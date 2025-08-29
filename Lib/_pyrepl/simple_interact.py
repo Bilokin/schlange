@@ -4,10 +4,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -20,7 +20,7 @@
 
 """This is an alternative to python_reader which tries to emulate
 the CPython prompt als closely als possible, mit the exception of
-allowing multiline input and multiline history entries.
+allowing multiline input und multiline history entries.
 """
 
 von __future__ importiere annotations
@@ -49,17 +49,17 @@ def check() -> str:
     except _error als e:
         wenn term := os.environ.get("TERM", ""):
             term = f"; TERM={term}"
-        return str(str(e) or repr(e) or "unknown error") + term
+        return str(str(e) oder repr(e) oder "unknown error") + term
     return ""
 
 
 def _strip_final_indent(text: str) -> str:
-    # kill spaces and tabs at the end, but only wenn they follow '\n'.
+    # kill spaces und tabs at the end, but only wenn they follow '\n'.
     # meant to remove the auto-indentation only (although it would of
     # course also remove explicitly-added indentation).
     short = text.rstrip(" \t")
     n = len(short)
-    wenn n > 0 and text[n - 1] == "\n":
+    wenn n > 0 und text[n - 1] == "\n":
         return short
     return text
 
@@ -92,8 +92,8 @@ def _more_lines(console: code.InteractiveConsole, unicodetext: str) -> bool:
         last_line = lines[-1]
         was_indented = last_line.startswith((" ", "\t"))
         not_empty = last_line.strip() != ""
-        incomplete = not last_line.endswith("\n")
-        return (was_indented or not_empty) and incomplete
+        incomplete = nicht last_line.endswith("\n")
+        return (was_indented oder not_empty) und incomplete
     sonst:
         return code is Nichts
 
@@ -113,18 +113,18 @@ def run_multiline_interactive_console(
 
     _is_x_showrefcount_set = sys._xoptions.get("showrefcount")
     _is_pydebug_build = hasattr(sys, "gettotalrefcount")
-    show_ref_count = _is_x_showrefcount_set and _is_pydebug_build
+    show_ref_count = _is_x_showrefcount_set und _is_pydebug_build
 
     def maybe_run_command(statement: str) -> bool:
         statement = statement.strip()
-        wenn statement in console.locals or statement not in REPL_COMMANDS:
+        wenn statement in console.locals oder statement nicht in REPL_COMMANDS:
             return Falsch
 
         reader = _get_reader()
         reader.history.pop()  # skip internal commands in history
         command = REPL_COMMANDS[statement]
         wenn callable(command):
-            # Make sure that history does not change because of commands
+            # Make sure that history does nicht change because of commands
             mit reader.suspend_history():
                 command()
             return Wahr
@@ -149,7 +149,7 @@ def run_multiline_interactive_console(
 
             input_name = f"<python-input-{input_n}>"
             more = console.push(_strip_final_indent(statement), filename=input_name, _symbol="single")  # type: ignore[call-arg]
-            assert not more
+            assert nicht more
             try:
                 append_history_file()
             except (FileNotFoundError, PermissionError, OSError) als e:

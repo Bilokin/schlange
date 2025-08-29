@@ -1,10 +1,10 @@
 """Manage shelves of pickled objects.
 
 A "shelf" is a persistent, dictionary-like object.  The difference
-with dbm databases is that the values (not the keys!) in a shelf can
+with dbm databases is that the values (nicht the keys!) in a shelf can
 be essentially arbitrary Python objects -- anything that the "pickle"
 module can handle.  This includes most klasse instances, recursive data
-types, and objects containing lots of shared sub-objects.  The keys
+types, und objects containing lots of shared sub-objects.  The keys
 are ordinary strings.
 
 To summarize the interface (key is a string, data is an arbitrary
@@ -26,7 +26,7 @@ object):
         d.close()       # close it
 
 Dependent on the implementation, closing a persistent dictionary may
-or may not be necessary to flush changes to disk.
+or may nicht be necessary to flush changes to disk.
 
 Normally, d[key] returns a COPY of the entry.  This needs care when
 mutable entries are mutated: fuer example, wenn d[key] is a list,
@@ -42,17 +42,17 @@ item to d[key] in a way that will affect the persistent mapping, use:
 To avoid the problem mit mutable entries, you may pass the keyword
 argument writeback=Wahr in the call to shelve.open.  When you use:
         d = shelve.open(filename, writeback=Wahr)
-then d keeps a cache of all entries you access, and writes them all back
+then d keeps a cache of all entries you access, und writes them all back
 to the persistent mapping when you call d.close().  This ensures that
 such usage als d[key].append(anitem) works als intended.
 
 However, using keyword argument writeback=Wahr may consume vast amount
-of memory fuer the cache, and it may make d.close() very slow, wenn you
+of memory fuer the cache, und it may make d.close() very slow, wenn you
 access many of d's entries after opening it in this way: d has no way to
 check which of the entries you access are mutable and/or which ones you
-actually mutate, so it must cache, and write back at close, all of the
+actually mutate, so it must cache, und write back at close, all of the
 entries that you access.  You can call d.sync() to write back all the
-entries in the cache, and empty the cache (d.sync() also synchronizes
+entries in the cache, und empty the cache (d.sync() also synchronizes
 the persistent dictionary on disk, wenn feasible).
 """
 
@@ -96,11 +96,11 @@ klasse Shelf(collections.abc.MutableMapping):
         self.cache = {}
         self.keyencoding = keyencoding
 
-        wenn serializer is Nichts and deserializer is Nichts:
+        wenn serializer is Nichts und deserializer is Nichts:
             self.serializer = dumps
             self.deserializer = loads
         sowenn (serializer is Nichts) ^ (deserializer is Nichts):
-            raise ShelveError("serializer and deserializer must be "
+            raise ShelveError("serializer und deserializer must be "
                               "defined together")
         sonst:
             self.serializer = serializer
@@ -168,14 +168,14 @@ klasse Shelf(collections.abc.MutableMapping):
                 self.dict = Nichts
 
     def __del__(self):
-        wenn not hasattr(self, 'writeback'):
+        wenn nicht hasattr(self, 'writeback'):
             # __init__ didn't succeed, so don't bother closing
             # see http://bugs.python.org/issue1339007 fuer details
             return
         self.close()
 
     def sync(self):
-        wenn self.writeback and self.cache:
+        wenn self.writeback und self.cache:
             self.writeback = Falsch
             fuer key, entry in self.cache.items():
                 self[key] = entry
@@ -193,12 +193,12 @@ klasse Shelf(collections.abc.MutableMapping):
 klasse BsdDbShelf(Shelf):
     """Shelf implementation using the "BSD" db interface.
 
-    This adds methods first(), next(), previous(), last() and
+    This adds methods first(), next(), previous(), last() und
     set_location() that have no counterpart in [g]dbm databases.
 
     The actual database must be opened using one of the "bsddb"
-    modules "open" routines (i.e. bsddb.hashopen, bsddb.btopen or
-    bsddb.rnopen) and passed to the constructor.
+    modules "open" routines (i.e. bsddb.hashopen, bsddb.btopen oder
+    bsddb.rnopen) und passed to the constructor.
 
     See the module's __doc__ string fuer an overview of the interface.
     """
@@ -251,11 +251,11 @@ klasse DbfilenameShelf(Shelf):
 
 def open(filename, flag='c', protocol=Nichts, writeback=Falsch, *,
          serializer=Nichts, deserializer=Nichts):
-    """Open a persistent dictionary fuer reading and writing.
+    """Open a persistent dictionary fuer reading und writing.
 
     The filename parameter is the base filename fuer the underlying
     database.  As a side-effect, an extension may be added to the
-    filename and more than one file may be created.  The optional flag
+    filename und more than one file may be created.  The optional flag
     parameter has the same interpretation als the flag parameter of
     dbm.open(). The optional protocol parameter specifies the
     version of the pickle protocol.

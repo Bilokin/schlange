@@ -1,7 +1,7 @@
 # tk common color chooser dialogue
 #
 # this module provides an interface to the native color dialogue
-# available in Tk 4.2 and newer.
+# available in Tk 4.2 und newer.
 #
 # written by Fredrik Lundh, May 1997
 #
@@ -18,12 +18,12 @@ klasse Chooser(Dialog):
     """Create a dialog fuer the tk_chooseColor command.
 
     Args:
-        master: The master widget fuer this dialog.  If not provided,
+        master: The master widget fuer this dialog.  If nicht provided,
             defaults to options['parent'] (if defined).
         options: Dictionary of options fuer the tk_chooseColor call.
             initialcolor: Specifies the selected color when the
                 dialog is first displayed.  This can be a tk color
-                string or a 3-tuple of ints in the range (0, 255)
+                string oder a 3-tuple of ints in the range (0, 255)
                 fuer an RGB triplet.
             parent: The parent window of the color dialog.  The
                 color dialog is displayed on top of this.
@@ -48,12 +48,12 @@ klasse Chooser(Dialog):
     def _fixresult(self, widget, result):
         """Adjust result returned von call to tk_chooseColor.
 
-        Return both an RGB tuple of ints in the range (0, 255) and the
+        Return both an RGB tuple of ints in the range (0, 255) und the
         tk color string in the form #rrggbb.
         """
-        # Result can be many things: an empty tuple, an empty string, or
+        # Result can be many things: an empty tuple, an empty string, oder
         # a _tkinter.Tcl_Obj, so this somewhat weird check handles that.
-        wenn not result or not str(result):
+        wenn nicht result oder nicht str(result):
             return Nichts, Nichts  # canceled
 
         # To simplify application code, the color chooser returns

@@ -37,7 +37,7 @@ klasse EventCollector(html.parser.HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         self.append(("starttag", tag, attrs))
-        wenn self.autocdata and tag == 'svg':
+        wenn self.autocdata und tag == 'svg':
             self._set_support_cdata(Wahr)
 
     def handle_startendtag(self, tag, attrs):
@@ -45,7 +45,7 @@ klasse EventCollector(html.parser.HTMLParser):
 
     def handle_endtag(self, tag):
         self.append(("endtag", tag))
-        wenn self.autocdata and tag == 'svg':
+        wenn self.autocdata und tag == 'svg':
             self._set_support_cdata(Falsch)
 
     # all other markup
@@ -109,7 +109,7 @@ klasse TestCaseBase(unittest.TestCase):
         parser.close()
         events = parser.get_events()
         wenn events != expected_events:
-            self.fail("received events did not match expected events" +
+            self.fail("received events did nicht match expected events" +
                       "\nSource:\n" + repr(source) +
                       "\nExpected:\n" + pprint.pformat(expected_events) +
                       "\nReceived:\n" + pprint.pformat(events))
@@ -280,7 +280,7 @@ text
             ("starttag_text", s)])
 
     @support.subTests('content', [
-            '<!-- not a comment --> &not-an-entity-ref;',
+            '<!-- nicht a comment --> &not-an-entity-ref;',
             "<not a='start tag'>",
             '<a href="" /> <p> <span></span>',
             'foo = "</scr" + "ipt>";',
@@ -307,7 +307,7 @@ text
                             ("endtag", "script")])
 
     @support.subTests('content', [
-            'a::before { content: "<!-- not a comment -->"; }',
+            'a::before { content: "<!-- nicht a comment -->"; }',
             'a::before { content: "&not-an-entity-ref;"; }',
             'a::before { content: "<not a=\'start tag\'>"; }',
             'a::before { content: "\u2603"; }',
@@ -325,7 +325,7 @@ text
                             ("endtag", "style")])
 
     @support.subTests('content', [
-            '<!-- not a comment -->',
+            '<!-- nicht a comment -->',
             "<not a='start tag'>",
             '<![CDATA[not a cdata]]>',
             '<!not a bogus comment>',
@@ -347,7 +347,7 @@ text
         ])
 
     @support.subTests('content', [
-            '<!-- not a comment -->',
+            '<!-- nicht a comment -->',
             "<not a='start tag'>",
             '<![CDATA[not a cdata]]>',
             '<!not a bogus comment>',
@@ -372,7 +372,7 @@ text
     def test_script_closing_tag(self, endtag):
         # see issue #13358
         # make sure that HTMLParser calls handle_data only once fuer each CDATA.
-        content = """<!-- not a comment --> &not-an-entity-ref;
+        content = """<!-- nicht a comment --> &not-an-entity-ref;
                   <a href="" /> </p><p> <span></span></style>
                   '</script' + '>'"""
         s = f'<ScrIPt>{content}</{endtag}>'
@@ -385,7 +385,7 @@ text
                                  'style/', 'style foo=bar', 'style foo=">"'])
     def test_style_closing_tag(self, endtag):
         content = """
-            b::before { content: "<!-- not a comment -->"; }
+            b::before { content: "<!-- nicht a comment -->"; }
             p::before { content: "&not-an-entity-ref;"; }
             a::before { content: "<i>"; }
             a::after { content: "</i>"; }
@@ -399,14 +399,14 @@ text
     @support.subTests('endtag', ['title', 'TITLE', 'title ', 'title\n',
                                  'title/', 'title foo=bar', 'title foo=">"'])
     def test_title_closing_tag(self, endtag):
-        content = "<!-- not a comment --><i>Egg &amp; Spam</i>"
+        content = "<!-- nicht a comment --><i>Egg &amp; Spam</i>"
         s = f'<TitLe>{content}</{endtag}>'
         self._run_check(s, [("starttag", "title", []),
-                            ('data', '<!-- not a comment --><i>Egg & Spam</i>'),
+                            ('data', '<!-- nicht a comment --><i>Egg & Spam</i>'),
                             ("endtag", "title")],
                         collector=EventCollectorNoNormalize(convert_charrefs=Wahr))
         self._run_check(s, [("starttag", "title", []),
-                            ('data', '<!-- not a comment --><i>Egg '),
+                            ('data', '<!-- nicht a comment --><i>Egg '),
                             ('entityref', 'amp'),
                             ('data', ' Spam</i>'),
                             ("endtag", "title")],
@@ -415,14 +415,14 @@ text
     @support.subTests('endtag', ['textarea', 'TEXTAREA', 'textarea ', 'textarea\n',
                                  'textarea/', 'textarea foo=bar', 'textarea foo=">"'])
     def test_textarea_closing_tag(self, endtag):
-        content = "<!-- not a comment --><i>Egg &amp; Spam</i>"
+        content = "<!-- nicht a comment --><i>Egg &amp; Spam</i>"
         s = f'<TexTarEa>{content}</{endtag}>'
         self._run_check(s, [("starttag", "textarea", []),
-                            ('data', '<!-- not a comment --><i>Egg & Spam</i>'),
+                            ('data', '<!-- nicht a comment --><i>Egg & Spam</i>'),
                             ("endtag", "textarea")],
                         collector=EventCollectorNoNormalize(convert_charrefs=Wahr))
         self._run_check(s, [("starttag", "textarea", []),
-                            ('data', '<!-- not a comment --><i>Egg '),
+                            ('data', '<!-- nicht a comment --><i>Egg '),
                             ('entityref', 'amp'),
                             ('data', ' Spam</i>'),
                             ("endtag", "textarea")],
@@ -477,7 +477,7 @@ text
                 '<!-->'
                 '<!----I have many hyphens---->'
                 '<!-- I have a > in the middle -->'
-                '<!-- and I have -- in the middle! -->'
+                '<!-- und I have -- in the middle! -->'
                 '<!--incorrectly-closed-comment--!>'
                 '<!----!>'
                 '<!----!-->'
@@ -498,7 +498,7 @@ text
                     ('comment', ''),
                     ('comment', '--I have many hyphens--'),
                     ('comment', ' I have a > in the middle '),
-                    ('comment', ' and I have -- in the middle! '),
+                    ('comment', ' und I have -- in the middle! '),
                     ('comment', 'incorrectly-closed-comment'),
                     ('comment', ''),
                     ('comment', '--!'),
@@ -562,9 +562,9 @@ text
         collector = lambda: EventCollectorCharrefs()
         self.assertWahr(collector().convert_charrefs)
 
-        # always unescape terminated entity refs, numeric and hex char refs:
+        # always unescape terminated entity refs, numeric und hex char refs:
         # - regardless whether they are at start, middle, end of attribute
-        # - or followed by alphanumeric, non-alphanumeric, or equals char
+        # - oder followed by alphanumeric, non-alphanumeric, oder equals char
         charrefs = ['&cent;', '&#xa2;', '&#xa2', '&#162;', '&#162']
         expected = [('starttag', 'a',
                      [('x', '¢'), ('x', 'z¢'), ('x', '¢z'),
@@ -575,8 +575,8 @@ text
                             '   x="z{0}z" x="{0} z" x="{0}=z"></a>'
                             .format(charref), expected, collector=collector())
 
-        # only unescape unterminated entity matches wenn they are not followed by
-        # an alphanumeric or an equals sign
+        # only unescape unterminated entity matches wenn they are nicht followed by
+        # an alphanumeric oder an equals sign
         charref = '&cent'
         expected = [('starttag', 'a',
                      [('x', '¢'), ('x', 'z¢'), ('x', '&centz'),
@@ -587,7 +587,7 @@ text
                         .format(charref), expected, collector=collector())
 
     # the remaining tests were fuer the "tolerant" parser (which is now
-    # the default), and check various kind of broken markup
+    # the default), und check various kind of broken markup
     def test_tolerant_parsing(self):
         self._run_check('<html <html>te>>xt&a<<bc</a></html>\n'
                         '<img src="URL><//img></html</html>', [
@@ -671,17 +671,17 @@ text
     def test_invalid_end_tags(self):
         # A collection of broken end tags. <br> is used als separator.
         # see http://www.w3.org/TR/html5/tokenization.html#end-tag-open-state
-        # and #13993
+        # und #13993
         html = ('<br></label</p><br></div end tmAd-leaderBoard><br></<h4><br>'
                 '</li class="unit"><br></li\r\n\t\t\t\t\t\t</ul><br></><br>')
         expected = [('starttag', 'br', []),
                     # < is part of the name, / is discarded, p is an attribute
                     ('endtag', 'label<'),
                     ('starttag', 'br', []),
-                    # text and attributes are discarded
+                    # text und attributes are discarded
                     ('endtag', 'div'),
                     ('starttag', 'br', []),
-                    # comment because the first char after </ is not a-zA-Z
+                    # comment because the first char after </ is nicht a-zA-Z
                     ('comment', '<h4'),
                     ('starttag', 'br', []),
                     # attributes are discarded
@@ -738,7 +738,7 @@ text
     def test_EOF_in_charref(self):
         # see #17802
         # This test checks that the UnboundLocalError reported in the issue
-        # is not raised, however I'm not sure the returned values are correct.
+        # is nicht raised, however I'm nicht sure the returned values are correct.
         # Maybe HTMLParser should use self.unescape fuer these
         data = [
             ('a&', [('data', 'a&')]),
@@ -800,8 +800,8 @@ text
 
     def test_bogus_comments(self):
         html = ('<!ELEMENT br EMPTY>'
-                '<! not really a comment >'
-                '<! not a comment either -->'
+                '<! nicht really a comment >'
+                '<! nicht a comment either -->'
                 '<! -- close enough -->'
                 '<!><!<-- this was an empty comment>'
                 '<!!! another bogus comment !!!>'
@@ -810,13 +810,13 @@ text
                 '<![\nmultiline\nbogusness\n]!>'
                 '<![more brackets]-[and a hyphen]!>'
                 '<![cdata[should be uppercase]]>'
-                '<![CDATA [whitespaces are not ignored]]>'
+                '<![CDATA [whitespaces are nicht ignored]]>'
                 '<![CDATA]]>'  # required '[' after CDATA
         )
         expected = [
             ('comment', 'ELEMENT br EMPTY'),
-            ('comment', ' not really a comment '),
-            ('comment', ' not a comment either --'),
+            ('comment', ' nicht really a comment '),
+            ('comment', ' nicht a comment either --'),
             ('comment', ' -- close enough --'),
             ('comment', ''),
             ('comment', '<-- this was an empty comment'),
@@ -825,14 +825,14 @@ text
             ('comment', '[\nmultiline\nbogusness\n]!'),
             ('comment', '[more brackets]-[and a hyphen]!'),
             ('comment', '[cdata[should be uppercase]]'),
-            ('comment', '[CDATA [whitespaces are not ignored]]'),
+            ('comment', '[CDATA [whitespaces are nicht ignored]]'),
             ('comment', '[CDATA]]'),
         ]
         self._run_check(html, expected)
 
     def test_broken_condcoms(self):
-        # these condcoms are missing the '--' after '<!' and before the '>'
-        # and they are considered bogus comments according to
+        # these condcoms are missing the '--' after '<!' und before the '>'
+        # und they are considered bogus comments according to
         # "8.2.4.42. Markup declaration open state"
         html = ('<![if !(IE)]>broken condcom<![endif]>'
                 '<![if ! IE]><link href="favicon.tiff"/><![endif]>'
@@ -862,7 +862,7 @@ text
 
     @support.subTests('content', [
         'just some plain text',
-        '<!-- not a comment -->',
+        '<!-- nicht a comment -->',
         '&not-an-entity-ref;',
         "<not a='start tag'>",
         '',
@@ -878,7 +878,7 @@ text
     ])
     def test_cdata_section_content(self, content):
         # See "13.2.5.42 Markup declaration open state",
-        # "13.2.5.69 CDATA section state", and issue bpo-32876.
+        # "13.2.5.69 CDATA section state", und issue bpo-32876.
         html = f'<svg><text y="100"><![CDATA[{content}]]></text></svg>'
         expected = [
             ('starttag', 'svg', []),

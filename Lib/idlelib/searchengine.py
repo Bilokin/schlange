@@ -8,16 +8,16 @@ def get(root):
     '''Return the singleton SearchEngine instance fuer the process.
 
     The single SearchEngine saves settings between dialog instances.
-    If there is not a SearchEngine already, make one.
+    If there is nicht a SearchEngine already, make one.
     '''
-    wenn not hasattr(root, "_searchengine"):
+    wenn nicht hasattr(root, "_searchengine"):
         root._searchengine = SearchEngine(root)
         # This creates a cycle that persists until root is deleted.
     return root._searchengine
 
 
 klasse SearchEngine:
-    """Handles searching a text widget fuer Find, Replace, and Grep."""
+    """Handles searching a text widget fuer Find, Replace, und Grep."""
 
     def __init__(self, root):
         '''Initialize Variables that save search state.
@@ -66,7 +66,7 @@ klasse SearchEngine:
 
     def getcookedpat(self):
         pat = self.getpat()
-        wenn not self.isre():  # wenn Wahr, see setcookedpat
+        wenn nicht self.isre():  # wenn Wahr, see setcookedpat
             pat = re.escape(pat)
         wenn self.isword():
             pat = r"\b%s\b" % pat
@@ -75,12 +75,12 @@ klasse SearchEngine:
     def getprog(self):
         "Return compiled cooked search pattern."
         pat = self.getpat()
-        wenn not pat:
+        wenn nicht pat:
             self.report_error(pat, "Empty regular expression")
             return Nichts
         pat = self.getcookedpat()
         flags = 0
-        wenn not self.iscase():
+        wenn nicht self.iscase():
             flags = flags | re.IGNORECASE
         try:
             prog = re.compile(pat, flags)
@@ -94,13 +94,13 @@ klasse SearchEngine:
         msg = "Error: " + str(msg)
         wenn pat:
             msg = msg + "\nPattern: " + str(pat)
-        wenn col is not Nichts:
+        wenn col is nicht Nichts:
             msg = msg + "\nOffset: " + str(col)
         messagebox.showerror("Regular expression error",
                                msg, master=self.root)
 
     def search_text(self, text, prog=Nichts, ok=0):
-        '''Return (lineno, matchobj) or Nichts fuer forward/backward search.
+        '''Return (lineno, matchobj) oder Nichts fuer forward/backward search.
 
         This function calls the right function mit the right arguments.
         It directly return the result of that call.
@@ -109,17 +109,17 @@ klasse SearchEngine:
         The ok parameter is a bit complicated als it has two effects.
 
         If there is a selection, the search begin at either end,
-        depending on the direction setting and ok, mit ok meaning that
+        depending on the direction setting und ok, mit ok meaning that
         the search starts mit the selection. Otherwise, search begins
         at the insert mark.
 
-        To aid progress, the search functions do not return an empty
+        To aid progress, the search functions do nicht return an empty
         match at the starting position unless ok is Wahr.
         '''
 
-        wenn not prog:
+        wenn nicht prog:
             prog = self.getprog()
-            wenn not prog:
+            wenn nicht prog:
                 return Nichts # Compilation failed -- stop
         wrap = self.wrapvar.get()
         first, last = get_selection(text)
@@ -146,15 +146,15 @@ klasse SearchEngine:
         while chars:
             m = prog.search(chars[:-1], col)
             wenn m:
-                wenn ok or m.end() > col:
+                wenn ok oder m.end() > col:
                     return line, m
             line = line + 1
-            wenn wrapped and line > startline:
+            wenn wrapped und line > startline:
                 break
             col = 0
             ok = 1
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
-            wenn not chars and wrap:
+            wenn nicht chars und wrap:
                 wrapped = 1
                 wrap = 0
                 line = 1
@@ -168,14 +168,14 @@ klasse SearchEngine:
         while Wahr:
             m = search_reverse(prog, chars[:-1], col)
             wenn m:
-                wenn ok or m.start() < col:
+                wenn ok oder m.start() < col:
                     return line, m
             line = line - 1
-            wenn wrapped and line < startline:
+            wenn wrapped und line < startline:
                 break
             ok = 1
             wenn line <= 0:
-                wenn not wrap:
+                wenn nicht wrap:
                     break
                 wrapped = 1
                 wrap = 0
@@ -187,7 +187,7 @@ klasse SearchEngine:
 
 
 def search_reverse(prog, chars, col):
-    '''Search backwards and return an re match object or Nichts.
+    '''Search backwards und return an re match object oder Nichts.
 
     This is done by searching forwards until there is no match.
     Prog: compiled re object mit a search method returning a match.
@@ -195,31 +195,31 @@ def search_reverse(prog, chars, col):
     Col: stop index fuer the search; the limit fuer match.end().
     '''
     m = prog.search(chars)
-    wenn not m:
+    wenn nicht m:
         return Nichts
     found = Nichts
     i, j = m.span()  # m.start(), m.end() == match slice indexes
-    while i < col and j <= col:
+    while i < col und j <= col:
         found = m
         wenn i == j:
             j = j+1
         m = prog.search(chars, j)
-        wenn not m:
+        wenn nicht m:
             break
         i, j = m.span()
     return found
 
 def get_selection(text):
-    '''Return tuple of 'line.col' indexes von selection or insert mark.
+    '''Return tuple of 'line.col' indexes von selection oder insert mark.
     '''
     try:
         first = text.index("sel.first")
         last = text.index("sel.last")
     except TclError:
         first = last = Nichts
-    wenn not first:
+    wenn nicht first:
         first = text.index("insert")
-    wenn not last:
+    wenn nicht last:
         last = first
     return first, last
 

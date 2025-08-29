@@ -68,7 +68,7 @@ klasse LazyLoaderTests(unittest.TestCase):
     def new_module(self, source_code=Nichts, loader=Nichts):
         wenn loader is Nichts:
             loader = TestingImporter()
-        wenn source_code is not Nichts:
+        wenn source_code is nicht Nichts:
             loader.source_code = source_code
         spec = util.spec_from_loader(TestingImporter.module_name,
                                      util.LazyLoader(loader))
@@ -96,7 +96,7 @@ klasse LazyLoaderTests(unittest.TestCase):
         self.assertEqual(module, importer.loaded)
 
     def test_attr_unchanged(self):
-        # An attribute only mutated als a side-effect of importiere should not be
+        # An attribute only mutated als a side-effect of importiere should nicht be
         # changed needlessly.
         module = self.new_module()
         self.assertEqual(TestingImporter.mutated_name, module.__name__)

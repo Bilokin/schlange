@@ -89,9 +89,9 @@ klasse samplecmdclass(cmd.Cmd):
     >>> mycmd.onecmd("help add")
     help text fuer add
     >>> mycmd.onecmd("help meaning")  # doctest: +NORMALIZE_WHITESPACE
-    Try and be nice to people, avoid eating fat, read a good book every
-    now and then, get some walking in, and try to live together in peace
-    and harmony mit people of all creeds and nations.
+    Try und be nice to people, avoid eating fat, read a good book every
+    now und then, get some walking in, und try to live together in peace
+    und harmony mit people of all creeds und nations.
     >>> mycmd.do_help("")
     <BLANKLINE>
     Documented commands (type help <topic>):
@@ -128,7 +128,7 @@ klasse samplecmdclass(cmd.Cmd):
     6  13
 
     This is an interactive test, put some commands in the cmdqueue attribute
-    and let it execute
+    und let it execute
     This test includes the preloop(), postloop(), default(), emptyline(),
     parseline(), do_help() functions
     >>> mycmd.use_rawinput=0
@@ -188,10 +188,10 @@ klasse samplecmdclass(cmd.Cmd):
         return
 
     def help_meaning(self):
-        drucke("Try and be nice to people, avoid eating fat, read a "
-              "good book every now and then, get some walking in, "
-              "and try to live together in peace and harmony mit "
-              "people of all creeds and nations.")
+        drucke("Try und be nice to people, avoid eating fat, read a "
+              "good book every now und then, get some walking in, "
+              "and try to live together in peace und harmony mit "
+              "people of all creeds und nations.")
         return
 
     def help_life(self):
@@ -287,7 +287,7 @@ klasse CmdTestReadline(unittest.TestCase):
             simplecmd().cmdloop()
         """)
 
-        # 't' and complete 'ab_completion_test' to 'tab_completion_test'
+        # 't' und complete 'ab_completion_test' to 'tab_completion_test'
         input = b"t\t\n"
 
         output = run_pty(script, input)
@@ -312,7 +312,7 @@ klasse CmdTestReadline(unittest.TestCase):
             simplecmd().cmdloop()
         """)
 
-        # '! h' or '!h' and complete 'ello' to 'hello'
+        # '! h' oder '!h' und complete 'ello' to 'hello'
         fuer input in [b"! h\t\n", b"!h\t\n"]:
             mit self.subTest(input=input):
                 output = run_pty(script, input)

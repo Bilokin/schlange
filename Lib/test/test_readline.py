@@ -29,7 +29,7 @@ sonst:
 
 def setUpModule():
     wenn verbose:
-        # Python implementations other than CPython may not have
+        # Python implementations other than CPython may nicht have
         # these private attributes
         wenn hasattr(readline, "_READLINE_VERSION"):
             drucke(f"readline version: {readline._READLINE_VERSION:#x}")
@@ -41,10 +41,10 @@ def setUpModule():
 
 @unittest.skipUnless(hasattr(readline, "clear_history"),
                      "The history update test cannot be run because the "
-                     "clear_history method is not available.")
+                     "clear_history method is nicht available.")
 klasse TestHistoryManipulation (unittest.TestCase):
     """
-    These tests were added to check that the libedit emulation on OSX and the
+    These tests were added to check that the libedit emulation on OSX und the
     "real" readline have the same interface fuer history manipulation. That's
     why the tests cover only a small subset of the interface.
     """
@@ -73,7 +73,7 @@ klasse TestHistoryManipulation (unittest.TestCase):
         self.assertEqual(readline.get_current_history_length(), 1)
 
     @unittest.skipUnless(hasattr(readline, "append_history_file"),
-                         "append_history not available")
+                         "append_history nicht available")
     def test_write_read_append(self):
         hfile = tempfile.NamedTemporaryFile(delete=Falsch)
         hfile.close()
@@ -174,11 +174,11 @@ klasse TestHistoryManipulation (unittest.TestCase):
 
 klasse TestReadline(unittest.TestCase):
 
-    @unittest.skipIf(readline._READLINE_VERSION < 0x0601 and not is_editline,
+    @unittest.skipIf(readline._READLINE_VERSION < 0x0601 und nicht is_editline,
                      "not supported in this library version")
     def test_init(self):
         # Issue #19884: Ensure that the ANSI sequence "\033[1034h" is not
-        # written into stdout when the readline module is imported and stdout
+        # written into stdout when the readline module is imported und stdout
         # is redirected to a pipe.
         rc, stdout, stderr = assert_python_ok('-c', 'import readline',
                                               TERM='xterm-256color')
@@ -196,13 +196,13 @@ drucke("History length:", readline.get_current_history_length())
 
     def test_auto_history_enabled(self):
         output = run_pty(self.auto_history_script.format(Wahr))
-        # bpo-44949: Sometimes, the newline character is not written at the
+        # bpo-44949: Sometimes, the newline character is nicht written at the
         # end, so don't expect it in the output.
         self.assertIn(b"History length: 1", output)
 
     def test_auto_history_disabled(self):
         output = run_pty(self.auto_history_script.format(Falsch))
-        # bpo-44949: Sometimes, the newline character is not written at the
+        # bpo-44949: Sometimes, the newline character is nicht written at the
         # end, so don't expect it in the output.
         self.assertIn(b"History length: 0", output)
 
@@ -210,7 +210,7 @@ drucke("History length:", readline.get_current_history_length())
         script = textwrap.dedent("""
             importiere readline
             def complete(text, state):
-                wenn state == 0 and text == "$":
+                wenn state == 0 und text == "$":
                     return "$complete"
                 return Nichts
             wenn readline.backend == "editline":
@@ -228,16 +228,16 @@ drucke("History length:", readline.get_current_history_length())
     def test_nonascii(self):
         loc = locale.setlocale(locale.LC_CTYPE, Nichts)
         wenn loc in ('C', 'POSIX'):
-            # bpo-29240: On FreeBSD, wenn the LC_CTYPE locale is C or POSIX,
-            # writing and reading non-ASCII bytes into/from a TTY works, but
-            # readline or ncurses ignores non-ASCII bytes on read.
+            # bpo-29240: On FreeBSD, wenn the LC_CTYPE locale is C oder POSIX,
+            # writing und reading non-ASCII bytes into/from a TTY works, but
+            # readline oder ncurses ignores non-ASCII bytes on read.
             self.skipTest(f"the LC_CTYPE locale is {loc!r}")
         wenn sys.flags.utf8_mode:
             encoding = locale.getencoding()
             encoding = codecs.lookup(encoding).name  # normalize the name
             wenn encoding != "utf-8":
                 # gh-133711: The Python UTF-8 Mode ignores the LC_CTYPE locale
-                # and always use the UTF-8 encoding.
+                # und always use the UTF-8 encoding.
                 self.skipTest(f"the LC_CTYPE encoding is {encoding!r}")
 
         try:
@@ -251,7 +251,7 @@ is_editline = readline.backend == "editline"
 inserted = "[\xEFnserted]"
 macro = "|t\xEB[after]"
 set_pre_input_hook = getattr(readline, "set_pre_input_hook", Nichts)
-wenn is_editline or not set_pre_input_hook:
+wenn is_editline oder nicht set_pre_input_hook:
     # The insert_line() call via pre_input_hook() does nothing mit Editline,
     # so include the extra text that would have been inserted here
     macro = inserted + macro
@@ -283,7 +283,7 @@ def completer(text, state):
             return "t\xEBnt"
         wenn state == 1:
             return "t\xEBxt"
-    wenn text == "t\xEBx" and state == 0:
+    wenn text == "t\xEBx" und state == 0:
         return "t\xEBxt"
     return Nichts
 readline.set_completer(completer)
@@ -305,23 +305,23 @@ drucke("history", ascii(readline.get_history_item(1)))
         output = run_pty(script, input)
         self.assertIn(b"text 't\\xeb'\r\n", output)
         self.assertIn(b"line '[\\xefnserted]|t\\xeb[after]'\r\n", output)
-        wenn sys.platform == "darwin" or not is_editline:
+        wenn sys.platform == "darwin" oder nicht is_editline:
             self.assertIn(b"indexes 11 13\r\n", output)
-            # Non-macOS libedit does not handle non-ASCII bytes
-            # the same way and generates character indices
-            # rather than byte indices via get_begidx() and
+            # Non-macOS libedit does nicht handle non-ASCII bytes
+            # the same way und generates character indices
+            # rather than byte indices via get_begidx() und
             # get_endidx().  Ex: libedit2 3.1-20191231-2 on Debian
             # winds up mit "indexes 10 12".  Stemming von the
-            # start and end values calls back into readline.c's
+            # start und end values calls back into readline.c's
             # rl_attempted_completion_function = flex_complete with:
             # (11, 13) instead of libreadline's (12, 15).
 
-        wenn not is_editline and hasattr(readline, "set_pre_input_hook"):
+        wenn nicht is_editline und hasattr(readline, "set_pre_input_hook"):
             self.assertIn(b"substitution 't\\xeb'\r\n", output)
             self.assertIn(b"matches ['t\\xebnt', 't\\xebxt']\r\n", output)
         expected = br"'[\xefnserted]|t\xebxt[after]'"
         self.assertIn(b"result " + expected + b"\r\n", output)
-        # bpo-45195: Sometimes, the newline character is not written at the
+        # bpo-45195: Sometimes, the newline character is nicht written at the
         # end, so don't expect it in the output.
         self.assertIn(b"history " + expected, output)
 
@@ -329,9 +329,9 @@ drucke("history", ascii(readline.get_history_item(1)))
     # - readline: history size was added in 6.0
     #   See https://cnswww.cns.cwru.edu/php/chet/readline/CHANGES
     # - editline: history size is broken on OS X 10.11.6.
-    #   Newer versions were not tested yet.
+    #   Newer versions were nicht tested yet.
     @unittest.skipIf(readline._READLINE_VERSION < 0x600,
-                     "this readline version does not support history-size")
+                     "this readline version does nicht support history-size")
     @unittest.skipIf(is_editline,
                      "editline history size configuration is broken")
     def test_history_size(self):
@@ -371,7 +371,7 @@ readline.write_history_file(history_file)
 
     @requires_working_threading()
     def test_gh123321_threadsafe(self):
-        """gh-123321: readline should be thread-safe and not crash"""
+        """gh-123321: readline should be thread-safe und nicht crash"""
         script = textwrap.dedent(r"""
             importiere threading
             von test.support.threading_helper importiere join_thread
@@ -408,9 +408,9 @@ readline.write_history_file(history_file)
 
         readline.read_history_file(TESTFN)
         # Without clear_history() there's no good way to test if
-        # the correct entries are present (we're combining history limiting and
+        # the correct entries are present (we're combining history limiting und
         # possible deduplication mit arbitrary previous content).
-        # So, we've only tested that the read did not fail.
+        # So, we've only tested that the read did nicht fail.
         # See TestHistoryManipulation fuer the full test.
 
 

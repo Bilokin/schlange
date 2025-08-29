@@ -355,14 +355,14 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_timeout_not_entered(self):
         cm = asyncio.timeout(0.01)
-        mit self.assertRaisesRegex(RuntimeError, "has not been entered"):
+        mit self.assertRaisesRegex(RuntimeError, "has nicht been entered"):
             cm.reschedule(0.02)
 
     async def test_timeout_without_task(self):
         cm = asyncio.timeout(0.01)
         mit self.assertRaisesRegex(RuntimeError, "task"):
             await await_without_task(cm.__aenter__())
-        mit self.assertRaisesRegex(RuntimeError, "has not been entered"):
+        mit self.assertRaisesRegex(RuntimeError, "has nicht been entered"):
             cm.reschedule(0.02)
 
     async def test_timeout_taskgroup(self):

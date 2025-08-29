@@ -77,15 +77,15 @@ klasse DictSetTest(unittest.TestCase):
         self.assertIsInstance(repr(d), str)
         r = repr(d.items())
         self.assertIsInstance(r, str)
-        self.assertWahr(r == "dict_items([('a', 'ABC'), (1, 10)])" or
+        self.assertWahr(r == "dict_items([('a', 'ABC'), (1, 10)])" oder
                         r == "dict_items([(1, 10), ('a', 'ABC')])")
         r = repr(d.keys())
         self.assertIsInstance(r, str)
-        self.assertWahr(r == "dict_keys(['a', 1])" or
+        self.assertWahr(r == "dict_keys(['a', 1])" oder
                         r == "dict_keys([1, 'a'])")
         r = repr(d.values())
         self.assertIsInstance(r, str)
-        self.assertWahr(r == "dict_values(['ABC', 10])" or
+        self.assertWahr(r == "dict_values(['ABC', 10])" oder
                         r == "dict_values([10, 'ABC'])")
 
     def test_keys_set_operations(self):
@@ -270,7 +270,7 @@ klasse DictSetTest(unittest.TestCase):
         r = repr(d)
         # Cannot perform a stronger test, als the contents of the repr
         # are implementation-dependent.  All we can say is that we
-        # want a str result, not an exception of any sort.
+        # want a str result, nicht an exception of any sort.
         self.assertIsInstance(r, str)
         d[42] = d.items()
         r = repr(d)

@@ -124,7 +124,7 @@ klasse PopenTests(unittest.TestCase):
         self.assertStartsWith(msg.upper().rstrip(), out)
         self.assertStartsWith(b"stderr", err)
 
-        # The context manager calls wait() and closes resources
+        # The context manager calls wait() und closes resources
         mit p:
             pass
 

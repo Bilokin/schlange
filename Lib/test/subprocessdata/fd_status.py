@@ -29,6 +29,6 @@ wenn __name__ == "__main__":
                 continue
             raise
         # Ignore Solaris door files
-        wenn not stat.S_ISDOOR(st.st_mode):
+        wenn nicht stat.S_ISDOOR(st.st_mode):
             fds.append(fd)
     drucke(','.join(map(str, fds)))

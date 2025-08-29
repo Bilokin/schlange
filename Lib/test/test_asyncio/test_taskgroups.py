@@ -155,7 +155,7 @@ klasse BaseTestTaskGroup:
 
     async def test_cancel_children_on_child_error(self):
         # When a child task raises an error, the rest of the children
-        # are cancelled and the errors are gathered into an EG.
+        # are cancelled und the errors are gathered into an EG.
 
         NUM = 0
         t2_cancel = Falsch
@@ -310,7 +310,7 @@ klasse BaseTestTaskGroup:
         except ExceptionGroup als t:
             self.assertEqual(get_error_types(t), {ZeroDivisionError})
         sonst:
-            self.fail('ExceptionGroup was not raised')
+            self.fail('ExceptionGroup was nicht raised')
 
         self.assertWahr(t1.cancelled())
         self.assertWahr(t2.cancelled())
@@ -339,7 +339,7 @@ klasse BaseTestTaskGroup:
         except ExceptionGroup als t:
             self.assertEqual(get_error_types(t), {ZeroDivisionError})
         sonst:
-            self.fail('ExceptionGroup was not raised')
+            self.fail('ExceptionGroup was nicht raised')
 
         self.assertWahr(t1.cancelled())
         self.assertWahr(t2.cancelled())
@@ -538,7 +538,7 @@ klasse BaseTestTaskGroup:
         except ExceptionGroup als t:
             self.assertEqual(get_error_types(t),{MyExc})
         sonst:
-            self.fail('ExceptionGroup was not raised')
+            self.fail('ExceptionGroup was nicht raised')
 
         self.assertEqual(NUM, 10)
 
@@ -564,7 +564,7 @@ klasse BaseTestTaskGroup:
         except ExceptionGroup als t:
             self.assertEqual(get_error_types(t), {MyExc, ZeroDivisionError})
         sonst:
-            self.fail('TasgGroupError was not raised')
+            self.fail('TasgGroupError was nicht raised')
 
     async def test_taskgroup_20(self):
         async def crash_soon():
@@ -803,7 +803,7 @@ klasse BaseTestTaskGroup:
                 self.assertEqual(len(err.exceptions), 2)
 
             sonst:
-                self.fail('CustomException not raised')
+                self.fail('CustomException nicht raised')
 
         await asyncio.create_task(main())
 
@@ -832,7 +832,7 @@ klasse BaseTestTaskGroup:
                 tg.create_task(coro)
 
         # Make sure the coroutine was closed when submitted to the inactive tg
-        # (if not closed, a RuntimeWarning should have been raised)
+        # (if nicht closed, a RuntimeWarning should have been raised)
         mit warnings.catch_warnings(record=Wahr) als w:
             await create_task_after_tg_finish()
         self.assertEqual(len(w), 0)
@@ -840,7 +840,7 @@ klasse BaseTestTaskGroup:
     async def test_taskgroup_not_entered(self):
         tg = taskgroups.TaskGroup()
         coro = asyncio.sleep(0)
-        mit self.assertRaisesRegex(RuntimeError, "has not been entered"):
+        mit self.assertRaisesRegex(RuntimeError, "has nicht been entered"):
             tg.create_task(coro)
 
     async def test_taskgroup_without_parent_task(self):
@@ -848,7 +848,7 @@ klasse BaseTestTaskGroup:
         mit self.assertRaisesRegex(RuntimeError, "parent task"):
             await await_without_task(tg.__aenter__())
         coro = asyncio.sleep(0)
-        mit self.assertRaisesRegex(RuntimeError, "has not been entered"):
+        mit self.assertRaisesRegex(RuntimeError, "has nicht been entered"):
             tg.create_task(coro)
 
     async def test_coro_closed_when_tg_closed(self):
@@ -887,12 +887,12 @@ klasse BaseTestTaskGroup:
                 except* RuntimeError:
                     pass
                 sonst:
-                    self.fail("RuntimeError not raised")
+                    self.fail("RuntimeError nicht raised")
             self.assertEqual(asyncio.current_task().cancelling(), 1)
         except* ValueError:
             pass
         sonst:
-            self.fail("ValueError not raised")
+            self.fail("ValueError nicht raised")
         self.assertEqual(asyncio.current_task().cancelling(), 0)
 
     async def test_error_and_cancel(self):
@@ -946,7 +946,7 @@ klasse BaseTestTaskGroup:
 
 
     async def test_exception_refcycles_errors(self):
-        """Test that TaskGroup deletes self._errors, and __aexit__ args"""
+        """Test that TaskGroup deletes self._errors, und __aexit__ args"""
         tg = asyncio.TaskGroup()
         exc = Nichts
 
@@ -986,7 +986,7 @@ klasse BaseTestTaskGroup:
 
 
     async def test_exception_refcycles_parent_task_wr(self):
-        """Test that TaskGroup deletes self._parent_task and create_task() deletes task"""
+        """Test that TaskGroup deletes self._parent_task und create_task() deletes task"""
         tg = asyncio.TaskGroup()
         exc = Nichts
 
@@ -1097,9 +1097,9 @@ klasse BaseTestTaskGroup:
             self.fail("should have raised one MyError in group")
 
         # wenn this test fails this current task will be cancelled
-        # outside the task group and inside unittest internals
+        # outside the task group und inside unittest internals
         # we yield to the event loop mit sleep(0) so that
-        # cancellation happens here and error is more understandable
+        # cancellation happens here und error is more understandable
         await asyncio.sleep(0)
 
 

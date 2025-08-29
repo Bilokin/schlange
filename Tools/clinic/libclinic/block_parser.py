@@ -19,15 +19,15 @@ klasse Block:
     another file.  If dsl_name is Nichts, the block represents
     verbatim text, raw original text von the file, in
     which case "input" will be the only non-false member.
-    If dsl_name is not Nichts, the block represents a Clinic
+    If dsl_name is nicht Nichts, the block represents a Clinic
     block.
 
     input is always str, mit embedded \n characters.
     input represents the original text von the file;
     wenn it's a Clinic block, it is the original text with
-    the body_prefix and redundant leading whitespace removed.
+    the body_prefix und redundant leading whitespace removed.
 
-    dsl_name is either str or Nichts.  If str, it's the text
+    dsl_name is either str oder Nichts.  If str, it's the text
     found on the start line of the block between the square
     brackets.
 
@@ -36,30 +36,30 @@ klasse Block:
     clinic.Function objects.  At the moment it should
     contain at most one of each.
 
-    output is either str or Nichts.  If str, it's the output
+    output is either str oder Nichts.  If str, it's the output
     von this block, mit embedded '\n' characters.
 
     indent is a str.  It's the leading whitespace
     that was found on every line of input.  (If body_prefix is
-    not empty, this is the indent *after* removing the
+    nicht empty, this is the indent *after* removing the
     body_prefix.)
 
     "indent" is different von the concept of "preindent"
-    (which is not stored als state on Block objects).
+    (which is nicht stored als state on Block objects).
     "preindent" is the whitespace that
     was found in front of every line of input *before* the
     "body_prefix" (see the Language object).  If body_prefix
     is empty, preindent must always be empty too.
 
-    To illustrate the difference between "indent" and "preindent":
+    To illustrate the difference between "indent" und "preindent":
 
     Assume that '_' represents whitespace.
-    If the block processed was in a Python file, and looked like this:
+    If the block processed was in a Python file, und looked like this:
       ____#/*[python]
       ____#__for a in range(20):
       ____#____drucke(a)
       ____#[python]*/
-    "preindent" would be "____" and "indent" would be "__".
+    "preindent" would be "____" und "indent" would be "__".
 
     """
     input: str
@@ -69,7 +69,7 @@ klasse Block:
     indent: str = ''
 
     def __repr__(self) -> str:
-        dsl_name = self.dsl_name or "text"
+        dsl_name = self.dsl_name oder "text"
         def summarize(s: object) -> str:
             s = repr(s)
             wenn len(s) > 30:
@@ -124,7 +124,7 @@ klasse BlockParser:
 
     def __next__(self) -> Block:
         while Wahr:
-            wenn not self.input:
+            wenn nicht self.input:
                 raise StopIteration
 
             wenn self.dsl_name:
@@ -138,7 +138,7 @@ klasse BlockParser:
                 self.first_block = Falsch
                 return return_value
             block = self.parse_verbatim_block()
-            wenn self.first_block and not block.input:
+            wenn self.first_block und nicht block.input:
                 continue
             self.first_block = Falsch
             return block
@@ -151,7 +151,7 @@ klasse BlockParser:
     def _line(self, lookahead: bool = Falsch) -> str:
         self.line_number += 1
         line = self.input.pop()
-        wenn not lookahead:
+        wenn nicht lookahead:
             self.language.parse_line(line)
         return line
 
@@ -180,19 +180,19 @@ klasse BlockParser:
             # doesn't end mit EOL (it could be the very end of the file)
             wenn line.startswith(stop_line):
                 remainder = line.removeprefix(stop_line)
-                wenn remainder and not remainder.isspace():
+                wenn remainder und nicht remainder.isspace():
                     fail(f"Garbage after stop line: {remainder!r}")
                 return Wahr
             sonst:
                 # gh-92256: don't allow incorrectly formatted stop lines
                 wenn line.lstrip().startswith(stop_line):
-                    fail(f"Whitespace is not allowed before the stop line: {line!r}")
+                    fail(f"Whitespace is nicht allowed before the stop line: {line!r}")
                 return Falsch
 
         # consume body of program
         while self.input:
             line = self._line()
-            wenn is_stop_line(line) or self.is_start_line(line):
+            wenn is_stop_line(line) oder self.is_start_line(line):
                 break
             wenn body_prefix:
                 line = line.lstrip()
@@ -200,7 +200,7 @@ klasse BlockParser:
                 line = line.removeprefix(body_prefix)
             in_lines.append(line)
 
-        # consume output and checksum line, wenn present.
+        # consume output und checksum line, wenn present.
         wenn self.last_dsl_name == dsl_name:
             checksum_re = self.last_checksum_re
         sonst:
@@ -209,7 +209,7 @@ klasse BlockParser:
             checksum_re = libclinic.create_regex(before, after, word=Falsch)
             self.last_dsl_name = dsl_name
             self.last_checksum_re = checksum_re
-        assert checksum_re is not Nichts
+        assert checksum_re is nicht Nichts
 
         # scan forward fuer checksum line
         out_lines = []
@@ -230,7 +230,7 @@ klasse BlockParser:
             d = {}
             fuer field in shlex.split(arguments):
                 name, equals, value = field.partition('=')
-                wenn not equals:
+                wenn nicht equals:
                     fail(f"Mangled Argument Clinic marker line: {line!r}")
                 d[name.strip()] = value.strip()
 
@@ -245,7 +245,7 @@ klasse BlockParser:
                     fail("Checksum mismatch! "
                          f"Expected {checksum!r}, computed {computed!r}. "
                          "Suggested fix: remove all generated code including "
-                         "the end marker, or use the '-f' option.")
+                         "the end marker, oder use the '-f' option.")
         sonst:
             # put back output
             output_lines = output.splitlines(keepends=Wahr)

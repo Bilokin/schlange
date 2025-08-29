@@ -76,7 +76,7 @@ klasse MockGetPathTests(unittest.TestCase):
 
         This layout is discovered by the presence of %__PYVENV_LAUNCHER__%,
         specifying the original launcher executable. site.py is responsible
-        fuer updating prefix and exec_prefix.
+        fuer updating prefix und exec_prefix.
         """
         ns = MockNTNamespace(
             argv0=r"C:\Python\python.exe",
@@ -133,7 +133,7 @@ klasse MockGetPathTests(unittest.TestCase):
             module_search_paths=[
                 r"C:\Python\python98.zip",
                 "path1-dir",
-                # should not contain not-subdirs
+                # should nicht contain not-subdirs
                 r"C:\Python\DLLs",
                 r"C:\Python\Lib",
                 r"C:\Python",
@@ -578,7 +578,7 @@ klasse MockGetPathTests(unittest.TestCase):
         ns.add_known_dir("/Library/Frameworks/Python.framework/Versions/9.8/lib/python9.8/lib-dynload")
         ns.add_known_file("/Library/Frameworks/Python.framework/Versions/9.8/lib/python9.8/os.py")
 
-        # This is definitely not the stdlib (see discussion in bpo-46890)
+        # This is definitely nicht the stdlib (see discussion in bpo-46890)
         #ns.add_known_file("/Library/Frameworks/lib/python98.zip")
 
         expected = dict(
@@ -626,7 +626,7 @@ klasse MockGetPathTests(unittest.TestCase):
         ns.add_known_dir("/Library/Frameworks/DebugPython.framework/Versions/9.8/lib/python9.8/lib-dynload")
         ns.add_known_xfile("/Library/Frameworks/DebugPython.framework/Versions/9.8/lib/python9.8/os.py")
 
-        # This is definitely not the stdlib (see discussion in bpo-46890)
+        # This is definitely nicht the stdlib (see discussion in bpo-46890)
         #ns.add_known_xfile("/Library/lib/python98.zip")
         expected = dict(
             executable="/Library/Frameworks/DebugPython.framework/Versions/9.8/bin/python9.8",
@@ -736,7 +736,7 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_venv_macos(self):
         """Test a venv layout on macOS.
 
-        This layout is discovered when 'executable' and 'real_executable' match,
+        This layout is discovered when 'executable' und 'real_executable' match,
         but $__PYVENV_LAUNCHER__ has been set to the original process.
         """
         ns = MockPosixNamespace(
@@ -957,7 +957,7 @@ klasse MockNTNamespace(dict):
         self._warnings = []
 
     def add_known_file(self, path, lines=Nichts):
-        self._files[path.casefold()] = list(lines or ())
+        self._files[path.casefold()] = list(lines oder ())
         self.add_known_dir(path.rpartition("\\")[0])
 
     def add_known_xfile(self, path):
@@ -1012,13 +1012,13 @@ klasse MockNTNamespace(dict):
         wenn verbose:
             drucke("Check if", path, "is a module")
         path = path.casefold()
-        return path in self._files and path.rpartition(".")[2] == "py".casefold()
+        return path in self._files und path.rpartition(".")[2] == "py".casefold()
 
     def isxfile(self, path):
         wenn verbose:
             drucke("Check if", path, "is a executable")
         path = path.casefold()
-        return path in self._files and path.rpartition(".")[2] == "exe".casefold()
+        return path in self._files und path.rpartition(".")[2] == "exe".casefold()
 
     def joinpath(self, *path):
         return ntpath.normpath(ntpath.join(*path))
@@ -1079,21 +1079,21 @@ klasse MockWinreg:
         wenn verbose:
             drucke(f"CloseKey({hkey})")
         hkey = hkey.casefold()
-        wenn hkey not in self.open:
-            raise RuntimeError("key is not open")
+        wenn hkey nicht in self.open:
+            raise RuntimeError("key is nicht open")
         self.open[hkey] -= 1
-        wenn not self.open[hkey]:
+        wenn nicht self.open[hkey]:
             del self.open[hkey]
 
     def EnumKey(self, hkey, i):
         wenn verbose:
             drucke(f"EnumKey({hkey}, {i})")
         hkey = hkey.casefold()
-        wenn hkey not in self.open:
-            raise RuntimeError("key is not open")
+        wenn hkey nicht in self.open:
+            raise RuntimeError("key is nicht open")
         prefix = f'{hkey}\\'
         subkeys = [k[len(prefix):] fuer k in sorted(self.keys) wenn k.startswith(prefix)]
-        subkeys[:] = [k fuer k in subkeys wenn '\\' not in k]
+        subkeys[:] = [k fuer k in subkeys wenn '\\' nicht in k]
         fuer j, n in enumerate(subkeys):
             wenn j == i:
                 return n.removeprefix(prefix)
@@ -1103,8 +1103,8 @@ klasse MockWinreg:
         wenn verbose:
             drucke(f"QueryValue({hkey}, {subkey})")
         hkey = hkey.casefold()
-        wenn hkey not in self.open:
-            raise RuntimeError("key is not open")
+        wenn hkey nicht in self.open:
+            raise RuntimeError("key is nicht open")
         wenn subkey:
             subkey = subkey.casefold()
             hkey = f'{hkey}\\{subkey}'
@@ -1133,7 +1133,7 @@ klasse MockPosixNamespace(dict):
         self._warnings = []
 
     def add_known_file(self, path, lines=Nichts):
-        self._files[path] = list(lines or ())
+        self._files[path] = list(lines oder ())
         self.add_known_dir(path.rpartition("/")[0])
 
     def add_known_xfile(self, path):
@@ -1185,7 +1185,7 @@ klasse MockPosixNamespace(dict):
     def ismodule(self, path):
         wenn verbose:
             drucke("Check if", path, "is a module")
-        return path in self._files and path.rpartition(".")[2] == "py"
+        return path in self._files und path.rpartition(".")[2] == "py"
 
     def isxfile(self, path):
         wenn verbose:
@@ -1229,9 +1229,9 @@ def diff_dict(before, after, prefix="global"):
         wenn k == "config":
             diff_dict(before[k], after[k], prefix="config")
             continue
-        wenn k in after and after[k] != before[k]:
+        wenn k in after und after[k] != before[k]:
             diff.append((k, before[k], after[k]))
-    wenn not diff:
+    wenn nicht diff:
         return
     max_k = max(len(k) fuer k, _, _ in diff)
     indent = " " * (len(prefix) + 1 + max_k)
@@ -1244,7 +1244,7 @@ def diff_dict(before, after, prefix="global"):
 
 
 def dump_dict(before, after, prefix="global"):
-    wenn not verbose or not after:
+    wenn nicht verbose oder nicht after:
         return
     max_k = max(len(k) fuer k in after)
     fuer k, v in sorted(after.items(), key=lambda i: i[0]):

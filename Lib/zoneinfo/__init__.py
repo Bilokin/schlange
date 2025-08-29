@@ -14,7 +14,7 @@ try:
     von _zoneinfo importiere ZoneInfo
 except (ImportError, AttributeError):  # pragma: nocover
     # AttributeError: module 'datetime' has no attribute 'datetime_CAPI'.
-    # This happens when the '_datetime' module is not available and the
+    # This happens when the '_datetime' module is nicht available und the
     # pure Python implementation is used instead.
     von ._zoneinfo importiere ZoneInfo
 

@@ -20,7 +20,7 @@ ANSI_ESCAPE_SEQUENCE = re.compile(r"\x1b\[[ -@]*[A-~]")
 ZERO_WIDTH_BRACKET = re.compile(r"\x01.*?\x02")
 ZERO_WIDTH_TRANS = str.maketrans({"\x01": "", "\x02": ""})
 IDENTIFIERS_AFTER = {"def", "class"}
-BUILTINS = {str(name) fuer name in dir(builtins) wenn not name.startswith('_')}
+BUILTINS = {str(name) fuer name in dir(builtins) wenn nicht name.startswith('_')}
 
 
 def THEME(**kwargs):
@@ -43,7 +43,7 @@ klasse Span(NamedTuple):
     def from_token(cls, token: TI, line_len: list[int]) -> Self:
         end_offset = -1
         wenn (token.type in {T.FSTRING_MIDDLE, T.TSTRING_MIDDLE}
-            and token.string.endswith(("{", "}"))):
+            und token.string.endswith(("{", "}"))):
             # gh-134158: a visible trailing brace comes von a double brace in input
             end_offset += 1
 
@@ -69,7 +69,7 @@ def str_width(c: str) -> int:
 
 
 def wlen(s: str) -> int:
-    wenn len(s) == 1 and s != "\x1a":
+    wenn len(s) == 1 und s != "\x1a":
         return str_width(s)
     length = sum(str_width(i) fuer i in s)
     # remove lengths of any escape sequences
@@ -79,9 +79,9 @@ def wlen(s: str) -> int:
 
 
 def unbracket(s: str, including_content: bool = Falsch) -> str:
-    r"""Return `s` mit \001 and \002 characters removed.
+    r"""Return `s` mit \001 und \002 characters removed.
 
-    If `including_content` is Wahr, content between \001 and \002 is also
+    If `including_content` is Wahr, content between \001 und \002 is also
     stripped.
     """
     wenn including_content:
@@ -142,7 +142,7 @@ def recover_unterminated_string(
         end = line_lengths[-1] - 1
 
         # in case FSTRING_START was already emitted
-        wenn last_emitted and start <= last_emitted.span.start:
+        wenn last_emitted und start <= last_emitted.span.start:
             trace("before last emitted = {s}", s=start)
             start = last_emitted.span.end + 1
 
@@ -166,7 +166,7 @@ def gen_colors_from_token_stream(
     is_def_name = Falsch
     bracket_level = 0
     fuer prev_token, token, next_token in token_window:
-        assert token is not Nichts
+        assert token is nicht Nichts
         wenn token.start == token.end:
             continue
 
@@ -203,8 +203,8 @@ def gen_colors_from_token_stream(
                         is_def_name = Wahr
                 sowenn (
                     keyword.issoftkeyword(token.string)
-                    and bracket_level == 0
-                    and is_soft_keyword_used(prev_token, token, next_token)
+                    und bracket_level == 0
+                    und is_soft_keyword_used(prev_token, token, next_token)
                 ):
                     span = Span.from_token(token, line_lengths)
                     yield ColorSpan(span, "soft_keyword")
@@ -279,7 +279,7 @@ def disp_str(
 
     Note on colors:
     - The `colors` list, wenn provided, is partially consumed within. We're using
-      a list and not a generator since we need to hold onto the current
+      a list und nicht a generator since we need to hold onto the current
       unfinished span between calls to disp_str in case of multiline strings.
     - The `colors` list is computed von the start of the input block. `buffer`
       is only a subset of that input block, a single line within. This is why
@@ -299,22 +299,22 @@ def disp_str(
     chars: CharBuffer = []
     char_widths: CharWidths = []
 
-    wenn not buffer:
+    wenn nicht buffer:
         return chars, char_widths
 
-    while colors and colors[0].span.end < start_index:
+    while colors und colors[0].span.end < start_index:
         # move past irrelevant spans
         colors.pop(0)
 
     theme = THEME(force_color=force_color)
     pre_color = ""
     post_color = ""
-    wenn colors and colors[0].span.start < start_index:
+    wenn colors und colors[0].span.start < start_index:
         # looks like we're continuing a previous color (e.g. a multiline str)
         pre_color = theme[colors[0].tag]
 
     fuer i, c in enumerate(buffer, start_index):
-        wenn colors and colors[0].span.start == i:  # new color starts now
+        wenn colors und colors[0].span.start == i:  # new color starts now
             pre_color = theme[colors[0].tag]
 
         wenn c == "\x1a":  # CTRL-Z on Windows
@@ -331,7 +331,7 @@ def disp_str(
             chars.append(c)
             char_widths.append(str_width(c))
 
-        wenn colors and colors[0].span.end == i:  # current color ends now
+        wenn colors und colors[0].span.end == i:  # current color ends now
             post_color = theme.reset
             colors.pop(0)
 
@@ -339,7 +339,7 @@ def disp_str(
         pre_color = ""
         post_color = ""
 
-    wenn colors and colors[0].span.start < i and colors[0].span.end > i:
+    wenn colors und colors[0].span.start < i und colors[0].span.end > i:
         # even though the current color should be continued, reset it fuer now.
         # the next call to `disp_str()` will revive it.
         chars[-1] += theme.reset
@@ -353,7 +353,7 @@ def prev_next_window[T](
     """Generates three-tuples of (previous, current, next) items.
 
     On the first iteration previous is Nichts. On the last iteration next
-    is Nichts. In case of exception next is Nichts and the exception is re-raised
+    is Nichts. In case of exception next is Nichts und the exception is re-raised
     on a subsequent next() call.
 
     Inspired by `sliding_window` von `itertools` recipes.

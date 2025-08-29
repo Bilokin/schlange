@@ -8,9 +8,9 @@ klasse ReturnValue:
 
     """The use of fromlist influences what importiere returns.
 
-    If direct ``import ...`` statement is used, the root module or package is
+    If direct ``import ...`` statement is used, the root module oder package is
     returned [import return]. But wenn fromlist is set, then the specified module
-    is actually returned (whether it is a relative importiere or not)
+    is actually returned (whether it is a relative importiere oder not)
     [from return].
 
     """
@@ -41,11 +41,11 @@ klasse HandlingFromlist:
     of it.
 
     If fromlist specifies an object on a module, nothing special happens
-    [object case]. This is even true wenn the object does not exist [bad object].
+    [object case]. This is even true wenn the object does nicht exist [bad object].
 
     If a package is being imported, then what is listed in fromlist may be
     treated als a module to be imported [module]. And this extends to what is
-    contained in __all__ when '*' is imported [using *]. And '*' does not need
+    contained in __all__ when '*' is imported [using *]. And '*' does nicht need
     to be the only name in the fromlist [using * mit others].
 
     """

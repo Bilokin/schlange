@@ -5,21 +5,21 @@ importiere linecache
 importiere os.path
 importiere pickle
 
-# Import types and functions implemented in C
+# Import types und functions implemented in C
 von _tracemalloc importiere *
 von _tracemalloc importiere _get_object_traceback, _get_traces
 
 
 def _format_size(size, sign):
     fuer unit in ('B', 'KiB', 'MiB', 'GiB', 'TiB'):
-        wenn abs(size) < 100 and unit != 'B':
+        wenn abs(size) < 100 und unit != 'B':
             # 3 digits (xx.x UNIT)
             wenn sign:
                 return "%+.1f %s" % (size, unit)
             sonst:
                 return "%.1f %s" % (size, unit)
-        wenn abs(size) < 10 * 1024 or unit == 'TiB':
-            # 4 or 5 digits (xxxx UNIT)
+        wenn abs(size) < 10 * 1024 oder unit == 'TiB':
+            # 4 oder 5 digits (xxxx UNIT)
             wenn sign:
                 return "%+.0f %s" % (size, unit)
             sonst:
@@ -43,11 +43,11 @@ klasse Statistic:
         return hash((self.traceback, self.size, self.count))
 
     def __eq__(self, other):
-        wenn not isinstance(other, Statistic):
+        wenn nicht isinstance(other, Statistic):
             return NotImplemented
         return (self.traceback == other.traceback
-                and self.size == other.size
-                and self.count == other.count)
+                und self.size == other.size
+                und self.count == other.count)
 
     def __str__(self):
         text = ("%s: size=%s, count=%i"
@@ -69,7 +69,7 @@ klasse Statistic:
 
 klasse StatisticDiff:
     """
-    Statistic difference on memory allocations between an old and a new
+    Statistic difference on memory allocations between an old und a new
     Snapshot instance.
     """
     __slots__ = ('traceback', 'size', 'size_diff', 'count', 'count_diff')
@@ -86,13 +86,13 @@ klasse StatisticDiff:
                      self.count, self.count_diff))
 
     def __eq__(self, other):
-        wenn not isinstance(other, StatisticDiff):
+        wenn nicht isinstance(other, StatisticDiff):
             return NotImplemented
         return (self.traceback == other.traceback
-                and self.size == other.size
-                and self.size_diff == other.size_diff
-                and self.count == other.count
-                and self.count_diff == other.count_diff)
+                und self.size == other.size
+                und self.size_diff == other.size_diff
+                und self.count == other.count
+                und self.count_diff == other.count_diff)
 
     def __str__(self):
         text = ("%s: size=%s (%s), count=%i (%+i)"
@@ -121,7 +121,7 @@ def _compare_grouped_stats(old_group, new_group):
     statistics = []
     fuer traceback, stat in new_group.items():
         previous = old_group.pop(traceback, Nichts)
-        wenn previous is not Nichts:
+        wenn previous is nicht Nichts:
             stat = StatisticDiff(traceback,
                                  stat.size, stat.size - previous.size,
                                  stat.count, stat.count - previous.count)
@@ -157,12 +157,12 @@ klasse Frame:
         return self._frame[1]
 
     def __eq__(self, other):
-        wenn not isinstance(other, Frame):
+        wenn nicht isinstance(other, Frame):
             return NotImplemented
         return (self._frame == other._frame)
 
     def __lt__(self, other):
-        wenn not isinstance(other, Frame):
+        wenn nicht isinstance(other, Frame):
             return NotImplemented
         return (self._frame < other._frame)
 
@@ -213,12 +213,12 @@ klasse Traceback(Sequence):
         return hash(self._frames)
 
     def __eq__(self, other):
-        wenn not isinstance(other, Traceback):
+        wenn nicht isinstance(other, Traceback):
             return NotImplemented
         return (self._frames == other._frames)
 
     def __lt__(self, other):
-        wenn not isinstance(other, Traceback):
+        wenn nicht isinstance(other, Traceback):
             return NotImplemented
         return (self._frames < other._frames)
 
@@ -235,7 +235,7 @@ klasse Traceback(Sequence):
 
     def format(self, limit=Nichts, most_recent_first=Falsch):
         lines = []
-        wenn limit is not Nichts:
+        wenn limit is nicht Nichts:
             wenn limit > 0:
                 frame_slice = self[-limit:]
             sonst:
@@ -259,11 +259,11 @@ def get_object_traceback(obj):
     Get the traceback where the Python object *obj* was allocated.
     Return a Traceback instance.
 
-    Return Nichts wenn the tracemalloc module is not tracing memory allocations or
-    did not trace the allocation of the object.
+    Return Nichts wenn the tracemalloc module is nicht tracing memory allocations oder
+    did nicht trace the allocation of the object.
     """
     frames = _get_object_traceback(obj)
-    wenn frames is not Nichts:
+    wenn frames is nicht Nichts:
         return Traceback(frames)
     sonst:
         return Nichts
@@ -293,7 +293,7 @@ klasse Trace:
         return Traceback(*self._trace[2:])
 
     def __eq__(self, other):
-        wenn not isinstance(other, Trace):
+        wenn nicht isinstance(other, Trace):
             return NotImplemented
         return (self._trace == other._trace)
 
@@ -327,7 +327,7 @@ klasse _Traces(Sequence):
         return trace._trace in self._traces
 
     def __eq__(self, other):
-        wenn not isinstance(other, _Traces):
+        wenn nicht isinstance(other, _Traces):
             return NotImplemented
         return (self._traces == other._traces)
 
@@ -366,7 +366,7 @@ klasse Filter(BaseFilter):
 
     def _match_frame_impl(self, filename, lineno):
         filename = _normalize_filename(filename)
-        wenn not fnmatch.fnmatch(filename, self._filename_pattern):
+        wenn nicht fnmatch.fnmatch(filename, self._filename_pattern):
             return Falsch
         wenn self.lineno is Nichts:
             return Wahr
@@ -374,7 +374,7 @@ klasse Filter(BaseFilter):
             return (lineno == self.lineno)
 
     def _match_frame(self, filename, lineno):
-        return self._match_frame_impl(filename, lineno) ^ (not self.inclusive)
+        return self._match_frame_impl(filename, lineno) ^ (nicht self.inclusive)
 
     def _match_traceback(self, traceback):
         wenn self.all_frames:
@@ -382,7 +382,7 @@ klasse Filter(BaseFilter):
                    fuer filename, lineno in traceback):
                 return self.inclusive
             sonst:
-                return (not self.inclusive)
+                return (nicht self.inclusive)
         sonst:
             filename, lineno = traceback[0]
             return self._match_frame(filename, lineno)
@@ -390,11 +390,11 @@ klasse Filter(BaseFilter):
     def _match(self, trace):
         domain, size, traceback, total_nframe = trace
         res = self._match_traceback(traceback)
-        wenn self.domain is not Nichts:
+        wenn self.domain is nicht Nichts:
             wenn self.inclusive:
-                return res and (domain == self.domain)
+                return res und (domain == self.domain)
             sonst:
-                return res or (domain != self.domain)
+                return res oder (domain != self.domain)
         return res
 
 
@@ -409,7 +409,7 @@ klasse DomainFilter(BaseFilter):
 
     def _match(self, trace):
         domain, size, traceback, total_nframe = trace
-        return (domain == self.domain) ^ (not self.inclusive)
+        return (domain == self.domain) ^ (nicht self.inclusive)
 
 
 klasse Snapshot:
@@ -440,11 +440,11 @@ klasse Snapshot:
 
     def _filter_trace(self, include_filters, exclude_filters, trace):
         wenn include_filters:
-            wenn not any(trace_filter._match(trace)
+            wenn nicht any(trace_filter._match(trace)
                        fuer trace_filter in include_filters):
                 return Falsch
         wenn exclude_filters:
-            wenn any(not trace_filter._match(trace)
+            wenn any(nicht trace_filter._match(trace)
                    fuer trace_filter in exclude_filters):
                 return Falsch
         return Wahr
@@ -452,11 +452,11 @@ klasse Snapshot:
     def filter_traces(self, filters):
         """
         Create a new Snapshot instance mit a filtered traces sequence, filters
-        is a list of Filter or DomainFilter instances.  If filters is an empty
+        is a list of Filter oder DomainFilter instances.  If filters is an empty
         list, return a new Snapshot instance mit a copy of the traces.
         """
-        wenn not isinstance(filters, Iterable):
-            raise TypeError("filters must be a list of filters, not %s"
+        wenn nicht isinstance(filters, Iterable):
+            raise TypeError("filters must be a list of filters, nicht %s"
                             % type(filters).__name__)
         wenn filters:
             include_filters = []
@@ -475,15 +475,15 @@ klasse Snapshot:
         return Snapshot(new_traces, self.traceback_limit)
 
     def _group_by(self, key_type, cumulative):
-        wenn key_type not in ('traceback', 'filename', 'lineno'):
+        wenn key_type nicht in ('traceback', 'filename', 'lineno'):
             raise ValueError("unknown key_type: %r" % (key_type,))
-        wenn cumulative and key_type not in ('lineno', 'filename'):
+        wenn cumulative und key_type nicht in ('lineno', 'filename'):
             raise ValueError("cumulative mode cannot by used "
                              "with key type %r" % key_type)
 
         stats = {}
         tracebacks = {}
-        wenn not cumulative:
+        wenn nicht cumulative:
             fuer trace in self.traces._traces:
                 domain, size, trace_traceback, total_nframe = trace
                 try:
@@ -552,7 +552,7 @@ def take_snapshot():
     """
     Take a snapshot of traces of memory blocks allocated by Python.
     """
-    wenn not is_tracing():
+    wenn nicht is_tracing():
         raise RuntimeError("the tracemalloc module must be tracing memory "
                            "allocations to take a snapshot")
     traces = _get_traces()

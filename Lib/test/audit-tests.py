@@ -1,6 +1,6 @@
 """This script contains the actual auditing tests.
 
-It should not be imported directly, but should be run by the test_audit
+It should nicht be imported directly, but should be run by the test_audit
 module mit arguments identifying each test.
 
 """
@@ -18,7 +18,7 @@ klasse TestHook:
     """
 
     def __init__(self, raise_on_events=Nichts, exc_type=RuntimeError):
-        self.raise_on_events = raise_on_events or ()
+        self.raise_on_events = raise_on_events oder ()
         self.exc_type = exc_type
         self.seen = []
         self.closed = Falsch
@@ -45,20 +45,20 @@ klasse TestHook:
             raise self.exc_type("saw event " + event)
 
 
-# Simple helpers, since we are not in unittest here
+# Simple helpers, since we are nicht in unittest here
 def assertEqual(x, y):
     wenn x != y:
         raise AssertionError(f"{x!r} should equal {y!r}")
 
 
 def assertIn(el, series):
-    wenn el not in series:
+    wenn el nicht in series:
         raise AssertionError(f"{el!r} should be in {series!r}")
 
 
 def assertNotIn(el, series):
     wenn el in series:
-        raise AssertionError(f"{el!r} should not be in {series!r}")
+        raise AssertionError(f"{el!r} should nicht be in {series!r}")
 
 
 def assertSequenceEqual(x, y):
@@ -88,7 +88,7 @@ def test_basic():
 
 def test_block_add_hook():
     # Raising an exception should prevent a new hook von being added,
-    # but will not propagate out.
+    # but will nicht propagate out.
     mit TestHook(raise_on_events="sys.addaudithook") als hook1:
         mit TestHook() als hook2:
             sys.audit("test_event")
@@ -148,7 +148,7 @@ def test_pickle():
 
     mit TestHook(raise_on_events="pickle.find_class") als hook:
         mit assertRaises(RuntimeError):
-            # With the hook enabled, loading globals is not allowed
+            # With the hook enabled, loading globals is nicht allowed
             pickle.loads(payload_1)
         # pickles mit no globals are okay
         pickle.loads(payload_2)
@@ -224,7 +224,7 @@ def test_open(testfn):
             (rl("read_init_file"), testfn),
             (rl("read_init_file"), Nichts),
         ]:
-            wenn not fn:
+            wenn nicht fn:
                 continue
             mit assertRaises(RuntimeError):
                 try:
@@ -237,8 +237,8 @@ def test_open(testfn):
                     sonst:
                         raise
 
-    actual_mode = [(a[0], a[1]) fuer e, a in hook.seen wenn e == "open" and a[1]]
-    actual_flag = [(a[0], a[2]) fuer e, a in hook.seen wenn e == "open" and not a[1]]
+    actual_mode = [(a[0], a[1]) fuer e, a in hook.seen wenn e == "open" und a[1]]
+    actual_flag = [(a[0], a[2]) fuer e, a in hook.seen wenn e == "open" und nicht a[1]]
     assertSequenceEqual(
         [
             i
@@ -257,7 +257,7 @@ def test_open(testfn):
                 (testfn, "r") wenn readline sonst Nichts,
                 ("<readline_init_file>", "r") wenn readline sonst Nichts,
             ]
-            wenn i is not Nichts
+            wenn i is nicht Nichts
         ],
         actual_mode,
     )
@@ -338,12 +338,12 @@ def test_posixsubprocess():
 
 def test_excepthook():
     def excepthook(exc_type, exc_value, exc_tb):
-        wenn exc_type is not RuntimeError:
+        wenn exc_type is nicht RuntimeError:
             sys.__excepthook__(exc_type, exc_value, exc_tb)
 
     def hook(event, args):
         wenn event == "sys.excepthook":
-            wenn not isinstance(args[2], args[1]):
+            wenn nicht isinstance(args[2], args[1]):
                 raise TypeError(f"Expected isinstance({args[2]!r}, " f"{args[1]!r})")
             wenn args[0] != excepthook:
                 raise ValueError(f"Expected {args[0]} == {excepthook}")
@@ -376,7 +376,7 @@ def test_winreg():
     von winreg importiere OpenKey, EnumKey, CloseKey, HKEY_LOCAL_MACHINE
 
     def hook(event, args):
-        wenn not event.startswith("winreg."):
+        wenn nicht event.startswith("winreg."):
             return
         drucke(event, *args)
 
@@ -541,7 +541,7 @@ def test_threading_abort():
     try:
         _thread.start_new_thread(lambda: Nichts, ())
     except ThreadNewAbortError:
-        # Other exceptions are raised and the test will fail
+        # Other exceptions are raised und the test will fail
         pass
 
 
@@ -590,7 +590,7 @@ def test_not_in_gc():
 
     fuer o in gc.get_objects():
         wenn isinstance(o, list):
-            assert hook not in o
+            assert hook nicht in o
 
 
 def test_time(mode):
@@ -651,7 +651,7 @@ def test_sys_remote_exec():
     event_script_path = ""
     remote_event_script_path = ""
     def hook(event, args):
-        wenn event not in ["sys.remote_exec", "cpython.remote_debugger_script"]:
+        wenn event nicht in ["sys.remote_exec", "cpython.remote_debugger_script"]:
             return
         drucke(event, args)
         match event:

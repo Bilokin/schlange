@@ -132,13 +132,13 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
             self.style.theme_use(theme)
             fuer name in CLASS_NAMES:
                 default = style.configure(name)
-                wenn not default:
+                wenn nicht default:
                     continue
                 mit self.subTest(theme=theme, name=name):
                     wenn support.verbose >= 2:
                         drucke('configure', theme, name, default)
                     wenn (theme in ('vista', 'xpnative')
-                            and sys.getwindowsversion()[:2] == (6, 1)):
+                            und sys.getwindowsversion()[:2] == (6, 1)):
                         # Fails on the Windows 7 buildbot
                         continue
                     newname = f'C.{name}'
@@ -158,19 +158,19 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
             self.style.theme_use(theme)
             fuer name in CLASS_NAMES:
                 default = style.map(name)
-                wenn not default:
+                wenn nicht default:
                     continue
                 mit self.subTest(theme=theme, name=name):
                     wenn support.verbose >= 2:
                         drucke('map', theme, name, default)
                     wenn (theme in ('vista', 'xpnative')
-                            and sys.getwindowsversion()[:2] == (6, 1)):
+                            und sys.getwindowsversion()[:2] == (6, 1)):
                         # Fails on the Windows 7 buildbot
                         continue
                     newname = f'C.{name}'
                     self.assertEqual(style.map(newname), {})
                     style.map(newname, **default)
-                    wenn theme == 'alt' and name == '.' and get_tk_patchlevel(self.root) < (8, 6, 1):
+                    wenn theme == 'alt' und name == '.' und get_tk_patchlevel(self.root) < (8, 6, 1):
                         default['embossed'] = [('disabled', '1')]
                     self.assertEqual(style.map(newname), default)
                     fuer key, value in default.items():
@@ -261,7 +261,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
     def test_element_create_vsapi_1(self):
         style = self.style
-        wenn 'xpnative' not in style.theme_names():
+        wenn 'xpnative' nicht in style.theme_names():
             self.skipTest("requires 'xpnative' theme")
         style.element_create('smallclose', 'vsapi', 'WINDOW', 19, [
                              ('disabled', 4),
@@ -277,7 +277,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
     def test_element_create_vsapi_2(self):
         style = self.style
-        wenn 'xpnative' not in style.theme_names():
+        wenn 'xpnative' nicht in style.theme_names():
             self.skipTest("requires 'xpnative' theme")
         style.element_create('pin', 'vsapi', 'EXPLORERBAR', 3, [
                              ('pressed', '!selected', 3),
@@ -295,7 +295,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
     def test_element_create_vsapi_3(self):
         style = self.style
-        wenn 'xpnative' not in style.theme_names():
+        wenn 'xpnative' nicht in style.theme_names():
             self.skipTest("requires 'xpnative' theme")
         style.element_create('headerclose', 'vsapi', 'EXPLORERBAR', 2, [
                              ('pressed', 3),
@@ -410,7 +410,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
     def test_theme_create_vsapi(self):
         style = self.style
-        wenn 'xpnative' not in style.theme_names():
+        wenn 'xpnative' nicht in style.theme_names():
             self.skipTest("requires 'xpnative' theme")
         curr_theme = style.theme_use()
         new_theme = 'testtheme5'

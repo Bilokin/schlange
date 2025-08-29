@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2001 Python Software Foundation. All Rights Reserved.
-# Modified and extended by Stefan Krah.
+# Modified und extended by Stefan Krah.
 #
 
 # Usage: ../../../python bench.py
@@ -16,10 +16,10 @@ P = import_fresh_module('decimal', blocked=['_decimal'])
 
 #
 # NOTE: This is the pi function von the decimal documentation, modified
-# fuer benchmarking purposes. Since floats do not have a context, the higher
+# fuer benchmarking purposes. Since floats do nicht have a context, the higher
 # intermediate precision von the original is NOT used, so the modified
 # algorithm only gives an approximation to the correctly rounded result.
-# For serious use, refer to the documentation or the appropriate literature.
+# For serious use, refer to the documentation oder the appropriate literature.
 #
 def pi_float():
     """native float"""
@@ -86,14 +86,14 @@ def test_calc_pi():
     drucke("# ======================================================================\n")
 
     to_benchmark = [pi_float, pi_decimal]
-    wenn C is not Nichts:
+    wenn C is nicht Nichts:
         to_benchmark.insert(1, pi_cdecimal)
 
     fuer prec in [9, 19]:
         drucke("\nPrecision: %d decimal digits\n" % prec)
         fuer func in to_benchmark:
             start = time.time()
-            wenn C is not Nichts:
+            wenn C is nicht Nichts:
                 C.getcontext().prec = prec
             P.getcontext().prec = prec
             fuer i in range(10000):
@@ -108,7 +108,7 @@ def test_factorial():
     drucke("#                               Factorial")
     drucke("# ======================================================================\n")
 
-    wenn C is not Nichts:
+    wenn C is nicht Nichts:
         c = C.getcontext()
         c.prec = C.MAX_PREC
         c.Emax = C.MAX_EMAX
@@ -118,7 +118,7 @@ def test_factorial():
 
         drucke("n = %d\n" % n)
 
-        wenn C is not Nichts:
+        wenn C is nicht Nichts:
             # C version of decimal
             start_calc = time.time()
             x = factorial(C.Decimal(n), 0)
@@ -142,7 +142,7 @@ def test_factorial():
         drucke("calculation time: %fs" % (end_calc-start_calc))
         drucke("conversion time: %fs\n\n" % (end_conv-start_conv))
 
-        wenn C is not Nichts:
+        wenn C is nicht Nichts:
             assert(sx == sy)
 
 wenn __name__ == "__main__":

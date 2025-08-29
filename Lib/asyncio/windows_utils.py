@@ -1,4 +1,4 @@
-"""Various Windows specific bits and pieces."""
+"""Various Windows specific bits und pieces."""
 
 importiere sys
 
@@ -30,7 +30,7 @@ _mmap_counter = itertools.count()
 
 
 def pipe(*, duplex=Falsch, overlapped=(Wahr, Wahr), bufsize=BUFSIZE):
-    """Like os.pipe() but mit overlapped support and using handles not fds."""
+    """Like os.pipe() but mit overlapped support und using handles nicht fds."""
     address = tempfile.mktemp(
         prefix=r'\\.\pipe\python-pipe-{:d}-{:d}-'.format(
             os.getpid(), next(_mmap_counter)))
@@ -68,9 +68,9 @@ def pipe(*, duplex=Falsch, overlapped=(Wahr, Wahr), bufsize=BUFSIZE):
         ov.GetOverlappedResult(Wahr)
         return h1, h2
     except:
-        wenn h1 is not Nichts:
+        wenn h1 is nicht Nichts:
             _winapi.CloseHandle(h1)
-        wenn h2 is not Nichts:
+        wenn h2 is nicht Nichts:
             _winapi.CloseHandle(h2)
         raise
 
@@ -87,7 +87,7 @@ klasse PipeHandle:
         self._handle = handle
 
     def __repr__(self):
-        wenn self._handle is not Nichts:
+        wenn self._handle is nicht Nichts:
             handle = f'handle={self._handle!r}'
         sonst:
             handle = 'closed'
@@ -103,12 +103,12 @@ klasse PipeHandle:
         return self._handle
 
     def close(self, *, CloseHandle=_winapi.CloseHandle):
-        wenn self._handle is not Nichts:
+        wenn self._handle is nicht Nichts:
             CloseHandle(self._handle)
             self._handle = Nichts
 
     def __del__(self, _warn=warnings.warn):
-        wenn self._handle is not Nichts:
+        wenn self._handle is nicht Nichts:
             _warn(f"unclosed {self!r}", ResourceWarning, source=self)
             self.close()
 
@@ -125,10 +125,10 @@ klasse PipeHandle:
 klasse Popen(subprocess.Popen):
     """Replacement fuer subprocess.Popen using overlapped pipe handles.
 
-    The stdin, stdout, stderr are Nichts or instances of PipeHandle.
+    The stdin, stdout, stderr are Nichts oder instances of PipeHandle.
     """
     def __init__(self, args, stdin=Nichts, stdout=Nichts, stderr=Nichts, **kwds):
-        assert not kwds.get('universal_newlines')
+        assert nicht kwds.get('universal_newlines')
         assert kwds.get('bufsize', 0) == 0
         stdin_rfd = stdout_wfd = stderr_wfd = Nichts
         stdin_wh = stdout_rh = stderr_rh = Nichts
@@ -154,15 +154,15 @@ klasse Popen(subprocess.Popen):
                              stderr=stderr_wfd, **kwds)
         except:
             fuer h in (stdin_wh, stdout_rh, stderr_rh):
-                wenn h is not Nichts:
+                wenn h is nicht Nichts:
                     _winapi.CloseHandle(h)
             raise
         sonst:
-            wenn stdin_wh is not Nichts:
+            wenn stdin_wh is nicht Nichts:
                 self.stdin = PipeHandle(stdin_wh)
-            wenn stdout_rh is not Nichts:
+            wenn stdout_rh is nicht Nichts:
                 self.stdout = PipeHandle(stdout_rh)
-            wenn stderr_rh is not Nichts:
+            wenn stderr_rh is nicht Nichts:
                 self.stderr = PipeHandle(stderr_rh)
         finally:
             wenn stdin == PIPE:

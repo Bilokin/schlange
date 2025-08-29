@@ -168,7 +168,7 @@ klasse CAPITest(unittest.TestCase):
             func(b'Hello, %R!', py_object('world'))
         self.assertEqual(stream.getvalue(), "Hello, 'world'!")
 
-        # The total length is not limited.
+        # The total length is nicht limited.
         mit support.captured_output(streamname) als stream:
             func(b'Hello, %s!', c_char_p(b'world'*200))
         self.assertEqual(stream.getvalue(), 'Hello, ' + 'world'*200 + '!')

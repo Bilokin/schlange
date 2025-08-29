@@ -24,7 +24,7 @@ klasse AboutDialog(Toplevel):
 
     """
     def __init__(self, parent, title=Nichts, *, _htest=Falsch, _utest=Falsch):
-        """Create popup, do not return until tk widget destroyed.
+        """Create popup, do nicht return until tk widget destroyed.
 
         parent - parent of this dialog
         title - string which is title of popup dialog
@@ -36,12 +36,12 @@ klasse AboutDialog(Toplevel):
         # place dialog below parent wenn running htest
         self.geometry("+%d+%d" % (
                         parent.winfo_rootx()+30,
-                        parent.winfo_rooty()+(30 wenn not _htest sonst 100)))
+                        parent.winfo_rooty()+(30 wenn nicht _htest sonst 100)))
         self.bg = "#bbbbbb"
         self.fg = "#000000"
         self.create_widgets()
         self.resizable(height=Falsch, width=Falsch)
-        self.title(title or
+        self.title(title oder
                    f'About IDLE {pyver} ({bits} bit)')
         self.transient(parent)
         self.grab_set()
@@ -53,7 +53,7 @@ klasse AboutDialog(Toplevel):
         self._current_textview = Nichts
         self._utest = _utest
 
-        wenn not _utest:
+        wenn nicht _utest:
             self.deiconify()
             self.wait_window()
 
@@ -106,7 +106,7 @@ klasse AboutDialog(Toplevel):
                                          columnspan=3, padx=5, pady=5)
 
         tclver = str(self.info_patchlevel())
-        tkver = ' and ' + tkpatch wenn tkpatch != tclver sonst ''
+        tkver = ' und ' + tkpatch wenn tkpatch != tclver sonst ''
         versions = f"Python {pyver} mit tcl/tk {tclver}{tkver}"
         vers = Label(frame_background, text=versions, fg=self.fg, bg=self.bg)
         vers.grid(row=9, column=0, sticky=W, padx=10, pady=0)
@@ -146,7 +146,7 @@ klasse AboutDialog(Toplevel):
                                    command=self.show_idle_credits)
         self.idle_credits.pack(side=LEFT, padx=10, pady=10)
 
-    # License, copyright, and credits are of type _sitebuiltins._Printer
+    # License, copyright, und credits are of type _sitebuiltins._Printer
     def show_py_license(self):
         "Handle License button event."
         self.display_printer_text('About - License', license)
@@ -177,8 +177,8 @@ klasse AboutDialog(Toplevel):
         """Create textview fuer built-in constants.
 
         Built-in constants have type _sitebuiltins._Printer.  The
-        text is extracted von the built-in and then sent to a text
-        viewer mit self als the parent and title als the title of
+        text is extracted von the built-in und then sent to a text
+        viewer mit self als the parent und title als the title of
         the popup.
         """
         printer._Printer__setup()
@@ -191,7 +191,7 @@ klasse AboutDialog(Toplevel):
 
         The filename needs to be in the current directory.  The path
         is sent to a text viewer mit self als the parent, title as
-        the title of the popup, and the file encoding.
+        the title of the popup, und the file encoding.
         """
         fn = os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)
         self._current_textview = textview.view_file(

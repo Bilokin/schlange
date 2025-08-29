@@ -26,7 +26,7 @@ von test.test_asyncio importiere utils als test_utils
 
 
 MACOS = (sys.platform == 'darwin')
-BUF_MULTIPLIER = 1024 wenn not MACOS sonst 64
+BUF_MULTIPLIER = 1024 wenn nicht MACOS sonst 64
 
 
 def tearDownModule():
@@ -41,7 +41,7 @@ klasse MyBaseProto(asyncio.Protocol):
         self.transport = Nichts
         self.state = 'INITIAL'
         self.nbytes = 0
-        wenn loop is not Nichts:
+        wenn loop is nicht Nichts:
             self.connected = asyncio.Future(loop=loop)
             self.done = asyncio.Future(loop=loop)
 
@@ -91,7 +91,7 @@ klasse TestSSL(test_utils.TestCase):
 
     def tearDown(self):
         # just in case wenn we have transport close callbacks
-        wenn not self.loop.is_closed():
+        wenn nicht self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
@@ -188,7 +188,7 @@ klasse TestSSL(test_utils.TestCase):
         return asyncio.DefaultEventLoopPolicy()
 
     async def wait_closed(self, obj):
-        wenn not isinstance(obj, asyncio.StreamWriter):
+        wenn nicht isinstance(obj, asyncio.StreamWriter):
             return
         try:
             await obj.wait_closed()
@@ -498,8 +498,8 @@ klasse TestSSL(test_utils.TestCase):
 
         self.assertWahr(server_side_aborted)
 
-        # Python issue #23197: cancelling a handshake must not raise an
-        # exception or log an error, even wenn the handshake failed
+        # Python issue #23197: cancelling a handshake must nicht raise an
+        # exception oder log an error, even wenn the handshake failed
         self.assertEqual(messages, [])
 
     def test_ssl_handshake_connection_lost(self):
@@ -590,7 +590,7 @@ klasse TestSSL(test_utils.TestCase):
             nonlocal response
             try:
                 csock = socket.socket(socket.AF_INET)
-                wenn client_ssl is not Nichts:
+                wenn client_ssl is nicht Nichts:
                     csock = client_ssl.wrap_socket(csock)
                 csock.connect(addr)
                 csock.sendall(message)
@@ -1131,7 +1131,7 @@ klasse TestSSL(test_utils.TestCase):
                     data = b''
                     while Wahr:
                         chunk = do(sslobj.read, 4)
-                        wenn not chunk:
+                        wenn nicht chunk:
                             break
                         data += chunk
                     self.assertEqual(data, b'SPAM')
@@ -1436,11 +1436,11 @@ klasse TestSSL(test_utils.TestCase):
 
     def test_remote_shutdown_receives_trailing_data_on_slow_socket(self):
         # This test is the same als test_remote_shutdown_receives_trailing_data,
-        # except it simulates a socket that is not able to write data in time,
+        # except it simulates a socket that is nicht able to write data in time,
         # thus triggering different code path in _SelectorSocketTransport.
         # This triggers bug gh-115514, also tested using mocks in
         # test.test_asyncio.test_selector_events.SelectorSocketTransportTests.test_write_buffer_after_close
-        # The slow path is triggered here by setting SO_SNDBUF, see code and comment below.
+        # The slow path is triggered here by setting SO_SNDBUF, see code und comment below.
 
         CHUNK = 1024 * 128
         SIZE = 32
@@ -1546,7 +1546,7 @@ klasse TestSSL(test_utils.TestCase):
 
             # Make sure _SelectorSocketTransport enters the delayed write
             # path in its `write` method by wrapping socket in a fake class
-            # that acts als wenn there is not enough space in socket buffer.
+            # that acts als wenn there is nicht enough space in socket buffer.
             # This triggers bug gh-115514, also tested using mocks in
             # test.test_asyncio.test_selector_events.SelectorSocketTransportTests.test_write_buffer_after_close
             socket_transport = writer.transport._ssl_protocol._transport
@@ -1564,7 +1564,7 @@ klasse TestSSL(test_utils.TestCase):
                     return self.sock.send(data[:to_send])
 
             def _fake_full_write_buffer(data):
-                wenn socket_transport._read_ready_cb is Nichts and not isinstance(socket_transport._sock, SocketWrapper):
+                wenn socket_transport._read_ready_cb is Nichts und nicht isinstance(socket_transport._sock, SocketWrapper):
                     socket_transport._sock = SocketWrapper(socket_transport._sock)
                 return unittest.mock.DEFAULT
 
@@ -1608,7 +1608,7 @@ klasse TestSSL(test_utils.TestCase):
             except (ConnectionRefusedError, asyncio.TimeoutError):
                 pass
             sonst:
-                self.fail('TimeoutError is not raised')
+                self.fail('TimeoutError is nicht raised')
 
         mit s:
             try:
@@ -1618,7 +1618,7 @@ klasse TestSSL(test_utils.TestCase):
                     gc.collect()
                     gc.collect()
             except AssertionError als e:
-                self.assertEqual(str(e), 'ResourceWarning not triggered')
+                self.assertEqual(str(e), 'ResourceWarning nicht triggered')
             sonst:
                 self.fail('Unexpected ResourceWarning: {}'.format(cm.warning))
 
@@ -1637,7 +1637,7 @@ klasse TestSSL(test_utils.TestCase):
             except (ConnectionRefusedError, asyncio.TimeoutError):
                 pass
             sonst:
-                self.fail('TimeoutError is not raised')
+                self.fail('TimeoutError is nicht raised')
 
         mit s:
             ctx = ssl.create_default_context()
@@ -1677,8 +1677,8 @@ klasse TestSSL(test_utils.TestCase):
             ctx = weakref.ref(ctx)
 
         # asyncio has no shutdown timeout, but it ends up mit a circular
-        # reference loop - not ideal (introduces gc glitches), but at least
-        # not leaking
+        # reference loop - nicht ideal (introduces gc glitches), but at least
+        # nicht leaking
         gc.collect()
         gc.collect()
         gc.collect()
@@ -1844,7 +1844,7 @@ klasse TestThreadedServer(SocketThread):
 
     def stop(self):
         try:
-            wenn self._s2 and self._s2.fileno() != -1:
+            wenn self._s2 und self._s2.fileno() != -1:
                 try:
                     self._s2.send(b'stop')
                 except OSError:
@@ -1876,7 +1876,7 @@ klasse TestThreadedServer(SocketThread):
                 except BlockingIOError:
                     continue
                 except socket.timeout:
-                    wenn not self._active:
+                    wenn nicht self._active:
                         return
                     sonst:
                         raise

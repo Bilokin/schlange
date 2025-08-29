@@ -52,10 +52,10 @@ klasse MockFrameInfo:
 skip_if_not_supported = unittest.skipIf(
     (
         sys.platform != "darwin"
-        and sys.platform != "linux"
-        and sys.platform != "win32"
+        und sys.platform != "linux"
+        und sys.platform != "win32"
     ),
-    "Test only runs on Linux, Windows and MacOS",
+    "Test only runs on Linux, Windows und MacOS",
 )
 
 
@@ -90,7 +90,7 @@ _test_sock.sendall(b"ready")
 
     client_socket = Nichts
     try:
-        # Wait fuer process to connect and send ready signal
+        # Wait fuer process to connect und send ready signal
         client_socket, _ = server_socket.accept()
         server_socket.close()
         response = client_socket.recv(1024)
@@ -99,7 +99,7 @@ _test_sock.sendall(b"ready")
 
         yield proc
     finally:
-        wenn client_socket is not Nichts:
+        wenn client_socket is nicht Nichts:
             client_socket.close()
         wenn proc.poll() is Nichts:
             proc.kill()
@@ -115,7 +115,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
     """Unit tests fuer individual profiler components."""
 
     def test_mock_frame_info_with_empty_and_unicode_values(self):
-        """Test MockFrameInfo handles empty strings, unicode characters, and very long names correctly."""
+        """Test MockFrameInfo handles empty strings, unicode characters, und very long names correctly."""
         # Test mit empty strings
         frame = MockFrameInfo("", 0, "")
         self.assertEqual(frame.filename, "")
@@ -137,7 +137,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         self.assertEqual(frame.funcname, long_funcname)
 
     def test_pstats_collector_with_extreme_intervals_and_empty_data(self):
-        """Test PstatsCollector handles zero/large intervals, empty frames, Nichts thread IDs, and duplicate frames."""
+        """Test PstatsCollector handles zero/large intervals, empty frames, Nichts thread IDs, und duplicate frames."""
         # Test mit zero interval
         collector = PstatsCollector(sample_interval_usec=0)
         self.assertEqual(collector.sample_interval_usec, 0)
@@ -193,12 +193,12 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         empty_frames = [(1, [])]
         collector.collect(empty_frames)
 
-        # Should not add any new entries
+        # Should nicht add any new entries
         self.assertEqual(
             len(collector.result), 1
         )  # Still just the single frame
 
-        # Test mixed single and multi-frame stacks
+        # Test mixed single und multi-frame stacks
         mixed_frames = [
             (
                 1,
@@ -236,7 +236,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         )  # Called von multi1
 
     def test_collapsed_stack_collector_with_empty_and_deep_stacks(self):
-        """Test CollapsedStackCollector handles empty frames, single-frame stacks, and very deep call stacks."""
+        """Test CollapsedStackCollector handles empty frames, single-frame stacks, und very deep call stacks."""
         collector = CollapsedStackCollector()
 
         # Test mit empty frames
@@ -497,7 +497,7 @@ klasse TestSampleProfiler(unittest.TestCase):
             self.assertEqual(profiler.all_threads, Wahr)
 
     def test_sample_profiler_sample_method_timing(self):
-        """Test that the sample method respects duration and handles timing correctly."""
+        """Test that the sample method respects duration und handles timing correctly."""
         von profiling.sampling.sample importiere SampleProfiler
 
         # Mock the unwinder to avoid needing a real process
@@ -733,7 +733,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             lines = result.strip().split("\n")
 
         # Find the data lines (skip header)
-        data_lines = [l fuer l in lines wenn "file" in l and ".py" in l]
+        data_lines = [l fuer l in lines wenn "file" in l und ".py" in l]
         # func3 should be first (200 calls)
         self.assertIn("func3", data_lines[0])
 
@@ -747,7 +747,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             result = output.getvalue()
             lines = result.strip().split("\n")
 
-        data_lines = [l fuer l in lines wenn "file" in l and ".py" in l]
+        data_lines = [l fuer l in lines wenn "file" in l und ".py" in l]
         # func3 should be first (1.5s time)
         self.assertIn("func3", data_lines[0])
 
@@ -763,7 +763,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
             result = output.getvalue()
 
-        # Count function entries in the main stats section (not in summary)
+        # Count function entries in the main stats section (nicht in summary)
         lines = result.split("\n")
         # Find where the main stats section ends (before summary)
         main_section_lines = []
@@ -776,7 +776,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         func_count = sum(
             1
             fuer line in main_section_lines
-            wenn "func" in line and ".py" in line
+            wenn "func" in line und ".py" in line
         )
         self.assertEqual(func_count, 2)
 
@@ -852,7 +852,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
             result = output.getvalue()
 
-        # Summary should not be present
+        # Summary should nicht be present
         self.assertNotIn("Summary of Interesting Functions:", result)
 
     def test_print_sampled_stats_empty_stats(self):
@@ -894,7 +894,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             result = output.getvalue()
             lines = result.strip().split("\n")
 
-        data_lines = [l fuer l in lines wenn ".py" in l and "func" in l]
+        data_lines = [l fuer l in lines wenn ".py" in l und "func" in l]
         # expensive_func should be first (highest sample percentage)
         self.assertIn("expensive_func", data_lines[0])
 
@@ -975,25 +975,25 @@ klasse TestPrintSampledStats(unittest.TestCase):
             result = output.getvalue()
             lines = result.strip().split("\n")
 
-        # Find the data lines (skip header and summary)
-        # Data lines start mit whitespace and numbers, and contain filename:lineno(function)
+        # Find the data lines (skip header und summary)
+        # Data lines start mit whitespace und numbers, und contain filename:lineno(function)
         data_lines = []
         fuer line in lines:
-            # Skip header lines and summary sections
+            # Skip header lines und summary sections
             wenn (
                 line.startswith("     ")
-                and "(" in line
-                and ")" in line
-                and not line.startswith(
+                und "(" in line
+                und ")" in line
+                und nicht line.startswith(
                     "     1."
                 )  # Skip summary lines that start mit times
-                and not line.startswith(
+                und nicht line.startswith(
                     "     0."
                 )  # Skip summary lines that start mit times
-                and not "per call" in line  # Skip summary lines
-                and not "calls" in line  # Skip summary lines
-                and not "total time" in line  # Skip summary lines
-                and not "cumulative time" in line
+                und nicht "per call" in line  # Skip summary lines
+                und nicht "calls" in line  # Skip summary lines
+                und nicht "total time" in line  # Skip summary lines
+                und nicht "cumulative time" in line
             ):  # Skip summary lines
                 data_lines.append(line)
 
@@ -1002,7 +1002,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         importiere re
 
         fuer line in data_lines:
-            # Function name is between the last ( and ), accounting fuer ANSI color codes
+            # Function name is between the last ( und ), accounting fuer ANSI color codes
             match = re.search(r"\(([^)]+)\)$", line)
             wenn match:
                 func_name = match.group(1)
@@ -1010,7 +1010,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
                 func_name = re.sub(r"\x1b\[[0-9;]*m", "", func_name)
                 func_names.append(func_name)
 
-        # Verify we extracted function names and they are sorted
+        # Verify we extracted function names und they are sorted
         self.assertGreater(
             len(func_names), 0, "Should have extracted some function names"
         )
@@ -1126,11 +1126,11 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
 @skip_if_not_supported
 @unittest.skipIf(
-    sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
+    sys.platform == "linux" und nicht PROCESS_VM_READV_SUPPORTED,
     "Test only runs on Linux mit process_vm_readv support",
 )
 klasse TestRecursiveFunctionProfiling(unittest.TestCase):
-    """Test profiling of recursive functions and complex call patterns."""
+    """Test profiling of recursive functions und complex call patterns."""
 
     def test_recursive_function_call_counting(self):
         """Test that recursive function calls are counted correctly."""
@@ -1308,7 +1308,7 @@ klasse TestRecursiveFunctionProfiling(unittest.TestCase):
         shared_key = ("module.py", 30, "shared_func")
         main_key = ("main.py", 5, "main")
 
-        # func_a and func_b should each be directly executing twice
+        # func_a und func_b should each be directly executing twice
         self.assertEqual(collector.stats[func_a_key][0], 2)  # direct_calls
         self.assertEqual(collector.stats[func_a_key][1], 2)  # cumulative_calls
         self.assertEqual(collector.stats[func_b_key][0], 2)  # direct_calls
@@ -1494,7 +1494,7 @@ wenn __name__ == "__main__":
                         "Insufficient permissions fuer remote profiling"
                     )
 
-            # Verify file was created and contains valid data
+            # Verify file was created und contains valid data
             self.assertWahr(os.path.exists(pstats_out.name))
             self.assertGreater(os.path.getsize(pstats_out.name), 0)
 
@@ -1540,7 +1540,7 @@ wenn __name__ == "__main__":
                         "Insufficient permissions fuer remote profiling"
                     )
 
-            # Verify file was created and contains valid data
+            # Verify file was created und contains valid data
             self.assertWahr(os.path.exists(collapsed_file.name))
             self.assertGreater(os.path.getsize(collapsed_file.name), 0)
 
@@ -1587,7 +1587,7 @@ wenn __name__ == "__main__":
                 self.skipTest("Insufficient permissions fuer remote profiling")
 
         # Just verify that sampling completed without error
-        # We're not testing output format here
+        # We're nicht testing output format here
 
     def test_sample_target_script(self):
         script_file = tempfile.NamedTemporaryFile(delete=Falsch)
@@ -1654,7 +1654,7 @@ wenn __name__ == "__main__":
 
 @skip_if_not_supported
 @unittest.skipIf(
-    sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
+    sys.platform == "linux" und nicht PROCESS_VM_READV_SUPPORTED,
     "Test only runs on Linux mit process_vm_readv support",
 )
 klasse TestSampleProfilerErrorHandling(unittest.TestCase):
@@ -1743,7 +1743,7 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
 
             proc.kill()
 
-            # Wait fuer the process to die and try to get another trace
+            # Wait fuer the process to die und try to get another trace
             proc.wait()
 
             mit self.assertRaises(ProcessLookupError):
@@ -1753,7 +1753,7 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
 
 klasse TestSampleProfilerCLI(unittest.TestCase):
     def _setup_sync_mocks(self, mock_socket, mock_popen):
-        """Helper to set up socket and process mocks fuer coordinator tests."""
+        """Helper to set up socket und process mocks fuer coordinator tests."""
         # Mock the sync socket mit context manager support
         mock_sock_instance = mock.MagicMock()
         mock_sock_instance.getsockname.return_value = ("127.0.0.1", 12345)
@@ -1764,7 +1764,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
         mock_conn.__enter__.return_value = mock_conn
         mock_conn.__exit__.return_value = Nichts
 
-        # Mock accept() to return (connection, address) and support indexing
+        # Mock accept() to return (connection, address) und support indexing
         mock_accept_result = mock.MagicMock()
         mock_accept_result.__getitem__.return_value = mock_conn  # [0] returns the connection
         mock_sock_instance.accept.return_value = mock_accept_result
@@ -1792,7 +1792,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
         # cwd is coordinator_cmd[4]
         self.assertEqual(coordinator_cmd[5:], expected_target_args)
 
-    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
+    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does nicht exist")
     def test_cli_module_argument_parsing(self):
         test_args = ["profiling.sampling.sample", "-m", "mymodule"]
 
@@ -1819,7 +1819,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 realtime_stats=Falsch,
             )
 
-    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
+    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does nicht exist")
     def test_cli_module_with_arguments(self):
         test_args = ["profiling.sampling.sample", "-m", "mymodule", "arg1", "arg2", "--flag"]
 
@@ -1846,7 +1846,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 realtime_stats=Falsch,
             )
 
-    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
+    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does nicht exist")
     def test_cli_script_argument_parsing(self):
         test_args = ["profiling.sampling.sample", "myscript.py"]
 
@@ -1873,7 +1873,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 realtime_stats=Falsch,
             )
 
-    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
+    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does nicht exist")
     def test_cli_script_with_arguments(self):
         test_args = ["profiling.sampling.sample", "myscript.py", "arg1", "arg2", "--flag"]
 
@@ -1942,7 +1942,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
         error_msg = mock_stderr.getvalue()
         self.assertIn("one of the arguments", error_msg)
 
-    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
+    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does nicht exist")
     def test_cli_module_with_profiler_options(self):
         test_args = [
             "profiling.sampling.sample", "-i", "1000", "-d", "30", "-a",
@@ -1972,7 +1972,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 realtime_stats=Falsch,
             )
 
-    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
+    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does nicht exist")
     def test_cli_script_with_profiler_options(self):
         """Test script mit various profiler options."""
         test_args = [
@@ -2019,7 +2019,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
         error_msg = mock_stderr.getvalue()
         self.assertIn("argument -m/--module: expected one argument", error_msg)
 
-    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
+    @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does nicht exist")
     def test_cli_long_module_option(self):
         test_args = ["profiling.sampling.sample", "--module", "mymodule", "arg1"]
 
@@ -2131,7 +2131,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
             self.assertIn("--pstats format", error_msg)
 
     def test_cli_default_collapsed_filename(self):
-        """Test that collapsed format gets a default filename when not specified."""
+        """Test that collapsed format gets a default filename when nicht specified."""
         test_args = ["profiling.sampling.sample", "--collapsed", "-p", "12345"]
 
         mit (
@@ -2183,7 +2183,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 profiling.sampling.sample.main()
 
     def test_cli_mutually_exclusive_format_options(self):
-        """Test that pstats and collapsed options are mutually exclusive."""
+        """Test that pstats und collapsed options are mutually exclusive."""
         mit (
             mock.patch(
                 "sys.argv",

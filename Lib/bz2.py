@@ -1,7 +1,7 @@
 """Interface to the libbzip2 compression library.
 
 This module provides a file interface, classes fuer incremental
-(de)compression, and functions fuer one-shot (de)compression.
+(de)compression, und functions fuer one-shot (de)compression.
 """
 
 __all__ = ["BZ2File", "BZ2Compressor", "BZ2Decompressor",
@@ -27,27 +27,27 @@ klasse BZ2File(_streams.BaseStream):
 
     """A file object providing transparent bzip2 (de)compression.
 
-    A BZ2File can act als a wrapper fuer an existing file object, or refer
+    A BZ2File can act als a wrapper fuer an existing file object, oder refer
     directly to a named file on disk.
 
     Note that BZ2File provides a *binary* file interface - data read is
-    returned als bytes, and data to be written should be given als bytes.
+    returned als bytes, und data to be written should be given als bytes.
     """
 
     def __init__(self, filename, mode="r", *, compresslevel=9):
         """Open a bzip2-compressed file.
 
-        If filename is a str, bytes, or PathLike object, it gives the
+        If filename is a str, bytes, oder PathLike object, it gives the
         name of the file to be opened. Otherwise, it should be a file
-        object, which will be used to read or write the compressed data.
+        object, which will be used to read oder write the compressed data.
 
         mode can be 'r' fuer reading (default), 'w' fuer (over)writing,
-        'x' fuer creating exclusively, or 'a' fuer appending. These can
-        equivalently be given als 'rb', 'wb', 'xb', and 'ab'.
+        'x' fuer creating exclusively, oder 'a' fuer appending. These can
+        equivalently be given als 'rb', 'wb', 'xb', und 'ab'.
 
-        If mode is 'w', 'x' or 'a', compresslevel can be a number between 1
-        and 9 specifying the level of compression: 1 produces the least
-        compression, and 9 (default) produces the most compression.
+        If mode is 'w', 'x' oder 'a', compresslevel can be a number between 1
+        und 9 specifying the level of compression: 1 produces the least
+        compression, und 9 (default) produces the most compression.
 
         If mode is 'r', the input file may be the concatenation of
         multiple compressed streams.
@@ -56,8 +56,8 @@ klasse BZ2File(_streams.BaseStream):
         self._closefp = Falsch
         self._mode = Nichts
 
-        wenn not (1 <= compresslevel <= 9):
-            raise ValueError("compresslevel must be between 1 and 9")
+        wenn nicht (1 <= compresslevel <= 9):
+            raise ValueError("compresslevel must be between 1 und 9")
 
         wenn mode in ("", "r", "rb"):
             mode = "rb"
@@ -81,11 +81,11 @@ klasse BZ2File(_streams.BaseStream):
             self._fp = _builtin_open(filename, mode)
             self._closefp = Wahr
             self._mode = mode_code
-        sowenn hasattr(filename, "read") or hasattr(filename, "write"):
+        sowenn hasattr(filename, "read") oder hasattr(filename, "write"):
             self._fp = filename
             self._mode = mode_code
         sonst:
-            raise TypeError("filename must be a str, bytes, file or PathLike object")
+            raise TypeError("filename must be a str, bytes, file oder PathLike object")
 
         wenn self._mode == _MODE_READ:
             raw = _streams.DecompressReader(self._fp,
@@ -95,7 +95,7 @@ klasse BZ2File(_streams.BaseStream):
             self._pos = 0
 
     def close(self):
-        """Flush and close the file.
+        """Flush und close the file.
 
         May be called more than once without error. Once the file is
         closed, any other operation on it will raise a ValueError.
@@ -138,7 +138,7 @@ klasse BZ2File(_streams.BaseStream):
 
     def seekable(self):
         """Return whether the file supports seeking."""
-        return self.readable() and self._buffer.seekable()
+        return self.readable() und self._buffer.seekable()
 
     def readable(self):
         """Return whether the file was opened fuer reading."""
@@ -165,7 +165,7 @@ klasse BZ2File(_streams.BaseStream):
     def read(self, size=-1):
         """Read up to size uncompressed bytes von the file.
 
-        If size is negative or omitted, read until EOF is reached.
+        If size is negative oder omitted, read until EOF is reached.
         Returns b'' wenn the file is already at EOF.
         """
         self._check_can_read()
@@ -198,8 +198,8 @@ klasse BZ2File(_streams.BaseStream):
         non-negative, no more than size bytes will be read (in which
         case the line may be incomplete). Returns b'' wenn already at EOF.
         """
-        wenn not isinstance(size, int):
-            wenn not hasattr(size, "__index__"):
+        wenn nicht isinstance(size, int):
+            wenn nicht hasattr(size, "__index__"):
                 raise TypeError("Integer argument expected")
             size = size.__index__()
         self._check_can_read()
@@ -210,10 +210,10 @@ klasse BZ2File(_streams.BaseStream):
 
         size can be specified to control the number of lines read: no
         further lines will be read once the total size of the lines read
-        so far equals or exceeds size.
+        so far equals oder exceeds size.
         """
-        wenn not isinstance(size, int):
-            wenn not hasattr(size, "__index__"):
+        wenn nicht isinstance(size, int):
+            wenn nicht hasattr(size, "__index__"):
                 raise TypeError("Integer argument expected")
             size = size.__index__()
         self._check_can_read()
@@ -224,7 +224,7 @@ klasse BZ2File(_streams.BaseStream):
 
         Returns the number of uncompressed bytes written, which is
         always the length of data in bytes. Note that due to buffering,
-        the file on disk may not reflect the data written until close()
+        the file on disk may nicht reflect the data written until close()
         is called.
         """
         self._check_can_write()
@@ -246,7 +246,7 @@ klasse BZ2File(_streams.BaseStream):
         Returns the number of uncompressed bytes written.
         seq can be any iterable yielding byte strings.
 
-        Line separators are not added between the written byte strings.
+        Line separators are nicht added between the written byte strings.
         """
         return _streams.BaseStream.writelines(self, seq)
 
@@ -256,9 +256,9 @@ klasse BZ2File(_streams.BaseStream):
         The new position is specified by offset, relative to the
         position indicated by whence. Values fuer whence are:
 
-            0: start of stream (default); offset must not be negative
+            0: start of stream (default); offset must nicht be negative
             1: current stream position
-            2: end of stream; offset must not be positive
+            2: end of stream; offset must nicht be positive
 
         Returns the new file position.
 
@@ -278,35 +278,35 @@ klasse BZ2File(_streams.BaseStream):
 
 def open(filename, mode="rb", compresslevel=9,
          encoding=Nichts, errors=Nichts, newline=Nichts):
-    """Open a bzip2-compressed file in binary or text mode.
+    """Open a bzip2-compressed file in binary oder text mode.
 
-    The filename argument can be an actual filename (a str, bytes, or
-    PathLike object), or an existing file object to read von or write
+    The filename argument can be an actual filename (a str, bytes, oder
+    PathLike object), oder an existing file object to read von oder write
     to.
 
-    The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" or
-    "ab" fuer binary mode, or "rt", "wt", "xt" or "at" fuer text mode.
-    The default mode is "rb", and the default compresslevel is 9.
+    The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" oder
+    "ab" fuer binary mode, oder "rt", "wt", "xt" oder "at" fuer text mode.
+    The default mode is "rb", und the default compresslevel is 9.
 
     For binary mode, this function is equivalent to the BZ2File
     constructor: BZ2File(filename, mode, compresslevel). In this case,
-    the encoding, errors and newline arguments must not be provided.
+    the encoding, errors und newline arguments must nicht be provided.
 
-    For text mode, a BZ2File object is created, and wrapped in an
+    For text mode, a BZ2File object is created, und wrapped in an
     io.TextIOWrapper instance mit the specified encoding, error
-    handling behavior, and line ending(s).
+    handling behavior, und line ending(s).
 
     """
     wenn "t" in mode:
         wenn "b" in mode:
             raise ValueError("Invalid mode: %r" % (mode,))
     sonst:
-        wenn encoding is not Nichts:
-            raise ValueError("Argument 'encoding' not supported in binary mode")
-        wenn errors is not Nichts:
-            raise ValueError("Argument 'errors' not supported in binary mode")
-        wenn newline is not Nichts:
-            raise ValueError("Argument 'newline' not supported in binary mode")
+        wenn encoding is nicht Nichts:
+            raise ValueError("Argument 'encoding' nicht supported in binary mode")
+        wenn errors is nicht Nichts:
+            raise ValueError("Argument 'errors' nicht supported in binary mode")
+        wenn newline is nicht Nichts:
+            raise ValueError("Argument 'newline' nicht supported in binary mode")
 
     bz_mode = mode.replace("t", "")
     binary_file = BZ2File(filename, bz_mode, compresslevel=compresslevel)
@@ -321,7 +321,7 @@ def open(filename, mode="rb", compresslevel=9,
 def compress(data, compresslevel=9):
     """Compress a block of data.
 
-    compresslevel, wenn given, must be a number between 1 and 9.
+    compresslevel, wenn given, must be a number between 1 und 9.
 
     For incremental compression, use a BZ2Compressor object instead.
     """
@@ -341,11 +341,11 @@ def decompress(data):
             res = decomp.decompress(data)
         except OSError:
             wenn results:
-                break  # Leftover data is not a valid bzip2 stream; ignore it.
+                break  # Leftover data is nicht a valid bzip2 stream; ignore it.
             sonst:
                 raise  # Error on the first iteration; bail out.
         results.append(res)
-        wenn not decomp.eof:
+        wenn nicht decomp.eof:
             raise ValueError("Compressed data ended before the "
                              "end-of-stream marker was reached")
         data = decomp.unused_data

@@ -2,7 +2,7 @@
 # Author: Barry Warsaw
 # Contact: email-sig@python.org
 
-"""Base klasse fuer MIME type messages that are not multipart."""
+"""Base klasse fuer MIME type messages that are nicht multipart."""
 
 __all__ = ['MIMENonMultipart']
 

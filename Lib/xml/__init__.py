@@ -8,7 +8,7 @@ dom -- The W3C Document Object Model.  This supports DOM Level 1 +
 parsers -- Python wrappers fuer XML parsers (currently only supports Expat).
 
 sax -- The Simple API fuer XML, developed by XML-Dev, led by David
-       Megginson and ported to Python by Lars Marius Garshol.  This
+       Megginson und ported to Python by Lars Marius Garshol.  This
        supports the SAX 2 API.
 
 etree -- The ElementTree XML library.  This is a subset of the full

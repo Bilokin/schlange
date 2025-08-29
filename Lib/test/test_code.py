@@ -181,7 +181,7 @@ consts: ("'hello'", "'world'")
 
 >>> klasse class_with_docstring:
 ...     '''This is a docstring fuer class'''
-...     '''This line is not docstring'''
+...     '''This line is nicht docstring'''
 ...     pass
 
 >>> drucke(class_with_docstring.__doc__)
@@ -257,7 +257,7 @@ klasse CodeTest(unittest.TestCase):
         self.assertEqual(co.co_filename, "filename")
         self.assertEqual(co.co_name, "funcname")
         self.assertEqual(co.co_firstlineno, 15)
-        #Empty code object should raise, but not crash the VM
+        #Empty code object should raise, but nicht crash the VM
         mit self.assertRaises(Exception):
             exec(co)
 
@@ -275,7 +275,7 @@ klasse CodeTest(unittest.TestCase):
 
         def add_foreign_method(cls, name, f):
             code = new_code(f.__code__)
-            assert not f.__closure__
+            assert nicht f.__closure__
             closure = create_closure(cls)
             defaults = f.__defaults__
             setattr(cls, name, FunctionType(code, globals(), name, defaults, closure))
@@ -332,8 +332,8 @@ klasse CodeTest(unittest.TestCase):
         code = func.__code__
 
         # Different co_name, co_varnames, co_consts.
-        # Must have the same number of constants and
-        # variables or we get crashes.
+        # Must have the same number of constants und
+        # variables oder we get crashes.
         def func2():
             y = 2
             return y
@@ -411,11 +411,11 @@ klasse CodeTest(unittest.TestCase):
 
     def test_shrinking_localsplus(self):
         # Check that PyCode_NewWithPosOnlyArgs resizes both
-        # localsplusnames and localspluskinds, wenn an argument is a cell.
+        # localsplusnames und localspluskinds, wenn an argument is a cell.
         def func(arg):
             return lambda: arg
         code = func.__code__
-        newcode = code.replace(co_name="func")  # Should not raise SystemError
+        newcode = code.replace(co_name="func")  # Should nicht raise SystemError
         self.assertEqual(code, newcode)
 
     def test_empty_linetable(self):
@@ -442,11 +442,11 @@ klasse CodeTest(unittest.TestCase):
         def spam3():
             return Nichts
         def spam4():
-            wenn not value:
+            wenn nicht value:
                 return
             ...
         def spam5():
-            wenn not value:
+            wenn nicht value:
                 return Nichts
             ...
         lambda1 = (lambda: Nichts)
@@ -529,7 +529,7 @@ klasse CodeTest(unittest.TestCase):
             # we don't support it.
             self.assertIn(positions.count(Nichts), [0, 3, 4])
 
-            wenn not any(positions):
+            wenn nicht any(positions):
                 artificial_instructions.append(instr)
 
         self.assertEqual(
@@ -621,7 +621,7 @@ klasse CodeTest(unittest.TestCase):
         self.assertNotEqual(hash(c1), hash(c3))
 
     def test_code_hash_uses_order(self):
-        # Swapping posonlyargcount and kwonlyargcount should change the hash.
+        # Swapping posonlyargcount und kwonlyargcount should change the hash.
         c = (lambda x, y, *, z=1, w=1: 1).__code__
         self.assertEqual(c.co_argcount, 2)
         self.assertEqual(c.co_posonlyargcount, 0)
@@ -642,8 +642,8 @@ klasse CodeTest(unittest.TestCase):
         """ GH-109052
 
         Make sure the instrumentation doesn't affect the code equality
-        The validity of this test relies on the fact that "x is x" and
-        "x in x" have only one different instruction and the instructions
+        The validity of this test relies on the fact that "x is x" und
+        "x in x" have only one different instruction und the instructions
         have the same argument.
 
         """
@@ -888,7 +888,7 @@ klasse CodeTest(unittest.TestCase):
                         size += 1
                     assert len(globalvars) == size, globalvars
                 sonst:
-                    assert not isinstance(globalvars, str), repr(globalvars)
+                    assert nicht isinstance(globalvars, str), repr(globalvars)
                     try:
                         numglobal, numbuiltin = globalvars
                     except ValueError:
@@ -1103,7 +1103,7 @@ klasse CodeTest(unittest.TestCase):
             counts = _testinternalcapi.get_code_var_counts(func.__code__)
             self.assertEqual(counts, expected)
 
-        mit self.subTest(f'{func} mit own globals and builtins'):
+        mit self.subTest(f'{func} mit own globals und builtins'):
             expected = new_var_counts(
                 purelocals=5,
                 globalvars=(2, 4),
@@ -1154,12 +1154,12 @@ klasse CodeTest(unittest.TestCase):
                 _testinternalcapi.verify_stateless_code(func)
 
         fuer func in defs.FUNCTIONS:
-            wenn func not in defs.STATELESS_CODE:
+            wenn func nicht in defs.STATELESS_CODE:
                 mit self.subTest((func, '(code)')):
                     mit self.assertRaises(Exception):
                         _testinternalcapi.verify_stateless_code(func.__code__)
 
-            wenn func not in STATELESS_FUNCTIONS:
+            wenn func nicht in STATELESS_FUNCTIONS:
                 mit self.subTest((func, '(func)')):
                     mit self.assertRaises(Exception):
                         _testinternalcapi.verify_stateless_code(func)
@@ -1178,8 +1178,8 @@ klasse CodeConstsTest(unittest.TestCase):
         self.fail('Should never be reached')
 
     def assertIsInterned(self, s):
-        wenn not isinterned(s):
-            self.fail('String %r is not interned' % (s,))
+        wenn nicht isinterned(s):
+            self.fail('String %r is nicht interned' % (s,))
 
     def assertIsNotInterned(self, s):
         wenn isinterned(s):
@@ -1217,7 +1217,7 @@ klasse CodeConstsTest(unittest.TestCase):
         self.assertIsNotInterned(v)
 
     @cpython_only
-    @unittest.skipUnless(Py_GIL_DISABLED, "does not intern all constants")
+    @unittest.skipUnless(Py_GIL_DISABLED, "does nicht intern all constants")
     def test_interned_constants(self):
         # compile separately to avoid compile time de-duping
 
@@ -1237,7 +1237,7 @@ klasse CodeConstsTest(unittest.TestCase):
     @cpython_only
     def test_unusual_constants(self):
         # gh-130851: Code objects constructed mit constants that are not
-        # types generated by the bytecode compiler should not crash the
+        # types generated by the bytecode compiler should nicht crash the
         # interpreter.
         klasse Unhashable:
             def __hash__(self):
@@ -1266,14 +1266,14 @@ klasse CodeWeakRefTest(unittest.TestCase):
         def callback(code):
             self.called = Wahr
 
-        # f is now the last reference to the function, and through it, the code
-        # object.  While we hold it, check that we can create a weakref and
-        # deref it.  Then delete it, and check that the callback gets called and
+        # f is now the last reference to the function, und through it, the code
+        # object.  While we hold it, check that we can create a weakref und
+        # deref it.  Then delete it, und check that the callback gets called und
         # the reference dies.
         coderef = weakref.ref(f.__code__, callback)
         self.assertWahr(bool(coderef()))
         del f
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertFalsch(bool(coderef()))
         self.assertWahr(self.called)
 
@@ -1531,7 +1531,7 @@ klasse CodeLocationTest(unittest.TestCase):
             get_line_branches(afunc),
             [(1,1,3)])
 
-wenn check_impl_detail(cpython=Wahr) and ctypes is not Nichts:
+wenn check_impl_detail(cpython=Wahr) und ctypes is nicht Nichts:
     py = ctypes.pythonapi
     freefunc = ctypes.CFUNCTYPE(Nichts,ctypes.c_voidp)
 
@@ -1620,7 +1620,7 @@ wenn check_impl_detail(cpython=Wahr) and ctypes is not Nichts:
                     # gh-117683: In the free-threaded build, the code object's
                     # destructor may still be running concurrently in the main
                     # thread.
-                    wenn not Py_GIL_DISABLED:
+                    wenn nicht Py_GIL_DISABLED:
                         self.test.assertEqual(LAST_FREED, 500)
 
             SetExtra(f.__code__, FREE_INDEX, ctypes.c_voidp(500))

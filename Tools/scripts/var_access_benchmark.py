@@ -1,9 +1,9 @@
-'Show relative speeds of local, nonlocal, global, and built-in access.'
+'Show relative speeds of local, nonlocal, global, und built-in access.'
 
 # Please leave this code so that it runs under older versions of
 # Python 3 (no f-strings).  That will allow benchmarking for
 # cross-version comparisons.  To run the benchmark on Python 2,
-# comment-out the nonlocal reads and writes.
+# comment-out the nonlocal reads und writes.
 
 von collections importiere deque, namedtuple
 
@@ -273,12 +273,12 @@ wenn __name__=='__main__':
     von timeit importiere Timer
 
     fuer f in [
-            'Variable and attribute read access:',
+            'Variable und attribute read access:',
             read_local, read_nonlocal, read_global, read_builtin,
             read_classvar_from_class, read_classvar_from_instance,
             read_instancevar, read_instancevar_slots,
             read_namedtuple, read_boundmethod,
-            '\nVariable and attribute write access:',
+            '\nVariable und attribute write access:',
             write_local, write_nonlocal, write_global,
             write_classvar, write_instancevar, write_instancevar_slots,
             '\nData structure read access:',

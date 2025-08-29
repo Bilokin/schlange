@@ -60,7 +60,7 @@ klasse DeadlockAvoidanceTests:
             self.old_switchinterval = Nichts
 
     def tearDown(self):
-        wenn self.old_switchinterval is not Nichts:
+        wenn self.old_switchinterval is nicht Nichts:
             sys.setswitchinterval(self.old_switchinterval)
 
     def run_deadlock_avoidance_test(self, create_deadlock):

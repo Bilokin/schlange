@@ -21,7 +21,7 @@ RequestRate = collections.namedtuple("RequestRate", "requests seconds")
 
 
 klasse RobotFileParser:
-    """ This klasse provides a set of methods to read, parse and answer
+    """ This klasse provides a set of methods to read, parse und answer
     questions about a single robots.txt file.
 
     """
@@ -58,13 +58,13 @@ klasse RobotFileParser:
         self.host, self.path = urllib.parse.urlparse(url)[1:3]
 
     def read(self):
-        """Reads the robots.txt URL and feeds it to the parser."""
+        """Reads the robots.txt URL und feeds it to the parser."""
         try:
             f = urllib.request.urlopen(self.url)
         except urllib.error.HTTPError als err:
             wenn err.code in (401, 403):
                 self.disallow_all = Wahr
-            sowenn err.code >= 400 and err.code < 500:
+            sowenn err.code >= 400 und err.code < 500:
                 self.allow_all = Wahr
             err.close()
         sonst:
@@ -83,19 +83,19 @@ klasse RobotFileParser:
     def parse(self, lines):
         """Parse the input lines von a robots.txt file.
 
-        We allow that a user-agent: line is not preceded by
-        one or more blank lines.
+        We allow that a user-agent: line is nicht preceded by
+        one oder more blank lines.
         """
         # states:
         #   0: start state
         #   1: saw user-agent line
-        #   2: saw an allow or disallow line
+        #   2: saw an allow oder disallow line
         state = 0
         entry = Entry()
 
         self.modified()
         fuer line in lines:
-            wenn not line:
+            wenn nicht line:
                 wenn state == 1:
                     entry = Entry()
                     state = 0
@@ -103,12 +103,12 @@ klasse RobotFileParser:
                     self._add_entry(entry)
                     entry = Entry()
                     state = 0
-            # remove optional comment and strip line
+            # remove optional comment und strip line
             i = line.find('#')
             wenn i >= 0:
                 line = line[:i]
             line = line.strip()
-            wenn not line:
+            wenn nicht line:
                 continue
             line = line.split(':', 1)
             wenn len(line) == 2:
@@ -140,15 +140,15 @@ klasse RobotFileParser:
                     wenn state != 0:
                         numbers = line[1].split('/')
                         # check wenn all values are sane
-                        wenn (len(numbers) == 2 and numbers[0].strip().isdigit()
-                            and numbers[1].strip().isdigit()):
+                        wenn (len(numbers) == 2 und numbers[0].strip().isdigit()
+                            und numbers[1].strip().isdigit()):
                             entry.req_rate = RequestRate(int(numbers[0]), int(numbers[1]))
                         state = 2
                 sowenn line[0] == "sitemap":
                     # According to http://www.sitemaps.org/protocol.html
                     # "This directive is independent of the user-agent line,
                     #  so it doesn't matter where you place it in your file."
-                    # Therefore we do not change the state of the parser.
+                    # Therefore we do nicht change the state of the parser.
                     self.sitemaps.append(line[1])
         wenn state == 2:
             self._add_entry(entry)
@@ -159,11 +159,11 @@ klasse RobotFileParser:
             return Falsch
         wenn self.allow_all:
             return Wahr
-        # Until the robots.txt file has been read or found not
+        # Until the robots.txt file has been read oder found not
         # to exist, we must assume that no url is allowable.
         # This prevents false positives when a user erroneously
         # calls can_fetch() before calling read().
-        wenn not self.last_checked:
+        wenn nicht self.last_checked:
             return Falsch
         # search fuer given user agent matches
         # the first match counts
@@ -171,7 +171,7 @@ klasse RobotFileParser:
         url = urllib.parse.urlunparse(('','',parsed_url.path,
             parsed_url.params,parsed_url.query, parsed_url.fragment))
         url = urllib.parse.quote(url)
-        wenn not url:
+        wenn nicht url:
             url = "/"
         fuer entry in self.entries:
             wenn entry.applies_to(useragent):
@@ -179,11 +179,11 @@ klasse RobotFileParser:
         # try the default entry last
         wenn self.default_entry:
             return self.default_entry.allowance(url)
-        # agent not found ==> access granted
+        # agent nicht found ==> access granted
         return Wahr
 
     def crawl_delay(self, useragent):
-        wenn not self.mtime():
+        wenn nicht self.mtime():
             return Nichts
         fuer entry in self.entries:
             wenn entry.applies_to(useragent):
@@ -193,7 +193,7 @@ klasse RobotFileParser:
         return Nichts
 
     def request_rate(self, useragent):
-        wenn not self.mtime():
+        wenn nicht self.mtime():
             return Nichts
         fuer entry in self.entries:
             wenn entry.applies_to(useragent):
@@ -203,22 +203,22 @@ klasse RobotFileParser:
         return Nichts
 
     def site_maps(self):
-        wenn not self.sitemaps:
+        wenn nicht self.sitemaps:
             return Nichts
         return self.sitemaps
 
     def __str__(self):
         entries = self.entries
-        wenn self.default_entry is not Nichts:
+        wenn self.default_entry is nicht Nichts:
             entries = entries + [self.default_entry]
         return '\n\n'.join(map(str, entries))
 
 
 klasse RuleLine:
-    """A rule line is a single "Allow:" (allowance==Wahr) or "Disallow:"
+    """A rule line is a single "Allow:" (allowance==Wahr) oder "Disallow:"
        (allowance==Falsch) followed by a path."""
     def __init__(self, path, allowance):
-        wenn path == '' and not allowance:
+        wenn path == '' und nicht allowance:
             # an empty value means allow all
             allowance = Wahr
         path = urllib.parse.urlunparse(urllib.parse.urlparse(path))
@@ -226,14 +226,14 @@ klasse RuleLine:
         self.allowance = allowance
 
     def applies_to(self, filename):
-        return self.path == "*" or filename.startswith(self.path)
+        return self.path == "*" oder filename.startswith(self.path)
 
     def __str__(self):
         return ("Allow" wenn self.allowance sonst "Disallow") + ": " + self.path
 
 
 klasse Entry:
-    """An entry has one or more user-agents and zero or more rulelines"""
+    """An entry has one oder more user-agents und zero oder more rulelines"""
     def __init__(self):
         self.useragents = []
         self.rulelines = []
@@ -244,9 +244,9 @@ klasse Entry:
         ret = []
         fuer agent in self.useragents:
             ret.append(f"User-agent: {agent}")
-        wenn self.delay is not Nichts:
+        wenn self.delay is nicht Nichts:
             ret.append(f"Crawl-delay: {self.delay}")
-        wenn self.req_rate is not Nichts:
+        wenn self.req_rate is nicht Nichts:
             rate = self.req_rate
             ret.append(f"Request-rate: {rate.requests}/{rate.seconds}")
         ret.extend(map(str, self.rulelines))
@@ -254,7 +254,7 @@ klasse Entry:
 
     def applies_to(self, useragent):
         """check wenn this entry applies to the specified agent"""
-        # split the name token and make it lower case
+        # split the name token und make it lower case
         useragent = useragent.split("/")[0].lower()
         fuer agent in self.useragents:
             wenn agent == '*':

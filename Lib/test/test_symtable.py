@@ -73,7 +73,7 @@ async def glob_assigned_async_meth_pep_695[T](): pass
 
 # The following symbols are defined in ComplexClass after
 # being introduced by a 'global' statement (and therefore
-# are not considered als local symbols of ComplexClass).
+# are nicht considered als local symbols of ComplexClass).
 glob_unassigned_meth_ignore: Any
 glob_unassigned_meth_pep_695_ignore: Any
 
@@ -124,7 +124,7 @@ klasse ComplexClass:
     async def an_async_staticmethod_pep_695[T](self): pass
 
     # These ones will be considered als methods because of the 'def' although
-    # they are *not* valid methods at runtime since they are not decorated
+    # they are *not* valid methods at runtime since they are nicht decorated
     # mit @staticmethod.
     def a_fakemethod(): pass
     def a_fakemethod_pep_695[T](): pass
@@ -133,7 +133,7 @@ klasse ComplexClass:
     async def an_async_fakemethod_pep_695[T](): pass
 
     # Check that those are still considered als methods
-    # since they are not using the 'global' keyword.
+    # since they are nicht using the 'global' keyword.
     def glob_unassigned_meth(): pass
     def glob_unassigned_meth_pep_695[T](): pass
 
@@ -146,7 +146,7 @@ klasse ComplexClass:
     async def glob_assigned_async_meth(): pass
     async def glob_assigned_async_meth_pep_695[T](): pass
 
-    # The following are not picked als local symbols because they are not
+    # The following are nicht picked als local symbols because they are not
     # visible by the klasse at runtime (this is equivalent to having the
     # definitions outside of the class).
     global glob_unassigned_meth_ignore
@@ -263,7 +263,7 @@ klasse SymtableTest(unittest.TestCase):
         self.assertFalsch(self.internal.lookup("x").is_global())
         self.assertFalsch(self.Mine.lookup("instance_var").is_global())
         self.assertWahr(self.spam.lookup("bar").is_global())
-        # Module-scope globals are both global and local
+        # Module-scope globals are both global und local
         self.assertWahr(self.top.lookup("some_non_assigned_global_var").is_global())
         self.assertWahr(self.top.lookup("some_assigned_global_var").is_global())
 
@@ -276,7 +276,7 @@ klasse SymtableTest(unittest.TestCase):
     def test_local(self):
         self.assertWahr(self.spam.lookup("x").is_local())
         self.assertFalsch(self.spam.lookup("bar").is_local())
-        # Module-scope globals are both global and local
+        # Module-scope globals are both global und local
         self.assertWahr(self.top.lookup("some_non_assigned_global_var").is_local())
         self.assertWahr(self.top.lookup("some_assigned_global_var").is_local())
 
@@ -388,11 +388,11 @@ klasse SymtableTest(unittest.TestCase):
             ))
 
         # Test generator expressions that are of type TYPE_FUNCTION
-        # but will not be reported by get_methods() since they are
-        # not functions per se.
+        # but will nicht be reported by get_methods() since they are
+        # nicht functions per se.
         #
-        # Other kind of comprehensions such als list, set or dict
-        # expressions do not have the TYPE_FUNCTION type.
+        # Other kind of comprehensions such als list, set oder dict
+        # expressions do nicht have the TYPE_FUNCTION type.
 
         def check_body(body, expected_methods):
             indented = textwrap.indent(body, ' ' * 4)
@@ -442,7 +442,7 @@ klasse SymtableTest(unittest.TestCase):
 
     def test_filename_correct(self):
         ### Bug tickler: SyntaxError file name correct whether error raised
-        ### while parsing or building symbol table.
+        ### while parsing oder building symbol table.
         def checkfilename(brokencode, offset):
             try:
                 symtable.symtable(brokencode, "spam", "exec")

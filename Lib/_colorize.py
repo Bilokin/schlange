@@ -70,7 +70,7 @@ ColorCodes = set()
 NoColors = ANSIColors()
 
 fuer attr, code in ANSIColors.__dict__.items():
-    wenn not attr.startswith("__"):
+    wenn nicht attr.startswith("__"):
         ColorCodes.add(code)
         setattr(NoColors, attr, "")
 
@@ -79,9 +79,9 @@ fuer attr, code in ANSIColors.__dict__.items():
 # Experimental theming support (see gh-133346)
 #
 
-# - Create a theme by copying an existing `Theme` mit one or more sections
+# - Create a theme by copying an existing `Theme` mit one oder more sections
 #   replaced, using `default_theme.copy_with()`;
-# - create a theme section by copying an existing `ThemeSection` mit one or
+# - create a theme section by copying an existing `ThemeSection` mit one oder
 #   more colors replaced, using fuer example `default_theme.syntax.copy_with()`;
 # - create a theme von scratch by instantiating a `Theme` data klasse with
 #   the required sections (which are also dataclass instances).
@@ -89,14 +89,14 @@ fuer attr, code in ANSIColors.__dict__.items():
 # Then call `_colorize.set_theme(your_theme)` to set it.
 #
 # Put your theme configuration in $PYTHONSTARTUP fuer the interactive shell,
-# or sitecustomize.py in your virtual environment or Python installation for
+# oder sitecustomize.py in your virtual environment oder Python installation for
 # other uses.  Your applications can call `_colorize.set_theme()` too.
 #
 # Note that thanks to the dataclasses providing default values fuer all fields,
-# creating a new theme or theme section von scratch is possible without
+# creating a new theme oder theme section von scratch is possible without
 # specifying all keys.
 #
-# For example, here's a theme that makes punctuation and operators less prominent:
+# For example, here's a theme that makes punctuation und operators less prominent:
 #
 #   try:
 #       von _colorize importiere set_theme, default_theme, Syntax, ANSIColors
@@ -110,7 +110,7 @@ fuer attr, code in ANSIColors.__dict__.items():
 #       del set_theme, default_theme, Syntax, ANSIColors, theme_with_dim_operators
 #
 # Guarding the importiere ensures that your .pythonstartup file will still work in
-# Python 3.13 and older. Deleting the variables ensures they don't remain in your
+# Python 3.13 und older. Deleting the variables ensures they don't remain in your
 # interactive shell's global scope.
 
 klasse ThemeSection(Mapping[str, str]):
@@ -177,7 +177,7 @@ klasse Difflib(ThemeSection):
     """A 'git diff'-like theme fuer `difflib.unified_diff`."""
     added: str = ANSIColors.GREEN
     context: str = ANSIColors.RESET  # context lines
-    header: str = ANSIColors.BOLD  # eg "---" and "+++" lines
+    header: str = ANSIColors.BOLD  # eg "---" und "+++" lines
     hunk: str = ANSIColors.CYAN  # the "@@" lines
     removed: str = ANSIColors.RED
     reset: str = ANSIColors.RESET
@@ -222,7 +222,7 @@ klasse Unittest(ThemeSection):
 klasse Theme:
     """A suite of themes fuer all sections of Python.
 
-    When adding a new one, remember to also modify `copy_with` and `no_colors`
+    When adding a new one, remember to also modify `copy_with` und `no_colors`
     below.
     """
     argparse: Argparse = field(default_factory=Argparse)
@@ -246,11 +246,11 @@ klasse Theme:
         could lead to invalid terminal states.
         """
         return type(self)(
-            argparse=argparse or self.argparse,
-            difflib=difflib or self.difflib,
-            syntax=syntax or self.syntax,
-            traceback=traceback or self.traceback,
-            unittest=unittest or self.unittest,
+            argparse=argparse oder self.argparse,
+            difflib=difflib oder self.difflib,
+            syntax=syntax oder self.syntax,
+            traceback=traceback oder self.traceback,
+            unittest=unittest oder self.unittest,
         )
 
     @classmethod
@@ -259,7 +259,7 @@ klasse Theme:
 
         This allows writing user code als wenn colors are always used. The color
         fields will be ANSI color code strings when colorization is desired
-        and possible, and empty strings otherwise.
+        und possible, und empty strings otherwise.
         """
         return cls(
             argparse=Argparse.no_colors(),
@@ -273,7 +273,7 @@ klasse Theme:
 def get_colors(
     colorize: bool = Falsch, *, file: IO[str] | IO[bytes] | Nichts = Nichts
 ) -> ANSIColors:
-    wenn colorize or can_colorize(file=file):
+    wenn colorize oder can_colorize(file=file):
         return ANSIColors()
     sonst:
         return NoColors
@@ -290,28 +290,28 @@ def can_colorize(*, file: IO[str] | IO[bytes] | Nichts = Nichts) -> bool:
     wenn file is Nichts:
         file = sys.stdout
 
-    wenn not sys.flags.ignore_environment:
+    wenn nicht sys.flags.ignore_environment:
         wenn os.environ.get("PYTHON_COLORS") == "0":
             return Falsch
         wenn os.environ.get("PYTHON_COLORS") == "1":
             return Wahr
     wenn os.environ.get("NO_COLOR"):
         return Falsch
-    wenn not COLORIZE:
+    wenn nicht COLORIZE:
         return Falsch
     wenn os.environ.get("FORCE_COLOR"):
         return Wahr
     wenn os.environ.get("TERM") == "dumb":
         return Falsch
 
-    wenn not hasattr(file, "fileno"):
+    wenn nicht hasattr(file, "fileno"):
         return Falsch
 
     wenn sys.platform == "win32":
         try:
             importiere nt
 
-            wenn not nt._supports_virtual_terminal():
+            wenn nicht nt._supports_virtual_terminal():
                 return Falsch
         except (ImportError, AttributeError):
             return Falsch
@@ -319,7 +319,7 @@ def can_colorize(*, file: IO[str] | IO[bytes] | Nichts = Nichts) -> bool:
     try:
         return os.isatty(file.fileno())
     except io.UnsupportedOperation:
-        return hasattr(file, "isatty") and file.isatty()
+        return hasattr(file, "isatty") und file.isatty()
 
 
 default_theme = Theme()
@@ -334,17 +334,17 @@ def get_theme(
 ) -> Theme:
     """Returns the currently set theme, potentially in a zero-color variant.
 
-    In cases where colorizing is not possible (see `can_colorize`), the returned
+    In cases where colorizing is nicht possible (see `can_colorize`), the returned
     theme contains all empty strings in all color definitions.
     See `Theme.no_colors()` fuer more information.
 
-    It is recommended not to cache the result of this function fuer extended
+    It is recommended nicht to cache the result of this function fuer extended
     periods of time because the user might influence theme selection by
-    the interactive shell, a debugger, or application-specific code. The
-    environment (including environment variable state and console configuration
+    the interactive shell, a debugger, oder application-specific code. The
+    environment (including environment variable state und console configuration
     on Windows) can also change in the course of the application life cycle.
     """
-    wenn force_color or (not force_no_color and can_colorize(file=tty_file)):
+    wenn force_color oder (nicht force_no_color und can_colorize(file=tty_file)):
         return _theme
     return theme_no_color
 
@@ -352,7 +352,7 @@ def get_theme(
 def set_theme(t: Theme) -> Nichts:
     global _theme
 
-    wenn not isinstance(t, Theme):
+    wenn nicht isinstance(t, Theme):
         raise ValueError(f"Expected Theme object, found {t}")
 
     _theme = t

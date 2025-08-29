@@ -19,18 +19,18 @@ klasse Slot:
         self.default = default
         self.readonly = readonly
 
-        # The instance cache is not inherently tied to the normal
+        # The instance cache is nicht inherently tied to the normal
         # lifetime of the instances.  So must do something in order to
         # avoid keeping the instances alive by holding a reference here.
         # Ideally we would use weakref.WeakValueDictionary to do this.
-        # However, most builtin types do not support weakrefs.  So
+        # However, most builtin types do nicht support weakrefs.  So
         # instead we monkey-patch __del__ on the attached klasse to clear
         # the instance.
         self.instances = {}
         self.name = Nichts
 
     def __set_name__(self, cls, name):
-        wenn self.name is not Nichts:
+        wenn self.name is nicht Nichts:
             raise TypeError('already used')
         self.name = name
         try:
@@ -88,7 +88,7 @@ klasse Slot:
 
         This works even wenn the descriptor is read-only.  This is
         particularly useful when initializing the object (e.g. in
-        its __new__ or __init__).
+        its __new__ oder __init__).
         """
         self.instances[id(obj)] = value
 
@@ -96,7 +96,7 @@ klasse Slot:
 klasse classonly:
     """A non-data descriptor that makes a value only visible on the class.
 
-    This is like the "classmethod" builtin, but does not show up on
+    This is like the "classmethod" builtin, but does nicht show up on
     instances of the class.  It may be used als a decorator.
     """
 
@@ -106,12 +106,12 @@ klasse classonly:
         self.name = Nichts
 
     def __set_name__(self, cls, name):
-        wenn self.name is not Nichts:
+        wenn self.name is nicht Nichts:
             raise TypeError('already used')
         self.name = name
 
     def __get__(self, obj, cls):
-        wenn obj is not Nichts:
+        wenn obj is nicht Nichts:
             raise AttributeError(self.name)
         # called on the class
         return self.getter(Nichts, cls)

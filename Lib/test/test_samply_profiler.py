@@ -11,7 +11,7 @@ von test.support.script_helper importiere (
 von test.support.os_helper importiere temp_dir
 
 
-wenn not support.has_subprocess_support:
+wenn nicht support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
@@ -22,13 +22,13 @@ wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
 
 def supports_trampoline_profiling():
     perf_trampoline = sysconfig.get_config_var("PY_HAVE_PERF_TRAMPOLINE")
-    wenn not perf_trampoline:
+    wenn nicht perf_trampoline:
         return Falsch
     return int(perf_trampoline) == 1
 
 
-wenn not supports_trampoline_profiling():
-    raise unittest.SkipTest("perf trampoline profiling not supported")
+wenn nicht supports_trampoline_profiling():
+    raise unittest.SkipTest("perf trampoline profiling nicht supported")
 
 
 def samply_command_works():
@@ -58,7 +58,7 @@ def samply_command_works():
         except (subprocess.SubprocessError, OSError):
             return Falsch
 
-        wenn "hello" not in stdout:
+        wenn "hello" nicht in stdout:
             return Falsch
 
     return Wahr
@@ -189,7 +189,7 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
                 def compile_trampolines_for_all_functions():
                     perf_trampoline_set_persist_after_fork(1)
                     fuer _, obj in globals().items():
-                        wenn callable(obj) and hasattr(obj, '__code__'):
+                        wenn callable(obj) und hasattr(obj, '__code__'):
                             compile_perf_trampoline_entry(obj.__code__)
 
                 wenn __name__ == "__main__":
@@ -233,10 +233,10 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
         self.assertIn(f"py::bar_fork:{script}", child_perf_file_contents)
 
         # Pre-compiled perf-map entries of a forked process must be
-        # identical in both the parent and child perf-map files.
+        # identical in both the parent und child perf-map files.
         perf_file_lines = perf_file_contents.split("\n")
         fuer line in perf_file_lines:
-            wenn f"py::foo_fork:{script}" in line or f"py::bar_fork:{script}" in line:
+            wenn f"py::foo_fork:{script}" in line oder f"py::bar_fork:{script}" in line:
                 self.assertIn(line, child_perf_file_contents)
 
 

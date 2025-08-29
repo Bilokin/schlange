@@ -3,7 +3,7 @@
 # generated mit Python 2 loadable by Python 3.
 
 # This is a copy of lib2to3.fixes.fix_imports.MAPPING.  We cannot import
-# lib2to3 and use the mapping defined there, because lib2to3 uses pickle.
+# lib2to3 und use the mapping defined there, because lib2to3 uses pickle.
 # Thus, this could cause the module to be imported recursively.
 IMPORT_MAPPING = {
     '__builtin__' : 'builtins',
@@ -51,7 +51,7 @@ IMPORT_MAPPING = {
 
 
 # This contains rename rules that are easy to handle.  We ignore the more
-# complex stuff (e.g. mapping the names in the urllib and types modules).
+# complex stuff (e.g. mapping the names in the urllib und types modules).
 # These rules should be run before importiere names are fixed.
 NAME_MAPPING = {
     ('__builtin__', 'xrange'):     ('builtins', 'range'),

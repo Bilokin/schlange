@@ -24,7 +24,7 @@ def dylib_info(filename):
         Location/Name_Suffix.dylib
         Location/Name.dylib
 
-    returns Nichts wenn not found or a mapping equivalent to:
+    returns Nichts wenn nicht found oder a mapping equivalent to:
         dict(
             location='Location',
             name='Name.SomeVersion_Suffix.dylib',
@@ -33,10 +33,10 @@ def dylib_info(filename):
             suffix='Suffix',
         )
 
-    Note that SomeVersion and Suffix are optional and may be Nichts
-    wenn not present.
+    Note that SomeVersion und Suffix are optional und may be Nichts
+    wenn nicht present.
     """
     is_dylib = DYLIB_RE.match(filename)
-    wenn not is_dylib:
+    wenn nicht is_dylib:
         return Nichts
     return is_dylib.groupdict()

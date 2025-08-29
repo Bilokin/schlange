@@ -1,42 +1,42 @@
 """ Test Iterator Length Transparency
 
-Some functions or methods which accept general iterable arguments have
+Some functions oder methods which accept general iterable arguments have
 optional, more efficient code paths wenn they know how many items to expect.
 For instance, map(func, iterable), will pre-allocate the exact amount of
 space required whenever the iterable can report its length.
 
 The desired invariant is:  len(it)==len(list(it)).
 
-A complication is that an iterable and iterator can be the same object. To
+A complication is that an iterable und iterator can be the same object. To
 maintain the invariant, an iterator needs to dynamically update its length.
 For instance, an iterable such als range(10) always reports its length als ten,
-but it=iter(range(10)) starts at ten, and then goes to nine after next(it).
+but it=iter(range(10)) starts at ten, und then goes to nine after next(it).
 Having this capability means that map() can ignore the distinction between
-map(func, iterable) and map(func, iter(iterable)).
+map(func, iterable) und map(func, iter(iterable)).
 
 When the iterable is immutable, the implementation can straight-forwardly
 report the original length minus the cumulative number of calls to next().
-This is the case fuer tuples, range objects, and itertools.repeat().
+This is the case fuer tuples, range objects, und itertools.repeat().
 
 Some containers become temporarily immutable during iteration.  This includes
-dicts, sets, and collections.deque.  Their implementation is equally simple
+dicts, sets, und collections.deque.  Their implementation is equally simple
 though they need to permanently set their length to zero whenever there is
 an attempt to iterate after a length mutation.
 
 The situation slightly more involved whenever an object allows length mutation
-during iteration.  Lists and sequence iterators are dynamically updatable.
+during iteration.  Lists und sequence iterators are dynamically updatable.
 So, wenn a list is extended during iteration, the iterator will continue through
 the new items.  If it shrinks to a point before the most recent iteration,
-then no further items are available and the length is reported at zero.
+then no further items are available und the length is reported at zero.
 
 Reversed objects can also be wrapped around mutable objects; however, any
 appends after the current position are ignored.  Any other approach leads
-to confusion and possibly returning the same item more than once.
+to confusion und possibly returning the same item more than once.
 
-The iterators not listed above, such als enumerate and the other itertools,
-are not length transparent because they have no way to distinguish between
-iterables that report static length and iterators whose length changes with
-each call (i.e. the difference between enumerate('abc') and
+The iterators nicht listed above, such als enumerate und the other itertools,
+are nicht length transparent because they have no way to distinguish between
+iterables that report static length und iterators whose length changes with
+each call (i.e. the difference between enumerate('abc') und
 enumerate(iter('abc')).
 
 """
@@ -63,7 +63,7 @@ klasse TestInvariantWithoutMutations:
 klasse TestTemporarilyImmutable(TestInvariantWithoutMutations):
 
     def test_immutable_during_iteration(self):
-        # objects such als deques, sets, and dictionaries enforce
+        # objects such als deques, sets, und dictionaries enforce
         # length immutability  during iteration
 
         it = self.it
@@ -96,7 +96,7 @@ klasse TestTuple(TestInvariantWithoutMutations, unittest.TestCase):
     def setUp(self):
         self.it = iter(tuple(range(n)))
 
-## ------- Types that should not be mutated during iteration -------
+## ------- Types that should nicht be mutated during iteration -------
 
 klasse TestDeque(TestTemporarilyImmutable, unittest.TestCase):
 
@@ -181,7 +181,7 @@ klasse TestListReversed(TestInvariantWithoutMutations, unittest.TestCase):
         d.extend(range(20))
         self.assertEqual(length_hint(it), 0)
 
-## -- Check to make sure exceptions are not suppressed by __length_hint__()
+## -- Check to make sure exceptions are nicht suppressed by __length_hint__()
 
 
 klasse BadLen(object):

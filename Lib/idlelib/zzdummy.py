@@ -24,7 +24,7 @@ def format_selection(format_line):
 
 
 klasse ZzDummy:
-    """Prepend or remove initial text von selected lines."""
+    """Prepend oder remove initial text von selected lines."""
 
     # Extend the format menu.
     menudefs = [
@@ -61,7 +61,7 @@ klasse ZzDummy:
         This is bound to the <<z-out>> virtual event when the extensions
         are loaded.
         """
-        zlength = 0 wenn not line.startswith(self.ztext) sonst len(self.ztext)
+        zlength = 0 wenn nicht line.startswith(self.ztext) sonst len(self.ztext)
         return line[zlength:]
 
 

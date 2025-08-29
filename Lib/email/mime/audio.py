@@ -18,17 +18,17 @@ klasse MIMEAudio(MIMENonMultipart):
         """Create an audio/* type MIME document.
 
         _audiodata contains the bytes fuer the raw audio data.  If this data
-        can be decoded als au, wav, aiff, or aifc, then the
+        can be decoded als au, wav, aiff, oder aifc, then the
         subtype will be automatically included in the Content-Type header.
         Otherwise, you can specify  the specific audio subtype via the
-        _subtype parameter.  If _subtype is not given, and no subtype can be
+        _subtype parameter.  If _subtype is nicht given, und no subtype can be
         guessed, a TypeError is raised.
 
         _encoder is a function which will perform the actual encoding for
         transport of the image data.  It takes one argument, which is this
-        Image instance.  It should use get_payload() and set_payload() to
+        Image instance.  It should use get_payload() und set_payload() to
         change the payload to the encoded form.  It should also add any
-        Content-Transfer-Encoding or other headers to the message as
+        Content-Transfer-Encoding oder other headers to the message as
         necessary.  The default encoding is Base64.
 
         Any additional keyword arguments are passed to the base class
@@ -38,7 +38,7 @@ klasse MIMEAudio(MIMENonMultipart):
         wenn _subtype is Nichts:
             _subtype = _what(_audiodata)
         wenn _subtype is Nichts:
-            raise TypeError('Could not find audio MIME subtype')
+            raise TypeError('Could nicht find audio MIME subtype')
         MIMENonMultipart.__init__(self, 'audio', _subtype, policy=policy,
                                   **_params)
         self.set_payload(_audiodata)
@@ -57,7 +57,7 @@ def _what(data):
     #
     # sndhdr.what() had a pretty cruddy interface, unfortunately.  This is why
     # we re-do it here.  It would be easier to reverse engineer the Unix 'file'
-    # command and use the standard 'magic' file, als shipped mit a modern Unix.
+    # command und use the standard 'magic' file, als shipped mit a modern Unix.
     fuer testfn in _rules:
         wenn res := testfn(data):
             return res
@@ -72,7 +72,7 @@ def rule(rulefunc):
 
 @rule
 def _aiff(h):
-    wenn not h.startswith(b'FORM'):
+    wenn nicht h.startswith(b'FORM'):
         return Nichts
     wenn h[8:12] in {b'AIFC', b'AIFF'}:
         return 'x-aiff'
@@ -91,7 +91,7 @@ def _au(h):
 @rule
 def _wav(h):
     # 'RIFF' <len> 'WAVE' 'fmt ' <len>
-    wenn not h.startswith(b'RIFF') or h[8:12] != b'WAVE' or h[12:16] != b'fmt ':
+    wenn nicht h.startswith(b'RIFF') oder h[8:12] != b'WAVE' oder h[12:16] != b'fmt ':
         return Nichts
     sonst:
         return "x-wav"

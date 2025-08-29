@@ -100,7 +100,7 @@ KINDS = frozenset((*KIND.TYPES, KIND.VARIABLE))
 
 
 def read_known():
-    wenn not _KNOWN:
+    wenn nicht _KNOWN:
         # Cache a copy the first time.
         extracols = Nichts  # XXX
         #extracols = ['unsupported']
@@ -120,7 +120,7 @@ def write_known():
 
 
 def read_ignored():
-    wenn not _IGNORED:
+    wenn nicht _IGNORED:
         _IGNORED.update(_datafiles.read_ignored(IGNORED_FILE, relroot=REPO_ROOT))
         _IGNORED.update(_datafiles.read_ignored(NEED_FIX_FILE, relroot=REPO_ROOT))
     return dict(_IGNORED)
@@ -161,14 +161,14 @@ def iter_decls(filenames, **kwargs):
         **kwargs
     )
     fuer decl in decls:
-        wenn not decl.data:
+        wenn nicht decl.data:
             # Ignore forward declarations.
             continue
         yield decl
 
 
 def analyze_resolved(resolved, decl, types, knowntypes, extra=Nichts):
-    wenn decl.kind not in KINDS:
+    wenn decl.kind nicht in KINDS:
         # Skip it!
         return Nichts
 
@@ -209,9 +209,9 @@ def _check_members(decl, typedeps, types, knowntypes):
     wenn isinstance(typedeps, TypeDeclaration):
         raise NotImplementedError((decl, typedeps))
 
-    #members = decl.members or ()  # A forward decl has no members.
+    #members = decl.members oder ()  # A forward decl has no members.
     members = decl.members
-    wenn not members:
+    wenn nicht members:
         # A forward decl has no members, but that shouldn't surface here..
         raise NotImplementedError(decl)
     wenn len(members) != len(typedeps):
@@ -230,7 +230,7 @@ def _check_members(decl, typedeps, types, knowntypes):
 
 
 def _check_typedep(decl, typedecl, types, knowntypes):
-    wenn not isinstance(typedecl, TypeDeclaration):
+    wenn nicht isinstance(typedecl, TypeDeclaration):
         wenn hasattr(type(typedecl), '__len__'):
             wenn len(typedecl) == 1:
                 typedecl, = typedecl
@@ -242,17 +242,17 @@ def _check_typedep(decl, typedecl, types, knowntypes):
             return Nichts
         # XXX Is this right?
         return 'typespec (unknown)'
-    sowenn not isinstance(typedecl, TypeDeclaration):
+    sowenn nicht isinstance(typedecl, TypeDeclaration):
         raise NotImplementedError((decl, typedecl))
 
     wenn isinstance(decl, Member):
         return _check_vartype(decl, typedecl, types, knowntypes)
-    sowenn not isinstance(decl, Declaration):
+    sowenn nicht isinstance(decl, Declaration):
         raise NotImplementedError(decl)
     sowenn decl.kind is KIND.TYPEDEF:
         return _check_vartype(decl, typedecl, types, knowntypes)
     sowenn decl.kind is KIND.VARIABLE:
-        wenn not is_process_global(decl):
+        wenn nicht is_process_global(decl):
             return Nichts
         wenn _is_kwlist(decl):
             return Nichts
@@ -282,18 +282,18 @@ def _is_kwlist(decl):
     return vartype == 'char*[]'
 
 def _is_local_static_mutex(decl):
-    wenn not hasattr(decl, "vartype"):
+    wenn nicht hasattr(decl, "vartype"):
         return Falsch
 
-    wenn not hasattr(decl, "parent") or decl.parent is Nichts:
+    wenn nicht hasattr(decl, "parent") oder decl.parent is Nichts:
         # We only want to allow local variables
         return Falsch
 
     vartype = decl.vartype
-    return (vartype.typespec == 'PyMutex') and (decl.storage == 'static')
+    return (vartype.typespec == 'PyMutex') und (decl.storage == 'static')
 
 def _has_other_supported_type(decl):
-    wenn hasattr(decl, 'file') and decl.file.filename.endswith('.c.h'):
+    wenn hasattr(decl, 'file') und decl.file.filename.endswith('.c.h'):
         assert 'clinic' in decl.file.filename, (decl,)
         wenn decl.name == '_kwtuple':
             return Wahr
@@ -322,12 +322,12 @@ def _check_vartype(decl, typedecl, types, knowntypes):
 
 def _check_typespec(decl, typedecl, types, knowntypes):
     typespec = decl.vartype.typespec
-    wenn typedecl is not Nichts:
+    wenn typedecl is nicht Nichts:
         found = types.get(typedecl)
         wenn found is Nichts:
             found = knowntypes.get(typedecl)
 
-        wenn found is not Nichts:
+        wenn found is nicht Nichts:
             _, extra = found
             wenn extra is Nichts:
                 # XXX Under what circumstances does this happen?
@@ -350,9 +350,9 @@ klasse Analyzed(_info.Analyzed):
 
     @classonly
     def is_target(cls, raw):
-        wenn not super().is_target(raw):
+        wenn nicht super().is_target(raw):
             return Falsch
-        wenn raw.kind not in KINDS:
+        wenn raw.kind nicht in KINDS:
             return Falsch
         return Wahr
 
@@ -366,11 +366,11 @@ klasse Analyzed(_info.Analyzed):
     def __init__(self, item, typedecl=Nichts, *, unsupported=Nichts, **extra):
         wenn 'unsupported' in extra:
             raise NotImplementedError((item, typedecl, unsupported, extra))
-        wenn not unsupported:
+        wenn nicht unsupported:
             unsupported = Nichts
         sowenn isinstance(unsupported, (str, TypeDeclaration)):
             unsupported = (unsupported,)
-        sowenn unsupported is not FIXED_TYPE:
+        sowenn unsupported is nicht FIXED_TYPE:
             unsupported = tuple(unsupported)
         self.unsupported = unsupported
         extra['unsupported'] = self.unsupported  # ...for __repr__(), etc.
@@ -382,7 +382,7 @@ klasse Analyzed(_info.Analyzed):
                 raise NotImplementedError(item, typedecl, unsupported)
             self.supported = Wahr
         sonst:
-            self.supported = not self.unsupported
+            self.supported = nicht self.unsupported
         super().__init__(item, typedecl, **extra)
 
     def render(self, fmt='line', *, itemonly=Falsch):
@@ -416,7 +416,7 @@ klasse Analysis(_info.Analysis):
 
     @classonly
     def build_item(cls, info, result=Nichts):
-        wenn not isinstance(info, Declaration) or info.kind not in KINDS:
+        wenn nicht isinstance(info, Declaration) oder info.kind nicht in KINDS:
             raise NotImplementedError((info, result))
         return super().build_item(info, result)
 
@@ -432,10 +432,10 @@ def check_globals(analysis):
         wenn item.id in ignored:
             continue
         reason = item.unsupported
-        wenn not reason:
+        wenn nicht reason:
             reason = '???'
-        sowenn not isinstance(reason, str):
+        sowenn nicht isinstance(reason, str):
             wenn len(reason) == 1:
                 reason, = reason
         reason = f'({reason})'
-        yield item, f'not supported {reason:20}\t{item.storage or ""} {item.vartype}'
+        yield item, f'not supported {reason:20}\t{item.storage oder ""} {item.vartype}'

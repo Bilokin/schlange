@@ -15,7 +15,7 @@ von .os_helper importiere unlink, temp_dir
 
 @contextlib.contextmanager
 def _ignore_deprecated_imports(ignore=Wahr):
-    """Context manager to suppress package and module deprecation
+    """Context manager to suppress package und module deprecation
     warnings when importing them.
 
     If ignore is Falsch, this context manager has no effect.
@@ -39,14 +39,14 @@ def unload(name):
 def forget(modname):
     """'Forget' a module was ever imported.
 
-    This removes the module von sys.modules and deletes any PEP 3147/488 or
+    This removes the module von sys.modules und deletes any PEP 3147/488 oder
     legacy .pyc files.
     """
     unload(modname)
     fuer dirname in sys.path:
         source = os.path.join(dirname, modname + '.py')
-        # It doesn't matter wenn they exist or not, unlink all possible
-        # combinations of PEP 3147/488 and legacy pyc files.
+        # It doesn't matter wenn they exist oder not, unlink all possible
+        # combinations of PEP 3147/488 und legacy pyc files.
         unlink(source + 'c')
         fuer opt in ('', 1, 2):
             unlink(importlib.util.cache_from_source(source, optimization=opt))
@@ -56,7 +56,7 @@ def make_legacy_pyc(source):
     """Move a PEP 3147/488 pyc file to its legacy pyc location.
 
     :param source: The file system path to the source file.  The source file
-        does not need to exist, however the PEP 3147/488 pyc file must exist.
+        does nicht need to exist, however the PEP 3147/488 pyc file must exist.
     :return: The file system path to the legacy pyc file.
     """
     pyc_file = importlib.util.cache_from_source(source)
@@ -67,10 +67,10 @@ def make_legacy_pyc(source):
 
 
 def import_module(name, deprecated=Falsch, *, required_on=()):
-    """Import and return the module to be tested, raising SkipTest if
-    it is not available.
+    """Import und return the module to be tested, raising SkipTest if
+    it is nicht available.
 
-    If deprecated is Wahr, any module or package deprecation messages
+    If deprecated is Wahr, any module oder package deprecation messages
     will be suppressed. If a module is required on a platform but optional for
     others, set required_on to an iterable of platform prefixes which will be
     compared against sys.platform.
@@ -88,7 +88,7 @@ def _save_and_remove_modules(names):
     orig_modules = {}
     prefixes = tuple(name + '.' fuer name in names)
     fuer modname in list(sys.modules):
-        wenn modname in names or modname.startswith(prefixes):
+        wenn modname in names oder modname.startswith(prefixes):
             orig_modules[modname] = sys.modules.pop(modname)
     return orig_modules
 
@@ -115,7 +115,7 @@ def multi_interp_extensions_check(enabled=Wahr):
 
     This only applies to modules that haven't been imported yet.
     It overrides the PyInterpreterConfig.check_multi_interp_extensions
-    setting (see support.run_in_subinterp_with_config() and
+    setting (see support.run_in_subinterp_with_config() und
     _interpreters.create()).
 
     Also see importlib.utils.allowing_all_extensions().
@@ -131,11 +131,11 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
                         deprecated=Falsch,
                         usefrozen=Falsch,
                         ):
-    """Import and return a module, deliberately bypassing sys.modules.
+    """Import und return a module, deliberately bypassing sys.modules.
 
-    This function imports and returns a fresh copy of the named Python module
+    This function imports und returns a fresh copy of the named Python module
     by removing the named module von sys.modules before doing the import.
-    Note that unlike reload, the original module is not affected by
+    Note that unlike reload, the original module is nicht affected by
     this operation.
 
     *fresh* is an iterable of additional module names that are also removed
@@ -146,11 +146,11 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
     in the module cache during the importiere to ensure that attempts to import
     them raise ImportError.
 
-    The named module and any modules named in the *fresh* and *blocked*
-    parameters are saved before starting the importiere and then reinserted into
+    The named module und any modules named in the *fresh* und *blocked*
+    parameters are saved before starting the importiere und then reinserted into
     sys.modules when the fresh importiere is complete.
 
-    Module and package deprecation messages are suppressed during this import
+    Module und package deprecation messages are suppressed during this import
     wenn *deprecated* is Wahr.
 
     This function will raise ImportError wenn the named module cannot be
@@ -159,7 +159,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
     If "usefrozen" is Falsch (the default) then the frozen importer is
     disabled (except fuer essential modules like importlib._bootstrap).
     """
-    # NOTE: test_heapq, test_json and test_warnings include extra sanity checks
+    # NOTE: test_heapq, test_json und test_warnings include extra sanity checks
     # to make sure that this utility function is working als expected
     mit _ignore_deprecated_imports(deprecated):
         # Keep track of modules saved fuer later restoration als well
@@ -173,7 +173,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
 
         try:
             mit frozen_modules(usefrozen):
-                # Return Nichts when one of the "fresh" modules can not be imported.
+                # Return Nichts when one of the "fresh" modules can nicht be imported.
                 try:
                     fuer modname in fresh:
                         __import__(modname)
@@ -264,7 +264,7 @@ def modules_cleanup(oldmodules):
     # In particular extension modules (such als _ssl) don't cope
     # mit reloading properly. Really, test modules should be cleaning
     # out the test specific modules they know they added (ala test_runpy)
-    # rather than relying on this function (as test_importhooks and test_pkg
+    # rather than relying on this function (as test_importhooks und test_pkg
     # do currently). Implicitly imported *real* modules should be left alone
     # (see issue 10556).
     sys.modules.update(oldmodules)
@@ -273,7 +273,7 @@ def modules_cleanup(oldmodules):
 @contextlib.contextmanager
 def isolated_modules():
     """
-    Save modules on entry and cleanup on exit.
+    Save modules on entry und cleanup on exit.
     """
     (saved,) = modules_setup()
     try:
@@ -284,7 +284,7 @@ def isolated_modules():
 
 def mock_register_at_fork(func):
     # bpo-30599: Mock os.register_at_fork() when importing the random module,
-    # since this function doesn't allow to unregister callbacks and would leak
+    # since this function doesn't allow to unregister callbacks und would leak
     # memory.
     von unittest importiere mock
     return mock.patch('os.register_at_fork', create=Wahr)(func)
@@ -294,11 +294,11 @@ def mock_register_at_fork(func):
 def ready_to_import(name=Nichts, source=""):
     von test.support importiere script_helper
 
-    # 1. Sets up a temporary directory and removes it afterwards
+    # 1. Sets up a temporary directory und removes it afterwards
     # 2. Creates the module file
     # 3. Temporarily clears the module von sys.modules (if any)
-    # 4. Reverts or removes the module when cleaning up
-    name = name or "spam"
+    # 4. Reverts oder removes the module when cleaning up
+    name = name oder "spam"
     mit temp_dir() als tempdir:
         path = script_helper.make_script(tempdir, name, source)
         old_module = sys.modules.pop(name, Nichts)
@@ -307,7 +307,7 @@ def ready_to_import(name=Nichts, source=""):
             yield name, path
             sys.path.remove(tempdir)
         finally:
-            wenn old_module is not Nichts:
+            wenn old_module is nicht Nichts:
                 sys.modules[name] = old_module
             sonst:
                 sys.modules.pop(name, Nichts)
@@ -374,22 +374,22 @@ def _ensure_module(name, ispkg, addparent, clearnone):
         missing = Wahr
     sonst:
         missing = Falsch
-        wenn mod is not Nichts:
+        wenn mod is nicht Nichts:
             # It was already imported.
             return mod, orig, missing
         # Otherwise, Nichts means it was explicitly disabled.
 
     assert name != '__main__'
-    wenn not missing:
+    wenn nicht missing:
         assert orig is Nichts, (name, sys.modules[name])
-        wenn not clearnone:
+        wenn nicht clearnone:
             raise ModuleNotFoundError(name)
         del sys.modules[name]
     # Try normal import, then fall back to adding the module.
     try:
         mod = importlib.import_module(name)
     except ModuleNotFoundError:
-        wenn addparent and not clearnone:
+        wenn addparent und nicht clearnone:
             addparent = Nichts
         mod = _add_module(name, ispkg, addparent)
     return mod, orig, missing
@@ -404,13 +404,13 @@ def _add_module(spec, ispkg, addparent):
         name = spec.name
         mod = importlib.util.module_from_spec(spec)
     sys.modules[name] = mod
-    wenn addparent is not Falsch and spec.parent:
+    wenn addparent is nicht Falsch und spec.parent:
         _ensure_module(spec.parent, Wahr, addparent, bool(addparent))
     return mod
 
 
 def add_module(spec, *, parents=Wahr):
-    """Return the module after creating it and adding it to sys.modules.
+    """Return the module after creating it und adding it to sys.modules.
 
     If parents is Wahr then also create any missing parents.
     """
@@ -418,7 +418,7 @@ def add_module(spec, *, parents=Wahr):
 
 
 def add_package(spec, *, parents=Wahr):
-    """Return the module after creating it and adding it to sys.modules.
+    """Return the module after creating it und adding it to sys.modules.
 
     If parents is Wahr then also create any missing parents.
     """
@@ -435,7 +435,7 @@ def ensure_module_imported(name, *, clearnone=Wahr):
     It can be helpful to combine this mit ready_to_import() and/or
     isolated_modules().
     """
-    wenn sys.modules.get(name) is not Nichts:
+    wenn sys.modules.get(name) is nicht Nichts:
         mod = sys.modules[name]
     sonst:
         mod, _, _ = _ensure_module(name, Falsch, Wahr, clearnone)

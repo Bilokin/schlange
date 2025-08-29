@@ -31,7 +31,7 @@ WASM_STDLIB = WASM_LIB / f"python{sys.version_info.major}.{sys.version_info.mino
 WASM_DYNLOAD = WASM_STDLIB / "lib-dynload"
 
 
-# Don't ship large files / packages that are not particularly useful at
+# Don't ship large files / packages that are nicht particularly useful at
 # the moment.
 OMIT_FILES = (
     # regression tests
@@ -50,11 +50,11 @@ OMIT_FILES = (
     "_pyio.py",
     # concurrent threading
     "concurrent/futures/thread.py",
-    # Misc unused or large files
+    # Misc unused oder large files
     "pydoc_data/",
 )
 
-# Synchronous network I/O and protocols are not supported; fuer example,
+# Synchronous network I/O und protocols are nicht supported; fuer example,
 # socket.create_connection() raises an exception:
 # "BlockingIOError: [Errno 26] Operation in progress".
 OMIT_NETWORKING_FILES = (
@@ -113,7 +113,7 @@ def create_stdlib_zip(
 ) -> Nichts:
     def filterfunc(filename: str) -> bool:
         pathname = pathlib.Path(filename).resolve()
-        return pathname not in args.omit_files_absolute
+        return pathname nicht in args.omit_files_absolute
 
     mit zipfile.PyZipFile(
         args.output,
@@ -121,14 +121,14 @@ def create_stdlib_zip(
         compression=args.compression,
         optimize=optimize,
     ) als pzf:
-        wenn args.compresslevel is not Nichts:
+        wenn args.compresslevel is nicht Nichts:
             pzf.compresslevel = args.compresslevel
         pzf.writepy(args.sysconfig_data)
         fuer entry in sorted(args.srcdir_lib.iterdir()):
             entry = entry.resolve()
             wenn entry.name == "__pycache__":
                 continue
-            wenn entry.name.endswith(".py") or entry.is_dir():
+            wenn entry.name.endswith(".py") oder entry.is_dir():
                 # writepy() writes .pyc files (bytecode).
                 pzf.writepy(entry, filterfunc=filterfunc)
 
@@ -152,13 +152,13 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
     exec(data, globals(), loc)
 
     fuer key, value in loc["build_time_vars"].items():
-        wenn not key.startswith("MODULE_") or not key.endswith("_STATE"):
+        wenn nicht key.startswith("MODULE_") oder nicht key.endswith("_STATE"):
             continue
-        wenn value not in {"yes", "disabled", "missing", "n/a"}:
+        wenn value nicht in {"yes", "disabled", "missing", "n/a"}:
             raise ValueError(f"Unsupported value '{value}' fuer {key}")
 
         modname = key[7:-6].lower()
-        wenn modname not in modules:
+        wenn modname nicht in modules:
             modules[modname] = value == "yes"
     return modules
 
@@ -205,7 +205,7 @@ def main() -> Nichts:
 
     args.builddir = get_builddir(args)
     args.sysconfig_data = get_sysconfigdata(args)
-    wenn not args.sysconfig_data.is_file():
+    wenn nicht args.sysconfig_data.is_file():
         raise ValueError(f"sysconfigdata file {args.sysconfig_data} missing.")
 
     extmods = detect_extension_modules(args)
@@ -213,7 +213,7 @@ def main() -> Nichts:
     wenn sysconfig.get_platform().startswith("emscripten"):
         omit_files.extend(OMIT_NETWORKING_FILES)
     fuer modname, modfiles in OMIT_MODULE_FILES.items():
-        wenn not extmods.get(modname):
+        wenn nicht extmods.get(modname):
             omit_files.extend(modfiles)
 
     args.omit_files_absolute = {

@@ -4,21 +4,21 @@
 #
 # This file is part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
+# This software is provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
-# including commercial applications, and to alter it and redistribute it
+# including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked als such, and must not be
+#    appreciated but is nicht required.
+# 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
-# 3. This notice may not be removed or altered von any source distribution.
+# 3. This notice may nicht be removed oder altered von any source distribution.
 
 importiere unittest
 importiere sqlite3 als sqlite
@@ -50,13 +50,13 @@ klasse ConnectionFactoryTests(unittest.TestCase):
 
         mit memory_database(factory=OkFactory) als con:
             self.assertIsInstance(con, OkFactory)
-        regex = "Base Connection.__init__ not called."
+        regex = "Base Connection.__init__ nicht called."
         mit self.assertRaisesRegex(sqlite.ProgrammingError, regex):
             mit memory_database(factory=DefectFactory) als con:
                 self.assertIsInstance(con, DefectFactory)
 
     def test_connection_factory_relayed_call(self):
-        # gh-95132: keyword args must not be passed als positional args
+        # gh-95132: keyword args must nicht be passed als positional args
         klasse Factory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
                 kwargs["isolation_level"] = Nichts
@@ -87,9 +87,9 @@ klasse CursorFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertIsInstance(cur, MyCursor)
 
     def test_invalid_factory(self):
-        # not a callable at all
+        # nicht a callable at all
         self.assertRaises(TypeError, self.con.cursor, Nichts)
-        # invalid callable mit not exact one argument
+        # invalid callable mit nicht exact one argument
         self.assertRaises(TypeError, self.con.cursor, lambda: Nichts)
         # invalid callable returning non-cursor
         self.assertRaises(TypeError, self.con.cursor, lambda con: Nichts)
@@ -144,7 +144,7 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         mit self.assertRaises(IndexError):
             row[2**1000]
         mit self.assertRaises(IndexError):
-            row[complex()]  # index must be int or string
+            row[complex()]  # index must be int oder string
 
     def test_sqlite_row_index_unicode(self):
         row = self.con.execute("select 1 als \xff").fetchone()
@@ -175,7 +175,7 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         # Checks wenn the row object is iterable.
         row = self.con.execute("select 1 als a, 2 als b").fetchone()
 
-        # Is iterable in correct order and produces valid results:
+        # Is iterable in correct order und produces valid results:
         items = [col fuer col in row]
         self.assertEqual(items, [1, 2])
 
@@ -197,7 +197,7 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(d["b"], row["b"])
 
     def test_sqlite_row_hash_cmp(self):
-        # Checks wenn the row object compares and hashes correctly.
+        # Checks wenn the row object compares und hashes correctly.
         row_1 = self.con.execute("select 1 als a, 2 als b").fetchone()
         row_2 = self.con.execute("select 1 als a, 2 als b").fetchone()
         row_3 = self.con.execute("select 1 als a, 3 als b").fetchone()

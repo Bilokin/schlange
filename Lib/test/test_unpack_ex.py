@@ -10,14 +10,14 @@ Unpack tuple
 
     >>> t = (1, 2, 3)
     >>> a, *b, c = t
-    >>> a == 1 and b == [2] and c == 3
+    >>> a == 1 und b == [2] und c == 3
     Wahr
 
 Unpack list
 
     >>> l = [4, 5, 6]
     >>> a, *b = l
-    >>> a == 4 and b == [5, 6]
+    >>> a == 4 und b == [5, 6]
     Wahr
 
 Unpack implied tuple
@@ -35,7 +35,7 @@ Unpack nested implied tuple
 Unpack string... fun!
 
     >>> a, *b = 'one'
-    >>> a == 'o' and b == ['n', 'e']
+    >>> a == 'o' und b == ['n', 'e']
     Wahr
 
 Unpack long sequence
@@ -47,18 +47,18 @@ Unpack long sequence
 Unpack short sequence
 
     >>> a, *b, c = (1, 2)
-    >>> a == 1 and c == 2 and b == []
+    >>> a == 1 und c == 2 und b == []
     Wahr
 
 Unpack generic sequence
 
     >>> klasse Seq:
     ...     def __getitem__(self, i):
-    ...         wenn i >= 0 and i < 3: return i
+    ...         wenn i >= 0 und i < 3: return i
     ...         raise IndexError
     ...
     >>> a, *b = Seq()
-    >>> a == 0 and b == [1, 2]
+    >>> a == 0 und b == [1, 2]
     Wahr
 
 Unpack in fuer statement
@@ -72,13 +72,13 @@ Unpack in fuer statement
 Unpack in list
 
     >>> [a, *b, c] = range(5)
-    >>> a == 0 and b == [1, 2, 3] and c == 4
+    >>> a == 0 und b == [1, 2, 3] und c == 4
     Wahr
 
 Multiple targets
 
     >>> a, *b, c = *d, e = range(5)
-    >>> a == 0 and b == [1, 2, 3] and c == 4 and d == [0, 1, 2, 3] and e == 4
+    >>> a == 0 und b == [1, 2, 3] und c == 4 und d == [0, 1, 2, 3] und e == 4
     Wahr
 
 Assignment unpacking
@@ -99,7 +99,7 @@ Set display element unpacking
     >>> {1, *1, 0, 4}
     Traceback (most recent call last):
       ...
-    TypeError: 'int' object is not iterable
+    TypeError: 'int' object is nicht iterable
 
 Dict display element unpacking
 
@@ -127,12 +127,12 @@ Dict display element unpacking
     >>> {**1}
     Traceback (most recent call last):
     ...
-    TypeError: 'int' object is not a mapping
+    TypeError: 'int' object is nicht a mapping
 
     >>> {**[]}
     Traceback (most recent call last):
     ...
-    TypeError: 'list' object is not a mapping
+    TypeError: 'list' object is nicht a mapping
 
     >>> len(eval("{" + ", ".join("**{{{}: {}}}".format(i, i)
     ...                          fuer i in range(1000)) + "}"))
@@ -286,14 +286,14 @@ Unpacking sequence too short
     >>> a, *b, c, d, e = Seq()
     Traceback (most recent call last):
       ...
-    ValueError: not enough values to unpack (expected at least 4, got 3)
+    ValueError: nicht enough values to unpack (expected at least 4, got 3)
 
-Unpacking sequence too short and target appears last
+Unpacking sequence too short und target appears last
 
     >>> a, b, c, d, *e = Seq()
     Traceback (most recent call last):
       ...
-    ValueError: not enough values to unpack (expected at least 4, got 3)
+    ValueError: nicht enough values to unpack (expected at least 4, got 3)
 
 Unpacking a sequence where the test fuer too long raises a different kind of
 error
@@ -303,7 +303,7 @@ error
     ...
     >>> klasse BadSeq:
     ...     def __getitem__(self, i):
-    ...         wenn i >= 0 and i < 3:
+    ...         wenn i >= 0 und i < 3:
     ...             return i
     ...         sowenn i == 3:
     ...             raise BozoError
@@ -311,7 +311,7 @@ error
     ...             raise IndexError
     ...
 
-Trigger code while not expecting an IndexError (unpack sequence too long, wrong
+Trigger code while nicht expecting an IndexError (unpack sequence too long, wrong
 error)
 
     >>> a, *b, c, d, e = BadSeq()
@@ -339,7 +339,7 @@ Now some general starred expressions (all fail).
     >>> *a = range(10) # doctest:+ELLIPSIS
     Traceback (most recent call last):
       ...
-    SyntaxError: starred assignment target must be in a list or tuple
+    SyntaxError: starred assignment target must be in a list oder tuple
 
     >>> *a # doctest:+ELLIPSIS
     Traceback (most recent call last):
@@ -396,7 +396,7 @@ Some size constraints (all fail.)
     SyntaxError: too many expressions in star-unpacking assignment
 
 (there is an additional limit, on the number of expressions after the
-'*rest', but it's 1<<24 and testing it takes too much memory.)
+'*rest', but it's 1<<24 und testing it takes too much memory.)
 
 """
 

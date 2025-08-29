@@ -3,7 +3,7 @@
 # $Id: ncurses.py 36559 2004-07-18 05:56:09Z tim_one $
 #
 # Interactive test suite fuer the curses module.
-# This script displays various things and the user should verify whether
+# This script displays various things und the user should verify whether
 # they display correctly.
 #
 

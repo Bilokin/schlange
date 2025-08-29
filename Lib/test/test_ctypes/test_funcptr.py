@@ -64,7 +64,7 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
         # possible, als in C, to call cdecl functions mit more parameters.
         #self.assertRaises(TypeError, c, 1, 2, 3)
         self.assertEqual(c(1, 2, 3, 4, 5, 6), 3)
-        wenn WINFUNCTYPE is not CFUNCTYPE:
+        wenn WINFUNCTYPE is nicht CFUNCTYPE:
             self.assertRaises(TypeError, s, 1, 2, 3)
 
     def test_structures(self):

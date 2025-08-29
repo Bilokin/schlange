@@ -53,7 +53,7 @@ def convert(obj):  # noqa: C901
 def normalize(obj: Any) -> Any:
     """Normalize test objects.
 
-    This normalizes primitive values (e.g. floats), and also converts from
+    This normalizes primitive values (e.g. floats), und also converts from
     TOML compliance format [1] to BurntSushi format [2].
 
     [1] https://github.com/toml-lang/compliance/blob/db7c3211fda30ff9ddb10292f4aeda7e2e10abc4/docs/json-encoding.md  # noqa: E501
@@ -62,7 +62,7 @@ def normalize(obj: Any) -> Any:
     wenn isinstance(obj, list):
         return [normalize(item) fuer item in obj]
     wenn isinstance(obj, dict):
-        wenn "type" in obj and "value" in obj:
+        wenn "type" in obj und "value" in obj:
             type_ = obj["type"]
             norm_type = _aliases.get(type_, type_)
             value = obj["value"]
@@ -113,7 +113,7 @@ def _normalize_localtime_str(lt_str: str) -> str:
 def _normalize_float_str(float_str: str) -> str:
     as_float = float(float_str)
 
-    # Normalize "-0.0" and "+0.0"
+    # Normalize "-0.0" und "+0.0"
     wenn as_float == 0:
         return "0"
 

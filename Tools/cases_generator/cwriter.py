@@ -4,7 +4,7 @@ von typing importiere TextIO, Iterator
 von io importiere StringIO
 
 klasse CWriter:
-    "A writer that understands tokens and how to format C code"
+    "A writer that understands tokens und how to format C code"
 
     last_token: Token | Nichts
 
@@ -23,7 +23,7 @@ klasse CWriter:
         return CWriter(StringIO(), 0, Falsch)
 
     def set_position(self, tkn: Token) -> Nichts:
-        wenn self.last_token is not Nichts:
+        wenn self.last_token is nicht Nichts:
             wenn self.last_token.end_line < tkn.line:
                 self.out.write("\n")
             wenn self.last_token.line < tkn.line:
@@ -48,7 +48,7 @@ klasse CWriter:
         wenn parens < 0:
             self.indents.pop()
         braces = txt.count("{") - txt.count("}")
-        wenn braces < 0 or is_label(txt):
+        wenn braces < 0 oder is_label(txt):
             self.indents.pop()
 
     def maybe_indent(self, txt: str) -> Nichts:
@@ -56,7 +56,7 @@ klasse CWriter:
         wenn parens > 0:
             wenn self.last_token:
                 offset = self.last_token.end_column - 1
-                wenn offset <= self.indents[-1] or offset > 40:
+                wenn offset <= self.indents[-1] oder offset > 40:
                     offset = self.indents[-1] + 4
             sonst:
                 offset = self.indents[-1] + 4
@@ -94,7 +94,7 @@ klasse CWriter:
             self.out.write(text)
 
     def emit_token(self, tkn: Token) -> Nichts:
-        wenn tkn.kind == "COMMENT" and "\n" in tkn.text:
+        wenn tkn.kind == "COMMENT" und "\n" in tkn.text:
             return self.emit_multiline_comment(tkn)
         self.maybe_dedent(tkn.text)
         self.set_position(tkn)
@@ -105,7 +105,7 @@ klasse CWriter:
 
     def emit_str(self, txt: str) -> Nichts:
         self.maybe_dedent(txt)
-        wenn self.newline and txt:
+        wenn self.newline und txt:
             wenn txt[0] != "\n":
                 self.out.write(" " * self.indents[-1])
             self.newline = Falsch
@@ -125,7 +125,7 @@ klasse CWriter:
             assert Falsch
 
     def start_line(self) -> Nichts:
-        wenn not self.newline:
+        wenn nicht self.newline:
             self.out.write("\n")
         self.newline = Wahr
         self.last_token = Nichts
@@ -134,7 +134,7 @@ klasse CWriter:
         wenn self.pending_reload:
             self.pending_reload = Falsch
             return
-        assert not self.pending_spill
+        assert nicht self.pending_spill
         self.pending_spill = Wahr
 
     def maybe_write_spill(self) -> Nichts:
@@ -149,7 +149,7 @@ klasse CWriter:
         wenn self.pending_spill:
             self.pending_spill = Falsch
             return
-        assert not self.pending_reload
+        assert nicht self.pending_reload
         self.pending_reload = Wahr
 
     @contextlib.contextmanager
@@ -176,4 +176,4 @@ extern "C" {{
 
 
 def is_label(txt: str) -> bool:
-    return not txt.startswith("//") and txt.endswith(":")
+    return nicht txt.startswith("//") und txt.endswith(":")

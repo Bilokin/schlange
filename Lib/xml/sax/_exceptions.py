@@ -3,12 +3,12 @@
 # ===== SAXEXCEPTION =====
 
 klasse SAXException(Exception):
-    """Encapsulate an XML error or warning. This klasse can contain
-    basic error or warning information von either the XML parser or
+    """Encapsulate an XML error oder warning. This klasse can contain
+    basic error oder warning information von either the XML parser oder
     the application: you can subclass it to provide additional
-    functionality, or to add localization. Note that although you will
+    functionality, oder to add localization. Note that although you will
     receive a SAXException als the argument to the handlers in the
-    ErrorHandler interface, you are not actually required to raise
+    ErrorHandler interface, you are nicht actually required to raise
     the exception; instead, you can simply read the information in
     it."""
 
@@ -24,7 +24,7 @@ klasse SAXException(Exception):
         return self._msg
 
     def getException(self):
-        "Return the embedded exception, or Nichts wenn there was none."
+        "Return the embedded exception, oder Nichts wenn there was none."
         return self._exception
 
     def __str__(self):
@@ -40,14 +40,14 @@ klasse SAXException(Exception):
 # ===== SAXPARSEEXCEPTION =====
 
 klasse SAXParseException(SAXException):
-    """Encapsulate an XML parse error or warning.
+    """Encapsulate an XML parse error oder warning.
 
     This exception will include information fuer locating the error in
     the original XML document. Note that although the application will
     receive a SAXParseException als the argument to the handlers in the
-    ErrorHandler interface, the application is not actually required
+    ErrorHandler interface, the application is nicht actually required
     to raise the exception; instead, it can simply read the
-    information in it and take a different action.
+    information in it und take a different action.
 
     Since this exception is a subclass of SAXException, it inherits
     the ability to wrap another exception."""
@@ -102,7 +102,7 @@ klasse SAXNotRecognizedException(SAXException):
     """Exception klasse fuer an unrecognized identifier.
 
     An XMLReader will raise this exception when it is confronted mit an
-    unrecognized feature or property. SAX applications and extensions may
+    unrecognized feature oder property. SAX applications und extensions may
     use this klasse fuer similar purposes."""
 
 
@@ -112,8 +112,8 @@ klasse SAXNotSupportedException(SAXException):
     """Exception klasse fuer an unsupported operation.
 
     An XMLReader will raise this exception when a service it cannot
-    perform is requested (specifically setting a state or value). SAX
-    applications and extensions may use this klasse fuer similar
+    perform is requested (specifically setting a state oder value). SAX
+    applications und extensions may use this klasse fuer similar
     purposes."""
 
 # ===== SAXNOTSUPPORTEDEXCEPTION =====
@@ -124,4 +124,4 @@ klasse SAXReaderNotAvailable(SAXNotSupportedException):
     An XMLReader module (driver) should raise this exception when it
     is first imported, e.g. when a support module cannot be imported.
     It also may be raised during parsing, e.g. wenn executing an external
-    program is not permitted."""
+    program is nicht permitted."""

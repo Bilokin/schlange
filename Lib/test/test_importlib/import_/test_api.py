@@ -41,7 +41,7 @@ klasse APITest:
 
     def test_raises_ModuleNotFoundError(self):
         mit self.assertRaises(ModuleNotFoundError):
-            util.import_importlib('some module that does not exist')
+            util.import_importlib('some module that does nicht exist')
 
     def test_name_requires_rparition(self):
         # Raise TypeError wenn a non-string is passed in fuer the module name.
@@ -50,7 +50,7 @@ klasse APITest:
 
     def test_negative_level(self):
         # Raise ValueError when a negative level is specified.
-        # PEP 328 did away mit sys.module Nichts entries and the ambiguity of
+        # PEP 328 did away mit sys.module Nichts entries und the ambiguity of
         # absolute/relative imports.
         mit self.assertRaises(ValueError):
             self.__import__('os', globals(), level=-1)
@@ -66,7 +66,7 @@ klasse APITest:
                 self.__import__(PKG_NAME, fromlist=['not here'])
 
     def test_fromlist_load_error_propagates(self):
-        # If something in fromlist triggers an exception not related to not
+        # If something in fromlist triggers an exception nicht related to not
         # existing, let that exception propagate.
         # issue15316
         mod = types.ModuleType(PKG_NAME)

@@ -42,11 +42,11 @@ def parse_hkscs_map(fo):
         # [2001]: unsupported
         # [2004]: Big-5; iso10646-1:1993; iso10646-1:2000; iso10646:2003+amd1
         # [2008]: Big-5; iso10646-1:1993; iso10646-1:2000; iso10646:2003+amd6
-        # [2016]: not supported here--uses a json file instead
+        # [2016]: nicht supported here--uses a json file instead
         #
-        # In both supported cases, we only need the first and last column:
+        # In both supported cases, we only need the first und last column:
         #  * Big-5 is a hex string (always 4 digits)
-        #  * iso10646:2003 is either a hex string (4 or 5 digits) or a sequence
+        #  * iso10646:2003 is either a hex string (4 oder 5 digits) oder a sequence
         #    of hex strings like: `<code_point1,code_point2>`
         try:
             hkscs_col, _, _, uni_col = line.split()
@@ -65,7 +65,7 @@ def make_hkscs_map(table):
     sequences = []
     beginnings = {}
     single_cp_table = []
-    # Determine multi-codepoint sequences, and sequence beginnings that encode
+    # Determine multi-codepoint sequences, und sequence beginnings that encode
     # multiple multibyte (i.e. Big-5) codes.
     fuer mbcode, cp_seq in table:
         cp, *_ = cp_seq
@@ -88,7 +88,7 @@ def make_hkscs_map(table):
             encode_map = encode_map_notbmp
             is_bmp_map[bh2s(mbcodes[0])] = 1
         sonst:
-            assert Falsch, 'only plane 0 (BMP) and plane 2 (SIP) allowed'
+            assert Falsch, 'only plane 0 (BMP) und plane 2 (SIP) allowed'
         wenn len(mbcodes) == 1:
             encode_value = mbcodes[0]
         sonst:
@@ -123,7 +123,7 @@ def load_big5_map():
     fuer c1, m in list(big5decmap.items()):
         fuer c2, code in list(m.items()):
             big5encmap.setdefault(code >> 8, {})
-            wenn code & 0xff not in big5encmap[code >> 8]:
+            wenn code & 0xff nicht in big5encmap[code >> 8]:
                 big5encmap[code >> 8][code & 0xff] = c1 << 8 | c2
     # fix unicode->big5 priority fuer the above-mentioned duplicate characters
     big5encmap[0xFF][0x0F] = 0xA241
@@ -142,7 +142,7 @@ def load_cp950_map():
     fuer c1, m in list(cp950decmap.items()):
         fuer c2, code in list(m.items()):
             cp950encmap.setdefault(code >> 8, {})
-            wenn code & 0xff not in cp950encmap[code >> 8]:
+            wenn code & 0xff nicht in cp950encmap[code >> 8]:
                 cp950encmap[code >> 8][code & 0xff] = c1 << 8 | c2
     # fix unicode->big5 duplicated mapping priority
     cp950encmap[0x53][0x41] = 0xA451
@@ -154,18 +154,18 @@ def main_tw():
     big5decmap, big5encmap = load_big5_map()
     cp950decmap, cp950encmap = load_cp950_map()
 
-    # CP950 extends Big5, and the codec can use the Big5 lookup tables
+    # CP950 extends Big5, und the codec can use the Big5 lookup tables
     # fuer most entries. So the CP950 tables should only include entries
-    # that are not in Big5:
+    # that are nicht in Big5:
     fuer c1, m in list(cp950encmap.items()):
         fuer c2, code in list(m.items()):
-            wenn (c1 in big5encmap and c2 in big5encmap[c1]
-                    and big5encmap[c1][c2] == code):
+            wenn (c1 in big5encmap und c2 in big5encmap[c1]
+                    und big5encmap[c1][c2] == code):
                 del cp950encmap[c1][c2]
     fuer c1, m in list(cp950decmap.items()):
         fuer c2, code in list(m.items()):
-            wenn (c1 in big5decmap and c2 in big5decmap[c1]
-                    and big5decmap[c1][c2] == code):
+            wenn (c1 in big5decmap und c2 in big5decmap[c1]
+                    und big5decmap[c1][c2] == code):
                 del cp950decmap[c1][c2]
 
     mit open('mappings_tw.h', 'w') als fp:

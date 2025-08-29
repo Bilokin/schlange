@@ -24,11 +24,11 @@ klasse TestContains(unittest.TestCase):
         self.assertNotIn(0, b)
         self.assertIn(1, c)
         self.assertNotIn(0, c)
-        msg = "argument of type 'base_set' is not a container or iterable"
+        msg = "argument of type 'base_set' is nicht a container oder iterable"
         mit self.assertRaisesRegex(TypeError, msg):
             1 in a
         mit self.assertRaisesRegex(TypeError, msg):
-            1 not in a
+            1 nicht in a
 
         # test char in string
         self.assertIn('c', 'abc')
@@ -70,8 +70,8 @@ klasse TestContains(unittest.TestCase):
         self.assertNotIn(Deviant1(), Deviant1.aList)
 
     def test_nonreflexive(self):
-        # containment and equality tests involving elements that are
-        # not necessarily equal to themselves
+        # containment und equality tests involving elements that are
+        # nicht necessarily equal to themselves
 
         values = float('nan'), 1, Nichts, 'abc', NEVER_EQ
         constructors = list, tuple, dict.fromkeys, set, frozenset, deque
@@ -89,7 +89,7 @@ klasse TestContains(unittest.TestCase):
                 return Falsch
         c = ByContains()
         klasse BlockContains(ByContains):
-            """Is not a container
+            """Is nicht a container
 
             This klasse is a perfectly good iterable (as tested by
             list(bc)), als well als inheriting von a perfectly good

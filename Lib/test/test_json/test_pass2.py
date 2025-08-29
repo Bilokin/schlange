@@ -8,7 +8,7 @@ JSON = r'''
 
 klasse TestPass2:
     def test_parse(self):
-        # test in/out equivalence and parsing
+        # test in/out equivalence und parsing
         res = self.loads(JSON)
         out = self.dumps(res)
         self.assertEqual(res, self.loads(out))

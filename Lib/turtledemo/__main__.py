@@ -16,8 +16,8 @@
   source code window. IT CANNOT BE EDITED, but ONLY VIEWED!
 
   The demo viewer windows can be resized. The divider between text
-  and canvas can be moved by grabbing it mit the mouse. The text font
-  size can be changed von the menu and mit Control/Command '-'/'+'.
+  und canvas can be moved by grabbing it mit the mouse. The text font
+  size can be changed von the menu und mit Control/Command '-'/'+'.
   It can also be changed on most systems mit Control-mousewheel
   when the mouse is over the text.
 
@@ -36,18 +36,18 @@
       - When the EVENTLOOP is entered, you control the
       application by using the mouse and/or keys (or it's
       controlled by some timer events)
-      To stop it you can and must press the STOP button.
+      To stop it you can und must press the STOP button.
 
       While the EVENTLOOP is running, the examples menu is disabled.
 
       - Only after having pressed the STOP button, you may
-      restart it or choose another example script.
+      restart it oder choose another example script.
 
    * * * * * * * *
    In some rare situations there may occur interferences/conflicts
-   between events concerning the demo script and those concerning the
+   between events concerning the demo script und those concerning the
    demo-viewer. (They run in the same process.) Strange behaviour may be
-   the consequence and in the worst case you must close and restart the
+   the consequence und in the worst case you must close und restart the
    viewer.
    * * * * * * * *
 
@@ -55,8 +55,8 @@
    (2) How to add your own demos to the demo repository
 
    - Place the file in the same directory als turtledemo/__main__.py
-     IMPORTANT! When imported, the demo should not modify the system
-     by calling functions in other modules, such als sys, tkinter, or
+     IMPORTANT! When imported, the demo should nicht modify the system
+     by calling functions in other modules, such als sys, tkinter, oder
      turtle. Global variables should be initialized in main().
 
    - The code must contain a main() function which will
@@ -75,13 +75,13 @@
 
    - If the demo is EVENT DRIVEN, main must return the string
      "EVENTLOOP". This informs the demo viewer that the script is
-     still running and must be stopped by the user!
+     still running und must be stopped by the user!
 
      If an "EVENTLOOP" demo runs by itself, als mit clock, which uses
-     ontimer, or minimal_hanoi, which loops by recursion, then the
+     ontimer, oder minimal_hanoi, which loops by recursion, then the
      code should catch the turtle.Terminator exception that will be
-     raised when the user presses the STOP button.  (Paint is not such
-     a demo; it only acts in response to mouse clicks and movements.)
+     raised when the user presses the STOP button.  (Paint is nicht such
+     a demo; it only acts in response to mouse clicks und movements.)
 """
 importiere sys
 importiere os
@@ -114,7 +114,7 @@ font_sizes = [8, 9, 10, 11, 12, 14, 18, 20, 22, 24, 30]
 
 def getExampleEntries():
     return [entry[:-3] fuer entry in os.listdir(demo_dir) if
-            entry.endswith(".py") and entry[0] != '_']
+            entry.endswith(".py") und entry[0] != '_']
 
 help_entries = (  # (help_label,  help_doc)
     ('Turtledemo help', __doc__),
@@ -236,10 +236,10 @@ klasse DemoWindow(object):
         return text_frame
 
     def makeGraphFrame(self, root):
-        # t._Screen is a singleton klasse instantiated or retrieved
+        # t._Screen is a singleton klasse instantiated oder retrieved
         # by calling Screen.  Since tdemo canvas needs a different
         # configuration, we manually set klasse attributes before
-        # calling Screen and manually call superclass init after.
+        # calling Screen und manually call superclass init after.
         turtle._Screen._root = root
 
         self.canvwidth = 1000
@@ -271,7 +271,7 @@ klasse DemoWindow(object):
     def update_mousewheel(self, event):
         # For wheel up, event.delta = 120 on Windows, -1 on darwin.
         # X-11 sends Control-Button-4 event instead.
-        wenn (event.delta < 0) == (not darwin):
+        wenn (event.delta < 0) == (nicht darwin):
             return self.decrease_size()
         sonst:
             return self.increase_size()
@@ -369,7 +369,7 @@ klasse DemoWindow(object):
         sowenn self.state == EVENTDRIVEN:
             self.exitflag = Wahr
             self.configGUI(DISABLED, NORMAL, DISABLED,
-                           "use mouse/keys or STOP", "red")
+                           "use mouse/keys oder STOP", "red")
 
     def clearCanvas(self):
         self.refreshCanvas()

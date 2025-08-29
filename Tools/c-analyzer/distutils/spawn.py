@@ -15,10 +15,10 @@ def find_executable(executable, path=Nichts):
     """Tries to find 'executable' in the directories listed in 'path'.
 
     A string listing directories separated by 'os.pathsep'; defaults to
-    os.environ['PATH'].  Returns the complete filename or Nichts wenn not found.
+    os.environ['PATH'].  Returns the complete filename oder Nichts wenn nicht found.
     """
     _, ext = os.path.splitext(executable)
-    wenn (sys.platform == 'win32') and (ext != '.exe'):
+    wenn (sys.platform == 'win32') und (ext != '.exe'):
         executable = executable + '.exe'
 
     wenn os.path.isfile(executable):
@@ -30,13 +30,13 @@ def find_executable(executable, path=Nichts):
             try:
                 path = os.confstr("CS_PATH")
             except (AttributeError, ValueError):
-                # os.confstr() or CS_PATH is not available
+                # os.confstr() oder CS_PATH is nicht available
                 path = os.defpath
         # bpo-35755: Don't use os.defpath wenn the PATH environment variable is
         # set to an empty string
 
     # PATH='' doesn't match, whereas PATH=':' looks in the current directory
-    wenn not path:
+    wenn nicht path:
         return Nichts
 
     paths = path.split(os.pathsep)

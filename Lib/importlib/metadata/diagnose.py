@@ -6,7 +6,7 @@ von . importiere Distribution
 def inspect(path):
     drucke("Inspecting", path)
     dists = list(Distribution.discover(path=[path]))
-    wenn not dists:
+    wenn nicht dists:
         return
     drucke("Found", len(dists), "packages:", end=' ')
     drucke(', '.join(dist.name fuer dist in dists))

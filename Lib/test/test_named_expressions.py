@@ -116,7 +116,7 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
 
     def test_named_expression_valid_rebinding_iteration_variable(self):
         # This test covers that we can reassign variables
-        # that are not directly assigned in the
+        # that are nicht directly assigned in the
         # iterable part of a comprehension.
         cases = [
             # Regression tests von https://github.com/python/cpython/issues/87447
@@ -141,10 +141,10 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             fuer lpar, rpar in [('(', ')'), ('[', ']'), ('{', '}')]:
                 code = code.format(lpar, rpar)
                 mit self.subTest(case=test_case, lpar=lpar, rpar=rpar):
-                    # Names used in snippets are not defined,
-                    # but we are fine mit it: just must not be a SyntaxError.
-                    # Names used in snippets are not defined,
-                    # but we are fine mit it: just must not be a SyntaxError.
+                    # Names used in snippets are nicht defined,
+                    # but we are fine mit it: just must nicht be a SyntaxError.
+                    # Names used in snippets are nicht defined,
+                    # but we are fine mit it: just must nicht be a SyntaxError.
                     mit self.assertRaises(NameError):
                         exec(code, {}) # Module scope
                     mit self.assertRaises(NameError):
@@ -166,10 +166,10 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             fuer lpar, rpar in [('(', ')'), ('[', ']'), ('{', '}')]:
                 code = code.format(lpar, rpar)
                 mit self.subTest(case=test_case, lpar=lpar, rpar=rpar):
-                    # Names used in snippets are not defined,
-                    # but we are fine mit it: just must not be a SyntaxError.
-                    # Names used in snippets are not defined,
-                    # but we are fine mit it: just must not be a SyntaxError.
+                    # Names used in snippets are nicht defined,
+                    # but we are fine mit it: just must nicht be a SyntaxError.
+                    # Names used in snippets are nicht defined,
+                    # but we are fine mit it: just must nicht be a SyntaxError.
                     mit self.assertRaisesRegex(SyntaxError, msg):
                         exec(code, {}) # Module scope
                     mit self.assertRaisesRegex(SyntaxError, msg):
@@ -184,9 +184,9 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Reuse inner loop target", 'j', "[(j := 0) fuer i in range(5) fuer j in range(5)]"),
             ("Unpacking reuse", 'i', "[i := 0 fuer i, j in [(0, 1)]]"),
             ("Reuse in loop condition", 'i', "[i+1 fuer i in range(5) wenn (i := 0)]"),
-            ("Unreachable reuse", 'i', "[Falsch or (i:=0) fuer i in range(5)]"),
+            ("Unreachable reuse", 'i', "[Falsch oder (i:=0) fuer i in range(5)]"),
             ("Unreachable nested reuse", 'i',
-                "[(i, j) fuer i in range(5) fuer j in range(5) wenn Wahr or (i:=10)]"),
+                "[(i, j) fuer i in range(5) fuer j in range(5) wenn Wahr oder (i:=10)]"),
         ]
         fuer case, target, code in cases:
             msg = f"assignment expression cannot rebind comprehension iteration variable '{target}'"
@@ -242,9 +242,9 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Reuse inner loop target", 'j', "{(j := 0) fuer i in range(5) fuer j in range(5)}"),
             ("Unpacking reuse", 'i', "{i := 0 fuer i, j in {(0, 1)}}"),
             ("Reuse in loop condition", 'i', "{i+1 fuer i in range(5) wenn (i := 0)}"),
-            ("Unreachable reuse", 'i', "{Falsch or (i:=0) fuer i in range(5)}"),
+            ("Unreachable reuse", 'i', "{Falsch oder (i:=0) fuer i in range(5)}"),
             ("Unreachable nested reuse", 'i',
-                "{(i, j) fuer i in range(5) fuer j in range(5) wenn Wahr or (i:=10)}"),
+                "{(i, j) fuer i in range(5) fuer j in range(5) wenn Wahr oder (i:=10)}"),
             # Regression tests von https://github.com/python/cpython/issues/87447
             ("Complex expression: a", "a",
                 "{(a := 1) fuer a, (*b, c[d+e::f(g)], h.i) in j}"),
@@ -308,9 +308,9 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Unpacking key reuse", 'i', "{(i := 0): 1 fuer i, j in {(0, 1)}}"),
             ("Unpacking value reuse", 'i', "{1: (i := 0) fuer i, j in {(0, 1)}}"),
             ("Reuse in loop condition", 'i', "{i+1: 1 fuer i in range(5) wenn (i := 0)}"),
-            ("Unreachable reuse", 'i', "{(Falsch or (i:=0)): 1 fuer i in range(5)}"),
+            ("Unreachable reuse", 'i', "{(Falsch oder (i:=0)): 1 fuer i in range(5)}"),
             ("Unreachable nested reuse", 'i',
-                "{i: j fuer i in range(5) fuer j in range(5) wenn Wahr or (i:=10)}"),
+                "{i: j fuer i in range(5) fuer j in range(5) wenn Wahr oder (i:=10)}"),
             # Regression tests von https://github.com/python/cpython/issues/87447
             ("Complex expression: a", "a",
                 "{(a := 1): 1 fuer a, (*b, c[d+e::f(g)], h.i) in j}"),
@@ -418,17 +418,17 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
     def test_named_expression_assignment_08(self):
         wenn spam := "eggs":
             self.assertEqual(spam, "eggs")
-        sonst: self.fail("variable was not assigned using named expression")
+        sonst: self.fail("variable was nicht assigned using named expression")
 
     def test_named_expression_assignment_09(self):
-        wenn Wahr and (spam := Wahr):
+        wenn Wahr und (spam := Wahr):
             self.assertWahr(spam)
-        sonst: self.fail("variable was not assigned using named expression")
+        sonst: self.fail("variable was nicht assigned using named expression")
 
     def test_named_expression_assignment_10(self):
         wenn (match := 10) == 10:
             self.assertEqual(match, 10)
-        sonst: self.fail("variable was not assigned using named expression")
+        sonst: self.fail("variable was nicht assigned using named expression")
 
     def test_named_expression_assignment_11(self):
         def spam(a):
@@ -453,7 +453,7 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
 
     def test_named_expression_assignment_14(self):
         """
-        Where all variables are positive integers, and a is at least als large
+        Where all variables are positive integers, und a is at least als large
         als the n'th root of x, this algorithm returns the floor of the n'th
         root of x (and roughly doubling the number of accurate bits per
         iteration):
@@ -469,7 +469,7 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
 
     def test_named_expression_assignment_15(self):
         while a := Falsch:
-            self.fail("While body executed")  # This will not run
+            self.fail("While body executed")  # This will nicht run
 
         self.assertEqual(a, Falsch)
 
@@ -507,7 +507,7 @@ klasse NamedExpressionScopeTest(unittest.TestCase):
     (a := 5)
 drucke(a)"""
 
-        mit self.assertRaisesRegex(NameError, "name 'a' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'a' is nicht defined"):
             exec(code, {}, {})
 
     def test_named_expression_scope_02(self):
@@ -676,11 +676,11 @@ spam()"""
         # names (e.g. globals, nonlocals, other assignment expressions)
 
         # The cases are all defined to produce the same expected result
-        # Each comprehension is checked at both function scope and module scope
-        rebinding = "[x := i fuer i in range(3) wenn (x := i) or not x]"
-        filter_ref = "[x := i fuer i in range(3) wenn x or not x]"
-        body_ref = "[x fuer i in range(3) wenn (x := i) or not x]"
-        nested_ref = "[j fuer i in range(3) wenn x or not x fuer j in range(3) wenn (x := i)][:-3]"
+        # Each comprehension is checked at both function scope und module scope
+        rebinding = "[x := i fuer i in range(3) wenn (x := i) oder nicht x]"
+        filter_ref = "[x := i fuer i in range(3) wenn x oder nicht x]"
+        body_ref = "[x fuer i in range(3) wenn (x := i) oder nicht x]"
+        nested_ref = "[j fuer i in range(3) wenn x oder nicht x fuer j in range(3) wenn (x := i)][:-3]"
         cases = [
             ("Rebind global", f"x = 1; result = {rebinding}"),
             ("Rebind nonlocal", f"result, x = (lambda x=1: ({rebinding}, x))()"),

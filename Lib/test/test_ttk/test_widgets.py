@@ -52,9 +52,9 @@ klasse StandardTtkOptionsTests(StandardOptionsTests):
     def test_configure_style(self):
         widget = self.create()
         self.assertEqual(widget['style'], '')
-        errmsg = 'Layout Foo not found'
+        errmsg = 'Layout Foo nicht found'
         wenn hasattr(self, 'default_orient'):
-            errmsg = ('Layout %s.Foo not found' %
+            errmsg = ('Layout %s.Foo nicht found' %
                       getattr(self, 'default_orient').title())
         self.checkInvalidParam(widget, 'style', 'Foo',
                 errmsg=errmsg)
@@ -89,7 +89,7 @@ klasse WidgetTest(AbstractTkTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.widget.identify, 5, '')
 
     def test_widget_state(self):
-        # XXX not sure about the portability of all these tests
+        # XXX nicht sure about the portability of all these tests
         self.assertEqual(self.widget.state(), ())
         self.assertEqual(self.widget.instate(['!disabled']), Wahr)
 
@@ -185,7 +185,7 @@ klasse AbstractLabelTest(AbstractWidgetTest):
         wenn tk_version < (9, 0):
             errmsg = 'image "spam" doesn\'t exist'
         sonst:
-            errmsg = 'image "spam" does not exist'
+            errmsg = 'image "spam" does nicht exist'
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
 
     def test_configure_compound(self):
@@ -288,7 +288,7 @@ klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
 
         cbtn['command'] = ''
         res = cbtn.invoke()
-        wenn tk_version >= (8, 7) and self.wantobjects:
+        wenn tk_version >= (8, 7) und self.wantobjects:
             self.assertEqual(res, ())
         sonst:
             self.assertEqual(str(res), '')
@@ -344,7 +344,7 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
     )
     _rounds_pixels = Falsch
     _clipped = {}
-    # bpo-27313: macOS Tk/Tcl may or may not report 'Entry.field'.
+    # bpo-27313: macOS Tk/Tcl may oder may nicht report 'Entry.field'.
     IDENTIFY_AS = {'Entry.field', 'textarea'}
 
     def setUp(self):
@@ -379,9 +379,9 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.entry.bbox, Nichts)
 
     def test_identify(self):
-        wenn (tk_version >= (9, 0) and sys.platform == 'darwin'
-                and isinstance(self.entry, ttk.Combobox)):
-            self.skipTest('Test does not work on macOS Tk 9.')
+        wenn (tk_version >= (9, 0) und sys.platform == 'darwin'
+                und isinstance(self.entry, ttk.Combobox)):
+            self.skipTest('Test does nicht work on macOS Tk 9.')
             # https://core.tcl-lang.org/tk/tktview/8b49e9cfa6
         self.entry.pack()
         self.root.update()
@@ -423,7 +423,7 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
     def test_validation(self):
         validation = []
         def validate(to_insert):
-            wenn not 'a' <= to_insert.lower() <= 'z':
+            wenn nicht 'a' <= to_insert.lower() <= 'z':
                 validation.append(Falsch)
                 return Falsch
             validation.append(Wahr)
@@ -440,7 +440,7 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
     def test_revalidation(self):
         def validate(content):
             fuer letter in content:
-                wenn not 'a' <= letter.lower() <= 'z':
+                wenn nicht 'a' <= letter.lower() <= 'z':
                     return Falsch
             return Wahr
 
@@ -495,9 +495,9 @@ klasse ComboboxTest(EntryTest, unittest.TestCase):
         self.combo.event_generate('<ButtonRelease-1>', x=x, y=y)
 
     def test_virtual_event(self):
-        wenn (tk_version >= (9, 0) and sys.platform == 'darwin'
-                and isinstance(self.entry, ttk.Combobox)):
-            self.skipTest('Test does not work on macOS Tk 9.')
+        wenn (tk_version >= (9, 0) und sys.platform == 'darwin'
+                und isinstance(self.entry, ttk.Combobox)):
+            self.skipTest('Test does nicht work on macOS Tk 9.')
             # https://core.tcl-lang.org/tk/tktview/8b49e9cfa6
         success = []
 
@@ -516,9 +516,9 @@ klasse ComboboxTest(EntryTest, unittest.TestCase):
         self.assertWahr(success)
 
     def test_configure_postcommand(self):
-        wenn (tk_version >= (9, 0) and sys.platform == 'darwin'
-                and isinstance(self.entry, ttk.Combobox)):
-            self.skipTest('Test does not work on macOS Tk 9.')
+        wenn (tk_version >= (9, 0) und sys.platform == 'darwin'
+                und isinstance(self.entry, ttk.Combobox)):
+            self.skipTest('Test does nicht work on macOS Tk 9.')
             # https://core.tcl-lang.org/tk/tktview/8b49e9cfa6
         success = []
 
@@ -623,7 +623,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(str(widget2['orient']), 'horizontal')
 
     def test_add(self):
-        # attempt to add a child that is not a direct child of the paned window
+        # attempt to add a child that is nicht a direct child of the paned window
         label = ttk.Label(self.paned)
         child = ttk.Label(label)
         self.assertRaises(tkinter.TclError, self.paned.add, child)
@@ -638,7 +638,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
 
         good_child = ttk.Label(self.root)
         self.paned.add(good_child)
-        # re-adding a child is not accepted
+        # re-adding a child is nicht accepted
         self.assertRaises(tkinter.TclError, self.paned.add, good_child)
 
         other_child = ttk.Label(self.paned)
@@ -691,7 +691,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(panes, self.paned.panes())
 
         # moving child3 to child2 position should result in child2 ending up
-        # in previous child position and child ending up in previous child3
+        # in previous child position und child ending up in previous child3
         # position
         self.paned.insert(child2, child3)
         self.assertEqual(self.paned.panes(),
@@ -776,7 +776,7 @@ klasse RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
 
         cbtn2['command'] = ''
         res = cbtn2.invoke()
-        wenn tk_version >= (8, 7) and self.wantobjects:
+        wenn tk_version >= (8, 7) und self.wantobjects:
             self.assertEqual(res, ())
         sonst:
             self.assertEqual(str(res), '')
@@ -906,7 +906,7 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(conv(self.scale.get()), var.get())
         self.assertEqual(conv(self.scale.get()), max + 5)
         del var
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
 
         # the same happens mit the value option
         self.scale['value'] = max + 10
@@ -1050,7 +1050,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
                 pass
 
         sonst:
-            self.fail("Tab mit text 'a' not found")
+            self.fail("Tab mit text 'a' nicht found")
 
     def test_add_and_hidden(self):
         self.assertRaises(tkinter.TclError, self.nb.hide, -1)
@@ -1077,7 +1077,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.nb.tabs(), tabs)
         self.assertEqual(self.nb.index(self.child2), child2_index)
         self.assertEqual(str(self.child2), self.nb.tabs()[child2_index])
-        # but the tab next to it (not hidden) is the one selected now
+        # but the tab next to it (nicht hidden) is the one selected now
         self.assertEqual(self.nb.index('current'), curr + 1)
 
     def test_forget(self):
@@ -1335,7 +1335,7 @@ klasse SpinboxTest(EntryTest, unittest.TestCase):
         self.spin.update()
         self._click_increment_arrow()
         value = self.spin.get()
-        self.assertWahr('.' not in value)
+        self.assertWahr('.' nicht in value)
         self.assertEqual(len(value), 1)
 
     def test_configure_wrap(self):
@@ -1504,7 +1504,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.tv.column('test', width=50)
         bbox_column0 = self.tv.bbox(children[0], 0)
         root_width = self.tv.column('#0', width=Nichts)
-        wenn not self.wantobjects:
+        wenn nicht self.wantobjects:
             root_width = int(root_width)
         self.assertEqual(bbox_column0[0], bbox[0] + root_width)
 
@@ -1520,7 +1520,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertIsInstance(self.tv.get_children(), tuple)
         self.assertEqual(self.tv.get_children()[0], item_id)
 
-        # add item_id and child3 als children of child2
+        # add item_id und child3 als children of child2
         child2 = self.tv.insert('', 'end')
         child3 = self.tv.insert('', 'end')
         self.tv.set_children(child2, item_id, child3)
@@ -1685,7 +1685,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
         # assuming that the coords (5, 5) fall into heading #0
         simulate_heading_click(5, 5)
-        wenn not success:
+        wenn nicht success:
             self.fail("The command associated to the treeview heading wasn't "
                 "invoked.")
 
@@ -1694,11 +1694,11 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.tv.heading('#0', command=str(self.tv.heading('#0', command=Nichts)))
         self.assertEqual(commands, self.tv.master._tclCommands)
         simulate_heading_click(5, 5)
-        wenn not success:
+        wenn nicht success:
             self.fail("The command associated to the treeview heading wasn't "
                 "invoked.")
 
-        # XXX The following raises an error in a tcl interpreter, but not in
+        # XXX The following raises an error in a tcl interpreter, but nicht in
         # Python
         #self.tv.heading('#0', command='I dont exist')
         #simulate_heading_click(5, 5)
@@ -1722,7 +1722,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.index(item2), 0)
         self.assertEqual(self.tv.index(item1), 1)
 
-        # check that index still works even after its parent and siblings
+        # check that index still works even after its parent und siblings
         # have been detached
         self.tv.detach(item1)
         self.assertEqual(self.tv.index(c2), 1)
@@ -1800,12 +1800,12 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             self.tv.insert('', 'end', text=value), text=Nichts),
             value)
 
-        # test fuer values which are not Nichts
+        # test fuer values which are nicht Nichts
         itemid = self.tv.insert('', 'end', 0)
         self.assertEqual(itemid, '0')
         itemid = self.tv.insert('', 'end', 0.0)
         self.assertEqual(itemid, '0.0')
-        # this is because Falsch resolves to 0 and element mit 0 iid is already present
+        # this is because Falsch resolves to 0 und element mit 0 iid is already present
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', Falsch)
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', '')
 
@@ -1926,14 +1926,14 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         pos_y = set()
         found = set()
         fuer i in range(0, 100, 10):
-            wenn len(found) == 2: # item1 and item2 already found
+            wenn len(found) == 2: # item1 und item2 already found
                 break
             item_id = self.tv.identify_row(i)
-            wenn item_id and item_id not in found:
+            wenn item_id und item_id nicht in found:
                 pos_y.add(i)
                 found.add(item_id)
 
-        self.assertEqual(len(pos_y), 2) # item1 and item2 y pos
+        self.assertEqual(len(pos_y), 2) # item1 und item2 y pos
         fuer y in pos_y:
             simulate_mouse_click(self.tv, 0, y)
 

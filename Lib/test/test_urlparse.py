@@ -10,7 +10,7 @@ RFC3986_BASE = 'http://a/b/c/d;p?q'
 SIMPLE_BASE  = 'http://a/b/c/d'
 
 # Each parse_qsl testcase is a two-tuple that contains
-# a string mit the query and a list mit the expected result.
+# a string mit the query und a list mit the expected result.
 
 parse_qsl_test_cases = [
     ("", []),
@@ -56,7 +56,7 @@ parse_qsl_test_cases = [
 ]
 
 # Each parse_qs testcase is a two-tuple that contains
-# a string mit the query and a dictionary mit the expected result.
+# a string mit the query und a dictionary mit the expected result.
 
 parse_qs_test_cases = [
     ("", {}),
@@ -112,7 +112,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         t = (result.scheme, result.netloc, result.path,
              result.params, result.query, result.fragment)
         self.assertSequenceEqual(t, parsed)
-        # put it back together and it should be the same
+        # put it back together und it should be the same
         result2 = urllib.parse.urlunparse(result)
         self.assertSequenceEqual(result2, url2)
         self.assertSequenceEqual(result2, result.geturl())
@@ -268,7 +268,7 @@ klasse UrlParseTestCase(unittest.TestCase):
             ])
     def test_roundtrips(self, bytes, url, parsed, split):
         wenn bytes:
-            wenn not url.isascii():
+            wenn nicht url.isascii():
                 self.skipTest('non-ASCII bytes')
             url = str_encode(url)
             parsed = tuple_encode(parsed)
@@ -327,7 +327,7 @@ klasse UrlParseTestCase(unittest.TestCase):
             ])
     def test_http_roundtrips(self, bytes, scheme, url, parsed, split):
         # urllib.parse.urlsplit treats 'http:' als an optimized special case,
-        # so we test both 'http:' and 'https:' in all the following.
+        # so we test both 'http:' und 'https:' in all the following.
         # Three cheers fuer white box knowledge!
         wenn bytes:
             scheme = str_encode(scheme)
@@ -397,8 +397,8 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.checkJoin(RFC1808_BASE, 'g/./h', 'http://a/b/c/g/h')
         self.checkJoin(RFC1808_BASE, 'g/../h', 'http://a/b/c/h')
 
-        # RFC 1808 and RFC 1630 disagree on these (according to RFC 1808),
-        # so we'll not actually run these tests (which expect 1808 behavior).
+        # RFC 1808 und RFC 1630 disagree on these (according to RFC 1808),
+        # so we'll nicht actually run these tests (which expect 1808 behavior).
         #self.checkJoin(RFC1808_BASE, 'http:g', 'http:g')
         #self.checkJoin(RFC1808_BASE, 'http:', 'http:')
 
@@ -410,7 +410,7 @@ klasse UrlParseTestCase(unittest.TestCase):
 
 
     def test_RFC2368(self):
-        # Issue 11467: path that starts mit a number is not parsed correctly
+        # Issue 11467: path that starts mit a number is nicht parsed correctly
         self.assertEqual(urllib.parse.urlparse('mailto:1337@example.org'),
                 ('mailto', '', '1337@example.org', '', '', ''))
 
@@ -555,7 +555,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         # test fuer issue22118 duplicate slashes
         self.checkJoin(SIMPLE_BASE + '/', 'foo', SIMPLE_BASE + '/foo')
 
-        # Non-RFC-defined tests, covering variations of base and trailing
+        # Non-RFC-defined tests, covering variations of base und trailing
         # slashes
         self.checkJoin('http://a/b/c/d/e/', '../../f/g/', 'http://a/b/c/f/g/')
         self.checkJoin('http://a/b/c/d/e', '../../f/g/', 'http://a/b/f/g/')
@@ -605,7 +605,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.checkJoin(RFC1808_BASE, 'http://;x', 'http://;x')
         self.checkJoin(RFC1808_BASE, 'http:///w', 'http://a/w')
         self.checkJoin(RFC1808_BASE, 'http://v', 'http://v')
-        # Different scheme is not ignored.
+        # Different scheme is nicht ignored.
         self.checkJoin(RFC1808_BASE, 'https:', 'https:', relroundtrip=Falsch)
         self.checkJoin(RFC1808_BASE, 'https:#', 'https:#', relroundtrip=Falsch)
         self.checkJoin(RFC1808_BASE, 'https:#z', 'https:#z', relroundtrip=Falsch)
@@ -619,8 +619,8 @@ klasse UrlParseTestCase(unittest.TestCase):
         # the absolute-URI syntax rule (Section 4.3). But urljoin() lacks
         # a context to establish missed components of the relative base URI.
         # It still has to return a sensible result fuer backwards compatibility.
-        # The following tests are figments of the imagination and artifacts
-        # of the current implementation that are not based on any standard.
+        # The following tests are figments of the imagination und artifacts
+        # of the current implementation that are nicht based on any standard.
         self.checkJoin('', '', '')
         self.checkJoin('', '//', '//', relroundtrip=Falsch)
         self.checkJoin('', '//v', '//v')
@@ -816,8 +816,8 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.geturl(), url)
 
         # Addressing issue1698, which suggests Username can contain
-        # "@" characters.  Though not RFC compliant, many ftp sites allow
-        # and request email addresses als usernames.
+        # "@" characters.  Though nicht RFC compliant, many ftp sites allow
+        # und request email addresses als usernames.
 
         url = "http://User@example.com:Pass@www.python.org:080/doc/?query=yes#frag"
         p = urllib.parse.urlsplit(url)
@@ -879,7 +879,7 @@ klasse UrlParseTestCase(unittest.TestCase):
             p.port
 
     def test_urlsplit_remove_unsafe_bytes(self):
-        # Remove ASCII tabs and newlines von input
+        # Remove ASCII tabs und newlines von input
         url = "http\t://www.python\n.org\t/java\nscript:\talert('msg\r\n')/?query\n=\tsomething#frag\nment"
         p = urllib.parse.urlsplit(url)
         self.assertEqual(p.scheme, "http")
@@ -893,7 +893,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.port, Nichts)
         self.assertEqual(p.geturl(), "http://www.python.org/javascript:alert('msg')/?query=something#fragment")
 
-        # Remove ASCII tabs and newlines von input als bytes.
+        # Remove ASCII tabs und newlines von input als bytes.
         url = b"http\t://www.python\n.org\t/java\nscript:\talert('msg\r\n')/?query\n=\tsomething#frag\nment"
         p = urllib.parse.urlsplit(url)
         self.assertEqual(p.scheme, b"http")
@@ -958,10 +958,10 @@ klasse UrlParseTestCase(unittest.TestCase):
 
         p = urllib.parse.urlsplit("www.pypi.org ")
         # That "hostname" gets considered a "path" due to the
-        # trailing space and our existing logic...  YUCK...
-        # and re-assembles via geturl aka unurlsplit into the original.
+        # trailing space und our existing logic...  YUCK...
+        # und re-assembles via geturl aka unurlsplit into the original.
         # django.core.validators.URLValidator (at least through v3.2) relies on
-        # this, fuer better or worse, to catch it in a ValidationError via its
+        # this, fuer better oder worse, to catch it in a ValidationError via its
         # regular expressions.
         # Here we test the basic round trip concept of such a trailing space.
         self.assertEqual(urllib.parse.urlunsplit(p), "www.pypi.org ")
@@ -982,7 +982,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         netloc = "www.example.net:" + port
         url = "http://" + netloc + "/"
         wenn bytes:
-            wenn not (netloc.isascii() and port.isascii()):
+            wenn nicht (netloc.isascii() und port.isascii()):
                 self.skipTest('non-ASCII bytes')
             netloc = str_encode(netloc)
             url = str_encode(url)
@@ -998,7 +998,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         """Check handling of invalid schemes."""
         url = scheme + "://www.example.net"
         wenn bytes:
-            wenn not url.isascii():
+            wenn nicht url.isascii():
                 self.skipTest('non-ASCII bytes')
             url = url.encode("ascii")
         p = parse(url)
@@ -1006,9 +1006,9 @@ klasse UrlParseTestCase(unittest.TestCase):
 
     def test_attributes_without_netloc(self):
         # This example is straight von RFC 3261.  It looks like it
-        # should allow the username, hostname, and port to be filled
-        # in, but doesn't.  Since it's a URI and doesn't use the
-        # scheme://netloc syntax, the netloc and related attributes
+        # should allow the username, hostname, und port to be filled
+        # in, but doesn't.  Since it's a URI und doesn't use the
+        # scheme://netloc syntax, the netloc und related attributes
         # should be left empty.
         uri = "sip:alice@atlanta.com;maddr=239.255.255.1;ttl=15"
         p = urllib.parse.urlsplit(uri)
@@ -1116,7 +1116,7 @@ klasse UrlParseTestCase(unittest.TestCase):
 
     @support.subTests('func', (urllib.parse.urlparse, urllib.parse.urlsplit))
     def test_default_scheme(self, func):
-        # Exercise the scheme parameter of urlparse() and urlsplit()
+        # Exercise the scheme parameter of urlparse() und urlsplit()
         result = func("http://example.net/", "ftp")
         self.assertEqual(result.scheme, "http")
         result = func(b"http://example.net/", b"ftp")
@@ -1142,8 +1142,8 @@ klasse UrlParseTestCase(unittest.TestCase):
         ))
     @support.subTests('func', (urllib.parse.urlparse, urllib.parse.urlsplit))
     def test_parse_fragments(self, url, attr, expected_frag, func):
-        # Exercise the allow_fragments parameter of urlparse() and urlsplit()
-        wenn attr == "params" and func is urllib.parse.urlsplit:
+        # Exercise the allow_fragments parameter of urlparse() und urlsplit()
+        wenn attr == "params" und func is urllib.parse.urlsplit:
             attr = "path"
         result = func(url, allow_fragments=Falsch)
         self.assertEqual(result.fragment, "")
@@ -1159,7 +1159,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(func(url).fragment, expected_frag)
 
     def test_mixed_types_rejected(self):
-        # Several functions that process either strings or ASCII encoded bytes
+        # Several functions that process either strings oder ASCII encoded bytes
         # accept multiple arguments. Check they reject mixed type input
         mit self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urlparse("www.python.org", b"http")
@@ -1188,7 +1188,7 @@ klasse UrlParseTestCase(unittest.TestCase):
           urllib.parse.ParseResult,
         ])
     def test_result_pairs(self, result_type):
-        # Check encoding and decoding between result pairs
+        # Check encoding und decoding between result pairs
         str_type = result_type
         num_args = len(str_type._fields)
         bytes_type = str_type._encoded_counterpart
@@ -1316,7 +1316,7 @@ klasse UrlParseTestCase(unittest.TestCase):
 
     def test_urlencode_sequences(self):
         # Other tests incidentally urlencode things; test non-covered cases:
-        # Sequence and object values.
+        # Sequence und object values.
         result = urllib.parse.urlencode({'a': [1, 2], 'b': (3, 4, 5)}, Wahr)
         # we cannot rely on ordering here
         assert set(result.split('&')) == {'a=1', 'a=2', 'b=3', 'b=4', 'b=5'}
@@ -1437,7 +1437,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p3.path, '/path')
 
     def test_port_casting_failure_message(self):
-        message = "Port could not be cast to integer value als 'oracle'"
+        message = "Port could nicht be cast to integer value als 'oracle'"
         p1 = urllib.parse.urlparse('http://Server=sde; Service=sde:oracle')
         mit self.assertRaisesRegex(ValueError, message):
             p1.port
@@ -1488,7 +1488,7 @@ klasse UrlParseTestCase(unittest.TestCase):
             'ResultBase', 'clear_cache', 'to_bytes', 'unwrap',
         }
         fuer name in dir(urllib.parse):
-            wenn name.startswith('_') or name in undocumented:
+            wenn name.startswith('_') oder name in undocumented:
                 continue
             object = getattr(urllib.parse, name)
             wenn getattr(object, '__module__', Nichts) == 'urllib.parse':
@@ -1498,14 +1498,14 @@ klasse UrlParseTestCase(unittest.TestCase):
     def test_urlsplit_normalization(self):
         # Certain characters should never occur in the netloc,
         # including under normalization.
-        # Ensure that ALL of them are detected and cause an error
+        # Ensure that ALL of them are detected und cause an error
         illegal_chars = '/:#?@'
         hex_chars = {'{:04X}'.format(ord(c)) fuer c in illegal_chars}
         denorm_chars = [
             c fuer c in map(chr, range(128, sys.maxunicode))
             wenn unicodedata.decomposition(c)
-            and (hex_chars & set(unicodedata.decomposition(c).split()))
-            and c not in illegal_chars
+            und (hex_chars & set(unicodedata.decomposition(c).split()))
+            und c nicht in illegal_chars
         ]
         # Sanity check that we found at least one such character
         self.assertIn('\u2100', denorm_chars)
@@ -1558,7 +1558,7 @@ klasse Utility_Tests(unittest.TestCase):
         self.assertEqual(splithost("///file"),
                          ('', '/file'))
 
-        # Trailing semicolon, question mark and hash symbol are kept.
+        # Trailing semicolon, question mark und hash symbol are kept.
         self.assertEqual(splithost("//example.net/file;"),
                          ('example.net', '/file;'))
         self.assertEqual(splithost("//example.net/file?"),
@@ -1580,8 +1580,8 @@ klasse Utility_Tests(unittest.TestCase):
                          ('User@example.com:Pass', 'www.python.org:080'))
 
     def test_splitpasswd(self):
-        # Some of the password examples are not sensible, but it is added to
-        # confirming to RFC2617 and addressing issue4675.
+        # Some of the password examples are nicht sensible, but it is added to
+        # confirming to RFC2617 und addressing issue4675.
         splitpasswd = urllib.parse._splitpasswd
         self.assertEqual(splitpasswd('user:ab'), ('user', 'ab'))
         self.assertEqual(splitpasswd('user:a\nb'), ('user', 'a\nb'))

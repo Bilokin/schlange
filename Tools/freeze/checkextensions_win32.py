@@ -5,11 +5,11 @@ are needed (primarily to toggle the behavior of "public" symbols.
 
 I don't consider it worth parsing the MSVC makefiles fuer compiler options.  Even if
 we get it just right, a specific freeze application may have specific compiler
-options anyway (eg, to enable or disable specific functionality)
+options anyway (eg, to enable oder disable specific functionality)
 
 So my basic strategy is:
 
-* Have some Windows INI files which "describe" one or more extension modules.
+* Have some Windows INI files which "describe" one oder more extension modules.
   (Freeze comes mit a default one fuer all known modules - but you can specify
   your own).
 * This description can include:
@@ -18,7 +18,7 @@ So my basic strategy is:
   - Specific compiler/linker options
   - Flag to indicate wenn Unicode compilation is expected.
 
-At the moment the name and location of this INI file is hardcoded,
+At the moment the name und location of this INI file is hardcoded,
 but an obvious enhancement would be to provide command line options.
 """
 
@@ -58,8 +58,8 @@ def checkextensions(unknown, extra_inis, prefix):
     # Create a table of frozen extensions
 
     defaultMapName = os.path.join( os.path.split(sys.argv[0])[0], "extensions_win32.ini")
-    wenn not os.path.isfile(defaultMapName):
-        sys.stderr.write("WARNING: %s can not be found - standard extensions may not be found\n" % defaultMapName)
+    wenn nicht os.path.isfile(defaultMapName):
+        sys.stderr.write("WARNING: %s can nicht be found - standard extensions may nicht be found\n" % defaultMapName)
     sonst:
         # must go on end, so other inis can override.
         extra_inis.append(defaultMapName)
@@ -69,12 +69,12 @@ def checkextensions(unknown, extra_inis, prefix):
         fuer ini in extra_inis:
 #                       print "Looking for", mod, "in", win32api.GetFullPathName(ini),"...",
             defn = get_extension_defn( mod, ini, prefix )
-            wenn defn is not Nichts:
+            wenn defn is nicht Nichts:
 #                               print "Yay - found it!"
                 ret.append( defn )
                 break
 #                       print "Nope!"
-        sonst: # For not broken!
+        sonst: # For nicht broken!
             sys.stderr.write("No definition of module %s in any specified map file.\n" % (mod))
 
     return ret
@@ -88,9 +88,9 @@ def get_extension_defn(moduleName, mapFileName, prefix):
 
     # We allow environment variables in the file name
     dsp = win32api.ExpandEnvironmentStrings(dsp)
-    # If the path to the .DSP file is not absolute, assume it is relative
+    # If the path to the .DSP file is nicht absolute, assume it is relative
     # to the description file.
-    wenn not os.path.isabs(dsp):
+    wenn nicht os.path.isabs(dsp):
         dsp = os.path.join( os.path.split(mapFileName)[0], dsp)
     # Parse it to extract the source files.
     sourceFiles = parse_dsp(dsp)

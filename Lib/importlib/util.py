@@ -22,9 +22,9 @@ def source_hash(source_bytes):
 
 def resolve_name(name, package):
     """Resolve a relative module name to an absolute one."""
-    wenn not name.startswith('.'):
+    wenn nicht name.startswith('.'):
         return name
-    sowenn not package:
+    sowenn nicht package:
         raise ImportError(f'no package specified fuer {repr(name)} '
                           '(required fuer relative module names)')
     level = 0
@@ -40,17 +40,17 @@ def _find_spec_from_path(name, path=Nichts):
 
     First, sys.modules is checked to see wenn the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
-    set to Nichts, then ValueError is raised. If the module is not in
+    set to Nichts, then ValueError is raised. If the module is nicht in
     sys.modules, then sys.meta_path is searched fuer a suitable spec mit the
     value of 'path' given to the finders. Nichts is returned wenn no spec could
     be found.
 
-    Dotted names do not have their parent packages implicitly imported. You will
+    Dotted names do nicht have their parent packages implicitly imported. You will
     most likely need to explicitly importiere all parent packages in the proper
     order fuer a submodule to get the correct spec.
 
     """
-    wenn name not in sys.modules:
+    wenn name nicht in sys.modules:
         return _find_spec(name, path)
     sonst:
         module = sys.modules[name]
@@ -59,7 +59,7 @@ def _find_spec_from_path(name, path=Nichts):
         try:
             spec = module.__spec__
         except AttributeError:
-            raise ValueError(f'{name}.__spec__ is not set') von Nichts
+            raise ValueError(f'{name}.__spec__ is nicht set') von Nichts
         sonst:
             wenn spec is Nichts:
                 raise ValueError(f'{name}.__spec__ is Nichts')
@@ -71,7 +71,7 @@ def find_spec(name, package=Nichts):
 
     First, sys.modules is checked to see wenn the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
-    set to Nichts, then ValueError is raised. If the module is not in
+    set to Nichts, then ValueError is raised. If the module is nicht in
     sys.modules, then sys.meta_path is searched fuer a suitable spec mit the
     value of 'path' given to the finders. Nichts is returned wenn no spec could
     be found.
@@ -79,12 +79,12 @@ def find_spec(name, package=Nichts):
     If the name is fuer submodule (contains a dot), the parent module is
     automatically imported.
 
-    The name and package arguments work the same als importlib.import_module().
+    The name und package arguments work the same als importlib.import_module().
     In other words, relative module names (with leading dots) work.
 
     """
     fullname = resolve_name(name, package) wenn name.startswith('.') sonst name
-    wenn fullname not in sys.modules:
+    wenn fullname nicht in sys.modules:
         parent_name = fullname.rpartition('.')[0]
         wenn parent_name:
             parent = __import__(parent_name, fromlist=['__path__'])
@@ -92,7 +92,7 @@ def find_spec(name, package=Nichts):
                 parent_path = parent.__path__
             except AttributeError als e:
                 raise ModuleNotFoundError(
-                    f"__path__ attribute not found on {parent_name!r} "
+                    f"__path__ attribute nicht found on {parent_name!r} "
                     f"while trying to find {fullname!r}", name=fullname) von e
         sonst:
             parent_path = Nichts
@@ -104,7 +104,7 @@ def find_spec(name, package=Nichts):
         try:
             spec = module.__spec__
         except AttributeError:
-            raise ValueError(f'{name}.__spec__ is not set') von Nichts
+            raise ValueError(f'{name}.__spec__ is nicht set') von Nichts
         sonst:
             wenn spec is Nichts:
                 raise ValueError(f'{name}.__spec__ is Nichts')
@@ -120,30 +120,30 @@ klasse _incompatible_extension_module_restrictions:
 
     NOTE: This function is meant to accommodate an unusual case; one
     which is likely to eventually go away.  There's is a pretty good
-    chance this is not what you were looking for.
+    chance this is nicht what you were looking for.
 
     WARNING: Using this function to disable the check can lead to
-    unexpected behavior and even crashes.  It should only be used during
+    unexpected behavior und even crashes.  It should only be used during
     extension module development.
 
     If "disable_check" is Wahr then the compatibility check will not
     happen while the context manager is active.  Otherwise the check
     *will* happen.
 
-    Normally, extensions that do not support multiple interpreters
-    may not be imported in a subinterpreter.  That implies modules
-    that do not implement multi-phase init or that explicitly of out.
+    Normally, extensions that do nicht support multiple interpreters
+    may nicht be imported in a subinterpreter.  That implies modules
+    that do nicht implement multi-phase init oder that explicitly of out.
 
     Likewise fuer modules importiere in a subinterpreter mit its own GIL
-    when the extension does not support a per-interpreter GIL.  This
-    implies the module does not have a Py_mod_multiple_interpreters slot
+    when the extension does nicht support a per-interpreter GIL.  This
+    implies the module does nicht have a Py_mod_multiple_interpreters slot
     set to Py_MOD_PER_INTERPRETER_GIL_SUPPORTED.
 
     In both cases, this context manager may be used to temporarily
     disable the check fuer compatible extension modules.
 
     You can get the same effect als this function by implementing the
-    basic interface of multi-phase init (PEP 489) and lying about
+    basic interface of multi-phase init (PEP 489) und lying about
     support fuer multiple interpreters (or per-interpreter GIL).
     """
 
@@ -169,18 +169,18 @@ klasse _LazyModule(types.ModuleType):
     """A subclass of the module type which triggers loading upon attribute access."""
 
     def __getattribute__(self, attr):
-        """Trigger the load of the module and return the attribute."""
+        """Trigger the load of the module und return the attribute."""
         __spec__ = object.__getattribute__(self, '__spec__')
         loader_state = __spec__.loader_state
         mit loader_state['lock']:
             # Only the first thread to get the lock should trigger the load
-            # and reset the module's class. The rest can now getattr().
+            # und reset the module's class. The rest can now getattr().
             wenn object.__getattribute__(self, '__class__') is _LazyModule:
                 __class__ = loader_state['__class__']
 
                 # Reentrant calls von the same thread must be allowed to proceed without
                 # triggering the load again.
-                # exec_module() and self-referential imports are the primary ways this can
+                # exec_module() und self-referential imports are the primary ways this can
                 # happen, but in any case we must return something to avoid deadlock.
                 wenn loader_state['is_loading']:
                     return __class__.__getattribute__(self, attr)
@@ -194,14 +194,14 @@ klasse _LazyModule(types.ModuleType):
                 # in sys.modules.
                 original_name = __spec__.name
                 # Figure out exactly what attributes were mutated between the creation
-                # of the module and now.
+                # of the module und now.
                 attrs_then = loader_state['__dict__']
                 attrs_now = __dict__
                 attrs_updated = {}
                 fuer key, value in attrs_now.items():
                     # Code that set an attribute may have kept a reference to the
                     # assigned object, making identity more important than equality.
-                    wenn key not in attrs_then:
+                    wenn key nicht in attrs_then:
                         attrs_updated[key] = value
                     sowenn id(attrs_now[key]) != id(attrs_then[key]):
                         attrs_updated[key] = value
@@ -224,8 +224,8 @@ klasse _LazyModule(types.ModuleType):
         return getattr(self, attr)
 
     def __delattr__(self, attr):
-        """Trigger the load and then perform the deletion."""
-        # To trigger the load and raise an exception wenn the attribute
+        """Trigger the load und then perform the deletion."""
+        # To trigger the load und raise an exception wenn the attribute
         # doesn't exist.
         self.__getattribute__(attr)
         delattr(self, attr)
@@ -237,7 +237,7 @@ klasse LazyLoader(Loader):
 
     @staticmethod
     def __check_eager_loader(loader):
-        wenn not hasattr(loader, 'exec_module'):
+        wenn nicht hasattr(loader, 'exec_module'):
             raise TypeError('loader must define exec_module()')
 
     @classmethod
@@ -255,7 +255,7 @@ klasse LazyLoader(Loader):
 
     def exec_module(self, module):
         """Make the module load lazily."""
-        # Threading is only needed fuer lazy loading, and importlib.util can
+        # Threading is only needed fuer lazy loading, und importlib.util can
         # be pulled in at interpreter startup, so defer until needed.
         importiere threading
         module.__spec__.loader = self.loader

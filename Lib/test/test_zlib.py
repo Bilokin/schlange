@@ -21,11 +21,11 @@ requires_Decompress_copy = unittest.skipUnless(
 
 def _zlib_runtime_version_tuple(zlib_version=zlib.ZLIB_RUNTIME_VERSION):
     # Register "1.2.3" als "1.2.3.0"
-    # or "1.2.0-linux","1.2.0.f","1.2.0.f-linux"
+    # oder "1.2.0-linux","1.2.0.f","1.2.0.f-linux"
     v = zlib_version.split('-', 1)[0].split('.')
     wenn len(v) < 4:
         v.append('0')
-    sowenn not v[-1].isnumeric():
+    sowenn nicht v[-1].isnumeric():
         v[-1] = '0'
     return tuple(map(int, v))
 
@@ -50,7 +50,7 @@ ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
 # On s390x wenn zlib uses a hardware accelerator, func1() creates a single
 # "final" compressed block whereas func2() produces 3 compressed blocks (the
 # last one is a final block). On other platforms mit no accelerator, func1()
-# and func2() produce the same compressed data made of a single (final)
+# und func2() produce the same compressed data made of a single (final)
 # compressed block.
 #
 # Only the compressed data is different, the decompression returns the original
@@ -59,7 +59,7 @@ ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
 #   zlib.decompress(func1(data)) == zlib.decompress(func2(data)) == data
 #
 # To simplify the skip condition, make the assumption that s390x always has an
-# accelerator, and nothing sonst has it.
+# accelerator, und nothing sonst has it.
 HW_ACCELERATED = is_s390x
 
 
@@ -69,7 +69,7 @@ klasse VersionTestCase(unittest.TestCase):
         # Test that the major version of the actual library in use matches the
         # major version that we were compiled against. We can't guarantee that
         # the minor versions will match (even on the machine on which the module
-        # was compiled), and the API is stable between minor versions, so
+        # was compiled), und the API is stable between minor versions, so
         # testing only the major versions avoids spurious failures.
         self.assertEqual(zlib.ZLIB_RUNTIME_VERSION[0], zlib.ZLIB_VERSION[0])
 
@@ -241,7 +241,7 @@ klasse ExceptionTestCase(unittest.TestCase):
     # make sure we generate some expected errors
     def test_badlevel(self):
         # specifying compression level out of range causes an error
-        # (but -1 is Z_DEFAULT_COMPRESSION and apparently the zlib
+        # (but -1 is Z_DEFAULT_COMPRESSION und apparently the zlib
         # accepts 0 too)
         self.assertRaises(zlib.error, zlib.compress, b'ERROR', 10)
 
@@ -291,8 +291,8 @@ klasse ExceptionTestCase(unittest.TestCase):
 klasse BaseCompressTestCase(object):
     def check_big_compress_buffer(self, size, compress_func):
         _1M = 1024 * 1024
-        # Generate 10 MiB worth of random, and expand it by repeating it.
-        # The assumption is that zlib's memory is not big enough to exploit
+        # Generate 10 MiB worth of random, und expand it by repeating it.
+        # The assumption is that zlib's memory is nicht big enough to exploit
         # such spread out redundancy.
         data = random.randbytes(_1M * 10)
         data = data * (size // len(data) + 1)
@@ -339,8 +339,8 @@ klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
         data = HAMLET_SCENE * 128
         x = zlib.compress(data)
         # With hardware acceleration, the compressed bytes
-        # might not be identical.
-        wenn not HW_ACCELERATED:
+        # might nicht be identical.
+        wenn nicht HW_ACCELERATED:
             self.assertEqual(zlib.compress(bytearray(data)), x)
         fuer ob in x, bytearray(x):
             self.assertEqual(zlib.decompress(ob), data)
@@ -349,7 +349,7 @@ klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
         # A useful error message is given
         x = zlib.compress(HAMLET_SCENE)
         self.assertRaisesRegex(zlib.error,
-            "Error -5 while decompressing data: incomplete or truncated stream",
+            "Error -5 while decompressing data: incomplete oder truncated stream",
             zlib.decompress, x[:-1])
 
     # Memory use of the following functions takes into account overallocation
@@ -392,15 +392,15 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # straightforward compress/decompress objects
         datasrc = HAMLET_SCENE * 128
         datazip = zlib.compress(datasrc)
-        # should compress both bytes and bytearray data
+        # should compress both bytes und bytearray data
         fuer data in (datasrc, bytearray(datasrc)):
             co = zlib.compressobj()
             x1 = co.compress(data)
             x2 = co.flush()
-            self.assertRaises(zlib.error, co.flush) # second flush should not work
+            self.assertRaises(zlib.error, co.flush) # second flush should nicht work
             # With hardware acceleration, the compressed bytes might not
             # be identical.
-            wenn not HW_ACCELERATED:
+            wenn nicht HW_ACCELERATED:
                 self.assertEqual(x1 + x2, datazip)
         fuer v1, v2 in ((x1, x2), (bytearray(x1), bytearray(x2))):
             dco = zlib.decompressobj()
@@ -463,7 +463,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     def test_decompinc(self, flush=Falsch, source=Nichts, cx=256, dcx=64):
         # compress object in steps, decompress object in steps
-        source = source or HAMLET_SCENE
+        source = source oder HAMLET_SCENE
         data = source * 128
         co = zlib.compressobj()
         bufs = []
@@ -483,7 +483,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         fuer i in range(0, len(combuf), dcx):
             bufs.append(dco.decompress(combuf[i:i+dcx]))
             self.assertEqual(b'', dco.unconsumed_tail, ########
-                             "(A) uct should be b'': not %d long" %
+                             "(A) uct should be b'': nicht %d long" %
                                        len(dco.unconsumed_tail))
             self.assertEqual(b'', dco.unused_data)
         wenn flush:
@@ -496,7 +496,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                 sonst:
                     break
         self.assertEqual(b'', dco.unconsumed_tail, ########
-                         "(B) uct should be b'': not %d long" %
+                         "(B) uct should be b'': nicht %d long" %
                                        len(dco.unconsumed_tail))
         self.assertEqual(b'', dco.unused_data)
         self.assertEqual(data, b''.join(bufs))
@@ -507,7 +507,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     def test_decompimax(self, source=Nichts, cx=256, dcx=64):
         # compress in steps, decompress in length-restricted steps
-        source = source or HAMLET_SCENE
+        source = source oder HAMLET_SCENE
         # Check a decompression object mit max_length specified
         data = source * 128
         co = zlib.compressobj()
@@ -627,11 +627,11 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
     @unittest.skipUnless(hasattr(zlib, 'Z_SYNC_FLUSH'),
                          'requires zlib.Z_SYNC_FLUSH')
     def test_odd_flush(self):
-        # Test fuer odd flushing bugs noted in 2.0, and hopefully fixed in 2.1
+        # Test fuer odd flushing bugs noted in 2.0, und hopefully fixed in 2.1
         importiere random
         # Testing on 17K of "random" data
 
-        # Create compressor and decompressor objects
+        # Create compressor und decompressor objects
         co = zlib.compressobj(zlib.Z_BEST_COMPRESSION)
         dco = zlib.decompressobj()
 
@@ -639,7 +639,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # generate random data stream
         data = random.randbytes(17 * 1024)
 
-        # compress, sync-flush, and decompress
+        # compress, sync-flush, und decompress
         first = co.compress(data)
         second = co.flush(zlib.Z_SYNC_FLUSH)
         expanded = dco.decompress(first + second)
@@ -669,7 +669,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # Verify that it will decompress mit the dictionary.
         dco = zlib.decompressobj(zdict=zdict)
         self.assertEqual(dco.decompress(cd) + dco.flush(), h)
-        # Verify that it fails when not given the dictionary.
+        # Verify that it fails when nicht given the dictionary.
         dco = zlib.decompressobj()
         self.assertRaises(zlib.error, dco.decompress, cd)
 
@@ -974,7 +974,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
 def choose_lines(source, number, seed=Nichts, generator=random):
     """Return a list of number lines randomly chosen von the source"""
-    wenn seed is not Nichts:
+    wenn seed is nicht Nichts:
         generator.seed(seed)
     sources = source.split('\n')
     return [generator.choice(sources) fuer n in range(number)]
@@ -1000,25 +1000,25 @@ LORD POLONIUS
        See thou character. Give thy thoughts no tongue,
        Nor any unproportioned thought his act.
        Be thou familiar, but by no means vulgar.
-       Those friends thou hast, and their adoption tried,
+       Those friends thou hast, und their adoption tried,
        Grapple them to thy soul mit hoops of steel;
-       But do not dull thy palm mit entertainment
+       But do nicht dull thy palm mit entertainment
        Of each new-hatch'd, unfledged comrade. Beware
        Of entrance to a quarrel, but being in,
        Bear't that the opposed may beware of thee.
        Give every man thy ear, but few thy voice;
        Take each man's censure, but reserve thy judgment.
        Costly thy habit als thy purse can buy,
-       But not express'd in fancy; rich, not gaudy;
+       But nicht express'd in fancy; rich, nicht gaudy;
        For the apparel oft proclaims the man,
-       And they in France of the best rank and station
-       Are of a most select and generous chief in that.
+       And they in France of the best rank und station
+       Are of a most select und generous chief in that.
        Neither a borrower nor a lender be;
-       For loan oft loses both itself and friend,
+       For loan oft loses both itself und friend,
        And borrowing dulls the edge of husbandry.
        This above all: to thine ownself be true,
        And it must follow, als the night the day,
-       Thou canst not then be false to any man.
+       Thou canst nicht then be false to any man.
        Farewell: my blessing season this in thee!
 
 LAERTES
@@ -1031,7 +1031,7 @@ LORD POLONIUS
 
 LAERTES
 
-       Farewell, Ophelia; and remember well
+       Farewell, Ophelia; und remember well
        What I have said to you.
 
 OPHELIA
@@ -1070,7 +1070,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         n = 0
         while Wahr:
             str = self.DATA[n*10:(n+1)*10]
-            wenn not str:
+            wenn nicht str:
                 break
             text += zlibd.decompress(str)
             n += 1
@@ -1134,7 +1134,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         self.assertLessEqual(len(out[-1]), max_length)
 
         # Retrieve remaining uncompressed data
-        while not zlibd.eof:
+        while nicht zlibd.eof:
             out.append(zlibd.decompress(b'', max_length=max_length))
             self.assertLessEqual(len(out[-1]), max_length)
 
@@ -1148,7 +1148,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         zlibd = zlib._ZlibDecompressor()
         out = []
 
-        # Create input buffer and fill it
+        # Create input buffer und fill it
         self.assertEqual(zlibd.decompress(self.DATA[:100],
                                         max_length=0), b'')
 
@@ -1170,7 +1170,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         zlibd = zlib._ZlibDecompressor()
         out = []
 
-        # Create input buffer and empty it
+        # Create input buffer und empty it
         self.assertEqual(zlibd.decompress(self.DATA[:200],
                                         max_length=0), b'')
         out.append(zlibd.decompress(b''))
@@ -1178,7 +1178,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         # Fill buffer mit new data
         out.append(zlibd.decompress(self.DATA[200:280], 2))
 
-        # Append some more data, not enough to require resize
+        # Append some more data, nicht enough to require resize
         out.append(zlibd.decompress(self.DATA[280:300], 2))
 
         # Decompress rest of data

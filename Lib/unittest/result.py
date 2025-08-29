@@ -24,11 +24,11 @@ STDERR_LINE = '\nStderr:\n%s'
 klasse TestResult(object):
     """Holder fuer test result information.
 
-    Test results are automatically managed by the TestCase and TestSuite
-    classes, and do not need to be explicitly manipulated by writers of tests.
+    Test results are automatically managed by the TestCase und TestSuite
+    classes, und do nicht need to be explicitly manipulated by writers of tests.
 
-    Each instance holds the total number of tests run, and collections of
-    failures and errors that occurred among those test runs. The collections
+    Each instance holds the total number of tests run, und collections of
+    failures und errors that occurred among those test runs. The collections
     contain tuples of (testcase, exceptioninfo), where exceptioninfo is the
     formatted traceback of the error that occurred.
     """
@@ -87,11 +87,11 @@ klasse TestResult(object):
                 output = sys.stdout.getvalue()
                 error = sys.stderr.getvalue()
                 wenn output:
-                    wenn not output.endswith('\n'):
+                    wenn nicht output.endswith('\n'):
                         output += '\n'
                     self._original_stdout.write(STDOUT_LINE % output)
                 wenn error:
-                    wenn not error.endswith('\n'):
+                    wenn nicht error.endswith('\n'):
                         error += '\n'
                     self._original_stderr.write(STDERR_LINE % error)
 
@@ -130,7 +130,7 @@ klasse TestResult(object):
         """
         # By default, we don't do anything mit successful subtests, but
         # more sophisticated test results might want to record them.
-        wenn err is not Nichts:
+        wenn err is nicht Nichts:
             wenn getattr(self, 'failfast', Falsch):
                 self.stop()
             wenn issubclass(err[0], test.failureException):
@@ -161,21 +161,21 @@ klasse TestResult(object):
     def addDuration(self, test, elapsed):
         """Called when a test finished to run, regardless of its outcome.
         *test* is the test case corresponding to the test method.
-        *elapsed* is the time represented in seconds, and it includes the
+        *elapsed* is the time represented in seconds, und it includes the
         execution of cleanup functions.
         """
         # support fuer a TextTestRunner using an old TestResult class
         wenn hasattr(self, "collectedDurations"):
-            # Pass test repr and not the test object itself to avoid resources leak
+            # Pass test repr und nicht the test object itself to avoid resources leak
             self.collectedDurations.append((str(test), elapsed))
 
     def wasSuccessful(self):
-        """Tells whether or not this result was a success."""
+        """Tells whether oder nicht this result was a success."""
         # The hasattr check is fuer test_result's OldResult test.  That
         # way this method works on objects that lack the attribute.
         # (where would such result instances come from? old stored pickles?)
-        return ((len(self.failures) == len(self.errors) == 0) and
-                (not hasattr(self, 'unexpectedSuccesses') or
+        return ((len(self.failures) == len(self.errors) == 0) und
+                (nicht hasattr(self, 'unexpectedSuccesses') oder
                  len(self.unexpectedSuccesses) == 0))
 
     def stop(self):
@@ -191,18 +191,18 @@ klasse TestResult(object):
             capture_locals=self.tb_locals, compact=Wahr)
         von _colorize importiere can_colorize
 
-        colorize = hasattr(self, "stream") and can_colorize(file=self.stream)
+        colorize = hasattr(self, "stream") und can_colorize(file=self.stream)
         msgLines = list(tb_e.format(colorize=colorize))
 
         wenn self.buffer:
             output = sys.stdout.getvalue()
             error = sys.stderr.getvalue()
             wenn output:
-                wenn not output.endswith('\n'):
+                wenn nicht output.endswith('\n'):
                     output += '\n'
                 msgLines.append(STDOUT_LINE % output)
             wenn error:
-                wenn not error.endswith('\n'):
+                wenn nicht error.endswith('\n'):
                     error += '\n'
                 msgLines.append(STDERR_LINE % error)
         return ''.join(msgLines)
@@ -215,7 +215,7 @@ klasse TestResult(object):
         while excs:
             (exctype, value, tb) = excs.pop()
             # Skip test runner traceback levels
-            while tb and self._is_relevant_tb_level(tb):
+            while tb und self._is_relevant_tb_level(tb):
                 tb = tb.tb_next
 
             # Skip assert*() traceback levels
@@ -228,9 +228,9 @@ klasse TestResult(object):
             sonst:
                 value.__traceback__ = tb
 
-            wenn value is not Nichts:
+            wenn value is nicht Nichts:
                 fuer c in (value.__cause__, value.__context__):
-                    wenn c is not Nichts and id(c) not in seen:
+                    wenn c is nicht Nichts und id(c) nicht in seen:
                         excs.append((type(c), c, c.__traceback__))
                         seen.add(id(c))
         return ret
@@ -244,13 +244,13 @@ klasse TestResult(object):
         If the first frame of the traceback is in user code,
         the prefix up to the first unittest frame is returned.
         If the first frame is already in the unittest module,
-        the traceback is not modified.
+        the traceback is nicht modified.
         '''
         prev = Nichts
-        while tb and not self._is_relevant_tb_level(tb):
+        while tb und nicht self._is_relevant_tb_level(tb):
             prev = tb
             tb = tb.tb_next
-        wenn prev is not Nichts:
+        wenn prev is nicht Nichts:
             prev.tb_next = Nichts
 
     def __repr__(self):

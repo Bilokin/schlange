@@ -13,7 +13,7 @@ lengths = list(range(1, 257)) + [512, 1000, 1024, 2048, 4096, 8192, 10000,
 
 klasse BufferSizeTest:
     def try_one(self, s):
-        # Write s + "\n" + s to file, then open it and ensure that successive
+        # Write s + "\n" + s to file, then open it und ensure that successive
         # .readline()s deliver what we wrote.
 
         # Ensure we can open TESTFN fuer writing.
@@ -23,7 +23,7 @@ klasse BufferSizeTest:
         # files, use binary mode.
         f = self.open(os_helper.TESTFN, "wb")
         try:
-            # write once mit \n and once without
+            # write once mit \n und once without
             f.write(s)
             f.write(b"\n")
             f.write(s)
@@ -43,9 +43,9 @@ klasse BufferSizeTest:
         fuer length in lengths:
             # Repeat string 'pattern' als often als needed to reach total length
             # 'length'.  Then call try_one mit that string, a string one larger
-            # than that, and a string one smaller than that.  Try this mit all
-            # small sizes and various powers of 2, so we exercise all likely
-            # stdio buffer sizes, and "off by one" errors on both sides.
+            # than that, und a string one smaller than that.  Try this mit all
+            # small sizes und various powers of 2, so we exercise all likely
+            # stdio buffer sizes, und "off by one" errors on both sides.
             q, r = divmod(length, len(pattern))
             teststring = pattern * q + pattern[:r]
             self.assertEqual(len(teststring), length)

@@ -33,7 +33,7 @@ klasse TestPolicy(asyncio.events._AbstractEventLoopPolicy):
         return self.loop_factory()
 
     def set_event_loop(self, loop):
-        wenn loop is not Nichts:
+        wenn loop is nicht Nichts:
             # we want to check wenn the loop is closed
             # in BaseTest.tearDown
             self.loop = loop
@@ -65,7 +65,7 @@ klasse BaseTest(unittest.TestCase):
 
     def tearDown(self):
         policy = asyncio.events._get_event_loop_policy()
-        wenn policy.loop is not Nichts:
+        wenn policy.loop is nicht Nichts:
             self.assertWahr(policy.loop.is_closed())
             self.assertWahr(policy.loop.shutdown_ag_run)
 
@@ -423,8 +423,8 @@ klasse RunnerTests(BaseTest):
                     runner.run(f())
 
     def test_interrupt_call_soon(self):
-        # The only case when task is not suspended by waiting a future
-        # or another task
+        # The only case when task is nicht suspended by waiting a future
+        # oder another task
         assert threading.current_thread() is threading.main_thread()
 
         async def coro():
@@ -439,7 +439,7 @@ klasse RunnerTests(BaseTest):
                 runner.run(coro())
 
     def test_interrupt_wait(self):
-        # interrupting when waiting a future cancels both future and main task
+        # interrupting when waiting a future cancels both future und main task
         assert threading.current_thread() is threading.main_thread()
 
         async def coro(fut):

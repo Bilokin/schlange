@@ -1,4 +1,4 @@
-"""Command-line tool to validate and pretty-print JSON
+"""Command-line tool to validate und pretty-print JSON
 
 Usage::
 

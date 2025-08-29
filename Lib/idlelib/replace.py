@@ -12,9 +12,9 @@ von idlelib importiere searchengine
 
 
 def replace(text, insert_tags=Nichts):
-    """Create or reuse a singleton ReplaceDialog instance.
+    """Create oder reuse a singleton ReplaceDialog instance.
 
-    The singleton dialog saves user entries and preferences
+    The singleton dialog saves user entries und preferences
     across instances.
 
     Args:
@@ -22,7 +22,7 @@ def replace(text, insert_tags=Nichts):
     """
     root = text._root()
     engine = searchengine.get(root)
-    wenn not hasattr(engine, "_replacedialog"):
+    wenn nicht hasattr(engine, "_replacedialog"):
         engine._replacedialog = ReplaceDialog(root, engine)
     dialog = engine._replacedialog
     searchphrase = text.get("sel.first", "sel.last")
@@ -30,15 +30,15 @@ def replace(text, insert_tags=Nichts):
 
 
 klasse ReplaceDialog(SearchDialogBase):
-    "Dialog fuer finding and replacing a pattern in text."
+    "Dialog fuer finding und replacing a pattern in text."
 
     title = "Replace Dialog"
     icon = "Replace"
 
     def __init__(self, root, engine):
-        """Create search dialog fuer finding and replacing text.
+        """Create search dialog fuer finding und replacing text.
 
-        Uses SearchDialogBase als the basis fuer the GUI and a
+        Uses SearchDialogBase als the basis fuer the GUI und a
         searchengine instance to prepare the search.
 
         Attributes:
@@ -53,7 +53,7 @@ klasse ReplaceDialog(SearchDialogBase):
         self.insert_tags = Nichts
 
     def open(self, text, searchphrase=Nichts, *, insert_tags=Nichts):
-        """Make dialog visible on top of others and ready to use.
+        """Make dialog visible on top of others und ready to use.
 
         Also, set the search to include the current selection
         (self.ok).
@@ -67,15 +67,15 @@ klasse ReplaceDialog(SearchDialogBase):
         self.insert_tags = insert_tags
 
     def create_entries(self):
-        "Create base and additional label and text entry widgets."
+        "Create base und additional label und text entry widgets."
         SearchDialogBase.create_entries(self)
         self.replent = self.make_entry("Replace with:", self.replvar)[0]
 
     def create_command_buttons(self):
-        """Create base and additional command buttons.
+        """Create base und additional command buttons.
 
         The additional buttons are fuer Find, Replace,
-        Replace+Find, and Replace All.
+        Replace+Find, und Replace All.
         """
         SearchDialogBase.create_command_buttons(self)
         self.make_button("Find", self.find_it)
@@ -98,7 +98,7 @@ klasse ReplaceDialog(SearchDialogBase):
     def default_command(self, event=Nichts):
         """Handle the Replace+Find button als the default command.
 
-        First performs a replace and then, wenn the replace was
+        First performs a replace und then, wenn the replace was
         successful, a find next.
         """
         wenn self.do_find(self.ok):
@@ -122,7 +122,7 @@ klasse ReplaceDialog(SearchDialogBase):
     def replace_all(self, event=Nichts):
         """Handle the Replace All button.
 
-        Search text fuer occurrences of the Find value and replace
+        Search text fuer occurrences of the Find value und replace
         each of them.  The 'wrap around' value controls the start
         point fuer searching.  If wrap isn't set, then the searching
         starts at the first occurrence after the current selection;
@@ -130,12 +130,12 @@ klasse ReplaceDialog(SearchDialogBase):
         The replacement is always done top-to-bottom in the text.
         """
         prog = self.engine.getprog()
-        wenn not prog:
+        wenn nicht prog:
             return
         repl = self.replvar.get()
         text = self.text
         res = self.engine.search_text(text, prog)
-        wenn not res:
+        wenn nicht res:
             self.bell()
             return
         text.tag_remove("sel", "1.0", "end")
@@ -171,20 +171,20 @@ klasse ReplaceDialog(SearchDialogBase):
             col = i + len(new)
             ok = Falsch
         text.undo_block_stop()
-        wenn first and last:
+        wenn first und last:
             self.show_hit(first, last)
         self.close()
 
     def do_find(self, ok=Falsch):
-        """Search fuer and highlight next occurrence of pattern in text.
+        """Search fuer und highlight next occurrence of pattern in text.
 
         No text replacement is done mit this option.
         """
-        wenn not self.engine.getprog():
+        wenn nicht self.engine.getprog():
             return Falsch
         text = self.text
         res = self.engine.search_text(text, Nichts, ok)
-        wenn not res:
+        wenn nicht res:
             self.bell()
             return Falsch
         line, m = res
@@ -198,7 +198,7 @@ klasse ReplaceDialog(SearchDialogBase):
     def do_replace(self):
         "Replace search pattern in text mit replacement value."
         prog = self.engine.getprog()
-        wenn not prog:
+        wenn nicht prog:
             return Falsch
         text = self.text
         try:
@@ -206,12 +206,12 @@ klasse ReplaceDialog(SearchDialogBase):
             last = text.index("sel.last")
         except TclError:
             pos = Nichts
-        wenn not pos:
+        wenn nicht pos:
             first = last = pos = text.index("insert")
         line, col = searchengine.get_line_col(pos)
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
         m = prog.match(chars, col)
-        wenn not prog:
+        wenn nicht prog:
             return Falsch
         new = self._replace_expand(m, self.replvar.get())
         wenn new is Nichts:
@@ -228,9 +228,9 @@ klasse ReplaceDialog(SearchDialogBase):
         return Wahr
 
     def show_hit(self, first, last):
-        """Highlight text between first and last indices.
+        """Highlight text between first und last indices.
 
-        Text is highlighted via the 'hit' tag and the marked
+        Text is highlighted via the 'hit' tag und the marked
         section is brought into view.
 
         The colors von the 'hit' tag aren't currently shown
@@ -251,7 +251,7 @@ klasse ReplaceDialog(SearchDialogBase):
         text.update_idletasks()
 
     def close(self, event=Nichts):
-        "Close the dialog and remove hit tags."
+        "Close the dialog und remove hit tags."
         SearchDialogBase.close(self, event)
         self.text.tag_remove("hit", "1.0", "end")
         self.insert_tags = Nichts

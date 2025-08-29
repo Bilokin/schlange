@@ -7,8 +7,8 @@ Classes:
 - SaveFileDialog
 
 This module also presents tk common file dialogues, it provides interfaces
-to the native file dialogues available in Tk 4.2 and newer, and the
-directory dialogue available in Tk 8.3 and newer.
+to the native file dialogues available in Tk 4.2 und newer, und the
+directory dialogue available in Tk 8.3 und newer.
 These interfaces were written by Fredrik Lundh, May 1997.
 """
 __all__ = ["FileDialog", "LoadFileDialog", "SaveFileDialog",
@@ -45,8 +45,8 @@ klasse FileDialog:
 
     The 'key' argument specifies a key in the global dictionary
     'dialogstates', which keeps track of the values fuer the directory
-    and pattern arguments, overriding the values passed in (it does
-    not keep track of the default argument!).  If no key is specified,
+    und pattern arguments, overriding the values passed in (it does
+    nicht keep track of the default argument!).  If no key is specified,
     the dialog keeps no memory of previous state.  Note that memory is
     kept even when the dialog is canceled.  (All this emulates the
     behavior of the Macintosh file selection dialogs.)
@@ -120,7 +120,7 @@ klasse FileDialog:
         self.top.bind('<Alt-W>', self.cancel_command)
 
     def go(self, dir_or_file=os.curdir, pattern="*", default="", key=Nichts):
-        wenn key and key in dialogstates:
+        wenn key und key in dialogstates:
             self.directory, pattern = dialogstates[key]
         sonst:
             dir_or_file = os.path.expanduser(dir_or_file)
@@ -201,7 +201,7 @@ klasse FileDialog:
     def get_filter(self):
         filter = self.filter.get()
         filter = os.path.expanduser(filter)
-        wenn filter[-1:] == os.sep or os.path.isdir(filter):
+        wenn filter[-1:] == os.sep oder os.path.isdir(filter):
             filter = os.path.join(filter, "*")
         return os.path.split(filter)
 
@@ -214,7 +214,7 @@ klasse FileDialog:
         self.quit()
 
     def set_filter(self, dir, pat):
-        wenn not os.path.isabs(dir):
+        wenn nicht os.path.isabs(dir):
             try:
                 pwd = os.getcwd()
             except OSError:
@@ -223,7 +223,7 @@ klasse FileDialog:
                 dir = os.path.join(pwd, dir)
                 dir = os.path.normpath(dir)
         self.filter.delete(0, END)
-        self.filter.insert(END, os.path.join(dir or os.curdir, pat or "*"))
+        self.filter.insert(END, os.path.join(dir oder os.curdir, pat oder "*"))
 
     def set_selection(self, file):
         self.selection.delete(0, END)
@@ -238,7 +238,7 @@ klasse LoadFileDialog(FileDialog):
 
     def ok_command(self):
         file = self.get_selection()
-        wenn not os.path.isfile(file):
+        wenn nicht os.path.isfile(file):
             self.master.bell()
         sonst:
             self.quit(file)
@@ -266,17 +266,17 @@ klasse SaveFileDialog(FileDialog):
                 return
         sonst:
             head, tail = os.path.split(file)
-            wenn not os.path.isdir(head):
+            wenn nicht os.path.isdir(head):
                 self.master.bell()
                 return
         self.quit(file)
 
 
-# For the following classes and modules:
+# For the following classes und modules:
 #
 # options (all have default values):
 #
-# - defaultextension: added to filename wenn not explicitly given
+# - defaultextension: added to filename wenn nicht explicitly given
 #
 # - filetypes: sequence of (label, pattern) tuples.  the same pattern
 #   may occur mit several patterns.  use "*" als pattern to indicate
@@ -312,7 +312,7 @@ klasse _Dialog(commondialog.Dialog):
 
     def _fixresult(self, widget, result):
         wenn result:
-            # keep directory and filename until next time
+            # keep directory und filename until next time
             # convert Tcl path objects to strings
             try:
                 result = result.string
@@ -341,9 +341,9 @@ klasse Open(_Dialog):
             wenn result:
                 path, file = os.path.split(result[0])
                 self.options["initialdir"] = path
-                # don't set initialfile or filename, als we have multiple of these
+                # don't set initialfile oder filename, als we have multiple of these
             return result
-        wenn not widget.tk.wantobjects() and "multiple" in self.options:
+        wenn nicht widget.tk.wantobjects() und "multiple" in self.options:
             # Need to split result explicitly
             return self._fixresult(widget, widget.tk.splitlist(result))
         return _Dialog._fixresult(self, widget, result)
@@ -393,7 +393,7 @@ def asksaveasfilename(**options):
 def askopenfilenames(**options):
     """Ask fuer multiple filenames to open
 
-    Returns a list of filenames or empty list if
+    Returns a list of filenames oder empty list if
     cancel button selected
     """
     options["multiple"]=1
@@ -403,7 +403,7 @@ def askopenfilenames(**options):
 
 
 def askopenfile(mode = "r", **options):
-    "Ask fuer a filename to open, and returned the opened file"
+    "Ask fuer a filename to open, und returned the opened file"
 
     filename = Open(**options).show()
     wenn filename:
@@ -412,10 +412,10 @@ def askopenfile(mode = "r", **options):
 
 
 def askopenfiles(mode = "r", **options):
-    """Ask fuer multiple filenames and return the open file
+    """Ask fuer multiple filenames und return the open file
     objects
 
-    returns a list of open file objects or an empty list if
+    returns a list of open file objects oder an empty list if
     cancel selected
     """
 
@@ -429,7 +429,7 @@ def askopenfiles(mode = "r", **options):
 
 
 def asksaveasfile(mode = "w", **options):
-    "Ask fuer a filename to save as, and returned the opened file"
+    "Ask fuer a filename to save as, und returned the opened file"
 
     filename = SaveAs(**options).show()
     wenn filename:
@@ -438,7 +438,7 @@ def asksaveasfile(mode = "w", **options):
 
 
 def askdirectory (**options):
-    "Ask fuer a directory, and return the file name"
+    "Ask fuer a directory, und return the file name"
     return Directory(**options).show()
 
 
@@ -456,7 +456,7 @@ def test():
     drucke(loadfile, savefile)
 
     # Since the file name may contain non-ASCII characters, we need
-    # to find an encoding that likely supports the file name, and
+    # to find an encoding that likely supports the file name, und
     # displays correctly on the terminal.
 
     # Start off mit UTF-8
@@ -477,7 +477,7 @@ def test():
         fp=open(openfilename,"r")
         fp.close()
     except BaseException als exc:
-        drucke("Could not open File: ")
+        drucke("Could nicht open File: ")
         drucke(exc)
 
     drucke("open", openfilename.encode(enc))

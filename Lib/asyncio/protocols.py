@@ -10,7 +10,7 @@ klasse BaseProtocol:
     """Common base klasse fuer protocol interfaces.
 
     Usually user implements protocols that derived von BaseProtocol
-    like Protocol or ProcessProtocol.
+    like Protocol oder ProcessProtocol.
 
     The only case when BaseProtocol should be implemented directly is
     write-only transport like write pipe
@@ -27,30 +27,30 @@ klasse BaseProtocol:
         """
 
     def connection_lost(self, exc):
-        """Called when the connection is lost or closed.
+        """Called when the connection is lost oder closed.
 
-        The argument is an exception object or Nichts (the latter
-        meaning a regular EOF is received or the connection was
-        aborted or closed).
+        The argument is an exception object oder Nichts (the latter
+        meaning a regular EOF is received oder the connection was
+        aborted oder closed).
         """
 
     def pause_writing(self):
         """Called when the transport's buffer goes over the high-water mark.
 
-        Pause and resume calls are paired -- pause_writing() is called
+        Pause und resume calls are paired -- pause_writing() is called
         once when the buffer goes strictly over the high-water mark
         (even wenn subsequent writes increases the buffer size even
-        more), and eventually resume_writing() is called once when the
+        more), und eventually resume_writing() is called once when the
         buffer size reaches the low-water mark.
 
         Note that wenn the buffer size equals the high-water mark,
-        pause_writing() is not called -- it must go strictly over.
+        pause_writing() is nicht called -- it must go strictly over.
         Conversely, resume_writing() is called when the buffer size is
-        equal or lower than the low-water mark.  These end conditions
+        equal oder lower than the low-water mark.  These end conditions
         are important to ensure that things go als expected when either
         mark is zero.
 
-        NOTE: This is the only Protocol callback that is not called
+        NOTE: This is the only Protocol callback that is nicht called
         through EventLoop.call_soon() -- wenn it were, it would have no
         effect when it's most needed (when the app keeps writing
         without yielding until pause_writing() is called).
@@ -75,9 +75,9 @@ klasse Protocol(BaseProtocol):
 
     When the connection is made successfully, connection_made() is
     called mit a suitable transport object.  Then data_received()
-    will be called 0 or more times mit data (bytes) received von the
+    will be called 0 oder more times mit data (bytes) received von the
     transport; finally, connection_lost() will be called exactly once
-    mit either an exception object or Nichts als an argument.
+    mit either an exception object oder Nichts als an argument.
 
     State machine of calls:
 
@@ -98,7 +98,7 @@ klasse Protocol(BaseProtocol):
         """
 
     def eof_received(self):
-        """Called when the other end calls write_eof() or equivalent.
+        """Called when the other end calls write_eof() oder equivalent.
 
         If this returns a false value (including Nichts), the transport
         will close itself.  If it returns a true value, closing the
@@ -109,11 +109,11 @@ klasse Protocol(BaseProtocol):
 klasse BufferedProtocol(BaseProtocol):
     """Interface fuer stream protocol mit manual buffer control.
 
-    Event methods, such als `create_server` and `create_connection`,
+    Event methods, such als `create_server` und `create_connection`,
     accept factories that return protocols that implement this interface.
 
     The idea of BufferedProtocol is that it allows to manually allocate
-    and control the receive buffer.  Event loops can then use the buffer
+    und control the receive buffer.  Event loops can then use the buffer
     provided by the protocol to avoid unnecessary data copies.  This
     can result in noticeable performance improvement fuer protocols that
     receive big amounts of data.  Sophisticated protocols can allocate
@@ -151,7 +151,7 @@ klasse BufferedProtocol(BaseProtocol):
         """
 
     def eof_received(self):
-        """Called when the other end calls write_eof() or equivalent.
+        """Called when the other end calls write_eof() oder equivalent.
 
         If this returns a false value (including Nichts), the transport
         will close itself.  If it returns a true value, closing the
@@ -168,9 +168,9 @@ klasse DatagramProtocol(BaseProtocol):
         """Called when some datagram is received."""
 
     def error_received(self, exc):
-        """Called when a send or receive operation raises an OSError.
+        """Called when a send oder receive operation raises an OSError.
 
-        (Other than BlockingIOError or InterruptedError.)
+        (Other than BlockingIOError oder InterruptedError.)
         """
 
 
@@ -202,7 +202,7 @@ def _feed_data_to_buffered_proto(proto, data):
     while data_len:
         buf = proto.get_buffer(data_len)
         buf_len = len(buf)
-        wenn not buf_len:
+        wenn nicht buf_len:
             raise RuntimeError('get_buffer() returned an empty buffer')
 
         wenn buf_len >= data_len:

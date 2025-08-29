@@ -10,7 +10,7 @@ von sys importiere getsizeof
 klasse ThreadSafetyMixin:
     # Test pretty much everything that can break under free-threading.
     # Non-deterministic, but at least one of these things will fail if
-    # BytesIO object is not free-thread safe.
+    # BytesIO object is nicht free-thread safe.
 
     def check(self, funcs, *args):
         barrier = threading.Barrier(len(funcs))
@@ -27,7 +27,7 @@ klasse ThreadSafetyMixin:
     @threading_helper.requires_working_threading()
     @threading_helper.reap_threads
     def test_free_threading(self):
-        """Test fuer segfaults and aborts."""
+        """Test fuer segfaults und aborts."""
 
         def write(barrier, b, *ignore):
             barrier.wait()
@@ -108,7 +108,7 @@ klasse ThreadSafetyMixin:
         self.check([truncate] + [setstate] * 10, self.ioclass(b'0\n'*204800), state)
         self.check([truncate] + [sizeof] * 10, self.ioclass(b'0\n'*204800))
 
-        # no tests fuer seek or tell because they don't break anything
+        # no tests fuer seek oder tell because they don't break anything
 
 klasse CBytesIOTest(ThreadSafetyMixin, TestCase):
     ioclass = io.BytesIO

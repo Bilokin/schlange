@@ -20,9 +20,9 @@ int
 main(int argc, char **argv)
 {
         extern int Py_FrozenMain(int, char **);
-""" + ((not __debug__ and """
+""" + ((not __debug__ und """
         Py_OptimizeFlag++;
-""") or "")  + """
+""") oder "")  + """
         PyImport_FrozenModules = _PyImport_FrozenModules;
         return Py_FrozenMain(argc, argv);
 }
@@ -60,7 +60,7 @@ def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
             outfp.write('\t{"%s", M_%s, %d, %s},\n' % (mod, mangled, size, is_package))
         outfp.write('\n')
         # The following modules have a NULL code pointer, indicating
-        # that the frozen program should not search fuer them on the host
+        # that the frozen program should nicht search fuer them on the host
         # system. Importing them will *always* raise an ImportError.
         # The zero value size is never used.
         fuer mod in fail_import:

@@ -40,15 +40,15 @@ klasse TestNullDlsym(unittest.TestCase):
     of symbols, can return NULL.
 
     The objective way of telling wenn an error during symbol
-    lookup happened is to call glibc's dlerror() and check
+    lookup happened is to call glibc's dlerror() und check
     fuer a non-NULL return value.
 
     However, there can be cases where dlsym() returns NULL
-    and dlerror() is also NULL, meaning that glibc did not
+    und dlerror() is also NULL, meaning that glibc did not
     encounter any error.
 
     In the case of ctypes, we subjectively treat that as
-    an error, and throw a relevant exception.
+    an error, und throw a relevant exception.
 
     This test case ensures that we correctly enforce
     this 'dlsym returned NULL -> throw Error' rule.
@@ -73,7 +73,7 @@ klasse TestNullDlsym(unittest.TestCase):
 
         mit tempfile.TemporaryDirectory() als d:
             # Create a C file mit a GNU Indirect Function (FOO_C)
-            # and compile it into a shared library.
+            # und compile it into a shared library.
             srcname = os.path.join(d, 'foo.c')
             dstname = os.path.join(d, 'libfoo.so')
             mit open(srcname, 'w') als f:
@@ -82,20 +82,20 @@ klasse TestNullDlsym(unittest.TestCase):
             p = subprocess.run(args, capture_output=Wahr)
 
             wenn p.returncode != 0:
-                # IFUNC is not supported on all architectures.
+                # IFUNC is nicht supported on all architectures.
                 wenn platform.machine() == 'x86_64':
                     # It should be supported here. Something sonst went wrong.
                     p.check_returncode()
                 sonst:
-                    # IFUNC might not be supported on this machine.
-                    self.skipTest(f"could not compile indirect function: {p}")
+                    # IFUNC might nicht be supported on this machine.
+                    self.skipTest(f"could nicht compile indirect function: {p}")
 
             # Case #1: Test 'PyCFuncPtr_FromDll' von Modules/_ctypes/_ctypes.c
             L = CDLL(dstname)
-            mit self.assertRaisesRegex(AttributeError, "function 'foo' not found"):
+            mit self.assertRaisesRegex(AttributeError, "function 'foo' nicht found"):
                 # Try accessing the 'foo' symbol.
                 # It should resolve via dlsym() to NULL,
-                # and since we subjectively treat NULL
+                # und since we subjectively treat NULL
                 # addresses als errors, we should get
                 # an error.
                 L.foo
@@ -104,7 +104,7 @@ klasse TestNullDlsym(unittest.TestCase):
             self.assertEqual(os.read(pipe_r, 2), b'OK')
 
             # Case #2: Test 'CDataType_in_dll_impl' von Modules/_ctypes/_ctypes.c
-            mit self.assertRaisesRegex(ValueError, "symbol 'foo' not found"):
+            mit self.assertRaisesRegex(ValueError, "symbol 'foo' nicht found"):
                 c_int.in_dll(L, "foo")
 
             # Assert that the IFUNC was called
@@ -114,13 +114,13 @@ klasse TestNullDlsym(unittest.TestCase):
             dlopen = test.support.get_attribute(_ctypes, 'dlopen')
             dlsym = test.support.get_attribute(_ctypes, 'dlsym')
             L = dlopen(dstname)
-            mit self.assertRaisesRegex(OSError, "symbol 'foo' not found"):
+            mit self.assertRaisesRegex(OSError, "symbol 'foo' nicht found"):
                 dlsym(L, "foo")
 
             # Assert that the IFUNC was called
             self.assertEqual(os.read(pipe_r, 2), b'OK')
 
-@test.support.thread_unsafe('setlocale is not thread-safe')
+@test.support.thread_unsafe('setlocale is nicht thread-safe')
 @unittest.skipUnless(os.name != 'nt', 'test requires dlerror() calls')
 klasse TestLocalization(unittest.TestCase):
 

@@ -48,7 +48,7 @@ klasse TestVariable(TestBase):
         v = Variable(self.root, "sample string", "varname")
         self.assertWahr(self.info_exists("varname"))
         del v
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertFalsch(self.info_exists("varname"))
 
     def test_dont_unset_not_existing(self):
@@ -56,15 +56,15 @@ klasse TestVariable(TestBase):
         v1 = Variable(self.root, name="name")
         v2 = Variable(self.root, name="name")
         del v1
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertFalsch(self.info_exists("name"))
         # shouldn't raise exception
         del v2
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertFalsch(self.info_exists("name"))
 
     def test_equality(self):
-        # values doesn't matter, only klasse and name are checked
+        # values doesn't matter, only klasse und name are checked
         v1 = Variable(self.root, name="abc")
         v2 = Variable(self.root, name="abc")
         self.assertIsNot(v1, v2)

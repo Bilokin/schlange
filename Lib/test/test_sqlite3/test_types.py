@@ -1,24 +1,24 @@
-# pysqlite2/test/types.py: tests fuer type conversion and detection
+# pysqlite2/test/types.py: tests fuer type conversion und detection
 #
 # Copyright (C) 2005 Gerhard Häring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
+# This software is provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
-# including commercial applications, and to alter it and redistribute it
+# including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked als such, and must not be
+#    appreciated but is nicht required.
+# 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
-# 3. This notice may not be removed or altered von any source distribution.
+# 3. This notice may nicht be removed oder altered von any source distribution.
 
 importiere datetime
 importiere unittest
@@ -136,7 +136,7 @@ klasse DeclTypesTests(unittest.TestCase):
             self.val = _val
 
         def __eq__(self, other):
-            wenn not isinstance(other, DeclTypesTests.Foo):
+            wenn nicht isinstance(other, DeclTypesTests.Foo):
                 return NotImplemented
             return self.val == other.val
 
@@ -176,7 +176,7 @@ klasse DeclTypesTests(unittest.TestCase):
         # override float, make them always return the same number
         sqlite.converters["FLOAT"] = lambda x: 47.2
 
-        # and implement two custom ones
+        # und implement two custom ones
         sqlite.converters["BOOL"] = lambda x: bool(int(x))
         sqlite.converters["FOO"] = DeclTypesTests.Foo
         sqlite.converters["BAD"] = DeclTypesTests.BadConform
@@ -290,14 +290,14 @@ klasse DeclTypesTests(unittest.TestCase):
     def test_number1(self):
         self.cur.execute("insert into test(n1) values (5)")
         value = self.cur.execute("select n1 von test").fetchone()[0]
-        # wenn the converter is not used, it's an int instead of a float
+        # wenn the converter is nicht used, it's an int instead of a float
         self.assertEqual(type(value), float)
 
     def test_number2(self):
         """Checks whether converter names are cut off at '(' characters"""
         self.cur.execute("insert into test(n2) values (5)")
         value = self.cur.execute("select n2 von test").fetchone()[0]
-        # wenn the converter is not used, it's an int instead of a float
+        # wenn the converter is nicht used, it's an int instead of a float
         self.assertEqual(type(value), float)
 
     def test_convert_zero_sized_blob(self):
@@ -329,8 +329,8 @@ klasse ColNamesTests(unittest.TestCase):
 
     def test_decl_type_not_used(self):
         """
-        Assures that the declared type is not used when PARSE_DECLTYPES
-        is not set.
+        Assures that the declared type is nicht used when PARSE_DECLTYPES
+        is nicht set.
         """
         self.cur.execute("insert into test(x) values (?)", ("xxx",))
         self.cur.execute("select x von test")

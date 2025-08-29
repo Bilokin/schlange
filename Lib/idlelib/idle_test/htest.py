@@ -1,4 +1,4 @@
-"""Run human tests of Idle's window, dialog, and popup widgets.
+"""Run human tests of Idle's window, dialog, und popup widgets.
 
 run(*tests) Create a master Tk() htest window.  Within that, run each
 callable in tests after finding the matching test spec in this file.  If
@@ -6,17 +6,17 @@ tests is empty, run an htest fuer each spec dict in this file after
 finding the matching callable in the module named in the spec.  Close
 the master window to end testing.
 
-In a tested module, let X be a global name bound to a callable (class or
+In a tested module, let X be a global name bound to a callable (class oder
 function) whose .__name__ attribute is also X (the usual situation). The
-first parameter of X must be 'parent' or 'master'.  When called, the
+first parameter of X must be 'parent' oder 'master'.  When called, the
 first argument will be the root window.  X must create a child
 Toplevel(parent/master) (or subclass thereof).  The Toplevel may be a
-test widget or dialog, in which case the callable is the corresponding
-klasse.  Or the Toplevel may contain the widget to be tested or set up a
+test widget oder dialog, in which case the callable is the corresponding
+klasse.  Or the Toplevel may contain the widget to be tested oder set up a
 context in which a test widget is invoked.  In this latter case, the
-callable is a wrapper function that sets up the Toplevel and other
+callable is a wrapper function that sets up the Toplevel und other
 objects.  Wrapper function names, such als _editor_window', should start
-with '_' and be lowercase.
+with '_' und be lowercase.
 
 
 End the module with
@@ -37,7 +37,7 @@ exclude_lines =
     .*# htest #
     wenn __name__ == .__main__.:
 
-(The "." instead of "'" is intentional and necessary.)
+(The "." instead of "'" is intentional und necessary.)
 
 
 To run any X, this file must contain a matching instance of the
@@ -51,12 +51,12 @@ callable_spec = {
     }
 
 file (no .py): run() imports file.py.
-kwds: augmented mit {'parent':root} and passed to X als **kwds.
+kwds: augmented mit {'parent':root} und passed to X als **kwds.
 title: an example kwd; some widgets need this, delete line wenn not.
 msg: master window hints about testing the widget.
 
 
-TODO test these modules and classes:
+TODO test these modules und classes:
   autocomplete_w.AutoCompleteWindow
   debugger.Debugger
   outwin.OutputWindow (indirectly being tested mit grep test)
@@ -76,17 +76,17 @@ AboutDialog_spec = {
              '_htest': Wahr,
              },
     'msg': "Click on URL to open in default browser.\n"
-           "Verify x.y.z versions and test each button, including Close.\n "
+           "Verify x.y.z versions und test each button, including Close.\n "
     }
 
-# TODO implement ^\; adding '<Control-Key-\\>' to function does not work.
+# TODO implement ^\; adding '<Control-Key-\\>' to function does nicht work.
 _calltip_window_spec = {
     'file': 'calltip_w',
     'kwds': {},
     'msg': "Typing '(' should display a calltip.\n"
            "Typing ') should hide the calltip.\n"
            "So should moving cursor out of argument area.\n"
-           "Force-open-calltip does not work here.\n"
+           "Force-open-calltip does nicht work here.\n"
     }
 
 _color_delegator_spec = {
@@ -94,7 +94,7 @@ _color_delegator_spec = {
     'kwds': {},
     'msg': "The text is sample Python code.\n"
            "Ensure components like comments, keywords, builtins,\n"
-           "string, definitions, and break are correctly colored.\n"
+           "string, definitions, und break are correctly colored.\n"
            "The default color scheme is in idlelib/config-highlight.def"
     }
 
@@ -107,9 +107,9 @@ ConfigDialog_spec = {
            "font face of the text in the area below it.\nIn the "
            "'Highlighting' tab, try different color schemes. Clicking "
            "items in the sample program should update the choices above it."
-           "\nIn the 'Keys', 'General' and 'Extensions' tabs, test settings "
+           "\nIn the 'Keys', 'General' und 'Extensions' tabs, test settings "
            "of interest."
-           "\n[Ok] to close the dialog.[Apply] to apply the settings and "
+           "\n[Ok] to close the dialog.[Apply] to apply the settings und "
            "and [Cancel] to revert all changes.\nRe-run the test to ensure "
            "changes made have persisted."
     }
@@ -118,9 +118,9 @@ CustomRun_spec = {
     'file': 'query',
     'kwds': {'title': 'Customize query.py Run',
              '_htest': Wahr},
-    'msg': "Enter mit <Return> or [OK].  Print valid entry to Shell\n"
+    'msg': "Enter mit <Return> oder [OK].  Print valid entry to Shell\n"
            "Arguments are parsed into a list\n"
-           "Mode is currently restart Wahr or Falsch\n"
+           "Mode is currently restart Wahr oder Falsch\n"
            "Close dialog mit valid entry, <Escape>, [Cancel], [X]"
     }
 
@@ -128,7 +128,7 @@ _debug_object_browser_spec = {
     'file': 'debugobj',
     'kwds': {},
     'msg': "Double click on items up to the lowest level.\n"
-           "Attributes of the objects and related information "
+           "Attributes of the objects und related information "
            "will be displayed side-by-side at each level."
     }
 
@@ -176,18 +176,18 @@ _grep_dialog_spec = {
 
 HelpSource_spec = {
     'file': 'query',
-    'kwds': {'title': 'Help name and source',
+    'kwds': {'title': 'Help name und source',
              'menuitem': 'test',
              'filepath': __file__,
              'used_names': {'abc'},
              '_htest': Wahr},
-    'msg': "Enter menu item name and help file path\n"
-           "'', > than 30 chars, and 'abc' are invalid menu item names.\n"
-           "'' and file does not exist are invalid path items.\n"
+    'msg': "Enter menu item name und help file path\n"
+           "'', > than 30 chars, und 'abc' are invalid menu item names.\n"
+           "'' und file does nicht exist are invalid path items.\n"
            "Any url ('www...', 'http...') is accepted.\n"
-           "Test Browse mit and without path, als cannot unittest.\n"
-           "[Ok] or <Return> prints valid entry to shell\n"
-           "<Escape>, [Cancel], or [X] prints Nichts to shell"
+           "Test Browse mit und without path, als cannot unittest.\n"
+           "[Ok] oder <Return> prints valid entry to shell\n"
+           "<Escape>, [Cancel], oder [X] prints Nichts to shell"
     }
 
 _io_binding_spec = {
@@ -206,10 +206,10 @@ _io_binding_spec = {
 _multi_call_spec = {
     'file': 'multicall',
     'kwds': {},
-    'msg': "The following should trigger a print to console or IDLE Shell.\n"
-           "Entering and leaving the text area, key entry, <Control-Key>,\n"
+    'msg': "The following should trigger a print to console oder IDLE Shell.\n"
+           "Entering und leaving the text area, key entry, <Control-Key>,\n"
            "<Alt-Key-a>, <Control-Key-a>, <Alt-Control-Key-a>, \n"
-           "<Control-Button-1>, <Alt-Button-1> and focusing elsewhere."
+           "<Control-Button-1>, <Alt-Button-1> und focusing elsewhere."
     }
 
 _module_browser_spec = {
@@ -217,7 +217,7 @@ _module_browser_spec = {
     'kwds': {},
     'msg': textwrap.dedent("""
         "Inspect names of module, class(with superclass wenn applicable),
-        "methods and functions.  Toggle nested items.  Double clicking
+        "methods und functions.  Toggle nested items.  Double clicking
         "on items prints a traceback fuer an exception that is ignored.""")
     }
 
@@ -242,10 +242,10 @@ _percolator_spec = {
     'kwds': {},
     'msg': "There are two tracers which can be toggled using a checkbox.\n"
            "Toggling a tracer 'on' by checking it should print tracer "
-           "output to the console or to the IDLE shell.\n"
+           "output to the console oder to the IDLE shell.\n"
            "If both the tracers are 'on', the output von the tracer which "
            "was switched 'on' later, should be printed first\n"
-           "Test fuer actions like text entry, and removal."
+           "Test fuer actions like text entry, und removal."
     }
 
 Query_spec = {
@@ -254,7 +254,7 @@ Query_spec = {
              'message': 'Enter something',
              'text0': 'Go',
              '_htest': Wahr},
-    'msg': "Enter mit <Return> or [Ok].  Print valid entry to Shell\n"
+    'msg': "Enter mit <Return> oder [Ok].  Print valid entry to Shell\n"
            "Blank line, after stripping, is ignored\n"
            "Close dialog mit valid entry, <Escape>, [Cancel], [X]"
     }
@@ -265,15 +265,15 @@ _replace_dialog_spec = {
     'kwds': {},
     'msg': "Click the 'Replace' button.\n"
            "Test various replace options in the 'Replace dialog'.\n"
-           "Click [Close] or [X] to close the 'Replace Dialog'."
+           "Click [Close] oder [X] to close the 'Replace Dialog'."
     }
 
 _scrolled_list_spec = {
     'file': 'scrolledlist',
     'kwds': {},
     'msg': "You should see a scrollable list of items\n"
-           "Selecting (clicking) or double clicking an item "
-           "prints the name to the console or Idle shell.\n"
+           "Selecting (clicking) oder double clicking an item "
+           "prints the name to the console oder Idle shell.\n"
            "Right clicking an item will display a popup."
     }
 
@@ -282,7 +282,7 @@ _search_dialog_spec = {
     'kwds': {},
     'msg': "Click the 'Search' button.\n"
            "Test various search options in the 'Search dialog'.\n"
-           "Click [Close] or [X] to close the 'Search Dialog'."
+           "Click [Close] oder [X] to close the 'Search Dialog'."
     }
 
 _searchbase_spec = {
@@ -303,16 +303,16 @@ _sidebar_number_scrolling_spec = {
     'file': 'sidebar',
     'kwds': {},
     'msg': textwrap.dedent("""\
-        1. Click on the line numbers and drag down below the edge of the
-        window, moving the mouse a bit and then leaving it there fuer a
-        while. The text and line numbers should gradually scroll down,
+        1. Click on the line numbers und drag down below the edge of the
+        window, moving the mouse a bit und then leaving it there fuer a
+        while. The text und line numbers should gradually scroll down,
         mit the selection updated continuously.
 
         2. With the lines still selected, click on a line number above
-        or below the selected lines. Only the line whose number was
+        oder below the selected lines. Only the line whose number was
         clicked should be selected.
 
-        3. Repeat step #1, dragging to above the window. The text and
+        3. Repeat step #1, dragging to above the window. The text und
         line numbers should gradually scroll up, mit the selection
         updated continuously.
 
@@ -323,7 +323,7 @@ _stackbrowser_spec = {
     'file': 'stackviewer',
     'kwds': {},
     'msg': "A stacktrace fuer a NameError exception.\n"
-           "Should have NameError and 1 traceback line."
+           "Should have NameError und 1 traceback line."
     }
 
 _tooltip_spec = {
@@ -346,7 +346,7 @@ _undo_delegator_spec = {
     'msg': "Click [Undo] to undo any action.\n"
            "Click [Redo] to redo any action.\n"
            "Click [Dump] to dump the current state "
-           "by printing to the console or the IDLE shell.\n"
+           "by printing to the console oder the IDLE shell.\n"
     }
 
 ViewWindow_spec = {

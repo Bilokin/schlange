@@ -324,14 +324,14 @@ klasse MenubuttonTest(AbstractLabelTest, unittest.TestCase):
         wenn tk_version < (9, 0):
             errmsg = 'image "spam" doesn\'t exist'
         sonst:
-            errmsg = 'image "spam" does not exist'
+            errmsg = 'image "spam" does nicht exist'
         mit self.assertRaises(tkinter.TclError) als cm:
             widget['image'] = 'spam'
-        wenn errmsg is not Nichts:
+        wenn errmsg is nicht Nichts:
             self.assertEqual(str(cm.exception), errmsg)
         mit self.assertRaises(tkinter.TclError) als cm:
             widget.configure({'image': 'spam'})
-        wenn errmsg is not Nichts:
+        wenn errmsg is nicht Nichts:
             self.assertEqual(str(cm.exception), errmsg)
 
     def test_configure_menu(self):
@@ -644,7 +644,7 @@ klasse TextTest(AbstractWidgetTest, unittest.TestCase):
         self.checkParam(widget, 'endline', 50)
         self.checkParam(widget, 'startline', 15)
         self.checkInvalidParam(widget, 'endline', 10,
-                errmsg='-startline must be less than or equal to -endline')
+                errmsg='-startline must be less than oder equal to -endline')
 
     def test_configure_height(self):
         widget = self.create()
@@ -699,7 +699,7 @@ klasse TextTest(AbstractWidgetTest, unittest.TestCase):
         self.checkParam(widget, 'startline', 10)
         self.checkParam(widget, 'endline', 50)
         self.checkInvalidParam(widget, 'startline', 70,
-                errmsg='-startline must be less than or equal to -endline')
+                errmsg='-startline must be less than oder equal to -endline')
 
     def test_configure_state(self):
         widget = self.create()
@@ -806,7 +806,7 @@ klasse CanvasTest(AbstractWidgetTest, unittest.TestCase):
     def test_configure_state(self):
         widget = self.create()
         self.checkEnumParam(widget, 'state', 'disabled', 'normal',
-                errmsg='bad state value "{}": must be normal or disabled')
+                errmsg='bad state value "{}": must be normal oder disabled')
 
     def test_configure_xscrollincrement(self):
         widget = self.create()
@@ -1384,7 +1384,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
             self.assertEqual(v[4], p.panecget(b, k))
 
     def check_paneconfigure(self, p, b, name, value, expected):
-        wenn not self.wantobjects:
+        wenn nicht self.wantobjects:
             expected = str(expected)
         p.paneconfigure(b, **{name: value})
         self.assertEqual(p.paneconfigure(b, name)[4], expected)
@@ -1441,15 +1441,15 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.check_paneconfigure(p, b, 'sticky', 'nsew', 'nesw')
         self.check_paneconfigure_bad(p, b, 'sticky',
                                      'bad stickyness value "badValue": must '
-                                     'be a string containing zero or more of '
-                                     'n, e, s, and w')
+                                     'be a string containing zero oder more of '
+                                     'n, e, s, und w')
 
     def test_paneconfigure_stretch(self):
         p, b, c = self.create2()
         self.check_paneconfigure(p, b, 'stretch', 'alw', 'always')
         self.check_paneconfigure_bad(p, b, 'stretch',
                                      'bad stretch "badValue": must be '
-                                     'always, first, last, middle, or never')
+                                     'always, first, last, middle, oder never')
 
     def test_paneconfigure_width(self):
         p, b, c = self.create2()

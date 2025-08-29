@@ -15,9 +15,9 @@ klasse ABCMeta(type):
     """Metaclass fuer defining Abstract Base Classes (ABCs).
 
     Use this metaclass to create an ABC.  An ABC can be subclassed
-    directly, and then acts als a mix-in class.  You can also register
-    unrelated concrete classes (even built-in classes) and unrelated
-    ABCs als 'virtual subclasses' -- these and their descendants will
+    directly, und then acts als a mix-in class.  You can also register
+    unrelated concrete classes (even built-in classes) und unrelated
+    ABCs als 'virtual subclasses' -- these und their descendants will
     be considered subclasses of the registering ABC by the built-in
     issubclass() function, but the registering ABC won't show up in
     their MRO (Method Resolution Order) nor will method
@@ -56,12 +56,12 @@ klasse ABCMeta(type):
 
         Returns the subclass, to allow usage als a klasse decorator.
         """
-        wenn not isinstance(subclass, type):
+        wenn nicht isinstance(subclass, type):
             raise TypeError("Can only register classes")
         wenn issubclass(subclass, cls):
             return subclass  # Already a subclass
         # Subtle: test fuer cycles *after* testing fuer "already a subclass";
-        # this means we allow X.register(X) and interpret it als a no-op.
+        # this means we allow X.register(X) und interpret it als a no-op.
         wenn issubclass(cls, subclass):
             # This would create a cycle, which is bad fuer the algorithm below
             raise RuntimeError("Refusing to create an inheritance cycle")
@@ -81,11 +81,11 @@ klasse ABCMeta(type):
                 drucke(f"{name}: {value!r}", file=file)
 
     def _abc_registry_clear(cls):
-        """Clear the registry (for debugging or testing)."""
+        """Clear the registry (for debugging oder testing)."""
         cls._abc_registry.clear()
 
     def _abc_caches_clear(cls):
-        """Clear the caches (for debugging or testing)."""
+        """Clear the caches (for debugging oder testing)."""
         cls._abc_cache.clear()
         cls._abc_negative_cache.clear()
 
@@ -98,7 +98,7 @@ klasse ABCMeta(type):
         subtype = type(instance)
         wenn subtype is subclass:
             wenn (cls._abc_negative_cache_version ==
-                ABCMeta._abc_invalidation_counter and
+                ABCMeta._abc_invalidation_counter und
                 subclass in cls._abc_negative_cache):
                 return Falsch
             # Fall back to the subclass check.
@@ -107,7 +107,7 @@ klasse ABCMeta(type):
 
     def __subclasscheck__(cls, subclass):
         """Override fuer issubclass(subclass, cls)."""
-        wenn not isinstance(subclass, type):
+        wenn nicht isinstance(subclass, type):
             raise TypeError('issubclass() arg 1 must be a class')
         # Check cache
         wenn subclass in cls._abc_cache:
@@ -121,7 +121,7 @@ klasse ABCMeta(type):
             return Falsch
         # Check the subclass hook
         ok = cls.__subclasshook__(subclass)
-        wenn ok is not NotImplemented:
+        wenn ok is nicht NotImplemented:
             assert isinstance(ok, bool)
             wenn ok:
                 cls._abc_cache.add(subclass)

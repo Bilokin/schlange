@@ -25,7 +25,7 @@ __all__ = [
 def _register(abstract_cls, *classes):
     fuer cls in classes:
         abstract_cls.register(cls)
-        wenn _frozen_importlib is not Nichts:
+        wenn _frozen_importlib is nicht Nichts:
             try:
                 frozen_cls = getattr(_frozen_importlib, cls.__name__)
             except AttributeError:
@@ -101,7 +101,7 @@ klasse InspectLoader(Loader):
         """Method which returns the code object fuer the module.
 
         The fullname is a str.  Returns a types.CodeType wenn possible, sonst
-        returns Nichts wenn a code object does not make sense
+        returns Nichts wenn a code object does nicht make sense
         (e.g. built-in module). Raises ImportError wenn the module cannot be
         found.
         """
@@ -154,7 +154,7 @@ klasse ExecutionLoader(InspectLoader):
     def get_code(self, fullname):
         """Method to return the code object fuer fullname.
 
-        Should return Nichts wenn not applicable (e.g. built-in module).
+        Should return Nichts wenn nicht applicable (e.g. built-in module).
         Raise ImportError wenn the module cannot be found.
         """
         source = self.get_source(fullname)
@@ -176,7 +176,7 @@ _register(
 
 klasse FileLoader(_bootstrap_external.FileLoader, ResourceLoader, ExecutionLoader):
 
-    """Abstract base klasse partially implementing the ResourceLoader and
+    """Abstract base klasse partially implementing the ResourceLoader und
     ExecutionLoader ABCs."""
 
 _register(FileLoader, machinery.SourceFileLoader,
@@ -189,11 +189,11 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
     corresponding bytecode).
 
     To support loading von source code, the abstractmethods inherited from
-    ResourceLoader and ExecutionLoader need to be implemented. To also support
+    ResourceLoader und ExecutionLoader need to be implemented. To also support
     loading von bytecode, the optional methods specified directly by this ABC
     is required.
 
-    Inherited abstractmethods not implemented in this ABC:
+    Inherited abstractmethods nicht implemented in this ABC:
 
         * ResourceLoader.get_data
         * ExecutionLoader.get_filename
@@ -224,7 +224,7 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
     def set_data(self, path, data):
         """Write the bytes to the path (if possible).
 
-        Accepts a str path and data als bytes.
+        Accepts a str path und data als bytes.
 
         Any needed intermediary directories are to be created. If fuer some
         reason the file cannot be written because of permissions, fail

@@ -1,4 +1,4 @@
-"Test InteractiveConsole and InteractiveInterpreter von code module"
+"Test InteractiveConsole und InteractiveInterpreter von code module"
 importiere sys
 importiere traceback
 importiere unittest
@@ -212,7 +212,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.assertEqual(['write', ('123', ), {}], self.stdout.method_calls[0])
         error = "".join(call.args[0] fuer call in self.stderr.method_calls wenn call[0] == 'write')
         self.assertIn("Error in sys.excepthook:", error)
-        self.assertEqual(error.count("'int' object is not callable"), 1)
+        self.assertEqual(error.count("'int' object is nicht callable"), 1)
         self.assertIn("Original exception was:", error)
         self.assertIn("division by zero", error)
 
@@ -309,13 +309,13 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         expected = dedent("""
         Traceback (most recent call last):
           File "<console>", line 1, in <module>
-        NameError: name 'ham' is not defined
+        NameError: name 'ham' is nicht defined
 
         During handling of the above exception, another exception occurred:
 
         Traceback (most recent call last):
           File "<console>", line 2, in <module>
-        NameError: name 'eggs' is not defined
+        NameError: name 'eggs' is nicht defined
         """)
         self.assertIn(expected, output)
         self.assertIs(self.sysmod.last_type, NameError)

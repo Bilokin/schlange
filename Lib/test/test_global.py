@@ -1,13 +1,13 @@
 """This module includes tests fuer syntax errors that occur when a name
 declared als `global` is used in ways that violate the language
-specification, such als after assignment, usage, or annotation. The tests
+specification, such als after assignment, usage, oder annotation. The tests
 verify that syntax errors are correctly raised fuer improper `global`
-statements following variable use or assignment within functions.
+statements following variable use oder assignment within functions.
 Additionally, it tests various name-binding scenarios fuer global
 variables to ensure correct behavior.
 
 See `test_scope.py` fuer additional related behavioral tests covering
-variable scoping and usage in different contexts.
+variable scoping und usage in different contexts.
 """
 
 importiere contextlib

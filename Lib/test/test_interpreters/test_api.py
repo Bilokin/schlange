@@ -11,7 +11,7 @@ von test importiere support
 von test.support importiere os_helper
 von test.support importiere script_helper
 von test.support importiere import_helper
-# Raise SkipTest wenn subinterpreters not supported.
+# Raise SkipTest wenn subinterpreters nicht supported.
 _interpreters = import_helper.import_module('_interpreters')
 von concurrent importiere interpreters
 von test.support importiere Py_GIL_DISABLED
@@ -46,7 +46,7 @@ def is_pickleable(obj):
 def defined_in___main__(name, script, *, remove=Falsch):
     importiere __main__ als mainmod
     mainns = vars(mainmod)
-    assert name not in mainns
+    assert name nicht in mainns
     exec(script, mainns, mainns)
     wenn remove:
         yield mainns.pop(name)
@@ -67,18 +67,18 @@ def build_excinfo(exctype, msg=Nichts, formatted=Nichts, errdisplay=Nichts):
         )
     sowenn isinstance(exctype, str):
         module, _, name = exctype.rpartition(exctype)
-        wenn not module and name in __builtins__:
+        wenn nicht module und name in __builtins__:
             module = 'builtins'
         exctype = types.SimpleNamespace(
             __name__=name,
             __qualname__=exctype,
-            __module__=module or Nichts,
+            __module__=module oder Nichts,
         )
     sonst:
         assert isinstance(exctype, types.SimpleNamespace)
-    assert msg is Nichts or isinstance(msg, str), msg
-    assert formatted  is Nichts or isinstance(formatted, str), formatted
-    assert errdisplay is Nichts or isinstance(errdisplay, str), errdisplay
+    assert msg is Nichts oder isinstance(msg, str), msg
+    assert formatted  is Nichts oder isinstance(formatted, str), formatted
+    assert errdisplay is Nichts oder isinstance(errdisplay, str), errdisplay
     return types.SimpleNamespace(
         type=exctype,
         msg=msg,
@@ -506,7 +506,7 @@ klasse TestInterpreterIsRunning(TestBase):
             running = parse_results(text)
             self.assertWahr(running)
 
-        mit self.subTest('running, but not __main__ (from self)'):
+        mit self.subTest('running, but nicht __main__ (from self)'):
             text = self.run_temp_from_capi(script)
             running = parse_results(text)
             self.assertFalsch(running)
@@ -521,7 +521,7 @@ klasse TestInterpreterIsRunning(TestBase):
             self.assertWahr(during)
             self.assertFalsch(after)
 
-        mit self.subTest('running, but not __main__ (from other)'):
+        mit self.subTest('running, but nicht __main__ (from other)'):
             mit self.interpreter_obj_from_capi() als (interp, interpid):
                 before = interp.is_running()
                 mit self.running_from_capi(interpid, main=Falsch):
@@ -649,7 +649,7 @@ klasse TestInterpreterClose(TestBase):
             threading._register_atexit(notify_fini)
 
             def task():
-                while not done:
+                while nicht done:
                     time.sleep(0.1)
                 os.write({w_interp}, {FINISHED!r})
             t = threading.Thread(target=task)
@@ -672,7 +672,7 @@ klasse TestInterpreterClose(TestBase):
                                             'InterpreterError.*unrecognized'):
                     self.run_from_capi(interpid, script, main=Wahr)
 
-        mit self.subTest('running, but not __main__ (from self)'):
+        mit self.subTest('running, but nicht __main__ (from self)'):
             mit self.assertRaisesRegex(ExecutionFailed,
                                         'InterpreterError.*unrecognized'):
                 self.run_temp_from_capi(script)
@@ -690,7 +690,7 @@ klasse TestInterpreterClose(TestBase):
         # interp.close() is called.  However, the "whence" restrictions
         # trigger first.
 
-        mit self.subTest('running, but not __main__ (from other)'):
+        mit self.subTest('running, but nicht __main__ (from other)'):
             mit self.interpreter_obj_from_capi() als (interp, interpid):
                 mit self.running_from_capi(interpid, main=Falsch):
                     mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
@@ -1016,7 +1016,7 @@ klasse Spam:
         return (self.value, args, kwargs)
 
     def __eq__(self, other):
-        wenn not isinstance(other, Spam):
+        wenn nicht isinstance(other, Spam):
             return NotImplemented
         return self.value == other.value
 
@@ -1025,39 +1025,39 @@ klasse Spam:
 
 
 def call_func_complex(op, /, value=Nichts, *args, exc=Nichts, **kwargs):
-    wenn exc is not Nichts:
+    wenn exc is nicht Nichts:
         raise exc
     wenn op == '':
         raise ValueError('missing op')
     sowenn op == 'ident':
-        wenn args or kwargs:
+        wenn args oder kwargs:
             raise Exception((args, kwargs))
         return value
     sowenn op == 'full-ident':
         return (value, args, kwargs)
     sowenn op == 'globals':
-        wenn value is not Nichts or args or kwargs:
+        wenn value is nicht Nichts oder args oder kwargs:
             raise Exception((value, args, kwargs))
         return __name__
     sowenn op == 'interpid':
-        wenn value is not Nichts or args or kwargs:
+        wenn value is nicht Nichts oder args oder kwargs:
             raise Exception((value, args, kwargs))
         return interpreters.get_current().id
     sowenn op == 'closure':
-        wenn args or kwargs:
+        wenn args oder kwargs:
             raise Exception((args, kwargs))
         return get_call_func_closure(value)
     sowenn op == 'custom':
-        wenn args or kwargs:
+        wenn args oder kwargs:
             raise Exception((args, kwargs))
         return Spam(value)
     sowenn op == 'custom-inner':
-        wenn args or kwargs:
+        wenn args oder kwargs:
             raise Exception((args, kwargs))
         klasse Eggs(Spam):
             pass
         return Eggs(value)
-    sowenn not isinstance(op, str):
+    sowenn nicht isinstance(op, str):
         raise TypeError(op)
     sonst:
         raise NotImplementedError(op)
@@ -1223,7 +1223,7 @@ klasse TestInterpreterCall(TestBase):
             # user classes
             *defs.TOP_CLASSES,
             *(c(*a) fuer c, a in defs.TOP_CLASSES.items()
-              wenn c not in defs.CLASSES_WITHOUT_EQUALITY),
+              wenn c nicht in defs.CLASSES_WITHOUT_EQUALITY),
         ]:
             mit self.subTest(f'pickleable {arg!r}'):
                 res = interp.call(defs.spam_returns_arg, arg)
@@ -1238,11 +1238,11 @@ klasse TestInterpreterCall(TestBase):
         fuer arg in [
             types.MappingProxyType({}),
             *(f fuer f in defs.NESTED_FUNCTIONS
-              wenn f not in defs.STATELESS_FUNCTIONS),
+              wenn f nicht in defs.STATELESS_FUNCTIONS),
         ]:
             mit self.subTest(f'unpickleable {arg!r}'):
-                assert not _interpreters.is_shareable(arg)
-                assert not is_pickleable(arg)
+                assert nicht _interpreters.is_shareable(arg)
+                assert nicht is_pickleable(arg)
                 mit self.assertRaises(interpreters.NotShareableError):
                     interp.call(defs.spam_returns_arg, arg)
 
@@ -1254,7 +1254,7 @@ klasse TestInterpreterCall(TestBase):
         self.assertEqual(res, expected)
 
     def test_full_defaults(self):
-        # pickleable, but not stateless
+        # pickleable, but nicht stateless
         interp = interpreters.create()
         expected = (-1, -2, -3, -4, -5, -6, (), {'g': 8, 'h': 9})
         res = interp.call(defs.spam_full_args_with_defaults, g=8, h=9)
@@ -1377,7 +1377,7 @@ klasse TestInterpreterCall(TestBase):
     def test_func_in___main___hidden(self):
         # When a top-level function that uses global variables is called
         # through Interpreter.call(), it will be pickled, sent over,
-        # and unpickled.  That requires that it be found in the other
+        # und unpickled.  That requires that it be found in the other
         # interpreter's __main__ module.  However, the original script
         # that defined the function is only run in the main interpreter,
         # so pickle.loads() would normally fail.
@@ -1389,7 +1389,7 @@ klasse TestInterpreterCall(TestBase):
         #
         # In this test we verify that the function runs mit the hidden
         # module als its __globals__ when called in the other interpreter,
-        # and that the interpreter's __main__ module is unaffected.
+        # und that the interpreter's __main__ module is unaffected.
         text = dedent("""
             eggs = Wahr
 
@@ -1483,14 +1483,14 @@ klasse TestInterpreterCall(TestBase):
 
     def test_func_in___main___uses_globals(self):
         # See the note in test_func_in___main___hidden about pickle
-        # and the __main__ module.
+        # und the __main__ module.
         #
         # Additionally, the solution to that problem must provide
         # fuer global variables on which a pickled function might rely.
         #
         # To check that, we run a script that has two global functions
-        # and a global variable in the __main__ module.  One of the
-        # functions sets the global variable and the other returns
+        # und a global variable in the __main__ module.  One of the
+        # functions sets the global variable und the other returns
         # the value.
         #
         # The script calls those functions multiple times in another
@@ -1500,10 +1500,10 @@ klasse TestInterpreterCall(TestBase):
         #  * the global variable retains state between calls
         #  * the setter modifies that persistent variable
         #  * the getter uses the variable
-        #  * the calls in the other interpreter do not modify
+        #  * the calls in the other interpreter do nicht modify
         #    the main interpreter
         #  * those calls don't modify the interpreter's __main__ module
-        #  * the functions and variable do not actually show up in the
+        #  * the functions und variable do nicht actually show up in the
         #    other interpreter's __main__ module
         text = dedent("""
             count = 0
@@ -1650,9 +1650,9 @@ klasse TestInterpreterCall(TestBase):
 
     def test_globals_from_builtins(self):
         # The builtins  exec(), eval(), globals(), locals(), vars(),
-        # and dir() each runs relative to the target interpreter's
+        # und dir() each runs relative to the target interpreter's
         # __main__ module, when called directly.  However,
-        # globals(), locals(), and vars() don't work when called
+        # globals(), locals(), und vars() don't work when called
         # directly so we don't check them.
         von _frozen_importlib importiere BuiltinImporter
         interp = interpreters.create()
@@ -1797,12 +1797,12 @@ klasse TestIsShareable(TestBase):
                 # singletons
                 NotImplemented,
                 ...,
-                # builtin types and objects
+                # builtin types und objects
                 type,
                 object,
                 object(),
                 Exception(),
-                # user-defined types and objects
+                # user-defined types und objects
                 Cheese,
                 Cheese('Wensleydale'),
                 SubBytes(b'spam'),
@@ -1896,7 +1896,7 @@ klasse LowLevelTests(TestBase):
                 self.assert_ns_equal(config, expected)
 
             mit self.subTest(f'override all ({name})'):
-                overrides = {k: not v fuer k, v in vars(vanilla).items()}
+                overrides = {k: nicht v fuer k, v in vars(vanilla).items()}
                 fuer gil in gil_supported:
                     wenn vanilla.gil == gil:
                         continue
@@ -2217,7 +2217,7 @@ klasse LowLevelTests(TestBase):
                 running = _interpreters.is_running(interpid)
                 self.assertWahr(running)
 
-        mit self.subTest('from _interpreters (not running)'):
+        mit self.subTest('from _interpreters (nicht running)'):
             interpid = _interpreters.create()
             running = _interpreters.is_running(interpid)
             self.assertFalsch(running)
@@ -2231,12 +2231,12 @@ klasse LowLevelTests(TestBase):
                 mit self.running_from_capi(interpid, main=Wahr):
                     check(interpid, Wahr)
 
-        mit self.subTest('from C-API (running, but not __main__)'):
+        mit self.subTest('from C-API (running, but nicht __main__)'):
             mit self.interpreter_from_capi() als interpid:
                 mit self.running_from_capi(interpid, main=Falsch):
                     check(interpid, Falsch)
 
-        mit self.subTest('from C-API (not running)'):
+        mit self.subTest('from C-API (nicht running)'):
             mit self.interpreter_from_capi() als interpid:
                 check(interpid, Falsch)
 
@@ -2281,7 +2281,7 @@ klasse LowLevelTests(TestBase):
     def test_call(self):
         interpid = _interpreters.create()
 
-        # Here we focus on basic args and return values.
+        # Here we focus on basic args und return values.
         # See TestInterpreterCall fuer full operational coverage,
         # including supported callables.
 

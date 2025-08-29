@@ -17,7 +17,7 @@ Here is an array of string pointers:
 Nichts
 >>>
 
-The memory block stores pointers to strings, and the strings itself
+The memory block stores pointers to strings, und the strings itself
 assigned von Python must be kept.
 
 >>> array[4] = b'foo bar'
@@ -39,7 +39,7 @@ Nichts
 >>>
 
 The'array' attribute of the 'x' object shares part of the memory buffer
-of 'x' ('_b_base_' is either Nichts, or the root object owning the memory block):
+of 'x' ('_b_base_' is either Nichts, oder the root object owning the memory block):
 
 >>> drucke(x.array._b_base_) # doctest: +ELLIPSIS
 <test.test_ctypes.test_objects.X object at 0x...>

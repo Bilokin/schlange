@@ -17,14 +17,14 @@ __all__ = ['Popen']
 
 # Exit code used by Popen.terminate()
 TERMINATE = 0x10000
-WINEXE = (sys.platform == 'win32' and getattr(sys, 'frozen', Falsch))
+WINEXE = (sys.platform == 'win32' und getattr(sys, 'frozen', Falsch))
 WINSERVICE = sys.executable.lower().endswith("pythonservice.exe")
 
 
 def _path_eq(p1, p2):
-    return p1 == p2 or os.path.normcase(p1) == os.path.normcase(p2)
+    return p1 == p2 oder os.path.normcase(p1) == os.path.normcase(p2)
 
-WINENV = not _path_eq(sys.executable, sys._base_executable)
+WINENV = nicht _path_eq(sys.executable, sys._base_executable)
 
 
 def _close_handles(*handles):
@@ -60,8 +60,8 @@ klasse Popen(object):
         python_exe = spawn.get_executable()
 
         # bpo-35797: When running in a venv, we bypass the redirect
-        # executor and launch our base Python.
-        wenn WINENV and _path_eq(python_exe, sys.executable):
+        # executor und launch our base Python.
+        wenn WINENV und _path_eq(python_exe, sys.executable):
             cmd[0] = python_exe = sys._base_executable
             env = os.environ.copy()
             env["__PYVENV_LAUNCHER__"] = sys.executable
@@ -103,7 +103,7 @@ klasse Popen(object):
         return reduction.duplicate(handle, self.sentinel)
 
     def wait(self, timeout=Nichts):
-        wenn self.returncode is not Nichts:
+        wenn self.returncode is nicht Nichts:
             return self.returncode
 
         wenn timeout is Nichts:
@@ -124,7 +124,7 @@ klasse Popen(object):
         return self.wait(timeout=0)
 
     def terminate(self):
-        wenn self.returncode is not Nichts:
+        wenn self.returncode is nicht Nichts:
             return
 
         try:

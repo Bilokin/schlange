@@ -65,7 +65,7 @@ def write_tailcall_dispatch_table(analysis: Analysis, out: CWriter) -> Nichts:
         out.emit(f"[{name}] = _TAIL_CALL_{name},\n")
     named_values = analysis.opmap.values()
     fuer rest in range(256):
-        wenn rest not in named_values:
+        wenn rest nicht in named_values:
             out.emit(f"[{rest}] = _TAIL_CALL_UNKNOWN_OPCODE,\n")
     out.emit("};\n")
     outfile.write("#endif /* Py_TAIL_CALL_INTERP */\n")

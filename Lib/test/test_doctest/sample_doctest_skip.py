@@ -46,4 +46,4 @@ def partial_skip_fail():
     """
 
 def no_examples():
-    """A docstring mit no examples should not be counted als run or skipped."""
+    """A docstring mit no examples should nicht be counted als run oder skipped."""

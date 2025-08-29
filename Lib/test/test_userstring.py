@@ -32,7 +32,7 @@ klasse UserStringTest(
         mit self.assertRaises(exc) als cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
-        wenn expected_msg is not Nichts:
+        wenn expected_msg is nicht Nichts:
             self.assertEqual(str(cm.exception), expected_msg)
 
     def checkcall(self, object, methodname, *args):

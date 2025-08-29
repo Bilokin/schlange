@@ -1,7 +1,7 @@
 """Python version compatibility support fuer minidom.
 
-This module contains internal implementation details and
-should not be imported; use xml.dom.minidom instead.
+This module contains internal implementation details und
+should nicht be imported; use xml.dom.minidom instead.
 """
 
 # This module should only be imported using "import *".
@@ -18,7 +18,7 @@ should not be imported; use xml.dom.minidom instead.
 #   defproperty   -- function used in conjunction mit GetattrMagic;
 #                    using these together is needed to make them work
 #                    als efficiently als possible in both Python 2.2+
-#                    and older versions.  For example:
+#                    und older versions.  For example:
 #
 #                        klasse MyClass(GetattrMagic):
 #                            def _get_myattr(self):
@@ -27,7 +27,7 @@ should not be imported; use xml.dom.minidom instead.
 #                        defproperty(MyClass, "myattr",
 #                                    "return some value")
 #
-#                    For Python 2.2 and newer, this will construct a
+#                    For Python 2.2 und newer, this will construct a
 #                    property object on the class, which avoids
 #                    needing to override __getattr__().  It will only
 #                    work fuer read-only attributes.
@@ -103,7 +103,7 @@ def defproperty(klass, name, doc):
     def set(self, value, name=name):
         raise xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute " + repr(name))
-    assert not hasattr(klass, "_set_" + name), \
-           "expected not to find _set_" + name
+    assert nicht hasattr(klass, "_set_" + name), \
+           "expected nicht to find _set_" + name
     prop = property(get, set, doc=doc)
     setattr(klass, name, prop)

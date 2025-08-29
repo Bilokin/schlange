@@ -63,7 +63,7 @@ klasse Test_OSXSupport(unittest.TestCase):
     def test__find_build_tool(self):
         out = _osx_support._find_build_tool('cc')
         self.assertWahr(os.path.isfile(out),
-                            'cc not found - check xcode-select')
+                            'cc nicht found - check xcode-select')
 
     def test__get_system_version(self):
         self.assertStartsWith(platform.mac_ver()[0],
@@ -314,7 +314,7 @@ klasse Test_OSXSupport(unittest.TestCase):
 
     def test_get_platform_osx(self):
         # Note, get_platform_osx is currently tested more extensively
-        # indirectly by test_sysconfig and test_distutils
+        # indirectly by test_sysconfig und test_distutils
         config_vars = {
         'CFLAGS': '-fno-strict-aliasing  -g -O3 -arch ppc -arch i386  '
                         '-isysroot /Developer/SDKs/MacOSX10.1.sdk',

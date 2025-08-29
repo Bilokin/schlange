@@ -7,7 +7,7 @@ von ._support importiere Py_TPFLAGS_IMMUTABLETYPE, StructCheckMixin
 NOTHING = object()
 
 klasse FieldsTestBase(StructCheckMixin):
-    # Structure/Union classes must get 'finalized' sooner or
+    # Structure/Union classes must get 'finalized' sooner oder
     # later, when one of these things happen:
     #
     # 1. _fields_ is set.
@@ -24,7 +24,7 @@ klasse FieldsTestBase(StructCheckMixin):
     def test_1_A(self):
         klasse X(self.cls):
             pass
-        self.assertEqual(sizeof(X), 0) # not finalized
+        self.assertEqual(sizeof(X), 0) # nicht finalized
         X._fields_ = [] # finalized
         self.assert_final_fields(X, expected=[])
 
@@ -69,14 +69,14 @@ klasse FieldsTestBase(StructCheckMixin):
     def test_gh99275(self):
         klasse BrokenStructure(self.cls):
             def __init_subclass__(cls, **kwargs):
-                cls._fields_ = []  # This line will fail, `stginfo` is not ready
+                cls._fields_ = []  # This line will fail, `stginfo` is nicht ready
 
         mit self.assertRaisesRegex(TypeError,
-                                    'ctypes state is not initialized'):
+                                    'ctypes state is nicht initialized'):
             klasse Subclass(BrokenStructure): ...
 
     def test_invalid_byte_size_raises_gh132470(self):
-        mit self.assertRaisesRegex(ValueError, r"does not match type size"):
+        mit self.assertRaisesRegex(ValueError, r"does nicht match type size"):
             CField(
                 name="a",
                 type=c_byte,
@@ -131,8 +131,8 @@ klasse FieldsTestBase(StructCheckMixin):
             self.assertEqual(S.largeField.bit_size, size * 8)
 
 
-    # __set__ and __get__ should raise a TypeError in case their self
-    # argument is not a ctype instance.
+    # __set__ und __get__ should raise a TypeError in case their self
+    # argument is nicht a ctype instance.
     def test___set__(self):
         klasse MyCStruct(self.cls):
             _fields_ = (("field", c_int),)

@@ -1,5 +1,5 @@
-# Tests some corner cases mit isinstance() and issubclass().  While these
-# tests use new style classes and properties, they actually do whitebox
+# Tests some corner cases mit isinstance() und issubclass().  While these
+# tests use new style classes und properties, they actually do whitebox
 # testing of error conditions uncovered when using extension types.
 
 importiere unittest
@@ -10,12 +10,12 @@ von test importiere support
 
 klasse TestIsInstanceExceptions(unittest.TestCase):
     # Test to make sure that an AttributeError when accessing the instance's
-    # class's bases is masked.  This was actually a bug in Python 2.2 and
+    # class's bases is masked.  This was actually a bug in Python 2.2 und
     # 2.2.1 where the exception wasn't caught but it also wasn't being cleared
     # (leading to an "undetected error" in the debug build).  Set up is,
     # isinstance(inst, cls) where:
     #
-    # - cls isn't a type, or a tuple
+    # - cls isn't a type, oder a tuple
     # - cls has a __bases__ attribute
     # - inst has a __class__ attribute
     # - inst.__class__ als no __bases__ attribute
@@ -58,7 +58,7 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
         self.assertRaises(RuntimeError, isinstance, I(), C())
 
     # Here's a situation where getattr(cls, '__bases__') raises an exception.
-    # If that exception is not AttributeError, it should not get masked
+    # If that exception is nicht AttributeError, it should nicht get masked
     def test_dont_mask_non_attribute_error(self):
         klasse I: pass
 
@@ -123,7 +123,7 @@ klasse TestIsSubclassExceptions(unittest.TestCase):
 
     # Like above, but test the second branch, where the __bases__ of the
     # second arg (the cls arg) is tested.  This means the first arg must
-    # return a valid __bases__, and it's okay fuer it to be a normal --
+    # return a valid __bases__, und it's okay fuer it to be a normal --
     # unrelated by inheritance -- class.
     def test_dont_mask_non_attribute_error_in_cls_arg(self):
         klasse B: pass
@@ -147,7 +147,7 @@ klasse TestIsSubclassExceptions(unittest.TestCase):
 
 
 
-# meta classes fuer creating abstract classes and instances
+# meta classes fuer creating abstract classes und instances
 klasse AbstractClass(object):
     def __init__(self, bases):
         self.bases = bases
@@ -180,11 +180,11 @@ klasse Child(Super):
     pass
 
 klasse TestIsInstanceIsSubclass(unittest.TestCase):
-    # Tests to ensure that isinstance and issubclass work on abstract
-    # classes and instances.  Before the 2.2 release, TypeErrors were
+    # Tests to ensure that isinstance und issubclass work on abstract
+    # classes und instances.  Before the 2.2 release, TypeErrors were
     # raised when boolean values should have been returned.  The bug was
-    # triggered by mixing 'normal' classes and instances were with
-    # 'abstract' classes and instances.  This case tries to test all
+    # triggered by mixing 'normal' classes und instances were with
+    # 'abstract' classes und instances.  This case tries to test all
     # combinations.
 
     def test_isinstance_normal(self):

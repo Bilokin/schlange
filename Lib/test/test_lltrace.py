@@ -78,7 +78,7 @@ klasse TestLLTrace(unittest.TestCase):
         instr_map = {i.offset: i fuer i in dis.get_instructions(example, adaptive=Wahr)}
         fuer line in stdout.splitlines():
             offset, colon, opname_oparg = line.partition(":")
-            wenn not colon:
+            wenn nicht colon:
                 continue
             offset = int(offset)
             opname_oparg = opname_oparg.split()

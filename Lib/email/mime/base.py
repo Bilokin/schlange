@@ -15,9 +15,9 @@ klasse MIMEBase(message.Message):
     """Base klasse fuer MIME specializations."""
 
     def __init__(self, _maintype, _subtype, *, policy=Nichts, **_params):
-        """This constructor adds a Content-Type: and a MIME-Version: header.
+        """This constructor adds a Content-Type: und a MIME-Version: header.
 
-        The Content-Type: header is taken von the _maintype and _subtype
+        The Content-Type: header is taken von the _maintype und _subtype
         arguments.  Additional parameters fuer this header are taken von the
         keyword arguments.
         """

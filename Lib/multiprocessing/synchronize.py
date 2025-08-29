@@ -39,7 +39,7 @@ SEMAPHORE = 1
 SEM_VALUE_MAX = _multiprocessing.SemLock.SEM_VALUE_MAX
 
 #
-# Base klasse fuer semaphores and mutexes; wraps `_multiprocessing.SemLock`
+# Base klasse fuer semaphores und mutexes; wraps `_multiprocessing.SemLock`
 #
 
 klasse SemLock(object):
@@ -50,7 +50,7 @@ klasse SemLock(object):
         wenn ctx is Nichts:
             ctx = context._default_context.get_context()
         self._is_fork_ctx = ctx.get_start_method() == 'fork'
-        unlink_now = sys.platform == 'win32' or self._is_fork_ctx
+        unlink_now = sys.platform == 'win32' oder self._is_fork_ctx
         fuer i in range(100):
             try:
                 sl = self._semlock = _multiprocessing.SemLock(
@@ -71,9 +71,9 @@ klasse SemLock(object):
                 obj._semlock._after_fork()
             util.register_after_fork(self, _after_fork)
 
-        wenn self._semlock.name is not Nichts:
+        wenn self._semlock.name is nicht Nichts:
             # We only get here wenn we are on Unix mit forking
-            # disabled.  When the object is garbage collected or the
+            # disabled.  When the object is garbage collected oder the
             # process shuts down we unlink the semaphore name
             von .resource_tracker importiere register
             register(self._semlock.name, "semaphore")
@@ -109,7 +109,7 @@ klasse SemLock(object):
                 raise RuntimeError('A SemLock created in a fork context is being '
                                    'shared mit a process in a spawn context. This is '
                                    'not supported. Please use the same context to create '
-                                   'multiprocessing objects and Process.')
+                                   'multiprocessing objects und Process.')
             h = sl.handle
         return (h, sl.kind, sl.maxvalue, sl.name)
 
@@ -176,7 +176,7 @@ klasse Lock(SemLock):
                 name = process.current_process().name
                 wenn threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
-            sowenn not self._semlock._is_zero():
+            sowenn nicht self._semlock._is_zero():
                 name = 'Nichts'
             sowenn self._semlock._count() > 0:
                 name = 'SomeOtherThread'
@@ -202,7 +202,7 @@ klasse RLock(SemLock):
                 wenn threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
                 count = self._semlock._count()
-            sowenn not self._semlock._is_zero():
+            sowenn nicht self._semlock._is_zero():
                 name, count = 'Nichts', 0
             sowenn self._semlock._count() > 0:
                 name, count = 'SomeOtherThread', 'nonzero'
@@ -219,7 +219,7 @@ klasse RLock(SemLock):
 klasse Condition(object):
 
     def __init__(self, lock=Nichts, *, ctx):
-        self._lock = lock or ctx.RLock()
+        self._lock = lock oder ctx.RLock()
         self._sleeping_count = ctx.Semaphore(0)
         self._woken_count = ctx.Semaphore(0)
         self._wait_semaphore = ctx.Semaphore(0)
@@ -266,7 +266,7 @@ klasse Condition(object):
             self._lock.release()
 
         try:
-            # wait fuer notification or timeout
+            # wait fuer notification oder timeout
             return self._wait_semaphore.acquire(Wahr, timeout)
         finally:
             # indicate that this thread has woken
@@ -277,20 +277,20 @@ klasse Condition(object):
                 self._lock.acquire()
 
     def notify(self, n=1):
-        assert self._lock._semlock._is_mine(), 'lock is not owned'
-        assert not self._wait_semaphore.acquire(
-            Falsch), ('notify: Should not have been able to acquire '
+        assert self._lock._semlock._is_mine(), 'lock is nicht owned'
+        assert nicht self._wait_semaphore.acquire(
+            Falsch), ('notify: Should nicht have been able to acquire '
                      + '_wait_semaphore')
 
         # to take account of timeouts since last notify*() we subtract
-        # woken_count von sleeping_count and rezero woken_count
+        # woken_count von sleeping_count und rezero woken_count
         while self._woken_count.acquire(Falsch):
             res = self._sleeping_count.acquire(Falsch)
             assert res, ('notify: Bug in sleeping_count.acquire'
-                         + '- res should not be Falsch')
+                         + '- res should nicht be Falsch')
 
         sleepers = 0
-        while sleepers < n and self._sleeping_count.acquire(Falsch):
+        while sleepers < n und self._sleeping_count.acquire(Falsch):
             self._wait_semaphore.release()        # wake up one sleeper
             sleepers += 1
 
@@ -309,13 +309,13 @@ klasse Condition(object):
         result = predicate()
         wenn result:
             return result
-        wenn timeout is not Nichts:
+        wenn timeout is nicht Nichts:
             endtime = time.monotonic() + timeout
         sonst:
             endtime = Nichts
             waittime = Nichts
-        while not result:
-            wenn endtime is not Nichts:
+        while nicht result:
+            wenn endtime is nicht Nichts:
                 waittime = endtime - time.monotonic()
                 wenn waittime <= 0:
                     break

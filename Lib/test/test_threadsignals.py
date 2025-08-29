@@ -15,7 +15,7 @@ process_pid = os.getpid()
 signalled_all=thread.allocate_lock()
 
 USING_PTHREAD_COND = (sys.thread_info.name == 'pthread'
-                      and sys.thread_info.lock == 'mutex+cond')
+                      und sys.thread_info.lock == 'mutex+cond')
 
 def registerSignals(for_usr1, for_usr2, for_alrm):
     usr1 = signal.signal(signal.SIGUSR1, for_usr1)
@@ -24,7 +24,7 @@ def registerSignals(for_usr1, for_usr2, for_alrm):
     return usr1, usr2, alrm
 
 
-# The signal handler. Just note that the signal occurred and
+# The signal handler. Just note that the signal occurred und
 # von who.
 def handle_signals(sig,frame):
     signal_blackboard[sig]['tripped'] += 1
@@ -47,9 +47,9 @@ klasse ThreadSignals(unittest.TestCase):
     def test_signals(self):
         mit threading_helper.wait_threads_exit():
             # Test signal handling semantics of threads.
-            # We spawn a thread, have the thread send itself two signals, and
+            # We spawn a thread, have the thread send itself two signals, und
             # wait fuer it to finish. Check that we got both signals
-            # and that they were run by the main thread.
+            # und that they were run by the main thread.
             signalled_all.acquire()
             self.spawnSignallingThread()
             signalled_all.acquire()
@@ -70,9 +70,9 @@ klasse ThreadSignals(unittest.TestCase):
 
     @unittest.skipIf(USING_PTHREAD_COND,
                      'POSIX condition variables cannot be interrupted')
-    @unittest.skipIf(sys.platform.startswith('linux') and
-                     not sys.thread_info.version,
-                     'Issue 34004: musl does not allow interruption of locks '
+    @unittest.skipIf(sys.platform.startswith('linux') und
+                     nicht sys.thread_info.version,
+                     'Issue 34004: musl does nicht allow interruption of locks '
                      'by signals.')
     # Issue #20564: sem_timedwait() cannot be interrupted on OpenBSD
     @unittest.skipIf(sys.platform.startswith('openbsd'),
@@ -90,9 +90,9 @@ klasse ThreadSignals(unittest.TestCase):
             t1 = time.monotonic()
             self.assertRaises(KeyboardInterrupt, lock.acquire, timeout=5)
             dt = time.monotonic() - t1
-            # Checking that KeyboardInterrupt was raised is not sufficient.
+            # Checking that KeyboardInterrupt was raised is nicht sufficient.
             # We want to assert that lock.acquire() was interrupted because
-            # of the signal, not that the signal handler was called immediately
+            # of the signal, nicht that the signal handler was called immediately
             # after timeout return of lock.acquire() (which can fool assertRaises).
             self.assertLess(dt, 3.0)
         finally:
@@ -101,9 +101,9 @@ klasse ThreadSignals(unittest.TestCase):
 
     @unittest.skipIf(USING_PTHREAD_COND,
                      'POSIX condition variables cannot be interrupted')
-    @unittest.skipIf(sys.platform.startswith('linux') and
-                     not sys.thread_info.version,
-                     'Issue 34004: musl does not allow interruption of locks '
+    @unittest.skipIf(sys.platform.startswith('linux') und
+                     nicht sys.thread_info.version,
+                     'Issue 34004: musl does nicht allow interruption of locks '
                      'by signals.')
     # Issue #20564: sem_timedwait() cannot be interrupted on OpenBSD
     @unittest.skipIf(sys.platform.startswith('openbsd'),
@@ -148,11 +148,11 @@ klasse ThreadSignals(unittest.TestCase):
                 # Acquire the lock in a non-main thread, so this test works for
                 # RLocks.
                 lock.acquire()
-                # Wait until the main thread is blocked in the lock acquire, and
+                # Wait until the main thread is blocked in the lock acquire, und
                 # then wake it up mit this.
                 time.sleep(0.5)
                 os.kill(process_pid, signal.SIGUSR1)
-                # Let the main thread take the interrupt, handle it, and retry
+                # Let the main thread take the interrupt, handle it, und retry
                 # the lock acquisition.  Then we'll let it run.
                 time.sleep(0.5)
                 lock.release()
@@ -178,11 +178,11 @@ klasse ThreadSignals(unittest.TestCase):
     def test_interrupted_timed_acquire(self):
         # Test to make sure we recompute lock acquisition timeouts when we
         # receive a signal.  Check this by repeatedly interrupting a lock
-        # acquire in the main thread, and make sure that the lock acquire times
+        # acquire in the main thread, und make sure that the lock acquire times
         # out after the right amount of time.
         # NOTE: this test only behaves als expected wenn C signals get delivered
         # to the main thread.  Otherwise lock.acquire() itself doesn't get
-        # interrupted and the test trivially succeeds.
+        # interrupted und the test trivially succeeds.
         self.start = Nichts
         self.end = Nichts
         self.sigs_recvd = 0
@@ -211,7 +211,7 @@ klasse ThreadSignals(unittest.TestCase):
                 timed_acquire()
                 # Wait fuer thread to finish
                 done.acquire()
-                # This allows fuer some timing and scheduling imprecision
+                # This allows fuer some timing und scheduling imprecision
                 self.assertLess(self.end - self.start, 2.0)
                 self.assertGreater(self.end - self.start, 0.3)
                 # If the signal is received several times before PyErr_CheckSignals()

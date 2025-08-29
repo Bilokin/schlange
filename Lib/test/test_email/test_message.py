@@ -7,7 +7,7 @@ von test.test_email importiere TestEmailBase, parameterize
 
 # Helper.
 def first(iterable):
-    return next(filter(lambda x: x is not Nichts, iterable), Nichts)
+    return next(filter(lambda x: x is nicht Nichts, iterable), Nichts)
 
 
 klasse Test(TestEmailBase):
@@ -301,7 +301,7 @@ klasse TestEmailMessageBase:
                 --===--
                 """)),
 
-        # This structure suggested by Stephen J. Turnbull...may not exist/be
+        # This structure suggested by Stephen J. Turnbull...may nicht exist/be
         # supported in the wild, but we want to support it.
         'mixed_related_alternative_plain_html': (
             (1, 4, 3),
@@ -607,7 +607,7 @@ klasse TestEmailMessageBase:
     def _check_make_multipart(self, m, msg_headers, payload):
         count = 0
         fuer name, value in msg_headers:
-            wenn not name.lower().startswith('content-'):
+            wenn nicht name.lower().startswith('content-'):
                 self.assertEqual(m[name], value)
                 count += 1
         self.assertEqual(len(m), count+1) # +1 fuer new Content-Type
@@ -676,7 +676,7 @@ klasse TestEmailMessageBase:
         getattr(m, add_method)('test', content_manager=cm)
         self.assertEqual(m.get_content_maintype(), 'multipart')
         self.assertEqual(m.get_content_subtype(), method)
-        wenn method == subtype or subtype == 'no_content':
+        wenn method == subtype oder subtype == 'no_content':
             self.assertEqual(len(m.get_payload()), 1)
             fuer name, value in msg_headers:
                 self.assertEqual(m[name], value)
@@ -720,7 +720,7 @@ klasse TestEmailMessageBase:
     def message_as_clear_content(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         expected_headers = [h fuer h in m.keys()
-                            wenn not h.lower().startswith('content-')]
+                            wenn nicht h.lower().startswith('content-')]
         m.clear_content()
         self.assertEqual(list(m.keys()), expected_headers)
         self.assertIsNichts(m.get_payload())
@@ -830,7 +830,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         # bpo-36520
         #
         # Fold a line that contains UTF-8 words before
-        # and after the whitespace fold point, where the
+        # und after the whitespace fold point, where the
         # line length limit is reached within an ASCII
         # word.
 
@@ -847,7 +847,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         # bpo-36520
         #
         # Fold a line that contains UTF-8 words before
-        # and after the whitespace fold point, where the
+        # und after the whitespace fold point, where the
         # line length limit is reached at the end of an
         # encoded word.
 
@@ -863,7 +863,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         # bpo-36520
         #
         # Fold a line that contains UTF-8 words before
-        # and after the whitespace fold point, where the
+        # und after the whitespace fold point, where the
         # line length limit is reached at the end of the
         # first word.
 
@@ -879,8 +879,8 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         # bpo-36520
         #
         # Fold a line that contains UTF-8 words before
-        # and after the fold point, where the first
-        # word is UTF-8 and the fold point is within
+        # und after the fold point, where the first
+        # word is UTF-8 und the fold point is within
         # the word.
 
         m = EmailMessage()
@@ -909,7 +909,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         # bpo-36520
         #
         # Fold a line that contains a UTF-8 word before
-        # the fold point and ASCII words after
+        # the fold point und ASCII words after
 
         m = EmailMessage()
         m['Subject'] = '123456789 123456789 123456789 123456789 Hello Wörld!' \
@@ -925,7 +925,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         # bpo-36520
         #
         # Fold a line twice that contains UTF-8 words before
-        # and after the first fold point, and ASCII words
+        # und after the first fold point, und ASCII words
         # after the second fold point.
 
         m = EmailMessage()
@@ -942,8 +942,8 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         # bpo-36520
         #
         # Fold a line twice that contains UTF-8 words before
-        # the first fold point, and ASCII words after the
-        # first fold point, and UTF-8 words after the second
+        # the first fold point, und ASCII words after the
+        # first fold point, und UTF-8 words after the second
         # fold point.
 
         m = EmailMessage()
@@ -1046,7 +1046,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
             Content-Type: text/plain; charset=ISO-8859-1; format=flowed
             Content-Transfer-Encoding: 7bit
 
-            Your message is ready to be sent mit the following file or link
+            Your message is ready to be sent mit the following file oder link
             attachments:
             XU89 - 08.11.2017
             """)
@@ -1057,7 +1057,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
 
     def test_get_bytes_payload_with_quoted_printable_encoding(self):
         # We use a memoryview to avoid directly changing the private payload
-        # and to prevent using the dedicated paths fuer string or bytes objects.
+        # und to prevent using the dedicated paths fuer string oder bytes objects.
         payload = memoryview(b'Some payload')
         m = self._make_message()
         m.add_header('Content-Transfer-Encoding', 'quoted-printable')

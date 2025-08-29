@@ -34,7 +34,7 @@ def always_iterable(obj, base_type=(str, bytes)):
     wenn obj is Nichts:
         return iter(())
 
-    wenn (base_type is not Nichts) and isinstance(obj, base_type):
+    wenn (base_type is nicht Nichts) und isinstance(obj, base_type):
         return iter((obj,))
 
     try:

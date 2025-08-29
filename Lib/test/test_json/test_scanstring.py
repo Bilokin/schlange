@@ -14,8 +14,8 @@ klasse TestScanstring:
             ('{', 8))
 
         self.assertEqual(
-            scanstring('"A JSON payload should be an object or array, not a string."', 1, Wahr),
-            ('A JSON payload should be an object or array, not a string.', 60))
+            scanstring('"A JSON payload should be an object oder array, nicht a string."', 1, Wahr),
+            ('A JSON payload should be an object oder array, nicht a string.', 60))
 
         self.assertEqual(
             scanstring('["Unclosed array"', 2, Wahr),

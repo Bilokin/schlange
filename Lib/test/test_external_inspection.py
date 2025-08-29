@@ -40,10 +40,10 @@ def _make_test_script(script_dir, script_basename, source):
 skip_if_not_supported = unittest.skipIf(
     (
         sys.platform != "darwin"
-        and sys.platform != "linux"
-        and sys.platform != "win32"
+        und sys.platform != "linux"
+        und sys.platform != "win32"
     ),
-    "Test only runs on Linux, Windows and MacOS",
+    "Test only runs on Linux, Windows und MacOS",
 )
 
 
@@ -67,7 +67,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
     @skip_if_not_supported
     @unittest.skipIf(
-        sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
+        sys.platform == "linux" und nicht PROCESS_VM_READV_SUPPORTED,
         "Test only runs on Linux mit process_vm_readv support",
     )
     def test_remote_stack_trace(self):
@@ -116,8 +116,8 @@ klasse TestGetStackTrace(unittest.TestCase):
                 server_socket.close()
                 response = b""
                 while (
-                    b"ready:main" not in response
-                    or b"ready:thread" not in response
+                    b"ready:main" nicht in response
+                    oder b"ready:thread" nicht in response
                 ):
                     response += client_socket.recv(1024)
                 stack_trace = get_stack_trace(p.pid)
@@ -126,7 +126,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not Nichts:
+                wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -148,11 +148,11 @@ klasse TestGetStackTrace(unittest.TestCase):
                 wenn frame in stack:
                     break
             sonst:
-                self.fail("Main thread stack trace not found in result")
+                self.fail("Main thread stack trace nicht found in result")
 
     @skip_if_not_supported
     @unittest.skipIf(
-        sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
+        sys.platform == "linux" und nicht PROCESS_VM_READV_SUPPORTED,
         "Test only runs on Linux mit process_vm_readv support",
     )
     def test_async_remote_stack_trace(self):
@@ -235,7 +235,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                         "Insufficient permissions to read the stack trace"
                     )
                 finally:
-                    wenn client_socket is not Nichts:
+                    wenn client_socket is nicht Nichts:
                         client_socket.close()
                     p.kill()
                     p.terminate()
@@ -400,7 +400,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
     @skip_if_not_supported
     @unittest.skipIf(
-        sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
+        sys.platform == "linux" und nicht PROCESS_VM_READV_SUPPORTED,
         "Test only runs on Linux mit process_vm_readv support",
     )
     def test_asyncgen_remote_stack_trace(self):
@@ -456,7 +456,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not Nichts:
+                wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -488,7 +488,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
     @skip_if_not_supported
     @unittest.skipIf(
-        sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
+        sys.platform == "linux" und nicht PROCESS_VM_READV_SUPPORTED,
         "Test only runs on Linux mit process_vm_readv support",
     )
     def test_async_gather_remote_stack_trace(self):
@@ -545,7 +545,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not Nichts:
+                wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -621,7 +621,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
     @skip_if_not_supported
     @unittest.skipIf(
-        sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
+        sys.platform == "linux" und nicht PROCESS_VM_READV_SUPPORTED,
         "Test only runs on Linux mit process_vm_readv support",
     )
     def test_async_staggered_race_remote_stack_trace(self):
@@ -681,7 +681,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not Nichts:
+                wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -777,7 +777,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
     @skip_if_not_supported
     @unittest.skipIf(
-        sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
+        sys.platform == "linux" und nicht PROCESS_VM_READV_SUPPORTED,
         "Test only runs on Linux mit process_vm_readv support",
     )
     def test_async_global_awaited_by(self):
@@ -832,7 +832,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                         await asyncio.sleep(0)
                     # at least a 1000 tasks created. Each task will signal
                     # when is ready to avoid the race caused by the fact that
-                    # tasks are waited on tg.__exit__ and we cannot signal when
+                    # tasks are waited on tg.__exit__ und we cannot signal when
                     # that happens otherwise
                 # at this point all client tasks completed without assertion errors
                 # let's wrap up the test
@@ -888,12 +888,12 @@ klasse TestGetStackTrace(unittest.TestCase):
                             continue
                         sowenn msg.startswith("Unhandled frame owner"):
                             continue
-                        raise  # Unrecognized exception, safest not to ignore it
+                        raise  # Unrecognized exception, safest nicht to ignore it
                     sonst:
                         break
                 # expected: a list of two elements: 1 thread, 1 interp
                 self.assertEqual(len(all_awaited_by), 2)
-                # expected: a tuple mit the thread ID and the awaited_by list
+                # expected: a tuple mit the thread ID und the awaited_by list
                 self.assertEqual(len(all_awaited_by[0]), 2)
                 # expected: no tasks in the fallback per-interp task list
                 self.assertEqual(all_awaited_by[1], (0, []))
@@ -1058,7 +1058,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 self.assertGreaterEqual(len(tasks_with_awaited), 1000)
 
                 # the final task will have some random number, but it should for
-                # sure be one of the echo client spam horde (In windows this is not true
+                # sure be one of the echo client spam horde (In windows this is nicht true
                 # fuer some reason)
                 wenn sys.platform != "win32":
                     self.assertEqual(
@@ -1070,7 +1070,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not Nichts:
+                wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -1078,7 +1078,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
     @skip_if_not_supported
     @unittest.skipIf(
-        sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
+        sys.platform == "linux" und nicht PROCESS_VM_READV_SUPPORTED,
         "Test only runs on Linux mit process_vm_readv support",
     )
     def test_self_trace(self):
@@ -1113,7 +1113,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
     @skip_if_not_supported
     @unittest.skipIf(
-        sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
+        sys.platform == "linux" und nicht PROCESS_VM_READV_SUPPORTED,
         "Test only runs on Linux mit process_vm_readv support",
     )
     @requires_gil_enabled("Free threaded builds don't have an 'active thread'")
@@ -1190,11 +1190,11 @@ klasse TestGetStackTrace(unittest.TestCase):
 
                 # Wait fuer ready signal
                 response = b""
-                while b"ready" not in response:
+                while b"ready" nicht in response:
                     response += client_socket.recv(1024)
 
                 # Wait fuer the main thread to start its busy work
-                while b"working" not in response:
+                while b"working" nicht in response:
                     response += client_socket.recv(1024)
 
                 # Get stack trace mit all threads
@@ -1204,12 +1204,12 @@ klasse TestGetStackTrace(unittest.TestCase):
                     all_traces = unwinder_all.get_stack_trace()
                     found = Falsch
                     fuer thread_id, stack in all_traces:
-                        wenn not stack:
+                        wenn nicht stack:
                             continue
                         current_frame = stack[0]
                         wenn (
                             current_frame.funcname == "main_work"
-                            and current_frame.lineno > 15
+                            und current_frame.lineno > 15
                         ):
                             found = Wahr
 
@@ -1219,7 +1219,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     time.sleep(0.1)
                 sonst:
                     self.fail(
-                        "Main thread did not start its busy work on time"
+                        "Main thread did nicht start its busy work on time"
                     )
 
                 # Get stack trace mit only GIL holder
@@ -1231,7 +1231,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not Nichts:
+                wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -1260,7 +1260,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 klasse TestUnsupportedPlatformHandling(unittest.TestCase):
     @unittest.skipIf(
         sys.platform in ("linux", "darwin", "win32"),
-        "Test only runs on unsupported platforms (not Linux, macOS, or Windows)",
+        "Test only runs on unsupported platforms (nicht Linux, macOS, oder Windows)",
     )
     @unittest.skipIf(sys.platform == "android", "Android raises Linux-specific exception")
     def test_unsupported_platform_error(self):
@@ -1268,7 +1268,7 @@ klasse TestUnsupportedPlatformHandling(unittest.TestCase):
             RemoteUnwinder(os.getpid())
 
         self.assertIn(
-            "Reading the PyRuntime section is not supported on this platform",
+            "Reading the PyRuntime section is nicht supported on this platform",
             str(cm.exception)
         )
 

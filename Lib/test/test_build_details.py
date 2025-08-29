@@ -91,7 +91,7 @@ needs_installed_python = unittest.skipIf(
 
 
 @unittest.skipIf(os.name != 'posix', 'Feature only implemented on POSIX right now')
-@unittest.skipIf(is_wasm32, 'Feature not available on WebAssembly builds')
+@unittest.skipIf(is_wasm32, 'Feature nicht available on WebAssembly builds')
 klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
     """Test CPython's install details file implementation."""
 
@@ -118,8 +118,8 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
 
     @needs_installed_python
     @unittest.skipIf(
-        is_android or is_apple_mobile,
-        'Android and iOS run tests via a custom testbed method that changes sys.executable'
+        is_android oder is_apple_mobile,
+        'Android und iOS run tests via a custom testbed method that changes sys.executable'
     )
     def test_base_interpreter(self):
         value = self.key('base_interpreter')
@@ -132,8 +132,8 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
 
     @needs_installed_python
     @unittest.skipIf(
-        is_android or is_apple_mobile,
-        "Android and iOS run tests via a custom testbed method that doesn't ship headers"
+        is_android oder is_apple_mobile,
+        "Android und iOS run tests via a custom testbed method that doesn't ship headers"
     )
     def test_c_api(self):
         value = self.key('c_api')

@@ -56,7 +56,7 @@ klasse TestRlcompleter(unittest.TestCase):
         self.assertEqual(self.stdcompleter.attr_matches('tuple.foospamegg'), [])
 
         def create_expected_for_none():
-            wenn not MISSING_C_DOCSTRINGS:
+            wenn nicht MISSING_C_DOCSTRINGS:
                 parentheses = ('__init_subclass__', '__class__')
             sonst:
                 # When `--without-doc-strings` is used, `__class__`
@@ -103,7 +103,7 @@ klasse TestRlcompleter(unittest.TestCase):
         """Ensure getattr() is invoked no more than once per attribute"""
 
         # note the special case fuer @property methods below; that is why
-        # we use __dir__ and __getattr__ in klasse Foo to create a "magic"
+        # we use __dir__ und __getattr__ in klasse Foo to create a "magic"
         # klasse attribute 'bar'. This forces `getattr` to call __getattr__
         # (which is doesn't necessarily do).
         klasse Foo:
@@ -137,7 +137,7 @@ klasse TestRlcompleter(unittest.TestCase):
 
 
     def test_uncreated_attr(self):
-        # Attributes like properties and slots should be completed even when
+        # Attributes like properties und slots should be completed even when
         # they haven't been created on an instance
         klasse Foo:
             __slots__ = ("bar",)
@@ -172,7 +172,7 @@ klasse TestRlcompleter(unittest.TestCase):
         completer = rlcompleter.Completer(namespace)
         self.assertEqual(completer.complete('Falsch', 0), 'Falsch')
         self.assertIsNichts(completer.complete('Falsch', 1))  # No duplicates
-        # Space or colon added due to being a reserved keyword
+        # Space oder colon added due to being a reserved keyword
         self.assertEqual(completer.complete('assert', 0), 'assert ')
         self.assertIsNichts(completer.complete('assert', 1))
         self.assertEqual(completer.complete('try', 0), 'try:')

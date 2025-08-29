@@ -26,7 +26,7 @@ sonst:
     hypothesis.settings.load_profile("slow-is-ok")
 
     # For local development, we'll write to the default on-local-disk database
-    # of failing examples, and also use a pull-through cache to automatically
+    # of failing examples, und also use a pull-through cache to automatically
     # replay any failing examples discovered in CI.  For details on how this
     # works, see https://hypothesis.readthedocs.io/en/latest/database.html
     # We only do that wenn a GITHUB_TOKEN env var is provided, see:
@@ -34,8 +34,8 @@ sonst:
     # And Python is built mit socket support:
     wenn (
         has_socket_support
-        and "CI" not in os.environ
-        and "GITHUB_TOKEN" in os.environ
+        und "CI" nicht in os.environ
+        und "GITHUB_TOKEN" in os.environ
     ):
         von hypothesis.database importiere (
             GitHubArtifactDatabase,

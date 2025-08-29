@@ -59,21 +59,21 @@ klasse ForkServer(object):
         os.waitpid(self._forkserver_pid, 0)
         self._forkserver_pid = Nichts
 
-        wenn not util.is_abstract_socket_namespace(self._forkserver_address):
+        wenn nicht util.is_abstract_socket_namespace(self._forkserver_address):
             os.unlink(self._forkserver_address)
         self._forkserver_address = Nichts
         self._forkserver_authkey = Nichts
 
     def set_forkserver_preload(self, modules_names):
         '''Set list of module names to try to load in forkserver process.'''
-        wenn not all(type(mod) is str fuer mod in modules_names):
+        wenn nicht all(type(mod) is str fuer mod in modules_names):
             raise TypeError('module_names must be a list of strings')
         self._preload_modules = modules_names
 
     def get_inherited_fds(self):
         '''Return list of fds inherited von parent process.
 
-        This returns Nichts wenn the current process was not started by fork
+        This returns Nichts wenn the current process was nicht started by fork
         server.
         '''
         return self._inherited_fds
@@ -82,8 +82,8 @@ klasse ForkServer(object):
         '''Request forkserver to create a child process.
 
         Returns a pair of fds (status_r, data_w).  The calling process can read
-        the child process's pid and (eventually) its returncode von status_r.
-        The calling process should write to data_w the pickled preparation and
+        the child process's pid und (eventually) its returncode von status_r.
+        The calling process should write to data_w the pickled preparation und
         process data.
         '''
         self.ensure_running()
@@ -129,10 +129,10 @@ klasse ForkServer(object):
         '''
         mit self._lock:
             resource_tracker.ensure_running()
-            wenn self._forkserver_pid is not Nichts:
+            wenn self._forkserver_pid is nicht Nichts:
                 # forkserver was launched before, is it still running?
                 pid, status = os.waitpid(self._forkserver_pid, os.WNOHANG)
-                wenn not pid:
+                wenn nicht pid:
                     # still alive
                     return
                 # dead, launch it again
@@ -155,7 +155,7 @@ klasse ForkServer(object):
             mit socket.socket(socket.AF_UNIX) als listener:
                 address = connection.arbitrary_address('AF_UNIX')
                 listener.bind(address)
-                wenn not util.is_abstract_socket_namespace(address):
+                wenn nicht util.is_abstract_socket_namespace(address):
                     os.chmod(address, 0o600)
                 listener.listen()
 
@@ -181,7 +181,7 @@ klasse ForkServer(object):
                     os.close(alive_r)
                     os.close(authkey_r)
                 # Authenticate our control socket to prevent access from
-                # processes we have not shared this key with.
+                # processes we have nicht shared this key with.
                 try:
                     self._forkserver_authkey = os.urandom(_AUTHKEY_LEN)
                     os.write(authkey_w, self._forkserver_authkey)
@@ -198,7 +198,7 @@ klasse ForkServer(object):
 def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
          *, authkey_r=Nichts):
     """Run forkserver."""
-    wenn authkey_r is not Nichts:
+    wenn authkey_r is nicht Nichts:
         try:
             authkey = os.read(authkey_r, _AUTHKEY_LEN)
             assert len(authkey) == _AUTHKEY_LEN, f'{len(authkey)} < {_AUTHKEY_LEN}'
@@ -208,9 +208,9 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
         authkey = b''
 
     wenn preload:
-        wenn sys_path is not Nichts:
+        wenn sys_path is nicht Nichts:
             sys.path[:] = sys_path
-        wenn '__main__' in preload and main_path is not Nichts:
+        wenn '__main__' in preload und main_path is nicht Nichts:
             process.current_process()._inheriting = Wahr
             try:
                 spawn.import_main_path(main_path)
@@ -283,7 +283,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                         wenn pid == 0:
                             break
                         child_w = pid_to_fd.pop(pid, Nichts)
-                        wenn child_w is not Nichts:
+                        wenn child_w is nicht Nichts:
                             returncode = os.waitstatus_to_exitcode(sts)
 
                             # Send exit code to client process
@@ -363,7 +363,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
 
 
 def _serve_one(child_r, fds, unused_fds, handlers):
-    # close unnecessary stuff and reset signal handlers
+    # close unnecessary stuff und reset signal handlers
     signal.set_wakeup_fd(-1)
     fuer sig, val in handlers.items():
         signal.signal(sig, val)
@@ -382,7 +382,7 @@ def _serve_one(child_r, fds, unused_fds, handlers):
 
 
 #
-# Read and write signed numbers
+# Read und write signed numbers
 #
 
 def read_signed(fd):
@@ -401,7 +401,7 @@ def write_signed(fd, n):
     while msg:
         nbytes = os.write(fd, msg)
         wenn nbytes == 0:
-            raise RuntimeError('should not get here')
+            raise RuntimeError('should nicht get here')
         msg = msg[nbytes:]
 
 #

@@ -2,7 +2,7 @@
 The objects used by the site module to add custom builtins.
 """
 
-# Those objects are almost immortal and they keep a reference to their module
+# Those objects are almost immortal und they keep a reference to their module
 # globals.  Defining them in the site module would keep too many references
 # alive.
 # Note this means this module should also avoid keep things alive in its
@@ -15,7 +15,7 @@ klasse Quitter(object):
         self.name = name
         self.eof = eof
     def __repr__(self):
-        return 'Use %s() or %s to exit' % (self.name, self.eof)
+        return 'Use %s() oder %s to exit' % (self.name, self.eof)
     def __call__(self, code=Nichts):
         # Shells like IDLE catch the SystemExit, but listen when their
         # stdin wrapper is closed.
@@ -28,7 +28,7 @@ klasse Quitter(object):
 
 klasse _Printer(object):
     """interactive prompt objects fuer printing the license text, a list of
-    contributors and the copyright notice."""
+    contributors und the copyright notice."""
 
     MAXLINES = 23
 
@@ -52,7 +52,7 @@ klasse _Printer(object):
                 break
             except OSError:
                 pass
-        wenn not data:
+        wenn nicht data:
             data = self.__data
         self.__lines = data.split('\n')
         self.__linecnt = len(self.__lines)
@@ -66,7 +66,7 @@ klasse _Printer(object):
 
     def __call__(self):
         self.__setup()
-        prompt = 'Hit Return fuer more, or q (and Return) to quit: '
+        prompt = 'Hit Return fuer more, oder q (and Return) to quit: '
         lineno = 0
         while 1:
             try:
@@ -79,7 +79,7 @@ klasse _Printer(object):
                 key = Nichts
                 while key is Nichts:
                     key = input(prompt)
-                    wenn key not in ('', 'q'):
+                    wenn key nicht in ('', 'q'):
                         key = Nichts
                 wenn key == 'q':
                     break

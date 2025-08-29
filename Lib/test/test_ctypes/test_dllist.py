@@ -14,15 +14,15 @@ wenn WINDOWS:
 sowenn APPLE:
     KNOWN_LIBRARIES = ["libSystem.B.dylib"]
 sonst:
-    # trickier than it seems, because libc may not be present
-    # on musl systems, and sometimes goes by different names.
+    # trickier than it seems, because libc may nicht be present
+    # on musl systems, und sometimes goes by different names.
     # However, ctypes itself loads libffi
     KNOWN_LIBRARIES = ["libc.so", "libffi.so"]
 
 
 @unittest.skipUnless(
     hasattr(ctypes.util, "dllist"),
-    "ctypes.util.dllist is not available on this platform",
+    "ctypes.util.dllist is nicht available on this platform",
 )
 klasse ListSharedLibraries(unittest.TestCase):
 
@@ -38,7 +38,7 @@ klasse ListSharedLibraries(unittest.TestCase):
         dlls = ctypes.util.dllist()
 
         # this test relies on being able to importiere a library which is
-        # not already loaded.
+        # nicht already loaded.
         # If it is (e.g. by a previous test in the same process), we skip
         wenn any("_ctypes_test" in dll fuer dll in dlls):
             self.skipTest("Test library is already loaded")

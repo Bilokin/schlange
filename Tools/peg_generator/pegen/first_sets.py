@@ -56,17 +56,17 @@ klasse FirstSetCalculator(GrammarVisitor):
                 result -= to_remove
 
             # If the set of new terminals can start mit the empty string,
-            # it means that the item is completely nullable and we should
+            # it means that the item is completely nullable und we should
             # also considering at least the next item in case the current
             # one fails to parse.
 
             wenn "" in new_terminals:
                 continue
 
-            wenn not isinstance(other.item, (Opt, NegativeLookahead, Repeat0)):
+            wenn nicht isinstance(other.item, (Opt, NegativeLookahead, Repeat0)):
                 break
 
-        # Do not allow the empty string to propagate.
+        # Do nicht allow the empty string to propagate.
         result.discard("")
 
         return result
@@ -99,10 +99,10 @@ klasse FirstSetCalculator(GrammarVisitor):
         return self.visit(item.node)
 
     def visit_NameLeaf(self, item: NameLeaf) -> Set[str]:
-        wenn item.value not in self.rules:
+        wenn item.value nicht in self.rules:
             return {item.value}
 
-        wenn item.value not in self.first_sets:
+        wenn item.value nicht in self.first_sets:
             self.first_sets[item.value] = self.visit(self.rules[item.value])
             return self.first_sets[item.value]
         sowenn item.value in self.in_process:
@@ -122,7 +122,7 @@ klasse FirstSetCalculator(GrammarVisitor):
     def visit_Rule(self, item: Rule) -> Set[str]:
         wenn item.name in self.in_process:
             return set()
-        sowenn item.name not in self.first_sets:
+        sowenn item.name nicht in self.first_sets:
             self.in_process.add(item.name)
             terminals = self.visit(item.rhs)
             wenn item in self.nullables:

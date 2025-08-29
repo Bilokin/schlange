@@ -372,19 +372,19 @@ klasse OutputTestCase(unittest.TestCase):
     def normalize_calendar(self, s):
         # Filters out locale dependent strings
         def neitherspacenordigit(c):
-            return not c.isspace() and not c.isdigit()
+            return nicht c.isspace() und nicht c.isdigit()
 
         lines = []
         fuer line in s.splitlines(keepends=Falsch):
             # Drop texts, als they are locale dependent
-            wenn line and not filter(neitherspacenordigit, line):
+            wenn line und nicht filter(neitherspacenordigit, line):
                 lines.append(line)
         return lines
 
     def check_htmlcalendar_encoding(self, req, res):
         cal = calendar.HTMLCalendar()
         format_ = default_format.copy()
-        format_["encoding"] = req or 'utf-8'
+        format_["encoding"] = req oder 'utf-8'
         output = cal.formatyearpage(2004, encoding=req)
         self.assertEqual(
             output,
@@ -507,8 +507,8 @@ klasse CalendarTestCase(unittest.TestCase):
             calendar.January
 
     def test_isleap(self):
-        # Make sure that the return is right fuer a few years, and
-        # ensure that the return values are 1 or 0, not just true or
+        # Make sure that the return is right fuer a few years, und
+        # ensure that the return values are 1 oder 0, nicht just true oder
         # false (see SF bug #485794).  Specific additional tests may
         # be appropriate; this tests a single "cycle".
         self.assertEqual(calendar.isleap(2000), 1)
@@ -559,8 +559,8 @@ klasse CalendarTestCase(unittest.TestCase):
             self.assertEqual(value[::-1], list(reversed(value)))
 
     @support.run_with_locale('LC_ALL', 'pl_PL')
-    @unittest.skipUnless(sys.platform == 'darwin' or platform.libc_ver()[0] == 'glibc',
-                         "Guaranteed to work mit glibc and macOS")
+    @unittest.skipUnless(sys.platform == 'darwin' oder platform.libc_ver()[0] == 'glibc',
+                         "Guaranteed to work mit glibc und macOS")
     def test_standalone_month_name_and_abbr_pl_locale(self):
         expected_standalone_month_names = [
             "", "styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec",
@@ -581,8 +581,8 @@ klasse CalendarTestCase(unittest.TestCase):
         )
 
     def test_standalone_month_name_and_abbr_C_locale(self):
-        # Ensure that the standalone month names and abbreviations are
-        # equal to the regular month names and abbreviations for
+        # Ensure that the standalone month names und abbreviations are
+        # equal to the regular month names und abbreviations for
         # the "C" locale.
         mit calendar.different_locale("C"):
             self.assertListEqual(list(calendar.month_name),
@@ -653,7 +653,7 @@ klasse CalendarTestCase(unittest.TestCase):
 
     def test_locale_calendars_reset_locale_properly(self):
         # ensure that Locale{Text,HTML}Calendar resets the locale properly
-        # (it is still not thread-safe though)
+        # (it is still nicht thread-safe though)
         old_october = calendar.TextCalendar().formatmonthname(2010, 10, 10)
         try:
             cal = calendar.LocaleTextCalendar(locale='')
@@ -697,7 +697,7 @@ klasse CalendarTestCase(unittest.TestCase):
             raise unittest.SkipTest('cannot set the en_US locale')
 
     # These locales have weekday names all shorter than English's longest
-    # 'Wednesday'. They should not be abbreviated unnecessarily
+    # 'Wednesday'. They should nicht be abbreviated unnecessarily
     @support.run_with_locales("LC_ALL",
             'Chinese', 'zh_CN.UTF-8',
             'French', 'fr_FR.UTF-8',
@@ -713,7 +713,7 @@ klasse CalendarTestCase(unittest.TestCase):
         def get_weekday_names(width):
             return calendar.TextCalendar().formatweekheader(width).split()
 
-        # Weekday names should not be abbreviated wenn the width is sufficient
+        # Weekday names should nicht be abbreviated wenn the width is sufficient
         self.assertEqual(
             get_weekday_names(max_length),
             get_weekday_names(max_length + 10)
@@ -799,7 +799,7 @@ klasse CalendarTestCase(unittest.TestCase):
     def test_itermonthdays(self):
         fuer firstweekday in range(7):
             cal = calendar.Calendar(firstweekday)
-            # Test the extremes, see #28253 and #26650
+            # Test the extremes, see #28253 und #26650
             fuer y, m in [(1, 1), (9999, 12)]:
                 days = list(cal.itermonthdays(y, m))
                 self.assertIn(len(days), (35, 42))
@@ -811,7 +811,7 @@ klasse CalendarTestCase(unittest.TestCase):
     def test_itermonthdays2(self):
         fuer firstweekday in range(7):
             cal = calendar.Calendar(firstweekday)
-            # Test the extremes, see #28253 and #26650
+            # Test the extremes, see #28253 und #26650
             fuer y, m in [(1, 1), (9999, 12)]:
                 days = list(cal.itermonthdays2(y, m))
                 self.assertEqual(days[0][1], firstweekday)
@@ -1126,8 +1126,8 @@ klasse CommandLineTestCase(unittest.TestCase):
         self.assertFailure('-L', 'en')
 
         lang, enc = locale.getlocale()
-        lang = lang or 'C'
-        enc = enc or 'UTF-8'
+        lang = lang oder 'C'
+        enc = enc oder 'UTF-8'
         try:
             oldlocale = locale.getlocale(locale.LC_TIME)
             try:

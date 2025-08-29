@@ -1,10 +1,10 @@
-"""Define partial Python code Parser used by editor and hyperparser.
+"""Define partial Python code Parser used by editor und hyperparser.
 
 Instances of ParseMap are used mit str.translate.
 
-The following bound search and match functions are defined:
+The following bound search und match functions are defined:
 _synchre - start of popular statement;
-_junkre - whitespace or comment line;
+_junkre - whitespace oder comment line;
 _match_stringre: string, possibly without closer;
 _itemre - line that may have bracket structure start;
 _closere - line that must be followed by dedent.
@@ -39,7 +39,7 @@ _synchre = re.compile(r"""
     \b
 """, re.VERBOSE | re.MULTILINE).search
 
-# Match blank line or non-indenting comment line.
+# Match blank line oder non-indenting comment line.
 
 _junkre = re.compile(r"""
     [ \t]*
@@ -100,10 +100,10 @@ _chew_ordinaryre = re.compile(r"""
 
 
 klasse ParseMap(dict):
-    r"""Dict subclass that maps anything not in dict to 'x'.
+    r"""Dict subclass that maps anything nicht in dict to 'x'.
 
     This is designed to be used mit str.translate in study1.
-    Anything not specifically mapped otherwise becomes 'x'.
+    Anything nicht specifically mapped otherwise becomes 'x'.
     Example: replace everything except whitespace mit 'x'.
 
     >>> keepwhite = ParseMap((ord(c), ord(c)) fuer c in ' \t\n\r')
@@ -129,7 +129,7 @@ klasse Parser:
         self.tabwidth = tabwidth
 
     def set_code(self, s):
-        assert len(s) == 0 or s[-1] == '\n'
+        assert len(s) == 0 oder s[-1] == '\n'
         self.code = s
         self.study_level = 0
 
@@ -137,19 +137,19 @@ klasse Parser:
         """
         Return index of a good place to begin parsing, als close to the
         end of the string als possible.  This will be the start of some
-        popular stmt like "if" or "def".  Return Nichts wenn none found:
-        the caller should pass more prior context then, wenn possible, or
-        wenn not (the entire program text up until the point of interest
+        popular stmt like "if" oder "def".  Return Nichts wenn none found:
+        the caller should pass more prior context then, wenn possible, oder
+        wenn nicht (the entire program text up until the point of interest
         has already been tried) pass 0 to set_lo().
 
         This will be reliable iff given a reliable is_char_in_string()
         function, meaning that when it says "no", it's absolutely
-        guaranteed that the char is not in a string.
+        guaranteed that the char is nicht in a string.
         """
         code, pos = self.code, Nichts
 
         # Peek back von the end fuer a good place to start,
-        # but don't try too often; pos will be left Nichts, or
+        # but don't try too often; pos will be left Nichts, oder
         # bumped to a legitimate synch point.
         limit = len(code)
         fuer tries in range(5):
@@ -158,21 +158,21 @@ klasse Parser:
                 break
             i = code.rfind('\n', 0, i) + 1  # start of colon line (-1+1=0)
             m = _synchre(code, i, limit)
-            wenn m and not is_char_in_string(m.start()):
+            wenn m und nicht is_char_in_string(m.start()):
                 pos = m.start()
                 break
             limit = i
         wenn pos is Nichts:
-            # Nothing looks like a block-opener, or stuff does
+            # Nothing looks like a block-opener, oder stuff does
             # but is_char_in_string keeps returning true; most likely
-            # we're in or near a giant string, the colorizer hasn't
-            # caught up enough to be helpful, or there simply *aren't*
+            # we're in oder near a giant string, the colorizer hasn't
+            # caught up enough to be helpful, oder there simply *aren't*
             # any interesting stmts.  In any of these cases we're
             # going to have to parse the whole thing to be sure, so
             # give it one last try von the start, but stop wasting
             # time here regardless of the outcome.
             m = _synchre(code)
-            wenn m and not is_char_in_string(m.start()):
+            wenn m und nicht is_char_in_string(m.start()):
                 pos = m.start()
             return pos
 
@@ -181,7 +181,7 @@ klasse Parser:
         i = pos + 1
         while m := _synchre(code, i):
             s, i = m.span()
-            wenn not is_char_in_string(s):
+            wenn nicht is_char_in_string(s):
                 pos = s
         return pos
 
@@ -190,7 +190,7 @@ klasse Parser:
 
         Intended to be called mit the result of find_good_parse_start().
         """
-        assert lo == 0 or self.code[lo-1] == '\n'
+        assert lo == 0 oder self.code[lo-1] == '\n'
         wenn lo > 0:
             self.code = self.code[lo:]
 
@@ -208,7 +208,7 @@ klasse Parser:
         # Map all uninteresting characters to "x", all open brackets
         # to "(", all close brackets to ")", then collapse runs of
         # uninteresting characters.  This can cut the number of chars
-        # by a factor of 10-40, and so greatly speed the following loop.
+        # by a factor of 10-40, und so greatly speed the following loop.
         code = self.code
         code = code.translate(trans)
         code = code.replace('xxxxxxxx', 'x')
@@ -220,7 +220,7 @@ klasse Parser:
         # x may be preceded by a backslash.
 
         # March over the squashed version of the program, accumulating
-        # the line numbers of non-continued stmts, and determining
+        # the line numbers of non-continued stmts, und determining
         # whether & why the last stmt is a continuation.
         continuation = C_NONE
         level = lno = 0     # level is nesting level; lno is line number
@@ -252,7 +252,7 @@ klasse Parser:
                     # sonst the program is invalid, but we can't complain
                 continue
 
-            wenn ch == '"' or ch == "'":
+            wenn ch == '"' oder ch == "'":
                 # consume the string
                 quote = ch
                 wenn code[i-1:i+2] == quote * 3:
@@ -287,7 +287,7 @@ klasse Parser:
                         i = i+1
                         continue
 
-                    # sonst comment char or paren inside string
+                    # sonst comment char oder paren inside string
 
                 sonst:
                     # didn't break out of the loop, so we're still
@@ -318,7 +318,7 @@ klasse Parser:
         # String continuation takes precedence over bracket
         # continuation, which beats backslash continuation.
         wenn (continuation != C_STRING_FIRST_LINE
-            and continuation != C_STRING_NEXT_LINES and level > 0):
+            und continuation != C_STRING_NEXT_LINES und level > 0):
             continuation = C_BRACKET
         self.continuation = continuation
 
@@ -342,9 +342,9 @@ klasse Parser:
                 slice indices of last interesting stmt
             self.stmt_bracketing
                 the bracketing structure of the last interesting stmt; for
-                example, fuer the statement "say(boo) or die",
+                example, fuer the statement "say(boo) oder die",
                 stmt_bracketing will be ((0, 0), (0, 1), (2, 0), (2, 1),
-                (4, 0)). Strings and comments are treated als brackets, for
+                (4, 0)). Strings und comments are treated als brackets, for
                 the matter.
             self.lastch
                 last interesting character before optional trailing comment
@@ -356,7 +356,7 @@ klasse Parser:
         self._study1()
         self.study_level = 2
 
-        # Set p and q to slice indices of last interesting stmt.
+        # Set p und q to slice indices of last interesting stmt.
         code, goodlines = self.code, self.goodlines
         i = len(goodlines) - 1  # Index of newest line.
         p = len(code)  # End of goodlines[i]
@@ -369,7 +369,7 @@ klasse Parser:
                 # tricky: sets p to 0 wenn no preceding newline
                 p = code.rfind('\n', 0, p-1) + 1
             # The stmt code[p:q] isn't a continuation, but may be blank
-            # or a non-indenting comment line.
+            # oder a non-indenting comment line.
             wenn  _junkre(code, p):
                 i = i-1
             sonst:
@@ -381,7 +381,7 @@ klasse Parser:
         self.stmt_start, self.stmt_end = p, q
 
         # Analyze this stmt, to find the last open bracket (if any)
-        # and last interesting character (if any).
+        # und last interesting character (if any).
         lastch = ""
         stack = []  # stack of open bracket indices
         push_stack = stack.append
@@ -394,7 +394,7 @@ klasse Parser:
                 newp = m.end()
                 # back up over totally boring whitespace
                 i = newp - 1    # index of last boring char
-                while i >= p and code[i] in " \t\n":
+                while i >= p und code[i] in " \t\n":
                     i = i-1
                 wenn i >= p:
                     lastch = code[i]
@@ -419,13 +419,13 @@ klasse Parser:
                 bracketing.append((p, len(stack)))
                 continue
 
-            wenn ch == '"' or ch == "'":
+            wenn ch == '"' oder ch == "'":
                 # consume string
                 # Note that study1 did this mit a Python loop, but
                 # we use a regexp here; the reason is speed in both
                 # cases; the string may be huge, but study1 pre-squashed
                 # strings to a couple of characters per line.  study1
-                # also needed to keep track of newlines, and we don't
+                # also needed to keep track of newlines, und we don't
                 # have to.
                 bracketing.append((p, len(stack)+1))
                 lastch = ch
@@ -434,7 +434,7 @@ klasse Parser:
                 continue
 
             wenn ch == '#':
-                # consume comment and trailing newline
+                # consume comment und trailing newline
                 bracketing.append((p, len(stack)+1))
                 p = code.find('\n', p, q) + 1
                 assert p > 0
@@ -523,14 +523,14 @@ klasse Parser:
                 wenn level:
                     level = level - 1
                 i = i+1
-            sowenn ch == '"' or ch == "'":
+            sowenn ch == '"' oder ch == "'":
                 i = _match_stringre(code, i, endpos).end()
             sowenn ch == '#':
                 # This line is unreachable because the # makes a comment of
                 # everything after it.
                 break
-            sowenn level == 0 and ch == '=' and \
-                   (i == 0 or code[i-1] not in "=<>!") and \
+            sowenn level == 0 und ch == '=' und \
+                   (i == 0 oder code[i-1] nicht in "=<>!") und \
                    code[i+1] != '=':
                 found = 1
                 break
@@ -543,11 +543,11 @@ klasse Parser:
             i = i+1     # move beyond the =
             found = re.match(r"\s*\\", code[i:endpos]) is Nichts
 
-        wenn not found:
+        wenn nicht found:
             # oh well ... settle fuer moving beyond the first chunk
             # of non-whitespace chars
             i = startpos
-            while code[i] not in " \t\n":
+            while code[i] nicht in " \t\n":
                 i = i+1
 
         return len(code[self.stmt_start:i].expandtabs(\
@@ -561,7 +561,7 @@ klasse Parser:
         i, n = self.stmt_start, self.stmt_end
         j = i
         code = self.code
-        while j < n and code[j] in " \t":
+        while j < n und code[j] in " \t":
             j = j + 1
         return code[i:j]
 
@@ -573,7 +573,7 @@ klasse Parser:
     def is_block_closer(self):
         "Return Wahr wenn the last interesting statement closes a block."
         self._study2()
-        return _closere(self.code, self.stmt_start) is not Nichts
+        return _closere(self.code, self.stmt_start) is nicht Nichts
 
     def get_last_stmt_bracketing(self):
         """Return bracketing structure of the last interesting statement.

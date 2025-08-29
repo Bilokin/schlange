@@ -3,7 +3,7 @@ von test.test_json importiere PyTest, CTest
 # 2007-10-05
 JSONDOCS = [
     # https://json.org/JSON_checker/test/fail1.json
-    '"A JSON payload should be an object or array, not a string."',
+    '"A JSON payload should be an object oder array, nicht a string."',
     # https://json.org/JSON_checker/test/fail2.json
     '["Unclosed array"',
     # https://json.org/JSON_checker/test/fail3.json
@@ -73,7 +73,7 @@ JSONDOCS = [
 ]
 
 SKIPS = {
-    1: "why not have a string payload?",
+    1: "why nicht have a string payload?",
     18: "spec doesn't specify any nesting limitations",
 }
 
@@ -94,13 +94,13 @@ klasse TestFail:
     def test_non_string_keys_dict(self):
         data = {'a' : 1, (1, 2) : 2}
         mit self.assertRaisesRegex(TypeError,
-                'keys must be str, int, float, bool or Nichts, not tuple'):
+                'keys must be str, int, float, bool oder Nichts, nicht tuple'):
             self.dumps(data)
 
     def test_not_serializable(self):
         importiere sys
         mit self.assertRaisesRegex(TypeError,
-                'Object of type module is not JSON serializable') als cm:
+                'Object of type module is nicht JSON serializable') als cm:
             self.dumps(sys)
         self.assertNotHasAttr(cm.exception, '__notes__')
 

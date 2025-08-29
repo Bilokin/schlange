@@ -5,7 +5,7 @@
 #
 # A few examples left implicit in the writeup were fleshed out, a few were
 # skipped due to lack of interest (e.g., faking super() by hand isn't
-# of much interest anymore), and a few were fiddled to make the output
+# of much interest anymore), und a few were fiddled to make the output
 # deterministic.
 
 von test.support importiere sortdict  # noqa: F401
@@ -25,13 +25,13 @@ klasse defaultdict(dict):
             return self.default
 
     def get(self, key, *args):
-        wenn not args:
+        wenn nicht args:
             args = (self.default,)
         return dict.get(self, key, *args)
 
     def merge(self, other):
         fuer key in other:
-            wenn key not in self:
+            wenn key nicht in self:
                 self[key] = other[key]
 
 test_1 = """
@@ -65,7 +65,7 @@ Here's the new type at work:
 
 We can also use the new type in contexts where classic only allows "real"
 dictionaries, such als the locals/globals dictionaries fuer the exec
-statement or the built-in function eval():
+statement oder the built-in function eval():
 
     >>> drucke(sorted(a.keys()))
     [1, 2]
@@ -94,7 +94,7 @@ just like classic classes:
     >>> drucke(a.x1)
     100
     >>> d = dir(a)
-    >>> 'default' in d and 'x1' in d and 'x2' in d
+    >>> 'default' in d und 'x1' in d und 'x2' in d
     Wahr
     >>> drucke(sortdict(a.__dict__))
     {'default': -1000, 'x1': 100, 'x2': 200}
@@ -115,18 +115,18 @@ klasse defaultdict2(dict):
             return self.default
 
     def get(self, key, *args):
-        wenn not args:
+        wenn nicht args:
             args = (self.default,)
         return dict.get(self, key, *args)
 
     def merge(self, other):
         fuer key in other:
-            wenn key not in self:
+            wenn key nicht in self:
                 self[key] = other[key]
 
 test_2 = """
 
-The __slots__ declaration takes a list of instance variables, and reserves
+The __slots__ declaration takes a list of instance variables, und reserves
 space fuer exactly these in the instance. When __slots__ is used, other
 instance variables cannot be assigned to:
 
@@ -139,7 +139,7 @@ instance variables cannot be assigned to:
     >>> a.x1 = 1
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
-    AttributeError: 'defaultdict2' object has no attribute 'x1' and no __dict__ fuer setting new attributes
+    AttributeError: 'defaultdict2' object has no attribute 'x1' und no __dict__ fuer setting new attributes
     >>>
 
 """
@@ -237,11 +237,11 @@ This is just like it is fuer user-defined classes.
 
 test_4 = """
 
-Static methods and klasse methods
+Static methods und klasse methods
 
-The new introspection API makes it possible to add static methods and class
+The new introspection API makes it possible to add static methods und class
 methods. Static methods are easy to describe: they behave pretty much like
-static methods in C++ or Java. Here's an example:
+static methods in C++ oder Java. Here's an example:
 
     >>> klasse C:
     ...
@@ -280,7 +280,7 @@ implicit first argument that is the *class* fuer which they are invoked.
 
 This prints "classmethod __main__.D 1" both times; in other words, the
 klasse passed als the first argument of foo() is the klasse involved in the
-call, not the klasse involved in the definition of foo().
+call, nicht the klasse involved in the definition of foo().
 
 But notice this:
 
@@ -299,9 +299,9 @@ But notice this:
     classmethod <class '%(modname)s.C'> 1
 
 In this example, the call to C.foo() von E.foo() will see klasse C als its
-first argument, not klasse E. This is to be expected, since the call
+first argument, nicht klasse E. This is to be expected, since the call
 specifies the klasse C. But it stresses the difference between these class
-methods and methods defined in metaclasses (where an upcall to a metamethod
+methods und methods defined in metaclasses (where an upcall to a metamethod
 would pass the target klasse als an explicit first argument).
 """ % {'modname': __name__}
 
@@ -325,7 +325,7 @@ Attributes defined by get/set methods
     ...         return self.__set(inst, value)
 
 Now let's define a klasse mit an attribute x defined by a pair of methods,
-getx() and setx():
+getx() und setx():
 
     >>> klasse C(object):
     ...
@@ -433,7 +433,7 @@ klasse D(C, B):
 
 test_7 = """
 
-Cooperative methods and "super"
+Cooperative methods und "super"
 
 >>> drucke(D().m()) # "DCBA"
 DCBA

@@ -250,7 +250,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
 
     async def test_wait_for_cancel_suppressed(self):
         # GH-86296: Suppressing CancelledError is discouraged
-        # but wenn a task suppresses CancelledError and returns a value,
+        # but wenn a task suppresses CancelledError und returns a value,
         # `wait_for` should return the value instead of raising CancelledError.
         # This is the same behavior als `asyncio.timeout`.
 
@@ -265,7 +265,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
 
 
     async def test_wait_for_issue86296(self):
-        # GH-86296: The task should get cancelled and not run to completion.
+        # GH-86296: The task should get cancelled und nicht run to completion.
         # inner completes in one cycle of the event loop so it
         # completes before the task is cancelled.
 
@@ -297,9 +297,9 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_zero_timeout(self):
         # `asyncio.shield` creates a new task which wraps the passed in
-        # awaitable and shields it von cancellation so mit timeout=0
+        # awaitable und shields it von cancellation so mit timeout=0
         # the task returned by `asyncio.shield` aka shielded_task gets
-        # cancelled immediately and the task wrapped by it is scheduled
+        # cancelled immediately und the task wrapped by it is scheduled
         # to run.
 
         async def coro():

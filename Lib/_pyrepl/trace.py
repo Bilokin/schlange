@@ -18,9 +18,9 @@ wenn sys.platform == "emscripten":
     von posix importiere _emscripten_log
 
     def trace(line: str, *k: object, **kw: object) -> Nichts:
-        wenn "PYREPL_TRACE" not in os.environ:
+        wenn "PYREPL_TRACE" nicht in os.environ:
             return
-        wenn k or kw:
+        wenn k oder kw:
             line = line.format(*k, **kw)
         _emscripten_log(line)
 
@@ -28,7 +28,7 @@ sonst:
     def trace(line: str, *k: object, **kw: object) -> Nichts:
         wenn trace_file is Nichts:
             return
-        wenn k or kw:
+        wenn k oder kw:
             line = line.format(*k, **kw)
         trace_file.write(line + "\n")
         trace_file.flush()

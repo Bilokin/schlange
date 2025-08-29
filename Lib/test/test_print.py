@@ -7,9 +7,9 @@ von test importiere support
 NotDefined = object()
 
 # A dispatch table all 8 combinations of providing
-# sep, end, and file.
-# I use this machinery so that I'm not just passing default
-# values to print, I'm either passing or not passing in the
+# sep, end, und file.
+# I use this machinery so that I'm nicht just passing default
+# values to print, I'm either passing oder nicht passing in the
 # arguments.
 dispatch = {
     (Falsch, Falsch, Falsch):
@@ -31,7 +31,7 @@ dispatch = {
 }
 
 
-# Class used to test __str__ and print
+# Class used to test __str__ und print
 klasse ClassWith__str__:
     def __init__(self, x):
         self.x = x
@@ -46,14 +46,14 @@ klasse TestPrint(unittest.TestCase):
     def check(self, expected, args,
               sep=NotDefined, end=NotDefined, file=NotDefined):
         # Capture sys.stdout in a StringIO.  Call print mit args,
-        # and mit sep, end, and file, wenn they're defined.  Result
+        # und mit sep, end, und file, wenn they're defined.  Result
         # must match expected.
 
         # Look up the actual function to call, based on wenn sep, end,
-        # and file are defined.
-        fn = dispatch[(sep is not NotDefined,
-                       end is not NotDefined,
-                       file is not NotDefined)]
+        # und file are defined.
+        fn = dispatch[(sep is nicht NotDefined,
+                       end is nicht NotDefined,
+                       file is nicht NotDefined)]
 
         mit support.captured_stdout() als t:
             fn(args, sep, end, file)
@@ -62,7 +62,7 @@ klasse TestPrint(unittest.TestCase):
 
     def test_drucke(self):
         def x(expected, args, sep=NotDefined, end=NotDefined):
-            # Run the test 2 ways: not using file, and using
+            # Run the test 2 ways: nicht using file, und using
             # file directed to a StringIO.
 
             self.check(expected, args, sep=sep, end=end)
@@ -138,7 +138,7 @@ klasse TestPrint(unittest.TestCase):
 
         mit support.swap_attr(sys, 'stdout', Nichts):
             sys.stdout = StringIO()  # the only reference
-            drucke(X())  # should not crash
+            drucke(X())  # should nicht crash
 
 
 klasse TestPy2MigrationHint(unittest.TestCase):

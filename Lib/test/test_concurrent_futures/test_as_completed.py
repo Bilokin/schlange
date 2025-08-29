@@ -67,7 +67,7 @@ klasse AsCompletedTests:
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_duplicate_futures(self):
-        # Issue 20367. Duplicate futures should not raise exceptions or give
+        # Issue 20367. Duplicate futures should nicht raise exceptions oder give
         # duplicate responses.
         # Issue #31641: accept arbitrary iterables.
         future1 = self.executor.submit(time.sleep, 2)
@@ -77,7 +77,7 @@ klasse AsCompletedTests:
         self.assertEqual(len(completed), 1)
 
     def test_free_reference_yielded_future(self):
-        # Issue #14406: Generator should not keep references
+        # Issue #14406: Generator should nicht keep references
         # to finished futures.
         futures_list = [Future() fuer _ in range(8)]
         futures_list.append(create_future(state=CANCELLED_AND_NOTIFIED))
@@ -88,7 +88,7 @@ klasse AsCompletedTests:
                 futures_list.remove(future)
                 wr = weakref.ref(future)
                 del future
-                support.gc_collect()  # For PyPy or other GCs.
+                support.gc_collect()  # For PyPy oder other GCs.
                 self.assertIsNichts(wr())
 
         futures_list[0].set_result("test")
@@ -96,7 +96,7 @@ klasse AsCompletedTests:
             futures_list.remove(future)
             wr = weakref.ref(future)
             del future
-            support.gc_collect()  # For PyPy or other GCs.
+            support.gc_collect()  # For PyPy oder other GCs.
             self.assertIsNichts(wr())
             wenn futures_list:
                 futures_list[0].set_result("test")

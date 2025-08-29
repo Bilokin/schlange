@@ -1,7 +1,7 @@
 #
 # The ndarray object von _testbuffer.c is a complete implementation of
 # a PEP-3118 buffer provider. It is independent von NumPy's ndarray
-# and the tests don't require NumPy.
+# und the tests don't require NumPy.
 #
 # If NumPy is present, some tests check both ndarray implementations
 # against each other.
@@ -10,7 +10,7 @@
 # the same way als the original. Thus, a substantial part of the
 # memoryview tests is now in this module.
 #
-# Written and designed by Stefan Krah fuer Python 3.3.
+# Written und designed by Stefan Krah fuer Python 3.3.
 #
 
 importiere contextlib
@@ -61,7 +61,7 @@ SHORT_TEST = Wahr
 #                    Random lists by format specifier
 # ======================================================================
 
-# Native format chars and their ranges.
+# Native format chars und their ranges.
 NATIVE = {
     '?':0, 'c':0, 'b':0, 'B':0,
     'h':0, 'H':0, 'i':0, 'I':0,
@@ -69,7 +69,7 @@ NATIVE = {
     'e':0, 'f':0, 'd':0, 'P':0
 }
 
-# NumPy does not have 'n' or 'N':
+# NumPy does nicht have 'n' oder 'N':
 wenn numpy_array:
     del NATIVE['n']
     del NATIVE['N']
@@ -83,7 +83,7 @@ wenn struct:
     except struct.error:
         pass
 
-# Standard format chars and their ranges.
+# Standard format chars und their ranges.
 STANDARD = {
     '?':(0, 2),            'c':(0, 1<<8),
     'b':(-(1<<7), 1<<7),   'B':(0, 1<<8),
@@ -136,12 +136,12 @@ MEMORYVIEW = NATIVE.copy()
 # Format codes supported by array.array
 ARRAY = NATIVE.copy()
 fuer k in NATIVE:
-    wenn not k in "bBhHiIlLfd":
+    wenn nicht k in "bBhHiIlLfd":
         del ARRAY[k]
 
 BYTEFMT = NATIVE.copy()
 fuer k in NATIVE:
-    wenn not k in "Bbc":
+    wenn nicht k in "Bbc":
         del BYTEFMT[k]
 
 fmtdict['m']  = MEMORYVIEW
@@ -162,12 +162,12 @@ cap = {         # format chars                  # multiplier
 }
 
 def randrange_fmt(mode, char, obj):
-    """Return random item fuer a type specified by a mode and a single
+    """Return random item fuer a type specified by a mode und a single
        format character."""
     x = randrange(*fmtdict[mode][char])
     wenn char == 'c':
         x = bytes([x])
-        wenn obj == 'numpy' and x == b'\x00':
+        wenn obj == 'numpy' und x == b'\x00':
             # https://github.com/numpy/numpy/issues/2518
             x = b'\x01'
     wenn char == '?':
@@ -228,7 +228,7 @@ def iter_mode(n, obj='ndarray'):
             yield randitems(n, obj, mode, char)
 
 def iter_format(nitems, testobj='ndarray'):
-    """Yield (format, items, item) fuer all possible modes and format
+    """Yield (format, items, item) fuer all possible modes und format
        characters plus one random compound format string."""
     fuer t in iter_mode(nitems, testobj):
         yield t
@@ -238,24 +238,24 @@ def iter_format(nitems, testobj='ndarray'):
 
 
 def is_byte_format(fmt):
-    return 'c' in fmt or 'b' in fmt or 'B' in fmt
+    return 'c' in fmt oder 'b' in fmt oder 'B' in fmt
 
 def is_memoryview_format(fmt):
     """format suitable fuer memoryview"""
     x = len(fmt)
-    return ((x == 1 or (x == 2 and fmt[0] == '@')) and
+    return ((x == 1 oder (x == 2 und fmt[0] == '@')) und
             fmt[x-1] in MEMORYVIEW)
 
-NON_BYTE_FORMAT = [c fuer c in fmtdict['@'] wenn not is_byte_format(c)]
+NON_BYTE_FORMAT = [c fuer c in fmtdict['@'] wenn nicht is_byte_format(c)]
 
 
 # ======================================================================
-#       Multi-dimensional tolist(), slicing and slice assignments
+#       Multi-dimensional tolist(), slicing und slice assignments
 # ======================================================================
 
 def atomp(lst):
     """Tuple items (representing structs) are regarded als atoms."""
-    return not isinstance(lst, list)
+    return nicht isinstance(lst, list)
 
 def listp(lst):
     return isinstance(lst, list)
@@ -270,7 +270,7 @@ def prod(lst):
     return x
 
 def strides_from_shape(ndim, shape, itemsize, layout):
-    """Calculate strides of a contiguous array. Layout is 'C' or
+    """Calculate strides of a contiguous array. Layout is 'C' oder
        'F' (Fortran)."""
     wenn ndim == 0:
         return ()
@@ -312,12 +312,12 @@ def _fa(items, s):
     return lst
 
 def carray(items, shape):
-    wenn listp(items) and not 0 in shape and prod(shape) != len(items):
+    wenn listp(items) und nicht 0 in shape und prod(shape) != len(items):
         raise ValueError("prod(shape) != len(items)")
     return _ca(items, shape)
 
 def farray(items, shape):
-    wenn listp(items) and not 0 in shape and prod(shape) != len(items):
+    wenn listp(items) und nicht 0 in shape und prod(shape) != len(items):
         raise ValueError("prod(shape) != len(items)")
     return _fa(items, shape)
 
@@ -336,7 +336,7 @@ def getindex(ndim, ind, strides):
 def transpose(src, shape):
     """Transpose flat item list that is regarded als a multi-dimensional
        matrix defined by shape: dest...[k][j][i] = src[i][j][k]...  """
-    wenn not shape:
+    wenn nicht shape:
         return src
     ndim = len(shape)
     sstrides = strides_from_shape(ndim, shape, 1, 'C')
@@ -357,7 +357,7 @@ def _flatten(lst):
     return _flatten(lst[0]) + _flatten(lst[1:])
 
 def flatten(lst):
-    """flatten list or return scalar"""
+    """flatten list oder return scalar"""
     wenn atomp(lst): # scalar
         return lst
     return _flatten(lst)
@@ -376,11 +376,11 @@ def multislice(lst, slices):
     return [multislice(sublst, slices[1:]) fuer sublst in lst[slices[0]]]
 
 def m_assign(llst, rlst, lslices, rslices):
-    """Multi-dimensional slice assignment: llst and rlst are the operands,
-       lslices and rslices are lists of slice objects. llst and rlst must
+    """Multi-dimensional slice assignment: llst und rlst are the operands,
+       lslices und rslices are lists of slice objects. llst und rlst must
        have the same structure.
 
-       For a two-dimensional example, this is not implemented in Python:
+       For a two-dimensional example, this is nicht implemented in Python:
 
          llst[0:3:2, 0:3:2] = rlst[1:3:1, 1:3:1]
 
@@ -398,7 +398,7 @@ def m_assign(llst, rlst, lslices, rslices):
     return llst
 
 def cmp_structure(llst, rlst, lslices, rslices):
-    """Compare the structure of llst[lslices] and rlst[rslices]."""
+    """Compare the structure of llst[lslices] und rlst[rslices]."""
     lshape = slice_shape(llst, lslices)
     rshape = slice_shape(rlst, rslices)
     wenn (len(lshape) != len(rshape)):
@@ -413,7 +413,7 @@ def cmp_structure(llst, rlst, lslices, rslices):
 def multislice_assign(llst, rlst, lslices, rslices):
     """Return llst after assigning: llst[lslices] = rlst[rslices]"""
     wenn cmp_structure(llst, rlst, lslices, rslices) < 0:
-        raise ValueError("lvalue and rvalue have different structures")
+        raise ValueError("lvalue und rvalue have different structures")
     return m_assign(llst, rlst, lslices, rslices)
 
 
@@ -431,7 +431,7 @@ def multislice_assign(llst, rlst, lslices, rslices):
 #     memory block, provided that it is a multiple of
 #     itemsize.
 #
-# The functions in this section test and verify random structures
+# The functions in this section test und verify random structures
 # in full generality. A structure is valid iff it fits in the
 # underlying memory block.
 #
@@ -449,13 +449,13 @@ def verify_structure(memlen, itemsize, ndim, shape, strides, offset):
     """
     wenn offset % itemsize:
         return Falsch
-    wenn offset < 0 or offset+itemsize > memlen:
+    wenn offset < 0 oder offset+itemsize > memlen:
         return Falsch
     wenn any(v % itemsize fuer v in strides):
         return Falsch
 
     wenn ndim <= 0:
-        return ndim == 0 and not shape and not strides
+        return ndim == 0 und nicht shape und nicht strides
     wenn 0 in shape:
         return Wahr
 
@@ -464,7 +464,7 @@ def verify_structure(memlen, itemsize, ndim, shape, strides, offset):
     imax = sum(strides[j]*(shape[j]-1) fuer j in range(ndim)
                wenn strides[j] > 0)
 
-    return 0 <= offset+imin and offset+imax+itemsize <= memlen
+    return 0 <= offset+imin und offset+imax+itemsize <= memlen
 
 def get_item(lst, indices):
     fuer i in indices:
@@ -499,7 +499,7 @@ def rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
        If 'valid' is true, the returned structure is valid, otherwise invalid.
        If 'shape' is given, use that instead of creating a random shape.
     """
-    wenn not shape:
+    wenn nicht shape:
         ndim = randrange(maxdim+1)
         wenn (ndim == 0):
             wenn valid:
@@ -512,7 +512,7 @@ def rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
 
         minshape = 2
         n = randrange(100)
-        wenn n >= 95 and valid:
+        wenn n >= 95 und valid:
             minshape = 0
         sowenn n >= 90:
             minshape = 1
@@ -525,11 +525,11 @@ def rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
 
     maxstride = 5
     n = randrange(100)
-    zero_stride = Wahr wenn n >= 95 and n & 1 sonst Falsch
+    zero_stride = Wahr wenn n >= 95 und n & 1 sonst Falsch
 
     strides = [0] * ndim
     strides[ndim-1] = itemsize * randrange(-maxstride, maxstride+1)
-    wenn not zero_stride and strides[ndim-1] == 0:
+    wenn nicht zero_stride und strides[ndim-1] == 0:
         strides[ndim-1] = itemsize
 
     fuer i in range(ndim-2, -1, -1):
@@ -541,7 +541,7 @@ def rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
                           itemsize * randrange(1, maxstride+1))
 
     imin = imax = 0
-    wenn not 0 in shape:
+    wenn nicht 0 in shape:
         imin = sum(strides[j]*(shape[j]-1) fuer j in range(ndim)
                    wenn strides[j] <= 0)
         imax = sum(strides[j]*(shape[j]-1) fuer j in range(ndim)
@@ -584,7 +584,7 @@ def randslice_from_shape(ndim, shape):
 def rand_aligned_slices(maxdim=5, maxshape=16):
     """Create (lshape, rshape, tuple(lslices), tuple(rslices)) such that
        shapeof(x[lslices]) == shapeof(y[rslices]), where x is an array
-       mit shape 'lshape' and y is an array mit shape 'rshape'."""
+       mit shape 'lshape' und y is an array mit shape 'rshape'."""
     ndim = randrange(1, maxdim+1)
     minshape = 2
     n = randrange(100)
@@ -663,7 +663,7 @@ def cast_items(exporter, fmt, itemsize, shape=Nichts):
         wenn prod(shape) * itemsize != bytelen:
             return Nichts, shape
     sowenn shape == []:
-        wenn exporter.ndim == 0 or itemsize != bytelen:
+        wenn exporter.ndim == 0 oder itemsize != bytelen:
             return Nichts, shape
     sonst:
         n, r = divmod(bytelen, itemsize)
@@ -712,7 +712,7 @@ def rslice(n, allow_empty=Falsch):
     """Generate random slice fuer a single dimension of length n.
        If zero=Wahr, the slices may be empty, otherwise they will
        be non-empty."""
-    minlen = 0 wenn allow_empty or n == 0 sonst 1
+    minlen = 0 wenn allow_empty oder n == 0 sonst 1
     slicelen = randrange(minlen, n+1)
     return randslice_from_slicelen(slicelen, n)
 
@@ -785,7 +785,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         wenn shape:
             expected_len = prod(shape)*itemsize
         sonst:
-            wenn not fmt: # array has been implicitly cast to unsigned bytes
+            wenn nicht fmt: # array has been implicitly cast to unsigned bytes
                 expected_len = len(lst)
             sonst: # ndim = 0
                 expected_len = itemsize
@@ -818,15 +818,15 @@ klasse TestBufferProtocol(unittest.TestCase):
         self.assertIs(result.readonly, readonly)
         self.assertEqual(result.ndim, ndim)
         self.assertEqual(result.shape, tuple(shape))
-        wenn not (sliced and suboffsets):
+        wenn nicht (sliced und suboffsets):
             self.assertEqual(result.strides, tuple(strides))
         self.assertEqual(result.suboffsets, tuple(suboffsets))
 
-        wenn isinstance(result, ndarray) or is_memoryview_format(fmt):
+        wenn isinstance(result, ndarray) oder is_memoryview_format(fmt):
             rep = result.tolist() wenn fmt sonst result.tobytes()
             self.assertEqual(rep, lst)
 
-        wenn not fmt: # array has been cast to unsigned bytes,
+        wenn nicht fmt: # array has been cast to unsigned bytes,
             return  # the remaining tests won't work.
 
         # PyBuffer_GetPointer() is the definition how to access an item.
@@ -835,7 +835,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         #
         # Also test tobytes() against the flattened 'lst', mit all items
         # packed to bytes.
-        wenn not cast: # casts chop up 'lst' in different ways
+        wenn nicht cast: # casts chop up 'lst' in different ways
             b = bytearray()
             buf_err = Nichts
             fuer ind in indices(shape):
@@ -848,11 +848,11 @@ klasse TestBufferProtocol(unittest.TestCase):
                         x = struct.pack(fmt, item2)
                     b.extend(x)
                 except BufferError:
-                    buf_err = Wahr # re-exporter does not provide full buffer
+                    buf_err = Wahr # re-exporter does nicht provide full buffer
                     break
                 self.assertEqual(item1, item2)
 
-            wenn not buf_err:
+            wenn nicht buf_err:
                 # test tobytes()
                 self.assertEqual(result.tobytes(), b)
 
@@ -872,7 +872,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 fuer order in ['C', 'F', 'A']:
                     expected = result
                     wenn order == 'F':
-                        wenn not is_contiguous(result, 'A') or \
+                        wenn nicht is_contiguous(result, 'A') oder \
                            is_contiguous(result, 'C'):
                             # For constructing the ndarray, convert the
                             # flattened logical representation to Fortran order.
@@ -880,8 +880,8 @@ klasse TestBufferProtocol(unittest.TestCase):
                             expected = ndarray(trans, shape=shape, format=ff,
                                                flags=ND_FORTRAN)
                     sonst: # 'C', 'A'
-                        wenn not is_contiguous(result, 'A') or \
-                           is_contiguous(result, 'F') and order == 'C':
+                        wenn nicht is_contiguous(result, 'A') oder \
+                           is_contiguous(result, 'F') und order == 'C':
                             # The flattened list is already in C-order.
                             expected = ndarray(flattened, shape=shape, format=ff)
 
@@ -951,7 +951,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         wenn is_memoryview_format(fmt):
             try:
                 m = memoryview(result)
-            except BufferError: # re-exporter does not provide full information
+            except BufferError: # re-exporter does nicht provide full information
                 return
             ex = result.obj wenn isinstance(result, memoryview) sonst result
 
@@ -963,7 +963,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 self.assertEqual(m.readonly, expected_readonly)
                 self.assertEqual(m.ndim, ndim)
                 self.assertEqual(m.shape, tuple(shape))
-                wenn not (sliced and suboffsets):
+                wenn nicht (sliced und suboffsets):
                     self.assertEqual(m.strides, tuple(strides))
                 self.assertEqual(m.suboffsets, tuple(suboffsets))
 
@@ -986,39 +986,39 @@ klasse TestBufferProtocol(unittest.TestCase):
             return ((req&flag) == flag)
 
         wenn (# writable request to read-only exporter
-            (ex.readonly and match(req, PyBUF_WRITABLE)) or
+            (ex.readonly und match(req, PyBUF_WRITABLE)) oder
             # cannot match explicit contiguity request
-            (match(req, PyBUF_C_CONTIGUOUS) and not ex.c_contiguous) or
-            (match(req, PyBUF_F_CONTIGUOUS) and not ex.f_contiguous) or
-            (match(req, PyBUF_ANY_CONTIGUOUS) and not ex.contiguous) or
+            (match(req, PyBUF_C_CONTIGUOUS) und nicht ex.c_contiguous) oder
+            (match(req, PyBUF_F_CONTIGUOUS) und nicht ex.f_contiguous) oder
+            (match(req, PyBUF_ANY_CONTIGUOUS) und nicht ex.contiguous) oder
             # buffer needs suboffsets
-            (not match(req, PyBUF_INDIRECT) and ex.suboffsets) or
+            (nicht match(req, PyBUF_INDIRECT) und ex.suboffsets) oder
             # buffer without strides must be C-contiguous
-            (not match(req, PyBUF_STRIDES) and not ex.c_contiguous) or
-            # PyBUF_SIMPLE|PyBUF_FORMAT and PyBUF_WRITABLE|PyBUF_FORMAT
-            (not match(req, PyBUF_ND) and match(req, PyBUF_FORMAT))):
+            (nicht match(req, PyBUF_STRIDES) und nicht ex.c_contiguous) oder
+            # PyBUF_SIMPLE|PyBUF_FORMAT und PyBUF_WRITABLE|PyBUF_FORMAT
+            (nicht match(req, PyBUF_ND) und match(req, PyBUF_FORMAT))):
 
             self.assertRaises(BufferError, ndarray, ex, getbuf=req)
             return
 
-        wenn isinstance(ex, ndarray) or is_memoryview_format(ex.format):
+        wenn isinstance(ex, ndarray) oder is_memoryview_format(ex.format):
             lst = ex.tolist()
         sonst:
             nd = ndarray(ex, getbuf=PyBUF_FULL_RO)
             lst = nd.tolist()
 
-        # The consumer may have requested default values or a NULL format.
+        # The consumer may have requested default values oder a NULL format.
         ro = Falsch wenn match(req, PyBUF_WRITABLE) sonst ex.readonly
         fmt = ex.format
         itemsize = ex.itemsize
         ndim = ex.ndim
-        wenn not match(req, PyBUF_FORMAT):
+        wenn nicht match(req, PyBUF_FORMAT):
             # itemsize refers to the original itemsize before the cast.
             # The equality product(shape) * itemsize = len still holds.
             # The equality calcsize(format) = itemsize does _not_ hold.
             fmt = ''
             lst = orig_ex.tobytes() # Issue 12834
-        wenn not match(req, PyBUF_ND):
+        wenn nicht match(req, PyBUF_ND):
             ndim = 1
         shape = orig_ex.shape wenn match(req, PyBUF_ND) sonst ()
         strides = orig_ex.strides wenn match(req, PyBUF_STRIDES) sonst ()
@@ -1041,7 +1041,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             PyBUF_STRIDED, PyBUF_STRIDED_RO,
             PyBUF_CONTIG, PyBUF_CONTIG_RO,
         )
-        # items and format
+        # items und format
         items_fmt = (
             ([Wahr wenn x % 2 sonst Falsch fuer x in range(12)], '?'),
             ([1,2,3,4,5,6,7,8,9,10,11,12], 'b'),
@@ -1077,9 +1077,9 @@ klasse TestBufferProtocol(unittest.TestCase):
                 offset *= itemsize
                 fuer flags in ndflags:
 
-                    wenn strides and (flags&ND_FORTRAN):
+                    wenn strides und (flags&ND_FORTRAN):
                         continue
-                    wenn not shape and (flags&ND_PIL):
+                    wenn nicht shape und (flags&ND_PIL):
                         continue
 
                     _items = items wenn shape sonst items[0]
@@ -1090,9 +1090,9 @@ klasse TestBufferProtocol(unittest.TestCase):
                     m1 = memoryview(ex1)
                     wenn ex2:
                         m2 = memoryview(ex2)
-                    wenn ex1.ndim == 0 or (ex1.ndim == 1 and shape and strides):
+                    wenn ex1.ndim == 0 oder (ex1.ndim == 1 und shape und strides):
                         self.assertEqual(m1, ex1)
-                    wenn ex2 and ex2.ndim == 1 and shape and strides:
+                    wenn ex2 und ex2.ndim == 1 und shape und strides:
                         self.assertEqual(m2, ex2)
 
                     fuer req in requests:
@@ -1112,7 +1112,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         self.assertRaises(BufferError, ndarray, ex)
 
         # Request complex structure von a simple exporter. In this
-        # particular case the test object is not PEP-3118 compliant.
+        # particular case the test object is nicht PEP-3118 compliant.
         base = ndarray([9], [1])
         ex = ndarray(base, getbuf=PyBUF_SIMPLE)
         self.assertRaises(BufferError, ndarray, ex, getbuf=PyBUF_WRITABLE)
@@ -1139,7 +1139,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         nd = ndarray([9], [1])
         ndm = ndarray([9], [1], flags=ND_VAREXPORT)
 
-        # Initialization of a new ndarray or mutation of an existing array.
+        # Initialization of a new ndarray oder mutation of an existing array.
         fuer c in (ndarray, nd.push, ndm.push):
             # Invalid types.
             self.assertRaises(TypeError, c, {1,2,3})
@@ -1162,7 +1162,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             # Invalid items.
             self.assertRaises(ValueError, c, [], shape=[1])
             self.assertRaises(ValueError, c, ['XXX'], shape=[1], format="L")
-            # Invalid combination of items and format.
+            # Invalid combination of items und format.
             self.assertRaises(struct.error, c, [1000], shape=[1], format="B")
             self.assertRaises(ValueError, c, [1,(2,3)], shape=[2], format="B")
             self.assertRaises(ValueError, c, [1,2,3], shape=[3], format="QL")
@@ -1183,9 +1183,9 @@ klasse TestBufferProtocol(unittest.TestCase):
             self.assertRaises(OverflowError, c, [1], shape=[1],
                               strides=[2**128])
 
-            # Invalid combination of strides and shape.
+            # Invalid combination of strides und shape.
             self.assertRaises(ValueError, c, [1,2], shape=[2,1], strides=[1])
-            # Invalid combination of strides and format.
+            # Invalid combination of strides und format.
             self.assertRaises(ValueError, c, [1,2,3,4], shape=[2], strides=[3],
                               format="L")
 
@@ -1226,7 +1226,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         self.assertRaises(BufferError, nd.push, [1], [1])
         self.assertRaises(BufferError, nd.pop)
 
-        # ND_VAREXPORT not set: push/pop fail mit exported buffers
+        # ND_VAREXPORT nicht set: push/pop fail mit exported buffers
         nd = ndarray([9], [1])
         nd.push([1], [1])
         m = memoryview(nd)
@@ -1368,7 +1368,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 itemsize = struct.calcsize(fmt)
 
                 fuer flags in (0, ND_PIL):
-                    wenn ndim == 0 and flags == ND_PIL:
+                    wenn ndim == 0 und flags == ND_PIL:
                         continue
 
                     # C array
@@ -1404,7 +1404,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                                 lst=lst)
 
     def test_ndarray_index_invalid(self):
-        # not writable
+        # nicht writable
         nd = ndarray([1], shape=[1])
         self.assertRaises(TypeError, nd.__setitem__, 1, 8)
         mv = memoryview(nd)
@@ -1537,7 +1537,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             self.assertRaises(IndexError, nd.__setitem__, -6, single_item)
             self.assertRaises(IndexError, nd.__setitem__, 5, single_item)
 
-            wenn not is_memoryview_format(fmt):
+            wenn nicht is_memoryview_format(fmt):
                 continue
 
             nd = ndarray(items, shape=[5], format=fmt, flags=ND_WRITABLE)
@@ -1560,7 +1560,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 nd[i] = nd[i+1]
             self.assertEqual(nd.tolist(), items)
 
-            wenn not is_memoryview_format(fmt):
+            wenn nicht is_memoryview_format(fmt):
                 continue
 
             nd = ndarray(items, shape=[5], format=fmt, flags=ND_WRITABLE)
@@ -1624,13 +1624,13 @@ klasse TestBufferProtocol(unittest.TestCase):
     def test_ndarray_slice_invalid(self):
         items = [1,2,3,4,5,6,7,8]
 
-        # rvalue is not an exporter
+        # rvalue is nicht an exporter
         xl = ndarray(items, shape=[8], flags=ND_WRITABLE)
         ml = memoryview(xl)
         self.assertRaises(TypeError, xl.__setitem__, slice(0,8,1), items)
         self.assertRaises(TypeError, ml.__setitem__, slice(0,8,1), items)
 
-        # rvalue is not a full exporter
+        # rvalue is nicht a full exporter
         xl = ndarray(items, shape=[8], flags=ND_WRITABLE)
         ex = ndarray(items, shape=[8], flags=ND_WRITABLE)
         xr = ndarray(ex, getbuf=PyBUF_ND)
@@ -1653,7 +1653,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         self.assertRaises(TypeError, nd.__getitem__, ("@%$", slice(0,1,1)))
         self.assertRaises(TypeError, nd.__getitem__, (slice(0,1,1), {}))
 
-        # memoryview: not implemented
+        # memoryview: nicht implemented
         self.assertRaises(NotImplementedError, mv.__getitem__,
                           (slice(0,1,1), slice(0,1,0)))
         self.assertRaises(TypeError, mv.__getitem__, "@%$")
@@ -1757,7 +1757,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                     except Exception als e:
                         nderr = e.__class__
 
-                    wenn nderr or listerr:
+                    wenn nderr oder listerr:
                         self.assertIs(nderr, listerr)
                     sonst:
                         self.assertEqual(ndsliced.tolist(), sliced)
@@ -1792,7 +1792,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 except Exception als e:
                     nderr = e.__class__
 
-                wenn nderr or listerr:
+                wenn nderr oder listerr:
                     self.assertIs(nderr, listerr)
                 sonst:
                     self.assertEqual(ndsliced.tolist(), sliced)
@@ -1831,7 +1831,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                             self.assertEqual(nd.tolist(), lst)
                             self.assertIs(nderr, lsterr)
 
-                        wenn not is_memoryview_format(fmt):
+                        wenn nicht is_memoryview_format(fmt):
                             continue
 
                         mverr = Nichts
@@ -1879,7 +1879,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                     except Exception als e:
                         nderr = e.__class__
 
-                    wenn nderr or listerr:
+                    wenn nderr oder listerr:
                         self.assertIs(nderr, listerr)
                     sonst:
                         self.assertEqual(nd.tolist(), result)
@@ -1979,7 +1979,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 self.assertEqual(ml.tolist(), xllist)
                 self.assertEqual(mr.tolist(), xrlist)
 
-                wenn tl[2] > 0 and tr[2] > 0:
+                wenn tl[2] > 0 und tr[2] > 0:
                     # ndim > 0: test against suboffsets representation.
                     yl = ndarray_from_structure(litems, fmt, tl, flags=ND_PIL)
                     yr = ndarray_from_structure(ritems, fmt, tr, flags=ND_PIL)
@@ -1995,14 +1995,14 @@ klasse TestBufferProtocol(unittest.TestCase):
                     self.assertEqual(mr.tolist(), yrlist)
 
                 wenn numpy_array:
-                    wenn 0 in lshape or 0 in rshape:
+                    wenn 0 in lshape oder 0 in rshape:
                         continue # https://github.com/numpy/numpy/issues/2503
 
                     zl = numpy_array_from_structure(litems, fmt, tl)
                     zr = numpy_array_from_structure(ritems, fmt, tr)
                     zl[lslices] = zr[rslices]
 
-                    wenn not is_overlapping(tl) and not is_overlapping(tr):
+                    wenn nicht is_overlapping(tl) und nicht is_overlapping(tr):
                         # Slice assignment of overlapping structures
                         # is undefined in NumPy.
                         self.verify(xl, obj=Nichts,
@@ -2170,7 +2170,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 b = py_buffer_to_contiguous(nd, order, request)
                 self.assertEqual(b, b'')
 
-        ### One-dimensional arrays are trivial, since Fortran and C order
+        ### One-dimensional arrays are trivial, since Fortran und C order
         ### are the same.
 
         # one-dimensional
@@ -2489,9 +2489,9 @@ klasse TestBufferProtocol(unittest.TestCase):
         self.assertRaises(ValueError, get_contiguous, nd[::-1], PyBUF_READ, 'C')
 
     def test_memoryview_cast_zero_shape(self):
-        # Casts are undefined wenn buffer is multidimensional and shape
+        # Casts are undefined wenn buffer is multidimensional und shape
         # contains zeros. These arrays are regarded als C-contiguous by
-        # Numpy and PyBuffer_GetContiguous(), so they are not caught by
+        # Numpy und PyBuffer_GetContiguous(), so they are nicht caught by
         # the test fuer C-contiguity in memory_cast().
         items = [1,2,3]
         fuer shape in ([0,3,3], [3,0,3], [0,3,3]):
@@ -2571,7 +2571,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 except (TypeError, ValueError) als e:
                     mv_err = e.__class__
 
-                wenn struct_err or mv_err:
+                wenn struct_err oder mv_err:
                     self.assertIsNot(struct_err, Nichts)
                     self.assertIsNot(mv_err, Nichts)
                 sonst:
@@ -2579,7 +2579,7 @@ klasse TestBufferProtocol(unittest.TestCase):
 
     def test_memoryview_cast_zero_strides(self):
         # Casts are undefined wenn strides contains zeros. These arrays are
-        # (sometimes!) regarded als C-contiguous by Numpy, but not by
+        # (sometimes!) regarded als C-contiguous by Numpy, but nicht by
         # PyBuffer_GetContiguous().
         ex = ndarray([1,2,3], shape=[3], strides=[0])
         self.assertFalsch(ex.c_contiguous)
@@ -2602,11 +2602,11 @@ klasse TestBufferProtocol(unittest.TestCase):
             ex = ndarray(sitems, shape=[1], format=sfmt)
             msrc = memoryview(ex)
             fuer dfmt, _, _ in iter_format(1):
-                wenn not is_memoryview_format(dfmt):
+                wenn nicht is_memoryview_format(dfmt):
                     self.assertRaises(ValueError, msrc.cast, dfmt,
                                       [32//dsize])
                 sonst:
-                    wenn not is_byte_format(sfmt) and not is_byte_format(dfmt):
+                    wenn nicht is_byte_format(sfmt) und nicht is_byte_format(dfmt):
                         self.assertRaises(TypeError, msrc.cast, dfmt,
                                           [32//dsize])
 
@@ -2632,7 +2632,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         self.assertRaises(ValueError, m.cast, "@X")
         self.assertRaises(ValueError, m.cast, "@XY")
 
-        # dest format not implemented
+        # dest format nicht implemented
         self.assertRaises(ValueError, m.cast, "=B")
         self.assertRaises(ValueError, m.cast, "!L")
         self.assertRaises(ValueError, m.cast, "<P")
@@ -2640,7 +2640,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         self.assertRaises(ValueError, m.cast, "BI")
         self.assertRaises(ValueError, m.cast, "xBI")
 
-        # src format not implemented
+        # src format nicht implemented
         ex = ndarray([(1,2), (3,4)], shape=[2], format="II")
         m = memoryview(ex)
         self.assertRaises(NotImplementedError, m.__getitem__, 0)
@@ -2671,7 +2671,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         m = memoryview(nd)
         self.assertRaises(ValueError, m.cast, 'I', [1]*128)
 
-        # view->len not a multiple of itemsize
+        # view->len nicht a multiple of itemsize
         ex = ndarray(list([9 fuer _ in range(3*5*7*11)]), shape=[3*5*7*11])
         m = memoryview(ex)
         self.assertRaises(TypeError, m.cast, "I", shape=[2,3,4,5])
@@ -2764,11 +2764,11 @@ klasse TestBufferProtocol(unittest.TestCase):
     @support.requires_resource('cpu')
     def test_memoryview_cast_1D_ND(self):
         # Cast between C-contiguous buffers. At least one buffer must
-        # be 1D, at least one format must be 'c', 'b' or 'B'.
+        # be 1D, at least one format must be 'c', 'b' oder 'B'.
         fuer _tshape in gencastshapes():
             fuer char in fmtdict['@']:
                 # Casts to _Bool are undefined wenn the source contains values
-                # other than 0 or 1.
+                # other than 0 oder 1.
                 wenn char == "?":
                     continue
                 tfmt = ('', '@')[randrange(2)] + char
@@ -2989,7 +2989,7 @@ klasse TestBufferProtocol(unittest.TestCase):
 
         # pack_single() success:
         fuer fmt in fmtdict['@']:
-            wenn fmt == 'c' or fmt == '?':
+            wenn fmt == 'c' oder fmt == '?':
                 continue
             ex = ndarray([1,2,3], shape=[3], format=fmt, flags=ND_WRITABLE)
             m = memoryview(ex)
@@ -3025,7 +3025,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 continue
             m2 = m1.cast(fmt)
             lo, hi = _range
-            wenn fmt == 'd' or fmt == 'f':
+            wenn fmt == 'd' oder fmt == 'f':
                 lo, hi = -2**1024, 2**1024
             wenn fmt != 'P': # PyLong_AsVoidPtr() accepts negative numbers
                 self.assertRaises(ValueError, m2.__setitem__, 0, lo-1)
@@ -3036,7 +3036,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         m2 = m1.cast('c')
         self.assertRaises(ValueError, m2.__setitem__, 0, b'\xff\xff')
 
-        # format not implemented
+        # format nicht implemented
         ex = ndarray(list(range(1)), shape=[1], format="xL", flags=ND_WRITABLE)
         m = memoryview(ex)
         self.assertRaises(NotImplementedError, m.__setitem__, 0, 1)
@@ -3095,7 +3095,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         self.assertRaises(TypeError, m.__setitem__, (slice(0,2,1), {}),
                           bytearray([1,2]))
 
-        # rvalue is not an exporter
+        # rvalue is nicht an exporter
         self.assertRaises(TypeError, m.__setitem__, slice(0,1,1), [1])
 
         # non-contiguous slice assignment
@@ -3178,7 +3178,7 @@ klasse TestBufferProtocol(unittest.TestCase):
 
                         wenn have_resize: # memoryview cannot change shape
                             self.assertIs(m_err, ValueError)
-                        sowenn m_err or array_err:
+                        sowenn m_err oder array_err:
                             self.assertIs(m_err, array_err)
                         sonst:
                             self.assertEqual(m, a)
@@ -3211,7 +3211,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         self.assertNotEqual(v, w)
         self.assertNotEqual(w, v)
 
-        # Operand does not implement the buffer protocol:
+        # Operand does nicht implement the buffer protocol:
         v = memoryview(a)
         self.assertNotEqual(v, [1, 2, 3])
 
@@ -3236,7 +3236,7 @@ klasse TestBufferProtocol(unittest.TestCase):
     @warnings_helper.ignore_warnings(category=DeprecationWarning)  # gh-80480 array('u')
     def test_memoryview_compare_special_cases_deprecated_u_type_code(self):
 
-        # Depends on issue #15625: the struct module does not understand 'u'.
+        # Depends on issue #15625: the struct module does nicht understand 'u'.
         a = array.array('u', 'xyz')
         v = memoryview(a)
         self.assertNotEqual(a, v)
@@ -3290,7 +3290,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         self.assertEqual(w, nd1)
         self.assertEqual(nd1, w)
 
-        # struct module: not equal
+        # struct module: nicht equal
         nd1 = ndarray((1729, 1.2, b'12345'), shape=[], format='Lf5s')
         nd2 = ndarray((-1729, 1.2, b'12345'), shape=[], format='hf5s',
                       flags=ND_WRITABLE)
@@ -3872,7 +3872,7 @@ klasse TestBufferProtocol(unittest.TestCase):
 
     def test_memoryview_compare_not_equal(self):
 
-        # items not equal
+        # items nicht equal
         fuer byteorder in ['=', '<', '>', '!']:
             x = ndarray([2**63]*120, shape=[3,5,2,2,2], format=byteorder+'Q')
             y = ndarray([2**63]*120, shape=[3,5,2,2,2], format=byteorder+'Q',
@@ -4431,7 +4431,7 @@ klasse TestBufferProtocol(unittest.TestCase):
 
     def test_memoryview_getbuffer_undefined(self):
 
-        # getbufferproc does not adhere to the new documentation
+        # getbufferproc does nicht adhere to the new documentation
         nd = ndarray([1,2,3], [3], flags=ND_GETBUF_FAIL|ND_GETBUF_UNDEFINED)
         self.assertRaises(BufferError, memoryview, nd)
 
@@ -4554,7 +4554,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
 
             def __buffer__(self, flags):
                 wenn flags & inspect.BufferFlags.WRITABLE:
-                    wenn not self._mutable:
+                    wenn nicht self._mutable:
                         raise RuntimeError("not mutable")
                     return memoryview(self._data)
                 sonst:
@@ -4779,10 +4779,10 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
     def test_multiple_inheritance_buffer_last_raising(self):
         klasse A:
             def __buffer__(self, flags):
-                raise RuntimeError("should not be called")
+                raise RuntimeError("should nicht be called")
 
             def __release_buffer__(self, buffer):
-                raise RuntimeError("should not be called")
+                raise RuntimeError("should nicht be called")
 
         klasse B(bytearray, A):
             def __buffer__(self, flags):

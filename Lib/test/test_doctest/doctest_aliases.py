@@ -1,7 +1,7 @@
 # Used by test_doctest.py.
 
 klasse TwoNames:
-    '''f() and g() are two names fuer the same method'''
+    '''f() und g() are two names fuer the same method'''
 
     def f(self):
         '''

@@ -49,7 +49,7 @@ klasse TestInvalidExceptStar(unittest.TestCase):
 
 
 klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
-    MSG = (r"'break', 'continue' and 'return'"
+    MSG = (r"'break', 'continue' und 'return'"
            r" cannot appear in an except\* block")
 
     def check_invalid(self, src):
@@ -174,20 +174,20 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
 
 klasse ExceptStarTest(ExceptionIsLikeMixin, unittest.TestCase):
     def assertMetadataEqual(self, e1, e2):
-        wenn e1 is Nichts or e2 is Nichts:
-            self.assertWahr(e1 is Nichts and e2 is Nichts)
+        wenn e1 is Nichts oder e2 is Nichts:
+            self.assertWahr(e1 is Nichts und e2 is Nichts)
         sonst:
             self.assertEqual(e1.__context__, e2.__context__)
             self.assertEqual(e1.__cause__, e2.__cause__)
             self.assertEqual(e1.__traceback__, e2.__traceback__)
 
     def assertMetadataNotEqual(self, e1, e2):
-        wenn e1 is Nichts or e2 is Nichts:
+        wenn e1 is Nichts oder e2 is Nichts:
             self.assertNotEqual(e1, e2)
         sonst:
-            return not (e1.__context__ == e2.__context__
-                        and e1.__cause__ == e2.__cause__
-                        and e1.__traceback__ == e2.__traceback__)
+            return nicht (e1.__context__ == e2.__context__
+                        und e1.__cause__ == e2.__cause__
+                        und e1.__traceback__ == e2.__traceback__)
 
 
 klasse TestExceptStarSplitSemantics(ExceptStarTest):
@@ -218,7 +218,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
                 sys_exception = match = sys.exception()
             sonst:
                 wenn rest_template:
-                    self.fail("Exception not raised")
+                    self.fail("Exception nicht raised")
         except BaseException als e:
             rest = e
         self.assertExceptionIsLike(match, match_template)
@@ -381,7 +381,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
             self.assertExceptionIsLike(e,
                 ExceptionGroup("mmn", [OSError("os")]))
         sonst:
-            self.fail("Exception not raised")
+            self.fail("Exception nicht raised")
 
     def test_multiple_matches_unnamed(self):
         try:
@@ -395,7 +395,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
             self.assertExceptionIsLike(e,
                 ExceptionGroup("mmu", [OSError("os")]))
         sonst:
-            self.fail("Exception not raised")
+            self.fail("Exception nicht raised")
 
     def test_first_match_wins_named(self):
         try:
@@ -406,7 +406,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
         except* BlockingIOError:
             self.fail("Should have been matched als OSError")
         sonst:
-            self.fail("Exception not raised")
+            self.fail("Exception nicht raised")
 
     def test_first_match_wins_unnamed(self):
         try:
@@ -418,7 +418,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
         except* BlockingIOError:
             pass
         sonst:
-            self.fail("Exception not raised")
+            self.fail("Exception nicht raised")
 
     def test_nested_except_stars(self):
         try:
@@ -429,12 +429,12 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
             except* ValueError:
                 pass
             sonst:
-                self.fail("Exception not raised")
+                self.fail("Exception nicht raised")
             e = sys.exception()
             self.assertExceptionIsLike(e,
                  ExceptionGroup("n", [BlockingIOError("io")]))
         sonst:
-            self.fail("Exception not raised")
+            self.fail("Exception nicht raised")
 
     def test_nested_in_loop(self):
         fuer _ in range(2):
@@ -443,7 +443,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
             except* BlockingIOError:
                 pass
             sonst:
-                self.fail("Exception not raised")
+                self.fail("Exception nicht raised")
 
 
 klasse TestExceptStarReraise(ExceptStarTest):
@@ -456,7 +456,7 @@ klasse TestExceptStarReraise(ExceptStarTest):
                 raise
             except* ValueError als e:
                 raise
-            # OSError not handled
+            # OSError nicht handled
         except ExceptionGroup als e:
             exc = e
 
@@ -473,7 +473,7 @@ klasse TestExceptStarReraise(ExceptStarTest):
                 raise
             except* ValueError:
                 raise
-            # OSError not handled
+            # OSError nicht handled
         except ExceptionGroup als e:
             exc = e
 
@@ -490,7 +490,7 @@ klasse TestExceptStarReraise(ExceptStarTest):
                 raise
             except* ValueError als e:
                 pass
-            # OSError not handled
+            # OSError nicht handled
         except ExceptionGroup als e:
             exc = e
 
@@ -521,7 +521,7 @@ klasse TestExceptStarReraise(ExceptStarTest):
                 raise
             except* ValueError als e:
                 pass
-            # OSError not handled
+            # OSError nicht handled
         except ExceptionGroup als e:
             exc = e
 
@@ -966,7 +966,7 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
 
         eg_list = [
             (BadEG1("eg", [OSError(123), ValueError(456)]),
-             r"split must return a tuple, not str"),
+             r"split must return a tuple, nicht str"),
             (BadEG2("eg", [OSError(123), ValueError(456)]),
              r"split must return a 2-tuple, got tuple of size 1")
         ]
@@ -1019,7 +1019,7 @@ klasse TestExceptStarCleanup(ExceptStarTest):
 
 klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
     # Test that except* works when leaf exceptions are
-    # unhashable or have a bad custom __eq__
+    # unhashable oder have a bad custom __eq__
 
     klasse UnhashableExc(ValueError):
         __hash__ = Nichts
@@ -1111,7 +1111,7 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
 
 klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
     # Test that except* works mit exception groups that are
-    # unhashable or have a bad custom __eq__
+    # unhashable oder have a bad custom __eq__
 
     klasse UnhashableEG(ExceptionGroup):
         __hash__ = Nichts

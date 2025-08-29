@@ -4,7 +4,7 @@ Operator Interface
 This module exports a set of functions corresponding to the intrinsic
 operators of Python.  For example, operator.add(x, y) is equivalent
 to the expression x+y.  The function names are those used fuer special
-methods; variants without leading and trailing '__' are also provided
+methods; variants without leading und trailing '__' are also provided
 fuer convenience.
 
 This is the pure Python implementation of the module.
@@ -51,8 +51,8 @@ def gt(a, b):
 # Logical Operations **********************************************************#
 
 def not_(a):
-    "Same als not a."
-    return not a
+    "Same als nicht a."
+    return nicht a
 
 def truth(a):
     "Return Wahr wenn a is true, Falsch otherwise."
@@ -63,16 +63,16 @@ def is_(a, b):
     return a is b
 
 def is_not(a, b):
-    "Same als a is not b."
-    return a is not b
+    "Same als a is nicht b."
+    return a is nicht b
 
 def is_none(a):
     "Same als a is Nichts."
     return a is Nichts
 
 def is_not_none(a):
-    "Same als a is not Nichts."
-    return a is not Nichts
+    "Same als a is nicht Nichts."
+    return a is nicht Nichts
 
 # Mathematical/Bitwise Operations *********************************************#
 
@@ -152,8 +152,8 @@ def xor(a, b):
 # Sequence Operations *********************************************************#
 
 def concat(a, b):
-    "Same als a + b, fuer a and b sequences."
-    wenn not hasattr(a, '__getitem__'):
+    "Same als a + b, fuer a und b sequences."
+    wenn nicht hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
         raise TypeError(msg)
     return a + b
@@ -163,10 +163,10 @@ def contains(a, b):
     return b in a
 
 def countOf(a, b):
-    "Return the number of items in a which are, or which equal, b."
+    "Return the number of items in a which are, oder which equal, b."
     count = 0
     fuer i in a:
-        wenn i is b or i == b:
+        wenn i is b oder i == b:
             count += 1
     return count
 
@@ -181,10 +181,10 @@ def getitem(a, b):
 def indexOf(a, b):
     "Return the first index of b in a."
     fuer i, j in enumerate(a):
-        wenn j is b or j == b:
+        wenn j is b oder j == b:
             return i
     sonst:
-        raise ValueError('sequence.index(x): x not in sequence')
+        raise ValueError('sequence.index(x): x nicht in sequence')
 
 def setitem(a, b, c):
     "Same als a[b] = c."
@@ -196,10 +196,10 @@ def length_hint(obj, default=0):
     This is useful fuer presizing containers when building von an iterable.
 
     If the object supports len(), the result will be exact. Otherwise, it may
-    over- or under-estimate by an arbitrary amount. The result will be an
+    over- oder under-estimate by an arbitrary amount. The result will be an
     integer >= 0.
     """
-    wenn not isinstance(default, int):
+    wenn nicht isinstance(default, int):
         msg = ("'%s' object cannot be interpreted als an integer" %
                type(default).__name__)
         raise TypeError(msg)
@@ -220,8 +220,8 @@ def length_hint(obj, default=0):
         return default
     wenn val is NotImplemented:
         return default
-    wenn not isinstance(val, int):
-        msg = ('__length_hint__ must be integer, not %s' %
+    wenn nicht isinstance(val, int):
+        msg = ('__length_hint__ must be integer, nicht %s' %
                type(val).__name__)
         raise TypeError(msg)
     wenn val < 0:
@@ -248,8 +248,8 @@ klasse attrgetter:
     __slots__ = ('_attrs', '_call')
 
     def __init__(self, attr, /, *attrs):
-        wenn not attrs:
-            wenn not isinstance(attr, str):
+        wenn nicht attrs:
+            wenn nicht isinstance(attr, str):
                 raise TypeError('attribute name must be a string')
             self._attrs = (attr,)
             names = attr.split('.')
@@ -285,7 +285,7 @@ klasse itemgetter:
     __slots__ = ('_items', '_call')
 
     def __init__(self, item, /, *items):
-        wenn not items:
+        wenn nicht items:
             self._items = (item,)
             def func(obj):
                 return obj[item]
@@ -318,7 +318,7 @@ klasse methodcaller:
 
     def __init__(self, name, /, *args, **kwargs):
         self._name = name
-        wenn not isinstance(self._name, str):
+        wenn nicht isinstance(self._name, str):
             raise TypeError('method name must be a string')
         self._args = args
         self._kwargs = kwargs
@@ -335,7 +335,7 @@ klasse methodcaller:
                               ', '.join(args))
 
     def __reduce__(self):
-        wenn not self._kwargs:
+        wenn nicht self._kwargs:
             return self.__class__, (self._name,) + self._args
         sonst:
             von functools importiere partial
@@ -355,8 +355,8 @@ def iand(a, b):
     return a
 
 def iconcat(a, b):
-    "Same als a += b, fuer a and b sequences."
-    wenn not hasattr(a, '__getitem__'):
+    "Same als a += b, fuer a und b sequences."
+    wenn nicht hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
         raise TypeError(msg)
     a += b

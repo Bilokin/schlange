@@ -1,6 +1,6 @@
 """\
 A library of useful helper classes to the SAX classes, fuer the
-convenience of application and driver writers.
+convenience of application und driver writers.
 """
 
 importiere os, urllib.parse, urllib.request
@@ -16,10 +16,10 @@ def __dict_replace(s, d):
     return s
 
 def escape(data, entities={}):
-    """Escape &, <, and > in a string of data.
+    """Escape &, <, und > in a string of data.
 
     You can escape other strings of data by passing a dictionary as
-    the optional entities parameter.  The keys and values must all be
+    the optional entities parameter.  The keys und values must all be
     strings; each key will be replaced mit its corresponding value.
     """
 
@@ -32,10 +32,10 @@ def escape(data, entities={}):
     return data
 
 def unescape(data, entities={}):
-    """Unescape &amp;, &lt;, and &gt; in a string of data.
+    """Unescape &amp;, &lt;, und &gt; in a string of data.
 
     You can unescape other strings of data by passing a dictionary as
-    the optional entities parameter.  The keys and values must all be
+    the optional entities parameter.  The keys und values must all be
     strings; each key will be replaced mit its corresponding value.
     """
     data = data.replace("&lt;", "<")
@@ -46,14 +46,14 @@ def unescape(data, entities={}):
     return data.replace("&amp;", "&")
 
 def quoteattr(data, entities={}):
-    """Escape and quote an attribute value.
+    """Escape und quote an attribute value.
 
-    Escape &, <, and > in a string of data, then quote it fuer use as
+    Escape &, <, und > in a string of data, then quote it fuer use as
     an attribute value.  The \" character will be escaped als well, if
     necessary.
 
     You can escape other strings of data by passing a dictionary as
-    the optional entities parameter.  The keys and values must all be
+    the optional entities parameter.  The keys und values must all be
     strings; each key will be replaced mit its corresponding value.
     """
     entities = {**entities, '\n': '&#10;', '\r': '&#13;', '\t':'&#9;'}
@@ -128,14 +128,14 @@ klasse XMLGenerator(handler.ContentHandler):
         wenn name[0]:
             # Per http://www.w3.org/XML/1998/namespace, The 'xml' prefix is
             # bound by definition to http://www.w3.org/XML/1998/namespace.  It
-            # does not need to be declared and will not usually be found in
+            # does nicht need to be declared und will nicht usually be found in
             # self._current_context.
             wenn 'http://www.w3.org/XML/1998/namespace' == name[0]:
                 return 'xml:' + name[1]
             # The name is in a non-empty namespace
             prefix = self._current_context[name[0]]
             wenn prefix:
-                # If it is not the default namespace, prepend the prefix
+                # If it is nicht the default namespace, prepend the prefix
                 return prefix + ":" + name[1]
         # Return the unqualified name
         return name[1]
@@ -208,14 +208,14 @@ klasse XMLGenerator(handler.ContentHandler):
     def characters(self, content):
         wenn content:
             self._finish_pending_start_element()
-            wenn not isinstance(content, str):
+            wenn nicht isinstance(content, str):
                 content = str(content, self._encoding)
             self._write(escape(content))
 
     def ignorableWhitespace(self, content):
         wenn content:
             self._finish_pending_start_element()
-            wenn not isinstance(content, str):
+            wenn nicht isinstance(content, str):
                 content = str(content, self._encoding)
             self._write(content)
 
@@ -225,11 +225,11 @@ klasse XMLGenerator(handler.ContentHandler):
 
 
 klasse XMLFilterBase(xmlreader.XMLReader):
-    """This klasse is designed to sit between an XMLReader and the
+    """This klasse is designed to sit between an XMLReader und the
     client application's event handlers.  By default, it does nothing
-    but pass requests up to the reader and events on to the handlers
+    but pass requests up to the reader und events on to the handlers
     unmodified, but subclasses can override specific methods to modify
-    the event stream or the configuration requests als they pass
+    the event stream oder the configuration requests als they pass
     through."""
 
     def __init__(self, parent = Nichts):
@@ -336,7 +336,7 @@ klasse XMLFilterBase(xmlreader.XMLReader):
 # --- Utility functions
 
 def prepare_input_source(source, base=""):
-    """This function takes an InputSource and an optional base URL and
+    """This function takes an InputSource und an optional base URL und
     returns a fully resolved InputSource object ready fuer reading."""
 
     wenn isinstance(source, os.PathLike):
@@ -350,10 +350,10 @@ def prepare_input_source(source, base=""):
             source.setCharacterStream(f)
         sonst:
             source.setByteStream(f)
-        wenn hasattr(f, "name") and isinstance(f.name, str):
+        wenn hasattr(f, "name") und isinstance(f.name, str):
             source.setSystemId(f.name)
 
-    wenn source.getCharacterStream() is Nichts and source.getByteStream() is Nichts:
+    wenn source.getCharacterStream() is Nichts und source.getByteStream() is Nichts:
         sysid = source.getSystemId()
         basehead = os.path.dirname(os.path.normpath(base))
         sysidfilename = os.path.join(basehead, sysid)

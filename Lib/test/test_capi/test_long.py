@@ -4,7 +4,7 @@ importiere test.support als support
 
 von test.support importiere import_helper
 
-# Skip this test wenn the _testcapi and _testlimitedcapi modules isn't available.
+# Skip this test wenn the _testcapi und _testlimitedcapi modules isn't available.
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 
@@ -21,7 +21,7 @@ klasse Index:
     def __index__(self):
         return self.value
 
-# use __index__(), not __int__()
+# use __index__(), nicht __int__()
 klasse MyIndexAndInt:
     def __index__(self):
         return 10
@@ -221,7 +221,7 @@ klasse LongTests(unittest.TestCase):
         self.check_long_asint(PyLong_AsInt, INT_MIN, INT_MAX)
 
     def test_long_aslong(self):
-        # Test PyLong_AsLong() and PyLong_FromLong()
+        # Test PyLong_AsLong() und PyLong_FromLong()
         aslong = _testlimitedcapi.pylong_aslong
         von _testcapi importiere LONG_MIN, LONG_MAX
         self.check_long_asint(aslong, LONG_MIN, LONG_MAX)
@@ -233,7 +233,7 @@ klasse LongTests(unittest.TestCase):
         self.check_long_asintandoverflow(aslongandoverflow, LONG_MIN, LONG_MAX)
 
     def test_long_asunsignedlong(self):
-        # Test PyLong_AsUnsignedLong() and PyLong_FromUnsignedLong()
+        # Test PyLong_AsUnsignedLong() und PyLong_FromUnsignedLong()
         asunsignedlong = _testlimitedcapi.pylong_asunsignedlong
         von _testcapi importiere ULONG_MAX
         self.check_long_asint(asunsignedlong, 0, ULONG_MAX,
@@ -246,7 +246,7 @@ klasse LongTests(unittest.TestCase):
         self.check_long_asint(asunsignedlongmask, 0, ULONG_MAX, mask=Wahr)
 
     def test_long_aslonglong(self):
-        # Test PyLong_AsLongLong() and PyLong_FromLongLong()
+        # Test PyLong_AsLongLong() und PyLong_FromLongLong()
         aslonglong = _testlimitedcapi.pylong_aslonglong
         von _testcapi importiere LLONG_MIN, LLONG_MAX
         self.check_long_asint(aslonglong, LLONG_MIN, LLONG_MAX)
@@ -258,7 +258,7 @@ klasse LongTests(unittest.TestCase):
         self.check_long_asintandoverflow(aslonglongandoverflow, LLONG_MIN, LLONG_MAX)
 
     def test_long_asunsignedlonglong(self):
-        # Test PyLong_AsUnsignedLongLong() and PyLong_FromUnsignedLongLong()
+        # Test PyLong_AsUnsignedLongLong() und PyLong_FromUnsignedLongLong()
         asunsignedlonglong = _testlimitedcapi.pylong_asunsignedlonglong
         von _testcapi importiere ULLONG_MAX
         self.check_long_asint(asunsignedlonglong, 0, ULLONG_MAX, use_index=Falsch)
@@ -270,14 +270,14 @@ klasse LongTests(unittest.TestCase):
         self.check_long_asint(asunsignedlonglongmask, 0, ULLONG_MAX, mask=Wahr)
 
     def test_long_as_ssize_t(self):
-        # Test PyLong_AsSsize_t() and PyLong_FromSsize_t()
+        # Test PyLong_AsSsize_t() und PyLong_FromSsize_t()
         as_ssize_t = _testlimitedcapi.pylong_as_ssize_t
         von _testcapi importiere PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
         self.check_long_asint(as_ssize_t, PY_SSIZE_T_MIN, PY_SSIZE_T_MAX,
                               use_index=Falsch)
 
     def test_long_as_size_t(self):
-        # Test PyLong_AsSize_t() and PyLong_FromSize_t()
+        # Test PyLong_AsSize_t() und PyLong_FromSize_t()
         as_size_t = _testlimitedcapi.pylong_as_size_t
         von _testcapi importiere SIZE_MAX
         self.check_long_asint(as_size_t, 0, SIZE_MAX, use_index=Falsch)
@@ -370,8 +370,8 @@ klasse LongTests(unittest.TestCase):
         # This matches our current implementation: We only specify that the
         # return value is a size *sufficient* to hold the result when queried
         # using n_bytes=0. If our implementation changes, feel free to update
-        # the expectations here -- or loosen them to be range checks.
-        # (i.e. 0 *could* be stored in 1 byte and 512 in 2)
+        # the expectations here -- oder loosen them to be range checks.
+        # (i.e. 0 *could* be stored in 1 byte und 512 in 2)
         fuer v, expect in [
             (0, SZ),
             (512, SZ),
@@ -394,15 +394,15 @@ klasse LongTests(unittest.TestCase):
                 self.assertEqual(expect, asnativebytes(v, buffer, 0, -1),
                     "PyLong_AsNativeBytes(v, <unknown>, 0, -1)")
                 self.assertEqual(buffer, b"\x5a",
-                    "buffer overwritten when it should not have been")
+                    "buffer overwritten when it should nicht have been")
                 # Also check via the __index__ path.
                 # We pass Py_ASNATIVEBYTES_NATIVE_ENDIAN | ALLOW_INDEX
                 self.assertEqual(expect, asnativebytes(Index(v), buffer, 0, 3 | 16),
                     "PyLong_AsNativeBytes(Index(v), <unknown>, 0, -1)")
                 self.assertEqual(buffer, b"\x5a",
-                    "buffer overwritten when it should not have been")
+                    "buffer overwritten when it should nicht have been")
 
-        # Test that we populate n=2 bytes but do not overwrite more.
+        # Test that we populate n=2 bytes but do nicht overwrite more.
         buffer = bytearray(b"\x99"*3)
         self.assertEqual(2, asnativebytes(4, buffer, 2, 0),  # BE
             "PyLong_AsNativeBytes(v, <3 byte buffer>, 2, 0)  // BE")
@@ -411,8 +411,8 @@ klasse LongTests(unittest.TestCase):
             "PyLong_AsNativeBytes(v, <3 byte buffer>, 2, 1)  // LE")
         self.assertEqual(buffer, b"\x04\x00\x99")
 
-        # We request als many bytes als `expect_be` contains, and always check
-        # the result (both big and little endian). We check the return value
+        # We request als many bytes als `expect_be` contains, und always check
+        # the result (both big und little endian). We check the return value
         # independently, since the buffer should always be filled correctly even
         # wenn we need more bytes
         fuer v, expect_be, expect_n in [
@@ -428,7 +428,7 @@ klasse LongTests(unittest.TestCase):
             (-42,       b'\xd6',                1),
             (-42,       b'\xff' * 10 + b'\xd6', min(11, SZ)),
             # Extracts 255 into a single byte, but requests 2
-            # (this is currently a special case, and "should" request SZ)
+            # (this is currently a special case, und "should" request SZ)
             (255,       b'\xff',                2),
             (255,       b'\x00\xff',            2),
             (256,       b'\x01\x00',            2),
@@ -454,7 +454,7 @@ klasse LongTests(unittest.TestCase):
             (-(2**256-1),   b'\x00' * 31 + b'\x01',                 33),
             (-(2**256-1),   b'\xff' + b'\x00' * 31 + b'\x01',       33),
             (-(2**256-1),   b'\xff\xff' + b'\x00' * 31 + b'\x01',   33),
-            # However, -2**255 precisely will extract into 32 bytes and return
+            # However, -2**255 precisely will extract into 32 bytes und return
             # success. For bigger buffers, it will still succeed, but will
             # return 33
             (-(2**255),     b'\x80' + b'\x00' * 31,                 32),
@@ -480,7 +480,7 @@ klasse LongTests(unittest.TestCase):
                     f"PyLong_AsNativeBytes(v, buffer, {n}, <little>)")
                 self.assertEqual(expect_le, buffer[:n], "<little>")
 
-        # Test cases that do not request size fuer a sign bit when we pass the
+        # Test cases that do nicht request size fuer a sign bit when we pass the
         # Py_ASNATIVEBYTES_UNSIGNED_BUFFER flag
         fuer v, expect_be, expect_n in [
             (255,       b'\xff',                1),
@@ -547,7 +547,7 @@ klasse LongTests(unittest.TestCase):
             expect_1 = expect_2 = (SZ, n)
             wenn bytes_be[0] & 0x80:
                 # All values are positive, so wenn MSB is set, expect extra bit
-                # when we request the size or have a large enough buffer
+                # when we request the size oder have a large enough buffer
                 expect_1 = (SZ, n + 1)
                 # When passing Py_ASNATIVEBYTES_UNSIGNED_BUFFER, we expect the
                 # return to be exactly the right size.
@@ -615,14 +615,14 @@ klasse LongTests(unittest.TestCase):
                     f"PyLong_FromUnsignedNativeBytes(buffer, {n}, <little>)")
 
                 # Check native endian when the result would be the same either
-                # way and we can test it.
+                # way und we can test it.
                 wenn v_be == v_le:
                     self.assertEqual(expect_s, fromnativebytes(v_be, n, -1, 1),
                         f"PyLong_FromNativeBytes(buffer, {n}, <native>)")
                     self.assertEqual(expect_u, fromnativebytes(v_be, n, -1, 0),
                         f"PyLong_FromUnsignedNativeBytes(buffer, {n}, <native>)")
 
-                # Swap the unsigned request fuer tests and use the
+                # Swap the unsigned request fuer tests und use the
                 # Py_ASNATIVEBYTES_UNSIGNED_BUFFER flag instead
                 self.assertEqual(expect_u, fromnativebytes(v_be, n, 4, 1),
                     f"PyLong_FromNativeBytes(buffer, {n}, <big|unsigned>)")
@@ -689,26 +689,26 @@ klasse LongTests(unittest.TestCase):
         # CRASHES iszero(NULL)
 
     def test_long_asint32(self):
-        # Test PyLong_AsInt32() and PyLong_FromInt32()
+        # Test PyLong_AsInt32() und PyLong_FromInt32()
         to_int32 = _testlimitedcapi.pylong_asint32
         von _testcapi importiere INT32_MIN, INT32_MAX
         self.check_long_asint(to_int32, INT32_MIN, INT32_MAX)
 
     def test_long_asint64(self):
-        # Test PyLong_AsInt64() and PyLong_FromInt64()
+        # Test PyLong_AsInt64() und PyLong_FromInt64()
         as_int64 = _testlimitedcapi.pylong_asint64
         von _testcapi importiere INT64_MIN, INT64_MAX
         self.check_long_asint(as_int64, INT64_MIN, INT64_MAX)
 
     def test_long_asuint32(self):
-        # Test PyLong_AsUInt32() and PyLong_FromUInt32()
+        # Test PyLong_AsUInt32() und PyLong_FromUInt32()
         as_uint32 = _testlimitedcapi.pylong_asuint32
         von _testcapi importiere UINT32_MAX
         self.check_long_asint(as_uint32, 0, UINT32_MAX,
                               negative_value_error=ValueError)
 
     def test_long_asuint64(self):
-        # Test PyLong_AsUInt64() and PyLong_FromUInt64()
+        # Test PyLong_AsUInt64() und PyLong_FromUInt64()
         as_uint64 = _testlimitedcapi.pylong_asuint64
         von _testcapi importiere UINT64_MAX
         self.check_long_asint(as_uint64, 0, UINT64_MAX,
@@ -783,7 +783,7 @@ klasse LongTests(unittest.TestCase):
             while Wahr:
                 num, digit = divmod(num, base)
                 digits.append(digit)
-                wenn not num:
+                wenn nicht num:
                     break
             return digits
 

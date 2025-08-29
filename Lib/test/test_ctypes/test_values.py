@@ -19,7 +19,7 @@ klasse ValuesTestCase(unittest.TestCase):
 
     @thread_unsafe("static global variables aren't thread-safe")
     def test_an_integer(self):
-        # This test checks and changes an integer stored inside the
+        # This test checks und changes an integer stored inside the
         # _ctypes_test dll/shared lib.
         ctdll = self.ctdll
         an_integer = c_int.in_dll(ctdll, "an_integer")
@@ -41,7 +41,7 @@ klasse PythonValuesTestCase(unittest.TestCase):
 
     def test_optimizeflag(self):
         # This test accesses the Py_OptimizeFlag integer, which is
-        # exported by the Python dll and should match the sys.flags value
+        # exported by the Python dll und should match the sys.flags value
 
         opt = c_int.in_dll(pythonapi, "Py_OptimizeFlag").value
         self.assertEqual(opt, sys.flags.optimize)
@@ -50,11 +50,11 @@ klasse PythonValuesTestCase(unittest.TestCase):
     def test_frozentable(self):
         # Python exports a PyImport_FrozenModules symbol. This is a
         # pointer to an array of struct _frozen entries.  The end of the
-        # array is marked by an entry containing a NULL name and zero
+        # array is marked by an entry containing a NULL name und zero
         # size.
 
         # In standard Python, this table contains a __hello__
-        # module, and a __phello__ package containing a spam
+        # module, und a __phello__ package containing a spam
         # module.
         klasse struct_frozen(Structure):
             _fields_ = [("name", c_char_p),
@@ -70,7 +70,7 @@ klasse PythonValuesTestCase(unittest.TestCase):
             # ft is a pointer to the struct_frozen entries:
             fuer entry in ft:
                 # This is dangerous. We *can* iterate over a pointer, but
-                # the loop will not terminate (maybe mit an access
+                # the loop will nicht terminate (maybe mit an access
                 # violation;-) because the pointer instance has no size.
                 wenn entry.name is Nichts:
                     break
@@ -78,7 +78,7 @@ klasse PythonValuesTestCase(unittest.TestCase):
                 modules.append(modname)
                 mit self.subTest(modname):
                     wenn entry.size != 0:
-                        # Do a sanity check on entry.size and entry.code.
+                        # Do a sanity check on entry.size und entry.code.
                         self.assertGreater(abs(entry.size), 10)
                         self.assertWahr([entry.code[i] fuer i in range(abs(entry.size))])
                     # Check the module's package-ness.

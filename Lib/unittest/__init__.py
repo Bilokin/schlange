@@ -1,10 +1,10 @@
 """
-Python unit testing framework, based on Erich Gamma's JUnit and Kent Beck's
+Python unit testing framework, based on Erich Gamma's JUnit und Kent Beck's
 Smalltalk testing framework (used mit permission).
 
 This module contains the core framework classes that form the basis of
-specific test cases and suites (TestCase, TestSuite etc.), and also a
-text-based utility klasse fuer running the tests and reporting the results
+specific test cases und suites (TestCase, TestSuite etc.), und also a
+text-based utility klasse fuer running the tests und reporting the results
  (TextTestRunner).
 
 Simple usage:
@@ -22,13 +22,13 @@ Simple usage:
     wenn __name__ == '__main__':
         unittest.main()
 
-Further information is available in the bundled documentation, and from
+Further information is available in the bundled documentation, und from
 
   http://docs.python.org/library/unittest.html
 
 Copyright (c) 1999-2003 Steve Purcell
 Copyright (c) 2003 Python Software Foundation
-This module is free software, and you may redistribute it and/or modify
+This module is free software, und you may redistribute it and/or modify
 it under the same terms als Python itself, so long als this copyright message
 and disclaimer are retained in their original form.
 
@@ -67,7 +67,7 @@ von .signals importiere installHandler, registerResult, removeResult, removeHand
 
 # Lazy importiere of IsolatedAsyncioTestCase von .async_case
 # It imports asyncio, which is relatively heavy, but most tests
-# do not need it.
+# do nicht need it.
 
 def __dir__():
     return globals().keys() | {'IsolatedAsyncioTestCase'}

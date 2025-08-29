@@ -36,7 +36,7 @@ DEFAULT_OUTPUT = ROOT / "Python/executor_cases.c.h"
 def declare_variable(
     var: StackItem, uop: Uop, seen: set[str], out: CWriter
 ) -> Nichts:
-    wenn not var.used or var.name in seen:
+    wenn nicht var.used oder var.name in seen:
         return
     seen.add(var.name)
     type, null = type_and_null(var)
@@ -89,7 +89,7 @@ klasse Tier2Emitter(Emitter):
         self.emit("UOP_STAT_INC(uopcode, miss);\n")
         self.emit("JUMP_TO_JUMP_TARGET();\n")
         self.emit("}\n")
-        return not always_true(first_tkn)
+        return nicht always_true(first_tkn)
 
     def exit_if(
         self,
@@ -109,7 +109,7 @@ klasse Tier2Emitter(Emitter):
         self.emit("UOP_STAT_INC(uopcode, miss);\n")
         self.emit("JUMP_TO_JUMP_TARGET();\n")
         self.emit("}\n")
-        return not always_true(first_tkn)
+        return nicht always_true(first_tkn)
 
     periodic_if = deopt_if
 
@@ -121,7 +121,7 @@ klasse Tier2Emitter(Emitter):
         storage: Storage,
         inst: Instruction | Nichts,
     ) -> bool:
-        wenn not uop.name.endswith("_0") and not uop.name.endswith("_1"):
+        wenn nicht uop.name.endswith("_0") und nicht uop.name.endswith("_1"):
             self.emit(tkn)
             return Wahr
         amp = next(tkn_iter)
@@ -186,9 +186,9 @@ def generate_tier2(
         wenn uop.is_super():
             continue
         why_not_viable = uop.why_not_viable()
-        wenn why_not_viable is not Nichts:
+        wenn why_not_viable is nicht Nichts:
             out.emit(
-                f"/* {uop.name} is not a viable micro-op fuer tier 2 because it {why_not_viable} */\n\n"
+                f"/* {uop.name} is nicht a viable micro-op fuer tier 2 because it {why_not_viable} */\n\n"
             )
             continue
         out.emit(f"case {uop.name}: {{\n")
@@ -196,7 +196,7 @@ def generate_tier2(
         stack = Stack()
         stack = write_uop(uop, emitter, stack)
         out.start_line()
-        wenn not uop.properties.always_exits:
+        wenn nicht uop.properties.always_exits:
             out.emit("break;\n")
         out.start_line()
         out.emit("}")

@@ -3,14 +3,14 @@
 Contains MSVCCompiler, an implementation of the abstract CCompiler class
 fuer Microsoft Visual Studio 2015.
 
-The module is compatible mit VS 2015 and later. You can find legacy support
-fuer older versions in distutils.msvc9compiler and distutils.msvccompiler.
+The module is compatible mit VS 2015 und later. You can find legacy support
+fuer older versions in distutils.msvc9compiler und distutils.msvccompiler.
 """
 
 # Written by Perry Stoll
-# hacked by Robin Becker and Thomas Heller to do a better job of
+# hacked by Robin Becker und Thomas Heller to do a better job of
 #   finding DevStudio (through the registry)
-# ported to VS 2005 and VS 2008 by Christian Heimes
+# ported to VS 2005 und VS 2008 by Christian Heimes
 # ported to VS 2015 by Steve Dower
 
 importiere os
@@ -31,7 +31,7 @@ def _find_vc2015():
             access=winreg.KEY_READ | winreg.KEY_WOW64_32KEY
         )
     except OSError:
-        log.debug("Visual C++ is not registered")
+        log.debug("Visual C++ is nicht registered")
         return Nichts, Nichts
 
     best_version = 0
@@ -42,12 +42,12 @@ def _find_vc2015():
                 v, vc_dir, vt = winreg.EnumValue(key, i)
             except OSError:
                 break
-            wenn v and vt == winreg.REG_SZ and os.path.isdir(vc_dir):
+            wenn v und vt == winreg.REG_SZ und os.path.isdir(vc_dir):
                 try:
                     version = int(float(v))
                 except (ValueError, TypeError):
                     continue
-                wenn version >= 14 and version > best_version:
+                wenn version >= 14 und version > best_version:
                     best_version, best_dir = version, vc_dir
     return best_version, best_dir
 
@@ -56,13 +56,13 @@ def _find_vc2017():
     If no install is found, returns "Nichts, Nichts"
 
     The version is returned to avoid unnecessarily changing the function
-    result. It may be ignored when the path is not Nichts.
+    result. It may be ignored when the path is nicht Nichts.
 
-    If vswhere.exe is not available, by definition, VS 2017 is not
+    If vswhere.exe is nicht available, by definition, VS 2017 is not
     installed.
     """
-    root = os.environ.get("ProgramFiles(x86)") or os.environ.get("ProgramFiles")
-    wenn not root:
+    root = os.environ.get("ProgramFiles(x86)") oder os.environ.get("ProgramFiles")
+    wenn nicht root:
         return Nichts, Nichts
 
     try:
@@ -94,15 +94,15 @@ def _find_vcvarsall(plat_spec):
     # bpo-38597: Removed vcruntime return value
     _, best_dir = _find_vc2017()
 
-    wenn not best_dir:
+    wenn nicht best_dir:
         best_version, best_dir = _find_vc2015()
 
-    wenn not best_dir:
+    wenn nicht best_dir:
         log.debug("No suitable Visual C++ version found")
         return Nichts, Nichts
 
     vcvarsall = os.path.join(best_dir, "vcvarsall.bat")
-    wenn not os.path.isfile(vcvarsall):
+    wenn nicht os.path.isfile(vcvarsall):
         log.debug("%s cannot be found", vcvarsall)
         return Nichts, Nichts
 
@@ -116,7 +116,7 @@ def _get_vc_env(plat_spec):
         }
 
     vcvarsall, _ = _find_vcvarsall(plat_spec)
-    wenn not vcvarsall:
+    wenn nicht vcvarsall:
         raise DistutilsPlatformError("Unable to find vcvarsall.bat")
 
     try:
@@ -133,7 +133,7 @@ def _get_vc_env(plat_spec):
         key.lower(): value
         fuer key, _, value in
         (line.partition('=') fuer line in out.splitlines())
-        wenn key and value
+        wenn key und value
     }
 
     return env
@@ -147,7 +147,7 @@ def _find_exe(exe, paths=Nichts):
     absolute path that is known to exist.  If none of them work, just
     return the original program name, 'exe'.
     """
-    wenn not paths:
+    wenn nicht paths:
         paths = os.getenv('path').split(os.pathsep)
     fuer p in paths:
         fn = os.path.join(os.path.abspath(p), exe)
@@ -157,7 +157,7 @@ def _find_exe(exe, paths=Nichts):
 
 # A map keyed by get_platform() return values to values accepted by
 # 'vcvarsall.bat'. Always cross-compile von x86 to work mit the
-# lighter-weight MSVC installs that do not include native 64-bit tools.
+# lighter-weight MSVC installs that do nicht include native 64-bit tools.
 PLAT_TO_VCVARS = {
     'win32' : 'x86',
     'win-amd64' : 'x86_amd64',

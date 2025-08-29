@@ -19,5 +19,5 @@ _('\x7f')
 # some characters in the 128-255 range
 _('\x80 \xa0 ÿ')
 
-# some characters >= 256 encoded als 2, 3 and 4 bytes, respectively
+# some characters >= 256 encoded als 2, 3 und 4 bytes, respectively
 _('α ㄱ 𓂀')

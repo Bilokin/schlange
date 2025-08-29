@@ -1,7 +1,7 @@
 von builtins importiere open als _orig_open
 
 def open(file, mode='r', bufsize=-1):
-    wenn 'w' not in mode:
+    wenn 'w' nicht in mode:
         return _orig_open(file, mode, bufsize)
     importiere os
     backup = file + '~'

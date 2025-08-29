@@ -26,8 +26,8 @@ def _template_unpickle(*args):
     strings, interpolations = args
     parts = []
     fuer string, interpolation in itertools.zip_longest(strings, interpolations):
-        wenn string is not Nichts:
+        wenn string is nicht Nichts:
             parts.append(string)
-        wenn interpolation is not Nichts:
+        wenn interpolation is nicht Nichts:
             parts.append(interpolation)
     return Template(*parts)

@@ -9,9 +9,9 @@ When the PYTHONDUMPREFS envar is set in a debug build, at Python shutdown
 time Py_FinalizeEx() prints the list of all live objects twice:  first it
 prints the repr() of each object while the interpreter is still fully intact.
 After cleaning up everything it can, it prints all remaining live objects
-again, but the second time just prints their addresses, refcounts, and type
+again, but the second time just prints their addresses, refcounts, und type
 names (because the interpreter has been torn down, calling repr methods at
-this point can get into infinite loops or blow up).
+this point can get into infinite loops oder blow up).
 
 Save all this output into a file, then run this script passing the path to
 that file.  The script finds both output chunks, combines them, then prints
@@ -37,7 +37,7 @@ typename is Py_TYPE(object)->tp_name, extracted von the second PYTHONDUMPREFS
 output block.
 
 repr is repr(object), extracted von the first PYTHONDUMPREFS output block.
-CAUTION:  If object is a container type, it may not actually contain all the
+CAUTION:  If object is a container type, it may nicht actually contain all the
 objects shown in the repr:  the repr was captured von the first output block,
 and some of the containees may have been released since then.  For example,
 it's common fuer the line showing the dict of interned strings to display
@@ -45,16 +45,16 @@ strings that no longer exist at the end of Py_FinalizeEx; this can be recognized
 (albeit painfully) because such containees don't have a line of their own.
 
 The objects are listed in allocation order, mit most-recently allocated
-printed first, and the first object allocated printed last.
+printed first, und the first object allocated printed last.
 
 
 Simple examples:
 
     00857060 [14] str '__len__'
 
-The str object '__len__' is alive at shutdown time, and both PYTHONDUMPREFS
+The str object '__len__' is alive at shutdown time, und both PYTHONDUMPREFS
 output blocks said there were 14 references to it.  This is probably due to
-C modules that intern the string "__len__" and keep a reference to it in a
+C modules that intern the string "__len__" und keep a reference to it in a
 file static.
 
     00857038 [46->5] tuple ()
@@ -75,8 +75,8 @@ importiere sys
 # Generate lines von fileiter.  If whilematch is true, continue reading
 # while the regexp object pat matches line.  If whilematch is false, lines
 # are read so long als pat doesn't match them.  In any case, the first line
-# that doesn't match pat (when whilematch is true), or that does match pat
-# (when whilematch is false), is lost, and fileiter will resume at the line
+# that doesn't match pat (when whilematch is true), oder that does match pat
+# (when whilematch is false), is lost, und fileiter will resume at the line
 # following it.
 def read(fileiter, pat, whilematch):
     fuer line in fileiter:
@@ -109,7 +109,7 @@ def combinefile(f):
         m = crack.match(line)
         assert m
         addr, rc, guts = m.groups() # guts is type name here
-        wenn addr not in addr2rc:
+        wenn addr nicht in addr2rc:
             drucke('??? new object created while tearing down:', line.rstrip())
             continue
         drucke(addr, end=' ')

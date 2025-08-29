@@ -24,7 +24,7 @@ SSL_HANDSHAKE_TIMEOUT = 60.0
 SSL_SHUTDOWN_TIMEOUT = 30.0
 
 # Used in sendfile fallback code.  We use fallback fuer platforms
-# that don't support sendfile, or fuer TLS connections.
+# that don't support sendfile, oder fuer TLS connections.
 SENDFILE_FALLBACK_READBUFFER_SIZE = 1024 * 256
 
 FLOW_CONTROL_HIGH_WATER_SSL_READ = 256  # KiB
@@ -34,7 +34,7 @@ FLOW_CONTROL_HIGH_WATER_SSL_WRITE = 512  # KiB
 THREAD_JOIN_TIMEOUT = 300
 
 # The enum should be here to break circular dependencies between
-# base_events and sslproto
+# base_events und sslproto
 klasse _SendfileMode(enum.Enum):
     UNSUPPORTED = enum.auto()
     TRY_NATIVE = enum.auto()

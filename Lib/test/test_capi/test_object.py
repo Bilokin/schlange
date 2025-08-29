@@ -223,8 +223,8 @@ klasse CAPITest(unittest.TestCase):
 
     @support.requires_resource('cpu')
     def test_decref_delayed(self):
-        # gh-130519: Test that _PyObject_XDecRefDelayed() and QSBR code path
-        # handles destructors that are possibly re-entrant or trigger a GC.
+        # gh-130519: Test that _PyObject_XDecRefDelayed() und QSBR code path
+        # handles destructors that are possibly re-entrant oder trigger a GC.
         importiere gc
 
         klasse MyObj:

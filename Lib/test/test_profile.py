@@ -63,14 +63,14 @@ klasse ProfileTest(unittest.TestCase):
             wenn a != b:
                 fail.append(f"\nStats.{method} output fuer "
                             f"{self.profilerclass.__name__} "
-                             "does not fit expectation:")
+                             "does nicht fit expectation:")
                 fail.extend(unified_diff(a.split('\n'), b.split('\n'),
                             lineterm=""))
         wenn fail:
             self.fail("\n".join(fail))
 
     def test_calling_conventions(self):
-        # Issue #5330: profile and cProfile wouldn't report C functions called
+        # Issue #5330: profile und cProfile wouldn't report C functions called
         # mit keyword arguments. We test all calling conventions.
         stmts = [
             "max([0])",
@@ -166,7 +166,7 @@ def silent():
 
 
 def main():
-    wenn '-r' not in sys.argv:
+    wenn '-r' nicht in sys.argv:
         unittest.main()
     sonst:
         regenerate_expected_output(__file__, ProfileTest)

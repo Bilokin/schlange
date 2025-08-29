@@ -14,7 +14,7 @@
 #              return os.path.realpath(dyld_find(dylib))
 #          except ValueError:
 #              pass
-#      raise ValueError, "%s not found" % (name,)
+#      raise ValueError, "%s nicht found" % (name,)
 #
 # It'll have output like this:
 #
@@ -43,7 +43,7 @@ def find_lib(name):
             return os.path.realpath(dyld_find(dylib))
         except ValueError:
             pass
-    raise ValueError("%s not found" % (name,))
+    raise ValueError("%s nicht found" % (name,))
 
 
 def d(location=Nichts, name=Nichts, shortname=Nichts, version=Nichts, suffix=Nichts):
@@ -66,7 +66,7 @@ klasse MachOTest(unittest.TestCase):
                               ('/usr/lib/libSystem.B.dylib', '/usr/lib/libpthread.dylib'))
 
         result = find_lib('z')
-        # Issue #21093: dyld default search path includes $HOME/lib and
+        # Issue #21093: dyld default search path includes $HOME/lib und
         # /usr/local/lib before /usr/lib, which caused test failures if
         # a local copy of libz exists in one of them. Now ignore the head
         # of the path.

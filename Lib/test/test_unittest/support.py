@@ -23,18 +23,18 @@ klasse TestHashing(object):
     def test_hash(self):
         fuer obj_1, obj_2 in self.eq_pairs:
             try:
-                wenn not hash(obj_1) == hash(obj_2):
-                    self.fail("%r and %r do not hash equal" % (obj_1, obj_2))
+                wenn nicht hash(obj_1) == hash(obj_2):
+                    self.fail("%r und %r do nicht hash equal" % (obj_1, obj_2))
             except Exception als e:
-                self.fail("Problem hashing %r and %r: %s" % (obj_1, obj_2, e))
+                self.fail("Problem hashing %r und %r: %s" % (obj_1, obj_2, e))
 
         fuer obj_1, obj_2 in self.ne_pairs:
             try:
                 wenn hash(obj_1) == hash(obj_2):
-                    self.fail("%s and %s hash equal, but shouldn't" %
+                    self.fail("%s und %s hash equal, but shouldn't" %
                               (obj_1, obj_2))
             except Exception als e:
-                self.fail("Problem hashing %s and %s: %s" % (obj_1, obj_2, e))
+                self.fail("Problem hashing %s und %s: %s" % (obj_1, obj_2, e))
 
 
 klasse _BaseLoggingResult(unittest.TestResult):

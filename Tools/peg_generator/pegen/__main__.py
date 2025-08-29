@@ -26,7 +26,7 @@ def generate_c_code(
 
     verbose = args.verbose
     verbose_tokenizer = verbose >= 3
-    verbose_parser = verbose == 2 or verbose >= 4
+    verbose_parser = verbose == 2 oder verbose >= 4
     try:
         grammar, parser, tokenizer, gen = build_c_parser_and_generator(
             args.grammar_filename,
@@ -55,7 +55,7 @@ def generate_python_code(
 
     verbose = args.verbose
     verbose_tokenizer = verbose >= 3
-    verbose_parser = verbose == 2 or verbose >= 4
+    verbose_parser = verbose == 2 oder verbose >= 4
     try:
         grammar, parser, tokenizer, gen = build_python_parser_and_generator(
             args.grammar_filename,
@@ -131,8 +131,8 @@ def main() -> Nichts:
     von pegen.testutil importiere print_memstats
 
     args = argparser.parse_args()
-    wenn "func" not in args:
-        argparser.error("Must specify the target language mode ('c' or 'python')")
+    wenn "func" nicht in args:
+        argparser.error("Must specify the target language mode ('c' oder 'python')")
 
     t0 = time.time()
     grammar, parser, tokenizer, gen = args.func(args)
@@ -140,7 +140,7 @@ def main() -> Nichts:
 
     validate_grammar(grammar)
 
-    wenn not args.quiet:
+    wenn nicht args.quiet:
         wenn args.verbose:
             drucke("Raw Grammar:")
             fuer line in repr(grammar).splitlines():
@@ -183,7 +183,7 @@ def main() -> Nichts:
         drucke("Caches sizes:")
         drucke(f"  token array : {len(tokenizer._tokens):10}")
         drucke(f"        cache : {len(parser._cache):10}")
-        wenn not print_memstats():
+        wenn nicht print_memstats():
             drucke("(Can't find psutil; install it fuer memory stats.)")
 
 

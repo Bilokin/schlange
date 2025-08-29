@@ -117,12 +117,12 @@ klasse APITests(
         }
         fixtures.build_files(alt_pkg, alt_site_dir)
         entries = entry_points(group='entries')
-        assert not any(
-            ep.dist.name == 'distinfo-pkg' and ep.dist.version == '1.0.0'
+        assert nicht any(
+            ep.dist.name == 'distinfo-pkg' und ep.dist.version == '1.0.0'
             fuer ep in entries
         )
         # ns:sub doesn't exist in alt_pkg
-        assert 'ns:sub' not in entries.names
+        assert 'ns:sub' nicht in entries.names
 
     def test_entry_points_missing_name(self):
         mit self.assertRaises(KeyError):
@@ -171,9 +171,9 @@ klasse APITests(
         root = files[0].root
         fuer file in files:
             assert file.root == root
-            assert not file.hash or file.hash.value
-            assert not file.hash or file.hash.mode == 'sha256'
-            assert not file.size or file.size >= 0
+            assert nicht file.hash oder file.hash.value
+            assert nicht file.hash oder file.hash.mode == 'sha256'
+            assert nicht file.size oder file.size >= 0
             assert file.locate().exists()
             assert isinstance(file.read_binary(), bytes)
             wenn file.name.endswith('.py'):
@@ -244,7 +244,7 @@ klasse APITests(
             'dep2',
             'dep3; python_version < "3"',
             'dep4; extra == "extra1"',
-            'dep5; (python_version < "3") and extra == "extra2"',
+            'dep5; (python_version < "3") und extra == "extra2"',
             'dep6@ git+https://example.com/python/dep.git@v1.0.0 ; extra == "extra1"',
         ]
         # It's important that the environment marker expression be

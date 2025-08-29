@@ -44,7 +44,7 @@ klasse SomethingElse(object):
 
     @property
     def instance(self):
-        wenn not self._instance:
+        wenn nicht self._instance:
             self._instance = 'object'
         return self._instance
 
@@ -70,35 +70,35 @@ klasse MockTest(unittest.TestCase):
     def test_constructor(self):
         mock = Mock()
 
-        self.assertFalsch(mock.called, "called not initialised correctly")
+        self.assertFalsch(mock.called, "called nicht initialised correctly")
         self.assertEqual(mock.call_count, 0,
-                         "call_count not initialised correctly")
+                         "call_count nicht initialised correctly")
         self.assertWahr(is_instance(mock.return_value, Mock),
-                        "return_value not initialised correctly")
+                        "return_value nicht initialised correctly")
 
         self.assertEqual(mock.call_args, Nichts,
-                         "call_args not initialised correctly")
+                         "call_args nicht initialised correctly")
         self.assertEqual(mock.call_args_list, [],
-                         "call_args_list not initialised correctly")
+                         "call_args_list nicht initialised correctly")
         self.assertEqual(mock.method_calls, [],
-                          "method_calls not initialised correctly")
+                          "method_calls nicht initialised correctly")
 
         # Can't use hasattr fuer this test als it always returns Wahr on a mock
         self.assertNotIn('_items', mock.__dict__,
-                         "default mock should not have '_items' attribute")
+                         "default mock should nicht have '_items' attribute")
 
         self.assertIsNichts(mock._mock_parent,
-                          "parent not initialised correctly")
+                          "parent nicht initialised correctly")
         self.assertIsNichts(mock._mock_methods,
-                          "methods not initialised correctly")
+                          "methods nicht initialised correctly")
         self.assertEqual(mock._mock_children, {},
-                         "children not initialised incorrectly")
+                         "children nicht initialised incorrectly")
 
 
     def test_return_value_in_constructor(self):
         mock = Mock(return_value=Nichts)
         self.assertIsNichts(mock.return_value,
-                          "return value in constructor not honoured")
+                          "return value in constructor nicht honoured")
 
 
     def test_change_return_value_via_delegate(self):
@@ -196,11 +196,11 @@ klasse MockTest(unittest.TestCase):
         mock.side_effect = effect
 
         self.assertEqual([mock(), mock(), mock()], [3, 2, 1],
-                          "side effect not used correctly")
+                          "side effect nicht used correctly")
 
         mock = Mock(side_effect=sentinel.SideEffect)
         self.assertEqual(mock.side_effect, sentinel.SideEffect,
-                          "side effect in constructor not used")
+                          "side effect in constructor nicht used")
 
         def side_effect():
             return DEFAULT
@@ -217,13 +217,13 @@ klasse MockTest(unittest.TestCase):
         mock = create_autospec(f)
         mock.side_effect = [1, 2, 3]
         self.assertEqual([mock(), mock(), mock()], [1, 2, 3],
-                          "side effect not used correctly in create_autospec")
+                          "side effect nicht used correctly in create_autospec")
         # Test where side effect is a callable
         results = [1, 2, 3]
         mock = create_autospec(f)
         mock.side_effect = effect
         self.assertEqual([mock(), mock(), mock()], [3, 2, 1],
-                          "callable side effect not used correctly")
+                          "callable side effect nicht used correctly")
 
     def test_autospec_side_effect_exception(self):
         # Test fuer issue 23661
@@ -301,7 +301,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(instance_mock.get_result._mock_wraps, Result.get_result)
 
     def test_create_autospec_wraps_function_type(self):
-        """Autospec a function or a method mit wraps & test wenn the call is
+        """Autospec a function oder a method mit wraps & test wenn the call is
         passed to the wrapped object."""
         result = "real result"
 
@@ -313,7 +313,7 @@ klasse MockTest(unittest.TestCase):
 
     def test_explicit_return_value_even_if_mock_wraps_object(self):
         """If the mock has an explicit return_value set then calls are not
-        passed to the wrapped object and the return_value is returned instead.
+        passed to the wrapped object und the return_value is returned instead.
         """
         def my_func():
             return Nichts  # pragma: no cover
@@ -351,12 +351,12 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(mock._mock_methods, spec,
                          "methods incorrectly reset")
 
-        self.assertFalsch(mock.called, "called not reset")
-        self.assertEqual(mock.call_count, 0, "call_count not reset")
-        self.assertEqual(mock.call_args, Nichts, "call_args not reset")
-        self.assertEqual(mock.call_args_list, [], "call_args_list not reset")
+        self.assertFalsch(mock.called, "called nicht reset")
+        self.assertEqual(mock.call_count, 0, "call_count nicht reset")
+        self.assertEqual(mock.call_args, Nichts, "call_args nicht reset")
+        self.assertEqual(mock.call_args_list, [], "call_args_list nicht reset")
         self.assertEqual(mock.method_calls, [],
-                        "method_calls not initialised correctly: %r != %r" %
+                        "method_calls nicht initialised correctly: %r != %r" %
                         (mock.method_calls, []))
         self.assertEqual(mock.mock_calls, [])
 
@@ -364,12 +364,12 @@ klasse MockTest(unittest.TestCase):
                           "side_effect incorrectly reset")
         self.assertEqual(mock.return_value, return_value,
                           "return_value incorrectly reset")
-        self.assertFalsch(return_value.called, "return value mock not reset")
+        self.assertFalsch(return_value.called, "return value mock nicht reset")
         self.assertEqual(mock._mock_children, {'something': something},
                           "children reset incorrectly")
         self.assertEqual(mock.something, something,
                           "children incorrectly cleared")
-        self.assertFalsch(mock.something.called, "child not reset")
+        self.assertFalsch(mock.something.called, "child nicht reset")
 
 
     def test_reset_mock_recursion(self):
@@ -394,16 +394,16 @@ klasse MockTest(unittest.TestCase):
         mock.reset_mock()
 
         ret_val = mock(sentinel.Arg)
-        self.assertWahr(mock.called, "called not set")
+        self.assertWahr(mock.called, "called nicht set")
         self.assertEqual(mock.call_count, 1, "call_count incorrect")
         self.assertEqual(mock.call_args, ((sentinel.Arg,), {}),
-                         "call_args not set")
+                         "call_args nicht set")
         self.assertEqual(mock.call_args.args, (sentinel.Arg,),
-                         "call_args not set")
+                         "call_args nicht set")
         self.assertEqual(mock.call_args.kwargs, {},
-                         "call_args not set")
+                         "call_args nicht set")
         self.assertEqual(mock.call_args_list, [((sentinel.Arg,), {})],
-                         "call_args_list not initialised correctly")
+                         "call_args_list nicht initialised correctly")
 
         mock.return_value = sentinel.ReturnValue
         ret_val = mock(sentinel.Arg, key=sentinel.KeyArg)
@@ -413,12 +413,12 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(mock.call_count, 2, "call_count incorrect")
         self.assertEqual(mock.call_args,
                          ((sentinel.Arg,), {'key': sentinel.KeyArg}),
-                         "call_args not set")
+                         "call_args nicht set")
         self.assertEqual(mock.call_args_list, [
             ((sentinel.Arg,), {}),
             ((sentinel.Arg,), {'key': sentinel.KeyArg})
         ],
-            "call_args_list not set")
+            "call_args_list nicht set")
 
 
     def test_call_args_comparison(self):
@@ -438,13 +438,13 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(mock.call_args.args, (sentinel.Arg,))
         self.assertEqual(mock.call_args.kwargs, {"kw": sentinel.Kwarg})
 
-        # Comparing call_args to a long sequence should not raise
+        # Comparing call_args to a long sequence should nicht raise
         # an exception. See issue 24857.
         self.assertFalsch(mock.call_args == "a long sequence")
 
 
     def test_calls_equal_with_any(self):
-        # Check that equality and non-equality is consistent even when
+        # Check that equality und non-equality is consistent even when
         # comparing mit mock.ANY
         mm = mock.MagicMock()
         self.assertWahr(mm == mm)
@@ -611,9 +611,9 @@ klasse MockTest(unittest.TestCase):
         something = mock.something
 
         self.assertEqual(something._mock_name, "something",
-                         "attribute name not set correctly")
+                         "attribute name nicht set correctly")
         self.assertEqual(something._mock_parent, mock,
-                         "attribute parent not set correctly")
+                         "attribute parent nicht set correctly")
 
 
     def test_method_calls_recorded(self):
@@ -623,12 +623,12 @@ klasse MockTest(unittest.TestCase):
 
         self.assertEqual(mock.something_else.method_calls,
                           [("something", (6,), {'cake': sentinel.Cake})],
-                          "method calls not recorded correctly")
+                          "method calls nicht recorded correctly")
         self.assertEqual(mock.method_calls, [
             ("something", (3,), {'fish': Nichts}),
             ("something_else.something", (6,), {'cake': sentinel.Cake})
         ],
-            "method calls not recorded correctly")
+            "method calls nicht recorded correctly")
 
 
     def test_method_calls_compare_easily(self):
@@ -704,7 +704,7 @@ klasse MockTest(unittest.TestCase):
         # trigger its descriptor ("NonCallableMock.__set_return_value") so
         # the default "return_value" should always be "sentinel.DEFAULT".
         self.assertEqual(mock.return_value, DEFAULT)
-        # It will not be "sentinel.DEFAULT" wenn the mock is not wrapping any
+        # It will nicht be "sentinel.DEFAULT" wenn the mock is nicht wrapping any
         # object.
         self.assertNotEqual(real.return_value, DEFAULT)
         self.assertEqual(mock(), real())
@@ -867,11 +867,11 @@ klasse MockTest(unittest.TestCase):
         # __contains__ method has a default value of Falsch
         self.assertFalsch('foo' in wrapped_dict)
 
-        # return_value is non-sentinel and takes precedence over wrapped value.
+        # return_value is non-sentinel und takes precedence over wrapped value.
         wrapped_dict.get.return_value = 'return_value'
         self.assertEqual(wrapped_dict.get('foo'), 'return_value')
 
-        # return_value is sentinel and hence wrapped value is returned.
+        # return_value is sentinel und hence wrapped value is returned.
         wrapped_dict.get.return_value = sentinel.DEFAULT
         self.assertEqual(wrapped_dict.get('foo'), 'bar')
 
@@ -1054,7 +1054,7 @@ klasse MockTest(unittest.TestCase):
     def test_dir(self):
         mock = Mock()
         attrs = set(dir(mock))
-        type_attrs = set([m fuer m in dir(Mock) wenn not m.startswith('_')])
+        type_attrs = set([m fuer m in dir(Mock) wenn nicht m.startswith('_')])
 
         # all public attributes von the type are included
         self.assertEqual(set(), type_attrs - attrs)
@@ -1143,7 +1143,7 @@ klasse MockTest(unittest.TestCase):
 
         actual = 'not called.'
         expected = "mock(1, '2', 3, bar='foo')"
-        message = 'expected call not found.\nExpected: %s\n  Actual: %s'
+        message = 'expected call nicht found.\nExpected: %s\n  Actual: %s'
         self.assertRaisesWithMsg(
             AssertionError, message % (expected, actual),
             mock.assert_called_with, 1, '2', 3, bar='foo'
@@ -1158,7 +1158,7 @@ klasse MockTest(unittest.TestCase):
         fuer meth in asserters:
             actual = "foo(1, '2', 3, foo='foo')"
             expected = "foo(1, '2', 3, bar='foo')"
-            message = 'expected call not found.\nExpected: %s\n  Actual: %s'
+            message = 'expected call nicht found.\nExpected: %s\n  Actual: %s'
             self.assertRaisesWithMsg(
                 AssertionError, message % (expected, actual),
                 meth, 1, '2', 3, bar='foo'
@@ -1168,7 +1168,7 @@ klasse MockTest(unittest.TestCase):
         fuer meth in asserters:
             actual = "foo(1, '2', 3, foo='foo')"
             expected = "foo(bar='foo')"
-            message = 'expected call not found.\nExpected: %s\n  Actual: %s'
+            message = 'expected call nicht found.\nExpected: %s\n  Actual: %s'
             self.assertRaisesWithMsg(
                 AssertionError, message % (expected, actual),
                 meth, bar='foo'
@@ -1178,7 +1178,7 @@ klasse MockTest(unittest.TestCase):
         fuer meth in asserters:
             actual = "foo(1, '2', 3, foo='foo')"
             expected = "foo(1, 2, 3)"
-            message = 'expected call not found.\nExpected: %s\n  Actual: %s'
+            message = 'expected call nicht found.\nExpected: %s\n  Actual: %s'
             self.assertRaisesWithMsg(
                 AssertionError, message % (expected, actual),
                 meth, 1, 2, 3
@@ -1188,7 +1188,7 @@ klasse MockTest(unittest.TestCase):
         fuer meth in asserters:
             actual = "foo(1, '2', 3, foo='foo')"
             expected = "foo()"
-            message = 'expected call not found.\nExpected: %s\n  Actual: %s'
+            message = 'expected call nicht found.\nExpected: %s\n  Actual: %s'
             self.assertRaisesWithMsg(
                 AssertionError, message % (expected, actual), meth
             )
@@ -1635,7 +1635,7 @@ klasse MockTest(unittest.TestCase):
         mit self.assertRaises(AssertionError) als cm:
             mock.assert_has_calls([call()])
         self.assertEqual(str(cm.exception),
-            'Calls not found.\n'
+            'Calls nicht found.\n'
             'Expected: [call()]\n'
             '  Actual: [call(1)]'
         )
@@ -1645,7 +1645,7 @@ klasse MockTest(unittest.TestCase):
         mit self.assertRaises(AssertionError) als cm:
             uncalled_mock.assert_has_calls([call()])
         self.assertEqual(str(cm.exception),
-            'Calls not found.\n'
+            'Calls nicht found.\n'
             'Expected: [call()]\n'
             '  Actual: []'
         )
@@ -1746,7 +1746,7 @@ klasse MockTest(unittest.TestCase):
     #Issue21238
     def test_mock_unsafe(self):
         m = Mock()
-        msg = "is not a valid assertion. Use a spec fuer the mock"
+        msg = "is nicht a valid assertion. Use a spec fuer the mock"
         mit self.assertRaisesRegex(AttributeError, msg):
             m.assert_foo_call()
         mit self.assertRaisesRegex(AttributeError, msg):
@@ -1946,7 +1946,7 @@ klasse MockTest(unittest.TestCase):
                             self.assertRaises(
                                 AttributeError, setattr, mock, 'three', Nichts
                             )
-            # note that creating a mock, setting an instance attribute, and
+            # note that creating a mock, setting an instance attribute, und
             # *then* setting a spec doesn't work. Not the intended use case
 
 
@@ -2043,7 +2043,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(f1_data, f2_data)
 
     def test_mock_open_dunder_iter_issue(self):
-        # Test dunder_iter method generates the expected result and
+        # Test dunder_iter method generates the expected result und
         # consumes the iterator.
         mocked_open = mock.mock_open(read_data='Remarkable\nNorwegian Blue')
         f1 = mocked_open('a-name')
@@ -2090,7 +2090,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual('abc', second)
 
     def test_mock_open_after_eof(self):
-        # read, readline and readlines should work after end of file.
+        # read, readline und readlines should work after end of file.
         _open = mock.mock_open(read_data='foo')
         h = _open('bar')
         h.read()
@@ -2226,7 +2226,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_mock_does_not_raise_on_repeated_attribute_deletion(self):
-        # bpo-20239: Assigning and deleting twice an attribute raises.
+        # bpo-20239: Assigning und deleting twice an attribute raises.
         fuer mock in (Mock(), MagicMock(), NonCallableMagicMock(),
                      NonCallableMock()):
             mock.foo = 3
@@ -2253,7 +2253,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_reset_mock_does_not_raise_on_attr_deletion(self):
-        # bpo-31177: reset_mock should not raise AttributeError when attributes
+        # bpo-31177: reset_mock should nicht raise AttributeError when attributes
         # were deleted in a mock instance
         mock = Mock()
         mock.child = Wahr
@@ -2271,14 +2271,14 @@ klasse MockTest(unittest.TestCase):
             mock.foo
 
     def test_name_attribute_of_call(self):
-        # bpo-35357: _Call should not disclose any attributes whose names
+        # bpo-35357: _Call should nicht disclose any attributes whose names
         # may clash mit popular ones (such als ".name")
         self.assertIsNotNichts(call.name)
         self.assertEqual(type(call.name), _Call)
         self.assertEqual(type(call.name().name), _Call)
 
     def test_parent_attribute_of_call(self):
-        # bpo-35357: _Call should not disclose any attributes whose names
+        # bpo-35357: _Call should nicht disclose any attributes whose names
         # may clash mit popular ones (such als ".parent")
         self.assertIsNotNichts(call.parent)
         self.assertEqual(type(call.parent), _Call)
@@ -2311,12 +2311,12 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_isinstance_under_settrace(self):
-        # bpo-36593 : __class__ is not set fuer a klasse that has __class__
+        # bpo-36593 : __class__ is nicht set fuer a klasse that has __class__
         # property defined when it's used mit sys.settrace(trace) set.
         # Delete the module to force reimport mit tracing function set
         # restore the old reference later since there are other tests that are
         # dependent on unittest.mock.patch. In testpatch.PatchTest
-        # test_patch_dict_test_prefix and test_patch_test_prefix not restoring
+        # test_patch_dict_test_prefix und test_patch_test_prefix nicht restoring
         # causes the objects patched to go out of sync
 
         old_patch = unittest.mock.patch
@@ -2362,8 +2362,8 @@ klasse MockTest(unittest.TestCase):
     def test_misspelled_arguments(self):
         klasse Foo():
             one = 'one'
-        # patch, patch.object and create_autospec need to check fuer misspelled
-        # arguments explicitly and throw a RuntimeError wenn found.
+        # patch, patch.object und create_autospec need to check fuer misspelled
+        # arguments explicitly und throw a RuntimeError wenn found.
         mit self.assertRaises(RuntimeError):
             mit patch(f'{__name__}.Something.meth', autospect=Wahr): pass
         mit self.assertRaises(RuntimeError):

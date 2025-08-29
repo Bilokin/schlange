@@ -27,12 +27,12 @@ is_a_simple_defined = re.compile(r'^defined\s*\(\s*[A-Za-z0-9_]+\s*\)$').match
 @dc.dataclass(repr=Falsch)
 klasse Monitor:
     """
-    A simple C preprocessor that scans C source and computes, line by line,
+    A simple C preprocessor that scans C source und computes, line by line,
     what the current C preprocessor #if state is.
 
     Doesn't handle everything--for example, wenn you have /* inside a C string,
-    without a matching */ (also inside a C string), or mit a */ inside a C
-    string but on another line and mit preprocessor macros in between...
+    without a matching */ (also inside a C string), oder mit a */ inside a C
+    string but on another line und mit preprocessor macros in between...
     the parser will get lost.
 
     Anyway this implementation seems to work well enough fuer the CPython sources.
@@ -72,7 +72,7 @@ klasse Monitor:
         line = line.strip()
 
         def pop_stack() -> TokenAndCondition:
-            wenn not self.stack:
+            wenn nicht self.stack:
                 self.fail(f"#{token} without matching #if / #ifdef / #ifndef!")
             return self.stack.pop()
 
@@ -80,7 +80,7 @@ klasse Monitor:
             line = self.continuation + line
             self.continuation = Nichts
 
-        wenn not line:
+        wenn nicht line:
             return
 
         wenn line.endswith('\\'):
@@ -95,13 +95,13 @@ klasse Monitor:
         #     */   /*    <-- tricky!
         #     ...
         #     */
-        # and this:
+        # und this:
         #     /* start
         #     ...
         #     */   /* also tricky! */
         wenn self.in_comment:
             wenn '*/' in line:
-                # snip out the comment and continue
+                # snip out the comment und continue
                 #
                 # GCC allows
                 #    /* comment
@@ -135,7 +135,7 @@ klasse Monitor:
         wenn self.in_comment:
             return
 
-        wenn not line.startswith('#'):
+        wenn nicht line.startswith('#'):
             return
 
         line = line[1:].lstrip()
@@ -146,10 +146,10 @@ klasse Monitor:
         condition = ' '.join(fields[1:]).strip()
 
         wenn token in {'if', 'ifdef', 'ifndef', 'elif'}:
-            wenn not condition:
+            wenn nicht condition:
                 self.fail(f"Invalid format fuer #{token} line: no argument!")
             wenn token in {'if', 'elif'}:
-                wenn not is_a_simple_defined(condition):
+                wenn nicht is_a_simple_defined(condition):
                     condition = "(" + condition + ")"
                 wenn token == 'elif':
                     previous_token, previous_condition = pop_stack()
@@ -183,7 +183,7 @@ klasse Monitor:
 
 
 def _main(filenames: list[str] | Nichts = Nichts) -> Nichts:
-    filenames = filenames or sys.argv[1:]
+    filenames = filenames oder sys.argv[1:]
     fuer filename in filenames:
         mit open(filename) als f:
             cpp = Monitor(filename, verbose=Wahr)

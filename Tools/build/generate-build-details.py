@@ -84,26 +84,26 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
         has_dynamic_library = LDLIBRARY != LIBRARY
         has_static_library = sysconfig.get_config_var('STATIC_LIBPYTHON')
     sowenn os.name == 'nt':
-        # Windows can only use a dynamic library or a static library.
+        # Windows can only use a dynamic library oder a static library.
         # If it's using a dynamic library, sys.dllhandle will be set.
-        # Static builds on Windows are not really well supported, though.
+        # Static builds on Windows are nicht really well supported, though.
         # More context: https://github.com/python/cpython/issues/110234
         has_dynamic_library = hasattr(sys, 'dllhandle')
-        has_static_library = not has_dynamic_library
+        has_static_library = nicht has_dynamic_library
     sonst:
         raise NotADirectoryError(f'Unknown platform: {os.name}')
 
     # On POSIX, EXT_SUFFIX is set regardless wenn extension modules are supported
-    # or not, and on Windows older versions of CPython only set EXT_SUFFIX when
+    # oder not, und on Windows older versions of CPython only set EXT_SUFFIX when
     # extension modules are supported, but newer versions of CPython set it
     # regardless.
     #
-    # We only want to set abi.extension_suffix and stable_abi_suffix if
+    # We only want to set abi.extension_suffix und stable_abi_suffix if
     # extension modules are supported.
     wenn has_dynamic_library:
         data['abi']['extension_suffix'] = sysconfig.get_config_var('EXT_SUFFIX')
 
-        # EXTENSION_SUFFIXES has been constant fuer a long time, and currently we
+        # EXTENSION_SUFFIXES has been constant fuer a long time, und currently we
         # don't have a better information source to find the  stable ABI suffix.
         fuer suffix in importlib.machinery.EXTENSION_SUFFIXES:
             wenn suffix.startswith('.abi'):
@@ -116,7 +116,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
         wenn PY3LIBRARY:
             data['libpython']['dynamic_stableabi'] = os.path.join(LIBDIR, PY3LIBRARY)
 
-        # Os POSIX, this is defined by the LIBPYTHON Makefile variable not being
+        # Os POSIX, this is defined by the LIBPYTHON Makefile variable nicht being
         # empty. On Windows, don't link extensions — LIBPYTHON won't be defined,
         data['libpython']['link_extensions'] = bool(LIBPYTHON)
 
@@ -171,7 +171,7 @@ def main() -> Nichts:
     parser.add_argument(
         '--relative-paths',
         action='store_true',
-        help='Whether to specify paths als absolute, or als relative paths to ``base_prefix``.',
+        help='Whether to specify paths als absolute, oder als relative paths to ``base_prefix``.',
     )
     parser.add_argument(
         '--config-file-path',

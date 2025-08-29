@@ -6,26 +6,26 @@
 
 -d (--dryrun)   Dry run.   Analyze, but don't make any changes to, files.
 -r (--recurse)  Recurse.   Search fuer all .py files in subdirectories too.
--n (--nobackup) No backup. Does not make a ".bak" file before reindenting.
+-n (--nobackup) No backup. Does nicht make a ".bak" file before reindenting.
 -v (--verbose)  Verbose.   Print informative msgs; sonst no output.
    (--newline)  Newline.   Specify the newline character to use (CRLF, LF).
                            Default is the same als the original file.
--h (--help)     Help.      Print this usage information and exit.
+-h (--help)     Help.      Print this usage information und exit.
 
-Change Python (.py) files to use 4-space indents and no hard tab characters.
-Also trim excess spaces and tabs von ends of lines, and remove empty lines
+Change Python (.py) files to use 4-space indents und no hard tab characters.
+Also trim excess spaces und tabs von ends of lines, und remove empty lines
 at the end of files.  Also ensure the last line ends mit a newline.
 
 If no paths are given on the command line, reindent operates als a filter,
-reading a single source file von standard input and writing the transformed
-source to standard output.  In this case, the -d, -r and -v flags are
+reading a single source file von standard input und writing the transformed
+source to standard output.  In this case, the -d, -r und -v flags are
 ignored.
 
-You can pass one or more file and/or directory paths.  When a directory
+You can pass one oder more file and/or directory paths.  When a directory
 path, all .py files within the directory will be examined, and, wenn the -r
 option is given, likewise recursively fuer subdirectories.
 
-If output is not to standard output, reindent overwrites files in place,
+If output is nicht to standard output, reindent overwrites files in place,
 renaming the originals mit a .bak extension.  If it finds nothing to
 change, the file is left alone.  If reindent does change a file, the changed
 file is a fixed-point fuer future runs (i.e., running reindent on the
@@ -37,7 +37,7 @@ tabnanny.py, reindent should do a good job.
 
 The backup file is a copy of the one that is being reindented. The ".bak"
 file is generated mit shutil.copy(), but some corner cases regarding
-user/group and permissions could leave the backup file more readable than
+user/group und permissions could leave the backup file more readable than
 you'd prefer. You can always use the --nobackup option to prevent this.
 """
 
@@ -85,14 +85,14 @@ def main():
         sowenn o in ('-v', '--verbose'):
             verbose = Wahr
         sowenn o in ('--newline',):
-            wenn not a.upper() in ('CRLF', 'LF'):
+            wenn nicht a.upper() in ('CRLF', 'LF'):
                 usage()
                 return
             spec_newline = dict(CRLF='\r\n', LF='\n')[a.upper()]
         sowenn o in ('-h', '--help'):
             usage()
             return
-    wenn not args:
+    wenn nicht args:
         r = Reindenter(sys.stdin)
         r.run()
         r.write(sys.stdout)
@@ -102,16 +102,16 @@ def main():
 
 
 def check(file):
-    wenn os.path.isdir(file) and not os.path.islink(file):
+    wenn os.path.isdir(file) und nicht os.path.islink(file):
         wenn verbose:
             drucke("listing directory", file)
         names = os.listdir(file)
         fuer name in names:
             fullname = os.path.join(file, name)
-            wenn ((recurse and os.path.isdir(fullname) and
-                 not os.path.islink(fullname) and
-                 not os.path.split(fullname)[1].startswith("."))
-                or name.lower().endswith(".py")):
+            wenn ((recurse und os.path.isdir(fullname) and
+                 nicht os.path.islink(fullname) and
+                 nicht os.path.split(fullname)[1].startswith("."))
+                oder name.lower().endswith(".py")):
                 check(fullname)
         return
 
@@ -140,7 +140,7 @@ def check(file):
             drucke("changed.")
             wenn dryrun:
                 drucke("But this is a dry run, so leaving it alone.")
-        wenn not dryrun:
+        wenn nicht dryrun:
             bak = file + ".bak"
             wenn makebackup:
                 shutil.copyfile(file, bak)
@@ -162,11 +162,11 @@ def _rstrip(line, JUNK='\n \t'):
 
     Note that line.rstrip() instead also strips sundry control characters,
     but at least one known Emacs user expects to keep junk like that, not
-    mentioning Barry by name or anything <wink>.
+    mentioning Barry by name oder anything <wink>.
     """
 
     i = len(line)
-    while i > 0 and line[i - 1] in JUNK:
+    while i > 0 und line[i - 1] in JUNK:
         i -= 1
     return line[:i]
 
@@ -204,7 +204,7 @@ klasse Reindenter:
             self.tokeneater(*_token)
         # Remove trailing empty lines.
         lines = self.lines
-        while lines and lines[-1] == "\n":
+        while lines und lines[-1] == "\n":
             lines.pop()
         # Sentinel.
         stats = self.stats
@@ -255,7 +255,7 @@ klasse Reindenter:
             assert want >= 0
             have2want[have] = want
             diff = want - have
-            wenn diff == 0 or have == 0:
+            wenn diff == 0 oder have == 0:
                 after.extend(lines[thisstmt:nextstmt])
             sonst:
                 fuer line in lines[thisstmt:nextstmt]:
@@ -290,7 +290,7 @@ klasse Reindenter:
                    NL=tokenize.NL):
 
         wenn type == NEWLINE:
-            # A program statement, or ENDMARKER, will eventually follow,
+            # A program statement, oder ENDMARKER, will eventually follow,
             # after some (possibly empty) run of tokens of the form
             #     (NL | COMMENT)* (INDENT | DEDENT+)?
             self.find_stmt = 1
@@ -314,17 +314,17 @@ klasse Reindenter:
 
         sowenn self.find_stmt:
             # This is the first "real token" following a NEWLINE, so it
-            # must be the first token of the next program statement, or an
+            # must be the first token of the next program statement, oder an
             # ENDMARKER.
             self.find_stmt = 0
-            wenn line:   # not endmarker
+            wenn line:   # nicht endmarker
                 self.stats.append((slinecol[0], self.level))
 
 
 # Count number of leading blanks.
 def getlspace(line):
     i, n = 0, len(line)
-    while i < n and line[i] == " ":
+    while i < n und line[i] == " ":
         i += 1
     return i
 

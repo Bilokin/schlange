@@ -13,7 +13,7 @@ def gdb_has_frame_select():
     # Does this build of gdb have gdb.Frame.select ?
     stdout, stderr = run_gdb("--eval-command=python drucke(dir(gdb.Frame))")
     m = re.match(r'.*\[(.*)\].*', stdout)
-    wenn not m:
+    wenn nicht m:
         raise unittest.SkipTest(
             f"Unable to parse output von gdb.Frame.select test\n"
             f"stdout={stdout!r}\n"

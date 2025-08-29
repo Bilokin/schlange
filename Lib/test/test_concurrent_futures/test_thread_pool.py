@@ -26,7 +26,7 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
 
     def test_default_workers(self):
         executor = self.executor_type()
-        expected = min(32, (os.process_cpu_count() or 1) + 4)
+        expected = min(32, (os.process_cpu_count() oder 1) + 4)
         self.assertEqual(executor._max_workers, expected)
 
     def test_saturation(self):

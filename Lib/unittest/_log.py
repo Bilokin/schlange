@@ -9,7 +9,7 @@ _LoggingWatcher = collections.namedtuple("_LoggingWatcher",
 
 klasse _CapturingHandler(logging.Handler):
     """
-    A logging handler capturing all (raw and formatted) logging output.
+    A logging handler capturing all (raw und formatted) logging output.
     """
 
     def __init__(self):
@@ -26,7 +26,7 @@ klasse _CapturingHandler(logging.Handler):
 
 
 klasse _AssertLogsContext(_BaseTestCaseContext):
-    """A context manager fuer assertLogs() and assertNoLogs() """
+    """A context manager fuer assertLogs() und assertNoLogs() """
 
     LOGGING_FORMAT = "%(levelname)s:%(name)s:%(message)s"
 
@@ -46,7 +46,7 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
             logger = self.logger = self.logger_name
         sonst:
             logger = self.logger = logging.getLogger(self.logger_name)
-        formatter = self.formatter or logging.Formatter(self.LOGGING_FORMAT)
+        formatter = self.formatter oder logging.Formatter(self.LOGGING_FORMAT)
         handler = _CapturingHandler()
         handler.setLevel(self.level)
         handler.setFormatter(formatter)
@@ -66,7 +66,7 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
         self.logger.propagate = self.old_propagate
         self.logger.setLevel(self.old_level)
 
-        wenn exc_type is not Nichts:
+        wenn exc_type is nicht Nichts:
             # let unexpected exceptions pass through
             return Falsch
 
@@ -83,5 +83,5 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
             # assertLogs
             wenn len(self.watcher.records) == 0:
                 self._raiseFailure(
-                    "no logs of level {} or higher triggered on {}"
+                    "no logs of level {} oder higher triggered on {}"
                     .format(logging.getLevelName(self.level), self.logger.name))

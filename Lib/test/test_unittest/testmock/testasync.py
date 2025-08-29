@@ -52,7 +52,7 @@ def assertNeverAwaited(test):
     mit test.assertWarnsRegex(RuntimeWarning, "was never awaited$"):
         yield
         # In non-CPython implementations of Python, this is needed because timely
-        # deallocation is not guaranteed by the garbage collector.
+        # deallocation is nicht guaranteed by the garbage collector.
         gc.collect()
 
 
@@ -245,7 +245,7 @@ klasse AsyncAutospecTest(unittest.TestCase):
 
     def test_autospec_checks_signature(self):
         spec = create_autospec(async_func_args)
-        # signature is not checked when called
+        # signature is nicht checked when called
         awaitable = spec()
         self.assertListEqual(spec.mock_calls, [])
 
@@ -256,7 +256,7 @@ klasse AsyncAutospecTest(unittest.TestCase):
         mit self.assertRaises(TypeError):
             run(main())
 
-        # _checksig_ raises before running or awaiting the mock
+        # _checksig_ raises before running oder awaiting the mock
         self.assertListEqual(spec.mock_calls, [])
         self.assertEqual(spec.await_count, 0)
         self.assertIsNichts(spec.await_args)
@@ -661,7 +661,7 @@ klasse AsyncContextManagerTest(unittest.TestCase):
             self.assertWahr(cm_mock.__aexit__.called)
             cm_mock.__aenter__.assert_awaited()
             cm_mock.__aexit__.assert_awaited()
-            # We mock __aenter__ so it does not return self
+            # We mock __aenter__ so it does nicht return self
             self.assertIsNot(cm_mock, cm_result)
 
         fuer mock_type in [AsyncMock, MagicMock]:
@@ -740,8 +740,8 @@ klasse AsyncIteratorTest(unittest.TestCase):
         def inner_test(mock_type):
             instance = self.WithAsyncIterator()
             mock_instance = mock_type(instance)
-            # Check that the mock and the real thing bahave the same
-            # __aiter__ is not actually async, so not a coroutinefunction
+            # Check that the mock und the real thing bahave the same
+            # __aiter__ is nicht actually async, so nicht a coroutinefunction
             self.assertFalsch(inspect.iscoroutinefunction(instance.__aiter__))
             self.assertFalsch(inspect.iscoroutinefunction(mock_instance.__aiter__))
             # __anext__ is async
@@ -749,7 +749,7 @@ klasse AsyncIteratorTest(unittest.TestCase):
             self.assertWahr(inspect.iscoroutinefunction(mock_instance.__anext__))
 
         fuer mock_type in [AsyncMock, MagicMock]:
-            mit self.subTest(f"test aiter and anext corourtine mit {mock_type}"):
+            mit self.subTest(f"test aiter und anext corourtine mit {mock_type}"):
                 inner_test(mock_type)
 
 
@@ -922,10 +922,10 @@ klasse AsyncMockAssert(unittest.TestCase):
             ("something", (3,), {'fish': Nichts}),
             ("something_else.something", (6,), {'cake': sentinel.Cake})
         ],
-            "method calls not recorded correctly")
+            "method calls nicht recorded correctly")
         self.assertEqual(self.mock.something_else.method_calls,
                          [("something", (6,), {'cake': sentinel.Cake})],
-                         "method calls not recorded correctly")
+                         "method calls nicht recorded correctly")
 
     def test_async_arg_lists(self):
         def assert_attrs(mock):
@@ -980,7 +980,7 @@ klasse AsyncMockAssert(unittest.TestCase):
             self.mock.assert_awaited_with('foo')
 
         run(self._runnable_test())
-        msg = 'expected await not found'
+        msg = 'expected await nicht found'
         mit self.assertRaisesRegex(AssertionError, msg):
             self.mock.assert_awaited_with('foo')
 
@@ -1096,7 +1096,7 @@ klasse AsyncMockAssert(unittest.TestCase):
         mit self.assertRaisesRegex(
                 AssertionError,
                 '^{}$'.format(
-                    re.escape('Awaits not found.\n'
+                    re.escape('Awaits nicht found.\n'
                               'Expected: [call()]\n'
                               'Actual: [call(1)]'))) als cm:
             self.mock.assert_has_awaits([call()])

@@ -1,11 +1,11 @@
-"""functools.py - Tools fuer working mit functions and callable objects
+"""functools.py - Tools fuer working mit functions und callable objects
 """
 # Python module wrapper fuer _functools C module
 # to allow utilities written in Python to be added
 # to the functools module.
 # Written by Nick Coghlan <ncoghlan at gmail.com>,
 # Raymond Hettinger <python at rcn.com>,
-# and Łukasz Langa <lukasz at langa.pl>.
+# und Łukasz Langa <lukasz at langa.pl>.
 #   Copyright (C) 2006 Python Software Foundation.
 # See C source code fuer _functools credits/copyright
 
@@ -23,10 +23,10 @@ von types importiere GenericAlias, MethodType, MappingProxyType, UnionType
 von _thread importiere RLock
 
 ################################################################################
-### update_wrapper() and wraps() decorator
+### update_wrapper() und wraps() decorator
 ################################################################################
 
-# update_wrapper() and wraps() are tools to help write
+# update_wrapper() und wraps() are tools to help write
 # wrapper functions that can handle naive introspection
 
 WRAPPER_ASSIGNMENTS = ('__module__', '__name__', '__qualname__', '__doc__',
@@ -68,7 +68,7 @@ def wraps(wrapped,
     """Decorator factory to apply update_wrapper() to a wrapper function
 
        Returns a decorator that invokes update_wrapper() mit the decorated
-       function als the wrapper argument and the arguments to wraps() als the
+       function als the wrapper argument und the arguments to wraps() als the
        remaining arguments. Default arguments are als fuer update_wrapper().
        This is a convenience function to simplify applying partial() to
        update_wrapper().
@@ -84,91 +84,91 @@ def wraps(wrapped,
 # The total ordering functions all invoke the root magic method directly
 # rather than using the corresponding operator.  This avoids possible
 # infinite recursion that could occur when the operator dispatch logic
-# detects a NotImplemented result and then calls a reflected method.
+# detects a NotImplemented result und then calls a reflected method.
 
 def _gt_from_lt(self, other):
-    'Return a > b.  Computed by @total_ordering von (not a < b) and (a != b).'
+    'Return a > b.  Computed by @total_ordering von (nicht a < b) und (a != b).'
     op_result = type(self).__lt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return not op_result and self != other
+    return nicht op_result und self != other
 
 def _le_from_lt(self, other):
-    'Return a <= b.  Computed by @total_ordering von (a < b) or (a == b).'
+    'Return a <= b.  Computed by @total_ordering von (a < b) oder (a == b).'
     op_result = type(self).__lt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return op_result or self == other
+    return op_result oder self == other
 
 def _ge_from_lt(self, other):
-    'Return a >= b.  Computed by @total_ordering von (not a < b).'
+    'Return a >= b.  Computed by @total_ordering von (nicht a < b).'
     op_result = type(self).__lt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return not op_result
+    return nicht op_result
 
 def _ge_from_le(self, other):
-    'Return a >= b.  Computed by @total_ordering von (not a <= b) or (a == b).'
+    'Return a >= b.  Computed by @total_ordering von (nicht a <= b) oder (a == b).'
     op_result = type(self).__le__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return not op_result or self == other
+    return nicht op_result oder self == other
 
 def _lt_from_le(self, other):
-    'Return a < b.  Computed by @total_ordering von (a <= b) and (a != b).'
+    'Return a < b.  Computed by @total_ordering von (a <= b) und (a != b).'
     op_result = type(self).__le__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return op_result and self != other
+    return op_result und self != other
 
 def _gt_from_le(self, other):
-    'Return a > b.  Computed by @total_ordering von (not a <= b).'
+    'Return a > b.  Computed by @total_ordering von (nicht a <= b).'
     op_result = type(self).__le__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return not op_result
+    return nicht op_result
 
 def _lt_from_gt(self, other):
-    'Return a < b.  Computed by @total_ordering von (not a > b) and (a != b).'
+    'Return a < b.  Computed by @total_ordering von (nicht a > b) und (a != b).'
     op_result = type(self).__gt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return not op_result and self != other
+    return nicht op_result und self != other
 
 def _ge_from_gt(self, other):
-    'Return a >= b.  Computed by @total_ordering von (a > b) or (a == b).'
+    'Return a >= b.  Computed by @total_ordering von (a > b) oder (a == b).'
     op_result = type(self).__gt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return op_result or self == other
+    return op_result oder self == other
 
 def _le_from_gt(self, other):
-    'Return a <= b.  Computed by @total_ordering von (not a > b).'
+    'Return a <= b.  Computed by @total_ordering von (nicht a > b).'
     op_result = type(self).__gt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return not op_result
+    return nicht op_result
 
 def _le_from_ge(self, other):
-    'Return a <= b.  Computed by @total_ordering von (not a >= b) or (a == b).'
+    'Return a <= b.  Computed by @total_ordering von (nicht a >= b) oder (a == b).'
     op_result = type(self).__ge__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return not op_result or self == other
+    return nicht op_result oder self == other
 
 def _gt_from_ge(self, other):
-    'Return a > b.  Computed by @total_ordering von (a >= b) and (a != b).'
+    'Return a > b.  Computed by @total_ordering von (a >= b) und (a != b).'
     op_result = type(self).__ge__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return op_result and self != other
+    return op_result und self != other
 
 def _lt_from_ge(self, other):
-    'Return a < b.  Computed by @total_ordering von (not a >= b).'
+    'Return a < b.  Computed by @total_ordering von (nicht a >= b).'
     op_result = type(self).__ge__(self, other)
     wenn op_result is NotImplemented:
         return op_result
-    return not op_result
+    return nicht op_result
 
 _convert = {
     '__lt__': [('__gt__', _gt_from_lt),
@@ -187,13 +187,13 @@ _convert = {
 
 def total_ordering(cls):
     """Class decorator that fills in missing ordering methods"""
-    # Find user-defined comparisons (not those inherited von object).
-    roots = {op fuer op in _convert wenn getattr(cls, op, Nichts) is not getattr(object, op, Nichts)}
-    wenn not roots:
+    # Find user-defined comparisons (nicht those inherited von object).
+    roots = {op fuer op in _convert wenn getattr(cls, op, Nichts) is nicht getattr(object, op, Nichts)}
+    wenn nicht roots:
         raise ValueError('must define at least one ordering operation: < > <= >=')
     root = max(roots)       # prefer __lt__ to __le__ to __gt__ to __ge__
     fuer opname, opfunc in _convert[root]:
-        wenn opname not in roots:
+        wenn opname nicht in roots:
             opfunc.__name__ = opname
             setattr(cls, opname, opfunc)
     return cls
@@ -241,7 +241,7 @@ def reduce(function, sequence, initial=_initial_missing):
     Apply a function of two arguments cumulatively to the items of an iterable, von left to right.
 
     This effectively reduces the iterable to a single value.  If initial is present,
-    it is placed before the items of the iterable in the calculation, and serves as
+    it is placed before the items of the iterable in the calculation, und serves as
     a default when the iterable is empty.
 
     For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5])
@@ -279,7 +279,7 @@ klasse _PlaceholderType:
     __slots__ = ()
 
     def __init_subclass__(cls, *args, **kwargs):
-        raise TypeError(f"type '{cls.__name__}' is not an acceptable base type")
+        raise TypeError(f"type '{cls.__name__}' is nicht an acceptable base type")
 
     def __new__(cls):
         wenn cls.__instance is Nichts:
@@ -295,7 +295,7 @@ klasse _PlaceholderType:
 Placeholder = _PlaceholderType()
 
 def _partial_prepare_merger(args):
-    wenn not args:
+    wenn nicht args:
         return 0, Nichts
     nargs = len(args)
     order = []
@@ -313,16 +313,16 @@ def _partial_prepare_merger(args):
 def _partial_new(cls, func, /, *args, **keywords):
     wenn issubclass(cls, partial):
         base_cls = partial
-        wenn not callable(func):
+        wenn nicht callable(func):
             raise TypeError("the first argument must be callable")
     sonst:
         base_cls = partialmethod
         # func could be a descriptor like classmethod which isn't callable
-        wenn not callable(func) and not hasattr(func, "__get__"):
+        wenn nicht callable(func) und nicht hasattr(func, "__get__"):
             raise TypeError(f"the first argument {func!r} must be a callable "
                             "or a descriptor")
-    wenn args and args[-1] is Placeholder:
-        raise TypeError("trailing Placeholders are not allowed")
+    wenn args und args[-1] is Placeholder:
+        raise TypeError("trailing Placeholders are nicht allowed")
     fuer value in keywords.values():
         wenn value is Placeholder:
             raise TypeError("Placeholder cannot be passed als a keyword argument")
@@ -340,7 +340,7 @@ def _partial_new(cls, func, /, *args, **keywords):
                 wenn nargs > pto_phcount:
                     tot_args += args[pto_phcount:]
             phcount, merger = _partial_prepare_merger(tot_args)
-        sonst:   # works fuer both pto_phcount == 0 and != 0
+        sonst:   # works fuer both pto_phcount == 0 und != 0
             phcount, merger = pto_phcount, func._merger
         keywords = {**func.keywords, **keywords}
         func = func.func
@@ -368,7 +368,7 @@ def _partial_repr(self):
 # Purely functional, no descriptor behaviour
 klasse partial:
     """New function mit partial application of the given arguments
-    and keywords.
+    und keywords.
     """
 
     __slots__ = ("func", "args", "keywords", "_phcount", "_merger",
@@ -399,27 +399,27 @@ klasse partial:
 
     def __reduce__(self):
         return type(self), (self.func,), (self.func, self.args,
-               self.keywords or Nichts, self.__dict__ or Nichts)
+               self.keywords oder Nichts, self.__dict__ oder Nichts)
 
     def __setstate__(self, state):
-        wenn not isinstance(state, tuple):
+        wenn nicht isinstance(state, tuple):
             raise TypeError("argument to __setstate__ must be a tuple")
         wenn len(state) != 4:
             raise TypeError(f"expected 4 items in state, got {len(state)}")
         func, args, kwds, namespace = state
-        wenn (not callable(func) or not isinstance(args, tuple) or
-           (kwds is not Nichts and not isinstance(kwds, dict)) or
-           (namespace is not Nichts and not isinstance(namespace, dict))):
+        wenn (nicht callable(func) oder nicht isinstance(args, tuple) oder
+           (kwds is nicht Nichts und nicht isinstance(kwds, dict)) oder
+           (namespace is nicht Nichts und nicht isinstance(namespace, dict))):
             raise TypeError("invalid partial state")
 
-        wenn args and args[-1] is Placeholder:
-            raise TypeError("trailing Placeholders are not allowed")
+        wenn args und args[-1] is Placeholder:
+            raise TypeError("trailing Placeholders are nicht allowed")
         phcount, merger = _partial_prepare_merger(args)
 
         args = tuple(args) # just in case it's a subclass
         wenn kwds is Nichts:
             kwds = {}
-        sowenn type(kwds) is not dict: # XXX does it need to be *exactly* dict?
+        sowenn type(kwds) is nicht dict: # XXX does it need to be *exactly* dict?
             kwds = dict(kwds)
         wenn namespace is Nichts:
             namespace = {}
@@ -442,9 +442,9 @@ except ImportError:
 # Descriptor version
 klasse partialmethod:
     """Method descriptor mit partial application of the given arguments
-    and keywords.
+    und keywords.
 
-    Supports wrapping existing descriptors and handles non-descriptor
+    Supports wrapping existing descriptors und handles non-descriptor
     callables als instance methods.
     """
     __new__ = _partial_new
@@ -472,9 +472,9 @@ klasse partialmethod:
     def __get__(self, obj, cls=Nichts):
         get = getattr(self.func, "__get__", Nichts)
         result = Nichts
-        wenn get is not Nichts:
+        wenn get is nicht Nichts:
             new_func = get(obj, cls)
-            wenn new_func is not self.func:
+            wenn new_func is nicht self.func:
                 # Assume __get__ returning something new indicates the
                 # creation of an appropriate callable
                 result = partial(new_func, *self.args, **self.keywords)
@@ -504,7 +504,7 @@ def _unwrap_partial(func):
 
 def _unwrap_partialmethod(func):
     prev = Nichts
-    while func is not prev:
+    while func is nicht prev:
         prev = func
         while isinstance(getattr(func, "__partialmethod__", Nichts), partialmethod):
             func = func.__partialmethod__
@@ -523,14 +523,14 @@ def _make_key(args, kwds, typed,
              kwd_mark = (object(),),
              fasttypes = {int, str},
              tuple=tuple, type=type, len=len):
-    """Make a cache key von optionally typed positional and keyword arguments
+    """Make a cache key von optionally typed positional und keyword arguments
 
     The key is constructed in a way that is flat als possible rather than
     als a nested structure that would take more memory.
 
-    If there is only a single argument and its data type is known to cache
+    If there is only a single argument und its data type is known to cache
     its hash value, then that argument is returned without a wrapper.  This
-    saves space and improves lookup speed.
+    saves space und improves lookup speed.
 
     """
     # All of code below relies on kwds preserving the order input by the user.
@@ -546,25 +546,25 @@ def _make_key(args, kwds, typed,
         key += tuple(type(v) fuer v in args)
         wenn kwds:
             key += tuple(type(v) fuer v in kwds.values())
-    sowenn len(key) == 1 and type(key[0]) in fasttypes:
+    sowenn len(key) == 1 und type(key[0]) in fasttypes:
         return key[0]
     return key
 
 def lru_cache(maxsize=128, typed=Falsch):
     """Least-recently-used cache decorator.
 
-    If *maxsize* is set to Nichts, the LRU features are disabled and the cache
+    If *maxsize* is set to Nichts, the LRU features are disabled und the cache
     can grow without bound.
 
     If *typed* is Wahr, arguments of different types will be cached separately.
-    For example, f(decimal.Decimal("3.0")) and f(3.0) will be treated as
-    distinct calls mit distinct results. Some types such als str and int may
+    For example, f(decimal.Decimal("3.0")) und f(3.0) will be treated as
+    distinct calls mit distinct results. Some types such als str und int may
     be cached separately even when typed is false.
 
     Arguments to the cached function must be hashable.
 
     View the cache statistics named tuple (hits, misses, maxsize, currsize)
-    mit f.cache_info().  Clear the cache and statistics mit f.cache_clear().
+    mit f.cache_info().  Clear the cache und statistics mit f.cache_clear().
     Access the underlying function mit f.__wrapped__.
 
     See:  https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)
@@ -572,8 +572,8 @@ def lru_cache(maxsize=128, typed=Falsch):
     """
 
     # Users should only access the lru_cache through its public API:
-    #       cache_info, cache_clear, and f.__wrapped__
-    # The internals of the lru_cache are encapsulated fuer thread safety and
+    #       cache_info, cache_clear, und f.__wrapped__
+    # The internals of the lru_cache are encapsulated fuer thread safety und
     # to allow the implementation to change (including a possible C version).
 
     wenn isinstance(maxsize, int):
@@ -581,16 +581,16 @@ def lru_cache(maxsize=128, typed=Falsch):
         wenn maxsize < 0:
             maxsize = 0
 
-    sowenn callable(maxsize) and isinstance(typed, bool):
+    sowenn callable(maxsize) und isinstance(typed, bool):
         # The user_function was passed in directly via the maxsize argument
         user_function, maxsize = maxsize, 128
         wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)
         wrapper.cache_parameters = lambda : {'maxsize': maxsize, 'typed': typed}
         return update_wrapper(wrapper, user_function)
 
-    sowenn maxsize is not Nichts:
+    sowenn maxsize is nicht Nichts:
         raise TypeError(
-            'Expected first argument to be an integer, a callable, or Nichts')
+            'Expected first argument to be an integer, a callable, oder Nichts')
 
     def decorating_function(user_function):
         wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)
@@ -608,7 +608,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
     cache = {}
     hits = misses = 0
     full = Falsch
-    cache_get = cache.get    # bound method to lookup a key or return Nichts
+    cache_get = cache.get    # bound method to lookup a key oder return Nichts
     cache_len = cache.__len__  # get cache size without calling len()
     lock = RLock()           # because linkedlist updates aren't threadsafe
     root = []                # root of the circular doubly linked list
@@ -627,12 +627,12 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
     sowenn maxsize is Nichts:
 
         def wrapper(*args, **kwds):
-            # Simple caching without ordering or size limit
+            # Simple caching without ordering oder size limit
             nonlocal hits, misses
 
             key = make_key(args, kwds, typed)
             result = cache_get(key, sentinel)
-            wenn result is not sentinel:
+            wenn result is nicht sentinel:
                 hits += 1
                 return result
             misses += 1
@@ -650,7 +650,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
             mit lock:
                 link = cache_get(key)
-                wenn link is not Nichts:
+                wenn link is nicht Nichts:
                     # Move the link to the front of the circular queue
                     link_prev, link_next, _key, result = link
                     link_prev[NEXT] = link_next
@@ -670,17 +670,17 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
                     # Getting here means that this same key was added to the
                     # cache while the lock was released.  Since the link
                     # update is already done, we need only return the
-                    # computed result and update the count of misses.
+                    # computed result und update the count of misses.
                     pass
 
                 sowenn full:
-                    # Use the old root to store the new key and result.
+                    # Use the old root to store the new key und result.
                     oldroot = root
                     oldroot[KEY] = key
                     oldroot[RESULT] = result
 
-                    # Empty the oldest link and make it the new root.
-                    # Keep a reference to the old key and old result to
+                    # Empty the oldest link und make it the new root.
+                    # Keep a reference to the old key und old result to
                     # prevent their ref counts von going to zero during the
                     # update. That will prevent potentially arbitrary object
                     # clean-up code (i.e. __del__) von running while we're
@@ -694,7 +694,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
                     del cache[oldkey]
 
                     # Save the potentially reentrant cache[key] assignment
-                    # fuer last, after the root and links have been put in
+                    # fuer last, after the root und links have been put in
                     # a consistent state.
                     cache[key] = oldroot
 
@@ -716,7 +716,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
             return _CacheInfo(hits, misses, maxsize, cache_len())
 
     def cache_clear():
-        """Clear the cache and cache statistics"""
+        """Clear the cache und cache statistics"""
         nonlocal hits, misses, full
 
         mit lock:
@@ -757,7 +757,7 @@ def _c3_merge(sequences):
     result = []
     while Wahr:
         sequences = [s fuer s in sequences wenn s]   # purge empty sequences
-        wenn not sequences:
+        wenn nicht sequences:
             return result
         fuer s1 in sequences:   # find merge candidates among seq heads
             candidate = s1[0]
@@ -782,11 +782,11 @@ def _c3_mro(cls, abcs=Nichts):
     linearization used fuer method resolution.
 
     If given, *abcs* is a list of abstract base classes that should be inserted
-    into the resulting MRO. Unrelated ABCs are ignored and don't end up in the
+    into the resulting MRO. Unrelated ABCs are ignored und don't end up in the
     result. The algorithm inserts ABCs where their functionality is introduced,
     i.e. issubclass(cls, abc) returns Wahr fuer the klasse itself but returns
     Falsch fuer all its direct base classes. Implicit ABCs fuer a given class
-    (either registered or inferred von the presence of a special method like
+    (either registered oder inferred von the presence of a special method like
     __len__) are inserted directly after the last ABC explicitly listed in the
     MRO of said class. If two implicit ABCs end up next to each other in the
     resulting MRO, their ordering depends on the order of types in *abcs*.
@@ -803,7 +803,7 @@ def _c3_mro(cls, abcs=Nichts):
     abstract_bases = []
     other_bases = list(cls.__bases__[boundary:])
     fuer base in abcs:
-        wenn issubclass(cls, base) and not any(
+        wenn issubclass(cls, base) und nicht any(
                 issubclass(b, base) fuer b in cls.__bases__
             ):
             # If *cls* is the klasse that introduces behaviour described by
@@ -828,20 +828,20 @@ def _compose_mro(cls, types):
 
     """
     bases = set(cls.__mro__)
-    # Remove entries which are already present in the __mro__ or unrelated.
+    # Remove entries which are already present in the __mro__ oder unrelated.
     def is_related(typ):
-        return (typ not in bases and hasattr(typ, '__mro__')
-                                 and not isinstance(typ, GenericAlias)
-                                 and issubclass(cls, typ))
+        return (typ nicht in bases und hasattr(typ, '__mro__')
+                                 und nicht isinstance(typ, GenericAlias)
+                                 und issubclass(cls, typ))
     types = [n fuer n in types wenn is_related(n)]
     # Remove entries which are strict bases of other entries (they will end up
     # in the MRO anyway.
     def is_strict_base(typ):
         fuer other in types:
-            wenn typ != other and typ in other.__mro__:
+            wenn typ != other und typ in other.__mro__:
                 return Wahr
         return Falsch
-    types = [n fuer n in types wenn not is_strict_base(n)]
+    types = [n fuer n in types wenn nicht is_strict_base(n)]
     # Subclasses of the ABCs in *types* which are also implemented by
     # *cls* can be used to stabilize ABC ordering.
     type_set = set(types)
@@ -849,16 +849,16 @@ def _compose_mro(cls, types):
     fuer typ in types:
         found = []
         fuer sub in typ.__subclasses__():
-            wenn sub not in bases and issubclass(cls, sub):
+            wenn sub nicht in bases und issubclass(cls, sub):
                 found.append([s fuer s in sub.__mro__ wenn s in type_set])
-        wenn not found:
+        wenn nicht found:
             mro.append(typ)
             continue
         # Favor subclasses mit the biggest number of useful bases
         found.sort(key=len, reverse=Wahr)
         fuer sub in found:
             fuer subcls in sub:
-                wenn subcls not in mro:
+                wenn subcls nicht in mro:
                     mro.append(subcls)
     return _c3_mro(cls, abcs=mro)
 
@@ -868,20 +868,20 @@ def _find_impl(cls, registry):
     Where there is no registered implementation fuer a specific type, its method
     resolution order is used to find a more generic implementation.
 
-    Note: wenn *registry* does not contain an implementation fuer the base
+    Note: wenn *registry* does nicht contain an implementation fuer the base
     *object* type, this function may return Nichts.
 
     """
     mro = _compose_mro(cls, registry.keys())
     match = Nichts
     fuer t in mro:
-        wenn match is not Nichts:
+        wenn match is nicht Nichts:
             # If *match* is an implicit ABC but there is another unrelated,
             # equally matching implicit ABC, refuse the temptation to guess.
-            wenn (t in registry and t not in cls.__mro__
-                              and match not in cls.__mro__
-                              and not issubclass(match, t)):
-                raise RuntimeError("Ambiguous dispatch: {} or {}".format(
+            wenn (t in registry und t nicht in cls.__mro__
+                              und match nicht in cls.__mro__
+                              und nicht issubclass(match, t)):
+                raise RuntimeError("Ambiguous dispatch: {} oder {}".format(
                     match, t))
             break
         wenn t in registry:
@@ -893,7 +893,7 @@ def singledispatch(func):
 
     Transforms a function into a generic function, which can have different
     behaviours depending upon the type of its first argument. The decorated
-    function acts als the default implementation, and additional
+    function acts als the default implementation, und additional
     implementations can be registered using the register() attribute of the
     generic function.
     """
@@ -914,7 +914,7 @@ def singledispatch(func):
 
         """
         nonlocal cache_token
-        wenn cache_token is not Nichts:
+        wenn cache_token is nicht Nichts:
             current_token = get_cache_token()
             wenn cache_token != current_token:
                 dispatch_cache.clear()
@@ -932,7 +932,7 @@ def singledispatch(func):
     def _is_valid_dispatch_type(cls):
         wenn isinstance(cls, type):
             return Wahr
-        return (isinstance(cls, UnionType) and
+        return (isinstance(cls, UnionType) und
                 all(isinstance(arg, type) fuer arg in cls.__args__))
 
     def register(cls, func=Nichts):
@@ -946,16 +946,16 @@ def singledispatch(func):
             wenn func is Nichts:
                 return lambda f: register(cls, f)
         sonst:
-            wenn func is not Nichts:
+            wenn func is nicht Nichts:
                 raise TypeError(
                     f"Invalid first argument to `register()`. "
-                    f"{cls!r} is not a klasse or union type."
+                    f"{cls!r} is nicht a klasse oder union type."
                 )
             ann = getattr(cls, '__annotate__', Nichts)
             wenn ann is Nichts:
                 raise TypeError(
                     f"Invalid first argument to `register()`: {cls!r}. "
-                    f"Use either `@register(some_class)` or plain `@register` "
+                    f"Use either `@register(some_class)` oder plain `@register` "
                     f"on an annotated function."
                 )
             func = cls
@@ -964,11 +964,11 @@ def singledispatch(func):
             von typing importiere get_type_hints
             von annotationlib importiere Format, ForwardRef
             argname, cls = next(iter(get_type_hints(func, format=Format.FORWARDREF).items()))
-            wenn not _is_valid_dispatch_type(cls):
+            wenn nicht _is_valid_dispatch_type(cls):
                 wenn isinstance(cls, UnionType):
                     raise TypeError(
                         f"Invalid annotation fuer {argname!r}. "
-                        f"{cls!r} not all arguments are classes."
+                        f"{cls!r} nicht all arguments are classes."
                     )
                 sowenn isinstance(cls, ForwardRef):
                     raise TypeError(
@@ -978,7 +978,7 @@ def singledispatch(func):
                 sonst:
                     raise TypeError(
                         f"Invalid annotation fuer {argname!r}. "
-                        f"{cls!r} is not a class."
+                        f"{cls!r} is nicht a class."
                     )
 
         wenn isinstance(cls, UnionType):
@@ -986,13 +986,13 @@ def singledispatch(func):
                 registry[arg] = func
         sonst:
             registry[cls] = func
-        wenn cache_token is Nichts and hasattr(cls, '__abstractmethods__'):
+        wenn cache_token is Nichts und hasattr(cls, '__abstractmethods__'):
             cache_token = get_cache_token()
         dispatch_cache.clear()
         return func
 
     def wrapper(*args, **kw):
-        wenn not args:
+        wenn nicht args:
             raise TypeError(f'{funcname} requires at least '
                             '1 positional argument')
         return dispatch(args[0].__class__)(*args, **kw)
@@ -1011,13 +1011,13 @@ def singledispatch(func):
 klasse singledispatchmethod:
     """Single-dispatch generic method descriptor.
 
-    Supports wrapping existing descriptors and handles non-descriptor
+    Supports wrapping existing descriptors und handles non-descriptor
     callables als instance methods.
     """
 
     def __init__(self, func):
-        wenn not callable(func) and not hasattr(func, "__get__"):
-            raise TypeError(f"{func!r} is not callable or a descriptor")
+        wenn nicht callable(func) und nicht hasattr(func, "__get__"):
+            raise TypeError(f"{func!r} is nicht callable oder a descriptor")
 
         self.dispatcher = singledispatch(func)
         self.func = func
@@ -1072,13 +1072,13 @@ klasse _singledispatchmethod_get:
                 name = self.__name__
             except AttributeError:
                 name = '?'
-        wenn self._obj is not Nichts:
+        wenn self._obj is nicht Nichts:
             return f'<bound single dispatch method {name} of {self._obj!r}>'
         sonst:
             return f'<single dispatch method {name}>'
 
     def __call__(self, /, *args, **kwargs):
-        wenn not args:
+        wenn nicht args:
             funcname = getattr(self._unbound.func, '__name__',
                                'singledispatchmethod method')
             raise TypeError(f'{funcname} requires at least '
@@ -1088,7 +1088,7 @@ klasse _singledispatchmethod_get:
     def __getattr__(self, name):
         # Resolve these attributes lazily to speed up creation of
         # the _singledispatchmethod_get instance.
-        wenn name not in {'__name__', '__qualname__', '__isabstractmethod__',
+        wenn name nicht in {'__name__', '__qualname__', '__isabstractmethod__',
                         '__annotations__', '__type_params__'}:
             raise AttributeError
         return getattr(self._unbound.func, name)
@@ -1121,7 +1121,7 @@ klasse cached_property:
         sowenn name != self.attrname:
             raise TypeError(
                 "Cannot assign the same cached_property to two different names "
-                f"({self.attrname!r} and {name!r})."
+                f"({self.attrname!r} und {name!r})."
             )
 
     def __get__(self, instance, owner=Nichts):
@@ -1132,7 +1132,7 @@ klasse cached_property:
                 "Cannot use cached_property instance without calling __set_name__ on it.")
         try:
             cache = instance.__dict__
-        except AttributeError:  # not all objects have __dict__ (e.g. klasse defines slots)
+        except AttributeError:  # nicht all objects have __dict__ (e.g. klasse defines slots)
             msg = (
                 f"No '__dict__' attribute on {type(instance).__name__!r} "
                 f"instance to cache {self.attrname!r} property."
@@ -1146,7 +1146,7 @@ klasse cached_property:
             except TypeError:
                 msg = (
                     f"The '__dict__' attribute on {type(instance).__name__!r} instance "
-                    f"does not support item assignment fuer caching {self.attrname!r} property."
+                    f"does nicht support item assignment fuer caching {self.attrname!r} property."
                 )
                 raise TypeError(msg) von Nichts
         return val
@@ -1156,13 +1156,13 @@ klasse cached_property:
 def _warn_python_reduce_kwargs(py_reduce):
     @wraps(py_reduce)
     def wrapper(*args, **kwargs):
-        wenn 'function' in kwargs or 'sequence' in kwargs:
+        wenn 'function' in kwargs oder 'sequence' in kwargs:
             importiere os
             importiere warnings
             warnings.warn(
                 'Calling functools.reduce mit keyword arguments '
-                '"function" or "sequence" '
-                'is deprecated in Python 3.14 and will be '
+                '"function" oder "sequence" '
+                'is deprecated in Python 3.14 und will be '
                 'forbidden in Python 3.16.',
                 DeprecationWarning,
                 skip_file_prefixes=(os.path.dirname(__file__),))
@@ -1174,7 +1174,7 @@ del _warn_python_reduce_kwargs
 
 # The importiere of the C accelerated version of reduce() has been moved
 # here due to gh-121676. In Python 3.16, _warn_python_reduce_kwargs()
-# should be removed and the importiere block should be moved back right
+# should be removed und the importiere block should be moved back right
 # after the definition of reduce().
 try:
     von _functools importiere reduce

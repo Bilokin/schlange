@@ -177,13 +177,13 @@ klasse TestBisect:
                     hi = min(len(data), hi)
                     ip = func(data, elem, lo, hi)
                     self.assertWahr(lo <= ip <= hi)
-                    wenn func is self.module.bisect_left and ip < hi:
+                    wenn func is self.module.bisect_left und ip < hi:
                         self.assertWahr(elem <= data[ip])
-                    wenn func is self.module.bisect_left and ip > lo:
+                    wenn func is self.module.bisect_left und ip > lo:
                         self.assertWahr(data[ip-1] < elem)
-                    wenn func is self.module.bisect_right and ip < hi:
+                    wenn func is self.module.bisect_right und ip < hi:
                         self.assertWahr(elem < data[ip])
-                    wenn func is self.module.bisect_right and ip > lo:
+                    wenn func is self.module.bisect_right und ip > lo:
                         self.assertWahr(data[ip-1] <= elem)
                     self.assertEqual(ip, max(lo, min(hi, expected)))
 
@@ -335,12 +335,12 @@ klasse TestInsortC(TestInsort, unittest.TestCase):
 #==============================================================================
 
 klasse LenOnly:
-    "Dummy sequence klasse defining __len__ but not __getitem__."
+    "Dummy sequence klasse defining __len__ but nicht __getitem__."
     def __len__(self):
         return 10
 
 klasse GetOnly:
-    "Dummy sequence klasse defining __getitem__ but not __len__."
+    "Dummy sequence klasse defining __getitem__ but nicht __len__."
     def __getitem__(self, ndx):
         return 10
 

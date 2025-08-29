@@ -27,7 +27,7 @@ klasse GeneralTest(unittest.TestCase):
 
     def test_order(self):
         # Check that callbacks are called in reverse order mit the expected
-        # positional and keyword arguments.
+        # positional und keyword arguments.
         calls = []
 
         def func1(*args, **kwargs):

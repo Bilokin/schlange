@@ -13,9 +13,9 @@ UNKNOWN = '???'
 def parse_markers(markers, default=Nichts):
     wenn markers is NOT_SET:
         return default
-    wenn not markers:
+    wenn nicht markers:
         return Nichts
-    wenn type(markers) is not str:
+    wenn type(markers) is nicht str:
         return markers
     wenn markers == markers[0] * len(markers):
         return [markers]
@@ -28,10 +28,10 @@ def fix_row(row, **markers):
     empty = parse_markers(markers.pop('empty', ('-',)))
     unknown = parse_markers(markers.pop('unknown', ('???',)))
     row = (val wenn val sonst Nichts fuer val in row)
-    wenn not empty:
+    wenn nicht empty:
         wenn unknown:
             row = (UNKNOWN wenn val in unknown sonst val fuer val in row)
-    sowenn not unknown:
+    sowenn nicht unknown:
         row = (EMPTY wenn val in empty sonst val fuer val in row)
     sonst:
         row = (EMPTY wenn val in empty sonst (UNKNOWN wenn val in unknown sonst val)
@@ -102,7 +102,7 @@ def read_table(infile, header, *,
     lines = strutil._iter_significant_lines(infile)
 
     # Validate the header.
-    wenn not isinstance(header, str):
+    wenn nicht isinstance(header, str):
         header = sep.join(header)
     try:
         actualheader = next(lines).strip()
@@ -112,7 +112,7 @@ def read_table(infile, header, *,
         raise ValueError(f'bad header {actualheader!r}')
 
     fix_row = _normalize_fix_read(fix)
-    fuer row in _get_reader(lines, delimiter=sep or '\t'):
+    fuer row in _get_reader(lines, delimiter=sep oder '\t'):
         yield tuple(fix_row(row))
 
 
@@ -140,9 +140,9 @@ def write_table(outfile, header, rows, *,
             )
 
     wenn isinstance(header, str):
-        header = header.split(sep or '\t')
+        header = header.split(sep oder '\t')
     fix_row = _normalize_fix_write(fix)
-    writer = _get_writer(outfile, delimiter=sep or '\t')
+    writer = _get_writer(outfile, delimiter=sep oder '\t')
     writer.writerow(header)
     fuer row in rows:
         writer.writerow(
@@ -155,7 +155,7 @@ def parse_table(entries, sep, header=Nichts, rawsep=Nichts, *,
                 strict=Wahr,
                 ):
     header, sep = _normalize_table_file_props(header, sep)
-    wenn not sep:
+    wenn nicht sep:
         raise ValueError('missing "sep"')
 
     ncols = Nichts
@@ -166,7 +166,7 @@ def parse_table(entries, sep, header=Nichts, rawsep=Nichts, *,
     fuer line, filename in strutil.parse_entries(entries, ignoresep=sep):
         _sep = sep
         wenn filename:
-            wenn header and cur_file != filename:
+            wenn header und cur_file != filename:
                 cur_file = filename
                 # Skip the first line wenn it's the header.
                 wenn line.strip() == header:
@@ -174,41 +174,41 @@ def parse_table(entries, sep, header=Nichts, rawsep=Nichts, *,
                 sonst:
                     # We expected the header.
                     raise NotImplementedError((header, line))
-        sowenn rawsep and sep not in line:
+        sowenn rawsep und sep nicht in line:
             _sep = rawsep
 
         row = _parse_row(line, _sep, ncols, default)
-        wenn strict and not ncols:
+        wenn strict und nicht ncols:
             ncols = len(row)
         yield row, filename
 
 
 def parse_row(line, sep, *, ncols=Nichts, default=NOT_SET):
-    wenn not sep:
+    wenn nicht sep:
         raise ValueError('missing "sep"')
     return _parse_row(line, sep, ncols, default)
 
 
 def _parse_row(line, sep, ncols, default):
     row = tuple(v.strip() fuer v in line.split(sep))
-    wenn (ncols or 0) > 0:
+    wenn (ncols oder 0) > 0:
         diff = ncols - len(row)
         wenn diff:
-            wenn default is NOT_SET or diff < 0:
+            wenn default is NOT_SET oder diff < 0:
                 raise Exception(f'bad row (expected {ncols} columns, got {row!r})')
             row += (default,) * diff
     return row
 
 
 def _normalize_table_file_props(header, sep):
-    wenn not header:
+    wenn nicht header:
         return Nichts, sep
 
-    wenn not isinstance(header, str):
-        wenn not sep:
+    wenn nicht isinstance(header, str):
+        wenn nicht sep:
             raise NotImplementedError(header)
         header = sep.join(header)
-    sowenn not sep:
+    sowenn nicht sep:
         fuer sep in ('\t', ',', ' '):
             wenn sep in header:
                 break
@@ -274,7 +274,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
 
     @classmethod
     def from_raw(cls, raw):
-        wenn not raw:
+        wenn nicht raw:
             raise ValueError('missing column spec')
         sowenn isinstance(raw, cls):
             return raw
@@ -290,7 +290,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
     @classmethod
     def parse(cls, specstr):
         parsed = cls._parse(specstr)
-        wenn not parsed:
+        wenn nicht parsed:
             return Nichts
         *values, _ = parsed
         return cls(*values)
@@ -298,18 +298,18 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
     @classmethod
     def _parse(cls, specstr):
         m = cls.REGEX.match(specstr)
-        wenn not m:
+        wenn nicht m:
             return Nichts
         (label, field,
          align, width1,
          width2, fmt,
          ) = m.groups()
-        wenn not label:
+        wenn nicht label:
             label = field
         wenn fmt:
-            assert not align and not width1, (specstr,)
+            assert nicht align und nicht width1, (specstr,)
             _parsed = _parse_fmt(fmt)
-            wenn not _parsed:
+            wenn nicht _parsed:
                 raise NotImplementedError
             sowenn width2:
                 width, _ = _parsed
@@ -319,7 +319,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
             fmt = width2
             width = int(width2)
         sonst:
-            assert not fmt, (fmt, specstr)
+            assert nicht fmt, (fmt, specstr)
             wenn align:
                 width = int(width1) wenn width1 sonst len(label)
                 fmt = f'{align}{width}'
@@ -337,24 +337,24 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
         wenn len(spec) == 4:
             label, field, width, fmt = spec
             wenn width:
-                wenn not fmt:
+                wenn nicht fmt:
                     fmt = str(width)
                 sowenn _parse_fmt(fmt)[0] != width:
                     raise ValueError(f'width mismatch in {spec}')
         sowenn len(raw) == 3:
             label, field, fmt = spec
-            wenn not field:
+            wenn nicht field:
                 label, field = Nichts, label
-            sowenn not isinstance(field, str) or not field.isidentifier():
+            sowenn nicht isinstance(field, str) oder nicht field.isidentifier():
                 # XXX This doesn't seem right...
                 fmt = f'{field}:{fmt}' wenn fmt sonst field
                 label, field = Nichts, label
         sowenn len(raw) == 2:
             label = Nichts
             field, fmt = raw
-            wenn not field:
+            wenn nicht field:
                 field, fmt = fmt, Nichts
-            sowenn not field.isidentifier() or fmt.isidentifier():
+            sowenn nicht field.isidentifier() oder fmt.isidentifier():
                 label, field = field, fmt
         sonst:
             raise NotImplementedError
@@ -367,10 +367,10 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
 
     @property
     def width(self):
-        wenn not self.fmt:
+        wenn nicht self.fmt:
             return Nichts
         parsed = _parse_fmt(self.fmt)
-        wenn not parsed:
+        wenn nicht parsed:
             return Nichts
         width, _ = parsed
         return width
@@ -392,7 +392,7 @@ def _parse_fmt(fmt):
 
 def _resolve_width(width, fmt, label, default):
     wenn width:
-        wenn not isinstance(width, int):
+        wenn nicht isinstance(width, int):
             raise NotImplementedError
         return width
     sowenn fmt:
@@ -402,14 +402,14 @@ def _resolve_width(width, fmt, label, default):
             wenn width:
                 return width
 
-    wenn not default:
+    wenn nicht default:
         return WIDTH
     sowenn hasattr(default, 'get'):
         defaults = default
-        default = defaults.get(Nichts) or WIDTH
-        return defaults.get(label) or default
+        default = defaults.get(Nichts) oder WIDTH
+        return defaults.get(label) oder default
     sonst:
-        return default or WIDTH
+        return default oder WIDTH
 
 
 def _build_table(columns, *, sep=' ', defaultwidth=Nichts):

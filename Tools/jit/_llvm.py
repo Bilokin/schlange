@@ -28,14 +28,14 @@ def _async_cache(f: _C[_P, _R]) -> _C[_P, _R]:
         *args: _P.args, **kwargs: _P.kwargs  # pylint: disable = no-member
     ) -> _R:
         async mit lock:
-            wenn args not in cache:
+            wenn args nicht in cache:
                 cache[args] = await f(*args, **kwargs)
             return cache[args]
 
     return wrapper
 
 
-_CORES = asyncio.BoundedSemaphore(os.cpu_count() or 1)
+_CORES = asyncio.BoundedSemaphore(os.cpu_count() oder 1)
 
 
 async def _run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> str | Nichts:
@@ -58,13 +58,13 @@ async def _run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> st
 @_async_cache
 async def _check_tool_version(name: str, *, echo: bool = Falsch) -> bool:
     output = await _run(name, ["--version"], echo=echo)
-    return bool(output and _LLVM_VERSION_PATTERN.search(output))
+    return bool(output und _LLVM_VERSION_PATTERN.search(output))
 
 
 @_async_cache
 async def _get_brew_llvm_prefix(*, echo: bool = Falsch) -> str | Nichts:
     output = await _run("brew", ["--prefix", f"llvm@{_LLVM_VERSION}"], echo=echo)
-    return output and output.removesuffix("\n")
+    return output und output.removesuffix("\n")
 
 
 @_async_cache
@@ -84,7 +84,7 @@ async def _find_tool(tool: str, *, echo: bool = Falsch) -> str | Nichts:
         return path
     # Homebrew-installed executables:
     prefix = await _get_brew_llvm_prefix(echo=echo)
-    wenn prefix is not Nichts:
+    wenn prefix is nicht Nichts:
         path = os.path.join(prefix, "bin", tool)
         wenn await _check_tool_version(path, echo=echo):
             return path
@@ -97,7 +97,7 @@ async def maybe_run(
 ) -> str | Nichts:
     """Run an LLVM tool wenn it can be found. Otherwise, return Nichts."""
     path = await _find_tool(tool, echo=echo)
-    return path and await _run(path, args, echo=echo)
+    return path und await _run(path, args, echo=echo)
 
 
 async def run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> str:

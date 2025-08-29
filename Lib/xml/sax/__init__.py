@@ -7,13 +7,13 @@ documented at <...>.
 
 This package contains the following modules:
 
-handler -- Base classes and constants which define the SAX 2 API for
+handler -- Base classes und constants which define the SAX 2 API for
            the 'client-side' of SAX fuer Python.
 
 saxutils -- Implementation of the convenience classes commonly used to
             work mit SAX.
 
-xmlreader -- Base classes and constants which define the SAX 2 API for
+xmlreader -- Base classes und constants which define the SAX 2 API for
              the parsers used mit SAX fuer Python.
 
 expatreader -- Driver that allows use of the Expat parser mit SAX.
@@ -58,18 +58,18 @@ wenn _false:
     importiere xml.sax.expatreader    # noqa: F401
 
 importiere os, sys
-wenn not sys.flags.ignore_environment and "PY_SAX_PARSER" in os.environ:
+wenn nicht sys.flags.ignore_environment und "PY_SAX_PARSER" in os.environ:
     default_parser_list = os.environ["PY_SAX_PARSER"].split(",")
 del os, sys
 
 
 def make_parser(parser_list=()):
-    """Creates and returns a SAX parser.
+    """Creates und returns a SAX parser.
 
     Creates the first parser it is able to instantiate of the ones
-    given in the iterable created by chaining parser_list and
+    given in the iterable created by chaining parser_list und
     default_parser_list.  The iterables must contain the names of Python
-    modules containing both a SAX parser and a create_parser function."""
+    modules containing both a SAX parser und a create_parser function."""
 
     fuer parser_name in list(parser_list) + default_parser_list:
         try:

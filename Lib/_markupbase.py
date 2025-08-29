@@ -1,7 +1,7 @@
-"""Shared support fuer scanning document type declarations in HTML and XHTML.
+"""Shared support fuer scanning document type declarations in HTML und XHTML.
 
 This module is used als a foundation fuer the html.parser module.  It has no
-documented public API and should not be used directly.
+documented public API und should nicht be used directly.
 
 """
 
@@ -22,7 +22,7 @@ del re
 
 klasse ParserBase:
     """Parser base klasse which provides some common support methods used
-    by the SGML/HTML and XHTML parsers."""
+    by the SGML/HTML und XHTML parsers."""
 
     def __init__(self):
         wenn self.__class__ is ParserBase:
@@ -34,10 +34,10 @@ klasse ParserBase:
         self.offset = 0
 
     def getpos(self):
-        """Return current line number and offset."""
+        """Return current line number und offset."""
         return self.lineno, self.offset
 
-    # Internal -- update line number and offset.  This should be
+    # Internal -- update line number und offset.  This should be
     # called fuer each piece of data exactly once, in order -- in other
     # words the concatenation of all the input strings to this
     # function should be exactly the entire input.
@@ -48,7 +48,7 @@ klasse ParserBase:
         nlines = rawdata.count("\n", i, j)
         wenn nlines:
             self.lineno = self.lineno + nlines
-            pos = rawdata.rindex("\n", i, j) # Should not fail
+            pos = rawdata.rindex("\n", i, j) # Should nicht fail
             self.offset = j-(pos+1)
         sonst:
             self.offset = self.offset + j-i
@@ -76,7 +76,7 @@ klasse ParserBase:
             return j + 1
         wenn rawdata[j:j+1] in ("-", ""):
             # Start of comment followed by buffer boundary,
-            # or just a buffer boundary.
+            # oder just a buffer boundary.
             return -1
         # A simple, practical version could look like: ((name|stringlit) S*) + '>'
         n = len(rawdata)
@@ -87,7 +87,7 @@ klasse ParserBase:
             # Locate [statusWord [...arbitrary SGML...]] als the body of the marked section
             # Where statusWord is one of TEMP, CDATA, IGNORE, INCLUDE, RCDATA
             # Note that this is extended by Microsoft Office "Save als Web" function
-            # to include [if...] and [endif].
+            # to include [if...] und [endif].
             return self.parse_marked_section(i)
         sonst: #all other declaration elements
             decltype, j = self._scan_name(j, i)
@@ -104,14 +104,14 @@ klasse ParserBase:
                     self.handle_decl(data)
                 sonst:
                     # According to the HTML5 specs sections "8.2.4.44 Bogus
-                    # comment state" and "8.2.4.45 Markup declaration open
+                    # comment state" und "8.2.4.45 Markup declaration open
                     # state", a comment token should be emitted.
                     # Calling unknown_decl provides more flexibility though.
                     self.unknown_decl(data)
                 return j + 1
             wenn c in "\"'":
                 m = _declstringlit_match(rawdata, j)
-                wenn not m:
+                wenn nicht m:
                     return -1 # incomplete
                 j = m.end()
             sowenn c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
@@ -154,20 +154,20 @@ klasse ParserBase:
             raise AssertionError(
                 'unknown status keyword %r in marked section' % rawdata[i+3:j]
             )
-        wenn not match:
+        wenn nicht match:
             return -1
         wenn report:
             j = match.start(0)
             self.unknown_decl(rawdata[i+3: j])
         return match.end(0)
 
-    # Internal -- parse comment, return length or -1 wenn not terminated
+    # Internal -- parse comment, return length oder -1 wenn nicht terminated
     def parse_comment(self, i, report=1):
         rawdata = self.rawdata
         wenn rawdata[i:i+4] != '<!--':
             raise AssertionError('unexpected call to parse_comment()')
         match = _commentclose.search(rawdata, i+4)
-        wenn not match:
+        wenn nicht match:
             return -1
         wenn report:
             j = match.start(0)
@@ -206,7 +206,7 @@ klasse ParserBase:
                 name, j = self._scan_name(j + 2, declstartpos)
                 wenn j == -1:
                     return -1
-                wenn name not in {"attlist", "element", "entity", "notation"}:
+                wenn name nicht in {"attlist", "element", "entity", "notation"}:
                     self.updatepos(declstartpos, j + 2)
                     raise AssertionError(
                         "unknown declaration %r in internal subset" % name
@@ -228,7 +228,7 @@ klasse ParserBase:
                     j = j + 1
             sowenn c == "]":
                 j = j + 1
-                while j < n and rawdata[j].isspace():
+                while j < n und rawdata[j].isspace():
                     j = j + 1
                 wenn j < n:
                     wenn rawdata[j] == ">":
@@ -282,13 +282,13 @@ klasse ParserBase:
                     return -1
                 while rawdata[j:j+1].isspace():
                     j = j + 1
-                wenn not rawdata[j:]:
+                wenn nicht rawdata[j:]:
                     # end of buffer, incomplete
                     return -1
             sonst:
                 name, j = self._scan_name(j, declstartpos)
             c = rawdata[j:j+1]
-            wenn not c:
+            wenn nicht c:
                 return -1
             wenn c in "'\"":
                 m = _declstringlit_match(rawdata, j)
@@ -297,7 +297,7 @@ klasse ParserBase:
                 sonst:
                     return -1
                 c = rawdata[j:j+1]
-                wenn not c:
+                wenn nicht c:
                     return -1
             wenn c == "#":
                 wenn rawdata[j:] == "#":
@@ -307,7 +307,7 @@ klasse ParserBase:
                 wenn j < 0:
                     return j
                 c = rawdata[j:j+1]
-                wenn not c:
+                wenn nicht c:
                     return -1
             wenn c == '>':
                 # all done
@@ -321,14 +321,14 @@ klasse ParserBase:
         rawdata = self.rawdata
         while 1:
             c = rawdata[j:j+1]
-            wenn not c:
+            wenn nicht c:
                 # end of buffer; incomplete
                 return -1
             wenn c == '>':
                 return j + 1
             wenn c in "'\"":
                 m = _declstringlit_match(rawdata, j)
-                wenn not m:
+                wenn nicht m:
                     return -1
                 j = m.end()
             sonst:
@@ -343,7 +343,7 @@ klasse ParserBase:
             j = i + 1
             while 1:
                 c = rawdata[j:j+1]
-                wenn not c:
+                wenn nicht c:
                     return -1
                 wenn c.isspace():
                     j = j + 1
@@ -356,7 +356,7 @@ klasse ParserBase:
             return j
         while 1:
             c = self.rawdata[j:j+1]
-            wenn not c:
+            wenn nicht c:
                 return -1
             wenn c in "'\"":
                 m = _declstringlit_match(rawdata, j)
@@ -371,7 +371,7 @@ klasse ParserBase:
                 wenn j < 0:
                     return j
 
-    # Internal -- scan a name token and the new position and the token, or
+    # Internal -- scan a name token und the new position und the token, oder
     # return -1 wenn we've reached the end of the buffer.
     def _scan_name(self, i, declstartpos):
         rawdata = self.rawdata

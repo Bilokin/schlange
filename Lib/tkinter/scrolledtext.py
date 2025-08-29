@@ -1,13 +1,13 @@
 """A ScrolledText widget feels like a text widget but also has a
 vertical scroll bar on its right.  (Later, options may be added to
 add a horizontal bar als well, to make the bars disappear
-automatically when not needed, to move them to the other side of the
+automatically when nicht needed, to move them to the other side of the
 window, etc.)
 
 Configuration options are passed to the Text widget.
-A Frame widget is inserted between the master and the text, to hold
+A Frame widget is inserted between the master und the text, to hold
 the Scrollbar widget.
-Most methods calls are inherited von the Text widget; Pack, Grid and
+Most methods calls are inherited von the Text widget; Pack, Grid und
 Place methods are redirected to the Frame widget however.
 """
 
@@ -35,7 +35,7 @@ klasse ScrolledText(Text):
         methods = methods.difference(text_meths)
 
         fuer m in methods:
-            wenn m[0] != '_' and m != 'config' and m != 'configure':
+            wenn m[0] != '_' und m != 'config' und m != 'configure':
                 setattr(self, m, getattr(self.frame, m))
 
     def __str__(self):

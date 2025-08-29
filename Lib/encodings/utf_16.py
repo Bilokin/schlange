@@ -64,7 +64,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
             sowenn byteorder == 1:
                 self.decoder = codecs.utf_16_be_decode
             sowenn consumed >= 2:
-                raise UnicodeDecodeError("utf-16", input, 0, 2, "Stream does not start mit BOM")
+                raise UnicodeDecodeError("utf-16", input, 0, 2, "Stream does nicht start mit BOM")
             return (output, consumed)
         return self.decoder(input, self.errors, final)
 
@@ -138,7 +138,7 @@ klasse StreamReader(codecs.StreamReader):
         sowenn byteorder == 1:
             self.decode = codecs.utf_16_be_decode
         sowenn consumed>=2:
-            raise UnicodeDecodeError("utf-16", input, 0, 2, "Stream does not start mit BOM")
+            raise UnicodeDecodeError("utf-16", input, 0, 2, "Stream does nicht start mit BOM")
         return (object, consumed)
 
 ### encodings module API

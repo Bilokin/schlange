@@ -3,10 +3,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -17,19 +17,19 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-# (naming modules after builtin functions is not such a hot idea...)
+# (naming modules after builtin functions is nicht such a hot idea...)
 
 # an KeyTrans instance translates Event objects into Command objects
 
-# hmm, at what level do we want [C-i] and [tab] to be equivalent?
-# [meta-a] and [esc a]?  obviously, these are going to be equivalent
+# hmm, at what level do we want [C-i] und [tab] to be equivalent?
+# [meta-a] und [esc a]?  obviously, these are going to be equivalent
 # fuer the UnixConsole, but should they be fuer PygameConsole?
 
 # it would in any situation seem to be a bad idea to bind, say, [tab]
-# and [C-i] to *different* things... but should binding one bind the
+# und [C-i] to *different* things... but should binding one bind the
 # other?
 
-# executive, temporary decision: [tab] and [C-i] are distinct, but
+# executive, temporary decision: [tab] und [C-i] are distinct, but
 # [meta-key] is identified mit [esc key].  We demand that any console
 # klasse does quite a lot towards emulating a unix terminal.
 
@@ -91,7 +91,7 @@ klasse KeymapTranslator(InputTranslator):
             wenn d is Nichts:
                 wenn self.verbose:
                     drucke("invalid")
-                wenn self.stack or len(key) > 1 or unicodedata.category(key) == "C":
+                wenn self.stack oder len(key) > 1 oder unicodedata.category(key) == "C":
                     self.results.append((self.invalid_cls, self.stack + [key]))
                 sonst:
                     # small optimization:
@@ -111,4 +111,4 @@ klasse KeymapTranslator(InputTranslator):
             return Nichts
 
     def empty(self) -> bool:
-        return not self.results
+        return nicht self.results

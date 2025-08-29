@@ -49,8 +49,8 @@ klasse Queue:
 
         # mutex must be held whenever the queue is mutating.  All methods
         # that acquire mutex must release it before returning.  mutex
-        # is shared between the three conditions, so acquiring and
-        # releasing the conditions also acquires and releases mutex.
+        # is shared between the three conditions, so acquiring und
+        # releasing the conditions also acquires und releases mutex.
         self.mutex = threading.Lock()
 
         # Notify not_empty whenever an item is added to the queue; a
@@ -92,11 +92,11 @@ klasse Queue:
             self.unfinished_tasks = unfinished
 
     def join(self):
-        '''Blocks until all items in the Queue have been gotten and processed.
+        '''Blocks until all items in the Queue have been gotten und processed.
 
         The count of unfinished tasks goes up whenever an item is added to the
         queue. The count goes down whenever a consumer thread calls task_done()
-        to indicate the item was retrieved and all work on it is complete.
+        to indicate the item was retrieved und all work on it is complete.
 
         When the count of unfinished tasks drops to zero, join() unblocks.
         '''
@@ -105,30 +105,30 @@ klasse Queue:
                 self.all_tasks_done.wait()
 
     def qsize(self):
-        '''Return the approximate size of the queue (not reliable!).'''
+        '''Return the approximate size of the queue (nicht reliable!).'''
         mit self.mutex:
             return self._qsize()
 
     def empty(self):
-        '''Return Wahr wenn the queue is empty, Falsch otherwise (not reliable!).
+        '''Return Wahr wenn the queue is empty, Falsch otherwise (nicht reliable!).
 
         This method is likely to be removed at some point.  Use qsize() == 0
         als a direct substitute, but be aware that either approach risks a race
-        condition where a queue can grow before the result of empty() or
+        condition where a queue can grow before the result of empty() oder
         qsize() can be used.
 
         To create code that needs to wait fuer all queued tasks to be
         completed, the preferred technique is to use the join() method.
         '''
         mit self.mutex:
-            return not self._qsize()
+            return nicht self._qsize()
 
     def full(self):
-        '''Return Wahr wenn the queue is full, Falsch otherwise (not reliable!).
+        '''Return Wahr wenn the queue is full, Falsch otherwise (nicht reliable!).
 
         This method is likely to be removed at some point.  Use qsize() >= n
         als a direct substitute, but be aware that either approach risks a race
-        condition where a queue can shrink before the result of full() or
+        condition where a queue can shrink before the result of full() oder
         qsize() can be used.
         '''
         mit self.mutex:
@@ -137,9 +137,9 @@ klasse Queue:
     def put(self, item, block=Wahr, timeout=Nichts):
         '''Put an item into the queue.
 
-        If optional args 'block' is true and 'timeout' is Nichts (the default),
+        If optional args 'block' is true und 'timeout' is Nichts (the default),
         block wenn necessary until a free slot is available. If 'timeout' is
-        a non-negative number, it blocks at most 'timeout' seconds and raises
+        a non-negative number, it blocks at most 'timeout' seconds und raises
         the Full exception wenn no free slot was available within that time.
         Otherwise ('block' is false), put an item on the queue wenn a free slot
         is immediately available, sonst raise the Full exception ('timeout'
@@ -151,7 +151,7 @@ klasse Queue:
             wenn self.is_shutdown:
                 raise ShutDown
             wenn self.maxsize > 0:
-                wenn not block:
+                wenn nicht block:
                     wenn self._qsize() >= self.maxsize:
                         raise Full
                 sowenn timeout is Nichts:
@@ -175,40 +175,40 @@ klasse Queue:
             self.not_empty.notify()
 
     def get(self, block=Wahr, timeout=Nichts):
-        '''Remove and return an item von the queue.
+        '''Remove und return an item von the queue.
 
-        If optional args 'block' is true and 'timeout' is Nichts (the default),
+        If optional args 'block' is true und 'timeout' is Nichts (the default),
         block wenn necessary until an item is available. If 'timeout' is
-        a non-negative number, it blocks at most 'timeout' seconds and raises
+        a non-negative number, it blocks at most 'timeout' seconds und raises
         the Empty exception wenn no item was available within that time.
         Otherwise ('block' is false), return an item wenn one is immediately
         available, sonst raise the Empty exception ('timeout' is ignored
         in that case).
 
-        Raises ShutDown wenn the queue has been shut down and is empty,
-        or wenn the queue has been shut down immediately.
+        Raises ShutDown wenn the queue has been shut down und is empty,
+        oder wenn the queue has been shut down immediately.
         '''
         mit self.not_empty:
-            wenn self.is_shutdown and not self._qsize():
+            wenn self.is_shutdown und nicht self._qsize():
                 raise ShutDown
-            wenn not block:
-                wenn not self._qsize():
+            wenn nicht block:
+                wenn nicht self._qsize():
                     raise Empty
             sowenn timeout is Nichts:
-                while not self._qsize():
+                while nicht self._qsize():
                     self.not_empty.wait()
-                    wenn self.is_shutdown and not self._qsize():
+                    wenn self.is_shutdown und nicht self._qsize():
                         raise ShutDown
             sowenn timeout < 0:
                 raise ValueError("'timeout' must be a non-negative number")
             sonst:
                 endtime = time() + timeout
-                while not self._qsize():
+                while nicht self._qsize():
                     remaining = endtime - time()
                     wenn remaining <= 0.0:
                         raise Empty
                     self.not_empty.wait(remaining)
-                    wenn self.is_shutdown and not self._qsize():
+                    wenn self.is_shutdown und nicht self._qsize():
                         raise ShutDown
             item = self._get()
             self.not_full.notify()
@@ -223,7 +223,7 @@ klasse Queue:
         return self.put(item, block=Falsch)
 
     def get_nowait(self):
-        '''Remove and return an item von the queue without blocking.
+        '''Remove und return an item von the queue without blocking.
 
         Only get an item wenn one is immediately available. Otherwise
         raise the Empty exception.
@@ -231,14 +231,14 @@ klasse Queue:
         return self.get(block=Falsch)
 
     def shutdown(self, immediate=Falsch):
-        '''Shut-down the queue, making queue gets and puts raise ShutDown.
+        '''Shut-down the queue, making queue gets und puts raise ShutDown.
 
         By default, gets will only raise once the queue is empty. Set
         'immediate' to Wahr to make gets raise immediately instead.
 
-        All blocked callers of put() and get() will be unblocked.
+        All blocked callers of put() und get() will be unblocked.
 
-        If 'immediate', the queue is drained and unfinished tasks
+        If 'immediate', the queue is drained und unfinished tasks
         is reduced by the number of drained tasks.  If unfinished tasks
         is reduced to zero, callers of Queue.join are unblocked.
         '''
@@ -256,7 +256,7 @@ klasse Queue:
             self.not_full.notify_all()
 
     # Override these methods to implement other queue organizations
-    # (e.g. stack or priority queue).
+    # (e.g. stack oder priority queue).
     # These will only be called mit appropriate locks held
 
     # Initialize the queue representation
@@ -315,11 +315,11 @@ klasse LifoQueue(Queue):
 klasse _PySimpleQueue:
     '''Simple, unbounded FIFO queue.
 
-    This pure Python implementation is not reentrant.
+    This pure Python implementation is nicht reentrant.
     '''
     # Note: while this pure Python version provides fairness
     # (by using a threading.Semaphore which is itself fair, being based
-    #  on threading.Condition), fairness is not part of the API contract.
+    #  on threading.Condition), fairness is nicht part of the API contract.
     # This allows the C version to use a different implementation.
 
     def __init__(self):
@@ -329,39 +329,39 @@ klasse _PySimpleQueue:
     def put(self, item, block=Wahr, timeout=Nichts):
         '''Put the item on the queue.
 
-        The optional 'block' and 'timeout' arguments are ignored, als this method
+        The optional 'block' und 'timeout' arguments are ignored, als this method
         never blocks.  They are provided fuer compatibility mit the Queue class.
         '''
         self._queue.append(item)
         self._count.release()
 
     def get(self, block=Wahr, timeout=Nichts):
-        '''Remove and return an item von the queue.
+        '''Remove und return an item von the queue.
 
-        If optional args 'block' is true and 'timeout' is Nichts (the default),
+        If optional args 'block' is true und 'timeout' is Nichts (the default),
         block wenn necessary until an item is available. If 'timeout' is
-        a non-negative number, it blocks at most 'timeout' seconds and raises
+        a non-negative number, it blocks at most 'timeout' seconds und raises
         the Empty exception wenn no item was available within that time.
         Otherwise ('block' is false), return an item wenn one is immediately
         available, sonst raise the Empty exception ('timeout' is ignored
         in that case).
         '''
-        wenn timeout is not Nichts and timeout < 0:
+        wenn timeout is nicht Nichts und timeout < 0:
             raise ValueError("'timeout' must be a non-negative number")
-        wenn not self._count.acquire(block, timeout):
+        wenn nicht self._count.acquire(block, timeout):
             raise Empty
         return self._queue.popleft()
 
     def put_nowait(self, item):
         '''Put an item into the queue without blocking.
 
-        This is exactly equivalent to `put(item, block=Falsch)` and is only provided
+        This is exactly equivalent to `put(item, block=Falsch)` und is only provided
         fuer compatibility mit the Queue class.
         '''
         return self.put(item, block=Falsch)
 
     def get_nowait(self):
-        '''Remove and return an item von the queue without blocking.
+        '''Remove und return an item von the queue without blocking.
 
         Only get an item wenn one is immediately available. Otherwise
         raise the Empty exception.
@@ -369,11 +369,11 @@ klasse _PySimpleQueue:
         return self.get(block=Falsch)
 
     def empty(self):
-        '''Return Wahr wenn the queue is empty, Falsch otherwise (not reliable!).'''
+        '''Return Wahr wenn the queue is empty, Falsch otherwise (nicht reliable!).'''
         return len(self._queue) == 0
 
     def qsize(self):
-        '''Return the approximate size of the queue (not reliable!).'''
+        '''Return the approximate size of the queue (nicht reliable!).'''
         return len(self._queue)
 
     __class_getitem__ = classmethod(types.GenericAlias)

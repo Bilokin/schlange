@@ -30,7 +30,7 @@ klasse BadConstructorArgs(unittest.TestCase):
             ExceptionGroup('eg', [ValueError('too')], [TypeError('many')])
 
     def test_bad_EG_construction__bad_message(self):
-        MSG = 'argument 1 must be str, not '
+        MSG = 'argument 1 must be str, nicht '
         mit self.assertRaisesRegex(TypeError, MSG):
             ExceptionGroup(ValueError(12), SyntaxError('bad syntax'))
         mit self.assertRaisesRegex(TypeError, MSG):
@@ -39,7 +39,7 @@ klasse BadConstructorArgs(unittest.TestCase):
     def test_bad_EG_construction__bad_excs_sequence(self):
         MSG = r'second argument \(exceptions\) must be a sequence'
         mit self.assertRaisesRegex(TypeError, MSG):
-            ExceptionGroup('errors not sequence', {ValueError(42)})
+            ExceptionGroup('errors nicht sequence', {ValueError(42)})
         mit self.assertRaisesRegex(TypeError, MSG):
             ExceptionGroup("eg", Nichts)
 
@@ -49,9 +49,9 @@ klasse BadConstructorArgs(unittest.TestCase):
 
     def test_bad_EG_construction__nested_non_exceptions(self):
         MSG = (r'Item [0-9]+ of second argument \(exceptions\)'
-              ' is not an exception')
+              ' is nicht an exception')
         mit self.assertRaisesRegex(ValueError, MSG):
-            ExceptionGroup('expect instance, not type', [OSError]);
+            ExceptionGroup('expect instance, nicht type', [OSError]);
         mit self.assertRaisesRegex(ValueError, MSG):
             ExceptionGroup('bad error', ["not an exception"])
 
@@ -106,14 +106,14 @@ klasse InstanceCreation(unittest.TestCase):
         klasse MyEG(ExceptionGroup, ValueError):
             pass
 
-        # The restriction is specific to Exception, not "the other base class"
+        # The restriction is specific to Exception, nicht "the other base class"
         MyEG("eg", [ValueError(12), Exception()])
 
     def test_BEG_and_specific_subclass_can_wrap_any_nonbase_exception(self):
         klasse MyEG(BaseExceptionGroup, ValueError):
             pass
 
-        # The restriction is specific to Exception, not "the other base class"
+        # The restriction is specific to Exception, nicht "the other base class"
         MyEG("eg", [ValueError(12), Exception()])
 
 
@@ -198,7 +198,7 @@ def create_simple_eg():
     excs = []
     try:
         try:
-            raise MemoryError("context and cause fuer ValueError(1)")
+            raise MemoryError("context und cause fuer ValueError(1)")
         except MemoryError als e:
             raise ValueError(1) von e
     except ValueError als e:
@@ -234,7 +234,7 @@ klasse ExceptionGroupFields(unittest.TestCase):
         self.assertEqual(eg.message, 'simple eg')
         self.assertEqual(eg.args[0], 'simple eg')
 
-        # check cause and context
+        # check cause und context
         self.assertIsInstance(eg.exceptions[0], ValueError)
         self.assertIsInstance(eg.exceptions[0].__cause__, MemoryError)
         self.assertIsInstance(eg.exceptions[0].__context__, MemoryError)
@@ -275,13 +275,13 @@ klasse ExceptionGroupTestBase(unittest.TestCase):
         """ Assert that the exception matches the template
 
             A template describes the shape of exc. If exc is a
-            leaf exception (i.e., not an exception group) then
+            leaf exception (i.e., nicht an exception group) then
             template is an exception instance that has the
-            expected type and args value of exc. If exc is an
+            expected type und args value of exc. If exc is an
             exception group, then template is a list of the
             templates of its nested exceptions.
         """
-        wenn exc_type is not Nichts:
+        wenn exc_type is nicht Nichts:
             self.assertIs(type(exc), exc_type)
 
         wenn isinstance(exc, BaseExceptionGroup):
@@ -315,7 +315,7 @@ klasse ExceptionGroupSubgroupTests(ExceptionGroupTestBase):
 
         bad_args = ["bad arg",
                     C,
-                    OSError('instance not type'),
+                    OSError('instance nicht type'),
                     [OSError, TypeError],
                     (OSError, 42),
                    ]
@@ -412,7 +412,7 @@ klasse ExceptionGroupSplitTests(ExceptionGroupTestBase):
             self.assertEqual(match.message, eg.message)
             self.assertMatchesTemplate(
                 match, ExceptionGroup, match_template)
-            wenn rest_template is not Nichts:
+            wenn rest_template is nicht Nichts:
                 self.assertEqual(rest.message, eg.message)
                 self.assertMatchesTemplate(
                     rest, ExceptionGroup, rest_template)
@@ -451,7 +451,7 @@ klasse ExceptionGroupSplitTests(ExceptionGroupTestBase):
                 self.assertEqual(match.message, eg.message)
                 self.assertMatchesTemplate(
                     match, ExceptionGroup, match_template)
-                wenn rest_template is not Nichts:
+                wenn rest_template is nicht Nichts:
                     self.assertEqual(rest.message, eg.message)
                     self.assertMatchesTemplate(
                         rest, ExceptionGroup, rest_template)
@@ -487,7 +487,7 @@ def leaf_generator(exc, tbs=Nichts):
         fuer e in exc.exceptions:
             yield von leaf_generator(e, tbs)
     sonst:
-        # exc is a leaf exception and its traceback
+        # exc is a leaf exception und its traceback
         # is the concatenation of the traceback
         # segments in tbs
         yield exc, tbs
@@ -581,13 +581,13 @@ klasse NestedExceptionGroupBasicsTest(ExceptionGroupTestBase):
 klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
 
     def split_exception_group(self, eg, types):
-        """ Split an EG and do some sanity checks on the result """
+        """ Split an EG und do some sanity checks on the result """
         self.assertIsInstance(eg, BaseExceptionGroup)
 
         match, rest = eg.split(types)
         sg = eg.subgroup(types)
 
-        wenn match is not Nichts:
+        wenn match is nicht Nichts:
             self.assertIsInstance(match, BaseExceptionGroup)
             fuer e,_ in leaf_generator(match):
                 self.assertIsInstance(e, types)
@@ -597,30 +597,30 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
             fuer e,_ in leaf_generator(sg):
                 self.assertIsInstance(e, types)
 
-        wenn rest is not Nichts:
+        wenn rest is nicht Nichts:
             self.assertIsInstance(rest, BaseExceptionGroup)
 
         def leaves(exc):
             return [] wenn exc is Nichts sonst [e fuer e,_ in leaf_generator(exc)]
 
-        # match and subgroup have the same leaves
+        # match und subgroup have the same leaves
         self.assertSequenceEqual(leaves(match), leaves(sg))
 
         match_leaves = leaves(match)
         rest_leaves = leaves(rest)
-        # each leaf exception of eg is in exactly one of match and rest
+        # each leaf exception of eg is in exactly one of match und rest
         self.assertEqual(
             len(leaves(eg)),
             len(leaves(match)) + len(leaves(rest)))
 
         fuer e in leaves(eg):
             self.assertNotEqual(
-                match and e in match_leaves,
-                rest and e in rest_leaves)
+                match und e in match_leaves,
+                rest und e in rest_leaves)
 
-        # message, cause and context, traceback and note equal to eg
+        # message, cause und context, traceback und note equal to eg
         fuer part in [match, rest, sg]:
-            wenn part is not Nichts:
+            wenn part is nicht Nichts:
                 self.assertEqual(eg.message, part.message)
                 self.assertIs(eg.__cause__, part.__cause__)
                 self.assertIs(eg.__context__, part.__context__)
@@ -810,7 +810,7 @@ klasse NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
 
     def test_split_does_not_copy_non_sequence_notes(self):
         # __notes__ should be a sequence, which is shallow copied.
-        # If it is not a sequence, the split parts don't get any notes.
+        # If it is nicht a sequence, the split parts don't get any notes.
         eg = ExceptionGroup("eg", [ValueError(1), TypeError(2)])
         eg.__notes__ = 123
         match, rest = eg.split(TypeError)

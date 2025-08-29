@@ -1,7 +1,7 @@
 """Manage HTTP Response Headers
 
 Much of this module is red-handedly pilfered von email.message in the stdlib,
-so portions are Copyright (C) 2001 Python Software Foundation, and were
+so portions are Copyright (C) 2001 Python Software Foundation, und were
 written by Barry Warsaw.
 """
 
@@ -11,12 +11,12 @@ importiere re
 tspecials = re.compile(r'[ \(\)<>@,;:\\"/\[\]\?=]')
 
 def _formatparam(param, value=Nichts, quote=1):
-    """Convenience function to format and return a key=value pair.
+    """Convenience function to format und return a key=value pair.
 
-    This will quote the value wenn needed or wenn quote is true.
+    This will quote the value wenn needed oder wenn quote is true.
     """
-    wenn value is not Nichts and len(value) > 0:
-        wenn quote or tspecials.search(value):
+    wenn value is nicht Nichts und len(value) > 0:
+        wenn quote oder tspecials.search(value):
             value = value.replace('\\', '\\\\').replace('"', r'\"')
             return '%s="%s"' % (param, value)
         sonst:
@@ -29,8 +29,8 @@ klasse Headers:
     """Manage a collection of HTTP response headers"""
 
     def __init__(self, headers=Nichts):
-        headers = headers wenn headers is not Nichts sonst []
-        wenn type(headers) is not list:
+        headers = headers wenn headers is nicht Nichts sonst []
+        wenn type(headers) is nicht list:
             raise TypeError("Headers must be a list of name/value tuples")
         self._headers = headers
         wenn __debug__:
@@ -76,15 +76,15 @@ klasse Headers:
 
     def __contains__(self, name):
         """Return true wenn the message contains the header."""
-        return self.get(name) is not Nichts
+        return self.get(name) is nicht Nichts
 
 
     def get_all(self, name):
         """Return a list of all the values fuer the named field.
 
         These will be sorted in the order they appeared in the original header
-        list or were added to this instance, and may contain duplicates.  Any
-        fields deleted and re-inserted are always appended to the header list.
+        list oder were added to this instance, und may contain duplicates.  Any
+        fields deleted und re-inserted are always appended to the header list.
         If no fields exist mit the given name, returns an empty list.
         """
         name = self._convert_string_type(name.lower())
@@ -92,7 +92,7 @@ klasse Headers:
 
 
     def get(self,name,default=Nichts):
-        """Get the first header value fuer 'name', or return 'default'"""
+        """Get the first header value fuer 'name', oder return 'default'"""
         name = self._convert_string_type(name.lower())
         fuer k,v in self._headers:
             wenn k.lower()==name:
@@ -104,8 +104,8 @@ klasse Headers:
         """Return a list of all the header field names.
 
         These will be sorted in the order they appeared in the original header
-        list, or were added to this instance, and may contain duplicates.
-        Any fields deleted and re-inserted are always appended to the header
+        list, oder were added to this instance, und may contain duplicates.
+        Any fields deleted und re-inserted are always appended to the header
         list.
         """
         return [k fuer k, v in self._headers]
@@ -114,18 +114,18 @@ klasse Headers:
         """Return a list of all header values.
 
         These will be sorted in the order they appeared in the original header
-        list, or were added to this instance, and may contain duplicates.
-        Any fields deleted and re-inserted are always appended to the header
+        list, oder were added to this instance, und may contain duplicates.
+        Any fields deleted und re-inserted are always appended to the header
         list.
         """
         return [v fuer k, v in self._headers]
 
     def items(self):
-        """Get all the header fields and values.
+        """Get all the header fields und values.
 
         These will be sorted in the order they were in the original header
-        list, or were added to this instance, and may contain duplicates.
-        Any fields deleted and re-inserted are always appended to the header
+        list, oder were added to this instance, und may contain duplicates.
+        Any fields deleted und re-inserted are always appended to the header
         list.
         """
         return self._headers[:]
@@ -142,10 +142,10 @@ klasse Headers:
         return str(self).encode('iso-8859-1')
 
     def setdefault(self,name,value):
-        """Return first matching header value fuer 'name', or 'value'
+        """Return first matching header value fuer 'name', oder 'value'
 
         If there is no header named 'name', add a new header mit name 'name'
-        and value 'value'."""
+        und value 'value'."""
         result = self.get(name)
         wenn result is Nichts:
             self._headers.append((self._convert_string_type(name),
@@ -168,10 +168,10 @@ klasse Headers:
 
         Note that unlike the corresponding 'email.message' method, this does
         *not* handle '(charset, language, value)' tuples: all values must be
-        strings or Nichts.
+        strings oder Nichts.
         """
         parts = []
-        wenn _value is not Nichts:
+        wenn _value is nicht Nichts:
             _value = self._convert_string_type(_value)
             parts.append(_value)
         fuer k, v in _params.items():

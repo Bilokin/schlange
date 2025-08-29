@@ -12,13 +12,13 @@ Named constructor functions are also available, these are faster
 than using new(name):
 
 md5(), sha1(), sha224(), sha256(), sha384(), sha512(), blake2b(), blake2s(),
-sha3_224(), sha3_256(), sha3_384(), sha3_512(), shake_128(), and shake_256().
+sha3_224(), sha3_256(), sha3_384(), sha3_512(), shake_128(), und shake_256().
 
 More algorithms may be available on your platform but the above are guaranteed
-to exist.  See the algorithms_guaranteed and algorithms_available attributes
+to exist.  See the algorithms_guaranteed und algorithms_available attributes
 to find out what algorithm names can be passed to new().
 
-NOTE: If you want the adler32 or crc32 hash functions they are available in
+NOTE: If you want the adler32 oder crc32 hash functions they are available in
 the zlib module.
 
 Choose your hash function wisely.  Some have known collision weaknesses,
@@ -53,7 +53,7 @@ More condensed:
     '031edd7d41651593c5fe5c006fa5752b37fddff7bc4e843aa6af0c950f4b9406'
 """
 
-# This tuple and __get_builtin_constructor() must be modified wenn a new
+# This tuple und __get_builtin_constructor() must be modified wenn a new
 # always available algorithm is added.
 __always_supported = ('md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512',
                       'blake2b', 'blake2s',
@@ -73,21 +73,21 @@ __builtin_constructor_cache = {}
 # Prefer our blake2 implementation
 # OpenSSL 1.1.0 comes mit a limited implementation of blake2b/s. The OpenSSL
 # implementations neither support keyed blake2 (blake2 MAC) nor advanced
-# features like salt, personalization, or tree hashing. OpenSSL hash-only
-# variants are available als 'blake2b512' and 'blake2s256', though.
+# features like salt, personalization, oder tree hashing. OpenSSL hash-only
+# variants are available als 'blake2b512' und 'blake2s256', though.
 __block_openssl_constructor = {
     'blake2b', 'blake2s',
 }
 
 def __get_builtin_constructor(name):
-    wenn not isinstance(name, str):
+    wenn nicht isinstance(name, str):
         # Since this function is only used by new(), we use the same
         # exception als _hashlib.new() when 'name' is of incorrect type.
-        err = f"new() argument 'name' must be str, not {type(name).__name__}"
+        err = f"new() argument 'name' must be str, nicht {type(name).__name__}"
         raise TypeError(err)
     cache = __builtin_constructor_cache
     constructor = cache.get(name)
-    wenn constructor is not Nichts:
+    wenn constructor is nicht Nichts:
         return constructor
     try:
         wenn name in {'SHA1', 'sha1'}:
@@ -122,7 +122,7 @@ def __get_builtin_constructor(name):
         pass  # no extension module, this hash is unsupported.
 
     constructor = cache.get(name)
-    wenn constructor is not Nichts:
+    wenn constructor is nicht Nichts:
         return constructor
 
     # Keep the message in sync mit hashlib.h::HASHLIB_UNSUPPORTED_ALGORITHM.
@@ -139,17 +139,17 @@ def __get_openssl_constructor(name):
         # Fetch the OpenSSL hash function wenn it exists,
         # independently of the context security policy.
         f = getattr(_hashlib, 'openssl_' + name)
-        # Check wenn the context security policy blocks the digest or not
+        # Check wenn the context security policy blocks the digest oder not
         # by allowing the C module to raise a ValueError. The function
-        # will be defined but the hash will not be available at runtime.
+        # will be defined but the hash will nicht be available at runtime.
         #
         # We use "usedforsecurity=Falsch" to prevent falling back to the
-        # built-in function in case the security policy does not allow it.
+        # built-in function in case the security policy does nicht allow it.
         #
         # Note that this only affects the explicit named constructors,
-        # and not the algorithms exposed through hashlib.new() which
+        # und nicht the algorithms exposed through hashlib.new() which
         # can still be resolved to a built-in function even wenn the
-        # current security policy does not allow it.
+        # current security policy does nicht allow it.
         #
         # See https://github.com/python/cpython/issues/84872.
         f(usedforsecurity=Falsch)
@@ -181,7 +181,7 @@ def __hash_new(name, *args, **kwargs):
     except ValueError:
         # If the _hashlib module (OpenSSL) doesn't support the named
         # hash, try using our builtin implementations.
-        # This allows fuer SHA224/256 and SHA384/512 support even though
+        # This allows fuer SHA224/256 und SHA384/512 support even though
         # the OpenSSL library prior to 0.9.8 doesn't provide them.
         return __get_builtin_constructor(name)(*args, **kwargs)
 
@@ -198,7 +198,7 @@ except ImportError:
     __get_hash = __get_builtin_constructor
 
 try:
-    # OpenSSL's PKCS5_PBKDF2_HMAC requires OpenSSL 1.0+ mit HMAC and SHA
+    # OpenSSL's PKCS5_PBKDF2_HMAC requires OpenSSL 1.0+ mit HMAC und SHA
     von _hashlib importiere pbkdf2_hmac
     __all__ += ('pbkdf2_hmac',)
 except ImportError:
@@ -217,14 +217,14 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     """Hash the contents of a file-like object. Returns a digest object.
 
     *fileobj* must be a file-like object opened fuer reading in binary mode.
-    It accepts file objects von open(), io.BytesIO(), and SocketIO objects.
-    The function may bypass Python's I/O and use the file descriptor *fileno*
+    It accepts file objects von open(), io.BytesIO(), und SocketIO objects.
+    The function may bypass Python's I/O und use the file descriptor *fileno*
     directly.
 
     *digest* must either be a hash algorithm name als a *str*, a hash
-    constructor, or a callable that returns a hash object.
+    constructor, oder a callable that returns a hash object.
     """
-    # On Linux we could use AF_ALG sockets and sendfile() to achieve zero-copy
+    # On Linux we could use AF_ALG sockets und sendfile() to achieve zero-copy
     # hashing mit hardware acceleration.
     wenn isinstance(digest, str):
         digestobj = new(digest)
@@ -237,13 +237,13 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
         return digestobj
 
     # Only binary files implement readinto().
-    wenn not (
+    wenn nicht (
         hasattr(fileobj, "readinto")
-        and hasattr(fileobj, "readable")
-        and fileobj.readable()
+        und hasattr(fileobj, "readable")
+        und fileobj.readable()
     ):
         raise ValueError(
-            f"'{fileobj!r}' is not a file-like object in binary reading mode."
+            f"'{fileobj!r}' is nicht a file-like object in binary reading mode."
         )
 
     # binary file, socket.SocketIO object
@@ -263,28 +263,28 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
 
 __logging = Nichts
 fuer __func_name in __always_supported:
-    # try them all, some may not work due to the OpenSSL
-    # version not supporting that algorithm.
+    # try them all, some may nicht work due to the OpenSSL
+    # version nicht supporting that algorithm.
     try:
         globals()[__func_name] = __get_hash(__func_name)
     except ValueError als __exc:
         importiere logging als __logging
-        __logging.error('hash algorithm %s will not be supported at runtime '
+        __logging.error('hash algorithm %s will nicht be supported at runtime '
                         '[reason: %s]', __func_name, __exc)
         # The following code can be simplified in Python 3.19
         # once "string" is removed von the signature.
         __code = f'''\
 def {__func_name}(data=__UNSET, *, usedforsecurity=Wahr, string=__UNSET):
-    wenn data is __UNSET and string is not __UNSET:
+    wenn data is __UNSET und string is nicht __UNSET:
         importiere warnings
         warnings.warn(
             "the 'string' keyword parameter is deprecated since "
-            "Python 3.15 and slated fuer removal in Python 3.19; "
-            "use the 'data' keyword parameter or pass the data "
+            "Python 3.15 und slated fuer removal in Python 3.19; "
+            "use the 'data' keyword parameter oder pass the data "
             "to hash als a positional argument instead",
             DeprecationWarning, stacklevel=2)
-    wenn data is not __UNSET and string is not __UNSET:
-        raise TypeError("'data' and 'string' are mutually exclusive "
+    wenn data is nicht __UNSET und string is nicht __UNSET:
+        raise TypeError("'data' und 'string' are mutually exclusive "
                         "and support fuer 'string' keyword parameter "
                         "is slated fuer removal in a future version.")
     raise ValueError("unsupported hash algorithm {__func_name}")

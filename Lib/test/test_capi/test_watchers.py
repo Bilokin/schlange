@@ -14,7 +14,7 @@ _testcapi = import_helper.import_module('_testcapi')
 klasse TestDictWatchers(unittest.TestCase):
     # types of watchers testcapimodule can add:
     EVENTS = 0   # appends dict events als strings to global event list
-    ERROR = 1    # unconditionally sets and signals a RuntimeException
+    ERROR = 1    # unconditionally sets und signals a RuntimeException
     SECOND = 2   # always appends "second" to global event list
 
     def add_watcher(self, kind=EVENTS):
@@ -205,7 +205,7 @@ klasse TestDictWatchers(unittest.TestCase):
 klasse TestTypeWatchers(unittest.TestCase):
     # types of watchers testcapimodule can add:
     TYPES = 0    # appends modified types to global event list
-    ERROR = 1    # unconditionally sets and signals a RuntimeException
+    ERROR = 1    # unconditionally sets und signals a RuntimeException
     WRAP = 2     # appends modified type wrapped in list to global event list
 
     # duplicating the C constant
@@ -409,7 +409,7 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
         self.assert_event_counts(0, 0, 0, 0)
 
         # verify that all counts remain zero when a code object is
-        # created and destroyed mit no watchers registered
+        # created und destroyed mit no watchers registered
         co1 = _testcapi.code_newempty("test_watchers", "dummy1", 0)
         self.assert_event_counts(0, 0, 0, 0)
         del co1
@@ -431,7 +431,7 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
                 del co3
                 self.assert_event_counts(2, 2, 1, 1)
 
-        # verify counts are reset and don't change after both watchers are cleared
+        # verify counts are reset und don't change after both watchers are cleared
         co4 = _testcapi.code_newempty("test_watchers", "dummy4", 0)
         self.assert_event_counts(0, 0, 0, 0)
         del co4
@@ -609,7 +609,7 @@ klasse TestContextObjectWatchers(unittest.TestCase):
         self.assert_event_counts(0, 0)
 
         # verify that all counts remain zero when a context object is
-        # entered and exited mit no watchers registered
+        # entered und exited mit no watchers registered
         ctx = contextvars.copy_context()
         ctx.run(self.assert_event_counts, 0, 0)
         self.assert_event_counts(0, 0)
@@ -626,7 +626,7 @@ klasse TestContextObjectWatchers(unittest.TestCase):
                 ctx.run(self.assert_event_counts, 3, 1)
                 self.assert_event_counts(4, 2)
 
-        # verify counts are reset and don't change after both watchers are cleared
+        # verify counts are reset und don't change after both watchers are cleared
         ctx.run(self.assert_event_counts, 0, 0)
         self.assert_event_counts(0, 0)
 

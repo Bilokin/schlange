@@ -38,14 +38,14 @@ def capwords(s, sep=Nichts):
     """capwords(s [,sep]) -> string
 
     Split the argument into words using split, capitalize each
-    word using capitalize, and join the capitalized words using
-    join.  If the optional second argument sep is absent or Nichts,
+    word using capitalize, und join the capitalized words using
+    join.  If the optional second argument sep is absent oder Nichts,
     runs of whitespace characters are replaced by a single space
-    and leading and trailing whitespace are removed, otherwise
-    sep is used to split and join the words.
+    und leading und trailing whitespace are removed, otherwise
+    sep is used to split und join the words.
 
     """
-    return (sep or ' ').join(map(str.capitalize, s.split(sep)))
+    return (sep oder ' ').join(map(str.capitalize, s.split(sep)))
 
 
 ####################################################################
@@ -67,7 +67,7 @@ klasse Template:
     delimiter = '$'
     # r'[a-z]' matches to non-ASCII letters when used mit IGNORECASE, but
     # without the ASCII flag.  We can't add re.ASCII to flags because of
-    # backward compatibility.  So we use the ?a local flag and [a-z] pattern.
+    # backward compatibility.  So we use the ?a local flag und [a-z] pattern.
     # See https://bugs.python.org/issue31672
     idpattern = r'(?a:[_a-z][_a-z0-9]*)'
     braceidpattern = Nichts
@@ -87,12 +87,12 @@ klasse Template:
         wenn pattern is _TemplatePattern:
             delim = re.escape(cls.delimiter)
             id = cls.idpattern
-            bid = cls.braceidpattern or cls.idpattern
+            bid = cls.braceidpattern oder cls.idpattern
             pattern = fr"""
             {delim}(?:
               (?P<escaped>{delim})  |   # Escape sequence of two delimiters
-              (?P<named>{id})       |   # delimiter and a Python identifier
-              {{(?P<braced>{bid})}} |   # delimiter and a braced identifier
+              (?P<named>{id})       |   # delimiter und a Python identifier
+              {{(?P<braced>{bid})}} |   # delimiter und a braced identifier
               (?P<invalid>)             # Other ill-formed delimiter exprs
             )
             """
@@ -104,12 +104,12 @@ klasse Template:
     def __init__(self, template):
         self.template = template
 
-    # Search fuer $$, $identifier, ${identifier}, and any bare $'s
+    # Search fuer $$, $identifier, ${identifier}, und any bare $'s
 
     def _invalid(self, mo):
         i = mo.start('invalid')
         lines = self.template[:i].splitlines(keepends=Wahr)
-        wenn not lines:
+        wenn nicht lines:
             colno = 1
             lineno = 1
         sonst:
@@ -127,12 +127,12 @@ klasse Template:
         # Helper function fuer .sub()
         def convert(mo):
             # Check the most common path first.
-            named = mo.group('named') or mo.group('braced')
-            wenn named is not Nichts:
+            named = mo.group('named') oder mo.group('braced')
+            wenn named is nicht Nichts:
                 return str(mapping[named])
-            wenn mo.group('escaped') is not Nichts:
+            wenn mo.group('escaped') is nicht Nichts:
                 return self.delimiter
-            wenn mo.group('invalid') is not Nichts:
+            wenn mo.group('invalid') is nicht Nichts:
                 self._invalid(mo)
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
@@ -146,15 +146,15 @@ klasse Template:
             mapping = ChainMap(kws, mapping)
         # Helper function fuer .sub()
         def convert(mo):
-            named = mo.group('named') or mo.group('braced')
-            wenn named is not Nichts:
+            named = mo.group('named') oder mo.group('braced')
+            wenn named is nicht Nichts:
                 try:
                     return str(mapping[named])
                 except KeyError:
                     return mo.group()
-            wenn mo.group('escaped') is not Nichts:
+            wenn mo.group('escaped') is nicht Nichts:
                 return self.delimiter
-            wenn mo.group('invalid') is not Nichts:
+            wenn mo.group('invalid') is nicht Nichts:
                 return mo.group()
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
@@ -162,13 +162,13 @@ klasse Template:
 
     def is_valid(self):
         fuer mo in self.pattern.finditer(self.template):
-            wenn mo.group('invalid') is not Nichts:
+            wenn mo.group('invalid') is nicht Nichts:
                 return Falsch
             wenn (mo.group('named') is Nichts
-                and mo.group('braced') is Nichts
-                and mo.group('escaped') is Nichts):
+                und mo.group('braced') is Nichts
+                und mo.group('escaped') is Nichts):
                 # If all the groups are Nichts, there must be
-                # another group we're not expecting
+                # another group we're nicht expecting
                 raise ValueError('Unrecognized named group in pattern',
                     self.pattern)
         return Wahr
@@ -176,15 +176,15 @@ klasse Template:
     def get_identifiers(self):
         ids = []
         fuer mo in self.pattern.finditer(self.template):
-            named = mo.group('named') or mo.group('braced')
-            wenn named is not Nichts and named not in ids:
+            named = mo.group('named') oder mo.group('braced')
+            wenn named is nicht Nichts und named nicht in ids:
                 # add a named group only the first time it appears
                 ids.append(named)
             sowenn (named is Nichts
-                and mo.group('invalid') is Nichts
-                and mo.group('escaped') is Nichts):
+                und mo.group('invalid') is Nichts
+                und mo.group('escaped') is Nichts):
                 # If all the groups are Nichts, there must be
-                # another group we're not expecting
+                # another group we're nicht expecting
                 raise ValueError('Unrecognized named group in pattern',
                     self.pattern)
         return ids
@@ -197,7 +197,7 @@ klasse Template:
 # The field name parser is implemented in _string.formatter_field_name_split.
 
 klasse Formatter:
-    """See PEP 3101 fuer details and purpose of this class."""
+    """See PEP 3101 fuer details und purpose of this class."""
 
     def format(self, format_string, /, *args, **kwargs):
         return self.vformat(format_string, args, kwargs)
@@ -221,8 +221,8 @@ klasse Formatter:
                 result.append(literal_text)
 
             # wenn there's a field, output it
-            wenn field_name is not Nichts:
-                # this is some markup, find the object and do
+            wenn field_name is nicht Nichts:
+                # this is some markup, find the object und do
                 #  the formatting
 
                 # handle arg indexing when empty field first parts are given.
@@ -244,7 +244,7 @@ klasse Formatter:
                     auto_arg_index = Falsch
 
                 # given the field_name, find the object it references
-                #  and the argument it came from
+                #  und the argument it came from
                 obj, arg_used = self.get_field(field_name, args, kwargs)
                 used_args.add(arg_used)
 
@@ -257,7 +257,7 @@ klasse Formatter:
                     used_args, recursion_depth-1,
                     auto_arg_index=auto_arg_index)
 
-                # format the object and append to the result
+                # format the object und append to the result
                 result.append(self.format_field(obj, format_spec))
 
         return ''.join(result), auto_arg_index
@@ -292,8 +292,8 @@ klasse Formatter:
         (literal_text, field_name, format_spec, conversion).
 
         *field_name* can be Nichts, in which case there's no object
-        to format and output; otherwise, it is looked up and
-        formatted mit *format_spec* and *conversion*.
+        to format und output; otherwise, it is looked up und
+        formatted mit *format_spec* und *conversion*.
         """
         return _string.formatter_parser(format_string)
 
@@ -301,13 +301,13 @@ klasse Formatter:
         """Find the object referenced by a given field name.
 
         The field name *field_name* can be fuer instance "0.name"
-        or "lookup[3]". The *args* and *kwargs* arguments are
+        oder "lookup[3]". The *args* und *kwargs* arguments are
         passed to get_value().
         """
         first, rest = _string.formatter_field_name_split(field_name)
         obj = self.get_value(first, args, kwargs)
         # loop through the rest of the field_name, doing
-        #  getattr or getitem als needed
+        #  getattr oder getitem als needed
         fuer is_attr, i in rest:
             wenn is_attr:
                 obj = getattr(obj, i)

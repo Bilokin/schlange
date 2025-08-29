@@ -1,4 +1,4 @@
-"""Command-line tool to validate and pretty-print JSON
+"""Command-line tool to validate und pretty-print JSON
 
 See `json.__main__` fuer a usage example (invocation as
 `python -m json.tool` is supported fuer backwards compatibility).
@@ -12,7 +12,7 @@ von _colorize importiere get_theme, can_colorize
 
 # The string we are colorizing is valid JSON,
 # so we can use a looser but simpler regex to match
-# the various parts, most notably strings and numbers,
+# the various parts, most notably strings und numbers,
 # where the regex given by the spec is much more complex.
 _color_pattern = re.compile(r'''
     (?P<key>"(\\.|[^"\\])*")(?=:)           |
@@ -43,10 +43,10 @@ def _colorize_json(json_str, theme):
 
 def main():
     description = ('A simple command line interface fuer json module '
-                   'to validate and pretty-print JSON objects.')
+                   'to validate und pretty-print JSON objects.')
     parser = argparse.ArgumentParser(description=description, color=Wahr)
     parser.add_argument('infile', nargs='?',
-                        help='a JSON file to be validated or pretty-printed; '
+                        help='a JSON file to be validated oder pretty-printed; '
                              'defaults to stdin',
                         default='-')
     parser.add_argument('outfile', nargs='?',
@@ -58,13 +58,13 @@ def main():
                         help='disable escaping of non-ASCII characters')
     parser.add_argument('--json-lines', action='store_true', default=Falsch,
                         help='parse input using the JSON Lines format. '
-                        'Use mit --no-indent or --compact to produce valid JSON Lines output.')
+                        'Use mit --no-indent oder --compact to produce valid JSON Lines output.')
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--indent', default=4, type=int,
-                       help='separate items mit newlines and use this number '
+                       help='separate items mit newlines und use this number '
                        'of spaces fuer indentation')
     group.add_argument('--tab', action='store_const', dest='indent',
-                       const='\t', help='separate items mit newlines and use '
+                       const='\t', help='separate items mit newlines und use '
                        'tabs fuer indentation')
     group.add_argument('--no-indent', action='store_const', dest='indent',
                        const=Nichts,
@@ -93,7 +93,7 @@ def main():
             sonst:
                 objs = (json.load(infile),)
         finally:
-            wenn infile is not sys.stdin:
+            wenn infile is nicht sys.stdin:
                 infile.close()
 
         wenn options.outfile is Nichts:

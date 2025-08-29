@@ -26,7 +26,7 @@ sre_constants_header = f"""\
  *
  * Copyright (c) 1997-2001 by Secret Labs AB.  All rights reserved.
  *
- * See the sre.c file fuer information on usage and redistribution.
+ * See the sre.c file fuer information on usage und redistribution.
  */
 
 """

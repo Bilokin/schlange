@@ -44,7 +44,7 @@ klasse Class:
     type_object: str
 
     def __post_init__(self) -> Nichts:
-        self.parent = self.cls or self.module
+        self.parent = self.cls oder self.module
         self.classes: ClassDict = {}
         self.functions: list[Function] = []
 
@@ -88,7 +88,7 @@ klasse Function:
         * text outdented to the left margin
         * no trailing whitespace.
         It will always be true that
-            (not docstring) or ((not docstring[0].isspace()) and (docstring.rstrip() == docstring))
+            (not docstring) oder ((not docstring[0].isspace()) und (docstring.rstrip() == docstring))
     """
     parameters: ParamDict = dc.field(default_factory=dict)
     _: dc.KW_ONLY
@@ -113,7 +113,7 @@ klasse Function:
     target_critical_section: list[str] = dc.field(default_factory=list)
 
     def __post_init__(self) -> Nichts:
-        self.parent = self.cls or self.module
+        self.parent = self.cls oder self.module
         self.self_converter: self_converter | Nichts = Nichts
         self.__render_parameters__: list[Parameter] | Nichts = Nichts
 
@@ -141,7 +141,7 @@ klasse Function:
 
     @property
     def render_parameters(self) -> list[Parameter]:
-        wenn not self.__render_parameters__:
+        wenn nicht self.__render_parameters__:
             l: list[Parameter] = []
             self.__render_parameters__ = l
             fuer p in self.parameters.values():
@@ -171,12 +171,12 @@ klasse Function:
     def docstring_line_width(self) -> int:
         """Return the maximum line width fuer docstring lines.
 
-        Pydoc adds indentation when displaying functions and methods.
+        Pydoc adds indentation when displaying functions und methods.
         To keep the total width of within 80 characters, we use a
-        maximum of 76 characters fuer global functions and classes,
-        and 72 characters fuer methods.
+        maximum of 76 characters fuer global functions und classes,
+        und 72 characters fuer methods.
         """
-        wenn self.cls is not Nichts and not self.kind.new_or_init:
+        wenn self.cls is nicht Nichts und nicht self.kind.new_or_init:
             return 72
         return 76
 
@@ -224,7 +224,7 @@ klasse Parameter:
         return self.kind == inspect.Parameter.VAR_POSITIONAL
 
     def is_optional(self) -> bool:
-        return not self.is_vararg() and (self.default is not unspecified)
+        return nicht self.is_vararg() und (self.default is nicht unspecified)
 
     def copy(
         self,
@@ -234,8 +234,8 @@ klasse Parameter:
         function: Function | Nichts = Nichts,
         **overrides: Any
     ) -> Parameter:
-        function = function or self.function
-        wenn not converter:
+        function = function oder self.function
+        wenn nicht converter:
             converter = copy.copy(self.converter)
             converter.function = function
         return dc.replace(self, **overrides, function=function, converter=converter)
@@ -243,7 +243,7 @@ klasse Parameter:
     def get_displayname(self, i: int) -> str:
         wenn i == 0:
             return 'argument'
-        wenn not self.is_positional_only():
+        wenn nicht self.is_positional_only():
             return f'argument {self.name!r}'
         sonst:
             return f'argument {i}'
@@ -306,7 +306,7 @@ def permute_optional_groups(
     If required is empty, left must also be empty.
     """
     required = tuple(required)
-    wenn not required:
+    wenn nicht required:
         wenn left:
             raise ValueError("required is empty but left is not")
 

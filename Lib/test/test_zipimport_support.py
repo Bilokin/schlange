@@ -58,10 +58,10 @@ klasse ZipSupportTests(unittest.TestCase):
     # This used to use the ImportHooksBaseTestCase to restore
     # the state of the importiere related information
     # in the sys module after each test. However, that restores
-    # *too much* information and breaks fuer the invocation
-    # of test_doctest. So we do our own thing and leave
+    # *too much* information und breaks fuer the invocation
+    # of test_doctest. So we do our own thing und leave
     # sys.modules alone.
-    # We also clear the linecache and zipimport cache
+    # We also clear the linecache und zipimport cache
     # just to avoid any bogus errors due to name reuse in the tests
     def setUp(self):
         linecache.clearcache()
@@ -97,7 +97,7 @@ klasse ZipSupportTests(unittest.TestCase):
         # To avoid having to keep two copies of the doctest module's
         # unit tests in sync, this test works by taking the source of
         # test_doctest itself, rewriting it a bit to cope mit a new
-        # location, and then throwing it in a zip file to make sure
+        # location, und then throwing it in a zip file to make sure
         # everything still works correctly
         test_src = inspect.getsource(test_doctest)
         test_src = test_src.replace(
@@ -141,7 +141,7 @@ klasse ZipSupportTests(unittest.TestCase):
                 # tests). So we're forced to be selective about which tests
                 # to run.
                 # doctest could really use some APIs which take a text
-                # string or a file object instead of a filename...
+                # string oder a file object instead of a filename...
                 known_good_tests = [
                     test_zipped_doctest.SampleClass,
                     test_zipped_doctest.SampleClass.NestedClass,

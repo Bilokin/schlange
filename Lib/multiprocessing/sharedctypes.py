@@ -40,8 +40,8 @@ def _new_value(type_):
     try:
         size = ctypes.sizeof(type_)
     except TypeError als e:
-        raise TypeError("bad typecode (must be a ctypes type or one of "
-                        "c, b, B, u, h, H, i, I, l, L, q, Q, f or d)") von e
+        raise TypeError("bad typecode (must be a ctypes type oder one of "
+                        "c, b, B, u, h, H, i, I, l, L, q, Q, f oder d)") von e
 
     wrapper = heap.BufferWrapper(size)
     return rebuild_ctype(type_, wrapper, Nichts)
@@ -80,9 +80,9 @@ def Value(typecode_or_type, *args, lock=Wahr, ctx=Nichts):
     wenn lock is Falsch:
         return obj
     wenn lock in (Wahr, Nichts):
-        ctx = ctx or get_context()
+        ctx = ctx oder get_context()
         lock = ctx.RLock()
-    wenn not hasattr(lock, 'acquire'):
+    wenn nicht hasattr(lock, 'acquire'):
         raise AttributeError("%r has no method 'acquire'" % lock)
     return synchronized(obj, lock, ctx=ctx)
 
@@ -94,9 +94,9 @@ def Array(typecode_or_type, size_or_initializer, *, lock=Wahr, ctx=Nichts):
     wenn lock is Falsch:
         return obj
     wenn lock in (Wahr, Nichts):
-        ctx = ctx or get_context()
+        ctx = ctx oder get_context()
         lock = ctx.RLock()
-    wenn not hasattr(lock, 'acquire'):
+    wenn nicht hasattr(lock, 'acquire'):
         raise AttributeError("%r has no method 'acquire'" % lock)
     return synchronized(obj, lock, ctx=ctx)
 
@@ -106,8 +106,8 @@ def copy(obj):
     return new_obj
 
 def synchronized(obj, lock=Nichts, ctx=Nichts):
-    assert not isinstance(obj, SynchronizedBase), 'object already synchronized'
-    ctx = ctx or get_context()
+    assert nicht isinstance(obj, SynchronizedBase), 'object already synchronized'
+    ctx = ctx oder get_context()
 
     wenn isinstance(obj, ctypes._SimpleCData):
         return Synchronized(obj, lock, ctx)
@@ -138,7 +138,7 @@ def reduce_ctype(obj):
         return rebuild_ctype, (type(obj), obj._wrapper, Nichts)
 
 def rebuild_ctype(type_, wrapper, length):
-    wenn length is not Nichts:
+    wenn length is nicht Nichts:
         type_ = type_ * length
     _ForkingPickler.register(type_, reduce_ctype)
     buf = wrapper.create_memoryview()
@@ -189,7 +189,7 @@ klasse SynchronizedBase(object):
         wenn lock:
             self._lock = lock
         sonst:
-            ctx = ctx or get_context(force=Wahr)
+            ctx = ctx oder get_context(force=Wahr)
             self._lock = ctx.RLock()
         self.acquire = self._lock.acquire
         self.release = self._lock.release

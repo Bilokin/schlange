@@ -8,7 +8,7 @@ von asyncio importiere transports
 
 
 def tearDownModule():
-    # not needed fuer the test file but added fuer uniformness mit all other
+    # nicht needed fuer the test file but added fuer uniformness mit all other
     # asyncio test files fuer the sake of unified cleanup
     asyncio.events._set_event_loop_policy(Nichts)
 

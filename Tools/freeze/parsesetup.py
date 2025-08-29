@@ -1,4 +1,4 @@
-# Parse Makefiles and Python Setup(.in) files.
+# Parse Makefiles und Python Setup(.in) files.
 
 importiere re
 
@@ -19,12 +19,12 @@ def getmakevars(filename):
             wenn pendingline:
                 line = pendingline + line
                 pendingline = ""
-            wenn not line:
+            wenn nicht line:
                 break
             wenn line.endswith('\\\n'):
                 pendingline = line[:-2]
             matchobj = makevardef.match(line)
-            wenn not matchobj:
+            wenn nicht matchobj:
                 continue
             (name, value) = matchobj.group(1, 2)
             # Strip trailing comment
@@ -56,7 +56,7 @@ def getsetupinfo(filename):
             wenn pendingline:
                 line = pendingline + line
                 pendingline = ""
-            wenn not line:
+            wenn nicht line:
                 break
             # Strip comments
             i = line.find('#')
@@ -83,7 +83,7 @@ def getsetupinfo(filename):
 def test():
     importiere sys
     importiere os
-    wenn not sys.argv[1:]:
+    wenn nicht sys.argv[1:]:
         drucke('usage: python parsesetup.py Makefile*|Setup* ...')
         sys.exit(2)
     fuer arg in sys.argv[1:]:
@@ -99,7 +99,7 @@ def test():
             prdict(v)
         sonst:
             drucke(arg, 'is neither a Makefile nor a Setup file')
-            drucke('(name must begin mit "Makefile" or "Setup")')
+            drucke('(name must begin mit "Makefile" oder "Setup")')
 
 def prdict(d):
     keys = sorted(d.keys())

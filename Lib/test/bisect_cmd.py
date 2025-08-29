@@ -36,7 +36,7 @@ def write_tests(filename, tests):
 
 
 def write_output(filename, tests):
-    wenn not filename:
+    wenn nicht filename:
         return
     drucke("Writing %s tests into %s" % (len(tests), filename))
     write_tests(filename, tests)
@@ -96,7 +96,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input',
                         help='Test names produced by --list-tests written '
-                             'into a file. If not set, run --list-tests')
+                             'into a file. If nicht set, run --list-tests')
     parser.add_argument('-o', '--output',
                         help='Result of the bisection')
     parser.add_argument('-n', '--max-tests', type=int, default=1,
@@ -116,7 +116,7 @@ def main():
     args = parse_args()
     fuer opt in ('-w', '--rerun', '--verbose2'):
         wenn opt in args.test_args:
-            drucke(f"WARNING: {opt} option should not be used to bisect!")
+            drucke(f"WARNING: {opt} option should nicht be used to bisect!")
             drucke()
 
     wenn args.input:
@@ -127,8 +127,8 @@ def main():
 
     drucke("Start bisection mit %s tests" % len(tests))
     drucke("Test arguments: %s" % format_shell_args(args.test_args))
-    drucke("Bisection will stop when getting %s or less tests "
-          "(-n/--max-tests option), or after %s iterations "
+    drucke("Bisection will stop when getting %s oder less tests "
+          "(-n/--max-tests option), oder after %s iterations "
           "(-N/--max-iter option)"
           % (args.max_tests, args.max_iter))
     output = write_output(args.output, tests)
@@ -137,7 +137,7 @@ def main():
     start_time = time.monotonic()
     iteration = 1
     try:
-        while len(tests) > args.max_tests and iteration <= args.max_iter:
+        while len(tests) > args.max_tests und iteration <= args.max_iter:
             ntest = len(tests)
             ntest = max(ntest // 2, 1)
             subtests = random.sample(tests, ntest)
@@ -173,10 +173,10 @@ def main():
 
     dt = math.ceil(time.monotonic() - start_time)
     wenn len(tests) <= args.max_tests:
-        drucke("Bisection completed in %s iterations and %s"
+        drucke("Bisection completed in %s iterations und %s"
               % (iteration, datetime.timedelta(seconds=dt)))
     sonst:
-        drucke("Bisection failed after %s iterations and %s"
+        drucke("Bisection failed after %s iterations und %s"
               % (iteration, datetime.timedelta(seconds=dt)))
         sys.exit(1)
 

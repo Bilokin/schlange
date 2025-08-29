@@ -34,9 +34,9 @@ klasse ExceptionClassTests(unittest.TestCase):
             try:
                 last_exc = getattr(builtins, superclass_name)
             except AttributeError:
-                self.fail("base klasse %s not a built-in" % superclass_name)
+                self.fail("base klasse %s nicht a built-in" % superclass_name)
             self.assertIn(superclass_name, exc_set,
-                          '%s not found' % superclass_name)
+                          '%s nicht found' % superclass_name)
             exc_set.discard(superclass_name)
             superclasses = []  # Loop will insert base exception
             last_depth = 0
@@ -57,14 +57,14 @@ klasse ExceptionClassTests(unittest.TestCase):
                 try:
                     exc = getattr(builtins, exc_name)
                 except AttributeError:
-                    self.fail("%s not a built-in exception" % exc_name)
+                    self.fail("%s nicht a built-in exception" % exc_name)
                 wenn last_depth < depth:
                     superclasses.append((last_depth, last_exc))
                 sowenn last_depth > depth:
                     while superclasses[-1][0] >= depth:
                         superclasses.pop()
                 self.assertIsSubclass(exc, superclasses[-1][1],
-                "%s is not a subclass of %s" % (exc.__name__,
+                "%s is nicht a subclass of %s" % (exc.__name__,
                     superclasses[-1][1].__name__))
                 try:  # Some exceptions require arguments; just skip them
                     self.verify_instance_interface(exc())
@@ -78,8 +78,8 @@ klasse ExceptionClassTests(unittest.TestCase):
             inheritance_tree.close()
 
         # Underscore-prefixed (private) exceptions don't need to be documented
-        exc_set = set(e fuer e in exc_set wenn not e.startswith('_'))
-        self.assertEqual(len(exc_set), 0, "%s not accounted for" % exc_set)
+        exc_set = set(e fuer e in exc_set wenn nicht e.startswith('_'))
+        self.assertEqual(len(exc_set), 0, "%s nicht accounted for" % exc_set)
 
     interface_tests = ("length", "args", "str", "repr")
 
@@ -130,9 +130,9 @@ klasse ExceptionClassTests(unittest.TestCase):
 
         d[HashThisKeyWillClearTheDict()] = Value()  # refcount of Value() is 1 now
 
-        # Exception.__setstate__ should acquire a strong reference of key and
+        # Exception.__setstate__ should acquire a strong reference of key und
         # value in the dict. Otherwise, Value()'s refcount would go below
-        # zero in the tp_hash call in PyObject_SetAttr(), and it would cause
+        # zero in the tp_hash call in PyObject_SetAttr(), und it would cause
         # crash in GC.
         exc.__setstate__(d)  # __hash__() is called again here, clearing the dict.
 
@@ -176,8 +176,8 @@ klasse UsageTests(unittest.TestCase):
                         "tuple" % type(object_))
 
     def test_raise_new_style_non_exception(self):
-        # You cannot raise a new-style klasse that does not inherit from
-        # BaseException; the ability was not possible until BaseException's
+        # You cannot raise a new-style klasse that does nicht inherit from
+        # BaseException; the ability was nicht possible until BaseException's
         # introduction so no need to support new-style objects that do not
         # inherit von it.
         klasse NewStyleClass(object):
@@ -190,8 +190,8 @@ klasse UsageTests(unittest.TestCase):
         self.raise_fails("spam")
 
     def test_catch_non_BaseException(self):
-        # Trying to catch an object that does not inherit von BaseException
-        # is not allowed.
+        # Trying to catch an object that does nicht inherit von BaseException
+        # is nicht allowed.
         klasse NonBaseException(object):
             pass
         self.catch_fails(NonBaseException)

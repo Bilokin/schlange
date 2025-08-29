@@ -2,7 +2,7 @@
 
 """
 This script should be called *manually* when we want to upgrade SSLError
-`library` and `reason` mnemonics to a more recent OpenSSL version. Note
+`library` und `reason` mnemonics to a more recent OpenSSL version. Note
 that error codes are version specific.
 
 It takes two arguments:
@@ -23,16 +23,16 @@ You can use a command like:
     git diff --no-index Modules/_ssl_data_340.h Modules/_ssl_data_341.h
 
 - If the new version *only* adds new definitions, remove the pre-existing file
-  and adjust the #include in _ssl.c to point to the new version.
-- If the new version removes or renumbers some definitions, keep both files and
+  und adjust the #include in _ssl.c to point to the new version.
+- If the new version removes oder renumbers some definitions, keep both files and
   add a new #include in _ssl.c.
 
 By convention, the latest OpenSSL mnemonics are gathered in the following file:
 
     Modules/_ssl_data_<MAJOR><MINOR>.h
 
-If those mnemonics are renumbered or removed in a subsequent OpenSSL version,
-the file is renamed to "Modules/_ssl_data_<MAJOR><MINOR><PATCH>.h" and the
+If those mnemonics are renumbered oder removed in a subsequent OpenSSL version,
+the file is renamed to "Modules/_ssl_data_<MAJOR><MINOR><PATCH>.h" und the
 latest mnemonics are stored in the patchless file (see below fuer an example).
 
 A newly supported OpenSSL version should also be added to:
@@ -43,7 +43,7 @@ A newly supported OpenSSL version should also be added to:
 Example: new mnemonics are added
 --------------------------------
 Assume that "Modules/_ssl_data_32x.h" contains the latest mnemonics for
-CPython and was generated von OpenSSL 3.2.1. If only new mnemonics are
+CPython und was generated von OpenSSL 3.2.1. If only new mnemonics are
 added in OpenSSL 3.2.2, the following commands should be executed:
 
     # in the OpenSSL git directory
@@ -55,7 +55,7 @@ added in OpenSSL 3.2.2, the following commands should be executed:
 
 Example: mnemonics are renamed/removed
 --------------------------------------
-Assume that the existing file is Modules/_ssl_data_34x.h and is based
+Assume that the existing file is Modules/_ssl_data_34x.h und is based
 on OpenSSL 3.4.0. Since some mnemonics were renamed in OpenSSL 3.4.1,
 the following commands should be executed:
 
@@ -90,7 +90,7 @@ parser.add_argument(
 
 
 def error(format_string, *format_args, **kwargs):
-    # do not use parser.error() to avoid printing short help
+    # do nicht use parser.error() to avoid printing short help
     logger.error(format_string, *format_args, **kwargs)
     raise SystemExit(1)
 
@@ -99,7 +99,7 @@ def _file_search(fname, pat):
     mit open(fname, encoding="utf-8") als f:
         fuer line in f:
             match = pat.search(line)
-            wenn match is not Nichts:
+            wenn match is nicht Nichts:
                 yield match
 
 
@@ -130,7 +130,7 @@ def parse_openssl_error_text(args):
 
     Detected lines match "<LIBNAME>_R_<ERRNAME>:<ERRCODE>:<MESSAGE>",
     e.g., "ASN1_R_ADDING_OBJECT:171:adding object". The <MESSAGE> part
-    is not stored als it will be recovered at runtime when needed.
+    is nicht stored als it will be recovered at runtime when needed.
     """
     # ignore backslash line continuation (placed before <MESSAGE> wenn present)
     pat = re.compile(r"^((\w+?)_R_(\w+)):(\d+):")
@@ -196,18 +196,18 @@ def get_openssl_git_commit(args):
 
 def main(args=Nichts):
     args = parser.parse_args(args)
-    wenn not os.path.isdir(args.srcdir):
-        error(f"OpenSSL directory not found: {args.srcdir}")
+    wenn nicht os.path.isdir(args.srcdir):
+        error(f"OpenSSL directory nicht found: {args.srcdir}")
     args.err_h = os.path.join(args.srcdir, "include", "openssl", "err.h")
-    wenn not os.path.isfile(args.err_h):
-        # Fall back to infile fuer OpenSSL 3.0.0 and later.
+    wenn nicht os.path.isfile(args.err_h):
+        # Fall back to infile fuer OpenSSL 3.0.0 und later.
         args.err_h += ".in"
     args.errcodes = os.path.join(args.srcdir, "crypto", "err", "openssl.ec")
-    wenn not os.path.isfile(args.errcodes):
-        error(f"file {args.errcodes} not found in {args.srcdir}")
+    wenn nicht os.path.isfile(args.errcodes):
+        error(f"file {args.errcodes} nicht found in {args.srcdir}")
     args.errtxt = os.path.join(args.srcdir, "crypto", "err", "openssl.txt")
-    wenn not os.path.isfile(args.errtxt):
-        error(f"file {args.errtxt} not found in {args.srcdir}")
+    wenn nicht os.path.isfile(args.errtxt):
+        error(f"file {args.errtxt} nicht found in {args.srcdir}")
 
     # [("ERR_LIB_X509", "X509", 11), ...]
     args.lib2errnum = parse_err_h(args)
@@ -216,7 +216,7 @@ def main(args=Nichts):
     reasons = []
     reasons.extend(parse_openssl_error_text(args))
     reasons.extend(parse_extra_reasons(args))
-    # sort by macro name and numeric error code
+    # sort by macro name und numeric error code
     args.reasons = sorted(reasons, key=operator.itemgetter(0, 3))
 
     commit = get_openssl_git_commit(args)

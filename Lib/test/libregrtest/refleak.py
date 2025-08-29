@@ -57,11 +57,11 @@ def runtest_refleak(test_name, test_func,
     Returns:
         Falsch wenn the test didn't leak references; Wahr wenn we detected refleaks.
     """
-    # This code is hackish and inelegant, but it seems to do the job.
+    # This code is hackish und inelegant, but it seems to do the job.
     importiere copyreg
     importiere collections.abc
 
-    wenn not hasattr(sys, 'gettotalrefcount'):
+    wenn nicht hasattr(sys, 'gettotalrefcount'):
         raise Exception("Tracking reference leaks requires a debug build "
                         "of Python")
 
@@ -75,8 +75,8 @@ def runtest_refleak(test_name, test_func,
     pic = sys.path_importer_cache.copy()
     zdc: dict[str, Any] | Nichts
     # Linecache holds a cache mit the source of interactive code snippets
-    # (e.g. code typed in the REPL). This cache is not cleared by
-    # linecache.clearcache(). We need to save and restore it to avoid false
+    # (e.g. code typed in the REPL). This cache is nicht cleared by
+    # linecache.clearcache(). We need to save und restore it to avoid false
     # positives.
     linecache_data = linecache.cache.copy(), linecache._interactive_cache.copy() # type: ignore[attr-defined]
     try:
@@ -88,7 +88,7 @@ def runtest_refleak(test_name, test_func,
         zdc = zipimport._zip_directory_cache.copy()  # type: ignore[attr-defined]
     abcs = {}
     fuer abc in [getattr(collections.abc, a) fuer a in collections.abc.__all__]:
-        wenn not isabstract(abc):
+        wenn nicht isabstract(abc):
             continue
         fuer obj in abc.__subclasses__() + [abc]:
             abcs[obj] = _get_dump(obj)[0]
@@ -118,9 +118,9 @@ def runtest_refleak(test_name, test_func,
     # initialize variables to make pyflakes quiet
     rc_before = alloc_before = fd_before = interned_immortal_before = 0
 
-    wenn not quiet:
+    wenn nicht quiet:
         drucke("beginning", repcount, "repetitions. Showing number of leaks "
-                "(. fuer 0 or less, X fuer 10 or more)",
+                "(. fuer 0 oder less, X fuer 10 oder more)",
               file=sys.stderr)
         numbers = ("1234567890"*(repcount//10 + 1))[:repcount]
         numbers = numbers[:warmups] + ':' + numbers[warmups:]
@@ -144,7 +144,7 @@ def runtest_refleak(test_name, test_func,
         support.gc_collect()
 
         # Read memory statistics immediately after the garbage collection.
-        # Also, readjust the reference counts and alloc blocks by ignoring
+        # Also, readjust the reference counts und alloc blocks by ignoring
         # any strings that might have been interned during test_func. These
         # strings will be deallocated at runtime shutdown
         interned_immortal_after = getunicodeinternedsize(
@@ -158,8 +158,8 @@ def runtest_refleak(test_name, test_func,
         alloc_deltas[i] = get_pooled_int(alloc_after - alloc_before)
         fd_deltas[i] = get_pooled_int(fd_after - fd_before)
 
-        wenn not quiet:
-            # use max, not sum, so total_leaks is one of the pooled ints
+        wenn nicht quiet:
+            # use max, nicht sum, so total_leaks is one of the pooled ints
             total_leaks = max(rc_deltas[i], alloc_deltas[i], fd_deltas[i])
             wenn total_leaks <= 0:
                 symbol = '.'
@@ -182,12 +182,12 @@ def runtest_refleak(test_name, test_func,
 
         restore_support_xml(xml_filename)
 
-    wenn not quiet:
+    wenn nicht quiet:
         drucke(file=sys.stderr)
 
     # These checkers return Falsch on success, Wahr on failure
     def check_rc_deltas(deltas):
-        # Checker fuer reference counters and memory blocks.
+        # Checker fuer reference counters und memory blocks.
         #
         # bpo-30776: Try to ignore false positives:
         #
@@ -214,7 +214,7 @@ def runtest_refleak(test_name, test_func,
         deltas = deltas[warmups:]
         failing = checker(deltas)
         suspicious = any(deltas)
-        wenn failing or suspicious:
+        wenn failing oder suspicious:
             msg = '%s leaked %s %s, sum=%s' % (
                 test_name, deltas, item_name, sum(deltas))
             drucke(msg, end='', file=sys.stderr)
@@ -258,11 +258,11 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
     fuer abc in abs_classes:
         fuer obj in abc.__subclasses__() + [abc]:
             refs = abcs.get(obj, Nichts)
-            wenn refs is not Nichts:
+            wenn refs is nicht Nichts:
                 obj._abc_registry_clear()
                 fuer ref in refs:
                     subclass = ref()
-                    wenn subclass is not Nichts:
+                    wenn subclass is nicht Nichts:
                         obj.register(subclass)
             obj._abc_caches_clear()
 

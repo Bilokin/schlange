@@ -14,7 +14,7 @@ line2 = 'b = a'
 
 
 klasse StoreTest(unittest.TestCase):
-    '''Tests History.__init__ and History.store mit mock Text'''
+    '''Tests History.__init__ und History.store mit mock Text'''
 
     @classmethod
     def setUpClass(cls):
@@ -88,7 +88,7 @@ klasse FetchTest(unittest.TestCase):
         del cls.root
 
     def fetch_test(self, reverse, line, prefix, index, *, bell=Falsch):
-        # Perform one fetch als invoked by Alt-N or Alt-P
+        # Perform one fetch als invoked by Alt-N oder Alt-P
         # Test the result. The line test is the most important.
         # The last two are diagnostic of fetch internals.
         History = self.history

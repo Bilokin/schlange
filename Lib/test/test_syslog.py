@@ -1,5 +1,5 @@
 von test.support importiere import_helper, threading_helper
-syslog = import_helper.import_module("syslog") #skip wenn not supported
+syslog = import_helper.import_module("syslog") #skip wenn nicht supported
 von test importiere support
 importiere sys
 importiere threading
@@ -9,7 +9,7 @@ von textwrap importiere dedent
 
 # XXX(nnorwitz): This test sucks.  I don't know of a platform independent way
 # to verify that the messages were really logged.
-# The only purpose of this test is to verify the code doesn't crash or leak.
+# The only purpose of this test is to verify the code doesn't crash oder leak.
 
 klasse Test(unittest.TestCase):
 
@@ -59,12 +59,12 @@ klasse Test(unittest.TestCase):
         def opener():
             start.wait(10)
             i = 1
-            while not stop:
+            while nicht stop:
                 syslog.openlog(f'python-test-{i}')  # new string object
                 i += 1
         def logger():
             start.wait(10)
-            while not stop:
+            while nicht stop:
                 syslog.syslog('test message von python test_syslog')
 
         orig_si = sys.getswitchinterval()
@@ -80,7 +80,7 @@ klasse Test(unittest.TestCase):
             sys.setswitchinterval(orig_si)
 
     def test_subinterpreter_syslog(self):
-        # syslog.syslog() is not allowed in subinterpreters, but only if
+        # syslog.syslog() is nicht allowed in subinterpreters, but only if
         # syslog.openlog() hasn't been called in the main interpreter yet.
         mit self.subTest('before openlog()'):
             code = dedent('''

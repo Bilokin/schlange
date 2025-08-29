@@ -84,7 +84,7 @@ klasse AugAssignTest(unittest.TestCase):
                 return aug_test3(self.val + val)
 
         klasse aug_test4(aug_test3):
-            """Blocks inheritance, and fallback to __add__"""
+            """Blocks inheritance, und fallback to __add__"""
             __iadd__ = Nichts
 
         x = aug_test(1)
@@ -92,7 +92,7 @@ klasse AugAssignTest(unittest.TestCase):
         x += 10
 
         self.assertIsInstance(x, aug_test)
-        self.assertWahr(y is not x)
+        self.assertWahr(y is nicht x)
         self.assertEqual(x.val, 11)
 
         x = aug_test2(2)
@@ -107,7 +107,7 @@ klasse AugAssignTest(unittest.TestCase):
         x += 10
 
         self.assertIsInstance(x, aug_test3)
-        self.assertWahr(y is not x)
+        self.assertWahr(y is nicht x)
         self.assertEqual(x.val, 13)
 
         x = aug_test4(4)

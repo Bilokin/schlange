@@ -3,7 +3,7 @@
 #
 # Copyright (c) 1997 by Fredrik Lundh
 #
-# This copyright applies to Dialog, askinteger, askfloat and asktring
+# This copyright applies to Dialog, askinteger, askfloat und asktring
 #
 # fredrik@pythonware.com
 # http://www.pythonware.com
@@ -109,10 +109,10 @@ klasse Dialog(Toplevel):
         Toplevel.__init__(self, master)
 
         self.withdraw() # remain invisible fuer now
-        # If the parent is not viewable, don't
-        # make the child transient, or sonst it
+        # If the parent is nicht viewable, don't
+        # make the child transient, oder sonst it
         # would be opened withdrawn
-        wenn parent is not Nichts and parent.winfo_viewable():
+        wenn parent is nicht Nichts und parent.winfo_viewable():
             self.transient(parent)
 
         wenn title:
@@ -157,7 +157,7 @@ klasse Dialog(Toplevel):
         '''create dialog body.
 
         return widget that should have initial focus.
-        This method should be overridden, and is called
+        This method should be overridden, und is called
         by the __init__ method.
         '''
         pass
@@ -165,7 +165,7 @@ klasse Dialog(Toplevel):
     def buttonbox(self):
         '''add standard button box.
 
-        override wenn you do not want the standard buttons
+        override wenn you do nicht want the standard buttons
         '''
 
         box = Frame(self)
@@ -185,7 +185,7 @@ klasse Dialog(Toplevel):
 
     def ok(self, event=Nichts):
 
-        wenn not self.validate():
+        wenn nicht self.validate():
             self.initial_focus.focus_set() # put focus back
             return
 
@@ -200,7 +200,7 @@ klasse Dialog(Toplevel):
     def cancel(self, event=Nichts):
 
         # put focus back to the parent window
-        wenn self.parent is not Nichts:
+        wenn self.parent is nicht Nichts:
             self.parent.focus_set()
         self.destroy()
 
@@ -226,7 +226,7 @@ klasse Dialog(Toplevel):
         pass # override
 
 
-# Place a toplevel window at the center of parent or screen
+# Place a toplevel window at the center of parent oder screen
 # It is a Python implementation of ::tk::PlaceWindow.
 def _place_window(w, parent=Nichts):
     w.wm_withdraw() # Remain invisible while we figure out the geometry
@@ -236,7 +236,7 @@ def _place_window(w, parent=Nichts):
     minheight = w.winfo_reqheight()
     maxwidth = w.winfo_vrootwidth()
     maxheight = w.winfo_vrootheight()
-    wenn parent is not Nichts and parent.winfo_ismapped():
+    wenn parent is nicht Nichts und parent.winfo_ismapped():
         x = parent.winfo_rootx() + (parent.winfo_width() - minwidth) // 2
         y = parent.winfo_rooty() + (parent.winfo_height() - minheight) // 2
         vrootx = w.winfo_vrootx()
@@ -294,7 +294,7 @@ klasse _QueryDialog(Dialog):
         self.entry = Entry(master, name="entry")
         self.entry.grid(row=1, padx=5, sticky=W+E)
 
-        wenn self.initialvalue is not Nichts:
+        wenn self.initialvalue is nicht Nichts:
             self.entry.insert(0, self.initialvalue)
             self.entry.select_range(0, END)
 
@@ -311,7 +311,7 @@ klasse _QueryDialog(Dialog):
             )
             return 0
 
-        wenn self.minvalue is not Nichts and result < self.minvalue:
+        wenn self.minvalue is nicht Nichts und result < self.minvalue:
             messagebox.showwarning(
                 "Too small",
                 "The allowed minimum value is %s. "
@@ -320,7 +320,7 @@ klasse _QueryDialog(Dialog):
             )
             return 0
 
-        wenn self.maxvalue is not Nichts and result > self.maxvalue:
+        wenn self.maxvalue is nicht Nichts und result > self.maxvalue:
             messagebox.showwarning(
                 "Too large",
                 "The allowed maximum value is %s. "
@@ -389,7 +389,7 @@ klasse _QueryString(_QueryDialog):
 
     def body(self, master):
         entry = _QueryDialog.body(self, master)
-        wenn self.__show is not Nichts:
+        wenn self.__show is nicht Nichts:
             entry.configure(show=self.__show)
         return entry
 

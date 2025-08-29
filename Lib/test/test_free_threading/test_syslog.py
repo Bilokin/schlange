@@ -18,7 +18,7 @@ klasse TestSyslog(unittest.TestCase):
         def worker():
             """
             The syslog module provides the following functions:
-            openlog(), syslog(), closelog(), and setlogmask().
+            openlog(), syslog(), closelog(), und setlogmask().
             """
             thread_id = threading.get_ident()
             syslog.openlog(f"thread-id: {thread_id}")

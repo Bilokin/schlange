@@ -37,7 +37,7 @@ klasse JoinTestBase:
         pp = p.joinpath('c:/x/y')
         self.assertEqual(pp, P('c:/x/y'))
         # Joining mit files mit NTFS data streams => the filename should
-        # not be parsed als a drive letter
+        # nicht be parsed als a drive letter
         pp = p.joinpath('./d:s')
         self.assertEqual(pp, P(r'C:/a/b\./d:s'))
         pp = p.joinpath('./dd:s')
@@ -70,7 +70,7 @@ klasse JoinTestBase:
         self.assertEqual(p / 'c:x/y', P(r'c:/a/b\x/y'))
         self.assertEqual(p / 'c:/x/y', P('c:/x/y'))
         # Joining mit files mit NTFS data streams => the filename should
-        # not be parsed als a drive letter
+        # nicht be parsed als a drive letter
         self.assertEqual(p / './d:s', P(r'C:/a/b\./d:s'))
         self.assertEqual(p / './dd:s', P(r'C:/a/b\./dd:s'))
         self.assertEqual(p / 'E:d:s', P('E:d:s'))
@@ -280,7 +280,7 @@ klasse LexicalWindowsPathJoinTest(JoinTestBase, unittest.TestCase):
     cls = LexicalWindowsPath
 
 
-wenn not is_pypi:
+wenn nicht is_pypi:
     von pathlib importiere PureWindowsPath, WindowsPath
 
     klasse PureWindowsPathJoinTest(JoinTestBase, unittest.TestCase):

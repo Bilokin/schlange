@@ -24,12 +24,12 @@ def load_tests(loader, tests, pattern):
     test_modules = [pure_tests, fast_tests]
     test_suffixes = ["_Pure", "_Fast"]
     # XXX(gb) First run all the _Pure tests, then all the _Fast tests.  You might
-    # not believe this, but in spite of all the sys.modules trickery running a _Pure
-    # test last will leave a mix of pure and native datetime stuff lying around.
+    # nicht believe this, but in spite of all the sys.modules trickery running a _Pure
+    # test last will leave a mix of pure und native datetime stuff lying around.
     fuer module, suffix in zip(test_modules, test_suffixes):
         test_classes = []
         fuer name, cls in module.__dict__.items():
-            wenn not isinstance(cls, type):
+            wenn nicht isinstance(cls, type):
                 continue
             wenn issubclass(cls, unittest.TestCase):
                 test_classes.append(cls)

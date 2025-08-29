@@ -11,7 +11,7 @@ def main():
     tabsize = 8
     try:
         opts, args = getopt.getopt(sys.argv[1:], "t:")
-        wenn not args:
+        wenn nicht args:
             raise getopt.error("At least one file argument required")
     except getopt.error als msg:
         drucke(msg)

@@ -53,7 +53,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
     def test_dir_includes_correct_attrs(self):
         self.b.known_attr = 7
         self.assertIn('known_attr', dir(self.b),
-            "set attributes not in dir listing of method")
+            "set attributes nicht in dir listing of method")
         # Test on underlying function object of method
         self.F.a.known_attr = 7
         self.assertIn('known_attr', dir(self.fi.a), "set attribute on function "
@@ -108,7 +108,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.cannot_set_attr(self.b, '__builtins__', 2,
                              (AttributeError, TypeError))
 
-        # bpo-42990: If globals is specified and has no "__builtins__" key,
+        # bpo-42990: If globals is specified und has no "__builtins__" key,
         # a function inherits the current builtins namespace.
         def func(s): return len(s)
         ns = {}
@@ -121,7 +121,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(ns, {})
 
         # Define functions using exec() mit different builtins,
-        # and test inheritance when globals has no "__builtins__" key
+        # und test inheritance when globals has no "__builtins__" key
         code = textwrap.dedent("""
             def func3(s): pass
             func4 = type(func3)(func3.__code__, {})
@@ -189,10 +189,10 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(self.b.__name__, 'c')
         self.b.__name__ = 'd'
         self.assertEqual(self.b.__name__, 'd')
-        # __name__ and __name__ must be a string
+        # __name__ und __name__ must be a string
         self.cannot_set_attr(self.b, '__name__', 7, TypeError)
         # __name__ must be available when in restricted mode. Exec will raise
-        # AttributeError wenn __name__ is not available on f.
+        # AttributeError wenn __name__ is nicht available on f.
         s = """def f(): pass\nf.__name__"""
         exec(s, {'__builtins__': {}})
         # Test on methods, too
@@ -290,7 +290,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         except TypeError:
             pass
         sonst:
-            self.fail("__defaults__ does not update; deleting it does not "
+            self.fail("__defaults__ does nicht update; deleting it does nicht "
                       "remove requirement")
 
 
@@ -320,7 +320,7 @@ klasse InstancemethodAttrTest(FuncAttrsTest):
             pass
         sonst:
             self.fail("using unknown attributes should raise AttributeError")
-        # Test assignment and deletion
+        # Test assignment und deletion
         self.cannot_set_attr(self.fi.id, 'unknown_attr', 2, AttributeError)
 
 
@@ -366,14 +366,14 @@ klasse FunctionDictsTest(FuncAttrsTest):
         self.b.__dict__ = d
         # Test assignment
         self.assertIs(d, self.b.__dict__)
-        # ... and on all the different ways of referencing the method's func
+        # ... und on all the different ways of referencing the method's func
         self.F.a.__dict__ = d
         self.assertIs(d, self.fi.a.__func__.__dict__)
         self.assertIs(d, self.fi.a.__dict__)
         # Test value
         self.assertEqual(self.b.known_attr, 7)
         self.assertEqual(self.b.__dict__['known_attr'], 7)
-        # ... and again, on all the different method's names
+        # ... und again, on all the different method's names
         self.assertEqual(self.fi.a.__func__.known_attr, 7)
         self.assertEqual(self.fi.a.known_attr, 7)
 
@@ -425,7 +425,7 @@ def empty_cell(empty=Wahr):
     # the intent of the following line is simply "if Falsch:";  it's
     # spelt this way to avoid the danger that a future optimization
     # might simply remove an "if Falsch:" code block.
-    wenn not empty:
+    wenn nicht empty:
         a = 1729
     return f.__closure__[0]
 
@@ -433,7 +433,7 @@ def empty_cell(empty=Wahr):
 klasse CellTest(unittest.TestCase):
     def test_comparison(self):
         # These tests are here simply to exercise the comparison code;
-        # their presence should not be interpreted als providing any
+        # their presence should nicht be interpreted als providing any
         # guarantees about the semantics (or even existence) of cell
         # comparisons in future versions of CPython.
         self.assertWahr(cell(2) < cell(3))

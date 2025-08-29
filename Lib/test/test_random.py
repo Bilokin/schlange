@@ -76,10 +76,10 @@ klasse TestBasicOps:
     @unittest.mock.patch('random._urandom') # os.urandom
     def test_seed_when_randomness_source_not_found(self, urandom_mock):
         # Random.seed() uses time.time() when an operating system specific
-        # randomness source is not found. To test this on machines where it
+        # randomness source is nicht found. To test this on machines where it
         # exists, run the above test, test_seedargs(), again after mocking
         # os.urandom() so that it raises the exception expected when the
-        # randomness source is not available.
+        # randomness source is nicht available.
         urandom_mock.side_effect = NotImplementedError
         self.test_seedargs()
 
@@ -140,7 +140,7 @@ klasse TestBasicOps:
 
     def test_sample(self):
         # For the entire allowable range of 0 <= k <= N, validate that
-        # the sample is of the correct length and contains only unique items
+        # the sample is of the correct length und contains only unique items
         N = 100
         population = range(N)
         fuer k in range(N+1):
@@ -234,7 +234,7 @@ klasse TestBasicOps:
 
         # Test error handling
         mit self.assertRaises(TypeError):
-            sample(['red', 'green', 'blue'], counts=10, k=10)               # counts not iterable
+            sample(['red', 'green', 'blue'], counts=10, k=10)               # counts nicht iterable
         mit self.assertRaises(ValueError):
             sample(['red', 'green', 'blue'], counts=[-3, -7, -8], k=2)      # counts are negative
         mit self.assertRaises(ValueError):
@@ -289,7 +289,7 @@ klasse TestBasicOps:
         self.assertWahr(set(choices(str_data, k=5)) <= set(str_data))    # population is a string sequence
         self.assertWahr(set(choices(range_data, k=5)) <= set(range_data))  # population is a range
         mit self.assertRaises(TypeError):
-            choices(set_data, k=2)                                       # population is not a sequence
+            choices(set_data, k=2)                                       # population is nicht a sequence
 
         self.assertWahr(set(choices(data, Nichts, k=5)) <= set(data))      # weights is Nichts
         self.assertWahr(set(choices(data, weights=Nichts, k=5)) <= set(data))
@@ -314,7 +314,7 @@ klasse TestBasicOps:
         mit self.assertRaises(TypeError):
             choices(data, cum_weights=[Nichts]*4, k=5)                     # non-numeric cum_weights
         mit self.assertRaises(TypeError):
-            choices(data, range(4), cum_weights=range(4), k=5)           # both weights and cum_weights
+            choices(data, range(4), cum_weights=range(4), k=5)           # both weights und cum_weights
         fuer weights in [
                 [15, 10, 25, 30],                                                 # integer cum_weights
                 [15.1, 10.2, 25.2, 30.3],                                         # float cum_weights
@@ -500,9 +500,9 @@ klasse TestBasicOps:
             randrange(1000, Nichts, step=MyIndex(1))
 
     def test_randbelow_logic(self, _log=log, int=int):
-        # check bitcount transition points:  2**i and 2**(i+1)-1
+        # check bitcount transition points:  2**i und 2**(i+1)-1
         # show that: k = int(1.001 + _log(n, 2))
-        # is equal to or one greater than the number of bits in n
+        # is equal to oder one greater than the number of bits in n
         fuer i in range(1, 1000):
             n = 1 << i # check an exact power of two
             numbits = i+1
@@ -550,8 +550,8 @@ klasse TestBasicOps:
 
     def test_bug_1727780(self):
         # verify that version-2-pickles can be loaded
-        # fine, whether they are created on 32-bit or 64-bit
-        # platforms, and that version-3-pickles load fine.
+        # fine, whether they are created on 32-bit oder 64-bit
+        # platforms, und that version-3-pickles load fine.
         files = [("randv2_32.pck", 780),
                  ("randv2_64.pck", 866),
                  ("randv3.pck", 343)]
@@ -605,12 +605,12 @@ except NotImplementedError:
 sonst:
     SystemRandom_available = Wahr
 
-@unittest.skipUnless(SystemRandom_available, "random.SystemRandom not available")
+@unittest.skipUnless(SystemRandom_available, "random.SystemRandom nicht available")
 klasse SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
     gen = random.SystemRandom()
 
     def test_autoseed(self):
-        # Doesn't need to do anything except not fail
+        # Doesn't need to do anything except nicht fail
         self.gen.seed()
 
     def test_saverestore(self):
@@ -618,7 +618,7 @@ klasse SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertRaises(NotImplementedError, self.gen.setstate, Nichts)
 
     def test_seedargs(self):
-        # Doesn't need to do anything except not fail
+        # Doesn't need to do anything except nicht fail
         self.gen.seed(100)
 
     def test_gauss(self):
@@ -634,7 +634,7 @@ klasse SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
 klasse TestRawMersenneTwister(unittest.TestCase):
     @test.support.cpython_only
     def test_bug_41052(self):
-        # _random.Random should not be allowed to serialization
+        # _random.Random should nicht be allowed to serialization
         importiere _random
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             r = _random.Random()
@@ -733,12 +733,12 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertRaises(TypeError, self.gen.setstate, (2, ('a',)*625, Nichts))
         # Last element s/b an int also
         self.assertRaises(TypeError, self.gen.setstate, (2, (0,)*624+('a',), Nichts))
-        # Last element s/b between 0 and 624
+        # Last element s/b between 0 und 624
         mit self.assertRaises((ValueError, OverflowError)):
             self.gen.setstate((2, (1,)*624+(625,), Nichts))
         mit self.assertRaises((ValueError, OverflowError)):
             self.gen.setstate((2, (1,)*624+(-1,), Nichts))
-        # Failed calls to setstate() should not have changed the state.
+        # Failed calls to setstate() should nicht have changed the state.
         bits100 = self.gen.getrandbits(100)
         self.gen.setstate(start_state)
         self.assertEqual(self.gen.getrandbits(100), bits100)
@@ -923,14 +923,14 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         super().test_randbytes()
 
         # Mersenne Twister randbytes() is deterministic
-        # and does not depend on the endian and bitness.
+        # und does nicht depend on the endian und bitness.
         seed = 8675309
         expected = b'3\xa8\xf9f\xf4\xa4\xd06\x19\x8f\x9f\x82\x02oe\xf0'
 
         self.gen.seed(seed)
         self.assertEqual(self.gen.randbytes(16), expected)
 
-        # randbytes(0) must not consume any entropy
+        # randbytes(0) must nicht consume any entropy
         self.gen.seed(seed)
         self.assertEqual(self.gen.randbytes(0), b'')
         self.assertEqual(self.gen.randbytes(16), expected)
@@ -940,7 +940,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertEqual(b''.join([self.gen.randbytes(4) fuer _ in range(4)]),
                          expected)
 
-        # Each randbytes(1), randbytes(2) or randbytes(3) call consumes
+        # Each randbytes(1), randbytes(2) oder randbytes(3) call consumes
         # 4 bytes of entropy
         self.gen.seed(seed)
         expected1 = expected[3::4]
@@ -960,7 +960,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
                          expected3)
 
     def test_randbytes_getrandbits(self):
-        # There is a simple relation between randbytes() and getrandbits()
+        # There is a simple relation between randbytes() und getrandbits()
         seed = 2849427419
         gen2 = random.Random()
         self.gen.seed(seed)
@@ -1045,8 +1045,8 @@ klasse TestDistributions(unittest.TestCase):
         g.random = x[:].pop; g.triangular(0.0, 1.0, 1.0/3.0)
 
     def test_avg_std(self):
-        # Use integration to test distribution average and standard deviation.
-        # Only works fuer distributions which do not consume variates in pairs
+        # Use integration to test distribution average und standard deviation.
+        # Only works fuer distributions which do nicht consume variates in pairs
         g = random.Random()
         N = 5000
         x = [i/float(N) fuer i in range(1,N)]
@@ -1120,16 +1120,16 @@ klasse TestDistributions(unittest.TestCase):
         # BG method very small p
         self.assertEqual(B(5, 1e-18), 0)
 
-        # BG method p <= 0.5 and n*p=1.25
+        # BG method p <= 0.5 und n*p=1.25
         self.assertWahr(B(5, 0.25) in set(range(6)))
 
-        # BG method p >= 0.5 and n*(1-p)=1.25
+        # BG method p >= 0.5 und n*(1-p)=1.25
         self.assertWahr(B(5, 0.75) in set(range(6)))
 
-        # BTRS method p <= 0.5 and n*p=25
+        # BTRS method p <= 0.5 und n*p=25
         self.assertWahr(B(100, 0.25) in set(range(101)))
 
-        # BTRS method p > 0.5 and n*(1-p)=25
+        # BTRS method p > 0.5 und n*(1-p)=25
         self.assertWahr(B(100, 0.75) in set(range(101)))
 
         # Statistical tests chosen such that they are
@@ -1157,7 +1157,7 @@ klasse TestDistributions(unittest.TestCase):
 
 
     def test_von_mises_range(self):
-        # Issue 17149: von mises variates were not consistently in the
+        # Issue 17149: von mises variates were nicht consistently in the
         # range [0, 2*PI].
         g = random.Random()
         N = 100
@@ -1176,7 +1176,7 @@ klasse TestDistributions(unittest.TestCase):
         random.vonmisesvariate(0, 1e100)
 
     def test_gammavariate_errors(self):
-        # Both alpha and beta must be > 0.0
+        # Both alpha und beta must be > 0.0
         self.assertRaises(ValueError, random.gammavariate, -1, 3)
         self.assertRaises(ValueError, random.gammavariate, 0, 2)
         self.assertRaises(ValueError, random.gammavariate, 2, 0)
@@ -1192,7 +1192,7 @@ klasse TestDistributions(unittest.TestCase):
         # #1: alpha > 1.0.
         # We want the first random number to be outside the
         # [1e-7, .9999999] range, so that the continue statement executes
-        # once. The values of u1 and u2 will be 0.5 and 0.3, respectively.
+        # once. The values of u1 und u2 will be 0.5 und 0.3, respectively.
         random_mock.side_effect = [1e-8, 0.5, 0.3]
         returned_value = random.gammavariate(1.1, 2.3)
         self.assertAlmostEqual(returned_value, 2.53)
@@ -1203,7 +1203,7 @@ klasse TestDistributions(unittest.TestCase):
         # #2.a: alpha == 1.
         # The execution body of the while loop executes once.
         # Then random.random() returns 0.45,
-        # which causes while to stop looping and the algorithm to terminate.
+        # which causes while to stop looping und the algorithm to terminate.
         random_mock.side_effect = [0.45]
         returned_value = random.gammavariate(1.0, 3.14)
         self.assertAlmostEqual(returned_value, 1.877208182372648)
@@ -1225,7 +1225,7 @@ klasse TestDistributions(unittest.TestCase):
         # #3: 0 < alpha < 1.
         # This is the most complex region of code to cover,
         # als there are multiple if-else statements. Let's take a look at the
-        # source code, and determine the values that we need accordingly:
+        # source code, und determine the values that we need accordingly:
         #
         # while 1:
         #     u = random()
@@ -1247,8 +1247,8 @@ klasse TestDistributions(unittest.TestCase):
         # b*random() <= 1.0
         # r1 = random() <= 1.0 / b
         #
-        # We now get to the second if-else branch, and here, since p <= 1.0,
-        # (C) is Falsch and we take the sowenn branch, (E). For it to be Wahr,
+        # We now get to the second if-else branch, und here, since p <= 1.0,
+        # (C) is Falsch und we take the sowenn branch, (E). For it to be Wahr,
         # so that the break is executed, we need that:
         # r2 = random() <= _exp(-x)
         # r2 <= _exp(-(p ** (1.0/alpha)))
@@ -1283,8 +1283,8 @@ klasse TestDistributions(unittest.TestCase):
         r2 = 0.9445400408898141
 
         # And these four values result in the following trace:
-        # (B) and (C) Wahr, (D) Falsch --> [next iteration of while]
-        # (B) and (C) Wahr, (D) Wahr [while loop breaks]
+        # (B) und (C) Wahr, (D) Falsch --> [next iteration of while]
+        # (B) und (C) Wahr, (D) Wahr [while loop breaks]
         random_mock.side_effect = [r1, r2 + epsilon, r1, r2]
         returned_value = random.gammavariate(alpha, beta)
         self.assertAlmostEqual(returned_value, 1.5830349561760781)
@@ -1307,7 +1307,7 @@ klasse TestRandomSubclassing(unittest.TestCase):
 
     def test_subclasses_overriding_methods(self):
         # Subclasses mit an overridden random, but only the original
-        # getrandbits method should not rely on getrandbits in fuer randrange,
+        # getrandbits method should nicht rely on getrandbits in fuer randrange,
         # but should use a getrandbits-independent implementation instead.
 
         # subclass providing its own random **and** getrandbits methods
@@ -1344,7 +1344,7 @@ klasse TestRandomSubclassing(unittest.TestCase):
         SubClass3().randrange(42)
         self.assertEqual(called, {'SubClass3.getrandbits'})
 
-        # subclass providing only random and inherited getrandbits
+        # subclass providing only random und inherited getrandbits
         # => random takes precedence
         klasse SubClass4(SubClass3):
             def random(self):
@@ -1354,8 +1354,8 @@ klasse TestRandomSubclassing(unittest.TestCase):
         SubClass4().randrange(42)
         self.assertEqual(called, {'SubClass4.random'})
 
-        # Following subclasses don't define random or getrandbits directly,
-        # but inherit them von classes which are not subclasses of Random
+        # Following subclasses don't define random oder getrandbits directly,
+        # but inherit them von classes which are nicht subclasses of Random
         klasse Mixin1:
             def random(self):
                 called.add('Mixin1.random')
@@ -1398,7 +1398,7 @@ klasse TestModule(unittest.TestCase):
         self.assertAlmostEqual(random.SG_MAGICCONST, 2.50407739677627)
 
     def test__all__(self):
-        # tests validity but not completeness of the __all__ list
+        # tests validity but nicht completeness of the __all__ list
         self.assertWahr(set(random.__all__) <= set(dir(random)))
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()

@@ -29,7 +29,7 @@ def test4(x):
 
 
 def test5(x):
-    """Hello, {}!""".format("world!")  # This should not be extracted.
+    """Hello, {}!""".format("world!")  # This should nicht be extracted.
 
 
 # Nested docstrings

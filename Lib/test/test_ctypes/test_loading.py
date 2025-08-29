@@ -33,13 +33,13 @@ klasse LoaderTest(unittest.TestCase):
     unknowndll = "xxrandomnamexx"
 
     def test_load(self):
-        wenn libc_name is not Nichts:
+        wenn libc_name is nicht Nichts:
             test_lib = libc_name
         sonst:
             wenn os.name == "nt":
                 test_lib = _ctypes_test.__file__
             sonst:
-                self.skipTest('could not find library to load')
+                self.skipTest('could nicht find library to load')
         CDLL(test_lib)
         CDLL(os.path.basename(test_lib))
         CDLL(os_helper.FakePath(test_lib))
@@ -47,11 +47,11 @@ klasse LoaderTest(unittest.TestCase):
 
     def test_load_version(self):
         wenn libc_name is Nichts:
-            self.skipTest('could not find libc')
+            self.skipTest('could nicht find libc')
         wenn os.path.basename(libc_name) != 'libc.so.6':
             self.skipTest('wrong libc path fuer test')
         cdll.LoadLibrary("libc.so.6")
-        # linux uses version, libc 9 should not exist
+        # linux uses version, libc 9 should nicht exist
         self.assertRaises(OSError, cdll.LoadLibrary, "libc.so.9")
         self.assertRaises(OSError, cdll.LoadLibrary, self.unknowndll)
 
@@ -63,8 +63,8 @@ klasse LoaderTest(unittest.TestCase):
                 found = Wahr
                 cdll.LoadLibrary(lib)
                 CDLL(lib)
-        wenn not found:
-            self.skipTest("Could not find c and m libraries")
+        wenn nicht found:
+            self.skipTest("Could nicht find c und m libraries")
 
     @unittest.skipUnless(os.name == "nt",
                          'test specific to Windows')
@@ -88,7 +88,7 @@ klasse LoaderTest(unittest.TestCase):
                          'test specific to Windows')
     def test_load_ordinal_functions(self):
         dll = ctypes.WinDLL(_ctypes_test.__file__)
-        # We load the same function both via ordinal and name
+        # We load the same function both via ordinal und name
         func_ord = dll[2]
         func_name = dll.GetString
         # addressof gets the address where the function pointer is stored
@@ -119,7 +119,7 @@ klasse LoaderTest(unittest.TestCase):
 
         advapi32 = ctypes.windll.advapi32
         # Calling CloseEventLog mit a NULL argument should fail,
-        # but the call should not segfault or so.
+        # but the call should nicht segfault oder so.
         self.assertEqual(0, advapi32.CloseEventLog(Nichts))
 
         kernel32 = ctypes.windll.kernel32
@@ -148,7 +148,7 @@ klasse LoaderTest(unittest.TestCase):
             ext = ".dll"
 
         mit os_helper.temp_dir() als tmp:
-            # We copy two files and load _sqlite3.dll (formerly .pyd),
+            # We copy two files und load _sqlite3.dll (formerly .pyd),
             # which has a dependency on sqlite3.dll. Then we test
             # loading it in subprocesses to avoid it starting in memory
             # fuer each test.
@@ -174,10 +174,10 @@ klasse LoaderTest(unittest.TestCase):
                             cwd=tmp, stderr=subprocess.STDOUT,
                         )
 
-            # Default load should not find this in CWD
+            # Default load should nicht find this in CWD
             should_fail("WinDLL('_sqlite3.dll')")
 
-            # Relative path (but not just filename) should succeed
+            # Relative path (but nicht just filename) should succeed
             should_pass("WinDLL('./_sqlite3.dll')")
 
             # Insecure load flags should succeed

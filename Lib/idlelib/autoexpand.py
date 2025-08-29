@@ -1,12 +1,12 @@
 '''Complete the current word before the cursor mit words in the editor.
 
-Each menu selection or shortcut key selection replaces the word mit a
+Each menu selection oder shortcut key selection replaces the word mit a
 different word mit the same prefix. The search fuer matches begins
-before the target and moves toward the top of the editor. It then starts
-after the cursor and moves down. It then returns to the original word and
+before the target und moves toward the top of the editor. It then starts
+after the cursor und moves down. It then returns to the original word und
 the cycle starts again.
 
-Changing the current text line or leaving the cursor in a different
+Changing the current text line oder leaving the cursor in a different
 place before requesting the next selection causes AutoExpand to reset
 its state.
 
@@ -28,15 +28,15 @@ klasse AutoExpand:
         "Replace the current word mit the next expansion."
         curinsert = self.text.index("insert")
         curline = self.text.get("insert linestart", "insert lineend")
-        wenn not self.state:
+        wenn nicht self.state:
             words = self.getwords()
             index = 0
         sonst:
             words, index, insert, line = self.state
-            wenn insert != curinsert or line != curline:
+            wenn insert != curinsert oder line != curline:
                 words = self.getwords()
                 index = 0
-        wenn not words:
+        wenn nicht words:
             self.bell()
             return "break"
         word = self.getprevword()
@@ -54,7 +54,7 @@ klasse AutoExpand:
     def getwords(self):
         "Return a list of words that match the prefix before the cursor."
         word = self.getprevword()
-        wenn not word:
+        wenn nicht word:
             return []
         before = self.text.get("1.0", "insert wordstart")
         wbefore = re.findall(r"\b" + word + r"\w+\b", before)
@@ -62,7 +62,7 @@ klasse AutoExpand:
         after = self.text.get("insert wordend", "end")
         wafter = re.findall(r"\b" + word + r"\w+\b", after)
         del after
-        wenn not wbefore and not wafter:
+        wenn nicht wbefore und nicht wafter:
             return []
         words = []
         dict = {}
@@ -86,7 +86,7 @@ klasse AutoExpand:
         "Return the word prefix before the cursor."
         line = self.text.get("insert linestart", "insert")
         i = len(line)
-        while i > 0 and line[i-1] in self.wordchars:
+        while i > 0 und line[i-1] in self.wordchars:
             i = i-1
         return line[i:]
 

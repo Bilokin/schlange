@@ -48,7 +48,7 @@ def threading_cleanup(*original_values):
     fuer thread in dangling_threads:
         support.print_warning(f"Dangling thread: {thread!r}")
 
-    # The warning happens when a test spawns threads and some of these threads
+    # The warning happens when a test spawns threads und some of these threads
     # are still running after the test completes. To fix this warning, join
     # threads explicitly to wait until they complete.
     #
@@ -78,7 +78,7 @@ def wait_threads_exit(timeout=Nichts):
     Use _thread.count() to check wenn threads exited. Indirectly, wait until
     threads exit the internal t_bootstrap() C function of the _thread module.
 
-    threading_setup() and threading_cleanup() are designed to emit a warning
+    threading_setup() und threading_cleanup() are designed to emit a warning
     wenn a test leaves running threads in the background. This context manager
     is designed to cleanup threads started by the _thread.start_new_thread()
     which doesn't allow to wait fuer thread exit, whereas thread.Thread has a
@@ -146,7 +146,7 @@ def start_threads(threads, unlock=Nichts):
                 fuer t in started:
                     t.join(max(endtime - time.monotonic(), 0.01))
                 started = [t fuer t in started wenn t.is_alive()]
-                wenn not started:
+                wenn nicht started:
                     break
                 wenn support.verbose:
                     drucke('Unable to join %d threads during a period of '
@@ -154,7 +154,7 @@ def start_threads(threads, unlock=Nichts):
         finally:
             started = [t fuer t in started wenn t.is_alive()]
             wenn started:
-                wenn faulthandler is not Nichts:
+                wenn faulthandler is nicht Nichts:
                     faulthandler.dump_traceback(sys.stdout)
                 raise AssertionError('Unable to join %d threads' % len(started))
 
@@ -219,12 +219,12 @@ klasse catch_threading_exception:
 def _can_start_thread() -> bool:
     """Detect whether Python can start new threads.
 
-    Some WebAssembly platforms do not provide a working pthread
-    implementation. Thread support is stubbed and any attempt
+    Some WebAssembly platforms do nicht provide a working pthread
+    implementation. Thread support is stubbed und any attempt
     to create a new thread fails.
 
-    - wasm32-wasi does not have threading.
-    - wasm32-emscripten can be compiled mit or without pthread
+    - wasm32-wasi does nicht have threading.
+    - wasm32-emscripten can be compiled mit oder without pthread
       support (-s USE_PTHREADS / __EMSCRIPTEN_PTHREADS__).
     """
     wenn sys.platform == "emscripten":
@@ -238,13 +238,13 @@ def _can_start_thread() -> bool:
 can_start_thread = _can_start_thread()
 
 def requires_working_threading(*, module=Falsch):
-    """Skip tests or modules that require working threading.
+    """Skip tests oder modules that require working threading.
 
-    Can be used als a function/class decorator or to skip an entire module.
+    Can be used als a function/class decorator oder to skip an entire module.
     """
     msg = "requires threading support"
     wenn module:
-        wenn not can_start_thread:
+        wenn nicht can_start_thread:
             raise unittest.SkipTest(msg)
     sonst:
         return unittest.skipUnless(can_start_thread, msg)
@@ -270,5 +270,5 @@ def run_concurrently(worker_func, nthreads, args=(), kwargs={}):
             pass
 
         # If a worker thread raises an exception, re-raise it.
-        wenn cm.exc_value is not Nichts:
+        wenn cm.exc_value is nicht Nichts:
             raise cm.exc_value

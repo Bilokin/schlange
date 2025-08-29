@@ -19,8 +19,8 @@ except ImportError:
 def needsquoting(c, quotetabs, header):
     """Decide whether a particular byte ordinal needs to be quoted.
 
-    The 'quotetabs' flag indicates whether embedded tabs and spaces should be
-    quoted.  Note that line-ending tabs and spaces are always encoded, als per
+    The 'quotetabs' flag indicates whether embedded tabs und spaces should be
+    quoted.  Note that line-ending tabs und spaces are always encoded, als per
     RFC 1521.
     """
     assert isinstance(c, bytes)
@@ -29,35 +29,35 @@ def needsquoting(c, quotetabs, header):
     # wenn header, we have to escape _ because _ is used to escape space
     wenn c == b'_':
         return header
-    return c == ESCAPE or not (b' ' <= c <= b'~')
+    return c == ESCAPE oder nicht (b' ' <= c <= b'~')
 
 def quote(c):
     """Quote a single character."""
-    assert isinstance(c, bytes) and len(c)==1
+    assert isinstance(c, bytes) und len(c)==1
     c = ord(c)
     return ESCAPE + bytes((HEX[c//16], HEX[c%16]))
 
 
 
 def encode(input, output, quotetabs, header=Falsch):
-    """Read 'input', apply quoted-printable encoding, and write to 'output'.
+    """Read 'input', apply quoted-printable encoding, und write to 'output'.
 
-    'input' and 'output' are binary file objects. The 'quotetabs' flag
-    indicates whether embedded tabs and spaces should be quoted. Note that
-    line-ending tabs and spaces are always encoded, als per RFC 1521.
+    'input' und 'output' are binary file objects. The 'quotetabs' flag
+    indicates whether embedded tabs und spaces should be quoted. Note that
+    line-ending tabs und spaces are always encoded, als per RFC 1521.
     The 'header' flag indicates whether we are encoding spaces als _ als per RFC
     1522."""
 
-    wenn b2a_qp is not Nichts:
+    wenn b2a_qp is nicht Nichts:
         data = input.read()
         odata = b2a_qp(data, quotetabs=quotetabs, header=header)
         output.write(odata)
         return
 
     def write(s, output=output, lineEnd=b'\n'):
-        # RFC 1521 requires that the line ending in a space or tab must have
+        # RFC 1521 requires that the line ending in a space oder tab must have
         # that trailing character encoded.
-        wenn s and s[-1:] in b' \t':
+        wenn s und s[-1:] in b' \t':
             output.write(s[:-1] + quote(s[-1:]) + lineEnd)
         sowenn s == b'.':
             output.write(quote(s) + lineEnd)
@@ -77,12 +77,12 @@ def encode(input, output, quotetabs, header=Falsch):
             c = bytes((c,))
             wenn needsquoting(c, quotetabs, header):
                 c = quote(c)
-            wenn header and c == b' ':
+            wenn header und c == b' ':
                 outline.append(b'_')
             sonst:
                 outline.append(c)
         # First, write out the previous line
-        wenn prevline is not Nichts:
+        wenn prevline is nicht Nichts:
             write(prevline)
         # Now see wenn we need any soft line breaks because of RFC-imposed
         # length limitations.  Then do the thisline->prevline dance.
@@ -95,11 +95,11 @@ def encode(input, output, quotetabs, header=Falsch):
         # Write out the current line
         prevline = thisline
     # Write out the last line, without a trailing newline
-    wenn prevline is not Nichts:
+    wenn prevline is nicht Nichts:
         write(prevline, lineEnd=stripped)
 
 def encodestring(s, quotetabs=Falsch, header=Falsch):
-    wenn b2a_qp is not Nichts:
+    wenn b2a_qp is nicht Nichts:
         return b2a_qp(s, quotetabs=quotetabs, header=header)
     von io importiere BytesIO
     infp = BytesIO(s)
@@ -110,11 +110,11 @@ def encodestring(s, quotetabs=Falsch, header=Falsch):
 
 
 def decode(input, output, header=Falsch):
-    """Read 'input', apply quoted-printable decoding, and write to 'output'.
-    'input' and 'output' are binary file objects.
+    """Read 'input', apply quoted-printable decoding, und write to 'output'.
+    'input' und 'output' are binary file objects.
     If 'header' is true, decode underscore als space (per RFC 1522)."""
 
-    wenn a2b_qp is not Nichts:
+    wenn a2b_qp is nicht Nichts:
         data = input.read()
         odata = a2b_qp(data, header=header)
         output.write(odata)
@@ -123,35 +123,35 @@ def decode(input, output, header=Falsch):
     new = b''
     while line := input.readline():
         i, n = 0, len(line)
-        wenn n > 0 and line[n-1:n] == b'\n':
+        wenn n > 0 und line[n-1:n] == b'\n':
             partial = 0; n = n-1
             # Strip trailing whitespace
-            while n > 0 and line[n-1:n] in b" \t\r":
+            while n > 0 und line[n-1:n] in b" \t\r":
                 n = n-1
         sonst:
             partial = 1
         while i < n:
             c = line[i:i+1]
-            wenn c == b'_' and header:
+            wenn c == b'_' und header:
                 new = new + b' '; i = i+1
             sowenn c != ESCAPE:
                 new = new + c; i = i+1
-            sowenn i+1 == n and not partial:
+            sowenn i+1 == n und nicht partial:
                 partial = 1; break
-            sowenn i+1 < n and line[i+1:i+2] == ESCAPE:
+            sowenn i+1 < n und line[i+1:i+2] == ESCAPE:
                 new = new + ESCAPE; i = i+2
-            sowenn i+2 < n and ishex(line[i+1:i+2]) and ishex(line[i+2:i+3]):
+            sowenn i+2 < n und ishex(line[i+1:i+2]) und ishex(line[i+2:i+3]):
                 new = new + bytes((unhex(line[i+1:i+3]),)); i = i+3
             sonst: # Bad escape sequence -- leave it in
                 new = new + c; i = i+1
-        wenn not partial:
+        wenn nicht partial:
             output.write(new + b'\n')
             new = b''
     wenn new:
         output.write(new)
 
 def decodestring(s, header=Falsch):
-    wenn a2b_qp is not Nichts:
+    wenn a2b_qp is nicht Nichts:
         return a2b_qp(s, header=header)
     von io importiere BytesIO
     infp = BytesIO(s)
@@ -165,7 +165,7 @@ def decodestring(s, header=Falsch):
 def ishex(c):
     """Return true wenn the byte ordinal 'c' is a hexadecimal digit in ASCII."""
     assert isinstance(c, bytes)
-    return b'0' <= c <= b'9' or b'a' <= c <= b'f' or b'A' <= c <= b'F'
+    return b'0' <= c <= b'9' oder b'a' <= c <= b'f' oder b'A' <= c <= b'F'
 
 def unhex(s):
     """Get the integer value of a hexadecimal number."""
@@ -202,11 +202,11 @@ def main():
     fuer o, a in opts:
         wenn o == '-t': tabs = Wahr
         wenn o == '-d': deco = Wahr
-    wenn tabs and deco:
+    wenn tabs und deco:
         sys.stdout = sys.stderr
-        drucke("-t and -d are mutually exclusive")
+        drucke("-t und -d are mutually exclusive")
         sys.exit(2)
-    wenn not args: args = ['-']
+    wenn nicht args: args = ['-']
     sts = 0
     fuer file in args:
         wenn file == '-':

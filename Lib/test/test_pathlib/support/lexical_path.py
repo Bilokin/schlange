@@ -26,12 +26,12 @@ klasse LexicalPath(_JoinablePath):
         return hash(vfspath(self))
 
     def __eq__(self, other):
-        wenn not isinstance(other, LexicalPath):
+        wenn nicht isinstance(other, LexicalPath):
             return NotImplemented
         return vfspath(self) == vfspath(other)
 
     def __vfspath__(self):
-        wenn not self._segments:
+        wenn nicht self._segments:
             return ''
         return self.parser.join(*self._segments)
 

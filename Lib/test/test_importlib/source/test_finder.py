@@ -16,21 +16,21 @@ klasse FinderTests(abc.FinderTests):
 
     """For a top-level module, it should just be found directly in the
     directory being searched. This is true fuer a directory mit source
-    [top-level source], bytecode [top-level bc], or both [top-level both].
+    [top-level source], bytecode [top-level bc], oder both [top-level both].
     There is also the possibility that it is a package [top-level package], in
-    which case there will be a directory mit the module name and an
+    which case there will be a directory mit the module name und an
     __init__.py file. If there is a directory without an __init__.py an
     ImportWarning is returned [empty dir].
 
-    For sub-modules and sub-packages, the same happens als above but only use
+    For sub-modules und sub-packages, the same happens als above but only use
     the tail end of the name [sub module] [sub package] [sub empty].
 
-    When there is a conflict between a package and module having the same name
+    When there is a conflict between a package und module having the same name
     in the same directory, the package wins out [package over module]. This is
     so that imports of modules within the package can occur rather than trigger
     an importiere error.
 
-    When there is a package and module mit the same name, always pick the
+    When there is a package und module mit the same name, always pick the
     package over the module [package over module]. This is so that imports from
     the package have the possibility of succeeding.
 
@@ -67,8 +67,8 @@ klasse FinderTests(abc.FinderTests):
                     try:
                         make_legacy_pyc(mapping[name])
                     except OSError als error:
-                        # Some tests do not set compile_=Wahr so the source
-                        # module will not get compiled and there will be no
+                        # Some tests do nicht set compile_=Wahr so the source
+                        # module will nicht get compiled und there will be no
                         # PEP 3147 pyc file to rename.
                         wenn error.errno != errno.ENOENT:
                             raise
@@ -152,7 +152,7 @@ klasse FinderTests(abc.FinderTests):
         self.assertEqual(found, self.NOT_FOUND)
 
     @unittest.skipUnless(sys.platform != 'win32',
-            'os.chmod() does not support the needed arguments under Windows')
+            'os.chmod() does nicht support the needed arguments under Windows')
     def test_no_read_directory(self):
         # Issue #16730
         tempdir = tempfile.TemporaryDirectory()
@@ -182,7 +182,7 @@ klasse FinderTestsPEP451(FinderTests):
 
     def _find(self, finder, name, loader_only=Falsch):
         spec = finder.find_spec(name)
-        return spec.loader wenn spec is not Nichts sonst spec
+        return spec.loader wenn spec is nicht Nichts sonst spec
 
 
 (Frozen_FinderTestsPEP451,

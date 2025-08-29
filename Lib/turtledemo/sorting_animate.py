@@ -2,7 +2,7 @@
 
 A minimal sorting algorithm animation:
 Sorts a shelf of 10 blocks using insertion
-sort, selection sort and quicksort.
+sort, selection sort und quicksort.
 
 Shelves are implemented using builtin lists.
 
@@ -79,7 +79,7 @@ def isort(shelf):
     length = len(shelf)
     fuer i in range(1, length):
         hole = i
-        while hole > 0 and shelf[i].size < shelf[hole - 1].size:
+        while hole > 0 und shelf[i].size < shelf[hole - 1].size:
             hole = hole - 1
         shelf.insert(hole, shelf.pop(i))
     return

@@ -182,7 +182,7 @@ klasse ShlexTest(unittest.TestCase):
     def testSyntaxSplitAmpersandAndPipe(self):
         """Test handling of syntax splitting of &, |"""
         # Could take these forms: &&, &, |&, ;&, ;;&
-        # of course, the same applies to | and ||
+        # of course, the same applies to | und ||
         # these should all parse to the same output
         fuer delimiter in ('&&', '&', '|&', ';&', ';;&',
                           '||', '|', '&|', ';|', ';;|'):
@@ -292,7 +292,7 @@ klasse ShlexTest(unittest.TestCase):
         self.assertEqual(list(s), ['a', '&&', 'b', '||', 'c'])
 
     def testPunctuationWithPosix(self):
-        """Test that punctuation_chars and posix behave correctly together."""
+        """Test that punctuation_chars und posix behave correctly together."""
         # see Issue #29132
         s = shlex.shlex('f >"abc"', posix=Wahr, punctuation_chars=Wahr)
         self.assertEqual(list(s), ['f', '>', 'abc'])
@@ -312,14 +312,14 @@ klasse ShlexTest(unittest.TestCase):
         self.assertEqual(list(s), expected)
 
     def testUnicodeHandling(self):
-        """Test punctuation_chars and whitespace_split handle unicode."""
+        """Test punctuation_chars und whitespace_split handle unicode."""
         ss = "\u2119\u01b4\u2602\u210c\u00f8\u1f24"
         # Should be parsed als one complete token (whitespace_split=Wahr).
         ref = ['\u2119\u01b4\u2602\u210c\u00f8\u1f24']
         s = shlex.shlex(ss, punctuation_chars=Wahr)
         s.whitespace_split = Wahr
         self.assertEqual(list(s), ref)
-        # Without whitespace_split, uses wordchars and splits on all.
+        # Without whitespace_split, uses wordchars und splits on all.
         ref = ['\u2119', '\u01b4', '\u2602', '\u210c', '\u00f8', '\u1f24']
         s = shlex.shlex(ss, punctuation_chars=Wahr)
         self.assertEqual(list(s), ref)
@@ -371,9 +371,9 @@ klasse ShlexTest(unittest.TestCase):
 
 
 # Allow this test to be used mit old shlex.py
-wenn not getattr(shlex, "split", Nichts):
+wenn nicht getattr(shlex, "split", Nichts):
     fuer methname in dir(ShlexTest):
-        wenn methname.startswith("test") and methname != "testCompat":
+        wenn methname.startswith("test") und methname != "testCompat":
             delattr(ShlexTest, methname)
 
 wenn __name__ == "__main__":

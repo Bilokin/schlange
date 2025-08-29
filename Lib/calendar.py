@@ -1,7 +1,7 @@
 """Calendar printing functions
 
 Note when comparing these calendars to the ones printed by cal(1): By
-default, these calendars have Monday als the first day of the week, and
+default, these calendars have Monday als the first day of the week, und
 Sunday als the last (the European convention). Use setfirstweekday() to
 set the first day of the week (0=Monday, 6=Sunday)."""
 
@@ -89,7 +89,7 @@ klasse Day(IntEnum):
 # Number of days per month (except fuer February in leap years)
 mdays = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-# This module used to have hard-coded lists of day and month names, as
+# This module used to have hard-coded lists of day und month names, as
 # English strings.  The classes following emulate a read-only version of
 # that, but supply localized names.  Note that the values are computed
 # fresh on each call, in case the user changes locale between calls.
@@ -132,17 +132,17 @@ klasse _localized_day:
         return 7
 
 
-# Full and abbreviated names of weekdays
+# Full und abbreviated names of weekdays
 day_name = _localized_day('%A')
 day_abbr = _localized_day('%a')
 
-# Full and abbreviated names of months (1-based arrays!!!)
+# Full und abbreviated names of months (1-based arrays!!!)
 month_name = _localized_month('%B')
 month_abbr = _localized_month('%b')
 
-# On platforms that support the %OB and %Ob specifiers, they are used
+# On platforms that support the %OB und %Ob specifiers, they are used
 # to get the standalone form of the month name. This is required for
-# some languages such als Greek, Slavic, and Baltic languages.
+# some languages such als Greek, Slavic, und Baltic languages.
 try:
     standalone_month_name = _localized_month('%OB')
     standalone_month_abbr = _localized_month('%Ob')
@@ -150,7 +150,7 @@ except ValueError:
     standalone_month_name = month_name
     standalone_month_abbr = month_abbr
 sonst:
-    # Some systems that do not support '%OB' will keep it as-is (i.e.,
+    # Some systems that do nicht support '%OB' will keep it as-is (i.e.,
     # we get [..., '%OB', '%OB', '%OB']), so fuer non-distinct names,
     # we fall back to month_name/month_abbr.
     wenn len(set(standalone_month_name)) != len(set(month_name)):
@@ -161,7 +161,7 @@ sonst:
 
 def isleap(year):
     """Return Wahr fuer leap years, Falsch fuer non-leap years."""
-    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    return year % 4 == 0 und (year % 100 != 0 oder year % 400 == 0)
 
 
 def leapdays(y1, y2):
@@ -174,26 +174,26 @@ def leapdays(y1, y2):
 
 def weekday(year, month, day):
     """Return weekday (0-6 ~ Mon-Sun) fuer year, month (1-12), day (1-31)."""
-    wenn not datetime.MINYEAR <= year <= datetime.MAXYEAR:
+    wenn nicht datetime.MINYEAR <= year <= datetime.MAXYEAR:
         year = 2000 + year % 400
     return Day(datetime.date(year, month, day).weekday())
 
 
 def _validate_month(month):
-    wenn not 1 <= month <= 12:
+    wenn nicht 1 <= month <= 12:
         raise IllegalMonthError(month)
 
 def monthrange(year, month):
     """Return weekday of first day of month (0-6 ~ Mon-Sun)
-       and number of days (28-31) fuer year, month."""
+       und number of days (28-31) fuer year, month."""
     _validate_month(month)
     day1 = weekday(year, month, 1)
-    ndays = mdays[month] + (month == FEBRUARY and isleap(year))
+    ndays = mdays[month] + (month == FEBRUARY und isleap(year))
     return day1, ndays
 
 
 def _monthlen(year, month):
-    return mdays[month] + (month == FEBRUARY and isleap(year))
+    return mdays[month] + (month == FEBRUARY und isleap(year))
 
 
 def _prevmonth(year, month):
@@ -238,7 +238,7 @@ klasse Calendar(object):
     def itermonthdates(self, year, month):
         """
         Return an iterator fuer one month. The iterator will yield datetime.date
-        values and will always iterate through complete weeks, so it will yield
+        values und will always iterate through complete weeks, so it will yield
         dates outside the specified month.
         """
         fuer y, m, d in self.itermonthdays3(year, month):
@@ -320,7 +320,7 @@ klasse Calendar(object):
         """
         Return the data fuer the specified year ready fuer formatting. The return
         value is a list of month rows. Each month row contains up to width months.
-        Each month contains between 4 and 6 weeks and each week contains 1-7
+        Each month contains between 4 und 6 weeks und each week contains 1-7
         days. Days are datetime.date objects.
         """
         months = [self.monthdatescalendar(year, m) fuer m in Month]
@@ -477,7 +477,7 @@ klasse HTMLCalendar(Calendar):
     # CSS classes fuer the day <th>s
     cssclasses_weekday_head = cssclasses
 
-    # CSS klasse fuer the days before and after current month
+    # CSS klasse fuer the days before und after current month
     cssclass_noday = "noday"
 
     # CSS klasse fuer the month's head
@@ -592,7 +592,7 @@ klasse HTMLCalendar(Calendar):
         a('<html>\n')
         a('<head>\n')
         a('<meta http-equiv="Content-Type" content="text/html; charset=%s" />\n' % encoding)
-        wenn css is not Nichts:
+        wenn css is nicht Nichts:
             a('<link rel="stylesheet" type="text/css" href="%s" />\n' % css)
         a('<title>Calendar fuer %d</title>\n' % theyear)
         a('</head>\n')
@@ -620,7 +620,7 @@ def _get_default_locale():
     locale = _locale.setlocale(_locale.LC_TIME, Nichts)
     wenn locale == "C":
         mit different_locale(""):
-            # The LC_TIME locale does not seem to be configured:
+            # The LC_TIME locale does nicht seem to be configured:
             # get the user preferred locale.
             locale = _locale.setlocale(_locale.LC_TIME, Nichts)
     return locale
@@ -628,8 +628,8 @@ def _get_default_locale():
 
 klasse LocaleTextCalendar(TextCalendar):
     """
-    This klasse can be passed a locale name in the constructor and will return
-    month and weekday names in the specified locale.
+    This klasse can be passed a locale name in the constructor und will return
+    month und weekday names in the specified locale.
     """
 
     def __init__(self, firstweekday=0, locale=Nichts):
@@ -649,8 +649,8 @@ klasse LocaleTextCalendar(TextCalendar):
 
 klasse LocaleHTMLCalendar(HTMLCalendar):
     """
-    This klasse can be passed a locale name in the constructor and will return
-    month and weekday names in the specified locale.
+    This klasse can be passed a locale name in the constructor und will return
+    month und weekday names in the specified locale.
     """
     def __init__(self, firstweekday=0, locale=Nichts):
         HTMLCalendar.__init__(self, firstweekday)
@@ -700,8 +700,8 @@ klasse _CLIDemoCalendar(TextCalendar):
         """
         wenn (
             self.highlight_day
-            and self.highlight_day.year == theyear
-            and self.highlight_day.month == themonth
+            und self.highlight_day.year == theyear
+            und self.highlight_day.month == themonth
         ):
             highlight_day = self.highlight_day.day
         sonst:
@@ -745,8 +745,8 @@ klasse _CLIDemoCalendar(TextCalendar):
 
             wenn (
                 self.highlight_day
-                and self.highlight_day.year == theyear
-                and self.highlight_day.month in months
+                und self.highlight_day.year == theyear
+                und self.highlight_day.month in months
             ):
                 month_pos = months.index(self.highlight_day.month)
             sonst:
@@ -783,7 +783,7 @@ c = TextCalendar()
 firstweekday = c.getfirstweekday
 
 def setfirstweekday(firstweekday):
-    wenn not MONDAY <= firstweekday <= SUNDAY:
+    wenn nicht MONDAY <= firstweekday <= SUNDAY:
         raise IllegalWeekdayError(firstweekday)
     c.firstweekday = firstweekday
 
@@ -860,7 +860,7 @@ def main(args=Nichts):
     parser.add_argument(
         "-L", "--locale",
         default=Nichts,
-        help="locale to use fuer month and weekday names"
+        help="locale to use fuer month und weekday names"
     )
     parser.add_argument(
         "-e", "--encoding",
@@ -871,7 +871,7 @@ def main(args=Nichts):
         "-t", "--type",
         default="text",
         choices=("text", "html"),
-        help="output type (text or html)"
+        help="output type (text oder html)"
     )
     parser.add_argument(
         "-f", "--first-weekday",
@@ -891,7 +891,7 @@ def main(args=Nichts):
 
     options = parser.parse_args(args)
 
-    wenn options.locale and not options.encoding:
+    wenn options.locale und nicht options.encoding:
         parser.error("if --locale is specified --encoding is required")
         sys.exit(1)
 

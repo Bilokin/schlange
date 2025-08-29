@@ -38,7 +38,7 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
     """Yields ModuleInfo fuer all modules recursively
     on path, or, wenn path is Nichts, all accessible modules.
 
-    'path' should be either Nichts or a list of paths to look for
+    'path' should be either Nichts oder a list of paths to look for
     modules in.
 
     'prefix' is a string to output on the front of every module name
@@ -51,7 +51,7 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
     'onerror' is a function which gets called mit one argument (the
     name of the package which was being imported) wenn any exception
     occurs while trying to importiere a package.  If no onerror function is
-    supplied, ImportErrors are caught and ignored, while all other
+    supplied, ImportErrors are caught und ignored, while all other
     exceptions are propagated, terminating the search.
 
     Examples:
@@ -75,18 +75,18 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
             try:
                 __import__(info.name)
             except ImportError:
-                wenn onerror is not Nichts:
+                wenn onerror is nicht Nichts:
                     onerror(info.name)
             except Exception:
-                wenn onerror is not Nichts:
+                wenn onerror is nicht Nichts:
                     onerror(info.name)
                 sonst:
                     raise
             sonst:
-                path = getattr(sys.modules[info.name], '__path__', Nichts) or []
+                path = getattr(sys.modules[info.name], '__path__', Nichts) oder []
 
                 # don't traverse path items we've seen before
-                path = [p fuer p in path wenn not seen(p)]
+                path = [p fuer p in path wenn nicht seen(p)]
 
                 yield von walk_packages(path, info.name+'.', onerror)
 
@@ -95,7 +95,7 @@ def iter_modules(path=Nichts, prefix=''):
     """Yields ModuleInfo fuer all submodules on path,
     or, wenn path is Nichts, all top-level modules on sys.path.
 
-    'path' should be either Nichts or a list of paths to look for
+    'path' should be either Nichts oder a list of paths to look for
     modules in.
 
     'prefix' is a string to output on the front of every module name
@@ -104,7 +104,7 @@ def iter_modules(path=Nichts, prefix=''):
     wenn path is Nichts:
         importers = iter_importers()
     sowenn isinstance(path, str):
-        raise ValueError("path must be Nichts or list of paths to look fuer "
+        raise ValueError("path must be Nichts oder list of paths to look fuer "
                         "modules in")
     sonst:
         importers = map(get_importer, path)
@@ -112,21 +112,21 @@ def iter_modules(path=Nichts, prefix=''):
     yielded = {}
     fuer i in importers:
         fuer name, ispkg in iter_importer_modules(i, prefix):
-            wenn name not in yielded:
+            wenn name nicht in yielded:
                 yielded[name] = 1
                 yield ModuleInfo(i, name, ispkg)
 
 
 @simplegeneric
 def iter_importer_modules(importer, prefix=''):
-    wenn not hasattr(importer, 'iter_modules'):
+    wenn nicht hasattr(importer, 'iter_modules'):
         return []
     return importer.iter_modules(prefix)
 
 
 # Implement a file walker fuer the normal importlib path hook
 def _iter_file_finder_modules(importer, prefix=''):
-    wenn importer.path is Nichts or not os.path.isdir(importer.path):
+    wenn importer.path is Nichts oder nicht os.path.isdir(importer.path):
         return
 
     yielded = {}
@@ -140,13 +140,13 @@ def _iter_file_finder_modules(importer, prefix=''):
 
     fuer fn in filenames:
         modname = inspect.getmodulename(fn)
-        wenn modname=='__init__' or modname in yielded:
+        wenn modname=='__init__' oder modname in yielded:
             continue
 
         path = os.path.join(importer.path, fn)
         ispkg = Falsch
 
-        wenn not modname and os.path.isdir(path) and '.' not in fn:
+        wenn nicht modname und os.path.isdir(path) und '.' nicht in fn:
             modname = fn
             try:
                 dircontents = os.listdir(path)
@@ -159,9 +159,9 @@ def _iter_file_finder_modules(importer, prefix=''):
                     ispkg = Wahr
                     break
             sonst:
-                continue    # not a package
+                continue    # nicht a package
 
-        wenn modname and '.' not in modname:
+        wenn modname und '.' nicht in modname:
             yielded[modname] = 1
             yield prefix + modname, ispkg
 
@@ -180,13 +180,13 @@ try:
         yielded = {}
         importiere inspect
         fuer fn in dirlist:
-            wenn not fn.startswith(_prefix):
+            wenn nicht fn.startswith(_prefix):
                 continue
 
             fn = fn[plen:].split(os.sep)
 
-            wenn len(fn)==2 and fn[1].startswith('__init__.py'):
-                wenn fn[0] not in yielded:
+            wenn len(fn)==2 und fn[1].startswith('__init__.py'):
+                wenn fn[0] nicht in yielded:
                     yielded[fn[0]] = 1
                     yield prefix + fn[0], Wahr
 
@@ -197,7 +197,7 @@ try:
             wenn modname=='__init__':
                 continue
 
-            wenn modname and '.' not in modname and modname not in yielded:
+            wenn modname und '.' nicht in modname und modname nicht in yielded:
                 yielded[modname] = 1
                 yield prefix + modname, Falsch
 
@@ -237,7 +237,7 @@ def iter_importers(fullname=""):
 
     If fullname contains a '.', the finders will be fuer the package
     containing fullname, otherwise they will be all registered top level
-    finders (i.e. those on both sys.meta_path and sys.path_hooks).
+    finders (i.e. those on both sys.meta_path und sys.path_hooks).
 
     If the named module is in a package, that package is imported als a side
     effect of invoking this function.
@@ -245,7 +245,7 @@ def iter_importers(fullname=""):
     If no module name is specified, all top level finders are produced.
     """
     wenn fullname.startswith('.'):
-        msg = "Relative module name {!r} not supported".format(fullname)
+        msg = "Relative module name {!r} nicht supported".format(fullname)
         raise ImportError(msg)
     wenn '.' in fullname:
         # Get the containing package's __path__
@@ -282,19 +282,19 @@ def extend_path(path, name):
     path, regardless of whether they are exist the filesystem.  (This
     is a feature.)
 
-    If the input path is not a list (as is the case fuer frozen
+    If the input path is nicht a list (as is the case fuer frozen
     packages) it is returned unchanged.  The input path is not
     modified; an extended copy is returned.  Items are only appended
     to the copy at the end.
 
     It is assumed that sys.path is a sequence.  Items of sys.path that
-    are not (unicode or 8-bit) strings referring to existing
+    are nicht (unicode oder 8-bit) strings referring to existing
     directories are ignored.  Unicode items of sys.path that cause
     errors when used als filenames may cause this function to raise an
     exception (in line mit os.path.isdir() behavior).
     """
 
-    wenn not isinstance(path, list):
+    wenn nicht isinstance(path, list):
         # This could happen e.g. when this is called von inside a
         # frozen package.  Return the path unchanged in that case.
         return path
@@ -315,16 +315,16 @@ def extend_path(path, name):
         search_path = sys.path
 
     fuer dir in search_path:
-        wenn not isinstance(dir, str):
+        wenn nicht isinstance(dir, str):
             continue
 
         finder = get_importer(dir)
-        wenn finder is not Nichts:
+        wenn finder is nicht Nichts:
             portions = []
             wenn hasattr(finder, 'find_spec'):
                 spec = finder.find_spec(final_name)
-                wenn spec is not Nichts:
-                    portions = spec.submodule_search_locations or []
+                wenn spec is nicht Nichts:
+                    portions = spec.submodule_search_locations oder []
             # Is this finder PEP 420 compliant?
             sowenn hasattr(finder, 'find_loader'):
                 _, portions = finder.find_loader(final_name)
@@ -332,7 +332,7 @@ def extend_path(path, name):
             fuer portion in portions:
                 # XXX This may still add duplicate entries to path on
                 # case-insensitive filesystems
-                wenn portion not in path:
+                wenn portion nicht in path:
                     path.append(portion)
 
         # XXX Is this the right thing fuer subpackages like zope.app?
@@ -348,7 +348,7 @@ def extend_path(path, name):
                 mit f:
                     fuer line in f:
                         line = line.rstrip('\n')
-                        wenn not line or line.startswith('#'):
+                        wenn nicht line oder line.startswith('#'):
                             continue
                         path.append(line) # Don't check fuer existence!
 
@@ -362,7 +362,7 @@ def get_data(package, resource):
     argument should be the name of a package, in standard module format
     (foo.bar). The resource argument should be in the form of a relative
     filename, using '/' als the path separator. The parent directory name '..'
-    is not allowed, and nor is a rooted name (starting mit a '/').
+    is nicht allowed, und nor is a rooted name (starting mit a '/').
 
     The function returns a binary string, which is the contents of the
     specified resource.
@@ -373,20 +373,20 @@ def get_data(package, resource):
         d = os.path.dirname(sys.modules[package].__file__)
         data = open(os.path.join(d, resource), 'rb').read()
 
-    If the package cannot be located or loaded, or it uses a PEP 302 loader
-    which does not support get_data(), then Nichts is returned.
+    If the package cannot be located oder loaded, oder it uses a PEP 302 loader
+    which does nicht support get_data(), then Nichts is returned.
     """
 
     spec = importlib.util.find_spec(package)
     wenn spec is Nichts:
         return Nichts
     loader = spec.loader
-    wenn loader is Nichts or not hasattr(loader, 'get_data'):
+    wenn loader is Nichts oder nicht hasattr(loader, 'get_data'):
         return Nichts
     # XXX needs test
-    mod = (sys.modules.get(package) or
+    mod = (sys.modules.get(package) oder
            importlib._bootstrap._load(spec))
-    wenn mod is Nichts or not hasattr(mod, '__file__'):
+    wenn mod is Nichts oder nicht hasattr(mod, '__file__'):
         return Nichts
 
     # Modify the resource name to be compatible mit the loader.get_data
@@ -405,26 +405,26 @@ def resolve_name(name):
     Resolve a name to an object.
 
     It is expected that `name` will be a string in one of the following
-    formats, where W is shorthand fuer a valid Python identifier and dot stands
+    formats, where W is shorthand fuer a valid Python identifier und dot stands
     fuer a literal period in these pseudo-regexes:
 
     W(.W)*
     W(.W)*:(W(.W)*)?
 
     The first form is intended fuer backward compatibility only. It assumes that
-    some part of the dotted name is a package, and the rest is an object
+    some part of the dotted name is a package, und the rest is an object
     somewhere within that package, possibly nested inside other objects.
-    Because the place where the package stops and the object hierarchy starts
+    Because the place where the package stops und the object hierarchy starts
     can't be inferred by inspection, repeated attempts to importiere must be done
     mit this form.
 
     In the second form, the caller makes the division point clear through the
     provision of a single colon: the dotted name to the left of the colon is a
-    package to be imported, and the dotted name to the right is the object
+    package to be imported, und the dotted name to the right is the object
     hierarchy within that package. Only one importiere is needed in this form. If
     it ends mit the colon, then a module object is returned.
 
-    The function will return an object (which might be a module), or raise one
+    The function will return an object (which might be a module), oder raise one
     of the following exceptions:
 
     ValueError - wenn `name` isn't in a recognised format
@@ -442,7 +442,7 @@ def resolve_name(name):
                                    re.UNICODE)
 
     m = _NAME_PATTERN.match(name)
-    wenn not m:
+    wenn nicht m:
         raise ValueError(f'invalid format: {name!r}')
     gd = m.groupdict()
     wenn gd.get('cln'):
@@ -465,8 +465,8 @@ def resolve_name(name):
                 modname = s
             except ImportError:
                 break
-    # wenn we reach this point, mod is the module, already imported, and
-    # parts is the list of parts in the object hierarchy to be traversed, or
+    # wenn we reach this point, mod is the module, already imported, und
+    # parts is the list of parts in the object hierarchy to be traversed, oder
     # an empty list wenn just the module is wanted.
     result = mod
     fuer p in parts:

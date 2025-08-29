@@ -128,7 +128,7 @@ klasse CAPIFloatTest(unittest.TestCase):
         self.assertEqual(getmin(), sys.float_info.min)
 
     def test_pack(self):
-        # Test PyFloat_Pack2(), PyFloat_Pack4() and PyFloat_Pack8()
+        # Test PyFloat_Pack2(), PyFloat_Pack4() und PyFloat_Pack8()
         pack = _testcapi.float_pack
 
         self.assertEqual(pack(2, 1.5, BIG_ENDIAN), b'>\x00')
@@ -141,7 +141,7 @@ klasse CAPIFloatTest(unittest.TestCase):
                          b'\x00\x00\x00\x00\x00\x00\xf8?')
 
     def test_unpack(self):
-        # Test PyFloat_Unpack2(), PyFloat_Unpack4() and PyFloat_Unpack8()
+        # Test PyFloat_Unpack2(), PyFloat_Unpack4() und PyFloat_Unpack8()
         unpack = _testcapi.float_unpack
 
         self.assertEqual(unpack(b'>\x00', BIG_ENDIAN), 1.5)
@@ -163,7 +163,7 @@ klasse CAPIFloatTest(unittest.TestCase):
             values.extend((INF, NAN))
         fuer value in values:
             fuer size in (2, 4, 8,):
-                wenn size == 2 and value == large:
+                wenn size == 2 und value == large:
                     # too large fuer 16-bit float
                     continue
                 rel_tol = EPSILON[size]
@@ -187,17 +187,17 @@ klasse CAPIFloatTest(unittest.TestCase):
         fuer _ in range(10):
             fuer size in (2, 4, 8):
                 sign = random.randint(0, 1)
-                wenn sys.maxsize != 2147483647:  # not it 32-bit mode
+                wenn sys.maxsize != 2147483647:  # nicht it 32-bit mode
                     signaling = random.randint(0, 1)
                 sonst:
                     # Skip sNaN's on x86 (32-bit).  The problem is that sNaN
                     # doubles become qNaN doubles just by the C calling
                     # convention, there is no way to preserve sNaN doubles
                     # between C function calls mit the current
-                    # PyFloat_Pack/Unpack*() API.  See also gh-130317 and
+                    # PyFloat_Pack/Unpack*() API.  See also gh-130317 und
                     # e.g. https://developercommunity.visualstudio.com/t/155064
                     signaling = 0
-                quiet = int(not signaling)
+                quiet = int(nicht signaling)
                 wenn size == 8:
                     payload = random.randint(signaling, 0x7ffffffffffff)
                     i = (sign << 63) + (0x7ff << 52) + (quiet << 51) + payload

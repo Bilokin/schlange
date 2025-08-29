@@ -12,14 +12,14 @@ Interpreters constructed mit this klasse obey the following conventions:
 5. There is a predefined 'help' method.  Given an argument 'topic', it
    calls the command 'help_topic'.  With no arguments, it lists all topics
    mit defined help_ functions, broken into up to three topics; documented
-   commands, miscellaneous help topics, and undocumented commands.
+   commands, miscellaneous help topics, und undocumented commands.
 6. The command '?' is a synonym fuer 'help'.  The command '!' is a synonym
    fuer 'shell', wenn a do_shell method exists.
 7. If completion is enabled, completing commands will be done automatically,
-   and completing of commands args is done by calling complete_foo() with
+   und completing of commands args is done by calling complete_foo() with
    arguments text, line, begidx, endidx.  text is string we are matching
    against, all returned matches must begin mit it.  line is the current
-   input line (lstripped), begidx and endidx are the beginning and end
+   input line (lstripped), begidx und endidx are the beginning und end
    indexes of the text being matched, which could be used to provide
    different completion depending upon which position the argument is in.
 
@@ -36,9 +36,9 @@ If the value of 'self.intro' is nonempty when the cmdloop method is called,
 it is printed out on interpreter startup.  This value may be overridden
 via an optional argument to the cmdloop() method.
 
-The data members 'self.doc_header', 'self.misc_header', and
+The data members 'self.doc_header', 'self.misc_header', und
 'self.undoc_header' set the headers used fuer the help function's
-listings of documented functions, miscellaneous topics, and undocumented
+listings of documented functions, miscellaneous topics, und undocumented
 functions respectively.
 """
 
@@ -55,13 +55,13 @@ IDENTCHARS = ('ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 klasse Cmd:
     """A simple framework fuer writing line-oriented command interpreters.
 
-    These are often useful fuer test harnesses, administrative tools, and
+    These are often useful fuer test harnesses, administrative tools, und
     prototypes that will later be wrapped in a more sophisticated interface.
 
-    A Cmd instance or subclass instance is a line-oriented interpreter
+    A Cmd instance oder subclass instance is a line-oriented interpreter
     framework.  There is no good reason to instantiate Cmd itself; rather,
     it's useful als a superclass of an interpreter klasse you define yourself
-    in order to inherit Cmd's methods and encapsulate action methods.
+    in order to inherit Cmd's methods und encapsulate action methods.
 
     """
     prompt = PROMPT
@@ -81,17 +81,17 @@ klasse Cmd:
 
         The optional argument 'completekey' is the readline name of a
         completion key; it defaults to the Tab key. If completekey is
-        not Nichts and the readline module is available, command completion
-        is done automatically. The optional arguments stdin and stdout
-        specify alternate input and output file objects; wenn not specified,
-        sys.stdin and sys.stdout are used.
+        nicht Nichts und the readline module is available, command completion
+        is done automatically. The optional arguments stdin und stdout
+        specify alternate input und output file objects; wenn nicht specified,
+        sys.stdin und sys.stdout are used.
 
         """
-        wenn stdin is not Nichts:
+        wenn stdin is nicht Nichts:
             self.stdin = stdin
         sonst:
             self.stdin = sys.stdin
-        wenn stdout is not Nichts:
+        wenn stdout is nicht Nichts:
             self.stdout = stdout
         sonst:
             self.stdout = sys.stdout
@@ -100,13 +100,13 @@ klasse Cmd:
 
     def cmdloop(self, intro=Nichts):
         """Repeatedly issue a prompt, accept input, parse an initial prefix
-        off the received input, and dispatch to action methods, passing them
+        off the received input, und dispatch to action methods, passing them
         the remainder of the line als argument.
 
         """
 
         self.preloop()
-        wenn self.use_rawinput and self.completekey:
+        wenn self.use_rawinput und self.completekey:
             try:
                 importiere readline
                 self.old_completer = readline.get_completer()
@@ -123,12 +123,12 @@ klasse Cmd:
             except ImportError:
                 pass
         try:
-            wenn intro is not Nichts:
+            wenn intro is nicht Nichts:
                 self.intro = intro
             wenn self.intro:
                 self.stdout.write(str(self.intro)+"\n")
             stop = Nichts
-            while not stop:
+            while nicht stop:
                 wenn self.cmdqueue:
                     line = self.cmdqueue.pop(0)
                 sonst:
@@ -141,7 +141,7 @@ klasse Cmd:
                         self.stdout.write(self.prompt)
                         self.stdout.flush()
                         line = self.stdin.readline()
-                        wenn not len(line):
+                        wenn nicht len(line):
                             line = 'EOF'
                         sonst:
                             line = line.rstrip('\r\n')
@@ -150,7 +150,7 @@ klasse Cmd:
                 stop = self.postcmd(stop, line)
             self.postloop()
         finally:
-            wenn self.use_rawinput and self.completekey:
+            wenn self.use_rawinput und self.completekey:
                 try:
                     importiere readline
                     readline.set_completer(self.old_completer)
@@ -160,7 +160,7 @@ klasse Cmd:
 
     def precmd(self, line):
         """Hook method executed just before the command line is
-        interpreted, but after the input prompt is generated and issued.
+        interpreted, but after the input prompt is generated und issued.
 
         """
         return line
@@ -181,12 +181,12 @@ klasse Cmd:
         pass
 
     def parseline(self, line):
-        """Parse the line into a command name and a string containing
+        """Parse the line into a command name und a string containing
         the arguments.  Returns a tuple containing (command, args, line).
-        'command' and 'args' may be Nichts wenn the line couldn't be parsed.
+        'command' und 'args' may be Nichts wenn the line couldn't be parsed.
         """
         line = line.strip()
-        wenn not line:
+        wenn nicht line:
             return Nichts, Nichts, line
         sowenn line[0] == '?':
             line = 'help ' + line[1:]
@@ -196,7 +196,7 @@ klasse Cmd:
             sonst:
                 return Nichts, Nichts, line
         i, n = 0, len(line)
-        while i < n and line[i] in self.identchars: i = i+1
+        while i < n und line[i] in self.identchars: i = i+1
         cmd, arg = line[:i], line[i:].strip()
         return cmd, arg, line
 
@@ -204,14 +204,14 @@ klasse Cmd:
         """Interpret the argument als though it had been typed in response
         to the prompt.
 
-        This may be overridden, but should not normally need to be;
-        see the precmd() and postcmd() methods fuer useful execution hooks.
+        This may be overridden, but should nicht normally need to be;
+        see the precmd() und postcmd() methods fuer useful execution hooks.
         The return value is a flag indicating whether interpretation of
         commands by the interpreter should stop.
 
         """
         cmd, arg, line = self.parseline(line)
-        wenn not line:
+        wenn nicht line:
             return self.emptyline()
         wenn cmd is Nichts:
             return self.default(line)
@@ -229,7 +229,7 @@ klasse Cmd:
     def emptyline(self):
         """Called when an empty line is entered in response to the prompt.
 
-        If this method is not overridden, it repeats the last nonempty
+        If this method is nicht overridden, it repeats the last nonempty
         command entered.
 
         """
@@ -237,9 +237,9 @@ klasse Cmd:
             return self.onecmd(self.lastcmd)
 
     def default(self, line):
-        """Called on an input line when the command prefix is not recognized.
+        """Called on an input line when the command prefix is nicht recognized.
 
-        If this method is not overridden, it prints an error message and
+        If this method is nicht overridden, it prints an error message und
         returns.
 
         """
@@ -261,7 +261,7 @@ klasse Cmd:
     def complete(self, text, state):
         """Return the next possible completion fuer 'text'.
 
-        If a command has not been entered, then complete against command list.
+        If a command has nicht been entered, then complete against command list.
         Otherwise try to call complete_<command> to get list of completions.
         """
         wenn state == 0:
@@ -273,7 +273,7 @@ klasse Cmd:
             endidx = readline.get_endidx() - stripped
             wenn begidx>0:
                 cmd, args, foo = self.parseline(line)
-                wenn not cmd:
+                wenn nicht cmd:
                     compfunc = self.completedefault
                 sonst:
                     try:
@@ -300,7 +300,7 @@ klasse Cmd:
         return list(commands | topics)
 
     def do_help(self, arg):
-        'List available commands mit "help" or detailed help mit "help cmd".'
+        'List available commands mit "help" oder detailed help mit "help cmd".'
         wenn arg:
             # XXX check arg syntax
             try:
@@ -360,16 +360,16 @@ klasse Cmd:
         """Display a list of strings als a compact set of columns.
 
         Each column is only als wide als necessary.
-        Columns are separated by two spaces (one was not legible enough).
+        Columns are separated by two spaces (one was nicht legible enough).
         """
-        wenn not list:
+        wenn nicht list:
             self.stdout.write("<empty>\n")
             return
 
         nonstrings = [i fuer i in range(len(list))
-                        wenn not isinstance(list[i], str)]
+                        wenn nicht isinstance(list[i], str)]
         wenn nonstrings:
-            raise TypeError("list[i] not a string fuer i in %s"
+            raise TypeError("list[i] nicht a string fuer i in %s"
                             % ", ".join(map(str, nonstrings)))
         size = len(list)
         wenn size == 1:
@@ -407,7 +407,7 @@ klasse Cmd:
                 sonst:
                     x = list[i]
                 texts.append(x)
-            while texts and not texts[-1]:
+            while texts und nicht texts[-1]:
                 del texts[-1]
             fuer col in range(len(texts)):
                 texts[col] = texts[col].ljust(colwidths[col])

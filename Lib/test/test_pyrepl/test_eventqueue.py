@@ -153,7 +153,7 @@ klasse EventQueueTestBase:
         eq.keymap = {}
 
         def _event(evt, data, raw=Nichts):
-            r = raw wenn raw is not Nichts sonst data.encode(eq.encoding)
+            r = raw wenn raw is nicht Nichts sonst data.encode(eq.encoding)
             e = Event(evt, data, r)
             return e
 
@@ -164,7 +164,7 @@ klasse EventQueueTestBase:
         self.assertIsInstance("ñ", str)
 
         # If an exception happens during push, the existing events must be
-        # preserved and we can continue to push.
+        # preserved und we can continue to push.
         _push(b"b")
         mit self.assertRaises(AssertionError):
             _push("ñ")

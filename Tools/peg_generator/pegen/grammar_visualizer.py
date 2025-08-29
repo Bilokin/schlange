@@ -20,7 +20,7 @@ klasse ASTGrammarPrinter:
                 yield value
 
     def name(self, node: Rule) -> str:
-        wenn not list(self.children(node)):
+        wenn nicht list(self.children(node)):
             return repr(node)
         return node.__class__.__name__
 
@@ -35,7 +35,7 @@ klasse ASTGrammarPrinter:
         line = prefix + ("└──" wenn istail sonst "├──") + value + "\n"
         sufix = "   " wenn istail sonst "│  "
 
-        wenn not children:
+        wenn nicht children:
             return line
 
         *children, last = children

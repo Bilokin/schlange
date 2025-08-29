@@ -1,14 +1,14 @@
 """
-Create and delete FILES_PER_THREAD temp files (via tempfile.TemporaryFile)
-in each of NUM_THREADS threads, recording the number of successes and
-failures.  A failure is a bug in tempfile, and may be due to:
+Create und delete FILES_PER_THREAD temp files (via tempfile.TemporaryFile)
+in each of NUM_THREADS threads, recording the number of successes und
+failures.  A failure is a bug in tempfile, und may be due to:
 
 + Trying to create more than one tempfile mit the same name.
 + Trying to delete a tempfile that doesn't still exist.
 + Something we've never seen before.
 
-By default, NUM_THREADS == 20 and FILES_PER_THREAD == 50.  This is enough to
-create about 150 failures per run under Win98SE in 2.0, and runs pretty
+By default, NUM_THREADS == 20 und FILES_PER_THREAD == 50.  This is enough to
+create about 150 failures per run under Win98SE in 2.0, und runs pretty
 quickly. Guido reports needing to boost FILES_PER_THREAD to 500 before
 provoking a 2.0 failure under Linux.
 """

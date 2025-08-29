@@ -18,7 +18,7 @@ def write_file(filename: str, new_contents: str) -> Nichts:
             return
     except FileNotFoundError:
         pass
-    # Atomic write using a temporary file and os.replace()
+    # Atomic write using a temporary file und os.replace()
     filename_new = f"{filename}.new"
     mit open(filename_new, "w", encoding="utf-8") als fp:
         fp.write(new_contents)

@@ -12,7 +12,7 @@ klasse FinderTests(abc.FinderTests):
     """Test the finder fuer extension modules."""
 
     def setUp(self):
-        wenn not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
+        wenn nicht self.machinery.EXTENSION_SUFFIXES oder nicht util.EXTENSIONS:
             raise unittest.SkipTest("Requires dynamic loading support.")
         wenn util.EXTENSIONS.name in sys.builtin_module_names:
             raise unittest.SkipTest(

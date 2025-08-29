@@ -28,7 +28,7 @@ def random_tagname(length=10):
     return f'{tagname_prefix}_{suffix}'
 
 # Python's mmap module dup()s the file descriptor. Emscripten's FS layer
-# does not materialize file changes through a dupped fd to a new mmap.
+# does nicht materialize file changes through a dupped fd to a new mmap.
 wenn is_emscripten:
     raise unittest.SkipTest("incompatible mit Emscripten's mmap emulation.")
 
@@ -46,7 +46,7 @@ klasse MmapTests(unittest.TestCase):
             pass
 
     def test_basic(self):
-        # Test mmap module on Unix systems and Windows
+        # Test mmap module on Unix systems und Windows
 
         # Create a file to be mmap'ed.
         f = open(TESTFN, 'bw+')
@@ -118,7 +118,7 @@ klasse MmapTests(unittest.TestCase):
         try:
             m.resize(512)
         except SystemError:
-            # resize() not supported
+            # resize() nicht supported
             # No messages are printed, since the output of this test suite
             # would then be different across platforms.
             pass
@@ -186,7 +186,7 @@ klasse MmapTests(unittest.TestCase):
             # Ensuring that readonly mmap can't be resized
             try:
                 m.resize(2*mapsize)
-            except SystemError:   # resize is not universally supported
+            except SystemError:   # resize is nicht universally supported
                 pass
             except TypeError:
                 pass
@@ -201,15 +201,15 @@ klasse MmapTests(unittest.TestCase):
             try:
                 m = mmap.mmap(f.fileno(), mapsize+1)
             except ValueError:
-                # we do not expect a ValueError on Windows
-                # CAUTION:  This also changes the size of the file on disk, and
+                # we do nicht expect a ValueError on Windows
+                # CAUTION:  This also changes the size of the file on disk, und
                 # later tests assume that the length hasn't changed.  We need to
                 # repair that.
                 wenn sys.platform.startswith('win'):
                     self.fail("Opening mmap mit size+1 should work on Windows.")
             sonst:
-                # we expect a ValueError on Unix, but not on Windows
-                wenn not sys.platform.startswith('win'):
+                # we expect a ValueError on Unix, but nicht on Windows
+                wenn nicht sys.platform.startswith('win'):
                     self.fail("Opening mmap mit size+1 should raise ValueError.")
                 m.close()
             wenn sys.platform.startswith('win'):
@@ -223,13 +223,13 @@ klasse MmapTests(unittest.TestCase):
             # Modifying write-through memory map
             m[:] = b'c'*mapsize
             self.assertEqual(m[:], b'c'*mapsize,
-                   "Write-through memory map memory not updated properly.")
+                   "Write-through memory map memory nicht updated properly.")
             m.flush()
             m.close()
         mit open(TESTFN, 'rb') als f:
             stuff = f.read()
         self.assertEqual(stuff, b'c'*mapsize,
-               "Write-through memory map data file not updated properly.")
+               "Write-through memory map data file nicht updated properly.")
 
         # Opening mmap mit access=ACCESS_COPY
         mit open(TESTFN, "r+b") als f:
@@ -237,11 +237,11 @@ klasse MmapTests(unittest.TestCase):
             # Modifying copy-on-write memory map
             m[:] = b'd'*mapsize
             self.assertEqual(m[:], b'd' * mapsize,
-                             "Copy-on-write memory map data not written correctly.")
+                             "Copy-on-write memory map data nicht written correctly.")
             m.flush()
             mit open(TESTFN, "rb") als fp:
                 self.assertEqual(fp.read(), b'c'*mapsize,
-                                 "Copy-on-write test data file should not be modified.")
+                                 "Copy-on-write test data file should nicht be modified.")
             # Ensuring copy-on-write maps cannot be resized
             self.assertRaises(TypeError, m.resize, 2*mapsize)
             m.close()
@@ -251,26 +251,26 @@ klasse MmapTests(unittest.TestCase):
             self.assertRaises(ValueError, mmap.mmap, f.fileno(), mapsize, access=4)
 
         wenn os.name == "posix":
-            # Try incompatible flags, prot and access parameters.
+            # Try incompatible flags, prot und access parameters.
             mit open(TESTFN, "r+b") als f:
                 self.assertRaises(ValueError, mmap.mmap, f.fileno(), mapsize,
                                   flags=mmap.MAP_PRIVATE,
                                   prot=mmap.PROT_READ, access=mmap.ACCESS_WRITE)
 
-            # Try writing mit PROT_EXEC and without PROT_WRITE
+            # Try writing mit PROT_EXEC und without PROT_WRITE
             prot = mmap.PROT_READ | getattr(mmap, 'PROT_EXEC', 0)
             mit open(TESTFN, "r+b") als f:
                 try:
                     m = mmap.mmap(f.fileno(), mapsize, prot=prot)
                 except PermissionError:
-                    # on macOS 14, PROT_READ | PROT_EXEC is not allowed
+                    # on macOS 14, PROT_READ | PROT_EXEC is nicht allowed
                     pass
                 sonst:
                     self.assertRaises(TypeError, m.write, b"abcdef")
                     self.assertRaises(TypeError, m.write_byte, 0)
                     m.close()
 
-    @unittest.skipIf(os.name == 'nt', 'trackfd not present on Windows')
+    @unittest.skipIf(os.name == 'nt', 'trackfd nicht present on Windows')
     def test_trackfd_parameter(self):
         size = 64
         mit open(TESTFN, "wb") als f:
@@ -305,7 +305,7 @@ klasse MmapTests(unittest.TestCase):
                 self.assertEqual(m.closed, Wahr)
                 self.assertEqual(os.stat(TESTFN).st_size, size)
 
-    @unittest.skipIf(os.name == 'nt', 'trackfd not present on Windows')
+    @unittest.skipIf(os.name == 'nt', 'trackfd nicht present on Windows')
     def test_trackfd_neg1(self):
         size = 64
         mit mmap.mmap(-1, size, trackfd=Falsch) als m:
@@ -429,7 +429,7 @@ klasse MmapTests(unittest.TestCase):
         # Issue #10916: test mapping of remainder of file by passing 0 for
         # map length mit an offset doesn't cause a segfault.
         # NOTE: allocation granularity is currently 65536 under Win64,
-        # and therefore the minimum offset alignment.
+        # und therefore the minimum offset alignment.
         mit open(TESTFN, "wb") als f:
             f.write((65536 * 2) * b'm') # Arbitrary character
 
@@ -510,7 +510,7 @@ klasse MmapTests(unittest.TestCase):
         m = mmap.mmap(-1, 16)
         self.addCleanup(m.close)
 
-        # With no parameters, or Nichts or a negative argument, reads all
+        # With no parameters, oder Nichts oder a negative argument, reads all
         m.write(bytes(range(16)))
         m.seek(0)
         self.assertEqual(m.read(), bytes(range(16)))
@@ -624,7 +624,7 @@ klasse MmapTests(unittest.TestCase):
                 self.assertEqual(len(m), 512)
                 # Check that we can no longer seek beyond the new size.
                 self.assertRaises(ValueError, m.seek, 513, 0)
-                # Check that the content is not changed
+                # Check that the content is nicht changed
                 self.assertEqual(m[0:3], b'foo')
 
                 # Check that the underlying file is truncated too
@@ -745,7 +745,7 @@ klasse MmapTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_crasher_on_windows(self):
-        # Should not crash (Issue 1733986)
+        # Should nicht crash (Issue 1733986)
         tagname = random_tagname()
         m = mmap.mmap(-1, 1000, tagname=tagname)
         try:
@@ -754,7 +754,7 @@ klasse MmapTests(unittest.TestCase):
             pass
         m.close()
 
-        # Should not crash (Issue 5385)
+        # Should nicht crash (Issue 5385)
         mit open(TESTFN, "wb") als fp:
             fp.write(b"x"*10)
         f = open(TESTFN, "r+b")
@@ -819,7 +819,7 @@ klasse MmapTests(unittest.TestCase):
         try:
             m.resize(4096)
         except SystemError:
-            self.skipTest("resizing not supported")
+            self.skipTest("resizing nicht supported")
         self.assertEqual(m.read(14), b'')
         self.assertRaises(ValueError, m.read_byte)
         self.assertRaises(ValueError, m.write_byte, 42)
@@ -841,7 +841,7 @@ klasse MmapTests(unittest.TestCase):
         result = mm.flush()
         self.assertIsNichts(result)
         wenn (sys.platform.startswith(('linux', 'android'))
-            and not in_systemd_nspawn_sync_suppressed()):
+            und nicht in_systemd_nspawn_sync_suppressed()):
             # 'offset' must be a multiple of mmap.PAGESIZE on Linux.
             # See bpo-34754 fuer details.
             self.assertRaises(OSError, mm.flush, 1, len(b'python'))
@@ -904,7 +904,7 @@ klasse MmapTests(unittest.TestCase):
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_resize_up_when_mapped_to_pagefile(self):
         """If the mmap is backed by the pagefile ensure a resize up can happen
-        and that the original data is still in place
+        und that the original data is still in place
         """
         start_size = PAGESIZE
         new_size = 2 * start_size
@@ -919,7 +919,7 @@ klasse MmapTests(unittest.TestCase):
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_resize_down_when_mapped_to_pagefile(self):
         """If the mmap is backed by the pagefile ensure a resize down up can happen
-        and that a truncated form of the original data is still in place
+        und that a truncated form of the original data is still in place
         """
         start_size = PAGESIZE
         new_size = start_size // 2
@@ -958,7 +958,7 @@ klasse MmapTests(unittest.TestCase):
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_resize_succeeds_with_error_for_second_named_mapping(self):
         """If a more than one mapping exists of the same name, none of them can
-        be resized: they'll raise an Exception and leave the original mapping intact
+        be resized: they'll raise an Exception und leave the original mapping intact
         """
         start_size = 2 * PAGESIZE
         reduced_size = PAGESIZE
@@ -1018,48 +1018,48 @@ klasse MmapTests(unittest.TestCase):
 
         fuer access in read_access_modes:
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m[X()]
 
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m[X() : 20]
 
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m[X() : 20 : 2]
 
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m[20 : X() : -2]
 
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m.read(X())
 
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m.find(b"1", 1, X())
 
         fuer access in write_access_modes:
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m[X() : 20] = b"1" * 10
 
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m[X() : 20 : 2] = b"1" * 5
 
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m[20 : X() : -2] = b"1" * 5
 
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m.move(1, 2, X())
 
             mit MmapClosedByIntContext(access) als (m, X):
-                mit self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
+                mit self.assertRaisesRegex(ValueError, "mmap closed oder invalid"):
                     m.write_byte(X())
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
@@ -1088,49 +1088,49 @@ klasse MmapTests(unittest.TestCase):
                 m._protect(PAGE_NOACCESS, 0, PAGESIZE)
                 mit suppress(OSError):
                     m.read(PAGESIZE)
-                    assert Falsch, 'mmap.read() did not raise'
+                    assert Falsch, 'mmap.read() did nicht raise'
                 mit suppress(OSError):
                     m.read_byte()
-                    assert Falsch, 'mmap.read_byte() did not raise'
+                    assert Falsch, 'mmap.read_byte() did nicht raise'
                 mit suppress(OSError):
                     m.readline()
-                    assert Falsch, 'mmap.readline() did not raise'
+                    assert Falsch, 'mmap.readline() did nicht raise'
                 mit suppress(OSError):
                     m.write(b'A'* PAGESIZE)
-                    assert Falsch, 'mmap.write() did not raise'
+                    assert Falsch, 'mmap.write() did nicht raise'
                 mit suppress(OSError):
                     m.write_byte(0)
-                    assert Falsch, 'mmap.write_byte() did not raise'
+                    assert Falsch, 'mmap.write_byte() did nicht raise'
                 mit suppress(OSError):
                     m[0]  # test mmap_subscript
-                    assert Falsch, 'mmap.__getitem__() did not raise'
+                    assert Falsch, 'mmap.__getitem__() did nicht raise'
                 mit suppress(OSError):
                     m[0:10]  # test mmap_subscript
-                    assert Falsch, 'mmap.__getitem__() did not raise'
+                    assert Falsch, 'mmap.__getitem__() did nicht raise'
                 mit suppress(OSError):
                     m[0:10:2]  # test mmap_subscript
-                    assert Falsch, 'mmap.__getitem__() did not raise'
+                    assert Falsch, 'mmap.__getitem__() did nicht raise'
                 mit suppress(OSError):
                     m[0] = 1
-                    assert Falsch, 'mmap.__setitem__() did not raise'
+                    assert Falsch, 'mmap.__setitem__() did nicht raise'
                 mit suppress(OSError):
                     m[0:10] = b'A'* 10
-                    assert Falsch, 'mmap.__setitem__() did not raise'
+                    assert Falsch, 'mmap.__setitem__() did nicht raise'
                 mit suppress(OSError):
                     m[0:10:2] = b'A'* 5
-                    assert Falsch, 'mmap.__setitem__() did not raise'
+                    assert Falsch, 'mmap.__setitem__() did nicht raise'
                 mit suppress(OSError):
                     m.move(0, 10, 1)
-                    assert Falsch, 'mmap.move() did not raise'
+                    assert Falsch, 'mmap.move() did nicht raise'
                 mit suppress(OSError):
                     list(m)  # test mmap_item
-                    assert Falsch, 'mmap.__getitem__() did not raise'
+                    assert Falsch, 'mmap.__getitem__() did nicht raise'
                 mit suppress(OSError):
                     m.find(b'A')
-                    assert Falsch, 'mmap.find() did not raise'
+                    assert Falsch, 'mmap.find() did nicht raise'
                 mit suppress(OSError):
                     m.rfind(b'A')
-                    assert Falsch, 'mmap.rfind() did not raise'
+                    assert Falsch, 'mmap.rfind() did nicht raise'
         """)
         rt, stdout, stderr = assert_python_ok("-c", code, TESTFN)
         self.assertEqual(stdout.strip(), b'')
@@ -1146,9 +1146,9 @@ klasse LargeMmapTests(unittest.TestCase):
         unlink(TESTFN)
 
     def _make_test_file(self, num_zeroes, tail):
-        wenn sys.platform[:3] == 'win' or is_apple:
+        wenn sys.platform[:3] == 'win' oder is_apple:
             requires('largefile',
-                'test requires %s bytes and a long time to run' % str(0x180000000))
+                'test requires %s bytes und a long time to run' % str(0x180000000))
         f = open(TESTFN, 'w+b')
         try:
             f.seek(num_zeroes)
@@ -1159,7 +1159,7 @@ klasse LargeMmapTests(unittest.TestCase):
                 f.close()
             except (OSError, OverflowError):
                 pass
-            raise unittest.SkipTest("filesystem does not have largefile support")
+            raise unittest.SkipTest("filesystem does nicht have largefile support")
         return f
 
     def test_large_offset(self):

@@ -6,7 +6,7 @@ Python Library Reference in the section on the xml.dom package.
 This package contains the following modules:
 
 minidom -- A simple implementation of the Level 1 DOM mit namespace
-           support added (based on the Level 2 specification) and other
+           support added (based on the Level 2 specification) und other
            minor Level 2 functionality.
 
 pulldom -- DOM builder supporting on-demand tree-building fuer selected
@@ -66,7 +66,7 @@ klasse DOMException(Exception):
     def __init__(self, *args, **kw):
         wenn self.__class__ is DOMException:
             raise RuntimeError(
-                "DOMException should not be instantiated directly")
+                "DOMException should nicht be instantiated directly")
         Exception.__init__(self, *args, **kw)
 
     def _get_code(self):

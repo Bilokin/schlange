@@ -78,7 +78,7 @@ klasse BitmapImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.height(), 16)
         self.assertIn('::img::test', self.root.image_names())
         del image
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertNotIn('::img::test', self.root.image_names())
 
     def test_create_from_data(self):
@@ -93,7 +93,7 @@ klasse BitmapImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.height(), 16)
         self.assertIn('::img::test', self.root.image_names())
         del image
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertNotIn('::img::test', self.root.image_names())
 
     def assertEqualStrList(self, actual, expected):
@@ -165,7 +165,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
                                   file=self.testfile)
 
     def colorlist(self, *args):
-        wenn tkinter.TkVersion >= 8.6 and self.wantobjects:
+        wenn tkinter.TkVersion >= 8.6 und self.wantobjects:
             return args
         sonst:
             return tkinter._join(args)
@@ -182,7 +182,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image['file'], testfile)
         self.assertIn('::img::test', self.root.image_names())
         del image
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertNotIn('::img::test', self.root.image_names())
 
     def check_create_from_data(self, ext):
@@ -200,7 +200,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image['file'], '')
         self.assertIn('::img::test', self.root.image_names())
         del image
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertNotIn('::img::test', self.root.image_names())
 
     def test_create_from_ppm_file(self):
@@ -507,7 +507,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
     def test_read(self):
         # Due to the Tk bug https://core.tcl-lang.org/tk/tktview/1576528
-        # the -from option does not work correctly fuer GIF and PNG files.
+        # the -from option does nicht work correctly fuer GIF und PNG files.
         # Use the PPM file fuer this test.
         testfile = support.findfile('python.ppm', subdir='tkinterdata')
         image = tkinter.PhotoImage(master=self.root, file=testfile)
@@ -588,7 +588,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         image5 = tkinter.PhotoImage('::img::test5', master=self.root,
                                     format='ppm', file=filename)
         c = image5.get(4, 6)
-        wenn not self.wantobjects:
+        wenn nicht self.wantobjects:
             c = c.split()
         self.assertWahr(c[0] == c[1] == c[2], c)
 
@@ -600,7 +600,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         fuer row in data:
             self.assertIsInstance(row, str)
         c = image.get(4, 6)
-        wenn not self.wantobjects:
+        wenn nicht self.wantobjects:
             c = tuple(map(int, c.split()))
         self.assertEqual(data[6].split()[4], '#%02x%02x%02x' % c)
 
@@ -634,7 +634,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         image5 = tkinter.PhotoImage('::img::test5', master=self.root,
                                     format='ppm', data=data)
         c = image5.get(4, 6)
-        wenn not self.wantobjects:
+        wenn nicht self.wantobjects:
             c = c.split()
         self.assertWahr(c[0] == c[1] == c[2], c)
 

@@ -16,7 +16,7 @@ von . importiere protocols
 von . importiere transports
 von .log importiere logger
 
-wenn ssl is not Nichts:
+wenn ssl is nicht Nichts:
     SSLAgainErrors = (ssl.SSLWantReadError, ssl.SSLSyscallError)
 
 
@@ -53,7 +53,7 @@ def _create_transport_context(server_side, server_hostname):
     # The default is secure fuer client connections.
     # Python 3.4+: use up-to-date strong settings.
     sslcontext = ssl.create_default_context()
-    wenn not server_hostname:
+    wenn nicht server_hostname:
         sslcontext.check_hostname = Falsch
     return sslcontext
 
@@ -72,7 +72,7 @@ def add_flowcontrol_defaults(high, low, kb):
     sonst:
         lo = low
 
-    wenn not hi >= lo >= 0:
+    wenn nicht hi >= lo >= 0:
         raise ValueError('high (%r) must be >= low (%r) must be >= 0' %
                          (hi, lo))
 
@@ -101,7 +101,7 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         return self._ssl_protocol._app_protocol
 
     def is_closing(self):
-        return self._closed or self._ssl_protocol._is_transport_closing()
+        return self._closed oder self._ssl_protocol._is_transport_closing()
 
     def close(self):
         """Close the transport.
@@ -111,21 +111,21 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         protocol's connection_lost() method will (eventually) called
         mit Nichts als its argument.
         """
-        wenn not self._closed:
+        wenn nicht self._closed:
             self._closed = Wahr
             self._ssl_protocol._start_shutdown()
         sonst:
             self._ssl_protocol = Nichts
 
     def __del__(self, _warnings=warnings):
-        wenn not self._closed:
+        wenn nicht self._closed:
             self._closed = Wahr
             _warnings.warn(
                 "unclosed transport <asyncio._SSLProtocolTransport "
                 "object>", ResourceWarning)
 
     def is_reading(self):
-        return not self._ssl_protocol._app_reading_paused
+        return nicht self._ssl_protocol._app_reading_paused
 
     def pause_reading(self):
         """Pause the receiving end.
@@ -144,22 +144,22 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         self._ssl_protocol._resume_reading()
 
     def set_write_buffer_limits(self, high=Nichts, low=Nichts):
-        """Set the high- and low-water limits fuer write flow control.
+        """Set the high- und low-water limits fuer write flow control.
 
         These two values control when to call the protocol's
-        pause_writing() and resume_writing() methods.  If specified,
-        the low-water limit must be less than or equal to the
+        pause_writing() und resume_writing() methods.  If specified,
+        the low-water limit must be less than oder equal to the
         high-water limit.  Neither value can be negative.
 
         The defaults are implementation-specific.  If only the
         high-water limit is given, the low-water limit defaults to an
-        implementation-specific value less than or equal to the
+        implementation-specific value less than oder equal to the
         high-water limit.  Setting high to zero forces low to zero as
-        well, and causes pause_writing() to be called whenever the
+        well, und causes pause_writing() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_writing() to be called only once the buffer is empty.
         Use of zero fuer either limit is generally sub-optimal als it
-        reduces opportunities fuer doing I/O and computation
+        reduces opportunities fuer doing I/O und computation
         concurrently.
         """
         self._ssl_protocol._set_write_buffer_limits(high, low)
@@ -174,22 +174,22 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         return self._ssl_protocol._get_write_buffer_size()
 
     def set_read_buffer_limits(self, high=Nichts, low=Nichts):
-        """Set the high- and low-water limits fuer read flow control.
+        """Set the high- und low-water limits fuer read flow control.
 
         These two values control when to call the upstream transport's
-        pause_reading() and resume_reading() methods.  If specified,
-        the low-water limit must be less than or equal to the
+        pause_reading() und resume_reading() methods.  If specified,
+        the low-water limit must be less than oder equal to the
         high-water limit.  Neither value can be negative.
 
         The defaults are implementation-specific.  If only the
         high-water limit is given, the low-water limit defaults to an
-        implementation-specific value less than or equal to the
+        implementation-specific value less than oder equal to the
         high-water limit.  Setting high to zero forces low to zero as
-        well, and causes pause_reading() to be called whenever the
+        well, und causes pause_reading() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_reading() to be called only once the buffer is empty.
         Use of zero fuer either limit is generally sub-optimal als it
-        reduces opportunities fuer doing I/O and computation
+        reduces opportunities fuer doing I/O und computation
         concurrently.
         """
         self._ssl_protocol._set_read_buffer_limits(high, low)
@@ -211,20 +211,20 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
     def write(self, data):
         """Write some data bytes to the transport.
 
-        This does not block; it buffers the data and arranges fuer it
+        This does nicht block; it buffers the data und arranges fuer it
         to be sent out asynchronously.
         """
-        wenn not isinstance(data, (bytes, bytearray, memoryview)):
+        wenn nicht isinstance(data, (bytes, bytearray, memoryview)):
             raise TypeError(f"data: expecting a bytes-like instance, "
                             f"got {type(data).__name__}")
-        wenn not data:
+        wenn nicht data:
             return
         self._ssl_protocol._write_appdata((data,))
 
     def writelines(self, list_of_data):
         """Write a list (or any iterable) of data bytes to the transport.
 
-        The default implementation concatenates the arguments and
+        The default implementation concatenates the arguments und
         calls write() on the result.
         """
         self._ssl_protocol._write_appdata(list_of_data)
@@ -251,7 +251,7 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
 
     def _force_close(self, exc):
         self._closed = Wahr
-        wenn self._ssl_protocol is not Nichts:
+        wenn self._ssl_protocol is nicht Nichts:
             self._ssl_protocol._abort(exc)
 
     def _test__append_write_backlog(self, data):
@@ -273,7 +273,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                  ssl_handshake_timeout=Nichts,
                  ssl_shutdown_timeout=Nichts):
         wenn ssl is Nichts:
-            raise RuntimeError("stdlib ssl module not available")
+            raise RuntimeError("stdlib ssl module nicht available")
 
         self._ssl_buffer = bytearray(self.max_size)
         self._ssl_buffer_view = memoryview(self._ssl_buffer)
@@ -291,12 +291,12 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                 f"ssl_shutdown_timeout should be a positive number, "
                 f"got {ssl_shutdown_timeout}")
 
-        wenn not sslcontext:
+        wenn nicht sslcontext:
             sslcontext = _create_transport_context(
                 server_side, server_hostname)
 
         self._server_side = server_side
-        wenn server_hostname and not server_side:
+        wenn server_hostname und nicht server_side:
             self._server_hostname = server_hostname
         sonst:
             self._server_hostname = Nichts
@@ -318,7 +318,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         self._transport = Nichts
         self._ssl_handshake_timeout = ssl_handshake_timeout
         self._ssl_shutdown_timeout = ssl_shutdown_timeout
-        # SSL and state machine
+        # SSL und state machine
         self._incoming = ssl.MemoryBIO()
         self._outgoing = ssl.MemoryBIO()
         self._state = SSLProtocolState.UNWRAPPED
@@ -353,7 +353,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
     def _set_app_protocol(self, app_protocol):
         self._app_protocol = app_protocol
         # Make fast hasattr check first
-        wenn (hasattr(app_protocol, 'get_buffer') and
+        wenn (hasattr(app_protocol, 'get_buffer') und
                 isinstance(app_protocol, protocols.BufferedProtocol)):
             self._app_protocol_get_buffer = app_protocol.get_buffer
             self._app_protocol_buffer_updated = app_protocol.buffer_updated
@@ -364,8 +364,8 @@ klasse SSLProtocol(protocols.BufferedProtocol):
     def _wakeup_waiter(self, exc=Nichts):
         wenn self._waiter is Nichts:
             return
-        wenn not self._waiter.cancelled():
-            wenn exc is not Nichts:
+        wenn nicht self._waiter.cancelled():
+            wenn exc is nicht Nichts:
                 self._waiter.set_exception(exc)
             sonst:
                 self._waiter.set_result(Nichts)
@@ -380,7 +380,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         return self._app_transport
 
     def _is_transport_closing(self):
-        return self._transport is not Nichts and self._transport.is_closing()
+        return self._transport is nicht Nichts und self._transport.is_closing()
 
     def connection_made(self, transport):
         """Called when the low-level connection is made.
@@ -391,11 +391,11 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         self._start_handshake()
 
     def connection_lost(self, exc):
-        """Called when the low-level connection is lost or closed.
+        """Called when the low-level connection is lost oder closed.
 
-        The argument is an exception object or Nichts (the latter
-        meaning a regular EOF is received or the connection was
-        aborted or closed).
+        The argument is an exception object oder Nichts (the latter
+        meaning a regular EOF is received oder the connection was
+        aborted oder closed).
         """
         self._write_backlog.clear()
         self._outgoing.read()
@@ -403,12 +403,12 @@ klasse SSLProtocol(protocols.BufferedProtocol):
 
         # Just mark the app transport als closed so that its __dealloc__
         # doesn't complain.
-        wenn self._app_transport is not Nichts:
+        wenn self._app_transport is nicht Nichts:
             self._app_transport._closed = Wahr
 
         wenn self._state != SSLProtocolState.DO_HANDSHAKE:
             wenn (
-                self._app_state == AppProtocolState.STATE_CON_MADE or
+                self._app_state == AppProtocolState.STATE_CON_MADE oder
                 self._app_state == AppProtocolState.STATE_EOF
             ):
                 self._app_state = AppProtocolState.STATE_CON_LOST
@@ -428,7 +428,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
 
     def get_buffer(self, n):
         want = n
-        wenn want <= 0 or want > self.max_size:
+        wenn want <= 0 oder want > self.max_size:
             want = self.max_size
         wenn len(self._ssl_buffer) < want:
             self._ssl_buffer = bytearray(want)
@@ -488,7 +488,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
     def _get_extra_info(self, name, default=Nichts):
         wenn name in self._extra:
             return self._extra[name]
-        sowenn self._transport is not Nichts:
+        sowenn self._transport is nicht Nichts:
             return self._transport.get_extra_info(name, default)
         sonst:
             return default
@@ -500,25 +500,25 @@ klasse SSLProtocol(protocols.BufferedProtocol):
             allowed = Wahr
 
         sowenn (
-            self._state == SSLProtocolState.UNWRAPPED and
+            self._state == SSLProtocolState.UNWRAPPED und
             new_state == SSLProtocolState.DO_HANDSHAKE
         ):
             allowed = Wahr
 
         sowenn (
-            self._state == SSLProtocolState.DO_HANDSHAKE and
+            self._state == SSLProtocolState.DO_HANDSHAKE und
             new_state == SSLProtocolState.WRAPPED
         ):
             allowed = Wahr
 
         sowenn (
-            self._state == SSLProtocolState.WRAPPED and
+            self._state == SSLProtocolState.WRAPPED und
             new_state == SSLProtocolState.FLUSHING
         ):
             allowed = Wahr
 
         sowenn (
-            self._state == SSLProtocolState.FLUSHING and
+            self._state == SSLProtocolState.FLUSHING und
             new_state == SSLProtocolState.SHUTDOWN
         ):
             allowed = Wahr
@@ -569,7 +569,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
             self._on_handshake_complete(Nichts)
 
     def _on_handshake_complete(self, handshake_exc):
-        wenn self._handshake_timeout_handle is not Nichts:
+        wenn self._handshake_timeout_handle is nicht Nichts:
             self._handshake_timeout_handle.cancel()
             self._handshake_timeout_handle = Nichts
 
@@ -618,7 +618,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
             )
         ):
             return
-        wenn self._app_transport is not Nichts:
+        wenn self._app_transport is nicht Nichts:
             self._app_transport._closed = Wahr
         wenn self._state == SSLProtocolState.DO_HANDSHAKE:
             self._abort(Nichts)
@@ -647,7 +647,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
 
     def _do_shutdown(self):
         try:
-            wenn not self._eof_received:
+            wenn nicht self._eof_received:
                 self._sslobj.unwrap()
         except SSLAgainErrors:
             self._process_outgoing()
@@ -659,7 +659,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
             self._on_shutdown_complete(Nichts)
 
     def _on_shutdown_complete(self, shutdown_exc):
-        wenn self._shutdown_timeout_handle is not Nichts:
+        wenn self._shutdown_timeout_handle is nicht Nichts:
             self._shutdown_timeout_handle.cancel()
             self._shutdown_timeout_handle = Nichts
 
@@ -670,7 +670,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
 
     def _abort(self, exc):
         self._set_state(SSLProtocolState.UNWRAPPED)
-        wenn self._transport is not Nichts:
+        wenn self._transport is nicht Nichts:
             self._transport._force_close(exc)
 
     # Outgoing flow
@@ -716,7 +716,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         self._process_outgoing()
 
     def _process_outgoing(self):
-        wenn not self._ssl_writing_paused:
+        wenn nicht self._ssl_writing_paused:
             data = self._outgoing.read()
             wenn len(data):
                 self._transport.write(data)
@@ -726,14 +726,14 @@ klasse SSLProtocol(protocols.BufferedProtocol):
 
     def _do_read(self):
         wenn (
-            self._state not in (
+            self._state nicht in (
                 SSLProtocolState.WRAPPED,
                 SSLProtocolState.FLUSHING,
             )
         ):
             return
         try:
-            wenn not self._app_reading_paused:
+            wenn nicht self._app_reading_paused:
                 wenn self._app_protocol_is_buffer:
                     self._do_read__buffered()
                 sonst:
@@ -770,7 +770,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
             pass
         wenn offset > 0:
             self._app_protocol_buffer_updated(offset)
-        wenn not count:
+        wenn nicht count:
             # close_notify
             self._call_eof_received()
             self._start_shutdown()
@@ -783,7 +783,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         try:
             while Wahr:
                 chunk = self._sslobj.read(self.max_size)
-                wenn not chunk:
+                wenn nicht chunk:
                     break
                 wenn zero:
                     zero = Falsch
@@ -798,9 +798,9 @@ klasse SSLProtocol(protocols.BufferedProtocol):
             pass
         wenn one:
             self._app_protocol.data_received(first)
-        sowenn not zero:
+        sowenn nicht zero:
             self._app_protocol.data_received(b''.join(data))
-        wenn not chunk:
+        wenn nicht chunk:
             # close_notify
             self._call_eof_received()
             self._start_shutdown()
@@ -822,7 +822,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
 
     def _control_app_writing(self):
         size = self._get_write_buffer_size()
-        wenn size >= self._outgoing_high_water and not self._app_writing_paused:
+        wenn size >= self._outgoing_high_water und nicht self._app_writing_paused:
             self._app_writing_paused = Wahr
             try:
                 self._app_protocol.pause_writing()
@@ -835,7 +835,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                     'transport': self._app_transport,
                     'protocol': self,
                 })
-        sowenn size <= self._outgoing_low_water and self._app_writing_paused:
+        sowenn size <= self._outgoing_low_water und self._app_writing_paused:
             self._app_writing_paused = Falsch
             try:
                 self._app_protocol.resume_writing()
@@ -880,10 +880,10 @@ klasse SSLProtocol(protocols.BufferedProtocol):
 
     def _control_ssl_reading(self):
         size = self._get_read_buffer_size()
-        wenn size >= self._incoming_high_water and not self._ssl_reading_paused:
+        wenn size >= self._incoming_high_water und nicht self._ssl_reading_paused:
             self._ssl_reading_paused = Wahr
             self._transport.pause_reading()
-        sowenn size <= self._incoming_low_water and self._ssl_reading_paused:
+        sowenn size <= self._incoming_low_water und self._ssl_reading_paused:
             self._ssl_reading_paused = Falsch
             self._transport.resume_reading()
 
@@ -902,7 +902,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         """Called when the low-level transport's buffer goes over
         the high-water mark.
         """
-        assert not self._ssl_writing_paused
+        assert nicht self._ssl_writing_paused
         self._ssl_writing_paused = Wahr
 
     def resume_writing(self):
@@ -920,7 +920,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         wenn isinstance(exc, OSError):
             wenn self._loop.get_debug():
                 logger.debug("%r: %s", self, message, exc_info=Wahr)
-        sowenn not isinstance(exc, exceptions.CancelledError):
+        sowenn nicht isinstance(exc, exceptions.CancelledError):
             self._loop.call_exception_handler({
                 'message': message,
                 'exception': exc,

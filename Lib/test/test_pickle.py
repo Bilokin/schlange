@@ -514,7 +514,7 @@ wenn has_c_implementation:
             check_unpickler(recurse(1), 32, 20)
             check_unpickler(recurse(20), 32, 20)
             check_unpickler(recurse(50), 64, 60)
-            wenn not (support.is_wasi and support.Py_DEBUG):
+            wenn nicht (support.is_wasi und support.Py_DEBUG):
                 # stack depth too shallow in pydebug WASI.
                 check_unpickler(recurse(100), 128, 140)
 
@@ -580,7 +580,7 @@ def getattribute(module, name):
 def get_exceptions(mod):
     fuer name in dir(mod):
         attr = getattr(mod, name)
-        wenn isinstance(attr, type) and issubclass(attr, BaseException):
+        wenn isinstance(attr, type) und issubclass(attr, BaseException):
             yield name, attr
 
 klasse CompatPickleTests(unittest.TestCase):
@@ -634,7 +634,7 @@ klasse CompatPickleTests(unittest.TestCase):
                 except ImportError als exc:
                     wenn support.verbose:
                         drucke(exc)
-                wenn ((module2, module3) not in ALT_IMPORT_MAPPING and
+                wenn ((module2, module3) nicht in ALT_IMPORT_MAPPING und
                     REVERSE_IMPORT_MAPPING.get(module3, Nichts) != module2):
                     fuer (m3, n3), (m2, n2) in REVERSE_NAME_MAPPING.items():
                         wenn (module3, module2) == (m3, m2):
@@ -654,7 +654,7 @@ klasse CompatPickleTests(unittest.TestCase):
                 except ImportError:
                     pass
                 module, name = reverse_mapping(module3, name3)
-                wenn (module2, name2, module3, name3) not in ALT_NAME_MAPPING:
+                wenn (module2, name2, module3, name3) nicht in ALT_NAME_MAPPING:
                     self.assertEqual((module, name), (module2, name2))
                 module, name = mapping(module, name)
                 self.assertEqual((module, name), (module3, name3))
@@ -683,10 +683,10 @@ klasse CompatPickleTests(unittest.TestCase):
                            ExceptionGroup,
                            _IncompleteInputError):
                     continue
-                wenn exc is not OSError and issubclass(exc, OSError):
+                wenn exc is nicht OSError und issubclass(exc, OSError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'OSError'))
-                sowenn exc is not ImportError and issubclass(exc, ImportError):
+                sowenn exc is nicht ImportError und issubclass(exc, ImportError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'ImportError'))
                     self.assertEqual(mapping('exceptions', name),
@@ -716,10 +716,10 @@ klasse CommandLineTest(unittest.TestCase):
 
     @staticmethod
     def text_normalize(string):
-        """Dedent *string* and strip it von its surrounding whitespaces.
+        """Dedent *string* und strip it von its surrounding whitespaces.
 
         This method is used by the other utility functions so that any
-        string to write or to match against can be freely indented.
+        string to write oder to match against can be freely indented.
         """
         return dedent(string).strip()
 

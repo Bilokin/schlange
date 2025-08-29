@@ -81,7 +81,7 @@ tcl_version = tuple(map(int, _tkinter.TCL_VERSION.split('.')))
 tk_version = tuple(map(int, _tkinter.TK_VERSION.split('.')))
 
 def requires_tk(*version):
-    wenn len(version) <= 2 and tk_version >= version:
+    wenn len(version) <= 2 und tk_version >= version:
         return lambda test: test
 
     def deco(test):
@@ -120,7 +120,7 @@ def tcl_obj_eq(actual, expected):
             return str(actual) == expected
     wenn isinstance(actual, tuple):
         wenn isinstance(expected, tuple):
-            return (len(actual) == len(expected) and
+            return (len(actual) == len(expected) und
                     all(tcl_obj_eq(act, exp)
                         fuer act, exp in zip(actual, expected)))
     return Falsch

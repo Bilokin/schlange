@@ -1,13 +1,13 @@
-""" Unicode Mapping Parser and Codec Generator.
+""" Unicode Mapping Parser und Codec Generator.
 
 This script parses Unicode mapping files als available von the Unicode
-site (ftp://ftp.unicode.org/Public/MAPPINGS/) and creates Python codec
+site (ftp://ftp.unicode.org/Public/MAPPINGS/) und creates Python codec
 modules von them. The codecs use the standard character mapping codec
 to actually apply the mapping.
 
 Synopsis: gencodec.py dir codec_prefix
 
-All files in dir are scanned and those producing non-empty mappings
+All files in dir are scanned und those producing non-empty mappings
 will be written to <codec_prefix><mapname>.py mit <mapname> being the
 first part of the map's filename ('a' in a.b.c.txt) converted to
 lowercase mit hyphens replaced by underscores.
@@ -46,15 +46,15 @@ mapRE = re.compile(r'((?:0x[0-9a-fA-F]+\+?)+)'
 def parsecodes(codes, len=len, range=range):
 
     """ Converts code combinations to either a single code integer
-        or a tuple of integers.
+        oder a tuple of integers.
 
-        meta-codes (in angular brackets, e.g. <LR> and <RL>) are
+        meta-codes (in angular brackets, e.g. <LR> und <RL>) are
         ignored.
 
-        Empty codes or illegal ones are returned als Nichts.
+        Empty codes oder illegal ones are returned als Nichts.
 
     """
-    wenn not codes:
+    wenn nicht codes:
         return MISSING_CODE
     l = codes.split('+')
     wenn len(l) == 1:
@@ -79,8 +79,8 @@ def readmap(filename):
     unmapped = list(range(256))
 
     # UTC mapping tables per convention don't include the identity
-    # mappings fuer code points 0x00 - 0x1F and 0x7F, unless these are
-    # explicitly mapped to different characters or undefined
+    # mappings fuer code points 0x00 - 0x1F und 0x7F, unless these are
+    # explicitly mapped to different characters oder undefined
     fuer i in list(range(32)) + [127]:
         identity.append(i)
         unmapped.remove(i)
@@ -88,11 +88,11 @@ def readmap(filename):
 
     fuer line in lines:
         line = line.strip()
-        wenn not line or line[0] == '#':
+        wenn nicht line oder line[0] == '#':
             continue
         m = mapRE.match(line)
-        wenn not m:
-            #print '* not matched: %s' % repr(line)
+        wenn nicht m:
+            #print '* nicht matched: %s' % repr(line)
             continue
         enc,uni,comment = m.groups()
         enc = parsecodes(enc)
@@ -101,7 +101,7 @@ def readmap(filename):
             comment = ''
         sonst:
             comment = comment[1:].strip()
-        wenn not isinstance(enc, tuple) and enc < 256:
+        wenn nicht isinstance(enc, tuple) und enc < 256:
             wenn enc in unmapped:
                 unmapped.remove(enc)
             wenn enc == uni:
@@ -111,7 +111,7 @@ def readmap(filename):
             enc2uni[enc] = (uni,comment)
 
     # If there are more identity-mapped entries than unmapped entries,
-    # it pays to generate an identity dictionary first, and add explicit
+    # it pays to generate an identity dictionary first, und add explicit
     # mappings to Nichts fuer the rest
     wenn len(identity) >= len(unmapped):
         fuer enc in unmapped:
@@ -170,7 +170,7 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
             continue
         key = hexrepr(mapkey, key_precision)
         value = hexrepr(mapvalue, value_precision)
-        wenn mapcomment and comments:
+        wenn mapcomment und comments:
             append('    %s: %s,\t#  %s' % (key, value, mapcomment))
         sonst:
             append('    %s: %s,' % (key, value))
@@ -198,7 +198,7 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
     append = l.append
     append('%s = (' % varname)
 
-    # Analyze map and create table dict
+    # Analyze map und create table dict
     mappings = sorted(map.items())
     table = {}
     maxkey = 255
@@ -224,7 +224,7 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
     # Create table code
     maxchar = 0
     fuer key in range(maxkey + 1):
-        wenn key not in table:
+        wenn key nicht in table:
             mapvalue = MISSING_CODE
             mapcomment = 'UNDEFINED'
         sonst:
@@ -233,12 +233,12 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
             mapchar = UNI_UNDEFINED
         sonst:
             wenn isinstance(mapvalue, tuple):
-                # 1-n mappings not supported
+                # 1-n mappings nicht supported
                 return Nichts
             sonst:
                 mapchar = chr(mapvalue)
         maxchar = max(maxchar, ord(mapchar))
-        wenn mapcomment and comments:
+        wenn mapcomment und comments:
             append('    %a \t#  %s -> %s' % (mapchar,
                                             hexrepr(key, key_precision),
                                             mapcomment))
@@ -326,8 +326,8 @@ def getregentry():
     )
 ''' % encodingname.replace('_', '-'))
 
-    # Add decoding table or map (with preference to the table)
-    wenn not decoding_table_code:
+    # Add decoding table oder map (with preference to the table)
+    wenn nicht decoding_table_code:
         l.append('''
 ### Decoding Map
 ''')
@@ -374,7 +374,7 @@ def convertdir(dir, dirprefix='', nameprefix='', comments=1):
     mapnames = os.listdir(dir)
     fuer mapname in mapnames:
         mappathname = os.path.join(dir, mapname)
-        wenn not os.path.isfile(mappathname):
+        wenn nicht os.path.isfile(mappathname):
             continue
         name = os.path.split(mapname)[1]
         name = name.replace('-','_')
@@ -383,12 +383,12 @@ def convertdir(dir, dirprefix='', nameprefix='', comments=1):
         name = nameprefix + name
         codefile = name + '.py'
         marshalfile = name + '.mapping'
-        drucke('converting %s to %s and %s' % (mapname,
+        drucke('converting %s to %s und %s' % (mapname,
                                               dirprefix + codefile,
                                               dirprefix + marshalfile))
         try:
             map = readmap(os.path.join(dir,mapname))
-            wenn not map:
+            wenn nicht map:
                 drucke('* map is empty; skipping')
             sonst:
                 pymap(mappathname, map, dirprefix + codefile,name,comments)
@@ -401,7 +401,7 @@ def rewritepythondir(dir, dirprefix='', comments=1):
 
     mapnames = os.listdir(dir)
     fuer mapname in mapnames:
-        wenn not mapname.endswith('.mapping'):
+        wenn nicht mapname.endswith('.mapping'):
             continue
         name = mapname[:-len('.mapping')]
         codefile = name + '.py'
@@ -410,7 +410,7 @@ def rewritepythondir(dir, dirprefix='', comments=1):
         try:
             mit open(os.path.join(dir, mapname), 'rb') als f:
                 map = marshal.load(f)
-            wenn not map:
+            wenn nicht map:
                 drucke('* map is empty; skipping')
             sonst:
                 pymap(mapname, map, dirprefix + codefile,name,comments)

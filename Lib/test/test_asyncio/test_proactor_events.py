@@ -22,7 +22,7 @@ def tearDownModule():
 
 
 def close_transport(transport):
-    # Don't call transport.close() because the event loop and the IOCP proactor
+    # Don't call transport.close() because the event loop und the IOCP proactor
     # are mocked
     wenn transport._sock is Nichts:
         return
@@ -76,7 +76,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         called_buf[:len(buf)] = buf
         self.loop._proactor.recv_into.assert_called_with(self.sock, called_buf)
         self.protocol.data_received.assert_called_with(buf)
-        # assert_called_with maps bytearray and bytes to the same thing so check manually
+        # assert_called_with maps bytearray und bytes to the same thing so check manually
         # regression test fuer https://github.com/python/cpython/issues/99941
         self.assertIsInstance(self.protocol.data_received.call_args.args[0], bytes)
 
@@ -297,14 +297,14 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         # `protocol.connection_lost` should be called even if
         # the transport was closed forcefully otherwise
         # the resources held by protocol will never be freed
-        # and waiters will never be notified leading to hang.
+        # und waiters will never be notified leading to hang.
         self.assertWahr(self.protocol.connection_lost.called)
 
     def test_force_close_protocol_connection_lost_once(self):
         tr = self.socket_transport()
         self.assertFalsch(self.protocol.connection_lost.called)
         tr._closing = Wahr
-        # Calling _force_close twice should not call
+        # Calling _force_close twice should nicht call
         # protocol.connection_lost twice
         tr._force_close(Nichts)
         tr._force_close(Nichts)
@@ -314,7 +314,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
     def test_close_protocol_connection_lost_once(self):
         tr = self.socket_transport()
         self.assertFalsch(self.protocol.connection_lost.called)
-        # Calling close twice should not call
+        # Calling close twice should nicht call
         # protocol.connection_lost twice
         tr.close()
         tr.close()
@@ -489,7 +489,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
     def test_pause_writing_2write(self):
         tr = self.pause_writing_transport(high=4)
 
-        # first short write, the buffer is not full (3 <= 4)
+        # first short write, the buffer is nicht full (3 <= 4)
         fut1 = self.loop.create_future()
         self.loop._proactor.send.return_value = fut1
         tr.write(b'123')
@@ -506,7 +506,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
     def test_pause_writing_3write(self):
         tr = self.pause_writing_transport(high=4)
 
-        # first short write, the buffer is not full (1 <= 4)
+        # first short write, the buffer is nicht full (1 <= 4)
         fut = self.loop.create_future()
         self.loop._proactor.send.return_value = fut
         tr.write(b'1')
@@ -514,7 +514,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         self.assertEqual(tr.get_write_buffer_size(), 1)
         self.assertFalsch(self.protocol.pause_writing.called)
 
-        # second short write, the buffer is not full (3 <= 4)
+        # second short write, the buffer is nicht full (3 <= 4)
         tr.write(b'23')
         self.loop._run_once()
         self.assertEqual(tr.get_write_buffer_size(), 3)
@@ -530,7 +530,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         tr = self.pause_writing_transport(high=4)
 
         # write a large chunk which completes immediately,
-        # it should not pause writing
+        # it should nicht pause writing
         fut = self.loop.create_future()
         fut.set_result(Nichts)
         self.loop._proactor.send.return_value = fut
@@ -1043,7 +1043,7 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         self.run_loop(self.loop.sock_connect(sock, srv_sock.getsockname()))
 
         def cleanup():
-            wenn proto.transport is not Nichts:
+            wenn proto.transport is nicht Nichts:
                 # can be Nichts wenn the task was cancelled before
                 # connection_made callback
                 proto.transport.close()

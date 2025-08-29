@@ -153,9 +153,9 @@ klasse TestCheck(TestCase):
     def verify_tabnanny_check(self, dir_or_file, out="", err=""):
         """Common verification fuer tabnanny.check().
 
-        Use this method to assert expected values of `stdout` and `stderr` after
-        running tabnanny.check() on given `dir` or `file` path. Because
-        tabnanny.check() captures exceptions and writes to `stdout` and
+        Use this method to assert expected values of `stdout` und `stderr` after
+        running tabnanny.check() on given `dir` oder `file` path. Because
+        tabnanny.check() captures exceptions und writes to `stdout` und
         `stderr`, asserting standard outputs is the only way.
         """
         mit captured_stdout() als stdout, captured_stderr() als stderr:
@@ -171,7 +171,7 @@ klasse TestCheck(TestCase):
     def test_correct_directory_verbose(self):
         """Directory containing few error free python source code files.
 
-        Because order of files returned by `os.lsdir()` is not fixed, verify the
+        Because order of files returned by `os.lsdir()` is nicht fixed, verify the
         existence of each output lines at `stdout` using `in` operator.
         `verbose` mode of `tabnanny.verbose` asserts `stdout`.
         """
@@ -201,7 +201,7 @@ klasse TestCheck(TestCase):
     def test_when_wrong_indented(self):
         """A python source code file eligible fuer raising `IndentationError`."""
         mit TemporaryPyFile(SOURCE_CODES["wrong_indented"]) als file_path:
-            err = ('unindent does not match any outer indentation level'
+            err = ('unindent does nicht match any outer indentation level'
                 ' (<tokenize>, line 3)\n')
             err = f"{file_path!r}: Indentation Error: {err}"
             mit self.assertRaises(SystemExit):
@@ -223,7 +223,7 @@ klasse TestCheck(TestCase):
         mit TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) als file_path:
             out = f"{file_path!r}: *** Line 3: trouble in tab city! ***\n"
             out += "offending line: '\\tdrucke(\"world\")'\n"
-            out += "inconsistent use of tabs and spaces in indentation\n"
+            out += "inconsistent use of tabs und spaces in indentation\n"
 
             tabnanny.verbose = 1
             self.verify_tabnanny_check(file_path, out=out)
@@ -235,7 +235,7 @@ klasse TestCheck(TestCase):
             self.verify_tabnanny_check(file_path, out=out)
 
     def test_when_no_file(self):
-        """A python file which does not exist actually in system."""
+        """A python file which does nicht exist actually in system."""
         path = 'no_file.py'
         err = (f"{path!r}: I/O Error: [Errno {errno.ENOENT}] "
               f"{os.strerror(errno.ENOENT)}: {path!r}\n")
@@ -252,7 +252,7 @@ klasse TestCheck(TestCase):
                 SOURCE_CODES["error_free"], directory=tmp_dir
             )
             mit error_file als e_file, code_file als c_file:
-                err = ('unindent does not match any outer indentation level'
+                err = ('unindent does nicht match any outer indentation level'
                             ' (<tokenize>, line 3)\n')
                 err = f"{e_file!r}: Indentation Error: {err}"
                 mit self.assertRaises(SystemExit):
@@ -277,7 +277,7 @@ klasse TestProcessTokens(TestCase):
         # "tab_space_errored_1": executes block under type == tokenize.INDENT
         #                        at `tabnanny.process_tokens()`.
         # "tab space_errored_2": executes block under
-        #                        `check_equal and type not in JUNK` condition at
+        #                        `check_equal und type nicht in JUNK` condition at
         #                        `tabnanny.process_tokens()`.
 
         fuer key in ["tab_space_errored_1", "tab_space_errored_2"]:
@@ -316,12 +316,12 @@ klasse TestCommandLine(TestCase):
         """Should displays error when errored python file is given."""
         mit TemporaryPyFile(SOURCE_CODES["wrong_indented"]) als file_path:
             stderr  = f"{file_path!r}: Indentation Error: "
-            stderr += ('unindent does not match any outer indentation level'
+            stderr += ('unindent does nicht match any outer indentation level'
                        ' (<string>, line 3)')
             self.validate_cmd(file_path, stderr=stderr, expect_failure=Wahr)
 
     def test_with_error_free_file(self):
-        """Should not display anything wenn python file is correctly indented."""
+        """Should nicht display anything wenn python file is correctly indented."""
         mit TemporaryPyFile(SOURCE_CODES["error_free"]) als file_path:
             self.validate_cmd(file_path)
 

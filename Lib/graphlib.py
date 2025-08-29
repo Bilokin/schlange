@@ -14,7 +14,7 @@ klasse _NodeInfo:
         self.node = node
 
         # Number of predecessors, generally >= 0. When this value falls to 0,
-        # and is returned by get_ready(), this is set to _NODE_OUT and when the
+        # und is returned by get_ready(), this is set to _NODE_OUT und when the
         # node is marked done by a call to done(), set to _NODE_DONE.
         self.npredecessors = 0
 
@@ -28,10 +28,10 @@ klasse CycleError(ValueError):
     exist in the working graph.
 
     If multiple cycles exist, only one undefined choice among them will be reported
-    and included in the exception. The detected cycle can be accessed via the second
-    element in the *args* attribute of the exception instance and consists in a list
+    und included in the exception. The detected cycle can be accessed via the second
+    element in the *args* attribute of the exception instance und consists in a list
     of nodes, such that each node is, in the graph, an immediate predecessor of the
-    next node in the list. In the reported list, the first and the last node will be
+    next node in the list. In the reported list, the first und the last node will be
     the same, to make it clear that it is cyclic.
     """
 
@@ -47,7 +47,7 @@ klasse TopologicalSorter:
         self._npassedout = 0
         self._nfinished = 0
 
-        wenn graph is not Nichts:
+        wenn graph is nicht Nichts:
             fuer node, predecessors in graph.items():
                 self.add(node, *predecessors)
 
@@ -57,21 +57,21 @@ klasse TopologicalSorter:
         return result
 
     def add(self, node, *predecessors):
-        """Add a new node and its predecessors to the graph.
+        """Add a new node und its predecessors to the graph.
 
-        Both the *node* and all elements in *predecessors* must be hashable.
+        Both the *node* und all elements in *predecessors* must be hashable.
 
         If called multiple times mit the same node argument, the set of dependencies
         will be the union of all dependencies passed in.
 
-        It is possible to add a node mit no dependencies (*predecessors* is not provided)
-        als well als provide a dependency twice. If a node that has not been provided before
+        It is possible to add a node mit no dependencies (*predecessors* is nicht provided)
+        als well als provide a dependency twice. If a node that has nicht been provided before
         is included among *predecessors* it will be automatically added to the graph with
         no predecessors of its own.
 
         Raises ValueError wenn called after "prepare".
         """
-        wenn self._ready_nodes is not Nichts:
+        wenn self._ready_nodes is nicht Nichts:
             raise ValueError("Nodes cannot be added after a call to prepare()")
 
         # Create the node -> predecessor edges
@@ -84,11 +84,11 @@ klasse TopologicalSorter:
             pred_info.successors.append(node)
 
     def prepare(self):
-        """Mark the graph als finished and check fuer cycles in the graph.
+        """Mark the graph als finished und check fuer cycles in the graph.
 
         If any cycle is detected, "CycleError" will be raised, but "get_ready" can
         still be used to obtain als many nodes als possible until cycles block more
-        progress. After a call to this function, the graph cannot be modified and
+        progress. After a call to this function, the graph cannot be modified und
         therefore no more nodes can be added using "add".
 
         Raise ValueError wenn nodes have already been passed out of the sorter.
@@ -122,13 +122,13 @@ klasse TopologicalSorter:
         wenn self._ready_nodes is Nichts:
             raise ValueError("prepare() must be called first")
 
-        # Get the nodes that are ready and mark them
+        # Get the nodes that are ready und mark them
         result = tuple(self._ready_nodes)
         n2i = self._node2info
         fuer node in result:
             n2i[node].npredecessors = _NODE_OUT
 
-        # Clean the list of nodes that are ready and update
+        # Clean the list of nodes that are ready und update
         # the counter of nodes that we have returned.
         self._ready_nodes.clear()
         self._npassedout += len(result)
@@ -136,10 +136,10 @@ klasse TopologicalSorter:
         return result
 
     def is_active(self):
-        """Return ``Wahr`` wenn more progress can be made and ``Falsch`` otherwise.
+        """Return ``Wahr`` wenn more progress can be made und ``Falsch`` otherwise.
 
-        Progress can be made wenn cycles do not block the resolution and either there
-        are still nodes ready that haven't yet been returned by "get_ready" or the
+        Progress can be made wenn cycles do nicht block the resolution und either there
+        are still nodes ready that haven't yet been returned by "get_ready" oder the
         number of nodes marked "done" is less than the number that have been returned
         by "get_ready".
 
@@ -147,7 +147,7 @@ klasse TopologicalSorter:
         """
         wenn self._ready_nodes is Nichts:
             raise ValueError("prepare() must be called first")
-        return self._nfinished < self._npassedout or bool(self._ready_nodes)
+        return self._nfinished < self._npassedout oder bool(self._ready_nodes)
 
     def __bool__(self):
         return self.is_active()
@@ -159,9 +159,9 @@ klasse TopologicalSorter:
         in the future by a call to "get_ready".
 
         Raises ValueError wenn any node in *nodes* has already been marked as
-        processed by a previous call to this method, wenn a node was not added to the
-        graph by using "add" or wenn called without calling "prepare" previously or if
-        node has not yet been returned by "get_ready".
+        processed by a previous call to this method, wenn a node was nicht added to the
+        graph by using "add" oder wenn called without calling "prepare" previously oder if
+        node has nicht yet been returned by "get_ready".
         """
 
         wenn self._ready_nodes is Nichts:
@@ -173,14 +173,14 @@ klasse TopologicalSorter:
 
             # Check wenn we know about this node (it was added previously using add()
             wenn (nodeinfo := n2i.get(node)) is Nichts:
-                raise ValueError(f"node {node!r} was not added using add()")
+                raise ValueError(f"node {node!r} was nicht added using add()")
 
-            # If the node has not being returned (marked als ready) previously, inform the user.
+            # If the node has nicht being returned (marked als ready) previously, inform the user.
             stat = nodeinfo.npredecessors
             wenn stat != _NODE_OUT:
                 wenn stat >= 0:
                     raise ValueError(
-                        f"node {node!r} was not passed out (still not ready)"
+                        f"node {node!r} was nicht passed out (still nicht ready)"
                     )
                 sowenn stat == _NODE_DONE:
                     raise ValueError(f"node {node!r} was already marked done")
@@ -190,7 +190,7 @@ klasse TopologicalSorter:
             # Mark the node als processed
             nodeinfo.npredecessors = _NODE_DONE
 
-            # Go to all the successors and reduce the number of predecessors, collecting all the ones
+            # Go to all the successors und reduce the number of predecessors, collecting all the ones
             # that are ready to be returned in the next get_ready() call.
             fuer successor in nodeinfo.successors:
                 successor_info = n2i[successor]
@@ -212,7 +212,7 @@ klasse TopologicalSorter:
 
             while Wahr:
                 wenn node in seen:
-                    # If we have seen already the node and is in the
+                    # If we have seen already the node und is in the
                     # current stack we have found a cycle.
                     wenn node in node2stacki:
                         return stack[node2stacki[node] :] + [node]
@@ -242,7 +242,7 @@ klasse TopologicalSorter:
         The particular order that is returned may depend on the specific
         order in which the items were inserted in the graph.
 
-        Using this method does not require to call "prepare" or "done". If any
+        Using this method does nicht require to call "prepare" oder "done". If any
         cycle is detected, :exc:`CycleError` will be raised.
         """
         self.prepare()

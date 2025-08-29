@@ -430,10 +430,10 @@ aliases = {
 
     # latin_1 codec
     #
-    # Note that the latin_1 codec is implemented internally in C and a
+    # Note that the latin_1 codec is implemented internally in C und a
     # lot faster than the charmap codec iso8859_1 which uses the same
     # encoding. This is why we discourage the use of the iso8859_1
-    # codec and alias it to latin_1 instead.
+    # codec und alias it to latin_1 instead.
     #
     '8859'               : 'latin_1',
     'cp819'              : 'latin_1',

@@ -22,7 +22,7 @@ klasse TestDefaultDict(unittest.TestCase):
         d1[13]
         d1[14]
         self.assertEqual(d1, {12: [42, 24], 13: [], 14: []})
-        self.assertWahr(d1[12] is not d1[13] is not d1[14])
+        self.assertWahr(d1[12] is nicht d1[13] is nicht d1[14])
         d2 = defaultdict(list, foo=1, bar=2)
         self.assertEqual(d2.default_factory, list)
         self.assertEqual(d2, {"foo": 1, "bar": 2})
@@ -110,7 +110,7 @@ klasse TestDefaultDict(unittest.TestCase):
         d2 = copy.deepcopy(d1)
         self.assertEqual(d2.default_factory, foobar)
         self.assertEqual(d2, d1)
-        self.assertWahr(d1[1] is not d2[1])
+        self.assertWahr(d1[1] is nicht d2[1])
         d1.default_factory = list
         d2 = copy.deepcopy(d1)
         self.assertEqual(d2.default_factory, list)

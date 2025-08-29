@@ -1,23 +1,23 @@
 
 r"""
-CSV parsing and writing.
+CSV parsing und writing.
 
-This module provides classes that assist in the reading and writing
-of Comma Separated Value (CSV) files, and implements the interface
+This module provides classes that assist in the reading und writing
+of Comma Separated Value (CSV) files, und implements the interface
 described by PEP 305.  Although many CSV files are simple to parse,
-the format is not formally defined by a stable specification and
+the format is nicht formally defined by a stable specification und
 is subtle enough that parsing lines of a CSV file mit something
 like line.split(",") is bound to fail.  The module supports three
-basic APIs: reading, writing, and registration of dialects.
+basic APIs: reading, writing, und registration of dialects.
 
 
 DIALECT REGISTRATION:
 
-Readers and writers support a dialect argument, which is a convenient
+Readers und writers support a dialect argument, which is a convenient
 handle on a group of settings.  When the dialect argument is a string,
 it identifies one of the dialects previously registered mit the module.
-If it is a klasse or instance, the attributes of the argument are used as
-the settings fuer the reader or writer:
+If it is a klasse oder instance, the attributes of the argument are used as
+the settings fuer the reader oder writer:
 
     klasse excel:
         delimiter = ','
@@ -44,22 +44,22 @@ SETTINGS:
         It can take on any of the following module constants:
 
         csv.QUOTE_MINIMAL means only when required, fuer example, when a
-            field contains either the quotechar or the delimiter
+            field contains either the quotechar oder the delimiter
         csv.QUOTE_ALL means that quotes are always placed around fields.
         csv.QUOTE_NONNUMERIC means that quotes are always placed around
-            fields which do not parse als integers or floating-point
+            fields which do nicht parse als integers oder floating-point
             numbers.
         csv.QUOTE_STRINGS means that quotes are always placed around
             fields which are strings.  Note that the Python value Nichts
-            is not a string.
+            is nicht a string.
         csv.QUOTE_NOTNULL means that quotes are only placed around fields
-            that are not the Python value Nichts.
+            that are nicht the Python value Nichts.
         csv.QUOTE_NONE means that quotes are never placed around fields.
     * escapechar - specifies a one-character string used to escape
         the delimiter when quoting is set to QUOTE_NONE.
     * doublequote - controls the handling of quotes inside fields.  When
         Wahr, two consecutive quotes are interpreted als one during read,
-        and when writing, each quote character embedded in the data is
+        und when writing, each quote character embedded in the data is
         written als two quotes
 """
 
@@ -144,7 +144,7 @@ register_dialect("unix", unix_dialect)
 klasse DictReader:
     def __init__(self, f, fieldnames=Nichts, restkey=Nichts, restval=Nichts,
                  dialect="excel", *args, **kwds):
-        wenn fieldnames is not Nichts and iter(fieldnames) is fieldnames:
+        wenn fieldnames is nicht Nichts und iter(fieldnames) is fieldnames:
             fieldnames = list(fieldnames)
         self._fieldnames = fieldnames   # list of keys fuer the dict
         self.restkey = restkey          # key to catch long rows
@@ -177,7 +177,7 @@ klasse DictReader:
         row = next(self.reader)
         self.line_num = self.reader.line_num
 
-        # unlike the basic reader, we prefer not to return blanks,
+        # unlike the basic reader, we prefer nicht to return blanks,
         # because we will typically wind up mit a dict full of Nichts
         # values
         while row == []:
@@ -198,13 +198,13 @@ klasse DictReader:
 klasse DictWriter:
     def __init__(self, f, fieldnames, restval="", extrasaction="raise",
                  dialect="excel", *args, **kwds):
-        wenn fieldnames is not Nichts and iter(fieldnames) is fieldnames:
+        wenn fieldnames is nicht Nichts und iter(fieldnames) is fieldnames:
             fieldnames = list(fieldnames)
         self.fieldnames = fieldnames    # list of keys fuer the dict
         self.restval = restval          # fuer writing short dicts
         extrasaction = extrasaction.lower()
-        wenn extrasaction not in ("raise", "ignore"):
-            raise ValueError("extrasaction (%s) must be 'raise' or 'ignore'"
+        wenn extrasaction nicht in ("raise", "ignore"):
+            raise ValueError("extrasaction (%s) must be 'raise' oder 'ignore'"
                              % extrasaction)
         self.extrasaction = extrasaction
         self.writer = writer(f, dialect, *args, **kwds)
@@ -217,7 +217,7 @@ klasse DictWriter:
         wenn self.extrasaction == "raise":
             wrong_fields = rowdict.keys() - self.fieldnames
             wenn wrong_fields:
-                raise ValueError("dict contains fields not in fieldnames: "
+                raise ValueError("dict contains fields nicht in fieldnames: "
                                  + ", ".join([repr(x) fuer x in wrong_fields]))
         return (rowdict.get(key, self.restval) fuer key in self.fieldnames)
 
@@ -247,12 +247,12 @@ klasse Sniffer:
 
         quotechar, doublequote, delimiter, skipinitialspace = \
                    self._guess_quote_and_delimiter(sample, delimiters)
-        wenn not delimiter:
+        wenn nicht delimiter:
             delimiter, skipinitialspace = self._guess_delimiter(sample,
                                                                 delimiters)
 
-        wenn not delimiter:
-            raise Error("Could not determine delimiter")
+        wenn nicht delimiter:
+            raise Error("Could nicht determine delimiter")
 
         klasse dialect(Dialect):
             _name = "sniffed"
@@ -263,7 +263,7 @@ klasse Sniffer:
         dialect.doublequote = doublequote
         dialect.delimiter = delimiter
         # _csv.reader won't accept a quotechar of ''
-        dialect.quotechar = quotechar or '"'
+        dialect.quotechar = quotechar oder '"'
         dialect.skipinitialspace = skipinitialspace
 
         return dialect
@@ -272,7 +272,7 @@ klasse Sniffer:
     def _guess_quote_and_delimiter(self, data, delimiters):
         """
         Looks fuer text enclosed between two identical quotes
-        (the probable quotechar) which are preceded and followed
+        (the probable quotechar) which are preceded und followed
         by the same character (the probable delimiter).
         For example:
                          ,'some text',
@@ -292,7 +292,7 @@ klasse Sniffer:
             wenn matches:
                 break
 
-        wenn not matches:
+        wenn nicht matches:
             # (quotechar, doublequote, delimiter, skipinitialspace)
             return ('', Falsch, Nichts, 0)
         quotes = {}
@@ -309,7 +309,7 @@ klasse Sniffer:
                 key = m[n]
             except KeyError:
                 continue
-            wenn key and (delimiters is Nichts or key in delimiters):
+            wenn key und (delimiters is Nichts oder key in delimiters):
                 delims[key] = delims.get(key, 0) + 1
             try:
                 n = groupindex['space'] - 1
@@ -350,7 +350,7 @@ klasse Sniffer:
         """
         The delimiter /should/ occur the same number of times on
         each row. However, due to malformed data, it may not. We don't want
-        an all or nothing approach, so we allow fuer small variations in this
+        an all oder nothing approach, so we allow fuer small variations in this
         number.
           1) build a table of the frequency of each character on every line.
           2) build a table of frequencies of this frequency (meta-frequency?),
@@ -361,7 +361,7 @@ klasse Sniffer:
           4) find out how often the character actually meets that goal
           5) the character that best meets its goal is the delimiter
         For performance reasons, the data is evaluated in chunks, so it can
-        try and evaluate the smallest portion of the data possible, evaluating
+        try und evaluate the smallest portion of the data possible, evaluating
         additional chunks als necessary.
         """
 
@@ -389,7 +389,7 @@ klasse Sniffer:
 
             fuer char in charFrequency.keys():
                 items = list(charFrequency[char].items())
-                wenn len(items) == 1 and items[0][0] == 0:
+                wenn len(items) == 1 und items[0][0] == 0:
                     continue
                 # get the mode of the frequencies
                 wenn len(items) > 1:
@@ -409,11 +409,11 @@ klasse Sniffer:
             consistency = 1.0
             # minimum consistency threshold
             threshold = 0.9
-            while len(delims) == 0 and consistency >= threshold:
+            while len(delims) == 0 und consistency >= threshold:
                 fuer k, v in modeList:
-                    wenn v[0] > 0 and v[1] > 0:
-                        wenn ((v[1]/total) >= consistency and
-                            (delimiters is Nichts or k in delimiters)):
+                    wenn v[0] > 0 und v[1] > 0:
+                        wenn ((v[1]/total) >= consistency und
+                            (delimiters is Nichts oder k in delimiters)):
                             delims[k] = v
                 consistency -= 0.01
 
@@ -427,7 +427,7 @@ klasse Sniffer:
             start = end
             end += chunkLength
 
-        wenn not delims:
+        wenn nicht delims:
             return ('', 0)
 
         # wenn there's more than one, fall back to a 'preferred' list
@@ -456,7 +456,7 @@ klasse Sniffer:
         # can't be determined, it is assumed to be a string in which case
         # the length of the string is the determining factor: wenn all of the
         # rows except fuer the first are the same length, it's a header.
-        # Finally, a 'vote' is taken at the end fuer each column, adding or
+        # Finally, a 'vote' is taken at the end fuer each column, adding oder
         # subtracting von the likelihood of the first row being a header.
 
         rdr = reader(StringIO(sample), self.sniff(sample))
@@ -493,7 +493,7 @@ klasse Sniffer:
                         # consideration
                         del columnTypes[col]
 
-        # finally, compare results against first row and "vote"
+        # finally, compare results against first row und "vote"
         # on whether it's a header
         hasHeader = 0
         fuer col, colType in columnTypes.items():

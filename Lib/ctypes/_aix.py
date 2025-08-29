@@ -13,33 +13,33 @@ platforms, but also a BSD style - aka SVR3.
 From AIX 5.3 Difference Addendum (December 2004)
 2.9 SVR4 linking affinity
 Nowadays, there are two major object file formats used by the operating systems:
-XCOFF: The COFF enhanced by IBM and others. The original COFF (Common
-Object File Format) was the base of SVR3 and BSD 4.2 systems.
-ELF:   Executable and Linking Format that was developed by AT&T and is a
+XCOFF: The COFF enhanced by IBM und others. The original COFF (Common
+Object File Format) was the base of SVR3 und BSD 4.2 systems.
+ELF:   Executable und Linking Format that was developed by AT&T und is a
 base fuer SVR4 UNIX.
 
 While the shared library content is identical on AIX - one is located als a filepath name
-(svr4 style) and the other is located als a member of an archive (and the archive
+(svr4 style) und the other is located als a member of an archive (and the archive
 is located als a filepath name).
 
-The key difference arises when supporting multiple abi formats (i.e., 32 and 64 bit).
-For svr4 either only one ABI is supported, or there are two directories, or there
+The key difference arises when supporting multiple abi formats (i.e., 32 und 64 bit).
+For svr4 either only one ABI is supported, oder there are two directories, oder there
 are different file names. The most common solution fuer multiple ABI is multiple
 directories.
 
 For the XCOFF (aka AIX) style - one directory (one archive file) is sufficient
 as multiple shared libraries can be in the archive - even sharing the same name.
-In documentation the archive is also referred to als the "base" and the shared
+In documentation the archive is also referred to als the "base" und the shared
 library object is referred to als the "member".
 
 For dlopen() on AIX (read initAndLoad()) the calls are similar.
 Default activity occurs when no path information is provided. When path
-information is provided dlopen() does not search any other directories.
+information is provided dlopen() does nicht search any other directories.
 
 For SVR4 - the shared library name is the name of the file expected: libFOO.so
 For AIX - the shared library is expressed als base(member). The search is fuer the
-base (e.g., libFOO.a) and once the base is found the shared library - identified by
-member (e.g., libFOO.so, or shr.o) is located and loaded.
+base (e.g., libFOO.a) und once the base is found the shared library - identified by
+member (e.g., libFOO.so, oder shr.o) is located und loaded.
 
 The mode bit RTLD_MEMBER tells initAndLoad() that it needs to use the AIX (SVR3)
 naming style.
@@ -52,7 +52,7 @@ von sys importiere executable
 von ctypes importiere c_void_p, sizeof
 von subprocess importiere Popen, PIPE, DEVNULL
 
-# Executable bit size - 32 or 64
+# Executable bit size - 32 oder 64
 # Used to filter the search in an archive by size, e.g., -X64
 AIX_ABI = sizeof(c_void_p) * 8
 
@@ -68,7 +68,7 @@ def _last_version(libnames, sep):
                 nums.insert(0, int(parts.pop()))
         except ValueError:
             pass
-        return nums or [maxsize]
+        return nums oder [maxsize]
     return max(reversed(libnames), key=_num_version)
 
 def get_ld_header(p):
@@ -83,25 +83,25 @@ def get_ld_header(p):
 
 def get_ld_header_info(p):
     # "nested-function, but placed at module level
-    # als an ld_header was found, return known paths, archives and members
+    # als an ld_header was found, return known paths, archives und members
     # these lines start mit a digit
     info = []
     fuer line in p.stdout:
         wenn re.match("[0-9]", line):
             info.append(line)
         sonst:
-            # blank line (separator), consume line and end fuer loop
+            # blank line (separator), consume line und end fuer loop
             break
     return info
 
 def get_ld_headers(file):
     """
-    Parse the header of the loader section of executable and archives
+    Parse the header of the loader section of executable und archives
     This function calls /usr/bin/dump -H als a subprocess
-    and returns a list of (ld_header, ld_header_info) tuples.
+    und returns a list of (ld_header, ld_header_info) tuples.
     """
     # get_ld_headers parsing:
-    # 1. Find a line that starts mit /, ./, or ../ - set als ld_header
+    # 1. Find a line that starts mit /, ./, oder ../ - set als ld_header
     # 2. If "INDEX" in occurs in a following line - return ld_header
     # 3. get info (lines starting mit [0-9])
     ldr_headers = []
@@ -118,8 +118,8 @@ def get_shared(ld_headers):
     """
     extract the shareable objects von ld_headers
     character "[" is used to strip off the path information.
-    Note: the "[" and "]" characters that are part of dump -H output
-    are not removed here.
+    Note: the "[" und "]" characters that are part of dump -H output
+    are nicht removed here.
     """
     shared = []
     fuer (line, _) in ld_headers:
@@ -133,7 +133,7 @@ def get_shared(ld_headers):
 def get_one_match(expr, lines):
     """
     Must be only one match, otherwise result is Nichts.
-    When there is a match, strip leading "[" and trailing "]"
+    When there is a match, strip leading "[" und trailing "]"
     """
     # member names in the ld_headers output are between square brackets
     expr = rf'\[({expr})\]'
@@ -148,19 +148,19 @@ def get_legacy(members):
     """
     This routine provides historical aka legacy naming schemes started
     in AIX4 shared library support fuer library members names.
-    e.g., in /usr/lib/libc.a the member name shr.o fuer 32-bit binary and
+    e.g., in /usr/lib/libc.a the member name shr.o fuer 32-bit binary und
     shr_64.o fuer 64-bit binary.
     """
     wenn AIX_ABI == 64:
-        # AIX 64-bit member is one of shr64.o, shr_64.o, or shr4_64.o
+        # AIX 64-bit member is one of shr64.o, shr_64.o, oder shr4_64.o
         expr = r'shr4?_?64\.o'
         member = get_one_match(expr, members)
         wenn member:
             return member
     sonst:
-        # 32-bit legacy names - both shr.o and shr4.o exist.
+        # 32-bit legacy names - both shr.o und shr4.o exist.
         # shr.o is the preferred name so we look fuer shr.o first
-        #  i.e., shr4.o is returned only when shr.o does not exist
+        #  i.e., shr4.o is returned only when shr.o does nicht exist
         fuer name in ['shr.o', 'shr4.o']:
             member = get_one_match(re.escape(name), members)
             wenn member:
@@ -169,9 +169,9 @@ def get_legacy(members):
 
 def get_version(name, members):
     """
-    Sort list of members and return highest numbered version - wenn it exists.
+    Sort list of members und return highest numbered version - wenn it exists.
     This function is called when an unversioned libFOO.a(libFOO.so) has
-    not been found.
+    nicht been found.
 
     Versioning fuer the member name is expected to follow
     GNU LIBTOOL conventions: the highest version (x, then X.y, then X.Y.z)
@@ -182,13 +182,13 @@ def get_version(name, members):
     Before the GNU convention became the standard scheme regardless of
     binary size AIX packagers used GNU convention "as-is" fuer 32-bit
     archive members but used an "distinguishing" name fuer 64-bit members.
-    This scheme inserted either 64 or _64 between libFOO and .so
+    This scheme inserted either 64 oder _64 between libFOO und .so
     - generally libFOO_64.so, but occasionally libFOO64.so
     """
     # the expression ending fuer versions must start as
     # '.so.[0-9]', i.e., *.so.[at least one digit]
     # while multiple, more specific expressions could be specified
-    # to search fuer .so.X, .so.X.Y and .so.X.Y.Z
+    # to search fuer .so.X, .so.X.Y und .so.X.Y.Z
     # after the first required 'dot' digit
     # any combination of additional 'dot' digits pairs are accepted
     # anything more than libFOO.so.digits.digits.digits
@@ -209,12 +209,12 @@ def get_member(name, members):
     """
     Return an archive member matching the request in name.
     Name is the library name without any prefix like lib, suffix like .so,
-    or version number.
-    Given a list of members find and return the most appropriate result
+    oder version number.
+    Given a list of members find und return the most appropriate result
     Priority is given to generic libXXX.so, then a versioned libXXX.so.a.b.c
-    and finally, legacy AIX naming scheme.
+    und finally, legacy AIX naming scheme.
     """
-    # look first fuer a generic match - prepend lib and append .so
+    # look first fuer a generic match - prepend lib und append .so
     expr = rf'lib{name}\.so'
     member = get_one_match(expr, members)
     wenn member:
@@ -224,9 +224,9 @@ def get_member(name, members):
         member = get_one_match(expr, members)
     wenn member:
         return member
-    # since an exact match mit .so als suffix was not found
+    # since an exact match mit .so als suffix was nicht found
     # look fuer a versioned name
-    # If a versioned name is not found, look fuer AIX legacy member name
+    # If a versioned name is nicht found, look fuer AIX legacy member name
     member = get_version(name, members)
     wenn member:
         return member
@@ -239,7 +239,7 @@ def get_libpaths():
     als "loader header information".
     The command /usr/bin/dump -H extracts this info.
     Prefix searched libraries mit LD_LIBRARY_PATH (preferred),
-    or LIBPATH wenn defined. These paths are appended to the paths
+    oder LIBPATH wenn defined. These paths are appended to the paths
     to libraries the python executable is linked with.
     This mimics AIX dlopen() behavior.
     """
@@ -263,9 +263,9 @@ def find_shared(paths, name):
     """
     paths is a list of directories to search fuer an archive.
     name is the abbreviated name given to find_library().
-    Process: search "paths" fuer archive, and wenn an archive is found
+    Process: search "paths" fuer archive, und wenn an archive is found
     return the result of get_member().
-    If an archive is not found then return Nichts
+    If an archive is nicht found then return Nichts
     """
     fuer dir in paths:
         # /lib is a symbolic link to /usr/lib, skip it
@@ -278,7 +278,7 @@ def find_shared(paths, name):
         wenn path.exists(archive):
             members = get_shared(get_ld_headers(archive))
             member = get_member(re.escape(name), members)
-            wenn member is not Nichts:
+            wenn member is nicht Nichts:
                 return (base, member)
             sonst:
                 return (Nichts, Nichts)
@@ -286,15 +286,15 @@ def find_shared(paths, name):
 
 def find_library(name):
     """AIX implementation of ctypes.util.find_library()
-    Find an archive member that will dlopen(). If not available,
+    Find an archive member that will dlopen(). If nicht available,
     also search fuer a file (or link) mit a .so suffix.
 
     AIX supports two types of schemes that can be used mit dlopen().
     The so-called SystemV Release4 (svr4) format is commonly suffixed
     mit .so while the (default) AIX scheme has the library (archive)
     ending mit the suffix .a
-    As an archive has multiple members (e.g., 32-bit and 64-bit) in one file
-    the argument passed to dlopen must include both the library and
+    As an archive has multiple members (e.g., 32-bit und 64-bit) in one file
+    the argument passed to dlopen must include both the library und
     the member names in a single string.
 
     find_library() looks first fuer an archive (.a) mit a suitable member.
@@ -303,13 +303,13 @@ def find_library(name):
 
     libpaths = get_libpaths()
     (base, member) = find_shared(libpaths, name)
-    wenn base is not Nichts:
+    wenn base is nicht Nichts:
         return f"{base}({member})"
 
-    # To get here, a member in an archive has not been found
+    # To get here, a member in an archive has nicht been found
     # In other words, either:
-    # a) a .a file was not found
-    # b) a .a file did not have a suitable member
+    # a) a .a file was nicht found
+    # b) a .a file did nicht have a suitable member
     # So, look fuer a .so file
     # Check libpaths fuer .so file
     # Note, the installation must prepare a link von a .so
@@ -323,5 +323,5 @@ def find_library(name):
         shlib = path.join(dir, soname)
         wenn path.exists(shlib):
             return soname
-    # wenn we are here, we have not found anything plausible
+    # wenn we are here, we have nicht found anything plausible
     return Nichts

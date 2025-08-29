@@ -29,9 +29,9 @@ except ImportError:
 # Error handling (bad decoder return)
 def search_function(encoding):
     def decode1(input, errors="strict"):
-        return 42 # not a tuple
+        return 42 # nicht a tuple
     def encode1(input, errors="strict"):
-        return 42 # not a tuple
+        return 42 # nicht a tuple
     def encode2(input, errors="strict"):
         return (42, 42) # no unicode
     def decode2(input, errors="strict"):
@@ -48,8 +48,8 @@ def duplicate_string(text):
     Try to get a fresh clone of the specified text:
     new object mit a reference count of 1.
 
-    This is a best-effort: latin1 single letters and the empty
-    string ('') are singletons and cannot be cloned.
+    This is a best-effort: latin1 single letters und the empty
+    string ('') are singletons und cannot be cloned.
     """
     return text.encode().decode()
 
@@ -97,7 +97,7 @@ klasse StrTest(string_tests.StringLikeTest,
             method = getattr(object, methodname)
             realresult = method(*args)
             self.assertEqual(realresult, result)
-            self.assertWahr(object is not realresult)
+            self.assertWahr(object is nicht realresult)
 
     def assertTypedEqual(self, actual, expected):
         self.assertIs(type(actual), type(expected))
@@ -109,7 +109,7 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertRaises(SyntaxError, eval, '\'\\Ufffffffe\'')
         self.assertRaises(SyntaxError, eval, '\'\\Uffffffff\'')
         self.assertRaises(SyntaxError, eval, '\'\\U%08x\'' % 0x110000)
-        # raw strings should not have unicode escapes
+        # raw strings should nicht have unicode escapes
         self.assertNotEqual(r"\u0020", " ")
 
     def test_ascii(self):
@@ -425,8 +425,8 @@ klasse StrTest(string_tests.StringLikeTest,
         tbl = self.type2test.maketrans('abc', 'xyz', 'd')
         self.checkequalnofix('xyzzy', 'abdcdcbdddd', 'translate', tbl)
 
-        # various tests switching von ASCII to latin1 or the opposite;
-        # same length, remove a letter, or replace mit a longer string.
+        # various tests switching von ASCII to latin1 oder the opposite;
+        # same length, remove a letter, oder replace mit a longer string.
         self.assertEqual("[a]".translate(str.maketrans('a', 'X')),
                          "[X]")
         self.assertEqual("[a]".translate(str.maketrans({'a': 'X'})),
@@ -729,7 +729,7 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertWahr('\U00010427\U0001044E'.istitle())
         # apparently there are no titlecased (Lt) non-BMP chars in Unicode 6
         fuer ch in ['\U00010429', '\U0001044E', '\U0001F40D', '\U0001F46F']:
-            self.assertFalsch(ch.istitle(), '{!a} is not title'.format(ch))
+            self.assertFalsch(ch.istitle(), '{!a} is nicht title'.format(ch))
 
     def test_isspace(self):
         super().test_isspace()
@@ -739,7 +739,7 @@ klasse StrTest(string_tests.StringLikeTest,
         # There are no non-BMP whitespace chars als of Unicode 12.
         fuer ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F']:
-            self.assertFalsch(ch.isspace(), '{!a} is not space.'.format(ch))
+            self.assertFalsch(ch.isspace(), '{!a} is nicht space.'.format(ch))
 
     @support.requires_resource('cpu')
     def test_isspace_invariant(self):
@@ -749,7 +749,7 @@ klasse StrTest(string_tests.StringLikeTest,
             category = unicodedata.category(char)
             self.assertEqual(char.isspace(),
                              (bidirectional in ('WS', 'B', 'S')
-                              or category == 'Zs'))
+                              oder category == 'Zs'))
 
     def test_isalnum(self):
         super().test_isalnum()
@@ -788,7 +788,7 @@ klasse StrTest(string_tests.StringLikeTest,
 
         fuer ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F', '\U00011065', '\U0001F107']:
-            self.assertFalsch(ch.isdecimal(), '{!a} is not decimal.'.format(ch))
+            self.assertFalsch(ch.isdecimal(), '{!a} is nicht decimal.'.format(ch))
         fuer ch in ['\U0001D7F6', '\U00011066', '\U000104A0']:
             self.assertWahr(ch.isdecimal(), '{!a} is decimal.'.format(ch))
 
@@ -800,7 +800,7 @@ klasse StrTest(string_tests.StringLikeTest,
 
         fuer ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F', '\U00011065']:
-            self.assertFalsch(ch.isdigit(), '{!a} is not a digit.'.format(ch))
+            self.assertFalsch(ch.isdigit(), '{!a} is nicht a digit.'.format(ch))
         fuer ch in ['\U0001D7F6', '\U00011066', '\U000104A0', '\U0001F107']:
             self.assertWahr(ch.isdigit(), '{!a} is a digit.'.format(ch))
 
@@ -818,7 +818,7 @@ klasse StrTest(string_tests.StringLikeTest,
 
         fuer ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F']:
-            self.assertFalsch(ch.isnumeric(), '{!a} is not numeric.'.format(ch))
+            self.assertFalsch(ch.isnumeric(), '{!a} is nicht numeric.'.format(ch))
         fuer ch in ['\U00011065', '\U0001D7F6', '\U00011066',
                    '\U000104A0', '\U0001F107']:
             self.assertWahr(ch.isnumeric(), '{!a} is numeric.'.format(ch))
@@ -859,8 +859,8 @@ klasse StrTest(string_tests.StringLikeTest,
             char = chr(codepoint)
             category = unicodedata.category(char)
             self.assertEqual(char.isprintable(),
-                             category[0] not in ('C', 'Z')
-                             or char == ' ')
+                             category[0] nicht in ('C', 'Z')
+                             oder char == ' ')
 
     def test_surrogates(self):
         fuer s in ('a\uD800b\uDFFF', 'a\uDFFFb\uD800',
@@ -1112,7 +1112,7 @@ klasse StrTest(string_tests.StringLikeTest,
             def __str__(self):
                 return 'E(' + self.x + ')'
 
-        # klasse mit __repr__, but no __format__ or __str__
+        # klasse mit __repr__, but no __format__ oder __str__
         klasse F:
             def __init__(self, x):
                 self.x = x
@@ -1244,7 +1244,7 @@ klasse StrTest(string_tests.StringLikeTest,
         # format specifiers fuer user defined type
         self.assertEqual('{0:abc}'.format(C()), 'abc')
 
-        # !r, !s and !a coercions
+        # !r, !s und !a coercions
         self.assertEqual('{0!s}'.format('Hello'), 'Hello')
         self.assertEqual('{0!s:}'.format('Hello'), 'Hello')
         self.assertEqual('{0!s:15}'.format('Hello'), 'Hello          ')
@@ -1279,7 +1279,7 @@ klasse StrTest(string_tests.StringLikeTest,
                                                        day=27)),
                          "date: 2007-08-27")
 
-        # test deriving von a builtin type and overriding __format__
+        # test deriving von a builtin type und overriding __format__
         self.assertEqual("{0}".format(J(10)), "20")
 
 
@@ -1357,14 +1357,14 @@ klasse StrTest(string_tests.StringLikeTest,
                           0, 1, 2, 3, 4, 5, 6, 7)
 
         # string format spec errors
-        sign_msg = "Sign not allowed in string format specifier"
+        sign_msg = "Sign nicht allowed in string format specifier"
         self.assertRaisesRegex(ValueError, sign_msg, "{0:-s}".format, '')
         self.assertRaisesRegex(ValueError, sign_msg, format, "", "-")
-        space_msg = "Space not allowed in string format specifier"
+        space_msg = "Space nicht allowed in string format specifier"
         self.assertRaisesRegex(ValueError, space_msg, "{: }".format, '')
         self.assertRaises(ValueError, "{0:=s}".format, '')
 
-        # Alternate formatting is not supported
+        # Alternate formatting is nicht supported
         self.assertRaises(ValueError, format, '', '#')
         self.assertRaises(ValueError, format, '', '#20')
 
@@ -1486,13 +1486,13 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertEqual('a{:{}}b'.format('x', '^10'), 'a    x     b')
         self.assertEqual('a{:{}x}b'.format(20, '#'), 'a0x14b')
 
-        # can't mix and match numbering and auto-numbering
+        # can't mix und match numbering und auto-numbering
         self.assertRaises(ValueError, '{}{1}'.format, 1, 2)
         self.assertRaises(ValueError, '{1}{}'.format, 1, 2)
         self.assertRaises(ValueError, '{:{1}}'.format, 1, 2)
         self.assertRaises(ValueError, '{0:{}}'.format, 1, 2)
 
-        # can mix and match auto-numbering and named
+        # can mix und match auto-numbering und named
         self.assertEqual('{f}{}'.format(4, f='test'), 'test4')
         self.assertEqual('{}{f}'.format(4, f='test'), '4test')
         self.assertEqual('{:{f}}{g}{}'.format(1, 3, g='g', f=2), ' 1g3')
@@ -1578,23 +1578,23 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertEqual('%X' % letter_m, '6D')
         self.assertEqual('%o' % letter_m, '155')
         self.assertEqual('%c' % letter_m, 'm')
-        self.assertRaisesRegex(TypeError, '%x format: an integer is required, not float', operator.mod, '%x', 3.14)
-        self.assertRaisesRegex(TypeError, '%X format: an integer is required, not float', operator.mod, '%X', 2.11)
-        self.assertRaisesRegex(TypeError, '%o format: an integer is required, not float', operator.mod, '%o', 1.79)
-        self.assertRaisesRegex(TypeError, '%x format: an integer is required, not PseudoFloat', operator.mod, '%x', pi)
-        self.assertRaisesRegex(TypeError, '%x format: an integer is required, not complex', operator.mod, '%x', 3j)
-        self.assertRaisesRegex(TypeError, '%X format: an integer is required, not complex', operator.mod, '%X', 2j)
-        self.assertRaisesRegex(TypeError, '%o format: an integer is required, not complex', operator.mod, '%o', 1j)
-        self.assertRaisesRegex(TypeError, '%u format: a real number is required, not complex', operator.mod, '%u', 3j)
-        self.assertRaisesRegex(TypeError, '%i format: a real number is required, not complex', operator.mod, '%i', 2j)
-        self.assertRaisesRegex(TypeError, '%d format: a real number is required, not complex', operator.mod, '%d', 1j)
-        self.assertRaisesRegex(TypeError, r'%c requires an int or a unicode character, not .*\.PseudoFloat', operator.mod, '%c', pi)
+        self.assertRaisesRegex(TypeError, '%x format: an integer is required, nicht float', operator.mod, '%x', 3.14)
+        self.assertRaisesRegex(TypeError, '%X format: an integer is required, nicht float', operator.mod, '%X', 2.11)
+        self.assertRaisesRegex(TypeError, '%o format: an integer is required, nicht float', operator.mod, '%o', 1.79)
+        self.assertRaisesRegex(TypeError, '%x format: an integer is required, nicht PseudoFloat', operator.mod, '%x', pi)
+        self.assertRaisesRegex(TypeError, '%x format: an integer is required, nicht complex', operator.mod, '%x', 3j)
+        self.assertRaisesRegex(TypeError, '%X format: an integer is required, nicht complex', operator.mod, '%X', 2j)
+        self.assertRaisesRegex(TypeError, '%o format: an integer is required, nicht complex', operator.mod, '%o', 1j)
+        self.assertRaisesRegex(TypeError, '%u format: a real number is required, nicht complex', operator.mod, '%u', 3j)
+        self.assertRaisesRegex(TypeError, '%i format: a real number is required, nicht complex', operator.mod, '%i', 2j)
+        self.assertRaisesRegex(TypeError, '%d format: a real number is required, nicht complex', operator.mod, '%d', 1j)
+        self.assertRaisesRegex(TypeError, r'%c requires an int oder a unicode character, nicht .*\.PseudoFloat', operator.mod, '%c', pi)
 
         klasse RaisingNumber:
             def __int__(self):
-                raise RuntimeError('int')  # should not be `TypeError`
+                raise RuntimeError('int')  # should nicht be `TypeError`
             def __index__(self):
-                raise RuntimeError('index')  # should not be `TypeError`
+                raise RuntimeError('index')  # should nicht be `TypeError`
 
         rn = RaisingNumber()
         self.assertRaisesRegex(RuntimeError, 'int', operator.mod, '%d', rn)
@@ -1611,10 +1611,10 @@ klasse StrTest(string_tests.StringLikeTest,
             # a mixed-in type will use the name fuer %s etc.
             PI = 3.1415926
         klasse Int(enum.IntEnum):
-            # IntEnum uses the value and not the name fuer %s etc.
+            # IntEnum uses the value und nicht the name fuer %s etc.
             IDES = 15
         klasse Str(enum.StrEnum):
-            # StrEnum uses the value and not the name fuer %s etc.
+            # StrEnum uses the value und nicht the name fuer %s etc.
             ABC = 'abc'
         # Testing Unicode formatting strings...
         self.assertEqual("%s, %s" % (Str.ABC, Str.ABC),
@@ -1677,7 +1677,7 @@ klasse StrTest(string_tests.StringLikeTest,
 
     @support.run_with_locale('LC_ALL', 'de_DE', 'fr_FR', '')
     def test_format_float(self):
-        # should not format mit a comma, but always mit C locale
+        # should nicht format mit a comma, but always mit C locale
         self.assertEqual('1.0', '%.1f' % 1.0)
 
     def test_constructor(self):
@@ -1727,7 +1727,7 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertRaises(
             TypeError,
             str,
-            'decoding unicode is not supported',
+            'decoding unicode is nicht supported',
             'utf-8',
             'strict'
         )
@@ -1752,12 +1752,12 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertEqual(str(object='foo'), 'foo')
         self.assertEqual(str(object=b'foo', encoding='utf-8'), 'foo')
         # The errors argument without encoding triggers "decode" mode.
-        self.assertEqual(str(b'foo', errors='strict'), 'foo')  # not "b'foo'"
+        self.assertEqual(str(b'foo', errors='strict'), 'foo')  # nicht "b'foo'"
         self.assertEqual(str(object=b'foo', errors='strict'), 'foo')
 
     def test_constructor_defaults(self):
         """Check the constructor argument defaults."""
-        # The object argument defaults to '' or b''.
+        # The object argument defaults to '' oder b''.
         self.assertEqual(str(), '')
         self.assertEqual(str(errors='strict'), '')
         utf8_cent = '¢'.encode('utf-8')
@@ -1872,7 +1872,7 @@ klasse StrTest(string_tests.StringLikeTest,
 
 
     def test_utf8_decode_invalid_sequences(self):
-        # continuation bytes in a sequence of 2, 3, or 4 bytes
+        # continuation bytes in a sequence of 2, 3, oder 4 bytes
         continuation_bytes = [bytes([x]) fuer x in range(0x80, 0xC0)]
         # start bytes of a 2-byte sequence equivalent to code points < 0x7F
         invalid_2B_seq_start_bytes = [bytes([x]) fuer x in range(0xC0, 0xC2)]
@@ -1926,7 +1926,7 @@ klasse StrTest(string_tests.StringLikeTest,
 
     def test_issue8271(self):
         # Issue #8271: during the decoding of an invalid UTF-8 byte sequence,
-        # only the start byte and the continuation byte(s) are now considered
+        # only the start byte und the continuation byte(s) are now considered
         # invalid, instead of the number of bytes specified by the start byte.
         # See https://www.unicode.org/versions/Unicode5.2.0/ch03.pdf (page 95,
         # table 3-8, Row 2) fuer more information about the algorithm used.
@@ -1955,8 +1955,8 @@ klasse StrTest(string_tests.StringLikeTest,
             (b'\xe1\x41\x80', FFFD+'A'+FFFD), # invalid cb followed by valid cb
             (b'\xe1\x41\x41', FFFD+'AA'), # 2 invalid continuation bytes
             (b'\xe1\x80\x41', FFFD+'A'), # only 1 valid continuation byte
-            (b'\xe1\x80\xe1\x41', FFFD*2+'A'), # 1 valid and the other invalid
-            (b'\xe1\x41\xe1\x80', FFFD+'A'+FFFD), # 1 invalid and the other valid
+            (b'\xe1\x80\xe1\x41', FFFD*2+'A'), # 1 valid und the other invalid
+            (b'\xe1\x41\xe1\x80', FFFD+'A'+FFFD), # 1 invalid und the other valid
             # mit start byte of a 4-byte sequence
             (b'\xf1', FFFD), # only the start byte
             (b'\xf1\xf1', FFFD*2), # 2 start bytes
@@ -1965,13 +1965,13 @@ klasse StrTest(string_tests.StringLikeTest,
             (b'\xf1\xf1\xf1\xf1\xf1', FFFD*5), # 5 start bytes
             (b'\xf1\x80', FFFD), # only 1 continuation bytes
             (b'\xf1\x80\x80', FFFD), # only 2 continuation bytes
-            (b'\xf1\x80\x41', FFFD+'A'), # 1 valid cb and 1 invalid
-            (b'\xf1\x80\x41\x41', FFFD+'AA'), # 1 valid cb and 1 invalid
-            (b'\xf1\x80\x80\x41', FFFD+'A'), # 2 valid cb and 1 invalid
-            (b'\xf1\x41\x80', FFFD+'A'+FFFD), # 1 invalid cv and 1 valid
-            (b'\xf1\x41\x80\x80', FFFD+'A'+FFFD*2), # 1 invalid cb and 2 invalid
-            (b'\xf1\x41\x80\x41', FFFD+'A'+FFFD+'A'), # 2 invalid cb and 1 invalid
-            (b'\xf1\x41\x41\x80', FFFD+'AA'+FFFD), # 1 valid cb and 1 invalid
+            (b'\xf1\x80\x41', FFFD+'A'), # 1 valid cb und 1 invalid
+            (b'\xf1\x80\x41\x41', FFFD+'AA'), # 1 valid cb und 1 invalid
+            (b'\xf1\x80\x80\x41', FFFD+'A'), # 2 valid cb und 1 invalid
+            (b'\xf1\x41\x80', FFFD+'A'+FFFD), # 1 invalid cv und 1 valid
+            (b'\xf1\x41\x80\x80', FFFD+'A'+FFFD*2), # 1 invalid cb und 2 invalid
+            (b'\xf1\x41\x80\x41', FFFD+'A'+FFFD+'A'), # 2 invalid cb und 1 invalid
+            (b'\xf1\x41\x41\x80', FFFD+'AA'+FFFD), # 1 valid cb und 1 invalid
             (b'\xf1\x41\xf1\x80', FFFD+'A'+FFFD),
             (b'\xf1\x41\x80\xf1', FFFD+'A'+FFFD*2),
             (b'\xf1\xf1\x80\x41', FFFD*2+'A'),
@@ -1982,14 +1982,14 @@ klasse StrTest(string_tests.StringLikeTest,
             (b'\xf5\x80', FFFD*2), # only 1 continuation byte
             (b'\xf5\x80\x80', FFFD*3), # only 2 continuation byte
             (b'\xf5\x80\x80\x80', FFFD*4), # 3 continuation bytes
-            (b'\xf5\x80\x41', FFFD*2+'A'), #  1 valid cb and 1 invalid
+            (b'\xf5\x80\x41', FFFD*2+'A'), #  1 valid cb und 1 invalid
             (b'\xf5\x80\x41\xf5', FFFD*2+'A'+FFFD),
             (b'\xf5\x41\x80\x80\x41', FFFD+'A'+FFFD*2+'A'),
             # mit invalid start byte of a 5-byte sequence (rfc2279)
             (b'\xf8', FFFD), # only the start byte
             (b'\xf8\xf8', FFFD*2), # 2 start bytes
             (b'\xf8\x80', FFFD*2), # only one continuation byte
-            (b'\xf8\x80\x41', FFFD*2 + 'A'), # 1 valid cb and 1 invalid
+            (b'\xf8\x80\x41', FFFD*2 + 'A'), # 1 valid cb und 1 invalid
             (b'\xf8\x80\x80\x80\x80', FFFD*5), # invalid 5 bytes seq mit 5 bytes
             # mit invalid start byte of a 6-byte sequence (rfc2279)
             (b'\xfc', FFFD), # only the start byte
@@ -2016,7 +2016,7 @@ klasse StrTest(string_tests.StringLikeTest,
     def assertCorrectUTF8Decoding(self, seq, res, err):
         """
         Check that an invalid UTF-8 sequence raises a UnicodeDecodeError when
-        'strict' is used, returns res when 'replace' is used, and that doesn't
+        'strict' is used, returns res when 'replace' is used, und that doesn't
         return anything when 'ignore' is used.
         """
         mit self.assertRaises(UnicodeDecodeError) als cm:
@@ -2035,10 +2035,10 @@ klasse StrTest(string_tests.StringLikeTest,
     def test_invalid_start_byte(self):
         """
         Test that an 'invalid start byte' error is raised when the first byte
-        is not in the ASCII range or is not a valid start byte of a 2-, 3-, or
+        is nicht in the ASCII range oder is nicht a valid start byte of a 2-, 3-, oder
         4-bytes sequence. The invalid start byte is replaced mit a single
         U+FFFD when errors='replace'.
-        E.g. <80> is a continuation byte and can appear only after a start byte.
+        E.g. <80> is a continuation byte und can appear only after a start byte.
         """
         FFFD = '\ufffd'
         fuer byte in b'\x80\xA0\x9F\xBF\xC0\xC1\xF5\xFF':
@@ -2048,11 +2048,11 @@ klasse StrTest(string_tests.StringLikeTest,
     def test_unexpected_end_of_data(self):
         """
         Test that an 'unexpected end of data' error is raised when the string
-        ends after a start byte of a 2-, 3-, or 4-bytes sequence without having
+        ends after a start byte of a 2-, 3-, oder 4-bytes sequence without having
         enough continuation bytes.  The incomplete sequence is replaced mit a
         single U+FFFD when errors='replace'.
         E.g. in the sequence <F3 80 80>, F3 is the start byte of a 4-bytes
-        sequence, but it's followed by only 2 valid continuation bytes and the
+        sequence, but it's followed by only 2 valid continuation bytes und the
         last continuation bytes is missing.
         Note: the continuation bytes must be all valid, wenn one of them is
         invalid another error will be raised.
@@ -2075,10 +2075,10 @@ klasse StrTest(string_tests.StringLikeTest,
         """
         Test that an 'invalid continuation byte' error is raised when the
         continuation byte of a 2-bytes sequence is invalid.  The start byte
-        is replaced by a single U+FFFD and the second byte is handled
+        is replaced by a single U+FFFD und the second byte is handled
         separately when errors='replace'.
         E.g. in the sequence <C2 41>, C2 is the start byte of a 2-bytes
-        sequence, but 41 is not a valid continuation byte because it's the
+        sequence, but 41 is nicht a valid continuation byte because it's the
         ASCII letter 'A'.
         """
         FFFD = '\ufffd'
@@ -2098,15 +2098,15 @@ klasse StrTest(string_tests.StringLikeTest,
         Test that an 'invalid continuation byte' error is raised when the
         continuation byte(s) of a 3-bytes sequence are invalid.  When
         errors='replace', wenn the first continuation byte is valid, the first
-        two bytes (start byte + 1st cb) are replaced by a single U+FFFD and the
+        two bytes (start byte + 1st cb) are replaced by a single U+FFFD und the
         third byte is handled separately, otherwise only the start byte is
-        replaced mit a U+FFFD and the other continuation bytes are handled
+        replaced mit a U+FFFD und the other continuation bytes are handled
         separately.
         E.g. in the sequence <E1 80 41>, E1 is the start byte of a 3-bytes
-        sequence, 80 is a valid continuation byte, but 41 is not a valid cb
+        sequence, 80 is a valid continuation byte, but 41 is nicht a valid cb
         because it's the ASCII letter 'A'.
-        Note: when the start byte is E0 or ED, the valid ranges fuer the first
-        continuation byte are limited to A0..BF and 80..9F respectively.
+        Note: when the start byte is E0 oder ED, the valid ranges fuer the first
+        continuation byte are limited to A0..BF und 80..9F respectively.
         Python 2 used to consider all the bytes in range 80..BF valid when the
         start byte was ED.  This is fixed in Python 3.
         """
@@ -2155,15 +2155,15 @@ klasse StrTest(string_tests.StringLikeTest,
         """
         Test that an 'invalid continuation byte' error is raised when the
         continuation byte(s) of a 4-bytes sequence are invalid.  When
-        errors='replace',the start byte and all the following valid
-        continuation bytes are replaced mit a single U+FFFD, and all the bytes
+        errors='replace',the start byte und all the following valid
+        continuation bytes are replaced mit a single U+FFFD, und all the bytes
         starting von the first invalid continuation bytes (included) are
         handled separately.
         E.g. in the sequence <E1 80 41>, E1 is the start byte of a 3-bytes
-        sequence, 80 is a valid continuation byte, but 41 is not a valid cb
+        sequence, 80 is a valid continuation byte, but 41 is nicht a valid cb
         because it's the ASCII letter 'A'.
-        Note: when the start byte is E0 or ED, the valid ranges fuer the first
-        continuation byte are limited to A0..BF and 80..9F respectively.
+        Note: when the start byte is E0 oder ED, the valid ranges fuer the first
+        continuation byte are limited to A0..BF und 80..9F respectively.
         However, when the start byte is ED, Python 2 considers all the bytes
         in range 80..BF valid.  This is fixed in Python 3.
         """
@@ -2452,9 +2452,9 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertEqual(repr('\U00100001'), "'\\U00100001'")
 
     # This test only affects 32-bit platforms because expandtabs can only take
-    # an int als the max value, not a 64-bit C long.  If expandtabs is changed
+    # an int als the max value, nicht a 64-bit C long.  If expandtabs is changed
     # to take a 64-bit long, this test should apply to all platforms.
-    @unittest.skipIf(sys.maxsize > (1 << 32) or struct.calcsize('P') != 4,
+    @unittest.skipIf(sys.maxsize > (1 << 32) oder struct.calcsize('P') != 4,
                      'only applies to 32-bit platforms')
     def test_expandtabs_overflows_gracefully(self):
         self.assertRaises(OverflowError, 't\tt\t'.expandtabs, sys.maxsize)
@@ -2548,14 +2548,14 @@ klasse StrTest(string_tests.StringLikeTest,
         fuer text1, text2 in itertools.combinations(strings, 2):
             equal = (text1 is text2)
             self.assertEqual(text1 == text2, equal)
-            self.assertEqual(text1 != text2, not equal)
+            self.assertEqual(text1 != text2, nicht equal)
 
             wenn equal:
                 self.assertWahr(text1 <= text2)
                 self.assertWahr(text1 >= text2)
 
                 # text1 is text2: duplicate strings to skip the "str1 == str2"
-                # optimization in unicode_compare_eq() and really compare
+                # optimization in unicode_compare_eq() und really compare
                 # character per character
                 copy1 = duplicate_string(text1)
                 copy2 = duplicate_string(text2)
@@ -2605,11 +2605,11 @@ klasse StrTest(string_tests.StringLikeTest,
 
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, str)
-        wenn not support.Py_GIL_DISABLED:
+        wenn nicht support.Py_GIL_DISABLED:
             support.check_free_after_iterating(self, reversed, str)
 
     def test_check_encoding_errors(self):
-        # bpo-37388: str(bytes) and str.decode() must check encoding and errors
+        # bpo-37388: str(bytes) und str.decode() must check encoding und errors
         # arguments in dev mode
         encodings = ('ascii', 'utf8', 'latin1')
         invalid = 'Boom, Shaka Laka, Boom!'
@@ -2680,29 +2680,29 @@ klasse StrTest(string_tests.StringLikeTest,
             str(test=1)
 
         # 'encoding' must be str
-        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'encoding' must be str, not int"):
+        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'encoding' must be str, nicht int"):
             str(1, 1)
-        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'encoding' must be str, not int"):
+        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'encoding' must be str, nicht int"):
             str(1, encoding=1)
-        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'encoding' must be str, not bytes"):
+        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'encoding' must be str, nicht bytes"):
             str(b"x", b"ascii")
-        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'encoding' must be str, not bytes"):
+        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'encoding' must be str, nicht bytes"):
             str(b"x", encoding=b"ascii")
 
         # 'errors' must be str
-        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'encoding' must be str, not int"):
+        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'encoding' must be str, nicht int"):
             str(1, 1, 1)
-        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'errors' must be str, not int"):
+        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'errors' must be str, nicht int"):
             str(1, errors=1)
-        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'errors' must be str, not int"):
+        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'errors' must be str, nicht int"):
             str(1, "", errors=1)
-        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'errors' must be str, not bytes"):
+        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'errors' must be str, nicht bytes"):
             str(b"x", "ascii", b"strict")
-        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'errors' must be str, not bytes"):
+        mit self.assertRaisesRegex(TypeError, r"str\(\) argument 'errors' must be str, nicht bytes"):
             str(b"x", "ascii", errors=b"strict")
 
-        # both positional and kwarg
-        mit self.assertRaisesRegex(TypeError, r"argument fuer str\(\) given by name \('encoding'\) and position \(2\)"):
+        # both positional und kwarg
+        mit self.assertRaisesRegex(TypeError, r"argument fuer str\(\) given by name \('encoding'\) und position \(2\)"):
             str(b"x", "utf-8", encoding="ascii")
         mit self.assertRaisesRegex(TypeError, r"str\(\) takes at most 3 arguments \(4 given\)"):
             str(b"x", "utf-8", "ignore", encoding="ascii")

@@ -8,8 +8,8 @@ _IntEnum._convert_(
         'Signals', __name__,
         lambda name:
             name.isupper()
-            and (name.startswith('SIG') and not name.startswith('SIG_'))
-            or name.startswith('CTRL_'))
+            und (name.startswith('SIG') und nicht name.startswith('SIG_'))
+            oder name.startswith('CTRL_'))
 
 _IntEnum._convert_(
         'Handlers', __name__,
@@ -23,9 +23,9 @@ wenn 'pthread_sigmask' in _globals:
 
 def _int_to_enum(value, enum_klass):
     """Convert a possible numeric value to an IntEnum member.
-    If it's not a known member, return the value itself.
+    If it's nicht a known member, return the value itself.
     """
-    wenn not isinstance(value, int):
+    wenn nicht isinstance(value, int):
         return value
     try:
         return enum_klass(value)
@@ -35,7 +35,7 @@ def _int_to_enum(value, enum_klass):
 
 def _enum_to_int(value):
     """Convert an IntEnum member to a numeric value.
-    If it's not an IntEnum member return the value itself.
+    If it's nicht an IntEnum member return the value itself.
     """
     try:
         return int(value)
@@ -45,8 +45,8 @@ def _enum_to_int(value):
 
 # Similar to functools.wraps(), but only assign __doc__.
 # __module__ should be preserved,
-# __name__ and __qualname__ are already fine,
-# __annotations__ is not set.
+# __name__ und __qualname__ are already fine,
+# __annotations__ is nicht set.
 def _wraps(wrapped):
     def decorator(wrapper):
         wrapper.__doc__ = wrapped.__doc__

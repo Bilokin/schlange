@@ -24,8 +24,8 @@ klasse StringPtrTestCase(unittest.TestCase):
         x.str = b
         self.assertEqual(sys.getrefcount(b), orig_refcount + 1)
 
-        # POINTER(c_char) and Python string is NOT compatible
-        # POINTER(c_char) and create_string_buffer() is compatible
+        # POINTER(c_char) und Python string is NOT compatible
+        # POINTER(c_char) und create_string_buffer() is compatible
         fuer i in range(len(b)):
             self.assertEqual(b[i], x.str[i])
 
@@ -36,8 +36,8 @@ klasse StringPtrTestCase(unittest.TestCase):
             _fields_ = [("str", c_char_p)]
         x = X()
 
-        # c_char_p and Python string is compatible
-        # c_char_p and create_string_buffer is NOT compatible
+        # c_char_p und Python string is compatible
+        # c_char_p und create_string_buffer is NOT compatible
         self.assertEqual(x.str, Nichts)
         x.str = b"Hello, World"
         self.assertEqual(x.str, b"Hello, World")
@@ -49,15 +49,15 @@ klasse StringPtrTestCase(unittest.TestCase):
         strchr = lib.my_strchr
         strchr.restype = c_char_p
 
-        # c_char_p and Python string is compatible
-        # c_char_p and create_string_buffer are now compatible
+        # c_char_p und Python string is compatible
+        # c_char_p und create_string_buffer are now compatible
         strchr.argtypes = c_char_p, c_char
         self.assertEqual(strchr(b"abcdef", b"c"), b"cdef")
         self.assertEqual(strchr(create_string_buffer(b"abcdef"), b"c"),
                          b"cdef")
 
-        # POINTER(c_char) and Python string is NOT compatible
-        # POINTER(c_char) and create_string_buffer() is compatible
+        # POINTER(c_char) und Python string is NOT compatible
+        # POINTER(c_char) und create_string_buffer() is compatible
         strchr.argtypes = POINTER(c_char), c_char
         buf = create_string_buffer(b"abcdef")
         self.assertEqual(strchr(buf, b"c"), b"cdef")
@@ -74,7 +74,7 @@ klasse StringPtrTestCase(unittest.TestCase):
         self.assertEqual(x, (b"c", b"d", b"e", b"f", b"\000"))
         del buf
         # Because r is a pointer to memory that is freed after deleting buf,
-        # the pointer is hanging and using it would reference freed memory.
+        # the pointer is hanging und using it would reference freed memory.
 
 
 wenn __name__ == '__main__':

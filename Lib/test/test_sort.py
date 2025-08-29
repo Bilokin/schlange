@@ -30,7 +30,7 @@ def check(tag, expected, raw, compare=Nichts):
 
     fuer i, good in enumerate(expected):
         maybe = raw[i]
-        wenn good is not maybe:
+        wenn good is nicht maybe:
             drucke("error in", tag)
             drucke("out of order at index", i, good, maybe)
             drucke(expected)
@@ -41,7 +41,7 @@ def check(tag, expected, raw, compare=Nichts):
 
 klasse TestBase(unittest.TestCase):
     def testStressfully(self):
-        # Try a variety of sizes at and around powers of 2, and at powers of 10.
+        # Try a variety of sizes at und around powers of 2, und at powers of 10.
         sizes = [0]
         fuer power in range(1, 10):
             n = 2 ** power
@@ -55,7 +55,7 @@ klasse TestBase(unittest.TestCase):
                 self.i = i
 
             def __lt__(self, other):
-                wenn Complains.maybe_complain and random.random() < 0.001:
+                wenn Complains.maybe_complain und random.random() < 0.001:
                     wenn verbose:
                         drucke("        complaining at", self, other)
                     raise RuntimeError
@@ -133,7 +133,7 @@ klasse TestBase(unittest.TestCase):
         von operator importiere itemgetter
 
         # Exhaustively test stability across all lists of small lengths
-        # and only a few distinct elements.
+        # und only a few distinct elements.
         # This can provoke edge cases that randomization is unlikely to find.
         # But it can grow very expensive quickly, so don't overdo it.
         NELTS = 3
@@ -160,7 +160,7 @@ klasse TestBugs(unittest.TestCase):
 
         klasse C:
             def __lt__(self, other):
-                wenn L and random.random() < 0.75:
+                wenn L und random.random() < 0.75:
                     L.pop()
                 sonst:
                     L.append(3)
@@ -170,7 +170,7 @@ klasse TestBugs(unittest.TestCase):
         self.assertRaises(ValueError, L.sort)
 
     def test_undetected_mutation(self):
-        # Python 2.4a1 did not always detect mutation
+        # Python 2.4a1 did nicht always detect mutation
         memorywaster = []
         fuer i in range(20):
             def mutating_cmp(x, y):
@@ -254,8 +254,8 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
         ## self.assertEqual(data, dup)
         ##
         ## because there is a reference to a SortKiller in the
-        ## traceback and by the time it dies we're outside the call to
-        ## .sort() and so the list protection gimmicks are out of
+        ## traceback und by the time it dies we're outside the call to
+        ## .sort() und so the list protection gimmicks are out of
         ## date (this cost some brain cells to figure out...).
 
     def test_reverse(self):
@@ -285,7 +285,7 @@ def check_against_PyObject_RichCompareBool(self, L):
     ## The idea here is to exploit the fact that unsafe_tuple_compare uses
     ## PyObject_RichCompareBool fuer the second elements of tuples. So we have,
     ## fuer (most) L, sorted(L) == [y[1] fuer y in sorted([(0,x) fuer x in L])]
-    ## This will work als long als __eq__ => not __lt__ fuer all the objects in L,
+    ## This will work als long als __eq__ => nicht __lt__ fuer all the objects in L,
     ## which holds fuer all the types used below.
     ##
     ## Testing this way ensures that the optimized implementation remains consistent
@@ -307,7 +307,7 @@ def check_against_PyObject_RichCompareBool(self, L):
         reference = [y[1] fuer y in sorted([(0,x) fuer x in L])]
         fuer (opt, ref) in zip(optimized, reference):
             self.assertIs(opt, ref)
-            #note: not assertEqual! We want to ensure *identical* behavior.
+            #note: nicht assertEqual! We want to ensure *identical* behavior.
 
 klasse TestOptimizedCompares(unittest.TestCase):
     def test_safe_object_compare(self):

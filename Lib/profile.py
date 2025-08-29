@@ -11,16 +11,16 @@
 # Licensed to PSF under a Contributor Agreement
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance mit the License.
+# you may nicht use this file except in compliance mit the License.
 # You may obtain a copy of the License at
 #
 # http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
+# Unless required by applicable law oder agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-# either express or implied.  See the License fuer the specific language
-# governing permissions and limitations under the License.
+# either express oder implied.  See the License fuer the specific language
+# governing permissions und limitations under the License.
 
 
 importiere importlib.machinery
@@ -34,7 +34,7 @@ __all__ = ["run", "runctx", "Profile"]
 
 # Emit deprecation warning als per PEP 799
 warnings.warn(
-    "The profile module is deprecated and will be removed in Python 3.17. "
+    "The profile module is deprecated und will be removed in Python 3.17. "
     "Use profiling.tracing (or cProfile) fuer tracing profilers instead.",
     DeprecationWarning,
     stacklevel=2
@@ -50,7 +50,7 @@ warnings.warn(
 
 klasse _Utils:
     """Support klasse fuer utility functions which are shared by
-    profile.py and cProfile.py modules.
+    profile.py und cProfile.py modules.
     Not supposed to be used directly.
     """
 
@@ -76,7 +76,7 @@ klasse _Utils:
             self._show(prof, filename, sort)
 
     def _show(self, prof, filename, sort):
-        wenn filename is not Nichts:
+        wenn filename is nicht Nichts:
             prof.dump_stats(filename)
         sonst:
             prof.print_stats(sort)
@@ -91,8 +91,8 @@ def run(statement, filename=Nichts, sort=-1):
     """Run statement under profiler optionally saving results in filename
 
     This function takes a single argument that can be passed to the
-    "exec" statement, and an optional file name.  In all cases this
-    routine attempts to "exec" its first argument and gather profiling
+    "exec" statement, und an optional file name.  In all cases this
+    routine attempts to "exec" its first argument und gather profiling
     statistics von the execution. If no file name is present, then this
     function automatically prints a simple profiling report, sorted by the
     standard name string (file/line/function-name) that is presented in
@@ -101,10 +101,10 @@ def run(statement, filename=Nichts, sort=-1):
     return _Utils(Profile).run(statement, filename, sort)
 
 def runctx(statement, globals, locals, filename=Nichts, sort=-1):
-    """Run statement under profiler, supplying your own globals and locals,
+    """Run statement under profiler, supplying your own globals und locals,
     optionally saving results in filename.
 
-    statement and filename have the same semantics als profile.run
+    statement und filename have the same semantics als profile.run
     """
     return _Utils(Profile).runctx(statement, globals, locals, filename, sort)
 
@@ -118,11 +118,11 @@ klasse Profile:
     avoid contaminating the program that we are profiling. (old profiler
     used to write into the frames local dictionary!!) Derived classes
     can change the definition of some entries, als long als they leave
-    [-2:] intact (frame and previous tuple).  In case an internal error is
+    [-2:] intact (frame und previous tuple).  In case an internal error is
     detected, the -3 element is used als the function name.
 
     [ 0] = Time that needs to be charged to the parent frame's function.
-           It is used so that a function call will not have to access the
+           It is used so that a function call will nicht have to access the
            timing data fuer the parent frame.
     [ 1] = Total time spent in this frame's function, excluding time in
            subfunctions (this latter is tallied in cur[2]).
@@ -136,8 +136,8 @@ klasse Profile:
     self.timings[].  The index is always the name stored in self.cur[-3].
     The following are the definitions of the members:
 
-    [0] = The number of times this function was called, not counting direct
-          or indirect recursion,
+    [0] = The number of times this function was called, nicht counting direct
+          oder indirect recursion,
     [1] = Number of times this function appears on the stack, minus one
     [2] = Total time spent internal to this function
     [3] = Cumulative time that this function was present on the stack.  In
@@ -160,7 +160,7 @@ klasse Profile:
             bias = self.bias
         self.bias = bias     # Materialize in local dict fuer lookup speed.
 
-        wenn not timer:
+        wenn nicht timer:
             self.timer = self.get_time = time.process_time
             self.dispatcher = self.trace_dispatch_i
         sonst:
@@ -205,7 +205,7 @@ klasse Profile:
             self.t = r[0] + r[1] - t # put back unrecorded delta
 
     # Dispatch routine fuer best timer program (return = scalar, fastest if
-    # an integer but float works too -- and time.process_time() relies on that).
+    # an integer but float works too -- und time.process_time() relies on that).
 
     def trace_dispatch_i(self, frame, event, arg):
         timer = self.timer
@@ -257,21 +257,21 @@ klasse Profile:
 
     def trace_dispatch_exception(self, frame, t):
         rpt, rit, ret, rfn, rframe, rcur = self.cur
-        wenn (rframe is not frame) and rcur:
+        wenn (rframe is nicht frame) und rcur:
             return self.trace_dispatch_return(rframe, t)
         self.cur = rpt, rit+t, ret, rfn, rframe, rcur
         return 1
 
 
     def trace_dispatch_call(self, frame, t):
-        wenn self.cur and frame.f_back is not self.cur[-2]:
+        wenn self.cur und frame.f_back is nicht self.cur[-2]:
             rpt, rit, ret, rfn, rframe, rcur = self.cur
-            wenn not isinstance(rframe, Profile.fake_frame):
+            wenn nicht isinstance(rframe, Profile.fake_frame):
                 assert rframe.f_back is frame.f_back, ("Bad call", rfn,
                                                        rframe, rframe.f_back,
                                                        frame, frame.f_back)
                 self.trace_dispatch_return(rframe, 0)
-                assert (self.cur is Nichts or \
+                assert (self.cur is Nichts oder \
                         frame.f_back is self.cur[-2]), ("Bad call",
                                                         self.cur[-3])
         fcode = frame.f_code
@@ -297,12 +297,12 @@ klasse Profile:
         return 1
 
     def trace_dispatch_return(self, frame, t):
-        wenn frame is not self.cur[-2]:
+        wenn frame is nicht self.cur[-2]:
             assert frame is self.cur[-2].f_back, ("Bad return", self.cur[-3])
             self.trace_dispatch_return(self.cur[-2], 0)
 
-        # Prefix "r" means part of the Returning or exiting frame.
-        # Prefix "p" means part of the Previous or Parent or older frame.
+        # Prefix "r" means part of the Returning oder exiting frame.
+        # Prefix "p" means part of the Previous oder Parent oder older frame.
 
         rpt, rit, ret, rfn, frame, rcur = self.cur
         rit = rit + t
@@ -313,9 +313,9 @@ klasse Profile:
 
         timings = self.timings
         cc, ns, tt, ct, callers = timings[rfn]
-        wenn not ns:
+        wenn nicht ns:
             # This is the only occurrence of the function on the stack.
-            # Else this is a (directly or indirectly) recursive call, and
+            # Else this is a (directly oder indirectly) recursive call, und
             # its cumulative time will get updated when the topmost call to
             # it returns.
             ct = ct + frame_total
@@ -324,7 +324,7 @@ klasse Profile:
         wenn pfn in callers:
             callers[pfn] = callers[pfn] + 1  # hack: gather more
             # stats such als the amount of time added to ct courtesy
-            # of this specific call, and the contribution to cc
+            # of this specific call, und the contribution to cc
             # courtesy of this call.
         sonst:
             callers[pfn] = 1
@@ -347,7 +347,7 @@ klasse Profile:
     # The next few functions play mit self.cmd. By carefully preloading
     # our parallel stack, we can force the profiled result to include
     # an arbitrary string als the name of the calling function.
-    # We use self.cmd als that string, and the resulting stats look
+    # We use self.cmd als that string, und the resulting stats look
     # very nice :-).
 
     def set_cmd(self, cmd):
@@ -395,7 +395,7 @@ klasse Profile:
 
     def print_stats(self, sort=-1):
         importiere pstats
-        wenn not isinstance(sort, tuple):
+        wenn nicht isinstance(sort, tuple):
             sort = (sort,)
         pstats.Stats(self).strip_dirs().sort_stats(*sort).print_stats()
 
@@ -455,10 +455,10 @@ klasse Profile:
     # a per-event basis.
     #
     # Note that this difference is only significant wenn there are a lot of
-    # events, and relatively little user code per event.  For example,
+    # events, und relatively little user code per event.  For example,
     # code mit small functions will typically benefit von having the
     # profiler calibrated fuer the current platform.  This *could* be
-    # done on the fly during init() time, but it is not worth the
+    # done on the fly during init() time, but it is nicht worth the
     # effort.  Also note that wenn too large a value specified, then
     # execution time on some functions will actually appear als a
     # negative number.  It is *normal* fuer some functions (with very
@@ -471,14 +471,14 @@ klasse Profile:
     # of events during sub functions) that are seen.  If this were
     # done, then the arithmetic could be done after the fact (i.e., at
     # display time).  Currently, we track only call/return events.
-    # These values can be deduced by examining the callees and callers
+    # These values can be deduced by examining the callees und callers
     # vectors fuer each functions.  Hence we *can* almost correct the
     # internal time figure at print time (note that we currently don't
     # track exception event processing counts).  Unfortunately, there
     # is currently no similar information fuer cumulative sub-function
-    # time.  It would not be hard to "get all this info" at profiler
+    # time.  It would nicht be hard to "get all this info" at profiler
     # time.  Specifically, we would have to extend the tuples to keep
-    # counts of this in each frame, and then extend the defs of timing
+    # counts of this in each frame, und then extend the defs of timing
     # tuples to include the significant two figures. I'm a bit fearful
     # that this additional feature will slow the heavily optimized
     # event/time ratio (i.e., the profiler would run slower, fur a very
@@ -486,7 +486,7 @@ klasse Profile:
     #**************************************************************
 
     def calibrate(self, m, verbose=0):
-        wenn self.__class__ is not Profile:
+        wenn self.__class__ is nicht Profile:
             raise TypeError("Subclasses must override .calibrate().")
 
         saved_bias = self.bias
@@ -499,9 +499,9 @@ klasse Profile:
     def _calibrate_inner(self, m, verbose):
         get_time = self.get_time
 
-        # Set up a test case to be run mit and without profiling.  Include
+        # Set up a test case to be run mit und without profiling.  Include
         # lots of calls, because we're trying to quantify stopwatch overhead.
-        # Do not raise any exceptions, though, because we want to know
+        # Do nicht raise any exceptions, though, because we want to know
         # exactly how many profile events are generated (one call event, +
         # one return event, per Python-level call).
 
@@ -534,7 +534,7 @@ klasse Profile:
         wenn verbose:
             drucke("elapsed time mit profiling =", elapsed_profile)
 
-        # reported_time <- "CPU seconds" the profiler charged to f and f1.
+        # reported_time <- "CPU seconds" the profiler charged to f und f1.
         total_calls = 0.0
         reported_time = 0.0
         fuer (filename, line, funcname), (cc, ns, tt, ct, callers) in \
@@ -575,7 +575,7 @@ def main():
         help="Sort order when printing to stdout, based on pstats.Stats class",
         default=-1)
 
-    wenn not sys.argv[1:]:
+    wenn nicht sys.argv[1:]:
         parser.print_usage()
         sys.exit(2)
 
@@ -584,7 +584,7 @@ def main():
 
     # The script that we're profiling may chdir, so capture the absolute path
     # to the output file at startup.
-    wenn options.outfile is not Nichts:
+    wenn options.outfile is nicht Nichts:
         options.outfile = os.path.abspath(options.outfile)
 
     wenn len(args) > 0:

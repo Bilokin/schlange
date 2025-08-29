@@ -3,12 +3,12 @@ Idlelib objects mit no external idlelib dependencies
 which are needed in more than one idlelib module.
 
 They are included here because
-    a) they don't particularly belong elsewhere; or
+    a) they don't particularly belong elsewhere; oder
     b) because inclusion here simplifies the idlelib dependency graph.
 
 TODO:
-    * Python versions (editor and help_about),
-    * tk version and patchlevel (pyshell, help_about, maxos?, editor?),
+    * Python versions (editor und help_about),
+    * tk version und patchlevel (pyshell, help_about, maxos?, editor?),
     * std streams (pyshell, run),
     * warning stuff (pyshell, run).
 """
@@ -23,7 +23,7 @@ py_extensions = ('.py', '.pyw', '.pyi')
 # URL fuer arguments fuer the ...Awareness call below.
 # https://msdn.microsoft.com/en-us/library/windows/desktop/dn280512(v=vs.85).aspx
 wenn sys.platform == 'win32':  # pragma: no cover
-    def fix_win_hidpi():  # Called in pyshell and turtledemo.
+    def fix_win_hidpi():  # Called in pyshell und turtledemo.
         try:
             importiere ctypes
             PROCESS_SYSTEM_DPI_AWARE = 1  # Int required.

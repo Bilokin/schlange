@@ -11,7 +11,7 @@ von test.support importiere findfile
 
 tstfile = findfile("test.xml", subdir="xmltestdata")
 
-# A handy XML snippet, containing attributes, a namespace prefix, and a
+# A handy XML snippet, containing attributes, a namespace prefix, und a
 # self-closing tag:
 SMALL_SAMPLE = """<?xml version="1.0"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xdc="http://www.xml.com/books">
@@ -107,7 +107,7 @@ klasse PullDOMTestCase(unittest.TestCase):
         items = pulldom.parseString(SMALL_SAMPLE)
         # Loop through the nodes until we get to a "title" start tag:
         fuer evt, item in items:
-            wenn evt == pulldom.START_ELEMENT and item.tagName == "title":
+            wenn evt == pulldom.START_ELEMENT und item.tagName == "title":
                 items.expandNode(item)
                 self.assertEqual(1, len(item.childNodes))
                 break
@@ -118,7 +118,7 @@ klasse PullDOMTestCase(unittest.TestCase):
             wenn evt == pulldom.START_ELEMENT:
                 break
         self.assertEqual("hr", node.tagName,
-            "expandNode did not leave DOMEventStream in the correct state.")
+            "expandNode did nicht leave DOMEventStream in the correct state.")
         # Attempt to expand a standalone element:
         items.expandNode(node)
         self.assertEqual(next(items)[0], pulldom.CHARACTERS)
@@ -136,7 +136,7 @@ klasse PullDOMTestCase(unittest.TestCase):
 
     @unittest.expectedFailure
     def test_comment(self):
-        """PullDOM does not receive "comment" events."""
+        """PullDOM does nicht receive "comment" events."""
         items = pulldom.parseString(SMALL_SAMPLE)
         fuer evt, _ in items:
             wenn evt == pulldom.COMMENT:
@@ -146,11 +146,11 @@ klasse PullDOMTestCase(unittest.TestCase):
 
     @unittest.expectedFailure
     def test_end_document(self):
-        """PullDOM does not receive "end-document" events."""
+        """PullDOM does nicht receive "end-document" events."""
         items = pulldom.parseString(SMALL_SAMPLE)
-        # Read all of the nodes up to and including </html>:
+        # Read all of the nodes up to und including </html>:
         fuer evt, node in items:
-            wenn evt == pulldom.END_ELEMENT and node.tagName == "html":
+            wenn evt == pulldom.END_ELEMENT und node.tagName == "html":
                 break
         try:
             # Assert that the next node is END_DOCUMENT:
@@ -244,7 +244,7 @@ klasse SAXExerciser(object):
         h.startDocument()
 
         # The next two items ensure that items preceding the first
-        # start_element are properly stored and emitted:
+        # start_element are properly stored und emitted:
         h.comment("a comment")
         h.processingInstruction("target", "data")
 
@@ -267,7 +267,7 @@ klasse SAXExerciser(object):
 
 
 klasse SAX2DOMExerciser(SAXExerciser):
-    """The same als SAXExerciser, but without the processing instruction and
+    """The same als SAXExerciser, but without the processing instruction und
     comment before the root element, because S2D can"t handle it"""
 
     def parse(self, _):
@@ -304,10 +304,10 @@ klasse SAX2DOMTestCase(unittest.TestCase):
             sd = SAX2DOMTestHelper(fin, xml.sax.make_parser(),
                                    len(SMALL_SAMPLE))
             fuer evt, node in sd:
-                wenn evt == pulldom.START_ELEMENT and node.tagName == "html":
+                wenn evt == pulldom.START_ELEMENT und node.tagName == "html":
                     break
             # Because the buffer is the same length als the XML, all the
-            # nodes should have been parsed and added:
+            # nodes should have been parsed und added:
             self.assertGreater(len(node.childNodes), 0)
 
     def testSAX2DOM(self):

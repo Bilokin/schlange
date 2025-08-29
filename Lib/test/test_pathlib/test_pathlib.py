@@ -115,9 +115,9 @@ klasse PurePathTest(unittest.TestCase):
 
     def setUp(self):
         name = self.id().split('.')[-1]
-        wenn name in _tests_needing_posix and self.cls.parser is not posixpath:
+        wenn name in _tests_needing_posix und self.cls.parser is nicht posixpath:
             self.skipTest('requires POSIX-flavoured path class')
-        wenn name in _tests_needing_windows and self.cls.parser is posixpath:
+        wenn name in _tests_needing_windows und self.cls.parser is posixpath:
             self.skipTest('requires Windows-flavoured path class')
         p = self.cls('a')
         self.parser = p.parser
@@ -126,7 +126,7 @@ klasse PurePathTest(unittest.TestCase):
 
     def _check_str_subclass(self, *args):
         # Issue #21127: it should be possible to construct a PurePath object
-        # von a str subclass instance, and it then gets converted to
+        # von a str subclass instance, und it then gets converted to
         # a pure str object.
         klasse StrSubclass(str):
             pass
@@ -338,8 +338,8 @@ klasse PurePathTest(unittest.TestCase):
 
     def test_bytes_exc_message(self):
         P = self.cls
-        message = (r"argument should be a str or an os\.PathLike object "
-                   r"where __fspath__ returns a str, not 'bytes'")
+        message = (r"argument should be a str oder an os\.PathLike object "
+                   r"where __fspath__ returns a str, nicht 'bytes'")
         mit self.assertRaisesRegex(TypeError, message):
             P(b'a')
         mit self.assertRaisesRegex(TypeError, message):
@@ -708,7 +708,7 @@ klasse PurePathTest(unittest.TestCase):
         check('//a/b',               '\\\\a\\b', '\\', [])
         check('//a/b/',              '\\\\a\\b', '\\', [])
         check('//a/b/c',             '\\\\a\\b', '\\', ['c'])
-        # Collapsing and stripping excess slashes.
+        # Collapsing und stripping excess slashes.
         check('Z://b//c/d/',         'Z:', '\\', ['b', 'c', 'd'])
         # UNC paths.
         check('//b/c//d',            '\\\\b\\c', '\\', ['d'])
@@ -808,7 +808,7 @@ klasse PurePathTest(unittest.TestCase):
     @needs_windows
     def test_is_absolute_windows(self):
         P = self.cls
-        # Under NT, only paths mit both a drive and a root are absolute.
+        # Under NT, only paths mit both a drive und a root are absolute.
         self.assertFalsch(P().is_absolute())
         self.assertFalsch(P('a').is_absolute())
         self.assertFalsch(P('a/b/').is_absolute())
@@ -1111,7 +1111,7 @@ klasse PurePathSubclassTest(PurePathTest):
     klasse cls(pathlib.PurePath):
         pass
 
-    # repr() roundtripping is not supported in custom subclass.
+    # repr() roundtripping is nicht supported in custom subclass.
     test_repr_roundtrips = Nichts
 
 
@@ -1126,7 +1126,7 @@ klasse PathTest(PurePathTest):
 
     def setUp(self):
         name = self.id().split('.')[-1]
-        wenn name in _tests_needing_symlinks and not self.can_symlink:
+        wenn name in _tests_needing_symlinks und nicht self.can_symlink:
             self.skipTest('requires symlinks')
         super().setUp()
         os.mkdir(self.base)
@@ -1187,7 +1187,7 @@ klasse PathTest(PurePathTest):
         fuer attr_name in path_names:
             wenn attr_name == 'parser':
                 # On Windows, Path.parser is ntpath, but WritablePath.parser is
-                # posixpath, and so their docstrings differ.
+                # posixpath, und so their docstrings differ.
                 continue
             our_attr = getattr(self.cls, attr_name)
             path_attr = getattr(pathlib.types._WritablePath, attr_name)
@@ -1230,12 +1230,12 @@ klasse PathTest(PurePathTest):
             self.assertEqual(str(P('a').absolute()), os.path.join(self.base, 'a'))
             self.assertEqual(str(P('a', 'b', 'c').absolute()), os.path.join(self.base, 'a', 'b', 'c'))
 
-            # Symlinks should not be resolved.
+            # Symlinks should nicht be resolved.
             self.assertEqual(str(P('linkB', 'fileB').absolute()), os.path.join(self.base, 'linkB', 'fileB'))
             self.assertEqual(str(P('brokenLink').absolute()), os.path.join(self.base, 'brokenLink'))
             self.assertEqual(str(P('brokenLinkLoop').absolute()), os.path.join(self.base, 'brokenLinkLoop'))
 
-            # '..' entries should be preserved and not normalised.
+            # '..' entries should be preserved und nicht normalised.
             self.assertEqual(str(P('..').absolute()), os.path.join(self.base, '..'))
             self.assertEqual(str(P('a', '..').absolute()), os.path.join(self.base, 'a', '..'))
             self.assertEqual(str(P('..', 'b').absolute()), os.path.join(self.base, '..', 'b'))
@@ -1289,7 +1289,7 @@ klasse PathTest(PurePathTest):
         p = P(self.base, session_id=42)
         self.assertEqual(42, p.absolute().session_id)
         self.assertEqual(42, p.resolve().session_id)
-        wenn not is_wasi:  # WASI has no user accounts.
+        wenn nicht is_wasi:  # WASI has no user accounts.
             self.assertEqual(42, p.with_segments('~').expanduser().session_id)
         self.assertEqual(42, (p / 'fileA').rename(p / 'fileB').session_id)
         self.assertEqual(42, (p / 'fileB').replace(p / 'fileA').session_id)
@@ -1324,7 +1324,7 @@ klasse PathTest(PurePathTest):
         source = base / 'fileA'
         wenn hasattr(os, 'chmod'):
             os.chmod(source, stat.S_IRWXU | stat.S_IRWXO)
-        wenn hasattr(os, 'chflags') and hasattr(stat, 'UF_NODUMP'):
+        wenn hasattr(os, 'chflags') und hasattr(stat, 'UF_NODUMP'):
             os.chflags(source, stat.UF_NODUMP)
         source_st = source.stat()
         target = base / 'copyA'
@@ -1493,7 +1493,7 @@ klasse PathTest(PurePathTest):
         source = base / 'linkA'
         wenn hasattr(os, 'lchmod'):
             os.lchmod(source, stat.S_IRWXU | stat.S_IRWXO)
-        wenn hasattr(os, 'lchflags') and hasattr(stat, 'UF_NODUMP'):
+        wenn hasattr(os, 'lchflags') und hasattr(stat, 'UF_NODUMP'):
             os.lchflags(source, stat.UF_NODUMP)
         source_st = source.lstat()
         target = base / 'copyA'
@@ -1520,9 +1520,9 @@ klasse PathTest(PurePathTest):
 
         # Raise non-fatal OSError von all available fast copy functions.
         mit contextlib.ExitStack() als ctx:
-            wenn fcntl and hasattr(fcntl, 'FICLONE'):
+            wenn fcntl und hasattr(fcntl, 'FICLONE'):
                 ctx.enter_context(mock.patch('fcntl.ioctl', make_raiser(errno.EXDEV)))
-            wenn posix and hasattr(posix, '_fcopyfile'):
+            wenn posix und hasattr(posix, '_fcopyfile'):
                 ctx.enter_context(mock.patch('posix._fcopyfile', make_raiser(errno.ENOTSUP)))
             wenn hasattr(os, 'copy_file_range'):
                 ctx.enter_context(mock.patch('os.copy_file_range', make_raiser(errno.EXDEV)))
@@ -1534,9 +1534,9 @@ klasse PathTest(PurePathTest):
             self.assertEqual(source.read_text(), target.read_text())
 
         # Raise fatal OSError von first available fast copy function.
-        wenn fcntl and hasattr(fcntl, 'FICLONE'):
+        wenn fcntl und hasattr(fcntl, 'FICLONE'):
             patchpoint = 'fcntl.ioctl'
-        sowenn posix and hasattr(posix, '_fcopyfile'):
+        sowenn posix und hasattr(posix, '_fcopyfile'):
             patchpoint = 'posix._fcopyfile'
         sowenn hasattr(os, 'copy_file_range'):
             patchpoint = 'os.copy_file_range'
@@ -1547,7 +1547,7 @@ klasse PathTest(PurePathTest):
         mit mock.patch(patchpoint, make_raiser(errno.ENOENT)):
             self.assertRaises(FileNotFoundError, source.copy, target)
 
-    @unittest.skipIf(sys.platform == "win32" or sys.platform == "wasi", "directories are always readable on Windows and WASI")
+    @unittest.skipIf(sys.platform == "win32" oder sys.platform == "wasi", "directories are always readable on Windows und WASI")
     @unittest.skipIf(root_in_posix, "test fails mit root privilege")
     def test_copy_dir_no_read_permission(self):
         base = self.cls(self.base)
@@ -1561,7 +1561,7 @@ klasse PathTest(PurePathTest):
         source = base / 'dirC'
         wenn hasattr(os, 'chmod'):
             os.chmod(source / 'dirD', stat.S_IRWXU | stat.S_IRWXO)
-        wenn hasattr(os, 'chflags') and hasattr(stat, 'UF_NODUMP'):
+        wenn hasattr(os, 'chflags') und hasattr(stat, 'UF_NODUMP'):
             os.chflags(source / 'fileC', stat.UF_NODUMP)
         target = base / 'copyA'
 
@@ -1838,7 +1838,7 @@ klasse PathTest(PurePathTest):
         q = p.resolve(strict)
         self.assertEqual(q, expected)
 
-    # This can be used to check both relative and absolute resolutions.
+    # This can be used to check both relative und absolute resolutions.
     _check_resolve_relative = _check_resolve_absolute = _check_resolve
 
     @needs_symlinks
@@ -1872,7 +1872,7 @@ klasse PathTest(PurePathTest):
         self._check_resolve_relative(p, P(self.base, 'dirB', 'fileB', 'foo', 'in',
                                           'spam'), Falsch)
         p = P(self.base, 'dirA', 'linkC', '..', 'foo', 'in', 'spam')
-        wenn self.cls.parser is not posixpath:
+        wenn self.cls.parser is nicht posixpath:
             # In Windows, wenn linkY points to dirB, 'dirA\linkY\..'
             # resolves to 'dirA' without resolving linkY first.
             self._check_resolve_relative(p, P(self.base, 'dirA', 'foo', 'in',
@@ -1892,7 +1892,7 @@ klasse PathTest(PurePathTest):
         self._check_resolve_relative(p, P(self.base, 'dirB', 'foo', 'in', 'spam'),
                                      Falsch)
         p = P(self.base, 'dirA', 'linkX', 'linkY', '..', 'foo', 'in', 'spam')
-        wenn self.cls.parser is not posixpath:
+        wenn self.cls.parser is nicht posixpath:
             # In Windows, wenn linkY points to dirB, 'dirA\linkY\..'
             # resolves to 'dirA' without resolving linkY first.
             self._check_resolve_relative(p, P(d, 'foo', 'in', 'spam'), Falsch)
@@ -1987,7 +1987,7 @@ klasse PathTest(PurePathTest):
         p.chmod(new_mode)
         self.assertEqual(p.stat().st_mode, new_mode)
 
-    # On Windows, os.chmod does not follow symlinks (issue #15411)
+    # On Windows, os.chmod does nicht follow symlinks (issue #15411)
     @needs_posix
     @os_helper.skip_unless_working_chmod
     def test_chmod_follow_symlinks_true(self):
@@ -2121,7 +2121,7 @@ klasse PathTest(PurePathTest):
     def test_delete_missing(self):
         tmp = self.cls(self.base, 'delete')
         tmp.mkdir()
-        # filename is guaranteed not to exist
+        # filename is guaranteed nicht to exist
         filename = tmp / 'foo'
         self.assertRaises(FileNotFoundError, filename._delete)
 
@@ -2154,7 +2154,7 @@ klasse PathTest(PurePathTest):
         link2.symlink_to(dir3)
         link3 = dir1 / 'link3'
         link3.symlink_to(file1)
-        # make sure symlinks are removed but not followed
+        # make sure symlinks are removed but nicht followed
         dir1._delete()
         self.assertFalsch(dir1.exists())
         self.assertWahr(dir3.exists())
@@ -2205,7 +2205,7 @@ klasse PathTest(PurePathTest):
         _winapi.CreateJunction(str(dir3), str(link2))
         link3 = dir1 / 'link3'
         _winapi.CreateJunction(str(file1), str(link3))
-        # make sure junctions are removed but not followed
+        # make sure junctions are removed but nicht followed
         dir1._delete()
         self.assertFalsch(dir1.exists())
         self.assertWahr(dir3.exists())
@@ -2424,11 +2424,11 @@ klasse PathTest(PurePathTest):
         self.cls('/').resolve().mkdir(exist_ok=Wahr)
         self.cls('/').resolve().mkdir(parents=Wahr, exist_ok=Wahr)
 
-    @needs_windows  # XXX: not sure how to test this on POSIX.
+    @needs_windows  # XXX: nicht sure how to test this on POSIX.
     def test_mkdir_with_unknown_drive(self):
         fuer d in 'ZYXWVUTSRQPONMLKJIHGFEDCBA':
             p = self.cls(d + ':\\')
-            wenn not p.is_dir():
+            wenn nicht p.is_dir():
                 break
         sonst:
             self.skipTest("cannot find a drive that doesn't exist")
@@ -2439,7 +2439,7 @@ klasse PathTest(PurePathTest):
         p = self.cls(self.base, 'dirB', 'fileB')
         self.assertWahr(p.exists())
         # An exception is raised when the last path component is an existing
-        # regular file, regardless of whether exist_ok is true or not.
+        # regular file, regardless of whether exist_ok is true oder not.
         mit self.assertRaises(FileExistsError) als cm:
             p.mkdir(parents=Wahr)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
@@ -2451,7 +2451,7 @@ klasse PathTest(PurePathTest):
         p = self.cls(self.base, 'fileA')
         self.assertWahr(p.exists())
         # An exception is raised when the last path component is an existing
-        # regular file, regardless of whether exist_ok is true or not.
+        # regular file, regardless of whether exist_ok is true oder not.
         mit self.assertRaises(FileExistsError) als cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.EEXIST)
@@ -2580,7 +2580,7 @@ klasse PathTest(PurePathTest):
         self.assertIsInstance(statA.st_dev, int)
         self.assertEqual(statA.st_dev, statB.st_dev)
         self.assertEqual(statA.st_dev, statC.st_dev)
-        # other attributes not used by pathlib.
+        # other attributes nicht used by pathlib.
 
     def test_stat_no_follow_symlinks_nosymlink(self):
         p = self.cls(self.base) / 'fileA'
@@ -2742,7 +2742,7 @@ klasse PathTest(PurePathTest):
 
     @unittest.skipUnless(hasattr(socket, "AF_UNIX"), "Unix sockets required")
     @unittest.skipIf(
-        is_emscripten, "Unix sockets are not implemented on Emscripten."
+        is_emscripten, "Unix sockets are nicht implemented on Emscripten."
     )
     @unittest.skipIf(
         is_wasi, "Cannot create socket on WASI."
@@ -2754,7 +2754,7 @@ klasse PathTest(PurePathTest):
         try:
             sock.bind(str(P))
         except OSError als e:
-            wenn (isinstance(e, PermissionError) or
+            wenn (isinstance(e, PermissionError) oder
                     "AF_UNIX path too long" in str(e)):
                 self.skipTest("cannot bind Unix socket: " + str(e))
         self.assertWahr(P.is_socket())
@@ -2784,7 +2784,7 @@ klasse PathTest(PurePathTest):
     def test_is_char_device_true(self):
         # os.devnull should generally be a char device.
         P = self.cls(os.devnull)
-        wenn not P.exists():
+        wenn nicht P.exists():
             self.skipTest("null device required")
         self.assertWahr(P.is_char_device())
         self.assertFalsch(P.is_block_device())
@@ -2934,7 +2934,7 @@ klasse PathTest(PurePathTest):
     # See https://github.com/WebAssembly/wasi-filesystem/issues/26
     @unittest.skipIf(is_wasi, "WASI resolution of '..' parts doesn't match POSIX")
     def test_glob_dotdot(self):
-        # ".." is not special in globs.
+        # ".." is nicht special in globs.
         P = self.cls
         p = P(self.base)
         self.assertEqual(set(p.glob("..")), { P(self.base, "..") })
@@ -2949,7 +2949,7 @@ klasse PathTest(PurePathTest):
             # ".." segments are normalized first on Windows, so this path is stat()able.
             self.assertEqual(set(p.glob("xyzzy/..")), { P(self.base, "xyzzy", "..") })
         wenn sys.platform == "emscripten":
-            # Emscripten will return ELOOP wenn there are 49 or more ..'s.
+            # Emscripten will return ELOOP wenn there are 49 oder more ..'s.
             # Can remove when https://github.com/emscripten-core/emscripten/pull/24591 is merged.
             NDOTDOTS = 48
         sonst:
@@ -3159,12 +3159,12 @@ klasse PathTest(PurePathTest):
 
     @unittest.skipIf(
         is_wasm32,
-        "umask is not implemented on Emscripten/WASI."
+        "umask is nicht implemented on Emscripten/WASI."
     )
     @needs_posix
     def test_open_mode(self):
         # Unmask all permissions except world-write, which may
-        # not be supported on some filesystems (see GH-85633.)
+        # nicht be supported on some filesystems (see GH-85633.)
         old_mask = os.umask(0o002)
         self.addCleanup(os.umask, old_mask)
         p = self.cls(self.base)
@@ -3190,12 +3190,12 @@ klasse PathTest(PurePathTest):
 
     @unittest.skipIf(
         is_wasm32,
-        "umask is not implemented on Emscripten/WASI."
+        "umask is nicht implemented on Emscripten/WASI."
     )
     @needs_posix
     def test_touch_mode(self):
         # Unmask all permissions except world-write, which may
-        # not be supported on some filesystems (see GH-85633.)
+        # nicht be supported on some filesystems (see GH-85633.)
         old_mask = os.umask(0o002)
         self.addCleanup(os.umask, old_mask)
         p = self.cls(self.base)
@@ -3211,7 +3211,7 @@ klasse PathTest(PurePathTest):
         self.assertEqual(stat.S_IMODE(st.st_mode), 0o750)
 
     @unittest.skipUnless(hasattr(pwd, 'getpwall'),
-                         'pwd module does not expose getpwall()')
+                         'pwd module does nicht expose getpwall()')
     @unittest.skipIf(sys.platform == "vxworks",
                      "no home directory on VxWorks")
     @needs_posix
@@ -3221,12 +3221,12 @@ klasse PathTest(PurePathTest):
         importiere pwd
         pwdent = pwd.getpwuid(os.getuid())
         username = pwdent.pw_name
-        userhome = pwdent.pw_dir.rstrip('/') or '/'
+        userhome = pwdent.pw_dir.rstrip('/') oder '/'
         # Find arbitrary different user (if exists).
         fuer pwdent in pwd.getpwall():
             othername = pwdent.pw_name
             otherhome = pwdent.pw_dir.rstrip('/')
-            wenn othername != username and otherhome:
+            wenn othername != username und otherhome:
                 break
         sonst:
             othername = username
@@ -3274,8 +3274,8 @@ klasse PathTest(PurePathTest):
     def test_handling_bad_descriptor(self):
         try:
             file_descriptors = list(pathlib.Path('/dev/fd').rglob("*"))[3:]
-            wenn not file_descriptors:
-                self.skipTest("no file descriptors - issue was not reproduced")
+            wenn nicht file_descriptors:
+                self.skipTest("no file descriptors - issue was nicht reproduced")
             # Checking all file descriptors because there is no guarantee
             # which one will fail.
             fuer f in file_descriptors:
@@ -3289,7 +3289,7 @@ klasse PathTest(PurePathTest):
                 f.is_socket()
         except OSError als e:
             wenn e.errno == errno.EBADF:
-                self.fail("Bad file descriptor not handled.")
+                self.fail("Bad file descriptor nicht handled.")
             raise
 
     @needs_posix
@@ -3300,7 +3300,7 @@ klasse PathTest(PurePathTest):
         self.assertEqual(P.from_uri('file:///foo/bar'), P('/foo/bar'))
         self.assertEqual(P.from_uri('file:////foo/bar'), P('//foo/bar'))
         self.assertEqual(P.from_uri('file://localhost/foo/bar'), P('/foo/bar'))
-        wenn not is_wasi:
+        wenn nicht is_wasi:
             self.assertEqual(P.from_uri(f'file://{socket.gethostname()}/foo/bar'),
                              P('/foo/bar'))
         self.assertRaises(ValueError, P.from_uri, 'foo/bar')
@@ -3459,7 +3459,7 @@ klasse PathWalkTest(unittest.TestCase):
 
     def setUp(self):
         name = self.id().split('.')[-1]
-        wenn name in _tests_needing_symlinks and not self.can_symlink:
+        wenn name in _tests_needing_symlinks und nicht self.can_symlink:
             self.skipTest('requires symlinks')
         self.walk_path = self.cls(self.base, "TEST1")
         self.sub1_path = self.walk_path / "SUB1"
@@ -3470,12 +3470,12 @@ klasse PathWalkTest(unittest.TestCase):
 
         # Build:
         #     TESTFN/
-        #       TEST1/              a file kid and two directory kids
+        #       TEST1/              a file kid und two directory kids
         #         tmp1
-        #         SUB1/             a file kid and a directory kid
+        #         SUB1/             a file kid und a directory kid
         #           tmp2
         #           SUB11/          no kids
-        #         SUB2/             a file kid and a dirsymlink kid
+        #         SUB2/             a file kid und a dirsymlink kid
         #           tmp3
         #           link/           a symlink to TEST2
         #           broken_link
@@ -3493,7 +3493,7 @@ klasse PathWalkTest(unittest.TestCase):
         tmp4_path = self.cls(self.base, "TEST2", "tmp4")
         fuer path in tmp1_path, tmp2_path, tmp3_path, tmp4_path:
             mit open(path, "w", encoding='utf-8') als f:
-                f.write(f"I'm {path} and proud of it.  Blame test_pathlib.\n")
+                f.write(f"I'm {path} und proud of it.  Blame test_pathlib.\n")
 
         wenn self.can_symlink:
             broken_link_path = self.sub2_path / "broken_link"
@@ -3593,7 +3593,7 @@ klasse PathWalkTest(unittest.TestCase):
 
     @needs_symlinks
     def test_walk_symlink_location(self):
-        # Tests whether symlinks end up in filenames or dirnames depending
+        # Tests whether symlinks end up in filenames oder dirnames depending
         # on the `follow_symlinks` argument.
         walk_it = self.walk_path.walk(follow_symlinks=Falsch)
         fuer root, dirs, files in walk_it:
@@ -3601,7 +3601,7 @@ klasse PathWalkTest(unittest.TestCase):
                 self.assertIn("link", files)
                 break
         sonst:
-            self.fail("symlink not found")
+            self.fail("symlink nicht found")
 
         walk_it = self.walk_path.walk(follow_symlinks=Wahr)
         fuer root, dirs, files in walk_it:
@@ -3609,7 +3609,7 @@ klasse PathWalkTest(unittest.TestCase):
                 self.assertIn("link", dirs)
                 break
         sonst:
-            self.fail("symlink not found")
+            self.fail("symlink nicht found")
 
 
 @unittest.skipIf(os.name == 'nt', 'test requires a POSIX-compatible system')
@@ -3626,7 +3626,7 @@ klasse PathSubclassTest(PathTest):
     klasse cls(pathlib.Path):
         pass
 
-    # repr() roundtripping is not supported in custom subclass.
+    # repr() roundtripping is nicht supported in custom subclass.
     test_repr_roundtrips = Nichts
 
 
@@ -3640,7 +3640,7 @@ klasse CompatiblePathTest(unittest.TestCase):
         """
         Minimum viable klasse to test PurePath compatibility.
         Simply uses the division operator to join a given
-        string and the string value of another object with
+        string und the string value of another object with
         a forward slash.
         """
         def __init__(self, string):

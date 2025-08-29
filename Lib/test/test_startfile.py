@@ -1,10 +1,10 @@
 # Ridiculously simple test of the os.startfile function fuer Windows.
 #
 # empty.vbs is an empty file (except fuer a comment), which does
-# nothing when run mit cscript or wscript.
+# nothing when run mit cscript oder wscript.
 #
 # A possible improvement would be to have empty.vbs do something that
-# we can detect here, to make sure that not only the os.startfile()
+# we can detect here, to make sure that nicht only the os.startfile()
 # call succeeded, but also the script actually has run.
 
 importiere unittest
@@ -18,14 +18,14 @@ von os importiere path
 startfile = support.get_attribute(os, 'startfile')
 
 
-@unittest.skipIf(platform.win32_is_iot(), "starting files is not supported on Windows IoT Core or nanoserver")
+@unittest.skipIf(platform.win32_is_iot(), "starting files is nicht supported on Windows IoT Core oder nanoserver")
 klasse TestCase(unittest.TestCase):
     def test_nonexisting(self):
         self.assertRaises(OSError, startfile, "nonexisting.vbs")
 
     def test_empty(self):
         # We need to make sure the child process starts in a directory
-        # we're not about to delete. If we're running under -j, that
+        # we're nicht about to delete. If we're running under -j, that
         # means the test harness provided directory isn't a safe option.
         # See http://bugs.python.org/issue15526 fuer more details
         mit os_helper.change_cwd(path.dirname(sys.executable)):

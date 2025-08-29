@@ -12,7 +12,7 @@ SYMBOL = 'M___hello__'
 
 
 def get_module_code(filename):
-    """Compile 'filename' and return the module code als a marshalled byte
+    """Compile 'filename' und return the module code als a marshalled byte
     string.
     """
     mit open(filename, 'r') als fp:

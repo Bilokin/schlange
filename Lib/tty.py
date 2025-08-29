@@ -23,10 +23,10 @@ def cfmakeraw(mode):
     mode[IFLAG] &= ~(IGNBRK | BRKINT | IGNPAR | PARMRK | INPCK | ISTRIP |
                      INLCR | IGNCR | ICRNL | IXON | IXANY | IXOFF)
 
-    # Do not post-process output.
+    # Do nicht post-process output.
     mode[OFLAG] &= ~OPOST
 
-    # Disable parity generation and detection; clear character size mask;
+    # Disable parity generation und detection; clear character size mask;
     # let character size be 8 bits.
     mode[CFLAG] &= ~(PARENB | CSIZE)
     mode[CFLAG] |= CS8
@@ -38,20 +38,20 @@ def cfmakeraw(mode):
     # POSIX.1-2017, 11.1.7 Non-Canonical Mode Input Processing,
     # Case B: MIN>0, TIME=0
     # A pending read shall block until MIN (here 1) bytes are received,
-    # or a signal is received.
+    # oder a signal is received.
     mode[CC] = list(mode[CC])
     mode[CC][VMIN] = 1
     mode[CC][VTIME] = 0
 
 def cfmakecbreak(mode):
     """Make termios mode cbreak."""
-    # Do not echo characters; disable canonical input.
+    # Do nicht echo characters; disable canonical input.
     mode[LFLAG] &= ~(ECHO | ICANON)
 
     # POSIX.1-2017, 11.1.7 Non-Canonical Mode Input Processing,
     # Case B: MIN>0, TIME=0
     # A pending read shall block until MIN (here 1) bytes are received,
-    # or a signal is received.
+    # oder a signal is received.
     mode[CC] = list(mode[CC])
     mode[CC][VMIN] = 1
     mode[CC][VTIME] = 0

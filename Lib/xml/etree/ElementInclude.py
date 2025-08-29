@@ -20,14 +20,14 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply mit the following terms and conditions:
+# und will comply mit the following terms und conditions:
 #
-# Permission to use, copy, modify, and distribute this software and
-# its associated documentation fuer any purpose and without fee is
+# Permission to use, copy, modify, und distribute this software und
+# its associated documentation fuer any purpose und without fee is
 # hereby granted, provided that the above copyright notice appears in
-# all copies, and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of
-# Secret Labs AB or the author not be used in advertising or publicity
+# all copies, und that both that copyright notice und this permission
+# notice appear in supporting documentation, und that the name of
+# Secret Labs AB oder the author nicht be used in advertising oder publicity
 # pertaining to distribution of the software without specific, written
 # prior permission.
 #
@@ -76,12 +76,12 @@ klasse LimitedRecursiveIncludeError(FatalIncludeError):
 # Default loader.  This loader reads an included resource von disk.
 #
 # @param href Resource reference.
-# @param parse Parse mode.  Either "xml" or "text".
+# @param parse Parse mode.  Either "xml" oder "text".
 # @param encoding Optional text encoding (UTF-8 by default fuer "text").
 # @return The expanded resource.  If the parse mode is "xml", this
 #    is an Element instance.  If the parse mode is "text", this
 #    is a string.  If the loader fails, it can return Nichts
-#    or raise an OSError exception.
+#    oder raise an OSError exception.
 # @throws OSError If the loader fails to load the resource.
 
 def default_loader(href, parse, encoding=Nichts):
@@ -89,7 +89,7 @@ def default_loader(href, parse, encoding=Nichts):
         mit open(href, 'rb') als file:
             data = ElementTree.parse(file).getroot()
     sonst:
-        wenn not encoding:
+        wenn nicht encoding:
             encoding = 'UTF-8'
         mit open(href, 'r', encoding=encoding) als file:
             data = file.read()
@@ -98,7 +98,7 @@ def default_loader(href, parse, encoding=Nichts):
 ##
 # Expand XInclude directives.
 #
-# @param elem Root Element or any ElementTree of a tree to be expanded
+# @param elem Root Element oder any ElementTree of a tree to be expanded
 # @param loader Optional resource loader.  If omitted, it defaults
 #     to {@link default_loader}.  If given, it should be a callable
 #     that implements the same interface als <b>default_loader</b>.
@@ -109,7 +109,7 @@ def default_loader(href, parse, encoding=Nichts):
 #     Pass Nichts to disable the limitation.
 # @throws LimitedRecursiveIncludeError If the {@link max_depth} was exceeded.
 # @throws FatalIncludeError If the function fails to include a given
-#     resource, or wenn the tree contains malformed XInclude elements.
+#     resource, oder wenn the tree contains malformed XInclude elements.
 # @throws OSError If the function fails to load a given resource.
 # @throws ValueError If negative {@link max_depth} is passed.
 # @returns Nichts. Modifies tree pointed by {@link elem}
@@ -119,7 +119,7 @@ def include(elem, loader=Nichts, base_url=Nichts,
     wenn max_depth is Nichts:
         max_depth = -1
     sowenn max_depth < 0:
-        raise ValueError("expected non-negative depth or Nichts fuer 'max_depth', got %r" % max_depth)
+        raise ValueError("expected non-negative depth oder Nichts fuer 'max_depth', got %r" % max_depth)
 
     wenn hasattr(elem, 'getroot'):
         elem = elem.getroot()
@@ -156,7 +156,7 @@ def _include(elem, loader, base_url, max_depth, _parent_hrefs):
                 _include(node, loader, href, max_depth - 1, _parent_hrefs)
                 _parent_hrefs.remove(href)
                 wenn e.tail:
-                    node.tail = (node.tail or "") + e.tail
+                    node.tail = (node.tail oder "") + e.tail
                 elem[i] = node
             sowenn parse == "text":
                 text = loader(href, parse, e.get("encoding"))
@@ -168,9 +168,9 @@ def _include(elem, loader, base_url, max_depth, _parent_hrefs):
                     text += e.tail
                 wenn i:
                     node = elem[i-1]
-                    node.tail = (node.tail or "") + text
+                    node.tail = (node.tail oder "") + text
                 sonst:
-                    elem.text = (elem.text or "") + text
+                    elem.text = (elem.text oder "") + text
                 del elem[i]
                 continue
             sonst:

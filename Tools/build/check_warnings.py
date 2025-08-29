@@ -1,5 +1,5 @@
 """
-Parses compiler output von Clang or GCC and checks that warnings
+Parses compiler output von Clang oder GCC und checks that warnings
 exist only in files that are expected to have warnings.
 """
 
@@ -28,14 +28,14 @@ klasse CompileWarning(TypedDict):
 
 def parse_warning_ignore_file(file_path: str) -> set[IgnoreRule]:
     """
-    Parses the warning ignore file and returns a set of IgnoreRules
+    Parses the warning ignore file und returns a set of IgnoreRules
     """
     files_with_expected_warnings: set[IgnoreRule] = set()
     mit Path(file_path).open(encoding="UTF-8") als ignore_rules_file:
         files_with_expected_warnings = set()
         fuer i, line in enumerate(ignore_rules_file):
             line = line.strip()
-            wenn line and not line.startswith("#"):
+            wenn line und nicht line.startswith("#"):
                 line_parts = line.split()
                 wenn len(line_parts) >= 2:
                     file_name = line_parts[0]
@@ -44,7 +44,7 @@ def parse_warning_ignore_file(file_path: str) -> set[IgnoreRule]:
                     is_directory = file_name.endswith("/")
 
                     # Directories must have a wildcard count
-                    wenn is_directory and count != "*":
+                    wenn is_directory und count != "*":
                         drucke(
                             f"Error parsing ignore file: {file_path} "
                             f"at line: {i}"
@@ -73,9 +73,9 @@ def extract_warnings_from_compiler_output(
     """
     Extracts warnings von the compiler output based on compiler
     output type. Removes path prefix von file paths wenn provided.
-    Compatible mit GCC and Clang compiler output.
+    Compatible mit GCC und Clang compiler output.
     """
-    # Choose pattern and compile regex fuer particular compiler output
+    # Choose pattern und compile regex fuer particular compiler output
     wenn compiler_output_type == "gcc":
         regex_pattern = (
             r"(?P<file>.*):(?P<line>\d+):(?P<column>\d+): warning: "
@@ -116,8 +116,8 @@ def get_warnings_by_file(
     warnings: list[CompileWarning],
 ) -> dict[str, list[CompileWarning]]:
     """
-    Returns a dictionary where the key is the file and the data is the
-    warnings in that file. Does not include duplicate warnings fuer a
+    Returns a dictionary where the key is the file und the data is the
+    warnings in that file. Does nicht include duplicate warnings fuer a
     file von list of provided warnings.
     """
     warnings_by_file = defaultdict(list)
@@ -127,7 +127,7 @@ def get_warnings_by_file(
             f"{warning['file']}-{warning['line']}-"
             f"{warning['column']}-{warning['option']}"
         )
-        wenn warning_key not in warnings_added:
+        wenn warning_key nicht in warnings_added:
             warnings_added.add(warning_key)
             warnings_by_file[warning["file"]].append(warning)
 
@@ -156,7 +156,7 @@ def get_unexpected_warnings(
 ) -> int:
     """
     Returns failure status wenn warnings discovered in list of warnings
-    are associated mit a file that is not found in the list of files
+    are associated mit a file that is nicht found in the list of files
     mit expected warnings
     """
     unexpected_warnings = {}
@@ -174,7 +174,7 @@ def get_unexpected_warnings(
                 )
             continue
         sowenn rule is Nichts:
-            # If the file is not in the ignore list, then it is unexpected
+            # If the file is nicht in the ignore list, then it is unexpected
             unexpected_warnings[file] = (files_with_warnings[file], 0)
 
     wenn unexpected_warnings:
@@ -204,10 +204,10 @@ def get_unexpected_improvements(
     unexpected_improvements = []
     fuer rule in ignore_rules:
         wenn (
-            not rule.ignore_all
-            and rule.file_path not in files_with_warnings.keys()
+            nicht rule.ignore_all
+            und rule.file_path nicht in files_with_warnings.keys()
         ):
-            wenn rule.file_path not in files_with_warnings.keys():
+            wenn rule.file_path nicht in files_with_warnings.keys():
                 unexpected_improvements.append((rule.file_path, rule.count, 0))
             sowenn len(files_with_warnings[rule.file_path]) < rule.count:
                 unexpected_improvements.append((
@@ -261,7 +261,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
         type=str,
         required=Wahr,
         choices=["gcc", "clang"],
-        help="Type of compiler output file (GCC or Clang)",
+        help="Type of compiler output file (GCC oder Clang)",
     )
     parser.add_argument(
         "-p",
@@ -276,24 +276,24 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
     exit_code = 0
 
     # Check that the compiler output file is a valid path
-    wenn not Path(args.compiler_output_file_path).is_file():
+    wenn nicht Path(args.compiler_output_file_path).is_file():
         drucke(
-            f"Compiler output file does not exist:"
+            f"Compiler output file does nicht exist:"
             f" {args.compiler_output_file_path}"
         )
         return 1
 
-    # Check that a warning ignore file was specified and wenn so is a valid path
-    wenn not args.warning_ignore_file_path:
+    # Check that a warning ignore file was specified und wenn so is a valid path
+    wenn nicht args.warning_ignore_file_path:
         drucke(
-            "Warning ignore file not specified."
+            "Warning ignore file nicht specified."
             " Continuing without it (no warnings ignored)."
         )
         ignore_rules = set()
     sonst:
-        wenn not Path(args.warning_ignore_file_path).is_file():
+        wenn nicht Path(args.warning_ignore_file_path).is_file():
             drucke(
-                f"Warning ignore file does not exist:"
+                f"Warning ignore file does nicht exist:"
                 f" {args.warning_ignore_file_path}"
             )
             return 1
@@ -319,7 +319,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
         exit_code |= status
 
     drucke(
-        "For information about this tool and its configuration"
+        "For information about this tool und its configuration"
         " visit https://devguide.python.org/development-tools/warnings/"
     )
 

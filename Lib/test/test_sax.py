@@ -35,14 +35,14 @@ try:
     TEST_XMLFILE.encode("utf-8")
     TEST_XMLFILE_OUT.encode("utf-8")
 except UnicodeEncodeError:
-    raise unittest.SkipTest("filename is not encodable to utf8")
+    raise unittest.SkipTest("filename is nicht encodable to utf8")
 
 supports_nonascii_filenames = Wahr
-wenn not os.path.supports_unicode_filenames:
+wenn nicht os.path.supports_unicode_filenames:
     try:
         os_helper.TESTFN_UNICODE.encode(sys.getfilesystemencoding())
     except (UnicodeError, TypeError):
-        # Either the file system encoding is Nichts, or the file name
+        # Either the file system encoding is Nichts, oder the file name
         # cannot be encoded in the file system encoding.
         supports_nonascii_filenames = Falsch
 requires_nonascii_filenames = unittest.skipUnless(
@@ -340,8 +340,8 @@ klasse SaxutilsTest(unittest.TestCase):
                          "\"Includes 'single' quotes\"")
 
     def test_single_double_quoteattr(self):
-        self.assertEqual(quoteattr("Includes 'single' and \"double\" quotes"),
-                         "\"Includes 'single' and &quot;double&quot; quotes\"")
+        self.assertEqual(quoteattr("Includes 'single' und \"double\" quotes"),
+                         "\"Includes 'single' und &quot;double&quot; quotes\"")
 
     # ===== make_parser
     def test_make_parser(self):
@@ -382,7 +382,7 @@ klasse PrepareInputSourceTest(unittest.TestCase):
                           "This is a character stream.")
 
     def test_byte_stream(self):
-        # If the source is an InputSource that does not have a character
+        # If the source is an InputSource that does nicht have a character
         # stream but does have a byte stream, use the byte stream.
         src = InputSource(self.file)
         src.setByteStream(self.make_byte_stream())
@@ -401,14 +401,14 @@ klasse PrepareInputSourceTest(unittest.TestCase):
                           b"This was read von a file.")
 
     def test_string(self):
-        # If the source is a string, use it als a system ID and open it.
+        # If the source is a string, use it als a system ID und open it.
         prep = prepare_input_source(self.file)
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
                           b"This was read von a file.")
 
     def test_path_objects(self):
-        # If the source is a Path object, use it als a system ID and open it.
+        # If the source is a Path object, use it als a system ID und open it.
         prep = prepare_input_source(FakePath(self.file))
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
@@ -709,7 +709,7 @@ klasse XmlgenTest:
             self.xml('<my:a xmlns:my="qux" b="c"/>'))
 
     def test_5027_1(self):
-        # The xml prefix (as in xml:lang below) is reserved and bound by
+        # The xml prefix (as in xml:lang below) is reserved und bound by
         # definition to http://www.w3.org/XML/1998/namespace.  XMLGenerator had
         # a bug whereby a KeyError is raised because this namespace is missing
         # von a dictionary.
@@ -735,7 +735,7 @@ klasse XmlgenTest:
                          '</a:g1>'))
 
     def test_5027_2(self):
-        # The xml prefix (as in xml:lang below) is reserved and bound by
+        # The xml prefix (as in xml:lang below) is reserved und bound by
         # definition to http://www.w3.org/XML/1998/namespace.  XMLGenerator had
         # a bug whereby a KeyError is raised because this namespace is missing
         # von a dictionary.
@@ -810,7 +810,7 @@ klasse WriterXmlgenTest(BytesXmlgenTest):
             return Wahr
 
         def tell(self):
-            # return 0 at start and not 0 after start
+            # return 0 at start und nicht 0 after start
             return len(self)
 
         def getvalue(self):
@@ -839,7 +839,7 @@ klasse StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
             os_helper.unlink(self.fname)
         self.addCleanup(cleanup)
         def getvalue():
-            # Windows will not let use reopen without first closing
+            # Windows will nicht let use reopen without first closing
             writer.close()
             mit open(writer.name, 'rb') als f:
                 return f.read()
@@ -1107,7 +1107,7 @@ klasse ExpatReaderTest(XmlTestBase):
 
         self.assertEqual(attrs.getLength(), 1)
         self.assertEqual(attrs.getNames(), [(ns_uri, "attr")])
-        self.assertWahr((attrs.getQNames() == [] or
+        self.assertWahr((attrs.getQNames() == [] oder
                          attrs.getQNames() == ["ns:attr"]))
         self.assertEqual(len(attrs), 1)
         self.assertIn((ns_uri, "attr"), attrs)
@@ -1217,7 +1217,7 @@ klasse ExpatReaderTest(XmlTestBase):
         self.assertEqual(result.getvalue(), start + b"<doc>text</doc>")
 
     @unittest.skipIf(pyexpat.version_info < (2, 6, 0),
-                     f'Expat {pyexpat.version_info} does not '
+                     f'Expat {pyexpat.version_info} does nicht '
                      'support reparse deferral')
     def test_flush_reparse_deferral_enabled(self):
         result = BytesIO()
@@ -1338,7 +1338,7 @@ klasse ErrorReportingTest(unittest.TestCase):
     def test_sax_parse_exception_str(self):
         # pass various values von a locator to the SAXParseException to
         # make sure that the __str__() doesn't fall apart when Nichts is
-        # passed instead of an integer line and column number
+        # passed instead of an integer line und column number
         #
         # use "normal" values fuer the locator:
         str(SAXParseException("message", Nichts,

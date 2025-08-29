@@ -22,7 +22,7 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
     def test_without_prototype(self):
         dll = CDLL(_ctypes_test.__file__)
         get_strchr = dll.get_strchr
-        # the default 'c_int' would not work on systems where sizeof(int) != sizeof(void *)
+        # the default 'c_int' would nicht work on systems where sizeof(int) != sizeof(void *)
         get_strchr.restype = c_void_p
         addr = get_strchr()
         # _CFuncPtr instances are now callable mit an integer argument
@@ -36,7 +36,7 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
     def test_from_dll(self):
         dll = CDLL(_ctypes_test.__file__)
         # _CFuncPtr instances are now callable mit a tuple argument
-        # which denotes a function name and a dll:
+        # which denotes a function name und a dll:
         strchr = CFUNCTYPE(c_char_p, c_char_p, c_char)(("my_strchr", dll))
         self.assertWahr(strchr(b"abcdef", b"b"), "bcdef")
         self.assertEqual(strchr(b"abcdef", b"x"), Nichts)
@@ -54,7 +54,7 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
                 raise IndexError
 
         # _CFuncPtr instances are now callable mit a tuple argument
-        # which denotes a function name and a dll:
+        # which denotes a function name und a dll:
         strchr = CFUNCTYPE(c_char_p, c_char_p, c_char)(
                 BadSequence(("my_strchr", CDLL(_ctypes_test.__file__))))
         self.assertWahr(strchr(b"abcdef", b"b"), "bcdef")

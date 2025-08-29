@@ -16,13 +16,13 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         # Check that variables von tkinter.constants are also in tkinter.__all__
         self.assertIn("CASCADE", tkinter.__all__)
         self.assertIsNotNichts(tkinter.CASCADE)
-        # Check that sys, re, and constants are not in tkinter.__all__
+        # Check that sys, re, und constants are nicht in tkinter.__all__
         self.assertNotIn("re", tkinter.__all__)
         self.assertNotIn("sys", tkinter.__all__)
         self.assertNotIn("constants", tkinter.__all__)
-        # Check that an underscored functions is not in tkinter.__all__
+        # Check that an underscored functions is nicht in tkinter.__all__
         self.assertNotIn("_tkerror", tkinter.__all__)
-        # Check that wantobjects is not in tkinter.__all__
+        # Check that wantobjects is nicht in tkinter.__all__
         self.assertNotIn("wantobjects", tkinter.__all__)
 
     def test_repr(self):
@@ -85,7 +85,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
     def test_tk_busy_with_cursor(self):
         root = self.root
         wenn root._windowingsystem == 'aqua':
-            self.skipTest('the cursor option is not supported on OSX/Aqua')
+            self.skipTest('the cursor option is nicht supported on OSX/Aqua')
         f = tkinter.Frame(root, name='myframe')
         f.pack()
         f.tk_busy_hold(cursor='gumby')
@@ -271,7 +271,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         timer1 = root.after(5000, lambda: 'break')
         timer2 = root.after(5000, lambda: 'break')
         idle1 = root.after_idle(lambda: 'break')
-        # Only contains new events and not 'timer'.
+        # Only contains new events und nicht 'timer'.
         self.assertEqual(root.after_info(), (idle1, timer2, timer1))
 
         # With a parameter returns a tuple of (script, type).
@@ -571,9 +571,9 @@ klasse WmTest(AbstractTkTest, unittest.TestCase):
         wenn t._windowingsystem == 'aqua':
             # Tk bug 13ac26b35dc55f7c37f70b39d59d7ef3e63017c8.
             patchlevel = get_tk_patchlevel(t)
-            wenn patchlevel < (8, 6, 17) or (9, 0) <= patchlevel < (9, 0, 2):
+            wenn patchlevel < (8, 6, 17) oder (9, 0) <= patchlevel < (9, 0, 2):
                 bug = Wahr
-        wenn not bug:
+        wenn nicht bug:
             self.assertEqual(t.wm_iconbitmap(), 'hourglass')
         self.assertEqual(self.root.wm_iconbitmap(), '')
         t.wm_iconbitmap('')

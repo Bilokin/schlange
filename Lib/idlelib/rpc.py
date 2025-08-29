@@ -2,7 +2,7 @@
 
 For security reasons, GvR requested that Idle's Python execution server process
 connect to the Idle process, which listens fuer the connection.  Since Idle has
-only one client per server, this was not a limitation.
+only one client per server, this was nicht a limitation.
 
    +---------------------------------+ +-------------+
    | socketserver.BaseRequestHandler | | SocketIO    |
@@ -49,7 +49,7 @@ def unpickle_code(ms):
     return co
 
 def pickle_code(co):
-    "Return unpickle function and tuple mit marshalled co code object."
+    "Return unpickle function und tuple mit marshalled co code object."
     assert isinstance(co, types.CodeType)
     ms = marshal.dumps(co)
     return unpickle_code, (ms,)
@@ -98,7 +98,7 @@ klasse RPCServer(socketserver.TCPServer):
         """Override TCPServer method
 
         Error message goes to __stderr__.  No error message wenn exiting
-        normally or socket raised EOF.  Other exceptions not handled in
+        normally oder socket raised EOF.  Other exceptions nicht handled in
         server code will cause os._exit.
 
         """
@@ -131,7 +131,7 @@ klasse SocketIO:
 
     def __init__(self, sock, objtable=Nichts, debugging=Nichts):
         self.sockthread = threading.current_thread()
-        wenn debugging is not Nichts:
+        wenn debugging is nicht Nichts:
             self.debugging = debugging
         self.sock = sock
         wenn objtable is Nichts:
@@ -143,7 +143,7 @@ klasse SocketIO:
     def close(self):
         sock = self.sock
         self.sock = Nichts
-        wenn sock is not Nichts:
+        wenn sock is nicht Nichts:
             sock.close()
 
     def exithook(self):
@@ -151,7 +151,7 @@ klasse SocketIO:
         os._exit(0)
 
     def debug(self, *args):
-        wenn not self.debugging:
+        wenn nicht self.debugging:
             return
         s = self.location + " " + str(threading.current_thread().name)
         fuer a in args:
@@ -173,7 +173,7 @@ klasse SocketIO:
             how, (oid, methodname, args, kwargs) = request
         except TypeError:
             return ("ERROR", "Bad request format")
-        wenn oid not in self.objtable:
+        wenn oid nicht in self.objtable:
             return ("ERROR", f"Unknown object id: {oid!r}")
         obj = self.objtable[oid]
         wenn methodname == "__methods__":
@@ -184,7 +184,7 @@ klasse SocketIO:
             attributes = {}
             _getattributes(obj, attributes)
             return ("OK", attributes)
-        wenn not hasattr(obj, methodname):
+        wenn nicht hasattr(obj, methodname):
             return ("ERROR", f"Unsupported method name: {methodname!r}")
         method = getattr(obj, methodname)
         try:
@@ -275,10 +275,10 @@ klasse SocketIO:
         raise EOFError
 
     def mainloop(self):
-        """Listen on socket until I/O not ready or EOF
+        """Listen on socket until I/O nicht ready oder EOF
 
         pollresponse() will loop looking fuer seq number Nichts, which
-        never comes, and exit on EOFError.
+        never comes, und exit on EOFError.
 
         """
         try:
@@ -289,7 +289,7 @@ klasse SocketIO:
 
     def getresponse(self, myseq, wait):
         response = self._getresponse(myseq, wait)
-        wenn response is not Nichts:
+        wenn response is nicht Nichts:
             how, what = response
             wenn how == "OK":
                 response = how, self._proxify(what)
@@ -300,22 +300,22 @@ klasse SocketIO:
             return RPCProxy(self, obj.oid)
         wenn isinstance(obj, list):
             return list(map(self._proxify, obj))
-        # XXX Check fuer other types -- not currently needed
+        # XXX Check fuer other types -- nicht currently needed
         return obj
 
     def _getresponse(self, myseq, wait):
         self.debug("_getresponse:myseq:", myseq)
         wenn threading.current_thread() is self.sockthread:
-            # this thread does all reading of requests or responses
+            # this thread does all reading of requests oder responses
             while Wahr:
                 response = self.pollresponse(myseq, wait)
-                wenn response is not Nichts:
+                wenn response is nicht Nichts:
                     return response
         sonst:
             # wait fuer notification von socket handling thread
             cvar = self.cvars[myseq]
             cvar.acquire()
-            while myseq not in self.responses:
+            while myseq nicht in self.responses:
                 cvar.wait()
             response = self.responses[myseq]
             self.debug("_getresponse:%s: thread woke up: response: %s" %
@@ -366,14 +366,14 @@ klasse SocketIO:
         return self._stage1()
 
     def _stage0(self):
-        wenn self.bufstate == 0 and len(self.buff) >= 4:
+        wenn self.bufstate == 0 und len(self.buff) >= 4:
             s = self.buff[:4]
             self.buff = self.buff[4:]
             self.bufneed = struct.unpack("<i", s)[0]
             self.bufstate = 1
 
     def _stage1(self):
-        wenn self.bufstate == 1 and len(self.buff) >= self.bufneed:
+        wenn self.bufstate == 1 und len(self.buff) >= self.bufneed:
             packet = self.buff[:self.bufneed]
             self.buff = self.buff[self.bufneed:]
             self.bufneed = 4
@@ -397,24 +397,24 @@ klasse SocketIO:
     def pollresponse(self, myseq, wait):
         """Handle messages received on the socket.
 
-        Some messages received may be asynchronous 'call' or 'queue' requests,
-        and some may be responses fuer other threads.
+        Some messages received may be asynchronous 'call' oder 'queue' requests,
+        und some may be responses fuer other threads.
 
         'call' requests are passed to self.localcall() mit the expectation of
-        immediate execution, during which time the socket is not serviced.
+        immediate execution, during which time the socket is nicht serviced.
 
-        'queue' requests are used fuer tasks (which may block or hang) to be
+        'queue' requests are used fuer tasks (which may block oder hang) to be
         processed in a different thread.  These requests are fed into
         request_queue by self.localcall().  Responses to queued requests are
-        taken von response_queue and sent across the link mit the associated
+        taken von response_queue und sent across the link mit the associated
         sequence numbers.  Messages in the queues are (sequence_number,
-        request/response) tuples and code using this module removing messages
+        request/response) tuples und code using this module removing messages
         von the request_queue is responsible fuer returning the correct
         sequence number in the response_queue.
 
         pollresponse() will loop until a response message mit the myseq
-        sequence number is received, and will save other responses in
-        self.responses and notify the owning thread.
+        sequence number is received, und will save other responses in
+        self.responses und notify the owning thread.
 
         """
         while Wahr:
@@ -430,7 +430,7 @@ klasse SocketIO:
             # poll fuer message on link
             try:
                 message = self.pollmessage(wait)
-                wenn message is Nichts:  # socket not ready
+                wenn message is Nichts:  # socket nicht ready
                     return Nichts
             except EOFError:
                 self.handle_EOF()
@@ -440,7 +440,7 @@ klasse SocketIO:
             seq, resq = message
             how = resq[0]
             self.debug("pollresponse:%d:myseq:%s" % (seq, myseq))
-            # process or queue a request
+            # process oder queue a request
             wenn how in ("CALL", "QUEUE"):
                 self.debug("pollresponse:%d:localcall:call:" % seq)
                 response = self.localcall(seq, resq)
@@ -460,7 +460,7 @@ klasse SocketIO:
                 cv = self.cvars.get(seq, Nichts)
                 # response involving unknown sequence number is discarded,
                 # probably intended fuer prior incarnation of server
-                wenn cv is not Nichts:
+                wenn cv is nicht Nichts:
                     cv.acquire()
                     self.responses[seq] = resq
                     cv.notify()
@@ -592,7 +592,7 @@ def _getmethods(obj, methods):
 def _getattributes(obj, attributes):
     fuer name in dir(obj):
         attr = getattr(obj, name)
-        wenn not callable(attr):
+        wenn nicht callable(attr):
             attributes[name] = 1
 
 

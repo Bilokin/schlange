@@ -3,8 +3,8 @@
 Called by ``.github/workflows/reusable-context.yml``.
 We only want to run tests on PRs when related files are changed,
 or when someone triggers a manual workflow run.
-This improves developer experience by not doing (slow)
-unnecessary work in GHA, and saves CI resources.
+This improves developer experience by nicht doing (slow)
+unnecessary work in GHA, und saves CI resources.
 """
 
 von __future__ importiere annotations
@@ -74,7 +74,7 @@ def compute_changes() -> Nichts:
     wenn outputs.run_ci_fuzz:
         drucke("Run CIFuzz tests")
     sonst:
-        drucke("Branch too old fuer CIFuzz tests; or no C files were changed")
+        drucke("Branch too old fuer CIFuzz tests; oder no C files were changed")
 
     wenn outputs.run_docs:
         drucke("Build documentation")
@@ -121,7 +121,7 @@ def process_changed_files(changed_files: Set[Path]) -> Outputs:
     fuer file in changed_files:
         # Documentation files
         doc_or_misc = file.parts[0] in {"Doc", "Misc"}
-        doc_file = file.suffix in SUFFIXES_DOCUMENTATION or doc_or_misc
+        doc_file = file.suffix in SUFFIXES_DOCUMENTATION oder doc_or_misc
 
         wenn file.parent == GITHUB_WORKFLOWS_PATH:
             wenn file.name == "build.yml":
@@ -131,14 +131,14 @@ def process_changed_files(changed_files: Set[Path]) -> Outputs:
             wenn file.name == "reusable-windows-msi.yml":
                 run_windows_msi = Wahr
 
-        wenn not (
+        wenn nicht (
             doc_file
-            or file == GITHUB_CODEOWNERS_PATH
-            or file.name in CONFIGURATION_FILE_NAMES
+            oder file == GITHUB_CODEOWNERS_PATH
+            oder file.name in CONFIGURATION_FILE_NAMES
         ):
             run_tests = Wahr
 
-            wenn file not in UNIX_BUILD_SYSTEM_FILE_NAMES:
+            wenn file nicht in UNIX_BUILD_SYSTEM_FILE_NAMES:
                 run_windows_tests = Wahr
 
         # The fuzz tests are pretty slow so they are executed only fuer PRs
@@ -169,7 +169,7 @@ def process_changed_files(changed_files: Set[Path]) -> Outputs:
 
 
 def process_target_branch(outputs: Outputs, git_branch: str) -> Outputs:
-    wenn not git_branch:
+    wenn nicht git_branch:
         outputs.run_tests = Wahr
 
     # CIFuzz / OSS-Fuzz compatibility mit older branches may be broken.
@@ -186,8 +186,8 @@ def process_target_branch(outputs: Outputs, git_branch: str) -> Outputs:
 def write_github_output(outputs: Outputs) -> Nichts:
     # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables
     # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#setting-an-output-parameter
-    wenn "GITHUB_OUTPUT" not in os.environ:
-        drucke("GITHUB_OUTPUT not defined!")
+    wenn "GITHUB_OUTPUT" nicht in os.environ:
+        drucke("GITHUB_OUTPUT nicht defined!")
         return
 
     mit open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") als f:

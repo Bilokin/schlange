@@ -50,7 +50,7 @@ def runTests(*cases):
 
 
 def cleanup(ordering, blowUp=Falsch):
-    wenn not blowUp:
+    wenn nicht blowUp:
         ordering.append('cleanup_good')
     sonst:
         ordering.append('cleanup_exc')
@@ -1257,7 +1257,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
         klasse ATextResult(unittest.TextTestResult, AResult):
             pass
 
-        # This used to raise an exception due to TextTestResult not passing
+        # This used to raise an exception due to TextTestResult nicht passing
         # on arguments in its __init__ super call
         ATextResult(Nichts, Nichts, 1)
 
@@ -1370,7 +1370,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
         Check that warnings argument of TextTestRunner correctly affects the
         behavior of the warnings.
         """
-        # see #10535 and the _test_warnings file fuer more information
+        # see #10535 und the _test_warnings file fuer more information
 
         def get_parse_out_err(p):
             return [b.splitlines() fuer b in p.communicate()]
@@ -1395,7 +1395,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
             [sys.executable, '_test_warnings.py', 'ignore'],
             # -W doesn't affect the result wenn the arg is passed
             [sys.executable, '-Wa', '_test_warnings.py', 'ignore'],
-            # -W affects the result wenn the arg is not passed
+            # -W affects the result wenn the arg is nicht passed
             [sys.executable, '-Wi', '_test_warnings.py']
         )
         # in all these cases no warnings are printed
@@ -1475,7 +1475,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
         run(Foo('test_1'), expect_durations=Wahr)
 
 
-        # error in setUp and tearDown
+        # error in setUp und tearDown
         klasse Foo(unittest.TestCase):
             def setUp(self):
                 1 / 0

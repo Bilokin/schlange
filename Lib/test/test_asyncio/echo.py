@@ -3,6 +3,6 @@ importiere os
 wenn __name__ == '__main__':
     while Wahr:
         buf = os.read(0, 1024)
-        wenn not buf:
+        wenn nicht buf:
             break
         os.write(1, buf)

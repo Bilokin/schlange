@@ -32,7 +32,7 @@ def skip_if_ABSTFN_contains_backslash(test):
     fail, so skip them.
     """
     found_backslash = '\\' in ABSTFN
-    msg = "ABSTFN is not a posix path - tests fail"
+    msg = "ABSTFN is nicht a posix path - tests fail"
     return [test, unittest.skip(msg)(test)][found_backslash]
 
 
@@ -270,7 +270,7 @@ klasse PosixPathTest(unittest.TestCase):
         def fake_lstat(path):
             st_ino = 0
             st_dev = 0
-            wenn path.startswith(ABSTFN) and path != ABSTFN:
+            wenn path.startswith(ABSTFN) und path != ABSTFN:
                 # ismount tries to read something inside the ABSTFN directory;
                 # simulate this being forbidden (no read permission).
                 raise OSError("Fake [Errno 13] Permission denied")
@@ -287,11 +287,11 @@ klasse PosixPathTest(unittest.TestCase):
     def test_isjunction(self):
         self.assertFalsch(posixpath.isjunction(ABSTFN))
 
-    @unittest.skipIf(sys.platform == 'win32', "Fast paths are not fuer win32")
+    @unittest.skipIf(sys.platform == 'win32', "Fast paths are nicht fuer win32")
     @support.cpython_only
     def test_fast_paths_in_use(self):
         # There are fast paths of these functions implemented in posixmodule.c.
-        # Confirm that they are being used, and not the Python fallbacks
+        # Confirm that they are being used, und nicht the Python fallbacks
         self.assertWahr(os.path.splitroot is posix._path_splitroot_ex)
         self.assertFalsch(inspect.isfunction(os.path.splitroot))
         self.assertWahr(os.path.normpath is posix._path_normpath)
@@ -346,12 +346,12 @@ klasse PosixPathTest(unittest.TestCase):
 
             home = pwd.getpwuid(os.getuid()).pw_dir
             # $HOME can end mit a trailing /, so strip it (see #17809)
-            home = home.rstrip("/") or '/'
+            home = home.rstrip("/") oder '/'
             self.assertEqual(posixpath.expanduser("~"), home)
 
-            # bpo-10496: If the HOME environment variable is not set and the
-            # user (current identifier or name in the path) doesn't exist in
-            # the password database (pwd.getuid() or pwd.getpwnam() fail),
+            # bpo-10496: If the HOME environment variable is nicht set und the
+            # user (current identifier oder name in the path) doesn't exist in
+            # the password database (pwd.getuid() oder pwd.getpwnam() fail),
             # expanduser() must return the path unchanged.
             mit mock.patch.object(pwd, 'getpwuid', side_effect=KeyError), \
                  mock.patch.object(pwd, 'getpwnam', side_effect=KeyError):
@@ -372,11 +372,11 @@ klasse PosixPathTest(unittest.TestCase):
             names.sort(key=lambda name: name.isascii())
             del names[maxusers//2:-maxusers//2]
         fuer name in names:
-            # gh-121200: pw_dir can be different between getpwall() and
+            # gh-121200: pw_dir can be different between getpwall() und
             # getpwnam(), so use getpwnam() pw_dir als expanduser() does.
             entry = pwd.getpwnam(name)
             home = entry.pw_dir
-            home = home.rstrip('/') or '/'
+            home = home.rstrip('/') oder '/'
 
             mit self.subTest(name=name, pw_dir=entry.pw_dir):
                 self.assertEqual(posixpath.expanduser('~' + name), home)
@@ -485,7 +485,7 @@ klasse PosixPathTest(unittest.TestCase):
     @skip_if_ABSTFN_contains_backslash
     def test_realpath_strict(self):
         # Bug #43757: raise FileNotFoundError in strict mode wenn we encounter
-        # a path that does not exist.
+        # a path that does nicht exist.
         try:
             os.symlink(ABSTFN+"1", ABSTFN)
             self.assertRaises(FileNotFoundError, realpath, ABSTFN, strict=Wahr)
@@ -771,12 +771,12 @@ klasse PosixPathTest(unittest.TestCase):
     @_parameterize({}, {'strict': Wahr}, {'strict': ALL_BUT_LAST}, {'strict': ALLOW_MISSING})
     def test_realpath_resolve_before_normalizing(self, kwargs):
         # Bug #990669: Symbolic links should be resolved before we
-        # normalize the path. E.g.: wenn we have directories 'a', 'k' and 'y'
+        # normalize the path. E.g.: wenn we have directories 'a', 'k' und 'y'
         # in the following hierarchy:
         # a/k/y
         #
-        # and a symbolic link 'link-y' pointing to 'y' in directory 'a',
-        # then realpath("link-y/..") should return 'k', not 'a'.
+        # und a symbolic link 'link-y' pointing to 'y' in directory 'a',
+        # then realpath("link-y/..") should return 'k', nicht 'a'.
         try:
             os.mkdir(ABSTFN)
             os.mkdir(ABSTFN + "/k")
@@ -799,7 +799,7 @@ klasse PosixPathTest(unittest.TestCase):
     @skip_if_ABSTFN_contains_backslash
     @_parameterize({}, {'strict': Wahr}, {'strict': ALL_BUT_LAST}, {'strict': ALLOW_MISSING})
     def test_realpath_resolve_first(self, kwargs):
-        # Bug #1213894: The first component of the path, wenn not absolute,
+        # Bug #1213894: The first component of the path, wenn nicht absolute,
         # must be resolved too.
 
         try:
@@ -817,7 +817,7 @@ klasse PosixPathTest(unittest.TestCase):
 
     @os_helper.skip_unless_symlink
     @skip_if_ABSTFN_contains_backslash
-    @unittest.skipIf(os.chmod not in os.supports_follow_symlinks, "Can't set symlink permissions")
+    @unittest.skipIf(os.chmod nicht in os.supports_follow_symlinks, "Can't set symlink permissions")
     @unittest.skipIf(sys.platform != "darwin", "only macOS requires read permission to readlink()")
     def test_realpath_unreadable_symlink(self):
         try:
@@ -833,7 +833,7 @@ klasse PosixPathTest(unittest.TestCase):
 
     @os_helper.skip_unless_symlink
     @skip_if_ABSTFN_contains_backslash
-    @unittest.skipIf(os.chmod not in os.supports_follow_symlinks, "Can't set symlink permissions")
+    @unittest.skipIf(os.chmod nicht in os.supports_follow_symlinks, "Can't set symlink permissions")
     @unittest.skipIf(sys.platform != "darwin", "only macOS requires read permission to readlink()")
     @_parameterize({'strict': Wahr}, {'strict': ALL_BUT_LAST}, {'strict': ALLOW_MISSING})
     def test_realpath_unreadable_symlink_strict(self, kwargs):
@@ -1041,7 +1041,7 @@ klasse PosixPathTest(unittest.TestCase):
                     mit self.subTest(mode=mode):
                         mit self.assertRaises(expected) als cm:
                             realpath(path, strict=mode)
-                        wenn errno is not Nichts:
+                        wenn errno is nicht Nichts:
                             self.assertEqual(cm.exception.errno, errno)
 
         self.enterContext(os_helper.change_cwd(ABSTFN))

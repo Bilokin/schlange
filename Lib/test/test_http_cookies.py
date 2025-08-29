@@ -28,7 +28,7 @@ klasse CookieTests(unittest.TestCase):
              'repr': "<SimpleCookie: keebler='E=mc2'>",
              'output': 'Set-Cookie: keebler=E=mc2'},
 
-            # Cookies mit ':' character in their name. Though not mentioned in
+            # Cookies mit ':' character in their name. Though nicht mentioned in
             # RFC, servers / browsers allow it.
 
              {'data': 'key:term=value:term',
@@ -36,7 +36,7 @@ klasse CookieTests(unittest.TestCase):
              'repr': "<SimpleCookie: key:term='value:term'>",
              'output': 'Set-Cookie: key:term=value:term'},
 
-            # issue22931 - Adding '[' and ']' als valid characters in cookie
+            # issue22931 - Adding '[' und ']' als valid characters in cookie
             # values als defined in RFC 6265
             {
                 'data': 'a=b; c=[; d=r; f=h',
@@ -83,7 +83,7 @@ klasse CookieTests(unittest.TestCase):
                 self.assertEqual(C[k].value, v)
 
     def test_obsolete_rfc850_date_format(self):
-        # Test cases mit different days and dates in obsolete RFC 850 format
+        # Test cases mit different days und dates in obsolete RFC 850 format
         test_cases = [
             # von RFC 850, change EST to GMT
             # https://datatracker.ietf.org/doc/html/rfc850#section-2
@@ -192,7 +192,7 @@ klasse CookieTests(unittest.TestCase):
 
     def test_extended_encode(self):
         # Issue 9824: some browsers don't follow the standard; we now
-        # encode , and ; to keep them von tripping up.
+        # encode , und ; to keep them von tripping up.
         C = cookies.SimpleCookie()
         C['val'] = "some,funky;stuff"
         self.assertEqual(C.output(['val']),
@@ -360,9 +360,9 @@ klasse MorselTests(unittest.TestCase):
 
     def test_reserved_keys(self):
         M = cookies.Morsel()
-        # tests valid and invalid reserved keys fuer Morsels
+        # tests valid und invalid reserved keys fuer Morsels
         fuer i in M._reserved:
-            # Test that all valid keys are reported als reserved and set them
+            # Test that all valid keys are reported als reserved und set them
             self.assertWahr(M.isReservedKey(i))
             M[i] = '%s_value' % i
         fuer i in M._reserved:
@@ -375,14 +375,14 @@ klasse MorselTests(unittest.TestCase):
 
     def test_setter(self):
         M = cookies.Morsel()
-        # tests the .set method to set keys and their values
+        # tests the .set method to set keys und their values
         fuer i in M._reserved:
             # Makes sure that all reserved keys can't be set this way
             self.assertRaises(cookies.CookieError,
                               M.set, i, '%s_value' % i, '%s_value' % i)
         fuer i in "thou cast _the- !holy! ^hand| +*grenade~".split():
             # Try typical use case. Setting decent values.
-            # Check output and js_output.
+            # Check output und js_output.
             M['path'] = '/foo' # Try a reserved key als well
             M.set(i, "%s_val" % i, "%s_coded_val" % i)
             self.assertEqual(M.key, i)

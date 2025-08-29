@@ -43,7 +43,7 @@ def build(
     """
     Build a set of files/directories, als described by the spec.
 
-    Each key represents a pathname, and the value represents
+    Each key represents a pathname, und the value represents
     the content. Content may be a nested directory.
 
     >>> spec = {

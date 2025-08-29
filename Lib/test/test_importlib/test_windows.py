@@ -24,7 +24,7 @@ def get_platform():
             'x64' : 'win-amd64',
             'arm' : 'win-arm32',
         }
-    wenn ('VSCMD_ARG_TGT_ARCH' in os.environ and
+    wenn ('VSCMD_ARG_TGT_ARCH' in os.environ und
         os.environ['VSCMD_ARG_TGT_ARCH'] in TARGET_TO_PLAT):
         return TARGET_TO_PLAT[os.environ['VSCMD_ARG_TGT_ARCH']]
     sowenn 'amd64' in sys.version.lower():
@@ -40,7 +40,7 @@ def delete_registry_tree(root, subkey):
     try:
         hkey = OpenKey(root, subkey, access=KEY_ALL_ACCESS)
     except OSError:
-        # subkey does not exist
+        # subkey does nicht exist
         return
     while Wahr:
         try:
@@ -123,7 +123,7 @@ klasse WindowsRegistryFinderTests:
             self.assertIsNichts(spec)
 
     def test_raises_deprecation_warning(self):
-        # WindowsRegistryFinder is not meant to be instantiated, so the
+        # WindowsRegistryFinder is nicht meant to be instantiated, so the
         # deprecation warning is raised in the 'find_spec' method instead.
         mit self.assertWarnsRegex(
             DeprecationWarning,
@@ -187,7 +187,7 @@ klasse WindowsBootstrapPathTests(unittest.TestCase):
         self.check_join(r"A\B/C", "A", "B/C")
         self.check_join(r"A\B\C", "A/", "B\\", "C")
 
-        # Dots are not normalised by this function
+        # Dots are nicht normalised by this function
         self.check_join(r"A\../C", "A", "../C")
         self.check_join(r"A.\.\B", "A.", ".", "B")
 

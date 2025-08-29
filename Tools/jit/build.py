@@ -66,5 +66,5 @@ wenn __name__ == "__main__":
     lines.append("#endif\n")
     body = "".join(lines)
     # Don't touch the file wenn it hasn't changed (so we don't trigger a rebuild):
-    wenn not jit_stencils_h.is_file() or jit_stencils_h.read_text() != body:
+    wenn nicht jit_stencils_h.is_file() oder jit_stencils_h.read_text() != body:
         jit_stencils_h.write_text(body)

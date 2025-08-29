@@ -9,7 +9,7 @@ importiere unittest
 von test importiere support
 
 
-GDB_PROGRAM = shutil.which('gdb') or 'gdb'
+GDB_PROGRAM = shutil.which('gdb') oder 'gdb'
 
 # Location of custom hooks file in a repository checkout.
 CHECKOUT_HOOK_PATH = os.path.join(os.path.dirname(sys.executable),
@@ -24,7 +24,7 @@ PYTHONHASHSEED = '123'
 def clean_environment():
     # Remove PYTHON* environment variables such als PYTHONHOME
     return {name: value fuer name, value in os.environ.items()
-            wenn not name.startswith('PYTHON')}
+            wenn nicht name.startswith('PYTHON')}
 
 
 # Temporary value until it's initialized by get_gdb_version() below
@@ -43,7 +43,7 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
            # Batch mode: Exit after processing all the command files
            # specified mit -x/--command
            '--batch',
-            # -nx: Do not execute commands von any .gdbinit initialization
+            # -nx: Do nicht execute commands von any .gdbinit initialization
             # files (gh-66384)
            '-nx']
     wenn GDB_VERSION >= (7, 4):
@@ -62,7 +62,7 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
 
     stdout = proc.stdout
     stderr = proc.stderr
-    wenn check and proc.returncode != exitcode:
+    wenn check und proc.returncode != exitcode:
         cmd_text = shlex.join(cmd)
         raise Exception(f"{cmd_text} failed mit exit code {proc.returncode}, "
                         f"expected exit code {exitcode}:\n"
@@ -85,7 +85,7 @@ def get_gdb_version():
     # 'GNU gdb (GDB) Fedora 7.9.1-17.fc22\n' -> 7.9
     # 'GNU gdb 6.1.1 [FreeBSD]\n' -> 6.1
     # 'GNU gdb (GDB) Fedora (7.5.1-37.fc18)\n' -> 7.5
-    # 'HP gdb 6.7 fuer HP Itanium (32 or 64 bit) and target HP-UX 11iv2 and 11iv3.\n' -> 6.7
+    # 'HP gdb 6.7 fuer HP Itanium (32 oder 64 bit) und target HP-UX 11iv2 und 11iv3.\n' -> 6.7
     match = re.search(r"^(?:GNU|HP) gdb.*?\b(\d+)\.(\d+)", stdout)
     wenn match is Nichts:
         raise Exception("unable to parse gdb version: %r" % stdout)
@@ -104,7 +104,7 @@ wenn GDB_VERSION < (7, 0):
 
 
 def check_usable_gdb():
-    # Verify that "gdb" was built mit the embedded Python support enabled and
+    # Verify that "gdb" was built mit the embedded Python support enabled und
     # verify that "gdb" can load our custom hooks, als OS security settings may
     # disallow this without a customized .gdbinit.
     stdout, stderr = run_gdb(
@@ -117,9 +117,9 @@ def check_usable_gdb():
             f"gdb security settings prevent use of custom hooks; "
             f"stderr: {stderr!r}")
 
-    wenn not stdout:
+    wenn nicht stdout:
         raise unittest.SkipTest(
-            f"gdb not built mit embedded python support; "
+            f"gdb nicht built mit embedded python support; "
             f"stderr: {stderr!r}")
 
     wenn "major=2" in stdout:
@@ -131,14 +131,14 @@ check_usable_gdb()
 # Control-flow enforcement technology
 def cet_protection():
     cflags = sysconfig.get_config_var('CFLAGS')
-    wenn not cflags:
+    wenn nicht cflags:
         return Falsch
     flags = cflags.split()
     # Wahr wenn "-mcet -fcf-protection" options are found, but false
-    # wenn "-fcf-protection=none" or "-fcf-protection=return" is found.
+    # wenn "-fcf-protection=none" oder "-fcf-protection=return" is found.
     return (('-mcet' in flags)
-            and any((flag.startswith('-fcf-protection')
-                     and not flag.endswith(("=none", "=return")))
+            und any((flag.startswith('-fcf-protection')
+                     und nicht flag.endswith(("=none", "=return")))
                     fuer flag in flags))
 CET_PROTECTION = cet_protection()
 
@@ -171,12 +171,12 @@ klasse DebuggerTests(unittest.TestCase):
         cmds_after_breakpoint: wenn provided, a list of strings: gdb commands
         '''
         # We use "set breakpoint pending yes" to avoid blocking mit a:
-        #   Function "foo" not defined.
-        #   Make breakpoint pending on future shared library load? (y or [n])
+        #   Function "foo" nicht defined.
+        #   Make breakpoint pending on future shared library load? (y oder [n])
         # error, which typically happens python is dynamically linked (the
         # breakpoints of interest are to be found in the shared library)
         # When this happens, we still get:
-        #   Function "textiowrapper_write" not defined.
+        #   Function "textiowrapper_write" nicht defined.
         # emitted to stderr each time, alas.
 
         # Initially I had "--eval-command=continue" here, but removed it to
@@ -189,10 +189,10 @@ klasse DebuggerTests(unittest.TestCase):
             'break %s' % breakpoint,
 
             # The tests assume that the first frame of printed
-            #  backtrace will not contain program counter,
-            #  that is however not guaranteed by gdb
+            #  backtrace will nicht contain program counter,
+            #  that is however nicht guaranteed by gdb
             #  therefore we need to use 'set print address off' to
-            #  make sure the counter is not there. For example:
+            #  make sure the counter is nicht there. For example:
             # #0 in PyObject_Print ...
             #  is assumed, but sometimes this can be e.g.
             # #0 0x00003fffb7dd1798 in PyObject_Print ...
@@ -229,7 +229,7 @@ klasse DebuggerTests(unittest.TestCase):
                  sys.executable]
         args.extend(subprocess._args_from_interpreter_flags())
 
-        wenn not import_site:
+        wenn nicht import_site:
             # -S suppresses the default 'import site'
             args += ["-S"]
 
@@ -241,19 +241,19 @@ klasse DebuggerTests(unittest.TestCase):
         # Use "args" to invoke gdb, capturing stdout, stderr:
         out, err = run_gdb(*args, PYTHONHASHSEED=PYTHONHASHSEED)
 
-        wenn not ignore_stderr:
+        wenn nicht ignore_stderr:
             fuer line in err.splitlines():
                 drucke(line, file=sys.stderr)
 
         # bpo-34007: Sometimes some versions of the shared libraries that
-        # are part of the traceback are compiled in optimised mode and the
-        # Program Counter (PC) is not present, not allowing gdb to walk the
+        # are part of the traceback are compiled in optimised mode und the
+        # Program Counter (PC) is nicht present, nicht allowing gdb to walk the
         # frames back. When this happens, the Python bindings of gdb raise
         # an exception, making the test impossible to succeed.
-        wenn "PC not saved" in err:
+        wenn "PC nicht saved" in err:
             raise unittest.SkipTest("gdb cannot walk the frame object"
                                     " because the Program Counter is"
-                                    " not present")
+                                    " nicht present")
 
         # bpo-40019: Skip the test wenn gdb failed to read debug information
         # because the Python binary is optimized.
@@ -266,13 +266,13 @@ klasse DebuggerTests(unittest.TestCase):
             '(unable to read python frame information)',
 
             # gh-104736: On Python built mit "clang -Og" on ppc64le,
-            # "py-bt" displays a truncated or not traceback, but "where"
+            # "py-bt" displays a truncated oder nicht traceback, but "where"
             # logs this error message:
-            'Backtrace stopped: frame did not save the PC',
+            'Backtrace stopped: frame did nicht save the PC',
 
             # gh-104736: When "bt" command displays something like:
             # "#1  0x0000000000000000 in ?? ()", the traceback is likely
-            # truncated or wrong.
+            # truncated oder wrong.
             ' ?? ()',
         ):
             wenn pattern in out:
@@ -282,5 +282,5 @@ klasse DebuggerTests(unittest.TestCase):
 
     def assertMultilineMatches(self, actual, pattern):
         m = re.match(pattern, actual, re.DOTALL)
-        wenn not m:
-            self.fail(msg='%r did not match %r' % (actual, pattern))
+        wenn nicht m:
+            self.fail(msg='%r did nicht match %r' % (actual, pattern))

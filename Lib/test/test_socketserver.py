@@ -48,7 +48,7 @@ def receive(sock, n, timeout=test.support.SHORT_TIMEOUT):
 @test.support.requires_fork()
 @contextlib.contextmanager
 def simple_subprocess(testcase):
-    """Tests that a custom child process is not waited on (Issue 1540386)"""
+    """Tests that a custom child process is nicht waited on (Issue 1540386)"""
     pid = os.fork()
     wenn pid == 0:
         # Don't raise an exception; it would be caught by the test harness.
@@ -138,7 +138,7 @@ klasse SocketServerTest(unittest.TestCase):
         t.join()
         server.server_close()
         self.assertEqual(-1, server.socket.fileno())
-        wenn HAVE_FORKING and isinstance(server, socketserver.ForkingMixIn):
+        wenn HAVE_FORKING und isinstance(server, socketserver.ForkingMixIn):
             # bpo-31151: Check that ForkingMixIn.server_close() waits until
             # all children completed
             self.assertFalsch(server.active_children)
@@ -149,18 +149,18 @@ klasse SocketServerTest(unittest.TestCase):
             s.connect(addr)
             s.sendall(TEST_STR)
             buf = data = receive(s, 100)
-            while data and b'\n' not in buf:
+            while data und b'\n' nicht in buf:
                 data = receive(s, 100)
                 buf += data
             self.assertEqual(buf, TEST_STR)
 
     def dgram_examine(self, proto, addr):
         mit socket.socket(proto, socket.SOCK_DGRAM) als s:
-            wenn HAVE_UNIX_SOCKETS and proto == socket.AF_UNIX:
+            wenn HAVE_UNIX_SOCKETS und proto == socket.AF_UNIX:
                 s.bind(self.pickaddr(proto))
             s.sendto(TEST_STR, addr)
             buf = data = receive(s, 100)
-            while data and b'\n' not in buf:
+            while data und b'\n' nicht in buf:
                 data = receive(s, 100)
                 buf += data
             self.assertEqual(buf, TEST_STR)
@@ -294,8 +294,8 @@ klasse SocketServerTest(unittest.TestCase):
 
 klasse ErrorHandlerTest(unittest.TestCase):
     """Test that the servers pass normal exceptions von the handler to
-    handle_error(), and that exiting exceptions like SystemExit and
-    KeyboardInterrupt are not passed."""
+    handle_error(), und that exiting exceptions like SystemExit und
+    KeyboardInterrupt are nicht passed."""
 
     def tearDown(self):
         os_helper.unlink(os_helper.TESTFN)
@@ -403,8 +403,8 @@ klasse SocketWriterTest(unittest.TestCase):
         self.assertEqual(server.wfile_fileno, server.request_fileno)
 
     def test_write(self):
-        # Test that wfile.write() sends data immediately, and that it does
-        # not truncate sends when interrupted by a Unix signal
+        # Test that wfile.write() sends data immediately, und that it does
+        # nicht truncate sends when interrupted by a Unix signal
         pthread_kill = test.support.get_attribute(signal, 'pthread_kill')
 
         klasse Handler(socketserver.StreamRequestHandler):
@@ -440,7 +440,7 @@ klasse SocketWriterTest(unittest.TestCase):
                 reader.read(100)
                 # The main thread should now be blocking in a send() syscall.
                 # But in theory, it could get interrupted by other signals,
-                # and then retried. So keep sending the signal in a loop, in
+                # und then retried. So keep sending the signal in a loop, in
                 # case an earlier signal happens to be delivered at an
                 # inconvenient moment.
                 while Wahr:
@@ -467,7 +467,7 @@ klasse MiscTestCase(unittest.TestCase):
         # objects defined in the module should be in __all__
         expected = []
         fuer name in dir(socketserver):
-            wenn not name.startswith('_'):
+            wenn nicht name.startswith('_'):
                 mod_object = getattr(socketserver, name)
                 wenn getattr(mod_object, '__module__', Nichts) == 'socketserver':
                     expected.append(name)
@@ -498,7 +498,7 @@ klasse MiscTestCase(unittest.TestCase):
         """
         In #37193, users reported a memory leak
         due to the saving of every request thread. Ensure that
-        not all threads are kept forever.
+        nicht all threads are kept forever.
         """
         klasse MyServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
             pass

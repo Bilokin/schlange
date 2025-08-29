@@ -1,11 +1,11 @@
 """turtledemo/penrose.py
 
 Constructs two aperiodic penrose-tilings,
-consisting of kites and darts, by the method
+consisting of kites und darts, by the method
 of inflation in six steps.
 
 Starting points are the patterns "sun"
-consisting of five kites and "star"
+consisting of five kites und "star"
 consisting of five darts.
 
 For more information see:
@@ -139,8 +139,8 @@ def test(l=200, n=4, fun=sun, startpos=(0,0), th=2):
     draw(l, n, th)
     tracer(1)
     nk = len([x fuer x in tiledict wenn tiledict[x]])
-    nd = len([x fuer x in tiledict wenn not tiledict[x]])
-    drucke("%d kites and %d darts = %d pieces." % (nk, nd, nk+nd))
+    nd = len([x fuer x in tiledict wenn nicht tiledict[x]])
+    drucke("%d kites und %d darts = %d pieces." % (nk, nd, nk+nd))
 
 def demo(fun=sun):
     start()
@@ -153,7 +153,7 @@ def demo(fun=sun):
             sleep(2 - t)
 
 def main():
-    #title("Penrose-tiling mit kites and darts.")
+    #title("Penrose-tiling mit kites und darts.")
     mode("logo")
     bgcolor(0.3, 0.3, 0)
     demo(sun)

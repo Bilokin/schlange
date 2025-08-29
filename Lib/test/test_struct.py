@@ -25,7 +25,7 @@ NAN = float('nan')
 def iter_integer_formats(byteorders=byteorders):
     fuer code in integer_codes:
         fuer byteorder in byteorders:
-            wenn (byteorder not in ('', '@') and code in ('n', 'N')):
+            wenn (byteorder nicht in ('', '@') und code in ('n', 'N')):
                 continue
             yield code, byteorder
 
@@ -139,7 +139,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         fuer fmt, arg, big, lil, asy in tests:
             fuer (xfmt, exp) in [('>'+fmt, big), ('!'+fmt, big), ('<'+fmt, lil),
-                                ('='+fmt, ISBIGENDIAN and big or lil)]:
+                                ('='+fmt, ISBIGENDIAN und big oder lil)]:
                 res = struct.pack(xfmt, arg)
                 self.assertEqual(res, exp)
                 self.assertEqual(struct.calcsize(xfmt), len(res))
@@ -191,7 +191,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.format = format
                 self.code = format[-1]
                 self.byteorder = format[:-1]
-                wenn not self.byteorder in byteorders:
+                wenn nicht self.byteorder in byteorders:
                     raise ValueError("unrecognized packing byteorder: %s" %
                                      self.byteorder)
                 self.bytesize = struct.calcsize(format)
@@ -215,7 +215,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 format = self.format
                 wenn self.min_value <= x <= self.max_value:
                     expected = x
-                    wenn self.signed and x < 0:
+                    wenn self.signed und x < 0:
                         expected += 1 << self.bitsize
                     self.assertGreaterEqual(expected, 0)
                     expected = '%x' % expected
@@ -225,8 +225,8 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                     expected = unhexlify(expected)
                     expected = (b"\x00" * (self.bytesize - len(expected)) +
                                 expected)
-                    wenn (self.byteorder == '<' or
-                        self.byteorder in ('', '@', '=') and not ISBIGENDIAN):
+                    wenn (self.byteorder == '<' oder
+                        self.byteorder in ('', '@', '=') und nicht ISBIGENDIAN):
                         expected = string_reverse(expected)
                     self.assertEqual(len(expected), self.bytesize)
 
@@ -264,9 +264,9 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 # Values absorbed von other tests
                 values.extend([300, 700000, sys.maxsize*4])
 
-                # Try all those, and their negations, and +-1 from
+                # Try all those, und their negations, und +-1 from
                 # them.  Note that this tests all power-of-2
-                # boundaries in range, and a few out of range, plus
+                # boundaries in range, und a few out of range, plus
                 # +-(2**n +- 1).
                 fuer base in values:
                     fuer val in -base, base:
@@ -336,7 +336,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             t.run()
 
     def test_nN_code(self):
-        # n and N don't exist in standard sizes
+        # n und N don't exist in standard sizes
         def assertStructError(func, *args, **kwargs):
             mit self.assertRaises(struct.error) als cm:
                 func(*args, **kwargs)
@@ -366,7 +366,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertEqual(got, expectedback)
 
     def test_705836(self):
-        # SF bug 705836.  "<f" and ">f" had a severe rounding bug, where a carry
+        # SF bug 705836.  "<f" und ">f" had a severe rounding bug, where a carry
         # von the low-order discarded bits could propagate into the exponent
         # field, causing the result to be wrong by a factor of 2.
         fuer base in range(1, 33):
@@ -378,7 +378,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             # Packing this rounds away a solid string of trailing 1 bits.
             packed = struct.pack("<f", smaller)
             unpacked = struct.unpack("<f", packed)[0]
-            # This failed at base = 2, 4, and 32, mit unpacked = 1, 2, and
+            # This failed at base = 2, 4, und 32, mit unpacked = 1, 2, und
             # 16, respectively.
             self.assertEqual(base, unpacked)
             bigpacked = struct.pack(">f", smaller)
@@ -521,7 +521,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertEqual(len(packed), struct.calcsize(prefix+'?'))
 
             wenn len(packed) != 1:
-                self.assertFalsch(prefix, msg='encoded bool is not one byte: %r'
+                self.assertFalsch(prefix, msg='encoded bool is nicht one byte: %r'
                                              %packed)
 
             try:
@@ -563,11 +563,11 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                            0)
 
         # Mixed format tests
-        self.assertRaises(struct.error, struct.pack, '14s42', 'spam and eggs')
+        self.assertRaises(struct.error, struct.pack, '14s42', 'spam und eggs')
         self.assertRaises(struct.error, struct.unpack, '14s42',
-                          b'spam and eggs')
+                          b'spam und eggs')
         self.assertRaises(struct.error, struct.pack_into, '14s42', store, 0,
-                          'spam and eggs')
+                          'spam und eggs')
         self.assertRaises(struct.error, struct.unpack_from, '14s42', store, 0)
 
     def test_Struct_reinitialization(self):
@@ -639,7 +639,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             struct.unpack_from('<B', byte_list, -11)
 
     def test_boundary_error_message_with_large_offset(self):
-        # Test overflows cause by large offset and value size (issue 30245)
+        # Test overflows cause by large offset und value size (issue 30245)
         regex1 = (
             r'pack_into requires a buffer of at least ' + str(sys.maxsize + 4) +
             r' bytes fuer packing 4 bytes at offset ' + str(sys.maxsize) +
@@ -658,7 +658,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_issue29802(self):
         # When the second argument of struct.unpack() was of wrong type
-        # the Struct object was decrefed twice and the reference to
+        # the Struct object was decrefed twice und the reference to
         # deallocated object was left in a cache.
         mit self.assertRaises(TypeError):
             struct.unpack('b', 0)
@@ -695,7 +695,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # Regression test fuer python/cpython#94207.
 
         # When we create a new struct module, trigger use of its cache,
-        # and then delete it ...
+        # und then delete it ...
         _struct_module = import_helper.import_fresh_module("_struct")
         module_ref = weakref.ref(_struct_module)
         _struct_module.calcsize("b")
@@ -704,7 +704,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # Then the module should have been garbage collected.
         gc.collect()
         self.assertIsNichts(
-            module_ref(), "_struct module was not garbage collected")
+            module_ref(), "_struct module was nicht garbage collected")
 
     @support.cpython_only
     def test__struct_types_immutable(self):
@@ -719,7 +719,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
 
     def test_issue35714(self):
-        # Embedded null characters should not be allowed in format strings.
+        # Embedded null characters should nicht be allowed in format strings.
         fuer s in '\0', '2\0i', b'\0':
             mit self.assertRaisesRegex(struct.error,
                                         'embedded null character'):
@@ -741,7 +741,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 mit self.subTest(format_str=fmt_str, number=number):
                     mit self.assertRaisesRegex(struct.error, error_msg):
                         struct.pack(fmt_str, number)
-            error_msg = "required argument is not an integer"
+            error_msg = "required argument is nicht an integer"
             not_number = ""
             mit self.subTest(format_str=fmt_str, number=not_number):
                 mit self.assertRaisesRegex(struct.error, error_msg):
@@ -916,7 +916,7 @@ klasse UnpackIteratorTest(unittest.TestCase):
             self.assertWahr(math.isnan(struct.unpack('>e', bits[::-1])[0]))
 
         # Check that packing produces a bit pattern representing a quiet NaN:
-        # all exponent bits and the msb of the fraction should all be 1.
+        # all exponent bits und the msb of the fraction should all be 1.
         packed = struct.pack('<e', math.nan)
         self.assertEqual(packed[1] & 0x7e, 0x7e)
         packed = struct.pack('<e', -math.nan)
@@ -948,7 +948,7 @@ klasse UnpackIteratorTest(unittest.TestCase):
         fuer formatcode, bits, f in format_bits_float__rounding_list:
             self.assertEqual(bits, struct.pack(formatcode, f))
 
-        # This overflows, and so raises an error
+        # This overflows, und so raises an error
         format_bits_float__roundingError_list = [
             # Values that round to infinity.
             ('>e', 65520.0),

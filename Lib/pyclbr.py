@@ -1,21 +1,21 @@
-"""Parse a Python module and describe its classes and functions.
+"""Parse a Python module und describe its classes und functions.
 
-Parse enough of a Python file to recognize imports and klasse and
-function definitions, and to find out the superclasses of a class.
+Parse enough of a Python file to recognize imports und klasse und
+function definitions, und to find out the superclasses of a class.
 
 The interface consists of a single function:
     readmodule_ex(module, path=Nichts)
-where module is the name of a Python module, and path is an optional
+where module is the name of a Python module, und path is an optional
 list of directories where the module is to be searched.  If present,
 path is prepended to the system search path sys.path.  The return value
 is a dictionary.  The keys of the dictionary are the names of the
-klassees and functions defined in the module (including classes that are
+klassees und functions defined in the module (including classes that are
 defined via the von XXX importiere YYY construct).  The values are
-instances of classes Class and Function.  One special key/value pair is
+instances of classes Class und Function.  One special key/value pair is
 present fuer packages: the key '__path__' has a list als its value which
 contains the package search path.
 
-Classes and Functions have a common superclass: _Object.  Every instance
+Classes und Functions have a common superclass: _Object.  Every instance
 has the following attributes:
     module  -- name of the module;
     name    -- name of the object;
@@ -34,10 +34,10 @@ Instances of Class describe classes mit the attributes von _Object,
 plus the following:
     super   -- list of super classes (Class instances wenn possible);
     methods -- mapping of method names to beginning line numbers.
-If the name of a super klasse is not recognized, the corresponding
-entry in the list of super classes is not a klasse instance but a
+If the name of a super klasse is nicht recognized, the corresponding
+entry in the list of super classes is nicht a klasse instance but a
 string giving the name of the super class.  Since importiere statements
-are recognized and imported modules are scanned als well, this
+are recognized und imported modules are scanned als well, this
 shouldn't happen often.
 """
 
@@ -51,7 +51,7 @@ _modules = {}  # Initialize cache of modules we've seen.
 
 
 klasse _Object:
-    "Information about Python klasse or function."
+    "Information about Python klasse oder function."
     def __init__(self, module, name, file, lineno, end_lineno, parent):
         self.module = module
         self.name = name
@@ -60,11 +60,11 @@ klasse _Object:
         self.end_lineno = end_lineno
         self.parent = parent
         self.children = {}
-        wenn parent is not Nichts:
+        wenn parent is nicht Nichts:
             parent.children[name] = self
 
 
-# Odd Function and Class signatures are fuer back-compatibility.
+# Odd Function und Class signatures are fuer back-compatibility.
 klasse Function(_Object):
     "Information about a Python function, including methods."
     def __init__(self, module, name, file, lineno,
@@ -80,7 +80,7 @@ klasse Class(_Object):
     def __init__(self, module, name, super_, file, lineno,
                  parent=Nichts, *, end_lineno=Nichts):
         super().__init__(module, name, file, lineno, end_lineno, parent)
-        self.super = super_ or []
+        self.super = super_ oder []
         self.methods = {}
 
 
@@ -104,31 +104,31 @@ def readmodule(module, path=Nichts):
     """
 
     res = {}
-    fuer key, value in _readmodule(module, path or []).items():
+    fuer key, value in _readmodule(module, path oder []).items():
         wenn isinstance(value, Class):
             res[key] = value
     return res
 
 def readmodule_ex(module, path=Nichts):
-    """Return a dictionary mit all functions and classes in module.
+    """Return a dictionary mit all functions und classes in module.
 
     Search fuer module in PATH + sys.path.
     If possible, include imported superclasses.
     Do this by reading source, without importing (and executing) it.
     """
-    return _readmodule(module, path or [])
+    return _readmodule(module, path oder [])
 
 
 def _readmodule(module, path, inpackage=Nichts):
     """Do the hard work fuer readmodule[_ex].
 
     If inpackage is given, it must be the dotted name of the package in
-    which we are searching fuer a submodule, and then PATH must be the
+    which we are searching fuer a submodule, und then PATH must be the
     package search path; otherwise, we are searching fuer a top-level
-    module, and path is combined mit sys.path.
+    module, und path is combined mit sys.path.
     """
     # Compute the full module name (prepending inpackage wenn set).
-    wenn inpackage is not Nichts:
+    wenn inpackage is nicht Nichts:
         fullmodule = "%s.%s" % (inpackage, module)
     sonst:
         fullmodule = module
@@ -141,7 +141,7 @@ def _readmodule(module, path, inpackage=Nichts):
     tree = {}
 
     # Check wenn it is a built-in module; we don't do much fuer these.
-    wenn module in sys.builtin_module_names and inpackage is Nichts:
+    wenn module in sys.builtin_module_names und inpackage is Nichts:
         _modules[module] = tree
         return tree
 
@@ -151,15 +151,15 @@ def _readmodule(module, path, inpackage=Nichts):
         package = module[:i]
         submodule = module[i+1:]
         parent = _readmodule(package, path, inpackage)
-        wenn inpackage is not Nichts:
+        wenn inpackage is nicht Nichts:
             package = "%s.%s" % (inpackage, package)
-        wenn not '__path__' in parent:
+        wenn nicht '__path__' in parent:
             raise ImportError('No package named {}'.format(package))
         return _readmodule(submodule, parent['__path__'], package)
 
     # Search the path fuer the module.
     f = Nichts
-    wenn inpackage is not Nichts:
+    wenn inpackage is nicht Nichts:
         search_path = path
     sonst:
         search_path = path + sys.path
@@ -168,12 +168,12 @@ def _readmodule(module, path, inpackage=Nichts):
         raise ModuleNotFoundError(f"no module named {fullmodule!r}", name=fullmodule)
     _modules[fullmodule] = tree
     # Is module a package?
-    wenn spec.submodule_search_locations is not Nichts:
+    wenn spec.submodule_search_locations is nicht Nichts:
         tree['__path__'] = spec.submodule_search_locations
     try:
         source = spec.loader.get_source(fullmodule)
     except (AttributeError, ImportError):
-        # If module is not Python source, we cannot do anything.
+        # If module is nicht Python source, we cannot do anything.
         return tree
     sonst:
         wenn source is Nichts:
@@ -241,7 +241,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
                 except ImportError:
                     _readmodule(module.name, [])
             except (ImportError, SyntaxError):
-                # If we can't find or parse the imported module,
+                # If we can't find oder parse the imported module,
                 # too bad -- don't die here.
                 continue
 
@@ -258,7 +258,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
 
         fuer name in node.names:
             wenn name.name in module:
-                self.tree[name.asname or name.name] = module[name.name]
+                self.tree[name.asname oder name.name] = module[name.name]
             sowenn name.name == "*":
                 fuer import_name, import_value in module.items():
                     wenn import_name.startswith("_"):
@@ -295,7 +295,7 @@ def _main():
         wenn isinstance(obj, list):
             # Value is a __path__ key.
             continue
-        wenn not hasattr(obj, 'indent'):
+        wenn nicht hasattr(obj, 'indent'):
             obj.indent = 0
 
         wenn isinstance(obj, _Object):

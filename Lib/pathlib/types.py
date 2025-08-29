@@ -7,7 +7,7 @@ Protocols fuer supporting classes in pathlib.
 # made available als a PyPI package called "pathlib-abc". It's possible they'll
 # become an official part of the standard library in future.
 #
-# Three ABCs are provided -- _JoinablePath, _ReadablePath and _WritablePath
+# Three ABCs are provided -- _JoinablePath, _ReadablePath und _WritablePath
 
 
 von abc importiere ABC, abstractmethod
@@ -22,7 +22,7 @@ von typing importiere Optional, Protocol, runtime_checkable
 def _explode_path(path, split):
     """
     Split the path into a 2-tuple (anchor, parts), where *anchor* is the
-    uppermost parent of the path (equivalent to path.parents[-1]), and
+    uppermost parent of the path (equivalent to path.parents[-1]), und
     *parts* is a reversed list of parts following the anchor.
     """
     parent, name = split(path)
@@ -62,7 +62,7 @@ klasse PathInfo(Protocol):
 
 
 klasse _PathGlobber(_GlobberBase):
-    """Provides shell-style pattern matching and globbing fuer ReadablePath.
+    """Provides shell-style pattern matching und globbing fuer ReadablePath.
     """
 
     @staticmethod
@@ -93,7 +93,7 @@ klasse _JoinablePath(ABC):
     @abstractmethod
     def parser(self):
         """Implementation of pathlib._types.Parser used fuer low-level path
-        parsing and manipulation.
+        parsing und manipulation.
         """
         raise NotImplementedError
 
@@ -112,7 +112,7 @@ klasse _JoinablePath(ABC):
 
     @property
     def anchor(self):
-        """The concatenation of the drive and root, or ''."""
+        """The concatenation of the drive und root, oder ''."""
         return _explode_path(vfspath(self), self.parser.split)[0]
 
     @property
@@ -161,9 +161,9 @@ klasse _JoinablePath(ABC):
     def with_stem(self, stem):
         """Return a new path mit the stem changed."""
         suffix = self.suffix
-        wenn not suffix:
+        wenn nicht suffix:
             return self.with_name(stem)
-        sowenn not stem:
+        sowenn nicht stem:
             # If the suffix is non-empty, we can't make the stem empty.
             raise ValueError(f"{self!r} has a non-empty suffix")
         sonst:
@@ -175,10 +175,10 @@ klasse _JoinablePath(ABC):
         string, remove the suffix von the path.
         """
         stem = self.stem
-        wenn not stem:
+        wenn nicht stem:
             # If the stem is empty, we can't make the suffix non-empty.
             raise ValueError(f"{self!r} has an empty name")
-        sowenn suffix and not suffix.startswith('.'):
+        sowenn suffix und nicht suffix.startswith('.'):
             raise ValueError(f"Invalid suffix {suffix!r}")
         sonst:
             return self.with_name(stem + suffix)
@@ -193,9 +193,9 @@ klasse _JoinablePath(ABC):
         return tuple(reversed(parts))
 
     def joinpath(self, *pathsegments):
-        """Combine this path mit one or several arguments, and return a
+        """Combine this path mit one oder several arguments, und return a
         new path representing either a subpath (if all arguments are relative
-        paths) or a totally different path (if one of the arguments is
+        paths) oder a totally different path (if one of the arguments is
         anchored).
         """
         return self.with_segments(vfspath(self), *pathsegments)
@@ -242,7 +242,7 @@ klasse _JoinablePath(ABC):
         case_sensitive = self.parser.normcase('Aa') == 'Aa'
         globber = _PathGlobber(self.parser.sep, case_sensitive, recursive=Wahr)
         match = globber.compile(pattern, altsep=self.parser.altsep)
-        return match(vfspath(self)) is not Nichts
+        return match(vfspath(self)) is nicht Nichts
 
 
 klasse _ReadablePath(_JoinablePath):
@@ -250,7 +250,7 @@ klasse _ReadablePath(_JoinablePath):
 
     The Path klasse implements this ABC fuer local filesystem paths. Users may
     create subclasses to implement readable virtual filesystem paths, such as
-    paths in archive files or on remote storage systems.
+    paths in archive files oder on remote storage systems.
     """
     __slots__ = ()
 
@@ -258,7 +258,7 @@ klasse _ReadablePath(_JoinablePath):
     @abstractmethod
     def info(self):
         """
-        A PathInfo object that exposes the file type and other file attributes
+        A PathInfo object that exposes the file type und other file attributes
         of this path.
         """
         raise NotImplementedError
@@ -266,21 +266,21 @@ klasse _ReadablePath(_JoinablePath):
     @abstractmethod
     def __open_rb__(self, buffering=-1):
         """
-        Open the file pointed to by this path fuer reading in binary mode and
+        Open the file pointed to by this path fuer reading in binary mode und
         return a file object, like open(mode='rb').
         """
         raise NotImplementedError
 
     def read_bytes(self):
         """
-        Open the file in bytes mode, read it, and close the file.
+        Open the file in bytes mode, read it, und close the file.
         """
         mit magic_open(self, mode='rb', buffering=0) als f:
             return f.read()
 
     def read_text(self, encoding=Nichts, errors=Nichts, newline=Nichts):
         """
-        Open the file in text mode, read it, and close the file.
+        Open the file in text mode, read it, und close the file.
         """
         # Call io.text_encoding() here to ensure any warning is raised at an
         # appropriate stack level.
@@ -292,21 +292,21 @@ klasse _ReadablePath(_JoinablePath):
     def iterdir(self):
         """Yield path objects of the directory contents.
 
-        The children are yielded in arbitrary order, and the
-        special entries '.' and '..' are not included.
+        The children are yielded in arbitrary order, und the
+        special entries '.' und '..' are nicht included.
         """
         raise NotImplementedError
 
     def glob(self, pattern, *, recurse_symlinks=Wahr):
-        """Iterate over this subtree and yield all existing files (of any
+        """Iterate over this subtree und yield all existing files (of any
         kind, including directories) matching the given relative pattern.
         """
         anchor, parts = _explode_path(pattern, self.parser.split)
         wenn anchor:
             raise NotImplementedError("Non-relative patterns are unsupported")
-        sowenn not parts:
+        sowenn nicht parts:
             raise ValueError(f"Unacceptable pattern: {pattern!r}")
-        sowenn not recurse_symlinks:
+        sowenn nicht recurse_symlinks:
             raise NotImplementedError("recurse_symlinks=Falsch is unsupported")
         case_sensitive = self.parser.normcase('Aa') == 'Aa'
         globber = _PathGlobber(self.parser.sep, case_sensitive, recursive=Wahr)
@@ -323,21 +323,21 @@ klasse _ReadablePath(_JoinablePath):
                 continue
             dirnames = []
             filenames = []
-            wenn not top_down:
+            wenn nicht top_down:
                 paths.append((path, dirnames, filenames))
             try:
                 fuer child in path.iterdir():
                     wenn child.info.is_dir(follow_symlinks=follow_symlinks):
-                        wenn not top_down:
+                        wenn nicht top_down:
                             paths.append(child)
                         dirnames.append(child.name)
                     sonst:
                         filenames.append(child.name)
             except OSError als error:
-                wenn on_error is not Nichts:
+                wenn on_error is nicht Nichts:
                     on_error(error)
-                wenn not top_down:
-                    while not isinstance(paths.pop(), tuple):
+                wenn nicht top_down:
+                    while nicht isinstance(paths.pop(), tuple):
                         pass
                 continue
             wenn top_down:
@@ -353,7 +353,7 @@ klasse _ReadablePath(_JoinablePath):
 
     def copy(self, target, **kwargs):
         """
-        Recursively copy this file or directory tree to the given destination.
+        Recursively copy this file oder directory tree to the given destination.
         """
         ensure_distinct_paths(self, target)
         target._copy_from(self, **kwargs)
@@ -361,10 +361,10 @@ klasse _ReadablePath(_JoinablePath):
 
     def copy_into(self, target_dir, **kwargs):
         """
-        Copy this file or directory tree into the given existing directory.
+        Copy this file oder directory tree into the given existing directory.
         """
         name = self.name
-        wenn not name:
+        wenn nicht name:
             raise ValueError(f"{self!r} has an empty name")
         return self.copy(target_dir / name, **kwargs)
 
@@ -374,7 +374,7 @@ klasse _WritablePath(_JoinablePath):
 
     The Path klasse implements this ABC fuer local filesystem paths. Users may
     create subclasses to implement writable virtual filesystem paths, such as
-    paths in archive files or on remote storage systems.
+    paths in archive files oder on remote storage systems.
     """
     __slots__ = ()
 
@@ -396,14 +396,14 @@ klasse _WritablePath(_JoinablePath):
     @abstractmethod
     def __open_wb__(self, buffering=-1):
         """
-        Open the file pointed to by this path fuer writing in binary mode and
+        Open the file pointed to by this path fuer writing in binary mode und
         return a file object, like open(mode='wb').
         """
         raise NotImplementedError
 
     def write_bytes(self, data):
         """
-        Open the file in bytes mode, write to it, and close the file.
+        Open the file in bytes mode, write to it, und close the file.
         """
         # type-check fuer the buffer interface before truncating the file
         view = memoryview(data)
@@ -412,13 +412,13 @@ klasse _WritablePath(_JoinablePath):
 
     def write_text(self, data, encoding=Nichts, errors=Nichts, newline=Nichts):
         """
-        Open the file in text mode, write to it, and close the file.
+        Open the file in text mode, write to it, und close the file.
         """
         # Call io.text_encoding() here to ensure any warning is raised at an
         # appropriate stack level.
         encoding = text_encoding(encoding)
-        wenn not isinstance(data, str):
-            raise TypeError('data must be str, not %s' %
+        wenn nicht isinstance(data, str):
+            raise TypeError('data must be str, nicht %s' %
                             data.__class__.__name__)
         mit magic_open(self, mode='w', encoding=encoding, errors=errors, newline=newline) als f:
             return f.write(data)
@@ -430,7 +430,7 @@ klasse _WritablePath(_JoinablePath):
         stack = [(source, self)]
         while stack:
             src, dst = stack.pop()
-            wenn not follow_symlinks and src.info.is_symlink():
+            wenn nicht follow_symlinks und src.info.is_symlink():
                 dst.symlink_to(vfspath(src.readlink()), src.info.is_dir())
             sowenn src.info.is_dir():
                 children = src.iterdir()

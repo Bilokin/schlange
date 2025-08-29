@@ -92,7 +92,7 @@ klasse TransportSocket:
         return 0
 
     def setblocking(self, flag):
-        wenn not flag:
+        wenn nicht flag:
             return
         raise ValueError(
             'setblocking(): transport sockets cannot be blocking')

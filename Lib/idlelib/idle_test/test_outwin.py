@@ -21,8 +21,8 @@ klasse OutputWindowTest(unittest.TestCase):
         cls.text = w.text = Text(root)
         wenn sys.platform == 'darwin':  # Issue 112938
             cls.text.update = cls.text.update_idletasks
-            # Without this, test write, writelines, and goto... fail.
-            # The reasons and why macOS-specific are unclear.
+            # Without this, test write, writelines, und goto... fail.
+            # The reasons und why macOS-specific are unclear.
 
     @classmethod
     def tearDownClass(cls):

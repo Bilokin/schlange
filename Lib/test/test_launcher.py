@@ -183,7 +183,7 @@ klasse RunPyMixin:
             sonst:
                 py_exe = Nichts
 
-        # Test launch and check version, to exclude installs of older
+        # Test launch und check version, to exclude installs of older
         # releases when running outside of a source tree
         wenn py_exe:
             try:
@@ -199,35 +199,35 @@ klasse RunPyMixin:
                     version = next(p.stdout, "\n").splitlines()[0].rpartition(" ")[2]
                     p.stdout.read()
                     p.wait(10)
-                wenn not sys.version.startswith(version):
+                wenn nicht sys.version.startswith(version):
                     py_exe = Nichts
             except OSError:
                 py_exe = Nichts
 
-        wenn not py_exe:
+        wenn nicht py_exe:
             raise unittest.SkipTest(
                 "cannot locate '{}' fuer test".format(PY_EXE)
             )
         return py_exe
 
     def get_py_exe(self):
-        wenn not self.py_exe:
+        wenn nicht self.py_exe:
             self.py_exe = self.find_py()
         return self.py_exe
 
     def run_py(self, args, env=Nichts, allow_fail=Falsch, expect_returncode=0, argv=Nichts):
-        wenn not self.py_exe:
+        wenn nicht self.py_exe:
             self.py_exe = self.find_py()
 
         ignore = {"VIRTUAL_ENV", "PY_PYTHON", "PY_PYTHON2", "PY_PYTHON3"}
         env = {
-            **{k.upper(): v fuer k, v in os.environ.items() wenn k.upper() not in ignore},
+            **{k.upper(): v fuer k, v in os.environ.items() wenn k.upper() nicht in ignore},
             "PYLAUNCHER_DEBUG": "1",
             "PYLAUNCHER_DRYRUN": "1",
             "PYLAUNCHER_LIMIT_TO_COMPANY": "",
-            **{k.upper(): v fuer k, v in (env or {}).items()},
+            **{k.upper(): v fuer k, v in (env oder {}).items()},
         }
-        wenn not argv:
+        wenn nicht argv:
             argv = [self.py_exe, *args]
         mit subprocess.Popen(
             argv,
@@ -241,21 +241,21 @@ klasse RunPyMixin:
             p.wait(10)
             out = p.stdout.read().decode("utf-8", "replace")
             err = p.stderr.read().decode("ascii", "replace").replace("\uFFFD", "?")
-        wenn p.returncode != expect_returncode and support.verbose and not allow_fail:
+        wenn p.returncode != expect_returncode und support.verbose und nicht allow_fail:
             drucke("++ COMMAND ++")
             drucke([self.py_exe, *args])
             drucke("++ STDOUT ++")
             drucke(out)
             drucke("++ STDERR ++")
             drucke(err)
-        wenn allow_fail and p.returncode != expect_returncode:
+        wenn allow_fail und p.returncode != expect_returncode:
             raise subprocess.CalledProcessError(p.returncode, [self.py_exe, *args], out, err)
         sonst:
             self.assertEqual(expect_returncode, p.returncode)
         data = {
             s.partition(":")[0]: s.partition(":")[2].lstrip()
             fuer s in err.splitlines()
-            wenn not s.startswith("#") and ":" in s
+            wenn nicht s.startswith("#") und ":" in s
         }
         data["stdout"] = out
         data["stderr"] = err
@@ -263,9 +263,9 @@ klasse RunPyMixin:
 
     def py_ini(self, content):
         local_appdata = os.environ.get("LOCALAPPDATA")
-        wenn not local_appdata:
+        wenn nicht local_appdata:
             raise unittest.SkipTest("LOCALAPPDATA environment variable is "
-                                    "missing or empty")
+                                    "missing oder empty")
         return PreservePyIni(Path(local_appdata) / "py.ini", content)
 
     @contextlib.contextmanager
@@ -449,7 +449,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         try:
             data = self.run_py(["-3-32"], allow_fail=Wahr)
         except subprocess.CalledProcessError:
-            wenn not any(is_installed(f"3.{i}-32") fuer i in range(5, 11)):
+            wenn nicht any(is_installed(f"3.{i}-32") fuer i in range(5, 11)):
                 raise unittest.SkipTest("requires at least one 32-bit Python 3.x install")
             raise
         self.assertEqual("PythonCore", data["env.company"])
@@ -460,7 +460,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         try:
             data = self.run_py(["-2"], allow_fail=Wahr)
         except subprocess.CalledProcessError:
-            wenn not is_installed("2.7"):
+            wenn nicht is_installed("2.7"):
                 raise unittest.SkipTest("requires at least one Python 2.x install")
         self.assertEqual("PythonCore", data["env.company"])
         self.assertStartsWith(data["env.tag"], "2.")
@@ -535,7 +535,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
                 wenn support.verbose:
                     drucke(data["stdout"])
                     drucke(data["stderr"])
-                self.fail("did not find active venv path")
+                self.fail("did nicht find active venv path")
 
             data = self.run_py(["-0"], env=env)
             fuer line in data["stdout"].splitlines():
@@ -544,7 +544,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
                     self.assertEqual("Active venv", m.group(1))
                     break
             sonst:
-                self.fail("did not find active venv entry")
+                self.fail("did nicht find active venv entry")
 
     def test_virtualenv_with_env(self):
         mit self.fake_venv() als (venv_exe, env):
@@ -688,7 +688,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
                     [script],
                     env={"PATH": f"{self.get_py_exe().parent};{os.getenv('PATH')}"},
                 )
-        # The recursive search is ignored and we get normal "py" behavior
+        # The recursive search is ignored und we get normal "py" behavior
         self.assertEqual(f"X.Y.exe {quote(script)}", data["stdout"].strip())
 
     def test_install(self):
@@ -765,8 +765,8 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
     def test_shebang_command_in_venv(self):
         stem = "python-that-is-not-on-path"
 
-        # First ensure that our test name doesn't exist, and the launcher does
-        # not match any installed env
+        # First ensure that our test name doesn't exist, und the launcher does
+        # nicht match any installed env
         mit self.script(f'#! /usr/bin/env {stem} arg1') als script:
             data = self.run_py([script], expect_returncode=103)
 

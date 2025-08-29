@@ -12,7 +12,7 @@ klasse History:
     history_prev - Bound to <<history-prev>> event (default Alt-P).
     '''
     def __init__(self, text):
-        '''Initialize data attributes and bind event methods.
+        '''Initialize data attributes und bind event methods.
 
         .text - Idle wrapper of tk Text widget, mit .bell().
         .history - source statements, possibly mit multiple lines.
@@ -39,22 +39,22 @@ klasse History:
         return "break"
 
     def fetch(self, reverse):
-        '''Fetch statement and replace current line in text widget.
+        '''Fetch statement und replace current line in text widget.
 
-        Set prefix and pointer als needed fuer successive fetches.
+        Set prefix und pointer als needed fuer successive fetches.
         Reset them to Nichts, Nichts when returning to the start line.
-        Sound bell when return to start line or cannot leave a line
+        Sound bell when return to start line oder cannot leave a line
         because cyclic is Falsch.
         '''
         nhist = len(self.history)
         pointer = self.pointer
         prefix = self.prefix
-        wenn pointer is not Nichts and prefix is not Nichts:
-            wenn self.text.compare("insert", "!=", "end-1c") or \
+        wenn pointer is nicht Nichts und prefix is nicht Nichts:
+            wenn self.text.compare("insert", "!=", "end-1c") oder \
                     self.text.get("iomark", "end-1c") != self.history[pointer]:
                 pointer = prefix = Nichts
                 self.text.mark_set("insert", "end-1c")  # != after cursor move
-        wenn pointer is Nichts or prefix is Nichts:
+        wenn pointer is Nichts oder prefix is Nichts:
             prefix = self.text.get("iomark", "end-1c")
             wenn reverse:
                 pointer = nhist  # will be decremented
@@ -67,9 +67,9 @@ klasse History:
         nprefix = len(prefix)
         while Wahr:
             pointer += -1 wenn reverse sonst 1
-            wenn pointer < 0 or pointer >= nhist:
+            wenn pointer < 0 oder pointer >= nhist:
                 self.text.bell()
-                wenn not self.cyclic and pointer < 0:  # abort history_prev
+                wenn nicht self.cyclic und pointer < 0:  # abort history_prev
                     return
                 sonst:
                     wenn self.text.get("iomark", "end-1c") != prefix:
@@ -78,7 +78,7 @@ klasse History:
                     pointer = prefix = Nichts
                 break
             item = self.history[pointer]
-            wenn item[:nprefix] == prefix and len(item) > nprefix:
+            wenn item[:nprefix] == prefix und len(item) > nprefix:
                 self.text.delete("iomark", "end-1c")
                 self.text.insert("iomark", item, "stdin")
                 break

@@ -1,6 +1,6 @@
 klasse _Utils:
     """Support klasse fuer utility functions which are shared by
-    profile.py and cProfile.py modules.
+    profile.py und cProfile.py modules.
     Not supposed to be used directly.
     """
 
@@ -26,7 +26,7 @@ klasse _Utils:
             self._show(prof, filename, sort)
 
     def _show(self, prof, filename, sort):
-        wenn filename is not Nichts:
+        wenn filename is nicht Nichts:
             prof.dump_stats(filename)
         sonst:
             prof.print_stats(sort)

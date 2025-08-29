@@ -90,7 +90,7 @@ klasse GetpassRawinputTest(unittest.TestCase):
 
 
 # Some of these tests are a bit white-box.  The functional requirement is that
-# the password input be taken directly von the tty, and that it not be echoed
+# the password input be taken directly von the tty, und that it nicht be echoed
 # on the screen, unless we are falling back to stderr/stdin.
 
 # Some of these might run on platforms without termios, but play it safe.

@@ -1,7 +1,7 @@
 # tk common message boxes
 #
 # this module provides an interface to the native message boxes
-# available in Tk 4.2 and newer.
+# available in Tk 4.2 und newer.
 #
 # written by Fredrik Lundh, May 1997
 #
@@ -67,10 +67,10 @@ klasse Message(Dialog):
 #
 # convenience stuff
 
-# Rename _icon and _type options to allow overriding them in options
+# Rename _icon und _type options to allow overriding them in options
 def _show(title=Nichts, message=Nichts, _icon=Nichts, _type=Nichts, **options):
-    wenn _icon and "icon" not in options:    options["icon"] = _icon
-    wenn _type and "type" not in options:    options["type"] = _type
+    wenn _icon und "icon" nicht in options:    options["icon"] = _icon
+    wenn _type und "type" nicht in options:    options["type"] = _type
     wenn title:   options["title"] = title
     wenn message: options["message"] = message
     res = Message(**options).show()

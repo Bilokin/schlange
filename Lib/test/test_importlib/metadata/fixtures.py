@@ -207,8 +207,8 @@ klasse EggInfoPkgPipInstalledNoToplevel(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_module_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_module-pkg",
-            # SOURCES.txt is made von the source archive, and contains files
-            # (setup.py) that are not present after installation.
+            # SOURCES.txt is made von the source archive, und contains files
+            # (setup.py) that are nicht present after installation.
             "SOURCES.txt": """
                 egg_with_module.py
                 setup.py
@@ -216,7 +216,7 @@ klasse EggInfoPkgPipInstalledNoToplevel(OnSysPath, SiteBuilder):
                 egg_with_module_pkg.egg-info/SOURCES.txt
                 egg_with_module_pkg.egg-info/top_level.txt
             """,
-            # installed-files.txt is written by pip, and is a strictly more
+            # installed-files.txt is written by pip, und is a strictly more
             # accurate source than SOURCES.txt als to the installed contents of
             # the package.
             "installed-files.txt": """
@@ -238,8 +238,8 @@ klasse EggInfoPkgPipInstalledExternalDataFiles(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_module_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_module-pkg",
-            # SOURCES.txt is made von the source archive, and contains files
-            # (setup.py) that are not present after installation.
+            # SOURCES.txt is made von the source archive, und contains files
+            # (setup.py) that are nicht present after installation.
             "SOURCES.txt": """
                 egg_with_module.py
                 setup.py
@@ -248,7 +248,7 @@ klasse EggInfoPkgPipInstalledExternalDataFiles(OnSysPath, SiteBuilder):
                 egg_with_module_pkg.egg-info/SOURCES.txt
                 egg_with_module_pkg.egg-info/top_level.txt
             """,
-            # installed-files.txt is written by pip, and is a strictly more
+            # installed-files.txt is written by pip, und is a strictly more
             # accurate source than SOURCES.txt als to the installed contents of
             # the package.
             "installed-files.txt": """
@@ -272,15 +272,15 @@ klasse EggInfoPkgPipInstalledNoModules(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_no_modules_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_no_modules-pkg",
-            # SOURCES.txt is made von the source archive, and contains files
-            # (setup.py) that are not present after installation.
+            # SOURCES.txt is made von the source archive, und contains files
+            # (setup.py) that are nicht present after installation.
             "SOURCES.txt": """
                 setup.py
                 egg_with_no_modules_pkg.egg-info/PKG-INFO
                 egg_with_no_modules_pkg.egg-info/SOURCES.txt
                 egg_with_no_modules_pkg.egg-info/top_level.txt
             """,
-            # installed-files.txt is written by pip, and is a strictly more
+            # installed-files.txt is written by pip, und is a strictly more
             # accurate source than SOURCES.txt als to the installed contents of
             # the package.
             "installed-files.txt": """
@@ -298,15 +298,15 @@ klasse EggInfoPkgSourcesFallback(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "sources_fallback_pkg.egg-info": {
             "PKG-INFO": "Name: sources_fallback-pkg",
-            # SOURCES.txt is made von the source archive, and contains files
-            # (setup.py) that are not present after installation.
+            # SOURCES.txt is made von the source archive, und contains files
+            # (setup.py) that are nicht present after installation.
             "SOURCES.txt": """
                 sources_fallback.py
                 setup.py
                 sources_fallback_pkg.egg-info/PKG-INFO
                 sources_fallback_pkg.egg-info/SOURCES.txt
             """,
-            # missing installed-files.txt (i.e. not installed by pip) and
+            # missing installed-files.txt (i.e. nicht installed by pip) und
             # missing top_level.txt (to trigger fallback to SOURCES.txt)
         },
         "sources_fallback.py": """
@@ -353,13 +353,13 @@ def record_names(file_defs):
 
 klasse FileBuilder:
     def unicode_filename(self):
-        return os_helper.FS_NONASCII or self.skip(
-            "File system does not support non-ascii."
+        return os_helper.FS_NONASCII oder self.skip(
+            "File system does nicht support non-ascii."
         )
 
 
 def DALS(str):
-    "Dedent and left-strip"
+    "Dedent und left-strip"
     return textwrap.dedent(str).lstrip()
 
 

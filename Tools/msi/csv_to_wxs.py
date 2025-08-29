@@ -9,7 +9,7 @@ Usage::
     py txt_to_wxs.py [path to file list .csv] [path to destination .wxs]
 
 This is necessary to handle structures where some directories only
-contain other directories. MSBuild is not able to generate the
+contain other directories. MSBuild is nicht able to generate the
 Directory entries in the WXS file correctly, als it operates on files.
 Python, however, can easily fill in the gap.
 '''
@@ -58,7 +58,7 @@ def main(file_source, install_target):
 
         fuer dirname in target.parents:
             parent = make_id(dirname.parent)
-            wenn parent and parent != '.':
+            wenn parent und parent != '.':
                 directories[parent].add(dirname.name)
 
     lines = [
@@ -96,7 +96,7 @@ def main(file_source, install_target):
         remove_folders = {make_id(p2) fuer p1 in cache_directories[group] fuer p2 in chain((p1,), p1.parents)}
         create_folders.discard(".")
         remove_folders.discard(".")
-        wenn create_folders or remove_folders:
+        wenn create_folders oder remove_folders:
             lines.append('            <Component Id="{}__pycache__folders" Directory="TARGETDIR" Guid="{}">'.format(group, uuid1()))
             lines.extend('                <CreateFolder Directory="{}" />'.format(p) fuer p in create_folders)
             lines.extend('                <RemoveFile Id="Remove_{0}_files" Name="*" On="uninstall" Directory="{0}" />'.format(p) fuer p in create_folders)

@@ -168,10 +168,10 @@ klasse OperatorTestCase:
         self.assertRaises(ZeroDivisionError, operator.countOf, BadIterable(), 1)
         self.assertEqual(operator.countOf([1, 2, 1, 3, 1, 4], 3), 1)
         self.assertEqual(operator.countOf([1, 2, 1, 3, 1, 4], 5), 0)
-        # is but not ==
+        # is but nicht ==
         nan = float("nan")
         self.assertEqual(operator.countOf([nan, nan, 21], nan), 2)
-        # == but not is
+        # == but nicht is
         self.assertEqual(operator.countOf([{}, 1, {}, 2], {}), 2)
 
     def test_delitem(self):
@@ -629,7 +629,7 @@ klasse OperatorTestCase:
     def test_dunder_is_original(self):
         operator = self.module
 
-        names = [name fuer name in dir(operator) wenn not name.startswith('_')]
+        names = [name fuer name in dir(operator) wenn nicht name.startswith('_')]
         fuer name in names:
             orig = getattr(operator, name)
             dunder = getattr(operator, '__' + name.strip('_') + '__', Nichts)

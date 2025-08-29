@@ -104,7 +104,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         klasse POINT(Structure):
             _fields_ = [("phi", c_float), ("rho", c_float)]
         self.check_struct(POINT)
-        # conflicting positional and keyword args
+        # conflicting positional und keyword args
         self.assertRaisesRegex(TypeError, "phi", POINT, 2, 3, phi=4)
         self.assertRaisesRegex(TypeError, "rho", POINT, 2, 3, rho=4)
 
@@ -263,7 +263,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         func.argtypes = (Test,)
         func.restype = Nichts
         func(s)
-        # bpo-37140: Passing the structure by reference must not call
+        # bpo-37140: Passing the structure by reference must nicht call
         # its finalizer!
         self.assertEqual(finalizer_calls, [])
         self.assertEqual(s.first, 1)
@@ -321,8 +321,8 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
     def test_issue18060_a(self):
         # This test case calls
         # PyCStructUnionType_update_stginfo() fuer each
-        # _fields_ assignment, and PyCStgInfo_clone()
-        # fuer the Mid and Vector klasse definitions.
+        # _fields_ assignment, und PyCStgInfo_clone()
+        # fuer the Mid und Vector klasse definitions.
         klasse Base(Structure):
             _fields_ = [('y', c_double),
                         ('x', c_double)]
@@ -696,8 +696,8 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
 
     def test_do_not_share_pointer_type_cache_via_stginfo_clone(self):
         # This test case calls PyCStgInfo_clone()
-        # fuer the Mid and Vector klasse definitions
-        # and checks that pointer_type cache not shared
+        # fuer the Mid und Vector klasse definitions
+        # und checks that pointer_type cache nicht shared
         # between subclasses.
         klasse Base(Structure):
             _fields_ = [('y', c_double),

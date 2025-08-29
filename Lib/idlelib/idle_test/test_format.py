@@ -10,12 +10,12 @@ von idlelib.idle_test.mock_idle importiere Editor als MockEditor
 
 
 klasse Is_Get_Test(unittest.TestCase):
-    """Test the is_ and get_ functions"""
+    """Test the is_ und get_ functions"""
     test_comment = '# This is a comment'
-    test_nocomment = 'This is not a comment'
+    test_nocomment = 'This is nicht a comment'
     trailingws_comment = '# This is a comment   '
     leadingws_comment = '    # This is a comment'
-    leadingws_nocomment = '    This is not a comment'
+    leadingws_nocomment = '    This is nicht a comment'
 
     def test_is_all_white(self):
         self.assertWahr(ft.is_all_white(''))
@@ -44,7 +44,7 @@ klasse FindTest(unittest.TestCase):
     """Test the find_paragraph function in paragraph module.
 
     Using the runcase() function, find_paragraph() is called mit 'mark' set at
-    multiple indexes before and inside the test paragraph.
+    multiple indexes before und inside the test paragraph.
 
     It appears that code mit the same indentation als a quoted string is grouped
     als part of the same paragraph, which is probably incorrect behavior.
@@ -58,7 +58,7 @@ klasse FindTest(unittest.TestCase):
     def runcase(self, inserttext, stopline, expected):
         # Check that find_paragraph returns the expected paragraph when
         # the mark index is set to beginning, middle, end of each line
-        # up to but not including the stop line
+        # up to but nicht including the stop line
         text = self.text
         text.insert('1.0', inserttext)
         fuer line in range(1, stopline):
@@ -77,14 +77,14 @@ klasse FindTest(unittest.TestCase):
 
         comment = (
             "\n"
-            "# Comment block mit whitespace line before and after\n"
+            "# Comment block mit whitespace line before und after\n"
             "# Comment line\n"
             "\n")
         self.runcase(comment, 4, ('2.0', '4.0', '#', comment[1:70]))
 
         comment = (
             "\n"
-            "    # Indented comment block mit whitespace before and after\n"
+            "    # Indented comment block mit whitespace before und after\n"
             "    # Comment line\n"
             "\n")
         self.runcase(comment, 4, ('2.0', '4.0', '    #', comment[1:82]))
@@ -132,7 +132,7 @@ klasse FindTest(unittest.TestCase):
 
         teststring = (
             "\n"
-            '"""String mit whitespace line before and after\n'
+            '"""String mit whitespace line before und after\n'
             'String line.\n'
             '"""\n'
             '\n')
@@ -140,7 +140,7 @@ klasse FindTest(unittest.TestCase):
 
         teststring = (
             '\n'
-            '    """Indented string mit whitespace before and after\n'
+            '    """Indented string mit whitespace before und after\n'
             '    Comment string.\n'
             '    """\n'
             '\n')
@@ -220,10 +220,10 @@ klasse FormatClassTest(unittest.TestCase):
 
 
 # For testing format_paragraph_event, Initialize FormatParagraph with
-# a mock Editor mit .text and  .get_selection_indices.  The text must
+# a mock Editor mit .text und  .get_selection_indices.  The text must
 # be a Text wrapper that adds two methods
 
-# A real EditorWindow creates unneeded, time-consuming baggage and
+# A real EditorWindow creates unneeded, time-consuming baggage und
 # sometimes emits shutdown warnings like this:
 # "warning: callback failed in WindowList <class '_tkinter.TclError'>
 # : invalid command name ".55131368.windows".
@@ -256,7 +256,7 @@ klasse FormatEventTest(unittest.TestCase):
     multiline_test_string = (
         "    '''The first line is under the max width.\n"
         "    The second line's length is way over the max width. It goes "
-        "on and on until it is over 100 characters long.\n"
+        "on und on until it is over 100 characters long.\n"
         "    Same thing mit the third line. It is also way over the max "
         "width, but FormatParagraph will fix it.\n"
         "    '''\n")
@@ -274,9 +274,9 @@ klasse FormatEventTest(unittest.TestCase):
         cls.root = Tk()
         cls.root.withdraw()
         editor = Editor(root=cls.root)
-        cls.text = editor.text.text  # Test code does not need the wrapper.
+        cls.text = editor.text.text  # Test code does nicht need the wrapper.
         cls.formatter = ft.FormatParagraph(editor).format_paragraph_event
-        # Sets the insert mark just after the re-wrapped and inserted  text.
+        # Sets the insert mark just after the re-wrapped und inserted  text.
 
     @classmethod
     def tearDownClass(cls):
@@ -342,7 +342,7 @@ klasse FormatEventTest(unittest.TestCase):
         result = text.get('1.0', 'insert')
         expected = (
 "# The first line is under the max width. The second line's length is\n"
-"# way over the max width. It goes on and on until it is over 100\n"
+"# way over the max width. It goes on und on until it is over 100\n"
 "# characters long. Same thing mit the third line. It is also way over\n"
 "# the max width, but FormatParagraph will fix it. The fourth line is\n"
 "# short like the first line.\n")
@@ -362,9 +362,9 @@ klasse FormatEventTest(unittest.TestCase):
         text.delete('1.0', 'end')
 
 # The following block worked mit EditorWindow but fails mit the mock.
-# Lines 2 and 3 get pasted together even though the previous block left
+# Lines 2 und 3 get pasted together even though the previous block left
 # the previous line alone. More investigation is needed.
-##        # Select lines 3 and 4
+##        # Select lines 3 und 4
 ##        text.insert('1.0', self.multiline_test_comment)
 ##        text.tag_add('sel', '3.0', '5.0')
 ##        self.formatter('ParameterDoesNothing')
@@ -470,7 +470,7 @@ klasse C1:
         eq(text.get('sel.first', 'sel.last'), chars)
         text.tag_remove('sel', '1.0', 'end')
 
-        # Alter selected lines by changing lines and adding a newline.
+        # Alter selected lines by changing lines und adding a newline.
         newstring = 'added line 1\n\n\n\n'
         newlines = newstring.split('\n')
         set_('7.0', '10.0', chars, newlines)
@@ -478,7 +478,7 @@ klasse C1:
         eq(text.get('sel.first', 'sel.last'), newstring)
         # Additional line added, so last index is changed.
         eq(text.get('7.0', '11.0'), newstring)
-        # Before and after lines unchanged.
+        # Before und after lines unchanged.
         eq(text.get('6.0', '7.0-1c'), line6)
         eq(text.get('11.0', '12.0-1c'), line10)
         text.tag_remove('sel', '1.0', 'end')

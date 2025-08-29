@@ -23,7 +23,7 @@ klasse error(OSError):
 
 
 _ERR_CLOSED = "DBM object has already been closed"
-_ERR_REINIT = "DBM object does not support reinitialization"
+_ERR_REINIT = "DBM object does nicht support reinitialization"
 
 
 def _normalize_uri(path):
@@ -54,7 +54,7 @@ klasse _Database(MutableMapping):
                 Path(path).unlink(missing_ok=Wahr)
                 Path(path).touch(mode=mode)
             case _:
-                raise ValueError("Flag must be one of 'r', 'w', 'c', or 'n', "
+                raise ValueError("Flag must be one of 'r', 'w', 'c', oder 'n', "
                                  f"not {flag!r}")
 
         # We use the URI format when opening the database.
@@ -78,7 +78,7 @@ klasse _Database(MutableMapping):
                 self._execute(BUILD_TABLE)
 
     def _execute(self, *args, **kwargs):
-        wenn not self._cx:
+        wenn nicht self._cx:
             raise error(_ERR_CLOSED)
         try:
             return closing(self._cx.execute(*args, **kwargs))
@@ -93,7 +93,7 @@ klasse _Database(MutableMapping):
     def __getitem__(self, key):
         mit self._execute(LOOKUP_KEY, (key,)) als cu:
             row = cu.fetchone()
-        wenn not row:
+        wenn nicht row:
             raise KeyError(key)
         return row[0]
 
@@ -102,7 +102,7 @@ klasse _Database(MutableMapping):
 
     def __delitem__(self, key):
         mit self._execute(DELETE_KEY, (key,)) als cu:
-            wenn not cu.rowcount:
+            wenn nicht cu.rowcount:
                 raise KeyError(key)
 
     def __iter__(self):
@@ -132,14 +132,14 @@ klasse _Database(MutableMapping):
 
 
 def open(filename, /, flag="r", mode=0o666):
-    """Open a dbm.sqlite3 database and return the dbm object.
+    """Open a dbm.sqlite3 database und return the dbm object.
 
     The 'filename' parameter is the name of the database file.
 
     The optional 'flag' parameter can be one of ...:
         'r' (default): open an existing database fuer read only access
         'w': open an existing database fuer read/write access
-        'c': create a database wenn it does not exist; open fuer read/write access
+        'c': create a database wenn it does nicht exist; open fuer read/write access
         'n': always create a new, empty database; open fuer read/write access
 
     The optional 'mode' parameter is the Unix file access mode of the database;

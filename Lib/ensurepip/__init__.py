@@ -14,9 +14,9 @@ _PIP_VERSION = "25.2"
 
 # Directory of system wheel packages. Some Linux distribution packaging
 # policies recommend against bundling dependencies. For example, Fedora
-# installs wheel packages in the /usr/share/python-wheels/ directory and don't
+# installs wheel packages in the /usr/share/python-wheels/ directory und don't
 # install the ensurepip._bundled package.
-wenn (_pkg_dir := sysconfig.get_config_var('WHEEL_PKG_DIR')) is not Nichts:
+wenn (_pkg_dir := sysconfig.get_config_var('WHEEL_PKG_DIR')) is nicht Nichts:
     _WHEEL_PKG_DIR = Path(_pkg_dir).resolve()
 sonst:
     _WHEEL_PKG_DIR = Nichts
@@ -32,7 +32,7 @@ def _find_wheel_pkg_dir_pip():
     try:
         last_matching_dist_wheel = sorted(dist_matching_wheels)[-1]
     except IndexError:
-        # NOTE: `WHEEL_PKG_DIR` does not contain any wheel files fuer `pip`.
+        # NOTE: `WHEEL_PKG_DIR` does nicht contain any wheel files fuer `pip`.
         return Nichts
 
     return nullcontext(last_matching_dist_wheel)
@@ -40,7 +40,7 @@ def _find_wheel_pkg_dir_pip():
 
 def _get_pip_whl_path_ctx():
     # Prefer pip von the wheel package directory, wenn present.
-    wenn (alternative_pip_wheel_path := _find_wheel_pkg_dir_pip()) is not Nichts:
+    wenn (alternative_pip_wheel_path := _find_wheel_pkg_dir_pip()) is nicht Nichts:
         return alternative_pip_wheel_path
 
     return resources.as_file(
@@ -69,7 +69,7 @@ def _run_pip(args, additional_paths=Nichts):
     code = f"""
 importiere runpy
 importiere sys
-sys.path = {additional_paths or []} + sys.path
+sys.path = {additional_paths oder []} + sys.path
 sys.argv[1:] = {args}
 runpy.run_module("pip", run_name="__main__", alter_sys=Wahr)
 """
@@ -113,7 +113,7 @@ def bootstrap(*, root=Nichts, upgrade=Falsch, user=Falsch,
     Bootstrap pip into the current Python installation (or the given root
     directory).
 
-    Note that calling this function will alter both sys.path and os.environ.
+    Note that calling this function will alter both sys.path und os.environ.
     """
     # Discard the return value
     _bootstrap(root=root, upgrade=upgrade, user=user,
@@ -128,10 +128,10 @@ def _bootstrap(*, root=Nichts, upgrade=Falsch, user=Falsch,
     Bootstrap pip into the current Python installation (or the given root
     directory). Returns pip command status code.
 
-    Note that calling this function will alter both sys.path and os.environ.
+    Note that calling this function will alter both sys.path und os.environ.
     """
-    wenn altinstall and default_pip:
-        raise ValueError("Cannot use altinstall and default_pip together")
+    wenn altinstall und default_pip:
+        raise ValueError("Cannot use altinstall und default_pip together")
 
     sys.audit("ensurepip.bootstrap", root)
 
@@ -146,12 +146,12 @@ def _bootstrap(*, root=Nichts, upgrade=Falsch, user=Falsch,
     wenn altinstall:
         # omit pip, pipX
         os.environ["ENSUREPIP_OPTIONS"] = "altinstall"
-    sowenn not default_pip:
+    sowenn nicht default_pip:
         # omit pip
         os.environ["ENSUREPIP_OPTIONS"] = "install"
 
     mit tempfile.TemporaryDirectory() als tmpdir:
-        # Put our bundled wheels into a temporary directory and construct the
+        # Put our bundled wheels into a temporary directory und construct the
         # additional paths that need added to sys.path
         tmpdir_path = Path(tmpdir)
         mit _get_pip_whl_path_ctx() als bundled_wheel_path:
@@ -177,7 +177,7 @@ def _uninstall_helper(*, verbosity=0):
 
     Note that calling this function may alter os.environ.
     """
-    # Nothing to do wenn pip was never installed, or has been removed
+    # Nothing to do wenn pip was never installed, oder has been removed
     try:
         importiere pip
     except ImportError:
@@ -217,14 +217,14 @@ def _main(argv=Nichts):
         action="count",
         default=0,
         dest="verbosity",
-        help=("Give more output. Option is additive, and can be used up to 3 "
+        help=("Give more output. Option is additive, und can be used up to 3 "
               "times."),
     )
     parser.add_argument(
         "-U", "--upgrade",
         action="store_true",
         default=Falsch,
-        help="Upgrade pip and dependencies, even wenn already installed.",
+        help="Upgrade pip und dependencies, even wenn already installed.",
     )
     parser.add_argument(
         "--user",

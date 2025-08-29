@@ -22,7 +22,7 @@ klasse IoctlTestsTty(unittest.TestCase):
             # Skip wenn another process is in foreground
             r = fcntl.ioctl(tty, TIOCGPGRP, struct.pack("i", 0))
         rpgrp = struct.unpack("i", r)[0]
-        wenn rpgrp not in (os.getpgrp(), os.getsid(0)):
+        wenn rpgrp nicht in (os.getpgrp(), os.getsid(0)):
             raise unittest.SkipTest("Neither the process group nor the session "
                                     "are attached to /dev/tty")
 
@@ -76,7 +76,7 @@ klasse IoctlTestsTty(unittest.TestCase):
         intsize = buf.itemsize
         # A fill value unlikely to be in `ids`
         fill = -12345
-        wenn nbytes is not Nichts:
+        wenn nbytes is nicht Nichts:
             # Extend the buffer so that it is exactly `nbytes` bytes long
             buf.extend([fill] * (nbytes // intsize))
             self.assertEqual(len(buf) * intsize, nbytes)   # sanity check
@@ -142,7 +142,7 @@ klasse IoctlTestsPty(unittest.TestCase):
     def test_ioctl_clear_input_or_output(self):
         wfd = self.slave_fd
         rfd = self.master_fd
-        # The data is buffered in the input buffer on Linux, and in
+        # The data is buffered in the input buffer on Linux, und in
         # the output buffer on other platforms.
         inbuf = sys.platform in ('linux', 'android')
 
@@ -187,11 +187,11 @@ klasse IoctlTestsPty(unittest.TestCase):
                 finally:
                     write_suspended.set()
                 self.assertFalsch(write_finished.wait(0.5),
-                                 'output was not suspended')
+                                 'output was nicht suspended')
             finally:
                 fcntl.ioctl(wfd, termios.TCXONC, termios.TCOON)
             self.assertWahr(write_finished.wait(support.SHORT_TIMEOUT),
-                            'output was not resumed')
+                            'output was nicht resumed')
             self.assertEqual(os.read(rfd, 1024), b'def')
 
     def test_ioctl_set_window_size(self):

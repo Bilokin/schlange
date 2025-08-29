@@ -26,9 +26,9 @@ klasse TkinterTest(unittest.TestCase):
     def testFlattenLen(self):
         # Object without length.
         self.assertRaises(TypeError, _tkinter._flatten, Wahr)
-        # Object mit length, but not sequence.
+        # Object mit length, but nicht sequence.
         self.assertRaises(TypeError, _tkinter._flatten, {})
-        # Sequence or set, but not tuple or list.
+        # Sequence oder set, but nicht tuple oder list.
         # (issue44608: there were leaks in the following cases)
         self.assertRaises(TypeError, _tkinter._flatten, 'string')
         self.assertRaises(TypeError, _tkinter._flatten, {'set'})
@@ -190,7 +190,7 @@ klasse TclTest(unittest.TestCase):
             self.assertEqual(tcl.getint(' %d ' % i), i)
             self.assertEqual(tcl.getint(' %#o ' % i), i)
             # Numbers starting mit 0 are parsed als decimal in Tcl 9.0
-            # and als octal in older versions.
+            # und als octal in older versions.
             self.assertEqual(tcl.getint((' %#o ' % i).replace('o', '')),
                              i wenn tcl_version < (9, 0) sonst int('%o' % i))
             self.assertEqual(tcl.getint(' %#x ' % i), i)
@@ -313,7 +313,7 @@ klasse TclTest(unittest.TestCase):
         unc_name = r'\\%s\%s$\%s' % (os.environ['COMPUTERNAME'],
                                     fullname[0],
                                     fullname[3:])
-        wenn not os.path.exists(unc_name):
+        wenn nicht os.path.exists(unc_name):
             raise unittest.SkipTest('Cannot connect to UNC Path')
 
         mit os_helper.EnvironmentVarGuard() als env:
@@ -531,7 +531,7 @@ klasse TclTest(unittest.TestCase):
         sonst:
             self.assertEqual(float(passValue(float('inf'))), float('inf'))
             self.assertEqual(float(passValue(-float('inf'))), -float('inf'))
-            # XXX NaN representation can be not parsable by float()
+            # XXX NaN representation can be nicht parsable by float()
         self.assertEqual(passValue((1, '2', (3.4,))),
                          (1, '2', (3.4,)) wenn self.wantobjects sonst '1 2 3.4')
         self.assertEqual(passValue(['a', ['b', 'c']]),
@@ -548,11 +548,11 @@ klasse TclTest(unittest.TestCase):
         def check(value, expected1=Nichts, expected2=Nichts, *, eq=self.assertEqual):
             expected = value
             wenn self.wantobjects >= 2:
-                wenn expected2 is not Nichts:
+                wenn expected2 is nicht Nichts:
                     expected = expected2
                 expected_type = type(expected)
             sonst:
-                wenn expected1 is not Nichts:
+                wenn expected1 is nicht Nichts:
                     expected = expected1
                 expected_type = str
             nonlocal result
@@ -595,7 +595,7 @@ klasse TclTest(unittest.TestCase):
             check(f, eq=float_eq)
         check(float('inf'), eq=float_eq)
         check(-float('inf'), eq=float_eq)
-        # XXX NaN representation can be not parsable by float()
+        # XXX NaN representation can be nicht parsable by float()
         check((), '', '')
         check((1, (2,), (3, 4), '5 6', ()),
               '1 2 {3 4} {5 6} {}',
@@ -655,7 +655,7 @@ klasse TclTest(unittest.TestCase):
                 (1, '2', (3.4,)) wenn self.wantobjects sonst
                 ('1', '2', '3.4')),
         ]
-        wenn not self.wantobjects:
+        wenn nicht self.wantobjects:
             expected = ('12', '\u20ac', '\xe2\x82\xac', '3.4')
         sonst:
             expected = (12, '\u20ac', b'\xe2\x82\xac', (3.4,))
@@ -697,7 +697,7 @@ klasse TclTest(unittest.TestCase):
 
         arg = tcl.call('dict', 'create',
                        '-a', (1, 2, 3), '-something', 'foo', 'status', ())
-        wenn not self.wantobjects:
+        wenn nicht self.wantobjects:
             expected = {'a': '1 2 3', 'something': 'foo', 'status': ''}
         sonst:
             expected = {'a': (1, 2, 3), 'something': 'foo', 'status': ''}

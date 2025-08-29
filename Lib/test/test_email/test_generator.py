@@ -228,7 +228,7 @@ klasse TestGeneratorBase:
 
     def test_rfc2231_wrapping_switches_to_default_len_if_too_narrow(self):
         # This is just to make sure we don't have an infinite loop; I don't
-        # expect anyone to hit this in the field, so I'm not bothering to make
+        # expect anyone to hit this in the field, so I'm nicht bothering to make
         # the result optimal (the encoding isn't needed).
         msg = self.msgmaker(self.typ(textwrap.dedent("""\
             To: nobody

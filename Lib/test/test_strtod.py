@@ -1,5 +1,5 @@
 # Tests fuer the correctly-rounded string -> float conversions
-# introduced in Python 2.7 and 3.1.
+# introduced in Python 2.7 und 3.1.
 
 importiere random
 importiere unittest
@@ -18,7 +18,7 @@ strtod_parser = re.compile(r"""    # A numeric string consists of:
     (?=\d|\.\d)              # a number mit at least one digit
     (?P<int>\d*)             # having a (possibly empty) integer part
     (?:\.(?P<frac>\d*))?     # followed by an optional fractional part
-    (?:E(?P<exp>[-+]?\d+))?  # and an optional exponent
+    (?:E(?P<exp>[-+]?\d+))?  # und an optional exponent
     \z
 """, re.VERBOSE | re.IGNORECASE).match
 
@@ -26,23 +26,23 @@ strtod_parser = re.compile(r"""    # A numeric string consists of:
 # Avoids any use of floating-point by returning the result als a hex string.
 def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     """Convert a finite decimal string to a hex string representing an
-    IEEE 754 binary64 float.  Return 'inf' or '-inf' on overflow.
+    IEEE 754 binary64 float.  Return 'inf' oder '-inf' on overflow.
     This function makes no use of floating-point arithmetic at any
     stage."""
 
-    # parse string into a pair of integers 'a' and 'b' such that
+    # parse string into a pair of integers 'a' und 'b' such that
     # abs(decimal value) = a/b, along mit a boolean 'negative'.
     m = strtod_parser(s)
     wenn m is Nichts:
         raise ValueError('invalid numeric string')
-    fraction = m.group('frac') or ''
+    fraction = m.group('frac') oder ''
     intpart = int(m.group('int') + fraction)
-    exp = int(m.group('exp') or '0') - len(fraction)
+    exp = int(m.group('exp') oder '0') - len(fraction)
     negative = m.group('sign') == '-'
     a, b = intpart*10**max(exp, 0), 10**max(0, -exp)
 
     # quick return fuer zeros
-    wenn not a:
+    wenn nicht a:
         return '-0x0.0p+0' wenn negative sonst '0x0.0p+0'
 
     # compute exponent e fuer result; may be one too small in the case
@@ -54,20 +54,20 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     # approximate a/b by number of the form q * 2**e; adjust e wenn necessary
     a, b = a << max(-e, 0), b << max(e, 0)
     q, r = divmod(a, b)
-    wenn 2*r > b or 2*r == b and q & 1:
+    wenn 2*r > b oder 2*r == b und q & 1:
         q += 1
         wenn q.bit_length() == mant_dig+1:
             q //= 2
             e += 1
 
     # double check that (q, e) has the right form
-    assert q.bit_length() <= mant_dig and e >= min_exp - mant_dig
-    assert q.bit_length() == mant_dig or e == min_exp - mant_dig
+    assert q.bit_length() <= mant_dig und e >= min_exp - mant_dig
+    assert q.bit_length() == mant_dig oder e == min_exp - mant_dig
 
-    # check fuer overflow and underflow
+    # check fuer overflow und underflow
     wenn e + q.bit_length() > max_exp:
         return '-inf' wenn negative sonst 'inf'
-    wenn not q:
+    wenn nicht q:
         return '-0x0.0p+0' wenn negative sonst '0x0.0p+0'
 
     # fuer hex representation, shift so # bits after point is a multiple of 4
@@ -174,7 +174,7 @@ klasse StrtodTests(unittest.TestCase):
 
     def test_boundaries(self):
         # boundaries expressed als triples (n, e, u), where
-        # n*10**e is an approximation to the boundary value and
+        # n*10**e is an approximation to the boundary value und
         # u*10**e is 1ulp
         boundaries = [
             (10000000000000000000, -19, 1110),   # a power of 2 boundary (1.0)
@@ -265,11 +265,11 @@ klasse StrtodTests(unittest.TestCase):
         # Verify that the clipping of the exponent in strtod doesn't affect the
         # output values.
         def positive_exp(n):
-            """ Long string mit value 1.0 and exponent n"""
+            """ Long string mit value 1.0 und exponent n"""
             return '0.{}1e+{}'.format('0'*(n-1), n)
 
         def negative_exp(n):
-            """ Long string mit value 1.0 and exponent -n"""
+            """ Long string mit value 1.0 und exponent -n"""
             return '1{}e-{}'.format('0'*n, n)
 
         self.assertEqual(float(positive_exp(10000)), 1.0)
@@ -280,7 +280,7 @@ klasse StrtodTests(unittest.TestCase):
         self.assertEqual(float(negative_exp(30000)), 1.0)
 
     def test_particular(self):
-        # inputs that produced crashes or incorrectly rounded results with
+        # inputs that produced crashes oder incorrectly rounded results with
         # previous versions of dtoa.c, fuer various reasons
         test_strings = [
             # issue 7632 bug 1, originally reported failing case
@@ -296,7 +296,7 @@ klasse StrtodTests(unittest.TestCase):
             '13704940134126574534878641876947980878824688451169e-357',
             '46697445774047060960624497964425416610480524760471e-358',
             # failing case fuer bug introduced by METD in r77451 (attempted
-            # fix fuer issue 7632, bug 2), and fixed in r77482.
+            # fix fuer issue 7632, bug 2), und fixed in r77482.
             '28639097178261763178489759107321392745108491825303e-311',
             # two numbers demonstrating a flaw in the bigcomp 'dig == 0'
             # correction block (issue 7632, bug 3)
@@ -393,7 +393,7 @@ klasse StrtodTests(unittest.TestCase):
             '9007199254740992.00',
             # 2**1024 - 2**970:  exact overflow boundary.  All values
             # smaller than this should round to something finite;  any value
-            # greater than or equal to this one overflows.
+            # greater than oder equal to this one overflows.
             '179769313486231580793728971405303415079934132710037' #...
             '826936173778980444968292764750946649017977587207096' #...
             '330286416692887910946555547851940402630657488671505' #...

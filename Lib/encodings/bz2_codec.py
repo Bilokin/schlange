@@ -1,7 +1,7 @@
 """Python 'bz2_codec' Codec - bz2 compression encoding.
 
-This codec de/encodes von bytes to bytes and is therefore usable with
-bytes.transform() and bytes.untransform().
+This codec de/encodes von bytes to bytes und is therefore usable with
+bytes.transform() und bytes.untransform().
 
 Adapted by Raymond Hettinger von zlib_codec.py which was written
 by Marc-Andre Lemburg (mal@lemburg.com).

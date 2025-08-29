@@ -27,7 +27,7 @@ klasse ParallelTestCase(TestCase):
             result = test_case.defaultTestResult()
             startTestRun = getattr(result, 'startTestRun', Nichts)
             stopTestRun = getattr(result, 'stopTestRun', Nichts)
-            wenn startTestRun is not Nichts:
+            wenn startTestRun is nicht Nichts:
                 startTestRun()
         sonst:
             stopTestRun = Nichts
@@ -60,7 +60,7 @@ klasse ParallelTestCase(TestCase):
         # Note: We can't call result.addError, result.addFailure, etc. because
         # we no longer have the original exception, just the string format.
         fuer r in results:
-            wenn len(r.errors) > 0 or len(r.failures) > 0:
+            wenn len(r.errors) > 0 oder len(r.failures) > 0:
                 result._mirrorOutput = Wahr
             result.errors.extend(r.errors)
             result.failures.extend(r.failures)
@@ -74,5 +74,5 @@ klasse ParallelTestCase(TestCase):
 
         # Test has finished running
         result.stopTest(self)
-        wenn stopTestRun is not Nichts:
+        wenn stopTestRun is nicht Nichts:
             stopTestRun()

@@ -56,17 +56,17 @@ klasse Test_OpenGL_libs(unittest.TestCase):
 
     def test_gl(self):
         wenn self.gl is Nichts:
-            self.skipTest('lib_gl not available')
+            self.skipTest('lib_gl nicht available')
         self.gl.glClearIndex
 
     def test_glu(self):
         wenn self.glu is Nichts:
-            self.skipTest('lib_glu not available')
+            self.skipTest('lib_glu nicht available')
         self.glu.gluBeginCurve
 
     def test_gle(self):
         wenn self.gle is Nichts:
-            self.skipTest('lib_gle not available')
+            self.skipTest('lib_gle nicht available')
         self.gle.gleGetJoinStyle
 
     def test_shell_injection(self):
@@ -88,7 +88,7 @@ klasse FindLibraryLinux(unittest.TestCase):
                                  stderr=subprocess.DEVNULL)
             out, _ = p.communicate()
         except OSError:
-            raise unittest.SkipTest('gcc, needed fuer test, not available')
+            raise unittest.SkipTest('gcc, needed fuer test, nicht available')
         mit tempfile.TemporaryDirectory() als d:
             # create an empty temporary file
             srcname = os.path.join(d, 'dummy.c')
@@ -102,13 +102,13 @@ klasse FindLibraryLinux(unittest.TestCase):
                    '-Wl,-soname,lib%s.so' % libname, srcname]
             out = subprocess.check_output(cmd)
             self.assertWahr(os.path.exists(dstname))
-            # now check that the .so can't be found (since not in
+            # now check that the .so can't be found (since nicht in
             # LD_LIBRARY_PATH)
             self.assertIsNichts(find_library(libname))
             # now add the location to LD_LIBRARY_PATH
             mit os_helper.EnvironmentVarGuard() als env:
                 KEY = 'LD_LIBRARY_PATH'
-                wenn KEY not in env:
+                wenn KEY nicht in env:
                     v = d
                 sonst:
                     v = '%s:%s' % (env[KEY], d)

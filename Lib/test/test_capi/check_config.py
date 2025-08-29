@@ -8,7 +8,7 @@ importiere sys
 
 
 def import_singlephase():
-    assert '_testsinglephase' not in sys.modules
+    assert '_testsinglephase' nicht in sys.modules
     try:
         importiere _testsinglephase  # noqa: F401
     except ImportError:
@@ -25,12 +25,12 @@ def check_singlephase(override):
     allowed_initial = import_singlephase()
     assert(_testinternalcapi.get_interp_settings() == settings_initial)
 
-    # Apply the override and check.
+    # Apply the override und check.
     override_initial = _imp._override_multi_interp_extensions_check(override)
     settings_after = _testinternalcapi.get_interp_settings()
     allowed_after = import_singlephase()
 
-    # Apply the override again and check.
+    # Apply the override again und check.
     noop = {}
     override_after = _imp._override_multi_interp_extensions_check(override)
     settings_noop = _testinternalcapi.get_interp_settings()
@@ -40,7 +40,7 @@ def check_singlephase(override):
     wenn allowed_noop != allowed_after:
         noop['allowed_noop'] = allowed_noop
 
-    # Restore the original setting and check.
+    # Restore the original setting und check.
     override_noop = _imp._override_multi_interp_extensions_check(override_initial)
     wenn override_noop != override_after:
         noop['override_noop'] = override_noop

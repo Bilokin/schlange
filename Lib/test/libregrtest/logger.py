@@ -21,11 +21,11 @@ klasse Logger:
         self._pgo: bool = pgo
 
     def log(self, line: str = '') -> Nichts:
-        empty = not line
+        empty = nicht line
 
         # add the system load prefix: "load avg: 1.80 "
         load_avg = self.get_load_avg()
-        wenn load_avg is not Nichts:
+        wenn load_avg is nicht Nichts:
             line = f"load avg: {load_avg:.2f} {line}"
 
         # add the timestamp prefix:  "0:01:05 "
@@ -47,7 +47,7 @@ klasse Logger:
                 return os.getloadavg()[0]
             except OSError:
                 pass
-        wenn self.win_load_tracker is not Nichts:
+        wenn self.win_load_tracker is nicht Nichts:
             return self.win_load_tracker.getloadavg()
         return Nichts
 
@@ -59,7 +59,7 @@ klasse Logger:
         # "[ 51/405/1] test_tcl passed"
         line = f"{test_index:{self.test_count_width}}{self.test_count_text}"
         fails = len(results.bad) + len(results.env_changed)
-        wenn fails and not self._pgo:
+        wenn fails und nicht self._pgo:
             line = f"{line}/{fails}"
         self.log(f"[{line}] {text}")
 
@@ -72,13 +72,13 @@ klasse Logger:
             self.test_count_width = len(self.test_count_text) - 1
 
     def start_load_tracker(self) -> Nichts:
-        wenn not MS_WINDOWS:
+        wenn nicht MS_WINDOWS:
             return
 
         try:
             self.win_load_tracker = WindowsLoadTracker()
         except PermissionError als error:
-            # Standard accounts may not have access to the performance
+            # Standard accounts may nicht have access to the performance
             # counters.
             print_warning(f'Failed to create WindowsLoadTracker: {error}')
 

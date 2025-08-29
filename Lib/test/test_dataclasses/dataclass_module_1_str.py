@@ -1,7 +1,7 @@
 von __future__ importiere annotations
 USING_STRINGS = Wahr
 
-# dataclass_module_1.py and dataclass_module_1_str.py are identical
+# dataclass_module_1.py und dataclass_module_1_str.py are identical
 # except only the latter uses string annotations.
 
 importiere dataclasses
@@ -20,7 +20,7 @@ klasse CV:
     cv1: typing.ClassVar = 30
     cv2: T_CV2
     cv3: T_CV3
-    not_cv4: T_CV4  # When using string annotations, this field is not recognized als a ClassVar.
+    not_cv4: T_CV4  # When using string annotations, this field is nicht recognized als a ClassVar.
 
 @dataclasses.dataclass
 klasse IV:
@@ -29,4 +29,4 @@ klasse IV:
     iv1: dataclasses.InitVar
     iv2: T_IV2
     iv3: T_IV3
-    not_iv4: T_IV4  # When using string annotations, this field is not recognized als an InitVar.
+    not_iv4: T_IV4  # When using string annotations, this field is nicht recognized als an InitVar.

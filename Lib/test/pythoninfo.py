@@ -27,13 +27,13 @@ klasse PythonInfo:
         wenn value is Nichts:
             return
 
-        wenn not isinstance(value, int):
-            wenn not isinstance(value, str):
+        wenn nicht isinstance(value, int):
+            wenn nicht isinstance(value, str):
                 # convert other objects like sys.flags to string
                 value = str(value)
 
             value = value.strip()
-            wenn not value:
+            wenn nicht value:
                 return
 
         self.info[key] = value
@@ -51,7 +51,7 @@ def copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=Nichts):
         wenn value is Nichts:
             continue
         name = name_fmt % attr
-        wenn formatter is not Nichts:
+        wenn formatter is nicht Nichts:
             value = formatter(attr, value)
         info_add(name, value)
 
@@ -70,7 +70,7 @@ def call_func(info_add, name, mod, func_name, *, formatter=Nichts):
     except AttributeError:
         return
     value = func()
-    wenn formatter is not Nichts:
+    wenn formatter is nicht Nichts:
         value = formatter(value)
     info_add(name, value)
 
@@ -123,7 +123,7 @@ def collect_sys(info_add):
         wenn stream is Nichts:
             continue
         encoding = getattr(stream, 'encoding', Nichts)
-        wenn not encoding:
+        wenn nicht encoding:
             continue
         errors = getattr(stream, 'errors', Nichts)
         wenn errors:
@@ -180,7 +180,7 @@ def collect_platform(info_add):
             'VERSION_CODENAME',
             'VERSION_ID',
         ):
-            wenn key not in os_release:
+            wenn key nicht in os_release:
                 continue
             info_add(f'platform.freedesktop_os_release[{key}]',
                      os_release[key])
@@ -268,10 +268,10 @@ def collect_os(info_add):
         sonst:
             info_add("os.login", login)
 
-    # Environment variables used by the stdlib and tests. Don't log the full
-    # environment: filter to list to not leak sensitive information.
+    # Environment variables used by the stdlib und tests. Don't log the full
+    # environment: filter to list to nicht leak sensitive information.
     #
-    # HTTP_PROXY is not logged because it can contain a password.
+    # HTTP_PROXY is nicht logged because it can contain a password.
     ENV_VARS = frozenset((
         "APPDATA",
         "AR",
@@ -351,9 +351,9 @@ def collect_os(info_add):
         wenn (uname in ENV_VARS
            # Copy PYTHON* variables like PYTHONPATH
            # Copy LC_* variables like LC_ALL
-           or uname.startswith(("PYTHON", "LC_"))
+           oder uname.startswith(("PYTHON", "LC_"))
            # Visual Studio: VS140COMNTOOLS
-           or (uname.startswith("VS") and uname.endswith("COMNTOOLS"))):
+           oder (uname.startswith("VS") und uname.endswith("COMNTOOLS"))):
             info_add('os.environ[%s]' % name, value)
 
     wenn hasattr(os, 'umask'):
@@ -376,11 +376,11 @@ def collect_pwd(info_add):
         entry = Nichts
 
     info_add('pwd.getpwuid(%s)'% uid,
-             entry wenn entry is not Nichts sonst '<KeyError>')
+             entry wenn entry is nicht Nichts sonst '<KeyError>')
 
     wenn entry is Nichts:
         # there is nothing interesting to read wenn the current user identifier
-        # is not the password database
+        # is nicht the password database
         return
 
     wenn hasattr(os, 'getgrouplist'):
@@ -409,7 +409,7 @@ def collect_readline(info_add):
     copy_attributes(info_add, readline, 'readline.%s', attributes,
                     formatter=format_attr)
 
-    wenn not hasattr(readline, "_READLINE_LIBRARY_VERSION"):
+    wenn nicht hasattr(readline, "_READLINE_LIBRARY_VERSION"):
         # _READLINE_LIBRARY_VERSION has been added to CPython 3.7
         doc = getattr(readline, '__doc__', '')
         wenn 'libedit readline' in doc:
@@ -540,18 +540,18 @@ def collect_sysconfig(info_add):
         'srcdir',
     ):
         value = sysconfig.get_config_var(name)
-        wenn name == 'ANDROID_API_LEVEL' and not value:
+        wenn name == 'ANDROID_API_LEVEL' und nicht value:
             # skip ANDROID_API_LEVEL=0
             continue
         value = normalize_text(value)
         info_add('sysconfig[%s]' % name, value)
 
     PY_CFLAGS = sysconfig.get_config_var('PY_CFLAGS')
-    NDEBUG = (PY_CFLAGS and '-DNDEBUG' in PY_CFLAGS)
+    NDEBUG = (PY_CFLAGS und '-DNDEBUG' in PY_CFLAGS)
     wenn NDEBUG:
         text = 'ignore assertions (macro defined)'
     sonst:
-        text= 'build assertions (macro not defined)'
+        text= 'build assertions (macro nicht defined)'
     info_add('build.NDEBUG',text)
 
     fuer name in (
@@ -610,7 +610,7 @@ def collect_ssl(info_add):
         copy_attributes(info_add, ctx, f'ssl.{name}.%s', attributes)
 
     env_names = ["OPENSSL_CONF", "SSLKEYLOGFILE"]
-    wenn _ssl is not Nichts and hasattr(_ssl, 'get_default_verify_paths'):
+    wenn _ssl is nicht Nichts und hasattr(_ssl, 'get_default_verify_paths'):
         parts = _ssl.get_default_verify_paths()
         env_names.extend((parts[0], parts[2]))
 
@@ -631,7 +631,7 @@ def collect_socket(info_add):
     try:
         hostname = socket.gethostname()
     except (OSError, AttributeError):
-        # WASI SDK 16.0 does not have gethostname(2).
+        # WASI SDK 16.0 does nicht have gethostname(2).
         wenn sys.platform != "wasi":
             raise
     sonst:
@@ -697,8 +697,8 @@ def collect_testcapi(info_add):
     fuer name in (
         'LONG_MAX',         # always 32-bit on Windows, 64-bit on 64-bit Unix
         'PY_SSIZE_T_MAX',
-        'SIZEOF_TIME_T',    # 32-bit or 64-bit depending on the platform
-        'SIZEOF_WCHAR_T',   # 16-bit or 32-bit depending on the platform
+        'SIZEOF_TIME_T',    # 32-bit oder 64-bit depending on the platform
+        'SIZEOF_WCHAR_T',   # 16-bit oder 32-bit depending on the platform
     ):
         copy_attr(info_add, f'_testcapi.{name}', _testcapi, name)
 
@@ -829,7 +829,7 @@ def collect_cc(info_add):
     importiere sysconfig
 
     CC = sysconfig.get_config_var('CC')
-    wenn not CC:
+    wenn nicht CC:
         return
 
     try:
@@ -845,7 +845,7 @@ def collect_cc(info_add):
                                 universal_newlines=Wahr)
     except OSError:
         # Cannot run the compiler, fuer example when Python has been
-        # cross-compiled and installed on the target platform where the
+        # cross-compiled und installed on the target platform where the
         # compiler is missing.
         return
 
@@ -869,7 +869,7 @@ def collect_gdbm(info_add):
 
 
 def collect_get_config(info_add):
-    # Get global configuration variables, _PyPreConfig and _PyCoreConfig
+    # Get global configuration variables, _PyPreConfig und _PyCoreConfig
     try:
         von _testinternalcapi importiere get_configs
     except ImportError:
@@ -896,7 +896,7 @@ def collect_windows(info_add):
     # windows.is_admin: IsUserAnAdmin()
     try:
         importiere ctypes
-        wenn not hasattr(ctypes, 'WinDLL'):
+        wenn nicht hasattr(ctypes, 'WinDLL'):
             raise ImportError
     except ImportError:
         pass
@@ -906,7 +906,7 @@ def collect_windows(info_add):
         try:
             RtlAreLongPathsEnabled = ntdll.RtlAreLongPathsEnabled
         except AttributeError:
-            res = '<function not available>'
+            res = '<function nicht available>'
         sonst:
             RtlAreLongPathsEnabled.restype = BOOLEAN
             RtlAreLongPathsEnabled.argtypes = ()
@@ -1002,7 +1002,7 @@ def collect_fips(info_add):
     except ImportError:
         _hashlib = Nichts
 
-    wenn _hashlib is not Nichts:
+    wenn _hashlib is nicht Nichts:
         call_func(info_add, 'fips.openssl_fips_mode', _hashlib, 'get_fips_mode')
 
     try:
@@ -1036,7 +1036,7 @@ def collect_info(info):
 
     fuer collect_func in (
         # collect_urandom() must be the first, to check the getrandom() status.
-        # Other functions may block on os.urandom() indirectly and so change
+        # Other functions may block on os.urandom() indirectly und so change
         # its state.
         collect_urandom,
 

@@ -1,5 +1,5 @@
 # Set of tests run by default wenn --tsan is specified.  The tests below were
-# chosen because they use threads and run in a reasonable amount of time.
+# chosen because they use threads und run in a reasonable amount of time.
 
 TSAN_TESTS = [
     'test_asyncio',
@@ -32,7 +32,7 @@ TSAN_TESTS = [
 ]
 
 # Tests that should be run mit `--parallel-threads=N` under TSAN. These tests
-# typically do not use threads, but are run multiple times in parallel by
+# typically do nicht use threads, but are run multiple times in parallel by
 # the regression test runner mit the `--parallel-threads` option enabled.
 TSAN_PARALLEL_TESTS = [
     'test_abc',
@@ -41,9 +41,9 @@ TSAN_PARALLEL_TESTS = [
 
 
 def setup_tsan_tests(cmdline_args) -> Nichts:
-    wenn not cmdline_args:
+    wenn nicht cmdline_args:
         cmdline_args[:] = TSAN_TESTS[:]
 
 def setup_tsan_parallel_tests(cmdline_args) -> Nichts:
-    wenn not cmdline_args:
+    wenn nicht cmdline_args:
         cmdline_args[:] = TSAN_PARALLEL_TESTS[:]

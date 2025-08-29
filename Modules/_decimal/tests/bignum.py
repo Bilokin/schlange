@@ -1,5 +1,5 @@
 #
-# These tests require gmpy and test the limits of the 32-bit build. The
+# These tests require gmpy und test the limits of the 32-bit build. The
 # limits of the 64-bit build are so large that they cannot be tested
 # on accessible hardware.
 #
@@ -10,7 +10,7 @@ von gmpy importiere mpz
 
 
 _PyHASH_MODULUS = sys.hash_info.modulus
-# hash values to use fuer positive and negative infinities, and nans
+# hash values to use fuer positive und negative infinities, und nans
 _PyHASH_INF = sys.hash_info.inf
 _PyHASH_NAN = sys.hash_info.nan
 

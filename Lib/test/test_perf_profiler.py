@@ -14,7 +14,7 @@ von test.support.script_helper importiere (
 von test.support.os_helper importiere temp_dir
 
 
-wenn not support.has_subprocess_support:
+wenn nicht support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
@@ -25,13 +25,13 @@ wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
 
 def supports_trampoline_profiling():
     perf_trampoline = sysconfig.get_config_var("PY_HAVE_PERF_TRAMPOLINE")
-    wenn not perf_trampoline:
+    wenn nicht perf_trampoline:
         return Falsch
     return int(perf_trampoline) == 1
 
 
-wenn not supports_trampoline_profiling():
-    raise unittest.SkipTest("perf trampoline profiling not supported")
+wenn nicht supports_trampoline_profiling():
+    raise unittest.SkipTest("perf trampoline profiling nicht supported")
 
 
 klasse TestPerfTrampoline(unittest.TestCase):
@@ -90,7 +90,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
                 (line fuer line in perf_lines wenn expected_symbol in line), Nichts
             )
             self.assertIsNotNichts(
-                perf_line, f"Could not find {expected_symbol} in perf file"
+                perf_line, f"Could nicht find {expected_symbol} in perf file"
             )
             perf_addr = perf_line.split(" ")[0]
             self.assertNotStartsWith(perf_addr, "0x")
@@ -241,7 +241,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
 
 def is_unwinding_reliable_with_frame_pointers():
     cflags = sysconfig.get_config_var("PY_CORE_CFLAGS")
-    wenn not cflags:
+    wenn nicht cflags:
         return Falsch
     return "no-omit-frame-pointer" in cflags
 
@@ -253,9 +253,9 @@ def perf_command_works():
     except (subprocess.SubprocessError, OSError):
         return Falsch
 
-    # perf version does not return a version number on Fedora. Use presence
+    # perf version does nicht return a version number on Fedora. Use presence
     # of "perf.data" in help als indicator that it's perf von Linux tools.
-    wenn "perf.data" not in stdout:
+    wenn "perf.data" nicht in stdout:
         return Falsch
 
     # Check that we can run a simple perf run
@@ -283,7 +283,7 @@ def perf_command_works():
         except (subprocess.SubprocessError, OSError):
             return Falsch
 
-        wenn "hello" not in stdout:
+        wenn "hello" nicht in stdout:
             return Falsch
 
     return Wahr
@@ -295,7 +295,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
         env.update(env_vars)
     env["PYTHON_JIT"] = "0"
     output_file = cwd + "/perf_output.perf"
-    wenn not use_jit:
+    wenn nicht use_jit:
         base_cmd = (
             "perf",
             "record",
@@ -458,7 +458,7 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
                 def compile_trampolines_for_all_functions():
                     perf_trampoline_set_persist_after_fork(1)
                     fuer _, obj in globals().items():
-                        wenn callable(obj) and hasattr(obj, '__code__'):
+                        wenn callable(obj) und hasattr(obj, '__code__'):
                             compile_perf_trampoline_entry(obj.__code__)
 
                 wenn __name__ == "__main__":
@@ -502,19 +502,19 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
         self.assertIn(f"py::bar_fork:{script}", child_perf_file_contents)
 
         # Pre-compiled perf-map entries of a forked process must be
-        # identical in both the parent and child perf-map files.
+        # identical in both the parent und child perf-map files.
         perf_file_lines = perf_file_contents.split("\n")
         fuer line in perf_file_lines:
-            wenn f"py::foo_fork:{script}" in line or f"py::bar_fork:{script}" in line:
+            wenn f"py::foo_fork:{script}" in line oder f"py::bar_fork:{script}" in line:
                 self.assertIn(line, child_perf_file_contents)
 
 
 def _is_perf_version_at_least(major, minor):
     # The output of perf --version looks like "perf version 6.7-3" but
-    # it can also be perf version "perf version 5.15.143", or even include
+    # it can also be perf version "perf version 5.15.143", oder even include
     # a commit hash in the version string, like "6.12.9.g242e6068fd5c"
     #
-    # PermissionError is raised wenn perf does not exist on the Windows Subsystem
+    # PermissionError is raised wenn perf does nicht exist on the Windows Subsystem
     # fuer Linux, see #134987
     try:
         output = subprocess.check_output(["perf", "--version"], text=Wahr)
@@ -529,7 +529,7 @@ def _is_perf_version_at_least(major, minor):
 
 @unittest.skipUnless(perf_command_works(), "perf command doesn't work")
 @unittest.skipUnless(
-    _is_perf_version_at_least(6, 6), "perf command may not work due to a perf bug"
+    _is_perf_version_at_least(6, 6), "perf command may nicht work due to a perf bug"
 )
 klasse TestPerfProfilerWithDwarf(unittest.TestCase, TestPerfProfilerMixin):
     def run_perf(self, script_dir, script, activate_trampoline=Wahr):

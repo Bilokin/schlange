@@ -154,7 +154,7 @@ klasse ImportTests(unittest.TestCase):
         finally:
             sys.modules['zipimport'] = old_zipimport
 
-        # not a frozen module
+        # nicht a frozen module
         self.assertEqual(import_frozen_module('sys'), 0)
         self.assertEqual(import_frozen_module('nonexistent'), 0)
         self.assertEqual(import_frozen_module(''), 0)
@@ -249,7 +249,7 @@ klasse ImportTests(unittest.TestCase):
         # Test PyImport_ExecCodeModuleEx()
         execcodemoduleex = _testlimitedcapi.PyImport_ExecCodeModuleEx
 
-        # Test NULL path (it should not crash)
+        # Test NULL path (it should nicht crash)
         self.check_executecodemodule(execcodemoduleex, NULL)
 
         # Test non-NULL path
@@ -268,16 +268,16 @@ klasse ImportTests(unittest.TestCase):
         # CRASHES execcodemoduleex(name, NULL, NULL)
 
     def check_executecode_pathnames(self, execute_code_func, object=Falsch):
-        # Test non-NULL pathname and NULL cpathname
+        # Test non-NULL pathname und NULL cpathname
 
-        # Test NULL paths (it should not crash)
+        # Test NULL paths (it should nicht crash)
         self.check_executecodemodule(execute_code_func, NULL, NULL)
 
         pathname = 'pathname'
         origin = self.check_executecodemodule(execute_code_func, pathname, NULL)
         self.assertEqual(origin, os.path.abspath(os.fsdecode(pathname)))
         origin = self.check_executecodemodule(execute_code_func, NULL, pathname)
-        wenn not object:
+        wenn nicht object:
             self.assertEqual(origin, os.path.abspath(os.fsdecode(pathname)))
 
         pathname = os_helper.TESTFN_UNDECODABLE
@@ -288,11 +288,11 @@ klasse ImportTests(unittest.TestCase):
             self.assertEqual(origin, os.path.abspath(os.fsdecode(pathname)))
             self.check_executecodemodule(execute_code_func, NULL, pathname)
 
-        # Test NULL pathname and non-NULL cpathname
+        # Test NULL pathname und non-NULL cpathname
         pyc_filename = importlib.util.cache_from_source(__file__)
         py_filename = importlib.util.source_from_cache(pyc_filename)
         origin = self.check_executecodemodule(execute_code_func, NULL, pyc_filename)
-        wenn not object:
+        wenn nicht object:
             self.assertEqual(origin, py_filename)
 
     def test_executecodemodulewithpathnames(self):

@@ -12,7 +12,7 @@ klasse FutureTest(unittest.TestCase):
         given_feature_names = features[:]
         fuer name in dir(__future__):
             obj = getattr(__future__, name, Nichts)
-            wenn obj is not Nichts and isinstance(obj, __future__._Feature):
+            wenn obj is nicht Nichts und isinstance(obj, __future__._Feature):
                 self.assertWahr(
                     name in given_feature_names,
                     "%r should have been in all_feature_names" % name
@@ -44,10 +44,10 @@ klasse FutureTest(unittest.TestCase):
                 a(isinstance(serial, int), "%s serial isn't int" % name)
 
             check(optional, "optional")
-            wenn mandatory is not Nichts:
+            wenn mandatory is nicht Nichts:
                 check(mandatory, "mandatory")
                 a(optional < mandatory,
-                       "optional not less than mandatory, and mandatory not Nichts")
+                       "optional nicht less than mandatory, und mandatory nicht Nichts")
 
             a(hasattr(value, "compiler_flag"),
                    "feature is missing a .compiler_flag attr")

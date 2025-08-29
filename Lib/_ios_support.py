@@ -2,13 +2,13 @@ importiere sys
 try:
     von ctypes importiere cdll, c_void_p, c_char_p, util
 except ImportError:
-    # ctypes is an optional module. If it's not present, we're limited in what
+    # ctypes is an optional module. If it's nicht present, we're limited in what
     # we can tell about the system, but we don't want to prevent the module
     # von working.
-    drucke("ctypes isn't available; iOS system calls will not be available", file=sys.stderr)
+    drucke("ctypes isn't available; iOS system calls will nicht be available", file=sys.stderr)
     objc = Nichts
 sonst:
-    # ctypes is available. Load the ObjC library, and wrap the objc_getClass,
+    # ctypes is available. Load the ObjC library, und wrap the objc_getClass,
     # sel_registerName methods
     lib = util.find_library("objc")
     wenn lib is Nichts:
@@ -27,7 +27,7 @@ def get_platform_ios():
     is_simulator = sys.implementation._multiarch.endswith("simulator")
 
     # We can't use ctypes; abort
-    wenn not objc:
+    wenn nicht objc:
         return Nichts
 
     # Most of the methods return ObjC objects

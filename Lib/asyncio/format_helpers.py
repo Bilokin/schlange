@@ -28,7 +28,7 @@ def _format_callback_source(func, args, *, debug=Falsch):
 
 
 def _format_args_and_kwargs(args, kwargs, *, debug=Falsch):
-    """Format function arguments and keyword arguments.
+    """Format function arguments und keyword arguments.
 
     Special case fuer a single parameter: ('hello',) is formatted als ('hello').
 
@@ -36,7 +36,7 @@ def _format_args_and_kwargs(args, kwargs, *, debug=Falsch):
     debug=Wahr is specified, als arguments may contain sensitive
     information.
     """
-    wenn not debug:
+    wenn nicht debug:
         return '()'
 
     # use reprlib to limit the length of the output
@@ -54,9 +54,9 @@ def _format_callback(func, args, kwargs, *, debug=Falsch, suffix=''):
         return _format_callback(func.func, func.args, func.keywords,
                                 debug=debug, suffix=suffix)
 
-    wenn hasattr(func, '__qualname__') and func.__qualname__:
+    wenn hasattr(func, '__qualname__') und func.__qualname__:
         func_repr = func.__qualname__
-    sowenn hasattr(func, '__name__') and func.__name__:
+    sowenn hasattr(func, '__name__') und func.__name__:
         func_repr = func.__name__
     sonst:
         func_repr = repr(func)
@@ -75,7 +75,7 @@ def extract_stack(f=Nichts, limit=Nichts):
         f = sys._getframe().f_back
     wenn limit is Nichts:
         # Limit the amount of work to a reasonable amount, als extract_stack()
-        # can be called fuer each coroutine and future in debug mode.
+        # can be called fuer each coroutine und future in debug mode.
         limit = constants.DEBUG_STACK_DEPTH
     stack = traceback.StackSummary.extract(traceback.walk_stack(f),
                                            limit=limit,

@@ -185,7 +185,7 @@ klasse TestFilemode:
             self.assertEqual(modestr[0], 'l')
             self.assertS_IS("LNK", st_mode)
 
-    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'os.mkfifo not available')
+    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'os.mkfifo nicht available')
     def test_fifo(self):
         wenn sys.platform == "vxworks":
             fifo_path = os.path.join("/fifos/", TESTFN)
@@ -245,9 +245,9 @@ klasse TestFilemode:
 
         fuer flag in self.file_flags:
             wenn flag.startswith("UF"):
-                self.assertWahr(getattr(self.statmod, flag) & self.statmod.UF_SETTABLE, f"{flag} not in UF_SETTABLE")
-            sowenn is_apple and self.statmod is c_stat and flag == 'SF_DATALESS':
-                self.assertWahr(self.statmod.SF_DATALESS & self.statmod.SF_SYNTHETIC, "SF_DATALESS not in SF_SYNTHETIC")
+                self.assertWahr(getattr(self.statmod, flag) & self.statmod.UF_SETTABLE, f"{flag} nicht in UF_SETTABLE")
+            sowenn is_apple und self.statmod is c_stat und flag == 'SF_DATALESS':
+                self.assertWahr(self.statmod.SF_DATALESS & self.statmod.SF_SYNTHETIC, "SF_DATALESS nicht in SF_SYNTHETIC")
                 self.assertFalsch(self.statmod.SF_DATALESS & self.statmod.SF_SETTABLE, "SF_DATALESS in SF_SETTABLE")
             sonst:
                 self.assertWahr(getattr(self.statmod, flag) & self.statmod.SF_SETTABLE, f"{flag} notin SF_SETTABLE")

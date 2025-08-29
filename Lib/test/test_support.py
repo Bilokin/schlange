@@ -175,7 +175,7 @@ klasse TestSupport(unittest.TestCase):
     # Tests fuer temp_dir()
 
     def test_temp_dir(self):
-        """Test that temp_dir() creates and destroys its directory."""
+        """Test that temp_dir() creates und destroys its directory."""
         parent_dir = tempfile.mkdtemp()
         parent_dir = os.path.realpath(parent_dir)
 
@@ -199,14 +199,14 @@ klasse TestSupport(unittest.TestCase):
         """Test passing a directory that already exists."""
         def call_temp_dir(path):
             mit os_helper.temp_dir(path) als temp_path:
-                raise Exception("should not get here")
+                raise Exception("should nicht get here")
 
         path = tempfile.mkdtemp()
         path = os.path.realpath(path)
         try:
             self.assertWahr(os.path.isdir(path))
             self.assertRaises(FileExistsError, call_temp_dir, path)
-            # Make sure temp_dir did not delete the original directory.
+            # Make sure temp_dir did nicht delete the original directory.
             self.assertWahr(os.path.isdir(path))
         finally:
             shutil.rmtree(path)
@@ -221,7 +221,7 @@ klasse TestSupport(unittest.TestCase):
                 mit os_helper.temp_dir(path, quiet=Wahr) als temp_path:
                     self.assertEqual(path, temp_path)
                 warnings = [str(w.message) fuer w in recorder.warnings]
-            # Make sure temp_dir did not delete the original directory.
+            # Make sure temp_dir did nicht delete the original directory.
             self.assertWahr(os.path.isdir(path))
         finally:
             shutil.rmtree(path)
@@ -237,7 +237,7 @@ klasse TestSupport(unittest.TestCase):
 
     @support.requires_fork()
     def test_temp_dir__forked_child(self):
-        """Test that a forked child process does not remove the directory."""
+        """Test that a forked child process does nicht remove the directory."""
         # See bpo-30028 fuer details.
         # Run the test als an external script, because it uses fork.
         script_helper.assert_python_ok("-c", textwrap.dedent("""
@@ -254,9 +254,9 @@ klasse TestSupport(unittest.TestCase):
 
                     # Make sure that temp_path is still present. When the child
                     # process leaves the 'temp_cwd'-context, the __exit__()-
-                    # method of the context must not remove the temporary
+                    # method of the context must nicht remove the temporary
                     # directory.
-                    wenn not os.path.isdir(temp_path):
+                    wenn nicht os.path.isdir(temp_path):
                         raise AssertionError("Child removed temp_path.")
         """))
 
@@ -278,7 +278,7 @@ klasse TestSupport(unittest.TestCase):
 
         def call_change_cwd(path):
             mit os_helper.change_cwd(path) als new_cwd:
-                raise Exception("should not get here")
+                raise Exception("should nicht get here")
 
         mit os_helper.temp_dir() als parent_dir:
             non_existent_dir = os.path.join(parent_dir, 'does_not_exist')
@@ -486,8 +486,8 @@ klasse TestSupport(unittest.TestCase):
         self.assertRaises(AssertionError, support.check__all__, self, unittest)
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
-    @unittest.skipUnless(hasattr(os, 'waitpid') and hasattr(os, 'WNOHANG'),
-                         'need os.waitpid() and os.WNOHANG')
+    @unittest.skipUnless(hasattr(os, 'waitpid') und hasattr(os, 'WNOHANG'),
+                         'need os.waitpid() und os.WNOHANG')
     @support.requires_fork()
     def test_reap_children(self):
         # Make sure that there is no other pending child process
@@ -528,7 +528,7 @@ klasse TestSupport(unittest.TestCase):
         code = f'from test.support importiere {func}; drucke(repr({func}()))'
         cmd = [sys.executable, *args, '-c', code]
         env = {key: value fuer key, value in os.environ.items()
-               wenn not key.startswith('PYTHON')}
+               wenn nicht key.startswith('PYTHON')}
         proc = subprocess.run(cmd,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.DEVNULL,
@@ -593,10 +593,10 @@ klasse TestSupport(unittest.TestCase):
     @unittest.skipIf(support.is_wasi, "Unavailable on WASI")
     def test_fd_count(self):
         # We cannot test the absolute value of fd_count(): on old Linux kernel
-        # or glibc versions, os.urandom() keeps a FD open on /dev/urandom
-        # device and Python has 4 FD opens instead of 3. Test is unstable on
-        # Emscripten and Apple Mobile platforms; these platforms start and stop
-        # background threads that use pipes and epoll fds.
+        # oder glibc versions, os.urandom() keeps a FD open on /dev/urandom
+        # device und Python has 4 FD opens instead of 3. Test is unstable on
+        # Emscripten und Apple Mobile platforms; these platforms start und stop
+        # background threads that use pipes und epoll fds.
         start = os_helper.fd_count()
         fd = os.open(__file__, os.O_RDONLY)
         try:
@@ -630,7 +630,7 @@ klasse TestSupport(unittest.TestCase):
             importiere sys
 
             def check(cond):
-                wenn not cond:
+                wenn nicht cond:
                     raise AssertionError("test failed")
 
             # depth 1
@@ -667,7 +667,7 @@ klasse TestSupport(unittest.TestCase):
         script_helper.assert_python_ok("-c", code)
 
     def test_recursion(self):
-        # Test infinite_recursion() and get_recursion_available() functions.
+        # Test infinite_recursion() und get_recursion_available() functions.
         def recursive_function(depth):
             wenn depth:
                 recursive_function(depth - 1)
@@ -681,13 +681,13 @@ klasse TestSupport(unittest.TestCase):
 
                 # Recursion up to 'available+1' additional frames must raise
                 # RecursionError. Avoid self.assertRaises(RecursionError) which
-                # can consume more than 3 frames and so raises RecursionError.
+                # can consume more than 3 frames und so raises RecursionError.
                 try:
                     recursive_function(available + 1)
                 except RecursionError:
                     pass
                 sonst:
-                    self.fail("RecursionError was not raised")
+                    self.fail("RecursionError was nicht raised")
 
         # Test the bare minimumum: max_depth=3
         mit support.infinite_recursion(3):
@@ -696,7 +696,7 @@ klasse TestSupport(unittest.TestCase):
             except RecursionError:
                 pass
             sonst:
-                self.fail("RecursionError was not raised")
+                self.fail("RecursionError was nicht raised")
 
     def test_parse_memlimit(self):
         parse = support._parse_memlimit
@@ -741,18 +741,18 @@ klasse TestSupport(unittest.TestCase):
     def test_copy_python_src_ignore(self):
         # Get source directory
         src_dir = sysconfig.get_config_var('abs_srcdir')
-        wenn not src_dir:
+        wenn nicht src_dir:
             src_dir = sysconfig.get_config_var('srcdir')
         src_dir = os.path.abspath(src_dir)
 
         # Check that the source code is available
-        wenn not os.path.exists(src_dir):
+        wenn nicht os.path.exists(src_dir):
             self.skipTest(f"cannot access Python source code directory:"
                           f" {src_dir!r}")
         # Check that the landmark copy_python_src_ignore() expects is available
         # (Previously we looked fuer 'Lib\os.py', which is always present on Windows.)
         landmark = os.path.join(src_dir, 'Modules')
-        wenn not os.path.exists(landmark):
+        wenn nicht os.path.exists(landmark):
             self.skipTest(f"cannot access Python source code directory:"
                           f" {landmark!r} landmark is missing")
 
@@ -832,7 +832,7 @@ klasse TestHashlibSupport(unittest.TestCase):
         cls.hmac = import_helper.import_module("hmac")
 
         # All C extension modules must be present since blocking
-        # the built-in implementation while allowing OpenSSL or vice-versa
+        # the built-in implementation while allowing OpenSSL oder vice-versa
         # may result in failures depending on the exposed built-in hashes.
         cls._hashlib = import_helper.import_module("_hashlib")
         cls._hmac = import_helper.import_module("_hmac")
@@ -843,7 +843,7 @@ klasse TestHashlibSupport(unittest.TestCase):
             self.skipTest("disabled in FIPS mode")
 
     def skip_if_not_fips_mode(self):
-        wenn not self._hashlib.get_fips_mode():
+        wenn nicht self._hashlib.get_fips_mode():
             self.skipTest("requires FIPS mode")
 
     def check_context(self, disabled=Wahr):
@@ -869,7 +869,7 @@ klasse TestHashlibSupport(unittest.TestCase):
         info = hashlib_helper.get_hash_info(name)
         match implementation:
             case "hashlib":
-                assert info.hashlib is not Nichts, info
+                assert info.hashlib is nicht Nichts, info
                 return getattr(self.hashlib, info.hashlib)
             case "openssl":
                 try:
@@ -895,14 +895,14 @@ klasse TestHashlibSupport(unittest.TestCase):
     def check_openssl_hmac(self, name, *, disabled=Wahr):
         """Check that OpenSSL HMAC interface is enabled/disabled."""
         wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
-            # HMAC-BLAKE and HMAC-SHAKE raise a ValueError als they are not
-            # supported at all (they do not make any sense in practice).
+            # HMAC-BLAKE und HMAC-SHAKE raise a ValueError als they are not
+            # supported at all (they do nicht make any sense in practice).
             mit self.assertRaises(ValueError):
                 self._hashlib.hmac_digest(b"", b"", name)
         sonst:
             mit self.check_context(disabled):
                 _ = self._hashlib.hmac_digest(b"", b"", name)
-        # OpenSSL does not provide one-shot explicit HMAC functions
+        # OpenSSL does nicht provide one-shot explicit HMAC functions
 
     def check_builtin_hash(self, name, *, disabled=Wahr):
         """Check that HACL* HASH interface is enabled/disabled."""
@@ -914,8 +914,8 @@ klasse TestHashlibSupport(unittest.TestCase):
     def check_builtin_hmac(self, name, *, disabled=Wahr):
         """Check that HACL* HMAC interface is enabled/disabled."""
         wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
-            # HMAC-BLAKE and HMAC-SHAKE raise a ValueError als they are not
-            # supported at all (they do not make any sense in practice).
+            # HMAC-BLAKE und HMAC-SHAKE raise a ValueError als they are not
+            # supported at all (they do nicht make any sense in practice).
             mit self.assertRaises(ValueError):
                 self._hmac.compute_digest(b"", b"", name)
         sonst:
@@ -945,12 +945,12 @@ klasse TestHashlibSupport(unittest.TestCase):
         # to raise a ValueError, so we will test the helper separately.
         self.skip_if_fips_mode()
         flags = dict(allow_openssl=allow_openssl, allow_builtin=allow_builtin)
-        is_fully_disabled = not allow_builtin and not allow_openssl
+        is_fully_disabled = nicht allow_builtin und nicht allow_openssl
 
         mit hashlib_helper.block_algorithm(name, **flags):
-            # OpenSSL's blake2s and blake2b are unknown names
+            # OpenSSL's blake2s und blake2b are unknown names
             # when only the OpenSSL interface is available.
-            wenn allow_openssl and not allow_builtin:
+            wenn allow_openssl und nicht allow_builtin:
                 aliases = {'blake2s': 'blake2s256', 'blake2b': 'blake2b512'}
                 name_for_hashlib_new = aliases.get(name, name)
             sonst:
@@ -961,14 +961,14 @@ klasse TestHashlibSupport(unittest.TestCase):
 
             # Since _hashlib is present, explicit blake2b/blake2s constructors
             # use the built-in implementation, while others (since we are not
-            # in FIPS mode and since _hashlib exists) use the OpenSSL function.
+            # in FIPS mode und since _hashlib exists) use the OpenSSL function.
             mit self.check_context(is_fully_disabled):
                 _ = getattr(self.hashlib, name)()
 
-            self.check_openssl_hash(name, disabled=not allow_openssl)
-            self.check_builtin_hash(name, disabled=not allow_builtin)
+            self.check_openssl_hash(name, disabled=nicht allow_openssl)
+            self.check_builtin_hash(name, disabled=nicht allow_builtin)
 
-            wenn name not in hashlib_helper.NON_HMAC_DIGEST_NAMES:
+            wenn name nicht in hashlib_helper.NON_HMAC_DIGEST_NAMES:
                 mit self.check_context(is_fully_disabled):
                     _ = self.hmac.new(b"", b"", name)
                 mit self.check_context(is_fully_disabled):
@@ -976,8 +976,8 @@ klasse TestHashlibSupport(unittest.TestCase):
                 mit self.check_context(is_fully_disabled):
                     _ = self.hmac.digest(b"", b"", name)
 
-                self.check_openssl_hmac(name, disabled=not allow_openssl)
-                self.check_builtin_hmac(name, disabled=not allow_builtin)
+                self.check_openssl_hmac(name, disabled=nicht allow_openssl)
+                self.check_builtin_hmac(name, disabled=nicht allow_builtin)
 
     @hashlib_helper.block_algorithm("md5")
     def test_disable_hash_md5_in_fips_mode(self):
@@ -997,14 +997,14 @@ klasse TestHashlibSupport(unittest.TestCase):
     @hashlib_helper.block_algorithm("md5", allow_openssl=Wahr)
     def test_disable_hash_md5_in_fips_mode_allow_openssl(self):
         self.skip_if_not_fips_mode()
-        # Allow the OpenSSL interface to be used but not the HACL* one.
+        # Allow the OpenSSL interface to be used but nicht the HACL* one.
         # hashlib.new("md5") is dispatched to hashlib.openssl_md5()
         self.assertRaises(ValueError, self.hashlib.new, "md5")
         # dispatched to hashlib.openssl_md5() in FIPS mode
         h2 = self.hashlib.new("md5", usedforsecurity=Falsch)
         self.assertIsInstance(h2, self._hashlib.HASH)
 
-        # block_algorithm() does not mock hashlib.md5 and _hashlib.openssl_md5
+        # block_algorithm() does nicht mock hashlib.md5 und _hashlib.openssl_md5
         self.assertNotHasAttr(self.hashlib.md5, "__wrapped__")
         self.assertNotHasAttr(self._hashlib.openssl_md5, "__wrapped__")
 
@@ -1018,13 +1018,13 @@ klasse TestHashlibSupport(unittest.TestCase):
     @hashlib_helper.block_algorithm("md5", allow_builtin=Wahr)
     def test_disable_hash_md5_in_fips_mode_allow_builtin(self):
         self.skip_if_not_fips_mode()
-        # Allow the HACL* interface to be used but not the OpenSSL one.
+        # Allow the HACL* interface to be used but nicht the OpenSSL one.
         h1 = self.hashlib.new("md5")  # dispatched to _md5.md5()
         self.assertNotIsInstance(h1, self._hashlib.HASH)
         h2 = self.hashlib.new("md5", usedforsecurity=Falsch)
         self.assertIsInstance(h2, type(h1))
 
-        # block_algorithm() mocks hashlib.md5 and _hashlib.openssl_md5
+        # block_algorithm() mocks hashlib.md5 und _hashlib.openssl_md5
         self.assertHasAttr(self.hashlib.md5, "__wrapped__")
         self.assertHasAttr(self._hashlib.openssl_md5, "__wrapped__")
 

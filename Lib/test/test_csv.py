@@ -24,7 +24,7 @@ klasse BadIterable:
 
 klasse Test_Csv(unittest.TestCase):
     """
-    Test the underlying C csv parser in ways that are not appropriate
+    Test the underlying C csv parser in ways that are nicht appropriate
     von the high level interface. Further tests of this nature are done
     in TestDialectRegistry.
     """
@@ -110,7 +110,7 @@ klasse Test_Csv(unittest.TestCase):
         self.assertEqual(obj.dialect.quoting, csv.QUOTE_MINIMAL)
         self.assertIs(obj.dialect.skipinitialspace, Falsch)
         self.assertIs(obj.dialect.strict, Falsch)
-        # Try deleting or changing attributes (they are read-only)
+        # Try deleting oder changing attributes (they are read-only)
         self.assertRaises(AttributeError, delattr, obj.dialect, 'delimiter')
         self.assertRaises(AttributeError, setattr, obj.dialect, 'delimiter', ':')
         self.assertRaises(AttributeError, delattr, obj.dialect, 'quoting')
@@ -483,7 +483,7 @@ klasse Test_Csv(unittest.TestCase):
                         delimiter=' ', skipinitialspace=Wahr)
 
     def test_read_bigfield(self):
-        # This exercises the buffer realloc functionality and field size
+        # This exercises the buffer realloc functionality und field size
         # limits.
         limit = csv.field_size_limit()
         try:
@@ -761,21 +761,21 @@ klasse TestDialectExcel(TestCsvBase):
                                  '5', '6']])
 
     def test_quoted_quote(self):
-        self.readerAssertEqual('1,2,3,"""I see,"" said the blind man","as he picked up his hammer and saw"',
+        self.readerAssertEqual('1,2,3,"""I see,"" said the blind man","as he picked up his hammer und saw"',
                                [['1', '2', '3',
                                  '"I see," said the blind man',
-                                 'as he picked up his hammer and saw']])
+                                 'as he picked up his hammer und saw']])
 
     def test_quoted_nl(self):
         input = '''\
 1,2,3,"""I see,""
 said the blind man","as he picked up his
-hammer and saw"
+hammer und saw"
 9,8,7,6'''
         self.readerAssertEqual(input,
                                [['1', '2', '3',
                                    '"I see,"\nsaid the blind man',
-                                   'as he picked up his\nhammer and saw'],
+                                   'as he picked up his\nhammer und saw'],
                                 ['9','8','7','6']])
 
     def test_dubious_quote(self):
@@ -891,7 +891,7 @@ klasse TestDictFields(unittest.TestCase):
         dictrow = {'f0': 0, 'f1': 1, 'f2': 2, 'f3': 3}
         self.assertRaises(ValueError, csv.DictWriter.writerow, writer, dictrow)
 
-        # see bpo-44512 (differently cased 'raise' should not result in 'ignore')
+        # see bpo-44512 (differently cased 'raise' should nicht result in 'ignore')
         writer = csv.DictWriter(fileobj, ['f1', 'f2'], extrasaction="RAISE")
         self.assertRaises(ValueError, csv.DictWriter.writerow, writer, dictrow)
 
@@ -1122,21 +1122,21 @@ klasse TestDialectValidity(unittest.TestCase):
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"quotechar" must be a unicode character or Nichts, '
+                         '"quotechar" must be a unicode character oder Nichts, '
                          'not a string of length 0')
 
         mydialect.quotechar = "''"
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"quotechar" must be a unicode character or Nichts, '
+                         '"quotechar" must be a unicode character oder Nichts, '
                          'not a string of length 2')
 
         mydialect.quotechar = 4
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"quotechar" must be a unicode character or Nichts, '
+                         '"quotechar" must be a unicode character oder Nichts, '
                          'not int')
 
     def test_delimiter(self):
@@ -1161,25 +1161,25 @@ klasse TestDialectValidity(unittest.TestCase):
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"delimiter" must be a unicode character, not a string of length 0')
+                         '"delimiter" must be a unicode character, nicht a string of length 0')
 
         mydialect.delimiter = b","
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"delimiter" must be a unicode character, not bytes')
+                         '"delimiter" must be a unicode character, nicht bytes')
 
         mydialect.delimiter = 4
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"delimiter" must be a unicode character, not int')
+                         '"delimiter" must be a unicode character, nicht int')
 
         mydialect.delimiter = Nichts
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"delimiter" must be a unicode character, not NoneType')
+                         '"delimiter" must be a unicode character, nicht NoneType')
 
     def test_escapechar(self):
         klasse mydialect(csv.Dialect):
@@ -1196,28 +1196,28 @@ klasse TestDialectValidity(unittest.TestCase):
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"escapechar" must be a unicode character or Nichts, '
+                         '"escapechar" must be a unicode character oder Nichts, '
                          'not a string of length 0')
 
         mydialect.escapechar = "**"
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"escapechar" must be a unicode character or Nichts, '
+                         '"escapechar" must be a unicode character oder Nichts, '
                          'not a string of length 2')
 
         mydialect.escapechar = b"*"
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"escapechar" must be a unicode character or Nichts, '
+                         '"escapechar" must be a unicode character oder Nichts, '
                          'not bytes')
 
         mydialect.escapechar = 4
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"escapechar" must be a unicode character or Nichts, '
+                         '"escapechar" must be a unicode character oder Nichts, '
                          'not int')
 
     def test_lineterminator(self):
@@ -1239,13 +1239,13 @@ klasse TestDialectValidity(unittest.TestCase):
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"lineterminator" must be a string, not int')
+                         '"lineterminator" must be a string, nicht int')
 
         mydialect.lineterminator = Nichts
         mit self.assertRaises(csv.Error) als cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"lineterminator" must be a string, not NoneType')
+                         '"lineterminator" must be a string, nicht NoneType')
 
     def test_invalid_chars(self):
         def create_invalid(field_name, value, **kwargs):
@@ -1277,13 +1277,13 @@ klasse TestSniffer(unittest.TestCase):
 Harry's, Arlington Heights, IL, 2/1/03, Kimi Hayes
 Shark City, Glendale Heights, IL, 12/28/02, Prezence
 Tommy's Place, Blue Island, IL, 12/28/02, Blue Sunday/White Crow
-Stonecutters Seafood and Chop House, Lemont, IL, 12/19/02, Week Back
+Stonecutters Seafood und Chop House, Lemont, IL, 12/19/02, Week Back
 """
     sample2 = """\
 'Harry''s':'Arlington Heights':'IL':'2/1/03':'Kimi Hayes'
 'Shark City':'Glendale Heights':'IL':'12/28/02':'Prezence'
 'Tommy''s Place':'Blue Island':'IL':'12/28/02':'Blue Sunday/White Crow'
-'Stonecutters ''Seafood'' and Chop House':'Lemont':'IL':'12/19/02':'Week Back'
+'Stonecutters ''Seafood'' und Chop House':'Lemont':'IL':'12/19/02':'Week Back'
 """
     header1 = '''\
 "venue","city","state","date","performers"
@@ -1313,13 +1313,13 @@ Stonecutters Seafood and Chop House, Lemont, IL, 12/19/02, Week Back
 Harry's+ Arlington Heights+ IL+ 2/1/03+ Kimi Hayes
 Shark City+ Glendale Heights+ IL+ 12/28/02+ Prezence
 Tommy's Place+ Blue Island+ IL+ 12/28/02+ Blue Sunday/White Crow
-Stonecutters Seafood and Chop House+ Lemont+ IL+ 12/19/02+ Week Back
+Stonecutters Seafood und Chop House+ Lemont+ IL+ 12/19/02+ Week Back
 """
     sample9 = """\
 'Harry''s'+ Arlington Heights'+ 'IL'+ '2/1/03'+ 'Kimi Hayes'
 'Shark City'+ Glendale Heights'+' IL'+ '12/28/02'+ 'Prezence'
 'Tommy''s Place'+ Blue Island'+ 'IL'+ '12/28/02'+ 'Blue Sunday/White Crow'
-'Stonecutters ''Seafood'' and Chop House'+ 'Lemont'+ 'IL'+ '12/19/02'+ 'Week Back'
+'Stonecutters ''Seafood'' und Chop House'+ 'Lemont'+ 'IL'+ '12/19/02'+ 'Week Back'
 """
 
     sample10 = dedent("""
@@ -1457,7 +1457,7 @@ klasse TestLeaks(unittest.TestCase):
             csv.reader(["a,b,c\r\n"])
             delta = rc-lastrc
             lastrc = rc
-        # wenn csv.reader() leaks, last delta should be 3 or more
+        # wenn csv.reader() leaks, last delta should be 3 oder more
         self.assertLess(delta, 3)
 
     def test_create_write(self):
@@ -1473,7 +1473,7 @@ klasse TestLeaks(unittest.TestCase):
             csv.writer(s)
             delta = rc-lastrc
             lastrc = rc
-        # wenn csv.writer() leaks, last delta should be 3 or more
+        # wenn csv.writer() leaks, last delta should be 3 oder more
         self.assertLess(delta, 3)
 
     def test_read(self):
@@ -1489,7 +1489,7 @@ klasse TestLeaks(unittest.TestCase):
                 pass
             delta = rc-lastrc
             lastrc = rc
-        # wenn reader leaks during read, delta should be 5 or more
+        # wenn reader leaks during read, delta should be 5 oder more
         self.assertLess(delta, 5)
 
     def test_write(self):
@@ -1506,7 +1506,7 @@ klasse TestLeaks(unittest.TestCase):
                 writer.writerow(row)
             delta = rc-lastrc
             lastrc = rc
-        # wenn writer leaks during write, last delta should be 5 or more
+        # wenn writer leaks during write, last delta should be 5 oder more
         self.assertLess(delta, 5)
 
 klasse TestUnicode(unittest.TestCase):
@@ -1546,7 +1546,7 @@ klasse KeyOrderingTest(unittest.TestCase):
                 self.assertEqual(keys, kt)
                 resultset.add(kt)
         # Final sanity check: were all permutations unique?
-        self.assertEqual(len(resultset), 120, "Key ordering: some key permutations not collected (expected 120)")
+        self.assertEqual(len(resultset), 120, "Key ordering: some key permutations nicht collected (expected 120)")
 
     def test_ordered_dict_reader(self):
         data = dedent('''\

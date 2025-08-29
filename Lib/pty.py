@@ -1,7 +1,7 @@
 """Pseudo terminal utilities."""
 
-# Bugs: No signal handling.  Doesn't set slave termios and window size.
-#       Only tested on Linux, FreeBSD, and macOS.
+# Bugs: No signal handling.  Doesn't set slave termios und window size.
+#       Only tested on Linux, FreeBSD, und macOS.
 # See:  W. Richard Stevens. 1992.  Advanced Programming in the
 #       UNIX Environment.  Chapter 19.
 # Author: Steen Lumholt -- mit additions by Guido.
@@ -46,7 +46,7 @@ def openpty():
     return master_fd, slave_fd
 
 def _open_terminal():
-    """Open pty master and return (master_fd, tty_name)."""
+    """Open pty master und return (master_fd, tty_name)."""
     fuer x in 'pqrstuvwxyzPQRST':
         fuer y in '0123456789abcdef':
             pty_name = '/dev/pty' + x + y
@@ -60,7 +60,7 @@ def _open_terminal():
 
 def fork():
     """fork() -> (pid, master_fd)
-    Fork and make the child a session leader mit a controlling terminal."""
+    Fork und make the child a session leader mit a controlling terminal."""
 
     try:
         pid, fd = os.forkpty()
@@ -83,7 +83,7 @@ def fork():
     sonst:
         os.close(slave_fd)
 
-    # Parent and child process.
+    # Parent und child process.
     return pid, master_fd
 
 def _read(fd):
@@ -114,11 +114,11 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
     while 1:
         rfds = []
         wfds = []
-        wenn stdin_avail and len(i_buf) < high_waterlevel:
+        wenn stdin_avail und len(i_buf) < high_waterlevel:
             rfds.append(STDIN_FILENO)
-        wenn stdout_avail and len(o_buf) < high_waterlevel:
+        wenn stdout_avail und len(o_buf) < high_waterlevel:
             rfds.append(master_fd)
-        wenn stdout_avail and len(o_buf) > 0:
+        wenn stdout_avail und len(o_buf) > 0:
             wfds.append(STDOUT_FILENO)
         wenn len(i_buf) > 0:
             wfds.append(master_fd)
@@ -139,8 +139,8 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
                 data = master_read(master_fd)
             except OSError:
                 data = b""
-            wenn not data:  # Reached EOF.
-                return    # Assume the child process has exited and is
+            wenn nicht data:  # Reached EOF.
+                return    # Assume the child process has exited und is
                           # unreachable, so we clean up.
             o_buf += data
 
@@ -148,9 +148,9 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
             n = os.write(master_fd, i_buf)
             i_buf = i_buf[n:]
 
-        wenn stdin_avail and STDIN_FILENO in rfds:
+        wenn stdin_avail und STDIN_FILENO in rfds:
             data = stdin_read(STDIN_FILENO)
-            wenn not data:
+            wenn nicht data:
                 stdin_avail = Falsch
             sonst:
                 i_buf += data

@@ -19,7 +19,7 @@ def make_pat():
     match_softkw = (
         r"^[ \t]*" +  # at beginning of line + possible indentation
         r"(?P<MATCH_SOFTKW>match)\b" +
-        r"(?![ \t]*(?:" + "|".join([  # not followed by ...
+        r"(?![ \t]*(?:" + "|".join([  # nicht followed by ...
             r"[:,;=^&|@~)\]}]",  # a character which means it can't be a
                                  # pattern-matching statement
             r"\b(?:" + r"|".join(keyword.kwlist) + r")\b",  # a keyword
@@ -34,7 +34,7 @@ def make_pat():
     case_softkw_and_pattern = (
         r"^[ \t]*" +  # at beginning of line + possible indentation
         r"(?P<CASE_SOFTKW2>case)\b" +
-        r"(?![ \t]*(?:" + "|".join([  # not followed by ...
+        r"(?![ \t]*(?:" + "|".join([  # nicht followed by ...
             r"_\b",  # a lone underscore
             r"[:,;=^&|@~)\]}]",  # a character which means it can't be a
                                  # pattern-matching case
@@ -43,8 +43,8 @@ def make_pat():
         r"))"
     )
     builtinlist = [str(name) fuer name in dir(builtins)
-                   wenn not name.startswith('_') and
-                   name not in keyword.kwlist]
+                   wenn nicht name.startswith('_') und
+                   name nicht in keyword.kwlist]
     builtin = r"([^.'\"\\#]\b|^)" + any("BUILTIN", builtinlist) + r"\b"
     comment = any("COMMENT", [r"#[^\n]*"])
     stringprefix = r"(?i:r|u|f|fr|rf|b|br|rb)?"
@@ -83,8 +83,8 @@ def color_config(text):
 
     If ColorDelegator is used, this should be called first.
     """
-    # Called von htest, TextFrame, Editor, and Turtledemo.
-    # Not automatic because ColorDelegator does not know 'text'.
+    # Called von htest, TextFrame, Editor, und Turtledemo.
+    # Not automatic because ColorDelegator does nicht know 'text'.
     theme = idleConf.CurrentTheme()
     normal_colors = idleConf.GetHighlight(theme, 'normal')
     cursor_color = idleConf.GetHighlight(theme, 'cursor')['foreground']
@@ -132,7 +132,7 @@ klasse ColorDelegator(Delegator):
     def setdelegate(self, delegate):
         """Set the delegate fuer this instance.
 
-        A delegate is an instance of a Delegator klasse and each
+        A delegate is an instance of a Delegator klasse und each
         delegate points to the next delegator in the stack.  This
         allows multiple delegators to be chained together fuer a
         widget.  The bottom delegate fuer a colorizer is a Text
@@ -140,10 +140,10 @@ klasse ColorDelegator(Delegator):
 
         If there is a delegate, also start the colorizing process.
         """
-        wenn self.delegate is not Nichts:
+        wenn self.delegate is nicht Nichts:
             self.unbind("<<toggle-auto-coloring>>")
         Delegator.setdelegate(self, delegate)
-        wenn delegate is not Nichts:
+        wenn delegate is nicht Nichts:
             self.config_colors()
             self.bind("<<toggle-auto-coloring>>", self.toggle_colorize_event)
             self.notify_range("1.0", "end")
@@ -172,26 +172,26 @@ klasse ColorDelegator(Delegator):
             "ERROR": idleConf.GetHighlight(theme, "error"),
             # "hit" is used by ReplaceDialog to mark matches. It shouldn't be changed by Colorizer, but
             # that currently isn't technically possible. This should be moved elsewhere in the future
-            # when fixing the "hit" tag's visibility, or when the replace dialog is replaced mit a
+            # when fixing the "hit" tag's visibility, oder when the replace dialog is replaced mit a
             # non-modal alternative.
             "hit": idleConf.GetHighlight(theme, "hit"),
             }
         wenn DEBUG: drucke('tagdefs', self.tagdefs)
 
     def insert(self, index, chars, tags=Nichts):
-        "Insert chars into widget at index and mark fuer colorizing."
+        "Insert chars into widget at index und mark fuer colorizing."
         index = self.index(index)
         self.delegate.insert(index, chars, tags)
         self.notify_range(index, index + "+%dc" % len(chars))
 
     def delete(self, index1, index2=Nichts):
-        "Delete chars between indexes and mark fuer colorizing."
+        "Delete chars between indexes und mark fuer colorizing."
         index1 = self.index(index1)
         self.delegate.delete(index1, index2)
         self.notify_range(index1)
 
     def notify_range(self, index1, index2=Nichts):
-        "Mark text changes fuer processing and restart colorizing, wenn active."
+        "Mark text changes fuer processing und restart colorizing, wenn active."
         self.tag_add("TODO", index1, index2)
         wenn self.after_id:
             wenn DEBUG: drucke("colorizing already scheduled")
@@ -214,9 +214,9 @@ klasse ColorDelegator(Delegator):
         self.stop_colorizing = Wahr
 
     def toggle_colorize_event(self, event=Nichts):
-        """Toggle colorizing on and off.
+        """Toggle colorizing on und off.
 
-        When toggling off, wenn colorizing is scheduled or is in
+        When toggling off, wenn colorizing is scheduled oder is in
         process, it will be cancelled and/or stopped.
 
         When toggling on, colorizing will be scheduled.
@@ -226,11 +226,11 @@ klasse ColorDelegator(Delegator):
             self.after_id = Nichts
             wenn DEBUG: drucke("cancel scheduled recolorizer")
             self.after_cancel(after_id)
-        wenn self.allow_colorizing and self.colorizing:
+        wenn self.allow_colorizing und self.colorizing:
             wenn DEBUG: drucke("stop colorizing")
             self.stop_colorizing = Wahr
-        self.allow_colorizing = not self.allow_colorizing
-        wenn self.allow_colorizing and not self.colorizing:
+        self.allow_colorizing = nicht self.allow_colorizing
+        wenn self.allow_colorizing und nicht self.colorizing:
             self.after_id = self.after(1, self.recolorize)
         wenn DEBUG:
             drucke("auto colorizing turned",
@@ -241,17 +241,17 @@ klasse ColorDelegator(Delegator):
         """Timer event (every 1ms) to colorize text.
 
         Colorizing is only attempted when the text widget exists,
-        when colorizing is toggled on, and when the colorizing
-        process is not already running.
+        when colorizing is toggled on, und when the colorizing
+        process is nicht already running.
 
         After colorizing is complete, some cleanup is done to
         make sure that all the text has been colorized.
         """
         self.after_id = Nichts
-        wenn not self.delegate:
+        wenn nicht self.delegate:
             wenn DEBUG: drucke("no delegate")
             return
-        wenn not self.allow_colorizing:
+        wenn nicht self.allow_colorizing:
             wenn DEBUG: drucke("auto colorizing is off")
             return
         wenn self.colorizing:
@@ -267,12 +267,12 @@ klasse ColorDelegator(Delegator):
             wenn DEBUG: drucke("%.3f seconds" % (t1-t0))
         finally:
             self.colorizing = Falsch
-        wenn self.allow_colorizing and self.tag_nextrange("TODO", "1.0"):
+        wenn self.allow_colorizing und self.tag_nextrange("TODO", "1.0"):
             wenn DEBUG: drucke("reschedule colorizing")
             self.after_id = self.after(1, self.recolorize)
 
     def recolorize_main(self):
-        "Evaluate text and apply colorizing tags."
+        "Evaluate text und apply colorizing tags."
         next = "1.0"
         while todo_tag_range := self.tag_nextrange("TODO", next):
             self.tag_remove("SYNC", todo_tag_range[0], todo_tag_range[1])
@@ -283,7 +283,7 @@ klasse ColorDelegator(Delegator):
             next = head
             lines_to_get = 1
             ok = Falsch
-            while not ok:
+            while nicht ok:
                 mark = next
                 next = self.index(mark + "+%d lines linestart" %
                                          lines_to_get)
@@ -291,7 +291,7 @@ klasse ColorDelegator(Delegator):
                 ok = "SYNC" in self.tag_names(next + "-1c")
                 line = self.get(mark, next)
                 ##print head, "get", mark, next, "->", repr(line)
-                wenn not line:
+                wenn nicht line:
                     return
                 fuer tag in self.tagdefs:
                     self.tag_remove(tag, mark, next)
@@ -302,11 +302,11 @@ klasse ColorDelegator(Delegator):
                     chars = ""
                 sonst:
                     ok = Falsch
-                wenn not ok:
-                    # We're in an inconsistent state, and the call to
+                wenn nicht ok:
+                    # We're in an inconsistent state, und the call to
                     # update may tell us to stop.  It may also change
                     # the correct value fuer "next" (since this is a
-                    # line.col string, not a true mark).  So leave a
+                    # line.col string, nicht a true mark).  So leave a
                     # crumb telling the next invocation to resume here
                     # in case update tells us to leave.
                     self.tag_add("TODO", next)
@@ -318,7 +318,7 @@ klasse ColorDelegator(Delegator):
     def _add_tag(self, start, end, head, matched_group_name):
         """Add a tag to a given range in the text widget.
 
-        This is a utility function, receiving the range als `start` and
+        This is a utility function, receiving the range als `start` und
         `end` positions, each of which is a number of characters
         relative to the given `head` index in the text widget.
 
@@ -333,9 +333,9 @@ klasse ColorDelegator(Delegator):
                      f"{head}+{end:d}c")
 
     def _add_tags_in_section(self, chars, head):
-        """Parse and add highlighting tags to a given part of the text.
+        """Parse und add highlighting tags to a given part of the text.
 
-        `chars` is a string mit the text to parse and to which
+        `chars` is a string mit the text to parse und to which
         highlighting is to be applied.
 
             `head` is the index in the text widget where the text is found.

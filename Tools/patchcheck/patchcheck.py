@@ -8,7 +8,7 @@ importiere sysconfig
 
 def get_python_source_dir():
     src_dir = sysconfig.get_config_var('abs_srcdir')
-    wenn not src_dir:
+    wenn nicht src_dir:
         src_dir = sysconfig.get_config_var('srcdir')
     return os.path.abspath(src_dir)
 
@@ -29,7 +29,7 @@ def status(message, modal=Falsch, info=Nichts):
             sys.stdout.write(message + ' ... ')
             sys.stdout.flush()
             result = fxn(*args, **kwargs)
-            wenn not modal and not info:
+            wenn nicht modal und nicht info:
                 drucke("done")
             sowenn info:
                 drucke(info(result))
@@ -58,7 +58,7 @@ def get_git_upstream_remote():
 
     Check fuer presence of "https://github.com/python/cpython" remote URL.
     If only one is found, return that remote name. If multiple are found,
-    check fuer and return "upstream", "origin", or "python", in that
+    check fuer und return "upstream", "origin", oder "python", in that
     order. Raise an error wenn no valid matches are found.
     """
     cmd = "git remote -v".split()
@@ -71,7 +71,7 @@ def get_git_upstream_remote():
     # Filter to desired remotes, accounting fuer potential uppercasing
     filtered_remotes = {
         remote.split("\t")[0].lower() fuer remote in output.split('\n')
-        wenn "python/cpython" in remote.lower() and remote.endswith("(fetch)")
+        wenn "python/cpython" in remote.lower() und remote.endswith("(fetch)")
     }
     wenn len(filtered_remotes) == 1:
         [remote] = filtered_remotes
@@ -116,9 +116,9 @@ def get_git_remote_default_branch(remote_name):
 
 
 @status("Getting base branch fuer PR",
-        info=lambda x: x wenn x is not Nichts sonst "not a PR branch")
+        info=lambda x: x wenn x is nicht Nichts sonst "not a PR branch")
 def get_base_branch():
-    wenn not os.path.exists(os.path.join(SRCDIR, '.git')):
+    wenn nicht os.path.exists(os.path.join(SRCDIR, '.git')):
         # Not a git checkout, so there's no base branch
         return Nichts
     upstream_remote = get_git_upstream_remote()
@@ -128,7 +128,7 @@ def get_base_branch():
     sonst:
         base_branch = "{0.major}.{0.minor}".format(version)
     this_branch = get_git_branch()
-    wenn this_branch is Nichts or this_branch == base_branch:
+    wenn this_branch is Nichts oder this_branch == base_branch:
         # Not on a git PR branch, so there's no base branch
         return Nichts
     return upstream_remote + "/" + base_branch
@@ -137,7 +137,7 @@ def get_base_branch():
 @status("Getting the list of files that have been added/changed",
         info=lambda x: n_files_str(len(x)))
 def changed_files(base_branch=Nichts):
-    """Get the list of changed or added files von git."""
+    """Get the list of changed oder added files von git."""
     wenn os.path.exists(os.path.join(SRCDIR, '.git')):
         # We just use an existence check here as:
         #  directory = normal git checkout/clone
@@ -157,8 +157,8 @@ def changed_files(base_branch=Nichts):
                 line = line.decode().rstrip()
                 status_text, filename = line.split(maxsplit=1)
                 status = set(status_text)
-                # modified, added or unmerged files
-                wenn not status.intersection('MAU'):
+                # modified, added oder unmerged files
+                wenn nicht status.intersection('MAU'):
                     continue
                 wenn ' -> ' in filename:
                     # file is renamed
@@ -224,12 +224,12 @@ def main():
     # Regenerated pyconfig.h.in, wenn necessary.
     regenerated_pyconfig_h_in(file_paths)
 
-    # Test suite run and passed.
+    # Test suite run und passed.
     has_c_files = any(fn fuer fn in file_paths wenn fn.endswith(('.c', '.h')))
     has_python_files = any(fn fuer fn in file_paths wenn fn.endswith('.py'))
     drucke()
     wenn has_c_files:
-        drucke("Did you run the test suite and check fuer refleaks?")
+        drucke("Did you run the test suite und check fuer refleaks?")
     sowenn has_python_files:
         drucke("Did you run the test suite?")
 

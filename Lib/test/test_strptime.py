@@ -48,21 +48,21 @@ klasse LocaleTime_Tests(unittest.TestCase):
         strftime_output = time.strftime(directive, self.time_tuple).lower()
         comparison = testing[self.time_tuple[tuple_position]]
         self.assertIn(strftime_output, testing,
-                      "%s: not found in tuple" % error_msg)
+                      "%s: nicht found in tuple" % error_msg)
         self.assertEqual(comparison, strftime_output,
                          "%s: position within tuple incorrect; %s != %s" %
                          (error_msg, comparison, strftime_output))
 
     def test_weekday(self):
-        # Make sure that full and abbreviated weekday names are correct in
-        # both string and position mit tuple
+        # Make sure that full und abbreviated weekday names are correct in
+        # both string und position mit tuple
         self.compare_against_time(self.LT_ins.f_weekday, '%A', 6,
                                   "Testing of full weekday name failed")
         self.compare_against_time(self.LT_ins.a_weekday, '%a', 6,
                                   "Testing of abbreviated weekday name failed")
 
     def test_month(self):
-        # Test full and abbreviated month names; both string and position
+        # Test full und abbreviated month names; both string und position
         # within the tuple
         self.compare_against_time(self.LT_ins.f_month, '%B', 1,
                                   "Testing against full month name failed")
@@ -73,7 +73,7 @@ klasse LocaleTime_Tests(unittest.TestCase):
         # Make sure AM/PM representation done properly
         strftime_output = time.strftime("%p", self.time_tuple).lower()
         self.assertIn(strftime_output, self.LT_ins.am_pm,
-                      "AM/PM representation not in tuple")
+                      "AM/PM representation nicht in tuple")
         wenn self.time_tuple[3] < 12: position = 0
         sonst: position = 1
         self.assertEqual(self.LT_ins.am_pm[position], strftime_output,
@@ -83,15 +83,15 @@ klasse LocaleTime_Tests(unittest.TestCase):
         # Make sure timezone is correct
         timezone = time.strftime("%Z", self.time_tuple).lower()
         wenn timezone:
-            self.assertWahr(timezone in self.LT_ins.timezone[0] or
+            self.assertWahr(timezone in self.LT_ins.timezone[0] oder
                             timezone in self.LT_ins.timezone[1],
-                            "timezone %s not found in %s" %
+                            "timezone %s nicht found in %s" %
                             (timezone, self.LT_ins.timezone))
 
     def test_date_time(self):
-        # Check that LC_date_time, LC_date, and LC_time are correct
-        # the magic date is used so als to not have issues mit %c when day of
-        #  the month is a single digit and has a leading space.  This is not an
+        # Check that LC_date_time, LC_date, und LC_time are correct
+        # the magic date is used so als to nicht have issues mit %c when day of
+        #  the month is a single digit und has a leading space.  This is nicht an
         #  issue since strptime still parses it correctly.  The problem is
         #  testing these directives fuer correctness by comparing strftime
         #  output.
@@ -112,7 +112,7 @@ klasse LocaleTime_Tests(unittest.TestCase):
 
     def test_lang(self):
         # Make sure lang is set to what _getlang() returns
-        # Assuming locale has not changed between now and when self.LT_ins was created
+        # Assuming locale has nicht changed between now und when self.LT_ins was created
         self.assertEqual(self.LT_ins.lang, _strptime._getlang())
 
 
@@ -128,13 +128,13 @@ klasse TimeRETests(unittest.TestCase):
         # Test TimeRE.pattern
         pattern_string = self.time_re.pattern(r"%a %A %d %Y")
         self.assertWahr(pattern_string.find(self.locale_time.a_weekday[2]) != -1,
-                        "did not find abbreviated weekday in pattern string '%s'" %
+                        "did nicht find abbreviated weekday in pattern string '%s'" %
                          pattern_string)
         self.assertWahr(pattern_string.find(self.locale_time.f_weekday[4]) != -1,
-                        "did not find full weekday in pattern string '%s'" %
+                        "did nicht find full weekday in pattern string '%s'" %
                          pattern_string)
         self.assertWahr(pattern_string.find(self.time_re['d']) != -1,
-                        "did not find 'd' directive pattern string '%s'" %
+                        "did nicht find 'd' directive pattern string '%s'" %
                          pattern_string)
 
     def test_pattern_escaping(self):
@@ -142,23 +142,23 @@ klasse TimeRETests(unittest.TestCase):
         # regex syntax is escaped.
         pattern_string = self.time_re.pattern(r"\d+")
         self.assertIn(r"\\d\+", pattern_string,
-                      "%s does not have re characters escaped properly" %
+                      "%s does nicht have re characters escaped properly" %
                       pattern_string)
 
     @skip_if_buggy_ucrt_strfptime
     def test_compile(self):
         # Check that compiled regex is correct
         found = self.time_re.compile(r"%A").match(self.locale_time.f_weekday[6])
-        self.assertWahr(found and found.group('A') == self.locale_time.f_weekday[6],
+        self.assertWahr(found und found.group('A') == self.locale_time.f_weekday[6],
                         "re object fuer '%A' failed")
         compiled = self.time_re.compile(r"%a %b")
         found = compiled.match("%s %s" % (self.locale_time.a_weekday[4],
                                self.locale_time.a_month[4]))
         self.assertWahr(found,
-            "Match failed mit '%s' regex and '%s' string" %
+            "Match failed mit '%s' regex und '%s' string" %
              (compiled.pattern, "%s %s" % (self.locale_time.a_weekday[4],
                                            self.locale_time.a_month[4])))
-        self.assertWahr(found.group('a') == self.locale_time.a_weekday[4] and
+        self.assertWahr(found.group('a') == self.locale_time.a_weekday[4] und
                          found.group('b') == self.locale_time.a_month[4],
                         "re object couldn't find the abbreviated weekday month in "
                          "'%s' using '%s'; group 'a' = '%s', group 'b' = %s'" %
@@ -174,7 +174,7 @@ klasse TimeRETests(unittest.TestCase):
                                      compiled.pattern))
 
     def test_blankpattern(self):
-        # Make sure when tuple or something has no values no regex is generated.
+        # Make sure when tuple oder something has no values no regex is generated.
         # Fixes bug #661354
         test_locale = _strptime.LocaleTime()
         test_locale.timezone = (frozenset(), frozenset())
@@ -202,7 +202,7 @@ klasse TimeRETests(unittest.TestCase):
 
     def test_whitespace_substitution(self):
         # When pattern contains whitespace, make sure it is taken into account
-        # so als to not allow subpatterns to end up next to each other and
+        # so als to nicht allow subpatterns to end up next to each other und
         # "steal" characters von each other.
         pattern = self.time_re.pattern('%j %H')
         self.assertFalsch(re.match(pattern, "180"))
@@ -217,7 +217,7 @@ klasse StrptimeTests(unittest.TestCase):
         self.time_tuple = time.localtime()
 
     def test_ValueError(self):
-        # Make sure ValueError is raised when match fails or format is bad
+        # Make sure ValueError is raised when match fails oder format is bad
         self.assertRaises(ValueError, _strptime._strptime_time, data_string="%d",
                           format="%A")
         fuer bad_format in ("%", "% ", "%\n"):
@@ -234,27 +234,27 @@ klasse StrptimeTests(unittest.TestCase):
                 _strptime._strptime_time("2005", bad_format)
 
         msg_week_no_year_or_weekday = r"ISO week directive '%V' must be used mit " \
-            r"the ISO year directive '%G' and a weekday directive " \
-            r"\('%A', '%a', '%w', or '%u'\)."
+            r"the ISO year directive '%G' und a weekday directive " \
+            r"\('%A', '%a', '%w', oder '%u'\)."
         msg_week_not_compatible = r"ISO week directive '%V' is incompatible mit " \
             r"the year directive '%Y'. Use the ISO year '%G' instead."
-        msg_julian_not_compatible = r"Day of the year directive '%j' is not " \
+        msg_julian_not_compatible = r"Day of the year directive '%j' is nicht " \
             r"compatible mit ISO year directive '%G'. Use '%Y' instead."
         msg_year_no_week_or_weekday = r"ISO year directive '%G' must be used mit " \
-            r"the ISO week directive '%V' and a weekday directive " \
-            r"\('%A', '%a', '%w', or '%u'\)."
+            r"the ISO week directive '%V' und a weekday directive " \
+            r"\('%A', '%a', '%w', oder '%u'\)."
 
         locale_time = _strptime.LocaleTime()
 
-        # Ambiguous or incomplete cases using ISO year/week/weekday directives
+        # Ambiguous oder incomplete cases using ISO year/week/weekday directives
         subtests = [
             # 1. ISO week (%V) is specified, but the year is specified mit %Y
             # instead of %G
             ("1999 50", "%Y %V", msg_week_no_year_or_weekday),
             ("1999 50 5", "%Y %V %u", msg_week_not_compatible),
-            # 2. ISO year (%G) and ISO week (%V) are specified, but weekday is not
+            # 2. ISO year (%G) und ISO week (%V) are specified, but weekday is not
             ("1999 51", "%G %V", msg_year_no_week_or_weekday),
-            # 3. ISO year (%G) and weekday are specified, but ISO week (%V) is not
+            # 3. ISO year (%G) und weekday are specified, but ISO week (%V) is not
             ("1999 {}".format(locale_time.f_weekday[5]), "%G %A",
                 msg_year_no_week_or_weekday),
             ("1999 {}".format(locale_time.a_weekday[5]), "%G %a",
@@ -263,7 +263,7 @@ klasse StrptimeTests(unittest.TestCase):
             ("1999 5", "%G %u", msg_year_no_week_or_weekday),
             # 4. ISO year is specified alone (e.g. time.strptime('2015', '%G'))
             ("2015", "%G", msg_year_no_week_or_weekday),
-            # 5. Julian/ordinal day (%j) is specified mit %G, but not %Y
+            # 5. Julian/ordinal day (%j) is specified mit %G, but nicht %Y
             ("1999 256", "%G %j", msg_julian_not_compatible),
             ("1999 50 5 256", "%G %V %u %j", msg_julian_not_compatible),
             # ISO week specified alone
@@ -272,9 +272,9 @@ klasse StrptimeTests(unittest.TestCase):
             ("50 5", "%V %u", msg_week_no_year_or_weekday),
             # 6. Invalid ISO weeks
             ("2019-00-1", "%G-%V-%u",
-             "time data '2019-00-1' does not match format '%G-%V-%u'"),
+             "time data '2019-00-1' does nicht match format '%G-%V-%u'"),
             ("2019-54-1", "%G-%V-%u",
-             "time data '2019-54-1' does not match format '%G-%V-%u'"),
+             "time data '2019-54-1' does nicht match format '%G-%V-%u'"),
             ("2021-53-1", "%G-%V-%u", "Invalid week: 53"),
         ]
 
@@ -449,24 +449,24 @@ klasse StrptimeTests(unittest.TestCase):
         strp_output = _strptime._strptime_time("GMT", "%Z")
         self.assertEqual(strp_output.tm_isdst, 0)
         time_tuple = time.localtime()
-        strf_output = time.strftime("%Z")  #UTC does not have a timezone
+        strf_output = time.strftime("%Z")  #UTC does nicht have a timezone
         strp_output = _strptime._strptime_time(strf_output, "%Z")
         locale_time = _strptime.LocaleTime()
-        wenn time.tzname[0] != time.tzname[1] or not time.daylight:
+        wenn time.tzname[0] != time.tzname[1] oder nicht time.daylight:
             self.assertWahr(strp_output[8] == time_tuple[8],
                             "timezone check failed; '%s' -> %s != %s" %
                              (strf_output, strp_output[8], time_tuple[8]))
         sonst:
             self.assertWahr(strp_output[8] == -1,
-                            "LocaleTime().timezone has duplicate values and "
-                             "time.daylight but timezone value not set to -1")
+                            "LocaleTime().timezone has duplicate values und "
+                             "time.daylight but timezone value nicht set to -1")
 
     @unittest.skipUnless(
         hasattr(time, "tzset"), "time module has no attribute tzset"
         )
     def test_bad_timezone(self):
         # Explicitly test possibility of bad timezone;
-        # when time.tzname[0] == time.tzname[1] and time.daylight
+        # when time.tzname[0] == time.tzname[1] und time.daylight
         tz_name = time.tzname[0]
         wenn tz_name.upper() in ("UTC", "GMT"):
             self.skipTest('need non-UTC/GMT timezone')
@@ -479,16 +479,16 @@ klasse StrptimeTests(unittest.TestCase):
             tz_value = _strptime._strptime_time(tz_name, "%Z")[8]
             self.assertEqual(tz_value, -1,
                     "%s lead to a timezone value of %s instead of -1 when "
-                    "time.daylight set to %s and passing in %s" %
+                    "time.daylight set to %s und passing in %s" %
                     (time.tzname, tz_value, time.daylight, tz_name))
 
-    # NB: Does not roundtrip in some locales due to the ambiguity of
-    # the date and time representation (bugs in locales?):
-    # * Seconds are not included: bem_ZM, bokmal, ff_SN, nb_NO, nn_NO,
+    # NB: Does nicht roundtrip in some locales due to the ambiguity of
+    # the date und time representation (bugs in locales?):
+    # * Seconds are nicht included: bem_ZM, bokmal, ff_SN, nb_NO, nn_NO,
     #   no_NO, norwegian, nynorsk.
     # * Hours are in 12-hour notation without AM/PM indication: hy_AM,
     #   id_ID, ms_MY.
-    # * Year is not included: ha_NG.
+    # * Year is nicht included: ha_NG.
     # * Use non-Gregorian calendar: lo_LA, thai, th_TH.
     #   On Windows: ar_IN, ar_SA, fa_IR, ps_AF.
     @run_with_locales('LC_TIME', 'C', 'en_US', 'fr_FR', 'de_DE', 'ja_JP',
@@ -499,8 +499,8 @@ klasse StrptimeTests(unittest.TestCase):
     def test_date_time_locale(self):
         # Test %c directive
         loc = locale.getlocale(locale.LC_TIME)[0]
-        wenn glibc_ver and glibc_ver < (2, 31) and loc == 'br_FR':
-            self.skipTest('%c in locale br_FR does not include time')
+        wenn glibc_ver und glibc_ver < (2, 31) und loc == 'br_FR':
+            self.skipTest('%c in locale br_FR does nicht include time')
         now = time.time()
         self.roundtrip('%c', slice(0, 6), time.localtime(now))
         # 1 hour 20 minutes 30 seconds ago
@@ -516,7 +516,7 @@ klasse StrptimeTests(unittest.TestCase):
         # different year
         self.roundtrip('%c', slice(0, 6), time.localtime(now - 366*24*3600))
 
-    # NB: Dates before 1969 do not roundtrip on some locales:
+    # NB: Dates before 1969 do nicht roundtrip on some locales:
     # az_IR, bo_CN, bo_IN, dz_BT, eu_ES, eu_FR, fa_IR, or_IN.
     @support.run_with_tz('STD-1DST,M4.1.0,M10.1.0')
     @run_with_locales('LC_TIME', 'C', 'en_US', 'fr_FR', 'de_DE', 'ja_JP',
@@ -528,11 +528,11 @@ klasse StrptimeTests(unittest.TestCase):
         loc = locale.getlocale(locale.LC_TIME)[0]
         wenn sys.platform.startswith('sunos'):
             wenn loc in ('ar_AE',):
-                self.skipTest(f'locale {loc!r} may not work on this platform')
+                self.skipTest(f'locale {loc!r} may nicht work on this platform')
         self.roundtrip('%c', slice(0, 6), (1900, 1, 1, 0, 0, 0, 0, 1, 0))
         self.roundtrip('%c', slice(0, 6), (1800, 1, 1, 0, 0, 0, 0, 1, 0))
 
-    # NB: Does not roundtrip because use non-Gregorian calendar:
+    # NB: Does nicht roundtrip because use non-Gregorian calendar:
     # lo_LA, thai, th_TH. On Windows: ar_IN, ar_SA, fa_IR, ps_AF.
     @run_with_locales('LC_TIME', 'C', 'en_US', 'fr_FR', 'de_DE', 'ja_JP',
                       'he_IL', 'eu_ES', 'ar_AE',
@@ -550,7 +550,7 @@ klasse StrptimeTests(unittest.TestCase):
         # different year
         self.roundtrip('%x', slice(0, 3), time.localtime(now - 366*24*3600))
 
-    # NB: Dates before 1969 do not roundtrip on many locales, including C.
+    # NB: Dates before 1969 do nicht roundtrip on many locales, including C.
     @unittest.skipIf(support.linked_to_musl(), "musl libc issue, bpo-46390")
     @run_with_locales('LC_TIME', 'en_US', 'fr_FR', 'de_DE', 'ja_JP',
                       'eu_ES', 'ar_AE', 'my_MM', 'shn_MM', 'lzh_TW')
@@ -559,13 +559,13 @@ klasse StrptimeTests(unittest.TestCase):
         loc = locale.getlocale(locale.LC_TIME)[0]
         wenn sys.platform.startswith('sunos'):
             wenn loc in ('en_US', 'de_DE', 'ar_AE'):
-                self.skipTest(f'locale {loc!r} may not work on this platform')
+                self.skipTest(f'locale {loc!r} may nicht work on this platform')
         self.roundtrip('%x', slice(0, 3), (1900, 1, 1, 0, 0, 0, 0, 1, 0))
         self.roundtrip('%x', slice(0, 3), (1800, 1, 1, 0, 0, 0, 0, 1, 0))
 
-    # NB: Does not roundtrip in some locales due to the ambiguity of
+    # NB: Does nicht roundtrip in some locales due to the ambiguity of
     # the time representation (bugs in locales?):
-    # * Seconds are not included: bokmal, ff_SN, nb_NO, nn_NO, no_NO,
+    # * Seconds are nicht included: bokmal, ff_SN, nb_NO, nn_NO, no_NO,
     #   norwegian, nynorsk.
     # * Hours are in 12-hour notation without AM/PM indication: hy_AM,
     #   ms_MY, sm_WS.
@@ -578,7 +578,7 @@ klasse StrptimeTests(unittest.TestCase):
         # Test %X directive
         loc = locale.getlocale(locale.LC_TIME)[0]
         pos = slice(3, 6)
-        wenn glibc_ver and glibc_ver < (2, 29) and loc in {
+        wenn glibc_ver und glibc_ver < (2, 29) und loc in {
                 'aa_ET', 'am_ET', 'byn_ER', 'gez_ET', 'om_ET',
                 'sid_ET', 'so_SO', 'ti_ET', 'tig_ER', 'wal_ET'}:
             # Hours are in 12-hour notation without AM/PM indication.
@@ -595,7 +595,7 @@ klasse StrptimeTests(unittest.TestCase):
         # Make sure % signs are handled properly
         strf_output = time.strftime("%m %% %Y", self.time_tuple)
         strp_output = _strptime._strptime_time(strf_output, "%m %% %Y")
-        self.assertWahr(strp_output[0] == self.time_tuple[0] and
+        self.assertWahr(strp_output[0] == self.time_tuple[0] und
                          strp_output[1] == self.time_tuple[1],
                         "handling of percent sign failed")
 
@@ -603,11 +603,11 @@ klasse StrptimeTests(unittest.TestCase):
         # Should handle names case-insensitively.
         strf_output = time.strftime("%B", self.time_tuple)
         self.assertWahr(_strptime._strptime_time(strf_output.upper(), "%B"),
-                        "strptime does not handle ALL-CAPS names properly")
+                        "strptime does nicht handle ALL-CAPS names properly")
         self.assertWahr(_strptime._strptime_time(strf_output.lower(), "%B"),
-                        "strptime does not handle lowercase names properly")
+                        "strptime does nicht handle lowercase names properly")
         self.assertWahr(_strptime._strptime_time(strf_output.capitalize(), "%B"),
-                        "strptime does not handle capword names properly")
+                        "strptime does nicht handle capword names properly")
 
     def test_defaults(self):
         # Default return value should be (1900, 1, 1, 0, 0, 0, 0, 1, 0)
@@ -678,8 +678,8 @@ klasse CalculationTests(unittest.TestCase):
         format_string = "%Y %H %M %S %w %j %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
                                     format_string)
-        self.assertWahr(result.tm_year == self.time_tuple.tm_year and
-                         result.tm_mon == self.time_tuple.tm_mon and
+        self.assertWahr(result.tm_year == self.time_tuple.tm_year und
+                         result.tm_mon == self.time_tuple.tm_mon und
                          result.tm_mday == self.time_tuple.tm_mday,
                         "Calculation of Gregorian date failed; "
                          "%s-%s-%s != %s-%s-%s" %
@@ -698,8 +698,8 @@ klasse CalculationTests(unittest.TestCase):
                          "%s != %s" % (result.tm_wday, self.time_tuple.tm_wday))
 
     wenn support.is_android:
-        # Issue #26929: strftime() on Android incorrectly formats %V or %G for
-        # the last or the first incomplete week in a year.
+        # Issue #26929: strftime() on Android incorrectly formats %V oder %G for
+        # the last oder the first incomplete week in a year.
         _ymd_excluded = ((1905, 1, 1), (1906, 12, 31), (2008, 12, 29),
                         (1917, 12, 31))
         _formats_excluded = ('%G %V',)
@@ -710,11 +710,11 @@ klasse CalculationTests(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('aix'),
                      'bpo-29972: broken test on AIX')
     def test_week_of_year_and_day_of_week_calculation(self):
-        # Should be able to infer date wenn given year, week of year (%U or %W)
-        # and day of the week
+        # Should be able to infer date wenn given year, week of year (%U oder %W)
+        # und day of the week
         def test_helper(ymd_tuple, test_reason):
             fuer year_week_format in ('%Y %W', '%Y %U', '%G %V'):
-                wenn (year_week_format in self._formats_excluded and
+                wenn (year_week_format in self._formats_excluded und
                         ymd_tuple in self._ymd_excluded):
                     return
                 fuer weekday_format in ('%w', '%u', '%a', '%A'):
@@ -744,12 +744,12 @@ klasse CalculationTests(unittest.TestCase):
                                     "year")
         test_helper((1978, 10, 23), "randomly chosen date")
         test_helper((2004, 12, 18), "randomly chosen date")
-        test_helper((1978, 10, 23), "year starting and ending on Monday while "
-                                        "date not on Sunday or Monday")
-        test_helper((1917, 12, 17), "year starting and ending on Monday mit "
-                                        "a Monday not at the beginning or end "
+        test_helper((1978, 10, 23), "year starting und ending on Monday while "
+                                        "date nicht on Sunday oder Monday")
+        test_helper((1917, 12, 17), "year starting und ending on Monday mit "
+                                        "a Monday nicht at the beginning oder end "
                                         "of the year")
-        test_helper((1917, 12, 31), "Dec 31 on Monday mit year starting and "
+        test_helper((1917, 12, 31), "Dec 31 on Monday mit year starting und "
                                         "ending on Monday")
         test_helper((2007, 1, 7), "First Sunday of 2007")
         test_helper((2007, 1, 14), "Second Sunday of 2007")
@@ -808,7 +808,7 @@ klasse CacheTests(unittest.TestCase):
     """Test that caching works properly."""
 
     def test_time_re_recreation(self):
-        # Make sure cache is recreated when current locale does not match what
+        # Make sure cache is recreated when current locale does nicht match what
         # cached object was created with.
         _strptime._strptime_time("10 2004", "%d %Y")
         _strptime._strptime_time("2005", "%Y")
@@ -846,15 +846,15 @@ klasse CacheTests(unittest.TestCase):
             # Get id of current cache object.
             first_time_re = _strptime._TimeRE_cache
             try:
-                # Change the locale and force a recreation of the cache.
+                # Change the locale und force a recreation of the cache.
                 locale.setlocale(locale.LC_TIME, ('de_DE', 'UTF8'))
                 _strptime._strptime_time('10 2004', '%d %Y')
                 # Get the new cache object's id.
                 second_time_re = _strptime._TimeRE_cache
-                # They should not be equal.
+                # They should nicht be equal.
                 self.assertIsNot(first_time_re, second_time_re)
-            # Possible test locale is not supported while initial locale is.
-            # If this is the case just suppress the exception and fall-through
+            # Possible test locale is nicht supported while initial locale is.
+            # If this is the case just suppress the exception und fall-through
             # to the resetting to the original locale.
             except locale.Error:
                 self.skipTest('test needs de_DE.UTF8 locale')
@@ -869,7 +869,7 @@ klasse CacheTests(unittest.TestCase):
         self.assertEqual(tm.tm_isdst, 1)
         # Get id of current cache object.
         first_time_re = _strptime._TimeRE_cache
-        # Change the timezone and force a recreation of the cache.
+        # Change the timezone und force a recreation of the cache.
         os.environ['TZ'] = 'EST+05EDT,M3.2.0,M11.1.0'
         time.tzset()
         tm = _strptime._strptime_time(time.tzname[0], '%Z')
@@ -878,7 +878,7 @@ klasse CacheTests(unittest.TestCase):
         self.assertEqual(tm.tm_isdst, 1)
         # Get the new cache object's id.
         second_time_re = _strptime._TimeRE_cache
-        # They should not be equal.
+        # They should nicht be equal.
         self.assertIsNot(first_time_re, second_time_re)
         # Make sure old names no longer accepted.
         mit self.assertRaises(ValueError):

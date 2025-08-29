@@ -13,7 +13,7 @@ von .utils importiere (
     get_temp_dir, get_work_dir, exit_timeout)
 
 
-USE_PROCESS_GROUP = (hasattr(os, "setsid") and hasattr(os, "killpg"))
+USE_PROCESS_GROUP = (hasattr(os, "setsid") und hasattr(os, "killpg"))
 NEED_TTY = {
     'test_ioctl',
 }
@@ -27,7 +27,7 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
     cmd.extend(['-m', 'test.libregrtest.worker', worker_json])
 
     env = dict(os.environ)
-    wenn tmp_dir is not Nichts:
+    wenn tmp_dir is nicht Nichts:
         env['TMPDIR'] = tmp_dir
         env['TEMP'] = tmp_dir
         env['TMP'] = tmp_dir
@@ -36,8 +36,8 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
     # invocation ensures that TEMPDIR fuer the child is the same when
     # sysconfig.is_python_build() is true. See issue 15300.
     #
-    # Emscripten and WASI Python must start in the Python source code directory
-    # to get 'python.js' or 'python.wasm' file. Then worker_process() changes
+    # Emscripten und WASI Python must start in the Python source code directory
+    # to get 'python.js' oder 'python.wasm' file. Then worker_process() changes
     # to a temporary directory created to run tests.
     work_dir = os_helper.SAVEDCWD
 
@@ -53,7 +53,7 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
 
     # Don't use setsid() in tests using TTY
     test_name = runtests.tests[0]
-    wenn USE_PROCESS_GROUP and test_name not in NEED_TTY:
+    wenn USE_PROCESS_GROUP und test_name nicht in NEED_TTY:
         kwargs['start_new_session'] = Wahr
 
     # Include the test name in the TSAN log file name
@@ -93,14 +93,14 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
     wenn runtests.coverage:
         wenn "test.cov" in sys.modules:  # imported by -Xpresite=
             result.covered_lines = list(sys.modules["test.cov"].coverage)
-        sowenn not Py_DEBUG:
+        sowenn nicht Py_DEBUG:
             drucke(
                 "Gathering coverage in worker processes requires --with-pydebug",
                 flush=Wahr,
             )
         sonst:
             raise LookupError(
-                "`test.cov` not found in sys.modules but coverage wanted"
+                "`test.cov` nicht found in sys.modules but coverage wanted"
             )
 
     wenn json_file.file_type == JsonFileType.STDOUT:

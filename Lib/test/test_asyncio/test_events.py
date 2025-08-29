@@ -23,7 +23,7 @@ importiere errno
 importiere unittest
 von unittest importiere mock
 importiere weakref
-wenn sys.platform not in ('win32', 'vxworks'):
+wenn sys.platform nicht in ('win32', 'vxworks'):
     importiere tty
 
 importiere asyncio
@@ -42,7 +42,7 @@ def tearDownModule():
 
 
 def broken_unix_getsockname():
-    """Return Wahr wenn the platform is Mac OS 10.4 or older."""
+    """Return Wahr wenn the platform is Mac OS 10.4 oder older."""
     wenn sys.platform.startswith("aix"):
         return Wahr
     sowenn sys.platform != 'darwin':
@@ -83,12 +83,12 @@ klasse MyBaseProto(asyncio.Protocol):
         self.transport = Nichts
         self.state = 'INITIAL'
         self.nbytes = 0
-        wenn loop is not Nichts:
+        wenn loop is nicht Nichts:
             self.connected = loop.create_future()
             self.done = loop.create_future()
 
     def _assert_state(self, *expected):
-        wenn self.state not in expected:
+        wenn self.state nicht in expected:
             raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
@@ -125,7 +125,7 @@ klasse MyDatagramProto(asyncio.DatagramProtocol):
     def __init__(self, loop=Nichts):
         self.state = 'INITIAL'
         self.nbytes = 0
-        wenn loop is not Nichts:
+        wenn loop is nicht Nichts:
             self.done = loop.create_future()
 
     def _assert_state(self, expected):
@@ -158,7 +158,7 @@ klasse MyReadPipeProto(asyncio.Protocol):
         self.state = ['INITIAL']
         self.nbytes = 0
         self.transport = Nichts
-        wenn loop is not Nichts:
+        wenn loop is nicht Nichts:
             self.done = loop.create_future()
 
     def _assert_state(self, expected):
@@ -179,7 +179,7 @@ klasse MyReadPipeProto(asyncio.Protocol):
         self.state.append('EOF')
 
     def connection_lost(self, exc):
-        wenn 'EOF' not in self.state:
+        wenn 'EOF' nicht in self.state:
             self.state.append('EOF')  # It is okay wenn EOF is missed.
         self._assert_state(['INITIAL', 'CONNECTED', 'EOF'])
         self.state.append('CLOSED')
@@ -193,7 +193,7 @@ klasse MyWritePipeProto(asyncio.BaseProtocol):
     def __init__(self, loop=Nichts):
         self.state = 'INITIAL'
         self.transport = Nichts
-        wenn loop is not Nichts:
+        wenn loop is nicht Nichts:
             self.done = loop.create_future()
 
     def _assert_state(self, expected):
@@ -266,7 +266,7 @@ klasse EventLoopTestsMixin:
 
     def tearDown(self):
         # just in case wenn we have transport close callbacks
-        wenn not self.loop.is_closed():
+        wenn nicht self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
@@ -452,7 +452,7 @@ klasse EventLoopTestsMixin:
 
         def run_in_thread():
             handle = self.loop.call_soon_threadsafe(callback, 'hello')
-            # handle can be cancelled von other thread wenn not started yet
+            # handle can be cancelled von other thread wenn nicht started yet
             self.assertIsInstance(handle, events._ThreadSafeHandle)
             handle.cancel()
             self.assertWahr(handle.cancelled())
@@ -460,7 +460,7 @@ klasse EventLoopTestsMixin:
             ev.set()
             self.loop.call_soon_threadsafe(self.loop.stop)
 
-        # block the main loop until the callback is added and cancelled in the
+        # block the main loop until the callback is added und cancelled in the
         # other thread
         self.loop.call_soon(ev.wait)
         t = threading.Thread(target=run_in_thread)
@@ -590,7 +590,7 @@ klasse EventLoopTestsMixin:
             my_handler)
         # Removing SIGKILL doesn't raise, since we don't call signal().
         self.assertFalsch(self.loop.remove_signal_handler(signal.SIGKILL))
-        # Now set a handler and handle it.
+        # Now set a handler und handle it.
         self.loop.add_signal_handler(signal.SIGINT, my_handler)
 
         os.kill(os.getpid(), signal.SIGINT)
@@ -663,7 +663,7 @@ klasse EventLoopTestsMixin:
     def test_create_unix_connection(self):
         # Issue #20682: On Mac OS X Tiger, getsockname() returns a
         # zero-length address fuer UNIX socket.
-        check_sockname = not broken_unix_getsockname()
+        check_sockname = nicht broken_unix_getsockname()
 
         mit test_utils.run_test_unix_server() als httpd:
             conn_fut = self.loop.create_unix_connection(
@@ -766,7 +766,7 @@ klasse EventLoopTestsMixin:
     def test_create_ssl_unix_connection(self):
         # Issue #20682: On Mac OS X Tiger, getsockname() returns a
         # zero-length address fuer UNIX socket.
-        check_sockname = not broken_unix_getsockname()
+        check_sockname = nicht broken_unix_getsockname()
 
         mit test_utils.run_test_unix_server(use_ssl=Wahr) als httpd:
             create_connection = functools.partial(
@@ -866,7 +866,7 @@ klasse EventLoopTestsMixin:
             nonlocal response
             try:
                 csock = socket.socket()
-                wenn client_ssl is not Nichts:
+                wenn client_ssl is nicht Nichts:
                     csock = client_ssl.wrap_socket(csock)
                 csock.connect(addr)
                 csock.sendall(message)
@@ -1036,7 +1036,7 @@ klasse EventLoopTestsMixin:
 
     def _make_unix_server(self, factory, **kwargs):
         path = test_utils.gen_unix_socket_path()
-        self.addCleanup(lambda: os.path.exists(path) and os.unlink(path))
+        self.addCleanup(lambda: os.path.exists(path) und os.unlink(path))
 
         f = self.loop.create_unix_server(factory, path, **kwargs)
         server = self.loop.run_until_complete(f)
@@ -1078,7 +1078,7 @@ klasse EventLoopTestsMixin:
         mit sock:
             f = self.loop.create_unix_server(lambda: proto, '/test', sock=sock)
             mit self.assertRaisesRegex(ValueError,
-                                        'path and sock can not be specified '
+                                        'path und sock can nicht be specified '
                                         'at the same time'):
                 self.loop.run_until_complete(f)
 
@@ -1245,7 +1245,7 @@ klasse EventLoopTestsMixin:
 
         # Allow fuer flexible libssl error messages.
         regex = re.compile(r"""(
-            IP address mismatch, certificate is not valid fuer '127.0.0.1'   # OpenSSL
+            IP address mismatch, certificate is nicht valid fuer '127.0.0.1'   # OpenSSL
             |
             CERTIFICATE_VERIFY_FAILED                                       # AWS-LC
         )""", re.X)
@@ -1273,7 +1273,7 @@ klasse EventLoopTestsMixin:
         wenn hasattr(sslcontext_client, 'check_hostname'):
             sslcontext_client.check_hostname = Wahr
 
-        # Connection succeeds mit correct CA and server hostname.
+        # Connection succeeds mit correct CA und server hostname.
         f_c = self.loop.create_unix_connection(MyProto, path,
                                                ssl=sslcontext_client,
                                                server_hostname='localhost')
@@ -1299,7 +1299,7 @@ klasse EventLoopTestsMixin:
         wenn hasattr(sslcontext_client, 'check_hostname'):
             sslcontext_client.check_hostname = Wahr
 
-        # Connection succeeds mit correct CA and server hostname.
+        # Connection succeeds mit correct CA und server hostname.
         f_c = self.loop.create_connection(MyProto, host, port,
                                           ssl=sslcontext_client,
                                           server_hostname='localhost')
@@ -1354,7 +1354,7 @@ klasse EventLoopTestsMixin:
 
         server.close()
 
-    @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 not supported or enabled')
+    @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 nicht supported oder enabled')
     def test_create_server_dual_stack(self):
         f_proto = self.loop.create_future()
 
@@ -1465,7 +1465,7 @@ klasse EventLoopTestsMixin:
     def test_create_datagram_endpoint(self):
         self._test_create_datagram_endpoint(('127.0.0.1', 0), socket.AF_INET)
 
-    @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 not supported or enabled')
+    @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 nicht supported oder enabled')
     def test_create_datagram_endpoint_ipv6(self):
         self._test_create_datagram_endpoint(('::1', 0), socket.AF_INET6)
 
@@ -1485,7 +1485,7 @@ klasse EventLoopTestsMixin:
             sonst:
                 break
         sonst:
-            self.fail('Can not create socket.')
+            self.fail('Can nicht create socket.')
 
         f = self.loop.create_datagram_endpoint(
             lambda: MyDatagramProto(loop=self.loop), sock=sock)
@@ -1536,8 +1536,8 @@ klasse EventLoopTestsMixin:
         )
         addr_2 = socket_2.getsockname()
 
-        # creating and immediately closing this to try to get an address that
-        # is not listening
+        # creating und immediately closing this to try to get an address that
+        # is nicht listening
         socket_3 = create_socket()
         transport_3, protocol_3 = loop.run_until_complete(
             loop.create_datagram_endpoint(Protocol, sock=socket_3)
@@ -1571,9 +1571,9 @@ klasse EventLoopTestsMixin:
 
     def test_internal_fds(self):
         loop = self.create_event_loop()
-        wenn not isinstance(loop, selector_events.BaseSelectorEventLoop):
+        wenn nicht isinstance(loop, selector_events.BaseSelectorEventLoop):
             loop.close()
-            self.skipTest('loop is not a BaseSelectorEventLoop')
+            self.skipTest('loop is nicht a BaseSelectorEventLoop')
 
         self.assertEqual(1, loop._internal_fds)
         loop.close()
@@ -1634,7 +1634,7 @@ klasse EventLoopTestsMixin:
                 lambda: write_proto, wpipeobj)
             return read_transport, write_transport
 
-        # Run and close the loop without closing the transports
+        # Run und close the loop without closing the transports
         read_transport, write_transport = loop.run_until_complete(connect())
         loop.close()
 
@@ -1750,7 +1750,7 @@ klasse EventLoopTestsMixin:
     @unittest.skipUnless(sys.platform != 'win32',
                          "Don't support pipes fuer Windows")
     @unittest.skipUnless(hasattr(os, 'openpty'), 'need os.openpty()')
-    # select, poll and kqueue don't support character devices (PTY) on Mac OS X
+    # select, poll und kqueue don't support character devices (PTY) on Mac OS X
     # older than 10.6 (Snow Leopard)
     @support.requires_mac_ver(10, 6)
     def test_write_pty(self):
@@ -1795,7 +1795,7 @@ klasse EventLoopTestsMixin:
     @unittest.skipUnless(sys.platform != 'win32',
                          "Don't support pipes fuer Windows")
     @unittest.skipUnless(hasattr(os, 'openpty'), 'need os.openpty()')
-    # select, poll and kqueue don't support character devices (PTY) on Mac OS X
+    # select, poll und kqueue don't support character devices (PTY) on Mac OS X
     # older than 10.6 (Snow Leopard)
     @support.requires_mac_ver(10, 6)
     def test_bidirectional_pty(self):
@@ -1873,7 +1873,7 @@ klasse EventLoopTestsMixin:
         r.setblocking(Falsch)
         f = self.loop.create_task(self.loop.sock_recv(r, 1))
         ov = getattr(f, 'ov', Nichts)
-        wenn ov is not Nichts:
+        wenn ov is nicht Nichts:
             self.assertWahr(ov.pending)
 
         async def main():
@@ -1893,7 +1893,7 @@ klasse EventLoopTestsMixin:
 
         self.assertEqual(t.result(), 'cancelled')
         self.assertRaises(asyncio.CancelledError, f.result)
-        wenn ov is not Nichts:
+        wenn ov is nicht Nichts:
             self.assertFalsch(ov.pending)
         self.loop._stop_serving(r)
 
@@ -2143,7 +2143,7 @@ klasse SubprocessTestsMixin:
     def test_subprocess_send_signal(self):
         # bpo-31034: Make sure that we get the default signal handler (killing
         # the process). The parent process may have decided to ignore SIGHUP,
-        # and signal handlers are inherited.
+        # und signal handlers are inherited.
         old_handler = signal.signal(signal.SIGHUP, signal.SIG_DFL)
         try:
             prog = os.path.join(os.path.dirname(__file__), 'echo.py')
@@ -2237,7 +2237,7 @@ klasse SubprocessTestsMixin:
             self.assertEqual(b'ERR:BrokenPipeError', proto.data[2])
         sonst:
             # After closing the read-end of a pipe, writing to the
-            # write-end using os.write() fails mit errno==EINVAL and
+            # write-end using os.write() fails mit errno==EINVAL und
             # GetLastError()==ERROR_INVALID_NAME on Windows!?!  (Using
             # WriteFile() we get ERROR_BROKEN_PIPE als expected.)
             self.assertEqual(b'ERR:OSError', proto.data[2])
@@ -2277,7 +2277,7 @@ klasse SubprocessTestsMixin:
     def test_subprocess_shell_invalid_args(self):
 
         async def connect(cmd=Nichts, **kwds):
-            wenn not cmd:
+            wenn nicht cmd:
                 cmd = 'pwd'
             await self.loop.subprocess_shell(
                 asyncio.SubprocessProtocol,
@@ -2309,19 +2309,19 @@ wenn sys.platform == 'win32':
             return asyncio.ProactorEventLoop()
 
         def test_reader_callback(self):
-            raise unittest.SkipTest("IocpEventLoop does not have add_reader()")
+            raise unittest.SkipTest("IocpEventLoop does nicht have add_reader()")
 
         def test_reader_callback_cancel(self):
-            raise unittest.SkipTest("IocpEventLoop does not have add_reader()")
+            raise unittest.SkipTest("IocpEventLoop does nicht have add_reader()")
 
         def test_writer_callback(self):
-            raise unittest.SkipTest("IocpEventLoop does not have add_writer()")
+            raise unittest.SkipTest("IocpEventLoop does nicht have add_writer()")
 
         def test_writer_callback_cancel(self):
-            raise unittest.SkipTest("IocpEventLoop does not have add_writer()")
+            raise unittest.SkipTest("IocpEventLoop does nicht have add_writer()")
 
         def test_remove_fds_after_closing(self):
-            raise unittest.SkipTest("IocpEventLoop does not have add_reader()")
+            raise unittest.SkipTest("IocpEventLoop does nicht have add_reader()")
 sonst:
     importiere selectors
 
@@ -2543,7 +2543,7 @@ klasse HandleTests(test_utils.TestCase):
 
     def test_coroutine_like_object_debug_formatting(self):
         # Test that asyncio can format coroutines that are instances of
-        # collections.abc.Coroutine, but lack cr_core or gi_code attributes
+        # collections.abc.Coroutine, but lack cr_core oder gi_code attributes
         # (such als ones compiled mit Cython).
 
         coro = CoroLike()
@@ -2563,7 +2563,7 @@ klasse HandleTests(test_utils.TestCase):
 
         coro = CoroLike()
         coro.__qualname__ = 'CoroLike'
-        # Some coroutines might not have '__name__', such as
+        # Some coroutines might nicht have '__name__', such as
         # built-in async_gen.asend().
         self.assertEqual(coroutines._format_coroutine(coro), 'CoroLike()')
 
@@ -2991,7 +2991,7 @@ klasse GetEventLoopTestsMixin:
     wenn sys.platform != 'win32':
         def test_get_event_loop_new_process(self):
             # bpo-32126: The multiprocessing module used by
-            # ProcessPoolExecutor is not functional when the
+            # ProcessPoolExecutor is nicht functional when the
             # multiprocessing.synchronize module cannot be imported.
             support.skip_if_broken_multiprocessing_synchronize()
 
@@ -3023,7 +3023,7 @@ klasse GetEventLoopTestsMixin:
                 except RuntimeError:
                     pass
                 sonst:
-                    self.fail("RuntimeError not raised")
+                    self.fail("RuntimeError nicht raised")
 
             self.assertIs(asyncio.get_running_loop(), running_loop)
 
@@ -3069,7 +3069,7 @@ klasse GetEventLoopTestsMixin:
 
         finally:
             asyncio.events._set_event_loop_policy(old_policy)
-            wenn loop is not Nichts:
+            wenn loop is nicht Nichts:
                 loop.close()
 
         mit self.assertRaisesRegex(RuntimeError, 'no running'):
@@ -3107,7 +3107,7 @@ klasse GetEventLoopTestsMixin:
 
         finally:
             asyncio.events._set_event_loop_policy(old_policy)
-            wenn loop is not Nichts:
+            wenn loop is nicht Nichts:
                 loop.close()
 
         mit self.assertRaisesRegex(RuntimeError, 'no running'):

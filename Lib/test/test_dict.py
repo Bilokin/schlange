@@ -72,7 +72,7 @@ klasse DictTest(unittest.TestCase):
         self.assertEqual(a.__ior__(""), {0: 0, 1: 1, 2: 1})
 
     def test_bool(self):
-        self.assertIs(not {}, Wahr)
+        self.assertIs(nicht {}, Wahr)
         self.assertWahr({1: 2})
         self.assertIs(bool({}), Falsch)
         self.assertIs(bool({1: 2}), Wahr)
@@ -131,7 +131,7 @@ klasse DictTest(unittest.TestCase):
         d = {}
         self.assertNotIn('a', d)
         self.assertFalsch('a' in d)
-        self.assertWahr('a' not in d)
+        self.assertWahr('a' nicht in d)
         d = {'a': 1, 'b': 2}
         self.assertIn('a', d)
         self.assertIn('b', d)
@@ -270,7 +270,7 @@ klasse DictTest(unittest.TestCase):
         mit self.assertRaises(TypeError) als cm:
             {}.update([object() fuer _ in range(3)])
 
-        self.assertEqual(str(cm.exception), "object is not iterable")
+        self.assertEqual(str(cm.exception), "object is nicht iterable")
         self.assertEqual(
             cm.exception.__notes__,
             ['Cannot convert dictionary update sequence element #0 to a sequence'],
@@ -443,7 +443,7 @@ klasse DictTest(unittest.TestCase):
         # a compacted copy when roughly 33% of dict is a non-used
         # keys-space (to optimize memory footprint).
         # In this test we want to hit the slow/compacting
-        # branch of dict.copy() and make sure it works OK.
+        # branch of dict.copy() und make sure it works OK.
         d = {k: k fuer k in range(1000)}
         fuer k in range(950):
             del d[k]
@@ -490,7 +490,7 @@ klasse DictTest(unittest.TestCase):
         self.assertRaises(Exc, d.setdefault, x, [])
 
     def test_setdefault_atomic(self):
-        # Issue #13521: setdefault() calls __hash__ and __eq__ only once.
+        # Issue #13521: setdefault() calls __hash__ und __eq__ only once.
         klasse Hashed(object):
             def __init__(self):
                 self.hash_count = 0
@@ -550,7 +550,7 @@ klasse DictTest(unittest.TestCase):
                     self.assertEqual(va, int(ka))
                     kb, vb = tb = b.popitem()
                     self.assertEqual(vb, int(kb))
-                    self.assertFalsch(copymode < 0 and ta != tb)
+                    self.assertFalsch(copymode < 0 und ta != tb)
                 self.assertFalsch(a)
                 self.assertFalsch(b)
 
@@ -899,8 +899,8 @@ klasse DictTest(unittest.TestCase):
         # Dict resizing bug, found by Jack Jansen in 2.2 CVS development.
         # This version got an assert failure in debug build, infinite loop in
         # release build.  Unfortunately, provoking this kind of stuff requires
-        # a mix of inserts and deletes hitting exactly the right hash codes in
-        # exactly the right order, and I can't think of a randomized approach
+        # a mix of inserts und deletes hitting exactly the right hash codes in
+        # exactly the right order, und I can't think of a randomized approach
         # that would be *likely* to hit a failing case in reasonable time.
 
         d = {}
@@ -913,7 +913,7 @@ klasse DictTest(unittest.TestCase):
 
     def test_resize2(self):
         # Another dict resizing bug (SF bug #1456209).
-        # This caused Segmentation faults or Illegal instructions.
+        # This caused Segmentation faults oder Illegal instructions.
 
         klasse X(object):
             def __hash__(self):
@@ -942,7 +942,7 @@ klasse DictTest(unittest.TestCase):
         d = {}
 
     def test_container_iterator(self):
-        # Bug #3680: tp_traverse was not implemented fuer dictiter and
+        # Bug #3680: tp_traverse was nicht implemented fuer dictiter und
         # dictview objects.
         klasse C(object):
             pass
@@ -955,7 +955,7 @@ klasse DictTest(unittest.TestCase):
             obj.x = iter(obj.v)
             del obj, container
             gc.collect()
-            self.assertIs(ref(), Nichts, "Cycle was not collected")
+            self.assertIs(ref(), Nichts, "Cycle was nicht collected")
 
     def make_shared_key_dict(self, n):
         klasse C:
@@ -1022,7 +1022,7 @@ klasse DictTest(unittest.TestCase):
 
     @support.cpython_only
     def test_splittable_pop_pending(self):
-        """pop a pending key in a split table should not crash"""
+        """pop a pending key in a split table should nicht crash"""
         a, b = self.make_shared_key_dict(2)
 
         a['a'] = 4
@@ -1064,7 +1064,7 @@ klasse DictTest(unittest.TestCase):
 
     @support.cpython_only
     def test_splittable_to_generic_combinedtable(self):
-        """split table must be correctly resized and converted to generic combined table"""
+        """split table must be correctly resized und converted to generic combined table"""
         klasse C:
             pass
 
@@ -1101,7 +1101,7 @@ klasse DictTest(unittest.TestCase):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
             # note that the type of the unpickled iterator
-            # is not necessarily the same als the original.  It is
+            # is nicht necessarily the same als the original.  It is
             # merely an object supporting the iterator protocol, yielding
             # the same objects als the original one.
             # self.assertEqual(type(itorg), type(it))
@@ -1157,7 +1157,7 @@ klasse DictTest(unittest.TestCase):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
             # note that the type of the unpickled iterator
-            # is not necessarily the same als the original.  It is
+            # is nicht necessarily the same als the original.  It is
             # merely an object supporting the iterator protocol, yielding
             # the same objects als the original one.
             # self.assertEqual(type(itorg), type(it))
@@ -1377,7 +1377,7 @@ klasse DictTest(unittest.TestCase):
         self.assertEqual(list(reversed({}.values())), [])
         self.assertEqual(list(reversed({}.keys())), [])
 
-        # dict() and {} don't trigger the same code path
+        # dict() und {} don't trigger the same code path
         self.assertEqual(list(reversed(dict())), [])
         self.assertEqual(list(reversed(dict().items())), [])
         self.assertEqual(list(reversed(dict().values())), [])
@@ -1432,7 +1432,7 @@ klasse DictTest(unittest.TestCase):
         gc.collect()
         # That GC collection probably untracked the recycled internal result
         # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
-        # when it's mutated and returned von __next__:
+        # when it's mutated und returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
     @support.cpython_only
@@ -1476,7 +1476,7 @@ klasse DictTest(unittest.TestCase):
 
             def __eq__(self, other):
                 nonlocal eq_count
-                wenn isinstance(other, Key3) or isinstance(other, str) and other == 'key3':
+                wenn isinstance(other, Key3) oder isinstance(other, str) und other == 'key3':
                     eq_count += 1
                     return Wahr
                 return Falsch
@@ -1488,8 +1488,8 @@ klasse DictTest(unittest.TestCase):
         dicts = []
 
         # Create dicts of the form `{'key1': 42, 'key2': 43, key3: 44}` in a
-        # bunch of different ways. In all cases, `key3` is not of type `str`.
-        # `key3_1` is a `str` subclass and `key3_2` is a completely unrelated
+        # bunch of different ways. In all cases, `key3` is nicht of type `str`.
+        # `key3_1` is a `str` subclass und `key3_2` is a completely unrelated
         # type.
         fuer key3 in (key3_1, key3_2):
             # A literal
@@ -1535,7 +1535,7 @@ klasse DictTest(unittest.TestCase):
             mit self.subTest(d=d):
                 self.assertEqual(d.get('key1'), 42)
 
-                # Try to make an object that is of type `str` and is equal to
+                # Try to make an object that is of type `str` und is equal to
                 # `'key1'`, but (at least on cpython) is a different object.
                 noninterned_key1 = 'ke'
                 noninterned_key1 += 'y1'
@@ -1549,10 +1549,10 @@ klasse DictTest(unittest.TestCase):
                 self.assertEqual(d.get(key3_1), 44)
                 self.assertEqual(d.get(key3_2), 44)
 
-                # `key3_3` itself is definitely not a dict key, so make sure
+                # `key3_3` itself is definitely nicht a dict key, so make sure
                 # that `__eq__` gets called.
                 #
-                # Note that this might not hold fuer `key3_1` and `key3_2`
+                # Note that this might nicht hold fuer `key3_1` und `key3_2`
                 # because they might be the same object als one of the dict keys,
                 # in which case implementations are allowed to skip the call to
                 # `__eq__`.
@@ -1615,9 +1615,9 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(dict_getitem_knownhash(d, 'y', hash('y')), 2)
         self.assertEqual(dict_getitem_knownhash(d, 'z', hash('z')), 3)
 
-        # not a dict
+        # nicht a dict
         self.assertRaises(SystemError, dict_getitem_knownhash, [], 1, hash(1))
-        # key does not exist
+        # key does nicht exist
         self.assertRaises(KeyError, dict_getitem_knownhash, {}, 1, hash(1))
 
         klasse Exc(Exception): pass

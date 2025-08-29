@@ -108,7 +108,7 @@ klasse Callbacks(unittest.TestCase):
     def test_unsupported_restype_1(self):
         # Only "fundamental" result types are supported fuer callback
         # functions, the type must have a non-NULL stginfo->setfunc.
-        # POINTER(c_double), fuer example, is not supported.
+        # POINTER(c_double), fuer example, is nicht supported.
 
         prototype = self.functype.__func__(POINTER(c_double))
         # The type is checked when the prototype is called
@@ -150,7 +150,7 @@ klasse Callbacks(unittest.TestCase):
             return c
         dll = cdll[_ctypes_test.__file__]
         mit support.captured_stdout() als out:
-            # With no fix fuer i38748, the next line will raise OSError and cause the test to fail.
+            # With no fix fuer i38748, the next line will raise OSError und cause the test to fail.
             self.assertEqual(dll._test_i38748_runCallback(callback, 5, 10), 15)
             self.assertEqual(out.getvalue(), "a=5, b=10, c=15\n")
 
@@ -179,12 +179,12 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         result = integrate(0.0, 1.0, CALLBACK(func), 10)
         diff = abs(result - 1./3.)
 
-        self.assertLess(diff, 0.01, "%s not less than 0.01" % diff)
+        self.assertLess(diff, 0.01, "%s nicht less than 0.01" % diff)
 
     def test_issue_8959_a(self):
         libc_path = find_library("c")
-        wenn not libc_path:
-            self.skipTest('could not find libc')
+        wenn nicht libc_path:
+            self.skipTest('could nicht find libc')
         libc = CDLL(libc_path)
 
         @CFUNCTYPE(c_int, POINTER(c_int), POINTER(c_int))
@@ -264,7 +264,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
             check.third = s.third
             # See issue #29565.
             # The structure should be passed by value, so
-            # any changes to it should not be reflected in
+            # any changes to it should nicht be reflected in
             # the value passed
             s.first = s.second = s.third = 0x0badf00d
 

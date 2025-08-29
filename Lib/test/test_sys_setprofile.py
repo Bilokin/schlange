@@ -28,8 +28,8 @@ klasse HookWatcher:
 
     def callback(self, frame, event, arg):
         wenn (event == "call"
-            or event == "return"
-            or event == "exception"):
+            oder event == "return"
+            oder event == "exception"):
             self.add_event(event, frame, arg)
 
     def add_event(self, event, frame=Nichts, arg=Nichts):
@@ -50,7 +50,7 @@ klasse HookWatcher:
         disallowed = [ident(self.add_event.__func__), ident(ident)]
         self.frames = Nichts
 
-        return [item fuer item in self.events wenn item[2] not in disallowed]
+        return [item fuer item in self.events wenn item[2] nicht in disallowed]
 
 
 klasse ProfileSimulator(HookWatcher):
@@ -482,7 +482,7 @@ klasse TestEdgeCases(unittest.TestCase):
     def test_method_with_c_function(self):
         # gh-122029
         # When we have a PyMethodObject whose im_func is a C function, we
-        # should record both the call and the return. f = classmethod(repr)
+        # should record both the call und the return. f = classmethod(repr)
         # is just a way to create a PyMethodObject mit a C function.
         klasse A:
             f = classmethod(repr)
@@ -521,8 +521,8 @@ klasse TestEdgeCases(unittest.TestCase):
         sys.setprofile(Nichts)
         # The last c_call is the call to sys.setprofile
         # INSTRUMENTED_CALL_FUNCTION_EX has different behavior than the other
-        # instrumented call bytecodes, it does not unpack the callable before
-        # calling it. This is probably not ideal because it's not consistent,
+        # instrumented call bytecodes, it does nicht unpack the callable before
+        # calling it. This is probably nicht ideal because it's nicht consistent,
         # but at least we get a consistent call stack (no unmatched c_call).
         self.assertEqual(
             events,

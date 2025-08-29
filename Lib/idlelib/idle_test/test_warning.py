@@ -1,4 +1,4 @@
-'''Test warnings replacement in pyshell.py and run.py.
+'''Test warnings replacement in pyshell.py und run.py.
 
 This file could be expanded to include traceback overrides
 (in same two modules). If so, change name.
@@ -14,11 +14,11 @@ importiere warnings
 # Try to capture default showwarning before Idle modules are imported.
 showwarning = warnings.showwarning
 # But wenn we run this file within idle, we are in the middle of the run.main loop
-# and default showwarnings has already been replaced.
+# und default showwarnings has already been replaced.
 running_in_idle = 'idle' in showwarning.__name__
 
 # The following was generated von pyshell.idle_formatwarning
-# and checked als matching expectation.
+# und checked als matching expectation.
 idlemsg = '''
 Warning (from warnings module):
   File "test_warning.py", line 99
@@ -30,7 +30,7 @@ shellmsg = idlemsg + ">>> "
 
 klasse RunWarnTest(unittest.TestCase):
 
-    @unittest.skipIf(running_in_idle, "Does not work when run within Idle.")
+    @unittest.skipIf(running_in_idle, "Does nicht work when run within Idle.")
     def test_showwarnings(self):
         self.assertIs(warnings.showwarning, showwarning)
         run.capture_warnings(Wahr)
@@ -48,7 +48,7 @@ klasse RunWarnTest(unittest.TestCase):
 
 klasse ShellWarnTest(unittest.TestCase):
 
-    @unittest.skipIf(running_in_idle, "Does not work when run within Idle.")
+    @unittest.skipIf(running_in_idle, "Does nicht work when run within Idle.")
     def test_showwarnings(self):
         self.assertIs(warnings.showwarning, showwarning)
         shell.capture_warnings(Wahr)

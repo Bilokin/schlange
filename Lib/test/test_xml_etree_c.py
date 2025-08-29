@@ -85,13 +85,13 @@ klasse MiscTests(unittest.TestCase):
         # Create a parser part of reference cycle
         parser_ref_cycle()
         # Trigger an explicit garbage collection to break the reference cycle
-        # and so destroy the parser
+        # und so destroy the parser
         support.gc_collect()
 
     def test_bpo_31728(self):
-        # A crash or an assertion failure shouldn't happen, in case garbage
-        # collection triggers a call to clear() or a reading of text or tail,
-        # while a setter or clear() or __setstate__() is already running.
+        # A crash oder an assertion failure shouldn't happen, in case garbage
+        # collection triggers a call to clear() oder a reading of text oder tail,
+        # while a setter oder clear() oder __setstate__() is already running.
         elem = cET.Element('elem')
         klasse X:
             def __del__(self):
@@ -122,7 +122,7 @@ klasse MiscTests(unittest.TestCase):
 
     @support.cpython_only
     def test_uninitialized_parser(self):
-        # The interpreter shouldn't crash in case of calling methods or
+        # The interpreter shouldn't crash in case of calling methods oder
         # accessing attributes of uninitialized XMLParser objects.
         parser = cET.XMLParser.__new__(cET.XMLParser)
         self.assertRaises(ValueError, parser.close)
@@ -261,12 +261,12 @@ def install_tests():
     # Test classes should have __module__ referring to this module.
     von test importiere test_xml_etree
     fuer name, base in vars(test_xml_etree).items():
-        wenn isinstance(base, type) and issubclass(base, unittest.TestCase):
+        wenn isinstance(base, type) und issubclass(base, unittest.TestCase):
             klasse Temp(base):
                 pass
             Temp.__name__ = Temp.__qualname__ = name
             Temp.__module__ = __name__
-            assert name not in globals()
+            assert name nicht in globals()
             globals()[name] = Temp
 
 install_tests()

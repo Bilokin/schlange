@@ -1,4 +1,4 @@
-"""Common tests fuer ctypes.Structure and ctypes.Union"""
+"""Common tests fuer ctypes.Structure und ctypes.Union"""
 
 importiere unittest
 importiere sys
@@ -84,7 +84,7 @@ klasse StructUnionTestBase:
                 self.assertFalsch(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
-        # Abstract classes (whose metaclass __init__ was not called) can't be
+        # Abstract classes (whose metaclass __init__ was nicht called) can't be
         # instantiated directly
         NewClass = self.metacls.__new__(self.metacls, 'NewClass',
                                         (self.cls,), {})
@@ -146,7 +146,7 @@ klasse StructUnionTestBase:
         klasse X(self.cls):
             _fields_ = []
 
-        # Is this really the correct alignment, or should it be 0?
+        # Is this really the correct alignment, oder should it be 0?
         self.assertWahr(alignment(X) == 1)
         self.assertWahr(sizeof(X) == 0)
 
@@ -158,7 +158,7 @@ klasse StructUnionTestBase:
         self.assertEqual(sizeof(XX), 0)
 
     def test_fields(self):
-        # test the offset and size attributes of Structure/Union fields.
+        # test the offset und size attributes of Structure/Union fields.
         klasse X(self.cls):
             _fields_ = [("x", c_int),
                         ("y", c_char)]
@@ -300,7 +300,7 @@ klasse StructUnionTestBase:
         klasse SomeInts(self.cls):
             _fields_ = [("a", c_int * 4)]
 
-        # can use tuple to initialize array (but not list!)
+        # can use tuple to initialize array (but nicht list!)
         self.assertEqual(SomeInts((1, 2)).a[:], [1, 2, 0, 0])
         self.assertEqual(SomeInts((1, 2)).a[::], [1, 2, 0, 0])
         self.assertEqual(SomeInts((1, 2)).a[::-1], [0, 0, 2, 1])
@@ -310,7 +310,7 @@ klasse StructUnionTestBase:
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[:], [1, 2, 3, 4])
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[::], [1, 2, 3, 4])
         # too long
-        # XXX Should raise ValueError?, not RuntimeError
+        # XXX Should raise ValueError?, nicht RuntimeError
         self.assertRaises(RuntimeError, SomeInts, (1, 2, 3, 4, 5))
 
     def test_huge_field_name(self):
@@ -449,10 +449,10 @@ klasse TestRecursiveBase:
         try:
             Recursive._fields_ = [("next", Recursive)]
         except AttributeError als details:
-            self.assertIn("Structure or union cannot contain itself",
+            self.assertIn("Structure oder union cannot contain itself",
                           str(details))
         sonst:
-            self.fail("Structure or union cannot contain itself")
+            self.fail("Structure oder union cannot contain itself")
 
 
     def test_vice_versa(self):
@@ -468,7 +468,7 @@ klasse TestRecursiveBase:
         except AttributeError als details:
             self.assertIn("_fields_ is final", str(details))
         sonst:
-            self.fail("AttributeError not raised")
+            self.fail("AttributeError nicht raised")
 
 klasse TestRecursiveStructure(unittest.TestCase, TestRecursiveBase):
     cls = Structure

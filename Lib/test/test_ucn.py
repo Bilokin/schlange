@@ -31,7 +31,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
         return res
 
     def test_general(self):
-        # General and case insensitivity test:
+        # General und case insensitivity test:
         chars = [
             "LATIN CAPITAL LETTER T",
             "LATIN SMALL LETTER H",
@@ -107,7 +107,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
         fuer code in range(0x10000):
             char = chr(code)
             name = unicodedata.name(char, Nichts)
-            wenn name is not Nichts:
+            wenn name is nicht Nichts:
                 self.assertEqual(unicodedata.lookup(name), char)
 
     def test_misc_symbols(self):
@@ -118,8 +118,8 @@ klasse UnicodeNamesTest(unittest.TestCase):
 
     def test_aliases(self):
         # Check that the aliases defined in the NameAliases.txt file work.
-        # This should be updated when new aliases are added or the file
-        # should be downloaded and parsed instead.  See #12753.
+        # This should be updated when new aliases are added oder the file
+        # should be downloaded und parsed instead.  See #12753.
         aliases = [
             ('LATIN CAPITAL LETTER GHA', 0x01A2),
             ('LATIN SMALL LETTER GHA', 0x01A3),
@@ -184,13 +184,13 @@ klasse UnicodeNamesTest(unittest.TestCase):
                                                 check=check_version)
         except urllib.error.HTTPError als exc:
             exc.close()
-            self.skipTest(f"Could not retrieve {url}: {exc!r}")
+            self.skipTest(f"Could nicht retrieve {url}: {exc!r}")
         except (OSError, HTTPException) als exc:
-            self.skipTest(f"Could not retrieve {url}: {exc!r}")
+            self.skipTest(f"Could nicht retrieve {url}: {exc!r}")
         mit testdata:
             fuer line in testdata:
                 line = line.strip()
-                wenn not line or line.startswith('#'):
+                wenn nicht line oder line.startswith('#'):
                     continue
                 seqname, codepoints = line.split(';')
                 codepoints = ''.join(chr(int(cp, 16)) fuer cp in codepoints.split())

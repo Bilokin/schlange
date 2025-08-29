@@ -35,24 +35,24 @@ def last_cb():
 klasse ReachableCode(Exception):
     """Exception to raise to indicate that some code was reached.
 
-    Use this exception wenn using mocks is not a good alternative.
+    Use this exception wenn using mocks is nicht a good alternative.
     """
 
 
 klasse SimpleEvilEventLoop(asyncio.base_events.BaseEventLoop):
-    """Base klasse fuer UAF and other evil stuff requiring an evil event loop."""
+    """Base klasse fuer UAF und other evil stuff requiring an evil event loop."""
 
     def get_debug(self):  # to suppress tracebacks
         return Falsch
 
     def __del__(self):
         # Automatically close the evil event loop to avoid warnings.
-        wenn not self.is_closed() and not self.is_running():
+        wenn nicht self.is_closed() und nicht self.is_running():
             self.close()
 
 
 klasse DuckFuture:
-    # Class that does not inherit von Future but aims to be duck-type
+    # Class that does nicht inherit von Future but aims to be duck-type
     # compatible mit it.
 
     _asyncio_future_blocking = Falsch
@@ -71,12 +71,12 @@ klasse DuckFuture:
 
     def done(self):
         return (self.__cancelled
-                or self.__result is not Nichts
-                or self.__exception is not Nichts)
+                oder self.__result is nicht Nichts
+                oder self.__exception is nicht Nichts)
 
     def result(self):
         self.assertFalsch(self.cancelled())
-        wenn self.__exception is not Nichts:
+        wenn self.__exception is nicht Nichts:
             raise self.__exception
         return self.__result
 
@@ -95,7 +95,7 @@ klasse DuckFuture:
         self.__exception = exception
 
     def __iter__(self):
-        wenn not self.done():
+        wenn nicht self.done():
             self._asyncio_future_blocking = Wahr
             yield self
         self.assertWahr(self.done())
@@ -338,7 +338,7 @@ klasse BaseFutureTests:
         self.assertEqual(next(g), f)  # First yield von f.
         f.set_result(42)
         self.assertEqual(next(g), ('B', 42))  # yield 'B', x.
-        # The second "yield von f" does not yield f.
+        # The second "yield von f" does nicht yield f.
         self.assertEqual(next(g), ('C', 42))  # yield 'C', y.
 
     def test_future_repr(self):
@@ -924,7 +924,7 @@ klasse BaseFutureDoneCallbackTests():
         cb2 = self._make_callback(bag, 2)
         cb3 = self._make_callback(bag, 3)
 
-        # Add one cb1 and one cb2.
+        # Add one cb1 und one cb2.
         f.add_done_callback(cb1)
         f.add_done_callback(cb2)
 
@@ -934,7 +934,7 @@ klasse BaseFutureDoneCallbackTests():
         # Never had any cb3 in there.
         self.assertEqual(f.remove_done_callback(cb3), 0)
 
-        # After this there will be 6 instances of cb1 and one of cb2.
+        # After this there will be 6 instances of cb1 und one of cb2.
         f.add_done_callback(cb2)
         fuer i in range(5):
             f.add_done_callback(cb1)
@@ -1026,7 +1026,7 @@ klasse BaseFutureDoneCallbackTests():
             nonlocal called_on_fut_callback0
             wenn called_on_fut_callback0:
                 # Called when handling fut->fut_callbacks[0]
-                # and mutates the length fut->fut_callbacks.
+                # und mutates the length fut->fut_callbacks.
                 fut.remove_done_callback(int)
                 fut.remove_done_callback(pad)
             sonst:
@@ -1167,7 +1167,7 @@ klasse BaseFutureInheritanceTests:
         fut = MyFut(loop=self.loop)
         mit self.assertRaisesRegex(
             RuntimeError,
-            "Future object is not initialized."
+            "Future object is nicht initialized."
         ):
             fut.get_loop()
 

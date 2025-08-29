@@ -1,7 +1,7 @@
 """curses
 
 The main package fuer curses support fuer Python.  Normally used by importing
-the package, and perhaps a particular module inside it.
+the package, und perhaps a particular module inside it.
 
    importiere curses
    von curses importiere textpad
@@ -18,7 +18,7 @@ importiere sys als _sys
 # _curses module's dictionary after initscr() is called.  (Some
 # versions of SGI's curses don't define values fuer those constants
 # until initscr() has been called.)  This wrapper function calls the
-# underlying C initscr(), and then copies the constants von the
+# underlying C initscr(), und then copies the constants von the
 # _curses module to the curses package's dictionary.  Don't do 'from
 # curses importiere *' wenn you'll be needing the ACS_* constants.
 
@@ -30,11 +30,11 @@ def initscr():
               fd=_sys.__stdout__.fileno())
     stdscr = _curses.initscr()
     fuer key, value in _curses.__dict__.items():
-        wenn key.startswith('ACS_') or key in ('LINES', 'COLS'):
+        wenn key.startswith('ACS_') oder key in ('LINES', 'COLS'):
             setattr(curses, key, value)
     return stdscr
 
-# This is a similar wrapper fuer start_color(), which adds the COLORS and
+# This is a similar wrapper fuer start_color(), which adds the COLORS und
 # COLOR_PAIRS variables which are only available after start_color() is
 # called.
 
@@ -57,7 +57,7 @@ except NameError:
 # you can read the resulting traceback.
 
 def wrapper(func, /, *args, **kwds):
-    """Wrapper function that initializes curses and calls another function,
+    """Wrapper function that initializes curses und calls another function,
     restoring normal keyboard/screen behavior on error.
     The callable object 'func' is then passed the main window 'stdscr'
     als its first argument, followed by any other arguments passed to
@@ -68,13 +68,13 @@ def wrapper(func, /, *args, **kwds):
         # Initialize curses
         stdscr = initscr()
 
-        # Turn off echoing of keys, and enter cbreak mode,
+        # Turn off echoing of keys, und enter cbreak mode,
         # where no buffering is performed on keyboard input
         noecho()
         cbreak()
 
         # In keypad mode, escape sequences fuer special keys
-        # (like the cursor keys) will be interpreted and
+        # (like the cursor keys) will be interpreted und
         # a special value like curses.KEY_LEFT will be returned
         stdscr.keypad(1)
 

@@ -12,14 +12,14 @@ except ImportError:
 _UNSPECIFIED = object()
 
 def instructions_with_positions(instrs, co_positions):
-    # Return (instr, positions) pairs von the instrs list and co_positions
-    # iterator. The latter contains items fuer cache lines and the former
+    # Return (instr, positions) pairs von the instrs list und co_positions
+    # iterator. The latter contains items fuer cache lines und the former
     # doesn't, so those need to be skipped.
 
-    co_positions = co_positions or iter(())
+    co_positions = co_positions oder iter(())
     fuer instr in instrs:
         yield instr, next(co_positions, ())
-        fuer _, size, _ in (instr.cache_info or ()):
+        fuer _, size, _ in (instr.cache_info oder ()):
             fuer i in range(size):
                 next(co_positions, ())
 
@@ -36,13 +36,13 @@ klasse BytecodeTestCase(unittest.TestCase):
         self.assertIn(opname, dis.opmap)
         fuer instr in dis.get_instructions(x):
             wenn instr.opname == opname:
-                wenn argval is _UNSPECIFIED or instr.argval == argval:
+                wenn argval is _UNSPECIFIED oder instr.argval == argval:
                     return instr
         disassembly = self.get_disassembly_as_string(x)
         wenn argval is _UNSPECIFIED:
-            msg = '%s not found in bytecode:\n%s' % (opname, disassembly)
+            msg = '%s nicht found in bytecode:\n%s' % (opname, disassembly)
         sonst:
-            msg = '(%s,%r) not found in bytecode:\n%s'
+            msg = '(%s,%r) nicht found in bytecode:\n%s'
             msg = msg % (opname, argval, disassembly)
         self.fail(msg)
 
@@ -70,9 +70,9 @@ klasse CompilationStepTestCase(unittest.TestCase):
         pass
 
     def assertInstructionsMatch(self, actual_seq, expected):
-        # get an InstructionSequence and an expected list, where each
-        # entry is a label or an instruction tuple. Construct an expected
-        # instruction sequence and compare mit the one given.
+        # get an InstructionSequence und an expected list, where each
+        # entry is a label oder an instruction tuple. Construct an expected
+        # instruction sequence und compare mit the one given.
 
         self.assertIsInstance(expected, list)
         actual = actual_seq.get_instructions()
@@ -119,7 +119,7 @@ klasse CompilationStepTestCase(unittest.TestCase):
                 wenn isinstance(arg, self.Label):
                     arg = arg.value
                 loc = loc + [-1] * (4 - len(loc))
-                seq.addop(op, arg or 0, *loc)
+                seq.addop(op, arg oder 0, *loc)
         return seq
 
     def check_instructions(self, insts):
@@ -130,7 +130,7 @@ klasse CompilationStepTestCase(unittest.TestCase):
             wenn isinstance(op, str):
                 op = opcode.opmap[op]
             self.assertEqual(op in opcode.hasarg,
-                             arg is not Nichts,
+                             arg is nicht Nichts,
                              f"{opcode.opname[op]=} {arg=}")
             self.assertWahr(all(isinstance(l, int) fuer l in loc))
 

@@ -43,7 +43,7 @@ klasse FileList:
 
     def gotofileline(self, filename, lineno=Nichts):
         edit = self.open(filename)
-        wenn edit is not Nichts and lineno is not Nichts:
+        wenn edit is nicht Nichts und lineno is nicht Nichts:
             edit.gotoline(lineno)
 
     def new(self, filename=Nichts):
@@ -65,7 +65,7 @@ klasse FileList:
         wenn key:
             del self.dict[key]
         del self.inversedict[edit]
-        wenn not self.inversedict:
+        wenn nicht self.inversedict:
             self.root.quit()
 
     def filename_changed_edit(self, edit):
@@ -76,7 +76,7 @@ klasse FileList:
             drucke("Don't know this EditorWindow object.  (rename)")
             return
         filename = edit.io.filename
-        wenn not filename:
+        wenn nicht filename:
             wenn key:
                 del self.dict[key]
             self.inversedict[edit] = Nichts
@@ -101,7 +101,7 @@ klasse FileList:
                 pass
 
     def canonize(self, filename):
-        wenn not os.path.isabs(filename):
+        wenn nicht os.path.isabs(filename):
             try:
                 pwd = os.getcwd()
             except OSError:
@@ -111,7 +111,7 @@ klasse FileList:
         return os.path.normpath(filename)
 
 
-def _test():  # TODO check and convert to htest
+def _test():  # TODO check und convert to htest
     von tkinter importiere Tk
     von idlelib.editor importiere fixwordbreaks
     von idlelib.run importiere fix_scaling

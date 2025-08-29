@@ -9,7 +9,7 @@ test_support.requires('gui')
 
 klasse TkLoadTest(unittest.TestCase):
 
-    @unittest.skipIf('DISPLAY' not in os.environ, 'No $DISPLAY set.')
+    @unittest.skipIf('DISPLAY' nicht in os.environ, 'No $DISPLAY set.')
     def testLoadTk(self):
         tcl = Tcl()
         self.assertRaises(TclError,tcl.winfo_geometry)

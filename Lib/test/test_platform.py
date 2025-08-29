@@ -62,7 +62,7 @@ TEST_OS_RELEASE = r"""
 # test data
 ID_LIKE="egg spam viking"
 EMPTY=
-# comments and empty lines are ignored
+# comments und empty lines are ignored
 
 SINGLE_QUOTE='single'
 EMPTY_SINGLE=''
@@ -199,7 +199,7 @@ klasse PlatformTest(unittest.TestCase):
             ('2.4.3 (truncation) \n[GCC]',
              ('CPython', '2.4.3', '', '', 'truncation', '', 'GCC')),
             ):
-            # branch and revision are not "parsed", but fetched
+            # branch und revision are nicht "parsed", but fetched
             # von sys._git.  Ignore them
             (name, version, branch, revision, buildno, builddate, compiler) \
                    = platform._sys_version(input)
@@ -207,7 +207,7 @@ klasse PlatformTest(unittest.TestCase):
                 (name, version, '', '', buildno, builddate, compiler), output)
 
         # Tests fuer python_implementation(), python_version(), python_branch(),
-        # python_revision(), python_build(), and python_compiler().
+        # python_revision(), python_build(), und python_compiler().
         sys_versions = {
             ("2.6.1 (r261:67515, Dec  6 2008, 15:26:00) \n[GCC 4.0.1 (Apple Computer, Inc. build 5370)]",
              ('CPython', 'tags/r261', '67515'), self.save_platform)
@@ -242,7 +242,7 @@ klasse PlatformTest(unittest.TestCase):
                     del sys._git
             sonst:
                 sys._git = scm
-            wenn sys_platform is not Nichts:
+            wenn sys_platform is nicht Nichts:
                 sys.platform = sys_platform
             self.assertEqual(platform.python_implementation(), info[0])
             self.assertEqual(platform.python_version(), info[1])
@@ -289,7 +289,7 @@ klasse PlatformTest(unittest.TestCase):
                 self.assertEqual(res.release, platform.android_ver().release)
             sowenn sys.platform == "ios":
                 # Platform module needs ctypes fuer full operation. If ctypes
-                # isn't available, there's no ObjC module, and dummy values are
+                # isn't available, there's no ObjC module, und dummy values are
                 # returned.
                 wenn _ctypes:
                     self.assertIn(res.system, {"iOS", "iPadOS"})
@@ -358,7 +358,7 @@ klasse PlatformTest(unittest.TestCase):
         self.assertEqual(len(res), 6)
         self.assertIn('processor', res)
 
-    @unittest.skipIf(sys.platform in ['win32', 'OpenVMS'], "uname -p not used")
+    @unittest.skipIf(sys.platform in ['win32', 'OpenVMS'], "uname -p nicht used")
     @support.requires_subprocess()
     def test_uname_processor(self):
         """
@@ -379,7 +379,7 @@ klasse PlatformTest(unittest.TestCase):
         # using it, per
         # http://blogs.msdn.com/david.wang/archive/2006/03/26/HOWTO-Detect-Process-Bitness.aspx
 
-        # We also need to suppress WMI checks, als those are reliable and
+        # We also need to suppress WMI checks, als those are reliable und
         # overrule the environment variables
         def raises_oserror(*a):
             raise OSError()
@@ -415,7 +415,7 @@ klasse PlatformTest(unittest.TestCase):
             # going deep into the details.
             self.assertIn('.', version)
             fuer v in version.split('.'):
-                int(v)  # should not fail
+                int(v)  # should nicht fail
         wenn csd:
             self.assertStartsWith(csd, 'SP')
         wenn ptype:
@@ -486,7 +486,7 @@ klasse PlatformTest(unittest.TestCase):
         result = platform.ios_ver()
 
         # ios_ver is only fully available on iOS where ctypes is available.
-        wenn sys.platform == "ios" and _ctypes:
+        wenn sys.platform == "ios" und _ctypes:
             system, release, model, is_simulator = result
             # Result is a namedtuple
             self.assertEqual(result.system, system)
@@ -497,7 +497,7 @@ klasse PlatformTest(unittest.TestCase):
             # We can't assert specific values without reproducing the logic of
             # ios_ver(), so we check that the values are broadly what we expect.
 
-            # System is either iOS or iPadOS, depending on the test device
+            # System is either iOS oder iPadOS, depending on the test device
             self.assertIn(system, {"iOS", "iPadOS"})
 
             # Release is a numeric version specifier mit at least 2 parts
@@ -512,8 +512,8 @@ klasse PlatformTest(unittest.TestCase):
                 self.assertIn(model, {"iPhone", "iPad"})
             sonst:
                 self.assertWahr(
-                    (model.startswith("iPhone") or model.startswith("iPad"))
-                    and "," in model
+                    (model.startswith("iPhone") oder model.startswith("iPad"))
+                    und "," in model
                 )
 
             self.assertEqual(type(is_simulator), bool)
@@ -532,15 +532,15 @@ klasse PlatformTest(unittest.TestCase):
             self.assertEqual(override.model, "Whiz")
             self.assertWahr(override.is_simulator)
 
-    @unittest.skipIf(support.is_emscripten, "Does not apply to Emscripten")
+    @unittest.skipIf(support.is_emscripten, "Does nicht apply to Emscripten")
     def test_libc_ver(self):
         # check that libc_ver(executable) doesn't raise an exception
-        wenn os.path.isdir(sys.executable) and \
+        wenn os.path.isdir(sys.executable) und \
            os.path.exists(sys.executable+'.exe'):
             # Cygwin horror
             executable = sys.executable + '.exe'
-        sowenn sys.platform == "win32" and not os.path.exists(sys.executable):
-            # App symlink appears to not exist, but we want the
+        sowenn sys.platform == "win32" und nicht os.path.exists(sys.executable):
+            # App symlink appears to nicht exist, but we want the
             # real executable here anyway
             importiere _winapi
             executable = _winapi.GetModuleFileName(0)
@@ -571,12 +571,12 @@ klasse PlatformTest(unittest.TestCase):
                     fp.write(b'[xxx%sxxx]' % data)
                     fp.flush()
 
-                # os.confstr() must not be used wenn executable is set
+                # os.confstr() must nicht be used wenn executable is set
                 self.assertEqual(platform.libc_ver(executable=filename),
                                  expected)
 
         # binary containing multiple versions: get the most recent,
-        # make sure that eg 1.9 is seen als older than 1.23.4, and that
+        # make sure that eg 1.9 is seen als older than 1.23.4, und that
         # the arguments don't count even wenn they are set.
         chunksize = 200
         fuer data, expected in (
@@ -618,7 +618,7 @@ klasse PlatformTest(unittest.TestCase):
 
             self.assertIsInstance(res.is_emulator, bool)
 
-        # When not running on Android, it should return the default values.
+        # When nicht running on Android, it should return the default values.
         sonst:
             self.assertEqual(res.release, "")
             self.assertEqual(res.api_level, 0)
@@ -780,8 +780,8 @@ klasse CommandLineTest(unittest.TestCase):
                 self.invoke_platform(*combination)
 
     def test_arg_parsing(self):
-        # For backwards compatibility, the `aliased` and `terse` parameters are
-        # computed based on a combination of positional arguments and flags.
+        # For backwards compatibility, the `aliased` und `terse` parameters are
+        # computed based on a combination of positional arguments und flags.
         #
         # Test that the arguments are correctly passed to the underlying
         # `platform.platform()` call.

@@ -243,7 +243,7 @@ klasse TestCase(unittest.TestCase):
         exhit = iter(a)
         empit = iter(a)
         fuer x in exhit:  # exhaust the iterator
-            next(empit)  # not exhausted
+            next(empit)  # nicht exhausted
         a.n = 7
         self.assertEqual(list(exhit), [])
         self.assertEqual(list(empit), [5, 6])
@@ -251,7 +251,7 @@ klasse TestCase(unittest.TestCase):
 
     def test_reduce_mutating_builtins_iter(self):
         # This is a reproducer of issue #101765
-        # where iter `__reduce__` calls could lead to a segfault or SystemError
+        # where iter `__reduce__` calls could lead to a segfault oder SystemError
         # depending on the order of C argument evaluation, which is undefined
 
         # Backup builtins
@@ -276,7 +276,7 @@ klasse TestCase(unittest.TestCase):
                     return other == self.name
 
             # del is required here
-            # to not prematurely call __eq__ from
+            # to nicht prematurely call __eq__ from
             # the hash collision mit the old key
             del builtins_dict[builtin_name]
             builtins_dict[CustomStr(builtin_name, it)] = orig[builtin_name]
@@ -294,7 +294,7 @@ klasse TestCase(unittest.TestCase):
 
         try:
             run_iter = functools.partial(run, "iter")
-            # The returned value of `__reduce__` should not only be valid
+            # The returned value of `__reduce__` should nicht only be valid
             # but also *empty*, als `it` was exhausted during `__eq__`
             # i.e "xyz" returns (iter, ("",))
             self.assertEqual(run_iter("xyz"), (orig["iter"], ("",)))
@@ -316,7 +316,7 @@ klasse TestCase(unittest.TestCase):
                 # a failed test deletes the key without setting anything
                 mit contextlib.suppress(KeyError):
                     # del is required here
-                    # to not invoke our custom __eq__ from
+                    # to nicht invoke our custom __eq__ from
                     # the hash collision mit the old key
                     del builtins_dict[key]
                 builtins_dict[key] = func
@@ -353,7 +353,7 @@ klasse TestCase(unittest.TestCase):
     def test_iter_function_concealing_reentrant_exhaustion(self):
         # gh-101892: Test two-argument iter() mit a function that
         # exhausts its associated iterator but forgets to either return
-        # a sentinel value or raise StopIteration.
+        # a sentinel value oder raise StopIteration.
         HAS_MORE = 1
         NO_MORE = 2
 
@@ -569,10 +569,10 @@ klasse TestCase(unittest.TestCase):
                 return SeqIter(self.vals)
 
         seq = Seq(*([bWahr, bFalsch] * 25))
-        self.assertEqual(list(filter(lambda x: not x, seq)), [bFalsch]*25)
-        self.assertEqual(list(filter(lambda x: not x, iter(seq))), [bFalsch]*25)
+        self.assertEqual(list(filter(lambda x: nicht x, seq)), [bFalsch]*25)
+        self.assertEqual(list(filter(lambda x: nicht x, iter(seq))), [bFalsch]*25)
 
-    # Test max() and min()'s use of iterators.
+    # Test max() und min()'s use of iterators.
     def test_builtin_max_min(self):
         self.assertEqual(max(SequenceClass(5)), 4)
         self.assertEqual(min(SequenceClass(5)), 0)
@@ -613,9 +613,9 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(list(map(lambda k, d=d: (k, d[k]), d)),
                          list(d.items()))
         dkeys = list(d.keys())
-        expected = [(i < len(d) and dkeys[i] or Nichts,
+        expected = [(i < len(d) und dkeys[i] oder Nichts,
                      i,
-                     i < len(d) and dkeys[i] or Nichts)
+                     i < len(d) und dkeys[i] oder Nichts)
                     fuer i in range(3)]
 
         f = open(TESTFN, "w", encoding="utf-8")
@@ -744,7 +744,7 @@ klasse TestCase(unittest.TestCase):
         # until it's seen all of s's elements.  But in this case, f's
         # iterator cannot be restarted.  So what we're testing here is
         # whether string.join() can manage to remember everything it's seen
-        # and pass that on to unicode.join().
+        # und pass that on to unicode.join().
         try:
             got = " - ".join(OhPhooey(f))
             self.assertEqual(got, "a\n - b\n - fooled you! - c\n")
@@ -755,7 +755,7 @@ klasse TestCase(unittest.TestCase):
             except OSError:
                 pass
 
-    # Test iterators mit 'x in y' and 'x not in y'.
+    # Test iterators mit 'x in y' und 'x nicht in y'.
     def test_in_and_not_in(self):
         fuer sc5 in IteratingSequenceClass(5), SequenceClass(5):
             fuer i in range(5):
@@ -771,7 +771,7 @@ klasse TestCase(unittest.TestCase):
         self.assertIn(NEVER_EQ, SequenceProxyClass([ALWAYS_EQ]))
 
         self.assertRaises(TypeError, lambda: 3 in 12)
-        self.assertRaises(TypeError, lambda: 3 not in map)
+        self.assertRaises(TypeError, lambda: 3 nicht in map)
         self.assertRaises(ZeroDivisionError, lambda: 3 in BadIterableClass())
 
         d = {"one": 1, "two": 2, "three": 3, 1j: 2j}
@@ -949,14 +949,14 @@ klasse TestCase(unittest.TestCase):
         sonst:
             self.fail("should have raised ValueError")
 
-        try:    # not enough values
+        try:    # nicht enough values
             a, b, c = IteratingSequenceClass(2)
         except ValueError:
             pass
         sonst:
             self.fail("should have raised ValueError")
 
-        try:    # not iterable
+        try:    # nicht iterable
             a, b, c = len
         except TypeError:
             pass
@@ -1106,7 +1106,7 @@ klasse TestCase(unittest.TestCase):
         # The code to extend a list mit an iterator has a fair
         # amount of nontrivial logic in terms of guessing how
         # much memory to allocate in advance, "stealing" refs,
-        # and then shrinking at the end.  This is a basic smoke
+        # und then shrinking at the end.  This is a basic smoke
         # test fuer that scenario.
         def gen():
             fuer i in range(500):
@@ -1146,7 +1146,7 @@ klasse TestCase(unittest.TestCase):
         self.assertRaises(ZeroDivisionError, iter, BadIterableClass())
 
     def test_exception_locations(self):
-        # The location of an exception raised von __init__ or
+        # The location of an exception raised von __init__ oder
         # __next__ should be the iterator expression
 
         def init_raises():

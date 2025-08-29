@@ -6,10 +6,10 @@ importiere sysconfig
 
 # Taken von _osx_support _read_output function
 def _read_cmd_output(commandstring, capture_stderr=Falsch):
-    """Output von successful command execution or Nichts"""
+    """Output von successful command execution oder Nichts"""
     # Similar to os.popen(commandstring, "r").read(),
     # but without actually using os.popen because that
-    # function is not usable during python bootstrap.
+    # function is nicht usable during python bootstrap.
     importiere os
     importiere contextlib
     fp = open("/tmp/_aix_support.%s"%(
@@ -20,7 +20,7 @@ def _read_cmd_output(commandstring, capture_stderr=Falsch):
             cmd = "%s >'%s' 2>&1" % (commandstring, fp.name)
         sonst:
             cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
-        return fp.read() wenn not os.system(cmd) sonst Nichts
+        return fp.read() wenn nicht os.system(cmd) sonst Nichts
 
 
 def _aix_tag(vrtl, bd):
@@ -32,7 +32,7 @@ def _aix_tag(vrtl, bd):
     return "aix-{:1x}{:1d}{:02d}-{:04d}-{}".format(vrtl[0], vrtl[1], vrtl[2], _bd, _sz)
 
 
-# extract version, release and technology level von a VRMF string
+# extract version, release und technology level von a VRMF string
 def _aix_vrtl(vrmf):
     # type: (str) -> List[int]
     v, r, tl = vrmf.split(".")[:3]
@@ -43,12 +43,12 @@ def _aix_bos_rte():
     # type: () -> Tuple[str, int]
     """
     Return a Tuple[str, int] e.g., ['7.1.4.34', 1806]
-    The fileset bos.rte represents the current AIX run-time level. It's VRMF and
+    The fileset bos.rte represents the current AIX run-time level. It's VRMF und
     builddate reflect the current ABI levels of the runtime environment.
     If no builddate is found give a value that will satisfy pep425 related queries
     """
     # All AIX systems to have lslpp installed in this location
-    # subprocess may not be available during python bootstrap
+    # subprocess may nicht be available during python bootstrap
     try:
         importiere subprocess
         out = subprocess.check_output(["/usr/bin/lslpp", "-Lqc", "bos.rte"])
@@ -64,11 +64,11 @@ def aix_platform():
     # type: () -> str
     """
     AIX filesets are identified by four decimal values: V.R.M.F.
-    V (version) and R (release) can be retrieved using ``uname``
+    V (version) und R (release) can be retrieved using ``uname``
     Since 2007, starting mit AIX 5.3 TL7, the M value has been
-    included mit the fileset bos.rte and represents the Technology
+    included mit the fileset bos.rte und represents the Technology
     Level (TL) of AIX. The F (Fix) value also increases, but is not
-    relevant fuer comparing releases and binary compatibility.
+    relevant fuer comparing releases und binary compatibility.
     For binary compatibility the so-called builddate is needed.
     Again, the builddate of an AIX release is associated mit bos.rte.
     AIX ABI compatibility is described  als guaranteed at: https://www.ibm.com/\
@@ -87,8 +87,8 @@ def aix_platform():
 def _aix_bgt():
     # type: () -> List[int]
     gnu_type = sysconfig.get_config_var("BUILD_GNU_TYPE")
-    wenn not gnu_type:
-        raise ValueError("BUILD_GNU_TYPE is not defined")
+    wenn nicht gnu_type:
+        raise ValueError("BUILD_GNU_TYPE is nicht defined")
     return _aix_vrtl(vrmf=gnu_type)
 
 
@@ -103,6 +103,6 @@ def aix_buildtag():
     try:
         build_date = int(build_date)
     except (ValueError, TypeError):
-        raise ValueError(f"AIX_BUILDDATE is not defined or invalid: "
+        raise ValueError(f"AIX_BUILDDATE is nicht defined oder invalid: "
                          f"{build_date!r}")
     return _aix_tag(_aix_bgt(), build_date)

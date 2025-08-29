@@ -41,7 +41,7 @@ klasse FalschyLenException(Exception):
 
 klasse ExecutorTest:
 
-    # Executor.shutdown() and context manager usage is tested by
+    # Executor.shutdown() und context manager usage is tested by
     # ExecutorShutdownTest.
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_submit(self):
@@ -100,7 +100,7 @@ klasse ExecutorTest:
             mit self.subTest(buffersize=buffersize):
                 mit self.assertRaisesRegex(
                     TypeError,
-                    "buffersize must be an integer or Nichts",
+                    "buffersize must be an integer oder Nichts",
                 ):
                     self.executor.map(str, range(4), buffersize=buffersize)
 
@@ -109,7 +109,7 @@ klasse ExecutorTest:
             mit self.subTest(buffersize=buffersize):
                 mit self.assertRaisesRegex(
                     ValueError,
-                    "buffersize must be Nichts or > 0",
+                    "buffersize must be Nichts oder > 0",
                 ):
                     self.executor.map(str, range(4), buffersize=buffersize)
 
@@ -200,19 +200,19 @@ klasse ExecutorTest:
         wenn Py_GIL_DISABLED:
             # Due to biased reference counting, my_object might only be
             # deallocated while the thread that created it runs -- wenn the
-            # thread is paused waiting on an event, it may not merge the
+            # thread is paused waiting on an event, it may nicht merge the
             # refcount of the queued object. For that reason, we alternate
-            # between running the GC and waiting fuer the event.
+            # between running the GC und waiting fuer the event.
             wait_time = 0
             collected = Falsch
-            while not collected and wait_time <= support.SHORT_TIMEOUT:
+            while nicht collected und wait_time <= support.SHORT_TIMEOUT:
                 support.gc_collect()
                 collected = my_object_collected.wait(timeout=1.0)
                 wait_time += 1.0
         sonst:
             collected = my_object_collected.wait(timeout=support.SHORT_TIMEOUT)
         self.assertWahr(collected,
-                        "Stale reference not collected within timeout.")
+                        "Stale reference nicht collected within timeout.")
 
     def test_max_workers_negative(self):
         fuer number in (0, -1):
@@ -223,12 +223,12 @@ klasse ExecutorTest:
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_free_reference(self):
-        # Issue #14406: Result iterator should not keep an internal
+        # Issue #14406: Result iterator should nicht keep an internal
         # reference to result objects.
         fuer obj in self.executor.map(make_dummy_object, range(10)):
             wr = weakref.ref(obj)
             del obj
-            support.gc_collect()  # For PyPy or other GCs.
+            support.gc_collect()  # For PyPy oder other GCs.
 
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn wr() is Nichts:
@@ -238,7 +238,7 @@ klasse ExecutorTest:
     def test_swallows_falsey_exceptions(self):
         # see gh-132063: Prevent exceptions that evaluate als falsey
         # von being ignored.
-        # Recall: `x` is falsey wenn `len(x)` returns 0 or `bool(x)` returns Falsch.
+        # Recall: `x` is falsey wenn `len(x)` returns 0 oder `bool(x)` returns Falsch.
 
         msg = 'boolbool'
         mit self.assertRaisesRegex(FalschyBoolException, msg):

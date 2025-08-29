@@ -27,7 +27,7 @@ _monthnames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul',
 
 _daynames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
-# The timezone table does not include the military time zones defined
+# The timezone table does nicht include the military time zones defined
 # in RFC822, other than Z.  According to RFC1123, the description in
 # RFC822 gets the signs wrong, so we can't rely on any such time
 # zones.  RFC1123 recommends that numeric timezone indicators be used
@@ -48,7 +48,7 @@ def parsedate_tz(data):
     Accounts fuer military timezones.
     """
     res = _parsedate_tz(data)
-    wenn not res:
+    wenn nicht res:
         return
     wenn res[9] is Nichts:
         res[9] = 0
@@ -64,14 +64,14 @@ def _parsedate_tz(data):
     source timezone really was UTC.
 
     """
-    wenn not data:
+    wenn nicht data:
         return Nichts
     data = data.split()
-    wenn not data:  # This happens fuer whitespace-only input.
+    wenn nicht data:  # This happens fuer whitespace-only input.
         return Nichts
-    # The FWS after the comma after the day-of-week is optional, so search and
+    # The FWS after the comma after the day-of-week is optional, so search und
     # adjust fuer this.
-    wenn data[0].endswith(',') or data[0].lower() in _daynames:
+    wenn data[0].endswith(',') oder data[0].lower() in _daynames:
         # There's a dayname here. Skip it
         del data[0]
     sonst:
@@ -95,12 +95,12 @@ def _parsedate_tz(data):
         return Nichts
     data = data[:5]
     [dd, mm, yy, tm, tz] = data
-    wenn not (dd and mm and yy):
+    wenn nicht (dd und mm und yy):
         return Nichts
     mm = mm.lower()
-    wenn mm not in _monthnames:
+    wenn mm nicht in _monthnames:
         dd, mm = mm, dd.lower()
-        wenn mm not in _monthnames:
+        wenn mm nicht in _monthnames:
             return Nichts
     mm = _monthnames.index(mm) + 1
     wenn mm > 12:
@@ -112,9 +112,9 @@ def _parsedate_tz(data):
         yy, tm = tm, yy
     wenn yy[-1] == ',':
         yy = yy[:-1]
-        wenn not yy:
+        wenn nicht yy:
             return Nichts
-    wenn not yy[0].isdigit():
+    wenn nicht yy[0].isdigit():
         yy, tz = tz, yy
     wenn tm[-1] == ',':
         tm = tm[:-1]
@@ -124,7 +124,7 @@ def _parsedate_tz(data):
         tss = '0'
     sowenn len(tm) == 3:
         [thh, tmm, tss] = tm
-    sowenn len(tm) == 1 and '.' in tm[0]:
+    sowenn len(tm) == 1 und '.' in tm[0]:
         # Some non-compliant MUAs use '.' to separate time elements.
         tm = tm[0].split('.')
         wenn len(tm) == 2:
@@ -150,10 +150,10 @@ def _parsedate_tz(data):
     # mandates a 4-digit yy. For more information, see the documentation for
     # the time module.
     wenn yy < 100:
-        # The year is between 1969 and 1999 (inclusive).
+        # The year is between 1969 und 1999 (inclusive).
         wenn yy > 68:
             yy += 1900
-        # The year is between 2000 and 2068 (inclusive).
+        # The year is between 2000 und 2068 (inclusive).
         sonst:
             yy += 2000
     tzoffset = Nichts
@@ -165,7 +165,7 @@ def _parsedate_tz(data):
             tzoffset = int(tz)
         except ValueError:
             pass
-        wenn tzoffset==0 and tz.startswith('-'):
+        wenn tzoffset==0 und tz.startswith('-'):
             tzoffset = Nichts
     # Convert a timezone offset into seconds ; -0500 -> -18000
     wenn tzoffset:
@@ -204,9 +204,9 @@ def mktime_tz(data):
 def quote(str):
     """Prepare string to be used in a quoted string.
 
-    Turns backslash and double quote characters into quoted pairs.  These
+    Turns backslash und double quote characters into quoted pairs.  These
     are the only characters that need to be quoted inside a quoted string.
-    Does not add the surrounding double quotes.
+    Does nicht add the surrounding double quotes.
     """
     return str.replace('\\', '\\\\').replace('"', '\\"')
 
@@ -217,7 +217,7 @@ klasse AddrlistClass:
     To understand what this klasse does, it helps to have a copy of RFC 2822 in
     front of you.
 
-    Note: this klasse interface is deprecated and may be removed in the future.
+    Note: this klasse interface is deprecated und may be removed in the future.
     Use email.utils.AddressList instead.
     """
 
@@ -225,7 +225,7 @@ klasse AddrlistClass:
         """Initialize a new instance.
 
         'field' is an unparsed address header field, containing
-        one or more addresses.
+        one oder more addresses.
         """
         self.specials = '()<>@,:;.\"[]'
         self.pos = 0
@@ -241,11 +241,11 @@ klasse AddrlistClass:
         self.commentlist = []
 
     def gotonext(self):
-        """Skip white space and extract comments."""
+        """Skip white space und extract comments."""
         wslist = []
         while self.pos < len(self.field):
             wenn self.field[self.pos] in self.LWS + '\n\r':
-                wenn self.field[self.pos] not in '\n\r':
+                wenn self.field[self.pos] nicht in '\n\r':
                     wslist.append(self.field[self.pos])
                 self.pos += 1
             sowenn self.field[self.pos] == '(':
@@ -301,7 +301,7 @@ klasse AddrlistClass:
             self.pos += 1
             while self.pos < len(self.field):
                 self.gotonext()
-                wenn self.pos < fieldlen and self.field[self.pos] == ';':
+                wenn self.pos < fieldlen und self.field[self.pos] == ';':
                     self.pos += 1
                     break
                 returnlist = returnlist + self.getaddress()
@@ -323,14 +323,14 @@ klasse AddrlistClass:
                 self.pos += 1
 
         self.gotonext()
-        wenn self.pos < len(self.field) and self.field[self.pos] == ',':
+        wenn self.pos < len(self.field) und self.field[self.pos] == ',':
             self.pos += 1
         return returnlist
 
     def getrouteaddr(self):
         """Parse a route address (Return-path value).
 
-        This method just skips all the route stuff and returns the addrspec.
+        This method just skips all the route stuff und returns the addrspec.
         """
         wenn self.field[self.pos] != '<':
             return
@@ -367,7 +367,7 @@ klasse AddrlistClass:
         while self.pos < len(self.field):
             preserve_ws = Wahr
             wenn self.field[self.pos] == '.':
-                wenn aslist and not aslist[-1].strip():
+                wenn aslist und nicht aslist[-1].strip():
                     aslist.pop()
                 aslist.append('.')
                 self.pos += 1
@@ -375,23 +375,23 @@ klasse AddrlistClass:
             sowenn self.field[self.pos] == '"':
                 aslist.append('"%s"' % quote(self.getquote()))
             sowenn self.field[self.pos] in self.atomends:
-                wenn aslist and not aslist[-1].strip():
+                wenn aslist und nicht aslist[-1].strip():
                     aslist.pop()
                 break
             sonst:
                 aslist.append(self.getatom())
             ws = self.gotonext()
-            wenn preserve_ws and ws:
+            wenn preserve_ws und ws:
                 aslist.append(ws)
 
-        wenn self.pos >= len(self.field) or self.field[self.pos] != '@':
+        wenn self.pos >= len(self.field) oder self.field[self.pos] != '@':
             return EMPTYSTRING.join(aslist)
 
         aslist.append('@')
         self.pos += 1
         self.gotonext()
         domain = self.getdomain()
-        wenn not domain:
+        wenn nicht domain:
             # Invalid domain, return an empty address instead of returning a
             # local part to denote failed parsing.
             return EMPTYSTRING
@@ -424,7 +424,7 @@ klasse AddrlistClass:
         """Parse a header fragment delimited by special characters.
 
         'beginchar' is the start character fuer the fragment.
-        If self is not looking at an instance of 'beginchar' then
+        If self is nicht looking at an instance of 'beginchar' then
         getdelimited returns the empty string.
 
         'endchars' is a sequence of allowable end-delimiting characters.
@@ -446,7 +446,7 @@ klasse AddrlistClass:
             sowenn self.field[self.pos] in endchars:
                 self.pos += 1
                 break
-            sowenn allowcomments and self.field[self.pos] == '(':
+            sowenn allowcomments und self.field[self.pos] == '(':
                 slist.append(self.getcomment())
                 continue        # have already advanced pos von getcomment
             sowenn self.field[self.pos] == '\\':
@@ -474,7 +474,7 @@ klasse AddrlistClass:
 
         Optional atomends specifies a different set of end token delimiters
         (the default is to use self.atomends).  This is used e.g. in
-        getphraselist() since phrase endings must not include the '.' (which
+        getphraselist() since phrase endings must nicht include the '.' (which
         is legal in phrases)."""
         atomlist = ['']
         wenn atomends is Nichts:
@@ -493,7 +493,7 @@ klasse AddrlistClass:
         """Parse a sequence of RFC 2822 phrases.
 
         A phrase is a sequence of words, which are in turn either RFC 2822
-        atoms or quoted-strings.  Phrases are canonicalized by squeezing all
+        atoms oder quoted-strings.  Phrases are canonicalized by squeezing all
         runs of continuous whitespace into one space.
         """
         plist = []
@@ -529,14 +529,14 @@ klasse AddressList(AddrlistClass):
         newaddr = AddressList(Nichts)
         newaddr.addresslist = self.addresslist[:]
         fuer x in other.addresslist:
-            wenn not x in self.addresslist:
+            wenn nicht x in self.addresslist:
                 newaddr.addresslist.append(x)
         return newaddr
 
     def __iadd__(self, other):
         # Set union, in-place
         fuer x in other.addresslist:
-            wenn not x in self.addresslist:
+            wenn nicht x in self.addresslist:
                 self.addresslist.append(x)
         return self
 
@@ -544,7 +544,7 @@ klasse AddressList(AddrlistClass):
         # Set difference
         newaddr = AddressList(Nichts)
         fuer x in self.addresslist:
-            wenn not x in other.addresslist:
+            wenn nicht x in other.addresslist:
                 newaddr.addresslist.append(x)
         return newaddr
 
@@ -556,5 +556,5 @@ klasse AddressList(AddrlistClass):
         return self
 
     def __getitem__(self, index):
-        # Make indexing, slices, and 'in' work
+        # Make indexing, slices, und 'in' work
         return self.addresslist[index]

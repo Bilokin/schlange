@@ -35,8 +35,8 @@ def bad_cleanup2():
 
 @force_not_colorized_test_class
 klasse Test_TestResult(unittest.TestCase):
-    # Note: there are not separate tests fuer TestResult.wasSuccessful(),
-    # TestResult.errors, TestResult.failures, TestResult.testsRun or
+    # Note: there are nicht separate tests fuer TestResult.wasSuccessful(),
+    # TestResult.errors, TestResult.failures, TestResult.testsRun oder
     # TestResult.shouldStop because these only have meaning in terms of
     # other TestResult methods.
     #
@@ -114,7 +114,7 @@ klasse Test_TestResult(unittest.TestCase):
         self.assertEqual(result.testsRun, 1)
         self.assertEqual(result.shouldStop, Falsch)
 
-    # "Called before and after tests are run. The default implementation does nothing."
+    # "Called before und after tests are run. The default implementation does nothing."
     def test_startTestRun_stopTestRun(self):
         result = unittest.TestResult()
         result.startTestRun()
@@ -129,14 +129,14 @@ klasse Test_TestResult(unittest.TestCase):
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
-    # "errors - A list containing 2-tuples of TestCase instances and
+    # "errors - A list containing 2-tuples of TestCase instances und
     # formatted tracebacks. Each tuple represents a test which raised an
     # unexpected exception. Contains formatted
     # tracebacks instead of sys.exc_info() results."
     # ...
-    # "failures - A list containing 2-tuples of TestCase instances and
+    # "failures - A list containing 2-tuples of TestCase instances und
     # formatted tracebacks. Each tuple represents a test where a failure was
-    # explicitly signalled using the TestCase.fail*() or TestCase.assert*()
+    # explicitly signalled using the TestCase.fail*() oder TestCase.assert*()
     # methods. Contains formatted tracebacks instead
     # of sys.exc_info() results."
     def test_addSuccess(self):
@@ -168,14 +168,14 @@ klasse Test_TestResult(unittest.TestCase):
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
-    # "errors - A list containing 2-tuples of TestCase instances and
+    # "errors - A list containing 2-tuples of TestCase instances und
     # formatted tracebacks. Each tuple represents a test which raised an
     # unexpected exception. Contains formatted
     # tracebacks instead of sys.exc_info() results."
     # ...
-    # "failures - A list containing 2-tuples of TestCase instances and
+    # "failures - A list containing 2-tuples of TestCase instances und
     # formatted tracebacks. Each tuple represents a test where a failure was
-    # explicitly signalled using the TestCase.fail*() or TestCase.assert*()
+    # explicitly signalled using the TestCase.fail*() oder TestCase.assert*()
     # methods. Contains formatted tracebacks instead
     # of sys.exc_info() results."
     def test_addFailure(self):
@@ -227,7 +227,7 @@ klasse Test_TestResult(unittest.TestCase):
         result.stopTest(test)
 
         formatted_exc = result.failures[0][1]
-        dropped = [l fuer l in full_exc wenn l not in formatted_exc]
+        dropped = [l fuer l in full_exc wenn l nicht in formatted_exc]
         self.assertEqual(len(dropped), 1)
         self.assertIn("raise self.failureException(msg)", dropped[0])
 
@@ -256,7 +256,7 @@ klasse Test_TestResult(unittest.TestCase):
         result.stopTest(test)
 
         formatted_exc = result.failures[0][1]
-        dropped = [l fuer l in full_exc wenn l not in formatted_exc]
+        dropped = [l fuer l in full_exc wenn l nicht in formatted_exc]
         self.assertEqual(len(dropped), 1)
         self.assertIn("raise self.failureException(msg)", dropped[0])
 
@@ -327,14 +327,14 @@ klasse Test_TestResult(unittest.TestCase):
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
-    # "errors - A list containing 2-tuples of TestCase instances and
+    # "errors - A list containing 2-tuples of TestCase instances und
     # formatted tracebacks. Each tuple represents a test which raised an
     # unexpected exception. Contains formatted
     # tracebacks instead of sys.exc_info() results."
     # ...
-    # "failures - A list containing 2-tuples of TestCase instances and
+    # "failures - A list containing 2-tuples of TestCase instances und
     # formatted tracebacks. Each tuple represents a test where a failure was
-    # explicitly signalled using the TestCase.fail*() or TestCase.assert*()
+    # explicitly signalled using the TestCase.fail*() oder TestCase.assert*()
     # methods. Contains formatted tracebacks instead
     # of sys.exc_info() results."
     def test_addError(self):
@@ -522,7 +522,7 @@ klasse Test_TextTestResult(unittest.TestCase):
                         '(' + __name__ + '.Test_TextTestResult.testGetDuplicatedNestedSubTestDescriptionWithoutDocstring) (baz=3, bar=4, foo=1)')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def testGetDescriptionWithOneLineDocstring(self):
         """Tests getDescription() fuer a method mit a docstring."""
         result = unittest.TextTestResult(Nichts, Wahr, 1)
@@ -533,7 +533,7 @@ klasse Test_TextTestResult(unittest.TestCase):
                 'Tests getDescription() fuer a method mit a docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def testGetSubTestDescriptionWithOneLineDocstring(self):
         """Tests getDescription() fuer a method mit a docstring."""
         result = unittest.TextTestResult(Nichts, Wahr, 1)
@@ -547,7 +547,7 @@ klasse Test_TextTestResult(unittest.TestCase):
                 'Tests getDescription() fuer a method mit a docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def testGetDescriptionWithMultiLineDocstring(self):
         """Tests getDescription() fuer a method mit a longer docstring.
         The second line of the docstring.
@@ -561,7 +561,7 @@ klasse Test_TextTestResult(unittest.TestCase):
                 'docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def testGetSubTestDescriptionWithMultiLineDocstring(self):
         """Tests getDescription() fuer a method mit a longer docstring.
         The second line of the docstring.
@@ -608,7 +608,7 @@ klasse Test_TextTestResult(unittest.TestCase):
 
         tearDownError = Nichts
         def tearDown(self):
-            wenn self.tearDownError is not Nichts:
+            wenn self.tearDownError is nicht Nichts:
                 raise self.tearDownError
 
     def _run_test(self, test_name, verbosity, tearDownError=Nichts):
@@ -731,7 +731,7 @@ klasse Test_OldTestResult(unittest.TestCase):
                                        ('testExpectedFail', Wahr),
                                        ('testUnexpectedSuccess', Falsch)):
             test = Test(test_name)
-            self.assertOldResultWarning(test, int(not should_pass))
+            self.assertOldResultWarning(test, int(nicht should_pass))
 
     def testOldTestTesultSetup(self):
         klasse Test(unittest.TestCase):

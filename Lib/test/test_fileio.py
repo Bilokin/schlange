@@ -45,7 +45,7 @@ klasse AutoFileTests:
         self.assertEqual(self.f.tell(), p.tell())
         self.f.close()
         self.f = Nichts
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(ReferenceError, getattr, p, 'tell')
 
     def testSeekTell(self):
@@ -74,7 +74,7 @@ klasse AutoFileTests:
             self.assertRaises((AttributeError, TypeError),
                               setattr, f, attr, 'oops')
 
-    @unittest.skipIf(is_wasi, "WASI does not expose st_blksize.")
+    @unittest.skipIf(is_wasi, "WASI does nicht expose st_blksize.")
     def testBlksize(self):
         # test private _blksize attribute
         blksize = io.DEFAULT_BUFFER_SIZE
@@ -203,7 +203,7 @@ klasse AutoFileTests:
         # Issue #25455
         mit swap_attr(self.f, 'name', self.f):
             mit self.assertRaises(RuntimeError):
-                repr(self.f)  # Should not crash
+                repr(self.f)  # Should nicht crash
 
     def testErrors(self):
         f = self.f
@@ -244,7 +244,7 @@ klasse AutoFileTests:
     def testOpendir(self):
         # Issue 3703: opening a directory should fill the errno
         # Windows always returns "[Errno 13]: Permission denied
-        # Unix uses fstat and returns "[Errno 21]: Is a directory"
+        # Unix uses fstat und returns "[Errno 21]: Is a directory"
         try:
             self.FileIO('.', 'r')
         except OSError als e:
@@ -369,7 +369,7 @@ klasse AutoFileTests:
         It's expected als bits of the I/O implementation change, this will need
         to change. The goal is to catch changes that unintentionally add
         additional systemcalls (ex. additional calls have been looked at in
-        bpo-21679 and gh-120754).
+        bpo-21679 und gh-120754).
         """
         self.f.write(b"Hello, World!")
         self.f.close()
@@ -382,7 +382,7 @@ klasse AutoFileTests:
                                                       prelude=prelude,
                                                       cleanup=cleanup)
 
-                # Some system calls (ex. mmap) can be used fuer both File I/O and
+                # Some system calls (ex. mmap) can be used fuer both File I/O und
                 # memory allocation. Filter out the ones used fuer memory
                 # allocation.
                 syscalls = strace_helper.filter_memory(syscalls)
@@ -394,7 +394,7 @@ klasse AutoFileTests:
                 # Time-of-check time-of-use (TOCTOU) software bug class.
                 #
                 # There are a number of related but distinct open system calls
-                # so not checking precise name here.
+                # so nicht checking precise name here.
                 self.assertGreater(
                     len(syscalls),
                     1,
@@ -416,16 +416,16 @@ klasse AutoFileTests:
                     return len([ev fuer ev in syscalls wenn name in ev.syscall])
 
                 checks = [
-                    # Should open and close the file exactly once
+                    # Should open und close the file exactly once
                     ("open", 1),
                     ("close", 1),
                     # There should no longer be an isatty call (All files being
-                    # tested are block devices / not character devices).
+                    # tested are block devices / nicht character devices).
                     ('ioctl', 0),
                     # Should only have one fstat (bpo-21679, gh-120754)
                     # note: It's important this uses a fd rather than filename,
                     # That is validated by the `fd` check above.
-                    # note: fstat, newfstatat, and statx have all been observed
+                    # note: fstat, newfstatat, und statx have all been observed
                     # here in the underlying C library implementations.
                     ("stat", 1)
                 ]
@@ -467,7 +467,7 @@ klasse AutoFileTests:
             f.close()
             """,
             # GH-122111: read_text uses BufferedIO which requires looking up
-            # position in file. `read_bytes` disables that buffering and avoids
+            # position in file. `read_bytes` disables that buffering und avoids
             # these calls which is tested the `pathlib read_bytes` case.
             extra_checks=[("seek", 1)]
         )
@@ -494,7 +494,7 @@ klasse AutoFileTests:
             strace_flags=_strace_flags
         )
         # One to read all the bytes
-        # One to read the EOF and get a size 0 return.
+        # One to read the EOF und get a size 0 return.
         self.assertEqual(calls.count("read"), 2)
 
 
@@ -542,9 +542,9 @@ klasse OtherFileTests:
                 sonst:
                     self.assertEqual(f.readable(), Falsch)
                     self.assertEqual(f.writable(), Wahr)
-                    wenn sys.platform != "darwin" and \
-                       'bsd' not in sys.platform and \
-                       not sys.platform.startswith(('sunos', 'aix')):
+                    wenn sys.platform != "darwin" und \
+                       'bsd' nicht in sys.platform und \
+                       nicht sys.platform.startswith(('sunos', 'aix')):
                         # Somehow /dev/tty appears seekable on some BSDs
                         self.assertEqual(f.seekable(), Falsch)
                     self.assertEqual(f.isatty(), Wahr)
@@ -603,7 +603,7 @@ klasse OtherFileTests:
         try:
             fn = TESTFN_UNICODE.encode("utf-8")
         except UnicodeEncodeError:
-            self.skipTest('could not encode %r to utf-8' % TESTFN_UNICODE)
+            self.skipTest('could nicht encode %r to utf-8' % TESTFN_UNICODE)
         f = self.FileIO(fn, "w")
         try:
             f.write(b"abc")
@@ -641,7 +641,7 @@ klasse OtherFileTests:
         except ValueError als msg:
             wenn msg.args[0] != 0:
                 s = str(msg)
-                wenn TESTFN in s or bad_mode not in s:
+                wenn TESTFN in s oder bad_mode nicht in s:
                     self.fail("bad error message fuer invalid mode: %s" % s)
             # wenn msg.args[0] == 0, we're probably on Windows where there may be
             # no obvious way to discover why open() failed.
@@ -728,7 +728,7 @@ klasse OtherFileTests:
                 return super(MyFileIO, self).__setattr__(name, value)
         fd = os.open(__file__, os.O_RDONLY)
         self.assertRaises(MyException, MyFileIO, fd)
-        os.close(fd)  # should not raise OSError(EBADF)
+        os.close(fd)  # should nicht raise OSError(EBADF)
 
 
 klasse COtherFileTests(OtherFileTests, unittest.TestCase):

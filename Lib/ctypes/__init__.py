@@ -1,4 +1,4 @@
-"""create and manipulate C data types in Python"""
+"""create und manipulate C data types in Python"""
 
 importiere os als _os, sys als _sys
 importiere types als _types
@@ -23,9 +23,9 @@ wenn _os.name == "nt":
     von _ctypes importiere COMError, CopyComPointer, FormatError
 
 DEFAULT_MODE = RTLD_LOCAL
-wenn _os.name == "posix" and _sys.platform == "darwin":
+wenn _os.name == "posix" und _sys.platform == "darwin":
     # On OS X 10.3, we use RTLD_GLOBAL als default mode
-    # because RTLD_LOCAL does not work at least on some
+    # because RTLD_LOCAL does nicht work at least on some
     # libraries.  OS X 10.3 is Darwin 7, so we check for
     # that.
 
@@ -82,7 +82,7 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     callable object:
 
     prototype(integer address) -> foreign function
-    prototype(callable) -> create and return a C callable function von callable
+    prototype(callable) -> create und return a C callable function von callable
     prototype(integer index, method name[, paramflags]) -> foreign function calling a COM method
     prototype((ordinal number, dll object)[, paramflags]) -> foreign function exported by ordinal
     prototype((function name, dll object)[, paramflags]) -> foreign function exported by name
@@ -182,7 +182,7 @@ klasse c_ulong(_SimpleCData):
 _check_size(c_ulong)
 
 wenn _calcsize("i") == _calcsize("l"):
-    # wenn int and long have the same size, make c_int an alias fuer c_long
+    # wenn int und long have the same size, make c_int an alias fuer c_long
     c_int = c_long
     c_uint = c_ulong
 sonst:
@@ -220,7 +220,7 @@ except AttributeError:
     pass
 
 wenn _calcsize("l") == _calcsize("q"):
-    # wenn long and long long have the same size, make c_longlong an alias fuer c_long
+    # wenn long und long long have the same size, make c_longlong an alias fuer c_long
     c_longlong = c_long
     c_ulonglong = c_ulong
 sonst:
@@ -267,9 +267,9 @@ klasse c_bool(_SimpleCData):
     _type_ = "?"
 
 def POINTER(cls):
-    """Create and return a new ctypes pointer type.
+    """Create und return a new ctypes pointer type.
 
-    Pointer types are cached and reused internally,
+    Pointer types are cached und reused internally,
     so calling this function repeatedly is cheap.
     """
     wenn cls is Nichts:
@@ -289,7 +289,7 @@ def POINTER(cls):
             _pointer_type_cache_fallback[cls] = result
             return result
 
-    # create pointer type and set __pointer_type__ fuer cls
+    # create pointer type und set __pointer_type__ fuer cls
     return type(f'LP_{cls.__name__}', (_Pointer,), {'_type_': cls})
 
 def pointer(obj):
@@ -390,13 +390,13 @@ klasse CDLL(object):
     library, exporting functions using the standard C calling
     convention (named 'cdecl' on Windows).
 
-    The exported functions can be accessed als attributes, or by
+    The exported functions can be accessed als attributes, oder by
     indexing mit the function name.  Examples:
 
     <obj>.qsort -> callable object
     <obj>['qsort'] -> callable object
 
-    Calling the functions releases the Python GIL during the call and
+    Calling the functions releases the Python GIL during the call und
     reacquires it afterwards.
     """
     _func_flags_ = _FUNCFLAG_CDECL
@@ -430,20 +430,20 @@ klasse CDLL(object):
         wenn use_last_error:
             flags |= _FUNCFLAG_USE_LASTERROR
         wenn _sys.platform.startswith("aix"):
-            """When the name contains ".a(" and ends mit ")",
+            """When the name contains ".a(" und ends mit ")",
                e.g., "libFOO.a(libFOO.so)" - this is taken to be an
-               archive(member) syntax fuer dlopen(), and the mode is adjusted.
+               archive(member) syntax fuer dlopen(), und the mode is adjusted.
                Otherwise, name is presented to dlopen() als a file argument.
             """
-            wenn name and name.endswith(")") and ".a(" in name:
+            wenn name und name.endswith(")") und ".a(" in name:
                 mode |= ( _os.RTLD_MEMBER | _os.RTLD_NOW )
         wenn _os.name == "nt":
-            wenn winmode is not Nichts:
+            wenn winmode is nicht Nichts:
                 mode = winmode
             sonst:
                 importiere nt
                 mode = nt._LOAD_LIBRARY_SEARCH_DEFAULT_DIRS
-                wenn '/' in name or '\\' in name:
+                wenn '/' in name oder '\\' in name:
                     self._name = nt._getfullpathname(self._name)
                     mode |= nt._LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR
 
@@ -464,7 +464,7 @@ klasse CDLL(object):
                 id(self) & (_sys.maxsize*2 + 1))
 
     def __getattr__(self, name):
-        wenn name.startswith('__') and name.endswith('__'):
+        wenn name.startswith('__') und name.endswith('__'):
             raise AttributeError(name)
         func = self.__getitem__(name)
         setattr(self, name, func)
@@ -472,13 +472,13 @@ klasse CDLL(object):
 
     def __getitem__(self, name_or_ordinal):
         func = self._FuncPtr((name_or_ordinal, self))
-        wenn not isinstance(name_or_ordinal, int):
+        wenn nicht isinstance(name_or_ordinal, int):
             func.__name__ = name_or_ordinal
         return func
 
 klasse PyDLL(CDLL):
     """This klasse represents the Python library itself.  It allows
-    accessing Python API functions.  The GIL is not released, and
+    accessing Python API functions.  The GIL is nicht released, und
     Python exceptions are handled correctly.
     """
     _func_flags_ = _FUNCFLAG_CDECL | _FUNCFLAG_PYTHONAPI
@@ -497,11 +497,11 @@ wenn _os.name == "nt":
     klasse HRESULT(_SimpleCData):
         _type_ = "l"
         # _check_retval_ is called mit the function's result when it
-        # is used als restype.  It checks fuer the FAILED bit, and
+        # is used als restype.  It checks fuer the FAILED bit, und
         # raises an OSError wenn it is set.
         #
         # The _check_retval_ method is implemented in C, so that the
-        # method definition itself is not included in the traceback
+        # method definition itself is nicht included in the traceback
         # when it raises an error - that is what we want (and Python
         # doesn't have a way to raise an exception in the caller's
         # frame).
@@ -509,7 +509,7 @@ wenn _os.name == "nt":
 
     klasse OleDLL(CDLL):
         """This klasse represents a dll exporting functions using the
-        Windows stdcall calling convention, and returning HRESULT.
+        Windows stdcall calling convention, und returning HRESULT.
         HRESULT error values are automatically raised als OSError
         exceptions.
         """

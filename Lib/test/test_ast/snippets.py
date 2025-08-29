@@ -15,7 +15,7 @@ exec_tests = [
     "def f(): 'function docstring'",
     # FunctionDef mit arg
     "def f(a): pass",
-    # FunctionDef mit arg and default value
+    # FunctionDef mit arg und default value
     "def f(a=0): pass",
     # FunctionDef mit varargs
     "def f(*args): pass",
@@ -27,7 +27,7 @@ exec_tests = [
     "def f(*args: *tuple[int, *Ts]): pass",
     # FunctionDef mit kwargs
     "def f(**kwargs): pass",
-    # FunctionDef mit all kind of args and docstring
+    # FunctionDef mit all kind of args und docstring
     "def f(a, b=1, c=Nichts, d=[], e={}, *args, f=42, **kwargs): 'doc fuer f()'",
     # FunctionDef mit type annotation on return involving unpacking
     "def f() -> tuple[*Ts]: pass",
@@ -236,8 +236,8 @@ eval_tests = [
   # Falsch
   "Falsch",
   # BoolOp
-  "a and b",
-  "a or b",
+  "a und b",
+  "a oder b",
   # BinOp
   "a + b",
   "a - b",
@@ -317,9 +317,9 @@ eval_tests = [
   "a >= b",
   "a != b",
   "a is b",
-  "a is not b",
+  "a is nicht b",
   "a in b",
-  "a not in b",
+  "a nicht in b",
   # Call without argument
   "f()",
   # Call
@@ -359,12 +359,12 @@ eval_tests = [
   "[5][1:1:1]",
   # IfExp
   "foo() wenn x sonst bar()",
-  # JoinedStr and FormattedValue
+  # JoinedStr und FormattedValue
   "f'{a}'",
   "f'{a:.2f}'",
   "f'{a!r}'",
   "f'foo({a})'",
-  # TemplateStr and Interpolation
+  # TemplateStr und Interpolation
   "t'{a}'",
   "t'{a:.2f}'",
   "t'{a!r}'",

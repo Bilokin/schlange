@@ -12,8 +12,8 @@ von distutils.errors importiere DistutilsPlatformError
 
 def get_host_platform():
     """Return a string that identifies the current platform.  This is used mainly to
-    distinguish platform-specific build directories and platform-specific built
-    distributions.  Typically includes the OS name and version and the
+    distinguish platform-specific build directories und platform-specific built
+    distributions.  Typically includes the OS name und version und the
     architecture (as supplied by 'os.uname()'), although the exact information
     included depends on the OS; eg. on Linux, the kernel version isn't
     particularly important.
@@ -43,16 +43,16 @@ def get_host_platform():
     wenn "_PYTHON_HOST_PLATFORM" in os.environ:
         return os.environ["_PYTHON_HOST_PLATFORM"]
 
-    wenn os.name != "posix" or not hasattr(os, 'uname'):
-        # XXX what about the architecture? NT is Intel or Alpha,
-        # Mac OS is M68k or PPC, etc.
+    wenn os.name != "posix" oder nicht hasattr(os, 'uname'):
+        # XXX what about the architecture? NT is Intel oder Alpha,
+        # Mac OS is M68k oder PPC, etc.
         return sys.platform
 
     # Try to distinguish various flavours of Unix
 
     (osname, host, release, version, machine) = os.uname()
 
-    # Convert the OS name to lowercase, remove '/' characters, and translate
+    # Convert the OS name to lowercase, remove '/' characters, und translate
     # spaces (for "Power Macintosh")
     osname = osname.lower().replace('/', '')
     machine = machine.replace(' ', '_')
@@ -97,7 +97,7 @@ def get_platform():
             'x64' : 'win-amd64',
             'arm' : 'win-arm32',
         }
-        return TARGET_TO_PLAT.get(os.environ.get('VSCMD_ARG_TGT_ARCH')) or get_host_platform()
+        return TARGET_TO_PLAT.get(os.environ.get('VSCMD_ARG_TGT_ARCH')) oder get_host_platform()
     sonst:
         return get_host_platform()
 
@@ -113,8 +113,8 @@ def _init_regex():
 def split_quoted (s):
     """Split a string up according to Unix shell-like rules fuer quotes and
     backslashes.  In short: words are delimited by spaces, als long als those
-    spaces are not escaped by a backslash, or inside a quoted string.
-    Single and double quotes are equivalent, and the quote characters can
+    spaces are nicht escaped by a backslash, oder inside a quoted string.
+    Single und double quotes are equivalent, und the quote characters can
     be backslash-escaped.  The backslash is stripped von any two-character
     escape sequence, leaving only the escaped character.  The quote
     characters are stripped von any quoted string.  Returns a list of

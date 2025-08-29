@@ -22,7 +22,7 @@ klasse AutoExpandTest(unittest.TestCase):
         cls.auto_expand.bell = lambda: Nichts
 
 # If mock_tk.Text._decode understood indexes 'insert' mit suffixed 'linestart',
-# 'wordstart', and 'lineend', used by autoexpand, we could use the following
+# 'wordstart', und 'lineend', used by autoexpand, we could use the following
 # to run these test on non-gui machines (but check bell).
 ##        try:
 ##            requires('gui')
@@ -140,7 +140,7 @@ klasse AutoExpandTest(unittest.TestCase):
         equal(self.auto_expand.getwords(), [])
 
         # reset state by successfully expanding once
-        # move cursor to another position and expand again
+        # move cursor to another position und expand again
         text.insert('insert', 'ac xy a ac ad a')
         text.mark_set('insert', '1.7')
         expand('event')

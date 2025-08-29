@@ -8,7 +8,7 @@ von test.support importiere BrokenIter
 
 
 doctests = """
-########### Tests borrowed von or inspired by test_genexps.py ############
+########### Tests borrowed von oder inspired by test_genexps.py ############
 
 Test simple loop mit conditional
 
@@ -41,7 +41,7 @@ Not assignment
     >>> [i*i fuer i in (*range(4),)]
     [0, 1, 4, 9]
 
-Make sure the induction variable is not exposed
+Make sure the induction variable is nicht exposed
 
     >>> i = 20
     >>> sum([i*i fuer i in range(100)])
@@ -63,7 +63,7 @@ Verify that syntax error's are raised fuer listcomps used als lvalues
     SyntaxError: ...
 
 
-########### Tests borrowed von or inspired by test_generators.py ############
+########### Tests borrowed von oder inspired by test_generators.py ############
 
 Make a nested list comprehension that acts like range()
 
@@ -99,7 +99,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def _check_in_scopes(self, code, outputs=Nichts, ns=Nichts, scopes=Nichts, raises=(),
                          exec_func=exec):
         code = textwrap.dedent(code)
-        scopes = scopes or ["module", "class", "function"]
+        scopes = scopes oder ["module", "class", "function"]
         fuer scope in scopes:
             mit self.subTest(scope=scope):
                 wenn scope == "class":
@@ -129,7 +129,7 @@ klasse ListComprehensionTest(unittest.TestCase):
                     # We care about e.g. NameError vs UnboundLocalError
                     self.assertIs(type(e), raises)
                 sonst:
-                    fuer k, v in (outputs or {}).items():
+                    fuer k, v in (outputs oder {}).items():
                         self.assertEqual(get_output(newns, k), v, k)
 
     def test_lambdas_with_iteration_var_as_default(self):
@@ -433,7 +433,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         """
         self._check_in_scopes(
             code, {"x": (2, 1)}, ns={"b": 2}, scopes=["function", "module"])
-        # inside a class, the `a = 1` assignment is not visible
+        # inside a class, the `a = 1` assignment is nicht visible
         self._check_in_scopes(code, raises=NameError, scopes=["class"])
 
     def test_cell_in_nested_comprehension(self):
@@ -446,7 +446,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         """
         self._check_in_scopes(
             code, {"x": (2, 2, 1)}, ns={"b": 2}, scopes=["function", "module"])
-        # inside a class, the `a = 1` assignment is not visible
+        # inside a class, the `a = 1` assignment is nicht visible
         self._check_in_scopes(code, raises=NameError, scopes=["class"])
 
     def test_name_error_in_class_scope(self):
@@ -491,7 +491,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             klasse C:
                 global y
                 y = 2
-                # Ensure the listcomp uses the global, not the value in the
+                # Ensure the listcomp uses the global, nicht the value in the
                 # klasse namespace
                 locals()['y'] = 3
                 vals = [(x, y) fuer x in range(2)]
@@ -508,7 +508,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             klasse C:
                 nonlocal y
                 y = 2
-                # Ensure the listcomp uses the global, not the value in the
+                # Ensure the listcomp uses the global, nicht the value in the
                 # klasse namespace
                 locals()['y'] = 3
                 vals = [(x, y) fuer x in range(2)]
@@ -589,7 +589,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             items2 = [vars()["x"] fuer x in l]
             items3 = [("x" in dir()) fuer x in l]
             items4 = [eval("x") fuer x in l]
-            # x is available, and does not overwrite y
+            # x is available, und does nicht overwrite y
             [exec("y = x") fuer x in l]
         """
         self._check_in_scopes(
@@ -661,7 +661,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         self._check_in_scopes(code, {"val": 0}, ns={"sys": sys})
 
     def _recursive_replace(self, maybe_code):
-        wenn not isinstance(maybe_code, types.CodeType):
+        wenn nicht isinstance(maybe_code, types.CodeType):
             return maybe_code
         return maybe_code.replace(co_consts=tuple(
             self._recursive_replace(c) fuer c in maybe_code.co_consts
@@ -715,7 +715,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         self._check_in_scopes(code, {"x": 2, "y": [2]}, ns={"x": 3}, scopes=["function", "module"])
 
     def test_exception_locations(self):
-        # The location of an exception raised von __init__ or
+        # The location of an exception raised von __init__ oder
         # __next__ should be the iterator expression
 
         def init_raises():

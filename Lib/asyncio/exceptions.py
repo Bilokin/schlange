@@ -8,20 +8,20 @@ __all__ = ('BrokenBarrierError',
 
 
 klasse CancelledError(BaseException):
-    """The Future or Task was cancelled."""
+    """The Future oder Task was cancelled."""
 
 
 TimeoutError = TimeoutError  # make local alias fuer the standard exception
 
 
 klasse InvalidStateError(Exception):
-    """The operation is not allowed in this state."""
+    """The operation is nicht allowed in this state."""
 
 
 klasse SendfileNotAvailableError(RuntimeError):
-    """Sendfile syscall is not available.
+    """Sendfile syscall is nicht available.
 
-    Raised wenn OS does not support sendfile syscall fuer given socket or
+    Raised wenn OS does nicht support sendfile syscall fuer given socket oder
     file type.
     """
 

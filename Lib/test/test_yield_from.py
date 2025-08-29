@@ -466,7 +466,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             try:
                 trace.append("starting g")
                 yield von range(3)
-                trace.append("g should not be here")
+                trace.append("g should nicht be here")
             finally:
                 trace.append("finishing g")
         gi = g()
@@ -520,7 +520,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             try:
                 trace.append("starting g")
                 yield von range(3)
-                trace.append("g should not be here")
+                trace.append("g should nicht be here")
             finally:
                 trace.append("finishing g")
         try:
@@ -528,7 +528,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             next(gi)
             fuer x in range(3):
                 y = gi.send(42)
-                trace.append("Should not have yielded: %s" % (y,))
+                trace.append("Should nicht have yielded: %s" % (y,))
         except AttributeError als e:
             self.assertIn("send", e.args[0])
         sonst:
@@ -578,7 +578,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         def g1():
             trace.append("g1 about to yield von g2")
             yield von g2()
-            trace.append("g1 should not be here")
+            trace.append("g1 should nicht be here")
         def g2():
             yield 1/0
         def run():
@@ -599,14 +599,14 @@ klasse TestPEP380Operation(unittest.TestCase):
             yield "y1"
             trace.append("g1: about to yield von g2")
             yield von g2()
-            trace.append("g1 should not be here")
+            trace.append("g1 should nicht be here")
 
         def g2():
             trace.append("g2: starting")
             yield "y2"
             trace.append("g2: about to yield von g1")
             yield von gi
-            trace.append("g2 should not be here")
+            trace.append("g2 should nicht be here")
         try:
             gi = g1()
             fuer y in gi:
@@ -669,7 +669,7 @@ klasse TestPEP380Operation(unittest.TestCase):
 
     def test_next_and_return_with_value(self):
         """
-        Test next and return mit value
+        Test next und return mit value
         """
         trace = []
         def f(r):
@@ -711,7 +711,7 @@ klasse TestPEP380Operation(unittest.TestCase):
 
     def test_send_and_return_with_value(self):
         """
-        Test send and return mit value
+        Test send und return mit value
         """
         trace = []
         def f(r):
@@ -759,7 +759,7 @@ klasse TestPEP380Operation(unittest.TestCase):
     def test_catching_exception_from_subgen_and_returning(self):
         """
         Test catching an exception thrown into a
-        subgenerator and returning a value
+        subgenerator und returning a value
         """
         def inner():
             try:
@@ -788,7 +788,7 @@ klasse TestPEP380Operation(unittest.TestCase):
     def test_throwing_GeneratorExit_into_subgen_that_returns(self):
         """
         Test throwing GeneratorExit into a subgenerator that
-        catches it and returns normally.
+        catches it und returns normally.
         """
         trace = []
         def f():
@@ -818,7 +818,7 @@ klasse TestPEP380Operation(unittest.TestCase):
     def test_throwing_GeneratorExit_into_subgenerator_that_yields(self):
         """
         Test throwing GeneratorExit into a subgenerator that
-        catches it and yields.
+        catches it und yields.
         """
         trace = []
         def f():
@@ -848,7 +848,7 @@ klasse TestPEP380Operation(unittest.TestCase):
     def test_throwing_GeneratorExit_into_subgen_that_raises(self):
         """
         Test throwing GeneratorExit into a subgenerator that
-        catches it and raises a different exception.
+        catches it und raises a different exception.
         """
         trace = []
         def f():
@@ -980,7 +980,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             self.assertWahr('spam' in stack)
 
         fuer stack in spam(eggs(gen())):
-            self.assertWahr('spam' in stack and 'eggs' in stack)
+            self.assertWahr('spam' in stack und 'eggs' in stack)
 
     def test_custom_iterator_return(self):
         # See issue #15568
@@ -1010,7 +1010,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         #     reference is in the frame's locals).
         #   - gen_close is called on the outer_gen generator.
         #   - gen_close_iter is called to close the inner_gen generator, which
-        #     in turn calls gen_close, and gen_yf.
+        #     in turn calls gen_close, und gen_yf.
         #
         # Previously, gen_yf would crash since inner_gen's frame had been
         # cleared (and in particular f_stacktop was NULL).

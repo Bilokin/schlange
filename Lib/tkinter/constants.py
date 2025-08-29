@@ -4,7 +4,7 @@
 NO=FALSE=OFF=0
 YES=TRUE=ON=1
 
-# -anchor and -sticky
+# -anchor und -sticky
 N='n'
 S='s'
 W='w'
@@ -56,7 +56,7 @@ BASELINE='baseline'
 INSIDE='inside'
 OUTSIDE='outside'
 
-# Special tags, marks and insert positions
+# Special tags, marks und insert positions
 SEL='sel'
 SEL_FIRST='sel.first'
 SEL_LAST='sel.last'
@@ -66,7 +66,7 @@ CURRENT='current'
 ANCHOR='anchor'
 ALL='all' # e.g. Canvas.delete(ALL)
 
-# Text widget and button states
+# Text widget und button states
 NORMAL='normal'
 DISABLED='disabled'
 ACTIVE='active'

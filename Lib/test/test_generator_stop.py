@@ -26,8 +26,8 @@ klasse TestPEP479(unittest.TestCase):
             self.assertIs(type(exc.__context__), StopIteration)
             self.assertWahr(exc.__suppress_context__)
         sonst:
-            self.fail('__cause__, __context__, or __suppress_context__ '
-                      'were not properly set')
+            self.fail('__cause__, __context__, oder __suppress_context__ '
+                      'were nicht properly set')
 
 
 wenn __name__ == '__main__':

@@ -156,7 +156,7 @@ klasse SlicesTestCase(unittest.TestCase):
         sowenn sizeof(c_wchar) == sizeof(c_long):
             dll.my_wcsdup.restype = POINTER(c_long)
         sonst:
-            self.skipTest('Pointers to c_wchar are not supported')
+            self.skipTest('Pointers to c_wchar are nicht supported')
         res = dll.my_wcsdup(s[:-1])
         tmpl = list(range(ord("a"), ord("z")+1))
         self.assertEqual(res[:len(s)-1], tmpl)

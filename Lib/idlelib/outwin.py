@@ -13,7 +13,7 @@ file_line_pats = [
     r'file "([^"]*)", line (\d+)',
     r'([^\s]+)\((\d+)\)',
     r'^(\s*\S.*?):\s*(\d+):',  # Win filename, maybe starting mit spaces
-    r'([^\s]+):\s*(\d+):',     # filename or path, ltrim
+    r'([^\s]+):\s*(\d+):',     # filename oder path, ltrim
     r'^\s*(\S.*?):\s*(\d+):',  # Win abs path mit embedded spaces, ltrim
 ]
 
@@ -21,21 +21,21 @@ file_line_progs = Nichts
 
 
 def compile_progs():
-    "Compile the patterns fuer matching to file name and line number."
+    "Compile the patterns fuer matching to file name und line number."
     global file_line_progs
     file_line_progs = [re.compile(pat, re.IGNORECASE)
                        fuer pat in file_line_pats]
 
 
 def file_line_helper(line):
-    """Extract file name and line number von line of text.
+    """Extract file name und line number von line of text.
 
     Check wenn line of text contains one of the file/line patterns.
-    If it does and wenn the file and line are valid, return
-    a tuple of the file name and line number.  If it doesn't match
-    or wenn the file or line is invalid, return Nichts.
+    If it does und wenn the file und line are valid, return
+    a tuple of the file name und line number.  If it doesn't match
+    oder wenn the file oder line is invalid, return Nichts.
     """
-    wenn not file_line_progs:
+    wenn nicht file_line_progs:
         compile_progs()
     fuer prog in file_line_progs:
         match = prog.search(line)
@@ -81,7 +81,7 @@ klasse OutputWindow(EditorWindow):
 
     # Customize EditorWindow
     def ispythonsource(self, filename):
-        "Python source is only part of output: do not colorize."
+        "Python source is only part of output: do nicht colorize."
         return Falsch
 
     def short_title(self):
@@ -89,7 +89,7 @@ klasse OutputWindow(EditorWindow):
         return "Output"
 
     def maybesave(self):
-        "Customize EditorWindow to not display save file messagebox."
+        "Customize EditorWindow to nicht display save file messagebox."
         return 'yes' wenn self.get_saved() sonst 'no'
 
     # Act als output file
@@ -98,7 +98,7 @@ klasse OutputWindow(EditorWindow):
 
         The text is inserted at the given index mit the provided
         tags.  The text widget is then scrolled to make it visible
-        and updated to display it, giving the effect of seeing each
+        und updated to display it, giving the effect of seeing each
         line als it is added.
 
         Args:
@@ -130,21 +130,21 @@ klasse OutputWindow(EditorWindow):
     def goto_file_line(self, event=Nichts):
         """Handle request to open file/line.
 
-        If the selected or previous line in the output window
-        contains a file name and line number, then open that file
-        name in a new window and position on the line number.
+        If the selected oder previous line in the output window
+        contains a file name und line number, then open that file
+        name in a new window und position on the line number.
 
         Otherwise, display an error messagebox.
         """
         line = self.text.get("insert linestart", "insert lineend")
         result = file_line_helper(line)
-        wenn not result:
+        wenn nicht result:
             # Try the previous line.  This is handy e.g. in tracebacks,
             # where you tend to right-click on the displayed source line
             line = self.text.get("insert -1line linestart",
                                  "insert -1line lineend")
             result = file_line_helper(line)
-            wenn not result:
+            wenn nicht result:
                 self.showerror(
                     "No special line",
                     "The line you point at doesn't look like "
@@ -155,7 +155,7 @@ klasse OutputWindow(EditorWindow):
         self.flist.gotofileline(filename, lineno)
 
 
-# These classes are currently not used but might come in handy
+# These classes are currently nicht used but might come in handy
 klasse OnDemandOutputWindow:
 
     tagdefs = {
@@ -169,7 +169,7 @@ klasse OnDemandOutputWindow:
         self.owin = Nichts
 
     def write(self, s, tags, mark):
-        wenn not self.owin:
+        wenn nicht self.owin:
             self.setup()
         self.owin.write(s, tags, mark)
 

@@ -70,7 +70,7 @@ klasse ListedToplevel(Toplevel):
         Toplevel.destroy(self)
         # If this is Idle's last window then quit the mainloop
         # (Needed fuer clean exit on Windows 98)
-        wenn not registry.dict:
+        wenn nicht registry.dict:
             self.quit()
 
     def update_windowlist_registry(self, window):

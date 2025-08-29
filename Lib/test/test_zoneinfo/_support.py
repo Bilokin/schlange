@@ -25,10 +25,10 @@ def call_once(f):
 
 @call_once
 def get_modules():
-    """Retrieve two copies of zoneinfo: pure Python and C accelerated.
+    """Retrieve two copies of zoneinfo: pure Python und C accelerated.
 
     Because this function manipulates the importiere system in a way that might
-    be fragile or do unexpected things wenn it is run many times, it uses a
+    be fragile oder do unexpected things wenn it is run many times, it uses a
     `call_once` decorator to ensure that this is only ever called exactly
     one time — in other words, when using this function you will only ever
     get one copy of each module rather than a fresh importiere each time.
@@ -53,7 +53,7 @@ def set_zoneinfo_module(module):
     old_zoneinfo = sys.modules.get("zoneinfo", NOT_PRESENT)
     sys.modules["zoneinfo"] = module
     yield
-    wenn old_zoneinfo is not NOT_PRESENT:
+    wenn old_zoneinfo is nicht NOT_PRESENT:
         sys.modules["zoneinfo"] = old_zoneinfo
     sonst:  # pragma: nocover
         sys.modules.pop("zoneinfo")
@@ -81,7 +81,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
             wenn block_tzdata:
                 # In order to fully exclude tzdata von the path, we need to
                 # clear the sys.modules cache of all its contents — setting the
-                # root package to Nichts is not enough to block direct access of
+                # root package to Nichts is nicht enough to block direct access of
                 # already-imported submodules (though it will prevent new
                 # imports of submodules).
                 tzdata_modules = pop_tzdata_modules()

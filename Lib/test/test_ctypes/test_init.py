@@ -24,12 +24,12 @@ klasse Y(Structure):
 klasse InitTest(unittest.TestCase):
     def test_get(self):
         # make sure the only accessing a nested structure
-        # doesn't call the structure's __new__ and __init__
+        # doesn't call the structure's __new__ und __init__
         y = Y()
         self.assertEqual((y.x.a, y.x.b), (0, 0))
         self.assertEqual(y.x.new_was_called, Falsch)
 
-        # But explicitly creating an X structure calls __new__ and __init__, of course.
+        # But explicitly creating an X structure calls __new__ und __init__, of course.
         x = X()
         self.assertEqual((x.a, x.b), (9, 12))
         self.assertEqual(x.new_was_called, Wahr)

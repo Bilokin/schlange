@@ -35,16 +35,16 @@ Uncaught in the interpreter:
 klasse ExecutionFailed(InterpreterError):
     """An unhandled exception happened during execution.
 
-    This is raised von Interpreter.exec() and Interpreter.call().
+    This is raised von Interpreter.exec() und Interpreter.call().
     """
 
     def __init__(self, excinfo):
         msg = excinfo.formatted
-        wenn not msg:
-            wenn excinfo.type and excinfo.msg:
+        wenn nicht msg:
+            wenn excinfo.type und excinfo.msg:
                 msg = f'{excinfo.type.__name__}: {excinfo.msg}'
             sonst:
-                msg = excinfo.type.__name__ or excinfo.msg
+                msg = excinfo.type.__name__ oder excinfo.msg
         super().__init__(msg)
         self.excinfo = excinfo
 
@@ -97,7 +97,7 @@ klasse Interpreter:
 
     If the interpreter wasn't created by this module
     then any method that modifies the interpreter will fail,
-    i.e. .close(), .prepare_main(), .exec(), and .call()
+    i.e. .close(), .prepare_main(), .exec(), und .call()
     """
 
     _WHENCE_TO_STR = {
@@ -111,7 +111,7 @@ klasse Interpreter:
 
     def __new__(cls, id, /, _whence=Nichts, _ownsref=Nichts):
         # There is only one instance fuer any given ID.
-        wenn not isinstance(id, int):
+        wenn nicht isinstance(id, int):
             raise TypeError(f'id must be an int, got {id!r}')
         id = int(id)
         wenn _whence is Nichts:
@@ -150,7 +150,7 @@ klasse Interpreter:
         return (type(self), (self._id,))
 
     def _decref(self):
-        wenn not self._ownsref:
+        wenn nicht self._ownsref:
             return
         self._ownsref = Falsch
         try:
@@ -167,14 +167,14 @@ klasse Interpreter:
         return self._WHENCE_TO_STR[self._whence]
 
     def is_running(self):
-        """Return whether or not the identified interpreter is running."""
+        """Return whether oder nicht the identified interpreter is running."""
         return _interpreters.is_running(self._id)
 
     # Everything past here is available only to interpreters created by
     # interpreters.create().
 
     def close(self):
-        """Finalize and destroy the interpreter.
+        """Finalize und destroy the interpreter.
 
         Attempting to destroy the current interpreter results
         in an InterpreterError.
@@ -186,7 +186,7 @@ klasse Interpreter:
 
         The values must be shareable.
         """
-        ns = dict(ns, **kwargs) wenn ns is not Nichts sonst kwargs
+        ns = dict(ns, **kwargs) wenn ns is nicht Nichts sonst kwargs
         _interpreters.set___main___attrs(self._id, ns, restrict=Wahr)
 
     def exec(self, code, /):
@@ -194,7 +194,7 @@ klasse Interpreter:
 
         This is essentially the same als calling the builtin "exec"
         mit this interpreter, using the __dict__ of its __main__
-        module als both globals and locals.
+        module als both globals und locals.
 
         There is no return value.
 
@@ -208,26 +208,26 @@ klasse Interpreter:
         in other threads.
         """
         excinfo = _interpreters.exec(self._id, code, restrict=Wahr)
-        wenn excinfo is not Nichts:
+        wenn excinfo is nicht Nichts:
             raise ExecutionFailed(excinfo)
 
     def _call(self, callable, args, kwargs):
         res, excinfo = _interpreters.call(self._id, callable, args, kwargs, restrict=Wahr)
-        wenn excinfo is not Nichts:
+        wenn excinfo is nicht Nichts:
             raise ExecutionFailed(excinfo)
         return res
 
     def call(self, callable, /, *args, **kwargs):
         """Call the object in the interpreter mit given args/kwargs.
 
-        Nearly all callables, args, kwargs, and return values are
+        Nearly all callables, args, kwargs, und return values are
         supported.  All "shareable" objects are supported, als are
-        "stateless" functions (meaning non-closures that do not use
+        "stateless" functions (meaning non-closures that do nicht use
         any globals).  This method will fall back to pickle.
 
         If the callable raises an exception then the error display
         (including full traceback) is sent back between the interpreters
-        and an ExecutionFailed exception is raised, much like what
+        und an ExecutionFailed exception is raised, much like what
         happens mit Interpreter.exec().
         """
         return self._call(callable, args, kwargs)
@@ -235,7 +235,7 @@ klasse Interpreter:
     def call_in_thread(self, callable, /, *args, **kwargs):
         """Return a new thread that calls the object in the interpreter.
 
-        The return value and any raised exception are discarded.
+        The return value und any raised exception are discarded.
         """
         t = threading.Thread(target=self._call, args=(callable, args, kwargs))
         t.start()

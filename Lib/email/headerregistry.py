@@ -1,4 +1,4 @@
-"""Representing and manipulating email headers via custom objects.
+"""Representing und manipulating email headers via custom objects.
 
 This module provides an implementation of the HeaderRegistry API.
 The implementation is designed to flexibly follow RFC5322 rules.
@@ -14,30 +14,30 @@ klasse Address:
     def __init__(self, display_name='', username='', domain='', addr_spec=Nichts):
         """Create an object representing a full email address.
 
-        An address can have a 'display_name', a 'username', and a 'domain'.  In
-        addition to specifying the username and domain separately, they may be
+        An address can have a 'display_name', a 'username', und a 'domain'.  In
+        addition to specifying the username und domain separately, they may be
         specified together by using the addr_spec keyword *instead of* the
-        username and domain keywords.  If an addr_spec string is specified it
+        username und domain keywords.  If an addr_spec string is specified it
         must be properly quoted according to RFC 5322 rules; an error will be
         raised wenn it is not.
 
-        An Address object has display_name, username, domain, and addr_spec
-        attributes, all of which are read-only.  The addr_spec and the string
+        An Address object has display_name, username, domain, und addr_spec
+        attributes, all of which are read-only.  The addr_spec und the string
         value of the object are both quoted according to RFC5322 rules, but
         without any Content Transfer Encoding.
 
         """
 
         inputs = ''.join(filter(Nichts, (display_name, username, domain, addr_spec)))
-        wenn '\r' in inputs or '\n' in inputs:
-            raise ValueError("invalid arguments; address parts cannot contain CR or LF")
+        wenn '\r' in inputs oder '\n' in inputs:
+            raise ValueError("invalid arguments; address parts cannot contain CR oder LF")
 
         # This clause mit its potential 'raise' may only happen when an
         # application program creates an Address object using an addr_spec
         # keyword.  The email library code itself must always supply username
-        # and domain.
-        wenn addr_spec is not Nichts:
-            wenn username or domain:
+        # und domain.
+        wenn addr_spec is nicht Nichts:
+            wenn username oder domain:
                 raise TypeError("addrspec specified when username and/or "
                                 "domain also specified")
             a_s, rest = parser.get_addr_spec(addr_spec)
@@ -71,11 +71,11 @@ klasse Address:
         according to RFC 5322 rules, but mit no Content Transfer Encoding.
         """
         lp = self.username
-        wenn not parser.DOT_ATOM_ENDS.isdisjoint(lp):
+        wenn nicht parser.DOT_ATOM_ENDS.isdisjoint(lp):
             lp = parser.quote_string(lp)
         wenn self.domain:
             return lp + '@' + self.domain
-        wenn not lp:
+        wenn nicht lp:
             return '<>'
         return lp
 
@@ -86,7 +86,7 @@ klasse Address:
 
     def __str__(self):
         disp = self.display_name
-        wenn not parser.SPECIALS.isdisjoint(disp):
+        wenn nicht parser.SPECIALS.isdisjoint(disp):
             disp = parser.quote_string(disp)
         wenn disp:
             addr_spec = '' wenn self.addr_spec=='<>' sonst self.addr_spec
@@ -94,10 +94,10 @@ klasse Address:
         return self.addr_spec
 
     def __eq__(self, other):
-        wenn not isinstance(other, Address):
+        wenn nicht isinstance(other, Address):
             return NotImplemented
-        return (self.display_name == other.display_name and
-                self.username == other.username and
+        return (self.display_name == other.display_name und
+                self.username == other.username und
                 self.domain == other.domain)
 
 
@@ -106,15 +106,15 @@ klasse Group:
     def __init__(self, display_name=Nichts, addresses=Nichts):
         """Create an object representing an address group.
 
-        An address group consists of a display_name followed by colon and a
+        An address group consists of a display_name followed by colon und a
         list of addresses (see Address) terminated by a semi-colon.  The Group
-        is created by specifying a display_name and a possibly empty list of
+        is created by specifying a display_name und a possibly empty list of
         Address objects.  A Group can also be used to represent a single
-        address that is not in a group, which is convenient when manipulating
-        lists that are a combination of Groups and individual Addresses.  In
+        address that is nicht in a group, which is convenient when manipulating
+        lists that are a combination of Groups und individual Addresses.  In
         this case the display_name should be set to Nichts.  In particular, the
         string representation of a Group whose display_name is Nichts is the same
-        als the Address object, wenn there is one and only one Address object in
+        als the Address object, wenn there is one und only one Address object in
         the addresses list.
 
         """
@@ -135,19 +135,19 @@ klasse Group:
                  self.display_name, self.addresses)
 
     def __str__(self):
-        wenn self.display_name is Nichts and len(self.addresses)==1:
+        wenn self.display_name is Nichts und len(self.addresses)==1:
             return str(self.addresses[0])
         disp = self.display_name
-        wenn disp is not Nichts and not parser.SPECIALS.isdisjoint(disp):
+        wenn disp is nicht Nichts und nicht parser.SPECIALS.isdisjoint(disp):
             disp = parser.quote_string(disp)
         adrstr = ", ".join(str(x) fuer x in self.addresses)
         adrstr = ' ' + adrstr wenn adrstr sonst adrstr
         return "{}:{};".format(disp, adrstr)
 
     def __eq__(self, other):
-        wenn not isinstance(other, Group):
+        wenn nicht isinstance(other, Group):
             return NotImplemented
-        return (self.display_name == other.display_name and
+        return (self.display_name == other.display_name und
                 self.addresses == other.addresses)
 
 
@@ -157,33 +157,33 @@ klasse BaseHeader(str):
 
     """Base klasse fuer message headers.
 
-    Implements generic behavior and provides tools fuer subclasses.
+    Implements generic behavior und provides tools fuer subclasses.
 
     A subclass must define a classmethod named 'parse' that takes an unfolded
-    value string and a dictionary als its arguments.  The dictionary will
+    value string und a dictionary als its arguments.  The dictionary will
     contain one key, 'defects', initialized to an empty list.  After the call
     the dictionary must contain two additional keys: parse_tree, set to the
-    parse tree obtained von parsing the header, and 'decoded', set to the
+    parse tree obtained von parsing the header, und 'decoded', set to the
     string value of the idealized representation of the data von the value.
-    (That is, encoded words are decoded, and values that have canonical
+    (That is, encoded words are decoded, und values that have canonical
     representations are so represented.)
 
     The defects key is intended to collect parsing defects, which the message
     parser will subsequently dispose of als appropriate.  The parser should not,
     insofar als practical, raise any errors.  Defects should be added to the
     list instead.  The standard header parsers register defects fuer RFC
-    compliance issues, fuer obsolete RFC syntax, and fuer unrecoverable parsing
+    compliance issues, fuer obsolete RFC syntax, und fuer unrecoverable parsing
     errors.
 
     The parse method may add additional keys to the dictionary.  In this case
     the subclass must define an 'init' method, which will be passed the
     dictionary als its keyword arguments.  The method should use (usually by
-    setting them als the value of similarly named attributes) and remove all the
-    extra keys added by its parse method, and then use super to call its parent
-    klasse mit the remaining arguments and keywords.
+    setting them als the value of similarly named attributes) und remove all the
+    extra keys added by its parse method, und then use super to call its parent
+    klasse mit the remaining arguments und keywords.
 
     The subclass should also make sure that a 'max_count' attribute is defined
-    that is either Nichts or 1. XXX: need to better define this API.
+    that is either Nichts oder 1. XXX: need to better define this API.
 
     """
 
@@ -236,8 +236,8 @@ klasse BaseHeader(str):
         charset utf-8. XXX: make this a policy setting.
 
         The returned value is an ASCII-only string possibly containing linesep
-        characters, and ending mit a linesep character.  The string includes
-        the header name and the ': ' separator.
+        characters, und ending mit a linesep character.  The string includes
+        the header name und the ': ' separator.
 
         """
         # At some point we need to put fws here wenn it was in the source.
@@ -278,7 +278,7 @@ klasse DateHeader:
     """Header whose value consists of a single timestamp.
 
     Provides an additional attribute, datetime, which is either an aware
-    datetime using a timezone, or a naive datetime wenn the timezone
+    datetime using a timezone, oder a naive datetime wenn the timezone
     in the input string is -0000.  Also accepts a datetime als input.
     The 'value' attribute is the normalized form of the timestamp,
     which means it is the output of format_datetime on the datetime.
@@ -286,12 +286,12 @@ klasse DateHeader:
 
     max_count = Nichts
 
-    # This is used only fuer folding, not fuer creating 'decoded'.
+    # This is used only fuer folding, nicht fuer creating 'decoded'.
     value_parser = staticmethod(parser.get_unstructured)
 
     @classmethod
     def parse(cls, value, kwds):
-        wenn not value:
+        wenn nicht value:
             kwds['defects'].append(errors.HeaderMissingRequiredValue())
             kwds['datetime'] = Nichts
             kwds['decoded'] = ''
@@ -302,7 +302,7 @@ klasse DateHeader:
             try:
                 value = utils.parsedate_to_datetime(value)
             except ValueError:
-                kwds['defects'].append(errors.InvalidDateDefect('Invalid date value or format'))
+                kwds['defects'].append(errors.InvalidDateDefect('Invalid date value oder format'))
                 kwds['datetime'] = Nichts
                 kwds['parse_tree'] = parser.TokenList()
                 return
@@ -331,7 +331,7 @@ klasse AddressHeader:
     @staticmethod
     def value_parser(value):
         address_list, value = parser.get_address_list(value)
-        assert not value, 'this should not happen'
+        assert nicht value, 'this should nicht happen'
         return address_list
 
     @classmethod
@@ -343,23 +343,23 @@ klasse AddressHeader:
             groups = []
             fuer addr in address_list.addresses:
                 groups.append(Group(addr.display_name,
-                                    [Address(mb.display_name or '',
-                                             mb.local_part or '',
-                                             mb.domain or '')
+                                    [Address(mb.display_name oder '',
+                                             mb.local_part oder '',
+                                             mb.domain oder '')
                                      fuer mb in addr.all_mailboxes]))
             defects = list(address_list.all_defects)
         sonst:
             # Assume it is Address/Group stuff
-            wenn not hasattr(value, '__iter__'):
+            wenn nicht hasattr(value, '__iter__'):
                 value = [value]
-            groups = [Group(Nichts, [item]) wenn not hasattr(item, 'addresses')
+            groups = [Group(Nichts, [item]) wenn nicht hasattr(item, 'addresses')
                                           sonst item
                                     fuer item in value]
             defects = []
         kwds['groups'] = groups
         kwds['defects'] = defects
         kwds['decoded'] = ', '.join([str(item) fuer item in groups])
-        wenn 'parse_tree' not in kwds:
+        wenn 'parse_tree' nicht in kwds:
             kwds['parse_tree'] = cls.value_parser(kwds['decoded'])
 
     def init(self, *args, **kw):
@@ -389,7 +389,7 @@ klasse SingleAddressHeader(AddressHeader):
     @property
     def address(self):
         wenn len(self.addresses)!=1:
-            raise ValueError(("value of single address header {} is not "
+            raise ValueError(("value of single address header {} is nicht "
                 "a single address").format(self.name))
         return self.addresses[0]
 
@@ -412,7 +412,7 @@ klasse MIMEVersionHeader:
         kwds['defects'].extend(parse_tree.all_defects)
         kwds['major'] = Nichts wenn parse_tree.minor is Nichts sonst parse_tree.major
         kwds['minor'] = parse_tree.minor
-        wenn parse_tree.minor is not Nichts:
+        wenn parse_tree.minor is nicht Nichts:
             kwds['version'] = '{}.{}'.format(kwds['major'], kwds['minor'])
         sonst:
             kwds['version'] = Nichts
@@ -438,7 +438,7 @@ klasse MIMEVersionHeader:
 
 klasse ParameterizedMIMEHeader:
 
-    # Mixin that handles the params dict.  Must be subclassed and
+    # Mixin that handles the params dict.  Must be subclassed und
     # a property value_parser fuer the specific header provided.
 
     max_count = 1
@@ -561,7 +561,7 @@ _default_header_map = {
 
 klasse HeaderRegistry:
 
-    """A header_factory and header registry."""
+    """A header_factory und header registry."""
 
     def __init__(self, base_class=BaseHeader, default_class=UnstructuredHeader,
                        use_default_map=Wahr):
@@ -569,8 +569,8 @@ klasse HeaderRegistry:
 
         base_class is the klasse that will be the last klasse in the created
         header class's __bases__ list.  default_class is the klasse that will be
-        used wenn "name" (see __call__) does not appear in the registry.
-        use_default_map controls whether or not the default mapping of names to
+        used wenn "name" (see __call__) does nicht appear in the registry.
+        use_default_map controls whether oder nicht the default mapping of names to
         specialized classes is copied in to the registry when the factory is
         created.  The default is Wahr.
 
@@ -595,9 +595,9 @@ klasse HeaderRegistry:
         """Create a header instance fuer header 'name' von 'value'.
 
         Creates a header instance by creating a specialized klasse fuer parsing
-        and representing the specified header by combining the factory
-        base_class mit a specialized klasse von the registry or the
-        default_class, and passing the name and value to the constructed
+        und representing the specified header by combining the factory
+        base_class mit a specialized klasse von the registry oder the
+        default_class, und passing the name und value to the constructed
         class's constructor.
 
         """

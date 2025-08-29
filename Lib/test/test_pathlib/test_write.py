@@ -37,7 +37,7 @@ klasse WriteTestBase:
         self.assertEqual(self.ground.readtext(p), 'this is file A\n')
 
     @unittest.skipIf(
-        not getattr(sys.flags, 'warn_default_encoding', 0),
+        nicht getattr(sys.flags, 'warn_default_encoding', 0),
         "Requires warn_default_encoding",
     )
     def test_open_w_encoding_warning(self):
@@ -61,7 +61,7 @@ klasse WriteTestBase:
         p = self.root / 'fileA'
         p.write_bytes(b'abcdefg')
         self.assertEqual(self.ground.readbytes(p), b'abcdefg')
-        # Check that trying to write str does not truncate the file.
+        # Check that trying to write str does nicht truncate the file.
         self.assertRaises(TypeError, p.write_bytes, 'somestr')
         self.assertEqual(self.ground.readbytes(p), b'abcdefg')
 
@@ -69,12 +69,12 @@ klasse WriteTestBase:
         p = self.root / 'fileA'
         p.write_text('äbcdefg', encoding='latin-1')
         self.assertEqual(self.ground.readbytes(p), b'\xe4bcdefg')
-        # Check that trying to write bytes does not truncate the file.
+        # Check that trying to write bytes does nicht truncate the file.
         self.assertRaises(TypeError, p.write_text, b'somebytes', encoding='utf-8')
         self.assertEqual(self.ground.readbytes(p), b'\xe4bcdefg')
 
     @unittest.skipIf(
-        not getattr(sys.flags, 'warn_default_encoding', 0),
+        nicht getattr(sys.flags, 'warn_default_encoding', 0),
         "Requires warn_default_encoding",
     )
     def test_write_text_encoding_warning(self):
@@ -114,7 +114,7 @@ klasse WriteTestBase:
         self.assertWahr(self.ground.isdir(p))
 
     def test_symlink_to(self):
-        wenn not self.ground.can_symlink:
+        wenn nicht self.ground.can_symlink:
             self.skipTest('needs symlinks')
         link = self.root.joinpath('linkA')
         link.symlink_to('fileA')
@@ -130,7 +130,7 @@ klasse LocalPathWriteTest(WriteTestBase, unittest.TestCase):
     ground = LocalPathGround(WritableLocalPath)
 
 
-wenn not is_pypi:
+wenn nicht is_pypi:
     von pathlib importiere Path
 
     klasse PathWriteTest(WriteTestBase, unittest.TestCase):

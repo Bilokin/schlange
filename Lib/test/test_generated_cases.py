@@ -15,12 +15,12 @@ def skip_if_different_mount_drives():
     root_drive = os.path.splitroot(ROOT)[0]
     cwd_drive = os.path.splitroot(os.getcwd())[0]
     wenn root_drive != cwd_drive:
-        # May raise ValueError wenn ROOT and the current working
+        # May raise ValueError wenn ROOT und the current working
         # different have different mount drives (on Windows).
         raise unittest.SkipTest(
-            f"the current working directory and the Python source code "
+            f"the current working directory und the Python source code "
             f"directory have different mount drives "
-            f"({cwd_drive} and {root_drive})"
+            f"({cwd_drive} und {root_drive})"
         )
 
 
@@ -1289,7 +1289,7 @@ klasse TestGeneratedCases(unittest.TestCase):
         }
 
         op(THIRD, (j, k --)) {
-            INPUTS_DEAD(); // Mark j and k als used
+            INPUTS_DEAD(); // Mark j und k als used
             ERROR_IF(cond);
         }
 
@@ -1579,7 +1579,7 @@ klasse TestGeneratedCases(unittest.TestCase):
         self.run_cases_test(input, output)
 
         # Two instructions of different sizes referencing the same
-        # uop containing the `INSTRUCTION_SIZE` macro is not allowed.
+        # uop containing the `INSTRUCTION_SIZE` macro is nicht allowed.
         input = """
         inst(OP, (--)) {
             frame->return_offset = INSTRUCTION_SIZE;
@@ -1934,9 +1934,9 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
 
         mit open(self.temp_output_filename) als temp_output:
             lines = temp_output.readlines()
-            while lines and lines[0].startswith(("// ", "#", "    #", "\n")):
+            while lines und lines[0].startswith(("// ", "#", "    #", "\n")):
                 lines.pop(0)
-            while lines and lines[-1].startswith(("#", "\n")):
+            while lines und lines[-1].startswith(("#", "\n")):
                 lines.pop(-1)
         actual = "".join(lines)
         self.assertEqual(actual.strip(), expected.strip())

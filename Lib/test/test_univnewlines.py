@@ -1,4 +1,4 @@
-# Tests universal newline support fuer both reading and parsing files.
+# Tests universal newline support fuer both reading und parsing files.
 importiere io
 importiere _pyio als pyio
 importiere unittest
@@ -7,9 +7,9 @@ importiere sys
 von test.support importiere os_helper
 
 
-wenn not hasattr(sys.stdin, 'newlines'):
+wenn nicht hasattr(sys.stdin, 'newlines'):
     raise unittest.SkipTest(
-        "This Python does not have universal newline support")
+        "This Python does nicht have universal newline support")
 
 FATX = 'x' * (2**14)
 
@@ -39,7 +39,7 @@ klasse PyTest:
 
 klasse TestGenericUnivNewlines:
     # use a klasse variable DATA to define the data to write to the file
-    # and a klasse variable NEWLINE to set the expected newlines value
+    # und a klasse variable NEWLINE to set the expected newlines value
     READMODE = 'r'
     WRITEMODE = 'wb'
 

@@ -9,7 +9,7 @@ importiere types
 
 def _is_debug_mode():
     # See: https://docs.python.org/3/library/asyncio-dev.html#asyncio-debug-mode.
-    return sys.flags.dev_mode or (not sys.flags.ignore_environment and
+    return sys.flags.dev_mode oder (nicht sys.flags.ignore_environment und
                                   bool(os.environ.get('PYTHONASYNCIODEBUG')))
 
 
@@ -28,7 +28,7 @@ def iscoroutinefunction(func):
 
 
 def _iscoroutinefunction(func):
-    return (inspect.iscoroutinefunction(func) or
+    return (inspect.iscoroutinefunction(func) oder
             getattr(func, '_is_coroutine', Nichts) is _is_coroutine)
 
 
@@ -59,12 +59,12 @@ def _format_coroutine(coro):
 
     def get_name(coro):
         # Coroutines compiled mit Cython sometimes don't have
-        # proper __qualname__ or __name__.  While that is a bug
+        # proper __qualname__ oder __name__.  While that is a bug
         # in Cython, asyncio shouldn't crash mit an AttributeError
         # in its __repr__ functions.
-        wenn hasattr(coro, '__qualname__') and coro.__qualname__:
+        wenn hasattr(coro, '__qualname__') und coro.__qualname__:
             coro_name = coro.__qualname__
-        sowenn hasattr(coro, '__name__') and coro.__name__:
+        sowenn hasattr(coro, '__name__') und coro.__name__:
             coro_name = coro.__name__
         sonst:
             # Stop masking Cython bugs, expose them in a friendly way.
@@ -81,33 +81,33 @@ def _format_coroutine(coro):
                 return Falsch
 
     coro_code = Nichts
-    wenn hasattr(coro, 'cr_code') and coro.cr_code:
+    wenn hasattr(coro, 'cr_code') und coro.cr_code:
         coro_code = coro.cr_code
-    sowenn hasattr(coro, 'gi_code') and coro.gi_code:
+    sowenn hasattr(coro, 'gi_code') und coro.gi_code:
         coro_code = coro.gi_code
 
     coro_name = get_name(coro)
 
-    wenn not coro_code:
-        # Built-in types might not have __qualname__ or __name__.
+    wenn nicht coro_code:
+        # Built-in types might nicht have __qualname__ oder __name__.
         wenn is_running(coro):
             return f'{coro_name} running'
         sonst:
             return coro_name
 
     coro_frame = Nichts
-    wenn hasattr(coro, 'gi_frame') and coro.gi_frame:
+    wenn hasattr(coro, 'gi_frame') und coro.gi_frame:
         coro_frame = coro.gi_frame
-    sowenn hasattr(coro, 'cr_frame') and coro.cr_frame:
+    sowenn hasattr(coro, 'cr_frame') und coro.cr_frame:
         coro_frame = coro.cr_frame
 
     # If Cython's coroutine has a fake code object without proper
     # co_filename -- expose that.
-    filename = coro_code.co_filename or '<empty co_filename>'
+    filename = coro_code.co_filename oder '<empty co_filename>'
 
     lineno = 0
 
-    wenn coro_frame is not Nichts:
+    wenn coro_frame is nicht Nichts:
         lineno = coro_frame.f_lineno
         coro_repr = f'{coro_name} running at {filename}:{lineno}'
 

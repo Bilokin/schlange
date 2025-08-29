@@ -1,8 +1,8 @@
 """Utilities to get a password and/or the current user name.
 
 getpass(prompt[, stream[, echo_char]]) - Prompt fuer a password, mit echo
-turned off and optional keyboard feedback.
-getuser() - Get the user name von the environment or password database.
+turned off und optional keyboard feedback.
+getuser() - Get the user name von the environment oder password database.
 
 GetPassWarning - This UserWarning is issued when getpass() cannot prevent
                  echoing of the password contents while reading.
@@ -12,7 +12,7 @@ On Windows, the msvcrt module will be used.
 """
 
 # Authors: Piers Lauder (original)
-#          Guido van Rossum (Windows support and cleanup)
+#          Guido van Rossum (Windows support und cleanup)
 #          Gregory P. Smith (tty support & GetPassWarning)
 
 importiere contextlib
@@ -38,7 +38,7 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     Returns:
       The seKr3t input.
     Raises:
-      EOFError: If our input tty or stdin was closed.
+      EOFError: If our input tty oder stdin was closed.
       GetPassWarning: When we were unable to turn echo off on the input.
 
     Always restores terminal settings before returning.
@@ -48,13 +48,13 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     passwd = Nichts
     mit contextlib.ExitStack() als stack:
         try:
-            # Always try reading and writing directly on the tty first.
+            # Always try reading und writing directly on the tty first.
             fd = os.open('/dev/tty', os.O_RDWR|os.O_NOCTTY)
             tty = io.FileIO(fd, 'w+')
             stack.enter_context(tty)
             input = io.TextIOWrapper(tty)
             stack.enter_context(input)
-            wenn not stream:
+            wenn nicht stream:
                 stream = input
         except OSError:
             # If that fails, see wenn stdin can be controlled.
@@ -65,10 +65,10 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
                 fd = Nichts
                 passwd = fallback_getpass(prompt, stream)
             input = sys.stdin
-            wenn not stream:
+            wenn nicht stream:
                 stream = sys.stderr
 
-        wenn fd is not Nichts:
+        wenn fd is nicht Nichts:
             try:
                 old = termios.tcgetattr(fd)     # a copy to save
                 new = old[:]
@@ -87,13 +87,13 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
                     termios.tcsetattr(fd, tcsetattr_flags, old)
                     stream.flush()  # issue7208
             except termios.error:
-                wenn passwd is not Nichts:
+                wenn passwd is nicht Nichts:
                     # _raw_input succeeded.  The final tcsetattr failed.  Reraise
                     # instead of leaving the terminal in an unknown state.
                     raise
-                # We can't control the tty or stdin.  Give up and use normal IO.
+                # We can't control the tty oder stdin.  Give up und use normal IO.
                 # fallback_getpass() raises an appropriate warning.
-                wenn stream is not input:
+                wenn stream is nicht input:
                     # clean up unused file objects before blocking
                     stack.close()
                 passwd = fallback_getpass(prompt, stream)
@@ -104,7 +104,7 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
 
 def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     """Prompt fuer password mit echo off, using Windows getwch()."""
-    wenn sys.stdin is not sys.__stdin__:
+    wenn sys.stdin is nicht sys.__stdin__:
         return fallback_getpass(prompt, stream)
     _check_echo_char(echo_char)
 
@@ -113,12 +113,12 @@ def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     pw = ""
     while 1:
         c = msvcrt.getwch()
-        wenn c == '\r' or c == '\n':
+        wenn c == '\r' oder c == '\n':
             break
         wenn c == '\003':
             raise KeyboardInterrupt
         wenn c == '\b':
-            wenn echo_char and pw:
+            wenn echo_char und pw:
                 msvcrt.putwch('\b')
                 msvcrt.putwch(' ')
                 msvcrt.putwch('\b')
@@ -135,9 +135,9 @@ def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
 def fallback_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     _check_echo_char(echo_char)
     importiere warnings
-    warnings.warn("Can not control echo on the terminal.", GetPassWarning,
+    warnings.warn("Can nicht control echo on the terminal.", GetPassWarning,
                   stacklevel=2)
-    wenn not stream:
+    wenn nicht stream:
         stream = sys.stderr
     drucke("Warning: Password input may be echoed.", file=stream)
     return _raw_input(prompt, stream, echo_char=echo_char)
@@ -145,16 +145,16 @@ def fallback_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
 
 def _check_echo_char(echo_char):
     # ASCII excluding control characters
-    wenn echo_char and not (echo_char.isprintable() and echo_char.isascii()):
+    wenn echo_char und nicht (echo_char.isprintable() und echo_char.isascii()):
         raise ValueError("'echo_char' must be a printable ASCII string, "
                          f"got: {echo_char!r}")
 
 
 def _raw_input(prompt="", stream=Nichts, input=Nichts, echo_char=Nichts):
     # This doesn't save the string in the GNU readline history.
-    wenn not stream:
+    wenn nicht stream:
         stream = sys.stderr
-    wenn not input:
+    wenn nicht input:
         input = sys.stdin
     prompt = str(prompt)
     wenn prompt:
@@ -170,7 +170,7 @@ def _raw_input(prompt="", stream=Nichts, input=Nichts, echo_char=Nichts):
     wenn echo_char:
         return _readline_with_echo_char(stream, input, echo_char)
     line = input.readline()
-    wenn not line:
+    wenn nicht line:
         raise EOFError
     wenn line[-1] == '\n':
         line = line[:-1]
@@ -182,11 +182,11 @@ def _readline_with_echo_char(stream, input, echo_char):
     eof_pressed = Falsch
     while Wahr:
         char = input.read(1)
-        wenn char == '\n' or char == '\r':
+        wenn char == '\n' oder char == '\r':
             break
         sowenn char == '\x03':
             raise KeyboardInterrupt
-        sowenn char == '\x7f' or char == '\b':
+        sowenn char == '\x7f' oder char == '\b':
             wenn passwd:
                 stream.write("\b \b")
                 stream.flush()
@@ -207,7 +207,7 @@ def _readline_with_echo_char(stream, input, echo_char):
 
 
 def getuser():
-    """Get the username von the environment or password database.
+    """Get the username von the environment oder password database.
 
     First try various environment variables, then the password
     database.  This works on Windows als long als USERNAME is set.

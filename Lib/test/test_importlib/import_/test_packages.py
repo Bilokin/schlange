@@ -48,7 +48,7 @@ klasse ParentModuleTests:
             mit util.import_state(meta_path=[mock]):
                 mit self.assertRaises((ZeroDivisionError, ImportError)):
                     # This raises ImportError on the "from . importiere module"
-                    # line, not sure why.
+                    # line, nicht sure why.
                     self.__import__('pkg')
                 self.assertNotIn('pkg', sys.modules)
                 mit self.assertRaises((ZeroDivisionError, ImportError)):
@@ -68,7 +68,7 @@ klasse ParentModuleTests:
             mit util.import_state(meta_path=[mock]):
                 mit self.assertRaises((ZeroDivisionError, ImportError)):
                     # This raises ImportError on the "from ..subpkg importiere module"
-                    # line, not sure why.
+                    # line, nicht sure why.
                     self.__import__('pkg.subpkg')
                 self.assertNotIn('pkg.subpkg', sys.modules)
                 mit self.assertRaises((ZeroDivisionError, ImportError)):
@@ -79,7 +79,7 @@ klasse ParentModuleTests:
 
     def test_module_not_package(self):
         # Try to importiere a submodule von a non-package should raise ImportError.
-        assert not hasattr(sys, '__path__')
+        assert nicht hasattr(sys, '__path__')
         mit self.assertRaises(ImportError) als cm:
             self.__import__('sys.no_submodules_here')
         self.assertEqual(cm.exception.name, 'sys.no_submodules_here')

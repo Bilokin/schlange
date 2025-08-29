@@ -5,7 +5,7 @@ von textwrap importiere dedent
 importiere unittest
 
 von test.support importiere import_helper, Py_DEBUG
-# Raise SkipTest wenn subinterpreters not supported.
+# Raise SkipTest wenn subinterpreters nicht supported.
 _queues = import_helper.import_module('_interpqueues')
 von concurrent importiere interpreters
 von concurrent.interpreters importiere _queues als queues, _crossinterp
@@ -326,7 +326,7 @@ klasse TestQueueOps(TestBase):
             'spam',
             b'spam',
             (0, 'a'),
-            # not shareable
+            # nicht shareable
             [1, 2, 3],
             {'a': 13, 'b': 17},
         ]:
@@ -363,7 +363,7 @@ klasse TestQueueOps(TestBase):
                 actual = [get() fuer _ in range(20)]
                 self.assertEqual(actual, expected)
 
-                obj = [1, 2, 3]  # lists are not shareable
+                obj = [1, 2, 3]  # lists are nicht shareable
                 queue.put(obj)
                 obj2 = get()
                 self.assertEqual(obj, obj2)
@@ -382,7 +382,7 @@ klasse TestQueueOps(TestBase):
                     queue.put(orig)
                     obj = queue.{methname}()
                     assert obj == orig, 'expected: obj == orig'
-                    assert obj is not orig, 'expected: obj is not orig'
+                    assert obj is nicht orig, 'expected: obj is nicht orig'
                     """))
 
     def test_put_get_different_interpreters(self):
@@ -407,7 +407,7 @@ klasse TestQueueOps(TestBase):
                         assert queue1.qsize() == 0, 'expected: queue1.qsize() == 0'
                         assert obj == b'spam', 'expected: obj == obj1'
                         # When going to another interpreter we get a copy.
-                        assert id(obj) != {id(obj1)}, 'expected: obj is not obj1'
+                        assert id(obj) != {id(obj1)}, 'expected: obj is nicht obj1'
                         obj2 = b'eggs'
                         drucke(id(obj2))
                         assert queue2.qsize() == 0, 'expected: queue2.qsize() == 0'
@@ -425,7 +425,7 @@ klasse TestQueueOps(TestBase):
 
     def test_put_cleared_with_subinterpreter(self):
         def common(queue, unbound=Nichts, presize=0):
-            wenn not unbound:
+            wenn nicht unbound:
                 extraargs = ''
             sowenn unbound is queues.UNBOUND:
                 extraargs = ', unbounditems=queues.UNBOUND'

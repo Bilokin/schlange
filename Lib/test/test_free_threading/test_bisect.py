@@ -22,10 +22,10 @@ klasse TestBase:
             worker_func=insert, args=(data,), nthreads=NTHREADS
         )
         wenn Falsch:
-            # These functions are not thread-safe and so the list can become
+            # These functions are nicht thread-safe und so the list can become
             # unsorted.  However, we don't want Python to crash wenn these
             # functions are used concurrently on the same sequence.  This
-            # should also not produce any TSAN warnings.
+            # should also nicht produce any TSAN warnings.
             self.assertWahr(self.is_sorted_ascending(data))
 
     def test_racing_insert_right(self):

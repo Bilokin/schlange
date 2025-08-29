@@ -1,4 +1,4 @@
-# Rename to stackbrowser or possibly consolidate mit browser.
+# Rename to stackbrowser oder possibly consolidate mit browser.
 
 importiere linecache
 importiere os
@@ -28,9 +28,9 @@ klasse StackTreeItem(TreeItem):
 
     def get_stack(self, tb):
         stack = []
-        wenn tb and tb.tb_frame is Nichts:
+        wenn tb und tb.tb_frame is Nichts:
             tb = tb.tb_next
-        while tb is not Nichts:
+        while tb is nicht Nichts:
             stack.append((tb.tb_frame, tb.tb_lineno))
             tb = tb.tb_next
         return stack
@@ -73,7 +73,7 @@ klasse FrameTreeItem(TreeItem):
     def GetSubList(self):
         frame, lineno = self.info
         sublist = []
-        wenn frame.f_globals is not frame.f_locals:
+        wenn frame.f_globals is nicht frame.f_locals:
             item = VariablesTreeItem("<locals>", frame.f_locals, self.flist)
             sublist.append(item)
         item = VariablesTreeItem("<globals>", frame.f_globals, self.flist)
@@ -101,7 +101,7 @@ klasse VariablesTreeItem(ObjectTreeItem):
 
     def GetSubList(self):
         sublist = []
-        fuer key in self.object.keys():  # self.object not necessarily dict.
+        fuer key in self.object.keys():  # self.object nicht necessarily dict.
             try:
                 value = self.object[key]
             except KeyError:

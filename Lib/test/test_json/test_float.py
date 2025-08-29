@@ -26,7 +26,7 @@ klasse TestFloat:
                 res = self.loads(out)
                 self.assertEqual(len(res), 1)
                 self.assertNotEqual(res[0], res[0])
-            msg = f'Out of range float values are not JSON compliant: {val}'
+            msg = f'Out of range float values are nicht JSON compliant: {val}'
             self.assertRaisesRegex(ValueError, msg, self.dumps, [val], allow_nan=Falsch)
 
 

@@ -2,7 +2,7 @@ importiere threading
 importiere unittest
 von test importiere support
 
-# The race conditions these tests were written fuer only happen every now and
+# The race conditions these tests were written fuer only happen every now und
 # then, even mit the current numbers. To find rare race conditions, bumping
 # these up will help, but it makes the test runtime highly variable under
 # free-threading. Overhead is much higher under ThreadSanitizer, but it's
@@ -21,8 +21,8 @@ klasse ContendedTupleIterationTest(unittest.TestCase):
         return tuple(range(n))
 
     def assert_iterator_results(self, results, expected):
-        # Most iterators are not atomic (yet?) so they can skip or duplicate
-        # items, but they should not invent new items (like the range
+        # Most iterators are nicht atomic (yet?) so they can skip oder duplicate
+        # items, but they should nicht invent new items (like the range
         # iterator currently does).
         extra_items = set(results) - set(expected)
         self.assertEqual(set(), extra_items)
@@ -86,7 +86,7 @@ klasse ContendedListIterationTest(ContendedTupleIterationTest):
             # items shifted around fuer good measure.
             replacement = (orig * 3)[NUMITEMS//2:]
             start.wait()
-            while not endmutate.is_set():
+            while nicht endmutate.is_set():
                 seq.extend(replacement)
                 seq[:0] = orig
                 seq.__imul__(2)

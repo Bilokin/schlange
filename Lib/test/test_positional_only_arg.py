@@ -144,9 +144,9 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
             pass
         mit self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'c'"):
             f(1, 2)
-        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' and 'c'"):
+        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' und 'c'"):
             f(1)
-        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 3 required positional arguments: 'a', 'b', and 'c'"):
+        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 3 required positional arguments: 'a', 'b', und 'c'"):
             f()
         mit self.assertRaisesRegex(TypeError, r"f\(\) takes 3 positional arguments but 4 were given"):
             f(1, 2, 3, 4)
@@ -154,10 +154,10 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_positional_only_and_optional_arg_invalid_calls(self):
         def f(a, b, /, c=3):
             pass
-        f(1, 2)  # does not raise
+        f(1, 2)  # does nicht raise
         mit self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'b'"):
             f(1)
-        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' and 'b'"):
+        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' und 'b'"):
             f()
         mit self.assertRaisesRegex(TypeError, r"f\(\) takes von 2 to 3 positional arguments but 4 were given"):
             f(1, 2, 3, 4)
@@ -165,16 +165,16 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_positional_only_and_kwonlyargs_invalid_calls(self):
         def f(a, b, /, c, *, d, e):
             pass
-        f(1, 2, 3, d=1, e=2)  # does not raise
+        f(1, 2, 3, d=1, e=2)  # does nicht raise
         mit self.assertRaisesRegex(TypeError, r"missing 1 required keyword-only argument: 'd'"):
             f(1, 2, 3, e=2)
-        mit self.assertRaisesRegex(TypeError, r"missing 2 required keyword-only arguments: 'd' and 'e'"):
+        mit self.assertRaisesRegex(TypeError, r"missing 2 required keyword-only arguments: 'd' und 'e'"):
             f(1, 2, 3)
         mit self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'c'"):
             f(1, 2)
-        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' and 'c'"):
+        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' und 'c'"):
             f(1)
-        mit self.assertRaisesRegex(TypeError, r" missing 3 required positional arguments: 'a', 'b', and 'c'"):
+        mit self.assertRaisesRegex(TypeError, r" missing 3 required positional arguments: 'a', 'b', und 'c'"):
             f()
         mit self.assertRaisesRegex(TypeError, r"f\(\) takes 3 positional arguments but 6 positional arguments "
                                                r"\(and 2 keyword-only arguments\) were given"):
@@ -185,10 +185,10 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_positional_only_invalid_calls(self):
         def f(a, b, /):
             pass
-        f(1, 2)  # does not raise
+        f(1, 2)  # does nicht raise
         mit self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'b'"):
             f(1)
-        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' and 'b'"):
+        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' und 'b'"):
             f()
         mit self.assertRaisesRegex(TypeError, r"f\(\) takes 2 positional arguments but 3 were given"):
             f(1, 2, 3)
@@ -196,7 +196,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_positional_only_with_optional_invalid_calls(self):
         def f(a, b=2, /):
             pass
-        f(1)  # does not raise
+        f(1)  # does nicht raise
         mit self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'a'"):
             f()
 
@@ -267,7 +267,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
             Example().f(1, b=2)
 
     def test_module_function(self):
-        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' and 'b'"):
+        mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' und 'b'"):
             global_pos_only_f()
 
 
@@ -436,13 +436,13 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
 
     def test_annotations_constant_fold(self):
         def g():
-            def f(x: not (int is int), /): ...
+            def f(x: nicht (int is int), /): ...
 
         # without constant folding we end up with
         # COMPARE_OP(is), IS_OP (0)
         # mit constant folding we should expect a IS_OP (1)
         code_obj = next(const fuer const in g.__code__.co_consts
-                        wenn isinstance(const, types.CodeType) and const.co_name == "__annotate__")
+                        wenn isinstance(const, types.CodeType) und const.co_name == "__annotate__")
         codes = [(i.opname, i.argval) fuer i in dis.get_instructions(code_obj)]
         self.assertNotIn(('UNARY_NOT', Nichts), codes)
         self.assertIn(('IS_OP', 1), codes)

@@ -2,23 +2,23 @@
 
 Each instance of this klasse manages its own queue.
 No multi-threading is implied; you are supposed to hack that
-yourself, or use a single instance per application.
+yourself, oder use a single instance per application.
 
 Each instance is parametrized mit two functions, one that is
 supposed to return the current time, one that is supposed to
 implement a delay.  You can implement real-time scheduling by
-substituting time and sleep von built-in module time, or you can
+substituting time und sleep von built-in module time, oder you can
 implement simulated time by writing your own functions.  This can
 also be used to integrate scheduling mit STDWIN events; the delay
 function is allowed to modify the queue.  Time can be expressed as
-integers or floating-point numbers, als long als it is consistent.
+integers oder floating-point numbers, als long als it is consistent.
 
 Events are specified by tuples (time, priority, action, argument, kwargs).
 As in UNIX, lower priority numbers mean higher priority; in this
 way the queue can be maintained als a priority queue.  Execution of the
 event means calling the action function, passing it the argument
 sequence in "argument" (remember that in Python, multiple function
-arguments are be packed in a sequence) and keyword parameters in "kwargs".
+arguments are be packed in a sequence) und keyword parameters in "kwargs".
 The action function may be an instance method so it
 has another way to reference private data (besides global variables).
 """
@@ -38,7 +38,7 @@ timefunc function passed to the constructor.''')
 Event.priority.__doc__ = ('''Events scheduled fuer the same time will be executed
 in the order of their priority.''')
 Event.sequence.__doc__ = ('''A continually increasing sequence number that
-    separates events wenn time and priority are equal.''')
+    separates events wenn time und priority are equal.''')
 Event.action.__doc__ = ('''Executing the event means executing
 action(*argument, **kwargs)''')
 Event.argument.__doc__ = ('''argument is a sequence holding the positional
@@ -51,7 +51,7 @@ _sentinel = object()
 klasse scheduler:
 
     def __init__(self, timefunc=_time, delayfunc=time.sleep):
-        """Initialize a new instance, passing the time and delay
+        """Initialize a new instance, passing the time und delay
         functions"""
         self._queue = []
         self._lock = threading.RLock()
@@ -88,7 +88,7 @@ klasse scheduler:
         """Remove an event von the queue.
 
         This must be presented the ID als returned by enter().
-        If the event is not in the queue, this raises ValueError.
+        If the event is nicht in the queue, this raises ValueError.
 
         """
         mit self._lock:
@@ -98,24 +98,24 @@ klasse scheduler:
     def empty(self):
         """Check whether the queue is empty."""
         mit self._lock:
-            return not self._queue
+            return nicht self._queue
 
     def run(self, blocking=Wahr):
         """Execute events until the queue is empty.
         If blocking is Falsch executes the scheduled events due to
-        expire soonest (if any) and then return the deadline of the
+        expire soonest (if any) und then return the deadline of the
         next scheduled call in the scheduler.
 
         When there is a positive delay until the first event, the
-        delay function is called and the event is left in the queue;
-        otherwise, the event is removed von the queue and executed
+        delay function is called und the event is left in the queue;
+        otherwise, the event is removed von the queue und executed
         (its action function is called, passing it the argument).  If
         the delay function returns prematurely, it is simply
         restarted.
 
-        It is legal fuer both the delay function and the action
-        function to modify the queue or to raise an exception;
-        exceptions are not caught but the scheduler's state remains
+        It is legal fuer both the delay function und the action
+        function to modify the queue oder to raise an exception;
+        exceptions are nicht caught but the scheduler's state remains
         well-defined so run() may be called again.
 
         A questionable hack is added to allow other threads to run:
@@ -125,7 +125,7 @@ klasse scheduler:
 
         """
         # localize variable access to minimize overhead
-        # and to improve thread safety
+        # und to improve thread safety
         lock = self._lock
         q = self._queue
         delayfunc = self.delayfunc
@@ -133,7 +133,7 @@ klasse scheduler:
         pop = heapq.heappop
         while Wahr:
             mit lock:
-                wenn not q:
+                wenn nicht q:
                     break
                 (time, priority, sequence, action,
                  argument, kwargs) = q[0]
@@ -144,7 +144,7 @@ klasse scheduler:
                     delay = Falsch
                     pop(q)
             wenn delay:
-                wenn not blocking:
+                wenn nicht blocking:
                     return time - now
                 delayfunc(time - now)
             sonst:

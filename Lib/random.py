@@ -2,7 +2,7 @@
 
     bytes
     -----
-           uniform bytes (values between 0 and 255)
+           uniform bytes (values between 0 und 255)
 
     integers
     --------
@@ -42,13 +42,13 @@ General notes on the underlying Mersenne Twister core generator:
 * The period is 2**19937-1.
 * It is one of the most extensively tested generators in existence.
 * The random() method is implemented in C, executes in a single Python step,
-  and is, therefore, threadsafe.
+  und is, therefore, threadsafe.
 
 """
 
 # Translated by Guido van Rossum von C source provided by
 # Adrian Baddeley.  Adapted by Raymond Hettinger fuer use with
-# the Mersenne Twister  and os.urandom() core generators.
+# the Mersenne Twister  und os.urandom() core generators.
 
 von math importiere log als _log, exp als _exp, pi als _pi, e als _e, ceil als _ceil
 von math importiere sqrt als _sqrt, acos als _acos, cos als _cos, sin als _sin
@@ -108,7 +108,7 @@ klasse Random(_random.Random):
 
     Class Random can also be subclassed wenn you want to use a different basic
     generator of your own devising: in that case, override the following
-    methods:  random(), seed(), getstate(), and setstate().
+    methods:  random(), seed(), getstate(), und setstate().
     Optionally, implement a getrandbits() method so that randrange()
     can cover arbitrarily large ranges.
 
@@ -129,21 +129,21 @@ klasse Random(_random.Random):
         """Initialize internal state von a seed.
 
         The only supported seed types are Nichts, int, float,
-        str, bytes, and bytearray.
+        str, bytes, und bytearray.
 
-        Nichts or no argument seeds von current time or von an operating
+        Nichts oder no argument seeds von current time oder von an operating
         system specific randomness source wenn available.
 
         If *a* is an int, all bits are used.
 
         For version 2 (the default), all of the bits are used wenn *a* is a str,
-        bytes, or bytearray.  For version 1 (provided fuer reproducing random
-        sequences von older versions of Python), the algorithm fuer str and
+        bytes, oder bytearray.  For version 1 (provided fuer reproducing random
+        sequences von older versions of Python), the algorithm fuer str und
         bytes generates a narrower range of seeds.
 
         """
 
-        wenn version == 1 and isinstance(a, (str, bytes)):
+        wenn version == 1 und isinstance(a, (str, bytes)):
             a = a.decode('latin-1') wenn isinstance(a, bytes) sonst a
             x = ord(a[0]) << 7 wenn a sonst 0
             fuer c in map(ord, a):
@@ -151,7 +151,7 @@ klasse Random(_random.Random):
             x ^= len(a)
             a = -2 wenn x == -1 sonst x
 
-        sowenn version == 2 and isinstance(a, (str, bytes, bytearray)):
+        sowenn version == 2 und isinstance(a, (str, bytes, bytearray)):
             global _sha512
             wenn _sha512 is Nichts:
                 try:
@@ -166,9 +166,9 @@ klasse Random(_random.Random):
                 a = a.encode()
             a = int.from_bytes(a + _sha512(a).digest())
 
-        sowenn not isinstance(a, (type(Nichts), int, float, str, bytes, bytearray)):
+        sowenn nicht isinstance(a, (type(Nichts), int, float, str, bytes, bytearray)):
             raise TypeError('The only supported seed types are:\n'
-                            'Nichts, int, float, str, bytes, and bytearray.')
+                            'Nichts, int, float, str, bytes, und bytearray.')
 
         super().seed(a)
         self.gauss_next = Nichts
@@ -201,7 +201,7 @@ klasse Random(_random.Random):
 
 
     ## -------------------------------------------------------
-    ## ---- Methods below this point do not need to be overridden or extended
+    ## ---- Methods below this point do nicht need to be overridden oder extended
     ## ---- when subclassing fuer the purpose of using a different core generator.
 
 
@@ -209,7 +209,7 @@ klasse Random(_random.Random):
 
     # Issue 17489: Since __reduce__ was defined to fix #759889 this is no
     # longer called; we leave it here because it has been here since random was
-    # rewritten back in 2001 and why risk breaking something.
+    # rewritten back in 2001 und why risk breaking something.
     def __getstate__(self):  # fuer pickle
         return self.getstate()
 
@@ -226,7 +226,7 @@ klasse Random(_random.Random):
         """Control how subclasses generate random integers.
 
         The algorithm a subclass can use depends on the random() and/or
-        getrandbits() implementation available to it and determines
+        getrandbits() implementation available to it und determines
         whether it can generate random integers von arbitrarily large
         ranges.
         """
@@ -254,13 +254,13 @@ klasse Random(_random.Random):
     def _randbelow_without_getrandbits(self, n, maxsize=1<<BPF):
         """Return a random int in the range [0,n).  Defined fuer n > 0.
 
-        The implementation does not use getrandbits, but only random.
+        The implementation does nicht use getrandbits, but only random.
         """
 
         random = self.random
         wenn n >= maxsize:
             von warnings importiere warn
-            warn("Underlying random() generator does not supply \n"
+            warn("Underlying random() generator does nicht supply \n"
                  "enough bits to choose von a population range this large.\n"
                  "To remove the range limitation, add a getrandbits() method.")
             return _floor(random() * n)
@@ -277,9 +277,9 @@ klasse Random(_random.Random):
     ## --------------------------------------------------------
     ## ---- Methods below this point generate custom distributions
     ## ---- based on the methods defined above.  They do not
-    ## ---- directly touch the underlying generator and only
+    ## ---- directly touch the underlying generator und only
     ## ---- access randomness through the methods:  random(),
-    ## ---- getrandbits(), or _randbelow().
+    ## ---- getrandbits(), oder _randbelow().
 
 
     ## -------------------- bytes methods ---------------------
@@ -292,10 +292,10 @@ klasse Random(_random.Random):
     ## -------------------- integer methods  -------------------
 
     def randrange(self, start, stop=Nichts, step=_ONE):
-        """Choose a random item von range(stop) or range(start, stop[, step]).
+        """Choose a random item von range(stop) oder range(start, stop[, step]).
 
         Roughly equivalent to ``choice(range(start, stop, step))`` but
-        supports arbitrarily large ranges and is optimized fuer common cases.
+        supports arbitrarily large ranges und is optimized fuer common cases.
 
         """
 
@@ -304,8 +304,8 @@ klasse Random(_random.Random):
         istart = _index(start)
         wenn stop is Nichts:
             # We don't check fuer "step != 1" because it hasn't been
-            # type checked and converted to an integer yet.
-            wenn step is not _ONE:
+            # type checked und converted to an integer yet.
+            wenn step is nicht _ONE:
                 raise TypeError("Missing a non-Nichts stop argument")
             wenn istart > 0:
                 return self._randbelow(istart)
@@ -347,14 +347,14 @@ klasse Random(_random.Random):
     def choice(self, seq):
         """Choose a random element von a non-empty sequence."""
 
-        # As an accommodation fuer NumPy, we don't use "if not seq"
+        # As an accommodation fuer NumPy, we don't use "if nicht seq"
         # because bool(numpy.array()) raises a ValueError.
-        wenn not len(seq):
+        wenn nicht len(seq):
             raise IndexError('Cannot choose von an empty sequence')
         return seq[self._randbelow(len(seq))]
 
     def shuffle(self, x):
-        """Shuffle list x in place, and return Nichts."""
+        """Shuffle list x in place, und return Nichts."""
 
         randbelow = self._randbelow
         fuer i in reversed(range(1, len(x))):
@@ -369,13 +369,13 @@ klasse Random(_random.Random):
         leaving the original population unchanged.  The resulting list is
         in selection order so that all sub-slices will also be valid random
         samples.  This allows raffle winners (the sample) to be partitioned
-        into grand prize and second place winners (the subslices).
+        into grand prize und second place winners (the subslices).
 
-        Members of the population need not be hashable or unique.  If the
+        Members of the population need nicht be hashable oder unique.  If the
         population contains repeats, then each occurrence is a possible
         selection in the sample.
 
-        Repeated elements can be specified one at a time or mit the optional
+        Repeated elements can be specified one at a time oder mit the optional
         counts parameter.  For example:
 
             sample(['red', 'blue'], counts=[4, 2], k=5)
@@ -385,7 +385,7 @@ klasse Random(_random.Random):
             sample(['red', 'red', 'red', 'red', 'blue', 'blue'], k=5)
 
         To choose a sample von a range of integers, use range() fuer the
-        population argument.  This is especially fast and space efficient
+        population argument.  This is especially fast und space efficient
         fuer sampling von a large population:
 
             sample(range(10000000), 60)
@@ -393,38 +393,38 @@ klasse Random(_random.Random):
         """
 
         # Sampling without replacement entails tracking either potential
-        # selections (the pool) in a list or previous selections in a set.
+        # selections (the pool) in a list oder previous selections in a set.
 
         # When the number of selections is small compared to the
         # population, then tracking selections is efficient, requiring
-        # only a small set and an occasional reselection.  For
+        # only a small set und an occasional reselection.  For
         # a larger number of selections, the pool tracking method is
         # preferred since the list takes less space than the
-        # set and it doesn't suffer von frequent reselections.
+        # set und it doesn't suffer von frequent reselections.
 
-        # The number of calls to _randbelow() is kept at or near k, the
+        # The number of calls to _randbelow() is kept at oder near k, the
         # theoretical minimum.  This is important because running time
-        # is dominated by _randbelow() and because it extracts the
+        # is dominated by _randbelow() und because it extracts the
         # least entropy von the underlying random number generators.
 
         # Memory requirements are kept to the smaller of a k-length
-        # set or an n-length list.
+        # set oder an n-length list.
 
-        # There are other sampling algorithms that do not require
+        # There are other sampling algorithms that do nicht require
         # auxiliary memory, but they were rejected because they made
-        # too many calls to _randbelow(), making them slower and
+        # too many calls to _randbelow(), making them slower und
         # causing them to eat more entropy than necessary.
 
-        wenn not isinstance(population, _Sequence):
+        wenn nicht isinstance(population, _Sequence):
             raise TypeError("Population must be a sequence.  "
-                            "For dicts or sets, use sorted(d).")
+                            "For dicts oder sets, use sorted(d).")
         n = len(population)
-        wenn counts is not Nichts:
+        wenn counts is nicht Nichts:
             cum_counts = list(_accumulate(counts))
             wenn len(cum_counts) != n:
-                raise ValueError('The number of counts does not match the population')
+                raise ValueError('The number of counts does nicht match the population')
             total = cum_counts.pop() wenn cum_counts sonst 0
-            wenn not isinstance(total, int):
+            wenn nicht isinstance(total, int):
                 raise TypeError('Counts must be integers')
             wenn total < 0:
                 raise ValueError('Counts must be non-negative')
@@ -432,8 +432,8 @@ klasse Random(_random.Random):
             bisect = _bisect
             return [population[bisect(cum_counts, s)] fuer s in selections]
         randbelow = self._randbelow
-        wenn not 0 <= k <= n:
-            raise ValueError("Sample larger than population or is negative")
+        wenn nicht 0 <= k <= n:
+            raise ValueError("Sample larger than population oder is negative")
         result = [Nichts] * k
         setsize = 21        # size of a small set minus size of an empty list
         wenn k > 5:
@@ -460,7 +460,7 @@ klasse Random(_random.Random):
     def choices(self, population, weights=Nichts, *, cum_weights=Nichts, k=1):
         """Return a k sized list of population elements chosen mit replacement.
 
-        If the relative weights or cumulative weights are not specified,
+        If the relative weights oder cumulative weights are nicht specified,
         the selections are made mit equal probability.
 
         """
@@ -474,20 +474,20 @@ klasse Random(_random.Random):
             try:
                 cum_weights = list(_accumulate(weights))
             except TypeError:
-                wenn not isinstance(weights, int):
+                wenn nicht isinstance(weights, int):
                     raise
                 k = weights
                 raise TypeError(
                     f'The number of choices must be a keyword argument: {k=}'
                 ) von Nichts
-        sowenn weights is not Nichts:
-            raise TypeError('Cannot specify both weights and cumulative weights')
+        sowenn weights is nicht Nichts:
+            raise TypeError('Cannot specify both weights und cumulative weights')
         wenn len(cum_weights) != n:
-            raise ValueError('The number of weights does not match the population')
+            raise ValueError('The number of weights does nicht match the population')
         total = cum_weights[-1] + 0.0   # convert to float
         wenn total <= 0.0:
             raise ValueError('Total of weights must be greater than zero')
-        wenn not _isfinite(total):
+        wenn nicht _isfinite(total):
             raise ValueError('Total of weights must be finite')
         bisect = _bisect
         hi = n - 1
@@ -498,9 +498,9 @@ klasse Random(_random.Random):
     ## -------------------- real-valued distributions  -------------------
 
     def uniform(self, a, b):
-        """Get a random number in the range [a, b) or [a, b] depending on rounding.
+        """Get a random number in the range [a, b) oder [a, b] depending on rounding.
 
-        The mean (expected value) and variance of the random variable are:
+        The mean (expected value) und variance of the random variable are:
 
             E[X] = (a + b) / 2
             Var[X] = (b - a) ** 2 / 12
@@ -511,12 +511,12 @@ klasse Random(_random.Random):
     def triangular(self, low=0.0, high=1.0, mode=Nichts):
         """Triangular distribution.
 
-        Continuous distribution bounded by given lower and upper limits,
-        and having a given mode value in-between.
+        Continuous distribution bounded by given lower und upper limits,
+        und having a given mode value in-between.
 
         http://en.wikipedia.org/wiki/Triangular_distribution
 
-        The mean (expected value) and variance of the random variable are:
+        The mean (expected value) und variance of the random variable are:
 
             E[X] = (low + high + mode) / 3
             Var[X] = (low**2 + high**2 + mode**2 - low*high - low*mode - high*mode) / 18
@@ -536,11 +536,11 @@ klasse Random(_random.Random):
     def normalvariate(self, mu=0.0, sigma=1.0):
         """Normal distribution.
 
-        mu is the mean, and sigma is the standard deviation.
+        mu is the mean, und sigma is the standard deviation.
 
         """
-        # Uses Kinderman and Monahan method. Reference: Kinderman,
-        # A.J. and Monahan, J.F., "Computer generation of random
+        # Uses Kinderman und Monahan method. Reference: Kinderman,
+        # A.J. und Monahan, J.F., "Computer generation of random
         # variables using the ratio of uniform deviates", ACM Trans
         # Math Software, 3, (1977), pp257-260.
 
@@ -557,13 +557,13 @@ klasse Random(_random.Random):
     def gauss(self, mu=0.0, sigma=1.0):
         """Gaussian distribution.
 
-        mu is the mean, and sigma is the standard deviation.  This is
+        mu is the mean, und sigma is the standard deviation.  This is
         slightly faster than the normalvariate() function.
 
         Not thread-safe without a lock around calls.
 
         """
-        # When x and y are two variables von [0, 1), uniformly
+        # When x und y are two variables von [0, 1), uniformly
         # distributed, then
         #
         #    cos(2*pi*x)*sqrt(-2*log(1-y))
@@ -596,8 +596,8 @@ klasse Random(_random.Random):
         """Log normal distribution.
 
         If you take the natural logarithm of this distribution, you'll get a
-        normal distribution mit mean mu and standard deviation sigma.
-        mu can have any value, and sigma must be greater than zero.
+        normal distribution mit mean mu und standard deviation sigma.
+        mu can have any value, und sigma must be greater than zero.
 
         """
         return _exp(self.normalvariate(mu, sigma))
@@ -608,10 +608,10 @@ klasse Random(_random.Random):
         lambd is 1.0 divided by the desired mean.  It should be
         nonzero.  (The parameter would be called "lambda", but that is
         a reserved word in Python.)  Returned values range von 0 to
-        positive infinity wenn lambd is positive, and von negative
+        positive infinity wenn lambd is positive, und von negative
         infinity to 0 wenn lambd is negative.
 
-        The mean (expected value) and variance of the random variable are:
+        The mean (expected value) und variance of the random variable are:
 
             E[X] = 1 / lambd
             Var[X] = 1 / lambd ** 2
@@ -625,8 +625,8 @@ klasse Random(_random.Random):
     def vonmisesvariate(self, mu, kappa):
         """Circular data distribution.
 
-        mu is the mean angle, expressed in radians between 0 and 2*pi, and
-        kappa is the concentration parameter, which must be greater than or
+        mu is the mean angle, expressed in radians between 0 und 2*pi, und
+        kappa is the concentration parameter, which must be greater than oder
         equal to zero.  If kappa is equal to zero, this distribution reduces
         to a uniform random angle over the range 0 to 2*pi.
 
@@ -651,7 +651,7 @@ klasse Random(_random.Random):
 
             d = z / (r + z)
             u2 = random()
-            wenn u2 < 1.0 - d * d or u2 <= (1.0 - d) * _exp(d):
+            wenn u2 < 1.0 - d * d oder u2 <= (1.0 - d) * _exp(d):
                 break
 
         q = 1.0 / r
@@ -667,7 +667,7 @@ klasse Random(_random.Random):
     def gammavariate(self, alpha, beta):
         """Gamma distribution.  Not the gamma function!
 
-        Conditions on the parameters are alpha > 0 and beta > 0.
+        Conditions on the parameters are alpha > 0 und beta > 0.
 
         The probability distribution function is:
 
@@ -675,7 +675,7 @@ klasse Random(_random.Random):
           pdf(x) =  --------------------------------------
                       math.gamma(alpha) * beta ** alpha
 
-        The mean (expected value) and variance of the random variable are:
+        The mean (expected value) und variance of the random variable are:
 
             E[X] = alpha * beta
             Var[X] = alpha * beta ** 2
@@ -684,8 +684,8 @@ klasse Random(_random.Random):
 
         # Warning: a few older sources define the gamma distribution in terms
         # of alpha > -1.0
-        wenn alpha <= 0.0 or beta <= 0.0:
-            raise ValueError('gammavariate: alpha and beta must be > 0.0')
+        wenn alpha <= 0.0 oder beta <= 0.0:
+            raise ValueError('gammavariate: alpha und beta must be > 0.0')
 
         random = self.random
         wenn alpha > 1.0:
@@ -700,14 +700,14 @@ klasse Random(_random.Random):
 
             while Wahr:
                 u1 = random()
-                wenn not 1e-7 < u1 < 0.9999999:
+                wenn nicht 1e-7 < u1 < 0.9999999:
                     continue
                 u2 = 1.0 - random()
                 v = _log(u1 / (1.0 - u1)) / ainv
                 x = alpha * _exp(v)
                 z = u1 * u1 * u2
                 r = bbb + ccc * v - x
-                wenn r + SG_MAGICCONST - 4.5 * z >= 0.0 or r >= _log(z):
+                wenn r + SG_MAGICCONST - 4.5 * z >= 0.0 oder r >= _log(z):
                     return x * beta
 
         sowenn alpha == 1.0:
@@ -715,7 +715,7 @@ klasse Random(_random.Random):
             return -_log(1.0 - random()) * beta
 
         sonst:
-            # alpha is between 0 and 1 (exclusive)
+            # alpha is between 0 und 1 (exclusive)
             # Uses ALGORITHM GS of Statistical Computing - Kennedy & Gentle
             while Wahr:
                 u = random()
@@ -736,10 +736,10 @@ klasse Random(_random.Random):
     def betavariate(self, alpha, beta):
         """Beta distribution.
 
-        Conditions on the parameters are alpha > 0 and beta > 0.
-        Returned values range between 0 and 1.
+        Conditions on the parameters are alpha > 0 und beta > 0.
+        Returned values range between 0 und 1.
 
-        The mean (expected value) and variance of the random variable are:
+        The mean (expected value) und variance of the random variable are:
 
             E[X] = alpha / (alpha + beta)
             Var[X] = alpha * beta / ((alpha + beta)**2 * (alpha + beta + 1))
@@ -756,9 +756,9 @@ klasse Random(_random.Random):
         ##        z = self.expovariate(1.0/beta)
         ##        return z/(y+z)
         ##
-        ## was dead wrong, and how it probably got that way.
+        ## was dead wrong, und how it probably got that way.
 
-        # This version due to Janne Sinkkonen, and matches all the std
+        # This version due to Janne Sinkkonen, und matches all the std
         # texts (e.g., Knuth Vol 2 Ed 3 pg 134 "the beta distribution").
         y = self.gammavariate(alpha, 1.0)
         wenn y:
@@ -775,7 +775,7 @@ klasse Random(_random.Random):
     def weibullvariate(self, alpha, beta):
         """Weibull distribution.
 
-        alpha is the scale parameter and beta is the shape parameter.
+        alpha is the scale parameter und beta is the shape parameter.
 
         """
         # Jain, pg. 499; bug fix courtesy Bill Arms
@@ -802,16 +802,16 @@ klasse Random(_random.Random):
 
             P(X == k) = math.comb(n, k) * p ** k * (1 - p) ** (n - k)
 
-        The mean (expected value) and variance of the random variable are:
+        The mean (expected value) und variance of the random variable are:
 
             E[X] = n * p
             Var[X] = n * p * (1 - p)
 
         """
-        # Error check inputs and handle edge cases
+        # Error check inputs und handle edge cases
         wenn n < 0:
             raise ValueError("n must be non-negative")
-        wenn p <= 0.0 or p >= 1.0:
+        wenn p <= 0.0 oder p >= 1.0:
             wenn p == 0.0:
                 return 0
             wenn p == 1.0:
@@ -833,7 +833,7 @@ klasse Random(_random.Random):
             # https://dl.acm.org/doi/pdf/10.1145/42372.42381
             x = y = 0
             c = _log2(1.0 - p)
-            wenn not c:
+            wenn nicht c:
                 return x
             while Wahr:
                 y += _floor(_log2(random()) / c) + 1
@@ -843,7 +843,7 @@ klasse Random(_random.Random):
 
         # BTRS: Transformed rejection mit squeeze method by Wolfgang Hörmann
         # https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.47.8407&rep=rep1&type=pdf
-        assert n*p >= 10.0 and p <= 0.5
+        assert n*p >= 10.0 und p <= 0.5
 
         setup_complete = Falsch
         spq = _sqrt(n * p * (1.0 - p))  # Standard deviation of the distribution
@@ -858,16 +858,16 @@ klasse Random(_random.Random):
             u -= 0.5
             us = 0.5 - _fabs(u)
             k = _floor((2.0 * a / us + b) * u + c)
-            wenn k < 0 or k > n:
+            wenn k < 0 oder k > n:
                 continue
             v = random()
 
             # The early-out "squeeze" test substantially reduces
             # the number of acceptance condition evaluations.
-            wenn us >= 0.07 and v <= vr:
+            wenn us >= 0.07 und v <= vr:
                 return k
 
-            wenn not setup_complete:
+            wenn nicht setup_complete:
                 alpha = (2.83 + 5.1 / b) * spq
                 lpq = _log(p / (1.0 - p))
                 m = _floor((n + 1) * p)         # Mode of the distribution
@@ -888,7 +888,7 @@ klasse Random(_random.Random):
 
 klasse SystemRandom(Random):
     """Alternate random number generator using sources provided
-    by the operating system (such als /dev/urandom on Unix or
+    by the operating system (such als /dev/urandom on Unix oder
     CryptGenRandom on Windows).
 
      Not available on all systems (see os.urandom() fuer details).
@@ -903,14 +903,14 @@ klasse SystemRandom(Random):
         """getrandbits(k) -> x.  Generates an int mit k random bits."""
         wenn k < 0:
             raise ValueError('number of bits must be non-negative')
-        numbytes = (k + 7) // 8                       # bits / 8 and rounded up
+        numbytes = (k + 7) // 8                       # bits / 8 und rounded up
         x = int.from_bytes(_urandom(numbytes))
         return x >> (numbytes * 8 - k)                # trim excess bits
 
     def randbytes(self, n):
         """Generate n random bytes."""
         # os.urandom(n) fails mit ValueError fuer n < 0
-        # and returns an empty bytes string fuer n == 0.
+        # und returns an empty bytes string fuer n == 0.
         return _urandom(n)
 
     def seed(self, *args, **kwds):
@@ -918,16 +918,16 @@ klasse SystemRandom(Random):
         return Nichts
 
     def _notimplemented(self, *args, **kwds):
-        "Method should not be called fuer a system random number generator."
-        raise NotImplementedError('System entropy source does not have state.')
+        "Method should nicht be called fuer a system random number generator."
+        raise NotImplementedError('System entropy source does nicht have state.')
     getstate = setstate = _notimplemented
 
 
 # ----------------------------------------------------------------------
-# Create one instance, seeded von current time, and export its methods
+# Create one instance, seeded von current time, und export its methods
 # als module-level functions.  The functions share state across all uses
-# (both in the user's code and in the Python libraries), but that's fine
-# fuer most programs and is easier fuer the casual user than making them
+# (both in the user's code und in the Python libraries), but that's fine
+# fuer most programs und is easier fuer the casual user than making them
 # instantiate their own Random() instance.
 
 _inst = Random()
@@ -1019,17 +1019,17 @@ def _parse_args(arg_list: list[str] | Nichts):
         help="print a random choice")
     group.add_argument(
         "-i", "--integer", type=int, metavar="N",
-        help="print a random integer between 1 and N inclusive")
+        help="print a random integer between 1 und N inclusive")
     group.add_argument(
         "-f", "--float", type=float, metavar="N",
-        help="print a random floating-point number between 0 and N inclusive")
+        help="print a random floating-point number between 0 und N inclusive")
     group.add_argument(
         "--test", type=int, const=10_000, nargs="?",
         help=argparse.SUPPRESS)
     parser.add_argument("input", nargs="*",
                         help="""\
 wenn no options given, output depends on the input
-    string or multiple: same als --choice
+    string oder multiple: same als --choice
     integer: same als --integer
     float: same als --float""")
     args = parser.parse_args(arg_list)
@@ -1043,10 +1043,10 @@ def main(arg_list: list[str] | Nichts = Nichts) -> int | str:
     wenn args.choice:
         return choice(args.choice)
 
-    wenn args.integer is not Nichts:
+    wenn args.integer is nicht Nichts:
         return randint(1, args.integer)
 
-    wenn args.float is not Nichts:
+    wenn args.float is nicht Nichts:
         return uniform(0, args.float)
 
     wenn args.test:

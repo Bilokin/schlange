@@ -38,7 +38,7 @@ von pegen.grammar importiere (
     StringLeaf,
 )
 
-# Keywords and soft keywords are listed at the end of the parser definition.
+# Keywords und soft keywords are listed at the end of the parser definition.
 klasse GeneratedParser(Parser):
 
     @memoize
@@ -587,7 +587,7 @@ klasse GeneratedParser(Parser):
             and
             (literal_1 := self.expect("}"))
         ):
-            return "{" + ( atoms or "" ) + "}"
+            return "{" + ( atoms oder "" ) + "}"
         self._reset(mark)
         wenn cut: return Nichts
         cut = Falsch
@@ -600,7 +600,7 @@ klasse GeneratedParser(Parser):
             and
             (literal_1 := self.expect("]"))
         ):
-            return "[" + ( atoms or "" ) + "]"
+            return "[" + ( atoms oder "" ) + "]"
         self._reset(mark)
         wenn cut: return Nichts
         wenn (

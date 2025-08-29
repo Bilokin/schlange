@@ -40,7 +40,7 @@ klasse HashCountingInt(int):
         return int.__hash__(self)
 
 klasse TestJointOps:
-    # Tests common to both set and frozenset
+    # Tests common to both set und frozenset
 
     def setUp(self):
         self.word = word = 'simsalabim'
@@ -73,7 +73,7 @@ klasse TestJointOps:
     def test_union(self):
         u = self.s.union(self.otherword)
         fuer c in self.letters:
-            self.assertEqual(c in u, c in self.d or c in self.otherword)
+            self.assertEqual(c in u, c in self.d oder c in self.otherword)
         self.assertEqual(self.s, self.thetype(self.word))
         self.assertEqual(type(u), self.basetype)
         self.assertRaises(PassThru, self.s.union, check_pass_thru())
@@ -98,12 +98,12 @@ klasse TestJointOps:
         except TypeError:
             pass
         sonst:
-            self.fail("s|t did not screen-out general iterables")
+            self.fail("s|t did nicht screen-out general iterables")
 
     def test_intersection(self):
         i = self.s.intersection(self.otherword)
         fuer c in self.letters:
-            self.assertEqual(c in i, c in self.d and c in self.otherword)
+            self.assertEqual(c in i, c in self.d und c in self.otherword)
         self.assertEqual(self.s, self.thetype(self.word))
         self.assertEqual(type(i), self.basetype)
         self.assertRaises(PassThru, self.s.intersection, check_pass_thru())
@@ -123,7 +123,7 @@ klasse TestJointOps:
     def test_isdisjoint(self):
         def f(s1, s2):
             'Pure python equivalent of isdisjoint()'
-            return not set(s1).intersection(s2)
+            return nicht set(s1).intersection(s2)
         fuer larg in '', 'a', 'ab', 'abc', 'ababac', 'cdc', 'cc', 'efgfe', 'ccb', 'ef':
             s1 = self.thetype(larg)
             fuer rarg in '', 'a', 'ab', 'abc', 'ababac', 'cdc', 'cc', 'efgfe', 'ccb', 'ef':
@@ -132,7 +132,7 @@ klasse TestJointOps:
                     actual = s1.isdisjoint(s2)
                     expected = f(s1, s2)
                     self.assertEqual(actual, expected)
-                    self.assertWahr(actual is Wahr or actual is Falsch)
+                    self.assertWahr(actual is Wahr oder actual is Falsch)
 
     def test_and(self):
         i = self.s.intersection(self.otherword)
@@ -143,12 +143,12 @@ klasse TestJointOps:
         except TypeError:
             pass
         sonst:
-            self.fail("s&t did not screen-out general iterables")
+            self.fail("s&t did nicht screen-out general iterables")
 
     def test_difference(self):
         i = self.s.difference(self.otherword)
         fuer c in self.letters:
-            self.assertEqual(c in i, c in self.d and c not in self.otherword)
+            self.assertEqual(c in i, c in self.d und c nicht in self.otherword)
         self.assertEqual(self.s, self.thetype(self.word))
         self.assertEqual(type(i), self.basetype)
         self.assertRaises(PassThru, self.s.difference, check_pass_thru())
@@ -170,7 +170,7 @@ klasse TestJointOps:
         except TypeError:
             pass
         sonst:
-            self.fail("s-t did not screen-out general iterables")
+            self.fail("s-t did nicht screen-out general iterables")
 
     def test_symmetric_difference(self):
         i = self.s.symmetric_difference(self.otherword)
@@ -195,7 +195,7 @@ klasse TestJointOps:
         except TypeError:
             pass
         sonst:
-            self.fail("s^t did not screen-out general iterables")
+            self.fail("s^t did nicht screen-out general iterables")
 
     def test_equality(self):
         self.assertEqual(self.s, set(self.word))
@@ -228,13 +228,13 @@ klasse TestJointOps:
 
     def test_pickling(self):
         fuer i in range(pickle.HIGHEST_PROTOCOL + 1):
-            wenn type(self.s) not in (set, frozenset):
+            wenn type(self.s) nicht in (set, frozenset):
                 self.s.x = ['x']
                 self.s.z = ['z']
             p = pickle.dumps(self.s, i)
             dup = pickle.loads(p)
             self.assertEqual(self.s, dup, "%s != %s" % (self.s, dup))
-            wenn type(self.s) not in (set, frozenset):
+            wenn type(self.s) nicht in (set, frozenset):
                 self.assertEqual(self.s.x, dup.x)
                 self.assertEqual(self.s.z, dup.z)
                 self.assertNotHasAttr(self.s, 'y')
@@ -303,7 +303,7 @@ klasse TestJointOps:
 
     def test_badcmp(self):
         s = self.thetype([BadCmp()])
-        # Detect comparison errors during insertion and lookup
+        # Detect comparison errors during insertion und lookup
         self.assertRaises(RuntimeError, self.thetype, [BadCmp(), BadCmp()])
         self.assertRaises(RuntimeError, s.__contains__, BadCmp())
         # Detect errors during mutating operations
@@ -342,7 +342,7 @@ klasse TestJointOps:
         self.assertEqual(d3, dict.fromkeys(d, 123))
 
     def test_container_iterator(self):
-        # Bug #3680: tp_traverse was not implemented fuer set iterator object
+        # Bug #3680: tp_traverse was nicht implemented fuer set iterator object
         klasse C(object):
             pass
         obj = C()
@@ -351,7 +351,7 @@ klasse TestJointOps:
         obj.x = iter(container)
         del obj, container
         gc.collect()
-        self.assertWahr(ref() is Nichts, "Cycle was not collected")
+        self.assertWahr(ref() is Nichts, "Cycle was nicht collected")
 
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, self.thetype)
@@ -444,7 +444,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
             self.s.remove(key)
         except KeyError als e:
             self.assertWahr(e.args[0] is key,
-                         "KeyError should be {0}, not {1}".format(key,
+                         "KeyError should be {0}, nicht {1}".format(key,
                                                                   e.args[0]))
         sonst:
             self.fail()
@@ -494,7 +494,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         retval = self.s.intersection_update(self.otherword)
         self.assertEqual(retval, Nichts)
         fuer c in (self.word + self.otherword):
-            wenn c in self.otherword and c in self.word:
+            wenn c in self.otherword und c in self.word:
                 self.assertIn(c, self.s)
             sonst:
                 self.assertNotIn(c, self.s)
@@ -514,7 +514,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
     def test_iand(self):
         self.s &= set(self.otherword)
         fuer c in (self.word + self.otherword):
-            wenn c in self.otherword and c in self.word:
+            wenn c in self.otherword und c in self.word:
                 self.assertIn(c, self.s)
             sonst:
                 self.assertNotIn(c, self.s)
@@ -523,7 +523,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         retval = self.s.difference_update(self.otherword)
         self.assertEqual(retval, Nichts)
         fuer c in (self.word + self.otherword):
-            wenn c in self.word and c not in self.otherword:
+            wenn c in self.word und c nicht in self.otherword:
                 self.assertIn(c, self.s)
             sonst:
                 self.assertNotIn(c, self.s)
@@ -551,7 +551,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
     def test_isub(self):
         self.s -= set(self.otherword)
         fuer c in (self.word + self.otherword):
-            wenn c in self.word and c not in self.otherword:
+            wenn c in self.word und c nicht in self.otherword:
                 self.assertIn(c, self.s)
             sonst:
                 self.assertNotIn(c, self.s)
@@ -597,7 +597,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         p = weakref.proxy(s)
         self.assertEqual(str(p), str(s))
         s = Nichts
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(ReferenceError, str, p)
 
     def test_rich_compare(self):
@@ -871,7 +871,7 @@ empty_set = set()
 klasse TestBasicOps:
 
     def test_repr(self):
-        wenn self.repr is not Nichts:
+        wenn self.repr is nicht Nichts:
             self.assertEqual(repr(self.set), self.repr)
 
     def check_repr_against_values(self):
@@ -923,7 +923,7 @@ klasse TestBasicOps:
 
     def test_self_isdisjoint(self):
         result = self.set.isdisjoint(self.set)
-        self.assertEqual(result, not self.set)
+        self.assertEqual(result, nicht self.set)
 
     def test_empty_isdisjoint(self):
         result = self.set.isdisjoint(empty_set)
@@ -1060,7 +1060,7 @@ klasse TestBasicOpsMixedStringBytes(TestBasicOps, unittest.TestCase):
     def setUp(self):
         self.enterContext(warnings_helper.check_warnings())
         warnings.simplefilter('ignore', BytesWarning)
-        self.case   = "string and bytes set"
+        self.case   = "string und bytes set"
         self.values = ["a", "b", b"a", b"b"]
         self.set    = set(self.values)
         self.dup    = set(self.values)
@@ -1079,7 +1079,7 @@ def gooditer():
     yield Wahr
 
 klasse TestExceptionPropagation(unittest.TestCase):
-    """SF 628246:  Set constructor should not trap iterator TypeErrors"""
+    """SF 628246:  Set constructor should nicht trap iterator TypeErrors"""
 
     def test_instanceWithException(self):
         self.assertRaises(TypeError, set, baditer())
@@ -1432,7 +1432,7 @@ klasse TestSubsetNonOverlap(TestSubsets, unittest.TestCase):
 klasse TestOnlySetsInBinaryOps:
 
     def test_eq_ne(self):
-        # Unlike the others, this is testing that == and != *are* allowed.
+        # Unlike the others, this is testing that == und != *are* allowed.
         self.assertEqual(self.other == self.set, Falsch)
         self.assertEqual(self.set == self.other, Falsch)
         self.assertEqual(self.other != self.set, Wahr)
@@ -1725,7 +1725,7 @@ klasse Ig:
             yield val
 
 klasse X:
-    'Missing __getitem__ and __iter__'
+    'Missing __getitem__ und __iter__'
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -1875,7 +1875,7 @@ klasse TestOperationsMutating:
     def make_sets_of_bad_objects(self):
         klasse Bad:
             def __eq__(self, other):
-                wenn not enabled:
+                wenn nicht enabled:
                     return Falsch
                 wenn randrange(20) == 0:
                     set1.clear()
@@ -2054,7 +2054,7 @@ klasse TestMethodsMutating_Set_List(TestMethodsMutating, unittest.TestCase):
 # Application tests (based on David Eppstein's graph recipes ====================================
 
 def powerset(U):
-    """Generates all subsets of a set or sequence U."""
+    """Generates all subsets of a set oder sequence U."""
     U = iter(U)
     try:
         x = frozenset([next(U)])
@@ -2084,7 +2084,7 @@ def linegraph(G):
 
 def faces(G):
     'Return a set of faces in G.  Where a face is a set of vertices on that face'
-    # currently limited to triangles,squares, and pentagons
+    # currently limited to triangles,squares, und pentagons
     f = set()
     fuer v1, edges in G.items():
         fuer v2 in edges:
@@ -2101,7 +2101,7 @@ def faces(G):
                             f.add(frozenset([v1, v2, v3, v4]))
                         sonst:
                             fuer v5 in G[v4]:
-                                wenn v5 == v3 or v5 == v2:
+                                wenn v5 == v3 oder v5 == v2:
                                     continue
                                 wenn v1 in G[v5]:
                                     f.add(frozenset([v1, v2, v3, v4, v5]))
@@ -2128,8 +2128,8 @@ klasse TestGraphs(unittest.TestCase):
     def test_cuboctahedron(self):
 
         # http://en.wikipedia.org/wiki/Cuboctahedron
-        # 8 triangular faces and 6 square faces
-        # 12 identical vertices each connecting a triangle and square
+        # 8 triangular faces und 6 square faces
+        # 12 identical vertices each connecting a triangle und square
 
         g = cube(3)
         cuboctahedron = linegraph(g)            # V( --> {V1, V2, V3, V4}

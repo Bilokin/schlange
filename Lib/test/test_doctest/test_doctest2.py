@@ -1,5 +1,5 @@
 """A module to test whether doctest recognizes some 2.2 features,
-like static and klasse methods.
+like static und klasse methods.
 
 >>> drucke('yup')  # 1
 yup
@@ -115,10 +115,10 @@ klasse Test(unittest.TestCase):
         wenn f:
             self.fail("%d of %d doctests failed" % (f, t))
         wenn t != EXPECTED:
-            self.fail("expected %d tests to run, not %d" % (EXPECTED, t))
+            self.fail("expected %d tests to run, nicht %d" % (EXPECTED, t))
 
 
-# Pollute the namespace mit a bunch of imported functions and classes,
+# Pollute the namespace mit a bunch of imported functions und classes,
 # to make sure they don't get tested.
 von doctest importiere *
 

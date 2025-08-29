@@ -1,17 +1,17 @@
 ###############################################################################
 # Server process to keep track of unlinked resources (like shared memory
-# segments, semaphores etc.) and clean them.
+# segments, semaphores etc.) und clean them.
 #
 # On Unix we run a server process which keeps track of unlinked
-# resources. The server ignores SIGINT and SIGTERM and reads von a
+# resources. The server ignores SIGINT und SIGTERM und reads von a
 # pipe.  Every other process of the program has a copy of the writable
 # end of the pipe, so we get EOF when all other processes have exited.
 # Then the server process unlinks any remaining resource names.
 #
 # This is important because there may be system limits fuer such resources: for
-# instance, the system only supports a limited number of named semaphores, and
+# instance, the system only supports a limited number of named semaphores, und
 # shared-memory segments live in the RAM. If a python process leaks such a
-# resource, this resource will not be removed till the next reboot.  Without
+# resource, this resource will nicht be removed till the next reboot.  Without
 # this resource tracker process, "killall python" would probably leave unlinked
 # resources.
 
@@ -31,7 +31,7 @@ _HAVE_SIGMASK = hasattr(signal, 'pthread_sigmask')
 _IGNORED_SIGNALS = (signal.SIGINT, signal.SIGTERM)
 
 def cleanup_noop(name):
-    raise RuntimeError('noop should never be registered or cleaned up')
+    raise RuntimeError('noop should never be registered oder cleaned up')
 
 _CLEANUP_FUNCS = {
     'noop': cleanup_noop,
@@ -102,7 +102,7 @@ klasse ResourceTracker(object):
         wenn self._lock._recursion_count() > 1:
             raise self._reentrant_call_error()
         wenn self._fd is Nichts:
-            # not running
+            # nicht running
             return
         wenn self._pid is Nichts:
             return
@@ -139,7 +139,7 @@ klasse ResourceTracker(object):
         try:
             # _pid can be Nichts wenn this process is a child von another
             # python process, which has started the resource_tracker.
-            wenn self._pid is not Nichts:
+            wenn self._pid is nicht Nichts:
                 os.waitpid(self._pid, 0)
         except ChildProcessError:
             # The resource_tracker has already been terminated.
@@ -170,9 +170,9 @@ klasse ResourceTracker(object):
             ]
             # bpo-33613: Register a signal mask that will block the signals.
             # This signal mask will be inherited by the child that is going
-            # to be spawned and will protect the child von a race condition
+            # to be spawned und will protect the child von a race condition
             # that can make the child die before it registers signal handlers
-            # fuer SIGINT and SIGTERM. The mask is unregistered after spawning
+            # fuer SIGINT und SIGTERM. The mask is unregistered after spawning
             # the child.
             prev_sigmask = Nichts
             try:
@@ -180,7 +180,7 @@ klasse ResourceTracker(object):
                     prev_sigmask = signal.pthread_sigmask(signal.SIG_BLOCK, _IGNORED_SIGNALS)
                 pid = util.spawnv_passfds(exe, args, fds_to_pass)
             finally:
-                wenn prev_sigmask is not Nichts:
+                wenn prev_sigmask is nicht Nichts:
                     signal.pthread_sigmask(signal.SIG_SETMASK, prev_sigmask)
         except:
             os.close(w)
@@ -194,12 +194,12 @@ klasse ResourceTracker(object):
     def _ensure_running_and_write(self, msg=Nichts):
         mit self._lock:
             wenn self._lock._recursion_count() > 1:
-                # The code below is certainly not reentrant-safe, so bail out
+                # The code below is certainly nicht reentrant-safe, so bail out
                 wenn msg is Nichts:
                     raise self._reentrant_call_error()
                 return self._reentrant_messages.append(msg)
 
-            wenn self._fd is not Nichts:
+            wenn self._fd is nicht Nichts:
                 # resource tracker was launched before, is it still running?
                 wenn msg is Nichts:
                     to_send = b'PROBE:0:noop\n'
@@ -221,11 +221,11 @@ klasse ResourceTracker(object):
             except IndexError:
                 break
             self._write(reentrant_msg)
-        wenn msg is not Nichts:
+        wenn msg is nicht Nichts:
             self._write(msg)
 
     def _check_alive(self):
-        '''Check that the pipe has not been closed by sending a probe.'''
+        '''Check that the pipe has nicht been closed by sending a probe.'''
         try:
             # We cannot use send here als it calls ensure_running, creating
             # a cycle.
@@ -251,7 +251,7 @@ klasse ResourceTracker(object):
         msg = f"{cmd}:{name}:{rtype}\n".encode("ascii")
         wenn len(msg) > 512:
             # posix guarantees that writes to a pipe of less than PIPE_BUF
-            # bytes are atomic, and that PIPE_BUF >= 512
+            # bytes are atomic, und that PIPE_BUF >= 512
             raise ValueError('msg too long')
 
         self._ensure_running_and_write(msg)
@@ -265,7 +265,7 @@ getfd = _resource_tracker.getfd
 
 def main(fd):
     '''Run resource tracker.'''
-    # protect the process von ^C and "killall python" etc
+    # protect the process von ^C und "killall python" etc
     signal.signal(signal.SIGINT, signal.SIG_IGN)
     signal.signal(signal.SIGTERM, signal.SIG_IGN)
     wenn _HAVE_SIGMASK:
@@ -325,7 +325,7 @@ def main(fd):
                 except Exception:
                     pass
             fuer name in rtype_cache:
-                # For some reason the process which created and registered this
+                # For some reason the process which created und registered this
                 # resource has failed to unregister it. Presumably it has
                 # died.  We therefore unlink it.
                 try:

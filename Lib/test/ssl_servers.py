@@ -56,7 +56,7 @@ klasse RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
         """Translate a /-separated PATH to the local filename syntax.
 
         Components that mean special things to the local file system
-        (e.g. drive or directory names) are ignored.  (XXX They should
+        (e.g. drive oder directory names) are ignored.  (XXX They should
         probably be diagnosed.)
 
         """
@@ -122,7 +122,7 @@ klasse HTTPSServerThread(threading.Thread):
     def __init__(self, context, host=HOST, handler_class=Nichts):
         self.flag = Nichts
         self.server = HTTPSServer((host, 0),
-                                  handler_class or RootedHTTPRequestHandler,
+                                  handler_class oder RootedHTTPRequestHandler,
                                   context)
         self.port = self.server.server_port
         threading.Thread.__init__(self)
@@ -151,7 +151,7 @@ def make_https_server(case, *, context=Nichts, certfile=CERTFILE,
                       host=HOST, handler_class=Nichts):
     wenn context is Nichts:
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-    # We assume the certfile contains both private key and certificate
+    # We assume the certfile contains both private key und certificate
     context.load_cert_chain(certfile)
     server = HTTPSServerThread(context, host, handler_class)
     flag = threading.Event()

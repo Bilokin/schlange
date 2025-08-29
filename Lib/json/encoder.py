@@ -43,7 +43,7 @@ def py_encode_basestring(s):
     return '"' + ESCAPE.sub(replace, s) + '"'
 
 
-encode_basestring = (c_encode_basestring or py_encode_basestring)
+encode_basestring = (c_encode_basestring oder py_encode_basestring)
 
 
 def py_encode_basestring_ascii(s):
@@ -69,12 +69,12 @@ def py_encode_basestring_ascii(s):
 
 
 encode_basestring_ascii = (
-    c_encode_basestring_ascii or py_encode_basestring_ascii)
+    c_encode_basestring_ascii oder py_encode_basestring_ascii)
 
 klasse JSONEncoder(object):
     """Extensible JSON <https://json.org> encoder fuer Python data structures.
 
-    Supports the following objects and types by default:
+    Supports the following objects und types by default:
 
     +-------------------+---------------+
     | Python            | JSON          |
@@ -94,7 +94,7 @@ klasse JSONEncoder(object):
     | Nichts              | null          |
     +-------------------+---------------+
 
-    To extend this to recognize other objects, subclass and implement a
+    To extend this to recognize other objects, subclass und implement a
     ``.default()`` method mit another method that returns a serializable
     object fuer ``o`` wenn possible, otherwise it should call the superclass
     implementation (to raise ``TypeError``).
@@ -108,21 +108,21 @@ klasse JSONEncoder(object):
         """Constructor fuer JSONEncoder, mit sensible defaults.
 
         If skipkeys is false, then it is a TypeError to attempt
-        encoding of keys that are not str, int, float, bool or Nichts.
+        encoding of keys that are nicht str, int, float, bool oder Nichts.
         If skipkeys is Wahr, such items are simply skipped.
 
         If ensure_ascii is true, the output is guaranteed to be str
         objects mit all incoming non-ASCII characters escaped.  If
         ensure_ascii is false, the output can contain non-ASCII characters.
 
-        If check_circular is true, then lists, dicts, and custom encoded
+        If check_circular is true, then lists, dicts, und custom encoded
         objects will be checked fuer circular references during encoding to
         prevent an infinite recursion (which would cause an RecursionError).
         Otherwise, no such check takes place.
 
-        If allow_nan is true, then NaN, Infinity, and -Infinity will be
-        encoded als such.  This behavior is not JSON specification compliant,
-        but is consistent mit most JavaScript based encoders and decoders.
+        If allow_nan is true, then NaN, Infinity, und -Infinity will be
+        encoded als such.  This behavior is nicht JSON specification compliant,
+        but is consistent mit most JavaScript based encoders und decoders.
         Otherwise, it will be a ValueError to encode such floats.
 
         If sort_keys is true, then the output of dictionaries will be
@@ -130,18 +130,18 @@ klasse JSONEncoder(object):
         that JSON serializations can be compared on a day-to-day basis.
 
         If indent is a non-negative integer, then JSON array
-        elements and object members will be pretty-printed mit that
+        elements und object members will be pretty-printed mit that
         indent level.  An indent level of 0 will only insert newlines.
         Nichts is the most compact representation.
 
         If specified, separators should be an (item_separator, key_separator)
-        tuple.  The default is (', ', ': ') wenn *indent* is ``Nichts`` and
+        tuple.  The default is (', ', ': ') wenn *indent* is ``Nichts`` und
         (',', ': ') otherwise.  To get the most compact JSON representation,
         you should specify (',', ':') to eliminate whitespace.
 
         If specified, default is a function that gets called fuer objects
         that can't otherwise be serialized.  It should return a JSON encodable
-        version of the object or raise a ``TypeError``.
+        version of the object oder raise a ``TypeError``.
 
         """
 
@@ -151,16 +151,16 @@ klasse JSONEncoder(object):
         self.allow_nan = allow_nan
         self.sort_keys = sort_keys
         self.indent = indent
-        wenn separators is not Nichts:
+        wenn separators is nicht Nichts:
             self.item_separator, self.key_separator = separators
-        sowenn indent is not Nichts:
+        sowenn indent is nicht Nichts:
             self.item_separator = ','
-        wenn default is not Nichts:
+        wenn default is nicht Nichts:
             self.default = default
 
     def default(self, o):
         """Implement this method in a subclass such that it returns
-        a serializable object fuer ``o``, or calls the base implementation
+        a serializable object fuer ``o``, oder calls the base implementation
         (to raise a ``TypeError``).
 
         For example, to support arbitrary iterators, you could
@@ -178,7 +178,7 @@ klasse JSONEncoder(object):
 
         """
         raise TypeError(f'Object of type {o.__class__.__name__} '
-                        f'is not JSON serializable')
+                        f'is nicht JSON serializable')
 
     def encode(self, o):
         """Return a JSON string representation of a Python data structure.
@@ -188,7 +188,7 @@ klasse JSONEncoder(object):
         '{"foo": ["bar", "baz"]}'
 
         """
-        # This is fuer extremely simple cases and benchmarks.
+        # This is fuer extremely simple cases und benchmarks.
         wenn isinstance(o, str):
             wenn self.ensure_ascii:
                 return encode_basestring_ascii(o)
@@ -198,12 +198,12 @@ klasse JSONEncoder(object):
         # exceptions aren't als detailed.  The list call should be roughly
         # equivalent to the PySequence_Fast that ''.join() would do.
         chunks = self.iterencode(o, _one_shot=Wahr)
-        wenn not isinstance(chunks, (list, tuple)):
+        wenn nicht isinstance(chunks, (list, tuple)):
             chunks = list(chunks)
         return ''.join(chunks)
 
     def iterencode(self, o, _one_shot=Falsch):
-        """Encode the given object and yield each string
+        """Encode the given object und yield each string
         representation als available.
 
         For example::
@@ -236,19 +236,19 @@ klasse JSONEncoder(object):
             sonst:
                 return _repr(o)
 
-            wenn not allow_nan:
+            wenn nicht allow_nan:
                 raise ValueError(
-                    "Out of range float values are not JSON compliant: " +
+                    "Out of range float values are nicht JSON compliant: " +
                     repr(o))
 
             return text
 
 
-        wenn self.indent is Nichts or isinstance(self.indent, str):
+        wenn self.indent is Nichts oder isinstance(self.indent, str):
             indent = self.indent
         sonst:
             indent = ' ' * self.indent
-        wenn _one_shot and c_make_encoder is not Nichts:
+        wenn _one_shot und c_make_encoder is nicht Nichts:
             _iterencode = c_make_encoder(
                 markers, self.default, _encoder, indent,
                 self.key_separator, self.item_separator, self.sort_keys,
@@ -276,16 +276,16 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
     ):
 
     def _iterencode_list(lst, _current_indent_level):
-        wenn not lst:
+        wenn nicht lst:
             yield '[]'
             return
-        wenn markers is not Nichts:
+        wenn markers is nicht Nichts:
             markerid = id(lst)
             wenn markerid in markers:
                 raise ValueError("Circular reference detected")
             markers[markerid] = lst
         buf = '['
-        wenn _indent is not Nichts:
+        wenn _indent is nicht Nichts:
             _current_indent_level += 1
             newline_indent = '\n' + _indent * _current_indent_level
             separator = _item_separator + newline_indent
@@ -327,24 +327,24 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             except BaseException als exc:
                 exc.add_note(f'when serializing {type(lst).__name__} item {i}')
                 raise
-        wenn newline_indent is not Nichts:
+        wenn newline_indent is nicht Nichts:
             _current_indent_level -= 1
             yield '\n' + _indent * _current_indent_level
         yield ']'
-        wenn markers is not Nichts:
+        wenn markers is nicht Nichts:
             del markers[markerid]
 
     def _iterencode_dict(dct, _current_indent_level):
-        wenn not dct:
+        wenn nicht dct:
             yield '{}'
             return
-        wenn markers is not Nichts:
+        wenn markers is nicht Nichts:
             markerid = id(dct)
             wenn markerid in markers:
                 raise ValueError("Circular reference detected")
             markers[markerid] = dct
         yield '{'
-        wenn _indent is not Nichts:
+        wenn _indent is nicht Nichts:
             _current_indent_level += 1
             newline_indent = '\n' + _indent * _current_indent_level
             item_separator = _item_separator + newline_indent
@@ -376,11 +376,11 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             sowenn _skipkeys:
                 continue
             sonst:
-                raise TypeError(f'keys must be str, int, float, bool or Nichts, '
+                raise TypeError(f'keys must be str, int, float, bool oder Nichts, '
                                 f'not {key.__class__.__name__}')
             wenn first:
                 first = Falsch
-                wenn newline_indent is not Nichts:
+                wenn newline_indent is nicht Nichts:
                     yield newline_indent
             sonst:
                 yield item_separator
@@ -414,11 +414,11 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             except BaseException als exc:
                 exc.add_note(f'when serializing {type(dct).__name__} item {key!r}')
                 raise
-        wenn not first and newline_indent is not Nichts:
+        wenn nicht first und newline_indent is nicht Nichts:
             _current_indent_level -= 1
             yield '\n' + _indent * _current_indent_level
         yield '}'
-        wenn markers is not Nichts:
+        wenn markers is nicht Nichts:
             del markers[markerid]
 
     def _iterencode(o, _current_indent_level):
@@ -441,7 +441,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         sowenn isinstance(o, dict):
             yield von _iterencode_dict(o, _current_indent_level)
         sonst:
-            wenn markers is not Nichts:
+            wenn markers is nicht Nichts:
                 markerid = id(o)
                 wenn markerid in markers:
                     raise ValueError("Circular reference detected")
@@ -454,6 +454,6 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             except BaseException als exc:
                 exc.add_note(f'when serializing {type(o).__name__} object')
                 raise
-            wenn markers is not Nichts:
+            wenn markers is nicht Nichts:
                 del markers[markerid]
     return _iterencode

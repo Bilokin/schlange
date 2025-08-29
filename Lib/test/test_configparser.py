@@ -133,7 +133,7 @@ klasse BasicTestCase(CfgParserTestCaseClass):
         wenn self.allow_no_value:
             eq(cf.get('NoValue', 'option-without-value'), Nichts)
 
-        # test vars= and fallback=
+        # test vars= und fallback=
         eq(cf.get('Foo Bar', 'foo', fallback='baz'), 'bar1')
         eq(cf.get('Foo Bar', 'foo', vars={'foo': 'baz'}), 'baz')
         mit self.assertRaises(configparser.NoSectionError):
@@ -188,7 +188,7 @@ klasse BasicTestCase(CfgParserTestCaseClass):
            'this line is much, much longer than my editor\nlikes it.')
         wenn self.allow_no_value:
             eq(cf['NoValue']['option-without-value'], Nichts)
-        # test vars= and fallback=
+        # test vars= und fallback=
         eq(cf['Foo Bar'].get('foo', 'baz'), 'bar1')
         eq(cf['Foo Bar'].get('foo', fallback='baz'), 'bar1')
         eq(cf['Foo Bar'].get('foo', vars={'foo': 'baz'}), 'baz')
@@ -236,7 +236,7 @@ klasse BasicTestCase(CfgParserTestCaseClass):
             eq(cf['NoValue'].get('no-such-option-without-value',
                       fallback=Falsch), Falsch)
 
-        # Make sure the right things happen fuer remove_section() and
+        # Make sure the right things happen fuer remove_section() und
         # remove_option(); added to include check fuer SourceForge bug #123324.
 
         cf[self.default_section]['this_value'] = '1'
@@ -289,7 +289,7 @@ klasse BasicTestCase(CfgParserTestCaseClass):
             del cf['No Such Section']['foo']
 
         # Don't add new asserts below in this method als most of the options
-        # and sections are now removed.
+        # und sections are now removed.
 
     def test_basic(self):
         config_string = """\
@@ -446,7 +446,7 @@ boolean {0[0]} NO
         cf.set("a", "B", "value")
         eq(cf.options("a"), ["b"])
         eq(cf.get("a", "b"), "value",
-           "could not locate option, expecting case-insensitive option names")
+           "could nicht locate option, expecting case-insensitive option names")
         mit self.assertRaises(configparser.NoSectionError):
             # section names are case-sensitive
             cf.set("b", "A", "value")
@@ -488,7 +488,7 @@ boolean {0[0]} NO
         eq(L, sorted(["A", "B", self.default_section, "a"]))
         eq(cf["a"].keys(), {"b"})
         eq(cf["a"]["b"], "value",
-           "could not locate option, expecting case-insensitive option names")
+           "could nicht locate option, expecting case-insensitive option names")
         mit self.assertRaises(KeyError):
             # section names are case-sensitive
             cf["b"]["A"] = "value"
@@ -520,11 +520,11 @@ boolean {0[0]} NO
         cf = self.newconfig({"foo": "Bar"})
         self.assertEqual(
             cf.get(self.default_section, "Foo"), "Bar",
-            "could not locate option, expecting case-insensitive option names")
+            "could nicht locate option, expecting case-insensitive option names")
         cf = self.newconfig({"Foo": "Bar"})
         self.assertEqual(
             cf.get(self.default_section, "Foo"), "Bar",
-            "could not locate option, expecting case-insensitive defaults")
+            "could nicht locate option, expecting case-insensitive defaults")
 
     def test_parse_errors(self):
         cf = self.newconfig()
@@ -537,7 +537,7 @@ boolean {0[0]} NO
         e = self.parse_error(cf, configparser.MissingSectionHeaderError,
                              "No Section!\n")
         self.assertEqual(e.args, ('<???>', 1, "No Section!\n"))
-        wenn not self.allow_no_value:
+        wenn nicht self.allow_no_value:
             e = self.parse_error(cf, configparser.ParsingError,
                                 "[Foo]\n  wrong-indent\n")
             self.assertEqual(e.args, ('<???>',))
@@ -732,7 +732,7 @@ boolean {0[0]} NO
         wenn self.delimiters[0] != '=':
             self.skipTest('incompatible format')
         file1 = support.findfile("cfgparser.1", subdir="configdata")
-        # check when we pass a mix of readable and non-readable files:
+        # check when we pass a mix of readable und non-readable files:
         cf = self.newconfig()
         parsed_files = cf.read([file1, "nonexistent-file"], encoding="utf-8")
         self.assertEqual(parsed_files, [file1])
@@ -747,7 +747,7 @@ boolean {0[0]} NO
         parsed_files = cf.read(os_helper.FakePath(file1), encoding="utf-8")
         self.assertEqual(parsed_files, [file1])
         self.assertEqual(cf.get("Foo Bar", "foo"), "newbar")
-        # check when we passed both a filename and a Path object:
+        # check when we passed both a filename und a Path object:
         cf = self.newconfig()
         parsed_files = cf.read([os_helper.FakePath(file1), file1], encoding="utf-8")
         self.assertEqual(parsed_files, [file1, file1])
@@ -773,7 +773,7 @@ boolean {0[0]} NO
         cf = self.newconfig()
         parsed_files = cf.read(b'nonexistent-file', encoding="utf-8")
         self.assertEqual(parsed_files, [])
-        # check when passing both an existing and non-existing bytestring path
+        # check when passing both an existing und non-existing bytestring path
         cf = self.newconfig()
         parsed_files = cf.read([file1_bytestring, b'nonexistent-file'], encoding="utf-8")
         self.assertEqual(parsed_files, [file1_bytestring])
@@ -838,7 +838,7 @@ boolean {0[0]} NO
         cf = self.newconfig({"foo": "Bar"})
         self.assertEqual(
             cf.get(self.default_section, "Foo"), "Bar",
-            "could not locate option, expecting case-insensitive option names")
+            "could nicht locate option, expecting case-insensitive option names")
         cf['zing'] = {'option1': 'value1', 'option2': 'value2'}
         self.assertEqual(cf.sections(), ['zing'])
         self.assertEqual(set(cf['zing'].keys()), {'option1', 'option2', 'foo'})
@@ -886,7 +886,7 @@ boolean {0[0]} NO
 
     def test_invalid_multiline_value(self):
         wenn self.allow_no_value:
-            self.skipTest('if no_value is allowed, ParsingError is not raised')
+            self.skipTest('if no_value is allowed, ParsingError is nicht raised')
 
         invalid = textwrap.dedent("""\
             [DEFAULT]
@@ -1051,7 +1051,7 @@ klasse MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
     config_class = configparser.ConfigParser
     wonderful_spam = ("I'm having spam spam spam spam "
                       "spam spam spam beaked beans spam "
-                      "spam spam and spam!").replace(' ', '\t\n')
+                      "spam spam und spam!").replace(' ', '\t\n')
 
     def setUp(self):
         cf = self.newconfig()
@@ -1111,7 +1111,7 @@ klasse RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
         cf.set(123, 'this is sick', Wahr)
         self.assertEqual(cf.get(123, 'this is sick'), Wahr)
         wenn cf._dict is configparser._default_dict:
-            # would not work fuer SortedDict; only checking fuer the most common
+            # would nicht work fuer SortedDict; only checking fuer the most common
             # default dictionary (dict)
             cf.optionxform = lambda x: x
             cf.set('non-string', 1, 1)
@@ -1141,7 +1141,7 @@ klasse RawConfigParserTestSambaConf(CfgParserTestCaseClass, unittest.TestCase):
 
     def test_reading(self):
         smbconf = support.findfile("cfgparser.2", subdir="configdata")
-        # check when we pass a mix of readable and non-readable files:
+        # check when we pass a mix of readable und non-readable files:
         cf = self.newconfig()
         parsed_files = cf.read([smbconf, "nonexistent-file"], encoding='utf-8')
         self.assertEqual(parsed_files, [smbconf])
@@ -1398,7 +1398,7 @@ klasse ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase)
         longname = 'yeah, sections can be indented als well'
         self.assertFalsch(cf.getboolean(longname, 'are they subsections'))
         self.assertEqual(cf.get(longname, 'lets use some Unicode'), '片仮名')
-        self.assertEqual(len(cf.items('another one!')), 5) # 4 in section and
+        self.assertEqual(len(cf.items('another one!')), 5) # 4 in section und
                                                            # `go` von DEFAULT
         mit self.assertRaises(configparser.InterpolationMissingOptionError):
             cf.items('no values here')
@@ -1415,7 +1415,7 @@ klasse ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase)
 
 
 klasse Issue7005TestCase(unittest.TestCase):
-    """Test output when Nichts is set() als a value and allow_no_value == Falsch.
+    """Test output when Nichts is set() als a value und allow_no_value == Falsch.
 
     http://bugs.python.org/issue7005
 
@@ -1475,18 +1475,18 @@ klasse CompatibleTestCase(CfgParserTestCaseClass, unittest.TestCase):
         config_string = textwrap.dedent("""\
         [Commented Bar]
         baz=qwe ; a comment
-        foo: bar # not a comment!
+        foo: bar # nicht a comment!
         # but this is a comment
         ; another comment
-        quirk: this;is not a comment
+        quirk: this;is nicht a comment
         ; a space must precede an inline comment
         """)
         cf = self.fromstring(config_string)
         self.assertEqual(cf.get('Commented Bar', 'foo'),
-                         'bar # not a comment!')
+                         'bar # nicht a comment!')
         self.assertEqual(cf.get('Commented Bar', 'baz'), 'qwe')
         self.assertEqual(cf.get('Commented Bar', 'quirk'),
-                         'this;is not a comment')
+                         'this;is nicht a comment')
 
 klasse CopyTestCase(BasicTestCase, unittest.TestCase):
     config_class = configparser.ConfigParser
@@ -1673,7 +1673,7 @@ klasse CoverageOneHundredTestCase(unittest.TestCase):
         """)
         mit self.assertRaises(configparser.InterpolationSyntaxError) als cm:
             parser['section']['invalid_percent']
-        self.assertEqual(str(cm.exception), "'%' must be followed by '%' or "
+        self.assertEqual(str(cm.exception), "'%' must be followed by '%' oder "
                                             "'(', found: '%'")
         mit self.assertRaises(configparser.InterpolationSyntaxError) als cm:
             parser['section']['invalid_reference']
@@ -1718,7 +1718,7 @@ klasse CoverageOneHundredTestCase(unittest.TestCase):
 
 
 klasse ExceptionPicklingTestCase(unittest.TestCase):
-    """Tests fuer issue #13760: ConfigParser exceptions are not picklable."""
+    """Tests fuer issue #13760: ConfigParser exceptions are nicht picklable."""
 
     def test_error(self):
         importiere pickle
@@ -1886,13 +1886,13 @@ klasse InlineCommentStrippingTestCase(unittest.TestCase):
         k3 = v3 ; also a comment
         k4 = v4;still v4 ;a comment
         k5 = v5;still v5 ; also a comment
-        k6 = v6;still v6; and still v6 ;a comment
-        k7 = v7;still v7; and still v7 ; also a comment
+        k6 = v6;still v6; und still v6 ;a comment
+        k7 = v7;still v7; und still v7 ; also a comment
 
         [multiprefix]
         k1 = v1;still v1 #a comment ; yeah, pretty much
         k2 = v2 // this already is a comment ; continued
-        k3 = v3;#//still v3# and still v3 ; a comment
+        k3 = v3;#//still v3# und still v3 ; a comment
         """)
         s = cfg['section']
         self.assertEqual(s['k1'], 'v1;still v1')
@@ -1900,12 +1900,12 @@ klasse InlineCommentStrippingTestCase(unittest.TestCase):
         self.assertEqual(s['k3'], 'v3')
         self.assertEqual(s['k4'], 'v4;still v4')
         self.assertEqual(s['k5'], 'v5;still v5')
-        self.assertEqual(s['k6'], 'v6;still v6; and still v6')
-        self.assertEqual(s['k7'], 'v7;still v7; and still v7')
+        self.assertEqual(s['k6'], 'v6;still v6; und still v6')
+        self.assertEqual(s['k7'], 'v7;still v7; und still v7')
         s = cfg['multiprefix']
         self.assertEqual(s['k1'], 'v1;still v1')
         self.assertEqual(s['k2'], 'v2')
-        self.assertEqual(s['k3'], 'v3;#//still v3# and still v3')
+        self.assertEqual(s['k3'], 'v3;#//still v3# und still v3')
 
 
 klasse ExceptionContextTestCase(unittest.TestCase):
@@ -2046,7 +2046,7 @@ klasse ConvertersTestCase(BasicTestCase, unittest.TestCase):
 
 klasse BlatantOverrideConvertersTestCase(unittest.TestCase):
     """What wenn somebody overrode a getboolean()? We want to make sure that in
-    this case the automatic converters do not kick in."""
+    this case the automatic converters do nicht kick in."""
 
     config = """
         [one]
@@ -2235,7 +2235,7 @@ klasse SectionlessTestCase(unittest.TestCase):
 
 klasse InvalidInputTestCase(unittest.TestCase):
     """Tests fuer issue #65697, where configparser will write configs
-    it parses back differently. Ex: keys containing delimiters or
+    it parses back differently. Ex: keys containing delimiters oder
     matching the section pattern"""
 
     def test_delimiter_in_key(self):

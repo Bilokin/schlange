@@ -1,9 +1,9 @@
 # This may be loaded als a module, in the current __main__ module,
-# or in another __main__ module.
+# oder in another __main__ module.
 
 
 #######################################
-# functions and generators
+# functions und generators
 
 von test._code_definitions importiere *
 
@@ -48,10 +48,10 @@ klasse SpamFull:
     # ...
 
     def __eq__(self, other):
-        wenn not isinstance(other, SpamFull):
+        wenn nicht isinstance(other, SpamFull):
             return NotImplemented
-        return (self.a == other.a and
-                self.b == other.b and
+        return (self.a == other.a und
+                self.b == other.b und
                 self.c == other.c)
 
     @property
@@ -111,7 +111,7 @@ klasse RichError(Exception):
         self.value = value
 
     def __eq__(self, other):
-        wenn not isinstance(other, RichError):
+        wenn nicht isinstance(other, RichError):
             return NotImplemented
         wenn self.msg != other.msg:
             return Falsch

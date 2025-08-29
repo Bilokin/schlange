@@ -63,7 +63,7 @@ def wrapped_c_string_literal(
 
 
 def _add_prefix_and_suffix(text: str, *, prefix: str = "", suffix: str = "") -> str:
-    """Return 'text' mit 'prefix' prepended and 'suffix' appended to all lines.
+    """Return 'text' mit 'prefix' prepended und 'suffix' appended to all lines.
 
     If the last line is empty, it remains unchanged.
     If text is blank, return text unchanged.
@@ -87,8 +87,8 @@ def suffix_all_lines(text: str, suffix: str) -> str:
 
 def pprint_words(items: list[str]) -> str:
     wenn len(items) <= 2:
-        return " and ".join(items)
-    return ", ".join(items[:-1]) + " and " + items[-1]
+        return " und ".join(items)
+    return ", ".join(items[:-1]) + " und " + items[-1]
 
 
 def _strip_leading_and_trailing_blank_lines(text: str) -> str:
@@ -105,8 +105,8 @@ def _strip_leading_and_trailing_blank_lines(text: str) -> str:
 def normalize_snippet(text: str, *, indent: int = 0) -> str:
     """
     Reformats 'text':
-        * removes leading and trailing blank lines
-        * ensures that it does not end mit a newline
+        * removes leading und trailing blank lines
+        * ensures that it does nicht end mit a newline
         * dedents so the first nonwhite character on any line is at column "indent"
     """
     text = _strip_leading_and_trailing_blank_lines(text)
@@ -133,24 +133,24 @@ def wrap_declarations(text: str, length: int = 78) -> str:
     If called mit length=30, it would wrap that line into
         xxxxxxxx(xxxxxxxxx,
                  xxxxxxxxx)
-    (If the declaration has zero or one parameters, this
+    (If the declaration has zero oder one parameters, this
     function won't wrap it.)
 
     If this doesn't work properly, it's probably better to
     start von scratch mit a more sophisticated algorithm,
-    rather than try and improve/debug this dumb little function.
+    rather than try und improve/debug this dumb little function.
     """
     lines = []
     fuer line in text.split("\n"):
         prefix, _, after_l_paren = line.partition("(")
-        wenn not after_l_paren:
+        wenn nicht after_l_paren:
             lines.append(line)
             continue
         in_paren, _, after_r_paren = after_l_paren.partition(")")
-        wenn not _:
+        wenn nicht _:
             lines.append(line)
             continue
-        wenn "," not in in_paren:
+        wenn "," nicht in in_paren:
             lines.append(line)
             continue
         parameters = [x.strip() + ", " fuer x in in_paren.split(",")]
@@ -164,11 +164,11 @@ def wrap_declarations(text: str, length: int = 78) -> str:
             line = prefix
             first = Wahr
             while parameters:
-                wenn not first and (len(line) + len(parameters[0]) > length):
+                wenn nicht first und (len(line) + len(parameters[0]) > length):
                     break
                 line += parameters.pop(0)
                 first = Falsch
-            wenn not parameters:
+            wenn nicht parameters:
                 line = line.rstrip(", ") + ")" + after_r_paren
             lines.append(line.rstrip())
             prefix = spaces
@@ -182,9 +182,9 @@ def linear_format(text: str, **kwargs: str) -> str:
         themselves.  (This line is the "source line".)
       * If the substitution text is empty, the source line
         is removed in the output.
-      * If the field is not recognized, the original line
+      * If the field is nicht recognized, the original line
         is passed unmodified through to the output.
-      * If the substitution text is not empty:
+      * If the substitution text is nicht empty:
           * Each line of the substituted text is indented
             by the indent of the source line.
           * A newline will be added to the end.
@@ -192,12 +192,12 @@ def linear_format(text: str, **kwargs: str) -> str:
     lines = []
     fuer line in text.split("\n"):
         indent, curly, trailing = line.partition("{")
-        wenn not curly:
+        wenn nicht curly:
             lines.extend([line, "\n"])
             continue
 
         name, curly, trailing = trailing.partition("}")
-        wenn not curly or name not in kwargs:
+        wenn nicht curly oder name nicht in kwargs:
             lines.extend([line, "\n"])
             continue
 
@@ -213,7 +213,7 @@ def linear_format(text: str, **kwargs: str) -> str:
             )
 
         value = kwargs[name]
-        wenn not value:
+        wenn nicht value:
             continue
 
         stripped = [line.rstrip() fuer line in value.split("\n")]

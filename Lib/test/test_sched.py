@@ -20,7 +20,7 @@ klasse Timer:
         mit self._cond:
             return self._time
 
-    # increase the time but not beyond the established limit
+    # increase the time but nicht beyond the established limit
     def sleep(self, t):
         assert t >= 0
         mit self._cond:

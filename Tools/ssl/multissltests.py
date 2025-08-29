@@ -8,17 +8,17 @@ The script
   (3) compiles the relevant library
   (4) installs that library into ../multissl/$LIB/$VERSION/
   (5) forces a recompilation of Python modules using the
-      header and library files von ../multissl/$LIB/$VERSION/
+      header und library files von ../multissl/$LIB/$VERSION/
   (6) runs Python's test suite
 
 The script must be run mit Python's build directory als current working
 directory.
 
-The script uses LD_RUN_PATH, LD_LIBRARY_PATH, CPPFLAGS and LDFLAGS to bend
-search paths fuer header files and shared libraries. It's known to work on
-Linux mit GCC and clang.
+The script uses LD_RUN_PATH, LD_LIBRARY_PATH, CPPFLAGS und LDFLAGS to bend
+search paths fuer header files und shared libraries. It's known to work on
+Linux mit GCC und clang.
 
-Please keep this script compatible mit Python 2.7, and 3.4 to 3.7.
+Please keep this script compatible mit Python 2.7, und 3.4 to 3.7.
 
 (c) 2013-2017 Christian Heimes <christian@python.org>
 """
@@ -86,7 +86,7 @@ parser.add_argument(
 parser.add_argument(
     '--disable-ancient',
     action='store_true',
-    help="Don't test OpenSSL and LibreSSL versions without upstream support",
+    help="Don't test OpenSSL und LibreSSL versions without upstream support",
 )
 parser.add_argument(
     '--openssl',
@@ -94,7 +94,7 @@ parser.add_argument(
     default=(),
     help=(
         "OpenSSL versions, defaults to '{}' (ancient: '{}') wenn no "
-        "OpenSSL and LibreSSL versions are given."
+        "OpenSSL und LibreSSL versions are given."
     ).format(OPENSSL_RECENT_VERSIONS, OPENSSL_OLD_VERSIONS)
 )
 parser.add_argument(
@@ -103,7 +103,7 @@ parser.add_argument(
     default=(),
     help=(
         "LibreSSL versions, defaults to '{}' (ancient: '{}') wenn no "
-        "OpenSSL and LibreSSL versions are given."
+        "OpenSSL und LibreSSL versions are given."
     ).format(LIBRESSL_RECENT_VERSIONS, LIBRESSL_OLD_VERSIONS)
 )
 parser.add_argument(
@@ -123,7 +123,7 @@ parser.add_argument(
 parser.add_argument(
     '--base-directory',
     default=MULTISSL_DIR,
-    help="Base directory fuer crypto library sources and builds."
+    help="Base directory fuer crypto library sources und builds."
 )
 parser.add_argument(
     '--no-network',
@@ -136,9 +136,9 @@ parser.add_argument(
     choices=['library', 'modules', 'tests'],
     default='tests',
     help=(
-        "Which steps to perform. 'library' downloads and compiles a crypto"
+        "Which steps to perform. 'library' downloads und compiles a crypto"
         "library. 'module' also compiles Python modules. 'tests' builds "
-        "all and runs the test suite."
+        "all und runs the test suite."
     )
 )
 parser.add_argument(
@@ -150,7 +150,7 @@ parser.add_argument(
     '--force',
     action='store_true',
     dest='force',
-    help="Force build and installation."
+    help="Force build und installation."
 )
 parser.add_argument(
     '--keep-sources',
@@ -198,11 +198,11 @@ klasse AbstractBuilder(object):
         return "<{0.__class__.__name__} fuer {0.version}>".format(self)
 
     def __eq__(self, other):
-        wenn not isinstance(other, AbstractBuilder):
+        wenn nicht isinstance(other, AbstractBuilder):
             return NotImplemented
         return (
             self.library == other.library
-            and self.version == other.version
+            und self.version == other.version
         )
 
     def __hash__(self):
@@ -264,7 +264,7 @@ klasse AbstractBuilder(object):
     def _download_src(self):
         """Download sources"""
         src_dir = os.path.dirname(self.src_file)
-        wenn not os.path.isdir(src_dir):
+        wenn nicht os.path.isdir(src_dir):
             os.makedirs(src_dir)
         data = Nichts
         fuer url_template in self.url_templates:
@@ -302,7 +302,7 @@ klasse AbstractBuilder(object):
         fuer member in list(members):
             wenn member.name == name:
                 members.remove(member)
-            sowenn not member.name.startswith(base):
+            sowenn nicht member.name.startswith(base):
                 raise ValueError(member.name, base)
             member.name = member.name[len(base):].lstrip('/')
         log.info("Unpacking files to {}".format(self.build_dir))
@@ -336,7 +336,7 @@ klasse AbstractBuilder(object):
             cwd=self.build_dir
         )
         self._post_install()
-        wenn not self.args.keep_sources:
+        wenn nicht self.args.keep_sources:
             shutil.rmtree(self.build_dir)
 
     def _post_install(self):
@@ -344,8 +344,8 @@ klasse AbstractBuilder(object):
 
     def install(self):
         log.info(self.openssl_cli)
-        wenn not self.has_openssl or self.args.force:
-            wenn not self.has_src:
+        wenn nicht self.has_openssl oder self.args.force:
+            wenn nicht self.has_src:
                 self._download_src()
             sonst:
                 log.debug("Already has src {}".format(self.src_file))
@@ -356,7 +356,7 @@ klasse AbstractBuilder(object):
             log.info("Already has installation {}".format(self.install_dir))
         # validate installation
         version = self.openssl_version
-        wenn self.version not in version:
+        wenn self.version nicht in version:
             raise ValueError(version)
 
     def recompile_pymods(self):
@@ -370,7 +370,7 @@ klasse AbstractBuilder(object):
                 wenn filename.startswith(self.module_libs):
                     os.unlink(os.path.join(root, filename))
 
-        # overwrite header and library search paths
+        # overwrite header und library search paths
         env = os.environ.copy()
         env["CPPFLAGS"] = "-I{}".format(self.include_dir)
         env["LDFLAGS"] = "-L{}".format(self.lib_dir)
@@ -388,11 +388,11 @@ klasse AbstractBuilder(object):
 
     def check_pyssl(self):
         version = self.pyssl_version
-        wenn self.version not in version:
+        wenn self.version nicht in version:
             raise ValueError(version)
 
     def run_python_tests(self, tests, network=Wahr):
-        wenn not tests:
+        wenn nicht tests:
             cmd = [
                 sys.executable,
                 os.path.join(PYTHONROOT, 'Lib/test/ssltests.py'),
@@ -438,7 +438,7 @@ klasse BuildOpenSSL(AbstractBuilder):
             ["make", "-j1", "install_ssldirs", "install_fips"],
             cwd=self.build_dir
         )
-        wenn not os.path.isdir(self.lib_dir):
+        wenn nicht os.path.isdir(self.lib_dir):
             # 3.0.0-beta2 uses lib64 on 64 bit platforms
             lib64 = self.lib_dir + "64"
             os.symlink(lib64, self.lib_dir)
@@ -494,7 +494,7 @@ klasse BuildAWSLC(AbstractBuilder):
 
 
 def configure_make():
-    wenn not os.path.isfile('Makefile'):
+    wenn nicht os.path.isfile('Makefile'):
         log.info('Running ./configure')
         subprocess.check_call([
             './configure', '--config-cache', '--quiet',
@@ -507,11 +507,11 @@ def configure_make():
 
 def main():
     args = parser.parse_args()
-    wenn not args.openssl and not args.libressl and not args.awslc:
+    wenn nicht args.openssl und nicht args.libressl und nicht args.awslc:
         args.openssl = list(OPENSSL_RECENT_VERSIONS)
         args.libressl = list(LIBRESSL_RECENT_VERSIONS)
         args.awslc = list(AWSLC_RECENT_VERSIONS)
-        wenn not args.disable_ancient:
+        wenn nicht args.disable_ancient:
             args.openssl.extend(OPENSSL_OLD_VERSIONS)
             args.libressl.extend(LIBRESSL_OLD_VERSIONS)
 
@@ -524,18 +524,18 @@ def main():
 
     wenn args.steps in {'modules', 'tests'}:
         fuer name in ['Makefile.pre.in', 'Modules/_ssl.c']:
-            wenn not os.path.isfile(os.path.join(PYTHONROOT, name)):
+            wenn nicht os.path.isfile(os.path.join(PYTHONROOT, name)):
                 parser.error(
                     "Must be executed von CPython build dir"
                 )
-        wenn not os.path.samefile('python', sys.executable):
+        wenn nicht os.path.samefile('python', sys.executable):
             parser.error(
                 "Must be executed mit ./python von CPython build dir"
             )
-        # check fuer configure and run make
+        # check fuer configure und run make
         configure_make()
 
-    # download and register builder
+    # download und register builder
     builds = []
     fuer build_class, versions in [
         (BuildOpenSSL, args.openssl),

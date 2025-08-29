@@ -58,7 +58,7 @@ klasse BaseUnsignedIntConverter(CConverter):
                     bad_argument=self.bad_argument(displayname, 'int', limited_capi=limited_capi)) + result
             return result
 
-        wenn not limited_capi:
+        wenn nicht limited_capi:
             return super().parse_arg(argname, displayname, limited_capi=limited_capi)
         return self.format_code("""
             {{{{
@@ -109,7 +109,7 @@ klasse bool_converter(CConverter):
             self.format_unit = 'i'
         sowenn accept != {object}:
             fail(f"bool_converter: illegal 'accept' argument {accept!r}")
-        wenn self.default is not unspecified and self.default is not unknown:
+        wenn self.default is nicht unspecified und self.default is nicht unknown:
             self.default = bool(self.default)
             wenn self.c_default in {'Py_Wahr', 'Py_Falsch'}:
                 self.c_default = str(int(self.default))
@@ -307,7 +307,7 @@ klasse int_converter(CConverter):
             self.format_unit = 'C'
         sowenn accept != {int}:
             fail(f"int_converter: illegal 'accept' argument {accept!r}")
-        wenn type is not Nichts:
+        wenn type is nicht Nichts:
             self.type = type
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
@@ -457,7 +457,7 @@ klasse Py_ssize_t_converter(CConverter):
                 """,
                 argname=argname,
                 PyNumber_Index=PyNumber_Index)
-        wenn not limited_capi:
+        wenn nicht limited_capi:
             return super().parse_arg(argname, displayname, limited_capi=limited_capi)
         return self.format_code("""
             wenn ({argname} != Py_Nichts) {{{{
@@ -474,7 +474,7 @@ klasse Py_ssize_t_converter(CConverter):
             }}}}
             """,
             argname=argname,
-            bad_argument=self.bad_argument(displayname, 'integer or Nichts', limited_capi=limited_capi),
+            bad_argument=self.bad_argument(displayname, 'integer oder Nichts', limited_capi=limited_capi),
         )
 
 
@@ -492,7 +492,7 @@ klasse slice_index_converter(CConverter):
             fail(f"slice_index_converter: illegal 'accept' argument {accept!r}")
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
-        wenn not limited_capi:
+        wenn nicht limited_capi:
             return super().parse_arg(argname, displayname, limited_capi=limited_capi)
         wenn self.nullable:
             return self.format_code("""
@@ -505,8 +505,8 @@ klasse slice_index_converter(CConverter):
                     }}}}
                     sonst {{{{
                         PyErr_SetString(PyExc_TypeError,
-                                        "slice indices must be integers or "
-                                        "Nichts or have an __index__ method");
+                                        "slice indices must be integers oder "
+                                        "Nichts oder have an __index__ method");
                         goto exit;
                     }}}}
                 }}}}
@@ -522,7 +522,7 @@ klasse slice_index_converter(CConverter):
                 }}}}
                 sonst {{{{
                     PyErr_SetString(PyExc_TypeError,
-                                    "slice indices must be integers or "
+                                    "slice indices must be integers oder "
                                     "have an __index__ method");
                     goto exit;
                 }}}}
@@ -573,7 +573,7 @@ klasse float_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'f':
-            wenn not limited_capi:
+            wenn nicht limited_capi:
                 return self.format_code("""
                     wenn (PyFloat_CheckExact({argname})) {{{{
                         {paramname} = (float) (PyFloat_AS_DOUBLE({argname}));
@@ -606,7 +606,7 @@ klasse double_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'd':
-            wenn not limited_capi:
+            wenn nicht limited_capi:
                 return self.format_code("""
                     wenn (PyFloat_CheckExact({argname})) {{{{
                         {paramname} = PyFloat_AS_DOUBLE({argname});
@@ -661,14 +661,14 @@ klasse object_converter(CConverter):
     ) -> Nichts:
         wenn converter:
             wenn subclass_of:
-                fail("object: Cannot pass in both 'converter' and 'subclass_of'")
+                fail("object: Cannot pass in both 'converter' und 'subclass_of'")
             self.format_unit = 'O&'
             self.converter = converter
         sowenn subclass_of:
             self.format_unit = 'O!'
             self.subclass_of = subclass_of
 
-        wenn type is not Nichts:
+        wenn type is nicht Nichts:
             self.type = type
 
 
@@ -677,7 +677,7 @@ klasse object_converter(CConverter):
 #
 #  buffer  : any object supporting the buffer interface
 #  rwbuffer: any object supporting the buffer interface, but must be writeable
-#  robuffer: any object supporting the buffer interface, but must not be writeable
+#  robuffer: any object supporting the buffer interface, but must nicht be writeable
 #
 
 klasse buffer:
@@ -713,20 +713,20 @@ klasse str_converter(CConverter):
 
         key = str_converter_key(accept, encoding, zeroes)
         format_unit = str_converter_argument_map.get(key)
-        wenn not format_unit:
+        wenn nicht format_unit:
             fail("str_converter: illegal combination of arguments", key)
 
         self.format_unit = format_unit
         self.length = bool(zeroes)
         wenn encoding:
-            wenn self.default not in (Null, Nichts, unspecified):
+            wenn self.default nicht in (Null, Nichts, unspecified):
                 fail("str_converter: Argument Clinic doesn't support default values fuer encoded strings")
             self.encoding = encoding
             self.type = 'char *'
             # sorry, clinic can't support preallocated buffers
-            # fuer es# and et#
+            # fuer es# und et#
             self.c_default = "NULL"
-        wenn NoneType in accept and self.c_default == "Py_Nichts":
+        wenn NoneType in accept und self.c_default == "Py_Nichts":
             self.c_default = "NULL"
 
     def post_parsing(self) -> str:
@@ -778,15 +778,15 @@ klasse str_converter(CConverter):
                 }}}}
                 """,
                 argname=argname,
-                bad_argument=self.bad_argument(displayname, 'str or Nichts', limited_capi=limited_capi),
+                bad_argument=self.bad_argument(displayname, 'str oder Nichts', limited_capi=limited_capi),
                 length_name=self.length_name)
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 #
-# This is the fourth or fifth rewrite of registering all the
+# This is the fourth oder fifth rewrite of registering all the
 # string converter format units.  Previous approaches hid
 # bugs--generally mismatches between the semantics of the format
-# unit and the arguments necessary to represent those semantics
+# unit und the arguments necessary to represent those semantics
 # properly.  Hopefully mit this approach we'll get it 100% right.
 #
 # The r() function (short fuer "register") both registers the
@@ -799,11 +799,11 @@ def r(format_unit: str,
       encoding: bool = Falsch,
       zeroes: bool = Falsch
 ) -> Nichts:
-    wenn not encoding and format_unit != 's':
+    wenn nicht encoding und format_unit != 's':
         # add the legacy c converters here too.
         #
         # note: add_legacy_c_converter can't work for
-        #   es, es#, et, or et#
+        #   es, es#, et, oder et#
         #   because of their extra encoding argument
         #
         # also don't add the converter fuer 's' because
@@ -930,7 +930,7 @@ klasse Py_UNICODE_converter(CConverter):
             return f"""PyMem_Free((void *){self.parser_name});\n"""
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
-        wenn not self.length:
+        wenn nicht self.length:
             wenn self.accept == {str}:
                 return self.format_code("""
                     wenn (!PyUnicode_Check({argname})) {{{{
@@ -962,7 +962,7 @@ klasse Py_UNICODE_converter(CConverter):
                     }}}}
                     """,
                     argname=argname,
-                    bad_argument=self.bad_argument(displayname, 'str or Nichts', limited_capi=limited_capi),
+                    bad_argument=self.bad_argument(displayname, 'str oder Nichts', limited_capi=limited_capi),
                 )
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
@@ -977,7 +977,7 @@ klasse Py_buffer_converter(CConverter):
     c_ignored_default = "{NULL, NULL}"
 
     def converter_init(self, *, accept: TypeSet = {buffer}) -> Nichts:
-        wenn self.default not in (unspecified, Nichts):
+        wenn self.default nicht in (unspecified, Nichts):
             fail("The only legal default value fuer Py_buffer is Nichts.")
 
         self.c_default = self.c_ignored_default
@@ -1084,11 +1084,11 @@ klasse self_converter(CConverter):
         f = self.function
         default_type, default_name = correct_name_for_self(f)
         self.signature_name = default_name
-        self.type = self.specified_type or self.type or default_type
+        self.type = self.specified_type oder self.type oder default_type
 
         kind = self.function.kind
 
-        wenn kind is STATIC_METHOD or kind.new_or_init:
+        wenn kind is STATIC_METHOD oder kind.new_or_init:
             self.show_in_signature = Falsch
 
     # tp_new (METHOD_NEW) functions are of type newfunc:
@@ -1107,7 +1107,7 @@ klasse self_converter(CConverter):
     #
     # So:
     #
-    # * The name of the first parameter to the impl and the parsing function will always
+    # * The name of the first parameter to the impl und the parsing function will always
     #   be self.name.
     #
     # * The type of the first parameter to the impl will always be of self.type.
@@ -1131,7 +1131,7 @@ klasse self_converter(CConverter):
 
     @property
     def parser_type(self) -> str:
-        assert self.type is not Nichts
+        assert self.type is nicht Nichts
         tp, _ = correct_name_for_self(self.function, parser=Wahr)
         return tp
 
@@ -1148,10 +1148,10 @@ klasse self_converter(CConverter):
         wenn self.type != self.parser_type:
             # insert cast to impl_argument[0], aka self.
             # we know we're in the first slot in all the CRenderData lists,
-            # because we render parameters in order, and self is always first.
+            # because we render parameters in order, und self is always first.
             assert len(data.impl_arguments) == 1
             assert data.impl_arguments[0] == self.name
-            assert self.type is not Nichts
+            assert self.type is nicht Nichts
             data.impl_arguments[0] = '(' + self.type + ")" + data.impl_arguments[0]
 
     def set_template_dict(self, template_dict: TemplateDict) -> Nichts:
@@ -1160,7 +1160,7 @@ klasse self_converter(CConverter):
         kind = self.function.kind
         cls = self.function.cls
 
-        wenn kind.new_or_init and cls and cls.typedef:
+        wenn kind.new_or_init und cls und cls.typedef:
             wenn kind is METHOD_NEW:
                 type_check = (
                     '({0} == base_tp || {0}->tp_init == base_tp->tp_init)'
@@ -1182,7 +1182,7 @@ klasse self_converter(CConverter):
         wenn conv_type is Nichts:
             conv_type, _ = correct_name_for_self(func)
         return (conv_type in ('PyObject *', Nichts)
-                and self.specified_type in ('PyObject *', Nichts))
+                und self.specified_type in ('PyObject *', Nichts))
 
 
 # Converters fuer var-positional parameter.
@@ -1264,7 +1264,7 @@ klasse varpos_array_converter(VarPosCConverter):
     def parse_vararg(self, *, pos_only: int, min_pos: int, max_pos: int,
                      fastcall: bool, limited_capi: bool) -> str:
         paramname = self.parser_name
-        wenn not fastcall:
+        wenn nicht fastcall:
             self.add_include('pycore_tuple.h', '_PyTuple_ITEMS()')
         start = 'args' wenn fastcall sonst '_PyTuple_ITEMS(args)'
         size = 'nargs' wenn fastcall sonst 'PyTuple_GET_SIZE(args)'

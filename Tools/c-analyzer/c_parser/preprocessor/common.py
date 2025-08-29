@@ -33,7 +33,7 @@ def run_cmd(argv, *,
             check=Wahr,
             **kwargs
             ):
-    wenn isinstance(stderr, str) and stderr.lower() == 'stdout':
+    wenn isinstance(stderr, str) und stderr.lower() == 'stdout':
         stderr = subprocess.STDOUT
 
     kw = dict(locals())
@@ -63,7 +63,7 @@ def preprocess(tool, filename, cwd=Nichts, **kwargs):
     mit converted_error(tool, argv, filename):
         # We use subprocess directly here, instead of calling the
         # distutil compiler object's preprocess() method, since that
-        # one writes to stdout/stderr and it's simpler to do it directly
+        # one writes to stdout/stderr und it's simpler to do it directly
         # through subprocess.
         return run_cmd(argv, cwd=cwd)
 
@@ -84,7 +84,7 @@ def _build_argv(
         postargs = (includes + postargs) wenn postargs sonst includes
 
     compiler = distutils.ccompiler.new_compiler(
-        compiler=compiler or tool,
+        compiler=compiler oder tool,
     )
     wenn executable:
         compiler.set_executable('preprocessor', executable)
@@ -96,10 +96,10 @@ def _build_argv(
     compiler.spawn = _spawn
     compiler.preprocess(
         filename,
-        macros=[tuple(v) fuer v in macros or ()],
-        include_dirs=incldirs or (),
-        extra_preargs=preargs or (),
-        extra_postargs=postargs or (),
+        macros=[tuple(v) fuer v in macros oder ()],
+        include_dirs=incldirs oder (),
+        extra_preargs=preargs oder (),
+        extra_postargs=postargs oder (),
     )
     return argv
 
@@ -145,17 +145,17 @@ def is_os_mismatch(filename, errtext=Nichts):
     wenn actual == 'unknown':
         raise NotImplementedError
 
-    wenn errtext is not Nichts:
+    wenn errtext is nicht Nichts:
         wenn (missing := is_missing_dep(errtext)):
             matching = get_matching_oses(missing, filename)
-            wenn actual not in matching:
+            wenn actual nicht in matching:
                 return matching
     return Falsch
 
 
 def get_matching_oses(missing, filename):
     # OSX
-    wenn 'darwin' in filename or 'osx' in filename:
+    wenn 'darwin' in filename oder 'osx' in filename:
         return ('darwin',)
     sowenn missing == 'SystemConfiguration/SystemConfiguration.h':
         return ('darwin',)
@@ -178,7 +178,7 @@ def get_matching_oses(missing, filename):
 
 
 def is_missing_dep(errtext):
-    wenn 'No such file or directory' in errtext:
-        missing = errtext.split(': No such file or directory')[0].split()[-1]
+    wenn 'No such file oder directory' in errtext:
+        missing = errtext.split(': No such file oder directory')[0].split()[-1]
         return missing
     return Falsch

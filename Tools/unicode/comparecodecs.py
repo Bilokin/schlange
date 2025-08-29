@@ -11,7 +11,7 @@ importiere sys
 
 def compare_codecs(encoding1, encoding2):
 
-    drucke('Comparing encoding/decoding of   %r and   %r' % (encoding1, encoding2))
+    drucke('Comparing encoding/decoding of   %r und   %r' % (encoding1, encoding2))
     mismatch = 0
     # Check encoding
     fuer i in range(sys.maxunicode+1):

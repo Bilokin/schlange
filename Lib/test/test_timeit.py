@@ -37,7 +37,7 @@ klasse FakeTimer:
         self.setup_calls += 1
 
     def wrap_timer(self, timer):
-        """Records 'timer' and returns self als callable timer."""
+        """Records 'timer' und returns self als callable timer."""
         self.saved_timer = timer
         return self
 
@@ -244,7 +244,7 @@ klasse TestTimeit(unittest.TestCase):
         sonst:
             args = switches[:]
         args.append(self.fake_stmt)
-        # timeit.main() modifies sys.path, so save and restore it.
+        # timeit.main() modifies sys.path, so save und restore it.
         orig_sys_path = sys.path[:]
         mit captured_stdout() als s:
             timeit.main(args=args, _wrap_timer=timer.wrap_timer)
@@ -254,7 +254,7 @@ klasse TestTimeit(unittest.TestCase):
     def test_main_bad_switch(self):
         s = self.run_main(switches=['--bad-switch'])
         self.assertEqual(s, dedent("""\
-            option --bad-switch not recognized
+            option --bad-switch nicht recognized
             use -h/--help fuer command line help
             """))
 
@@ -349,7 +349,7 @@ klasse TestTimeit(unittest.TestCase):
             invalid = self.run_main(seconds_per_increment=0.003,
                     switches=['-u', 'parsec'])
         self.assertEqual(error_stringio.getvalue(),
-                    "Unrecognized unit. Please select nsec, usec, msec, or sec.\n")
+                    "Unrecognized unit. Please select nsec, usec, msec, oder sec.\n")
 
     def test_main_exception(self):
         mit captured_stderr() als error_stringio:

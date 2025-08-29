@@ -1,9 +1,9 @@
 """
 This module contains the core classes of version 2.0 of SAX fuer Python.
 This file provides only default classes mit absolutely minimum
-functionality, von which drivers and applications can be subclassed.
+functionality, von which drivers und applications can be subclassed.
 
-Many of these classes are empty and are included only als documentation
+Many of these classes are empty und are included only als documentation
 of the interfaces.
 
 $Id$
@@ -24,9 +24,9 @@ klasse ErrorHandler:
 
     If you create an object that implements this interface, then
     register the object mit your XMLReader, the parser will call the
-    methods in your object to report all warnings and errors. There
+    methods in your object to report all warnings und errors. There
     are three levels of errors available: warnings, (possibly)
-    recoverable errors, and unrecoverable errors. All methods take a
+    recoverable errors, und unrecoverable errors. All methods take a
     SAXParseException als the only parameter."""
 
     def error(self, exception):
@@ -47,7 +47,7 @@ klasse ErrorHandler:
 klasse ContentHandler:
     """Interface fuer receiving logical document content events.
 
-    This is the main callback interface in SAX, and the one most
+    This is the main callback interface in SAX, und the one most
     important to applications. The order of events in this interface
     mirrors the order of the information in the document."""
 
@@ -58,7 +58,7 @@ klasse ContentHandler:
         """Called by the parser to give the application a locator for
         locating the origin of document events.
 
-        SAX parsers are strongly encouraged (though not absolutely
+        SAX parsers are strongly encouraged (though nicht absolutely
         required) to supply a locator: wenn it does so, it must supply
         the locator to the application by invoking this method before
         invoking any of the other methods in the DocumentHandler
@@ -66,68 +66,68 @@ klasse ContentHandler:
 
         The locator allows the application to determine the end
         position of any document-related event, even wenn the parser is
-        not reporting an error. Typically, the application will use
+        nicht reporting an error. Typically, the application will use
         this information fuer reporting its own errors (such as
-        character content that does not match an application's
+        character content that does nicht match an application's
         business rules). The information returned by the locator is
-        probably not sufficient fuer use mit a search engine.
+        probably nicht sufficient fuer use mit a search engine.
 
         Note that the locator will return correct information only
         during the invocation of the events in this interface. The
-        application should not attempt to use it at any other time."""
+        application should nicht attempt to use it at any other time."""
         self._locator = locator
 
     def startDocument(self):
         """Receive notification of the beginning of a document.
 
         The SAX parser will invoke this method only once, before any
-        other methods in this interface or in DTDHandler (except for
+        other methods in this interface oder in DTDHandler (except for
         setDocumentLocator)."""
 
     def endDocument(self):
         """Receive notification of the end of a document.
 
-        The SAX parser will invoke this method only once, and it will
+        The SAX parser will invoke this method only once, und it will
         be the last method invoked during the parse. The parser shall
-        not invoke this method until it has either abandoned parsing
-        (because of an unrecoverable error) or reached the end of
+        nicht invoke this method until it has either abandoned parsing
+        (because of an unrecoverable error) oder reached the end of
         input."""
 
     def startPrefixMapping(self, prefix, uri):
         """Begin the scope of a prefix-URI Namespace mapping.
 
-        The information von this event is not necessary fuer normal
+        The information von this event is nicht necessary fuer normal
         Namespace processing: the SAX XML reader will automatically
-        replace prefixes fuer element and attribute names when the
+        replace prefixes fuer element und attribute names when the
         http://xml.org/sax/features/namespaces feature is true (the
         default).
 
         There are cases, however, when applications need to use
-        prefixes in character data or in attribute values, where they
+        prefixes in character data oder in attribute values, where they
         cannot safely be expanded automatically; the
         start/endPrefixMapping event supplies the information to the
         application to expand prefixes in those contexts itself, if
         necessary.
 
-        Note that start/endPrefixMapping events are not guaranteed to
+        Note that start/endPrefixMapping events are nicht guaranteed to
         be properly nested relative to each-other: all
         startPrefixMapping events will occur before the corresponding
-        startElement event, and all endPrefixMapping events will occur
+        startElement event, und all endPrefixMapping events will occur
         after the corresponding endElement event, but their order is
-        not guaranteed."""
+        nicht guaranteed."""
 
     def endPrefixMapping(self, prefix):
         """End the scope of a prefix-URI mapping.
 
         See startPrefixMapping fuer details. This event will always
         occur after the corresponding endElement event, but the order
-        of endPrefixMapping events is not otherwise guaranteed."""
+        of endPrefixMapping events is nicht otherwise guaranteed."""
 
     def startElement(self, name, attrs):
         """Signals the start of an element in non-namespace mode.
 
         The name parameter contains the raw XML 1.0 name of the
-        element type als a string and the attrs parameter holds an
+        element type als a string und the attrs parameter holds an
         instance of the Attributes klasse containing the attributes of
         the element."""
 
@@ -142,7 +142,7 @@ klasse ContentHandler:
 
         The name parameter contains the name of the element type als a
         (uri, localname) tuple, the qname parameter the raw XML 1.0
-        name used in the source document, and the attrs parameter
+        name used in the source document, und the attrs parameter
         holds an instance of the Attributes klasse containing the
         attributes of the element.
 
@@ -160,7 +160,7 @@ klasse ContentHandler:
 
         The Parser will call this method to report each chunk of
         character data. SAX parsers may return all contiguous
-        character data in a single chunk, or they may split it into
+        character data in a single chunk, oder they may split it into
         several chunks; however, all of the characters in any single
         event must come von the same external entity so that the
         Locator provides useful information."""
@@ -171,10 +171,10 @@ klasse ContentHandler:
         Validating Parsers must use this method to report each chunk
         of ignorable whitespace (see the W3C XML 1.0 recommendation,
         section 2.10): non-validating parsers may also use this method
-        wenn they are capable of parsing and using content models.
+        wenn they are capable of parsing und using content models.
 
         SAX parsers may return all contiguous whitespace in a single
-        chunk, or they may split it into several chunks; however, all
+        chunk, oder they may split it into several chunks; however, all
         of the characters in any single event must come von the same
         external entity, so that the Locator provides useful
         information."""
@@ -184,10 +184,10 @@ klasse ContentHandler:
 
         The Parser will invoke this method once fuer each processing
         instruction found: note that processing instructions may occur
-        before or after the main document element.
+        before oder after the main document element.
 
         A SAX parser should never report an XML declaration (XML 1.0,
-        section 2.8) or a text declaration (XML 1.0, section 4.3.1)
+        section 2.8) oder a text declaration (XML 1.0, section 4.3.1)
         using this method."""
 
     def skippedEntity(self, name):
@@ -195,10 +195,10 @@ klasse ContentHandler:
 
         The Parser will invoke this method once fuer each entity
         skipped. Non-validating processors may skip entities wenn they
-        have not seen the declarations (because, fuer example, the
+        have nicht seen the declarations (because, fuer example, the
         entity was declared in an external DTD subset). All processors
         may skip external entities, depending on the values of the
-        http://xml.org/sax/features/external-general-entities and the
+        http://xml.org/sax/features/external-general-entities und the
         http://xml.org/sax/features/external-parameter-entities
         properties."""
 
@@ -209,7 +209,7 @@ klasse DTDHandler:
     """Handle DTD events.
 
     This interface specifies only those DTD events required fuer basic
-    parsing (unparsed entities and attributes)."""
+    parsing (unparsed entities und attributes)."""
 
     def notationDecl(self, name, publicId, systemId):
         "Handle a notation declaration event."
@@ -228,8 +228,8 @@ klasse EntityResolver:
     this interface mit the default behaviour."""
 
     def resolveEntity(self, publicId, systemId):
-        """Resolve the system identifier of an entity and return either
-        the system identifier to read von als a string, or an InputSource
+        """Resolve the system identifier of an entity und return either
+        the system identifier to read von als a string, oder an InputSource
         to read from."""
         return systemId
 
@@ -242,40 +242,40 @@ klasse EntityResolver:
 
 feature_namespaces = "http://xml.org/sax/features/namespaces"
 # true: Perform Namespace processing (default).
-# false: Optionally do not perform Namespace processing
+# false: Optionally do nicht perform Namespace processing
 #        (implies namespace-prefixes).
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (nicht parsing) read/write
 
 feature_namespace_prefixes = "http://xml.org/sax/features/namespace-prefixes"
-# true: Report the original prefixed names and attributes used fuer Namespace
+# true: Report the original prefixed names und attributes used fuer Namespace
 #       declarations.
-# false: Do not report attributes used fuer Namespace declarations, and
-#        optionally do not report original prefixed names (default).
-# access: (parsing) read-only; (not parsing) read/write
+# false: Do nicht report attributes used fuer Namespace declarations, und
+#        optionally do nicht report original prefixed names (default).
+# access: (parsing) read-only; (nicht parsing) read/write
 
 feature_string_interning = "http://xml.org/sax/features/string-interning"
-# true: All element names, prefixes, attribute names, Namespace URIs, and
+# true: All element names, prefixes, attribute names, Namespace URIs, und
 #       local names are interned using the built-in intern function.
-# false: Names are not necessarily interned, although they may be (default).
-# access: (parsing) read-only; (not parsing) read/write
+# false: Names are nicht necessarily interned, although they may be (default).
+# access: (parsing) read-only; (nicht parsing) read/write
 
 feature_validation = "http://xml.org/sax/features/validation"
-# true: Report all validation errors (implies external-general-entities and
+# true: Report all validation errors (implies external-general-entities und
 #       external-parameter-entities).
-# false: Do not report validation errors.
-# access: (parsing) read-only; (not parsing) read/write
+# false: Do nicht report validation errors.
+# access: (parsing) read-only; (nicht parsing) read/write
 
 feature_external_ges = "http://xml.org/sax/features/external-general-entities"
 # true: Include all external general (text) entities.
-# false: Do not include external general entities.
-# access: (parsing) read-only; (not parsing) read/write
+# false: Do nicht include external general entities.
+# access: (parsing) read-only; (nicht parsing) read/write
 
 feature_external_pes = "http://xml.org/sax/features/external-parameter-entities"
 # true: Include all external parameter entities, including the external
 #       DTD subset.
-# false: Do not include any external parameter entities, even the external
+# false: Do nicht include any external parameter entities, even the external
 #        DTD subset.
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (nicht parsing) read/write
 
 all_features = [feature_namespaces,
                 feature_namespace_prefixes,
@@ -299,15 +299,15 @@ property_lexical_handler = "http://xml.org/sax/properties/lexical-handler"
 property_declaration_handler = "http://xml.org/sax/properties/declaration-handler"
 # data type: xml.sax.sax2lib.DeclHandler
 # description: An optional extension handler fuer DTD-related events other
-#              than notations and unparsed entities.
+#              than notations und unparsed entities.
 # access: read/write
 
 property_dom_node = "http://xml.org/sax/properties/dom-node"
 # data type: org.w3c.dom.Node
 # description: When parsing, the current DOM node being visited wenn this is
-#              a DOM iterator; when not parsing, the root DOM node for
+#              a DOM iterator; when nicht parsing, the root DOM node for
 #              iteration.
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (nicht parsing) read/write
 
 property_xml_string = "http://xml.org/sax/properties/xml-string"
 # data type: String
@@ -331,7 +331,7 @@ property_interning_dict = "http://www.python.org/sax/properties/interning-dict"
 # description: The dictionary used to intern common strings in the document
 # access: write: Request that the parser uses a specific dictionary, to
 #                allow interning across different documents
-#         read:  return the current interning dictionary, or Nichts
+#         read:  return the current interning dictionary, oder Nichts
 #
 
 all_properties = [property_lexical_handler,
@@ -348,7 +348,7 @@ klasse LexicalHandler:
     This handler is used to obtain lexical information about an XML
     document, that is, information about how the document was encoded
     (as opposed to what it contains, which is reported to the
-    ContentHandler), such als comments and CDATA marked section
+    ContentHandler), such als comments und CDATA marked section
     boundaries.
 
     To set the LexicalHandler of an XMLReader, use the setProperty
@@ -357,7 +357,7 @@ klasse LexicalHandler:
 
     def comment(self, content):
         """Reports a comment anywhere in the document (including the
-        DTD and outside the document element).
+        DTD und outside the document element).
 
         content is a string that holds the contents of the comment."""
 
@@ -366,12 +366,12 @@ klasse LexicalHandler:
         has an associated DTD.
 
         A startEntity event will be reported before declaration events
-        von the external DTD subset are reported, and this can be
+        von the external DTD subset are reported, und this can be
         used to infer von which subset DTD declarations derive.
 
         name is the name of the document element type, public_id the
         public identifier of the DTD (or Nichts wenn none were supplied)
-        and system_id the system identifier of the external subset (or
+        und system_id the system identifier of the external subset (or
         Nichts wenn none were supplied)."""
 
     def endDTD(self):

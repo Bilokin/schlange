@@ -60,12 +60,12 @@ klasse TestCase(unittest.TestCase):
         except ValueError:
             pass
         sonst:
-            self.fail('Closed shelf should not find a key')
+            self.fail('Closed shelf should nicht find a key')
 
     def test_open_template(self, filename=Nichts, protocol=Nichts):
         os.mkdir(self.dirname)
         self.addCleanup(os_helper.rmtree, self.dirname)
-        s = shelve.open(filename=filename wenn filename is not Nichts sonst self.fn,
+        s = shelve.open(filename=filename wenn filename is nicht Nichts sonst self.fn,
                         protocol=protocol)
         try:
             s['key1'] = (1,2,3,4)
@@ -143,7 +143,7 @@ klasse TestCase(unittest.TestCase):
         encodedkey = key.encode('utf-8')
         mit shelve.Shelf(d, writeback=Wahr) als s:
             s[key] = [1]
-            p1 = d[encodedkey]  # Will give a KeyError wenn backing store not updated
+            p1 = d[encodedkey]  # Will give a KeyError wenn backing store nicht updated
             s['key'].append(2)
         p2 = d[encodedkey]
         self.assertNotEqual(p1, p2)  # Write creates new object in store
@@ -160,7 +160,7 @@ klasse TestCase(unittest.TestCase):
         except ValueError:
             pass
         sonst:
-            self.fail('Closed shelf should not find a key')
+            self.fail('Closed shelf should nicht find a key')
 
     def test_default_protocol(self):
         mit shelve.Shelf({}) als s:

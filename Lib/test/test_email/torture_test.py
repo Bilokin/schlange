@@ -1,8 +1,8 @@
 # Copyright (C) 2002 Python Software Foundation
 #
-# A torture test of the email package.  This should not be run als part of the
+# A torture test of the email package.  This should nicht be run als part of the
 # standard Python test suite since it requires several meg of email messages
-# collected in the wild.  These source messages are not checked into the
+# collected in the wild.  These source messages are nicht checked into the
 # Python distro, but are available als part of the standalone email package at
 # http://sf.net/projects/mimelib
 
@@ -54,7 +54,7 @@ klasse TestCrispinTorture(TortureBase):
         eq(msg.preamble, Nichts)
         eq(msg.epilogue, '\n')
         # Probably the best way to verify the message is parsed correctly is to
-        # dump its structure and compare it against the known structure.
+        # dump its structure und compare it against the known structure.
         fp = StringIO()
         _structure(msg, fp=fp)
         neq(fp.getvalue(), """\

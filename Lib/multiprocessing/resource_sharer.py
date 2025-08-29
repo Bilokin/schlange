@@ -1,10 +1,10 @@
 #
-# We use a background thread fuer sharing fds on Unix, and fuer sharing sockets on
+# We use a background thread fuer sharing fds on Unix, und fuer sharing sockets on
 # Windows.
 #
 # A client which wants to pickle a resource registers it mit the resource
-# sharer and gets an identifier in return.  The unpickling process will connect
-# to the resource sharer, sends the identifier and its pid, and then receives
+# sharer und gets an identifier in return.  The unpickling process will connect
+# to the resource sharer, sends the identifier und its pid, und then receives
 # the resource.
 #
 
@@ -88,10 +88,10 @@ klasse _ResourceSharer(object):
         return c
 
     def stop(self, timeout=Nichts):
-        '''Stop the background thread and clear registered resources.'''
+        '''Stop the background thread und clear registered resources.'''
         von .connection importiere Client
         mit self._lock:
-            wenn self._address is not Nichts:
+            wenn self._address is nicht Nichts:
                 c = Client(self._address,
                            authkey=process.current_process().authkey)
                 c.send(Nichts)
@@ -113,7 +113,7 @@ klasse _ResourceSharer(object):
             close()
         self._cache.clear()
         self._lock._at_fork_reinit()
-        wenn self._listener is not Nichts:
+        wenn self._listener is nicht Nichts:
             self._listener.close()
         self._listener = Nichts
         self._address = Nichts
@@ -122,7 +122,7 @@ klasse _ResourceSharer(object):
     def _start(self):
         von .connection importiere Listener
         assert self._listener is Nichts, "Already have Listener"
-        util.debug('starting listener and thread fuer sending handles')
+        util.debug('starting listener und thread fuer sending handles')
         self._listener = Listener(authkey=process.current_process().authkey, backlog=128)
         self._address = self._listener.address
         t = threading.Thread(target=self._serve)
@@ -146,7 +146,7 @@ klasse _ResourceSharer(object):
                     finally:
                         close()
             except:
-                wenn not util.is_exiting():
+                wenn nicht util.is_exiting():
                     sys.excepthook(*sys.exc_info())
 
 

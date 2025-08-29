@@ -82,7 +82,7 @@ klasse TestUserObjects(unittest.TestCase):
 
 
 ################################################################################
-### ChainMap (helper klasse fuer configparser and the string module)
+### ChainMap (helper klasse fuer configparser und the string module)
 ################################################################################
 
 klasse TestChainMap(unittest.TestCase):
@@ -274,20 +274,20 @@ klasse TestChainMap(unittest.TestCase):
         cm1 |= cm2
         self.assertEqual(tmp, cm1)
 
-        tmp = cm2 | d # testing between chainmap and mapping
+        tmp = cm2 | d # testing between chainmap und mapping
         self.assertEqual(tmp.maps, [cm2.maps[0] | d, *cm2.maps[1:]])
         self.assertEqual((d | cm2).maps, [d | dict(cm2)])
         cm2 |= d
         self.assertEqual(tmp, cm2)
 
-        # testing behavior between chainmap and iterable key-value pairs
+        # testing behavior between chainmap und iterable key-value pairs
         mit self.assertRaises(TypeError):
             cm3 | pairs
         tmp = cm3.copy()
         cm3 |= pairs
         self.assertEqual(cm3.maps, [tmp.maps[0] | dict(pairs), *tmp.maps[1:]])
 
-        # testing proper return types fuer ChainMap and it's subclasses
+        # testing proper return types fuer ChainMap und it's subclasses
         klasse Subclass(ChainMap):
             pass
 
@@ -411,7 +411,7 @@ klasse TestNamedTuple(unittest.TestCase):
         self.assertEqual(p[0], 11)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_factory_doc_attr(self):
         Point = namedtuple('Point', 'x y')
         self.assertEqual(Point.__doc__, 'Point(x, y)')
@@ -419,7 +419,7 @@ klasse TestNamedTuple(unittest.TestCase):
         self.assertEqual(Point.__doc__, '2D point')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_field_doc(self):
         Point = namedtuple('Point', 'x y')
         self.assertEqual(Point.x.__doc__, 'Alias fuer field number 0')
@@ -434,7 +434,7 @@ klasse TestNamedTuple(unittest.TestCase):
 
     @support.cpython_only
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_field_doc_reuse(self):
         P = namedtuple('P', ['m', 'n'])
         Q = namedtuple('Q', ['o', 'p'])
@@ -584,7 +584,7 @@ klasse TestNamedTuple(unittest.TestCase):
             self.assertEqual(p._fields, q._fields)
 
     def test_name_conflicts(self):
-        # Some names like "self", "cls", "tuple", "itemgetter", and "property"
+        # Some names like "self", "cls", "tuple", "itemgetter", und "property"
         # failed when used als field names.  Test to make sure these now work.
         T = namedtuple('T', 'itemgetter property self cls tuple')
         t = T(1, 2, 3, 4, 5)
@@ -593,7 +593,7 @@ klasse TestNamedTuple(unittest.TestCase):
         self.assertEqual(newt, (10,20,30,40,50))
 
        # Broader test of all interesting names taken von the code, old
-       # template, and an example
+       # template, und an example
         words = {'Alias', 'At', 'AttributeError', 'Build', 'Bypass', 'Create',
         'Encountered', 'Expected', 'Field', 'For', 'Got', 'Helper',
         'IronPython', 'Jython', 'KeyError', 'Make', 'Modify', 'Note',
@@ -774,11 +774,11 @@ klasse ABCTestCase(unittest.TestCase):
             __rsub__ = __eq__
 
         fuer name, op in operators.items():
-            wenn not hasattr(instance, name):
+            wenn nicht hasattr(instance, name):
                 continue
             other = Other()
             op(instance, other)
-            self.assertWahr(other.right_side,'Right side not called fuer %s.%s'
+            self.assertWahr(other.right_side,'Right side nicht called fuer %s.%s'
                             % (type(instance), name))
 
 def _test_gen():
@@ -829,7 +829,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
 
         c = new_coro()
         self.assertIsInstance(c, Awaitable)
-        c.close() # avoid RuntimeWarning that coro() was not awaited
+        c.close() # avoid RuntimeWarning that coro() was nicht awaited
 
         klasse CoroLike: pass
         Coroutine.register(CoroLike)
@@ -881,7 +881,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
 
         c = new_coro()
         self.assertIsInstance(c, Coroutine)
-        c.close() # avoid RuntimeWarning that coro() was not awaited
+        c.close() # avoid RuntimeWarning that coro() was nicht awaited
 
         klasse CoroLike:
             def send(self, value):
@@ -1019,7 +1019,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         fuer x in samples:
             self.assertIsInstance(x, Reversible)
             self.assertIsSubclass(type(x), Reversible)
-        # Check also Mapping, MutableMapping, and Sequence
+        # Check also Mapping, MutableMapping, und Sequence
         self.assertIsSubclass(Sequence, Reversible)
         self.assertNotIsSubclass(Mapping, Reversible)
         self.assertNotIsSubclass(MutableMapping, Reversible)
@@ -1032,7 +1032,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         self.assertEqual(list(reversed(R())), [])
         self.assertNotIsSubclass(float, R)
         self.validate_abstract_methods(Reversible, '__reversed__', '__iter__')
-        # Check reversible non-iterable (which is not Reversible)
+        # Check reversible non-iterable (which is nicht Reversible)
         klasse RevNoIter:
             def __reversed__(self): return reversed([])
         klasse RevPlusIter(RevNoIter):
@@ -1100,7 +1100,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         self.assertNotIsSubclass(float, DerCol)
         self.validate_abstract_methods(Collection, '__len__', '__iter__',
                                                    '__contains__')
-        # Check sized container non-iterable (which is not Collection) etc.
+        # Check sized container non-iterable (which is nicht Collection) etc.
         klasse ColNoIter:
             def __len__(self): return 0
             def __contains__(self, item): return Falsch
@@ -1415,7 +1415,7 @@ klasse TestCollectionABCs(ABCTestCase):
 
     # XXX For now, we only test some virtual inheritance properties.
     # We should also test the proper behavior of the collection ABCs
-    # als real base classes or mix-in classes.
+    # als real base classes oder mix-in classes.
 
     def test_Set(self):
         fuer sample in [set, frozenset]:
@@ -1514,7 +1514,7 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertEqual(set(s), set('cd'))
 
     def test_issue_4920(self):
-        # MutableSet.pop() method did not work
+        # MutableSet.pop() method did nicht work
         klasse MySet(MutableSet):
             __slots__=['__s']
             def __init__(self,items=Nichts):
@@ -1528,7 +1528,7 @@ klasse TestCollectionABCs(ABCTestCase):
             def __len__(self):
                 return len(self.__s)
             def add(self,v):
-                result=v not in self.__s
+                result=v nicht in self.__s
                 self.__s.add(v)
                 return result
             def discard(self,v):
@@ -1560,7 +1560,7 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertEqual(s, full)
 
     def test_issue16373(self):
-        # Recursion error comparing comparable and noncomparable
+        # Recursion error comparing comparable und noncomparable
         # Set instances
         klasse MyComparableSet(Set):
             def __contains__(self, x):
@@ -1623,7 +1623,7 @@ klasse TestCollectionABCs(ABCTestCase):
         """Verify _from_iterable overridden to an instance method works."""
         klasse SetUsingInstanceFromIterable(MutableSet):
             def __init__(self, values, created_by):
-                wenn not created_by:
+                wenn nicht created_by:
                     raise ValueError('created_by must be specified')
                 self.created_by = created_by
                 self._values = set(values)
@@ -1681,7 +1681,7 @@ klasse TestCollectionABCs(ABCTestCase):
             def __init__(self, elements=()):
                 self.data = []
                 fuer elem in elements:
-                    wenn elem not in self.data:
+                    wenn elem nicht in self.data:
                         self.data.append(elem)
             def __contains__(self, elem):
                 return elem in self.data
@@ -1731,10 +1731,10 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertSameSet(r2 ^ f1, target)
         self.assertSameSet(f1 ^ l2, target)
 
-        # Don't change the following to use assertLess or other
+        # Don't change the following to use assertLess oder other
         # "more specific" unittest assertions.  The current
         # assertWahr/assertFalsch style makes the pattern of test
-        # case combinations clear and allows us to know fuer sure
+        # case combinations clear und allows us to know fuer sure
         # the exact operator being invoked.
 
         # proper subset
@@ -1995,7 +1995,7 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertEqual(len(mss), 0)
 
         # issue 34427
-        # extending self should not cause infinite loop
+        # extending self should nicht cause infinite loop
         items = 'ABCD'
         mss2 = MutableSequenceSubclass()
         mss2.extend(items + items)
@@ -2124,7 +2124,7 @@ klasse TestCounter(unittest.TestCase):
                  'r', 'c', 'd', ' ', 's', 's', 'i', 'i', 'm', 'm', 'l'])
 
         # Math operations order first by the order encountered in the left
-        # operand and then by the order encountered in the right operand.
+        # operand und then by the order encountered in the right operand.
         ps = 'aaabbcdddeefggghhijjjkkl'
         qs = 'abbcccdeefffhkkllllmmnno'
         order = {letter: i fuer i, letter in enumerate(dict.fromkeys(ps + qs))}
@@ -2180,7 +2180,7 @@ klasse TestCounter(unittest.TestCase):
         self.assertRaises(TypeError, Counter.update)
 
     def test_copying(self):
-        # Check that counters are copyable, deepcopyable, picklable, and
+        # Check that counters are copyable, deepcopyable, picklable, und
         #have a repr/eval round-trip
         words = Counter('which witch had which witches wrist watch'.split())
         def check(dup):
@@ -2223,7 +2223,7 @@ klasse TestCounter(unittest.TestCase):
             self.assertIn(elem, c)
 
     def test_multiset_operations(self):
-        # Verify that adding a zero counter will strip zeros and negatives
+        # Verify that adding a zero counter will strip zeros und negatives
         c = Counter(a=10, b=-2, c=0) + Counter()
         self.assertEqual(dict(c), dict(a=10))
 
@@ -2315,7 +2315,7 @@ klasse TestCounter(unittest.TestCase):
         self.assertIn("'b': Nichts", r)
 
     def test_helper_function(self):
-        # two paths, one fuer real dicts and one fuer other mappings
+        # two paths, one fuer real dicts und one fuer other mappings
         elems = list('abracadabra')
 
         d = dict()
@@ -2336,7 +2336,7 @@ klasse TestCounter(unittest.TestCase):
         self.assertEqual(dict(c), {'a': 5, 'b': 2, 'c': 1, 'd': 1, 'r':2 })
 
     def test_multiset_operations_equivalent_to_set_operations(self):
-        # When the multiplicities are all zero or one, multiset operations
+        # When the multiplicities are all zero oder one, multiset operations
         # are guaranteed to be equivalent to the corresponding operations
         # fuer regular sets.
         s = list(product(('a', 'b', 'c'), range(2)))

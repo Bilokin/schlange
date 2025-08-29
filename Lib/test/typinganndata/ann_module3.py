@@ -1,6 +1,6 @@
 """
 Correct syntax fuer variable annotation that should fail at runtime
-in a certain manner. More examples are in test_grammar and test_parser.
+in a certain manner. More examples are in test_grammar und test_parser.
 """
 
 def f_bad_ann():

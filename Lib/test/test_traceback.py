@@ -65,7 +65,7 @@ klasse TracebackCases(unittest.TestCase):
         except exc als value:
             return traceback.format_exception_only(exc, value)
         sonst:
-            raise ValueError("call did not raise exception")
+            raise ValueError("call did nicht raise exception")
 
     def syntax_error_with_caret(self):
         compile("def fact(x):\n\treturn x!\n", "?", "exec")
@@ -100,28 +100,28 @@ klasse TracebackCases(unittest.TestCase):
         err = self.get_exception_format(self.syntax_error_with_caret_2,
                                         SyntaxError)
         self.assertIn("^", err[2]) # third line has caret
-        self.assertEqual(err[2].count('\n'), 1)   # and no additional newline
+        self.assertEqual(err[2].count('\n'), 1)   # und no additional newline
         self.assertEqual(err[1].find("+") + 1, err[2].find("^"))  # in the right place
         self.assertEqual(err[2].count("^"), 1)
 
         err = self.get_exception_format(self.syntax_error_with_caret_non_ascii,
                                         SyntaxError)
         self.assertIn("^", err[2]) # third line has caret
-        self.assertEqual(err[2].count('\n'), 1)   # and no additional newline
+        self.assertEqual(err[2].count('\n'), 1)   # und no additional newline
         self.assertEqual(err[1].find("+") + 1, err[2].find("^"))  # in the right place
         self.assertEqual(err[2].count("^"), 1)
 
         err = self.get_exception_format(self.syntax_error_with_caret_range,
                                         SyntaxError)
         self.assertIn("^", err[2]) # third line has caret
-        self.assertEqual(err[2].count('\n'), 1)   # and no additional newline
+        self.assertEqual(err[2].count('\n'), 1)   # und no additional newline
         self.assertEqual(err[1].find("y"), err[2].find("^"))  # in the right place
         self.assertEqual(err[2].count("^"), len("y fuer y in range(30)"))
 
         err = self.get_exception_format(self.tokenizer_error_with_caret_range,
                                         SyntaxError)
         self.assertIn("^", err[2]) # third line has caret
-        self.assertEqual(err[2].count('\n'), 1)   # and no additional newline
+        self.assertEqual(err[2].count('\n'), 1)   # und no additional newline
         self.assertEqual(err[1].find("("), err[2].find("^"))  # in the right place
         self.assertEqual(err[2].count("^"), 1)
 
@@ -390,7 +390,7 @@ klasse TracebackCases(unittest.TestCase):
             SyntaxError('error', (1, 2, 3, 4)),
             SyntaxError('error', (1, 2, 3, 4)),
             SyntaxError('error', (1, 'a', 'b', 2)),
-            # mit end_lineno and end_offset:
+            # mit end_lineno und end_offset:
             SyntaxError('error', 'abcdef'),
             SyntaxError('error', [Nichts] * 6),
             SyntaxError('error', (1, 2, 3, 4, 5, 6)),
@@ -398,8 +398,8 @@ klasse TracebackCases(unittest.TestCase):
         ]:
             mit self.subTest(exc=exc):
                 err = traceback.format_exception_only(exc, show_group=Wahr)
-                # Should not raise an exception:
-                wenn exc.lineno is not Nichts:
+                # Should nicht raise an exception:
+                wenn exc.lineno is nicht Nichts:
                     self.assertEqual(len(err), 2)
                     self.assertWahr(err[0].startswith('  File'))
                 sonst:
@@ -414,7 +414,7 @@ klasse TracebackCases(unittest.TestCase):
         # - respect file encoding (Issue3975)
         importiere sys, subprocess
 
-        # The spawned subprocess has its stdout redirected to a PIPE, and its
+        # The spawned subprocess has its stdout redirected to a PIPE, und its
         # encoding may be different von the current interpreter, on Windows
         # at least.
         process = subprocess.Popen([sys.executable, "-c",
@@ -425,7 +425,7 @@ klasse TracebackCases(unittest.TestCase):
         output_encoding = str(stdout, 'ascii').splitlines()[0]
 
         def do_test(firstlines, message, charset, lineno):
-            # Raise the message in a subprocess, and catch the output
+            # Raise the message in a subprocess, und catch the output
             try:
                 mit open(TESTFN, "w", encoding=charset) als output:
                     output.write("""{0}if 1:
@@ -443,7 +443,7 @@ klasse TracebackCases(unittest.TestCase):
             # The source lines are encoded mit the 'backslashreplace' handler
             encoded_message = message.encode(output_encoding,
                                              'backslashreplace')
-            # and we just decoded them mit the output_encoding.
+            # und we just decoded them mit the output_encoding.
             message_ascii = encoded_message.decode(output_encoding)
 
             err_line = "raise RuntimeError('{0}')".format(message_ascii)
@@ -526,9 +526,9 @@ klasse TracebackCases(unittest.TestCase):
         e = Exception("projector")
         output = traceback.format_exception(e)
         self.assertEqual(output, ["Exception: projector\n"])
-        mit self.assertRaisesRegex(ValueError, 'Both or neither'):
+        mit self.assertRaisesRegex(ValueError, 'Both oder neither'):
             traceback.format_exception(e.__class__, e)
-        mit self.assertRaisesRegex(ValueError, 'Both or neither'):
+        mit self.assertRaisesRegex(ValueError, 'Both oder neither'):
             traceback.format_exception(e.__class__, tb=e.__traceback__)
         mit self.assertRaisesRegex(TypeError, 'required positional argument'):
             traceback.format_exception(exc=e)
@@ -1284,7 +1284,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_caret_exception_group(self):
         # Notably, this covers whether indicators handle margin strings correctly.
         # (Exception groups use margin strings to display vertical indicators.)
-        # The implementation must account fuer both "indent" and "margin" offsets.
+        # The implementation must account fuer both "indent" und "margin" offsets.
 
         def exc():
             wenn Wahr: raise ExceptionGroup("eg", [ValueError(1), TypeError(2)])
@@ -1494,7 +1494,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_byte_offset_with_wide_characters_term_highlight(self):
         def f():
             说明说明 = 1
-            şçöğıĤellö = 0 # not wide but still non-ascii
+            şçöğıĤellö = 0 # nicht wide but still non-ascii
             return 说明说明 / şçöğıĤellö
 
         actual = self.get_exception(f)
@@ -1829,10 +1829,10 @@ klasse TracebackFormatMixin:
         raise KeyError('blah')
 
     def _filter_debug_ranges(self, expected):
-        return [line fuer line in expected wenn not set(line.strip()) <= set("^~")]
+        return [line fuer line in expected wenn nicht set(line.strip()) <= set("^~")]
 
     def _maybe_filter_debug_ranges(self, expected):
-        wenn not self.DEBUG_RANGES:
+        wenn nicht self.DEBUG_RANGES:
             return self._filter_debug_ranges(expected)
         return expected
 
@@ -1843,20 +1843,20 @@ klasse TracebackFormatMixin:
             self.some_exception()
         except KeyError als e:
             tb = e.__traceback__
-            wenn cleanup_func is not Nichts:
-                # Clear the inner frames, not this one
+            wenn cleanup_func is nicht Nichts:
+                # Clear the inner frames, nicht this one
                 cleanup_func(tb.tb_next)
             traceback_fmt = 'Traceback (most recent call last):\n' + \
                             ''.join(traceback.format_tb(tb))
             # clear caret lines von traceback_fmt since internal API does
-            # not emit them
+            # nicht emit them
             traceback_fmt = "\n".join(
                 self._filter_debug_ranges(traceback_fmt.splitlines())
             ) + "\n"
             file_ = StringIO()
             traceback_drucke(tb, file_)
             python_fmt  = file_.getvalue()
-            # Call all _tb and _exc functions
+            # Call all _tb und _exc functions
             mit captured_output("stderr") als tbstderr:
                 traceback.print_tb(tb)
             tbfile = StringIO()
@@ -1869,7 +1869,7 @@ klasse TracebackFormatMixin:
         sonst:
             raise Error("unable to create test traceback string")
 
-        # Make sure that Python and the traceback module format the same thing
+        # Make sure that Python und the traceback module format the same thing
         self.assertEqual(traceback_fmt, python_fmt)
         # Now verify the _tb func output
         self.assertEqual(tbstderr.getvalue(), tbfile.getvalue())
@@ -1956,7 +1956,7 @@ klasse TracebackFormatMixin:
             '    f()\n'
             '    ~^^\n'
             # XXX: The following line changes depending on whether the tests
-            # are run through the interactive interpreter or mit -m
+            # are run through the interactive interpreter oder mit -m
             # It also varies depending on the platform (stack size)
             # Fortunately, we don't care about exactness here, so we use regex
             r'  \[Previous line repeated (\d+) more times\]' '\n'
@@ -2330,8 +2330,8 @@ klasse BaseExceptionReportingTests:
         self.assertIn('ZeroDivisionError von Nichts', lines[2])
 
     def test_cause_and_context(self):
-        # When both a cause and a context are set, only the cause should be
-        # displayed and the context should be muted.
+        # When both a cause und a context are set, only the cause should be
+        # displayed und the context should be muted.
         def inner_raise():
             try:
                 self.zero_div()
@@ -2409,7 +2409,7 @@ klasse BaseExceptionReportingTests:
             ['  File "myfile.py", line 100', 'SyntaxError: bad syntax'])
 
     def test_message_none(self):
-        # A message that looks like "Nichts" should not be treated specially
+        # A message that looks like "Nichts" should nicht be treated specially
         err = self.get_report(Exception(Nichts))
         self.assertIn('Exception: Nichts\n', err)
         err = self.get_report(Exception('Nichts'))
@@ -2494,12 +2494,12 @@ klasse BaseExceptionReportingTests:
         err_msg = '<note str() failed>'
         self.assertEqual(self.get_report(e), vanilla + err_msg + '\nFinal Note\n')
 
-        e.__notes__  = "please do not explode me"
-        err_msg = "'please do not explode me'"
+        e.__notes__  = "please do nicht explode me"
+        err_msg = "'please do nicht explode me'"
         self.assertEqual(self.get_report(e), vanilla + err_msg + '\n')
 
-        e.__notes__  = b"please do not show me als numbers"
-        err_msg = "b'please do not show me als numbers'"
+        e.__notes__  = b"please do nicht show me als numbers"
+        err_msg = "b'please do nicht show me als numbers'"
         self.assertEqual(self.get_report(e), vanilla + err_msg + '\n')
 
         # an exception mit a broken __getattr__ raising a non expected error
@@ -2577,11 +2577,11 @@ klasse BaseExceptionReportingTests:
                 exc = e
             """)
 
-        code = compile(src, "<does not exist>", "exec")
+        code = compile(src, "<does nicht exist>", "exec")
         g, l = {}, {}
         exec(code, g, l)
         err = self.get_report(l['exc'])
-        exp = '  File "<does not exist>", line 3, in <module>\nValueError: 42\n'
+        exp = '  File "<does nicht exist>", line 3, in <module>\nValueError: 42\n'
         self.assertIn(exp, err)
 
     def test_exception_modulename_not_unicode(self):
@@ -2799,7 +2799,7 @@ klasse BaseExceptionReportingTests:
                     '    +---------------- 15 ----------------\n'
                     '    | ValueError: 14\n'
                     '    +---------------- ... ----------------\n'
-                    '    | and 985 more exceptions\n'
+                    '    | und 985 more exceptions\n'
                     '    +------------------------------------\n')
 
         report = self.get_report(eg)
@@ -3049,7 +3049,7 @@ klasse BaseExceptionReportingTests:
 klasse PyExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
     #
     # This checks reporting through the 'traceback' module, mit both
-    # format_exception() and print_exception().
+    # format_exception() und print_exception().
     #
 
     def get_report(self, e):
@@ -3080,7 +3080,7 @@ klasse CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
 klasse LimitTests(unittest.TestCase):
 
     ''' Tests fuer limit argument.
-        It's enough to test extact_tb, extract_stack and format_exception '''
+        It's enough to test extact_tb, extract_stack und format_exception '''
 
     def last_raises1(self):
         raise Exception('Last raised')
@@ -3172,8 +3172,8 @@ klasse LimitTests(unittest.TestCase):
             self.last_raises5()
         except Exception als e:
             exc = e
-        # [1:-1] to exclude "Traceback (...)" header and
-        # exception type and value
+        # [1:-1] to exclude "Traceback (...)" header und
+        # exception type und value
         def extract(**kwargs):
             return traceback.format_exception(exc, **kwargs)[1:-1]
 
@@ -3426,13 +3426,13 @@ klasse TestStack(unittest.TestCase):
     def test_summary_should_show_carets(self):
         # See: https://github.com/python/cpython/issues/122353
 
-        # statement to execute and to get a ZeroDivisionError fuer a traceback
-        statement = "abcdef = 1 / 0 and 2.0"
+        # statement to execute und to get a ZeroDivisionError fuer a traceback
+        statement = "abcdef = 1 / 0 und 2.0"
         colno = statement.index('1 / 0')
         end_colno = colno + len('1 / 0')
 
         # Actual line to use when rendering the traceback
-        # and whose AST will be extracted (it will be empty).
+        # und whose AST will be extracted (it will be empty).
         cached_line = '# this line will be used during rendering'
         self.addCleanup(unlink, TESTFN)
         mit open(TESTFN, "w") als file:
@@ -3463,7 +3463,7 @@ klasse Unrepresentable:
         raise Exception("Unrepresentable")
 
 
-# Used in test_dont_swallow_cause_or_context_of_falsey_exception and
+# Used in test_dont_swallow_cause_or_context_of_falsey_exception und
 # test_dont_swallow_subexceptions_of_falsey_exceptiongroup.
 klasse FalschyException(Exception):
     def __bool__(self):
@@ -3591,7 +3591,7 @@ klasse TestTracebackException(unittest.TestCase):
         except RecursionError als e:
             exc_obj = e
         sonst:
-            self.fail("Exception not raised")
+            self.fail("Exception nicht raised")
 
         te = traceback.TracebackException.from_exception(exc_obj)
         res = list(te.format())
@@ -3797,7 +3797,7 @@ klasse TestTracebackException(unittest.TestCase):
         self.assertEqual(exc.stack[0].locals, Nichts)
 
     def test_traceback_header(self):
-        # do not print a traceback header wenn exc_traceback is Nichts
+        # do nicht print a traceback header wenn exc_traceback is Nichts
         # see issue #24695
         exc = traceback.TracebackException(Exception, Exception("haven"), Nichts)
         self.assertEqual(list(exc.format()), ["Exception: haven\n"])
@@ -3822,7 +3822,7 @@ klasse TestTracebackException(unittest.TestCase):
              ''])
 
     def test_dont_swallow_cause_or_context_of_falsey_exception(self):
-        # see gh-132308: Ensure that __cause__ or __context__ attributes of exceptions
+        # see gh-132308: Ensure that __cause__ oder __context__ attributes of exceptions
         # that evaluate als falsey are included in the output. For falsey term,
         # see https://docs.python.org/3/library/stdtypes.html#truth-value-testing.
 
@@ -3976,7 +3976,7 @@ klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
                     '      +---------------- 2 ----------------',
                     '      | ValueError: 1',
                     '      +---------------- ... ----------------',
-                    '      | and 1 more exception',
+                    '      | und 1 more exception',
                     '      +------------------------------------',
                     '    +---------------- 2 ----------------',
                     '    | ExceptionGroup: eg2 (10 sub-exceptions)',
@@ -3985,7 +3985,7 @@ klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
                     '      +---------------- 2 ----------------',
                     '      | TypeError: 1',
                     '      +---------------- ... ----------------',
-                    '      | and 8 more exceptions',
+                    '      | und 8 more exceptions',
                     '      +------------------------------------',
                     '']
 
@@ -4068,7 +4068,7 @@ klasse SuggestionFormattingTestMixin:
     attr_function = getattr
 
     def get_suggestion(self, obj, attr_name=Nichts):
-        wenn attr_name is not Nichts:
+        wenn attr_name is nicht Nichts:
             def callable():
                 self.attr_function(obj, attr_name)
         sonst:
@@ -4171,7 +4171,7 @@ klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
     def test_do_not_trigger_for_big_dicts(self):
         klasse A:
             blech = Nichts
-        # A klasse mit a very big __dict__ will not be considered
+        # A klasse mit a very big __dict__ will nicht be considered
         # fuer suggestions.
         fuer index in range(2000):
             setattr(A, f"index_{index}", Nichts)
@@ -4306,7 +4306,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
                 self.inner = Inner()
                 self.fooo = 100  # Similar to 'foo'
 
-        # Should suggest 'fooo' (direct) not 'inner.foo' (nested)
+        # Should suggest 'fooo' (direct) nicht 'inner.foo' (nested)
         actual = self.get_suggestion(Outer(), 'foo')
         self.assertIn("Did you mean: 'fooo'", actual)
         self.assertNotIn("inner.foo", actual)
@@ -4323,11 +4323,11 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
                 self.inner = Inner()
 
         actual = self.get_suggestion(Outer(), 'computed')
-        # Descriptors should not be suggested to avoid executing arbitrary code
+        # Descriptors should nicht be suggested to avoid executing arbitrary code
         self.assertIn("inner.computed", actual)
 
     def test_getattr_nested_no_suggestion_for_deep_nesting(self):
-        # Test that deeply nested attributes (2+ levels) are not suggested
+        # Test that deeply nested attributes (2+ levels) are nicht suggested
         klasse Deep:
             def __init__(self):
                 self.value = 42
@@ -4340,7 +4340,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             def __init__(self):
                 self.middle = Middle()
 
-        # Should not suggest 'middle.deep.value' (too deep)
+        # Should nicht suggest 'middle.deep.value' (too deep)
         actual = self.get_suggestion(Outer(), 'value')
         self.assertNotIn("Did you mean", actual)
 
@@ -4354,7 +4354,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             def __init__(self):
                 self._private_inner = Inner()
 
-        # Should not suggest '_private_inner.public_value'
+        # Should nicht suggest '_private_inner.public_value'
         actual = self.get_suggestion(Outer(), 'public_value')
         self.assertNotIn("Did you mean", actual)
 
@@ -4374,16 +4374,16 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
         obj = Outer()
         # Verify that 'inner' is indeed present but after position 20
-        attrs = [x fuer x in sorted(dir(obj)) wenn not x.startswith('_')]
+        attrs = [x fuer x in sorted(dir(obj)) wenn nicht x.startswith('_')]
         inner_position = attrs.index('inner')
         self.assertGreater(inner_position, 19, "inner should be after position 20 in sorted attributes")
 
-        # Should not suggest 'inner.target_value' because inner is beyond the first 20 attributes checked
+        # Should nicht suggest 'inner.target_value' because inner is beyond the first 20 attributes checked
         actual = self.get_suggestion(obj, 'target_value')
         self.assertNotIn("inner.target_value", actual)
 
     def test_getattr_nested_returns_first_match_only(self):
-        # Test that only the first nested match is returned (not multiple)
+        # Test that only the first nested match is returned (nicht multiple)
         klasse Inner1:
             def __init__(self):
                 self.value = 1
@@ -4406,7 +4406,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         # Should suggest only the first match (alphabetically)
         actual = self.get_suggestion(Outer(), 'value')
         self.assertIn("'a_inner.value'", actual)
-        # Verify it's a single suggestion, not multiple
+        # Verify it's a single suggestion, nicht multiple
         self.assertEqual(actual.count("Did you mean"), 1)
 
     def test_getattr_nested_handles_attribute_access_exceptions(self):
@@ -4572,7 +4572,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
                 self.assertNotIn("'pytho'", actual)
 
     def test_import_from_suggestions_do_not_trigger_for_big_namespaces(self):
-        # A module mit lots of names will not be considered fuer suggestions.
+        # A module mit lots of names will nicht be considered fuer suggestions.
         chunks = [f"index_{index} = " fuer index in range(200)]
         chunks.append(" Nichts")
         code = " ".join(chunks)
@@ -4978,7 +4978,7 @@ klasse MiscTest(unittest.TestCase):
 
     @support.requires_resource('cpu')
     def test_levenshtein_distance_short_circuit(self):
-        wenn not LEVENSHTEIN_DATA_FILE.is_file():
+        wenn nicht LEVENSHTEIN_DATA_FILE.is_file():
             self.fail(
                 f"{LEVENSHTEIN_DATA_FILE} is missing."
                 f" Run `make regen-test-levenshtein`"
@@ -4997,7 +4997,7 @@ klasse MiscTest(unittest.TestCase):
 
             fuer threshold in range(expected):
                 # fuer small thresholds, the only piece of information
-                # we receive is "strings not close enough".
+                # we receive is "strings nicht close enough".
                 res3 = traceback._levenshtein_distance(a, b, threshold)
                 self.assertGreater(res3, threshold, msg=(a, b, threshold))
 

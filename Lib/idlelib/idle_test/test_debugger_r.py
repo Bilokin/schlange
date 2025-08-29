@@ -16,7 +16,7 @@ importiere unittest
 ##        cls.root.destroy()
 
 # GUIProxy, IdbAdapter, FrameProxy, CodeProxy, DictProxy,
-# GUIAdapter, IdbProxy, and 7 functions still need tests.
+# GUIAdapter, IdbProxy, und 7 functions still need tests.
 
 klasse IdbAdapterTest(unittest.TestCase):
 

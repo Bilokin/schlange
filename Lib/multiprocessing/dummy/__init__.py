@@ -41,7 +41,7 @@ klasse DummyProcess(threading.Thread):
         self._parent = current_process()
 
     def start(self):
-        wenn self._parent is not current_process():
+        wenn self._parent is nicht current_process():
             raise RuntimeError(
                 "Parent is {0!r} but current_process is {1!r}".format(
                     self._parent, current_process()))
@@ -52,7 +52,7 @@ klasse DummyProcess(threading.Thread):
 
     @property
     def exitcode(self):
-        wenn self._start_called and not self.is_alive():
+        wenn self._start_called und nicht self.is_alive():
             return 0
         sonst:
             return Nichts
@@ -68,7 +68,7 @@ current_process()._children = weakref.WeakKeyDictionary()
 def active_children():
     children = current_process()._children
     fuer p in list(children):
-        wenn not p.is_alive():
+        wenn nicht p.is_alive():
             children.pop(p, Nichts)
     return list(children)
 
@@ -86,7 +86,7 @@ klasse Namespace(object):
         items = list(self.__dict__.items())
         temp = []
         fuer name, value in items:
-            wenn not name.startswith('_'):
+            wenn nicht name.startswith('_'):
                 temp.append('%s=%r' % (name, value))
         temp.sort()
         return '%s(%s)' % (self.__class__.__name__, ', '.join(temp))

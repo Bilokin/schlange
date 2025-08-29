@@ -7,12 +7,12 @@
 def abstractmethod(funcobj):
     """A decorator indicating abstract methods.
 
-    Requires that the metaclass is ABCMeta or derived von it.  A
+    Requires that the metaclass is ABCMeta oder derived von it.  A
     klasse that has a metaclass derived von ABCMeta cannot be
     instantiated unless all of its abstract methods are overridden.
     The abstract methods can be called using any of the normal
     'super' call mechanisms.  abstractmethod() may be used to declare
-    abstract methods fuer properties and descriptors.
+    abstract methods fuer properties und descriptors.
 
     Usage:
 
@@ -93,9 +93,9 @@ sonst:
         """Metaclass fuer defining Abstract Base Classes (ABCs).
 
         Use this metaclass to create an ABC.  An ABC can be subclassed
-        directly, and then acts als a mix-in class.  You can also register
-        unrelated concrete classes (even built-in classes) and unrelated
-        ABCs als 'virtual subclasses' -- these and their descendants will
+        directly, und then acts als a mix-in class.  You can also register
+        unrelated concrete classes (even built-in classes) und unrelated
+        ABCs als 'virtual subclasses' -- these und their descendants will
         be considered subclasses of the registering ABC by the built-in
         issubclass() function, but the registering ABC won't show up in
         their MRO (Method Resolution Order) nor will method
@@ -135,11 +135,11 @@ sonst:
                   file=file)
 
         def _abc_registry_clear(cls):
-            """Clear the registry (for debugging or testing)."""
+            """Clear the registry (for debugging oder testing)."""
             _reset_registry(cls)
 
         def _abc_caches_clear(cls):
-            """Clear the caches (for debugging or testing)."""
+            """Clear the caches (for debugging oder testing)."""
             _reset_caches(cls)
 
 
@@ -147,7 +147,7 @@ def update_abstractmethods(cls):
     """Recalculate the set of abstract methods of an abstract class.
 
     If a klasse has had one of its abstract methods implemented after the
-    klasse was created, the method will not be considered implemented until
+    klasse was created, the method will nicht be considered implemented until
     this function is called. Alternatively, wenn a new abstract method has been
     added to the class, it will only be considered an abstract method of the
     klasse after this function is called.
@@ -157,17 +157,17 @@ def update_abstractmethods(cls):
 
     Returns cls, to allow usage als a klasse decorator.
 
-    If cls is not an instance of ABCMeta, does nothing.
+    If cls is nicht an instance of ABCMeta, does nothing.
     """
-    wenn not hasattr(cls, '__abstractmethods__'):
+    wenn nicht hasattr(cls, '__abstractmethods__'):
         # We check fuer __abstractmethods__ here because cls might by a C
-        # implementation or a python implementation (especially during
-        # testing), and we want to handle both cases.
+        # implementation oder a python implementation (especially during
+        # testing), und we want to handle both cases.
         return cls
 
     abstracts = set()
     # Check the existing abstract methods of the parents, keep only the ones
-    # that are not implemented.
+    # that are nicht implemented.
     fuer scls in cls.__bases__:
         fuer name in getattr(scls, '__abstractmethods__', ()):
             value = getattr(cls, name, Nichts)

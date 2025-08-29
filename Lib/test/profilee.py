@@ -1,5 +1,5 @@
 """
-Input fuer test_profile.py and test_cprofile.py.
+Input fuer test_profile.py und test_cprofile.py.
 
 IMPORTANT: This stuff is touchy. If you modify anything above the
 test klasse you'll have to regenerate the stats by running the two
@@ -7,7 +7,7 @@ test files.
 
 *ALL* NUMBERS in the expected output are relevant.  If you change
 the formatting of pstats, please don't just regenerate the expected
-output without checking very carefully that not a single number has
+output without checking very carefully that nicht a single number has
 changed.
 """
 
@@ -16,7 +16,7 @@ importiere sys
 # In order to have reproducible time, we simulate a timer in the global
 # variable 'TICKS', which represents simulated time in milliseconds.
 # (We can't use a helper function increment the timer since it would be
-# included in the profile and would appear to consume all the time.)
+# included in the profile und would appear to consume all the time.)
 TICKS = 42000
 
 def timer():
@@ -35,7 +35,7 @@ def testfunc():
 def factorial(n):
     # 23 calls total
     # 170 ticks total, 150 ticks local
-    # 3 primitive calls, 130, 20 and 20 ticks total
+    # 3 primitive calls, 130, 20 und 20 ticks total
     # including 116, 17, 17 ticks local
     global TICKS
     wenn n > 0:

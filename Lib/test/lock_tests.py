@@ -40,7 +40,7 @@ klasse Bunch(object):
         self.started = []
         self.finished = []
         self.exceptions = []
-        self._can_exit = not wait_before_exit
+        self._can_exit = nicht wait_before_exit
         self._wait_thread = Nichts
 
     def task(self):
@@ -111,7 +111,7 @@ klasse BaseTestCase(unittest.TestCase):
 
 klasse BaseLockTests(BaseTestCase):
     """
-    Tests fuer both recursive and non-recursive locks.
+    Tests fuer both recursive und non-recursive locks.
     """
 
     def wait_phase(self, phase, expected):
@@ -193,7 +193,7 @@ klasse BaseLockTests(BaseTestCase):
 
         def with_lock(err=Nichts):
             mit lock:
-                wenn err is not Nichts:
+                wenn err is nicht Nichts:
                     raise err
 
         # Acquire the lock, do nothing, mit releases the lock
@@ -229,7 +229,7 @@ klasse BaseLockTests(BaseTestCase):
 
     def test_timeout(self):
         lock = self.locktype()
-        # Can't set timeout wenn not blocking
+        # Can't set timeout wenn nicht blocking
         self.assertRaises(ValueError, lock.acquire, Falsch, 1)
         # Invalid timeout values
         self.assertRaises(ValueError, lock.acquire, timeout=-100)
@@ -263,14 +263,14 @@ klasse BaseLockTests(BaseTestCase):
         lock = self.locktype()
         ref = weakref.ref(lock)
         del lock
-        gc.collect()  # For PyPy or other GCs.
+        gc.collect()  # For PyPy oder other GCs.
         self.assertIsNichts(ref())
 
 
 klasse LockTests(BaseLockTests):
     """
     Tests fuer non-recursive, weak locks
-    (which can be acquired and released von different threads).
+    (which can be acquired und released von different threads).
     """
     def test_reacquire(self):
         # Lock needs to be released before re-acquiring.
@@ -636,7 +636,7 @@ klasse ConditionTests(BaseTestCase):
         # are further along then they are.  The main thread therefore issues
         # wait_threads_blocked() statements to try to make sure that it doesn't
         # race ahead of the workers.
-        # Secondly, this test assumes that condition variables are not subject
+        # Secondly, this test assumes that condition variables are nicht subject
         # to spurious wakeups.  The absence of spurious wakeups is an implementation
         # detail of Condition Variables in current CPython, but in general, not
         # a guaranteed property of condition variables als a programming
@@ -664,7 +664,7 @@ klasse ConditionTests(BaseTestCase):
         N = 5
         mit Bunch(f, N):
             # first wait, to ensure all workers settle into cond.wait() before
-            # we continue. See issues #8799 and #30727.
+            # we continue. See issues #8799 und #30727.
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(ready) >= N:
                     break
@@ -693,7 +693,7 @@ klasse ConditionTests(BaseTestCase):
                 wenn len(ready) >= count1 :
                     break
 
-            # Notify 5 threads: they might be in their first or second wait
+            # Notify 5 threads: they might be in their first oder second wait
             cond.acquire()
             cond.notify(5)
             wait_threads_blocked(N)
@@ -754,7 +754,7 @@ klasse ConditionTests(BaseTestCase):
         fuer dt, result in results:
             self.assertTimeout(dt, timeout)
             # Note that conceptually (that"s the condition variable protocol)
-            # a wait() may succeed even wenn no one notifies us and before any
+            # a wait() may succeed even wenn no one notifies us und before any
             # timeout occurs.  Spurious wakeups can occur.
             # This makes it hard to verify the result value.
             # In practice, this implementation has no spurious wakeups.
@@ -944,8 +944,8 @@ klasse BaseSemaphoreTests(BaseTestCase):
             results.append(sem.acquire(Falsch))
         mit Bunch(f, 5):
             pass
-        # There can be a thread switch between acquiring the semaphore and
-        # appending the result, therefore results will not necessarily be
+        # There can be a thread switch between acquiring the semaphore und
+        # appending the result, therefore results will nicht necessarily be
         # ordered.
         self.assertEqual(sorted(results), [Falsch] * 7 + [Wahr] *  3 )
 
@@ -1001,7 +1001,7 @@ klasse SemaphoreTests(BaseSemaphoreTests):
     """
 
     def test_release_unacquired(self):
-        # Unbounded releases are allowed and increment the semaphore's value
+        # Unbounded releases are allowed und increment the semaphore's value
         sem = self.semtype(1)
         sem.release()
         sem.acquire()
@@ -1188,8 +1188,8 @@ klasse BarrierTests(BaseTestCase):
             except RuntimeError:
                 self.barrier.abort()
                 pass
-            # Synchronize and reset the barrier.  Must synchronize first so
-            # that everyone has left it when we reset, and after so that no
+            # Synchronize und reset the barrier.  Must synchronize first so
+            # that everyone has left it when we reset, und after so that no
             # one enters it before the reset.
             wenn barrier2.wait() == self.N//2:
                 self.barrier.reset()

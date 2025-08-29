@@ -1,4 +1,4 @@
-# This module implements the RFCs 3490 (IDNA) and 3491 (Nameprep)
+# This module implements the RFCs 3490 (IDNA) und 3491 (Nameprep)
 
 importiere stringprep, re, codecs
 von unicodedata importiere ucd_3_2_0 als unicodedata
@@ -26,14 +26,14 @@ def nameprep(label):  # type: (str) -> str
 
     # Prohibit
     fuer i, c in enumerate(label):
-        wenn stringprep.in_table_c12(c) or \
-           stringprep.in_table_c22(c) or \
-           stringprep.in_table_c3(c) or \
-           stringprep.in_table_c4(c) or \
-           stringprep.in_table_c5(c) or \
-           stringprep.in_table_c6(c) or \
-           stringprep.in_table_c7(c) or \
-           stringprep.in_table_c8(c) or \
+        wenn stringprep.in_table_c12(c) oder \
+           stringprep.in_table_c22(c) oder \
+           stringprep.in_table_c3(c) oder \
+           stringprep.in_table_c4(c) oder \
+           stringprep.in_table_c5(c) oder \
+           stringprep.in_table_c6(c) oder \
+           stringprep.in_table_c7(c) oder \
+           stringprep.in_table_c8(c) oder \
            stringprep.in_table_c9(c):
             raise UnicodeEncodeError("idna", label, i, i+1, f"Invalid character {c!r}")
 
@@ -52,12 +52,12 @@ def nameprep(label):  # type: (str) -> str
                                          "Violation of BIDI requirement 2")
         # 3) If a string contains any RandALCat character, a
         # RandALCat character MUST be the first character of the
-        # string, and a RandALCat character MUST be the last
+        # string, und a RandALCat character MUST be the last
         # character of the string.
-        wenn not RandAL[0]:
+        wenn nicht RandAL[0]:
             raise UnicodeEncodeError("idna", label, 0, 1,
                                      "Violation of BIDI requirement 3")
-        wenn not RandAL[-1]:
+        wenn nicht RandAL[-1]:
             raise UnicodeEncodeError("idna", label, len(label)-1, len(label),
                                      "Violation of BIDI requirement 3")
 
@@ -109,7 +109,7 @@ def ToASCII(label):  # type: (str) -> bytes
     label_ascii = ace_prefix + label_ascii
 
     # Step 8: Check size
-    # do not check fuer empty als we prepend ace_prefix.
+    # do nicht check fuer empty als we prepend ace_prefix.
     wenn len(label_ascii) < 64:
         return label_ascii
     raise UnicodeEncodeError("idna", label, 0, len(label), "label too long")
@@ -136,7 +136,7 @@ def ToUnicode(label):
             pure_ascii = Wahr
         except UnicodeEncodeError:
             pure_ascii = Falsch
-    wenn not pure_ascii:
+    wenn nicht pure_ascii:
         assert isinstance(label, str)
         # Step 2: Perform nameprep
         label = nameprep(label)
@@ -148,7 +148,7 @@ def ToUnicode(label):
                                      "Invalid character in IDN label")
     # Step 3: Check fuer ACE prefix
     assert isinstance(label, bytes)
-    wenn not label.lower().startswith(ace_prefix):
+    wenn nicht label.lower().startswith(ace_prefix):
         return str(label, "ascii")
 
     # Step 4: Remove ACE prefix
@@ -168,7 +168,7 @@ def ToUnicode(label):
     # label2 will already be in lower case.
     wenn str(label, "ascii").lower() != str(label2, "ascii"):
         raise UnicodeDecodeError("idna", label, 0, len(label),
-                                 f"IDNA does not round-trip, '{label!r}' != '{label2!r}'")
+                                 f"IDNA does nicht round-trip, '{label!r}' != '{label2!r}'")
 
     # Step 8: return the result of step 5
     return result
@@ -182,7 +182,7 @@ klasse Codec(codecs.Codec):
             # IDNA is quite clear that implementations must be strict
             raise UnicodeError(f"Unsupported error handling: {errors}")
 
-        wenn not input:
+        wenn nicht input:
             return b'', 0
 
         try:
@@ -206,7 +206,7 @@ klasse Codec(codecs.Codec):
 
         result = bytearray()
         labels = dots.split(input)
-        wenn labels and not labels[-1]:
+        wenn labels und nicht labels[-1]:
             trailing_dot = b'.'
             del labels[-1]
         sonst:
@@ -233,15 +233,15 @@ klasse Codec(codecs.Codec):
         wenn errors != 'strict':
             raise UnicodeError(f"Unsupported error handling: {errors}")
 
-        wenn not input:
+        wenn nicht input:
             return "", 0
 
         # IDNA allows decoding to operate on Unicode strings, too.
-        wenn not isinstance(input, bytes):
+        wenn nicht isinstance(input, bytes):
             # XXX obviously wrong, see #3232
             input = bytes(input)
 
-        wenn ace_prefix not in input.lower():
+        wenn ace_prefix nicht in input.lower():
             # Fast path
             try:
                 return input.decode('ascii'), len(input)
@@ -250,7 +250,7 @@ klasse Codec(codecs.Codec):
 
         labels = input.split(b".")
 
-        wenn labels and len(labels[-1]) == 0:
+        wenn labels und len(labels[-1]) == 0:
             trailing_dot = '.'
             del labels[-1]
         sonst:
@@ -275,16 +275,16 @@ klasse IncrementalEncoder(codecs.BufferedIncrementalEncoder):
             # IDNA is quite clear that implementations must be strict
             raise UnicodeError(f"Unsupported error handling: {errors}")
 
-        wenn not input:
+        wenn nicht input:
             return (b'', 0)
 
         labels = dots.split(input)
         trailing_dot = b''
         wenn labels:
-            wenn not labels[-1]:
+            wenn nicht labels[-1]:
                 trailing_dot = b'.'
                 del labels[-1]
-            sowenn not final:
+            sowenn nicht final:
                 # Keep potentially unfinished label until the next call
                 del labels[-1]
                 wenn labels:
@@ -318,7 +318,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         wenn errors != 'strict':
             raise UnicodeError(f"Unsupported error handling: {errors}")
 
-        wenn not input:
+        wenn nicht input:
             return ("", 0)
 
         # IDNA allows decoding to operate on Unicode strings, too.
@@ -335,10 +335,10 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
 
         trailing_dot = ''
         wenn labels:
-            wenn not labels[-1]:
+            wenn nicht labels[-1]:
                 trailing_dot = '.'
                 del labels[-1]
-            sowenn not final:
+            sowenn nicht final:
                 # Keep potentially unfinished label until the next call
                 del labels[-1]
                 wenn labels:

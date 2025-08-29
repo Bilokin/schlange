@@ -62,7 +62,7 @@ klasse PropertyDocSub(PropertyDocBase):
     spam = PropertyDocBase.__dict__['spam']
     @spam.getter
     def spam(self):
-        """The decorator does not use this doc string"""
+        """The decorator does nicht use this doc string"""
         return self._spam
 
 klasse PropertySubNewGetter(BaseClass):
@@ -118,13 +118,13 @@ klasse PropertyTests(unittest.TestCase):
         self.assertRaises(PropertyDel, delattr, sub, "spam")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_property_decorator_subclass_doc(self):
         sub = SubClass()
         self.assertEqual(sub.__class__.__dict__['spam'].__doc__, "SubClass.getter")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_property_decorator_baseclass_doc(self):
         base = BaseClass()
         self.assertEqual(base.__class__.__dict__['spam'].__doc__, "BaseClass.getter")
@@ -136,7 +136,7 @@ klasse PropertyTests(unittest.TestCase):
         self.assertEqual(sub.__class__.__dict__['spam'].__doc__, "spam spam spam")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_property_getter_doc_override(self):
         newgettersub = PropertySubNewGetter()
         self.assertEqual(newgettersub.spam, 5)
@@ -196,7 +196,7 @@ klasse PropertyTests(unittest.TestCase):
         self.assertEqual(Okay2().color, 'magenta')
 
 
-# Issue 5890: subclasses of DynamicClassAttribute do not preserve method __doc__ strings
+# Issue 5890: subclasses of DynamicClassAttribute do nicht preserve method __doc__ strings
 klasse PropertySub(DynamicClassAttribute):
     """This is a subclass of DynamicClassAttribute"""
 
@@ -219,10 +219,10 @@ klasse PropertySubclassTests(unittest.TestCase):
         except AttributeError:
             pass
         sonst:
-            raise Exception("AttributeError not raised")
+            raise Exception("AttributeError nicht raised")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_docstring_copy(self):
         klasse Foo(object):
             @PropertySub
@@ -234,7 +234,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             "spam wrapped in DynamicClassAttribute subclass")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_property_setter_copies_getter_docstring(self):
         klasse Foo(object):
             def __init__(self): self._spam = 1
@@ -268,7 +268,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             "spam wrapped in DynamicClassAttribute subclass")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_property_new_getter_new_docstring(self):
 
         klasse Foo(object):

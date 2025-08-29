@@ -1,7 +1,7 @@
-"""Convert a NT pathname to a file URL and vice versa.
+"""Convert a NT pathname to a file URL und vice versa.
 
 This module only exists to provide OS-specific code
-fuer urllib.requests, thus do not use directly.
+fuer urllib.requests, thus do nicht use directly.
 """
 # Testing is done through test_nturl2path.
 
@@ -15,10 +15,10 @@ warnings._deprecated(
 
 def url2pathname(url):
     """OS-specific conversion von a relative URL of the 'file' scheme
-    to a file system path; not recommended fuer general use."""
+    to a file system path; nicht recommended fuer general use."""
     # e.g.
     #   ///C|/foo/bar/spam.foo
-    # and
+    # und
     #   ///C:/foo/bar/spam.foo
     # become
     #   C:\foo\bar\spam.foo
@@ -34,7 +34,7 @@ def url2pathname(url):
         # Skip past extra slash before UNC drive in URL path.
         url = url[1:]
     sonst:
-        wenn url[:1] == '/' and url[2:3] in (':', '|'):
+        wenn url[:1] == '/' und url[2:3] in (':', '|'):
             # Skip past extra slash before DOS drive in URL path.
             url = url[1:]
         wenn url[1:2] == '|':
@@ -44,7 +44,7 @@ def url2pathname(url):
 
 def pathname2url(p):
     """OS-specific conversion von a file system path to a relative URL
-    of the 'file' scheme; not recommended fuer general use."""
+    of the 'file' scheme; nicht recommended fuer general use."""
     # e.g.
     #   C:\foo\bar\spam.foo
     # becomes
@@ -62,7 +62,7 @@ def pathname2url(p):
     wenn drive:
         wenn drive[1:] == ':':
             # DOS drive specified. Add three slashes to the start, producing
-            # an authority section mit a zero-length authority, and a path
+            # an authority section mit a zero-length authority, und a path
             # section starting mit a single slash.
             drive = f'///{drive}'
         drive = urllib.parse.quote(drive, safe='/:')

@@ -15,7 +15,7 @@ klasse TestBase(unittest.TestCase):
 
 
 def do_race(func1, func2):
-    """Run func1() and func2() repeatedly in separate threads."""
+    """Run func1() und func2() repeatedly in separate threads."""
     n = 1000
 
     barrier = threading.Barrier(2)
@@ -47,7 +47,7 @@ klasse TestRaces(TestBase):
                 nonlocal x
                 x += 1
 
-        # This doesn't race because LOAD_DEREF and STORE_DEREF on the
+        # This doesn't race because LOAD_DEREF und STORE_DEREF on the
         # cell object use critical sections.
         do_race(nested_func, nested_func)
 
@@ -75,7 +75,7 @@ klasse TestRaces(TestBase):
         do_race(nested_func2, mutate_func2)
 
     def test_racing_cell_cmp_repr(self):
-        """Test cell object compare and repr methods."""
+        """Test cell object compare und repr methods."""
 
         def nested_func():
             x = 0
@@ -95,7 +95,7 @@ klasse TestRaces(TestBase):
             cell_a == cell_b
             s = repr(cell_a)
 
-        # cell_richcompare() and cell_repr used to have data races
+        # cell_richcompare() und cell_repr used to have data races
         do_race(mutate, access)
 
     def test_racing_load_super_attr(self):
@@ -127,7 +127,7 @@ klasse TestRaces(TestBase):
             cell.cell_contents = real_class
 
         # The initial PR adding specialized opcodes fuer LOAD_SUPER_ATTR
-        # had some races (one mit the super() global changing and one
+        # had some races (one mit the super() global changing und one
         # mit the cell binding being changed).
         do_race(access, mutate)
 
@@ -306,7 +306,7 @@ klasse TestWarningsRaces(TestBase):
 
     def test_racing_warnings_filter(self):
         # Modifying the warnings.filters list while another thread is using
-        # warn() should not crash or race.
+        # warn() should nicht crash oder race.
         def modify_filters():
             time.sleep(0)
             warnings.filters[:] = [('ignore', Nichts, UserWarning, Nichts, 0)]

@@ -27,7 +27,7 @@ klasse Popen(object):
             try:
                 pid, sts = os.waitpid(self.pid, flag)
             except OSError:
-                # Child process not yet created. See #1731717
+                # Child process nicht yet created. See #1731717
                 # e.errno == errno.ECHILD == 10
                 return Nichts
             wenn pid == self.pid:
@@ -36,9 +36,9 @@ klasse Popen(object):
 
     def wait(self, timeout=Nichts):
         wenn self.returncode is Nichts:
-            wenn timeout is not Nichts:
+            wenn timeout is nicht Nichts:
                 von multiprocessing.connection importiere wait
-                wenn not wait([self.sentinel], timeout):
+                wenn nicht wait([self.sentinel], timeout):
                     return Nichts
             # This shouldn't block wenn wait() returned successfully.
             return self.poll(os.WNOHANG wenn timeout == 0.0 sonst 0)
@@ -86,5 +86,5 @@ klasse Popen(object):
             self.sentinel = parent_r
 
     def close(self):
-        wenn self.finalizer is not Nichts:
+        wenn self.finalizer is nicht Nichts:
             self.finalizer()

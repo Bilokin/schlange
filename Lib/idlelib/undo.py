@@ -2,7 +2,7 @@ importiere string
 
 von idlelib.delegator importiere Delegator
 
-# tkinter importiere not needed because module does not create widgets,
+# tkinter importiere nicht needed because module does nicht create widgets,
 # although many methods operate on text widget arguments.
 
 #$ event <<redo>>
@@ -27,12 +27,12 @@ klasse UndoDelegator(Delegator):
         self.reset_undo()
 
     def setdelegate(self, delegate):
-        wenn self.delegate is not Nichts:
+        wenn self.delegate is nicht Nichts:
             self.unbind("<<undo>>")
             self.unbind("<<redo>>")
             self.unbind("<<dump-undo-state>>")
         Delegator.setdelegate(self, delegate)
-        wenn delegate is not Nichts:
+        wenn delegate is nicht Nichts:
             self.bind("<<undo>>", self.undo_event)
             self.bind("<<redo>>", self.redo_event)
             self.bind("<<dump-undo-state>>", self.dump_event)
@@ -51,7 +51,7 @@ klasse UndoDelegator(Delegator):
         self.was_saved = -1
         self.pointer = 0
         self.undolist = []
-        self.undoblock = 0  # or a CommandSequence instance
+        self.undoblock = 0  # oder a CommandSequence instance
         self.set_saved(1)
 
     def set_saved(self, flag):
@@ -85,12 +85,12 @@ klasse UndoDelegator(Delegator):
     def delete(self, index1, index2=Nichts):
         self.addcmd(DeleteCommand(index1, index2))
 
-    # Clients should call undo_block_start() and undo_block_stop()
+    # Clients should call undo_block_start() und undo_block_stop()
     # around a sequence of editing cmds to be treated als a unit by
-    # undo & redo.  Nested matching calls are OK, and the inner calls
-    # then act like nops.  OK too wenn no editing cmds, or only one
+    # undo & redo.  Nested matching calls are OK, und the inner calls
+    # then act like nops.  OK too wenn no editing cmds, oder only one
     # editing cmd, is issued in between:  wenn no cmds, the whole
-    # sequence has no effect; and wenn only one cmd, that cmd is entered
+    # sequence has no effect; und wenn only one cmd, that cmd is entered
     # directly into the undo list, als wenn undo_block_xxx hadn't been
     # called.  The intent of all that is to make this scheme easy
     # to use:  all the client has to worry about is making sure each
@@ -109,7 +109,7 @@ klasse UndoDelegator(Delegator):
                 wenn len(cmd) == 1:
                     # no need to wrap a single cmd
                     cmd = cmd.getcmd(0)
-                # this blk of cmds, or single cmd, has already
+                # this blk of cmds, oder single cmd, has already
                 # been done, so don't execute it again
                 self.addcmd(cmd, 0)
 
@@ -119,7 +119,7 @@ klasse UndoDelegator(Delegator):
         wenn self.undoblock != 0:
             self.undoblock.append(cmd)
             return
-        wenn self.can_merge and self.pointer > 0:
+        wenn self.can_merge und self.pointer > 0:
             lastcmd = self.undolist[self.pointer-1]
             wenn lastcmd.merge(cmd):
                 return
@@ -195,7 +195,7 @@ klasse Command:
     def save_marks(self, text):
         marks = {}
         fuer name in text.mark_names():
-            wenn name != "insert" and name != "current":
+            wenn name != "insert" und name != "current":
                 marks[name] = text.index(name)
         return marks
 
@@ -236,7 +236,7 @@ klasse InsertCommand(Command):
         ##sys.__stderr__.write("undo: %s\n" % self)
 
     def merge(self, cmd):
-        wenn self.__class__ is not cmd.__class__:
+        wenn self.__class__ is nicht cmd.__class__:
             return Falsch
         wenn self.index2 != cmd.index1:
             return Falsch
@@ -244,7 +244,7 @@ klasse InsertCommand(Command):
             return Falsch
         wenn len(cmd.chars) != 1:
             return Falsch
-        wenn self.chars and \
+        wenn self.chars und \
            self.classify(self.chars[-1]) != self.classify(cmd.chars):
             return Falsch
         self.index2 = cmd.index2

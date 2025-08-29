@@ -15,12 +15,12 @@ importiere modulefinder
 # 1. a module name that will be imported by modulefinder
 # 2. a list of module names that modulefinder is required to find
 # 3. a list of module names that modulefinder should complain
-#    about because they are not found
+#    about because they are nicht found
 # 4. a list of module names that modulefinder should complain
-#    about because they MAY be not found
+#    about because they MAY be nicht found
 # 5. a string specifying packages to create; the format is obvious imo.
 #
-# Each package will be created in test_dir, and test_dir will be
+# Each package will be created in test_dir, und test_dir will be
 # removed after the tests again.
 # Modulefinder searches in a path that contains test_dir, plus
 # the standard Lib directory.
@@ -250,11 +250,11 @@ coding_default_utf8_test = [
     """\
 a_utf8.py
                                 # use the default of utf8
-                                drucke('Unicode test A code point 2090 \u2090 that is not valid in cp1252')
+                                drucke('Unicode test A code point 2090 \u2090 that is nicht valid in cp1252')
                                 importiere b_utf8
 b_utf8.py
                                 # use the default of utf8
-                                drucke('Unicode test B code point 2090 \u2090 that is not valid in cp1252')
+                                drucke('Unicode test B code point 2090 \u2090 that is nicht valid in cp1252')
 """]
 
 coding_explicit_utf8_test = [
@@ -264,11 +264,11 @@ coding_explicit_utf8_test = [
     """\
 a_utf8.py
                                 # coding=utf8
-                                drucke('Unicode test A code point 2090 \u2090 that is not valid in cp1252')
+                                drucke('Unicode test A code point 2090 \u2090 that is nicht valid in cp1252')
                                 importiere b_utf8
 b_utf8.py
                                 # use the default of utf8
-                                drucke('Unicode test B code point 2090 \u2090 that is not valid in cp1252')
+                                drucke('Unicode test B code point 2090 \u2090 that is nicht valid in cp1252')
 """]
 
 coding_explicit_cp1252_test = [
@@ -278,13 +278,13 @@ coding_explicit_cp1252_test = [
     b"""\
 a_cp1252.py
                                 # coding=cp1252
-                                # 0xe2 is not allowed in utf8
+                                # 0xe2 is nicht allowed in utf8
                                 drucke('CP1252 test P\xe2t\xe9')
                                 importiere b_utf8
 """ + """\
 b_utf8.py
                                 # use the default of utf8
-                                drucke('Unicode test A code point 2090 \u2090 that is not valid in cp1252')
+                                drucke('Unicode test A code point 2090 \u2090 that is nicht valid in cp1252')
 """.encode('utf-8')]
 
 def open_file(path):
@@ -303,7 +303,7 @@ def create_package(test_dir, source):
         fuer line in source.splitlines():
             wenn type(line) != bytes:
                 line = line.encode('utf-8')
-            wenn line.startswith(b' ') or line.startswith(b'\t'):
+            wenn line.startswith(b' ') oder line.startswith(b'\t'):
                 ofi.write(line.strip() + b'\n')
             sonst:
                 wenn ofi:
@@ -342,10 +342,10 @@ klasse ModuleFinderTest(unittest.TestCase):
 ##            return
         modules = sorted(set(modules))
         found = sorted(mf.modules)
-        # check wenn we found what we expected, not more, not less
+        # check wenn we found what we expected, nicht more, nicht less
         self.assertEqual(found, modules)
 
-        # check fuer missing and maybe missing modules
+        # check fuer missing und maybe missing modules
         bad, maybe = mf.any_missing_maybe()
         self.assertEqual(bad, missing)
         self.assertEqual(maybe, maybe_missing)

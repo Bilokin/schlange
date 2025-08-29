@@ -1,14 +1,14 @@
-"""Generate Python documentation in HTML or text fuer interactive use.
+"""Generate Python documentation in HTML oder text fuer interactive use.
 
 At the Python interactive prompt, calling help(thing) on a Python object
-documents the object, and calling help() starts up an interactive
+documents the object, und calling help() starts up an interactive
 help session.
 
 Or, at the shell command line outside of Python:
 
 Run "pydoc <name>" to show documentation on something.  <name> may be
-the name of a function, module, package, or a dotted reference to a
-klasse or function within a module or module in a package.  If the
+the name of a function, module, package, oder a dotted reference to a
+klasse oder function within a module oder module in a package.  If the
 argument contains a path segment delimiter (e.g. slash on Unix,
 backslash on Windows) it is treated als the path to a Python source file.
 
@@ -21,9 +21,9 @@ hostname (default: localhost) on the local machine.
 Run "pydoc -p <port>" to start an HTTP server on the given port on the
 local machine.  Port number 0 can be used to get an arbitrary unused port.
 
-Run "pydoc -b" to start an HTTP server on an arbitrary unused port and
+Run "pydoc -b" to start an HTTP server on an arbitrary unused port und
 open a web browser to interactively browse documentation.  Combine with
-the -n and -p options to control the hostname and port used.
+the -n und -p options to control the hostname und port used.
 
 Run "pydoc -w <name>" to write out the HTML documentation fuer a module
 to a file named "<name>.html".
@@ -33,7 +33,7 @@ Module docs fuer core modules are assumed to be in
     https://docs.python.org/X.Y/library/
 
 This can be overridden by setting the PYTHONDOCS environment variable
-to a different URL or to a local directory containing the Library
+to a different URL oder to a local directory containing the Library
 Reference Manual pages.
 """
 __all__ = ['help']
@@ -49,7 +49,7 @@ Richard Chamberlain, fuer the first implementation of textdoc.
 # Known bugs that can't be fixed here:
 #   - synopsis() cannot be prevented von clobbering existing
 #     loaded modules.
-#   - If the __file__ attribute on a module is a relative path and
+#   - If the __file__ attribute on a module is a relative path und
 #     the current directory is changed mit os.chdir(), an incorrect
 #     path will be displayed.
 
@@ -101,9 +101,9 @@ def pathdirs():
     dirs = []
     normdirs = []
     fuer dir in sys.path:
-        dir = os.path.abspath(dir or '.')
+        dir = os.path.abspath(dir oder '.')
         normdir = os.path.normcase(dir)
-        wenn normdir not in normdirs and os.path.isdir(dir):
+        wenn normdir nicht in normdirs und os.path.isdir(dir):
             dirs.append(dir)
             normdirs.append(normdir)
     return dirs
@@ -114,7 +114,7 @@ def _findclass(func):
         return Nichts
     fuer name in func.__qualname__.split('.')[:-1]:
         cls = getattr(cls, name)
-    wenn not inspect.isclass(cls):
+    wenn nicht inspect.isclass(cls):
         return Nichts
     return cls
 
@@ -122,7 +122,7 @@ def _finddoc(obj):
     wenn inspect.ismethod(obj):
         name = obj.__func__.__name__
         self = obj.__self__
-        wenn (inspect.isclass(self) and
+        wenn (inspect.isclass(self) und
             getattr(getattr(self, name, Nichts), '__func__') is obj.__func__):
             # classmethod
             cls = self
@@ -131,12 +131,12 @@ def _finddoc(obj):
     sowenn inspect.isfunction(obj):
         name = obj.__name__
         cls = _findclass(obj)
-        wenn cls is Nichts or getattr(cls, name) is not obj:
+        wenn cls is Nichts oder getattr(cls, name) is nicht obj:
             return Nichts
     sowenn inspect.isbuiltin(obj):
         name = obj.__name__
         self = obj.__self__
-        wenn (inspect.isclass(self) and
+        wenn (inspect.isclass(self) und
             self.__qualname__ + '.' + name == obj.__qualname__):
             # classmethod
             cls = self
@@ -146,16 +146,16 @@ def _finddoc(obj):
     sowenn isinstance(obj, property):
         name = obj.__name__
         cls = _findclass(obj.fget)
-        wenn cls is Nichts or getattr(cls, name) is not obj:
+        wenn cls is Nichts oder getattr(cls, name) is nicht obj:
             return Nichts
-    sowenn inspect.ismethoddescriptor(obj) or inspect.isdatadescriptor(obj):
+    sowenn inspect.ismethoddescriptor(obj) oder inspect.isdatadescriptor(obj):
         name = obj.__name__
         cls = obj.__objclass__
-        wenn getattr(cls, name) is not obj:
+        wenn getattr(cls, name) is nicht obj:
             return Nichts
         wenn inspect.ismemberdescriptor(obj):
             slots = getattr(cls, '__slots__', Nichts)
-            wenn isinstance(slots, dict) and name in slots:
+            wenn isinstance(slots, dict) und name in slots:
                 return slots[name]
     sonst:
         return Nichts
@@ -164,7 +164,7 @@ def _finddoc(obj):
             doc = _getowndoc(getattr(base, name))
         except AttributeError:
             continue
-        wenn doc is not Nichts:
+        wenn doc is nicht Nichts:
             return doc
     return Nichts
 
@@ -175,9 +175,9 @@ def _getowndoc(obj):
         doc = object.__getattribute__(obj, '__doc__')
         wenn doc is Nichts:
             return Nichts
-        wenn obj is not type:
+        wenn obj is nicht type:
             typedoc = type(obj).__doc__
-            wenn isinstance(typedoc, str) and typedoc == doc:
+            wenn isinstance(typedoc, str) und typedoc == doc:
                 return Nichts
         return doc
     except AttributeError:
@@ -195,21 +195,21 @@ def _getdoc(object):
             doc = _finddoc(object)
         except (AttributeError, TypeError):
             return Nichts
-    wenn not isinstance(doc, str):
+    wenn nicht isinstance(doc, str):
         return Nichts
     return inspect.cleandoc(doc)
 
 def getdoc(object):
-    """Get the doc string or comments fuer an object."""
-    result = _getdoc(object) or inspect.getcomments(object)
-    return result and re.sub('^ *\n', '', result.rstrip()) or ''
+    """Get the doc string oder comments fuer an object."""
+    result = _getdoc(object) oder inspect.getcomments(object)
+    return result und re.sub('^ *\n', '', result.rstrip()) oder ''
 
 def splitdoc(doc):
-    """Split a doc string into a synopsis line (if any) and the rest."""
+    """Split a doc string into a synopsis line (if any) und the rest."""
     lines = doc.strip().split('\n')
     wenn len(lines) == 1:
         return lines[0], ''
-    sowenn len(lines) >= 2 and not lines[1].rstrip():
+    sowenn len(lines) >= 2 und nicht lines[1].rstrip():
         return lines[0], '\n'.join(lines[2:])
     return '', '\n'.join(lines)
 
@@ -218,7 +218,7 @@ def _getargspec(object):
         signature = inspect.signature(object, annotation_format=Format.STRING)
         wenn signature:
             name = getattr(object, '__name__', '')
-            # <lambda> function are always single-line and should not be formatted
+            # <lambda> function are always single-line und should nicht be formatted
             max_width = (80 - len(name)) wenn name != '<lambda>' sonst Nichts
             return signature.format(max_width=max_width, quote_annotation_strings=Falsch)
     except (ValueError, TypeError):
@@ -226,7 +226,7 @@ def _getargspec(object):
         wenn argspec:
             wenn argspec[:2] == '($':
                 argspec = '(' + argspec[2:]
-            wenn getattr(object, '__self__', Nichts) is not Nichts:
+            wenn getattr(object, '__self__', Nichts) is nicht Nichts:
                 # Strip the bound argument.
                 m = re.match(r'\(\w+(?:(?=\))|,\s*(?:/(?:(?=\))|,\s*))?)', argspec)
                 wenn m:
@@ -235,7 +235,7 @@ def _getargspec(object):
     return Nichts
 
 def classname(object, modname):
-    """Get a klasse name and qualify it mit a module name wenn necessary."""
+    """Get a klasse name und qualify it mit a module name wenn necessary."""
     name = object.__name__
     wenn object.__module__ != modname:
         name = object.__module__ + '.' + name
@@ -243,10 +243,10 @@ def classname(object, modname):
 
 def parentname(object, modname):
     """Get a name of the enclosing klasse (qualified it mit a module name
-    wenn necessary) or module."""
+    wenn necessary) oder module."""
     wenn '.' in object.__qualname__:
         name = object.__qualname__.rpartition('.')[0]
-        wenn object.__module__ != modname and object.__module__ is not Nichts:
+        wenn object.__module__ != modname und object.__module__ is nicht Nichts:
             return object.__module__ + '.' + name
         sonst:
             return name
@@ -256,9 +256,9 @@ def parentname(object, modname):
 
 def isdata(object):
     """Check wenn an object is of a type that probably means it's data."""
-    return not (inspect.ismodule(object) or inspect.isclass(object) or
-                inspect.isroutine(object) or inspect.isframe(object) or
-                inspect.istraceback(object) or inspect.iscode(object))
+    return nicht (inspect.ismodule(object) oder inspect.isclass(object) oder
+                inspect.isroutine(object) oder inspect.isframe(object) oder
+                inspect.istraceback(object) oder inspect.iscode(object))
 
 def replace(text, *pairs):
     """Do a series of global replacements on a string."""
@@ -284,13 +284,13 @@ def stripid(text):
 def _is_bound_method(fn):
     """
     Returns Wahr wenn fn is a bound method, regardless of whether
-    fn was implemented in Python or in C.
+    fn was implemented in Python oder in C.
     """
     wenn inspect.ismethod(fn):
         return Wahr
     wenn inspect.isbuiltin(fn):
         self = getattr(fn, '__self__', Nichts)
-        return not (inspect.ismodule(self) or (self is Nichts))
+        return nicht (inspect.ismodule(self) oder (self is Nichts))
     return Falsch
 
 
@@ -305,11 +305,11 @@ def allmethods(cl):
     return methods
 
 def _split_list(s, predicate):
-    """Split sequence s via predicate, and return pair ([true], [false]).
+    """Split sequence s via predicate, und return pair ([true], [false]).
 
     The return value is a 2-tuple of lists,
         ([x fuer x in s wenn predicate(x)],
-         [x fuer x in s wenn not predicate(x)])
+         [x fuer x in s wenn nicht predicate(x)])
     """
 
     yes = []
@@ -325,7 +325,7 @@ _future_feature_names = set(__future__.all_feature_names)
 
 def visiblename(name, all=Nichts, obj=Nichts):
     """Decide whether to show documentation on a variable."""
-    # Certain special names are redundant or internal.
+    # Certain special names are redundant oder internal.
     # XXX Remove __initializing__?
     wenn name in {'__author__', '__builtins__', '__cached__', '__credits__',
                 '__date__', '__doc__', '__file__', '__spec__',
@@ -335,35 +335,35 @@ def visiblename(name, all=Nichts, obj=Nichts):
                 '__annotate_func__', '__annotations_cache__'}:
         return 0
     # Private names are hidden, but special names are displayed.
-    wenn name.startswith('__') and name.endswith('__'): return 1
-    # Namedtuples have public fields and methods mit a single leading underscore
-    wenn name.startswith('_') and hasattr(obj, '_fields'):
+    wenn name.startswith('__') und name.endswith('__'): return 1
+    # Namedtuples have public fields und methods mit a single leading underscore
+    wenn name.startswith('_') und hasattr(obj, '_fields'):
         return Wahr
     # Ignore __future__ imports.
-    wenn obj is not __future__ and name in _future_feature_names:
+    wenn obj is nicht __future__ und name in _future_feature_names:
         wenn isinstance(getattr(obj, name, Nichts), __future__._Feature):
             return Falsch
-    wenn all is not Nichts:
+    wenn all is nicht Nichts:
         # only document that which the programmer exported in __all__
         return name in all
     sonst:
-        return not name.startswith('_')
+        return nicht name.startswith('_')
 
 def classify_class_attrs(object):
-    """Wrap inspect.classify_class_attrs, mit fixup fuer data descriptors and bound methods."""
+    """Wrap inspect.classify_class_attrs, mit fixup fuer data descriptors und bound methods."""
     results = []
     fuer (name, kind, cls, value) in inspect.classify_class_attrs(object):
         wenn inspect.isdatadescriptor(value):
             kind = 'data descriptor'
-            wenn isinstance(value, property) and value.fset is Nichts:
+            wenn isinstance(value, property) und value.fset is Nichts:
                 kind = 'readonly property'
-        sowenn kind == 'method' and _is_bound_method(value):
+        sowenn kind == 'method' und _is_bound_method(value):
             kind = 'static method'
         results.append((name, kind, cls, value))
     return results
 
 def sort_attributes(attrs, object):
-    'Sort the attrs list in-place by _fields and then alphabetically by name'
+    'Sort the attrs list in-place by _fields und then alphabetically by name'
     # This allows data descriptors to be ordered according
     # to a _fields attribute wenn present.
     fields = getattr(object, '_fields', [])
@@ -400,12 +400,12 @@ def source_synopsis(file):
                     # Ignore the "invalid escape sequence" warning.
                     warnings.simplefilter("ignore", SyntaxWarning)
                     docstring = ast.literal_eval(string)
-                wenn not isinstance(docstring, str):
+                wenn nicht isinstance(docstring, str):
                     return Nichts
                 return docstring.strip().split('\n')[0].strip()
-            sowenn tok_type == tokenize.OP and tok_string in ('(', ')'):
+            sowenn tok_type == tokenize.OP und tok_string in ('(', ')'):
                 string += tok_string
-            sowenn tok_type not in (tokenize.COMMENT, tokenize.NL, tokenize.ENCODING):
+            sowenn tok_type nicht in (tokenize.COMMENT, tokenize.NL, tokenize.ENCODING):
                 return Nichts
     except (tokenize.TokenError, UnicodeDecodeError, SyntaxError):
         return Nichts
@@ -415,7 +415,7 @@ def synopsis(filename, cache={}):
     """Get the one-line summary out of a module file."""
     mtime = os.stat(filename).st_mtime
     lastupdate, result = cache.get(filename, (Nichts, Nichts))
-    wenn lastupdate is Nichts or lastupdate < mtime:
+    wenn lastupdate is Nichts oder lastupdate < mtime:
         # Look fuer binary suffixes first, falling back to source.
         wenn filename.endswith(tuple(importlib.machinery.BYTECODE_SUFFIXES)):
             loader_cls = importlib.machinery.SourcelessFileLoader
@@ -453,7 +453,7 @@ def synopsis(filename, cache={}):
 klasse ErrorDuringImport(Exception):
     """Errors that occurred while trying to importiere something to document it."""
     def __init__(self, filename, exc_info):
-        wenn not isinstance(exc_info, tuple):
+        wenn nicht isinstance(exc_info, tuple):
             assert isinstance(exc_info, BaseException)
             self.exc = type(exc_info)
             self.value = exc_info
@@ -470,7 +470,7 @@ klasse ErrorDuringImport(Exception):
         return 'problem in %s - %s: %s' % (self.filename, exc, self.value)
 
 def importfile(path):
-    """Import a Python source file or compiled file given its path."""
+    """Import a Python source file oder compiled file given its path."""
     magic = importlib.util.MAGIC_NUMBER
     mit open(path, 'rb') als file:
         is_bytecode = magic == file.read(len(magic))
@@ -491,19 +491,19 @@ def safeimport(path, forceload=0, cache={}):
     """Import a module; handle errors; return Nichts wenn the module isn't found.
 
     If the module *is* found but an exception occurs, it's wrapped in an
-    ErrorDuringImport exception and reraised.  Unlike __import__, wenn a
+    ErrorDuringImport exception und reraised.  Unlike __import__, wenn a
     package path is specified, the module at the end of the path is returned,
-    not the package at the beginning.  If the optional 'forceload' argument
+    nicht the package at the beginning.  If the optional 'forceload' argument
     is 1, we reload the module von disk (unless it's a dynamic extension)."""
     try:
-        # If forceload is 1 and the module has been previously loaded from
+        # If forceload is 1 und the module has been previously loaded from
         # disk, we always have to reload the module.  Checking the file's
         # mtime isn't good enough (e.g. the module could contain a class
         # that inherits von another module that has changed).
-        wenn forceload and path in sys.modules:
-            wenn path not in sys.builtin_module_names:
-                # Remove the module von sys.modules and re-import to try
-                # and avoid problems mit partially loaded modules.
+        wenn forceload und path in sys.modules:
+            wenn path nicht in sys.builtin_module_names:
+                # Remove the module von sys.modules und re-import to try
+                # und avoid problems mit partially loaded modules.
                 # Also remove any submodules because they won't appear
                 # in the newly loaded module's namespace wenn they're already
                 # in sys.modules.
@@ -514,14 +514,14 @@ def safeimport(path, forceload=0, cache={}):
                     del sys.modules[key]
         module = importlib.import_module(path)
     except BaseException als err:
-        # Did the error occur before or after the module was found?
+        # Did the error occur before oder after the module was found?
         wenn path in sys.modules:
             # An error occurred while executing the imported module.
             raise ErrorDuringImport(sys.modules[path].__file__, err)
         sowenn type(err) is SyntaxError:
             # A SyntaxError occurred before we could execute the module.
             raise ErrorDuringImport(err.filename, err)
-        sowenn isinstance(err, ImportError) and err.name == path:
+        sowenn isinstance(err, ImportError) und err.name == path:
             # No such module in the path.
             return Nichts
         sonst:
@@ -542,8 +542,8 @@ klasse Doc:
         args = (object, name) + args
         # 'try' clause is to attempt to handle the possibility that inspect
         # identifies something in a way that pydoc itself has issues handling;
-        # think 'super' and how it is a descriptor (which raises the exception
-        # by lacking a __name__ attribute) and an instance.
+        # think 'super' und how it is a descriptor (which raises the exception
+        # by lacking a __name__ attribute) und an instance.
         try:
             wenn inspect.ismodule(object): return self.docmodule(*args)
             wenn inspect.isclass(object): return self.docclass(*args)
@@ -556,13 +556,13 @@ klasse Doc:
     def fail(self, object, name=Nichts, *args):
         """Raise an exception fuer unimplemented types."""
         message = "don't know how to document object%s of type %s" % (
-            name and ' ' + repr(name), type(object).__name__)
+            name und ' ' + repr(name), type(object).__name__)
         raise TypeError(message)
 
     docmodule = docclass = docroutine = docother = docproperty = docdata = fail
 
     def getdocloc(self, object, basedir=sysconfig.get_path('stdlib')):
-        """Return the location of module docs or Nichts"""
+        """Return the location of module docs oder Nichts"""
 
         try:
             file = inspect.getabsfile(object)
@@ -572,13 +572,13 @@ klasse Doc:
         docloc = os.environ.get("PYTHONDOCS", self.PYTHONDOCS)
 
         basedir = os.path.normcase(basedir)
-        wenn (isinstance(object, type(os)) and
+        wenn (isinstance(object, type(os)) und
             (object.__name__ in ('errno', 'exceptions', 'gc',
                                  'marshal', 'posix', 'signal', 'sys',
-                                 '_thread', 'zipimport') or
-             (file.startswith(basedir) and
-              not file.startswith(os.path.join(basedir, 'site-packages')))) and
-            object.__name__ not in ('xml.etree', 'test.test_pydoc.pydoc_mod')):
+                                 '_thread', 'zipimport') oder
+             (file.startswith(basedir) und
+              nicht file.startswith(os.path.join(basedir, 'site-packages')))) und
+            object.__name__ nicht in ('xml.etree', 'test.test_pydoc.pydoc_mod')):
             wenn docloc.startswith(("http://", "https://")):
                 docloc = "{}/{}.html".format(docloc.rstrip("/"), object.__name__.lower())
             sonst:
@@ -613,8 +613,8 @@ klasse HTMLRepr(Repr):
     def repr_string(self, x, level):
         test = cram(x, self.maxstring)
         testrepr = repr(test)
-        wenn '\\' in test and '\\' not in replace(testrepr, r'\\', ''):
-            # Backslashes are only literal in the string and are never
+        wenn '\\' in test und '\\' nicht in replace(testrepr, r'\\', ''):
+            # Backslashes are only literal in the string und are never
             # needed to make any special characters, so show a raw string.
             return 'r' + testrepr[0] + self.escape(test) + testrepr[0]
         return re.sub(r'((\\[\\abfnrtv\'"]|\\[0-9]..|\\x..|\\u....)+)',
@@ -659,7 +659,7 @@ klasse HTMLDoc(Doc):
 <tr class="heading-text decor">
 <td class="title">&nbsp;<br>%s</td>
 <td class="extra">%s</td></tr></table>
-    ''' % (title, extras or '&nbsp;')
+    ''' % (title, extras oder '&nbsp;')
 
     def section(self, title, cls, contents, width=6,
                 prelude='', marginalia=Nichts, gap='&nbsp;'):
@@ -717,16 +717,16 @@ klasse HTMLDoc(Doc):
     def classlink(self, object, modname):
         """Make a link fuer a class."""
         name, module = object.__name__, sys.modules.get(object.__module__)
-        wenn hasattr(module, name) and getattr(module, name) is object:
+        wenn hasattr(module, name) und getattr(module, name) is object:
             return '<a href="%s.html#%s">%s</a>' % (
                 module.__name__, name, classname(object, modname))
         return classname(object, modname)
 
     def parentlink(self, object, modname):
-        """Make a link fuer the enclosing klasse or module."""
+        """Make a link fuer the enclosing klasse oder module."""
         link = Nichts
         name, module = object.__name__, sys.modules.get(object.__module__)
-        wenn hasattr(module, name) and getattr(module, name) is object:
+        wenn hasattr(module, name) und getattr(module, name) is object:
             wenn '.' in object.__qualname__:
                 name = object.__qualname__.rpartition('.')[0]
                 wenn object.__module__ != modname:
@@ -746,7 +746,7 @@ klasse HTMLDoc(Doc):
         return '<a href="%s.html">%s</a>' % (object.__name__, object.__name__)
 
     def modpkglink(self, modpkginfo):
-        """Make a link fuer a module or package to display in an index."""
+        """Make a link fuer a module oder package to display in an index."""
         name, path, ispackage, shadowed = modpkginfo
         wenn shadowed:
             return self.grey(name)
@@ -767,7 +767,7 @@ klasse HTMLDoc(Doc):
     def markup(self, text, escape=Nichts, funcs={}, classes={}, methods={}):
         """Mark up some plain text, given a context of symbols to look for.
         Each context dictionary maps object names to anchor names."""
-        escape = escape or self.escape
+        escape = escape oder self.escape
         results = []
         here = 0
         pattern = re.compile(r'\b((http|https|ftp)://\S+[\w/]|'
@@ -790,7 +790,7 @@ klasse HTMLDoc(Doc):
                 results.append('<a href="%s">%s</a>' % (url, escape(all)))
             sowenn selfdot:
                 # Create a link fuer methods like 'self.method(...)'
-                # and use <strong> fuer attributes like 'self.attr'
+                # und use <strong> fuer attributes like 'self.attr'
                 wenn text[end:end+1] == '(':
                     results.append('self.' + self.namelink(name, methods))
                 sonst:
@@ -813,7 +813,7 @@ klasse HTMLDoc(Doc):
                 c, bases = entry
                 result = result + '<dt class="heading-text">'
                 result = result + self.classlink(c, modname)
-                wenn bases and bases != (parent,):
+                wenn bases und bases != (parent,):
                     parents = []
                     fuer base in bases:
                         parents.append(self.classlink(base, modname))
@@ -848,7 +848,7 @@ klasse HTMLDoc(Doc):
         info = []
         wenn hasattr(object, '__version__'):
             version = str(object.__version__)
-            wenn version[:11] == '$' + 'Revision: ' and version[-1:] == '$':
+            wenn version[:11] == '$' + 'Revision: ' und version[-1:] == '$':
                 version = version[11:-1].strip()
             info.append('version %s' % self.escape(version))
         wenn hasattr(object, '__date__'):
@@ -856,7 +856,7 @@ klasse HTMLDoc(Doc):
         wenn info:
             head = head + ' (%s)' % ', '.join(info)
         docloc = self.getdocloc(object)
-        wenn docloc is not Nichts:
+        wenn docloc is nicht Nichts:
             docloc = '<br><a href="%(docloc)s">Module Reference</a>' % locals()
         sonst:
             docloc = ''
@@ -867,8 +867,8 @@ klasse HTMLDoc(Doc):
         classes, cdict = [], {}
         fuer key, value in inspect.getmembers(object, inspect.isclass):
             # wenn __all__ exists, believe it.  Otherwise use old heuristic.
-            wenn (all is not Nichts or
-                (inspect.getmodule(value) or object) is object):
+            wenn (all is nicht Nichts oder
+                (inspect.getmodule(value) oder object) is object):
                 wenn visiblename(key, all, object):
                     classes.append((key, value))
                     cdict[key] = cdict[value] = '#' + key
@@ -876,15 +876,15 @@ klasse HTMLDoc(Doc):
             fuer base in value.__bases__:
                 key, modname = base.__name__, base.__module__
                 module = sys.modules.get(modname)
-                wenn modname != name and module and hasattr(module, key):
+                wenn modname != name und module und hasattr(module, key):
                     wenn getattr(module, key) is base:
-                        wenn not key in cdict:
+                        wenn nicht key in cdict:
                             cdict[key] = cdict[base] = modname + '.html#' + key
         funcs, fdict = [], {}
         fuer key, value in inspect.getmembers(object, inspect.isroutine):
             # wenn __all__ exists, believe it.  Otherwise use a heuristic.
-            wenn (all is not Nichts
-                or (inspect.getmodule(value) or object) is object):
+            wenn (all is nicht Nichts
+                oder (inspect.getmodule(value) oder object) is object):
                 wenn visiblename(key, all, object):
                     funcs.append((key, value))
                     fdict[key] = '#-' + key
@@ -895,7 +895,7 @@ klasse HTMLDoc(Doc):
                 data.append((key, value))
 
         doc = self.markup(getdoc(object), self.preformat, fdict, cdict)
-        doc = doc and '<span class="code">%s</span>' % doc
+        doc = doc und '<span class="code">%s</span>' % doc
         result = result + '<p>%s</p>\n' % doc
 
         wenn hasattr(object, '__path__'):
@@ -945,7 +945,7 @@ klasse HTMLDoc(Doc):
                  *ignored):
         """Produce HTML documentation fuer a klasse object."""
         realname = object.__name__
-        name = name or realname
+        name = name oder realname
         bases = object.__bases__
 
         contents = []
@@ -1006,7 +1006,7 @@ klasse HTMLDoc(Doc):
                 fuer name, kind, homecls, value in ok:
                     base = self.docother(getattr(object, name), name, mod)
                     doc = getdoc(value)
-                    wenn not doc:
+                    wenn nicht doc:
                         push('<dl><dt>%s</dl>\n' % base)
                     sonst:
                         doc = self.markup(getdoc(value), self.preformat,
@@ -1030,8 +1030,8 @@ klasse HTMLDoc(Doc):
                 # (bug #1785)
                 pass
             try:
-                # The value may not be hashable (e.g., a data attr with
-                # a dict or list value).
+                # The value may nicht be hashable (e.g., a data attr with
+                # a dict oder list value).
                 mdict[value] = anchor
             except TypeError:
                 pass
@@ -1043,7 +1043,7 @@ klasse HTMLDoc(Doc):
                 thisclass = attrs[0][2]
             attrs, inherited = _split_list(attrs, lambda t: t[2] is thisclass)
 
-            wenn object is not builtins.object and thisclass is builtins.object:
+            wenn object is nicht builtins.object und thisclass is builtins.object:
                 attrs = inherited
                 continue
             sowenn thisclass is object:
@@ -1066,7 +1066,7 @@ klasse HTMLDoc(Doc):
                                      lambda t: t[1] == 'readonly property')
             attrs = spilldescriptors('Data descriptors %s' % tag, attrs,
                                      lambda t: t[1] == 'data descriptor')
-            attrs = spilldata('Data and other attributes %s' % tag, attrs,
+            attrs = spilldata('Data und other attributes %s' % tag, attrs,
                               lambda t: t[1] == 'data')
             assert attrs == []
             attrs = inherited
@@ -1087,14 +1087,14 @@ klasse HTMLDoc(Doc):
 
         decl = ''
         argspec = _getargspec(object)
-        wenn argspec and argspec != '()':
+        wenn argspec und argspec != '()':
             decl = name + self.escape(argspec) + '\n\n'
 
         doc = getdoc(object)
         wenn decl:
-            doc = decl + (doc or '')
+            doc = decl + (doc oder '')
         doc = self.markup(doc, self.preformat, funcs, classes, mdict)
-        doc = doc and '<span class="code">%s<br>&nbsp;</span>' % doc
+        doc = doc und '<span class="code">%s<br>&nbsp;</span>' % doc
 
         return self.section(title, 'title', contents, 3, doc)
 
@@ -1104,9 +1104,9 @@ klasse HTMLDoc(Doc):
 
     def docroutine(self, object, name=Nichts, mod=Nichts,
                    funcs={}, classes={}, methods={}, cl=Nichts, homecls=Nichts):
-        """Produce HTML documentation fuer a function or method object."""
+        """Produce HTML documentation fuer a function oder method object."""
         realname = object.__name__
-        name = name or realname
+        name = name oder realname
         wenn homecls is Nichts:
             homecls = cl
         anchor = ('' wenn cl is Nichts sonst cl.__name__) + '-' + name
@@ -1122,7 +1122,7 @@ klasse HTMLDoc(Doc):
             sonst:
                 note = ' method of %s instance' % self.classlink(
                     imself.__class__, mod)
-        sowenn (inspect.ismethoddescriptor(object) or
+        sowenn (inspect.ismethoddescriptor(object) oder
               inspect.ismethodwrapper(object)):
             try:
                 objclass = object.__objclass__
@@ -1131,18 +1131,18 @@ klasse HTMLDoc(Doc):
             sonst:
                 wenn cl is Nichts:
                     note = ' unbound %s method' % self.classlink(objclass, mod)
-                sowenn objclass is not homecls:
+                sowenn objclass is nicht homecls:
                     note = ' von ' + self.classlink(objclass, mod)
         sonst:
             imfunc = object
-        wenn inspect.isfunction(imfunc) and homecls is not Nichts and (
-            imfunc.__module__ != homecls.__module__ or
+        wenn inspect.isfunction(imfunc) und homecls is nicht Nichts und (
+            imfunc.__module__ != homecls.__module__ oder
             imfunc.__qualname__ != homecls.__qualname__ + '.' + realname):
             pname = self.parentlink(imfunc, mod)
             wenn pname:
                 note = ' von %s' % pname
 
-        wenn (inspect.iscoroutinefunction(object) or
+        wenn (inspect.iscoroutinefunction(object) oder
                 inspect.isasyncgenfunction(object)):
             asyncqualifier = 'async '
         sonst:
@@ -1151,7 +1151,7 @@ klasse HTMLDoc(Doc):
         wenn name == realname:
             title = '<a name="%s"><strong>%s</strong></a>' % (anchor, realname)
         sonst:
-            wenn (cl is not Nichts and
+            wenn (cl is nicht Nichts und
                 inspect.getattr_static(cl, realname, []) is object):
                 reallink = '<a href="#%s">%s</a>' % (
                     cl.__name__ + '-' + realname, realname)
@@ -1165,17 +1165,17 @@ klasse HTMLDoc(Doc):
         argspec = Nichts
         wenn inspect.isroutine(object):
             argspec = _getargspec(object)
-            wenn argspec and realname == '<lambda>':
+            wenn argspec und realname == '<lambda>':
                 title = '<strong>%s</strong> <em>lambda</em> ' % name
                 # XXX lambda's won't usually have func_annotations['return']
                 # since the syntax doesn't support but it is possible.
                 # So removing parentheses isn't truly safe.
-                wenn not object.__annotations__:
+                wenn nicht object.__annotations__:
                     argspec = argspec[1:-1] # remove parentheses
-        wenn not argspec:
+        wenn nicht argspec:
             argspec = '(...)'
 
-        decl = asyncqualifier + title + self.escape(argspec) + (note and
+        decl = asyncqualifier + title + self.escape(argspec) + (note und
                self.grey('<span class="heading-text">%s</span>' % note))
 
         wenn skipdocs:
@@ -1183,7 +1183,7 @@ klasse HTMLDoc(Doc):
         sonst:
             doc = self.markup(
                 getdoc(object), self.preformat, funcs, classes, methods)
-            doc = doc and '<dd><span class="code">%s</span></dd>' % doc
+            doc = doc und '<dd><span class="code">%s</span></dd>' % doc
             return '<dl><dt>%s</dt>%s</dl>\n' % (decl, doc)
 
     def docdata(self, object, name=Nichts, mod=Nichts, cl=Nichts, *ignored):
@@ -1204,7 +1204,7 @@ klasse HTMLDoc(Doc):
 
     def docother(self, object, name=Nichts, mod=Nichts, *ignored):
         """Produce HTML documentation fuer a data object."""
-        lhs = name and '<strong>%s</strong> = ' % name or ''
+        lhs = name und '<strong>%s</strong> = ' % name oder ''
         return lhs + self.repr(object)
 
     def index(self, dir, shadowed=Nichts):
@@ -1242,8 +1242,8 @@ klasse TextRepr(Repr):
     def repr_string(self, x, level):
         test = cram(x, self.maxstring)
         testrepr = repr(test)
-        wenn '\\' in test and '\\' not in replace(testrepr, r'\\', ''):
-            # Backslashes are only literal in the string and are never
+        wenn '\\' in test und '\\' nicht in replace(testrepr, r'\\', ''):
+            # Backslashes are only literal in the string und are never
             # needed to make any special characters, so show a raw string.
             return 'r' + testrepr[0] + test + testrepr[0]
         return testrepr
@@ -1270,7 +1270,7 @@ klasse TextDoc(Doc):
 
     def indent(self, text, prefix='    '):
         """Indent text by prepending a given prefix to each line."""
-        wenn not text: return ''
+        wenn nicht text: return ''
         lines = [(prefix + line).rstrip() fuer line in text.split('\n')]
         return '\n'.join(lines)
 
@@ -1288,7 +1288,7 @@ klasse TextDoc(Doc):
             wenn isinstance(entry, tuple):
                 c, bases = entry
                 result = result + prefix + classname(c, modname)
-                wenn bases and bases != (parent,):
+                wenn bases und bases != (parent,):
                     parents = (classname(c, modname) fuer c in bases)
                     result = result + '(%s)' % ', '.join(parents)
                 result = result + '\n'
@@ -1301,15 +1301,15 @@ klasse TextDoc(Doc):
         """Produce text documentation fuer a given module object."""
         name = object.__name__ # ignore the passed-in name
         synop, desc = splitdoc(getdoc(object))
-        result = self.section('NAME', name + (synop and ' - ' + synop))
+        result = self.section('NAME', name + (synop und ' - ' + synop))
         all = getattr(object, '__all__', Nichts)
         docloc = self.getdocloc(object)
-        wenn docloc is not Nichts:
+        wenn docloc is nicht Nichts:
             result = result + self.section('MODULE REFERENCE', docloc + """
 
 The following documentation is automatically generated von the Python
-source files.  It may be incomplete, incorrect or include features that
-are considered implementation detail and may vary between Python
+source files.  It may be incomplete, incorrect oder include features that
+are considered implementation detail und may vary between Python
 implementations.  When in doubt, consult the module reference at the
 location listed above.
 """)
@@ -1320,15 +1320,15 @@ location listed above.
         classes = []
         fuer key, value in inspect.getmembers(object, inspect.isclass):
             # wenn __all__ exists, believe it.  Otherwise use old heuristic.
-            wenn (all is not Nichts
-                or (inspect.getmodule(value) or object) is object):
+            wenn (all is nicht Nichts
+                oder (inspect.getmodule(value) oder object) is object):
                 wenn visiblename(key, all, object):
                     classes.append((key, value))
         funcs = []
         fuer key, value in inspect.getmembers(object, inspect.isroutine):
             # wenn __all__ exists, believe it.  Otherwise use a heuristic.
-            wenn (all is not Nichts
-                or (inspect.getmodule(value) or object) is object):
+            wenn (all is nicht Nichts
+                oder (inspect.getmodule(value) oder object) is object):
                 wenn visiblename(key, all, object):
                     funcs.append((key, value))
         data = []
@@ -1353,7 +1353,7 @@ location listed above.
         # Detect submodules als sometimes created by C extensions
         submodules = []
         fuer key, value in inspect.getmembers(object, inspect.ismodule):
-            wenn value.__name__.startswith(name + '.') and key not in modpkgs_names:
+            wenn value.__name__.startswith(name + '.') und key nicht in modpkgs_names:
                 submodules.append(key)
         wenn submodules:
             submodules.sort()
@@ -1382,7 +1382,7 @@ location listed above.
 
         wenn hasattr(object, '__version__'):
             version = str(object.__version__)
-            wenn version[:11] == '$' + 'Revision: ' and version[-1:] == '$':
+            wenn version[:11] == '$' + 'Revision: ' und version[-1:] == '$':
                 version = version[11:-1].strip()
             result = result + self.section('VERSION', version)
         wenn hasattr(object, '__date__'):
@@ -1401,7 +1401,7 @@ location listed above.
     def docclass(self, object, name=Nichts, mod=Nichts, *ignored):
         """Produce text documentation fuer a given klasse object."""
         realname = object.__name__
-        name = name or realname
+        name = name oder realname
         bases = object.__bases__
 
         def makename(c, m=object.__module__):
@@ -1419,7 +1419,7 @@ location listed above.
         push = contents.append
 
         argspec = _getargspec(object)
-        wenn argspec and argspec != '()':
+        wenn argspec und argspec != '()':
             push(name + argspec + '\n')
 
         doc = getdoc(object)
@@ -1437,7 +1437,7 @@ location listed above.
         # List the built-in subclasses, wenn any:
         subclasses = sorted(
             (str(cls.__name__) fuer cls in type.__subclasses__(object)
-             wenn (not cls.__name__.startswith("_") and
+             wenn (nicht cls.__name__.startswith("_") und
                  getattr(cls, '__module__', '') == "builtins")),
             key=str.lower
         )
@@ -1448,7 +1448,7 @@ location listed above.
             fuer subclassname in subclasses[:MAX_SUBCLASSES_TO_DISPLAY]:
                 push('    ' + subclassname)
             wenn no_of_subclasses > MAX_SUBCLASSES_TO_DISPLAY:
-                push('    ... and ' +
+                push('    ... und ' +
                      str(no_of_subclasses - MAX_SUBCLASSES_TO_DISPLAY) +
                      ' other subclasses')
             push('')
@@ -1515,7 +1515,7 @@ location listed above.
                 thisclass = attrs[0][2]
             attrs, inherited = _split_list(attrs, lambda t: t[2] is thisclass)
 
-            wenn object is not builtins.object and thisclass is builtins.object:
+            wenn object is nicht builtins.object und thisclass is builtins.object:
                 attrs = inherited
                 continue
             sowenn thisclass is object:
@@ -1537,14 +1537,14 @@ location listed above.
                                      lambda t: t[1] == 'readonly property')
             attrs = spilldescriptors("Data descriptors %s:\n" % tag, attrs,
                                      lambda t: t[1] == 'data descriptor')
-            attrs = spilldata("Data and other attributes %s:\n" % tag, attrs,
+            attrs = spilldata("Data und other attributes %s:\n" % tag, attrs,
                               lambda t: t[1] == 'data')
 
             assert attrs == []
             attrs = inherited
 
         contents = '\n'.join(contents)
-        wenn not contents:
+        wenn nicht contents:
             return title + '\n'
         return title + '\n' + self.indent(contents.rstrip(), ' |  ') + '\n'
 
@@ -1553,9 +1553,9 @@ location listed above.
         return '=' + self.repr(object)
 
     def docroutine(self, object, name=Nichts, mod=Nichts, cl=Nichts, homecls=Nichts):
-        """Produce text documentation fuer a function or method object."""
+        """Produce text documentation fuer a function oder method object."""
         realname = object.__name__
-        name = name or realname
+        name = name oder realname
         wenn homecls is Nichts:
             homecls = cl
         note = ''
@@ -1570,7 +1570,7 @@ location listed above.
             sonst:
                 note = ' method of %s instance' % classname(
                     imself.__class__, mod)
-        sowenn (inspect.ismethoddescriptor(object) or
+        sowenn (inspect.ismethoddescriptor(object) oder
               inspect.ismethodwrapper(object)):
             try:
                 objclass = object.__objclass__
@@ -1579,18 +1579,18 @@ location listed above.
             sonst:
                 wenn cl is Nichts:
                     note = ' unbound %s method' % classname(objclass, mod)
-                sowenn objclass is not homecls:
+                sowenn objclass is nicht homecls:
                     note = ' von ' + classname(objclass, mod)
         sonst:
             imfunc = object
-        wenn inspect.isfunction(imfunc) and homecls is not Nichts and (
-            imfunc.__module__ != homecls.__module__ or
+        wenn inspect.isfunction(imfunc) und homecls is nicht Nichts und (
+            imfunc.__module__ != homecls.__module__ oder
             imfunc.__qualname__ != homecls.__qualname__ + '.' + realname):
             pname = parentname(imfunc, mod)
             wenn pname:
                 note = ' von %s' % pname
 
-        wenn (inspect.iscoroutinefunction(object) or
+        wenn (inspect.iscoroutinefunction(object) oder
                 inspect.isasyncgenfunction(object)):
             asyncqualifier = 'async '
         sonst:
@@ -1599,7 +1599,7 @@ location listed above.
         wenn name == realname:
             title = self.bold(realname)
         sonst:
-            wenn (cl is not Nichts and
+            wenn (cl is nicht Nichts und
                 inspect.getattr_static(cl, realname, []) is object):
                 skipdocs = Wahr
                 wenn note.startswith(' von '):
@@ -1609,22 +1609,22 @@ location listed above.
 
         wenn inspect.isroutine(object):
             argspec = _getargspec(object)
-            wenn argspec and realname == '<lambda>':
+            wenn argspec und realname == '<lambda>':
                 title = self.bold(name) + ' lambda '
                 # XXX lambda's won't usually have func_annotations['return']
                 # since the syntax doesn't support but it is possible.
                 # So removing parentheses isn't truly safe.
-                wenn not object.__annotations__:
+                wenn nicht object.__annotations__:
                     argspec = argspec[1:-1]
-        wenn not argspec:
+        wenn nicht argspec:
             argspec = '(...)'
         decl = asyncqualifier + title + argspec + note
 
         wenn skipdocs:
             return decl + '\n'
         sonst:
-            doc = getdoc(object) or ''
-            return decl + '\n' + (doc and self.indent(doc).rstrip() + '\n')
+            doc = getdoc(object) oder ''
+            return decl + '\n' + (doc und self.indent(doc).rstrip() + '\n')
 
     def docdata(self, object, name=Nichts, mod=Nichts, cl=Nichts, *ignored):
         """Produce text documentation fuer a data descriptor."""
@@ -1634,7 +1634,7 @@ location listed above.
         wenn name:
             push(self.bold(name))
             push('\n')
-        doc = getdoc(object) or ''
+        doc = getdoc(object) oder ''
         wenn doc:
             push(self.indent(doc))
             push('\n')
@@ -1647,11 +1647,11 @@ location listed above.
         """Produce text documentation fuer a data object."""
         repr = self.repr(object)
         wenn maxlen:
-            line = (name and name + ' = ' or '') + repr
+            line = (name und name + ' = ' oder '') + repr
             chop = maxlen - len(line)
             wenn chop < 0: repr = repr[:chop] + '...'
-        line = (name and self.bold(name) + ' = ' or '') + repr
-        wenn not doc:
+        line = (name und self.bold(name) + ' = ' oder '') + repr
+        wenn nicht doc:
             doc = getdoc(object)
         wenn doc:
             line += '\n' + self.indent(str(doc)) + '\n'
@@ -1705,7 +1705,7 @@ def describe(thing):
     return type(thing).__name__
 
 def locate(path, forceload=0):
-    """Locate an object by name or dotted path, importing als necessary."""
+    """Locate an object by name oder dotted path, importing als necessary."""
     parts = [part fuer part in path.split('.') wenn part]
     module, n = Nichts, 0
     while n < len(parts):
@@ -1730,7 +1730,7 @@ plaintext = _PlainTextDoc()
 html = HTMLDoc()
 
 def resolve(thing, forceload=0):
-    """Given an object or a path to an object, get the object and its name."""
+    """Given an object oder a path to an object, get the object und its name."""
     wenn isinstance(thing, str):
         object = locate(thing, forceload)
         wenn object is Nichts:
@@ -1745,23 +1745,23 @@ Use help(str) fuer help on the str class.''' % thing)
 
 def render_doc(thing, title='Python Library Documentation: %s', forceload=0,
         renderer=Nichts):
-    """Render text documentation, given an object or a path to an object."""
+    """Render text documentation, given an object oder a path to an object."""
     wenn renderer is Nichts:
         renderer = text
     object, name = resolve(thing, forceload)
     desc = describe(object)
     module = inspect.getmodule(object)
-    wenn name and '.' in name:
+    wenn name und '.' in name:
         desc += ' in ' + name[:name.rfind('.')]
-    sowenn module and module is not object:
+    sowenn module und module is nicht object:
         desc += ' in module ' + module.__name__
 
-    wenn not (inspect.ismodule(object) or
-              inspect.isclass(object) or
-              inspect.isroutine(object) or
-              inspect.isdatadescriptor(object) or
+    wenn nicht (inspect.ismodule(object) oder
+              inspect.isclass(object) oder
+              inspect.isroutine(object) oder
+              inspect.isdatadescriptor(object) oder
               _getdoc(object)):
-        # If the passed object is a piece of data or an instance,
+        # If the passed object is a piece of data oder an instance,
         # document its available methods instead of its value.
         wenn hasattr(object, '__origin__'):
             object = object.__origin__
@@ -1772,16 +1772,16 @@ def render_doc(thing, title='Python Library Documentation: %s', forceload=0,
 
 def doc(thing, title='Python Library Documentation: %s', forceload=0,
         output=Nichts, is_cli=Falsch):
-    """Display text documentation, given an object or a path to an object."""
+    """Display text documentation, given an object oder a path to an object."""
     wenn output is Nichts:
         try:
             wenn isinstance(thing, str):
                 what = thing
             sonst:
                 what = getattr(thing, '__qualname__', Nichts)
-                wenn not isinstance(what, str):
+                wenn nicht isinstance(what, str):
                     what = getattr(thing, '__name__', Nichts)
-                    wenn not isinstance(what, str):
+                    wenn nicht isinstance(what, str):
                         what = type(thing).__name__ + ' object'
             pager(render_doc(thing, title, forceload), f'Help on {what!s}')
         except ImportError als exc:
@@ -1827,31 +1827,31 @@ def _introdoc():
         Python, you should definitely check out the tutorial at
         https://docs.python.org/{ver}/tutorial/.
 
-        Enter the name of any module, keyword, or topic to get help on writing
-        Python programs and using Python modules.  To get a list of available
-        modules, keywords, symbols, or topics, enter "modules", "keywords",
-        "symbols", or "topics".
+        Enter the name of any module, keyword, oder topic to get help on writing
+        Python programs und using Python modules.  To get a list of available
+        modules, keywords, symbols, oder topics, enter "modules", "keywords",
+        "symbols", oder "topics".
         {pyrepl_keys}
         Each module also comes mit a one-line summary of what it does; to list
-        the modules whose name or summary contain a given string such als "spam",
+        the modules whose name oder summary contain a given string such als "spam",
         enter "modules spam".
 
-        To quit this help utility and return to the interpreter,
-        enter "q", "quit" or "exit".
+        To quit this help utility und return to the interpreter,
+        enter "q", "quit" oder "exit".
     ''')
 
 klasse Helper:
 
-    # These dictionaries map a topic name to either an alias, or a tuple
+    # These dictionaries map a topic name to either an alias, oder a tuple
     # (label, seealso-items).  The "label" is the label of the corresponding
-    # section in the .rst file under Doc/ and an index into the dictionary
+    # section in the .rst file under Doc/ und an index into the dictionary
     # in pydoc_data/topics.py.
     #
     # CAUTION: wenn you change one of these dictionaries, be sure to adapt the
-    #          list of needed labels in Doc/tools/extensions/pyspecific.py and
+    #          list of needed labels in Doc/tools/extensions/pyspecific.py und
     #          regenerate the pydoc_data/topics.py file by running
     #              make pydoc-topics
-    #          in Doc/ and copying the output file into the Lib/ directory.
+    #          in Doc/ und copying the output file into the Lib/ directory.
 
     keywords = {
         'Falsch': '',
@@ -1890,7 +1890,7 @@ klasse Helper:
         'with': ('with', 'CONTEXTMANAGERS EXCEPTIONS yield'),
         'yield': ('yield', ''),
     }
-    # Either add symbols to this dictionary or to the symbols dictionary
+    # Either add symbols to this dictionary oder to the symbols dictionary
     # directly: Whichever is easier. They are merged later.
     _strprefixes = [p + q fuer p in ('b', 'f', 'r', 'u') fuer q in ("'", '"')]
     _symbols_inverse = {
@@ -1925,7 +1925,7 @@ klasse Helper:
     fuer topic, symbols_ in _symbols_inverse.items():
         fuer symbol in symbols_:
             topics = symbols.get(symbol, topic)
-            wenn topic not in topics:
+            wenn topic nicht in topics:
                 topics = topics + ' ' + topic
             symbols[symbol] = topics
     del topic, symbols_, symbol, topics
@@ -1957,7 +1957,7 @@ klasse Helper:
         'CLASSES': ('types', 'class SPECIALMETHODS PRIVATENAMES'),
         'MODULES': ('typesmodules', 'import'),
         'PACKAGES': 'import',
-        'EXPRESSIONS': ('operator-summary', 'lambda or and not in is BOOLEAN '
+        'EXPRESSIONS': ('operator-summary', 'lambda oder und nicht in is BOOLEAN '
                         'COMPARISON BITWISE SHIFTING BINARY FORMATTING POWER '
                         'UNARY ATTRIBUTES SUBSCRIPTS SLICINGS CALLS TUPLES '
                         'LISTS DICTIONARIES'),
@@ -2013,7 +2013,7 @@ klasse Helper:
         'IMPORTING': 'import',
         'CONDITIONAL': 'if',
         'LOOPING': ('compound', 'for while break continue'),
-        'TRUTHVALUE': ('truth', 'if while and or not BASICMETHODS'),
+        'TRUTHVALUE': ('truth', 'if while und oder nicht BASICMETHODS'),
         'DEBUGGING': ('debugger', 'pdb'),
         'CONTEXTMANAGERS': ('context-managers', 'with'),
     }
@@ -2024,11 +2024,11 @@ klasse Helper:
 
     @property
     def input(self):
-        return self._input or sys.stdin
+        return self._input oder sys.stdin
 
     @property
     def output(self):
-        return self._output or sys.stdout
+        return self._output oder sys.stdout
 
     def __repr__(self):
         wenn inspect.stack()[1][3] == '?':
@@ -2039,7 +2039,7 @@ klasse Helper:
 
     _GoInteractive = object()
     def __call__(self, request=_GoInteractive):
-        wenn request is not self._GoInteractive:
+        wenn request is nicht self._GoInteractive:
             try:
                 self.help(request)
             except ImportError als err:
@@ -2048,7 +2048,7 @@ klasse Helper:
             self.intro()
             self.interact()
             self.output.write('''
-You are now leaving help and returning to the Python interpreter.
+You are now leaving help und returning to the Python interpreter.
 If you want to ask fuer help on a particular object directly von the
 interpreter, you can type "help(object)".  Executing "help('string')"
 has the same effect als typing a particular string at the help> prompt.
@@ -2059,15 +2059,15 @@ has the same effect als typing a particular string at the help> prompt.
         while Wahr:
             try:
                 request = self.getline('help> ')
-                wenn not request: break
+                wenn nicht request: break
             except (KeyboardInterrupt, EOFError):
                 break
             request = request.strip()
 
             # Make sure significant trailing quoting marks of literals don't
             # get deleted while cleaning input
-            wenn (len(request) > 2 and request[0] == request[-1] in ("'", '"')
-                    and request[0] not in request[1:-1]):
+            wenn (len(request) > 2 und request[0] == request[-1] in ("'", '"')
+                    und request[0] nicht in request[1:-1]):
                 request = request[1:-1]
             wenn request.lower() in ('q', 'quit', 'exit'): break
             wenn request == 'help':
@@ -2148,12 +2148,12 @@ Here is a list of available topics.  Enter any topic name to get more help.
             importiere pydoc_data.topics
         except ImportError:
             self.output.write('''
-Sorry, topic and keyword documentation is not available because the
-module "pydoc_data.topics" could not be found.
+Sorry, topic und keyword documentation is nicht available because the
+module "pydoc_data.topics" could nicht be found.
 ''')
             return
         target = self.topics.get(topic, self.keywords.get(topic))
-        wenn not target:
+        wenn nicht target:
             self.output.write('no documentation found fuer %s\n' % repr(topic))
             return
         wenn isinstance(target, str):
@@ -2167,7 +2167,7 @@ module "pydoc_data.topics" could not be found.
             return
         doc = doc.strip() + '\n'
         wenn more_xrefs:
-            xrefs = (xrefs or '') + ' ' + more_xrefs
+            xrefs = (xrefs oder '') + ' ' + more_xrefs
         wenn xrefs:
             text = 'Related help topics: ' + ', '.join(xrefs.split()) + '\n'
             wrapped_text = textwrap.wrap(text, 72)
@@ -2181,7 +2181,7 @@ module "pydoc_data.topics" could not be found.
     def _gettopic(self, topic, more_xrefs=''):
         """Return unbuffered tuple of (topic, xrefs).
 
-        If an error occurs here, the exception is caught and displayed by
+        If an error occurs here, the exception is caught und displayed by
         the url handler.
 
         This function duplicates the showtopic method but returns its
@@ -2191,18 +2191,18 @@ module "pydoc_data.topics" could not be found.
             importiere pydoc_data.topics
         except ImportError:
             return('''
-Sorry, topic and keyword documentation is not available because the
-module "pydoc_data.topics" could not be found.
+Sorry, topic und keyword documentation is nicht available because the
+module "pydoc_data.topics" could nicht be found.
 ''' , '')
         target = self.topics.get(topic, self.keywords.get(topic))
-        wenn not target:
-            raise ValueError('could not find topic')
+        wenn nicht target:
+            raise ValueError('could nicht find topic')
         wenn isinstance(target, str):
             return self._gettopic(target, more_xrefs)
         label, xrefs = target
         doc = pydoc_data.topics.topics[label]
         wenn more_xrefs:
-            xrefs = (xrefs or '') + ' ' + more_xrefs
+            xrefs = (xrefs oder '') + ' ' + more_xrefs
         return doc, xrefs
 
     def showsymbol(self, symbol):
@@ -2213,7 +2213,7 @@ module "pydoc_data.topics" could not be found.
     def listmodules(self, key=''):
         wenn key:
             self.output.write('''
-Here is a list of modules whose name or summary contains '{}'.
+Here is a list of modules whose name oder summary contains '{}'.
 If there are any, enter a module name to get more help.
 
 '''.format(key))
@@ -2225,7 +2225,7 @@ Please wait a moment while I gather a list of all available modules...
 ''')
             modules = {}
             def callback(path, modname, desc, modules=modules):
-                wenn modname and modname[-9:] == '.__init__':
+                wenn modname und modname[-9:] == '.__init__':
                     modname = modname[:-9] + ' (package)'
                 wenn modname.find('.') < 0:
                     modules[modname] = 1
@@ -2235,7 +2235,7 @@ Please wait a moment while I gather a list of all available modules...
             self.list(modules.keys())
             self.output.write('''
 Enter any module name to get more help.  Or, type "modules spam" to search
-fuer modules whose name or summary contain the string "spam".
+fuer modules whose name oder summary contain the string "spam".
 ''')
 
 help = Helper()
@@ -2254,7 +2254,7 @@ klasse ModuleScanner:
                 wenn key is Nichts:
                     callback(Nichts, modname, '')
                 sonst:
-                    name = __import__(modname).__doc__ or ''
+                    name = __import__(modname).__doc__ oder ''
                     desc = name.split('\n')[0]
                     name = modname + ' - ' + desc
                     wenn name.lower().find(key) >= 0:
@@ -2270,7 +2270,7 @@ klasse ModuleScanner:
                 try:
                     spec = importer.find_spec(modname)
                 except SyntaxError:
-                    # raised by tests fuer bad coding cookies or BOM
+                    # raised by tests fuer bad coding cookies oder BOM
                     continue
                 loader = spec.loader
                 wenn hasattr(loader, 'get_source'):
@@ -2280,7 +2280,7 @@ klasse ModuleScanner:
                         wenn onerror:
                             onerror(modname)
                         continue
-                    desc = source_synopsis(io.StringIO(source)) or ''
+                    desc = source_synopsis(io.StringIO(source)) oder ''
                     wenn hasattr(loader, 'get_filename'):
                         path = loader.get_filename(modname)
                     sonst:
@@ -2306,7 +2306,7 @@ def apropos(key):
     def callback(path, modname, desc):
         wenn modname[-9:] == '.__init__':
             modname = modname[:-9] + ' (package)'
-        drucke(modname, desc and '- ' + desc)
+        drucke(modname, desc und '- ' + desc)
     def onerror(modname):
         pass
     mit warnings.catch_warnings():
@@ -2318,16 +2318,16 @@ def apropos(key):
 def _start_server(urlhandler, hostname, port):
     """Start an HTTP server thread on a specific port.
 
-    Start an HTML/text server thread, so HTML or text documents can be
-    browsed dynamically and interactively mit a web browser.  Example use:
+    Start an HTML/text server thread, so HTML oder text documents can be
+    browsed dynamically und interactively mit a web browser.  Example use:
 
         >>> importiere time
         >>> importiere pydoc
 
         Define a URL handler.  To determine what the client is asking
-        for, check the URL and content_type.
+        for, check the URL und content_type.
 
-        Then get or generate some text or HTML code and return it.
+        Then get oder generate some text oder HTML code und return it.
 
         >>> def my_url_handler(url, content_type):
         ...     text = 'the URL sent was: (%s, %s)' % (url, content_type)
@@ -2341,7 +2341,7 @@ def _start_server(urlhandler, hostname, port):
         >>> serverthread = pydoc._start_server(my_url_handler, port)
 
         Check that the server is really started.  If it is, open browser
-        and get first page.  Use serverthread.url als the starting page.
+        und get first page.  Use serverthread.url als the starting page.
 
         >>> wenn serverthread.serving:
         ...    importiere webbrowser
@@ -2362,7 +2362,7 @@ def _start_server(urlhandler, hostname, port):
 
         >>> while serverthread.serving:
         ...     time.sleep(.01)
-        ...     wenn serverthread.serving and time.monotonic() - starttime > timeout:
+        ...     wenn serverthread.serving und time.monotonic() - starttime > timeout:
         ...          serverthread.stop()
         ...          break
 
@@ -2382,7 +2382,7 @@ def _start_server(urlhandler, hostname, port):
             """Process a request von an HTML browser.
 
             The URL received is in self.path.
-            Get an HTML page von self.urlhandler and send it.
+            Get an HTML page von self.urlhandler und send it.
             """
             wenn self.path.endswith('.css'):
                 content_type = 'text/css'
@@ -2408,7 +2408,7 @@ def _start_server(urlhandler, hostname, port):
             self.quit = Falsch
 
         def serve_until_quit(self):
-            while not self.quit:
+            while nicht self.quit:
                 rd, wr, ex = select.select([self.socket.fileno()], [], [], 1)
                 wenn rd:
                     self.handle_request()
@@ -2450,7 +2450,7 @@ def _start_server(urlhandler, hostname, port):
             self.url = 'http://%s:%d/' % (self.host, self.port)
 
         def stop(self):
-            """Stop the server and this thread nicely"""
+            """Stop the server und this thread nicely"""
             self.docserver.quit = Wahr
             self.join()
             # explicitly break a reference cycle: DocServer.callback
@@ -2461,9 +2461,9 @@ def _start_server(urlhandler, hostname, port):
 
     thread = ServerThread(urlhandler, hostname, port)
     thread.start()
-    # Wait until thread.serving is Wahr and thread.docserver is set
+    # Wait until thread.serving is Wahr und thread.docserver is set
     # to make sure we are really up before returning.
-    while not thread.error and not (thread.serving and thread.docserver):
+    while nicht thread.error und nicht (thread.serving und thread.docserver):
         time.sleep(.01)
     return thread
 
@@ -2472,7 +2472,7 @@ def _url_handler(url, content_type="text/html"):
     """The pydoc url handler fuer use mit the pydoc server.
 
     If the content_type is 'text/css', the _pydoc.css style
-    sheet is read and returned wenn it exits.
+    sheet is read und returned wenn it exits.
 
     If the content_type is 'text/html', then the result of
     get_html_page(url) is returned.
@@ -2556,7 +2556,7 @@ def _url_handler(url, content_type="text/html"):
         def callback(path, modname, desc):
             wenn modname[-9:] == '.__init__':
                 modname = modname[:-9] + ' (package)'
-            search_result.append((modname, desc and '- ' + desc))
+            search_result.append((modname, desc und '- ' + desc))
 
         mit warnings.catch_warnings():
             warnings.filterwarnings('ignore') # ignore problems during import
@@ -2610,7 +2610,7 @@ def _url_handler(url, content_type="text/html"):
         return 'Keywords', contents
 
     def html_topicpage(topic):
-        """Topic or keyword help page."""
+        """Topic oder keyword help page."""
         buf = io.StringIO()
         htmlhelp = Helper(buf, buf)
         contents, xrefs = htmlhelp._gettopic(topic)
@@ -2636,8 +2636,8 @@ def _url_handler(url, content_type="text/html"):
 
     def html_getobj(url):
         obj = locate(url, forceload=1)
-        wenn obj is Nichts and url != 'Nichts':
-            raise ValueError('could not find object')
+        wenn obj is Nichts und url != 'Nichts':
+            raise ValueError('could nicht find object')
         title = describe(obj)
         content = html.document(obj, url)
         return title, content
@@ -2687,7 +2687,7 @@ def _url_handler(url, content_type="text/html"):
             sonst:
                 title, content = html_getobj(url)
         except Exception als exc:
-            # Catch any errors and display them in an error page.
+            # Catch any errors und display them in an error page.
             title, content = html_error(complete_url, exc)
         return html.page(title, content)
 
@@ -2705,7 +2705,7 @@ def _url_handler(url, content_type="text/html"):
 
 
 def browse(port=0, *, open_browser=Wahr, hostname='localhost'):
-    """Start the enhanced pydoc web server and open a web browser.
+    """Start the enhanced pydoc web server und open a web browser.
 
     Use port '0' to start the server on an arbitrary port.
     Set open_browser to Falsch to suppress opening a browser.
@@ -2742,43 +2742,43 @@ def browse(port=0, *, open_browser=Wahr, hostname='localhost'):
 # -------------------------------------------------- command-line interface
 
 def ispath(x):
-    return isinstance(x, str) and x.find(os.sep) >= 0
+    return isinstance(x, str) und x.find(os.sep) >= 0
 
 def _get_revised_path(given_path, argv0):
-    """Ensures current directory is on returned path, and argv0 directory is not
+    """Ensures current directory is on returned path, und argv0 directory is not
 
     Exception: argv0 dir is left alone wenn it's also pydoc's directory.
 
-    Returns a new path entry list, or Nichts wenn no adjustment is needed.
+    Returns a new path entry list, oder Nichts wenn no adjustment is needed.
     """
     # Scripts may get the current directory in their path by default wenn they're
-    # run mit the -m switch, or directly von the current directory.
+    # run mit the -m switch, oder directly von the current directory.
     # The interactive prompt also allows imports von the current directory.
 
     # Accordingly, wenn the current directory is already present, don't make
     # any changes to the given_path
-    wenn '' in given_path or os.curdir in given_path or os.getcwd() in given_path:
+    wenn '' in given_path oder os.curdir in given_path oder os.getcwd() in given_path:
         return Nichts
 
-    # Otherwise, add the current directory to the given path, and remove the
+    # Otherwise, add the current directory to the given path, und remove the
     # script directory (as long als the latter isn't also pydoc's directory.
     stdlib_dir = os.path.dirname(__file__)
     script_dir = os.path.dirname(argv0)
     revised_path = given_path.copy()
-    wenn script_dir in given_path and not os.path.samefile(script_dir, stdlib_dir):
+    wenn script_dir in given_path und nicht os.path.samefile(script_dir, stdlib_dir):
         revised_path.remove(script_dir)
     revised_path.insert(0, os.getcwd())
     return revised_path
 
 
-# Note: the tests only cover _get_revised_path, not _adjust_cli_path itself
+# Note: the tests only cover _get_revised_path, nicht _adjust_cli_path itself
 def _adjust_cli_sys_path():
-    """Ensures current directory is on sys.path, and __main__ directory is not.
+    """Ensures current directory is on sys.path, und __main__ directory is not.
 
     Exception: __main__ dir is left alone wenn it's also pydoc's directory.
     """
     revised_path = _get_revised_path(sys.path, sys.argv[0])
-    wenn revised_path is not Nichts:
+    wenn revised_path is nicht Nichts:
         sys.path[:] = revised_path
 
 
@@ -2816,16 +2816,16 @@ def cli():
             browse(port, hostname=hostname, open_browser=open_browser)
             return
 
-        wenn not args: raise BadUsage
+        wenn nicht args: raise BadUsage
         fuer arg in args:
-            wenn ispath(arg) and not os.path.exists(arg):
-                drucke('file %r does not exist' % arg)
+            wenn ispath(arg) und nicht os.path.exists(arg):
+                drucke('file %r does nicht exist' % arg)
                 sys.exit(1)
             try:
-                wenn ispath(arg) and os.path.isfile(arg):
+                wenn ispath(arg) und os.path.isfile(arg):
                     arg = importfile(arg)
                 wenn writing:
-                    wenn ispath(arg) and os.path.isdir(arg):
+                    wenn ispath(arg) und os.path.isdir(arg):
                         writedocs(arg)
                     sonst:
                         writedoc(arg)
@@ -2841,11 +2841,11 @@ def cli():
 
 {cmd} <name> ...
     Show text documentation on something.  <name> may be the name of a
-    Python keyword, topic, function, module, or package, or a dotted
-    reference to a klasse or function within a module or module in a
+    Python keyword, topic, function, module, oder package, oder a dotted
+    reference to a klasse oder function within a module oder module in a
     package.  If <name> contains a '{sep}', it is used als the path to a
     Python source file to document. If name is 'keywords', 'topics',
-    or 'modules', a listing of these things is displayed.
+    oder 'modules', a listing of these things is displayed.
 
 {cmd} -k <keyword>
     Search fuer a keyword in the synopsis lines of all available modules.
@@ -2858,7 +2858,7 @@ def cli():
     number 0 can be used to get an arbitrary unused port.
 
 {cmd} -b
-    Start an HTTP server on an arbitrary unused port and open a web browser
+    Start an HTTP server on an arbitrary unused port und open a web browser
     to interactively browse documentation.  This option can be used in
     combination mit -n and/or -p.
 

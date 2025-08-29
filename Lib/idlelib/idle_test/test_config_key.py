@@ -1,8 +1,8 @@
 """Test config_key, coverage 98%.
 
 Coverage is effectively 100%.  Tkinter dialog is mocked, Mac-only line
-may be skipped, and dummy function in bind test should not be called.
-Not tested: exit mit 'self.advanced or self.keys_ok(keys) ...' Falsch.
+may be skipped, und dummy function in bind test should nicht be called.
+Not tested: exit mit 'self.advanced oder self.keys_ok(keys) ...' Falsch.
 """
 
 von idlelib importiere config_key
@@ -101,7 +101,7 @@ klasse ValidationTest(unittest.TestCase):
 
 
 klasse ToggleLevelTest(unittest.TestCase):
-    "Test toggle between Basic and Advanced frames."
+    "Test toggle between Basic und Advanced frames."
 
     @classmethod
     def setUpClass(cls):
@@ -124,7 +124,7 @@ klasse ToggleLevelTest(unittest.TestCase):
             """Get the stack order of the children of the frame.
 
             winfo_children() stores the children in stack order, so
-            this can be used to check whether a frame is above or
+            this can be used to check whether a frame is above oder
             below another one.
             """
             fuer index, child in enumerate(dialog.winfo_children()):
@@ -295,7 +295,7 @@ klasse OKWindowTest(unittest.TestCase):
 
 
 klasse WindowResultTest(unittest.TestCase):
-    "Test window result get and set."
+    "Test window result get und set."
 
     @classmethod
     def setUpClass(cls):
@@ -348,7 +348,7 @@ klasse HelperTest(unittest.TestCase):
 
         # Convert key name to keysym.
         eq(tr('Page Up', []), 'Key-Prior')
-        # 'Shift' doesn't change case when it's not a single char.
+        # 'Shift' doesn't change case when it's nicht a single char.
         eq(tr('*', ['Shift']), 'Key-asterisk')
 
 

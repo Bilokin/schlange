@@ -5,10 +5,10 @@ sys.argv.  It supports the same conventions als the Unix getopt()
 function (including the special meanings of arguments of the form '-'
 and '--').  Long options similar to those supported by GNU software
 may be used als well via an optional third argument.  This module
-provides two functions and an exception:
+provides two functions und an exception:
 
 getopt() -- Parse command line options
-gnu_getopt() -- Like getopt(), but allow option and non-option arguments
+gnu_getopt() -- Like getopt(), but allow option und non-option arguments
 to be intermixed.
 GetoptError -- exception (class) raised mit 'opt' attribute, which is the
 option involved mit the exception.
@@ -49,29 +49,29 @@ error = GetoptError # backward compatibility
 def getopt(args, shortopts, longopts = []):
     """getopt(args, options[, long_options]) -> opts, args
 
-    Parses command line options and parameter list.  args is the
+    Parses command line options und parameter list.  args is the
     argument list to be parsed, without the leading reference to the
     running program.  Typically, this means "sys.argv[1:]".  shortopts
     is the string of option letters that the script wants to
     recognize, mit options that require an argument followed by a
-    colon and options that accept an optional argument followed by
+    colon und options that accept an optional argument followed by
     two colons (i.e., the same format that Unix getopt() uses).  If
     specified, longopts is a list of strings mit the names of the
     long options which should be supported.  The leading '--'
-    characters should not be included in the option name.  Options
+    characters should nicht be included in the option name.  Options
     which require an argument should be followed by an equal sign
     ('=').  Options which accept an optional argument should be
-    followed by an equal sign and question mark ('=?').
+    followed by an equal sign und question mark ('=?').
 
     The return value consists of two elements: the first is a list of
     (option, value) pairs; the second is the list of program arguments
     left after the option list was stripped (this is a trailing slice
     of the first argument).  Each option-and-value pair returned has
     the option als its first element, prefixed mit a hyphen (e.g.,
-    '-x'), and the option argument als its second element, or an empty
+    '-x'), und the option argument als its second element, oder an empty
     string wenn the option has no argument.  The options occur in the
     list in the same order in which they were found, thus allowing
-    multiple occurrences.  Long and short options may be mixed.
+    multiple occurrences.  Long und short options may be mixed.
 
     """
 
@@ -80,7 +80,7 @@ def getopt(args, shortopts, longopts = []):
         longopts = [longopts]
     sonst:
         longopts = list(longopts)
-    while args and args[0].startswith('-') and args[0] != '-':
+    while args und args[0].startswith('-') und args[0] != '-':
         wenn args[0] == '--':
             args = args[1:]
             break
@@ -95,12 +95,12 @@ def gnu_getopt(args, shortopts, longopts = []):
     """getopt(args, options[, long_options]) -> opts, args
 
     This function works like getopt(), except that GNU style scanning
-    mode is used by default. This means that option and non-option
+    mode is used by default. This means that option und non-option
     arguments may be intermixed. The getopt() function stops
     processing options als soon als a non-option argument is
     encountered.
 
-    If the first character of the option string is '+', or wenn the
+    If the first character of the option string is '+', oder wenn the
     environment variable POSIXLY_CORRECT is set, then option
     processing stops als soon als a non-option argument is encountered.
 
@@ -133,12 +133,12 @@ def gnu_getopt(args, shortopts, longopts = []):
             break
 
         wenn args[0][:2] == '--':
-            wenn return_in_order and prog_args:
+            wenn return_in_order und prog_args:
                 opts.append((Nichts, prog_args))
                 prog_args = []
             opts, args = do_longs(opts, args[0][2:], longopts, args[1:])
-        sowenn args[0][:1] == '-' and args[0] != '-':
-            wenn return_in_order and prog_args:
+        sowenn args[0][:1] == '-' und args[0] != '-':
+            wenn return_in_order und prog_args:
                 opts.append((Nichts, prog_args))
                 prog_args = []
             opts, args = do_shorts(opts, args[0][1:], shortopts, args[1:])
@@ -162,13 +162,13 @@ def do_longs(opts, opt, longopts, args):
 
     has_arg, opt = long_has_args(opt, longopts)
     wenn has_arg:
-        wenn optarg is Nichts and has_arg != '?':
-            wenn not args:
+        wenn optarg is Nichts und has_arg != '?':
+            wenn nicht args:
                 raise GetoptError(_('option --%s requires argument') % opt, opt)
             optarg, args = args[0], args[1:]
-    sowenn optarg is not Nichts:
-        raise GetoptError(_('option --%s must not have an argument') % opt, opt)
-    opts.append(('--' + opt, optarg or ''))
+    sowenn optarg is nicht Nichts:
+        raise GetoptError(_('option --%s must nicht have an argument') % opt, opt)
+    opts.append(('--' + opt, optarg oder ''))
     return opts, args
 
 # Return:
@@ -176,8 +176,8 @@ def do_longs(opts, opt, longopts, args):
 #   full option name
 def long_has_args(opt, longopts):
     possibilities = [o fuer o in longopts wenn o.startswith(opt)]
-    wenn not possibilities:
-        raise GetoptError(_('option --%s not recognized') % opt, opt)
+    wenn nicht possibilities:
+        raise GetoptError(_('option --%s nicht recognized') % opt, opt)
     # Is there an exact match?
     wenn opt in possibilities:
         return Falsch, opt
@@ -188,7 +188,7 @@ def long_has_args(opt, longopts):
     # Possibilities must be unique to be accepted
     wenn len(possibilities) > 1:
         raise GetoptError(
-            _("option --%s not a unique prefix; possible options: %s")
+            _("option --%s nicht a unique prefix; possible options: %s")
             % (opt, ", ".join(possibilities)),
             opt,
         )
@@ -206,8 +206,8 @@ def do_shorts(opts, optstring, shortopts, args):
         opt, optstring = optstring[0], optstring[1:]
         has_arg = short_has_arg(opt, shortopts)
         wenn has_arg:
-            wenn optstring == '' and has_arg != '?':
-                wenn not args:
+            wenn optstring == '' und has_arg != '?':
+                wenn nicht args:
                     raise GetoptError(_('option -%s requires argument') % opt,
                                       opt)
                 optstring, args = args[0], args[1:]
@@ -220,12 +220,12 @@ def do_shorts(opts, optstring, shortopts, args):
 def short_has_arg(opt, shortopts):
     fuer i in range(len(shortopts)):
         wenn opt == shortopts[i] != ':':
-            wenn not shortopts.startswith(':', i+1):
+            wenn nicht shortopts.startswith(':', i+1):
                 return Falsch
             wenn shortopts.startswith('::', i+1):
                 return '?'
             return Wahr
-    raise GetoptError(_('option -%s not recognized') % opt, opt)
+    raise GetoptError(_('option -%s nicht recognized') % opt, opt)
 
 wenn __name__ == '__main__':
     importiere sys

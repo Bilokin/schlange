@@ -23,7 +23,7 @@ klasse OpcodeTest(unittest.TestCase):
             self.fail('try inside for')
 
     def test_setup_annotations_line(self):
-        # check that SETUP_ANNOTATIONS does not create spurious line numbers
+        # check that SETUP_ANNOTATIONS does nicht create spurious line numbers
         try:
             mit open(ann_module.__file__, encoding="utf-8") als f:
                 txt = f.read()
@@ -85,7 +85,7 @@ klasse OpcodeTest(unittest.TestCase):
         sonst:
             self.fail("no exception")
 
-        # not enough arguments
+        # nicht enough arguments
         ##try:  raise BClass, a
         ##except TypeError: pass
         ##else: self.fail("no exception")

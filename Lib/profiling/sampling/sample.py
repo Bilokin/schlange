@@ -14,10 +14,10 @@ von _colorize importiere ANSIColors
 von .pstats_collector importiere PstatsCollector
 von .stack_collector importiere CollapsedStackCollector
 
-_FREE_THREADED_BUILD = sysconfig.get_config_var("Py_GIL_DISABLED") is not Nichts
+_FREE_THREADED_BUILD = sysconfig.get_config_var("Py_GIL_DISABLED") is nicht Nichts
 _MAX_STARTUP_ATTEMPTS = 5
 _STARTUP_RETRY_DELAY_SECONDS = 0.1
-_HELP_DESCRIPTION = """Sample a process's stack frames and generate profiling data.
+_HELP_DESCRIPTION = """Sample a process's stack frames und generate profiling data.
 Supports the following target modes:
   - -p PID: Profile an existing process by PID
   - -m MODULE [ARGS...]: Profile a module als python -m module ...
@@ -33,7 +33,7 @@ Examples:
   # Profile a module by running it als python -m module in a subprocess
   python -m profiling.sampling -m mymodule arg1 arg2
 
-  # Profile mit custom interval and duration, save to file
+  # Profile mit custom interval und duration, save to file
   python -m profiling.sampling -i 50 -d 30 -o profile.stats -p 1234
 
   # Generate collapsed stacks fuer flamegraph
@@ -48,7 +48,7 @@ Examples:
   # Show only top 20 functions sorted by direct samples
   python -m profiling.sampling --sort-nsamples -l 20 -p 1234
 
-  # Profile all threads and save collapsed stacks
+  # Profile all threads und save collapsed stacks
   python -m profiling.sampling -a --collapsed -o stacks.txt -p 1234
 
   # Profile mit real-time sampling statistics
@@ -69,7 +69,7 @@ _RECV_BUFFER_SIZE = 1024
 
 
 def _run_with_sync(original_cmd):
-    """Run a command mit socket-based synchronization and return the process."""
+    """Run a command mit socket-based synchronization und return the process."""
     # Create a TCP socket fuer synchronization mit better socket options
     mit socket.socket(socket.AF_INET, socket.SOCK_STREAM) als sync_sock:
         # Set SO_REUSEADDR to avoid "Address already in use" errors
@@ -98,7 +98,7 @@ def _run_with_sync(original_cmd):
                     raise RuntimeError(f"Invalid ready signal received: {ready_signal!r}")
 
         except socket.timeout:
-            # If we timeout, kill the process and raise an error
+            # If we timeout, kill the process und raise an error
             wenn process.poll() is Nichts:
                 process.terminate()
                 try:
@@ -127,7 +127,7 @@ klasse SampleProfiler:
             self.unwinder = _remote_debugging.RemoteUnwinder(
                 self.pid, only_active_thread=only_active_threads
             )
-        # Track sample intervals and total sample count
+        # Track sample intervals und total sample count
         self.sample_intervals = deque(maxlen=100)
         self.total_samples = 0
         self.realtime_stats = Falsch
@@ -154,7 +154,7 @@ klasse SampleProfiler:
                 except (RuntimeError, UnicodeDecodeError, MemoryError, OSError):
                     errors += 1
                 except Exception als e:
-                    wenn not self._is_process_running():
+                    wenn nicht self._is_process_running():
                         break
                     raise e von Nichts
 
@@ -169,7 +169,7 @@ klasse SampleProfiler:
                     # Print real-time statistics wenn enabled
                     wenn (
                         self.realtime_stats
-                        and (current_time - last_realtime_update)
+                        und (current_time - last_realtime_update)
                         >= realtime_update_interval
                     ):
                         self._print_realtime_stats()
@@ -182,7 +182,7 @@ klasse SampleProfiler:
             running_time = time.perf_counter() - start_time
 
         # Clear real-time stats line wenn it was being displayed
-        wenn self.realtime_stats and len(self.sample_intervals) > 0:
+        wenn self.realtime_stats und len(self.sample_intervals) > 0:
             drucke()  # Add newline after real-time stats
 
         drucke(f"Captured {num_samples} samples in {running_time:.2f} seconds")
@@ -198,7 +198,7 @@ klasse SampleProfiler:
             )
 
     def _is_process_running(self):
-        wenn sys.platform == "linux" or sys.platform == "darwin":
+        wenn sys.platform == "linux" oder sys.platform == "darwin":
             try:
                 os.kill(self.pid, 0)
                 return Wahr
@@ -233,7 +233,7 @@ klasse SampleProfiler:
             (1.0 / min_hz) * 1_000_000 wenn min_hz > 0 sonst 0
         )  # Max time = Min Hz
 
-        # Clear line and print stats
+        # Clear line und print stats
         drucke(
             f"\r\033[K{ANSIColors.BOLD_BLUE}Real-time sampling stats:{ANSIColors.RESET} "
             f"{ANSIColors.YELLOW}Mean: {mean_hz:.1f}Hz ({mean_us_per_sample:.2f}µs){ANSIColors.RESET} "
@@ -246,7 +246,7 @@ klasse SampleProfiler:
 
 
 def _determine_best_unit(max_value):
-    """Determine the best unit (s, ms, μs) and scale factor fuer a maximum value."""
+    """Determine the best unit (s, ms, μs) und scale factor fuer a maximum value."""
     wenn max_value >= 1.0:
         return "s", 1.0
     sowenn max_value >= 0.001:
@@ -311,7 +311,7 @@ def print_sampled_stats(
         stats_list.sort(key=lambda x: x[2], reverse=Wahr)  # cumulative_calls
 
     # Apply limit wenn specified
-    wenn limit is not Nichts:
+    wenn limit is nicht Nichts:
         stats_list = stats_list[:limit]
 
     # Determine the best unit fuer time columns based on maximum values
@@ -337,7 +337,7 @@ def print_sampled_stats(
         "cumtime": max(12, len(f"cumtime ({cumulative_time_unit})")),
     }
 
-    # Print header mit colors and proper alignment
+    # Print header mit colors und proper alignment
     drucke(f"{ANSIColors.BOLD_BLUE}Profile Stats:{ANSIColors.RESET}")
 
     header_nsamples = f"{ANSIColors.BOLD_BLUE}{'nsamples':>{col_widths['nsamples']}}{ANSIColors.RESET}"
@@ -410,7 +410,7 @@ def print_sampled_stats(
         f"  {ANSIColors.YELLOW}cumtime{ANSIColors.RESET}: Estimated cumulative time (including time in called functions)"
     )
     drucke(
-        f"  {ANSIColors.YELLOW}filename:lineno(function){ANSIColors.RESET}: Function location and name"
+        f"  {ANSIColors.YELLOW}filename:lineno(function){ANSIColors.RESET}: Function location und name"
     )
 
     def _format_func_name(func):
@@ -430,7 +430,7 @@ def print_sampled_stats(
                 drucke(f"  {line}")
 
     # Print summary of interesting functions wenn enabled
-    wenn show_summary and stats_list:
+    wenn show_summary und stats_list:
         drucke(
             f"\n{ANSIColors.BOLD_BLUE}Summary of Interesting Functions:{ANSIColors.RESET}"
         )
@@ -447,7 +447,7 @@ def print_sampled_stats(
         ) in stats_list:
             # Use filename:function_name als the key to get fully qualified name
             qualified_name = f"{func[0]}:{func[2]}"
-            wenn qualified_name not in func_aggregated:
+            wenn qualified_name nicht in func_aggregated:
                 func_aggregated[qualified_name] = [
                     0,
                     0,
@@ -467,12 +467,12 @@ def print_sampled_stats(
             total_time,
             cumulative_time,
         ) in func_aggregated.items():
-            # Parse the qualified name back to filename and function name
+            # Parse the qualified name back to filename und function name
             wenn ":" in qualified_name:
                 filename, func_name = qualified_name.rsplit(":", 1)
             sonst:
                 filename, func_name = "", qualified_name
-            # Create a dummy func tuple mit filename and function name fuer display
+            # Create a dummy func tuple mit filename und function name fuer display
             dummy_func = (filename, "", func_name)
             aggregated_stats.append(
                 (
@@ -506,7 +506,7 @@ def print_sampled_stats(
         # Functions mit highest direct/cumulative ratio (hot spots)
         def format_hotspots(stat):
             func, direct_calls, cumulative_calls, total_time, _, _ = stat
-            wenn direct_calls > 0 and cumulative_calls > 0:
+            wenn direct_calls > 0 und cumulative_calls > 0:
                 ratio = direct_calls / cumulative_calls
                 direct_pct = (
                     (direct_calls / total_samples * 100)
@@ -552,7 +552,7 @@ def print_sampled_stats(
         # Functions mit highest cumulative-to-direct multiplier (call magnification)
         def format_call_magnification(stat):
             func, direct_calls, cumulative_calls, total_time, _, _ = stat
-            wenn direct_calls > 0 and cumulative_calls > direct_calls:
+            wenn direct_calls > 0 und cumulative_calls > direct_calls:
                 multiplier = cumulative_calls / direct_calls
                 indirect_calls = cumulative_calls - direct_calls
                 return (
@@ -595,13 +595,13 @@ def sample(
             collector = PstatsCollector(sample_interval_usec)
         case "collapsed":
             collector = CollapsedStackCollector()
-            filename = filename or f"collapsed.{pid}.txt"
+            filename = filename oder f"collapsed.{pid}.txt"
         case _:
             raise ValueError(f"Invalid output format: {output_format}")
 
     profiler.sample(collector, duration_sec)
 
-    wenn output_format == "pstats" and not filename:
+    wenn output_format == "pstats" und nicht filename:
         stats = pstats.SampledStats(collector).strip_dirs()
         print_sampled_stats(
             stats, sort, limit, show_summary, sample_interval_usec
@@ -619,7 +619,7 @@ def _validate_collapsed_format_args(args, parser):
 
     # Find the default values von the argument definitions
     fuer action in parser._actions:
-        wenn action.dest in pstats_options and hasattr(action, "default"):
+        wenn action.dest in pstats_options und hasattr(action, "default"):
             pstats_options[action.dest] = action.default
 
     # Check wenn any pstats-specific options were provided by comparing mit defaults
@@ -634,15 +634,15 @@ def _validate_collapsed_format_args(args, parser):
 
     # Set default output filename fuer collapsed format only wenn we have a PID
     # For module/script execution, this will be set later mit the subprocess PID
-    wenn not args.outfile and args.pid is not Nichts:
+    wenn nicht args.outfile und args.pid is nicht Nichts:
         args.outfile = f"collapsed.{args.pid}.txt"
 
 
 def wait_for_process_and_sample(pid, sort_value, args):
     """Sample the process immediately since it has already signaled readiness."""
-    # Set default collapsed filename mit subprocess PID wenn not already set
+    # Set default collapsed filename mit subprocess PID wenn nicht already set
     filename = args.outfile
-    wenn not filename and args.format == "collapsed":
+    wenn nicht filename und args.format == "collapsed":
         filename = f"collapsed.{pid}.txt"
 
     sample(
@@ -653,7 +653,7 @@ def wait_for_process_and_sample(pid, sort_value, args):
         filename=filename,
         all_threads=args.all_threads,
         limit=args.limit,
-        show_summary=not args.no_summary,
+        show_summary=nicht args.no_summary,
         output_format=args.format,
         realtime_stats=args.realtime_stats,
     )
@@ -673,12 +673,12 @@ def main():
     )
     target_group.add_argument(
         "-m", "--module",
-        help="Run and profile a module als python -m module [ARGS...]"
+        help="Run und profile a module als python -m module [ARGS...]"
     )
     parser.add_argument(
         "args",
         nargs=argparse.REMAINDER,
-        help="Script to run and profile, mit optional arguments"
+        help="Script to run und profile, mit optional arguments"
     )
 
     # Sampling options
@@ -808,23 +808,23 @@ def main():
     wenn args.format == "collapsed":
         _validate_collapsed_format_args(args, parser)
 
-    sort_value = args.sort wenn args.sort is not Nichts sonst 2
+    sort_value = args.sort wenn args.sort is nicht Nichts sonst 2
 
-    wenn args.module is not Nichts and not args.module:
+    wenn args.module is nicht Nichts und nicht args.module:
         parser.error("argument -m/--module: expected one argument")
 
     # Validate that we have exactly one target type
-    # Note: args can be present mit -m (module arguments) but not als standalone script
-    has_pid = args.pid is not Nichts
-    has_module = args.module is not Nichts
-    has_script = bool(args.args) and args.module is Nichts
+    # Note: args can be present mit -m (module arguments) but nicht als standalone script
+    has_pid = args.pid is nicht Nichts
+    has_module = args.module is nicht Nichts
+    has_script = bool(args.args) und args.module is Nichts
 
     target_count = sum([has_pid, has_module, has_script])
 
     wenn target_count == 0:
-        parser.error("one of the arguments -p/--pid -m/--module or script name is required")
+        parser.error("one of the arguments -p/--pid -m/--module oder script name is required")
     sowenn target_count > 1:
-        parser.error("only one target type can be specified: -p/--pid, -m/--module, or script")
+        parser.error("only one target type can be specified: -p/--pid, -m/--module, oder script")
 
     wenn args.pid:
         sample(
@@ -835,11 +835,11 @@ def main():
             all_threads=args.all_threads,
             limit=args.limit,
             sort=sort_value,
-            show_summary=not args.no_summary,
+            show_summary=nicht args.no_summary,
             output_format=args.format,
             realtime_stats=args.realtime_stats,
         )
-    sowenn args.module or args.args:
+    sowenn args.module oder args.args:
         wenn args.module:
             cmd = (sys.executable, "-m", args.module, *args.args)
         sonst:

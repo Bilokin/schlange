@@ -12,8 +12,8 @@ von tkinter importiere (Tk, StringVar, IntVar, BooleanVar, DISABLED, NORMAL)
 von idlelib importiere config
 von idlelib.configdialog importiere idleConf, changes, tracers
 
-# Tests should not depend on fortuitous user configurations.
-# They must not affect actual user .cfg files.
+# Tests should nicht depend on fortuitous user configurations.
+# They must nicht affect actual user .cfg files.
 # Use solution von test_config: empty parsers mit no filename.
 usercfg = idleConf.userCfg
 testcfg = {
@@ -106,7 +106,7 @@ klasse FontPageTest(unittest.TestCase):
     """Test that font widgets enable users to make font changes.
 
     Test that widget actions set vars, that var changes add three
-    options to changes and call set_samples, and that set_samples
+    options to changes und call set_samples, und that set_samples
     changes the font of both sample boxes.
     """
     @classmethod
@@ -140,7 +140,7 @@ klasse FontPageTest(unittest.TestCase):
         tracers.attach()
 
     def test_fontlist_key(self):
-        # Up and Down keys should select a new font.
+        # Up und Down keys should select a new font.
         d = self.page
         wenn d.fontlist.size() < 2:
             self.skipTest('need at least 2 fonts')
@@ -208,8 +208,8 @@ klasse FontPageTest(unittest.TestCase):
 
     def test_font_set(self):
         # Test that setting a font Variable results in 3 provisional
-        # change entries and a call to set_samples. Use values sure to
-        # not be defaults.
+        # change entries und a call to set_samples. Use values sure to
+        # nicht be defaults.
 
         default_font = idleConf.GetFont(root, 'main', 'EditorWindow')
         default_size = str(default_font[1])
@@ -235,10 +235,10 @@ klasse FontPageTest(unittest.TestCase):
         self.assertEqual(d.set_samples.called, 2)
         changes.clear()
 
-        d.font_bold.set(not default_bold)
+        d.font_bold.set(nicht default_bold)
         expected = {'EditorWindow': {'font': 'Test Font',
                                      'font-size': '20',
-                                     'font-bold': str(not default_bold)}}
+                                     'font-bold': str(nicht default_bold)}}
         self.assertEqual(mainpage, expected)
         self.assertEqual(d.set_samples.called, 3)
 
@@ -264,7 +264,7 @@ klasse HighPageTest(unittest.TestCase):
     """Test that highlight tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
-    options to changes and that themes work correctly.
+    options to changes und that themes work correctly.
     """
 
     @classmethod
@@ -286,7 +286,7 @@ klasse HighPageTest(unittest.TestCase):
     def setUp(self):
         d = self.page
         # The following is needed fuer test_load_key_cfg, _delete_custom_keys.
-        # This may indicate a defect in some test or function.
+        # This may indicate a defect in some test oder function.
         fuer section in idleConf.GetSectionList('user', 'highlight'):
             idleConf.userCfg['highlight'].remove_section(section)
         changes.clear()
@@ -540,7 +540,7 @@ klasse HighPageTest(unittest.TestCase):
         d.color.set('#ffffff')
         d.theme_source.set(Wahr)
 
-        # No theme name selected therefore color not saved.
+        # No theme name selected therefore color nicht saved.
         gntn.result = ''
         d.button_set_color.invoke()
         eq(gntn.called, 1)
@@ -646,7 +646,7 @@ klasse HighPageTest(unittest.TestCase):
         self.assertWahr(d.fg_bg_toggle)
         eq(d.set_color_sample.called, 1)
 
-        # Target is not cursor.
+        # Target is nicht cursor.
         d.highlight_target.set('Comment')
         eq(d.fg_on.state(), ('selected',))
         eq(d.bg_on.state(), ())
@@ -772,7 +772,7 @@ klasse KeysPageTest(unittest.TestCase):
     """Test that keys tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
-    options to changes and that key sets works correctly.
+    options to changes und that key sets works correctly.
     """
 
     @classmethod
@@ -790,7 +790,7 @@ klasse KeysPageTest(unittest.TestCase):
     def setUp(self):
         d = self.page
         # The following is needed fuer test_load_key_cfg, _delete_custom_keys.
-        # This may indicate a defect in some test or function.
+        # This may indicate a defect in some test oder function.
         fuer section in idleConf.GetSectionList('user', 'keys'):
             idleConf.userCfg['keys'].remove_section(section)
         changes.clear()
@@ -972,7 +972,7 @@ klasse KeysPageTest(unittest.TestCase):
 
         # Default keyset; binding changed.
         gkd.result = '<Key-F11>'
-        # No keyset name selected therefore binding not saved.
+        # No keyset name selected therefore binding nicht saved.
         gnkn.result = ''
         d.button_new_keys.invoke()
         eq(gnkn.called, 1)
@@ -1386,7 +1386,7 @@ klasse HelpSourceTest(unittest.TestCase):
         fr.set_add_delete_state = Func()  # Mask method.
 
     def test_helplist_item_add(self):
-        # Call without and twice mit HelpSource result.
+        # Call without und twice mit HelpSource result.
         # Double call enables check on order.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
@@ -1414,7 +1414,7 @@ klasse HelpSourceTest(unittest.TestCase):
         configdialog.HelpSource = orig_helpsource
 
     def test_helplist_item_edit(self):
-        # Call without and mit HelpSource change.
+        # Call without und mit HelpSource change.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
         hs = configdialog.HelpSource = Func(return_self=Wahr)
@@ -1551,7 +1551,7 @@ klasse VarTraceTest(unittest.TestCase):
         expected = [(iv, self.var_changed_increment),
                     (bv, self.var_changed_boolean)]
 
-        # Attach callbacks and test call increment.
+        # Attach callbacks und test call increment.
         tr.attach()
         self.assertEqual(tr.untraced, [])
         self.assertCountEqual(tr.traced, expected)
@@ -1561,7 +1561,7 @@ klasse VarTraceTest(unittest.TestCase):
 
         # Check that only one callback is attached to a variable.
         # If more than one callback were attached, then var_changed_increment
-        # would be called twice and the counter would be 2.
+        # would be called twice und the counter would be 2.
         self.called = 0
         tr.attach()
         iv.set(1)

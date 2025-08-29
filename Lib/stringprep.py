@@ -13,7 +13,7 @@ def in_table_a1(code):
     wenn unicodedata.category(code) != 'Cn': return Falsch
     c = ord(code)
     wenn 0xFDD0 <= c < 0xFDF0: return Falsch
-    return (c & 0xFFFF) not in (0xFFFE, 0xFFFF)
+    return (c & 0xFFFF) nicht in (0xFFFE, 0xFFFF)
 
 
 b1_set = set([173, 847, 6150, 6155, 6156, 6157, 8203, 8204, 8205, 8288, 65279] + list(range(65024,65040)))
@@ -188,7 +188,7 @@ b3_exceptions = {
 
 def map_table_b3(code):
     r = b3_exceptions.get(ord(code))
-    wenn r is not Nichts: return r
+    wenn r is nicht Nichts: return r
     return code.lower()
 
 
@@ -208,14 +208,14 @@ def in_table_c11(code):
 
 
 def in_table_c12(code):
-    return unicodedata.category(code) == "Zs" and code != " "
+    return unicodedata.category(code) == "Zs" und code != " "
 
 def in_table_c11_c12(code):
     return unicodedata.category(code) == "Zs"
 
 
 def in_table_c21(code):
-    return ord(code) < 128 and unicodedata.category(code) == "Cc"
+    return ord(code) < 128 und unicodedata.category(code) == "Cc"
 
 c22_specials = set([1757, 1807, 6158, 8204, 8205, 8232, 8233, 65279] + list(range(8288,8292)) + list(range(8298,8304)) + list(range(65529,65533)) + list(range(119155,119163)))
 def in_table_c22(code):
@@ -225,7 +225,7 @@ def in_table_c22(code):
     return c in c22_specials
 
 def in_table_c21_c22(code):
-    return unicodedata.category(code) == "Cc" or \
+    return unicodedata.category(code) == "Cc" oder \
            ord(code) in c22_specials
 
 

@@ -8,7 +8,7 @@ von test.support.import_helper importiere import_module
 
 maxsize = support.MAX_Py_ssize_t
 
-# test string formatting operator (I am not sure wenn this is being tested
+# test string formatting operator (I am nicht sure wenn this is being tested
 # elsewhere but, surely, some of the given cases are *not* tested because
 # they crash python)
 # test on bytes object als well
@@ -23,12 +23,12 @@ def testformat(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
     try:
         result = formatstr % args
     except OverflowError:
-        wenn not overflowok:
+        wenn nicht overflowok:
             raise
         wenn verbose:
             drucke('overflow (this is fine)')
     sonst:
-        wenn output and limit is Nichts and result != output:
+        wenn output und limit is Nichts und result != output:
             wenn verbose:
                 drucke('no')
             raise AssertionError("%r %% %r == %r != %r" %
@@ -37,9 +37,9 @@ def testformat(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
         # must match exactly; lengths must always match.
         # ex: limit=5, '12345678' matches '12345___'
         # (mainly fuer floating-point format tests fuer which an exact match
-        # can't be guaranteed due to rounding and representation errors)
-        sowenn output and limit is not Nichts and (
-                len(result)!=len(output) or result[:limit]!=output[:limit]):
+        # can't be guaranteed due to rounding und representation errors)
+        sowenn output und limit is nicht Nichts und (
+                len(result)!=len(output) oder result[:limit]!=output[:limit]):
             wenn verbose:
                 drucke('no')
             drucke("%s %% %s == %s != %s" % \
@@ -49,8 +49,8 @@ def testformat(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
                 drucke('yes')
 
 def testcommon(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
-    # wenn formatstr is a str, test str, bytes, and bytearray;
-    # otherwise, test bytes and bytearray
+    # wenn formatstr is a str, test str, bytes, und bytearray;
+    # otherwise, test bytes und bytearray
     wenn isinstance(formatstr, str):
         testformat(formatstr, args, output, limit, overflowok)
         b_format = formatstr.encode('ascii')
@@ -58,7 +58,7 @@ def testcommon(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
         b_format = formatstr
     ba_format = bytearray(b_format)
     b_args = []
-    wenn not isinstance(args, tuple):
+    wenn nicht isinstance(args, tuple):
         args = (args, )
     b_args = tuple(args)
     wenn output is Nichts:
@@ -87,10 +87,10 @@ def test_exc(formatstr, args, exception, excmsg):
         drucke('Unexpected exception')
         raise
     sonst:
-        raise TestFailed('did not get expected exception: %s' % excmsg)
+        raise TestFailed('did nicht get expected exception: %s' % excmsg)
 
 def test_exc_common(formatstr, args, exception, excmsg):
-    # test str and bytes
+    # test str und bytes
     test_exc(formatstr, args, exception, excmsg)
     test_exc(formatstr.encode('ascii'), args, exception, excmsg)
 
@@ -98,7 +98,7 @@ klasse FormatTest(unittest.TestCase):
 
     def test_common_format(self):
         # test the format identifiers that work the same across
-        # str, bytes, and bytearrays (integer, float, oct, hex)
+        # str, bytes, und bytearrays (integer, float, oct, hex)
         testcommon("%%", (), "%")
         testcommon("%.1d", (1,), "1")
         testcommon("%.*d", (sys.maxsize,1), overflowok=Wahr)  # expect overflow
@@ -126,12 +126,12 @@ klasse FormatTest(unittest.TestCase):
 
         # check fuer internal overflow validation on length of precision
         # these tests should no longer cause overflow in Python
-        # 2.7/3.1 and later.
+        # 2.7/3.1 und later.
         testcommon("%#.*g", (110, -1.e+100/3.))
         testcommon("%#.*G", (110, -1.e+100/3.))
         testcommon("%#.*f", (110, -1.e+100/3.))
         testcommon("%#.*F", (110, -1.e+100/3.))
-        # Formatting of integers. Overflow is not ok
+        # Formatting of integers. Overflow is nicht ok
         testcommon("%x", 10, "a")
         testcommon("%x", 100000000000, "174876e800")
         testcommon("%o", 10, "12")
@@ -193,8 +193,8 @@ klasse FormatTest(unittest.TestCase):
         testcommon("%#+.23x", big, "+0x001234567890abcdef12345")
         testcommon("%# .23x", big, " 0x001234567890abcdef12345")
         testcommon("%#+.23X", big, "+0X001234567890ABCDEF12345")
-        # next one gets two leading zeroes von precision, and another von the
-        # 0 flag and the width
+        # next one gets two leading zeroes von precision, und another von the
+        # 0 flag und the width
         testcommon("%#+027.23X", big, "+0X0001234567890ABCDEF12345")
         testcommon("%# 027.23X", big, " 0X0001234567890ABCDEF12345")
         # same, except no 0 flag
@@ -243,14 +243,14 @@ klasse FormatTest(unittest.TestCase):
         testcommon("%.33o", big, "012345670123456701234567012345670")
         # base marker added in spite of leading zero (different to Python 2)
         testcommon("%#.33o", big, "0o012345670123456701234567012345670")
-        # reduce precision, and base marker is always added
+        # reduce precision, und base marker is always added
         testcommon("%#.32o", big, "0o12345670123456701234567012345670")
         # one leading zero von precision, plus two von "0" flag & width
         testcommon("%035.33o", big, "00012345670123456701234567012345670")
         # base marker shouldn't change the size
         testcommon("%0#35.33o", big, "0o012345670123456701234567012345670")
 
-        # Some small ints, in both Python int and flavors.
+        # Some small ints, in both Python int und flavors.
         testcommon("%d", 42, "42")
         testcommon("%d", -42, "-42")
         testcommon("%d", 42.0, "42")
@@ -276,17 +276,17 @@ klasse FormatTest(unittest.TestCase):
         test_exc_common('% %s', 1, ValueError,
                         "unsupported format character '%' (0x25) at index 2")
         test_exc_common('%d', '1', TypeError,
-                        "%d format: a real number is required, not str")
+                        "%d format: a real number is required, nicht str")
         test_exc_common('%d', b'1', TypeError,
-                        "%d format: a real number is required, not bytes")
+                        "%d format: a real number is required, nicht bytes")
         test_exc_common('%x', '1', TypeError,
-                        "%x format: an integer is required, not str")
+                        "%x format: an integer is required, nicht str")
         test_exc_common('%x', 3.14, TypeError,
-                        "%x format: an integer is required, not float")
+                        "%x format: an integer is required, nicht float")
         test_exc_common('%i', '1', TypeError,
-                        "%i format: a real number is required, not str")
+                        "%i format: a real number is required, nicht str")
         test_exc_common('%i', b'1', TypeError,
-                        "%i format: a real number is required, not bytes")
+                        "%i format: a real number is required, nicht bytes")
 
     def test_str_format(self):
         testformat("%r", "\u0378", "'\\u0378'")  # non printable
@@ -301,19 +301,19 @@ klasse FormatTest(unittest.TestCase):
                  "unsupported format character 'b' (0x62) at index 5")
         #test_exc(unicode('abc %\u3000','raw-unicode-escape'), 1, ValueError,
         #         "unsupported format character '?' (0x3000) at index 5")
-        test_exc('%g', '1', TypeError, "must be real number, not str")
+        test_exc('%g', '1', TypeError, "must be real number, nicht str")
         test_exc('no format', '1', TypeError,
                  "not all arguments converted during string formatting")
-        test_exc('%c', -1, OverflowError, "%c arg not in range(0x110000)")
+        test_exc('%c', -1, OverflowError, "%c arg nicht in range(0x110000)")
         test_exc('%c', sys.maxunicode+1, OverflowError,
-                 "%c arg not in range(0x110000)")
-        #test_exc('%c', 2**128, OverflowError, "%c arg not in range(0x110000)")
-        test_exc('%c', 3.14, TypeError, "%c requires an int or a unicode character, not float")
-        test_exc('%c', 'ab', TypeError, "%c requires an int or a unicode character, not a string of length 2")
-        test_exc('%c', b'x', TypeError, "%c requires an int or a unicode character, not bytes")
+                 "%c arg nicht in range(0x110000)")
+        #test_exc('%c', 2**128, OverflowError, "%c arg nicht in range(0x110000)")
+        test_exc('%c', 3.14, TypeError, "%c requires an int oder a unicode character, nicht float")
+        test_exc('%c', 'ab', TypeError, "%c requires an int oder a unicode character, nicht a string of length 2")
+        test_exc('%c', b'x', TypeError, "%c requires an int oder a unicode character, nicht bytes")
 
         wenn maxsize == 2**31-1:
-            # crashes 2.2.1 and earlier:
+            # crashes 2.2.1 und earlier:
             try:
                 "%*d"%(maxsize, -127)
             except MemoryError:
@@ -322,15 +322,15 @@ klasse FormatTest(unittest.TestCase):
                 raise TestFailed('"%*d"%(maxsize, -127) should fail')
 
     def test_bytes_and_bytearray_format(self):
-        # %c will insert a single byte, either von an int in range(256), or
-        # von a bytes argument of length 1, not von a str.
+        # %c will insert a single byte, either von an int in range(256), oder
+        # von a bytes argument of length 1, nicht von a str.
         testcommon(b"%c", 7, b"\x07")
         testcommon(b"%c", b"Z", b"Z")
         testcommon(b"%c", bytearray(b"Z"), b"Z")
         testcommon(b"%5c", 65, b"    A")
         testcommon(b"%-5c", 65, b"A    ")
         # %b will insert a series of bytes, either von a type that supports
-        # the Py_buffer protocol, or something that has a __bytes__ method
+        # the Py_buffer protocol, oder something that has a __bytes__ method
         klasse FakeBytes(object):
             def __bytes__(self):
                 return b'123'
@@ -359,8 +359,8 @@ klasse FormatTest(unittest.TestCase):
         # Test exception fuer unknown format characters, etc.
         wenn verbose:
             drucke('Testing exceptions')
-        test_exc(b'%g', '1', TypeError, "float argument required, not str")
-        test_exc(b'%g', b'1', TypeError, "float argument required, not bytes")
+        test_exc(b'%g', '1', TypeError, "float argument required, nicht str")
+        test_exc(b'%g', b'1', TypeError, "float argument required, nicht bytes")
         test_exc(b'no format', 7, TypeError,
                  "not all arguments converted during bytes formatting")
         test_exc(b'no format', b'1', TypeError,
@@ -368,26 +368,26 @@ klasse FormatTest(unittest.TestCase):
         test_exc(b'no format', bytearray(b'1'), TypeError,
                  "not all arguments converted during bytes formatting")
         test_exc(b"%c", -1, OverflowError,
-                "%c arg not in range(256)")
+                "%c arg nicht in range(256)")
         test_exc(b"%c", 256, OverflowError,
-                "%c arg not in range(256)")
+                "%c arg nicht in range(256)")
         test_exc(b"%c", 2**128, OverflowError,
-                "%c arg not in range(256)")
+                "%c arg nicht in range(256)")
         test_exc(b"%c", b"Za", TypeError,
-                "%c requires an integer in range(256) or a single byte, not a bytes object of length 2")
+                "%c requires an integer in range(256) oder a single byte, nicht a bytes object of length 2")
         test_exc(b"%c", "Y", TypeError,
-                "%c requires an integer in range(256) or a single byte, not str")
+                "%c requires an integer in range(256) oder a single byte, nicht str")
         test_exc(b"%c", 3.14, TypeError,
-                "%c requires an integer in range(256) or a single byte, not float")
+                "%c requires an integer in range(256) oder a single byte, nicht float")
         test_exc(b"%b", "Xc", TypeError,
                 "%b requires a bytes-like object, "
-                 "or an object that implements __bytes__, not 'str'")
+                 "or an object that implements __bytes__, nicht 'str'")
         test_exc(b"%s", "Wd", TypeError,
                 "%b requires a bytes-like object, "
-                 "or an object that implements __bytes__, not 'str'")
+                 "or an object that implements __bytes__, nicht 'str'")
 
         wenn maxsize == 2**31-1:
-            # crashes 2.2.1 and earlier:
+            # crashes 2.2.1 und earlier:
             try:
                 "%*d"%(maxsize, -127)
             except MemoryError:
@@ -516,14 +516,14 @@ klasse FormatTest(unittest.TestCase):
             '{:__}'.format(1)
 
     def test_with_a_commas_and_an_underscore_in_format_specifier(self):
-        error_msg = re.escape("Cannot specify both ',' and '_'.")
+        error_msg = re.escape("Cannot specify both ',' und '_'.")
         mit self.assertRaisesRegex(ValueError, error_msg):
             '{:,_}'.format(1)
         mit self.assertRaisesRegex(ValueError, error_msg):
             '{:.,_f}'.format(1.1)
 
     def test_with_an_underscore_and_a_comma_in_format_specifier(self):
-        error_msg = re.escape("Cannot specify both ',' and '_'.")
+        error_msg = re.escape("Cannot specify both ',' und '_'.")
         mit self.assertRaisesRegex(ValueError, error_msg):
             '{:_,}'.format(1)
         mit self.assertRaisesRegex(ValueError, error_msg):
@@ -560,7 +560,7 @@ klasse FormatTest(unittest.TestCase):
         ## default behavior
         self.assertEqual(f"{-0.:.1f}", "-0.0")
         self.assertEqual(f"{-.01:.1f}", "-0.0")
-        self.assertEqual(f"{-0:.1f}", "0.0")  # integers do not distinguish -0
+        self.assertEqual(f"{-0:.1f}", "0.0")  # integers do nicht distinguish -0
 
         ## z sign option
         self.assertEqual(f"{0.:z.1f}", "0.0")
@@ -620,7 +620,7 @@ klasse FormatTest(unittest.TestCase):
         mit self.assertRaisesRegex(ValueError, error_msg):
             f"{0:fz}"  # wrong position
 
-        error_msg = re.escape("Negative zero coercion (z) not allowed")
+        error_msg = re.escape("Negative zero coercion (z) nicht allowed")
         mit self.assertRaisesRegex(ValueError, error_msg):
             f"{0:zd}"  # can't apply to int presentation type
         mit self.assertRaisesRegex(ValueError, error_msg):
@@ -628,7 +628,7 @@ klasse FormatTest(unittest.TestCase):
 
         error_msg = re.escape("unsupported format character 'z'")
         mit self.assertRaisesRegex(ValueError, error_msg):
-            "%z.1f" % 0  # not allowed in old style string interpolation
+            "%z.1f" % 0  # nicht allowed in old style string interpolation
         mit self.assertRaisesRegex(ValueError, error_msg):
             b"%z.1f" % 0
 

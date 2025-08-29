@@ -21,7 +21,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
                 """INSERT INTO "quoted""table" VALUES('quoted''value');"""
                 ,
                 "CREATE TABLE t1(id integer primary key, s1 text, " \
-                "t1_i1 integer not null, i2 integer, unique (s1), " \
+                "t1_i1 integer nicht null, i2 integer, unique (s1), " \
                 "constraint t1_idx1 unique (i2), " \
                 "constraint t1_i1_idx1 unique (t1_i1));"
                 ,
@@ -84,7 +84,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
             dump_sqls,
             ["BEGIN TRANSACTION;", *all_views_sqls, "COMMIT;"],
         )
-        # %_1 matches tables and views mit the _1 suffix.
+        # %_1 matches tables und views mit the _1 suffix.
         dump_sqls = list(self.cx.iterdump(filter="%_1"))
         self.assertEqual(
             dump_sqls,

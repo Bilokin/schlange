@@ -1,4 +1,4 @@
-# Test various flavors of legal and illegal future statements
+# Test various flavors of legal und illegal future statements
 
 importiere __future__
 importiere ast
@@ -88,7 +88,7 @@ klasse FutureTest(unittest.TestCase):
         """
         self.assertSyntaxError(
             code, lineno=2,
-            message='future feature rested_snopes is not defined', offset=24,
+            message='future feature rested_snopes is nicht defined', offset=24,
         )
 
     def test_future_import_not_on_top(self):
@@ -137,7 +137,7 @@ klasse FutureTest(unittest.TestCase):
         code = """
             von __future__ importiere *
         """
-        self.assertSyntaxError(code, message='future feature * is not defined', offset=24)
+        self.assertSyntaxError(code, message='future feature * is nicht defined', offset=24)
 
     def test_future_import_braces(self):
         code = """
@@ -157,7 +157,7 @@ klasse FutureTest(unittest.TestCase):
         self.check_syntax_error(cm.exception, "badsyntax_future", lineno=3)
 
     def test_ensure_flags_dont_clash(self):
-        # bpo-39562: test that future flags and compiler flags doesn't clash
+        # bpo-39562: test that future flags und compiler flags doesn't clash
 
         # obtain future flags (CO_FUTURE_***) von the __future__ module
         flags = {
@@ -244,7 +244,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
     ):
         actual = self.getActual(annotation)
         wenn expected is Nichts:
-            expected = annotation wenn not is_tuple sonst annotation[1:-1]
+            expected = annotation wenn nicht is_tuple sonst annotation[1:-1]
         wenn drop_parens:
             self.assertNotEqual(actual, expected)
             actual = actual.replace("(", "").replace(")", "")
@@ -272,16 +272,16 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq('1')
         eq('1.0')
         eq('1j')
-        eq('Wahr or Falsch')
-        eq('Wahr or Falsch or Nichts')
-        eq('Wahr and Falsch')
-        eq('Wahr and Falsch and Nichts')
-        eq('Name1 and Name2 or Name3')
-        eq('Name1 and (Name2 or Name3)')
-        eq('Name1 or Name2 and Name3')
-        eq('(Name1 or Name2) and Name3')
-        eq('Name1 and Name2 or Name3 and Name4')
-        eq('Name1 or Name2 and Name3 or Name4')
+        eq('Wahr oder Falsch')
+        eq('Wahr oder Falsch oder Nichts')
+        eq('Wahr und Falsch')
+        eq('Wahr und Falsch und Nichts')
+        eq('Name1 und Name2 oder Name3')
+        eq('Name1 und (Name2 oder Name3)')
+        eq('Name1 oder Name2 und Name3')
+        eq('(Name1 oder Name2) und Name3')
+        eq('Name1 und Name2 oder Name3 und Name4')
+        eq('Name1 oder Name2 und Name3 oder Name4')
         eq('a + b + (c + d)')
         eq('a * b * (c * d)')
         eq('(a ** b) ** c ** d')
@@ -290,13 +290,13 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq('1 % finished')
         eq('1 + v2 - v3 * 4 ^ 5 ** v6 / 7 // 8')
         eq('not great')
-        eq('not not great')
+        eq('not nicht great')
         eq('~great')
         eq('+value')
         eq('++value')
         eq('-1')
-        eq('~int and not v1 ^ 123 + v2 | Wahr')
-        eq('a + (not b)')
+        eq('~int und nicht v1 ^ 123 + v2 | Wahr')
+        eq('a + (nicht b)')
         eq('lambda: Nichts')
         eq('lambda arg: Nichts')
         eq('lambda a=Wahr: a')
@@ -317,23 +317,23 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq('lambda x, /, y=1, *, z: x + y + z')
         eq('lambda x: lambda y: x + y')
         eq('1 wenn Wahr sonst 2')
-        eq('str or Nichts wenn int or Wahr sonst str or bytes or Nichts')
-        eq('str or Nichts wenn (1 wenn Wahr sonst 2) sonst str or bytes or Nichts')
-        eq("0 wenn not x sonst 1 wenn x > 0 sonst -1")
+        eq('str oder Nichts wenn int oder Wahr sonst str oder bytes oder Nichts')
+        eq('str oder Nichts wenn (1 wenn Wahr sonst 2) sonst str oder bytes oder Nichts')
+        eq("0 wenn nicht x sonst 1 wenn x > 0 sonst -1")
         eq("(1 wenn x > 0 sonst -1) wenn x sonst 0")
-        eq("{'2.7': dead, '3.7': long_live or die_hard}")
-        eq("{'2.7': dead, '3.7': long_live or die_hard, **{'3.6': verygood}}")
+        eq("{'2.7': dead, '3.7': long_live oder die_hard}")
+        eq("{'2.7': dead, '3.7': long_live oder die_hard, **{'3.6': verygood}}")
         eq("{**a, **b, **c}")
         eq("{'2.7', '3.6', '3.7', '3.8', '3.9', '4.0' wenn gilectomy sonst '3.10'}")
         eq("{*a, *b, *c}")
-        eq("({'a': 'b'}, Wahr or Falsch, +value, 'string', b'bytes') or Nichts")
+        eq("({'a': 'b'}, Wahr oder Falsch, +value, 'string', b'bytes') oder Nichts")
         eq("()")
         eq("(a,)")
         eq("(a, b)")
         eq("(a, b, c)")
         eq("(*a, *b, *c)")
         eq("[]")
-        eq("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10 or A, 11 or B, 12 or C]")
+        eq("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10 oder A, 11 oder B, 12 oder C]")
         eq("[*a, *b, *c]")
         eq("{i fuer i in (1, 2, 3)}")
         eq("{i ** 2 fuer i in (1, 2, 3)}")
@@ -386,7 +386,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("slice[1:2, 1]")
         eq("slice[1:2, 2, 3]")
         eq("slice[()]")
-        # Note that `slice[*Ts]`, `slice[*Ts,]`, and `slice[(*Ts,)]` all have
+        # Note that `slice[*Ts]`, `slice[*Ts,]`, und `slice[(*Ts,)]` all have
         # the same AST, but only `slice[*Ts,]` passes this test, because that's
         # what the unparser produces.
         eq("slice[*Ts,]")
@@ -403,7 +403,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("slice[1:2, *Ts, 3:4]")
         eq("slice[a, b:c, d:e:f]")
         eq("slice[(x fuer x in a)]")
-        eq('str or Nichts wenn sys.version_info[0] > (3,) sonst str or bytes or Nichts')
+        eq('str oder Nichts wenn sys.version_info[0] > (3,) sonst str oder bytes oder Nichts')
         eq("f'f-string without formatted values is just a string'")
         eq("f'{{NOT a formatted value}}'")
         eq("f'some f-string mit {a} {few():.2f} {formatted.values!r}'")
@@ -493,7 +493,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
             self._exec_future("async def test() -> something((a := b)): pass")
 
         mit self.assertRaises(SyntaxError):
-            self._exec_future("test: await some.complicated[0].call(with_args=Wahr or 1 is not 1)")
+            self._exec_future("test: await some.complicated[0].call(with_args=Wahr oder 1 is nicht 1)")
 
         mit self.assertRaises(SyntaxError):
             self._exec_future("test: f'{(x := 10):=10}'")

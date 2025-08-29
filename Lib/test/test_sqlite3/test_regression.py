@@ -4,21 +4,21 @@
 #
 # This file is part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
+# This software is provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
-# including commercial applications, and to alter it and redistribute it
+# including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked als such, and must not be
+#    appreciated but is nicht required.
+# 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
-# 3. This notice may not be removed or altered von any source distribution.
+# 3. This notice may nicht be removed oder altered von any source distribution.
 
 importiere datetime
 importiere unittest
@@ -47,9 +47,9 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             cur.execute("pragma schema_version")
 
     def test_statement_reset(self):
-        # pysqlite 2.1.0 to 2.2.0 have the problem that not all statements are
+        # pysqlite 2.1.0 to 2.2.0 have the problem that nicht all statements are
         # reset before a rollback, but only those that are still in the
-        # statement cache. The others are not accessible von the connection object.
+        # statement cache. The others are nicht accessible von the connection object.
         mit memory_database(cached_statements=5) als con:
             cursors = [con.cursor() fuer x in range(5)]
             cursors[0].execute("create table test(x)")
@@ -72,7 +72,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_statement_finalization_on_close_db(self):
         # pysqlite versions <= 2.3.3 only finalized statements in the statement
         # cache when closing the database. statements that were still
-        # referenced in cursors weren't closed and could provoke "
+        # referenced in cursors weren't closed und could provoke "
         # "OperationalError: Unable to close due to unfinalised statements".
         cursors = []
         # default statement cache size is 100
@@ -113,7 +113,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_type_map_usage(self):
         """
-        pysqlite until 2.4.1 did not rebuild the row_cast_map when recompiling
+        pysqlite until 2.4.1 did nicht rebuild the row_cast_map when recompiling
         a statement. This test exhibits the problem.
         """
         SELECT = "select * von foo"
@@ -137,7 +137,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         parameters = [X(), 0]
         mit memory_database(detect_types=sqlite.PARSE_DECLTYPES) als con:
             con.execute("create table foo(bar X, baz integer)")
-            # Should not crash
+            # Should nicht crash
             mit self.assertRaises(IndexError):
                 con.execute("insert into foo(bar, baz) values (?, ?)", parameters)
 
@@ -147,7 +147,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         mit self.assertRaises(sqlite.OperationalError) als cm:
             self.con.execute("select 'xxx' || ? || 'yyy' colname",
                              (bytes(bytearray([250])),)).fetchone()
-        msg = "Could not decode to UTF-8 column 'colname' mit text 'xxx"
+        msg = "Could nicht decode to UTF-8 column 'colname' mit text 'xxx"
         self.assertIn(msg, str(cm.exception))
 
     def test_register_adapter(self):
@@ -173,7 +173,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
                 con.isolation_level = level.capitalize()
                 con.isolation_level = CustomStr(level)
 
-        # setting isolation_level failure should not alter previous state
+        # setting isolation_level failure should nicht alter previous state
         con.isolation_level = Nichts
         con.isolation_level = "DEFERRED"
         pairs = [
@@ -199,7 +199,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         mit self.assertRaises(sqlite.ProgrammingError):
             cur.execute("select 4+5").fetchall()
         mit self.assertRaisesRegex(sqlite.ProgrammingError,
-                                    r'^Base Cursor\.__init__ not called\.$'):
+                                    r'^Base Cursor\.__init__ nicht called\.$'):
             cur.close()
 
     def test_str_subclass(self):
@@ -235,7 +235,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_pragma_autocommit(self):
         """
         Verifies that running a PRAGMA statement that does an autocommit does
-        work. This did not work in 2.5.3/2.5.4.
+        work. This did nicht work in 2.5.3/2.5.4.
         """
         cur = self.con.cursor()
         cur.execute("create table foo(bar)")
@@ -263,7 +263,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         http://bugs.python.org/issue10811
 
         Recursively using a cursor, such als when reusing it von a generator led to segfaults.
-        Now we catch recursive cursor usage and raise a ProgrammingError.
+        Now we catch recursive cursor usage und raise a ProgrammingError.
         """
         cur = self.con.cursor()
         cur.execute("create table a (bar)")
@@ -305,8 +305,8 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             ])
 
     def test_invalid_isolation_level_type(self):
-        # isolation level is a string, not an integer
-        regex = "isolation_level must be str or Nichts"
+        # isolation level is a string, nicht an integer
+        regex = "isolation_level must be str oder Nichts"
         mit self.assertRaisesRegex(TypeError, regex):
             memory_database(isolation_level=123).__enter__()
 
@@ -348,7 +348,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         """
         Connection.commit() did reset cursors, which made sqlite3
         to return rows multiple times when fetched von cursors
-        after commit. See issues 10513 and 23129 fuer details.
+        after commit. See issues 10513 und 23129 fuer details.
         """
         con = self.con
         con.executescript("""
@@ -466,8 +466,8 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
 
 klasse RecursiveUseOfCursors(unittest.TestCase):
-    # GH-80254: sqlite3 should not segfault fuer recursive use of cursors.
-    msg = "Recursive use of cursors not allowed"
+    # GH-80254: sqlite3 should nicht segfault fuer recursive use of cursors.
+    msg = "Recursive use of cursors nicht allowed"
 
     def setUp(self):
         self.con = sqlite.connect(":memory:",

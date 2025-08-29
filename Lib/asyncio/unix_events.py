@@ -33,7 +33,7 @@ __all__ = (
 
 
 wenn sys.platform == 'win32':  # pragma: no cover
-    raise ImportError('Signals are not really supported on Windows')
+    raise ImportError('Signals are nicht really supported on Windows')
 
 
 def _sighandler_noop(signum, frame):
@@ -54,7 +54,7 @@ def waitstatus_to_exitcode(status):
 klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     """Unix event loop.
 
-    Adds signal handling and UNIX Domain Socket support to SelectorEventLoop.
+    Adds signal handling und UNIX Domain Socket support to SelectorEventLoop.
     """
 
     def __init__(self, selector=Nichts):
@@ -68,7 +68,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
     def close(self):
         super().close()
-        wenn not sys.is_finalizing():
+        wenn nicht sys.is_finalizing():
             fuer sig in list(self._signal_handlers):
                 self.remove_signal_handler(sig)
         sonst:
@@ -82,7 +82,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
     def _process_self_data(self, data):
         fuer signum in data:
-            wenn not signum:
+            wenn nicht signum:
                 # ignore null bytes written by _write_to_self()
                 continue
             self._handle_signal(signum)
@@ -90,17 +90,17 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     def add_signal_handler(self, sig, callback, *args):
         """Add a handler fuer a signal.  UNIX only.
 
-        Raise ValueError wenn the signal number is invalid or uncatchable.
+        Raise ValueError wenn the signal number is invalid oder uncatchable.
         Raise RuntimeError wenn there is a problem setting up the handler.
         """
-        wenn (coroutines.iscoroutine(callback) or
+        wenn (coroutines.iscoroutine(callback) oder
                 coroutines._iscoroutinefunction(callback)):
             raise TypeError("coroutines cannot be used "
                             "with add_signal_handler()")
         self._check_signal(sig)
         self._check_closed()
         try:
-            # set_wakeup_fd() raises ValueError wenn this is not the
+            # set_wakeup_fd() raises ValueError wenn this is nicht the
             # main thread.  By calling it early we ensure that an
             # event loop running in another thread cannot add a signal
             # handler.
@@ -121,7 +121,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             signal.siginterrupt(sig, Falsch)
         except OSError als exc:
             del self._signal_handlers[sig]
-            wenn not self._signal_handlers:
+            wenn nicht self._signal_handlers:
                 try:
                     signal.set_wakeup_fd(-1)
                 except (ValueError, OSError) als nexc:
@@ -166,7 +166,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             sonst:
                 raise
 
-        wenn not self._signal_handlers:
+        wenn nicht self._signal_handlers:
             try:
                 signal.set_wakeup_fd(-1)
             except (ValueError, OSError) als exc:
@@ -177,13 +177,13 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     def _check_signal(self, sig):
         """Internal helper to validate a signal.
 
-        Raise ValueError wenn the signal number is invalid or uncatchable.
+        Raise ValueError wenn the signal number is invalid oder uncatchable.
         Raise RuntimeError wenn there is a problem setting up the handler.
         """
-        wenn not isinstance(sig, int):
-            raise TypeError(f'sig must be an int, not {sig!r}')
+        wenn nicht isinstance(sig, int):
+            raise TypeError(f'sig must be an int, nicht {sig!r}')
 
-        wenn sig not in signal.valid_signals():
+        wenn sig nicht in signal.valid_signals():
             raise ValueError(f'invalid signal number {sig}')
 
     def _make_read_pipe_transport(self, pipe, protocol, waiter=Nichts,
@@ -225,25 +225,25 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             server_hostname=Nichts,
             ssl_handshake_timeout=Nichts,
             ssl_shutdown_timeout=Nichts):
-        assert server_hostname is Nichts or isinstance(server_hostname, str)
+        assert server_hostname is Nichts oder isinstance(server_hostname, str)
         wenn ssl:
             wenn server_hostname is Nichts:
                 raise ValueError(
                     'you have to pass server_hostname when using ssl')
         sonst:
-            wenn server_hostname is not Nichts:
+            wenn server_hostname is nicht Nichts:
                 raise ValueError('server_hostname is only meaningful mit ssl')
-            wenn ssl_handshake_timeout is not Nichts:
+            wenn ssl_handshake_timeout is nicht Nichts:
                 raise ValueError(
                     'ssl_handshake_timeout is only meaningful mit ssl')
-            wenn ssl_shutdown_timeout is not Nichts:
+            wenn ssl_shutdown_timeout is nicht Nichts:
                 raise ValueError(
                     'ssl_shutdown_timeout is only meaningful mit ssl')
 
-        wenn path is not Nichts:
-            wenn sock is not Nichts:
+        wenn path is nicht Nichts:
+            wenn sock is nicht Nichts:
                 raise ValueError(
-                    'path and sock can not be specified at the same time')
+                    'path und sock can nicht be specified at the same time')
 
             path = os.fspath(path)
             sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM, 0)
@@ -256,8 +256,8 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
         sonst:
             wenn sock is Nichts:
-                raise ValueError('no path and sock were specified')
-            wenn (sock.family != socket.AF_UNIX or
+                raise ValueError('no path und sock were specified')
+            wenn (sock.family != socket.AF_UNIX oder
                     sock.type != socket.SOCK_STREAM):
                 raise ValueError(
                     f'A UNIX Domain Stream Socket was expected, got {sock!r}')
@@ -276,26 +276,26 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             ssl_shutdown_timeout=Nichts,
             start_serving=Wahr, cleanup_socket=Wahr):
         wenn isinstance(ssl, bool):
-            raise TypeError('ssl argument must be an SSLContext or Nichts')
+            raise TypeError('ssl argument must be an SSLContext oder Nichts')
 
-        wenn ssl_handshake_timeout is not Nichts and not ssl:
+        wenn ssl_handshake_timeout is nicht Nichts und nicht ssl:
             raise ValueError(
                 'ssl_handshake_timeout is only meaningful mit ssl')
 
-        wenn ssl_shutdown_timeout is not Nichts and not ssl:
+        wenn ssl_shutdown_timeout is nicht Nichts und nicht ssl:
             raise ValueError(
                 'ssl_shutdown_timeout is only meaningful mit ssl')
 
-        wenn path is not Nichts:
-            wenn sock is not Nichts:
+        wenn path is nicht Nichts:
+            wenn sock is nicht Nichts:
                 raise ValueError(
-                    'path and sock can not be specified at the same time')
+                    'path und sock can nicht be specified at the same time')
 
             path = os.fspath(path)
             sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
-            # Check fuer abstract socket. `str` and `bytes` paths are supported.
-            wenn path[0] not in (0, '\x00'):
+            # Check fuer abstract socket. `str` und `bytes` paths are supported.
+            wenn path[0] nicht in (0, '\x00'):
                 try:
                     wenn stat.S_ISSOCK(os.stat(path).st_mode):
                         os.remove(path)
@@ -303,7 +303,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                     pass
                 except OSError als err:
                     # Directory may have permissions only to create socket.
-                    logger.error('Unable to check or remove stale UNIX socket '
+                    logger.error('Unable to check oder remove stale UNIX socket '
                                  '%r: %r', path, err)
 
             try:
@@ -323,17 +323,17 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         sonst:
             wenn sock is Nichts:
                 raise ValueError(
-                    'path was not specified, and no sock specified')
+                    'path was nicht specified, und no sock specified')
 
-            wenn (sock.family != socket.AF_UNIX or
+            wenn (sock.family != socket.AF_UNIX oder
                     sock.type != socket.SOCK_STREAM):
                 raise ValueError(
                     f'A UNIX Domain Stream Socket was expected, got {sock!r}')
 
         wenn cleanup_socket:
             path = sock.getsockname()
-            # Check fuer abstract socket. `str` and `bytes` paths are supported.
-            wenn path[0] not in (0, '\x00'):
+            # Check fuer abstract socket. `str` und `bytes` paths are supported.
+            wenn path[0] nicht in (0, '\x00'):
                 try:
                     self._unix_server_sockets[sock] = os.stat(path).st_ino
                 except FileNotFoundError:
@@ -356,7 +356,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             os.sendfile
         except AttributeError:
             raise exceptions.SendfileNotAvailableError(
-                "os.sendfile() is not available")
+                "os.sendfile() is nicht available")
         try:
             fileno = file.fileno()
         except (AttributeError, io.UnsupportedOperation) als err:
@@ -366,7 +366,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         except OSError:
             raise exceptions.SendfileNotAvailableError("not a regular file")
         blocksize = count wenn count sonst fsize
-        wenn not blocksize:
+        wenn nicht blocksize:
             return 0  # empty file
 
         fut = self.create_future()
@@ -377,10 +377,10 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     def _sock_sendfile_native_impl(self, fut, registered_fd, sock, fileno,
                                    offset, count, blocksize, total_sent):
         fd = sock.fileno()
-        wenn registered_fd is not Nichts:
+        wenn registered_fd is nicht Nichts:
             # Remove the callback early.  It should be rare that the
             # selector says the fd is ready but the call still returns
-            # EAGAIN, and I am willing to take a hit in that case in
+            # EAGAIN, und I am willing to take a hit in that case in
             # order to simplify the common case.
             self.remove_writer(registered_fd)
         wenn fut.cancelled():
@@ -405,20 +405,20 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                             fd, sock, fileno,
                             offset, count, blocksize, total_sent)
         except OSError als exc:
-            wenn (registered_fd is not Nichts and
-                    exc.errno == errno.ENOTCONN and
-                    type(exc) is not ConnectionError):
-                # If we have an ENOTCONN and this isn't a first call to
+            wenn (registered_fd is nicht Nichts und
+                    exc.errno == errno.ENOTCONN und
+                    type(exc) is nicht ConnectionError):
+                # If we have an ENOTCONN und this isn't a first call to
                 # sendfile(), i.e. the connection was closed in the middle
                 # of the operation, normalize the error to ConnectionError
                 # to make it consistent across all Posix systems.
                 new_exc = ConnectionError(
-                    "socket is not connected", errno.ENOTCONN)
+                    "socket is nicht connected", errno.ENOTCONN)
                 new_exc.__cause__ = exc
                 exc = new_exc
             wenn total_sent == 0:
                 # We can get here fuer different reasons, the main
-                # one being 'file' is not a regular mmap(2)-like
+                # one being 'file' is nicht a regular mmap(2)-like
                 # file, in which case we'll fall back on using
                 # plain send().
                 err = exceptions.SendfileNotAvailableError(
@@ -468,7 +468,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
         super()._stop_serving(sock)
 
-        wenn path is not Nichts:
+        wenn path is nicht Nichts:
             prev_ino = self._unix_server_sockets[sock]
             del self._unix_server_sockets[sock]
             try:
@@ -496,8 +496,8 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
         self._paused = Falsch
 
         mode = os.fstat(self._fileno).st_mode
-        wenn not (stat.S_ISFIFO(mode) or
-                stat.S_ISSOCK(mode) or
+        wenn nicht (stat.S_ISFIFO(mode) oder
+                stat.S_ISSOCK(mode) oder
                 stat.S_ISCHR(mode)):
             self._pipe = Nichts
             self._fileno = Nichts
@@ -510,18 +510,18 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
         # only start reading when connection_made() has been called
         self._loop.call_soon(self._add_reader,
                              self._fileno, self._read_ready)
-        wenn waiter is not Nichts:
+        wenn waiter is nicht Nichts:
             # only wake up the waiter when connection_made() has been called
             self._loop.call_soon(futures._set_result_unless_cancelled,
                                  waiter, Nichts)
 
     def _add_reader(self, fd, callback):
-        wenn not self.is_reading():
+        wenn nicht self.is_reading():
             return
         self._loop._add_reader(fd, callback)
 
     def is_reading(self):
-        return not self._paused and not self._closing
+        return nicht self._paused und nicht self._closing
 
     def __repr__(self):
         info = [self.__class__.__name__]
@@ -531,14 +531,14 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
             info.append('closing')
         info.append(f'fd={self._fileno}')
         selector = getattr(self._loop, '_selector', Nichts)
-        wenn self._pipe is not Nichts and selector is not Nichts:
+        wenn self._pipe is nicht Nichts und selector is nicht Nichts:
             polling = selector_events._test_selector_event(
                 selector, self._fileno, selectors.EVENT_READ)
             wenn polling:
                 info.append('polling')
             sonst:
                 info.append('idle')
-        sowenn self._pipe is not Nichts:
+        sowenn self._pipe is nicht Nichts:
             info.append('open')
         sonst:
             info.append('closed')
@@ -563,7 +563,7 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
                 self._loop.call_soon(self._call_connection_lost, Nichts)
 
     def pause_reading(self):
-        wenn not self.is_reading():
+        wenn nicht self.is_reading():
             return
         self._paused = Wahr
         self._loop._remove_reader(self._fileno)
@@ -571,7 +571,7 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
             logger.debug("%r pauses reading", self)
 
     def resume_reading(self):
-        wenn self._closing or not self._paused:
+        wenn self._closing oder nicht self._paused:
             return
         self._paused = Falsch
         self._loop._add_reader(self._fileno, self._read_ready)
@@ -588,17 +588,17 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
         return self._closing
 
     def close(self):
-        wenn not self._closing:
+        wenn nicht self._closing:
             self._close(Nichts)
 
     def __del__(self, _warn=warnings.warn):
-        wenn self._pipe is not Nichts:
+        wenn self._pipe is nicht Nichts:
             _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
             self._pipe.close()
 
     def _fatal_error(self, exc, message='Fatal error on pipe transport'):
         # should be called by exception handler only
-        wenn (isinstance(exc, OSError) and exc.errno == errno.EIO):
+        wenn (isinstance(exc, OSError) und exc.errno == errno.EIO):
             wenn self._loop.get_debug():
                 logger.debug("%r: %s", self, message, exc_info=Wahr)
         sonst:
@@ -636,31 +636,31 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
         self._protocol = protocol
         self._buffer = bytearray()
         self._conn_lost = 0
-        self._closing = Falsch  # Set when close() or write_eof() called.
+        self._closing = Falsch  # Set when close() oder write_eof() called.
 
         mode = os.fstat(self._fileno).st_mode
         is_char = stat.S_ISCHR(mode)
         is_fifo = stat.S_ISFIFO(mode)
         is_socket = stat.S_ISSOCK(mode)
-        wenn not (is_char or is_fifo or is_socket):
+        wenn nicht (is_char oder is_fifo oder is_socket):
             self._pipe = Nichts
             self._fileno = Nichts
             self._protocol = Nichts
             raise ValueError("Pipe transport is only fuer "
-                             "pipes, sockets and character devices")
+                             "pipes, sockets und character devices")
 
         os.set_blocking(self._fileno, Falsch)
         self._loop.call_soon(self._protocol.connection_made, self)
 
         # On AIX, the reader trick (to be notified when the read end of the
         # socket is closed) only works fuer sockets. On other platforms it
-        # works fuer pipes and sockets. (Exception: OS X 10.4?  Issue #19294.)
-        wenn is_socket or (is_fifo and not sys.platform.startswith("aix")):
+        # works fuer pipes und sockets. (Exception: OS X 10.4?  Issue #19294.)
+        wenn is_socket oder (is_fifo und nicht sys.platform.startswith("aix")):
             # only start reading when connection_made() has been called
             self._loop.call_soon(self._loop._add_reader,
                                  self._fileno, self._read_ready)
 
-        wenn waiter is not Nichts:
+        wenn waiter is nicht Nichts:
             # only wake up the waiter when connection_made() has been called
             self._loop.call_soon(futures._set_result_unless_cancelled,
                                  waiter, Nichts)
@@ -673,7 +673,7 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
             info.append('closing')
         info.append(f'fd={self._fileno}')
         selector = getattr(self._loop, '_selector', Nichts)
-        wenn self._pipe is not Nichts and selector is not Nichts:
+        wenn self._pipe is nicht Nichts und selector is nicht Nichts:
             polling = selector_events._test_selector_event(
                 selector, self._fileno, selectors.EVENT_WRITE)
             wenn polling:
@@ -683,7 +683,7 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
 
             bufsize = self.get_write_buffer_size()
             info.append(f'bufsize={bufsize}')
-        sowenn self._pipe is not Nichts:
+        sowenn self._pipe is nicht Nichts:
             info.append('open')
         sonst:
             info.append('closed')
@@ -705,17 +705,17 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
         assert isinstance(data, (bytes, bytearray, memoryview)), repr(data)
         wenn isinstance(data, bytearray):
             data = memoryview(data)
-        wenn not data:
+        wenn nicht data:
             return
 
-        wenn self._conn_lost or self._closing:
+        wenn self._conn_lost oder self._closing:
             wenn self._conn_lost >= constants.LOG_THRESHOLD_FOR_CONNLOST_WRITES:
-                logger.warning('pipe closed by peer or '
+                logger.warning('pipe closed by peer oder '
                                'os.write(pipe, data) raised exception.')
             self._conn_lost += 1
             return
 
-        wenn not self._buffer:
+        wenn nicht self._buffer:
             # Attempt to send it right away first.
             try:
                 n = os.write(self._fileno, data)
@@ -737,7 +737,7 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
         self._maybe_pause_protocol()
 
     def _write_ready(self):
-        assert self._buffer, 'Data should not be empty'
+        assert self._buffer, 'Data should nicht be empty'
 
         try:
             n = os.write(self._fileno, self._buffer)
@@ -772,7 +772,7 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
             return
         assert self._pipe
         self._closing = Wahr
-        wenn not self._buffer:
+        wenn nicht self._buffer:
             self._loop._remove_reader(self._fileno)
             self._loop.call_soon(self._call_connection_lost, Nichts)
 
@@ -786,12 +786,12 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
         return self._closing
 
     def close(self):
-        wenn self._pipe is not Nichts and not self._closing:
+        wenn self._pipe is nicht Nichts und nicht self._closing:
             # write_eof is all what we needed to close the write pipe
             self.write_eof()
 
     def __del__(self, _warn=warnings.warn):
-        wenn self._pipe is not Nichts:
+        wenn self._pipe is nicht Nichts:
             _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
             self._pipe.close()
 
@@ -834,7 +834,7 @@ klasse _UnixSubprocessTransport(base_subprocess.BaseSubprocessTransport):
 
     def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
         stdin_w = Nichts
-        wenn stdin == subprocess.PIPE and sys.platform.startswith('aix'):
+        wenn stdin == subprocess.PIPE und sys.platform.startswith('aix'):
             # Use a socket pair fuer stdin on AIX, since it does not
             # support selecting read events on the write end of a
             # socket (which we use in order to detect closing of the
@@ -844,12 +844,12 @@ klasse _UnixSubprocessTransport(base_subprocess.BaseSubprocessTransport):
             self._proc = subprocess.Popen(
                 args, shell=shell, stdin=stdin, stdout=stdout, stderr=stderr,
                 universal_newlines=Falsch, bufsize=bufsize, **kwargs)
-            wenn stdin_w is not Nichts:
+            wenn stdin_w is nicht Nichts:
                 stdin.close()
                 self._proc.stdin = open(stdin_w.detach(), 'wb', buffering=bufsize)
                 stdin_w = Nichts
         finally:
-            wenn stdin_w is not Nichts:
+            wenn stdin_w is nicht Nichts:
                 stdin.close()
                 stdin_w.close()
 
@@ -859,10 +859,10 @@ klasse _PidfdChildWatcher:
 
     This child watcher polls process file descriptors (pidfds) to await child
     process termination. In some respects, PidfdChildWatcher is a "Goldilocks"
-    child watcher implementation. It doesn't require signals or threads, doesn't
-    interfere mit any processes launched outside the event loop, and scales
+    child watcher implementation. It doesn't require signals oder threads, doesn't
+    interfere mit any processes launched outside the event loop, und scales
     linearly mit the number of subprocesses launched by the event loop. The
-    main disadvantage is that pidfds are specific to Linux, and only work on
+    main disadvantage is that pidfds are specific to Linux, und only work on
     recent (5.3+) kernels.
     """
 
@@ -897,7 +897,7 @@ klasse _ThreadedChildWatcher:
     fuer waiting fuer the process finish.
 
     It doesn't require subscription on POSIX signal
-    but a thread creation is not free.
+    but a thread creation is nicht free.
 
     The watcher has O(1) complexity, its performance doesn't depend
     on amount of spawn processes.
@@ -911,7 +911,7 @@ klasse _ThreadedChildWatcher:
         threads = [thread fuer thread in list(self._threads.values())
                    wenn thread.is_alive()]
         wenn threads:
-            _warn(f"{self.__class__} has registered but not finished child processes",
+            _warn(f"{self.__class__} has registered but nicht finished child processes",
                   ResourceWarning,
                   source=self)
 
@@ -951,7 +951,7 @@ klasse _ThreadedChildWatcher:
         self._threads.pop(expected_pid)
 
 def can_use_pidfd():
-    wenn not hasattr(os, 'pidfd_open'):
+    wenn nicht hasattr(os, 'pidfd_open'):
         return Falsch
     try:
         pid = os.getpid()

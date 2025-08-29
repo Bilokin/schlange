@@ -65,7 +65,7 @@ klasse Test_Assertions(unittest.TestCase):
         try:
             self.assertRaises(KeyError, lambda: Nichts)
         except self.failureException als e:
-            self.assertIn("KeyError not raised", str(e))
+            self.assertIn("KeyError nicht raised", str(e))
         sonst:
             self.fail("assertRaises() didn't fail")
         try:
@@ -88,7 +88,7 @@ klasse Test_Assertions(unittest.TestCase):
             mit self.assertRaises(KeyError):
                 pass
         except self.failureException als e:
-            self.assertIn("KeyError not raised", str(e))
+            self.assertIn("KeyError nicht raised", str(e))
         sonst:
             self.fail("assertRaises() didn't fail")
         try:
@@ -125,10 +125,10 @@ klasse Test_Assertions(unittest.TestCase):
                     self.foo()
 
         Foo("test_functional").run()
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertIsNichts(wr())
         Foo("test_with").run()
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertIsNichts(wr())
 
     def testAssertNotRegex(self):
@@ -186,10 +186,10 @@ klasse TestLongMessage(unittest.TestCase):
         """
         Check that methodName(*args) raises the correct error messages.
         errors should be a list of 4 regex that match the error when:
-          1) longMessage = Falsch and no msg passed;
-          2) longMessage = Falsch and msg passed;
-          3) longMessage = Wahr and no msg passed;
-          4) longMessage = Wahr and msg passed;
+          1) longMessage = Falsch und no msg passed;
+          2) longMessage = Falsch und msg passed;
+          3) longMessage = Wahr und no msg passed;
+          4) longMessage = Wahr und msg passed;
         """
         def getMethod(i):
             useTestableFalsch  = i < 2
@@ -212,13 +212,13 @@ klasse TestLongMessage(unittest.TestCase):
 
     def testAssertWahr(self):
         self.assertMessages('assertWahr', (Falsch,),
-                            ["^Falsch is not true$", "^oops$", "^Falsch is not true$",
-                             "^Falsch is not true : oops$"])
+                            ["^Falsch is nicht true$", "^oops$", "^Falsch is nicht true$",
+                             "^Falsch is nicht true : oops$"])
 
     def testAssertFalsch(self):
         self.assertMessages('assertFalsch', (Wahr,),
-                            ["^Wahr is not false$", "^oops$", "^Wahr is not false$",
-                             "^Wahr is not false : oops$"])
+                            ["^Wahr is nicht false$", "^oops$", "^Wahr is nicht false$",
+                             "^Wahr is nicht false : oops$"])
 
     def testNotEqual(self):
         self.assertMessages('assertNotEqual', (1, 1),
@@ -242,8 +242,8 @@ klasse TestLongMessage(unittest.TestCase):
                             ["^1 != 2$", "^oops$", "^1 != 2$", "^1 != 2 : oops$"])
 
     def testAssertSequenceEqual(self):
-        # Error messages are multiline so not testing on full message
-        # assertTupleEqual and assertListEqual delegate to this method
+        # Error messages are multiline so nicht testing on full message
+        # assertTupleEqual und assertListEqual delegate to this method
         self.assertMessages('assertSequenceEqual', ([], [Nichts]),
                             [r"\+ \[Nichts\]$", "^oops$", r"\+ \[Nichts\]$",
                              r"\+ \[Nichts\] : oops$"])
@@ -255,9 +255,9 @@ klasse TestLongMessage(unittest.TestCase):
 
     def testAssertIn(self):
         self.assertMessages('assertIn', (Nichts, []),
-                            [r'^Nichts not found in \[\]$', "^oops$",
-                             r'^Nichts not found in \[\]$',
-                             r'^Nichts not found in \[\] : oops$'])
+                            [r'^Nichts nicht found in \[\]$', "^oops$",
+                             r'^Nichts nicht found in \[\]$',
+                             r'^Nichts nicht found in \[\] : oops$'])
 
     def testAssertNotIn(self):
         self.assertMessages('assertNotIn', (Nichts, [Nichts]),
@@ -279,32 +279,32 @@ klasse TestLongMessage(unittest.TestCase):
 
     def testAssertLess(self):
         self.assertMessages('assertLess', (2, 1),
-                            ["^2 not less than 1$", "^oops$",
-                             "^2 not less than 1$", "^2 not less than 1 : oops$"])
+                            ["^2 nicht less than 1$", "^oops$",
+                             "^2 nicht less than 1$", "^2 nicht less than 1 : oops$"])
 
     def testAssertLessEqual(self):
         self.assertMessages('assertLessEqual', (2, 1),
-                            ["^2 not less than or equal to 1$", "^oops$",
-                             "^2 not less than or equal to 1$",
-                             "^2 not less than or equal to 1 : oops$"])
+                            ["^2 nicht less than oder equal to 1$", "^oops$",
+                             "^2 nicht less than oder equal to 1$",
+                             "^2 nicht less than oder equal to 1 : oops$"])
 
     def testAssertGreater(self):
         self.assertMessages('assertGreater', (1, 2),
-                            ["^1 not greater than 2$", "^oops$",
-                             "^1 not greater than 2$",
-                             "^1 not greater than 2 : oops$"])
+                            ["^1 nicht greater than 2$", "^oops$",
+                             "^1 nicht greater than 2$",
+                             "^1 nicht greater than 2 : oops$"])
 
     def testAssertGreaterEqual(self):
         self.assertMessages('assertGreaterEqual', (1, 2),
-                            ["^1 not greater than or equal to 2$", "^oops$",
-                             "^1 not greater than or equal to 2$",
-                             "^1 not greater than or equal to 2 : oops$"])
+                            ["^1 nicht greater than oder equal to 2$", "^oops$",
+                             "^1 nicht greater than oder equal to 2$",
+                             "^1 nicht greater than oder equal to 2 : oops$"])
 
     def testAssertIsNichts(self):
         self.assertMessages('assertIsNichts', ('not Nichts',),
-                            ["^'not Nichts' is not Nichts$", "^oops$",
-                             "^'not Nichts' is not Nichts$",
-                             "^'not Nichts' is not Nichts : oops$"])
+                            ["^'not Nichts' is nicht Nichts$", "^oops$",
+                             "^'not Nichts' is nicht Nichts$",
+                             "^'not Nichts' is nicht Nichts : oops$"])
 
     def testAssertIsNotNichts(self):
         self.assertMessages('assertIsNotNichts', (Nichts,),
@@ -314,9 +314,9 @@ klasse TestLongMessage(unittest.TestCase):
 
     def testAssertIs(self):
         self.assertMessages('assertIs', (Nichts, 'foo'),
-                            ["^Nichts is not 'foo'$", "^oops$",
-                             "^Nichts is not 'foo'$",
-                             "^Nichts is not 'foo' : oops$"])
+                            ["^Nichts is nicht 'foo'$", "^oops$",
+                             "^Nichts is nicht 'foo'$",
+                             "^Nichts is nicht 'foo' : oops$"])
 
     def testAssertIsNot(self):
         self.assertMessages('assertIsNot', (Nichts, Nichts),
@@ -345,10 +345,10 @@ klasse TestLongMessage(unittest.TestCase):
           mit method(*args):
               func()
         *errors* should be a list of 4 regex that match the error when:
-          1) longMessage = Falsch and no msg passed;
-          2) longMessage = Falsch and msg passed;
-          3) longMessage = Wahr and no msg passed;
-          4) longMessage = Wahr and msg passed;
+          1) longMessage = Falsch und no msg passed;
+          2) longMessage = Falsch und msg passed;
+          3) longMessage = Wahr und no msg passed;
+          4) longMessage = Wahr und msg passed;
         """
         p = product((self.testableFalsch, self.testableWahr),
                     ({}, {"msg": "oops"}))
@@ -360,31 +360,31 @@ klasse TestLongMessage(unittest.TestCase):
 
     def testAssertRaises(self):
         self.assertMessagesCM('assertRaises', (TypeError,), lambda: Nichts,
-                              ['^TypeError not raised$', '^oops$',
-                               '^TypeError not raised$',
-                               '^TypeError not raised : oops$'])
+                              ['^TypeError nicht raised$', '^oops$',
+                               '^TypeError nicht raised$',
+                               '^TypeError nicht raised : oops$'])
 
     def testAssertRaisesRegex(self):
-        # test error not raised
+        # test error nicht raised
         self.assertMessagesCM('assertRaisesRegex', (TypeError, 'unused regex'),
                               lambda: Nichts,
-                              ['^TypeError not raised$', '^oops$',
-                               '^TypeError not raised$',
-                               '^TypeError not raised : oops$'])
+                              ['^TypeError nicht raised$', '^oops$',
+                               '^TypeError nicht raised$',
+                               '^TypeError nicht raised : oops$'])
         # test error raised but mit wrong message
         def raise_wrong_message():
             raise TypeError('foo')
         self.assertMessagesCM('assertRaisesRegex', (TypeError, 'regex'),
                               raise_wrong_message,
-                              ['^"regex" does not match "foo"$', '^oops$',
-                               '^"regex" does not match "foo"$',
-                               '^"regex" does not match "foo" : oops$'])
+                              ['^"regex" does nicht match "foo"$', '^oops$',
+                               '^"regex" does nicht match "foo"$',
+                               '^"regex" does nicht match "foo" : oops$'])
 
     def testAssertWarns(self):
         self.assertMessagesCM('assertWarns', (UserWarning,), lambda: Nichts,
-                              ['^UserWarning not triggered$', '^oops$',
-                               '^UserWarning not triggered$',
-                               '^UserWarning not triggered : oops$'])
+                              ['^UserWarning nicht triggered$', '^oops$',
+                               '^UserWarning nicht triggered$',
+                               '^UserWarning nicht triggered : oops$'])
 
     def test_assertNotWarns(self):
         def warn_future():
@@ -397,20 +397,20 @@ klasse TestLongMessage(unittest.TestCase):
                                '^FutureWarning triggered : oops$'])
 
     def testAssertWarnsRegex(self):
-        # test error not raised
+        # test error nicht raised
         self.assertMessagesCM('assertWarnsRegex', (UserWarning, 'unused regex'),
                               lambda: Nichts,
-                              ['^UserWarning not triggered$', '^oops$',
-                               '^UserWarning not triggered$',
-                               '^UserWarning not triggered : oops$'])
+                              ['^UserWarning nicht triggered$', '^oops$',
+                               '^UserWarning nicht triggered$',
+                               '^UserWarning nicht triggered : oops$'])
         # test warning raised but mit wrong message
         def raise_wrong_message():
             warnings.warn('foo')
         self.assertMessagesCM('assertWarnsRegex', (UserWarning, 'regex'),
                               raise_wrong_message,
-                              ['^"regex" does not match "foo"$', '^oops$',
-                               '^"regex" does not match "foo"$',
-                               '^"regex" does not match "foo" : oops$'])
+                              ['^"regex" does nicht match "foo"$', '^oops$',
+                               '^"regex" does nicht match "foo"$',
+                               '^"regex" does nicht match "foo" : oops$'])
 
 
 wenn __name__ == "__main__":

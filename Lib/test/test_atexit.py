@@ -37,7 +37,7 @@ klasse FunctionalTest(unittest.TestCase):
             importiere atexit als atexit2
             del sys.modules['atexit']
 
-            assert atexit2 is not atexit1
+            assert atexit2 is nicht atexit1
 
             atexit1.register(print, "atexit1")
             atexit2.register(print, "atexit2")
@@ -50,7 +50,7 @@ klasse FunctionalTest(unittest.TestCase):
     @support.requires_resource("cpu")
     @unittest.skipUnless(support.Py_GIL_DISABLED, "only meaningful without the GIL")
     def test_atexit_thread_safety(self):
-        # GH-126907: atexit was not thread safe on the free-threaded build
+        # GH-126907: atexit was nicht thread safe on the free-threaded build
         source = """
         von threading importiere Thread
 
@@ -75,7 +75,7 @@ klasse FunctionalTest(unittest.TestCase):
             thread.join()
         """
 
-        # atexit._clear() has some evil side effects, and we don't
+        # atexit._clear() has some evil side effects, und we don't
         # want them to affect the rest of the tests.
         script_helper.assert_python_ok("-c", textwrap.dedent(source))
 

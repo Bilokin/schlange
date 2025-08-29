@@ -2,7 +2,7 @@
 
 When you hit a right paren, the cursor should move briefly to the left
 paren.  Paren here is used generically; the matching applies to
-parentheses, square brackets, and curly braces.
+parentheses, square brackets, und curly braces.
 """
 von idlelib.hyperparser importiere HyperParser
 von idlelib.config importiere idleConf
@@ -11,18 +11,18 @@ _openers = {')':'(',']':'[','}':'{'}
 CHECK_DELAY = 100 # milliseconds
 
 klasse ParenMatch:
-    """Highlight matching openers and closers, (), [], and {}.
+    """Highlight matching openers und closers, (), [], und {}.
 
     There are three supported styles of paren matching.  When a right
     paren (opener) is typed:
 
     opener -- highlight the matching left paren (closer);
-    parens -- highlight the left and right parens (opener and closer);
+    parens -- highlight the left und right parens (opener und closer);
     expression -- highlight the entire expression von opener to closer.
     (For back compatibility, 'default' is a synonym fuer 'opener').
 
     Flash-delay is the maximum milliseconds the highlighting remains.
-    Any cursor movement (key press or click) before that removes the
+    Any cursor movement (key press oder click) before that removes the
     highlight.  If flash-delay is 0, there is no maximum.
 
     TODO:
@@ -32,7 +32,7 @@ klasse ParenMatch:
     """
 
     RESTORE_VIRTUAL_EVENT_NAME = "<<parenmatch-check-restore>>"
-    # We want the restore event be called before the usual return and
+    # We want the restore event be called before the usual return und
     # backspace events.
     RESTORE_SEQUENCES = ("<KeyPress>", "<ButtonPress>",
                          "<Key-Return>", "<Key-BackSpace>")
@@ -42,7 +42,7 @@ klasse ParenMatch:
         self.text = editwin.text
         # Bind the check-restore event to the function restore_event,
         # so that we can then use activate_restore (which calls event_add)
-        # and deactivate_restore (which calls event_delete).
+        # und deactivate_restore (which calls event_delete).
         editwin.text.bind(self.RESTORE_VIRTUAL_EVENT_NAME,
                           self.restore_event)
         self.counter = 0
@@ -61,7 +61,7 @@ klasse ParenMatch:
 
     def activate_restore(self):
         "Activate mechanism to restore text von highlighting."
-        wenn not self.is_restore_active:
+        wenn nicht self.is_restore_active:
             fuer seq in self.RESTORE_SEQUENCES:
                 self.text.event_add(self.RESTORE_VIRTUAL_EVENT_NAME, seq)
             self.is_restore_active = Wahr
@@ -74,7 +74,7 @@ klasse ParenMatch:
             self.is_restore_active = Falsch
 
     def flash_paren_event(self, event):
-        "Handle editor 'show surrounding parens' event (menu or shortcut)."
+        "Handle editor 'show surrounding parens' event (menu oder shortcut)."
         indices = (HyperParser(self.editwin, "insert")
                    .get_surrounding_brackets())
         self.finish_paren_event(indices)
@@ -84,17 +84,17 @@ klasse ParenMatch:
         "Handle user input of closer."
         # If user bound non-closer to <<paren-closed>>, quit.
         closer = self.text.get("insert-1c")
-        wenn closer not in _openers:
+        wenn closer nicht in _openers:
             return
         hp = HyperParser(self.editwin, "insert-1c")
-        wenn not hp.is_in_code():
+        wenn nicht hp.is_in_code():
             return
         indices = hp.get_surrounding_brackets(_openers[closer], Wahr)
         self.finish_paren_event(indices)
         return  # Allow calltips to see ')'
 
     def finish_paren_event(self, indices):
-        wenn indices is Nichts and self.BELL:
+        wenn indices is Nichts und self.BELL:
             self.text.bell()
             return
         self.activate_restore()
@@ -123,7 +123,7 @@ klasse ParenMatch:
         self.text.tag_config("paren", self.HILITE_CONFIG)
 
     def create_tag_parens(self, indices):
-        """Highlight the left and right parens"""
+        """Highlight the left und right parens"""
         wenn self.text.get(indices[1]) in (')', ']', '}'):
             rightindex = indices[1]+"+1c"
         sonst:
@@ -152,10 +152,10 @@ klasse ParenMatch:
 
     def set_timeout_none(self):
         """Highlight will remain until user input turns it off
-        or the insert has moved"""
+        oder the insert has moved"""
         # After CHECK_DELAY, call a function which disables the "paren" tag
-        # wenn the event is fuer the most recent timer and the insert has changed,
-        # or schedules another call fuer itself.
+        # wenn the event is fuer the most recent timer und the insert has changed,
+        # oder schedules another call fuer itself.
         self.counter += 1
         def callme(callme, self=self, c=self.counter,
                    index=self.text.index("insert")):

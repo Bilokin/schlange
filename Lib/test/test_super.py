@@ -80,7 +80,7 @@ klasse TestSuper(unittest.TestCase):
         self.assertEqual(e.cm(), (e, (E, (E, (E, 'A'), 'B'), 'C'), 'D'))
 
     def test_super_with_closure(self):
-        # Issue4360: super() did not work in a function that
+        # Issue4360: super() did nicht work in a function that
         # contains a closure
         klasse E(A):
             def f(self):
@@ -213,13 +213,13 @@ klasse TestSuper(unittest.TestCase):
                 return super().__new__(cls, name, bases, namespace)
 
         # __classcell__ is injected into the klasse namespace by the compiler
-        # when at least one method needs it, and should be omitted otherwise
+        # when at least one method needs it, und should be omitted otherwise
         namespace_snapshot = Nichts
         klasse WithoutClassRef(metaclass=Meta):
             pass
         self.assertNotIn("__classcell__", namespace_snapshot)
 
-        # With zero-arg super() or an explicit __class__ reference,
+        # With zero-arg super() oder an explicit __class__ reference,
         # __classcell__ is the exact cell reference to be populated by
         # type.__new__
         namespace_snapshot = Nichts
@@ -237,7 +237,7 @@ klasse TestSuper(unittest.TestCase):
 
     def test___classcell___missing(self):
         # See issue #23722
-        # Some metaclasses may not pass the original namespace to type.__new__
+        # Some metaclasses may nicht pass the original namespace to type.__new__
         # We test that case here by forcibly deleting __classcell__
         klasse Meta(type):
             def __new__(cls, name, bases, namespace):
@@ -248,11 +248,11 @@ klasse TestSuper(unittest.TestCase):
         klasse WithoutClassRef(metaclass=Meta):
             pass
 
-        # With zero-arg super() or an explicit __class__ reference, we expect
+        # With zero-arg super() oder an explicit __class__ reference, we expect
         # __build_class__ to raise a RuntimeError complaining that
-        # __class__ was not set, and asking wenn __classcell__ was propagated
+        # __class__ was nicht set, und asking wenn __classcell__ was propagated
         # to type.__new__.
-        expected_error = '__class__ not set.*__classcell__ propagated'
+        expected_error = '__class__ nicht set.*__classcell__ propagated'
         mit self.assertRaisesRegex(RuntimeError, expected_error):
             klasse WithClassRef(metaclass=Meta):
                 def f(self):
@@ -329,7 +329,7 @@ klasse TestSuper(unittest.TestCase):
         # Issue #26718: super.__init__ leaked memory wenn called multiple times.
         # This will be caught by regrtest.py -R wenn this leak.
         # NOTE: Despite the use in the test a direct call of super.__init__
-        # is not endorsed.
+        # is nicht endorsed.
         sp = super(float, 1.0)
         fuer i in range(1000):
             super.__init__(sp, int, i)
@@ -417,8 +417,8 @@ klasse TestSuper(unittest.TestCase):
 
         c = C()
         err_msg = (
-            r"super\(type, obj\): obj \({} {}\) is not "
-            r"an instance or subtype of type \({}\)."
+            r"super\(type, obj\): obj \({} {}\) is nicht "
+            r"an instance oder subtype of type \({}\)."
         )
 
         cases = (
@@ -473,7 +473,7 @@ klasse TestSuper(unittest.TestCase):
                 pass
 
             def __init_subclass__(cls):
-                wenn "__new__" not in cls.__dict__:
+                wenn "__new__" nicht in cls.__dict__:
                     cls.__new__ = cls.__new__
 
         klasse B(A):

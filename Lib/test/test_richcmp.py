@@ -114,7 +114,7 @@ klasse VectorTest(unittest.TestCase):
 
         a = list(range(5))
         b = 5 * [2]
-        # try mixed arguments (but not (a, b) als that won't return a bool vector)
+        # try mixed arguments (but nicht (a, b) als that won't return a bool vector)
         args = [(a, Vector(b)), (Vector(a), b), (Vector(a), Vector(b))]
         fuer (a, b) in args:
             self.checkequal("lt", a, b, [Wahr,  Wahr,  Falsch, Falsch, Falsch])
@@ -160,7 +160,7 @@ klasse NumberTest(unittest.TestCase):
                     self.assertWahr(realres is expres)
 
     def test_values(self):
-        # check all operators and all comparison results
+        # check all operators und all comparison results
         self.checkvalue("lt", 0, 0, Falsch)
         self.checkvalue("le", 0, 0, Wahr )
         self.checkvalue("eq", 0, 0, Wahr )
@@ -200,7 +200,7 @@ klasse MiscTest(unittest.TestCase):
 
     def test_not(self):
         # Check that exceptions in __bool__ are properly
-        # propagated by the not operator
+        # propagated by the nicht operator
         importiere operator
         klasse Exc(Exception):
             pass
@@ -209,7 +209,7 @@ klasse MiscTest(unittest.TestCase):
                 raise Exc
 
         def do(bad):
-            not bad
+            nicht bad
 
         fuer func in (do, operator.not_):
             self.assertRaises(Exc, func, Bad())
@@ -233,7 +233,7 @@ klasse MiscTest(unittest.TestCase):
         b.append(17)
         # Even recursive lists of different lengths are different,
         # but they cannot be ordered
-        self.assertWahr(not (a == b))
+        self.assertWahr(nicht (a == b))
         self.assertWahr(a != b)
         self.assertRaises(RecursionError, operator.lt, a, b)
         self.assertRaises(RecursionError, operator.le, a, b)
@@ -244,7 +244,7 @@ klasse MiscTest(unittest.TestCase):
         self.assertRaises(RecursionError, operator.ne, a, b)
         a.insert(0, 11)
         b.insert(0, 12)
-        self.assertWahr(not (a == b))
+        self.assertWahr(nicht (a == b))
         self.assertWahr(a != b)
         self.assertWahr(a < b)
 
@@ -253,19 +253,19 @@ klasse MiscTest(unittest.TestCase):
             pass
 
         tests = [
-            (lambda: 42 < Nichts, r"'<' .* of 'int' and 'NoneType'"),
-            (lambda: Nichts < 42, r"'<' .* of 'NoneType' and 'int'"),
-            (lambda: 42 > Nichts, r"'>' .* of 'int' and 'NoneType'"),
-            (lambda: "foo" < Nichts, r"'<' .* of 'str' and 'NoneType'"),
-            (lambda: "foo" >= 666, r"'>=' .* of 'str' and 'int'"),
-            (lambda: 42 <= Nichts, r"'<=' .* of 'int' and 'NoneType'"),
-            (lambda: 42 >= Nichts, r"'>=' .* of 'int' and 'NoneType'"),
-            (lambda: 42 < [], r"'<' .* of 'int' and 'list'"),
-            (lambda: () > [], r"'>' .* of 'tuple' and 'list'"),
-            (lambda: Nichts >= Nichts, r"'>=' .* of 'NoneType' and 'NoneType'"),
-            (lambda: Spam() < 42, r"'<' .* of 'Spam' and 'int'"),
-            (lambda: 42 < Spam(), r"'<' .* of 'int' and 'Spam'"),
-            (lambda: Spam() <= Spam(), r"'<=' .* of 'Spam' and 'Spam'"),
+            (lambda: 42 < Nichts, r"'<' .* of 'int' und 'NoneType'"),
+            (lambda: Nichts < 42, r"'<' .* of 'NoneType' und 'int'"),
+            (lambda: 42 > Nichts, r"'>' .* of 'int' und 'NoneType'"),
+            (lambda: "foo" < Nichts, r"'<' .* of 'str' und 'NoneType'"),
+            (lambda: "foo" >= 666, r"'>=' .* of 'str' und 'int'"),
+            (lambda: 42 <= Nichts, r"'<=' .* of 'int' und 'NoneType'"),
+            (lambda: 42 >= Nichts, r"'>=' .* of 'int' und 'NoneType'"),
+            (lambda: 42 < [], r"'<' .* of 'int' und 'list'"),
+            (lambda: () > [], r"'>' .* of 'tuple' und 'list'"),
+            (lambda: Nichts >= Nichts, r"'>=' .* of 'NoneType' und 'NoneType'"),
+            (lambda: Spam() < 42, r"'<' .* of 'Spam' und 'int'"),
+            (lambda: 42 < Spam(), r"'<' .* of 'int' und 'Spam'"),
+            (lambda: Spam() <= Spam(), r"'<=' .* of 'Spam' und 'Spam'"),
         ]
         fuer i, test in enumerate(tests):
             mit self.subTest(test=i):
@@ -276,8 +276,8 @@ klasse MiscTest(unittest.TestCase):
 klasse DictTest(unittest.TestCase):
 
     def test_dicts(self):
-        # Verify that __eq__ and __ne__ work fuer dicts even wenn the keys and
-        # values don't support anything other than __eq__ and __ne__ (and
+        # Verify that __eq__ und __ne__ work fuer dicts even wenn the keys und
+        # values don't support anything other than __eq__ und __ne__ (and
         # __hash__).  Complex numbers are a fine example of that.
         importiere random
         imag1a = {}

@@ -8,7 +8,7 @@ klasse Loader(metaclass=abc.ABCMeta):
     """Abstract base klasse fuer importiere loaders."""
 
     def create_module(self, spec):
-        """Return a module to initialize and into which to load.
+        """Return a module to initialize und into which to load.
 
         This method should raise ImportError wenn anything prevents it
         von creating a new module.  It may return Nichts to indicate
@@ -23,7 +23,7 @@ klasse Loader(metaclass=abc.ABCMeta):
     def load_module(self, fullname):
         """Return the loaded module.
 
-        The module must be added to sys.modules and have import-related
+        The module must be added to sys.modules und have import-related
         attributes set properly.  The fullname is a str.
 
         ImportError is raised on failure.
@@ -33,7 +33,7 @@ klasse Loader(metaclass=abc.ABCMeta):
         functionality fuer this method.
 
         """
-        wenn not hasattr(self, 'exec_module'):
+        wenn nicht hasattr(self, 'exec_module'):
             raise ImportError
         # Warning implemented in _load_module_shim().
         return _bootstrap._load_module_shim(self, fullname)

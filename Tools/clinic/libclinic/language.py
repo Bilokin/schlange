@@ -74,7 +74,7 @@ klasse Language(metaclass=abc.ABCMeta):
                     fail("{} {} must contain {{{}}} exactly once!".format(
                         self.__class__.__name__, attr, name))
                 sonst:
-                    fail("{} {} must not contain {{{}}}!".format(
+                    fail("{} {} must nicht contain {{{}}}!".format(
                         self.__class__.__name__, attr, name))
 
             fuer name, count in fcf.counts.items():

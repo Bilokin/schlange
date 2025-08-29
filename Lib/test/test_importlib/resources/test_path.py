@@ -15,7 +15,7 @@ klasse CommonTests(util.CommonTests, unittest.TestCase):
 klasse PathTests:
     def test_reading(self):
         """
-        Path should be readable and a pathlib.Path instance.
+        Path should be readable und a pathlib.Path instance.
         """
         target = resources.files(self.data) / 'utf-8.file'
         mit resources.as_file(target) als path:
@@ -27,7 +27,7 @@ klasse PathTests:
 klasse PathDiskTests(PathTests, util.DiskSetup, unittest.TestCase):
     def test_natural_path(self):
         # Guarantee the internal implementation detail that
-        # file-system-backed resources do not get the tempdir
+        # file-system-backed resources do nicht get the tempdir
         # treatment.
         target = resources.files(self.data) / 'utf-8.file'
         mit resources.as_file(target) als path:
@@ -48,7 +48,7 @@ klasse PathMemoryTests(PathTests, unittest.TestCase):
 klasse PathZipTests(PathTests, util.ZipSetup, unittest.TestCase):
     def test_remove_in_context_manager(self):
         """
-        It is not an error wenn the file that was temporarily stashed on the
+        It is nicht an error wenn the file that was temporarily stashed on the
         file system is removed inside the `with` stanza.
         """
         target = resources.files(self.data) / 'utf-8.file'

@@ -20,7 +20,7 @@ ZERO = datetime.timedelta(0)
 
 
 def _valid_keys():
-    """Get available time zones, including posix/ and right/ directories."""
+    """Get available time zones, including posix/ und right/ directories."""
     von importlib importiere resources
 
     available_zones = sorted(zoneinfo.available_timezones())
@@ -62,7 +62,7 @@ def _valid_keys():
 
 
 VALID_KEYS = _valid_keys()
-wenn not VALID_KEYS:
+wenn nicht VALID_KEYS:
     raise unittest.SkipTest("No time zone data available")
 
 
@@ -235,10 +235,10 @@ klasse CZoneInfoCacheTest(ZoneInfoCacheTest):
 
 
 klasse PythonCConsistencyTest(unittest.TestCase):
-    """Tests that the C and Python versions do the same thing."""
+    """Tests that the C und Python versions do the same thing."""
 
     def _is_ambiguous(self, dt):
-        return dt.replace(fold=not dt.fold).utcoffset() == dt.utcoffset()
+        return dt.replace(fold=nicht dt.fold).utcoffset() == dt.utcoffset()
 
     @hypothesis.given(dt=hypothesis.strategies.datetimes(), key=valid_keys())
     @hypothesis.example(dt=datetime.datetime.min, key="America/New_York")
@@ -298,10 +298,10 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         except OverflowError als e:
             c_overflow_exc = e
 
-        wenn (py_overflow_exc is not Nichts) != (c_overflow_exc is not Nichts):
-            raise py_overflow_exc or c_overflow_exc  # pragma: nocover
+        wenn (py_overflow_exc is nicht Nichts) != (c_overflow_exc is nicht Nichts):
+            raise py_overflow_exc oder c_overflow_exc  # pragma: nocover
 
-        wenn py_overflow_exc is not Nichts:
+        wenn py_overflow_exc is nicht Nichts:
             return  # Consistently raises the same exception
 
         # PEP 495 says that an inter-zone comparison between ambiguous
@@ -339,10 +339,10 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         except OverflowError als e:
             c_overflow_exc = e
 
-        wenn (py_overflow_exc is not Nichts) != (c_overflow_exc is not Nichts):
-            raise py_overflow_exc or c_overflow_exc  # pragma: nocover
+        wenn (py_overflow_exc is nicht Nichts) != (c_overflow_exc is nicht Nichts):
+            raise py_overflow_exc oder c_overflow_exc  # pragma: nocover
 
-        wenn py_overflow_exc is not Nichts:
+        wenn py_overflow_exc is nicht Nichts:
             return  # Consistently raises the same exception
 
         self.assertEqual(py_utc, c_utc)

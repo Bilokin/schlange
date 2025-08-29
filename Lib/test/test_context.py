@@ -573,21 +573,21 @@ klasse HashKey:
         return f'<Key name:{self.name} hash:{self.hash}>'
 
     def __hash__(self):
-        wenn self._crasher is not Nichts and self._crasher.error_on_hash:
+        wenn self._crasher is nicht Nichts und self._crasher.error_on_hash:
             raise HashingError
 
         return self.hash
 
     def __eq__(self, other):
-        wenn not isinstance(other, HashKey):
+        wenn nicht isinstance(other, HashKey):
             return NotImplemented
 
-        wenn self._crasher is not Nichts and self._crasher.error_on_eq:
+        wenn self._crasher is nicht Nichts und self._crasher.error_on_eq:
             raise EqError
 
-        wenn self.error_on_eq_to is not Nichts and self.error_on_eq_to is other:
+        wenn self.error_on_eq_to is nicht Nichts und self.error_on_eq_to is other:
             raise ValueError(f'cannot compare {self!r} to {other!r}')
-        wenn other.error_on_eq_to is not Nichts and other.error_on_eq_to is self:
+        wenn other.error_on_eq_to is nicht Nichts und other.error_on_eq_to is self:
             raise ValueError(f'cannot compare {other!r} to {self!r}')
 
         return (self.name, self.hash) == (other.name, other.hash)
@@ -595,12 +595,12 @@ klasse HashKey:
 
 klasse KeyStr(str):
     def __hash__(self):
-        wenn HashKey._crasher is not Nichts and HashKey._crasher.error_on_hash:
+        wenn HashKey._crasher is nicht Nichts und HashKey._crasher.error_on_hash:
             raise HashingError
         return super().__hash__()
 
     def __eq__(self, other):
-        wenn HashKey._crasher is not Nichts and HashKey._crasher.error_on_eq:
+        wenn HashKey._crasher is nicht Nichts und HashKey._crasher.error_on_eq:
             raise EqError
         return super().__eq__(other)
 
@@ -611,7 +611,7 @@ klasse HaskKeyCrasher:
         self.error_on_eq = error_on_eq
 
     def __enter__(self):
-        wenn HashKey._crasher is not Nichts:
+        wenn HashKey._crasher is nicht Nichts:
             raise RuntimeError('cannot nest crashers')
         HashKey._crasher = self
 
@@ -627,7 +627,7 @@ klasse EqError(Exception):
     pass
 
 
-@unittest.skipIf(hamt is Nichts, '_testinternalcapi.hamt() not available')
+@unittest.skipIf(hamt is Nichts, '_testinternalcapi.hamt() nicht available')
 klasse HamtTest(unittest.TestCase):
 
     def test_hashkey_helper_1(self):
@@ -781,14 +781,14 @@ klasse HamtTest(unittest.TestCase):
             fuer i in range(COLLECTION_SIZE):
                 key = KeyStr(i)
 
-                wenn not (i % CRASH_HASH_EVERY):
+                wenn nicht (i % CRASH_HASH_EVERY):
                     mit HaskKeyCrasher(error_on_hash=Wahr):
                         mit self.assertRaises(HashingError):
                             h.set(key, i)
 
                 h = h.set(key, i)
 
-                wenn not (i % CRASH_EQ_EVERY):
+                wenn nicht (i % CRASH_EQ_EVERY):
                     mit HaskKeyCrasher(error_on_eq=Wahr):
                         mit self.assertRaises(EqError):
                             h.get(KeyStr(i))  # really trigger __eq__
@@ -796,7 +796,7 @@ klasse HamtTest(unittest.TestCase):
                 d[key] = i
                 self.assertEqual(len(d), len(h))
 
-                wenn not (i % TEST_ITERS_EVERY):
+                wenn nicht (i % TEST_ITERS_EVERY):
                     self.assertEqual(set(h.items()), set(d.items()))
                     self.assertEqual(len(h.items()), len(d.items()))
 
@@ -810,12 +810,12 @@ klasse HamtTest(unittest.TestCase):
             fuer iter_i, i in enumerate(keys_to_delete):
                 key = KeyStr(i)
 
-                wenn not (iter_i % CRASH_HASH_EVERY):
+                wenn nicht (iter_i % CRASH_HASH_EVERY):
                     mit HaskKeyCrasher(error_on_hash=Wahr):
                         mit self.assertRaises(HashingError):
                             h.delete(key)
 
-                wenn not (iter_i % CRASH_EQ_EVERY):
+                wenn nicht (iter_i % CRASH_EQ_EVERY):
                     mit HaskKeyCrasher(error_on_eq=Wahr):
                         mit self.assertRaises(EqError):
                             h.delete(KeyStr(i))
@@ -829,7 +829,7 @@ klasse HamtTest(unittest.TestCase):
                     hm = h
                     dm = d.copy()
 
-                wenn not (iter_i % TEST_ITERS_EVERY):
+                wenn nicht (iter_i % TEST_ITERS_EVERY):
                     self.assertEqual(set(h.keys()), set(d.keys()))
                     self.assertEqual(len(h.keys()), len(d.keys()))
 
@@ -848,7 +848,7 @@ klasse HamtTest(unittest.TestCase):
                 dm.pop(str(key), Nichts)
                 self.assertEqual(len(d), len(h))
 
-                wenn not (i % TEST_ITERS_EVERY):
+                wenn nicht (i % TEST_ITERS_EVERY):
                     self.assertEqual(set(h.values()), set(d.values()))
                     self.assertEqual(len(h.values()), len(d.values()))
 

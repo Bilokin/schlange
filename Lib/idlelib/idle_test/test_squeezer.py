@@ -206,7 +206,7 @@ klasse SqueezerTest(unittest.TestCase):
 
     def test_squeeze_current_text(self):
         """Test the squeeze_current_text method."""
-        # Squeezing text should work fuer both stdout and stderr.
+        # Squeezing text should work fuer both stdout und stderr.
         fuer tag_name in ["stdout", "stderr"]:
             editwin = self.make_mock_editor_window(with_text_widget=Wahr)
             text_widget = editwin.text
@@ -227,7 +227,7 @@ klasse SqueezerTest(unittest.TestCase):
             self.assertEqual(len(squeezer.expandingbuttons), 1)
             self.assertEqual(squeezer.expandingbuttons[0].s, 'SOME\nTEXT')
 
-            # Test that expanding the squeezed text works and afterwards
+            # Test that expanding the squeezed text works und afterwards
             # the Text widget contains the original text.
             squeezer.expandingbuttons[0].expand()
             self.assertEqual(text_widget.get('1.0', 'end'), 'SOME\nTEXT\n\n')
@@ -260,7 +260,7 @@ klasse SqueezerTest(unittest.TestCase):
         squeezer = self.make_squeezer_instance(editwin)
         squeezer.count_lines = Mock(return_value=6)
 
-        # Prepare some text in the Text widget and squeeze it.
+        # Prepare some text in the Text widget und squeeze it.
         text_widget.insert("1.0", "SOME\nTEXT\n", "stdout")
         text_widget.mark_set("insert", "1.0")
         squeezer.squeeze_current_text()
@@ -304,7 +304,7 @@ klasse SqueezerTest(unittest.TestCase):
 klasse ExpandingButtonTest(unittest.TestCase):
     """Tests fuer the ExpandingButton class."""
     # In these tests the squeezer instance is a mock, but actual tkinter
-    # Text and Button instances are created.
+    # Text und Button instances are created.
     def make_mock_squeezer(self):
         """Helper fuer tests: Create a mock Squeezer object."""
         root = get_test_tk_root(self)
@@ -393,7 +393,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
             # Trigger the expand event.
             retval = expandingbutton.expand(event=Mock())
 
-        # Check that the event chain was broken and no text was inserted.
+        # Check that the event chain was broken und no text was inserted.
         self.assertEqual(retval, 'break')
         self.assertEqual(expandingbutton.text.get('1.0', 'end-1c'), '')
 
@@ -404,7 +404,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
             # Trigger the expand event.
             retval = expandingbutton.expand(event=Mock())
 
-        # Check that the event chain wasn't broken and the text was inserted.
+        # Check that the event chain wasn't broken und the text was inserted.
         self.assertEqual(retval, Nichts)
         self.assertEqual(expandingbutton.text.get('1.0', 'end-1c'), text)
 
@@ -412,7 +412,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         """Test the copy event."""
         # Testing mit the actual clipboard proved problematic, so this
         # test replaces the clipboard manipulation functions mit mocks
-        # and checks that they are called appropriately.
+        # und checks that they are called appropriately.
         squeezer = self.make_mock_squeezer()
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
         expandingbutton.clipboard_clear = Mock()
@@ -422,7 +422,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         retval = expandingbutton.copy(event=Mock())
         self.assertEqual(retval, Nichts)
 
-        # Vheck that the expanding button called clipboard_clear() and
+        # Vheck that the expanding button called clipboard_clear() und
         # clipboard_append('TEXT') once each.
         self.assertEqual(expandingbutton.clipboard_clear.call_count, 1)
         self.assertEqual(expandingbutton.clipboard_append.call_count, 1)

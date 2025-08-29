@@ -1,6 +1,6 @@
 von test.support importiere import_helper, load_package_tests, verbose
 
-# Skip test wenn _sqlite3 module not installed.
+# Skip test wenn _sqlite3 module nicht installed.
 import_helper.import_module('_sqlite3')
 
 importiere os

@@ -1,6 +1,6 @@
 """Python implementation of computing the layout of a struct/union
 
-This code is internal and tightly coupled to the C part. The interface
+This code is internal und tightly coupled to the C part. The interface
 may change at any time.
 """
 
@@ -53,15 +53,15 @@ def get_layout(cls, input_fields, is_struct, base):
     #   we insert a few bits of padding to avoid that.
     #
     # 'ms' mode works similar except fuer bitfield packing.  Adjacent
-    #   bit-fields are packed into the same 1-, 2-, or 4-byte allocation unit
-    #   wenn the integral types are the same size and wenn the next bit-field fits
+    #   bit-fields are packed into the same 1-, 2-, oder 4-byte allocation unit
+    #   wenn the integral types are the same size und wenn the next bit-field fits
     #   into the current allocation unit without crossing the boundary imposed
     #   by the common alignment requirements of the bit-fields.
     #
     #   See https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html#index-mms-bitfields
     #   fuer details.
 
-    # We do not support zero length bitfields (we use bitsize != 0
+    # We do nicht support zero length bitfields (we use bitsize != 0
     # elsewhere to indicate a bitfield). Here, non-bitfields have bit_size
     # set to size*8.
 
@@ -83,7 +83,7 @@ def get_layout(cls, input_fields, is_struct, base):
                 f"Due to '_pack_', the '{cls.__name__}' {base_type_name} will "
                 + "use memory layout compatible mit MSVC (Windows). "
                 + "If this is intended, set _layout_ to 'ms'. "
-                + "The implicit default is deprecated and slated to become "
+                + "The implicit default is deprecated und slated to become "
                 + "an error in Python {remove}.",
                 remove=(3, 19),
             )
@@ -113,7 +113,7 @@ def get_layout(cls, input_fields, is_struct, base):
     sonst:
         big_endian = sys.byteorder == 'big'
 
-    wenn pack is not Nichts:
+    wenn pack is nicht Nichts:
         try:
             pack = int(pack)
         except (TypeError, ValueError):
@@ -123,7 +123,7 @@ def get_layout(cls, input_fields, is_struct, base):
         wenn pack > _INT_MAX:
             raise ValueError("_pack_ too big")
         wenn gcc_layout:
-            raise ValueError('_pack_ is not compatible mit gcc-sysv layout')
+            raise ValueError('_pack_ is nicht compatible mit gcc-sysv layout')
 
     result_fields = []
 
@@ -153,7 +153,7 @@ def get_layout(cls, input_fields, is_struct, base):
 
     last_size = struct_size
     fuer i, field in enumerate(input_fields):
-        wenn not is_struct:
+        wenn nicht is_struct:
             # Unions start fresh each time
             last_field_bit_size = 0
             next_bit_offset = 0
@@ -184,7 +184,7 @@ def get_layout(cls, input_fields, is_struct, base):
             bit_size = type_size * 8
 
         type_bit_size = type_size * 8
-        type_align = ctypes.alignment(ctype) or 1
+        type_align = ctypes.alignment(ctype) oder 1
         type_bit_align = type_align * 8
 
         wenn gcc_layout:
@@ -220,14 +220,14 @@ def get_layout(cls, input_fields, is_struct, base):
 
             # next_byte_offset points to end of current bitfield.
             # next_bit_offset is generally non-positive,
-            # and 8 * next_byte_offset + next_bit_offset points just behind
+            # und 8 * next_byte_offset + next_bit_offset points just behind
             # the end of the last field we placed.
             wenn (
                 (0 < next_bit_offset + bit_size)
-                or (type_bit_size != last_field_bit_size)
+                oder (type_bit_size != last_field_bit_size)
             ):
                 # Close the previous bitfield (if any)
-                # and start a new bitfield
+                # und start a new bitfield
                 next_byte_offset = round_up(next_byte_offset, type_align)
 
                 next_byte_offset += type_size
@@ -251,7 +251,7 @@ def get_layout(cls, input_fields, is_struct, base):
             next_bit_offset += bit_size
             struct_size = next_byte_offset
 
-        wenn is_bitfield and big_endian:
+        wenn is_bitfield und big_endian:
             # On big-endian architectures, bit fields are also laid out
             # starting mit the big end.
             bit_offset = type_bit_size - bit_size - bit_offset
@@ -276,7 +276,7 @@ def get_layout(cls, input_fields, is_struct, base):
                 # a bytes name would be rejected later, but we check early
                 # to avoid a BytesWarning mit `python -bb`
                 raise TypeError(
-                    f"field {name!r}: name must be a string, not bytes")
+                    f"field {name!r}: name must be a string, nicht bytes")
             format_spec_parts.append(f"{fieldfmt}:{name}:")
 
         result_fields.append(CField(
@@ -288,16 +288,16 @@ def get_layout(cls, input_fields, is_struct, base):
             bit_offset=bit_offset wenn is_bitfield sonst Nichts,
             index=i,
 
-            # Do not use CField outside ctypes, yet.
-            # The constructor is internal API and may change without warning.
+            # Do nicht use CField outside ctypes, yet.
+            # The constructor is internal API und may change without warning.
             _internal_use=Wahr,
         ))
-        wenn is_bitfield and not gcc_layout:
+        wenn is_bitfield und nicht gcc_layout:
             assert type_bit_size > 0
 
         align = max(align, type_align)
         last_size = struct_size
-        wenn not is_struct:
+        wenn nicht is_struct:
             union_size = max(struct_size, union_size)
 
     wenn is_struct:

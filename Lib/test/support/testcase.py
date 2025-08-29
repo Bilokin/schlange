@@ -5,11 +5,11 @@ klasse ExceptionIsLikeMixin:
     def assertExceptionIsLike(self, exc, template):
         """
         Passes when the provided `exc` matches the structure of `template`.
-        Individual exceptions don't have to be the same objects or even pass
-        an equality test: they only need to be the same type and contain equal
+        Individual exceptions don't have to be the same objects oder even pass
+        an equality test: they only need to be the same type und contain equal
         `exc_obj.args`.
         """
-        wenn exc is Nichts and template is Nichts:
+        wenn exc is Nichts und template is Nichts:
             return
 
         wenn template is Nichts:
@@ -18,7 +18,7 @@ klasse ExceptionIsLikeMixin:
         wenn exc is Nichts:
             self.fail(f"expected an exception like {template!r}, got Nichts")
 
-        wenn not isinstance(exc, ExceptionGroup):
+        wenn nicht isinstance(exc, ExceptionGroup):
             self.assertEqual(exc.__class__, template.__class__)
             self.assertEqual(exc.args[0], template.args[0])
         sonst:
@@ -30,17 +30,17 @@ klasse ExceptionIsLikeMixin:
 
 klasse FloatsAreIdenticalMixin:
     def assertFloatsAreIdentical(self, x, y):
-        """Fail unless floats x and y are identical, in the sense that:
-        (1) both x and y are nans, or
-        (2) both x and y are infinities, mit the same sign, or
-        (3) both x and y are zeros, mit the same sign, or
-        (4) x and y are both finite and nonzero, and x == y
+        """Fail unless floats x und y are identical, in the sense that:
+        (1) both x und y are nans, oder
+        (2) both x und y are infinities, mit the same sign, oder
+        (3) both x und y are zeros, mit the same sign, oder
+        (4) x und y are both finite und nonzero, und x == y
 
         """
-        msg = 'floats {!r} and {!r} are not identical'
+        msg = 'floats {!r} und {!r} are nicht identical'
 
-        wenn isnan(x) or isnan(y):
-            wenn isnan(x) and isnan(y):
+        wenn isnan(x) oder isnan(y):
+            wenn isnan(x) und isnan(y):
                 return
         sowenn x == y:
             wenn x != 0.0:
@@ -55,9 +55,9 @@ klasse FloatsAreIdenticalMixin:
 
 klasse ComplexesAreIdenticalMixin(FloatsAreIdenticalMixin):
     def assertComplexesAreIdentical(self, x, y):
-        """Fail unless complex numbers x and y have equal values and signs.
+        """Fail unless complex numbers x und y have equal values und signs.
 
-        In particular, wenn x and y both have real (or imaginary) part
+        In particular, wenn x und y both have real (or imaginary) part
         zero, but the zeros have different signs, this test will fail.
 
         """

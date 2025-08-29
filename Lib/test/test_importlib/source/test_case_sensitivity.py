@@ -29,7 +29,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
                                             self.machinery.BYTECODE_SUFFIXES))
 
     def sensitivity_test(self):
-        """Look fuer a module mit matching and non-matching sensitivity."""
+        """Look fuer a module mit matching und non-matching sensitivity."""
         sensitive_pkg = 'sensitive.{0}'.format(self.name)
         insensitive_pkg = 'insensitive.{0}'.format(self.name.lower())
         context = util.create_modules(insensitive_pkg, sensitive_pkg)
@@ -65,7 +65,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
 klasse CaseSensitivityTestPEP451(CaseSensitivityTest):
     def find(self, finder):
         found = finder.find_spec(self.name)
-        return found.loader wenn found is not Nichts sonst found
+        return found.loader wenn found is nicht Nichts sonst found
 
 
 (Frozen_CaseSensitivityTestPEP451,

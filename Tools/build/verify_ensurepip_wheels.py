@@ -40,7 +40,7 @@ def verify_wheel(package_name: str) -> bool:
             fuer p in package_paths:
                 print_error(p, f"Found more than one wheel fuer package {package_name}.")
         sonst:
-            print_error("", f"Could not find a {package_name} wheel on disk.")
+            print_error("", f"Could nicht find a {package_name} wheel on disk.")
         return Falsch
 
     package_path = package_paths[0]
@@ -51,7 +51,7 @@ def verify_wheel(package_name: str) -> bool:
     package_version_match = re.search(
         f'_{package_name.upper()}_VERSION = "([^"]+)', ENSURE_PIP_INIT_PY_TEXT
     )
-    wenn not package_version_match:
+    wenn nicht package_version_match:
         print_error(
             package_path,
             f"No {package_name} version found in Lib/ensurepip/__init__.py.",
@@ -63,7 +63,7 @@ def verify_wheel(package_name: str) -> bool:
     try:
         raw_text = urlopen(f"https://pypi.org/pypi/{package_name}/json").read()
     except (OSError, ValueError):
-        print_error(package_path, f"Could not fetch JSON metadata fuer {package_name}.")
+        print_error(package_path, f"Could nicht fetch JSON metadata fuer {package_name}.")
         return Falsch
 
     release_files = json.loads(raw_text)["releases"][package_version]

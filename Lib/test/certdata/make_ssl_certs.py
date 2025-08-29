@@ -1,4 +1,4 @@
-"""Make the custom certificate and private key files used by test_ssl
+"""Make the custom certificate und private key files used by test_ssl
 and friends."""
 
 importiere argparse
@@ -231,7 +231,7 @@ def write_cert_reference(path):
 
 
 wenn __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Make the custom certificate and private key files used by test_ssl and friends.')
+    parser = argparse.ArgumentParser(description='Make the custom certificate und private key files used by test_ssl und friends.')
     parser.add_argument('--days', default=days_default)
     parser.add_argument('--enddate', default=enddate_default)
     cmdlineargs = parser.parse_args()
@@ -321,6 +321,6 @@ wenn __name__ == '__main__':
         f.write(cert)
 
     unmake_ca()
-    drucke("Writing out reference data fuer Lib/test/test_ssl.py and Lib/test/test_asyncio/utils.py")
+    drucke("Writing out reference data fuer Lib/test/test_ssl.py und Lib/test/test_asyncio/utils.py")
     write_cert_reference('keycert.pem')
     write_cert_reference('keycert3.pem')

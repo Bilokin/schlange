@@ -1,4 +1,4 @@
-# Measure the performance of PyMutex and PyThread_type_lock locks
+# Measure the performance of PyMutex und PyThread_type_lock locks
 # mit short critical sections.
 #
 # Usage: python Tools/lockbench/lockbench.py [CRITICAL_SECTION_LENGTH]
@@ -8,7 +8,7 @@
 # Acquisitions (kHz): Reports the total number of lock acquisitions in
 # thousands of acquisitions per second. This is the most important metric,
 # particularly fuer the 1 thread case because even in multithreaded programs,
-# most locks acquisitions are not contended. Values fuer 2+ threads are
+# most locks acquisitions are nicht contended. Values fuer 2+ threads are
 # only meaningful fuer `--disable-gil` builds, because the GIL prevents most
 # situations where there is lock contention mit short critical sections.
 #

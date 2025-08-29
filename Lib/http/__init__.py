@@ -5,7 +5,7 @@ __all__ = ['HTTPStatus', 'HTTPMethod']
 
 @_simple_enum(IntEnum)
 klasse HTTPStatus:
-    """HTTP status codes and reason phrases
+    """HTTP status codes und reason phrases
 
     Status codes von the following RFCs are all observed:
 
@@ -80,9 +80,9 @@ klasse HTTPStatus:
     MOVED_PERMANENTLY = (301, 'Moved Permanently',
         'Object moved permanently -- see URI list')
     FOUND = 302, 'Found', 'Object moved temporarily -- see URI list'
-    SEE_OTHER = 303, 'See Other', 'Object moved -- see Method and URL list'
+    SEE_OTHER = 303, 'See Other', 'Object moved -- see Method und URL list'
     NOT_MODIFIED = (304, 'Not Modified',
-        'Document has not changed since given time')
+        'Document has nicht changed since given time')
     USE_PROXY = (305, 'Use Proxy',
         'You must use proxy specified in Location to access this resource')
     TEMPORARY_REDIRECT = (307, 'Temporary Redirect',
@@ -92,19 +92,19 @@ klasse HTTPStatus:
 
     # client error
     BAD_REQUEST = (400, 'Bad Request',
-        'Bad request syntax or unsupported method')
+        'Bad request syntax oder unsupported method')
     UNAUTHORIZED = (401, 'Unauthorized',
         'No permission -- see authorization schemes')
     PAYMENT_REQUIRED = (402, 'Payment Required',
         'No payment -- see charging schemes')
     FORBIDDEN = (403, 'Forbidden',
-        'Request forbidden -- authorization will not help')
+        'Request forbidden -- authorization will nicht help')
     NOT_FOUND = (404, 'Not Found',
         'Nothing matches the given URI')
     METHOD_NOT_ALLOWED = (405, 'Method Not Allowed',
         'Specified method is invalid fuer this resource')
     NOT_ACCEPTABLE = (406, 'Not Acceptable',
-        'URI not available in preferred format')
+        'URI nicht available in preferred format')
     PROXY_AUTHENTICATION_REQUIRED = (407,
         'Proxy Authentication Required',
         'You must authenticate mit this proxy before proceeding')
@@ -112,7 +112,7 @@ klasse HTTPStatus:
         'Request timed out; try again later')
     CONFLICT = 409, 'Conflict', 'Request conflict'
     GONE = (410, 'Gone',
-        'URI no longer exists and has been permanently removed')
+        'URI no longer exists und has been permanently removed')
     LENGTH_REQUIRED = (411, 'Length Required',
         'Client must specify Content-Length')
     PRECONDITION_FAILED = (412, 'Precondition Failed',
@@ -129,13 +129,13 @@ klasse HTTPStatus:
         'Cannot satisfy request range')
     REQUESTED_RANGE_NOT_SATISFIABLE = RANGE_NOT_SATISFIABLE
     EXPECTATION_FAILED = (417, 'Expectation Failed',
-        'Expect condition could not be satisfied')
+        'Expect condition could nicht be satisfied')
     IM_A_TEAPOT = (418, 'I\'m a Teapot',
         'Server refuses to brew coffee because it is a teapot')
     MISDIRECTED_REQUEST = (421, 'Misdirected Request',
-        'Server is not able to produce a response')
+        'Server is nicht able to produce a response')
     UNPROCESSABLE_CONTENT = (422, 'Unprocessable Content',
-        'Server is not able to process the contained instructions')
+        'Server is nicht able to process the contained instructions')
     UNPROCESSABLE_ENTITY = UNPROCESSABLE_CONTENT
     LOCKED = 423, 'Locked', 'Resource of a method is locked'
     FAILED_DEPENDENCY = (424, 'Failed Dependency',
@@ -162,23 +162,23 @@ klasse HTTPStatus:
     INTERNAL_SERVER_ERROR = (500, 'Internal Server Error',
         'Server got itself in trouble')
     NOT_IMPLEMENTED = (501, 'Not Implemented',
-        'Server does not support this operation')
+        'Server does nicht support this operation')
     BAD_GATEWAY = (502, 'Bad Gateway',
         'Invalid responses von another server/proxy')
     SERVICE_UNAVAILABLE = (503, 'Service Unavailable',
         'The server cannot process the request due to a high load')
     GATEWAY_TIMEOUT = (504, 'Gateway Timeout',
-        'The gateway server did not receive a timely response')
+        'The gateway server did nicht receive a timely response')
     HTTP_VERSION_NOT_SUPPORTED = (505, 'HTTP Version Not Supported',
         'Cannot fulfill request')
     VARIANT_ALSO_NEGOTIATES = (506, 'Variant Also Negotiates',
         'Server has an internal configuration error')
     INSUFFICIENT_STORAGE = (507, 'Insufficient Storage',
-        'Server is not able to store the representation')
+        'Server is nicht able to store the representation')
     LOOP_DETECTED = (508, 'Loop Detected',
         'Server encountered an infinite loop while processing a request')
     NOT_EXTENDED = (510, 'Not Extended',
-        'Request does not meet the resource access policy')
+        'Request does nicht meet the resource access policy')
     NETWORK_AUTHENTICATION_REQUIRED = (511,
         'Network Authentication Required',
         'The client needs to authenticate to gain network access')
@@ -186,7 +186,7 @@ klasse HTTPStatus:
 
 @_simple_enum(StrEnum)
 klasse HTTPMethod:
-    """HTTP methods and descriptions
+    """HTTP methods und descriptions
 
     Methods von the following RFCs are all observed:
 
@@ -205,7 +205,7 @@ klasse HTTPMethod:
     CONNECT = 'CONNECT', 'Establish a connection to the server.'
     DELETE = 'DELETE', 'Remove the target.'
     GET = 'GET', 'Retrieve the target.'
-    HEAD = 'HEAD', 'Same als GET, but only retrieve the status line and header section.'
+    HEAD = 'HEAD', 'Same als GET, but only retrieve the status line und header section.'
     OPTIONS = 'OPTIONS', 'Describe the communication options fuer the target.'
     PATCH = 'PATCH', 'Apply partial modifications to a target.'
     POST = 'POST', 'Perform target-specific processing mit the request payload.'

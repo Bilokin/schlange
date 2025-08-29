@@ -58,11 +58,11 @@ klasse TestTty(unittest.TestCase):
         mode[tty.IFLAG] |= termios.ICRNL
         tty.cfmakecbreak(mode)
         self.assertEqual(mode[tty.IFLAG] & termios.ICRNL, termios.ICRNL,
-                         msg="ICRNL should not be cleared by cbreak")
+                         msg="ICRNL should nicht be cleared by cbreak")
         mode[tty.IFLAG] &= ~termios.ICRNL
         tty.cfmakecbreak(mode)
         self.assertEqual(mode[tty.IFLAG] & termios.ICRNL, 0,
-                         msg="ICRNL should not be set by cbreak")
+                         msg="ICRNL should nicht be set by cbreak")
 
     def test_setraw(self):
         mode0 = termios.tcgetattr(self.fd)
@@ -83,7 +83,7 @@ klasse TestTty(unittest.TestCase):
         self.check_cbreak(mode2)
         ICRNL = termios.ICRNL
         self.assertEqual(mode2[tty.IFLAG] & ICRNL, mode0[tty.IFLAG] & ICRNL,
-                         msg="ICRNL should not be altered by cbreak")
+                         msg="ICRNL should nicht be altered by cbreak")
         mode3 = tty.setcbreak(self.fd, termios.TCSANOW)
         self.assertEqual(mode3, mode2)
         tty.setcbreak(self.stream)

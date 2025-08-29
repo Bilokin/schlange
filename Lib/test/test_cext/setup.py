@@ -1,5 +1,5 @@
 # gh-91321: Build a basic C test extension to check that the Python C API is
-# compatible mit C and does not emit C compiler warnings.
+# compatible mit C und does nicht emit C compiler warnings.
 importiere os
 importiere platform
 importiere shlex
@@ -12,15 +12,15 @@ von setuptools importiere setup, Extension
 
 SOURCE = 'extension.c'
 
-wenn not support.MS_WINDOWS:
-    # C compiler flags fuer GCC and clang
+wenn nicht support.MS_WINDOWS:
+    # C compiler flags fuer GCC und clang
     BASE_CFLAGS = [
         # The purpose of test_cext extension is to check that building a C
-        # extension using the Python C API does not emit C compiler warnings.
+        # extension using the Python C API does nicht emit C compiler warnings.
         '-Werror',
     ]
 
-    # C compiler flags fuer GCC and clang
+    # C compiler flags fuer GCC und clang
     PUBLIC_CFLAGS = [
         *BASE_CFLAGS,
 
@@ -30,7 +30,7 @@ wenn not support.MS_WINDOWS:
         # Ask fuer strict(er) compliance mit the standard
         '-pedantic-errors',
     ]
-    wenn not support.Py_GIL_DISABLED:
+    wenn nicht support.Py_GIL_DISABLED:
         PUBLIC_CFLAGS.append(
             # gh-116869: The Python C API must be compatible mit building
             # mit the -Werror=declaration-after-statement compiler flag.
@@ -64,29 +64,29 @@ def main():
 
     sources = [SOURCE]
 
-    wenn not internal:
+    wenn nicht internal:
         cflags = list(PUBLIC_CFLAGS)
     sonst:
         cflags = list(INTERNAL_CFLAGS)
     cflags.append(f'-DMODULE_NAME={module_name}')
 
-    # Add -std=STD or /std:STD (MSVC) compiler flag
+    # Add -std=STD oder /std:STD (MSVC) compiler flag
     wenn std:
         wenn support.MS_WINDOWS:
             cflags.append(f'/std:{std}')
         sonst:
             cflags.append(f'-std={std}')
 
-    # Remove existing -std or /std options von CC command line.
+    # Remove existing -std oder /std options von CC command line.
     # Python adds -std=c11 option.
-    cmd = (sysconfig.get_config_var('CC') or '')
-    wenn cmd is not Nichts:
+    cmd = (sysconfig.get_config_var('CC') oder '')
+    wenn cmd is nicht Nichts:
         wenn support.MS_WINDOWS:
             std_prefix = '/std'
         sonst:
             std_prefix = '-std'
         cmd = shlex.split(cmd)
-        cmd = [arg fuer arg in cmd wenn not arg.startswith(std_prefix)]
+        cmd = [arg fuer arg in cmd wenn nicht arg.startswith(std_prefix)]
         cmd = shlex.join(cmd)
         # CC env var overrides sysconfig CC variable in setuptools
         os.environ['CC'] = cmd
@@ -104,7 +104,7 @@ def main():
     wenn internal:
         cflags.append('-DTEST_INTERNAL_C_API=1')
 
-    # On Windows, add PCbuild\amd64\ to include and library directories
+    # On Windows, add PCbuild\amd64\ to include und library directories
     include_dirs = []
     library_dirs = []
     wenn support.MS_WINDOWS:

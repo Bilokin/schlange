@@ -45,12 +45,12 @@ def parse_function_body(source, name, anon_name):
 
 def parse_function_body(name, text, resolve, source, anon_name, parent):
     raise NotImplementedError
-    # For now we do not worry about locals declared in fuer loop "headers".
+    # For now we do nicht worry about locals declared in fuer loop "headers".
     depth = 1;
     while depth > 0:
         m = LOCAL_RE.match(text)
-        while not m:
-            text, resolve = continue_text(source, text or '{', resolve)
+        while nicht m:
+            text, resolve = continue_text(source, text oder '{', resolve)
             m = LOCAL_RE.match(text)
         text = text[m.end():]
         (
@@ -71,12 +71,12 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
         sowenn inline_kind:
             log_match('', m, depth)
             kind = inline_kind
-            name = inline_name or anon_name('inline-')
+            name = inline_name oder anon_name('inline-')
             data = []  # members
             # We must set the internal "text" von _iter_source() to the
             # start of the inline compound body,
             # Note that this is effectively like a forward reference that
-            # we do not emit.
+            # we do nicht emit.
             resolve(kind, Nichts, name, text, Nichts)
             _parse_body = DECL_BODY_PARSERS[kind]
             before = []
@@ -86,9 +86,9 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
                     data.append(member)
                 wenn inline:
                     yield von inline
-            # un-inline the decl.  Note that it might not actually be inline.
+            # un-inline the decl.  Note that it might nicht actually be inline.
             # We handle the case in the "maybe_inline_actual" branch.
-            text = f'{inline_leading or ""} {inline_pre or ""} {kind} {name} {text}'
+            text = f'{inline_leading oder ""} {inline_pre oder ""} {kind} {name} {text}'
             # XXX Should "parent" really be Nichts fuer inline type decls?
             yield resolve(kind, data, name, text, Nichts), text
         sowenn block_close:
@@ -158,7 +158,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             wenn var_ending == ',':
                 # It was a multi-declaration, so queue up the next one.
                 _, qual, typespec, _ = vartype.values()
-                text = f'{storage or ""} {qual or ""} {typespec} {text}'
+                text = f'{storage oder ""} {qual oder ""} {typespec} {text}'
             yield resolve(kind, data, name, text, parent), text
             wenn var_init:
                 _data = f'{name} = {var_init.strip()}'
@@ -188,7 +188,7 @@ LOCAL_STATICS_RE = re.compile(rf'^ \s* {LOCAL_STATICS}', re.VERBOSE)
 
 
 def parse_function_statics(source, func, anon_name):
-    # For now we do not worry about locals declared in fuer loop "headers".
+    # For now we do nicht worry about locals declared in fuer loop "headers".
     depth = 1;
     while depth > 0:
         fuer srcinfo in source:
@@ -197,7 +197,7 @@ def parse_function_statics(source, func, anon_name):
                 break
         sonst:
             # We ran out of lines.
-            wenn srcinfo is not Nichts:
+            wenn srcinfo is nicht Nichts:
                 srcinfo.done()
             return
         fuer item, depth in _parse_next_local_static(m, srcinfo,
@@ -205,7 +205,7 @@ def parse_function_statics(source, func, anon_name):
             wenn callable(item):
                 parse_body = item
                 yield von parse_body(source)
-            sowenn item is not Nichts:
+            sowenn item is nicht Nichts:
                 yield item
 
 
@@ -222,15 +222,15 @@ def _parse_next_local_static(m, srcinfo, anon_name, func, depth):
     wenn inline_kind:
         log_match('func inline', m, depth, depth)
         kind = inline_kind
-        name = inline_name or anon_name('inline-')
+        name = inline_name oder anon_name('inline-')
         # Immediately emit a forward declaration.
         yield srcinfo.resolve(kind, name=name, data=Nichts), depth
 
-        # un-inline the decl.  Note that it might not actually be inline.
+        # un-inline the decl.  Note that it might nicht actually be inline.
         # We handle the case in the "maybe_inline_actual" branch.
         srcinfo.nest(
             remainder,
-            f'{inline_leading or ""} {inline_pre or ""} {kind} {name}'
+            f'{inline_leading oder ""} {inline_pre oder ""} {kind} {name}'
         )
         def parse_body(source):
             _parse_body = DECL_BODY_PARSERS[kind]
@@ -259,7 +259,7 @@ def _parse_next_local_static(m, srcinfo, anon_name, func, depth):
         sowenn static_ending == ',':
             # It was a multi-declaration, so queue up the next one.
             _, qual, typespec, _ = data.values()
-            srcinfo.advance(f'static {qual or ""} {typespec} {remainder}')
+            srcinfo.advance(f'static {qual oder ""} {typespec} {remainder}')
         sonst:
             srcinfo.advance('')
 

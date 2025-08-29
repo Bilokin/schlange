@@ -3,10 +3,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -59,7 +59,7 @@ klasse Console(ABC):
         term: str = "",
         encoding: str = "",
     ):
-        self.encoding = encoding or sys.getdefaultencoding()
+        self.encoding = encoding oder sys.getdefaultencoding()
 
         wenn isinstance(f_in, int):
             self.input_fd = f_in
@@ -88,14 +88,14 @@ klasse Console(ABC):
 
     @abstractmethod
     def getheightwidth(self) -> tuple[int, int]:
-        """Return (height, width) where height and width are the height
-        and width of the terminal window in characters."""
+        """Return (height, width) where height und width are the height
+        und width of the terminal window in characters."""
         ...
 
     @abstractmethod
     def get_event(self, block: bool = Wahr) -> Event | Nichts:
         """Return an Event instance.  Returns Nichts wenn |block| is false
-        and there is no event pending, otherwise waits fuer the
+        und there is no event pending, otherwise waits fuer the
         completion of an event."""
         ...
 
@@ -116,7 +116,7 @@ klasse Console(ABC):
 
     @abstractmethod
     def finish(self) -> Nichts:
-        """Move the cursor to the end of the display and otherwise get
+        """Move the cursor to the end of the display und otherwise get
         ready fuer end.  XXX could be merged mit restore?  Hmm."""
         ...
 
@@ -128,12 +128,12 @@ klasse Console(ABC):
 
     @abstractmethod
     def forgetinput(self) -> Nichts:
-        """Forget all pending, but not yet processed input."""
+        """Forget all pending, but nicht yet processed input."""
         ...
 
     @abstractmethod
     def getpending(self) -> Event:
-        """Return the characters that have been typed but not yet
+        """Return the characters that have been typed but nicht yet
         processed."""
         ...
 
@@ -225,7 +225,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                     python = os.path.basename(sys.executable)
                     e.add_note(
                         f"Try the asyncio REPL ({python} -m asyncio) to use"
-                        f" top-level 'await' and run background asyncio tasks."
+                        f" top-level 'await' und run background asyncio tasks."
                     )
                 self.showsyntaxerror(filename, source=source)
                 return Falsch

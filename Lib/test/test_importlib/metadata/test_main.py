@@ -39,8 +39,8 @@ klasse BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
 
     def test_package_not_found_mentions_metadata(self):
         """
-        When a package is not found, that could indicate that the
-        package is not installed or that it is installed without
+        When a package is nicht found, that could indicate that the
+        package is nicht installed oder that it is installed without
         metadata. Ensure the exception mentions metadata to help
         guide users toward the cause. See #124.
         """
@@ -64,7 +64,7 @@ klasse BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
 
 klasse ImportTests(fixtures.DistInfoPkg, unittest.TestCase):
     def test_import_nonexistent_module(self):
-        # Ensure that the MetadataPathFinder does not crash an importiere of a
+        # Ensure that the MetadataPathFinder does nicht crash an importiere of a
         # non-existent module.
         mit self.assertRaises(ImportError):
             importlib.import_module('does_not_exist')
@@ -137,7 +137,7 @@ klasse InvalidMetadataTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestC
     @staticmethod
     def make_pkg(name, files=dict(METADATA="VERSION: 1.0")):
         """
-        Create metadata fuer a dist-info package mit name and files.
+        Create metadata fuer a dist-info package mit name und files.
         """
         return {
             f'{name}.dist-info': files,
@@ -333,7 +333,7 @@ klasse FileSystem(
     def test_unicode_dir_on_sys_path(self):
         """
         Ensure a Unicode subdirectory of a directory on sys.path
-        does not crash.
+        does nicht crash.
         """
         fixtures.build_files(
             {self.unicode_filename(): {}},
@@ -361,7 +361,7 @@ klasse PackagesDistributionsTest(
 ):
     def test_packages_distributions_neither_toplevel_nor_files(self):
         """
-        Test a package built without 'top-level.txt' or a file list.
+        Test a package built without 'top-level.txt' oder a file list.
         """
         fixtures.build_files(
             {
@@ -411,7 +411,7 @@ klasse PackagesDistributionsTest(
             assert distributions[f'in_namespace_{i}'] == ['all_distributions']
             assert distributions[f'in_package_{i}'] == ['all_distributions']
 
-        assert not any(name.endswith('.dist-info') fuer name in distributions)
+        assert nicht any(name.endswith('.dist-info') fuer name in distributions)
 
     @os_helper.skip_unless_symlink
     def test_packages_distributions_symlinked_top_level(self) -> Nichts:
@@ -446,7 +446,7 @@ klasse PackagesDistributionsEggTest(
     def test_packages_distributions_on_eggs(self):
         """
         Test old-style egg packages mit a variation of 'top_level.txt',
-        'SOURCES.txt', and 'installed-files.txt', available.
+        'SOURCES.txt', und 'installed-files.txt', available.
         """
         distributions = packages_distributions()
 
@@ -464,12 +464,12 @@ klasse PackagesDistributionsEggTest(
         # installed-files.txt (top_level.txt is missing)
         assert import_names_from_package('egg_with_module-pkg') == {'egg_with_module'}
 
-        # egg_with_no_modules-pkg should not be associated mit any importiere names
-        # (top_level.txt is empty, and installed-files.txt has no .py files)
+        # egg_with_no_modules-pkg should nicht be associated mit any importiere names
+        # (top_level.txt is empty, und installed-files.txt has no .py files)
         assert import_names_from_package('egg_with_no_modules-pkg') == set()
 
         # sources_fallback-pkg has one importiere ('sources_fallback') inferred from
-        # SOURCES.txt (top_level.txt and installed-files.txt is missing)
+        # SOURCES.txt (top_level.txt und installed-files.txt is missing)
         assert import_names_from_package('sources_fallback-pkg') == {'sources_fallback'}
 
 

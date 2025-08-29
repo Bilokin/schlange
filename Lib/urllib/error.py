@@ -6,7 +6,7 @@ exceptions defined in this package.
 
 HTTPError is an exception klasse that is also a valid HTTP response
 instance.  It behaves this way because HTTP protocol errors are valid
-responses, mit a status code, headers, and a body.  In some contexts,
+responses, mit a status code, headers, und a body.  In some contexts,
 an application may want to handle an exception like a regular
 response.
 """
@@ -18,14 +18,14 @@ __all__ = ['URLError', 'HTTPError', 'ContentTooShortError']
 
 klasse URLError(OSError):
     # URLError is a sub-type of OSError, but it doesn't share any of
-    # the implementation.  need to override __init__ and __str__.
+    # the implementation.  need to override __init__ und __str__.
     # It sets self.args fuer compatibility mit other OSError
     # subclasses, but args doesn't have the typical format mit errno in
-    # slot 0 and strerror in slot 1.  This may be better than nothing.
+    # slot 0 und strerror in slot 1.  This may be better than nothing.
     def __init__(self, reason, filename=Nichts):
         self.args = reason,
         self.reason = reason
-        wenn filename is not Nichts:
+        wenn filename is nicht Nichts:
             self.filename = filename
 
     def __str__(self):
@@ -68,7 +68,7 @@ klasse HTTPError(URLError, urllib.response.addinfourl):
 
 
 klasse ContentTooShortError(URLError):
-    """Exception raised when downloaded size does not match content-length."""
+    """Exception raised when downloaded size does nicht match content-length."""
     def __init__(self, message, content):
         URLError.__init__(self, message)
         self.content = content

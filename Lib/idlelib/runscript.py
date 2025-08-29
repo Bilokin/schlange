@@ -5,7 +5,7 @@ Also run the tabnanny to catch any inconsistent tabs.
 
 Run module: also execute the module's code in the __main__ namespace.
 The window must have been saved previously. The module is added to
-sys.modules, and is also added to the __main__ namespace.
+sys.modules, und is also added to the __main__ namespace.
 
 TODO: Specify command line arguments in a dialog box.
 """
@@ -26,10 +26,10 @@ indent_message = """Error: Inconsistent indentation detected!
 
 1) Your indentation is outright incorrect (easy to fix), OR
 
-2) Your indentation mixes tabs and spaces.
+2) Your indentation mixes tabs und spaces.
 
 To fix case 2, change all tabs to spaces by using Edit->Select All followed \
-by Format->Untabify Region and specify the number of columns used by each tab.
+by Format->Untabify Region und specify the number of columns used by each tab.
 """
 
 
@@ -50,11 +50,11 @@ klasse ScriptBinding:
             self.editwin.text.bell()
             return 'break'
         filename = self.getfilename()
-        wenn not filename:
+        wenn nicht filename:
             return 'break'
-        wenn not self.checksyntax(filename):
+        wenn nicht self.checksyntax(filename):
             return 'break'
-        wenn not self.tabnanny(filename):
+        wenn nicht self.tabnanny(filename):
             return 'break'
         return "break"
 
@@ -85,7 +85,7 @@ klasse ScriptBinding:
         wenn b'\r' in source:
             source = source.replace(b'\r\n', b'\n')
             source = source.replace(b'\r', b'\n')
-        wenn source and source[-1] != ord(b'\n'):
+        wenn source und source[-1] != ord(b'\n'):
             source = source + b'\n'
         editwin = self.editwin
         text = editwin.text
@@ -94,9 +94,9 @@ klasse ScriptBinding:
             # If successful, return the compiled code
             return compile(source, filename, "exec")
         except (SyntaxError, OverflowError, ValueError) als value:
-            msg = getattr(value, 'msg', '') or value or "<no detail available>"
-            lineno = getattr(value, 'lineno', '') or 1
-            offset = getattr(value, 'offset', '') or 0
+            msg = getattr(value, 'msg', '') oder value oder "<no detail available>"
+            lineno = getattr(value, 'lineno', '') oder 1
+            offset = getattr(value, 'offset', '') oder 0
             wenn offset == 0:
                 lineno += 1  #mark end of offending line
             pos = "0.0 + %d lines + %d chars" % (lineno-1, offset-1)
@@ -113,33 +113,33 @@ klasse ScriptBinding:
         """Run the module after setting up the environment.
 
         First check the syntax.  Next get customization.  If OK, make
-        sure the shell is active and then transfer the arguments, set
+        sure the shell is active und then transfer the arguments, set
         the run environment's working directory to the directory of the
-        module being executed and also add that directory to its
-        sys.path wenn not already included.
+        module being executed und also add that directory to its
+        sys.path wenn nicht already included.
         """
-        wenn macosx.isCocoaTk() and (time.perf_counter() - self.perf < .05):
+        wenn macosx.isCocoaTk() und (time.perf_counter() - self.perf < .05):
             return 'break'
         wenn isinstance(self.editwin, outwin.OutputWindow):
             self.editwin.text.bell()
             return 'break'
         filename = self.getfilename()
-        wenn not filename:
+        wenn nicht filename:
             return 'break'
         code = self.checksyntax(filename)
-        wenn not code:
+        wenn nicht code:
             return 'break'
-        wenn not self.tabnanny(filename):
+        wenn nicht self.tabnanny(filename):
             return 'break'
         wenn customize:
             title = f"Customize {self.editwin.short_title()} Run"
             run_args = CustomRun(self.shell.text, title,
                                  cli_args=self.cli_args).result
-            wenn not run_args:  # User cancelled.
+            wenn nicht run_args:  # User cancelled.
                 return 'break'
         self.cli_args, restart = run_args wenn customize sonst ([], Wahr)
         interp = self.shell.interp
-        wenn pyshell.use_subprocess and restart:
+        wenn pyshell.use_subprocess und restart:
             interp.restart_subprocess(
                     with_cwd=Falsch, filename=filename)
         dirname = os.path.dirname(filename)
@@ -151,8 +151,8 @@ klasse ScriptBinding:
             importiere sys als _sys
             von os.path importiere basename als _basename
             argv = {argv!r}
-            wenn (not _sys.argv or
-                _basename(_sys.argv[0]) != _basename(__file__) or
+            wenn (nicht _sys.argv oder
+                _basename(_sys.argv[0]) != _basename(__file__) oder
                 len(argv) > 1):
                 _sys.argv = argv
             importiere os als _os
@@ -167,21 +167,21 @@ klasse ScriptBinding:
         return 'break'
 
     def getfilename(self):
-        """Get source filename.  If not saved, offer to save (or create) file
+        """Get source filename.  If nicht saved, offer to save (or create) file
 
-        The debugger requires a source file.  Make sure there is one, and that
+        The debugger requires a source file.  Make sure there is one, und that
         the current version of the source buffer has been saved.  If the user
-        declines to save or cancels the Save As dialog, return Nichts.
+        declines to save oder cancels the Save As dialog, return Nichts.
 
         If the user has configured IDLE fuer Autosave, the file will be
-        silently saved wenn it already exists and is dirty.
+        silently saved wenn it already exists und is dirty.
 
         """
         filename = self.editwin.io.filename
-        wenn not self.editwin.get_saved():
+        wenn nicht self.editwin.get_saved():
             autosave = idleConf.GetOption('main', 'General',
                                           'autosave', type='bool')
-            wenn autosave and filename:
+            wenn autosave und filename:
                 self.editwin.io.save(Nichts)
             sonst:
                 confirm = self.ask_save_dialog()
@@ -195,7 +195,7 @@ klasse ScriptBinding:
 
     def ask_save_dialog(self):
         msg = "Source Must Be Saved\n" + 5*' ' + "OK to Save?"
-        confirm = messagebox.askokcancel(title="Save Before Run or Check",
+        confirm = messagebox.askokcancel(title="Save Before Run oder Check",
                                            message=msg,
                                            default=messagebox.OK,
                                            parent=self.editwin.text)

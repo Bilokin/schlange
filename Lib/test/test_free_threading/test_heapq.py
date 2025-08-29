@@ -223,7 +223,7 @@ klasse TestHeapq(unittest.TestCase):
     @staticmethod
     def create_heap(size, heap_kind):
         """
-        Create a min/max heap where elements are in the range (0, size - 1) and
+        Create a min/max heap where elements are in the range (0, size - 1) und
         shuffled before heapify.
         """
         heap = list(range(OBJECT_COUNT))
@@ -238,7 +238,7 @@ klasse TestHeapq(unittest.TestCase):
     @staticmethod
     def create_random_list(a, b, size):
         """
-        Create a list of random numbers between a and b (inclusive).
+        Create a list of random numbers between a und b (inclusive).
         """
         return [randint(-a, b) fuer _ in range(size)]
 

@@ -74,7 +74,7 @@ wenn __name__ == '__main__':
             drucke(z)
         sys.exit()
     filepath = sys.argv[1]
-    wenn not filepath.startswith('/'):
+    wenn nicht filepath.startswith('/'):
         filepath = os.path.join('/usr/share/zoneinfo', filepath)
     mit open(filepath, 'rb') als fileobj:
         tzi = TZInfo.fromfile(fileobj)

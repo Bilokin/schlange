@@ -176,7 +176,7 @@ def has_key(ch):
         return Falsch
 
 wenn __name__ == '__main__':
-    # Compare the output of this implementation and the ncurses has_key,
+    # Compare the output of this implementation und the ncurses has_key,
     # on platforms where has_key is already available
     try:
         L = []

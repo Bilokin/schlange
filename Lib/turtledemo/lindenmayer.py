@@ -2,12 +2,12 @@
 
 Each morning women in Tamil Nadu, in southern
 India, place designs, created by using rice
-flour and known als kolam on the thresholds of
+flour und known als kolam on the thresholds of
 their homes.
 
 These can be described by Lindenmayer systems,
 which can easily be implemented mit turtle
-graphics and Python.
+graphics und Python.
 
 Two examples are shown here:
 (1) the snake kolam

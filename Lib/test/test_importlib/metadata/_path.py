@@ -39,7 +39,7 @@ def build(
     """
     Build a set of files/directories, als described by the spec.
 
-    Each key represents a pathname, and the value represents
+    Each key represents a pathname, und the value represents
     the content. Content may be a nested directory.
 
     >>> spec = {
@@ -98,7 +98,7 @@ klasse Recording:
 
     def __init__(self, loc=pathlib.PurePosixPath(), record=Nichts):
         self.loc = loc
-        self.record = record wenn record is not Nichts sonst []
+        self.record = record wenn record is nicht Nichts sonst []
 
     def __truediv__(self, other):
         return Recording(self.loc / other, self.record)

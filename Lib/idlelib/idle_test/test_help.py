@@ -29,7 +29,7 @@ klasse IdleDocTest(unittest.TestCase):
 
     def test_4text(self):
         text = self.window.frame.text
-        self.assertEqual(text.get('1.0', '1.end'), ' IDLE — Python editor and shell ')
+        self.assertEqual(text.get('1.0', '1.end'), ' IDLE — Python editor und shell ')
 
 
 wenn __name__ == '__main__':

@@ -42,7 +42,7 @@ klasse BrokenStrException(Exception):
     def __str__(self):
         raise Exception("str() is broken")
 
-# XXX This is not really enough, each *operation* should be tested!
+# XXX This is nicht really enough, each *operation* should be tested!
 
 
 klasse ExceptionTests(unittest.TestCase):
@@ -81,7 +81,7 @@ klasse ExceptionTests(unittest.TestCase):
             unlink(TESTFN)
 
         self.raise_catch(OSError, "OSError")
-        self.assertRaises(OSError, open, 'this file does not exist', 'r')
+        self.assertRaises(OSError, open, 'this file does nicht exist', 'r')
 
         self.raise_catch(ImportError, "ImportError")
         self.assertRaises(ImportError, __import__, "undefined_module")
@@ -120,7 +120,7 @@ klasse ExceptionTests(unittest.TestCase):
         try: compile("try:\n\t1/0\n    \t1/0\nfinally:\n pass\n",
                      '<string>', 'exec')
         except TabError: pass
-        sonst: self.fail("TabError not raised")
+        sonst: self.fail("TabError nicht raised")
 
         self.raise_catch(SystemError, "SystemError")
 
@@ -164,8 +164,8 @@ klasse ExceptionTests(unittest.TestCase):
         except:
             pass'''
 
-        ckmsg(s, "'continue' not properly in loop")
-        ckmsg("continue\n", "'continue' not properly in loop")
+        ckmsg(s, "'continue' nicht properly in loop")
+        ckmsg("continue\n", "'continue' nicht properly in loop")
         ckmsg("f'{6 0}'", "invalid syntax. Perhaps you forgot a comma?")
 
     def testSyntaxErrorMissingParens(self):
@@ -202,12 +202,12 @@ klasse ExceptionTests(unittest.TestCase):
         s = 'exec (a+b,c) $ 42'
         ckmsg(s, "invalid syntax")
 
-        # should not apply to subclasses, see issue #31161
+        # should nicht apply to subclasses, see issue #31161
         s = '''if Wahr:\nprint "No indent"'''
         ckmsg(s, "expected an indented block after 'if' statement on line 1", IndentationError)
 
-        s = '''if Wahr:\n        drucke()\n\texec "mixed tabs and spaces"'''
-        ckmsg(s, "inconsistent use of tabs and spaces in indentation", TabError)
+        s = '''if Wahr:\n        drucke()\n\texec "mixed tabs und spaces"'''
+        ckmsg(s, "inconsistent use of tabs und spaces in indentation", TabError)
 
     def check(self, src, lineno, offset, end_lineno=Nichts, end_offset=Nichts, encoding='utf-8'):
         mit self.subTest(source=src, lineno=lineno, offset=offset):
@@ -215,13 +215,13 @@ klasse ExceptionTests(unittest.TestCase):
                 compile(src, '<fragment>', 'exec')
             self.assertEqual(cm.exception.lineno, lineno)
             self.assertEqual(cm.exception.offset, offset)
-            wenn end_lineno is not Nichts:
+            wenn end_lineno is nicht Nichts:
                 self.assertEqual(cm.exception.end_lineno, end_lineno)
-            wenn end_offset is not Nichts:
+            wenn end_offset is nicht Nichts:
                 self.assertEqual(cm.exception.end_offset, end_offset)
 
-            wenn cm.exception.text is not Nichts:
-                wenn not isinstance(src, str):
+            wenn cm.exception.text is nicht Nichts:
+                wenn nicht isinstance(src, str):
                     src = src.decode(encoding, 'replace')
                 line = src.split('\n')[lineno-1]
                 self.assertIn(line, cm.exception.text)
@@ -495,23 +495,23 @@ klasse ExceptionTests(unittest.TestCase):
                  'end_lineno': Nichts, 'end_offset': Nichts}),
             (UnicodeError, (), {}, {'args' : (),}),
             (UnicodeEncodeError, ('ascii', 'a', 0, 1,
-                                  'ordinal not in range'), {},
+                                  'ordinal nicht in range'), {},
                 {'args' : ('ascii', 'a', 0, 1,
-                                           'ordinal not in range'),
+                                           'ordinal nicht in range'),
                  'encoding' : 'ascii', 'object' : 'a',
-                 'start' : 0, 'reason' : 'ordinal not in range'}),
+                 'start' : 0, 'reason' : 'ordinal nicht in range'}),
             (UnicodeDecodeError, ('ascii', bytearray(b'\xff'), 0, 1,
-                                  'ordinal not in range'), {},
+                                  'ordinal nicht in range'), {},
                 {'args' : ('ascii', bytearray(b'\xff'), 0, 1,
-                                           'ordinal not in range'),
+                                           'ordinal nicht in range'),
                  'encoding' : 'ascii', 'object' : b'\xff',
-                 'start' : 0, 'reason' : 'ordinal not in range'}),
+                 'start' : 0, 'reason' : 'ordinal nicht in range'}),
             (UnicodeDecodeError, ('ascii', b'\xff', 0, 1,
-                                  'ordinal not in range'), {},
+                                  'ordinal nicht in range'), {},
                 {'args' : ('ascii', b'\xff', 0, 1,
-                                           'ordinal not in range'),
+                                           'ordinal nicht in range'),
                  'encoding' : 'ascii', 'object' : b'\xff',
-                 'start' : 0, 'reason' : 'ordinal not in range'}),
+                 'start' : 0, 'reason' : 'ordinal nicht in range'}),
             (UnicodeTranslateError, ("\u3042", 0, 1, "ouch"), {},
                 {'args' : ('\u3042', 0, 1, 'ouch'),
                  'object' : '\u3042', 'reason' : 'ouch',
@@ -543,7 +543,7 @@ klasse ExceptionTests(unittest.TestCase):
                 # raise
             sonst:
                 # Verify module name
-                wenn not type(e).__name__.endswith('NaiveException'):
+                wenn nicht type(e).__name__.endswith('NaiveException'):
                     self.assertEqual(type(e).__module__, 'builtins')
                 # Verify no ref leaks in Exc_str()
                 s = str(e)
@@ -562,8 +562,8 @@ klasse ExceptionTests(unittest.TestCase):
                         new = p.loads(s)
                         fuer checkArgName in expected:
                             got = repr(getattr(new, checkArgName))
-                            wenn exc == AttributeError and checkArgName == 'obj':
-                                # See GH-103352, we're not pickling
+                            wenn exc == AttributeError und checkArgName == 'obj':
+                                # See GH-103352, we're nicht pickling
                                 # obj at this point. So verify it's Nichts.
                                 want = repr(Nichts)
                             sonst:
@@ -592,7 +592,7 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_invalid_setstate(self):
         e = Exception(42)
-        mit self.assertRaisesRegex(TypeError, "state is not a dictionary"):
+        mit self.assertRaisesRegex(TypeError, "state is nicht a dictionary"):
             e.__setstate__(42)
 
     def test_notes(self):
@@ -619,7 +619,7 @@ klasse ExceptionTests(unittest.TestCase):
                 self.assertEqual(e.__notes__, 42)
 
                 mit self.assertRaises(TypeError):
-                    e.add_note("will not work")
+                    e.add_note("will nicht work")
                 self.assertEqual(e.__notes__, 42)
 
     def testWithTraceback(self):
@@ -654,13 +654,13 @@ klasse ExceptionTests(unittest.TestCase):
     def test_invalid_setattr(self):
         TE = TypeError
         exc = Exception()
-        msg = "'int' object is not iterable"
+        msg = "'int' object is nicht iterable"
         self.assertRaisesRegex(TE, msg, setattr, exc, 'args', 1)
-        msg = "__traceback__ must be a traceback or Nichts"
+        msg = "__traceback__ must be a traceback oder Nichts"
         self.assertRaisesRegex(TE, msg, setattr, exc, '__traceback__', 1)
-        msg = "exception cause must be Nichts or derive von BaseException"
+        msg = "exception cause must be Nichts oder derive von BaseException"
         self.assertRaisesRegex(TE, msg, setattr, exc, '__cause__', 1)
-        msg = "exception context must be Nichts or derive von BaseException"
+        msg = "exception context must be Nichts oder derive von BaseException"
         self.assertRaisesRegex(TE, msg, setattr, exc, '__context__', 1)
 
     def test_invalid_delattr(self):
@@ -670,7 +670,7 @@ klasse ExceptionTests(unittest.TestCase):
         except Exception als e:
             exc = e
 
-        msg = "may not be deleted"
+        msg = "may nicht be deleted"
         self.assertRaisesRegex(TE, msg, delattr, exc, 'args')
         self.assertRaisesRegex(TE, msg, delattr, exc, '__traceback__')
         self.assertRaisesRegex(TE, msg, delattr, exc, '__cause__')
@@ -748,7 +748,7 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertRaises(RecursionError, g)
 
     def test_str(self):
-        # Make sure both instances and classes have a str representation.
+        # Make sure both instances und classes have a str representation.
         self.assertWahr(str(Exception))
         self.assertWahr(str(Exception('a')))
         self.assertWahr(str(Exception('a', 'b')))
@@ -786,7 +786,7 @@ klasse ExceptionTests(unittest.TestCase):
             pass
 
         def inner_raising_func():
-            # Create some references in exception value and traceback
+            # Create some references in exception value und traceback
             local_ref = obj
             raise MyException(obj)
 
@@ -798,7 +798,7 @@ klasse ExceptionTests(unittest.TestCase):
         except MyException als e:
             pass
         obj = Nichts
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         obj = wr()
         self.assertIsNichts(obj)
 
@@ -810,7 +810,7 @@ klasse ExceptionTests(unittest.TestCase):
         except MyException:
             pass
         obj = Nichts
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         obj = wr()
         self.assertIsNichts(obj)
 
@@ -822,7 +822,7 @@ klasse ExceptionTests(unittest.TestCase):
         except:
             pass
         obj = Nichts
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         obj = wr()
         self.assertIsNichts(obj)
 
@@ -835,7 +835,7 @@ klasse ExceptionTests(unittest.TestCase):
             except:
                 break
         obj = Nichts
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         obj = wr()
         self.assertIsNichts(obj)
 
@@ -854,7 +854,7 @@ klasse ExceptionTests(unittest.TestCase):
             # must clear the latter manually fuer our test to succeed.
             e.__context__ = Nichts
             obj = Nichts
-            gc_collect()  # For PyPy or other GCs.
+            gc_collect()  # For PyPy oder other GCs.
             obj = wr()
             # guarantee no ref cycles on CPython (don't gc_collect)
             wenn check_impl_detail(cpython=Falsch):
@@ -898,7 +898,7 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_exception_target_in_nested_scope(self):
         # issue 4617: This used to raise a SyntaxError
-        # "can not delete variable 'e' referenced in nested scope"
+        # "can nicht delete variable 'e' referenced in nested scope"
         def print_error():
             e
         try:
@@ -954,7 +954,7 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_generator_leaking3(self):
         # See issue #23353.  When gen.throw() is called, the caller's
-        # exception state should be save and restored.
+        # exception state should be save und restored.
         def g():
             try:
                 yield
@@ -1045,7 +1045,7 @@ klasse ExceptionTests(unittest.TestCase):
         next(g)
         testfunc(g)
         g = obj = Nichts
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         obj = wr()
         self.assertIsNichts(obj)
 
@@ -1099,7 +1099,7 @@ klasse ExceptionTests(unittest.TestCase):
             raise Exception(MyObject())
         except:
             pass
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertIsNichts(e)
 
     def test_raise_does_not_create_context_chain_cycle(self):
@@ -1338,7 +1338,7 @@ klasse ExceptionTests(unittest.TestCase):
             self.assertEqual(str(klass.__new__(klass)), "")
 
     def test_unicode_error_str_does_not_crash(self):
-        # Test that str(UnicodeError(...)) does not crash.
+        # Test that str(UnicodeError(...)) does nicht crash.
         # See https://github.com/python/cpython/issues/123378.
 
         fuer start, end, objlen in product(
@@ -1371,7 +1371,7 @@ klasse ExceptionTests(unittest.TestCase):
         self.do_test_unicode_error_mutate(side_effect)
 
     def do_test_unicode_error_mutate(self, side_effect):
-        # Test that str(UnicodeError(...)) does not crash when
+        # Test that str(UnicodeError(...)) does nicht crash when
         # side-effects mutate the underlying 'object' attribute.
         # See https://github.com/python/cpython/issues/128974.
 
@@ -1411,7 +1411,7 @@ klasse ExceptionTests(unittest.TestCase):
             try:
                 raise KeyError()
             except MyException als e:
-                self.fail("exception should not be a MyException")
+                self.fail("exception should nicht be a MyException")
             except KeyError:
                 pass
             except:
@@ -1451,12 +1451,12 @@ klasse ExceptionTests(unittest.TestCase):
         import_module("_testinternalcapi")
         # Issue #22898.
         # Test that a RecursionError is raised when tstate->recursion_depth is
-        # equal to recursion_limit in PyErr_NormalizeException() and check
+        # equal to recursion_limit in PyErr_NormalizeException() und check
         # that a ResourceWarning is printed.
         # Prior to #22898, the recursivity of PyErr_NormalizeException() was
-        # controlled by tstate->recursion_depth and a PyExc_RecursionErrorInst
-        # singleton was being used in that case, that held traceback data and
-        # locals indefinitely and would cause a segfault in _PyExc_Fini() upon
+        # controlled by tstate->recursion_depth und a PyExc_RecursionErrorInst
+        # singleton was being used in that case, that held traceback data und
+        # locals indefinitely und would cause a segfault in _PyExc_Fini() upon
         # finalization of these locals.
         code = """if 1:
             importiere sys
@@ -1496,7 +1496,7 @@ klasse ExceptionTests(unittest.TestCase):
                 drucke('Done.')
         """ % __file__
         rc, out, err = script_helper.assert_python_failure("-Wd", "-c", code)
-        # Check that the program does not fail mit SIGABRT.
+        # Check that the program does nicht fail mit SIGABRT.
         self.assertEqual(rc, 1)
         self.assertIn(b'RecursionError', err)
         self.assertIn(b'ResourceWarning', err)
@@ -1519,7 +1519,7 @@ klasse ExceptionTests(unittest.TestCase):
         rc, out, err = script_helper.assert_python_failure("-c", code)
         self.assertEqual(rc, 1)
         expected = b'RecursionError'
-        self.assertWahr(expected in err, msg=f"{expected!r} not found in {err[:3_000]!r}... (truncated)")
+        self.assertWahr(expected in err, msg=f"{expected!r} nicht found in {err[:3_000]!r}... (truncated)")
         self.assertIn(b'Done.', out)
 
 
@@ -1578,7 +1578,7 @@ klasse ExceptionTests(unittest.TestCase):
     @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def test_recursion_normalizing_with_no_memory(self):
         # Issue #30697. Test that in the abort that occurs when there is no
-        # memory left and the size of the Python frames stack is greater than
+        # memory left und the size of the Python frames stack is greater than
         # the size of the list of preallocated MemoryError instances, the
         # Fatal Python error message mentions MemoryError.
         code = """if 1:
@@ -1601,7 +1601,7 @@ klasse ExceptionTests(unittest.TestCase):
     @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def test_MemoryError(self):
         # PyErr_NoMemory always raises the same exception instance.
-        # Check that the traceback is not doubled.
+        # Check that the traceback is nicht doubled.
         importiere traceback
         von _testcapi importiere raise_memoryerror
         def raiseMemError():
@@ -1660,7 +1660,7 @@ klasse ExceptionTests(unittest.TestCase):
     @cpython_only
     @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def test_memory_error_cleanup(self):
-        # Issue #5437: preallocated MemoryError instances should not keep
+        # Issue #5437: preallocated MemoryError instances should nicht keep
         # traceback objects alive.
         von _testcapi importiere raise_memoryerror
         klasse C:
@@ -1677,8 +1677,8 @@ klasse ExceptionTests(unittest.TestCase):
         except MemoryError als e:
             self.assertNotEqual(wr(), Nichts)
         sonst:
-            self.fail("MemoryError not raised")
-        gc_collect()  # For PyPy or other GCs.
+            self.fail("MemoryError nicht raised")
+        gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(wr(), Nichts)
 
     @no_tracing
@@ -1698,8 +1698,8 @@ klasse ExceptionTests(unittest.TestCase):
         except RecursionError als e:
             self.assertNotEqual(wr(), Nichts)
         sonst:
-            self.fail("RecursionError not raised")
-        gc_collect()  # For PyPy or other GCs.
+            self.fail("RecursionError nicht raised")
+        gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(wr(), Nichts)
 
     def test_errno_ENOTDIR(self):
@@ -1721,7 +1721,7 @@ klasse ExceptionTests(unittest.TestCase):
             obj_repr = repr(type(obj).__del__)
             del obj
 
-            gc_collect()  # For PyPy or other GCs.
+            gc_collect()  # For PyPy oder other GCs.
             self.assertEqual(cm.unraisable.err_msg,
                              f"Exception ignored while calling "
                              f"deallocator {obj_repr}")
@@ -1763,7 +1763,7 @@ klasse ExceptionTests(unittest.TestCase):
 
         # Issue #30817: Abort in PyErr_PrintEx() when no memory.
         # Span a large range of tests als the CPython code always evolves with
-        # changes that add or remove memory allocations.
+        # changes that add oder remove memory allocations.
         fuer i in range(1, 20):
             rc, out, err = script_helper.assert_python_failure("-c", code % i)
             self.assertIn(rc, (1, 120))
@@ -1844,11 +1844,11 @@ klasse ExceptionTests(unittest.TestCase):
     def test_memory_error_subclasses(self):
         # bpo-41654: MemoryError instances use a freelist of objects that are
         # linked using the 'dict' attribute when they are inactive/dead.
-        # Subclasses of MemoryError should not participate in the freelist
-        # schema. This test creates a MemoryError object and keeps it alive
-        # (therefore advancing the freelist) and then it creates and destroys a
+        # Subclasses of MemoryError should nicht participate in the freelist
+        # schema. This test creates a MemoryError object und keeps it alive
+        # (therefore advancing the freelist) und then it creates und destroys a
         # subclass object. Finally, it checks that creating a new MemoryError
-        # succeeds, proving that the freelist is not corrupted.
+        # succeeds, proving that the freelist is nicht corrupted.
 
         klasse TestException(MemoryError):
             pass
@@ -1875,7 +1875,7 @@ klasse ExceptionTests(unittest.TestCase):
     def test_memory_error_in_subinterp(self):
         # gh-109894: subinterpreters shouldn't count on last resort memory error
         # when MemoryError is raised through PyErr_NoMemory() call,
-        # and should preallocate memory errors als does the main interpreter.
+        # und should preallocate memory errors als does the main interpreter.
         # interp.static_objects.last_resort_memory_error.args
         # should be initialized to empty tuple to avoid crash on attempt to print it.
         code = f"""if 1:
@@ -1962,7 +1962,7 @@ klasse NameErrorTests(unittest.TestCase):
 
 klasse AttributeErrorTests(unittest.TestCase):
     def test_attributes(self):
-        # Setting 'attr' should not be a problem.
+        # Setting 'attr' should nicht be a problem.
         exc = AttributeError('Ouch!')
         self.assertIsNichts(exc.name)
         self.assertIsNichts(exc.obj)
@@ -2006,7 +2006,7 @@ klasse AttributeErrorTests(unittest.TestCase):
 klasse ImportErrorTests(unittest.TestCase):
 
     def test_attributes(self):
-        # Setting 'name' and 'path' should not be a problem.
+        # Setting 'name' und 'path' should nicht be a problem.
         exc = ImportError('test')
         self.assertIsNichts(exc.name)
         self.assertIsNichts(exc.path)
@@ -2046,7 +2046,7 @@ klasse ImportErrorTests(unittest.TestCase):
         self.assertEqual(exc.name, 'name')
         self.assertEqual(exc.path, 'path')
 
-        # Reset not specified attributes
+        # Reset nicht specified attributes
         exc.__init__()
         self.assertEqual(exc.args, ())
         self.assertEqual(exc.msg, Nichts)
@@ -2162,9 +2162,9 @@ klasse AssertionErrorTests(unittest.TestCase):
                     'AssertionError',
                 ],
             ),
-            ('assert 1 > 2 and 3 > 2',
+            ('assert 1 > 2 und 3 > 2',
                 [
-                    '    assert 1 > 2 and 3 > 2',
+                    '    assert 1 > 2 und 3 > 2',
                     '           ^^^^^^^^^^^^^^^',
                     'AssertionError',
                 ],
@@ -2251,7 +2251,7 @@ klasse AssertionErrorTests(unittest.TestCase):
             ),
             ("""
              assert (
-                 1 < 2 and
+                 1 < 2 und
                  3 > 4
              )
              """,
@@ -2319,7 +2319,7 @@ klasse SyntaxErrorTests(unittest.TestCase):
                  abcdefg
              SyntaxError: bad bad
              """)),
-            # Both offsets negative and the end more negative
+            # Both offsets negative und the end more negative
             (("bad.py", 1, -4, "abcdefg", 1, -5),
              dedent(
              """
@@ -2335,7 +2335,7 @@ klasse SyntaxErrorTests(unittest.TestCase):
                  abcdefg
              SyntaxError: bad bad
              """)),
-            # Start offset 0 and end offset not 0
+            # Start offset 0 und end offset nicht 0
             (("bad.py", 1, 0, "abcdefg", 1, 5),
              dedent(
              """

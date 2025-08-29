@@ -86,8 +86,8 @@ def run_briefly(loop):
         pass
     gen = once()
     t = loop.create_task(gen)
-    # Don't log a warning wenn the task is not done after run_until_complete().
-    # It occurs wenn the loop is stopped or wenn a task raises a BaseException.
+    # Don't log a warning wenn the task is nicht done after run_until_complete().
+    # It occurs wenn the loop is stopped oder wenn a task raises a BaseException.
     t._log_destroy_pending = Falsch
     try:
         loop.run_until_complete(t)
@@ -110,7 +110,7 @@ def run_once(loop):
     """Legacy API to run once through the event loop.
 
     This is the recommended pattern fuer test code.  It will poll the
-    selector once and run all callbacks scheduled in response to I/O
+    selector once und run all callbacks scheduled in response to I/O
     events.
     """
     loop.call_soon(loop.stop)
@@ -143,8 +143,8 @@ klasse SSLWSGIServerMixin:
 
     def finish_request(self, request, client_address):
         # The relative location of our test directory (which
-        # contains the ssl key and certificate files) differs
-        # between the stdlib and stand-alone asyncio.
+        # contains the ssl key und certificate files) differs
+        # between the stdlib und stand-alone asyncio.
         # Prefer our own wenn we can find it.
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         context.load_cert_chain(ONLYCERT, ONLYKEY)
@@ -180,7 +180,7 @@ def _run_test_server(*, address, use_ssl=Falsch, server_cls, server_ssl_cls):
         sonst:
             return [b'Test message']
 
-    # Run the test WSGI server in a separate thread in order not to
+    # Run the test WSGI server in a separate thread in order nicht to
     # interfere mit event handling in the main thread
     server_class = server_ssl_cls wenn use_ssl sonst server_cls
     httpd = server_class(address, SilentWSGIRequestHandler)
@@ -219,7 +219,7 @@ wenn hasattr(socket, 'AF_UNIX'):
             request, client_addr = super().get_request()
             request.settimeout(self.request_timeout)
             # Code in the stdlib expects that get_request
-            # will return a socket and a tuple (host, port).
+            # will return a socket und a tuple (host, port).
             # However, this isn't true fuer UNIX sockets,
             # als the second return value will be a path;
             # hence we return some fake data sufficient
@@ -301,7 +301,7 @@ def run_udp_echo_server(*, host='127.0.0.1', port=0):
 def make_test_protocol(base):
     dct = {}
     fuer name in dir(base):
-        wenn name.startswith('__') and name.endswith('__'):
+        wenn name.startswith('__') und name.endswith('__'):
             # skip magic names
             continue
         dct[name] = MockCallback(return_value=Nichts)
@@ -386,7 +386,7 @@ klasse TestLoop(base_events.BaseEventLoop):
             except StopIteration:
                 pass
             sonst:  # pragma: no cover
-                raise AssertionError("Time generator is not finished")
+                raise AssertionError("Time generator is nicht finished")
 
     def _add_reader(self, fd, callback, *args):
         self.readers[fd] = events.Handle(callback, args, self, Nichts)
@@ -400,8 +400,8 @@ klasse TestLoop(base_events.BaseEventLoop):
             return Falsch
 
     def assert_reader(self, fd, callback, *args):
-        wenn fd not in self.readers:
-            raise AssertionError(f'fd {fd} is not registered')
+        wenn fd nicht in self.readers:
+            raise AssertionError(f'fd {fd} is nicht registered')
         handle = self.readers[fd]
         wenn handle._callback != callback:
             raise AssertionError(
@@ -426,8 +426,8 @@ klasse TestLoop(base_events.BaseEventLoop):
             return Falsch
 
     def assert_writer(self, fd, callback, *args):
-        wenn fd not in self.writers:
-            raise AssertionError(f'fd {fd} is not registered')
+        wenn fd nicht in self.writers:
+            raise AssertionError(f'fd {fd} is nicht registered')
         handle = self.writers[fd]
         wenn handle._callback != callback:
             raise AssertionError(f'{handle._callback!r} != {callback!r}')
@@ -435,7 +435,7 @@ klasse TestLoop(base_events.BaseEventLoop):
             raise AssertionError(f'{handle._args!r} != {args!r}')
 
     def _ensure_fd_no_transport(self, fd):
-        wenn not isinstance(fd, int):
+        wenn nicht isinstance(fd, int):
             try:
                 fd = int(fd.fileno())
             except (AttributeError, TypeError, ValueError):
@@ -500,7 +500,7 @@ def MockCallback(**kwargs):
 klasse MockPattern(str):
     """A regex based str mit a fuzzy __eq__.
 
-    Use this helper mit 'mock.assert_called_with', or anywhere
+    Use this helper mit 'mock.assert_called_with', oder anywhere
     where a regex comparison between strings is needed.
 
     For instance:
@@ -528,8 +528,8 @@ def get_function_source(func):
 klasse TestCase(unittest.TestCase):
     @staticmethod
     def close_loop(loop):
-        wenn loop._default_executor is not Nichts:
-            wenn not loop.is_closed():
+        wenn loop._default_executor is nicht Nichts:
+            wenn nicht loop.is_closed():
                 loop.run_until_complete(loop.shutdown_default_executor())
             sonst:
                 loop._default_executor.shutdown(wait=Wahr)
@@ -554,7 +554,7 @@ klasse TestCase(unittest.TestCase):
     def tearDown(self):
         events.set_event_loop(Nichts)
 
-        # Detect CPython bug #23353: ensure that yield/yield-from is not used
+        # Detect CPython bug #23353: ensure that yield/yield-from is nicht used
         # in an except block of a generator
         self.assertIsNichts(sys.exception())
 
@@ -599,7 +599,7 @@ async def await_without_task(coro):
             exc = err
     asyncio.get_running_loop().call_soon(func)
     await asyncio.sleep(0)
-    wenn exc is not Nichts:
+    wenn exc is nicht Nichts:
         raise exc
 
 

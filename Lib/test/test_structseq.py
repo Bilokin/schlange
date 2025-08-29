@@ -74,11 +74,11 @@ klasse StructSeqTest(unittest.TestCase):
         t1 = time.gmtime()
         t2 = type(t1)(t1)
         self.assertEqual(t1, t2)
-        self.assertWahr(not (t1 < t2))
+        self.assertWahr(nicht (t1 < t2))
         self.assertWahr(t1 <= t2)
-        self.assertWahr(not (t1 > t2))
+        self.assertWahr(nicht (t1 > t2))
         self.assertWahr(t1 >= t2)
-        self.assertWahr(not (t1 != t2))
+        self.assertWahr(nicht (t1 != t2))
 
     def test_fields(self):
         t = time.gmtime()
@@ -112,7 +112,7 @@ klasse StructSeqTest(unittest.TestCase):
     def test_constructor_with_duplicate_fields(self):
         t = time.struct_time
 
-        error_message = re.escape("got duplicate or unexpected field name(s)")
+        error_message = re.escape("got duplicate oder unexpected field name(s)")
         mit self.assertRaisesRegex(TypeError, error_message):
             t("1234567890", dict={"tm_zone": "some zone"})
         mit self.assertRaisesRegex(TypeError, error_message):
@@ -135,13 +135,13 @@ klasse StructSeqTest(unittest.TestCase):
         self.assertEqual(r, tuple(range(n_visible_fields)))
 
         mit self.assertRaisesRegex(TypeError,
-                                    re.escape("got duplicate or unexpected field name(s)")):
+                                    re.escape("got duplicate oder unexpected field name(s)")):
             os.stat_result((*range(n_visible_fields), -1.0), {'st_atime': -1.0})
 
     def test_constructor_with_unknown_fields(self):
         t = time.struct_time
 
-        error_message = re.escape("got duplicate or unexpected field name(s)")
+        error_message = re.escape("got duplicate oder unexpected field name(s)")
         mit self.assertRaisesRegex(TypeError, error_message):
             t("123456789", dict={"tm_year": 0})
         mit self.assertRaisesRegex(TypeError, error_message):
@@ -334,7 +334,7 @@ klasse StructSeqTest(unittest.TestCase):
 
         r = os.stat_result(range(os.stat_result.n_sequence_fields))
 
-        error_message = re.escape('__replace__() is not supported')
+        error_message = re.escape('__replace__() is nicht supported')
         mit self.assertRaisesRegex(TypeError, error_message):
             copy.replace(r)
         mit self.assertRaisesRegex(TypeError, error_message):

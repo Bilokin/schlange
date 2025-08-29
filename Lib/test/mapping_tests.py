@@ -1,4 +1,4 @@
-# tests common to dict and UserDict
+# tests common to dict und UserDict
 importiere unittest
 importiere collections
 von test importiere support
@@ -31,7 +31,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
         unittest.TestCase.__init__(self, *args, **kw)
         self.reference = self._reference().copy()
 
-        # A (key, value) pair not in the mapping
+        # A (key, value) pair nicht in the mapping
         key, value = self.reference.popitem()
         self.other = {key:value}
 
@@ -67,7 +67,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
         self.assertNotEqual(d, p)
         #bool
         wenn p: self.fail("Empty mapping must compare to Falsch")
-        wenn not d: self.fail("Full mapping must compare to Wahr")
+        wenn nicht d: self.fail("Full mapping must compare to Wahr")
         # keys(), items(), iterkeys() ...
         def check_iterandlist(iter, lst, ref):
             self.assertHasAttr(iter, '__next__')
@@ -134,7 +134,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
         self.assertEqual(self._empty_mapping(), self._empty_mapping())
 
     def test_bool(self):
-        self.assertWahr(not self._empty_mapping())
+        self.assertWahr(nicht self._empty_mapping())
         self.assertWahr(self.reference)
         self.assertWahr(bool(self._empty_mapping()) is Falsch)
         self.assertWahr(bool(self.reference) is Wahr)
@@ -265,7 +265,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
 
         self.assertRaises(ValueError, d.update, [(1, 2, 3)])
 
-    # no test_fromkeys or test_copy als both os.environ and selves don't support it
+    # no test_fromkeys oder test_copy als both os.environ und selves don't support it
 
     def test_get(self):
         d = self._empty_mapping()
@@ -305,12 +305,12 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
 klasse TestMappingProtocol(BasicTestMappingProtocol):
     def test_constructor(self):
         BasicTestMappingProtocol.test_constructor(self)
-        self.assertWahr(self._empty_mapping() is not self._empty_mapping())
+        self.assertWahr(self._empty_mapping() is nicht self._empty_mapping())
         self.assertEqual(self.type2test(x=1, y=2), {"x": 1, "y": 2})
 
     def test_bool(self):
         BasicTestMappingProtocol.test_bool(self)
-        self.assertWahr(not self._empty_mapping())
+        self.assertWahr(nicht self._empty_mapping())
         self.assertWahr(self._full_mapping({"x": "y"}))
         self.assertWahr(bool(self._empty_mapping()) is Falsch)
         self.assertWahr(bool(self._full_mapping({"x": "y"})) is Wahr)
@@ -339,8 +339,8 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
     def test_contains(self):
         d = self._empty_mapping()
         self.assertNotIn('a', d)
-        self.assertWahr(not ('a' in d))
-        self.assertWahr('a' not in d)
+        self.assertWahr(nicht ('a' in d))
+        self.assertWahr('a' nicht in d)
         d = self._full_mapping({'a': 1, 'b': 2})
         self.assertIn('a', d)
         self.assertIn('b', d)
@@ -399,7 +399,7 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
         d.update([("x", 100), ("y", 20)])
         self.assertEqual(d, {"x":100, "y":20})
 
-        # Both item sequence and keyword arguments
+        # Both item sequence und keyword arguments
         d = self._empty_mapping()
         d.update([("x", 100), ("y", 20)], x=1, y=2)
         self.assertEqual(d, {"x":1, "y":2})
@@ -517,9 +517,9 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
                     self.assertEqual(va, int(ka))
                     kb, vb = tb = b.popitem()
                     self.assertEqual(vb, int(kb))
-                    self.assertWahr(not(copymode < 0 and ta != tb))
-                self.assertWahr(not a)
-                self.assertWahr(not b)
+                    self.assertWahr(not(copymode < 0 und ta != tb))
+                self.assertWahr(nicht a)
+                self.assertWahr(nicht b)
 
     def test_pop(self):
         BasicTestMappingProtocol.test_pop(self)

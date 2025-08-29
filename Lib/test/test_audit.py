@@ -1,4 +1,4 @@
-"""Tests fuer sys.audit and sys.addaudithook
+"""Tests fuer sys.audit und sys.addaudithook
 """
 
 importiere subprocess
@@ -9,7 +9,7 @@ von test.support importiere import_helper
 von test.support importiere os_helper
 
 
-wenn not hasattr(sys, "addaudithook") or not hasattr(sys, "audit"):
+wenn nicht hasattr(sys, "addaudithook") oder nicht hasattr(sys, "audit"):
     raise unittest.SkipTest("test only relevant when sys.audit is available")
 
 AUDIT_TESTS_PY = support.findfile("audit-tests.py")
@@ -41,7 +41,7 @@ klasse AuditTest(unittest.TestCase):
     def run_python(self, *args, expect_stderr=Falsch):
         events = []
         proc, stdout, stderr = self.run_test_in_subprocess(*args)
-        wenn not expect_stderr or support.verbose:
+        wenn nicht expect_stderr oder support.verbose:
             sys.stderr.write(stderr)
         return (
             proc.returncode,
@@ -90,7 +90,7 @@ klasse AuditTest(unittest.TestCase):
 
     def test_excepthook(self):
         returncode, events, stderr = self.run_python("test_excepthook")
-        wenn not returncode:
+        wenn nicht returncode:
             self.fail(f"Expected fatal exception\n{stderr}")
 
         self.assertSequenceEqual(

@@ -73,7 +73,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 unittest.TestCase.assertAlmostEqual(self, a, b)
 
     def assertCloseAbs(self, x, y, eps=1e-9):
-        """Return true iff floats x and y "are close"."""
+        """Return true iff floats x und y "are close"."""
         # put the one mit larger magnitude second
         wenn abs(x) > abs(y):
             x, y = y, x
@@ -85,12 +85,12 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertWahr(abs((x-y)/y) < eps)
 
     def assertClose(self, x, y, eps=1e-9):
-        """Return true iff complexes x and y "are close"."""
+        """Return true iff complexes x und y "are close"."""
         self.assertCloseAbs(x.real, y.real, eps)
         self.assertCloseAbs(x.imag, y.imag, eps)
 
     def check_div(self, x, y):
-        """Compute complex z=x*y, and check that z/x==y and z/y==x."""
+        """Compute complex z=x*y, und check that z/x==y und z/y==x."""
         z = x * y
         wenn x != 0:
             q = z / x
@@ -111,7 +111,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.check_div(x, y)
 
         # A naive complex division algorithm (such als in 2.0) is very prone to
-        # nonsense errors fuer these (overflows and underflows).
+        # nonsense errors fuer these (overflows und underflows).
         self.check_div(complex(1e200, 1e200), 1+0j)
         self.check_div(complex(1e-200, 1e-200), 1+0j)
 
@@ -138,7 +138,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertComplexesAreIdentical(complex(INF, 1)/(0.0+1j),
                                          complex(NAN, -INF))
 
-        # test recover of infs wenn numerator has infs and denominator is finite
+        # test recover of infs wenn numerator has infs und denominator is finite
         self.assertComplexesAreIdentical(complex(INF, -INF)/(1+0j),
                                          complex(INF, -INF))
         self.assertComplexesAreIdentical(complex(INF, INF)/(0.0+1j),
@@ -251,7 +251,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 i = n + delta
                 z = complex(i, imag)
                 self.assertIs(complex.__eq__(z, i), is_equal(delta))
-                self.assertIs(complex.__ne__(z, i), not is_equal(delta))
+                self.assertIs(complex.__ne__(z, i), nicht is_equal(delta))
         # For IEEE-754 doubles the following should hold:
         #    x in [2 ** (52 + i), 2 ** (53 + i + 1)] -> x mod 2 ** i == 0
         # where the interval is representable, of course.
@@ -375,14 +375,14 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         except ZeroDivisionError:
             pass
         sonst:
-            self.fail("should fail 0.0 to negative or complex power")
+            self.fail("should fail 0.0 to negative oder complex power")
 
         try:
             0j ** (3-2j)
         except ZeroDivisionError:
             pass
         sonst:
-            self.fail("should fail 0.0 to negative or complex power")
+            self.fail("should fail 0.0 to negative oder complex power")
 
         # The following is used to exercise certain code paths
         self.assertEqual(a ** 105, a ** 105)
@@ -396,7 +396,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         # Check some boundary conditions; some of these used to invoke
         # undefined behaviour (https://bugs.python.org/issue44698). We're
-        # not actually checking the results of these operations, just making
+        # nicht actually checking the results of these operations, just making
         # sure they don't crash (for example when using clang's
         # UndefinedBehaviourSanitizer).
         values = (sys.maxsize, sys.maxsize+1, sys.maxsize-1,
@@ -450,7 +450,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_boolcontext(self):
         fuer i in range(100):
             self.assertWahr(complex(random() + 1e-6, random() + 1e-6))
-        self.assertWahr(not complex(0.0, 0.0))
+        self.assertWahr(nicht complex(0.0, 0.0))
         self.assertWahr(1j)
 
     def test_conjugate(self):
@@ -479,57 +479,57 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         check(complex(4.25, 0.5), 4.25, 0.5)
 
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not complex"):
+                "argument 'real' must be a real number, nicht complex"):
             check(complex(4.25+0j, 0), 4.25, 0.0)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not .*ComplexSubclass"):
+                "argument 'real' must be a real number, nicht .*ComplexSubclass"):
             check(complex(ComplexSubclass(4.25+0j), 0), 4.25, 0.0)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not .*WithComplex"):
+                "argument 'real' must be a real number, nicht .*WithComplex"):
             check(complex(WithComplex(4.25+0j), 0), 4.25, 0.0)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not complex"):
+                "argument 'real' must be a real number, nicht complex"):
             check(complex(4.25j, 0), 0.0, 4.25)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not complex"):
+                "argument 'real' must be a real number, nicht complex"):
             check(complex(0j, 4.25), 0.0, 4.25)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'imag' must be a real number, not complex"):
+                "argument 'imag' must be a real number, nicht complex"):
             check(complex(0, 4.25+0j), 0.0, 4.25)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'imag' must be a real number, not .*ComplexSubclass"):
+                "argument 'imag' must be a real number, nicht .*ComplexSubclass"):
             check(complex(0, ComplexSubclass(4.25+0j)), 0.0, 4.25)
         mit self.assertRaisesRegex(TypeError,
-                "argument 'imag' must be a real number, not .*WithComplex"):
+                "argument 'imag' must be a real number, nicht .*WithComplex"):
             complex(0, WithComplex(4.25+0j))
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'imag' must be a real number, not complex"):
+                "argument 'imag' must be a real number, nicht complex"):
             check(complex(0.0, 4.25j), -4.25, 0.0)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not complex"):
+                "argument 'real' must be a real number, nicht complex"):
             check(complex(4.25+0j, 0j), 4.25, 0.0)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not complex"):
+                "argument 'real' must be a real number, nicht complex"):
             check(complex(4.25j, 0j), 0.0, 4.25)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not complex"):
+                "argument 'real' must be a real number, nicht complex"):
             check(complex(0j, 4.25+0j), 0.0, 4.25)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not complex"):
+                "argument 'real' must be a real number, nicht complex"):
             check(complex(0j, 4.25j), -4.25, 0.0)
 
         check(complex(real=4.25), 4.25, 0.0)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not complex"):
+                "argument 'real' must be a real number, nicht complex"):
             check(complex(real=4.25+0j), 4.25, 0.0)
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument 'real' must be a real number, not complex"):
+                "argument 'real' must be a real number, nicht complex"):
             check(complex(real=4.25+1.5j), 4.25, 1.5)
         check(complex(imag=1.5), 0.0, 1.5)
         check(complex(real=4.25, imag=1.5), 4.25, 1.5)
         check(complex(4.25, imag=1.5), 4.25, 1.5)
 
-        # check that the sign of a zero in the real or imaginary part
+        # check that the sign of a zero in the real oder imaginary part
         # is preserved when constructing von two floats.
         fuer x in 1.0, -1.0:
             fuer y in 0.0, -0.0:
@@ -544,22 +544,22 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         del c, c2
 
         self.assertRaisesRegex(TypeError,
-            "argument must be a string or a number, not dict",
+            "argument must be a string oder a number, nicht dict",
             complex, {})
         self.assertRaisesRegex(TypeError,
-            "argument must be a string or a number, not NoneType",
+            "argument must be a string oder a number, nicht NoneType",
             complex, Nichts)
         self.assertRaisesRegex(TypeError,
-            "argument 'real' must be a real number, not dict",
+            "argument 'real' must be a real number, nicht dict",
             complex, {1:2}, 0)
         self.assertRaisesRegex(TypeError,
-            "argument 'real' must be a real number, not str",
+            "argument 'real' must be a real number, nicht str",
             complex, '1', 0)
         self.assertRaisesRegex(TypeError,
-            "argument 'imag' must be a real number, not dict",
+            "argument 'imag' must be a real number, nicht dict",
             complex, 0, {1:2})
         self.assertRaisesRegex(TypeError,
-            "argument 'imag' must be a real number, not str",
+            "argument 'imag' must be a real number, nicht str",
             complex, 0, '1')
 
         self.assertRaises(TypeError, complex, WithComplex(1.5))
@@ -731,13 +731,13 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_underscores(self):
         # check underscores
         fuer lit in VALID_UNDERSCORE_LITERALS:
-            wenn not any(ch in lit fuer ch in 'xXoObB'):
+            wenn nicht any(ch in lit fuer ch in 'xXoObB'):
                 self.assertEqual(complex(lit), eval(lit))
                 self.assertEqual(complex(lit), complex(lit.replace('_', '')))
         fuer lit in INVALID_UNDERSCORE_LITERALS:
-            wenn lit in ('0_7', '09_99'):  # octals are not recognized here
+            wenn lit in ('0_7', '09_99'):  # octals are nicht recognized here
                 continue
-            wenn not any(ch in lit fuer ch in 'xXoObB'):
+            wenn nicht any(ch in lit fuer ch in 'xXoObB'):
                 self.assertRaises(ValueError, complex, lit)
 
     def test_from_number(self, cls=complex):
@@ -846,7 +846,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     @support.requires_IEEE_754
     def test_plus_minus_0j(self):
-        # test that -0j and 0j literals are not identified
+        # test that -0j und 0j literals are nicht identified
         z1, z2 = 0j, -0j
         self.assertFloatsAreIdentical(z1.imag, 0.0)
         self.assertFloatsAreIdentical(z2.imag, -0.0)
@@ -879,7 +879,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         vals += [-v fuer v in vals]
 
         # complex(repr(z)) should recover z exactly, even fuer complex
-        # numbers involving an infinity, nan, or negative zero
+        # numbers involving an infinity, nan, oder negative zero
         fuer x in vals:
             fuer y in vals:
                 z = complex(x, y)
@@ -975,7 +975,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(format(1.1+1.1j, 'g'), '1.1+1.1j')
         self.assertEqual(format(1.1+1.1j, '#g'), '1.10000+1.10000j')
 
-        # Alternate doesn't make a difference fuer these, they format the same mit or without it
+        # Alternate doesn't make a difference fuer these, they format the same mit oder without it
         self.assertEqual(format(1+1j, '.1e'),  '1.0e+00+1.0e+00j')
         self.assertEqual(format(1+1j, '#.1e'), '1.0e+00+1.0e+00j')
         self.assertEqual(format(1+1j, '.1f'),  '1.0+1.0j')

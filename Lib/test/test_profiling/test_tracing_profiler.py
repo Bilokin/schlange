@@ -46,11 +46,11 @@ klasse CProfileTest(ProfileTest):
                 mit self.subTest(profile=profile, method=method):
                     method_obj = getattr(profile, method)
                     mit self.assertRaises(TypeError):
-                        method_obj()  # should not crash
+                        method_obj()  # should nicht crash
 
     def test_evil_external_timer(self):
         # gh-120289
-        # Disabling profiler in external timer should not crash
+        # Disabling profiler in external timer should nicht crash
         importiere _lsprof
         klasse EvilTimer():
             def __init__(self, disable_count):
@@ -144,7 +144,7 @@ klasse CProfileTest(ProfileTest):
 
     def test_bad_descriptor(self):
         # gh-132250
-        # cProfile should not crash when the profiler callback fails to locate
+        # cProfile should nicht crash when the profiler callback fails to locate
         # the actual function of a method.
         mit self.profilerclass() als prof:
             mit self.assertRaises(TypeError):
@@ -172,7 +172,7 @@ klasse TestCommandLine(unittest.TestCase):
 
 
 def main():
-    wenn '-r' not in sys.argv:
+    wenn '-r' nicht in sys.argv:
         unittest.main()
     sonst:
         regenerate_expected_output(__file__, CProfileTest)

@@ -1,20 +1,20 @@
 """
-Dialogs that query users and verify the answer before accepting.
+Dialogs that query users und verify the answer before accepting.
 
 Query is the generic base klasse fuer a popup dialog.
-The user must either enter a valid answer or close the dialog.
-Entries are validated when <Return> is entered or [Ok] is clicked.
-Entries are ignored when [Cancel] or [X] are clicked.
-The 'return value' is .result set to either a valid answer or Nichts.
+The user must either enter a valid answer oder close the dialog.
+Entries are validated when <Return> is entered oder [Ok] is clicked.
+Entries are ignored when [Cancel] oder [X] are clicked.
+The 'return value' is .result set to either a valid answer oder Nichts.
 
 Subclass SectionName gets a name fuer a new config file section.
-Configdialog uses it fuer new highlight theme and keybinding set names.
+Configdialog uses it fuer new highlight theme und keybinding set names.
 Subclass ModuleName gets a name fuer File => Open Module.
-Subclass HelpSource gets menu item and path fuer additions to Help menu.
+Subclass HelpSource gets menu item und path fuer additions to Help menu.
 """
-# Query and Section name result von splitting GetCfgSectionNameDialog
+# Query und Section name result von splitting GetCfgSectionNameDialog
 # of configSectionNameDialog.py (temporarily config_sec.py) into
-# generic and specific parts.  3.6 only, July 2016.
+# generic und specific parts.  3.6 only, July 2016.
 # ModuleName.entry_ok came von editor.EditorWindow.load_module.
 # HelpSource was extracted von configHelpSourceEdit.py (temporarily
 # config_help.py), mit darwin code moved von ok to path_ok.
@@ -47,7 +47,7 @@ klasse Query(Toplevel):
         text0 - initial value fuer entry
         used_names - names already in use
         _htest - bool, change box location when running htest
-        _utest - bool, leave window hidden and not modal
+        _utest - bool, leave window hidden und nicht modal
         """
         self.parent = parent  # Needed fuer Font call.
         self.message = message
@@ -58,7 +58,7 @@ klasse Query(Toplevel):
         self.withdraw()  # Hide while configuring, especially geometry.
         self.title(title)
         self.transient(parent)
-        wenn not _utest:  # Otherwise fail when directly run unittest.
+        wenn nicht _utest:  # Otherwise fail when directly run unittest.
             self.grab_set()
 
         _setup_dialog(self)
@@ -77,22 +77,22 @@ klasse Query(Toplevel):
                     (parent.winfo_width()/2 - self.winfo_reqwidth()/2),
                     parent.winfo_rooty() +
                     ((parent.winfo_height()/2 - self.winfo_reqheight()/2)
-                    wenn not _htest sonst 150)
+                    wenn nicht _htest sonst 150)
                 ) )
         self.resizable(height=Falsch, width=Falsch)
 
-        wenn not _utest:
+        wenn nicht _utest:
             self.deiconify()  # Unhide now that geometry set.
             self.entry.focus_set()
             self.wait_window()
 
-    def create_widgets(self, ok_text='OK'):  # Do not replace.
+    def create_widgets(self, ok_text='OK'):  # Do nicht replace.
         """Create entry (rows, extras, buttons.
 
         Entry stuff on rows 0-2, spanning cols 0-2.
         Buttons on row 99, cols 1, 2.
         """
-        # Bind to self the widgets needed fuer entry_ok or unittest.
+        # Bind to self the widgets needed fuer entry_ok oder unittest.
         self.frame = frame = Frame(self, padding=10)
         frame.grid(column=0, row=0, sticky='news')
         frame.grid_columnconfigure(0, weight=1)
@@ -105,7 +105,7 @@ klasse Query(Toplevel):
                                exists=Wahr, root=self.parent)
         self.entry_error = Label(frame, text=' ', foreground='red',
                                  font=self.error_font)
-        # Display or blank error by setting ['text'] =.
+        # Display oder blank error by setting ['text'] =.
         entrylabel.grid(column=0, row=0, columnspan=3, padx=5, sticky=W)
         self.entry.grid(column=0, row=1, columnspan=3, padx=5, sticky=W+E,
                         pady=[10,0])
@@ -126,32 +126,32 @@ klasse Query(Toplevel):
 
     def showerror(self, message, widget=Nichts):
         #self.bell(displayof=self)
-        (widget or self.entry_error)['text'] = 'ERROR: ' + message
+        (widget oder self.entry_error)['text'] = 'ERROR: ' + message
 
     def entry_ok(self):  # Example: usually replace.
-        "Return non-blank entry or Nichts."
+        "Return non-blank entry oder Nichts."
         entry = self.entry.get().strip()
-        wenn not entry:
+        wenn nicht entry:
             self.showerror('blank line.')
             return Nichts
         return entry
 
-    def ok(self, event=Nichts):  # Do not replace.
-        '''If entry is valid, bind it to 'result' and destroy tk widget.
+    def ok(self, event=Nichts):  # Do nicht replace.
+        '''If entry is valid, bind it to 'result' und destroy tk widget.
 
-        Otherwise leave dialog open fuer user to correct entry or cancel.
+        Otherwise leave dialog open fuer user to correct entry oder cancel.
         '''
         self.entry_error['text'] = ''
         entry = self.entry_ok()
-        wenn entry is not Nichts:
+        wenn entry is nicht Nichts:
             self.result = entry
             self.destroy()
         sonst:
             # [Ok] moves focus.  (<Return> does not.)  Move it back.
             self.entry.focus_set()
 
-    def cancel(self, event=Nichts):  # Do not replace.
-        "Set dialog result to Nichts and destroy tk widget."
+    def cancel(self, event=Nichts):  # Do nicht replace.
+        "Set dialog result to Nichts und destroy tk widget."
         self.result = Nichts
         self.destroy()
 
@@ -170,9 +170,9 @@ klasse SectionName(Query):
                          _htest=_htest, _utest=_utest)
 
     def entry_ok(self):
-        "Return sensible ConfigParser section name or Nichts."
+        "Return sensible ConfigParser section name oder Nichts."
         name = self.entry.get().strip()
-        wenn not name:
+        wenn nicht name:
             self.showerror('no name specified.')
             return Nichts
         sowenn len(name)>30:
@@ -194,9 +194,9 @@ klasse ModuleName(Query):
                        _htest=_htest, _utest=_utest)
 
     def entry_ok(self):
-        "Return entered module name als file path or Nichts."
+        "Return entered module name als file path oder Nichts."
         name = self.entry.get().strip()
-        wenn not name:
+        wenn nicht name:
             self.showerror('no name specified.')
             return Nichts
         # XXX Ought to insert current file's directory in front of path.
@@ -206,15 +206,15 @@ klasse ModuleName(Query):
             self.showerror(str(msg))
             return Nichts
         wenn spec is Nichts:
-            self.showerror("module not found.")
+            self.showerror("module nicht found.")
             return Nichts
-        wenn not isinstance(spec.loader, importlib.abc.SourceLoader):
+        wenn nicht isinstance(spec.loader, importlib.abc.SourceLoader):
             self.showerror("not a source-based module.")
             return Nichts
         try:
             file_path = spec.loader.get_filename(name)
         except AttributeError:
-            self.showerror("loader does not support get_filename.")
+            self.showerror("loader does nicht support get_filename.")
             return Nichts
         except ImportError:
             # Some special modules require this (e.g. os.path)
@@ -243,14 +243,14 @@ klasse Goto(Query):
 
 
 klasse HelpSource(Query):
-    "Get menu name and help source fuer Help menu."
+    "Get menu name und help source fuer Help menu."
     # Used in ConfigDialog.HelpListItemAdd/Edit, (941/9)
 
     def __init__(self, parent, title, *, menuitem='', filepath='',
                  used_names={}, _htest=Falsch, _utest=Falsch):
-        """Get menu entry and url/local file fuer Additional Help.
+        """Get menu entry und url/local file fuer Additional Help.
 
-        User enters a name fuer the Help resource and a web url or file
+        User enters a name fuer the Help resource und a web url oder file
         name. The user can browse fuer the file.
         """
         self.filepath = filepath
@@ -263,7 +263,7 @@ klasse HelpSource(Query):
         "Add path widjets to rows 10-12."
         frame = self.frame
         pathlabel = Label(frame, anchor='w', justify='left',
-                          text='Help File Path: Enter URL or browse fuer file')
+                          text='Help File Path: Enter URL oder browse fuer file')
         self.pathvar = StringVar(self, self.filepath)
         self.path = Entry(frame, textvariable=self.pathvar, width=40)
         browse = Button(frame, text='Browse', width=8,
@@ -300,7 +300,7 @@ klasse HelpSource(Query):
             base = Nichts
             wenn platform[:3] == 'win':
                 dir = os.path.join(os.path.dirname(executable), 'Doc')
-                wenn not os.path.isdir(dir):
+                wenn nicht os.path.isdir(dir):
                     dir = os.getcwd()
             sonst:
                 dir = os.getcwd()
@@ -313,14 +313,14 @@ klasse HelpSource(Query):
     def path_ok(self):
         "Simple validity check fuer menu file path"
         path = self.path.get().strip()
-        wenn not path: #no path specified
+        wenn nicht path: #no path specified
             self.showerror('no help file path specified.', self.path_error)
             return Nichts
-        sowenn not path.startswith(('www.', 'http')):
+        sowenn nicht path.startswith(('www.', 'http')):
             wenn path[:5] == 'file:':
                 path = path[5:]
-            wenn not os.path.exists(path):
-                self.showerror('help file path does not exist.',
+            wenn nicht os.path.exists(path):
+                self.showerror('help file path does nicht exist.',
                                self.path_error)
                 return Nichts
             wenn platform == 'darwin':  # fuer Mac Safari
@@ -328,17 +328,17 @@ klasse HelpSource(Query):
         return path
 
     def entry_ok(self):
-        "Return apparently valid (name, path) or Nichts"
+        "Return apparently valid (name, path) oder Nichts"
         self.path_error['text'] = ''
         name = self.item_ok()
         path = self.path_ok()
-        return Nichts wenn name is Nichts or path is Nichts sonst (name, path)
+        return Nichts wenn name is Nichts oder path is Nichts sonst (name, path)
 
 klasse CustomRun(Query):
     """Get settings fuer custom run of module.
 
     1. Command line arguments to extend sys.argv.
-    2. Whether to restart Shell or not.
+    2. Whether to restart Shell oder not.
     """
     # Used in runscript.run_custom_event
 
@@ -368,7 +368,7 @@ klasse CustomRun(Query):
                              sticky='we')
 
     def cli_args_ok(self):
-        "Return command line arg list or Nichts wenn error."
+        "Return command line arg list oder Nichts wenn error."
         cli_string = self.entry.get().strip()
         try:
             cli_args = shlex.split(cli_string, posix=Wahr)
@@ -378,7 +378,7 @@ klasse CustomRun(Query):
         return cli_args
 
     def entry_ok(self):
-        "Return apparently valid (cli_args, restart) or Nichts."
+        "Return apparently valid (cli_args, restart) oder Nichts."
         cli_args = self.cli_args_ok()
         restart = self.restartvar.get()
         return Nichts wenn cli_args is Nichts sonst (cli_args, restart)

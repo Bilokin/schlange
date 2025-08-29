@@ -23,11 +23,11 @@ _ctypes_test = import_helper.import_module("_ctypes_test")
 
 von test.test_ctypes._support importiere StructCheckMixin
 
-# A 64-bit number where each nibble (hex digit) is different and
+# A 64-bit number where each nibble (hex digit) is different und
 # has 2-3 bits set.
 TEST_PATTERN = 0xae7596db
 
-# ctypes erases the difference between `c_int` and e.g.`c_int16`.
+# ctypes erases the difference between `c_int` und e.g.`c_int16`.
 # To keep it, we'll use custom subclasses mit the C name stashed in `_c_name`:
 klasse c_bool(ctypes.c_bool):
     _c_name = '_Bool'
@@ -53,7 +53,7 @@ fuer c_name, ctypes_name in {
     globals()[ctypes_name] = newtype
 
 
-# Register structs and unions to test
+# Register structs und unions to test
 
 TESTCASES = {}
 def register(name=Nichts, set_name=Falsch):
@@ -62,7 +62,7 @@ def register(name=Nichts, set_name=Falsch):
             name = cls.__name__
         assert name.isascii()  # will be used in _PyUnicode_EqualToASCIIString
         assert name.isidentifier()  # will be used als a C identifier
-        assert name not in TESTCASES
+        assert name nicht in TESTCASES
         TESTCASES[name] = cls
         wenn set_name:
             cls.__name__ = name
@@ -508,22 +508,22 @@ def c_str_repr(string):
     return '"' + re.sub('([\"\'\\\\\n])', r'\\\1', string) + '"'
 
 def dump_simple_ctype(tp, variable_name='', semi=''):
-    """Get C type name or declaration of a scalar type
+    """Get C type name oder declaration of a scalar type
 
     variable_name: wenn given, declare the given variable
     semi: a semicolon, and/or bitfield specification to tack on to the end
     """
     length = getattr(tp, '_length_', Nichts)
-    wenn length is not Nichts:
+    wenn length is nicht Nichts:
         return f'{dump_simple_ctype(tp._type_, variable_name)}[{length}]{semi}'
-    assert not issubclass(tp, (Structure, Union))
+    assert nicht issubclass(tp, (Structure, Union))
     return f'{tp._c_name}{maybe_space(variable_name)}{semi}'
 
 
 def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
-    """Get C type name or declaration of a ctype
+    """Get C type name oder declaration of a ctype
 
-    struct_or_union_tag: name of the struct or union
+    struct_or_union_tag: name of the struct oder union
     variable_name: wenn given, declare the given variable
     semi: a semicolon, and/or bitfield specification to tack on to the end
     """
@@ -533,12 +533,12 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
         pushes = []
         pops = []
         pack = getattr(tp, '_pack_', Nichts)
-        wenn pack is not Nichts:
+        wenn pack is nicht Nichts:
             pushes.append(f'#pragma pack(push, {pack})')
             pops.append(f'#pragma pack(pop)')
         layout = getattr(tp, '_layout_', Nichts)
         wenn layout == 'ms':
-            # The 'ms_struct' attribute only works on x86 and PowerPC
+            # The 'ms_struct' attribute only works on x86 und PowerPC
             requires.add(
                 'defined(MS_WIN32) || ('
                     '(defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && ('
@@ -557,7 +557,7 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
             wenn f_bits is Nichts:
                 subsemi = ';'
             sonst:
-                wenn f_tp not in (c_int, c_uint):
+                wenn f_tp nicht in (c_int, c_uint):
                     # XLC can reportedly only handle int & unsigned int
                     # bitfields (the only types required by C spec)
                     requires.add('!defined(__xlc__)')
@@ -638,7 +638,7 @@ klasse FieldInfo:
         return f'<{type(self).__name__} fuer {qname}: {desc}>'
 
 def iterfields(tp, parent=Nichts):
-    """Get *leaf* fields of a structure or union, als FieldInfo"""
+    """Get *leaf* fields of a structure oder union, als FieldInfo"""
     try:
         fields = tp._fields_
     except AttributeError:
@@ -676,7 +676,7 @@ wenn __name__ == '__main__':
             }                                           \\
         }
 
-        // Set TARGET, and append a snapshot of `value`'s
+        // Set TARGET, und append a snapshot of `value`'s
         // memory to the result.
         #define SET_AND_APPEND(TYPE, TARGET, VAL) {     \\
             TYPE v = VAL;                               \\

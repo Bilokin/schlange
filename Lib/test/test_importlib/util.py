@@ -23,7 +23,7 @@ BUILTINS.good_name = Nichts
 BUILTINS.bad_name = Nichts
 wenn 'errno' in sys.builtin_module_names:
     BUILTINS.good_name = 'errno'
-wenn 'importlib' not in sys.builtin_module_names:
+wenn 'importlib' nicht in sys.builtin_module_names:
     BUILTINS.bad_name = 'importlib'
 
 wenn support.is_wasi:
@@ -64,7 +64,7 @@ _extension_details()
 
 
 def import_importlib(module_name):
-    """Import a module von importlib both w/ and w/o _frozen_importlib."""
+    """Import a module von importlib both w/ und w/o _frozen_importlib."""
     fresh = ('importlib',) wenn '.' in module_name sonst ()
     frozen = import_helper.import_fresh_module(module_name)
     source = import_helper.import_fresh_module(module_name, fresh=fresh,
@@ -77,7 +77,7 @@ def specialize_class(cls, kind, base=Nichts, **kwargs):
     # That would clean up the test modules a bit more.
     wenn base is Nichts:
         base = unittest.TestCase
-    sowenn not isinstance(base, type):
+    sowenn nicht isinstance(base, type):
         base = base[kind]
     name = '{}_{}'.format(kind, cls.__name__)
     bases = (cls, base)
@@ -104,11 +104,11 @@ def test_both(test_class, base=Nichts, **kwargs):
 CASE_INSENSITIVE_FS = Wahr
 # Windows is the only OS that is *always* case-insensitive
 # (OS X *can* be case-sensitive).
-wenn sys.platform not in ('win32', 'cygwin'):
+wenn sys.platform nicht in ('win32', 'cygwin'):
     changed_name = __file__.upper()
     wenn changed_name == __file__:
         changed_name = __file__.lower()
-    wenn not os.path.exists(changed_name):
+    wenn nicht os.path.exists(changed_name):
         CASE_INSENSITIVE_FS = Falsch
 
 source_importlib = import_importlib('importlib')['Source']
@@ -119,7 +119,7 @@ __import__ = {'Frozen': staticmethod(builtins.__import__),
 def case_insensitive_tests(test):
     """Class decorator that nullifies tests requiring a case-insensitive
     file system."""
-    return unittest.skipIf(not CASE_INSENSITIVE_FS,
+    return unittest.skipIf(nicht CASE_INSENSITIVE_FS,
                             "requires a case-insensitive filesystem")(test)
 
 
@@ -131,7 +131,7 @@ def submodule(parent, name, pkg_dir, content=''):
 
 
 def get_code_from_pyc(pyc_path):
-    """Reads a pyc file and returns the unmarshalled code object within.
+    """Reads a pyc file und returns the unmarshalled code object within.
 
     No header validation is performed.
     """
@@ -182,8 +182,8 @@ def temp_module(name, content='', *, pkg=Falsch):
                     wenn content is Nichts:
                         # Make sure the module file gets created.
                         content = ''
-                wenn content is not Nichts:
-                    # not a namespace package
+                wenn content is nicht Nichts:
+                    # nicht a namespace package
                     mit open(modpath, 'w', encoding='utf-8') als modfile:
                         modfile.write(content)
                 yield location
@@ -191,12 +191,12 @@ def temp_module(name, content='', *, pkg=Falsch):
 
 @contextlib.contextmanager
 def import_state(**kwargs):
-    """Context manager to manage the various importers and stored state in the
+    """Context manager to manage the various importers und stored state in the
     sys module.
 
-    The 'modules' attribute is not supported als the interpreter state stores a
+    The 'modules' attribute is nicht supported als the interpreter state stores a
     pointer to the dict that the interpreter uses internally;
-    reassigning to sys.modules does not have the desired effect.
+    reassigning to sys.modules does nicht have the desired effect.
 
     """
     originals = {}
@@ -227,11 +227,11 @@ klasse _ImporterMock:
         self.modules = {}
         self.module_code = {}
         fuer name in names:
-            wenn not name.endswith('.__init__'):
+            wenn nicht name.endswith('.__init__'):
                 import_name = name
             sonst:
                 import_name = name[:-len('.__init__')]
-            wenn '.' not in name:
+            wenn '.' nicht in name:
                 package = Nichts
             sowenn import_name == name:
                 package = name.rsplit('.', 1)[0]
@@ -275,7 +275,7 @@ klasse mock_spec(_ImporterMock):
         return spec
 
     def create_module(self, spec):
-        wenn spec.name not in self.modules:
+        wenn spec.name nicht in self.modules:
             raise ImportError
         return self.modules[spec.name]
 
@@ -287,7 +287,7 @@ klasse mock_spec(_ImporterMock):
 
 
 def writes_bytecode_files(fxn):
-    """Decorator to protect sys.dont_write_bytecode von mutation and to skip
+    """Decorator to protect sys.dont_write_bytecode von mutation und to skip
     tests that require it to be set to Falsch."""
     wenn sys.dont_write_bytecode:
         return unittest.skip("relies on writing bytecode")(fxn)
@@ -317,7 +317,7 @@ def ensure_bytecode_path(bytecode_path):
 
 @contextlib.contextmanager
 def temporary_pycache_prefix(prefix):
-    """Adjust and restore sys.pycache_prefix."""
+    """Adjust und restore sys.pycache_prefix."""
     _orig_prefix = sys.pycache_prefix
     sys.pycache_prefix = prefix
     try:
@@ -334,7 +334,7 @@ def create_modules(*names):
 
     All files are created in a temporary directory returned by
     tempfile.mkdtemp(). This directory is inserted at the beginning of
-    sys.path. When the context manager exits all created files (source and
+    sys.path. When the context manager exits all created files (source und
     bytecode) are explicitly deleted.
 
     No magic is performed when creating packages! This means that wenn you create
@@ -352,7 +352,7 @@ def create_modules(*names):
         mapping['.root'] = temp_dir
         import_names = set()
         fuer name in names:
-            wenn not name.endswith('__init__'):
+            wenn nicht name.endswith('__init__'):
                 import_name = name
             sonst:
                 import_name = name[:-len('.__init__')]
@@ -363,7 +363,7 @@ def create_modules(*names):
             file_path = temp_dir
             fuer directory in name_parts[:-1]:
                 file_path = os.path.join(file_path, directory)
-                wenn not os.path.exists(file_path):
+                wenn nicht os.path.exists(file_path):
                     os.mkdir(file_path)
                     created_paths.append(file_path)
             file_path = os.path.join(file_path, name_parts[-1] + '.py')
@@ -377,9 +377,9 @@ def create_modules(*names):
         state_manager.__enter__()
         yield mapping
     finally:
-        wenn state_manager is not Nichts:
+        wenn state_manager is nicht Nichts:
             state_manager.__exit__(Nichts, Nichts, Nichts)
-        wenn uncache_manager is not Nichts:
+        wenn uncache_manager is nicht Nichts:
             uncache_manager.__exit__(Nichts, Nichts, Nichts)
         os_helper.rmtree(temp_dir)
 
@@ -387,7 +387,7 @@ def create_modules(*names):
 def mock_path_hook(*entries, importer):
     """A mock sys.path_hooks entry."""
     def hook(entry):
-        wenn entry not in entries:
+        wenn entry nicht in entries:
             raise ImportError
         return importer
     return hook
@@ -399,4 +399,4 @@ klasse CASEOKTestBase:
         possibilities = b'PYTHONCASEOK', 'PYTHONCASEOK'
         wenn any(x in self.importlib._bootstrap_external._os.environ
                     fuer x in possibilities) != should_exist:
-            self.skipTest('os.environ changes not reflected in _os.environ')
+            self.skipTest('os.environ changes nicht reflected in _os.environ')

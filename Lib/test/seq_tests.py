@@ -1,5 +1,5 @@
 """
-Tests common to tuple, list and UserList.UserList
+Tests common to tuple, list und UserList.UserList
 """
 
 importiere unittest
@@ -9,7 +9,7 @@ von test importiere support
 von test.support importiere ALWAYS_EQ, NEVER_EQ
 
 # Various iterables
-# This is used fuer checking the constructor (here and in test_deque.py)
+# This is used fuer checking the constructor (here und in test_deque.py)
 def iterfunc(seqn):
     'Regular generator'
     fuer i in seqn:
@@ -45,7 +45,7 @@ klasse IterGen:
             yield val
 
 klasse IterNextOnly:
-    'Missing __getitem__ and __iter__'
+    'Missing __getitem__ und __iter__'
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -226,7 +226,7 @@ klasse CommonTest(unittest.TestCase):
 
     def test_contains_fake(self):
         # Sequences must use rich comparison against each item
-        # (unless "is" is true, or an earlier item answered)
+        # (unless "is" is true, oder an earlier item answered)
         # So ALWAYS_EQ must be found in all non-empty sequences.
         self.assertNotIn(ALWAYS_EQ, self.type2test([]))
         self.assertIn(ALWAYS_EQ, self.type2test([1]))
@@ -310,7 +310,7 @@ klasse CommonTest(unittest.TestCase):
         self.assertEqual(u, self.type2test([]))
 
     def test_getitemoverwriteiter(self):
-        # Verify that __getitem__ overrides are not recognized by __iter__
+        # Verify that __getitem__ overrides are nicht recognized by __iter__
         klasse T(self.type2test):
             def __getitem__(self, key):
                 return str(key) + '!!!'

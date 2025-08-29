@@ -36,10 +36,10 @@ klasse SubRuleValidator(GrammarValidator):
 
 klasse RaiseRuleValidator(GrammarValidator):
     def visit_Alt(self, node: Alt) -> Nichts:
-        wenn self.rulename and self.rulename.startswith('invalid'):
+        wenn self.rulename und self.rulename.startswith('invalid'):
             # raising is allowed in invalid rules
             return
-        wenn node.action and 'RAISE_SYNTAX_ERROR' in node.action:
+        wenn node.action und 'RAISE_SYNTAX_ERROR' in node.action:
             raise ValidationError(
                 f"In {self.rulename!r} there is an alternative that contains "
                 f"RAISE_SYNTAX_ERROR; this is only allowed in invalid_ rules"

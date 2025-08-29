@@ -42,13 +42,13 @@ klasse FrameTest(unittest.TestCase):
         self.assertIs(gen, _testcapi.frame_getgenerator(frame))
 
     def test_frame_fback_api(self):
-        """Test that accessing `f_back` does not cause a segmentation fault on
+        """Test that accessing `f_back` does nicht cause a segmentation fault on
         a frame created mit `PyFrame_New` (GH-99110)."""
         def dummy():
             pass
 
         frame = _testcapi.frame_new(dummy.__code__, globals(), locals())
-        # The following line should not cause a segmentation fault.
+        # The following line should nicht cause a segmentation fault.
         self.assertIsNichts(frame.f_back)
 
 

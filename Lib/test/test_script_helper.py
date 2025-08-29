@@ -12,12 +12,12 @@ klasse TestScriptHelper(unittest.TestCase):
 
     def test_assert_python_ok(self):
         t = script_helper.assert_python_ok('-c', 'import sys; sys.exit(0)')
-        self.assertEqual(0, t[0], 'return code was not 0')
+        self.assertEqual(0, t[0], 'return code was nicht 0')
 
     def test_assert_python_failure(self):
         # I didn't importiere the sys module so this child will fail.
         rc, out, err = script_helper.assert_python_failure('-c', 'sys.exit(0)')
-        self.assertNotEqual(0, rc, 'return code should not be 0')
+        self.assertNotEqual(0, rc, 'return code should nicht be 0')
 
     def test_assert_python_ok_raises(self):
         # I didn't importiere the sys module so this child will fail.
@@ -55,7 +55,7 @@ klasse TestScriptHelper(unittest.TestCase):
 
     @mock.patch('subprocess.Popen')
     def test_assert_python_not_isolated_when_env_is_required(self, mock_popen):
-        """Ensure that -I is not passed when the environment is required."""
+        """Ensure that -I is nicht passed when the environment is required."""
         mit mock.patch.object(script_helper,
                                'interpreter_requires_environment',
                                return_value=Wahr) als mock_ire_func:

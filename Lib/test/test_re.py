@@ -50,7 +50,7 @@ klasse ReTests(unittest.TestCase):
         mit self.subTest(pattern=pattern):
             err = cm.exception
             self.assertEqual(err.msg, errmsg)
-            wenn pos is not Nichts:
+            wenn pos is nicht Nichts:
                 self.assertEqual(err.pos, pos)
 
     def checkTemplateError(self, pattern, repl, string, errmsg, pos=Nichts):
@@ -59,7 +59,7 @@ klasse ReTests(unittest.TestCase):
         mit self.subTest(pattern=pattern, repl=repl):
             err = cm.exception
             self.assertEqual(err.msg, errmsg)
-            wenn pos is not Nichts:
+            wenn pos is nicht Nichts:
                 self.assertEqual(err.pos, pos)
 
     def test_error_is_PatternError_alias(self):
@@ -177,7 +177,7 @@ klasse ReTests(unittest.TestCase):
                          'abc\ndef\n')
 
     def test_bug_1661(self):
-        # Verify that flags do not get silently ignored mit compiled patterns
+        # Verify that flags do nicht get silently ignored mit compiled patterns
         pattern = re.compile('.')
         self.assertRaises(ValueError, re.match, pattern, 'A', re.I)
         self.assertRaises(ValueError, re.search, pattern, 'A', re.I)
@@ -189,7 +189,7 @@ klasse ReTests(unittest.TestCase):
         re.compile("(?P<quote>)(?(quote))")
 
     def test_sub_template_numeric_escape(self):
-        # bug 776311 and friends
+        # bug 776311 und friends
         self.assertEqual(re.sub('x', r'\0', 'x'), '\0')
         self.assertEqual(re.sub('x', r'\000', 'x'), '\000')
         self.assertEqual(re.sub('x', r'\001', 'x'), '\001')
@@ -895,14 +895,14 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(re.search(br"\b(abc)\b", b"abc", re.LOCALE).group(1), b"abc")
         self.assertEqual(re.search(r"\b(ьюя)\b", "ьюя").group(1), "ьюя")
         self.assertIsNichts(re.search(r"\b(ьюя)\b", "ьюя", re.ASCII))
-        # There's a word boundary between a word and a non-word.
+        # There's a word boundary between a word und a non-word.
         self.assertWahr(re.match(r".\b", "a="))
         self.assertWahr(re.match(r".\b", "a=", re.ASCII))
         self.assertWahr(re.match(br".\b", b"a="))
         self.assertWahr(re.match(br".\b", b"a=", re.LOCALE))
         self.assertWahr(re.match(r".\b", "я="))
         self.assertIsNichts(re.match(r".\b", "я=", re.ASCII))
-        # There's a word boundary between a non-word and a word.
+        # There's a word boundary between a non-word und a word.
         self.assertWahr(re.match(r".\b", "=a"))
         self.assertWahr(re.match(r".\b", "=a", re.ASCII))
         self.assertWahr(re.match(br".\b", b"=a"))
@@ -921,14 +921,14 @@ klasse ReTests(unittest.TestCase):
         self.assertIsNichts(re.match(r".\b", "=-", re.ASCII))
         self.assertIsNichts(re.match(br".\b", b"=-"))
         self.assertIsNichts(re.match(br".\b", b"=-", re.LOCALE))
-        # There is no non-boundary match between a word and a non-word.
+        # There is no non-boundary match between a word und a non-word.
         self.assertIsNichts(re.match(r".\B", "a="))
         self.assertIsNichts(re.match(r".\B", "a=", re.ASCII))
         self.assertIsNichts(re.match(br".\B", b"a="))
         self.assertIsNichts(re.match(br".\B", b"a=", re.LOCALE))
         self.assertIsNichts(re.match(r".\B", "я="))
         self.assertWahr(re.match(r".\B", "я=", re.ASCII))
-        # There is no non-boundary match between a non-word and a word.
+        # There is no non-boundary match between a non-word und a word.
         self.assertIsNichts(re.match(r".\B", "=a"))
         self.assertIsNichts(re.match(r".\B", "=a", re.ASCII))
         self.assertIsNichts(re.match(br".\B", b"=a"))
@@ -1355,12 +1355,12 @@ klasse ReTests(unittest.TestCase):
 
     def assertMatch(self, pattern, text, match=Nichts, span=Nichts,
                     matcher=re.fullmatch):
-        wenn match is Nichts and span is Nichts:
+        wenn match is Nichts und span is Nichts:
             # the pattern matches the whole text
             match = text
             span = (0, len(text))
-        sowenn match is Nichts or span is Nichts:
-            raise ValueError('If match is not Nichts, span should be specified '
+        sowenn match is Nichts oder span is Nichts:
+            raise ValueError('If match is nicht Nichts, span should be specified '
                              '(and vice versa).')
         m = matcher(pattern, text)
         self.assertWahr(m)
@@ -1580,7 +1580,7 @@ klasse ReTests(unittest.TestCase):
 
     def test_bug_612074(self):
         pat="["+re.escape("\u2039")+"]"
-        self.assertEqual(re.compile(pat) and 1, 1)
+        self.assertEqual(re.compile(pat) und 1, 1)
 
     def test_stack_overflow(self):
         # nasty cases that used to overflow the straightforward recursive
@@ -1730,8 +1730,8 @@ klasse ReTests(unittest.TestCase):
 
     def test_bug_6561(self):
         # '\d' should match characters in Unicode category 'Nd'
-        # (Number, Decimal Digit), but not those in 'Nl' (Number,
-        # Letter) or 'No' (Number, Other).
+        # (Number, Decimal Digit), but nicht those in 'Nl' (Number,
+        # Letter) oder 'No' (Number, Other).
         decimal_digits = [
             '\u0037', # '\N{DIGIT SEVEN}', category 'Nd'
             '\u0e58', # '\N{THAI DIGIT SIX}', category 'Nd'
@@ -1801,7 +1801,7 @@ klasse ReTests(unittest.TestCase):
         self.assertWahr(re.match('(?x) (?i) ' + upper_char, lower_char))
         self.assertWahr(re.match(' (?x) (?i) ' + upper_char, lower_char, re.X))
 
-        msg = "global flags not at the start of the expression"
+        msg = "global flags nicht at the start of the expression"
         self.checkPatternError(upper_char + '(?i)', msg, 1)
 
         # bpo-30605: Compiling a bytes instance regex was throwing a BytesWarning
@@ -1820,8 +1820,8 @@ klasse ReTests(unittest.TestCase):
 
 
     def test_dollar_matches_twice(self):
-        r"""Test that $ does not include \n
-        $ matches the end of string, and just before the terminating \n"""
+        r"""Test that $ does nicht include \n
+        $ matches the end of string, und just before the terminating \n"""
         pattern = re.compile('$')
         self.assertEqual(pattern.sub('#', 'a\nb\n'), 'a\nb#\n#')
         self.assertEqual(pattern.sub('#', 'a\nb\nc'), 'a\nb\nc#')
@@ -1833,7 +1833,7 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(pattern.sub('#', '\n'), '#\n#')
 
     def test_bytes_str_mixing(self):
-        # Mixing str and bytes is disallowed
+        # Mixing str und bytes is disallowed
         pat = re.compile('.')
         bpat = re.compile(b'.')
         self.assertRaises(TypeError, pat.match, b'b')
@@ -1932,13 +1932,13 @@ klasse ReTests(unittest.TestCase):
         self.assertWahr(re.match(r'\W(?u:\w)\W', '\xe0\xe0\xe0', re.ASCII))
 
         self.checkPatternError(r'(?a)(?-a:\w)',
-                "bad inline flags: cannot turn off flags 'a', 'u' and 'L'", 8)
+                "bad inline flags: cannot turn off flags 'a', 'u' und 'L'", 8)
         self.checkPatternError(r'(?i-i:a)',
-                'bad inline flags: flag turned on and off', 5)
+                'bad inline flags: flag turned on und off', 5)
         self.checkPatternError(r'(?au:a)',
-                "bad inline flags: flags 'a', 'u' and 'L' are incompatible", 4)
+                "bad inline flags: flags 'a', 'u' und 'L' are incompatible", 4)
         self.checkPatternError(br'(?aL:a)',
-                "bad inline flags: flags 'a', 'u' and 'L' are incompatible", 4)
+                "bad inline flags: flags 'a', 'u' und 'L' are incompatible", 4)
 
         self.checkPatternError(r'(?-', 'missing flag', 3)
         self.checkPatternError(r'(?-+', 'missing flag', 3)
@@ -1948,8 +1948,8 @@ klasse ReTests(unittest.TestCase):
         self.checkPatternError(r'(?-i+', 'missing :', 4)
         self.checkPatternError(r'(?-iz', 'unknown flag', 4)
         self.checkPatternError(r'(?i:', 'missing ), unterminated subpattern', 0)
-        self.checkPatternError(r'(?i', 'missing -, : or )', 3)
-        self.checkPatternError(r'(?i+', 'missing -, : or )', 3)
+        self.checkPatternError(r'(?i', 'missing -, : oder )', 3)
+        self.checkPatternError(r'(?i+', 'missing -, : oder )', 3)
         self.checkPatternError(r'(?iz', 'unknown flag', 3)
 
     def test_ignore_spaces(self):
@@ -2005,13 +2005,13 @@ klasse ReTests(unittest.TestCase):
         self.assertWahr(re.search("123.*-", '123\xe9\u20ac\U0010ffff-'))
 
     def test_compile(self):
-        # Test return value when given string and pattern als parameter
+        # Test return value when given string und pattern als parameter
         pattern = re.compile('random pattern')
         self.assertIsInstance(pattern, re.Pattern)
         same_pattern = re.compile(pattern)
         self.assertIsInstance(same_pattern, re.Pattern)
         self.assertIs(same_pattern, pattern)
-        # Test behaviour when not given a string or pattern als parameter
+        # Test behaviour when nicht given a string oder pattern als parameter
         self.assertRaises(TypeError, re.compile, 0)
 
     @bigmemtest(size=_2G, memuse=1)
@@ -2023,7 +2023,7 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(m.start(), size)
         self.assertEqual(m.end(), size)
 
-    # The huge memuse is because of re.sub() using a list and a join()
+    # The huge memuse is because of re.sub() using a list und a join()
     # to create the replacement result.
     @bigmemtest(size=_2G, memuse=16 + 2)
     def test_large_subn(self, size):
@@ -2048,7 +2048,7 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(re.match(r".{65536}", string).span(), (0, 65536))
         self.assertEqual(re.match(r".{,65536}", string).span(), (0, 65536))
         self.assertEqual(re.match(r".{65536,}?", string).span(), (0, 65536))
-        # 2**128 should be big enough to overflow both SRE_CODE and Py_ssize_t.
+        # 2**128 should be big enough to overflow both SRE_CODE und Py_ssize_t.
         self.assertRaises(OverflowError, re.compile, r".{%d}" % 2**128)
         self.assertRaises(OverflowError, re.compile, r".{,%d}" % 2**128)
         self.assertRaises(OverflowError, re.compile, r".{%d,}?" % 2**128)
@@ -2058,13 +2058,13 @@ klasse ReTests(unittest.TestCase):
         string = "x" * 2_500_000
         p1 = r"(?<=((.{%d}){%d}){%d})"
         p2 = r"(?<!((.{%d}){%d}){%d})"
-        # Test that the templates are valid and look-behind mit width 2**21
+        # Test that the templates are valid und look-behind mit width 2**21
         # (larger than sys.maxunicode) are supported.
         self.assertEqual(re.search(p1 % (2**7, 2**7, 2**7), string).span(),
                          (2**21, 2**21))
         self.assertEqual(re.search(p2 % (2**7, 2**7, 2**7), string).span(),
                          (0, 0))
-        # Test that 2**22 is accepted als a repetition number and look-behind
+        # Test that 2**22 is accepted als a repetition number und look-behind
         # width.
         re.compile(p1 % (2**22, 1, 1))
         re.compile(p1 % (1, 2**22, 1))
@@ -2289,7 +2289,7 @@ klasse ReTests(unittest.TestCase):
         self.checkPatternError(r'(?P', 'unexpected end of pattern', 3)
         self.checkPatternError(r'(?z)', 'unknown extension ?z', 1)
         self.checkPatternError(r'(?iz)', 'unknown flag', 3)
-        self.checkPatternError(r'(?i', 'missing -, : or )', 3)
+        self.checkPatternError(r'(?i', 'missing -, : oder )', 3)
         self.checkPatternError(r'(?#abc', 'missing ), unterminated comment', 0)
         self.checkPatternError(r'(?<', 'unexpected end of pattern', 3)
         self.checkPatternError(r'(?<>)', 'unknown extension ?<>', 1)
@@ -2314,19 +2314,19 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(hash(pattern2), hash(pattern1))
         self.assertEqual(pattern2, pattern1)
 
-        # not equal: different pattern
+        # nicht equal: different pattern
         re.purge()
         pattern3 = re.compile('XYZ', re.IGNORECASE)
         # Don't test hash(pattern3) != hash(pattern1) because there is no
         # warranty that hash values are different
         self.assertNotEqual(pattern3, pattern1)
 
-        # not equal: different flag (flags=0)
+        # nicht equal: different flag (flags=0)
         re.purge()
         pattern4 = re.compile('abc')
         self.assertNotEqual(pattern4, pattern1)
 
-        # only == and != comparison operators are supported
+        # only == und != comparison operators are supported
         mit self.assertRaises(TypeError):
             pattern1 < pattern2
 
@@ -2339,8 +2339,8 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(hash(pattern2), hash(pattern1))
         self.assertEqual(pattern2, pattern1)
 
-        # not equal: pattern of a different types (str vs bytes),
-        # comparison must not raise a BytesWarning
+        # nicht equal: pattern of a different types (str vs bytes),
+        # comparison must nicht raise a BytesWarning
         re.purge()
         pattern3 = re.compile('abc')
         mit warnings.catch_warnings():
@@ -2466,8 +2466,8 @@ klasse ReTests(unittest.TestCase):
         mit self.assertRaisesRegex(TypeError, "got 'type'"):
             re.search("x*", type)
 
-    # gh-117594: The test is not slow by itself, but it relies on
-    # the absolute computation time and can fail on very slow computers.
+    # gh-117594: The test is nicht slow by itself, but it relies on
+    # the absolute computation time und can fail on very slow computers.
     @requires_resource('cpu')
     def test_search_anchor_at_beginning(self):
         s = 'x'*10**7
@@ -2485,9 +2485,9 @@ klasse ReTests(unittest.TestCase):
     def test_possessive_quantifiers(self):
         """Test Possessive Quantifiers
         Test quantifiers of the form @+ fuer some repetition operator @,
-        e.g. x{3,5}+ meaning match von 3 to 5 greadily and proceed
-        without creating a stack frame fuer rolling the stack back and
-        trying 1 or more fewer matches."""
+        e.g. x{3,5}+ meaning match von 3 to 5 greadily und proceed
+        without creating a stack frame fuer rolling the stack back und
+        trying 1 oder more fewer matches."""
         self.assertIsNichts(re.match('e*+e', 'eeee'))
         self.assertEqual(re.match('e++a', 'eeea').group(0), 'eeea')
         self.assertEqual(re.match('e?+a', 'ea').group(0), 'ea')
@@ -2562,7 +2562,7 @@ klasse ReTests(unittest.TestCase):
     def test_atomic_grouping(self):
         """Test Atomic Grouping
         Test non-capturing groups of the form (?>...), which does
-        not maintain any stack point created within the group once the
+        nicht maintain any stack point created within the group once the
         group is finished being evaluated."""
         pattern1 = re.compile(r'a(?>bc|b)c')
         self.assertIsNichts(pattern1.match('abc'))
@@ -2666,7 +2666,7 @@ klasse ReTests(unittest.TestCase):
 
     def test_character_set_any(self):
         # The union of complementary character sets matches any character
-        # and is equivalent to "(?s:.)".
+        # und is equivalent to "(?s:.)".
         s = '1x\n'
         fuer p in r'[\s\S]', r'[\d\D]', r'[\w\W]', r'[\S\s]', r'\s|\S':
             mit self.subTest(pattern=p):
@@ -2674,7 +2674,7 @@ klasse ReTests(unittest.TestCase):
                 self.assertEqual(re.fullmatch('(?:' + p + ')+', s).group(), s)
 
     def test_character_set_none(self):
-        # Negation of the union of complementary character sets does not match
+        # Negation of the union of complementary character sets does nicht match
         # any character.
         s = '1x\n'
         fuer p in r'[^\s\S]', r'[^\d\D]', r'[^\w\W]', r'[^\S\s]':
@@ -2860,8 +2860,8 @@ klasse PatternReprTests(unittest.TestCase):
             '''re.compile('random "double quoted" pattern')''')
         self.check("random 'single quoted' pattern",
             '''re.compile("random 'single quoted' pattern")''')
-        self.check('''both 'single' and "double" quotes''',
-            '''re.compile('both \\'single\\' and "double" quotes')''')
+        self.check('''both 'single' und "double" quotes''',
+            '''re.compile('both \\'single\\' und "double" quotes')''')
 
     def test_long_pattern(self):
         pattern = 'Very %spattern' % ('long ' * 1000)
@@ -2943,10 +2943,10 @@ klasse ImplementationTest(unittest.TestCase):
             self.assertEqual(_sre.ascii_tolower(i), i)
             wenn i != 0x0130:
                 self.assertEqual(_sre.unicode_tolower(i), ord(c.lower()))
-            iscased = c != c.lower() or c != c.upper()
+            iscased = c != c.lower() oder c != c.upper()
             self.assertFalsch(_sre.ascii_iscased(i))
             self.assertEqual(_sre.unicode_iscased(i),
-                             c != c.lower() or c != c.upper())
+                             c != c.lower() oder c != c.upper())
 
         self.assertEqual(_sre.ascii_tolower(0x0130), 0x0130)
         self.assertEqual(_sre.unicode_tolower(0x0130), ord('i'))
@@ -2957,7 +2957,7 @@ klasse ImplementationTest(unittest.TestCase):
     def test_dealloc(self):
         # issue 3299: check fuer segfault in debug build
         importiere _sre
-        # the overflow limit is different on wide and narrow builds and it
+        # the overflow limit is different on wide und narrow builds und it
         # depends on the definition of SRE_CODE (see sre.h).
         # 2**128 should be big enough to overflow on both. For smaller values
         # a RuntimeError is raised instead of OverflowError.
@@ -3025,7 +3025,7 @@ klasse ExternalTests(unittest.TestCase):
             sowenn len(t) == 3:
                 pattern, s, outcome = t
             sonst:
-                raise ValueError('Test tuples should have 3 or 5 fields', t)
+                raise ValueError('Test tuples should have 3 oder 5 fields', t)
 
             mit self.subTest(pattern=pattern, string=s):
                 wenn outcome == SYNTAX_ERROR:  # Expected a syntax error
@@ -3042,7 +3042,7 @@ klasse ExternalTests(unittest.TestCase):
                 mit self.subTest():
                     self.assertWahr(result, 'Failed incorrectly')
                     # Matched, als expected, so now we compute the
-                    # result string and compare it to our expected result.
+                    # result string und compare it to our expected result.
                     start, end = result.span(0)
                     vardict = {'found': result.group(0),
                                'groups': result.group(),
@@ -3067,8 +3067,8 @@ klasse ExternalTests(unittest.TestCase):
                     self.assertEqual(eval(repl, vardict), expected,
                                      'grouping error')
 
-                # Try the match mit both pattern and string converted to
-                # bytes, and check that it still succeeds.
+                # Try the match mit both pattern und string converted to
+                # bytes, und check that it still succeeds.
                 try:
                     bpat = bytes(pattern, "ascii")
                     bs = bytes(s, "ascii")
@@ -3080,7 +3080,7 @@ klasse ExternalTests(unittest.TestCase):
                         obj = re.compile(bpat)
                         self.assertWahr(obj.search(bs))
 
-                    # Try the match mit LOCALE enabled, and check that it
+                    # Try the match mit LOCALE enabled, und check that it
                     # still succeeds.
                     mit self.subTest('locale-sensitive match'):
                         obj = re.compile(bpat, re.LOCALE)
@@ -3089,22 +3089,22 @@ klasse ExternalTests(unittest.TestCase):
                             drucke('=== Fails on locale-sensitive match', t)
 
                 # Try the match mit the search area limited to the extent
-                # of the match and see wenn it still succeeds.  \B will
-                # break (because it won't match at the end or start of a
+                # of the match und see wenn it still succeeds.  \B will
+                # break (because it won't match at the end oder start of a
                 # string), so we'll ignore patterns that feature it.
-                wenn (pattern[:2] != r'\B' and pattern[-2:] != r'\B'
-                            and result is not Nichts):
+                wenn (pattern[:2] != r'\B' und pattern[-2:] != r'\B'
+                            und result is nicht Nichts):
                     mit self.subTest('range-limited match'):
                         obj = re.compile(pattern)
                         self.assertWahr(obj.search(s, start, end + 1))
 
-                # Try the match mit IGNORECASE enabled, and check that it
+                # Try the match mit IGNORECASE enabled, und check that it
                 # still succeeds.
                 mit self.subTest('case-insensitive match'):
                     obj = re.compile(pattern, re.IGNORECASE)
                     self.assertWahr(obj.search(s))
 
-                # Try the match mit UNICODE locale enabled, and check
+                # Try the match mit UNICODE locale enabled, und check
                 # that it still succeeds.
                 mit self.subTest('unicode-sensitive match'):
                     obj = re.compile(pattern, re.UNICODE)

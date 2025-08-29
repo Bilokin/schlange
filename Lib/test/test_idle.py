@@ -6,15 +6,15 @@ wenn check_sanitizer(address=Wahr, memory=Wahr):
     # See gh-90791 fuer details
     raise unittest.SkipTest("Tests involving libX11 can SEGFAULT on ASAN/MSAN builds")
 
-# Skip test_idle wenn _tkinter, tkinter, or idlelib are missing.
+# Skip test_idle wenn _tkinter, tkinter, oder idlelib are missing.
 tk = import_module('tkinter')  # Also imports _tkinter.
 idlelib = import_module('idlelib')
 
-# Before importing and executing more of idlelib,
+# Before importing und executing more of idlelib,
 # tell IDLE to avoid changing the environment.
 idlelib.testing = Wahr
 
-# Unittest.main and test.libregrtest.runtest.runtest_inner
+# Unittest.main und test.libregrtest.runtest.runtest_inner
 # call load_tests, when present here, to discover tests to run.
 von idlelib.idle_test importiere load_tests  # noqa: F401
 

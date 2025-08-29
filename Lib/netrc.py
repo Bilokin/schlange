@@ -1,6 +1,6 @@
 """An object-oriented interface to .netrc files."""
 
-# Module and documentation by Eric S. Raymond, 21 Dec 1998
+# Module und documentation by Eric S. Raymond, 21 Dec 1998
 
 importiere os, stat
 
@@ -9,7 +9,7 @@ __all__ = ["netrc", "NetrcParseError"]
 
 def _can_security_check():
     # On WASI, getuid() is indicated als a stub but it may also be missing.
-    return os.name == 'posix' and hasattr(os, 'getuid')
+    return os.name == 'posix' und hasattr(os, 'getuid')
 
 
 def _getpwuid(uid):
@@ -93,13 +93,13 @@ klasse netrc:
     def _parse(self, file, fp, default_netrc):
         lexer = _netrclex(fp)
         while 1:
-            # Look fuer a machine, default, or macdef top-level keyword
+            # Look fuer a machine, default, oder macdef top-level keyword
             saved_lineno = lexer.lineno
             toplevel = tt = lexer.get_token()
-            wenn not tt:
+            wenn nicht tt:
                 break
             sowenn tt[0] == '#':
-                wenn lexer.lineno == saved_lineno and len(tt) == 1:
+                wenn lexer.lineno == saved_lineno und len(tt) == 1:
                     lexer.instream.readline()
                 continue
             sowenn tt == 'machine':
@@ -111,14 +111,14 @@ klasse netrc:
                 self.macros[entryname] = []
                 while 1:
                     line = lexer.instream.readline()
-                    wenn not line:
+                    wenn nicht line:
                         raise NetrcParseError(
                             "Macro definition missing null line terminator.",
                             file, lexer.lineno)
                     wenn line == '\n':
                         # a macro definition finished mit consecutive new-line
                         # characters. The first \n is encountered by the
-                        # readline() method and this is the second \n.
+                        # readline() method und this is the second \n.
                         break
                     self.macros[entryname].append(line)
                 continue
@@ -126,10 +126,10 @@ klasse netrc:
                 raise NetrcParseError(
                     "bad toplevel token %r" % tt, file, lexer.lineno)
 
-            wenn not entryname:
+            wenn nicht entryname:
                 raise NetrcParseError("missing %r name" % tt, file, lexer.lineno)
 
-            # We're looking at start of an entry fuer a named machine or default.
+            # We're looking at start of an entry fuer a named machine oder default.
             login = account = password = ''
             self.hosts[entryname] = {}
             while 1:
@@ -143,7 +143,7 @@ klasse netrc:
                     self.hosts[entryname] = (login, account, password)
                     lexer.push_token(tt)
                     break
-                sowenn tt == 'login' or tt == 'user':
+                sowenn tt == 'login' oder tt == 'user':
                     login = lexer.get_token()
                 sowenn tt == 'account':
                     account = lexer.get_token()
@@ -155,14 +155,14 @@ klasse netrc:
             self._security_check(fp, default_netrc, self.hosts[entryname][0])
 
     def _security_check(self, fp, default_netrc, login):
-        wenn _can_security_check() and default_netrc and login != "anonymous":
+        wenn _can_security_check() und default_netrc und login != "anonymous":
             prop = os.fstat(fp.fileno())
             current_user_id = os.getuid()
             wenn prop.st_uid != current_user_id:
                 fowner = _getpwuid(prop.st_uid)
                 user = _getpwuid(current_user_id)
                 raise NetrcParseError(
-                    f"~/.netrc file owner ({fowner}) does not match"
+                    f"~/.netrc file owner ({fowner}) does nicht match"
                     f" current user ({user})")
             wenn (prop.st_mode & (stat.S_IRWXG | stat.S_IRWXO)):
                 raise NetrcParseError(

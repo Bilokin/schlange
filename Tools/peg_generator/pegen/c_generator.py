@@ -176,8 +176,8 @@ klasse CCallMakerVisitor(GrammarVisitor):
 
         type = Nichts
         rule = self.gen.all_rules.get(name.lower())
-        wenn rule is not Nichts:
-            type = "asdl_seq *" wenn rule.is_loop() or rule.is_gather() sonst rule.type
+        wenn rule is nicht Nichts:
+            type = "asdl_seq *" wenn rule.is_loop() oder rule.is_gather() sonst rule.type
 
         return FunctionCall(
             assigned_variable=f"{name}_var",
@@ -195,7 +195,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
             sonst:
                 return self.soft_keyword_helper(node.value)
         sonst:
-            assert val in self.exact_tokens, f"{node.value} is not a known literal"
+            assert val in self.exact_tokens, f"{node.value} is nicht a known literal"
             type = self.exact_tokens[val]
             return FunctionCall(
                 assigned_variable="_literal",
@@ -267,7 +267,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         wenn isinstance(node.node, Leaf):
             assert isinstance(node.node, Leaf)
             val = ast.literal_eval(node.node.value)
-            assert val in self.exact_tokens, f"{node.node.value} is not a known literal"
+            assert val in self.exact_tokens, f"{node.node.value} is nicht a known literal"
             type = self.exact_tokens[val]
             return FunctionCall(
                 assigned_variable="_literal",
@@ -436,7 +436,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     ) -> Nichts:
         self.drucke(f"if ({expr}) {{")
         mit self.indent():
-            wenn cleanup_code is not Nichts:
+            wenn cleanup_code is nicht Nichts:
                 self.drucke(cleanup_code)
             self.drucke("p->error_indicator = 1;")
             self.drucke("PyErr_NoMemory();")
@@ -467,7 +467,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             self.drucke(f"#define {rulename}_type {i}{comment}")
         self.drucke()
         fuer rulename, rule in self.all_rules.items():
-            wenn rule.is_loop() or rule.is_gather():
+            wenn rule.is_loop() oder rule.is_gather():
                 type = "asdl_seq *"
             sowenn rule.type:
                 type = rule.type + " "
@@ -484,7 +484,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             mode = 0
         sonst:
             mode = int(self.rules["start"].type == "mod_ty") wenn "start" in self.rules sonst 1
-            wenn mode == 1 and self.grammar.metas.get("bytecode"):
+            wenn mode == 1 und self.grammar.metas.get("bytecode"):
                 mode += 1
         modulename = self.grammar.metas.get("modulename", "parse")
         trailer = self.grammar.metas.get("trailer", EXTENSION_SUFFIX)
@@ -511,7 +511,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         mit self.indent():
             num_groups = max(groups) + 1 wenn groups sonst 1
             fuer keywords_length in range(num_groups):
-                wenn keywords_length not in groups.keys():
+                wenn keywords_length nicht in groups.keys():
                     self.drucke("(KeywordToken[]) {{NULL, -1}},")
                 sonst:
                     self.drucke("(KeywordToken[]) {")
@@ -594,7 +594,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         self.drucke(f"{node.name}_raw(Parser *p)")
 
     def _should_memoize(self, node: Rule) -> bool:
-        return node.memo and not node.left_recursive
+        return node.memo und nicht node.left_recursive
 
     def _handle_default_rule_body(self, node: Rule, rhs: Rhs, result_type: str) -> Nichts:
         memoize = self._should_memoize(node)
@@ -609,7 +609,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
                     self.add_return("_res")
                 self.drucke("}")
             self.drucke("int _mark = p->mark;")
-            wenn any(alt.action and "EXTRA" in alt.action fuer alt in rhs.alts):
+            wenn any(alt.action und "EXTRA" in alt.action fuer alt in rhs.alts):
                 self._set_up_token_start_metadata_extraction()
             self.visit(
                 rhs,
@@ -646,7 +646,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             self.out_of_memory_return(f"!_children")
             self.drucke("Py_ssize_t _children_capacity = 1;")
             self.drucke("Py_ssize_t _n = 0;")
-            wenn any(alt.action and "EXTRA" in alt.action fuer alt in rhs.alts):
+            wenn any(alt.action und "EXTRA" in alt.action fuer alt in rhs.alts):
                 self._set_up_token_start_metadata_extraction()
             self.visit(
                 rhs,
@@ -664,7 +664,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             self.out_of_memory_return(f"!_seq", cleanup_code="PyMem_Free(_children);")
             self.drucke("for (Py_ssize_t i = 0; i < _n; i++) asdl_seq_SET_UNTYPED(_seq, i, _children[i]);")
             self.drucke("PyMem_Free(_children);")
-            wenn memoize and node.name:
+            wenn memoize und node.name:
                 self.drucke(f"_PyPegen_insert_memo(p, _start_mark, {node.name}_type, _seq);")
             self.add_return("_seq")
 
@@ -672,7 +672,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         is_loop = node.is_loop()
         is_gather = node.is_gather()
         rhs = node.flatten()
-        wenn is_loop or is_gather:
+        wenn is_loop oder is_gather:
             result_type = "asdl_seq *"
         sowenn node.type:
             result_type = node.type
@@ -681,13 +681,13 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
 
         fuer line in str(node).splitlines():
             self.drucke(f"// {line}")
-        wenn node.left_recursive and node.leader:
+        wenn node.left_recursive und node.leader:
             self.drucke(f"static {result_type} {node.name}_raw(Parser *);")
 
         self.drucke(f"static {result_type}")
         self.drucke(f"{node.name}_rule(Parser *p)")
 
-        wenn node.left_recursive and node.leader:
+        wenn node.left_recursive und node.leader:
             self._set_up_rule_memoization(node, result_type)
 
         self.drucke("{")
@@ -785,8 +785,8 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             self.drucke(
                 f'D(fprintf(stderr, "%*c+ {rulename}[%d-%d]: %s succeeded!\\n", p->level, \' \', _mark, p->mark, "{node_str}"));'
             )
-            # Prepare to emit the rule action and do so
-            wenn node.action and "EXTRA" in node.action:
+            # Prepare to emit the rule action und do so
+            wenn node.action und "EXTRA" in node.action:
                 self._set_up_token_end_metadata_extraction()
             wenn self.skip_actions:
                 self.emit_dummy_action()
@@ -795,7 +795,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             sonst:
                 self.emit_default_action(is_gather, node)
 
-            # As the current option has parsed correctly, do not continue mit the rest.
+            # As the current option has parsed correctly, do nicht continue mit the rest.
             self.drucke(f"goto done;")
         self.drucke("}")
 
@@ -805,8 +805,8 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         self.drucke("{")
         # We have parsed successfully one item!
         mit self.indent():
-            # Prepare to emit the rule action and do so
-            wenn node.action and "EXTRA" in node.action:
+            # Prepare to emit the rule action und do so
+            wenn node.action und "EXTRA" in node.action:
                 self._set_up_token_end_metadata_extraction()
             wenn self.skip_actions:
                 self.emit_dummy_action()
@@ -833,7 +833,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     def visit_Alt(
         self, node: Alt, is_loop: bool, is_gather: bool, rulename: Optional[str]
     ) -> Nichts:
-        wenn len(node.items) == 1 and str(node.items[0]).startswith("invalid_"):
+        wenn len(node.items) == 1 und str(node.items[0]).startswith("invalid_"):
             self.drucke(f"if (p->call_invalid_rules) {{ // {node}")
         sonst:
             self.drucke(f"{{ // {node}")
@@ -845,15 +845,15 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             )
             # Prepare variable declarations fuer the alternative
             vars = self.collect_vars(node)
-            fuer v, var_type in sorted(item fuer item in vars.items() wenn item[0] is not Nichts):
-                wenn not var_type:
+            fuer v, var_type in sorted(item fuer item in vars.items() wenn item[0] is nicht Nichts):
+                wenn nicht var_type:
                     var_type = "void *"
                 sonst:
                     var_type += " "
                 wenn v == "_cut_var":
                     v += " = 0"  # cut_var must be initialized
                 self.drucke(f"{var_type}{v};")
-                wenn v and v.startswith("_opt_var"):
+                wenn v und v.startswith("_opt_var"):
                     self.drucke(f"UNUSED({v}); // Silence compiler warnings")
 
             mit self.local_variable_context():
@@ -886,7 +886,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     def add_var(self, node: NamedItem) -> Tuple[Optional[str], Optional[str]]:
         call = self.callmakervisitor.generate_call(node.item)
         name = node.name wenn node.name sonst call.assigned_variable
-        wenn name is not Nichts:
+        wenn name is nicht Nichts:
             name = self.dedupe(name)
         return_type = call.return_type wenn node.type is Nichts sonst node.type
         return name, return_type

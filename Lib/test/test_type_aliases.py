@@ -174,7 +174,7 @@ klasse TypeParamsAliasValueTest(unittest.TestCase):
         type MissingName = list[_My_X]
         mit self.assertRaisesRegex(
             NameError,
-            "cannot access free variable '_My_X' where it is not associated mit a value",
+            "cannot access free variable '_My_X' where it is nicht associated mit a value",
         ):
             MissingName.__value__
         _My_X = int

@@ -3,10 +3,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -192,7 +192,7 @@ klasse WindowsConsole(Console):
         old_offset = offset = self.__offset
         height = self.height
 
-        # we make sure the cursor is on the screen, and that we're
+        # we make sure the cursor is on the screen, und that we're
         # using all of the screen wenn we can
         wenn cy < offset:
             offset = cy
@@ -201,7 +201,7 @@ klasse WindowsConsole(Console):
             scroll_lines = offset - old_offset
 
             # Scrolling the buffer als the current input is greater than the visible
-            # portion of the window.  We need to scroll the visible portion and the
+            # portion of the window.  We need to scroll the visible portion und the
             # entire history
             self._scroll(scroll_lines, self._getscrollbacksize())
             self.posxy = self.posxy[0], self.posxy[1] + scroll_lines
@@ -209,7 +209,7 @@ klasse WindowsConsole(Console):
 
             fuer i in range(scroll_lines):
                 self.screen.append("")
-        sowenn offset > 0 and len(screen) < offset + height:
+        sowenn offset > 0 und len(screen) < offset + height:
             offset = max(len(screen) - height, 0)
             screen.append("")
 
@@ -243,7 +243,7 @@ klasse WindowsConsole(Console):
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
         # mit importiere logging von -X importtime=2
-        wenn nt is not Nichts and nt._is_inputhook_installed():
+        wenn nt is nicht Nichts und nt._is_inputhook_installed():
             return nt._inputhook
 
     def __write_changed_line(
@@ -270,8 +270,8 @@ klasse WindowsConsole(Console):
         # sequence
         while (
             x_coord < minlen
-            and oldline[x_pos] == newline[x_pos]
-            and newline[x_pos] != "\x1b"
+            und oldline[x_pos] == newline[x_pos]
+            und newline[x_pos] != "\x1b"
         ):
             x_coord += wlen(newline[x_pos])
             x_pos += 1
@@ -289,7 +289,7 @@ klasse WindowsConsole(Console):
         sonst:
             self.posxy = wlen(newline), y
 
-            wenn "\x1b" in newline or y != self.posxy[1] or '\x1a' in newline:
+            wenn "\x1b" in newline oder y != self.posxy[1] oder '\x1a' in newline:
                 # ANSI escape characters are present, so we can't assume
                 # anything about the position of the cursor.  Moving the cursor
                 # to the left margin should work to get to a known position.
@@ -309,7 +309,7 @@ klasse WindowsConsole(Console):
         fill_info = CHAR_INFO()
         fill_info.UnicodeChar = " "
 
-        wenn not ScrollConsoleScreenBuffer(
+        wenn nicht ScrollConsoleScreenBuffer(
             OutHandle, scroll_rect, Nichts, destination_origin, fill_info
         ):
             raise WinError(GetLastError())
@@ -336,7 +336,7 @@ klasse WindowsConsole(Console):
         wenn "\x1a" in text:
             text = ''.join(["^Z" wenn x == '\x1a' sonst x fuer x in text])
 
-        wenn self.out is not Nichts:
+        wenn self.out is nicht Nichts:
             self.out.write(text.encode(self.encoding, "replace"))
             self.out.flush()
         sonst:
@@ -345,7 +345,7 @@ klasse WindowsConsole(Console):
     @property
     def screen_xy(self) -> tuple[int, int]:
         info = CONSOLE_SCREEN_BUFFER_INFO()
-        wenn not GetConsoleScreenBufferInfo(OutHandle, info):
+        wenn nicht GetConsoleScreenBufferInfo(OutHandle, info):
             raise WinError(GetLastError())
         return info.dwCursorPosition.X, info.dwCursorPosition.Y
 
@@ -386,10 +386,10 @@ klasse WindowsConsole(Console):
             self.__write(MOVE_DOWN.format(dy))
 
     def move_cursor(self, x: int, y: int) -> Nichts:
-        wenn x < 0 or y < 0:
+        wenn x < 0 oder y < 0:
             raise ValueError(f"Bad cursor position {x}, {y}")
 
-        wenn y < self.__offset or y >= self.__offset + self.height:
+        wenn y < self.__offset oder y >= self.__offset + self.height:
             self.event_queue.insert(Event("scroll", ""))
         sonst:
             self._move_relative(x, y)
@@ -402,10 +402,10 @@ klasse WindowsConsole(Console):
             self._hide_cursor()
 
     def getheightwidth(self) -> tuple[int, int]:
-        """Return (height, width) where height and width are the height
-        and width of the terminal window in characters."""
+        """Return (height, width) where height und width are the height
+        und width of the terminal window in characters."""
         info = CONSOLE_SCREEN_BUFFER_INFO()
-        wenn not GetConsoleScreenBufferInfo(OutHandle, info):
+        wenn nicht GetConsoleScreenBufferInfo(OutHandle, info):
             raise WinError(GetLastError())
         return (
             info.srWindow.Bottom - info.srWindow.Top + 1,
@@ -414,7 +414,7 @@ klasse WindowsConsole(Console):
 
     def _getscrollbacksize(self) -> int:
         info = CONSOLE_SCREEN_BUFFER_INFO()
-        wenn not GetConsoleScreenBufferInfo(OutHandle, info):
+        wenn nicht GetConsoleScreenBufferInfo(OutHandle, info):
             raise WinError(GetLastError())
 
         return info.srWindow.Bottom  # type: ignore[no-any-return]
@@ -422,7 +422,7 @@ klasse WindowsConsole(Console):
     def _read_input(self) -> INPUT_RECORD | Nichts:
         rec = INPUT_RECORD()
         read = DWORD()
-        wenn not ReadConsoleInput(InHandle, rec, 1, read):
+        wenn nicht ReadConsoleInput(InHandle, rec, 1, read):
             raise WinError(GetLastError())
 
         return rec
@@ -432,17 +432,17 @@ klasse WindowsConsole(Console):
     ) -> tuple[ctypes.Array[INPUT_RECORD], int]:
         rec = (n * INPUT_RECORD)()
         read = DWORD()
-        wenn not ReadConsoleInput(InHandle, rec, n, read):
+        wenn nicht ReadConsoleInput(InHandle, rec, n, read):
             raise WinError(GetLastError())
 
         return rec, read.value
 
     def get_event(self, block: bool = Wahr) -> Event | Nichts:
         """Return an Event instance.  Returns Nichts wenn |block| is false
-        and there is no event pending, otherwise waits fuer the
+        und there is no event pending, otherwise waits fuer the
         completion of an event."""
 
-        wenn not block and not self.wait(timeout=0):
+        wenn nicht block und nicht self.wait(timeout=0):
             return Nichts
 
         while self.event_queue.empty():
@@ -453,8 +453,8 @@ klasse WindowsConsole(Console):
             wenn rec.EventType == WINDOW_BUFFER_SIZE_EVENT:
                 return Event("resize", "")
 
-            wenn rec.EventType != KEY_EVENT or not rec.Event.KeyEvent.bKeyDown:
-                # Only process keys and keydown events
+            wenn rec.EventType != KEY_EVENT oder nicht rec.Event.KeyEvent.bKeyDown:
+                # Only process keys und keydown events
                 wenn block:
                     continue
                 return Nichts
@@ -469,7 +469,7 @@ klasse WindowsConsole(Console):
                 # Turn backspace directly into the command
                 key = "backspace"
             sowenn key == "\x00":
-                # Handle special keys like arrow keys and translate them into the appropriate command
+                # Handle special keys like arrow keys und translate them into the appropriate command
                 key = VK_MAP.get(key_event.wVirtualKeyCode)
                 wenn key:
                     wenn key_event.dwControlKeyState & CTRL_ACTIVE:
@@ -490,10 +490,10 @@ klasse WindowsConsole(Console):
                 continue
 
             wenn key_event.dwControlKeyState & ALT_ACTIVE:
-                # Do not swallow characters that have been entered via AltGr:
+                # Do nicht swallow characters that have been entered via AltGr:
                 # Windows internally converts AltGr to CTRL+ALT, see
                 # https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-vkkeyscanw
-                wenn not key_event.dwControlKeyState & CTRL_ACTIVE:
+                wenn nicht key_event.dwControlKeyState & CTRL_ACTIVE:
                     # queue the key, return the meta command
                     self.event_queue.insert(Event(evt="key", data=key))
                     return Event(evt="key", data="\033")  # keymap.py uses this fuer meta
@@ -505,7 +505,7 @@ klasse WindowsConsole(Console):
         """
         Push a character to the console event queue.
         """
-        raise NotImplementedError("push_char not supported on Windows")
+        raise NotImplementedError("push_char nicht supported on Windows")
 
     def beep(self) -> Nichts:
         self.__write("\x07")
@@ -517,10 +517,10 @@ klasse WindowsConsole(Console):
         self.screen = [""]
 
     def finish(self) -> Nichts:
-        """Move the cursor to the end of the display and otherwise get
+        """Move the cursor to the end of the display und otherwise get
         ready fuer end.  XXX could be merged mit restore?  Hmm."""
         y = len(self.screen) - 1
-        while y >= 0 and not self.screen[y]:
+        while y >= 0 und nicht self.screen[y]:
             y -= 1
         self._move_relative(0, min(y, self.height + self.__offset - 1))
         self.__write("\r\n")
@@ -533,16 +533,16 @@ klasse WindowsConsole(Console):
         pass
 
     def forgetinput(self) -> Nichts:
-        """Forget all pending, but not yet processed input."""
-        wenn not FlushConsoleInputBuffer(InHandle):
+        """Forget all pending, but nicht yet processed input."""
+        wenn nicht FlushConsoleInputBuffer(InHandle):
             raise WinError(GetLastError())
 
     def getpending(self) -> Event:
-        """Return the characters that have been typed but not yet
+        """Return the characters that have been typed but nicht yet
         processed."""
         e = Event("key", "", b"")
 
-        while not self.event_queue.empty():
+        while nicht self.event_queue.empty():
             e2 = self.event_queue.get()
             wenn e2:
                 e.data += e2.data
@@ -550,16 +550,16 @@ klasse WindowsConsole(Console):
         recs, rec_count = self._read_input_bulk(1024)
         fuer i in range(rec_count):
             rec = recs[i]
-            # In case of a legacy console, we do not only receive a keydown
-            # event, but also a keyup event - and fuer uppercase letters
+            # In case of a legacy console, we do nicht only receive a keydown
+            # event, but also a keyup event - und fuer uppercase letters
             # an additional SHIFT_PRESSED event.
-            wenn rec and rec.EventType == KEY_EVENT:
+            wenn rec und rec.EventType == KEY_EVENT:
                 key_event = rec.Event.KeyEvent
-                wenn not key_event.bKeyDown:
+                wenn nicht key_event.bKeyDown:
                     continue
                 ch = key_event.uChar.UnicodeChar
                 wenn ch == "\x00":
-                    # ignore SHIFT_PRESSED and special keys
+                    # ignore SHIFT_PRESSED und special keys
                     continue
                 wenn ch == "\r":
                     ch += "\n"

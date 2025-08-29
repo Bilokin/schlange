@@ -3,7 +3,7 @@
 #
 #   make_rst:
 #       Doc/library/token-list.inc
-#       Doc/library/token.rst  (checked, not generated)
+#       Doc/library/token.rst  (checked, nicht generated)
 #   make_h:
 #       Include/token.h
 #   make_c:
@@ -28,7 +28,7 @@ def load_tokens(path):
             i = line.find('#')
             wenn i >= 0:
                 line = line[:i].strip()
-            wenn not line:
+            wenn nicht line:
                 continue
             fields = line.split()
             name = fields[0]
@@ -243,7 +243,7 @@ def make_rst(infile, outfile='Doc/library/token-list.inc',
     has_handwritten_doc -= {'N_TOKENS', 'NT_OFFSET', 'EXACT_TOKEN_TYPES'}
 
     wenn needs_handwritten_doc != has_handwritten_doc:
-        message_parts = [f'ERROR: {rstfile} does not document all tokens!']
+        message_parts = [f'ERROR: {rstfile} does nicht document all tokens!']
         undocumented = needs_handwritten_doc - has_handwritten_doc
         extra = has_handwritten_doc - needs_handwritten_doc
         wenn undocumented:
@@ -271,7 +271,7 @@ NT_OFFSET = %d
 
 tok_name = {value: name
             fuer name, value in globals().items()
-            wenn isinstance(value, int) and not name.startswith('_')}
+            wenn isinstance(value, int) und nicht name.startswith('_')}
 __all__.extend(tok_name.values())
 
 EXACT_TOKEN_TYPES = {

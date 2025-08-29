@@ -64,7 +64,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     ### Set up attributes used by inherited tests
     ################################################################
 
-    # Used by TestHashing.test_hash and TestEquality.test_eq
+    # Used by TestHashing.test_hash und TestEquality.test_eq
     eq_pairs = [(Test.Foo('test1'), Test.Foo('test1'))]
 
     # Used by TestEquality.test_ne
@@ -83,7 +83,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # ...
     # "methodName defaults to "runTest"."
     #
-    # Make sure it really is optional, and that it defaults to the proper
+    # Make sure it really is optional, und that it defaults to the proper
     # thing.
     def test_init__no_test_name(self):
         klasse Test(unittest.TestCase):
@@ -300,7 +300,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "TestCase.run() still works when the defaultTestResult is a TestResult
-    # that does not support startTestRun and stopTestRun.
+    # that does nicht support startTestRun und stopTestRun.
     def test_run_call_order_default_result(self):
 
         klasse Foo(unittest.TestCase):
@@ -313,7 +313,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             Foo('test').run()
 
     def test_deprecation_of_return_val_from_test(self):
-        # Issue 41322 - deprecate return of value that is not Nichts von a test
+        # Issue 41322 - deprecate return of value that is nicht Nichts von a test
         klasse Nothing:
             def __eq__(self, o):
                 return o is Nichts
@@ -327,21 +327,21 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         mit self.assertWarns(DeprecationWarning) als w:
             Foo('test1').run()
-        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'int'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Foo('test2').run()
-        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
         self.assertIn('test2', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'generator'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Foo('test3').run()
-        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
         self.assertIn('test3', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn(f'returned {Nothing.__name__!r}', str(w.warning))
@@ -356,7 +356,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     'coroutine .* was never awaited', RuntimeWarning)
             Foo('test1').run()
             support.gc_collect()
-        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'coroutine'", str(w.warning))
@@ -458,7 +458,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     def test_subtests_failfast(self):
-        # Ensure proper test flow mit subtests and failfast (issue #22894)
+        # Ensure proper test flow mit subtests und failfast (issue #22894)
         events = []
 
         klasse Foo(unittest.TestCase):
@@ -563,7 +563,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             def runTest(self):
                 pass
 
-        # ... and nothing should happen
+        # ... und nothing should happen
         Foo().setUp()
 
     # "The default implementation does nothing."
@@ -572,14 +572,14 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             def runTest(self):
                 pass
 
-        # ... and nothing should happen
+        # ... und nothing should happen
         Foo().tearDown()
 
     # "Return a string identifying the specific test case."
     #
-    # Because of the vague nature of the docs, I'm not going to lock this
+    # Because of the vague nature of the docs, I'm nicht going to lock this
     # test down too much. Really all that can be asserted is that the id()
-    # will be a string (either 8-byte or unicode -- again, because the docs
+    # will be a string (either 8-byte oder unicode -- again, because the docs
     # just say "string")
     def test_id(self):
         klasse Foo(unittest.TestCase):
@@ -589,9 +589,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertIsInstance(Foo().id(), str)
 
 
-    # "If result is omitted or Nichts, a temporary result object is created,
-    # used, and is made available to the caller. As TestCase owns the
-    # temporary result startTestRun and stopTestRun are called.
+    # "If result is omitted oder Nichts, a temporary result object is created,
+    # used, und is made available to the caller. As TestCase owns the
+    # temporary result startTestRun und stopTestRun are called.
 
     def test_run__uses_defaultTestResult(self):
         events = []
@@ -649,7 +649,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertIsNichts(self.shortDescription())
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def testShortDescriptionWithOneLineDocstring(self):
         """Tests shortDescription() fuer a method mit a docstring."""
         self.assertEqual(
@@ -657,7 +657,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                 'Tests shortDescription() fuer a method mit a docstring.')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def testShortDescriptionWithMultiLineDocstring(self):
         """Tests shortDescription() fuer a method mit a longer docstring.
 
@@ -671,7 +671,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                  'docstring.')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def testShortDescriptionWhitespaceTrimming(self):
         """
             Tests shortDescription() whitespace is trimmed, so that the first
@@ -690,7 +690,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             return type(a) == type(b) == SadSnake
         self.addTypeEqualityFunc(SadSnake, AllSnakesCreatedEqual)
         self.assertEqual(s1, s2)
-        # No this doesn't clean up and remove the SadSnake equality func
+        # No this doesn't clean up und remove the SadSnake equality func
         # von this TestCase instance but since it's local nothing sonst
         # will ever notice that.
 
@@ -711,11 +711,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsInstance(thing, int)
         self.assertEqual(str(cm.exception),
-                "[] is not an instance of <class 'int'>")
+                "[] is nicht an instance of <class 'int'>")
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsInstance(thing, (int, float))
         self.assertEqual(str(cm.exception),
-                "[] is not an instance of any of (<class 'int'>, <class 'float'>)")
+                "[] is nicht an instance of any of (<class 'int'>, <class 'float'>)")
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsInstance(thing, int, 'ababahalamaha')
@@ -750,14 +750,14 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(List, int)
         self.assertEqual(str(cm.exception),
-                f"{List!r} is not a subclass of <class 'int'>")
+                f"{List!r} is nicht a subclass of <class 'int'>")
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(List, (int, float))
         self.assertEqual(str(cm.exception),
-                f"{List!r} is not a subclass of any of (<class 'int'>, <class 'float'>)")
+                f"{List!r} is nicht a subclass of any of (<class 'int'>, <class 'float'>)")
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(1, int)
-        self.assertEqual(str(cm.exception), "1 is not a class")
+        self.assertEqual(str(cm.exception), "1 is nicht a class")
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(List, int, 'ababahalamaha')
@@ -779,7 +779,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                 f"{List!r} is a subclass of <class 'list'>")
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(1, int)
-        self.assertEqual(str(cm.exception), "1 is not a class")
+        self.assertEqual(str(cm.exception), "1 is nicht a class")
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(List, list, 'ababahalamaha')
@@ -962,7 +962,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         except self.failureException als e:
             msg = e.args[0]
         sonst:
-            self.fail('assertSequenceEqual did not fail.')
+            self.fail('assertSequenceEqual did nicht fail.')
         self.assertLess(len(msg), len(diff))
         self.assertIn(omitted, msg)
 
@@ -972,7 +972,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         except self.failureException als e:
             msg = e.args[0]
         sonst:
-            self.fail('assertSequenceEqual did not fail.')
+            self.fail('assertSequenceEqual did nicht fail.')
         self.assertGreater(len(msg), len(diff))
         self.assertNotIn(omitted, msg)
 
@@ -982,7 +982,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         except self.failureException als e:
             msg = e.args[0]
         sonst:
-            self.fail('assertSequenceEqual did not fail.')
+            self.fail('assertSequenceEqual did nicht fail.')
         self.assertGreater(len(msg), len(diff))
         self.assertNotIn(omitted, msg)
 
@@ -1010,7 +1010,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         except self.failureException als e:
             self.assertEqual(str(e), 'foo')
         sonst:
-            self.fail('assertDictEqual did not fail')
+            self.fail('assertDictEqual did nicht fail')
 
     def testAssertMultiLineEqualTruncates(self):
         test = unittest.TestCase('assertEqual')
@@ -1022,7 +1022,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         except self.failureException als e:
             self.assertEqual(str(e), 'foo')
         sonst:
-            self.fail('assertMultiLineEqual did not fail')
+            self.fail('assertMultiLineEqual did nicht fail')
 
     def testAssertEqual_diffThreshold(self):
         # check threshold value
@@ -1030,7 +1030,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         # disable madDiff to get diff markers
         self.maxDiff = Nichts
 
-        # set a lower threshold value and add a cleanup to restore it
+        # set a lower threshold value und add a cleanup to restore it
         old_threshold = self._diffThreshold
         self._diffThreshold = 2**5
         self.addCleanup(lambda: setattr(self, '_diffThreshold', old_threshold))
@@ -1042,13 +1042,13 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertIn('^', str(cm.exception))
         self.assertEqual(s + 'a', s + 'a')
 
-        # over the threshold: diff not used and marker (^) not in error message
+        # over the threshold: diff nicht used und marker (^) nicht in error message
         s = 'x' * (2**6)
         # wenn the path that uses difflib is taken, _truncateMessage will be
         # called -- replace it mit explodingTruncation to verify that this
         # doesn't happen
         def explodingTruncation(message, diff):
-            raise SystemError('this should not be raised')
+            raise SystemError('this should nicht be raised')
         old_truncate = self._truncateMessage
         self._truncateMessage = explodingTruncation
         self.addCleanup(lambda: setattr(self, '_truncateMessage', old_truncate))
@@ -1061,7 +1061,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(s + 'a', s + 'a')
 
     def testAssertEqual_shorten(self):
-        # set a lower threshold value and add a cleanup to restore it
+        # set a lower threshold value und add a cleanup to restore it
         old_threshold = self._diffThreshold
         self._diffThreshold = 0
         self.addCleanup(lambda: setattr(self, '_diffThreshold', old_threshold))
@@ -1112,7 +1112,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertCountEqual(iter([1, 2, [], 3, 4]),
                               iter([1, 2, [], 3, 4]))
 
-        # hashable types, but not orderable
+        # hashable types, but nicht orderable
         self.assertRaises(self.failureException, self.assertCountEqual,
                           [], [divmod, 'x', 1, 5j, 2j, frozenset()])
         # comparing dicts
@@ -1124,7 +1124,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertRaises(self.failureException, self.assertCountEqual,
                           [[1]], [[2]])
 
-        # Same elements, but not same sequence length
+        # Same elements, but nicht same sequence length
         self.assertRaises(self.failureException, self.assertCountEqual,
                           [1, 1, 2], [2, 1])
         self.assertRaises(self.failureException, self.assertCountEqual,
@@ -1259,7 +1259,7 @@ test case
 http://www.python.org/doc/2.4.1/lib/module-unittest.html
 test case
     A test case is the smallest unit of testing. [...] You may provide your
-    own implementation that does not subclass von TestCase, of course.
+    own implementation that does nicht subclass von TestCase, of course.
 """
         sample_text_error = """\
 - http://www.python.org/doc/2.3/lib/module-unittest.html
@@ -1270,7 +1270,7 @@ test case
 -     A test case is the smallest unit of testing. [...]
 +     A test case is the smallest unit of testing. [...] You may provide your
 ?                                                       +++++++++++++++++++++
-+     own implementation that does not subclass von TestCase, of course.
++     own implementation that does nicht subclass von TestCase, of course.
 """
         self.maxDiff = Nichts
         try:
@@ -1280,7 +1280,7 @@ test case
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
         sonst:
-            self.fail(f'{self.failureException} not raised')
+            self.fail(f'{self.failureException} nicht raised')
 
     def testAssertEqualSingleLine(self):
         sample_text = "laden swallows fly slowly"
@@ -1298,11 +1298,11 @@ test case
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
         sonst:
-            self.fail(f'{self.failureException} not raised')
+            self.fail(f'{self.failureException} nicht raised')
 
     def testAssertEqualwithEmptyString(self):
         '''Verify when there is an empty string involved, the diff output
-         does not treat the empty string als a single empty line. It should
+         does nicht treat the empty string als a single empty line. It should
          instead be handled als a non-line.
         '''
         sample_text = ''
@@ -1317,7 +1317,7 @@ test case
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
         sonst:
-            self.fail(f'{self.failureException} not raised')
+            self.fail(f'{self.failureException} nicht raised')
 
     def testAssertEqualMultipleLinesMissingNewlineTerminator(self):
         '''Verifying format of diff output von assertEqual involving strings
@@ -1339,11 +1339,11 @@ test case
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
         sonst:
-            self.fail(f'{self.failureException} not raised')
+            self.fail(f'{self.failureException} nicht raised')
 
     def testAssertEqualMultipleLinesMismatchedNewlinesTerminators(self):
         '''Verifying format of diff output von assertEqual involving strings
-         mit multiple lines and mismatched newlines. The output should
+         mit multiple lines und mismatched newlines. The output should
          include a - on it's own line to indicate the newline difference
          between the two strings
         '''
@@ -1364,13 +1364,13 @@ test case
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
         sonst:
-            self.fail(f'{self.failureException} not raised')
+            self.fail(f'{self.failureException} nicht raised')
 
     def testEqualityBytesWarning(self):
         wenn sys.flags.bytes_warning:
             def bytes_warning():
                 return self.assertWarnsRegex(BytesWarning,
-                            'Comparison between bytes and string')
+                            'Comparison between bytes und string')
         sonst:
             def bytes_warning():
                 return contextlib.ExitStack()
@@ -1461,7 +1461,7 @@ test case
         self.assertRaises(ExceptionMock, Stub)
         # A tuple of exception classes is accepted
         self.assertRaises((ValueError, ExceptionMock), Stub)
-        # *args and **kwargs also work
+        # *args und **kwargs also work
         self.assertRaises(ValueError, int, '19', base=8)
         # Failure when no exception is raised
         mit self.assertRaises(self.failureException):
@@ -1486,7 +1486,7 @@ test case
         # The context manager exposes caught exception
         self.assertIsInstance(cm.exception, ExceptionMock)
         self.assertEqual(cm.exception.args[0], 'We expect')
-        # *args and **kwargs also work
+        # *args und **kwargs also work
         mit self.assertRaises(ValueError):
             int('19', base=8)
         # Failure when no exception is raised
@@ -1518,7 +1518,7 @@ test case
             self.assertRaises((ValueError, object))
 
     def testAssertRaisesRefcount(self):
-        # bpo-23890: assertRaises() must not keep objects alive longer
+        # bpo-23890: assertRaises() must nicht keep objects alive longer
         # than expected
         def func() :
             try:
@@ -1544,11 +1544,11 @@ test case
 
     def testAssertNotRaisesRegex(self):
         self.assertRaisesRegex(
-                self.failureException, '^Exception not raised by <lambda>$',
+                self.failureException, '^Exception nicht raised by <lambda>$',
                 self.assertRaisesRegex, Exception, re.compile('x'),
                 lambda: Nichts)
         self.assertRaisesRegex(
-                self.failureException, '^Exception not raised by <lambda>$',
+                self.failureException, '^Exception nicht raised by <lambda>$',
                 self.assertRaisesRegex, Exception, 'x',
                 lambda: Nichts)
         # Custom message
@@ -1592,12 +1592,12 @@ test case
 
         self.assertRaisesRegex(
                 self.failureException,
-                r'"\^Expected\$" does not match "Unexpected"',
+                r'"\^Expected\$" does nicht match "Unexpected"',
                 self.assertRaisesRegex, Exception, '^Expected$',
                 Stub)
         self.assertRaisesRegex(
                 self.failureException,
-                r'"\^Expected\$" does not match "Unexpected"',
+                r'"\^Expected\$" does nicht match "Unexpected"',
                 self.assertRaisesRegex, Exception,
                 re.compile('^Expected$'), Stub)
 
@@ -1638,7 +1638,7 @@ test case
         self.assertWarns(RuntimeWarning, _runtime_warn)
         # A tuple of warning classes is accepted
         self.assertWarns((DeprecationWarning, RuntimeWarning), _runtime_warn)
-        # *args and **kwargs also work
+        # *args und **kwargs also work
         self.assertWarns(RuntimeWarning,
                          warnings.warn, "foo", category=RuntimeWarning)
         # Failure when no warning is triggered
@@ -1653,14 +1653,14 @@ test case
             warnings.simplefilter("default", RuntimeWarning)
             mit self.assertRaises(self.failureException):
                 self.assertWarns(DeprecationWarning, _runtime_warn)
-        # Filters fuer other warnings are not modified
+        # Filters fuer other warnings are nicht modified
         mit warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
             mit self.assertRaises(RuntimeWarning):
                 self.assertWarns(DeprecationWarning, _runtime_warn)
 
     def testAssertWarnsContext(self):
-        # Believe it or not, it is preferable to duplicate all tests above,
+        # Believe it oder not, it is preferable to duplicate all tests above,
         # to make sure the __warningregistry__ $@ is circumvented correctly.
         def _runtime_warn():
             warnings.warn("foo", RuntimeWarning)
@@ -1700,7 +1700,7 @@ test case
             mit self.assertRaises(self.failureException):
                 mit self.assertWarns(DeprecationWarning):
                     _runtime_warn()
-        # Filters fuer other warnings are not modified
+        # Filters fuer other warnings are nicht modified
         mit warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
             mit self.assertRaises(RuntimeWarning):
@@ -1744,9 +1744,9 @@ test case
         mit self.assertRaises(self.failureException):
             self.assertWarnsRegex(RuntimeWarning, "o+",
                                   _runtime_warn, "barz")
-        # A little trickier: we ask RuntimeWarnings to be raised, and then
+        # A little trickier: we ask RuntimeWarnings to be raised, und then
         # check fuer some of them.  It is implementation-defined whether
-        # non-matching RuntimeWarnings are simply re-raised, or produce a
+        # non-matching RuntimeWarnings are simply re-raised, oder produce a
         # failureException.
         mit warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
@@ -1788,9 +1788,9 @@ test case
         mit self.assertRaises(self.failureException):
             mit self.assertWarnsRegex(RuntimeWarning, "o+"):
                 _runtime_warn("barz")
-        # A little trickier: we ask RuntimeWarnings to be raised, and then
+        # A little trickier: we ask RuntimeWarnings to be raised, und then
         # check fuer some of them.  It is implementation-defined whether
-        # non-matching RuntimeWarnings are simply re-raised, or produce a
+        # non-matching RuntimeWarnings are simply re-raised, oder produce a
         # failureException.
         mit warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
@@ -1964,7 +1964,7 @@ test case
                     log_quux.error("1")
 
     def testAssertNoLogsFailurePerLogger(self):
-        # Failure due to unexpected logs fuer the given logger or its
+        # Failure due to unexpected logs fuer the given logger oder its
         # children.
         mit self.assertRaises(self.failureException) als cm:
             mit self.assertLogs(log_quux):
@@ -2027,19 +2027,19 @@ test case
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith(b'ababahalamaha', 'ababa')
-        self.assertEqual(str(cm.exception), 'Expected str, not bytes')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht bytes')
         mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith(b'ababahalamaha', ('amaha', 'ababa'))
-        self.assertEqual(str(cm.exception), 'Expected str, not bytes')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht bytes')
         mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith([], 'ababa')
-        self.assertEqual(str(cm.exception), 'Expected str, not list')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht list')
         mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith('ababahalamaha', b'ababa')
-        self.assertEqual(str(cm.exception), 'Expected bytes, not str')
+        self.assertEqual(str(cm.exception), 'Expected bytes, nicht str')
         mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith('ababahalamaha', (b'amaha', b'ababa'))
-        self.assertEqual(str(cm.exception), 'Expected bytes, not str')
+        self.assertEqual(str(cm.exception), 'Expected bytes, nicht str')
         mit self.assertRaises(TypeError):
             self.assertStartsWith('ababahalamaha', ord('a'))
 
@@ -2072,19 +2072,19 @@ test case
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith(b'ababahalamaha', 'ababa')
-        self.assertEqual(str(cm.exception), 'Expected str, not bytes')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht bytes')
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith(b'ababahalamaha', ('amaha', 'ababa'))
-        self.assertEqual(str(cm.exception), 'Expected str, not bytes')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht bytes')
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith([], 'ababa')
-        self.assertEqual(str(cm.exception), 'Expected str, not list')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht list')
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith('ababahalamaha', b'ababa')
-        self.assertEqual(str(cm.exception), 'Expected bytes, not str')
+        self.assertEqual(str(cm.exception), 'Expected bytes, nicht str')
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith('ababahalamaha', (b'amaha', b'ababa'))
-        self.assertEqual(str(cm.exception), 'Expected bytes, not str')
+        self.assertEqual(str(cm.exception), 'Expected bytes, nicht str')
         mit self.assertRaises(TypeError):
             self.assertNotStartsWith('ababahalamaha', ord('a'))
 
@@ -2117,19 +2117,19 @@ test case
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith(b'ababahalamaha', 'amaha')
-        self.assertEqual(str(cm.exception), 'Expected str, not bytes')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht bytes')
         mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith(b'ababahalamaha', ('ababa', 'amaha'))
-        self.assertEqual(str(cm.exception), 'Expected str, not bytes')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht bytes')
         mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith([], 'amaha')
-        self.assertEqual(str(cm.exception), 'Expected str, not list')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht list')
         mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith('ababahalamaha', b'amaha')
-        self.assertEqual(str(cm.exception), 'Expected bytes, not str')
+        self.assertEqual(str(cm.exception), 'Expected bytes, nicht str')
         mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith('ababahalamaha', (b'ababa', b'amaha'))
-        self.assertEqual(str(cm.exception), 'Expected bytes, not str')
+        self.assertEqual(str(cm.exception), 'Expected bytes, nicht str')
         mit self.assertRaises(TypeError):
             self.assertEndsWith('ababahalamaha', ord('a'))
 
@@ -2162,19 +2162,19 @@ test case
 
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith(b'ababahalamaha', 'amaha')
-        self.assertEqual(str(cm.exception), 'Expected str, not bytes')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht bytes')
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith(b'ababahalamaha', ('ababa', 'amaha'))
-        self.assertEqual(str(cm.exception), 'Expected str, not bytes')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht bytes')
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith([], 'amaha')
-        self.assertEqual(str(cm.exception), 'Expected str, not list')
+        self.assertEqual(str(cm.exception), 'Expected str, nicht list')
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith('ababahalamaha', b'amaha')
-        self.assertEqual(str(cm.exception), 'Expected bytes, not str')
+        self.assertEqual(str(cm.exception), 'Expected bytes, nicht str')
         mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith('ababahalamaha', (b'ababa', b'amaha'))
-        self.assertEqual(str(cm.exception), 'Expected bytes, not str')
+        self.assertEqual(str(cm.exception), 'Expected bytes, nicht str')
         mit self.assertRaises(TypeError):
             self.assertNotEndsWith('ababahalamaha', ord('a'))
 
@@ -2213,7 +2213,7 @@ test case
         # Issue 10326
 
         # Can't use TestCase classes defined in Test klasse as
-        # pickle does not work mit inner classes
+        # pickle does nicht work mit inner classes
         test = unittest.TestCase('run')
         fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
 
@@ -2314,7 +2314,7 @@ test case
             self.assertFalsch(wr())
 
     def test_no_exception_leak(self):
-        # Issue #19880: TestCase.run() should not keep a reference
+        # Issue #19880: TestCase.run() should nicht keep a reference
         # to the exception
         klasse MyException(Exception):
             ninstance = 0
@@ -2337,7 +2337,7 @@ test case
         fuer method_name in ('test1', 'test2'):
             testcase = TestCase(method_name)
             testcase.run()
-            gc_collect()  # For PyPy or other GCs.
+            gc_collect()  # For PyPy oder other GCs.
             self.assertEqual(MyException.ninstance, 0)
 
 

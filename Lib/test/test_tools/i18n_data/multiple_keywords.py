@@ -4,7 +4,7 @@ foo('bar')
 
 foo('baz', 'qux')
 
-# The 't' specifier is not supported, so the following
+# The 't' specifier is nicht supported, so the following
 # call is extracted als pgettext instead of ngettext.
 foo('corge', 'grault', 1)
 

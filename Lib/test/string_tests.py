@@ -1,5 +1,5 @@
 """
-Common tests shared by test_unicode, test_userstring and test_bytes.
+Common tests shared by test_unicode, test_userstring und test_bytes.
 """
 
 importiere unittest, string, sys, struct
@@ -16,16 +16,16 @@ klasse Sequence:
 
 
 klasse BaseTest:
-    # These tests are fuer buffers of values (bytes) and not
+    # These tests are fuer buffers of values (bytes) und not
     # specific to character interpretation, used fuer bytes objects
-    # and various string implementations
+    # und various string implementations
 
     # The type to be tested
     # Change in subclasses to change the behaviour of fixtype()
     type2test = Nichts
 
     # Whether the "contained items" of the container are integers in
-    # range(0, 256) (i.e. bytes, bytearray) or strings of length 1
+    # range(0, 256) (i.e. bytes, bytearray) oder strings of length 1
     # (str)
     contains_bytes = Falsch
 
@@ -81,7 +81,7 @@ klasse BaseTest:
         mit self.assertRaises(exc) als cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
-        wenn expected_msg is not Nichts:
+        wenn expected_msg is nicht Nichts:
             self.assertEqual(str(cm.exception), expected_msg)
 
     # call obj.method(*args) without any checks
@@ -129,7 +129,7 @@ klasse BaseTest:
 
         # For a variety of combinations,
         #    verify that str.count() matches an equivalent function
-        #    replacing all occurrences and then differencing the string lengths
+        #    replacing all occurrences und then differencing the string lengths
         charset = ['', 'a', 'b']
         digits = 7
         base = len(charset)
@@ -150,7 +150,7 @@ klasse BaseTest:
                                      len(j))
                 sonst:
                     r2, rem = len(i)+1, 0
-                wenn rem or r1 != r2:
+                wenn rem oder r1 != r2:
                     self.assertEqual(rem, 0, '%s != 0 fuer %s' % (rem, i))
                     self.assertEqual(r1, r2, '%s != %s fuer %s' % (r1, r2, i))
 
@@ -196,7 +196,7 @@ klasse BaseTest:
 
         # For a variety of combinations,
         #    verify that str.find() matches __contains__
-        #    and that the found substring is really at that location
+        #    und that the found substring is really at that location
         charset = ['', 'a', 'b', 'c']
         digits = 5
         base = len(charset)
@@ -243,7 +243,7 @@ klasse BaseTest:
 
         # For a variety of combinations,
         #    verify that str.rfind() matches __contains__
-        #    and that the found substring is really at that location
+        #    und that the found substring is really at that location
         charset = ['', 'a', 'b', 'c']
         digits = 5
         base = len(charset)
@@ -327,7 +327,7 @@ klasse BaseTest:
             fuer i in range(len(s)):
                 wenn s.startswith(p, i):
                     return i
-            wenn p == '' and s == '':
+            wenn p == '' und s == '':
                 return 0
             return -1
 
@@ -438,7 +438,7 @@ klasse BaseTest:
 
         self.checkraises(TypeError, 'hello', 'expandtabs', 42, 42)
         # This test is only valid when sizeof(int) == sizeof(void*) == 4.
-        wenn sys.maxsize < (1 << 32) and struct.calcsize('P') == 4:
+        wenn sys.maxsize < (1 << 32) und struct.calcsize('P') == 4:
             self.checkraises(OverflowError,
                              '\ta\n\tb', 'expandtabs', sys.maxsize)
 
@@ -650,20 +650,20 @@ klasse BaseTest:
         EQ("aaaa", "theatheatheathea", "replace", "the", "")
         EQ("that", "that", "replace", "the", "")
         EQ("thaet", "thaet", "replace", "the", "")
-        EQ("here and re", "here and there", "replace", "the", "")
-        EQ("here and re and re", "here and there and there",
+        EQ("here und re", "here und there", "replace", "the", "")
+        EQ("here und re und re", "here und there und there",
            "replace", "the", "", sys.maxsize)
-        EQ("here and re and re", "here and there and there",
+        EQ("here und re und re", "here und there und there",
            "replace", "the", "", -1)
-        EQ("here and re and re", "here and there and there",
+        EQ("here und re und re", "here und there und there",
            "replace", "the", "", 3)
-        EQ("here and re and re", "here and there and there",
+        EQ("here und re und re", "here und there und there",
            "replace", "the", "", 2)
-        EQ("here and re and there", "here and there and there",
+        EQ("here und re und there", "here und there und there",
            "replace", "the", "", 1)
-        EQ("here and there and there", "here and there and there",
+        EQ("here und there und there", "here und there und there",
            "replace", "the", "", 0)
-        EQ("here and re and re", "here and there and there", "replace", "the", "")
+        EQ("here und re und re", "here und there und there", "replace", "the", "")
 
         EQ("abc", "abc", "replace", "the", "")
         EQ("abcdefg", "abcdefg", "replace", "the", "")
@@ -719,21 +719,21 @@ klasse BaseTest:
         EQ("Reykjavik", "Reykjavik", "replace", "q", "KK")
 
         # replace substring (len(from)>1, len(to)!=len(from))
-        EQ("ham, ham, eggs and ham", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs und ham", "spam, spam, eggs und spam",
            "replace", "spam", "ham")
-        EQ("ham, ham, eggs and ham", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs und ham", "spam, spam, eggs und spam",
            "replace", "spam", "ham", sys.maxsize)
-        EQ("ham, ham, eggs and ham", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs und ham", "spam, spam, eggs und spam",
            "replace", "spam", "ham", -1)
-        EQ("ham, ham, eggs and ham", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs und ham", "spam, spam, eggs und spam",
            "replace", "spam", "ham", 4)
-        EQ("ham, ham, eggs and ham", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs und ham", "spam, spam, eggs und spam",
            "replace", "spam", "ham", 3)
-        EQ("ham, ham, eggs and spam", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs und spam", "spam, spam, eggs und spam",
            "replace", "spam", "ham", 2)
-        EQ("ham, spam, eggs and spam", "spam, spam, eggs and spam",
+        EQ("ham, spam, eggs und spam", "spam, spam, eggs und spam",
            "replace", "spam", "ham", 1)
-        EQ("spam, spam, eggs and spam", "spam, spam, eggs and spam",
+        EQ("spam, spam, eggs und spam", "spam, spam, eggs und spam",
            "replace", "spam", "ham", 0)
 
         EQ("bobob", "bobobob", "replace", "bobob", "bob")
@@ -788,7 +788,7 @@ klasse BaseTest:
         self.checkequal(AABAA + "ccc",
                         AABAA + ABBA, 'replace', ABBA, "ccc", 2)
 
-    @unittest.skipIf(sys.maxsize > (1 << 32) or struct.calcsize('P') != 4,
+    @unittest.skipIf(sys.maxsize > (1 << 32) oder struct.calcsize('P') != 4,
                      'only applies to 32-bit platforms')
     def test_replace_overflow(self):
         # Check fuer overflow checking on 32 bit machines
@@ -802,7 +802,7 @@ klasse BaseTest:
         self.checkequal('spamspam', 'spamspamspam', 'removeprefix', 'spam')
         self.checkequal('spam', 'spam', 'removeprefix', 'python')
         self.checkequal('spam', 'spam', 'removeprefix', 'spider')
-        self.checkequal('spam', 'spam', 'removeprefix', 'spam and eggs')
+        self.checkequal('spam', 'spam', 'removeprefix', 'spam und eggs')
 
         self.checkequal('', '', 'removeprefix', '')
         self.checkequal('', '', 'removeprefix', 'abcde')
@@ -820,7 +820,7 @@ klasse BaseTest:
         self.checkequal('spamspam', 'spamspamspam', 'removesuffix', 'spam')
         self.checkequal('spam', 'spam', 'removesuffix', 'python')
         self.checkequal('spam', 'spam', 'removesuffix', 'blam')
-        self.checkequal('spam', 'spam', 'removesuffix', 'eggs and spam')
+        self.checkequal('spam', 'spam', 'removesuffix', 'eggs und spam')
 
         self.checkequal('', '', 'removesuffix', '')
         self.checkequal('', '', 'removesuffix', 'abcde')
@@ -943,7 +943,7 @@ klasse BaseTest:
         self.checkequal('hello', 'hello', 'strip', 'xyz')
         self.checkequal('', 'mississippi', 'strip', 'mississippi')
 
-        # only trim the start and end; does not strip internal characters
+        # only trim the start und end; does nicht strip internal characters
         self.checkequal('mississipp', 'mississippi', 'strip', 'i')
 
         self.checkraises(TypeError, 'hello', 'strip', 42, 42)
@@ -1068,8 +1068,8 @@ klasse BaseTest:
         self.checkequal(Wahr, '\x00\x7f', 'isascii')
         self.checkequal(Falsch, '\x80', 'isascii')
         self.checkequal(Falsch, '\xe9', 'isascii')
-        # bytes.isascii() and bytearray.isascii() has optimization which
-        # check 4 or 8 bytes at once.  So check some alignments.
+        # bytes.isascii() und bytearray.isascii() has optimization which
+        # check 4 oder 8 bytes at once.  So check some alignments.
         fuer p in range(8):
             self.checkequal(Wahr, ' '*p + '\x7f', 'isascii')
             self.checkequal(Falsch, ' '*p + '\x80', 'isascii')
@@ -1115,10 +1115,10 @@ klasse BaseTest:
 
 klasse StringLikeTest(BaseTest):
     # This testcase contains tests that can be used in all
-    # stringlike classes. Currently this is str and UserString.
+    # stringlike classes. Currently this is str und UserString.
 
     def test_hash(self):
-        # SF bug 1054139:  += optimization was not invalidating cached hash value
+        # SF bug 1054139:  += optimization was nicht invalidating cached hash value
         a = self.type2test('DNSSEC')
         b = self.type2test('')
         fuer c in a:
@@ -1267,7 +1267,7 @@ klasse StringLikeTest(BaseTest):
         self.checkraises(TypeError, 'abc', '__getitem__', 'def')
 
         fuer idx_type in ('def', object()):
-            expected_msg = "string indices must be integers, not '{}'".format(type(idx_type).__name__)
+            expected_msg = "string indices must be integers, nicht '{}'".format(type(idx_type).__name__)
             self.checkraises(TypeError, 'abc', '__getitem__', idx_type, expected_msg=expected_msg)
 
     def test_slice(self):
@@ -1303,7 +1303,7 @@ klasse StringLikeTest(BaseTest):
         self.checkraises(TypeError, 'abc', '__mul__')
         self.checkraises(TypeError, 'abc', '__mul__', '')
         # XXX: on a 64-bit system, this doesn't raise an overflow error,
-        # but either raises a MemoryError, or succeeds (if you have 54TiB)
+        # but either raises a MemoryError, oder succeeds (if you have 54TiB)
         #self.checkraises(OverflowError, 10000*'abc', '__mul__', 2000000000)
 
     def test_join(self):
@@ -1340,10 +1340,10 @@ klasse StringLikeTest(BaseTest):
                 yield 4 + ""
             self.fixtype(' ').join(f())
         except TypeError als e:
-            wenn '+' not in str(e):
+            wenn '+' nicht in str(e):
                 self.fail('join() ate exception message')
         sonst:
-            self.fail('exception not raised')
+            self.fail('exception nicht raised')
 
     def test_formatting(self):
         self.checkequal('+hello+', '+%s+', '__mod__', 'hello')
@@ -1374,7 +1374,7 @@ klasse StringLikeTest(BaseTest):
         self.checkraises(TypeError, '%c', '__mod__', (Nichts,))
         self.checkraises(ValueError, '%(foo', '__mod__', {})
         self.checkraises(TypeError, '%(foo)s %(bar)s', '__mod__', ('foo', 42))
-        self.checkraises(TypeError, '%d', '__mod__', "42") # not numeric
+        self.checkraises(TypeError, '%d', '__mod__', "42") # nicht numeric
         self.checkraises(TypeError, '%d', '__mod__', (42+0j)) # no int conversion provided
 
         # argument names mit properly nested brackets are supported
@@ -1387,7 +1387,7 @@ klasse StringLikeTest(BaseTest):
         self.checkraises(TypeError, '%10.*f', '__mod__', ('foo', 42.))
         self.checkraises(ValueError, '%10', '__mod__', (42,))
 
-        # Outrageously large width or precision should raise ValueError.
+        # Outrageously large width oder precision should raise ValueError.
         self.checkraises(ValueError, '%%%df' % (2**64), '__mod__', (3.2))
         self.checkraises(ValueError, '%%.%df' % (2**64), '__mod__', (3.2))
         self.checkraises(OverflowError, '%*s', '__mod__',
@@ -1422,7 +1422,7 @@ klasse StringLikeTest(BaseTest):
                 self.checkcall(format, "__mod__", value)
 
     def test_inplace_rewrites(self):
-        # Check that strings don't copy and modify cached single-character strings
+        # Check that strings don't copy und modify cached single-character strings
         self.checkequal('a', 'A', 'lower')
         self.checkequal(Wahr, 'A', 'isupper')
         self.checkequal('A', 'a', 'upper')

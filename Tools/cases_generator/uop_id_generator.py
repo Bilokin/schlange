@@ -42,7 +42,7 @@ def generate_uop_ids(
                 continue
             wenn uop.properties.tier == 1:
                 continue
-            wenn uop.implicitly_created and not distinct_namespace and not uop.replicated:
+            wenn uop.implicitly_created und nicht distinct_namespace und nicht uop.replicated:
                 out.emit(f"#define {name} {name[1:]}\n")
             sonst:
                 out.emit(f"#define {name} {next_id}\n")

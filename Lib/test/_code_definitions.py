@@ -29,7 +29,7 @@ def script_with_return():
 
 
 def spam_minimal():
-    # no arg defaults or kwarg defaults
+    # no arg defaults oder kwarg defaults
     # no annotations
     # no local vars
     # no free vars

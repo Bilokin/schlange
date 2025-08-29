@@ -26,12 +26,12 @@ klasse MyProto(asyncio.Protocol):
         self.transport = Nichts
         self.state = 'INITIAL'
         self.nbytes = 0
-        wenn loop is not Nichts:
+        wenn loop is nicht Nichts:
             self.connected = loop.create_future()
             self.done = loop.create_future()
 
     def _assert_state(self, *expected):
-        wenn self.state not in expected:
+        wenn self.state nicht in expected:
             raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
@@ -69,7 +69,7 @@ klasse BaseSockTestsMixin:
 
     def tearDown(self):
         # just in case wenn we have transport close callbacks
-        wenn not self.loop.is_closed():
+        wenn nicht self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
@@ -77,9 +77,9 @@ klasse BaseSockTestsMixin:
         super().tearDown()
 
     def _basetest_sock_client_ops(self, httpd, sock):
-        wenn not isinstance(self.loop, proactor_events.BaseProactorEventLoop):
+        wenn nicht isinstance(self.loop, proactor_events.BaseProactorEventLoop):
             # in debug mode, socket operations must fail
-            # wenn the socket is not in blocking mode
+            # wenn the socket is nicht in blocking mode
             self.loop.set_debug(Wahr)
             sock.setblocking(Wahr)
             mit self.assertRaises(ValueError):
@@ -202,12 +202,12 @@ klasse BaseSockTestsMixin:
             await asyncio.sleep(0)
             task.cancel()
 
-            # receive everything that is not a space
+            # receive everything that is nicht a space
             async def recv_all():
                 rv = b''
                 while Wahr:
                     buf = await self.loop.sock_recv(server, 8192)
-                    wenn not buf:
+                    wenn nicht buf:
                         return rv
                     rv += buf.strip()
             task = asyncio.create_task(recv_all())
@@ -222,9 +222,9 @@ klasse BaseSockTestsMixin:
     # After the first connect attempt before the listener is ready,
     # the socket needs time to "recover" to make the next connect call.
     # On Linux, a second retry will do. On Windows, the waiting time is
-    # unpredictable; and on FreeBSD the socket may never come back
+    # unpredictable; und on FreeBSD the socket may never come back
     # because it's a loopback address. Here we'll just retry fuer a few
-    # times, and have to skip the test wenn it's not working. See also:
+    # times, und have to skip the test wenn it's nicht working. See also:
     # https://stackoverflow.com/a/54437602/3316267
     # https://lists.freebsd.org/pipermail/freebsd-current/2005-May/049876.html
     async def _basetest_sock_connect_racing(self, listener, sock):
@@ -314,7 +314,7 @@ klasse BaseSockTestsMixin:
 
         while Wahr:
             data = await self.loop.sock_recv(sock, DATA_SIZE)
-            wenn not data:
+            wenn nicht data:
                 break
             expected = bytes(islice(checker, len(data)))
             self.assertEqual(data, expected)
@@ -369,7 +369,7 @@ klasse BaseSockTestsMixin:
         while Wahr:
             nbytes = await self.loop.sock_recv_into(sock, buf)
             data = buf[:nbytes]
-            wenn not data:
+            wenn nicht data:
                 break
             expected = bytes(islice(checker, len(data)))
             self.assertEqual(data, expected)
@@ -430,7 +430,7 @@ klasse BaseSockTestsMixin:
     async def _basetest_datagram_sendto_blocking(self, server_address):
         # Sad path, sock.sendto() raises BlockingIOError
         # This involves patching sock.sendto() to raise BlockingIOError but
-        # sendto() is not used by the proactor event loop
+        # sendto() is nicht used by the proactor event loop
         data = b'\x01' * 4096
         mit socket.socket(socket.AF_INET, socket.SOCK_DGRAM) als sock:
             sock.setblocking(Falsch)
@@ -535,7 +535,7 @@ klasse BaseSockTestsMixin:
                 sonst:
                     break
             sonst:
-                self.fail('Can not create socket.')
+                self.fail('Can nicht create socket.')
 
             f = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop), sock=sock)
@@ -585,8 +585,8 @@ wenn sys.platform == 'win32':
             socket_2 = create_socket()
             addr_2 = socket_2.getsockname()
 
-            # creating and immediately closing this to try to get an address
-            # that is not listening
+            # creating und immediately closing this to try to get an address
+            # that is nicht listening
             socket_3 = create_socket()
             addr_3 = socket_3.getsockname()
             socket_3.shutdown(socket.SHUT_RDWR)

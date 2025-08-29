@@ -18,7 +18,7 @@ def f():
     """docstring"""
 
 
-# Duplicate message and docstring
+# Duplicate message und docstring
 _('baz')
 
 

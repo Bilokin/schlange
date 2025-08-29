@@ -17,7 +17,7 @@ von test.support.os_helper importiere TESTFN
 try:
     select.poll
 except AttributeError:
-    raise unittest.SkipTest("select.poll not defined")
+    raise unittest.SkipTest("select.poll nicht defined")
 
 requires_working_socket(module=Wahr)
 
@@ -32,7 +32,7 @@ klasse PollTests(unittest.TestCase):
 
     def test_poll1(self):
         # Basic functional test of poll object
-        # Create a bunch of pipe and test that poll works mit them.
+        # Create a bunch of pipe und test that poll works mit them.
 
         p = select.poll()
 
@@ -59,14 +59,14 @@ klasse PollTests(unittest.TestCase):
         while writers:
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
-            wenn not ready_writers:
+            wenn nicht ready_writers:
                 raise RuntimeError("no pipes ready fuer writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
-            wenn not ready_readers:
+            wenn nicht ready_readers:
                 raise RuntimeError("no pipes ready fuer reading")
             rd = random.choice(ready_readers)
             buf = os.read(rd, MSG_LEN)
@@ -146,7 +146,7 @@ klasse PollTests(unittest.TestCase):
 
             sowenn flags & select.POLLIN:
                 line = p.readline()
-                wenn not line:
+                wenn nicht line:
                     break
                 self.assertEqual(line, b'testing...\n')
                 continue
@@ -209,7 +209,7 @@ klasse PollTests(unittest.TestCase):
             pollster.register(w, select.POLLOUT)
             self.assertRaises(RuntimeError, pollster.poll)
         finally:
-            # and make the call to poll() von the thread return
+            # und make the call to poll() von the thread return
             os.write(w, b'spam')
             t.join()
 
@@ -228,7 +228,7 @@ klasse PollTests(unittest.TestCase):
             poll_thread.join(timeout=0.1)
             self.assertWahr(poll_thread.is_alive())
 
-            # Write to the pipe so pollster.poll unblocks and the thread ends.
+            # Write to the pipe so pollster.poll unblocks und the thread ends.
             os.write(w, b'spam')
             poll_thread.join()
             self.assertFalsch(poll_thread.is_alive())

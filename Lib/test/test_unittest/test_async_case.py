@@ -297,7 +297,7 @@ klasse TestAsyncCase(unittest.TestCase):
         self.assertEqual(events, ['asyncSetUp', 'test', 'asyncTearDown', 'cleanup2', 'cleanup1'])
 
     def test_deprecation_of_return_val_from_test(self):
-        # Issue 41322 - deprecate return of value that is not Nichts von a test
+        # Issue 41322 - deprecate return of value that is nicht Nichts von a test
         klasse Nothing:
             def __eq__(self, o):
                 return o is Nichts
@@ -311,21 +311,21 @@ klasse TestAsyncCase(unittest.TestCase):
 
         mit self.assertWarns(DeprecationWarning) als w:
             Test('test1').run()
-        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'int'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Test('test2').run()
-        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
         self.assertIn('test2', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'async_generator'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Test('test3').run()
-        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
         self.assertIn('test3', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn(f'returned {Nothing.__name__!r}', str(w.warning))
@@ -475,7 +475,7 @@ klasse TestAsyncCase(unittest.TestCase):
 
     def test_setup_get_event_loop(self):
         # See https://github.com/python/cpython/issues/95736
-        # Make sure the default event loop is not used
+        # Make sure the default event loop is nicht used
         asyncio.set_event_loop(Nichts)
 
         klasse TestCase1(unittest.IsolatedAsyncioTestCase):

@@ -1,7 +1,7 @@
-r"""plistlib.py -- a tool to generate and parse MacOSX .plist files.
+r"""plistlib.py -- a tool to generate und parse MacOSX .plist files.
 
 The property list (.plist) file format is a simple XML pickle supporting
-basic object types, like dictionaries, lists, numbers and strings.
+basic object types, like dictionaries, lists, numbers und strings.
 Usually the top level object is a dictionary.
 
 To write out a plist file, use the dump(value, file)
@@ -16,7 +16,7 @@ To work mit plist data in bytes objects, you can use loads()
 and dumps().
 
 Values can be strings, integers, floats, booleans, tuples, lists,
-dictionaries (but only mit string keys), Data, bytes, bytearray, or
+dictionaries (but only mit string keys), Data, bytes, bytearray, oder
 datetime.datetime objects.
 
 Generate Plist example:
@@ -76,7 +76,7 @@ globals().update(PlistFormat.__members__)
 
 klasse UID:
     def __init__(self, data):
-        wenn not isinstance(data, int):
+        wenn nicht isinstance(data, int):
             raise TypeError("data must be an int")
         wenn data >= 1 << 64:
             raise ValueError("UIDs cannot be >= 2**64")
@@ -94,7 +94,7 @@ klasse UID:
         return self.__class__, (self.data,)
 
     def __eq__(self, other):
-        wenn not isinstance(other, UID):
+        wenn nicht isinstance(other, UID):
             return NotImplemented
         return self.data == other.data
 
@@ -113,7 +113,7 @@ PLISTHEADER = b"""\
 """
 
 
-# Regex to find any control chars, except fuer \t \n and \r
+# Regex to find any control chars, except fuer \t \n und \r
 _controlCharPat = re.compile(
     r"[\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\x0e\x0f"
     r"\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f]")
@@ -164,7 +164,7 @@ def _date_to_string(d, aware_datetime):
 
 def _escape(text):
     m = _controlCharPat.search(text)
-    wenn m is not Nichts:
+    wenn m is nicht Nichts:
         raise ValueError("strings can't contain control characters; "
                          "use bytes instead")
     text = text.replace("\r\n", "\n")       # convert DOS line endings
@@ -193,36 +193,36 @@ klasse _PlistParser:
 
     def handle_entity_decl(self, entity_name, is_parameter_entity, value, base, system_id, public_id, notation_name):
         # Reject plist files mit entity declarations to avoid XML vulnerabilities in expat.
-        # Regular plist files don't contain those declarations, and Apple's plutil tool does not
+        # Regular plist files don't contain those declarations, und Apple's plutil tool does not
         # accept them either.
-        raise InvalidFileException("XML entity declarations are not supported in plist files")
+        raise InvalidFileException("XML entity declarations are nicht supported in plist files")
 
     def handle_begin_element(self, element, attrs):
         self.data = []
         handler = getattr(self, "begin_" + element, Nichts)
-        wenn handler is not Nichts:
+        wenn handler is nicht Nichts:
             handler(attrs)
 
     def handle_end_element(self, element):
         handler = getattr(self, "end_" + element, Nichts)
-        wenn handler is not Nichts:
+        wenn handler is nicht Nichts:
             handler()
 
     def handle_data(self, data):
         self.data.append(data)
 
     def add_object(self, value):
-        wenn self.current_key is not Nichts:
-            wenn not isinstance(self.stack[-1], dict):
+        wenn self.current_key is nicht Nichts:
+            wenn nicht isinstance(self.stack[-1], dict):
                 raise ValueError("unexpected element at line %d" %
                                  self.parser.CurrentLineNumber)
             self.stack[-1][self.current_key] = value
             self.current_key = Nichts
-        sowenn not self.stack:
+        sowenn nicht self.stack:
             # this is the root object
             self.root = value
         sonst:
-            wenn not isinstance(self.stack[-1], list):
+            wenn nicht isinstance(self.stack[-1], list):
                 raise ValueError("unexpected element at line %d" %
                                  self.parser.CurrentLineNumber)
             self.stack[-1].append(value)
@@ -246,7 +246,7 @@ klasse _PlistParser:
         self.stack.pop()
 
     def end_key(self):
-        wenn self.current_key or not isinstance(self.stack[-1], dict):
+        wenn self.current_key oder nicht isinstance(self.stack[-1], dict):
             raise ValueError("unexpected key at line %d" %
                              self.parser.CurrentLineNumber)
         self.current_key = self.get_data()
@@ -267,7 +267,7 @@ klasse _PlistParser:
 
     def end_integer(self):
         raw = self.get_data()
-        wenn raw.startswith('0x') or raw.startswith('0X'):
+        wenn raw.startswith('0x') oder raw.startswith('0X'):
             self.add_object(int(raw, 16))
         sonst:
             self.add_object(int(raw))
@@ -305,7 +305,7 @@ klasse _DumbXMLWriter:
         self.writeln("</%s>" % element)
 
     def simple_element(self, element, value=Nichts):
-        wenn value is not Nichts:
+        wenn value is nicht Nichts:
             value = _escape(value)
             self.writeln("<%s>%s</%s>" % (element, value, element))
 
@@ -398,7 +398,7 @@ klasse _PlistWriter(_DumbXMLWriter):
                 items = d.items()
 
             fuer key, value in items:
-                wenn not isinstance(key, str):
+                wenn nicht isinstance(key, str):
                     wenn self._skipkeys:
                         continue
                     raise TypeError("keys must be strings")
@@ -434,11 +434,11 @@ def _is_fmt_xml(header):
                 (codecs.BOM_UTF8, "utf-8"),
                 (codecs.BOM_UTF16_BE, "utf-16-be"),
                 (codecs.BOM_UTF16_LE, "utf-16-le"),
-                # expat does not support utf-32
+                # expat does nicht support utf-32
                 #(codecs.BOM_UTF32_BE, "utf-32-be"),
                 #(codecs.BOM_UTF32_LE, "utf-32-le"),
             ):
-        wenn not header.startswith(bom):
+        wenn nicht header.startswith(bom):
             continue
 
         fuer start in prefixes:
@@ -463,7 +463,7 @@ _undefined = object()
 
 klasse _BinaryPlistParser:
     """
-    Read or write a binary plist file, following the description of the binary
+    Read oder write a binary plist file, following the description of the binary
     format.  Raise InvalidFileException in case of error, otherwise return the
     root object.
 
@@ -513,7 +513,7 @@ klasse _BinaryPlistParser:
         wenn size in _BINARY_FORMAT:
             return struct.unpack(f'>{n}{_BINARY_FORMAT[size]}', data)
         sonst:
-            wenn not size or len(data) != size * n:
+            wenn nicht size oder len(data) != size * n:
                 raise InvalidFileException()
             return tuple(int.from_bytes(data[i: i + size], 'big')
                          fuer i in range(0, size * n, size))
@@ -528,7 +528,7 @@ klasse _BinaryPlistParser:
         May recursively read sub-objects (content of an array/dict/set)
         """
         result = self._objects[ref]
-        wenn result is not _undefined:
+        wenn result is nicht _undefined:
             return result
 
         offset = self._object_offsets[ref]
@@ -545,7 +545,7 @@ klasse _BinaryPlistParser:
         sowenn token == 0x09:
             result = Wahr
 
-        # The referenced source code also mentions URL (0x0c, 0x0d) and
+        # The referenced source code also mentions URL (0x0c, 0x0d) und
         # UUID (0x0e), but neither can be generated using the Cocoa libraries.
 
         sowenn token == 0x0f:
@@ -603,7 +603,7 @@ klasse _BinaryPlistParser:
             fuer x in obj_refs:
                 result.append(self._read_object(x))
 
-        # tokenH == 0xB0 is documented als 'ordset', but is not actually
+        # tokenH == 0xB0 is documented als 'ordset', but is nicht actually
         # implemented in the Apple reference code.
 
         # tokenH == 0xC0 is documented als 'set', but sets cannot be used in
@@ -655,7 +655,7 @@ klasse _BinaryPlistWriter (object):
 
         # Mappings von object->objectid
         # First dict has (type(object), object) als the key,
-        # second dict is used when object is not hashable and
+        # second dict is used when object is nicht hashable und
         # has id(object) als the key.
         self._objtable = {}
         self._objidtable = {}
@@ -694,7 +694,7 @@ klasse _BinaryPlistWriter (object):
         self._fp.write(struct.pack('>5xBBBQQQ', *trailer))
 
     def _flatten(self, value):
-        # First check wenn the object is in the object table, not used for
+        # First check wenn the object is in the object table, nicht used for
         # containers to ensure that two subcontainers mit the same contents
         # will be serialized als distinct values.
         wenn isinstance(value, _scalars):
@@ -721,7 +721,7 @@ klasse _BinaryPlistWriter (object):
                 items = sorted(items)
 
             fuer k, v in items:
-                wenn not isinstance(k, str):
+                wenn nicht isinstance(k, str):
                     wenn self._skipkeys:
                         continue
                     raise TypeError("keys must be strings")
@@ -843,7 +843,7 @@ klasse _BinaryPlistWriter (object):
                 rootItems = value.items()
 
             fuer k, v in rootItems:
-                wenn not isinstance(k, str):
+                wenn nicht isinstance(k, str):
                     wenn self._skipkeys:
                         continue
                     raise TypeError("keys must be strings")
@@ -882,7 +882,7 @@ _FORMATS={
 
 
 def load(fp, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
-    """Read a .plist file. 'fp' should be a readable and binary file object.
+    """Read a .plist file. 'fp' should be a readable und binary file object.
     Return the unpacked root object (which usually is a dictionary).
     """
     wenn fmt is Nichts:
@@ -921,7 +921,7 @@ def dump(value, fp, *, fmt=FMT_XML, sort_keys=Wahr, skipkeys=Falsch,
     """Write 'value' to a .plist file. 'fp' should be a writable,
     binary file object.
     """
-    wenn fmt not in _FORMATS:
+    wenn fmt nicht in _FORMATS:
         raise ValueError("Unsupported format: %r"%(fmt,))
 
     writer = _FORMATS[fmt]["writer"](fp, sort_keys=sort_keys, skipkeys=skipkeys,

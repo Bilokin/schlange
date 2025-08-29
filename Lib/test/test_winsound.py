@@ -15,9 +15,9 @@ winsound = import_helper.import_module('winsound')
 
 
 # Unless we actually have an ear in the room, we have no idea whether a sound
-# actually plays, and it's incredibly flaky trying to figure out wenn a sound
-# even *should* play.  Instead of guessing, just call the function and assume
-# it either passed or raised the RuntimeError we expect in case of failure.
+# actually plays, und it's incredibly flaky trying to figure out wenn a sound
+# even *should* play.  Instead of guessing, just call the function und assume
+# it either passed oder raised the RuntimeError we expect in case of failure.
 def sound_func(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -170,7 +170,7 @@ klasse PlaySoundTest(unittest.TestCase):
         time.sleep(0.5)
         safe_PlaySound('SystemQuestion', winsound.SND_ALIAS | winsound.SND_NOSTOP)
         # Issue 8367: PlaySound(Nichts, winsound.SND_PURGE)
-        # does not raise on systems without a sound card.
+        # does nicht raise on systems without a sound card.
         winsound.PlaySound(Nichts, winsound.SND_PURGE)
 
     def test_sound_sentry(self):

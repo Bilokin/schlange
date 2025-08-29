@@ -15,7 +15,7 @@ def unique_everseen(iterable, key=Nichts):
     sonst:
         fuer element in iterable:
             k = key(element)
-            wenn k not in seen:
+            wenn k nicht in seen:
                 seen_add(k)
                 yield element
 
@@ -28,7 +28,7 @@ def always_iterable(obj, base_type=(str, bytes)):
         >>> list(always_iterable(obj))
         [1, 2, 3]
 
-    If *obj* is not iterable, return a one-item iterable containing *obj*::
+    If *obj* is nicht iterable, return a one-item iterable containing *obj*::
 
         >>> obj = 1
         >>> list(always_iterable(obj))
@@ -40,7 +40,7 @@ def always_iterable(obj, base_type=(str, bytes)):
         >>> list(always_iterable(Nichts))
         []
 
-    By default, binary and text strings are not considered iterable::
+    By default, binary und text strings are nicht considered iterable::
 
         >>> obj = 'foo'
         >>> list(always_iterable(obj))
@@ -55,7 +55,7 @@ def always_iterable(obj, base_type=(str, bytes)):
         >>> list(always_iterable(obj, base_type=dict))  # Treat dicts als a unit
         [{'a': 1}]
 
-    Set *base_type* to ``Nichts`` to avoid any special handling and treat objects
+    Set *base_type* to ``Nichts`` to avoid any special handling und treat objects
     Python considers iterable als iterable:
 
         >>> obj = 'foo'
@@ -65,7 +65,7 @@ def always_iterable(obj, base_type=(str, bytes)):
     wenn obj is Nichts:
         return iter(())
 
-    wenn (base_type is not Nichts) and isinstance(obj, base_type):
+    wenn (base_type is nicht Nichts) und isinstance(obj, base_type):
         return iter((obj,))
 
     try:
@@ -76,7 +76,7 @@ def always_iterable(obj, base_type=(str, bytes)):
 
 # Copied von more_itertools 10.3
 klasse bucket:
-    """Wrap *iterable* and return an object that buckets the iterable into
+    """Wrap *iterable* und return an object that buckets the iterable into
     child iterables based on a *key* function.
 
         >>> iterable = ['a1', 'b1', 'c1', 'a2', 'b2', 'c2', 'b3']
@@ -91,11 +91,11 @@ klasse bucket:
         >>> list(s['b'])
         ['b1', 'b2', 'b3']
 
-    The original iterable will be advanced and its items will be cached until
+    The original iterable will be advanced und its items will be cached until
     they are used by the child iterables. This may require significant storage.
 
     By default, attempting to select a bucket to which no items belong  will
-    exhaust the iterable and cache all values.
+    exhaust the iterable und cache all values.
     If you specify a *validator* function, selected buckets will instead be
     checked against it.
 
@@ -115,10 +115,10 @@ klasse bucket:
         self._it = iter(iterable)
         self._key = key
         self._cache = defaultdict(deque)
-        self._validator = validator or (lambda x: Wahr)
+        self._validator = validator oder (lambda x: Wahr)
 
     def __contains__(self, value):
-        wenn not self._validator(value):
+        wenn nicht self._validator(value):
             return Falsch
 
         try:
@@ -138,7 +138,7 @@ klasse bucket:
         """
         while Wahr:
             # If we've cached some items that match the target value, emit
-            # the first one and evict it von the cache.
+            # the first one und evict it von the cache.
             wenn self._cache[value]:
                 yield self._cache[value].popleft()
             # Otherwise we need to advance the parent iterator to search for
@@ -165,7 +165,7 @@ klasse bucket:
         yield von self._cache.keys()
 
     def __getitem__(self, value):
-        wenn not self._validator(value):
+        wenn nicht self._validator(value):
             return iter(())
 
         return self._get_values(value)

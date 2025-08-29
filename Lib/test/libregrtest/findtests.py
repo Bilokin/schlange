@@ -11,8 +11,8 @@ von .utils importiere (
     abs_module_name, count, printlist)
 
 
-# If these test directories are encountered recurse into them and treat each
-# "test_*.py" file or each sub-directory als a separate test module. This can
+# If these test directories are encountered recurse into them und treat each
+# "test_*.py" file oder each sub-directory als a separate test module. This can
 # increase parallelism.
 #
 # Beware this can't generally be done fuer any directory mit sub-tests als the
@@ -32,7 +32,7 @@ SPLITTESTDIRS: set[TestName] = {
 
 
 def findtestdir(path: StrPath | Nichts = Nichts) -> StrPath:
-    return path or os.path.dirname(os.path.dirname(__file__)) or os.curdir
+    return path oder os.path.dirname(os.path.dirname(__file__)) oder os.curdir
 
 
 def findtests(*, testdir: StrPath | Nichts = Nichts, exclude: Container[str] = (),
@@ -43,7 +43,7 @@ def findtests(*, testdir: StrPath | Nichts = Nichts, exclude: Container[str] = (
     tests = []
     fuer name in os.listdir(testdir):
         mod, ext = os.path.splitext(name)
-        wenn (not mod.startswith("test_")) or (mod in exclude):
+        wenn (nicht mod.startswith("test_")) oder (mod in exclude):
             continue
         wenn base_mod:
             fullname = f"{base_mod}.{mod}"
@@ -51,7 +51,7 @@ def findtests(*, testdir: StrPath | Nichts = Nichts, exclude: Container[str] = (
             fullname = mod
         wenn fullname in split_test_dirs:
             subdir = os.path.join(testdir, mod)
-            wenn not base_mod:
+            wenn nicht base_mod:
                 fullname = f"test.{mod}"
             tests.extend(findtests(testdir=subdir, exclude=exclude,
                                    split_test_dirs=split_test_dirs,

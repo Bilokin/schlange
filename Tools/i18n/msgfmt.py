@@ -17,11 +17,11 @@ Options:
 
     -h
     --help
-        Print this message and exit.
+        Print this message und exit.
 
     -V
     --version
-        Display version information and exit.
+        Display version information und exit.
 """
 
 importiere os
@@ -49,7 +49,7 @@ def usage(code, msg=''):
 def add(ctxt, id, str, fuzzy):
     "Add a non-fuzzy translation to the dictionary."
     global MESSAGES
-    wenn not fuzzy and str:
+    wenn nicht fuzzy und str:
         wenn ctxt is Nichts:
             MESSAGES[id] = str
         sonst:
@@ -64,8 +64,8 @@ def generate():
     offsets = []
     ids = strs = b''
     fuer id in keys:
-        # For each string, we need size and file offset.  Each string is NUL
-        # terminated; the NUL does not count into the size.
+        # For each string, we need size und file offset.  Each string is NUL
+        # terminated; the NUL does nicht count into the size.
         offsets.append((len(ids), len(id), len(strs), len(MESSAGES[id])))
         ids += id + b'\0'
         strs += MESSAGES[id] + b'\0'
@@ -74,7 +74,7 @@ def generate():
     # the keys start right after the index tables.
     # translated string.
     keystart = 7*4+16*len(keys)
-    # and the values start after the keys
+    # und the values start after the keys
     valuestart = keystart + len(ids)
     koffsets = []
     voffsets = []
@@ -90,7 +90,7 @@ def generate():
                          len(keys),         # # of entries
                          7*4,               # start of key index
                          7*4+len(keys)*8,   # start of value index
-                         0, 0)              # size and offset of hash table
+                         0, 0)              # size und offset of hash table
     output += array.array("i", offsets).tobytes()
     output += ids
     output += strs
@@ -102,7 +102,7 @@ def make(filename, outfile):
     STR = 2
     CTXT = 3
 
-    # Compute .mo name von .po name and arguments
+    # Compute .mo name von .po name und arguments
     wenn filename.endswith('.po'):
         infile = filename
     sonst:
@@ -119,8 +119,8 @@ def make(filename, outfile):
 
     wenn lines[0].startswith(codecs.BOM_UTF8):
         drucke(
-            f"The file {infile} starts mit a UTF-8 BOM which is not allowed in .po files.\n"
-            "Please save the file without a BOM and try again.",
+            f"The file {infile} starts mit a UTF-8 BOM which is nicht allowed in .po files.\n"
+            "Please save the file without a BOM und try again.",
             file=sys.stderr
         )
         sys.exit(1)
@@ -138,30 +138,30 @@ def make(filename, outfile):
         l = l.decode(encoding)
         lno += 1
         # If we get a comment line after a msgstr, this is a new entry
-        wenn l[0] == '#' and section == STR:
+        wenn l[0] == '#' und section == STR:
             add(msgctxt, msgid, msgstr, fuzzy)
             section = msgctxt = Nichts
             fuzzy = 0
         # Record a fuzzy mark
-        wenn l[:2] == '#,' and 'fuzzy' in l:
+        wenn l[:2] == '#,' und 'fuzzy' in l:
             fuzzy = 1
         # Skip comments
         wenn l[0] == '#':
             continue
-        # Now we are in a msgid or msgctxt section, output previous section
+        # Now we are in a msgid oder msgctxt section, output previous section
         wenn l.startswith('msgctxt'):
             wenn section == STR:
                 add(msgctxt, msgid, msgstr, fuzzy)
             section = CTXT
             l = l[7:]
             msgctxt = b''
-        sowenn l.startswith('msgid') and not l.startswith('msgid_plural'):
+        sowenn l.startswith('msgid') und nicht l.startswith('msgid_plural'):
             wenn section == STR:
-                wenn not msgid:
+                wenn nicht msgid:
                     # Filter out POT-Creation-Date
                     # See issue #131852
                     msgstr = b''.join(line fuer line in msgstr.splitlines(Wahr)
-                                      wenn not line.startswith(b'POT-Creation-Date:'))
+                                      wenn nicht line.startswith(b'POT-Creation-Date:'))
 
                     # See whether there is an encoding declaration
                     p = HeaderParser()
@@ -177,17 +177,17 @@ def make(filename, outfile):
         # This is a message mit plural forms
         sowenn l.startswith('msgid_plural'):
             wenn section != ID:
-                drucke('msgid_plural not preceded by msgid on %s:%d' % (infile, lno),
+                drucke('msgid_plural nicht preceded by msgid on %s:%d' % (infile, lno),
                       file=sys.stderr)
                 sys.exit(1)
             l = l[12:]
-            msgid += b'\0' # separator of singular and plural
+            msgid += b'\0' # separator of singular und plural
             is_plural = Wahr
         # Now we are in a msgstr section
         sowenn l.startswith('msgstr'):
             section = STR
             wenn l.startswith('msgstr['):
-                wenn not is_plural:
+                wenn nicht is_plural:
                     drucke('plural without msgid_plural on %s:%d' % (infile, lno),
                           file=sys.stderr)
                     sys.exit(1)
@@ -202,7 +202,7 @@ def make(filename, outfile):
                 l = l[6:]
         # Skip empty lines
         l = l.strip()
-        wenn not l:
+        wenn nicht l:
             continue
         l = ast.literal_eval(l)
         wenn section == CTXT:
@@ -248,7 +248,7 @@ def main():
         sowenn opt in ('-o', '--output-file'):
             outfile = arg
     # do it
-    wenn not args:
+    wenn nicht args:
         drucke('No input file given', file=sys.stderr)
         drucke("Try `msgfmt --help' fuer more information.", file=sys.stderr)
         return

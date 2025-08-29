@@ -14,11 +14,11 @@ INVALID_UTF8 = b'\xff'
 
 klasse DictSubclass(dict):
     def __getitem__(self, key):
-        raise RuntimeError('do not get evil')
+        raise RuntimeError('do nicht get evil')
     def __setitem__(self, key, value):
-        raise RuntimeError('do not set evil')
+        raise RuntimeError('do nicht set evil')
     def __delitem__(self, key):
-        raise RuntimeError('do not del evil')
+        raise RuntimeError('do nicht del evil')
 
 def gen():
     yield 'a'
@@ -88,7 +88,7 @@ klasse CAPITest(unittest.TestCase):
         clear(dct)
         self.assertEqual(dct, {})
 
-        # NOTE: It is not safe to call it mit OrderedDict.
+        # NOTE: It is nicht safe to call it mit OrderedDict.
 
         # Has no effect fuer non-dicts.
         dct = UserDict({1: 2})
@@ -495,7 +495,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(dict_pop({}, not_hashable_key), (0, NULL))
         mit self.assertRaises(TypeError):
             dict_pop({'key': 1}, not_hashable_key)
-        dict_pop({}, NULL)  # key is not checked wenn dict is empty
+        dict_pop({}, NULL)  # key is nicht checked wenn dict is empty
 
         # CRASHES dict_pop(NULL, "key")
         # CRASHES dict_pop({"a": 1}, NULL)

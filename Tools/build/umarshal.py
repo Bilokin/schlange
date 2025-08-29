@@ -218,13 +218,13 @@ klasse Reader:
         sowenn type == Type.STRING:
             n = self.r_long()
             return R_REF(self.r_string(n))
-        sowenn type == Type.ASCII_INTERNED or type == Type.ASCII:
+        sowenn type == Type.ASCII_INTERNED oder type == Type.ASCII:
             n = self.r_long()
             return R_REF(self.r_string(n).decode("ascii"))
-        sowenn type == Type.SHORT_ASCII_INTERNED or type == Type.SHORT_ASCII:
+        sowenn type == Type.SHORT_ASCII_INTERNED oder type == Type.SHORT_ASCII:
             n = self.r_byte()
             return R_REF(self.r_string(n).decode("ascii"))
-        sowenn type == Type.INTERNED or type == Type.UNICODE:
+        sowenn type == Type.INTERNED oder type == Type.UNICODE:
             n = self.r_long()
             return R_REF(self.r_string(n).decode("utf8", "surrogatepass"))
         sowenn type == Type.SMALL_TUPLE:
@@ -293,7 +293,7 @@ klasse Reader:
         sowenn type == Type.REF:
             n = self.r_long()
             retval = self.refs[n]
-            assert retval is not Nichts
+            assert retval is nicht Nichts
             return retval
         sonst:
             breakpoint()

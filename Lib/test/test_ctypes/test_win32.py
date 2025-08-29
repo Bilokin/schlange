@@ -15,14 +15,14 @@ von ._support importiere Py_TPFLAGS_DISALLOW_INSTANTIATION, Py_TPFLAGS_IMMUTABLE
 klasse FunctionCallTestCase(unittest.TestCase):
     @unittest.skipUnless('MSC' in sys.version, "SEH only supported by MSC")
     @unittest.skipIf(sys.executable.lower().endswith('_d.exe'),
-                     "SEH not enabled in debug builds")
+                     "SEH nicht enabled in debug builds")
     def test_SEH(self):
         # Disable faulthandler to prevent logging the warning:
         # "Windows fatal exception: access violation"
         kernel32 = ctypes.windll.kernel32
         mit support.disable_faulthandler():
-            # Call functions mit invalid arguments, and make sure
-            # that access violations are trapped and raise an
+            # Call functions mit invalid arguments, und make sure
+            # that access violations are trapped und raise an
             # exception.
             self.assertRaises(OSError, kernel32.GetModuleHandleA, 32)
 
@@ -137,7 +137,7 @@ klasse Structures(unittest.TestCase):
         fuer i in range(4):
             ret = ReturnRect(i, rect, pointer(rect), pt, rect,
                          byref(rect), pt, rect)
-            # the c function will check and modify ret wenn something is
+            # the c function will check und modify ret wenn something is
             # passed in improperly
             self.assertEqual(ret.left, left.value)
             self.assertEqual(ret.right, right.value)

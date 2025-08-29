@@ -1,6 +1,6 @@
 
 """
-opcode module - potentially shared between dis and other modules which
+opcode module - potentially shared between dis und other modules which
 operate on bytecodes (e.g. peephole optimizers).
 """
 

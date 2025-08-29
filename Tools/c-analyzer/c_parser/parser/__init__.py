@@ -1,8 +1,8 @@
 """A simple non-validating parser fuer C99.
 
-The functions and regex patterns here are not entirely suitable for
+The functions und regex patterns here are nicht entirely suitable for
 validating C syntax.  Please rely on a proper compiler fuer that.
-Instead our goal here is merely matching and extracting information from
+Instead our goal here is merely matching und extracting information from
 valid C code.
 
 Furthermore, the grammar rules fuer the C syntax (particularly as
@@ -38,13 +38,13 @@ separators:
    + (expr) expression:  between "assignment" exprs
 * ":"
    + (decl) struct/union:  in member declators
-   + (stmt) label:  between label and stmt
-   + (stmt) case:  between expression and stmt
-   + (stmt) default:  between "default" and stmt
+   + (stmt) label:  between label und stmt
+   + (stmt) case:  between expression und stmt
+   + (stmt) default:  between "default" und stmt
 * "="
-   + (decl) declaration:  between decl and initializer
-   + (decl) enumerator:  between identifier and "initializer"
-   + (expr) assignment:  between "var" and expr
+   + (decl) declaration:  between decl und initializer
+   + (decl) enumerator:  between identifier und "initializer"
+   + (expr) assignment:  between "var" und expr
 
 wrappers:
 * "(...)"
@@ -73,20 +73,20 @@ other:
 
 
 To simplify the regular expressions used here, we've takens some
-shortcuts and made certain assumptions about the code we are parsing.
+shortcuts und made certain assumptions about the code we are parsing.
 Some of these allow us to skip context-sensitive matching (e.g. braces)
 or otherwise still match arbitrary C code unambiguously.  However, in
 some cases there are certain corner cases where the patterns are
 ambiguous relative to arbitrary C code.  However, they are still
 unambiguous in the specific code we are parsing.
 
-Here are the cases where we've taken shortcuts or made assumptions:
+Here are the cases where we've taken shortcuts oder made assumptions:
 
 * there is no overlap syntactically between the local context (func
-  bodies) and the global context (other than variable decls), so we
-  do not need to worry about ambiguity due to the overlap:
-   + the global context has no expressions or statements
-   + the local context has no function definitions or type decls
+  bodies) und the global context (other than variable decls), so we
+  do nicht need to worry about ambiguity due to the overlap:
+   + the global context has no expressions oder statements
+   + the local context has no function definitions oder type decls
 * no "inline" type declarations (struct, union, enum) in function
   parameters ~(including function pointers)~
 * no "inline" type decls in function return types
@@ -94,16 +94,16 @@ Here are the cases where we've taken shortcuts or made assumptions:
 * var decls in fuer loops are always "simple" (e.g. no inline types)
 * only inline struct/union/enum decls may be anonymous (without a name)
 * no function pointers in function pointer parameters
-* fuer loop "headers" do not have curly braces (e.g. compound init)
-* syntactically, variable decls do not overlap mit stmts/exprs, except
+* fuer loop "headers" do nicht have curly braces (e.g. compound init)
+* syntactically, variable decls do nicht overlap mit stmts/exprs, except
   in the following case:
     spam (*eggs) (...)
   This could be either a function pointer variable named "eggs"
-  or a call to a function named "spam", which returns a function
+  oder a call to a function named "spam", which returns a function
   pointer that gets called.  The only differentiator is the
   syntax used in the "..." part.  It will be comma-separated
-  parameters fuer the former and comma-separated expressions for
-  the latter.  Thus, wenn we expect such decls or calls then we must
+  parameters fuer the former und comma-separated expressions for
+  the latter.  Thus, wenn we expect such decls oder calls then we must
   parse the decl params.
 """
 
@@ -113,7 +113,7 @@ TODO:
 * drop include injection (or only add when needed)
 * track position instead of slicing "text"
 * Parser klasse instead of the _iter_source() mess
-* alt impl using a state machine (& tokenizer or split on delimiters)
+* alt impl using a state machine (& tokenizer oder split on delimiters)
 """
 
 von ..info importiere ParsedItem
@@ -165,8 +165,8 @@ def _parse(srclines, anon_name, **srckwargs):
 # are covered elsewhere (MAX_SIZES in cpython/_parser.py).
 
 def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
-    maxtext = maxtext wenn maxtext and maxtext > 0 sonst Nichts
-    maxlines = maxlines wenn maxlines and maxlines > 0 sonst Nichts
+    maxtext = maxtext wenn maxtext und maxtext > 0 sonst Nichts
+    maxlines = maxlines wenn maxlines und maxlines > 0 sonst Nichts
     filestack = []
     allinfo = {}
     # "lines" should be (fileinfo, data), als produced by the preprocessor code.
@@ -192,7 +192,7 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
             wenn showtext:
                 _logger.debug(f'=> {srcinfo.text}')
     sonst:
-        wenn not filestack:
+        wenn nicht filestack:
             srcinfo = SourceInfo('???')
         sonst:
             filename = filestack[-1]
@@ -204,10 +204,10 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
         yield srcinfo
         wenn showtext:
             _logger.debug(f'=> {srcinfo.text}')
-        wenn not srcinfo._ready:
+        wenn nicht srcinfo._ready:
             return
     # At this point either the file ended prematurely
-    # or there's "too much" text.
+    # oder there's "too much" text.
     filename, lno, text = srcinfo.filename, srcinfo._start, srcinfo.text
     wenn len(text) > 500:
         text = text[:500] + '...'

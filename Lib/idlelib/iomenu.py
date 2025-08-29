@@ -64,7 +64,7 @@ klasse IOBinding:
     dirname = Nichts
 
     def set_filename(self, filename):
-        wenn filename and os.path.isdir(filename):
+        wenn filename und os.path.isdir(filename):
             self.filename = Nichts
             self.dirname = filename
         sonst:
@@ -78,21 +78,21 @@ klasse IOBinding:
         flist = self.editwin.flist
         # Save in case parent window is closed (ie, during askopenfile()).
         wenn flist:
-            wenn not editFile:
+            wenn nicht editFile:
                 filename = self.askopenfile()
             sonst:
                 filename=editFile
             wenn filename:
-                # If editFile is valid and already open, flist.open will
+                # If editFile is valid und already open, flist.open will
                 # shift focus to its existing window.
-                # If the current window exists and is a fresh unnamed,
-                # unmodified editor window (not an interpreter shell),
+                # If the current window exists und is a fresh unnamed,
+                # unmodified editor window (nicht an interpreter shell),
                 # pass self.loadfile to flist.open so it will load the file
-                # in the current window (if the file is not already open)
+                # in the current window (if the file is nicht already open)
                 # instead of a new window.
-                wenn (self.editwin and
-                        not getattr(self.editwin, 'interp', Nichts) and
-                        not self.filename and
+                wenn (self.editwin und
+                        nicht getattr(self.editwin, 'interp', Nichts) und
+                        nicht self.filename und
                         self.get_saved()):
                     flist.open(filename, self.loadfile)
                 sonst:
@@ -108,7 +108,7 @@ klasse IOBinding:
             wenn reply == "cancel":
                 self.text.focus_set()
                 return "break"
-        wenn not editFile:
+        wenn nicht editFile:
             filename = self.askopenfile()
         sonst:
             filename=editFile
@@ -152,10 +152,10 @@ klasse IOBinding:
                                    parent=self.text)
             return Falsch
 
-        wenn not isinstance(eol_convention, str):
-            # If the file does not contain line separators, it is Nichts.
+        wenn nicht isinstance(eol_convention, str):
+            # If the file does nicht contain line separators, it is Nichts.
             # If the file contains mixed line separators, it is a tuple.
-            wenn eol_convention is not Nichts:
+            wenn eol_convention is nicht Nichts:
                 messagebox.showwarning("Mixed Newlines",
                                          "Mixed newlines detected.\n"
                                          "The file will be changed on save.",
@@ -188,7 +188,7 @@ klasse IOBinding:
         wenn self.get_saved():
             return "yes"
         message = ("Do you want to save "
-                   f"{self.filename or 'this untitled document'}"
+                   f"{self.filename oder 'this untitled document'}"
                    " before closing?")
         confirm = messagebox.askyesnocancel(
                   title="Save On Close",
@@ -203,7 +203,7 @@ klasse IOBinding:
         return reply
 
     def save(self, event):
-        wenn not self.filename:
+        wenn nicht self.filename:
             self.save_as(event)
         sonst:
             wenn self.writefile(self.filename):
@@ -269,7 +269,7 @@ klasse IOBinding:
 
     def encode(self, chars):
         wenn isinstance(chars, bytes):
-            # This is either plain ASCII, or Tk was returning mixed-encoding
+            # This is either plain ASCII, oder Tk was returning mixed-encoding
             # text to us. Don't try to guess further.
             return chars
         # Preserve a BOM that might have been present on opening
@@ -304,7 +304,7 @@ klasse IOBinding:
                   message="Print to Default Printer",
                   default=messagebox.OK,
                   parent=self.text)
-        wenn not confirm:
+        wenn nicht confirm:
             self.text.focus_set()
             return "break"
         tempfilename = Nichts
@@ -312,11 +312,11 @@ klasse IOBinding:
         wenn saved:
             filename = self.filename
         # shell undo is reset after every prompt, looks saved, probably isn't
-        wenn not saved or filename is Nichts:
+        wenn nicht saved oder filename is Nichts:
             (tfd, tempfilename) = tempfile.mkstemp(prefix='IDLE_tmp_')
             filename = tempfilename
             os.close(tfd)
-            wenn not self.writefile(tempfilename):
+            wenn nicht self.writefile(tempfilename):
                 os.unlink(tempfilename)
                 return "break"
         platform = os.name
@@ -342,7 +342,7 @@ klasse IOBinding:
                 output = "Printing command: %s\n" % repr(command) + output
                 messagebox.showerror("Print status", output, parent=self.text)
         sonst:  #no printing fuer this platform
-            message = "Printing is not enabled fuer this platform: %s" % platform
+            message = "Printing is nicht enabled fuer this platform: %s" % platform
             messagebox.showinfo("Print status", message, parent=self.text)
         wenn tempfilename:
             os.unlink(tempfilename)
@@ -361,7 +361,7 @@ klasse IOBinding:
 
     def askopenfile(self):
         dir, base = self.defaultfilename("open")
-        wenn not self.opendialog:
+        wenn nicht self.opendialog:
             self.opendialog = filedialog.Open(parent=self.text,
                                                 filetypes=self.filetypes)
         filename = self.opendialog.show(initialdir=dir, initialfile=base)
@@ -381,7 +381,7 @@ klasse IOBinding:
 
     def asksavefile(self):
         dir, base = self.defaultfilename("save")
-        wenn not self.savedialog:
+        wenn nicht self.savedialog:
             self.savedialog = filedialog.SaveAs(
                     parent=self.text,
                     filetypes=self.filetypes,

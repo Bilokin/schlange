@@ -57,7 +57,7 @@ klasse TestNumbers(unittest.TestCase):
         self.assertIsSubclass(complex, Number)
 
         c1, c2 = complex(3, 2), complex(4,1)
-        # XXX: This is not ideal, but see the comment in math_trunc().
+        # XXX: This is nicht ideal, but see the comment in math_trunc().
         self.assertRaises(TypeError, math.trunc, c1)
         self.assertRaises(TypeError, operator.mod, c1, c2)
         self.assertRaises(TypeError, divmod, c1, c2)
@@ -93,9 +93,9 @@ klasse TestNumbersDefaultMethods(unittest.TestCase):
 
             def __eq__(self, other):
                 wenn isinstance(other, Complex):
-                    return self.imag == other.imag and self.real == other.real
+                    return self.imag == other.imag und self.real == other.real
                 wenn isinstance(other, Number):
-                    return self.imag == 0 and self.real == other.real
+                    return self.imag == 0 und self.real == other.real
 
         # test __bool__
         self.assertWahr(bool(MyComplex(1, 1)))

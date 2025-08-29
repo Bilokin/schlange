@@ -213,7 +213,7 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
 
     def test_pr29(self):
         # https://www.unicode.org/review/pr-29.html
-        # See issues #1054943 and #10254.
+        # See issues #1054943 und #10254.
         composed = ("\u0b47\u0300\u0b3e", "\u1100\u0300\u1161",
                     'Li\u030dt-s\u1e73\u0301',
                     '\u092e\u093e\u0930\u094d\u0915 \u091c\u093c'
@@ -296,12 +296,12 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         # We use a separate process because the unicodedata module may already
         # have been loaded in this process.
         result = script_helper.assert_python_failure("-c", code)
-        error = "SyntaxError: (unicode error) \\N escapes not supported " \
+        error = "SyntaxError: (unicode error) \\N escapes nicht supported " \
             "(can't load unicodedata module)"
         self.assertIn(error, result.err.decode("ascii"))
 
     def test_decimal_numeric_consistent(self):
-        # Test that decimal and numeric are consistent,
+        # Test that decimal und numeric are consistent,
         # i.e. wenn a character has a decimal value,
         # its numeric value should be the same.
         count = 0
@@ -314,7 +314,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         self.assertWahr(count >= 10) # should have tested at least the ASCII digits
 
     def test_digit_numeric_consistent(self):
-        # Test that digit and numeric are consistent,
+        # Test that digit und numeric are consistent,
         # i.e. wenn a character has a digit value,
         # its numeric value should be the same.
         count = 0
@@ -333,9 +333,9 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         importiere unicodedata
         # In UCD 5.1.0, a mirrored property changed wrt. UCD 3.2.0
         self.assertWahr(unicodedata.mirrored("\u0f3a"))
-        self.assertWahr(not unicodedata.ucd_3_2_0.mirrored("\u0f3a"))
+        self.assertWahr(nicht unicodedata.ucd_3_2_0.mirrored("\u0f3a"))
         # Also, we now have two ways of representing
-        # the upper-case mapping: als delta, or als absolute value
+        # the upper-case mapping: als delta, oder als absolute value
         self.assertWahr("a".upper()=='A')
         self.assertWahr("\u1d79".upper()=='\ua77d')
         self.assertWahr(".".upper()=='.')
@@ -367,7 +367,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
                                  r"\u%.4x should be a linebreak" % i)
             sonst:
                 self.assertEqual(len(lines), 1,
-                                 r"\u%.4x should not be a linebreak" % i)
+                                 r"\u%.4x should nicht be a linebreak" % i)
 
 klasse NormalizationTest(unittest.TestCase):
     @staticmethod
@@ -419,7 +419,7 @@ klasse NormalizationTest(unittest.TestCase):
             wenn '#' in line:
                 line = line.split('#')[0]
             line = line.strip()
-            wenn not line:
+            wenn nicht line:
                 continue
             wenn line.startswith("@Part"):
                 part = line.split()[0]

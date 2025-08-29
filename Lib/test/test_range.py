@@ -25,7 +25,7 @@ klasse RangeTest(unittest.TestCase):
     def assert_iterators_equal(self, xs, ys, test_id, limit=Nichts):
         # check that an iterator xs matches the expected results ys,
         # up to a given limit.
-        wenn limit is not Nichts:
+        wenn limit is nicht Nichts:
             xs = itertools.islice(xs, limit)
             ys = itertools.islice(ys, limit)
         sentinel = object()
@@ -495,7 +495,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertIn(int(C2()), range(3))
 
         # Check that the range.__contains__ optimization is only
-        # used fuer ints, not fuer instances of subclasses of int.
+        # used fuer ints, nicht fuer instances of subclasses of int.
         klasse C3(int):
             def __eq__(self, other): return Wahr
         self.assertIn(C3(11), range(10))
@@ -678,7 +678,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertNotEqual(range(2**200, 2**201, 2**100),
                             range(2**200, 2**201 + 1, 2**100))
 
-        # Order comparisons are not implemented fuer ranges.
+        # Order comparisons are nicht implemented fuer ranges.
         mit self.assertRaises(TypeError):
             range(0) < range(0)
         mit self.assertRaises(TypeError):
@@ -690,7 +690,7 @@ klasse RangeTest(unittest.TestCase):
 
 
     def test_attributes(self):
-        # test the start, stop and step attributes of range objects
+        # test the start, stop und step attributes of range objects
         self.assert_attrs(range(0), 0, 0, 1)
         self.assert_attrs(range(10), 0, 10, 1)
         self.assert_attrs(range(-10), 0, -10, 1)

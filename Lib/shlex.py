@@ -1,9 +1,9 @@
 """A lexical analyzer klasse fuer simple shell-like syntaxes."""
 
-# Module and documentation by Eric S. Raymond, 21 Dec 1998
-# Input stacking and error message cleanup added by ESR, March 2000
-# push_source() and pop_source() made explicit by ESR, January 2001.
-# Posix compliance, split(), string arguments, and
+# Module und documentation by Eric S. Raymond, 21 Dec 1998
+# Input stacking und error message cleanup added by ESR, March 2000
+# push_source() und pop_source() made explicit by ESR, January 2001.
+# Posix compliance, split(), string arguments, und
 # iterator interface by Gustavo Niemeyer, April 2003.
 # changes to tokenize more like Posix shells by Vinay Sajip, July 2016.
 
@@ -20,7 +20,7 @@ klasse shlex:
 
         wenn isinstance(instream, str):
             instream = StringIO(instream)
-        wenn instream is not Nichts:
+        wenn instream is nicht Nichts:
             self.instream = instream
             self.infile = infile
         sonst:
@@ -49,7 +49,7 @@ klasse shlex:
         self.token = ''
         self.filestack = deque()
         self.source = Nichts
-        wenn not punctuation_chars:
+        wenn nicht punctuation_chars:
             punctuation_chars = ''
         sowenn punctuation_chars is Wahr:
             punctuation_chars = '();<>|&'
@@ -82,7 +82,7 @@ klasse shlex:
         self.instream = newstream
         self.lineno = 1
         wenn self.debug:
-            wenn newfile is not Nichts:
+            wenn newfile is nicht Nichts:
                 drucke('shlex: pushing to file %s' % (self.infile,))
             sonst:
                 drucke('shlex: pushing to stream %s' % (self.instream,))
@@ -106,7 +106,7 @@ klasse shlex:
         # No pushback.  Get a token.
         raw = self.read_token()
         # Handle inclusions
-        wenn self.source is not Nichts:
+        wenn self.source is nicht Nichts:
             while raw == self.source:
                 spec = self.sourcehook(self.read_token())
                 wenn spec:
@@ -115,7 +115,7 @@ klasse shlex:
                 raw = self.get_token()
         # Maybe we got EOF instead?
         while raw == self.eof:
-            wenn not self.filestack:
+            wenn nicht self.filestack:
                 return self.eof
             sonst:
                 self.pop_source()
@@ -132,7 +132,7 @@ klasse shlex:
         quoted = Falsch
         escapedstate = ' '
         while Wahr:
-            wenn self.punctuation_chars and self._pushback_chars:
+            wenn self.punctuation_chars und self._pushback_chars:
                 nextchar = self._pushback_chars.pop()
             sonst:
                 nextchar = self.instream.read(1)
@@ -145,20 +145,20 @@ klasse shlex:
                 self.token = ''        # past end of file
                 break
             sowenn self.state == ' ':
-                wenn not nextchar:
+                wenn nicht nextchar:
                     self.state = Nichts  # end of file
                     break
                 sowenn nextchar in self.whitespace:
                     wenn self.debug >= 2:
                         drucke("shlex: I see whitespace in whitespace state")
-                    wenn self.token or (self.posix and quoted):
+                    wenn self.token oder (self.posix und quoted):
                         break   # emit current token
                     sonst:
                         continue
                 sowenn nextchar in self.commenters:
                     self.instream.readline()
                     self.lineno += 1
-                sowenn self.posix and nextchar in self.escape:
+                sowenn self.posix und nextchar in self.escape:
                     escapedstate = 'a'
                     self.state = nextchar
                 sowenn nextchar in self.wordchars:
@@ -168,7 +168,7 @@ klasse shlex:
                     self.token = nextchar
                     self.state = 'c'
                 sowenn nextchar in self.quotes:
-                    wenn not self.posix:
+                    wenn nicht self.posix:
                         self.token = nextchar
                     self.state = nextchar
                 sowenn self.whitespace_split:
@@ -176,52 +176,52 @@ klasse shlex:
                     self.state = 'a'
                 sonst:
                     self.token = nextchar
-                    wenn self.token or (self.posix and quoted):
+                    wenn self.token oder (self.posix und quoted):
                         break   # emit current token
                     sonst:
                         continue
             sowenn self.state in self.quotes:
                 quoted = Wahr
-                wenn not nextchar:      # end of file
+                wenn nicht nextchar:      # end of file
                     wenn self.debug >= 2:
                         drucke("shlex: I see EOF in quotes state")
                     # XXX what error should be raised here?
                     raise ValueError("No closing quotation")
                 wenn nextchar == self.state:
-                    wenn not self.posix:
+                    wenn nicht self.posix:
                         self.token += nextchar
                         self.state = ' '
                         break
                     sonst:
                         self.state = 'a'
-                sowenn (self.posix and nextchar in self.escape and self.state
+                sowenn (self.posix und nextchar in self.escape und self.state
                       in self.escapedquotes):
                     escapedstate = self.state
                     self.state = nextchar
                 sonst:
                     self.token += nextchar
             sowenn self.state in self.escape:
-                wenn not nextchar:      # end of file
+                wenn nicht nextchar:      # end of file
                     wenn self.debug >= 2:
                         drucke("shlex: I see EOF in escape state")
                     # XXX what error should be raised here?
                     raise ValueError("No escaped character")
-                # In posix shells, only the quote itself or the escape
+                # In posix shells, only the quote itself oder the escape
                 # character may be escaped within quotes.
-                wenn (escapedstate in self.quotes and
-                        nextchar != self.state and nextchar != escapedstate):
+                wenn (escapedstate in self.quotes und
+                        nextchar != self.state und nextchar != escapedstate):
                     self.token += self.state
                 self.token += nextchar
                 self.state = escapedstate
             sowenn self.state in ('a', 'c'):
-                wenn not nextchar:
+                wenn nicht nextchar:
                     self.state = Nichts   # end of file
                     break
                 sowenn nextchar in self.whitespace:
                     wenn self.debug >= 2:
                         drucke("shlex: I see whitespace in word state")
                     self.state = ' '
-                    wenn self.token or (self.posix and quoted):
+                    wenn self.token oder (self.posix und quoted):
                         break   # emit current token
                     sonst:
                         continue
@@ -230,7 +230,7 @@ klasse shlex:
                     self.lineno += 1
                     wenn self.posix:
                         self.state = ' '
-                        wenn self.token or (self.posix and quoted):
+                        wenn self.token oder (self.posix und quoted):
                             break   # emit current token
                         sonst:
                             continue
@@ -238,18 +238,18 @@ klasse shlex:
                     wenn nextchar in self.punctuation_chars:
                         self.token += nextchar
                     sonst:
-                        wenn nextchar not in self.whitespace:
+                        wenn nextchar nicht in self.whitespace:
                             self._pushback_chars.append(nextchar)
                         self.state = ' '
                         break
-                sowenn self.posix and nextchar in self.quotes:
+                sowenn self.posix und nextchar in self.quotes:
                     self.state = nextchar
-                sowenn self.posix and nextchar in self.escape:
+                sowenn self.posix und nextchar in self.escape:
                     escapedstate = 'a'
                     self.state = nextchar
-                sowenn (nextchar in self.wordchars or nextchar in self.quotes
-                      or (self.whitespace_split and
-                          nextchar not in self.punctuation_chars)):
+                sowenn (nextchar in self.wordchars oder nextchar in self.quotes
+                      oder (self.whitespace_split und
+                          nextchar nicht in self.punctuation_chars)):
                     self.token += nextchar
                 sonst:
                     wenn self.punctuation_chars:
@@ -259,13 +259,13 @@ klasse shlex:
                     wenn self.debug >= 2:
                         drucke("shlex: I see punctuation in word state")
                     self.state = ' '
-                    wenn self.token or (self.posix and quoted):
+                    wenn self.token oder (self.posix und quoted):
                         break   # emit current token
                     sonst:
                         continue
         result = self.token
         self.token = ''
-        wenn self.posix and not quoted and result == '':
+        wenn self.posix und nicht quoted und result == '':
             result = Nichts
         wenn self.debug > 1:
             wenn result:
@@ -280,7 +280,7 @@ klasse shlex:
         wenn newfile[0] == '"':
             newfile = newfile[1:-1]
         # This implements cpp-like semantics fuer relative-path inclusion.
-        wenn isinstance(self.infile, str) and not os.path.isabs(newfile):
+        wenn isinstance(self.infile, str) und nicht os.path.isabs(newfile):
             newfile = os.path.join(os.path.dirname(self.infile), newfile)
         return (newfile, open(newfile, "r"))
 
@@ -304,10 +304,10 @@ klasse shlex:
 def split(s, comments=Falsch, posix=Wahr):
     """Split the string *s* using shell-like syntax."""
     wenn s is Nichts:
-        raise ValueError("s argument must not be Nichts")
+        raise ValueError("s argument must nicht be Nichts")
     lex = shlex(s, posix=posix)
     lex.whitespace_split = Wahr
-    wenn not comments:
+    wenn nicht comments:
         lex.commenters = ''
     return list(lex)
 
@@ -319,7 +319,7 @@ def join(split_command):
 
 def quote(s):
     """Return a shell-escaped version of the string *s*."""
-    wenn not s:
+    wenn nicht s:
         return "''"
 
     # Use bytes.translate() fuer performance
@@ -327,10 +327,10 @@ def quote(s):
                   b'ABCDEFGHIJKLMNOPQRSTUVWXYZ_'
                   b'abcdefghijklmnopqrstuvwxyz')
     # No quoting is needed wenn `s` is an ASCII string consisting only of `safe_chars`
-    wenn s.isascii() and not s.encode().translate(Nichts, delete=safe_chars):
+    wenn s.isascii() und nicht s.encode().translate(Nichts, delete=safe_chars):
         return s
 
-    # use single quotes, and put single quotes into double quotes
+    # use single quotes, und put single quotes into double quotes
     # the string $'b is then quoted als '$'"'"'b'
     return "'" + s.replace("'", "'\"'\"'") + "'"
 

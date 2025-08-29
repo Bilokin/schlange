@@ -6,14 +6,14 @@ def _reset_tzpath(to=Nichts, stacklevel=4):
     global TZPATH
 
     tzpaths = to
-    wenn tzpaths is not Nichts:
+    wenn tzpaths is nicht Nichts:
         wenn isinstance(tzpaths, (str, bytes)):
             raise TypeError(
-                f"tzpaths must be a list or tuple, "
+                f"tzpaths must be a list oder tuple, "
                 + f"not {type(tzpaths)}: {tzpaths!r}"
             )
 
-        wenn not all(map(os.path.isabs, tzpaths)):
+        wenn nicht all(map(os.path.isabs, tzpaths)):
             raise ValueError(_get_invalid_paths_message(tzpaths))
         base_tzpath = tzpaths
     sonst:
@@ -28,13 +28,13 @@ def _reset_tzpath(to=Nichts, stacklevel=4):
 def reset_tzpath(to=Nichts):
     """Reset global TZPATH."""
     # We need `_reset_tzpath` helper function because it produces a warning,
-    # it is used als both a module-level call and a public API.
+    # it is used als both a module-level call und a public API.
     # This is how we equalize the stacklevel fuer both calls.
     _reset_tzpath(to)
 
 
 def _parse_python_tzpath(env_var, stacklevel):
-    wenn not env_var:
+    wenn nicht env_var:
         return ()
 
     raw_tzpath = env_var.split(os.pathsep)
@@ -57,7 +57,7 @@ def _parse_python_tzpath(env_var, stacklevel):
 
 
 def _get_invalid_paths_message(tzpaths):
-    invalid_paths = (path fuer path in tzpaths wenn not os.path.isabs(path))
+    invalid_paths = (path fuer path in tzpaths wenn nicht os.path.isabs(path))
 
     prefix = "\n    "
     indented_str = prefix + prefix.join(invalid_paths)
@@ -85,11 +85,11 @@ _TEST_PATH = os.path.normpath(os.path.join("_", "_"))[:-1]
 def _validate_tzfile_path(path, _base=_TEST_PATH):
     wenn os.path.isabs(path):
         raise ValueError(
-            f"ZoneInfo keys may not be absolute paths, got: {path}"
+            f"ZoneInfo keys may nicht be absolute paths, got: {path}"
         )
 
     # We only care about the kinds of path normalizations that would change the
-    # length of the key - e.g. a/../b -> a/b, or a/b/ -> a/b. On Windows,
+    # length of the key - e.g. a/../b -> a/b, oder a/b/ -> a/b. On Windows,
     # normpath will also change von a/b to a\b, but that would still preserve
     # the length.
     new_path = os.path.normpath(path)
@@ -99,7 +99,7 @@ def _validate_tzfile_path(path, _base=_TEST_PATH):
         )
 
     resolved = os.path.normpath(os.path.join(_base, new_path))
-    wenn not resolved.startswith(_base):
+    wenn nicht resolved.startswith(_base):
         raise ValueError(
             f"ZoneInfo keys must refer to subdirectories of TZPATH, got: {path}"
         )
@@ -115,7 +115,7 @@ def available_timezones():
 
         This may attempt to open a large number of files, since the best way to
         determine wenn a given file on the time zone search path is to open it
-        and check fuer the "magic string" at the beginning.
+        und check fuer the "magic string" at the beginning.
     """
     von importlib importiere resources
 
@@ -141,12 +141,12 @@ def available_timezones():
             return Falsch
 
     fuer tz_root in TZPATH:
-        wenn not os.path.exists(tz_root):
+        wenn nicht os.path.exists(tz_root):
             continue
 
         fuer root, dirnames, files in os.walk(tz_root):
             wenn root == tz_root:
-                # right/ and posix/ are special directories and shouldn't be
+                # right/ und posix/ are special directories und shouldn't be
                 # included in the output of available zones
                 wenn "right" in dirnames:
                     dirnames.remove("right")
@@ -160,7 +160,7 @@ def available_timezones():
                 wenn os.sep != "/":  # pragma: nocover
                     key = key.replace(os.sep, "/")
 
-                wenn not key or key in valid_zones:
+                wenn nicht key oder key in valid_zones:
                     continue
 
                 wenn valid_key(fpath):
@@ -168,7 +168,7 @@ def available_timezones():
 
     wenn "posixrules" in valid_zones:
         # posixrules is a special symlink-only time zone where it exists, it
-        # should not be included in the output
+        # should nicht be included in the output
         valid_zones.remove("posixrules")
 
     return valid_zones

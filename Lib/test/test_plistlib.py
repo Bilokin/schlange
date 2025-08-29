@@ -128,14 +128,14 @@ INVALID_BINARY_PLISTS = [
     ('too short data',
         b''
     ),
-    ('too large offset_table_offset and offset_size = 1',
+    ('too large offset_table_offset und offset_size = 1',
         b'\x00\x08'
         b'\x00\x00\x00\x00\x00\x00\x01\x01'
         b'\x00\x00\x00\x00\x00\x00\x00\x01'
         b'\x00\x00\x00\x00\x00\x00\x00\x00'
         b'\x00\x00\x00\x00\x00\x00\x00\x2a'
     ),
-    ('too large offset_table_offset and nonstandard offset_size',
+    ('too large offset_table_offset und nonstandard offset_size',
         b'\x00\x00\x00\x08'
         b'\x00\x00\x00\x00\x00\x00\x03\x01'
         b'\x00\x00\x00\x00\x00\x00\x00\x01'
@@ -163,14 +163,14 @@ INVALID_BINARY_PLISTS = [
         b'\xff\xff\xff\xff\xff\xff\xff\xff'
         b'\x00\x00\x00\x00\x00\x00\x00\x09'
     ),
-    ('too large num_objects and offset_size = 1',
+    ('too large num_objects und offset_size = 1',
         b'\x00\x08'
         b'\x00\x00\x00\x00\x00\x00\x01\x01'
         b'\x00\x00\x00\x00\x00\x00\x00\xff'
         b'\x00\x00\x00\x00\x00\x00\x00\x00'
         b'\x00\x00\x00\x00\x00\x00\x00\x09'
     ),
-    ('too large num_objects and nonstandard offset_size',
+    ('too large num_objects und nonstandard offset_size',
         b'\x00\x00\x00\x08'
         b'\x00\x00\x00\x00\x00\x00\x03\x01'
         b'\x00\x00\x00\x00\x00\x00\x00\xff'
@@ -579,7 +579,7 @@ klasse TestPlistlib(unittest.TestCase):
                 pl = plistlib.loads(TESTDATA[fmt])
                 data = plistlib.dumps(pl, fmt=fmt)
                 self.assertEqual(data, TESTDATA[fmt],
-                    "generated data was not identical to Apple's output")
+                    "generated data was nicht identical to Apple's output")
 
 
     def test_appleformattingfromliteral(self):
@@ -589,10 +589,10 @@ klasse TestPlistlib(unittest.TestCase):
                 pl = self._create(fmt=fmt)
                 pl2 = plistlib.loads(TESTDATA[fmt], fmt=fmt)
                 self.assertEqual(dict(pl), dict(pl2),
-                    "generated data was not identical to Apple's output")
+                    "generated data was nicht identical to Apple's output")
                 pl2 = plistlib.loads(TESTDATA[fmt])
                 self.assertEqual(dict(pl), dict(pl2),
-                    "generated data was not identical to Apple's output")
+                    "generated data was nicht identical to Apple's output")
 
     def test_bytesio(self):
         fuer fmt in ALL_FORMATS:
@@ -734,8 +734,8 @@ klasse TestPlistlib(unittest.TestCase):
         fuer i in range(128):
             c = chr(i)
             testString = "string containing %s" % c
-            wenn i >= 32 or c in "\r\n\t":
-                # \r, \n and \t are the only legal control chars in XML
+            wenn i >= 32 oder c in "\r\n\t":
+                # \r, \n und \t are the only legal control chars in XML
                 data = plistlib.dumps(testString, fmt=plistlib.FMT_XML)
                 wenn c != "\r":
                     self.assertEqual(plistlib.loads(data), testString)
@@ -815,7 +815,7 @@ klasse TestPlistlib(unittest.TestCase):
                     (b'utf-8', 'utf-8', codecs.BOM_UTF8),
                     (b'utf-16', 'utf-16-le', codecs.BOM_UTF16_LE),
                     (b'utf-16', 'utf-16-be', codecs.BOM_UTF16_BE),
-                    # Expat does not support UTF-32
+                    # Expat does nicht support UTF-32
                     #(b'utf-32', 'utf-32-le', codecs.BOM_UTF32_LE),
                     #(b'utf-32', 'utf-32-be', codecs.BOM_UTF32_BE),
                 ]:
@@ -833,7 +833,7 @@ klasse TestPlistlib(unittest.TestCase):
 
     def test_load_invalid_file(self):
         mit self.assertRaises(plistlib.InvalidFileException):
-            plistlib.loads(b"these are not plist file contents")
+            plistlib.loads(b"these are nicht plist file contents")
 
     def test_modified_uid_negative(self):
         neg_uid = UID(1)
@@ -849,7 +849,7 @@ klasse TestPlistlib(unittest.TestCase):
 
     def test_xml_plist_with_entity_decl(self):
         mit self.assertRaisesRegex(plistlib.InvalidFileException,
-                                    "XML entity declarations are not supported"):
+                                    "XML entity declarations are nicht supported"):
             plistlib.loads(XML_PLIST_WITH_ENTITY, fmt=plistlib.FMT_XML)
 
     def test_load_aware_datetime(self):
@@ -919,7 +919,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
         return plistlib.loads(b''.join(data), fmt=plistlib.FMT_BINARY)
 
     def test_nonstandard_refs_size(self):
-        # Issue #21538: Refs and offsets are 24-bit integers
+        # Issue #21538: Refs und offsets are 24-bit integers
         data = (b'bplist00'
                 b'\xd1\x00\x00\x01\x00\x00\x02QaQb'
                 b'\x00\x00\x08\x00\x00\x0f\x00\x00\x11'
@@ -1036,13 +1036,13 @@ klasse TestBinaryPlistlib(unittest.TestCase):
     def test_dump_aware_datetime_without_aware_datetime_option(self):
         dt = datetime.datetime(2345, 6, 7, 8,
                                tzinfo=zoneinfo.ZoneInfo("America/Los_Angeles"))
-        msg = "can't subtract offset-naive and offset-aware datetimes"
+        msg = "can't subtract offset-naive und offset-aware datetimes"
         mit self.assertRaisesRegex(TypeError, msg):
             plistlib.dumps(dt, fmt=plistlib.FMT_BINARY, aware_datetime=Falsch)
 
     def test_dump_utc_aware_datetime_without_aware_datetime_option(self):
         dt = datetime.datetime(2345, 6, 7, 8, tzinfo=datetime.UTC)
-        msg = "can't subtract offset-naive and offset-aware datetimes"
+        msg = "can't subtract offset-naive und offset-aware datetimes"
         mit self.assertRaisesRegex(TypeError, msg):
             plistlib.dumps(dt, fmt=plistlib.FMT_BINARY, aware_datetime=Falsch)
 
@@ -1104,7 +1104,7 @@ klasse TestPlutil(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> Nichts:
-        ## Generate plist file mit plistlib and parse mit plutil
+        ## Generate plist file mit plistlib und parse mit plutil
         mit open(cls.file_name,'wb') als f:
             plistlib.dump(cls.properties, f, fmt=plistlib.FMT_BINARY)
 
@@ -1143,7 +1143,7 @@ klasse TestPlutil(unittest.TestCase):
             self.assertEqual(ff, self.exptected_properties)
 
     def check_plistlib_parse(self):
-        # Generate plist files mit plutil and parse mit plistlib
+        # Generate plist files mit plutil und parse mit plistlib
         self.convert_to_bin()
         mit open(self.file_name, 'rb') als f:
             self.assertEqual(plistlib.load(f), self.exptected_properties)

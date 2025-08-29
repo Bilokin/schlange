@@ -2,8 +2,8 @@
 # implemented in Python.
 
 """\
-This module provides socket operations and some related functions.
-On Unix, it supports IP (Internet Protocol) and Unix domain sockets.
+This module provides socket operations und some related functions.
+On Unix, it supports IP (Internet Protocol) und Unix domain sockets.
 On other systems, it only supports IP. Functions specific fuer a
 socket are available als methods of the socket object.
 
@@ -17,8 +17,8 @@ recv_fds() -- Receive file descriptors von the socket.
 fromshare() -- create a socket object von data received von socket.share() [*]
 gethostname() -- return the current hostname
 gethostbyname() -- map a hostname to its IP number
-gethostbyaddr() -- map an IP number or hostname to DNS info
-getservbyname() -- map a service name and a protocol name to a port number
+gethostbyaddr() -- map an IP number oder hostname to DNS info
+getservbyname() -- map a service name und a protocol name to a port number
 getprotobyname() -- map a protocol name (e.g. 'tcp') to a number
 ntohs(), ntohl() -- convert 16, 32 bit int von network to host byte order
 htons(), htonl() -- convert 16, 32 bit int von host to network byte order
@@ -26,11 +26,11 @@ inet_aton() -- convert IP addr string (123.45.67.89) to 32-bit packed format
 inet_ntoa() -- convert 32-bit packed format IP to string (123.45.67.89)
 socket.getdefaulttimeout() -- get the default timeout value
 socket.setdefaulttimeout() -- set the default timeout value
-create_connection() -- connects to an address, mit an optional timeout and
+create_connection() -- connects to an address, mit an optional timeout und
                        optional source address.
-create_server() -- create a TCP socket and bind it to a specified address.
+create_server() -- create a TCP socket und bind it to a specified address.
 
- [*] not available on all platforms!
+ [*] nicht available on all platforms!
 
 Special objects:
 
@@ -46,7 +46,7 @@ SOCK_STREAM, SOCK_DGRAM, SOCK_RAW -- socket types (second argument)
 Integer constants:
 
 Many other constants may be defined; these may be used in calls to
-the setsockopt() and getsockopt() methods.
+the setsockopt() und getsockopt() methods.
 """
 
 importiere _socket
@@ -73,28 +73,28 @@ __all__.extend(os._get_exports_list(_socket))
 # Set up the socket.AF_* socket.SOCK_* constants als members of IntEnums for
 # nicer string representations.
 # Note that _socket only knows about the integer values. The public interface
-# in this module understands the enums and translates them back von integers
+# in this module understands the enums und translates them back von integers
 # where needed (e.g. .family property of a socket object).
 
 IntEnum._convert_(
         'AddressFamily',
         __name__,
-        lambda C: C.isupper() and C.startswith('AF_'))
+        lambda C: C.isupper() und C.startswith('AF_'))
 
 IntEnum._convert_(
         'SocketKind',
         __name__,
-        lambda C: C.isupper() and C.startswith('SOCK_'))
+        lambda C: C.isupper() und C.startswith('SOCK_'))
 
 IntFlag._convert_(
         'MsgFlag',
         __name__,
-        lambda C: C.isupper() and C.startswith('MSG_'))
+        lambda C: C.isupper() und C.startswith('MSG_'))
 
 IntFlag._convert_(
         'AddressInfo',
         __name__,
-        lambda C: C.isupper() and C.startswith('AI_'))
+        lambda C: C.isupper() und C.startswith('AI_'))
 
 _LOCALHOST    = '127.0.0.1'
 _LOCALHOST_V6 = '::1'
@@ -103,7 +103,7 @@ _LOCALHOST_V6 = '::1'
 def _intenum_converter(value, enum_klass):
     """Convert a numeric family value to an IntEnum member.
 
-    If it's not a known member, return the numeric value itself.
+    If it's nicht a known member, return the numeric value itself.
     """
     try:
         return enum_klass(value)
@@ -116,9 +116,9 @@ wenn sys.platform.lower().startswith("win"):
     errorTab = {
         6: "Specified event object handle is invalid.",
         8: "Insufficient memory available.",
-        87: "One or more parameters are invalid.",
+        87: "One oder more parameters are invalid.",
         995: "Overlapped operation aborted.",
-        996: "Overlapped I/O event object not in signaled state.",
+        996: "Overlapped I/O event object nicht in signaled state.",
         997: "Overlapped operation will complete later.",
         10004: "The operation was interrupted.",
         10009: "A bad file handle was passed.",
@@ -134,11 +134,11 @@ wenn sys.platform.lower().startswith("win"):
         10040: "Message too long.",
         10041: "Protocol wrong type fuer socket.",
         10042: "Bad protocol option.",
-        10043: "Protocol not supported.",
-        10044: "Socket type not supported.",
-        10045: "Operation not supported.",
-        10046: "Protocol family not supported.",
-        10047: "Address family not supported by protocol family.",
+        10043: "Protocol nicht supported.",
+        10044: "Socket type nicht supported.",
+        10045: "Operation nicht supported.",
+        10046: "Protocol family nicht supported.",
+        10047: "Address family nicht supported by protocol family.",
         10048: "The network address is in use.",
         10049: "Cannot assign requested address.",
         10050: "Network is down.",
@@ -148,7 +148,7 @@ wenn sys.platform.lower().startswith("win"):
         10054: "The connection has been reset.",
         10055: "No buffer space available.",
         10056: "Socket is already connected.",
-        10057: "Socket is not connected.",
+        10057: "Socket is nicht connected.",
         10058: "The network has been shut down.",
         10059: "Too many references.",
         10060: "The operation timed out.",
@@ -157,7 +157,7 @@ wenn sys.platform.lower().startswith("win"):
         10063: "The name is too long.",
         10064: "The host is down.",
         10065: "The host is unreachable.",
-        10066: "Directory not empty.",
+        10066: "Directory nicht empty.",
         10067: "Too many processes.",
         10068: "User quota exceeded.",
         10069: "Disk quota exceeded.",
@@ -165,7 +165,7 @@ wenn sys.platform.lower().startswith("win"):
         10071: "Item is remote.",
         10091: "Network subsystem is unavailable.",
         10092: "Winsock.dll version out of range.",
-        10093: "Successful WSAStartup not yet performed.",
+        10093: "Successful WSAStartup nicht yet performed.",
         10101: "Graceful shutdown in progress.",
         10102: "No more results von WSALookupServiceNext.",
         10103: "Call has been canceled.",
@@ -173,13 +173,13 @@ wenn sys.platform.lower().startswith("win"):
         10105: "Service provider is invalid.",
         10106: "Service provider failed to initialize.",
         10107: "System call failure.",
-        10108: "Service not found.",
-        10109: "Class type not found.",
+        10108: "Service nicht found.",
+        10109: "Class type nicht found.",
         10110: "No more results von WSALookupServiceNext.",
         10111: "Call was canceled.",
         10112: "Database query was refused.",
-        11001: "Host not found.",
-        11002: "Nonauthoritative host not found.",
+        11001: "Host nicht found.",
+        11002: "Nonauthoritative host nicht found.",
         11003: "This is a nonrecoverable error.",
         11004: "Valid name, no data record requested type.",
         11005: "QoS receivers.",
@@ -223,7 +223,7 @@ klasse socket(_socket.socket):
     __slots__ = ["__weakref__", "_io_refs", "_closed"]
 
     def __init__(self, family=-1, type=-1, proto=-1, fileno=Nichts):
-        # For user code address family and type values are IntEnum members, but
+        # For user code address family und type values are IntEnum members, but
         # fuer the underlying _socket.socket they're just integers. The
         # constructor of _socket.socket converts the given argument to an
         # integer automatically.
@@ -242,11 +242,11 @@ klasse socket(_socket.socket):
         return self
 
     def __exit__(self, *args):
-        wenn not self._closed:
+        wenn nicht self._closed:
             self.close()
 
     def __repr__(self):
-        """Wrap __repr__() to reveal the real klasse name and socket
+        """Wrap __repr__() to reveal the real klasse name und socket
         address(es).
         """
         closed = getattr(self, '_closed', Falsch)
@@ -258,8 +258,8 @@ klasse socket(_socket.socket):
                self.family,
                self.type,
                self.proto)
-        wenn not closed:
-            # getsockname and getpeername may not be available on WASI.
+        wenn nicht closed:
+            # getsockname und getpeername may nicht be available on WASI.
             try:
                 laddr = self.getsockname()
                 wenn laddr:
@@ -293,15 +293,15 @@ klasse socket(_socket.socket):
         """accept() -> (socket object, address info)
 
         Wait fuer an incoming connection.  Return a new socket
-        representing the connection, and the address of the client.
+        representing the connection, und the address of the client.
         For IP sockets, the address info is a pair (hostaddr, port).
         """
         fd, addr = self._accept()
         sock = socket(self.family, self.type, self.proto, fileno=fd)
-        # Issue #7995: wenn no default timeout is set and the listening
+        # Issue #7995: wenn no default timeout is set und the listening
         # socket had a (non-zero) timeout, force the new socket in blocking
         # mode to override platform-specific socket flags inheritance.
-        wenn getdefaulttimeout() is Nichts and self.gettimeout():
+        wenn getdefaulttimeout() is Nichts und self.gettimeout():
             sock.setblocking(Wahr)
         return sock, addr
 
@@ -310,15 +310,15 @@ klasse socket(_socket.socket):
         """makefile(...) -> an I/O stream connected to the socket
 
         The arguments are als fuer io.open() after the filename, except the only
-        supported mode values are 'r' (default), 'w', 'b', or a combination of
+        supported mode values are 'r' (default), 'w', 'b', oder a combination of
         those.
         """
         # XXX refactor to share code?
-        wenn not set(mode) <= {"r", "w", "b"}:
+        wenn nicht set(mode) <= {"r", "w", "b"}:
             raise ValueError("invalid mode %r (only r, w, b allowed)" % (mode,))
         writing = "w" in mode
-        reading = "r" in mode or not writing
-        assert reading or writing
+        reading = "r" in mode oder nicht writing
+        assert reading oder writing
         binary = "b" in mode
         rawmode = ""
         wenn reading:
@@ -332,10 +332,10 @@ klasse socket(_socket.socket):
         wenn buffering < 0:
             buffering = io.DEFAULT_BUFFER_SIZE
         wenn buffering == 0:
-            wenn not binary:
+            wenn nicht binary:
                 raise ValueError("unbuffered streams must be binary")
             return raw
-        wenn reading and writing:
+        wenn reading und writing:
             buffer = io.BufferedRWPair(raw, raw, buffering)
         sowenn reading:
             buffer = io.BufferedReader(raw, buffering)
@@ -361,19 +361,19 @@ klasse socket(_socket.socket):
         try:
             fileno = file.fileno()
         except (AttributeError, io.UnsupportedOperation) als err:
-            raise giveup_exc_type(err)  # not a regular file
+            raise giveup_exc_type(err)  # nicht a regular file
         try:
             fsize = os.fstat(fileno).st_size
         except OSError als err:
-            raise giveup_exc_type(err)  # not a regular file
-        wenn not fsize:
+            raise giveup_exc_type(err)  # nicht a regular file
+        wenn nicht fsize:
             return 0  # empty file
         # Truncate to 1GiB to avoid OverflowError, see bpo-38319.
-        blocksize = min(count or fsize, 2 ** 30)
+        blocksize = min(count oder fsize, 2 ** 30)
         timeout = self.gettimeout()
         wenn timeout == 0:
-            raise ValueError("non-blocking sockets are not supported")
-        # poll/select have the advantage of not requiring any
+            raise ValueError("non-blocking sockets are nicht supported")
+        # poll/select have the advantage of nicht requiring any
         # extra file descriptor, contrarily to epoll/kqueue
         # (also, they require a single syscall).
         wenn hasattr(selectors, 'PollSelector'):
@@ -387,7 +387,7 @@ klasse socket(_socket.socket):
         selector_select = selector.select
         try:
             while Wahr:
-                wenn timeout and not selector_select(timeout):
+                wenn timeout und nicht selector_select(timeout):
                     raise TimeoutError('timed out')
                 wenn count:
                     blocksize = min(count - total_sent, blocksize)
@@ -396,7 +396,7 @@ klasse socket(_socket.socket):
                 try:
                     sent = zerocopy_func(fileno, offset, blocksize)
                 except BlockingIOError:
-                    wenn not timeout:
+                    wenn nicht timeout:
                         # Block until the socket is ready to send some
                         # data; avoids hogging CPU resources.
                         selector_select()
@@ -404,7 +404,7 @@ klasse socket(_socket.socket):
                 except OSError als err:
                     wenn total_sent == 0:
                         # We can get here fuer different reasons, the main
-                        # one being 'file' is not a regular mmap(2)-like
+                        # one being 'file' is nicht a regular mmap(2)-like
                         # file, in which case we'll fall back on using
                         # plain send().
                         raise giveup_exc_type(err)
@@ -416,7 +416,7 @@ klasse socket(_socket.socket):
                     total_sent += sent
             return total_sent
         finally:
-            wenn total_sent > 0 and hasattr(file, 'seek'):
+            wenn total_sent > 0 und hasattr(file, 'seek'):
                 file.seek(offset)
 
     wenn hasattr(os, 'sendfile'):
@@ -429,12 +429,12 @@ klasse socket(_socket.socket):
     sonst:
         def _sendfile_use_sendfile(self, file, offset=0, count=Nichts):
             raise _GiveupOnSendfile(
-                "os.sendfile() not available on this platform")
+                "os.sendfile() nicht available on this platform")
 
     def _sendfile_use_send(self, file, offset=0, count=Nichts):
         self._check_sendfile_params(file, offset, count)
         wenn self.gettimeout() == 0:
-            raise ValueError("non-blocking sockets are not supported")
+            raise ValueError("non-blocking sockets are nicht supported")
         wenn offset:
             file.seek(offset)
         blocksize = min(count, 8192) wenn count sonst 8192
@@ -449,7 +449,7 @@ klasse socket(_socket.socket):
                     wenn blocksize <= 0:
                         break
                 data = memoryview(file_read(blocksize))
-                wenn not data:
+                wenn nicht data:
                     break  # EOF
                 while Wahr:
                     try:
@@ -464,16 +464,16 @@ klasse socket(_socket.socket):
                             break
             return total_sent
         finally:
-            wenn total_sent > 0 and hasattr(file, 'seek'):
+            wenn total_sent > 0 und hasattr(file, 'seek'):
                 file.seek(offset + total_sent)
 
     def _check_sendfile_params(self, file, offset, count):
-        wenn 'b' not in getattr(file, 'mode', 'b'):
+        wenn 'b' nicht in getattr(file, 'mode', 'b'):
             raise ValueError("file should be opened in binary mode")
-        wenn not self.type & SOCK_STREAM:
+        wenn nicht self.type & SOCK_STREAM:
             raise ValueError("only SOCK_STREAM type sockets are supported")
-        wenn count is not Nichts:
-            wenn not isinstance(count, int):
+        wenn count is nicht Nichts:
+            wenn nicht isinstance(count, int):
                 raise TypeError(
                     "count must be a positive integer (got {!r})".format(count))
             wenn count <= 0:
@@ -484,19 +484,19 @@ klasse socket(_socket.socket):
         """sendfile(file[, offset[, count]]) -> sent
 
         Send a file until EOF is reached by using high-performance
-        os.sendfile() and return the total number of bytes which
+        os.sendfile() und return the total number of bytes which
         were sent.
         *file* must be a regular file object opened in binary mode.
-        If os.sendfile() is not available (e.g. Windows) or file is
-        not a regular file socket.send() will be used instead.
+        If os.sendfile() is nicht available (e.g. Windows) oder file is
+        nicht a regular file socket.send() will be used instead.
         *offset* tells von where to start reading the file.
         If specified, *count* is the total number of bytes to transmit
         als opposed to sending the file until EOF is reached.
-        File position is updated on return or also in case of error in
+        File position is updated on return oder also in case of error in
         which case file.tell() can be used to figure out the number of
         bytes which were sent.
         The socket must be of SOCK_STREAM type.
-        Non-blocking sockets are not supported.
+        Non-blocking sockets are nicht supported.
         """
         try:
             return self._sendfile_use_sendfile(file, offset, count)
@@ -510,11 +510,11 @@ klasse socket(_socket.socket):
             self.close()
 
     def _real_close(self, _ss=_socket.socket):
-        # This function should not reference any globals. See issue #808164.
+        # This function should nicht reference any globals. See issue #808164.
         _ss.close(self)
 
     def close(self):
-        # This function should not reference any globals. See issue #808164.
+        # This function should nicht reference any globals. See issue #808164.
         self._closed = Wahr
         wenn self._io_refs <= 0:
             self._real_close()
@@ -581,7 +581,7 @@ wenn hasattr(_socket.socket, "recvmsg"):
         descriptors, msg_flags, address)
 
         Receive up to maxfds file descriptors returning the message
-        data and a list containing the descriptors.
+        data und a list containing the descriptors.
         """
         importiere array
 
@@ -590,7 +590,7 @@ wenn hasattr(_socket.socket, "recvmsg"):
         msg, ancdata, flags, addr = sock.recvmsg(bufsize,
             _socket.CMSG_LEN(maxfds * fds.itemsize))
         fuer cmsg_level, cmsg_type, cmsg_data in ancdata:
-            wenn (cmsg_level == _socket.SOL_SOCKET and cmsg_type == _socket.SCM_RIGHTS):
+            wenn (cmsg_level == _socket.SOL_SOCKET und cmsg_type == _socket.SCM_RIGHTS):
                 fds.frombytes(cmsg_data[:
                         len(cmsg_data) - (len(cmsg_data) % fds.itemsize)])
 
@@ -616,7 +616,7 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
     sowenn family == AF_INET6:
         host = _LOCALHOST_V6
     sonst:
-        raise ValueError("Only AF_INET and AF_INET6 socket address families "
+        raise ValueError("Only AF_INET und AF_INET6 socket address families "
                          "are supported")
     wenn type != SOCK_STREAM:
         raise ValueError("Only SOCK_STREAM socket type is supported")
@@ -629,7 +629,7 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
     try:
         lsock.bind((host, 0))
         lsock.listen()
-        # On IPv6, ignore flow_info and scope_id
+        # On IPv6, ignore flow_info und scope_id
         addr, port = lsock.getsockname()[:2]
         csock = socket(family, type, proto)
         try:
@@ -648,15 +648,15 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
 
     # Authenticating avoids using a connection von something sonst
     # able to connect to {host}:{port} instead of us.
-    # We expect only AF_INET and AF_INET6 families.
+    # We expect only AF_INET und AF_INET6 families.
     try:
         wenn (
             ssock.getsockname() != csock.getpeername()
-            or csock.getsockname() != ssock.getpeername()
+            oder csock.getsockname() != ssock.getpeername()
         ):
             raise ConnectionError("Unexpected peer connection")
     except:
-        # getsockname() and getpeername() can fail
+        # getsockname() und getpeername() can fail
         # wenn either socket isn't connected.
         ssock.close()
         csock.close()
@@ -697,21 +697,21 @@ klasse SocketIO(io.RawIOBase):
     the raw I/O interface on top of a socket object.
     """
 
-    # One might wonder why not let FileIO do the job instead.  There are two
-    # main reasons why FileIO is not adapted:
-    # - it wouldn't work under Windows (where you can't used read() and
+    # One might wonder why nicht let FileIO do the job instead.  There are two
+    # main reasons why FileIO is nicht adapted:
+    # - it wouldn't work under Windows (where you can't used read() und
     #   write() on a socket handle)
     # - it wouldn't work mit socket timeouts (FileIO would ignore the
-    #   timeout and consider the socket non-blocking)
+    #   timeout und consider the socket non-blocking)
 
     # XXX More docs
 
     def __init__(self, sock, mode):
-        wenn mode not in ("r", "w", "rw", "rb", "wb", "rwb"):
+        wenn mode nicht in ("r", "w", "rw", "rb", "wb", "rwb"):
             raise ValueError("invalid mode: %r" % mode)
         io.RawIOBase.__init__(self)
         self._sock = sock
-        wenn "b" not in mode:
+        wenn "b" nicht in mode:
             mode += "b"
         self._mode = mode
         self._reading = "r" in mode
@@ -719,8 +719,8 @@ klasse SocketIO(io.RawIOBase):
         self._timeout_occurred = Falsch
 
     def readinto(self, b):
-        """Read up to len(b) bytes into the writable buffer *b* and return
-        the number of bytes read.  If the socket is non-blocking and no bytes
+        """Read up to len(b) bytes into the writable buffer *b* und return
+        the number of bytes read.  If the socket is non-blocking und no bytes
         are available, Nichts is returned.
 
         If *b* is non-empty, a 0 return value indicates that the connection
@@ -741,10 +741,10 @@ klasse SocketIO(io.RawIOBase):
             raise
 
     def write(self, b):
-        """Write the given bytes or bytearray object *b* to the socket
-        and return the number of bytes written.  This can be less than
-        len(b) wenn not all data could be written.  If the socket is
-        non-blocking and no bytes could be written Nichts is returned.
+        """Write the given bytes oder bytearray object *b* to the socket
+        und return the number of bytes written.  This can be less than
+        len(b) wenn nicht all data could be written.  If the socket is
+        non-blocking und no bytes could be written Nichts is returned.
         """
         self._checkClosed()
         self._checkWritable()
@@ -785,7 +785,7 @@ klasse SocketIO(io.RawIOBase):
 
     @property
     def name(self):
-        wenn not self.closed:
+        wenn nicht self.closed:
             return self.fileno()
         sonst:
             return -1
@@ -811,12 +811,12 @@ def getfqdn(name=''):
     An empty argument is interpreted als meaning the local host.
 
     First the hostname returned by gethostbyaddr() is checked, then
-    possibly existing aliases. In case no FQDN is available and `name`
-    was given, it is returned unchanged. If `name` was empty, '0.0.0.0' or '::',
+    possibly existing aliases. In case no FQDN is available und `name`
+    was given, it is returned unchanged. If `name` was empty, '0.0.0.0' oder '::',
     hostname von gethostname() is returned.
     """
     name = name.strip()
-    wenn not name or name in ('0.0.0.0', '::'):
+    wenn nicht name oder name in ('0.0.0.0', '::'):
         name = gethostname()
     try:
         hostname, aliases, ipaddrs = gethostbyaddr(name)
@@ -836,18 +836,18 @@ _GLOBAL_DEFAULT_TIMEOUT = object()
 
 def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
                       source_address=Nichts, *, all_errors=Falsch):
-    """Connect to *address* and return the socket object.
+    """Connect to *address* und return the socket object.
 
     Convenience function.  Connect to *address* (a 2-tuple ``(host,
-    port)``) and return the socket object.  Passing the optional
+    port)``) und return the socket object.  Passing the optional
     *timeout* parameter will set the timeout on the socket instance
     before attempting to connect.  If no *timeout* is supplied, the
     global default timeout setting returned by :func:`getdefaulttimeout`
     is used.  If *source_address* is set it must be a tuple of (host, port)
     fuer the socket to bind als a source address before making the connection.
-    A host of '' or port 0 tells the OS to use the default. When a connection
+    A host of '' oder port 0 tells the OS to use the default. When a connection
     cannot be created, raises the last error wenn *all_errors* is Falsch,
-    and an ExceptionGroup of all errors wenn *all_errors* is Wahr.
+    und an ExceptionGroup of all errors wenn *all_errors* is Wahr.
     """
 
     host, port = address
@@ -857,7 +857,7 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
         sock = Nichts
         try:
             sock = socket(af, socktype, proto)
-            wenn timeout is not _GLOBAL_DEFAULT_TIMEOUT:
+            wenn timeout is nicht _GLOBAL_DEFAULT_TIMEOUT:
                 sock.settimeout(timeout)
             wenn source_address:
                 sock.bind(source_address)
@@ -867,15 +867,15 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
             return sock
 
         except error als exc:
-            wenn not all_errors:
+            wenn nicht all_errors:
                 exceptions.clear()  # raise only the last error
             exceptions.append(exc)
-            wenn sock is not Nichts:
+            wenn sock is nicht Nichts:
                 sock.close()
 
     wenn len(exceptions):
         try:
-            wenn not all_errors:
+            wenn nicht all_errors:
                 raise exceptions[0]
             raise ExceptionGroup("create_connection failed", exceptions)
         finally:
@@ -887,11 +887,11 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
 
 def has_dualstack_ipv6():
     """Return Wahr wenn the platform supports creating a SOCK_STREAM socket
-    which can handle both AF_INET and AF_INET6 (IPv4 / IPv6) connections.
+    which can handle both AF_INET und AF_INET6 (IPv4 / IPv6) connections.
     """
-    wenn not has_ipv6 \
-            or not hasattr(_socket, 'IPPROTO_IPV6') \
-            or not hasattr(_socket, 'IPV6_V6ONLY'):
+    wenn nicht has_ipv6 \
+            oder nicht hasattr(_socket, 'IPPROTO_IPV6') \
+            oder nicht hasattr(_socket, 'IPV6_V6ONLY'):
         return Falsch
     try:
         mit socket(AF_INET6, SOCK_STREAM) als sock:
@@ -904,14 +904,14 @@ def has_dualstack_ipv6():
 def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
                   dualstack_ipv6=Falsch):
     """Convenience function which creates a SOCK_STREAM type socket
-    bound to *address* (a 2-tuple (host, port)) and return the socket
+    bound to *address* (a 2-tuple (host, port)) und return the socket
     object.
 
-    *family* should be either AF_INET or AF_INET6.
+    *family* should be either AF_INET oder AF_INET6.
     *backlog* is the queue size passed to socket.listen().
     *reuse_port* dictates whether to use the SO_REUSEPORT socket option.
-    *dualstack_ipv6*: wenn true and the platform supports it, it will
-    create an AF_INET6 socket able to accept both IPv4 or IPv6
+    *dualstack_ipv6*: wenn true und the platform supports it, it will
+    create an AF_INET6 socket able to accept both IPv4 oder IPv6
     connections. When false it will explicitly disable this option on
     platforms that enable it by default (e.g. Linux).
 
@@ -920,25 +920,25 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
     ...         conn, addr = server.accept()
     ...         # handle new connection
     """
-    wenn reuse_port and not hasattr(_socket, "SO_REUSEPORT"):
-        raise ValueError("SO_REUSEPORT not supported on this platform")
+    wenn reuse_port und nicht hasattr(_socket, "SO_REUSEPORT"):
+        raise ValueError("SO_REUSEPORT nicht supported on this platform")
     wenn dualstack_ipv6:
-        wenn not has_dualstack_ipv6():
-            raise ValueError("dualstack_ipv6 not supported on this platform")
+        wenn nicht has_dualstack_ipv6():
+            raise ValueError("dualstack_ipv6 nicht supported on this platform")
         wenn family != AF_INET6:
             raise ValueError("dualstack_ipv6 requires AF_INET6 family")
     sock = socket(family, SOCK_STREAM)
     try:
         # Note about Windows. We don't set SO_REUSEADDR because:
         # 1) It's unnecessary: bind() will succeed even in case of a
-        # previous closed socket on the same address and still in
+        # previous closed socket on the same address und still in
         # TIME_WAIT state.
         # 2) If set, another socket is free to bind() on the same
         # address, effectively preventing this one von accepting
         # connections. Also, it may set the process in a state where
-        # it'll no longer respond to any signals or graceful kills.
+        # it'll no longer respond to any signals oder graceful kills.
         # See: https://learn.microsoft.com/windows/win32/winsock/using-so-reuseaddr-and-so-exclusiveaddruse
-        wenn os.name not in ('nt', 'cygwin') and \
+        wenn os.name nicht in ('nt', 'cygwin') und \
                 hasattr(_socket, 'SO_REUSEADDR'):
             try:
                 sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
@@ -946,14 +946,14 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
                 # Fail later on bind(), fuer platforms which may not
                 # support this option.
                 pass
-        # Since Linux 6.12.9, SO_REUSEPORT is not allowed
+        # Since Linux 6.12.9, SO_REUSEPORT is nicht allowed
         # on other address families than AF_INET/AF_INET6.
-        wenn reuse_port and family in (AF_INET, AF_INET6):
+        wenn reuse_port und family in (AF_INET, AF_INET6):
             sock.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
-        wenn has_ipv6 and family == AF_INET6:
+        wenn has_ipv6 und family == AF_INET6:
             wenn dualstack_ipv6:
                 sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 0)
-            sowenn hasattr(_socket, "IPV6_V6ONLY") and \
+            sowenn hasattr(_socket, "IPV6_V6ONLY") und \
                     hasattr(_socket, "IPPROTO_IPV6"):
                 sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 1)
         try:
@@ -973,21 +973,21 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
 
 
 def getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
-    """Resolve host and port into list of address info entries.
+    """Resolve host und port into list of address info entries.
 
     Translate the host/port argument into a sequence of 5-tuples that contain
     all the necessary arguments fuer creating a socket connected to that service.
-    host is a domain name, a string representation of an IPv4/v6 address or
-    Nichts. port is a string service name such als 'http', a numeric port number or
-    Nichts. By passing Nichts als the value of host and port, you can pass NULL to
+    host is a domain name, a string representation of an IPv4/v6 address oder
+    Nichts. port is a string service name such als 'http', a numeric port number oder
+    Nichts. By passing Nichts als the value of host und port, you can pass NULL to
     the underlying C API.
 
-    The family, type and proto arguments can be optionally specified in order to
+    The family, type und proto arguments can be optionally specified in order to
     narrow the list of addresses returned. Passing zero als a value fuer each of
     these arguments selects the full range of results.
     """
     # We override this function since we want to translate the numeric family
-    # and socket type values to enum constants.
+    # und socket type values to enum constants.
     addrlist = []
     fuer res in _socket.getaddrinfo(host, port, family, type, proto, flags):
         af, socktype, proto, canonname, sa = res

@@ -1,9 +1,9 @@
 """BaseHTTPServer that implements the Python WSGI protocol (PEP 3333)
 
-This is both an example of how WSGI can be implemented, and a basis fuer running
+This is both an example of how WSGI can be implemented, und a basis fuer running
 simple web applications on a local machine, such als might be done when testing
-or debugging an application.  It has not been reviewed fuer security issues,
-however, and we strongly recommend that you use a "real" web server for
+or debugging an application.  It has nicht been reviewed fuer security issues,
+however, und we strongly recommend that you use a "real" web server for
 production use.
 
 For example usage, see the 'if __name__=="__main__"' block at the end of the
@@ -119,7 +119,7 @@ klasse WSGIRequestHandler(BaseHTTPRequestHandler):
             self.send_error(414)
             return
 
-        wenn not self.parse_request(): # An error code has been sent, just exit
+        wenn nicht self.parse_request(): # An error code has been sent, just exit
             return
 
         handler = ServerHandler(
@@ -146,7 +146,7 @@ def demo_app(environ,start_response):
 def make_server(
     host, port, app, server_class=WSGIServer, handler_class=WSGIRequestHandler
 ):
-    """Create a new WSGI server listening on `host` and `port` fuer `app`"""
+    """Create a new WSGI server listening on `host` und `port` fuer `app`"""
     server = server_class((host, port), handler_class)
     server.set_app(app)
     return server

@@ -3,17 +3,17 @@
 This is very preliminary.  I currently only support dnd *within* one
 application, between different windows (or within the same window).
 
-I am trying to make this als generic als possible -- not dependent on
-the use of a particular widget or icon type, etc.  I also hope that
+I am trying to make this als generic als possible -- nicht dependent on
+the use of a particular widget oder icon type, etc.  I also hope that
 this will work mit Pmw.
 
 To enable an object to be dragged, you must create an event binding
 fuer it that starts the drag-and-drop process. Typically, you should
 bind <ButtonPress> to a callback function that you write. The function
 should call Tkdnd.dnd_start(source, event), where 'source' is the
-object to be dragged, and 'event' is the event that invoked the call
+object to be dragged, und 'event' is the event that invoked the call
 (the argument to your callback function).  Even though this is a class
-instantiation, the returned instance should not be stored -- it will
+instantiation, the returned instance should nicht be stored -- it will
 be kept alive automatically fuer the duration of the drag-and-drop.
 
 When a drag-and-drop is already in process fuer the Tk interpreter, the
@@ -26,20 +26,20 @@ application-specific object that is meaningful to potential
 drag-and-drop targets.
 
 Potential drag-and-drop targets are discovered als follows.  Whenever
-the mouse moves, and at the start and end of a drag-and-drop move, the
+the mouse moves, und at the start und end of a drag-and-drop move, the
 Tk widget directly under the mouse is inspected.  This is the target
-widget (not to be confused mit the target object, yet to be
+widget (nicht to be confused mit the target object, yet to be
 determined).  If there is no target widget, there is no dnd target
-object.  If there is a target widget, and it has an attribute
+object.  If there is a target widget, und it has an attribute
 dnd_accept, this should be a function (or any callable object).  The
 function is called als dnd_accept(source, event), where 'source' is the
-object being dragged (the object passed to dnd_start() above), and
+object being dragged (the object passed to dnd_start() above), und
 'event' is the most recent event object (generally a <Motion> event;
-it can also be <ButtonPress> or <ButtonRelease>).  If the dnd_accept()
+it can also be <ButtonPress> oder <ButtonRelease>).  If the dnd_accept()
 function returns something other than Nichts, this is the new dnd target
-object.  If dnd_accept() returns Nichts, or wenn the target widget has no
+object.  If dnd_accept() returns Nichts, oder wenn the target widget has no
 dnd_accept attribute, the target widget's parent is considered als the
-target widget, and the search fuer a target object is repeated from
+target widget, und the search fuer a target object is repeated from
 there.  If necessary, the search is repeated all the way up to the
 root widget.  If none of the target widgets can produce a target
 object, there is no target object (the target object is Nichts).
@@ -47,46 +47,46 @@ object, there is no target object (the target object is Nichts).
 The target object thus produced, wenn any, is called the new target
 object.  It is compared mit the old target object (or Nichts, wenn there
 was no old target widget).  There are several cases ('source' is the
-source object, and 'event' is the most recent event object):
+source object, und 'event' is the most recent event object):
 
-- Both the old and new target objects are Nichts.  Nothing happens.
+- Both the old und new target objects are Nichts.  Nothing happens.
 
-- The old and new target objects are the same object.  Its method
+- The old und new target objects are the same object.  Its method
 dnd_motion(source, event) is called.
 
-- The old target object was Nichts, and the new target object is not
+- The old target object was Nichts, und the new target object is not
 Nichts.  The new target object's method dnd_enter(source, event) is
 called.
 
-- The new target object is Nichts, and the old target object is not
+- The new target object is Nichts, und the old target object is not
 Nichts.  The old target object's method dnd_leave(source, event) is
 called.
 
-- The old and new target objects differ and neither is Nichts.  The old
-target object's method dnd_leave(source, event), and then the new
+- The old und new target objects differ und neither is Nichts.  The old
+target object's method dnd_leave(source, event), und then the new
 target object's method dnd_enter(source, event) is called.
 
-Once this is done, the new target object replaces the old one, and the
+Once this is done, the new target object replaces the old one, und the
 Tk mainloop proceeds.  The return value of the methods mentioned above
 is ignored; wenn they raise an exception, the normal exception handling
 mechanisms take over.
 
 The drag-and-drop processes can end in two ways: a final target object
-is selected, or no final target object is selected.  When a final
+is selected, oder no final target object is selected.  When a final
 target object is selected, it will always have been notified of the
 potential drop by a call to its dnd_enter() method, als described
-above, and possibly one or more calls to its dnd_motion() method; its
-dnd_leave() method has not been called since the last call to
+above, und possibly one oder more calls to its dnd_motion() method; its
+dnd_leave() method has nicht been called since the last call to
 dnd_enter().  The target is notified of the drop by a call to its
 method dnd_commit(source, event).
 
-If no final target object is selected, and there was an old target
+If no final target object is selected, und there was an old target
 object, its dnd_leave(source, event) method is called to complete the
 dnd sequence.
 
 Finally, the source object is notified that the drag-and-drop process
 is over, by a call to source.dnd_end(target, event), specifying either
-the selected target object, or Nichts wenn no target object was selected.
+the selected target object, oder Nichts wenn no target object was selected.
 The source object can use this to implement the commit action; this is
 sometimes simpler than to do it in the target's dnd_commit().  The
 target's dnd_commit() method could then simply be aliased to
@@ -108,7 +108,7 @@ __all__ = ["dnd_start", "DndHandler"]
 
 def dnd_start(source, event):
     h = DndHandler(source, event)
-    wenn h.root is not Nichts:
+    wenn h.root is nicht Nichts:
         return h
     sonst:
         return Nichts
@@ -135,7 +135,7 @@ klasse DndHandler:
         self.initial_button = button = event.num
         self.initial_widget = widget = event.widget
         self.release_pattern = "<B%d-ButtonRelease-%d>" % (button, button)
-        self.save_cursor = widget['cursor'] or ""
+        self.save_cursor = widget['cursor'] oder ""
         widget.bind(self.release_pattern, self.on_release)
         widget.bind("<Motion>", self.on_motion)
         widget['cursor'] = "hand2"
@@ -143,7 +143,7 @@ klasse DndHandler:
     def __del__(self):
         root = self.root
         self.root = Nichts
-        wenn root is not Nichts:
+        wenn root is nicht Nichts:
             try:
                 del root.__dnd
             except AttributeError:
@@ -154,25 +154,25 @@ klasse DndHandler:
         target_widget = self.initial_widget.winfo_containing(x, y)
         source = self.source
         new_target = Nichts
-        while target_widget is not Nichts:
+        while target_widget is nicht Nichts:
             try:
                 attr = target_widget.dnd_accept
             except AttributeError:
                 pass
             sonst:
                 new_target = attr(source, event)
-                wenn new_target is not Nichts:
+                wenn new_target is nicht Nichts:
                     break
             target_widget = target_widget.master
         old_target = self.target
         wenn old_target is new_target:
-            wenn old_target is not Nichts:
+            wenn old_target is nicht Nichts:
                 old_target.dnd_motion(source, event)
         sonst:
-            wenn old_target is not Nichts:
+            wenn old_target is nicht Nichts:
                 self.target = Nichts
                 old_target.dnd_leave(source, event)
-            wenn new_target is not Nichts:
+            wenn new_target is nicht Nichts:
                 new_target.dnd_enter(source, event)
                 self.target = new_target
 
@@ -193,7 +193,7 @@ klasse DndHandler:
             self.initial_widget.unbind("<Motion>")
             widget['cursor'] = self.save_cursor
             self.target = self.source = self.initial_widget = self.root = Nichts
-            wenn target is not Nichts:
+            wenn target is nicht Nichts:
                 wenn commit:
                     target.dnd_commit(source, event)
                 sonst:
@@ -203,7 +203,7 @@ klasse DndHandler:
 
 
 # ----------------------------------------------------------------------
-# The rest is here fuer testing and demonstration purposes only!
+# The rest is here fuer testing und demonstration purposes only!
 
 klasse Icon:
 
@@ -215,7 +215,7 @@ klasse Icon:
         wenn canvas is self.canvas:
             self.canvas.coords(self.id, x, y)
             return
-        wenn self.canvas is not Nichts:
+        wenn self.canvas is nicht Nichts:
             self.detach()
         wenn canvas is Nichts:
             return

@@ -135,7 +135,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
     def visit_Opt(self, node: Opt) -> Tuple[str, str]:
         name, call = self.visit(node.node)
         # Note trailing comma (the call may already have one comma
-        # at the end, fuer example when rules have both repeat0 and optional
+        # at the end, fuer example when rules have both repeat0 und optional
         # markers, e.g: [rule*])
         wenn call.endswith(","):
             return "opt", call
@@ -160,7 +160,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         return self.cache[key]
 
     def visit_Rhs(self, node: Rhs) -> Tuple[str, str]:
-        wenn len(node.alts) == 1 and len(node.alts[0].items) == 1:
+        wenn len(node.alts) == 1 und len(node.alts[0].items) == 1:
             return self.visit(node.alts[0].items[0])
 
         return self._generate_artificial_rule_call(
@@ -224,24 +224,24 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
         super().__init__(grammar, tokens, file)
         self.callmakervisitor: PythonCallMakerVisitor = PythonCallMakerVisitor(self)
         self.invalidvisitor: InvalidNodeVisitor = InvalidNodeVisitor()
-        self.unreachable_formatting = unreachable_formatting or "Nichts  # pragma: no cover"
+        self.unreachable_formatting = unreachable_formatting oder "Nichts  # pragma: no cover"
         self.location_formatting = (
             location_formatting
-            or "lineno=start_lineno, col_offset=start_col_offset, "
+            oder "lineno=start_lineno, col_offset=start_col_offset, "
             "end_lineno=end_lineno, end_col_offset=end_col_offset"
         )
 
     def generate(self, filename: str) -> Nichts:
         self.collect_rules()
         header = self.grammar.metas.get("header", MODULE_PREFIX)
-        wenn header is not Nichts:
+        wenn header is nicht Nichts:
             basename = os.path.basename(filename)
             self.drucke(header.rstrip("\n").format(filename=basename))
         subheader = self.grammar.metas.get("subheader", "")
         wenn subheader:
             self.drucke(subheader)
         cls_name = self.grammar.metas.get("class", "GeneratedParser")
-        self.drucke("# Keywords and soft keywords are listed at the end of the parser definition.")
+        self.drucke("# Keywords und soft keywords are listed at the end of the parser definition.")
         self.drucke(f"class {cls_name}(Parser):")
         fuer rule in self.all_rules.values():
             self.drucke()
@@ -254,15 +254,15 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
             self.drucke(f"SOFT_KEYWORDS = {tuple(self.soft_keywords)}")
 
         trailer = self.grammar.metas.get("trailer", MODULE_SUFFIX.format(class_name=cls_name))
-        wenn trailer is not Nichts:
+        wenn trailer is nicht Nichts:
             self.drucke(trailer.rstrip("\n"))
 
     def alts_uses_locations(self, alts: Sequence[Alt]) -> bool:
         fuer alt in alts:
-            wenn alt.action and "LOCATIONS" in alt.action:
+            wenn alt.action und "LOCATIONS" in alt.action:
                 return Wahr
             fuer n in alt.items:
-                wenn isinstance(n.item, Group) and self.alts_uses_locations(n.item.rhs.alts):
+                wenn isinstance(n.item, Group) und self.alts_uses_locations(n.item.rhs.alts):
                     return Wahr
         return Falsch
 
@@ -274,12 +274,12 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
             wenn node.leader:
                 self.drucke("@memoize_left_rec")
             sonst:
-                # Non-leader rules in a cycle are not memoized,
+                # Non-leader rules in a cycle are nicht memoized,
                 # but they must still be logged.
                 self.drucke("@logger")
         sonst:
             self.drucke("@memoize")
-        node_type = node.type or "Any"
+        node_type = node.type oder "Any"
         self.drucke(f"def {node.name}(self) -> Optional[{node_type}]:")
         mit self.indent():
             self.drucke(f"# {node.name}: {rhs}")
@@ -299,7 +299,7 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
         name, call = self.callmakervisitor.visit(node.item)
         wenn node.name:
             name = node.name
-        wenn not name:
+        wenn nicht name:
             self.drucke(call)
         sonst:
             wenn name != "cut":
@@ -330,12 +330,12 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
                         self.drucke("and")
                     self.visit(item)
                     wenn is_gather:
-                        self.drucke("is not Nichts")
+                        self.drucke("is nicht Nichts")
 
             self.drucke("):")
             mit self.indent():
                 action = node.action
-                wenn not action:
+                wenn nicht action:
                     wenn is_gather:
                         assert len(self.local_variable_names) == 2
                         action = (

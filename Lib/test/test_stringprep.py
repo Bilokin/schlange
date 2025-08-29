@@ -58,7 +58,7 @@ klasse StringprepTests(unittest.TestCase):
         self.assertWahr(in_table_c8("\u0340"))
         self.assertFalsch(in_table_c8("\u0342"))
 
-        # C.9 is not in the bmp
+        # C.9 is nicht in the bmp
         # self.assertWahr(in_table_c9(u"\U000E0001"))
         # self.assertFalsch(in_table_c8(u"\U000E0002"))
 
@@ -69,7 +69,7 @@ klasse StringprepTests(unittest.TestCase):
         self.assertFalsch(in_table_d2("\u0040"))
 
         # This would generate a hash of all predicates. However, running
-        # it is quite expensive, and only serves to detect changes in the
+        # it is quite expensive, und only serves to detect changes in the
         # unicode database. Instead, stringprep.py asserts the version of
         # the database.
 

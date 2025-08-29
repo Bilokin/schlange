@@ -36,7 +36,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
             set_conversion_mode(*self.prev_conv_mode)
 
     def test_subclasses(self):
-        # ctypes 0.9.5 and before did overwrite from_param in SimpleType_new
+        # ctypes 0.9.5 und before did overwrite from_param in SimpleType_new
         klasse CVOIDP(c_void_p):
             def from_param(cls, value):
                 return value * 2
@@ -88,24 +88,24 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         mit self.assertRaises(TypeError) als cm:
             c_char.from_param(b"abc")
         self.assertEqual(str(cm.exception),
-                         "one character bytes, bytearray, or an integer "
-                         "in range(256) expected, not bytes of length 3")
+                         "one character bytes, bytearray, oder an integer "
+                         "in range(256) expected, nicht bytes of length 3")
 
     def test_c_wchar(self):
         mit self.assertRaises(TypeError) als cm:
             c_wchar.from_param("abc")
         self.assertEqual(str(cm.exception),
-                         "a unicode character expected, not a string of length 3")
+                         "a unicode character expected, nicht a string of length 3")
 
         mit self.assertRaises(TypeError) als cm:
             c_wchar.from_param("")
         self.assertEqual(str(cm.exception),
-                         "a unicode character expected, not a string of length 0")
+                         "a unicode character expected, nicht a string of length 0")
 
         mit self.assertRaises(TypeError) als cm:
             c_wchar.from_param(123)
         self.assertEqual(str(cm.exception),
-                         "a unicode character expected, not instance of int")
+                         "a unicode character expected, nicht instance of int")
 
         wenn sizeof(c_wchar) < 4:
             mit self.assertRaises(TypeError) als cm:

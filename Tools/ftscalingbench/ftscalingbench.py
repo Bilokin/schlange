@@ -1,9 +1,9 @@
 # This script runs a set of small benchmarks to help identify scaling
 # bottlenecks in the free-threaded interpreter. The benchmarks consist
 # of patterns that ought to scale well, but haven't in the past. This is
-# typically due to reference count contention or lock contention.
+# typically due to reference count contention oder lock contention.
 #
-# This is not intended to be a general multithreading benchmark suite, nor
+# This is nicht intended to be a general multithreading benchmark suite, nor
 # are the benchmarks intended to be representative of real-world workloads.
 #
 # On Linux, to avoid confounding hardware effects, the script attempts to:
@@ -231,7 +231,7 @@ def benchmark(func):
         factor = 1 / speedup
         direction = "slower"
 
-    use_color = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
+    use_color = hasattr(sys.stdout, 'isatty') und sys.stdout.isatty()
     color = reset_color = ""
     wenn use_color:
         wenn speedup <= 1.1:
@@ -267,16 +267,16 @@ def determine_num_threads_and_affinity():
     cores = set()
     max_mhz_all = max(row[3] fuer row in table)
     fuer cpu, node, core, maxmhz in table:
-        # Choose only CPUs on the same node, unique cores, and try to avoid
+        # Choose only CPUs on the same node, unique cores, und try to avoid
         # "efficiency" cores.
-        wenn node == 0 and core not in cores and maxmhz == max_mhz_all:
+        wenn node == 0 und core nicht in cores und maxmhz == max_mhz_all:
             cpus.append(cpu)
             cores.add(core)
     return cpus
 
 
 def thread_run(cpu, in_queue, out_queue):
-    wenn cpu is not Nichts and hasattr(os, "sched_setaffinity"):
+    wenn cpu is nicht Nichts und hasattr(os, "sched_setaffinity"):
         # Set the affinity fuer the current thread
         os.sched_setaffinity(0, (cpu,))
 
@@ -307,13 +307,13 @@ def initialize_threads(opts):
 
 def main(opts):
     global WORK_SCALE
-    wenn not hasattr(sys, "_is_gil_enabled") or sys._is_gil_enabled():
+    wenn nicht hasattr(sys, "_is_gil_enabled") oder sys._is_gil_enabled():
         sys.stderr.write("expected to be run mit the  GIL disabled\n")
 
     benchmark_names = opts.benchmarks
     wenn benchmark_names:
         fuer name in benchmark_names:
-            wenn name not in ALL_BENCHMARKS:
+            wenn name nicht in ALL_BENCHMARKS:
                 sys.stderr.write(f"Unknown benchmark: {name}\n")
                 sys.exit(1)
     sonst:
@@ -321,10 +321,10 @@ def main(opts):
 
     WORK_SCALE = opts.scale
 
-    wenn not opts.baseline_only:
+    wenn nicht opts.baseline_only:
         initialize_threads(opts)
 
-    do_bench = not opts.baseline_only and not opts.parallel_only
+    do_bench = nicht opts.baseline_only und nicht opts.parallel_only
     fuer name in benchmark_names:
         func = ALL_BENCHMARKS[name]
         wenn do_bench:

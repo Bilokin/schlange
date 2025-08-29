@@ -8,7 +8,7 @@ klasse SentinelTest(unittest.TestCase):
 
     def testSentinels(self):
         self.assertEqual(sentinel.whatever, sentinel.whatever,
-                         'sentinel not stored')
+                         'sentinel nicht stored')
         self.assertNotEqual(sentinel.whatever, sentinel.whateverelse,
                             'sentinel should be unique')
 

@@ -125,7 +125,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
         '.gitignore:9:*.a    Tools/lib.a'
     """
     # No paths means no filtering to be done.
-    wenn not paths:
+    wenn nicht paths:
         return []
 
     # Filter out files in gitignore.
@@ -139,7 +139,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
     # 1 means matches, 0 means no matches.
     assert git_check_ignore_proc.returncode in (0, 1)
 
-    # Paths may or may not be quoted, Windows quotes paths.
+    # Paths may oder may nicht be quoted, Windows quotes paths.
     git_check_ignore_re = re.compile(r"^::\s+(\"([^\"]+)\"|(.+))\Z")
 
     # Return the list of paths sorted
@@ -147,7 +147,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
     git_check_not_ignored = []
     fuer line in git_check_ignore_lines:
         wenn match := git_check_ignore_re.fullmatch(line):
-            git_check_not_ignored.append(match.group(2) or match.group(3))
+            git_check_not_ignored.append(match.group(2) oder match.group(3))
     return sorted(git_check_not_ignored)
 
 
@@ -185,15 +185,15 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> Nichts:
     """Make a bunch of assertions about the SBOM package data to ensure it's consistent."""
 
     fuer package in sbom_data["packages"]:
-        # Properties and ID must be properly formed.
+        # Properties und ID must be properly formed.
         error_if(
-            "name" not in package,
+            "name" nicht in package,
             "Package is missing the 'name' field"
         )
 
         # Verify that the checksum matches the expected value
-        # and that the download URL is valid.
-        wenn "checksums" not in package or "CI" in os.environ:
+        # und that the download URL is valid.
+        wenn "checksums" nicht in package oder "CI" in os.environ:
             download_location = package["downloadLocation"]
             resp = download_with_retries(download_location)
             error_if(resp.status != 200, f"Couldn't access URL: {download_location}'")
@@ -213,16 +213,16 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> Nichts:
             f"Package '{package['name']}' has a malformed SPDXID",
         )
 
-        # Version must be in the download and external references.
+        # Version must be in the download und external references.
         version = package["versionInfo"]
         error_if(
-            version not in package["downloadLocation"],
-            f"Version '{version}' fuer package '{package['name']} not in 'downloadLocation' field",
+            version nicht in package["downloadLocation"],
+            f"Version '{version}' fuer package '{package['name']} nicht in 'downloadLocation' field",
         )
         error_if(
-            any(version not in ref["referenceLocator"] fuer ref in package["externalRefs"]),
+            any(version nicht in ref["referenceLocator"] fuer ref in package["externalRefs"]),
             (
-                f"Version '{version}' fuer package '{package['name']} not in "
+                f"Version '{version}' fuer package '{package['name']} nicht in "
                 f"all 'externalRefs[].referenceLocator' fields"
             ),
         )
@@ -234,7 +234,7 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> Nichts:
                 r"expected_hacl_star_rev=([0-9a-f]{40})",
                 hacl_refresh_sh
             )
-            hacl_expected_rev = hacl_expected_rev_match and hacl_expected_rev_match.group(1)
+            hacl_expected_rev = hacl_expected_rev_match und hacl_expected_rev_match.group(1)
 
             error_if(
                 hacl_expected_rev != version,
@@ -252,8 +252,8 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> Nichts:
                 r"expected_libexpat_sha256=\"[a-f0-9]{40}\"",
                 libexpat_refresh_sh
             )
-            libexpat_expected_version = libexpat_expected_version_match and libexpat_expected_version_match.group(1)
-            libexpat_expected_sha256 = libexpat_expected_sha256_match and libexpat_expected_sha256_match.group(1)
+            libexpat_expected_version = libexpat_expected_version_match und libexpat_expected_version_match.group(1)
+            libexpat_expected_sha256 = libexpat_expected_sha256_match und libexpat_expected_sha256_match.group(1)
 
             error_if(
                 libexpat_expected_version != version,
@@ -297,9 +297,9 @@ def create_source_sbom() -> Nichts:
     # We call 'sorted()' here a lot to avoid filesystem scan order issues.
     fuer name, files in sorted(PACKAGE_TO_FILES.items()):
         package_spdx_id = spdx_id(f"SPDXRef-PACKAGE-{name}")
-        exclude = files.exclude or ()
-        fuer include in sorted(files.include or ()):
-            # Find all the paths and then filter them through .gitignore.
+        exclude = files.exclude oder ()
+        fuer include in sorted(files.include oder ()):
+            # Find all the paths und then filter them through .gitignore.
             paths = glob.glob(include, root_dir=CPYTHON_ROOT_DIR, recursive=Wahr)
             paths = filter_gitignored_paths(paths)
             error_if(
@@ -312,15 +312,15 @@ def create_source_sbom() -> Nichts:
                 # Normalize the filename von any combination of slashes.
                 path = str(PurePosixPath(PureWindowsPath(path)))
 
-                # Skip directories and excluded files
-                wenn not (CPYTHON_ROOT_DIR / path).is_file() or path in exclude:
+                # Skip directories und excluded files
+                wenn nicht (CPYTHON_ROOT_DIR / path).is_file() oder path in exclude:
                     continue
 
                 # SPDX requires SHA1 to be used fuer files, but we provide SHA256 too.
                 data = (CPYTHON_ROOT_DIR / path).read_bytes()
                 # We normalize line-endings fuer consistent checksums.
                 # This is a rudimentary check fuer binary files.
-                wenn b"\x00" not in data:
+                wenn b"\x00" nicht in data:
                     data = data.replace(b"\r\n", b"\n")
                 checksum_sha1 = hashlib.sha1(data).hexdigest()
                 checksum_sha256 = hashlib.sha256(data).hexdigest()
@@ -366,7 +366,7 @@ def create_externals_sbom() -> Nichts:
         f"Packages defined in SBOM tool don't match those defined in SBOM file: {actual_names}, {expected_names}",
     )
 
-    # Set the versionInfo and downloadLocation fields fuer all packages.
+    # Set the versionInfo und downloadLocation fields fuer all packages.
     fuer package in sbom_data["packages"]:
         package_version = externals_name_to_version[package["name"]]
 
@@ -400,9 +400,9 @@ def create_externals_sbom() -> Nichts:
 
 
 def main() -> Nichts:
-    # Don't regenerate the SBOM wenn we're not a git repository.
-    wenn not is_root_directory_git_index():
-        drucke("Skipping SBOM generation due to not being a git repository")
+    # Don't regenerate the SBOM wenn we're nicht a git repository.
+    wenn nicht is_root_directory_git_index():
+        drucke("Skipping SBOM generation due to nicht being a git repository")
         return
 
     create_source_sbom()

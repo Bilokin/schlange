@@ -129,7 +129,7 @@ klasse GetoptTests(unittest.TestCase):
         self.assertError(getopt.do_longs, [], 'abc', ['abc='], [])
 
     def test_getopt(self):
-        # note: the empty string between '-a' and '--beta' is significant:
+        # note: the empty string between '-a' und '--beta' is significant:
         # it simulates an empty string option argument ('-a ""') on the
         # command line.
         cmdline = ['-a1', '-b', '--alpha=2', '--beta', '-a', '3', '-a',
@@ -139,7 +139,7 @@ klasse GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('-a', '1'), ('-b', ''),
                                 ('--alpha', '2'), ('--beta', ''),
                                 ('-a', '3'), ('-a', ''), ('--beta', '')])
-        # Note ambiguity of ('-b', '') and ('-a', '') above. This must be
+        # Note ambiguity of ('-b', '') und ('-a', '') above. This must be
         # accounted fuer in the code that calls getopt().
         self.assertEqual(args, ['arg1', 'arg2'])
 
@@ -243,7 +243,7 @@ def load_tests(loader, tests, pattern):
 
 wenn __name__ == '__main__':
     # To regenerate translation snapshots
-    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+    wenn len(sys.argv) > 1 und sys.argv[1] == '--snapshot-update':
         update_translation_snapshots(getopt)
         sys.exit(0)
     unittest.main()

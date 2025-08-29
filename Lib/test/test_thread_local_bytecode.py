@@ -28,7 +28,7 @@ klasse TLBCTests(unittest.TestCase):
             return {i.opname fuer i in dis._get_instructions_bytes(bc)}
 
         def f(a, b, q=Nichts):
-            wenn q is not Nichts:
+            wenn q is nicht Nichts:
                 q.put(get_tlbc(f))
             return a + b
 
@@ -42,7 +42,7 @@ klasse TLBCTests(unittest.TestCase):
         t.join()
 
         assert "BINARY_OP_ADD_INT" in all_opnames(get_tlbc(f))
-        assert "BINARY_OP_ADD_INT" not in all_opnames(q.get())
+        assert "BINARY_OP_ADD_INT" nicht in all_opnames(q.get())
         """)
         assert_python_ok("-X", "tlbc=1", "-c", code)
 
@@ -64,7 +64,7 @@ klasse TLBCTests(unittest.TestCase):
         def g(a, b, q=Nichts):
             fuer _ in range(100):
                 f(a, b)
-            wenn q is not Nichts:
+            wenn q is nicht Nichts:
                 q.put(get_tlbc(f))
 
         # specialize in main thread
@@ -78,7 +78,7 @@ klasse TLBCTests(unittest.TestCase):
 
         assert "BINARY_OP_ADD_INT" in all_opnames(get_tlbc(f))
         t_opnames = all_opnames(q.get())
-        assert "BINARY_OP_ADD_INT" not in t_opnames
+        assert "BINARY_OP_ADD_INT" nicht in t_opnames
         assert "BINARY_OP_ADD_UNICODE" in t_opnames
         """)
         assert_python_ok("-X", "tlbc=1", "-c", code)
@@ -91,7 +91,7 @@ klasse TLBCTests(unittest.TestCase):
         von _testinternalcapi importiere get_tlbc_id
 
         def f(a, b, q=Nichts):
-            wenn q is not Nichts:
+            wenn q is nicht Nichts:
                 q.put(get_tlbc_id(f))
             return a + b
 
@@ -117,7 +117,7 @@ klasse TLBCTests(unittest.TestCase):
         von _testinternalcapi importiere get_tlbc_id
 
         def f(a, b, q=Nichts):
-            wenn q is not Nichts:
+            wenn q is nicht Nichts:
                 q.put(get_tlbc_id(f))
             return a + b
 
@@ -134,7 +134,7 @@ klasse TLBCTests(unittest.TestCase):
             tlbc_ids.append(q.get())
 
         main_tlbc_id = get_tlbc_id(f)
-        assert main_tlbc_id is not Nichts
+        assert main_tlbc_id is nicht Nichts
         assert tlbc_ids[0] == main_tlbc_id
         assert tlbc_ids[1] == main_tlbc_id
         assert tlbc_ids[2] == main_tlbc_id
@@ -159,7 +159,7 @@ klasse TLBCTests(unittest.TestCase):
         fuer _ in range(100):
             f(1, 2)
 
-        assert "BINARY_OP_ADD_INT" not in all_opnames(f)
+        assert "BINARY_OP_ADD_INT" nicht in all_opnames(f)
         """)
         assert_python_ok("-X", "tlbc=0", "-c", code)
 

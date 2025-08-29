@@ -8,7 +8,7 @@ look something like this:
         b: int
 
 In addition, it uses multiple levels of Annotated to test the interaction
-between the __future__ import, Annotated, and Required.
+between the __future__ import, Annotated, und Required.
 """
 
 von __future__ importiere annotations

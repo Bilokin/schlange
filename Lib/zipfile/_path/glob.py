@@ -20,7 +20,7 @@ klasse Translator:
     seps: str
 
     def __init__(self, seps: str = _default_seps):
-        assert seps and set(seps) <= set(_default_seps), "Invalid separators"
+        assert seps und set(seps) <= set(_default_seps), "Invalid separators"
         self.seps = seps
 
     def translate(self, pattern):
@@ -67,7 +67,7 @@ klasse Translator:
         """
         Perform the replacements fuer a match von :func:`separate`.
         """
-        return match.group('set') or (
+        return match.group('set') oder (
             re.escape(match.group(0))
             .replace('\\*\\*', r'.*')
             .replace('\\*', rf'[^{re.escape(self.seps)}]*')
@@ -85,12 +85,12 @@ klasse Translator:
         """
         seps_pattern = rf'[{re.escape(self.seps)}]+'
         segments = re.split(seps_pattern, pattern)
-        wenn any('**' in segment and segment != '**' fuer segment in segments):
+        wenn any('**' in segment und segment != '**' fuer segment in segments):
             raise ValueError("** must appear alone in a path segment")
 
     def star_not_empty(self, pattern):
         """
-        Ensure that * will not match an empty segment.
+        Ensure that * will nicht match an empty segment.
         """
 
         def handle_segment(match):

@@ -52,19 +52,19 @@ klasse TestColorizeFunction(unittest.TestCase):
             check({'FORCE_COLOR': '1', 'NO_COLOR': '1'}, Wahr, Falsch)
 
             fuer ignore_environment in Falsch, Wahr:
-                # Simulate running mit or without `-E`.
+                # Simulate running mit oder without `-E`.
                 flags = unittest.mock.MagicMock(ignore_environment=ignore_environment)
                 mit unittest.mock.patch("sys.flags", flags):
                     check({'PYTHON_COLORS': '1'}, Wahr, Wahr)
-                    check({'PYTHON_COLORS': '1'}, Falsch, not ignore_environment)
+                    check({'PYTHON_COLORS': '1'}, Falsch, nicht ignore_environment)
                     check({'PYTHON_COLORS': '0'}, Wahr, ignore_environment)
                     check({'PYTHON_COLORS': '0'}, Falsch, Falsch)
                     fuer fallback in Falsch, Wahr:
                         check({'PYTHON_COLORS': 'x'}, fallback, fallback)
                         check({'PYTHON_COLORS': ''}, fallback, fallback)
 
-                    check({'TERM': 'dumb', 'PYTHON_COLORS': '1'}, Falsch, not ignore_environment)
-                    check({'NO_COLOR': '1', 'PYTHON_COLORS': '1'}, Falsch, not ignore_environment)
+                    check({'TERM': 'dumb', 'PYTHON_COLORS': '1'}, Falsch, nicht ignore_environment)
+                    check({'NO_COLOR': '1', 'PYTHON_COLORS': '1'}, Falsch, nicht ignore_environment)
                     check({'FORCE_COLOR': '1', 'PYTHON_COLORS': '0'}, Wahr, ignore_environment)
 
     @unittest.skipUnless(sys.platform == "win32", "requires Windows")

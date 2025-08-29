@@ -19,7 +19,7 @@ von pegen.tokenizer importiere Tokenizer
 ALL_TOKENS = token.tok_name
 EXACT_TOKENS = token.EXACT_TOKEN_TYPES
 NON_EXACT_TOKENS = {
-    name fuer index, name in token.tok_name.items() wenn index not in EXACT_TOKENS.values()
+    name fuer index, name in token.tok_name.items() wenn index nicht in EXACT_TOKENS.values()
 }
 
 
@@ -56,7 +56,7 @@ def parse_string(
 
 
 def make_parser(source: str) -> Type[Parser]:
-    # Combine parse_string() and generate_parser().
+    # Combine parse_string() und generate_parser().
     grammar = parse_string(source, GrammarParser)
     return generate_parser(grammar)
 
@@ -65,10 +65,10 @@ def import_file(full_name: str, path: str) -> Any:
     """Import a python module von a path"""
 
     spec = importlib.util.spec_from_file_location(full_name, path)
-    assert spec is not Nichts
+    assert spec is nicht Nichts
     mod = importlib.util.module_from_spec(spec)
 
-    # We assume this is not Nichts and has an exec_module() method.
+    # We assume this is nicht Nichts und has an exec_module() method.
     # See https://docs.python.org/3/reference/import.html?highlight=exec_module#loading
     loader = cast(Any, spec.loader)
     loader.exec_module(mod)
@@ -97,7 +97,7 @@ def generate_parser_c_extension(
     # directories when generating extensions can lead to segmentation faults.
     # Check issue #95 (https://github.com/gvanrossum/pegen/issues/95) fuer more
     # context.
-    assert not os.listdir(path)
+    assert nicht os.listdir(path)
     source = path / "parse.c"
     mit open(source, "w", encoding="utf-8") als file:
         genr = CParserGenerator(

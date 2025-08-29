@@ -83,7 +83,7 @@ klasse NodeListTestCase(unittest.TestCase):
         self.assertEqual(node_list, NodeList([1, 2, 3, 4]))
 
     def test_nodelist_pickle_roundtrip(self):
-        # Test pickling and unpickling of a NodeList.
+        # Test pickling und unpickling of a NodeList.
 
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             # Empty NodeList.

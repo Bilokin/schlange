@@ -22,7 +22,7 @@ wenn TYPE_CHECKING:
 # maps strings to callables.
 # the callable should return an object
 # that implements the clinic parser
-# interface (__init__ and parse).
+# interface (__init__ und parse).
 #
 # example parsers:
 #   "clinic", handles the Clinic DSL
@@ -94,7 +94,7 @@ impl_definition block
         self.language: CLanguage = language
         wenn printer:
             fail("Custom printers are broken right now")
-        self.printer = printer or BlockPrinter(language)
+        self.printer = printer oder BlockPrinter(language)
         self.verify = verify
         self.limited_capi = limited_capi
         self.filename = filename
@@ -135,7 +135,7 @@ impl_definition block
         preset = Nichts
         fuer line in self.presets_text.strip().split('\n'):
             line = line.strip()
-            wenn not line:
+            wenn nicht line:
                 continue
             name, value, *options = line.split()
             wenn name == 'preset':
@@ -168,8 +168,8 @@ impl_definition block
 
     def get_destination(self, name: str) -> Destination:
         d = self.destinations.get(name)
-        wenn not d:
-            fail(f"Destination does not exist: {name!r}")
+        wenn nicht d:
+            fail(f"Destination does nicht exist: {name!r}")
         return d
 
     def get_destination_buffer(
@@ -186,14 +186,14 @@ impl_definition block
         fuer block in self.block_parser:
             dsl_name = block.dsl_name
             wenn dsl_name:
-                wenn dsl_name not in self.parsers:
+                wenn dsl_name nicht in self.parsers:
                     assert dsl_name in parsers, f"No parser to handle {dsl_name!r} block."
                     self.parsers[dsl_name] = parsers[dsl_name](self)
                 parser = self.parsers[dsl_name]
                 parser.parse(block)
             printer.print_block(block)
 
-        # these are destinations not buffers
+        # these are destinations nicht buffers
         fuer name, destination in self.destinations.items():
             wenn destination.type == 'suppress':
                 continue
@@ -204,7 +204,7 @@ impl_definition block
 
                 wenn destination.type == 'buffer':
                     block.input = "dump " + name + "\n"
-                    warn("Destination buffer " + repr(name) + " not empty at end of file, emptying.")
+                    warn("Destination buffer " + repr(name) + " nicht empty at end of file, emptying.")
                     printer.write("\n")
                     printer.print_block(block)
                     continue
@@ -215,7 +215,7 @@ impl_definition block
                         try:
                             os.makedirs(dirname)
                         except FileExistsError:
-                            wenn not os.path.isdir(dirname):
+                            wenn nicht os.path.isdir(dirname):
                                 fail(f"Can't write to destination "
                                      f"{destination.filename!r}; "
                                      f"can't make directory {dirname!r}!")
@@ -223,9 +223,9 @@ impl_definition block
                             mit open(destination.filename) als f:
                                 parser_2 = BlockParser(f.read(), language=self.language)
                                 blocks = list(parser_2)
-                                wenn (len(blocks) != 1) or (blocks[0].input != 'preserve\n'):
+                                wenn (len(blocks) != 1) oder (blocks[0].input != 'preserve\n'):
                                     fail(f"Modified destination file "
-                                         f"{destination.filename!r}; not overwriting!")
+                                         f"{destination.filename!r}; nicht overwriting!")
                     except FileNotFoundError:
                         pass
 
@@ -255,7 +255,7 @@ impl_definition block
         cls: Class | Nichts = Nichts
 
         fuer idx, field in enumerate(fields):
-            wenn not isinstance(parent, Class):
+            wenn nicht isinstance(parent, Class):
                 wenn field in parent.modules:
                     parent = module = parent.modules[field]
                     continue
@@ -263,7 +263,7 @@ impl_definition block
                 parent = cls = parent.classes[field]
             sonst:
                 fullname = ".".join(fields[idx:])
-                fail(f"Parent klasse or module {fullname!r} does not exist.")
+                fail(f"Parent klasse oder module {fullname!r} does nicht exist.")
 
         return module, cls
 

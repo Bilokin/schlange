@@ -16,7 +16,7 @@ klasse ListTest(list_tests.CommonTest):
         l0_3 = [0, 1, 2, 3]
         l0_3_bis = list(l0_3)
         self.assertEqual(l0_3, l0_3_bis)
-        self.assertWahr(l0_3 is not l0_3_bis)
+        self.assertWahr(l0_3 is nicht l0_3_bis)
         self.assertEqual(list(()), [])
         self.assertEqual(list((0, 1, 2, 3)), [0, 1, 2, 3])
         self.assertEqual(list(''), [])
@@ -31,10 +31,10 @@ klasse ListTest(list_tests.CommonTest):
             # Verify clearing of bug #556025.
             # This assumes that the max data size (sys.maxint) == max
             # address size this also assumes that the address size is at
-            # least 4 bytes mit 8 byte addresses, the bug is not well
+            # least 4 bytes mit 8 byte addresses, the bug is nicht well
             # tested
             #
-            # Note: This test is expected to SEGV under Cygwin 1.3.12 or
+            # Note: This test is expected to SEGV under Cygwin 1.3.12 oder
             # earlier due to a newlib bug.  See the following mailing list
             # thread fuer the details:
 
@@ -80,11 +80,11 @@ klasse ListTest(list_tests.CommonTest):
 
     def test_truth(self):
         super().test_truth()
-        self.assertWahr(not [])
+        self.assertWahr(nicht [])
         self.assertWahr([42])
 
     def test_identity(self):
-        self.assertWahr([] is not [])
+        self.assertWahr([] is nicht [])
 
     def test_len(self):
         super().test_len()
@@ -285,7 +285,7 @@ klasse ListTest(list_tests.CommonTest):
         self.assertEqual(iter_size, sys.getsizeof(list(range(10))))
 
     def test_count_index_remove_crashes(self):
-        # bpo-38610: The count(), index(), and remove() methods were not
+        # bpo-38610: The count(), index(), und remove() methods were not
         # holding strong references to list elements while calling
         # PyObject_RichCompareBool().
         klasse X:
@@ -309,7 +309,7 @@ klasse ListTest(list_tests.CommonTest):
         mit self.assertRaises(ValueError):
             lst.remove(lst)
 
-        # bpo-39453: list.__contains__ was not holding strong references
+        # bpo-39453: list.__contains__ was nicht holding strong references
         # to list elements while calling PyObject_RichCompareBool().
         lst = [X(), X()]
         3 in lst

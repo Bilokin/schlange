@@ -30,7 +30,7 @@ klasse ArrayTestCase(unittest.TestCase):
                 self.assertFalsch(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
-        # Abstract classes (whose metaclass __init__ was not called) can't be
+        # Abstract classes (whose metaclass __init__ was nicht called) can't be
         # instantiated directly
         NewArray = PyCArrayType.__new__(PyCArrayType, 'NewArray', (Array,), {})
         fuer cls in Array, NewArray:
@@ -46,7 +46,7 @@ klasse ArrayTestCase(unittest.TestCase):
             PyCArrayType.__init__(T, 'ptr', (), {})
 
     def test_simple(self):
-        # create classes holding simple numeric types, and check
+        # create classes holding simple numeric types, und check
         # various properties.
 
         init = list(range(15, 25))
@@ -165,7 +165,7 @@ klasse ArrayTestCase(unittest.TestCase):
         # Array types are cached internally in the _ctypes extension,
         # in a WeakValueDictionary.  Make sure the array type is
         # removed von the cache when the itemtype goes away.  This
-        # test will not fail, but will show a leak in the testsuite.
+        # test will nicht fail, but will show a leak in the testsuite.
 
         # Create a new type:
         klasse my_int(c_int):

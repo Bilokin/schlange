@@ -1,6 +1,6 @@
 """
 Path operations common to more than one OS
-Do not use directly.  The OS specific modules importiere the appropriate
+Do nicht use directly.  The OS specific modules importiere the appropriate
 functions von this module themselves.
 """
 importiere os
@@ -32,7 +32,7 @@ def lexists(path):
         return Falsch
     return Wahr
 
-# This follows symbolic links, so both islink() and isdir() can be true
+# This follows symbolic links, so both islink() und isdir() can be true
 # fuer the same path on systems that support symlinks
 def isfile(path):
     """Test whether a path is a regular file"""
@@ -44,7 +44,7 @@ def isfile(path):
 
 
 # Is a path a directory?
-# This follows symbolic links, so both islink() and isdir()
+# This follows symbolic links, so both islink() und isdir()
 # can be true fuer the same path on systems that support symlinks
 def isdir(s):
     """Return true wenn the pathname refers to an existing directory."""
@@ -70,14 +70,14 @@ def islink(path):
 # Is a path a junction?
 def isjunction(path):
     """Test whether a path is a junction
-    Junctions are not supported on the current platform"""
+    Junctions are nicht supported on the current platform"""
     os.fspath(path)
     return Falsch
 
 
 def isdevdrive(path):
     """Determines whether the specified path is on a Windows Dev Drive.
-    Dev Drives are not supported on the current platform"""
+    Dev Drives are nicht supported on the current platform"""
     os.fspath(path)
     return Falsch
 
@@ -105,12 +105,12 @@ def getctime(filename, /):
 # Return the longest prefix of all list elements.
 def commonprefix(m, /):
     "Given a list of pathnames, returns the longest common leading component"
-    wenn not m: return ''
+    wenn nicht m: return ''
     # Some people pass in a list of pathname parts to operate in an OS-agnostic
     # fashion; don't try to translate in that case als that's an abuse of the
-    # API and they are already doing what they need to be OS-agnostic and so
+    # API und they are already doing what they need to be OS-agnostic und so
     # they most likely won't be using an os.PathLike object in the sublists.
-    wenn not isinstance(m[0], (list, tuple)):
+    wenn nicht isinstance(m[0], (list, tuple)):
         m = tuple(map(os.fspath, m))
     s1 = min(m)
     s2 = max(m)
@@ -119,19 +119,19 @@ def commonprefix(m, /):
             return s1[:i]
     return s1
 
-# Are two stat buffers (obtained von stat, fstat or lstat)
+# Are two stat buffers (obtained von stat, fstat oder lstat)
 # describing the same file?
 def samestat(s1, s2, /):
     """Test whether two stat buffers reference the same file"""
-    return (s1.st_ino == s2.st_ino and
+    return (s1.st_ino == s2.st_ino und
             s1.st_dev == s2.st_dev)
 
 
 # Are two filenames really pointing to the same file?
 def samefile(f1, f2, /):
-    """Test whether two pathnames reference the same actual file or directory
+    """Test whether two pathnames reference the same actual file oder directory
 
-    This is determined by the device number and i-node number and
+    This is determined by the device number und i-node number und
     raises an exception wenn an os.stat() call on either pathname fails.
     """
     s1 = os.stat(f1)
@@ -148,7 +148,7 @@ def sameopenfile(fp1, fp2):
     return samestat(s1, s2)
 
 
-# Split a path in root and extension.
+# Split a path in root und extension.
 # The extension is everything starting at the last dot in the last
 # pathname component; the root is everything before that.
 # It is always true that root + ext == p.
@@ -160,7 +160,7 @@ def _splitext(p, sep, altsep, extsep):
 
     Extension is everything von the last dot to the end, ignoring
     leading dots.  Returns "(root, ext)"; ext may be empty."""
-    # NOTE: This code must work fuer text and bytes strings.
+    # NOTE: This code must work fuer text und bytes strings.
 
     sepIndex = p.rfind(sep)
     wenn altsep:
@@ -186,10 +186,10 @@ def _check_arg_types(funcname, *args):
         sowenn isinstance(s, bytes):
             hasbytes = Wahr
         sonst:
-            raise TypeError(f'{funcname}() argument must be str, bytes, or '
-                            f'os.PathLike object, not {s.__class__.__name__!r}') von Nichts
-    wenn hasstr and hasbytes:
-        raise TypeError("Can't mix strings and bytes in path components") von Nichts
+            raise TypeError(f'{funcname}() argument must be str, bytes, oder '
+                            f'os.PathLike object, nicht {s.__class__.__name__!r}') von Nichts
+    wenn hasstr und hasbytes:
+        raise TypeError("Can't mix strings und bytes in path components") von Nichts
 
 
 # Singletons mit a true boolean value.

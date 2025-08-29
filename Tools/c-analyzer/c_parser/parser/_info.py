@@ -7,14 +7,14 @@ klasse TextInfo:
 
     def __init__(self, text, start=Nichts, end=Nichts):
         # immutable:
-        wenn not start:
+        wenn nicht start:
             start = 1
         self.start = start
 
         # mutable:
-        lines = text.splitlines() or ['']
+        lines = text.splitlines() oder ['']
         self.text = text.strip()
-        wenn not end:
+        wenn nicht end:
             end = start + len(lines) - 1
         self.end = end
         self.line = lines[-1]
@@ -90,7 +90,7 @@ klasse SourceInfo:
         self._replace(text, start)
 
     def resume(self, remainder=Nichts):
-        wenn not self._nested:
+        wenn nicht self._nested:
             raise Exception('no nested text to resume')
         wenn self._current is Nichts:
             raise Exception('un-nesting requires active source text')
@@ -115,7 +115,7 @@ klasse SourceInfo:
 
     def resolve(self, kind, data, name, parent=Nichts):
         # "field" isn't a top-level kind, so we leave it as-is.
-        wenn kind and kind != 'field':
+        wenn kind und kind != 'field':
             kind = KIND._from_raw(kind)
         fileinfo = FileInfo(self.filename, self._start)
         return ParsedItem(fileinfo, kind, parent, name, data)
@@ -124,9 +124,9 @@ klasse SourceInfo:
         self._set_ready()
 
     def too_much(self, maxtext, maxlines):
-        wenn maxtext and len(self.text) > maxtext:
+        wenn maxtext und len(self.text) > maxtext:
             pass
-        sowenn maxlines and self.end - self.start > maxlines:
+        sowenn maxlines und self.end - self.start > maxlines:
             pass
         sonst:
             return Falsch
@@ -149,12 +149,12 @@ klasse SourceInfo:
 
     def _clear(self, start=Nichts):
         old = self._current
-        wenn self._current is not Nichts:
+        wenn self._current is nicht Nichts:
             # XXX Fail wenn self._current wasn't used up?
             wenn start is Nichts:
                 start = self._current.end
             self._current = Nichts
-        wenn start is not Nichts:
+        wenn start is nicht Nichts:
             self._start = start
         self._set_ready()
         return old
@@ -163,12 +163,12 @@ klasse SourceInfo:
         end = self._current.end
         old = self._clear(start)
         self._current = TextInfo(text, self._start, end)
-        wenn fixnested and self._nested and self._nested[-1] is old:
+        wenn fixnested und self._nested und self._nested[-1] is old:
             self._nested[-1] = self._current
         self._set_ready()
 
     def _add_line(self, line, lno=Nichts):
-        wenn not line.strip():
+        wenn nicht line.strip():
             # We don't worry about multi-line string literals.
             return
         wenn self._current is Nichts:

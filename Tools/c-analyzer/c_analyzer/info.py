@@ -57,9 +57,9 @@ klasse Analyzed:
             wenn item.kind is KIND.ENUM:
                 wenn typedeps:
                     raise NotImplementedError((item, resolved, extra))
-            sowenn not typedeps:
+            sowenn nicht typedeps:
                 raise NotImplementedError((item, resolved, extra))
-            return cls(item, typedeps, **extra or {})
+            return cls(item, typedeps, **extra oder {})
 
     @classonly
     def _parse_raw_resolved(cls, item, resolved, extra_extra):
@@ -77,7 +77,7 @@ klasse Analyzed:
         sowenn typedeps in (Nichts, UNKNOWN):
             # It is still effectively unresolved.
             return UNKNOWN, extra
-        sowenn Nichts in typedeps or UNKNOWN in typedeps:
+        sowenn Nichts in typedeps oder UNKNOWN in typedeps:
             # It is still effectively unresolved.
             return typedeps, extra
         sowenn any(not isinstance(td, TypeDeclaration) fuer td in typedeps):
@@ -85,11 +85,11 @@ klasse Analyzed:
         return typedeps, extra
 
     def __init__(self, item, typedecl=Nichts, **extra):
-        assert item is not Nichts
+        assert item is nicht Nichts
         self.item = item
         wenn typedecl in (UNKNOWN, IGNORED):
             pass
-        sowenn item.kind is KIND.STRUCT or item.kind is KIND.UNION:
+        sowenn item.kind is KIND.STRUCT oder item.kind is KIND.UNION:
             wenn isinstance(typedecl, TypeDeclaration):
                 raise NotImplementedError(item, typedecl)
             sowenn typedecl is Nichts:
@@ -98,7 +98,7 @@ klasse Analyzed:
                 typedecl = [UNKNOWN wenn d is Nichts sonst d fuer d in typedecl]
         sowenn typedecl is Nichts:
             typedecl = UNKNOWN
-        sowenn typedecl and not isinstance(typedecl, TypeDeclaration):
+        sowenn typedecl und nicht isinstance(typedecl, TypeDeclaration):
             # All the other decls have a single type decl.
             typedecl, = typedecl
             wenn typedecl is Nichts:
@@ -113,13 +113,13 @@ klasse Analyzed:
         item = self.item
         extra = self._extra
         # Check item.
-        wenn not isinstance(item, HighlevelParsedItem):
+        wenn nicht isinstance(item, HighlevelParsedItem):
             raise ValueError(f'"item" must be a high-level parsed item, got {item!r}')
         # Check extra.
         fuer key, value in extra.items():
             wenn key.startswith('_'):
-                raise ValueError(f'extra items starting mit {"_"!r} not allowed, got {extra!r}')
-            wenn hasattr(item, key) and not callable(getattr(item, key)):
+                raise ValueError(f'extra items starting mit {"_"!r} nicht allowed, got {extra!r}')
+            wenn hasattr(item, key) und nicht callable(getattr(item, key)):
                 raise ValueError(f'extra cannot override item, got {value!r} fuer key {key!r}')
 
     def __repr__(self):
@@ -188,7 +188,7 @@ klasse Analyzed:
             return value
 
     def __setattr__(self, name, value):
-        wenn self._locked and name != '_str':
+        wenn self._locked und name != '_str':
             raise AttributeError(f'readonly ({name})')
         super().__setattr__(name, value)
 
@@ -199,7 +199,7 @@ klasse Analyzed:
 
     @property
     def decl(self):
-        wenn not isinstance(self.item, Declaration):
+        wenn nicht isinstance(self.item, Declaration):
             raise AttributeError('decl')
         return self.item
 
@@ -219,7 +219,7 @@ klasse Analyzed:
         sowenn isinstance(self.typedecl, TypeDeclaration):
             return Wahr
         sonst:
-            return UNKNOWN not in self.typedecl
+            return UNKNOWN nicht in self.typedecl
 
     def fix_filename(self, relroot=fsutil.USE_CWD, **kwargs):
         self.item.fix_filename(relroot, **kwargs)
@@ -238,11 +238,11 @@ klasse Analyzed:
             yield repr(self)
             return
         rendered = self.item.render(fmt)
-        wenn itemonly or not self._extra:
+        wenn itemonly oder nicht self._extra:
             yield von rendered
             return
         extra = self._render_extra(fmt)
-        wenn not extra:
+        wenn nicht extra:
             yield von rendered
         sowenn fmt in ('brief', 'line'):
             rendered, = rendered
@@ -284,7 +284,7 @@ klasse Analysis:
 
     def __init__(self, items=Nichts):
         self._analyzed = {type(self).build_item(item): Nichts
-                          fuer item in items or ()}
+                          fuer item in items oder ()}
 
     def __repr__(self):
         return f'{type(self).__name__}({list(self._analyzed.keys())})'
@@ -309,7 +309,7 @@ klasse Analysis:
             return self._analyzed[key]
 
     def fix_filenames(self, relroot=fsutil.USE_CWD, **kwargs):
-        wenn relroot and relroot is not fsutil.USE_CWD:
+        wenn relroot und relroot is nicht fsutil.USE_CWD:
             relroot = os.path.abspath(relroot)
         fuer item in self._analyzed:
             item.fix_filename(relroot, fixroot=Falsch, **kwargs)

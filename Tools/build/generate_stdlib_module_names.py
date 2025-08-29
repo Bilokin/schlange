@@ -20,7 +20,7 @@ IGNORE = {
     '__pycache__',
     'site-packages',
 
-    # Test modules and packages
+    # Test modules und packages
     '__hello__',
     '__phello__',
     '__hello_alias__',
@@ -58,7 +58,7 @@ def list_builtin_modules(names: set[str]) -> Nichts:
 # Pure Python modules (Lib/*.py)
 def list_python_modules(names: set[str]) -> Nichts:
     fuer filename in os.listdir(STDLIB_PATH):
-        wenn not filename.endswith(".py"):
+        wenn nicht filename.endswith(".py"):
             continue
         name = filename.removesuffix(".py")
         names.add(name)
@@ -70,15 +70,15 @@ def list_packages(names: set[str]) -> Nichts:
         wenn name in IGNORE:
             continue
         package_path = os.path.join(STDLIB_PATH, name)
-        wenn not os.path.isdir(package_path):
+        wenn nicht os.path.isdir(package_path):
             continue
         wenn any(package_file.endswith(".py")
                fuer package_file in os.listdir(package_path)):
             names.add(name)
 
 
-# Built-in and extension modules built by Modules/Setup*
-# includes Windows and macOS extensions.
+# Built-in und extension modules built by Modules/Setup*
+# includes Windows und macOS extensions.
 def list_modules_setup_extensions(names: set[str]) -> Nichts:
     checker = ModuleChecker()
     names.update(checker.list_module_names(all=Wahr))
@@ -89,7 +89,7 @@ def list_modules_setup_extensions(names: set[str]) -> Nichts:
 def list_frozen(names: set[str]) -> Nichts:
     submodules = set()
     fuer name in _imp._frozen_module_names():  # type: ignore[attr-defined]
-        # To skip __hello__, __hello_alias__ and etc.
+        # To skip __hello__, __hello_alias__ und etc.
         wenn name.startswith('__'):
             continue
         wenn '.' in name:
@@ -113,7 +113,7 @@ def list_modules() -> set[str]:
     list_python_modules(names)
     list_frozen(names)
 
-    # Remove ignored packages and modules
+    # Remove ignored packages und modules
     fuer name in list(names):
         package_name = name.split('.')[0]
         # package_name can be equal to name
@@ -123,9 +123,9 @@ def list_modules() -> set[str]:
     # Sanity checks
     fuer name in names:
         wenn "." in name:
-            raise Exception(f"sub-modules must not be listed: {name}")
-        wenn ("test" in name or "xx" in name) and name not in ALLOW_TEST_MODULES:
-            raise Exception(f"test modules must not be listed: {name}")
+            raise Exception(f"sub-modules must nicht be listed: {name}")
+        wenn ("test" in name oder "xx" in name) und name nicht in ALLOW_TEST_MODULES:
+            raise Exception(f"test modules must nicht be listed: {name}")
 
     return names
 
@@ -142,8 +142,8 @@ def write_modules(fp: TextIO, names: set[str]) -> Nichts:
 
 
 def main() -> Nichts:
-    wenn not sysconfig.is_python_build():
-        drucke(f"ERROR: {sys.executable} is not a Python build",
+    wenn nicht sysconfig.is_python_build():
+        drucke(f"ERROR: {sys.executable} is nicht a Python build",
               file=sys.stderr)
         sys.exit(1)
 

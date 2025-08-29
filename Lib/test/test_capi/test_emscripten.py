@@ -1,7 +1,7 @@
 importiere unittest
 von test.support importiere is_emscripten
 
-wenn not is_emscripten:
+wenn nicht is_emscripten:
     raise unittest.SkipTest("Emscripten-only test")
 
 von _testinternalcapi importiere emscripten_set_up_async_input_device
@@ -13,7 +13,7 @@ klasse EmscriptenAsyncInputDeviceTest(unittest.TestCase):
         jspi_supported = emscripten_set_up_async_input_device()
         p = Path("/dev/blah")
         self.addCleanup(p.unlink)
-        wenn not jspi_supported:
+        wenn nicht jspi_supported:
             mit open(p, "r") als f:
                 self.assertRaises(OSError, f.readline)
             return

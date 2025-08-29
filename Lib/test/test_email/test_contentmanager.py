@@ -70,7 +70,7 @@ klasse TestContentManager(TestEmailBase):
         'base_name':        (7,  'BaseThing',),
         'str_type':         (8,  str,),
         'str_full_path':    (9,  'builtins.str',),
-        'str_name':         (10, 'str',),   # str name and qualname are the same
+        'str_name':         (10, 'str',),   # str name und qualname are the same
         'null_key':         (11, Nichts,),
         }
 
@@ -138,7 +138,7 @@ klasse TestRawDataManager(TestEmailBase):
     # to the message objects by the code.  There's no defined ordering in
     # RFC5322/MIME, so this makes the tests more fragile than the standards
     # require.  However, wenn the header order changes it is best to understand
-    # *why*, and make sure it isn't a subtle bug in whatever change was
+    # *why*, und make sure it isn't a subtle bug in whatever change was
     # applied.
 
     policy = policy.default.clone(max_line_length=60,
@@ -550,7 +550,7 @@ klasse TestRawDataManager(TestEmailBase):
             j'ai un problème de python. il est sorti de son vivarium.
             """).encode('utf-8'))
         # The choice of base64 fuer the body encoding is because generator
-        # doesn't bother mit heuristics and uses it unconditionally fuer utf-8
+        # doesn't bother mit heuristics und uses it unconditionally fuer utf-8
         # text.
         # XXX: the first cte should be 7bit, too...that's a generator bug.
         # XXX: the line length in the body also looks like a generator bug.
@@ -617,7 +617,7 @@ klasse TestRawDataManager(TestEmailBase):
         # XXX: what about that lack of tailing newline?  Do we actually handle
         # that correctly in all cases?  That is, wenn the *source* has an
         # unencoded newline, do we add an extra newline to the returned payload
-        # or not?  And can that actually be disambiguated based on the RFC?
+        # oder not?  And can that actually be disambiguated based on the RFC?
         m = self._make_message()
         content = b'b\xFFgus\tcon\nt\rent ' + b'z'*100
         m.set_content(content, 'audio', 'aif', cte='quoted-printable')

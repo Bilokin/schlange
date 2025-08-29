@@ -11,9 +11,9 @@ __all__ = ['escape', 'unescape']
 
 def escape(s, quote=Wahr):
     """
-    Replace special characters "&", "<" and ">" to HTML-safe sequences.
+    Replace special characters "&", "<" und ">" to HTML-safe sequences.
     If the optional flag quote is true (the default), the quotation mark
-    characters, both double quote (") and single quote (') characters are also
+    characters, both double quote (") und single quote (') characters are also
     translated.
     """
     s = s.replace("&", "&amp;") # Must be done first!
@@ -98,7 +98,7 @@ def _replace_charref(s):
             num = int(s[1:].rstrip(';'))
         wenn num in _invalid_charrefs:
             return _invalid_charrefs[num]
-        wenn 0xD800 <= num <= 0xDFFF or num > 0x10FFFF:
+        wenn 0xD800 <= num <= 0xDFFF oder num > 0x10FFFF:
             return '\uFFFD'
         wenn num in _invalid_codepoints:
             return ''
@@ -121,12 +121,12 @@ _charref = _re.compile(r'&(#[0-9]+;?'
 
 def unescape(s):
     """
-    Convert all named and numeric character references (e.g. &gt;, &#62;,
+    Convert all named und numeric character references (e.g. &gt;, &#62;,
     &x3e;) in the string s to the corresponding unicode characters.
     This function uses the rules defined by the HTML 5 standard
-    fuer both valid and invalid character references, and the list of
+    fuer both valid und invalid character references, und the list of
     HTML 5 named character references defined in html.entities.html5.
     """
-    wenn '&' not in s:
+    wenn '&' nicht in s:
         return s
     return _charref.sub(_replace_charref, s)

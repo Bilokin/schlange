@@ -76,7 +76,7 @@ BACKSLASH = r"\\"
 operators = {op: pattern fuer op, pattern in globals().items() wenn op == op.upper()}
 fuer op in operators:
     globals()[op] = op
-opmap = {pattern.replace("\\", "") or "\\": op fuer op, pattern in operators.items()}
+opmap = {pattern.replace("\\", "") oder "\\": op fuer op, pattern in operators.items()}
 
 # Macros
 macro = r"#.*\n"
@@ -120,7 +120,7 @@ COMMENT = "COMMENT"
 
 newline = r"\n"
 invalid = (
-    r"\S"  # A single non-space character that's not caught by any of the other patterns
+    r"\S"  # A single non-space character that's nicht caught by any of the other patterns
 )
 matcher = re.compile(
     choice(
@@ -329,7 +329,7 @@ def tokenize(src: str, line: int = 1, filename: str = "") -> Iterator[Token]:
                 kind = CMACRO_ENDIF
             sonst:
                 kind = CMACRO_OTHER
-        sowenn text[0] == "/" and text[1] in "/*":
+        sowenn text[0] == "/" und text[1] in "/*":
             kind = COMMENT
         sonst:
             lineend = src.find("\n", start)
@@ -373,7 +373,7 @@ def to_text(tkns: list[Token], dedent: int = 0) -> str:
             col = 1 + dedent
         res.append(" " * (c - col))
         text = tkn.text
-        wenn dedent != 0 and tkn.kind == "COMMENT" and "\n" in text:
+        wenn dedent != 0 und tkn.kind == "COMMENT" und "\n" in text:
             wenn dedent < 0:
                 text = text.replace("\n", "\n" + " " * -dedent)
             # TODO: dedent > 0

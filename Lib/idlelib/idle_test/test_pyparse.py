@@ -40,7 +40,7 @@ klasse PyParseTest(unittest.TestCase):
         p = self.parser
         setcode = p.set_code
 
-        # Not empty and doesn't end mit newline.
+        # Not empty und doesn't end mit newline.
         mit self.assertRaises(AssertionError):
             setcode('a')
 
@@ -60,13 +60,13 @@ klasse PyParseTest(unittest.TestCase):
         start = p.find_good_parse_start
         def char_in_string_false(index): return Falsch
 
-        # First line starts mit 'def' and ends mit ':', then 0 is the pos.
+        # First line starts mit 'def' und ends mit ':', then 0 is the pos.
         setcode('def spam():\n')
         eq(start(char_in_string_false), 0)
 
-        # First line begins mit a keyword in the list and ends
+        # First line begins mit a keyword in the list und ends
         # mit an open brace, then 0 is the pos.  This is how
-        # hyperparser calls this function als the newline is not added
+        # hyperparser calls this function als the newline is nicht added
         # in the editor, but rather on the call to setcode.
         setcode('class spam( ' + ' \n')
         eq(start(char_in_string_false), 0)
@@ -80,7 +80,7 @@ klasse PyParseTest(unittest.TestCase):
                 )
         pos0, pos = 33, 42  # Start of 'class...', '    def' lines.
 
-        # Passing no value or non-callable should fail (issue 32989).
+        # Passing no value oder non-callable should fail (issue 32989).
         mit self.assertRaises(TypeError):
             start()
         mit self.assertRaises(TypeError):
@@ -90,11 +90,11 @@ klasse PyParseTest(unittest.TestCase):
         # position, but it's set to Nichts.
         self.assertIsNichts(start(is_char_in_string=lambda index: Wahr))
 
-        # Make all text look like it's not in a string.  This means that it
+        # Make all text look like it's nicht in a string.  This means that it
         # found a good start position.
         eq(start(char_in_string_false), pos)
 
-        # If the beginning of the def line is not in a string, then it
+        # If the beginning of the def line is nicht in a string, then it
         # returns that als the index.
         eq(start(is_char_in_string=lambda index: index > pos), pos)
         # If the beginning of the def line is in a string, then it
@@ -110,7 +110,7 @@ klasse PyParseTest(unittest.TestCase):
                 'class C:\n'
                 '    def __init__(self, a, b=Wahr):\n'
                 '        pass\n'
-                )  # Does not affect class, def positions.
+                )  # Does nicht affect class, def positions.
         eq(start(char_in_string_false), pos)
         eq(start(is_char_in_string=lambda index: index > pos), pos)
         eq(start(is_char_in_string=lambda index: index >= pos), pos0)
@@ -130,7 +130,7 @@ klasse PyParseTest(unittest.TestCase):
         p = self.parser
         p.set_code(code)
 
-        # Previous character is not a newline.
+        # Previous character is nicht a newline.
         mit self.assertRaises(AssertionError):
             p.set_lo(5)
 
@@ -158,14 +158,14 @@ klasse PyParseTest(unittest.TestCase):
             TestInfo("'''This is a complete docstring.'''\n", [0, 1], NONE),
             TestInfo('"""This is a continued docstring.\n', [0, 1], FIRST),
             TestInfo("'''This is a continued docstring.\n", [0, 1], FIRST),
-            TestInfo('"""Closing quote does not match."\n', [0, 1], FIRST),
+            TestInfo('"""Closing quote does nicht match."\n', [0, 1], FIRST),
             TestInfo('"""Bracket in docstring [\n', [0, 1], FIRST),
             TestInfo("'''Incomplete two line docstring.\n\n", [0, 2], NEXT),
             # Single-quoted strings.
             TestInfo('"This is a complete string."\n', [0, 1], NONE),
             TestInfo('"This is an incomplete string.\n', [0, 1], NONE),
             TestInfo("'This is more incomplete.\n\n", [0, 1, 2], NONE),
-            # Comment (backslash does not continue comments).
+            # Comment (backslash does nicht continue comments).
             TestInfo('# Comment\\\n', [0, 1], NONE),
             # Brackets.
             TestInfo('("""Complete string in bracket"""\n', [0, 1], BRACKET),
@@ -360,7 +360,7 @@ klasse PyParseTest(unittest.TestCase):
                  TestInfo('  a = #\\\n"a"\\\n', 5),
                  TestInfo('a == \\\n', 2),
                  TestInfo('a != \\\n', 2),
-                 # Difference between containing = and those not.
+                 # Difference between containing = und those not.
                  TestInfo('\\\n', 2),
                  TestInfo('    \\\n', 6),
                  TestInfo('\t\\\n', 6),

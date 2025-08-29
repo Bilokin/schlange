@@ -10,7 +10,7 @@ importiere unittest
 
 
 # This test is only relevant fuer from-source builds of Python.
-wenn not sysconfig.is_python_build():
+wenn nicht sysconfig.is_python_build():
     raise unittest.SkipTest('test irrelevant fuer an installed Python')
 
 src_base = dirname(dirname(dirname(__file__)))
@@ -20,9 +20,9 @@ parser_dir = os.path.join(src_base, 'Parser')
 klasse TestAsdlParser(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # Loads the asdl module dynamically, since it's not in a real importable
+        # Loads the asdl module dynamically, since it's nicht in a real importable
         # package.
-        # Parses Python.asdl into an ast.Module and run the check on it.
+        # Parses Python.asdl into an ast.Module und run the check on it.
         # There's no need to do this fuer each test method, hence setUpClass.
         sys.path.insert(0, parser_dir)
         loader = importlib.machinery.SourceFileLoader(

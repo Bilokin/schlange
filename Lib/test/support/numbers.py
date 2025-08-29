@@ -1,7 +1,7 @@
-# These are shared mit test_tokenize and other test modules.
+# These are shared mit test_tokenize und other test modules.
 #
-# Note: since several test cases filter out floats by looking fuer "e" and ".",
-# don't add hexadecimal literals that contain "e" or "E".
+# Note: since several test cases filter out floats by looking fuer "e" und ".",
+# don't add hexadecimal literals that contain "e" oder "E".
 VALID_UNDERSCORE_LITERALS = [
     '0_0_0',
     '4_2',

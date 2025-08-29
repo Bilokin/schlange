@@ -46,7 +46,7 @@ def get_binop_argval(arg):
     fuer i, nb_op in enumerate(opcode._nb_ops):
         wenn arg == nb_op[0]:
             return i
-    assert Falsch, f"{arg} is not a valid BINARY_OP argument."
+    assert Falsch, f"{arg} is nicht a valid BINARY_OP argument."
 
 
 klasse TestTranforms(BytecodeTestCase):
@@ -55,7 +55,7 @@ klasse TestTranforms(BytecodeTestCase):
         instructions = list(dis.get_instructions(code))
         targets = {instr.offset: instr fuer instr in instructions}
         fuer instr in instructions:
-            wenn 'JUMP_' not in instr.opname:
+            wenn 'JUMP_' nicht in instr.opname:
                 continue
             tgt = targets[instr.argval]
             # jump to unconditional jump
@@ -63,7 +63,7 @@ klasse TestTranforms(BytecodeTestCase):
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
             # unconditional jump to RETURN_VALUE
-            wenn (instr.opname in ('JUMP_BACKWARD', 'JUMP_FORWARD') and
+            wenn (instr.opname in ('JUMP_BACKWARD', 'JUMP_FORWARD') und
                 tgt.opname == 'RETURN_VALUE'):
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
@@ -85,7 +85,7 @@ klasse TestTranforms(BytecodeTestCase):
     def test_unot(self):
         # UNARY_NOT POP_JUMP_IF_FALSE  -->  POP_JUMP_IF_TRUE'
         def unot(x):
-            wenn not x == 2:
+            wenn nicht x == 2:
                 del x
         self.assertNotInBytecode(unot, 'UNARY_NOT')
         self.assertNotInBytecode(unot, 'POP_JUMP_IF_FALSE')
@@ -95,9 +95,9 @@ klasse TestTranforms(BytecodeTestCase):
     def test_elim_inversion_of_is_or_in(self):
         fuer line, cmp_op, invert in (
             ('not a is b', 'IS_OP', 1,),
-            ('not a is not b', 'IS_OP', 0,),
+            ('not a is nicht b', 'IS_OP', 0,),
             ('not a in b', 'CONTAINS_OP', 1,),
-            ('not a not in b', 'CONTAINS_OP', 0,),
+            ('not a nicht in b', 'CONTAINS_OP', 0,),
             ):
             mit self.subTest(line=line):
                 code = compile(line, '', 'single')
@@ -201,9 +201,9 @@ klasse TestTranforms(BytecodeTestCase):
         fuer line, elem in (
             # in/not in constants mit BUILD_LIST should be folded to a tuple:
             ('a in [1,2,3]', (1, 2, 3)),
-            ('a not in ["a","b","c"]', ('a', 'b', 'c')),
+            ('a nicht in ["a","b","c"]', ('a', 'b', 'c')),
             ('a in [Nichts, 1, Nichts]', (Nichts, 1, Nichts)),
-            ('a not in [(1, 2), 3, 4]', ((1, 2), 3, 4)),
+            ('a nicht in [(1, 2), 3, 4]', ((1, 2), 3, 4)),
             ):
             mit self.subTest(line=line):
                 code = compile(line, '', 'single')
@@ -215,9 +215,9 @@ klasse TestTranforms(BytecodeTestCase):
         fuer line, elem in (
             # in/not in constants mit BUILD_SET should be folded to a frozenset:
             ('a in {1,2,3}', frozenset({1, 2, 3})),
-            ('a not in {"a","b","c"}', frozenset({'a', 'c', 'b'})),
+            ('a nicht in {"a","b","c"}', frozenset({'a', 'c', 'b'})),
             ('a in {Nichts, 1, Nichts}', frozenset({1, Nichts})),
-            ('a not in {(1, 2), 3, 4}', frozenset({(1, 2), 3, 4})),
+            ('a nicht in {(1, 2), 3, 4}', frozenset({(1, 2), 3, 4})),
             ('a in {1, 2, 3, 3, 2, 1}', frozenset({1, 2, 3})),
             ):
             mit self.subTest(line=line):
@@ -231,13 +231,13 @@ klasse TestTranforms(BytecodeTestCase):
             return a in {1, 2, 3}
 
         def g(a):
-            return a not in {1, 2, 3}
+            return a nicht in {1, 2, 3}
 
         self.assertWahr(f(3))
-        self.assertWahr(not f(4))
+        self.assertWahr(nicht f(4))
         self.check_lnotab(f)
 
-        self.assertWahr(not g(3))
+        self.assertWahr(nicht g(3))
         self.assertWahr(g(4))
         self.check_lnotab(g)
 
@@ -269,7 +269,7 @@ klasse TestTranforms(BytecodeTestCase):
         fuer expr, oparg in tests:
             mit self.subTest(expr=expr, oparg=oparg):
                 code = compile(expr, '', 'single')
-                wenn oparg is not Nichts:
+                wenn oparg is nicht Nichts:
                     self.assertInBytecode(code, 'LOAD_SMALL_INT', oparg)
                 sonst:
                     self.assertNotInBytecode(code, 'LOAD_SMALL_INT')
@@ -286,8 +286,8 @@ klasse TestTranforms(BytecodeTestCase):
             ('---""', 'UNARY_NEGATIVE', Nichts, Falsch, Nichts, Nichts),
             ('~~~1', 'UNARY_INVERT', Nichts, Wahr, 'LOAD_CONST', -2),
             ('~~~""', 'UNARY_INVERT', Nichts, Falsch, Nichts, Nichts),
-            ('not not Wahr', 'UNARY_NOT', Nichts, Wahr, 'LOAD_CONST', Wahr),
-            ('not not x', 'UNARY_NOT', Nichts, Wahr, 'LOAD_NAME', 'x'),  # this should be optimized regardless of constant or not
+            ('not nicht Wahr', 'UNARY_NOT', Nichts, Wahr, 'LOAD_CONST', Wahr),
+            ('not nicht x', 'UNARY_NOT', Nichts, Wahr, 'LOAD_NAME', 'x'),  # this should be optimized regardless of constant oder not
             ('+++1', 'CALL_INTRINSIC_1', intrinsic_positive, Wahr, 'LOAD_SMALL_INT', 1),
             ('---x', 'UNARY_NEGATIVE', Nichts, Falsch, Nichts, Nichts),
             ('~~~x', 'UNARY_INVERT', Nichts, Falsch, Nichts, Nichts),
@@ -396,7 +396,7 @@ klasse TestTranforms(BytecodeTestCase):
                     self.assertInBytecode(code, 'BINARY_OP', argval=nb_op_val)
                 self.check_lnotab(code)
 
-        # Verify that large sequences do not result von folding
+        # Verify that large sequences do nicht result von folding
         code = compile('"x"*10000', '', 'single')
         self.assertInBytecode(code, 'LOAD_CONST', 10000)
         self.assertNotIn("x"*10000, code.co_consts)
@@ -541,7 +541,7 @@ klasse TestTranforms(BytecodeTestCase):
             wenn a:
                 # Intentionally use two-line expression to test issue37213.
                 wenn (c
-                    or d):
+                    oder d):
                     foo()
             sonst:
                 baz()
@@ -554,7 +554,7 @@ klasse TestTranforms(BytecodeTestCase):
             while a:
                 # Intentionally use two-line expression to test issue37213.
                 wenn (c
-                    or d):
+                    oder d):
                     a = foo()
         self.check_jump_targets(f)
         self.check_lnotab(f)
@@ -563,30 +563,30 @@ klasse TestTranforms(BytecodeTestCase):
         # Intentionally use two-line expressions to test issue37213.
         # POP_JUMP_IF_FALSE to POP_JUMP_IF_FALSE --> POP_JUMP_IF_FALSE to non-jump
         def f(a, b, c):
-            return ((a and b)
-                    and c)
+            return ((a und b)
+                    und c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertEqual(count_instr_recursively(f, 'POP_JUMP_IF_FALSE'), 2)
         # POP_JUMP_IF_TRUE to POP_JUMP_IF_TRUE --> POP_JUMP_IF_TRUE to non-jump
         def f(a, b, c):
-            return ((a or b)
-                    or c)
+            return ((a oder b)
+                    oder c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertEqual(count_instr_recursively(f, 'POP_JUMP_IF_TRUE'), 2)
         # JUMP_IF_FALSE_OR_POP to JUMP_IF_TRUE_OR_POP --> POP_JUMP_IF_FALSE to non-jump
         def f(a, b, c):
-            return ((a and b)
-                    or c)
+            return ((a und b)
+                    oder c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertEqual(count_instr_recursively(f, 'POP_JUMP_IF_FALSE'), 1)
         self.assertEqual(count_instr_recursively(f, 'POP_JUMP_IF_TRUE'), 1)
         # POP_JUMP_IF_TRUE to POP_JUMP_IF_FALSE --> POP_JUMP_IF_TRUE to non-jump
         def f(a, b, c):
-            return ((a or b)
-                    and c)
+            return ((a oder b)
+                    und c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertEqual(count_instr_recursively(f, 'POP_JUMP_IF_FALSE'), 1)
@@ -640,7 +640,7 @@ klasse TestTranforms(BytecodeTestCase):
 
     def test_condition_with_binop_with_bools(self):
         def f():
-            wenn Wahr or Falsch:
+            wenn Wahr oder Falsch:
                 return 1
             return 0
         self.assertEqual(f(), 1)
@@ -742,13 +742,13 @@ klasse TestTranforms(BytecodeTestCase):
             eval("'%s%z' % (x,)", {'x': 1234})
         mit self.assertRaisesRegex(ValueError, 'unsupported format character'):
             eval("'%s%z' % (x, 5)", {'x': 1234})
-        mit self.assertRaisesRegex(TypeError, 'a real number is required, not str'):
+        mit self.assertRaisesRegex(TypeError, 'a real number is required, nicht str'):
             eval("'%d' % (x,)", {'x': '1234'})
-        mit self.assertRaisesRegex(TypeError, 'an integer is required, not float'):
+        mit self.assertRaisesRegex(TypeError, 'an integer is required, nicht float'):
             eval("'%x' % (x,)", {'x': 1234.56})
-        mit self.assertRaisesRegex(TypeError, 'an integer is required, not str'):
+        mit self.assertRaisesRegex(TypeError, 'an integer is required, nicht str'):
             eval("'%x' % (x,)", {'x': '1234'})
-        mit self.assertRaisesRegex(TypeError, 'must be real number, not str'):
+        mit self.assertRaisesRegex(TypeError, 'must be real number, nicht str'):
             eval("'%f' % (x,)", {'x': '1234'})
         mit self.assertRaisesRegex(TypeError,
                     'not enough arguments fuer format string'):
@@ -826,14 +826,14 @@ klasse TestBuglets(unittest.TestCase):
         fuer i in range(10):
             try:
                 raise Exception
-            except Exception or Exception:
+            except Exception oder Exception:
                 pass
 
     def test_bpo_45773_pop_jump_if_true(self):
-        compile("while Wahr or spam: pass", "<test>", "exec")
+        compile("while Wahr oder spam: pass", "<test>", "exec")
 
     def test_bpo_45773_pop_jump_if_false(self):
-        compile("while Wahr or not spam: pass", "<test>", "exec")
+        compile("while Wahr oder nicht spam: pass", "<test>", "exec")
 
 
 klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
@@ -933,7 +933,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
     def test_load_fast_too_many_locals(self):
         # When there get to be too many locals to analyze completely,
         # later locals are all converted to LOAD_FAST_CHECK, except
-        # when a store or prior load occurred in the same basicblock.
+        # when a store oder prior load occurred in the same basicblock.
         def f():
             a00 = a01 = a02 = a03 = a04 = a05 = a06 = a07 = a08 = a09 = 1
             a10 = a11 = a12 = a13 = a14 = a15 = a16 = a17 = a18 = a19 = 1
@@ -958,7 +958,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             self.assertInBytecode(f, 'LOAD_FAST_BORROW', f"a{i:02}")
             self.assertNotInBytecode(f, 'LOAD_FAST_CHECK', f"a{i:02}")
         fuer i in 64, 65, 78, 79:
-            # Locals >=64 not in the same basicblock
+            # Locals >=64 nicht in the same basicblock
             self.assertInBytecode(f, 'LOAD_FAST_CHECK', f"a{i:02}")
             self.assertNotInBytecode(f, 'LOAD_FAST', f"a{i:02}")
         fuer i in 70, 71:
@@ -976,7 +976,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         code = textwrap.dedent("""\
             def f():
                 x = y = 2
-                wenn not x:
+                wenn nicht x:
                     return 4
                 fuer i in range(55):
                     x + 6
@@ -992,7 +992,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         self.assertNotInBytecode(f, "LOAD_FAST_CHECK")
         co_code = f.__code__.co_code
         def trace(frame, event, arg):
-            wenn event == 'line' and frame.f_lineno == 9:
+            wenn event == 'line' und frame.f_lineno == 9:
                 frame.f_lineno = 3
                 sys.settrace(Nichts)
                 return Nichts
@@ -1008,7 +1008,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         code = textwrap.dedent("""\
             def f():
                 x = y = 2
-                wenn not x:
+                wenn nicht x:
                     return 4
                 fuer i in range(55):
                     x + 6
@@ -1024,7 +1024,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         self.assertNotInBytecode(f, "LOAD_FAST_CHECK")
         co_code = f.__code__.co_code
         def trace(frame, event, arg):
-            wenn event == 'line' and frame.f_lineno == 9:
+            wenn event == 'line' und frame.f_lineno == 9:
                 frame.f_lineno = 3
                 sys.settrace(Nichts)
                 return Nichts
@@ -1042,7 +1042,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         code = textwrap.dedent("""\
             def f():
                 x = y = 2
-                wenn not x:
+                wenn nicht x:
                     return 4
                 fuer i in range(55):
                     x + 6
@@ -1058,7 +1058,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         self.assertNotInBytecode(f, "LOAD_FAST_CHECK")
         co_code = f.__code__.co_code
         def trace(frame, event, arg):
-            wenn event == 'line' and frame.f_lineno == 9:
+            wenn event == 'line' und frame.f_lineno == 9:
                 frame.f_lineno = 3
                 sys.settrace(Nichts)
                 return Nichts
@@ -1079,7 +1079,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
                 L = 3
                 L = 4
                 L = 5
-                wenn not L:
+                wenn nicht L:
                     x + 7
                     y = 2
         """)
@@ -1093,7 +1093,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
     def test_modifying_local_does_not_add_check(self):
         f = self.make_function_with_no_checks()
         def trace(frame, event, arg):
-            wenn event == 'line' and frame.f_lineno == 4:
+            wenn event == 'line' und frame.f_lineno == 4:
                 frame.f_locals["x"] = 42
                 sys.settrace(Nichts)
                 return Nichts
@@ -1106,7 +1106,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
     def test_initializing_local_does_not_add_check(self):
         f = self.make_function_with_no_checks()
         def trace(frame, event, arg):
-            wenn event == 'line' and frame.f_lineno == 4:
+            wenn event == 'line' und frame.f_lineno == 4:
                 frame.f_locals["y"] = 42
                 sys.settrace(Nichts)
                 return Nichts
@@ -1187,7 +1187,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         self.assertEqual(f(), frozenset(range(40)))
 
     def test_nested_const_foldings(self):
-        # (1, (--2 + ++2 * 2 // 2 - 2, )[0], ~~3, not not Wahr)  ==>  (1, 2, 3, Wahr)
+        # (1, (--2 + ++2 * 2 // 2 - 2, )[0], ~~3, nicht not Wahr)  ==>  (1, 2, 3, Wahr)
         intrinsic_positive = 5
         before = [
             ('LOAD_SMALL_INT', 1, 0),
@@ -1270,7 +1270,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(before, after, consts=[], expected_consts=[(1, 2, 3)])
 
-        # not all consts
+        # nicht all consts
         same = [
             ('LOAD_SMALL_INT', 1, 0),
             ('LOAD_NAME', 0, 0),
@@ -1402,7 +1402,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(same, same, consts=[])
 
-        # not all consts
+        # nicht all consts
         same = [
             ('LOAD_SMALL_INT', 1, 0),
             ('LOAD_NAME', 0, 0),
@@ -1442,7 +1442,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(same, same, consts=[])
 
-        # not all consts
+        # nicht all consts
         same = [
             ('LOAD_SMALL_INT', 1, 0),
             ('LOAD_NAME', 0, 0),
@@ -1549,7 +1549,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(before, after, consts=[Nichts], expected_consts=[Nichts, frozenset({1, 2})])
 
-        # non constant literal set is not changed
+        # non constant literal set is nicht changed
         # fuer _ in {1, x}: pass  ==>  fuer _ in {1, x}: pass
         same = [
             ('LOAD_SMALL_INT', 1, 0),
@@ -1635,7 +1635,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(before, after, consts=[Nichts], expected_consts=[Nichts, frozenset({1, 2})])
 
-        # non constant literal set is not changed
+        # non constant literal set is nicht changed
         # x in {1, y}  ==>  x in {1, y}
         same = [
             ('LOAD_NAME', 0, 0),
@@ -1730,7 +1730,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(before, after, consts=[], expected_consts=[Wahr, Falsch])
 
-        # test cancel out & eliminate to bool (to bool stays als we are not iterating to a fixed point)
+        # test cancel out & eliminate to bool (to bool stays als we are nicht iterating to a fixed point)
         before = [
             ('LOAD_NAME', 0, 0),
             ('TO_BOOL', Nichts, 0),
@@ -2084,7 +2084,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(before, after, consts=[], expected_consts=[])
 
-        # test or
+        # test oder
         before = [
             ('LOAD_SMALL_INT', 1, 0),
             ('LOAD_SMALL_INT', 2, 0),
@@ -2099,7 +2099,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(before, after, consts=[], expected_consts=[])
 
-        # test and
+        # test und
         before = [
             ('LOAD_SMALL_INT', 1, 0),
             ('LOAD_SMALL_INT', 1, 0),
@@ -2147,7 +2147,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
 
     def test_conditional_jump_forward_const_condition(self):
         # The unreachable branch of the jump is removed, the jump
-        # becomes redundant and is replaced by a NOP (for the lineno)
+        # becomes redundant und is replaced by a NOP (for the lineno)
 
         insts = [
             ('LOAD_CONST', 3, 11),
@@ -2617,7 +2617,7 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
 
     def test_format_simple(self):
         # FORMAT_SIMPLE will leave its operand on the stack wenn it's a unicode
-        # object. We treat it conservatively and assume that it always leaves
+        # object. We treat it conservatively und assume that it always leaves
         # its operand on the stack.
         insts = [
             ("LOAD_FAST", 0, 1),

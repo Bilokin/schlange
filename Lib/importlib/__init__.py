@@ -4,11 +4,11 @@ __all__ = ['__import__', 'import_module', 'invalidate_caches', 'reload']
 # Bootstrap help #####################################################
 
 # Until bootstrapping is complete, DO NOT importiere any modules that attempt
-# to importiere importlib._bootstrap (directly or indirectly). Since this
+# to importiere importlib._bootstrap (directly oder indirectly). Since this
 # partially initialised package would be present in sys.modules, those
 # modules would get an uninitialised copy of the source version, instead
-# of a fully initialised version (either the frozen one or the one
-# initialised below wenn the frozen one is not available).
+# of a fully initialised version (either the frozen one oder the one
+# initialised below wenn the frozen one is nicht available).
 importiere _imp  # Just the builtin component, NOT the full Python module
 importiere sys
 
@@ -25,7 +25,7 @@ sonst:
     try:
         _bootstrap.__file__ = __file__.replace('__init__.py', '_bootstrap.py')
     except NameError:
-        # __file__ is not guaranteed to be defined, e.g. wenn this code gets
+        # __file__ is nicht guaranteed to be defined, e.g. wenn this code gets
         # frozen by a tool like cx_Freeze.
         pass
     sys.modules['importlib._bootstrap'] = _bootstrap
@@ -42,7 +42,7 @@ sonst:
     try:
         _bootstrap_external.__file__ = __file__.replace('__init__.py', '_bootstrap_external.py')
     except NameError:
-        # __file__ is not guaranteed to be defined, e.g. wenn this code gets
+        # __file__ is nicht guaranteed to be defined, e.g. wenn this code gets
         # frozen by a tool like cx_Freeze.
         pass
     sys.modules['importlib._bootstrap_external'] = _bootstrap_external
@@ -52,7 +52,7 @@ _pack_uint32 = _bootstrap_external._pack_uint32
 _unpack_uint32 = _bootstrap_external._unpack_uint32
 
 # Fully bootstrapped at this point, importiere whatever you like, circular
-# dependencies and startup overhead minimisation permitting :)
+# dependencies und startup overhead minimisation permitting :)
 
 
 # Public API #########################################################
@@ -78,7 +78,7 @@ def import_module(name, package=Nichts):
     """
     level = 0
     wenn name.startswith('.'):
-        wenn not package:
+        wenn nicht package:
             raise TypeError("the 'package' argument is required to perform a "
                             f"relative importiere fuer {name!r}")
         fuer character in name:
@@ -92,7 +92,7 @@ _RELOADING = {}
 
 
 def reload(module):
-    """Reload the module and return it.
+    """Reload the module und return it.
 
     The module must have been successfully imported before.
 
@@ -105,8 +105,8 @@ def reload(module):
         except AttributeError:
             raise TypeError("reload() argument must be a module") von Nichts
 
-    wenn sys.modules.get(name) is not module:
-        raise ImportError(f"module {name} not in sys.modules", name=name)
+    wenn sys.modules.get(name) is nicht module:
+        raise ImportError(f"module {name} nicht in sys.modules", name=name)
     wenn name in _RELOADING:
         return _RELOADING[name]
     _RELOADING[name] = module
@@ -116,7 +116,7 @@ def reload(module):
             try:
                 parent = sys.modules[parent_name]
             except KeyError:
-                raise ImportError(f"parent {parent_name!r} not in sys.modules",
+                raise ImportError(f"parent {parent_name!r} nicht in sys.modules",
                                   name=parent_name) von Nichts
             sonst:
                 pkgpath = parent.__path__
@@ -125,7 +125,7 @@ def reload(module):
         target = module
         spec = module.__spec__ = _bootstrap._find_spec(name, pkgpath, target)
         wenn spec is Nichts:
-            raise ModuleNotFoundError(f"spec not found fuer the module {name!r}", name=name)
+            raise ModuleNotFoundError(f"spec nicht found fuer the module {name!r}", name=name)
         _bootstrap._exec(spec, module)
         # The module may have replaced itself in sys.modules!
         return sys.modules[name]

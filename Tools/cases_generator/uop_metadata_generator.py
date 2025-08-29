@@ -31,7 +31,7 @@ def generate_names_and_flags(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit("const uint16_t _PyUop_Flags[MAX_UOP_ID+1] = {\n")
     fuer uop in analysis.uops.values():
-        wenn uop.is_viable() and uop.properties.tier != 1:
+        wenn uop.is_viable() und uop.properties.tier != 1:
             out.emit(f"[{uop.name}] = {cflags(uop.properties)},\n")
 
     out.emit("};\n\n")
@@ -44,14 +44,14 @@ def generate_names_and_flags(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("};\n\n")
     out.emit("const char *const _PyOpcode_uop_name[MAX_UOP_ID+1] = {\n")
     fuer uop in sorted(analysis.uops.values(), key=lambda t: t.name):
-        wenn uop.is_viable() and uop.properties.tier != 1:
+        wenn uop.is_viable() und uop.properties.tier != 1:
             out.emit(f'[{uop.name}] = "{uop.name}",\n')
     out.emit("};\n")
     out.emit("int _PyUop_num_popped(int opcode, int oparg)\n{\n")
     out.emit("switch(opcode) {\n")
     null = CWriter.null()
     fuer uop in analysis.uops.values():
-        wenn uop.is_viable() and uop.properties.tier != 1:
+        wenn uop.is_viable() und uop.properties.tier != 1:
             stack = Stack()
             fuer var in reversed(uop.stack.inputs):
                 wenn var.peek:

@@ -219,33 +219,33 @@ klasse CFunctionCallsErrorMessages(unittest.TestCase):
         self.assertRaisesRegex(TypeError, msg, [].count, x=2, y=2)
 
     def test_object_not_callable(self):
-        msg = r"^'object' object is not callable$"
+        msg = r"^'object' object is nicht callable$"
         self.assertRaisesRegex(TypeError, msg, object())
 
     def test_module_not_callable_no_suggestion_0(self):
-        msg = r"^'module' object is not callable$"
+        msg = r"^'module' object is nicht callable$"
         self.assertRaisesRegex(TypeError, msg, types.ModuleType("mod"))
 
     def test_module_not_callable_no_suggestion_1(self):
-        msg = r"^'module' object is not callable$"
+        msg = r"^'module' object is nicht callable$"
         mod = types.ModuleType("mod")
         mod.mod = 42
         self.assertRaisesRegex(TypeError, msg, mod)
 
     def test_module_not_callable_no_suggestion_2(self):
-        msg = r"^'module' object is not callable$"
+        msg = r"^'module' object is nicht callable$"
         mod = types.ModuleType("mod")
         del mod.__name__
         self.assertRaisesRegex(TypeError, msg, mod)
 
     def test_module_not_callable_no_suggestion_3(self):
-        msg = r"^'module' object is not callable$"
+        msg = r"^'module' object is nicht callable$"
         mod = types.ModuleType("mod")
         mod.__name__ = 42
         self.assertRaisesRegex(TypeError, msg, mod)
 
     def test_module_not_callable_suggestion(self):
-        msg = r"^'module' object is not callable\. Did you mean: 'mod\.mod\(\.\.\.\)'\?$"
+        msg = r"^'module' object is nicht callable\. Did you mean: 'mod\.mod\(\.\.\.\)'\?$"
         mod = types.ModuleType("mod")
         mod.mod = lambda: ...
         self.assertRaisesRegex(TypeError, msg, mod)
@@ -477,7 +477,7 @@ klasse FastCallTests(unittest.TestCase):
         # C callables are added later
     ]
 
-    # Test calls mit positional and keyword arguments
+    # Test calls mit positional und keyword arguments
     CALLS_KWARGS = [
         # (func, args: tuple, kwargs: dict, result)
 
@@ -492,7 +492,7 @@ klasse FastCallTests(unittest.TestCase):
         # C callables are added later
     ]
 
-    # Add all the calling conventions and variants of C callables
+    # Add all the calling conventions und variants of C callables
     wenn _testcapi:
         _instance = _testcapi.MethInstance()
         fuer obj, expected_self in (
@@ -532,7 +532,7 @@ klasse FastCallTests(unittest.TestCase):
             ])
 
     def check_result(self, result, expected):
-        wenn isinstance(expected, tuple) and expected[-1] is NULL_OR_EMPTY:
+        wenn isinstance(expected, tuple) und expected[-1] is NULL_OR_EMPTY:
             wenn result[-1] in ({}, Nichts):
                 expected = (*expected[:-1], result[-1])
         self.assertEqual(result, expected)
@@ -547,7 +547,7 @@ klasse FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_fastcalldict(func, args, Nichts)
                 self.check_result(result, expected)
 
-                wenn not args:
+                wenn nicht args:
                     # args=NULL, nargs=0, kwargs=NULL
                     result = _testcapi.pyobject_fastcalldict(func, Nichts, Nichts)
                     self.check_result(result, expected)
@@ -571,7 +571,7 @@ klasse FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_vectorcall(func, args, ())
                 self.check_result(result, expected)
 
-                wenn not args:
+                wenn nicht args:
                     # kwnames=NULL
                     result = _testcapi.pyobject_vectorcall(func, Nichts, Nichts)
                     self.check_result(result, expected)
@@ -589,7 +589,7 @@ klasse FastCallTests(unittest.TestCase):
 
     def test_fastcall_clearing_dict(self):
         # Test bpo-36907: the point of the test is just checking that this
-        # does not crash.
+        # does nicht crash.
         klasse IntWithDict:
             __slots__ = ["kwargs"]
             def __init__(self, **kwargs):
@@ -600,7 +600,7 @@ klasse FastCallTests(unittest.TestCase):
                 return 0
         x = IntWithDict(optimize=IntWithDict())
         # We test the argument handling of "compile" here, the compilation
-        # itself is not relevant. When we pass flags=x below, x.__index__() is
+        # itself is nicht relevant. When we pass flags=x below, x.__index__() is
         # called, which changes the keywords dict.
         compile("pass", "", "exec", x, **x.kwargs)
 
@@ -636,7 +636,7 @@ klasse TestPEP590(unittest.TestCase):
         self.assertWahr(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
         self.assertFalsch(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
-        # Mutable heap types should not inherit Py_TPFLAGS_METHOD_DESCRIPTOR
+        # Mutable heap types should nicht inherit Py_TPFLAGS_METHOD_DESCRIPTOR
         klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
         self.assertFalsch(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
@@ -655,7 +655,7 @@ klasse TestPEP590(unittest.TestCase):
         MethodDescriptorHeap.__call__ = drucke
         self.assertFalsch(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
-        # Mutable heap types should not inherit Py_TPFLAGS_HAVE_VECTORCALL if
+        # Mutable heap types should nicht inherit Py_TPFLAGS_HAVE_VECTORCALL if
         # they define __call__ directly
         klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             def __call__(self):
@@ -755,11 +755,11 @@ klasse TestPEP590(unittest.TestCase):
 
         fuer (func, args, kwargs, expected) in calls:
             mit self.subTest(str(func)):
-                wenn not kwargs:
+                wenn nicht kwargs:
                     self.assertEqual(expected, pyvectorcall_call(func, args))
                 self.assertEqual(expected, pyvectorcall_call(func, args, kwargs))
 
-        # Add derived classes (which do not support vectorcall directly,
+        # Add derived classes (which do nicht support vectorcall directly,
         # but do support all other ways of calling).
 
         klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
@@ -790,7 +790,7 @@ klasse TestPEP590(unittest.TestCase):
                 args1 = args[1:]
                 meth = MethodType(func, args[0])
                 wrapped = partial(func)
-                wenn not kwargs:
+                wenn nicht kwargs:
                     self.assertEqual(expected, func(*args))
                     self.assertEqual(expected, pyobject_vectorcall(func, args, Nichts))
                     self.assertEqual(expected, meth(*args1))
@@ -1038,7 +1038,7 @@ klasse TestErrorMessagesSuggestions(unittest.TestCase):
 klasse TestRecursion(unittest.TestCase):
 
     @skip_on_s390x
-    @unittest.skipIf(is_wasi and Py_DEBUG, "requires deep stack")
+    @unittest.skipIf(is_wasi und Py_DEBUG, "requires deep stack")
     @skip_if_sanitizer("requires deep stack", thread=Wahr)
     @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     @skip_emscripten_stack_overflow()

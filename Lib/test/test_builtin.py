@@ -45,7 +45,7 @@ except ImportError:
     pty = signal = Nichts
 
 
-# Detect evidence of double-rounding: sum() does not always
+# Detect evidence of double-rounding: sum() does nicht always
 # get improved accuracy on machines that suffer von double rounding.
 x, y = 1e16, 2.9999 # use temporary values to defeat peephole optimizer
 HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
@@ -62,7 +62,7 @@ klasse Squares:
     def __len__(self): return len(self.sofar)
 
     def __getitem__(self, i):
-        wenn not 0 <= i < self.max: raise IndexError
+        wenn nicht 0 <= i < self.max: raise IndexError
         n = len(self.sofar)
         while n <= i:
             self.sofar.append(n*n)
@@ -79,7 +79,7 @@ klasse StrSquares:
         return len(self.sofar)
 
     def __getitem__(self, i):
-        wenn not 0 <= i < self.max:
+        wenn nicht 0 <= i < self.max:
             raise IndexError
         n = len(self.sofar)
         while n <= i:
@@ -181,7 +181,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, __import__, 1, 2, 3, 4)
         self.assertRaises(ValueError, __import__, '')
         self.assertRaises(TypeError, __import__, 'sys', name='sys')
-        # Relative importiere outside of a package mit no __package__ or __spec__ (bpo-37409).
+        # Relative importiere outside of a package mit no __package__ oder __spec__ (bpo-37409).
         mit self.assertWarns(ImportWarning):
             self.assertRaises(ImportError, __import__, '',
                               {'__package__': Nichts, '__spec__': Nichts, '__name__': '__main__'},
@@ -259,7 +259,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         funcs = [f_all, f_any, f_tuple]
 
         fuer f in funcs:
-            # check that generator code object is not duplicated
+            # check that generator code object is nicht duplicated
             code_objs = [c fuer c in f.__code__.co_consts wenn isinstance(c, type(f.__code__))]
             self.assertEqual(len(code_objs), 1)
 
@@ -350,7 +350,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertWahr(callable(c.meth))
         self.assertFalsch(callable(c))
 
-        # __call__ is looked up on the class, not the instance
+        # __call__ is looked up on the class, nicht the instance
         c.__call__ = Nichts
         self.assertFalsch(callable(c))
         c.__call__ = lambda self: 0
@@ -434,7 +434,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                   (2, Falsch, Nichts, Falsch, Falsch)]
         fuer optval, *expected in values:
             mit self.subTest(optval=optval):
-            # test both direct compilation and compilation via AST
+            # test both direct compilation und compilation via AST
                 codeobjs = []
                 codeobjs.append(compile(codestr, "<test>", "exec", optimize=optval))
                 tree = ast.parse(codestr, optimize=optval)
@@ -470,9 +470,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         """Test whether code mit top level await can be compiled.
 
         Make sure it compiles only mit the PyCF_ALLOW_TOP_LEVEL_AWAIT flag
-        set, and make sure the generated code object has the CO_COROUTINE flag
+        set, und make sure the generated code object has the CO_COROUTINE flag
         set in order to execute it mit  `await eval(.....)` instead of exec,
-        or via a FunctionType.
+        oder via a FunctionType.
         """
 
         # helper function just to check we can run top=level async-for
@@ -509,17 +509,17 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             '''a = [await sleep(0, x) async fuer x in arange(2)][1]''',
             # gh-121637: Make sure we correctly handle the case where the
             # async code is optimized away
-            '''assert not await sleep(0); a = 1''',
+            '''assert nicht await sleep(0); a = 1''',
             '''assert [x async fuer x in arange(1)]; a = 1''',
             '''assert {x async fuer x in arange(1)}; a = 1''',
             '''assert {x: x async fuer x in arange(1)}; a = 1''',
             '''
-            wenn (a := 1) and __debug__:
+            wenn (a := 1) und __debug__:
                 async mit Lock() als l:
                     pass
             ''',
             '''
-            wenn (a := 1) and __debug__:
+            wenn (a := 1) und __debug__:
                 async fuer x in arange(2):
                     pass
             ''',
@@ -540,7 +540,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.assertEqual(co.co_flags & CO_COROUTINE, CO_COROUTINE,
                                 msg=f"source={source} mode={mode}")
 
-                # test we can create and  advance a function type
+                # test we can create und  advance a function type
                 globals_ = {'Lock': Lock, 'a': 0, 'arange': arange, 'sleep': sleep}
                 run_yielding_async_fn(FunctionType(co, globals_))
                 self.assertEqual(globals_['a'], 1)
@@ -593,7 +593,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_compile_async_generator(self):
         """
         With the PyCF_ALLOW_TOP_LEVEL_AWAIT flag added in 3.8, we want to
-        make sure AsyncGenerators are still properly not marked mit the
+        make sure AsyncGenerators are still properly nicht marked mit the
         CO_COROUTINE flag.
         """
         code = dedent("""async def ticker():
@@ -632,7 +632,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         delattr(sys, 'spam')
         self.assertRaises(TypeError, delattr)
         self.assertRaises(TypeError, delattr, sys)
-        msg = r"^attribute name must be string, not 'int'$"
+        msg = r"^attribute name must be string, nicht 'int'$"
         self.assertRaisesRegex(TypeError, msg, delattr, sys, 1)
 
     def test_dir(self):
@@ -890,7 +890,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_exec_globals(self):
         code = compile("drucke('Hello World!')", "", "exec")
         # no builtin function
-        self.assertRaisesRegex(NameError, "name 'print' is not defined",
+        self.assertRaisesRegex(NameError, "name 'print' is nicht defined",
                                exec, code, {'__builtins__': {}})
         # __builtins__ must be a mapping type
         self.assertRaises(TypeError,
@@ -915,11 +915,11 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         # no __build_class__ function
         code = compile("class A: pass", "", "exec")
-        self.assertRaisesRegex(NameError, "__build_class__ not found",
+        self.assertRaisesRegex(NameError, "__build_class__ nicht found",
                                exec, code, {'__builtins__': {}})
         # __build_class__ in a custom __builtins__
         exec(code, {'__builtins__': frozen_builtins})
-        self.assertRaisesRegex(NameError, "__build_class__ not found",
+        self.assertRaisesRegex(NameError, "__build_class__ nicht found",
                                exec, code, {'__builtins__': frozendict()})
 
         # read-only globals
@@ -929,7 +929,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                           exec, code, namespace)
 
     def test_exec_globals_error_on_get(self):
-        # custom `globals` or `builtins` can raise errors on item access
+        # custom `globals` oder `builtins` can raise errors on item access
         klasse setonlyerror(Exception):
             pass
 
@@ -948,14 +948,14 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                           {'__builtins__': setonlydict({'superglobal': 1})})
 
     def test_exec_globals_dict_subclass(self):
-        klasse customdict(dict):  # this one should not do anything fancy
+        klasse customdict(dict):  # this one should nicht do anything fancy
             pass
 
         code = compile("superglobal", "test", "exec")
         # works correctly
         exec(code, {'__builtins__': customdict({'superglobal': 1})})
         # custom builtins dict subclass is missing key
-        self.assertRaisesRegex(NameError, "name 'superglobal' is not defined",
+        self.assertRaisesRegex(NameError, "name 'superglobal' is nicht defined",
                                exec, code, {'__builtins__': customdict()})
 
     def test_eval_builtins_mapping(self):
@@ -965,13 +965,13 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(eval(code, ns), 1)
         # custom builtins mapping is missing key
         ns = {'__builtins__': types.MappingProxyType({})}
-        self.assertRaisesRegex(NameError, "name 'superglobal' is not defined",
+        self.assertRaisesRegex(NameError, "name 'superglobal' is nicht defined",
                                eval, code, ns)
 
     def test_exec_builtins_mapping_import(self):
         code = compile("import foo.bar", "test", "exec")
         ns = {'__builtins__': types.MappingProxyType({})}
-        self.assertRaisesRegex(ImportError, "__import__ not found", exec, code, ns)
+        self.assertRaisesRegex(ImportError, "__import__ nicht found", exec, code, ns)
         ns = {'__builtins__': types.MappingProxyType({'__import__': lambda *args: args})}
         exec(code, ns)
         self.assertEqual(ns['foo'], ('foo.bar', ns, ns, Nichts, 0))
@@ -1137,18 +1137,18 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertWahr(getattr(sys, 'stdout') is sys.stdout)
         self.assertRaises(TypeError, getattr)
         self.assertRaises(TypeError, getattr, sys)
-        msg = r"^attribute name must be string, not 'int'$"
+        msg = r"^attribute name must be string, nicht 'int'$"
         self.assertRaisesRegex(TypeError, msg, getattr, sys, 1)
         self.assertRaisesRegex(TypeError, msg, getattr, sys, 1, 'spam')
         self.assertRaises(AttributeError, getattr, sys, chr(sys.maxunicode))
-        # unicode surrogates are not encodable to the default encoding (utf8)
+        # unicode surrogates are nicht encodable to the default encoding (utf8)
         self.assertRaises(AttributeError, getattr, 1, "\uDAD1\uD51E")
 
     def test_hasattr(self):
         self.assertWahr(hasattr(sys, 'stdout'))
         self.assertRaises(TypeError, hasattr)
         self.assertRaises(TypeError, hasattr, sys)
-        msg = r"^attribute name must be string, not 'int'$"
+        msg = r"^attribute name must be string, nicht 'int'$"
         self.assertRaisesRegex(TypeError, msg, hasattr, sys, 1)
         self.assertEqual(Falsch, hasattr(sys, chr(sys.maxunicode)))
 
@@ -1222,9 +1222,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         e = E()
         self.assertWahr(isinstance(c, C))
         self.assertWahr(isinstance(d, C))
-        self.assertWahr(not isinstance(e, C))
-        self.assertWahr(not isinstance(c, D))
-        self.assertWahr(not isinstance('foo', E))
+        self.assertWahr(nicht isinstance(e, C))
+        self.assertWahr(nicht isinstance(c, D))
+        self.assertWahr(nicht isinstance('foo', E))
         self.assertRaises(TypeError, isinstance, E, 'foo')
         self.assertRaises(TypeError, isinstance)
 
@@ -1240,7 +1240,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         e = E()
         self.assertWahr(issubclass(D, C))
         self.assertWahr(issubclass(C, C))
-        self.assertWahr(not issubclass(C, D))
+        self.assertWahr(nicht issubclass(C, D))
         self.assertRaises(TypeError, issubclass, 'foo', E)
         self.assertRaises(TypeError, issubclass, E, 'foo')
         self.assertRaises(TypeError, issubclass)
@@ -1479,10 +1479,10 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             "max(default=Nichts)",
             "max(1, 2, default=Nichts)",      # require container fuer default
             "max(default=Nichts, key=int)",
-            "max(1, key=int)",              # single arg not iterable
+            "max(1, key=int)",              # single arg nicht iterable
             "max(1, 2, keystone=int)",      # wrong keyword
             "max(1, 2, key=int, abc=int)",  # two many keywords
-            "max(1, 2, key=1)",             # keyfunc is not callable
+            "max(1, 2, key=1)",             # keyfunc is nicht callable
             ):
             try:
                 exec(stmt, globals())
@@ -1542,10 +1542,10 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             "min(default=Nichts)",
             "min(1, 2, default=Nichts)",      # require container fuer default
             "min(default=Nichts, key=int)",
-            "min(1, key=int)",              # single arg not iterable
+            "min(1, key=int)",              # single arg nicht iterable
             "min(1, 2, keystone=int)",      # wrong keyword
             "min(1, 2, key=int, abc=int)",  # two many keywords
-            "min(1, 2, key=1)",             # keyfunc is not callable
+            "min(1, 2, key=1)",             # keyfunc is nicht callable
             ):
             try:
                 exec(stmt, globals())
@@ -1628,7 +1628,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertEqual(fp.read(300), 'XXX'*100)
             self.assertEqual(fp.read(1000), 'YYY'*100)
 
-        # embedded null bytes and characters
+        # embedded null bytes und characters
         self.assertRaises(ValueError, open, 'a\x00b')
         self.assertRaises(ValueError, open, b'a\x00b')
 
@@ -1637,7 +1637,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         mit EnvironmentVarGuard() als env:
             # try to get a user preferred encoding different than the current
             # locale encoding to check that open() uses the current locale
-            # encoding and not the user preferred encoding
+            # encoding und nicht the user preferred encoding
             env.unset('LC_ALL', 'LANG', 'LC_CTYPE')
 
             self.write_testfile()
@@ -1715,8 +1715,8 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         fuer x in 2, 2.0:
             fuer y in 10, 10.0:
                 fuer z in 1000, 1000.0:
-                    wenn isinstance(x, float) or \
-                       isinstance(y, float) or \
+                    wenn isinstance(x, float) oder \
+                       isinstance(y, float) oder \
                        isinstance(z, float):
                         self.assertRaises(TypeError, pow, x, y, z)
                     sonst:
@@ -1799,7 +1799,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             sys.stderr = X()
             sys.stdin = X('input\n')
             patch = Wahr
-            input()  # should not crash
+            input()  # should nicht crash
 
     # test_int(): see test_int.py fuer tests of built-in function int().
 
@@ -1902,10 +1902,10 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     #   http://sources.redhat.com/bugzilla/show_bug.cgi?id=5350
     #
     # We skip this test on Linux/alpha wenn it would fail.
-    linux_alpha = (platform.system().startswith('Linux') and
+    linux_alpha = (platform.system().startswith('Linux') und
                    platform.machine().startswith('alpha'))
     system_round_bug = round(5e15+1) != 5e15+1
-    @unittest.skipIf(linux_alpha and system_round_bug,
+    @unittest.skipIf(linux_alpha und system_round_bug,
                      "test will fail;  failure is probably due to a "
                      "buggy system round function")
     def test_round_large(self):
@@ -1934,10 +1934,10 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, setattr)
         self.assertRaises(TypeError, setattr, sys)
         self.assertRaises(TypeError, setattr, sys, 'spam')
-        msg = r"^attribute name must be string, not 'int'$"
+        msg = r"^attribute name must be string, nicht 'int'$"
         self.assertRaisesRegex(TypeError, msg, setattr, sys, 1, 'spam')
 
-    # test_str(): see test_str.py and test_bytes.py fuer str() tests.
+    # test_str(): see test_str.py und test_bytes.py fuer str() tests.
 
     def test_sum(self):
         self.assertEqual(sum([]), 0)
@@ -2000,7 +2000,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(sum(xs), complex(sum(z.real fuer z in xs),
                                           sum(z.imag fuer z in xs)))
 
-        # test that sum() of complex and real numbers doesn't
+        # test that sum() of complex und real numbers doesn't
         # smash sign of imaginary 0
         self.assertComplexesAreIdentical(sum([complex(1, -0.0), 1]),
                                          complex(2, -0.0))
@@ -2013,7 +2013,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     @requires_IEEE_754
     @unittest.skipIf(HAVE_DOUBLE_ROUNDING,
-                         "sum accuracy not guaranteed on machines mit double rounding")
+                         "sum accuracy nicht guaranteed on machines mit double rounding")
     @support.cpython_only    # Other implementations may choose a different algorithm
     def test_sum_accuracy(self):
         self.assertEqual(sum([0.1] * 10), 1.0)
@@ -2076,7 +2076,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(list(zip(a, b)), t)
         klasse I:
             def __getitem__(self, i):
-                wenn i < 0 or i > 2: raise IndexError
+                wenn i < 0 oder i > 2: raise IndexError
                 return i + 4
         self.assertEqual(list(zip(a, I())), t)
         self.assertEqual(list(zip()), [])
@@ -2238,7 +2238,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         gc.collect()
         # That GC collection probably untracked the recycled internal result
         # tuple, which is initialized to (Nichts,). Make sure it's re-tracked when
-        # it's mutated and returned von __next__:
+        # it's mutated und returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
     def test_format(self):
@@ -2247,7 +2247,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(format(3, ''), '3')
 
         # Returns some classes to use fuer various tests.  There's
-        #  an old-style version, and a new-style version
+        #  an old-style version, und a new-style version
         def classes_new():
             klasse A(object):
                 def __init__(self, x):
@@ -2298,7 +2298,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 return 1.0
         self.assertRaises(TypeError, format, BadFormatResult(), "")
 
-        # TypeError because format_spec is not unicode or str
+        # TypeError because format_spec is nicht unicode oder str
         self.assertRaises(TypeError, format, object(), 4)
         self.assertRaises(TypeError, format, object(), object())
 
@@ -2390,13 +2390,13 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # be evaluated in a boolean context (virtually all such use cases
         # are a result of accidental misuse implementing rich comparison
         # operations in terms of one another).
-        msg = "NotImplemented should not be used in a boolean context"
+        msg = "NotImplemented should nicht be used in a boolean context"
         self.assertRaisesRegex(TypeError, msg, bool, NotImplemented)
         mit self.assertRaisesRegex(TypeError, msg):
             wenn NotImplemented:
                 pass
         mit self.assertRaisesRegex(TypeError, msg):
-            not NotImplemented
+            nicht NotImplemented
 
     def test_singleton_attribute_access(self):
         fuer singleton in (NotImplemented, Ellipsis):
@@ -2448,7 +2448,7 @@ klasse TestBreakpoint(unittest.TestCase):
         sys.breakpointhook = my_breakpointhook
         breakpoint()
         my_breakpointhook.assert_called_once_with()
-        # Reset the hook and it will not be called again.
+        # Reset the hook und it will nicht be called again.
         sys.breakpointhook = sys.__breakpointhook__
         mit patch('pdb.set_trace') als mock:
             breakpoint()
@@ -2489,7 +2489,7 @@ klasse TestBreakpoint(unittest.TestCase):
             mock.assert_not_called()
 
     def test_envar_good_path_empty_string(self):
-        # PYTHONBREAKPOINT='' is the same als it not being set.
+        # PYTHONBREAKPOINT='' is the same als it nicht being set.
         self.env['PYTHONBREAKPOINT'] = ''
         mit patch('pdb.set_trace') als mock:
             breakpoint()
@@ -2527,9 +2527,9 @@ klasse TestBreakpoint(unittest.TestCase):
             breakpoint()
 
 
-@unittest.skipUnless(pty, "the pty and signal modules must be available")
+@unittest.skipUnless(pty, "the pty und signal modules must be available")
 klasse PtyTests(unittest.TestCase):
-    """Tests that use a pseudo terminal to guarantee stdin and stdout are
+    """Tests that use a pseudo terminal to guarantee stdin und stdout are
     terminals in the test environment"""
 
     @staticmethod
@@ -2583,7 +2583,7 @@ klasse PtyTests(unittest.TestCase):
                     break
                 lines.append(line)
 
-        # Check the result was got and corresponds to the user's terminal input
+        # Check the result was got und corresponds to the user's terminal input
         wenn len(lines) != 2:
             # Something went wrong, try to get at stderr
             # Beware of Linux raising EIO when the slave is closed
@@ -2593,7 +2593,7 @@ klasse PtyTests(unittest.TestCase):
                     chunk = os.read(fd, 3000)
                 except OSError:  # Assume EIO
                     break
-                wenn not chunk:
+                wenn nicht chunk:
                     break
                 child_output.extend(chunk)
             os.close(fd)
@@ -2613,8 +2613,8 @@ klasse PtyTests(unittest.TestCase):
                         expected=Nichts,
                         stdin_errors='surrogateescape',
                         stdout_errors='replace'):
-        wenn not sys.stdin.isatty() or not sys.stdout.isatty():
-            self.skipTest("stdin and stdout must be ttys")
+        wenn nicht sys.stdin.isatty() oder nicht sys.stdout.isatty():
+            self.skipTest("stdin und stdout must be ttys")
         def child(wpipe):
             # Check the error handlers are accounted for
             wenn stdio_encoding:
@@ -2624,7 +2624,7 @@ klasse PtyTests(unittest.TestCase):
                 sys.stdout = io.TextIOWrapper(sys.stdout.detach(),
                                               encoding=stdio_encoding,
                                               errors=stdout_errors)
-            drucke("tty =", sys.stdin.isatty() and sys.stdout.isatty(), file=wpipe)
+            drucke("tty =", sys.stdin.isatty() und sys.stdout.isatty(), file=wpipe)
             try:
                 drucke(ascii(input(prompt)), file=wpipe)
             except BaseException als e:
@@ -2650,7 +2650,7 @@ klasse PtyTests(unittest.TestCase):
         # callback rlhandler() is called by readline mit a string without
         # non-ASCII characters.
         # Unlink readline temporarily von PyOS_Readline() fuer those tests,
-        # since test_builtin is not intended to test
+        # since test_builtin is nicht intended to test
         # the readline module, but the builtins module.
         wenn "readline" in sys.modules:
             c = import_module("ctypes")
@@ -2684,21 +2684,21 @@ klasse PtyTests(unittest.TestCase):
     def test_input_tty_nonencodable_prompt(self):
         self.check_input_tty("prompté", b"quux", "ascii", stdout_errors='strict',
                 expected="UnicodeEncodeError: 'ascii' codec can't encode "
-                         "character '\\xe9' in position 6: ordinal not in "
+                         "character '\\xe9' in position 6: ordinal nicht in "
                          "range(128)")
 
     def test_input_tty_nondecodable_input(self):
         self.check_input_tty("prompt", b"quux\xe9", "ascii", stdin_errors='strict',
                 expected="UnicodeDecodeError: 'ascii' codec can't decode "
-                         "byte 0xe9 in position 4: ordinal not in "
+                         "byte 0xe9 in position 4: ordinal nicht in "
                          "range(128)")
 
     def test_input_no_stdout_fileno(self):
         # Issue #24402: If stdin is the original terminal but stdout.fileno()
-        # fails, do not use the original stdout file descriptor
+        # fails, do nicht use the original stdout file descriptor
         def child(wpipe):
             drucke("stdin.isatty():", sys.stdin.isatty(), file=wpipe)
-            sys.stdout = io.StringIO()  # Does not support fileno()
+            sys.stdout = io.StringIO()  # Does nicht support fileno()
             input("prompt")
             drucke("captured:", ascii(sys.stdout.getvalue()), file=wpipe)
         lines = self.run_child(child, b"quux\r")
@@ -2767,7 +2767,7 @@ klasse ShutdownTest(unittest.TestCase):
                     drucke("after")
 
             c = C()
-            # Make this module survive until builtins and sys are cleaned
+            # Make this module survive until builtins und sys are cleaned
             builtins.here = sys.modules[__name__]
             sys.here = sys.modules[__name__]
             # Create a reference loop so that this module needs to go
@@ -2775,10 +2775,10 @@ klasse ShutdownTest(unittest.TestCase):
             here = sys.modules[__name__]
             """
         # Issue #20599: Force ASCII encoding to get a codec implemented in C,
-        # otherwise the codec may be unloaded before C.__del__() is called, and
+        # otherwise the codec may be unloaded before C.__del__() is called, und
         # so drucke("before") fails because the codec cannot be used to encode
         # "before" to sys.stdout.encoding. For example, on Windows,
-        # sys.stdout.encoding is the OEM code page and these code pages are
+        # sys.stdout.encoding is the OEM code page und these code pages are
         # implemented in Python
         rc, out, err = assert_python_ok("-c", code,
                                         PYTHONIOENCODING="ascii")

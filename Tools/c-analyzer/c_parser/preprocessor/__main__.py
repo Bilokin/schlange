@@ -62,8 +62,8 @@ def _iter_preprocessed(filename, *,
                        pure=Falsch,
                        ):
     preprocess = get_preprocessor(filename)
-    fuer line in preprocess(tool=not pure) or ():
-        wenn match_kind is not Nichts and not match_kind(line.kind):
+    fuer line in preprocess(tool=nicht pure) oder ():
+        wenn match_kind is nicht Nichts und nicht match_kind(line.kind):
             continue
         yield line
 
@@ -91,7 +91,7 @@ def cmd_preprocess(filenames, *,
                    iter_filenames=Nichts,
                    **kwargs
                    ):
-    wenn 'get_file_preprocessor' not in kwargs:
+    wenn 'get_file_preprocessor' nicht in kwargs:
         kwargs['get_file_preprocessor'] = _get_preprocessor()
     wenn raw:
         def show_file(filename, lines):
@@ -153,7 +153,7 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *,
                ):
     importiere argparse
     parser = argparse.ArgumentParser(
-        prog=prog or get_prog(),
+        prog=prog oder get_prog(),
     )
 
     processors = add_commands_cli(

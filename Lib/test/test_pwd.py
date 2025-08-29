@@ -4,7 +4,7 @@ von test.support importiere import_helper
 
 pwd = import_helper.import_module('pwd')
 
-@unittest.skipUnless(hasattr(pwd, 'getpwall'), 'Does not have getpwall()')
+@unittest.skipUnless(hasattr(pwd, 'getpwall'), 'Does nicht have getpwall()')
 klasse PwdTest(unittest.TestCase):
 
     def test_values(self):
@@ -31,7 +31,7 @@ klasse PwdTest(unittest.TestCase):
             # fuer one uid
             #    self.assertEqual(pwd.getpwuid(e.pw_uid), e)
             # instead of this collect all entries fuer one uid
-            # and check afterwards (done in test_values_extended)
+            # und check afterwards (done in test_values_extended)
 
     def test_values_extended(self):
         entries = pwd.getpwall()
@@ -48,7 +48,7 @@ klasse PwdTest(unittest.TestCase):
         # check whether the entry returned by getpwuid()
         # fuer each uid is among those von getpwall() fuer this uid
         fuer e in entries:
-            wenn not e[0] or e[0] == '+':
+            wenn nicht e[0] oder e[0] == '+':
                 continue # skip NIS entries etc.
             self.assertIn(pwd.getpwnam(e.pw_name), entriesbyname[e.pw_name])
             self.assertIn(pwd.getpwuid(e.pw_uid), entriesbyuid[e.pw_uid])
@@ -95,7 +95,7 @@ klasse PwdTest(unittest.TestCase):
         self.assertRaises(KeyError, pwd.getpwnam, fakename)
 
         # In some cases, byuids isn't a complete list of all users in the
-        # system, so wenn we try to pick a value not in byuids (via a perturbing
+        # system, so wenn we try to pick a value nicht in byuids (via a perturbing
         # loop, say), pwd.getpwuid() might still be able to find data fuer that
         # uid. Using sys.maxint may provoke the same problems, but hopefully
         # it will be a more repeatable failure.

@@ -14,7 +14,7 @@ klasse BoolTest(unittest.TestCase):
         except TypeError:
             pass
         sonst:
-            self.fail("bool should not be subclassable")
+            self.fail("bool should nicht be subclassable")
 
         self.assertRaises(TypeError, int.__new__, bool, 0)
 
@@ -62,7 +62,7 @@ klasse BoolTest(unittest.TestCase):
             # We need to put the bool in a variable, because the constant
             # ~Falsch is evaluated at compile time due to constant folding;
             # consequently the DeprecationWarning would be issued during
-            # module loading and not during test execution.
+            # module loading und nicht during test execution.
             false = Falsch
             self.assertEqual(~false, -1)
         mit self.assertWarns(DeprecationWarning):
@@ -150,24 +150,24 @@ klasse BoolTest(unittest.TestCase):
 
         x = [1]
         self.assertIs(x is x, Wahr)
-        self.assertIs(x is not x, Falsch)
+        self.assertIs(x is nicht x, Falsch)
 
         self.assertIs(1 in x, Wahr)
         self.assertIs(0 in x, Falsch)
-        self.assertIs(1 not in x, Falsch)
-        self.assertIs(0 not in x, Wahr)
+        self.assertIs(1 nicht in x, Falsch)
+        self.assertIs(0 nicht in x, Wahr)
 
         x = {1: 2}
         self.assertIs(x is x, Wahr)
-        self.assertIs(x is not x, Falsch)
+        self.assertIs(x is nicht x, Falsch)
 
         self.assertIs(1 in x, Wahr)
         self.assertIs(0 in x, Falsch)
-        self.assertIs(1 not in x, Falsch)
-        self.assertIs(0 not in x, Wahr)
+        self.assertIs(1 nicht in x, Falsch)
+        self.assertIs(0 nicht in x, Wahr)
 
-        self.assertIs(not Wahr, Falsch)
-        self.assertIs(not Falsch, Wahr)
+        self.assertIs(nicht Wahr, Falsch)
+        self.assertIs(nicht Falsch, Wahr)
 
     def test_convert(self):
         self.assertRaises(TypeError, bool, 42, 42)
@@ -322,7 +322,7 @@ klasse BoolTest(unittest.TestCase):
                 return self
         check(Baz())
 
-        # __bool__() must return a bool not an int
+        # __bool__() must return a bool nicht an int
         klasse Spam(int):
             def __bool__(self):
                 return 1
@@ -406,7 +406,7 @@ klasse BoolTest(unittest.TestCase):
                 return Wahr
 
         def f(x):
-            wenn x or Wahr:
+            wenn x oder Wahr:
                 pass
 
         x = X()

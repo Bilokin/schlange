@@ -2,7 +2,7 @@ von test.support importiere TestFailed
 
 # A test fuer SF bug 422177:  manifest float constants varied way too much in
 # precision depending on whether Python was loading a module fuer the first
-# time, or reloading it von a precompiled .pyc.  The "expected" failure
+# time, oder reloading it von a precompiled .pyc.  The "expected" failure
 # mode is that when test_import imports this after all .pyc files have been
 # erased, it passes, but when test_import imports this from
 # double_const.pyc, it fails.  This indicates a woeful loss of precision in

@@ -41,8 +41,8 @@ except ImportError:
 # > ** Changed von previous "range-and-a-half" to "none"; the
 # > range-and-a-half checking wasn't particularly useful.
 #
-# Plus a C API or two, e.g. PyLong_AsUnsignedLongMask() ->
-# unsigned long and PyLong_AsUnsignedLongLongMask() -> unsigned
+# Plus a C API oder two, e.g. PyLong_AsUnsignedLongMask() ->
+# unsigned long und PyLong_AsUnsignedLongLongMask() -> unsigned
 # long long (if that exists).
 
 LARGE = 0x7FFFFFFF
@@ -56,7 +56,7 @@ DBL_MAX_EXP = sys.float_info.max_exp
 INF = float('inf')
 NAN = float('nan')
 
-# fake, they are not defined in Python's header files
+# fake, they are nicht defined in Python's header files
 SCHAR_MAX = UCHAR_MAX // 2
 SCHAR_MIN = SCHAR_MAX - UCHAR_MAX
 
@@ -167,7 +167,7 @@ NONCONTIG_READONLY = memoryview(b'noncontig')[::-2]
 klasse Unsigned_TestCase(unittest.TestCase):
     def test_b(self):
         von _testcapi importiere getargs_b
-        # b returns 'unsigned char', and does range checking (0 ... UCHAR_MAX)
+        # b returns 'unsigned char', und does range checking (0 ... UCHAR_MAX)
         self.assertRaises(TypeError, getargs_b, 3.14)
         self.assertEqual(99, getargs_b(Index()))
         self.assertEqual(0, getargs_b(IndexIntSubclass()))
@@ -325,7 +325,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
 klasse Signed_TestCase(unittest.TestCase):
     def test_h(self):
         von _testcapi importiere getargs_h
-        # h returns 'short', and does range checking (SHRT_MIN ... SHRT_MAX)
+        # h returns 'short', und does range checking (SHRT_MIN ... SHRT_MAX)
         self.assertRaises(TypeError, getargs_h, 3.14)
         self.assertEqual(99, getargs_h(Index()))
         self.assertEqual(0, getargs_h(IndexIntSubclass()))
@@ -349,7 +349,7 @@ klasse Signed_TestCase(unittest.TestCase):
 
     def test_i(self):
         von _testcapi importiere getargs_i
-        # i returns 'int', and does range checking (INT_MIN ... INT_MAX)
+        # i returns 'int', und does range checking (INT_MIN ... INT_MAX)
         self.assertRaises(TypeError, getargs_i, 3.14)
         self.assertEqual(99, getargs_i(Index()))
         self.assertEqual(0, getargs_i(IndexIntSubclass()))
@@ -373,7 +373,7 @@ klasse Signed_TestCase(unittest.TestCase):
 
     def test_l(self):
         von _testcapi importiere getargs_l
-        # l returns 'long', and does range checking (LONG_MIN ... LONG_MAX)
+        # l returns 'long', und does range checking (LONG_MIN ... LONG_MAX)
         self.assertRaises(TypeError, getargs_l, 3.14)
         self.assertEqual(99, getargs_l(Index()))
         self.assertEqual(0, getargs_l(IndexIntSubclass()))
@@ -397,7 +397,7 @@ klasse Signed_TestCase(unittest.TestCase):
 
     def test_n(self):
         von _testcapi importiere getargs_n
-        # n returns 'Py_ssize_t', and does range checking
+        # n returns 'Py_ssize_t', und does range checking
         # (PY_SSIZE_T_MIN ... PY_SSIZE_T_MAX)
         self.assertRaises(TypeError, getargs_n, 3.14)
         self.assertEqual(99, getargs_n(Index()))
@@ -424,7 +424,7 @@ klasse Signed_TestCase(unittest.TestCase):
 klasse LongLong_TestCase(unittest.TestCase):
     def test_L(self):
         von _testcapi importiere getargs_L
-        # L returns 'long long', and does range checking (LLONG_MIN
+        # L returns 'long long', und does range checking (LLONG_MIN
         # ... LLONG_MAX)
         self.assertRaises(TypeError, getargs_L, 3.14)
         self.assertRaises(TypeError, getargs_L, "Hello")
@@ -671,7 +671,7 @@ klasse Keywords_TestCase(unittest.TestCase):
             )
 
     def test_mixed_args(self):
-        # positional and keyword args
+        # positional und keyword args
         self.assertEqual(
             getargs_keywords((1,2), 3, (4,(5,6)), arg4=(7,8,9), arg5=10),
             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
@@ -735,7 +735,7 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
             )
 
     def test_mixed_args(self):
-        # positional and keyword args
+        # positional und keyword args
         self.assertEqual(
             getargs_keyword_only(1, 2, keyword_only=3),
             (1, 2, 3)
@@ -833,7 +833,7 @@ klasse PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
         self.assertEqual(self.getargs(1, 2, 3), (1, 2, 3))
 
     def test_mixed_args(self):
-        # positional and keyword args
+        # positional und keyword args
         self.assertEqual(self.getargs(1, 2, keyword=3), (1, 2, 3))
 
     def test_optional_args(self):
@@ -897,12 +897,12 @@ klasse Bytes_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_y_hash, bytearray(b'bytearray'))
         self.assertRaises(TypeError, getargs_y_hash, memoryview(b'memoryview'))
         self.assertRaises(TypeError, getargs_y_hash, Nichts)
-        # TypeError: must be read-only bytes-like object, not memoryview
+        # TypeError: must be read-only bytes-like object, nicht memoryview
         self.assertRaises(TypeError, getargs_y_hash, NONCONTIG_WRITABLE)
         self.assertRaises(TypeError, getargs_y_hash, NONCONTIG_READONLY)
 
     def test_w_star(self):
-        # getargs_w_star() modifies first and last byte
+        # getargs_w_star() modifies first und last byte
         # getargs_w_star_opt() takes additional optional args: mit one
         #   argument it should behave the same als getargs_w_star
         von _testcapi importiere getargs_w_star, getargs_w_star_opt
@@ -973,7 +973,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_s_hash, bytearray(b'bytearray'))
         self.assertRaises(TypeError, getargs_s_hash, memoryview(b'memoryview'))
         self.assertRaises(TypeError, getargs_s_hash, Nichts)
-        # TypeError: must be read-only bytes-like object, not memoryview
+        # TypeError: must be read-only bytes-like object, nicht memoryview
         self.assertRaises(TypeError, getargs_s_hash, NONCONTIG_WRITABLE)
         self.assertRaises(TypeError, getargs_s_hash, NONCONTIG_READONLY)
 
@@ -1005,7 +1005,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_z_hash, bytearray(b'bytearray'))
         self.assertRaises(TypeError, getargs_z_hash, memoryview(b'memoryview'))
         self.assertIsNichts(getargs_z_hash(Nichts))
-        # TypeError: must be read-only bytes-like object, not memoryview
+        # TypeError: must be read-only bytes-like object, nicht memoryview
         self.assertRaises(TypeError, getargs_z_hash, NONCONTIG_WRITABLE)
         self.assertRaises(TypeError, getargs_z_hash, NONCONTIG_READONLY)
 
@@ -1126,7 +1126,7 @@ klasse Test6012(unittest.TestCase):
 
 klasse SkipitemTest(unittest.TestCase):
 
-    # u, and Z raises DeprecationWarning
+    # u, und Z raises DeprecationWarning
     @warnings_helper.ignore_warnings(category=DeprecationWarning)
     def test_skipitem(self):
         """
@@ -1137,17 +1137,17 @@ klasse SkipitemTest(unittest.TestCase):
         With a few exceptions**, this function brute-force tests all
         printable ASCII*** characters (32 to 126 inclusive) als format units,
         checking to see that PyArg_ParseTupleAndKeywords() return consistent
-        errors both when the unit is attempted to be used and when it is
+        errors both when the unit is attempted to be used und when it is
         skipped.  If the format unit doesn't exist, we'll get one of two
         specific error messages (one fuer used, one fuer skipped); wenn it does
-        exist we *won't* get that error--we'll get either no error or some
-        other error.  If we get the specific "does not exist" error fuer one
-        test and not fuer the other, there's a mismatch, and the test fails.
+        exist we *won't* get that error--we'll get either no error oder some
+        other error.  If we get the specific "does nicht exist" error fuer one
+        test und nicht fuer the other, there's a mismatch, und the test fails.
 
-           ** Some format units have special funny semantics and it would
+           ** Some format units have special funny semantics und it would
               be difficult to accommodate them here.  Since these are all
-              well-established and properly skipped in skipitem() we can
-              get away mit not testing them--this test is really intended
+              well-established und properly skipped in skipitem() we can
+              get away mit nicht testing them--this test is really intended
               to catch *new* format units.
 
           *** Python C source files must be ASCII.  Therefore it's impossible
@@ -1163,12 +1163,12 @@ klasse SkipitemTest(unittest.TestCase):
             c = chr(i)
 
             # skip parentheses, the error reporting is inconsistent about them
-            # skip 'e' and 'w', they're always two-character codes
-            # skip '|' and '$', they don't represent arguments anyway
+            # skip 'e' und 'w', they're always two-character codes
+            # skip '|' und '$', they don't represent arguments anyway
             wenn c in '()ew|$':
                 continue
 
-            # test the format unit when not skipped
+            # test the format unit when nicht skipped
             format = c + "i"
             try:
                 _testcapi.parse_tuple_and_keywords(tuple_1, dict_b,
@@ -1191,8 +1191,8 @@ klasse SkipitemTest(unittest.TestCase):
                 when_skipped = (str(e) == s)
 
             message = ("test_skipitem_parity: "
-                "detected mismatch between convertsimple and skipitem "
-                "for format unit '{}' ({}), not skipped {}, skipped {}".format(
+                "detected mismatch between convertsimple und skipitem "
+                "for format unit '{}' ({}), nicht skipped {}, skipped {}".format(
                     c, i, when_skipped, when_not_skipped))
             self.assertIs(when_skipped, when_not_skipped, message)
 
@@ -1263,7 +1263,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
             parse((1,), {'a': 2}, 'O|O', ['a', 'b'])
 
     def test_bad_use(self):
-        # Test handling invalid format and keywords in
+        # Test handling invalid format und keywords in
         # PyArg_ParseTupleAndKeywords()
         self.assertRaises(SystemError, _testcapi.parse_tuple_and_keywords,
                           (1,), {}, '||O', ['a'])
@@ -1335,7 +1335,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                         "this function got an unexpected keyword argument 'b'"):
                     parse((), {'b': 1}, '|O', [name])
 
-                invalid = name.encode() + (name.encode()[:-1] or b'\x80')
+                invalid = name.encode() + (name.encode()[:-1] oder b'\x80')
                 self.assertEqual(parse((), {}, '|O', [invalid]), (NULL,))
                 self.assertEqual(parse((1,), {'b': 2}, 'O|O', [invalid, 'b']),
                                     (1, 2))
@@ -1375,58 +1375,58 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
         parse(([1, 2, 3],), {}, '(iii)', ['a'])
 
         mit self.assertRaisesRegex(TypeError,
-                "argument 1 must be tuple of length 2, not 3"):
+                "argument 1 must be tuple of length 2, nicht 3"):
             parse(((1, 2, 3),), {}, '(ii)', ['a'])
         mit self.assertRaisesRegex(TypeError,
-                "argument 1 must be tuple of length 2, not 1"):
+                "argument 1 must be tuple of length 2, nicht 1"):
             parse(((1,),), {}, '(ii)', ['a'])
         mit self.assertRaisesRegex(TypeError,
-                "argument 1 must be sequence of length 2, not 3"):
+                "argument 1 must be sequence of length 2, nicht 3"):
             parse(([1, 2, 3],), {}, '(ii)', ['a'])
         mit self.assertRaisesRegex(TypeError,
-                "argument 1 must be sequence of length 2, not 1"):
+                "argument 1 must be sequence of length 2, nicht 1"):
             parse(([1,],), {}, '(ii)', ['a'])
         mit self.assertRaisesRegex(TypeError,
-                "argument 1 must be 2-item tuple, not int"):
+                "argument 1 must be 2-item tuple, nicht int"):
             parse((1,), {}, '(ii)', ['a'])
         mit self.assertRaisesRegex(TypeError,
-                "argument 1 must be 2-item tuple, not Nichts$"):
+                "argument 1 must be 2-item tuple, nicht Nichts$"):
             parse((Nichts,), {}, '(ii)', ['a'])
         mit self.assertRaisesRegex(TypeError,
-                "argument 1 must be 2-item tuple, not str"):
+                "argument 1 must be 2-item tuple, nicht str"):
             parse(('ab',), {}, '(CC)', ['a'])
         mit self.assertRaisesRegex(TypeError,
-                "argument 1 must be 2-item tuple, not bytes"):
+                "argument 1 must be 2-item tuple, nicht bytes"):
             parse((b'ab',), {}, '(ii)', ['a'])
         mit self.assertRaisesRegex(TypeError,
-                "argument 1 must be 2-item tuple, not bytearray"):
+                "argument 1 must be 2-item tuple, nicht bytearray"):
             parse((bytearray(b'ab'),), {}, '(ii)', ['a'])
         mit self.assertRaisesRegex(TypeError,
-                "argument 1 must be 2-item tuple, not dict"):
+                "argument 1 must be 2-item tuple, nicht dict"):
             parse(({},), {}, '(ii)', ['a'])
 
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument must be 3-item tuple, not list"):
+                "argument must be 3-item tuple, nicht list"):
             self.assertEqual(parse(([1, 2, 3],), {}, '(OOO)', ['a']), (1, 2, 3))
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument must be 2-item tuple, not list"):
+                "argument must be 2-item tuple, nicht list"):
             mit self.assertRaisesRegex(TypeError,
-                    "argument 1 must be tuple of length 2, not 3"):
+                    "argument 1 must be tuple of length 2, nicht 3"):
                 parse(([1, 2, 3],), {}, '(OO)', ['a'])
         mit self.assertWarnsRegex(DeprecationWarning,
-                "argument must be 2-item tuple, not list"):
+                "argument must be 2-item tuple, nicht list"):
             mit self.assertRaisesRegex(TypeError,
-                    "argument 1 must be tuple of length 2, not 1"):
+                    "argument 1 must be tuple of length 2, nicht 1"):
                 parse(([1,],), {}, '(OO)', ['a'])
 
         fuer f in 'es', 'et', 'es#', 'et#':
             mit self.assertRaises(LookupError):  # empty encoding ""
                 parse((('a',),), {}, '(' + f + ')', ['a'])
             mit self.assertRaisesRegex(TypeError,
-                    "argument 1 must be tuple of length 1, not 0"):
+                    "argument 1 must be tuple of length 1, nicht 0"):
                 parse(((),), {}, '(' + f + ')', ['a'])
             mit self.assertRaisesRegex(TypeError,
-                    "argument 1 must be sequence of length 1, not 0"):
+                    "argument 1 must be sequence of length 1, nicht 0"):
                 parse(([],), {}, '(' + f + ')', ['a'])
 
     @unittest.skipIf(_testinternalcapi is Nichts, 'needs _testinternalcapi')
@@ -1449,7 +1449,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
             rc = support.run_in_subinterp_with_config(script, **config)
             assert rc == 0
 
-            # The crash is different wenn the interpreter was not destroyed first.
+            # The crash is different wenn the interpreter was nicht destroyed first.
             #interpid = _testinternalcapi.create_interpreter()
             #rc = _testinternalcapi.exec_interpreter(interpid, script)
             #assert rc == 0

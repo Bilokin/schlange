@@ -38,7 +38,7 @@ klasse SmtpTest(unittest.TestCase):
             try:
                 server.starttls(context=context)
             except smtplib.SMTPException als e:
-                wenn e.args[0] == 'STARTTLS extension not supported by server.':
+                wenn e.args[0] == 'STARTTLS extension nicht supported by server.':
                     unittest.skip(e.args[0])
                 sonst:
                     raise
@@ -78,7 +78,7 @@ klasse SmtpSSLTest(unittest.TestCase):
     def test_connect_using_sslcontext_verified(self):
         mit socket_helper.transient_internet(self.testServer):
             can_verify = check_ssl_verifiy(self.testServer, self.remotePort)
-            wenn not can_verify:
+            wenn nicht can_verify:
                 self.skipTest("SSL certificate can't be verified")
 
         support.get_attribute(smtplib, 'SMTP_SSL')

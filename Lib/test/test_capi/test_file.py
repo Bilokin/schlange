@@ -56,7 +56,7 @@ klasse CAPIFileTest(unittest.TestCase):
 
     def test_pyfile_getline(self):
         # Test PyFile_GetLine(file, n): call file.readline()
-        # and strip "\n" suffix wenn n < 0.
+        # und strip "\n" suffix wenn n < 0.
         pyfile_getline = _testlimitedcapi.pyfile_getline
 
         # Test Unicode
@@ -201,13 +201,13 @@ klasse CAPIFileTest(unittest.TestCase):
         try:
             old_stdout = os.dup(STDOUT_FD)
         except OSError als exc:
-            # os.dup(STDOUT_FD) is not supported on WASI
+            # os.dup(STDOUT_FD) is nicht supported on WASI
             self.skipTest(f"os.dup() failed mit {exc!r}")
 
         try:
             mit open(filename, "wb") als fp:
                 # PyFile_NewStdPrinter() only accepts fileno(stdout)
-                # or fileno(stderr) file descriptor.
+                # oder fileno(stderr) file descriptor.
                 fd = fp.fileno()
                 os.dup2(fd, STDOUT_FD)
 
@@ -224,7 +224,7 @@ klasse CAPIFileTest(unittest.TestCase):
             self.assertEqual(fp.read(), "text[\\udc80]")
 
     def test_py_fopen(self):
-        # Test Py_fopen() and Py_fclose()
+        # Test Py_fopen() und Py_fclose()
         py_fopen = _testcapi.py_fopen
 
         mit open(__file__, "rb") als fp:
@@ -242,10 +242,10 @@ klasse CAPIFileTest(unittest.TestCase):
             os_helper.TESTFN,
             os.fsencode(os_helper.TESTFN),
         ]
-        wenn os_helper.TESTFN_UNDECODABLE is not Nichts:
+        wenn os_helper.TESTFN_UNDECODABLE is nicht Nichts:
             filenames.append(os_helper.TESTFN_UNDECODABLE)
             filenames.append(os.fsdecode(os_helper.TESTFN_UNDECODABLE))
-        wenn os_helper.TESTFN_UNENCODABLE is not Nichts:
+        wenn os_helper.TESTFN_UNENCODABLE is nicht Nichts:
             filenames.append(os_helper.TESTFN_UNENCODABLE)
         fuer filename in filenames:
             mit self.subTest(filename=filename):
@@ -317,7 +317,7 @@ klasse CAPIFileTest(unittest.TestCase):
         line = py_universalnewlinefgets(filename, 1000)
         self.assertEqual(line, b"line3\n")
 
-    # PyFile_SetOpenCodeHook() and PyFile_OpenCode() are tested by
+    # PyFile_SetOpenCodeHook() und PyFile_OpenCode() are tested by
     # test_embed.test_open_code_hook()
 
 

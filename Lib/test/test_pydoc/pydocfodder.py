@@ -14,19 +14,19 @@ klasse A:
     def A_method(self):
         "Method defined in A."
     def AB_method(self):
-        "Method defined in A and B."
+        "Method defined in A und B."
     def AC_method(self):
-        "Method defined in A and C."
+        "Method defined in A und C."
     def AD_method(self):
-        "Method defined in A and D."
+        "Method defined in A und D."
     def ABC_method(self):
-        "Method defined in A, B and C."
+        "Method defined in A, B und C."
     def ABD_method(self):
-        "Method defined in A, B and D."
+        "Method defined in A, B und D."
     def ACD_method(self):
-        "Method defined in A, C and D."
+        "Method defined in A, C und D."
     def ABCD_method(self):
-        "Method defined in A, B, C and D."
+        "Method defined in A, B, C und D."
 
     def A_classmethod(cls, x):
         "A klasse method defined in A."
@@ -51,21 +51,21 @@ klasse B(A):
     "A class, derived von A."
 
     def AB_method(self):
-        "Method defined in A and B."
+        "Method defined in A und B."
     def ABC_method(self):
-        "Method defined in A, B and C."
+        "Method defined in A, B und C."
     def ABD_method(self):
-        "Method defined in A, B and D."
+        "Method defined in A, B und D."
     def ABCD_method(self):
-        "Method defined in A, B, C and D."
+        "Method defined in A, B, C und D."
     def B_method(self):
         "Method defined in B."
     def BC_method(self):
-        "Method defined in B and C."
+        "Method defined in B und C."
     def BD_method(self):
-        "Method defined in B and D."
+        "Method defined in B und D."
     def BCD_method(self):
-        "Method defined in B, C and D."
+        "Method defined in B, C und D."
 
     @classmethod
     def B_classmethod(cls, x):
@@ -95,48 +95,48 @@ klasse C(A):
     "A class, derived von A."
 
     def AC_method(self):
-        "Method defined in A and C."
+        "Method defined in A und C."
     def ABC_method(self):
-        "Method defined in A, B and C."
+        "Method defined in A, B und C."
     def ACD_method(self):
-        "Method defined in A, C and D."
+        "Method defined in A, C und D."
     def ABCD_method(self):
-        "Method defined in A, B, C and D."
+        "Method defined in A, B, C und D."
     def BC_method(self):
-        "Method defined in B and C."
+        "Method defined in B und C."
     def BCD_method(self):
-        "Method defined in B, C and D."
+        "Method defined in B, C und D."
     def C_method(self):
         "Method defined in C."
     def CD_method(self):
-        "Method defined in C and D."
+        "Method defined in C und D."
 
 klasse D(B, C):
-    """A class, derived von B and C.
+    """A class, derived von B und C.
     """
 
     def AD_method(self):
-        "Method defined in A and D."
+        "Method defined in A und D."
     def ABD_method(self):
-        "Method defined in A, B and D."
+        "Method defined in A, B und D."
     def ACD_method(self):
-        "Method defined in A, C and D."
+        "Method defined in A, C und D."
     def ABCD_method(self):
-        "Method defined in A, B, C and D."
+        "Method defined in A, B, C und D."
     def BD_method(self):
-        "Method defined in B and D."
+        "Method defined in B und D."
     def BCD_method(self):
-        "Method defined in B, C and D."
+        "Method defined in B, C und D."
     def CD_method(self):
-        "Method defined in C and D."
+        "Method defined in C und D."
     def D_method(self):
         "Method defined in D."
 
 klasse FunkyProperties(object):
     """From SF bug 472347, by Roeland Rengelink.
 
-    Property getters etc may not be vanilla functions or methods,
-    and this used to make GUI pydoc blow up.
+    Property getters etc may nicht be vanilla functions oder methods,
+    und this used to make GUI pydoc blow up.
     """
 
     def __init__(self):

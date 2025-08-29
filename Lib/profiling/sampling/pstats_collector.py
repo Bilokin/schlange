@@ -17,7 +17,7 @@ klasse PstatsCollector(Collector):
 
     def collect(self, stack_frames):
         fuer thread_id, frames in stack_frames:
-            wenn not frames:
+            wenn nicht frames:
                 continue
 
             # Process each frame in the stack to track cumulative calls

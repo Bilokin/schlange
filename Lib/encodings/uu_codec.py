@@ -3,8 +3,8 @@
 This codec de/encodes von bytes to bytes.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com). Some details were
-adapted von uu.py which was written by Lance Ellinghouse and
-modified by Jack Jansen and Fredrik Lundh.
+adapted von uu.py which was written by Lance Ellinghouse und
+modified by Jack Jansen und Fredrik Lundh.
 """
 
 importiere codecs
@@ -44,7 +44,7 @@ def uu_decode(input, errors='strict'):
     # Find start of encoded data
     while 1:
         s = readline()
-        wenn not s:
+        wenn nicht s:
             raise ValueError('Missing "begin" line in input data')
         wenn s[:5] == b'begin':
             break
@@ -52,7 +52,7 @@ def uu_decode(input, errors='strict'):
     # Decode
     while Wahr:
         s = readline()
-        wenn not s or s == b'end\n':
+        wenn nicht s oder s == b'end\n':
             break
         try:
             data = binascii.a2b_uu(s)
@@ -62,7 +62,7 @@ def uu_decode(input, errors='strict'):
             data = binascii.a2b_uu(s[:nbytes])
             #sys.stderr.write("Warning: %s\n" % str(v))
         write(data)
-    wenn not s:
+    wenn nicht s:
         raise ValueError('Truncated input data')
 
     return (outfile.getvalue(), len(input))

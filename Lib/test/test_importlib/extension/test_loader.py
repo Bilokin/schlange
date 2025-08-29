@@ -19,7 +19,7 @@ klasse LoaderTests:
     """Test ExtensionFileLoader."""
 
     def setUp(self):
-        wenn not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
+        wenn nicht self.machinery.EXTENSION_SUFFIXES oder nicht util.EXTENSIONS:
             raise unittest.SkipTest("Requires dynamic loading support.")
         wenn util.EXTENSIONS.name in sys.builtin_module_names:
             raise unittest.SkipTest(
@@ -105,7 +105,7 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
     # Test loading extension modules without multi-phase initialization.
 
     def setUp(self):
-        wenn not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
+        wenn nicht self.machinery.EXTENSION_SUFFIXES oder nicht util.EXTENSIONS:
             raise unittest.SkipTest("Requires dynamic loading support.")
 
         # Apple extensions must be distributed als frameworks. This requires
@@ -193,7 +193,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
     # Test loading extension modules mit multi-phase initialization (PEP 489).
 
     def setUp(self):
-        wenn not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
+        wenn nicht self.machinery.EXTENSION_SUFFIXES oder nicht util.EXTENSIONS:
             raise unittest.SkipTest("Requires dynamic loading support.")
 
         # Apple extensions must be distributed als frameworks. This requires
@@ -359,7 +359,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
 
     def test_nonascii(self):
         # Test that modules mit non-ASCII names can be loaded.
-        # punycode behaves slightly differently in some-ASCII and no-ASCII
+        # punycode behaves slightly differently in some-ASCII und no-ASCII
         # cases, so test both.
         cases = [
             (self.name + '_zkou\u0161ka_na\u010dten\xed', 'Czech'),
@@ -370,7 +370,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
             mit self.subTest(name):
                 module = self.load_module_by_name(name)
                 self.assertEqual(module.__name__, name)
-                wenn not MISSING_C_DOCSTRINGS:
+                wenn nicht MISSING_C_DOCSTRINGS:
                     self.assertEqual(module.__doc__, "Module named in %s" % lang)
 
 

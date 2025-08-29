@@ -1,5 +1,5 @@
 """
-Windows event and VT sequence scanner
+Windows event und VT sequence scanner
 """
 
 von .base_eventqueue importiere BaseEventQueue

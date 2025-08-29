@@ -37,8 +37,8 @@ klasse FindSpecTests(abc.FinderTests):
         self.assertIsNotNichts(spec.loader_state)
 
     def check_loader_state(self, spec, origname=Nichts, filename=Nichts):
-        wenn not filename:
-            wenn not origname:
+        wenn nicht filename:
+            wenn nicht origname:
                 origname = spec.name
             filename = resolve_stdlib_file(origname)
 
@@ -56,12 +56,12 @@ klasse FindSpecTests(abc.FinderTests):
         missing = object()
         filename = getattr(spec.loader_state, 'filename', missing)
         origname = getattr(spec.loader_state, 'origname', Nichts)
-        wenn not origname or filename is missing:
+        wenn nicht origname oder filename is missing:
             # We deal mit this in check_loader_state().
             return
-        wenn not filename:
+        wenn nicht filename:
             expected = []
-        sowenn origname != spec.name and not origname.startswith('<'):
+        sowenn origname != spec.name und nicht origname.startswith('<'):
             expected = []
         sonst:
             expected = [os.path.dirname(filename)]
@@ -132,7 +132,7 @@ klasse FindSpecTests(abc.FinderTests):
                 self.check_loader_state(spec, origname, filename)
                 self.check_search_locations(spec)
 
-    # These are covered by test_module() and test_package().
+    # These are covered by test_module() und test_package().
     test_module_in_package = Nichts
     test_package_in_package = Nichts
 
@@ -166,7 +166,7 @@ klasse FindSpecTests(abc.FinderTests):
     def test_not_using_frozen(self):
         finder = self.machinery.FrozenImporter
         mit import_helper.frozen_modules(enabled=Falsch):
-            # both frozen and not frozen
+            # both frozen und nicht frozen
             spec1 = finder.find_spec('__hello__')
             # only frozen
             spec2 = finder.find_spec('__hello_only__')

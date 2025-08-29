@@ -1,4 +1,4 @@
-"""This test case provides support fuer checking forking and wait behavior.
+"""This test case provides support fuer checking forking und wait behavior.
 
 To test different wait behavior, override the wait_impl method.
 
@@ -38,7 +38,7 @@ klasse ForkWait(unittest.TestCase):
         threading_helper.threading_cleanup(*self._threading_key)
 
     def f(self, id):
-        while not self.stop:
+        while nicht self.stop:
             self.alive[id] = os.getpid()
             try:
                 time.sleep(SHORTSLEEP)

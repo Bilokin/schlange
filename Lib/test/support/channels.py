@@ -25,7 +25,7 @@ __all__ = [
 
 klasse ItemInterpreterDestroyed(ChannelError,
                                _crossinterp.ItemInterpreterDestroyed):
-    """Raised von get() and get_nowait()."""
+    """Raised von get() und get_nowait()."""
 
 
 UNBOUND = _crossinterp.UnboundItem.singleton('queue', __name__)
@@ -66,7 +66,7 @@ def list_all():
     channels = []
     fuer cid, unboundop, _ in _channels.list_all():
         chan = _, send = RecvChannel(cid), SendChannel(cid)
-        wenn not hasattr(send, '_unboundop'):
+        wenn nicht hasattr(send, '_unboundop'):
             send._set_unbound(unboundop)
         sonst:
             assert send._unbound[0] == unboundop
@@ -75,7 +75,7 @@ def list_all():
 
 
 klasse _ChannelEnd:
-    """The base klasse fuer RecvChannel and SendChannel."""
+    """The base klasse fuer RecvChannel und SendChannel."""
 
     _end = Nichts
 
@@ -98,9 +98,9 @@ klasse _ChannelEnd:
 
     def __eq__(self, other):
         wenn isinstance(self, RecvChannel):
-            wenn not isinstance(other, RecvChannel):
+            wenn nicht isinstance(other, RecvChannel):
                 return NotImplemented
-        sowenn not isinstance(other, SendChannel):
+        sowenn nicht isinstance(other, SendChannel):
             return NotImplemented
         return other._id == self._id
 
@@ -138,7 +138,7 @@ klasse RecvChannel(_ChannelEnd):
         This blocks until an object has been sent, wenn none have been
         sent already.
         """
-        wenn timeout is not Nichts:
+        wenn timeout is nicht Nichts:
             timeout = int(timeout)
             wenn timeout < 0:
                 raise ValueError(f'timeout value must be non-negative')
@@ -146,10 +146,10 @@ klasse RecvChannel(_ChannelEnd):
         obj, unboundop = _channels.recv(self._id, _sentinel)
         while obj is _sentinel:
             time.sleep(_delay)
-            wenn timeout is not Nichts and time.time() >= end:
+            wenn timeout is nicht Nichts und time.time() >= end:
                 raise TimeoutError
             obj, unboundop = _channels.recv(self._id, _sentinel)
-        wenn unboundop is not Nichts:
+        wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
             return _resolve_unbound(unboundop)
         return obj
@@ -158,14 +158,14 @@ klasse RecvChannel(_ChannelEnd):
         """Return the next object von the channel.
 
         If none have been sent then return the default wenn one
-        is provided or fail mit ChannelEmptyError.  Otherwise this
+        is provided oder fail mit ChannelEmptyError.  Otherwise this
         is the same als recv().
         """
         wenn default is _NOT_SET:
             obj, unboundop = _channels.recv(self._id)
         sonst:
             obj, unboundop = _channels.recv(self._id, default)
-        wenn unboundop is not Nichts:
+        wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
             return _resolve_unbound(unboundop)
         return obj
@@ -191,7 +191,7 @@ klasse SendChannel(_ChannelEnd):
 #        return self
 
     def _set_unbound(self, op, items=Nichts):
-        assert not hasattr(self, '_unbound')
+        assert nicht hasattr(self, '_unbound')
         wenn items is Nichts:
             items = _resolve_unbound(op)
         unbound = (op, items)
@@ -210,7 +210,7 @@ klasse SendChannel(_ChannelEnd):
     @property
     def is_closed(self):
         info = self._info
-        return info.closed or info.closing
+        return info.closed oder info.closing
 
     def send(self, obj, timeout=Nichts, *,
              unbounditems=Nichts,
@@ -239,7 +239,7 @@ klasse SendChannel(_ChannelEnd):
             unboundop, = _serialize_unbound(unbounditems)
         # XXX Note that at the moment channel_send() only ever returns
         # Nichts.  This should be fixed when channel_send_wait() is added.
-        # See bpo-32604 and gh-19829.
+        # See bpo-32604 und gh-19829.
         return _channels.send(self._id, obj, unboundop, blocking=Falsch)
 
     def send_buffer(self, obj, timeout=Nichts, *,

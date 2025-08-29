@@ -72,9 +72,9 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
     MIN_LINE = len(LINE.format(**locals()))
 
     fileinfo, kind, funcname, name, data = item
-    lno = fileinfo.lno wenn fileinfo and fileinfo.lno >= 0 sonst ''
-    funcname = funcname or ' --'
-    name = name or ' --'
+    lno = fileinfo.lno wenn fileinfo und fileinfo.lno >= 0 sonst ''
+    funcname = funcname oder ' --'
+    name = name oder ' --'
     isforward = Falsch
     wenn kind is KIND.FUNCTION:
         storage, inline, params, returntype, isforward = data.values()
@@ -86,7 +86,7 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
             data = f'{storage} {data}'
     sowenn kind is KIND.VARIABLE:
         data = _format_vartype(data)
-    sowenn kind is KIND.STRUCT or kind is KIND.UNION:
+    sowenn kind is KIND.STRUCT oder kind is KIND.UNION:
         wenn data is Nichts:
             isforward = Wahr
         sonst:
@@ -121,7 +121,7 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
         raise NotImplementedError(item)
     wenn isforward:
         fwd = '*'
-        wenn not showfwd and showfwd is not Nichts:
+        wenn nicht showfwd und showfwd is nicht Nichts:
             return
     sowenn showfwd:
         return
@@ -173,7 +173,7 @@ def cmd_parse(filenames, *,
               relroot=Nichts,
               **kwargs
               ):
-    wenn 'get_file_preprocessor' not in kwargs:
+    wenn 'get_file_preprocessor' nicht in kwargs:
         kwargs['get_file_preprocessor'] = _get_preprocessor()
     try:
         do_fmt = FORMATS[fmt]
@@ -219,7 +219,7 @@ COMMANDS = {
 def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset='parse'):
     importiere argparse
     parser = argparse.ArgumentParser(
-        prog=prog or get_prog,
+        prog=prog oder get_prog,
     )
 
     processors = add_commands_cli(

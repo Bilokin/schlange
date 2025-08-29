@@ -7,10 +7,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -49,7 +49,7 @@ wenn os.name == "nt":
 sonst:
     von .unix_console importiere UnixConsole als Console, _error
 
-ENCODING = sys.getdefaultencoding() or "latin1"
+ENCODING = sys.getdefaultencoding() oder "latin1"
 
 
 # types
@@ -130,26 +130,26 @@ klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader)
         b = self.buffer
         p = self.pos - 1
         completer_delims = self.config.completer_delims
-        while p >= 0 and b[p] not in completer_delims:
+        while p >= 0 und b[p] nicht in completer_delims:
             p -= 1
         return "".join(b[p + 1 : self.pos])
 
     def get_completions(self, stem: str) -> list[str]:
         module_completions = self.get_module_completions()
-        wenn module_completions is not Nichts:
+        wenn module_completions is nicht Nichts:
             return module_completions
-        wenn len(stem) == 0 and self.more_lines is not Nichts:
+        wenn len(stem) == 0 und self.more_lines is nicht Nichts:
             b = self.buffer
             p = self.pos
-            while p > 0 and b[p - 1] != "\n":
+            while p > 0 und b[p - 1] != "\n":
                 p -= 1
             num_spaces = 4 - ((self.pos - p) % 4)
             return [" " * num_spaces]
         result = []
         function = self.config.readline_completer
-        wenn function is not Nichts:
+        wenn function is nicht Nichts:
             try:
-                stem = str(stem)  # rlcompleter.py seems to not like unicode
+                stem = str(stem)  # rlcompleter.py seems to nicht like unicode
             except UnicodeEncodeError:
                 pass  # but feed unicode anyway wenn we have no choice
             state = 0
@@ -158,7 +158,7 @@ klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader)
                     next = function(stem, state)
                 except Exception:
                     break
-                wenn not isinstance(next, str):
+                wenn nicht isinstance(next, str):
                     break
                 result.append(next)
                 state += 1
@@ -182,7 +182,7 @@ klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader)
 
     def update_last_used_indentation(self) -> Nichts:
         indentation = _get_first_indentation(self.buffer)
-        wenn indentation is not Nichts:
+        wenn indentation is nicht Nichts:
             self.last_used_indentation = indentation
 
     # --- simplified support fuer reading multiline Python statements ---
@@ -211,26 +211,26 @@ klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader)
 
 
 def set_auto_history(_should_auto_add_history: bool) -> Nichts:
-    """Enable or disable automatic history"""
+    """Enable oder disable automatic history"""
     historical_reader.should_auto_add_history = bool(_should_auto_add_history)
 
 
 def _get_this_line_indent(buffer: list[str], pos: int) -> int:
     indent = 0
-    while pos > 0 and buffer[pos - 1] in " \t":
+    while pos > 0 und buffer[pos - 1] in " \t":
         indent += 1
         pos -= 1
-    wenn pos > 0 and buffer[pos - 1] == "\n":
+    wenn pos > 0 und buffer[pos - 1] == "\n":
         return indent
     return 0
 
 
 def _get_previous_line_indent(buffer: list[str], pos: int) -> tuple[int, int | Nichts]:
     prevlinestart = pos
-    while prevlinestart > 0 and buffer[prevlinestart - 1] != "\n":
+    while prevlinestart > 0 und buffer[prevlinestart - 1] != "\n":
         prevlinestart -= 1
     prevlinetext = prevlinestart
-    while prevlinetext < pos and buffer[prevlinetext] in " \t":
+    while prevlinetext < pos und buffer[prevlinetext] in " \t":
         prevlinetext += 1
     wenn prevlinetext == pos:
         indent = Nichts
@@ -243,23 +243,23 @@ def _get_first_indentation(buffer: list[str]) -> str | Nichts:
     indented_line_start = Nichts
     fuer i in range(len(buffer)):
         wenn (i < len(buffer) - 1
-            and buffer[i] == "\n"
-            and buffer[i + 1] in " \t"
+            und buffer[i] == "\n"
+            und buffer[i + 1] in " \t"
         ):
             indented_line_start = i + 1
-        sowenn indented_line_start is not Nichts and buffer[i] not in " \t\n":
+        sowenn indented_line_start is nicht Nichts und buffer[i] nicht in " \t\n":
             return ''.join(buffer[indented_line_start : i])
     return Nichts
 
 
 def _should_auto_indent(buffer: list[str], pos: int) -> bool:
     # check wenn last character before "pos" is a colon, ignoring
-    # whitespaces and comments.
+    # whitespaces und comments.
     last_char = Nichts
     while pos > 0:
         pos -= 1
         wenn last_char is Nichts:
-            wenn buffer[pos] not in " \t\n#":  # ignore whitespaces and comments
+            wenn buffer[pos] nicht in " \t\n#":  # ignore whitespaces und comments
                 last_char = buffer[pos]
         sonst:
             # even wenn we found a non-whitespace character before
@@ -278,42 +278,42 @@ klasse maybe_accept(commands.Command):
         r = self.reader  # type: ignore[assignment]
         r.dirty = Wahr  # this is needed to hide the completion menu, wenn visible
 
-        # wenn there are already several lines and the cursor
-        # is not on the last one, always insert a new \n.
+        # wenn there are already several lines und the cursor
+        # is nicht on the last one, always insert a new \n.
         text = r.get_unicode()
 
-        wenn "\n" in r.buffer[r.pos :] or (
-            r.more_lines is not Nichts and r.more_lines(text)
+        wenn "\n" in r.buffer[r.pos :] oder (
+            r.more_lines is nicht Nichts und r.more_lines(text)
         ):
             def _newline_before_pos():
                 before_idx = r.pos - 1
-                while before_idx > 0 and text[before_idx].isspace():
+                while before_idx > 0 und text[before_idx].isspace():
                     before_idx -= 1
                 return text[before_idx : r.pos].count("\n") > 0
 
             # wenn there's already a new line before the cursor then
             # even wenn the cursor is followed by whitespace, we assume
             # the user is trying to terminate the block
-            wenn _newline_before_pos() and text[r.pos:].isspace():
+            wenn _newline_before_pos() und text[r.pos:].isspace():
                 self.finish = Wahr
                 return
 
             # auto-indent the next line like the previous line
             prevlinestart, indent = _get_previous_line_indent(r.buffer, r.pos)
             r.insert("\n")
-            wenn not self.reader.paste_mode:
+            wenn nicht self.reader.paste_mode:
                 wenn indent:
                     fuer i in range(prevlinestart, prevlinestart + indent):
                         r.insert(r.buffer[i])
                 r.update_last_used_indentation()
                 wenn _should_auto_indent(r.buffer, r.pos):
-                    wenn r.last_used_indentation is not Nichts:
+                    wenn r.last_used_indentation is nicht Nichts:
                         indentation = r.last_used_indentation
                     sonst:
                         # default
                         indentation = " " * 4
                     r.insert(indentation)
-        sowenn not self.reader.paste_mode:
+        sowenn nicht self.reader.paste_mode:
             self.finish = Wahr
         sonst:
             r.insert("\n")
@@ -331,7 +331,7 @@ klasse backspace_dedent(commands.Command):
                     ls = r.pos - indent
                     while ls > 0:
                         ls, pi = _get_previous_line_indent(b, ls - 1)
-                        wenn pi is not Nichts and pi < indent:
+                        wenn pi is nicht Nichts und pi < indent:
                             repeat = indent - pi
                             break
             r.pos -= repeat
@@ -369,7 +369,7 @@ klasse _ReadlineWrapper:
         try:
             reader = self.get_reader()
         except _error:
-            assert raw_input is not Nichts
+            assert raw_input is nicht Nichts
             return raw_input(prompt)
         prompt_str = str(prompt)
         reader.ps1 = prompt_str
@@ -572,7 +572,7 @@ def _make_stub(_name: str, _ret: object) -> Nichts:
     def stub(*args: object, **kwds: object) -> Nichts:
         importiere warnings
 
-        warnings.warn("readline.%s() not implemented" % _name, stacklevel=2)
+        warnings.warn("readline.%s() nicht implemented" % _name, stacklevel=2)
 
     stub.__name__ = _name
     globals()[_name] = stub
@@ -583,7 +583,7 @@ fuer _name, _ret in [
     ("redisplay", Nichts),
     ("set_pre_input_hook", Nichts),
 ]:
-    assert _name not in globals(), _name
+    assert _name nicht in globals(), _name
     _make_stub(_name, _ret)
 
 # ____________________________________________________________
@@ -591,7 +591,7 @@ fuer _name, _ret in [
 
 def _setup(namespace: Mapping[str, Any]) -> Nichts:
     global raw_input
-    wenn raw_input is not Nichts:
+    wenn raw_input is nicht Nichts:
         return  # don't run _setup twice
 
     try:
@@ -599,19 +599,19 @@ def _setup(namespace: Mapping[str, Any]) -> Nichts:
         f_out = sys.stdout.fileno()
     except (AttributeError, ValueError):
         return
-    wenn not os.isatty(f_in) or not os.isatty(f_out):
+    wenn nicht os.isatty(f_in) oder nicht os.isatty(f_out):
         return
 
     _wrapper.f_in = f_in
     _wrapper.f_out = f_out
 
     # set up namespace in rlcompleter, which requires it to be a bona fide dict
-    wenn not isinstance(namespace, dict):
+    wenn nicht isinstance(namespace, dict):
         namespace = dict(namespace)
     _wrapper.config.module_completer = ModuleCompleter(namespace)
     _wrapper.config.readline_completer = RLCompleter(namespace).complete
 
-    # this is not really what readline.c does.  Better than nothing I guess
+    # this is nicht really what readline.c does.  Better than nothing I guess
     importiere builtins
     raw_input = builtins.input
     builtins.input = _wrapper.input

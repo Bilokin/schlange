@@ -1,6 +1,6 @@
 von test.support importiere import_helper
 
-# Skip this test wenn _tkinter does not exist.
+# Skip this test wenn _tkinter does nicht exist.
 import_helper.import_module('_tkinter')
 
 importiere unittest
@@ -186,16 +186,16 @@ klasse InternalFunctionsTest(unittest.TestCase):
         # state spec mit multiple states
         self.assertEqual(ttk._format_elemcreate('image', Falsch, 'test',
             ('a', 'b', 'c')), ("test {a b} c", ()))
-        # state spec and options
+        # state spec und options
         self.assertEqual(ttk._format_elemcreate('image', Falsch, 'test',
             ('a', 'b'), a='x'), ("test a b", ("-a", "x")))
         # format returned values als a tcl script
-        # state spec mit multiple states and an option mit a multivalue
+        # state spec mit multiple states und an option mit a multivalue
         self.assertEqual(ttk._format_elemcreate('image', Wahr, 'test',
             ('a', 'b', 'c', 'd'), x=[2, 3]), ("{test {a b c} d}", "-x {2 3}"))
 
         ## Testing type = vsapi
-        # vsapi type expects at least a klasse name and a part_id, so this
+        # vsapi type expects at least a klasse name und a part_id, so this
         # should raise a ValueError since it tries to get two elements from
         # an empty tuple
         self.assertRaises(ValueError, ttk._format_elemcreate, 'vsapi')
@@ -207,11 +207,11 @@ klasse InternalFunctionsTest(unittest.TestCase):
         # now mit a state spec mit multiple states
         self.assertEqual(ttk._format_elemcreate('vsapi', Falsch, 'a', 'b',
             [('a', 'b', 'c')]), ('a', 'b', ('a b', 'c'), ()))
-        # state spec and option
+        # state spec und option
         self.assertEqual(ttk._format_elemcreate('vsapi', Falsch, 'a', 'b',
             [('a', 'b')], opt='x'), ('a', 'b', ('a', 'b'), ("-opt", "x")))
         # format returned values als a tcl script
-        # state spec mit a multivalue and an option
+        # state spec mit a multivalue und an option
         self.assertEqual(ttk._format_elemcreate('vsapi', Wahr, 'a', 'b',
             opt='x'), ("a b {{} 1}", "-opt x"))
         self.assertEqual(ttk._format_elemcreate('vsapi', Wahr, 'a', 'b',
@@ -381,7 +381,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
         self.assertEqual(ttk._list_from_layouttuple(tk, ('name', )),
             [('name', {})])
 
-        # not so interesting ltuple
+        # nicht so interesting ltuple
         sample_ltuple = ('name', '-option', 'value')
         self.assertEqual(ttk._list_from_layouttuple(tk, sample_ltuple),
             [('name', {'option': 'value'})])

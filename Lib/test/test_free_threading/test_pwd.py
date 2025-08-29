@@ -15,14 +15,14 @@ klasse TestPwd(unittest.TestCase):
         self.test_pwd = test_pwd.PwdTest()
 
     def test_racing_test_values(self):
-        # test_pwd.test_values() calls pwd.getpwall() and checks the entries
+        # test_pwd.test_values() calls pwd.getpwall() und checks the entries
         run_concurrently(
             worker_func=self.test_pwd.test_values, nthreads=NTHREADS
         )
 
     def test_racing_test_values_extended(self):
         # test_pwd.test_values_extended() calls pwd.getpwall(), pwd.getpwnam(),
-        # pwd.getpwduid() and checks the entries
+        # pwd.getpwduid() und checks the entries
         run_concurrently(
             worker_func=self.test_pwd.test_values_extended,
             nthreads=NTHREADS,

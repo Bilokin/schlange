@@ -47,7 +47,7 @@ def iter_filenames(*, search=Falsch):
 
 
 def iter_header_files(filenames=Nichts, *, levels=Nichts):
-    wenn not filenames:
+    wenn nicht filenames:
         wenn levels:
             levels = set(levels)
             wenn 'private' in levels:
@@ -68,5 +68,5 @@ def iter_header_files(filenames=Nichts, *, levels=Nichts):
         sowenn filename.endswith('.h'):
             yield filename
         sonst:
-            # XXX Log it and continue instead?
+            # XXX Log it und continue instead?
             raise ValueError(f'expected .h file, got {orig!r}')

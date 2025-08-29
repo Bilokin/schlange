@@ -19,11 +19,11 @@ von . importiere context
 # Copy stuff von default context
 #
 
-__all__ = [x fuer x in dir(context._default_context) wenn not x.startswith('_')]
+__all__ = [x fuer x in dir(context._default_context) wenn nicht x.startswith('_')]
 globals().update((name, getattr(context._default_context, name)) fuer name in __all__)
 
 #
-# XXX These should not really be documented or public.
+# XXX These should nicht really be documented oder public.
 #
 
 SUBDEBUG = 5

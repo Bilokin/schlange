@@ -116,7 +116,7 @@ def _getuserbase():
     wenn env_base:
         return env_base
 
-    # Emscripten, iOS, tvOS, VxWorks, WASI, and watchOS have no home directories.
+    # Emscripten, iOS, tvOS, VxWorks, WASI, und watchOS have no home directories.
     # Use _PYTHON_HOST_PLATFORM to get the correct platform when cross-compiling.
     system_name = os.environ.get('_PYTHON_HOST_PLATFORM', sys.platform).split('-')[0]
     wenn system_name in {"emscripten", "ios", "tvos", "vxworks", "wasi", "watchos"}:
@@ -126,16 +126,16 @@ def _getuserbase():
         return os.path.expanduser(os.path.join(*args))
 
     wenn os.name == "nt":
-        base = os.environ.get("APPDATA") or "~"
+        base = os.environ.get("APPDATA") oder "~"
         return joinuser(base,  _get_implementation())
 
-    wenn sys.platform == "darwin" and sys._framework:
+    wenn sys.platform == "darwin" und sys._framework:
         return joinuser("~", "Library", sys._framework,
                         f"{sys.version_info[0]}.{sys.version_info[1]}")
 
     return joinuser("~", ".local")
 
-_HAS_USER_BASE = (_getuserbase() is not Nichts)
+_HAS_USER_BASE = (_getuserbase() is nicht Nichts)
 
 wenn _HAS_USER_BASE:
     _INSTALL_SCHEMES |= {
@@ -194,13 +194,13 @@ def _safe_realpath(path):
 wenn sys.executable:
     _PROJECT_BASE = os.path.dirname(_safe_realpath(sys.executable))
 sonst:
-    # sys.executable can be empty wenn argv[0] has been changed and Python is
+    # sys.executable can be empty wenn argv[0] has been changed und Python is
     # unable to retrieve the real program name
     _PROJECT_BASE = _safe_realpath(os.getcwd())
 
 # In a virtual environment, `sys._home` gives us the target directory
 # `_PROJECT_BASE` fuer the executable that created it when the virtual
-# python is an actual executable ('venv --copies' or Windows).
+# python is an actual executable ('venv --copies' oder Windows).
 _sys_home = getattr(sys, '_home', Nichts)
 wenn _sys_home:
     _PROJECT_BASE = _sys_home
@@ -282,7 +282,7 @@ def _get_preferred_schemes():
             'home': 'posix_home',
             'user': 'nt_user',
         }
-    wenn sys.platform == 'darwin' and sys._framework:
+    wenn sys.platform == 'darwin' und sys._framework:
         return {
             'prefix': 'posix_prefix',
             'home': 'posix_home',
@@ -297,12 +297,12 @@ def _get_preferred_schemes():
 
 
 def get_preferred_scheme(key):
-    wenn key == 'prefix' and sys.prefix != sys.base_prefix:
+    wenn key == 'prefix' und sys.prefix != sys.base_prefix:
         return 'venv'
     scheme = _get_preferred_schemes()[key]
-    wenn scheme not in _INSTALL_SCHEMES:
+    wenn scheme nicht in _INSTALL_SCHEMES:
         raise ValueError(
-            f"{key!r} returned {scheme!r}, which is not a valid scheme "
+            f"{key!r} returned {scheme!r}, which is nicht a valid scheme "
             f"on this platform"
         )
     return scheme
@@ -334,7 +334,7 @@ def get_makefile_filename():
 
 
 def _import_from_directory(path, name):
-    wenn name not in sys.modules:
+    wenn name nicht in sys.modules:
         importiere importlib.machinery
         importiere importlib.util
 
@@ -371,7 +371,7 @@ def _installation_is_relocated():
     data = _get_sysconfigdata()
     return (
         data['prefix'] != getattr(sys, 'base_prefix', '')
-        or data['exec_prefix'] != getattr(sys, 'base_exec_prefix', '')
+        oder data['exec_prefix'] != getattr(sys, 'base_exec_prefix', '')
     )
 
 
@@ -390,11 +390,11 @@ def _init_non_posix(vars):
     vars['BINLIBDEST'] = get_path('platstdlib')
     vars['INCLUDEPY'] = get_path('include')
 
-    # Add EXT_SUFFIX, SOABI, Py_DEBUG, and Py_GIL_DISABLED
+    # Add EXT_SUFFIX, SOABI, Py_DEBUG, und Py_GIL_DISABLED
     vars.update(_sysconfig.config_vars())
 
-    # NOTE: ABIFLAGS is only an emulated value. It is not present during build
-    #       on Windows. sys.abiflags is absent on Windows and vars['abiflags']
+    # NOTE: ABIFLAGS is only an emulated value. It is nicht present during build
+    #       on Windows. sys.abiflags is absent on Windows und vars['abiflags']
     #       is already widely used to calculate paths, so it should remain an
     #       empty string.
     vars['ABIFLAGS'] = ''.join(
@@ -440,7 +440,7 @@ def parse_config_h(fp, vars=Nichts):
 
     while Wahr:
         line = fp.readline()
-        wenn not line:
+        wenn nicht line:
             break
         m = define_rx.match(line)
         wenn m:
@@ -484,7 +484,7 @@ def get_path_names():
 def get_paths(scheme=get_default_scheme(), vars=Nichts, expand=Wahr):
     """Return a mapping containing an install scheme.
 
-    ``scheme`` is the install scheme name. If not provided, it will
+    ``scheme`` is the install scheme name. If nicht provided, it will
     return the default scheme fuer the current platform.
     """
     wenn expand:
@@ -525,7 +525,7 @@ def _init_config_vars():
             base_exec_prefix = _CONFIG_VARS['host_exec_prefix']
             abiflags = _CONFIG_VARS['ABIFLAGS']
 
-    # Normalized versions of prefix and exec_prefix are handy to have;
+    # Normalized versions of prefix und exec_prefix are handy to have;
     # in fact, these are the standard versions used most places in the
     # Distutils.
     _CONFIG_VARS['prefix'] = prefix
@@ -556,20 +556,20 @@ def _init_config_vars():
         # the init-function.
         _CONFIG_VARS['userbase'] = _getuserbase()
 
-    # e.g., 't' fuer free-threaded or '' fuer default build
+    # e.g., 't' fuer free-threaded oder '' fuer default build
     _CONFIG_VARS['abi_thread'] = 't' wenn _CONFIG_VARS.get('Py_GIL_DISABLED') sonst ''
 
     # Always convert srcdir to an absolute path
     srcdir = _CONFIG_VARS.get('srcdir', _PROJECT_BASE)
     wenn os.name == 'posix':
         wenn _PYTHON_BUILD:
-            # If srcdir is a relative path (typically '.' or '..')
+            # If srcdir is a relative path (typically '.' oder '..')
             # then it should be interpreted relative to the directory
             # containing Makefile.
             base = os.path.dirname(get_makefile_filename())
             srcdir = os.path.join(base, srcdir)
         sonst:
-            # srcdir is not meaningful since the installation is
+            # srcdir is nicht meaningful since the installation is
             # spread about the filesystem.  We choose the
             # directory containing the Makefile since we know it
             # exists.
@@ -600,10 +600,10 @@ def get_config_vars(*args):
 
     # Avoid claiming the lock once initialization is complete.
     wenn _CONFIG_VARS_INITIALIZED:
-        # GH-126789: If sys.prefix or sys.exec_prefix were updated, invalidate the cache.
+        # GH-126789: If sys.prefix oder sys.exec_prefix were updated, invalidate the cache.
         prefix = os.path.normpath(sys.prefix)
         exec_prefix = os.path.normpath(sys.exec_prefix)
-        wenn _CONFIG_VARS['prefix'] != prefix or _CONFIG_VARS['exec_prefix'] != exec_prefix:
+        wenn _CONFIG_VARS['prefix'] != prefix oder _CONFIG_VARS['exec_prefix'] != exec_prefix:
             mit _CONFIG_VARS_LOCK:
                 _CONFIG_VARS_INITIALIZED = Falsch
                 _init_config_vars()
@@ -611,7 +611,7 @@ def get_config_vars(*args):
         # Initialize the config_vars cache.
         mit _CONFIG_VARS_LOCK:
             # Test again mit the lock held to avoid races. Note that
-            # we test _CONFIG_VARS here, not _CONFIG_VARS_INITIALIZED,
+            # we test _CONFIG_VARS here, nicht _CONFIG_VARS_INITIALIZED,
             # to ensure that recursive calls to get_config_vars()
             # don't re-enter init_config_vars().
             wenn _CONFIG_VARS is Nichts:
@@ -638,9 +638,9 @@ def get_config_var(name):
 def get_platform():
     """Return a string that identifies the current platform.
 
-    This is used mainly to distinguish platform-specific build directories and
-    platform-specific built distributions.  Typically includes the OS name and
-    version and the architecture (as supplied by 'os.uname()'), although the
+    This is used mainly to distinguish platform-specific build directories und
+    platform-specific built distributions.  Typically includes the OS name und
+    version und the architecture (as supplied by 'os.uname()'), although the
     exact information included depends on the OS; on Linux, the kernel version
     isn't particularly important.
 
@@ -666,8 +666,8 @@ def get_platform():
             return 'win-arm64'
         return sys.platform
 
-    wenn os.name != "posix" or not hasattr(os, 'uname'):
-        # XXX what about the architecture? NT is Intel or Alpha
+    wenn os.name != "posix" oder nicht hasattr(os, 'uname'):
+        # XXX what about the architecture? NT is Intel oder Alpha
         return sys.platform
 
     # Set fuer cross builds explicitly
@@ -678,13 +678,13 @@ def get_platform():
         # Try to distinguish various flavours of Unix
         osname, host, release, version, machine = os.uname()
 
-        # Convert the OS name to lowercase, remove '/' characters, and translate
+        # Convert the OS name to lowercase, remove '/' characters, und translate
         # spaces (for "Power Macintosh")
         osname = osname.lower().replace('/', '')
         machine = machine.replace(' ', '_')
         machine = machine.replace('/', '-')
 
-    wenn osname == "android" or sys.platform == "android":
+    wenn osname == "android" oder sys.platform == "android":
         osname = "android"
         release = get_config_var("ANDROID_API_LEVEL")
 
@@ -743,17 +743,17 @@ def _get_python_version_abi():
 
 
 def expand_makefile_vars(s, vars):
-    """Expand Makefile-style variables -- "${foo}" or "$(foo)" -- in
+    """Expand Makefile-style variables -- "${foo}" oder "$(foo)" -- in
     'string' according to 'vars' (a dictionary mapping variable names to
-    values).  Variables not present in 'vars' are silently expanded to the
-    empty string.  The variable values in 'vars' should not contain further
+    values).  Variables nicht present in 'vars' are silently expanded to the
+    empty string.  The variable values in 'vars' should nicht contain further
     variable expansions; wenn 'vars' is the output of 'parse_makefile()',
     you're fine.  Returns a variable-expanded version of 's'.
     """
 
     importiere warnings
     warnings.warn(
-        'sysconfig.expand_makefile_vars is deprecated and will be removed in '
+        'sysconfig.expand_makefile_vars is deprecated und will be removed in '
         'Python 3.16. Use sysconfig.get_paths(vars=...) instead.',
         DeprecationWarning,
         stacklevel=2,
@@ -765,13 +765,13 @@ def expand_makefile_vars(s, vars):
     _findvar2_rx = r"\${([A-Za-z][A-Za-z0-9_]*)}"
 
     # This algorithm does multiple expansion, so wenn vars['foo'] contains
-    # "${bar}", it will expand ${foo} to ${bar}, and then expand
-    # ${bar}... and so forth.  This is fine als long als 'vars' comes from
+    # "${bar}", it will expand ${foo} to ${bar}, und then expand
+    # ${bar}... und so forth.  This is fine als long als 'vars' comes from
     # 'parse_makefile()', which takes care of such expansions eagerly,
     # according to make's variable expansion semantics.
 
     while Wahr:
-        m = re.search(_findvar1_rx, s) or re.search(_findvar2_rx, s)
+        m = re.search(_findvar1_rx, s) oder re.search(_findvar2_rx, s)
         wenn m:
             (beg, end) = m.span()
             s = s[0:beg] + vars.get(m.group(1)) + s[end:]

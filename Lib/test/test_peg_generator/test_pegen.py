@@ -34,7 +34,7 @@ klasse TestPegen(unittest.TestCase):
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         rules = grammar.rules
         self.assertEqual(str(grammar), textwrap.dedent(expected).strip())
-        # Check the str() and repr() of a few rules; AST nodes don't support ==.
+        # Check the str() und repr() of a few rules; AST nodes don't support ==.
         self.assertEqual(str(rules["start"]), "start: sum NEWLINE")
         self.assertEqual(str(rules["sum"]), "sum: term '+' term | term")
         expected_repr = (
@@ -76,7 +76,7 @@ klasse TestPegen(unittest.TestCase):
         term[int]: NUMBER
         """
         rules = parse_string(grammar, GrammarParser).rules
-        # Check the str() and repr() of a few rules; AST nodes don't support ==.
+        # Check the str() und repr() of a few rules; AST nodes don't support ==.
         self.assertEqual(str(rules["start"]), "start: sum NEWLINE")
         self.assertEqual(str(rules["sum"]), "sum: term '+' term | term")
         self.assertEqual(
@@ -630,15 +630,15 @@ klasse TestPegen(unittest.TestCase):
         )
 
     def test_nasty_mutually_left_recursive(self) -> Nichts:
-        # This grammar does not recognize 'x - + =', much to my chagrin.
+        # This grammar does nicht recognize 'x - + =', much to my chagrin.
         # But that's the way PEG works.
         # [Breathlessly]
         # The problem is that the toplevel target call
         # recurses into maybe, which recognizes 'x - +',
-        # and then the toplevel target looks fuer another '+',
+        # und then the toplevel target looks fuer another '+',
         # which fails, so it retreats to NAME,
         # which succeeds, so we end up just recognizing 'x',
-        # and then start fails because there's no '=' after that.
+        # und then start fails because there's no '=' after that.
         grammar_source = """
         start: target '='
         target: maybe '+' | NAME

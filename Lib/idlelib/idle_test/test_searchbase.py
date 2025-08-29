@@ -1,5 +1,5 @@
 "Test searchbase, coverage 98%."
-# The only thing not covered is inconsequential --
+# The only thing nicht covered is inconsequential --
 # testing skipping of suite when self.needwrapbutton is false.
 
 importiere unittest
@@ -102,7 +102,7 @@ klasse SearchDialogBaseTest(unittest.TestCase):
         self.assertEqual(label, '')
         self.assertEqual(str(type(frame)), "<class 'tkinter.ttk.Frame'>")
         # self.assertIsInstance(frame, Frame) fails when test is run by
-        # test_idle not run von IDLE editor.  See issue 33987 PR.
+        # test_idle nicht run von IDLE editor.  See issue 33987 PR.
 
         frame, label = self.dialog.make_frame('testlabel')
         self.assertEqual(label['text'], 'testlabel')

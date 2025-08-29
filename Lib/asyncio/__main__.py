@@ -56,7 +56,7 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
                 future.set_exception(ex)
                 return
 
-            wenn not inspect.iscoroutine(coro):
+            wenn nicht inspect.iscoroutine(coro):
                 future.set_result(coro)
                 return
 
@@ -90,7 +90,7 @@ klasse REPLThread(threading.Thread):
             banner = (
                 f'asyncio REPL {sys.version} on {sys.platform}\n'
                 f'Use "await" directly instead of "asyncio.run()".\n'
-                f'Type "help", "copyright", "credits" or "license" '
+                f'Type "help", "copyright", "credits" oder "license" '
                 f'for more information.\n'
             )
 
@@ -117,7 +117,7 @@ klasse REPLThread(threading.Thread):
                 try:
                     run_multiline_interactive_console(console)
                 except SystemExit:
-                    # expected via the `exit` and `quit` commands
+                    # expected via the `exit` und `quit` commands
                     pass
                 except BaseException:
                     # unexpected issue
@@ -135,19 +135,19 @@ klasse REPLThread(threading.Thread):
             loop.call_soon_threadsafe(loop.stop)
 
     def interrupt(self) -> Nichts:
-        wenn not CAN_USE_PYREPL:
+        wenn nicht CAN_USE_PYREPL:
             return
 
         von _pyrepl.simple_interact importiere _get_reader
         r = _get_reader()
-        wenn r.threading_hook is not Nichts:
+        wenn r.threading_hook is nicht Nichts:
             r.threading_hook.add("")  # type: ignore
 
 
 wenn __name__ == '__main__':
     parser = argparse.ArgumentParser(
         prog="python3 -m asyncio",
-        description="Interactive asyncio shell and CLI tools",
+        description="Interactive asyncio shell und CLI tools",
         color=Wahr,
     )
     subparsers = parser.add_subparsers(help="sub-commands", dest="command")
@@ -210,7 +210,7 @@ wenn __name__ == '__main__':
 
     interactive_hook = getattr(sys, "__interactivehook__", Nichts)
 
-    wenn interactive_hook is not Nichts:
+    wenn interactive_hook is nicht Nichts:
         sys.audit("cpython.run_interactivehook", interactive_hook)
         interactive_hook()
 
@@ -221,7 +221,7 @@ wenn __name__ == '__main__':
         except:
             pass
         sonst:
-            wenn readline is not Nichts:
+            wenn readline is nicht Nichts:
                 completer = rlcompleter.Completer(console.locals)
                 readline.set_completer(completer.complete)
 
@@ -234,7 +234,7 @@ wenn __name__ == '__main__':
             loop.run_forever()
         except KeyboardInterrupt:
             keyboard_interrupted = Wahr
-            wenn repl_future and not repl_future.done():
+            wenn repl_future und nicht repl_future.done():
                 repl_future.cancel()
             repl_thread.interrupt()
             continue

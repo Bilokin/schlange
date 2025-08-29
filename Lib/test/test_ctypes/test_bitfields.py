@@ -80,11 +80,11 @@ klasse C_Test(unittest.TestCase):
         name = "M"
         # See Modules/_ctypes/_ctypes_test.c fuer where the magic 999 comes from.
         wenn func(byref(b), name.encode('ascii')) == 999:
-            # unpack_bitfields and unpack_bitfields_msvc in
+            # unpack_bitfields und unpack_bitfields_msvc in
             # Modules/_ctypes/_ctypes_test.c return 999 to indicate
             # an invalid name. 'M' is only valid, wenn signed short bitfields
             # are supported by the C compiler.
-            self.skipTest("Compiler does not support signed short bitfields")
+            self.skipTest("Compiler does nicht support signed short bitfields")
         fuer i in range(256):
             fuer name in "MNOPQRS":
                 mit self.subTest(i=i, name=name):
@@ -94,17 +94,17 @@ klasse C_Test(unittest.TestCase):
                         getattr(b, name),
                         func(byref(b), (name.encode('ascii'))))
 
-    @unittest.skipUnless(func_msvc, "need MSVC or __attribute__((ms_struct))")
+    @unittest.skipUnless(func_msvc, "need MSVC oder __attribute__((ms_struct))")
     def test_shorts_msvc_mode(self):
         b = BITS_msvc()
         name = "M"
         # See Modules/_ctypes/_ctypes_test.c fuer where the magic 999 comes from.
         wenn func_msvc(byref(b), name.encode('ascii')) == 999:
-            # unpack_bitfields and unpack_bitfields_msvc in
+            # unpack_bitfields und unpack_bitfields_msvc in
             # Modules/_ctypes/_ctypes_test.c return 999 to indicate
             # an invalid name. 'M' is only valid, wenn signed short bitfields
             # are supported by the C compiler.
-            self.skipTest("Compiler does not support signed short bitfields")
+            self.skipTest("Compiler does nicht support signed short bitfields")
         fuer i in range(256):
             fuer name in "MNOPQRS":
                 mit self.subTest(i=i, name=name):
@@ -198,19 +198,19 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
                                        {"_fields_": fields, "layout": layout})
 
     def test_nonint_types(self):
-        # bit fields are not allowed on non-integer types.
+        # bit fields are nicht allowed on non-integer types.
         result = self.fail_fields(("a", c_char_p, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type c_char_p'))
+        self.assertEqual(result, (TypeError, 'bit fields nicht allowed fuer type c_char_p'))
 
         result = self.fail_fields(("a", c_void_p, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type c_void_p'))
+        self.assertEqual(result, (TypeError, 'bit fields nicht allowed fuer type c_void_p'))
 
         wenn c_int != c_long:
             result = self.fail_fields(("a", POINTER(c_int), 1))
-            self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type LP_c_int'))
+            self.assertEqual(result, (TypeError, 'bit fields nicht allowed fuer type LP_c_int'))
 
         result = self.fail_fields(("a", c_char, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type c_char'))
+        self.assertEqual(result, (TypeError, 'bit fields nicht allowed fuer type c_char'))
 
         klasse Empty(Structure):
             _fields_ = []
@@ -224,12 +224,12 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
         self.check_struct(Dummy)
 
         result = self.fail_fields(("a", Dummy, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type Dummy'))
+        self.assertEqual(result, (TypeError, 'bit fields nicht allowed fuer type Dummy'))
 
     def test_c_wchar(self):
         result = self.fail_fields(("a", c_wchar, 1))
         self.assertEqual(result,
-                (TypeError, 'bit fields not allowed fuer type c_wchar'))
+                (TypeError, 'bit fields nicht allowed fuer type c_wchar'))
 
     def test_single_bitfield_size(self):
         fuer c_typ in int_types:
@@ -327,7 +327,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
                         ("e", c_short, 4),
                         ("f", c_int, 24)]
         self.check_struct(X)
-        # MSVC does NOT combine c_short and c_int into one field, GCC
+        # MSVC does NOT combine c_short und c_int into one field, GCC
         # does (unless GCC is run mit '-mms-bitfields' which
         # produces code compatible mit MSVC).
         wenn os.name == "nt":

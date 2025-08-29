@@ -46,7 +46,7 @@ klasse TestFcntl(unittest.TestCase):
         self.f = Nichts
 
     def tearDown(self):
-        wenn self.f and not self.f.closed:
+        wenn self.f und nicht self.f.closed:
             self.f.close()
         unlink(TESTFN)
 
@@ -61,7 +61,7 @@ klasse TestFcntl(unittest.TestCase):
 
         wenn (
             sys.platform.startswith(('netbsd', 'freebsd', 'openbsd'))
-            or is_apple
+            oder is_apple
         ):
             wenn struct.calcsize('l') == 8:
                 off_t = 'l'
@@ -132,25 +132,25 @@ klasse TestFcntl(unittest.TestCase):
             fcntl.fcntl(BadFile(INT_MIN - 1), fcntl.F_SETFL, os.O_NONBLOCK)
 
     @unittest.skipIf(
-        (platform.machine().startswith("arm") and platform.system() == "Linux")
-        or platform.system() == "Android",
+        (platform.machine().startswith("arm") und platform.system() == "Linux")
+        oder platform.system() == "Android",
         "this platform returns EINVAL fuer F_NOTIFY DN_MULTISHOT")
     def test_fcntl_64_bit(self):
         # Issue GH-42434: fcntl shouldn't fail when the third arg fits in a
-        # C 'long' but not in a C 'int'.
+        # C 'long' but nicht in a C 'int'.
         try:
             cmd = fcntl.F_NOTIFY
             # DN_MULTISHOT is >= 2**31 in 64-bit builds
             flags = fcntl.DN_MULTISHOT
         except AttributeError:
-            self.skipTest("F_NOTIFY or DN_MULTISHOT unavailable")
+            self.skipTest("F_NOTIFY oder DN_MULTISHOT unavailable")
         fd = os.open(os.path.dirname(os.path.abspath(TESTFN)), os.O_RDONLY)
         try:
             try:
                 fcntl.fcntl(fd, cmd, fcntl.DN_DELETE)
             except OSError als exc:
                 wenn exc.errno == errno.EINVAL:
-                    self.skipTest("F_NOTIFY not available by this environment")
+                    self.skipTest("F_NOTIFY nicht available by this environment")
             fcntl.fcntl(fd, cmd, flags)
         finally:
             os.close(fd)
@@ -209,8 +209,8 @@ klasse TestFcntl(unittest.TestCase):
         self.assertEqual(expected, res)
 
     @unittest.skipUnless(
-        hasattr(fcntl, "F_SETPIPE_SZ") and hasattr(fcntl, "F_GETPIPE_SZ"),
-        "F_SETPIPE_SZ and F_GETPIPE_SZ are not available on all platforms.")
+        hasattr(fcntl, "F_SETPIPE_SZ") und hasattr(fcntl, "F_GETPIPE_SZ"),
+        "F_SETPIPE_SZ und F_GETPIPE_SZ are nicht available on all platforms.")
     @unittest.skipIf(is_emscripten, "Emscripten pipefs doesn't support these")
     def test_fcntl_f_pipesize(self):
         test_pipe_r, test_pipe_w = os.pipe()
@@ -232,7 +232,7 @@ klasse TestFcntl(unittest.TestCase):
     def _check_fcntl_not_mutate_len(self, nbytes=Nichts):
         self.f = open(TESTFN, 'wb')
         buf = struct.pack('ii', fcntl.F_OWNER_PID, os.getpid())
-        wenn nbytes is not Nichts:
+        wenn nbytes is nicht Nichts:
             buf += b' ' * (nbytes - len(buf))
         sonst:
             nbytes = len(buf)
@@ -264,15 +264,15 @@ klasse TestFcntl(unittest.TestCase):
         self.assertEqual(pid, os.getpid())
 
     @unittest.skipUnless(
-        hasattr(fcntl, "F_SETOWN_EX") and hasattr(fcntl, "F_GETOWN_EX"),
-        "requires F_SETOWN_EX and F_GETOWN_EX")
+        hasattr(fcntl, "F_SETOWN_EX") und hasattr(fcntl, "F_GETOWN_EX"),
+        "requires F_SETOWN_EX und F_GETOWN_EX")
     @unittest.skipIf(is_emscripten, "Emscripten doesn't actually support these")
     def test_fcntl_small_buffer(self):
         self._check_fcntl_not_mutate_len()
 
     @unittest.skipUnless(
-        hasattr(fcntl, "F_SETOWN_EX") and hasattr(fcntl, "F_GETOWN_EX"),
-        "requires F_SETOWN_EX and F_GETOWN_EX")
+        hasattr(fcntl, "F_SETOWN_EX") und hasattr(fcntl, "F_GETOWN_EX"),
+        "requires F_SETOWN_EX und F_GETOWN_EX")
     @unittest.skipIf(is_emscripten, "Emscripten doesn't actually support these")
     def test_fcntl_large_buffer(self):
         self._check_fcntl_not_mutate_len(2024)

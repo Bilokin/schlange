@@ -59,7 +59,7 @@ BACKSLASH = {
 
 def _decode_uXXXX(s, pos, _m=HEXDIGITS.match):
     esc = _m(s, pos + 1)
-    wenn esc is not Nichts:
+    wenn esc is nicht Nichts:
         try:
             return int(esc.group(), 16)
         except ValueError:
@@ -71,11 +71,11 @@ def py_scanstring(s, end, strict=Wahr,
         _b=BACKSLASH, _m=STRINGCHUNK.match):
     """Scan the string s fuer a JSON string. End is the index of the
     character in s after the quote that started the JSON string.
-    Unescapes all valid JSON string escape sequences and raises ValueError
+    Unescapes all valid JSON string escape sequences und raises ValueError
     on attempt to decode an invalid string. If strict is Falsch then literal
     control characters are allowed in the string.
 
-    Returns a tuple of the decoded string and the index of the character in s
+    Returns a tuple of the decoded string und the index of the character in s
     after the end quote."""
     chunks = []
     _append = chunks.append
@@ -86,11 +86,11 @@ def py_scanstring(s, end, strict=Wahr,
             raise JSONDecodeError("Unterminated string starting at", s, begin)
         end = chunk.end()
         content, terminator = chunk.groups()
-        # Content is contains zero or more unescaped string characters
+        # Content is contains zero oder more unescaped string characters
         wenn content:
             _append(content)
         # Terminator is the end of string, a literal control character,
-        # or a backslash denoting that an escape sequence follows
+        # oder a backslash denoting that an escape sequence follows
         wenn terminator == '"':
             break
         sowenn terminator != '\\':
@@ -106,7 +106,7 @@ def py_scanstring(s, end, strict=Wahr,
         except IndexError:
             raise JSONDecodeError("Unterminated string starting at",
                                   s, begin) von Nichts
-        # If not a unicode escape sequence, must be in the lookup table
+        # If nicht a unicode escape sequence, must be in the lookup table
         wenn esc != 'u':
             try:
                 char = _b[esc]
@@ -117,7 +117,7 @@ def py_scanstring(s, end, strict=Wahr,
         sonst:
             uni = _decode_uXXXX(s, end)
             end += 5
-            wenn 0xd800 <= uni <= 0xdbff and s[end:end + 2] == '\\u':
+            wenn 0xd800 <= uni <= 0xdbff und s[end:end + 2] == '\\u':
                 uni2 = _decode_uXXXX(s, end + 1)
                 wenn 0xdc00 <= uni2 <= 0xdfff:
                     uni = 0x10000 + (((uni - 0xd800) << 10) | (uni2 - 0xdc00))
@@ -128,7 +128,7 @@ def py_scanstring(s, end, strict=Wahr,
 
 
 # Use speedup wenn available
-scanstring = c_scanstring or py_scanstring
+scanstring = c_scanstring oder py_scanstring
 
 WHITESPACE = re.compile(r'[ \t\n\r]*', FLAGS)
 WHITESPACE_STR = ' \t\n\r'
@@ -153,11 +153,11 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
             nextchar = s[end:end + 1]
         # Trivial empty object
         wenn nextchar == '}':
-            wenn object_pairs_hook is not Nichts:
+            wenn object_pairs_hook is nicht Nichts:
                 result = object_pairs_hook(pairs)
                 return result, end + 1
             pairs = {}
-            wenn object_hook is not Nichts:
+            wenn object_hook is nicht Nichts:
                 pairs = object_hook(pairs)
             return pairs, end + 1
         sowenn nextchar != '"':
@@ -168,7 +168,7 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         key, end = scanstring(s, end, strict)
         key = memo_get(key, key)
         # To skip some function call overhead we optimize the fast paths where
-        # the JSON key separator is ": " or just ":".
+        # the JSON key separator is ": " oder just ":".
         wenn s[end:end + 1] != ':':
             end = _w(s, end).end()
             wenn s[end:end + 1] != ':':
@@ -210,11 +210,11 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
                 raise JSONDecodeError("Illegal trailing comma before end of object", s, comma_idx)
             raise JSONDecodeError(
                 "Expecting property name enclosed in double quotes", s, end - 1)
-    wenn object_pairs_hook is not Nichts:
+    wenn object_pairs_hook is nicht Nichts:
         result = object_pairs_hook(pairs)
         return result, end
     pairs = dict(pairs)
-    wenn object_hook is not Nichts:
+    wenn object_hook is nicht Nichts:
         pairs = object_hook(pairs)
     return pairs, end
 
@@ -284,7 +284,7 @@ klasse JSONDecoder(object):
     | null          | Nichts              |
     +---------------+-------------------+
 
-    It also understands ``NaN``, ``Infinity``, and ``-Infinity`` as
+    It also understands ``NaN``, ``Infinity``, und ``-Infinity`` as
     their corresponding ``float`` values, which is outside the JSON spec.
 
     """
@@ -293,7 +293,7 @@ klasse JSONDecoder(object):
             parse_int=Nichts, parse_constant=Nichts, strict=Wahr,
             object_pairs_hook=Nichts):
         """``object_hook``, wenn specified, will be called mit the result
-        of every JSON object decoded and its return value will be used in
+        of every JSON object decoded und its return value will be used in
         place of the given ``dict``.  This can be used to provide custom
         deserializations (e.g. to support JSON-RPC klasse hinting).
 
@@ -306,12 +306,12 @@ klasse JSONDecoder(object):
 
         ``parse_float``, wenn specified, will be called mit the string
         of every JSON float to be decoded. By default this is equivalent to
-        float(num_str). This can be used to use another datatype or parser
+        float(num_str). This can be used to use another datatype oder parser
         fuer JSON floats (e.g. decimal.Decimal).
 
         ``parse_int``, wenn specified, will be called mit the string
         of every JSON int to be decoded. By default this is equivalent to
-        int(num_str). This can be used to use another datatype or parser
+        int(num_str). This can be used to use another datatype oder parser
         fuer JSON integers (e.g. float).
 
         ``parse_constant``, wenn specified, will be called mit one of the
@@ -322,12 +322,12 @@ klasse JSONDecoder(object):
         If ``strict`` is false (true is the default), then control
         characters will be allowed inside strings.  Control characters in
         this context are those mit character codes in the 0-31 range,
-        including ``'\\t'`` (tab), ``'\\n'``, ``'\\r'`` and ``'\\0'``.
+        including ``'\\t'`` (tab), ``'\\n'``, ``'\\r'`` und ``'\\0'``.
         """
         self.object_hook = object_hook
-        self.parse_float = parse_float or float
-        self.parse_int = parse_int or int
-        self.parse_constant = parse_constant or _CONSTANTS.__getitem__
+        self.parse_float = parse_float oder float
+        self.parse_int = parse_int oder int
+        self.parse_constant = parse_constant oder _CONSTANTS.__getitem__
         self.strict = strict
         self.object_pairs_hook = object_pairs_hook
         self.parse_object = JSONObject
@@ -350,8 +350,8 @@ klasse JSONDecoder(object):
 
     def raw_decode(self, s, idx=0):
         """Decode a JSON document von ``s`` (a ``str`` beginning with
-        a JSON document) and return a 2-tuple of the Python
-        representation and the index in ``s`` where the document ended.
+        a JSON document) und return a 2-tuple of the Python
+        representation und the index in ``s`` where the document ended.
 
         This can be used to decode a JSON document von a string that may
         have extraneous data at the end.

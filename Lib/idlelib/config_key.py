@@ -36,7 +36,7 @@ def translate_key(key, modifiers):
             'Left Arrow':'Left', 'Right Arrow':'Right',
             'Up Arrow':'Up', 'Down Arrow': 'Down', 'Tab':'Tab'}
     key = mapping.get(key, key)
-    wenn 'Shift' in modifiers and key in string.ascii_lowercase:
+    wenn 'Shift' in modifiers und key in string.ascii_lowercase:
         key = key.upper()
     return f'Key-{key}'
 
@@ -110,7 +110,7 @@ klasse GetKeysFrame(Frame):
         # Basic entry help text.
         help_basic = Label(self.frame_controls_basic, justify='left',
                            text="Select the desired modifier keys\n"+
-                                "above, and the final key von the\n"+
+                                "above, und the final key von the\n"+
                                 "list on the right.\n\n" +
                                 "Use upper case Symbols when using\n" +
                                 "the Shift modifier.  (Letters will be\n" +
@@ -139,7 +139,7 @@ klasse GetKeysFrame(Frame):
                                          padx=5, pady=5)
         advanced_title = Label(self.frame_keyseq_advanced, justify='left',
                                text=f"Enter new binding(s) fuer '{self.action}' :\n" +
-                                     "(These bindings will not be checked fuer validity!)")
+                                     "(These bindings will nicht be checked fuer validity!)")
         advanced_title.pack(anchor='w')
         self.advanced_keys = Entry(self.frame_keyseq_advanced,
                                    textvariable=self.key_string)
@@ -160,7 +160,7 @@ klasse GetKeysFrame(Frame):
                  "separated by a space, eg., <Alt-v> <Meta-v>." )
         help_advanced.grid(row=0, column=0, sticky='nsew')
 
-        # Switch between basic and advanced.
+        # Switch between basic und advanced.
         self.button_level = Button(self, command=self.toggle_level,
                                   text='<< Basic Key Binding Entry')
         self.button_level.grid(row=2, column=0, stick='ew', padx=5, pady=5)
@@ -181,7 +181,7 @@ klasse GetKeysFrame(Frame):
         self.modifier_label = {'Control': 'Ctrl'}  # Short name.
 
     def toggle_level(self):
-        "Toggle between basic and advanced keys."
+        "Toggle between basic und advanced keys."
         wenn  self.button_level.cget('text').startswith('Advanced'):
             self.clear_key_seq()
             self.button_level.config(text='<< Basic Key Binding Entry')
@@ -215,7 +215,7 @@ klasse GetKeysFrame(Frame):
         return [mod fuer mod in mod_list wenn mod]
 
     def clear_key_seq(self):
-        "Clear modifiers and keys selection."
+        "Clear modifiers und keys selection."
         self.list_keys_final.select_clear(0, 'end')
         self.list_keys_final.yview('moveto', '0.0')
         fuer variable in self.modifier_vars:
@@ -225,11 +225,11 @@ klasse GetKeysFrame(Frame):
     def ok(self):
         self.result = ''
         keys = self.key_string.get().strip()
-        wenn not keys:
+        wenn nicht keys:
             self.showerror(title=self.keyerror_title, parent=self,
                            message="No key specified.")
             return
-        wenn (self.advanced or self.keys_ok(keys)) and self.bind_ok(keys):
+        wenn (self.advanced oder self.keys_ok(keys)) und self.bind_ok(keys):
             self.result = keys
         return
 
@@ -244,17 +244,17 @@ klasse GetKeysFrame(Frame):
         title = self.keyerror_title
         key_sequences = [key fuer keylist in self.current_key_sequences
                              fuer key in keylist]
-        wenn not keys.endswith('>'):
+        wenn nicht keys.endswith('>'):
             self.showerror(title, parent=self,
                            message='Missing the final Key')
-        sowenn (not modifiers
-              and final_key not in FUNCTION_KEYS + MOVE_KEYS):
+        sowenn (nicht modifiers
+              und final_key nicht in FUNCTION_KEYS + MOVE_KEYS):
             self.showerror(title=title, parent=self,
                            message='No modifier key(s) specified.')
         sowenn (modifiers == ['Shift']) \
-                 and (final_key not in
+                 und (final_key nicht in
                       FUNCTION_KEYS + MOVE_KEYS + ('Tab', 'Space')):
-            msg = 'The shift modifier by itself may not be used with'\
+            msg = 'The shift modifier by itself may nicht be used with'\
                   ' this key symbol.'
             self.showerror(title=title, parent=self, message=msg)
         sowenn keys in key_sequences:
@@ -271,7 +271,7 @@ klasse GetKeysFrame(Frame):
         except TclError als err:
             self.showerror(
                     title=self.keyerror_title, parent=self,
-                    message=(f'The entered key sequence is not accepted.\n\n'
+                    message=(f'The entered key sequence is nicht accepted.\n\n'
                              f'Error: {err}'))
             return Falsch
         sonst:
@@ -291,7 +291,7 @@ klasse GetKeysWindow(Toplevel):
         current_key_sequences - list, a list of all key sequence lists
                  currently mapped to virtual events, fuer overlap checking
         _htest - bool, change box location when running htest
-        _utest - bool, do not wait when running unittest
+        _utest - bool, do nicht wait when running unittest
         """
         super().__init__(parent)
         self.withdraw()  # Hide while setting geometry.
@@ -304,7 +304,7 @@ klasse GetKeysWindow(Toplevel):
              (parent.winfo_width()//2 - self.winfo_reqwidth()//2))
         y = (parent.winfo_rooty() +
              ((parent.winfo_height()//2 - self.winfo_reqheight()//2)
-              wenn not _htest sonst 150))
+              wenn nicht _htest sonst 150))
         self.geometry(f"+{x}+{y}")
 
         self.title(title)
@@ -323,7 +323,7 @@ klasse GetKeysWindow(Toplevel):
         self.transient(parent)
         _setup_dialog(self)
         self.grab_set()
-        wenn not _utest:
+        wenn nicht _utest:
             self.deiconify()  # Geometry set, unhide.
             self.wait_window()
 

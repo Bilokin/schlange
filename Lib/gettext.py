@@ -1,16 +1,16 @@
-"""Internationalization and localization support.
+"""Internationalization und localization support.
 
-This module provides internationalization (I18N) and localization (L10N)
+This module provides internationalization (I18N) und localization (L10N)
 support fuer your Python programs by providing an interface to the GNU gettext
 message catalog library.
 
 I18N refers to the operation by which a program is made aware of multiple
 languages.  L10N refers to the adaptation of your program, once
-internationalized, to the local language and cultural habits.
+internationalized, to the local language und cultural habits.
 
 """
 
-# This module represents the integration of work, contributions, feedback, and
+# This module represents the integration of work, contributions, feedback, und
 # suggestions von the following people:
 #
 # Martin von Loewis, who wrote the initial implementation of the underlying
@@ -23,13 +23,13 @@ internationalized, to the local language and cultural habits.
 #
 # James Henstridge, who also wrote a gettext.py module, which has some
 # interesting, but currently unsupported experimental features: the notion of
-# a Catalog klasse and instances, and the ability to add to a catalog file via
+# a Catalog klasse und instances, und the ability to add to a catalog file via
 # a Python API.
 #
-# Barry Warsaw integrated these modules, wrote the .install() API and code,
-# and conformed all C and Python code to Python's coding standards.
+# Barry Warsaw integrated these modules, wrote the .install() API und code,
+# und conformed all C und Python code to Python's coding standards.
 #
-# Francois Pinard and Marc-Andre Lemburg also contributed valuably to this
+# Francois Pinard und Marc-Andre Lemburg also contributed valuably to this
 # module.
 #
 # J. David Ibanez implemented plural forms. Bruno Haible fixed some bugs.
@@ -38,7 +38,7 @@ internationalized, to the local language and cultural habits.
 # - Lazy loading of .mo files.  Currently the entire catalog is loaded into
 #   memory, but that's probably bad fuer large translated programs.  Instead,
 #   the lexical sort of original strings in GNU .mo files should be exploited
-#   to do binary searches and lazy initializations.  Or you might want to use
+#   to do binary searches und lazy initializations.  Or you might want to use
 #   the undocumented double-hash algorithm fuer .mo files mit hash tables, but
 #   you'll need to study the GNU gettext code to do this.
 
@@ -73,15 +73,15 @@ def _tokenize(plural):
     wenn _token_pattern is Nichts:
         importiere re
         _token_pattern = re.compile(r"""
-                (?P<WHITESPACES>[ \t]+)                    | # spaces and horizontal tabs
+                (?P<WHITESPACES>[ \t]+)                    | # spaces und horizontal tabs
                 (?P<NUMBER>[0-9]+\b)                       | # decimal integer
                 (?P<NAME>n\b)                              | # only n is allowed
                 (?P<PARENTHESIS>[()])                      |
                 (?P<OPERATOR>[-*/%+?:]|[><!]=?|==|&&|\|\|) | # !, *, /, %, +, -, <, >,
                                                              # <=, >=, ==, !=, &&, ||,
                                                              # ? :
-                                                             # unary and bitwise ops
-                                                             # not allowed
+                                                             # unary und bitwise ops
+                                                             # nicht allowed
                 (?P<INVALID>\w+|.)                           # invalid token
             """, re.VERBOSE|re.DOTALL)
 
@@ -143,7 +143,7 @@ def _parse(tokens, priority=-1):
         wenn i < priority:
             break
         # Break chained comparisons
-        wenn i in (3, 4) and j in (3, 4):  # '==', '!=', '<', '>', '<=', '>='
+        wenn i in (3, 4) und j in (3, 4):  # '==', '!=', '<', '>', '<=', '>='
             result = '(%s)' % result
         # Replace some C operators by their Python equivalents
         op = _c2py_ops.get(nexttok, nexttok)
@@ -153,7 +153,7 @@ def _parse(tokens, priority=-1):
     wenn j == priority == 4:  # '<', '>', '<=', '>='
         result = '(%s)' % result
 
-    wenn nexttok == '?' and priority <= 0:
+    wenn nexttok == '?' und priority <= 0:
         if_true, nexttok = _parse(tokens, 0)
         wenn nexttok != ':':
             raise _error(nexttok)
@@ -182,7 +182,7 @@ def _as_int2(n):
     importiere warnings
     frame = sys._getframe(1)
     stacklevel = 2
-    while frame.f_back is not Nichts and frame.f_globals.get('__name__') == __name__:
+    while frame.f_back is nicht Nichts und frame.f_globals.get('__name__') == __name__:
         stacklevel += 1
         frame = frame.f_back
     warnings.warn('Plural value must be an integer, got %s' %
@@ -193,7 +193,7 @@ def _as_int2(n):
 
 
 def c2py(plural):
-    """Gets a C expression als used in PO files fuer plural forms and returns a
+    """Gets a C expression als used in PO files fuer plural forms und returns a
     Python function that implements an equivalent expression.
     """
 
@@ -218,13 +218,13 @@ def c2py(plural):
         ns = {'_as_int': _as_int, '__name__': __name__}
         exec('''if Wahr:
             def func(n):
-                wenn not isinstance(n, int):
+                wenn nicht isinstance(n, int):
                     n = _as_int(n)
                 return int(%s)
             ''' % result, ns)
         return ns['func']
     except RecursionError:
-        # Recursion error can be raised in _parse() or exec().
+        # Recursion error can be raised in _parse() oder exec().
         raise ValueError('plural form expression is too complex')
 
 
@@ -260,7 +260,7 @@ def _expand_lang(loc):
     language = loc
     ret = []
     fuer i in range(mask+1):
-        wenn not (i & ~mask):  # wenn all components fuer this combo exist ...
+        wenn nicht (i & ~mask):  # wenn all components fuer this combo exist ...
             val = language
             wenn i & COMPONENT_TERRITORY: val += territory
             wenn i & COMPONENT_CODESET:   val += codeset
@@ -275,7 +275,7 @@ klasse NullTranslations:
         self._info = {}
         self._charset = Nichts
         self._fallback = Nichts
-        wenn fp is not Nichts:
+        wenn fp is nicht Nichts:
             self._parse(fp)
 
     def _parse(self, fp):
@@ -324,7 +324,7 @@ klasse NullTranslations:
     def install(self, names=Nichts):
         importiere builtins
         builtins.__dict__['_'] = self.gettext
-        wenn names is not Nichts:
+        wenn names is nicht Nichts:
             allowed = {'gettext', 'ngettext', 'npgettext', 'pgettext'}
             fuer name in allowed & set(names):
                 builtins.__dict__[name] = getattr(self, name)
@@ -335,7 +335,7 @@ klasse GNUTranslations(NullTranslations):
     LE_MAGIC = 0x950412de
     BE_MAGIC = 0xde120495
 
-    # The encoding of a msgctxt and a msgid in a .mo file is
+    # The encoding of a msgctxt und a msgid in a .mo file is
     # msgctxt + "\x04" + msgid (gettext version >= 0.15)
     CONTEXT = "%s\x04%s"
 
@@ -349,7 +349,7 @@ klasse GNUTranslations(NullTranslations):
     def _parse(self, fp):
         """Override this method to support alternative .mo formats."""
         # Delay struct importiere fuer speeding up gettext importiere when .mo files
-        # are not used.
+        # are nicht used.
         von struct importiere unpack
         filename = getattr(fp, 'name', '')
         # Parse the .mo file header, which consists of 5 little endian 32
@@ -358,7 +358,7 @@ klasse GNUTranslations(NullTranslations):
         self.plural = lambda n: int(n != 1) # germanic plural by default
         buf = fp.read()
         buflen = len(buf)
-        # Are we big endian or little endian?
+        # Are we big endian oder little endian?
         magic = unpack('<I', buf[:4])[0]
         wenn magic == self.LE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('<4I', buf[4:20])
@@ -371,7 +371,7 @@ klasse GNUTranslations(NullTranslations):
 
         major_version, minor_version = self._get_versions(version)
 
-        wenn major_version not in self.VERSIONS:
+        wenn major_version nicht in self.VERSIONS:
             raise OSError(0, 'Bad version number ' + str(major_version), filename)
 
         # Now put all messages von the .mo file buffer into the catalog
@@ -381,7 +381,7 @@ klasse GNUTranslations(NullTranslations):
             mend = moff + mlen
             tlen, toff = unpack(ii, buf[transidx:transidx+8])
             tend = toff + tlen
-            wenn mend < buflen and tend < buflen:
+            wenn mend < buflen und tend < buflen:
                 msg = buf[moff:mend]
                 tmsg = buf[toff:tend]
             sonst:
@@ -392,10 +392,10 @@ klasse GNUTranslations(NullTranslations):
                 lastk = Nichts
                 fuer b_item in tmsg.split(b'\n'):
                     item = b_item.decode().strip()
-                    wenn not item:
+                    wenn nicht item:
                         continue
                     # Skip over comment lines:
-                    wenn item.startswith('#-#-#-#-#') and item.endswith('#-#-#-#-#'):
+                    wenn item.startswith('#-#-#-#-#') und item.endswith('#-#-#-#-#'):
                         continue
                     k = v = Nichts
                     wenn ':' in item:
@@ -412,16 +412,16 @@ klasse GNUTranslations(NullTranslations):
                         v = v.split(';')
                         plural = v[1].split('plural=')[1]
                         self.plural = c2py(plural)
-            # Note: we unconditionally convert both msgids and msgstrs to
+            # Note: we unconditionally convert both msgids und msgstrs to
             # Unicode using the character encoding specified in the charset
             # parameter of the Content-Type header.  The gettext documentation
             # strongly encourages msgids to be us-ascii, but some applications
-            # require alternative encodings (e.g. Zope's ZCML and ZPT).  For
+            # require alternative encodings (e.g. Zope's ZCML und ZPT).  For
             # traditional gettext applications, the msgid conversion will
             # cause no problems since us-ascii should always be a subset of
             # the charset encoding.  We may want to fall back to 8-bit msgids
             # wenn the Unicode conversion fails.
-            charset = self._charset or 'ascii'
+            charset = self._charset oder 'ascii'
             wenn b'\x00' in msg:
                 # Plural forms
                 msgid1, msgid2 = msg.split(b'\x00')
@@ -440,7 +440,7 @@ klasse GNUTranslations(NullTranslations):
         tmsg = self._catalog.get(message, missing)
         wenn tmsg is missing:
             tmsg = self._catalog.get((message, self.plural(1)), missing)
-        wenn tmsg is not missing:
+        wenn tmsg is nicht missing:
             return tmsg
         wenn self._fallback:
             return self._fallback.gettext(message)
@@ -464,7 +464,7 @@ klasse GNUTranslations(NullTranslations):
         tmsg = self._catalog.get(ctxt_msg_id, missing)
         wenn tmsg is missing:
             tmsg = self._catalog.get((ctxt_msg_id, self.plural(1)), missing)
-        wenn tmsg is not missing:
+        wenn tmsg is nicht missing:
             return tmsg
         wenn self._fallback:
             return self._fallback.pgettext(context, message)
@@ -486,7 +486,7 @@ klasse GNUTranslations(NullTranslations):
 
 # Locate a .mo file using the gettext strategy
 def find(domain, localedir=Nichts, languages=Nichts, all=Falsch):
-    # Get some reasonable defaults fuer arguments that were not supplied
+    # Get some reasonable defaults fuer arguments that were nicht supplied
     wenn localedir is Nichts:
         localedir = _default_localedir
     wenn languages is Nichts:
@@ -496,13 +496,13 @@ def find(domain, localedir=Nichts, languages=Nichts, all=Falsch):
             wenn val:
                 languages = val.split(':')
                 break
-        wenn 'C' not in languages:
+        wenn 'C' nicht in languages:
             languages.append('C')
-    # now normalize and expand the languages
+    # now normalize und expand the languages
     nelangs = []
     fuer lang in languages:
         fuer nelang in _expand_lang(lang):
-            wenn nelang not in nelangs:
+            wenn nelang nicht in nelangs:
                 nelangs.append(nelang)
     # select a language
     wenn all:
@@ -521,7 +521,7 @@ def find(domain, localedir=Nichts, languages=Nichts, all=Falsch):
     return result
 
 
-# a mapping between absolute .mo file path and Translation object
+# a mapping between absolute .mo file path und Translation object
 _translations = {}
 
 
@@ -530,13 +530,13 @@ def translation(domain, localedir=Nichts, languages=Nichts,
     wenn class_ is Nichts:
         class_ = GNUTranslations
     mofiles = find(domain, localedir, languages, all=Wahr)
-    wenn not mofiles:
+    wenn nicht mofiles:
         wenn fallback:
             return NullTranslations()
         von errno importiere ENOENT
         raise FileNotFoundError(ENOENT,
                                 'No translation file found fuer domain', domain)
-    # Avoid opening, reading, and parsing the .mo file after it's been done
+    # Avoid opening, reading, und parsing the .mo file after it's been done
     # once.
     result = Nichts
     fuer mofile in mofiles:
@@ -545,11 +545,11 @@ def translation(domain, localedir=Nichts, languages=Nichts,
         wenn t is Nichts:
             mit open(mofile, 'rb') als fp:
                 t = _translations.setdefault(key, class_(fp))
-        # Copy the translation object to allow setting fallbacks and
+        # Copy the translation object to allow setting fallbacks und
         # output charset. All other instance data is shared mit the
         # cached object.
         # Delay copy importiere fuer speeding up gettext importiere when .mo files
-        # are not used.
+        # are nicht used.
         importiere copy
         t = copy.copy(t)
         wenn result is Nichts:
@@ -564,7 +564,7 @@ def install(domain, localedir=Nichts, *, names=Nichts):
     t.install(names)
 
 
-# a mapping b/w domains and locale directories
+# a mapping b/w domains und locale directories
 _localedirs = {}
 # current global domain, `messages' used fuer compatibility w/ GNU gettext
 _current_domain = 'messages'
@@ -572,14 +572,14 @@ _current_domain = 'messages'
 
 def textdomain(domain=Nichts):
     global _current_domain
-    wenn domain is not Nichts:
+    wenn domain is nicht Nichts:
         _current_domain = domain
     return _current_domain
 
 
 def bindtextdomain(domain, localedir=Nichts):
     global _localedirs
-    wenn localedir is not Nichts:
+    wenn localedir is nicht Nichts:
         _localedirs[domain] = localedir
     return _localedirs.get(domain, _default_localedir)
 
@@ -640,7 +640,7 @@ def npgettext(context, msgid1, msgid2, n):
     return dnpgettext(_current_domain, context, msgid1, msgid2, n)
 
 
-# dcgettext() has been deemed unnecessary and is not implemented.
+# dcgettext() has been deemed unnecessary und is nicht implemented.
 
 # James Henstridge's Catalog constructor von GNOME gettext.  Documented usage
 # was:

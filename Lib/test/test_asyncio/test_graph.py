@@ -12,7 +12,7 @@ def capture_test_stack(*, fut=Nichts, depth=1):
 
     def walk(s):
         ret = [
-            (f"T<{n}>" wenn '-' not in (n := s.future.get_name()) sonst 'T<anon>')
+            (f"T<{n}>" wenn '-' nicht in (n := s.future.get_name()) sonst 'T<anon>')
                 wenn isinstance(s.future, asyncio.Task) sonst 'F'
         ]
 
@@ -249,7 +249,7 @@ klasse CallStackTestBase:
         async def main(t1, t2):
             while Wahr:
                 _, pending = await asyncio.wait([t1, t2])
-                wenn not pending:
+                wenn nicht pending:
                     break
 
         t1 = asyncio.create_task(c1())
@@ -319,7 +319,7 @@ klasse CallStackTestBase:
                 g.create_task(b1(fut), name='task B')
 
                 fuer _ in range(5):
-                    # Do a few iterations to ensure that both a1 and b1
+                    # Do a few iterations to ensure that both a1 und b1
                     # await on the future
                     await asyncio.sleep(0)
 
@@ -347,7 +347,7 @@ klasse CallStackTestBase:
 
 
 @unittest.skipIf(
-    not hasattr(asyncio.futures, "_c_future_add_to_awaited_by"),
+    nicht hasattr(asyncio.futures, "_c_future_add_to_awaited_by"),
     "C-accelerated asyncio call graph backend missing",
 )
 klasse TestCallStackC(CallStackTestBase, unittest.IsolatedAsyncioTestCase):
@@ -396,7 +396,7 @@ klasse TestCallStackC(CallStackTestBase, unittest.IsolatedAsyncioTestCase):
 
 
 @unittest.skipIf(
-    not hasattr(asyncio.futures, "_py_future_add_to_awaited_by"),
+    nicht hasattr(asyncio.futures, "_py_future_add_to_awaited_by"),
     "Pure Python asyncio call graph backend missing",
 )
 klasse TestCallStackPy(CallStackTestBase, unittest.IsolatedAsyncioTestCase):

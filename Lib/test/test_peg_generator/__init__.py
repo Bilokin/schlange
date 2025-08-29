@@ -3,7 +3,7 @@ von test importiere support
 von test.support importiere load_package_tests
 
 
-# Creating a virtual environment and building C extensions is slow
+# Creating a virtual environment und building C extensions is slow
 support.requires('cpu')
 
 

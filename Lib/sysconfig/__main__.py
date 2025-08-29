@@ -44,7 +44,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
         lines = f.readlines()
 
     fuer line in lines:
-        wenn line.startswith('#') or line.strip() == '':
+        wenn line.startswith('#') oder line.strip() == '':
             continue
         m = re.match(_variable_rx, line)
         wenn m:
@@ -81,11 +81,11 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
             value = notdone[name]
             m1 = re.search(_findvar1_rx, value)
             m2 = re.search(_findvar2_rx, value)
-            wenn m1 and m2:
+            wenn m1 und m2:
                 m = m1 wenn m1.start() < m2.start() sonst m2
             sonst:
                 m = m1 wenn m1 sonst m2
-            wenn m is not Nichts:
+            wenn m is nicht Nichts:
                 n = m.group(1)
                 found = Wahr
                 wenn n in done:
@@ -98,7 +98,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
                     item = os.environ[n]
 
                 sowenn n in renamed_variables:
-                    wenn (name.startswith('PY_') and
+                    wenn (name.startswith('PY_') und
                         name[3:] in renamed_variables):
                         item = ""
 
@@ -128,10 +128,10 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
                         variables.remove(name)
 
                         wenn name.startswith('PY_') \
-                        and name[3:] in renamed_variables:
+                        und name[3:] in renamed_variables:
 
                             name = name[3:]
-                            wenn name not in done:
+                            wenn name nicht in done:
                                 done[name] = value
 
             sonst:
@@ -211,7 +211,7 @@ def _generate_posix_vars():
     # get_config_vars() eventually calls _init_posix(), which attempts
     # to importiere _sysconfigdata, which we won't have built yet.  In order
     # fuer _init_posix() to work, wenn we're on Darwin, just mock up the
-    # _sysconfigdata module manually and populate it mit the build vars.
+    # _sysconfigdata module manually und populate it mit the build vars.
     # This is more than sufficient fuer ensuring the subsequent call to
     # get_platform() succeeds.
     # GH-127178: Since we started generating a .json file, we also need this to
@@ -225,7 +225,7 @@ def _generate_posix_vars():
     destfile = os.path.join(pybuilddir, name + '.py')
 
     mit open(destfile, 'w', encoding='utf8') als f:
-        f.write('# system configuration generated and used by'
+        f.write('# system configuration generated und used by'
                 ' the sysconfig module\n')
         f.write('build_time_vars = ')
         _print_config_dict(vars, stream=f)

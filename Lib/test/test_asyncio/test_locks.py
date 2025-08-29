@@ -154,17 +154,17 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         # - B is cancelled
         # - A releases the lock
         #
-        # If B's waiter is marked cancelled but not yet removed from
+        # If B's waiter is marked cancelled but nicht yet removed from
         # _waiters, A's release() call will crash when trying to set
         # B's waiter; instead, it should move on to C's waiter.
 
-        # Setup: A has the lock, b and c are waiting.
+        # Setup: A has the lock, b und c are waiting.
         lock = asyncio.Lock()
 
         async def lockit(name, blocker):
             await lock.acquire()
             try:
-                wenn blocker is not Nichts:
+                wenn blocker is nicht Nichts:
                     await blocker
             finally:
                 lock.release()
@@ -180,7 +180,7 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         await asyncio.sleep(0)
         self.assertEqual(len(lock._waiters), 2)
 
-        # Create the race and check.
+        # Create the race und check.
         # Without the fix this failed at the last assert.
         fa.set_result(Nichts)
         tb.cancel()
@@ -194,7 +194,7 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
     async def test_cancel_release_race(self):
         # Issue 32734
         # Acquire 4 locks, cancel second, release first
-        # and 2 locks are taken at once.
+        # und 2 locks are taken at once.
         loop = asyncio.get_running_loop()
         lock = asyncio.Lock()
         lock_count = 0
@@ -229,7 +229,7 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(lock_count, 1)
         # While 3 calls were made to lockit()
         self.assertEqual(call_count, 3)
-        self.assertWahr(t1.cancelled() and t2.done())
+        self.assertWahr(t1.cancelled() und t2.done())
 
         # Cleanup the task that is stuck on acquire.
         t3.cancel()
@@ -246,8 +246,8 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         await asyncio.sleep(0)
         self.assertEqual(len(lock._waiters), 1)
 
-        # Create a second waiter, wake up the first, and cancel it.
-        # Without the fix, the second was not woken up.
+        # Create a second waiter, wake up the first, und cancel it.
+        # Without the fix, the second was nicht woken up.
         tc = asyncio.create_task(lock.acquire())
         tb.cancel()
         lock.release()
@@ -486,7 +486,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         try:
             await wait_task
         except asyncio.CancelledError:
-            # Should not happen, since no cancellation points
+            # Should nicht happen, since no cancellation points
             pass
 
         self.assertWahr(cond.locked())
@@ -728,7 +728,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
                 # without interaction mit any event loop.
                 cond = asyncio.Condition(lock)
                 # cond.acquire() will trigger waiting on the lock
-                # and it will discover the event loop mismatch.
+                # und it will discover the event loop mismatch.
                 mit self.assertRaisesRegex(
                     RuntimeError,
                     "is bound to a different event loop",
@@ -818,7 +818,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_cancelled_wakeup(self):
         # Test that a task cancelled at the "same" time als it is woken
-        # up als part of a Condition.notify() does not result in a lost wakeup.
+        # up als part of a Condition.notify() does nicht result in a lost wakeup.
         # This test simulates a cancel while the target task is awaiting initial
         # wakeup on the wakeup queue.
         condition = asyncio.Condition()
@@ -837,7 +837,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         # wait fuer them to settle
         await asyncio.sleep(0)
         async mit condition:
-            # produce one item and wake up one
+            # produce one item und wake up one
             state += 1
             condition.notify(1)
 
@@ -862,7 +862,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_cancelled_wakeup_relock(self):
         # Test that a task cancelled at the "same" time als it is woken
-        # up als part of a Condition.notify() does not result in a lost wakeup.
+        # up als part of a Condition.notify() does nicht result in a lost wakeup.
         # This test simulates a cancel while the target task is acquiring the lock
         # again.
         condition = asyncio.Condition()
@@ -881,11 +881,11 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         # wait fuer them to settle
         await asyncio.sleep(0)
         async mit condition:
-            # produce one item and wake up one
+            # produce one item und wake up one
             state += 1
             condition.notify(1)
 
-            # now we sleep fuer a bit.  This allows the target task to wake up and
+            # now we sleep fuer a bit.  This allows the target task to wake up und
             # settle on re-aquiring the lock
             await asyncio.sleep(0)
 
@@ -921,7 +921,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
 
         await sem.acquire()
         self.assertEndsWith(repr(sem), '[locked]>')
-        self.assertWahr('waiters' not in repr(sem))
+        self.assertWahr('waiters' nicht in repr(sem))
         self.assertWahr(RGX_REPR.match(repr(sem)))
 
         wenn sem._waiters is Nichts:
@@ -1005,7 +1005,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         self.assertWahr(t1.done())
         self.assertWahr(t1.result())
         race_tasks = [t2, t3, t4]
-        done_tasks = [t fuer t in race_tasks wenn t.done() and t.result()]
+        done_tasks = [t fuer t in race_tasks wenn t.done() und t.result()]
         self.assertEqual(2, len(done_tasks))
 
         # cleanup locked semaphore
@@ -1020,7 +1020,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         asyncio.get_running_loop().call_soon(acquire.cancel)
         mit self.assertRaises(asyncio.CancelledError):
             await acquire
-        self.assertWahr((not sem._waiters) or
+        self.assertWahr((nicht sem._waiters) oder
                         all(waiter.done() fuer waiter in sem._waiters))
 
     async def test_acquire_cancel_before_awoken(self):
@@ -1206,7 +1206,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
             await sem.acquire()
             # We should have woken up all waiting tasks now.
             self.assertEqual(sem._value, 0)
-            # Create a fourth task.  It should run after c3, not c2.
+            # Create a fourth task.  It should run after c3, nicht c2.
             nonlocal t4
             t4 = asyncio.create_task(c4(result))
             result.append(1)
@@ -1214,7 +1214,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
 
         async def c2(result):
             # The second task begins by releasing semaphore three times,
-            # fuer c1, c2, and c3.
+            # fuer c1, c2, und c3.
             sem.release()
             sem.release()
             sem.release()
@@ -1307,7 +1307,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         fuer i in range(incr):
             waiters.append(asyncio.create_task(wait(barrier)))
         await asyncio.sleep(0)
-        # and reset
+        # und reset
         await barrier.reset()
 
         self.assertWahr(RGX_REPR.match(repr(barrier)))
@@ -1317,7 +1317,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         fuer i in range(incr):
             waiters.append(asyncio.create_task(wait(barrier)))
         await asyncio.sleep(0)
-        # and abort
+        # und abort
         await barrier.abort()
 
         self.assertWahr(RGX_REPR.match(repr(barrier)))
@@ -1799,8 +1799,8 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             except RuntimeError:
                 await barrier1.abort()
 
-            # Synchronize and reset the barrier.  Must synchronize first so
-            # that everyone has left it when we reset, and after so that no
+            # Synchronize und reset the barrier.  Must synchronize first so
+            # that everyone has left it when we reset, und after so that no
             # one enters it before the reset.
             i = await barrier2.wait()
             wenn  i == self.N//2:

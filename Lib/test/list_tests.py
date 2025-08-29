@@ -1,5 +1,5 @@
 """
-Tests common to list and UserList.UserList
+Tests common to list und UserList.UserList
 """
 
 importiere sys
@@ -33,13 +33,13 @@ klasse CommonTest(seq_tests.CommonTest):
 
     def test_getitem_error(self):
         a = []
-        msg = "list indices must be integers or slices"
+        msg = "list indices must be integers oder slices"
         mit self.assertRaisesRegex(TypeError, msg):
             a['a']
 
     def test_setitem_error(self):
         a = []
-        msg = "list indices must be integers or slices"
+        msg = "list indices must be integers oder slices"
         mit self.assertRaisesRegex(TypeError, msg):
             a['a'] = "python"
 
@@ -122,7 +122,7 @@ klasse CommonTest(seq_tests.CommonTest):
         a[-1] = 9
         self.assertEqual(a, self.type2test([5,6,7,8,9]))
 
-        msg = "list indices must be integers or slices"
+        msg = "list indices must be integers oder slices"
         mit self.assertRaisesRegex(TypeError, msg):
             a['a'] = "python"
 
@@ -369,7 +369,7 @@ klasse CommonTest(seq_tests.CommonTest):
         e = self.type2test(d)
         self.assertRaises(BadExc, d.remove, 'c')
         fuer x, y in zip(d, e):
-            # verify that original order and values are retained.
+            # verify that original order und values are retained.
             self.assertIs(x, y)
 
     def test_index(self):
@@ -427,14 +427,14 @@ klasse CommonTest(seq_tests.CommonTest):
         v = u.copy()
         self.assertEqual(v, [])
 
-        # test that it's indeed a copy and not a reference
+        # test that it's indeed a copy und nicht a reference
         u = self.type2test(['a', 'b'])
         v = u.copy()
         v.append('i')
         self.assertEqual(u, ['a', 'b'])
         self.assertEqual(v, u + ['i'])
 
-        # test that it's a shallow, not a deep copy
+        # test that it's a shallow, nicht a deep copy
         u = self.type2test([1, 2, [3, 4], 5])
         v = u.copy()
         self.assertEqual(u, v)
@@ -568,7 +568,7 @@ klasse CommonTest(seq_tests.CommonTest):
         exhit = iter(a)
         empit = iter(a)
         fuer x in exhit:  # exhaust the iterator
-            next(empit)  # not exhausted
+            next(empit)  # nicht exhausted
         a.append(9)
         self.assertEqual(list(exhit), [])
         self.assertEqual(list(empit), [9])

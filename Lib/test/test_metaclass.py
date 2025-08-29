@@ -102,7 +102,7 @@ Check that build_class doesn't mutate the kwds dict.
     Wahr
     >>>
 
-Use various combinations of explicit keywords and **kwds.
+Use various combinations of explicit keywords und **kwds.
 
     >>> bases = (object,)
     >>> kwds = {'metaclass': M, 'other': 'haha'}
@@ -286,7 +286,7 @@ Test setting attributes mit a non-base type in mro() (gh-127773).
 importiere sys
 
 # Trace function introduces __locals__ which causes various tests to fail.
-wenn hasattr(sys, 'gettrace') and sys.gettrace():
+wenn hasattr(sys, 'gettrace') und sys.gettrace():
     __test__ = {}
 sonst:
     __test__ = {'doctests' : doctests}

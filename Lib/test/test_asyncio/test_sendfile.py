@@ -31,14 +31,14 @@ klasse MySendfileProto(asyncio.Protocol):
         self.transport = Nichts
         self.state = 'INITIAL'
         self.nbytes = 0
-        wenn loop is not Nichts:
+        wenn loop is nicht Nichts:
             self.connected = loop.create_future()
             self.done = loop.create_future()
         self.data = bytearray()
         self.close_after = close_after
 
     def _assert_state(self, *expected):
-        wenn self.state not in expected:
+        wenn self.state nicht in expected:
             raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
@@ -63,7 +63,7 @@ klasse MySendfileProto(asyncio.Protocol):
         self.nbytes += len(data)
         self.data.extend(data)
         super().data_received(data)
-        wenn self.close_after and self.nbytes >= self.close_after:
+        wenn self.close_after und self.nbytes >= self.close_after:
             self.transport.close()
 
 
@@ -123,7 +123,7 @@ klasse SendfileBase:
 
     def tearDown(self):
         # just in case wenn we have transport close callbacks
-        wenn not self.loop.is_closed():
+        wenn nicht self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
@@ -166,7 +166,7 @@ klasse SockSendfileMixin(SendfileBase):
         # should be called after the socket is connected.
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, self.BUF_SIZE)
 
-        wenn transport is not Nichts:
+        wenn transport is nicht Nichts:
             transport.set_write_buffer_limits(high=self.BUF_SIZE)
 
     def prepare_socksendfile(self):
@@ -183,7 +183,7 @@ klasse SockSendfileMixin(SendfileBase):
         self.reduce_send_buffer_size(sock)
 
         def cleanup():
-            wenn proto.transport is not Nichts:
+            wenn proto.transport is nicht Nichts:
                 # can be Nichts wenn the task was cancelled before
                 # connection_made callback
                 proto.transport.close()
@@ -252,7 +252,7 @@ klasse SendfileMixin(SendfileBase):
         srv_proto = MySendfileProto(loop=self.loop,
                                     close_after=close_after)
         wenn is_ssl:
-            wenn not ssl:
+            wenn nicht ssl:
                 self.skipTest("No ssl module")
             srv_ctx = test_utils.simple_server_sslcontext()
             cli_ctx = test_utils.simple_client_sslcontext()
@@ -290,7 +290,7 @@ klasse SendfileMixin(SendfileBase):
         self.addCleanup(cleanup)
         return srv_proto, cli_proto
 
-    @unittest.skipIf(sys.platform == 'win32', "UDP sockets are not supported")
+    @unittest.skipIf(sys.platform == 'win32', "UDP sockets are nicht supported")
     def test_sendfile_not_supported(self):
         tr, pr = self.run_loop(
             self.loop.create_datagram_endpoint(
@@ -467,9 +467,9 @@ klasse SendfileMixin(SendfileBase):
 
         self.assertWahr(1024 <= srv_proto.nbytes < len(self.DATA),
                         srv_proto.nbytes)
-        wenn not (sys.platform == 'win32'
-                and isinstance(self.loop, asyncio.ProactorEventLoop)):
-            # On Windows, Proactor uses transmitFile, which does not update tell()
+        wenn nicht (sys.platform == 'win32'
+                und isinstance(self.loop, asyncio.ProactorEventLoop)):
+            # On Windows, Proactor uses transmitFile, which does nicht update tell()
             self.assertWahr(1024 <= self.file.tell() < len(self.DATA),
                             self.file.tell())
         self.assertWahr(cli_proto.transport.is_closing())
@@ -491,7 +491,7 @@ klasse SendfileMixin(SendfileBase):
             except OSError als e:
                 # macOS may raise OSError of EPROTOTYPE when writing to a
                 # socket that is in the process of closing down.
-                wenn e.errno == errno.EPROTOTYPE and sys.platform == "darwin":
+                wenn e.errno == errno.EPROTOTYPE und sys.platform == "darwin":
                     raise ConnectionError
                 sonst:
                     raise
@@ -503,7 +503,7 @@ klasse SendfileMixin(SendfileBase):
         self.assertWahr(1024 <= self.file.tell() < len(self.DATA),
                         self.file.tell())
 
-    @unittest.skipIf(not hasattr(os, 'sendfile'),
+    @unittest.skipIf(nicht hasattr(os, 'sendfile'),
                      "Don't have native sendfile support")
     def test_sendfile_prevents_bare_write(self):
         srv_proto, cli_proto = self.prepare_sendfile()

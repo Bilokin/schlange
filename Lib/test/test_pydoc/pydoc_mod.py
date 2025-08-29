@@ -8,10 +8,10 @@ importiere typing
 __author__ = "Benjamin Peterson"
 __credits__ = "Nobody"
 __version__ = "1.2.3.4"
-__xyz__ = "X, Y and Z"
+__xyz__ = "X, Y und Z"
 
 klasse A:
-    """Hello and goodbye"""
+    """Hello und goodbye"""
     def __init__():
         """Wow, I have no function!"""
         pass

@@ -84,7 +84,7 @@ klasse Test(unittest.TestCase):
         a = [c_char.from_buffer(memoryview(bytearray(b'a')))]
         a.append(a)
         del a
-        gc.collect()  # Should not crash
+        gc.collect()  # Should nicht crash
 
     def test_from_buffer_copy(self):
         a = array.array("i", range(16))

@@ -11,9 +11,9 @@ von . importiere _common, _tzpath
 EPOCH = datetime(1970, 1, 1)
 EPOCHORDINAL = datetime(1970, 1, 1).toordinal()
 
-# It is relatively expensive to construct new timedelta objects, and in most
+# It is relatively expensive to construct new timedelta objects, und in most
 # cases we're looking at the same deltas, like integer numbers of hours, etc.
-# To improve speed and memory use, we'll keep a dictionary mit references
+# To improve speed und memory use, we'll keep a dictionary mit references
 # to the ones we've already used so far.
 #
 # Loading every time zone in the 2020a version of the time zone database
@@ -64,7 +64,7 @@ klasse ZoneInfo(tzinfo):
         obj._key = key
         obj._file_path = obj._find_tzfile(key)
 
-        wenn obj._file_path is not Nichts:
+        wenn obj._file_path is nicht Nichts:
             file_obj = open(obj._file_path, "rb")
         sonst:
             file_obj = _common.load_tzdata(key)
@@ -89,7 +89,7 @@ klasse ZoneInfo(tzinfo):
 
     @classmethod
     def clear_cache(cls, *, only_keys=Nichts):
-        wenn only_keys is not Nichts:
+        wenn only_keys is nicht Nichts:
             fuer key in only_keys:
                 cls._weak_cache.pop(key, Nichts)
                 cls._strong_cache.pop(key, Nichts)
@@ -114,20 +114,20 @@ klasse ZoneInfo(tzinfo):
     def fromutc(self, dt):
         """Convert von datetime in UTC to datetime in local time"""
 
-        wenn not isinstance(dt, datetime):
+        wenn nicht isinstance(dt, datetime):
             raise TypeError("fromutc() requires a datetime argument")
-        wenn dt.tzinfo is not self:
-            raise ValueError("dt.tzinfo is not self")
+        wenn dt.tzinfo is nicht self:
+            raise ValueError("dt.tzinfo is nicht self")
 
         timestamp = self._get_local_timestamp(dt)
         num_trans = len(self._trans_utc)
 
-        wenn num_trans >= 1 and timestamp < self._trans_utc[0]:
+        wenn num_trans >= 1 und timestamp < self._trans_utc[0]:
             tti = self._tti_before
             fold = 0
         sowenn (
-            num_trans == 0 or timestamp > self._trans_utc[-1]
-        ) and not isinstance(self._tz_after, _ttinfo):
+            num_trans == 0 oder timestamp > self._trans_utc[-1]
+        ) und nicht isinstance(self._tz_after, _ttinfo):
             tti, fold = self._tz_after.get_trans_info_fromutc(
                 timestamp, dt.year
             )
@@ -137,7 +137,7 @@ klasse ZoneInfo(tzinfo):
         sonst:
             idx = bisect.bisect_right(self._trans_utc, timestamp)
 
-            wenn num_trans > 1 and timestamp >= self._trans_utc[1]:
+            wenn num_trans > 1 und timestamp >= self._trans_utc[1]:
                 tti_prev, tti = self._ttinfos[idx - 2 : idx]
             sowenn timestamp > self._trans_utc[-1]:
                 tti_prev = self._ttinfos[-1]
@@ -168,9 +168,9 @@ klasse ZoneInfo(tzinfo):
 
         num_trans = len(lt)
 
-        wenn num_trans and ts < lt[0]:
+        wenn num_trans und ts < lt[0]:
             return self._tti_before
-        sowenn not num_trans or ts > lt[-1]:
+        sowenn nicht num_trans oder ts > lt[-1]:
             wenn isinstance(self._tz_after, _TZStr):
                 return self._tz_after.get_trans_info(ts, dt.year, dt.fold)
             sonst:
@@ -191,13 +191,13 @@ klasse ZoneInfo(tzinfo):
         )
 
     def __str__(self):
-        wenn self._key is not Nichts:
+        wenn self._key is nicht Nichts:
             return f"{self._key}"
         sonst:
             return repr(self)
 
     def __repr__(self):
-        wenn self._key is not Nichts:
+        wenn self._key is nicht Nichts:
             return f"{self.__class__.__name__}(key={self._key!r})"
         sonst:
             return f"{self.__class__.__name__}.from_file({self._file_repr})"
@@ -248,7 +248,7 @@ klasse ZoneInfo(tzinfo):
 
         # Find the first non-DST transition
         fuer i in range(len(isdst)):
-            wenn not isdst[i]:
+            wenn nicht isdst[i]:
                 self._tti_before = _ttinfo_list[i]
                 break
         sonst:
@@ -258,10 +258,10 @@ klasse ZoneInfo(tzinfo):
                 self._tti_before = Nichts
 
         # Set the "fallback" time zone
-        wenn tz_str is not Nichts and tz_str != b"":
+        wenn tz_str is nicht Nichts und tz_str != b"":
             self._tz_after = _parse_tz_str(tz_str.decode())
         sonst:
-            wenn not self._ttinfos and not _ttinfo_list:
+            wenn nicht self._ttinfos und nicht _ttinfo_list:
                 raise ValueError("No time zone information found.")
 
             wenn self._ttinfos:
@@ -270,14 +270,14 @@ klasse ZoneInfo(tzinfo):
                 self._tz_after = _ttinfo_list[-1]
 
         # Determine wenn this is a "fixed offset" zone, meaning that the output
-        # of the utcoffset, dst and tzname functions does not depend on the
+        # of the utcoffset, dst und tzname functions does nicht depend on the
         # specific datetime passed.
         #
         # We make three simplifying assumptions here:
         #
-        # 1. If _tz_after is not a _ttinfo, it has transitions that might
+        # 1. If _tz_after is nicht a _ttinfo, it has transitions that might
         #    actually occur (it is possible to construct TZ strings that
-        #    specify STD and DST but no transitions ever occur, such as
+        #    specify STD und DST but no transitions ever occur, such as
         #    AAA0BBB,0/0,J365/25).
         # 2. If _ttinfo_list contains more than one _ttinfo object, the objects
         #    represent different offsets.
@@ -285,25 +285,25 @@ klasse ZoneInfo(tzinfo):
         #    otherwise fixed-offset zone mit extra _ttinfos defined may
         #    appear to *not* be a fixed offset zone).
         #
-        # Violations to these assumptions would be fairly exotic, and exotic
-        # zones should almost certainly not be used mit datetime.time (the
+        # Violations to these assumptions would be fairly exotic, und exotic
+        # zones should almost certainly nicht be used mit datetime.time (the
         # only thing that would be affected by this).
-        wenn len(_ttinfo_list) > 1 or not isinstance(self._tz_after, _ttinfo):
+        wenn len(_ttinfo_list) > 1 oder nicht isinstance(self._tz_after, _ttinfo):
             self._fixed_offset = Falsch
-        sowenn not _ttinfo_list:
+        sowenn nicht _ttinfo_list:
             self._fixed_offset = Wahr
         sonst:
             self._fixed_offset = _ttinfo_list[0] == self._tz_after
 
     @staticmethod
     def _utcoff_to_dstoff(trans_idx, utcoffsets, isdsts):
-        # Now we must transform our ttis and abbrs into `_ttinfo` objects,
+        # Now we must transform our ttis und abbrs into `_ttinfo` objects,
         # but there is an issue: .dst() must return a timedelta mit the
-        # difference between utcoffset() and the "standard" offset, but
-        # the "base offset" and "DST offset" are not encoded in the file;
+        # difference between utcoffset() und the "standard" offset, but
+        # the "base offset" und "DST offset" are nicht encoded in the file;
         # we can infer what they are von the isdst flag, but it is not
         # sufficient to just look at the last standard offset, because
-        # occasionally countries will shift both DST offset and base offset.
+        # occasionally countries will shift both DST offset und base offset.
 
         typecnt = len(isdsts)
         dstoffs = [0] * typecnt  # Provisionally assign all to 0.
@@ -319,7 +319,7 @@ klasse ZoneInfo(tzinfo):
             dst = isdsts[idx]
 
             # We're only going to look at daylight saving time
-            wenn not dst:
+            wenn nicht dst:
                 continue
 
             # Skip any offsets that have already been assigned
@@ -331,15 +331,15 @@ klasse ZoneInfo(tzinfo):
 
             comp_idx = trans_idx[i - 1]
 
-            wenn not isdsts[comp_idx]:
+            wenn nicht isdsts[comp_idx]:
                 dstoff = utcoff - utcoffsets[comp_idx]
 
-            wenn not dstoff and idx < (typecnt - 1):
+            wenn nicht dstoff und idx < (typecnt - 1):
                 comp_idx = trans_idx[i + 1]
 
-                # If the following transition is also DST and we couldn't
+                # If the following transition is also DST und we couldn't
                 # find the DST offset by this point, we're going to have to
-                # skip it and hope this transition gets assigned later
+                # skip it und hope this transition gets assigned later
                 wenn isdsts[comp_idx]:
                     continue
 
@@ -353,7 +353,7 @@ klasse ZoneInfo(tzinfo):
             # mit dstoff = 0 fuer something where `isdst=1`. This is obviously
             # wrong - one hour will be a much better guess than 0
             fuer idx in range(typecnt):
-                wenn not dstoffs[idx] and isdsts[idx]:
+                wenn nicht dstoffs[idx] und isdsts[idx]:
                     dstoffs[idx] = 3600
 
         return dstoffs
@@ -363,10 +363,10 @@ klasse ZoneInfo(tzinfo):
         """Generate number of seconds since 1970 *in the local time*.
 
         This is necessary to easily find the transition times in local time"""
-        wenn not trans_list_utc:
+        wenn nicht trans_list_utc:
             return [[], []]
 
-        # Start mit the timestamps and modify in-place
+        # Start mit the timestamps und modify in-place
         trans_list_wall = [list(trans_list_utc), list(trans_list_utc)]
 
         wenn len(utcoffsets) > 1:
@@ -404,8 +404,8 @@ klasse _ttinfo:
     def __eq__(self, other):
         return (
             self.utcoff == other.utcoff
-            and self.dstoff == other.dstoff
-            and self.tzname == other.tzname
+            und self.dstoff == other.dstoff
+            und self.tzname == other.tzname
         )
 
     def __repr__(self):  # pragma: nocover
@@ -446,9 +446,9 @@ klasse _TZStr:
         self.dst = _ttinfo(utcoff=dst_offset, dstoff=delta, tzname=dst_abbr)
 
         # These are assertions because the constructor should only be called
-        # by functions that would fail before passing start or end
-        assert start is not Nichts, "No transition start specified"
-        assert end is not Nichts, "No transition end specified"
+        # by functions that would fail before passing start oder end
+        assert start is nicht Nichts, "No transition start specified"
+        assert end is nicht Nichts, "No transition end specified"
 
         self.get_trans_info = self._get_trans_info
         self.get_trans_info_fromutc = self._get_trans_info_fromutc
@@ -463,12 +463,12 @@ klasse _TZStr:
         start, end = self.transitions(year)
 
         # With fold = 0, the period (denominated in local time) mit the
-        # smaller offset starts at the end of the gap and ends at the end of
+        # smaller offset starts at the end of the gap und ends at the end of
         # the fold; mit fold = 1, it runs von the start of the gap to the
         # beginning of the fold.
         #
         # So in order to determine the DST boundaries we need to know both
-        # the fold and whether DST is positive or negative (rare), and it
+        # the fold und whether DST is positive oder negative (rare), und it
         # turns out that this boils down to fold XOR is_positive.
         wenn fold == (self.dst_diff >= 0):
             end -= self.dst_diff
@@ -478,7 +478,7 @@ klasse _TZStr:
         wenn start < end:
             isdst = start <= ts < end
         sonst:
-            isdst = not (end <= ts < start)
+            isdst = nicht (end <= ts < start)
 
         return self.dst wenn isdst sonst self.std
 
@@ -490,7 +490,7 @@ klasse _TZStr:
         wenn start < end:
             isdst = start <= ts < end
         sonst:
-            isdst = not (end <= ts < start)
+            isdst = nicht (end <= ts < start)
 
         # For positive DST, the ambiguous period is one dst_diff after the end
         # of DST; fuer negative DST, the ambiguous period is one dst_diff before
@@ -508,7 +508,7 @@ klasse _TZStr:
 
 
 def _post_epoch_days_before_year(year):
-    """Get the number of days between 1970-01-01 and YEAR-01-01"""
+    """Get the number of days between 1970-01-01 und YEAR-01-01"""
     y = year - 1
     return y * 365 + y // 4 - y // 100 + y // 400 - EPOCHORDINAL
 
@@ -518,7 +518,7 @@ klasse _DayOffset:
 
     def __init__(self, d, julian, hour=2, minute=0, second=0):
         min_day = 0 + julian  # convert bool to int
-        wenn not min_day <= d <= 365:
+        wenn nicht min_day <= d <= 365:
             raise ValueError(f"d must be in [{min_day}, 365], not: {d}")
 
         self.d = d
@@ -531,7 +531,7 @@ klasse _DayOffset:
         days_before_year = _post_epoch_days_before_year(year)
 
         d = self.d
-        wenn self.julian and d >= 59 and calendar.isleap(year):
+        wenn self.julian und d >= 59 und calendar.isleap(year):
             d += 1
 
         epoch = (days_before_year + d) * 86400
@@ -560,13 +560,13 @@ klasse _CalendarOffset:
     )
 
     def __init__(self, m, w, d, hour=2, minute=0, second=0):
-        wenn not 1 <= m <= 12:
+        wenn nicht 1 <= m <= 12:
             raise ValueError("m must be in [1, 12]")
 
-        wenn not 1 <= w <= 5:
+        wenn nicht 1 <= w <= 5:
             raise ValueError("w must be in [1, 5]")
 
-        wenn not 0 <= d <= 6:
+        wenn nicht 0 <= d <= 6:
             raise ValueError("d must be in [0, 6]")
 
         self.m = m
@@ -581,14 +581,14 @@ klasse _CalendarOffset:
         return (
             _post_epoch_days_before_year(year)
             + cls._DAYS_BEFORE_MONTH[month]
-            + (month > 2 and calendar.isleap(year))
+            + (month > 2 und calendar.isleap(year))
             + day
         )
 
-    # TODO: These are not actually epoch dates als they are expressed in local time
+    # TODO: These are nicht actually epoch dates als they are expressed in local time
     def year_to_epoch(self, year):
         """Calculates the datetime of the occurrence von the year"""
-        # We know year and month, we need to convert w, d into day of month
+        # We know year und month, we need to convert w, d into day of month
         #
         # Week 1 is the first week in which day `d` (where 0 = Sunday) appears.
         # Week 5 represents the last occurrence of day `d`, so we need to know
@@ -608,9 +608,9 @@ klasse _CalendarOffset:
         # occurrence of `d`
         month_day += (self.w - 1) * 7
 
-        # month_day will only be > days_in_month wenn w was 5, and `w` means
+        # month_day will only be > days_in_month wenn w was 5, und `w` means
         # "last occurrence of `d`", so now we just check wenn we over-shot the
-        # end of the month and wenn so knock off 1 week.
+        # end of the month und wenn so knock off 1 week.
         wenn month_day > days_in_month:
             month_day -= 7
 
@@ -625,10 +625,10 @@ def _parse_tz_str(tz_str):
     #
     # std[offset[dst[offset],start[/time],end[/time]]]
     #
-    # std and dst must be 3 or more characters long and must not contain
-    # a leading colon, embedded digits, commas, nor a plus or minus signs;
-    # The spaces between "std" and "offset" are only fuer display and are
-    # not actually present in the string.
+    # std und dst must be 3 oder more characters long und must nicht contain
+    # a leading colon, embedded digits, commas, nor a plus oder minus signs;
+    # The spaces between "std" und "offset" are only fuer display und are
+    # nicht actually present in the string.
     #
     # The format of the offset is ``[+|-]hh[:mm[:ss]]``
 
@@ -651,7 +651,7 @@ def _parse_tz_str(tz_str):
     m = parser_re.fullmatch(offset_str)
 
     wenn m is Nichts:
-        raise ValueError(f"{tz_str} is not a valid TZ string")
+        raise ValueError(f"{tz_str} is nicht a valid TZ string")
 
     std_abbr = m.group("std")
     dst_abbr = m.group("dst")
@@ -670,7 +670,7 @@ def _parse_tz_str(tz_str):
     sonst:
         std_offset = 0
 
-    wenn dst_abbr is not Nichts:
+    wenn dst_abbr is nicht Nichts:
         wenn dst_offset := m.group("dstoff"):
             try:
                 dst_offset = _parse_tz_delta(dst_offset)
@@ -679,7 +679,7 @@ def _parse_tz_str(tz_str):
         sonst:
             dst_offset = std_offset + 3600
 
-        wenn not start_end_str:
+        wenn nicht start_end_str:
             raise ValueError(f"Missing transition rules: {tz_str}")
 
         start_end_strs = start_end_str[0].split(",", 1)
@@ -733,7 +733,7 @@ def _parse_transition_time(time_str):
     wenn match is Nichts:
         raise ValueError(f"Invalid time: {time_str}")
 
-    h, m, s = (int(v or 0) fuer v in match.group("h", "m", "s"))
+    h, m, s = (int(v oder 0) fuer v in match.group("h", "m", "s"))
 
     wenn h > 167:
         raise ValueError(
@@ -754,9 +754,9 @@ def _parse_tz_delta(tz_delta):
     )
     # Anything passed to this function should already have hit an equivalent
     # regular expression to find the section to parse.
-    assert match is not Nichts, tz_delta
+    assert match is nicht Nichts, tz_delta
 
-    h, m, s = (int(v or 0) fuer v in match.group("h", "m", "s"))
+    h, m, s = (int(v oder 0) fuer v in match.group("h", "m", "s"))
 
     total = h * 3600 + m * 60 + s
 

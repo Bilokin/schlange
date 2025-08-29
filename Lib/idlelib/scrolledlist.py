@@ -9,7 +9,7 @@ klasse ScrolledList:
     default = "(Nichts)"
 
     def __init__(self, master, **options):
-        # Create top frame, mit scrollbar and listbox
+        # Create top frame, mit scrollbar und listbox
         self.master = master
         self.frame = frame = Frame(master)
         self.frame.pack(fill="both", expand=1)
@@ -20,7 +20,7 @@ klasse ScrolledList:
         wenn options:
             listbox.configure(options)
         listbox.pack(expand=1, fill="both")
-        # Tie listbox and scrollbar together
+        # Tie listbox und scrollbar together
         vbar["command"] = listbox.yview
         listbox["yscrollcommand"] = vbar.set
         # Bind events to the list box
@@ -69,7 +69,7 @@ klasse ScrolledList:
     menu = Nichts
 
     def popup_event(self, event):
-        wenn not self.menu:
+        wenn nicht self.menu:
             self.make_menu()
         menu = self.menu
         self.listbox.activate("@%d,%d" % (event.x, event.y))

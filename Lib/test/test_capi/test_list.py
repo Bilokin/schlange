@@ -84,7 +84,7 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES size(NULL)
 
     def check_list_get_item(self, getitem, exctype):
-        # Common test cases fuer PyList_GetItem() and PyList_GetItemRef()
+        # Common test cases fuer PyList_GetItem() und PyList_GetItemRef()
         lst = [1, 2, 3]
         self.assertEqual(getitem(lst, 0), 1)
         self.assertEqual(getitem(lst, 2), 3)

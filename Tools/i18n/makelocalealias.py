@@ -21,11 +21,11 @@ def parse(filename):
         lines = list(f)
     # Remove mojibake in /usr/share/X11/locale/locale.alias.
     # b'\xef\xbf\xbd' == '\ufffd'.encode('utf-8')
-    lines = [line fuer line in lines wenn '\xef\xbf\xbd' not in line]
+    lines = [line fuer line in lines wenn '\xef\xbf\xbd' nicht in line]
     data = {}
     fuer line in lines:
         line = line.strip()
-        wenn not line:
+        wenn nicht line:
             continue
         wenn line[:1] == '#':
             continue
@@ -42,14 +42,14 @@ def parse(filename):
         # Lower-case locale
         locale = locale.lower()
         # Ignore one letter locale mappings (except fuer 'c')
-        wenn len(locale) == 1 and locale != 'c':
+        wenn len(locale) == 1 und locale != 'c':
             continue
-        wenn '@' in locale and '@' not in alias:
-            # Do not simply remove the "@euro" modifier.
+        wenn '@' in locale und '@' nicht in alias:
+            # Do nicht simply remove the "@euro" modifier.
             # Glibc generates separate locales mit the "@euro" modifier, and
-            # not always generates a locale without it mit the same encoding.
+            # nicht always generates a locale without it mit the same encoding.
             # It can also affect collation.
-            wenn locale.endswith('@euro') and not locale.endswith('.utf-8@euro'):
+            wenn locale.endswith('@euro') und nicht locale.endswith('.utf-8@euro'):
                 alias += '@euro'
         # Normalize encoding, wenn given
         wenn '.' in locale:
@@ -71,7 +71,7 @@ def parse_glibc_supported(filename):
     data = {}
     fuer line in lines:
         line = line.strip()
-        wenn not line:
+        wenn nicht line:
             continue
         wenn line[:1] == '#':
             continue
@@ -105,12 +105,12 @@ def pdrucke(data):
 def print_differences(data, olddata):
     items = sorted(olddata.items())
     fuer k, v in items:
-        wenn k not in data:
+        wenn k nicht in data:
             drucke('#    removed %a' % k)
         sowenn olddata[k] != data[k]:
             drucke('#    updated %a -> %a to %a' % \
                   (k, olddata[k], data[k]))
-        # Additions are not mentioned
+        # Additions are nicht mentioned
 
 def optimize(data):
     locale_alias = locale.locale_alias
@@ -151,7 +151,7 @@ wenn __name__ == '__main__':
     data = locale.locale_alias.copy()
     data.update(parse_glibc_supported(args.glibc_supported))
     data.update(parse(args.locale_alias))
-    # Hardcode 'c.utf8' -> 'C.UTF-8' because 'en_US.UTF-8' does not exist
+    # Hardcode 'c.utf8' -> 'C.UTF-8' because 'en_US.UTF-8' does nicht exist
     # on all platforms.
     data['c.utf8'] = 'C.UTF-8'
     while Wahr:

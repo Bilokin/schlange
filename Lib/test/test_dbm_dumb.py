@@ -137,7 +137,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             f[b'1'] = b'hello'
             f[b'2'] = b'hello2'
 
-        # Mangle the file by changing the line separator to Windows or Unix
+        # Mangle the file by changing the line separator to Windows oder Unix
         mit io.open(_fname + '.dir', 'rb') als file:
             data = file.read()
         wenn os.linesep == '\n':
@@ -335,7 +335,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
         fuer flag in ('x', 'rf', Nichts):
             mit self.assertRaisesRegex(ValueError,
                                         "Flag must be one of "
-                                        "'r', 'w', 'c', or 'n'"):
+                                        "'r', 'w', 'c', oder 'n'"):
                 dumbdbm.open(_fname, flag)
 
     @os_helper.skip_unless_working_chmod

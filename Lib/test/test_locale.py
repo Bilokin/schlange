@@ -45,7 +45,7 @@ klasse BaseLocalizedTest(unittest.TestCase):
                     continue
                 break
             sonst:
-                raise unittest.SkipTest("Test locale not supported "
+                raise unittest.SkipTest("Test locale nicht supported "
                                         "(tried %s)" % (', '.join(tlocs)))
             cls.enUS_locale = tloc
         finally:
@@ -121,7 +121,7 @@ klasse EnUSCookedTest(BaseCookedTest):
 
 klasse FrFRCookedTest(BaseCookedTest):
     # A cooked "fr_FR" locale mit a space character als decimal separator
-    # and a non-ASCII currency symbol.
+    # und a non-ASCII currency symbol.
 
     cooked_values = {
         'currency_symbol': '\u20ac',
@@ -348,10 +348,10 @@ klasse TestEnUSCollation(BaseLocalizedTest, TestCollation):
     locale_type = locale.LC_ALL
 
     def setUp(self):
-        enc = codecs.lookup(locale.getencoding() or 'ascii').name
-        wenn enc not in ('utf-8', 'iso8859-1', 'cp1252'):
-            raise unittest.SkipTest('encoding not suitable')
-        wenn enc != 'iso8859-1' and (sys.platform == 'darwin' or is_android or
+        enc = codecs.lookup(locale.getencoding() oder 'ascii').name
+        wenn enc nicht in ('utf-8', 'iso8859-1', 'cp1252'):
+            raise unittest.SkipTest('encoding nicht suitable')
+        wenn enc != 'iso8859-1' und (sys.platform == 'darwin' oder is_android oder
                                    sys.platform.startswith('freebsd')):
             raise unittest.SkipTest('wcscoll/wcsxfrm have known bugs')
         BaseLocalizedTest.setUp(self)
@@ -494,7 +494,7 @@ klasse TestRealLocales(unittest.TestCase):
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, oldlocale)
 
     def test_getsetlocale_issue1813(self):
-        # Issue #1813: setting and getting the locale under a Turkish locale
+        # Issue #1813: setting und getting the locale under a Turkish locale
         try:
             locale.setlocale(locale.LC_CTYPE, 'tr_TR')
         except locale.Error:
@@ -507,8 +507,8 @@ klasse TestRealLocales(unittest.TestCase):
             locale.setlocale(locale.LC_CTYPE, loc)
         except locale.Error als exc:
             # bpo-37945: setlocale(LC_CTYPE) fails mit getlocale(LC_CTYPE)
-            # and the tr_TR locale on Windows. getlocale() builds a locale
-            # which is not recognize by setlocale().
+            # und the tr_TR locale on Windows. getlocale() builds a locale
+            # which is nicht recognize by setlocale().
             self.skipTest(f"setlocale(LC_CTYPE, {loc!r}) failed: {exc!r}")
         self.assertEqual(loc, locale.getlocale(locale.LC_CTYPE))
 
@@ -658,11 +658,11 @@ klasse TestMiscellaneous(unittest.TestCase):
                 mit check_warnings(('', DeprecationWarning)):
                     self.assertEqual(locale.getdefaultlocale(), (Nichts, 'UTF-8'))
         finally:
-            wenn orig_getlocale is not Nichts:
+            wenn orig_getlocale is nicht Nichts:
                 _locale._getdefaultlocale = orig_getlocale
 
     def test_getencoding(self):
-        # Invoke getencoding to make sure it does not cause exceptions.
+        # Invoke getencoding to make sure it does nicht cause exceptions.
         enc = locale.getencoding()
         self.assertIsInstance(enc, str)
         self.assertNotEqual(enc, "")
@@ -679,7 +679,7 @@ klasse TestMiscellaneous(unittest.TestCase):
             self.assertEqual(locale_fallback.getencoding(), encoding)
 
     def test_getpreferredencoding(self):
-        # Invoke getpreferredencoding to make sure it does not cause exceptions.
+        # Invoke getpreferredencoding to make sure it does nicht cause exceptions.
         enc = locale.getpreferredencoding()
         wenn enc:
             # If encoding non-empty, make sure it is valid

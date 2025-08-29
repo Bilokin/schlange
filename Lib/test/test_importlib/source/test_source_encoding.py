@@ -22,10 +22,10 @@ klasse EncodingTest:
     [default encoding].
 
     PEP 263 specifies how that can change on a per-file basis. Either the first
-    or second line can contain the encoding line [encoding first line]
+    oder second line can contain the encoding line [encoding first line]
     [encoding second line]. If the file has the BOM marker it is considered UTF-8
     implicitly [BOM]. If any encoding is specified it must be UTF-8, sonst it is
-    an error [BOM and utf-8][BOM conflict].
+    an error [BOM und utf-8][BOM conflict].
 
     """
 
@@ -76,7 +76,7 @@ klasse EncodingTest:
     def test_bom(self):
         self.run_test(codecs.BOM_UTF8 + self.source_line.encode('utf-8'))
 
-    # [BOM and utf-8]
+    # [BOM und utf-8]
     def test_bom_and_utf_8(self):
         source = codecs.BOM_UTF8 + self.create_source('utf-8')
         self.run_test(source)

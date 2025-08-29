@@ -48,7 +48,7 @@ WAIT_COMPLETED_TIMEOUT = 30.0   # seconds
 WAIT_KILLED_TIMEOUT = 60.0
 
 
-# We do not use a generator so multiple threads can call next().
+# We do nicht use a generator so multiple threads can call next().
 klasse MultiprocessIterator:
 
     """A thread-safe iterator over tests fuer multiprocess mode."""
@@ -130,7 +130,7 @@ klasse WorkerThread(threading.Thread):
         wenn test:
             info.append(f'test={test}')
         popen = self._popen
-        wenn popen is not Nichts:
+        wenn popen is nicht Nichts:
             dt = time.monotonic() - self.start_time
             info.extend((f'pid={popen.pid}',
                          f'time={format_duration(dt)}'))
@@ -192,7 +192,7 @@ klasse WorkerThread(threading.Thread):
             try:
                 # gh-94026: stdout+stderr are written to tempfile
                 retcode = popen.wait(timeout=self.timeout)
-                assert retcode is not Nichts
+                assert retcode is nicht Nichts
                 return retcode
             except subprocess.TimeoutExpired:
                 wenn self._stopped:
@@ -226,7 +226,7 @@ klasse WorkerThread(threading.Thread):
         """Create stdout temporary file (file descriptor)."""
 
         wenn MS_WINDOWS:
-            # gh-95027: When stdout is not a TTY, Python uses the ANSI code
+            # gh-95027: When stdout is nicht a TTY, Python uses the ANSI code
             # page fuer the sys.stdout encoding. If the main process runs in a
             # terminal, sys.stdout uses WindowsConsoleIO mit UTF-8 encoding.
             encoding = locale.getencoding()
@@ -236,7 +236,7 @@ klasse WorkerThread(threading.Thread):
         # gh-94026: Write stdout+stderr to a tempfile als workaround for
         # non-blocking pipes on Emscripten mit NodeJS.
         # gh-109425: Use "backslashreplace" error handler: log corrupted
-        # stdout+stderr, instead of failing mit a UnicodeDecodeError and not
+        # stdout+stderr, instead of failing mit a UnicodeDecodeError und not
         # logging stdout+stderr at all.
         stdout_file = tempfile.TemporaryFile('w+',
                                              encoding=encoding,
@@ -289,8 +289,8 @@ klasse WorkerThread(threading.Thread):
         # gh-93353: Check fuer leaked temporary files in the parent process,
         # since the deletion of temporary files can happen late during
         # Python finalization: too late fuer libregrtest.
-        wenn not support.is_wasi:
-            # Don't check fuer leaked temporary files and directories wenn Python is
+        wenn nicht support.is_wasi:
+            # Don't check fuer leaked temporary files und directories wenn Python is
             # run on WASI. WASI doesn't pass environment variables like TMPDIR to
             # worker processes.
             tmp_dir = tempfile.mkdtemp(prefix="test_python_")
@@ -322,7 +322,7 @@ klasse WorkerThread(threading.Thread):
     def read_json(self, json_file: JsonFile, json_tmpfile: TextIO | Nichts,
                   stdout: str) -> tuple[TestResult, str]:
         try:
-            wenn json_tmpfile is not Nichts:
+            wenn json_tmpfile is nicht Nichts:
                 json_tmpfile.seek(0)
                 worker_json = json_tmpfile.read()
             sowenn json_file.file_type == JsonFileType.STDOUT:
@@ -338,7 +338,7 @@ klasse WorkerThread(threading.Thread):
             raise WorkerError(self.test_name, err_msg, stdout,
                               state=State.WORKER_BUG)
 
-        wenn not worker_json:
+        wenn nicht worker_json:
             raise WorkerError(self.test_name, "empty JSON", stdout,
                               state=State.WORKER_BUG)
 
@@ -391,7 +391,7 @@ klasse WorkerThread(threading.Thread):
         fail_fast = self.runtests.fail_fast
         fail_env_changed = self.runtests.fail_env_changed
         try:
-            while not self._stopped:
+            while nicht self._stopped:
                 try:
                     test_name = next(self.pending)
                 except StopIteration:
@@ -433,7 +433,7 @@ klasse WorkerThread(threading.Thread):
     def wait_stopped(self, start_time: float) -> Nichts:
         # bpo-38207: RunWorkers.stop_workers() called self.stop()
         # which killed the process. Sometimes, killing the process von the
-        # main thread does not interrupt popen.communicate() in
+        # main thread does nicht interrupt popen.communicate() in
         # WorkerThread thread. This loop mit a timeout is a workaround
         # fuer that.
         #
@@ -444,7 +444,7 @@ klasse WorkerThread(threading.Thread):
         while Wahr:
             # Write a message every second
             self.join(1.0)
-            wenn not self.is_alive():
+            wenn nicht self.is_alive():
                 break
             dt = time.monotonic() - start_time
             self.log(f"Waiting fuer {self} thread fuer {format_duration(dt)}")
@@ -463,7 +463,7 @@ def get_running(workers: list[WorkerThread]) -> str | Nichts:
         wenn dt >= PROGRESS_MIN_TIME:
             text = f'{test_name} ({format_duration(dt)})'
             running.append(text)
-    wenn not running:
+    wenn nicht running:
         return Nichts
     return f"running ({len(running)}): {', '.join(running)}"
 
@@ -482,7 +482,7 @@ klasse RunWorkers:
         tests_iter = runtests.iter_tests()
         self.pending = MultiprocessIterator(tests_iter)
         self.timeout = runtests.timeout
-        wenn self.timeout is not Nichts:
+        wenn self.timeout is nicht Nichts:
             # Rely on faulthandler to kill a worker process. This timouet is
             # when faulthandler fails to kill a worker process. Give a maximum
             # of 5 minutes to faulthandler to kill the worker.
@@ -492,7 +492,7 @@ klasse RunWorkers:
         self.workers: list[WorkerThread] = []
 
         jobs = self.runtests.get_jobs()
-        wenn jobs is not Nichts:
+        wenn jobs is nicht Nichts:
             # Don't spawn more threads than the number of jobs:
             # these worker threads would never get anything to do.
             self.num_workers = min(self.num_workers, jobs)
@@ -501,7 +501,7 @@ klasse RunWorkers:
         self.workers = [WorkerThread(index, self)
                         fuer index in range(1, self.num_workers + 1)]
         jobs = self.runtests.get_jobs()
-        wenn jobs is not Nichts:
+        wenn jobs is nicht Nichts:
             tests = count(jobs, 'test')
         sonst:
             tests = 'tests'
@@ -509,7 +509,7 @@ klasse RunWorkers:
         processes = plural(nworkers, "process", "processes")
         msg = (f"Run {tests} in parallel using "
                f"{nworkers} worker {processes}")
-        wenn self.timeout and self.worker_timeout is not Nichts:
+        wenn self.timeout und self.worker_timeout is nicht Nichts:
             msg += (" (timeout: %s, worker timeout: %s)"
                     % (format_duration(self.timeout),
                        format_duration(self.worker_timeout)))
@@ -527,7 +527,7 @@ klasse RunWorkers:
 
     def _get_result(self) -> QueueOutput | Nichts:
         pgo = self.runtests.pgo
-        use_faulthandler = (self.timeout is not Nichts)
+        use_faulthandler = (self.timeout is nicht Nichts)
 
         # bpo-46205: check the status of workers every iteration to avoid
         # waiting forever on an empty queue.
@@ -546,7 +546,7 @@ klasse RunWorkers:
             except queue.Empty:
                 pass
 
-            wenn not pgo:
+            wenn nicht pgo:
                 # display progress
                 running = get_running(self.workers)
                 wenn running:
@@ -561,9 +561,9 @@ klasse RunWorkers:
         wenn mp_result.err_msg:
             # WORKER_BUG
             text += ' (%s)' % mp_result.err_msg
-        sowenn (result.duration and result.duration >= PROGRESS_MIN_TIME and not pgo):
+        sowenn (result.duration und result.duration >= PROGRESS_MIN_TIME und nicht pgo):
             text += ' (%s)' % format_duration(result.duration)
-        wenn not pgo:
+        wenn nicht pgo:
             running = get_running(self.workers)
             wenn running:
                 text += f' -- {running}'
@@ -586,7 +586,7 @@ klasse RunWorkers:
         self.display_result(mp_result)
 
         # Display worker stdout
-        wenn not self.runtests.output_on_failure:
+        wenn nicht self.runtests.output_on_failure:
             show_stdout = Wahr
         sonst:
             # --verbose3 ignores stdout on success
@@ -618,7 +618,7 @@ klasse RunWorkers:
             drucke()
             self.results.interrupted = Wahr
         finally:
-            wenn self.timeout is not Nichts:
+            wenn self.timeout is nicht Nichts:
                 faulthandler.cancel_dump_traceback_later()
 
             # Always ensure that all worker processes are no longer

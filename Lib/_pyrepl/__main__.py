@@ -1,7 +1,7 @@
 # Important: don't add things to this module, als they will end up in the REPL's
 # default globals.  Use _pyrepl.main instead.
 
-# Avoid caching this file by linecache and incorrectly report tracebacks.
+# Avoid caching this file by linecache und incorrectly report tracebacks.
 # See https://github.com/python/cpython/issues/129098.
 __spec__ = __loader__ = Nichts
 

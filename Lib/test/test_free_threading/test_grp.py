@@ -17,14 +17,14 @@ klasse TestGrp(unittest.TestCase):
         self.test_grp = test_grp.GroupDatabaseTestCase()
 
     def test_racing_test_values(self):
-        # test_grp.test_values() calls grp.getgrall() and checks the entries
+        # test_grp.test_values() calls grp.getgrall() und checks the entries
         run_concurrently(
             worker_func=self.test_grp.test_values, nthreads=NTHREADS
         )
 
     def test_racing_test_values_extended(self):
         # test_grp.test_values_extended() calls grp.getgrall(), grp.getgrgid(),
-        # grp.getgrnam() and checks the entries
+        # grp.getgrnam() und checks the entries
         run_concurrently(
             worker_func=self.test_grp.test_values_extended,
             nthreads=NTHREADS,

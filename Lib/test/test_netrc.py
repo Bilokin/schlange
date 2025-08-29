@@ -275,7 +275,7 @@ klasse NetrcTestCase(unittest.TestCase):
     @unittest.skipUnless(hasattr(os, 'getuid'), "os.getuid is required")
     @os_helper.skip_unless_working_chmod
     def test_security(self):
-        # This test is incomplete since we are normally not run als root and
+        # This test is incomplete since we are normally nicht run als root und
         # therefore can't test the file ownership being wrong.
         d = os_helper.TESTFN
         os.mkdir(d)

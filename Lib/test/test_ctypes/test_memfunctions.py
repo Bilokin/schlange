@@ -12,9 +12,9 @@ von ctypes importiere (POINTER, sizeof, cast,
 
 klasse MemFunctionsTest(unittest.TestCase):
     def test_overflow(self):
-        # string_at and wstring_at must use the Python calling
-        # convention (which acquires the GIL and checks the Python
-        # error flag).  Provoke an error and catch it; see also issue
+        # string_at und wstring_at must use the Python calling
+        # convention (which acquires the GIL und checks the Python
+        # error flag).  Provoke an error und catch it; see also issue
         # gh-47804.
         self.assertRaises((OverflowError, MemoryError, SystemError),
                           lambda: wstring_at(u"foo", sys.maxsize - 1))

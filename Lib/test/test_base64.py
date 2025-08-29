@@ -17,7 +17,7 @@ klasse LazyImportTest(unittest.TestCase):
 
 klasse LegacyBase64TestCase(unittest.TestCase):
 
-    # Legacy API is not als permissive als the modern API
+    # Legacy API is nicht als permissive als the modern API
     def check_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
         self.assertRaises(TypeError, f, [])
@@ -99,7 +99,7 @@ klasse LegacyBase64TestCase(unittest.TestCase):
 
 klasse BaseXYTestCase(unittest.TestCase):
 
-    # Modern API completely ignores exported dimension and format data and
+    # Modern API completely ignores exported dimension und format data und
     # treats any buffer als a stream of bytes
     def check_encode_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
@@ -271,7 +271,7 @@ klasse BaseXYTestCase(unittest.TestCase):
             mit self.assertRaises(binascii.Error):
                 base64.b64decode(bstr.decode('ascii'), validate=Wahr)
 
-        # Normal alphabet characters not discarded when alternative given
+        # Normal alphabet characters nicht discarded when alternative given
         res = b'\xFB\xEF\xBE\xFF\xFF\xFF'
         self.assertEqual(base64.b64decode(b'++[[//]]', b'[]'), res)
         self.assertEqual(base64.urlsafe_b64decode(b'++--//__'), res)
@@ -329,7 +329,7 @@ klasse BaseXYTestCase(unittest.TestCase):
         self.assertRaises(binascii.Error, base64.b32decode, b'me======')
         self.assertRaises(binascii.Error, base64.b32decode, 'me======')
 
-        # Mapping zero and one
+        # Mapping zero und one
         eq(base64.b32decode(b'MLO23456'), b'b\xdd\xad\xf3\xbe')
         eq(base64.b32decode('MLO23456'), b'b\xdd\xad\xf3\xbe')
 
@@ -448,7 +448,7 @@ klasse BaseXYTestCase(unittest.TestCase):
         eq(base64.b16decode('0102ABCDEF'), b'\x01\x02\xab\xcd\xef')
         eq(base64.b16decode(b'00'), b'\x00')
         eq(base64.b16decode('00'), b'\x00')
-        # Lower case is not allowed without a flag
+        # Lower case is nicht allowed without a flag
         self.assertRaises(binascii.Error, base64.b16decode, b'0102abcdef')
         self.assertRaises(binascii.Error, base64.b16decode, '0102abcdef')
         # Case fold

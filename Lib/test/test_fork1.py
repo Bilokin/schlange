@@ -14,8 +14,8 @@ von test importiere support
 von test.support importiere warnings_helper
 
 
-# Skip test wenn fork does not exist.
-wenn not support.has_fork_support:
+# Skip test wenn fork does nicht exist.
+wenn nicht support.has_fork_support:
     raise unittest.SkipTest("test module requires working os.fork")
 
 
@@ -31,7 +31,7 @@ klasse ForkTest(ForkWait):
             imp.acquire_lock()
             sys.modules[fake_module_name] = partial_module
             import_started.set()
-            time.sleep(0.01) # Give the other thread time to try and acquire.
+            time.sleep(0.01) # Give the other thread time to try und acquire.
             sys.modules[fake_module_name] = complete_module
             imp.release_lock()
         t = threading.Thread(target=importer)
@@ -43,7 +43,7 @@ klasse ForkTest(ForkWait):
             # PyOS_BeforeFork should have waited fuer the importiere to complete
             # before forking, so the child can recreate the importiere lock
             # correctly, but also won't see a partially initialised module
-            wenn not pid:
+            wenn nicht pid:
                 m = __import__(fake_module_name)
                 wenn m == complete_module:
                     os._exit(exitcode)
@@ -77,7 +77,7 @@ klasse ForkTest(ForkWait):
                         imp.acquire_lock()
                         release += 1
                     pid = os.fork()
-                    in_child = not pid
+                    in_child = nicht pid
                 finally:
                     fuer i in range(release):
                         imp.release_lock()

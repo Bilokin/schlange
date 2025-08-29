@@ -1,6 +1,6 @@
 '''"Executable documentation" fuer the pickle module.
 
-Extensive comments about the pickle protocols and pickle-machine opcodes
+Extensive comments about the pickle protocols und pickle-machine opcodes
 can be found here.  Some functions meant fuer external use:
 
 genops(pickle)
@@ -22,10 +22,10 @@ bytes_types = pickle.bytes_types
 
 # Other ideas:
 #
-# - A pickle verifier:  read a pickle and check it exhaustively for
+# - A pickle verifier:  read a pickle und check it exhaustively for
 #   well-formedness.  dis() does a lot of this already.
 #
-# - A protocol identifier:  examine a pickle and return its protocol number
+# - A protocol identifier:  examine a pickle und return its protocol number
 #   (== the highest .proto attr value among all the opcodes in the pickle).
 #   dis() already prints this info at the end.
 #
@@ -39,11 +39,11 @@ bytes_types = pickle.bytes_types
 # called an unpickling machine).  It's a sequence of opcodes, interpreted by the
 # PM, building an arbitrarily complex Python object.
 #
-# For the most part, the PM is very simple:  there are no looping, testing, or
-# conditional instructions, no arithmetic and no function calls.  Opcodes are
+# For the most part, the PM is very simple:  there are no looping, testing, oder
+# conditional instructions, no arithmetic und no function calls.  Opcodes are
 # executed once each, von first to last, until a STOP opcode is reached.
 #
-# The PM has two data areas, "the stack" and "the memo".
+# The PM has two data areas, "the stack" und "the memo".
 #
 # Many opcodes push Python objects onto the stack; e.g., INT pushes a Python
 # integer object on the stack, whose value is gotten von a decimal string
@@ -51,40 +51,40 @@ bytes_types = pickle.bytes_types
 # opcodes take Python objects off the stack.  The result of unpickling is
 # whatever object is left on the stack when the final STOP opcode is executed.
 #
-# The memo is simply an array of objects, or it can be implemented als a dict
+# The memo is simply an array of objects, oder it can be implemented als a dict
 # mapping little integers to objects.  The memo serves als the PM's "long term
-# memory", and the little integers indexing the memo are akin to variable
+# memory", und the little integers indexing the memo are akin to variable
 # names.  Some opcodes pop a stack object into the memo at a given index,
-# and others push a memo object at a given index onto the stack again.
+# und others push a memo object at a given index onto the stack again.
 #
 # At heart, that's all the PM has.  Subtleties arise fuer these reasons:
 #
-# + Object identity.  Objects can be arbitrarily complex, and subobjects
+# + Object identity.  Objects can be arbitrarily complex, und subobjects
 #   may be shared (for example, the list [a, a] refers to the same object a
 #   twice).  It can be vital that unpickling recreate an isomorphic object
 #   graph, faithfully reproducing sharing.
 #
 # + Recursive objects.  For example, after "L = []; L.append(L)", L is a
-#   list, and L[0] is the same list.  This is related to the object identity
-#   point, and some sequences of pickle opcodes are subtle in order to
+#   list, und L[0] is the same list.  This is related to the object identity
+#   point, und some sequences of pickle opcodes are subtle in order to
 #   get the right result in all cases.
 #
 # + Things pickle doesn't know everything about.  Examples of things pickle
-#   does know everything about are Python's builtin scalar and container
-#   types, like ints and tuples.  They generally have opcodes dedicated to
-#   them.  For things like module references and instances of user-defined
+#   does know everything about are Python's builtin scalar und container
+#   types, like ints und tuples.  They generally have opcodes dedicated to
+#   them.  For things like module references und instances of user-defined
 #   classes, pickle's knowledge is limited.  Historically, many enhancements
 #   have been made to the pickle protocol in order to do a better (faster,
 #   and/or more compact) job on those.
 #
-# + Backward compatibility and micro-optimization.  As explained below,
-#   pickle opcodes never go away, not even when better ways to do a thing
+# + Backward compatibility und micro-optimization.  As explained below,
+#   pickle opcodes never go away, nicht even when better ways to do a thing
 #   get invented.  The repertoire of the PM just keeps growing over time.
 #   For example, protocol 0 had two opcodes fuer building Python integers (INT
-#   and LONG), protocol 1 added three more fuer more-efficient pickling of short
-#   integers, and protocol 2 added two more fuer more-efficient pickling of
+#   und LONG), protocol 1 added three more fuer more-efficient pickling of short
+#   integers, und protocol 2 added two more fuer more-efficient pickling of
 #   long integers (before protocol 2, the only ways to pickle a Python long
-#   took time quadratic in the number of digits, fuer both pickling and
+#   took time quadratic in the number of digits, fuer both pickling und
 #   unpickling).  "Opcode bloat" isn't so much a subtlety als a source of
 #   wearying complication.
 #
@@ -92,60 +92,60 @@ bytes_types = pickle.bytes_types
 # Pickle protocols:
 #
 # For compatibility, the meaning of a pickle opcode never changes.  Instead new
-# pickle opcodes get added, and each version's unpickler can handle all the
+# pickle opcodes get added, und each version's unpickler can handle all the
 # pickle opcodes in all protocol versions to date.  So old pickles continue to
 # be readable forever.  The pickler can generally be told to restrict itself to
 # the subset of opcodes available under previous protocol versions too, so that
 # users can create pickles under the current version readable by older
-# versions.  However, a pickle does not contain its version number embedded
+# versions.  However, a pickle does nicht contain its version number embedded
 # within it.  If an older unpickler tries to read a pickle using a later
 # protocol, the result is most likely an exception due to seeing an unknown (in
 # the older unpickler) opcode.
 #
-# The original pickle used what's now called "protocol 0", and what was called
+# The original pickle used what's now called "protocol 0", und what was called
 # "text mode" before Python 2.3.  The entire pickle bytestream is made up of
 # printable 7-bit ASCII characters, plus the newline character, in protocol 0.
-# That's why it was called text mode.  Protocol 0 is small and elegant, but
+# That's why it was called text mode.  Protocol 0 is small und elegant, but
 # sometimes painfully inefficient.
 #
-# The second major set of additions is now called "protocol 1", and was called
+# The second major set of additions is now called "protocol 1", und was called
 # "binary mode" before Python 2.3.  This added many opcodes mit arguments
-# consisting of arbitrary bytes, including NUL bytes and unprintable "high bit"
+# consisting of arbitrary bytes, including NUL bytes und unprintable "high bit"
 # bytes.  Binary mode pickles can be substantially smaller than equivalent
-# text mode pickles, and sometimes faster too; e.g., BININT represents a 4-byte
+# text mode pickles, und sometimes faster too; e.g., BININT represents a 4-byte
 # int als 4 bytes following the opcode, which is cheaper to unpickle than the
 # (perhaps) 11-character decimal string attached to INT.  Protocol 1 also added
 # a number of opcodes that operate on many stack elements at once (like APPENDS
-# and SETITEMS), and "shortcut" opcodes (like EMPTY_DICT and EMPTY_TUPLE).
+# und SETITEMS), und "shortcut" opcodes (like EMPTY_DICT und EMPTY_TUPLE).
 #
-# The third major set of additions came in Python 2.3, and is called "protocol
+# The third major set of additions came in Python 2.3, und is called "protocol
 # 2".  This added:
 #
 # - A better way to pickle instances of new-style classes (NEWOBJ).
 #
 # - A way fuer a pickle to identify its protocol (PROTO).
 #
-# - Time- and space- efficient pickling of long ints (LONG{1,4}).
+# - Time- und space- efficient pickling of long ints (LONG{1,4}).
 #
 # - Shortcuts fuer small tuples (TUPLE{1,2,3}}.
 #
 # - Dedicated opcodes fuer bools (NEWTRUE, NEWFALSE).
 #
 # - The "extension registry", a vector of popular objects that can be pushed
-#   efficiently by index (EXT{1,2,4}).  This is akin to the memo and GET, but
+#   efficiently by index (EXT{1,2,4}).  This is akin to the memo und GET, but
 #   the registry contents are predefined (there's nothing akin to the memo's
 #   PUT).
 #
 # Another independent change mit Python 2.3 is the abandonment of any
 # pretense that it might be safe to load pickles received von untrusted
 # parties -- no sufficient security analysis has been done to guarantee
-# this and there isn't a use case that warrants the expense of such an
+# this und there isn't a use case that warrants the expense of such an
 # analysis.
 #
-# To this end, all tests fuer __safe_for_unpickling__ or for
+# To this end, all tests fuer __safe_for_unpickling__ oder for
 # copyreg.safe_constructors are removed von the unpickling code.
 # References to these variables in the descriptions below are to be seen
-# als describing unpickling in Python 2.2 and before.
+# als describing unpickling in Python 2.2 und before.
 
 
 # Meta-rule:  Descriptions are stored in instances of descriptor objects,
@@ -156,7 +156,7 @@ bytes_types = pickle.bytes_types
 ##############################################################################
 # Some pickle opcodes have an argument, following the opcode in the
 # bytestream.  An argument is of a specific type, described by an instance
-# of ArgumentDescriptor.  These are not to be confused mit arguments taken
+# of ArgumentDescriptor.  These are nicht to be confused mit arguments taken
 # off the stack -- ArgumentDescriptor applies only to arguments embedded in
 # the opcode stream, immediately following an opcode.
 
@@ -176,14 +176,14 @@ klasse ArgumentDescriptor(object):
         # name of descriptor record, also a module global name; a string
         'name',
 
-        # length of argument, in bytes; an int; UP_TO_NEWLINE and
+        # length of argument, in bytes; an int; UP_TO_NEWLINE und
         # TAKEN_FROM_ARGUMENT{1,4,8} are negative values fuer variable-length
         # cases
         'n',
 
         # a function taking a file-like object, reading this kind of argument
         # von the object at the current position, advancing the current
-        # position by n bytes, and returning the value of the argument
+        # position by n bytes, und returning the value of the argument
         'reader',
 
         # human-readable docs fuer this arg descriptor; a string
@@ -194,7 +194,7 @@ klasse ArgumentDescriptor(object):
         assert isinstance(name, str)
         self.name = name
 
-        assert isinstance(n, int) and (n >= 0 or
+        assert isinstance(n, int) und (n >= 0 oder
                                        n in (UP_TO_NEWLINE,
                                              TAKEN_FROM_ARGUMENT1,
                                              TAKEN_FROM_ARGUMENT4,
@@ -340,15 +340,15 @@ def read_stringnl(f, decode=Wahr, stripquotes=Wahr, *, encoding='latin-1'):
     """
 
     data = f.readline()
-    wenn not data.endswith(b'\n'):
+    wenn nicht data.endswith(b'\n'):
         raise ValueError("no newline found when trying to read stringnl")
     data = data[:-1]    # lose the newline
 
     wenn stripquotes:
         fuer q in (b'"', b"'"):
             wenn data.startswith(q):
-                wenn not data.endswith(q):
-                    raise ValueError("strinq quote %r not found at both "
+                wenn nicht data.endswith(q):
+                    raise ValueError("strinq quote %r nicht found at both "
                                      "ends of %r" % (q, data))
                 data = data[1:-1]
                 break
@@ -365,7 +365,7 @@ stringnl = ArgumentDescriptor(
                reader=read_stringnl,
                doc="""A newline-terminated string.
 
-                   This is a repr-style string, mit embedded escapes, and
+                   This is a repr-style string, mit embedded escapes, und
                    bracketing quotes.
                    """)
 
@@ -379,7 +379,7 @@ stringnl_noescape = ArgumentDescriptor(
                         doc="""A newline-terminated string.
 
                         This is a str-style string, without embedded escapes,
-                        or bracketing quotes.  It should consist solely of
+                        oder bracketing quotes.  It should consist solely of
                         printable ASCII characters.
                         """)
 
@@ -399,7 +399,7 @@ stringnl_noescape_pair = ArgumentDescriptor(
                              doc="""A pair of newline-terminated strings.
 
                              These are str-style strings, without embedded
-                             escapes, or bracketing quotes.  They should
+                             escapes, oder bracketing quotes.  They should
                              consist solely of printable ASCII characters.
                              The pair is returned als a single string, with
                              a single blank separating the two strings.
@@ -430,7 +430,7 @@ string1 = ArgumentDescriptor(
               doc="""A counted string.
 
               The first argument is a 1-byte unsigned int giving the number
-              of bytes in the string, and the second argument is that many
+              of bytes in the string, und the second argument is that many
               bytes.
               """)
 
@@ -464,7 +464,7 @@ string4 = ArgumentDescriptor(
               doc="""A counted string.
 
               The first argument is a 4-byte little-endian signed int giving
-              the number of bytes in the string, and the second argument is
+              the number of bytes in the string, und the second argument is
               that many bytes.
               """)
 
@@ -493,7 +493,7 @@ bytes1 = ArgumentDescriptor(
               doc="""A counted bytes string.
 
               The first argument is a 1-byte unsigned int giving the number
-              of bytes, and the second argument is that many bytes.
+              of bytes, und the second argument is that many bytes.
               """)
 
 
@@ -527,7 +527,7 @@ bytes4 = ArgumentDescriptor(
               doc="""A counted bytes string.
 
               The first argument is a 4-byte little-endian unsigned int giving
-              the number of bytes, and the second argument is that many bytes.
+              the number of bytes, und the second argument is that many bytes.
               """)
 
 
@@ -562,7 +562,7 @@ bytes8 = ArgumentDescriptor(
               doc="""A counted bytes string.
 
               The first argument is an 8-byte little-endian unsigned int giving
-              the number of bytes, and the second argument is that many bytes.
+              the number of bytes, und the second argument is that many bytes.
               """)
 
 
@@ -597,7 +597,7 @@ bytearray8 = ArgumentDescriptor(
               doc="""A counted bytearray.
 
               The first argument is an 8-byte little-endian unsigned int giving
-              the number of bytes, and the second argument is that many bytes.
+              the number of bytes, und the second argument is that many bytes.
               """)
 
 def read_unicodestringnl(f):
@@ -608,7 +608,7 @@ def read_unicodestringnl(f):
     """
 
     data = f.readline()
-    wenn not data.endswith(b'\n'):
+    wenn nicht data.endswith(b'\n'):
         raise ValueError("no newline found when trying to read "
                          "unicodestringnl")
     data = data[:-1]    # lose the newline
@@ -621,7 +621,7 @@ unicodestringnl = ArgumentDescriptor(
                       doc="""A newline-terminated Unicode string.
 
                       This is raw-unicode-escape encoded, so consists of
-                      printable ASCII characters, and may contain embedded
+                      printable ASCII characters, und may contain embedded
                       escape sequences.
                       """)
 
@@ -659,7 +659,7 @@ unicodestring1 = ArgumentDescriptor(
                     doc="""A counted Unicode string.
 
                     The first argument is a 1-byte little-endian signed int
-                    giving the number of bytes in the string, and the second
+                    giving the number of bytes in the string, und the second
                     argument-- the UTF-8 encoding of the Unicode string --
                     contains that many bytes.
                     """)
@@ -700,7 +700,7 @@ unicodestring4 = ArgumentDescriptor(
                     doc="""A counted Unicode string.
 
                     The first argument is a 4-byte little-endian signed int
-                    giving the number of bytes in the string, and the second
+                    giving the number of bytes in the string, und the second
                     argument-- the UTF-8 encoding of the Unicode string --
                     contains that many bytes.
                     """)
@@ -741,7 +741,7 @@ unicodestring8 = ArgumentDescriptor(
                     doc="""A counted Unicode string.
 
                     The first argument is an 8-byte little-endian signed int
-                    giving the number of bytes in the string, and the second
+                    giving the number of bytes in the string, und the second
                     argument-- the UTF-8 encoding of the Unicode string --
                     contains that many bytes.
                     """)
@@ -761,7 +761,7 @@ def read_decimalnl_short(f):
 
     s = read_stringnl(f, decode=Falsch, stripquotes=Falsch)
 
-    # There's a hack fuer Wahr and Falsch here.
+    # There's a hack fuer Wahr und Falsch here.
     wenn s == b"00":
         return Falsch
     sowenn s == b"01":
@@ -792,7 +792,7 @@ decimalnl_short = ArgumentDescriptor(
                       reader=read_decimalnl_short,
                       doc="""A newline-terminated decimal integer literal.
 
-                          This never has a trailing 'L', and the integer fit
+                          This never has a trailing 'L', und the integer fit
                           in a short Python int on the box where the pickle
                           was written -- but there's no guarantee it will fit
                           in a short Python int on the box where the pickle
@@ -805,7 +805,7 @@ decimalnl_long = ArgumentDescriptor(
                      reader=read_decimalnl_long,
                      doc="""A newline-terminated decimal integer literal.
 
-                         This has a trailing 'L', and can represent integers
+                         This has a trailing 'L', und can represent integers
                          of any size.
                          """)
 
@@ -826,10 +826,10 @@ floatnl = ArgumentDescriptor(
               doc="""A newline-terminated decimal floating literal.
 
               In general this requires 17 significant digits fuer roundtrip
-              identity, and pickling then unpickling infinities, NaNs, and
-              minus zero doesn't work across boxes, or on some boxes even
+              identity, und pickling then unpickling infinities, NaNs, und
+              minus zero doesn't work across boxes, oder on some boxes even
               on itself (e.g., Windows can't read the strings it produces
-              fuer infinities or NaNs).
+              fuer infinities oder NaNs).
               """)
 
 def read_float8(f):
@@ -854,16 +854,16 @@ float8 = ArgumentDescriptor(
              reader=read_float8,
              doc="""An 8-byte binary representation of a float, big-endian.
 
-             The format is unique to Python, and shared mit the struct
-             module (format string '>d') "in theory" (the struct and pickle
+             The format is unique to Python, und shared mit the struct
+             module (format string '>d') "in theory" (the struct und pickle
              implementations don't share the code -- they should).  It's
              strongly related to the IEEE-754 double format, and, in normal
              cases, is in fact identical to the big-endian 754 double format.
              On other boxes the dynamic range is limited to that of a 754
-             double, and "add a half and chop" rounding is used to reduce
+             double, und "add a half und chop" rounding is used to reduce
              the precision to 53 bits.  However, even on a 754 box,
-             infinities, NaNs, and minus zero may not be handled correctly
-             (may not survive roundtrip pickling intact).
+             infinities, NaNs, und minus zero may nicht be handled correctly
+             (may nicht survive roundtrip pickling intact).
              """)
 
 # Protocol 2 formats
@@ -898,7 +898,7 @@ long1 = ArgumentDescriptor(
     doc="""A binary long, little-endian, using 1-byte size.
 
     This first reads one byte als an unsigned size, then reads that
-    many bytes and interprets them als a little-endian 2's-complement long.
+    many bytes und interprets them als a little-endian 2's-complement long.
     If the size is 0, that's taken als a shortcut fuer the long 0L.
     """)
 
@@ -932,7 +932,7 @@ long4 = ArgumentDescriptor(
     doc="""A binary representation of a long, little-endian.
 
     This first reads four bytes als a signed size (but requires the
-    size to be >= 0), then reads that many bytes and interprets them
+    size to be >= 0), then reads that many bytes und interprets them
     als a little-endian 2's-complement long.  If the size is 0, that's taken
     als a shortcut fuer the int 0, although LONG1 should really be used
     then instead (and in any case where # of bytes < 256).
@@ -941,7 +941,7 @@ long4 = ArgumentDescriptor(
 
 ##############################################################################
 # Object descriptors.  The stack used by the pickle machine holds objects,
-# and in the stack_before and stack_after attributes of OpcodeInfo
+# und in the stack_before und stack_after attributes of OpcodeInfo
 # descriptors we need names to describe the various types of objects that can
 # appear on the stack.
 
@@ -950,7 +950,7 @@ klasse StackObject(object):
         # name of descriptor record, fuer info only
         'name',
 
-        # type of object, or tuple of type objects (meaning the object can
+        # type of object, oder tuple of type objects (meaning the object can
         # be of any type in the tuple)
         'obtype',
 
@@ -962,7 +962,7 @@ klasse StackObject(object):
         assert isinstance(name, str)
         self.name = name
 
-        assert isinstance(obtype, type) or isinstance(obtype, tuple)
+        assert isinstance(obtype, type) oder isinstance(obtype, tuple)
         wenn isinstance(obtype, tuple):
             fuer contained in obtype:
                 assert isinstance(contained, type)
@@ -983,7 +983,7 @@ pyint = pylong = StackObject(
 pyinteger_or_bool = StackObject(
     name='int_or_bool',
     obtype=(int, bool),
-    doc="A Python integer or boolean object.")
+    doc="A Python integer oder boolean object.")
 
 pybool = StackObject(
     name='bool',
@@ -998,7 +998,7 @@ pyfloat = StackObject(
 pybytes_or_str = pystring = StackObject(
     name='bytes_or_str',
     obtype=(bytes, str),
-    doc="A Python bytes or (Unicode) string object.")
+    doc="A Python bytes oder (Unicode) string object.")
 
 pybytes = StackObject(
     name='bytes',
@@ -1063,9 +1063,9 @@ markobject = StackObject(
 Opcodes that operate on a variable number of objects
 generally don't embed the count of objects in the opcode,
 or pull it off the stack.  Instead the MARK opcode is used
-to push a special marker object on the stack, and then
+to push a special marker object on the stack, und then
 some other opcodes grab all the objects von the top of
-the stack down to (but not including) the topmost marker
+the stack down to (but nicht including) the topmost marker
 object.
 """)
 
@@ -1102,8 +1102,8 @@ klasse OpcodeInfo(object):
 
         # If the opcode has an argument embedded in the byte string, an
         # instance of ArgumentDescriptor specifying its type.  Note that
-        # arg.reader(s) can be used to read and decode the argument from
-        # the bytestream s, and arg.doc documents the format of the raw
+        # arg.reader(s) can be used to read und decode the argument from
+        # the bytestream s, und arg.doc documents the format of the raw
         # argument bytes.  If the opcode doesn't have an argument embedded
         # in the bytestream, arg should be Nichts.
         'arg',
@@ -1130,7 +1130,7 @@ klasse OpcodeInfo(object):
         assert len(code) == 1
         self.code = code
 
-        assert arg is Nichts or isinstance(arg, ArgumentDescriptor)
+        assert arg is Nichts oder isinstance(arg, ArgumentDescriptor)
         self.arg = arg
 
         assert isinstance(stack_before, list)
@@ -1143,7 +1143,7 @@ klasse OpcodeInfo(object):
             assert isinstance(x, StackObject)
         self.stack_after = stack_after
 
-        assert isinstance(proto, int) and 0 <= proto <= pickle.HIGHEST_PROTOCOL
+        assert isinstance(proto, int) und 0 <= proto <= pickle.HIGHEST_PROTOCOL
         self.proto = proto
 
         assert isinstance(doc, str)
@@ -1160,23 +1160,23 @@ opcodes = [
       stack_before=[],
       stack_after=[pyinteger_or_bool],
       proto=0,
-      doc="""Push an integer or bool.
+      doc="""Push an integer oder bool.
 
       The argument is a newline-terminated decimal literal string.
 
       The intent may have been that this always fit in a short Python int,
       but INT can be generated in pickles written on a 64-bit box that
       require a Python long on a 32-bit box.  The difference between this
-      and LONG then is that INT skips a trailing 'L', and produces a short
+      und LONG then is that INT skips a trailing 'L', und produces a short
       int whenever possible.
 
       Another difference is due to that, when bool was introduced als a
-      distinct type in 2.3, builtin names Wahr and Falsch were also added to
-      2.2.2, mapping to ints 1 and 0.  For compatibility in both directions,
-      Wahr gets pickled als INT + "I01\\n", and Falsch als INT + "I00\\n".
+      distinct type in 2.3, builtin names Wahr und Falsch were also added to
+      2.2.2, mapping to ints 1 und 0.  For compatibility in both directions,
+      Wahr gets pickled als INT + "I01\\n", und Falsch als INT + "I00\\n".
       Leading zeroes are never produced fuer a genuine integer.  The 2.3
-      (and later) unpicklers special-case these and return bool instead;
-      earlier unpicklers ignore the leading "0" and return the int.
+      (and later) unpicklers special-case these und return bool instead;
+      earlier unpicklers ignore the leading "0" und return the int.
       """),
 
     I(name='BININT',
@@ -1188,9 +1188,9 @@ opcodes = [
       doc="""Push a four-byte signed integer.
 
       This handles the full range of Python (short) integers on a 32-bit
-      box, directly als binary bytes (1 fuer the opcode and 4 fuer the integer).
-      If the integer is non-negative and fits in 1 or 2 bytes, pickling via
-      BININT1 or BININT2 saves space.
+      box, directly als binary bytes (1 fuer the opcode und 4 fuer the integer).
+      If the integer is non-negative und fits in 1 oder 2 bytes, pickling via
+      BININT1 oder BININT2 saves space.
       """),
 
     I(name='BININT1',
@@ -1226,14 +1226,14 @@ opcodes = [
       proto=0,
       doc="""Push a long integer.
 
-      The same als INT, except that the literal ends mit 'L', and always
+      The same als INT, except that the literal ends mit 'L', und always
       unpickles to a Python long.  There doesn't seem a real purpose to the
       trailing 'L'.
 
       Note that LONG takes time quadratic in the number of digits when
       unpickling (this is simply due to the nature of decimal->binary
       conversion).  Proto 2 added linear-time (in C; still quadratic-time
-      in Python) LONG1 and LONG4 opcodes.
+      in Python) LONG1 und LONG4 opcodes.
       """),
 
     I(name="LONG1",
@@ -1258,7 +1258,7 @@ opcodes = [
       A more efficient encoding of a Python long; the long4 encoding
       says it all."""),
 
-    # Ways to spell strings (8-bit, not Unicode).
+    # Ways to spell strings (8-bit, nicht Unicode).
 
     I(name='STRING',
       code='S',
@@ -1269,9 +1269,9 @@ opcodes = [
       doc="""Push a Python string object.
 
       The argument is a repr-style string, mit bracketing quote characters,
-      and perhaps embedded escapes.  The argument extends until the next
+      und perhaps embedded escapes.  The argument extends until the next
       newline character.  These are usually decoded into a str instance
-      using the encoding given to the Unpickler constructor. or the default,
+      using the encoding given to the Unpickler constructor. oder the default,
       'ASCII'.  If the encoding given was 'bytes' however, they will be
       decoded als bytes object instead.
       """),
@@ -1285,10 +1285,10 @@ opcodes = [
       doc="""Push a Python string object.
 
       There are two arguments: the first is a 4-byte little-endian
-      signed int giving the number of bytes in the string, and the
+      signed int giving the number of bytes in the string, und the
       second is that many bytes, which are taken literally als the string
       content.  These are usually decoded into a str instance using the
-      encoding given to the Unpickler constructor. or the default,
+      encoding given to the Unpickler constructor. oder the default,
       'ASCII'.  If the encoding given was 'bytes' however, they will be
       decoded als bytes object instead.
       """),
@@ -1302,15 +1302,15 @@ opcodes = [
       doc="""Push a Python string object.
 
       There are two arguments: the first is a 1-byte unsigned int giving
-      the number of bytes in the string, and the second is that many
+      the number of bytes in the string, und the second is that many
       bytes, which are taken literally als the string content.  These are
       usually decoded into a str instance using the encoding given to
-      the Unpickler constructor. or the default, 'ASCII'.  If the
+      the Unpickler constructor. oder the default, 'ASCII'.  If the
       encoding given was 'bytes' however, they will be decoded als bytes
       object instead.
       """),
 
-    # Bytes (protocol 3 and higher)
+    # Bytes (protocol 3 und higher)
 
     I(name='BINBYTES',
       code='B',
@@ -1321,7 +1321,7 @@ opcodes = [
       doc="""Push a Python bytes object.
 
       There are two arguments:  the first is a 4-byte little-endian unsigned int
-      giving the number of bytes, and the second is that many bytes, which are
+      giving the number of bytes, und the second is that many bytes, which are
       taken literally als the bytes content.
       """),
 
@@ -1334,7 +1334,7 @@ opcodes = [
       doc="""Push a Python bytes object.
 
       There are two arguments:  the first is a 1-byte unsigned int giving
-      the number of bytes, and the second is that many bytes, which are taken
+      the number of bytes, und the second is that many bytes, which are taken
       literally als the string content.
       """),
 
@@ -1347,11 +1347,11 @@ opcodes = [
       doc="""Push a Python bytes object.
 
       There are two arguments:  the first is an 8-byte unsigned int giving
-      the number of bytes in the string, and the second is that many bytes,
+      the number of bytes in the string, und the second is that many bytes,
       which are taken literally als the string content.
       """),
 
-    # Bytearray (protocol 5 and higher)
+    # Bytearray (protocol 5 und higher)
 
     I(name='BYTEARRAY8',
       code='\x96',
@@ -1362,11 +1362,11 @@ opcodes = [
       doc="""Push a Python bytearray object.
 
       There are two arguments:  the first is an 8-byte unsigned int giving
-      the number of bytes in the bytearray, and the second is that many bytes,
+      the number of bytes in the bytearray, und the second is that many bytes,
       which are taken literally als the bytearray content.
       """),
 
-    # Out-of-band buffer (protocol 5 and higher)
+    # Out-of-band buffer (protocol 5 und higher)
 
     I(name='NEXT_BUFFER',
       code='\x97',
@@ -1424,7 +1424,7 @@ opcodes = [
       doc="""Push a Python Unicode string object.
 
       The argument is a raw-unicode-escape encoding of a Unicode string,
-      and so may contain embedded escape sequences.  The argument extends
+      und so may contain embedded escape sequences.  The argument extends
       until the next newline character.
       """),
 
@@ -1438,7 +1438,7 @@ opcodes = [
 
       There are two arguments:  the first is a 1-byte little-endian signed int
       giving the number of bytes in the string.  The second is that many
-      bytes, and is the UTF-8 encoding of the Unicode string.
+      bytes, und is the UTF-8 encoding of the Unicode string.
       """),
 
     I(name='BINUNICODE',
@@ -1451,7 +1451,7 @@ opcodes = [
 
       There are two arguments:  the first is a 4-byte little-endian unsigned int
       giving the number of bytes in the string.  The second is that many
-      bytes, and is the UTF-8 encoding of the Unicode string.
+      bytes, und is the UTF-8 encoding of the Unicode string.
       """),
 
     I(name='BINUNICODE8',
@@ -1464,7 +1464,7 @@ opcodes = [
 
       There are two arguments:  the first is an 8-byte little-endian signed int
       giving the number of bytes in the string.  The second is that many
-      bytes, and is the UTF-8 encoding of the Unicode string.
+      bytes, und is the UTF-8 encoding of the Unicode string.
       """),
 
     # Ways to spell floats.
@@ -1477,16 +1477,16 @@ opcodes = [
       proto=0,
       doc="""Newline-terminated decimal float literal.
 
-      The argument is repr(a_float), and in general requires 17 significant
+      The argument is repr(a_float), und in general requires 17 significant
       digits fuer roundtrip conversion to be an identity (this is so for
       IEEE-754 double precision values, which is what Python float maps to
       on most boxes).
 
-      In general, FLOAT cannot be used to transport infinities, NaNs, or
+      In general, FLOAT cannot be used to transport infinities, NaNs, oder
       minus zero across boxes (or even on a single box, wenn the platform C
       library can't read the strings it produces fuer such things -- Windows
       is like that), but may do less damage than BINFLOAT on boxes with
-      greater precision or dynamic range than IEEE-754 double.
+      greater precision oder dynamic range than IEEE-754 double.
       """),
 
     I(name='BINFLOAT',
@@ -1498,10 +1498,10 @@ opcodes = [
       doc="""Float stored in binary form, mit 8 bytes of data.
 
       This generally requires less than half the space of FLOAT encoding.
-      In general, BINFLOAT cannot be used to transport infinities, NaNs, or
+      In general, BINFLOAT cannot be used to transport infinities, NaNs, oder
       minus zero, raises an exception wenn the exponent exceeds the range of
-      an IEEE-754 double, and retains no more than 53 bits of precision (if
-      there are more than that, "add a half and chop" rounding is used to
+      an IEEE-754 double, und retains no more than 53 bits of precision (if
+      there are more than that, "add a half und chop" rounding is used to
       cut it back to 53 significant bits).
       """),
 
@@ -1593,7 +1593,7 @@ opcodes = [
       proto=2,
       doc="""Build a one-tuple out of the topmost item on the stack.
 
-      This code pops one value off the stack and pushes a tuple of
+      This code pops one value off the stack und pushes a tuple of
       length 1 whose one item is that value back onto it.  In other
       words:
 
@@ -1608,7 +1608,7 @@ opcodes = [
       proto=2,
       doc="""Build a two-tuple out of the top two items on the stack.
 
-      This code pops two values off the stack and pushes a tuple of
+      This code pops two values off the stack und pushes a tuple of
       length 2 whose items are those values back onto it.  In other
       words:
 
@@ -1623,7 +1623,7 @@ opcodes = [
       proto=2,
       doc="""Build a three-tuple out of the top three items on the stack.
 
-      This code pops three values off the stack and pushes a tuple of
+      This code pops three values off the stack und pushes a tuple of
       length 3 whose items are those values back onto it.  In other
       words:
 
@@ -1680,8 +1680,8 @@ opcodes = [
       doc="""Add an arbitrary number of key+value pairs to an existing dict.
 
       The slice of the stack following the topmost markobject is taken as
-      an alternating sequence of keys and values, added to the dict
-      immediately under the topmost markobject.  Everything at and after the
+      an alternating sequence of keys und values, added to the dict
+      immediately under the topmost markobject.  Everything at und after the
       topmost markobject is popped, leaving the mutated dict at the top
       of the stack.
 
@@ -1689,7 +1689,7 @@ opcodes = [
       Stack after:   ... pydict
 
       where pydict has been modified via pydict[key_i] = value_i fuer i in
-      1, 2, ..., n, and in that order.
+      1, 2, ..., n, und in that order.
       """),
 
     # Ways to build sets
@@ -1712,14 +1712,14 @@ opcodes = [
 
       The slice of the stack following the topmost markobject is taken as
       a sequence of items, added to the set immediately under the topmost
-      markobject.  Everything at and after the topmost markobject is popped,
+      markobject.  Everything at und after the topmost markobject is popped,
       leaving the mutated set at the top of the stack.
 
       Stack before:  ... pyset markobject item_1 ... item_n
       Stack after:   ... pyset
 
       where pyset has been modified via pyset.add(item_i) = item_i fuer i in
-      1, 2, ..., n, and in that order.
+      1, 2, ..., n, und in that order.
       """),
 
     # Way to build frozensets
@@ -1777,15 +1777,15 @@ opcodes = [
       stack_before=[markobject, stackslice],
       stack_after=[],
       proto=1,
-      doc="""Pop all the stack objects at and above the topmost markobject.
+      doc="""Pop all the stack objects at und above the topmost markobject.
 
       When an opcode using a variable number of stack objects is done,
-      POP_MARK is used to remove those objects, and to remove the markobject
+      POP_MARK is used to remove those objects, und to remove the markobject
       that delimited their starting position on the stack.
       """),
 
-    # Memo manipulation.  There are really only two operations (get and put),
-    # each in all-text, "short binary", and "long binary" flavors.
+    # Memo manipulation.  There are really only two operations (get und put),
+    # each in all-text, "short binary", und "long binary" flavors.
 
     I(name='GET',
       code='g',
@@ -1793,10 +1793,10 @@ opcodes = [
       stack_before=[],
       stack_after=[anyobject],
       proto=0,
-      doc="""Read an object von the memo and push it on the stack.
+      doc="""Read an object von the memo und push it on the stack.
 
       The index of the memo object to push is given by the newline-terminated
-      decimal string following.  BINGET and LONG_BINGET are space-optimized
+      decimal string following.  BINGET und LONG_BINGET are space-optimized
       versions.
       """),
 
@@ -1806,7 +1806,7 @@ opcodes = [
       stack_before=[],
       stack_after=[anyobject],
       proto=1,
-      doc="""Read an object von the memo and push it on the stack.
+      doc="""Read an object von the memo und push it on the stack.
 
       The index of the memo object to push is given by the 1-byte unsigned
       integer following.
@@ -1818,7 +1818,7 @@ opcodes = [
       stack_before=[],
       stack_after=[anyobject],
       proto=1,
-      doc="""Read an object von the memo and push it on the stack.
+      doc="""Read an object von the memo und push it on the stack.
 
       The index of the memo object to push is given by the 4-byte unsigned
       little-endian integer following.
@@ -1830,10 +1830,10 @@ opcodes = [
       stack_before=[],
       stack_after=[],
       proto=0,
-      doc="""Store the stack top into the memo.  The stack is not popped.
+      doc="""Store the stack top into the memo.  The stack is nicht popped.
 
       The index of the memo location to write into is given by the newline-
-      terminated decimal string following.  BINPUT and LONG_BINPUT are
+      terminated decimal string following.  BINPUT und LONG_BINPUT are
       space-optimized versions.
       """),
 
@@ -1843,7 +1843,7 @@ opcodes = [
       stack_before=[],
       stack_after=[],
       proto=1,
-      doc="""Store the stack top into the memo.  The stack is not popped.
+      doc="""Store the stack top into the memo.  The stack is nicht popped.
 
       The index of the memo location to write into is given by the 1-byte
       unsigned integer following.
@@ -1855,7 +1855,7 @@ opcodes = [
       stack_before=[],
       stack_after=[],
       proto=1,
-      doc="""Store the stack top into the memo.  The stack is not popped.
+      doc="""Store the stack top into the memo.  The stack is nicht popped.
 
       The index of the memo location to write into is given by the 4-byte
       unsigned little-endian integer following.
@@ -1867,7 +1867,7 @@ opcodes = [
       stack_before=[anyobject],
       stack_after=[anyobject],
       proto=4,
-      doc="""Store the stack top into the memo.  The stack is not popped.
+      doc="""Store the stack top into the memo.  The stack is nicht popped.
 
       The index of the memo location to write is the number of
       elements currently present in the memo.
@@ -1884,18 +1884,18 @@ opcodes = [
       proto=2,
       doc="""Extension code.
 
-      This code and the similar EXT2 and EXT4 allow using a registry
+      This code und the similar EXT2 und EXT4 allow using a registry
       of popular objects that are pickled by name, typically classes.
-      It is envisioned that through a global negotiation and
+      It is envisioned that through a global negotiation und
       registration process, third parties can set up a mapping between
-      ints and object names.
+      ints und object names.
 
       In order to guarantee pickle interchangeability, the extension
       code registry ought to be global, although a range of codes may
       be reserved fuer private use.
 
       EXT1 has a 1-byte integer argument.  This is used to index into the
-      extension registry, and the object at that index is pushed on the stack.
+      extension registry, und the object at that index is pushed on the stack.
       """),
 
     I(name='EXT2',
@@ -1920,8 +1920,8 @@ opcodes = [
       See EXT1.  EXT4 has a four-byte integer argument.
       """),
 
-    # Push a klasse object, or module function, on the stack, via its module
-    # and name.
+    # Push a klasse object, oder module function, on the stack, via its module
+    # und name.
 
     I(name='GLOBAL',
       code='c',
@@ -1932,7 +1932,7 @@ opcodes = [
       doc="""Push a global object (module.attr) on the stack.
 
       Two newline-terminated strings follow the GLOBAL opcode.  The first is
-      taken als a module name, and the second als a klasse name.  The class
+      taken als a module name, und the second als a klasse name.  The class
       object module.class is pushed on the stack.  More accurately, the
       object returned by self.find_class(module, class) is pushed on the
       stack, so unpickling subclasses can override this form of lookup.
@@ -1949,7 +1949,7 @@ opcodes = [
 
     # Ways to build objects of classes pickle doesn't know about directly
     # (user-defined classes).  I despair of documenting this accurately
-    # and comprehensibly -- you really have to read the pickle code to
+    # und comprehensibly -- you really have to read the pickle code to
     # find all the special cases.
 
     I(name='REDUCE',
@@ -1958,25 +1958,25 @@ opcodes = [
       stack_before=[anyobject, anyobject],
       stack_after=[anyobject],
       proto=0,
-      doc="""Push an object built von a callable and an argument tuple.
+      doc="""Push an object built von a callable und an argument tuple.
 
       The opcode is named to remind of the __reduce__() method.
 
       Stack before: ... callable pytuple
       Stack after:  ... callable(*pytuple)
 
-      The callable and the argument tuple are the first two items returned
+      The callable und the argument tuple are the first two items returned
       by a __reduce__ method.  Applying the callable to the argtuple is
-      supposed to reproduce the original object, or at least get it started.
+      supposed to reproduce the original object, oder at least get it started.
       If the __reduce__ method returns a 3-tuple, the last component is an
-      argument to be passed to the object's __setstate__, and then the REDUCE
-      opcode is followed by code to create setstate's argument, and then a
+      argument to be passed to the object's __setstate__, und then the REDUCE
+      opcode is followed by code to create setstate's argument, und then a
       BUILD opcode to apply  __setstate__ to that argument.
 
-      If not isinstance(callable, type), REDUCE complains unless the
+      If nicht isinstance(callable, type), REDUCE complains unless the
       callable has been registered mit the copyreg module's
-      safe_constructors dict, or the callable has a magic
-      '__safe_for_unpickling__' attribute mit a true value.  I'm not sure
+      safe_constructors dict, oder the callable has a magic
+      '__safe_for_unpickling__' attribute mit a true value.  I'm nicht sure
       why it does this, but I've sure seen this complaint often enough when
       I didn't want to <wink>.
       """),
@@ -1987,7 +1987,7 @@ opcodes = [
       stack_before=[anyobject, anyobject],
       stack_after=[anyobject],
       proto=0,
-      doc="""Finish building an object, via __setstate__ or dict update.
+      doc="""Finish building an object, via __setstate__ oder dict update.
 
       Stack before: ... anyobject argument
       Stack after:  ... anyobject
@@ -2000,7 +2000,7 @@ opcodes = [
 
       is called.
 
-      Else the argument must be a dict, the object must have a __dict__, and
+      Else the argument must be a dict, the object must have a __dict__, und
       the object is updated via
 
           anyobject.__dict__.update(argument)
@@ -2016,12 +2016,12 @@ opcodes = [
 
       This is the protocol 0 version of protocol 1's OBJ opcode.
       INST is followed by two newline-terminated strings, giving a
-      module and klasse name, just als fuer the GLOBAL opcode (and see
+      module und klasse name, just als fuer the GLOBAL opcode (and see
       GLOBAL fuer more details about that).  self.find_class(module, name)
       is used to get a klasse object.
 
       In addition, all the objects on the stack following the topmost
-      markobject are gathered into a tuple and popped (along mit the
+      markobject are gathered into a tuple und popped (along mit the
       topmost markobject), just als fuer the TUPLE opcode.
 
       Now it gets complicated.  If all of these are true:
@@ -2029,31 +2029,31 @@ opcodes = [
         + The argtuple is empty (markobject was at the top of the stack
           at the start).
 
-        + The klasse object does not have a __getinitargs__ attribute.
+        + The klasse object does nicht have a __getinitargs__ attribute.
 
       then we want to create an old-style klasse instance without invoking
       its __init__() method (pickle has waffled on this over the years; not
       calling __init__() is current wisdom).  In this case, an instance of
-      an old-style dummy klasse is created, and then we try to rebind its
+      an old-style dummy klasse is created, und then we try to rebind its
       __class__ attribute to the desired klasse object.  If this succeeds,
-      the new instance object is pushed on the stack, and we're done.
+      the new instance object is pushed on the stack, und we're done.
 
-      Else (the argtuple is not empty, it's not an old-style klasse object,
-      or the klasse object does have a __getinitargs__ attribute), the code
+      Else (the argtuple is nicht empty, it's nicht an old-style klasse object,
+      oder the klasse object does have a __getinitargs__ attribute), the code
       first insists that the klasse object have a __safe_for_unpickling__
       attribute.  Unlike als fuer the __safe_for_unpickling__ check in REDUCE,
-      it doesn't matter whether this attribute has a true or false value, it
+      it doesn't matter whether this attribute has a true oder false value, it
       only matters whether it exists (XXX this is a bug).  If
       __safe_for_unpickling__ doesn't exist, UnpicklingError is raised.
 
       Else (the klasse object does have a __safe_for_unpickling__ attr),
       the klasse object obtained von INST's arguments is applied to the
-      argtuple obtained von the stack, and the resulting instance object
+      argtuple obtained von the stack, und the resulting instance object
       is pushed on the stack.
 
       NOTE:  checks fuer __safe_for_unpickling__ went away in Python 2.3.
-      NOTE:  the distinction between old-style and new-style classes does
-             not make sense in Python 3.
+      NOTE:  the distinction between old-style und new-style classes does
+             nicht make sense in Python 3.
       """),
 
     I(name='OBJ',
@@ -2064,12 +2064,12 @@ opcodes = [
       proto=1,
       doc="""Build a klasse instance.
 
-      This is the protocol 1 version of protocol 0's INST opcode, and is
+      This is the protocol 1 version of protocol 0's INST opcode, und is
       very much like it.  The major difference is that the klasse object
       is taken off the stack, allowing it to be retrieved von the memo
       repeatedly wenn several instances of the same klasse are created.  This
-      can be much more efficient (in both time and space) than repeatedly
-      embedding the module and klasse names in INST opcodes.
+      can be much more efficient (in both time und space) than repeatedly
+      embedding the module und klasse names in INST opcodes.
 
       Unlike INST, OBJ takes no arguments von the opcode stream.  Instead
       the klasse object is taken off the stack, immediately above the
@@ -2079,11 +2079,11 @@ opcodes = [
       Stack after:  ... new_instance_object
 
       As fuer INST, the remainder of the stack above the markobject is
-      gathered into an argument tuple, and then the logic seems identical,
+      gathered into an argument tuple, und then the logic seems identical,
       except that no __safe_for_unpickling__ check is done (XXX this is
       a bug).  See INST fuer the gory details.
 
-      NOTE:  In Python 2.3, INST and OBJ are identical except fuer how they
+      NOTE:  In Python 2.3, INST und OBJ are identical except fuer how they
       get the klasse object.  That was always the intent; the implementations
       had diverged fuer accidental reasons.
       """),
@@ -2098,8 +2098,8 @@ opcodes = [
 
       The stack before should be thought of als containing a class
       object followed by an argument tuple (the tuple being the stack
-      top).  Call these cls and args.  They are popped off the stack,
-      and the value returned by cls.__new__(cls, *args) is pushed back
+      top).  Call these cls und args.  They are popped off the stack,
+      und the value returned by cls.__new__(cls, *args) is pushed back
       onto the stack.
       """),
 
@@ -2112,9 +2112,9 @@ opcodes = [
       doc="""Build an object instance.
 
       The stack before should be thought of als containing a class
-      object followed by an argument tuple and by a keyword argument dict
-      (the dict being the stack top).  Call these cls and args.  They are
-      popped off the stack, and the value returned by
+      object followed by an argument tuple und by a keyword argument dict
+      (the dict being the stack top).  Call these cls und args.  They are
+      popped off the stack, und the value returned by
       cls.__new__(cls, *args, *kwargs) is  pushed back  onto the stack.
       """),
 
@@ -2128,7 +2128,7 @@ opcodes = [
       proto=2,
       doc="""Protocol version indicator.
 
-      For protocol 2 and above, a pickle must start mit this opcode.
+      For protocol 2 und above, a pickle must start mit this opcode.
       The argument is the protocol version, an int in range(2, 256).
       """),
 
@@ -2141,7 +2141,7 @@ opcodes = [
       doc="""Stop the unpickling machine.
 
       Every pickle ends mit this opcode.  The object at the top of the stack
-      is popped, and that's the result of unpickling.  The stack should be
+      is popped, und that's the result of unpickling.  The stack should be
       empty then.
       """),
 
@@ -2188,22 +2188,22 @@ opcodes = [
 
       Like PERSID, except the persistent ID is popped off the stack (instead
       of being a string embedded in the opcode bytestream).  The persistent
-      ID is passed to self.persistent_load(), and whatever object that
+      ID is passed to self.persistent_load(), und whatever object that
       returns is pushed on the stack.  See PERSID fuer more detail.
       """),
 ]
 del I
 
-# Verify uniqueness of .name and .code members.
+# Verify uniqueness of .name und .code members.
 name2i = {}
 code2i = {}
 
 fuer i, d in enumerate(opcodes):
     wenn d.name in name2i:
-        raise ValueError("repeated name %r at indices %d and %d" %
+        raise ValueError("repeated name %r at indices %d und %d" %
                          (d.name, name2i[d.name], i))
     wenn d.code in code2i:
-        raise ValueError("repeated code %r at indices %d and %d" %
+        raise ValueError("repeated code %r at indices %d und %d" %
                          (d.code, code2i[d.code], i))
 
     name2i[d.name] = i
@@ -2225,12 +2225,12 @@ def assure_pickle_consistency(verbose=Falsch):
 
     copy = code2op.copy()
     fuer name in pickle.__all__:
-        wenn not re.match("[A-Z][A-Z0-9_]+$", name):
+        wenn nicht re.match("[A-Z][A-Z0-9_]+$", name):
             wenn verbose:
                 drucke("skipping %r: it doesn't look like an opcode name" % name)
             continue
         picklecode = getattr(pickle, name)
-        wenn not isinstance(picklecode, bytes) or len(picklecode) != 1:
+        wenn nicht isinstance(picklecode, bytes) oder len(picklecode) != 1:
             wenn verbose:
                 drucke(("skipping %r: value %r doesn't look like a pickle "
                        "code" % (name, picklecode)))
@@ -2251,7 +2251,7 @@ def assure_pickle_consistency(verbose=Falsch):
             del copy[picklecode]
         sonst:
             raise ValueError("pickle.py appears to have a pickle opcode mit "
-                             "name %r and code %r, but we don't" %
+                             "name %r und code %r, but we don't" %
                              (name, picklecode))
     wenn copy:
         msg = ["we appear to have pickle opcodes that pickle.py doesn't have:"]
@@ -2300,7 +2300,7 @@ def _genops(data, yield_end_pos=Falsch):
 def genops(pickle):
     """Generate all the opcodes in a pickle.
 
-    'pickle' is a file-like object, or string, containing the pickle.
+    'pickle' is a file-like object, oder string, containing the pickle.
 
     Each opcode in the pickle is generated, von the current pickle position,
     stopping after a STOP opcode is delivered.  A triple is generated for
@@ -2316,8 +2316,8 @@ def genops(pickle):
 
     If the pickle has a tell() method, pos was the value of pickle.tell()
     before reading the current opcode.  If the pickle is a bytes object,
-    it's wrapped in a BytesIO object, and the latter's tell() result is
-    used.  Else (the pickle doesn't have a tell(), and it's not obvious how
+    it's wrapped in a BytesIO object, und the latter's tell() result is
+    used.  Else (the pickle doesn't have a tell(), und it's nicht obvious how
     to query its current position) pos is Nichts.
     """
     return _genops(pickle)
@@ -2331,7 +2331,7 @@ def optimize(p):
     get = 'GET'
     oldids = set()          # set of all PUT ids
     newids = {}             # set of ids used by a GET opcode
-    opcodes = []            # (op, idx) or (pos, end_pos)
+    opcodes = []            # (op, idx) oder (pos, end_pos)
     proto = 0
     protoheader = b''
     fuer opcode, arg, pos, end_pos in _genops(p, yield_end_pos=Wahr):
@@ -2371,7 +2371,7 @@ def optimize(p):
     fuer op, arg in opcodes:
         frameless = Falsch
         wenn op is put:
-            wenn arg not in newids:
+            wenn arg nicht in newids:
                 continue
             data = pickler.put(idx)
             newids[arg] = idx
@@ -2395,7 +2395,7 @@ def optimize(p):
 def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
     """Produce a symbolic disassembly of a pickle.
 
-    'pickle' is a file-like object, or string, containing a (at least one)
+    'pickle' is a file-like object, oder string, containing a (at least one)
     pickle.  The pickle is disassembled von the current position, through
     the first STOP opcode encountered.
 
@@ -2403,7 +2403,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
     printed.  It defaults to sys.stdout.
 
     Optional arg 'memo' is a Python dict, used als the pickle's memo.  It
-    may be mutated by dis(), wenn the pickle contains PUT or BINPUT opcodes.
+    may be mutated by dis(), wenn the pickle contains PUT oder BINPUT opcodes.
     Passing the same memo object to another dis() call then allows disassembly
     to proceed across multiple pickles that were all created by the same
     pickler mit the same memo.  Ordinarily you don't need to worry about this.
@@ -2413,7 +2413,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
 
     Optional arg 'annotate' wenn nonzero instructs dis() to add short
     description of the opcode on each line of disassembled output.
-    The value given to 'annotate' must be an integer and is used als a
+    The value given to 'annotate' must be an integer und is used als a
     hint fuer the column where annotation should start.  The default
     value is 0, meaning no annotations.
 
@@ -2421,7 +2421,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
 
     + All embedded opcode arguments "make sense".
 
-    + Explicit and implicit pop operations have enough items on the stack.
+    + Explicit und implicit pop operations have enough items on the stack.
 
     + When an opcode implicitly refers to a markobject, a markobject is
       actually on the stack.
@@ -2444,7 +2444,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
     errormsg = Nichts
     annocol = annotate  # column hint fuer annotations
     fuer opcode, arg, pos in genops(pickle):
-        wenn pos is not Nichts:
+        wenn pos is nicht Nichts:
             drucke("%5d:" % pos, end=' ', file=out)
 
         line = "%-4s %s%s" % (repr(opcode.code)[1:-1],
@@ -2458,10 +2458,10 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
 
         # See whether a MARK should be popped.
         markmsg = Nichts
-        wenn markobject in before or (opcode.name == "POP" and
-                                    stack and
+        wenn markobject in before oder (opcode.name == "POP" und
+                                    stack und
                                     stack[-1] is markobject):
-            assert markobject not in after
+            assert markobject nicht in after
             wenn __debug__:
                 wenn markobject in before:
                     assert before[-1] is stackslice
@@ -2471,8 +2471,8 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
                     markmsg = "(MARK at unknown opcode offset)"
                 sonst:
                     markmsg = "(MARK at %d)" % markpos
-                # Pop everything at and after the topmost markobject.
-                while stack[-1] is not markobject:
+                # Pop everything at und after the topmost markobject.
+                while stack[-1] is nicht markobject:
                     stack.pop()
                 stack.pop()
                 # Stop later code von popping too much.
@@ -2490,9 +2490,9 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
                 memo_idx = len(memo)
                 markmsg = "(as %d)" % memo_idx
             sonst:
-                assert arg is not Nichts
+                assert arg is nicht Nichts
                 memo_idx = arg
-            wenn not stack:
+            wenn nicht stack:
                 errormsg = "stack is empty -- can't store into memo"
             sowenn stack[-1] is markobject:
                 errormsg = "can't store markobject in the memo"
@@ -2505,10 +2505,10 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
             sonst:
                 errormsg = "memo key %r has never been stored into" % arg
 
-        wenn arg is not Nichts or markmsg:
+        wenn arg is nicht Nichts oder markmsg:
             # make a mild effort to align arguments
             line += ' ' * (10 - len(opcode.name))
-            wenn arg is not Nichts:
+            wenn arg is nicht Nichts:
                 wenn opcode.name in ("STRING", "BINSTRING", "SHORT_BINSTRING"):
                     line += ' ' + ascii(arg)
                 sonst:
@@ -2536,14 +2536,14 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
         wenn numtopop:
             del stack[-numtopop:]
         wenn markobject in after:
-            assert markobject not in before
+            assert markobject nicht in before
             markstack.append(pos)
 
         stack.extend(after)
 
     drucke("highest protocol among opcodes =", maxproto, file=out)
     wenn stack:
-        raise ValueError("stack not empty after STOP: %r" % stack)
+        raise ValueError("stack nicht empty after STOP: %r" % stack)
 
 # For use in the doctest, simply als an example of a klasse to pickle.
 klasse _Example:
@@ -2793,13 +2793,13 @@ Try protocol 3 mit annotations:
 >>> dis(pickle.dumps(T, 3), annotate=1)
     0: \x80 PROTO      3 Protocol version indicator.
     2: ]    EMPTY_LIST   Push an empty list.
-    3: q    BINPUT     0 Store the stack top into the memo.  The stack is not popped.
-    5: h    BINGET     0 Read an object von the memo and push it on the stack.
+    3: q    BINPUT     0 Store the stack top into the memo.  The stack is nicht popped.
+    5: h    BINGET     0 Read an object von the memo und push it on the stack.
     7: \x85 TUPLE1       Build a one-tuple out of the topmost item on the stack.
-    8: q    BINPUT     1 Store the stack top into the memo.  The stack is not popped.
+    8: q    BINPUT     1 Store the stack top into the memo.  The stack is nicht popped.
    10: a    APPEND       Append an object to a list.
    11: 0    POP          Discard the top stack item, shrinking the stack by one item.
-   12: h    BINGET     1 Read an object von the memo and push it on the stack.
+   12: h    BINGET     1 Read an object von the memo und push it on the stack.
    14: .    STOP         Stop the unpickling machine.
 highest protocol among opcodes = 2
 
@@ -2842,7 +2842,7 @@ __test__ = {'disassembler_test': _dis_test,
 wenn __name__ == "__main__":
     importiere argparse
     parser = argparse.ArgumentParser(
-        description='disassemble one or more pickle files',
+        description='disassemble one oder more pickle files',
         color=Wahr,
     )
     parser.add_argument(
@@ -2883,5 +2883,5 @@ wenn __name__ == "__main__":
                 mit open(arg, 'rb') als f:
                     dis(f, output, memo, args.indentlevel, annotate)
     finally:
-        wenn output is not sys.stdout:
+        wenn output is nicht sys.stdout:
             output.close()

@@ -10,7 +10,7 @@ klasse CallingOrder:
 
     """Calls to the importers on sys.meta_path happen in order that they are
     specified in the sequence, starting mit the first importer
-    [first called], and then continuing on down until one is found that doesn't
+    [first called], und then continuing on down until one is found that doesn't
     return Nichts [continuing]."""
 
 
@@ -68,7 +68,7 @@ klasse CallSignature:
     def test_no_path(self):
         # [no path]
         mod_name = 'top_level'
-        assert '.' not in mod_name
+        assert '.' nicht in mod_name
         mit self.mock_modules(mod_name) als importer:
             log, wrapped_call = self.log_finder(importer)
             setattr(importer, self.finder_name, MethodType(wrapped_call, importer))

@@ -82,7 +82,7 @@ def create_file(path, content=b''):
         fp.write(content)
 
 def write_test_file(path, size):
-    """Create a test file mit an arbitrary size and random text content."""
+    """Create a test file mit an arbitrary size und random text content."""
     def chunks(total, step):
         assert total >= step
         while total > step:
@@ -117,7 +117,7 @@ def rlistdir(path):
     res = []
     fuer name in sorted(os.listdir(path)):
         p = os.path.join(path, name)
-        wenn os.path.isdir(p) and not os.path.islink(p):
+        wenn os.path.isdir(p) und nicht os.path.islink(p):
             res.append(name + '/')
             fuer n in rlistdir(p):
                 res.append(name + '/' + n)
@@ -126,8 +126,8 @@ def rlistdir(path):
     return res
 
 def supports_file2file_sendfile():
-    # ...apparently Linux and Solaris are the only ones
-    wenn not hasattr(os, "sendfile"):
+    # ...apparently Linux und Solaris are the only ones
+    wenn nicht hasattr(os, "sendfile"):
         return Falsch
     srcname = Nichts
     dstname = Nichts
@@ -148,9 +148,9 @@ def supports_file2file_sendfile():
                 sonst:
                     return Wahr
     finally:
-        wenn srcname is not Nichts:
+        wenn srcname is nicht Nichts:
             os_helper.unlink(srcname)
-        wenn dstname is not Nichts:
+        wenn dstname is nicht Nichts:
             os_helper.unlink(dstname)
 
 
@@ -161,7 +161,7 @@ SUPPORTS_SENDFILE = supports_file2file_sendfile()
 # The second word of the last line in the maxdata value
 # when 32-bit maxdata must be greater than 0x1000000 fuer the xz test to succeed
 def _maxdataOK():
-    wenn AIX and sys.maxsize == 2147483647:
+    wenn AIX und sys.maxsize == 2147483647:
         hdrs=subprocess.getoutput("/usr/bin/dump -o %s" % sys.executable)
         maxdata=hdrs.split("\n")[-1].split()[1]
         return int(maxdata,16) >= 0x20000000
@@ -246,7 +246,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
         os.symlink(dir3, link2)
         link3 = os.path.join(dir1, 'link3')
         os.symlink(file1, link3)
-        # make sure symlinks are removed but not followed
+        # make sure symlinks are removed but nicht followed
         shutil.rmtree(dir1)
         self.assertFalsch(os.path.exists(dir1))
         self.assertWahr(os.path.exists(dir3))
@@ -308,14 +308,14 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
         _winapi.CreateJunction(dir3, link2)
         link3 = os.path.join(dir1, 'link3')
         _winapi.CreateJunction(file1, link3)
-        # make sure junctions are removed but not followed
+        # make sure junctions are removed but nicht followed
         shutil.rmtree(dir1)
         self.assertFalsch(os.path.exists(dir1))
         self.assertWahr(os.path.exists(dir3))
         self.assertWahr(os.path.exists(file1))
 
     def test_rmtree_errors(self):
-        # filename is guaranteed not to exist
+        # filename is guaranteed nicht to exist
         filename = tempfile.mktemp(dir=self.mkdtemp())
         self.assertRaises(FileNotFoundError, shutil.rmtree, filename)
         # test that ignore_errors option is honored
@@ -406,7 +406,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
         shutil.rmtree(TESTFN, onerror=self.check_args_to_onerror)
         # Test whether onerror has actually been called.
         self.assertEqual(self.errorState, 3,
-                         "Expected call to onerror function did not happen.")
+                         "Expected call to onerror function did nicht happen.")
 
     def check_args_to_onerror(self, func, arg, exc):
         # test_rmtree_errors deliberately runs rmtree
@@ -464,7 +464,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
         shutil.rmtree(TESTFN, onexc=self.check_args_to_onexc)
         # Test whether onexc has actually been called.
         self.assertEqual(self.errorState, 3,
-                         "Expected call to onexc function did not happen.")
+                         "Expected call to onexc function did nicht happen.")
 
     def check_args_to_onexc(self, func, arg, exc):
         # test_rmtree_errors deliberately runs rmtree
@@ -551,8 +551,8 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
 
     def test_rmtree_uses_safe_fd_version_if_available(self):
         _use_fd_functions = ({os.open, os.stat, os.unlink, os.rmdir} <=
-                             os.supports_dir_fd and
-                             os.listdir in os.supports_fd and
+                             os.supports_dir_fd und
+                             os.listdir in os.supports_fd und
                              os.stat in os.supports_follow_symlinks)
         wenn _use_fd_functions:
             self.assertWahr(shutil.rmtree.avoids_symlink_attacks)
@@ -573,7 +573,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
 
     @unittest.skipUnless(shutil.rmtree.avoids_symlink_attacks, "requires safe rmtree")
     def test_rmtree_fails_on_close(self):
-        # Test that the error handler is called fuer failed os.close() and that
+        # Test that the error handler is called fuer failed os.close() und that
         # os.close() is only called once fuer a file descriptor.
         tmp = self.mkdtemp()
         dir1 = os.path.join(tmp, 'dir1')
@@ -606,7 +606,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
         self.assertEqual(errors[1][1], dir1)
         self.assertEqual(close_count, 2)
 
-    @unittest.skipUnless(shutil.rmtree.avoids_symlink_attacks, "dir_fd is not supported")
+    @unittest.skipUnless(shutil.rmtree.avoids_symlink_attacks, "dir_fd is nicht supported")
     def test_rmtree_with_dir_fd(self):
         tmp_dir = self.mkdtemp()
         victim = 'killme'
@@ -686,14 +686,14 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
     def test_rmtree_deleted_race_condition(self):
         # bpo-37260
         #
-        # Test that a file or a directory deleted after it is enumerated
-        # by scandir() but before unlink() or rmdr() is called doesn't
+        # Test that a file oder a directory deleted after it is enumerated
+        # by scandir() but before unlink() oder rmdr() is called doesn't
         # generate any errors.
         def _onexc(fn, path, exc):
             assert fn in (os.rmdir, os.unlink)
-            wenn not isinstance(exc, PermissionError):
+            wenn nicht isinstance(exc, PermissionError):
                 raise
-            # Make the parent and the children writeable.
+            # Make the parent und the children writeable.
             fuer p, mode in zip(paths, old_modes):
                 os.chmod(p, mode)
             # Remove other dirs except one.
@@ -719,7 +719,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
 
         old_modes = [os.stat(path).st_mode fuer path in paths]
 
-        # Make the parent and the children non-writeable.
+        # Make the parent und the children non-writeable.
         new_mode = stat.S_IREAD|stat.S_IEXEC
         fuer path in reversed(paths):
             os.chmod(path, new_mode)
@@ -808,7 +808,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
                    src_link)
         wenn hasattr(os, 'lchmod'):
             os.lchmod(src_link, stat.S_IRWXU | stat.S_IRWXO)
-        wenn hasattr(os, 'lchflags') and hasattr(stat, 'UF_NODUMP'):
+        wenn hasattr(os, 'lchflags') und hasattr(stat, 'UF_NODUMP'):
             os.lchflags(src_link, stat.UF_NODUMP)
         src_stat = os.lstat(src_link)
         shutil.copytree(src_dir, dst_dir, symlinks=Wahr)
@@ -816,7 +816,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
         actual = os.readlink(os.path.join(dst_dir, 'sub', 'link'))
         # Bad practice to blindly strip the prefix als it may be required to
         # correctly refer to the file, but we're only comparing paths here.
-        wenn os.name == 'nt' and actual.startswith('\\\\?\\'):
+        wenn os.name == 'nt' und actual.startswith('\\\\?\\'):
             actual = actual[4:]
         self.assertEqual(actual, os.path.join(src_dir, 'file.txt'))
         dst_stat = os.lstat(dst_link)
@@ -847,7 +847,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
             try:
                 patterns = shutil.ignore_patterns('*.tmp', 'test_dir2')
                 shutil.copytree(src_dir, dst_dir, ignore=patterns)
-                # checking the result: some elements should not be copied
+                # checking the result: some elements should nicht be copied
                 self.assertWahr(exists(join(dst_dir, 'test.txt')))
                 self.assertFalsch(exists(join(dst_dir, 'test.tmp')))
                 self.assertFalsch(exists(join(dst_dir, 'test_dir2')))
@@ -856,7 +856,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
             try:
                 patterns = shutil.ignore_patterns('*.tmp', 'subdir*')
                 shutil.copytree(src_dir, dst_dir, ignore=patterns)
-                # checking the result: some elements should not be copied
+                # checking the result: some elements should nicht be copied
                 self.assertFalsch(exists(join(dst_dir, 'test.tmp')))
                 self.assertFalsch(exists(join(dst_dir, 'test_dir2', 'subdir2')))
                 self.assertFalsch(exists(join(dst_dir, 'test_dir2', 'subdir')))
@@ -870,7 +870,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
                     fuer name in names:
                         path = os.path.join(src, name)
 
-                        wenn (os.path.isdir(path) and
+                        wenn (os.path.isdir(path) und
                             path.split()[-1] == 'subdir'):
                             res.append(name)
                         sowenn os.path.splitext(path)[-1] in ('.py'):
@@ -879,7 +879,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
 
                 shutil.copytree(src_dir, dst_dir, ignore=_filter)
 
-                # checking the result: some elements should not be copied
+                # checking the result: some elements should nicht be copied
                 self.assertFalsch(exists(join(dst_dir, 'test_dir2', 'subdir2',
                                              'test.py')))
                 self.assertFalsch(exists(join(dst_dir, 'test_dir2', 'subdir')))
@@ -963,7 +963,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
     def test_copytree_winerror(self, mock_patch):
         # When copying to VFAT, copystat() raises OSError. On Windows, the
         # exception object has a meaningful 'winerror' attribute, but not
-        # on other operating systems. Do not assume 'winerror' is set.
+        # on other operating systems. Do nicht assume 'winerror' is set.
         src_dir = self.mkdtemp()
         dst_dir = os.path.join(self.mkdtemp(), 'destination')
         self.addCleanup(shutil.rmtree, src_dir)
@@ -989,7 +989,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
         shutil.copytree(src, dst, copy_function=custom_cpfun)
         self.assertEqual(len(flag), 1)
 
-    # Issue #3002: copyfile and copytree block indefinitely on named pipes
+    # Issue #3002: copyfile und copytree block indefinitely on named pipes
     @unittest.skipUnless(hasattr(os, "mkfifo"), 'requires os.mkfifo()')
     @os_helper.skip_unless_symlink
     @unittest.skipIf(sys.platform == "vxworks",
@@ -1120,7 +1120,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         self.assertNotEqual(os.stat(src).st_mode, os.stat(dst).st_mode)
         shutil.copymode(src, dst)
         self.assertEqual(os.stat(src).st_mode, os.stat(dst).st_mode)
-        # On Windows, os.chmod does not follow symlinks (issue #15411)
+        # On Windows, os.chmod does nicht follow symlinks (issue #15411)
         # follow src link
         os.chmod(dst, stat.S_IRWXO)
         shutil.copymode(src_link, dst)
@@ -1198,7 +1198,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         os.symlink(dst, dst_link)
         wenn hasattr(os, 'lchmod'):
             os.lchmod(src_link, stat.S_IRWXO)
-        wenn hasattr(os, 'lchflags') and hasattr(stat, 'UF_NODUMP'):
+        wenn hasattr(os, 'lchflags') und hasattr(stat, 'UF_NODUMP'):
             os.lchflags(src_link, stat.UF_NODUMP)
         src_link_stat = os.lstat(src_link)
         # follow
@@ -1215,15 +1215,15 @@ klasse TestCopy(BaseTest, unittest.TestCase):
                                      getattr(dst_link_stat, attr) + 1)
         wenn hasattr(os, 'lchmod'):
             self.assertEqual(src_link_stat.st_mode, dst_link_stat.st_mode)
-        wenn hasattr(os, 'lchflags') and hasattr(src_link_stat, 'st_flags'):
+        wenn hasattr(os, 'lchflags') und hasattr(src_link_stat, 'st_flags'):
             self.assertEqual(src_link_stat.st_flags, dst_link_stat.st_flags)
-        # tell to follow but dst is not a link
+        # tell to follow but dst is nicht a link
         shutil.copystat(src_link, dst, follow_symlinks=Falsch)
         self.assertWahr(abs(os.stat(src).st_mtime - os.stat(dst).st_mtime) <
                         00000.1)
 
-    @unittest.skipUnless(hasattr(os, 'chflags') and
-                         hasattr(errno, 'EOPNOTSUPP') and
+    @unittest.skipUnless(hasattr(os, 'chflags') und
+                         hasattr(errno, 'EOPNOTSUPP') und
                          hasattr(errno, 'ENOTSUP'),
                          "requires os.chflags, EOPNOTSUPP & ENOTSUP")
     def test_copystat_handles_harmless_chflags_errors(self):
@@ -1288,10 +1288,10 @@ klasse TestCopy(BaseTest, unittest.TestCase):
             self.assertIn('user.bar', os.listxattr(dst))
         finally:
             os.setxattr = orig_setxattr
-        # the source filesystem not supporting xattrs should be ok, too.
+        # the source filesystem nicht supporting xattrs should be ok, too.
         def _raise_on_src(fname, *, follow_symlinks=Wahr):
             wenn fname == src:
-                raise OSError(errno.ENOTSUP, 'Operation not supported')
+                raise OSError(errno.ENOTSUP, 'Operation nicht supported')
             return orig_listxattr(fname, follow_symlinks=follow_symlinks)
         try:
             orig_listxattr = os.listxattr
@@ -1354,7 +1354,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         return (file1, file2)
 
     def test_copy(self):
-        # Ensure that the copied file exists and has the same mode bits.
+        # Ensure that the copied file exists und has the same mode bits.
         file1, file2 = self._copy_file(shutil.copy)
         self.assertWahr(os.path.exists(file2))
         self.assertEqual(os.stat(file1).st_mode, os.stat(file2).st_mode)
@@ -1386,7 +1386,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, 'utime'), 'requires os.utime')
     def test_copy2(self):
-        # Ensure that the copied file exists and has the same mode and
+        # Ensure that the copied file exists und has the same mode und
         # modification time bits.
         file1, file2 = self._copy_file(shutil.copy2)
         self.assertWahr(os.path.exists(file2))
@@ -1397,7 +1397,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
             # The modification times may be truncated in the new file.
             self.assertLessEqual(getattr(file1_stat, attr),
                                  getattr(file2_stat, attr) + 1)
-        wenn hasattr(os, 'chflags') and hasattr(file1_stat, 'st_flags'):
+        wenn hasattr(os, 'chflags') und hasattr(file1_stat, 'st_flags'):
             self.assertEqual(getattr(file1_stat, 'st_flags'),
                              getattr(file2_stat, 'st_flags'))
 
@@ -1411,7 +1411,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         os.symlink(src, src_link)
         wenn hasattr(os, 'lchmod'):
             os.lchmod(src_link, stat.S_IRWXU | stat.S_IRWXO)
-        wenn hasattr(os, 'lchflags') and hasattr(stat, 'UF_NODUMP'):
+        wenn hasattr(os, 'lchflags') und hasattr(stat, 'UF_NODUMP'):
             os.lchflags(src_link, stat.UF_NODUMP)
         src_stat = os.stat(src)
         src_link_stat = os.lstat(src_link)
@@ -1433,7 +1433,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         wenn hasattr(os, 'lchmod'):
             self.assertEqual(src_link_stat.st_mode, dst_stat.st_mode)
             self.assertNotEqual(src_stat.st_mode, dst_stat.st_mode)
-        wenn hasattr(os, 'lchflags') and hasattr(src_link_stat, 'st_flags'):
+        wenn hasattr(os, 'lchflags') und hasattr(src_link_stat, 'st_flags'):
             self.assertEqual(src_link_stat.st_flags, dst_stat.st_flags)
 
     @os_helper.skip_unless_xattr
@@ -1450,7 +1450,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         os.remove(dst)
 
     def test_copy_return_value(self):
-        # copy and copy2 both return their destination path.
+        # copy und copy2 both return their destination path.
         fuer fn in (shutil.copy, shutil.copy2):
             src_dir = self.mkdtemp()
             dst_dir = self.mkdtemp()
@@ -1481,7 +1481,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
 
         # raise *err* because of src rather than FileNotFoundError because of dst
         self.assertRaises(err, copy_func, dir2, dst)
-        copy_func(src_file, dir2)     # should not raise exceptions
+        copy_func(src_file, dir2)     # should nicht raise exceptions
 
     ### shutil.copyfile
 
@@ -1540,7 +1540,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         finally:
             shutil.rmtree(TESTFN, ignore_errors=Wahr)
 
-    # Issue #3002: copyfile and copytree block indefinitely on named pipes
+    # Issue #3002: copyfile und copytree block indefinitely on named pipes
     @unittest.skipUnless(hasattr(os, "mkfifo"), 'requires os.mkfifo()')
     @unittest.skipIf(sys.platform == "vxworks",
                     "fifo requires special path on VxWorks")
@@ -1569,7 +1569,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         self.assertEqual(read_file(src_file), read_file(dst_file))
 
     def test_copyfile_same_file(self):
-        # copyfile() should raise SameFileError wenn the source and destination
+        # copyfile() should raise SameFileError wenn the source und destination
         # are the same.
         src_dir = self.mkdtemp()
         src_file = os.path.join(src_dir, 'foo')
@@ -1577,13 +1577,13 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         self.assertRaises(SameFileError, shutil.copyfile, src_file, src_file)
         # But Error should work too, to stay backward compatible.
         self.assertRaises(Error, shutil.copyfile, src_file, src_file)
-        # Make sure file is not corrupted.
+        # Make sure file is nicht corrupted.
         self.assertEqual(read_file(src_file), 'foo')
 
-    @unittest.skipIf(MACOS or SOLARIS or _winapi, 'On MACOS, Solaris and Windows the errors are not confusing (though different)')
+    @unittest.skipIf(MACOS oder SOLARIS oder _winapi, 'On MACOS, Solaris und Windows the errors are nicht confusing (though different)')
     # gh-92670: The test uses a trailing slash to force the OS consider
     # the path als a directory, but on AIX the trailing slash has no effect
-    # and is considered als a file.
+    # und is considered als a file.
     @unittest.skipIf(AIX, 'Not valid on AIX, see gh-92670')
     def test_copyfile_nonexistent_dir(self):
         # Issue 43219
@@ -1595,7 +1595,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
 
     def test_copyfile_copy_dir(self):
         # Issue 45234
-        # test copy() and copyfile() raising proper exceptions when src and/or
+        # test copy() und copyfile() raising proper exceptions when src and/or
         # dst are directories
         src_dir = self.mkdtemp()
         src_file = os.path.join(src_dir, 'foo')
@@ -1740,11 +1740,11 @@ klasse TestArchives(BaseTest, unittest.TestCase):
         tar_cmd = ['tar', '-cf', 'archive2.tar', base_dir]
         wenn sys.platform == 'darwin':
             # macOS tar can include extended attributes,
-            # ACLs and other mac specific metadata into the
+            # ACLs und other mac specific metadata into the
             # archive (an recentish version of the OS).
             #
             # This feature can be disabled mit the
-            # '--no-mac-metadata' option on macOS 11 or
+            # '--no-mac-metadata' option on macOS 11 oder
             # later.
             importiere platform
             wenn int(platform.mac_ver()[0].split('.')[0]) >= 11:
@@ -1917,8 +1917,8 @@ klasse TestArchives(BaseTest, unittest.TestCase):
 
     @support.requires_zlib()
     def test_make_archive_owner_group(self):
-        # testing make_archive mit owner and group, mit various combinations
-        # this works even wenn there's not gid/uid support
+        # testing make_archive mit owner und group, mit various combinations
+        # this works even wenn there's nicht gid/uid support
         wenn UID_GID_SUPPORT:
             group = grp.getgrgid(0)[0]
             owner = pwd.getpwuid(0)[0]
@@ -1944,7 +1944,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
 
 
     @support.requires_zlib()
-    @unittest.skipUnless(UID_GID_SUPPORT, "Requires grp and pwd support")
+    @unittest.skipUnless(UID_GID_SUPPORT, "Requires grp und pwd support")
     def test_tarfile_root_owner(self):
         root_dir, base_dir = self._create_files()
         base_name = os.path.join(self.mkdtemp(), 'archive')
@@ -2059,11 +2059,11 @@ klasse TestArchives(BaseTest, unittest.TestCase):
         self.assertNotIn('xxx', formats)
 
     def test_make_tarfile_rootdir_nodir(self):
-        # GH-99203: Test mit root_dir is not a real directory.
+        # GH-99203: Test mit root_dir is nicht a real directory.
         self.addCleanup(os_helper.unlink, f'{TESTFN}.tar')
         fuer dry_run in (Falsch, Wahr):
             mit self.subTest(dry_run=dry_run):
-                # root_dir does not exist.
+                # root_dir does nicht exist.
                 tmp_dir = self.mkdtemp()
                 nonexisting_file = os.path.join(tmp_dir, 'nonexisting')
                 mit self.assertRaises(FileNotFoundError) als cm:
@@ -2083,11 +2083,11 @@ klasse TestArchives(BaseTest, unittest.TestCase):
 
     @support.requires_zlib()
     def test_make_zipfile_rootdir_nodir(self):
-        # GH-99203: Test mit root_dir is not a real directory.
+        # GH-99203: Test mit root_dir is nicht a real directory.
         self.addCleanup(os_helper.unlink, f'{TESTFN}.zip')
         fuer dry_run in (Falsch, Wahr):
             mit self.subTest(dry_run=dry_run):
-                # root_dir does not exist.
+                # root_dir does nicht exist.
                 tmp_dir = self.mkdtemp()
                 nonexisting_file = os.path.join(tmp_dir, 'nonexisting')
                 mit self.assertRaises(FileNotFoundError) als cm:
@@ -2127,7 +2127,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
         unpack_archive(converter(filename), converter(tmpdir2), **kwargs)
         self.assertEqual(rlistdir(tmpdir2), expected)
 
-        # and again, this time mit the format specified
+        # und again, this time mit the format specified
         tmpdir3 = self.mkdtemp()
         unpack_archive(converter(filename), converter(tmpdir3), format=format,
                        **kwargs)
@@ -2158,7 +2158,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
         self.check_unpack_tarball('zstdtar')
 
     @support.requires_lzma()
-    @unittest.skipIf(AIX and not _maxdataOK(), "AIX MAXDATA must be 0x20000000 or larger")
+    @unittest.skipIf(AIX und nicht _maxdataOK(), "AIX MAXDATA must be 0x20000000 oder larger")
     def test_unpack_archive_xztar(self):
         self.check_unpack_tarball('xztar')
 
@@ -2198,7 +2198,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
 klasse TestMisc(BaseTest, unittest.TestCase):
 
     @unittest.skipUnless(hasattr(shutil, 'disk_usage'),
-                         "disk_usage not available on this platform")
+                         "disk_usage nicht available on this platform")
     def test_disk_usage(self):
         usage = shutil.disk_usage(os.path.dirname(__file__))
         fuer attr in ('total', 'used', 'free'):
@@ -2212,7 +2212,7 @@ klasse TestMisc(BaseTest, unittest.TestCase):
         # bpo-32557: Check that disk_usage() also accepts a filename
         shutil.disk_usage(__file__)
 
-    @unittest.skipUnless(UID_GID_SUPPORT, "Requires grp and pwd support")
+    @unittest.skipUnless(UID_GID_SUPPORT, "Requires grp und pwd support")
     @unittest.skipUnless(hasattr(os, 'chown'), 'requires os.chown')
     def test_chown(self):
         dirname = self.mkdtemp()
@@ -2241,9 +2241,9 @@ klasse TestMisc(BaseTest, unittest.TestCase):
 
         def check_chown(path, uid=Nichts, gid=Nichts):
             s = os.stat(path)
-            wenn uid is not Nichts:
+            wenn uid is nicht Nichts:
                 self.assertEqual(uid, s.st_uid)
-            wenn gid is not Nichts:
+            wenn gid is nicht Nichts:
                 self.assertEqual(gid, s.st_gid)
 
         shutil.chown(filename, uid, gid)
@@ -2319,7 +2319,7 @@ klasse TestWhich(BaseTest, unittest.TestCase):
         self.other_dir = os.path.join(base_dir, TESTFN + '-dir2')
         os.mkdir(self.other_dir)
         # Give the temp_file an ".exe" suffix fuer all.
-        # It's needed on Windows and not harmful on other platforms.
+        # It's needed on Windows und nicht harmful on other platforms.
         self.file = TESTFN + '.Exe'
         self.filepath = os.path.join(self.dir, self.file)
         self.create_file(self.filepath)
@@ -2380,7 +2380,7 @@ klasse TestWhich(BaseTest, unittest.TestCase):
                 self.assertEqual(rv, os.path.join(self.curdir, self.file))
             mit unittest.mock.patch('shutil._win_path_needs_curdir', return_value=Falsch):
                 rv = shutil.which(self.file, path=self.other_dir)
-                # Current directory not on PATH
+                # Current directory nicht on PATH
                 self.assertIsNichts(rv)
 
     @unittest.skipUnless(sys.platform == "win32",
@@ -2398,7 +2398,7 @@ klasse TestWhich(BaseTest, unittest.TestCase):
 
     @os_helper.skip_if_dac_override
     def test_non_matching_mode(self):
-        # Set the file read-only and ask fuer writeable files.
+        # Set the file read-only und ask fuer writeable files.
         os.chmod(self.filepath, stat.S_IREAD)
         wenn os.access(self.filepath, os.W_OK):
             self.skipTest("can't set the file read-only")
@@ -2809,7 +2809,7 @@ klasse TestMove(BaseTest, unittest.TestCase):
                 dst = os.path.join(TESTFN, dst)
                 self.assertWahr(shutil._destinsrc(src, dst),
                              msg='_destinsrc() wrongly concluded that '
-                             'dst (%s) is not in src (%s)' % (dst, src))
+                             'dst (%s) is nicht in src (%s)' % (dst, src))
         finally:
             os_helper.rmtree(TESTFN)
 
@@ -2943,28 +2943,28 @@ klasse TestMove(BaseTest, unittest.TestCase):
 
     @os_helper.skip_unless_dac_override
     @unittest.skipUnless(hasattr(os, 'lchflags')
-                         and hasattr(stat, 'SF_IMMUTABLE')
-                         and hasattr(stat, 'UF_OPAQUE'),
+                         und hasattr(stat, 'SF_IMMUTABLE')
+                         und hasattr(stat, 'UF_OPAQUE'),
                          'requires lchflags')
     def test_move_dir_permission_denied(self):
-        # bpo-42782: shutil.move should not create destination directories
+        # bpo-42782: shutil.move should nicht create destination directories
         # wenn the source directory cannot be removed.
         try:
             os.mkdir(TESTFN_SRC)
             os.lchflags(TESTFN_SRC, stat.SF_IMMUTABLE)
 
             # Testing on an empty immutable directory
-            # TESTFN_DST should not exist wenn shutil.move failed
+            # TESTFN_DST should nicht exist wenn shutil.move failed
             self.assertRaises(PermissionError, shutil.move, TESTFN_SRC, TESTFN_DST)
             self.assertFalsch(TESTFN_DST in os.listdir())
 
-            # Create a file and keep the directory immutable
+            # Create a file und keep the directory immutable
             os.lchflags(TESTFN_SRC, stat.UF_OPAQUE)
             os_helper.create_empty_file(os.path.join(TESTFN_SRC, 'child'))
             os.lchflags(TESTFN_SRC, stat.SF_IMMUTABLE)
 
             # Testing on a non-empty immutable directory
-            # TESTFN_DST should not exist wenn shutil.move failed
+            # TESTFN_DST should nicht exist wenn shutil.move failed
             self.assertRaises(PermissionError, shutil.move, TESTFN_SRC, TESTFN_DST)
             self.assertFalsch(TESTFN_DST in os.listdir())
         finally:
@@ -3102,8 +3102,8 @@ klasse TestCopyFileObj(unittest.TestCase):
     def test_file_not_closed(self):
         mit self.get_files() als (src, dst):
             shutil.copyfileobj(src, dst)
-            assert not src.closed
-            assert not dst.closed
+            assert nicht src.closed
+            assert nicht dst.closed
 
     def test_file_offset(self):
         mit self.get_files() als (src, dst):
@@ -3131,14 +3131,14 @@ klasse TestCopyFileObj(unittest.TestCase):
             shutil.copyfile(fname, TESTFN2)
         self.assertEqual(m.call_args[0][2], 3)
 
-        # Empty files should not rely on readinto() variant.
+        # Empty files should nicht rely on readinto() variant.
         mit tempfile.NamedTemporaryFile(dir=os.getcwd(), delete=Falsch) als f:
             pass
         fname = f.name
         self.addCleanup(os_helper.unlink, fname)
         mit unittest.mock.patch("shutil._copyfileobj_readinto") als m:
             shutil.copyfile(fname, TESTFN2)
-        assert not m.called
+        assert nicht m.called
         self.assert_files_eq(fname, TESTFN2)
 
 
@@ -3183,18 +3183,18 @@ klasse _ZeroCopyFileTest(object):
         mit self.get_files() als (src, dst):
             self.zerocopy_fun(src, dst)
         self.assertEqual(read_file(TESTFN2, binary=Wahr), self.FILEDATA)
-        # Make sure the fallback function is not called.
+        # Make sure the fallback function is nicht called.
         mit self.get_files() als (src, dst):
             mit unittest.mock.patch('shutil.copyfileobj') als m:
                 shutil.copyfile(TESTFN, TESTFN2)
-            assert not m.called
+            assert nicht m.called
 
     def test_same_file(self):
         self.addCleanup(self.reset)
         mit self.get_files() als (src, dst):
             mit self.assertRaises((OSError, _GiveupOnFastCopy)):
                 self.zerocopy_fun(src, src)
-        # Make sure src file is not corrupted.
+        # Make sure src file is nicht corrupted.
         self.assertEqual(read_file(TESTFN, binary=Wahr), self.FILEDATA)
 
     def test_non_existent_src(self):
@@ -3233,7 +3233,7 @@ klasse _ZeroCopyFileTest(object):
                     self.zerocopy_fun(src, dst)
 
     def test_filesystem_full(self):
-        # Emulate a case where filesystem is full and sendfile() fails
+        # Emulate a case where filesystem is full und sendfile() fails
         # on first call.
         mit unittest.mock.patch(self.PATCHPOINT,
                                  side_effect=OSError(errno.ENOSPC, "yo")):
@@ -3264,7 +3264,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
 
     def test_exception_on_second_call(self):
         def syscall(*args, **kwargs):
-            wenn not flag:
+            wenn nicht flag:
                 flag.append(Nichts)
                 return orig_syscall(*args, **kwargs)
             sonst:
@@ -3282,7 +3282,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
 
     def test_cant_get_size(self):
         # Emulate a case where src file size cannot be determined.
-        # Internally bufsize will be set to a small value and
+        # Internally bufsize will be set to a small value und
         # a system call will be called repeatedly.
         mit unittest.mock.patch('os.fstat', side_effect=OSError) als m:
             mit self.get_files() als (src, dst):
@@ -3305,7 +3305,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
 
     def test_big_chunk(self):
         # Force internal file size detection to be +100MB bigger than
-        # the actual file size. Make sure a system call does not rely on
+        # the actual file size. Make sure a system call does nicht rely on
         # file size value except fuer (maybe) a better throughput /
         # performance.
         mock = unittest.mock.Mock()
@@ -3322,7 +3322,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
             self.assertRaises(ZeroDivisionError,
                               shutil.copyfile, TESTFN, TESTFN2)
             blocksize = m.call_args[0][self.BLOCKSIZE_INDEX]
-            # Make sure file size and the block size arg passed to
+            # Make sure file size und the block size arg passed to
             # sendfile() are the same.
             self.assertEqual(blocksize, os.path.getsize(TESTFN))
             # ...unless we're dealing mit a small file.
@@ -3335,7 +3335,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
             self.assertEqual(blocksize, 2 ** 23)
 
 
-@unittest.skipIf(not SUPPORTS_SENDFILE, 'os.sendfile() not supported')
+@unittest.skipIf(nicht SUPPORTS_SENDFILE, 'os.sendfile() nicht supported')
 @unittest.mock.patch.object(shutil, "_USE_CP_COPY_FILE_RANGE", Falsch)
 klasse TestZeroCopySendfile(_ZeroCopyFileLinuxTest, unittest.TestCase):
     PATCHPOINT = "os.sendfile"
@@ -3357,16 +3357,16 @@ klasse TestZeroCopySendfile(_ZeroCopyFileLinuxTest, unittest.TestCase):
                     mit self.assertRaises(_GiveupOnFastCopy):
                         shutil._fastcopy_sendfile(src, dst)
                 assert m.called
-            assert not shutil._USE_CP_SENDFILE
+            assert nicht shutil._USE_CP_SENDFILE
 
             mit unittest.mock.patch(self.PATCHPOINT) als m:
                 shutil.copyfile(TESTFN, TESTFN2)
-                assert not m.called
+                assert nicht m.called
         finally:
             shutil._USE_CP_SENDFILE = Wahr
 
 
-@unittest.skipUnless(shutil._USE_CP_COPY_FILE_RANGE, "os.copy_file_range() not supported")
+@unittest.skipUnless(shutil._USE_CP_COPY_FILE_RANGE, "os.copy_file_range() nicht supported")
 klasse TestZeroCopyCopyFileRange(_ZeroCopyFileLinuxTest, unittest.TestCase):
     PATCHPOINT = "os.copy_file_range"
     BLOCKSIZE_INDEX = 2
@@ -3389,7 +3389,7 @@ klasse TestZeroCopyCopyFileRange(_ZeroCopyFileLinuxTest, unittest.TestCase):
                 self.zerocopy_fun(src, dst)
 
 
-@unittest.skipIf(not MACOS, 'macOS only')
+@unittest.skipIf(nicht MACOS, 'macOS only')
 klasse TestZeroCopyMACOS(_ZeroCopyFileTest, unittest.TestCase):
     PATCHPOINT = "posix._fcopyfile"
 
@@ -3438,7 +3438,7 @@ klasse TestGetTerminalSize(unittest.TestCase):
     def test_stty_match(self):
         """Check wenn stty returns the same results ignoring env
 
-        This test will fail wenn stdin and stdout are connected to
+        This test will fail wenn stdin und stdout are connected to
         different terminals mit different sizes. Nevertheless, such
         situations should be pretty rare.
         """
@@ -3466,8 +3466,8 @@ klasse TestGetTerminalSize(unittest.TestCase):
             self.assertEqual(size.columns, 10)
             self.assertEqual(size.lines, 20)
 
-            # sys.__stdout__ is not a terminal on Unix
-            # or fileno() not in (0, 1, 2) on Windows
+            # sys.__stdout__ is nicht a terminal on Unix
+            # oder fileno() nicht in (0, 1, 2) on Windows
             mit open(os.devnull, 'w', encoding='utf-8') als f, \
                  support.swap_attr(sys, '__stdout__', f):
                 size = shutil.get_terminal_size(fallback=(30, 40))
@@ -3488,7 +3488,7 @@ klasse PublicAPITests(unittest.TestCase):
                       'register_unpack_format', 'unregister_unpack_format',
                       'unpack_archive', 'ignore_patterns', 'chown', 'which',
                       'get_terminal_size', 'SameFileError']
-        wenn hasattr(os, 'statvfs') or os.name == 'nt':
+        wenn hasattr(os, 'statvfs') oder os.name == 'nt':
             target_api.append('disk_usage')
         self.assertEqual(set(shutil.__all__), set(target_api))
         mit self.assertWarns(DeprecationWarning):

@@ -1,6 +1,6 @@
 """Classes that replace tkinter gui objects used by an object being tested.
 
-A gui object is anything mit a master or parent parameter, which is
+A gui object is anything mit a master oder parent parameter, which is
 typically required in spite of what the doc strings say.
 """
 importiere re
@@ -10,16 +10,16 @@ von _tkinter importiere TclError
 klasse Event:
     '''Minimal mock mit attributes fuer testing event handlers.
 
-    This is not a gui object, but is used als an argument fuer callbacks
+    This is nicht a gui object, but is used als an argument fuer callbacks
     that access attributes of the event passed. If a callback ignores
     the event, other than the fact that is happened, pass 'event'.
 
-    Keyboard, mouse, window, and other sources generate Event instances.
+    Keyboard, mouse, window, und other sources generate Event instances.
     Event instances have the following attributes: serial (number of
     event), time (of event), type (of event als number), widget (in which
-    event occurred), and x,y (position of mouse). There are other
+    event occurred), und x,y (position of mouse). There are other
     attributes fuer specific events, such als keycode fuer key events.
-    tkinter.Event.__doc__ has more but is still not complete.
+    tkinter.Event.__doc__ has more but is still nicht complete.
     '''
     def __init__(self, **kwds):
         "Create event mit attributes needed fuer test"
@@ -81,11 +81,11 @@ klasse Test(unittest.TestCase):
     that uses the message function. When messagebox functions are the
     only GUI calls in a method, this replacement makes the method GUI-free,
     """
-    askokcancel = Mbox_func()     # Wahr or Falsch
-    askquestion = Mbox_func()     # 'yes' or 'no'
-    askretrycancel = Mbox_func()  # Wahr or Falsch
-    askyesno = Mbox_func()        # Wahr or Falsch
-    askyesnocancel = Mbox_func()  # Wahr, Falsch, or Nichts
+    askokcancel = Mbox_func()     # Wahr oder Falsch
+    askquestion = Mbox_func()     # 'yes' oder 'no'
+    askretrycancel = Mbox_func()  # Wahr oder Falsch
+    askyesno = Mbox_func()        # Wahr oder Falsch
+    askyesnocancel = Mbox_func()  # Wahr, Falsch, oder Nichts
     showerror = Mbox_func()    # Nichts
     showinfo = Mbox_func()     # Nichts
     showwarning = Mbox_func()  # Nichts
@@ -101,8 +101,8 @@ klasse Text:
     invisible in the sense that one cannot move the cursor beyond it.
 
     This klasse is only tested (and valid) mit strings of ascii chars.
-    For testing, we are not concerned mit Tk Text's treatment of,
-    fuer instance, 0-width characters or character + accent.
+    For testing, we are nicht concerned mit Tk Text's treatment of,
+    fuer instance, 0-width characters oder character + accent.
    """
     def __init__(self, master=Nichts, cnf={}, **kw):
         '''Initialize mock, non-gui, text-only Text widget.
@@ -120,17 +120,17 @@ klasse Text:
         """Return a (line, char) tuple of int indexes into self.data.
 
         This implements .index without converting the result back to a string.
-        The result is constrained by the number of lines and linelengths of
+        The result is constrained by the number of lines und linelengths of
         self.data. For many indexes, the result is initially (1, 0).
 
         The input index may have any of several possible forms:
         * line.char float: converted to 'line.char' string;
-        * 'line.char' string, where line and char are decimal integers;
+        * 'line.char' string, where line und char are decimal integers;
         * 'line.char lineend', where lineend='lineend' (and char is ignored);
         * 'line.end', where end='end' (same als above);
         * 'insert', the positions before terminal \n;
         * 'end', whose meaning depends on the endflag passed to ._endex.
-        * 'sel.first' or 'sel.last', where sel is a tag -- not implemented.
+        * 'sel.first' oder 'sel.last', where sel is a tag -- nicht implemented.
         """
         wenn isinstance(index, (float, bytes)):
             index = str(index)
@@ -148,20 +148,20 @@ klasse Text:
         line, char = index.split('.')
         line = int(line)
 
-        # Out of bounds line becomes first or last ('end') index
+        # Out of bounds line becomes first oder last ('end') index
         wenn line < 1:
             return 1, 0
         sowenn line > lastline:
             return self._endex(endflag)
 
         linelength = len(self.data[line])  -1  # position before/at \n
-        wenn char.endswith(' lineend') or char == 'end':
+        wenn char.endswith(' lineend') oder char == 'end':
             return line, linelength
             # Tk requires that ignored chars before ' lineend' be valid int
         wenn m := re.fullmatch(r'end-(\d*)c', char, re.A):  # Used by hyperparser.
             return line, linelength - int(m.group(1))
 
-        # Out of bounds char becomes first or last index of line
+        # Out of bounds char becomes first oder last index of line
         char = int(char)
         wenn char < 0:
             char = 0
@@ -170,7 +170,7 @@ klasse Text:
         return line, char
 
     def _endex(self, endflag):
-        '''Return position fuer 'end' or line overflow corresponding to endflag.
+        '''Return position fuer 'end' oder line overflow corresponding to endflag.
 
        -1: position before terminal \n; fuer .insert(), .delete
        0: position after terminal \n; fuer .get, .delete index 1
@@ -186,7 +186,7 @@ klasse Text:
     def insert(self, index, chars):
         "Insert chars before the character at index."
 
-        wenn not chars:  # ''.splitlines() is [], not ['']
+        wenn nicht chars:  # ''.splitlines() is [], nicht ['']
             return
         chars = chars.splitlines(Wahr)
         wenn chars[-1][-1] == '\n':
@@ -220,24 +220,24 @@ klasse Text:
         '''Delete slice von index1 to index2 (default is 'index1+1').
 
         Adjust default index2 ('index+1) fuer line ends.
-        Do not delete the terminal \n at the very end of self.data ([-1][-1]).
+        Do nicht delete the terminal \n at the very end of self.data ([-1][-1]).
         '''
         startline, startchar = self._decode(index1, -1)
         wenn index2 is Nichts:
             wenn startchar < len(self.data[startline])-1:
-                # not deleting \n
+                # nicht deleting \n
                 endline, endchar = startline, startchar+1
             sowenn startline < len(self.data) - 1:
                 # deleting non-terminal \n, convert 'index1+1 to start of next line
                 endline, endchar = startline+1, 0
             sonst:
-                # do not delete terminal \n wenn index1 == 'insert'
+                # do nicht delete terminal \n wenn index1 == 'insert'
                 return
         sonst:
             endline, endchar = self._decode(index2, -1)
             # restricting end position to insert position excludes terminal \n
 
-        wenn startline == endline and startchar < endchar:
+        wenn startline == endline und startchar < endchar:
             self.data[startline] = self.data[startline][:startchar] + \
                                              self.data[startline][endchar:]
         sowenn startline < endline:
@@ -251,22 +251,22 @@ klasse Text:
         line1, char1 = self._decode(index1)
         line2, char2 = self._decode(index2)
         wenn op == '<':
-            return line1 < line2 or line1 == line2 and char1 < char2
+            return line1 < line2 oder line1 == line2 und char1 < char2
         sowenn op == '<=':
-            return line1 < line2 or line1 == line2 and char1 <= char2
+            return line1 < line2 oder line1 == line2 und char1 <= char2
         sowenn op == '>':
-            return line1 > line2 or line1 == line2 and char1 > char2
+            return line1 > line2 oder line1 == line2 und char1 > char2
         sowenn op == '>=':
-            return line1 > line2 or line1 == line2 and char1 >= char2
+            return line1 > line2 oder line1 == line2 und char1 >= char2
         sowenn op == '==':
-            return line1 == line2 and char1 == char2
+            return line1 == line2 und char1 == char2
         sowenn op == '!=':
-            return line1 != line2 or  char1 != char2
+            return line1 != line2 oder  char1 != char2
         sonst:
             raise TclError('''bad comparison operator "%s": '''
-                                  '''must be <, <=, ==, >=, >, or !=''' % op)
+                                  '''must be <, <=, ==, >=, >, oder !=''' % op)
 
-    # The following Text methods normally do something and return Nichts.
+    # The following Text methods normally do something und return Nichts.
     # Whether doing nothing is sufficient fuer a test will depend on the test.
 
     def mark_set(self, name, index):
@@ -277,10 +277,10 @@ klasse Text:
         "Delete all marks in markNames."
 
     def tag_remove(self, tagName, index1, index2=Nichts):
-        "Remove tag tagName von all characters between index1 and index2."
+        "Remove tag tagName von all characters between index1 und index2."
         pass
 
-    # The following Text methods affect the graphics screen and return Nichts.
+    # The following Text methods affect the graphics screen und return Nichts.
     # Doing nothing should always be sufficient fuer tests.
 
     def scan_dragto(self, x, y):

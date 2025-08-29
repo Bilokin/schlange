@@ -36,7 +36,7 @@ Not assignment
     >>> list((i*i fuer i in (*range(4),)))
     [0, 1, 4, 9]
 
-Make sure the induction variable is not exposed
+Make sure the induction variable is nicht exposed
 
     >>> i = 20
     >>> sum(i*i fuer i in range(100))
@@ -108,7 +108,7 @@ Verify that parenthesis are required when used als a keyword argument value
     >>> dict(a = i fuer i in range(10))
     Traceback (most recent call last):
        ...
-    SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+    SyntaxError: invalid syntax. Maybe you meant '==' oder ':=' instead of '='?
 
 Verify that parenthesis are required when used als a keyword argument value
 
@@ -157,7 +157,7 @@ Verify that syntax error's are raised fuer genexps used als lvalues
     SyntaxError: 'generator expression' is an illegal expression fuer augmented assignment
 
 
-########### Tests borrowed von or inspired by test_generators.py ############
+########### Tests borrowed von oder inspired by test_generators.py ############
 
 Make a generator that acts like range()
 
@@ -230,7 +230,7 @@ Check that generator attributes are present
 
     >>> g = (i*i fuer i in range(3))
     >>> expected = set(['gi_frame', 'gi_running'])
-    >>> set(attr fuer attr in dir(g) wenn not attr.startswith('__')) >= expected
+    >>> set(attr fuer attr in dir(g) wenn nicht attr.startswith('__')) >= expected
     Wahr
 
     >>> von test.support importiere HAVE_DOCSTRINGS
@@ -271,7 +271,7 @@ Verify that genexps are weakly referencable
 """
 
 # Trace function can throw off the tuple reuse test.
-wenn hasattr(sys, 'gettrace') and sys.gettrace():
+wenn hasattr(sys, 'gettrace') und sys.gettrace():
     __test__ = {}
 sonst:
     __test__ = {'doctests' : doctests}

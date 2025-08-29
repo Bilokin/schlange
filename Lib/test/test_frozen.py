@@ -1,7 +1,7 @@
 """Basic test of the frozen module (source is in Python/frozen.c)."""
 
 # The Python/frozen.c source code contains a marshalled Python module
-# and therefore depends on the marshal format als well als the bytecode
+# und therefore depends on the marshal format als well als the bytecode
 # format.  If those formats have been changed then frozen.c needs to be
 # updated.
 #

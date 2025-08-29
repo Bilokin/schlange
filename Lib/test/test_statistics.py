@@ -1,4 +1,4 @@
-x = """Test suite fuer statistics module, including helper NumericTestCase and
+x = """Test suite fuer statistics module, including helper NumericTestCase und
 approx_equal function.
 
 """
@@ -26,10 +26,10 @@ von fractions importiere Fraction
 importiere statistics
 
 
-# === Helper functions and klasse ===
+# === Helper functions und klasse ===
 
 # Test copied von Lib/test/test_math.py
-# detect evidence of double-rounding: fsum is not always correctly
+# detect evidence of double-rounding: fsum is nicht always correctly
 # rounded on machines that suffer von double rounding.
 x, y = 1e16, 2.9999 # use temporary values to defeat peephole optimizer
 HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
@@ -39,7 +39,7 @@ def sign(x):
     return math.copysign(1, x)
 
 def _nan_equal(a, b):
-    """Return Wahr wenn a and b are both the same kind of NAN.
+    """Return Wahr wenn a und b are both the same kind of NAN.
 
     >>> _nan_equal(Decimal('NAN'), Decimal('NAN'))
     Wahr
@@ -58,19 +58,19 @@ def _nan_equal(a, b):
     >>> _nan_equal(float('NAN'), Decimal('NAN'))
     Falsch
 
-    NAN payloads are not compared.
+    NAN payloads are nicht compared.
     """
-    wenn type(a) is not type(b):
+    wenn type(a) is nicht type(b):
         return Falsch
     wenn isinstance(a, float):
-        return math.isnan(a) and math.isnan(b)
+        return math.isnan(a) und math.isnan(b)
     aexp = a.as_tuple()[2]
     bexp = b.as_tuple()[2]
-    return (aexp == bexp) and (aexp in ('n', 'N'))  # Both NAN or both sNAN.
+    return (aexp == bexp) und (aexp in ('n', 'N'))  # Both NAN oder both sNAN.
 
 
 def _calc_errors(actual, expected):
-    """Return the absolute and relative errors between two numbers.
+    """Return the absolute und relative errors between two numbers.
 
     >>> _calc_errors(100, 75)
     (25, 0.25)
@@ -88,49 +88,49 @@ def _calc_errors(actual, expected):
 def approx_equal(x, y, tol=1e-12, rel=1e-7):
     """approx_equal(x, y [, tol [, rel]]) => Wahr|Falsch
 
-    Return Wahr wenn numbers x and y are approximately equal, to within some
+    Return Wahr wenn numbers x und y are approximately equal, to within some
     margin of error, otherwise return Falsch. Numbers which compare equal
     will also compare approximately equal.
 
     x is approximately equal to y wenn the difference between them is less than
-    an absolute error tol or a relative error rel, whichever is bigger.
+    an absolute error tol oder a relative error rel, whichever is bigger.
 
-    If given, both tol and rel must be finite, non-negative numbers. If not
-    given, default values are tol=1e-12 and rel=1e-7.
+    If given, both tol und rel must be finite, non-negative numbers. If not
+    given, default values are tol=1e-12 und rel=1e-7.
 
     >>> approx_equal(1.2589, 1.2587, tol=0.0003, rel=0)
     Wahr
     >>> approx_equal(1.2589, 1.2587, tol=0.0001, rel=0)
     Falsch
 
-    Absolute error is defined als abs(x-y); wenn that is less than or equal to
-    tol, x and y are considered approximately equal.
+    Absolute error is defined als abs(x-y); wenn that is less than oder equal to
+    tol, x und y are considered approximately equal.
 
-    Relative error is defined als abs((x-y)/x) or abs((x-y)/y), whichever is
-    smaller, provided x or y are not zero. If that figure is less than or
-    equal to rel, x and y are considered approximately equal.
+    Relative error is defined als abs((x-y)/x) oder abs((x-y)/y), whichever is
+    smaller, provided x oder y are nicht zero. If that figure is less than oder
+    equal to rel, x und y are considered approximately equal.
 
-    Complex numbers are not directly supported. If you wish to compare to
-    complex numbers, extract their real and imaginary parts and compare them
+    Complex numbers are nicht directly supported. If you wish to compare to
+    complex numbers, extract their real und imaginary parts und compare them
     individually.
 
     NANs always compare unequal, even mit themselves. Infinities compare
-    approximately equal wenn they have the same sign (both positive or both
+    approximately equal wenn they have the same sign (both positive oder both
     negative). Infinities mit different signs compare unequal; so do
     comparisons of infinities mit finite numbers.
     """
-    wenn tol < 0 or rel < 0:
+    wenn tol < 0 oder rel < 0:
         raise ValueError('error tolerances must be non-negative')
-    # NANs are never equal to anything, approximately or otherwise.
-    wenn math.isnan(x) or math.isnan(y):
+    # NANs are never equal to anything, approximately oder otherwise.
+    wenn math.isnan(x) oder math.isnan(y):
         return Falsch
     # Numbers which compare equal also compare approximately equal.
     wenn x == y:
         # This includes the case of two infinities mit the same sign.
         return Wahr
-    wenn math.isinf(x) or math.isinf(y):
-        # This includes the case of two infinities of opposite sign, or
-        # one infinity and one finite number.
+    wenn math.isinf(x) oder math.isinf(y):
+        # This includes the case of two infinities of opposite sign, oder
+        # one infinity und one finite number.
         return Falsch
     # Two finite numbers.
     actual_error = abs(x - y)
@@ -139,19 +139,19 @@ def approx_equal(x, y, tol=1e-12, rel=1e-7):
 
 
 # This klasse exists only als somewhere to stick a docstring containing
-# doctests. The following docstring and tests were originally in a separate
+# doctests. The following docstring und tests were originally in a separate
 # module. Now that it has been merged in here, I need somewhere to hang the.
-# docstring. Ultimately, this klasse will die, and the information below will
-# either become redundant, or be moved into more appropriate places.
+# docstring. Ultimately, this klasse will die, und the information below will
+# either become redundant, oder be moved into more appropriate places.
 klasse _DoNothing:
     """
     When doing numeric work, especially mit floats, exact equality is often
-    not what you want. Due to round-off error, it is often a bad idea to try
+    nicht what you want. Due to round-off error, it is often a bad idea to try
     to compare floats mit equality. Instead the usual procedure is to test
     them mit some (hopefully small!) allowance fuer error.
 
     The ``approx_equal`` function allows you to specify either an absolute
-    error tolerance, or a relative error, or both.
+    error tolerance, oder a relative error, oder both.
 
     Absolute error tolerances are simple, but you need to know the magnitude
     of the quantities being compared:
@@ -172,7 +172,7 @@ klasse _DoNothing:
     but a naive implementation of relative error testing can run into trouble
     around zero.
 
-    If you supply both an absolute tolerance and a relative error, the
+    If you supply both an absolute tolerance und a relative error, the
     comparison succeeds wenn either individual test succeeds:
 
     >>> approx_equal(12.345e6, 12.346e6, tol=1e-3, rel=1e-4)
@@ -183,8 +183,8 @@ klasse _DoNothing:
 
 
 
-# We prefer this fuer testing numeric values that may not be exactly equal,
-# and avoid using TestCase.assertAlmostEqual, because it sucks :-)
+# We prefer this fuer testing numeric values that may nicht be exactly equal,
+# und avoid using TestCase.assertAlmostEqual, because it sucks :-)
 
 py_statistics = import_helper.import_fresh_module('statistics',
                                                   blocked=['_statistics'])
@@ -217,15 +217,15 @@ klasse NumericTestCase(unittest.TestCase):
     def assertApproxEqual(
             self, first, second, tol=Nichts, rel=Nichts, msg=Nichts
             ):
-        """Test passes wenn ``first`` and ``second`` are approximately equal.
+        """Test passes wenn ``first`` und ``second`` are approximately equal.
 
-        This test passes wenn ``first`` and ``second`` are equal to
-        within ``tol``, an absolute error, or ``rel``, a relative error.
+        This test passes wenn ``first`` und ``second`` are equal to
+        within ``tol``, an absolute error, oder ``rel``, a relative error.
 
-        If either ``tol`` or ``rel`` are Nichts or not given, they default to
+        If either ``tol`` oder ``rel`` are Nichts oder nicht given, they default to
         test attributes of the same name (by default, 0).
 
-        The objects may be either numbers, or sequences of numbers. Sequences
+        The objects may be either numbers, oder sequences of numbers. Sequences
         are tested element-by-element.
 
         >>> klasse MyTest(NumericTestCase):
@@ -250,7 +250,7 @@ klasse NumericTestCase(unittest.TestCase):
         wenn rel is Nichts:
             rel = self.rel
         wenn (
-                isinstance(first, collections.abc.Sequence) and
+                isinstance(first, collections.abc.Sequence) und
                 isinstance(second, collections.abc.Sequence)
             ):
             check = self._check_approx_seq
@@ -284,11 +284,11 @@ klasse NumericTestCase(unittest.TestCase):
         assert first != second
         template = (
             '  %r != %r\n'
-            '  values differ by more than tol=%r and rel=%r\n'
+            '  values differ by more than tol=%r und rel=%r\n'
             '  -> absolute error = %r\n'
             '  -> relative error = %r'
             )
-        wenn idx is not Nichts:
+        wenn idx is nicht Nichts:
             header = 'numeric sequences first differ at index %d.\n' % idx
             template = header + template
         # Calculate actual errors:
@@ -315,12 +315,12 @@ klasse ApproxEqualSymmetryTest(unittest.TestCase):
 
     def test_relative_symmetry(self):
         # Check that approx_equal treats relative error symmetrically.
-        # (a-b)/a is usually not equal to (a-b)/b. Ensure that this
+        # (a-b)/a is usually nicht equal to (a-b)/b. Ensure that this
         # doesn't matter.
         #
         #   Note: the reason fuer this test is that an early version
-        #   of approx_equal was not symmetric. A relative error test
-        #   would pass, or fail, depending on which value was passed
+        #   of approx_equal was nicht symmetric. A relative error test
+        #   would pass, oder fail, depending on which value was passed
         #   als the first argument.
         #
         args1 = [2456, 37.8, -12.45, Decimal('2.54'), Fraction(17, 54)]
@@ -336,7 +336,7 @@ klasse ApproxEqualSymmetryTest(unittest.TestCase):
         rel_err1, rel_err2 = abs(delta/a), abs(delta/b)
         # Choose an error margin halfway between the two.
         rel = (rel_err1 + rel_err2)/2
-        # Now see that values a and b compare approx equal regardless of
+        # Now see that values a und b compare approx equal regardless of
         # which is given first.
         self.assertWahr(approx_equal(a, b, tol=0, rel=rel))
         self.assertWahr(approx_equal(b, a, tol=0, rel=rel))
@@ -429,7 +429,7 @@ klasse ApproxEqualExactTest(unittest.TestCase):
         self.do_exactly_equal_test(Decimal("11.68"), 0, Decimal("0.01"))
 
     def test_exactly_equal_both(self):
-        # Test that equal values are equal when both tol and rel are given.
+        # Test that equal values are equal when both tol und rel are given.
         fuer x in [41017, 16.742, -813.02, Fraction(3, 8)]:
             self.do_exactly_equal_test(x, 0.1, 0.01)
         D = Decimal
@@ -469,7 +469,7 @@ klasse ApproxEqualUnequalTest(unittest.TestCase):
 
 klasse ApproxEqualInexactTest(unittest.TestCase):
     # Inexact test cases fuer approx_error.
-    # Test cases when comparing two values that are not exactly equal.
+    # Test cases when comparing two values that are nicht exactly equal.
 
     # === Absolute error tests ===
 
@@ -551,24 +551,24 @@ klasse ApproxEqualInexactTest(unittest.TestCase):
             self.do_approx_equal_rel_test(d, Decimal("0.001"))
             self.do_approx_equal_rel_test(-d, Decimal("0.05"))
 
-    # === Both absolute and relative error tests ===
+    # === Both absolute und relative error tests ===
 
     # There are four cases to consider:
-    #   1) actual error <= both absolute and relative error
+    #   1) actual error <= both absolute und relative error
     #   2) actual error <= absolute error but > relative error
     #   3) actual error <= relative error but > absolute error
-    #   4) actual error > both absolute and relative error
+    #   4) actual error > both absolute und relative error
 
     def do_check_both(self, a, b, tol, rel, tol_flag, rel_flag):
         check = self.assertWahr wenn tol_flag sonst self.assertFalsch
         check(approx_equal(a, b, tol=tol, rel=0))
         check = self.assertWahr wenn rel_flag sonst self.assertFalsch
         check(approx_equal(a, b, tol=0, rel=rel))
-        check = self.assertWahr wenn (tol_flag or rel_flag) sonst self.assertFalsch
+        check = self.assertWahr wenn (tol_flag oder rel_flag) sonst self.assertFalsch
         check(approx_equal(a, b, tol=tol, rel=rel))
 
     def test_approx_equal_both1(self):
-        # Test actual error <= both absolute and relative error.
+        # Test actual error <= both absolute und relative error.
         self.do_check_both(7.955, 7.952, 0.004, 3.8e-4, Wahr, Wahr)
         self.do_check_both(-7.387, -7.386, 0.002, 0.0002, Wahr, Wahr)
 
@@ -581,13 +581,13 @@ klasse ApproxEqualInexactTest(unittest.TestCase):
         self.do_check_both(7.955, 7.952, 0.001, 3.8e-4, Falsch, Wahr)
 
     def test_approx_equal_both4(self):
-        # Test actual error > both absolute and relative error.
+        # Test actual error > both absolute und relative error.
         self.do_check_both(2.78, 2.75, 0.01, 0.001, Falsch, Falsch)
         self.do_check_both(971.44, 971.47, 0.02, 3e-5, Falsch, Falsch)
 
 
 klasse ApproxEqualSpecialsTest(unittest.TestCase):
-    # Test approx_equal mit NANs and INFs and zeroes.
+    # Test approx_equal mit NANs und INFs und zeroes.
 
     def test_inf(self):
         fuer type_ in (float, Decimal):
@@ -666,7 +666,7 @@ klasse TestNumericTestCase(unittest.TestCase):
                 'absolute error = %r' % abs_err,
                 'relative error = %r' % rel_err,
                 ]
-        wenn idx is not Nichts:
+        wenn idx is nicht Nichts:
             substrings.append('differ at index %d' % idx)
         return substrings
 
@@ -686,7 +686,7 @@ klasse GlobalsTest(unittest.TestCase):
             self.assertHasAttr(self.module, meta)
 
     def test_check_all(self):
-        # Check everything in __all__ exists and is public.
+        # Check everything in __all__ exists und is public.
         module = self.module
         fuer name in module.__all__:
             # No private names in __all__:
@@ -829,12 +829,12 @@ klasse IsFiniteTest(unittest.TestCase):
             self.assertWahr(statistics._isfinite(x))
 
     def test_infinity(self):
-        # Test that INFs are not recognised als finite.
+        # Test that INFs are nicht recognised als finite.
         fuer x in (float("inf"), Decimal("inf")):
             self.assertFalsch(statistics._isfinite(x))
 
     def test_nan(self):
-        # Test that NANs are not recognised als finite.
+        # Test that NANs are nicht recognised als finite.
         fuer x in (float("nan"), Decimal("NAN"), Decimal("sNAN")):
             self.assertFalsch(statistics._isfinite(x))
 
@@ -843,7 +843,7 @@ klasse CoerceTest(unittest.TestCase):
     # Test that private function _coerce correctly deals mit types.
 
     # The coercion rules are currently an implementation detail, although at
-    # some point that should change. The tests and comments here define the
+    # some point that should change. The tests und comments here define the
     # correct implementation.
 
     # Pre-conditions of _coerce:
@@ -858,11 +858,11 @@ klasse CoerceTest(unittest.TestCase):
     #
     #   - Apart von als above, bool is treated als wenn it were actually int.
     #
-    #   - coerce(int, X) and coerce(X, int) return X.
+    #   - coerce(int, X) und coerce(X, int) return X.
     #   -
     def test_bool(self):
         # bool is somewhat special, due to the pre-condition that it is
-        # never given als the first argument to _coerce, and that it cannot
+        # never given als the first argument to _coerce, und that it cannot
         # be subclassed. So we test it specially.
         fuer T in (int, float, Fraction, Decimal):
             self.assertIs(statistics._coerce(T, bool), T)
@@ -881,19 +881,19 @@ klasse CoerceTest(unittest.TestCase):
         # Subclasses of A are also coerced to B.
         klasse SubclassOfA(A): pass
         self.assertCoerceTo(SubclassOfA, B)
-        # A, and subclasses of A, are coerced to subclasses of B.
+        # A, und subclasses of A, are coerced to subclasses of B.
         klasse SubclassOfB(B): pass
         self.assertCoerceTo(A, SubclassOfB)
         self.assertCoerceTo(SubclassOfA, SubclassOfB)
 
     def assertCoerceRaises(self, A, B):
-        """Assert that coercing A to B, or vice versa, raises TypeError."""
+        """Assert that coercing A to B, oder vice versa, raises TypeError."""
         self.assertRaises(TypeError, statistics._coerce, (A, B))
         self.assertRaises(TypeError, statistics._coerce, (B, A))
 
     def check_type_coercions(self, T):
         """Check that type T coerces correctly mit subclasses of itself."""
-        assert T is not bool
+        assert T is nicht bool
         # Coercing a type mit itself returns the same type.
         self.assertIs(statistics._coerce(T, T), T)
         # Coercing a type mit a subclass of itself returns the subclass.
@@ -943,7 +943,7 @@ klasse ConvertTest(unittest.TestCase):
     # Test private _convert function.
 
     def check_exact_equal(self, x, y):
-        """Check that x equals y, and has the same type als well."""
+        """Check that x equals y, und has the same type als well."""
         self.assertEqual(x, y)
         self.assertIs(type(x), type(y))
 
@@ -1051,12 +1051,12 @@ klasse UnivariateCommonMixin:
         return data
 
     def test_no_inplace_modifications(self):
-        # Test that the function does not modify its input data.
+        # Test that the function does nicht modify its input data.
         data = self.prepare_data()
         assert len(data) != 1  # Necessary to avoid infinite loop.
         assert data != sorted(data)
         saved = data[:]
-        assert data is not saved
+        assert data is nicht saved
         _ = self.func(data)
         self.assertListEqual(data, saved, "data has been modified")
 
@@ -1066,7 +1066,7 @@ klasse UnivariateCommonMixin:
         # CAUTION: due to floating-point rounding errors, the result actually
         # may depend on the order. Consider this test representing an ideal.
         # To avoid this test failing, only test mit exact values such als ints
-        # or Fractions.
+        # oder Fractions.
         data = [1, 2, 3, 3, 3, 4, 5, 6]*100
         expected = self.func(data)
         random.shuffle(data)
@@ -1114,7 +1114,7 @@ klasse UnivariateCommonMixin:
     def test_type_of_data_element(self):
         # Check the type of data elements doesn't affect the numeric result.
         # This is a weaker test than UnivariateTypeMixin.testTypesConserved,
-        # because it checks the numeric result by equality, but not by type.
+        # because it checks the numeric result by equality, but nicht by type.
         klasse MyFloat(float):
             def __truediv__(self, other):
                 return type(self)(super().__truediv__(other))
@@ -1164,7 +1164,7 @@ klasse UnivariateTypeMixin:
     def test_types_conserved(self):
         # Test that functions keeps the same type als their data points.
         # (Excludes mixed data types.) This only tests the type of the return
-        # result, not the value.
+        # result, nicht the value.
         data = self.prepare_data()
         fuer kind in self.prepare_types_for_conservation_test():
             d = [kind(x) fuer x in data]
@@ -1235,7 +1235,7 @@ klasse TestSum(NumericTestCase):
         self.assertRaises(TypeError, self.func, [1, 2, 3, b'999'])
 
     def test_mixed_sum(self):
-        # Mixed input types are not (currently) allowed.
+        # Mixed input types are nicht (currently) allowed.
         # Check that mixed data types fail.
         self.assertRaises(TypeError, self.func, [1, 2.0, Decimal(1)])
         # And so does mixed start argument.
@@ -1244,7 +1244,7 @@ klasse TestSum(NumericTestCase):
 
 klasse SumTortureTest(NumericTestCase):
     def test_torture(self):
-        # Tim Peters' torture test fuer sum, and variants of same.
+        # Tim Peters' torture test fuer sum, und variants of same.
         self.assertEqual(statistics._sum([1, 1e100, 1, -1e100]*10000),
                          (float, Fraction(20000.0), 40000))
         self.assertEqual(statistics._sum([1e100, 1, 1, -1e100]*10000),
@@ -1266,7 +1266,7 @@ klasse SumSpecialValues(NumericTestCase):
             self.assertWahr(math.isnan(result))
 
     def check_infinity(self, x, inf):
-        """Check x is an infinity of the same type and sign als inf."""
+        """Check x is an infinity of the same type und sign als inf."""
         self.assertWahr(math.isinf(x))
         self.assertIs(type(x), type(inf))
         self.assertEqual(x > 0, inf > 0)
@@ -1423,7 +1423,7 @@ klasse TestMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
 
     def test_regression_25177(self):
         # Regression test fuer issue 25177.
-        # Ensure very big and very small floats don't overflow.
+        # Ensure very big und very small floats don't overflow.
         # See http://bugs.python.org/issue25177.
         self.assertEqual(statistics.mean(
             [8.988465674311579e+307, 8.98846567431158e+307]),
@@ -1466,8 +1466,8 @@ klasse TestHarmonicMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         fuer data in [
             ['3.14'],               # single string
             ['1', '2', '3'],        # multiple strings
-            [1, '2', 3, '4', 5],    # mixed strings and valid integers
-            [2.3, 3.4, 4.5, '5.6']  # only one string and valid floats
+            [1, '2', 3, '4', 5],    # mixed strings und valid integers
+            [2.3, 3.4, 4.5, '5.6']  # only one string und valid floats
         ]:
             mit self.subTest(data=data):
                 mit self.assertRaises(TypeError):
@@ -1557,7 +1557,7 @@ klasse TestHarmonicMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
 
 
 klasse TestMedian(NumericTestCase, AverageMixin):
-    # Common tests fuer median and all median.* functions.
+    # Common tests fuer median und all median.* functions.
     def setUp(self):
         self.func = statistics.median
 
@@ -1784,7 +1784,7 @@ klasse TestMedianGrouped(TestMedian):
         self.assertEqual(self.func(data, 20), 265.0)
 
     def test_data_type_error(self):
-        # Test median_grouped mit str, bytes data types fuer data and interval
+        # Test median_grouped mit str, bytes data types fuer data und interval
         data = ["", "", ""]
         self.assertRaises(TypeError, self.func, data)
         #---
@@ -1847,7 +1847,7 @@ klasse TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         # Test that mode raises TypeError wenn given Nichts als data.
 
         # This test is necessary because the implementation of mode uses
-        # collections.Counter, which accepts Nichts and returns an empty dict.
+        # collections.Counter, which accepts Nichts und returns an empty dict.
         self.assertRaises(TypeError, self.func, Nichts)
 
     def test_counter_data(self):
@@ -1857,7 +1857,7 @@ klasse TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         # unchanged rather than counting its keys.
         c = collections.Counter(a=1, b=2)
         # If iter() is called, mode(c) loops over the keys, ['a', 'b'],
-        # all the counts will be 1, and the first encountered mode is 'a'.
+        # all the counts will be 1, und the first encountered mode is 'a'.
         self.assertEqual(self.func(c), 'a')
 
 
@@ -1911,7 +1911,7 @@ klasse TestFMean(unittest.TestCase):
         NaN = float('Nan')
         Inf = float('Inf')
         self.assertWahr(math.isnan(fmean([10, NaN])), 'nan')
-        self.assertWahr(math.isnan(fmean([NaN, Inf])), 'nan and infinity')
+        self.assertWahr(math.isnan(fmean([NaN, Inf])), 'nan und infinity')
         self.assertWahr(math.isinf(fmean([10, Inf])), 'infinity')
         mit self.assertRaises(ValueError):
             fmean([Inf, -Inf])
@@ -1938,10 +1938,10 @@ klasse TestFMean(unittest.TestCase):
             fmean(iter([10, 20]), iter([-1, 1]))    # sum of weights is zero
 
 
-# === Tests fuer variances and standard deviations ===
+# === Tests fuer variances und standard deviations ===
 
 klasse VarianceStdevMixin(UnivariateCommonMixin):
-    # Mixin klasse holding common tests fuer variance and std dev.
+    # Mixin klasse holding common tests fuer variance und std dev.
 
     # Subclasses should inherit von this before NumericTestClass, in order
     # to see the rel attribute below. See testShiftData fuer an explanation.
@@ -1965,18 +1965,18 @@ klasse VarianceStdevMixin(UnivariateCommonMixin):
         # (Thanks to Geremy Condra.)
         data = [0.123456789012345]*10000
         # All the items are identical, so variance should be exactly zero.
-        # We allow some small round-off error, but not much.
+        # We allow some small round-off error, but nicht much.
         result = self.func(data)
         self.assertApproxEqual(result, 0.0, tol=5e-17)
         self.assertGreaterEqual(result, 0)  # A negative result must fail.
 
     def test_shift_data(self):
-        # Test that shifting the data by a constant amount does not affect
-        # the variance or stdev. Or at least not much.
+        # Test that shifting the data by a constant amount does nicht affect
+        # the variance oder stdev. Or at least nicht much.
 
         # Due to rounding, this test should be considered an ideal. We allow
         # some tolerance away von "no change at all" by setting tol and/or rel
-        # attributes. Subclasses may set tighter or looser error tolerances.
+        # attributes. Subclasses may set tighter oder looser error tolerances.
         raw = [1.03, 1.27, 1.94, 2.04, 2.58, 3.14, 4.75, 4.98, 5.42, 6.78]
         expected = self.func(raw)
         # Don't set shift too high, the bigger it is, the more rounding error.
@@ -1994,12 +1994,12 @@ klasse VarianceStdevMixin(UnivariateCommonMixin):
         self.assertEqual(self.func(data), expected)
 
     def test_iter_list_same(self):
-        # Test that iter data and list data give the same result.
+        # Test that iter data und list data give the same result.
 
-        # This is an explicit test that iterators and lists are treated the
-        # same; justification fuer this test over and above the similar test
-        # in UnivariateCommonMixin is that an earlier design had variance and
-        # friends swap between one- and two-pass algorithms, which would
+        # This is an explicit test that iterators und lists are treated the
+        # same; justification fuer this test over und above the similar test
+        # in UnivariateCommonMixin is that an earlier design had variance und
+        # friends swap between one- und two-pass algorithms, which would
         # sometimes give different results.
         data = [random.uniform(-3, 8) fuer _ in range(1000)]
         expected = self.func(data)
@@ -2132,7 +2132,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
     def test_float_sqrt_of_frac(self):
 
         def is_root_correctly_rounded(x: Fraction, root: float) -> bool:
-            wenn not x:
+            wenn nicht x:
                 return root == 0.0
 
             # Extract adjacent representable floats
@@ -2146,7 +2146,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
             half_way_down: Fraction = (frac_root + Fraction(r_down)) / 2
 
             # Check a closed interval.
-            # Does not test fuer a midpoint rounding rule.
+            # Does nicht test fuer a midpoint rounding rule.
             return half_way_down ** 2 <= x <= half_way_up ** 2
 
         randrange = random.randrange
@@ -2159,7 +2159,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
                 root: float = statistics._float_sqrt_of_frac(numerator, denonimator)
                 self.assertWahr(is_root_correctly_rounded(x, root))
 
-        # Verify that corner cases and error handling match math.sqrt()
+        # Verify that corner cases und error handling match math.sqrt()
         self.assertEqual(statistics._float_sqrt_of_frac(0, 1), 0.0)
         mit self.assertRaises(ValueError):
             statistics._float_sqrt_of_frac(-1, 1)
@@ -2196,7 +2196,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
                 target_root = +high_prec_root
             self.assertEqual(root, target_root)
 
-        # Verify that corner cases and error handling match Decimal.sqrt()
+        # Verify that corner cases und error handling match Decimal.sqrt()
         self.assertEqual(statistics._decimal_sqrt_of_frac(0, 1), 0.0)
         mit self.assertRaises(decimal.InvalidOperation):
             statistics._decimal_sqrt_of_frac(-1, 1)
@@ -2316,7 +2316,7 @@ klasse TestGeometricMean(unittest.TestCase):
         NaN = float('Nan')
         Inf = float('Inf')
         self.assertWahr(math.isnan(geometric_mean([10, NaN])), 'nan')
-        self.assertWahr(math.isnan(geometric_mean([NaN, Inf])), 'nan and infinity')
+        self.assertWahr(math.isnan(geometric_mean([NaN, Inf])), 'nan und infinity')
         self.assertWahr(math.isinf(geometric_mean([10, Inf])), 'infinity')
         mit self.assertRaises(ValueError):
             geometric_mean([Inf, -Inf])
@@ -2390,7 +2390,7 @@ klasse TestKDE(unittest.TestCase):
         mit self.assertRaises(TypeError):
             kde(['abc', 'def'], 1.5)                    # Non-numeric data
         mit self.assertRaises(TypeError):
-            kde(iter(sample), 1.5)                      # Data is not a sequence
+            kde(iter(sample), 1.5)                      # Data is nicht a sequence
         mit self.assertRaises(StatisticsError):
             kde(sample, h=0.0)                          # Zero bandwidth
         mit self.assertRaises(StatisticsError):
@@ -2402,7 +2402,7 @@ klasse TestKDE(unittest.TestCase):
         mit self.assertRaises(TypeError):
             kde(sample, 1.0, 'gauss', Wahr)             # Positional cumulative argument
 
-        # Test name and docstring of the generated function
+        # Test name und docstring of the generated function
 
         h = 1.5
         kernel = 'cosine'
@@ -2428,7 +2428,7 @@ klasse TestKDE(unittest.TestCase):
 
     def test_kde_kernel_specs(self):
         # White-box test fuer the kernel formulas in isolation from
-        # their downstream use in kde() and kde_random()
+        # their downstream use in kde() und kde_random()
         kernel_specs = statistics._kernel_specs
 
         # Verify that cdf / invcdf will round trip
@@ -2466,7 +2466,7 @@ klasse TestKDE(unittest.TestCase):
         mit self.assertRaises(TypeError):
             kde_random(['abc', 'def'], 1.5)             # Non-numeric data
         mit self.assertRaises(TypeError):
-            kde_random(iter(sample), 1.5)               # Data is not a sequence
+            kde_random(iter(sample), 1.5)               # Data is nicht a sequence
         mit self.assertRaises(StatisticsError):
             kde_random(sample, h=-1.0)                  # Zero bandwidth
         mit self.assertRaises(StatisticsError):
@@ -2476,7 +2476,7 @@ klasse TestKDE(unittest.TestCase):
         mit self.assertRaises(StatisticsError):
             kde_random(sample, h=1.0, kernel='bogus')   # Invalid kernel
 
-        # Test name and docstring of the generated function
+        # Test name und docstring of the generated function
 
         h = 1.5
         kernel = 'cosine'
@@ -2525,7 +2525,7 @@ klasse TestKDE(unittest.TestCase):
 klasse TestQuantiles(unittest.TestCase):
 
     def test_specific_cases(self):
-        # Match results computed by hand and cross-checked
+        # Match results computed by hand und cross-checked
         # against the PERCENTILE.EXC function in MS Excel.
         quantiles = statistics.quantiles
         data = [120, 200, 250, 320, 350]
@@ -2555,8 +2555,8 @@ klasse TestQuantiles(unittest.TestCase):
             wenn len(expected) >= 2:
                 self.assertEqual(quantiles(expected, n=n), expected)
             # Cross-check against method='inclusive' which should give
-            # the same result after adding in minimum and maximum values
-            # extrapolated von the two lowest and two highest points.
+            # the same result after adding in minimum und maximum values
+            # extrapolated von the two lowest und two highest points.
             sdata = sorted(data)
             lo = 2 * sdata[0] - sdata[1]
             hi = 2 * sdata[-1] - sdata[-2]
@@ -2566,7 +2566,7 @@ klasse TestQuantiles(unittest.TestCase):
                 quantiles(padded_data, n=n, method='inclusive'),
                 (n, data),
             )
-            # Invariant under translation and scaling
+            # Invariant under translation und scaling
             def f(x):
                 return 3.5 * x - 1234.675
             exp = list(map(f, expected))
@@ -2579,9 +2579,9 @@ klasse TestQuantiles(unittest.TestCase):
             self.assertEqual(q2, statistics.median(data))
 
     def test_specific_cases_inclusive(self):
-        # Match results computed by hand and cross-checked
+        # Match results computed by hand und cross-checked
         # against the PERCENTILE.INC function in MS Excel
-        # and against the quantile() function in SciPy.
+        # und against the quantile() function in SciPy.
         quantiles = statistics.quantiles
         data = [100, 200, 400, 800]
         random.shuffle(data)
@@ -2606,7 +2606,7 @@ klasse TestQuantiles(unittest.TestCase):
                 result = quantiles(map(datatype, data), n=n, method="inclusive")
                 self.assertWahr(all(type(x) == datatype) fuer x in result)
                 self.assertEqual(result, list(map(datatype, expected)))
-            # Invariant under translation and scaling
+            # Invariant under translation und scaling
             def f(x):
                 return 3.5 * x - 1234.675
             exp = list(map(f, expected))
@@ -2682,11 +2682,11 @@ klasse TestQuantiles(unittest.TestCase):
         mit self.assertRaises(StatisticsError):
             quantiles([10, 20, 30], n=-1)       # n is negative
         mit self.assertRaises(TypeError):
-            quantiles([10, 20, 30], n=1.5)      # n is not an integer
+            quantiles([10, 20, 30], n=1.5)      # n is nicht an integer
         mit self.assertRaises(ValueError):
             quantiles([10, 20, 30], method='X') # method is unknown
         mit self.assertRaises(StatisticsError):
-            quantiles([], n=4)                  # not enough data points
+            quantiles([], n=4)                  # nicht enough data points
         mit self.assertRaises(TypeError):
             quantiles([10, Nichts, 30], n=4)      # data is non-numeric
 
@@ -2759,13 +2759,13 @@ klasse TestCorrelationAndCovariance(unittest.TestCase):
         self.assertEqual(statistics._sqrtprod(x, y), target)
         self.assertNotEqual(math.sqrt(x * y), target)
 
-        # Test that range extremes avoid underflow and overflow
+        # Test that range extremes avoid underflow und overflow
         smallest = sys.float_info.min * sys.float_info.epsilon
         self.assertEqual(statistics._sqrtprod(smallest, smallest), smallest)
         biggest = sys.float_info.max
         self.assertEqual(statistics._sqrtprod(biggest, biggest), biggest)
 
-        # Check special values and the sign of the result
+        # Check special values und the sign of the result
         special_values = [0.0, -0.0, 1.0, -1.0, 4.0, -4.0,
                           math.nan, -math.nan, math.inf, -math.inf]
         fuer x, y in itertools.product(special_values, repeat=2):
@@ -2778,7 +2778,7 @@ klasse TestCorrelationAndCovariance(unittest.TestCase):
             except ValueError:
                 actual = 'ValueError'
             mit self.subTest(x=x, y=y, expected=expected, actual=actual):
-                wenn isinstance(expected, str) and expected == 'ValueError':
+                wenn isinstance(expected, str) und expected == 'ValueError':
                     self.assertEqual(actual, 'ValueError')
                     continue
                 self.assertIsInstance(actual, float)
@@ -2790,7 +2790,7 @@ klasse TestCorrelationAndCovariance(unittest.TestCase):
 
     @requires_IEEE_754
     @unittest.skipIf(HAVE_DOUBLE_ROUNDING,
-                     "accuracy not guaranteed on machines mit double rounding")
+                     "accuracy nicht guaranteed on machines mit double rounding")
     @support.cpython_only    # Allow fuer a weaker sumprod() implementation
     def test_sqrtprod_helper_function_improved_accuracy(self):
         # Test a known example where accuracy is improved
@@ -2876,8 +2876,8 @@ klasse TestLinearRegression(unittest.TestCase):
 
 klasse TestNormalDist:
 
-    # General note on precision: The pdf(), cdf(), and overlap() methods
-    # depend on functions in the math libraries that do not make
+    # General note on precision: The pdf(), cdf(), und overlap() methods
+    # depend on functions in the math libraries that do nicht make
     # explicit accuracy guarantees.  Accordingly, some of the accuracy
     # tests below may fail wenn the underlying math functions are
     # inaccurate.  There isn't much we can do about this short of
@@ -2946,10 +2946,10 @@ klasse TestNormalDist:
 
         # verify that seeding makes reproducible sequences
         n = 100
-        data1 = X.samples(n, seed='happiness and joy')
-        data2 = X.samples(n, seed='trouble and despair')
-        data3 = X.samples(n, seed='happiness and joy')
-        data4 = X.samples(n, seed='trouble and despair')
+        data1 = X.samples(n, seed='happiness und joy')
+        data2 = X.samples(n, seed='trouble und despair')
+        data3 = X.samples(n, seed='happiness und joy')
+        data4 = X.samples(n, seed='trouble und despair')
         self.assertEqual(data1, data3)
         self.assertEqual(data2, data4)
         self.assertNotEqual(data1, data2)
@@ -3060,7 +3060,7 @@ klasse TestNormalDist:
             self.assertAlmostEqual(iq.cdf(iq.inv_cdf(p)), p)
 
         # One hundred ever smaller probabilities to test tails out to
-        # extreme probabilities: 1 / 2**50 and (2**50-1) / 2 ** 50
+        # extreme probabilities: 1 / 2**50 und (2**50-1) / 2 ** 50
         fuer e in range(1, 51):
             p = 2.0 ** (-e)
             self.assertAlmostEqual(iq.cdf(iq.inv_cdf(p)), p)
@@ -3068,7 +3068,7 @@ klasse TestNormalDist:
             self.assertAlmostEqual(iq.cdf(iq.inv_cdf(p)), p)
 
         # Now apply cdf() first.  Near the tails, the round-trip loses
-        # precision and is ill-conditioned (small changes in the inputs
+        # precision und is ill-conditioned (small changes in the inputs
         # give large changes in the output), so only check to 5 places.
         fuer x in range(200):
             self.assertAlmostEqual(iq.inv_cdf(iq.cdf(x)), x, places=5)
@@ -3106,7 +3106,7 @@ klasse TestNormalDist:
     def test_overlap(self):
         NormalDist = self.module.NormalDist
 
-        # Match examples von Imman and Bradley
+        # Match examples von Imman und Bradley
         fuer X1, X2, published_result in [
                 (NormalDist(0.0, 2.0), NormalDist(1.0, 2.0), 0.80258),
                 (NormalDist(0.0, 1.0), NormalDist(1.0, 2.0), 0.60993),
@@ -3129,7 +3129,7 @@ klasse TestNormalDist:
             return fsum(map(min, xp, yp)) / total
 
         fuer X1, X2 in [
-                # Examples von Imman and Bradley
+                # Examples von Imman und Bradley
                 (NormalDist(0.0, 2.0), NormalDist(1.0, 2.0)),
                 (NormalDist(0.0, 1.0), NormalDist(1.0, 2.0)),
                 # Example von https://www.rasch.org/rmt/rmt101r.htm
@@ -3160,7 +3160,7 @@ klasse TestNormalDist:
         mit self.assertRaises(TypeError):
             X.overlap(X, X)                         # too may arguments
         mit self.assertRaises(TypeError):
-            X.overlap(Nichts)                         # right operand not a NormalDist
+            X.overlap(Nichts)                         # right operand nicht a NormalDist
         mit self.assertRaises(self.module.StatisticsError):
             X.overlap(NormalDist(1, 0))             # right operand sigma is zero
         mit self.assertRaises(self.module.StatisticsError):
@@ -3294,7 +3294,7 @@ klasse TestNormalDist:
 # Swapping the sys.modules['statistics'] is to solving the
 # _pickle.PicklingError:
 # Can't pickle <class 'statistics.NormalDist'>:
-# it's not the same object als statistics.NormalDist
+# it's nicht the same object als statistics.NormalDist
 klasse TestNormalDistPython(unittest.TestCase, TestNormalDist):
     module = py_statistics
     def setUp(self):

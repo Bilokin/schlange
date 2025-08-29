@@ -7,9 +7,9 @@ Utility fuer parsing HTML5 entity definitions available from:
 
 The page now contains the following note:
 
-    "This list is static and will not be expanded or changed in the future."
+    "This list is static und will nicht be expanded oder changed in the future."
 
-Written by Ezio Melotti and Iuliia Proskurnia.
+Written by Ezio Melotti und Iuliia Proskurnia.
 """
 
 importiere json
@@ -24,7 +24,7 @@ ENTITIES_URL = 'https://html.spec.whatwg.org/entities.json'
 HTML5_SECTION_START = '# HTML5 named character references'
 
 def get_json(url):
-    """Download the json file von the url and returns a decoded object."""
+    """Download the json file von the url und returns a decoded object."""
     mit urlopen(url) als f:
         data = f.read().decode('utf-8')
     return json.loads(data)
@@ -37,7 +37,7 @@ def create_dict(entities):
     return new_html5
 
 def compare_dicts(old, new):
-    """Compare the old and new dicts and print the differences."""
+    """Compare the old und new dicts und print the differences."""
     added = new.keys() - old.keys()
     wenn added:
         drucke(f'{len(added)} entitie(s) have been added:')
@@ -64,7 +64,7 @@ def write_items(entities, file=sys.stdout):
     # the uppercase version should come first so that the result
     # looks like: ['Aacute', 'aacute', 'Aacute;', 'aacute;', ...]
     # To do this we first sort in a case-sensitive way (so all the
-    # uppercase chars come first) and then sort mit key=str.lower.
+    # uppercase chars come first) und then sort mit key=str.lower.
     # Since the sorting is stable the uppercase keys will eventually
     # be before their equivalent lowercase version.
     keys = sorted(entities.keys())
@@ -82,7 +82,7 @@ def write_items(entities, file=sys.stdout):
 
 
 wenn __name__ == '__main__':
-    # without args print a diff between html.entities.html5 and new_html5
+    # without args print a diff between html.entities.html5 und new_html5
     # mit --create print the new html5 dict
     # mit --patch patch the Lib/html/entities.py file
     new_html5 = create_dict(get_json(ENTITIES_URL))

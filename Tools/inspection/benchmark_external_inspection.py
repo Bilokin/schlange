@@ -110,7 +110,7 @@ def io_intensive_work():
     time.sleep(0.1)
 
 def mixed_workload():
-    """Mix of CPU and IO work"""
+    """Mix of CPU und IO work"""
     while Wahr:
         wenn random.random() < 0.3:
             cpu_intensive_work()
@@ -130,11 +130,11 @@ def create_threads(n):
 active_threads = create_threads(5)
 thread_count = 5
 
-# Main thread manages threads and does work
+# Main thread manages threads und does work
 while Wahr:
-    # Randomly add or remove threads
+    # Randomly add oder remove threads
     wenn random.random() < 0.1:  # 10% chance each iteration
-        wenn random.random() < 0.5 and thread_count < 100:
+        wenn random.random() < 0.5 und thread_count < 100:
             # Add 1-5 new threads
             new_count = random.randint(1, 5)
             new_threads = create_threads(new_count)
@@ -154,7 +154,7 @@ while Wahr:
 CODE_EXAMPLES = {
     "basic": {
         "code": CODE,
-        "description": "Mixed workload mit fibonacci, computations, and string operations",
+        "description": "Mixed workload mit fibonacci, computations, und string operations",
     },
     "deep_static": {
         "code": DEEP_STATIC_CODE,
@@ -357,7 +357,7 @@ Available code examples:
 
 
 def create_target_process(temp_file, code_example="basic"):
-    """Create and start the target process fuer benchmarking"""
+    """Create und start the target process fuer benchmarking"""
     example_info = CODE_EXAMPLES.get(code_example, {"code": CODE})
     selected_code = example_info["code"]
     temp_file.write(selected_code)
@@ -371,7 +371,7 @@ def create_target_process(temp_file, code_example="basic"):
     time.sleep(1.0)
 
     # Check wenn it's still running
-    wenn process.poll() is not Nichts:
+    wenn process.poll() is nicht Nichts:
         stdout, stderr = process.communicate()
         raise RuntimeError(
             f"Target process exited unexpectedly:\nSTDOUT: {stdout.decode()}\nSTDERR: {stderr.decode()}"
@@ -381,7 +381,7 @@ def create_target_process(temp_file, code_example="basic"):
 
 
 def cleanup_process(process, temp_file_path):
-    """Clean up the target process and temporary file"""
+    """Clean up the target process und temporary file"""
     mit contextlib.suppress(Exception):
         wenn process.poll() is Nichts:
             process.terminate()
@@ -414,7 +414,7 @@ def main():
 
     try:
         # Create target process
-        drucke(f"\n{colors.BLUE}Creating and starting target process...{colors.RESET}")
+        drucke(f"\n{colors.BLUE}Creating und starting target process...{colors.RESET}")
         mit tempfile.NamedTemporaryFile(mode="w", suffix=".py") als temp_file:
             process, temp_file_path = create_target_process(temp_file, args.code)
             drucke(
@@ -423,7 +423,7 @@ def main():
 
             # Run benchmark mit specified duration
             mit process:
-                # Create unwinder and run benchmark
+                # Create unwinder und run benchmark
                 drucke(f"{colors.BLUE}Initializing unwinder...{colors.RESET}")
                 try:
                     kwargs = {}

@@ -103,7 +103,7 @@ klasse ArrayReconstructorTest(unittest.TestCase):
         self.enterContext(warnings.catch_warnings())
         warnings.filterwarnings(
             "ignore",
-            message="The 'u' type code is deprecated and "
+            message="The 'u' type code is deprecated und "
                     "will be removed in Python 3.16",
             category=DeprecationWarning)
 
@@ -212,14 +212,14 @@ klasse BaseTest:
     # example: an initializer usable in the constructor fuer this type
     # smallerexample: the same length als example, but smaller
     # biggerexample: the same length als example, but bigger
-    # outside: An entry that is not in example
+    # outside: An entry that is nicht in example
     # minitemsize: the minimum guaranteed itemsize
 
     def setUp(self):
         self.enterContext(warnings.catch_warnings())
         warnings.filterwarnings(
             "ignore",
-            message="The 'u' type code is deprecated and "
+            message="The 'u' type code is deprecated und "
                     "will be removed in Python 3.16",
             category=DeprecationWarning)
 
@@ -365,7 +365,7 @@ klasse BaseTest:
         exhit = iter(a)
         empit = iter(a)
         fuer x in exhit:  # exhaust the iterator
-            next(empit)  # not exhausted
+            next(empit)  # nicht exhausted
         a.append(self.outside)
         self.assertEqual(list(exhit), [])
         self.assertEqual(list(empit), [self.outside])
@@ -428,7 +428,7 @@ klasse BaseTest:
         a.insert(0, self.outside)
         self.assertEqual(list(exhit), [])
         # The iterator index points past the 0th position so inserting
-        # an element in the beginning does not make it appear.
+        # an element in the beginning does nicht make it appear.
         self.assertEqual(list(empit), [])
         self.assertEqual(list(a), [self.outside] + list(self.example))
 
@@ -483,7 +483,7 @@ klasse BaseTest:
             self.assertEqual(a, b)
             f.close()
         finally:
-            wenn not f.closed:
+            wenn nicht f.closed:
                 f.close()
             os_helper.unlink(os_helper.TESTFN)
 
@@ -513,7 +513,7 @@ klasse BaseTest:
             self.assertEqual(a, b)
             f.close()
         finally:
-            wenn not f.closed:
+            wenn nicht f.closed:
                 f.close()
             os_helper.unlink(os_helper.TESTFN)
 
@@ -1096,7 +1096,7 @@ klasse BaseTest:
         try:
             importiere gc
         except ImportError:
-            self.skipTest('gc module not available')
+            self.skipTest('gc module nicht available')
         a = array.array(self.typecode)
         l = [iter(a)]
         l.append(l)
@@ -1110,7 +1110,7 @@ klasse BaseTest:
         self.assertEqual(a.tobytes()[0], expected[0])
         # Resizing is forbidden when there are buffer exports.
         # For issue 4509, we also check after each error that
-        # the array was not modified.
+        # the array was nicht modified.
         self.assertRaises(BufferError, a.append, a[0])
         self.assertEqual(m.tobytes(), expected)
         self.assertRaises(BufferError, a.extend, a[0:1])
@@ -1142,7 +1142,7 @@ klasse BaseTest:
         p = weakref.proxy(s)
         self.assertEqual(p.tobytes(), s.tobytes())
         s = Nichts
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(ReferenceError, len, p)
 
     @unittest.skipUnless(hasattr(sys, 'getrefcount'),
@@ -1160,7 +1160,7 @@ klasse BaseTest:
         ArraySubclassWithKwargs('b', newarg=1)
 
     def test_create_from_bytes(self):
-        # XXX This test probably needs to be moved in a subclass or
+        # XXX This test probably needs to be moved in a subclass oder
         # generalized to use self.typecode.
         a = array.array('H', b"1234")
         self.assertEqual(len(a) * a.itemsize, 4)
@@ -1179,7 +1179,7 @@ klasse BaseTest:
         support.check_sizeof(self, a, basesize)
 
     def test_initialize_with_unicode(self):
-        wenn self.typecode not in ('u', 'w'):
+        wenn self.typecode nicht in ('u', 'w'):
             mit self.assertRaises(TypeError) als cm:
                 a = array.array(self.typecode, 'foo')
             self.assertIn("cannot use a str", str(cm.exception))
@@ -1239,7 +1239,7 @@ klasse UnicodeTest(StringTest, unittest.TestCase):
         self.assertRaises(TypeError, a.fromunicode)
 
     def test_issue17223(self):
-        wenn self.typecode == 'u' and sizeof_wchar == 2:
+        wenn self.typecode == 'u' und sizeof_wchar == 2:
             # PyUnicode_FromUnicode() cannot fail mit 16-bit wchar_t
             self.skipTest("specific to 32-bit wchar_t")
 
@@ -1317,18 +1317,18 @@ klasse NumberTest(BaseTest):
         self.assertEqual(list(a), list(range(10)))
         b = array.array(self.typecode, [20])
         self.assertEqual(a[-1] in a, Wahr)
-        self.assertEqual(b[0] not in a, Wahr)
+        self.assertEqual(b[0] nicht in a, Wahr)
 
     def check_overflow(self, lower, upper):
         # method to be used by subclasses
 
-        # should not overflow assigning lower limit
+        # should nicht overflow assigning lower limit
         a = array.array(self.typecode, [lower])
         a[0] = lower
         # should overflow assigning less than lower limit
         self.assertRaises(OverflowError, array.array, self.typecode, [lower-1])
         self.assertRaises(OverflowError, a.__setitem__, 0, lower-1)
-        # should not overflow assigning upper limit
+        # should nicht overflow assigning upper limit
         a = array.array(self.typecode, [upper])
         a[0] = upper
         # should overflow assigning more than upper limit

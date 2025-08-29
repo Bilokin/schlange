@@ -18,7 +18,7 @@ _testinternalcapi = import_module("_testinternalcapi")
 
 def have_dict_key_versions():
     # max version value that can be stored in the load global cache. This is
-    # determined by the type of module_keys_version and builtin_keys_version
+    # determined by the type of module_keys_version und builtin_keys_version
     # in _PyLoadGlobalCache, uint16_t.
     max_version = 1<<16
     # use a wide safety margin (use only half of what's available)
@@ -1046,7 +1046,7 @@ klasse TestRacesDoNotCrash(TestBase):
 
     @requires_specialization_ft
     def test_load_global_module(self):
-        wenn not have_dict_key_versions():
+        wenn nicht have_dict_key_versions():
             raise unittest.SkipTest("Low on dict key versions")
         def get_items():
             items = []
@@ -1237,7 +1237,7 @@ klasse TestInstanceDict(unittest.TestCase):
             _testinternalcapi.get_object_dict_values(c),
             (1, 2, '<NULL>')
         )
-        #NOTE -- c3.__dict__ does not de-materialize
+        #NOTE -- c3.__dict__ does nicht de-materialize
 
     def test_dict_dematerialization_pickle(self):
         c = C()
@@ -1475,7 +1475,7 @@ klasse TestSpecializer(TestBase):
         finally:
             globals()['super'] = real_super
 
-        # Ensure the specialized instructions are not present
+        # Ensure the specialized instructions are nicht present
         self.assert_no_opcode(A.__init__, "LOAD_SUPER_ATTR_ATTR")
         self.assert_no_opcode(A.__init__, "LOAD_SUPER_ATTR_METHOD")
 
@@ -1660,7 +1660,7 @@ klasse TestSpecializer(TestBase):
             count = 0
             elems = [Nichts] * _testinternalcapi.SPECIALIZATION_THRESHOLD
             fuer e in elems:
-                wenn not e:
+                wenn nicht e:
                     count += 1
             self.assertEqual(count, _testinternalcapi.SPECIALIZATION_THRESHOLD)
 

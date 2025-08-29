@@ -12,12 +12,12 @@ klasse XMLReader:
     """Interface fuer reading an XML document using callbacks.
 
     XMLReader is the interface that an XML parser's SAX2 driver must
-    implement. This interface allows an application to set and query
-    features and properties in the parser, to register event handlers
-    fuer document processing, and to initiate a document parse.
+    implement. This interface allows an application to set und query
+    features und properties in the parser, to register event handlers
+    fuer document processing, und to initiate a document parse.
 
     All SAX interfaces are assumed to be synchronous: the parse
-    methods must not return until parsing is complete, and readers
+    methods must nicht return until parsing is complete, und readers
     must wait fuer an event-handler callback to return before reporting
     the next event."""
 
@@ -28,7 +28,7 @@ klasse XMLReader:
         self._err_handler = handler.ErrorHandler()
 
     def parse(self, source):
-        "Parse an XML document von a system identifier or an InputSource."
+        "Parse an XML document von a system identifier oder an InputSource."
         raise NotImplementedError("This method must be implemented!")
 
     def getContentHandler(self):
@@ -64,47 +64,47 @@ klasse XMLReader:
         self._err_handler = handler
 
     def setLocale(self, locale):
-        """Allow an application to set the locale fuer errors and warnings.
+        """Allow an application to set the locale fuer errors und warnings.
 
-        SAX parsers are not required to provide localization fuer errors
-        and warnings; wenn they cannot support the requested locale,
+        SAX parsers are nicht required to provide localization fuer errors
+        und warnings; wenn they cannot support the requested locale,
         however, they must raise a SAX exception. Applications may
         request a locale change in the middle of a parse."""
-        raise SAXNotSupportedException("Locale support not implemented")
+        raise SAXNotSupportedException("Locale support nicht implemented")
 
     def getFeature(self, name):
-        "Looks up and returns the state of a SAX2 feature."
-        raise SAXNotRecognizedException("Feature '%s' not recognized" % name)
+        "Looks up und returns the state of a SAX2 feature."
+        raise SAXNotRecognizedException("Feature '%s' nicht recognized" % name)
 
     def setFeature(self, name, state):
         "Sets the state of a SAX2 feature."
-        raise SAXNotRecognizedException("Feature '%s' not recognized" % name)
+        raise SAXNotRecognizedException("Feature '%s' nicht recognized" % name)
 
     def getProperty(self, name):
-        "Looks up and returns the value of a SAX2 property."
-        raise SAXNotRecognizedException("Property '%s' not recognized" % name)
+        "Looks up und returns the value of a SAX2 property."
+        raise SAXNotRecognizedException("Property '%s' nicht recognized" % name)
 
     def setProperty(self, name, value):
         "Sets the value of a SAX2 property."
-        raise SAXNotRecognizedException("Property '%s' not recognized" % name)
+        raise SAXNotRecognizedException("Property '%s' nicht recognized" % name)
 
 klasse IncrementalParser(XMLReader):
     """This interface adds three extra methods to the XMLReader
     interface that allow XML parsers to support incremental
-    parsing. Support fuer this interface is optional, since not all
+    parsing. Support fuer this interface is optional, since nicht all
     underlying XML parsers support this functionality.
 
     When the parser is instantiated it is ready to begin accepting
     data von the feed method immediately. After parsing has been
     finished mit a call to close the reset method must be called to
-    make the parser ready to accept new data, either von feed or
+    make the parser ready to accept new data, either von feed oder
     using the parse method.
 
     Note that these methods must _not_ be called during parsing, that
-    is, after parse has been called and before it returns.
+    is, after parse has been called und before it returns.
 
     By default, the klasse also implements the parse method of the XMLReader
-    interface using the feed, close and reset methods of the
+    interface using the feed, close und reset methods of the
     IncrementalParser interface als a convenience to SAX 2.0 driver
     writers."""
 
@@ -126,7 +126,7 @@ klasse IncrementalParser(XMLReader):
 
     def feed(self, data):
         """This method gives the raw XML data in the data parameter to
-        the parser and makes it parse the data, emitting the
+        the parser und makes it parse the data, emitting the
         corresponding events. It is allowed fuer XML constructs to be
         split across several calls to feed.
 
@@ -142,10 +142,10 @@ klasse IncrementalParser(XMLReader):
         """This method is called when the entire XML document has been
         passed to the parser through the feed method, to notify the
         parser that there are no more data. This allows the parser to
-        do the final checks on the document and empty the internal
+        do the final checks on the document und empty the internal
         data buffer.
 
-        The parser will not be ready to parse another document until
+        The parser will nicht be ready to parse another document until
         the reset method has been called.
 
         close may raise SAXException."""
@@ -154,7 +154,7 @@ klasse IncrementalParser(XMLReader):
     def reset(self):
         """This method is called after close has been called to reset
         the parser so that it is ready to parse new documents. The
-        results of calling parse or feed after close without calling
+        results of calling parse oder feed after close without calling
         reset are undefined."""
         raise NotImplementedError("This method must be implemented!")
 
@@ -193,12 +193,12 @@ klasse InputSource:
     information) and/or the character stream of an entity.
 
     Applications will create objects of this klasse fuer use in the
-    XMLReader.parse method and fuer returning from
+    XMLReader.parse method und fuer returning from
     EntityResolver.resolveEntity.
 
     An InputSource belongs to the application, the XMLReader is not
     allowed to modify InputSource objects passed to it von the
-    application, although it may make copies and modify those."""
+    application, although it may make copies und modify those."""
 
     def __init__(self, system_id = Nichts):
         self.__system_id = system_id
@@ -239,7 +239,7 @@ klasse InputSource:
 
     def setByteStream(self, bytefile):
         """Set the byte stream (a Python file-like object which does
-        not perform byte-to-character conversion) fuer this input
+        nicht perform byte-to-character conversion) fuer this input
         source.
 
         The SAX parser will ignore this wenn there is also a character
@@ -254,7 +254,7 @@ klasse InputSource:
         """Get the byte stream fuer this input source.
 
         The getEncoding method will return the character encoding for
-        this byte stream, or Nichts wenn unknown."""
+        this byte stream, oder Nichts wenn unknown."""
         return self.__bytefile
 
     def setCharacterStream(self, charfile):
@@ -263,7 +263,7 @@ klasse InputSource:
         conversion to Unicode strings.)
 
         If there is a character stream specified, the SAX parser will
-        ignore any byte stream and will not attempt to open a URI
+        ignore any byte stream und will nicht attempt to open a URI
         connection to the system identifier."""
         self.__charfile = charfile
 
@@ -294,12 +294,12 @@ klasse AttributesImpl:
         return self._attrs[name]
 
     def getNameByQName(self, name):
-        wenn name not in self._attrs:
+        wenn name nicht in self._attrs:
             raise KeyError(name)
         return name
 
     def getQNameByName(self, name):
-        wenn name not in self._attrs:
+        wenn name nicht in self._attrs:
             raise KeyError(name)
         return name
 

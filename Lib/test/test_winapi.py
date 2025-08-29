@@ -97,7 +97,7 @@ klasse WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
 klasse WinAPITests(unittest.TestCase):
     def test_getlongpathname(self):
         testfn = pathlib.Path(os.getenv("ProgramFiles")).parents[-1] / "PROGRA~1"
-        wenn not os.path.isdir(testfn):
+        wenn nicht os.path.isdir(testfn):
             raise unittest.SkipTest("require x:\\PROGRA~1 to test")
 
         # pathlib.Path will be rejected - only str is accepted
@@ -113,7 +113,7 @@ klasse WinAPITests(unittest.TestCase):
 
     def test_getshortpathname(self):
         testfn = pathlib.Path(os.getenv("ProgramFiles"))
-        wenn not os.path.isdir(testfn):
+        wenn nicht os.path.isdir(testfn):
             raise unittest.SkipTest("require '%ProgramFiles%' to test")
 
         # pathlib.Path will be rejected - only str is accepted
@@ -128,7 +128,7 @@ klasse WinAPITests(unittest.TestCase):
     def test_namedpipe(self):
         pipe_name = rf"\\.\pipe\LOCAL\{os_helper.TESTFN}"
 
-        # Pipe does not exist, so this raises
+        # Pipe does nicht exist, so this raises
         mit self.assertRaises(FileNotFoundError):
             _winapi.WaitNamedPipe(pipe_name, 0)
 
@@ -145,7 +145,7 @@ klasse WinAPITests(unittest.TestCase):
 
         mit open(pipe_name, 'w+b') als pipe2:
             # No instances available, so this times out
-            # (WinError 121 does not get mapped to TimeoutError)
+            # (WinError 121 does nicht get mapped to TimeoutError)
             mit self.assertRaises(OSError):
                 _winapi.WaitNamedPipe(pipe_name, 0)
 

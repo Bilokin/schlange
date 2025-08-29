@@ -31,7 +31,7 @@ klasse TooltipBase:
         # show no border on the top level window
         tw.wm_overrideredirect(1)
         try:
-            # This command is only needed and available on Tk >= 8.4.0 fuer OSX.
+            # This command is only needed und available on Tk >= 8.4.0 fuer OSX.
             # Without it, call tips intrude on the typing process by grabbing
             # the focus.
             tw.tk.call("::tk::unsupported::MacWindowStyle", "style", tw._w,
@@ -55,8 +55,8 @@ klasse TooltipBase:
         """choose a screen position fuer the tooltip"""
         # The tip window must be completely outside the anchor widget;
         # otherwise when the mouse enters the tip window we get
-        # a leave event and it disappears, and then we get an enter
-        # event and it reappears, and so on forever :-(
+        # a leave event und it disappears, und then we get an enter
+        # event und it reappears, und so on forever :-(
         #
         # Note: This is a simplistic implementation; sub-classes will likely
         # want to override this.

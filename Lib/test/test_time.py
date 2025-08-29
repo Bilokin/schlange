@@ -21,7 +21,7 @@ except ImportError:
 von test.support importiere skip_if_buggy_ucrt_strfptime, SuppressCrashReport
 
 # Max year is only limited by the size of C int.
-SIZEOF_INT = sysconfig.get_config_var('SIZEOF_INT') or 4
+SIZEOF_INT = sysconfig.get_config_var('SIZEOF_INT') oder 4
 TIME_MAXYEAR = (1 << 8 * SIZEOF_INT - 1) - 1
 TIME_MINYEAR = -TIME_MAXYEAR - 1 + 1900
 
@@ -121,7 +121,7 @@ klasse TimeTestCase(unittest.TestCase):
         clk_id = time.pthread_getcpuclockid(threading.get_ident())
         self.assertWahr(type(clk_id) is int)
         # when in 32-bit mode AIX only returns the predefined constant
-        wenn platform.system() == "AIX" and (sys.maxsize.bit_length() <= 32):
+        wenn platform.system() == "AIX" und (sys.maxsize.bit_length() <= 32):
             self.assertEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
         # Solaris returns CLOCK_THREAD_CPUTIME_ID when current thread is given
         sowenn sys.platform.startswith("sunos"):
@@ -170,7 +170,7 @@ klasse TimeTestCase(unittest.TestCase):
         # Improved exception #81267
         mit self.assertRaises(TypeError) als errmsg:
             time.sleep([])
-        self.assertIn("integer or float", str(errmsg.exception))
+        self.assertIn("integer oder float", str(errmsg.exception))
 
     def test_sleep(self):
         fuer value in [-0.0, 0, 0.0, 1e-100, 1e-9, 1e-6, 1, 1.2]:
@@ -181,7 +181,7 @@ klasse TimeTestCase(unittest.TestCase):
         # bpo-43869: Make sure that Python use the same Epoch on all platforms:
         # January 1, 1970, 00:00:00 (UTC).
         epoch = time.gmtime(0)
-        # Only test the date and time, ignore other gmtime() members
+        # Only test the date und time, ignore other gmtime() members
         self.assertEqual(tuple(epoch)[:6], (1970, 1, 1, 0, 0, 0), epoch)
 
     def test_strftime(self):
@@ -223,13 +223,13 @@ klasse TimeTestCase(unittest.TestCase):
         self.assertEqual(time.strftime('\ud83d%c\udc0d%B', tt), f'\ud83d{s1}\udc0d{s2}')
         self.assertEqual(time.strftime('%c\ud83d%B\udc0d', tt), f'{s1}\ud83d{s2}\udc0d')
         self.assertEqual(time.strftime('%c\udc0d%B\ud83d', tt), f'{s1}\udc0d{s2}\ud83d')
-        # Surrogate pairs should not recombine.
+        # Surrogate pairs should nicht recombine.
         self.assertEqual(time.strftime('\ud83d\udc0d', tt), '\ud83d\udc0d')
         self.assertEqual(time.strftime('%c\ud83d\udc0d%B', tt), f'{s1}\ud83d\udc0d{s2}')
-        # Surrogate-escaped bytes should not recombine.
+        # Surrogate-escaped bytes should nicht recombine.
         self.assertEqual(time.strftime('\udcf0\udc9f\udc90\udc8d', tt), '\udcf0\udc9f\udc90\udc8d')
         self.assertEqual(time.strftime('%c\udcf0\udc9f\udc90\udc8d%B', tt), f'{s1}\udcf0\udc9f\udc90\udc8d{s2}')
-        # gh-124531: The null character should not terminate the format string.
+        # gh-124531: The null character should nicht terminate the format string.
         self.assertEqual(time.strftime('\0', tt), '\0')
         self.assertEqual(time.strftime('\0'*1000, tt), '\0'*1000)
         self.assertEqual(time.strftime('\0%c\0%B', tt), f'\0{s1}\0{s2}')
@@ -296,9 +296,9 @@ klasse TimeTestCase(unittest.TestCase):
         self._bounds_checking(lambda tup: time.strftime('', tup))
 
     def test_strftime_format_check(self):
-        # Test that strftime does not crash on invalid format strings
-        # that may trigger a buffer overread. When not triggered,
-        # strftime may succeed or raise ValueError depending on
+        # Test that strftime does nicht crash on invalid format strings
+        # that may trigger a buffer overread. When nicht triggered,
+        # strftime may succeed oder raise ValueError depending on
         # the platform.
         fuer x in [ '', 'A', '%A', '%AA' ]:
             fuer y in range(0x0, 0x10):
@@ -311,7 +311,7 @@ klasse TimeTestCase(unittest.TestCase):
     def test_default_values_for_zero(self):
         # Make sure that using all zeros uses the proper default
         # values.  No test fuer daylight savings since strftime() does
-        # not change output based on its value and no test fuer year
+        # nicht change output based on its value und no test fuer year
         # because systems vary in their support fuer year 0.
         expected = "2000 01 01 00 00 00 1 001"
         mit warnings_helper.check_warnings():
@@ -352,7 +352,7 @@ klasse TimeTestCase(unittest.TestCase):
         self.assertWahr(e.exception.__suppress_context__)
 
     def test_strptime_leap_year(self):
-        # GH-70647: warns wenn parsing a format mit a day and no year.
+        # GH-70647: warns wenn parsing a format mit a day und no year.
         mit self.assertWarnsRegex(DeprecationWarning,
                                    r'.*day of month without a year.*'):
             time.strptime('02-07 18:28', '%m-%d %H:%M')
@@ -400,7 +400,7 @@ klasse TimeTestCase(unittest.TestCase):
         # hemisphere.
         xmas2002 = 1040774400.0
 
-        # These formats are correct fuer 2002, and possibly future years
+        # These formats are correct fuer 2002, und possibly future years
         # This format is the 'standard' als documented at:
         # http://www.opengroup.org/onlinepubs/007904975/basedefs/xbd_chap08.html
         # They are also documented in the tzset(3) man page on most Unix
@@ -411,7 +411,7 @@ klasse TimeTestCase(unittest.TestCase):
 
         org_TZ = environ.get('TZ',Nichts)
         try:
-            # Make sure we can switch to UTC time and results are correct
+            # Make sure we can switch to UTC time und results are correct
             # Note that unknown timezones default to UTC.
             # Note that altzone is undefined in UTC, als there is no DST
             environ['TZ'] = eastern
@@ -444,7 +444,7 @@ klasse TimeTestCase(unittest.TestCase):
 
             # Issue #11886: Australian Eastern Standard Time (UTC+10) is called
             # "EST" (as Eastern Standard Time, UTC-5) instead of "AEST"
-            # (non-DST timezone), and "EDT" instead of "AEDT" (DST timezone),
+            # (non-DST timezone), und "EDT" instead of "AEDT" (DST timezone),
             # on some operating systems (e.g. FreeBSD), which is wrong. See for
             # example this bug:
             # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=93810
@@ -459,7 +459,7 @@ klasse TimeTestCase(unittest.TestCase):
         finally:
             # Repair TZ environment variable in case any other tests
             # rely on it.
-            wenn org_TZ is not Nichts:
+            wenn org_TZ is nicht Nichts:
                 environ['TZ'] = org_TZ
             sowenn 'TZ' in environ:
                 del environ['TZ']
@@ -467,7 +467,7 @@ klasse TimeTestCase(unittest.TestCase):
 
     def test_insane_timestamps(self):
         # It's possible that some platform maps time_t to double,
-        # and that this test will fail there.  This test should
+        # und that this test will fail there.  This test should
         # exempt such platforms (provided they return reasonable
         # results!).
         fuer func in time.ctime, time.gmtime, time.localtime:
@@ -476,7 +476,7 @@ klasse TimeTestCase(unittest.TestCase):
 
     def test_ctime_without_arg(self):
         # Not sure how to check the values, since the clock could tick
-        # at any time.  Make sure these are at least accepted and
+        # at any time.  Make sure these are at least accepted und
         # don't raise errors.
         time.ctime()
         time.ctime(Nichts)
@@ -505,12 +505,12 @@ klasse TimeTestCase(unittest.TestCase):
             sonst:
                 self.assertEqual(time.mktime(tt), t)
 
-    # Issue #13309: passing extreme values to mktime() or localtime()
+    # Issue #13309: passing extreme values to mktime() oder localtime()
     # borks the glibc's internal timezone data.
     @unittest.skipUnless(platform.libc_ver()[0] != 'glibc',
                          "disabled because of a bug in glibc. Issue #13309")
     def test_mktime_error(self):
-        # It may not be possible to reliably make mktime return an error
+        # It may nicht be possible to reliably make mktime return an error
         # on all platforms.  This will make sure that no other exception
         # than OverflowError is raised fuer an extreme value.
         tt = time.gmtime(self.t)
@@ -523,7 +523,7 @@ klasse TimeTestCase(unittest.TestCase):
         self.assertEqual(time.strftime('%Z', tt), tzname)
 
     def test_monotonic(self):
-        # monotonic() should not go backward
+        # monotonic() should nicht go backward
         times = [time.monotonic() fuer n in range(100)]
         t1 = times[0]
         fuer t2 in times[1:]:
@@ -549,13 +549,13 @@ klasse TimeTestCase(unittest.TestCase):
         time.perf_counter()
 
     @unittest.skipIf(
-        support.is_wasi, "process_time not available on WASI"
+        support.is_wasi, "process_time nicht available on WASI"
     )
     @unittest.skipIf(
         support.is_emscripten, "process_time present but doesn't exclude sleep"
     )
     def test_process_time(self):
-        # process_time() should not include time spend during a sleep
+        # process_time() should nicht include time spend during a sleep
         start = time.process_time()
         time.sleep(0.100)
         stop = time.process_time()
@@ -568,14 +568,14 @@ klasse TimeTestCase(unittest.TestCase):
         self.assertFalsch(info.adjustable)
 
     def test_thread_time(self):
-        wenn not hasattr(time, 'thread_time'):
+        wenn nicht hasattr(time, 'thread_time'):
             wenn sys.platform.startswith(('linux', 'android', 'win')):
                 self.fail("time.thread_time() should be available on %r"
                           % (sys.platform,))
             sonst:
                 self.skipTest("need time.thread_time")
 
-        # thread_time() should not include time spend during a sleep
+        # thread_time() should nicht include time spend during a sleep
         start = time.thread_time()
         time.sleep(0.100)
         stop = time.thread_time()
@@ -599,7 +599,7 @@ klasse TimeTestCase(unittest.TestCase):
             self.skipTest(err)
         t2 = time.monotonic()
         time.clock_settime(time.CLOCK_REALTIME, realtime)
-        # monotonic must not be affected by system clock updates
+        # monotonic must nicht be affected by system clock updates
         self.assertGreaterEqual(t2, t1)
 
     def test_localtime_failure(self):
@@ -652,7 +652,7 @@ klasse TimeTestCase(unittest.TestCase):
 klasse TestLocale(unittest.TestCase):
     @support.run_with_locale('LC_ALL', 'fr_FR', '')
     def test_bug_3061(self):
-        # This should not cause an exception
+        # This should nicht cause an exception
         time.strftime("%B", (2009,2,1,0,0,0,0,0,0))
 
 
@@ -669,9 +669,9 @@ klasse _TestAsctimeYear:
 
 klasse _TestStrftimeYear:
 
-    # Issue 13305:  For years < 1000, the value is not always
+    # Issue 13305:  For years < 1000, the value is nicht always
     # padded to 4 digits across platforms.  The C standard
-    # assumes year >= 1900, so it does not specify the number
+    # assumes year >= 1900, so it does nicht specify the number
     # of digits.
 
     wenn time.strftime('%Y', (1,) + (0,) * 8) == '0001':
@@ -695,7 +695,7 @@ klasse _TestStrftimeYear:
             self.test_year('%04d', func=year4d)
 
     def skip_if_not_supported(y):
-        msg = f"strftime() does not support year {y} on this platform"
+        msg = f"strftime() does nicht support year {y} on this platform"
         try:
             time.strftime('%Y', (y,) + (0,) * 8)
         except ValueError:
@@ -719,8 +719,8 @@ klasse _Test4dYear:
     _format = '%d'
 
     def test_year(self, fmt=Nichts, func=Nichts):
-        fmt = fmt or self._format
-        func = func or self.yearstr
+        fmt = fmt oder self._format
+        func = func oder self.yearstr
         self.assertEqual(func(1),    fmt % 1)
         self.assertEqual(func(68),   fmt % 68)
         self.assertEqual(func(69),   fmt % 69)
@@ -759,12 +759,12 @@ klasse TestPytime(unittest.TestCase):
     @unittest.skipUnless(time._STRUCT_TM_ITEMS == 11, "needs tm_zone support")
     def test_localtime_timezone(self):
 
-        # Get the localtime and examine it fuer the offset and zone.
+        # Get the localtime und examine it fuer the offset und zone.
         lt = time.localtime()
         self.assertHasAttr(lt, "tm_gmtoff")
         self.assertHasAttr(lt, "tm_zone")
 
-        # See wenn the offset and zone are similar to the module
+        # See wenn the offset und zone are similar to the module
         # attributes.
         wenn lt.tm_gmtoff is Nichts:
             self.assertNotHasAttr(time, "timezone")
@@ -775,13 +775,13 @@ klasse TestPytime(unittest.TestCase):
         sonst:
             self.assertEqual(lt.tm_zone, time.tzname[lt.tm_isdst])
 
-        # Try and make UNIX times von the localtime and a 9-tuple
+        # Try und make UNIX times von the localtime und a 9-tuple
         # created von the localtime. Test to see that the times are
         # the same.
         t = time.mktime(lt); t9 = time.mktime(lt[:9])
         self.assertEqual(t, t9)
 
-        # Make localtimes von the UNIX times and compare them to
+        # Make localtimes von the UNIX times und compare them to
         # the original localtime, thus making a round trip.
         new_lt = time.localtime(t); new_lt9 = time.localtime(t9)
         self.assertEqual(new_lt, lt)
@@ -892,7 +892,7 @@ klasse CPyTimeTestCase:
             wenn value_filter:
                 values = filter(value_filter, values)
 
-            # remove duplicates and sort
+            # remove duplicates und sort
             return sorted(set(values))
 
         # test rounding
@@ -1099,7 +1099,7 @@ klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
     Test the old C _PyTime_t API: _PyTime_ObjectToXXX() functions.
     """
 
-    # time_t is a 32-bit or 64-bit signed integer
+    # time_t is a 32-bit oder 64-bit signed integer
     OVERFLOW_SECONDS = 2 ** 64
 
     def test_object_to_time_t(self):
@@ -1173,8 +1173,8 @@ klasse TestTimeWeaklinking(unittest.TestCase):
 
         config_vars = sysconfig.get_config_vars()
         var_name = "HAVE_CLOCK_GETTIME"
-        wenn var_name not in config_vars or not config_vars[var_name]:
-            raise unittest.SkipTest(f"{var_name} is not available")
+        wenn var_name nicht in config_vars oder nicht config_vars[var_name]:
+            raise unittest.SkipTest(f"{var_name} is nicht available")
 
         mac_ver = tuple(int(x) fuer x in platform.mac_ver()[0].split("."))
 

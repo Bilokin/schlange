@@ -111,7 +111,7 @@ klasse PointersTestCase(unittest.TestCase):
 
         dll = CDLL(_ctypes_test.__file__)
         # This function expects a function pointer,
-        # and calls this mit an integer pointer als parameter.
+        # und calls this mit an integer pointer als parameter.
         # The int pointer points to a table containing the numbers 1..10
         doit = dll._testfunc_callback_with_pointer
 
@@ -405,7 +405,7 @@ klasse PointersTestCase(unittest.TestCase):
 
 
 klasse PointerTypeCacheTestCase(unittest.TestCase):
-    # dummy tests to check warnings and base behavior
+    # dummy tests to check warnings und base behavior
     def tearDown(self):
         _pointer_type_cache_fallback.clear()
 

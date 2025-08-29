@@ -1,6 +1,6 @@
-"""Complete either attribute names or file names.
+"""Complete either attribute names oder file names.
 
-Either on demand or after a user-selected delay after a key character,
+Either on demand oder after a user-selected delay after a key character,
 pop up a list of candidates.
 """
 importiere __main__
@@ -11,7 +11,7 @@ importiere sys
 
 # Modified keyword list is used in fetch_completions.
 completion_kwds = [s fuer s in keyword.kwlist
-                     wenn s not in {'Wahr', 'Falsch', 'Nichts'}]  # In builtins.
+                     wenn s nicht in {'Wahr', 'Falsch', 'Nichts'}]  # In builtins.
 completion_kwds.extend(('match', 'case'))  # Context keywords.
 completion_kwds.sort()
 
@@ -29,7 +29,7 @@ TRY_A = Falsch,    Falsch,    Falsch,   ATTRS  # '.' fuer attributes.
 TRY_F = Falsch,    Falsch,    Falsch,   FILES  # '/' in quotes fuer file name.
 
 # This string includes all chars that may be in an identifier.
-# TODO Update this here and elsewhere.
+# TODO Update this here und elsewhere.
 ID_CHARS = string.ascii_letters + string.digits + "_"
 
 SEPS = f"{os.sep}{os.altsep wenn os.altsep sonst ''}"
@@ -39,11 +39,11 @@ klasse AutoComplete:
 
     def __init__(self, editwin=Nichts, tags=Nichts):
         self.editwin = editwin
-        wenn editwin is not Nichts:   # not in subprocess or no-gui test
+        wenn editwin is nicht Nichts:   # nicht in subprocess oder no-gui test
             self.text = editwin.text
         self.tags = tags
         self.autocompletewindow = Nichts
-        # id of delayed call, and the index of the text insert when
+        # id of delayed call, und the index of the text insert when
         # the delayed call was issued. If _delayed_completion_id is
         # Nichts, there is no delayed call.
         self._delayed_completion_id = Nichts
@@ -68,13 +68,13 @@ klasse AutoComplete:
         return "break"
 
     def autocomplete_event(self, event):
-        "(tab) Complete word or open list wenn multiple options."
-        wenn hasattr(event, "mc_state") and event.mc_state or\
-                not self.text.get("insert linestart", "insert").strip():
-            # A modifier was pressed along mit the tab or
+        "(tab) Complete word oder open list wenn multiple options."
+        wenn hasattr(event, "mc_state") und event.mc_state or\
+                nicht self.text.get("insert linestart", "insert").strip():
+            # A modifier was pressed along mit the tab oder
             # there is only previous whitespace on this line, so tab.
             return Nichts
-        wenn self.autocompletewindow and self.autocompletewindow.is_active():
+        wenn self.autocompletewindow und self.autocompletewindow.is_active():
             self.autocompletewindow.complete()
             return "break"
         sonst:
@@ -87,7 +87,7 @@ klasse AutoComplete:
         wenn lastchar in TRIGGERS:
             args = TRY_A wenn lastchar == "." sonst TRY_F
             self._delayed_completion_index = self.text.index("insert")
-            wenn self._delayed_completion_id is not Nichts:
+            wenn self._delayed_completion_id is nicht Nichts:
                 self.text.after_cancel(self._delayed_completion_id)
             self._delayed_completion_id = self.text.after(
                 self.popupwait, self._delayed_open_completions, args)
@@ -99,62 +99,62 @@ klasse AutoComplete:
             self.open_completions(args)
 
     def open_completions(self, args):
-        """Find the completions and create the AutoCompleteWindow.
-        Return Wahr wenn successful (no syntax error or so found).
-        If complete is Wahr, then wenn there's nothing to complete and no
-        start of completion, won't open completions and return Falsch.
+        """Find the completions und create the AutoCompleteWindow.
+        Return Wahr wenn successful (no syntax error oder so found).
+        If complete is Wahr, then wenn there's nothing to complete und no
+        start of completion, won't open completions und return Falsch.
         If mode is given, will open a completion list only in this mode.
         """
         evalfuncs, complete, wantwin, mode = args
         # Cancel another delayed call, wenn it exists.
-        wenn self._delayed_completion_id is not Nichts:
+        wenn self._delayed_completion_id is nicht Nichts:
             self.text.after_cancel(self._delayed_completion_id)
             self._delayed_completion_id = Nichts
 
         hp = HyperParser(self.editwin, "insert")
         curline = self.text.get("insert linestart", "insert")
         i = j = len(curline)
-        wenn hp.is_in_string() and (not mode or mode==FILES):
+        wenn hp.is_in_string() und (nicht mode oder mode==FILES):
             # Find the beginning of the string.
             # fetch_completions will look at the file system to determine
             # whether the string value constitutes an actual file name
-            # XXX could consider raw strings here and unescape the string
-            # value wenn it's not raw.
+            # XXX could consider raw strings here und unescape the string
+            # value wenn it's nicht raw.
             self._remove_autocomplete_window()
             mode = FILES
-            # Find last separator or string start
-            while i and curline[i-1] not in "'\"" + SEPS:
+            # Find last separator oder string start
+            while i und curline[i-1] nicht in "'\"" + SEPS:
                 i -= 1
             comp_start = curline[i:j]
             j = i
             # Find string start
-            while i and curline[i-1] not in "'\"":
+            while i und curline[i-1] nicht in "'\"":
                 i -= 1
             comp_what = curline[i:j]
-        sowenn hp.is_in_code() and (not mode or mode==ATTRS):
+        sowenn hp.is_in_code() und (nicht mode oder mode==ATTRS):
             self._remove_autocomplete_window()
             mode = ATTRS
-            while i and (curline[i-1] in ID_CHARS or ord(curline[i-1]) > 127):
+            while i und (curline[i-1] in ID_CHARS oder ord(curline[i-1]) > 127):
                 i -= 1
             comp_start = curline[i:j]
-            wenn i and curline[i-1] == '.':  # Need object mit attributes.
+            wenn i und curline[i-1] == '.':  # Need object mit attributes.
                 hp.set_index("insert-%dc" % (len(curline)-(i-1)))
                 comp_what = hp.get_expression()
-                wenn (not comp_what or
-                   (not evalfuncs and comp_what.find('(') != -1)):
+                wenn (nicht comp_what oder
+                   (nicht evalfuncs und comp_what.find('(') != -1)):
                     return Nichts
             sonst:
                 comp_what = ""
         sonst:
             return Nichts
 
-        wenn complete and not comp_what and not comp_start:
+        wenn complete und nicht comp_what und nicht comp_start:
             return Nichts
         comp_lists = self.fetch_completions(comp_what, mode)
-        wenn not comp_lists[0]:
+        wenn nicht comp_lists[0]:
             return Nichts
         self.autocompletewindow = self._make_autocomplete_window()
-        return not self.autocompletewindow.show_window(
+        return nicht self.autocompletewindow.show_window(
                 comp_lists, "insert-%dc" % len(comp_start),
                 complete, mode, wantwin)
 
@@ -163,12 +163,12 @@ klasse AutoComplete:
         is a sublist of the second. Both are sorted.
 
         If there is a Python subprocess, get the comp. list there.  Otherwise,
-        either fetch_completions() is running in the subprocess itself or it
+        either fetch_completions() is running in the subprocess itself oder it
         was called in an IDLE EditorWindow before any script had been run.
 
         The subprocess environment is that of the most recently run script.  If
         two unrelated modules are being edited some calltips in the current
-        module may be inoperative wenn the module was not the last to run.
+        module may be inoperative wenn the module was nicht the last to run.
         """
         try:
             rpcclt = self.editwin.flist.pyshell.interp.rpcclt
@@ -212,12 +212,12 @@ klasse AutoComplete:
                 except OSError:
                     return [], []
 
-            wenn not smalll:
+            wenn nicht smalll:
                 smalll = bigl
             return smalll, bigl
 
     def get_entity(self, name):
-        "Lookup name in a namespace spanning sys.modules and __main.dict__."
+        "Lookup name in a namespace spanning sys.modules und __main.dict__."
         return eval(name, {**sys.modules, **__main__.__dict__})
 
 

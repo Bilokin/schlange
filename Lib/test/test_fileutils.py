@@ -18,7 +18,7 @@ klasse PathTests(unittest.TestCase):
             von test.test_posixpath importiere PosixPathTest als posixdata
             tests = posixdata.NORMPATH_CASES
         fuer filename, expected in tests:
-            wenn not os.path.isabs(filename):
+            wenn nicht os.path.isabs(filename):
                 continue
             mit self.subTest(filename):
                 result = _testcapi.normalize_path(filename)

@@ -21,13 +21,13 @@ klasse _InterruptHandler(object):
                     pass
             sonst:
                 raise TypeError("expected SIGINT signal handler to be "
-                                "signal.SIG_IGN, signal.SIG_DFL, or a "
+                                "signal.SIG_IGN, signal.SIG_DFL, oder a "
                                 "callable object")
         self.default_handler = default_handler
 
     def __call__(self, signum, frame):
         installed_handler = signal.getsignal(signal.SIGINT)
-        wenn installed_handler is not self:
+        wenn installed_handler is nicht self:
             # wenn we aren't the installed handler, then delegate immediately
             # to the default handler
             self.default_handler(signum, frame)
@@ -55,7 +55,7 @@ def installHandler():
 
 
 def removeHandler(method=Nichts):
-    wenn method is not Nichts:
+    wenn method is nicht Nichts:
         @wraps(method)
         def inner(*args, **kwargs):
             initial = signal.getsignal(signal.SIGINT)
@@ -67,5 +67,5 @@ def removeHandler(method=Nichts):
         return inner
 
     global _interrupt_handler
-    wenn _interrupt_handler is not Nichts:
+    wenn _interrupt_handler is nicht Nichts:
         signal.signal(signal.SIGINT, _interrupt_handler.original_handler)

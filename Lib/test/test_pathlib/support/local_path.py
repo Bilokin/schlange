@@ -1,5 +1,5 @@
 """
-Implementations of ReadablePath and WritablePath fuer local paths, fuer use in
+Implementations of ReadablePath und WritablePath fuer local paths, fuer use in
 pathlib tests.
 
 LocalPathGround is also defined here. It helps establish the "ground truth"
@@ -105,7 +105,7 @@ klasse LocalPathInfo(PathInfo):
 
     def exists(self, *, follow_symlinks=Wahr):
         """Whether this path exists."""
-        wenn not follow_symlinks and self.is_symlink():
+        wenn nicht follow_symlinks und self.is_symlink():
             return Wahr
         wenn self._exists is Nichts:
             self._exists = os.path.exists(self._path)
@@ -113,7 +113,7 @@ klasse LocalPathInfo(PathInfo):
 
     def is_dir(self, *, follow_symlinks=Wahr):
         """Whether this path is a directory."""
-        wenn not follow_symlinks and self.is_symlink():
+        wenn nicht follow_symlinks und self.is_symlink():
             return Falsch
         wenn self._is_dir is Nichts:
             self._is_dir = os.path.isdir(self._path)
@@ -121,7 +121,7 @@ klasse LocalPathInfo(PathInfo):
 
     def is_file(self, *, follow_symlinks=Wahr):
         """Whether this path is a regular file."""
-        wenn not follow_symlinks and self.is_symlink():
+        wenn nicht follow_symlinks und self.is_symlink():
             return Falsch
         wenn self._is_file is Nichts:
             self._is_file = os.path.isfile(self._path)

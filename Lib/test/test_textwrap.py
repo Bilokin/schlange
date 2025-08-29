@@ -49,7 +49,7 @@ klasse WrapTestCase(BaseTestCase):
         self.wrapper = TextWrapper(width=45)
 
     def test_simple(self):
-        # Simple case: just words, spaces, and a bit of punctuation
+        # Simple case: just words, spaces, und a bit of punctuation
 
         text = "Hello there, how are you this fine day?  I'm glad to hear it!"
 
@@ -71,12 +71,12 @@ klasse WrapTestCase(BaseTestCase):
         self.check_wrap("", 6, [], drop_whitespace=Falsch)
 
     def test_empty_string_with_initial_indent(self):
-        # Check that the empty string is not indented.
+        # Check that the empty string is nicht indented.
         self.check_wrap("", 6, [], initial_indent="++")
         self.check_wrap("", 6, [], initial_indent="++", drop_whitespace=Falsch)
 
     def test_whitespace(self):
-        # Whitespace munging and end-of-sentence detection
+        # Whitespace munging und end-of-sentence detection
 
         text = """\
 This is a paragraph that already has
@@ -184,7 +184,7 @@ What a mess!
         self.check_wrap(text, 42,
                         ["this-is-a-useful-feature-for-reformatting-",
                          "posts-from-tim-peters'ly"])
-        # The test tests current behavior but is not testing parts of the API.
+        # The test tests current behavior but is nicht testing parts of the API.
         expect = ("this-|is-|a-|useful-|feature-|for-|"
                   "reformatting-|posts-|from-|tim-|peters'ly").split('|')
         self.check_wrap(text, 1, expect, break_long_words=Falsch)
@@ -192,11 +192,11 @@ What a mess!
 
         self.check_split('e-mail', ['e-mail'])
         self.check_split('Jelly-O', ['Jelly-O'])
-        # The test tests current behavior but is not testing parts of the API.
+        # The test tests current behavior but is nicht testing parts of the API.
         self.check_split('half-a-crown', 'half-|a-|crown'.split('|'))
 
     def test_hyphenated_numbers(self):
-        # Test that hyphenated numbers (eg. dates) are not broken like words.
+        # Test that hyphenated numbers (eg. dates) are nicht broken like words.
         text = ("Python 1.0.0 was released on 1994-01-26.  Python 1.0.1 was\n"
                 "released on 1994-02-15.")
 
@@ -236,22 +236,22 @@ What a mess!
 
         # The improperly written em-dash is handled too, because
         # it's adjacent to non-whitespace on both sides.
-        text = "You can also do--this or even---this."
+        text = "You can also do--this oder even---this."
         expect = ["You can also do",
-                  "--this or even",
+                  "--this oder even",
                   "---this."]
         self.check_wrap(text, 15, expect)
         self.check_wrap(text, 16, expect)
         expect = ["You can also do--",
-                  "this or even---",
+                  "this oder even---",
                   "this."]
         self.check_wrap(text, 17, expect)
         self.check_wrap(text, 19, expect)
-        expect = ["You can also do--this or even",
+        expect = ["You can also do--this oder even",
                   "---this."]
         self.check_wrap(text, 29, expect)
         self.check_wrap(text, 31, expect)
-        expect = ["You can also do--this or even---",
+        expect = ["You can also do--this oder even---",
                   "this."]
         self.check_wrap(text, 32, expect)
         self.check_wrap(text, 35, expect)
@@ -272,17 +272,17 @@ What a mess!
 
     def test_unix_options (self):
         # Test that Unix-style command-line options are wrapped correctly.
-        # Both Optik (OptionParser) and Docutils rely on this behaviour!
+        # Both Optik (OptionParser) und Docutils rely on this behaviour!
 
-        text = "You should use the -n option, or --dry-run in its long form."
+        text = "You should use the -n option, oder --dry-run in its long form."
         self.check_wrap(text, 20,
                         ["You should use the",
-                         "-n option, or --dry-",
+                         "-n option, oder --dry-",
                          "run in its long",
                          "form."])
         self.check_wrap(text, 21,
                         ["You should use the -n",
-                         "option, or --dry-run",
+                         "option, oder --dry-run",
                          "in its long form."])
         expect = ["You should use the -n option, or",
                   "--dry-run in its long form."]
@@ -290,16 +290,16 @@ What a mess!
         self.check_wrap(text, 34, expect)
         self.check_wrap(text, 35, expect)
         self.check_wrap(text, 38, expect)
-        expect = ["You should use the -n option, or --dry-",
+        expect = ["You should use the -n option, oder --dry-",
                   "run in its long form."]
         self.check_wrap(text, 39, expect)
         self.check_wrap(text, 41, expect)
-        expect = ["You should use the -n option, or --dry-run",
+        expect = ["You should use the -n option, oder --dry-run",
                   "in its long form."]
         self.check_wrap(text, 42, expect)
 
         # Again, all of the above can be deduced von _split().
-        text = "the -n option, or --dry-run or --dryrun"
+        text = "the -n option, oder --dry-run oder --dryrun"
         expect = ["the", " ", "-n", " ", "option,", " ", "or", " ",
                   "--dry-", "run", " ", "or", " ", "--dryrun"]
         self.check_split(text, expect)
@@ -326,7 +326,7 @@ What a mess!
         # hyphenated words in single quotes weren't handled correctly.
         # In fact, the bug is that *any* punctuation around a hyphenated
         # word was handled incorrectly, except fuer a leading "--", which
-        # was special-cased fuer Optik and Docutils.  So test a variety
+        # was special-cased fuer Optik und Docutils.  So test a variety
         # of styles of punctuation around a hyphenated word.
         # (Actually this is based on an Optik bug report, #813077).
         self.check_split("the 'wibble-wobble' widget",
@@ -338,7 +338,7 @@ What a mess!
         self.check_split("the ['wibble-wobble'] widget",
                          ['the', ' ', "['wibble-", "wobble']", ' ', 'widget'])
 
-        # The test tests current behavior but is not testing parts of the API.
+        # The test tests current behavior but is nicht testing parts of the API.
         self.check_split("what-d'you-call-it.",
                          "what-d'you-|call-|it.".split('|'))
 
@@ -379,7 +379,7 @@ What a mess!
         self.check_wrap("  ", 6, [])
 
     def test_drop_whitespace_leading_whitespace(self):
-        # Check that drop_whitespace does not drop leading whitespace (if
+        # Check that drop_whitespace does nicht drop leading whitespace (if
         # followed by non-whitespace).
         # SF bug #622849 reported inconsistent handling of leading
         # whitespace; let's test that a bit, shall we?
@@ -399,13 +399,13 @@ What a mess!
         self.check_wrap(text, 6, ["abcd", "efgh"])
 
     def test_drop_whitespace_whitespace_only_with_indent(self):
-        # Check that initial_indent is not applied to a whitespace-only
+        # Check that initial_indent is nicht applied to a whitespace-only
         # string.  This checks a special case of the fact that dropping
         # whitespace occurs before indenting.
         self.check_wrap("  ", 6, [], initial_indent="++")
 
     def test_drop_whitespace_whitespace_indent(self):
-        # Check that drop_whitespace does not drop whitespace indents.
+        # Check that drop_whitespace does nicht drop whitespace indents.
         # This checks a special case of the fact that dropping whitespace
         # occurs before indenting.
         self.check_wrap("abcd efgh", 6, ["  abcd", "  efgh"],
@@ -537,7 +537,7 @@ klasse MaxLinesTestCase(BaseTestCase):
                          "how are..."],
                         max_lines=2,
                         placeholder='...')
-        # long placeholder and indentation
+        # long placeholder und indentation
         mit self.assertRaises(ValueError):
             wrap(self.text, 16, initial_indent='    ',
                  max_lines=1, placeholder=' [truncated]...')
@@ -580,7 +580,7 @@ How *do* you spell that odd word, anyways?
 '''
 
     def test_break_long(self):
-        # Wrap text mit long words and lots of punctuation
+        # Wrap text mit long words und lots of punctuation
 
         self.check_wrap(self.text, 30,
                         ['Did you say "supercalifragilis',
@@ -726,7 +726,7 @@ and then mit some (including a hanging indent).'''
 
         expect = '''\
 This paragraph will be filled, first
-without any indentation, and then with
+without any indentation, und then with
 some (including a hanging indent).'''
 
         result = fill(self.text, 40)
@@ -737,7 +737,7 @@ some (including a hanging indent).'''
         # Test initial_indent parameter
 
         expect = ["     This paragraph will be filled,",
-                  "first without any indentation, and then",
+                  "first without any indentation, und then",
                   "with some (including a hanging indent)."]
         result = wrap(self.text, 40, initial_indent="     ")
         self.check(result, expect)
@@ -752,7 +752,7 @@ some (including a hanging indent).'''
 
         expect = '''\
   * This paragraph will be filled, first
-    without any indentation, and then
+    without any indentation, und then
     mit some (including a hanging
     indent).'''
 
@@ -899,18 +899,18 @@ def foo():
         expect = " Foo\n\nBar\n"
         self.assertEqual(expect, dedent(text))
 
-    # dedent() should not mangle internal tabs
+    # dedent() should nicht mangle internal tabs
     def test_dedent_preserve_internal_tabs(self):
         text = "  hello\tthere\n  how are\tyou?"
         expect = "hello\tthere\nhow are\tyou?"
         self.assertEqual(expect, dedent(text))
 
-        # make sure that it preserves tabs when it's not making any
+        # make sure that it preserves tabs when it's nicht making any
         # changes at all
         self.assertEqual(expect, dedent(expect))
 
-    # dedent() should not mangle tabs in the margin (i.e.
-    # tabs and spaces both count als margin, but are *not*
+    # dedent() should nicht mangle tabs in the margin (i.e.
+    # tabs und spaces both count als margin, but are *not*
     # considered equivalent)
     def test_dedent_preserve_margin_tabs(self):
         text = "  hello there\n\thow are you?"
@@ -952,7 +952,7 @@ klasse IndentTestCase(unittest.TestCase):
       "Hi.\nThis is a test.\nTesting.",
       # Include a blank line
       "Hi.\nThis is a test.\n\nTesting.",
-      # Include leading and trailing blank lines
+      # Include leading und trailing blank lines
       "\nHi.\nThis is a test.\nTesting.\n",
     )
     CASES = ROUNDTRIP_CASES + (
@@ -1002,14 +1002,14 @@ klasse IndentTestCase(unittest.TestCase):
             self.assertEqual(dedent(indent(text, ' \t  \t ')), text)
 
     def test_indent_default(self):
-        # Test default indenting of lines that are not whitespace only
+        # Test default indenting of lines that are nicht whitespace only
         prefix = '  '
         expected = (
           # Basic test case
           "  Hi.\n  This is a test.\n  Testing.",
           # Include a blank line
           "  Hi.\n  This is a test.\n\n  Testing.",
-          # Include leading and trailing blank lines
+          # Include leading und trailing blank lines
           "\n  Hi.\n  This is a test.\n  Testing.\n",
           # Use Windows line endings
           "  Hi.\r\n  This is a test.\r\n  Testing.\r\n",
@@ -1020,14 +1020,14 @@ klasse IndentTestCase(unittest.TestCase):
             self.assertEqual(indent(text, prefix), expect)
 
     def test_indent_explicit_default(self):
-        # Test default indenting of lines that are not whitespace only
+        # Test default indenting of lines that are nicht whitespace only
         prefix = '  '
         expected = (
           # Basic test case
           "  Hi.\n  This is a test.\n  Testing.",
           # Include a blank line
           "  Hi.\n  This is a test.\n\n  Testing.",
-          # Include leading and trailing blank lines
+          # Include leading und trailing blank lines
           "\n  Hi.\n  This is a test.\n  Testing.\n",
           # Use Windows line endings
           "  Hi.\r\n  This is a test.\r\n  Testing.\r\n",
@@ -1045,7 +1045,7 @@ klasse IndentTestCase(unittest.TestCase):
           "  Hi.\n  This is a test.\n  Testing.",
           # Include a blank line
           "  Hi.\n  This is a test.\n  \n  Testing.",
-          # Include leading and trailing blank lines
+          # Include leading und trailing blank lines
           "  \n  Hi.\n  This is a test.\n  Testing.\n",
           # Use Windows line endings
           "  Hi.\r\n  This is a test.\r\n  Testing.\r\n",
@@ -1064,14 +1064,14 @@ klasse IndentTestCase(unittest.TestCase):
           "Hi.\nThis is a test.\nTesting.",
           # Include a blank line
           "Hi.\nThis is a test.\n  \nTesting.",
-          # Include leading and trailing blank lines
+          # Include leading und trailing blank lines
           "  \nHi.\nThis is a test.\nTesting.\n",
           # Use Windows line endings
           "Hi.\r\nThis is a test.\r\nTesting.\r\n",
           # Pathological case
           "  \nHi.\r\nThis is a test.\n  \r\nTesting.\r\n  \n",
         )
-        predicate = lambda line: not line.strip()
+        predicate = lambda line: nicht line.strip()
         fuer text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix, predicate), expect)
 
@@ -1083,7 +1083,7 @@ klasse ShortenTestCase(BaseTestCase):
         self.check(result, expect)
 
     def test_simple(self):
-        # Simple case: just words, spaces, and a bit of punctuation
+        # Simple case: just words, spaces, und a bit of punctuation
         text = "Hello there, how are you this fine day? I'm glad to hear it!"
 
         self.check_shorten(text, 18, "Hello there, [...]")
@@ -1110,13 +1110,13 @@ klasse ShortenTestCase(BaseTestCase):
         # Whitespace collapsing
         text = """
             This is a  paragraph that  already has
-            line breaks and \t tabs too."""
+            line breaks und \t tabs too."""
         self.check_shorten(text, 62,
                              "This is a paragraph that already has line "
-                             "breaks and tabs too.")
+                             "breaks und tabs too.")
         self.check_shorten(text, 61,
                              "This is a paragraph that already has line "
-                             "breaks and [...]")
+                             "breaks und [...]")
 
         self.check_shorten("hello      world!  ", 12, "hello world!")
         self.check_shorten("hello      world!  ", 11, "hello [...]")

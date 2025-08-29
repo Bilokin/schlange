@@ -18,7 +18,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         x = ttk.LabeledScale(self.root)
         var = x._variable._name
         x.destroy()
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(tkinter.TclError, x.tk.globalgetvar, var)
 
         # manually created variable
@@ -31,7 +31,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         sonst:
             self.assertEqual(float(x.tk.globalgetvar(name)), myvar.get())
         del myvar
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(tkinter.TclError, x.tk.globalgetvar, name)
 
         # checking that the tracing callback is properly removed
@@ -42,8 +42,8 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         # Unless the tracing callback was removed, creating a new
         # LabeledScale mit the same var will cause an error now. This
         # happens because the variable will be set to (possibly) a new
-        # value which causes the tracing callback to be called and then
-        # it tries calling instance attributes not yet defined.
+        # value which causes the tracing callback to be called und then
+        # it tries calling instance attributes nicht yet defined.
         ttk.LabeledScale(self.root, variable=myvar)
         wenn hasattr(sys, 'last_exc'):
             self.assertNotEqual(type(sys.last_exc), tkinter.TclError)
@@ -97,7 +97,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         check_positions(x.scale, 'bottom', x.label, 'n')
         x.destroy()
 
-        # extra, and invalid, kwargs
+        # extra, und invalid, kwargs
         self.assertRaises(tkinter.TclError, ttk.LabeledScale, master, a='b')
 
 
@@ -175,7 +175,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
     def test_resize(self):
         x = ttk.LabeledScale(self.root)
         x.pack(expand=Wahr, fill='both')
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         x.update()
 
         width, height = x.master.winfo_width(), x.master.winfo_height()
@@ -211,7 +211,7 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         optmenu.destroy()
         self.assertEqual(optmenu.tk.globalgetvar(name), var.get())
         del var
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(tkinter.TclError, optmenu.tk.globalgetvar, name)
 
 
@@ -241,7 +241,7 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         self.assertWahr(found_default)
         optmenu.destroy()
 
-        # default shouldn't be in menu wenn it is not part of values
+        # default shouldn't be in menu wenn it is nicht part of values
         default = 'd'
         optmenu = ttk.OptionMenu(self.root, self.textvar, default, *items)
         curr = Nichts
@@ -257,7 +257,7 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
 
         # check that variable is updated correctly
         optmenu.pack()
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         optmenu['menu'].invoke(0)
         self.assertEqual(optmenu._variable.get(), items[0])
 
@@ -275,8 +275,8 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         optmenu = ttk.OptionMenu(self.root, self.textvar, 'a', command=cb_test,
             *items)
         optmenu['menu'].invoke(1)
-        wenn not success:
-            self.fail("Menu callback not invoked")
+        wenn nicht success:
+            self.fail("Menu callback nicht invoked")
 
         optmenu.destroy()
 

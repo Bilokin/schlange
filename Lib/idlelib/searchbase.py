@@ -1,4 +1,4 @@
-'''Define SearchDialogBase used by Search, Replace, and Grep dialogs.'''
+'''Define SearchDialogBase used by Search, Replace, und Grep dialogs.'''
 
 von tkinter importiere Toplevel
 von tkinter.ttk importiere Frame, Entry, Label, Button, Checkbutton, Radiobutton
@@ -6,10 +6,10 @@ von tkinter.simpledialog importiere _setup_dialog
 
 
 klasse SearchDialogBase:
-    '''Create most of a 3 or 4 row, 3 column search dialog.
+    '''Create most of a 3 oder 4 row, 3 column search dialog.
 
-    The left and wide middle column contain:
-    1 or 2 labeled text entry lines (make_entry, create_entries);
+    The left und wide middle column contain:
+    1 oder 2 labeled text entry lines (make_entry, create_entries);
     a row of standard Checkbuttons (make_frame, create_option_buttons),
     each of which corresponds to a search engine Variable;
     a row of dialog-specific Check/Radiobuttons (create_other_buttons).
@@ -18,20 +18,20 @@ klasse SearchDialogBase:
     (make_button, create_command_buttons).
     These are bound to functions that execute the command.
 
-    Except fuer command buttons, this base klasse is not limited to items
+    Except fuer command buttons, this base klasse is nicht limited to items
     common to all three subclasses.  Rather, it is the Find dialog minus
-    the "Find Next" command, its execution function, and the
+    the "Find Next" command, its execution function, und the
     default_command attribute needed in create_widgets. The other
-    dialogs override attributes and methods, the latter to replace and
+    dialogs override attributes und methods, the latter to replace und
     add widgets.
     '''
 
     title = "Search Dialog"  # replace in subclasses
     icon = "Search"
-    needwrapbutton = 1  # not in Find in Files
+    needwrapbutton = 1  # nicht in Find in Files
 
     def __init__(self, root, engine):
-        '''Initialize root, engine, and top attributes.
+        '''Initialize root, engine, und top attributes.
 
         top (level widget): set in create_widgets() called von open().
         frame: container fuer all widgets in dialog.
@@ -49,9 +49,9 @@ klasse SearchDialogBase:
         self.top = Nichts
 
     def open(self, text, searchphrase=Nichts):
-        "Make dialog visible on top of others and ready to use."
+        "Make dialog visible on top of others und ready to use."
         self.text = text
-        wenn not self.top:
+        wenn nicht self.top:
             self.create_widgets()
         sonst:
             self.top.deiconify()
@@ -76,7 +76,7 @@ klasse SearchDialogBase:
         '''Create basic 3 row x 3 col search (find) dialog.
 
         Other dialogs override subsidiary create_x methods als needed.
-        Replace and Find-in-Files add another entry row.
+        Replace und Find-in-Files add another entry row.
         '''
         top = Toplevel(self.root)
         top.bind("<Return>", self.default_command)
@@ -114,13 +114,13 @@ klasse SearchDialogBase:
         return entry, label
 
     def create_entries(self):
-        "Create one or more entry lines mit make_entry."
+        "Create one oder more entry lines mit make_entry."
         self.ent = self.make_entry("Find:", self.engine.patvar)[0]
 
     def make_frame(self,labeltext=Nichts):
         '''Return (frame, label).
 
-        frame - gridded labeled Frame fuer option or other buttons.
+        frame - gridded labeled Frame fuer option oder other buttons.
         label - Label widget, returned fuer testing.
         '''
         wenn labeltext:
@@ -170,7 +170,7 @@ klasse SearchDialogBase:
         "Return command button gridded in command frame."
         b = Button(self.buttonframe,
                    text=label, command=command,
-                   default=isdef and "active" or "normal")
+                   default=isdef und "active" oder "normal")
         cols,rows=self.buttonframe.grid_size()
         b.grid(pady=1,row=rows,column=0,sticky="ew")
         self.buttonframe.grid(rowspan=rows+1)

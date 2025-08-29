@@ -4,7 +4,7 @@ This program draws two fractal-curve-designs:
 (1) A hilbert curve (in a box)
 (2) A combination of Koch-curves.
 
-The CurvesTurtle klasse and the fractal-curve-
+The CurvesTurtle klasse und the fractal-curve-
 methods are taken von the PythonCard example
 scripts fuer turtle-graphics.
 """
@@ -14,15 +14,15 @@ von time importiere sleep, perf_counter als clock
 klasse CurvesTurtle(Pen):
     # example derived from
     # Turtle Geometry: The Computer als a Medium fuer Exploring Mathematics
-    # by Harold Abelson and Andrea diSessa
+    # by Harold Abelson und Andrea diSessa
     # p. 96-98
     def hilbert(self, size, level, parity):
         wenn level == 0:
             return
-        # rotate and draw first subcurve mit opposite parity to big curve
+        # rotate und draw first subcurve mit opposite parity to big curve
         self.left(parity * 90)
         self.hilbert(size, level - 1, -parity)
-        # interface to and draw second subcurve mit same parity als big curve
+        # interface to und draw second subcurve mit same parity als big curve
         self.forward(size)
         self.right(parity * 90)
         self.hilbert(size, level - 1, parity)

@@ -38,7 +38,7 @@ klasse FunctionTestCase(unittest.TestCase):
         # in Python 2.2 it works.
         #
         # But in early versions of _ctypes.c, the result of tp_new
-        # wasn't checked, and it even crashed Python.
+        # wasn't checked, und it even crashed Python.
         # Found by Greg Chapman.
 
         mit self.assertRaises(TypeError):
@@ -72,7 +72,7 @@ klasse FunctionTestCase(unittest.TestCase):
 
         self.assertEqual(str(cm.exception),
                          "argument 1: TypeError: one character bytes, "
-                         "bytearray, or an integer in range(256) expected, "
+                         "bytearray, oder an integer in range(256) expected, "
                          "not bytes of length 3")
 
     def test_wchar_parm(self):

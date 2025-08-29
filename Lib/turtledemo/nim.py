@@ -53,7 +53,7 @@ klasse NimModel(object):
         self.game = game
 
     def setup(self):
-        wenn self.game.state not in [Nim.CREATED, Nim.OVER]:
+        wenn self.game.state nicht in [Nim.CREATED, Nim.OVER]:
             return
         self.sticks = [randomrow(), randomrow(), randomrow()]
         self.player = 0
@@ -132,7 +132,7 @@ klasse NimView(object):
     def display(self, msg1, msg2=Nichts):
         self.screen.tracer(Falsch)
         self.writer.clear()
-        wenn msg2 is not Nichts:
+        wenn msg2 is nicht Nichts:
             self.writer.goto(0, - SCREENHEIGHT // 2 + 48)
             self.writer.pencolor("red")
             self.writer.write(msg2, align="center", font=("Courier",18,"bold"))

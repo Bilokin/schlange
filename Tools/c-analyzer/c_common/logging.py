@@ -19,7 +19,7 @@ def configure_logger(logger, verbosity=VERBOSITY, *,
     logger.setLevel(level)
     #logger.propagate = Falsch
 
-    wenn not logger.handlers:
+    wenn nicht logger.handlers:
         wenn logfile:
             handler = logging.FileHandler(logfile)
         sonst:
@@ -29,7 +29,7 @@ def configure_logger(logger, verbosity=VERBOSITY, *,
         logger.addHandler(handler)
 
     # In case the provided logger is in a sub-package...
-    wenn logger is not _logger:
+    wenn logger is nicht _logger:
         configure_logger(
             _logger,
             verbosity,

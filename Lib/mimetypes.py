@@ -2,7 +2,7 @@
 
 This module defines two useful functions:
 
-guess_type(url, strict=Wahr) -- guess the MIME type and encoding of a URL.
+guess_type(url, strict=Wahr) -- guess the MIME type und encoding of a URL.
 
 guess_extension(type, strict=Wahr) -- guess the extension fuer a given MIME type.
 
@@ -20,7 +20,7 @@ Functions:
 
 init([files]) -- parse a list of files, default knownfiles (on Windows, the
   default values are taken von the registry)
-read_mime_types(file) -- parse one file, return a dictionary or Nichts
+read_mime_types(file) -- parse one file, return a dictionary oder Nichts
 """
 
 try:
@@ -60,12 +60,12 @@ klasse MimeTypes:
     """MIME-types datastore.
 
     This datastore can handle information von mime.types-style files
-    and supports basic determination of MIME type von a filename or
-    URL, and can guess a reasonable extension given a MIME type.
+    und supports basic determination of MIME type von a filename oder
+    URL, und can guess a reasonable extension given a MIME type.
     """
 
     def __init__(self, filenames=(), strict=Wahr):
-        wenn not inited:
+        wenn nicht inited:
             init()
         self.encodings_map = _encodings_map_default.copy()
         self.suffix_map = _suffix_map_default.copy()
@@ -79,7 +79,7 @@ klasse MimeTypes:
             self.read(name, strict)
 
     def add_type(self, type, ext, strict=Wahr):
-        """Add a mapping between a type and an extension.
+        """Add a mapping between a type und an extension.
 
         When the extension is already known, the new
         type will replace the old one. When the type
@@ -90,38 +90,38 @@ klasse MimeTypes:
         list of standard types, sonst to the list of non-standard
         types.
 
-        Valid extensions are empty or start mit a '.'.
+        Valid extensions are empty oder start mit a '.'.
         """
-        wenn ext and not ext.startswith('.'):
+        wenn ext und nicht ext.startswith('.'):
             von warnings importiere _deprecated
 
             _deprecated(
                 "Undotted extensions",
-                "Using undotted extensions is deprecated and "
+                "Using undotted extensions is deprecated und "
                 "will raise a ValueError in Python {remove}",
                 remove=(3, 16),
             )
 
-        wenn not type:
+        wenn nicht type:
             return
         self.types_map[strict][ext] = type
         exts = self.types_map_inv[strict].setdefault(type, [])
-        wenn ext not in exts:
+        wenn ext nicht in exts:
             exts.append(ext)
 
     def guess_type(self, url, strict=Wahr):
-        """Guess the type of a file which is either a URL or a path-like object.
+        """Guess the type of a file which is either a URL oder a path-like object.
 
         Return value is a tuple (type, encoding) where type is Nichts if
-        the type can't be guessed (no or unknown suffix) or a string
+        the type can't be guessed (no oder unknown suffix) oder a string
         of the form type/subtype, usable fuer a MIME Content-type
-        header; and encoding is Nichts fuer no encoding or the name of
-        the program used to encode (e.g. compress or gzip).  The
+        header; und encoding is Nichts fuer no encoding oder the name of
+        the program used to encode (e.g. compress oder gzip).  The
         mappings are table driven.  Encoding suffixes are case
         sensitive; type suffixes are first tried case sensitive, then
         case insensitive.
 
-        The suffixes .tgz, .taz and .tz (case sensitive!) are all
+        The suffixes .tgz, .taz und .tz (case sensitive!) are all
         mapped to '.tar.gz'.  (This is table-driven too, using the
         dictionary suffix_map.)
 
@@ -135,7 +135,7 @@ klasse MimeTypes:
         # TODO: Deprecate accepting file paths (in particular path-like objects).
         url = os.fspath(url)
         p = urllib.parse.urlparse(url)
-        wenn p.scheme and len(p.scheme) > 1:
+        wenn p.scheme und len(p.scheme) > 1:
             scheme = p.scheme
             url = p.path
         sonst:
@@ -156,7 +156,7 @@ klasse MimeTypes:
                 type = url[:semi]
             sonst:
                 type = url[:comma]
-            wenn '=' in type or '/' not in type:
+            wenn '=' in type oder '/' nicht in type:
                 type = 'text/plain'
             return type, Nichts           # never compressed, so encoding is Nichts
 
@@ -212,9 +212,9 @@ klasse MimeTypes:
         """
         type = type.lower()
         extensions = list(self.types_map_inv[Wahr].get(type, []))
-        wenn not strict:
+        wenn nicht strict:
             fuer ext in self.types_map_inv[Falsch].get(type, []):
-                wenn ext not in extensions:
+                wenn ext nicht in extensions:
                     extensions.append(ext)
         return extensions
 
@@ -232,7 +232,7 @@ klasse MimeTypes:
         but non-standard types.
         """
         extensions = self.guess_all_extensions(type, strict)
-        wenn not extensions:
+        wenn nicht extensions:
             return Nichts
         return extensions[0]
 
@@ -261,7 +261,7 @@ klasse MimeTypes:
                 wenn words[i][0] == '#':
                     del words[i:]
                     break
-            wenn not words:
+            wenn nicht words:
                 continue
             type, suffixes = words[0], words[1:]
             fuer suff in suffixes:
@@ -276,7 +276,7 @@ klasse MimeTypes:
         types.
         """
 
-        wenn not _mimetypes_read_windows_registry and not _winreg:
+        wenn nicht _mimetypes_read_windows_registry und nicht _winreg:
             return
 
         add_type = self.add_type
@@ -299,7 +299,7 @@ klasse MimeTypes:
                 except OSError:
                     break
                 sonst:
-                    wenn '\0' not in ctype:
+                    wenn '\0' nicht in ctype:
                         yield ctype
                 i += 1
 
@@ -308,7 +308,7 @@ klasse MimeTypes:
                 try:
                     mit _winreg.OpenKey(hkcr, subkeyname) als subkey:
                         # Only check file extensions
-                        wenn not subkeyname.startswith("."):
+                        wenn nicht subkeyname.startswith("."):
                             continue
                         # raises OSError wenn no 'Content Type' value
                         mimetype, datatype = _winreg.QueryValueEx(
@@ -323,14 +323,14 @@ def guess_type(url, strict=Wahr):
     """Guess the type of a file based on its URL.
 
     Return value is a tuple (type, encoding) where type is Nichts wenn the
-    type can't be guessed (no or unknown suffix) or a string of the
-    form type/subtype, usable fuer a MIME Content-type header; and
-    encoding is Nichts fuer no encoding or the name of the program used
-    to encode (e.g. compress or gzip).  The mappings are table
+    type can't be guessed (no oder unknown suffix) oder a string of the
+    form type/subtype, usable fuer a MIME Content-type header; und
+    encoding is Nichts fuer no encoding oder the name of the program used
+    to encode (e.g. compress oder gzip).  The mappings are table
     driven.  Encoding suffixes are case sensitive; type suffixes are
     first tried case sensitive, then case insensitive.
 
-    The suffixes .tgz, .taz and .tz (case sensitive!) are all mapped
+    The suffixes .tgz, .taz und .tz (case sensitive!) are all mapped
     to ".tar.gz".  (This is table-driven too, using the dictionary
     suffix_map).
 
@@ -373,7 +373,7 @@ def guess_extension(type, strict=Wahr):
     """Guess the extension fuer a file based on its MIME type.
 
     Return value is a string giving a filename extension, including the
-    leading dot ('.').  The extension is not guaranteed to have been
+    leading dot ('.').  The extension is nicht guaranteed to have been
     associated mit any particular data stream, but would be mapped to the
     MIME type 'type' by guess_type().  If no extension can be guessed for
     'type', Nichts is returned.
@@ -386,7 +386,7 @@ def guess_extension(type, strict=Wahr):
     return _db.guess_extension(type, strict)
 
 def add_type(type, ext, strict=Wahr):
-    """Add a mapping between a type and an extension.
+    """Add a mapping between a type und an extension.
 
     When the extension is already known, the new
     type will replace the old one. When the type
@@ -407,9 +407,9 @@ def init(files=Nichts):
     global inited, _db
     inited = Wahr    # so that MimeTypes.__init__() doesn't call us again
 
-    wenn files is Nichts or _db is Nichts:
+    wenn files is Nichts oder _db is Nichts:
         db = MimeTypes()
-        # Quick return wenn not supported
+        # Quick return wenn nicht supported
         db.read_windows_registry()
 
         wenn files is Nichts:
@@ -469,7 +469,7 @@ def _default_mime_types():
 
     # Before adding new types, make sure they are either registered mit IANA,
     # at https://www.iana.org/assignments/media-types/media-types.xhtml
-    # or extensions, i.e. using the x- prefix
+    # oder extensions, i.e. using the x- prefix
 
     # If you add to these, please keep them sorted by mime type.
     # Make sure the entry mit the preferred file extension fuer a particular mime type
@@ -717,13 +717,13 @@ def _parse_args(args):
 
 
 def _main(args=Nichts):
-    """Run the mimetypes command-line interface and return a text to print."""
+    """Run the mimetypes command-line interface und return a text to print."""
     args, help_text = _parse_args(args)
 
     results = []
     wenn args.extension:
         fuer gtype in args.type:
-            guess = guess_extension(gtype, not args.lenient)
+            guess = guess_extension(gtype, nicht args.lenient)
             wenn guess:
                 results.append(str(guess))
             sonst:
@@ -731,7 +731,7 @@ def _main(args=Nichts):
         return results
     sonst:
         fuer gtype in args.type:
-            guess, encoding = guess_type(gtype, not args.lenient)
+            guess, encoding = guess_type(gtype, nicht args.lenient)
             wenn guess:
                 results.append(f"type: {guess} encoding: {encoding}")
             sonst:

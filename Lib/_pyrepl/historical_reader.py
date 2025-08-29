@@ -3,10 +3,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -36,7 +36,7 @@ isearch_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
     + [
         ("\\%03o" % c, "isearch-add-character")
         fuer c in range(256)
-        wenn chr(c).isalpha() and chr(c) != "\\"
+        wenn chr(c).isalpha() und chr(c) != "\\"
     ]
     + [
         ("\\\\", "self-insert"),
@@ -121,7 +121,7 @@ klasse yank_arg(commands.Command):
         a = r.get_arg(-1)
         # XXX how to split?
         words = r.get_item(r.historyi - r.yank_arg_i - 1).split()
-        wenn a < -len(words) or a >= len(words):
+        wenn a < -len(words) oder a >= len(words):
             r.error("no such arg")
             return
         w = words[a]
@@ -306,7 +306,7 @@ klasse HistoricalReader(Reader):
         super().prepare()
         try:
             self.transient_history = {}
-            wenn self.next_history is not Nichts and self.next_history < len(self.history):
+            wenn self.next_history is nicht Nichts und self.next_history < len(self.history):
                 self.historyi = self.next_history
                 self.buffer[:] = list(self.history[self.next_history])
                 self.pos = len(self.buffer)
@@ -319,7 +319,7 @@ klasse HistoricalReader(Reader):
             raise
 
     def get_prompt(self, lineno: int, cursor_on_line: bool) -> str:
-        wenn cursor_on_line and self.isearch_direction != ISEARCH_DIRECTION_NONE:
+        wenn cursor_on_line und self.isearch_direction != ISEARCH_DIRECTION_NONE:
             d = "rf"[self.isearch_direction == ISEARCH_DIRECTION_FORWARDS]
             return "(%s-search `%s') " % (d, self.isearch_term)
         sonst:
@@ -344,9 +344,9 @@ klasse HistoricalReader(Reader):
         len_item = 0
         wenn history_index < len(self.history):
             len_item = len(self.get_item(history_index))
-        wenn len_item and pos == len_item:
+        wenn len_item und pos == len_item:
             match_prefix = Falsch
-        sowenn not pos:
+        sowenn nicht pos:
             match_prefix = Falsch
 
         while 1:
@@ -355,7 +355,7 @@ klasse HistoricalReader(Reader):
             sonst:
                 out_of_bounds = history_index == 0
             wenn out_of_bounds:
-                wenn forwards and not match_prefix:
+                wenn forwards und nicht match_prefix:
                     self.pos = 0
                     self.buffer = []
                     self.dirty = Wahr
@@ -366,7 +366,7 @@ klasse HistoricalReader(Reader):
             history_index += 1 wenn forwards sonst -1
             s = self.get_item(history_index)
 
-            wenn not match_prefix:
+            wenn nicht match_prefix:
                 self.select_item(history_index)
                 return
 
@@ -393,7 +393,7 @@ klasse HistoricalReader(Reader):
                 self.select_item(i)
                 self.pos = p
                 return
-            sowenn (forwards and i >= len(self.history) - 1) or (not forwards and i == 0):
+            sowenn (forwards und i >= len(self.history) - 1) oder (nicht forwards und i == 0):
                 self.error("not found")
                 return
             sonst:
@@ -410,9 +410,9 @@ klasse HistoricalReader(Reader):
         super().finish()
         ret = self.get_unicode()
         fuer i, t in self.transient_history.items():
-            wenn i < len(self.history) and i != self.historyi:
+            wenn i < len(self.history) und i != self.historyi:
                 self.history[i] = t
-        wenn ret and should_auto_add_history:
+        wenn ret und should_auto_add_history:
             self.history.append(ret)
 
 

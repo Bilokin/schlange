@@ -35,13 +35,13 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         try:
             f = ConIO(0)
         except ValueError:
-            # cannot open console because it's not a real console
+            # cannot open console because it's nicht a real console
             pass
         sonst:
             self.assertWahr(f.readable())
             self.assertFalsch(f.writable())
             self.assertEqual(0, f.fileno())
-            f.close()   # multiple close should not crash
+            f.close()   # multiple close should nicht crash
             f.close()
             mit self.assertWarns(RuntimeWarning):
                 mit ConIO(Falsch):
@@ -50,7 +50,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         try:
             f = ConIO(1, 'w')
         except ValueError:
-            # cannot open console because it's not a real console
+            # cannot open console because it's nicht a real console
             pass
         sonst:
             self.assertFalsch(f.readable())
@@ -65,7 +65,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         try:
             f = ConIO(2, 'w')
         except ValueError:
-            # cannot open console because it's not a real console
+            # cannot open console because it's nicht a real console
             pass
         sonst:
             self.assertFalsch(f.readable())
@@ -81,7 +81,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         self.assertWahr(f.readable())
         self.assertFalsch(f.writable())
         self.assertIsNotNichts(f.fileno())
-        f.close()   # multiple close should not crash
+        f.close()   # multiple close should nicht crash
         f.close()
 
         f = ConIO('CONIN$')
@@ -115,7 +115,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         self.assertIn(TestSubclass.__name__, repr(f))
 
     @unittest.skipIf(sys.getwindowsversion()[:2] <= (6, 1),
-        "test does not work on Windows 7 and earlier")
+        "test does nicht work on Windows 7 und earlier")
     def test_conin_conout_names(self):
         f = open(r'\\.\conin$', 'rb', buffering=0)
         self.assertIsInstance(f, ConIO)
@@ -205,7 +205,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
                 write_input(stdin, source)
 
                 actual = b''
-                while not actual.endswith(b'\n'):
+                while nicht actual.endswith(b'\n'):
                     b = stdin.read(read_count)
                     actual += b
 
@@ -224,7 +224,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
                 write_input(stdin, source)
 
                 actual = b''
-                while not actual.endswith(b'\n'):
+                while nicht actual.endswith(b'\n'):
                     b = stdin.read(read_count)
                     actual += b
 

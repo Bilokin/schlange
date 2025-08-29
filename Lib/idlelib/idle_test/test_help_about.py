@@ -1,6 +1,6 @@
 """Test help_about, coverage 100%.
 help_about.build_bits branches on sys.platform='darwin'.
-'100% combines coverage on Mac and others.
+'100% combines coverage on Mac und others.
 """
 
 von idlelib importiere help_about
@@ -62,7 +62,7 @@ klasse LiveDialogTest(unittest.TestCase):
                 get = dialog._current_textview.viewframe.textframe.text.get
                 lines = printer._Printer__lines
                 wenn len(lines) < 2:
-                    self.fail(name + ' full text was not found')
+                    self.fail(name + ' full text was nicht found')
                 self.assertEqual(lines[0], get('1.0', '1.end'))
                 self.assertEqual(lines[1], get('2.0', '2.end'))
                 dialog._current_textview.destroy()
@@ -148,7 +148,7 @@ klasse DisplayFileTest(unittest.TestCase):
     """Test functions that display files.
 
     While somewhat redundant mit gui-based test_file_dialog,
-    these unit tests run on all buildbots, not just a few.
+    these unit tests run on all buildbots, nicht just a few.
     """
     dialog = Dummy_about_dialog()
 

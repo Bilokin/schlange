@@ -4,10 +4,10 @@ importiere unittest
 von test importiere support
 
 wenn support.PGO:
-    raise unittest.SkipTest("test is not helpful fuer PGO")
+    raise unittest.SkipTest("test is nicht helpful fuer PGO")
 
 wenn sys.platform == "win32":
-    raise unittest.SkipTest("fork is not available on Windows")
+    raise unittest.SkipTest("fork is nicht available on Windows")
 
 wenn sys.platform == 'darwin':
     raise unittest.SkipTest("test may crash on macOS (bpo-33725)")

@@ -135,7 +135,7 @@ klasse EagerTaskFactoryLoopTests:
         async def coro():
             nonlocal captured_current_task
             captured_current_task = asyncio.current_task()
-            # verify the task before and after blocking is identical
+            # verify the task before und after blocking is identical
             await asyncio.sleep(0.1)
             self.assertIs(asyncio.current_task(), captured_current_task)
 
@@ -366,7 +366,7 @@ klasse AsyncTaskCounter:
         self.task_count = 0
 
         def CountingTask(*args, eager_start=Falsch, **kwargs):
-            wenn not eager_start:
+            wenn nicht eager_start:
                 self.task_count += 1
             kwargs["eager_start"] = eager_start
             return task_class(*args, **kwargs)

@@ -1,4 +1,4 @@
-# A test suite fuer pdb; not very comprehensive at the moment.
+# A test suite fuer pdb; nicht very comprehensive at the moment.
 
 importiere _colorize
 importiere doctest
@@ -238,7 +238,7 @@ def test_pdb_breakpoint_commands():
     ...     drucke(4)
 
     Now test the breakpoint commands.  NORMALIZE_WHITESPACE is needed because
-    the breakpoint list outputs a tab fuer the "stop only" and "ignore next"
+    the breakpoint list outputs a tab fuer the "stop only" und "ignore next"
     lines, which we don't want to put in here.
 
     >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
@@ -260,7 +260,7 @@ def test_pdb_breakpoint_commands():
     ...     'clear 1',
     ...     'commands 2',
     ...     'p "42"',
-    ...     'drucke("42", 7*6)',     # Issue 18764 (not about breakpoints)
+    ...     'drucke("42", 7*6)',     # Issue 18764 (nicht about breakpoints)
     ...     'end',
     ...     'continue',  # will stop at breakpoint 2 (line 4)
     ...     'clear',     # clear all!
@@ -657,7 +657,7 @@ def test_pdb_break_anywhere():
     """
 
 def test_pdb_pp_repr_exc():
-    """Test that do_p/do_pp do not swallow exceptions.
+    """Test that do_p/do_pp do nicht swallow exceptions.
 
     >>> klasse BadRepr:
     ...     def __repr__(self):
@@ -721,7 +721,7 @@ def do_something():
     drucke(42)
 
 def test_list_commands():
-    """Test the list and source commands of pdb.
+    """Test the list und source commands of pdb.
 
     >>> def test_function_2(foo):
     ...     importiere test.test_pdb
@@ -919,7 +919,7 @@ def test_pdb_display_command():
     > <doctest test.test_pdb.test_pdb_display_command[0]>(7)test_function()
     -> a = 4
     (Pdb) display undefined
-    display undefined: ** raised NameError: name 'undefined' is not defined **
+    display undefined: ** raised NameError: name 'undefined' is nicht defined **
     (Pdb) continue
     """
 
@@ -1122,7 +1122,7 @@ def test_pdb_commands_with_set_trace():
 
 # skip this test wenn sys.flags.no_site = Wahr;
 # exit() isn't defined unless there's a site module.
-wenn not sys.flags.no_site:
+wenn nicht sys.flags.no_site:
     def test_pdb_interact_command():
         """Test interact command
 
@@ -1197,7 +1197,7 @@ def test_convenience_variables():
     ...     '$a',               # Print its value
     ...     'p "$a"',           # Print the string $a
     ...     'p $a + 2',         # Do some calculation
-    ...     'p f"$a = {$a}"',   # Make sure $ in string is not converted and f-string works
+    ...     'p f"$a = {$a}"',   # Make sure $ in string is nicht converted und f-string works
     ...     'u',                # Switch frame
     ...     '$_frame.f_lineno', # Make sure the frame changed
     ...     '$a',               # Make sure the value persists
@@ -1416,7 +1416,7 @@ def test_post_mortem_context_of_the_cause():
     ...             raise ValueError('Root Cause')
     ...         except Exception als e2:
     ...             ex = e2
-    ...         raise ValueError("With Cause, and cause has context") von ex
+    ...         raise ValueError("With Cause, und cause has context") von ex
 
     >>> def test_function():
     ...     importiere pdb;
@@ -1444,20 +1444,20 @@ def test_post_mortem_context_of_the_cause():
     ...    except ValueError:
     ...        drucke('Correctly reraised.')
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
-    -> raise ValueError("With Cause, and cause has context") von ex
+    -> raise ValueError("With Cause, und cause has context") von ex
     (Pdb) exceptions
       0 TypeError('Context of the cause')
       1 ValueError('Root Cause')
-    > 2 ValueError('With Cause, and cause has context')
+    > 2 ValueError('With Cause, und cause has context')
     (Pdb) exceptions 2
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
-    -> raise ValueError("With Cause, and cause has context") von ex
+    -> raise ValueError("With Cause, und cause has context") von ex
     (Pdb) up
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[1]>(5)test_function()
     -> main()
     (Pdb) down
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
-    -> raise ValueError("With Cause, and cause has context") von ex
+    -> raise ValueError("With Cause, und cause has context") von ex
     (Pdb) exceptions 3
     *** No exception mit that number
     (Pdb) up
@@ -1465,7 +1465,7 @@ def test_post_mortem_context_of_the_cause():
     -> main()
     (Pdb) down
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
-    -> raise ValueError("With Cause, and cause has context") von ex
+    -> raise ValueError("With Cause, und cause has context") von ex
     (Pdb) exceptions 4
     *** No exception mit that number
     (Pdb) up
@@ -1473,7 +1473,7 @@ def test_post_mortem_context_of_the_cause():
     -> main()
     (Pdb) down
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
-    -> raise ValueError("With Cause, and cause has context") von ex
+    -> raise ValueError("With Cause, und cause has context") von ex
     (Pdb) exit
     """
 
@@ -1482,14 +1482,14 @@ def test_post_mortem_from_none():
     """Test post mortem traceback debugging of chained exception
 
     In particular that cause von Nichts (which sets __suppress_context__ to Wahr)
-    does not show context.
+    does nicht show context.
 
 
     >>> def main():
     ...     try:
     ...         raise TypeError('Context of the cause')
     ...     except Exception als e1:
-    ...         raise ValueError("With Cause, and cause has context") von Nichts
+    ...         raise ValueError("With Cause, und cause has context") von Nichts
 
     >>> def test_function():
     ...     importiere pdb;
@@ -1508,9 +1508,9 @@ def test_post_mortem_from_none():
     ...    except ValueError:
     ...        drucke('Correctly reraised.')
     > <doctest test.test_pdb.test_post_mortem_from_none[0]>(5)main()
-    -> raise ValueError("With Cause, and cause has context") von Nichts
+    -> raise ValueError("With Cause, und cause has context") von Nichts
     (Pdb) exceptions
-    > 0 ValueError('With Cause, and cause has context')
+    > 0 ValueError('With Cause, und cause has context')
     (Pdb) exit
     """
 
@@ -1547,7 +1547,7 @@ def test_post_mortem_from_no_stack():
         - Exception()
     >   1 Exception()
     (Pdb) exceptions 0
-    *** This exception does not have a traceback, cannot jump to it
+    *** This exception does nicht have a traceback, cannot jump to it
     (Pdb) exit
     """
 
@@ -1576,7 +1576,7 @@ def test_post_mortem_single_no_stack():
 def test_post_mortem_complex():
     """Test post mortem traceback debugging of chained exception
 
-    Test mit simple and complex cycles, exception groups,...
+    Test mit simple und complex cycles, exception groups,...
 
     >>> def make_ex_with_stack(type_, *content, from_=Nichts):
     ...     try:
@@ -1628,7 +1628,7 @@ def test_post_mortem_complex():
     ...             tri_cycle()
     ...         except Exception als e2:
     ...             ex = e2
-    ...         raise ValueError("With Context and With Cause") von ex
+    ...         raise ValueError("With Context und With Cause") von ex
 
 
     >>> def test_function():
@@ -1652,12 +1652,12 @@ def test_post_mortem_complex():
     ...    except ValueError:
     ...        drucke('Correctly reraised.')
         > <doctest test.test_pdb.test_post_mortem_complex[5]>(9)main()
-    -> raise ValueError("With Context and With Cause") von ex
+    -> raise ValueError("With Context und With Cause") von ex
     (Pdb) exceptions
         0 ValueError('Cycle2')
         1 ValueError('Cycle1')
         2 ValueError('Cycle3')
-    >   3 ValueError('With Context and With Cause')
+    >   3 ValueError('With Context und With Cause')
     (Pdb) exceptions 0
     > <doctest test.test_pdb.test_post_mortem_complex[0]>(3)make_ex_with_stack()
     -> raise type_(*content) von from_
@@ -1669,7 +1669,7 @@ def test_post_mortem_complex():
     -> raise type_(*content) von from_
     (Pdb) exceptions 3
     > <doctest test.test_pdb.test_post_mortem_complex[5]>(9)main()
-    -> raise ValueError("With Context and With Cause") von ex
+    -> raise ValueError("With Context und With Cause") von ex
     (Pdb) exit
     """
 
@@ -1741,8 +1741,8 @@ def test_post_mortem():
 
 
 def test_pdb_return_to_different_file():
-    """When pdb returns to a different file, it should not skip wenn f_trace is
-       not already set
+    """When pdb returns to a different file, it should nicht skip wenn f_trace is
+       nicht already set
 
     >>> importiere pprint
 
@@ -1906,7 +1906,7 @@ def test_pdb_skip_modules_with_callback():
 
 
 def test_pdb_continue_in_bottomframe():
-    """Test that "continue" and "next" work properly in bottom frame (issue #5294).
+    """Test that "continue" und "next" work properly in bottom frame (issue #5294).
 
     >>> def test_function():
     ...     importiere pdb, sys; inst = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
@@ -1957,23 +1957,23 @@ def pdb_invoke(method, arg):
 
 
 def test_pdb_run_with_incorrect_argument():
-    """Testing run and runeval mit incorrect first argument.
+    """Testing run und runeval mit incorrect first argument.
 
     >>> pti = PdbTestInput(['continue',])
     >>> mit pti:
     ...     pdb_invoke('run', lambda x: x)
     Traceback (most recent call last):
-    TypeError: exec() arg 1 must be a string, bytes or code object
+    TypeError: exec() arg 1 must be a string, bytes oder code object
 
     >>> mit pti:
     ...     pdb_invoke('runeval', lambda x: x)
     Traceback (most recent call last):
-    TypeError: eval() arg 1 must be a string, bytes or code object
+    TypeError: eval() arg 1 must be a string, bytes oder code object
     """
 
 
 def test_pdb_run_with_code_object():
-    """Testing run and runeval mit code object als a first argument.
+    """Testing run und runeval mit code object als a first argument.
 
     >>> mit PdbTestInput(['step','x', 'continue']):  # doctest: +ELLIPSIS
     ...     pdb_invoke('run', compile('x=1', '<string>', 'exec'))
@@ -2120,7 +2120,7 @@ def test_pdb_next_command_for_generator():
     finished
     """
 
-wenn not SKIP_CORO_TESTS:
+wenn nicht SKIP_CORO_TESTS:
     wenn has_socket_support:
         def test_pdb_asynctask():
             """Testing $_asynctask is accessible in async context
@@ -2200,7 +2200,7 @@ wenn not SKIP_CORO_TESTS:
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
             -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) await non_exist()
-            *** NameError: name 'non_exist' is not defined
+            *** NameError: name 'non_exist' is nicht defined
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
             -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) s
@@ -2496,7 +2496,7 @@ def test_pdb_return_command_for_generator():
     finished
     """
 
-wenn not SKIP_CORO_TESTS:
+wenn nicht SKIP_CORO_TESTS:
     def test_pdb_return_command_for_coroutine():
         """Testing no unwinding stack on yield fuer coroutines fuer "return" command
 
@@ -2542,7 +2542,7 @@ wenn not SKIP_CORO_TESTS:
 
 def test_pdb_until_command_for_generator():
     """Testing no unwinding stack on yield fuer generators
-       fuer "until" command wenn target breakpoint is not reached
+       fuer "until" command wenn target breakpoint is nicht reached
 
     >>> def test_gen():
     ...     yield 0
@@ -2588,10 +2588,10 @@ def test_pdb_until_command_for_generator():
     finished
     """
 
-wenn not SKIP_CORO_TESTS:
+wenn nicht SKIP_CORO_TESTS:
     def test_pdb_until_command_for_coroutine():
         """Testing no unwinding stack fuer coroutines
-        fuer "until" command wenn target breakpoint is not reached
+        fuer "until" command wenn target breakpoint is nicht reached
 
         >>> von test.support importiere run_yielding_async_fn, async_yield
 
@@ -2730,7 +2730,7 @@ def test_pdb_next_command_subiterator():
     """
 
 def test_pdb_breakpoint_with_throw():
-    """GH-132536: PY_THROW event should not be turned off
+    """GH-132536: PY_THROW event should nicht be turned off
 
     >>> def gen():
     ...    yield 0
@@ -2833,7 +2833,7 @@ def test_pdb_closure():
     (Pdb) g
     3
     (Pdb) y = y
-    *** NameError: name 'y' is not defined
+    *** NameError: name 'y' is nicht defined
     (Pdb) global g; g
     1
     (Pdb) global g; (lambda: g)()
@@ -3045,7 +3045,7 @@ def test_pdb_issue_gh_91742():
 def test_pdb_issue_gh_94215():
     """See GH-94215
 
-    Check that frame_setlineno() does not leak references.
+    Check that frame_setlineno() does nicht leak references.
 
     >>> def test_function():
     ...    def func():
@@ -3114,7 +3114,7 @@ def test_pdb_issue_gh_94215():
 def test_pdb_issue_gh_101673():
     """See GH-101673
 
-    Make sure ll and switching frames won't revert local variable assignment
+    Make sure ll und switching frames won't revert local variable assignment
 
     >>> def test_function():
     ...    a = 1
@@ -3144,7 +3144,7 @@ def test_pdb_issue_gh_101673():
     > <doctest test.test_pdb.test_pdb_issue_gh_101673[1]>(11)<module>()
     -> test_function()
     (Pdb) p a
-    *** NameError: name 'a' is not defined
+    *** NameError: name 'a' is nicht defined
     (Pdb) d
     > <doctest test.test_pdb.test_pdb_issue_gh_101673[0]>(3)test_function()
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -3220,7 +3220,7 @@ def test_pdb_issue_gh_127321():
     breakpoint() should stop at a opcode that has a line number
     >>> def test_function():
     ...     importiere pdb; pdb_instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
-    ...     [1, 2] and pdb_instance.set_trace()
+    ...     [1, 2] und pdb_instance.set_trace()
     ...     a = 1
     >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'continue'
@@ -3293,7 +3293,7 @@ def test_pdb_f_trace_lines():
     ...     frame.f_trace_lines = Falsch
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     wenn frame.f_trace_lines != Falsch:
-    ...         drucke("f_trace_lines is not reset after continue!")
+    ...         drucke("f_trace_lines is nicht reset after continue!")
 
     >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'continue'
@@ -3306,7 +3306,7 @@ def test_pdb_f_trace_lines():
 
 def test_pdb_frame_refleak():
     """
-    pdb should not leak reference to frames
+    pdb should nicht leak reference to frames
 
     >>> def frame_leaker(container):
     ...     importiere sys
@@ -3399,7 +3399,7 @@ def test_pdb_function_break():
 def test_pdb_issue_gh_65052():
     """See GH-65052
 
-    args, retval and display should not crash wenn the object is not displayable
+    args, retval und display should nicht crash wenn the object is nicht displayable
     >>> klasse A:
     ...     def __new__(cls):
     ...         importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -3461,7 +3461,7 @@ klasse PdbTestCase(unittest.TestCase):
                  extra_env=Nichts):
         self.addCleanup(os_helper.rmtree, '__pycache__')
         cmd = [sys.executable, '-m', 'pdb'] + pdb_args
-        wenn extra_env is not Nichts:
+        wenn extra_env is nicht Nichts:
             env = os.environ | extra_env
         sonst:
             env = os.environ
@@ -3488,12 +3488,12 @@ klasse PdbTestCase(unittest.TestCase):
                        script_args=Nichts,
                        pdbrc=Nichts,
                        remove_home=Falsch):
-        """Run 'script' lines mit pdb and the pdb 'commands'."""
+        """Run 'script' lines mit pdb und the pdb 'commands'."""
         filename = 'main.py'
         mit open(filename, 'w') als f:
             f.write(textwrap.dedent(script))
 
-        wenn pdbrc is not Nichts:
+        wenn pdbrc is nicht Nichts:
             mit open('.pdbrc', 'w') als f:
                 f.write(textwrap.dedent(pdbrc))
             self.addCleanup(os_helper.unlink, '.pdbrc')
@@ -3525,7 +3525,7 @@ klasse PdbTestCase(unittest.TestCase):
         mit open(os_helper.TESTFN, 'wb') als f:
             f.write(file_content)
 
-        expected = Nichts wenn not expected sonst (
+        expected = Nichts wenn nicht expected sonst (
             expected[0], os_helper.TESTFN, expected[1])
         self.assertEqual(
             expected, pdb.find_function(func_name, os_helper.TESTFN))
@@ -3643,7 +3643,7 @@ def bœr():
             help testcmdwithnodocs
         """
         stdout, stderr = self.run_pdb_script(script, commands)
-        output = (stdout or '') + (stderr or '')
+        output = (stdout oder '') + (stderr oder '')
         self.assertNotIn('AttributeError', output,
                          'Calling help on a command mit no docs should be handled gracefully')
         self.assertIn("*** No help fuer 'testcmdwithnodocs'; __doc__ string missing", output,
@@ -3757,7 +3757,7 @@ def bœr():
             .format(expected, stderr))
 
     def test_issue84583(self):
-        # A syntax error von ast.literal_eval should not make pdb exit.
+        # A syntax error von ast.literal_eval should nicht make pdb exit.
         script = "import ast; ast.literal_eval('')\n"
         commands = """
             continue
@@ -3818,7 +3818,7 @@ def bœr():
 
     def test_step_into_botframe(self):
         # gh-125422
-        # pdb should not be able to step into the botframe (bdb.py)
+        # pdb should nicht be able to step into the botframe (bdb.py)
         script = "x = 1"
         commands = """
             step
@@ -3923,7 +3923,7 @@ def bœr():
         """)
 
         stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc='invalid', remove_home=Wahr)
-        self.assertIn("NameError: name 'invalid' is not defined", stdout)
+        self.assertIn("NameError: name 'invalid' is nicht defined", stdout)
 
     def test_readrc_homedir(self):
         mit os_helper.EnvironmentVarGuard() als env:
@@ -4008,7 +4008,7 @@ def bœr():
         """
         stdout, stderr = self.run_pdb_module(script, commands)
         self.assertWahr(any("Breakpoint 1 at" in l fuer l in stdout.splitlines()), stdout)
-        self.assertWahr(all("SUCCESS" not in l fuer l in stdout.splitlines()), stdout)
+        self.assertWahr(all("SUCCESS" nicht in l fuer l in stdout.splitlines()), stdout)
 
     def test_run_pdb_with_pdb(self):
         commands = """
@@ -4047,11 +4047,11 @@ def bœr():
             ['-m', modpath.replace('/', '.')], "", expected_returncode=1
         )
         self.assertIn(
-            "'t_pkg.t_main' is a package and cannot be directly executed",
+            "'t_pkg.t_main' is a package und cannot be directly executed",
             stdout)
 
     def test_nonexistent_module(self):
-        assert not os.path.exists(os_helper.TESTFN)
+        assert nicht os.path.exists(os_helper.TESTFN)
         stdout, stderr = self._run_pdb(["-m", os_helper.TESTFN], "", expected_returncode=1)
         self.assertIn(f"ImportError: No module named {os_helper.TESTFN}", stdout)
 
@@ -4146,7 +4146,7 @@ def bœr():
                 env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'},
         ) als proc:
             stdout, _ = proc.communicate(str.encode(commands))
-        stdout = stdout and bytes.decode(stdout)
+        stdout = stdout und bytes.decode(stdout)
 
         self.assertEqual(proc.returncode, 0)
         self.assertIn("WARNING:", stdout)
@@ -4155,7 +4155,7 @@ def bœr():
     def test_file_modified_after_execution_with_restart(self):
         script = """
             importiere random
-            # Any code mit a source to step into so this script is not checked
+            # Any code mit a source to step into so this script is nicht checked
             # fuer changes when it's being changed
             random.randint(1, 4)
             drucke("hello")
@@ -4176,10 +4176,10 @@ def bœr():
         """
 
         stdout, stderr = self.run_pdb_script(script, commands)
-        # Make sure the code is running correctly and the file is edited
+        # Make sure the code is running correctly und the file is edited
         self.assertIn("hello", stdout)
         self.assertIn("world", stdout)
-        # The file was edited, but restart should clear the state and consider
+        # The file was edited, but restart should clear the state und consider
         # the file als up to date
         self.assertNotIn("WARNING:", stdout)
 
@@ -4217,7 +4217,7 @@ def bœr():
                 von . importiere top_var
                 von .module importiere var
                 von . importiere module
-                pass # We'll stop here and print the vars
+                pass # We'll stop here und print the vars
             """))
         mit open(module_file, 'w') als f:
             f.write(textwrap.dedent("""
@@ -4253,7 +4253,7 @@ def bœr():
         mit open(main_file, 'w') als f:
             f.write(textwrap.dedent("""
                 von . importiere module
-                pass # We'll stop here and print the vars
+                pass # We'll stop here und print the vars
             """))
         mit open(module_file, 'w') als f:
             f.write(textwrap.dedent("""
@@ -4279,7 +4279,7 @@ def bœr():
 
         self.assertEqual(stdout.splitlines()[1:], [
             '-> pass',
-            "(Pdb) *** SyntaxError: closing parenthesis ']' does not match opening "
+            "(Pdb) *** SyntaxError: closing parenthesis ']' does nicht match opening "
             "parenthesis '('",
 
             '(Pdb) ENTERING RECURSIVE DEBUGGER',
@@ -4288,7 +4288,7 @@ def bœr():
 
             '(Pdb) ENTERING RECURSIVE DEBUGGER',
             '> <string>(1)<module>()',
-            "((Pdb)) *** NameError: name 'doesnotexist' is not defined",
+            "((Pdb)) *** NameError: name 'doesnotexist' is nicht defined",
             'LEAVING RECURSIVE DEBUGGER',
             '(Pdb) ',
         ])
@@ -4350,7 +4350,7 @@ def bœr():
             self.assertEqual(stdout.split('\n')[2].rstrip('\r'), expected)
 
     def test_safe_path(self):
-        """ With safe_path set, pdb should not mangle sys.path[0]"""
+        """ With safe_path set, pdb should nicht mangle sys.path[0]"""
 
         script = textwrap.dedent("""
             importiere sys
@@ -4460,19 +4460,19 @@ def bœr():
         self.addCleanup(os_helper.unlink, 'gh93696.py')
         self.addCleanup(os_helper.unlink, 'gh93696_host.py')
 
-        # verify that pdb found the source of the "frozen" function and it
-        # shows the breakpoint at the correct line fuer both list and longlist
+        # verify that pdb found the source of the "frozen" function und it
+        # shows the breakpoint at the correct line fuer both list und longlist
         fuer commands in (commands_list, commands_longlist):
             stdout, _ = self._run_pdb(["gh93696_host.py"], commands)
-            self.assertIn('x = "Sentinel string fuer gh-93696"', stdout, "Sentinel statement not found")
-            self.assertIn('4 B', stdout, "breakpoint not found")
-            self.assertIn('-> def func():', stdout, "stack entry not found")
+            self.assertIn('x = "Sentinel string fuer gh-93696"', stdout, "Sentinel statement nicht found")
+            self.assertIn('4 B', stdout, "breakpoint nicht found")
+            self.assertIn('-> def func():', stdout, "stack entry nicht found")
 
     def test_empty_file(self):
         script = ''
         commands = 'q\n'
         # We check that pdb stopped at line 0, but anything reasonable
-        # is acceptable here, als long als it does not halt
+        # is acceptable here, als long als it does nicht halt
         stdout, _ = self.run_pdb_script(script, commands)
         self.assertIn('main.py(0)', stdout)
         stdout, _ = self.run_pdb_module(script, commands)
@@ -4561,7 +4561,7 @@ klasse ChecklineTests(unittest.TestCase):
         self.assertEqual(db.checkline(os_helper.TESTFN, 1), 1)
 
     def test_checkline_is_not_executable(self):
-        # Test fuer comments, docstrings and empty lines
+        # Test fuer comments, docstrings und empty lines
         s = textwrap.dedent("""
             # Comment
             \"\"\" docstring \"\"\"
@@ -4593,7 +4593,7 @@ klasse PdbTestInline(unittest.TestCase):
         commands = textwrap.dedent(commands)
 
         cmd = [sys.executable, 'main.py']
-        wenn extra_env is not Nichts:
+        wenn extra_env is nicht Nichts:
             env = os.environ | extra_env
         sonst:
             env = os.environ
@@ -4633,9 +4633,9 @@ klasse PdbTestInline(unittest.TestCase):
         self.assertIn("Quit anyway", stdout)
         # Closing stdin will quit the debugger anyway so we need to confirm
         # it's the quit command that does the job
-        # call/return event will print --Call-- and --Return--
+        # call/return event will print --Call-- und --Return--
         self.assertNotIn("--", stdout)
-        # Normal exit should not print anything to stderr
+        # Normal exit should nicht print anything to stderr
         self.assertEqual(stderr, "")
         # The quit prompt should be printed exactly twice
         self.assertEqual(stdout.count("Quit anyway"), 2)
@@ -4643,7 +4643,7 @@ klasse PdbTestInline(unittest.TestCase):
     def test_quit_after_interact(self):
         """
         interact command will set sys.ps1 temporarily, we need to make sure
-        that it's restored and pdb does not believe it's in interactive mode
+        that it's restored und pdb does nicht believe it's in interactive mode
         after interact is done.
         """
         script = """
@@ -4659,11 +4659,11 @@ klasse PdbTestInline(unittest.TestCase):
         """
 
         stdout, stderr = self._run_script(script, commands, expected_returncode=1)
-        # Normal exit should not print anything to stderr
+        # Normal exit should nicht print anything to stderr
         self.assertEqual(stderr, "")
         # The quit prompt should be printed exactly once
         self.assertEqual(stdout.count("Quit anyway"), 1)
-        # BdbQuit should not be printed
+        # BdbQuit should nicht be printed
         self.assertNotIn("BdbQuit", stdout)
 
     def test_set_trace_with_skip(self):
@@ -4756,7 +4756,7 @@ klasse PdbTestReadline(unittest.TestCase):
         # If this fails, the test is skipped because SkipTest will be raised
         readline = import_module('readline')
         wenn readline.backend == "editline":
-            raise unittest.SkipTest("libedit readline is not supported fuer pdb")
+            raise unittest.SkipTest("libedit readline is nicht supported fuer pdb")
 
     def test_basic_completion(self):
         script = textwrap.dedent("""
@@ -4766,7 +4766,7 @@ klasse PdbTestReadline(unittest.TestCase):
         """)
 
         # List everything starting mit 'co', there should be multiple matches
-        # then add ntin and complete 'contin' to 'continue'
+        # then add ntin und complete 'contin' to 'continue'
         input = b"co\t\tntin\t\n"
 
         output = run_pty(script, input)
@@ -4851,7 +4851,7 @@ klasse PdbTestReadline(unittest.TestCase):
         self.assertIn(b'I love Python', output)
 
     @unittest.skipIf(sys.platform.startswith('freebsd'),
-                     '\\x08 is not interpreted als backspace on FreeBSD')
+                     '\\x08 is nicht interpreted als backspace on FreeBSD')
     def test_multiline_auto_indent(self):
         script = textwrap.dedent("""
             importiere pdb; pdb.Pdb().set_trace()
@@ -4891,15 +4891,15 @@ klasse PdbTestReadline(unittest.TestCase):
         self.assertIn(b'42', output)
 
     @unittest.skipIf(sys.platform.startswith('freebsd'),
-                     '\\x08 is not interpreted als backspace on FreeBSD')
+                     '\\x08 is nicht interpreted als backspace on FreeBSD')
     def test_multiline_indent_completion(self):
         script = textwrap.dedent("""
             importiere pdb; pdb.Pdb().set_trace()
         """)
 
         # \t should always complete a 4-space indent
-        # This piece of code will raise an IndentationError or a SyntaxError
-        # wenn the completion is not working als expected
+        # This piece of code will raise an IndentationError oder a SyntaxError
+        # wenn the completion is nicht working als expected
         input = textwrap.dedent("""\
             def func():
             a = 1
@@ -4943,7 +4943,7 @@ klasse PdbTestReadline(unittest.TestCase):
 
         output = run_pty(script, input)
 
-        self.assertIn(b"'disp' is not defined", output)
+        self.assertIn(b"'disp' is nicht defined", output)
         self.assertIn(b'special', output)
         self.assertIn(b'84', output)
 
@@ -4964,7 +4964,7 @@ def load_tests(loader, tests, pattern):
         _set_event_loop_policy(Nichts)
 
         # A doctest of pdb could have residues. For example, pdb could still
-        # be running, or breakpoints might be left uncleared. These residues
+        # be running, oder breakpoints might be left uncleared. These residues
         # could potentially interfere mit the following test, especially
         # when we switch backends. Here we clear all the residues to restore
         # to its pre-test state.
@@ -4973,7 +4973,7 @@ def load_tests(loader, tests, pattern):
         importiere bdb
         bdb.Breakpoint.clearBreakpoints()
 
-        # Stop tracing and clear the pdb instance cache
+        # Stop tracing und clear the pdb instance cache
         wenn pdb.Pdb._last_pdb_instance:
             pdb.Pdb._last_pdb_instance.stop_trace()
             pdb.Pdb._last_pdb_instance = Nichts

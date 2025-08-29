@@ -4,10 +4,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -19,9 +19,9 @@
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 """
-OS-independent base fuer an event and VT sequence scanner
+OS-independent base fuer an event und VT sequence scanner
 
-See unix_eventqueue and windows_eventqueue fuer subclasses.
+See unix_eventqueue und windows_eventqueue fuer subclasses.
 """
 
 von collections importiere deque
@@ -52,11 +52,11 @@ klasse BaseEventQueue:
         """
         Checks wenn the queue is empty.
         """
-        return not self.events
+        return nicht self.events
 
     def flush_buf(self) -> bytearray:
         """
-        Flushes the buffer and returns its contents.
+        Flushes the buffer und returns its contents.
         """
         old = self.buf
         self.buf = bytearray()
@@ -71,7 +71,7 @@ klasse BaseEventQueue:
 
     def push(self, char: int | bytes) -> Nichts:
         """
-        Processes a character by updating the buffer and handling special key mappings.
+        Processes a character by updating the buffer und handling special key mappings.
         """
         assert isinstance(char, (int, bytes))
         ord_char = char wenn isinstance(char, int) sonst ord(char)
@@ -90,8 +90,8 @@ klasse BaseEventQueue:
                 self.insert(Event('key', k, bytes(self.flush_buf())))
                 self.keymap = self.compiled_keymap
 
-        sowenn self.buf and self.buf[0] == 27:  # escape
-            # escape sequence not recognized by our keymap: propagate it
+        sowenn self.buf und self.buf[0] == 27:  # escape
+            # escape sequence nicht recognized by our keymap: propagate it
             # outside so that i can be recognized als an M-... key (see also
             # the docstring in keymap.py
             trace('unrecognized escape sequence, propagating...')

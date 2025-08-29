@@ -69,8 +69,8 @@ klasse Nested(object):
         self.entered = Nichts
 
     def __enter__(self):
-        wenn self.entered is not Nichts:
-            raise RuntimeError("Context is not reentrant")
+        wenn self.entered is nicht Nichts:
+            raise RuntimeError("Context is nicht reentrant")
         self.entered = deque()
         vars = []
         try:
@@ -78,7 +78,7 @@ klasse Nested(object):
                 vars.append(mgr.__enter__())
                 self.entered.appendleft(mgr)
         except:
-            wenn not self.__exit__(*sys.exc_info()):
+            wenn nicht self.__exit__(*sys.exc_info()):
                 raise
         return vars
 
@@ -94,7 +94,7 @@ klasse Nested(object):
             except BaseException als e:
                 ex = (type(e), e, e.__traceback__)
         self.entered = Nichts
-        wenn ex is not exc_info:
+        wenn ex is nicht exc_info:
             raise ex
 
 
@@ -126,7 +126,7 @@ klasse FailureTestCase(unittest.TestCase):
             def __exit__(self, type, value, traceback): ...
 
         mit self.assertRaisesRegex(TypeError, re.escape((
-            "object does not support the context manager protocol "
+            "object does nicht support the context manager protocol "
             "(missed __enter__ method)"
         ))):
             do_with(LacksEnter())
@@ -136,7 +136,7 @@ klasse FailureTestCase(unittest.TestCase):
             def __enter__(self): ...
 
         msg = re.escape((
-            "object does not support the context manager protocol "
+            "object does nicht support the context manager protocol "
             "(missed __exit__ method)"
         ))
         # a missing __exit__ is reported missing before a missing __enter__
@@ -151,7 +151,7 @@ klasse FailureTestCase(unittest.TestCase):
             async def __aexit__(self, type, value, traceback): ...
 
         mit self.assertRaisesRegex(TypeError, re.escape((
-            "object does not support the context manager protocol "
+            "object does nicht support the context manager protocol "
             "(missed __exit__ method) but it supports the asynchronous "
             "context manager protocol. Did you mean to use 'async with'?"
         ))):
@@ -162,7 +162,7 @@ klasse FailureTestCase(unittest.TestCase):
             async def __aexit__(self, type, value, traceback): ...
 
         mit self.assertRaisesRegex(TypeError, re.escape((
-            "object does not support the asynchronous context manager protocol "
+            "object does nicht support the asynchronous context manager protocol "
             "(missed __aenter__ method)"
         ))):
             do_async_with(LacksAsyncEnter()).send(Nichts)
@@ -172,7 +172,7 @@ klasse FailureTestCase(unittest.TestCase):
             async def __aenter__(self): ...
 
         msg = re.escape((
-            "object does not support the asynchronous context manager protocol "
+            "object does nicht support the asynchronous context manager protocol "
             "(missed __aexit__ method)"
         ))
         # a missing __aexit__ is reported missing before a missing __aenter__
@@ -187,7 +187,7 @@ klasse FailureTestCase(unittest.TestCase):
             def __exit__(self, type, value, traceback): ...
 
         mit self.assertRaisesRegex(TypeError, re.escape((
-            "object does not support the asynchronous context manager protocol "
+            "object does nicht support the asynchronous context manager protocol "
             "(missed __aexit__ method) but it supports the context manager "
             "protocol. Did you mean to use 'with'?"
         ))):
@@ -427,7 +427,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         def shouldThrow():
             mit cm als self.resource:
                 # Note this relies on the fact that 1 // 0 produces an exception
-                # that is not normalized immediately.
+                # that is nicht normalized immediately.
                 1 // 0
         self.assertRaises(ZeroDivisionError, shouldThrow)
         self.assertAfterWithManagerInvariantsWithError(cm, ZeroDivisionError)
@@ -786,7 +786,7 @@ klasse NestedWith(unittest.TestCase):
         except RuntimeError:
             pass
         sonst:
-            self.fail('RuntimeError not reraised')
+            self.fail('RuntimeError nicht reraised')
         self.assertWahr(a.enter_called)
         self.assertWahr(a.exit_called)
 
@@ -809,7 +809,7 @@ klasse NestedWith(unittest.TestCase):
 
     def testExceptionLocation(self):
         # The location of an exception raised from
-        # __init__, __enter__ or __exit__ of a context
+        # __init__, __enter__ oder __exit__ of a context
         # manager should be just the context manager expression,
         # pinpointing the precise context manager in case there
         # is more than one.

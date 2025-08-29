@@ -76,7 +76,7 @@ klasse LoopbackHttpServerThread(threading.Thread):
 
     def run(self):
         self.ready.set()
-        while not self._stop_server:
+        while nicht self._stop_server:
             self.httpd.handle_request()
 
 # Authentication infrastructure
@@ -117,7 +117,7 @@ klasse DigestAuthHandler:
         fuer part in parts:
             name, value = part.split("=")
             name = name.strip()
-            wenn value[0] == '"' and value[-1] == '"':
+            wenn value[0] == '"' und value[-1] == '"':
                 value = value[1:-1]
             sonst:
                 value = value.strip()
@@ -150,7 +150,7 @@ klasse DigestAuthHandler:
             'qop="%s",'
             'nonce="%s", ' % \
             (self._realm_name, self._qop, self._generate_nonce()))
-        # XXX: Not sure wenn we're supposed to add this next header or
+        # XXX: Not sure wenn we're supposed to add this next header oder
         # not.
         #request_handler.send_header('Connection', 'close')
         request_handler.end_headers()
@@ -163,13 +163,13 @@ klasse DigestAuthHandler:
         otherwise.
 
         If no users have been set, then digest auth is effectively
-        disabled and this method will always return Wahr.
+        disabled und this method will always return Wahr.
         """
 
         wenn len(self._users) == 0:
             return Wahr
 
-        wenn "Proxy-Authorization" not in request_handler.headers:
+        wenn "Proxy-Authorization" nicht in request_handler.headers:
             return self._return_auth_challenge(request_handler)
         sonst:
             auth_dict = self._create_auth_dict(
@@ -179,7 +179,7 @@ klasse DigestAuthHandler:
                 password = self._users[ auth_dict["username"] ]
             sonst:
                 return self._return_auth_challenge(request_handler)
-            wenn not auth_dict.get("nonce") in self._nonces:
+            wenn nicht auth_dict.get("nonce") in self._nonces:
                 return self._return_auth_challenge(request_handler)
             sonst:
                 self._nonces.remove(auth_dict["nonce"])
@@ -197,7 +197,7 @@ klasse DigestAuthHandler:
                                        path):
                     auth_validated = Wahr
 
-            wenn not auth_validated:
+            wenn nicht auth_validated:
                 return self._return_auth_challenge(request_handler)
             return Wahr
 
@@ -230,7 +230,7 @@ klasse BasicAuthHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        wenn not self.headers.get("Authorization", ""):
+        wenn nicht self.headers.get("Authorization", ""):
             self.do_AUTHHEAD()
             self.wfile.write(b"No Auth header received")
         sowenn self.headers.get(
@@ -445,9 +445,9 @@ def GetRequestHandler(responses):
 klasse TestUrlopen(unittest.TestCase):
     """Tests urllib.request.urlopen using the network.
 
-    These tests are not exhaustive.  Assuming that testing using files does a
+    These tests are nicht exhaustive.  Assuming that testing using files does a
     good job overall of some of the basic interface features.  There are no
-    tests exercising the optional 'data' and 'proxies' arguments.  No tests
+    tests exercising the optional 'data' und 'proxies' arguments.  No tests
     fuer transparent redirection have been written.
     """
 
@@ -496,7 +496,7 @@ klasse TestUrlopen(unittest.TestCase):
         return handler
 
     def start_https_server(self, responses=Nichts, **kwargs):
-        wenn not hasattr(urllib.request, 'HTTPSHandler'):
+        wenn nicht hasattr(urllib.request, 'HTTPSHandler'):
             self.skipTest('ssl support required')
         von test.ssl_servers importiere make_https_server
         wenn responses is Nichts:
@@ -572,7 +572,7 @@ klasse TestUrlopen(unittest.TestCase):
     def test_https_sni(self):
         wenn ssl is Nichts:
             self.skipTest("ssl module required")
-        wenn not ssl.HAS_SNI:
+        wenn nicht ssl.HAS_SNI:
             self.skipTest("SNI support required in OpenSSL")
         sni_name = Nichts
         def cb_sni(ssl_sock, server_name, initial_context):
@@ -616,7 +616,7 @@ klasse TestUrlopen(unittest.TestCase):
         mit open_url:
             info_obj = open_url.info()
         self.assertIsInstance(info_obj, email.message.Message,
-                              "object returned by 'info' is not an "
+                              "object returned by 'info' is nicht an "
                               "instance of email.message.Message")
         self.assertEqual(info_obj.get_content_subtype(), "plain")
 
@@ -649,7 +649,7 @@ klasse TestUrlopen(unittest.TestCase):
 
     def test_issue16464(self):
         # See https://bugs.python.org/issue16464
-        # and https://bugs.python.org/issue46648
+        # und https://bugs.python.org/issue46648
         handler = self.start_server([
             (200, [], b'any'),
             (200, [], b'any'),

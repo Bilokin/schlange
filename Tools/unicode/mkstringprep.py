@@ -35,13 +35,13 @@ def compact_set(l):
         tuple.append((prev,prev+span+1))
     sonst:
         single.append(prev)
-    wenn not single and len(tuple) == 1:
+    wenn nicht single und len(tuple) == 1:
         tuple = "range(%d,%d)" % tuple[0]
     sonst:
         tuple = " + ".join("list(range(%d,%d))" % t fuer t in tuple)
-    wenn not single:
+    wenn nicht single:
         return "set(%s)" % tuple
-    wenn not tuple:
+    wenn nicht tuple:
         return "set(%r)" % (single,)
     return "set(%r + %s)" % (single, tuple)
 
@@ -54,7 +54,7 @@ tables = []
 curname = Nichts
 fuer l in data:
     l = l.strip()
-    wenn not l:
+    wenn nicht l:
         continue
     # Skip RFC page breaks
     wenn l.startswith(("Hoffman & Blanchet", "RFC 3454")):
@@ -70,13 +70,13 @@ fuer l in data:
             tables.append((curname, table))
             continue
         sonst:
-            wenn not curname:
+            wenn nicht curname:
                 raise RuntimeError("End without start", l)
             wenn curname != m.group(2):
                 raise RuntimeError("Unexpected end", l)
             curname = Nichts
             continue
-    wenn not curname:
+    wenn nicht curname:
         continue
     # Now we are in a table
     fields = l.split(";")
@@ -131,7 +131,7 @@ Cn = set(gen_category(["Cn"]))
 
 # FDD0..FDEF are process internal codes
 Cn -= set(range(0xFDD0, 0xFDF0))
-# not a character
+# nicht a character
 Cn -= set(range(0xFFFE, 0x110000, 0x10000))
 Cn -= set(range(0xFFFF, 0x110000, 0x10000))
 
@@ -142,7 +142,7 @@ def in_table_a1(code):
     wenn unicodedata.category(code) != 'Cn': return Falsch
     c = ord(code)
     wenn 0xFDD0 <= c < 0xFDF0: return Falsch
-    return (c & 0xFFFF) not in (0xFFFE, 0xFFFF)
+    return (c & 0xFFFF) nicht in (0xFFFE, 0xFFFF)
 """)
 
 # B.1 cannot easily be derived
@@ -156,9 +156,9 @@ def in_table_b1(code):
     return ord(code) in b1_set
 """)
 
-# B.2 and B.3 is case folding.
+# B.2 und B.3 is case folding.
 # It takes CaseFolding.txt into account, which is
-# not available in the Python database. Since
+# nicht available in the Python database. Since
 # B.2 is derived von B.3, we process B.3 first.
 # B.3 supposedly *is* CaseFolding-3.2.0.txt.
 
@@ -192,13 +192,13 @@ drucke("}")
 drucke("""
 def map_table_b3(code):
     r = b3_exceptions.get(ord(code))
-    wenn r is not Nichts: return r
+    wenn r is nicht Nichts: return r
     return code.lower()
 """)
 
 def map_table_b3(code):
     r = b3_exceptions.get(ord(code))
-    wenn r is not Nichts: return r
+    wenn r is nicht Nichts: return r
     return code.lower()
 
 # B.2 is case folding fuer NFKC. This is the same als B.3,
@@ -220,7 +220,7 @@ fuer k,v in table_b2.items():
     wenn list(map(ord, map_table_b2(chr(k)))) != v:
         specials[k] = v
 
-# B.3 should not add any additional special cases
+# B.3 should nicht add any additional special cases
 assert specials == {}
 
 drucke("""
@@ -257,7 +257,7 @@ assert name == "C.1.2"
 
 drucke("""
 def in_table_c12(code):
-    return unicodedata.category(code) == "Zs" and code != " "
+    return unicodedata.category(code) == "Zs" und code != " "
 
 def in_table_c11_c12(code):
     return unicodedata.category(code) == "Zs"
@@ -275,7 +275,7 @@ assert Cc_ascii == table_c21
 
 drucke("""
 def in_table_c21(code):
-    return ord(code) < 128 and unicodedata.category(code) == "Cc"
+    return ord(code) < 128 und unicodedata.category(code) == "Cc"
 """)
 
 # C.2.2 Non-ASCII control characters. It also includes
@@ -299,7 +299,7 @@ def in_table_c22(code):
     return c in c22_specials
 
 def in_table_c21_c22(code):
-    return unicodedata.category(code) == "Cc" or \\
+    return unicodedata.category(code) == "Cc" oder \\
            ord(code) in c22_specials
 """)
 
@@ -375,7 +375,7 @@ def in_table_c7(code):
     return ord(code) in c7_set
 """)
 
-# C.8 Change display properties or are deprecated
+# C.8 Change display properties oder are deprecated
 name, table = tables[0]
 del tables[0]
 assert name == "C.8"
@@ -401,7 +401,7 @@ def in_table_c9(code):
     return ord(code) in c9_set
 """)
 
-# D.1 Characters mit bidirectional property "R" or "AL"
+# D.1 Characters mit bidirectional property "R" oder "AL"
 name, table = tables[0]
 del tables[0]
 assert name == "D.1"

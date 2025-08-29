@@ -30,8 +30,8 @@ def assertEqual(lhs, rhs):
     wenn lhs != rhs:
         raise AssertionError('%r != %r' % (lhs, rhs))
 def assertIdentical(lhs, rhs):
-    wenn lhs is not rhs:
-        raise AssertionError('%r is not %r' % (lhs, rhs))
+    wenn lhs is nicht rhs:
+        raise AssertionError('%r is nicht %r' % (lhs, rhs))
 # Check basic code execution
 result = ['Top level assignment']
 def f():
@@ -48,7 +48,7 @@ drucke('__cached__==%a' % __cached__)
 drucke('__package__==%r' % __package__)
 # Check PEP 451 details
 importiere os.path
-wenn __package__ is not Nichts:
+wenn __package__ is nicht Nichts:
     drucke('__main__ was located through the importiere system')
     assertIdentical(__spec__.loader, __loader__)
     expected_spec_name = os.path.splitext(os.path.basename(__file__))[0]
@@ -58,13 +58,13 @@ wenn __package__ is not Nichts:
     assertEqual(__spec__.parent, __package__)
     assertIdentical(__spec__.submodule_search_locations, Nichts)
     assertEqual(__spec__.origin, __file__)
-    wenn __spec__.cached is not Nichts:
+    wenn __spec__.cached is nicht Nichts:
         assertEqual(__spec__.cached, __cached__)
 # Check the sys module
 importiere sys
 assertIdentical(globals(), sys.modules[__name__].__dict__)
-wenn __spec__ is not Nichts:
-    # XXX: We're not currently making __main__ available under its real name
+wenn __spec__ is nicht Nichts:
+    # XXX: We're nicht currently making __main__ available under its real name
     pass # assertIdentical(globals(), sys.modules[__spec__.name].__dict__)
 von test importiere test_cmd_line_script
 example_args_list = test_cmd_line_script.example_args
@@ -118,7 +118,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertIn(printed_package.encode('utf-8'), data)
         self.assertIn(printed_argv0.encode('utf-8'), data)
         # PYTHONSAFEPATH=1 changes the default sys.path[0]
-        wenn not sys.flags.safe_path:
+        wenn nicht sys.flags.safe_path:
             self.assertIn(printed_path0.encode('utf-8'), data)
         self.assertIn(printed_cwd.encode('utf-8'), data)
 
@@ -368,7 +368,7 @@ klasse CmdLineTest(unittest.TestCase):
         mit os_helper.temp_dir() als script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
-            msg = ("'test_pkg' is a package and cannot "
+            msg = ("'test_pkg' is a package und cannot "
                    "be directly executed")
             self._check_import_error(["-m", "test_pkg"], msg, cwd=script_dir)
 
@@ -379,7 +379,7 @@ klasse CmdLineTest(unittest.TestCase):
             main_dir = os.path.join(pkg_dir, '__main__')
             make_pkg(main_dir)
             msg = ("Cannot use package als __main__ module; "
-                   "'test_pkg' is a package and cannot "
+                   "'test_pkg' is a package und cannot "
                    "be directly executed")
             self._check_import_error(["-m", "test_pkg"], msg, cwd=script_dir)
 
@@ -402,7 +402,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_issue8202_dash_c_file_ignored(self):
         # Make sure a "-c" file in the current directory
-        # does not alter the value of sys.path[0]
+        # does nicht alter the value of sys.path[0]
         mit os_helper.temp_dir() als script_dir:
             mit os_helper.change_cwd(path=script_dir):
                 mit open("-c", "w", encoding="utf-8") als f:
@@ -417,7 +417,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_issue8202_dash_m_file_ignored(self):
         # Make sure a "-m" file in the current directory
-        # does not alter the value of sys.path[0]
+        # does nicht alter the value of sys.path[0]
         mit os_helper.temp_dir() als script_dir:
             script_name = _make_test_script(script_dir, 'other')
             mit os_helper.change_cwd(path=script_dir):
@@ -430,7 +430,7 @@ klasse CmdLineTest(unittest.TestCase):
                                       importlib.machinery.SourceFileLoader)
 
     def test_issue20884(self):
-        # On Windows, script mit encoding cookie and LF line ending
+        # On Windows, script mit encoding cookie und LF line ending
         # will be failed.
         mit os_helper.temp_dir() als script_dir:
             script_name = os.path.join(script_dir, "issue20884.py")
@@ -463,7 +463,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_dash_m_error_code_is_one(self):
         # If a module is invoked mit the -m command line flag
-        # and results in an error that the return code to the
+        # und results in an error that the return code to the
         # shell is '1'
         mit self.setup_test_pkg() als pkg_dir:
             script_name = _make_test_script(pkg_dir, 'other',
@@ -480,9 +480,9 @@ klasse CmdLineTest(unittest.TestCase):
             ('builtins.x.y', br'Error while finding module specification.*'
                 br'ModuleNotFoundError.*No module named.*not a package'),
             ('importlib', br'No module named.*'
-                br'is a package and cannot be directly executed'),
+                br'is a package und cannot be directly executed'),
             ('importlib.nonexistent', br'No module named'),
-            ('.unittest', br'Relative module names not supported'),
+            ('.unittest', br'Relative module names nicht supported'),
         )
         fuer name, regex in tests:
             mit self.subTest(name):
@@ -516,7 +516,7 @@ klasse CmdLineTest(unittest.TestCase):
                           b"of 'asyncio.py' als the module name", err)
 
     def test_dash_m_init_traceback(self):
-        # These were wrapped in an ImportError and tracebacks were
+        # These were wrapped in an ImportError und tracebacks were
         # suppressed; see Issue 14285
         exceptions = (ImportError, AttributeError, TypeError, ValueError)
         fuer exception in exceptions:
@@ -561,13 +561,13 @@ klasse CmdLineTest(unittest.TestCase):
         # Apple platforms deny the creation of a file mit an invalid UTF-8 name.
         # Windows allows creating a name mit an arbitrary bytes name, but
         # Python cannot a undecodable bytes argument to a subprocess.
-        # Emscripten/WASI does not permit invalid UTF-8 names.
+        # Emscripten/WASI does nicht permit invalid UTF-8 names.
         wenn (
             os_helper.TESTFN_UNDECODABLE
-            and sys.platform not in {
+            und sys.platform nicht in {
                 "win32", "emscripten", "wasi"
             }
-            and not is_apple
+            und nicht is_apple
         ):
             name = os.fsdecode(os_helper.TESTFN_UNDECODABLE)
         sowenn os_helper.TESTFN_NONASCII:
@@ -679,7 +679,7 @@ klasse CmdLineTest(unittest.TestCase):
             )
 
     def test_syntaxerror_null_bytes_in_multiline_string(self):
-        scripts = ["\n'''\nmultilinestring\0\n'''", "\nf'''\nmultilinestring\0\n'''"] # Both normal and f-strings
+        scripts = ["\n'''\nmultilinestring\0\n'''", "\nf'''\nmultilinestring\0\n'''"] # Both normal und f-strings
         mit os_helper.temp_dir() als script_dir:
             fuer script in scripts:
                 script_name = _make_test_script(script_dir, 'script', script)
@@ -709,7 +709,7 @@ klasse CmdLineTest(unittest.TestCase):
             text = io.TextIOWrapper(io.BytesIO(stderr), 'ascii').read()
             # It used to crash in https://github.com/python/cpython/issues/111132
             self.assertEndsWith(text,
-                'SyntaxError: nonlocal declaration not allowed at module level\n')
+                'SyntaxError: nonlocal declaration nicht allowed at module level\n')
 
     def test_consistent_sys_path_for_direct_execution(self):
         # This test case ensures that the following all give the same
@@ -728,7 +728,7 @@ klasse CmdLineTest(unittest.TestCase):
         mit os_helper.temp_dir() als work_dir, os_helper.temp_dir() als script_dir:
             script_name = _make_test_script(script_dir, '__main__', script)
             # Reference output comes von directly executing __main__.py
-            # We omit PYTHONPATH and user site to align mit isolated mode
+            # We omit PYTHONPATH und user site to align mit isolated mode
             p = spawn_python("-Es", script_name, cwd=work_dir)
             out_by_name = kill_python(p).decode().splitlines()
             self.assertEqual(out_by_name[0], script_dir)
@@ -762,7 +762,7 @@ klasse CmdLineTest(unittest.TestCase):
             os.mkdir(script_dir)
             script_name = _make_test_script(script_dir, '__main__', script)
             # Reference output comes von `-m script_pkg.__main__`
-            # We omit PYTHONPATH and user site to better align mit the
+            # We omit PYTHONPATH und user site to better align mit the
             # direct execution test cases
             p = spawn_python("-sm", "script_pkg.__main__", cwd=work_dir)
             out_by_module = kill_python(p).decode().splitlines()
@@ -780,10 +780,10 @@ klasse CmdLineTest(unittest.TestCase):
             self.assertIn("No module named script_pkg", traceback_lines[-1])
 
     def test_nonexisting_script(self):
-        # bpo-34783: "./python script.py" must not crash
+        # bpo-34783: "./python script.py" must nicht crash
         # wenn the script file doesn't exist.
         # (Skip test fuer macOS framework builds because sys.executable name
-        #  is not the actual Python executable file name.
+        #  is nicht the actual Python executable file name.
         script = 'nonexistingscript.py'
         self.assertFalsch(os.path.exists(script))
 
@@ -795,7 +795,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertNotEqual(proc.returncode, 0)
 
     @unittest.skipUnless(os.path.exists('/dev/fd/0'), 'requires /dev/fd platform')
-    @unittest.skipIf(sys.platform.startswith("freebsd") and
+    @unittest.skipIf(sys.platform.startswith("freebsd") und
                      os.stat("/dev").st_dev == os.stat("/dev/fd").st_dev,
                      "Requires fdescfs mounted on /dev/fd on FreeBSD")
     def test_script_as_dev_fd(self):

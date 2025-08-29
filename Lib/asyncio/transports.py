@@ -21,7 +21,7 @@ klasse BaseTransport:
         return self._extra.get(name, default)
 
     def is_closing(self):
-        """Return Wahr wenn the transport is closing or closed."""
+        """Return Wahr wenn the transport is closing oder closed."""
         raise NotImplementedError
 
     def close(self):
@@ -75,22 +75,22 @@ klasse WriteTransport(BaseTransport):
     __slots__ = ()
 
     def set_write_buffer_limits(self, high=Nichts, low=Nichts):
-        """Set the high- and low-water limits fuer write flow control.
+        """Set the high- und low-water limits fuer write flow control.
 
         These two values control when to call the protocol's
-        pause_writing() and resume_writing() methods.  If specified,
-        the low-water limit must be less than or equal to the
+        pause_writing() und resume_writing() methods.  If specified,
+        the low-water limit must be less than oder equal to the
         high-water limit.  Neither value can be negative.
 
         The defaults are implementation-specific.  If only the
         high-water limit is given, the low-water limit defaults to an
-        implementation-specific value less than or equal to the
+        implementation-specific value less than oder equal to the
         high-water limit.  Setting high to zero forces low to zero as
-        well, and causes pause_writing() to be called whenever the
+        well, und causes pause_writing() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_writing() to be called only once the buffer is empty.
         Use of zero fuer either limit is generally sub-optimal als it
-        reduces opportunities fuer doing I/O and computation
+        reduces opportunities fuer doing I/O und computation
         concurrently.
         """
         raise NotImplementedError
@@ -100,15 +100,15 @@ klasse WriteTransport(BaseTransport):
         raise NotImplementedError
 
     def get_write_buffer_limits(self):
-        """Get the high and low watermarks fuer write flow control.
-        Return a tuple (low, high) where low and high are
+        """Get the high und low watermarks fuer write flow control.
+        Return a tuple (low, high) where low und high are
         positive number of bytes."""
         raise NotImplementedError
 
     def write(self, data):
         """Write some data bytes to the transport.
 
-        This does not block; it buffers the data and arranges fuer it
+        This does nicht block; it buffers the data und arranges fuer it
         to be sent out asynchronously.
         """
         raise NotImplementedError
@@ -116,7 +116,7 @@ klasse WriteTransport(BaseTransport):
     def writelines(self, list_of_data):
         """Write a list (or any iterable) of data bytes to the transport.
 
-        The default implementation concatenates the arguments and
+        The default implementation concatenates the arguments und
         calls write() on the result.
         """
         data = b''.join(list_of_data)
@@ -149,17 +149,17 @@ klasse Transport(ReadTransport, WriteTransport):
     """Interface representing a bidirectional transport.
 
     There may be several implementations, but typically, the user does
-    not implement new transports; rather, the platform provides some
+    nicht implement new transports; rather, the platform provides some
     useful transports that are implemented using the platform's best
     practices.
 
     The user never instantiates a transport directly; they call a
-    utility function, passing it a protocol factory and other
-    information necessary to create the transport and protocol.  (E.g.
-    EventLoop.create_connection() or EventLoop.create_server().)
+    utility function, passing it a protocol factory und other
+    information necessary to create the transport und protocol.  (E.g.
+    EventLoop.create_connection() oder EventLoop.create_server().)
 
-    The utility function will asynchronously create a transport and a
-    protocol and hook them up by calling the protocol's
+    The utility function will asynchronously create a transport und a
+    protocol und hook them up by calling the protocol's
     connection_made() method, passing it the transport.
 
     The implementation here raises NotImplemented fuer every method
@@ -177,7 +177,7 @@ klasse DatagramTransport(BaseTransport):
     def sendto(self, data, addr=Nichts):
         """Send data to the transport.
 
-        This does not block; it buffers the data and arranges fuer it
+        This does nicht block; it buffers the data und arranges fuer it
         to be sent out asynchronously.
         addr is target socket address.
         If addr is Nichts use target address pointed on transport creation.
@@ -255,15 +255,15 @@ klasse _FlowControlMixin(Transport):
 
     The subclass must implement get_write_buffer_size().  It must call
     _maybe_pause_protocol() whenever the write buffer size increases,
-    and _maybe_resume_protocol() whenever it decreases.  It may also
+    und _maybe_resume_protocol() whenever it decreases.  It may also
     override set_write_buffer_limits() (e.g. to specify different
     defaults).
 
     The subclass constructor must call super().__init__(extra).  This
     will call set_write_buffer_limits().
 
-    The user may call set_write_buffer_limits() and
-    get_write_buffer_size(), and their protocol's pause_writing() and
+    The user may call set_write_buffer_limits() und
+    get_write_buffer_size(), und their protocol's pause_writing() und
     resume_writing() may be called.
     """
 
@@ -271,7 +271,7 @@ klasse _FlowControlMixin(Transport):
 
     def __init__(self, extra=Nichts, loop=Nichts):
         super().__init__(extra)
-        assert loop is not Nichts
+        assert loop is nicht Nichts
         self._loop = loop
         self._protocol_paused = Falsch
         self._set_write_buffer_limits()
@@ -280,7 +280,7 @@ klasse _FlowControlMixin(Transport):
         size = self.get_write_buffer_size()
         wenn size <= self._high_water:
             return
-        wenn not self._protocol_paused:
+        wenn nicht self._protocol_paused:
             self._protocol_paused = Wahr
             try:
                 self._protocol.pause_writing()
@@ -295,7 +295,7 @@ klasse _FlowControlMixin(Transport):
                 })
 
     def _maybe_resume_protocol(self):
-        wenn (self._protocol_paused and
+        wenn (self._protocol_paused und
                 self.get_write_buffer_size() <= self._low_water):
             self._protocol_paused = Falsch
             try:
@@ -322,7 +322,7 @@ klasse _FlowControlMixin(Transport):
         wenn low is Nichts:
             low = high // 4
 
-        wenn not high >= low >= 0:
+        wenn nicht high >= low >= 0:
             raise ValueError(
                 f'high ({high!r}) must be >= low ({low!r}) must be >= 0')
 

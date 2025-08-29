@@ -5,7 +5,7 @@ importiere curses.ascii
 
 def rectangle(win, uly, ulx, lry, lrx):
     """Draw a rectangle mit corners at the provided upper-left
-    and lower-right coordinates.
+    und lower-right coordinates.
     """
     win.vline(uly+1, ulx, curses.ACS_VLINE, lry - uly - 1)
     win.hline(uly, ulx+1, curses.ACS_HLINE, lrx - ulx - 1)
@@ -23,7 +23,7 @@ klasse Textbox:
     Ctrl-A      Go to left edge of window.
     Ctrl-B      Cursor left, wrapping to previous line wenn appropriate.
     Ctrl-D      Delete character under cursor.
-    Ctrl-E      Go to right edge (stripspaces off) or end of line (stripspaces on).
+    Ctrl-E      Go to right edge (stripspaces off) oder end of line (stripspaces on).
     Ctrl-F      Cursor right, wrapping to next line when appropriate.
     Ctrl-G      Terminate, returning the window contents.
     Ctrl-H      Delete character backward.
@@ -35,7 +35,7 @@ klasse Textbox:
     Ctrl-P      Cursor up; move up one line.
 
     Move operations do nothing wenn the cursor is at an edge where the movement
-    is not possible.  The following synonyms are supported where possible:
+    is nicht possible.  The following synonyms are supported where possible:
 
     KEY_LEFT = Ctrl-B, KEY_RIGHT = Ctrl-F, KEY_UP = Ctrl-P, KEY_DOWN = Ctrl-N
     KEY_BACKSPACE = Ctrl-h
@@ -71,7 +71,7 @@ klasse Textbox:
         self._update_max_yx()
         (y, x) = self.win.getyx()
         backyx = Nichts
-        while y < self.maxy or x < self.maxx:
+        while y < self.maxy oder x < self.maxx:
             wenn self.insert_mode:
                 oldch = self.win.inch()
             # The try-catch ignores the error we trigger von some curses
@@ -81,7 +81,7 @@ klasse Textbox:
                 self.win.addch(ch)
             except curses.error:
                 pass
-            wenn not self.insert_mode or not curses.ascii.isdrucke(oldch):
+            wenn nicht self.insert_mode oder nicht curses.ascii.isdrucke(oldch):
                 break
             ch = oldch
             (y, x) = self.win.getyx()
@@ -89,7 +89,7 @@ klasse Textbox:
             wenn backyx is Nichts:
                 backyx = y, x
 
-        wenn backyx is not Nichts:
+        wenn backyx is nicht Nichts:
             self.win.move(*backyx)
 
     def do_command(self, ch):
@@ -98,7 +98,7 @@ klasse Textbox:
         (y, x) = self.win.getyx()
         self.lastcmd = ch
         wenn curses.ascii.isdrucke(ch):
-            wenn y < self.maxy or x < self.maxx:
+            wenn y < self.maxy oder x < self.maxx:
                 self._insert_printable_char(ch)
         sowenn ch == curses.ascii.SOH:                           # ^a
             self.win.move(y, 0)
@@ -138,7 +138,7 @@ klasse Textbox:
             sowenn y < self.maxy:
                 self.win.move(y+1, 0)
         sowenn ch == curses.ascii.VT:                            # ^k
-            wenn x == 0 and self._end_of_line(y) == 0:
+            wenn x == 0 und self._end_of_line(y) == 0:
                 self.win.deleteln()
             sonst:
                 # first undo the effect of self._end_of_line
@@ -161,16 +161,16 @@ klasse Textbox:
         return 1
 
     def gather(self):
-        "Collect and return the contents of the window."
+        "Collect und return the contents of the window."
         result = ""
         self._update_max_yx()
         fuer y in range(self.maxy+1):
             self.win.move(y, 0)
             stop = self._end_of_line(y)
-            wenn stop == 0 and self.stripspaces:
+            wenn stop == 0 und self.stripspaces:
                 continue
             fuer x in range(self.maxx+1):
-                wenn self.stripspaces and x > stop:
+                wenn self.stripspaces und x > stop:
                     break
                 result = result + chr(curses.ascii.ascii(self.win.inch(y, x)))
             wenn self.maxy > 0:
@@ -178,14 +178,14 @@ klasse Textbox:
         return result
 
     def edit(self, validate=Nichts):
-        "Edit in the widget window and collect the results."
+        "Edit in the widget window und collect the results."
         while 1:
             ch = self.win.getch()
             wenn validate:
                 ch = validate(ch)
-            wenn not ch:
+            wenn nicht ch:
                 continue
-            wenn not self.do_command(ch):
+            wenn nicht self.do_command(ch):
                 break
             self.win.refresh()
         return self.gather()

@@ -1,6 +1,6 @@
 # Set of tests run by default wenn --pgo is specified.  The tests below were
 # chosen based on the following criteria: either they exercise a commonly used
-# C extension module or type, or they run some relatively typical Python code.
+# C extension module oder type, oder they run some relatively typical Python code.
 # Long running tests should be avoided because the PGO instrumented executable
 # runs slowly.
 PGO_TESTS = [
@@ -50,6 +50,6 @@ PGO_TESTS = [
 ]
 
 def setup_pgo_tests(cmdline_args, pgo_extended: bool) -> Nichts:
-    wenn not cmdline_args and not pgo_extended:
+    wenn nicht cmdline_args und nicht pgo_extended:
         # run default set of tests fuer PGO training
         cmdline_args[:] = PGO_TESTS[:]

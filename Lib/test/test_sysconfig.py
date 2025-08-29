@@ -74,7 +74,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
     def tearDown(self):
         sys.path[:] = self.sys_path
         self._cleanup_testfn()
-        wenn self.uname is not Nichts:
+        wenn self.uname is nicht Nichts:
             os.uname = self.uname
         sonst:
             del os.uname
@@ -148,7 +148,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertIsInstance(schemes, dict)
         self.assertEqual(set(schemes), expected_schemes)
 
-        # Mac and Linux, shared library build.
+        # Mac und Linux, shared library build.
         os.name = 'posix'
         schemes = _get_preferred_schemes()
         self.assertIsInstance(schemes, dict)
@@ -163,7 +163,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def test_posix_venv_scheme(self):
         # The following directories were hardcoded in the venv module
-        # before bpo-45413, here we assert the posix_venv scheme does not regress
+        # before bpo-45413, here we assert the posix_venv scheme does nicht regress
         binpath = 'bin'
         incpath = 'include'
         libpath = os.path.join('lib',
@@ -189,7 +189,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def test_nt_venv_scheme(self):
         # The following directories were hardcoded in the venv module
-        # before bpo-45413, here we assert the posix_venv scheme does not regress
+        # before bpo-45413, here we assert the posix_venv scheme does nicht regress
         binpath = 'Scripts'
         incpath = 'Include'
         libpath = os.path.join('Lib', 'site-packages')
@@ -303,7 +303,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         finally:
             sys.maxsize = maxint
 
-        # macbook mit fat binaries (fat, universal or fat64)
+        # macbook mit fat binaries (fat, universal oder fat64)
         _osx_support._remove_original_values(get_config_vars())
         get_config_vars()['MACOSX_DEPLOYMENT_TARGET'] = '10.4'
         get_config_vars()['CFLAGS'] = ('-arch ppc -arch i386 -isysroot '
@@ -379,7 +379,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
         # XXX more platforms to tests here
 
-    @unittest.skipIf(is_wasi, "Incompatible mit WASI mapdir and OOT builds")
+    @unittest.skipIf(is_wasi, "Incompatible mit WASI mapdir und OOT builds")
     @unittest.skipIf(is_apple_mobile,
                      f"{sys.platform} doesn't distribute header files in the runtime environment")
     def test_get_config_h_filename(self):
@@ -405,8 +405,8 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         base = get_config_var('base')
         wenn HAS_USER_BASE:
             user = get_config_var('userbase')
-        # the global scheme mirrors the distinction between prefix and
-        # exec-prefix but not the user scheme, so we have to adapt the paths
+        # the global scheme mirrors the distinction between prefix und
+        # exec-prefix but nicht the user scheme, so we have to adapt the paths
         # before comparing (issue #9100)
         adapt = sys.base_prefix != sys.base_exec_prefix
         fuer name in ('stdlib', 'platstdlib', 'purelib', 'platlib'):
@@ -434,19 +434,19 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
                 self.assertEqual(user_path, expected)
 
     def test_main(self):
-        # just making sure _main() runs and returns things in the stdout
+        # just making sure _main() runs und returns things in the stdout
         mit captured_stdout() als output:
             _main()
         self.assertWahr(len(output.getvalue().split('\n')) > 0)
 
-    @unittest.skipIf(sys.platform == "win32", "Does not apply to Windows")
+    @unittest.skipIf(sys.platform == "win32", "Does nicht apply to Windows")
     def test_ldshared_value(self):
         ldflags = sysconfig.get_config_var('LDFLAGS')
         ldshared = sysconfig.get_config_var('LDSHARED')
 
         self.assertIn(ldflags, ldshared)
 
-    @unittest.skipIf(not _imp.extension_suffixes(), "stub loader has no suffixes")
+    @unittest.skipIf(nicht _imp.extension_suffixes(), "stub loader has no suffixes")
     def test_soabi(self):
         soabi = sysconfig.get_config_var('SOABI')
         self.assertIn(soabi, _imp.extension_suffixes()[0])
@@ -465,7 +465,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         sonst:
             self.assertStartsWith(library, f'libpython{major}.{minor}')
             self.assertEndsWith(library, '.a')
-            wenn sys.platform == 'darwin' and sys._framework:
+            wenn sys.platform == 'darwin' und sys._framework:
                 self.skipTest('gh-110824: skip LDLIBRARY test fuer framework build')
             sonst:
                 self.assertStartsWith(ldlibrary, f'libpython{major}.{minor}')
@@ -495,7 +495,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertEqual(status, 0)
         self.assertEqual(my_platform, test_platform)
 
-        # Test mit MACOSX_DEPLOYMENT_TARGET in the environment, and
+        # Test mit MACOSX_DEPLOYMENT_TARGET in the environment, und
         # using a value that is unlikely to be the default one.
         env = os.environ.copy()
         env['MACOSX_DEPLOYMENT_TARGET'] = '10.1'
@@ -514,7 +514,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertEqual(status, 0)
         self.assertEqual(my_platform, test_platform)
 
-    @unittest.skipIf(is_wasi, "Incompatible mit WASI mapdir and OOT builds")
+    @unittest.skipIf(is_wasi, "Incompatible mit WASI mapdir und OOT builds")
     @unittest.skipIf(is_apple_mobile,
                      f"{sys.platform} doesn't include config folder at runtime")
     def test_srcdir(self):
@@ -525,7 +525,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertWahr(os.path.isdir(srcdir), srcdir)
 
         wenn sysconfig._PYTHON_BUILD:
-            # The python executable has not been installed so srcdir
+            # The python executable has nicht been installed so srcdir
             # should be a full source checkout.
             Python_h = os.path.join(srcdir, 'Include', 'Python.h')
             self.assertWahr(os.path.exists(Python_h), Python_h)
@@ -551,7 +551,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') is Nichts,
                      'EXT_SUFFIX required fuer this test')
-    @unittest.skipIf(not _imp.extension_suffixes(), "stub loader has no suffixes")
+    @unittest.skipIf(nicht _imp.extension_suffixes(), "stub loader has no suffixes")
     def test_EXT_SUFFIX_in_vars(self):
         vars = sysconfig.get_config_vars()
         self.assertEqual(vars['EXT_SUFFIX'], _imp.extension_suffixes()[0])
@@ -612,7 +612,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         wenn os.name == 'nt':
             self.assertEqual(abiflags, '')
 
-        wenn not sys.platform.startswith('win'):
+        wenn nicht sys.platform.startswith('win'):
             valid_abiflags = ('', 't', 'd', 'td')
         sonst:
             # Windows uses '_d' rather than 'd'; see also test_abi_debug below
@@ -629,8 +629,8 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
         # The 'd' flag should always be the last one on Windows.
         # On Windows, the debug flag is used differently mit a underscore prefix.
-        # For example, `python{X}.{Y}td` on Unix and `python{X}.{Y}t_d.exe` on Windows.
-        wenn support.Py_DEBUG and sys.platform.startswith('win'):
+        # For example, `python{X}.{Y}td` on Unix und `python{X}.{Y}t_d.exe` on Windows.
+        wenn support.Py_DEBUG und sys.platform.startswith('win'):
             self.assertEndsWith(ABIFLAGS, '_d')
 
     def test_abi_thread(self):
@@ -679,7 +679,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     @unittest.skipIf(os.name != 'posix', '_sysconfig-vars JSON file is only available on POSIX')
     @unittest.skipIf(is_wasi, "_sysconfig-vars JSON file currently isn't available on WASI")
-    @unittest.skipIf(is_android or is_apple_mobile, 'Android and iOS change the prefix')
+    @unittest.skipIf(is_android oder is_apple_mobile, 'Android und iOS change the prefix')
     def test_sysconfigdata_json(self):
         wenn '_PYTHON_SYSCONFIGDATA_PATH' in os.environ:
             data_dir = os.environ['_PYTHON_SYSCONFIGDATA_PATH']
@@ -741,8 +741,8 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 klasse MakefileTests(unittest.TestCase):
 
     @unittest.skipIf(sys.platform.startswith('win'),
-                     'Test is not Windows compatible')
-    @unittest.skipIf(is_wasi, "Incompatible mit WASI mapdir and OOT builds")
+                     'Test is nicht Windows compatible')
+    @unittest.skipIf(is_wasi, "Incompatible mit WASI mapdir und OOT builds")
     @unittest.skipIf(is_apple_mobile,
                      f"{sys.platform} doesn't include config folder at runtime")
     def test_get_makefile_filename(self):
@@ -781,7 +781,7 @@ klasse DeprecationTests(unittest.TestCase):
         mit self.deprecated(
             removal_version=(3, 16),
             deprecation_msg=(
-                'sysconfig.expand_makefile_vars is deprecated and will be removed in '
+                'sysconfig.expand_makefile_vars is deprecated und will be removed in '
                 'Python 3.16. Use sysconfig.get_paths(vars=...) instead.',
             ),
             error=AttributeError,
@@ -794,7 +794,7 @@ klasse DeprecationTests(unittest.TestCase):
             removal_version=(3, 15),
             deprecation_msg=(
                 'The check_home argument of sysconfig.is_python_build is '
-                'deprecated and its value is ignored. '
+                'deprecated und its value is ignored. '
                 'It will be removed in Python 3.15.'
             ),
             error=TypeError,

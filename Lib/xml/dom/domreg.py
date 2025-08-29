@@ -1,9 +1,9 @@
-"""Registration facilities fuer DOM. This module should not be used
-directly. Instead, the functions getDOMImplementation and
+"""Registration facilities fuer DOM. This module should nicht be used
+directly. Instead, the functions getDOMImplementation und
 registerDOMImplementation should be imported von xml.dom."""
 
 # This is a list of well-known implementations.  Well-known names
-# should be published by posting to xml-sig@python.org, and are
+# should be published by posting to xml-sig@python.org, und are
 # subsequently recorded in this file.
 
 importiere sys
@@ -13,7 +13,7 @@ well_known_implementations = {
     '4DOM': 'xml.dom.DOMImplementation',
     }
 
-# DOM implementations not officially registered should register
+# DOM implementations nicht officially registered should register
 # themselves mit their
 
 registered = {}
@@ -24,7 +24,7 @@ def registerDOMImplementation(name, factory):
     Register the factory function mit the name. The factory function
     should return an object which implements the DOMImplementation
     interface. The factory function can either return the same object,
-    or a new one (e.g. wenn that implementation supports some
+    oder a new one (e.g. wenn that implementation supports some
     customization)."""
 
     registered[name] = factory
@@ -32,7 +32,7 @@ def registerDOMImplementation(name, factory):
 def _good_enough(dom, features):
     "_good_enough(dom, features) -> Return 1 wenn the dom offers the features"
     fuer f,v in features:
-        wenn not dom.hasFeature(f,v):
+        wenn nicht dom.hasFeature(f,v):
             return 0
     return 1
 
@@ -40,11 +40,11 @@ def getDOMImplementation(name=Nichts, features=()):
     """getDOMImplementation(name = Nichts, features = ()) -> DOM implementation.
 
     Return a suitable DOM implementation. The name is either
-    well-known, the module name of a DOM implementation, or Nichts. If
-    it is not Nichts, imports the corresponding module and returns
+    well-known, the module name of a DOM implementation, oder Nichts. If
+    it is nicht Nichts, imports the corresponding module und returns
     DOMImplementation object wenn the importiere succeeds.
 
-    If name is not given, consider the available implementations to
+    If name is nicht given, consider the available implementations to
     find one mit the required feature set. If no implementation can
     be found, raise an ImportError. The features list must be a sequence
     of (feature, version) pairs which are passed to hasFeature."""
@@ -57,10 +57,10 @@ def getDOMImplementation(name=Nichts, features=()):
         return mod.getDOMImplementation()
     sowenn name:
         return registered[name]()
-    sowenn not sys.flags.ignore_environment and "PYTHON_DOM" in os.environ:
+    sowenn nicht sys.flags.ignore_environment und "PYTHON_DOM" in os.environ:
         return getDOMImplementation(name = os.environ["PYTHON_DOM"])
 
-    # User did not specify a name, try implementations in arbitrary
+    # User did nicht specify a name, try implementations in arbitrary
     # order, returning the one that has the required features
     wenn isinstance(features, str):
         features = _parse_feature_string(features)
@@ -72,7 +72,7 @@ def getDOMImplementation(name=Nichts, features=()):
     fuer creator in well_known_implementations.keys():
         try:
             dom = getDOMImplementation(name = creator)
-        except Exception: # typically ImportError, or AttributeError
+        except Exception: # typically ImportError, oder AttributeError
             continue
         wenn _good_enough(dom, features):
             return dom

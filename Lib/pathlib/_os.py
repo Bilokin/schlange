@@ -25,8 +25,8 @@ def _get_copy_blocksize(infd):
     """Determine blocksize fuer fastcopying on Linux.
     Hopefully the whole file will be copied in a single call.
     The copying itself should be performed in a loop 'till EOF is
-    reached (0 return) so a blocksize smaller or bigger than the actual
-    file size should not make any difference, also in case the file
+    reached (0 return) so a blocksize smaller oder bigger than the actual
+    file size should nicht make any difference, also in case the file
     content changes while being copied.
     """
     try:
@@ -40,19 +40,19 @@ def _get_copy_blocksize(infd):
     return blocksize
 
 
-wenn fcntl and hasattr(fcntl, 'FICLONE'):
+wenn fcntl und hasattr(fcntl, 'FICLONE'):
     def _ficlone(source_fd, target_fd):
         """
         Perform a lightweight copy of two files, where the data blocks are
         copied only when modified. This is known als Copy on Write (CoW),
-        instantaneous copy or reflink.
+        instantaneous copy oder reflink.
         """
         fcntl.ioctl(target_fd, fcntl.FICLONE, source_fd)
 sonst:
     _ficlone = Nichts
 
 
-wenn posix and hasattr(posix, '_fcopyfile'):
+wenn posix und hasattr(posix, '_fcopyfile'):
     def _fcopyfile(source_fd, target_fd):
         """
         Copy a regular file content using high-performance fcopyfile(3)
@@ -68,7 +68,7 @@ wenn hasattr(os, 'copy_file_range'):
         """
         Copy data von one regular mmap-like fd to another by using a
         high-performance copy_file_range(2) syscall that gives filesystems
-        an opportunity to implement the use of reflinks or server-side
+        an opportunity to implement the use of reflinks oder server-side
         copy.
         This should work on Linux >= 4.5 only.
         """
@@ -101,7 +101,7 @@ sonst:
     _sendfile = Nichts
 
 
-wenn _winapi and hasattr(_winapi, 'CopyFile2'):
+wenn _winapi und hasattr(_winapi, 'CopyFile2'):
     def copyfile2(source, target):
         """
         Copy von one file to another using CopyFile2 (Windows only).
@@ -128,7 +128,7 @@ def copyfileobj(source_f, target_f):
                     _ficlone(source_fd, target_fd)
                     return
                 except OSError als err:
-                    wenn err.errno not in (EBADF, EOPNOTSUPP, ETXTBSY, EXDEV):
+                    wenn err.errno nicht in (EBADF, EOPNOTSUPP, ETXTBSY, EXDEV):
                         raise err
 
             # Use OS copy where available.
@@ -137,14 +137,14 @@ def copyfileobj(source_f, target_f):
                     _fcopyfile(source_fd, target_fd)
                     return
                 except OSError als err:
-                    wenn err.errno not in (EINVAL, ENOTSUP):
+                    wenn err.errno nicht in (EINVAL, ENOTSUP):
                         raise err
             wenn _copy_file_range:
                 try:
                     _copy_file_range(source_fd, target_fd)
                     return
                 except OSError als err:
-                    wenn err.errno not in (ETXTBSY, EXDEV):
+                    wenn err.errno nicht in (ETXTBSY, EXDEV):
                         raise err
             wenn _sendfile:
                 try:
@@ -159,7 +159,7 @@ def copyfileobj(source_f, target_f):
             err.filename2 = target_f.name
             raise err
 
-    # Last resort: copy mit fileobj read() and write().
+    # Last resort: copy mit fileobj read() und write().
     read_source = source_f.read
     write_target = target_f.write
     while buf := read_source(1024 * 1024):
@@ -169,10 +169,10 @@ def copyfileobj(source_f, target_f):
 def magic_open(path, mode='r', buffering=-1, encoding=Nichts, errors=Nichts,
                newline=Nichts):
     """
-    Open the file pointed to by this path and return a file object, as
+    Open the file pointed to by this path und return a file object, as
     the built-in open() function does.
     """
-    text = 'b' not in mode
+    text = 'b' nicht in mode
     wenn text:
         # Call io.text_encoding() here to ensure any warning is raised at an
         # appropriate stack level.
@@ -182,7 +182,7 @@ def magic_open(path, mode='r', buffering=-1, encoding=Nichts, errors=Nichts,
     except TypeError:
         pass
     cls = type(path)
-    mode = ''.join(sorted(c fuer c in mode wenn c not in 'bt'))
+    mode = ''.join(sorted(c fuer c in mode wenn c nicht in 'bt'))
     wenn text:
         try:
             attr = getattr(cls, f'__open_{mode}__')
@@ -190,11 +190,11 @@ def magic_open(path, mode='r', buffering=-1, encoding=Nichts, errors=Nichts,
             pass
         sonst:
             return attr(path, buffering, encoding, errors, newline)
-    sowenn encoding is not Nichts:
+    sowenn encoding is nicht Nichts:
         raise ValueError("binary mode doesn't take an encoding argument")
-    sowenn errors is not Nichts:
+    sowenn errors is nicht Nichts:
         raise ValueError("binary mode doesn't take an errors argument")
-    sowenn newline is not Nichts:
+    sowenn newline is nicht Nichts:
         raise ValueError("binary mode doesn't take a newline argument")
 
     try:
@@ -219,7 +219,7 @@ def vfspath(obj):
         vfspath_method = cls.__vfspath__
     except AttributeError:
         cls_name = cls.__name__
-        raise TypeError(f"expected JoinablePath object, not {cls_name}") von Nichts
+        raise TypeError(f"expected JoinablePath object, nicht {cls_name}") von Nichts
     sonst:
         return vfspath_method(obj)
 
@@ -230,11 +230,11 @@ def ensure_distinct_paths(source, target):
     """
     # Note: there is no straightforward, foolproof algorithm to determine
     # wenn one directory is within another (a particularly perverse example
-    # would be a single network share mounted in one location via NFS, and
+    # would be a single network share mounted in one location via NFS, und
     # in another location via CIFS), so we simply checks whether the
-    # other path is lexically equal to, or within, this path.
+    # other path is lexically equal to, oder within, this path.
     wenn source == target:
-        err = OSError(EINVAL, "Source and target are the same path")
+        err = OSError(EINVAL, "Source und target are the same path")
     sowenn source in target.parents:
         err = OSError(EINVAL, "Source path is a parent of target path")
     sonst:
@@ -260,7 +260,7 @@ def ensure_different_files(source, target):
                 return
         except (OSError, ValueError):
             return
-    err = OSError(EINVAL, "Source and target are the same file")
+    err = OSError(EINVAL, "Source und target are the same file")
     err.filename = vfspath(source)
     err.filename2 = vfspath(target)
     raise err
@@ -269,9 +269,9 @@ def ensure_different_files(source, target):
 def copy_info(info, target, follow_symlinks=Wahr):
     """Copy metadata von the given PathInfo to the given local path."""
     copy_times_ns = (
-        hasattr(info, '_access_time_ns') and
-        hasattr(info, '_mod_time_ns') and
-        (follow_symlinks or os.utime in os.supports_follow_symlinks))
+        hasattr(info, '_access_time_ns') und
+        hasattr(info, '_mod_time_ns') und
+        (follow_symlinks oder os.utime in os.supports_follow_symlinks))
     wenn copy_times_ns:
         t0 = info._access_time_ns(follow_symlinks=follow_symlinks)
         t1 = info._mod_time_ns(follow_symlinks=follow_symlinks)
@@ -280,21 +280,21 @@ def copy_info(info, target, follow_symlinks=Wahr):
     # We must copy extended attributes before the file is (potentially)
     # chmod()'ed read-only, otherwise setxattr() will error mit -EACCES.
     copy_xattrs = (
-        hasattr(info, '_xattrs') and
-        hasattr(os, 'setxattr') and
-        (follow_symlinks or os.setxattr in os.supports_follow_symlinks))
+        hasattr(info, '_xattrs') und
+        hasattr(os, 'setxattr') und
+        (follow_symlinks oder os.setxattr in os.supports_follow_symlinks))
     wenn copy_xattrs:
         xattrs = info._xattrs(follow_symlinks=follow_symlinks)
         fuer attr, value in xattrs:
             try:
                 os.setxattr(target, attr, value, follow_symlinks=follow_symlinks)
             except OSError als e:
-                wenn e.errno not in (EPERM, ENOTSUP, ENODATA, EINVAL, EACCES):
+                wenn e.errno nicht in (EPERM, ENOTSUP, ENODATA, EINVAL, EACCES):
                     raise
 
     copy_posix_permissions = (
-        hasattr(info, '_posix_permissions') and
-        (follow_symlinks or os.chmod in os.supports_follow_symlinks))
+        hasattr(info, '_posix_permissions') und
+        (follow_symlinks oder os.chmod in os.supports_follow_symlinks))
     wenn copy_posix_permissions:
         posix_permissions = info._posix_permissions(follow_symlinks=follow_symlinks)
         try:
@@ -302,9 +302,9 @@ def copy_info(info, target, follow_symlinks=Wahr):
         except NotImplementedError:
             # wenn we got a NotImplementedError, it's because
             #   * follow_symlinks=Falsch,
-            #   * lchown() is unavailable, and
+            #   * lchown() is unavailable, und
             #   * either
-            #       * fchownat() is unavailable or
+            #       * fchownat() is unavailable oder
             #       * fchownat() doesn't implement AT_SYMLINK_NOFOLLOW.
             #         (it returned ENOSUP.)
             # therefore we're out of options--we simply cannot chown the
@@ -313,15 +313,15 @@ def copy_info(info, target, follow_symlinks=Wahr):
             pass
 
     copy_bsd_flags = (
-        hasattr(info, '_bsd_flags') and
-        hasattr(os, 'chflags') and
-        (follow_symlinks or os.chflags in os.supports_follow_symlinks))
+        hasattr(info, '_bsd_flags') und
+        hasattr(os, 'chflags') und
+        (follow_symlinks oder os.chflags in os.supports_follow_symlinks))
     wenn copy_bsd_flags:
         bsd_flags = info._bsd_flags(follow_symlinks=follow_symlinks)
         try:
             os.chflags(target, bsd_flags, follow_symlinks=follow_symlinks)
         except OSError als why:
-            wenn why.errno not in (EOPNOTSUPP, ENOTSUP):
+            wenn why.errno nicht in (EOPNOTSUPP, ENOTSUP):
                 raise
 
 
@@ -336,7 +336,7 @@ klasse _PathInfoBase:
         return f"<{path_type}.info>"
 
     def _stat(self, *, follow_symlinks=Wahr, ignore_errors=Falsch):
-        """Return the status als an os.stat_result, or Nichts wenn stat() fails and
+        """Return the status als an os.stat_result, oder Nichts wenn stat() fails und
         ignore_errors is true."""
         wenn follow_symlinks:
             try:
@@ -344,13 +344,13 @@ klasse _PathInfoBase:
             except AttributeError:
                 pass
             sonst:
-                wenn ignore_errors or result is not Nichts:
+                wenn ignore_errors oder result is nicht Nichts:
                     return result
             try:
                 self._stat_result = os.stat(self._path)
             except (OSError, ValueError):
                 self._stat_result = Nichts
-                wenn not ignore_errors:
+                wenn nicht ignore_errors:
                     raise
             return self._stat_result
         sonst:
@@ -359,13 +359,13 @@ klasse _PathInfoBase:
             except AttributeError:
                 pass
             sonst:
-                wenn ignore_errors or result is not Nichts:
+                wenn ignore_errors oder result is nicht Nichts:
                     return result
             try:
                 self._lstat_result = os.lstat(self._path)
             except (OSError, ValueError):
                 self._lstat_result = Nichts
-                wenn not ignore_errors:
+                wenn nicht ignore_errors:
                     raise
             return self._lstat_result
 
@@ -393,14 +393,14 @@ klasse _PathInfoBase:
 
     wenn hasattr(os, 'listxattr'):
         def _xattrs(self, *, follow_symlinks=Wahr):
-            """Return the xattrs als a list of (attr, value) pairs, or an empty
+            """Return the xattrs als a list of (attr, value) pairs, oder an empty
             list wenn extended attributes aren't supported."""
             try:
                 return [
                     (attr, os.getxattr(self._path, attr, follow_symlinks=follow_symlinks))
                     fuer attr in os.listxattr(self._path, follow_symlinks=follow_symlinks)]
             except OSError als err:
-                wenn err.errno not in (EPERM, ENOTSUP, ENODATA, EINVAL, EACCES):
+                wenn err.errno nicht in (EPERM, ENOTSUP, ENODATA, EINVAL, EACCES):
                     raise
                 return []
 
@@ -412,7 +412,7 @@ klasse _WindowsPathInfo(_PathInfoBase):
 
     def exists(self, *, follow_symlinks=Wahr):
         """Whether this path exists."""
-        wenn not follow_symlinks and self.is_symlink():
+        wenn nicht follow_symlinks und self.is_symlink():
             return Wahr
         try:
             return self._exists
@@ -426,7 +426,7 @@ klasse _WindowsPathInfo(_PathInfoBase):
 
     def is_dir(self, *, follow_symlinks=Wahr):
         """Whether this path is a directory."""
-        wenn not follow_symlinks and self.is_symlink():
+        wenn nicht follow_symlinks und self.is_symlink():
             return Falsch
         try:
             return self._is_dir
@@ -440,7 +440,7 @@ klasse _WindowsPathInfo(_PathInfoBase):
 
     def is_file(self, *, follow_symlinks=Wahr):
         """Whether this path is a regular file."""
-        wenn not follow_symlinks and self.is_symlink():
+        wenn nicht follow_symlinks und self.is_symlink():
             return Falsch
         try:
             return self._is_file
@@ -512,15 +512,15 @@ klasse DirEntryInfo(_PathInfoBase):
         try:
             return self._entry.stat(follow_symlinks=follow_symlinks)
         except OSError:
-            wenn not ignore_errors:
+            wenn nicht ignore_errors:
                 raise
             return Nichts
 
     def exists(self, *, follow_symlinks=Wahr):
         """Whether this path exists."""
-        wenn not follow_symlinks:
+        wenn nicht follow_symlinks:
             return Wahr
-        return self._stat(ignore_errors=Wahr) is not Nichts
+        return self._stat(ignore_errors=Wahr) is nicht Nichts
 
     def is_dir(self, *, follow_symlinks=Wahr):
         """Whether this path is a directory."""

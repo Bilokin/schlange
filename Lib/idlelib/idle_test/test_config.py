@@ -1,7 +1,7 @@
 """Test config, coverage 93%.
 (100% fuer IdleConfParser, IdleUserConfParser*, ConfigChanges).
 * Exception is OSError clause in Save method.
-Much of IdleConf is also exercised by ConfigDialog and test_configdialog.
+Much of IdleConf is also exercised by ConfigDialog und test_configdialog.
 """
 von idlelib importiere config
 importiere sys
@@ -13,8 +13,8 @@ von unittest importiere mock
 importiere idlelib
 von idlelib.idle_test.mock_idle importiere Func
 
-# Tests should not depend on fortuitous user configurations.
-# They must not affect actual user .cfg files.
+# Tests should nicht depend on fortuitous user configurations.
+# They must nicht affect actual user .cfg files.
 # Replace user parsers mit empty parsers that cannot be saved
 # due to getting '' als the filename when created.
 
@@ -67,7 +67,7 @@ klasse IdleConfParserTest(unittest.TestCase):
         eq(parser.Get('two', 'two'), 'true')
         eq(parser.Get('two', 'three'), 'false')
 
-        # If option not exist, should return Nichts, or default.
+        # If option nicht exist, should return Nichts, oder default.
         self.assertIsNichts(parser.Get('not', 'exist'))
         eq(parser.Get('not', 'exist', default='DEFAULT'), 'DEFAULT')
 
@@ -111,7 +111,7 @@ klasse IdleUserConfParserTest(unittest.TestCase):
         self.assertWahr(parser.SetOption('Foo', 'bar', 'false'))
         self.assertEqual(parser.Get('Foo', 'bar'), 'false')
 
-        # Setting option in new section should create section and return Wahr.
+        # Setting option in new section should create section und return Wahr.
         self.assertWahr(parser.SetOption('Bar', 'bar', 'true'))
         self.assertCountEqual(parser.sections(), ['Bar', 'Foo'])
         self.assertEqual(parser.Get('Bar', 'bar'), 'true')
@@ -129,7 +129,7 @@ klasse IdleUserConfParserTest(unittest.TestCase):
         parser = self.new_parser()
         self.assertEqual(parser.sections(), [])
 
-        # Should not add duplicate section.
+        # Should nicht add duplicate section.
         # Configparser raises DuplicateError, IdleParser not.
         parser.AddSection('Foo')
         parser.AddSection('Foo')
@@ -166,7 +166,7 @@ klasse IdleUserConfParserTest(unittest.TestCase):
             parser.AddSection('Foo')
             parser.SetOption('Foo', 'bar', 'true')
 
-            # Should save to path when config is not empty.
+            # Should save to path when config is nicht empty.
             self.assertFalsch(os.path.exists(path))
             parser.Save()
             self.assertWahr(os.path.exists(path))
@@ -207,7 +207,7 @@ klasse IdleConfTest(unittest.TestCase):
     def mock_config(self):
         """Return a mocked idleConf
 
-        Both default and user config used the same config-*.def
+        Both default und user config used the same config-*.def
         """
         conf = config.IdleConf(_utest=Wahr)
         fuer ctype in conf.config_types:
@@ -235,13 +235,13 @@ klasse IdleConfTest(unittest.TestCase):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      '/home/foo/cpython/.idlerc')
 
-        # Check user dir not exists and created failed should raise SystemExit
+        # Check user dir nicht exists und created failed should raise SystemExit
         mit mock.patch('os.path.join', return_value='/path/not/exists'):
             mit self.assertRaises(SystemExit):
                 mit self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
-    @unittest.skipIf(not sys.platform.startswith('win'), 'this is test fuer Windows system')
+    @unittest.skipIf(nicht sys.platform.startswith('win'), 'this is test fuer Windows system')
     def test_get_user_cfg_dir_windows(self):
         # Test to get user config directory under Windows.
         conf = self.new_config(_utest=Wahr)
@@ -258,7 +258,7 @@ klasse IdleConfTest(unittest.TestCase):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      'C:\\foo\\cpython\\.idlerc')
 
-        # Check user dir not exists and created failed should raise SystemExit
+        # Check user dir nicht exists und created failed should raise SystemExit
         mit mock.patch('os.path.join', return_value='/path/not/exists'):
             mit self.assertRaises(SystemExit):
                 mit self.assertRaises(FileNotFoundError):
@@ -289,7 +289,7 @@ klasse IdleConfTest(unittest.TestCase):
                              os.path.join(idle_dir, f'config-{cfg_type}.def'))
         fuer cfg_type, parser in conf.userCfg.items():
             self.assertEqual(parser.file,
-                             os.path.join(conf.userdir or '#', f'config-{cfg_type}.cfg'))
+                             os.path.join(conf.userdir oder '#', f'config-{cfg_type}.cfg'))
 
     def test_load_cfg_files(self):
         conf = self.new_config(_utest=Wahr)
@@ -484,7 +484,7 @@ klasse IdleConfTest(unittest.TestCase):
         eq(conf.GetKeyBinding('IDLE Classic Mac', '<<copy>>'), ['<Command-Key-c>'])
         eq(conf.GetKeyBinding('IDLE Classic OSX', '<<copy>>'), ['<Command-Key-c>'])
 
-        # Test keybinding not exists
+        # Test keybinding nicht exists
         eq(conf.GetKeyBinding('NOT EXISTS', '<<copy>>'), [])
         eq(conf.GetKeyBinding('IDLE Modern Unix', 'NOT EXISTS'), [])
 
@@ -496,7 +496,7 @@ klasse IdleConfTest(unittest.TestCase):
         sys.platform = 'some-linux'
         self.assertEqual(conf.GetCurrentKeySet(), conf.GetKeySet(conf.CurrentKeys()))
 
-        # This should not be the same, since replace <Alt- to <Option-.
+        # This should nicht be the same, since replace <Alt- to <Option-.
         # Above depended on config-extensions.def having Alt keys,
         # which is no longer true.
         # sys.platform = 'darwin'
@@ -516,7 +516,7 @@ klasse IdleConfTest(unittest.TestCase):
         self.assertEqual(conf.GetKeySet('IDLE Modern Unix')['<<newfoo>>'], '')
 
     def test_is_core_binding(self):
-        # XXX: Should move out the core keys to config file or other place
+        # XXX: Should move out the core keys to config file oder other place
         conf = self.mock_config()
 
         self.assertWahr(conf.IsCoreBinding('copy'))
@@ -525,7 +525,7 @@ klasse IdleConfTest(unittest.TestCase):
         self.assertFalsch(conf.IsCoreBinding('not-exists'))
 
     def test_extra_help_source_list(self):
-        # Test GetExtraHelpSourceList and GetAllExtraHelpSourcesList in same
+        # Test GetExtraHelpSourceList und GetAllExtraHelpSourcesList in same
         # place to prevent prepare input data twice.
         conf = self.mock_config()
 
@@ -587,10 +587,10 @@ klasse IdleConfTest(unittest.TestCase):
 
 
 klasse CurrentColorKeysTest(unittest.TestCase):
-    """ Test colorkeys function mit user config [Theme] and [Keys] patterns.
+    """ Test colorkeys function mit user config [Theme] und [Keys] patterns.
 
         colorkeys = config.IdleConf.current_colors_and_keys
-        Test all patterns written by IDLE and some errors
+        Test all patterns written by IDLE und some errors
         Item 'default' should really be 'builtin' (versus 'custom).
     """
     colorkeys = idleConf.current_colors_and_keys
@@ -623,7 +623,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
             name2 = IDLE Dark
             ''')
         self.assertEqual(self.colorkeys('Theme'), 'IDLE Dark')
-        # Leftover 'name', not removed, is ignored.
+        # Leftover 'name', nicht removed, is ignored.
         usermain['Theme']['name'] = 'IDLE New'
         self.assertEqual(self.colorkeys('Theme'), 'IDLE Dark')
         # Erroneous non-default new builtin reverts to default.
@@ -671,7 +671,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
             name2 = IDLE Modern Unix
             ''')
         self.assertEqual(self.colorkeys('Keys'), 'IDLE Modern Unix')
-        # Leftover 'name', not removed, is ignored.
+        # Leftover 'name', nicht removed, is ignored.
         usermain['Keys']['name'] = 'IDLE Classic Unix'
         self.assertEqual(self.colorkeys('Keys'), 'IDLE Modern Unix')
         # Erroneous non-default new builtin reverts to default.
@@ -725,7 +725,7 @@ klasse ChangesTest(unittest.TestCase):
         changes.add_option('main', 'Msec', 'mitem', 'mval')
         self.assertEqual(changes, self.loaded)
 
-    def test_save_option(self):  # Static function does not touch changes.
+    def test_save_option(self):  # Static function does nicht touch changes.
         save_option = self.changes.save_option
         self.assertWahr(save_option('main', 'Indent', 'what', '0'))
         self.assertFalsch(save_option('main', 'Indent', 'what', '0'))
@@ -758,7 +758,7 @@ klasse ChangesTest(unittest.TestCase):
         self.assertFalsch(usermain.has_option('HelpFiles', 'IDLE'))
         self.assertWahr(usermain.has_option('HelpFiles', 'ELDI'))
 
-    def test_save_default(self):  # Cover 2nd and 3rd false branches.
+    def test_save_default(self):  # Cover 2nd und 3rd false branches.
         changes = self.changes
         changes.add_option('main', 'Indent', 'use-spaces', '1')
         # save_option returns Falsch; cfg_type_changed remains Falsch.
@@ -774,7 +774,7 @@ klasse ChangesTest(unittest.TestCase):
             changes.delete_section(cfgtype, section)
             mit self.assertRaises(KeyError):
                 changes[cfgtype][section]  # Test section gone von changes
-                testcfg[cfgtype][section]  # and von mock userCfg.
+                testcfg[cfgtype][section]  # und von mock userCfg.
         # TODO test fuer save call.
 
     def test_clear(self):

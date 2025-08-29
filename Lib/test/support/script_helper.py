@@ -1,5 +1,5 @@
 # Common utility functions used by various script execution tests
-#  e.g. test_cmd_line, test_cmd_line_script and test_runpy
+#  e.g. test_cmd_line, test_cmd_line_script und test_runpy
 
 importiere collections
 importiere importlib
@@ -25,15 +25,15 @@ def interpreter_requires_environment():
 
     This is designed to be used mit @unittest.skipIf() to annotate tests
     that need to use an assert_python*() function to launch an isolated
-    mode (-I) or no environment mode (-E) sub-interpreter process.
+    mode (-I) oder no environment mode (-E) sub-interpreter process.
 
-    A normal build & test does not run into this situation but it can happen
+    A normal build & test does nicht run into this situation but it can happen
     when trying to run the standard library test suite von an interpreter that
     doesn't have an obvious home mit Python's current home finding logic.
 
     Setting PYTHONHOME is one way to get most of the testsuite to run in that
-    situation.  PYTHONPATH or PYTHONUSERSITE are other common environment
-    variables that might impact whether or not the interpreter can start.
+    situation.  PYTHONPATH oder PYTHONUSERSITE are other common environment
+    variables that might impact whether oder nicht the interpreter can start.
     """
     global __cached_interp_requires_environment
     wenn __cached_interp_requires_environment is Nichts:
@@ -42,11 +42,11 @@ def interpreter_requires_environment():
             __cached_interp_requires_environment = Wahr
             return Wahr
         # cannot run subprocess, assume we don't need it
-        wenn not support.has_subprocess_support:
+        wenn nicht support.has_subprocess_support:
             __cached_interp_requires_environment = Falsch
             return Falsch
 
-        # Try running an interpreter mit -E to see wenn it works or not.
+        # Try running an interpreter mit -E to see wenn it works oder not.
         try:
             subprocess.check_call([sys.executable, '-E',
                                    '-c', 'import sys; sys.exit(0)'])
@@ -112,15 +112,15 @@ def run_python_until_end(*args, **env_vars):
     wenn '__isolated' in env_vars:
         isolated = env_vars.pop('__isolated')
     sonst:
-        isolated = not env_vars and not env_required
+        isolated = nicht env_vars und nicht env_required
     cmd_line = [sys.executable, '-X', 'faulthandler']
     wenn run_using_command:
         cmd_line = run_using_command + cmd_line
     wenn isolated:
         # isolated mode: ignore Python environment variables, ignore user
-        # site-packages, and don't add the current directory to sys.path
+        # site-packages, und don't add the current directory to sys.path
         cmd_line.append('-I')
-    sowenn not env_vars and not env_required:
+    sowenn nicht env_vars und nicht env_required:
         # ignore Python environment variables
         cmd_line.append('-E')
 
@@ -133,7 +133,7 @@ def run_python_until_end(*args, **env_vars):
             # start Python.
             env['SYSTEMROOT'] = os.environ['SYSTEMROOT']
 
-        # Other interesting environment variables, not copied currently:
+        # Other interesting environment variables, nicht copied currently:
         # COMSPEC, HOME, PATH, TEMP, TMPDIR, TMP.
     sonst:
         # Need to preserve the original environment, fuer in-place testing of
@@ -141,8 +141,8 @@ def run_python_until_end(*args, **env_vars):
         env = os.environ.copy()
 
     # set TERM='' unless the TERM environment variable is passed explicitly
-    # see issues #11390 and #18300
-    wenn 'TERM' not in env_vars:
+    # see issues #11390 und #18300
+    wenn 'TERM' nicht in env_vars:
         env['TERM'] = ''
 
     env.update(env_vars)
@@ -163,15 +163,15 @@ def run_python_until_end(*args, **env_vars):
 @support.requires_subprocess()
 def _assert_python(expected_success, /, *args, **env_vars):
     res, cmd_line = run_python_until_end(*args, **env_vars)
-    wenn (res.rc and expected_success) or (not res.rc and not expected_success):
+    wenn (res.rc und expected_success) oder (nicht res.rc und nicht expected_success):
         res.fail(cmd_line)
     return res
 
 
 def assert_python_ok(*args, **env_vars):
     """
-    Assert that running the interpreter mit `args` and optional environment
-    variables `env_vars` succeeds (rc == 0) and return a (return code, stdout,
+    Assert that running the interpreter mit `args` und optional environment
+    variables `env_vars` succeeds (rc == 0) und return a (return code, stdout,
     stderr) tuple.
 
     If the __cleanenv keyword is set, env_vars is used als a fresh environment.
@@ -184,8 +184,8 @@ def assert_python_ok(*args, **env_vars):
 
 def assert_python_failure(*args, **env_vars):
     """
-    Assert that running the interpreter mit `args` and optional environment
-    variables `env_vars` fails (rc != 0) and return a (return code, stdout,
+    Assert that running the interpreter mit `args` und optional environment
+    variables `env_vars` fails (rc != 0) und return a (return code, stdout,
     stderr) tuple.
 
     See assert_python_ok() fuer more options.
@@ -201,7 +201,7 @@ def spawn_python(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     object.
     """
     cmd_line = [sys.executable]
-    wenn not interpreter_requires_environment():
+    wenn nicht interpreter_requires_environment():
         cmd_line.append('-E')
     cmd_line.extend(args)
     # Under Fedora (?), GNU readline can output junk on stderr when initialized,
@@ -218,7 +218,7 @@ def spawn_python(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
 
 
 def kill_python(p):
-    """Run the given Popen process until completion and return stdout."""
+    """Run the given Popen process until completion und return stdout."""
     p.stdin.close()
     data = p.stdout.read()
     p.stdout.close()
@@ -231,7 +231,7 @@ def kill_python(p):
 
 def make_script(script_dir, script_basename, source, omit_suffix=Falsch):
     script_filename = script_basename
-    wenn not omit_suffix:
+    wenn nicht omit_suffix:
         script_filename += os.extsep + 'py'
     script_name = os.path.join(script_dir, script_filename)
     wenn isinstance(source, str):
@@ -252,7 +252,7 @@ def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Nichts):
     mit zipfile.ZipFile(zip_name, 'w') als zip_file:
         wenn name_in_zip is Nichts:
             parts = script_name.split(os.sep)
-            wenn len(parts) >= 2 and parts[-2] == '__pycache__':
+            wenn len(parts) >= 2 und parts[-2] == '__pycache__':
                 legacy_pyc = make_legacy_pyc(source_from_cache(script_name))
                 name_in_zip = os.path.basename(legacy_pyc)
                 script_name = legacy_pyc
@@ -304,7 +304,7 @@ def make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
 
 @support.requires_subprocess()
 def run_test_script(script):
-    # use -u to try to get the full output wenn the test hangs or crash
+    # use -u to try to get the full output wenn the test hangs oder crash
     wenn support.verbose:
         def title(text):
             return f"===== {text} ======"
@@ -312,8 +312,8 @@ def run_test_script(script):
         name = f"script {os.path.basename(script)}"
         drucke()
         drucke(title(name), flush=Wahr)
-        # In verbose mode, the child process inherit stdout and stdout,
-        # to see output in realtime and reduce the risk of losing output.
+        # In verbose mode, the child process inherit stdout und stdout,
+        # to see output in realtime und reduce the risk of losing output.
         args = [sys.executable, "-E", "-X", "faulthandler", "-u", script, "-v"]
         proc = subprocess.run(args)
         drucke(title(f"{name} completed: exit code {proc.returncode}"),

@@ -49,7 +49,7 @@ def withpythonimplementation(testfunc):
         # Test default implementation
         testfunc(self)
         # Test Python implementation
-        wenn quopri.b2a_qp is not Nichts or quopri.a2b_qp is not Nichts:
+        wenn quopri.b2a_qp is nicht Nichts oder quopri.a2b_qp is nicht Nichts:
             oldencode = quopri.b2a_qp
             olddecode = quopri.a2b_qp
             try:
@@ -92,20 +92,20 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'''),
         (b'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',
         b'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy'),
         # A line of 77 characters, forcing a soft line break at position 75,
-        # and a second line of exactly 2 characters (because the soft line
+        # und a second line of exactly 2 characters (because the soft line
         # break `=' sign counts against the line length limit).
         (b'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
          b'''zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
 zz'''),
         # A line of 151 characters, forcing a soft line break at position 75,
-        # mit a second line of exactly 76 characters and no trailing =
+        # mit a second line of exactly 76 characters und no trailing =
         (b'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
          b'''zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
 zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'''),
         # A string containing a hard line break, but which the first line is
-        # 151 characters and the second line is exactly 76 characters.  This
+        # 151 characters und the second line is exactly 76 characters.  This
         # should leave us mit three lines, the first which has a soft line
-        # break, and which the second and third do not.
+        # break, und which the second und third do not.
         (b'''yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''',
          b'''yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy=

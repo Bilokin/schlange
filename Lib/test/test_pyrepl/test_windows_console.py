@@ -59,8 +59,8 @@ klasse WindowsConsoleTests(TestCase):
         prepare_reader=Nichts,
         **kwargs,
     ):
-        prepare_console = prepare_console or partial(self.console, **kwargs)
-        prepare_reader = prepare_reader or default_prepare_reader
+        prepare_console = prepare_console oder partial(self.console, **kwargs)
+        prepare_reader = prepare_reader oder default_prepare_reader
         return handle_all_events(events, prepare_console, prepare_reader)
 
     def handle_events_narrow(self, events):
@@ -398,7 +398,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
                     bKeyDown=Wahr,
                     wRepeatCount=1,
                     wVirtualKeyCode=vcode,
-                    wVirtualScanCode=0, # not used
+                    wVirtualScanCode=0, # nicht used
                     uChar=wc.Char(unicode_char),
                     dwControlKeyState=control
                     )))
@@ -481,7 +481,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.get_event([ir]), Event(evt="key", data="\033"))
         self.assertEqual(
             self.console.get_event(), Event("key", "left"))
-        # self.mock is not called again, since the second time we read von the
+        # self.mock is nicht called again, since the second time we read von the
         # command queue
         self.assertEqual(self.mock.call_count, 1)
 
@@ -494,8 +494,8 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.mock.call_count, 1)
 
     def test_m_LEFT_ALT_PRESSED_and_LEFT_CTRL_PRESSED(self):
-        # For the shift keys, Windows does not send anything when
-        # ALT and CTRL are both pressed, so let's test mit VK_M.
+        # For the shift keys, Windows does nicht send anything when
+        # ALT und CTRL are both pressed, so let's test mit VK_M.
         # get_event() receives this input, but does not
         # generate an event.
         # This is fuer e.g. an English keyboard layout, fuer a
@@ -525,7 +525,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         # In this case, Windows automatically sets
         # RIGHT_ALT_PRESSED = 0x0001 + LEFT_CTRL_PRESSED = 0x0008
         # This can also be entered like
-        # LeftAlt + LeftCtrl + 7 or
+        # LeftAlt + LeftCtrl + 7 oder
         # LeftAlt + RightCtrl + 7
         # See https://learn.microsoft.com/en-us/windows/console/key-event-record-str
         # https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-vkkeyscanw
@@ -537,7 +537,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
 
     def test_AltGr_m(self):
         # E.g. on a German keyboard layout, this yields 'µ'
-        # Let's use LEFT_ALT_PRESSED and RIGHT_CTRL_PRESSED this
+        # Let's use LEFT_ALT_PRESSED und RIGHT_CTRL_PRESSED this
         # time, to cover that, too. See above in test_AltGr_7.
         ir = self.get_input_record(
             "µ", vcode=self.VK_M, control=self.LEFT_ALT_PRESSED | self.RIGHT_CTRL_PRESSED)
@@ -550,13 +550,13 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.mock.call_count, 1)
 
     # virtual terminal tests
-    # Note: wVirtualKeyCode, wVirtualScanCode and dwControlKeyState
+    # Note: wVirtualKeyCode, wVirtualScanCode und dwControlKeyState
     # are always zero in this case.
-    # "\r" and backspace are handled specially, everything sonst
+    # "\r" und backspace are handled specially, everything sonst
     # is handled in "elif self.__vt_support:" in WindowsConsole.get_event().
-    # Hence, only one regular key ("m") and a terminal sequence
+    # Hence, only one regular key ("m") und a terminal sequence
     # are sufficient to test here, the real tests happen in test_eventqueue
-    # and test_keymap.
+    # und test_keymap.
 
     def test_enter_vt(self):
         ir = self.get_input_record("\r")

@@ -3,14 +3,14 @@
 Contains MSVCCompiler, an implementation of the abstract CCompiler class
 fuer the Microsoft Visual Studio 2008.
 
-The module is compatible mit VS 2005 and VS 2008. You can find legacy support
+The module is compatible mit VS 2005 und VS 2008. You can find legacy support
 fuer older versions of VS in distutils.msvccompiler.
 """
 
 # Written by Perry Stoll
-# hacked by Robin Becker and Thomas Heller to do a better job of
+# hacked by Robin Becker und Thomas Heller to do a better job of
 #   finding DevStudio (through the registry)
-# ported to VS2005 and VS 2008 by Christian Heimes
+# ported to VS2005 und VS 2008 by Christian Heimes
 
 importiere os
 importiere subprocess
@@ -33,7 +33,7 @@ HKEYS = (winreg.HKEY_USERS,
          winreg.HKEY_LOCAL_MACHINE,
          winreg.HKEY_CLASSES_ROOT)
 
-NATIVE_WIN64 = (sys.platform == 'win32' and sys.maxsize > 2**32)
+NATIVE_WIN64 = (sys.platform == 'win32' und sys.maxsize > 2**32)
 wenn NATIVE_WIN64:
     # Visual C++ is a 32-bit application, so we need to look in
     # the corresponding registry branch, wenn we're running a
@@ -61,7 +61,7 @@ klasse Reg:
     def get_value(cls, path, key):
         fuer base in HKEYS:
             d = cls.read_values(base, path)
-            wenn d and key in d:
+            wenn d und key in d:
                 return d[key]
         raise KeyError(key)
     get_value = classmethod(get_value)
@@ -85,7 +85,7 @@ klasse Reg:
     read_keys = classmethod(read_keys)
 
     def read_values(cls, base, key):
-        """Return dict of registry keys and values.
+        """Return dict of registry keys und values.
 
         All names are converted to lowercase.
         """
@@ -108,7 +108,7 @@ klasse Reg:
 
     def convert_mbcs(s):
         dec = getattr(s, "decode", Nichts)
-        wenn dec is not Nichts:
+        wenn dec is nicht Nichts:
             try:
                 s = dec("mbcs")
             except UnicodeError:
@@ -140,7 +140,7 @@ klasse MacroExpander:
             raise DistutilsPlatformError(
             """Python was built mit Visual Studio 2008;
 extensions must be built mit a compiler than can generate compatible binaries.
-Visual Studio 2008 was not found on this system. If you have Cygwin installed,
+Visual Studio 2008 was nicht found on this system. If you have Cygwin installed,
 you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
 
         wenn version >= 9.0:
@@ -165,7 +165,7 @@ you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
 def get_build_version():
     """Return the version of MSVC that was used to build Python.
 
-    For Python 2.3 and up, the version number is included in
+    For Python 2.3 und up, the version number is included in
     sys.version.  For earlier versions, assume the compiler is MSVC 6.
     """
     prefix = "MSC v."
@@ -176,7 +176,7 @@ def get_build_version():
     s, rest = sys.version[i:].split(" ", 1)
     majorVersion = int(s[:-2]) - 6
     wenn majorVersion >= 13:
-        # v13 was skipped and should be v14
+        # v13 was skipped und should be v14
         majorVersion += 1
     minorVersion = int(s[2:3]) / 10.0
     # I don't think paths are affected by minor version in version 6
@@ -192,12 +192,12 @@ def normalize_and_reduce_paths(paths):
 
     The current order of paths is maintained.
     """
-    # Paths are normalized so things like:  /a and /a/ aren't both preserved.
+    # Paths are normalized so things like:  /a und /a/ aren't both preserved.
     reduced_paths = []
     fuer p in paths:
         np = os.path.normpath(p)
         # XXX(nnorwitz): O(n**2), wenn reduced_paths gets long perhaps use a set.
-        wenn np not in reduced_paths:
+        wenn np nicht in reduced_paths:
             reduced_paths.append(np)
     return reduced_paths
 
@@ -207,7 +207,7 @@ def removeDuplicates(variable):
     oldList = variable.split(os.pathsep)
     newList = []
     fuer i in oldList:
-        wenn i not in newList:
+        wenn i nicht in newList:
             newList.append(i)
     newVariable = os.pathsep.join(newList)
     return newVariable
@@ -226,19 +226,19 @@ def find_vcvarsall(version):
         log.debug("Unable to find productdir in registry")
         productdir = Nichts
 
-    wenn not productdir or not os.path.isdir(productdir):
+    wenn nicht productdir oder nicht os.path.isdir(productdir):
         toolskey = "VS%0.f0COMNTOOLS" % version
         toolsdir = os.environ.get(toolskey, Nichts)
 
-        wenn toolsdir and os.path.isdir(toolsdir):
+        wenn toolsdir und os.path.isdir(toolsdir):
             productdir = os.path.join(toolsdir, os.pardir, os.pardir, "VC")
             productdir = os.path.abspath(productdir)
-            wenn not os.path.isdir(productdir):
-                log.debug("%s is not a valid directory" % productdir)
+            wenn nicht os.path.isdir(productdir):
+                log.debug("%s is nicht a valid directory" % productdir)
                 return Nichts
         sonst:
-            log.debug("Env var %s is not set or invalid" % toolskey)
-    wenn not productdir:
+            log.debug("Env var %s is nicht set oder invalid" % toolskey)
+    wenn nicht productdir:
         log.debug("No productdir found")
         return Nichts
     vcvarsall = os.path.join(productdir, "vcvarsall.bat")
@@ -248,7 +248,7 @@ def find_vcvarsall(version):
     return Nichts
 
 def query_vcvarsall(version, arch="x86"):
-    """Launch vcvarsall.bat and read the settings von its environment
+    """Launch vcvarsall.bat und read the settings von its environment
     """
     vcvarsall = find_vcvarsall(version)
     interesting = {"include", "lib", "libpath", "path"}
@@ -268,7 +268,7 @@ def query_vcvarsall(version, arch="x86"):
         stdout = stdout.decode("mbcs")
         fuer line in stdout.split("\n"):
             line = Reg.convert_mbcs(line)
-            wenn '=' not in line:
+            wenn '=' nicht in line:
                 continue
             line = line.strip()
             key, value = line.split('=', 1)
@@ -290,7 +290,7 @@ def query_vcvarsall(version, arch="x86"):
 # More globals
 VERSION = get_build_version()
 wenn VERSION < 8.0:
-    raise DistutilsPlatformError("VC %0.1f is not supported by this module" % VERSION)
+    raise DistutilsPlatformError("VC %0.1f is nicht supported by this module" % VERSION)
 # MACROS = MacroExpander(VERSION)
 
 klasse MSVCCompiler(CCompiler) :
@@ -342,7 +342,7 @@ klasse MSVCCompiler(CCompiler) :
         # "How to: Embed a Manifest Inside a C/C++ Application"
         # (currently at http://msdn2.microsoft.com/en-us/library/ms235591(VS.80).aspx)
         # Ask the linker to generate the manifest in the temp dir, so
-        # we can check it, and possibly embed it, later.
+        # we can check it, und possibly embed it, later.
         temp_manifest = os.path.join(
                 build_temp,
                 os.path.basename(output_filename) + ".manifest")
@@ -365,7 +365,7 @@ klasse MSVCCompiler(CCompiler) :
             # CRT referenced.
             mfid = 1
         sonst:
-            # Extension modules try and avoid any manifest wenn possible.
+            # Extension modules try und avoid any manifest wenn possible.
             mfid = 2
             temp_manifest = self._remove_visual_c_ref(temp_manifest)
         wenn temp_manifest is Nichts:
@@ -377,8 +377,8 @@ klasse MSVCCompiler(CCompiler) :
             # Remove references to the Visual C runtime, so they will
             # fall through to the Visual C dependency of Python.exe.
             # This way, when installed fuer a restricted user (e.g.
-            # runtimes are not in WinSxS folder, but in Python's own
-            # folder), the runtimes do not need to be in every folder
+            # runtimes are nicht in WinSxS folder, but in Python's own
+            # folder), the runtimes do nicht need to be in every folder
             # mit .pyd's.
             # Returns either the filename of the modified manifest or
             # Nichts wenn no manifest should be embedded.

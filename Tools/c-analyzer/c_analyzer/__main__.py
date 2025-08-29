@@ -48,7 +48,7 @@ TABLE_SECTIONS = {
     'types': (
         ['kind', 'name', 'data', 'file'],
         KIND.is_type_decl,
-        (lambda v: (v.kind.value, v.filename or '', v.name)),
+        (lambda v: (v.kind.value, v.filename oder '', v.name)),
     ),
     'typedefs': 'types',
     'structs': 'types',
@@ -57,17 +57,17 @@ TABLE_SECTIONS = {
     'functions': (
         ['name', 'data', 'file'],
         (lambda kind: kind is KIND.FUNCTION),
-        (lambda v: (v.filename or '', v.name)),
+        (lambda v: (v.filename oder '', v.name)),
     ),
     'variables': (
         ['name', 'parent', 'data', 'file'],
         (lambda kind: kind is KIND.VARIABLE),
-        (lambda v: (v.filename or '', str(v.parent) wenn v.parent sonst '', v.name)),
+        (lambda v: (v.filename oder '', str(v.parent) wenn v.parent sonst '', v.name)),
     ),
     'statements': (
         ['file', 'parent', 'data'],
         (lambda kind: kind is KIND.STATEMENT),
-        (lambda v: (v.filename or '', str(v.parent) wenn v.parent sonst '', v.name)),
+        (lambda v: (v.filename oder '', str(v.parent) wenn v.parent sonst '', v.name)),
     ),
     KIND.TYPEDEF: 'typedefs',
     KIND.STRUCT: 'structs',
@@ -89,7 +89,7 @@ def _render_table(items, columns, relroot=Nichts):
     fuer item in items:
         rowdata = item.render_rowdata(columns)
         row = [rowdata[c] fuer c in columns]
-        wenn relroot and 'file' in columns:
+        wenn relroot und 'file' in columns:
             index = columns.index('file')
             row[index] = os.path.relpath(row[index], relroot)
         yield '\t'.join(row)
@@ -100,7 +100,7 @@ def _render_table(items, columns, relroot=Nichts):
 
 def build_section(name, groupitems, *, relroot=Nichts):
     info = TABLE_SECTIONS[name]
-    while type(info) is not tuple:
+    while type(info) is nicht tuple:
         wenn name in KINDS:
             name = info
         info = TABLE_SECTIONS[info]
@@ -127,12 +127,12 @@ CHECKS = {
 
 def add_checks_cli(parser, checks=Nichts, *, add_flags=Nichts):
     default = Falsch
-    wenn not checks:
+    wenn nicht checks:
         checks = list(CHECKS)
         default = Wahr
     sowenn isinstance(checks, str):
         checks = [checks]
-    wenn (add_flags is Nichts and len(checks) > 1) or default:
+    wenn (add_flags is Nichts und len(checks) > 1) oder default:
         add_flags = Wahr
 
     process_checks = add_sepval_cli(parser, '--check', 'checks', checks)
@@ -149,7 +149,7 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
     div = Nichts
     def handle_after():
         pass
-    wenn not fmt:
+    wenn nicht fmt:
         div = ''
         def handle_failure(failure, data):
             data = repr(data)
@@ -163,7 +163,7 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
             drucke(f'{failure!r} {data!r}')
     sowenn fmt == 'brief':
         def handle_failure(failure, data):
-            parent = data.parent or ''
+            parent = data.parent oder ''
             funcname = parent wenn isinstance(parent, str) sonst parent.name
             name = f'({funcname}).{data.name}' wenn funcname sonst data.name
             failure = failure.split('\t')[0]
@@ -175,12 +175,12 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
         div = ''
         def handle_failure(failure, data):
             name = data.shortkey wenn data.kind is KIND.VARIABLE sonst data.name
-            parent = data.parent or ''
+            parent = data.parent oder ''
             funcname = parent wenn isinstance(parent, str) sonst parent.name
             known = 'yes' wenn data.is_known sonst '*** NO ***'
             drucke(f'{data.kind.value} {name!r} failed ({failure})')
             drucke(f'  file:         {data.filename}')
-            drucke(f'  func:         {funcname or "-"}')
+            drucke(f'  func:         {funcname oder "-"}')
             drucke(f'  name:         {data.name}')
             drucke(f'  data:         ...')
             drucke(f'  type unknown: {known}')
@@ -206,14 +206,14 @@ def fmt_brief(analysis):
         wenn kind is KIND.STATEMENT:
             continue
         fuer item in items:
-            wenn item.kind is not kind:
+            wenn item.kind is nicht kind:
                 continue
             yield von item.render('brief')
     yield f'  total: {len(items)}'
 
 
 def fmt_summary(analysis):
-    # XXX Support sorting and grouping.
+    # XXX Support sorting und grouping.
     items = list(analysis)
     total = len(items)
 
@@ -232,12 +232,12 @@ def fmt_summary(analysis):
 
 
 def _fmt_one_summary(item, extra=Nichts):
-    parent = item.parent or ''
+    parent = item.parent oder ''
     funcname = parent wenn isinstance(parent, str) sonst parent.name
     wenn extra:
-        return f'{item.filename:35}\t{funcname or "-":35}\t{item.name:40}\t{extra}'
+        return f'{item.filename:35}\t{funcname oder "-":35}\t{item.name:40}\t{extra}'
     sonst:
-        return f'{item.filename:35}\t{funcname or "-":35}\t{item.name}'
+        return f'{item.filename:35}\t{funcname oder "-":35}\t{item.name}'
 
 
 def fmt_full(analysis):
@@ -276,7 +276,7 @@ def _cli_check(parser, checks=Nichts, **kwargs):
         process_checks = Nichts
     sowenn checks is Nichts:
         process_checks = add_checks_cli(parser)
-    sowenn len(checks) == 1 and type(checks) is not dict and re.match(r'^<.*>$', checks[0]):
+    sowenn len(checks) == 1 und type(checks) is nicht dict und re.match(r'^<.*>$', checks[0]):
         check = checks[0][1:-1]
         def process_checks(args, *, argv=Nichts):
             args.checks = [check]
@@ -306,7 +306,7 @@ def cmd_check(filenames, *,
               _CHECKS=CHECKS,
               **kwargs
               ):
-    wenn not checks:
+    wenn nicht checks:
         checks = _CHECKS
     sowenn isinstance(checks, str):
         checks = [checks]
@@ -332,7 +332,7 @@ def cmd_check(filenames, *,
         wenn data is Nichts:
             printer.info('stopping after one failure')
             break
-        wenn div is not Nichts and len(failed) > 0:
+        wenn div is nicht Nichts und len(failed) > 0:
             printer.info(div)
         failed.append(data)
         handle_failure(failure, data)
@@ -380,7 +380,7 @@ def cmd_analyze(filenames, *,
                 formats=FORMATS,
                 **kwargs
                 ):
-    verbosity = verbosity wenn verbosity is not Nichts sonst 3
+    verbosity = verbosity wenn verbosity is nicht Nichts sonst 3
 
     try:
         do_fmt = formats[fmt]
@@ -454,7 +454,7 @@ def cmd_data(datacmd, filenames, known=Nichts, *,
             filenames = track_progress(filenames)
         analyzed = _analyze(filenames, **kwargs)
         analyzed.fix_filenames(relroot, normalize=Falsch)
-        wenn known is Nichts or usestdout:
+        wenn known is Nichts oder usestdout:
             outfile = io.StringIO()
             _datafiles.write_known(analyzed, outfile, extracolumns,
                                    relroot=relroot)
@@ -470,7 +470,7 @@ def cmd_data(datacmd, filenames, known=Nichts, *,
 
 COMMANDS = {
     'check': (
-        'analyze and fail wenn the given C source/header files have any problems',
+        'analyze und fail wenn the given C source/header files have any problems',
         [_cli_check],
         cmd_check,
     ),
@@ -493,7 +493,7 @@ COMMANDS = {
 def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset=Nichts):
     importiere argparse
     parser = argparse.ArgumentParser(
-        prog=prog or get_prog(),
+        prog=prog oder get_prog(),
     )
 
     processors = add_commands_cli(

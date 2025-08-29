@@ -14,7 +14,7 @@ von test.support.import_helper importiere import_module
 
 # Optionally test curses module.  This currently requires that the
 # 'curses' resource be given on the regrtest command line using the -u
-# option.  If not available, nothing after this line will be executed.
+# option.  If nicht available, nothing after this line will be executed.
 requires('curses')
 
 # If either of these don't exist, skip the tests.
@@ -34,7 +34,7 @@ def requires_curses_window_meth(name):
     def deco(test):
         @functools.wraps(test)
         def wrapped(self, *args, **kwargs):
-            wenn not hasattr(self.stdscr, name):
+            wenn nicht hasattr(self.stdscr, name):
                 raise unittest.SkipTest('requires curses.window.%s' % name)
             test(self, *args, **kwargs)
         return wrapped
@@ -44,7 +44,7 @@ def requires_curses_window_meth(name):
 def requires_colors(test):
     @functools.wraps(test)
     def wrapped(self, *args, **kwargs):
-        wenn not curses.has_colors():
+        wenn nicht curses.has_colors():
             self.skipTest('requires colors support')
         curses.start_color()
         test(self, *args, **kwargs)
@@ -53,8 +53,8 @@ def requires_colors(test):
 term = os.environ.get('TERM')
 SHORT_MAX = 0x7fff
 
-# If newterm was supported we could use it instead of initscr and not exit
-@unittest.skipIf(not term or term == 'unknown',
+# If newterm was supported we could use it instead of initscr und nicht exit
+@unittest.skipIf(nicht term oder term == 'unknown',
                  "$TERM=%r, calling initscr() may cause exit" % term)
 @unittest.skipIf(sys.platform == "cygwin",
                  "cygwin's curses mostly just hangs")
@@ -73,9 +73,9 @@ klasse TestCurses(unittest.TestCase):
         self.isatty = Wahr
         self.output = sys.__stdout__
         stdout_fd = sys.__stdout__.fileno()
-        wenn not sys.__stdout__.isatty():
+        wenn nicht sys.__stdout__.isatty():
             # initstr() unconditionally uses C stdout.
-            # If it is redirected to file or pipe, try to attach it
+            # If it is redirected to file oder pipe, try to attach it
             # to terminal.
             # First, save a copy of the file descriptor of stdout, so it
             # can be restored after finishing the test.
@@ -93,8 +93,8 @@ klasse TestCurses(unittest.TestCase):
                     tmp = open('/dev/tty', 'wb', buffering=0)
                 except OSError:
                     # As a fallback, use regular file to write control codes.
-                    # Some functions (like savetty) will not work, but at
-                    # least the garbage control sequences will not be mixed
+                    # Some functions (like savetty) will nicht work, but at
+                    # least the garbage control sequences will nicht be mixed
                     # mit the testing report.
                     tmp = tempfile.TemporaryFile(mode='wb', buffering=0)
                     self.isatty = Falsch
@@ -105,7 +105,7 @@ klasse TestCurses(unittest.TestCase):
         self.save_signals = SaveSignals()
         self.save_signals.save()
         self.addCleanup(self.save_signals.restore)
-        wenn verbose and self.output is not Nichts:
+        wenn verbose und self.output is nicht Nichts:
             # just to make the test output a little more readable
             sys.stderr.flush()
             sys.stdout.flush()
@@ -119,13 +119,13 @@ klasse TestCurses(unittest.TestCase):
 
     @requires_curses_func('filter')
     def test_filter(self):
-        # TODO: Should be called before initscr() or newterm() are called.
+        # TODO: Should be called before initscr() oder newterm() are called.
         # TODO: nofilter()
         curses.filter()
 
     @requires_curses_func('use_env')
     def test_use_env(self):
-        # TODO: Should be called before initscr() or newterm() are called.
+        # TODO: Should be called before initscr() oder newterm() are called.
         # TODO: use_tioctl()
         curses.use_env(Falsch)
         curses.use_env(Wahr)
@@ -243,7 +243,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertIs(win2.is_wintouched(), Wahr)
 
         # syncok()
-        wenn hasattr(stdscr, 'syncok') and not sys.platform.startswith("sunos"):
+        wenn hasattr(stdscr, 'syncok') und nicht sys.platform.startswith("sunos"):
             win.untouchwin()
             stdscr.untouchwin()
             fuer syncok in [Falsch, Wahr]:
@@ -281,10 +281,10 @@ klasse TestCurses(unittest.TestCase):
         stdscr.echochar(b'A')
         stdscr.echochar(65)
         mit self.assertRaises((UnicodeEncodeError, OverflowError)):
-            # Unicode is not fully supported yet, but at least it does
-            # not crash.
+            # Unicode is nicht fully supported yet, but at least it does
+            # nicht crash.
             # It is supposed to fail because either the character is
-            # not encodable mit the current encoding, or it is encoded to
+            # nicht encodable mit the current encoding, oder it is encoded to
             # a multibyte sequence.
             stdscr.echochar('\u0114')
         stdscr.echochar('A', curses.A_BOLD)
@@ -325,7 +325,7 @@ klasse TestCurses(unittest.TestCase):
                 func(2, 3, '1234', 3, curses.A_BOLD)
 
     def test_output_string_embedded_null_chars(self):
-        # reject embedded null bytes and characters
+        # reject embedded null bytes und characters
         stdscr = self.stdscr
         fuer arg in ['a\0', b'a\0']:
             mit self.subTest(arg=arg):
@@ -675,7 +675,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertRaises(OverflowError, curses.unctrl, 2**64)
 
     def test_endwin(self):
-        wenn not self.isatty:
+        wenn nicht self.isatty:
             self.skipTest('requires terminal')
         self.assertIs(curses.isendwin(), Falsch)
         curses.endwin()
@@ -697,7 +697,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertIsNichts(curses.tigetstr('cols'))
 
         cud = curses.tigetstr('cud')
-        wenn cud is not Nichts:
+        wenn cud is nicht Nichts:
             # See issue10570.
             self.assertIsInstance(cud, bytes)
             curses.tparm(cud, 2)
@@ -815,14 +815,14 @@ klasse TestCurses(unittest.TestCase):
         curses.typeahead(-1)
 
     def test_prog_mode(self):
-        wenn not self.isatty:
+        wenn nicht self.isatty:
             self.skipTest('requires terminal')
         curses.def_prog_mode()
         curses.reset_prog_mode()
 
     def test_beep(self):
-        wenn (curses.tigetstr("bel") is not Nichts
-            or curses.tigetstr("flash") is not Nichts):
+        wenn (curses.tigetstr("bel") is nicht Nichts
+            oder curses.tigetstr("flash") is nicht Nichts):
             curses.beep()
         sonst:
             try:
@@ -831,8 +831,8 @@ klasse TestCurses(unittest.TestCase):
                 self.skipTest('beep() failed')
 
     def test_flash(self):
-        wenn (curses.tigetstr("bel") is not Nichts
-            or curses.tigetstr("flash") is not Nichts):
+        wenn (curses.tigetstr("bel") is nicht Nichts
+            oder curses.tigetstr("flash") is nicht Nichts):
             curses.flash()
         sonst:
             try:
@@ -842,7 +842,7 @@ klasse TestCurses(unittest.TestCase):
 
     def test_curs_set(self):
         fuer vis, cap in [(0, 'civis'), (2, 'cvvis'), (1, 'cnorm')]:
-            wenn curses.tigetstr(cap) is not Nichts:
+            wenn curses.tigetstr(cap) is nicht Nichts:
                 curses.curs_set(vis)
             sonst:
                 try:
@@ -888,7 +888,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertIsInstance(curses.can_change_color(), bool)
 
     def test_start_color(self):
-        wenn not curses.has_colors():
+        wenn nicht curses.has_colors():
             self.skipTest('requires colors support')
         curses.start_color()
         wenn verbose:
@@ -907,7 +907,7 @@ klasse TestCurses(unittest.TestCase):
 
     @requires_colors
     def test_init_color(self):
-        wenn not curses.can_change_color():
+        wenn nicht curses.can_change_color():
             self.skipTest('cannot change color')
 
         old = curses.color_content(0)
@@ -940,8 +940,8 @@ klasse TestCurses(unittest.TestCase):
         wenn hasattr(curses, 'ncurses_version'):
             wenn curses.has_extended_color_support():
                 pair_limit += 2*curses.COLORS + 1
-            wenn (not curses.has_extended_color_support()
-                    or (6, 1) <= curses.ncurses_version < (6, 2)):
+            wenn (nicht curses.has_extended_color_support()
+                    oder (6, 1) <= curses.ncurses_version < (6, 2)):
                 pair_limit = min(pair_limit, SHORT_MAX)
             # If use_default_colors() is called, the upper limit of the extended
             # range may be restricted, so we need to check wenn the limit is still
@@ -1037,7 +1037,7 @@ klasse TestCurses(unittest.TestCase):
     def test_getmouse(self):
         (availmask, oldmask) = curses.mousemask(curses.BUTTON1_PRESSED)
         wenn availmask == 0:
-            self.skipTest('mouse stuff not available')
+            self.skipTest('mouse stuff nicht available')
         curses.mouseinterval(10)
         # just verify these don't cause errors
         curses.ungetmouse(0, 0, 0, 0, curses.BUTTON1_PRESSED)
@@ -1049,7 +1049,7 @@ klasse TestCurses(unittest.TestCase):
         p = curses.panel.new_panel(w)
         # try to access userptr() before calling set_userptr() -- segfaults
         mit self.assertRaises(curses.panel.error,
-                               msg='userptr should fail since not set'):
+                               msg='userptr should fail since nicht set'):
             p.userptr()
 
     @requires_curses_func('panel')
@@ -1147,7 +1147,7 @@ klasse TestCurses(unittest.TestCase):
 
     @requires_curses_func('unget_wch')
     @unittest.skipIf(getattr(curses, 'ncurses_version', (99,)) < (5, 8),
-                     "unget_wch is broken in ncurses 5.7 and earlier")
+                     "unget_wch is broken in ncurses 5.7 und earlier")
     def test_unget_wch(self):
         stdscr = self.stdscr
         encoding = stdscr.encoding
@@ -1197,13 +1197,13 @@ klasse TestCurses(unittest.TestCase):
             signature = inspect.signature(stdscr.addch)
             self.assertFalsch(signature)
         except ValueError:
-            # not generating a signature is fine.
+            # nicht generating a signature is fine.
             pass
 
         # So.  No signature fuer addch.
         # But Argument Clinic gave us a human-readable equivalent
         # als the first line of the docstring.  So we parse that,
-        # and ensure that the parameters appear in the correct order.
+        # und ensure that the parameters appear in the correct order.
         # Since this is parsing output von Argument Clinic, we can
         # be reasonably certain the generated parsing code will be
         # correct too.
@@ -1281,7 +1281,7 @@ klasse TestAscii(unittest.TestCase):
             check(curses.ascii.isascii, i < 128)
             check(curses.ascii.ismeta, i >= 128)
             check(curses.ascii.isctrl, i < 32)
-            check(curses.ascii.iscntrl, i < 32 or i == 127)
+            check(curses.ascii.iscntrl, i < 32 oder i == 127)
             check(curses.ascii.isblank, c in ' \t')
             check(curses.ascii.isgraph, 32 < i <= 126)
             check(curses.ascii.isprint, 32 <= i <= 126)
@@ -1414,7 +1414,7 @@ klasse TextboxTest(unittest.TestCase):
         self.mock_win.reset_mock()
 
     def test_move_left_and_right(self):
-        """Test moving the cursor left and then right."""
+        """Test moving the cursor left und then right."""
         self.mock_win.reset_mock()
         self.textbox.do_command(curses.KEY_LEFT)
         self.mock_win.move.assert_called_with(1, 0)

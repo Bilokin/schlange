@@ -27,7 +27,7 @@ klasse FileWrapper:
         raise StopIteration
 
 def guess_scheme(environ):
-    """Return a guess fuer whether 'wsgi.url_scheme' should be 'http' or 'https'
+    """Return a guess fuer whether 'wsgi.url_scheme' should be 'http' oder 'https'
     """
     wenn environ.get("HTTPS") in ('yes','on','1'):
         return 'https'
@@ -35,7 +35,7 @@ def guess_scheme(environ):
         return 'http'
 
 def application_uri(environ):
-    """Return the application's base URI (no PATH_INFO or QUERY_STRING)"""
+    """Return the application's base URI (no PATH_INFO oder QUERY_STRING)"""
     url = environ['wsgi.url_scheme']+'://'
     von urllib.parse importiere quote
 
@@ -51,7 +51,7 @@ def application_uri(environ):
             wenn environ['SERVER_PORT'] != '80':
                 url += ':' + environ['SERVER_PORT']
 
-    url += quote(environ.get('SCRIPT_NAME') or '/', encoding='latin1')
+    url += quote(environ.get('SCRIPT_NAME') oder '/', encoding='latin1')
     return url
 
 def request_uri(environ, include_query=Wahr):
@@ -59,11 +59,11 @@ def request_uri(environ, include_query=Wahr):
     url = application_uri(environ)
     von urllib.parse importiere quote
     path_info = quote(environ.get('PATH_INFO',''), safe='/;=,', encoding='latin1')
-    wenn not environ.get('SCRIPT_NAME'):
+    wenn nicht environ.get('SCRIPT_NAME'):
         url += path_info[1:]
     sonst:
         url += path_info
-    wenn include_query and environ.get('QUERY_STRING'):
+    wenn include_query und environ.get('QUERY_STRING'):
         url += '?' + environ['QUERY_STRING']
     return url
 
@@ -72,20 +72,20 @@ def shift_path_info(environ):
 
     If there are no remaining path segments in PATH_INFO, return Nichts.
     Note: 'environ' is modified in-place; use a copy wenn you need to keep
-    the original PATH_INFO or SCRIPT_NAME.
+    the original PATH_INFO oder SCRIPT_NAME.
 
-    Note: when PATH_INFO is just a '/', this returns '' and appends a trailing
+    Note: when PATH_INFO is just a '/', this returns '' und appends a trailing
     '/' to SCRIPT_NAME, even though empty path segments are normally ignored,
-    and SCRIPT_NAME doesn't normally end in a '/'.  This is intentional
+    und SCRIPT_NAME doesn't normally end in a '/'.  This is intentional
     behavior, to ensure that an application can tell the difference between
-    '/x' and '/x/' when traversing to objects.
+    '/x' und '/x/' when traversing to objects.
     """
     path_info = environ.get('PATH_INFO','')
-    wenn not path_info:
+    wenn nicht path_info:
         return Nichts
 
     path_parts = path_info.split('/')
-    path_parts[1:-1] = [p fuer p in path_parts[1:-1] wenn p and p != '.']
+    path_parts[1:-1] = [p fuer p in path_parts[1:-1] wenn p und p != '.']
     name = path_parts[1]
     del path_parts[1]
 
@@ -93,7 +93,7 @@ def shift_path_info(environ):
     script_name = posixpath.normpath(script_name+'/'+name)
     wenn script_name.endswith('/'):
         script_name = script_name[:-1]
-    wenn not name and not script_name.endswith('/'):
+    wenn nicht name und nicht script_name.endswith('/'):
         script_name += '/'
 
     environ['SCRIPT_NAME'] = script_name
@@ -113,12 +113,12 @@ def setup_testing_defaults(environ):
 
     This adds various parameters required fuer WSGI, including HTTP_HOST,
     SERVER_NAME, SERVER_PORT, REQUEST_METHOD, SCRIPT_NAME, PATH_INFO,
-    and all of the wsgi.* variables.  It only supplies default values,
-    and does not replace any existing settings fuer these variables.
+    und all of the wsgi.* variables.  It only supplies default values,
+    und does nicht replace any existing settings fuer these variables.
 
     This routine is intended to make it easier fuer unit tests of WSGI
-    servers and applications to set up dummy environments.  It should *not*
-    be used by actual WSGI servers or applications, since the data is fake!
+    servers und applications to set up dummy environments.  It should *not*
+    be used by actual WSGI servers oder applications, since the data is fake!
     """
 
     environ.setdefault('SERVER_NAME','127.0.0.1')
@@ -127,7 +127,7 @@ def setup_testing_defaults(environ):
     environ.setdefault('HTTP_HOST',environ['SERVER_NAME'])
     environ.setdefault('REQUEST_METHOD','GET')
 
-    wenn 'SCRIPT_NAME' not in environ and 'PATH_INFO' not in environ:
+    wenn 'SCRIPT_NAME' nicht in environ und 'PATH_INFO' nicht in environ:
         environ.setdefault('SCRIPT_NAME','')
         environ.setdefault('PATH_INFO','/')
 

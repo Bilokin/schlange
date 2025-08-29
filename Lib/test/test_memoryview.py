@@ -108,7 +108,7 @@ klasse AbstractMemoryTests:
                 self.assertEqual(m.count(ord('c')), l.count(ord('c')))
 
     def test_setitem_readonly(self):
-        wenn not self.ro_type:
+        wenn nicht self.ro_type:
             self.skipTest("no read-only type to test")
         b = self.ro_type(self._source)
         oldrefcount = sys.getrefcount(b)
@@ -122,7 +122,7 @@ klasse AbstractMemoryTests:
         self.assertEqual(sys.getrefcount(b), oldrefcount)
 
     def test_setitem_writable(self):
-        wenn not self.rw_type:
+        wenn nicht self.rw_type:
             self.skipTest("no writable type to test")
         tp = self.rw_type
         b = self.rw_type(self._source)
@@ -240,13 +240,13 @@ klasse AbstractMemoryTests:
         return m
 
     def test_attributes_readonly(self):
-        wenn not self.ro_type:
+        wenn nicht self.ro_type:
             self.skipTest("no read-only type to test")
         m = self.check_attributes_with_type(self.ro_type)
         self.assertEqual(m.readonly, Wahr)
 
     def test_attributes_writable(self):
-        wenn not self.rw_type:
+        wenn nicht self.rw_type:
             self.skipTest("no writable type to test")
         m = self.check_attributes_with_type(self.rw_type)
         self.assertEqual(m.readonly, Falsch)
@@ -266,7 +266,7 @@ klasse AbstractMemoryTests:
 
     def test_gc(self):
         fuer tp in self._types:
-            wenn not isinstance(tp, type):
+            wenn nicht isinstance(tp, type):
                 # If tp is a factory rather than a plain type, skip
                 continue
 
@@ -317,7 +317,7 @@ klasse AbstractMemoryTests:
         mit check:
             mit m:
                 pass
-        # str() and repr() still function
+        # str() und repr() still function
         self.assertIn("released memory", str(m))
         self.assertIn("released memory", repr(m))
         self.assertEqual(m, m)
@@ -361,7 +361,7 @@ klasse AbstractMemoryTests:
         self.assertRaises(TypeError, self._view, {})
 
     def test_hash(self):
-        # Memoryviews of readonly (hashable) types are hashable, and they
+        # Memoryviews of readonly (hashable) types are hashable, und they
         # hash als hash(obj.tobytes()).
         tp = self.ro_type
         wenn tp is Nichts:
@@ -485,7 +485,7 @@ klasse BaseMemoryviewTests:
         super().test_count()
         fuer tp in self._types:
             b = tp((b'a' * 5) + (b'c' * 3))
-            m = self._view(b)  # should not be sliced
+            m = self._view(b)  # should nicht be sliced
             self.assertEqual(len(b), len(m))
             mit self.subTest('count', buffer=b):
                 self.assertEqual(m.count(ord('a')), 5)

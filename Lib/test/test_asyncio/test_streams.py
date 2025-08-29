@@ -259,7 +259,7 @@ klasse StreamTests(test_utils.TestCase):
             ValueError, self.loop.run_until_complete, stream.readline())
         # No b'\n' at the end. The 'limit' is set to 3. So before
         # waiting fuer the new data in buffer, 'readline' will consume
-        # the entire buffer, and since the length of the consumed data
+        # the entire buffer, und since the length of the consumed data
         # is more than 3, it will raise a ValueError. The buffer is
         # expected to be empty now.
         self.assertEqual(b'', stream._buffer)
@@ -293,7 +293,7 @@ klasse StreamTests(test_utils.TestCase):
 
         self.assertRaises(
             ValueError, self.loop.run_until_complete, stream.readline())
-        # The buffer had just one line of data, and after raising
+        # The buffer had just one line of data, und after raising
         # a ValueError it should be empty.
         self.assertEqual(b'', stream._buffer)
 
@@ -496,7 +496,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_readuntil_multi_separator_negative_offset(self):
         # If the buffer is big enough fuer the smallest separator (but does
-        # not contain it) but too small fuer the largest, `offset` must not
+        # nicht contain it) but too small fuer the largest, `offset` must not
         # become negative.
         stream = asyncio.StreamReader(loop=self.loop)
         stream.feed_data(b'data')
@@ -517,7 +517,7 @@ klasse StreamTests(test_utils.TestCase):
         self.assertEqual(b'', stream._buffer)
 
     def test_readexactly_zero_or_less(self):
-        # Read exact number of bytes (zero or less).
+        # Read exact number of bytes (zero oder less).
         stream = asyncio.StreamReader(loop=self.loop)
         stream.feed_data(self.DATA)
 
@@ -652,7 +652,7 @@ klasse StreamTests(test_utils.TestCase):
                 return addr
 
             def stop(self):
-                wenn self.server is not Nichts:
+                wenn self.server is nicht Nichts:
                     self.server.close()
                     self.loop.run_until_complete(self.server.wait_closed())
                     self.server = Nichts
@@ -718,7 +718,7 @@ klasse StreamTests(test_utils.TestCase):
                 self.server = self.loop.run_until_complete(start)
 
             def stop(self):
-                wenn self.server is not Nichts:
+                wenn self.server is nicht Nichts:
                     self.server.close()
                     self.loop.run_until_complete(self.server.wait_closed())
                     self.server = Nichts
@@ -772,7 +772,7 @@ klasse StreamTests(test_utils.TestCase):
                 assert client_writer.get_extra_info('sslcontext') is Nichts
                 await client_writer.start_tls(
                     test_utils.simple_server_sslcontext())
-                assert client_writer.get_extra_info('sslcontext') is not Nichts
+                assert client_writer.get_extra_info('sslcontext') is nicht Nichts
                 data2 = await client_reader.readline()
                 client_writer.write(data2)
                 await client_writer.drain()
@@ -787,7 +787,7 @@ klasse StreamTests(test_utils.TestCase):
                 return sock.getsockname()
 
             def stop(self):
-                wenn self.server is not Nichts:
+                wenn self.server is nicht Nichts:
                     self.server.close()
                     self.loop.run_until_complete(self.server.wait_closed())
                     self.server = Nichts
@@ -799,7 +799,7 @@ klasse StreamTests(test_utils.TestCase):
             msgback1 = await reader.readline()
             assert writer.get_extra_info('sslcontext') is Nichts
             await writer.start_tls(test_utils.simple_client_sslcontext())
-            assert writer.get_extra_info('sslcontext') is not Nichts
+            assert writer.get_extra_info('sslcontext') is nicht Nichts
             writer.write(b"hello world 2!\n")
             await writer.drain()
             msgback2 = await reader.readline()
@@ -825,7 +825,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_streamreader_constructor_use_running_loop(self):
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
-        # retrieves the current loop wenn the loop parameter is not set
+        # retrieves the current loop wenn the loop parameter is nicht set
         async def test():
             return asyncio.StreamReader()
 
@@ -834,7 +834,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_streamreader_constructor_use_global_loop(self):
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
-        # retrieves the current loop wenn the loop parameter is not set
+        # retrieves the current loop wenn the loop parameter is nicht set
         # Deprecated in 3.10, undeprecated in 3.12
         self.addCleanup(asyncio.set_event_loop, Nichts)
         asyncio.set_event_loop(self.loop)
@@ -849,7 +849,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_streamreaderprotocol_constructor_use_running_loop(self):
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
-        # retrieves the current loop wenn the loop parameter is not set
+        # retrieves the current loop wenn the loop parameter is nicht set
         reader = mock.Mock()
         async def test():
             return asyncio.StreamReaderProtocol(reader)
@@ -858,7 +858,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_streamreaderprotocol_constructor_use_global_loop(self):
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
-        # retrieves the current loop wenn the loop parameter is not set
+        # retrieves the current loop wenn the loop parameter is nicht set
         # Deprecated in 3.10, undeprecated in 3.12
         self.addCleanup(asyncio.set_event_loop, Nichts)
         asyncio.set_event_loop(self.loop)
@@ -888,7 +888,7 @@ klasse StreamTests(test_utils.TestCase):
     def test_drain_raises(self):
         # See http://bugs.python.org/issue25441
 
-        # This test should not use asyncio fuer the mock server; the
+        # This test should nicht use asyncio fuer the mock server; the
         # whole point of the test is to test fuer a bug in drain()
         # where it never gives up the event loop but the socket is
         # closed on the  server side.
@@ -912,13 +912,13 @@ klasse StreamTests(test_utils.TestCase):
                 writer.write(b"foo\n")
                 await writer.drain()
 
-        # Start the server thread and wait fuer it to be listening.
+        # Start the server thread und wait fuer it to be listening.
         thread = threading.Thread(target=server)
         thread.daemon = Wahr
         thread.start()
         addr = q.get()
 
-        # Should not be stuck in an infinite loop.
+        # Should nicht be stuck in an infinite loop.
         mit self.assertRaises((ConnectionResetError, ConnectionAbortedError,
                                 BrokenPipeError)):
             self.loop.run_until_complete(client(*addr))
@@ -1114,7 +1114,7 @@ klasse StreamTests(test_utils.TestCase):
             # Make "loop is closed" occur first before "del wr" fuer this test.
             self.loop.stop()
             wr.close()
-            while not self.loop.is_closed():
+            while nicht self.loop.is_closed():
                 await asyncio.sleep(0.0)
 
             mit self.assertWarns(ResourceWarning) als cm:

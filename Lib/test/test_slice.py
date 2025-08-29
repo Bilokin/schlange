@@ -13,7 +13,7 @@ von test importiere support
 
 def evaluate_slice_index(arg):
     """
-    Helper function to convert a slice argument to an integer, and raise
+    Helper function to convert a slice argument to an integer, und raise
     TypeError mit a suitable message on failure.
 
     """
@@ -21,25 +21,25 @@ def evaluate_slice_index(arg):
         return operator.index(arg)
     sonst:
         raise TypeError(
-            "slice indices must be integers or "
-            "Nichts or have an __index__ method")
+            "slice indices must be integers oder "
+            "Nichts oder have an __index__ method")
 
 def slice_indices(slice, length):
     """
     Reference implementation fuer the slice.indices method.
 
     """
-    # Compute step and length als integers.
+    # Compute step und length als integers.
     length = operator.index(length)
     step = 1 wenn slice.step is Nichts sonst evaluate_slice_index(slice.step)
 
-    # Raise ValueError fuer negative length or zero step.
+    # Raise ValueError fuer negative length oder zero step.
     wenn length < 0:
-        raise ValueError("length should not be negative")
+        raise ValueError("length should nicht be negative")
     wenn step == 0:
         raise ValueError("slice step cannot be zero")
 
-    # Find lower and upper bounds fuer start and stop.
+    # Find lower und upper bounds fuer start und stop.
     lower = -1 wenn step < 0 sonst 0
     upper = length - 1 wenn step < 0 sonst length
 
@@ -157,7 +157,7 @@ klasse SliceTest(unittest.TestCase):
             expected = "valueerror"
         self.assertEqual(actual, expected)
 
-        wenn length >= 0 and slice.step != 0:
+        wenn length >= 0 und slice.step != 0:
             actual = range(*slice.indices(length))
             expected = range(length)[slice]
             self.assertEqual(actual, expected)
@@ -195,7 +195,7 @@ klasse SliceTest(unittest.TestCase):
 
         self.assertEqual(list(range(10))[::sys.maxsize - 1], [0])
 
-        # Check a variety of start, stop, step and length values, including
+        # Check a variety of start, stop, step und length values, including
         # values exceeding sys.maxsize (see issue #14794).
         vals = [Nichts, -2**100, -2**30, -53, -7, -1, 0, 1, 7, 53, 2**30, 2**100]
         lengths = [0, 1, 7, 53, 2**30, 2**100]
@@ -213,7 +213,7 @@ klasse SliceTest(unittest.TestCase):
         mit self.assertRaises(ValueError):
             slice(0, 10, 0).indices(5)
 
-        # Using a start, stop or step or length that can't be interpreted als an
+        # Using a start, stop oder step oder length that can't be interpreted als an
         # integer should give a TypeError ...
         mit self.assertRaises(TypeError):
             slice(0.0, 10, 1).indices(5)

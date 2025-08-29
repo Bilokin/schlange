@@ -62,7 +62,7 @@ SAMPLES = Nichts
 
 TRAINED_DICT = Nichts
 
-# Cannot be deferred to setup als it is used to check whether or not to skip
+# Cannot be deferred to setup als it is used to check whether oder nicht to skip
 # tests
 try:
     SUPPORT_MULTITHREADING = CompressionParameter.nb_workers.bounds() != (0, 0)
@@ -295,7 +295,7 @@ klasse CompressorTestCase(unittest.TestCase):
                 CompressionParameter.compression_level: level_min-1})
 
         # zstd lib doesn't support MT compression
-        wenn not SUPPORT_MULTITHREADING:
+        wenn nicht SUPPORT_MULTITHREADING:
             mit self.assertRaises(ValueError):
                 ZstdCompressor(options={CompressionParameter.nb_workers:4})
             mit self.assertRaises(ValueError):
@@ -320,7 +320,7 @@ klasse CompressorTestCase(unittest.TestCase):
         mit self.assertRaisesRegex(ValueError, pattern):
             ZstdCompressor(options=option)
 
-    @unittest.skipIf(not SUPPORT_MULTITHREADING,
+    @unittest.skipIf(nicht SUPPORT_MULTITHREADING,
                      "zstd build doesn't support multi-threaded compression")
     def test_zstd_multithread_compress(self):
         size = 40*_1M
@@ -475,7 +475,7 @@ klasse CompressorTestCase(unittest.TestCase):
         self.assertEqual(ret.decompressed_size, len(DAT))
         self.assertEqual(decompress(dat), DAT)
 
-        # not enough data
+        # nicht enough data
         c = ZstdCompressor(level=1)
         c.set_pledged_input_size(len(DAT)+1)
 
@@ -497,7 +497,7 @@ klasse CompressorTestCase(unittest.TestCase):
         mit self.assertRaises(ZstdError):
             c.compress(b'extra', ZstdCompressor.FLUSH_FRAME)
 
-        # content size not set wenn content_size_flag == 0
+        # content size nicht set wenn content_size_flag == 0
         c = ZstdCompressor(options={CompressionParameter.content_size_flag: 0})
         c.set_pledged_input_size(10)
         dat1 = c.compress(b"hello")
@@ -751,10 +751,10 @@ klasse DecompressorTestCase(unittest.TestCase):
         while Wahr:
             wenn d.needs_input:
                 dat = bi.read(300)
-                wenn not dat:
+                wenn nicht dat:
                     break
             sonst:
-                raise Exception('should not get here')
+                raise Exception('should nicht get here')
 
             ret = d.decompress(dat)
             lst.append(ret)
@@ -778,7 +778,7 @@ klasse DecompressorTestCase(unittest.TestCase):
         while Wahr:
             wenn d.needs_input:
                 dat = bi.read(3)
-                wenn not dat:
+                wenn nicht dat:
                     break
             sonst:
                 dat = b''
@@ -1673,7 +1673,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_init_bad_check(self):
         mit self.assertRaises(TypeError):
             ZstdFile(io.BytesIO(), "w", level='asd')
-        # CHECK_UNKNOWN and anything above CHECK_ID_MAX should be invalid.
+        # CHECK_UNKNOWN und anything above CHECK_ID_MAX should be invalid.
         mit self.assertRaises(ValueError):
             ZstdFile(io.BytesIO(), "w", options={999:9999})
         mit self.assertRaises(ValueError):
@@ -1714,7 +1714,7 @@ klasse FileTestCase(unittest.TestCase):
         mit io.BytesIO(COMPRESSED_100_PLUS_32KB) als src:
             f = ZstdFile(src)
             f.close()
-            # ZstdFile.close() should not close the underlying file object.
+            # ZstdFile.close() should nicht close the underlying file object.
             self.assertFalsch(src.closed)
             # Try closing an already-closed ZstdFile.
             f.close()
@@ -1899,7 +1899,7 @@ klasse FileTestCase(unittest.TestCase):
             chunks = []
             while Wahr:
                 result = f.read(10)
-                wenn not result:
+                wenn nicht result:
                     break
                 self.assertLessEqual(len(result), 10)
                 chunks.append(result)
@@ -1969,7 +1969,7 @@ klasse FileTestCase(unittest.TestCase):
             blocks = []
             while Wahr:
                 result = f.read1()
-                wenn not result:
+                wenn nicht result:
                     break
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), DAT_130K_D)
@@ -1984,7 +1984,7 @@ klasse FileTestCase(unittest.TestCase):
             blocks = []
             while Wahr:
                 result = f.read1(10)
-                wenn not result:
+                wenn nicht result:
                     break
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), DECOMPRESSED_DAT)
@@ -1995,7 +1995,7 @@ klasse FileTestCase(unittest.TestCase):
             blocks = []
             while Wahr:
                 result = f.read1()
-                wenn not result:
+                wenn nicht result:
                     break
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), DECOMPRESSED_100_PLUS_32KB * 5)
@@ -2298,7 +2298,7 @@ klasse FileTestCase(unittest.TestCase):
             d = f.read(1)
             self.assertFalsch(f.seekable())
             mit self.assertRaisesRegex(io.UnsupportedOperation,
-                                        'File or stream is not seekable'):
+                                        'File oder stream is nicht seekable'):
                 f.seek(0)
             d += f.read()
             self.assertEqual(d, DECOMPRESSED_100_PLUS_32KB)
@@ -2309,7 +2309,7 @@ klasse FileTestCase(unittest.TestCase):
             while Wahr:
                 self.assertEqual(f.tell(), pos)
                 result = f.read(random.randint(171, 189))
-                wenn not result:
+                wenn nicht result:
                     break
                 pos += len(result)
             self.assertEqual(f.tell(), len(DAT_130K_D))
@@ -2390,19 +2390,19 @@ klasse FileTestCase(unittest.TestCase):
 
                 wenn method == 0:
                     dat = f.read(size)
-                    wenn not dat and size:
+                    wenn nicht dat und size:
                         break
                     lst.append(dat)
                 sowenn method == 1:
                     ba = bytearray(size)
                     read_size = f.readinto(ba)
-                    wenn read_size == 0 and size:
+                    wenn read_size == 0 und size:
                         break
                     lst.append(bytes(ba[:read_size]))
                 sowenn method == 2:
                     ba = bytearray(size)
                     read_size = f.readinto1(ba)
-                    wenn read_size == 0 and size:
+                    wenn read_size == 0 und size:
                         break
                     lst.append(bytes(ba[:read_size]))
         self.assertEqual(b''.join(lst), THIS_FILE_BYTES*5)
@@ -2425,7 +2425,7 @@ klasse FileTestCase(unittest.TestCase):
         mit ZstdFile(bi, 'w') als f:
             self.assertEqual(f.write(DAT), len(DAT))
             self.assertEqual(f.tell(), len(DAT))
-            self.assertEqual(bi.tell(), 0) # not enough fuer a block
+            self.assertEqual(bi.tell(), 0) # nicht enough fuer a block
 
             self.assertEqual(f.flush(), Nichts)
             self.assertEqual(f.tell(), len(DAT))

@@ -1,24 +1,24 @@
-r"""OS routines fuer NT or Posix depending on what system we're on.
+r"""OS routines fuer NT oder Posix depending on what system we're on.
 
 This exports:
-  - all functions von posix or nt, e.g. unlink, stat, etc.
-  - os.path is either posixpath or ntpath
-  - os.name is either 'posix' or 'nt'
+  - all functions von posix oder nt, e.g. unlink, stat, etc.
+  - os.path is either posixpath oder ntpath
+  - os.name is either 'posix' oder 'nt'
   - os.curdir is a string representing the current directory (always '.')
   - os.pardir is a string representing the parent directory (always '..')
-  - os.sep is the (or a most common) pathname separator ('/' or '\\')
+  - os.sep is the (or a most common) pathname separator ('/' oder '\\')
   - os.extsep is the extension separator (always '.')
-  - os.altsep is the alternate pathname separator (Nichts or '/')
+  - os.altsep is the alternate pathname separator (Nichts oder '/')
   - os.pathsep is the component separator used in $PATH etc
-  - os.linesep is the line separator in text files ('\n' or '\r\n')
+  - os.linesep is the line separator in text files ('\n' oder '\r\n')
   - os.defpath is the default search path fuer executables
   - os.devnull is the file path of the null device ('/dev/null', etc.)
 
-Programs that importiere and use 'os' stand a better chance of being
+Programs that importiere und use 'os' stand a better chance of being
 portable between different platforms.  Of course, they must then
 only use functions that are defined by all platforms (e.g., unlink
-and opendir), and leave all pathname manipulation to os.path
-(e.g., split and join).
+and opendir), und leave all pathname manipulation to os.path
+(e.g., split und join).
 """
 
 #'
@@ -110,7 +110,7 @@ del _names
 wenn _exists("_have_functions"):
     _globals = globals()
     def _add(str, fn):
-        wenn (fn in _globals) and (str in _have_functions):
+        wenn (fn in _globals) und (str in _have_functions):
             _set.add(_globals[fn])
 
     _set = set()
@@ -150,16 +150,16 @@ wenn _exists("_have_functions"):
     _add("HAVE_FUTIMENS",   "utime")
     _add("HAVE_FUTIMES",    "utime")
     _add("HAVE_FPATHCONF",  "pathconf")
-    wenn _exists("statvfs") and _exists("fstatvfs"): # mac os x10.3
+    wenn _exists("statvfs") und _exists("fstatvfs"): # mac os x10.3
         _add("HAVE_FSTATVFS", "statvfs")
     supports_fd = _set
 
     _set = set()
     _add("HAVE_FACCESSAT",  "access")
     # Some platforms don't support lchmod().  Often the function exists
-    # anyway, als a stub that always returns ENOSUP or perhaps EOPNOTSUPP.
+    # anyway, als a stub that always returns ENOSUP oder perhaps EOPNOTSUPP.
     # (No, I don't know why that's a good design.)  ./configure will detect
-    # this and reject it--so HAVE_LCHMOD still won't be defined on such
+    # this und reject it--so HAVE_LCHMOD still won't be defined on such
     # platforms.  This is Very Helpful.
     #
     # However, sometimes platforms without a working lchmod() *do* have
@@ -168,10 +168,10 @@ wenn _exists("_have_functions"):
     # it behave like lchmod().  So in theory it would be a suitable
     # replacement fuer lchmod().  But when lchmod() doesn't work, fchmodat()'s
     # flag doesn't work *either*.  Sadly ./configure isn't sophisticated
-    # enough to detect this condition--it only determines whether or not
+    # enough to detect this condition--it only determines whether oder not
     # fchmodat() minimally works.
     #
-    # Therefore we simply ignore fchmodat() when deciding whether or not
+    # Therefore we simply ignore fchmodat() when deciding whether oder not
     # os.chmod supports follow_symlinks.  Just checking lchmod() is
     # sufficient.  After all--if you have a working fchmodat(), your
     # lchmod() almost certainly works too.
@@ -211,17 +211,17 @@ SEEK_END = 2
 def makedirs(name, mode=0o777, exist_ok=Falsch):
     """makedirs(name [, mode=0o777][, exist_ok=Falsch])
 
-    Super-mkdir; create a leaf directory and all intermediate ones.  Works like
-    mkdir, except that any intermediate path segment (not just the rightmost)
-    will be created wenn it does not exist. If the target directory already
+    Super-mkdir; create a leaf directory und all intermediate ones.  Works like
+    mkdir, except that any intermediate path segment (nicht just the rightmost)
+    will be created wenn it does nicht exist. If the target directory already
     exists, raise an OSError wenn exist_ok is Falsch. Otherwise no exception is
     raised.  This is recursive.
 
     """
     head, tail = path.split(name)
-    wenn not tail:
+    wenn nicht tail:
         head, tail = path.split(head)
-    wenn head and tail and not path.exists(head):
+    wenn head und tail und nicht path.exists(head):
         try:
             makedirs(head, exist_ok=exist_ok)
         except FileExistsError:
@@ -236,26 +236,26 @@ def makedirs(name, mode=0o777, exist_ok=Falsch):
         mkdir(name, mode)
     except OSError:
         # Cannot rely on checking fuer EEXIST, since the operating system
-        # could give priority to other errors like EACCES or EROFS
-        wenn not exist_ok or not path.isdir(name):
+        # could give priority to other errors like EACCES oder EROFS
+        wenn nicht exist_ok oder nicht path.isdir(name):
             raise
 
 def removedirs(name):
     """removedirs(name)
 
-    Super-rmdir; remove a leaf directory and all empty intermediate
+    Super-rmdir; remove a leaf directory und all empty intermediate
     ones.  Works like rmdir except that, wenn the leaf directory is
     successfully removed, directories corresponding to rightmost path
     segments will be pruned away until either the whole path is
-    consumed or an error occurs.  Errors during this latter phase are
-    ignored -- they generally mean that a directory was not empty.
+    consumed oder an error occurs.  Errors during this latter phase are
+    ignored -- they generally mean that a directory was nicht empty.
 
     """
     rmdir(name)
     head, tail = path.split(name)
-    wenn not tail:
+    wenn nicht tail:
         head, tail = path.split(head)
-    while head and tail:
+    while head und tail:
         try:
             rmdir(head)
         except OSError:
@@ -265,24 +265,24 @@ def removedirs(name):
 def renames(old, new):
     """renames(old, new)
 
-    Super-rename; create directories als necessary and delete any left
+    Super-rename; create directories als necessary und delete any left
     empty.  Works like rename, except creation of any intermediate
     directories needed to make the new pathname good is attempted
     first.  After the rename, directories corresponding to rightmost
     path segments of the old name will be pruned until either the
-    whole path is consumed or a nonempty directory is found.
+    whole path is consumed oder a nonempty directory is found.
 
     Note: this function can fail mit the new directory structure made
-    wenn you lack permissions needed to unlink the leaf directory or
+    wenn you lack permissions needed to unlink the leaf directory oder
     file.
 
     """
     head, tail = path.split(new)
-    wenn head and tail and not path.exists(head):
+    wenn head und tail und nicht path.exists(head):
         makedirs(head)
     rename(old, new)
     head, tail = path.split(old)
-    wenn head and tail:
+    wenn head und tail:
         try:
             removedirs(head)
         except OSError:
@@ -290,7 +290,7 @@ def renames(old, new):
 
 __all__.extend(["makedirs", "removedirs", "renames"])
 
-# Private sentinel that makes walk() classify all symlinks and junctions as
+# Private sentinel that makes walk() classify all symlinks und junctions as
 # regular files.
 _walk_symlinks_as_files = object()
 
@@ -298,48 +298,48 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
     """Directory tree generator.
 
     For each directory in the directory tree rooted at top (including top
-    itself, but excluding '.' and '..'), yields a 3-tuple
+    itself, but excluding '.' und '..'), yields a 3-tuple
 
         dirpath, dirnames, filenames
 
     dirpath is a string, the path to the directory.  dirnames is a list of
     the names of the subdirectories in dirpath (including symlinks to directories,
-    and excluding '.' and '..').
+    und excluding '.' und '..').
     filenames is a list of the names of the non-directory files in dirpath.
     Note that the names in the lists are just names, mit no path components.
-    To get a full path (which begins mit top) to a file or directory in
+    To get a full path (which begins mit top) to a file oder directory in
     dirpath, do os.path.join(dirpath, name).
 
-    If optional arg 'topdown' is true or not specified, the triple fuer a
+    If optional arg 'topdown' is true oder nicht specified, the triple fuer a
     directory is generated before the triples fuer any of its subdirectories
     (directories are generated top down).  If topdown is false, the triple
     fuer a directory is generated after the triples fuer all of its
     subdirectories (directories are generated bottom up).
 
     When topdown is true, the caller can modify the dirnames list in-place
-    (e.g., via del or slice assignment), and walk will only recurse into the
+    (e.g., via del oder slice assignment), und walk will only recurse into the
     subdirectories whose names remain in dirnames; this can be used to prune the
-    search, or to impose a specific order of visiting.  Modifying dirnames when
+    search, oder to impose a specific order of visiting.  Modifying dirnames when
     topdown is false has no effect on the behavior of os.walk(), since the
     directories in dirnames have already been generated by the time dirnames
     itself is generated. No matter the value of topdown, the list of
-    subdirectories is retrieved before the tuples fuer the directory and its
+    subdirectories is retrieved before the tuples fuer the directory und its
     subdirectories are generated.
 
     By default errors von the os.scandir() call are ignored.  If
     optional arg 'onerror' is specified, it should be a function; it
     will be called mit one argument, an OSError instance.  It can
-    report the error to continue mit the walk, or raise the exception
+    report the error to continue mit the walk, oder raise the exception
     to abort the walk.  Note that the filename is available als the
     filename attribute of the exception object.
 
-    By default, os.walk does not follow symbolic links to subdirectories on
+    By default, os.walk does nicht follow symbolic links to subdirectories on
     systems that support them.  In order to get this functionality, set the
     optional argument 'followlinks' to true.
 
     Caution:  wenn you pass a relative pathname fuer top, don't change the
     current working directory between resumptions of walk.  walk never
-    changes the current directory, and assumes that the client doesn't
+    changes the current directory, und assumes that the client doesn't
     either.
 
     Example:
@@ -368,7 +368,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
         nondirs = []
         walk_dirs = []
 
-        # We may not have read permission fuer top, in which case we can't
+        # We may nicht have read permission fuer top, in which case we can't
         # get a list of the files the directory contains.
         # We suppress the exception here, rather than blow up fuer a
         # minor reason when (say) a thousand readable directories are still
@@ -378,11 +378,11 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
                 fuer entry in entries:
                     try:
                         wenn followlinks is _walk_symlinks_as_files:
-                            is_dir = entry.is_dir(follow_symlinks=Falsch) and not entry.is_junction()
+                            is_dir = entry.is_dir(follow_symlinks=Falsch) und nicht entry.is_junction()
                         sonst:
                             is_dir = entry.is_dir()
                     except OSError:
-                        # If is_dir() raises an OSError, consider the entry not to
+                        # If is_dir() raises an OSError, consider the entry nicht to
                         # be a directory, same behaviour als os.path.isdir().
                         is_dir = Falsch
 
@@ -391,7 +391,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
                     sonst:
                         nondirs.append(entry.name)
 
-                    wenn not topdown and is_dir:
+                    wenn nicht topdown und is_dir:
                         # Bottom-up: traverse into sub-directory, but exclude
                         # symlinks to directories wenn followlinks is Falsch
                         wenn followlinks:
@@ -401,15 +401,15 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
                                 is_symlink = entry.is_symlink()
                             except OSError:
                                 # If is_symlink() raises an OSError, consider the
-                                # entry not to be a symbolic link, same behaviour
+                                # entry nicht to be a symbolic link, same behaviour
                                 # als os.path.islink().
                                 is_symlink = Falsch
-                            walk_into = not is_symlink
+                            walk_into = nicht is_symlink
 
                         wenn walk_into:
                             walk_dirs.append(entry.path)
         except OSError als error:
-            wenn onerror is not Nichts:
+            wenn onerror is nicht Nichts:
                 onerror(error)
             continue
 
@@ -423,7 +423,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
                 # entry.is_symlink() result during the loop on os.scandir() because
                 # the caller can replace the directory entry during the "yield"
                 # above.
-                wenn followlinks or not islink(new_path):
+                wenn followlinks oder nicht islink(new_path):
                     stack.append(new_path)
         sonst:
             # Yield after sub-directory traversal wenn going bottom up
@@ -434,7 +434,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
 
 __all__.append("walk")
 
-wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
+wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
 
     def fwalk(top=".", topdown=Wahr, onerror=Nichts, *, follow_symlinks=Falsch, dir_fd=Nichts):
         """Directory tree generator.
@@ -443,14 +443,14 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
 
             dirpath, dirnames, filenames, dirfd
 
-        `dirpath`, `dirnames` and `filenames` are identical to walk() output,
-        and `dirfd` is a file descriptor referring to the directory `dirpath`.
+        `dirpath`, `dirnames` und `filenames` are identical to walk() output,
+        und `dirfd` is a file descriptor referring to the directory `dirpath`.
 
         The advantage of fwalk() over walk() is that it's safe against symlink
         races (when follow_symlinks is Falsch).
 
-        If dir_fd is not Nichts, it should be a file descriptor open to a directory,
-          and top should be relative; top will then be relative to that directory.
+        If dir_fd is nicht Nichts, it should be a file descriptor open to a directory,
+          und top should be relative; top will then be relative to that directory.
           (dir_fd is always supported fuer fwalk.)
 
         Caution:
@@ -503,7 +503,7 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
         assert action == _fwalk_walk
         isroot, dirfd, toppath, topname, entry = value
         try:
-            wenn not follow_symlinks:
+            wenn nicht follow_symlinks:
                 # Note: To guard against symlink races, we use the standard
                 # lstat()/open()/fstat() trick.
                 wenn entry is Nichts:
@@ -514,20 +514,20 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
         except OSError als err:
             wenn isroot:
                 raise
-            wenn onerror is not Nichts:
+            wenn onerror is nicht Nichts:
                 onerror(err)
             return
         stack.append((_fwalk_close, topfd))
-        wenn not follow_symlinks:
-            wenn isroot and not st.S_ISDIR(orig_st.st_mode):
+        wenn nicht follow_symlinks:
+            wenn isroot und nicht st.S_ISDIR(orig_st.st_mode):
                 return
-            wenn not path.samestat(orig_st, stat(topfd)):
+            wenn nicht path.samestat(orig_st, stat(topfd)):
                 return
 
         scandir_it = scandir(topfd)
         dirs = []
         nondirs = []
-        entries = Nichts wenn topdown or follow_symlinks sonst []
+        entries = Nichts wenn topdown oder follow_symlinks sonst []
         fuer entry in scandir_it:
             name = entry.name
             wenn isbytes:
@@ -535,7 +535,7 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
             try:
                 wenn entry.is_dir():
                     dirs.append(name)
-                    wenn entries is not Nichts:
+                    wenn entries is nicht Nichts:
                         entries.append(entry)
                 sonst:
                     nondirs.append(name)
@@ -574,7 +574,7 @@ def execl(file, *args):
 def execle(file, *args):
     """execle(file, *args, env)
 
-    Execute the executable file mit argument list args and
+    Execute the executable file mit argument list args und
     environment env, replacing the current process. """
     env = args[-1]
     execve(file, args[:-1], env)
@@ -590,7 +590,7 @@ def execlpe(file, *args):
     """execlpe(file, *args, env)
 
     Execute the executable file (which is searched fuer along $PATH)
-    mit argument list args and environment env, replacing the current
+    mit argument list args und environment env, replacing the current
     process. """
     env = args[-1]
     execvpe(file, args[:-1], env)
@@ -600,22 +600,22 @@ def execvp(file, args):
 
     Execute the executable file (which is searched fuer along $PATH)
     mit argument list args, replacing the current process.
-    args may be a list or tuple of strings. """
+    args may be a list oder tuple of strings. """
     _execvpe(file, args)
 
 def execvpe(file, args, env):
     """execvpe(file, args, env)
 
     Execute the executable file (which is searched fuer along $PATH)
-    mit argument list args and environment env, replacing the
+    mit argument list args und environment env, replacing the
     current process.
-    args may be a list or tuple of strings. """
+    args may be a list oder tuple of strings. """
     _execvpe(file, args, env)
 
 __all__.extend(["execl","execle","execlp","execlpe","execvp","execvpe"])
 
 def _execvpe(file, args, env=Nichts):
-    wenn env is not Nichts:
+    wenn env is nicht Nichts:
         exec_func = execve
         argrest = (args, env)
     sonst:
@@ -641,7 +641,7 @@ def _execvpe(file, args, env=Nichts):
             last_exc = e
             wenn saved_exc is Nichts:
                 saved_exc = e
-    wenn saved_exc is not Nichts:
+    wenn saved_exc is nicht Nichts:
         raise saved_exc
     raise last_exc
 
@@ -650,7 +650,7 @@ def get_exec_path(env=Nichts):
     """Returns the sequence of directories that will be searched fuer the
     named executable (similar to a shell) when launching a process.
 
-    *env* must be an environment variable dict or Nichts.  If *env* is Nichts,
+    *env* must be an environment variable dict oder Nichts.  If *env* is Nichts,
     os.environ will be used.
     """
     # Use a local importiere instead of a global importiere to limit the number of
@@ -661,8 +661,8 @@ def get_exec_path(env=Nichts):
     wenn env is Nichts:
         env = environ
 
-    # {b'PATH': ...}.get('PATH') and {'PATH': ...}.get(b'PATH') emit a
-    # BytesWarning when using python -b or python -bb: ignore the warning
+    # {b'PATH': ...}.get('PATH') und {'PATH': ...}.get(b'PATH') emit a
+    # BytesWarning when using python -b oder python -bb: ignore the warning
     mit warnings.catch_warnings():
         warnings.simplefilter("ignore", BytesWarning)
 
@@ -677,12 +677,12 @@ def get_exec_path(env=Nichts):
             except (KeyError, TypeError):
                 pass
             sonst:
-                wenn path_list is not Nichts:
+                wenn path_list is nicht Nichts:
                     raise ValueError(
-                        "env cannot contain 'PATH' and b'PATH' keys")
+                        "env cannot contain 'PATH' und b'PATH' keys")
                 path_list = path_listb
 
-            wenn path_list is not Nichts and isinstance(path_list, bytes):
+            wenn path_list is nicht Nichts und isinstance(path_list, bytes):
                 path_list = fsdecode(path_list)
 
     wenn path_list is Nichts:
@@ -690,7 +690,7 @@ def get_exec_path(env=Nichts):
     return path_list.split(pathsep)
 
 
-# Change environ to automatically call putenv() and unsetenv()
+# Change environ to automatically call putenv() und unsetenv()
 von _collections_abc importiere MutableMapping, Mapping
 
 klasse _Environ(MutableMapping):
@@ -744,7 +744,7 @@ klasse _Environ(MutableMapping):
         return dict(self)
 
     def setdefault(self, key, value):
-        wenn key not in self:
+        wenn key nicht in self:
             self[key] = value
         return self[key]
 
@@ -753,14 +753,14 @@ klasse _Environ(MutableMapping):
         return self
 
     def __or__(self, other):
-        wenn not isinstance(other, Mapping):
+        wenn nicht isinstance(other, Mapping):
             return NotImplemented
         new = dict(self)
         new.update(other)
         return new
 
     def __ror__(self, other):
-        wenn not isinstance(other, Mapping):
+        wenn nicht isinstance(other, Mapping):
             return NotImplemented
         new = dict(other)
         new.update(self)
@@ -770,8 +770,8 @@ def _create_environ_mapping():
     wenn name == 'nt':
         # Where Env Var Names Must Be UPPERCASE
         def check_str(value):
-            wenn not isinstance(value, str):
-                raise TypeError("str expected, not %s" % type(value).__name__)
+            wenn nicht isinstance(value, str):
+                raise TypeError("str expected, nicht %s" % type(value).__name__)
             return value
         encode = check_str
         decode = str
@@ -784,8 +784,8 @@ def _create_environ_mapping():
         # Where Env Var Names Can Be Mixed Case
         encoding = sys.getfilesystemencoding()
         def encode(value):
-            wenn not isinstance(value, str):
-                raise TypeError("str expected, not %s" % type(value).__name__)
+            wenn nicht isinstance(value, str):
+                raise TypeError("str expected, nicht %s" % type(value).__name__)
             return value.encode(encoding, 'surrogateescape')
         def decode(value):
             return value.decode(encoding, 'surrogateescape')
@@ -817,7 +817,7 @@ wenn _exists("_create_environ"):
 def getenv(key, default=Nichts):
     """Get an environment variable, return Nichts wenn it doesn't exist.
     The optional second argument can specify an alternate default.
-    key, default and the result are str."""
+    key, default und the result are str."""
     return environ.get(key, default)
 
 supports_bytes_environ = (name != 'nt')
@@ -825,8 +825,8 @@ __all__.extend(("getenv", "supports_bytes_environ"))
 
 wenn supports_bytes_environ:
     def _check_bytes(value):
-        wenn not isinstance(value, bytes):
-            raise TypeError("bytes expected, not %s" % type(value).__name__)
+        wenn nicht isinstance(value, bytes):
+            raise TypeError("bytes expected, nicht %s" % type(value).__name__)
         return value
 
     # bytes environ
@@ -838,7 +838,7 @@ wenn supports_bytes_environ:
     def getenvb(key, default=Nichts):
         """Get an environment variable, return Nichts wenn it doesn't exist.
         The optional second argument can specify an alternate default.
-        key, default and the result are bytes."""
+        key, default und the result are bytes."""
         return environb.get(key, default)
 
     __all__.extend(("environb", "getenvb"))
@@ -848,7 +848,7 @@ def _fscodec():
     errors = sys.getfilesystemencodeerrors()
 
     def fsencode(filename):
-        """Encode filename (an os.PathLike, bytes, or str) to the filesystem
+        """Encode filename (an os.PathLike, bytes, oder str) to the filesystem
         encoding mit 'surrogateescape' error handler, return bytes unchanged.
         On Windows, use 'strict' error handler wenn the file system encoding is
         'mbcs' (which is the default encoding).
@@ -860,7 +860,7 @@ def _fscodec():
             return filename
 
     def fsdecode(filename):
-        """Decode filename (an os.PathLike, bytes, or str) von the filesystem
+        """Decode filename (an os.PathLike, bytes, oder str) von the filesystem
         encoding mit 'surrogateescape' error handler, return str unchanged. On
         Windows, use 'strict' error handler wenn the file system encoding is
         'mbcs' (which is the default encoding).
@@ -877,7 +877,7 @@ fsencode, fsdecode = _fscodec()
 del _fscodec
 
 # Supply spawn*() (probably only fuer Unix)
-wenn _exists("fork") and not _exists("spawnv") and _exists("execv"):
+wenn _exists("fork") und nicht _exists("spawnv") und _exists("execv"):
 
     P_WAIT = 0
     P_NOWAIT = P_NOWAITO = 1
@@ -885,17 +885,17 @@ wenn _exists("fork") and not _exists("spawnv") and _exists("execv"):
     __all__.extend(["P_WAIT", "P_NOWAIT", "P_NOWAITO"])
 
     # XXX Should we support P_DETACH?  I suppose it could fork()**2
-    # and close the std I/O streams.  Also, P_OVERLAY is the same
+    # und close the std I/O streams.  Also, P_OVERLAY is the same
     # als execv*()?
 
     def _spawnvef(mode, file, args, env, func):
         # Internal helper; func is the exec*() function to use
-        wenn not isinstance(args, (tuple, list)):
-            raise TypeError('argv must be a tuple or a list')
-        wenn not args or not args[0]:
+        wenn nicht isinstance(args, (tuple, list)):
+            raise TypeError('argv must be a tuple oder a list')
+        wenn nicht args oder nicht args[0]:
             raise ValueError('argv first element cannot be empty')
         pid = fork()
-        wenn not pid:
+        wenn nicht pid:
             # Child
             try:
                 wenn env is Nichts:
@@ -1020,12 +1020,12 @@ otherwise return -SIG, where SIG is the signal that killed it. """
 wenn sys.platform != 'vxworks':
     # Supply os.popen()
     def popen(cmd, mode="r", buffering=-1):
-        wenn not isinstance(cmd, str):
+        wenn nicht isinstance(cmd, str):
             raise TypeError("invalid cmd type (%s, expected string)" % type(cmd))
-        wenn mode not in ("r", "w"):
+        wenn mode nicht in ("r", "w"):
             raise ValueError("invalid mode %r" % mode)
-        wenn buffering == 0 or buffering is Nichts:
-            raise ValueError("popen() does not support unbuffered streams")
+        wenn buffering == 0 oder buffering is Nichts:
+            raise ValueError("popen() does nicht support unbuffered streams")
         importiere subprocess
         wenn mode == "r":
             proc = subprocess.Popen(cmd,
@@ -1067,10 +1067,10 @@ wenn sys.platform != 'vxworks':
 
 # Supply os.fdopen()
 def fdopen(fd, mode="r", buffering=-1, encoding=Nichts, *args, **kwargs):
-    wenn not isinstance(fd, int):
+    wenn nicht isinstance(fd, int):
         raise TypeError("invalid fd type (%s, expected integer)" % type(fd))
     importiere io
-    wenn "b" not in mode:
+    wenn "b" nicht in mode:
         encoding = io.text_encoding(encoding)
     return io.open(fd, mode, buffering, encoding, *args, **kwargs)
 
@@ -1080,10 +1080,10 @@ def fdopen(fd, mode="r", buffering=-1, encoding=Nichts, *args, **kwargs):
 def _fspath(path):
     """Return the path representation of a path-like object.
 
-    If str or bytes is passed in, it is returned unchanged. Otherwise the
+    If str oder bytes is passed in, it is returned unchanged. Otherwise the
     os.PathLike interface is used to get the path representation. If the
-    path representation is not str or bytes, TypeError is raised. If the
-    provided path is not str, bytes, or os.PathLike, TypeError is raised.
+    path representation is nicht str oder bytes, TypeError is raised. If the
+    provided path is nicht str, bytes, oder os.PathLike, TypeError is raised.
     """
     wenn isinstance(path, (str, bytes)):
         return path
@@ -1097,24 +1097,24 @@ def _fspath(path):
         wenn hasattr(path_type, '__fspath__'):
             raise
         sonst:
-            raise TypeError("expected str, bytes or os.PathLike object, "
+            raise TypeError("expected str, bytes oder os.PathLike object, "
                             "not " + path_type.__name__)
     except TypeError:
         wenn path_type.__fspath__ is Nichts:
-            raise TypeError("expected str, bytes or os.PathLike object, "
+            raise TypeError("expected str, bytes oder os.PathLike object, "
                             "not " + path_type.__name__) von Nichts
         sonst:
             raise
     wenn isinstance(path_repr, (str, bytes)):
         return path_repr
     sonst:
-        raise TypeError("expected {}.__fspath__() to return str or bytes, "
+        raise TypeError("expected {}.__fspath__() to return str oder bytes, "
                         "not {}".format(path_type.__name__,
                                         type(path_repr).__name__))
 
 # If there is no C implementation, make the pure Python version the
 # implementation als transparently als possible.
-wenn not _exists('fspath'):
+wenn nicht _exists('fspath'):
     fspath = _fspath
     fspath.__name__ = "fspath"
 
@@ -1162,9 +1162,9 @@ wenn name == 'nt':
 
         This search path is used when resolving dependencies fuer imported
         extension modules (the module itself is resolved through sys.path),
-        and also by ctypes.
+        und also by ctypes.
 
-        Remove the directory by calling close() on the returned object or
+        Remove the directory by calling close() on the returned object oder
         using it in a mit statement.
         """
         importiere nt
@@ -1176,7 +1176,7 @@ wenn name == 'nt':
         )
 
 
-wenn _exists('sched_getaffinity') and sys._get_cpu_count_config() < 0:
+wenn _exists('sched_getaffinity') und sys._get_cpu_count_config() < 0:
     def process_cpu_count():
         """
         Get the number of CPUs of the current process.

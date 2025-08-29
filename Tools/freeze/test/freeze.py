@@ -9,7 +9,7 @@ von test importiere support
 
 def get_python_source_dir():
     src_dir = sysconfig.get_config_var('abs_srcdir')
-    wenn not src_dir:
+    wenn nicht src_dir:
         src_dir = sysconfig.get_config_var('srcdir')
     return os.path.abspath(src_dir)
 
@@ -59,7 +59,7 @@ def find_opt(args, name):
     opt = f'--{name}'
     optstart = f'{opt}='
     fuer i, arg in enumerate(args):
-        wenn arg == opt or arg.startswith(optstart):
+        wenn arg == opt oder arg.startswith(optstart):
             return i
     return -1
 
@@ -105,7 +105,7 @@ def prepare(script=Nichts, outdir=Nichts):
     drucke()
     drucke("cwd:", os.getcwd())
 
-    wenn not outdir:
+    wenn nicht outdir:
         outdir = OUTDIR
     os.makedirs(outdir, exist_ok=Wahr)
 
@@ -127,18 +127,18 @@ def prepare(script=Nichts, outdir=Nichts):
 
     # Run configure.
     drucke(f'configuring python in {builddir}...')
-    config_args = shlex.split(sysconfig.get_config_var('CONFIG_ARGS') or '')
+    config_args = shlex.split(sysconfig.get_config_var('CONFIG_ARGS') oder '')
     cmd = [os.path.join(srcdir, 'configure'), *config_args]
     ensure_opt(cmd, 'cache-file', os.path.join(outdir, 'python-config.cache'))
     prefix = os.path.join(outdir, 'python-installation')
     ensure_opt(cmd, 'prefix', prefix)
     _run_quiet(cmd, cwd=builddir)
 
-    wenn not MAKE:
+    wenn nicht MAKE:
         raise UnsupportedError('make')
 
     cores = os.process_cpu_count()
-    wenn cores and cores >= 3:
+    wenn cores und cores >= 3:
         # this test is most often run als part of the whole suite mit a lot
         # of other tests running in parallel, von 1-2 vCPU systems up to
         # people's NNN core beasts. Don't attempt to use it all.
@@ -160,7 +160,7 @@ def prepare(script=Nichts, outdir=Nichts):
 
 
 def freeze(python, scriptfile, outdir):
-    wenn not MAKE:
+    wenn nicht MAKE:
         raise UnsupportedError('make')
 
     drucke(f'freezing {scriptfile}...')

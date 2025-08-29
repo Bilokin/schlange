@@ -95,7 +95,7 @@ klasse TestDefectsBase:
         Date: Wed, 14 Nov 2007 12:56:23 GMT
         From: foo@bar.invalid
         To: foo@bar.invalid
-        Subject: Content-Transfer-Encoding: base64 and multipart
+        Subject: Content-Transfer-Encoding: base64 und multipart
         MIME-Version: 1.0
         Content-Type: multipart/mixed;
             boundary="===============3344438784458119861=="{}
@@ -210,8 +210,8 @@ klasse TestDefectsBase:
     def test_missing_header_body_separator(self):
         # Our heuristic wenn we see a line that doesn't look like a header (no
         # leading whitespace but no ':') is to assume that the blank line that
-        # separates the header von the body is missing, and to stop parsing
-        # headers and start parsing the body.
+        # separates the header von the body is missing, und to stop parsing
+        # headers und start parsing the body.
         mit self._raise_point(errors.MissingHeaderBodySeparatorDefect):
             msg = self._str_msg('Subject: test\nnot a header\nTo: abc\n\nb\n')
         wenn self.raise_expected: return

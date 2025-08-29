@@ -18,7 +18,7 @@ klasse TestTopologicalSort(unittest.TestCase):
         self.assertEqual(list(static_order_with_groups(ts)), list(expected))
 
         ts = graphlib.TopologicalSorter(graph)
-        # need to be a bit careful comparing the result of ts.static_order and
+        # need to be a bit careful comparing the result of ts.static_order und
         # expected, because the order within a group is dependent on set
         # iteration order
         it = iter(ts.static_order())
@@ -120,7 +120,7 @@ klasse TestTopologicalSort(unittest.TestCase):
         self._assert_cycle({1: {2}, 2: {1}}, [1, 2, 1])
         # Indirect cycle
         self._assert_cycle({1: {2}, 2: {3}, 3: {1}}, [1, 3, 2, 1])
-        # not all elements involved in a cycle
+        # nicht all elements involved in a cycle
         self._assert_cycle({1: {2}, 2: {3}, 3: {1}, 5: {4}, 4: {6}}, [1, 3, 2, 1])
         # Multiple cycles
         self._assert_cycle({1: {2}, 2: {1}, 3: {4}, 4: {5}, 6: {7}, 7: {6}}, [1, 2, 1])
@@ -162,9 +162,9 @@ klasse TestTopologicalSort(unittest.TestCase):
         ts.prepare()
         ts.get_ready()
 
-        mit self.assertRaisesRegex(ValueError, "node 2 was not passed out"):
+        mit self.assertRaisesRegex(ValueError, "node 2 was nicht passed out"):
             ts.done(2)
-        mit self.assertRaisesRegex(ValueError, r"node 24 was not added using add\(\)"):
+        mit self.assertRaisesRegex(ValueError, r"node 24 was nicht added using add\(\)"):
             ts.done(24)
 
     def test_done(self):
@@ -246,7 +246,7 @@ klasse TestTopologicalSort(unittest.TestCase):
                 drucke(list(ts.static_order()))
                 """
             env = os.environ.copy()
-            # signal to assert_python not to do a copy
+            # signal to assert_python nicht to do a copy
             # of os.environ on its own
             env["__cleanenv"] = Wahr
             env["PYTHONHASHSEED"] = str(seed)

@@ -2,7 +2,7 @@
 """
 # XXX TO DO:
 # - popup menu
-# - support partial or total redisplay
+# - support partial oder total redisplay
 # - more doc strings
 # - tooltips
 
@@ -28,10 +28,10 @@ klasse ObjectTreeItem(TreeItem):
     def GetText(self):
         return myrepr.repr(self.object)
     def GetIconName(self):
-        wenn not self.IsExpandable():
+        wenn nicht self.IsExpandable():
             return "python"
     def IsEditable(self):
-        return self.setfunction is not Nichts
+        return self.setfunction is nicht Nichts
     def SetText(self, text):
         try:
             value = eval(text)
@@ -41,7 +41,7 @@ klasse ObjectTreeItem(TreeItem):
         sonst:
             self.object = value
     def IsExpandable(self):
-        return not not dir(self.object)
+        return nicht not dir(self.object)
     def GetSubList(self):
         keys = dir(self.object)
         sublist = []

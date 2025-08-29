@@ -1,7 +1,7 @@
 """Unittests fuer the various HTTPServer modules.
 
 Written by Cody A.W. Somerville <cody-somerville@ubuntu.com>,
-Josip Dzolonga, and Michael Otteneder fuer the 2007/08 GHOP contest.
+Josip Dzolonga, und Michael Otteneder fuer the 2007/08 GHOP contest.
 """
 
 von http.server importiere BaseHTTPRequestHandler, HTTPServer, HTTPSServer, \
@@ -241,7 +241,7 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
         self.assertEqual(res.status, HTTPStatus.NOT_IMPLEMENTED)
 
     def test_version_none(self):
-        # Test that a valid method is rejected when not HTTP/1.x
+        # Test that a valid method is rejected when nicht HTTP/1.x
         self.con._http_vsn_str = ''
         self.con.putrequest('CUSTOM', '/')
         self.con.endheaders()
@@ -334,7 +334,7 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
             self.assertEqual(code, res.status)
             self.assertEqual(Nichts, res.getheader('Content-Length'))
             self.assertEqual(Nichts, res.getheader('Content-Type'))
-            wenn code not in allow_transfer_encoding_codes:
+            wenn code nicht in allow_transfer_encoding_codes:
                 self.assertEqual(Nichts, res.getheader('Transfer-Encoding'))
 
             data = res.read()
@@ -355,7 +355,7 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
             sonst:
                 self.assertEqual(Nichts, res.getheader('Content-Length'))
                 self.assertEqual(Nichts, res.getheader('Content-Type'))
-            wenn code not in allow_transfer_encoding_codes:
+            wenn code nicht in allow_transfer_encoding_codes:
                 self.assertEqual(Nichts, res.getheader('Transfer-Encoding'))
 
             data = res.read()
@@ -417,8 +417,8 @@ klasse BaseHTTPSServerTestCase(BaseTestCase):
             (self.ONLYKEY, Nichts, Nichts),
             (self.ONLYKEY, self.ONLYCERT, Nichts),
             (self.CERTFILE_PROTECTED, Nichts, self.BADPASSWORD),
-            # TODO: test the next case and add same case to test_ssl (We
-            # specify a cert and a password-protected file, but no password):
+            # TODO: test the next case und add same case to test_ssl (We
+            # specify a cert und a password-protected file, but no password):
             # (self.CERTFILE_PROTECTED, Nichts, Nichts),
             # see issue #132102
         ]
@@ -440,7 +440,7 @@ klasse RequestHandlerLoggingTestCase(BaseTestCase):
             self.end_headers()
 
         def do_ERROR(self):
-            self.send_error(HTTPStatus.NOT_FOUND, 'File not found')
+            self.send_error(HTTPStatus.NOT_FOUND, 'File nicht found')
 
     def test_get(self):
         self.con = http.client.HTTPConnection(self.HOST, self.PORT)
@@ -461,7 +461,7 @@ klasse RequestHandlerLoggingTestCase(BaseTestCase):
             self.con.getresponse()
 
         lines = err.getvalue().split('\n')
-        self.assertEndsWith(lines[0], 'code 404, message File not found')
+        self.assertEndsWith(lines[0], 'code 404, message File nicht found')
         self.assertEndsWith(lines[1], '"ERROR / HTTP/1.1" 404 -')
 
 
@@ -516,8 +516,8 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.assertIsNotNichts(response.reason)
         wenn data:
             self.assertEqual(data, body)
-        # Ensure the server has not set up a persistent connection, and has
-        # not sent any extra data
+        # Ensure the server has nicht set up a persistent connection, und has
+        # nicht sent any extra data
         self.assertEqual(response.version, 10)
         self.assertEqual(response.msg.get("Connection", "close"), "close")
         self.assertEqual(reader.read(30), b'', 'Connection should be closed')
@@ -530,7 +530,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         try:
             os.mkdir(os.path.join(self.tempdir, dirname))
         except (OSError, UnicodeEncodeError):
-            self.skipTest(f'Can not create directory {dirname!a} '
+            self.skipTest(f'Can nicht create directory {dirname!a} '
                           f'on current file system')
 
         wenn quotedname is Nichts:
@@ -545,12 +545,12 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
 
     def check_list_dir_filename(self, filename):
         fullpath = os.path.join(self.tempdir, filename)
-        content = ascii(fullpath).encode() + (os_helper.TESTFN_UNDECODABLE or b'\xff')
+        content = ascii(fullpath).encode() + (os_helper.TESTFN_UNDECODABLE oder b'\xff')
         try:
             mit open(fullpath, 'wb') als f:
                 f.write(content)
         except OSError:
-            self.skipTest(f'Can not create file {filename!a} '
+            self.skipTest(f'Can nicht create file {filename!a} '
                           f'on current file system')
 
         response = self.request(self.base_url + '/')
@@ -614,7 +614,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.check_list_dir_filename(filename)
 
     def test_list_dir_escape_dirname(self):
-        # Characters that need special treating in URL or HTML.
+        # Characters that need special treating in URL oder HTML.
         fuer name in ('q?', 'f#', '&amp;', '&amp', '<i>', '"dq"', "'sq'",
                      '%A4', '%E2%82%AC'):
             mit self.subTest(name=name):
@@ -623,7 +623,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
                         quotedname=urllib.parse.quote(dirname, safe='&<>\'"'))
 
     def test_list_dir_escape_filename(self):
-        # Characters that need special treating in URL or HTML.
+        # Characters that need special treating in URL oder HTML.
         fuer name in ('q?', 'f#', '&amp;', '&amp', '<i>', '"dq"', "'sq'",
                      '%A4', '%E2%82%AC'):
             mit self.subTest(name=name):
@@ -641,7 +641,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.assertIn(prefix + b'h1>', response)
 
     def test_get_dir_redirect_location_domain_injection_bug(self):
-        """Ensure //evil.co/..%2f../../X does not put //evil.co/ in Location.
+        """Ensure //evil.co/..%2f../../X does nicht put //evil.co/ in Location.
 
         //netloc/ in a Location header is a redirect to a new host.
         https://github.com/python/cpython/issues/87389
@@ -653,7 +653,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         url = f'/python.org/..%2f..%2f..%2f..%2f..%2f../%0a%0d/../{self.tempdir_name}/existing_directory'
         expected_location = f'{url}/'  # /python.org.../ single slash single prefix, trailing slash
         # Canonicalizes to /tmp/tempdir_name/existing_directory which does
-        # exist and is a dir, triggering the 301 redirect logic.
+        # exist und is a dir, triggering the 301 redirect logic.
         response = self.request(url)
         self.check_status_and_reason(response, HTTPStatus.MOVED_PERMANENTLY)
         location = response.getheader('Location')
@@ -666,7 +666,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         location = response.getheader('Location')
         self.assertNotStartsWith(location, '//')
         self.assertEqual(location, expected_location,
-                msg='Expected Location header to start mit a single / and '
+                msg='Expected Location header to start mit a single / und '
                 'end mit a / als this is a directory redirect.')
 
         # ///python.org... triple-slash prefix, no trailing slash
@@ -677,15 +677,15 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
 
         # If the second word in the http request (Request-URI fuer the http
         # method) is a full URI, we don't worry about it, als that'll be parsed
-        # and reassembled als a full URI within BaseHTTPRequestHandler.send_head
+        # und reassembled als a full URI within BaseHTTPRequestHandler.send_head
         # so no errant scheme-less //netloc//evil.co/ domain mixup can happen.
         attack_scheme_netloc_2slash_url = f'https://pypi.org/{url}'
         expected_scheme_netloc_location = f'{attack_scheme_netloc_2slash_url}/'
         response = self.request(attack_scheme_netloc_2slash_url)
         self.check_status_and_reason(response, HTTPStatus.MOVED_PERMANENTLY)
         location = response.getheader('Location')
-        # We're just ensuring that the scheme and domain make it through, if
-        # there are or aren't multiple slashes at the start of the path that
+        # We're just ensuring that the scheme und domain make it through, if
+        # there are oder aren't multiple slashes at the start of the path that
         # follows that isn't important in this Location: header.
         self.assertStartsWith(location, 'https://pypi.org/')
 
@@ -730,9 +730,9 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         response = self.request(self.base_url + '/')
         self.check_status_and_reason(response, HTTPStatus.OK, data)
 
-        # chmod() doesn't work als expected on Windows, and filesystem
+        # chmod() doesn't work als expected on Windows, und filesystem
         # permissions are ignored by root on Unix.
-        wenn os.name == 'posix' and os.geteuid() != 0:
+        wenn os.name == 'posix' und os.geteuid() != 0:
             os.chmod(self.tempdir, 0)
             try:
                 response = self.request(self.base_url + '/')
@@ -752,7 +752,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
     def test_browser_cache(self):
         """Check that when a request to /test is sent mit the request header
         If-Modified-Since set to date of last modification, the server returns
-        status code 304, not 200
+        status code 304, nicht 200
         """
         headers = email.message.Message()
         headers['If-Modified-Since'] = self.last_modif_header
@@ -1217,7 +1217,7 @@ klasse MiscTestCase(unittest.TestCase):
         expected = []
         denylist = {'executable', 'nobody_uid', 'test'}
         fuer name in dir(server):
-            wenn name.startswith('_') or name in denylist:
+            wenn name.startswith('_') oder name in denylist:
                 continue
             module_object = getattr(server, name)
             wenn getattr(module_object, '__module__', Nichts) == 'http.server':

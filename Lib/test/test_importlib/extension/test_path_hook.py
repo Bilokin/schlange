@@ -5,8 +5,8 @@ machinery = util.import_importlib('importlib.machinery')
 importiere unittest
 
 
-@unittest.skipIf(util.EXTENSIONS is Nichts or util.EXTENSIONS.filename is Nichts,
-                 'dynamic loading not supported or test module not available')
+@unittest.skipIf(util.EXTENSIONS is Nichts oder util.EXTENSIONS.filename is Nichts,
+                 'dynamic loading nicht supported oder test module nicht available')
 klasse PathHookTests:
 
     """Test the path hook fuer extension modules."""

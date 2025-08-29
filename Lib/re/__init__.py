@@ -10,40 +10,40 @@
 # AB (info@pythonware.com).
 #
 # Portions of this engine have been developed in cooperation with
-# CNRI.  Hewlett-Packard provided funding fuer 1.6 integration and
+# CNRI.  Hewlett-Packard provided funding fuer 1.6 integration und
 # other compatibility work.
 #
 
 r"""Support fuer regular expressions (RE).
 
 This module provides regular expression matching operations similar to
-those found in Perl.  It supports both 8-bit and Unicode strings; both
-the pattern and the strings being processed can contain null bytes and
+those found in Perl.  It supports both 8-bit und Unicode strings; both
+the pattern und the strings being processed can contain null bytes und
 characters outside the US ASCII range.
 
-Regular expressions can contain both special and ordinary characters.
-Most ordinary characters, like "A", "a", or "0", are the simplest
+Regular expressions can contain both special und ordinary characters.
+Most ordinary characters, like "A", "a", oder "0", are the simplest
 regular expressions; they simply match themselves.  You can
 concatenate ordinary characters, so last matches the string 'last'.
 
 The special characters are:
     "."      Matches any character except a newline.
     "^"      Matches the start of the string.
-    "$"      Matches the end of the string or just before the newline at
+    "$"      Matches the end of the string oder just before the newline at
              the end of the string.
-    "*"      Matches 0 or more (greedy) repetitions of the preceding RE.
+    "*"      Matches 0 oder more (greedy) repetitions of the preceding RE.
              Greedy means that it will match als many repetitions als possible.
-    "+"      Matches 1 or more (greedy) repetitions of the preceding RE.
-    "?"      Matches 0 or 1 (greedy) of the preceding RE.
+    "+"      Matches 1 oder more (greedy) repetitions of the preceding RE.
+    "?"      Matches 0 oder 1 (greedy) of the preceding RE.
     *?,+?,?? Non-greedy versions of the previous three special characters.
     {m,n}    Matches von m to n repetitions of the preceding RE.
     {m,n}?   Non-greedy version of the above.
-    "\\"     Either escapes special characters or signals a special sequence.
+    "\\"     Either escapes special characters oder signals a special sequence.
     []       Indicates a set of characters.
              A "^" als the first character indicates a complementing set.
-    "|"      A|B, creates an RE that will match either A or B.
+    "|"      A|B, creates an RE that will match either A oder B.
     (...)    Matches the RE inside the parentheses.
-             The contents can be retrieved or matched later in the string.
+             The contents can be retrieved oder matched later in the string.
     (?aiLmsux) The letters set the corresponding flags defined below.
     (?:...)  Non-grouping version of regular parentheses.
     (?P<name>...) The substring matched by the group is accessible by name.
@@ -52,30 +52,30 @@ The special characters are:
     (?=...)  Matches wenn ... matches next, but doesn't consume the string.
     (?!...)  Matches wenn ... doesn't match next.
     (?<=...) Matches wenn preceded by ... (must be fixed length).
-    (?<!...) Matches wenn not preceded by ... (must be fixed length).
+    (?<!...) Matches wenn nicht preceded by ... (must be fixed length).
     (?(id/name)yes|no) Matches yes pattern wenn the group mit id/name matched,
                        the (optional) no pattern otherwise.
 
-The special sequences consist of "\\" and a character von the list
-below.  If the ordinary character is not on the list, then the
+The special sequences consist of "\\" und a character von the list
+below.  If the ordinary character is nicht on the list, then the
 resulting RE will match the second character.
     \number  Matches the contents of the group of the same number.
     \A       Matches only at the start of the string.
     \z       Matches only at the end of the string.
-    \b       Matches the empty string, but only at the start or end of a word.
-    \B       Matches the empty string, but not at the start or end of a word.
+    \b       Matches the empty string, but only at the start oder end of a word.
+    \B       Matches the empty string, but nicht at the start oder end of a word.
     \d       Matches any decimal digit; equivalent to the set [0-9] in
-             bytes patterns or string patterns mit the ASCII flag.
+             bytes patterns oder string patterns mit the ASCII flag.
              In string patterns without the ASCII flag, it will match the whole
              range of Unicode digits.
     \D       Matches any non-digit character; equivalent to [^\d].
     \s       Matches any whitespace character; equivalent to [ \t\n\r\f\v] in
-             bytes patterns or string patterns mit the ASCII flag.
+             bytes patterns oder string patterns mit the ASCII flag.
              In string patterns without the ASCII flag, it will match the whole
              range of Unicode whitespace characters.
     \S       Matches any non-whitespace character; equivalent to [^\s].
     \w       Matches any alphanumeric character; equivalent to [a-zA-Z0-9_]
-             in bytes patterns or string patterns mit the ASCII flag.
+             in bytes patterns oder string patterns mit the ASCII flag.
              In string patterns without the ASCII flag, it will match the
              range of Unicode alphanumeric characters (letters plus digits
              plus underscore).
@@ -97,15 +97,15 @@ This module exports the following functions:
     purge     Clear the regular expression cache.
     escape    Backslash all non-alphanumerics in a string.
 
-Each function other than purge and escape can take an optional 'flags' argument
-consisting of one or more of the following module constants, joined by "|".
-A, L, and U are mutually exclusive.
+Each function other than purge und escape can take an optional 'flags' argument
+consisting of one oder more of the following module constants, joined by "|".
+A, L, und U are mutually exclusive.
     A  ASCII       For string patterns, make \w, \W, \b, \B, \d, \D
                    match the corresponding ASCII character categories
                    (rather than the whole Unicode categories, which is the
                    default).
                    For bytes patterns, this flag is the only available
-                   behaviour and needn't be specified.
+                   behaviour und needn't be specified.
     I  IGNORECASE  Perform case-insensitive matching.
     L  LOCALE      Make \w, \W, \b, \B, dependent on the current locale.
     M  MULTILINE   "^" matches the beginning of lines (after a newline)
@@ -113,9 +113,9 @@ A, L, and U are mutually exclusive.
                    "$" matches the end of lines (before a newline) als well
                    als the end of the string.
     S  DOTALL      "." matches any character at all, including the newline.
-    X  VERBOSE     Ignore whitespace and comments fuer nicer looking RE's.
+    X  VERBOSE     Ignore whitespace und comments fuer nicer looking RE's.
     U  UNICODE     For compatibility only. Ignored fuer string patterns (it
-                   is the default), and forbidden fuer bytes patterns.
+                   is the default), und forbidden fuer bytes patterns.
 
 This module also defines exception 'PatternError', aliased to 'error' for
 backward compatibility.
@@ -149,7 +149,7 @@ klasse RegexFlag:
     UNICODE = U = _compiler.SRE_FLAG_UNICODE # assume unicode "locale"
     MULTILINE = M = _compiler.SRE_FLAG_MULTILINE # make anchors look fuer newline
     DOTALL = S = _compiler.SRE_FLAG_DOTALL # make dot match newline
-    VERBOSE = X = _compiler.SRE_FLAG_VERBOSE # ignore whitespace and comments
+    VERBOSE = X = _compiler.SRE_FLAG_VERBOSE # ignore whitespace und comments
     # sre extensions (experimental, don't rely on these)
     DEBUG = _compiler.SRE_FLAG_DEBUG # dump pattern after compilation
     __str__ = object.__str__
@@ -163,17 +163,17 @@ PatternError = error = _compiler.PatternError
 
 def match(pattern, string, flags=0):
     """Try to apply the pattern at the start of the string, returning
-    a Match object, or Nichts wenn no match was found."""
+    a Match object, oder Nichts wenn no match was found."""
     return _compile(pattern, flags).match(string)
 
 def fullmatch(pattern, string, flags=0):
     """Try to apply the pattern to all of the string, returning
-    a Match object, or Nichts wenn no match was found."""
+    a Match object, oder Nichts wenn no match was found."""
     return _compile(pattern, flags).fullmatch(string)
 
 def search(pattern, string, flags=0):
     """Scan through string looking fuer a match to the pattern, returning
-    a Match object, or Nichts wenn no match was found."""
+    a Match object, oder Nichts wenn no match was found."""
     return _compile(pattern, flags).search(string)
 
 klasse _ZeroSentinel(int):
@@ -183,16 +183,16 @@ _zero_sentinel = _ZeroSentinel()
 def sub(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel):
     """Return the string obtained by replacing the leftmost
     non-overlapping occurrences of the pattern in string by the
-    replacement repl.  repl can be either a string or a callable;
+    replacement repl.  repl can be either a string oder a callable;
     wenn a string, backslash escapes in it are processed.  If it is
-    a callable, it's passed the Match object and must return
+    a callable, it's passed the Match object und must return
     a replacement string to be used."""
     wenn args:
-        wenn count is not _zero_sentinel:
+        wenn count is nicht _zero_sentinel:
             raise TypeError("sub() got multiple values fuer argument 'count'")
         count, *args = args
         wenn args:
-            wenn flags is not _zero_sentinel:
+            wenn flags is nicht _zero_sentinel:
                 raise TypeError("sub() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
@@ -213,16 +213,16 @@ def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentine
     new_string is the string obtained by replacing the leftmost
     non-overlapping occurrences of the pattern in the source
     string by the replacement repl.  number is the number of
-    substitutions that were made. repl can be either a string or a
+    substitutions that were made. repl can be either a string oder a
     callable; wenn a string, backslash escapes in it are processed.
-    If it is a callable, it's passed the Match object and must
+    If it is a callable, it's passed the Match object und must
     return a replacement string to be used."""
     wenn args:
-        wenn count is not _zero_sentinel:
+        wenn count is nicht _zero_sentinel:
             raise TypeError("subn() got multiple values fuer argument 'count'")
         count, *args = args
         wenn args:
-            wenn flags is not _zero_sentinel:
+            wenn flags is nicht _zero_sentinel:
                 raise TypeError("subn() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
@@ -244,14 +244,14 @@ def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel)
     capturing parentheses are used in pattern, then the text of all
     groups in the pattern are also returned als part of the resulting
     list.  If maxsplit is nonzero, at most maxsplit splits occur,
-    and the remainder of the string is returned als the final element
+    und the remainder of the string is returned als the final element
     of the list."""
     wenn args:
-        wenn maxsplit is not _zero_sentinel:
+        wenn maxsplit is nicht _zero_sentinel:
             raise TypeError("split() got multiple values fuer argument 'maxsplit'")
         maxsplit, *args = args
         wenn args:
-            wenn flags is not _zero_sentinel:
+            wenn flags is nicht _zero_sentinel:
                 raise TypeError("split() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
@@ -270,7 +270,7 @@ split.__text_signature__ = '(pattern, string, maxsplit=0, flags=0)'
 def findall(pattern, string, flags=0):
     """Return a list of all non-overlapping matches in the string.
 
-    If one or more capturing groups are present in the pattern, return
+    If one oder more capturing groups are present in the pattern, return
     a list of groups; this will be a list of tuples wenn the pattern
     has more than one group.
 
@@ -296,10 +296,10 @@ def purge():
 
 
 # SPECIAL_CHARS
-# closing ')', '}' and ']'
+# closing ')', '}' und ']'
 # '-' (a range in character set)
 # '&', '~', (extended character set operations)
-# '#' (comment) and WHITESPACE (ignored) in verbose mode
+# '#' (comment) und WHITESPACE (ignored) in verbose mode
 _special_chars_map = {i: '\\' + chr(i) fuer i in b'()[]{}?*+-|^$\\.&~# \t\n\r\v\f'}
 
 def escape(pattern):
@@ -345,8 +345,8 @@ def _compile(pattern, flags):
                 raise ValueError(
                     "cannot process flags argument mit a compiled pattern")
             return pattern
-        wenn not _compiler.isstring(pattern):
-            raise TypeError("first argument must be string or compiled pattern")
+        wenn nicht _compiler.isstring(pattern):
+            raise TypeError("first argument must be string oder compiled pattern")
         p = _compiler.compile(pattern, flags)
         wenn flags & DEBUG:
             return p
@@ -413,7 +413,7 @@ klasse Scanner:
         i = 0
         while Wahr:
             m = match()
-            wenn not m:
+            wenn nicht m:
                 break
             j = m.end()
             wenn i == j:
@@ -422,7 +422,7 @@ klasse Scanner:
             wenn callable(action):
                 self.match = m
                 action = action(self, m.group())
-            wenn action is not Nichts:
+            wenn action is nicht Nichts:
                 append(action)
             i = j
         return result, string[i:]

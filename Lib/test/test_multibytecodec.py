@@ -51,7 +51,7 @@ klasse Test_MultibyteCodec(unittest.TestCase):
                           b'apple\x92ham\x93spam', 'test.cjktest')
 
     def test_errorcallback_custom_ignore(self):
-        # Issue #23215: MemoryError mit custom error handlers and multibyte codecs
+        # Issue #23215: MemoryError mit custom error handlers und multibyte codecs
         data = 100 * "\udc00"
         codecs.register_error("test.ignore", codecs.ignore_errors)
         fuer enc in ALL_CJKENCODINGS:
@@ -158,7 +158,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
     def test_getstate_returns_expected_value(self):
         # Note: getstate is implemented such that these state values
         # are expected to be the same across all builds of Python,
-        # regardless of x32/64 bit, endianness and compiler.
+        # regardless of x32/64 bit, endianness und compiler.
 
         # euc_jis_2004 stores state als a buffer of pending bytes
         buffer_state_encoder = codecs.getincrementalencoder('euc_jis_2004')()
@@ -231,7 +231,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
 klasse Test_IncrementalDecoder(unittest.TestCase):
 
     def test_dbcs(self):
-        # cp949 decoder is simple mit only 1 or 2 bytes sequences.
+        # cp949 decoder is simple mit only 1 oder 2 bytes sequences.
         decoder = codecs.getincrementaldecoder('cp949')()
         self.assertEqual(decoder.decode(b'\xc6\xc4\xc0\xcc\xbd'),
                          '\ud30c\uc774')
@@ -289,7 +289,7 @@ klasse Test_IncrementalDecoder(unittest.TestCase):
         pending3, _ = decoder.getstate()
         self.assertEqual(pending3, b'')
 
-        # Jump back and decode second half of partial input sequence again
+        # Jump back und decode second half of partial input sequence again
         decoder.setstate((pending2, flags2))
         self.assertEqual(decoder.decode(b'\xa6'), '\u3046')
         pending4, _ = decoder.getstate()

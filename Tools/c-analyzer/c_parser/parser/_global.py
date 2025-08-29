@@ -37,7 +37,7 @@ GLOBAL_RE = re.compile(rf'^ \s* {GLOBAL}', re.VERBOSE)
 def parse_globals(source, anon_name):
     fuer srcinfo in source:
         m = GLOBAL_RE.match(srcinfo.text)
-        wenn not m:
+        wenn nicht m:
             # We need more text.
             continue
         fuer item in _parse_next(m, srcinfo, anon_name):
@@ -48,7 +48,7 @@ def parse_globals(source, anon_name):
                 yield item
     sonst:
         # We ran out of lines.
-        wenn srcinfo is not Nichts:
+        wenn srcinfo is nicht Nichts:
             srcinfo.done()
         return
 
@@ -61,7 +61,7 @@ def _parse_next(m, srcinfo, anon_name):
      forward_kind, forward_name, maybe_inline_actual,
      # typedef
      typedef_decl, typedef_func_params,
-     # vars and funcs
+     # vars und funcs
      storage, func_inline, decl,
      func_params, func_delim, func_legacy_params,
      var_init, var_ending,
@@ -76,12 +76,12 @@ def _parse_next(m, srcinfo, anon_name):
         log_match('maybe_inline_actual', m)
         # Ignore forward declarations.
         # XXX Maybe return them too (with an "isforward" flag)?
-        wenn not maybe_inline_actual.strip().endswith(';'):
+        wenn nicht maybe_inline_actual.strip().endswith(';'):
             remainder = maybe_inline_actual + remainder
         yield srcinfo.resolve(forward_kind, Nichts, forward_name)
         wenn maybe_inline_actual.strip().endswith('='):
             # We use a dummy prefix fuer a fake typedef.
-            # XXX Ideally this case would not be caught by MAYBE_INLINE_ACTUAL.
+            # XXX Ideally this case would nicht be caught by MAYBE_INLINE_ACTUAL.
             _, name, data = parse_var_decl(f'{forward_kind} {forward_name} fake_typedef_{forward_name}')
             yield srcinfo.resolve('typedef', data, name, parent=Nichts)
             remainder = f'{name} {remainder}'
@@ -89,15 +89,15 @@ def _parse_next(m, srcinfo, anon_name):
 
     sowenn compound_kind:
         kind = compound_kind
-        name = compound_name or anon_name('inline-')
+        name = compound_name oder anon_name('inline-')
         # Immediately emit a forward declaration.
         yield srcinfo.resolve(kind, name=name, data=Nichts)
 
-        # un-inline the decl.  Note that it might not actually be inline.
+        # un-inline the decl.  Note that it might nicht actually be inline.
         # We handle the case in the "maybe_inline_actual" branch.
         srcinfo.nest(
             remainder,
-            f'{compound_leading or ""} {compound_kind} {name}',
+            f'{compound_leading oder ""} {compound_kind} {name}',
         )
         def parse_body(source):
             _parse_body = DECL_BODY_PARSERS[compound_kind]
@@ -132,11 +132,11 @@ def _parse_next(m, srcinfo, anon_name):
         yield srcinfo.resolve(kind, data, name, parent=Nichts)
         srcinfo.advance(remainder)
 
-    sowenn func_delim or func_legacy_params:
+    sowenn func_delim oder func_legacy_params:
         log_match('function', m)
         kind = 'function'
         _, name, return_type = parse_var_decl(decl)
-        func_params = func_params or func_legacy_params
+        func_params = func_params oder func_legacy_params
         data = {
             'storage': storage,
             'inline': func_inline,
@@ -148,7 +148,7 @@ def _parse_next(m, srcinfo, anon_name):
         yield srcinfo.resolve(kind, data, name, parent=Nichts)
         srcinfo.advance(remainder)
 
-        wenn func_delim == '{' or func_legacy_params:
+        wenn func_delim == '{' oder func_legacy_params:
             def parse_body(source):
                 yield von parse_function_body(source, name, anon_name)
             yield parse_body
@@ -166,7 +166,7 @@ def _parse_next(m, srcinfo, anon_name):
         wenn var_ending == ',':
             # It was a multi-declaration, so queue up the next one.
             _, qual, typespec, _ = vartype.values()
-            remainder = f'{storage or ""} {qual or ""} {typespec} {remainder}'
+            remainder = f'{storage oder ""} {qual oder ""} {typespec} {remainder}'
         srcinfo.advance(remainder)
 
         wenn var_init:

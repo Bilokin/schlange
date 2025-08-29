@@ -235,7 +235,7 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_next_data(self):
         # Check that next will correctly return the next available
-        # line and plays well mit the dunder_iter part.
+        # line und plays well mit the dunder_iter part.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
@@ -307,7 +307,7 @@ klasse TestMockOpen(unittest.TestCase):
 
 
     def test_interleaved_reads(self):
-        # Test that calling read, readline, and readlines pulls data
+        # Test that calling read, readline, und readlines pulls data
         # sequentially von the data we preload with
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         mit patch('%s.open' % __name__, mock, create=Wahr):
@@ -338,7 +338,7 @@ klasse TestMockOpen(unittest.TestCase):
         self.assertEqual(handle.readline(), 'bar')
         self.assertEqual(handle.readlines(), ['bar'])
 
-        # call repeatedly to check that a StopIteration is not propagated
+        # call repeatedly to check that a StopIteration is nicht propagated
         self.assertEqual(handle.readline(), 'bar')
         self.assertEqual(handle.readline(), 'bar')
 

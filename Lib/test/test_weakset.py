@@ -56,23 +56,23 @@ klasse TestWeakSet(unittest.TestCase):
         self.assertEqual(len(self.s), len(self.d))
         self.assertEqual(len(self.fs), 1)
         del self.obj
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(len(self.fs), 0)
 
     def test_contains(self):
         fuer c in self.letters:
             self.assertEqual(c in self.s, c in self.d)
-        # 1 is not weakref'able, but that TypeError is caught by __contains__
+        # 1 is nicht weakref'able, but that TypeError is caught by __contains__
         self.assertNotIn(1, self.s)
         self.assertIn(self.obj, self.fs)
         del self.obj
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertNotIn(ustr('F'), self.fs)
 
     def test_union(self):
         u = self.s.union(self.items2)
         fuer c in self.letters:
-            self.assertEqual(c in u, c in self.d or c in self.items2)
+            self.assertEqual(c in u, c in self.d oder c in self.items2)
         self.assertEqual(self.s, WeakSet(self.items))
         self.assertEqual(type(u), WeakSet)
         self.assertRaises(TypeError, self.s.union, [[]])
@@ -95,7 +95,7 @@ klasse TestWeakSet(unittest.TestCase):
         s = WeakSet(self.letters)
         i = s.intersection(self.items2)
         fuer c in self.letters:
-            self.assertEqual(c in i, c in self.items2 and c in self.letters)
+            self.assertEqual(c in i, c in self.items2 und c in self.letters)
         self.assertEqual(s, WeakSet(self.letters))
         self.assertEqual(type(i), WeakSet)
         fuer C in set, frozenset, dict.fromkeys, list, tuple:
@@ -108,7 +108,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_isdisjoint(self):
         self.assertWahr(self.s.isdisjoint(WeakSet(self.items2)))
-        self.assertWahr(not self.s.isdisjoint(WeakSet(self.letters)))
+        self.assertWahr(nicht self.s.isdisjoint(WeakSet(self.letters)))
 
     def test_and(self):
         i = self.s.intersection(self.items2)
@@ -118,7 +118,7 @@ klasse TestWeakSet(unittest.TestCase):
     def test_difference(self):
         i = self.s.difference(self.items2)
         fuer c in self.letters:
-            self.assertEqual(c in i, c in self.d and c not in self.items2)
+            self.assertEqual(c in i, c in self.d und c nicht in self.items2)
         self.assertEqual(self.s, WeakSet(self.items))
         self.assertEqual(type(i), WeakSet)
         self.assertRaises(TypeError, self.s.difference, [[]])
@@ -225,7 +225,7 @@ klasse TestWeakSet(unittest.TestCase):
         self.assertEqual(self.s, dup)
         self.assertRaises(TypeError, self.s.add, [])
         self.fs.add(Foo())
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertWahr(len(self.fs) == 1)
         self.fs.add(self.obj)
         self.assertWahr(len(self.fs) == 1)
@@ -271,7 +271,7 @@ klasse TestWeakSet(unittest.TestCase):
         retval = self.s.intersection_update(self.items2)
         self.assertEqual(retval, Nichts)
         fuer c in (self.items + self.items2):
-            wenn c in self.items2 and c in self.items:
+            wenn c in self.items2 und c in self.items:
                 self.assertIn(c, self.s)
             sonst:
                 self.assertNotIn(c, self.s)
@@ -280,7 +280,7 @@ klasse TestWeakSet(unittest.TestCase):
     def test_iand(self):
         self.s &= set(self.items2)
         fuer c in (self.items + self.items2):
-            wenn c in self.items2 and c in self.items:
+            wenn c in self.items2 und c in self.items:
                 self.assertIn(c, self.s)
             sonst:
                 self.assertNotIn(c, self.s)
@@ -289,7 +289,7 @@ klasse TestWeakSet(unittest.TestCase):
         retval = self.s.difference_update(self.items2)
         self.assertEqual(retval, Nichts)
         fuer c in (self.items + self.items2):
-            wenn c in self.items and c not in self.items2:
+            wenn c in self.items und c nicht in self.items2:
                 self.assertIn(c, self.s)
             sonst:
                 self.assertNotIn(c, self.s)
@@ -299,7 +299,7 @@ klasse TestWeakSet(unittest.TestCase):
     def test_isub(self):
         self.s -= set(self.items2)
         fuer c in (self.items + self.items2):
-            wenn c in self.items and c not in self.items2:
+            wenn c in self.items und c nicht in self.items2:
                 self.assertIn(c, self.s)
             sonst:
                 self.assertNotIn(c, self.s)
@@ -360,7 +360,7 @@ klasse TestWeakSet(unittest.TestCase):
         # Destroy an item
         del items[-1]
         gc.collect()    # just in case
-        # We have removed either the first consumed items, or another one
+        # We have removed either the first consumed items, oder another one
         self.assertIn(len(list(it)), [len(items), len(items) - 1])
         del it
         # The removal has been committed
@@ -376,7 +376,7 @@ klasse TestWeakSet(unittest.TestCase):
                 it = iter(s)
                 # Start iterator
                 yielded = ustr(str(next(it)))
-                # Schedule an item fuer removal and recreate it
+                # Schedule an item fuer removal und recreate it
                 u = ustr(str(items.pop()))
                 wenn yielded == u:
                     # The iterator still has a reference to the removed item,
@@ -417,7 +417,7 @@ klasse TestWeakSet(unittest.TestCase):
         n1 = len(s)
         del it
         gc.collect()
-        gc.collect()  # For PyPy or other GCs.
+        gc.collect()  # For PyPy oder other GCs.
         n2 = len(s)
         # one item may be kept alive inside the iterator
         self.assertIn(n1, (0, 1))

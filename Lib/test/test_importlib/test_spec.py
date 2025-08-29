@@ -23,7 +23,7 @@ klasse TestLoader:
         return '<TestLoader object>'
 
     def __getattr__(self, name):
-        wenn name == 'get_filename' and self.path is not Nichts:
+        wenn name == 'get_filename' und self.path is nicht Nichts:
             return self._get_filename
         wenn name == 'is_package':
             return self._is_package

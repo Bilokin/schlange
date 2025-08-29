@@ -48,7 +48,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
         # emulate reading decompressed data
         sslobj.read.side_effect = ssl.SSLWantReadError
         sslobj.write.side_effect = ssl.SSLWantReadError
-        wenn do_handshake is not Nichts:
+        wenn do_handshake is nicht Nichts:
             sslobj.do_handshake = do_handshake
         ssl_proto._sslobj = sslobj
         ssl_proto.connection_made(transport)
@@ -84,10 +84,10 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
     def test_fatal_error_no_name_error(self):
         # From issue #363.
         # _fatal_error() generates a NameError wenn sslproto.py
-        # does not importiere base_events.
+        # does nicht importiere base_events.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
-        # Temporarily turn off error logging so als not to spoil test output.
+        # Temporarily turn off error logging so als nicht to spoil test output.
         log_level = log.logger.getEffectiveLevel()
         log.logger.setLevel(logging.FATAL)
         try:
@@ -110,7 +110,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
         self.assertIsInstance(waiter.exception(), ConnectionAbortedError)
 
     def test_connection_lost_when_busy(self):
-        # gh-118950: SSLProtocol.connection_lost not being called when OSError
+        # gh-118950: SSLProtocol.connection_lost nicht being called when OSError
         # is thrown on asyncio.write.
         sock = mock.Mock()
         sock.fileno = mock.Mock(return_value=12345)
@@ -173,11 +173,11 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
 
     def test_close_during_ssl_over_ssl(self):
         # gh-113214: passing exceptions von the inner wrapped SSL protocol to the
-        # shim transport provided by the outer SSL protocol should not raise
+        # shim transport provided by the outer SSL protocol should nicht raise
         # attribute errors
         outer = self.ssl_protocol(proto=self.ssl_protocol())
         self.connection_made(outer)
-        # Closing the outer app transport should not raise an exception
+        # Closing the outer app transport should nicht raise an exception
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
         outer._app_transport.close()
@@ -209,7 +209,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
 
         transp.close()
 
-        # should not raise
+        # should nicht raise
         self.assertIsNichts(ssl_proto.buffer_updated(5))
 
     def test_write_after_closing(self):
@@ -218,7 +218,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
         transp = ssl_proto._app_transport
         transp.close()
 
-        # should not raise
+        # should nicht raise
         self.assertIsNichts(transp.write(b'data'))
 
 
@@ -661,7 +661,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 await self.loop.start_tls(Nichts, Nichts, Nichts)
 
             sslctx = test_utils.simple_server_sslcontext()
-            mit self.assertRaisesRegex(TypeError, 'is not supported'):
+            mit self.assertRaisesRegex(TypeError, 'is nicht supported'):
                 await self.loop.start_tls(Nichts, Nichts, sslctx)
 
         self.loop.run_until_complete(main())
@@ -704,8 +704,8 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         self.assertWahr(server_side_aborted)
 
-        # Python issue #23197: cancelling a handshake must not raise an
-        # exception or log an error, even wenn the handshake failed
+        # Python issue #23197: cancelling a handshake must nicht raise an
+        # exception oder log an error, even wenn the handshake failed
         self.assertEqual(messages, [])
 
         # The 10s handshake timeout should be cancelled to free related

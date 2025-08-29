@@ -9,7 +9,7 @@ von importlib importiere resources
 von . importiere util
 
 # Since the functional API forwards to Traversable, we only test
-# filesystem resources here -- not zip files, namespace packages etc.
+# filesystem resources here -- nicht zip files, namespace packages etc.
 # We do test fuer two kinds of Anchor, though.
 
 

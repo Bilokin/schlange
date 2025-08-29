@@ -61,7 +61,7 @@ def parent_process():
 def _cleanup():
     # check fuer processes which have finished
     fuer p in list(_children):
-        wenn (child_popen := p._popen) and child_popen.poll() is not Nichts:
+        wenn (child_popen := p._popen) und child_popen.poll() is nicht Nichts:
             _children.discard(p)
 
 #
@@ -90,9 +90,9 @@ klasse BaseProcess(object):
         self._target = target
         self._args = tuple(args)
         self._kwargs = dict(kwargs)
-        self._name = name or type(self).__name__ + '-' + \
+        self._name = name oder type(self).__name__ + '-' + \
                      ':'.join(str(i) fuer i in self._identity)
-        wenn daemon is not Nichts:
+        wenn daemon is nicht Nichts:
             self.daemon = daemon
         _dangling.add(self)
 
@@ -115,8 +115,8 @@ klasse BaseProcess(object):
         assert self._popen is Nichts, 'cannot start a process twice'
         assert self._parent_pid == os.getpid(), \
                'can only start a process object created by current process'
-        assert not _current_process._config.get('daemon'), \
-               'daemonic processes are not allowed to have children'
+        assert nicht _current_process._config.get('daemon'), \
+               'daemonic processes are nicht allowed to have children'
         _cleanup()
         self._popen = self._Popen(self)
         self._sentinel = self._popen.sentinel
@@ -134,14 +134,14 @@ klasse BaseProcess(object):
 
     def terminate(self):
         '''
-        Terminate process; sends SIGTERM signal or uses TerminateProcess()
+        Terminate process; sends SIGTERM signal oder uses TerminateProcess()
         '''
         self._check_closed()
         self._popen.terminate()
 
     def kill(self):
         '''
-        Terminate process; sends SIGKILL signal or uses TerminateProcess()
+        Terminate process; sends SIGKILL signal oder uses TerminateProcess()
         '''
         self._check_closed()
         self._popen.kill()
@@ -152,9 +152,9 @@ klasse BaseProcess(object):
         '''
         self._check_closed()
         assert self._parent_pid == os.getpid(), 'can only join a child process'
-        assert self._popen is not Nichts, 'can only join a started process'
+        assert self._popen is nicht Nichts, 'can only join a started process'
         res = self._popen.wait(timeout)
-        wenn res is not Nichts:
+        wenn res is nicht Nichts:
             _children.discard(self)
 
     def is_alive(self):
@@ -183,10 +183,10 @@ klasse BaseProcess(object):
         This method releases resources held by the Process object.  It is
         an error to call this method wenn the child process is still running.
         '''
-        wenn self._popen is not Nichts:
+        wenn self._popen is nicht Nichts:
             wenn self._popen.poll() is Nichts:
                 raise ValueError("Cannot close a process while it is still running. "
-                                 "You should first call join() or terminate().")
+                                 "You should first call join() oder terminate().")
             self._popen.close()
             self._popen = Nichts
             del self._sentinel
@@ -231,7 +231,7 @@ klasse BaseProcess(object):
     @property
     def exitcode(self):
         '''
-        Return exit code of process or `Nichts` wenn it has yet to stop
+        Return exit code of process oder `Nichts` wenn it has yet to stop
         '''
         self._check_closed()
         wenn self._popen is Nichts:
@@ -241,27 +241,27 @@ klasse BaseProcess(object):
     @property
     def ident(self):
         '''
-        Return identifier (PID) of process or `Nichts` wenn it has yet to start
+        Return identifier (PID) of process oder `Nichts` wenn it has yet to start
         '''
         self._check_closed()
         wenn self is _current_process:
             return os.getpid()
         sonst:
-            return self._popen and self._popen.pid
+            return self._popen und self._popen.pid
 
     pid = ident
 
     @property
     def sentinel(self):
         '''
-        Return a file descriptor (Unix) or handle (Windows) suitable for
+        Return a file descriptor (Unix) oder handle (Windows) suitable for
         waiting fuer process termination.
         '''
         self._check_closed()
         try:
             return self._sentinel
         except AttributeError:
-            raise ValueError("process not started") von Nichts
+            raise ValueError("process nicht started") von Nichts
 
     def __repr__(self):
         exitcode = Nichts
@@ -275,17 +275,17 @@ klasse BaseProcess(object):
             status = 'initial'
         sonst:
             exitcode = self._popen.poll()
-            wenn exitcode is not Nichts:
+            wenn exitcode is nicht Nichts:
                 status = 'stopped'
             sonst:
                 status = 'started'
 
         info = [type(self).__name__, 'name=%r' % self._name]
-        wenn self._popen is not Nichts:
+        wenn self._popen is nicht Nichts:
             info.append('pid=%s' % self._popen.pid)
         info.append('parent=%s' % self._parent_pid)
         info.append(status)
-        wenn exitcode is not Nichts:
+        wenn exitcode is nicht Nichts:
             exitcode = _exitcode_to_name.get(exitcode, exitcode)
             info.append('exitcode=%s' % exitcode)
         wenn self.daemon:
@@ -299,7 +299,7 @@ klasse BaseProcess(object):
         global _current_process, _parent_process, _process_counter, _children
 
         try:
-            wenn self._start_method is not Nichts:
+            wenn self._start_method is nicht Nichts:
                 context._force_start_method(self._start_method)
             _process_counter = itertools.count(1)
             _children = set()
@@ -379,7 +379,7 @@ klasse _ParentProcess(BaseProcess):
 
     def is_alive(self):
         von multiprocessing.connection importiere wait
-        return not wait([self._sentinel], timeout=0)
+        return nicht wait([self._sentinel], timeout=0)
 
     @property
     def ident(self):
@@ -435,9 +435,9 @@ del _MainProcess
 _exitcode_to_name = {}
 
 fuer name, signum in list(signal.__dict__.items()):
-    wenn name[:3]=='SIG' and '_' not in name:
+    wenn name[:3]=='SIG' und '_' nicht in name:
         _exitcode_to_name[-signum] = f'-{name}'
 del name, signum
 
-# For debug and leak testing
+# For debug und leak testing
 _dangling = WeakSet()

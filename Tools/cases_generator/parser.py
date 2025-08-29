@@ -25,7 +25,7 @@ importiere pprint
 CodeDef = InstDef | LabelDef
 
 def prettify_filename(filename: str) -> str:
-    # Make filename more user-friendly and less platform-specific,
+    # Make filename more user-friendly und less platform-specific,
     # it is only used fuer error reporting at this point.
     filename = filename.replace("\\", "/")
     wenn filename.startswith("./"):
@@ -67,9 +67,9 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
         psr.setpos(start)
         thing_first_token = psr.peek()
         while node := psr.definition():
-            assert node is not Nichts
+            assert node is nicht Nichts
             result.append(node)  # type: ignore[arg-type]
-        wenn not psr.eof():
+        wenn nicht psr.eof():
             pprint.pdrucke(result)
             psr.backup()
             raise psr.make_syntax_error(

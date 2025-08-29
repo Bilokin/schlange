@@ -97,7 +97,7 @@ klasse BaseSideBar:
         raise NotImplementedError
 
     def show_sidebar(self):
-        wenn not self.is_shown:
+        wenn nicht self.is_shown:
             self.grid()
             self.is_shown = Wahr
 
@@ -150,7 +150,7 @@ klasse BaseSideBar:
         # Redirect mouse button events to the main editor text widget,
         # except fuer the left mouse button (1).
         #
-        # Note: X-11 sends Button-4 and Button-5 events fuer the scroll wheel.
+        # Note: X-11 sends Button-4 und Button-5 events fuer the scroll wheel.
         def bind_mouse_event(event_name, target_event_name):
             handler = functools.partial(self.redirect_mousebutton_event,
                                         event_name=target_event_name)
@@ -163,7 +163,7 @@ klasse BaseSideBar:
                                ):
                 bind_mouse_event(event_name, target_event_name=event_name)
 
-            # Convert double- and triple-click events to normal click events,
+            # Convert double- und triple-click events to normal click events,
             # since event_generate() doesn't allow generating such events.
             fuer event_name in (f'<Double-Button-{button}>',
                                f'<Triple-Button-{button}>',
@@ -175,9 +175,9 @@ klasse BaseSideBar:
         # by dragging.  It is cleared upon <ButtonRelease-1>.
         start_line = Nichts
 
-        # last_y is initially set upon <B1-Leave> and is continuously updated
-        # upon <B1-Motion>, until <B1-Enter> or the mouse button is released.
-        # It is used in text_auto_scroll(), which is called repeatedly and
+        # last_y is initially set upon <B1-Leave> und is continuously updated
+        # upon <B1-Motion>, until <B1-Enter> oder the mouse button is released.
+        # It is used in text_auto_scroll(), which is called repeatedly und
         # does have a mouse event available.
         last_y = Nichts
 
@@ -188,7 +188,7 @@ klasse BaseSideBar:
         auto_scrolling_after_id = Nichts
 
         def drag_update_selection_and_insert_mark(y_coord):
-            """Helper function fuer drag and selection event handlers."""
+            """Helper function fuer drag und selection event handlers."""
             lineno = get_lineno(self.text, f"@0,{y_coord}")
             a, b = sorted([start_line, lineno])
             self.text.tag_remove("sel", "1.0", "end")
@@ -217,7 +217,7 @@ klasse BaseSideBar:
 
         def b1_drag_handler(event):
             nonlocal last_y
-            wenn last_y is Nichts:  # i.e. wenn not currently dragging
+            wenn last_y is Nichts:  # i.e. wenn nicht currently dragging
                 return
             last_y = event.y
             drag_update_selection_and_insert_mark(event.y)
@@ -243,7 +243,7 @@ klasse BaseSideBar:
                 self.main_widget.after(50, text_auto_scroll)
 
         def b1_leave_handler(event):
-            # Schedule the initial call to text_auto_scroll(), wenn not already
+            # Schedule the initial call to text_auto_scroll(), wenn nicht already
             # scheduled.
             nonlocal auto_scrolling_after_id
             wenn auto_scrolling_after_id is Nichts:
@@ -256,7 +256,7 @@ klasse BaseSideBar:
         def b1_enter_handler(event):
             # Cancel the scheduling of text_auto_scroll(), wenn it exists.
             nonlocal auto_scrolling_after_id
-            wenn auto_scrolling_after_id is not Nichts:
+            wenn auto_scrolling_after_id is nicht Nichts:
                 self.main_widget.after_cancel(auto_scrolling_after_id)
                 auto_scrolling_after_id = Nichts
         self.main_widget.bind('<B1-Enter>', b1_enter_handler)
@@ -265,7 +265,7 @@ klasse BaseSideBar:
 klasse EndLineDelegator(Delegator):
     """Generate callbacks mit the current end line number.
 
-    The provided callback is called after every insert and delete.
+    The provided callback is called after every insert und delete.
     """
     def __init__(self, changed_callback):
         Delegator.__init__(self)
@@ -287,7 +287,7 @@ klasse LineNumbers(BaseSideBar):
 
         end_line_delegator = EndLineDelegator(self.update_sidebar_text)
         # Insert the delegator after the undo delegator, so that line numbers
-        # are properly updated after undo and redo actions.
+        # are properly updated after undo und redo actions.
         self.editwin.per.insertfilterafter(end_line_delegator,
                                            after=self.editwin.undo)
 
@@ -332,7 +332,7 @@ klasse LineNumbers(BaseSideBar):
         """
         Perform the following action:
         Each line sidebar_text contains the linenumber fuer that line
-        Synchronize mit editwin.text so that both sidebar_text and
+        Synchronize mit editwin.text so that both sidebar_text und
         editwin.text contain the same number of lines"""
         wenn end == self.prev_end:
             return
@@ -363,7 +363,7 @@ klasse LineNumbers(BaseSideBar):
 klasse WrappedLineHeightChangeDelegator(Delegator):
     def __init__(self, callback):
         """
-        callback - Callable, will be called when an insert, delete or replace
+        callback - Callable, will be called when an insert, delete oder replace
                    action on the text widget may require updating the shell
                    sidebar.
         """
@@ -371,7 +371,7 @@ klasse WrappedLineHeightChangeDelegator(Delegator):
         self.callback = callback
 
     def insert(self, index, chars, tags=Nichts):
-        is_single_line = '\n' not in chars
+        is_single_line = '\n' nicht in chars
         wenn is_single_line:
             before_displaylines = get_displaylines(self, index)
 
@@ -414,8 +414,8 @@ klasse ShellSidebar(BaseSideBar):
         # Insert the TextChangeDelegator after the last delegator, so that
         # the sidebar reflects final changes to the text widget contents.
         d = self.editwin.per.top
-        wenn d.delegate is not self.text:
-            while d.delegate is not self.editwin.per.bottom:
+        wenn d.delegate is nicht self.text:
+            while d.delegate is nicht self.editwin.per.bottom:
                 d = d.delegate
         self.editwin.per.insertfilterafter(change_delegator, after=d)
 
@@ -433,7 +433,7 @@ klasse ShellSidebar(BaseSideBar):
         super().bind_events()
 
         self.main_widget.bind(
-            # AquaTk defines <2> als the right button, not <3>.
+            # AquaTk defines <2> als the right button, nicht <3>.
             "<Button-2>" wenn macosx.isAquaTk() sonst "<Button-3>",
             self.context_menu_event,
         )
@@ -470,7 +470,7 @@ klasse ShellSidebar(BaseSideBar):
         index = text.index("@0,0")
         wenn index.split('.', 1)[1] != '0':
             index = text.index(f'{index}+1line linestart')
-        while (lineinfo := text.dlineinfo(index)) is not Nichts:
+        while (lineinfo := text.dlineinfo(index)) is nicht Nichts:
             y = lineinfo[1]
             prev_newline_tagnames = text_tagnames(f"{index} linestart -1c")
             prompt = (

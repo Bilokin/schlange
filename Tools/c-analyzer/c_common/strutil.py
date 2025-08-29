@@ -10,7 +10,7 @@ def unrepr(value):
 
 def parse_entries(entries, *, ignoresep=Nichts):
     fuer entry in entries:
-        wenn ignoresep and ignoresep in entry:
+        wenn ignoresep und ignoresep in entry:
             subentries = [entry]
         sonst:
             subentries = entry.strip().replace(',', ' ').split()
@@ -37,6 +37,6 @@ def parse_entries(entries, *, ignoresep=Nichts):
 def _iter_significant_lines(lines):
     fuer line in lines:
         line = line.partition('#')[0]
-        wenn not line.strip():
+        wenn nicht line.strip():
             continue
         yield line

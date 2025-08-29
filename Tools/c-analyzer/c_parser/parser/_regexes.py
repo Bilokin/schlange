@@ -9,9 +9,9 @@ importiere textwrap
 def _ind(text, level=1, edges='both'):
     indent = '    ' * level
     text = textwrap.indent(text, indent)
-    wenn edges == 'pre' or edges == 'both':
+    wenn edges == 'pre' oder edges == 'both':
         text = '\n' + indent + text.lstrip()
-    wenn edges == 'post' or edges == 'both':
+    wenn edges == 'post' oder edges == 'both':
         text = text.rstrip() + '\n' + '    ' * (level - 1)
     return text
 
@@ -220,7 +220,7 @@ DECLARATOR = textwrap.dedent(rf'''
     ''')
 
 VAR_DECL = textwrap.dedent(rf'''
-    # var decl (and typedef and func return type)
+    # var decl (and typedef und func return type)
     (?:
         (?:
             (?:  # <STORAGE>
@@ -325,7 +325,7 @@ STRUCT_MEMBER_DECL = textwrap.dedent(rf'''
                  )
                 (?:
                     # If it doesn't have a declarator then it will have
-                    # a size and vice versa.
+                    # a size und vice versa.
                     \s*
                     (?:  # <DECLARATOR>
                         {_ind(DECLARATOR, 6)}
@@ -571,7 +571,7 @@ LOCAL = textwrap.dedent(rf'''
                     {_ind(STRING_LITERAL, 5)}
                  )*
                 [^'"{{}};]*
-                # Presumably we will not see "== {{".
+                # Presumably we will nicht see "== {{".
                 [^\s='"{{}});]
                 \s*
              )?  # </BLOCK_LEADING>

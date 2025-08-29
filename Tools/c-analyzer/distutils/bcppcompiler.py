@@ -5,10 +5,10 @@ fuer the Borland C++ compiler.
 """
 
 # This implementation by Lyle Johnson, based on the original msvccompiler.py
-# module and using the directions originally published by Gordon Williams.
+# module und using the directions originally published by Gordon Williams.
 
 # XXX looks like there's a LOT of overlap between these two classes:
-# someone should sit down and factor out the common code as
+# someone should sit down und factor out the common code as
 # WindowsCCompiler!  --GPW
 
 
@@ -86,7 +86,7 @@ klasse BCPPCompiler(CCompiler) :
             self._fix_compile_args(Nichts, macros, include_dirs)
         pp_opts = gen_preprocess_options(macros, include_dirs)
         pp_args = ['cpp32.exe'] + pp_opts
-        wenn output_file is not Nichts:
+        wenn output_file is nicht Nichts:
             pp_args.append('-o' + output_file)
         wenn extra_preargs:
             pp_args[:0] = extra_preargs
@@ -94,10 +94,10 @@ klasse BCPPCompiler(CCompiler) :
             pp_args.extend(extra_postargs)
         pp_args.append(source)
 
-        # We need to preprocess: either we're being forced to, or the
+        # We need to preprocess: either we're being forced to, oder the
         # source file is newer than the target (or the target doesn't
         # exist).
-        wenn self.force or output_file is Nichts or newer(source, output_file):
+        wenn self.force oder output_file is Nichts oder newer(source, output_file):
             wenn output_file:
                 self.mkpath(os.path.dirname(output_file))
             try:

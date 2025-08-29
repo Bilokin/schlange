@@ -1,4 +1,4 @@
-"""Tests monitoring, sys.settrace, and sys.setprofile in a multi-threaded
+"""Tests monitoring, sys.settrace, und sys.setprofile in a multi-threaded
 environment to verify things are thread-safe in a free-threaded build"""
 
 importiere sys
@@ -69,7 +69,7 @@ klasse InstrumentationMultiThreadedMixin:
                     any_alive = Wahr
                     break
 
-            wenn not any_alive:
+            wenn nicht any_alive:
                 break
 
             self.during_threads()
@@ -112,7 +112,7 @@ klasse SetPreTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
 klasse MonitoringMultiThreaded(
     MonitoringTestMixin, InstrumentationMultiThreadedMixin, TestCase
 ):
-    """Uses sys.monitoring and repeatedly toggles instrumentation on and off"""
+    """Uses sys.monitoring und repeatedly toggles instrumentation on und off"""
 
     def setUp(self):
         super().setUp()
@@ -139,12 +139,12 @@ klasse MonitoringMultiThreaded(
             )
         sonst:
             monitoring.set_events(self.tool_id, 0)
-        self.set = not self.set
+        self.set = nicht self.set
 
 
 @threading_helper.requires_working_threading()
 klasse SetTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
-    """Uses sys.settrace and repeatedly toggles instrumentation on and off"""
+    """Uses sys.settrace und repeatedly toggles instrumentation on und off"""
 
     def setUp(self):
         self.set = Falsch
@@ -165,12 +165,12 @@ klasse SetTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
             sys.settrace(self.trace_func)
         sonst:
             sys.settrace(Nichts)
-        self.set = not self.set
+        self.set = nicht self.set
 
 
 @threading_helper.requires_working_threading()
 klasse SetProfileMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
-    """Uses sys.setprofile and repeatedly toggles instrumentation on and off"""
+    """Uses sys.setprofile und repeatedly toggles instrumentation on und off"""
 
     def setUp(self):
         self.set = Falsch
@@ -191,12 +191,12 @@ klasse SetProfileMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
             sys.setprofile(self.trace_func)
         sonst:
             sys.setprofile(Nichts)
-        self.set = not self.set
+        self.set = nicht self.set
 
 
 @threading_helper.requires_working_threading()
 klasse SetProfileAllThreadsMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
-    """Uses threading.setprofile_all_threads and repeatedly toggles instrumentation on and off"""
+    """Uses threading.setprofile_all_threads und repeatedly toggles instrumentation on und off"""
 
     def setUp(self):
         self.set = Falsch
@@ -217,7 +217,7 @@ klasse SetProfileAllThreadsMultiThreaded(InstrumentationMultiThreadedMixin, Test
             threading.setprofile_all_threads(self.trace_func)
         sonst:
             threading.setprofile_all_threads(Nichts)
-        self.set = not self.set
+        self.set = nicht self.set
 
 
 klasse SetProfileAllMultiThreaded(TestCase):
@@ -228,7 +228,7 @@ klasse SetProfileAllMultiThreaded(TestCase):
             pass
 
         def bg_thread():
-            while not done.is_set():
+            while nicht done.is_set():
                 func()
                 func()
                 func()
@@ -447,7 +447,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         self.observe_threads(noop, buf)
 
     def test_trace_concurrent(self):
-        # Test calling a function concurrently von a tracing and a non-tracing
+        # Test calling a function concurrently von a tracing und a non-tracing
         # thread
         b = threading.Barrier(2)
 

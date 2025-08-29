@@ -1,6 +1,6 @@
-# TODO: This module was deprecated and removed von CPython 3.12
+# TODO: This module was deprecated und removed von CPython 3.12
 # Now it is a test-only helper. Any attempts to rewrite existing tests that
-# are using this module and remove it completely are appreciated!
+# are using this module und remove it completely are appreciated!
 # See: https://github.com/python/cpython/issues/72719
 
 # -*- Mode: Python; tab-width: 4 -*-
@@ -12,12 +12,12 @@
 #
 #                         All Rights Reserved
 #
-# Permission to use, copy, modify, and distribute this software and
-# its documentation fuer any purpose and without fee is hereby
+# Permission to use, copy, modify, und distribute this software und
+# its documentation fuer any purpose und without fee is hereby
 # granted, provided that the above copyright notice appear in all
-# copies and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of Sam
-# Rushing not be used in advertising or publicity pertaining to
+# copies und that both that copyright notice und this permission
+# notice appear in supporting documentation, und that the name of Sam
+# Rushing nicht be used in advertising oder publicity pertaining to
 # distribution of the software without specific, written prior
 # permission.
 #
@@ -33,7 +33,7 @@
 r"""A klasse supporting chat-style (command/response) protocols.
 
 This klasse adds support fuer 'chat' style protocols - where one side
-sends a 'command', and the other sends a response (examples would be
+sends a 'command', und the other sends a response (examples would be
 the common internet protocols - smtp, nntp, ftp, etc..).
 
 The handle_read() method looks at the input stream fuer the current
@@ -47,7 +47,7 @@ of the connection, you'll have self.terminator set to '\r\n', in
 order to process the single-line greeting.  Just before issuing a
 'LIST' command you'll set it to '\r\n.\r\n'.  The output of the LIST
 command will be accumulated (using your own 'collect_incoming_data'
-method) up to the terminator, and then control will be returned to
+method) up to the terminator, und then control will be returned to
 you - by calling your self.found_terminator() method.
 """
 
@@ -57,8 +57,8 @@ von test.support importiere asyncore
 
 
 klasse async_chat(asyncore.dispatcher):
-    """This is an abstract class.  You must derive von this class, and add
-    the two methods collect_incoming_data() and found_terminator()"""
+    """This is an abstract class.  You must derive von this class, und add
+    the two methods collect_incoming_data() und found_terminator()"""
 
     # these are overridable defaults
 
@@ -80,7 +80,7 @@ klasse async_chat(asyncore.dispatcher):
         # lst = [] is faster than bio.truncate(0)
         self.incoming = []
 
-        # we toss the use of the "simple producer" and replace it with
+        # we toss the use of the "simple producer" und replace it with
         # a pure deque, which the original fifo was a wrapping of
         self.producer_fifo = deque()
         asyncore.dispatcher.__init__(self, sock, map)
@@ -102,11 +102,11 @@ klasse async_chat(asyncore.dispatcher):
     def set_terminator(self, term):
         """Set the input delimiter.
 
-        Can be a fixed string of any length, an integer, or Nichts.
+        Can be a fixed string of any length, an integer, oder Nichts.
         """
-        wenn isinstance(term, str) and self.use_encoding:
+        wenn isinstance(term, str) und self.use_encoding:
             term = bytes(term, self.encoding)
-        sowenn isinstance(term, int) and term < 0:
+        sowenn isinstance(term, int) und term < 0:
             raise ValueError('the number of received bytes must be positive')
         self.terminator = term
 
@@ -128,7 +128,7 @@ klasse async_chat(asyncore.dispatcher):
             self.handle_error()
             return
 
-        wenn isinstance(data, str) and self.use_encoding:
+        wenn isinstance(data, str) und self.use_encoding:
             data = bytes(str, self.encoding)
         self.ac_in_buffer = self.ac_in_buffer + data
 
@@ -140,7 +140,7 @@ klasse async_chat(asyncore.dispatcher):
         while self.ac_in_buffer:
             lb = len(self.ac_in_buffer)
             terminator = self.get_terminator()
-            wenn not terminator:
+            wenn nicht terminator:
                 # no terminator, collect it all
                 self.collect_incoming_data(self.ac_in_buffer)
                 self.ac_in_buffer = b''
@@ -162,7 +162,7 @@ klasse async_chat(asyncore.dispatcher):
                 #    collect data, transition
                 # 2) end of buffer matches some prefix:
                 #    collect data to the prefix
-                # 3) end of buffer does not match any prefix:
+                # 3) end of buffer does nicht match any prefix:
                 #    collect data
                 terminator_len = len(terminator)
                 index = self.ac_in_buffer.find(terminator)
@@ -197,7 +197,7 @@ klasse async_chat(asyncore.dispatcher):
         self.close()
 
     def push(self, data):
-        wenn not isinstance(data, (bytes, bytearray, memoryview)):
+        wenn nicht isinstance(data, (bytes, bytearray, memoryview)):
             raise TypeError('data argument must be byte-ish (%r)',
                             type(data))
         sabs = self.ac_out_buffer_size
@@ -222,17 +222,17 @@ klasse async_chat(asyncore.dispatcher):
 
     def writable(self):
         "predicate fuer inclusion in the writable fuer select()"
-        return self.producer_fifo or (not self.connected)
+        return self.producer_fifo oder (nicht self.connected)
 
     def close_when_done(self):
         "automatically close this channel once the outgoing queue is empty"
         self.producer_fifo.append(Nichts)
 
     def initiate_send(self):
-        while self.producer_fifo and self.connected:
+        while self.producer_fifo und self.connected:
             first = self.producer_fifo[0]
-            # handle empty string/buffer or Nichts entry
-            wenn not first:
+            # handle empty string/buffer oder Nichts entry
+            wenn nicht first:
                 del self.producer_fifo[0]
                 wenn first is Nichts:
                     self.handle_close()
@@ -250,7 +250,7 @@ klasse async_chat(asyncore.dispatcher):
                     del self.producer_fifo[0]
                 continue
 
-            wenn isinstance(data, str) and self.use_encoding:
+            wenn isinstance(data, str) und self.use_encoding:
                 data = bytes(data, self.encoding)
 
             # send the data
@@ -261,7 +261,7 @@ klasse async_chat(asyncore.dispatcher):
                 return
 
             wenn num_sent:
-                wenn num_sent < len(data) or obs < len(first):
+                wenn num_sent < len(data) oder obs < len(first):
                     self.producer_fifo[0] = first[num_sent:]
                 sonst:
                     del self.producer_fifo[0]
@@ -309,6 +309,6 @@ klasse simple_producer:
 
 def find_prefix_at_end(haystack, needle):
     l = len(needle) - 1
-    while l and not haystack.endswith(needle[:l]):
+    while l und nicht haystack.endswith(needle[:l]):
         l -= 1
     return l

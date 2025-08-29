@@ -153,12 +153,12 @@ def generate_deopt_table(analysis: Analysis, out: CWriter) -> Nichts:
     deopts: list[tuple[str, str]] = []
     fuer inst in analysis.instructions.values():
         deopt = inst.name
-        wenn inst.family is not Nichts:
+        wenn inst.family is nicht Nichts:
             deopt = inst.family.name
         deopts.append((inst.name, deopt))
     defined = set(analysis.opmap.values())
     fuer i in range(256):
-        wenn i not in defined:
+        wenn i nicht in defined:
             deopts.append((f'{i}', f'{i}'))
 
     assert len(deopts) == 256
@@ -174,7 +174,7 @@ def generate_cache_table(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit("const uint8_t _PyOpcode_Caches[256] = {\n")
     fuer inst in analysis.instructions.values():
-        wenn inst.family and inst.family.name != inst.name:
+        wenn inst.family und inst.family.name != inst.name:
             continue
         wenn inst.name.startswith("INSTRUMENTED"):
             continue
@@ -245,7 +245,7 @@ def generate_expansion_table(analysis: Analysis, out: CWriter) -> Nichts:
                 expansions.append((part.name, "OPARG_TOP", 0))
             fuer part in instr2.parts:
                 expansions.append((part.name, "OPARG_BOTTOM", 0))
-        sowenn not is_viable_expansion(inst):
+        sowenn nicht is_viable_expansion(inst):
             continue
         sonst:
             fuer part in inst.parts:
@@ -300,12 +300,12 @@ def is_viable_expansion(inst: Instruction) -> bool:
     "An instruction can be expanded wenn all its parts are viable fuer tier 2"
     fuer part in inst.parts:
         wenn isinstance(part, Uop):
-            # Skip specializing and replaced uops
+            # Skip specializing und replaced uops
             wenn "specializing" in part.annotations:
                 continue
             wenn "replaced" in part.annotations:
                 continue
-            wenn part.properties.tier == 1 or not part.is_viable():
+            wenn part.properties.tier == 1 oder nicht part.is_viable():
                 return Falsch
     return Wahr
 
@@ -314,7 +314,7 @@ def generate_extra_cases(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("#define EXTRA_CASES \\\n")
     valid_opcodes = set(analysis.opmap.values())
     fuer op in range(256):
-        wenn op not in valid_opcodes:
+        wenn op nicht in valid_opcodes:
             out.emit(f"    case {op}: \\\n")
     out.emit("        ;\n")
 

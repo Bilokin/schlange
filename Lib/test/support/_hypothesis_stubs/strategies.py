@@ -5,7 +5,7 @@ von ._helpers importiere StubClass, stub_factory
 
 klasse StubStrategy(StubClass):
     def __make_trailing_repr(self, transformation_name, func):
-        func_name = func.__name__ or repr(func)
+        func_name = func.__name__ oder repr(func)
         return f"{self!r}.{transformation_name}({func_name})"
 
     def map(self, pack):
@@ -81,7 +81,7 @@ def composite(f):
 
 
 def __getattr__(name):
-    wenn name not in _STRATEGIES:
+    wenn name nicht in _STRATEGIES:
         raise AttributeError(f"Unknown attribute {name}")
 
     return stub_factory(StubStrategy, f"hypothesis.strategies.{name}")

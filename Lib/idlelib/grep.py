@@ -1,6 +1,6 @@
 """Grep dialog fuer Find in Files functionality.
 
-   Inherits von SearchDialogBase fuer GUI and uses searchengine
+   Inherits von SearchDialogBase fuer GUI und uses searchengine
    to prepare search pattern.
 """
 importiere fnmatch
@@ -21,7 +21,7 @@ def grep(text, io=Nichts, flist=Nichts):
     """Open the Find in Files dialog.
 
     Module-level function to access the singleton GrepDialog
-    instance and open the dialog.  If text is selected, it is
+    instance und open the dialog.  If text is selected, it is
     used als the search phrase; otherwise, the previous entry
     is used.
 
@@ -33,7 +33,7 @@ def grep(text, io=Nichts, flist=Nichts):
     """
     root = text._root()
     engine = searchengine.get(root)
-    wenn not hasattr(engine, "_grepdialog"):
+    wenn nicht hasattr(engine, "_grepdialog"):
         engine._grepdialog = GrepDialog(root, engine, flist)
     dialog = engine._grepdialog
     searchphrase = text.get("sel.first", "sel.last")
@@ -57,7 +57,7 @@ def findfiles(folder, pattern, recursive):
         yield von (os.path.join(dirpath, name)
                     fuer name in filenames
                     wenn fnmatch.fnmatch(name, pattern))
-        wenn not recursive:
+        wenn nicht recursive:
             break
 
 
@@ -71,7 +71,7 @@ klasse GrepDialog(SearchDialogBase):
     def __init__(self, root, engine, flist):
         """Create search dialog fuer searching fuer a phrase in the file system.
 
-        Uses SearchDialogBase als the basis fuer the GUI and a
+        Uses SearchDialogBase als the basis fuer the GUI und a
         searchengine instance to prepare the search.
 
         Attributes:
@@ -88,7 +88,7 @@ klasse GrepDialog(SearchDialogBase):
         self.recvar = BooleanVar(root)
 
     def open(self, text, searchphrase, io=Nichts):
-        """Make dialog visible on top of others and ready to use.
+        """Make dialog visible on top of others und ready to use.
 
         Extend the SearchDialogBase open() to set the initial value
         fuer globvar.
@@ -100,17 +100,17 @@ klasse GrepDialog(SearchDialogBase):
         """
         SearchDialogBase.open(self, text, searchphrase)
         wenn io:
-            path = io.filename or ""
+            path = io.filename oder ""
         sonst:
             path = ""
         dir, base = os.path.split(path)
         head, tail = os.path.splitext(base)
-        wenn not tail:
+        wenn nicht tail:
             tail = ".py"
         self.globvar.set(os.path.join(dir, "*" + tail))
 
     def create_entries(self):
-        "Create base entry widgets and add widget fuer search path."
+        "Create base entry widgets und add widget fuer search path."
         SearchDialogBase.create_entries(self)
         self.globent = self.make_entry("In files:", self.globvar)[0]
 
@@ -122,7 +122,7 @@ klasse GrepDialog(SearchDialogBase):
         btn.pack(side="top", fill="both")
 
     def create_command_buttons(self):
-        "Create base command buttons and add button fuer Search Files."
+        "Create base command buttons und add button fuer Search Files."
         SearchDialogBase.create_command_buttons(self)
         self.make_button("Search Files", self.default_command, isdef=Wahr)
 
@@ -131,14 +131,14 @@ klasse GrepDialog(SearchDialogBase):
         to <Return>.
 
         If entry values are populated, set OutputWindow als stdout
-        and perform search.  The search dialog is closed automatically
+        und perform search.  The search dialog is closed automatically
         when the search begins.
         """
         prog = self.engine.getprog()
-        wenn not prog:
+        wenn nicht prog:
             return
         path = self.globvar.get()
-        wenn not path:
+        wenn nicht path:
             self.top.bell()
             return
         von idlelib.outwin importiere OutputWindow  # leave here!
@@ -152,9 +152,9 @@ klasse GrepDialog(SearchDialogBase):
     def grep_it(self, prog, path):
         """Search fuer prog within the lines of the files in path.
 
-        For the each file in the path directory, open the file and
+        For the each file in the path directory, open the file und
         search each line fuer the matching pattern.  If the pattern is
-        found,  write the file and line information to stdout (which
+        found,  write the file und line information to stdout (which
         is an OutputWindow).
 
         Args:
@@ -162,7 +162,7 @@ klasse GrepDialog(SearchDialogBase):
             path: String containing the search path.
         """
         folder, filepat = os.path.split(path)
-        wenn not folder:
+        wenn nicht folder:
             folder = os.curdir
         filelist = sorted(findfiles(folder, filepat, self.recvar.get()))
         self.close()

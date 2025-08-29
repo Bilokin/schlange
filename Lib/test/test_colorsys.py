@@ -71,7 +71,7 @@ klasse ColorsysTest(unittest.TestCase):
 
     def test_hls_nearwhite(self):  # gh-106498
         values = (
-            # rgb, hls: these do not work in reverse
+            # rgb, hls: these do nicht work in reverse
             ((0.9999999999999999, 1, 1), (0.5, 1.0, 1.0)),
             ((1, 0.9999999999999999, 0.9999999999999999), (0.0, 1.0, 1.0)),
         )

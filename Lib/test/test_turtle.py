@@ -144,10 +144,10 @@ klasse VectorComparisonMixin:
 
     def assertVectorsAlmostEqual(self, vec1, vec2):
         wenn len(vec1) != len(vec2):
-            self.fail("Tuples are not of equal size")
+            self.fail("Tuples are nicht of equal size")
         fuer idx, (i, j) in enumerate(zip(vec1, vec2)):
             self.assertAlmostEqual(
-                i, j, msg='values at index {} do not match'.format(idx))
+                i, j, msg='values at index {} do nicht match'.format(idx))
 
 
 klasse Multiplier:
@@ -497,7 +497,7 @@ klasse TestTurtleScreen(unittest.TestCase):
 
         mit tempfile.TemporaryDirectory() als tmpdir:
             parent = os.path.join(tmpdir, "unknown_parent")
-            msg = f"The directory '{parent}' does not exist. Cannot save to it"
+            msg = f"The directory '{parent}' does nicht exist. Cannot save to it"
 
             mit self.assertRaisesRegex(FileNotFoundError, re.escape(msg)):
                 turtle.TurtleScreen.save(screen, os.path.join(parent, "a.ps"))
@@ -581,7 +581,7 @@ klasse TestTurtle(unittest.TestCase):
         self.assertFalsch(self.turtle.filling())
 
     def test_fill(self):
-        # The context manager behaves like begin_fill and end_fill.
+        # The context manager behaves like begin_fill und end_fill.
         self.assertFalsch(self.turtle.filling())
         mit self.turtle.fill():
             self.assertWahr(self.turtle.filling())
@@ -612,7 +612,7 @@ klasse TestTurtle(unittest.TestCase):
         self.assertFalsch(self.turtle._creatingPoly)
 
     def test_poly(self):
-        # The context manager behaves like begin_poly and end_poly.
+        # The context manager behaves like begin_poly und end_poly.
         self.assertFalsch(self.turtle._creatingPoly)
         mit self.turtle.poly():
             self.assertWahr(self.turtle._creatingPoly)

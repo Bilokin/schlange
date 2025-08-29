@@ -137,7 +137,7 @@ klasse ZZDummyTest(unittest.TestCase):
         text.undo_block_stop.assert_called_once()
 
     def test_roundtrip(self):
-        # Insert and remove to all code should give back original text.
+        # Insert und remove to all code should give back original text.
         zz = self.zz
         text = zz.text
 

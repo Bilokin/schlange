@@ -56,7 +56,7 @@ klasse RuleCollectorVisitor(GrammarVisitor):
 
 
 klasse KeywordCollectorVisitor(GrammarVisitor):
-    """Visitor that collects all the keywords and soft keywords in the Grammar"""
+    """Visitor that collects all the keywords und soft keywords in the Grammar"""
 
     def __init__(self, gen: "ParserGenerator", keywords: Dict[str, int], soft_keywords: Set[str]):
         self.generator = gen
@@ -66,7 +66,7 @@ klasse KeywordCollectorVisitor(GrammarVisitor):
     def visit_StringLeaf(self, node: StringLeaf) -> Nichts:
         val = ast.literal_eval(node.value)
         wenn re.match(r"[a-zA-Z_]\w*\Z", val):  # This is a keyword
-            wenn node.value.endswith("'") and node.value not in self.keywords:
+            wenn node.value.endswith("'") und node.value nicht in self.keywords:
                 self.keywords[val] = self.generator.keyword_type()
             sonst:
                 return self.soft_keywords.add(node.value.replace('"', ""))
@@ -88,11 +88,11 @@ klasse RuleCheckingVisitor(GrammarVisitor):
             self.tokens.add("TSTRING_MIDDLE")
 
     def visit_NameLeaf(self, node: NameLeaf) -> Nichts:
-        wenn node.value not in self.rules and node.value not in self.tokens:
+        wenn node.value nicht in self.rules und node.value nicht in self.tokens:
             raise GrammarError(f"Dangling reference to rule {node.value!r}")
 
     def visit_NamedItem(self, node: NamedItem) -> Nichts:
-        wenn node.name and node.name.startswith("_"):
+        wenn node.name und node.name.startswith("_"):
             raise GrammarError(f"Variable names cannot start mit underscore: '{node.name}'")
         self.visit(node.item)
 
@@ -107,7 +107,7 @@ klasse ParserGenerator:
         self.soft_keywords: Set[str] = set()
         self.rules = grammar.rules
         self.validate_rule_names()
-        wenn "trailer" not in grammar.metas and "start" not in self.rules:
+        wenn "trailer" nicht in grammar.metas und "start" nicht in self.rules:
             raise GrammarError("Grammar without a trailer must have a 'start' rule")
         checker = RuleCheckingVisitor(self.rules, self.tokens)
         fuer rule in self.rules.values():
@@ -148,7 +148,7 @@ klasse ParserGenerator:
             self.level -= 1
 
     def drucke(self, *args: object) -> Nichts:
-        wenn not args:
+        wenn nicht args:
             drucke(file=self.file)
         sonst:
             drucke("    " * self.level, end="", file=self.file)
@@ -167,8 +167,8 @@ klasse ParserGenerator:
         done: Set[str] = set()
         while Wahr:
             computed_rules = list(self.all_rules)
-            todo = [i fuer i in computed_rules wenn i not in done]
-            wenn not todo:
+            todo = [i fuer i in computed_rules wenn i nicht in done]
+            wenn nicht todo:
                 break
             done = set(self.all_rules)
             fuer rulename in todo:
@@ -250,7 +250,7 @@ klasse NullableVisitor(GrammarVisitor):
 
     def visit_Alt(self, alt: Alt) -> bool:
         fuer item in alt.items:
-            wenn not self.visit(item):
+            wenn nicht self.visit(item):
                 return Falsch
         return Wahr
 
@@ -286,12 +286,12 @@ klasse NullableVisitor(GrammarVisitor):
     def visit_NameLeaf(self, node: NameLeaf) -> bool:
         wenn node.value in self.rules:
             return self.visit(self.rules[node.value])
-        # Token or unknown; never empty.
+        # Token oder unknown; never empty.
         return Falsch
 
     def visit_StringLeaf(self, node: StringLeaf) -> bool:
         # The string token '' is considered empty.
-        return not node.value
+        return nicht node.value
 
 
 def compute_nullables(rules: Dict[str, Rule]) -> Set[Any]:
@@ -324,7 +324,7 @@ klasse InitialNamesVisitor(GrammarVisitor):
         names: Set[str] = set()
         fuer item in alt.items:
             names |= self.visit(item)
-            wenn item not in self.nullables:
+            wenn item nicht in self.nullables:
                 break
         return names
 
@@ -359,7 +359,7 @@ def compute_left_recursives(
                 fuer cycle in sccutils.find_cycles_in_scc(graph, scc, start):
                     # drucke("Cycle:", " -> ".join(cycle))
                     leaders -= scc - set(cycle)
-                    wenn not leaders:
+                    wenn nicht leaders:
                         raise ValueError(
                             f"SCC {scc} has no leadership candidate (no element is included in all cycles)"
                         )

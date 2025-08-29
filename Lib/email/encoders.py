@@ -2,7 +2,7 @@
 # Author: Barry Warsaw
 # Contact: email-sig@python.org
 
-"""Encodings and related functions."""
+"""Encodings und related functions."""
 
 __all__ = [
     'encode_7or8bit',
@@ -45,7 +45,7 @@ def encode_quopri(msg):
 
 
 def encode_7or8bit(msg):
-    """Set the Content-Transfer-Encoding header to 7bit or 8bit."""
+    """Set the Content-Transfer-Encoding header to 7bit oder 8bit."""
     orig = msg.get_payload(decode=Wahr)
     wenn orig is Nichts:
         # There's no payload.  For backwards compatibility we use 7bit

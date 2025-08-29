@@ -13,7 +13,7 @@ von test.test_asyncio importiere utils als test_utils
 von test importiere support
 von test.support importiere os_helper
 
-wenn not support.has_subprocess_support:
+wenn nicht support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 wenn support.MS_WINDOWS:
@@ -107,7 +107,7 @@ klasse SubprocessTransportTests(test_utils.TestCase):
         transport._returncode = Nichts
         self.assertEqual(
             repr(transport),
-            "<TestSubprocessTransport not started>"
+            "<TestSubprocessTransport nicht started>"
         )
         transport.close()
 
@@ -129,7 +129,7 @@ klasse SubprocessMixin:
             await proc.stdin.drain()
             proc.stdin.close()
 
-            # get output and exitcode
+            # get output und exitcode
             data = await proc.stdout.read()
             exitcode = await proc.wait()
             return (exitcode, data)
@@ -216,7 +216,7 @@ klasse SubprocessMixin:
         wenn sys.platform == 'win32':
             von subprocess importiere CREATE_NEW_PROCESS_GROUP
             # On windows create a new process group so that killing process
-            # kills the process and all its children.
+            # kills the process und all its children.
             creationflags = CREATE_NEW_PROCESS_GROUP
         proc = self.loop.run_until_complete(
             asyncio.create_subprocess_shell(blocking_shell_command, stdout=asyncio.subprocess.PIPE,
@@ -251,7 +251,7 @@ klasse SubprocessMixin:
     def test_send_signal(self):
         # bpo-31034: Make sure that we get the default signal handler (killing
         # the process). The parent process may have decided to ignore SIGHUP,
-        # and signal handlers are inherited.
+        # und signal handlers are inherited.
         old_handler = signal.signal(signal.SIGHUP, signal.SIG_DFL)
         try:
             code = 'import time; drucke("sleeping", flush=Wahr); time.sleep(3600)'
@@ -317,7 +317,7 @@ klasse SubprocessMixin:
             await proc.stdin.drain()
 
         coro = write_stdin(proc, large_data)
-        # drain() must raise BrokenPipeError or ConnectionResetError
+        # drain() must raise BrokenPipeError oder ConnectionResetError
         mit test_utils.disable_logger():
             self.assertRaises((BrokenPipeError, ConnectionResetError),
                               self.loop.run_until_complete, coro)
@@ -385,7 +385,7 @@ klasse SubprocessMixin:
         self.assertWahr(transport.resume_reading.called)
 
     def test_stdin_not_inheritable(self):
-        # asyncio issue #209: stdin must not be inheritable, otherwise
+        # asyncio issue #209: stdin must nicht be inheritable, otherwise
         # the Process.communicate() hangs
         async def len_message(message):
             code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
@@ -480,7 +480,7 @@ klasse SubprocessMixin:
         self.assertEqual(output, Nichts)
         self.assertEqual(exitcode, 0)
 
-    @unittest.skipIf(sys.platform not in ('linux', 'android'),
+    @unittest.skipIf(sys.platform nicht in ('linux', 'android'),
                      "Don't have /dev/stdin")
     def test_devstdin_input(self):
 
@@ -518,7 +518,7 @@ klasse SubprocessMixin:
             # Cancel the future
             task.cancel()
 
-            # Kill the process and wait until it is done
+            # Kill the process und wait until it is done
             proc.kill()
             await proc.wait()
 
@@ -605,7 +605,7 @@ klasse SubprocessMixin:
             transport, protocol = await create
             proc = transport.get_extra_info('subprocess')
 
-            # kill the process (but asyncio is not notified immediately)
+            # kill the process (but asyncio is nicht notified immediately)
             proc.kill()
             proc.wait()
 
@@ -627,8 +627,8 @@ klasse SubprocessMixin:
         self.assertIsNotNichts(proc_returncode)
         self.assertIsNichts(transport_return_code)
 
-        # transport.close() must not kill the process wenn it finished, even if
-        # the transport was not notified yet
+        # transport.close() must nicht kill the process wenn it finished, even if
+        # the transport was nicht notified yet
         self.assertFalsch(killed)
 
     async def _test_popen_error(self, stdin):
@@ -783,8 +783,8 @@ klasse SubprocessMixin:
 
     def test_subprocess_protocol_events(self):
         # gh-108973: Test that all subprocess protocol methods are called.
-        # The protocol methods are not called in a deterministic order.
-        # The order depends on the event loop and the operating system.
+        # The protocol methods are nicht called in a deterministic order.
+        # The order depends on the event loop und the operating system.
         events = []
         fds = [1, 2]
         expected = [
@@ -912,7 +912,7 @@ wenn sys.platform != 'win32':
 
     @unittest.skipUnless(
         unix_events.can_use_pidfd(),
-        "operating system does not support pidfds",
+        "operating system does nicht support pidfds",
     )
     klasse SubprocessPidfdWatcherTests(SubprocessWatcherMixin,
                                       test_utils.TestCase):

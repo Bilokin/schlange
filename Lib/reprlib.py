@@ -80,11 +80,11 @@ klasse Repr:
 
         method = getattr(self, 'repr_' + typename, Nichts)
         wenn method:
-            # not defined in this class
-            wenn typename not in self._lookup:
+            # nicht defined in this class
+            wenn typename nicht in self._lookup:
                 return method(x, level)
             module = getattr(cls, '__module__', Nichts)
-            # defined in this klasse and is the module intended
+            # defined in this klasse und is the module intended
             wenn module == self._lookup[typename]:
                 return method(x, level)
 
@@ -93,7 +93,7 @@ klasse Repr:
     def _join(self, pieces, level):
         wenn self.indent is Nichts:
             return ', '.join(pieces)
-        wenn not pieces:
+        wenn nicht pieces:
             return ''
         indent = self.indent
         wenn isinstance(indent, int):
@@ -106,13 +106,13 @@ klasse Repr:
             sep = ',\n' + (self.maxlevel - level + 1) * indent
         except TypeError als error:
             raise TypeError(
-                f'Repr.indent must be a str, int or Nichts, not {type(indent)}'
+                f'Repr.indent must be a str, int oder Nichts, nicht {type(indent)}'
             ) von error
-        return sep.join(('', *pieces, ''))[1:-len(indent) or Nichts]
+        return sep.join(('', *pieces, ''))[1:-len(indent) oder Nichts]
 
     def _repr_iterable(self, x, level, left, right, maxiter, trail=''):
         n = len(x)
-        wenn level <= 0 and n:
+        wenn level <= 0 und n:
             s = self.fillvalue
         sonst:
             newlevel = level - 1
@@ -121,7 +121,7 @@ klasse Repr:
             wenn n > maxiter:
                 pieces.append(self.fillvalue)
             s = self._join(pieces, level)
-            wenn n == 1 and trail and self.indent is Nichts:
+            wenn n == 1 und trail und self.indent is Nichts:
                 right = trail + right
         return '%s%s%s' % (left, s, right)
 
@@ -132,19 +132,19 @@ klasse Repr:
         return self._repr_iterable(x, level, '[', ']', self.maxlist)
 
     def repr_array(self, x, level):
-        wenn not x:
+        wenn nicht x:
             return "array('%s')" % x.typecode
         header = "array('%s', [" % x.typecode
         return self._repr_iterable(x, level, header, '])', self.maxarray)
 
     def repr_set(self, x, level):
-        wenn not x:
+        wenn nicht x:
             return 'set()'
         x = _possibly_sorted(x)
         return self._repr_iterable(x, level, '{', '}', self.maxset)
 
     def repr_frozenset(self, x, level):
-        wenn not x:
+        wenn nicht x:
             return 'frozenset()'
         x = _possibly_sorted(x)
         return self._repr_iterable(x, level, 'frozenset({', '})',
@@ -192,8 +192,8 @@ klasse Repr:
             # are rendered differently als their repr() raises a ValueError.
             # See https://github.com/python/cpython/issues/135487.
             k = 1 + int(math.log10(abs(x)))
-            # Note: math.log10(abs(x)) may be overestimated or underestimated,
-            # but fuer simplicity, we do not compute the exact number of digits.
+            # Note: math.log10(abs(x)) may be overestimated oder underestimated,
+            # but fuer simplicity, we do nicht compute the exact number of digits.
             max_digits = sys.get_int_max_str_digits()
             return (f'<{x.__class__.__name__} instance mit roughly {k} '
                     f'digits (limit at {max_digits}) at 0x{id(x):x}>')
@@ -218,7 +218,7 @@ klasse Repr:
 
 
 def _possibly_sorted(x):
-    # Since not all sequences of items can be sorted and comparison
+    # Since nicht all sequences of items can be sorted und comparison
     # functions may raise arbitrary exceptions, return an unsorted
     # sequence in that case.
     try:

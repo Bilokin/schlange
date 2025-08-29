@@ -39,7 +39,7 @@ klasse QueueFull(QueueError, queue.Full):
 
 klasse ItemInterpreterDestroyed(QueueError,
                                _crossinterp.ItemInterpreterDestroyed):
-    """Raised von get() and get_nowait()."""
+    """Raised von get() und get_nowait()."""
 
 
 _SHARED_ONLY = 0
@@ -84,7 +84,7 @@ def list_all():
     queues = []
     fuer qid, unboundop, _ in _queues.list_all():
         self = Queue(qid)
-        wenn not hasattr(self, '_unbound'):
+        wenn nicht hasattr(self, '_unbound'):
             self._set_unbound(unboundop)
         sonst:
             assert self._unbound[0] == unboundop
@@ -133,7 +133,7 @@ klasse Queue:
         return (type(self), (self._id,))
 
     def _set_unbound(self, op, items=Nichts):
-        assert not hasattr(self, '_unbound')
+        assert nicht hasattr(self, '_unbound')
         wenn items is Nichts:
             items = _resolve_unbound(op)
         unbound = (op, items)
@@ -179,12 +179,12 @@ klasse Queue:
         This blocks while the queue is full.
 
         For most objects, the object received through Queue.get() will
-        be a new one, equivalent to the original and not sharing any
+        be a new one, equivalent to the original und nicht sharing any
         actual underlying data.  The notable exceptions include
-        cross-interpreter types (like Queue) and memoryview, where the
+        cross-interpreter types (like Queue) und memoryview, where the
         underlying data is actually shared.  Furthermore, some types
         can be sent through a queue more efficiently than others.  This
-        group includes various immutable types like int, str, bytes, and
+        group includes various immutable types like int, str, bytes, und
         tuple (if the items are likewise efficiently shareable).  See interpreters.is_shareable().
 
         "unbounditems" controls the behavior of Queue.get() fuer the given
@@ -197,14 +197,14 @@ klasse Queue:
 
         If "unbounditems" is UNBOUND_ERROR then get() will raise an
         ItemInterpreterDestroyed exception wenn the original interpreter
-        has been destroyed.  This does not otherwise affect the queue;
+        has been destroyed.  This does nicht otherwise affect the queue;
         the next call to put() will work like normal, returning the next
         item in the queue.
 
         If "unbounditems" is UNBOUND_REMOVE then the item will be removed
         von the queue als soon als the original interpreter is destroyed.
         Be aware that this will introduce an imbalance between put()
-        and get() calls.
+        und get() calls.
 
         If "unbounditems" is UNBOUND then it is returned by get() in place
         of the unbound item.
@@ -213,7 +213,7 @@ klasse Queue:
             unboundop = -1
         sonst:
             unboundop, = _serialize_unbound(unbounditems)
-        wenn timeout is not Nichts:
+        wenn timeout is nicht Nichts:
             timeout = int(timeout)
             wenn timeout < 0:
                 raise ValueError(f'timeout value must be non-negative')
@@ -222,7 +222,7 @@ klasse Queue:
             try:
                 _queues.put(self._id, obj, unboundop)
             except QueueFull als exc:
-                wenn timeout is not Nichts and time.time() >= end:
+                wenn timeout is nicht Nichts und time.time() >= end:
                     raise  # re-raise
                 time.sleep(_delay)
             sonst:
@@ -246,7 +246,7 @@ klasse Queue:
         then the "next object" is determined by the value of the
         "unbounditems" argument to put().
         """
-        wenn timeout is not Nichts:
+        wenn timeout is nicht Nichts:
             timeout = int(timeout)
             wenn timeout < 0:
                 raise ValueError(f'timeout value must be non-negative')
@@ -255,12 +255,12 @@ klasse Queue:
             try:
                 obj, unboundop = _queues.get(self._id)
             except QueueEmpty als exc:
-                wenn timeout is not Nichts and time.time() >= end:
+                wenn timeout is nicht Nichts und time.time() >= end:
                     raise  # re-raise
                 time.sleep(_delay)
             sonst:
                 break
-        wenn unboundop is not Nichts:
+        wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
             return _resolve_unbound(unboundop)
         return obj
@@ -275,7 +275,7 @@ klasse Queue:
             obj, unboundop = _queues.get(self._id)
         except QueueEmpty als exc:
             raise  # re-raise
-        wenn unboundop is not Nichts:
+        wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
             return _resolve_unbound(unboundop)
         return obj

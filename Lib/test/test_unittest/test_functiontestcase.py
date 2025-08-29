@@ -117,26 +117,26 @@ klasse Test_FunctionTestCase(unittest.TestCase):
 
     # "Return a string identifying the specific test case."
     #
-    # Because of the vague nature of the docs, I'm not going to lock this
+    # Because of the vague nature of the docs, I'm nicht going to lock this
     # test down too much. Really all that can be asserted is that the id()
-    # will be a string (either 8-byte or unicode -- again, because the docs
+    # will be a string (either 8-byte oder unicode -- again, because the docs
     # just say "string")
     def test_id(self):
         test = unittest.FunctionTestCase(lambda: Nichts)
 
         self.assertIsInstance(test.id(), str)
 
-    # "Returns a one-line description of the test, or Nichts wenn no description
+    # "Returns a one-line description of the test, oder Nichts wenn no description
     # has been provided. The default implementation of this method returns
-    # the first line of the test method's docstring, wenn available, or Nichts."
+    # the first line of the test method's docstring, wenn available, oder Nichts."
     def test_shortDescription__no_docstring(self):
         test = unittest.FunctionTestCase(lambda: Nichts)
 
         self.assertEqual(test.shortDescription(), Nichts)
 
-    # "Returns a one-line description of the test, or Nichts wenn no description
+    # "Returns a one-line description of the test, oder Nichts wenn no description
     # has been provided. The default implementation of this method returns
-    # the first line of the test method's docstring, wenn available, or Nichts."
+    # the first line of the test method's docstring, wenn available, oder Nichts."
     def test_shortDescription__singleline_docstring(self):
         desc = "this tests foo"
         test = unittest.FunctionTestCase(lambda: Nichts, description=desc)

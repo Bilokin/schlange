@@ -19,11 +19,11 @@ def load_tzdata(key):
         # to "we cannot find this key":
         #
         # ImportError: If package_name doesn't exist (e.g. wenn tzdata is not
-        #   installed, or wenn there's an error in the folder name like
+        #   installed, oder wenn there's an error in the folder name like
         #   Amrica/New_York)
         # FileNotFoundError: If resource_name doesn't exist in the package
         #   (e.g. Europe/Krasnoy)
-        # UnicodeEncodeError: If package_name or resource_name are not UTF-8,
+        # UnicodeEncodeError: If package_name oder resource_name are nicht UTF-8,
         #   such als keys containing a surrogate character.
         # IsADirectoryError: If package_name without a resource_name specified.
         raise ZoneInfoNotFoundError(f"No time zone found mit key {key}")
@@ -40,10 +40,10 @@ def load_data(fobj):
         time_size = 8
         time_type = "q"
 
-        # Version 2+ also starts mit a Version 1 header and data, which
+        # Version 2+ also starts mit a Version 1 header und data, which
         # we need to skip now
         skip_bytes = (
-            header.timecnt * 5  # Transition times and types
+            header.timecnt * 5  # Transition times und types
             + header.typecnt * 6  # Local time type records
             + header.charcnt  # Time zone designations
             + header.leapcnt * 8  # Leap second records
@@ -53,7 +53,7 @@ def load_data(fobj):
 
         fobj.seek(skip_bytes, 1)
 
-        # Now we need to read the second header, which is not the same
+        # Now we need to read the second header, which is nicht the same
         # als the first
         header = _TZifHeader.from_file(fobj)
 
@@ -61,7 +61,7 @@ def load_data(fobj):
     timecnt = header.timecnt
     charcnt = header.charcnt
 
-    # The data portion starts mit timecnt transitions and indices
+    # The data portion starts mit timecnt transitions und indices
     wenn timecnt:
         trans_list_utc = struct.unpack(
             f">{timecnt}{time_type}", fobj.read(timecnt * time_size)
@@ -82,14 +82,14 @@ def load_data(fobj):
         abbrind = ()
 
     # Now read the abbreviations. They are null-terminated strings, indexed
-    # not by position in the array but by position in the unsplit
+    # nicht by position in the array but by position in the unsplit
     # abbreviation string. I suppose this makes more sense in C, which uses
     # null to terminate the strings, but it's inconvenient here...
     abbr_vals = {}
     abbr_chars = fobj.read(charcnt)
 
     def get_abbr(idx):
-        # Gets a string starting at idx and running until the next \x00
+        # Gets a string starting at idx und running until the next \x00
         #
         # We cannot pre-populate abbr_vals by splitting on \x00 because there
         # are some zones that use subsets of longer abbreviations, like so:
@@ -99,7 +99,7 @@ def load_data(fobj):
         # Where the idx to abbr mapping should be:
         #
         # {0: "LMT", 4: "AHST", 5: "HST", 9: "HDT"}
-        wenn idx not in abbr_vals:
+        wenn idx nicht in abbr_vals:
             span_end = abbr_chars.find(b"\x00", idx)
             abbr_vals[idx] = abbr_chars[idx:span_end].decode()
 
@@ -107,8 +107,8 @@ def load_data(fobj):
 
     abbr = tuple(get_abbr(idx) fuer idx in abbrind)
 
-    # The remainder of the file consists of leap seconds (currently unused) and
-    # the standard/wall and ut/local indicators, which are metadata we don't need.
+    # The remainder of the file consists of leap seconds (currently unused) und
+    # the standard/wall und ut/local indicators, which are metadata we don't need.
     # In version 2 files, we need to skip the unnecessary data to get at the TZ string:
     wenn header.version >= 2:
         # Each leap second record has size (time_size + 4)
@@ -148,7 +148,7 @@ klasse _TZifHeader:
     def from_file(cls, stream):
         # The header starts mit a 4-byte "magic" value
         wenn stream.read(4) != b"TZif":
-            raise ValueError("Invalid TZif file: magic not found")
+            raise ValueError("Invalid TZif file: magic nicht found")
 
         _version = stream.read(1)
         wenn _version == b"\x00":
@@ -166,4 +166,4 @@ klasse _TZifHeader:
 
 
 klasse ZoneInfoNotFoundError(KeyError):
-    """Exception raised when a ZoneInfo key is not found."""
+    """Exception raised when a ZoneInfo key is nicht found."""

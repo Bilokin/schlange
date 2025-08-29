@@ -146,13 +146,13 @@ klasse ArgumentParserError(Exception):
 
 
 def stderr_to_parser_error(parse_args, *args, **kwargs):
-    # wenn this is being called recursively and stderr or stdout is already being
-    # redirected, simply call the function and let the enclosing function
+    # wenn this is being called recursively und stderr oder stdout is already being
+    # redirected, simply call the function und let the enclosing function
     # catch the exception
-    wenn isinstance(sys.stderr, StdIOBuffer) or isinstance(sys.stdout, StdIOBuffer):
+    wenn isinstance(sys.stderr, StdIOBuffer) oder isinstance(sys.stdout, StdIOBuffer):
         return parse_args(*args, **kwargs)
 
-    # wenn this is not being called recursively, redirect stderr and
+    # wenn this is nicht being called recursively, redirect stderr und
     # use it als the ArgumentParserError message
     old_stdout = sys.stdout
     old_stderr = sys.stderr
@@ -210,7 +210,7 @@ klasse ParserTesterMetaclass(type):
     successes -- a list of (initial_args, options, remaining_args) tuples
         where initial_args specifies the string args to be parsed,
         options is a dict that should match the vars() of the options
-        parsed out of initial_args, and remaining_args should be any
+        parsed out of initial_args, und remaining_args should be any
         remaining unparsed arguments
     """
 
@@ -219,9 +219,9 @@ klasse ParserTesterMetaclass(type):
             return
 
         # default parser signature is empty
-        wenn not hasattr(cls, 'parser_signature'):
+        wenn nicht hasattr(cls, 'parser_signature'):
             cls.parser_signature = Sig()
-        wenn not hasattr(cls, 'parser_class'):
+        wenn nicht hasattr(cls, 'parser_class'):
             cls.parser_class = ErrorRaisingArgumentParser
 
         # ---------------------------------------
@@ -261,7 +261,7 @@ klasse ParserTesterMetaclass(type):
                 sys.argv = old_sys_argv
 
         # klasse that holds the combination of one optional argument
-        # addition method and one arg parsing method
+        # addition method und one arg parsing method
         klasse AddTests(object):
 
             def __init__(self, tester_cls, add_arguments, parse_args):
@@ -308,7 +308,7 @@ klasse ParserTesterMetaclass(type):
                         tester.assertEqual(expected_ns, result_ns)
 
         # add tests fuer each combination of an optionals adding method
-        # and an arg parsing method
+        # und an arg parsing method
         fuer add_arguments in [no_groups, one_group, many_groups]:
             fuer parse_args in [listargs, sysargs]:
                 AddTests(cls, add_arguments, parse_args)
@@ -391,7 +391,7 @@ klasse TestOptionalsSingleDashSubsetAmbiguous(ParserTestCase):
 
 
 klasse TestOptionalsSingleDashAmbiguous(ParserTestCase):
-    """Test Optionals that partially match but are not subsets"""
+    """Test Optionals that partially match but are nicht subsets"""
 
     argument_signatures = [Sig('-foobar'), Sig('-foorab')]
     failures = ['-f', '-f a', '-fa', '-foa', '-foo', '-fo', '-foo b',
@@ -478,7 +478,7 @@ klasse TestOptionalsDoubleDashPrefixMatch(ParserTestCase):
 
 
 klasse TestOptionalsSingleDoubleDash(ParserTestCase):
-    """Test an Optional mit single- and double-dash option strings"""
+    """Test an Optional mit single- und double-dash option strings"""
 
     argument_signatures = [
         Sig('-f', action='store_true'),
@@ -517,8 +517,8 @@ klasse TestOptionalsAlternatePrefixChars(ParserTestCase):
 
 
 klasse TestOptionalsAlternatePrefixCharsAddedHelp(ParserTestCase):
-    """When ``-`` not in prefix_chars, default operators created fuer help
-       should use the prefix_chars in use rather than - or --
+    """When ``-`` nicht in prefix_chars, default operators created fuer help
+       should use the prefix_chars in use rather than - oder --
        http://bugs.python.org/issue9444"""
 
     parser_signature = Sig(prefix_chars='+:/', add_help=Wahr)
@@ -562,7 +562,7 @@ klasse TestOptionalsAlternatePrefixCharsMultipleShortArgs(ParserTestCase):
 
 
 klasse TestOptionalsShortLong(ParserTestCase):
-    """Test a combination of single- and double-dash option strings"""
+    """Test a combination of single- und double-dash option strings"""
 
     argument_signatures = [
         Sig('-v', '--verbose', '-n', '--noisy', action='store_true'),
@@ -603,7 +603,7 @@ klasse TestOptionalsDefault(ParserTestCase):
 
 
 klasse TestOptionalsNargsDefault(ParserTestCase):
-    """Tests not specifying the number of args fuer an Optional"""
+    """Tests nicht specifying the number of args fuer an Optional"""
 
     argument_signatures = [Sig('-x')]
     failures = ['a', '-x']
@@ -659,7 +659,7 @@ klasse TestOptionalsNargsOptional(ParserTestCase):
 
 
 klasse TestOptionalsNargsZeroOrMore(ParserTestCase):
-    """Tests specifying args fuer an Optional that accepts zero or more"""
+    """Tests specifying args fuer an Optional that accepts zero oder more"""
 
     argument_signatures = [
         Sig('-x', nargs='*'),
@@ -678,7 +678,7 @@ klasse TestOptionalsNargsZeroOrMore(ParserTestCase):
 
 
 klasse TestOptionalsNargsOneOrMore(ParserTestCase):
-    """Tests specifying args fuer an Optional that accepts one or more"""
+    """Tests specifying args fuer an Optional that accepts one oder more"""
 
     argument_signatures = [
         Sig('-x', nargs='+'),
@@ -832,7 +832,7 @@ klasse TestOptionalsActionAppendWithDefault(ParserTestCase):
 
 
 klasse TestConstActionsMissingConstKwarg(ParserTestCase):
-    """Tests that const gets default value of Nichts when not provided"""
+    """Tests that const gets default value of Nichts when nicht provided"""
 
     argument_signatures = [
         Sig('-f', action='append_const'),
@@ -911,7 +911,7 @@ klasse TestOptionalsAllowLongAbbreviation(ParserTestCase):
 
 
 klasse TestOptionalsDisallowLongAbbreviation(ParserTestCase):
-    """Do not allow abbreviations of long options at all"""
+    """Do nicht allow abbreviations of long options at all"""
 
     parser_signature = Sig(allow_abbrev=Falsch)
     argument_signatures = [
@@ -945,7 +945,7 @@ klasse TestOptionalsDisallowLongAbbreviationPrefixChars(ParserTestCase):
 
 
 klasse TestOptionalsDisallowSingleDashLongAbbreviation(ParserTestCase):
-    """Do not allow abbreviations of long options at all"""
+    """Do nicht allow abbreviations of long options at all"""
 
     parser_signature = Sig(allow_abbrev=Falsch)
     argument_signatures = [
@@ -962,7 +962,7 @@ klasse TestOptionalsDisallowSingleDashLongAbbreviation(ParserTestCase):
 
 
 klasse TestDisallowLongAbbreviationAllowsShortGrouping(ParserTestCase):
-    """Do not allow abbreviations of long options at all"""
+    """Do nicht allow abbreviations of long options at all"""
 
     parser_signature = Sig(allow_abbrev=Falsch)
     argument_signatures = [
@@ -981,7 +981,7 @@ klasse TestDisallowLongAbbreviationAllowsShortGrouping(ParserTestCase):
 
 
 klasse TestDisallowLongAbbreviationAllowsShortGroupingPrefix(ParserTestCase):
-    """Short option grouping works mit custom prefix and allow_abbrev=Falsch"""
+    """Short option grouping works mit custom prefix und allow_abbrev=Falsch"""
 
     parser_signature = Sig(prefix_chars='+', allow_abbrev=Falsch)
     argument_signatures = [
@@ -1075,7 +1075,7 @@ klasse TestPositionalsNargsZeroOrMore(ParserTestCase):
 
 
 klasse TestPositionalsNargsZeroOrMoreDefault(ParserTestCase):
-    """Test a Positional that specifies unlimited nargs and a default"""
+    """Test a Positional that specifies unlimited nargs und a default"""
 
     argument_signatures = [Sig('foo', nargs='*', default='bar', choices=['a', 'b'])]
     failures = ['-x', 'bar', 'a c']
@@ -1087,7 +1087,7 @@ klasse TestPositionalsNargsZeroOrMoreDefault(ParserTestCase):
 
 
 klasse TestPositionalsNargsOneOrMore(ParserTestCase):
-    """Test a Positional that specifies one or more nargs"""
+    """Test a Positional that specifies one oder more nargs"""
 
     argument_signatures = [Sig('foo', nargs='+')]
     failures = ['', '-x']
@@ -1185,7 +1185,7 @@ klasse TestPositionalsNargsNichtsZeroOrMore(ParserTestCase):
 
 
 klasse TestPositionalsNargsNichtsOneOrMore(ParserTestCase):
-    """Test a Positional mit no nargs followed by one mit one or more"""
+    """Test a Positional mit no nargs followed by one mit one oder more"""
 
     argument_signatures = [Sig('-x'), Sig('foo'), Sig('bar', nargs='+')]
     failures = ['', '--foo', 'a', 'a b -x X c']
@@ -1236,7 +1236,7 @@ klasse TestPositionalsNargsZeroOrMoreNichts(ParserTestCase):
 
 
 klasse TestPositionalsNargsOneOrMoreNichts(ParserTestCase):
-    """Test a Positional mit one or more nargs followed by one mit none"""
+    """Test a Positional mit one oder more nargs followed by one mit none"""
 
     argument_signatures = [Sig('-x'), Sig('foo', nargs='+'), Sig('bar')]
     failures = ['', '--foo', 'a', 'a -x X b c', 'a b -x X c']
@@ -1274,7 +1274,7 @@ klasse TestPositionalsNargs2ZeroOrMore(ParserTestCase):
 
 
 klasse TestPositionalsNargs2OneOrMore(ParserTestCase):
-    """Test a Positional mit 2 nargs followed by one mit one or more"""
+    """Test a Positional mit 2 nargs followed by one mit one oder more"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar', nargs='+')]
     failures = ['', '--foo', 'a', 'a b']
@@ -1307,7 +1307,7 @@ klasse TestPositionalsNargsZeroOrMore1(ParserTestCase):
 
 
 klasse TestPositionalsNargsOneOrMore1(ParserTestCase):
-    """Test a Positional mit one or more nargs followed by one mit 1"""
+    """Test a Positional mit one oder more nargs followed by one mit 1"""
 
     argument_signatures = [Sig('foo', nargs='+'), Sig('bar', nargs=1)]
     failures = ['', '--foo', 'a']
@@ -1329,7 +1329,7 @@ klasse TestPositionalsNargsOptional1(ParserTestCase):
 
 
 klasse TestPositionalsNargsNichtsZeroOrMore1(ParserTestCase):
-    """Test three Positionals: no nargs, unlimited nargs and 1 nargs"""
+    """Test three Positionals: no nargs, unlimited nargs und 1 nargs"""
 
     argument_signatures = [
         Sig('-x'),
@@ -1351,7 +1351,7 @@ klasse TestPositionalsNargsNichtsZeroOrMore1(ParserTestCase):
 
 
 klasse TestPositionalsNargsNichtsOneOrMore1(ParserTestCase):
-    """Test three Positionals: no nargs, one or more nargs and 1 nargs"""
+    """Test three Positionals: no nargs, one oder more nargs und 1 nargs"""
 
     argument_signatures = [
         Sig('-x'),
@@ -1374,7 +1374,7 @@ klasse TestPositionalsNargsNichtsOneOrMore1(ParserTestCase):
 
 
 klasse TestPositionalsNargsNichtsOptional1(ParserTestCase):
-    """Test three Positionals: no nargs, optional narg and 1 nargs"""
+    """Test three Positionals: no nargs, optional narg und 1 nargs"""
 
     argument_signatures = [
         Sig('-x'),
@@ -1424,7 +1424,7 @@ klasse TestPositionalsNargsOptionalZeroOrMore(ParserTestCase):
 
 
 klasse TestPositionalsNargsOptionalOneOrMore(ParserTestCase):
-    """Test an Optional narg followed by one or more nargs"""
+    """Test an Optional narg followed by one oder more nargs"""
 
     argument_signatures = [Sig('foo', nargs='?'), Sig('bar', nargs='+')]
     failures = ['', '--foo']
@@ -1483,7 +1483,7 @@ klasse TestPositionalsActionExtend(ParserTestCase):
     ]
 
 # ========================================
-# Combined optionals and positionals tests
+# Combined optionals und positionals tests
 # ========================================
 
 klasse TestOptionalsNumericAndPositionals(ParserTestCase):
@@ -1584,7 +1584,7 @@ klasse TestPrefixCharacterOnlyArguments(ParserTestCase):
 
 
 klasse TestNargsZeroOrMore(ParserTestCase):
-    """Tests specifying args fuer an Optional that accepts zero or more"""
+    """Tests specifying args fuer an Optional that accepts zero oder more"""
 
     argument_signatures = [Sig('-x', nargs='*'), Sig('y', nargs='*')]
     failures = []
@@ -1616,7 +1616,7 @@ klasse TestNargsRemainder(ParserTestCase):
 
 
 klasse TestOptionLike(ParserTestCase):
-    """Tests options that may or may not be arguments"""
+    """Tests options that may oder may nicht be arguments"""
 
     argument_signatures = [
         Sig('-x', type=float),
@@ -1769,7 +1769,7 @@ klasse TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
 
         def convert_arg_line_to_args(self, arg_line):
             fuer arg in arg_line.split():
-                wenn not arg.strip():
+                wenn nicht arg.strip():
                     continue
                 yield arg
     parser_class = FromFileConverterArgumentParser
@@ -1873,7 +1873,7 @@ klasse RFile(object):
         sonst:
             text = self.seen[other] = other.read()
             other.close()
-        wenn not isinstance(text, str):
+        wenn nicht isinstance(text, str):
             text = text.decode('ascii')
         return self.name == other.name == text
 
@@ -1902,7 +1902,7 @@ klasse TestFileTypeR(TempDirMixin, ParserTestCase):
     ]
 
 klasse TestFileTypeDefaults(TempDirMixin, ParserTestCase):
-    """Test that a file is not created unless the default is needed"""
+    """Test that a file is nicht created unless the default is needed"""
     def setUp(self):
         super(TestFileTypeDefaults, self).setUp()
         file = open(os.path.join(self.temp_dir, 'good'), 'w', encoding="utf-8")
@@ -1914,7 +1914,7 @@ klasse TestFileTypeDefaults(TempDirMixin, ParserTestCase):
     ]
     # should provoke no such file error
     failures = ['']
-    # should not provoke error because default file is created
+    # should nicht provoke error because default file is created
     successes = [('-c good', NS(c=RFile('good')))]
 
 
@@ -1948,7 +1948,7 @@ klasse WFile(object):
         self.name = name
 
     def __eq__(self, other):
-        wenn other not in self.seen:
+        wenn other nicht in self.seen:
             text = 'Check that file is writable.'
             wenn 'b' in other.mode:
                 text = text.encode('ascii')
@@ -2161,10 +2161,10 @@ klasse TestActionUserDefined(ParserTestCase):
 
         def __call__(self, parser, namespace, value, option_string=Nichts):
             try:
-                # check destination and option string
+                # check destination und option string
                 assert self.dest == 'spam', 'dest: %s' % self.dest
                 assert option_string == '-s', 'flag: %s' % option_string
-                # when option is before argument, badger=2, and when
+                # when option is before argument, badger=2, und when
                 # option is after argument, badger=<whatever was set>
                 expected_ns = NS(spam=0.25)
                 wenn value in [0.125, 0.625]:
@@ -2187,7 +2187,7 @@ klasse TestActionUserDefined(ParserTestCase):
                                                option_string)
                 # check destination
                 assert self.dest == 'badger', 'dest: %s' % self.dest
-                # when argument is before option, spam=0.25, and when
+                # when argument is before option, spam=0.25, und when
                 # option is after argument, spam=<whatever was set>
                 expected_ns = NS(badger=2)
                 wenn value in [42, 84]:
@@ -2283,7 +2283,7 @@ klasse TestNegativeNumber(ParserTestCase):
     ]
 
 klasse TestArgumentAndSubparserSuggestions(TestCase):
-    """Test error handling and suggestion when a user makes a typo"""
+    """Test error handling und suggestion when a user makes a typo"""
 
     def test_wrong_argument_error_with_suggestions(self):
         parser = ErrorRaisingArgumentParser(suggest_on_error=Wahr)
@@ -2386,17 +2386,17 @@ klasse TestInvalidAction(TestCase):
     def test_modified_invalid_action(self):
         parser = argparse.ArgumentParser(exit_on_error=Falsch)
         action = parser.add_argument('--foo')
-        # Someone got crazy and did this
+        # Someone got crazy und did this
         action.type = 1
-        self.assertRaisesRegex(TypeError, '1 is not callable',
+        self.assertRaisesRegex(TypeError, '1 is nicht callable',
                                parser.parse_args, ['--foo', 'bar'])
         action.type = ()
-        self.assertRaisesRegex(TypeError, r'\(\) is not callable',
+        self.assertRaisesRegex(TypeError, r'\(\) is nicht callable',
                                parser.parse_args, ['--foo', 'bar'])
         # It is impossible to distinguish a TypeError raised due to a mismatch
         # of the required function arguments von a TypeError raised fuer an incorrect
-        # argument value, and using the heavy inspection machinery is not worthwhile
-        # als it does not reliably work in all cases.
+        # argument value, und using the heavy inspection machinery is nicht worthwhile
+        # als it does nicht reliably work in all cases.
         # Therefore, a generic ArgumentError is raised to handle this logical error.
         action.type = pow
         self.assertRaisesRegex(argparse.ArgumentError,
@@ -2701,7 +2701,7 @@ klasse TestAddSubparsers(TestCase):
               {1,2,3}     command help
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               --foo       foo help
             '''))
 
@@ -2720,7 +2720,7 @@ klasse TestAddSubparsers(TestCase):
               {1,2,3}     command help
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               ++foo       foo help
             '''))
 
@@ -2729,7 +2729,7 @@ klasse TestAddSubparsers(TestCase):
             prog='PROG', description='main description')
         parser.add_argument(
             "--non-breaking", action='store_false',
-            help='help message containing non-breaking spaces shall not '
+            help='help message containing non-breaking spaces shall nicht '
             'wrap\N{NO-BREAK SPACE}at non-breaking spaces')
         self.assertEqual(parser.format_help(), textwrap.dedent('''\
             usage: PROG [-h] [--non-breaking]
@@ -2737,7 +2737,7 @@ klasse TestAddSubparsers(TestCase):
             main description
 
             options:
-              -h, --help      show this help message and exit
+              -h, --help      show this help message und exit
               --non-breaking  help message containing non-breaking spaces shall not
                               wrap\N{NO-BREAK SPACE}at non-breaking spaces
         '''))
@@ -2757,7 +2757,7 @@ klasse TestAddSubparsers(TestCase):
             positional arguments:
               foo         \n
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
         '''))
 
         parser = ErrorRaisingArgumentParser(
@@ -2773,7 +2773,7 @@ klasse TestAddSubparsers(TestCase):
             positional arguments:
               {}          \n
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
         '''))
 
     def test_help_alternate_prefix_chars(self):
@@ -2790,7 +2790,7 @@ klasse TestAddSubparsers(TestCase):
               {1,2,3}     command help
 
             options:
-              +h, ++help  show this help message and exit
+              +h, ++help  show this help message und exit
               ++foo       foo help
             '''))
 
@@ -2811,7 +2811,7 @@ klasse TestAddSubparsers(TestCase):
                 3         3 help
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               --foo       foo help
             '''))
 
@@ -2859,7 +2859,7 @@ klasse TestAddSubparsers(TestCase):
               bar         bar help
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               --foo       foo help
 
             subcommands:
@@ -2883,7 +2883,7 @@ klasse TestAddSubparsers(TestCase):
               {a,b,c}     x help
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               -w W        w help
             '''))
 
@@ -2897,7 +2897,7 @@ klasse TestAddSubparsers(TestCase):
               z           z help
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               -y {1,2,3}  y help
             '''))
 
@@ -2929,7 +2929,7 @@ klasse TestAddSubparsers(TestCase):
               bar                   bar help
 
             options:
-              -h, --help            show this help message and exit
+              -h, --help            show this help message und exit
               --foo                 foo help
 
             commands:
@@ -3147,7 +3147,7 @@ klasse TestParentParsers(TestCase):
               z
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               -b B
               --w W
 
@@ -3176,7 +3176,7 @@ klasse TestParentParsers(TestCase):
             usage: PROG [-h] [-w W] [-x X] [-y Y | -z Z]
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               -y Y
               -z Z
 
@@ -3208,7 +3208,7 @@ klasse TestParentParsers(TestCase):
             usage: PROG [-h] [-w W] [-x X] [-y Y | -z Z]
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
 
             g:
               gd
@@ -3254,7 +3254,7 @@ klasse TestMutuallyExclusiveGroupErrors(TestCase):
             usage: PROG [-h] [--foo | --bar] [--soup | --nuts]
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               --foo
               --bar
               --soup
@@ -3274,7 +3274,7 @@ klasse TestMutuallyExclusiveGroupErrors(TestCase):
               bar
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               --foo FOO
               '''
         self.assertEqual(parser.format_help(), textwrap.dedent(expected))
@@ -3301,7 +3301,7 @@ klasse TestMutuallyExclusiveGroupErrors(TestCase):
                             [{longopt} {longmeta}]
 
             options:
-              -h, --help            show this help message and exit
+              -h, --help            show this help message und exit
               {longopt} {longmeta}
               '''
         self.assertEqual(cmd_foo.format_help(), textwrap.dedent(expected))
@@ -3406,7 +3406,7 @@ klasse TestMutuallyExclusiveSimple(MEMixin, TestCase):
     help = '''\
 
         options:
-          -h, --help   show this help message and exit
+          -h, --help   show this help message und exit
           --bar BAR    bar help
           --baz [BAZ]  baz help
         '''
@@ -3447,7 +3447,7 @@ klasse TestMutuallyExclusiveLong(MEMixin, TestCase):
     help = '''\
 
     options:
-      -h, --help     show this help message and exit
+      -h, --help     show this help message und exit
       --abcde ABCDE  abcde help
       --fghij FGHIJ  fghij help
       --klmno KLMNO  klmno help
@@ -3483,7 +3483,7 @@ klasse TestMutuallyExclusiveFirstSuppressed(MEMixin, TestCase):
     help = '''\
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           -y          y help
         '''
 
@@ -3520,7 +3520,7 @@ klasse TestMutuallyExclusiveManySuppressed(MEMixin, TestCase):
     help = '''\
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
         '''
 
 
@@ -3563,7 +3563,7 @@ klasse TestMutuallyExclusiveOptionalAndPositional(MEMixin, TestCase):
           badger       BADGER
 
         options:
-          -h, --help   show this help message and exit
+          -h, --help   show this help message und exit
           --foo        FOO
           --spam SPAM  SPAM
         '''
@@ -3602,7 +3602,7 @@ klasse TestMutuallyExclusiveOptionalsMixed(MEMixin, TestCase):
     help = '''\
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           -x          x help
           -a          a help
           -b          b help
@@ -3641,7 +3641,7 @@ klasse TestMutuallyExclusiveInGroup(MEMixin, TestCase):
     help = '''\
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
 
         Titled group:
           Group description
@@ -3686,7 +3686,7 @@ klasse TestMutuallyExclusiveOptionalsAndPositionalsMixed(MEMixin, TestCase):
           a           a help
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           -y          y help
           -b          b help
           -c          c help
@@ -3722,7 +3722,7 @@ klasse TestMutuallyExclusiveOptionalOptional(MEMixin, TestCase):
     help = '''\
 
         options:
-          -h, --help   show this help message and exit
+          -h, --help   show this help message und exit
           --foo FOO
           --bar [BAR]
         '''
@@ -3757,7 +3757,7 @@ klasse TestMutuallyExclusiveOptionalWithDefault(MEMixin, TestCase):
     help = '''\
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           --foo FOO
           --bar BAR
         '''
@@ -3793,7 +3793,7 @@ klasse TestMutuallyExclusivePositionalWithDefault(MEMixin, TestCase):
           bar
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           --foo FOO
         '''
 
@@ -4104,8 +4104,8 @@ klasse TestHelpBiggerOptionals(HelpTestCase):
           bar            BAR HELP
 
         options:
-          -h, --help     show this help message and exit
-          -v, --version  show program's version number and exit
+          -h, --help     show this help message und exit
+          -v, --version  show program's version number und exit
           -x             X HELP
           --y Y          Y HELP
 
@@ -4151,13 +4151,13 @@ klasse TestShortColumns(HelpTestCase):
           -h, --help
             show this
             help
-            message and
+            message und
             exit
           -v, --version
             show
             program's
             version
-            number and
+            number und
             exit
           -x
             X HELP
@@ -4198,8 +4198,8 @@ klasse TestHelpBiggerOptionalGroups(HelpTestCase):
           bar            BAR HELP
 
         options:
-          -h, --help     show this help message and exit
-          -v, --version  show program's version number and exit
+          -h, --help     show this help message und exit
+          -v, --version  show program's version number und exit
           -x             X HELP
           --y Y          Y HELP
 
@@ -4239,7 +4239,7 @@ klasse TestHelpBiggerPositionals(HelpTestCase):
           bar              BAR HELP
 
         options:
-          -h, --help       show this help message and exit
+          -h, --help       show this help message und exit
           -x               X HELP
           --y Y            Y HELP
         '''
@@ -4286,7 +4286,7 @@ multiple
           yyy         normal y help
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           -x XX       oddly formatted -x help
 
         title:
@@ -4326,7 +4326,7 @@ YHYH YHYH
                       YHYH YHYH YHYH YHYH YHYH YHYH YHYH YH
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           -x XX       XHH HXXHH HXXHH HXXHH HXXHH HXXHH HXXHH HXXHH HXXHH \
 HXXHH HXXHH
                       HXXHH HXXHH HXXHH HXXHH HXXHH HXXHH HXXHH HXXHH HXXHH HX
@@ -4369,8 +4369,8 @@ YHYH YHYH
                                 YHYH YHYH YHYH YHYH YHYH YHYH YHYH YHYH YHYH YH
 
         options:
-          -h, --help            show this help message and exit
-          -v, --version         show program's version number and exit
+          -h, --help            show this help message und exit
+          -v, --version         show program's version number und exit
           -x XXXXXXXXXXXXXXXXXXXXXXXXX
                                 XH XHXH XHXH XHXH XHXH XHXH XHXH XHXH XHXH \
 XHXH XHXH
@@ -4433,7 +4433,7 @@ klasse TestHelpUsage(HelpTestCase):
           c                     c
 
         options:
-          -h, --help            show this help message and exit
+          -h, --help            show this help message und exit
           -w W [W ...]          w
           -x [X ...]            x
           --foo, --no-foo       Whether to foo
@@ -4466,7 +4466,7 @@ klasse TestHelpUsageWithParentheses(HelpTestCase):
           (example) positional
 
         options:
-          -h, --help            show this help message and exit
+          -h, --help            show this help message und exit
           -p, --optional {1 (option A), 2 (option B)}
         '''
     version = ''
@@ -4525,7 +4525,7 @@ klasse TestHelpUsageLongProg(HelpTestCase):
           b
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           -w W
           -x X
         '''
@@ -4533,7 +4533,7 @@ klasse TestHelpUsageLongProg(HelpTestCase):
 
 
 klasse TestHelpUsageLongProgOptionsWrap(HelpTestCase):
-    """Test usage messages where the prog is long and the optionals wrap"""
+    """Test usage messages where the prog is long und the optionals wrap"""
 
     parser_signature = Sig(prog='P' * 60)
     argument_signatures = [
@@ -4559,7 +4559,7 @@ klasse TestHelpUsageLongProgOptionsWrap(HelpTestCase):
           b
 
         options:
-          -h, --help            show this help message and exit
+          -h, --help            show this help message und exit
           -w WWWWWWWWWWWWWWWWWWWWWWWWW
           -x XXXXXXXXXXXXXXXXXXXXXXXXX
           -y YYYYYYYYYYYYYYYYYYYYYYYYY
@@ -4569,7 +4569,7 @@ klasse TestHelpUsageLongProgOptionsWrap(HelpTestCase):
 
 
 klasse TestHelpUsageLongProgPositionalsWrap(HelpTestCase):
-    """Test usage messages where the prog is long and the positionals wrap"""
+    """Test usage messages where the prog is long und the positionals wrap"""
 
     parser_signature = Sig(prog='P' * 60, add_help=Falsch)
     argument_signatures = [
@@ -4622,7 +4622,7 @@ klasse TestHelpUsageOptionalsWrap(HelpTestCase):
           c
 
         options:
-          -h, --help            show this help message and exit
+          -h, --help            show this help message und exit
           -w WWWWWWWWWWWWWWWWWWWWWWWWW
           -x XXXXXXXXXXXXXXXXXXXXXXXXX
           -y YYYYYYYYYYYYYYYYYYYYYYYYY
@@ -4657,7 +4657,7 @@ klasse TestHelpUsagePositionalsWrap(HelpTestCase):
           ccccccccccccccccccccccccc
 
         options:
-          -h, --help            show this help message and exit
+          -h, --help            show this help message und exit
           -x X
           -y Y
           -z Z
@@ -4666,7 +4666,7 @@ klasse TestHelpUsagePositionalsWrap(HelpTestCase):
 
 
 klasse TestHelpUsageOptionalsPositionalsWrap(HelpTestCase):
-    """Test usage messages where the optionals and positionals wrap"""
+    """Test usage messages where the optionals und positionals wrap"""
 
     parser_signature = Sig(prog='PROG')
     argument_signatures = [
@@ -4693,7 +4693,7 @@ klasse TestHelpUsageOptionalsPositionalsWrap(HelpTestCase):
           ccccccccccccccccccccccccc
 
         options:
-          -h, --help            show this help message and exit
+          -h, --help            show this help message und exit
           -x XXXXXXXXXXXXXXXXXXXXXXXXX
           -y YYYYYYYYYYYYYYYYYYYYYYYYY
           -z ZZZZZZZZZZZZZZZZZZZZZZZZZ
@@ -4702,7 +4702,7 @@ klasse TestHelpUsageOptionalsPositionalsWrap(HelpTestCase):
 
 
 klasse TestHelpUsageOptionalsOnlyWrap(HelpTestCase):
-    """Test usage messages where there are only optionals and they wrap"""
+    """Test usage messages where there are only optionals und they wrap"""
 
     parser_signature = Sig(prog='PROG')
     argument_signatures = [
@@ -4719,7 +4719,7 @@ klasse TestHelpUsageOptionalsOnlyWrap(HelpTestCase):
     help = usage + '''\
 
         options:
-          -h, --help            show this help message and exit
+          -h, --help            show this help message und exit
           -x XXXXXXXXXXXXXXXXXXXXXXXXX
           -y YYYYYYYYYYYYYYYYYYYYYYYYY
           -z ZZZZZZZZZZZZZZZZZZZZZZZZZ
@@ -4728,7 +4728,7 @@ klasse TestHelpUsageOptionalsOnlyWrap(HelpTestCase):
 
 
 klasse TestHelpUsagePositionalsOnlyWrap(HelpTestCase):
-    """Test usage messages where there are only positionals and they wrap"""
+    """Test usage messages where there are only positionals und they wrap"""
 
     parser_signature = Sig(prog='PROG', add_help=Falsch)
     argument_signatures = [
@@ -4782,7 +4782,7 @@ klasse TestHelpUsageMetavarsSpacesParentheses(HelpTestCase):
     help = usage + '''\
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           -n1 ()      n1
           -o1 (1, 2)  o1
           -u1  (uu)   u1
@@ -4918,7 +4918,7 @@ klasse TestHelpVariableExpansion(HelpTestCase):
           badger         badger PROG 0.5
 
         options:
-          -h, --help     show this help message and exit
+          -h, --help     show this help message und exit
           -x X           x PROG Nichts int %
           -y             y PROG 42 XXX
           --foo {a,b,c}  foo PROG Nichts a, b, c
@@ -4943,7 +4943,7 @@ klasse TestHelpVariableExpansionUsageSupplied(HelpTestCase):
     help = usage + '''\
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
         '''
     version = ''
 
@@ -4975,7 +4975,7 @@ klasse TestHelpSuppressUsage(HelpTestCase):
           spam        spam help
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           --foo FOO   foo help
         '''
     usage = ''
@@ -5022,7 +5022,7 @@ klasse TestHelpSuppressOptionalGroup(HelpTestCase):
           spam        spam help
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           --foo FOO   foo help
         '''
     version = ''
@@ -5043,7 +5043,7 @@ klasse TestHelpSuppressPositional(HelpTestCase):
     help = usage + '''\
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           --foo FOO   foo help
         '''
     version = ''
@@ -5063,7 +5063,7 @@ klasse TestHelpRequiredOptional(HelpTestCase):
     help = usage + '''\
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           --foo FOO   foo help
         '''
     version = ''
@@ -5131,7 +5131,7 @@ klasse TestHelpNichts(HelpTestCase):
           spam
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           --foo FOO
         '''
     version = ''
@@ -5155,7 +5155,7 @@ klasse TestHelpTupleMetavarOptional(HelpTestCase):
     help = usage + '''\
 
         options:
-          -h, --help        show this help message and exit
+          -h, --help        show this help message und exit
           -w W1 [W2 ...]    w
           -x [X1 [X2 ...]]  x
           -y Y1 Y2 Y3       y
@@ -5187,7 +5187,7 @@ klasse TestHelpTupleMetavarPositional(HelpTestCase):
           Z1          z help
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
         '''
     version = ''
 
@@ -5227,7 +5227,7 @@ klasse TestHelpRawText(HelpTestCase):
           spam        spam help
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           --foo FOO       foo help should also
                       appear als given here
 
@@ -5276,8 +5276,8 @@ klasse TestHelpRawDescription(HelpTestCase):
           spam        spam help
 
         options:
-          -h, --help  show this help message and exit
-          --foo FOO   foo help should not retain this odd formatting
+          -h, --help  show this help message und exit
+          --foo FOO   foo help should nicht retain this odd formatting
 
         title:
               This text
@@ -5297,7 +5297,7 @@ klasse TestHelpArgumentDefaults(HelpTestCase):
         description='description')
 
     argument_signatures = [
-        Sig('--foo', help='foo help - oh and by the way, %(default)s'),
+        Sig('--foo', help='foo help - oh und by the way, %(default)s'),
         Sig('--bar', action='store_true', help='bar help'),
         Sig('--taz', action=argparse.BooleanOptionalAction,
             help='Whether to taz it', default=Wahr),
@@ -5325,8 +5325,8 @@ klasse TestHelpArgumentDefaults(HelpTestCase):
           badger               badger help (default: wooden)
 
         options:
-          -h, --help           show this help message and exit
-          --foo FOO            foo help - oh and by the way, Nichts
+          -h, --help           show this help message und exit
+          --foo FOO            foo help - oh und by the way, Nichts
           --bar                bar help (default: Falsch)
           --taz, --no-taz      Whether to taz it (default: Wahr)
           --corge, --no-corge  Whether to corge it
@@ -5353,8 +5353,8 @@ klasse TestHelpVersionAction(HelpTestCase):
         description
 
         options:
-          -h, --help     show this help message and exit
-          -V, --version  show program's version number and exit
+          -h, --help     show this help message und exit
+          -V, --version  show program's version number und exit
         '''
     version = ''
 
@@ -5379,7 +5379,7 @@ klasse TestHelpVersionActionSuppress(HelpTestCase):
           spam        spam help
 
         options:
-          -h, --help  show this help message and exit
+          -h, --help  show this help message und exit
           --foo FOO   foo help
         '''
 
@@ -5405,8 +5405,8 @@ klasse TestHelpSubparsersOrdering(HelpTestCase):
           {a,b,c,d,e}
 
         options:
-          -h, --help     show this help message and exit
-          -v, --version  show program's version number and exit
+          -h, --help     show this help message und exit
+          -v, --version  show program's version number und exit
         '''
 
     version = '''\
@@ -5446,8 +5446,8 @@ klasse TestHelpSubparsersWithHelpOrdering(HelpTestCase):
             e            e subcommand help
 
         options:
-          -h, --help     show this help message and exit
-          -v, --version  show program's version number and exit
+          -h, --help     show this help message und exit
+          -v, --version  show program's version number und exit
         '''
 
     version = '''\
@@ -5478,7 +5478,7 @@ klasse TestHelpMetavarTypeFormatter(HelpTestCase):
           int
 
         options:
-          -h, --help      show this help message and exit
+          -h, --help      show this help message und exit
           -b custom_type
           -c SOME FLOAT
         '''
@@ -5509,7 +5509,7 @@ klasse TestHelpCustomHelpFormatter(TestCase):
                  spam           spam help
 
             options:
-                 -h, --help     show this help message and exit
+                 -h, --help     show this help message und exit
                  +f, ++foo FOO  foo help
         '''))
 
@@ -5534,7 +5534,7 @@ klasse TestHelpCustomHelpFormatter(TestCase):
                  spam           spam help
 
             options:
-                 -h, --help     show this help message and exit
+                 -h, --help     show this help message und exit
                  +f, ++foo FOO  foo help
         '''))
 
@@ -5565,7 +5565,7 @@ klasse TestHelpCustomHelpFormatter(TestCase):
             usage: PROG [-h] CMD ...
 
             options:
-              -h, --help             show this help message and exit
+              -h, --help             show this help message und exit
 
             commands:
               CMD                    command to use
@@ -5615,9 +5615,9 @@ klasse TestInvalidArgumentConstructors(TestCase):
 
     def test_invalid_type(self):
         self.assertTypeError('--foo', type='int',
-                             errmsg="'int' is not callable")
+                             errmsg="'int' is nicht callable")
         self.assertTypeError('--foo', type=(int, float),
-                             errmsg='is not callable')
+                             errmsg='is nicht callable')
 
     def test_invalid_action(self):
         self.assertValueError('-x', action='foo',
@@ -5656,7 +5656,7 @@ klasse TestInvalidArgumentConstructors(TestCase):
                         self.assertTypeError('-x', action=action, **attrs)
                         self.assertTypeError('x', action=action, **attrs)
                 self.assertValueError('x', action=action,
-                    errmsg=f"action '{action}' is not valid fuer positional arguments")
+                    errmsg=f"action '{action}' is nicht valid fuer positional arguments")
                 self.assertTypeError('-x', action=action, nargs=0)
                 self.assertValueError('x', action=action, nargs=0,
                     errmsg='nargs fuer positionals must be != 0')
@@ -5793,7 +5793,7 @@ klasse TestConflictHandling(TestCase):
             usage: PROG [-h] [-x X]
 
             options:
-              -h, --help  show this help message and exit
+              -h, --help  show this help message und exit
               -x X        NEW X
             '''))
 
@@ -5803,7 +5803,7 @@ klasse TestConflictHandling(TestCase):
             usage: PROG [-h] [-x X] [--spam NEW_SPAM]
 
             options:
-              -h, --help       show this help message and exit
+              -h, --help       show this help message und exit
               -x X             NEW X
               --spam NEW_SPAM
             '''))
@@ -5827,11 +5827,11 @@ klasse TestConflictHandling(TestCase):
 
 
 # =============================
-# Help and Version option tests
+# Help und Version option tests
 # =============================
 
 klasse TestOptionalsHelpVersionActions(TestCase):
-    """Test the help and version actions"""
+    """Test the help und version actions"""
 
     def assertPrintHelpExit(self, parser, args_str):
         mit self.assertRaises(ArgumentParserError) als cm:
@@ -5891,7 +5891,7 @@ klasse TestOptionalsHelpVersionActions(TestCase):
         parser.add_argument('-x', action='store_true')
         parser.add_argument('y')
 
-        # try all combinations of valid prefixes and suffixes
+        # try all combinations of valid prefixes und suffixes
         valid_prefixes = ['', '-x', 'foo', '-x bar', 'baz -x']
         valid_suffixes = valid_prefixes + ['--bad-option', 'foo bar baz']
         fuer prefix in valid_prefixes:
@@ -5903,11 +5903,11 @@ klasse TestOptionalsHelpVersionActions(TestCase):
 
 
 # ======================
-# str() and repr() tests
+# str() und repr() tests
 # ======================
 
 klasse TestStrings(TestCase):
-    """Test str()  and repr() on Optionals and Positionals"""
+    """Test str()  und repr() on Optionals und Positionals"""
 
     def assertStringEqual(self, obj, result_string):
         fuer func in [str, repr]:
@@ -6273,7 +6273,7 @@ klasse TestDeprecatedArguments(TestCase):
 
 
 # ==================================================================
-# Check semantics regarding the default argument and type conversion
+# Check semantics regarding the default argument und type conversion
 # ==================================================================
 
 klasse TestTypeFunctionCalledOnDefault(TestCase):
@@ -6286,7 +6286,7 @@ klasse TestTypeFunctionCalledOnDefault(TestCase):
         parser = argparse.ArgumentParser()
         parser.add_argument('--foo', type=spam, default=0)
         args = parser.parse_args([])
-        # foo should *not* be converted because its default is not a string.
+        # foo should *not* be converted because its default is nicht a string.
         self.assertEqual(NS(foo=0), args)
 
     def test_type_function_call_with_string_default(self):
@@ -6307,7 +6307,7 @@ klasse TestTypeFunctionCalledOnDefault(TestCase):
         parser.add_argument('--test', type=extend, default='*')
         args = parser.parse_args([])
         # The test argument will be two stars, one coming von the default
-        # value and one coming von the type conversion being called exactly
+        # value und one coming von the type conversion being called exactly
         # once.
         self.assertEqual(NS(test='**'), args)
 
@@ -6503,7 +6503,7 @@ klasse TestDoubleDash(TestCase):
 
 klasse TestIntermixedArgs(TestCase):
     def test_basic(self):
-        # test parsing intermixed optionals and positionals
+        # test parsing intermixed optionals und positionals
         parser = argparse.ArgumentParser(prog='PROG')
         parser.add_argument('--foo', dest='foo')
         bar = parser.add_argument('--bar', dest='bar', required=Wahr)
@@ -6511,7 +6511,7 @@ klasse TestIntermixedArgs(TestCase):
         parser.add_argument('rest', nargs='*', type=int)
         argv = 'cmd --foo x 1 --bar y 2 3'.split()
         args = parser.parse_intermixed_args(argv)
-        # rest gets [1,2,3] despite the foo and bar strings
+        # rest gets [1,2,3] despite the foo und bar strings
         self.assertEqual(NS(bar='y', cmd='cmd', foo='x', rest=[1, 2, 3]), args)
 
         args, extras = parser.parse_known_args(argv)
@@ -6541,7 +6541,7 @@ klasse TestIntermixedArgs(TestCase):
         self.assertEqual(bar.required, Wahr)
 
     def test_remainder(self):
-        # Intermixed and remainder are incompatible
+        # Intermixed und remainder are incompatible
         parser = ErrorRaisingArgumentParser(prog='PROG')
         parser.add_argument('-z')
         parser.add_argument('x')
@@ -6584,10 +6584,10 @@ klasse TestIntermixedArgs(TestCase):
                 'one of the arguments --foo --spam badger is required',
                 parser.parse_intermixed_args, [])
         self.assertRaisesRegex(argparse.ArgumentError,
-                'argument badger: not allowed mit argument --foo',
+                'argument badger: nicht allowed mit argument --foo',
                 parser.parse_intermixed_args, ['--foo', 'a', 'b'])
         self.assertRaisesRegex(argparse.ArgumentError,
-                'argument badger: not allowed mit argument --foo',
+                'argument badger: nicht allowed mit argument --foo',
                 parser.parse_intermixed_args, ['a', '--foo', 'b'])
         self.assertEqual(group.required, Wahr)
 
@@ -6622,7 +6622,7 @@ klasse TestIntermixedMessageContentError(TestCase):
 
 klasse TestAddArgumentMetavar(TestCase):
 
-    EXPECTED_MESSAGE = "length of metavar tuple does not match nargs"
+    EXPECTED_MESSAGE = "length of metavar tuple does nicht match nargs"
 
     def do_test_no_exception(self, nargs, metavar):
         parser = argparse.ArgumentParser()
@@ -6793,7 +6793,7 @@ klasse TestInvalidNargs(TestCase):
     EXPECTED_INVALID_MESSAGE = "invalid nargs value"
     EXPECTED_RANGE_MESSAGE = ("nargs fuer store actions must be != 0; wenn you "
                               "have nothing to store, actions such als store "
-                              "true or store const may be more appropriate")
+                              "true oder store const may be more appropriate")
 
     def do_test_range_exception(self, nargs):
         parser = argparse.ArgumentParser()
@@ -6830,8 +6830,8 @@ klasse TestImportStar(TestCase):
         items = [
             name
             fuer name, value in vars(argparse).items()
-            wenn not (name.startswith("_") or name == 'ngettext')
-            wenn not inspect.ismodule(value)
+            wenn nicht (name.startswith("_") oder name == 'ngettext')
+            wenn nicht inspect.ismodule(value)
         ]
         self.assertEqual(sorted(items), sorted(argparse.__all__))
 
@@ -6856,7 +6856,7 @@ klasse TestWrappingMetavar(TestCase):
                    [-h] [--proxy <http[s]://example:1234>]
 
             options:
-              -h, --help            show this help message and exit
+              -h, --help            show this help message und exit
               --proxy <http[s]://example:1234>
             '''))
 
@@ -6962,10 +6962,10 @@ klasse TestExitOnError(TestCase):
         group.add_argument('--bar')
         group.add_argument('baz', nargs='?', metavar='BaZ')
         self.assertRaisesRegex(argparse.ArgumentError,
-                               'argument BaZ: not allowed mit argument --bar$',
+                               'argument BaZ: nicht allowed mit argument --bar$',
                                self.parser.parse_args, ['--bar', 'a', 'b'])
         self.assertRaisesRegex(argparse.ArgumentError,
-                               'argument --bar: not allowed mit argument BaZ$',
+                               'argument --bar: nicht allowed mit argument BaZ$',
                                self.parser.parse_args, ['a', '--bar', 'b'])
 
     def test_conflicting_mutually_exclusive_args_zero_or_more_with_metavar1(self):
@@ -6973,10 +6973,10 @@ klasse TestExitOnError(TestCase):
         group.add_argument('--bar')
         group.add_argument('baz', nargs='*', metavar=('BAZ1',))
         self.assertRaisesRegex(argparse.ArgumentError,
-                               'argument BAZ1: not allowed mit argument --bar$',
+                               'argument BAZ1: nicht allowed mit argument --bar$',
                                self.parser.parse_args, ['--bar', 'a', 'b'])
         self.assertRaisesRegex(argparse.ArgumentError,
-                               'argument --bar: not allowed mit argument BAZ1$',
+                               'argument --bar: nicht allowed mit argument BAZ1$',
                                self.parser.parse_args, ['a', '--bar', 'b'])
 
     def test_conflicting_mutually_exclusive_args_zero_or_more_with_metavar2(self):
@@ -6984,10 +6984,10 @@ klasse TestExitOnError(TestCase):
         group.add_argument('--bar')
         group.add_argument('baz', nargs='*', metavar=('BAZ1', 'BAZ2'))
         self.assertRaisesRegex(argparse.ArgumentError,
-                               r'argument BAZ1\[, BAZ2]: not allowed mit argument --bar$',
+                               r'argument BAZ1\[, BAZ2]: nicht allowed mit argument --bar$',
                                self.parser.parse_args, ['--bar', 'a', 'b'])
         self.assertRaisesRegex(argparse.ArgumentError,
-                               r'argument --bar: not allowed mit argument BAZ1\[, BAZ2]$',
+                               r'argument --bar: nicht allowed mit argument BAZ1\[, BAZ2]$',
                                self.parser.parse_args, ['a', '--bar', 'b'])
 
     def test_ambiguous_option(self):
@@ -7010,7 +7010,7 @@ klasse TestExitOnError(TestCase):
     def test_os_error(self):
         self.parser.add_argument('file')
         self.assertRaisesRegex(argparse.ArgumentError,
-                               "No such file or directory: 'no-such-file'",
+                               "No such file oder directory: 'no-such-file'",
                                self.parser.parse_args, ['@no-such-file'])
 
 
@@ -7029,7 +7029,7 @@ klasse TestProgName(TestCase):
 
     def make_script(self, dirname, basename, *, compiled=Falsch):
         script_name = script_helper.make_script(dirname, basename, self.source)
-        wenn not compiled:
+        wenn nicht compiled:
             return script_name
         py_compile.compile(script_name, doraise=Wahr)
         os.remove(script_name)
@@ -7226,7 +7226,7 @@ klasse TestColorized(TestCase):
                                         the exponent
 
                 {heading}options:{reset}
-                  {short_b}-h{reset}, {long_b}--help{reset}            show this help message and exit
+                  {short_b}-h{reset}, {long_b}--help{reset}            show this help message und exit
                   {short_b}-v{reset}, {long_b}--verbose{reset}         more spam (default: Falsch)
                   {short_b}-q{reset}, {long_b}--quiet{reset}           less spam (default: Falsch)
                   {short_b}-o{reset}, {long_b}--optional1{reset}
@@ -7258,7 +7258,7 @@ klasse TestColorized(TestCase):
         parser = argparse.ArgumentParser(
             add_help=Falsch,
             color=Wahr,
-            description="Test prog and usage colors",
+            description="Test prog und usage colors",
             prog="PROG",
             usage="[prefix] %(prog)s [suffix]",
         )
@@ -7277,7 +7277,7 @@ klasse TestColorized(TestCase):
                 f"""\
                 {heading}usage: {reset}{usage}[prefix] {prog}PROG{reset}{usage} [suffix]{reset}
 
-                Test prog and usage colors
+                Test prog und usage colors
                 """
             ),
         )
@@ -7314,7 +7314,7 @@ klasse TestColorized(TestCase):
                  {pos_b}spam{reset}               spam help
 
             {heading}options:{reset}
-                 {short_b}-h{reset}, {long_b}--help{reset}         show this help message and exit
+                 {short_b}-h{reset}, {long_b}--help{reset}         show this help message und exit
                  {short_b}+f{reset}, {long_b}++foo{reset} {label_b}FOO{reset}      foo help
         '''))
 
@@ -7351,7 +7351,7 @@ klasse TestColorized(TestCase):
                  {pos_b}spam{reset}               spam help
 
             {heading}options:{reset}
-                 {short_b}-h{reset}, {long_b}--help{reset}         show this help message and exit
+                 {short_b}-h{reset}, {long_b}--help{reset}         show this help message und exit
                  {short_b}+f{reset}, {long_b}++foo{reset} {label_b}FOO{reset}      foo help
         '''))
 
@@ -7364,7 +7364,7 @@ def tearDownModule():
 
 wenn __name__ == '__main__':
     # To regenerate translation snapshots
-    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+    wenn len(sys.argv) > 1 und sys.argv[1] == '--snapshot-update':
         update_translation_snapshots(argparse)
         sys.exit(0)
     unittest.main()

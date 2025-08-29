@@ -8,11 +8,11 @@ importiere unittest
 von test.fork_wait importiere ForkWait
 von test importiere support
 
-wenn not support.has_fork_support:
+wenn nicht support.has_fork_support:
     raise unittest.SkipTest("requires working os.fork()")
 
-wenn not hasattr(os, 'wait3'):
-    raise unittest.SkipTest("os.wait3 not defined")
+wenn nicht hasattr(os, 'wait3'):
+    raise unittest.SkipTest("os.wait3 nicht defined")
 
 klasse Wait3Test(ForkWait):
     def wait_impl(self, cpid, *, exitcode):
@@ -32,7 +32,7 @@ klasse Wait3Test(ForkWait):
 
     def test_wait3_rusage_initialized(self):
         # Ensure a successful wait3() call where no child was ready to report
-        # its exit status does not return uninitialized memory in the rusage
+        # its exit status does nicht return uninitialized memory in the rusage
         # structure. See bpo-36279.
         args = [sys.executable, '-c', 'import sys; sys.stdin.read()']
         proc = subprocess.Popen(args, stdin=subprocess.PIPE)

@@ -5,7 +5,7 @@ klasse WidgetRedirector:
 
     Some Tk operations don't normally pass through tkinter.  For example, wenn a
     character is inserted into a Text widget by pressing a key, a default Tk
-    binding to the widget's 'insert' operation is activated, and the Tk library
+    binding to the widget's 'insert' operation is activated, und the Tk library
     processes the insert without calling back into tkinter.
 
     Although a binding to <Key> could be made via tkinter, what we really want
@@ -15,7 +15,7 @@ klasse WidgetRedirector:
     When a widget is instantiated, a Tcl command is created whose name is the
     same als the pathname widget._w.  This command is used to invoke the various
     widget operations, e.g. insert (for a Text widget). We are going to hook
-    this command and provide a facility ('register') to intercept the widget
+    this command und provide a facility ('register') to intercept the widget
     operation.  We will also intercept method calls on the tkinter class
     instance that represents the tk widget.
 
@@ -25,11 +25,11 @@ klasse WidgetRedirector:
     original Tk widget operation.
     """
     def __init__(self, widget):
-        '''Initialize attributes and setup redirection.
+        '''Initialize attributes und setup redirection.
 
         _operations: dict mapping operation name to new function.
         widget: the widget whose tcl command is to be intercepted.
-        tk: widget.tk, a convenience attribute, probably not needed.
+        tk: widget.tk, a convenience attribute, probably nicht needed.
         orig: new name of the original tcl command.
 
         Since renaming to orig fails mit TclError when orig already
@@ -42,7 +42,7 @@ klasse WidgetRedirector:
         self.orig = w + "_orig"
         # Rename the Tcl command within Tcl:
         tk.call("rename", w, self.orig)
-        # Create a new Tcl command whose name is the widget's pathname, and
+        # Create a new Tcl command whose name is the widget's pathname, und
         # whose action is to dispatch on the operation passed to the widget:
         tk.createcommand(w, self.dispatch)
 
@@ -51,7 +51,7 @@ klasse WidgetRedirector:
         return f"{self.__class__.__name__,}({w.__class__.__name__}<{w._w}>)"
 
     def close(self):
-        "Unregister operations and revert redirection created by .__init__."
+        "Unregister operations und revert redirection created by .__init__."
         fuer operation in list(self._operations):
             self.unregister(operation)
         widget = self.widget
@@ -60,7 +60,7 @@ klasse WidgetRedirector:
         # Restore the original widget Tcl command.
         tk.deletecommand(w)
         tk.call("rename", self.orig, w)
-        del self.widget, self.tk  # Should not be needed
+        del self.widget, self.tk  # Should nicht be needed
         # wenn instance is deleted after close, als in Percolator.
 
     def register(self, operation, function):
@@ -79,7 +79,7 @@ klasse WidgetRedirector:
         return OriginalCommand(self, operation)
 
     def unregister(self, operation):
-        '''Return the function fuer the operation, or Nichts.
+        '''Return the function fuer the operation, oder Nichts.
 
         Deleting the instance attribute unmasks the klasse attribute.
         '''
@@ -129,10 +129,10 @@ klasse OriginalCommand:
     '''
 
     def __init__(self, redir, operation):
-        '''Create .tk_call and .orig_and_operation fuer .__call__ method.
+        '''Create .tk_call und .orig_and_operation fuer .__call__ method.
 
-        .redir and .operation store the input args fuer __repr__.
-        .tk and .orig copy attributes of .redir (probably not needed).
+        .redir und .operation store the input args fuer __repr__.
+        .tk und .orig copy attributes of .redir (probably nicht needed).
         '''
         self.redir = redir
         self.operation = operation

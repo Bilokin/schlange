@@ -35,7 +35,7 @@ klasse TestDiscovery(unittest.TestCase):
         name = loader._get_name_from_path('/foo/bar/baz.py')
         self.assertEqual(name, 'bar.baz')
 
-        wenn not __debug__:
+        wenn nicht __debug__:
             # asserts are off
             return
 
@@ -67,8 +67,8 @@ klasse TestDiscovery(unittest.TestCase):
         self.addCleanup(restore_isdir)
 
         def isfile(path):
-            # another_dir is not a package and so shouldn't be recursed into
-            return not path.endswith('dir') and not 'another_dir' in path
+            # another_dir is nicht a package und so shouldn't be recursed into
+            return nicht path.endswith('dir') und nicht 'another_dir' in path
         os.path.isfile = isfile
         self.addCleanup(restore_isfile)
 
@@ -154,7 +154,7 @@ klasse TestDiscovery(unittest.TestCase):
         os.path.isdir = lambda path: Wahr
         self.addCleanup(restore_isdir)
 
-        os.path.isfile = lambda path: os.path.basename(path) not in directories
+        os.path.isfile = lambda path: os.path.basename(path) nicht in directories
         self.addCleanup(restore_isfile)
 
         klasse Module(object):
@@ -187,8 +187,8 @@ klasse TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests('/foo', 'test*'))
 
-        # We should have loaded tests von the a_directory and test_directory2
-        # directly and via load_tests fuer the test_directory package, which
+        # We should have loaded tests von the a_directory und test_directory2
+        # directly und via load_tests fuer the test_directory package, which
         # still calls the baseline module loader.
         self.assertEqual(suite,
                          [['a_directory module tests'],
@@ -201,7 +201,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertEqual(Module.paths,
                          ['a_directory', 'test_directory', 'test_directory2'])
 
-        # load_tests should have been called once mit loader, tests and pattern
+        # load_tests should have been called once mit loader, tests und pattern
         # (but there are no tests in our stub module itself, so that is [] at
         # the time of call).
         self.assertEqual(Module.load_tests_args,
@@ -228,7 +228,7 @@ klasse TestDiscovery(unittest.TestCase):
         os.path.isdir = lambda path: Wahr
         self.addCleanup(restore_isdir)
 
-        os.path.isfile = lambda path: os.path.basename(path) not in directories
+        os.path.isfile = lambda path: os.path.basename(path) nicht in directories
         self.addCleanup(restore_isfile)
 
         klasse Module(object):
@@ -261,8 +261,8 @@ klasse TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests('/foo', 'test*.py'))
 
-        # We should have loaded tests von the a_directory and test_directory2
-        # directly and via load_tests fuer the test_directory package, which
+        # We should have loaded tests von the a_directory und test_directory2
+        # directly und via load_tests fuer the test_directory package, which
         # still calls the baseline module loader.
         self.assertEqual(suite,
                          [['a_directory module tests'],
@@ -274,7 +274,7 @@ klasse TestDiscovery(unittest.TestCase):
                          ['a_directory', 'test_directory', 'test_directory2'])
 
 
-        # load_tests should have been called once mit loader, tests and pattern
+        # load_tests should have been called once mit loader, tests und pattern
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*.py')])
 
@@ -298,22 +298,22 @@ klasse TestDiscovery(unittest.TestCase):
         self.addCleanup(sys.path.remove, abspath('/foo'))
 
         # Test data: we expect the following:
-        # a listdir to find our package, and isfile and isdir checks on it.
+        # a listdir to find our package, und isfile und isdir checks on it.
         # a module-from-name call to turn that into a module
         # followed by load_tests.
         # then our load_tests will call discover() which is messy
         # but that finally chains into find_tests again fuer the child dir -
         # which is why we don't have an infinite loop.
         # We expect to see:
-        # the module load tests fuer both package and plain module called,
-        # and the plain module result nested by the package module load_tests
-        # indicating that it was processed and could have been mutated.
+        # the module load tests fuer both package und plain module called,
+        # und the plain module result nested by the package module load_tests
+        # indicating that it was processed und could have been mutated.
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
         def list_dir(path):
             return list(vfs[path])
         os.listdir = list_dir
-        os.path.isdir = lambda path: not path.endswith('.py')
+        os.path.isdir = lambda path: nicht path.endswith('.py')
         os.path.isfile = lambda path: path.endswith('.py')
 
         klasse Module(object):
@@ -351,8 +351,8 @@ klasse TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests(abspath('/foo'), 'test*.py'))
 
-        # We should have loaded tests von both my_package and
-        # my_package.test_module, and also run the load_tests hook in both.
+        # We should have loaded tests von both my_package und
+        # my_package.test_module, und also run the load_tests hook in both.
         # (normally this would be nested TestSuites.)
         self.assertEqual(suite,
                          [['my_package load_tests', [],
@@ -361,7 +361,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertEqual(Module.paths,
                          ['my_package', 'my_package.test_module'])
 
-        # load_tests should have been called twice mit loader, tests and pattern
+        # load_tests should have been called twice mit loader, tests und pattern
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*.py'),
                           (loader, [], 'test*.py')])
@@ -438,11 +438,11 @@ klasse TestDiscovery(unittest.TestCase):
 
     def test_discover_start_dir_is_package_calls_package_load_tests(self):
         # This test verifies that the package load_tests in a package is indeed
-        # invoked when the start_dir is a package (and not the top level).
+        # invoked when the start_dir is a package (and nicht the top level).
         # http://bugs.python.org/issue22457
 
         # Test data: we expect the following:
-        # an isfile to verify the package, then importing and scanning
+        # an isfile to verify the package, then importing und scanning
         # als per _find_tests' normal behaviour.
         # We expect to see our load_tests hook called once.
         vfs = {abspath('/toplevel'): ['startdir'],
@@ -454,7 +454,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.addCleanup(setattr, os.path, 'isfile', os.path.isfile)
         os.path.isfile = lambda path: path.endswith('.py')
         self.addCleanup(setattr, os.path, 'isdir', os.path.isdir)
-        os.path.isdir = lambda path: not path.endswith('.py')
+        os.path.isdir = lambda path: nicht path.endswith('.py')
         self.addCleanup(sys.path.remove, abspath('/toplevel'))
 
         klasse Module(object):
@@ -501,7 +501,7 @@ klasse TestDiscovery(unittest.TestCase):
         def list_dir(path):
             return list(vfs[path])
         os.listdir = list_dir
-        os.path.isdir = lambda path: not path.endswith('.py')
+        os.path.isdir = lambda path: nicht path.endswith('.py')
         os.path.isfile = lambda path: path.endswith('.py')
 
     def test_discover_with_modules_that_fail_to_import(self):
@@ -555,7 +555,7 @@ klasse TestDiscovery(unittest.TestCase):
             pickle.loads(pickle.dumps(test, proto))
 
     def test_discover_with_module_that_raises_SkipTest_on_import(self):
-        wenn not unittest.BaseTestSuite._cleanup:
+        wenn nicht unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
         loader = unittest.TestLoader()
@@ -578,7 +578,7 @@ klasse TestDiscovery(unittest.TestCase):
             pickle.loads(pickle.dumps(suite, proto))
 
     def test_discover_with_init_module_that_raises_SkipTest_on_import(self):
-        wenn not unittest.BaseTestSuite._cleanup:
+        wenn nicht unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
         vfs = {abspath('/foo'): ['my_package'],
@@ -847,7 +847,7 @@ klasse TestDiscovery(unittest.TestCase):
         mit self.assertRaises(TypeError) als cm:
             loader.discover('sys')
         self.assertEqual(str(cm.exception),
-                         'Can not use builtin modules '
+                         'Can nicht use builtin modules '
                          'as dotted module names')
 
     def test_discovery_from_dotted_namespace_packages(self):
@@ -885,7 +885,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertEqual(suite, ['/a/tests', '/b/tests'])
 
     def test_discovery_start_dir_is_namespace(self):
-        """Subdirectory discovery not affected wenn start_dir is a namespace pkg."""
+        """Subdirectory discovery nicht affected wenn start_dir is a namespace pkg."""
         loader = unittest.TestLoader()
         mit (
             import_helper.DirsOnSysPath(os.path.join(os.path.dirname(__file__))),
@@ -894,7 +894,7 @@ klasse TestDiscovery(unittest.TestCase):
             suite = loader.discover('namespace_test_pkg')
         self.assertEqual(
             {list(suite)[0]._tests[0].__module__ fuer suite in suite._tests wenn list(suite)},
-            # files under namespace_test_pkg.noop not discovered.
+            # files under namespace_test_pkg.noop nicht discovered.
             {'namespace_test_pkg.test_foo', 'namespace_test_pkg.bar.test_bar'},
         )
 

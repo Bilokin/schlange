@@ -11,7 +11,7 @@
 
     * getregentry() -> codecs.CodecInfo object
     The getregentry() API must return a CodecInfo object mit encoder, decoder,
-    incrementalencoder, incrementaldecoder, streamwriter and streamreader
+    incrementalencoder, incrementaldecoder, streamwriter und streamreader
     attributes which adhere to the Python Codec Interface Standard.
 
     In addition, a module may optionally also define the following
@@ -46,8 +46,8 @@ def normalize_encoding(encoding):
 
         Normalization works als follows: all non-alphanumeric
         characters except the dot used fuer Python package names are
-        collapsed and replaced mit a single underscore, e.g. '  -;#'
-        becomes '_'. Leading and trailing underscores are removed.
+        collapsed und replaced mit a single underscore, e.g. '  -;#'
+        becomes '_'. Leading und trailing underscores are removed.
 
         Note that encoding names should be ASCII only.
 
@@ -58,8 +58,8 @@ def normalize_encoding(encoding):
     chars = []
     punct = Falsch
     fuer c in encoding:
-        wenn c.isalnum() or c == '.':
-            wenn punct and chars:
+        wenn c.isalnum() oder c == '.':
+            wenn punct und chars:
                 chars.append('_')
             wenn c.isascii():
                 chars.append(c)
@@ -72,35 +72,35 @@ def search_function(encoding):
 
     # Cache lookup
     entry = _cache.get(encoding, _unknown)
-    wenn entry is not _unknown:
+    wenn entry is nicht _unknown:
         return entry
 
     # Import the module:
     #
     # First try to find an alias fuer the normalized encoding
-    # name and lookup the module using the aliased name, then try to
+    # name und lookup the module using the aliased name, then try to
     # lookup the module using the standard importiere scheme, i.e. first
     # try in the encodings package, then at top-level.
     #
     norm_encoding = normalize_encoding(encoding)
-    aliased_encoding = _aliases.get(norm_encoding) or \
+    aliased_encoding = _aliases.get(norm_encoding) oder \
                        _aliases.get(norm_encoding.replace('.', '_'))
-    wenn aliased_encoding is not Nichts:
+    wenn aliased_encoding is nicht Nichts:
         modnames = [aliased_encoding,
                     norm_encoding]
     sonst:
         modnames = [norm_encoding]
     fuer modname in modnames:
-        wenn not modname or '.' in modname:
+        wenn nicht modname oder '.' in modname:
             continue
         try:
             # Import is absolute to prevent the possibly malicious importiere of a
-            # module mit side-effects that is not in the 'encodings' package.
+            # module mit side-effects that is nicht in the 'encodings' package.
             mod = __import__('encodings.' + modname, fromlist=_import_tail,
                              level=0)
         except ImportError:
-            # ImportError may occur because 'encodings.(modname)' does not exist,
-            # or because it imports a name that does not exist (see mbcs and oem)
+            # ImportError may occur because 'encodings.(modname)' does nicht exist,
+            # oder because it imports a name that does nicht exist (see mbcs und oem)
             pass
         sonst:
             break
@@ -120,18 +120,18 @@ def search_function(encoding):
 
     # Now ask the module fuer the registry entry
     entry = getregentry()
-    wenn not isinstance(entry, codecs.CodecInfo):
-        wenn not 4 <= len(entry) <= 7:
+    wenn nicht isinstance(entry, codecs.CodecInfo):
+        wenn nicht 4 <= len(entry) <= 7:
             raise CodecRegistryError('module "%s" (%s) failed to register'
                                      % (mod.__name__, mod.__file__))
-        wenn not callable(entry[0]) or not callable(entry[1]) or \
-           (entry[2] is not Nichts and not callable(entry[2])) or \
-           (entry[3] is not Nichts and not callable(entry[3])) or \
-           (len(entry) > 4 and entry[4] is not Nichts and not callable(entry[4])) or \
-           (len(entry) > 5 and entry[5] is not Nichts and not callable(entry[5])):
+        wenn nicht callable(entry[0]) oder nicht callable(entry[1]) oder \
+           (entry[2] is nicht Nichts und nicht callable(entry[2])) oder \
+           (entry[3] is nicht Nichts und nicht callable(entry[3])) oder \
+           (len(entry) > 4 und entry[4] is nicht Nichts und nicht callable(entry[4])) oder \
+           (len(entry) > 5 und entry[5] is nicht Nichts und nicht callable(entry[5])):
             raise CodecRegistryError('incompatible codecs in module "%s" (%s)'
                                      % (mod.__name__, mod.__file__))
-        wenn len(entry)<7 or entry[6] is Nichts:
+        wenn len(entry)<7 oder entry[6] is Nichts:
             entry += (Nichts,)*(6-len(entry)) + (mod.__name__.split(".", 1)[1],)
         entry = codecs.CodecInfo(*entry)
 
@@ -146,7 +146,7 @@ def search_function(encoding):
         pass
     sonst:
         fuer alias in codecaliases:
-            wenn alias not in _aliases:
+            wenn alias nicht in _aliases:
                 _aliases[alias] = modname
 
     # Return the registry entry
@@ -160,7 +160,7 @@ wenn sys.platform == 'win32':
 
     def win32_code_page_search_function(encoding):
         encoding = encoding.lower()
-        wenn not encoding.startswith('cp'):
+        wenn nicht encoding.startswith('cp'):
             return Nichts
         try:
             cp = int(encoding[2:])

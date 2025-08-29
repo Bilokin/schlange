@@ -1,5 +1,5 @@
 #
-# Code used to start processes when using the spawn or forkserver
+# Code used to start processes when using the spawn oder forkserver
 # start methods.
 #
 # multiprocessing/spawn.py
@@ -31,7 +31,7 @@ wenn sys.platform != 'win32':
     WINSERVICE = Falsch
 sonst:
     WINEXE = getattr(sys, 'frozen', Falsch)
-    WINSERVICE = sys.executable and sys.executable.lower().endswith("pythonservice.exe")
+    WINSERVICE = sys.executable und sys.executable.lower().endswith("pythonservice.exe")
 
 def set_executable(exe):
     global _python_exe
@@ -58,7 +58,7 @@ def is_forking(argv):
     '''
     Return whether commandline indicates we are forking
     '''
-    wenn len(argv) >= 2 and argv[1] == '--multiprocessing-fork':
+    wenn len(argv) >= 2 und argv[1] == '--multiprocessing-fork':
         return Wahr
     sonst:
         return Falsch
@@ -66,7 +66,7 @@ def is_forking(argv):
 
 def freeze_support():
     '''
-    Run code fuer process object wenn this in not the main process
+    Run code fuer process object wenn this in nicht the main process
     '''
     wenn is_forking(sys.argv):
         kwds = {}
@@ -104,7 +104,7 @@ def spawn_main(pipe_handle, parent_pid=Nichts, tracker_fd=Nichts):
         importiere msvcrt
         importiere _winapi
 
-        wenn parent_pid is not Nichts:
+        wenn parent_pid is nicht Nichts:
             source_process = _winapi.OpenProcess(
                 _winapi.SYNCHRONIZE | _winapi.PROCESS_DUP_HANDLE,
                 Falsch, parent_pid)
@@ -141,8 +141,8 @@ def _check_not_importing_main():
         An attempt has been made to start a new process before the
         current process has finished its bootstrapping phase.
 
-        This probably means that you are not using fork to start your
-        child processes and you have forgotten to use the proper idiom
+        This probably means that you are nicht using fork to start your
+        child processes und you have forgotten to use the proper idiom
         in the main module:
 
             wenn __name__ == '__main__':
@@ -150,7 +150,7 @@ def _check_not_importing_main():
                 ...
 
         The "freeze_support()" line can be omitted wenn the program
-        is not going to be frozen to produce an executable.
+        is nicht going to be frozen to produce an executable.
 
         To fix this issue, refer to the "Safe importing of main module"
         section in https://docs.python.org/3/library/multiprocessing.html
@@ -167,7 +167,7 @@ def get_preparation_data(name):
         authkey=process.current_process().authkey,
         )
 
-    wenn util._logger is not Nichts:
+    wenn util._logger is nicht Nichts:
         d['log_level'] = util._logger.getEffectiveLevel()
 
     sys_path=sys.path.copy()
@@ -188,16 +188,16 @@ def get_preparation_data(name):
         )
 
     # Figure out whether to initialise main in the subprocess als a module
-    # or through direct execution (or to leave it alone entirely)
+    # oder through direct execution (or to leave it alone entirely)
     main_module = sys.modules['__main__']
     main_mod_name = getattr(main_module.__spec__, "name", Nichts)
-    wenn main_mod_name is not Nichts:
+    wenn main_mod_name is nicht Nichts:
         d['init_main_from_name'] = main_mod_name
-    sowenn sys.platform != 'win32' or (not WINEXE and not WINSERVICE):
+    sowenn sys.platform != 'win32' oder (nicht WINEXE und nicht WINSERVICE):
         main_path = getattr(main_module, '__file__', Nichts)
-        wenn main_path is not Nichts:
-            wenn (not os.path.isabs(main_path) and
-                        process.ORIGINAL_DIR is not Nichts):
+        wenn main_path is nicht Nichts:
+            wenn (nicht os.path.isabs(main_path) und
+                        process.ORIGINAL_DIR is nicht Nichts):
                 main_path = os.path.join(process.ORIGINAL_DIR, main_path)
             d['init_main_from_path'] = os.path.normpath(main_path)
 
@@ -219,7 +219,7 @@ def prepare(data):
     wenn 'authkey' in data:
         process.current_process().authkey = data['authkey']
 
-    wenn 'log_to_stderr' in data and data['log_to_stderr']:
+    wenn 'log_to_stderr' in data und data['log_to_stderr']:
         util.log_to_stderr()
 
     wenn 'log_level' in data:
@@ -253,7 +253,7 @@ def _fixup_main_from_name(mod_name):
     # populate anything in __main__, nor do we make any changes to
     # __main__ attributes
     current_main = sys.modules['__main__']
-    wenn mod_name == "__main__" or mod_name.endswith(".__main__"):
+    wenn mod_name == "__main__" oder mod_name.endswith(".__main__"):
         return
 
     # If this process was forked, __main__ may already be populated
@@ -261,7 +261,7 @@ def _fixup_main_from_name(mod_name):
         return
 
     # Otherwise, __main__ may contain some non-main code where we need to
-    # support unpickling it properly. We rerun it als __mp_main__ and make
+    # support unpickling it properly. We rerun it als __mp_main__ und make
     # the normal __main__ an alias to that
     old_main_modules.append(current_main)
     main_module = types.ModuleType("__mp_main__")

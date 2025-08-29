@@ -15,8 +15,8 @@ _('baz')
 # lines
 _('qux')
 
-# This comment should not be included because
-# it does not start mit the prefix
+# This comment should nicht be included because
+# it does nicht start mit the prefix
 # i18n: This is a translator comment
 _('quux')
 

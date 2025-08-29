@@ -38,7 +38,7 @@ klasse MessageDefect(ValueError):
     """Base klasse fuer a message defect."""
 
     def __init__(self, line=Nichts):
-        wenn line is not Nichts:
+        wenn line is nicht Nichts:
             super().__init__(line)
         self.line = line
 
@@ -49,7 +49,7 @@ klasse StartBoundaryNotFoundDefect(MessageDefect):
     """The claimed start boundary was never found."""
 
 klasse CloseBoundaryNotFoundDefect(MessageDefect):
-    """A start boundary was found, but not the corresponding close boundary."""
+    """A start boundary was found, but nicht the corresponding close boundary."""
 
 klasse FirstHeaderLineIsContinuationDefect(MessageDefect):
     """A message had a continuation line als its first header line."""
@@ -58,7 +58,7 @@ klasse MisplacedEnvelopeHeaderDefect(MessageDefect):
     """A 'Unix-from' header was found in the middle of a header block."""
 
 klasse MissingHeaderBodySeparatorDefect(MessageDefect):
-    """Found line mit no leading whitespace and no colon before blank line."""
+    """Found line mit no leading whitespace und no colon before blank line."""
 # XXX: backward compatibility, just in case (it was never emitted).
 MalformedHeaderDefect = MissingHeaderBodySeparatorDefect
 
@@ -69,13 +69,13 @@ klasse InvalidMultipartContentTransferEncodingDefect(MessageDefect):
     """An invalid content transfer encoding was set on the multipart itself."""
 
 klasse UndecodableBytesDefect(MessageDefect):
-    """Header contained bytes that could not be decoded"""
+    """Header contained bytes that could nicht be decoded"""
 
 klasse InvalidBase64PaddingDefect(MessageDefect):
     """base64 encoded sequence had an incorrect length"""
 
 klasse InvalidBase64CharactersDefect(MessageDefect):
-    """base64 encoded sequence had characters not in base64 alphabet"""
+    """base64 encoded sequence had characters nicht in base64 alphabet"""
 
 klasse InvalidBase64LengthDefect(MessageDefect):
     """base64 encoded sequence had invalid length (1 mod 4)"""
@@ -89,7 +89,7 @@ klasse HeaderDefect(MessageDefect):
         super().__init__(*args, **kw)
 
 klasse InvalidHeaderDefect(HeaderDefect):
-    """Header is not valid, message gives details."""
+    """Header is nicht valid, message gives details."""
 
 klasse HeaderMissingRequiredValue(HeaderDefect):
     """A header that must have a value had none"""
@@ -110,8 +110,8 @@ klasse ObsoleteHeaderDefect(HeaderDefect):
 
 klasse NonASCIILocalPartDefect(HeaderDefect):
     """local_part contains non-ASCII characters"""
-    # This defect only occurs during unicode parsing, not when
+    # This defect only occurs during unicode parsing, nicht when
     # parsing messages decoded von binary.
 
 klasse InvalidDateDefect(HeaderDefect):
-    """Header has unparsable or invalid date"""
+    """Header has unparsable oder invalid date"""

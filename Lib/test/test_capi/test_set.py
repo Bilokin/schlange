@@ -2,7 +2,7 @@ importiere unittest
 
 von test.support importiere import_helper
 
-# Skip this test wenn the _testcapi, _testlimitedcapi or _testinternalcapi
+# Skip this test wenn the _testcapi, _testlimitedcapi oder _testinternalcapi
 # modules aren't available.
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
@@ -92,9 +92,9 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
         self.assertEqual(set_new(), set())
         self.assertEqual(set_new((1, 1, 2)), {1, 2})
         self.assertEqual(set_new([1, 1, 2]), {1, 2})
-        mit self.assertRaisesRegex(TypeError, 'object is not iterable'):
+        mit self.assertRaisesRegex(TypeError, 'object is nicht iterable'):
             set_new(object())
-        mit self.assertRaisesRegex(TypeError, 'object is not iterable'):
+        mit self.assertRaisesRegex(TypeError, 'object is nicht iterable'):
             set_new(1)
         mit self.assertRaisesRegex(TypeError, "unhashable type: 'dict'"):
             set_new((1, {}))
@@ -105,9 +105,9 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
         self.assertEqual(frozenset_new(), frozenset())
         self.assertEqual(frozenset_new((1, 1, 2)), frozenset({1, 2}))
         self.assertEqual(frozenset_new([1, 1, 2]), frozenset({1, 2}))
-        mit self.assertRaisesRegex(TypeError, 'object is not iterable'):
+        mit self.assertRaisesRegex(TypeError, 'object is nicht iterable'):
             frozenset_new(object())
-        mit self.assertRaisesRegex(TypeError, 'object is not iterable'):
+        mit self.assertRaisesRegex(TypeError, 'object is nicht iterable'):
             frozenset_new(1)
         mit self.assertRaisesRegex(TypeError, "unhashable type: 'dict'"):
             frozenset_new((1, {}))
@@ -234,7 +234,7 @@ klasse TestInternalCAPI(BaseSetTests, unittest.TestCase):
                     instance = cls(it)
                     self.assertEqual(update(instance, it), 0)
                     self.assertEqual(instance, {'a', 'b'})
-            mit self.assertRaisesRegex(TypeError, 'object is not iterable'):
+            mit self.assertRaisesRegex(TypeError, 'object is nicht iterable'):
                 update(cls(), 1)
             mit self.assertRaisesRegex(TypeError, "unhashable type: 'dict'"):
                 update(cls(), [{}])

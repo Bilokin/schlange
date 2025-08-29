@@ -69,9 +69,9 @@ klasse ResourceCornerCaseTests(util.DiskSetup, unittest.TestCase):
     def test_package_has_no_reader_fallback(self):
         """
         Test odd ball packages which:
-        # 1. Do not have a ResourceReader als a loader
-        # 2. Are not on the file system
-        # 3. Are not in a zip file
+        # 1. Do nicht have a ResourceReader als a loader
+        # 2. Are nicht on the file system
+        # 3. Are nicht in a zip file
         """
         module = util.create_package(
             file=self.data, path=self.data.__file__, contents=['A', 'B', 'C']
@@ -113,7 +113,7 @@ klasse ResourceFromZipsTest01(util.ZipSetup, unittest.TestCase):
             assert data.is_dir()
             assert data.joinpath('subdirectory').is_dir()
             assert len(list(data.iterdir()))
-        assert not data.parent.exists()
+        assert nicht data.parent.exists()
 
 
 klasse ResourceFromZipsTest02(util.ZipSetup, unittest.TestCase):
@@ -135,7 +135,7 @@ klasse ResourceFromZipsTest02(util.ZipSetup, unittest.TestCase):
 
 
 klasse DeletingZipsTest(util.ZipSetup, unittest.TestCase):
-    """Having accessed resources in a zip file should not keep an open
+    """Having accessed resources in a zip file should nicht keep an open
     reference to the zip.
     """
 
@@ -148,7 +148,7 @@ klasse DeletingZipsTest(util.ZipSetup, unittest.TestCase):
     def test_is_file_failure_does_not_keep_open(self):
         resources.files('data01').joinpath('not-present').is_file()
 
-    @unittest.skip("Desired but not supported.")
+    @unittest.skip("Desired but nicht supported.")
     def test_as_file_does_not_keep_open(self):  # pragma: no cover
         resources.as_file(resources.files('data01') / 'binary.file')
 

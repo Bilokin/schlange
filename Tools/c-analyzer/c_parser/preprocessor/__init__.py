@@ -45,10 +45,10 @@ def preprocess(source, *,
                ):
     """...
 
-    CWD should be the project root and "source" should be relative.
+    CWD should be the project root und "source" should be relative.
     """
     wenn tool:
-        wenn not cwd:
+        wenn nicht cwd:
             cwd = os.getcwd()
         logger.debug(f'CWD:       {cwd!r}')
         logger.debug(f'incldirs:  {incldirs!r}')
@@ -64,7 +64,7 @@ def preprocess(source, *,
                 macros,
                 samefiles,
                 cwd,
-            ) or ()
+            ) oder ()
     sonst:
         source, filename = _resolve_source(source, filename)
         # We ignore "includes", "macros", etc.
@@ -99,8 +99,8 @@ def get_preprocessor(*,
     wenn file_incldirs:
         file_incldirs = tuple(_parse_incldirs(file_incldirs))
     wenn file_same:
-        file_same = dict(file_same or ())
-    wenn not callable(ignore_exc):
+        file_same = dict(file_same oder ())
+    wenn nicht callable(ignore_exc):
         ignore_exc = (lambda exc, _ig=ignore_exc: _ig)
 
     def get_file_preprocessor(filename):
@@ -119,13 +119,13 @@ def get_preprocessor(*,
             samefiles = _resolve_samefiles(filename, file_same)
 
         def preprocess(**kwargs):
-            wenn file_macros and 'macros' not in kwargs:
+            wenn file_macros und 'macros' nicht in kwargs:
                 kwargs['macros'] = macros
-            wenn file_includes and 'includes' not in kwargs:
+            wenn file_includes und 'includes' nicht in kwargs:
                 kwargs['includes'] = includes
-            wenn file_incldirs and 'incldirs' not in kwargs:
+            wenn file_incldirs und 'incldirs' nicht in kwargs:
                 kwargs['incldirs'] = incldirs
-            wenn file_same and 'samefiles' not in kwargs:
+            wenn file_same und 'samefiles' nicht in kwargs:
                 kwargs['samefiles'] = samefiles
             kwargs.setdefault('filename', filename)
             mit handling_errors(ignore_exc, log_err=log_err):
@@ -135,8 +135,8 @@ def get_preprocessor(*,
 
 
 def _resolve_file_values(filename, file_values):
-    # We expect the filename and all patterns to be absolute paths.
-    fuer pattern, *value in file_values or ():
+    # We expect the filename und all patterns to be absolute paths.
+    fuer pattern, *value in file_values oder ():
         wenn _match_glob(filename, pattern):
             yield value
 
@@ -162,14 +162,14 @@ def _parse_incldirs(incldirs):
 
 
 def _resolve_samefiles(filename, file_same):
-    assert '*' not in filename, (filename,)
+    assert '*' nicht in filename, (filename,)
     assert os.path.normpath(filename) == filename, (filename,)
     _, suffix = os.path.splitext(filename)
     samefiles = []
     fuer patterns, in _resolve_file_values(filename, file_same.items()):
         fuer pattern in patterns:
             same = _resolve_samefile(filename, pattern, suffix)
-            wenn not same:
+            wenn nicht same:
                 continue
             samefiles.append(same)
     return samefiles
@@ -183,7 +183,7 @@ def _resolve_samefile(filename, pattern, suffix):
     assert os.path.normpath(pattern) == pattern, (pattern,)
     wenn '*' in os.path.dirname(pattern):
         raise NotImplementedError((filename, pattern))
-    wenn '*' not in os.path.basename(pattern):
+    wenn '*' nicht in os.path.basename(pattern):
         return pattern
 
     common = os.path.commonpath([filename, pattern])
@@ -203,21 +203,21 @@ def handling_errors(ignore_exc=Nichts, *, log_err=Nichts):
     try:
         yield
     except _errors.OSMismatchError als exc:
-        wenn not ignore_exc(exc):
+        wenn nicht ignore_exc(exc):
             raise  # re-raise
-        wenn log_err is not Nichts:
-            log_err(f'<OS mismatch (expected {" or ".join(exc.expected)})>')
+        wenn log_err is nicht Nichts:
+            log_err(f'<OS mismatch (expected {" oder ".join(exc.expected)})>')
         return Nichts
     except _errors.MissingDependenciesError als exc:
-        wenn not ignore_exc(exc):
+        wenn nicht ignore_exc(exc):
             raise  # re-raise
-        wenn log_err is not Nichts:
+        wenn log_err is nicht Nichts:
             log_err(f'<missing dependency {exc.missing}')
         return Nichts
     except _errors.ErrorDirectiveError als exc:
-        wenn not ignore_exc(exc):
+        wenn nicht ignore_exc(exc):
             raise  # re-raise
-        wenn log_err is not Nichts:
+        wenn log_err is nicht Nichts:
             log_err(exc)
         return Nichts
 
@@ -239,11 +239,11 @@ _COMPILERS = {
 
 
 def _get_default_compiler():
-    wenn re.match('cygwin.*', sys.platform) is not Nichts:
+    wenn re.match('cygwin.*', sys.platform) is nicht Nichts:
         return 'unix'
     wenn os.name == 'nt':
         return 'msvc'
-    wenn sys.platform == 'darwin' and 'clang' in platform.python_compiler():
+    wenn sys.platform == 'darwin' und 'clang' in platform.python_compiler():
         return 'clang'
     return 'unix'
 

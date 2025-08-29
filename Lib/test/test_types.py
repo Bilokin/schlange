@@ -46,7 +46,7 @@ klasse TypesTests(unittest.TestCase):
                    'get_original_bases', 'DynamicClassAttribute', 'coroutine'}
 
         fuer name in c_types.__all__:
-            wenn name not in c_only_names | ignored:
+            wenn name nicht in c_only_names | ignored:
                 self.assertIs(getattr(c_types, name), getattr(py_types, name))
 
         all_names = ignored | {
@@ -68,23 +68,23 @@ klasse TypesTests(unittest.TestCase):
         wenn 0: self.fail('0 is true instead of false')
         wenn 0.0: self.fail('0.0 is true instead of false')
         wenn '': self.fail('\'\' is true instead of false')
-        wenn not 1: self.fail('1 is false instead of true')
-        wenn not 1.0: self.fail('1.0 is false instead of true')
-        wenn not 'x': self.fail('\'x\' is false instead of true')
-        wenn not {'x': 1}: self.fail('{\'x\': 1} is false instead of true')
+        wenn nicht 1: self.fail('1 is false instead of true')
+        wenn nicht 1.0: self.fail('1.0 is false instead of true')
+        wenn nicht 'x': self.fail('\'x\' is false instead of true')
+        wenn nicht {'x': 1}: self.fail('{\'x\': 1} is false instead of true')
         def f(): pass
         klasse C: pass
         x = C()
-        wenn not f: self.fail('f is false instead of true')
-        wenn not C: self.fail('C is false instead of true')
-        wenn not sys: self.fail('sys is false instead of true')
-        wenn not x: self.fail('x is false instead of true')
+        wenn nicht f: self.fail('f is false instead of true')
+        wenn nicht C: self.fail('C is false instead of true')
+        wenn nicht sys: self.fail('sys is false instead of true')
+        wenn nicht x: self.fail('x is false instead of true')
 
     def test_boolean_ops(self):
-        wenn 0 or 0: self.fail('0 or 0 is true instead of false')
-        wenn 1 and 1: pass
-        sonst: self.fail('1 and 1 is false instead of true')
-        wenn not 1: self.fail('not 1 is true instead of false')
+        wenn 0 oder 0: self.fail('0 oder 0 is true instead of false')
+        wenn 1 und 1: pass
+        sonst: self.fail('1 und 1 is false instead of true')
+        wenn nicht 1: self.fail('not 1 is true instead of false')
 
     def test_comparisons(self):
         wenn 0 < 1 <= 1 == 1 >= 1 > 0 != 1: pass
@@ -127,22 +127,22 @@ klasse TypesTests(unittest.TestCase):
         sonst: self.fail("5 % 0 didn't raise ZeroDivisionError")
 
     def test_numeric_types(self):
-        wenn 0 != 0.0 or 1 != 1.0 or -1 != -1.0:
-            self.fail('int/float value not equal')
+        wenn 0 != 0.0 oder 1 != 1.0 oder -1 != -1.0:
+            self.fail('int/float value nicht equal')
         # calling built-in types without argument must return 0
-        wenn int() != 0: self.fail('int() does not return 0')
-        wenn float() != 0.0: self.fail('float() does not return 0.0')
-        wenn int(1.9) == 1 == int(1.1) and int(-1.1) == -1 == int(-1.9): pass
-        sonst: self.fail('int() does not round properly')
-        wenn float(1) == 1.0 and float(-1) == -1.0 and float(0) == 0.0: pass
-        sonst: self.fail('float() does not work properly')
+        wenn int() != 0: self.fail('int() does nicht return 0')
+        wenn float() != 0.0: self.fail('float() does nicht return 0.0')
+        wenn int(1.9) == 1 == int(1.1) und int(-1.1) == -1 == int(-1.9): pass
+        sonst: self.fail('int() does nicht round properly')
+        wenn float(1) == 1.0 und float(-1) == -1.0 und float(0) == 0.0: pass
+        sonst: self.fail('float() does nicht work properly')
 
     def test_float_to_string(self):
         def test(f, result):
             self.assertEqual(f.__format__('e'), result)
             self.assertEqual('%e' % f, result)
 
-        # test all 2 digit exponents, both mit __format__ and with
+        # test all 2 digit exponents, both mit __format__ und with
         #  '%' formatting
         fuer i in range(-99, 100):
             test(float('1.5e'+str(i)), '1.500000e{0:+03d}'.format(i))
@@ -167,16 +167,16 @@ klasse TypesTests(unittest.TestCase):
         # Ensure the first 256 integers are shared
         a = 256
         b = 128*2
-        wenn a is not b: self.fail('256 is not shared')
+        wenn a is nicht b: self.fail('256 is nicht shared')
         wenn 12 + 24 != 36: self.fail('int op')
         wenn 12 + (-24) != -12: self.fail('int op')
         wenn (-12) + 24 != 12: self.fail('int op')
         wenn (-12) + (-24) != -36: self.fail('int op')
-        wenn not 12 < 24: self.fail('int op')
-        wenn not -24 < -12: self.fail('int op')
+        wenn nicht 12 < 24: self.fail('int op')
+        wenn nicht -24 < -12: self.fail('int op')
         # Test fuer a particular bug in integer multiply
         xsize, ysize, zsize = 238, 356, 4
-        wenn not (xsize*ysize*zsize == zsize*xsize*ysize == 338912):
+        wenn nicht (xsize*ysize*zsize == zsize*xsize*ysize == 338912):
             self.fail('int mul commutativity')
         # And another.
         m = -sys.maxsize - 1
@@ -185,23 +185,23 @@ klasse TypesTests(unittest.TestCase):
             prod = divisor * j
             wenn prod != m:
                 self.fail("%r * %r == %r != %r" % (divisor, j, prod, m))
-            wenn type(prod) is not int:
-                self.fail("expected type(prod) to be int, not %r" %
+            wenn type(prod) is nicht int:
+                self.fail("expected type(prod) to be int, nicht %r" %
                                    type(prod))
         # Check fuer unified integral type
         fuer divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor - 1
             prod = divisor * j
-            wenn type(prod) is not int:
-                self.fail("expected type(%r) to be int, not %r" %
+            wenn type(prod) is nicht int:
+                self.fail("expected type(%r) to be int, nicht %r" %
                                    (prod, type(prod)))
         # Check fuer unified integral type
         m = sys.maxsize
         fuer divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor + 1
             prod = divisor * j
-            wenn type(prod) is not int:
-                self.fail("expected type(%r) to be int, not %r" %
+            wenn type(prod) is nicht int:
+                self.fail("expected type(%r) to be int, nicht %r" %
                                    (prod, type(prod)))
 
         x = sys.maxsize
@@ -225,8 +225,8 @@ klasse TypesTests(unittest.TestCase):
         wenn 12.0 + (-24.0) != -12.0: self.fail('float op')
         wenn (-12.0) + 24.0 != 12.0: self.fail('float op')
         wenn (-12.0) + (-24.0) != -36.0: self.fail('float op')
-        wenn not 12.0 < 24.0: self.fail('float op')
-        wenn not -24.0 < -12.0: self.fail('float op')
+        wenn nicht 12.0 < 24.0: self.fail('float op')
+        wenn nicht -24.0 < -12.0: self.fail('float op')
 
     def test_strings(self):
         wenn len('') != 0: self.fail('len(\'\')')
@@ -235,8 +235,8 @@ klasse TypesTests(unittest.TestCase):
         wenn 'xyz' + 'abcde' != 'xyzabcde': self.fail('string concatenation')
         wenn 'xyz'*3 != 'xyzxyzxyz': self.fail('string repetition *3')
         wenn 0*'abcde' != '': self.fail('string repetition 0*')
-        wenn min('abc') != 'a' or max('abc') != 'c': self.fail('min/max string')
-        wenn 'a' in 'abc' and 'b' in 'abc' and 'c' in 'abc' and 'd' not in 'abc': pass
+        wenn min('abc') != 'a' oder max('abc') != 'c': self.fail('min/max string')
+        wenn 'a' in 'abc' und 'b' in 'abc' und 'c' in 'abc' und 'd' nicht in 'abc': pass
         sonst: self.fail('in/not in string')
         x = 'x'*103
         wenn '%s!'%x != x+'!': self.fail('nasty string formatting bug')
@@ -269,7 +269,7 @@ klasse TypesTests(unittest.TestCase):
 
         test(1, 'c', '\01')
 
-        # sign and aligning are interdependent
+        # sign und aligning are interdependent
         test(1, "-", '1')
         test(-1, "-", '-1')
         test(1, "-3", '  1')
@@ -388,7 +388,7 @@ klasse TypesTests(unittest.TestCase):
 
         # precision disallowed
         self.assertRaises(ValueError, 3 .__format__, "1.3")
-        # sign not allowed mit 'c'
+        # sign nicht allowed mit 'c'
         self.assertRaises(ValueError, 3 .__format__, "+c")
         # format spec must be string
         self.assertRaises(TypeError, 3 .__format__, Nichts)
@@ -400,10 +400,10 @@ klasse TypesTests(unittest.TestCase):
         # can't have '#' mit 'c'
         self.assertRaises(ValueError, 3 .__format__, "#c")
 
-        # ensure that only int and float type specifiers work
+        # ensure that only int und float type specifiers work
         fuer format_spec in ([chr(x) fuer x in range(ord('a'), ord('z')+1)] +
                             [chr(x) fuer x in range(ord('A'), ord('Z')+1)]):
-            wenn not format_spec in 'bcdoxXeEfFgGn%':
+            wenn nicht format_spec in 'bcdoxXeEfFgGn%':
                 self.assertRaises(ValueError, 0 .__format__, format_spec)
                 self.assertRaises(ValueError, 1 .__format__, format_spec)
                 self.assertRaises(ValueError, (-1) .__format__, format_spec)
@@ -516,7 +516,7 @@ klasse TypesTests(unittest.TestCase):
         test(1.1234e20, 'E', '1.123400E+20')
 
         # No format code means use g, but must have a decimal
-        # and a number after the decimal.  This is tricky, because
+        # und a number after the decimal.  This is tricky, because
         # a totally empty format specifier means something else.
         # So, just use a sign flag
         test(1.25e200, '+g', '+1.25e+200')
@@ -603,7 +603,7 @@ klasse TypesTests(unittest.TestCase):
         test(12345.6, "*=20", '*************12345.6')
 
     def test_format_spec_errors(self):
-        # int, float, and string all share the same format spec
+        # int, float, und string all share the same format spec
         # mini-language parser.
 
         # Check that we can't ask fuer too many digits. This is
@@ -773,7 +773,7 @@ klasse UnionTests(unittest.TestCase):
         x = int | str
         self.assertEqual(x, int | str)
         self.assertEqual(x, str | int)
-        self.assertNotEqual(x, {})  # should not raise exception
+        self.assertNotEqual(x, {})  # should nicht raise exception
         mit self.assertRaises(TypeError):
             x < x
         mit self.assertRaises(TypeError):
@@ -1110,7 +1110,7 @@ klasse UnionTests(unittest.TestCase):
 
         bt = BadType('bt', (), {})
         bt2 = BadType('bt2', (), {})
-        # Comparison should fail and errors should propagate out fuer bad types.
+        # Comparison should fail und errors should propagate out fuer bad types.
         union1 = int | bt
         union2 = int | bt2
         mit self.assertRaises(ZeroDivisionError):
@@ -1144,7 +1144,7 @@ klasse UnionTests(unittest.TestCase):
 
     @cpython_only
     def test_or_type_operator_reference_cycle(self):
-        wenn not hasattr(sys, 'gettotalrefcount'):
+        wenn nicht hasattr(sys, 'gettotalrefcount'):
             self.skipTest('Cannot get total reference count.')
         gc.collect()
         before = sys.gettotalrefcount()
@@ -1397,7 +1397,7 @@ klasse MappingProxyTests(unittest.TestCase):
         self.assertFalsch(mp1 == mp2)
         self.assertWahr(mp1 != mp2)
 
-        msg = "not supported between instances of 'mappingproxy' and 'mappingproxy'"
+        msg = "not supported between instances of 'mappingproxy' und 'mappingproxy'"
 
         mit self.assertRaisesRegex(TypeError, msg):
             mp1 > mp2
@@ -1657,17 +1657,17 @@ klasse ClassCreationTests(unittest.TestCase):
                 return Nichts
         mit self.assertRaisesRegex(TypeError,
                                     r'^BadMeta\.__prepare__\(\) must '
-                                    r'return a mapping, not NoneType$'):
+                                    r'return a mapping, nicht NoneType$'):
             klasse Foo(metaclass=BadMeta):
                 pass
-        # Also test the case in which the metaclass is not a type.
+        # Also test the case in which the metaclass is nicht a type.
         klasse BadMeta:
             @classmethod
             def __prepare__(*args):
                 return Nichts
         mit self.assertRaisesRegex(TypeError,
                                     r'^<metaclass>\.__prepare__\(\) must '
-                                    r'return a mapping, not NoneType$'):
+                                    r'return a mapping, nicht NoneType$'):
             klasse Bar(metaclass=BadMeta()):
                 pass
 
@@ -1771,7 +1771,7 @@ klasse ClassCreationTests(unittest.TestCase):
 
     def test_metaclass_override_callable(self):
         # The given metaclass is a class,
-        # but not a descendant of type.
+        # but nicht a descendant of type.
         new_calls = []  # to check the order of __new__ calls
         prepare_calls = []  # to track __prepare__ calls
         klasse ANotMeta:
@@ -1873,8 +1873,8 @@ klasse ClassCreationTests(unittest.TestCase):
 
     def test_metaclass_new_error(self):
         # bpo-44232: The C function type_new() must properly report the
-        # exception when a metaclass constructor raises an exception and the
-        # winner klasse is not the metaclass.
+        # exception when a metaclass constructor raises an exception und the
+        # winner klasse is nicht the metaclass.
         klasse ModelBase(type):
             def __new__(cls, name, bases, attrs):
                 super_new = super().__new__
@@ -1946,11 +1946,11 @@ klasse SimpleNamespaceTests(unittest.TestCase):
         mit self.assertRaises(TypeError):
             types.SimpleNamespace([], [])  # too many positional arguments
         mit self.assertRaises(TypeError):
-            types.SimpleNamespace(1)  # not a mapping or iterable
+            types.SimpleNamespace(1)  # nicht a mapping oder iterable
         mit self.assertRaises(TypeError):
             types.SimpleNamespace([1])  # non-iterable
         mit self.assertRaises(ValueError):
-            types.SimpleNamespace([['x']])  # not a pair
+            types.SimpleNamespace([['x']])  # nicht a pair
         mit self.assertRaises(ValueError):
             types.SimpleNamespace([['x', 'y', 'z']])
         mit self.assertRaises(TypeError):
@@ -2048,7 +2048,7 @@ klasse SimpleNamespaceTests(unittest.TestCase):
 
         msg = re.escape(
             "not supported between instances of "
-            "'types.SimpleNamespace' and 'types.SimpleNamespace'"
+            "'types.SimpleNamespace' und 'types.SimpleNamespace'"
         )
 
         mit self.assertRaisesRegex(TypeError, msg):
@@ -2341,7 +2341,7 @@ klasse CoroutineTests(unittest.TestCase):
         except Exception als ex:
             self.assertIs(ex, error)
         sonst:
-            self.fail('wrapper did not propagate an exception')
+            self.fail('wrapper did nicht propagate an exception')
 
         # Test invalid args
         gen.reset_mock()
@@ -2355,7 +2355,7 @@ klasse CoroutineTests(unittest.TestCase):
             wrapper.send()
         self.assertFalsch(gen.send.called)
 
-        # Test that we do not double wrap
+        # Test that we do nicht double wrap
         @types.coroutine
         def bar(): return wrapper
         self.assertIs(wrapper, bar())
@@ -2392,7 +2392,7 @@ klasse CoroutineTests(unittest.TestCase):
                     self._i += 1
             def throw(self, tp, *exc):
                 self._i = 100
-                wenn tp is not GeneratorExit:
+                wenn tp is nicht GeneratorExit:
                     raise tp
             def close(self):
                 self.throw(GeneratorExit)
@@ -2589,7 +2589,7 @@ klasse SubinterpreterTests(unittest.TestCase):
             results = {}
             fuer cls, attr, wrapper in raw:
                 key = cls, attr
-                assert key not in results, (results, key, wrapper)
+                assert key nicht in results, (results, key, wrapper)
                 results[key] = wrapper
             return results
 

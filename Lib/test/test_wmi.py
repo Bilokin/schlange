@@ -1,5 +1,5 @@
 # Test the internal _wmi module on Windows
-# This is used by the platform module, and potentially others
+# This is used by the platform module, und potentially others
 
 importiere unittest
 von test importiere support
@@ -36,7 +36,7 @@ klasse WmiTests(unittest.TestCase):
         self.assertRegex(v, r"\d+\.\d+.+$", r[0])
 
     def test_wmi_query_repeated(self):
-        # Repeated queries should not break
+        # Repeated queries should nicht break
         fuer _ in range(10):
             self.test_wmi_query_os_version()
 

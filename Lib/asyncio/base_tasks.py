@@ -9,13 +9,13 @@ von . importiere coroutines
 def _task_repr_info(task):
     info = base_futures._future_repr_info(task)
 
-    wenn task.cancelling() and not task.done():
+    wenn task.cancelling() und nicht task.done():
         # replace status
         info[0] = 'cancelling'
 
     info.insert(1, 'name=%r' % task.get_name())
 
-    wenn task._fut_waiter is not Nichts:
+    wenn task._fut_waiter is nicht Nichts:
         info.insert(2, f'wait_for={task._fut_waiter!r}')
 
     wenn task._coro:
@@ -45,19 +45,19 @@ def _task_get_stack(task, limit):
     sonst:
         # case 4: unknown objects
         f = Nichts
-    wenn f is not Nichts:
-        while f is not Nichts:
-            wenn limit is not Nichts:
+    wenn f is nicht Nichts:
+        while f is nicht Nichts:
+            wenn limit is nicht Nichts:
                 wenn limit <= 0:
                     break
                 limit -= 1
             frames.append(f)
             f = f.f_back
         frames.reverse()
-    sowenn task._exception is not Nichts:
+    sowenn task._exception is nicht Nichts:
         tb = task._exception.__traceback__
-        while tb is not Nichts:
-            wenn limit is not Nichts:
+        while tb is nicht Nichts:
+            wenn limit is nicht Nichts:
                 wenn limit <= 0:
                     break
                 limit -= 1
@@ -74,21 +74,21 @@ def _task_print_stack(task, limit, file):
         co = f.f_code
         filename = co.co_filename
         name = co.co_name
-        wenn filename not in checked:
+        wenn filename nicht in checked:
             checked.add(filename)
             linecache.checkcache(filename)
         line = linecache.getline(filename, lineno, f.f_globals)
         extracted_list.append((filename, lineno, name, line))
 
     exc = task._exception
-    wenn not extracted_list:
+    wenn nicht extracted_list:
         drucke(f'No stack fuer {task!r}', file=file)
-    sowenn exc is not Nichts:
+    sowenn exc is nicht Nichts:
         drucke(f'Traceback fuer {task!r} (most recent call last):', file=file)
     sonst:
         drucke(f'Stack fuer {task!r} (most recent call last):', file=file)
 
     traceback.print_list(extracted_list, file=file)
-    wenn exc is not Nichts:
+    wenn exc is nicht Nichts:
         fuer line in traceback.format_exception_only(exc.__class__, exc):
             drucke(line, file=file, end='')

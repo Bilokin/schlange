@@ -274,7 +274,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         try:
             mit self.assertWarnsRegex(RuntimeWarning,
-                                       "The executor did not finishing joining"):
+                                       "The executor did nicht finishing joining"):
                 self.loop.run_until_complete(
                     self.loop.shutdown_default_executor(timeout=0.01))
         finally:
@@ -302,7 +302,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.assertIsInstance(h, asyncio.TimerHandle)
         self.assertIn(h, self.loop._scheduled)
         self.assertNotIn(h, self.loop._ready)
-        mit self.assertRaises(TypeError, msg="delay must not be Nichts"):
+        mit self.assertRaises(TypeError, msg="delay must nicht be Nichts"):
             self.loop.call_later(Nichts, cb)
 
     def test_call_later_negative_delays(self):
@@ -394,7 +394,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         # check disabled wenn debug mode is disabled
         test_thread(self.loop, Falsch)
 
-        # raise RuntimeError wenn the event loop of the thread is not the called
+        # raise RuntimeError wenn the event loop of the thread is nicht the called
         # event loop
         test_thread(self.loop, Wahr, create_loop=Wahr)
 
@@ -453,9 +453,9 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         def cb():
             pass
 
-        # Set up one "blocking" event that will not be cancelled to
-        # ensure later cancelled events do not make it to the head
-        # of the queue and get cleaned.
+        # Set up one "blocking" event that will nicht be cancelled to
+        # ensure later cancelled events do nicht make it to the head
+        # of the queue und get cleaned.
         not_cancelled_count = 1
         self.loop.call_later(3000, cb)
 
@@ -467,7 +467,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             h = self.loop.call_later(3600, cb)
             h.cancel()
 
-        # Add some cancelled events that will be at head and removed
+        # Add some cancelled events that will be at head und removed
         cancelled_count += 2
         fuer x in range(2):
             h = self.loop.call_later(100, cb)
@@ -497,7 +497,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         add_not_cancel_count = max(base_events._MIN_SCHEDULED_TIMER_HANDLES -
             add_cancel_count, 0)
 
-        # Add some events that will not be cancelled
+        # Add some events that will nicht be cancelled
         not_cancelled_count += add_not_cancel_count
         fuer x in range(add_not_cancel_count):
             self.loop.call_later(3600, cb)
@@ -546,7 +546,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         mit self.assertRaises(ShowStopper):
             self.loop.run_until_complete(foo(0.1))
 
-        # This call fails wenn run_until_complete does not clean up
+        # This call fails wenn run_until_complete does nicht clean up
         # done-callback fuer the previous future.
         self.loop.run_until_complete(foo(0.2))
 
@@ -558,17 +558,17 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             self.loop.run_until_complete, self.loop.subprocess_exec,
             asyncio.SubprocessProtocol)
 
-        # expected multiple arguments, not a list
+        # expected multiple arguments, nicht a list
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_exec,
             asyncio.SubprocessProtocol, args)
 
-        # program arguments must be strings, not int
+        # program arguments must be strings, nicht int
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_exec,
             asyncio.SubprocessProtocol, sys.executable, 123)
 
-        # universal_newlines, shell, bufsize must not be set
+        # universal_newlines, shell, bufsize must nicht be set
         self.assertRaises(TypeError,
         self.loop.run_until_complete, self.loop.subprocess_exec,
             asyncio.SubprocessProtocol, *args, universal_newlines=Wahr)
@@ -580,7 +580,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             asyncio.SubprocessProtocol, *args, bufsize=4096)
 
     def test_subprocess_shell_invalid_args(self):
-        # expected a string, not an int or a list
+        # expected a string, nicht an int oder a list
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_shell,
             asyncio.SubprocessProtocol, 123)
@@ -588,7 +588,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             self.loop.run_until_complete, self.loop.subprocess_shell,
             asyncio.SubprocessProtocol, [sys.executable, '-c', 'pass'])
 
-        # universal_newlines, shell, bufsize must not be set
+        # universal_newlines, shell, bufsize must nicht be set
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_shell,
             asyncio.SubprocessProtocol, 'exit 0', universal_newlines=Wahr)
@@ -638,7 +638,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             fut = asyncio.ensure_future(zero_error_coro(), loop=self.loop)
             fut.add_done_callback(lambda *args: self.loop.stop())
             self.loop.run_forever()
-            fut = Nichts # Trigger Future.__del__ or futures._TracebackLogger
+            fut = Nichts # Trigger Future.__del__ oder futures._TracebackLogger
             support.gc_collect()
             # Future.__del__ in logs error mit an actual exception context
             log.error.assert_called_with(
@@ -646,7 +646,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
                 exc_info=(ZeroDivisionError, MOCK_ANY, MOCK_ANY))
 
     def test_set_exc_handler_invalid(self):
-        mit self.assertRaisesRegex(TypeError, 'A callable object or Nichts'):
+        mit self.assertRaisesRegex(TypeError, 'A callable object oder Nichts'):
             self.loop.set_exception_handler('spam')
 
     def test_set_exc_handler_custom(self):
@@ -756,7 +756,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
     def test_set_task_factory_invalid(self):
         mit self.assertRaisesRegex(
-            TypeError, 'task factory must be a callable or Nichts'):
+            TypeError, 'task factory must be a callable oder Nichts'):
 
             self.loop.set_task_factory(1)
 
@@ -795,7 +795,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             'loop = asyncio.new_event_loop()',
             'drucke(loop.get_debug())'))
 
-        # Test mit -E to not fail wenn the unit test was run with
+        # Test mit -E to nicht fail wenn the unit test was run with
         # PYTHONASYNCIODEBUG set to a non-empty string
         sts, stdout, stderr = assert_python_ok('-E', '-c', code)
         self.assertEqual(stdout.rstrip(), b'Falsch')
@@ -882,7 +882,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
     def test_run_forever_keyboard_interrupt(self):
         # Python issue #22601: ensure that the temporary task created by
-        # run_forever() consumes the KeyboardInterrupt and so don't log
+        # run_forever() consumes the KeyboardInterrupt und so don't log
         # a warning
         async def raise_keyboard_interrupt():
             raise KeyboardInterrupt
@@ -900,7 +900,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.assertFalsch(self.loop.call_exception_handler.called)
 
     def test_run_until_complete_baseexception(self):
-        # Python issue #22429: run_until_complete() must not schedule a pending
+        # Python issue #22429: run_until_complete() must nicht schedule a pending
         # call to stop() wenn the future raised a BaseException
         async def raise_keyboard_interrupt():
             raise KeyboardInterrupt
@@ -972,7 +972,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop._selector.select.assert_called_once_with(0)
 
     def test_custom_run_forever_integration(self):
-        # Test that the run_forever_setup() and run_forever_cleanup() primitives
+        # Test that the run_forever_setup() und run_forever_cleanup() primitives
         # can be used to implement a custom run_forever loop.
         self.loop._process_events = mock.Mock()
 
@@ -1004,12 +1004,12 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.assertFalsch(self.loop.is_running())
 
         # Confirm the loop actually did run, processing events 10 times,
-        # and invoking the callback once.
+        # und invoking the callback once.
         self.assertEqual(self.loop._process_events.call_count, 10)
         self.assertEqual(count, 1)
 
     async def leave_unfinalized_asyncgen(self):
-        # Create an async generator, iterate it partially, and leave it
+        # Create an async generator, iterate it partially, und leave it
         # to be garbage collected.
         # Used in async generator finalization tests.
         # Depends on implementation details of garbage collector. Changes
@@ -1048,7 +1048,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop._write_to_self = mock.Mock()
         mit support.disable_gc():
             status = self.loop.run_until_complete(self.leave_unfinalized_asyncgen())
-            while not status['stopped']:
+            while nicht status['stopped']:
                 test_utils.run_briefly(self.loop)
             self.assertWahr(status['started'])
             self.assertWahr(status['stopped'])
@@ -1059,14 +1059,14 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
     def test_asyncgen_finalization_by_gc_in_other_thread(self):
         # Python issue 34769: If garbage collector runs in another
-        # thread, async generators will not finalize in debug
+        # thread, async generators will nicht finalize in debug
         # mode.
         self.loop._process_events = mock.Mock()
         self.loop._write_to_self = mock.Mock()
         self.loop.set_debug(Wahr)
         mit support.disable_gc():
             status = self.loop.run_until_complete(self.leave_unfinalized_asyncgen())
-            while not status['stopped']:
+            while nicht status['stopped']:
                 test_utils.run_briefly(self.loop)
             self.assertWahr(status['started'])
             self.assertWahr(status['stopped'])
@@ -1152,7 +1152,7 @@ klasse MyProto(asyncio.Protocol):
             self.done = asyncio.get_running_loop().create_future()
 
     def _assert_state(self, *expected):
-        wenn self.state not in expected:
+        wenn self.state nicht in expected:
             raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
@@ -1365,7 +1365,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         try:
             self.loop.run_until_complete(main())
         except OSError als ex:
-            wenn (hasattr(errno, 'EADDRNOTAVAIL') and
+            wenn (hasattr(errno, 'EADDRNOTAVAIL') und
                     ex.errno == errno.EADDRNOTAVAIL):
                 self.skipTest('failed to bind to ::1')
             sonst:
@@ -1421,7 +1421,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @patch_socket
     def test_create_connection_connect_non_os_err_close_err(self, m_socket):
         # Test the case when sock_connect() raises non-OSError exception
-        # and sock.close() raises OSError.
+        # und sock.close() raises OSError.
         async def getaddrinfo(*args, **kw):
             return [(2, 1, 6, '', ('107.6.106.82', 80))]
 
@@ -1512,7 +1512,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     def _test_create_connection_ip_addr(self, m_socket, allow_inet_pton):
         # Test the fallback code, even wenn this system has inet_pton.
-        wenn not allow_inet_pton:
+        wenn nicht allow_inet_pton:
             del m_socket.inet_pton
 
         m_socket.getaddrinfo = socket.getaddrinfo
@@ -1553,7 +1553,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'no IPv6 support')
     @unittest.skipIf(sys.platform.startswith('aix'),
-                    "bpo-25545: IPv6 scope id and getaddrinfo() behave differently on AIX")
+                    "bpo-25545: IPv6 scope id und getaddrinfo() behave differently on AIX")
     @patch_socket
     def test_create_connection_ipv6_scope(self, m_socket):
         m_socket.getaddrinfo = socket.getaddrinfo
@@ -1584,7 +1584,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     @patch_socket
     @unittest.skipIf(
-        support.is_android and platform.android_ver().api_level < 23,
+        support.is_android und platform.android_ver().api_level < 23,
         "Issue gh-71123: this fails on Android before API level 23"
     )
     def test_create_connection_service_name(self, m_socket):
@@ -1729,7 +1729,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
                 ssl_shutdown_timeout=shutdown_timeout)
 
     def test_create_connection_no_ssl_server_hostname_errors(self):
-        # When not using ssl, server_hostname must be Nichts.
+        # When nicht using ssl, server_hostname must be Nichts.
         coro = self.loop.create_connection(MyProto, 'python.org', 80,
                                            server_hostname='')
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
@@ -1888,7 +1888,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertRaises(
             OSError, self.loop.run_until_complete, coro)
 
-    @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 not supported or enabled')
+    @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 nicht supported oder enabled')
     def test_create_datagram_endpoint_no_matching_family(self):
         coro = self.loop.create_datagram_endpoint(
             asyncio.DatagramProtocol,
@@ -1998,8 +1998,8 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @unittest.skipIf(sys.platform == 'vxworks',
                     "SO_BROADCAST is enabled by default on VxWorks")
     def test_create_datagram_endpoint_sockopts(self):
-        # Socket options should not be applied unless asked for.
-        # SO_REUSEPORT is not available on all platforms.
+        # Socket options should nicht be applied unless asked for.
+        # SO_REUSEPORT is nicht available on all platforms.
 
         coro = self.loop.create_datagram_endpoint(
             lambda: MyDatagramProto(create_future=Wahr, loop=self.loop),
@@ -2059,7 +2059,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @patch_socket
     def test_create_datagram_endpoint_ip_addr(self, m_socket):
         def getaddrinfo(*args, **kw):
-            self.fail('should not have called getaddrinfo')
+            self.fail('should nicht have called getaddrinfo')
 
         m_socket.getaddrinfo = getaddrinfo
         m_socket.socket.return_value.bind = bind = mock.Mock()
@@ -2255,7 +2255,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         def cleanup():
             server.close()
             sock.close()
-            wenn proto.transport is not Nichts:
+            wenn proto.transport is nicht Nichts:
                 proto.transport.close()
                 self.run_loop(proto.wait_closed())
             self.run_loop(server.wait_closed())
@@ -2268,7 +2268,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
 
         mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "sendfile is not available"):
+                                    "sendfile is nicht available"):
             self.run_loop(self.loop._sock_sendfile_native(sock, self.file,
                                                           0, Nichts))
 
@@ -2279,7 +2279,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
 
         mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "sendfile is not available"):
+                                    "sendfile is nicht available"):
             self.run_loop(self.loop.sock_sendfile(sock, self.file,
                                                   fallback=Falsch))
 

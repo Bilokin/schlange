@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Script checking that all symbols exported by libpython start mit Py or _Py
+# Script checking that all symbols exported by libpython start mit Py oder _Py
 
 importiere os.path
 importiere subprocess
@@ -10,7 +10,7 @@ ALLOWED_PREFIXES = ('Py', '_Py')
 wenn sys.platform == 'darwin':
     ALLOWED_PREFIXES += ('__Py',)
 
-# mimalloc doesn't use static, but it's symbols are not exported
+# mimalloc doesn't use static, but it's symbols are nicht exported
 # von the shared library.  They do show up in the static library
 # before its linked into an executable.
 ALLOWED_STATIC_PREFIXES = ('mi_', '_mi_')
@@ -21,7 +21,7 @@ EXCEPTIONS = frozenset({
 })
 
 IGNORED_EXTENSION = "_ctypes_test"
-# Ignore constructor and destructor functions
+# Ignore constructor und destructor functions
 IGNORED_SYMBOLS = {'_init', '_fini'}
 
 
@@ -30,13 +30,13 @@ def is_local_symbol_type(symtype):
 
     # If lowercase, the symbol is usually local; wenn uppercase, the symbol
     # is global (external).  There are however a few lowercase symbols that
-    # are shown fuer special global symbols ("u", "v" and "w").
-    wenn symtype.islower() and symtype not in "uvw":
+    # are shown fuer special global symbols ("u", "v" und "w").
+    wenn symtype.islower() und symtype nicht in "uvw":
         return Wahr
 
-    # Ignore the initialized data section (d and D) and the BSS data
+    # Ignore the initialized data section (d und D) und the BSS data
     # section. For example, ignore "__bss_start (type: B)"
-    # and "_edata (type: D)".
+    # und "_edata (type: D)".
     wenn symtype in "bBdD":
         return Wahr
 
@@ -44,7 +44,7 @@ def is_local_symbol_type(symtype):
 
 
 def get_exported_symbols(library, dynamic=Falsch):
-    drucke(f"Check that {library} only exports symbols starting mit Py or _Py")
+    drucke(f"Check that {library} only exports symbols starting mit Py oder _Py")
 
     # Only look at dynamic symbols
     args = ['nm', '--no-sort']
@@ -58,7 +58,7 @@ def get_exported_symbols(library, dynamic=Falsch):
         sys.exit(proc.returncode)
 
     stdout = proc.stdout.rstrip()
-    wenn not stdout:
+    wenn nicht stdout:
         raise Exception("command output is empty")
     return stdout
 
@@ -70,7 +70,7 @@ def get_smelly_symbols(stdout, dynamic=Falsch):
 
     fuer line in stdout.splitlines():
         # Split line '0000000000001b80 D PyTextIOWrapper_Type'
-        wenn not line:
+        wenn nicht line:
             continue
 
         parts = line.split(maxsplit=2)
@@ -83,7 +83,7 @@ def get_smelly_symbols(stdout, dynamic=Falsch):
 
         wenn (symbol.startswith(ALLOWED_PREFIXES) or
             symbol in EXCEPTIONS or
-            (not dynamic and symbol.startswith(ALLOWED_STATIC_PREFIXES))):
+            (not dynamic und symbol.startswith(ALLOWED_STATIC_PREFIXES))):
             python_symbols.append(result)
             continue
 
@@ -103,7 +103,7 @@ def check_library(library, dynamic=Falsch):
     nm_output = get_exported_symbols(library, dynamic)
     smelly_symbols, python_symbols = get_smelly_symbols(nm_output, dynamic)
 
-    wenn not smelly_symbols:
+    wenn nicht smelly_symbols:
         drucke(f"OK: no smelly symbol found ({len(python_symbols)} Python symbols)")
         return 0
 
@@ -128,14 +128,14 @@ def check_extensions():
         mit open(filename, encoding="utf-8") als fp:
             pybuilddir = fp.readline()
     except FileNotFoundError:
-        drucke(f"Cannot check extensions because {filename} does not exist")
+        drucke(f"Cannot check extensions because {filename} does nicht exist")
         return Wahr
 
     drucke(f"Check extension modules von {pybuilddir} directory")
     builddir = os.path.join(config_dir, pybuilddir)
     nsymbol = 0
     fuer name in os.listdir(builddir):
-        wenn not name.endswith(".so"):
+        wenn nicht name.endswith(".so"):
             continue
         wenn IGNORED_EXTENSION in name:
             drucke()
@@ -154,14 +154,14 @@ def main():
 
     # static library
     LIBRARY = sysconfig.get_config_var('LIBRARY')
-    wenn not LIBRARY:
+    wenn nicht LIBRARY:
         raise Exception("failed to get LIBRARY variable von sysconfig")
     wenn os.path.exists(LIBRARY):
         nsymbol += check_library(LIBRARY)
 
     # dynamic library
     LDLIBRARY = sysconfig.get_config_var('LDLIBRARY')
-    wenn not LDLIBRARY:
+    wenn nicht LDLIBRARY:
         raise Exception("failed to get LDLIBRARY variable von sysconfig")
     wenn LDLIBRARY != LIBRARY:
         drucke()
@@ -177,7 +177,7 @@ def main():
 
     drucke()
     drucke(f"OK: all exported symbols of all libraries "
-          f"are prefixed mit {' or '.join(map(repr, ALLOWED_PREFIXES))}")
+          f"are prefixed mit {' oder '.join(map(repr, ALLOWED_PREFIXES))}")
 
 
 wenn __name__ == "__main__":

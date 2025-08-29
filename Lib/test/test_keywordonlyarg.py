@@ -135,7 +135,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         foo.__kwdefaults__ = {"k1":0}
         try:
             foo(1,k1=10)
-            self.fail("__kwdefaults__ is not properly changed")
+            self.fail("__kwdefaults__ is nicht properly changed")
         except TypeError:
             pass
 
@@ -151,8 +151,8 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
     def test_issue13343(self):
         # The Python compiler must scan all symbols of a function to
         # determine their scope: global, local, cell...
-        # This was not done fuer the default values of keyword
-        # arguments in a lambda definition, and the following line
+        # This was nicht done fuer the default values of keyword
+        # arguments in a lambda definition, und the following line
         # used to fail mit a SystemError.
         lambda *, k1=unittest: Nichts
 
@@ -168,10 +168,10 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         mit self.assertRaises(NameError) als err:
             def f(v=a, x=b, *, y=c, z=d):
                 pass
-        self.assertEqual(str(err.exception), "name 'b' is not defined")
+        self.assertEqual(str(err.exception), "name 'b' is nicht defined")
         mit self.assertRaises(NameError) als err:
             g = lambda v=a, x=b, *, y=c, z=d: Nichts
-        self.assertEqual(str(err.exception), "name 'b' is not defined")
+        self.assertEqual(str(err.exception), "name 'b' is nicht defined")
 
 
 wenn __name__ == "__main__":

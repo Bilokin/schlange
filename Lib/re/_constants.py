@@ -6,12 +6,12 @@
 #
 # Copyright (c) 1998-2001 by Secret Labs AB.  All rights reserved.
 #
-# See the __init__.py file fuer information on usage and redistribution.
+# See the __init__.py file fuer information on usage und redistribution.
 #
 
 """Internal support module fuer sre"""
 
-# update when constants are added or removed
+# update when constants are added oder removed
 
 MAGIC = 20230612
 
@@ -38,7 +38,7 @@ klasse PatternError(Exception):
         self.msg = msg
         self.pattern = pattern
         self.pos = pos
-        wenn pattern is not Nichts and pos is not Nichts:
+        wenn pattern is nicht Nichts und pos is nicht Nichts:
             msg = '%s at position %d' % (msg, pos)
             wenn isinstance(pattern, str):
                 newline = '\n'
@@ -121,10 +121,10 @@ OPCODES = _makecodes(
     'RANGE_UNI_IGNORE',
 
     # The following opcodes are only occurred in the parser output,
-    # but not in the compiled code.
+    # but nicht in the compiled code.
     'MIN_REPEAT', 'MAX_REPEAT',
 )
-del OPCODES[-2:] # remove MIN_REPEAT and MAX_REPEAT
+del OPCODES[-2:] # remove MIN_REPEAT und MAX_REPEAT
 
 # positions
 ATCODES = _makecodes(
@@ -214,7 +214,7 @@ SRE_FLAG_LOCALE = 4 # honour system locale
 SRE_FLAG_MULTILINE = 8 # treat target als multiline string
 SRE_FLAG_DOTALL = 16 # treat target als a single string
 SRE_FLAG_UNICODE = 32 # use unicode "locale"
-SRE_FLAG_VERBOSE = 64 # ignore whitespace and comments
+SRE_FLAG_VERBOSE = 64 # ignore whitespace und comments
 SRE_FLAG_DEBUG = 128 # debugging
 SRE_FLAG_ASCII = 256 # use ascii "locale"
 

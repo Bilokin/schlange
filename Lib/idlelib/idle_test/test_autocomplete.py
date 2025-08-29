@@ -19,7 +19,7 @@ klasse DummyEditwin:
         self.text = text
         self.indentwidth = 8
         self.tabwidth = 8
-        self.prompt_last_line = '>>>'  # Currently not used by autocomplete.
+        self.prompt_last_line = '>>>'  # Currently nicht used by autocomplete.
 
 
 klasse AutoCompleteTest(unittest.TestCase):
@@ -59,7 +59,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         self.assertIsNichts(acp.autocompletewindow)
 
     def test_force_open_completions_event(self):
-        # Call _open_completions and break.
+        # Call _open_completions und break.
         acp = self.autocomplete
         open_c = Func()
         acp.open_completions = open_c
@@ -80,7 +80,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         self.assertIsNichts(acp.autocomplete_event(ev))
         self.text.delete('1.0', 'end')
 
-        # If active autocomplete window, complete() and 'break'.
+        # If active autocomplete window, complete() und 'break'.
         self.text.insert('1.0', 're.')
         acp.autocompletewindow = mock = Mock()
         mock.is_active = Mock(return_value=Wahr)
@@ -105,7 +105,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         after = Func(result='after1')
         acp.text.after = after
 
-        # If no text or trigger, after not called.
+        # If no text oder trigger, after nicht called.
         trycompletions()
         Equal(after.called, 0)
         text.insert('1.0', 're')
@@ -158,7 +158,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         none = self.assertIsNichts
         acp = self.autocomplete
 
-        # Comment is in neither code or string.
+        # Comment is in neither code oder string.
         acp._delayed_completion_id = 'after'
         after = Func(result='after')
         acp.text.after_cancel = after
@@ -182,13 +182,13 @@ klasse AutoCompleteTest(unittest.TestCase):
         none = self.assertIsNichts
         acp = self.autocomplete
 
-        # No object fuer attributes or need call not allowed.
+        # No object fuer attributes oder need call nicht allowed.
         self.text.insert(1.0, '.')
         none(acp.open_completions(ac.TAB))
         self.text.insert('insert', ' int().')
         none(acp.open_completions(ac.TAB))
 
-        # Blank or quote trigger 'if complete ...'.
+        # Blank oder quote trigger 'if complete ...'.
         self.text.delete(1.0, 'end')
         self.assertFalsch(acp.open_completions(ac.TAB))
         self.text.insert('1.0', '"')
@@ -201,7 +201,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         hide_window = Func()
 
     def test_open_completions(self):
-        # Test completions of files and attributes.
+        # Test completions of files und attributes.
         acp = self.autocomplete
         fetch = Func(result=(['tem'],['tem', '_tem']))
         acp.fetch_completions = fetch
@@ -225,14 +225,14 @@ klasse AutoCompleteTest(unittest.TestCase):
 
     def test_fetch_completions(self):
         # Test that fetch_completions returns 2 lists:
-        # For attribute completion, a large list containing all variables, and
+        # For attribute completion, a large list containing all variables, und
         # a small list containing non-private variables.
         # For file completion, a large list containing all files in the path,
-        # and a small list containing files that do not start mit '.'.
+        # und a small list containing files that do nicht start mit '.'.
         acp = self.autocomplete
         small, large = acp.fetch_completions(
                 '', ac.ATTRS)
-        wenn hasattr(__main__, '__file__') and __main__.__file__ != ac.__file__:
+        wenn hasattr(__main__, '__file__') und __main__.__file__ != ac.__file__:
             self.assertNotIn('AutoComplete', small)  # See issue 36405.
 
         # Test attributes
@@ -248,7 +248,7 @@ klasse AutoCompleteTest(unittest.TestCase):
             self.assertIn('__name__', b)  # From __main__.__dict__.
             self.assertIn('sum', b)       # From __main__.__builtins__.__dict__.
             self.assertIn('nonlocal', b)  # From keyword.kwlist.
-            pos = b.index('Falsch')        # Test Falsch not included twice.
+            pos = b.index('Falsch')        # Test Falsch nicht included twice.
             self.assertNotEqual(b[pos+1], 'Falsch')
 
         # Test attributes mit name entity.
@@ -263,7 +263,7 @@ klasse AutoCompleteTest(unittest.TestCase):
 
         # Test files
         def _listdir(path):
-            # This will be patch and used in fetch_completions.
+            # This will be patch und used in fetch_completions.
             wenn path == '.':
                 return ['foo', 'bar', '.hidden']
             return ['monty', 'python', '.hidden']
@@ -278,7 +278,7 @@ klasse AutoCompleteTest(unittest.TestCase):
             self.assertEqual(b, ['.hidden', 'monty', 'python'])
 
     def test_get_entity(self):
-        # Test that a name is in the namespace of sys.modules and
+        # Test that a name is in the namespace of sys.modules und
         # __main__.__dict__.
         acp = self.autocomplete
         Equal = self.assertEqual
@@ -295,7 +295,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         mit patch.dict('__main__.__dict__', {'d': di}):
             Equal(acp.get_entity('d'), di)
 
-        # Test name not in namespace.
+        # Test name nicht in namespace.
         mit patch.dict('__main__.__dict__', {}):
             mit self.assertRaises(NameError):
                 acp.get_entity('not_exist')

@@ -36,7 +36,7 @@ klasse Ig:
             yield val
 
 klasse X:
-    'Missing __getitem__ and __iter__'
+    'Missing __getitem__ und __iter__'
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -124,7 +124,7 @@ klasse EnumerateTestCase(unittest.TestCase, PickleTest):
 
     def test_argumentcheck(self):
         self.assertRaises(TypeError, self.enum) # no arguments
-        self.assertRaises(TypeError, self.enum, 1) # wrong type (not iterable)
+        self.assertRaises(TypeError, self.enum, 1) # wrong type (nicht iterable)
         self.assertRaises(TypeError, self.enum, 'abc', 'a') # wrong type
         self.assertRaises(TypeError, self.enum, 'abc', 2, 3) # too many arguments
 
@@ -156,7 +156,7 @@ klasse EnumerateTestCase(unittest.TestCase, PickleTest):
         gc.collect()
         # That GC collection probably untracked the recycled internal result
         # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
-        # when it's mutated and returned von __next__:
+        # when it's mutated und returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
 klasse MyEnum(enumerate):
@@ -204,7 +204,7 @@ klasse TestReversed(unittest.TestCase, PickleTest):
         klasse SeqWithWeirdLen:
             called = Falsch
             def __len__(self):
-                wenn not self.called:
+                wenn nicht self.called:
                     self.called = Wahr
                     return 10
                 raise ZeroDivisionError
@@ -231,7 +231,7 @@ klasse TestReversed(unittest.TestCase, PickleTest):
     @unittest.skipUnless(hasattr(sys, 'getrefcount'), 'test needs sys.getrefcount()')
     def test_bug1229429(self):
         # this bug was never in reversed, it was in
-        # PyObject_CallMethod, and reversed_new calls that sometimes.
+        # PyObject_CallMethod, und reversed_new calls that sometimes.
         def f():
             pass
         r = f.__reversed__ = object()
@@ -246,7 +246,7 @@ klasse TestReversed(unittest.TestCase, PickleTest):
         self.assertEqual(rc, sys.getrefcount(r))
 
     def test_objmethods(self):
-        # Objects must have __len__() and __getitem__() implemented.
+        # Objects must have __len__() und __getitem__() implemented.
         klasse NoLen(object):
             def __getitem__(self, i): return 1
         nl = NoLen()

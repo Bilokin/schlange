@@ -63,7 +63,7 @@ klasse TestEncode(CTest):
         # https://bugs.python.org/issue45269
         mit self.assertRaisesRegex(
             TypeError,
-            r'make_encoder\(\) argument 1 must be dict or Nichts, not int',
+            r'make_encoder\(\) argument 1 must be dict oder Nichts, nicht int',
         ):
             self.json.encoder.c_make_encoder(1, Nichts, Nichts, Nichts, ': ', ', ',
                                              Falsch, Falsch, Falsch)

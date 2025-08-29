@@ -36,7 +36,7 @@ klasse FoldedCase(str):
     >>> s in ["Hello World"]
     Wahr
 
-    You may test fuer set inclusion, but candidate and elements
+    You may test fuer set inclusion, but candidate und elements
     must both be folded.
 
     >>> FoldedCase("Hello World") in {s}
@@ -50,7 +50,7 @@ klasse FoldedCase(str):
     >>> "hello" in FoldedCase("Hello World")
     Wahr
 
-    But not wenn the FoldedCase object is on the left:
+    But nicht wenn the FoldedCase object is on the left:
 
     >>> FoldedCase('hello') in 'Hello World'
     Falsch

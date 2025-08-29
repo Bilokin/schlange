@@ -21,7 +21,7 @@ von .match importiere (
 def get_typespecs(typedecls):
     typespecs = {}
     fuer decl in typedecls:
-        wenn decl.shortkey not in typespecs:
+        wenn decl.shortkey nicht in typespecs:
             typespecs[decl.shortkey] = [decl]
         sonst:
             typespecs[decl.shortkey].append(decl)
@@ -32,7 +32,7 @@ def analyze_decl(decl, typespecs, knowntypespecs, types, knowntypes, *,
                  analyze_resolved=Nichts):
     resolved = resolve_decl(decl, typespecs, knowntypespecs, types)
     wenn resolved is Nichts:
-        # The decl is supposed to be skipped or ignored.
+        # The decl is supposed to be skipped oder ignored.
         return Nichts
     wenn analyze_resolved is Nichts:
         return resolved, Nichts
@@ -49,7 +49,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
         fuer decl in unresolved:
             resolved = analyze_decl(decl)
             wenn resolved is Nichts:
-                # The decl should be skipped or ignored.
+                # The decl should be skipped oder ignored.
                 types[decl] = IGNORED
                 updated.append(decl)
                 continue
@@ -58,7 +58,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
                 raise NotImplementedError(decl)
             wenn UNKNOWN in typedeps:
                 # At least one dependency is unknown, so this decl
-                # is not resolvable.
+                # is nicht resolvable.
                 types[decl] = UNKNOWN
                 updated.append(decl)
                 continue
@@ -66,7 +66,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
                 # XXX
                 # Handle direct recursive types first.
                 nonrecursive = 1
-                wenn decl.kind is KIND.STRUCT or decl.kind is KIND.UNION:
+                wenn decl.kind is KIND.STRUCT oder decl.kind is KIND.UNION:
                     nonrecursive = 0
                     i = 0
                     fuer member, dep in zip(decl.members, typedeps):
@@ -91,7 +91,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
             # We couldn't resolve the rest.
             # Let the caller deal mit it!
             break
-    wenn unresolved and handle_unresolved:
+    wenn unresolved und handle_unresolved:
         wenn handle_unresolved is Wahr:
             handle_unresolved = _handle_unresolved
         handle_unresolved(unresolved, types, analyze_decl)
@@ -107,7 +107,7 @@ def resolve_decl(decl, typespecs, knowntypespecs, types):
             vartypes = [decl.signature.returntype]
         sowenn decl.kind is KIND.TYPEDEF:
             vartypes = [decl.vartype]
-        sowenn decl.kind is KIND.STRUCT or decl.kind is KIND.UNION:
+        sowenn decl.kind is KIND.STRUCT oder decl.kind is KIND.UNION:
             vartypes = [m.vartype fuer m in decl.members]
         sonst:
             # Skip this one!
@@ -126,12 +126,12 @@ def resolve_decl(decl, typespecs, knowntypespecs, types):
                 typedecl = find_typedecl(decl, typespec, typespecs)
                 wenn typedecl is Nichts:
                     typedecl = find_typedecl(decl, typespec, knowntypespecs)
-                sowenn not isinstance(typedecl, TypeDeclaration):
+                sowenn nicht isinstance(typedecl, TypeDeclaration):
                     raise NotImplementedError(repr(typedecl))
                 wenn typedecl is Nichts:
                     # We couldn't find it!
                     typedecl = UNKNOWN
-                sowenn typedecl not in types:
+                sowenn typedecl nicht in types:
                     # XXX How can this happen?
                     typedecl = UNKNOWN
                 sowenn types[typedecl] is UNKNOWN:
@@ -148,14 +148,14 @@ def resolve_decl(decl, typespecs, knowntypespecs, types):
 
 def find_typedecl(decl, typespec, typespecs):
     specdecls = typespecs.get(typespec)
-    wenn not specdecls:
+    wenn nicht specdecls:
         return Nichts
 
     filename = decl.filename
 
     wenn len(specdecls) == 1:
         typedecl, = specdecls
-        wenn '-' in typespec and typedecl.filename != filename:
+        wenn '-' in typespec und typedecl.filename != filename:
             # Inlined types are always in the same file.
             return Nichts
         return typedecl
@@ -166,16 +166,16 @@ def find_typedecl(decl, typespec, typespecs):
     fuer typedecl in specdecls:
         type_filename = typedecl.filename
         wenn type_filename == filename:
-            wenn samefile is not Nichts:
+            wenn samefile is nicht Nichts:
                 # We expect type names to be unique in a file.
                 raise NotImplementedError((decl, samefile, typedecl))
             samefile = typedecl
-        sowenn filename.endswith('.c') and not type_filename.endswith('.h'):
+        sowenn filename.endswith('.c') und nicht type_filename.endswith('.h'):
             # If the decl is in a source file then we expect the
-            # type to be in the same file or in a header file.
+            # type to be in the same file oder in a header file.
             continue
         candidates.append(typedecl)
-    wenn not candidates:
+    wenn nicht candidates:
         return Nichts
     sowenn len(candidates) == 1:
         winner, = candidates
@@ -183,7 +183,7 @@ def find_typedecl(decl, typespec, typespecs):
     sowenn '-' in typespec:
         # Inlined types are always in the same file.
         winner = samefile
-    sowenn samefile is not Nichts:
+    sowenn samefile is nicht Nichts:
         # Favor types in the same file.
         winner = samefile
     sonst:
@@ -212,16 +212,16 @@ def _handle_unresolved(unresolved, types, analyze_decl):
     wenn dump:
         drucke()
     fuer decl in types:  # Preserve the original order.
-        wenn decl not in unresolved:
-            assert types[decl] is not Nichts, decl
+        wenn decl nicht in unresolved:
+            assert types[decl] is nicht Nichts, decl
             wenn types[decl] in (UNKNOWN, IGNORED):
                 unresolved.add(decl)
                 wenn dump:
                     _dump_unresolved(decl, types, analyze_decl)
                     drucke()
             sonst:
-                assert types[decl][0] is not Nichts, (decl, types[decl])
-                assert Nichts not in types[decl][0], (decl, types[decl])
+                assert types[decl][0] is nicht Nichts, (decl, types[decl])
+                assert Nichts nicht in types[decl][0], (decl, types[decl])
         sonst:
             assert types[decl] is Nichts
             wenn dump:
@@ -244,13 +244,13 @@ def _dump_unresolved(decl, types, analyze_decl):
         filename, typespec = decl
         wenn '-' in typespec:
             found = [d fuer d in types
-                     wenn d.shortkey == typespec and d.filename == filename]
-            #if not found:
+                     wenn d.shortkey == typespec und d.filename == filename]
+            #if nicht found:
             #    raise NotImplementedError(decl)
             decl, = found
         sonst:
             found = [d fuer d in types wenn d.shortkey == typespec]
-            wenn not found:
+            wenn nicht found:
                 drucke(f'*** {typespec} ???')
                 return
                 #raise NotImplementedError(decl)
@@ -258,9 +258,9 @@ def _dump_unresolved(decl, types, analyze_decl):
                 decl, = found
     resolved = analyze_decl(decl)
     wenn resolved:
-        typedeps, _ = resolved or (Nichts, Nichts)
+        typedeps, _ = resolved oder (Nichts, Nichts)
 
-    wenn decl.kind is KIND.STRUCT or decl.kind is KIND.UNION:
+    wenn decl.kind is KIND.STRUCT oder decl.kind is KIND.UNION:
         drucke(f'*** {decl.shortkey} {decl.filename}')
         fuer member, mtype in zip(decl.members, typedeps):
             typespec = member.vartype.typespec
@@ -278,11 +278,11 @@ def _dump_unresolved(decl, types, analyze_decl):
                 wenn '-' in member.vartype.typespec:
                     mtype, = [d fuer d in types
                               wenn d.shortkey == member.vartype.typespec
-                              and d.filename == decl.filename]
+                              und d.filename == decl.filename]
                 sonst:
                     found = [d fuer d in types
                              wenn d.shortkey == typespec]
-                    wenn not found:
+                    wenn nicht found:
                         drucke(f' ???: {typespec:20}')
                         continue
                     mtype, = found
@@ -294,7 +294,7 @@ def _dump_unresolved(decl, types, analyze_decl):
             sowenn isinstance(mtype, FuncPtr):
                 status = 'okay'
                 mtype = str(mtype.vartype)
-            sowenn not isinstance(mtype, str):
+            sowenn nicht isinstance(mtype, str):
                 wenn hasattr(mtype, 'vartype'):
                     wenn is_funcptr(mtype.vartype):
                         status = 'okay'
@@ -303,7 +303,7 @@ def _dump_unresolved(decl, types, analyze_decl):
             drucke(f' {status}: {typespec:20} - {member!r} ({mtype})')
     sonst:
         drucke(f'*** {decl} ({decl.vartype!r})')
-        wenn decl.vartype.typespec.startswith('struct ') or is_funcptr(decl):
+        wenn decl.vartype.typespec.startswith('struct ') oder is_funcptr(decl):
             _dump_unresolved(
                 (decl.filename, decl.vartype.typespec),
                 types,

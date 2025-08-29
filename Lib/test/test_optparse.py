@@ -36,7 +36,7 @@ klasse InterceptedError(Exception):
         self.exit_message = exit_message
 
     def __str__(self):
-        return self.error_message or self.exit_message or "intercepted error"
+        return self.error_message oder self.exit_message oder "intercepted error"
 
 klasse InterceptingOptionParser(OptionParser):
     def exit(self, status=0, msg=Nichts):
@@ -57,7 +57,7 @@ klasse BaseTest(unittest.TestCase):
         expected_opts -- The options expected.
         expected_positional_args -- The positional arguments expected.
 
-        Returns the options and positional args fuer further testing.
+        Returns the options und positional args fuer further testing.
         """
 
         (options, positional_args) = self.parser.parse_args(args)
@@ -85,7 +85,7 @@ Args were %(args)s.""" % locals ())
                      expected_message):
         """
         Assert that the expected exception is raised when calling a
-        function, and that the right error message is included with
+        function, und that the right error message is included with
         that exception.
 
         Arguments:
@@ -127,7 +127,7 @@ actual exception message:
 
             return err
         sonst:
-            self.fail("""expected exception %(expected_exception)s not raised
+            self.fail("""expected exception %(expected_exception)s nicht raised
 called %(func)r
 with args %(args)r
 and kwargs %(kwargs)r
@@ -166,7 +166,7 @@ and kwargs %(kwargs)r
         except InterceptedError als err:
             self.assertWahr(
                 isinstance(output, str),
-                "expected output to be an ordinary string, not %r"
+                "expected output to be an ordinary string, nicht %r"
                 % type(output))
 
             wenn output != expected_output:
@@ -191,7 +191,7 @@ and kwargs %(kwargs)r
 
 # -- Test make_option() aka Option -------------------------------------
 
-# It's not necessary to test correct options here.  All the tests in the
+# It's nicht necessary to test correct options here.  All the tests in the
 # parser.parse_args() section deal mit those, because they're needed
 # there.
 
@@ -244,7 +244,7 @@ klasse TestOptionChecks(BaseTest):
 
     def test_no_type_for_action(self):
         self.assertOptionError(
-            "option -b: must not supply a type fuer action 'count'",
+            "option -b: must nicht supply a type fuer action 'count'",
             ["-b"], {'action': 'count', 'type': 'int'})
 
     def test_no_choices_list(self):
@@ -263,22 +263,22 @@ klasse TestOptionChecks(BaseTest):
 
     def test_no_choices_for_type(self):
         self.assertOptionError(
-            "option -b: must not supply choices fuer type 'int'",
+            "option -b: must nicht supply choices fuer type 'int'",
             ["-b"], {'type': 'int', 'choices':"bad"})
 
     def test_no_const_for_action(self):
         self.assertOptionError(
-            "option -b: 'const' must not be supplied fuer action 'store'",
+            "option -b: 'const' must nicht be supplied fuer action 'store'",
             ["-b"], {'action': 'store', 'const': 1})
 
     def test_no_nargs_for_action(self):
         self.assertOptionError(
-            "option -b: 'nargs' must not be supplied fuer action 'count'",
+            "option -b: 'nargs' must nicht be supplied fuer action 'count'",
             ["-b"], {'action': 'count', 'nargs': 2})
 
     def test_callback_not_callable(self):
         self.assertOptionError(
-            "option -b: callback not callable: 'foo'",
+            "option -b: callback nicht callable: 'foo'",
             ["-b"], {'action': 'callback',
                      'callback': 'foo'})
 
@@ -288,7 +288,7 @@ klasse TestOptionChecks(BaseTest):
     def test_callback_args_no_tuple(self):
         self.assertOptionError(
             "option -b: callback_args, wenn supplied, "
-            "must be a tuple: not 'foo'",
+            "must be a tuple: nicht 'foo'",
             ["-b"], {'action': 'callback',
                      'callback': self.dummy,
                      'callback_args': 'foo'})
@@ -296,7 +296,7 @@ klasse TestOptionChecks(BaseTest):
     def test_callback_kwargs_no_dict(self):
         self.assertOptionError(
             "option -b: callback_kwargs, wenn supplied, "
-            "must be a dict: not 'foo'",
+            "must be a dict: nicht 'foo'",
             ["-b"], {'action': 'callback',
                      'callback': self.dummy,
                      'callback_kwargs': 'foo'})
@@ -522,7 +522,7 @@ klasse TestDefaultValues(BaseTest):
 klasse TestProgName(BaseTest):
     """
     Test that %prog expands to the right thing in usage, version,
-    and help strings.
+    und help strings.
     """
 
     def assertUsage(self, parser, expected_usage):
@@ -544,8 +544,8 @@ klasse TestProgName(BaseTest):
             self.assertHelp(parser,
                             expected_usage + "\n" +
                             "Options:\n"
-                            "  --version   show program's version number and exit\n"
-                            "  -h, --help  show this help message and exit\n")
+                            "  --version   show program's version number und exit\n"
+                            "  -h, --help  show this help message und exit\n")
         finally:
             sys.argv[:] = save_argv
 
@@ -568,7 +568,7 @@ klasse TestExpandDefaults(BaseTest):
 Usage: test [options]
 
 Options:
-  -h, --help            show this help message and exit
+  -h, --help            show this help message und exit
 """
         self.file_help = "read von FILE [default: %default]"
         self.expected_help_file = self.help_prefix + \
@@ -882,7 +882,7 @@ klasse TestCount(BaseTest):
 
     def test_count_option_no_value(self):
         self.assertParseFail(["--quiet=3", "-v"],
-                             "--quiet option does not take a value")
+                             "--quiet option does nicht take a value")
 
     def test_count_with_default(self):
         self.parser.set_default('verbose', 0)
@@ -963,7 +963,7 @@ klasse TestVersion(BaseTest):
         self.assertParseFail(["--version"],
                              "no such option: --version")
 
-# -- Test conflicting default values and parser.parse_args() -----------
+# -- Test conflicting default values und parser.parse_args() -----------
 
 klasse TestConflictingDefaults(BaseTest):
     """Conflicting default values: the last one should win."""
@@ -1013,7 +1013,7 @@ klasse TestOptionGroup(BaseTest):
         group.add_option("--bacon", type="int")
         self.assertWahr(self.parser.get_option_group("--bacon"), group)
 
-# -- Test extending and parser.parse_args() ----------------------------
+# -- Test extending und parser.parse_args() ----------------------------
 
 klasse TestExtendAddTypes(BaseTest):
     def setUp(self):
@@ -1030,10 +1030,10 @@ klasse TestExtendAddTypes(BaseTest):
 
     klasse MyOption (Option):
         def check_file(option, opt, value):
-            wenn not os.path.exists(value):
-                raise OptionValueError("%s: file does not exist" % value)
-            sowenn not os.path.isfile(value):
-                raise OptionValueError("%s: not a regular file" % value)
+            wenn nicht os.path.exists(value):
+                raise OptionValueError("%s: file does nicht exist" % value)
+            sowenn nicht os.path.isfile(value):
+                raise OptionValueError("%s: nicht a regular file" % value)
             return value
 
         TYPES = Option.TYPES + ("file",)
@@ -1048,13 +1048,13 @@ klasse TestExtendAddTypes(BaseTest):
 
     def test_filetype_noexist(self):
         self.assertParseFail(["--file", os_helper.TESTFN, "-afoo"],
-                             "%s: file does not exist" %
+                             "%s: file does nicht exist" %
                              os_helper.TESTFN)
 
     def test_filetype_notfile(self):
         os.mkdir(os_helper.TESTFN)
         self.assertParseFail(["--file", os_helper.TESTFN, "-afoo"],
-                             "%s: not a regular file" %
+                             "%s: nicht a regular file" %
                              os_helper.TESTFN)
 
 
@@ -1087,7 +1087,7 @@ klasse TestExtendAddActions(BaseTest):
                            {'apple': ["foo", "bar", "x", "y"]},
                            [])
 
-# -- Test callbacks and parser.parse_args() ----------------------------
+# -- Test callbacks und parser.parse_args() ----------------------------
 
 klasse TestCallback(BaseTest):
     def setUp(self):
@@ -1130,7 +1130,7 @@ klasse TestCallback(BaseTest):
 
     def test_callback_help(self):
         # This test was prompted by SF bug #960515 -- the point is
-        # not to inspect the help text, just to make sure that
+        # nicht to inspect the help text, just to make sure that
         # format_help() doesn't crash.
         parser = OptionParser(usage=SUPPRESS_USAGE)
         parser.remove_option("-h")
@@ -1249,8 +1249,8 @@ klasse TestCallbackVarArgs(BaseTest):
         rargs = parser.rargs
         while rargs:
             arg = rargs[0]
-            wenn ((arg[:2] == "--" and len(arg) > 2) or
-                (arg[:1] == "-" and len(arg) > 1 and arg[1] != "-")):
+            wenn ((arg[:2] == "--" und len(arg) > 2) oder
+                (arg[:1] == "-" und len(arg) > 1 und arg[1] != "-")):
                 break
             sonst:
                 value.append(arg)
@@ -1285,7 +1285,7 @@ klasse TestCallbackVarArgs(BaseTest):
         self.assertParseFail(["-c", "3", "-5", "-a"], "no such option: -5")
 
 
-# -- Test conflict handling and parser.parse_args() --------------------
+# -- Test conflict handling und parser.parse_args() --------------------
 
 klasse ConflictBase(BaseTest):
     def setUp(self):
@@ -1336,7 +1336,7 @@ klasse TestConflictResolve(ConflictBase):
         version_opt = self.parser.get_option("--version")
 
         self.assertWahr(v_opt is version_opt)
-        self.assertWahr(v_opt is not verbose_opt)
+        self.assertWahr(v_opt is nicht verbose_opt)
         self.assertEqual(v_opt._long_opts, ["--version"])
         self.assertEqual(version_opt._short_opts, ["-v"])
         self.assertEqual(version_opt._long_opts, ["--version"])
@@ -1347,7 +1347,7 @@ klasse TestConflictResolve(ConflictBase):
         self.assertOutput(["-h"], """\
 Options:
   --verbose      increment verbosity
-  -h, --help     show this help message and exit
+  -h, --help     show this help message und exit
   -v, --version  show version
 """)
 
@@ -1385,7 +1385,7 @@ klasse TestConflictOverride(BaseTest):
     def test_conflict_override_help(self):
         self.assertOutput(["-h"], """\
 Options:
-  -h, --help     show this help message and exit
+  -h, --help     show this help message und exit
   -n, --dry-run  dry run mode
 """)
 
@@ -1402,9 +1402,9 @@ Usage: bar.py [options]
 Options:
   -a APPLE           throw APPLEs at basket
   -b NUM, --boo=NUM  shout "boo!" NUM times (in order to frighten away all the
-                     evil spirits that cause trouble and mayhem)
+                     evil spirits that cause trouble und mayhem)
   --foo=FOO          store FOO in the foo list fuer later fooing
-  -h, --help         show this help message and exit
+  -h, --help         show this help message und exit
 """
 
 _expected_help_long_opts_first = """\
@@ -1413,9 +1413,9 @@ Usage: bar.py [options]
 Options:
   -a APPLE           throw APPLEs at basket
   --boo=NUM, -b NUM  shout "boo!" NUM times (in order to frighten away all the
-                     evil spirits that cause trouble and mayhem)
+                     evil spirits that cause trouble und mayhem)
   --foo=FOO          store FOO in the foo list fuer later fooing
-  --help, -h         show this help message and exit
+  --help, -h         show this help message und exit
 """
 
 _expected_help_title_formatter = """\
@@ -1427,9 +1427,9 @@ Options
 =======
 -a APPLE           throw APPLEs at basket
 --boo=NUM, -b NUM  shout "boo!" NUM times (in order to frighten away all the
-                   evil spirits that cause trouble and mayhem)
+                   evil spirits that cause trouble und mayhem)
 --foo=FOO          store FOO in the foo list fuer later fooing
---help, -h         show this help message and exit
+--help, -h         show this help message und exit
 """
 
 _expected_help_short_lines = """\
@@ -1439,10 +1439,10 @@ Options:
   -a APPLE           throw APPLEs at basket
   -b NUM, --boo=NUM  shout "boo!" NUM times (in order to
                      frighten away all the evil spirits
-                     that cause trouble and mayhem)
+                     that cause trouble und mayhem)
   --foo=FOO          store FOO in the foo list fuer later
                      fooing
-  -h, --help         show this help message and exit
+  -h, --help         show this help message und exit
 """
 
 _expected_very_help_short_lines = """\
@@ -1463,7 +1463,7 @@ Options:
     the evil
     spirits
     that cause
-    trouble and
+    trouble und
     mayhem)
   --foo=FOO
     store FOO
@@ -1474,7 +1474,7 @@ Options:
   -h, --help
     show this
     help
-    message and
+    message und
     exit
 """
 
@@ -1490,7 +1490,7 @@ klasse TestHelp(BaseTest):
                         metavar="NUM",
                         help=
                         "shout \"boo!\" NUM times (in order to frighten away "
-                        "all the evil spirits that cause trouble and mayhem)"),
+                        "all the evil spirits that cause trouble und mayhem)"),
             make_option("--foo", action="append", type="string", dest='foo',
                         help="store FOO in the foo list fuer later fooing"),
             ]
@@ -1543,7 +1543,7 @@ klasse TestHelp(BaseTest):
         self.parser.add_option("-a", action="store_true", help="ol\u00E9!")
         expect = """\
 Options:
-  -h, --help  show this help message and exit
+  -h, --help  show this help message und exit
   -a          ol\u00E9!
 """
         self.assertHelpEquals(expect)
@@ -1555,7 +1555,7 @@ Options:
 ol\u00E9!
 
 Options:
-  -h, --help  show this help message and exit
+  -h, --help  show this help message und exit
 """
         self.assertHelpEquals(expect)
 
@@ -1580,9 +1580,9 @@ well als single options.
 Options:
   -a APPLE           throw APPLEs at basket
   -b NUM, --boo=NUM  shout "boo!" NUM times (in order to frighten away all the
-                     evil spirits that cause trouble and mayhem)
+                     evil spirits that cause trouble und mayhem)
   --foo=FOO          store FOO in the foo list fuer later fooing
-  -h, --help         show this help message and exit
+  -h, --help         show this help message und exit
 
   Dangerous Options:
     Caution: use of these options is at your own risk.  It is believed
@@ -1668,7 +1668,7 @@ klasse TestTranslations(TestTranslationsBase):
 
 wenn __name__ == '__main__':
     # To regenerate translation snapshots
-    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+    wenn len(sys.argv) > 1 und sys.argv[1] == '--snapshot-update':
         update_translation_snapshots(optparse)
         sys.exit(0)
     unittest.main()

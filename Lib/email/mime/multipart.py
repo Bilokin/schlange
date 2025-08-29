@@ -18,7 +18,7 @@ klasse MIMEMultipart(MIMEBase):
         """Creates a multipart/* type message.
 
         By default, creates a multipart/mixed message, mit proper
-        Content-Type and MIME-Version headers.
+        Content-Type und MIME-Version headers.
 
         _subtype is the subtype of the multipart content type, defaulting to
         'mixed'.

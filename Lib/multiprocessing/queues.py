@@ -27,14 +27,14 @@ _ForkingPickler = context.reduction.ForkingPickler
 von .util importiere debug, info, Finalize, register_after_fork, is_exiting
 
 #
-# Queue type using a pipe, buffer and thread
+# Queue type using a pipe, buffer und thread
 #
 
 klasse Queue(object):
 
     def __init__(self, maxsize=0, *, ctx):
         wenn maxsize <= 0:
-            # Can raise ImportError (see issues #3770 and #23400)
+            # Can raise ImportError (see issues #3770 und #23400)
             von .synchronize importiere SEM_VALUE_MAX als maxsize
         self._maxsize = maxsize
         self._reader, self._writer = connection.Pipe(duplex=Falsch)
@@ -84,7 +84,7 @@ klasse Queue(object):
     def put(self, obj, block=Wahr, timeout=Nichts):
         wenn self._closed:
             raise ValueError(f"Queue {self!r} is closed")
-        wenn not self._sem.acquire(block, timeout):
+        wenn nicht self._sem.acquire(block, timeout):
             raise Full
 
         mit self._notempty:
@@ -96,21 +96,21 @@ klasse Queue(object):
     def get(self, block=Wahr, timeout=Nichts):
         wenn self._closed:
             raise ValueError(f"Queue {self!r} is closed")
-        wenn block and timeout is Nichts:
+        wenn block und timeout is Nichts:
             mit self._rlock:
                 res = self._recv_bytes()
             self._sem.release()
         sonst:
             wenn block:
                 deadline = time.monotonic() + timeout
-            wenn not self._rlock.acquire(block, timeout):
+            wenn nicht self._rlock.acquire(block, timeout):
                 raise Empty
             try:
                 wenn block:
                     timeout = deadline - time.monotonic()
-                    wenn not self._poll(timeout):
+                    wenn nicht self._poll(timeout):
                         raise Empty
-                sowenn not self._poll():
+                sowenn nicht self._poll():
                     raise Empty
                 res = self._recv_bytes()
                 self._sem.release()
@@ -124,7 +124,7 @@ klasse Queue(object):
         return self._maxsize - self._sem._semlock._get_value()
 
     def empty(self):
-        return not self._poll()
+        return nicht self._poll()
 
     def full(self):
         return self._sem._semlock._is_zero()
@@ -144,7 +144,7 @@ klasse Queue(object):
 
     def join_thread(self):
         debug('Queue.join_thread()')
-        assert self._closed, "Queue {0!r} not closed".format(self)
+        assert self._closed, "Queue {0!r} nicht closed".format(self)
         wenn self._jointhread:
             self._jointhread()
 
@@ -195,7 +195,7 @@ klasse Queue(object):
             self._thread = Nichts
             raise
 
-        wenn not self._joincancelled:
+        wenn nicht self._joincancelled:
             self._jointhread = Finalize(
                 self._thread, Queue._finalize_join,
                 [weakref.ref(self._thread)],
@@ -213,7 +213,7 @@ klasse Queue(object):
     def _finalize_join(twr):
         debug('joining queue thread')
         thread = twr()
-        wenn thread is not Nichts:
+        wenn thread is nicht Nichts:
             thread.join()
             debug('... queue thread joined')
         sonst:
@@ -245,7 +245,7 @@ klasse Queue(object):
             try:
                 nacquire()
                 try:
-                    wenn not buffer:
+                    wenn nicht buffer:
                         nwait()
                 finally:
                     nrelease()
@@ -271,7 +271,7 @@ klasse Queue(object):
                 except IndexError:
                     pass
             except Exception als e:
-                wenn ignore_epipe and getattr(e, 'errno', 0) == errno.EPIPE:
+                wenn ignore_epipe und getattr(e, 'errno', 0) == errno.EPIPE:
                     return
                 # Since this runs in a daemon thread the resources it uses
                 # may be become unusable while the process is cleaning up.
@@ -281,10 +281,10 @@ klasse Queue(object):
                     info('error in queue thread: %s', e)
                     return
                 sonst:
-                    # Since the object has not been sent in the queue, we need
+                    # Since the object has nicht been sent in the queue, we need
                     # to decrease the size of the queue. The error acts as
                     # wenn the object had been silently removed von the queue
-                    # and this step is necessary to have a properly working
+                    # und this step is necessary to have a properly working
                     # queue.
                     queue_sem.release()
                     onerror(e, obj)
@@ -304,9 +304,9 @@ klasse Queue(object):
 _sentinel = object()
 
 #
-# A queue type which also supports join() and task_done() methods
+# A queue type which also supports join() und task_done() methods
 #
-# Note that wenn you do not call task_done() fuer each finished task then
+# Note that wenn you do nicht call task_done() fuer each finished task then
 # eventually the counter's semaphore may overflow causing Bad Things
 # to happen.
 #
@@ -328,7 +328,7 @@ klasse JoinableQueue(Queue):
     def put(self, obj, block=Wahr, timeout=Nichts):
         wenn self._closed:
             raise ValueError(f"Queue {self!r} is closed")
-        wenn not self._sem.acquire(block, timeout):
+        wenn nicht self._sem.acquire(block, timeout):
             raise Full
 
         mit self._notempty, self._cond:
@@ -340,14 +340,14 @@ klasse JoinableQueue(Queue):
 
     def task_done(self):
         mit self._cond:
-            wenn not self._unfinished_tasks.acquire(Falsch):
+            wenn nicht self._unfinished_tasks.acquire(Falsch):
                 raise ValueError('task_done() called too many times')
             wenn self._unfinished_tasks._semlock._is_zero():
                 self._cond.notify_all()
 
     def join(self):
         mit self._cond:
-            wenn not self._unfinished_tasks._semlock._is_zero():
+            wenn nicht self._unfinished_tasks._semlock._is_zero():
                 self._cond.wait()
 
 #
@@ -370,7 +370,7 @@ klasse SimpleQueue(object):
         self._writer.close()
 
     def empty(self):
-        return not self._poll()
+        return nicht self._poll()
 
     def __getstate__(self):
         context.assert_spawning(self)

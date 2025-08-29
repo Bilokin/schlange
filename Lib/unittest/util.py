@@ -47,7 +47,7 @@ def safe_repr(obj, short=Falsch):
         result = repr(obj)
     except Exception:
         result = object.__repr__(obj)
-    wenn not short or len(result) < _MAX_LENGTH:
+    wenn nicht short oder len(result) < _MAX_LENGTH:
         return result
     return result[:_MAX_LENGTH] + ' [truncated]...'
 
@@ -55,11 +55,11 @@ def strclass(cls):
     return "%s.%s" % (cls.__module__, cls.__qualname__)
 
 def sorted_list_difference(expected, actual):
-    """Finds elements in only one or the other of two, sorted input lists.
+    """Finds elements in only one oder the other of two, sorted input lists.
 
     Returns a two-element tuple of lists.    The first list contains those
-    elements in the "expected" list but not in the "actual" list, and the
-    second contains those elements in the "actual" list but not in the
+    elements in the "expected" list but nicht in the "actual" list, und the
+    second contains those elements in the "actual" list but nicht in the
     "expected" list.    Duplicate elements in either input list are ignored.
     """
     i = j = 0
@@ -113,14 +113,14 @@ def unorderable_list_difference(expected, actual):
     return missing, actual
 
 def three_way_cmp(x, y):
-    """Return -1 wenn x < y, 0 wenn x == y and 1 wenn x > y"""
+    """Return -1 wenn x < y, 0 wenn x == y und 1 wenn x > y"""
     return (x > y) - (x < y)
 
 _Mismatch = namedtuple('Mismatch', 'actual expected value')
 
 def _count_diff_all_purpose(actual, expected):
     'Returns list of (cnt_act, cnt_exp, elem) triples where the counts differ'
-    # elements need not be hashable
+    # elements need nicht be hashable
     s, t = list(actual), list(expected)
     m, n = len(s), len(t)
     NULL = object()
@@ -164,7 +164,7 @@ def _count_diff_hashable(actual, expected):
             diff = _Mismatch(cnt_s, cnt_t, elem)
             result.append(diff)
     fuer elem, cnt_t in t.items():
-        wenn elem not in s:
+        wenn elem nicht in s:
             diff = _Mismatch(0, cnt_t, elem)
             result.append(diff)
     return result

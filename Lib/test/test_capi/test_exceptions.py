@@ -44,7 +44,7 @@ klasse Test_Exceptions(unittest.TestCase):
             self.assertEqual(new_exception, new_exc)
             self.assertEqual(new_sys_exception, new_exception)
         sonst:
-            self.fail("Exception not raised")
+            self.fail("Exception nicht raised")
 
     def test_exc_info(self):
         raised_exception = ValueError("5")
@@ -121,7 +121,7 @@ klasse Test_FatalError(unittest.TestCase):
 
         match = re.search(r'^Extension modules:(.*) \(total: ([0-9]+)\)$',
                           err, re.MULTILINE)
-        wenn not match:
+        wenn nicht match:
             self.fail(f"Cannot find 'Extension modules:' in {err!r}")
         modules = set(match.group(1).strip().split(', '))
         total = int(match.group(2))
@@ -135,13 +135,13 @@ klasse Test_FatalError(unittest.TestCase):
     @support.requires_subprocess()
     def test_fatal_error(self):
         # By default, stdlib extension modules are ignored,
-        # but not test modules.
+        # but nicht test modules.
         expected = ('_testcapi',)
         not_expected = ('sys',)
         code = 'import _testcapi, sys; _testcapi.fatal_error(b"MESSAGE")'
         self.check_fatal_error(code, expected, not_expected)
 
-        # Mark _testcapi als stdlib module, but not sys
+        # Mark _testcapi als stdlib module, but nicht sys
         expected = ('sys',)
         not_expected = ('_testcapi',)
         code = """if Wahr:
@@ -192,7 +192,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
 
     def test_set_object(self):
 
-        # new exception als obj is not an exception
+        # new exception als obj is nicht an exception
         mit self.assertRaises(ValueError) als e:
             _testcapi.exc_set_object(ValueError, 42)
         self.assertEqual(e.exception.args, (42,))
@@ -204,7 +204,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         self.assertIsInstance(wrapped, TypeError)
         self.assertEqual(wrapped.args, (1, 2, 3))
 
-        # is superclass, so does not wrap
+        # is superclass, so does nicht wrap
         mit self.assertRaises(PermissionError) als e:
             _testcapi.exc_set_object(OSError, PermissionError(24))
         self.assertEqual(e.exception.args, (24,))
@@ -284,7 +284,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         mit self.assertRaises(FileNotFoundError) als e:
             setfromerrnowithfilename(ENOENT, OSError, b'file')
         self.assertEqual(e.exception.args,
-                         (ENOENT, 'No such file or directory'))
+                         (ENOENT, 'No such file oder directory'))
         self.assertEqual(e.exception.errno, ENOENT)
         self.assertEqual(e.exception.filename, 'file')
 
@@ -311,7 +311,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         mit self.assertRaises(ZeroDivisionError) als e:
             setfromerrnowithfilename(ENOENT, ZeroDivisionError, b'file')
         self.assertEqual(e.exception.args,
-                         (ENOENT, 'No such file or directory', 'file'))
+                         (ENOENT, 'No such file oder directory', 'file'))
         # CRASHES setfromerrnowithfilename(ENOENT, NULL, b'error')
 
     def test_err_writeunraisable(self):
@@ -432,7 +432,7 @@ klasse TestUnicodeTranslateError(UnicodeTranslateError):
 klasse TestUnicodeError(unittest.TestCase):
 
     def _check_no_crash(self, exc):
-        # ensure that the __str__() method does not crash
+        # ensure that the __str__() method does nicht crash
         _ = str(exc)
 
     def test_unicode_encode_error_get_start(self):

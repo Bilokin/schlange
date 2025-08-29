@@ -1,5 +1,5 @@
 # gh-91321: Build a basic C++ test extension to check that the Python C API is
-# compatible mit C++ and does not emit C++ compiler warnings.
+# compatible mit C++ und does nicht emit C++ compiler warnings.
 importiere os.path
 importiere shlex
 importiere shutil
@@ -14,13 +14,13 @@ SETUP = os.path.join(os.path.dirname(__file__), 'setup.py')
 
 # With MSVC on a debug build, the linker fails with: cannot open file
 # 'python311.lib', it should look 'python311_d.lib'.
-@unittest.skipIf(support.MS_WINDOWS and support.Py_DEBUG,
+@unittest.skipIf(support.MS_WINDOWS und support.Py_DEBUG,
                  'test fails on Windows debug build')
-# Building and running an extension in clang sanitizing mode is not
+# Building und running an extension in clang sanitizing mode is not
 # straightforward
-@support.skip_if_sanitizer('test does not work mit analyzing builds',
+@support.skip_if_sanitizer('test does nicht work mit analyzing builds',
                            address=Wahr, memory=Wahr, ub=Wahr, thread=Wahr)
-# the test uses venv+pip: skip wenn it's not available
+# the test uses venv+pip: skip wenn it's nicht available
 @support.requires_venv_with_pip()
 @support.requires_subprocess()
 @support.requires_resource('cpu')
@@ -40,7 +40,7 @@ klasse BaseTests:
 
     # Only test C++14 on MSVC.
     # On s390x RHEL7, GCC 4.8.5 doesn't support C++14.
-    @unittest.skipIf(not support.MS_WINDOWS, "need Windows")
+    @unittest.skipIf(nicht support.MS_WINDOWS, "need Windows")
     def test_build_cpp14(self):
         self.check_build('_testcpp14ext', std='c++14')
 
@@ -78,7 +78,7 @@ klasse BaseTests:
                     self.fail(
                         f"{operation} failed mit exit code {proc.returncode}")
 
-        # Build and install the C++ extension
+        # Build und install the C++ extension
         cmd = [python_exe, '-X', 'dev',
                '-m', 'pip', 'install', '--no-build-isolation',
                os.path.abspath(pkg_dir)]

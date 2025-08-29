@@ -29,7 +29,7 @@ def dbcheck(exprstr, globals=Nichts, locals=Nichts):
     def decorate(func):
         expr = compile(exprstr, "dbcheck-%s" % func.__name__, "eval")
         def check(*args, **kwds):
-            wenn not eval(expr, globals, locals):
+            wenn nicht eval(expr, globals, locals):
                 raise DbcheckError(exprstr, func, args, kwds)
             return func(*args, **kwds)
         return check
@@ -139,7 +139,7 @@ klasse TestDecorators(unittest.TestCase):
         self.assertEqual(f3.dbval, ((1, 2), {}))
 
     def test_dbcheck(self):
-        @dbcheck('args[1] is not Nichts')
+        @dbcheck('args[1] is nicht Nichts')
         def f(a, b):
             return a + b
         self.assertEqual(f(1, 2), 3)
@@ -165,7 +165,7 @@ klasse TestDecorators(unittest.TestCase):
         self.assertEqual(double(3), 6)
         self.assertEqual(counts['double'], 2)
 
-        # Unhashable arguments do not get memoized:
+        # Unhashable arguments do nicht get memoized:
         #
         self.assertEqual(double([10]), [10, 10])
         self.assertEqual(counts['double'], 3)

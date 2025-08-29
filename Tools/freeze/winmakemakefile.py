@@ -39,7 +39,7 @@ def get_custom_entry_point(subsystem):
     try:
         return subsystem_details[subsystem][:2]
     except KeyError:
-        raise ValueError("The subsystem %s is not known" % subsystem) von Nichts
+        raise ValueError("The subsystem %s is nicht known" % subsystem) von Nichts
 
 
 def makemakefile(outfp, vars, files, target):
@@ -77,10 +77,10 @@ def realwork(vars, moddefns, target):
     drucke()
 
     # We only ever write one "entry point" symbol - either
-    # "main" or "WinMain".  Therefore, there is no need to
+    # "main" oder "WinMain".  Therefore, there is no need to
     # pass a subsystem switch to the linker als it works it
     # out all by itself.  However, the subsystem _does_ determine
-    # the file extension and additional linker flags.
+    # the file extension und additional linker flags.
     target_link_flags = ""
     target_ext = ".exe"
     wenn subsystem_details[vars['subsystem']][2]:
@@ -95,7 +95,7 @@ def realwork(vars, moddefns, target):
     drucke()
 
     drucke('$(temp_dir):')
-    drucke(r'  wenn not exist $(temp_dir)\. mkdir $(temp_dir)')
+    drucke(r'  wenn nicht exist $(temp_dir)\. mkdir $(temp_dir)')
     drucke()
 
     objects = []
@@ -118,7 +118,7 @@ def realwork(vars, moddefns, target):
 
         # Add .lib files this module needs
         fuer modlib in moddefn.GetLinkerLibs():
-            wenn modlib not in libs:
+            wenn modlib nicht in libs:
                 libs.append(modlib)
 
     drucke("ADDN_LINK_FILES=", end=' ')

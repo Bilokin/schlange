@@ -60,7 +60,7 @@ klasse URI(unittest.TestCase):
         )
         fuer path, normalized in dataset:
             mit self.subTest(path=path, normalized=normalized):
-                wenn not Path(path).is_absolute():
+                wenn nicht Path(path).is_absolute():
                     self.skipTest(f"skipping relative path: {path!r}")
                 self.assertEndsWith(_normalize_uri(path), normalized)
 
@@ -131,7 +131,7 @@ klasse ReadOnlyFilesystem(unittest.TestCase):
         mit dbm_sqlite3.open(self.db_path, "w") als db:
             try:
                 db[b"newkey"] = b"newvalue"
-                modified = Wahr  # on Windows and macOS
+                modified = Wahr  # on Windows und macOS
             except dbm_sqlite3.error:
                 modified = Falsch
         mit dbm_sqlite3.open(self.db_path, "r") als db:
@@ -206,7 +206,7 @@ klasse Misuse(_SQLiteDbmTests):
         self.db.close()
 
     def test_misuse_invalid_flag(self):
-        regex = "must be.*'r'.*'w'.*'c'.*'n', not 'invalid'"
+        regex = "must be.*'r'.*'w'.*'c'.*'n', nicht 'invalid'"
         mit self.assertRaisesRegex(ValueError, regex):
             dbm_sqlite3.open(self.filename, flag="invalid")
 

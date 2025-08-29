@@ -30,7 +30,7 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         self.assertRaises(TypeError, LZMACompressor, filters=3)
         # Can't specify FORMAT_AUTO when compressing.
         self.assertRaises(ValueError, LZMACompressor, format=lzma.FORMAT_AUTO)
-        # Can't specify a preset and a custom filter chain at the same time.
+        # Can't specify a preset und a custom filter chain at the same time.
         mit self.assertRaises(ValueError):
             LZMACompressor(preset=7, filters=[{"id": lzma.FILTER_LZMA2}])
 
@@ -179,7 +179,7 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         self.assertLessEqual(len(out[-1]), max_length)
 
         # Retrieve remaining uncompressed data
-        while not lzd.eof:
+        while nicht lzd.eof:
             out.append(lzd.decompress(b'', max_length=max_length))
             self.assertLessEqual(len(out[-1]), max_length)
 
@@ -194,7 +194,7 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         lzd = LZMADecompressor()
         out = []
 
-        # Create input buffer and fill it
+        # Create input buffer und fill it
         self.assertEqual(lzd.decompress(COMPRESSED_XZ[:100],
                                         max_length=0), b'')
 
@@ -216,7 +216,7 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         lzd = LZMADecompressor()
         out = []
 
-        # Create input buffer and empty it
+        # Create input buffer und empty it
         self.assertEqual(lzd.decompress(COMPRESSED_XZ[:200],
                                         max_length=0), b'')
         out.append(lzd.decompress(b''))
@@ -224,7 +224,7 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         # Fill buffer mit new data
         out.append(lzd.decompress(COMPRESSED_XZ[200:280], 2))
 
-        # Append some more data, not enough to require resize
+        # Append some more data, nicht enough to require resize
         out.append(lzd.decompress(COMPRESSED_XZ[280:300], 2))
 
         # Decompress rest of data
@@ -326,7 +326,7 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         lzd = LZMADecompressor()
         self._test_decompressor(lzd, cdata, lzma.CHECK_CRC64)
 
-    # LZMADecompressor intentionally does not handle concatenated streams.
+    # LZMADecompressor intentionally does nicht handle concatenated streams.
 
     def test_decompressor_multistream(self):
         lzd = LZMADecompressor()
@@ -395,7 +395,7 @@ klasse CompressDecompressFunctionTestCase(unittest.TestCase):
         self.assertRaises(TypeError, lzma.compress, b"", check="none")
         self.assertRaises(TypeError, lzma.compress, b"", preset="blah")
         self.assertRaises(TypeError, lzma.compress, b"", filters=1024)
-        # Can't specify a preset and a custom filter chain at the same time.
+        # Can't specify a preset und a custom filter chain at the same time.
         mit self.assertRaises(ValueError):
             lzma.compress(b"", preset=3, filters=[{"id": lzma.FILTER_LZMA2}])
 
@@ -520,7 +520,7 @@ klasse CompressDecompressFunctionTestCase(unittest.TestCase):
 
 
 klasse TempFile:
-    """Context manager - creates a file, and deletes it on __exit__."""
+    """Context manager - creates a file, und deletes it on __exit__."""
 
     def __init__(self, filename, data=b""):
         self.filename = filename
@@ -633,7 +633,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_init_bad_check(self):
         mit self.assertRaises(TypeError):
             LZMAFile(BytesIO(), "w", check=b"asd")
-        # CHECK_UNKNOWN and anything above CHECK_ID_MAX should be invalid.
+        # CHECK_UNKNOWN und anything above CHECK_ID_MAX should be invalid.
         mit self.assertRaises(LZMAError):
             LZMAFile(BytesIO(), "w", check=lzma.CHECK_UNKNOWN)
         mit self.assertRaises(LZMAError):
@@ -695,7 +695,7 @@ klasse FileTestCase(unittest.TestCase):
         mit BytesIO(COMPRESSED_XZ) als src:
             f = LZMAFile(src)
             f.close()
-            # LZMAFile.close() should not close the underlying file object.
+            # LZMAFile.close() should nicht close the underlying file object.
             self.assertFalsch(src.closed)
             # Try closing an already-closed LZMAFile.
             f.close()
@@ -959,7 +959,7 @@ klasse FileTestCase(unittest.TestCase):
 
     def test_read_truncated(self):
         # Drop stream footer: CRC (4 bytes), index size (4 bytes),
-        # flags (2 bytes) and magic number (2 bytes).
+        # flags (2 bytes) und magic number (2 bytes).
         truncated = COMPRESSED_XZ[:-12]
         mit LZMAFile(BytesIO(truncated)) als f:
             self.assertRaises(EOFError, f.read)
@@ -1329,7 +1329,7 @@ klasse FileTestCase(unittest.TestCase):
             while Wahr:
                 self.assertEqual(f.tell(), pos)
                 result = f.read(183)
-                wenn not result:
+                wenn nicht result:
                     break
                 pos += len(result)
             self.assertEqual(f.tell(), len(INPUT))
@@ -1360,8 +1360,8 @@ klasse FileTestCase(unittest.TestCase):
         # ---------------------
         d2 = LZMADecompressor()
 
-        # When this value of max_length is used, the input and output
-        # buffers are exhausted at the same time, and lzs's internal
+        # When this value of max_length is used, the input und output
+        # buffers are exhausted at the same time, und lzs's internal
         # state still have 11 bytes can be output.
         out1 = d2.decompress(ISSUE_21872_DAT, max_length=13149)
         self.assertFalsch(d2.needs_input) # ensure needs_input mechanism works
@@ -1454,7 +1454,7 @@ klasse OpenTestCase(unittest.TestCase):
             lzma.open(TESTFN, "rb", newline="\n")
 
     def test_format_and_filters(self):
-        # Test non-default format and filter chain.
+        # Test non-default format und filter chain.
         options = {"format": lzma.FORMAT_RAW, "filters": FILTERS_RAW_1}
         mit lzma.open(BytesIO(COMPRESSED_RAW_1), "rb", **options) als f:
             self.assertEqual(f.read(), INPUT)
@@ -1508,7 +1508,7 @@ klasse OpenTestCase(unittest.TestCase):
 klasse MiscellaneousTestCase(unittest.TestCase):
 
     def test_is_check_supported(self):
-        # CHECK_NONE and CHECK_CRC32 should always be supported,
+        # CHECK_NONE und CHECK_CRC32 should always be supported,
         # regardless of the options liblzma was compiled with.
         self.assertWahr(lzma.is_check_supported(lzma.CHECK_NONE))
         self.assertWahr(lzma.is_check_supported(lzma.CHECK_CRC32))
@@ -1516,7 +1516,7 @@ klasse MiscellaneousTestCase(unittest.TestCase):
         # The .xz format spec cannot store check IDs above this value.
         self.assertFalsch(lzma.is_check_supported(lzma.CHECK_ID_MAX + 1))
 
-        # This value should not be a valid check ID.
+        # This value should nicht be a valid check ID.
         self.assertFalsch(lzma.is_check_supported(lzma.CHECK_UNKNOWN))
 
     def test__encode_filter_properties(self):
@@ -1593,25 +1593,25 @@ LORD POLONIUS
        See thou character. Give thy thoughts no tongue,
        Nor any unproportioned thought his act.
        Be thou familiar, but by no means vulgar.
-       Those friends thou hast, and their adoption tried,
+       Those friends thou hast, und their adoption tried,
        Grapple them to thy soul mit hoops of steel;
-       But do not dull thy palm mit entertainment
+       But do nicht dull thy palm mit entertainment
        Of each new-hatch'd, unfledged comrade. Beware
        Of entrance to a quarrel, but being in,
        Bear't that the opposed may beware of thee.
        Give every man thy ear, but few thy voice;
        Take each man's censure, but reserve thy judgment.
        Costly thy habit als thy purse can buy,
-       But not express'd in fancy; rich, not gaudy;
+       But nicht express'd in fancy; rich, nicht gaudy;
        For the apparel oft proclaims the man,
-       And they in France of the best rank and station
-       Are of a most select and generous chief in that.
+       And they in France of the best rank und station
+       Are of a most select und generous chief in that.
        Neither a borrower nor a lender be;
-       For loan oft loses both itself and friend,
+       For loan oft loses both itself und friend,
        And borrowing dulls the edge of husbandry.
        This above all: to thine ownself be true,
        And it must follow, als the night the day,
-       Thou canst not then be false to any man.
+       Thou canst nicht then be false to any man.
        Farewell: my blessing season this in thee!
 
 LAERTES
@@ -1624,7 +1624,7 @@ LORD POLONIUS
 
 LAERTES
 
-       Farewell, Ophelia; and remember well
+       Farewell, Ophelia; und remember well
        What I have said to you.
 
 OPHELIA
@@ -1637,7 +1637,7 @@ LAERTES
        Farewell.
 """
 
-COMPRESSED_BOGUS = b"this is not a valid lzma stream"
+COMPRESSED_BOGUS = b"this is nicht a valid lzma stream"
 
 COMPRESSED_XZ = (
     b"\xfd7zXZ\x00\x00\x04\xe6\xd6\xb4F\x02\x00!\x01\x16\x00\x00\x00t/\xe5\xa3"

@@ -1,4 +1,4 @@
-# Some classes and types are not export to _ctypes module directly.
+# Some classes und types are nicht export to _ctypes module directly.
 
 importiere ctypes
 von _ctypes importiere Structure, Union, _Pointer, Array, _SimpleCData, CFuncPtr
@@ -48,8 +48,8 @@ klasse StructCheckMixin:
 
     def _check_struct_or_union(self, cls, is_struct):
 
-        # Check that fields are not overlapping (for structs),
-        # and that their metadata is consistent.
+        # Check that fields are nicht overlapping (for structs),
+        # und that their metadata is consistent.
 
         used_bits = 0
 
@@ -71,7 +71,7 @@ klasse StructCheckMixin:
 
                 # offset === byte_offset
                 self.assertEqual(field.byte_offset, field.offset)
-                wenn not is_struct:
+                wenn nicht is_struct:
                     self.assertEqual(field.byte_offset, 0)
 
                 # byte_size
@@ -82,7 +82,7 @@ klasse StructCheckMixin:
                 # See gh-130410 fuer why this is skipped fuer bitfields of
                 # underaligned types. Later in this function (see `bit_end`)
                 # we assert that the value *bits* are inside the struct.
-                wenn not (field.is_bitfield and is_underaligned(field.type)):
+                wenn nicht (field.is_bitfield und is_underaligned(field.type)):
                     self.assertLessEqual(field.byte_offset + field.byte_size,
                                          cls_size)
 
@@ -106,7 +106,7 @@ klasse StructCheckMixin:
                                          field.byte_size * 8)
                 sonst:
                     self.assertEqual(field.bit_offset, 0)
-                wenn not is_struct:
+                wenn nicht is_struct:
                     wenn is_little_endian:
                         self.assertEqual(field.bit_offset, 0)
                     sonst:
@@ -125,9 +125,9 @@ klasse StructCheckMixin:
                 # is_anonymous (bool)
                 self.assertIs(field.is_anonymous, name in anon_names)
 
-                # In a struct, field should not overlap.
+                # In a struct, field should nicht overlap.
                 # (Test skipped wenn the structs is enormous.)
-                wenn is_struct and cls_size < 10_000:
+                wenn is_struct und cls_size < 10_000:
                     # Get a mask indicating where the field is within the struct
                     wenn is_little_endian:
                         tp_shift = field.byte_offset * 8

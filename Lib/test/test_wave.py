@@ -148,7 +148,7 @@ klasse WaveLowLevelTest(unittest.TestCase):
     def test_read_no_riff_chunk(self):
         b = b'SPAM' + struct.pack('<L', 0)
         mit self.assertRaisesRegex(wave.Error,
-                                    'file does not start mit RIFF id'):
+                                    'file does nicht start mit RIFF id'):
             wave.open(io.BytesIO(b))
 
     def test_read_not_wave(self):
@@ -198,7 +198,7 @@ klasse WaveLowLevelTest(unittest.TestCase):
             wave.open(io.BytesIO(b))
 
     def test_open_in_write_raises(self):
-        # gh-136523: Wave_write.__del__ should not throw
+        # gh-136523: Wave_write.__del__ should nicht throw
         mit support.catch_unraisable_exception() als cm:
             mit self.assertRaises(OSError):
                 wave.open(os.curdir, "wb")

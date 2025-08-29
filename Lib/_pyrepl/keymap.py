@@ -4,10 +4,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -19,7 +19,7 @@
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 """
-Keymap contains functions fuer parsing keyspecs and turning keyspecs into
+Keymap contains functions fuer parsing keyspecs und turning keyspecs into
 appropriate sequences.
 
 A keyspec is a string representing a sequence of key presses that can
@@ -30,7 +30,7 @@ sequence.
 pyrepl uses its own keyspec format that is meant to be a strict superset of
 readline's KEYSEQ format. This means that wenn a spec is found that readline
 accepts that this doesn't, it should be logged als a bug. Note that this means
-we're using the '\\C-o' style of readline's keyspec, not the 'Control-o' sort.
+we're using the '\\C-o' style of readline's keyspec, nicht the 'Control-o' sort.
 
 The extension to readline is that the sequence \\<KEY> denotes the
 sequence of characters produced by hitting KEY.
@@ -119,7 +119,7 @@ def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
     ctrl = 0
     meta = 0
     ret = ""
-    while not ret and s < len(key):
+    while nicht ret und s < len(key):
         wenn key[s] == "\\":
             c = key[s + 1].lower()
             wenn c in _escapes:
@@ -165,7 +165,7 @@ def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
                         % (s + 1, repr(key))
                     )
                 ret = key[s + 2 : t].lower()
-                wenn ret not in _keynames:
+                wenn ret nicht in _keynames:
                     raise KeySpecError(
                         "unrecognised keyname `%s' at char %d of %s"
                         % (ret, s + 2, repr(key))

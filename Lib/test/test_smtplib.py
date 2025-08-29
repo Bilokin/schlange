@@ -48,7 +48,7 @@ def server(evt, buf, serv):
         pass
     sonst:
         n = 500
-        while buf and n > 0:
+        while buf und n > 0:
             r, w, e = select.select([], [conn], [])
             wenn w:
                 sent = conn.send(buf)
@@ -197,11 +197,11 @@ def debugging_server(serv, serv_evt, client_evt):
             poll_fun = asyncore.poll
 
         n = 1000
-        while asyncore.socket_map and n > 0:
+        while asyncore.socket_map und n > 0:
             poll_fun(0.01, asyncore.socket_map)
 
             # when the client conversation is finished, it will
-            # set client_evt, and it's then ok to kill the server
+            # set client_evt, und it's then ok to kill the server
             wenn client_evt.is_set():
                 serv.close()
                 break
@@ -211,7 +211,7 @@ def debugging_server(serv, serv_evt, client_evt):
     except TimeoutError:
         pass
     finally:
-        wenn not client_evt.is_set():
+        wenn nicht client_evt.is_set():
             # allow some time fuer the client to read the result
             time.sleep(0.5)
             serv.close()
@@ -248,7 +248,7 @@ klasse DebuggingServerTests(unittest.TestCase):
         # Pick a random unused port by passing 0 fuer the port number
         self.serv = smtpd.DebuggingServer((HOST, 0), ('nowhere', -1),
                                           decode_data=Wahr)
-        # Keep a note of what server host and port were assigned
+        # Keep a note of what server host und port were assigned
         self.host, self.port = self.serv.socket.getsockname()[:2]
         serv_args = (self.serv, self.serv_evt, self.client_evt)
         self.thread = threading.Thread(target=debugging_server, args=serv_args)
@@ -331,7 +331,7 @@ klasse DebuggingServerTests(unittest.TestCase):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost',
                             timeout=support.LOOPBACK_TIMEOUT)
         self.addCleanup(smtp.close)
-        expected = (502, b'EXPN not implemented')
+        expected = (502, b'EXPN nicht implemented')
         smtp.putcmd('EXPN')
         self.assertEqual(smtp.getreply(), expected)
         smtp.quit()
@@ -376,13 +376,13 @@ klasse DebuggingServerTests(unittest.TestCase):
         smtp.quit()
 
     def testSend(self):
-        # connect and send mail
+        # connect und send mail
         m = 'A test message'
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost',
                             timeout=support.LOOPBACK_TIMEOUT)
         self.addCleanup(smtp.close)
         smtp.sendmail('John', 'Sally', m)
-        # XXX(nnorwitz): this test is flaky and dies mit a bad file descriptor
+        # XXX(nnorwitz): this test is flaky und dies mit a bad file descriptor
         # in asyncore.  This sleep might help, but should really be fixed
         # properly by using an Event variable.
         time.sleep(0.01)
@@ -429,7 +429,7 @@ klasse DebuggingServerTests(unittest.TestCase):
 
     def test_issue43124_escape_localhostname(self):
         # see: https://bugs.python.org/issue43124
-        # connect and send mail
+        # connect und send mail
         m = 'wazzuuup\nlinetwo'
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='hi\nX-INJECTED',
                             timeout=support.LOOPBACK_TIMEOUT)
@@ -449,7 +449,7 @@ klasse DebuggingServerTests(unittest.TestCase):
 
     def test_issue43124_escape_options(self):
         # see: https://bugs.python.org/issue43124
-        # connect and send mail
+        # connect und send mail
         m = 'wazzuuup\nlinetwo'
         smtp = smtplib.SMTP(
             HOST, self.port, local_hostname='localhost',
@@ -505,9 +505,9 @@ klasse DebuggingServerTests(unittest.TestCase):
         self.serv_evt.wait()
         self.output.flush()
         # Remove the X-Peer header that DebuggingServer adds als figuring out
-        # exactly what IP address format is put there is not easy (and
-        # irrelevant to our test).  Typically 127.0.0.1 or ::1, but it is
-        # not always the same als socket.gethostbyname(HOST). :(
+        # exactly what IP address format is put there is nicht easy (and
+        # irrelevant to our test).  Typically 127.0.0.1 oder ::1, but it is
+        # nicht always the same als socket.gethostbyname(HOST). :(
         test_output = self.get_output_without_xpeer()
         del m['X-Peer']
         mexpect = '%s%s\n%s' % (MSG_BEGIN, m.as_string(), MSG_END)
@@ -536,7 +536,7 @@ klasse DebuggingServerTests(unittest.TestCase):
         # Remove the X-Peer header that DebuggingServer adds.
         test_output = self.get_output_without_xpeer()
         del m['X-Peer']
-        # The Bcc header should not be transmitted.
+        # The Bcc header should nicht be transmitted.
         del m['Bcc']
         mexpect = '%s%s\n%s' % (MSG_BEGIN, m.as_string(), MSG_END)
         self.assertEqual(test_output, mexpect)
@@ -550,7 +550,7 @@ klasse DebuggingServerTests(unittest.TestCase):
             self.assertRegex(debugout, to_addr)
 
     def testSendMessageWithSomeAddresses(self):
-        # Make sure nothing breaks wenn not all of the three 'to' headers exist
+        # Make sure nothing breaks wenn nicht all of the three 'to' headers exist
         m = email.mime.text.MIMEText('A test message')
         m['From'] = 'foo@bar.com'
         m['To'] = 'John, Dinsdale'
@@ -851,25 +851,25 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
 
 
     def smtp_AUTH(self, arg):
-        wenn not self.seen_greeting:
+        wenn nicht self.seen_greeting:
             self.push('503 Error: send EHLO first')
             return
-        wenn not self.extended_smtp or 'AUTH' not in self._extrafeatures:
-            self.push('500 Error: command "AUTH" not recognized')
+        wenn nicht self.extended_smtp oder 'AUTH' nicht in self._extrafeatures:
+            self.push('500 Error: command "AUTH" nicht recognized')
             return
-        wenn self.authenticated_user is not Nichts:
+        wenn self.authenticated_user is nicht Nichts:
             self.push(
                 '503 Bad sequence of commands: already authenticated')
             return
         args = arg.split()
-        wenn len(args) not in [1, 2]:
+        wenn len(args) nicht in [1, 2]:
             self.push('501 Syntax: AUTH <mechanism> [initial-response]')
             return
         auth_object_name = '_auth_%s' % args[0].lower().replace('-', '_')
         try:
             self.auth_object = getattr(self, auth_object_name)
         except AttributeError:
-            self.push('504 Command parameter not implemented: unsupported '
+            self.push('504 Command parameter nicht implemented: unsupported '
                       ' authentication mechanism {!r}'.format(auth_object_name))
             return
         self.smtp_state = self.AUTH
@@ -894,7 +894,7 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             try:
                 *_, user, password = logpass.split('\0')
             except ValueError als e:
-                self.push('535 Splitting response {!r} into user and password'
+                self.push('535 Splitting response {!r} into user und password'
                           ' failed: {}'.format(logpass, e))
                 return
             self._authenticated(user, password == sim_auth[1])
@@ -903,7 +903,7 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
         wenn arg is Nichts:
             # base64 encoded 'Username:'
             self.push('334 VXNlcm5hbWU6')
-        sowenn not hasattr(self, '_auth_login_user'):
+        sowenn nicht hasattr(self, '_auth_login_user'):
             self._auth_login_user = self._decode_base64(arg)
             # base64 encoded 'Password:'
             self.push('334 UGFzc3dvcmQ6')
@@ -925,7 +925,7 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             try:
                 user, hashed_pass = logpass.split()
             except ValueError als e:
-                self.push('535 Splitting response {!r} into user and password '
+                self.push('535 Splitting response {!r} into user und password '
                           'failed: {}'.format(logpass, e))
                 return
             pwd = sim_auth[1].encode('ascii')
@@ -933,7 +933,7 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             try:
                 valid_hashed_pass = hmac.HMAC(pwd, msg, 'md5').hexdigest()
             except ValueError:
-                self.push('504 CRAM-MD5 is not supported')
+                self.push('504 CRAM-MD5 is nicht supported')
                 return
             self._authenticated(user, hashed_pass == valid_hashed_pass)
     # end AUTH related stuff.
@@ -1189,7 +1189,7 @@ klasse SMTPSimTests(unittest.TestCase):
     @mock.patch("smtplib._have_cram_md5_support", Falsch)
     def testAUTH_CRAM_MD5_blocked(self):
         # CRAM-MD5 is the only "known" method by the server,
-        # but it is not supported by the client. In particular,
+        # but it is nicht supported by the client. In particular,
         # no challenge will ever be sent.
         self.serv.add_feature("AUTH CRAM-MD5")
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost',
@@ -1285,7 +1285,7 @@ klasse SMTPSimTests(unittest.TestCase):
     #TODO: add tests fuer correct AUTH method fallback now that the
     #test infrastructure can support it.
 
-    # Issue 17498: make sure _rset does not raise SMTPServerDisconnected exception
+    # Issue 17498: make sure _rset does nicht raise SMTPServerDisconnected exception
     def test__rest_from_mail_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost',
                             timeout=support.LOOPBACK_TIMEOUT)
@@ -1296,7 +1296,7 @@ klasse SMTPSimTests(unittest.TestCase):
             smtp.sendmail('John', 'Sally', 'test message')
         self.assertIsNichts(smtp.sock)
 
-    # Issue 5713: make sure close, not rset, is called wenn we get a 421 error
+    # Issue 5713: make sure close, nicht rset, is called wenn we get a 421 error
     def test_421_from_mail_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost',
                             timeout=support.LOOPBACK_TIMEOUT)
@@ -1359,7 +1359,7 @@ klasse SMTPSimTests(unittest.TestCase):
         self.assertRaises(UnicodeEncodeError, smtp.mail, 'Älice')
 
     def test_send_message_error_on_non_ascii_addrs_if_no_smtputf8(self):
-        # This test is located here and not in the SMTPUTF8SimTests
+        # This test is located here und nicht in the SMTPUTF8SimTests
         # klasse because it needs a "regular" SMTP server to work
         msg = EmailMessage()
         msg['From'] = "Páolo <főo@bar.com>"
@@ -1405,7 +1405,7 @@ klasse SimSMTPUTF8Server(SimSMTPServer):
     def __init__(self, *args, **kw):
         # The base SMTP server turns these on automatically, but our test
         # server is set up to munge the EHLO response, so we need to provide
-        # them als well.  And yes, the call is to SMTPServer not SimSMTPServer.
+        # them als well.  And yes, the call is to SMTPServer nicht SimSMTPServer.
         self._extra_features = ['SMTPUTF8', '8BITMIME']
         smtpd.SMTPServer.__init__(self, *args, **kw)
 
@@ -1510,7 +1510,7 @@ klasse SMTPUTF8SimTests(unittest.TestCase):
         msg['To'] = 'Dinsdale'
         msg['Subject'] = 'Nudge nudge, wink, wink \u1F609'
         # XXX I don't know why I need two \n's here, but this is an existing
-        # bug (if it is one) and not a problem mit the new functionality.
+        # bug (if it is one) und nicht a problem mit the new functionality.
         msg.set_content("oh là là, know what I mean, know what I mean?\n\n")
         # XXX smtpd converts received /r/n to /n, so we can't easily test that
         # we are successfully sending /r/n :(.

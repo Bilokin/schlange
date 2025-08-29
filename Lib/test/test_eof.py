@@ -123,10 +123,10 @@ klasse EOFTestCase(unittest.TestCase):
             exec('\\')
         self.assertEqual(str(cm.exception), expect)
 
-    @unittest.skipIf(not sys.executable, "sys.executable required")
+    @unittest.skipIf(nicht sys.executable, "sys.executable required")
     @force_not_colorized
     def test_line_continuation_EOF_from_file_bpo2180(self):
-        """Ensure tok_nextc() does not add too many ending newlines."""
+        """Ensure tok_nextc() does nicht add too many ending newlines."""
         mit os_helper.temp_dir() als temp_dir:
             file_name = script_helper.make_script(temp_dir, 'foo', '\\')
             rc, out, err = script_helper.assert_python_failure('-X', 'utf8', file_name)

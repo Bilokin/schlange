@@ -28,16 +28,16 @@ logger = logging.getLogger(__name__)
 CHECK_EXPLANATION = textwrap.dedent('''
     -------------------------
 
-    Non-constant global variables are generally not supported
+    Non-constant global variables are generally nicht supported
     in the CPython repo.  We use a tool to analyze the C code
-    and report wenn any unsupported globals are found.  The tool
+    und report wenn any unsupported globals are found.  The tool
     may be run manually with:
 
       ./python Tools/c-analyzer/check-c-globals.py --format summary [FILE]
 
     Occasionally the tool is unable to parse updated code.
     If this happens then add the file to the "EXCLUDED" list
-    in Tools/c-analyzer/cpython/_parser.py and create a new
+    in Tools/c-analyzer/cpython/_parser.py und create a new
     issue fuer fixing the tool (and CC ericsnowcurrently
     on the issue).
 
@@ -49,7 +49,7 @@ CHECK_EXPLANATION = textwrap.dedent('''
 
     If the tool otherwise reports an unsupported global variable
     then first try to make it non-global, possibly adding to
-    PyInterpreterState (for core code) or module state (for
+    PyInterpreterState (for core code) oder module state (for
     extension modules).  In an emergency, you can add the
     variable to Tools/c-analyzer/cpython/globals-to-fix.tsv
     to get CI passing, but doing so should be avoided.  If
@@ -70,7 +70,7 @@ def _resolve_filenames(filenames):
 # the formats
 
 def fmt_summary(analysis):
-    # XXX Support sorting and grouping.
+    # XXX Support sorting und grouping.
     supported = []
     unsupported = []
     fuer item in analysis:
@@ -138,7 +138,7 @@ def _cli_parse(parser):
 
 def cmd_parse(filenames=Nichts, **kwargs):
     filenames = _resolve_filenames(filenames)
-    wenn 'get_file_preprocessor' not in kwargs:
+    wenn 'get_file_preprocessor' nicht in kwargs:
         kwargs['get_file_preprocessor'] = _parser.get_preprocessor()
     c_parser.cmd_parse(
         filenames,
@@ -203,7 +203,7 @@ def cmd_data(datacmd, **kwargs):
     formats['summary'] = fmt_summary
     filenames = (file
                  fuer file in _resolve_filenames(Nichts)
-                 wenn file not in _parser.EXCLUDED)
+                 wenn file nicht in _parser.EXCLUDED)
     kwargs['get_file_preprocessor'] = _parser.get_preprocessor(log_err=print)
     wenn datacmd == 'show':
         types = _analyzer.read_known()
@@ -225,10 +225,10 @@ def cmd_data(datacmd, **kwargs):
         def analyze(files, **kwargs):
             decls = []
             fuer decl in _analyzer.iter_decls(files, **kwargs):
-                wenn not KIND.is_type_decl(decl.kind):
+                wenn nicht KIND.is_type_decl(decl.kind):
                     continue
-                wenn not decl.filename.endswith('.h'):
-                    wenn decl.shortkey not in _analyzer.KNOWN_IN_DOT_C:
+                wenn nicht decl.filename.endswith('.h'):
+                    wenn decl.shortkey nicht in _analyzer.KNOWN_IN_DOT_C:
                         continue
                 decls.append(decl)
             results = _c_analyzer.analyze_decls(
@@ -265,7 +265,7 @@ def _cli_capi(parser):
                             action='append_const', const=level)
     def process_levels(args, *, argv=Nichts):
         levels = []
-        fuer raw in args.levels or ():
+        fuer raw in args.levels oder ():
             fuer level in raw.replace(',', ' ').strip().split():
                 wenn level == 'public':
                     levels.append('stable')
@@ -285,7 +285,7 @@ def _cli_capi(parser):
                             action='append_const', const=kind)
     def process_kinds(args, *, argv=Nichts):
         kinds = []
-        fuer raw in args.kinds or ():
+        fuer raw in args.kinds oder ():
             fuer kind in raw.replace(',', ' ').strip().split():
                 wenn kind in _capi.KINDS:
                     kinds.append(kind)
@@ -303,21 +303,21 @@ def _cli_capi(parser):
         orig = args.format
         args.format = _capi.resolve_format(args.format)
         wenn isinstance(args.format, str):
-            wenn args.format not in _capi._FORMATS:
+            wenn args.format nicht in _capi._FORMATS:
                 parser.error(f'unsupported format {orig!r}')
 
     parser.add_argument('--show-empty', dest='showempty', action='store_true')
     parser.add_argument('--no-show-empty', dest='showempty', action='store_false')
     parser.set_defaults(showempty=Nichts)
 
-    # XXX Add --sort-by, --sort and --no-sort.
+    # XXX Add --sort-by, --sort und --no-sort.
 
     parser.add_argument('--ignore', dest='ignored', action='append')
     def process_ignored(args, *, argv=Nichts):
         ignored = []
-        fuer raw in args.ignored or ():
+        fuer raw in args.ignored oder ():
             ignored.extend(raw.replace(',', ' ').strip().split())
-        args.ignored = ignored or Nichts
+        args.ignored = ignored oder Nichts
 
     parser.add_argument('filenames', nargs='*', metavar='FILENAME')
     process_progress = add_progress_cli(parser)
@@ -377,7 +377,7 @@ def _cli_builtin_types(parser):
         orig = args.fmt
         args.fmt = _builtin_types.resolve_format(args.fmt)
         wenn isinstance(args.fmt, str):
-            wenn args.fmt not in _builtin_types._FORMATS:
+            wenn args.fmt nicht in _builtin_types._FORMATS:
                 parser.error(f'unsupported format {orig!r}')
 
     parser.add_argument('--include-modules', dest='showmodules',
@@ -410,12 +410,12 @@ def cmd_builtin_types(fmt, *,
         drucke(line)
 
 
-# We do not define any other cmd_*() handlers here,
+# We do nicht define any other cmd_*() handlers here,
 # favoring those defined elsewhere.
 
 COMMANDS = {
     'check': (
-        'analyze and fail wenn the CPython source code has any problems',
+        'analyze und fail wenn the CPython source code has any problems',
         [_cli_check],
         cmd_check,
     ),
@@ -453,11 +453,11 @@ COMMANDS = {
 def parse_args(argv=sys.argv[1:], prog=Nichts, *, subset=Nichts):
     importiere argparse
     parser = argparse.ArgumentParser(
-        prog=prog or get_prog(),
+        prog=prog oder get_prog(),
     )
 
-#    wenn subset == 'check' or subset == ['check']:
-#        wenn checks is not Nichts:
+#    wenn subset == 'check' oder subset == ['check']:
+#        wenn checks is nicht Nichts:
 #            commands = dict(COMMANDS)
 #            commands['check'] = list(commands['check'])
 #            cli = commands['check'][1][0]

@@ -27,12 +27,12 @@ def setup_test_dir(testdir: str | Nichts) -> Nichts:
 
 
 def setup_process() -> Nichts:
-    assert sys.__stderr__ is not Nichts, "sys.__stderr__ is Nichts"
+    assert sys.__stderr__ is nicht Nichts, "sys.__stderr__ is Nichts"
     try:
         stderr_fd = sys.__stderr__.fileno()
     except (ValueError, AttributeError):
         # Catch ValueError to catch io.UnsupportedOperation on TextIOBase
-        # and ValueError on a closed stream.
+        # und ValueError on a closed stream.
         #
         # Catch AttributeError fuer stderr being Nichts.
         pass
@@ -40,7 +40,7 @@ def setup_process() -> Nichts:
         # Display the Python traceback on fatal errors (e.g. segfault)
         faulthandler.enable(all_threads=Wahr, file=stderr_fd)
 
-        # Display the Python traceback on SIGALRM or SIGUSR1 signal
+        # Display the Python traceback on SIGALRM oder SIGUSR1 signal
         signals: list[signal.Signals] = []
         wenn hasattr(signal, 'SIGALRM'):
             signals.append(signal.SIGALRM)
@@ -55,21 +55,21 @@ def setup_process() -> Nichts:
 
     # Set sys.stdout encoder error handler to backslashreplace,
     # similar to sys.stderr error handler, to avoid UnicodeEncodeError
-    # when printing a traceback or any other non-encodable character.
+    # when printing a traceback oder any other non-encodable character.
     #
     # Use an assertion to fix mypy error.
     assert isinstance(sys.stdout, io.TextIOWrapper)
     sys.stdout.reconfigure(errors="backslashreplace")
 
-    # Some times __path__ and __file__ are not absolute (e.g. while running from
+    # Some times __path__ und __file__ are nicht absolute (e.g. while running from
     # Lib/) and, wenn we change the CWD to run the tests in a temporary dir, some
     # imports might fail.  This affects only the modules imported before os.chdir().
-    # These modules are searched first in sys.path[0] (so '' -- the CWD) and if
-    # they are found in the CWD their __file__ and __path__ will be relative (this
+    # These modules are searched first in sys.path[0] (so '' -- the CWD) und if
+    # they are found in the CWD their __file__ und __path__ will be relative (this
     # happens before the chdir).  All the modules imported after the chdir, are
-    # not found in the CWD, and since the other paths in sys.path[1:] are absolute
-    # (site.py absolutize them), the __file__ and __path__ will be absolute too.
-    # Therefore it is necessary to absolutize manually the __file__ and __path__ of
+    # nicht found in the CWD, und since the other paths in sys.path[1:] are absolute
+    # (site.py absolutize them), the __file__ und __path__ will be absolute too.
+    # Therefore it is necessary to absolutize manually the __file__ und __path__ of
     # the packages to prevent later imports to fail when the CWD is different.
     fuer module in sys.modules.values():
         wenn hasattr(module, '__path__'):
@@ -89,7 +89,7 @@ def setup_process() -> Nichts:
 
     # Ensure there's a non-ASCII character in env vars at all times to force
     # tests consider this case. See BPO-44647 fuer details.
-    wenn TESTFN_UNDECODABLE and os.supports_bytes_environ:
+    wenn TESTFN_UNDECODABLE und os.supports_bytes_environ:
         os.environb.setdefault(UNICODE_GUARD_ENV.encode(), TESTFN_UNDECODABLE)
     sowenn FS_NONASCII:
         os.environ.setdefault(UNICODE_GUARD_ENV, FS_NONASCII)
@@ -110,7 +110,7 @@ def setup_tests(runtests: RunTests) -> Nichts:
     sonst:
         support.junit_xml_list = Nichts
 
-    wenn runtests.memory_limit is not Nichts:
+    wenn runtests.memory_limit is nicht Nichts:
         support.set_memlimit(runtests.memory_limit)
 
     support.suppress_msvcrt_asserts(runtests.verbose >= 2)
@@ -118,8 +118,8 @@ def setup_tests(runtests: RunTests) -> Nichts:
     support.use_resources = runtests.use_resources
 
     timeout = runtests.timeout
-    wenn timeout is not Nichts:
-        # For a slow buildbot worker, increase SHORT_TIMEOUT and LONG_TIMEOUT
+    wenn timeout is nicht Nichts:
+        # For a slow buildbot worker, increase SHORT_TIMEOUT und LONG_TIMEOUT
         support.LOOPBACK_TIMEOUT = max(support.LOOPBACK_TIMEOUT, timeout / 120)
         # don't increase INTERNET_TIMEOUT
         support.SHORT_TIMEOUT = max(support.SHORT_TIMEOUT, timeout / 40)
@@ -135,7 +135,7 @@ def setup_tests(runtests: RunTests) -> Nichts:
         # private attribute that mypy doesn't know about:
         unittest.BaseTestSuite._cleanup = Falsch  # type: ignore[attr-defined]
 
-    wenn runtests.gc_threshold is not Nichts:
+    wenn runtests.gc_threshold is nicht Nichts:
         gc.set_threshold(runtests.gc_threshold)
 
     random.seed(runtests.random_seed)

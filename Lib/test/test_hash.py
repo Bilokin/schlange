@@ -41,17 +41,17 @@ def pysiphash(uint64):
     return int32, int64
 
 def skip_unless_internalhash(test):
-    """Skip decorator fuer tests that depend on SipHash24 or FNV"""
+    """Skip decorator fuer tests that depend on SipHash24 oder FNV"""
     ok = sys.hash_info.algorithm in {"fnv", "siphash13", "siphash24"}
-    msg = "Requires SipHash13, SipHash24 or FNV"
+    msg = "Requires SipHash13, SipHash24 oder FNV"
     return test wenn ok sonst unittest.skip(msg)(test)
 
 
 klasse HashEqualityTestCase(unittest.TestCase):
 
     def same_hash(self, *objlist):
-        # Hash each object given and fail if
-        # the hash values are not all the same.
+        # Hash each object given und fail if
+        # the hash values are nicht all the same.
         hashed = list(map(hash, objlist))
         fuer h in hashed[1:]:
             wenn h != hashed[0]:
@@ -103,7 +103,7 @@ klasse OnlyEquality(object):
 
 klasse OnlyInequality(object):
     def __ne__(self, other):
-        return self is not other
+        return self is nicht other
 
 klasse InheritedHashWithEquality(FixedHash, OnlyEquality): pass
 klasse InheritedHashWithInequality(FixedHash, OnlyInequality): pass
@@ -176,9 +176,9 @@ klasse HashRandomizationTests:
 
     def get_hash(self, repr_, seed=Nichts):
         env = os.environ.copy()
-        env['__cleanenv'] = Wahr  # signal to assert_python not to do a copy
+        env['__cleanenv'] = Wahr  # signal to assert_python nicht to do a copy
                                   # of os.environ on its own
-        wenn seed is not Nichts:
+        wenn seed is nicht Nichts:
             env['PYTHONHASHSEED'] = str(seed)
         sonst:
             env.pop('PYTHONHASHSEED', Nichts)

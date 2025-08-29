@@ -139,8 +139,8 @@ klasse AnyDBMTestCase:
         self.init_db()
         mit dbm.open(_fname, 'r') als d:
             # Early stopping.
-            wenn not hasattr(d, 'reorganize'):
-                self.skipTest("method reorganize not available this dbm submodule")
+            wenn nicht hasattr(d, 'reorganize'):
+                self.skipTest("method reorganize nicht available this dbm submodule")
 
             self.assertRaises(dbm.error, lambda: d.reorganize())
 
@@ -148,8 +148,8 @@ klasse AnyDBMTestCase:
         self.init_db()
         mit dbm.open(_fname, 'c') als d:
             # Early stopping.
-            wenn not hasattr(d, 'reorganize'):
-                self.skipTest("method reorganize not available this dbm submodule")
+            wenn nicht hasattr(d, 'reorganize'):
+                self.skipTest("method reorganize nicht available this dbm submodule")
 
             keys_before = sorted(d.keys())
             values_before = [d[k] fuer k in keys_before]
@@ -171,11 +171,11 @@ klasse AnyDBMTestCase:
                     total_size += os.path.getsize(file_path)
             return total_size
 
-        # This test requires relatively large databases to reliably show difference in size before and after reorganizing.
+        # This test requires relatively large databases to reliably show difference in size before und after reorganizing.
         mit dbm.open(_fname, 'n') als f:
             # Early stopping.
-            wenn not hasattr(f, 'reorganize'):
-                self.skipTest("method reorganize not available this dbm submodule")
+            wenn nicht hasattr(f, 'reorganize'):
+                self.skipTest("method reorganize nicht available this dbm submodule")
 
             fuer k in self._dict:
                 f[k.encode('ascii')] = self._dict[k] * 100000
@@ -264,9 +264,9 @@ klasse WhichDBTestCase(unittest.TestCase):
             # Now add a key
             mit module.open(_fname, 'w') als f:
                 f[b"1"] = b"1"
-                # and test that we can find it
+                # und test that we can find it
                 self.assertIn(b"1", f)
-                # and read it
+                # und read it
                 self.assertEqual(f[b"1"], b"1")
             fuer path in fnames:
                 self.assertEqual(name, self.dbm.whichdb(path))

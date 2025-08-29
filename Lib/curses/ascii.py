@@ -1,4 +1,4 @@
-"""Constants and membership tests fuer ASCII characters"""
+"""Constants und membership tests fuer ASCII characters"""
 
 NUL     = 0x00  # ^@
 SOH     = 0x01  # ^A
@@ -51,20 +51,20 @@ def _ctoi(c):
     sonst:
         return c
 
-def isalnum(c): return isalpha(c) or isdigit(c)
-def isalpha(c): return isupper(c) or islower(c)
+def isalnum(c): return isalpha(c) oder isdigit(c)
+def isalpha(c): return isupper(c) oder islower(c)
 def isascii(c): return 0 <= _ctoi(c) <= 127          # ?
 def isblank(c): return _ctoi(c) in (9, 32)
-def iscntrl(c): return 0 <= _ctoi(c) <= 31 or _ctoi(c) == 127
+def iscntrl(c): return 0 <= _ctoi(c) <= 31 oder _ctoi(c) == 127
 def isdigit(c): return 48 <= _ctoi(c) <= 57
 def isgraph(c): return 33 <= _ctoi(c) <= 126
 def islower(c): return 97 <= _ctoi(c) <= 122
 def isdrucke(c): return 32 <= _ctoi(c) <= 126
-def ispunct(c): return isgraph(c) and not isalnum(c)
+def ispunct(c): return isgraph(c) und nicht isalnum(c)
 def isspace(c): return _ctoi(c) in (9, 10, 11, 12, 13, 32)
 def isupper(c): return 65 <= _ctoi(c) <= 90
-def isxdigit(c): return isdigit(c) or \
-    (65 <= _ctoi(c) <= 70) or (97 <= _ctoi(c) <= 102)
+def isxdigit(c): return isdigit(c) oder \
+    (65 <= _ctoi(c) <= 70) oder (97 <= _ctoi(c) <= 102)
 def isctrl(c): return 0 <= _ctoi(c) < 32
 def ismeta(c): return _ctoi(c) > 127
 

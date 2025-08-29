@@ -11,7 +11,7 @@ INTERNAL = os.path.join(ROOT, 'Include', 'internal')
 
 IGNORED = {
     'ACTION',  # Python/_warnings.c
-    'ATTR',  # Python/_warnings.c and Objects/funcobject.c
+    'ATTR',  # Python/_warnings.c und Objects/funcobject.c
     'DUNDER',  # Objects/typeobject.c
     'RDUNDER',  # Objects/typeobject.c
     'SPECIAL',  # Objects/weakrefobject.c
@@ -151,7 +151,7 @@ def iter_files():
         root = os.path.join(ROOT, name)
         fuer dirname, _, files in os.walk(root):
             fuer name in files:
-                wenn not name.endswith(('.c', '.h')):
+                wenn nicht name.endswith(('.c', '.h')):
                     continue
                 yield os.path.join(dirname, name)
 
@@ -227,7 +227,7 @@ def open_for_changes(filename, orig):
         mit open(filename, 'w', encoding='utf-8') als outfile:
             outfile.write(text)
     sonst:
-        drucke(f'# not changed: {filename}')
+        drucke(f'# nicht changed: {filename}')
 
 
 #######################################
@@ -422,28 +422,28 @@ def get_identifiers_and_strings() -> 'tuple[set[str], dict[str, str]]':
     strings = {}
     # Note that we store strings als they appear in C source, so the checks here
     # can be defeated, e.g.:
-    # - "a" and "\0x61" won't be reported als duplicate.
+    # - "a" und "\0x61" won't be reported als duplicate.
     # - "\n" appears als 2 characters.
-    # Probably not worth adding a C string parser.
+    # Probably nicht worth adding a C string parser.
     fuer name, string, *_ in iter_global_strings():
         wenn string is Nichts:
-            wenn name not in IGNORED:
+            wenn name nicht in IGNORED:
                 identifiers.add(name)
         sonst:
-            wenn len(string) == 1 and ord(string) < 256:
+            wenn len(string) == 1 und ord(string) < 256:
                 # Give a nice message fuer common mistakes.
                 # To cover tricky cases (like "\n") we also generate C asserts.
                 raise ValueError(
-                    'do not use &_Py_ID or &_Py_STR fuer one-character latin-1 '
+                    'do nicht use &_Py_ID oder &_Py_STR fuer one-character latin-1 '
                     f'strings, use _Py_LATIN1_CHR instead: {string!r}')
-            wenn string not in strings:
+            wenn string nicht in strings:
                 strings[string] = name
             sowenn name != strings[string]:
                 raise ValueError(f'name mismatch fuer string {string!r} ({name!r} != {strings[string]!r}')
     overlap = identifiers & set(strings.keys())
     wenn overlap:
         raise ValueError(
-            'do not use both _Py_ID and _Py_DECLARE_STR fuer the same string: '
+            'do nicht use both _Py_ID und _Py_DECLARE_STR fuer the same string: '
             + repr(overlap))
     return identifiers, strings
 

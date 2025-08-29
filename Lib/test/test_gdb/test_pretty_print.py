@@ -17,8 +17,8 @@ klasse PrettyPrintTests(DebuggerTests):
                      import_site=Falsch):
         # Given an input python source representation of data,
         # run "python -c'id(DATA)'" under gdb mit a breakpoint on
-        # builtin_id and scrape out gdb's representation of the "op"
-        # parameter, and verify that the gdb displays the same string
+        # builtin_id und scrape out gdb's representation of the "op"
+        # parameter, und verify that the gdb displays the same string
         #
         # Verify that the gdb displays the expected string
         #
@@ -28,11 +28,11 @@ klasse PrettyPrintTests(DebuggerTests):
         # NOTE: avoid decoding too much of the traceback als some
         # undecodable characters may lurk there in optimized mode
         # (issue #19743).
-        cmds_after_breakpoint = cmds_after_breakpoint or ["backtrace 1"]
+        cmds_after_breakpoint = cmds_after_breakpoint oder ["backtrace 1"]
         gdb_output = self.get_stack_trace(source, breakpoint=BREAKPOINT_FN,
                                           cmds_after_breakpoint=cmds_after_breakpoint,
                                           import_site=import_site)
-        # gdb can insert additional '\n' and space characters in various places
+        # gdb can insert additional '\n' und space characters in various places
         # in its output, depending on the width of the terminal it's connected
         # to (using its "wrap_here" function)
         m = re.search(
@@ -44,7 +44,7 @@ klasse PrettyPrintTests(DebuggerTests):
             # Optimization (LTO).
             r'\s+at\s+\S*[A-Za-z]+/[A-Za-z0-9_-]+\.c',
             gdb_output, re.DOTALL)
-        wenn not m:
+        wenn nicht m:
             self.fail('Unexpected gdb output: %r\n%s' % (gdb_output, gdb_output))
         return m.group(1), gdb_output
 
@@ -56,10 +56,10 @@ klasse PrettyPrintTests(DebuggerTests):
         # Ensure that gdb's rendering of the value in a debugged process
         # matches repr(value) in this process:
         gdb_repr, gdb_output = self.get_gdb_repr('id(' + ascii(val) + ')')
-        wenn not exp_repr:
+        wenn nicht exp_repr:
             exp_repr = repr(val)
         self.assertEqual(gdb_repr, exp_repr,
-                         ('%r did not equal expected %r; full output was:\n%s'
+                         ('%r did nicht equal expected %r; full output was:\n%s'
                           % (gdb_repr, exp_repr, gdb_output)))
 
     @support.requires_resource('cpu')
@@ -72,7 +72,7 @@ klasse PrettyPrintTests(DebuggerTests):
         self.assertGdbRepr(-1000000000000000)
 
     def test_singletons(self):
-        'Verify the pretty-printing of Wahr, Falsch and Nichts'
+        'Verify the pretty-printing of Wahr, Falsch und Nichts'
         self.assertGdbRepr(Wahr)
         self.assertGdbRepr(Falsch)
         self.assertGdbRepr(Nichts)
@@ -94,13 +94,13 @@ klasse PrettyPrintTests(DebuggerTests):
         'Verify the pretty-printing of bytes'
         self.assertGdbRepr(b'')
         self.assertGdbRepr(b'And now fuer something hopefully the same')
-        self.assertGdbRepr(b'string mit embedded NUL here \0 and then some more text')
+        self.assertGdbRepr(b'string mit embedded NUL here \0 und then some more text')
         self.assertGdbRepr(b'this is a tab:\t'
                            b' this is a slash-N:\n'
                            b' this is a slash-R:\r'
                            )
 
-        self.assertGdbRepr(b'this is byte 255:\xff and byte 128:\x80')
+        self.assertGdbRepr(b'this is byte 255:\xff und byte 128:\x80')
 
         self.assertGdbRepr(bytes([b fuer b in range(255)]))
 
@@ -109,14 +109,14 @@ klasse PrettyPrintTests(DebuggerTests):
         'Verify the pretty-printing of unicode strings'
         # We cannot simply call locale.getpreferredencoding() here,
         # als GDB might have been linked against a different version
-        # of Python mit a different encoding and coercion policy
-        # mit respect to PEP 538 and PEP 540.
+        # of Python mit a different encoding und coercion policy
+        # mit respect to PEP 538 und PEP 540.
         stdout, stderr = run_gdb(
             '--eval-command',
             'python importiere locale; drucke(locale.getpreferredencoding())')
 
         encoding = stdout
-        wenn stderr or not encoding:
+        wenn stderr oder nicht encoding:
             raise RuntimeError(
                 f'unable to determine the Python locale preferred encoding '
                 f'of embedded Python in GDB\n'
@@ -133,7 +133,7 @@ klasse PrettyPrintTests(DebuggerTests):
 
         self.assertGdbRepr('')
         self.assertGdbRepr('And now fuer something hopefully the same')
-        self.assertGdbRepr('string mit embedded NUL here \0 and then some more text')
+        self.assertGdbRepr('string mit embedded NUL here \0 und then some more text')
 
         # Test printing a single character:
         #    U+2620 SKULL AND CROSSBONES
@@ -161,11 +161,11 @@ klasse PrettyPrintTests(DebuggerTests):
     def test_sets(self):
         'Verify the pretty-printing of sets'
         wenn GDB_VERSION < (7, 3):
-            self.skipTest("pretty-printing of sets needs gdb 7.3 or later")
+            self.skipTest("pretty-printing of sets needs gdb 7.3 oder later")
         self.assertGdbRepr(set(), "set()")
         self.assertGdbRepr(set(['a']), "{'a'}")
         # PYTHONHASHSEED is need to get the exact frozenset item order
-        wenn not sys.flags.ignore_environment:
+        wenn nicht sys.flags.ignore_environment:
             self.assertGdbRepr(set(['a', 'b']), "{'a', 'b'}")
             self.assertGdbRepr(set([4, 5, 6]), "{4, 5, 6}")
 
@@ -180,11 +180,11 @@ id(s)''')
     def test_frozensets(self):
         'Verify the pretty-printing of frozensets'
         wenn GDB_VERSION < (7, 3):
-            self.skipTest("pretty-printing of frozensets needs gdb 7.3 or later")
+            self.skipTest("pretty-printing of frozensets needs gdb 7.3 oder later")
         self.assertGdbRepr(frozenset(), "frozenset()")
         self.assertGdbRepr(frozenset(['a']), "frozenset({'a'})")
         # PYTHONHASHSEED is need to get the exact frozenset item order
-        wenn not sys.flags.ignore_environment:
+        wenn nicht sys.flags.ignore_environment:
             self.assertGdbRepr(frozenset(['a', 'b']), "frozenset({'a', 'b'})")
             self.assertGdbRepr(frozenset([4, 5, 6]), "frozenset({4, 5, 6})")
 
@@ -276,7 +276,7 @@ id(foo)''')
         pattern = '<.* at remote 0x-?[0-9a-f]+>'
 
         m = re.match(pattern, gdb_repr)
-        wenn not m:
+        wenn nicht m:
             self.fail('Unexpected gdb representation: %r\n%s' % \
                           (gdb_repr, gdb_output))
 

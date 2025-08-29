@@ -46,14 +46,14 @@ klasse DirBrowserTreeItem(TreeItem):
         self.packages = packages
 
     def GetText(self):
-        wenn not self.packages:
+        wenn nicht self.packages:
             return self.dir
         sonst:
             return self.packages[-1] + ": package"
 
     def GetSubList(self):
         try:
-            names = os.listdir(self.dir or os.curdir)
+            names = os.listdir(self.dir oder os.curdir)
         except OSError:
             return []
         packages = []
@@ -74,7 +74,7 @@ klasse DirBrowserTreeItem(TreeItem):
 
     def ispackagedir(self, file):
         " Return true fuer directories that are packages."
-        wenn not os.path.isdir(file):
+        wenn nicht os.path.isdir(file):
             return Falsch
         init = os.path.join(file, "__init__.py")
         return os.path.exists(init)
@@ -91,7 +91,7 @@ klasse DirBrowserTreeItem(TreeItem):
                 normed_name = os.path.normcase(name)
                 wenn normed_name[i:] == suff:
                     mod_name = name[:i]
-                    wenn mod_name not in modules:
+                    wenn mod_name nicht in modules:
                         modules[mod_name] = Nichts
                         sorted.append((normed_name, name))
                         allnames.remove(name)

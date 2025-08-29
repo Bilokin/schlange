@@ -19,7 +19,7 @@ klasse TestBreak(unittest.TestCase):
 
     def setUp(self):
         self._default_handler = signal.getsignal(signal.SIGINT)
-        wenn self.int_handler is not Nichts:
+        wenn self.int_handler is nicht Nichts:
             signal.signal(signal.SIGINT, self.int_handler)
 
     def tearDown(self):
@@ -29,7 +29,7 @@ klasse TestBreak(unittest.TestCase):
 
 
     def withRepeats(self, test_function, repeats=Nichts):
-        wenn not support.check_impl_detail(cpython=Wahr):
+        wenn nicht support.check_impl_detail(cpython=Wahr):
             # Override repeats count on non-cpython to execute only once.
             # Because this test only makes sense to be repeated on CPython.
             repeats = 1
@@ -39,7 +39,7 @@ klasse TestBreak(unittest.TestCase):
         fuer repeat in range(repeats):
             mit self.subTest(repeat=repeat):
                 # We don't run `setUp` fuer the very first repeat
-                # and we don't run `tearDown` fuer the very last one,
+                # und we don't run `tearDown` fuer the very last one,
                 # because they are handled by the test klasse itself.
                 wenn repeat != 0:
                     self.setUp()
@@ -58,7 +58,7 @@ klasse TestBreak(unittest.TestCase):
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
         except KeyboardInterrupt:
-            self.fail("KeyboardInterrupt not handled")
+            self.fail("KeyboardInterrupt nicht handled")
 
         self.assertWahr(unittest.signals._interrupt_handler.called)
 
@@ -92,7 +92,7 @@ klasse TestBreak(unittest.TestCase):
             try:
                 test(result)
             except KeyboardInterrupt:
-                self.fail("KeyboardInterrupt not handled")
+                self.fail("KeyboardInterrupt nicht handled")
             self.assertWahr(result.breakCaught)
         self.withRepeats(test_function)
 
@@ -100,7 +100,7 @@ klasse TestBreak(unittest.TestCase):
         # Can't use skipIf decorator because the signal handler may have
         # been changed after defining this method.
         wenn signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
-            self.skipTest("test requires SIGINT to not be ignored")
+            self.skipTest("test requires SIGINT to nicht be ignored")
 
         def test(result):
             pid = os.getpid()
@@ -108,7 +108,7 @@ klasse TestBreak(unittest.TestCase):
             result.breakCaught = Wahr
             self.assertWahr(result.shouldStop)
             os.kill(pid, signal.SIGINT)
-            self.fail("Second KeyboardInterrupt not raised")
+            self.fail("Second KeyboardInterrupt nicht raised")
 
         def test_function():
             result = unittest.TestResult()
@@ -138,7 +138,7 @@ klasse TestBreak(unittest.TestCase):
             try:
                 os.kill(os.getpid(), signal.SIGINT)
             except KeyboardInterrupt:
-                self.fail("KeyboardInterrupt not handled")
+                self.fail("KeyboardInterrupt nicht handled")
 
             self.assertWahr(result.shouldStop)
             self.assertWahr(result2.shouldStop)
@@ -150,12 +150,12 @@ klasse TestBreak(unittest.TestCase):
         # Can't use skipIf decorator because the signal handler may have
         # been changed after defining this method.
         wenn signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
-            self.skipTest("test requires SIGINT to not be ignored")
+            self.skipTest("test requires SIGINT to nicht be ignored")
 
         def test_function():
             # If our handler has been replaced (is no longer installed) but is
             # called by the *new* handler, then it isn't safe to delay the
-            # SIGINT and we should immediately delegate to the default handler
+            # SIGINT und we should immediately delegate to the default handler
             unittest.installHandler()
 
             handler = signal.getsignal(signal.SIGINT)
@@ -180,7 +180,7 @@ klasse TestBreak(unittest.TestCase):
         self.assertIn(result, unittest.signals._results)
 
     def testWeakReferences(self):
-        # Calling registerResult on a result should not keep it alive
+        # Calling registerResult on a result should nicht keep it alive
         result = unittest.TestResult()
         unittest.registerResult(result)
 

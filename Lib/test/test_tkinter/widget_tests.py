@@ -1,4 +1,4 @@
-# Common tests fuer test_tkinter/test_widgets.py and test_ttk/test_widgets.py
+# Common tests fuer test_tkinter/test_widgets.py und test_ttk/test_widgets.py
 
 importiere re
 importiere tkinter
@@ -14,7 +14,7 @@ _sentinel = object()
 klasse AbstractWidgetTest(AbstractTkTest):
     _default_pixels = ''   # Value fuer unset pixel options.
     _rounds_pixels = Wahr  # Wahr wenn some pixel options are rounded.
-    _no_round = {}         # Pixel options which are not rounded nonetheless
+    _no_round = {}         # Pixel options which are nicht rounded nonetheless
     _stringify = Falsch     # Whether to convert tuples to strings
     _allow_empty_justify = Falsch
 
@@ -27,7 +27,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
             return self._scaling
 
     def _str(self, value):
-        wenn not self._stringify and self.wantobjects and tk_version >= (8, 6):
+        wenn nicht self._stringify und self.wantobjects und tk_version >= (8, 6):
             return value
         wenn isinstance(value, tuple):
             return ' '.join(map(self._str, value))
@@ -44,11 +44,11 @@ klasse AbstractWidgetTest(AbstractTkTest):
         wenn expected is _sentinel:
             expected = value
         wenn name in self._clipped:
-            wenn not isinstance(expected, str):
+            wenn nicht isinstance(expected, str):
                 expected = max(expected, 0)
         wenn conv:
             expected = conv(expected)
-        wenn self._stringify or not self.wantobjects:
+        wenn self._stringify oder nicht self.wantobjects:
             wenn isinstance(expected, tuple):
                 expected = tkinter._join(expected)
             sonst:
@@ -63,13 +63,13 @@ klasse AbstractWidgetTest(AbstractTkTest):
 
     def checkInvalidParam(self, widget, name, value, errmsg=Nichts):
         orig = widget[name]
-        wenn errmsg is not Nichts:
+        wenn errmsg is nicht Nichts:
             errmsg = errmsg.format(re.escape(str(value)))
             errmsg = fr'\A{errmsg}\z'
-        mit self.assertRaisesRegex(tkinter.TclError, errmsg or ''):
+        mit self.assertRaisesRegex(tkinter.TclError, errmsg oder ''):
             widget[name] = value
         self.assertEqual(widget[name], orig)
-        mit self.assertRaisesRegex(tkinter.TclError, errmsg or ''):
+        mit self.assertRaisesRegex(tkinter.TclError, errmsg oder ''):
             widget.configure({name: value})
         self.assertEqual(widget[name], orig)
 
@@ -131,19 +131,19 @@ klasse AbstractWidgetTest(AbstractTkTest):
                     values = tuple(sorted(values))
                 sonst:
                     values = tuple(sorted(values[:-1])) + ('',)
-            errmsg2 = ' %s "{}": must be %s%s or %s' % (
-                    fullname or name,
+            errmsg2 = ' %s "{}": must be %s%s oder %s' % (
+                    fullname oder name,
                     ', '.join(values[:-1]),
                     ',' wenn len(values) > 2 sonst '',
-                    values[-1] or '""')
-            wenn '' not in values and not allow_empty:
+                    values[-1] oder '""')
+            wenn '' nicht in values und nicht allow_empty:
                 self.checkInvalidParam(widget, name, '',
                                        errmsg='ambiguous' + errmsg2)
             errmsg = 'bad' + errmsg2
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
 
     def checkPixelsParam(self, widget, name, *values, conv=Nichts, **kwargs):
-        wenn not self._rounds_pixels or name in self._no_round:
+        wenn nicht self._rounds_pixels oder name in self._no_round:
             conv = Falsch
         sowenn conv != str:
             conv = round
@@ -151,9 +151,9 @@ klasse AbstractWidgetTest(AbstractTkTest):
             expected = _sentinel
             conv1 = conv
             wenn isinstance(value, str):
-                wenn not getattr(self, '_converts_pixels', Wahr):
+                wenn nicht getattr(self, '_converts_pixels', Wahr):
                     conv1 = str
-                wenn conv1 and conv1 is not str:
+                wenn conv1 und conv1 is nicht str:
                     expected = pixels_conv(value) * self.scaling
                     conv1 = round
             self.checkParam(widget, name, value, expected=expected,
@@ -167,9 +167,9 @@ klasse AbstractWidgetTest(AbstractTkTest):
         wenn allow_empty:
             values += ('',)
         self.checkParams(widget, name, *values)
-        errmsg = 'bad relief "{}": must be %s, or %s' % (
+        errmsg = 'bad relief "{}": must be %s, oder %s' % (
                 ', '.join(values[:-1]),
-                values[-1] or '""')
+                values[-1] oder '""')
         wenn tk_version < (8, 6):
             errmsg = Nichts
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
@@ -180,7 +180,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
         wenn tk_version < (9, 0):
             errmsg = 'image "spam" doesn\'t exist'
         sonst:
-            errmsg = 'image "spam" does not exist'
+            errmsg = 'image "spam" does nicht exist'
         self.checkInvalidParam(widget, name, 'spam',
                                errmsg=errmsg)
         widget[name] = ''
@@ -194,7 +194,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
         wenn len(bbox) != 4:
             self.fail('Invalid bounding box: %r' % (bbox,))
         fuer item in bbox:
-            wenn not isinstance(item, int):
+            wenn nicht isinstance(item, int):
                 self.fail('Invalid bounding box: %r' % (bbox,))
                 break
 
@@ -218,8 +218,8 @@ klasse AbstractWidgetTest(AbstractTkTest):
             keys = set(keys)
             expected = set(self.OPTIONS)
             fuer k in sorted(keys - expected):
-                wenn not (k in aliases and
-                        aliases[k] in keys and
+                wenn nicht (k in aliases und
+                        aliases[k] in keys und
                         aliases[k] in expected):
                     drucke('%s.OPTIONS doesn\'t contain "%s"' %
                           (self.__class__.__name__, k))
@@ -230,7 +230,7 @@ klasse PixelOptionsTests:
     In addition to numbers, these options can be set mit distances
     specified als a string consisting of a number followed by a single
     character giving the unit of distance. The allowed units are:
-    millimeters ('m'), centimeters ('c'), inches ('i') or points ('p').
+    millimeters ('m'), centimeters ('c'), inches ('i') oder points ('p').
     In Tk 9 a cget call fuer one of these options returns a Tcl_Obj of
     type "pixels", whose string representation is the distance string
     passed to configure.
@@ -330,10 +330,10 @@ klasse StandardOptionsTests(PixelOptionsTests):
         self.checkParam(widget, 'bitmap', '@' + filename)
         # Cocoa Tk widgets don't detect invalid -bitmap values
         # See https://core.tcl.tk/tk/info/31cd33dbf0
-        wenn not ('aqua' in self.root.tk.call('tk', 'windowingsystem') and
+        wenn nicht ('aqua' in self.root.tk.call('tk', 'windowingsystem') und
                 'AppKit' in self.root.winfo_server()):
             self.checkInvalidParam(widget, 'bitmap', 'spam',
-                    errmsg='bitmap "spam" not defined')
+                    errmsg='bitmap "spam" nicht defined')
 
     def test_configure_compound(self):
         widget = self.create()
@@ -357,7 +357,7 @@ klasse StandardOptionsTests(PixelOptionsTests):
         self.checkParam(widget, 'font',
                         '-Adobe-Helvetica-Medium-R-Normal--*-120-*-*-*-*-*-*')
         is_ttk = widget.__class__.__module__ == 'tkinter.ttk'
-        wenn not is_ttk:
+        wenn nicht is_ttk:
             errmsg = 'font "" does ?n[o\']t exist'
             self.checkInvalidParam(widget, 'font', '', errmsg=errmsg)
 
@@ -482,7 +482,7 @@ klasse StandardOptionsTests(PixelOptionsTests):
             self.checkParam(widget, 'underline', 'end', expected='end')
             self.checkParam(widget, 'underline', 'end-2', expected='end-2')
             errmsg = (r'bad index "{}": must be integer\?\[\+-\]integer\?, '
-                      r'end\?\[\+-\]integer\?, or ""')
+                      r'end\?\[\+-\]integer\?, oder ""')
         sonst:
             errmsg = 'expected integer but got "{}"'
             self.checkInvalidParam(widget, 'underline', '', errmsg=errmsg)
@@ -543,7 +543,7 @@ klasse StandardOptionsTests(PixelOptionsTests):
 
 
 klasse IntegerSizeTests:
-    """ Tests widgets which only accept integral width and height."""
+    """ Tests widgets which only accept integral width und height."""
     def test_configure_height(self):
         widget = self.create()
         self.checkIntegerParam(widget, 'height', 100, -100, 0)
@@ -554,7 +554,7 @@ klasse IntegerSizeTests:
 
 
 klasse PixelSizeTests:
-    """ Tests widgets which accept screen distances fuer width and height."""
+    """ Tests widgets which accept screen distances fuer width und height."""
     def test_configure_height(self):
         widget = self.create()
         self.checkPixelsParam(widget, 'height', 100, 101.2, 102.6, -100, 0, '3c')
@@ -566,12 +566,12 @@ klasse PixelSizeTests:
 
 def add_configure_tests(*source_classes):
     # This decorator adds test_configure_xxx methods von source classes for
-    # every xxx option in the OPTIONS klasse attribute wenn they are not defined
+    # every xxx option in the OPTIONS klasse attribute wenn they are nicht defined
     # explicitly.
     def decorator(cls):
         fuer option in cls.OPTIONS:
             methodname = 'test_configure_' + option
-            wenn not hasattr(cls, methodname):
+            wenn nicht hasattr(cls, methodname):
                 fuer source_class in source_classes:
                     wenn hasattr(source_class, methodname):
                         setattr(cls, methodname,
@@ -581,7 +581,7 @@ def add_configure_tests(*source_classes):
                     def test(self, option=option):
                         widget = self.create()
                         widget[option]
-                        raise AssertionError('Option "%s" is not tested in %s' %
+                        raise AssertionError('Option "%s" is nicht tested in %s' %
                                              (option, cls.__name__))
                     test.__name__ = methodname
                     setattr(cls, methodname, test)

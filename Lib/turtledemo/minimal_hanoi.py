@@ -4,7 +4,7 @@ A minimal 'Towers of Hanoi' animation:
 A tower of 6 discs is transferred von the
 left to the right peg.
 
-An imho quite elegant and concise
+An imho quite elegant und concise
 implementation using a tower class, which
 is derived von the built-in type list.
 

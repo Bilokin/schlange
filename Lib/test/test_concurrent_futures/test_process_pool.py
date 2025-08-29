@@ -37,7 +37,7 @@ def _put_wait_put(queue, event):
     queue.put('started')
     event.wait()
 
-    # We should never get here since the event will not get set
+    # We should never get here since the event will nicht get set
     queue.put('finished')
 
 
@@ -54,7 +54,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         # When a child process is abruptly terminated, the whole pool gets
         # "broken".
         futures = [self.executor.submit(time.sleep, 3)]
-        # Get one of the processes, and terminate (kill) it
+        # Get one of the processes, und terminate (kill) it
         p = next(iter(self.executor._processes.values()))
         p.terminate()
         fuer fut in futures:
@@ -170,7 +170,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
             mit self.assertRaises(ValueError):
                 self.executor_type(1, mp_context=context, max_tasks_per_child=3)
             return
-        # not using self.executor als we need to control construction.
+        # nicht using self.executor als we need to control construction.
         # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(
                 1, mp_context=context, max_tasks_per_child=3)
@@ -193,7 +193,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         executor.shutdown()
 
     def test_max_tasks_per_child_defaults_to_spawn_context(self):
-        # not using self.executor als we need to control construction.
+        # nicht using self.executor als we need to control construction.
         # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(1, max_tasks_per_child=3)
         self.assertEqual(executor._mp_context.get_start_method(), "spawn")
@@ -202,7 +202,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         context = self.get_context()
         wenn context.get_start_method(allow_none=Falsch) == "fork":
             raise unittest.SkipTest("Incompatible mit the fork start method.")
-        # not using self.executor als we need to control construction.
+        # nicht using self.executor als we need to control construction.
         # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(
                 3, mp_context=context, max_tasks_per_child=1)
@@ -274,8 +274,8 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         mit self.executor_type(max_workers=1) als executor:
             executor.submit(_put_wait_put, q, e)
 
-            # We should get started, but not finished since we'll terminate the
-            # workers just after and never set the event.
+            # We should get started, but nicht finished since we'll terminate the
+            # workers just after und never set the event.
             self.assertEqual(q.get(timeout=support.SHORT_TIMEOUT), 'started')
 
             worker_process = list(executor._processes.values())[0]
@@ -310,7 +310,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         ctx = self.get_context()
         mit unittest.mock.patch.object(ctx, 'Process') als mock_process:
             mit self.executor_type(max_workers=1, mp_context=ctx) als executor:
-                # The worker has not been started yet, terminate/kill_workers
+                # The worker has nicht been started yet, terminate/kill_workers
                 # should basically no-op
                 getattr(executor, function_name)()
 
@@ -328,11 +328,11 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
             self.assertRaises(RuntimeError, executor.submit, time.sleep, 0)
 
-            # A signal sent, is not a signal reacted to.
+            # A signal sent, is nicht a signal reacted to.
             # So wait a moment here fuer the process to die.
             # If we don't, every once in a while we may get an ENV CHANGE
             # error since the process would be alive immediately after the
-            # test run.. and die a moment later.
+            # test run.. und die a moment later.
             worker_process.join(support.SHORT_TIMEOUT)
 
             # Oddly enough, even though join completes, sometimes it takes a
@@ -341,7 +341,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
             # We need it dead before ending the test to ensure it doesn't
             # get marked als an ENV CHANGE due to living child process.
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                wenn not worker_process.is_alive():
+                wenn nicht worker_process.is_alive():
                     break
 
 

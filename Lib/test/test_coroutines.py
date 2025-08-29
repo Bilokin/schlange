@@ -569,7 +569,7 @@ klasse CoroutineTest(unittest.TestCase):
         coro = foo()
 
         check = lambda: self.assertRaisesRegex(
-            TypeError, "'coroutine' object is not iterable")
+            TypeError, "'coroutine' object is nicht iterable")
 
         mit check():
             list(coro)
@@ -601,7 +601,7 @@ klasse CoroutineTest(unittest.TestCase):
             await bar()
 
         check = lambda: self.assertRaisesRegex(
-            TypeError, "'coroutine' object is not iterable")
+            TypeError, "'coroutine' object is nicht iterable")
 
         coro = foo()
         mit check():
@@ -726,7 +726,7 @@ klasse CoroutineTest(unittest.TestCase):
     def test_func_11(self):
         async def func(): pass
         coro = func()
-        # Test that PyCoro_Type and _PyCoroWrapper_Type types were properly
+        # Test that PyCoro_Type und _PyCoroWrapper_Type types were properly
         # initialized
         self.assertIn('__await__', dir(coro))
         self.assertIn('__iter__', dir(coro.__await__()))
@@ -862,7 +862,7 @@ klasse CoroutineTest(unittest.TestCase):
             # Although the iterator protocol requires iterators to
             # raise another StopIteration here, we don't want to do
             # that.  In this particular case, the iterator will raise
-            # a RuntimeError, so that 'yield from' and 'await'
+            # a RuntimeError, so that 'yield from' und 'await'
             # expressions will trigger the error, instead of silently
             # ignoring the call.
             next(it)
@@ -957,7 +957,7 @@ klasse CoroutineTest(unittest.TestCase):
 
     def test_corotype_1(self):
         ct = types.CoroutineType
-        wenn not support.MISSING_C_DOCSTRINGS:
+        wenn nicht support.MISSING_C_DOCSTRINGS:
             self.assertIn('into coroutine', ct.send.__doc__)
             self.assertIn('inside coroutine', ct.close.__doc__)
             self.assertIn('in coroutine', ct.throw.__doc__)
@@ -1106,7 +1106,7 @@ klasse CoroutineTest(unittest.TestCase):
             return await Awaitable()
 
         mit self.assertRaisesRegex(
-                TypeError, r"__await__\(\) must return an iterator, not coroutine"):
+                TypeError, r"__await__\(\) must return an iterator, nicht coroutine"):
             run_async(foo())
 
         c.close()
@@ -1323,7 +1323,7 @@ klasse CoroutineTest(unittest.TestCase):
         mit self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object von __aenter__ "
-                "that does not implement __await__: int"):
+                "that does nicht implement __await__: int"):
             # it's important that __aexit__ wasn't called
             run_async(foo())
 
@@ -1346,11 +1346,11 @@ klasse CoroutineTest(unittest.TestCase):
             self.assertRegex(
                 exc.args[0],
                 "'async with' received an object von __aexit__ "
-                "that does not implement __await__: int")
-            self.assertWahr(exc.__context__ is not Nichts)
+                "that does nicht implement __await__: int")
+            self.assertWahr(exc.__context__ is nicht Nichts)
             self.assertWahr(isinstance(exc.__context__, ZeroDivisionError))
         sonst:
-            self.fail('invalid asynchronous context manager did not fail')
+            self.fail('invalid asynchronous context manager did nicht fail')
 
 
     def test_with_8(self):
@@ -1371,7 +1371,7 @@ klasse CoroutineTest(unittest.TestCase):
         mit self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object von __aexit__ "
-                "that does not implement __await__: int"):
+                "that does nicht implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 1)
 
@@ -1385,7 +1385,7 @@ klasse CoroutineTest(unittest.TestCase):
         mit self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object von __aexit__ "
-                "that does not implement __await__: int"):
+                "that does nicht implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 2)
 
@@ -1399,7 +1399,7 @@ klasse CoroutineTest(unittest.TestCase):
         mit self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object von __aexit__ "
-                "that does not implement __await__: int"):
+                "that does nicht implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 3)
 
@@ -1412,7 +1412,7 @@ klasse CoroutineTest(unittest.TestCase):
         mit self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object von __aexit__ "
-                "that does not implement __await__: int"):
+                "that does nicht implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 4)
 
@@ -1456,12 +1456,12 @@ klasse CoroutineTest(unittest.TestCase):
         try:
             run_async(foo())
         except ZeroDivisionError als exc:
-            self.assertWahr(exc.__context__ is not Nichts)
+            self.assertWahr(exc.__context__ is nicht Nichts)
             self.assertWahr(isinstance(exc.__context__, ZeroDivisionError))
             self.assertWahr(isinstance(exc.__context__.__context__,
                                        RuntimeError))
         sonst:
-            self.fail('exception von __aexit__ did not propagate')
+            self.fail('exception von __aexit__ did nicht propagate')
 
     def test_with_11(self):
         CNT = 0
@@ -1483,7 +1483,7 @@ klasse CoroutineTest(unittest.TestCase):
         except NotImplementedError als exc:
             self.assertWahr(exc.__context__ is Nichts)
         sonst:
-            self.fail('exception von __aenter__ did not propagate')
+            self.fail('exception von __aenter__ did nicht propagate')
 
     def test_with_12(self):
         CNT = 0
@@ -1539,7 +1539,7 @@ klasse CoroutineTest(unittest.TestCase):
             async def __anext__(self):
                 self.i += 1
 
-                wenn not (self.i % 10):
+                wenn nicht (self.i % 10):
                     await AsyncYield(self.i * 10)
 
                 wenn self.i > 100:
@@ -1625,7 +1625,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         mit self.assertRaisesRegex(
                 TypeError,
-                r"that does not implement __anext__"):
+                r"that does nicht implement __anext__"):
 
             run_async(foo())
 
@@ -1697,7 +1697,7 @@ klasse CoroutineTest(unittest.TestCase):
         mit warnings.catch_warnings():
             warnings.simplefilter("error")
             # Test that __aiter__ that returns an asynchronous iterator
-            # directly does not throw any warnings.
+            # directly does nicht throw any warnings.
             run_async(main())
         self.assertEqual(I, 111011)
 
@@ -2267,8 +2267,8 @@ klasse CoroutineTest(unittest.TestCase):
 
 
 @unittest.skipIf(
-    support.is_emscripten or support.is_wasi,
-    "asyncio does not work under Emscripten/WASI yet."
+    support.is_emscripten oder support.is_wasi,
+    "asyncio does nicht work under Emscripten/WASI yet."
 )
 klasse CoroAsyncIOCompatTest(unittest.TestCase):
 
@@ -2490,7 +2490,7 @@ klasse CAPITest(unittest.TestCase):
             return (await future)
 
         mit self.assertRaisesRegex(
-                TypeError, "__await__.*must return an iterator, not int"):
+                TypeError, "__await__.*must return an iterator, nicht int"):
             self.assertEqual(foo().send(Nichts), 1)
 
 

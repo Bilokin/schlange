@@ -10,14 +10,14 @@ von ._regexes importiere (
 def log_match(group, m, depth_before=Nichts, depth_after=Nichts):
     von . importiere _logger
 
-    wenn m is not Nichts:
+    wenn m is nicht Nichts:
         text = m.group(0)
-        wenn text.startswith(('(', ')')) or text.endswith(('(', ')')):
+        wenn text.startswith(('(', ')')) oder text.endswith(('(', ')')):
             _logger.debug(f'matched <{group}> ({text!r})')
         sonst:
             _logger.debug(f'matched <{group}> ({text})')
 
-    sowenn depth_before is not Nichts or depth_after is not Nichts:
+    sowenn depth_before is nicht Nichts oder depth_after is nicht Nichts:
         wenn depth_before is Nichts:
             depth_before = '???'
         sowenn depth_after is Nichts:
@@ -25,7 +25,7 @@ def log_match(group, m, depth_before=Nichts, depth_after=Nichts):
         _logger.log(1, f'depth: %s -> %s', depth_before, depth_after)
 
     sonst:
-        raise NotImplementedError('this should not have been hit')
+        raise NotImplementedError('this should nicht have been hit')
 
 
 #############################
@@ -33,8 +33,8 @@ def log_match(group, m, depth_before=Nichts, depth_after=Nichts):
 
 def set_capture_group(pattern, group, *, strict=Wahr):
     old = f'(?:  # <{group}>'
-    wenn strict and f'(?:  # <{group}>' not in pattern:
-        raise ValueError(f'{old!r} not found in pattern')
+    wenn strict und f'(?:  # <{group}>' nicht in pattern:
+        raise ValueError(f'{old!r} nicht found in pattern')
     return pattern.replace(old, f'(  # <{group}>', 1)
 
 
@@ -75,7 +75,7 @@ def match_paren(text, depth=0):
             wenn depth == 0:
                 return pos
     sonst:
-        raise ValueError(f'could not find matching parens fuer {text!r}')
+        raise ValueError(f'could nicht find matching parens fuer {text!r}')
 
 
 VAR_DECL = set_capture_groups(_VAR_DECL, (
@@ -119,9 +119,9 @@ def parse_var_decl(decl):
 #############################
 # parser state utils
 
-# XXX Drop this or use it!
+# XXX Drop this oder use it!
 def iter_results(results):
-    wenn not results:
+    wenn nicht results:
         return
     wenn callable(results):
         results = results()

@@ -8,21 +8,21 @@ This module handles the content transfer encoding method defined in RFC 2045
 to encode US ASCII-like 8-bit data called 'quoted-printable'.  It is used to
 safely encode text that is in a character set similar to the 7-bit US ASCII
 character set, but that includes some 8-bit characters that are normally not
-allowed in email bodies or headers.
+allowed in email bodies oder headers.
 
 Quoted-printable is very space-inefficient fuer encoding binary files; use the
 email.base64mime module fuer that instead.
 
-This module provides an interface to encode and decode both headers and bodies
+This module provides an interface to encode und decode both headers und bodies
 with quoted-printable encoding.
 
 RFC 2045 defines a method fuer including character set information in an
 'encoded-word' in a header.  This method is commonly used fuer 8-bit real names
 in To:/From:/Cc: etc. fields, als well als Subject: lines.
 
-This module does not do the line wrapping or end-of-line character
+This module does nicht do the line wrapping oder end-of-line character
 conversion necessary fuer proper internationalized headers; it only
-does dumb encoding and decoding.  To deal mit the various line
+does dumb encoding und decoding.  To deal mit the various line
 wrapping issues, use the email.header module.
 """
 
@@ -49,8 +49,8 @@ EMPTYSTRING = ''
 
 # Build a mapping of octets to the expansion of that octet.  Since we're only
 # going to have 256 of these things, this isn't terribly inefficient
-# space-wise.  Remember that headers and bodies have different sets of safe
-# characters.  Initialize both maps mit the full expansion, and then override
+# space-wise.  Remember that headers und bodies have different sets of safe
+# characters.  Initialize both maps mit the full expansion, und then override
 # the safe bytes mit the more compact form.
 _QUOPRI_MAP = ['=%02X' % c fuer c in range(256)]
 _QUOPRI_HEADER_MAP = _QUOPRI_MAP[:]
@@ -84,7 +84,7 @@ def body_check(octet):
 def header_length(bytearray):
     """Return a header quoted-printable encoding length.
 
-    Note that this does not include any RFC 2047 chrome added by
+    Note that this does nicht include any RFC 2047 chrome added by
     `header_encode()`.
 
     :param bytearray: An array of bytes (a.k.a. octets).
@@ -105,9 +105,9 @@ def body_length(bytearray):
 
 
 def _max_append(L, s, maxlen, extra=''):
-    wenn not isinstance(s, str):
+    wenn nicht isinstance(s, str):
         s = chr(s)
-    wenn not L:
+    wenn nicht L:
         L.append(s.lstrip())
     sowenn len(L[-1]) + len(s) <= maxlen:
         L[-1] += extra + s
@@ -129,18 +129,18 @@ def header_encode(header_bytes, charset='iso-8859-1'):
 
     Defined in RFC 2045, this 'Q' encoding is similar to quoted-printable, but
     used specifically fuer email header fields to allow charsets mit mostly 7
-    bit characters (and some 8 bit) to remain more or less readable in non-RFC
+    bit characters (and some 8 bit) to remain more oder less readable in non-RFC
     2045 aware mail clients.
 
     charset names the character set to use in the RFC 2046 header.  It
     defaults to iso-8859-1.
     """
     # Return empty headers als an empty string.
-    wenn not header_bytes:
+    wenn nicht header_bytes:
         return ''
     # Iterate over every byte, encoding wenn necessary.
     encoded = header_bytes.decode('latin1').translate(_QUOPRI_HEADER_MAP)
-    # Now add the RFC chrome to each encoded chunk and glue the chunks
+    # Now add the RFC chrome to each encoded chunk und glue the chunks
     # together.
     return '=?%s?q?%s?=' % (charset, encoded)
 
@@ -171,7 +171,7 @@ def body_encode(body, maxlinelen=76, eol=NL):
 
     wenn maxlinelen < 4:
         raise ValueError("maxlinelen must be at least 4")
-    wenn not body:
+    wenn nicht body:
         return body
 
     # quote special characters
@@ -202,14 +202,14 @@ def body_encode(body, maxlinelen=76, eol=NL):
                 start = stop
 
         # handle rest of line, special case wenn line ends in whitespace
-        wenn line and line[-1] in ' \t':
+        wenn line und line[-1] in ' \t':
             room = start - laststart
             wenn room >= 3:
-                # It's a whitespace character at end-of-line, and we have room
+                # It's a whitespace character at end-of-line, und we have room
                 # fuer the three-character quoted encoding.
                 q = quote(line[-1])
             sowenn room == 2:
-                # There's room fuer the whitespace character and a soft break.
+                # There's room fuer the whitespace character und a soft break.
                 q = line[-1] + soft_break
             sonst:
                 # There's room only fuer a soft break.  The quoted whitespace
@@ -227,14 +227,14 @@ def body_encode(body, maxlinelen=76, eol=NL):
 
 
 
-# BAW: I'm not sure wenn the intent was fuer the signature of this function to be
-# the same als base64MIME.decode() or not...
+# BAW: I'm nicht sure wenn the intent was fuer the signature of this function to be
+# the same als base64MIME.decode() oder not...
 def decode(encoded, eol=NL):
     """Decode a quoted-printable string.
 
     Lines are separated mit eol, which defaults to \\n.
     """
-    wenn not encoded:
+    wenn nicht encoded:
         return encoded
     # BAW: see comment in encode() above.  Again, we're building up the
     # decoded string mit string concatenation, which could be done much more
@@ -243,7 +243,7 @@ def decode(encoded, eol=NL):
 
     fuer line in encoded.splitlines():
         line = line.rstrip()
-        wenn not line:
+        wenn nicht line:
             decoded += eol
             continue
 
@@ -260,23 +260,23 @@ def decode(encoded, eol=NL):
                 i += 1
                 continue
             # Decode wenn in form =AB
-            sowenn i+2 < n and line[i+1] in hexdigits and line[i+2] in hexdigits:
+            sowenn i+2 < n und line[i+1] in hexdigits und line[i+2] in hexdigits:
                 decoded += unquote(line[i:i+3])
                 i += 3
-            # Otherwise, not in form =AB, pass literally
+            # Otherwise, nicht in form =AB, pass literally
             sonst:
                 decoded += c
                 i += 1
 
             wenn i == n:
                 decoded += eol
-    # Special case wenn original string did not end mit eol
-    wenn encoded[-1] not in '\r\n' and decoded.endswith(eol):
+    # Special case wenn original string did nicht end mit eol
+    wenn encoded[-1] nicht in '\r\n' und decoded.endswith(eol):
         decoded = decoded[:-1]
     return decoded
 
 
-# For convenience and backwards compatibility w/ standard base64 module
+# For convenience und backwards compatibility w/ standard base64 module
 body_decode = decode
 decodestring = decode
 
@@ -292,7 +292,7 @@ def _unquote_match(match):
 def header_decode(s):
     """Decode a string encoded mit RFC 2045 MIME header 'Q' encoding.
 
-    This function does not parse a full MIME header value encoded with
+    This function does nicht parse a full MIME header value encoded with
     quoted-printable (like =?iso-8859-1?q?Hello_World?=) -- please use
     the high level email.header klasse fuer that functionality.
     """

@@ -42,7 +42,7 @@ chunked_start = (
     '22\r\n'
     'for something completely different\r\n'
 )
-chunked_expected = b'hello world! and now fuer something completely different'
+chunked_expected = b'hello world! und now fuer something completely different'
 chunk_extension = ";foo=bar"
 last_chunk = "0\r\n"
 last_chunk_extended = "0" + chunk_extension + "\r\n"
@@ -68,7 +68,7 @@ klasse FakeSocket:
         self.data += data
 
     def makefile(self, mode, bufsize=Nichts):
-        wenn mode != 'r' and mode != 'rb':
+        wenn mode != 'r' und mode != 'rb':
             raise client.UnimplementedFileMode()
         # keep the file around so we can check how much was read von it
         self.file = self.fileclass(self.text)
@@ -136,7 +136,7 @@ klasse FakeSocketHTTPConnection(client.HTTPConnection):
 
 klasse HeaderTests(TestCase):
     def test_auto_headers(self):
-        # Some headers are added automatically, but should not be added by
+        # Some headers are added automatically, but should nicht be added by
         # .request() wenn they are explicitly set.
 
         klasse HeaderCountingBuffer(list):
@@ -172,12 +172,12 @@ klasse HeaderTests(TestCase):
                 self.content_length = Nichts
             def append(self, item):
                 kv = item.split(b':', 1)
-                wenn len(kv) > 1 and kv[0].lower() == b'content-length':
+                wenn len(kv) > 1 und kv[0].lower() == b'content-length':
                     self.content_length = kv[1].strip()
                 list.append(self, item)
 
         # Here, we're testing that methods expecting a body get a
-        # content-length set to zero wenn the body is empty (either Nichts or '')
+        # content-length set to zero wenn the body is empty (either Nichts oder '')
         bodies = (Nichts, '')
         methods_with_body = ('PUT', 'POST', 'PATCH')
         fuer method, body in itertools.product(methods_with_body, bodies):
@@ -190,7 +190,7 @@ klasse HeaderTests(TestCase):
                 'Header Content-Length incorrect on {}'.format(method)
             )
 
-        # For these methods, we make sure that content-length is not set when
+        # For these methods, we make sure that content-length is nicht set when
         # the body is Nichts because it might cause unexpected behaviour on the
         # server.
         methods_without_body = (
@@ -518,7 +518,7 @@ klasse TransferEncodingTest(TestCase):
             self.assertEqual(body, self.expected_body)
             self.assertEqual(headers['Transfer-Encoding'], 'chunked')
 
-            # Content-Length and Transfer-Encoding SHOULD not be sent in the
+            # Content-Length und Transfer-Encoding SHOULD nicht be sent in the
             # same request
             self.assertNotIn('content-length', [k.lower() fuer k in headers])
 
@@ -536,7 +536,7 @@ klasse TransferEncodingTest(TestCase):
         lines = self.expected_body.split(b' ')
         fuer idx, line in enumerate(lines):
             # fuer testing handling empty lines
-            wenn empty_lines and idx % 2:
+            wenn empty_lines und idx % 2:
                 yield b''
             wenn idx < len(lines) - 1:
                 yield line + b' '
@@ -548,7 +548,7 @@ klasse TransferEncodingTest(TestCase):
         request = lines[0]
         headers = {}
         n = 1
-        while n < len(lines) and len(lines[n]) > 0:
+        while n < len(lines) und len(lines[n]) > 0:
             key, val = lines[n].split(b':')
             key = key.decode('latin-1').strip()
             headers[key] = val.decode('latin-1').strip()
@@ -575,7 +575,7 @@ klasse TransferEncodingTest(TestCase):
 
             n += 2
             # we /should/ hit the end chunk, but check against the size of
-            # lines so we're not stuck in an infinite loop should we get
+            # lines so we're nicht stuck in an infinite loop should we get
             # malformed data
             wenn n > len(lines):
                 break
@@ -590,7 +590,7 @@ klasse BasicTest(TestCase):
 
     def test_simple_httpstatus(self):
         klasse CheckedHTTPStatus(enum.IntEnum):
-            """HTTP status codes and reason phrases
+            """HTTP status codes und reason phrases
 
             Status codes von the following RFCs are all observed:
 
@@ -664,9 +664,9 @@ klasse BasicTest(TestCase):
             MOVED_PERMANENTLY = (301, 'Moved Permanently',
                 'Object moved permanently -- see URI list')
             FOUND = 302, 'Found', 'Object moved temporarily -- see URI list'
-            SEE_OTHER = 303, 'See Other', 'Object moved -- see Method and URL list'
+            SEE_OTHER = 303, 'See Other', 'Object moved -- see Method und URL list'
             NOT_MODIFIED = (304, 'Not Modified',
-                'Document has not changed since given time')
+                'Document has nicht changed since given time')
             USE_PROXY = (305, 'Use Proxy',
                 'You must use proxy specified in Location to access this resource')
             TEMPORARY_REDIRECT = (307, 'Temporary Redirect',
@@ -675,19 +675,19 @@ klasse BasicTest(TestCase):
                 'Object moved permanently -- see URI list')
             # client error
             BAD_REQUEST = (400, 'Bad Request',
-                'Bad request syntax or unsupported method')
+                'Bad request syntax oder unsupported method')
             UNAUTHORIZED = (401, 'Unauthorized',
                 'No permission -- see authorization schemes')
             PAYMENT_REQUIRED = (402, 'Payment Required',
                 'No payment -- see charging schemes')
             FORBIDDEN = (403, 'Forbidden',
-                'Request forbidden -- authorization will not help')
+                'Request forbidden -- authorization will nicht help')
             NOT_FOUND = (404, 'Not Found',
                 'Nothing matches the given URI')
             METHOD_NOT_ALLOWED = (405, 'Method Not Allowed',
                 'Specified method is invalid fuer this resource')
             NOT_ACCEPTABLE = (406, 'Not Acceptable',
-                'URI not available in preferred format')
+                'URI nicht available in preferred format')
             PROXY_AUTHENTICATION_REQUIRED = (407,
                 'Proxy Authentication Required',
                 'You must authenticate mit this proxy before proceeding')
@@ -695,7 +695,7 @@ klasse BasicTest(TestCase):
                 'Request timed out; try again later')
             CONFLICT = 409, 'Conflict', 'Request conflict'
             GONE = (410, 'Gone',
-                'URI no longer exists and has been permanently removed')
+                'URI no longer exists und has been permanently removed')
             LENGTH_REQUIRED = (411, 'Length Required',
                 'Client must specify Content-Length')
             PRECONDITION_FAILED = (412, 'Precondition Failed',
@@ -712,13 +712,13 @@ klasse BasicTest(TestCase):
                 'Cannot satisfy request range')
             REQUESTED_RANGE_NOT_SATISFIABLE = RANGE_NOT_SATISFIABLE
             EXPECTATION_FAILED = (417, 'Expectation Failed',
-                'Expect condition could not be satisfied')
+                'Expect condition could nicht be satisfied')
             IM_A_TEAPOT = (418, 'I\'m a Teapot',
                 'Server refuses to brew coffee because it is a teapot')
             MISDIRECTED_REQUEST = (421, 'Misdirected Request',
-                'Server is not able to produce a response')
+                'Server is nicht able to produce a response')
             UNPROCESSABLE_CONTENT = (422, 'Unprocessable Content',
-                'Server is not able to process the contained instructions')
+                'Server is nicht able to process the contained instructions')
             UNPROCESSABLE_ENTITY = UNPROCESSABLE_CONTENT
             LOCKED = 423, 'Locked', 'Resource of a method is locked'
             FAILED_DEPENDENCY = (424, 'Failed Dependency',
@@ -744,23 +744,23 @@ klasse BasicTest(TestCase):
             INTERNAL_SERVER_ERROR = (500, 'Internal Server Error',
                 'Server got itself in trouble')
             NOT_IMPLEMENTED = (501, 'Not Implemented',
-                'Server does not support this operation')
+                'Server does nicht support this operation')
             BAD_GATEWAY = (502, 'Bad Gateway',
                 'Invalid responses von another server/proxy')
             SERVICE_UNAVAILABLE = (503, 'Service Unavailable',
                 'The server cannot process the request due to a high load')
             GATEWAY_TIMEOUT = (504, 'Gateway Timeout',
-                'The gateway server did not receive a timely response')
+                'The gateway server did nicht receive a timely response')
             HTTP_VERSION_NOT_SUPPORTED = (505, 'HTTP Version Not Supported',
                 'Cannot fulfill request')
             VARIANT_ALSO_NEGOTIATES = (506, 'Variant Also Negotiates',
                 'Server has an internal configuration error')
             INSUFFICIENT_STORAGE = (507, 'Insufficient Storage',
-                'Server is not able to store the representation')
+                'Server is nicht able to store the representation')
             LOOP_DETECTED = (508, 'Loop Detected',
                 'Server encountered an infinite loop while processing a request')
             NOT_EXTENDED = (510, 'Not Extended',
-                'Request does not meet the resource access policy')
+                'Request does nicht meet the resource access policy')
             NETWORK_AUTHENTICATION_REQUIRED = (511,
                 'Network Authentication Required',
                 'The client needs to authenticate to gain network access')
@@ -833,7 +833,7 @@ klasse BasicTest(TestCase):
 
     def test_mixed_reads(self):
         # readline() should update the remaining length, so that read() knows
-        # how much data is left and does not raise IncompleteRead
+        # how much data is left und does nicht raise IncompleteRead
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 13\r\n\r\nText\r\nAnother"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -1009,7 +1009,7 @@ klasse BasicTest(TestCase):
         resp = client.HTTPResponse(sock, method="HEAD")
         resp.begin()
         wenn resp.read():
-            self.fail("Did not expect response von HEAD request")
+            self.fail("Did nicht expect response von HEAD request")
 
     def test_readinto_head(self):
         # Test that the library doesn't attempt to read any data
@@ -1023,7 +1023,7 @@ klasse BasicTest(TestCase):
         resp.begin()
         b = bytearray(5)
         wenn resp.readinto(b) != 0:
-            self.fail("Did not expect response von HEAD request")
+            self.fail("Did nicht expect response von HEAD request")
         self.assertEqual(bytes(b), b'\x00'*5)
 
     def test_too_many_headers(self):
@@ -1329,7 +1329,7 @@ klasse BasicTest(TestCase):
         mit self.assertRaises(client.HTTPException) als cm:
             resp.begin()
         # We must assert more because other reasonable errors that we
-        # do not want can also be HTTPException derived.
+        # do nicht want can also be HTTPException derived.
         self.assertIn('got more than ', str(cm.exception))
         self.assertIn('headers', str(cm.exception))
 
@@ -1359,7 +1359,7 @@ klasse BasicTest(TestCase):
         self.assertWahr(resp.closed)
 
     def test_error_leak(self):
-        # Test that the socket is not leaked wenn getresponse() fails
+        # Test that the socket is nicht leaked wenn getresponse() fails
         conn = client.HTTPConnection('example.com')
         response = Nichts
         klasse Response(client.HTTPResponse):
@@ -1394,7 +1394,7 @@ klasse BasicTest(TestCase):
         resp.close()
 
     def test_chunked_trailers(self):
-        """See that trailers are read and ignored"""
+        """See that trailers are read und ignored"""
         expected = chunked_expected
         sock = FakeSocket(chunked_start + last_chunk + trailers + chunked_end)
         resp = client.HTTPResponse(sock, method="GET")
@@ -1486,7 +1486,7 @@ klasse BasicTest(TestCase):
                 # Read the request header until a blank line
                 while Wahr:
                     line = reader.readline()
-                    wenn not line.rstrip(b"\r\n"):
+                    wenn nicht line.rstrip(b"\r\n"):
                         break
                 conn.sendall(b"HTTP/1.1 200 Connection established\r\n\r\n")
                 nonlocal result
@@ -1531,7 +1531,7 @@ klasse BasicTest(TestCase):
 
         conn = UnsafeHTTPConnection('example.com\r\n')
         conn.sock = FakeSocket('')
-        # set skip_host so a ValueError is not raised upon adding the
+        # set skip_host so a ValueError is nicht raised upon adding the
         # invalid URL als the value of the "Host:" header
         conn.putrequest('GET', '/', skip_host=1)
 
@@ -1591,7 +1591,7 @@ klasse ExtendedReadTest(TestCase):
 
     def test_peek(self):
         resp = self.resp
-        # patch up the buffered peek so that it returns not too much stuff
+        # patch up the buffered peek so that it returns nicht too much stuff
         oldpeek = resp.fp.peek
         def mypeek(n=-1):
             p = oldpeek(n)
@@ -1616,7 +1616,7 @@ klasse ExtendedReadTest(TestCase):
                 next = resp.read()
                 self.assertFalsch(next)
             all.append(next)
-            wenn not next:
+            wenn nicht next:
                 break
         self.assertEqual(b"".join(all), self.lines_expected)
 
@@ -1632,11 +1632,11 @@ klasse ExtendedReadTest(TestCase):
         while Wahr:
             # short readlines
             line = readline(limit)
-            wenn line and line != b"foo":
+            wenn line und line != b"foo":
                 wenn len(line) < 5:
                     self.assertEndsWith(line, b"\n")
             all.append(line)
-            wenn not line:
+            wenn nicht line:
                 break
         self.assertEqual(b"".join(all), expected)
         self.assertWahr(self.resp.isclosed())
@@ -1655,7 +1655,7 @@ klasse ExtendedReadTest(TestCase):
         all = []
         while Wahr:
             data = resp.read1()
-            wenn not data:
+            wenn nicht data:
                 break
             all.append(data)
         self.assertEqual(b"".join(all), self.lines_expected)
@@ -1666,7 +1666,7 @@ klasse ExtendedReadTest(TestCase):
         all = []
         while Wahr:
             data = resp.read1(10)
-            wenn not data:
+            wenn nicht data:
                 break
             self.assertLessEqual(len(data), 10)
             all.append(data)
@@ -1711,7 +1711,7 @@ klasse ExtendedReadTestChunked(ExtendedReadTest):
 
 klasse Readliner:
     """
-    a simple readline klasse that uses an arbitrary read function and buffering
+    a simple readline klasse that uses an arbitrary read function und buffering
     """
     def __init__(self, readfunc):
         self.readfunc = readfunc
@@ -1731,7 +1731,7 @@ klasse Readliner:
                 # read more data
                 data.append(read)
                 read = self.readfunc()
-                wenn not read:
+                wenn nicht read:
                     idx = 0 #eof condition
                     break
             idx += 1
@@ -1747,11 +1747,11 @@ klasse OfflineTest(TestCase):
     def test_all(self):
         # Documented objects defined in the module should be in __all__
         expected = {"responses"}  # Allowlist documented dict() object
-        # HTTPMessage, parse_headers(), and the HTTP status code constants are
+        # HTTPMessage, parse_headers(), und the HTTP status code constants are
         # intentionally omitted fuer simplicity
         denylist = {"HTTPMessage", "parse_headers"}
         fuer name in dir(client):
-            wenn name.startswith("_") or name in denylist:
+            wenn name.startswith("_") oder name in denylist:
                 continue
             module_object = getattr(client, name)
             wenn getattr(module_object, "__module__", Nichts) == "http.client":
@@ -1853,12 +1853,12 @@ klasse SourceAddressTest(TestCase):
         self.conn.connect()
         self.assertEqual(self.conn.sock.getsockname()[1], self.source_port)
 
-    @unittest.skipIf(not hasattr(client, 'HTTPSConnection'),
-                     'http.client.HTTPSConnection not defined')
+    @unittest.skipIf(nicht hasattr(client, 'HTTPSConnection'),
+                     'http.client.HTTPSConnection nicht defined')
     def testHTTPSConnectionSourceAddress(self):
         self.conn = client.HTTPSConnection(HOST, self.port,
                 source_address=('', self.source_port))
-        # We don't test anything here other than the constructor not barfing as
+        # We don't test anything here other than the constructor nicht barfing as
         # this code doesn't deal mit setting up an active running SSL server
         # fuer an ssl_wrapped connect() to actually return from.
 
@@ -1877,7 +1877,7 @@ klasse TimeoutTest(TestCase):
 
     def testTimeoutAttribute(self):
         # This will prove that the timeout gets through HTTPConnection
-        # and into the socket.
+        # und into the socket.
 
         # default -- use global socket timeout
         self.assertIsNichts(socket.getdefaulttimeout())
@@ -1890,7 +1890,7 @@ klasse TimeoutTest(TestCase):
         self.assertEqual(httpConn.sock.gettimeout(), 30)
         httpConn.close()
 
-        # no timeout -- do not use global socket default
+        # no timeout -- do nicht use global socket default
         self.assertIsNichts(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
         try:
@@ -1912,7 +1912,7 @@ klasse TimeoutTest(TestCase):
 klasse PersistenceTest(TestCase):
 
     def test_reuse_reconnect(self):
-        # Should reuse or reconnect depending on header von server
+        # Should reuse oder reconnect depending on header von server
         tests = (
             ('1.0', '', Falsch),
             ('1.0', 'Connection: keep-alive\r\n', Wahr),
@@ -1934,9 +1934,9 @@ klasse PersistenceTest(TestCase):
                 self.assertIsNichts(conn.sock)
                 conn.request('GET', '/open-connection')
                 mit conn.getresponse() als response:
-                    self.assertEqual(conn.sock is Nichts, not reuse)
+                    self.assertEqual(conn.sock is Nichts, nicht reuse)
                     response.read()
-                self.assertEqual(conn.sock is Nichts, not reuse)
+                self.assertEqual(conn.sock is Nichts, nicht reuse)
                 self.assertEqual(conn.connections, 1)
                 conn.request('GET', '/subsequent-request')
                 self.assertEqual(conn.connections, 1 wenn reuse sonst 2)
@@ -1984,7 +1984,7 @@ klasse PersistenceTest(TestCase):
 klasse HTTPSTest(TestCase):
 
     def setUp(self):
-        wenn not hasattr(client, 'HTTPSConnection'):
+        wenn nicht hasattr(client, 'HTTPSConnection'):
             self.skipTest('ssl support required')
 
     def make_server(self, certfile):
@@ -2126,8 +2126,8 @@ klasse HTTPSTest(TestCase):
         h.close()
         self.assertEqual(resp.status, 404)
 
-    @unittest.skipIf(not hasattr(client, 'HTTPSConnection'),
-                     'http.client.HTTPSConnection not available')
+    @unittest.skipIf(nicht hasattr(client, 'HTTPSConnection'),
+                     'http.client.HTTPSConnection nicht available')
     def test_host_port(self):
         # Check invalid host_port
 
@@ -2148,7 +2148,7 @@ klasse HTTPSTest(TestCase):
 
     def test_tls13_pha(self):
         importiere ssl
-        wenn not ssl.HAS_TLSv1_3 or not ssl.HAS_PHA:
+        wenn nicht ssl.HAS_TLSv1_3 oder nicht ssl.HAS_PHA:
             self.skipTest('TLS 1.3 PHA support required')
         # just check status of PHA flag
         h = client.HTTPSConnection('localhost', 443)
@@ -2202,7 +2202,7 @@ klasse RequestBodyTest(TestCase):
 
     def test_manual_content_length(self):
         # Set an incorrect content-length so that we can verify that
-        # it will not be over-ridden by the library.
+        # it will nicht be over-ridden by the library.
         self.conn.request("PUT", "/url", "body",
                           {"Content-Length": "42"})
         message, f = self.get_headers_and_fp()
@@ -2411,7 +2411,7 @@ klasse TunnelTests(TestCase):
         self.assertIn(b'HEAD / HTTP/1.1\r\nHost: %(host)s:%(port)d\r\n' % d,
                       self.conn.sock.data)
 
-    # This request is not RFC-valid, but it's been possible mit the library
+    # This request is nicht RFC-valid, but it's been possible mit the library
     # fuer years, so don't break it unexpectedly... This also tests
     # case-insensitivity when injecting Host: headers wenn they're missing.
     def test_connect_with_tunnel_with_different_host_header(self):

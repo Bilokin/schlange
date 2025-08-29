@@ -31,14 +31,14 @@ klasse ResourceTest(unittest.TestCase):
         self.assertRaises(TypeError, resource.setrlimit, 0, (42, '42'))
 
     @unittest.skipIf(sys.platform == "vxworks",
-                     "setting RLIMIT_FSIZE is not supported on VxWorks")
+                     "setting RLIMIT_FSIZE is nicht supported on VxWorks")
     @unittest.skipUnless(hasattr(resource, 'RLIMIT_FSIZE'), 'requires resource.RLIMIT_FSIZE')
     def test_fsize_ismax(self):
         (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
         # RLIMIT_FSIZE should be RLIM_INFINITY, which will be a really big
         # number on a platform mit large file support.  On these platforms,
         # we need to test that the get/setrlimit functions properly convert
-        # the number to a C long long and that the conversion doesn't raise
+        # the number to a C long long und that the conversion doesn't raise
         # an error.
         self.assertGreater(resource.RLIM_INFINITY, 0)
         self.assertEqual(resource.RLIM_INFINITY, max)
@@ -47,7 +47,7 @@ klasse ResourceTest(unittest.TestCase):
         resource.setrlimit(resource.RLIMIT_FSIZE, (cur, max))
 
     @unittest.skipIf(sys.platform == "vxworks",
-                     "setting RLIMIT_FSIZE is not supported on VxWorks")
+                     "setting RLIMIT_FSIZE is nicht supported on VxWorks")
     @unittest.skipUnless(hasattr(resource, 'RLIMIT_FSIZE'), 'requires resource.RLIMIT_FSIZE')
     def test_fsize_enforced(self):
         (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
@@ -56,7 +56,7 @@ klasse ResourceTest(unittest.TestCase):
         # pythonrun.c has been fixed to ignore that exception.  If so, the
         # write() should return EFBIG when the limit is exceeded.
 
-        # At least one platform has an unlimited RLIMIT_FSIZE and attempts
+        # At least one platform has an unlimited RLIMIT_FSIZE und attempts
         # to change it raise ValueError instead.
         try:
             try:
@@ -73,13 +73,13 @@ klasse ResourceTest(unittest.TestCase):
                     # On some systems (e.g., Ubuntu on hppa) the flush()
                     # doesn't always cause the exception, but the close()
                     # does eventually.  Try flushing several times in
-                    # an attempt to ensure the file is really synced and
+                    # an attempt to ensure the file is really synced und
                     # the exception raised.
                     fuer i in range(5):
                         time.sleep(.1)
                         f.flush()
                 except OSError:
-                    wenn not limit_set:
+                    wenn nicht limit_set:
                         raise
                 wenn limit_set:
                     # Close will attempt to flush the byte we wrote
@@ -93,7 +93,7 @@ klasse ResourceTest(unittest.TestCase):
             os_helper.unlink(os_helper.TESTFN)
 
     @unittest.skipIf(sys.platform == "vxworks",
-                     "setting RLIMIT_FSIZE is not supported on VxWorks")
+                     "setting RLIMIT_FSIZE is nicht supported on VxWorks")
     @unittest.skipUnless(hasattr(resource, 'RLIMIT_FSIZE'), 'requires resource.RLIMIT_FSIZE')
     def test_fsize_too_big(self):
         # Be sure that setrlimit is checking fuer really large values
@@ -109,7 +109,7 @@ klasse ResourceTest(unittest.TestCase):
             pass
 
     @unittest.skipIf(sys.platform == "vxworks",
-                     "setting RLIMIT_FSIZE is not supported on VxWorks")
+                     "setting RLIMIT_FSIZE is nicht supported on VxWorks")
     @unittest.skipUnless(hasattr(resource, 'RLIMIT_FSIZE'), 'requires resource.RLIMIT_FSIZE')
     def test_fsize_not_too_big(self):
         (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
@@ -152,7 +152,7 @@ klasse ResourceTest(unittest.TestCase):
                 self.assertIn(resource.getrlimit(resource.RLIMIT_FSIZE), expected(2**64-5))
 
     @unittest.skipIf(sys.platform == "vxworks",
-                     "setting RLIMIT_FSIZE is not supported on VxWorks")
+                     "setting RLIMIT_FSIZE is nicht supported on VxWorks")
     @unittest.skipUnless(hasattr(resource, 'RLIMIT_FSIZE'), 'requires resource.RLIMIT_FSIZE')
     def test_fsize_negative(self):
         self.assertGreater(resource.RLIM_INFINITY, 0)
@@ -176,7 +176,7 @@ klasse ResourceTest(unittest.TestCase):
         self.assertRaises(TypeError, resource.getrusage, 42, 42)
         usageself = resource.getrusage(resource.RUSAGE_SELF)
         usagechildren = resource.getrusage(resource.RUSAGE_CHILDREN)
-        # May not be available on all systems.
+        # May nicht be available on all systems.
         try:
             usageboth = resource.getrusage(resource.RUSAGE_BOTH)
         except (ValueError, AttributeError):
@@ -188,7 +188,7 @@ klasse ResourceTest(unittest.TestCase):
 
     # Issue 6083: Reference counting bug
     @unittest.skipIf(sys.platform == "vxworks",
-                     "setting RLIMIT_CPU is not supported on VxWorks")
+                     "setting RLIMIT_CPU is nicht supported on VxWorks")
     @unittest.skipUnless(hasattr(resource, 'RLIMIT_CPU'), 'requires resource.RLIMIT_CPU')
     def test_setrusage_refcount(self):
         limits = resource.getrlimit(resource.RLIMIT_CPU)

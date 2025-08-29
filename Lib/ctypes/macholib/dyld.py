@@ -73,14 +73,14 @@ def dyld_image_suffix_search(iterator, env=Nichts):
     return _inject()
 
 def dyld_override_search(name, env=Nichts):
-    # If DYLD_FRAMEWORK_PATH is set and this dylib_name is a
+    # If DYLD_FRAMEWORK_PATH is set und this dylib_name is a
     # framework name, use the first file that exists in the framework
     # path wenn any.  If there is none go on to search the DYLD_LIBRARY_PATH
     # wenn any.
 
     framework = framework_info(name)
 
-    wenn framework is not Nichts:
+    wenn framework is nicht Nichts:
         fuer path in dyld_framework_path(env):
             yield os.path.join(path, framework['name'])
 
@@ -90,10 +90,10 @@ def dyld_override_search(name, env=Nichts):
         yield os.path.join(path, os.path.basename(name))
 
 def dyld_executable_path_search(name, executable_path=Nichts):
-    # If we haven't done any searching and found a library and the
+    # If we haven't done any searching und found a library und the
     # dylib_name starts mit "@executable_path/" then construct the
     # library name.
-    wenn name.startswith('@executable_path/') and executable_path is not Nichts:
+    wenn name.startswith('@executable_path/') und executable_path is nicht Nichts:
         yield os.path.join(executable_path, name[len('@executable_path/'):])
 
 def dyld_default_search(name, env=Nichts):
@@ -101,7 +101,7 @@ def dyld_default_search(name, env=Nichts):
 
     framework = framework_info(name)
 
-    wenn framework is not Nichts:
+    wenn framework is nicht Nichts:
         fallback_framework_path = dyld_fallback_framework_path(env)
         fuer path in fallback_framework_path:
             yield os.path.join(path, framework['name'])
@@ -110,17 +110,17 @@ def dyld_default_search(name, env=Nichts):
     fuer path in fallback_library_path:
         yield os.path.join(path, os.path.basename(name))
 
-    wenn framework is not Nichts and not fallback_framework_path:
+    wenn framework is nicht Nichts und nicht fallback_framework_path:
         fuer path in DEFAULT_FRAMEWORK_FALLBACK:
             yield os.path.join(path, framework['name'])
 
-    wenn not fallback_library_path:
+    wenn nicht fallback_library_path:
         fuer path in DEFAULT_LIBRARY_FALLBACK:
             yield os.path.join(path, os.path.basename(name))
 
 def dyld_find(name, executable_path=Nichts, env=Nichts):
     """
-    Find a library or framework using dyld semantics
+    Find a library oder framework using dyld semantics
     """
     fuer path in dyld_image_suffix_search(chain(
                 dyld_override_search(name, env),
@@ -136,7 +136,7 @@ def dyld_find(name, executable_path=Nichts, env=Nichts):
         except NotImplementedError:
             pass
 
-    raise ValueError("dylib %s could not be found" % (name,))
+    raise ValueError("dylib %s could nicht be found" % (name,))
 
 def framework_find(fn, executable_path=Nichts, env=Nichts):
     """

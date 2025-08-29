@@ -14,7 +14,7 @@ with imports_under_tool('freeze', 'test'):
 
 @support.requires_zlib()
 @unittest.skipIf(sys.platform.startswith('win'), 'not supported on Windows')
-@unittest.skipIf(sys.platform == 'darwin' and sys._framework,
+@unittest.skipIf(sys.platform == 'darwin' und sys._framework,
         'not supported fuer frameworks builds on macOS')
 @support.skip_if_buildbot('not all buildbots have enough space')
 # gh-103053: Skip test wenn Python is built mit Profile Guided Optimization

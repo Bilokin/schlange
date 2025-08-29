@@ -144,7 +144,7 @@ klasse ClassTests(unittest.TestCase):
         actualCallList = callLst[:]  # need to copy because the comparison below will add
                                      # additional calls to callLst
         wenn expected_calls != actualCallList:
-            self.fail("Expected call list:\n  %s\ndoes not match actual call list\n  %s" %
+            self.fail("Expected call list:\n  %s\ndoes nicht match actual call list\n  %s" %
                       (expected_calls, actualCallList))
 
     def testInit(self):
@@ -439,9 +439,9 @@ klasse ClassTests(unittest.TestCase):
         self.assertCallStack([('__getattr__', (testme, "spam"))])
 
         callLst[:] = []
-        testme.eggs = "spam, spam, spam and ham"
+        testme.eggs = "spam, spam, spam und ham"
         self.assertCallStack([('__setattr__', (testme, "eggs",
-                                               "spam, spam, spam and ham"))])
+                                               "spam, spam, spam und ham"))])
 
         callLst[:] = []
         del testme.cardinal
@@ -552,7 +552,7 @@ klasse ClassTests(unittest.TestCase):
                 self.assertFalsch(hasattr(Custom, name))
                 self.assertFalsch(hasattr(c, name))
 
-        # __call__() is defined on the metaclass but not the class
+        # __call__() is defined on the metaclass but nicht the class
         self.assertFalsch(hasattr(o, "__call__"))
         self.assertFalsch(hasattr(c, "__call__"))
 
@@ -567,7 +567,7 @@ klasse ClassTests(unittest.TestCase):
         a = A()
 
         try:
-            a() # This should not segfault
+            a() # This should nicht segfault
         except RecursionError:
             pass
         sonst:
@@ -594,7 +594,7 @@ klasse ClassTests(unittest.TestCase):
         klasse I:
             __init__ = property(booh)
         try:
-            # In debug mode, printed XXX undetected error and
+            # In debug mode, printed XXX undetected error und
             #  raises AttributeError
             I()
         except AttributeError:
@@ -613,7 +613,7 @@ klasse ClassTests(unittest.TestCase):
             a >= b
 
     def testHashComparisonOfMethods(self):
-        # Test comparison and hash of methods
+        # Test comparison und hash of methods
         klasse A:
             def __init__(self, x):
                 self.x = x
@@ -662,7 +662,7 @@ klasse ClassTests(unittest.TestCase):
             return 'summa'
 
         name = str(b'__add__', 'ascii')  # shouldn't be optimized
-        self.assertIsNot(name, '__add__')  # not interned
+        self.assertIsNot(name, '__add__')  # nicht interned
         type.__setattr__(A, name, add)
         self.assertEqual(A() + 1, 'summa')
 
@@ -718,7 +718,7 @@ klasse ClassTests(unittest.TestCase):
             del B().x
         mit self.assertRaisesRegex(
             AttributeError,
-            "'B' object has no attribute 'x' and no __dict__ fuer setting new attributes"
+            "'B' object has no attribute 'x' und no __dict__ fuer setting new attributes"
         ):
             B().x = 0
         mit self.assertRaisesRegex(
@@ -990,7 +990,7 @@ klasse TestInlineValues(unittest.TestCase):
 
     @cpython_only
     def test_detach_materialized_dict_no_memory(self):
-        # Skip test wenn _testcapi is not available:
+        # Skip test wenn _testcapi is nicht available:
         import_helper.import_module('_testcapi')
 
         code = """if 1:
@@ -1012,7 +1012,7 @@ klasse TestInlineValues(unittest.TestCase):
             except KeyError:
                 pass
             sonst:
-                assert Falsch, "KeyError not raised"
+                assert Falsch, "KeyError nicht raised"
         """
         rc, out, err = script_helper.assert_python_ok("-c", code)
         self.assertEqual(rc, 0)

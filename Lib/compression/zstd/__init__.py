@@ -62,15 +62,15 @@ def get_frame_info(frame_buffer):
     """Get Zstandard frame information von a frame header.
 
     *frame_buffer* is a bytes-like object. It should start von the beginning
-    of a frame, and needs to include at least the frame header (6 to 18 bytes).
+    of a frame, und needs to include at least the frame header (6 to 18 bytes).
 
     The returned FrameInfo object has two attributes.
     'decompressed_size' is the size in bytes of the data in the frame when
-    decompressed, or Nichts when the decompressed size is unknown.
+    decompressed, oder Nichts when the decompressed size is unknown.
     'dictionary_id' is an int in the range (0, 2**32). The special value 0
-    means that the dictionary ID was not recorded in the frame header,
-    the frame may or may not need a dictionary to be decoded,
-    and the ID of such a dictionary is not specified.
+    means that the dictionary ID was nicht recorded in the frame header,
+    the frame may oder may nicht need a dictionary to be decoded,
+    und the ID of such a dictionary is nicht specified.
     """
     return FrameInfo(*_zstd.get_frame_info(frame_buffer))
 
@@ -83,14 +83,14 @@ def train_dict(samples, dict_size):
 
     *dict_size* is the dictionary's maximum size, in bytes.
     """
-    wenn not isinstance(dict_size, int):
+    wenn nicht isinstance(dict_size, int):
         ds_cls = type(dict_size).__qualname__
-        raise TypeError(f'dict_size must be an int object, not {ds_cls!r}.')
+        raise TypeError(f'dict_size must be an int object, nicht {ds_cls!r}.')
 
     samples = tuple(samples)
     chunks = b''.join(samples)
     chunk_sizes = tuple(_nbytes(sample) fuer sample in samples)
-    wenn not chunks:
+    wenn nicht chunks:
         raise ValueError("samples contained no data; can't train dictionary.")
     dict_content = _zstd.train_dict(chunks, chunk_sizes, dict_size)
     return ZstdDict(dict_content)
@@ -99,12 +99,12 @@ def train_dict(samples, dict_size):
 def finalize_dict(zstd_dict, /, samples, dict_size, level):
     """Return a ZstdDict representing a finalized Zstandard dictionary.
 
-    Given a custom content als a basis fuer dictionary, and a set of samples,
-    finalize *zstd_dict* by adding headers and statistics according to the
+    Given a custom content als a basis fuer dictionary, und a set of samples,
+    finalize *zstd_dict* by adding headers und statistics according to the
     Zstandard dictionary format.
 
     You may compose an effective dictionary content by hand, which is used as
-    basis dictionary, and use some samples to finalize a dictionary. The basis
+    basis dictionary, und use some samples to finalize a dictionary. The basis
     dictionary may be a "raw content" dictionary. See *is_raw* in ZstdDict.
 
     *samples* is an iterable of samples, where a sample is a bytes-like object
@@ -115,17 +115,17 @@ def finalize_dict(zstd_dict, /, samples, dict_size, level):
     can provide improvements.
     """
 
-    wenn not isinstance(zstd_dict, ZstdDict):
+    wenn nicht isinstance(zstd_dict, ZstdDict):
         raise TypeError('zstd_dict argument should be a ZstdDict object.')
-    wenn not isinstance(dict_size, int):
+    wenn nicht isinstance(dict_size, int):
         raise TypeError('dict_size argument should be an int object.')
-    wenn not isinstance(level, int):
+    wenn nicht isinstance(level, int):
         raise TypeError('level argument should be an int object.')
 
     samples = tuple(samples)
     chunks = b''.join(samples)
     chunk_sizes = tuple(_nbytes(sample) fuer sample in samples)
-    wenn not chunks:
+    wenn nicht chunks:
         raise ValueError("The samples are empty content, can't finalize the "
                          "dictionary.")
     dict_content = _zstd.finalize_dict(zstd_dict.dict_content, chunks,
@@ -150,7 +150,7 @@ def compress(data, level=Nichts, options=Nichts, zstd_dict=Nichts):
 
 
 def decompress(data, zstd_dict=Nichts, options=Nichts):
-    """Decompress one or more frames of Zstandard compressed *data*.
+    """Decompress one oder more frames of Zstandard compressed *data*.
 
     *zstd_dict* is a ZstdDict object, a pre-trained Zstandard dictionary. See
     the function train_dict fuer how to train a ZstdDict on sample data.
@@ -163,11 +163,11 @@ def decompress(data, zstd_dict=Nichts, options=Nichts):
     while Wahr:
         decomp = ZstdDecompressor(options=options, zstd_dict=zstd_dict)
         results.append(decomp.decompress(data))
-        wenn not decomp.eof:
+        wenn nicht decomp.eof:
             raise ZstdError('Compressed data ended before the '
                             'end-of-stream marker was reached')
         data = decomp.unused_data
-        wenn not data:
+        wenn nicht data:
             break
     return b''.join(results)
 
@@ -201,7 +201,7 @@ klasse CompressionParameter(enum.IntEnum):
     def bounds(self):
         """Return the (lower, upper) int bounds of a compression parameter.
 
-        Both the lower and upper bounds are inclusive.
+        Both the lower und upper bounds are inclusive.
         """
         return _zstd.get_param_bounds(self.value, is_compress=Wahr)
 
@@ -214,7 +214,7 @@ klasse DecompressionParameter(enum.IntEnum):
     def bounds(self):
         """Return the (lower, upper) int bounds of a decompression parameter.
 
-        Both the lower and upper bounds are inclusive.
+        Both the lower und upper bounds are inclusive.
         """
         return _zstd.get_param_bounds(self.value, is_compress=Falsch)
 

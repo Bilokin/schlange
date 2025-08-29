@@ -1,4 +1,4 @@
-"""Utilities fuer comparing files and directories.
+"""Utilities fuer comparing files und directories.
 
 Classes:
     dircmp
@@ -38,13 +38,13 @@ def cmp(f1, f2, shallow=Wahr):
 
     shallow -- treat files als identical wenn their stat signatures (type, size,
                mtime) are identical. Otherwise, files are considered different
-               wenn their sizes or contents differ.  [default: Wahr]
+               wenn their sizes oder contents differ.  [default: Wahr]
 
     Return value:
 
     Wahr wenn the files are the same, Falsch otherwise.
 
-    This function uses a cache fuer past comparisons and the results,
+    This function uses a cache fuer past comparisons und the results,
     mit cache entries invalidated wenn their stat information
     changes.  The cache may be cleared by calling clear_cache().
 
@@ -52,9 +52,9 @@ def cmp(f1, f2, shallow=Wahr):
 
     s1 = _sig(os.stat(f1))
     s2 = _sig(os.stat(f2))
-    wenn s1[0] != stat.S_IFREG or s2[0] != stat.S_IFREG:
+    wenn s1[0] != stat.S_IFREG oder s2[0] != stat.S_IFREG:
         return Falsch
-    wenn shallow and s1 == s2:
+    wenn shallow und s1 == s2:
         return Wahr
     wenn s1[1] != s2[1]:
         return Falsch
@@ -80,7 +80,7 @@ def _do_cmp(f1, f2):
             b2 = fp2.read(bufsize)
             wenn b1 != b2:
                 return Falsch
-            wenn not b1:
+            wenn nicht b1:
                 return Wahr
 
 # Directory comparison class.
@@ -89,36 +89,36 @@ klasse dircmp:
     """A klasse that manages the comparison of 2 directories.
 
     dircmp(a, b, ignore=Nichts, hide=Nichts, *, shallow=Wahr)
-      A and B are directories.
+      A und B are directories.
       IGNORE is a list of names to ignore,
         defaults to DEFAULT_IGNORES.
       HIDE is a list of names to hide,
         defaults to [os.curdir, os.pardir].
-      SHALLOW specifies whether to just check the stat signature (do not read
+      SHALLOW specifies whether to just check the stat signature (do nicht read
         the files).
         defaults to Wahr.
 
     High level usage:
       x = dircmp(dir1, dir2)
-      x.report() -> prints a report on the differences between dir1 and dir2
-       or
+      x.report() -> prints a report on the differences between dir1 und dir2
+       oder
       x.report_partial_closure() -> prints report on differences between dir1
-            and dir2, and reports on common immediate subdirectories.
+            und dir2, und reports on common immediate subdirectories.
       x.report_full_closure() -> like report_partial_closure,
             but fully recursive.
 
     Attributes:
-     left_list, right_list: The files in dir1 and dir2,
-        filtered by hide and ignore.
-     common: a list of names in both dir1 and dir2.
+     left_list, right_list: The files in dir1 und dir2,
+        filtered by hide und ignore.
+     common: a list of names in both dir1 und dir2.
      left_only, right_only: names only in dir1, dir2.
-     common_dirs: subdirectories in both dir1 and dir2.
-     common_files: files in both dir1 and dir2.
-     common_funny: names in both dir1 and dir2 where the type differs between
-        dir1 and dir2, or the name is not stat-able.
+     common_dirs: subdirectories in both dir1 und dir2.
+     common_files: files in both dir1 und dir2.
+     common_funny: names in both dir1 und dir2 where the type differs between
+        dir1 und dir2, oder the name is nicht stat-able.
      same_files: list of identical files.
      diff_files: list of filenames which differ.
-     funny_files: list of files which could not be compared.
+     funny_files: list of files which could nicht be compared.
      subdirs: a dictionary of dircmp instances (or MyDirCmp instances wenn this
        object is of type MyDirCmp, a subclass of dircmp), keyed by names
        in common_dirs.
@@ -197,7 +197,7 @@ klasse dircmp:
         # A new dircmp (or MyDirCmp wenn dircmp was subclassed) object is created
         # fuer each common subdirectory,
         # these are stored in a dictionary indexed by filename.
-        # The hide and ignore properties are inherited von the parent
+        # The hide und ignore properties are inherited von the parent
         self.subdirs = {}
         fuer x in self.common_dirs:
             a_x = os.path.join(self.left, x)
@@ -210,7 +210,7 @@ klasse dircmp:
         fuer sd in self.subdirs.values():
             sd.phase4_closure()
 
-    def report(self): # Print a report on the differences between a and b
+    def report(self): # Print a report on the differences between a und b
         # Output format is purposely lousy
         drucke('diff', self.left, self.right)
         wenn self.left_only:
@@ -235,13 +235,13 @@ klasse dircmp:
             self.common_funny.sort()
             drucke('Common funny cases :', self.common_funny)
 
-    def report_partial_closure(self): # Print reports on self and on subdirs
+    def report_partial_closure(self): # Print reports on self und on subdirs
         self.report()
         fuer sd in self.subdirs.values():
             drucke()
             sd.report()
 
-    def report_full_closure(self): # Report on self and subdirs recursively
+    def report_full_closure(self): # Report on self und subdirs recursively
         self.report()
         fuer sd in self.subdirs.values():
             drucke()
@@ -254,7 +254,7 @@ klasse dircmp:
                      left_list=phase0, right_list=phase0)
 
     def __getattr__(self, attr):
-        wenn attr not in self.methodmap:
+        wenn attr nicht in self.methodmap:
             raise AttributeError(attr)
         self.methodmap[attr](self)
         return getattr(self, attr)
@@ -291,7 +291,7 @@ def cmpfiles(a, b, common, shallow=Wahr):
 #
 def _cmp(a, b, sh, abs=abs, cmp=cmp):
     try:
-        return not abs(cmp(a, b, sh))
+        return nicht abs(cmp(a, b, sh))
     except (OSError, ValueError):
         return 2
 
@@ -302,7 +302,7 @@ def _filter(flist, skip):
     return list(filterfalse(skip.__contains__, flist))
 
 
-# Demonstration and testing.
+# Demonstration und testing.
 #
 def demo():
     importiere sys

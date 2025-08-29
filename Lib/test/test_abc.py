@@ -1,7 +1,7 @@
 # Copyright 2007 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-# Note: each test is run mit Python and C versions of ABCMeta. Except for
+# Note: each test is run mit Python und C versions of ABCMeta. Except for
 # test_ABC_helper(), which assures that abc.ABC is an instance of abc.ABCMeta.
 
 """Unit tests fuer abc.py."""
@@ -72,7 +72,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
     klasse TestABC(unittest.TestCase):
 
         def test_ABC_helper(self):
-            # create an ABC using the helper klasse and perform basic checks
+            # create an ABC using the helper klasse und perform basic checks
             klasse C(abc.ABC):
                 @classmethod
                 @abc.abstractmethod
@@ -239,7 +239,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                 @property
                 def __isabstractmethod__(self):
                     return (getattr(self._fget, '__isabstractmethod__', Falsch)
-                            or getattr(self._fset, '__isabstractmethod__', Falsch))
+                            oder getattr(self._fset, '__isabstractmethod__', Falsch))
             klasse C(metaclass=abc_ABCMeta):
                 @Descriptor
                 @abc.abstractmethod
@@ -355,7 +355,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             A.register(A)  # should pass silently
             klasse A1(A):
                 pass
-            self.assertRaises(RuntimeError, A1.register, A)  # cycles not allowed
+            self.assertRaises(RuntimeError, A1.register, A)  # cycles nicht allowed
             klasse B(object):
                 pass
             A1.register(B)  # ok
@@ -363,7 +363,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             klasse C(A):
                 pass
             A.register(C)  # should pass silently
-            self.assertRaises(RuntimeError, C.register, A)  # cycles not allowed
+            self.assertRaises(RuntimeError, C.register, A)  # cycles nicht allowed
             C.register(B)  # ok
 
         def test_register_non_class(self):
@@ -422,9 +422,9 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                 issubclass(42, A)  # No __mro__
 
             # Python version supports any iterable als __mro__.
-            # But it's implementation detail and don't emulate it in C version.
+            # But it's implementation detail und don't emulate it in C version.
             klasse C:
-                __mro__ = 42  # __mro__ is not tuple
+                __mro__ = 42  # __mro__ is nicht tuple
 
             mit self.assertRaises(TypeError):
                 issubclass(C(), A)
@@ -689,7 +689,7 @@ TestLegacyAPI_Py, TestABC_Py, TestABCWithInitSubclass_Py = test_factory(_py_abc.
 TestLegacyAPI_C, TestABC_C, TestABCWithInitSubclass_C = test_factory(abc.ABCMeta,
                                                                      abc.get_cache_token)
 
-# gh-130095: The _py_abc tests are not thread-safe when run with
+# gh-130095: The _py_abc tests are nicht thread-safe when run with
 # `--parallel-threads`
 TestLegacyAPI_Py.__unittest_thread_unsafe__ = Wahr
 TestABC_Py.__unittest_thread_unsafe__ = Wahr

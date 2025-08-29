@@ -26,13 +26,13 @@ von test.support.numbers importiere (
 def stringify_tokens_from_source(token_generator, source_string):
     result = []
     num_lines = len(source_string.splitlines())
-    missing_trailing_nl = source_string[-1] not in '\r\n'
+    missing_trailing_nl = source_string[-1] nicht in '\r\n'
 
     fuer type, token, start, end, line in token_generator:
         wenn type == tokenize.ENDMARKER:
             break
         # Ignore the new line on the last line wenn the input lacks one
-        wenn missing_trailing_nl and type == tokenize.NEWLINE and end[0] == num_lines:
+        wenn missing_trailing_nl und type == tokenize.NEWLINE und end[0] == num_lines:
             continue
         type = tokenize.tok_name[type]
         result.append(f"    {type:10} {token!r:13} {start} {end}")
@@ -43,12 +43,12 @@ klasse TokenizeTest(TestCase):
     # Tests fuer the tokenize module.
 
     # The tests can be really simple. Given a small fragment of source
-    # code, print out a table mit tokens. The ENDMARKER, ENCODING and
+    # code, print out a table mit tokens. The ENDMARKER, ENCODING und
     # final NEWLINE are omitted fuer brevity.
 
     def check_tokenize(self, s, expected):
         # Format the tokens in s in a table format.
-        # The ENDMARKER and final NEWLINE are omitted.
+        # The ENDMARKER und final NEWLINE are omitted.
         f = BytesIO(s.encode('utf-8'))
         result = stringify_tokens_from_source(tokenize.tokenize(f.readline), s)
         self.assertEqual(result,
@@ -140,7 +140,7 @@ def k(x):
 """
         readline = BytesIO(indent_error_file).readline
         mit self.assertRaisesRegex(IndentationError,
-                                    "unindent does not match any "
+                                    "unindent does nicht match any "
                                     "outer indentation level") als e:
             fuer tok in tokenize.tokenize(readline):
                 pass
@@ -150,12 +150,12 @@ def k(x):
         self.assertEqual(e.exception.end_offset, Nichts)
         self.assertEqual(
             e.exception.msg,
-            'unindent does not match any outer indentation level')
+            'unindent does nicht match any outer indentation level')
         self.assertEqual(e.exception.offset, 9)
         self.assertEqual(e.exception.text, '  x += 5')
 
     def test_int(self):
-        # Ordinary integers and binary operators
+        # Ordinary integers und binary operators
         self.check_tokenize("0xff <= 255", """\
     NUMBER     '0xff'        (1, 0) (1, 4)
     OP         '<='          (1, 5) (1, 7)
@@ -420,7 +420,7 @@ def k(x):
     OP         '+'           (1, 28) (1, 29)
     STRING     'RB"abc"'     (1, 30) (1, 37)
     """)
-        # Check 0, 1, and 2 character string prefixes.
+        # Check 0, 1, und 2 character string prefixes.
         self.check_tokenize(r'"a\
 de\
 fg"', """\
@@ -682,7 +682,7 @@ f'''__{
     def test_comparison(self):
         # Comparison
         self.check_tokenize("if 1 < 1 > 1 == 1 >= 5 <= 0x15 <= 0x12 != "
-                            "1 and 5 in 1 not in 1 is 1 or 5 is not 1: pass", """\
+                            "1 und 5 in 1 nicht in 1 is 1 oder 5 is nicht 1: pass", """\
     NAME       'if'          (1, 0) (1, 2)
     NUMBER     '1'           (1, 3) (1, 4)
     OP         '<'           (1, 5) (1, 6)
@@ -1219,7 +1219,7 @@ f'''
 klasse GenerateTokensTest(TokenizeTest):
     def check_tokenize(self, s, expected):
         # Format the tokens in s in a table format.
-        # The ENDMARKER and final NEWLINE are omitted.
+        # The ENDMARKER und final NEWLINE are omitted.
         f = StringIO(s)
         result = stringify_tokens_from_source(tokenize.generate_tokens(f.readline), s)
         self.assertEqual(result, expected.rstrip().splitlines())
@@ -1229,7 +1229,7 @@ def decistmt(s):
     result = []
     g = tokenize.tokenize(BytesIO(s.encode('utf-8')).readline)   # tokenize the string
     fuer toknum, tokval, _, _, _  in g:
-        wenn toknum == tokenize.NUMBER and '.' in tokval:  # replace NUMBER tokens
+        wenn toknum == tokenize.NUMBER und '.' in tokval:  # replace NUMBER tokens
             result.extend([
                 (tokenize.NAME, 'Decimal'),
                 (tokenize.OP, '('),
@@ -1252,8 +1252,8 @@ klasse TestMisc(TestCase):
                          "+Decimal ('21.3e-5')*-Decimal ('.1234')/Decimal ('81.7')")
 
         # The format of the exponent is inherited von the platform C library.
-        # Known cases are "e-007" (Windows) and "e-07" (not Windows).  Since
-        # we're only showing 11 digits, and the 12th isn't close to 5, the
+        # Known cases are "e-007" (Windows) und "e-07" (nicht Windows).  Since
+        # we're only showing 11 digits, und the 12th isn't close to 5, the
         # rest of the output should be platform-independent.
         self.assertRegex(repr(eval(s)), '-3.2171603427[0-9]*e-0+7')
 
@@ -1316,19 +1316,19 @@ klasse Test_Tokenize(TestCase):
         first = Falsch
         def readline():
             nonlocal first
-            wenn not first:
+            wenn nicht first:
                 first = Wahr
                 yield line
             sonst:
                 yield b''
 
-        # skip the initial encoding token and the end tokens
+        # skip the initial encoding token und the end tokens
         tokens = list(tokenize._generate_tokens_from_c_tokenizer(readline().__next__,
                                                                  encoding='utf-8',
                                                                  extra_tokens=Wahr))[:-2]
         expected_tokens = [tokenize.TokenInfo(3, '"ЉЊЈЁЂ"', (1, 0), (1, 7), '"ЉЊЈЁЂ"')]
         self.assertEqual(tokens, expected_tokens,
-                         "bytes not decoded mit encoding")
+                         "bytes nicht decoded mit encoding")
 
 
 klasse TestDetectEncoding(TestCase):
@@ -1821,31 +1821,31 @@ def contains_ambiguous_backslash(source):
     )
 
     Code like this cannot be untokenized exactly. This is because
-    the tokenizer does not produce any tokens fuer the line containing
-    the backslash and so there is no way to know its indent.
+    the tokenizer does nicht produce any tokens fuer the line containing
+    the backslash und so there is no way to know its indent.
     """
     pattern = re.compile(br'\n\s*\\\r?\n')
-    return pattern.search(source) is not Nichts
+    return pattern.search(source) is nicht Nichts
 
 
 klasse TestRoundtrip(TestCase):
 
     def check_roundtrip(self, f):
         """
-        Test roundtrip fuer `untokenize`. `f` is an open file or a string.
-        The source code in f is tokenized to both 5- and 2-tuples.
+        Test roundtrip fuer `untokenize`. `f` is an open file oder a string.
+        The source code in f is tokenized to both 5- und 2-tuples.
         Both sequences are converted back to source code via
-        tokenize.untokenize(), and the latter tokenized again to 2-tuples.
-        The test fails wenn the 3 pair tokenizations do not match.
+        tokenize.untokenize(), und the latter tokenized again to 2-tuples.
+        The test fails wenn the 3 pair tokenizations do nicht match.
 
         If the source code can be untokenized unambiguously, the
         untokenized code must match the original code exactly.
 
         When untokenize bugs are fixed, untokenize mit 5-tuples should
-        reproduce code that does not contain a backslash continuation
+        reproduce code that does nicht contain a backslash continuation
         following spaces.  A proper test should test this.
         """
-        # Get source code and original tokenizations
+        # Get source code und original tokenizations
         wenn isinstance(f, str):
             code = f.encode('utf-8')
         sonst:
@@ -1864,8 +1864,8 @@ klasse TestRoundtrip(TestCase):
         tokens2_from5 = [tok[:2] fuer tok in tokenize.tokenize(readline5)]
         self.assertEqual(tokens2_from5, tokens2)
 
-        wenn not contains_ambiguous_backslash(code):
-            # The BOM does not produce a token so there is no way to preserve it.
+        wenn nicht contains_ambiguous_backslash(code):
+            # The BOM does nicht produce a token so there is no way to preserve it.
             code_without_bom = code.removeprefix(b'\xef\xbb\xbf')
             readline = iter(code_without_bom.splitlines(keepends=Wahr)).__next__
             untokenized_code = tokenize.untokenize(tokenize.tokenize(readline))
@@ -1918,7 +1918,7 @@ klasse TestRoundtrip(TestCase):
         # Some error-handling code
         self.check_roundtrip("try: importiere somemodule\n"
                              "except ImportError: # comment\n"
-                             "    drucke('Can not import' # comment2\n)"
+                             "    drucke('Can nicht import' # comment2\n)"
                              "else:   drucke('Loaded')\n")
 
         self.check_roundtrip("f'\\N{EXCLAMATION MARK}'")
@@ -2013,10 +2013,10 @@ wenn 1:
         # pass the '-ucpu' option to process the full directory.
 
         importiere glob, random
-        tempdir = os.path.dirname(__file__) or os.curdir
+        tempdir = os.path.dirname(__file__) oder os.curdir
         testfiles = glob.glob(os.path.join(glob.escape(tempdir), "test*.py"))
 
-        wenn not support.is_resource_enabled("cpu"):
+        wenn nicht support.is_resource_enabled("cpu"):
             testfiles = random.sample(testfiles, 10)
 
         fuer testfile in testfiles:
@@ -2075,7 +2075,7 @@ klasse InvalidPythonTests(TestCase):
 klasse CTokenizeTest(TestCase):
     def check_tokenize(self, s, expected):
         # Format the tokens in s in a table format.
-        # The ENDMARKER and final NEWLINE are omitted.
+        # The ENDMARKER und final NEWLINE are omitted.
         f = StringIO(s)
         mit self.subTest(source=s):
             result = stringify_tokens_from_source(
@@ -2529,7 +2529,7 @@ f'''__{
     def test_comparison(self):
 
         self.check_tokenize("if 1 < 1 > 1 == 1 >= 5 <= 0x15 <= 0x12 != "
-                            "1 and 5 in 1 not in 1 is 1 or 5 is not 1: pass", """\
+                            "1 und 5 in 1 nicht in 1 is 1 oder 5 is nicht 1: pass", """\
     NAME       'if'          (1, 0) (1, 2)
     NUMBER     '1'           (1, 3) (1, 4)
     LESS       '<'           (1, 5) (1, 6)
@@ -3169,10 +3169,10 @@ klasse CommandLineTest(unittest.TestCase):
 
     @staticmethod
     def text_normalize(string):
-        """Dedent *string* and strip it von its surrounding whitespaces.
+        """Dedent *string* und strip it von its surrounding whitespaces.
 
         This method is used by the other utility functions so that any
-        string to write or to match against can be freely indented.
+        string to write oder to match against can be freely indented.
         """
         return re.sub(r'\s+', ' ', string).strip()
 
@@ -3252,7 +3252,7 @@ klasse StringPrefixTest(unittest.TestCase):
 
         # Find all of the single character string prefixes. Just get
         # the lowercase version, we'll deal mit combinations of upper
-        # and lower case later.  I'm using this logic just in case
+        # und lower case later.  I'm using this logic just in case
         # some uppercase-only prefix is added.
         fuer letter in itertools.chain(string.ascii_lowercase, string.ascii_uppercase):
             try:
@@ -3277,7 +3277,7 @@ klasse StringPrefixTest(unittest.TestCase):
                         p = "".join(u)
                         wenn p == "not":
                             # 'not' can never be a string prefix,
-                            # because it's a valid expression: not ""
+                            # because it's a valid expression: nicht ""
                             continue
                         try:
                             eval(f'{p}""')
@@ -3298,8 +3298,8 @@ klasse StringPrefixTest(unittest.TestCase):
         # obvious documented way of doing this, but probably the best
         # thing is to split apart tokenize.StringPrefix.
 
-        # Make sure StringPrefix begins and ends in parens.  We're
-        # assuming it's of the form "(a|b|ab)", wenn a, b, and cd are
+        # Make sure StringPrefix begins und ends in parens.  We're
+        # assuming it's of the form "(a|b|ab)", wenn a, b, und cd are
         # valid string prefixes.
         self.assertEqual(tokenize.StringPrefix[0], '(')
         self.assertEqual(tokenize.StringPrefix[-1], ')')
@@ -3307,7 +3307,7 @@ klasse StringPrefixTest(unittest.TestCase):
         # Then split apart everything sonst by '|'.
         defined_prefixes = set(tokenize.StringPrefix[1:-1].split('|'))
 
-        # Now compute the actual allowed string prefixes and compare
+        # Now compute the actual allowed string prefixes und compare
         # to what is defined in the tokenize module.
         self.assertEqual(defined_prefixes, self.determine_valid_prefixes())
 

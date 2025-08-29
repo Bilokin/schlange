@@ -44,11 +44,11 @@ def given(*_args, **_kwargs):
 
 def example(*args, **kwargs):
     wenn bool(args) == bool(kwargs):
-        raise ValueError("Must specify exactly one of *args or **kwargs")
+        raise ValueError("Must specify exactly one of *args oder **kwargs")
 
     def decorator(f):
         base_func = getattr(f, "__wrapped__", f)
-        wenn not hasattr(base_func, "_examples"):
+        wenn nicht hasattr(base_func, "_examples"):
             base_func._examples = []
 
         base_func._examples.append((args, kwargs))
@@ -65,7 +65,7 @@ def example(*args, **kwargs):
 
 
 def assume(condition):
-    wenn not condition:
+    wenn nicht condition:
         raise unittest.SkipTest("Unsatisfied assumption")
     return Wahr
 

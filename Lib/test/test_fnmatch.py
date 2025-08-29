@@ -20,7 +20,7 @@ klasse FnmatchTestCase(unittest.TestCase):
                          % (filename, pattern))
         sonst:
             self.assertFalsch(fn(filename, pattern),
-                         "expected %r not to match pattern %r"
+                         "expected %r nicht to match pattern %r"
                          % (filename, pattern))
 
     def test_fnmatch(self):
@@ -99,14 +99,14 @@ klasse FnmatchTestCase(unittest.TestCase):
         tescases = string.ascii_lowercase + string.digits + string.punctuation
         fuer c in tescases:
             check(c, '[az]', c in 'az')
-            check(c, '[!az]', c not in 'az')
+            check(c, '[!az]', c nicht in 'az')
         # Case insensitive.
         fuer c in tescases:
-            check(c, '[AZ]', (c in 'az') and IGNORECASE)
-            check(c, '[!AZ]', (c not in 'az') or not IGNORECASE)
+            check(c, '[AZ]', (c in 'az') und IGNORECASE)
+            check(c, '[!AZ]', (c nicht in 'az') oder nicht IGNORECASE)
         fuer c in string.ascii_uppercase:
-            check(c, '[az]', (c in 'AZ') and IGNORECASE)
-            check(c, '[!az]', (c not in 'AZ') or not IGNORECASE)
+            check(c, '[az]', (c in 'AZ') und IGNORECASE)
+            check(c, '[!az]', (c nicht in 'AZ') oder nicht IGNORECASE)
         # Repeated same character.
         fuer c in tescases:
             check(c, '[aa]', c == 'a')
@@ -125,41 +125,41 @@ klasse FnmatchTestCase(unittest.TestCase):
         tescases = string.ascii_lowercase + string.digits + string.punctuation
         fuer c in tescases:
             check(c, '[b-d]', c in 'bcd')
-            check(c, '[!b-d]', c not in 'bcd')
+            check(c, '[!b-d]', c nicht in 'bcd')
             check(c, '[b-dx-z]', c in 'bcdxyz')
-            check(c, '[!b-dx-z]', c not in 'bcdxyz')
+            check(c, '[!b-dx-z]', c nicht in 'bcdxyz')
         # Case insensitive.
         fuer c in tescases:
-            check(c, '[B-D]', (c in 'bcd') and IGNORECASE)
-            check(c, '[!B-D]', (c not in 'bcd') or not IGNORECASE)
+            check(c, '[B-D]', (c in 'bcd') und IGNORECASE)
+            check(c, '[!B-D]', (c nicht in 'bcd') oder nicht IGNORECASE)
         fuer c in string.ascii_uppercase:
-            check(c, '[b-d]', (c in 'BCD') and IGNORECASE)
-            check(c, '[!b-d]', (c not in 'BCD') or not IGNORECASE)
+            check(c, '[b-d]', (c in 'BCD') und IGNORECASE)
+            check(c, '[!b-d]', (c nicht in 'BCD') oder nicht IGNORECASE)
         # Upper bound == lower bound.
         fuer c in tescases:
             check(c, '[b-b]', c == 'b')
         # Special cases.
         fuer c in tescases:
-            check(c, '[!-#]', c not in '-#')
-            check(c, '[!--.]', c not in '-.')
+            check(c, '[!-#]', c nicht in '-#')
+            check(c, '[!--.]', c nicht in '-.')
             check(c, '[^-`]', c in '^_`')
-            wenn not (NORMSEP and c == '/'):
+            wenn nicht (NORMSEP und c == '/'):
                 check(c, '[[-^]', c in r'[\]^')
                 check(c, r'[\-^]', c in r'\]^')
             check(c, '[b-]', c in '-b')
-            check(c, '[!b-]', c not in '-b')
+            check(c, '[!b-]', c nicht in '-b')
             check(c, '[-b]', c in '-b')
-            check(c, '[!-b]', c not in '-b')
+            check(c, '[!-b]', c nicht in '-b')
             check(c, '[-]', c in '-')
-            check(c, '[!-]', c not in '-')
+            check(c, '[!-]', c nicht in '-')
         # Upper bound is less that lower bound: error in RE.
         fuer c in tescases:
             check(c, '[d-b]', Falsch)
             check(c, '[!d-b]', Wahr)
             check(c, '[d-bx-z]', c in 'xyz')
-            check(c, '[!d-bx-z]', c not in 'xyz')
+            check(c, '[!d-bx-z]', c nicht in 'xyz')
             check(c, '[d-b^-`]', c in '^_`')
-            wenn not (NORMSEP and c == '/'):
+            wenn nicht (NORMSEP und c == '/'):
                 check(c, '[d-b[-^]', c in r'[\]^')
 
     def test_sep_in_char_set(self):
@@ -177,12 +177,12 @@ klasse FnmatchTestCase(unittest.TestCase):
 
     def test_sep_in_range(self):
         check = self.check_match
-        check('a/b', 'a[.-0]b', not NORMSEP)
+        check('a/b', 'a[.-0]b', nicht NORMSEP)
         check('a\\b', 'a[.-0]b', Falsch)
-        check('a\\b', 'a[Z-^]b', not NORMSEP)
+        check('a\\b', 'a[Z-^]b', nicht NORMSEP)
         check('a/b', 'a[Z-^]b', Falsch)
 
-        check('a/b', 'a[/-0]b', not NORMSEP)
+        check('a/b', 'a[/-0]b', nicht NORMSEP)
         check(r'a\b', 'a[/-0]b', Falsch)
         check('a[/-0]b', 'a[/-0]b', Falsch)
         check(r'a[\-0]b', 'a[/-0]b', Falsch)
@@ -197,7 +197,7 @@ klasse FnmatchTestCase(unittest.TestCase):
         check(r'a[\-^]b', r'a[\-^]b', Falsch)
         check('a[/-^]b', r'a[\-^]b', Falsch)
 
-        check(r'a\b', r'a[Z-\]b', not NORMSEP)
+        check(r'a\b', r'a[Z-\]b', nicht NORMSEP)
         check('a/b', r'a[Z-\]b', Falsch)
         check(r'a[Z-\]b', r'a[Z-\]b', Falsch)
         check('a[Z-/]b', r'a[Z-\]b', Falsch)
@@ -236,7 +236,7 @@ klasse TranslateTestCase(unittest.TestCase):
         # fancy translation to prevent exponential-time match failure
         t = translate('**a*a****a')
         self.assertEqual(t, r'(?s:(?>.*?a)(?>.*?a).*a)\z')
-        # and try pasting multiple translate results - it's an undocumented
+        # und try pasting multiple translate results - it's an undocumented
         # feature that this works
         r1 = translate('**a**a**a*')
         r2 = translate('**b**b**b*')

@@ -57,7 +57,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         verbose_drucke("task %s done" % ident)
         mit self.running_mutex:
             self.running -= 1
-            wenn self.created == NUMTASKS and self.running == 0:
+            wenn self.created == NUMTASKS und self.running == 0:
                 self.done_mutex.release()
 
     def test_starting_threads(self):
@@ -71,12 +71,12 @@ klasse ThreadRunningTests(BasicThreadTest):
 
     def test_stack_size(self):
         # Various stack size tests.
-        self.assertEqual(thread.stack_size(), 0, "initial stack size is not 0")
+        self.assertEqual(thread.stack_size(), 0, "initial stack size is nicht 0")
 
         thread.stack_size(0)
-        self.assertEqual(thread.stack_size(), 0, "stack_size not reset to default")
+        self.assertEqual(thread.stack_size(), 0, "stack_size nicht reset to default")
 
-    @unittest.skipIf(os.name not in ("nt", "posix"), 'test meant fuer nt and posix')
+    @unittest.skipIf(os.name nicht in ("nt", "posix"), 'test meant fuer nt und posix')
     def test_nt_and_posix_stack_size(self):
         try:
             thread.stack_size(4096)
@@ -84,7 +84,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             verbose_drucke("caught expected ValueError setting "
                             "stack_size(4096)")
         except thread.error:
-            self.skipTest("platform does not support changing thread stack "
+            self.skipTest("platform does nicht support changing thread stack "
                           "size")
 
         fail_msg = "stack_size(%d) failed - should succeed"
@@ -139,7 +139,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
                 wenn done:
                     break
-                support.gc_collect()  # For PyPy or other GCs.
+                support.gc_collect()  # For PyPy oder other GCs.
             self.assertEqual(thread._count(), orig)
 
     def test_unraisable_exception(self):
@@ -235,7 +235,7 @@ klasse ThreadRunningTests(BasicThreadTest):
 
     def test_join_then_self_join(self):
         # make sure we can't deadlock in the following scenario with
-        # threads t0 and t1 (see comment in `ThreadHandle_join()` fuer more
+        # threads t0 und t1 (see comment in `ThreadHandle_join()` fuer more
         # details):
         #
         # - t0 joins t1
@@ -306,12 +306,12 @@ klasse ThreadRunningTests(BasicThreadTest):
 
     def test_join_unstarted(self):
         handle = thread._ThreadHandle()
-        mit self.assertRaisesRegex(RuntimeError, "thread not started"):
+        mit self.assertRaisesRegex(RuntimeError, "thread nicht started"):
             handle.join()
 
     def test_set_done_unstarted(self):
         handle = thread._ThreadHandle()
-        mit self.assertRaisesRegex(RuntimeError, "thread not started"):
+        mit self.assertRaisesRegex(RuntimeError, "thread nicht started"):
             handle._set_done()
 
     def test_start_duplicate_handle(self):
@@ -394,7 +394,7 @@ klasse BarrierTest(BasicThreadTest):
         mit self.running_mutex:
             self.running -= 1
             # Must release mutex before releasing done, sonst the main thread can
-            # exit and set mutex to Nichts als part of global teardown; then
+            # exit und set mutex to Nichts als part of global teardown; then
             # mutex.release() raises AttributeError.
             finished = self.running == 0
         wenn finished:

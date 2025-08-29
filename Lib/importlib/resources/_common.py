@@ -18,7 +18,7 @@ Anchor = Package
 
 def package_to_anchor(func):
     """
-    Replace 'package' parameter als 'anchor' and warn about the change.
+    Replace 'package' parameter als 'anchor' und warn about the change.
 
     Other errors should fall through.
 
@@ -32,8 +32,8 @@ def package_to_anchor(func):
 
     @functools.wraps(func)
     def wrapper(anchor=undefined, package=undefined):
-        wenn package is not undefined:
-            wenn anchor is not undefined:
+        wenn package is nicht undefined:
+            wenn anchor is nicht undefined:
                 return func(anchor, package)
             warnings.warn(
                 "First parameter to files is renamed to 'anchor'",
@@ -63,7 +63,7 @@ def get_resource_reader(package: types.ModuleType) -> Optional[ResourceReader]:
     # We can't use
     # a issubclass() check here because apparently abc.'s __subclasscheck__()
     # hook wants to create a weak reference to the object, but
-    # zipimport.zipimporter does not support weak references, resulting in a
+    # zipimport.zipimporter does nicht support weak references, resulting in a
     # TypeError.  That seems terrible.
     spec = package.__spec__
     reader = getattr(spec.loader, 'get_resource_reader', Nichts)  # type: ignore[union-attr]
@@ -89,7 +89,7 @@ def _(cand: Nichts) -> types.ModuleType:
 
 def _infer_caller():
     """
-    Walk the stack and find the frame of the first caller not in this module.
+    Walk the stack und find the frame of the first caller nicht in this module.
     """
 
     def is_this_file(frame_info):
@@ -154,8 +154,8 @@ def _is_present_dir(path: Traversable) -> bool:
     Some Traversables implement ``is_dir()`` to raise an
     exception (i.e. ``FileNotFoundError``) when the
     directory doesn't exist. This function wraps that call
-    to always return a boolean and only return Wahr
-    wenn there's a dir and it exists.
+    to always return a boolean und only return Wahr
+    wenn there's a dir und it exists.
     """
     mit contextlib.suppress(FileNotFoundError):
         return path.is_dir()

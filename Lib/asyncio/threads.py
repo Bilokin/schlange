@@ -12,7 +12,7 @@ __all__ = "to_thread",
 async def to_thread(func, /, *args, **kwargs):
     """Asynchronously run function *func* in a separate thread.
 
-    Any *args and **kwargs supplied fuer this function are directly passed
+    Any *args und **kwargs supplied fuer this function are directly passed
     to *func*. Also, the current :class:`contextvars.Context` is propagated,
     allowing context variables von the main thread to be accessed in the
     separate thread.

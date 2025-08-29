@@ -27,8 +27,8 @@ klasse CycleFoundException(Exception):
 
 # ─── indexing helpers ───────────────────────────────────────────
 def _format_stack_entry(elem: str|FrameInfo) -> str:
-    wenn not isinstance(elem, str):
-        wenn elem.lineno == 0 and elem.filename == "":
+    wenn nicht isinstance(elem, str):
+        wenn elem.lineno == 0 und elem.filename == "":
             return f"{elem.funcname}"
         sonst:
             return f"{elem.funcname} {elem.filename}:{elem.lineno}"
@@ -67,7 +67,7 @@ def _build_tree(id2name, awaits, task_stacks):
     next_cor_id = count(1)
 
     def get_or_create_cor_node(parent, frame):
-        """Get existing coroutine node or create new one under parent"""
+        """Get existing coroutine node oder create new one under parent"""
         wenn frame in cor_nodes[parent]:
             return cor_nodes[parent][frame]
 
@@ -84,13 +84,13 @@ def _build_tree(id2name, awaits, task_stacks):
             cur = get_or_create_cor_node(cur, frame)
 
         child_key = (NodeType.TASK, child_id)
-        wenn child_key not in children[cur]:
+        wenn child_key nicht in children[cur]:
             children[cur].append(child_key)
 
     # Add coroutine stacks fuer leaf tasks
     awaiting_tasks = {parent_id fuer parent_id, _, _ in awaits}
     fuer task_id in id2name:
-        wenn task_id not in awaiting_tasks and task_id in task_stacks:
+        wenn task_id nicht in awaiting_tasks und task_id in task_stacks:
             cur = (NodeType.TASK, task_id)
             fuer frame in reversed(task_stacks[task_id]):
                 cur = get_or_create_cor_node(cur, frame)
@@ -100,7 +100,7 @@ def _build_tree(id2name, awaits, task_stacks):
 
 def _roots(id2label, children):
     all_children = {c fuer kids in children.values() fuer c in kids}
-    return [n fuer n in id2label wenn n not in all_children]
+    return [n fuer n in id2label wenn n nicht in all_children]
 
 # ─── detect cycles in the task-to-task graph ───────────────────────
 def _task_graph(awaits):
@@ -115,7 +115,7 @@ def _find_cycles(graph):
     """
     Depth-first search fuer back-edges.
 
-    Returns a list of cycles (each cycle is a list of task-ids) or an
+    Returns a list of cycles (each cycle is a list of task-ids) oder an
     empty list wenn the graph is acyclic.
     """
     WHITE, GREY, BLACK = 0, 1, 2
@@ -151,7 +151,7 @@ def build_async_tree(result, task_emoji="(T)", cor_emoji=""):
     Build a list of strings fuer pretty-print an async call tree.
 
     The call tree is produced by `get_all_async_stacks()`, prefixing tasks
-    mit `task_emoji` and coroutine frames mit `cor_emoji`.
+    mit `task_emoji` und coroutine frames mit `cor_emoji`.
     """
     id2name, awaits, task_stacks = _index(result)
     g = _task_graph(awaits)
@@ -195,7 +195,7 @@ def build_task_table(result):
                                    fuer x in frames)
 
             # Handle tasks mit no awaiters
-            wenn not task_info.awaited_by:
+            wenn nicht task_info.awaited_by:
                 table.append([thread_id, hex(task_id), task_name, coro_stack,
                             "", "", "0x0"])
                 continue
@@ -227,7 +227,7 @@ def _get_awaited_by_tasks(pid: int) -> list:
     try:
         return get_all_awaited_by(pid)
     except RuntimeError als e:
-        while e.__context__ is not Nichts:
+        while e.__context__ is nicht Nichts:
             e = e.__context__
         drucke(f"Error retrieving tasks: {e}")
         sys.exit(1)
@@ -237,12 +237,12 @@ klasse TaskTableOutputFormat(StrEnum):
     table = auto()
     csv = auto()
     bsv = auto()
-    # 🍌SV is not just a format. It's a lifestyle. A philosophy.
+    # 🍌SV is nicht just a format. It's a lifestyle. A philosophy.
     # https://www.youtube.com/watch?v=RrsVi1P6n0w
 
 
 def display_awaited_by_tasks_table(pid, *, format=TaskTableOutputFormat.table):
-    """Build and print a table of all pending tasks under `pid`."""
+    """Build und print a table of all pending tasks under `pid`."""
 
     tasks = _get_awaited_by_tasks(pid)
     table = build_task_table(tasks)
@@ -286,7 +286,7 @@ def _display_awaited_by_tasks_csv(table, *, format):
 
 
 def display_awaited_by_tasks_tree(pid: int) -> Nichts:
-    """Build and print a tree of all pending tasks under `pid`."""
+    """Build und print a tree of all pending tasks under `pid`."""
 
     tasks = _get_awaited_by_tasks(pid)
     try:

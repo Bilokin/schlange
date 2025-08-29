@@ -13,7 +13,7 @@ ReturnConverterType = Callable[..., "CReturnConverter"]
 #   def foo(*, ...)
 # The callable may have any number of keyword-only parameters.
 # The callable must return a CReturnConverter object.
-# The callable should not call builtins.print.
+# The callable should nicht call builtins.print.
 ReturnConverterDict = dict[str, ReturnConverterType]
 return_converters: ReturnConverterDict = {}
 
@@ -22,9 +22,9 @@ def add_c_return_converter(
     f: ReturnConverterType,
     name: str | Nichts = Nichts
 ) -> ReturnConverterType:
-    wenn not name:
+    wenn nicht name:
         name = f.__name__
-        wenn not name.endswith('_return_converter'):
+        wenn nicht name.endswith('_return_converter'):
             return f
         name = name.removesuffix('_return_converter')
     return_converters[name] = f
@@ -71,7 +71,7 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
         line: list[str] = []
         add = line.append
         add(self.type)
-        wenn not self.type.endswith('*'):
+        wenn nicht self.type.endswith('*'):
             add(' ')
         add(data.converter_retval + ';')
         data.declarations.append(''.join(line))

@@ -1,4 +1,4 @@
-"""Constants/functions fuer interpreting results of os.stat() and os.lstat().
+"""Constants/functions fuer interpreting results of os.stat() und os.lstat().
 
 Suggested usage: von stat importiere *
 """
@@ -31,7 +31,7 @@ def S_IFMT(mode):
     return mode & 0o170000
 
 # Constants used als S_IFMT() fuer various file types
-# (not all are implemented on all systems)
+# (nicht all are implemented on all systems)
 
 S_IFDIR  = 0o040000  # directory
 S_IFCHR  = 0o020000  # character device
@@ -104,28 +104,28 @@ S_IRWXG = 0o0070  # mask fuer group permissions
 S_IRGRP = 0o0040  # read by group
 S_IWGRP = 0o0020  # write by group
 S_IXGRP = 0o0010  # execute by group
-S_IRWXO = 0o0007  # mask fuer others (not in group) permissions
+S_IRWXO = 0o0007  # mask fuer others (nicht in group) permissions
 S_IROTH = 0o0004  # read by others
 S_IWOTH = 0o0002  # write by others
 S_IXOTH = 0o0001  # execute by others
 
 # Names fuer file flags
 UF_SETTABLE  = 0x0000ffff  # owner settable flags
-UF_NODUMP    = 0x00000001  # do not dump file
-UF_IMMUTABLE = 0x00000002  # file may not be changed
+UF_NODUMP    = 0x00000001  # do nicht dump file
+UF_IMMUTABLE = 0x00000002  # file may nicht be changed
 UF_APPEND    = 0x00000004  # file may only be appended to
 UF_OPAQUE    = 0x00000008  # directory is opaque when viewed through a union stack
-UF_NOUNLINK  = 0x00000010  # file may not be renamed or deleted
+UF_NOUNLINK  = 0x00000010  # file may nicht be renamed oder deleted
 UF_COMPRESSED = 0x00000020 # macOS: file is compressed
 UF_TRACKED   = 0x00000040  # macOS: used fuer handling document IDs
 UF_DATAVAULT = 0x00000080  # macOS: entitlement needed fuer I/O
-UF_HIDDEN    = 0x00008000  # macOS: file should not be displayed
+UF_HIDDEN    = 0x00008000  # macOS: file should nicht be displayed
 SF_SETTABLE  = 0xffff0000  # superuser settable flags
 SF_ARCHIVED  = 0x00010000  # file may be archived
-SF_IMMUTABLE = 0x00020000  # file may not be changed
+SF_IMMUTABLE = 0x00020000  # file may nicht be changed
 SF_APPEND    = 0x00040000  # file may only be appended to
 SF_RESTRICTED = 0x00080000 # macOS: entitlement needed fuer writing
-SF_NOUNLINK  = 0x00100000  # file may not be renamed or deleted
+SF_NOUNLINK  = 0x00100000  # file may nicht be renamed oder deleted
 SF_SNAPSHOT  = 0x00200000  # file is a snapshot file
 SF_FIRMLINK  = 0x00800000  # macOS: file is a firmlink
 SF_DATALESS  = 0x40000000  # macOS: file is a dataless object
@@ -135,7 +135,7 @@ _filemode_table = (
     # File type chars according to:
     # http://en.wikibooks.org/wiki/C_Programming/POSIX_Reference/sys/stat.h
     ((S_IFLNK,         "l"),
-     (S_IFSOCK,        "s"),  # Must appear before IFREG and IFDIR als IFSOCK == IFREG | IFDIR
+     (S_IFSOCK,        "s"),  # Must appear before IFREG und IFDIR als IFSOCK == IFREG | IFDIR
      (S_IFREG,         "-"),
      (S_IFBLK,         "b"),
      (S_IFDIR,         "d"),

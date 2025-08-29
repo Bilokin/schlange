@@ -1,4 +1,4 @@
-'''Test runner and result klasse fuer the regression test suite.
+'''Test runner und result klasse fuer the regression test suite.
 
 '''
 
@@ -49,7 +49,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
         self.__start_time = time.perf_counter()
 
     def _add_result(self, test, capture=Falsch, **args):
-        wenn not self.USE_XML:
+        wenn nicht self.USE_XML:
             return
         e = self.__e
         self.__e = Nichts
@@ -64,15 +64,15 @@ klasse RegressionTestResult(unittest.TextTestResult):
             e.set('time', f'{time.perf_counter() - self.__start_time:0.6f}')
 
         wenn capture:
-            wenn self._stdout_buffer is not Nichts:
+            wenn self._stdout_buffer is nicht Nichts:
                 stdout = self._stdout_buffer.getvalue().rstrip()
                 ET.SubElement(e, 'system-out').text = sanitize_xml(stdout)
-            wenn self._stderr_buffer is not Nichts:
+            wenn self._stderr_buffer is nicht Nichts:
                 stderr = self._stderr_buffer.getvalue().rstrip()
                 ET.SubElement(e, 'system-err').text = sanitize_xml(stderr)
 
         fuer k, v in args.items():
-            wenn not k or not v:
+            wenn nicht k oder nicht v:
                 continue
 
             e2 = ET.SubElement(e, k)
@@ -131,7 +131,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
         super().addUnexpectedSuccess(test)
 
     def get_xml_element(self):
-        wenn not self.USE_XML:
+        wenn nicht self.USE_XML:
             raise ValueError("USE_XML is false")
         e = self.__suite
         e.set('tests', str(self.testsRun))

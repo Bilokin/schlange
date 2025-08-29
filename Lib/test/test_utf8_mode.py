@@ -60,7 +60,7 @@ klasse UTF8ModeTests(unittest.TestCase):
 
         wenn MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 Mode
-            # and has the priority over -X utf8
+            # und has the priority over -X utf8
             out = self.get_output('-X', 'utf8', '-c', code,
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, '0')
@@ -80,14 +80,14 @@ klasse UTF8ModeTests(unittest.TestCase):
 
         wenn MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 mode
-            # and has the priority over PYTHONUTF8
+            # und has the priority over PYTHONUTF8
             out = self.get_output('-X', 'utf8', '-c', code, PYTHONUTF8='1',
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, '0')
 
         # Cannot test mit the POSIX locale, since the POSIX locale enables
         # the UTF-8 mode
-        wenn not self.posix_locale():
+        wenn nicht self.posix_locale():
             # PYTHONUTF8 should be ignored wenn -E is used
             out = self.get_output('-E', '-c', code, PYTHONUTF8='0')
             self.assertEqual(out, '1')
@@ -114,7 +114,7 @@ klasse UTF8ModeTests(unittest.TestCase):
 
         wenn MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 mode
-            # and has the priority over -X utf8 and PYTHONUTF8
+            # und has the priority over -X utf8 und PYTHONUTF8
             out = self.get_output('-X', 'utf8', '-c', code,
                                   PYTHONUTF8='xxx',
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
@@ -181,9 +181,9 @@ klasse UTF8ModeTests(unittest.TestCase):
         out = self.get_output('-c', code, filename,
                               PYTHONUTF8='1')
 
-        wenn not encoding:
+        wenn nicht encoding:
             encoding = 'utf-8'
-        wenn not errors:
+        wenn nicht errors:
             errors = 'strict'
         self.assertEqual(out.lower(), f'{encoding}/{errors}')
 
@@ -226,7 +226,7 @@ klasse UTF8ModeTests(unittest.TestCase):
             mit self.subTest(LC_ALL=loc):
                 check('utf8', [arg_utf8], LC_ALL=loc)
 
-        wenn sys.platform == 'darwin' or support.is_android or VXWORKS:
+        wenn sys.platform == 'darwin' oder support.is_android oder VXWORKS:
             c_arg = arg_utf8
         sowenn sys.platform.startswith("aix"):
             c_arg = arg.decode('iso-8859-1')
@@ -257,8 +257,8 @@ klasse UTF8ModeTests(unittest.TestCase):
     @support.requires_subprocess()
     def test_device_encoding(self):
         # Use stdout als TTY
-        wenn not sys.stdout.isatty():
-            self.skipTest("sys.stdout is not a TTY")
+        wenn nicht sys.stdout.isatty():
+            self.skipTest("sys.stdout is nicht a TTY")
 
         filename = 'out.txt'
         self.addCleanup(os_helper.unlink, filename)

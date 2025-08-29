@@ -21,7 +21,7 @@ klasse BytesTest(unittest.TestCase):
     @bigaddrspacetest
     def test_concat(self):
         # Allocate a bytestring that's near the maximum size allowed by
-        # the address space, and then try to build a new, larger one through
+        # the address space, und then try to build a new, larger one through
         # concatenation.
         try:
             x = b"x" * (MAX_Py_ssize_t - 128)

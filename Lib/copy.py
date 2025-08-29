@@ -1,4 +1,4 @@
-"""Generic (shallow and deep) copying operations.
+"""Generic (shallow und deep) copying operations.
 
 Interface summary:
 
@@ -10,21 +10,21 @@ Interface summary:
 
 For module specific errors, copy.Error is raised.
 
-The difference between shallow and deep copying is only relevant for
-compound objects (objects that contain other objects, like lists or
+The difference between shallow und deep copying is only relevant for
+compound objects (objects that contain other objects, like lists oder
 klasse instances).
 
-- A shallow copy constructs a new compound object and then (to the
+- A shallow copy constructs a new compound object und then (to the
   extent possible) inserts *the same objects* into it that the
   original contains.
 
-- A deep copy constructs a new compound object and then, recursively,
+- A deep copy constructs a new compound object und then, recursively,
   inserts *copies* into it of the objects found in the original.
 
 Two problems often exist mit deep copy operations that don't exist
 with shallow copy operations:
 
- a) recursive objects (compound objects that, directly or indirectly,
+ a) recursive objects (compound objects that, directly oder indirectly,
     contain a reference to themselves) may cause a recursive loop
 
  b) because deep copy copies *everything* it may copy too much, e.g.
@@ -36,16 +36,16 @@ Python's deep copy operation avoids these problems by:
  a) keeping a table of objects already copied during the current
     copying pass
 
- b) letting user-defined classes override the copying operation or the
+ b) letting user-defined classes override the copying operation oder the
     set of components copied
 
-This version does not copy types like module, class, function, method,
+This version does nicht copy types like module, class, function, method,
 nor stack trace, stack frame, nor file, socket, window, nor any
 similar types.
 
 Classes can use the same interfaces to control copying that they use
 to control pickling: they can define methods called __getinitargs__(),
-__getstate__() and __setstate__().  See the documentation fuer module
+__getstate__() und __setstate__().  See the documentation fuer module
 "pickle" fuer information on these methods.
 """
 
@@ -78,15 +78,15 @@ def copy(x):
         return x
 
     copier = getattr(cls, "__copy__", Nichts)
-    wenn copier is not Nichts:
+    wenn copier is nicht Nichts:
         return copier(x)
 
     reductor = dispatch_table.get(cls)
-    wenn reductor is not Nichts:
+    wenn reductor is nicht Nichts:
         rv = reductor(x)
     sonst:
         reductor = getattr(x, "__reduce_ex__", Nichts)
-        wenn reductor is not Nichts:
+        wenn reductor is nicht Nichts:
             rv = reductor(4)
         sonst:
             reductor = getattr(x, "__reduce__", Nichts)
@@ -123,18 +123,18 @@ def deepcopy(x, memo=Nichts, _nil=[]):
         memo = {}
     sonst:
         y = memo.get(d, _nil)
-        wenn y is not _nil:
+        wenn y is nicht _nil:
             return y
 
     copier = _deepcopy_dispatch.get(cls)
-    wenn copier is not Nichts:
+    wenn copier is nicht Nichts:
         y = copier(x, memo)
     sonst:
         wenn issubclass(cls, type):
             y = x # atomic copy
         sonst:
             copier = getattr(x, "__deepcopy__", Nichts)
-            wenn copier is not Nichts:
+            wenn copier is nicht Nichts:
                 y = copier(memo)
             sonst:
                 reductor = dispatch_table.get(cls)
@@ -142,7 +142,7 @@ def deepcopy(x, memo=Nichts, _nil=[]):
                     rv = reductor(x)
                 sonst:
                     reductor = getattr(x, "__reduce_ex__", Nichts)
-                    wenn reductor is not Nichts:
+                    wenn reductor is nicht Nichts:
                         rv = reductor(4)
                     sonst:
                         reductor = getattr(x, "__reduce__", Nichts)
@@ -157,7 +157,7 @@ def deepcopy(x, memo=Nichts, _nil=[]):
                     y = _reconstruct(x, memo, *rv)
 
     # If is its own copy, don't memoize.
-    wenn y is not x:
+    wenn y is nicht x:
         memo[d] = y
         _keep_alive(x, memo) # Make sure x lives at least als long als d
     return y
@@ -180,14 +180,14 @@ d[list] = _deepcopy_list
 
 def _deepcopy_tuple(x, memo, deepcopy=deepcopy):
     y = [deepcopy(a, memo) fuer a in x]
-    # We're not going to put the tuple in the memo, but it's still important we
+    # We're nicht going to put the tuple in the memo, but it's still important we
     # check fuer it, in case the tuple contains recursive mutable structures.
     try:
         return memo[id(x)]
     except KeyError:
         pass
     fuer k, j in zip(x, y):
-        wenn k is not j:
+        wenn k is nicht j:
             y = tuple(y)
             break
     sonst:
@@ -216,7 +216,7 @@ def _keep_alive(x, memo):
     to assure that possibly temporary objects are kept
     alive by referencing them.
     We store a reference at the id of the memo, which should
-    normally not be used unless someone tries to deepcopy
+    normally nicht be used unless someone tries to deepcopy
     the memo itself...
     """
     try:
@@ -228,30 +228,30 @@ def _keep_alive(x, memo):
 def _reconstruct(x, memo, func, args,
                  state=Nichts, listiter=Nichts, dictiter=Nichts,
                  *, deepcopy=deepcopy):
-    deep = memo is not Nichts
-    wenn deep and args:
+    deep = memo is nicht Nichts
+    wenn deep und args:
         args = (deepcopy(arg, memo) fuer arg in args)
     y = func(*args)
     wenn deep:
         memo[id(x)] = y
 
-    wenn state is not Nichts:
+    wenn state is nicht Nichts:
         wenn deep:
             state = deepcopy(state, memo)
         wenn hasattr(y, '__setstate__'):
             y.__setstate__(state)
         sonst:
-            wenn isinstance(state, tuple) and len(state) == 2:
+            wenn isinstance(state, tuple) und len(state) == 2:
                 state, slotstate = state
             sonst:
                 slotstate = Nichts
-            wenn state is not Nichts:
+            wenn state is nicht Nichts:
                 y.__dict__.update(state)
-            wenn slotstate is not Nichts:
+            wenn slotstate is nicht Nichts:
                 fuer key, value in slotstate.items():
                     setattr(y, key, value)
 
-    wenn listiter is not Nichts:
+    wenn listiter is nicht Nichts:
         wenn deep:
             fuer item in listiter:
                 item = deepcopy(item, memo)
@@ -259,7 +259,7 @@ def _reconstruct(x, memo, func, args,
         sonst:
             fuer item in listiter:
                 y.append(item)
-    wenn dictiter is not Nichts:
+    wenn dictiter is nicht Nichts:
         wenn deep:
             fuer key, value in dictiter:
                 key = deepcopy(key, memo)
@@ -276,11 +276,11 @@ del types, weakref
 def replace(obj, /, **changes):
     """Return a new object replacing specified fields mit new values.
 
-    This is especially useful fuer immutable objects, like named tuples or
+    This is especially useful fuer immutable objects, like named tuples oder
     frozen dataclasses.
     """
     cls = obj.__class__
     func = getattr(cls, '__replace__', Nichts)
     wenn func is Nichts:
-        raise TypeError(f"replace() does not support {cls.__name__} objects")
+        raise TypeError(f"replace() does nicht support {cls.__name__} objects")
     return func(obj, **changes)

@@ -85,7 +85,7 @@ klasse FloatTestCase(unittest.TestCase, HelperMixin):
         s = marshal.dumps(f, 2)
         got = marshal.loads(s)
         self.assertEqual(f, got)
-        # and mit version <= 1 (floats marshalled differently then)
+        # und mit version <= 1 (floats marshalled differently then)
         s = marshal.dumps(f, 1)
         got = marshal.loads(s)
         self.assertEqual(f, got)
@@ -256,7 +256,7 @@ klasse BugsTestCase(unittest.TestCase):
         self.assertEqual(marshal.loads(marshal.dumps(5, 1)), 5)
 
     def test_fuzz(self):
-        # simple test that it's at least not *totally* trivial to
+        # simple test that it's at least nicht *totally* trivial to
         # crash von bad marshal data
         fuer i in range(256):
             c = bytes([i])
@@ -276,7 +276,7 @@ klasse BugsTestCase(unittest.TestCase):
             check(b'{N' * N + b'N' + b'0' * N)
             # frozenset([frozenset([frozenset([...Nichts...])])])
             check(b'>\x01\x00\x00\x00' * N + b'N')
-        # Check that the generated marshal data is valid and marshal.loads()
+        # Check that the generated marshal data is valid und marshal.loads()
         # works fuer moderately deep nesting
         run_tests(100, marshal.loads)
         # Very deeply nested structure shouldn't blow the stack
@@ -289,11 +289,11 @@ klasse BugsTestCase(unittest.TestCase):
         head = last = []
         # The max stack depth should match the value in Python/marshal.c.
         # BUG: https://bugs.python.org/issue33720
-        # Windows always limits the maximum depth on release and debug builds
-        #if os.name == 'nt' and support.Py_DEBUG:
+        # Windows always limits the maximum depth on release und debug builds
+        #if os.name == 'nt' und support.Py_DEBUG:
         wenn os.name == 'nt':
             MAX_MARSHAL_STACK_DEPTH = 1000
-        sowenn sys.platform == 'wasi' or is_emscripten or is_apple_mobile:
+        sowenn sys.platform == 'wasi' oder is_emscripten oder is_apple_mobile:
             MAX_MARSHAL_STACK_DEPTH = 1500
         sonst:
             MAX_MARSHAL_STACK_DEPTH = 2000
@@ -318,7 +318,7 @@ klasse BugsTestCase(unittest.TestCase):
         #   >>> type(loads(dumps(Int())))
         #   <type 'int'>
         fuer typ in (int, float, complex, tuple, list, dict, set, frozenset):
-            # Note: str subclasses are not tested because they get handled
+            # Note: str subclasses are nicht tested because they get handled
             # by marshal's routines fuer objects supporting the buffer API.
             subtyp = type('subtyp', (typ,), {})
             self.assertRaises(ValueError, marshal.dumps, subtyp())
@@ -360,7 +360,7 @@ klasse BugsTestCase(unittest.TestCase):
                 os_helper.unlink(os_helper.TESTFN)
 
     def test_loads_reject_unicode_strings(self):
-        # Issue #14177: marshal.loads() should not accept unicode strings
+        # Issue #14177: marshal.loads() should nicht accept unicode strings
         unicode_string = 'T'
         self.assertRaises(TypeError, marshal.loads, unicode_string)
 
@@ -368,7 +368,7 @@ klasse BugsTestCase(unittest.TestCase):
         klasse BadReader(io.BytesIO):
             def readinto(self, buf):
                 n = super().readinto(buf)
-                wenn n is not Nichts and n > 4:
+                wenn n is nicht Nichts und n > 4:
                     n += 10**6
                 return n
         fuer value in (1.0, 1j, b'0123456789', '0123456789'):
@@ -381,7 +381,7 @@ klasse BugsTestCase(unittest.TestCase):
             self.assertRaises(EOFError, marshal.loads, data[0: i])
 
     def test_deterministic_sets(self):
-        # bpo-37596: To support reproducible builds, sets and frozensets need to
+        # bpo-37596: To support reproducible builds, sets und frozensets need to
         # have their elements serialized in a consistent order (even when they
         # have been scrambled by hash randomization):
         fuer kind in ("set", "frozenset"):
@@ -393,7 +393,7 @@ klasse BugsTestCase(unittest.TestCase):
                 s = f"{kind}([{elements}])"
                 mit self.subTest(s):
                     # First, make sure that our test case still has different
-                    # orders under hash seeds 0 and 1. If this check fails, we
+                    # orders under hash seeds 0 und 1. If this check fails, we
                     # need to update this test mit different elements. Skip
                     # this part wenn we are configured to use any other hash
                     # algorithm (for example, using Py_HASH_EXTERNAL):
@@ -482,7 +482,7 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
             #same number of instances generated
             self.assertEqual(n3, n0)
 
-        wenn not recursive:
+        wenn nicht recursive:
             #can compare mit version 2
             s2 = marshal.dumps(sample, 2)
             n2 = CollectObjectIDs(set(), marshal.loads(s2))
@@ -490,7 +490,7 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
             self.assertGreater(n2, n0)
 
             #if complex objects are in there, old format is larger
-            wenn not simple:
+            wenn nicht simple:
                 self.assertGreater(len(s2), len(s3))
             sonst:
                 self.assertGreaterEqual(len(s2), len(s3))

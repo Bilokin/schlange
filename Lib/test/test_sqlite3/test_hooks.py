@@ -4,21 +4,21 @@
 #
 # This file is part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
+# This software is provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
-# including commercial applications, and to alter it and redistribute it
+# including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked als such, and must not be
+#    appreciated but is nicht required.
+# 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
-# 3. This notice may not be removed or altered von any source distribution.
+# 3. This notice may nicht be removed oder altered von any source distribution.
 
 importiere contextlib
 importiere sqlite3 als sqlite
@@ -77,7 +77,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
             """
         result = self.con.execute(sql).fetchall()
         self.assertEqual(result, [('c',), ('b',), ('a',)],
-                         msg='the expected order was not returned')
+                         msg='the expected order was nicht returned')
 
         self.con.create_collation("mycoll", Nichts)
         mit self.assertRaises(sqlite.OperationalError) als cm:
@@ -100,7 +100,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
             """
         result = self.con.execute(sql).fetchall()
         self.assertEqual(result, [('c',), ('b',), ('a',)],
-                         msg="the expected order was not returned")
+                         msg="the expected order was nicht returned")
 
     def test_collation_register_twice(self):
         """
@@ -194,7 +194,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
         con.set_progress_handler(progress, 1)
         con.set_progress_handler(Nichts, 1)
         con.execute("select 1 union select 2 union select 3").fetchall()
-        self.assertEqual(action, 0, "progress handler was not cleared")
+        self.assertEqual(action, 0, "progress handler was nicht cleared")
 
     @with_tracebacks(ZeroDivisionError, msg_regex="bad_progress")
     def test_error_in_progress_handler(self):
@@ -260,7 +260,7 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
         con.set_trace_callback(trace)
         con.set_trace_callback(Nichts)
         con.execute("create table foo(a, b)")
-        self.assertFalsch(traced_statements, "trace callback was not cleared")
+        self.assertFalsch(traced_statements, "trace callback was nicht cleared")
 
     def test_unicode_content(self):
         """

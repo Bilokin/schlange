@@ -177,7 +177,7 @@ klasse TestClassGetitem(unittest.TestCase):
     def test_class_getitem_inheritance_2(self):
         klasse C:
             def __class_getitem__(cls, item):
-                return 'Should not see this'
+                return 'Should nicht see this'
         klasse D(C):
             def __class_getitem__(cls, item):
                 return f'{cls.__name__}[{item.__name__}]'
@@ -237,7 +237,7 @@ klasse TestClassGetitem(unittest.TestCase):
 
         klasse E: ...
         e = E()
-        e.__class_getitem__ = lambda cls, item: 'This will not work'
+        e.__class_getitem__ = lambda cls, item: 'This will nicht work'
         mit self.assertRaises(TypeError):
             e[int]
 

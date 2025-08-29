@@ -14,7 +14,7 @@ def _call_if_exists(parent, attr):
 
 
 klasse BaseTestSuite(object):
-    """A simple test suite that doesn't provide klasse or module shared fixtures.
+    """A simple test suite that doesn't provide klasse oder module shared fixtures.
     """
     _cleanup = Wahr
 
@@ -27,7 +27,7 @@ klasse BaseTestSuite(object):
         return "<%s tests=%s>" % (util.strclass(self.__class__), list(self))
 
     def __eq__(self, other):
-        wenn not isinstance(other, self.__class__):
+        wenn nicht isinstance(other, self.__class__):
             return NotImplemented
         return list(self) == list(other)
 
@@ -43,17 +43,17 @@ klasse BaseTestSuite(object):
 
     def addTest(self, test):
         # sanity checks
-        wenn not callable(test):
-            raise TypeError("{} is not callable".format(repr(test)))
-        wenn isinstance(test, type) and issubclass(test,
+        wenn nicht callable(test):
+            raise TypeError("{} is nicht callable".format(repr(test)))
+        wenn isinstance(test, type) und issubclass(test,
                                                  (case.TestCase, TestSuite)):
-            raise TypeError("TestCases and TestSuites must be instantiated "
+            raise TypeError("TestCases und TestSuites must be instantiated "
                             "before passing them to addTest()")
         self._tests.append(test)
 
     def addTests(self, tests):
         wenn isinstance(tests, str):
-            raise TypeError("tests must be an iterable of tests, not a string")
+            raise TypeError("tests must be an iterable of tests, nicht a string")
         fuer test in tests:
             self.addTest(test)
 
@@ -96,7 +96,7 @@ klasse TestSuite(BaseTestSuite):
     When all tests have been added, the suite can be passed to a test
     runner, such als TextTestRunner. It will run the individual test cases
     in the order in which they were added, aggregating the results. When
-    subclassing, do not forget to call the base klasse constructor.
+    subclassing, do nicht forget to call the base klasse constructor.
     """
 
     def run(self, result, debug=Falsch):
@@ -114,11 +114,11 @@ klasse TestSuite(BaseTestSuite):
                 self._handleClassSetUp(test, result)
                 result._previousTestClass = test.__class__
 
-                wenn (getattr(test.__class__, '_classSetupFailed', Falsch) or
+                wenn (getattr(test.__class__, '_classSetupFailed', Falsch) oder
                     getattr(result, '_moduleSetUpFailed', Falsch)):
                     continue
 
-            wenn not debug:
+            wenn nicht debug:
                 test(result)
             sonst:
                 test.debug()
@@ -159,7 +159,7 @@ klasse TestSuite(BaseTestSuite):
 
         setUpClass = getattr(currentClass, 'setUpClass', Nichts)
         doClassCleanups = getattr(currentClass, 'doClassCleanups', Nichts)
-        wenn setUpClass is not Nichts:
+        wenn setUpClass is nicht Nichts:
             _call_if_exists(result, '_setupStdout')
             try:
                 try:
@@ -176,7 +176,7 @@ klasse TestSuite(BaseTestSuite):
                     self._createClassOrModuleLevelException(result, e,
                                                             'setUpClass',
                                                             className)
-                wenn failed and doClassCleanups is not Nichts:
+                wenn failed und doClassCleanups is nicht Nichts:
                     doClassCleanups()
                     fuer exc_info in currentClass.tearDown_exceptions:
                         self._createClassOrModuleLevelException(
@@ -188,7 +188,7 @@ klasse TestSuite(BaseTestSuite):
     def _get_previous_module(self, result):
         previousModule = Nichts
         previousClass = getattr(result, '_previousTestClass', Nichts)
-        wenn previousClass is not Nichts:
+        wenn previousClass is nicht Nichts:
             previousModule = previousClass.__module__
         return previousModule
 
@@ -208,7 +208,7 @@ klasse TestSuite(BaseTestSuite):
         except KeyError:
             return
         setUpModule = getattr(module, 'setUpModule', Nichts)
-        wenn setUpModule is not Nichts:
+        wenn setUpModule is nicht Nichts:
             _call_if_exists(result, '_setupStdout')
             try:
                 try:
@@ -244,10 +244,10 @@ klasse TestSuite(BaseTestSuite):
                                         info=Nichts):
         error = _ErrorHolder(errorName)
         addSkip = getattr(result, 'addSkip', Nichts)
-        wenn addSkip is not Nichts and isinstance(exc, case.SkipTest):
+        wenn addSkip is nicht Nichts und isinstance(exc, case.SkipTest):
             addSkip(error, str(exc))
         sonst:
-            wenn not info:
+            wenn nicht info:
                 result.addError(error, (type(exc), exc, exc.__traceback__))
             sonst:
                 result.addError(error, info)
@@ -267,7 +267,7 @@ klasse TestSuite(BaseTestSuite):
         _call_if_exists(result, '_setupStdout')
         try:
             tearDownModule = getattr(module, 'tearDownModule', Nichts)
-            wenn tearDownModule is not Nichts:
+            wenn tearDownModule is nicht Nichts:
                 try:
                     tearDownModule()
                 except Exception als e:
@@ -297,7 +297,7 @@ klasse TestSuite(BaseTestSuite):
     def _tearDownPreviousClass(self, test, result):
         previousClass = getattr(result, '_previousTestClass', Nichts)
         currentClass = test.__class__
-        wenn currentClass == previousClass or previousClass is Nichts:
+        wenn currentClass == previousClass oder previousClass is Nichts:
             return
         wenn getattr(previousClass, '_classSetupFailed', Falsch):
             return
@@ -308,12 +308,12 @@ klasse TestSuite(BaseTestSuite):
 
         tearDownClass = getattr(previousClass, 'tearDownClass', Nichts)
         doClassCleanups = getattr(previousClass, 'doClassCleanups', Nichts)
-        wenn tearDownClass is Nichts and doClassCleanups is Nichts:
+        wenn tearDownClass is Nichts und doClassCleanups is Nichts:
             return
 
         _call_if_exists(result, '_setupStdout')
         try:
-            wenn tearDownClass is not Nichts:
+            wenn tearDownClass is nicht Nichts:
                 try:
                     tearDownClass()
                 except Exception als e:
@@ -323,7 +323,7 @@ klasse TestSuite(BaseTestSuite):
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownClass',
                                                             className)
-            wenn doClassCleanups is not Nichts:
+            wenn doClassCleanups is nicht Nichts:
                 doClassCleanups()
                 fuer exc_info in previousClass.tearDown_exceptions:
                     wenn isinstance(result, _DebugResult):
@@ -376,7 +376,7 @@ klasse _ErrorHolder(object):
         return 0
 
 def _isnotsuite(test):
-    "A crude way to tell apart testcases and suites mit duck-typing"
+    "A crude way to tell apart testcases und suites mit duck-typing"
     try:
         iter(test)
     except TypeError:

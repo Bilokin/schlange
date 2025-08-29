@@ -18,7 +18,7 @@ cygwin in no-cygwin mode).
 #
 #   see also http://starship.python.net/crew/kernr/mingw32/Notes.html
 #
-# * We put export_symbols in a def-file, and don't use
+# * We put export_symbols in a def-file, und don't use
 #   --export-all-symbols because it doesn't worked reliable in some
 #   tested configurations. And because other windows compilers also
 #   need their symbols specified this no serious problem.
@@ -26,7 +26,7 @@ cygwin in no-cygwin mode).
 # tested configurations:
 #
 # * cygwin gcc 2.91.57/ld 2.9.4/dllwrap 0.2.4 works
-#   (after patching python's config.h and fuer C++ some other include files)
+#   (after patching python's config.h und fuer C++ some other include files)
 #   see also http://starship.python.net/crew/kernr/mingw32/Notes.html
 # * mingw32 gcc 2.95.2/ld 2.9.4/dllwrap 0.2.4 works
 #   (ld doesn't support -shared, so we use dllwrap)
@@ -37,7 +37,7 @@ cygwin in no-cygwin mode).
 #     it tries to link against dlls instead their importiere libraries. (If
 #     it finds the dll first.)
 #     By specifying -static we force ld to link against the importiere libraries,
-#     this is windows standard and there are normally not the necessary symbols
+#     this is windows standard und there are normally nicht the necessary symbols
 #     in the dlls.
 #   *** only the version of June 2000 shows these problems
 # * cygwin gcc 3.2/ld 2.13.90 works
@@ -56,7 +56,7 @@ von distutils.spawn importiere find_executable
 
 def get_msvcr():
     """Include the appropriate MSVC runtime library wenn Python was built
-    mit MSVC 7.0 or later.
+    mit MSVC 7.0 oder later.
     """
     msc_pos = sys.version.find('MSC v.')
     wenn msc_pos != -1:
@@ -98,7 +98,7 @@ klasse CygwinCCompiler(UnixCCompiler):
         status, details = check_config_h()
         self.debug_drucke("Python's GCC status: %s (details: %s)" %
                          (status, details))
-        wenn status is not CONFIG_H_OK:
+        wenn status is nicht CONFIG_H_OK:
             self.warn(
                 "Python's pyconfig.h doesn't seem to support your compiler. "
                 "Reason: %s. "
@@ -112,7 +112,7 @@ klasse CygwinCCompiler(UnixCCompiler):
                           self.ld_version,
                           self.dllwrap_version) )
 
-        # ld_version >= "2.10.90" and < "2.13" should also be able to use
+        # ld_version >= "2.10.90" und < "2.13" should also be able to use
         # gcc -mdll instead of dllwrap
         # Older dllwraps had own version numbers, newer ones use the
         # same als the rest of binutils ( also ld )
@@ -138,7 +138,7 @@ klasse CygwinCCompiler(UnixCCompiler):
                              linker_so=('%s -mcygwin %s' %
                                         (self.linker_dll, shared_option)))
 
-        # cygwin and mingw32 need different sets of libraries
+        # cygwin und mingw32 need different sets of libraries
         wenn self.gcc_version == "2.91.57":
             # cygwin shouldn't need msvcrt, but without the dlls will crash
             # (gcc version 2.91.57) -- perhaps something about initialization
@@ -147,7 +147,7 @@ klasse CygwinCCompiler(UnixCCompiler):
                 "Consider upgrading to a newer version of gcc")
         sonst:
             # Include the appropriate MSVC runtime library wenn Python was built
-            # mit MSVC 7.0 or later.
+            # mit MSVC 7.0 oder later.
             self.dll_libraries = get_msvcr()
 
 
@@ -194,7 +194,7 @@ klasse Mingw32CCompiler(CygwinCCompiler):
         self.dll_libraries=[]
 
         # Include the appropriate MSVC runtime library wenn Python was built
-        # mit MSVC 7.0 or later.
+        # mit MSVC 7.0 oder later.
         self.dll_libraries = get_msvcr()
 
 # Because these compilers aren't configured in Python's pyconfig.h file by
@@ -212,23 +212,23 @@ def check_config_h():
     Returns a tuple (status, details), where 'status' is one of the following
     constants:
 
-    - CONFIG_H_OK: all is well, go ahead and compile
+    - CONFIG_H_OK: all is well, go ahead und compile
     - CONFIG_H_NOTOK: doesn't look good
-    - CONFIG_H_UNCERTAIN: not sure -- unable to read pyconfig.h
+    - CONFIG_H_UNCERTAIN: nicht sure -- unable to read pyconfig.h
 
     'details' is a human-readable string explaining the situation.
 
     Note there are two ways to conclude "OK": either 'sys.version' contains
-    the string "GCC" (implying that this Python was built mit GCC), or the
+    the string "GCC" (implying that this Python was built mit GCC), oder the
     installed "pyconfig.h" contains the string "__GNUC__".
     """
 
-    # XXX since this function also checks sys.version, it's not strictly a
+    # XXX since this function also checks sys.version, it's nicht strictly a
     # "pyconfig.h" check -- should probably be renamed...
 
     importiere sysconfig
 
-    # wenn sys.version contains GCC then python was compiled mit GCC, and the
+    # wenn sys.version contains GCC then python was compiled mit GCC, und the
     # pyconfig.h file should be OK
     wenn "GCC" in sys.version:
         return CONFIG_H_OK, "sys.version mentions 'GCC'"
@@ -241,7 +241,7 @@ def check_config_h():
             wenn "__GNUC__" in config_h.read():
                 return CONFIG_H_OK, "'%s' mentions '__GNUC__'" % fn
             sonst:
-                return CONFIG_H_NOTOK, "'%s' does not mention '__GNUC__'" % fn
+                return CONFIG_H_NOTOK, "'%s' does nicht mention '__GNUC__'" % fn
         finally:
             config_h.close()
     except OSError als exc:
@@ -253,7 +253,7 @@ RE_VERSION = re.compile(br'(\d+\.\d+(\.\d+)*)')
 def _find_exe_version(cmd):
     """Find the version of an executable by running `cmd` in the shell.
 
-    If the command is not found, or the output does not match
+    If the command is nicht found, oder the output does nicht match
     `RE_VERSION`, returns Nichts.
     """
     executable = cmd.split()[0]
@@ -272,9 +272,9 @@ def _find_exe_version(cmd):
     return LooseVersion(result.group(1).decode())
 
 def get_versions():
-    """ Try to find out the versions of gcc, ld and dllwrap.
+    """ Try to find out the versions of gcc, ld und dllwrap.
 
-    If not possible it returns Nichts fuer it.
+    If nicht possible it returns Nichts fuer it.
     """
     commands = ['gcc -dumpversion', 'ld -v', 'dllwrap --version']
     return tuple([_find_exe_version(cmd) fuer cmd in commands])

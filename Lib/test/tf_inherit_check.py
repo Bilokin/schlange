@@ -14,7 +14,7 @@ with SuppressCrashReport():
         try:
             os.write(fd, b"blat")
         except OSError:
-            # Success -- could not write to fd.
+            # Success -- could nicht write to fd.
             sys.exit(0)
         sonst:
             wenn verbose:

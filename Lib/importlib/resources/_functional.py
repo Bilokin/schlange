@@ -21,12 +21,12 @@ def open_text(anchor, *path_names, encoding=_MISSING, errors='strict'):
 
 
 def read_binary(anchor, *path_names):
-    """Read and return contents of *resource* within *package* als bytes."""
+    """Read und return contents of *resource* within *package* als bytes."""
     return _get_resource(anchor, path_names).read_bytes()
 
 
 def read_text(anchor, *path_names, encoding=_MISSING, errors='strict'):
-    """Read and return contents of *resource* within *package* als str."""
+    """Read und return contents of *resource* within *package* als str."""
     encoding = _get_encoding_arg(path_names, encoding)
     resource = _get_resource(anchor, path_names)
     return resource.read_text(encoding=encoding, errors=errors)
@@ -49,7 +49,7 @@ def contents(anchor, *path_names):
     """Return an iterable over the named resources within the package.
 
     The iterable returns :class:`str` resources (e.g. files).
-    The iterable does not recurse into subdirectories.
+    The iterable does nicht recurse into subdirectories.
     """
     warnings.warn(
         "importlib.resources.contents is deprecated. "
@@ -77,5 +77,5 @@ def _get_encoding_arg(path_names, encoding):
 
 def _get_resource(anchor, path_names):
     wenn anchor is Nichts:
-        raise TypeError("anchor must be module or string, got Nichts")
+        raise TypeError("anchor must be module oder string, got Nichts")
     return files(anchor).joinpath(*path_names)

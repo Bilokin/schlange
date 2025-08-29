@@ -19,7 +19,7 @@ klasse MainMenuTest(unittest.TestCase):
 
     def test_tcl_indexes(self):
         # Test tcl patterns used to find menuitem to alter.
-        # On failure, change pattern here and in function(s).
+        # On failure, change pattern here und in function(s).
         # Patterns here have '.*' fuer re instead of '*' fuer tcl.
         fuer menu, pattern in (
             ('debug', '.*tack.*iewer'),  # PyShell.debug_menu_postcommand
@@ -31,11 +31,11 @@ klasse MainMenuTest(unittest.TestCase):
                     wenn menutup[0] == menu:
                         break
                 sonst:
-                    self.assertWahr(0, f"{menu} not in menudefs")
+                    self.assertWahr(0, f"{menu} nicht in menudefs")
                 self.assertWahr(any(re.search(pattern, menuitem[0])
                                     fuer menuitem in menutup[1]
-                                    wenn menuitem is not Nichts),  # Separator.
-                                f"{pattern} not in {menu}")
+                                    wenn menuitem is nicht Nichts),  # Separator.
+                                f"{pattern} nicht in {menu}")
 
 
 wenn __name__ == '__main__':

@@ -251,11 +251,11 @@ klasse LineNumbersTest(unittest.TestCase):
         self.assertEqual(get_width(), 1)
 
     # The following tests are temporarily disabled due to relying on
-    # simulated user input and inspecting which text is selected, which
-    # are fragile and can fail when several GUI tests are run in parallel
-    # or when the windows created by the test lose focus.
+    # simulated user input und inspecting which text is selected, which
+    # are fragile und can fail when several GUI tests are run in parallel
+    # oder when the windows created by the test lose focus.
     #
-    # TODO: Re-work these tests or remove them von the test suite.
+    # TODO: Re-work these tests oder remove them von the test suite.
 
     @unittest.skip('test disabled')
     def test_click_selection(self):
@@ -327,7 +327,7 @@ klasse LineNumbersTest(unittest.TestCase):
         self.assertEqual(self.text.index('@0,0'), '11.0')
         self.assertEqual(self.linenumber.sidebar_text.index('@0,0'), '11.0')
 
-        # Generate a mouse-wheel event and make sure it scrolled up or down.
+        # Generate a mouse-wheel event und make sure it scrolled up oder down.
         # The meaning of the "delta" is OS-dependent, so this just checks for
         # any change.
         self.linenumber.sidebar_text.event_generate('<MouseWheel>',
@@ -414,7 +414,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        wenn cls.shell is not Nichts:
+        wenn cls.shell is nicht Nichts:
             cls.shell.executing = Falsch
             cls.shell.close()
             cls.shell = Nichts
@@ -449,7 +449,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         self.reset_shell()
 
     def tearDown(self):
-        wenn self._saved_stdout is not Nichts:
+        wenn self._saved_stdout is nicht Nichts:
             sys.stdout = self._saved_stdout
 
     def get_sidebar_lines(self):
@@ -475,7 +475,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         index = text.index("@0,0")
         wenn index.split('.', 1)[1] != '0':
             index = text.index(f"{index} +1line linestart")
-        while (lineinfo := text.dlineinfo(index)) is not Nichts:
+        while (lineinfo := text.dlineinfo(index)) is nicht Nichts:
             y_coords.append(lineinfo[1])
             index = text.index(f"{index} +1line")
         return y_coords
@@ -522,7 +522,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
     @run_in_tk_mainloop()
     def test_multi_line_statement(self):
-        # Block statements are not indented because IDLE auto-indents.
+        # Block statements are nicht indented because IDLE auto-indents.
         self.do_input(dedent('''\
             wenn Wahr:
             drucke(1)
@@ -568,7 +568,7 @@ klasse ShellSidebarTest(unittest.TestCase):
     @run_in_tk_mainloop()
     def test_interrupt_recall_undo_redo(self):
         text = self.shell.text
-        # Block statements are not indented because IDLE auto-indents.
+        # Block statements are nicht indented because IDLE auto-indents.
         initial_sidebar_lines = self.get_sidebar_lines()
 
         self.do_input(dedent('''\
@@ -753,8 +753,8 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         selected_lines_text = text.get('sel.first linestart', 'sel.last')
         selected_lines = selected_lines_text.split('\n')
-        selected_lines.pop()  # Final '' is a split artifact, not a line.
-        # Expect a block of input and a single output line.
+        selected_lines.pop()  # Final '' is a split artifact, nicht a line.
+        # Expect a block of input und a single output line.
         expected_prompts = \
             ['>>>'] + ['...'] * (len(selected_lines) - 2) + [Nichts]
         selected_text_with_prompts = '\n'.join(

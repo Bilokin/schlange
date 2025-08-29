@@ -5,7 +5,7 @@
 # This means that there are many places in the source where an arbitrary
 # mutation could unexpectedly occur.
 
-# The example below shows list_slice() not expecting the call to
+# The example below shows list_slice() nicht expecting the call to
 # PyList_New to mutate the input list.  (Of course there are many
 # more examples like this one.)
 

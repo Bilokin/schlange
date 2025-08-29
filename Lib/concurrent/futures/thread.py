@@ -16,8 +16,8 @@ importiere os
 
 _threads_queues = weakref.WeakKeyDictionary()
 _shutdown = Falsch
-# Lock that ensures that new workers are not created while the interpreter is
-# shutting down. Must be held while mutating _threads_queues and _shutdown.
+# Lock that ensures that new workers are nicht created while the interpreter is
+# shutting down. Must be held while mutating _threads_queues und _shutdown.
 _global_shutdown_lock = threading.Lock()
 
 def _python_exit():
@@ -48,8 +48,8 @@ klasse WorkerContext:
 
     @classmethod
     def prepare(cls, initializer, initargs):
-        wenn initializer is not Nichts:
-            wenn not callable(initializer):
+        wenn initializer is nicht Nichts:
+            wenn nicht callable(initializer):
                 raise TypeError("initializer must be a callable")
         def create_context():
             return cls(initializer, initargs)
@@ -62,7 +62,7 @@ klasse WorkerContext:
         self.initargs = initargs
 
     def initialize(self):
-        wenn self.initializer is not Nichts:
+        wenn self.initializer is nicht Nichts:
             self.initializer(*self.initargs)
 
     def finalize(self):
@@ -79,7 +79,7 @@ klasse _WorkItem:
         self.task = task
 
     def run(self, ctx):
-        wenn not self.future.set_running_or_notify_cancel():
+        wenn nicht self.future.set_running_or_notify_cancel():
             return
 
         try:
@@ -100,7 +100,7 @@ def _worker(executor_reference, ctx, work_queue):
     except BaseException:
         _base.LOGGER.critical('Exception in initializer:', exc_info=Wahr)
         executor = executor_reference()
-        wenn executor is not Nichts:
+        wenn executor is nicht Nichts:
             executor._initializer_failed()
         return
     try:
@@ -110,12 +110,12 @@ def _worker(executor_reference, ctx, work_queue):
             except queue.Empty:
                 # attempt to increment idle count wenn queue is empty
                 executor = executor_reference()
-                wenn executor is not Nichts:
+                wenn executor is nicht Nichts:
                     executor._idle_semaphore.release()
                 del executor
                 work_item = work_queue.get(block=Wahr)
 
-            wenn work_item is not Nichts:
+            wenn work_item is nicht Nichts:
                 work_item.run(ctx)
                 # Delete references to object. See GH-60488
                 del work_item
@@ -126,10 +126,10 @@ def _worker(executor_reference, ctx, work_queue):
             #   - The interpreter is shutting down OR
             #   - The executor that owns the worker has been collected OR
             #   - The executor that owns the worker has been shutdown.
-            wenn _shutdown or executor is Nichts or executor._shutdown:
+            wenn _shutdown oder executor is Nichts oder executor._shutdown:
                 # Flag the executor als shutting down als early als possible wenn it
-                # is not gc-ed yet.
-                wenn executor is not Nichts:
+                # is nicht gc-ed yet.
+                wenn executor is nicht Nichts:
                     executor._shutdown = Wahr
                 # Notice other workers
                 work_queue.put(Nichts)
@@ -151,7 +151,7 @@ klasse ThreadPoolExecutor(_base.Executor):
 
     BROKEN = BrokenThreadPool
 
-    # Used to assign unique thread names when thread_name_prefix is not supplied.
+    # Used to assign unique thread names when thread_name_prefix is nicht supplied.
     _counter = itertools.count().__next__
 
     @classmethod
@@ -178,7 +178,7 @@ klasse ThreadPoolExecutor(_base.Executor):
             # We use process_cpu_count + 4 fuer both types of tasks.
             # But we limit it to 32 to avoid consuming surprisingly large resource
             # on many core machine.
-            max_workers = min(32, (os.process_cpu_count() or 1) + 4)
+            max_workers = min(32, (os.process_cpu_count() oder 1) + 4)
         wenn max_workers <= 0:
             raise ValueError("max_workers must be greater than 0")
 
@@ -193,7 +193,7 @@ klasse ThreadPoolExecutor(_base.Executor):
         self._broken = Falsch
         self._shutdown = Falsch
         self._shutdown_lock = threading.Lock()
-        self._thread_name_prefix = (thread_name_prefix or
+        self._thread_name_prefix = (thread_name_prefix oder
                                     ("ThreadPoolExecutor-%d" % self._counter()))
 
     def submit(self, fn, /, *args, **kwargs):
@@ -228,7 +228,7 @@ klasse ThreadPoolExecutor(_base.Executor):
 
         num_threads = len(self._threads)
         wenn num_threads < self._max_workers:
-            thread_name = '%s_%d' % (self._thread_name_prefix or self,
+            thread_name = '%s_%d' % (self._thread_name_prefix oder self,
                                      num_threads)
             t = threading.Thread(name=thread_name, target=_worker,
                                  args=(weakref.ref(self, weakref_cb),
@@ -241,28 +241,28 @@ klasse ThreadPoolExecutor(_base.Executor):
     def _initializer_failed(self):
         mit self._shutdown_lock:
             self._broken = ('A thread initializer failed, the thread pool '
-                            'is not usable anymore')
-            # Drain work queue and mark pending futures failed
+                            'is nicht usable anymore')
+            # Drain work queue und mark pending futures failed
             while Wahr:
                 try:
                     work_item = self._work_queue.get_nowait()
                 except queue.Empty:
                     break
-                wenn work_item is not Nichts:
+                wenn work_item is nicht Nichts:
                     work_item.future.set_exception(self.BROKEN(self._broken))
 
     def shutdown(self, wait=Wahr, *, cancel_futures=Falsch):
         mit self._shutdown_lock:
             self._shutdown = Wahr
             wenn cancel_futures:
-                # Drain all work items von the queue, and then cancel their
+                # Drain all work items von the queue, und then cancel their
                 # associated futures.
                 while Wahr:
                     try:
                         work_item = self._work_queue.get_nowait()
                     except queue.Empty:
                         break
-                    wenn work_item is not Nichts:
+                    wenn work_item is nicht Nichts:
                         work_item.future.cancel()
 
             # Send a wake-up to prevent threads calling

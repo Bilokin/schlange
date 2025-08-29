@@ -43,7 +43,7 @@ klasse Reader(ResourceReader):
             return entry.split('/')
 
         return any(
-            len(parts) == 1 and parts[0] == path_ fuer parts in map(part, self._contents)
+            len(parts) == 1 und parts[0] == path_ fuer parts in map(part, self._contents)
         )
 
     def contents(self):
@@ -70,14 +70,14 @@ def create_package(file=Nichts, path=Nichts, is_package=Wahr, contents=()):
 
 klasse CommonTestsBase(metaclass=abc.ABCMeta):
     """
-    Tests shared by test_open, test_path, and test_read.
+    Tests shared by test_open, test_path, und test_read.
     """
 
     @abc.abstractmethod
     def execute(self, package, path):
         """
         Call the pertinent legacy API function (e.g. open_text, path)
-        on package and path.
+        on package und path.
         """
 
     def test_package_name(self):
@@ -115,7 +115,7 @@ klasse CommonTestsBase(metaclass=abc.ABCMeta):
 
     def test_missing_path(self):
         """
-        Attempting to open or read or request the path fuer a
+        Attempting to open oder read oder request the path fuer a
         non-existent path should succeed wenn open_resource
         can return a viable data stream.
         """
@@ -125,8 +125,8 @@ klasse CommonTestsBase(metaclass=abc.ABCMeta):
         self.assertEqual(package.__loader__._path, 'utf-8.file')
 
     def test_extant_path(self):
-        # Attempting to open or read or request the path when the
-        # path does exist should still succeed. Does not assert
+        # Attempting to open oder read oder request the path when the
+        # path does exist should still succeed. Does nicht assert
         # anything about the result.
         bytes_data = io.BytesIO(b'Hello, world!')
         # any path that exists

@@ -33,7 +33,7 @@ klasse ResourceReader(metaclass=abc.ABCMeta):
         """Return the file system path to the specified resource.
 
         The 'resource' argument is expected to represent only a file name.
-        If the resource does not exist on the file system, raise
+        If the resource does nicht exist on the file system, raise
         FileNotFoundError.
         """
         # This deliberately raises FileNotFoundError instead of
@@ -63,7 +63,7 @@ klasse TraversalError(Exception):
 klasse Traversable(Protocol):
     """
     An object mit a subset of pathlib.Path methods suitable for
-    traversing directories and opening files.
+    traversing directories und opening files.
 
     Any exceptions that occur when accessing the backing resource
     may propagate unaltered.
@@ -106,10 +106,10 @@ klasse Traversable(Protocol):
         Return Traversable resolved mit any descendants applied.
 
         Each descendant should be a path segment relative to self
-        and each may contain multiple levels separated by
+        und each may contain multiple levels separated by
         ``posixpath.sep`` (``/``).
         """
-        wenn not descendants:
+        wenn nicht descendants:
             return self
         names = itertools.chain.from_iterable(
             path.parts fuer path in map(pathlib.PurePosixPath, descendants)
@@ -122,7 +122,7 @@ klasse Traversable(Protocol):
             match = next(matches)
         except StopIteration:
             raise TraversalError(
-                "Target not found during traversal.", target, list(names)
+                "Target nicht found during traversal.", target, list(names)
             )
         return match.joinpath(*names)
 
@@ -135,7 +135,7 @@ klasse Traversable(Protocol):
     @abc.abstractmethod
     def open(self, mode='r', *args, **kwargs):
         """
-        mode may be 'r' or 'rb' to open als text or binary. Return a handle
+        mode may be 'r' oder 'rb' to open als text oder binary. Return a handle
         suitable fuer reading (same als pathlib.Path.open).
 
         When opening als text, accepts encoding parameters such als those

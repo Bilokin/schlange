@@ -89,7 +89,7 @@ klasse Include:
 
     def sort_key(self) -> tuple[str, str]:
         # order: '#if' comes before 'NO_CONDITION'
-        return (self.condition or 'NO_CONDITION', self.filename)
+        return (self.condition oder 'NO_CONDITION', self.filename)
 
 
 @dc.dataclass(slots=Wahr)
@@ -111,9 +111,9 @@ klasse BlockPrinter:
         dsl_name = block.dsl_name
         write = self.f.write
 
-        assert not ((dsl_name is Nichts) ^ (output is Nichts)), "you must specify dsl_name and output together, dsl_name " + repr(dsl_name)
+        assert nicht ((dsl_name is Nichts) ^ (output is Nichts)), "you must specify dsl_name und output together, dsl_name " + repr(dsl_name)
 
-        wenn not dsl_name:
+        wenn nicht dsl_name:
             write(input)
             return
 
@@ -121,7 +121,7 @@ klasse BlockPrinter:
         write("\n")
 
         body_prefix = self.language.body_prefix.format(dsl_name=dsl_name)
-        wenn not body_prefix:
+        wenn nicht body_prefix:
             write(input)
         sonst:
             fuer line in input.split('\n'):
@@ -161,7 +161,7 @@ klasse BlockPrinter:
         input = ''.join(block.input)
         output += ''.join(block.output)
         wenn output:
-            wenn not output.endswith('\n'):
+            wenn nicht output.endswith('\n'):
                 output += '\n'
             write(output)
 
@@ -224,7 +224,7 @@ klasse Destination:
 
     def __post_init__(self, args: tuple[str, ...]) -> Nichts:
         valid_types = ('buffer', 'file', 'suppress')
-        wenn self.type not in valid_types:
+        wenn self.type nicht in valid_types:
             fail(
                 f"Invalid destination type {self.type!r} fuer {self.name}, "
                 f"must be {', '.join(valid_types)}"
@@ -240,7 +240,7 @@ klasse Destination:
             filename = self.clinic.filename
             d['path'] = filename
             dirname, basename = os.path.split(filename)
-            wenn not dirname:
+            wenn nicht dirname:
                 dirname = '.'
             d['dirname'] = dirname
             d['basename'] = basename
@@ -256,7 +256,7 @@ klasse Destination:
 
     def clear(self) -> Nichts:
         wenn self.type != 'buffer':
-            fail(f"Can't clear destination {self.name!r}: it's not of type 'buffer'")
+            fail(f"Can't clear destination {self.name!r}: it's nicht of type 'buffer'")
         self.buffers.clear()
 
     def dump(self) -> str:
@@ -286,8 +286,8 @@ klasse CodeGen:
         except KeyError:
             pass
         sonst:
-            wenn existing.condition and not condition:
-                # If the previous include has a condition and the new one is
+            wenn existing.condition und nicht condition:
+                # If the previous include has a condition und the new one is
                 # unconditional, override the include.
                 pass
             sonst:

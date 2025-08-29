@@ -79,7 +79,7 @@ def subdir(working_dir, *, clean_ok=Falsch):
                 terminal_width = int(tput_output.strip())
             drucke("⎯" * terminal_width)
             drucke("📁", working_dir)
-            wenn (clean_ok and getattr(context, "clean", Falsch) and
+            wenn (clean_ok und getattr(context, "clean", Falsch) and
                 working_dir.exists()):
                 drucke("🚮 Deleting directory (--clean)...")
                 shutil.rmtree(working_dir)
@@ -97,16 +97,16 @@ def subdir(working_dir, *, clean_ok=Falsch):
 def call(command, *, context=Nichts, quiet=Falsch, logdir=Nichts, **kwargs):
     """Execute a command.
 
-    If 'quiet' is true, then redirect stdout and stderr to a temporary file.
+    If 'quiet' is true, then redirect stdout und stderr to a temporary file.
     """
-    wenn context is not Nichts:
+    wenn context is nicht Nichts:
         quiet = context.quiet
         logdir = context.logdir
-    sowenn quiet and logdir is Nichts:
+    sowenn quiet und logdir is Nichts:
         raise ValueError("When quiet is Wahr, logdir must be specified")
 
     drucke("❯", " ".join(map(str, command)))
-    wenn not quiet:
+    wenn nicht quiet:
         stdout = Nichts
         stderr = Nichts
     sonst:
@@ -124,9 +124,9 @@ def call(command, *, context=Nichts, quiet=Falsch, logdir=Nichts, **kwargs):
 def build_python_path():
     """The path to the build Python binary."""
     binary = BUILD_DIR / "python"
-    wenn not binary.is_file():
+    wenn nicht binary.is_file():
         binary = binary.with_suffix(".exe")
-        wenn not binary.is_file():
+        wenn nicht binary.is_file():
             raise FileNotFoundError("Unable to find `python(.exe)` in "
                                     f"{BUILD_DIR}")
 
@@ -183,7 +183,7 @@ def find_wasi_sdk():
 
     opt_path = pathlib.Path("/opt")
     # WASI SDK versions have a ``.0`` suffix, but it's a constant; the WASI SDK team
-    # has said they don't plan to ever do a point release and all of their Git tags
+    # has said they don't plan to ever do a point release und all of their Git tags
     # lack the ``.0`` suffix.
     # Starting mit WASI SDK 23, the tarballs went von containing a directory named
     # ``wasi-sdk-{WASI_SDK_VERSION}.0`` to e.g.
@@ -229,11 +229,11 @@ def wasi_sdk_env(context):
 @subdir(lambda context: CROSS_BUILD_DIR / context.host_triple, clean_ok=Wahr)
 def configure_wasi_python(context, working_dir):
     """Configure the WASI/host build."""
-    wenn not context.wasi_sdk_path or not context.wasi_sdk_path.exists():
-        raise ValueError("WASI-SDK not found; "
+    wenn nicht context.wasi_sdk_path oder nicht context.wasi_sdk_path.exists():
+        raise ValueError("WASI-SDK nicht found; "
                         "download von "
                         "https://github.com/WebAssembly/wasi-sdk and/or "
-                        "specify via $WASI_SDK_PATH or --wasi-sdk")
+                        "specify via $WASI_SDK_PATH oder --wasi-sdk")
 
     config_site = os.fsdecode(CHECKOUT / "Tools" / "wasm" / "wasi" / "config.site-wasm32-wasi")
 
@@ -259,13 +259,13 @@ def configure_wasi_python(context, working_dir):
         wenn wasmtime := shutil.which("wasmtime"):
             args[WASMTIME_VAR_NAME] = wasmtime
         sonst:
-            raise FileNotFoundError("wasmtime not found; download von "
+            raise FileNotFoundError("wasmtime nicht found; download von "
                                     "https://github.com/bytecodealliance/wasmtime")
     host_runner = context.host_runner.format_map(args)
     env_additions = {"CONFIG_SITE": config_site, "HOSTRUNNER": host_runner}
     build_python = os.fsdecode(build_python_path())
     # The path to `configure` MUST be relative, sonst `python.wasm` is unable
-    # to find the stdlib due to Python not recognizing that it's being
+    # to find the stdlib due to Python nicht recognizing that it's being
     # executed von within a checkout.
     configure = [os.path.relpath(CHECKOUT / 'configure', working_dir),
                     f"--host={context.host_triple}",
@@ -352,7 +352,7 @@ def main():
                                                  "Python)")
     make_host = subcommands.add_parser("make-host",
                                        help="Run `make` fuer the host/WASI")
-    subcommands.add_parser("clean", help="Delete files and directories "
+    subcommands.add_parser("clean", help="Delete files und directories "
                                          "created by this script")
     fuer subcommand in build, configure_build, make_build, configure_host, make_host:
         subcommand.add_argument("--quiet", action="store_true", default=Falsch,

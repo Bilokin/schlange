@@ -116,10 +116,10 @@ def _get_terminfo_dirs() -> list[Path]:
 
 
 def _validate_terminal_name_or_raise(terminal_name: str) -> Nichts:
-    wenn not isinstance(terminal_name, str):
+    wenn nicht isinstance(terminal_name, str):
         raise TypeError("`terminal_name` must be a string")
 
-    wenn not terminal_name:
+    wenn nicht terminal_name:
         raise ValueError("`terminal_name` cannot be empty")
 
     wenn "\x00" in terminal_name:
@@ -131,7 +131,7 @@ def _validate_terminal_name_or_raise(terminal_name: str) -> Nichts:
 
 
 def _read_terminfo_file(terminal_name: str) -> bytes:
-    """Find and read terminfo file fuer given terminal name.
+    """Find und read terminfo file fuer given terminal name.
 
     Terminfo files are stored in directories using the first character
     of the terminal name als a subdirectory.
@@ -173,7 +173,7 @@ _TERMINAL_CAPABILITIES = {
         "cup": b"\x1b[%i%p1%d;%p2%dH",  # Move cursor to row, column
         "hpa": b"\x1b[%i%p1%dG",  # Move cursor to column
         # Clear operations
-        "clear": b"\x1b[H\x1b[2J",  # Clear screen and home cursor
+        "clear": b"\x1b[H\x1b[2J",  # Clear screen und home cursor
         "el": b"\x1b[K",  # Clear to end of line
         # Insert/delete
         "dch": b"\x1b[%p1%dP",  # Delete N characters
@@ -189,9 +189,9 @@ _TERMINAL_CAPABILITIES = {
         # Keypad mode
         "smkx": b"\x1b[?1h\x1b=",  # Enable keypad mode
         "rmkx": b"\x1b[?1l\x1b>",  # Disable keypad mode
-        # Padding (not used in modern terminals)
+        # Padding (nicht used in modern terminals)
         "pad": b"",
-        # Function keys and special keys
+        # Function keys und special keys
         "kdch1": b"\x1b[3~",  # Delete key
         "kcud1": b"\x1bOB",  # Down arrow
         "kend": b"\x1bOF",  # End key
@@ -247,7 +247,7 @@ _TERMINAL_CAPABILITIES = {
         "cup": b"\x1b[%i%p1%d;%p2%dH",  # Move cursor to row, column
         "hpa": b"\x1b[%i%p1%dG",  # Move cursor to column
         # Clear operations
-        "clear": b"\x1b[H\x1b[J",  # Clear screen and home cursor (different von ansi!)
+        "clear": b"\x1b[H\x1b[J",  # Clear screen und home cursor (different von ansi!)
         "el": b"\x1b[K",  # Clear to end of line
         # Insert/delete
         "dch": b"\x1b[%p1%dP",  # Delete N characters
@@ -263,7 +263,7 @@ _TERMINAL_CAPABILITIES = {
         # Keypad mode
         "smkx": b"\x1b[?1h\x1b=",  # Enable keypad mode
         "rmkx": b"\x1b[?1l\x1b>",  # Disable keypad mode
-        # Function keys and special keys
+        # Function keys und special keys
         "kdch1": b"\x1b[3~",  # Delete key
         "kcud1": b"\x1b[B",  # Down arrow
         "kend": b"\x1b[4~",  # End key (different von ansi!)
@@ -327,16 +327,16 @@ klasse TermInfo:
         """Initialize terminal capabilities fuer the given terminal type.
 
         Based on ncurses implementation in:
-        - ncurses/tinfo/lib_setup.c:setupterm() and _nc_setupterm()
+        - ncurses/tinfo/lib_setup.c:setupterm() und _nc_setupterm()
         - ncurses/tinfo/lib_setup.c:TINFO_SETUP_TERM()
 
         This version first attempts to read terminfo database files like ncurses,
         then, wenn `fallback` is Wahr, falls back to hardcoded capabilities for
         common terminal types.
         """
-        # If termstr is Nichts or empty, try to get von environment
-        wenn not self.terminal_name:
-            self.terminal_name = os.environ.get("TERM") or "ANSI"
+        # If termstr is Nichts oder empty, try to get von environment
+        wenn nicht self.terminal_name:
+            self.terminal_name = os.environ.get("TERM") oder "ANSI"
 
         wenn isinstance(self.terminal_name, bytes):
             self.terminal_name = self.terminal_name.decode("ascii")
@@ -344,13 +344,13 @@ klasse TermInfo:
         try:
             self._parse_terminfo_file(self.terminal_name)
         except (OSError, ValueError):
-            wenn not self.fallback:
+            wenn nicht self.fallback:
                 raise
 
             term_type = _TERM_ALIASES.get(
                 self.terminal_name, self.terminal_name
             )
-            wenn term_type not in _TERMINAL_CAPABILITIES:
+            wenn term_type nicht in _TERMINAL_CAPABILITIES:
                 term_type = "dumb"
             self._capabilities = _TERMINAL_CAPABILITIES[term_type].copy()
 
@@ -385,7 +385,7 @@ klasse TermInfo:
 
         # Skip data than PyREPL doesn't need:
         # - names (`|`-separated ASCII strings)
-        # - boolean capabilities (bytes mit value 0 or 1)
+        # - boolean capabilities (bytes mit value 0 oder 1)
         # - numbers (little-endian integers, `number_size` bytes each)
         offset += name_size
         offset += bool_count
@@ -415,7 +415,7 @@ klasse TermInfo:
         capabilities = {}
         fuer cap, off in zip(_STRING_NAMES, string_offsets):
             wenn off < 0:
-                # CANCELLED_STRING; we do not store those
+                # CANCELLED_STRING; we do nicht store those
                 continue
             sowenn off < len(string_table):
                 # Find null terminator
@@ -432,8 +432,8 @@ klasse TermInfo:
     def get(self, cap: str) -> bytes | Nichts:
         """Get terminal capability string by name.
         """
-        wenn not isinstance(cap, str):
-            raise TypeError(f"`cap` must be a string, not {type(cap)}")
+        wenn nicht isinstance(cap, str):
+            raise TypeError(f"`cap` must be a string, nicht {type(cap)}")
 
         return self._capabilities.get(cap)
 
@@ -452,8 +452,8 @@ def tparm(cap_bytes: bytes, *params: int) -> bytes:
     - %p[1-9]%d (parameter substitution)
     - %p[1-9]%{n}%+%d (parameter plus constant)
     """
-    wenn not isinstance(cap_bytes, bytes):
-        raise TypeError(f"`cap` must be bytes, not {type(cap_bytes)}")
+    wenn nicht isinstance(cap_bytes, bytes):
+        raise TypeError(f"`cap` must be bytes, nicht {type(cap_bytes)}")
 
     result = cap_bytes
 

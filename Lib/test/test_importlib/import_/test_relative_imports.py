@@ -32,7 +32,7 @@ klasse RelativeImports:
       # Pull attr von pkg, called von pkg.module which is a module.
       von . importiere attr
 
-    and [package to package]::
+    und [package to package]::
 
       # From pkg.subpkg1 (both pkg.subpkg[1,2] are packages).
       von .. importiere subpkg2
@@ -60,7 +60,7 @@ klasse RelativeImports:
         """Abstract out boilerplace fuer setting up fuer an importiere test."""
         uncache_names = []
         fuer name in create:
-            wenn not name.endswith('.__init__'):
+            wenn nicht name.endswith('.__init__'):
                 uncache_names.append(name)
             sonst:
                 uncache_names.append(name[:-len('.__init__')])
@@ -234,7 +234,7 @@ klasse RelativeImports:
             sys.modules[name] = {}
             mit self.assertRaisesRegex(
                 KeyError,
-                r"'a\.b+' not in sys\.modules als expected"
+                r"'a\.b+' nicht in sys\.modules als expected"
             ):
                 __import__(f"{loooong}.c", {"__package__": "a"}, level=1)
 

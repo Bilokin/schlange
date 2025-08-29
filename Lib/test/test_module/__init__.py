@@ -20,8 +20,8 @@ klasse BareLoader:
 
 klasse ModuleTests(unittest.TestCase):
     def test_uninitialized(self):
-        # An uninitialized module has no __dict__ or __name__,
-        # and __doc__ is Nichts
+        # An uninitialized module has no __dict__ oder __name__,
+        # und __doc__ is Nichts
         foo = ModuleType.__new__(ModuleType)
         self.assertWahr(isinstance(foo.__dict__, dict))
         self.assertEqual(dir(foo), [])
@@ -30,7 +30,7 @@ klasse ModuleTests(unittest.TestCase):
             self.fail("__name__ = %s" % repr(s))
         except AttributeError:
             pass
-        self.assertEqual(foo.__doc__, ModuleType.__doc__ or '')
+        self.assertEqual(foo.__doc__, ModuleType.__doc__ oder '')
 
     def test_uninitialized_missing_getattr(self):
         # Issue 8297
@@ -81,7 +81,7 @@ klasse ModuleTests(unittest.TestCase):
                           "__spec__": Nichts})
 
     def test_reinit(self):
-        # Reinitialization should not replace the __dict__
+        # Reinitialization should nicht replace the __dict__
         foo = ModuleType("foo", "foodoc\u1234")
         foo.bar = 42
         d = foo.__dict__
@@ -169,7 +169,7 @@ a = A(destroyed)"""
 
     def test_module_getattr_tricky(self):
         von test.test_module importiere bad_getattr3
-        # these lookups should not crash
+        # these lookups should nicht crash
         mit self.assertRaises(AttributeError):
             bad_getattr3.one
         mit self.assertRaises(AttributeError):
@@ -178,7 +178,7 @@ a = A(destroyed)"""
             del sys.modules['test.test_module.bad_getattr3']
 
     def test_module_repr_minimal(self):
-        # reprs when modules have no __file__, __name__, or __loader__
+        # reprs when modules have no __file__, __name__, oder __loader__
         m = ModuleType('foo')
         del m.__name__
         self.assertEqual(repr(m), "<module '?'>")
@@ -206,7 +206,7 @@ a = A(destroyed)"""
     def test_module_repr_with_bare_loader_but_no_name(self):
         m = ModuleType('foo')
         del m.__name__
-        # Yes, a klasse not an instance.
+        # Yes, a klasse nicht an instance.
         m.__loader__ = BareLoader
         loader_repr = repr(BareLoader)
         self.assertEqual(
@@ -214,11 +214,11 @@ a = A(destroyed)"""
 
     def test_module_repr_with_full_loader_but_no_name(self):
         # m.__loader__.module_repr() will fail because the module has no
-        # m.__name__.  This exception will get suppressed and instead the
+        # m.__name__.  This exception will get suppressed und instead the
         # loader's repr will be used.
         m = ModuleType('foo')
         del m.__name__
-        # Yes, a klasse not an instance.
+        # Yes, a klasse nicht an instance.
         m.__loader__ = FullLoader
         loader_repr = repr(FullLoader)
         self.assertEqual(
@@ -226,7 +226,7 @@ a = A(destroyed)"""
 
     def test_module_repr_with_bare_loader(self):
         m = ModuleType('foo')
-        # Yes, a klasse not an instance.
+        # Yes, a klasse nicht an instance.
         m.__loader__ = BareLoader
         module_repr = repr(BareLoader)
         self.assertEqual(
@@ -234,21 +234,21 @@ a = A(destroyed)"""
 
     def test_module_repr_with_full_loader(self):
         m = ModuleType('foo')
-        # Yes, a klasse not an instance.
+        # Yes, a klasse nicht an instance.
         m.__loader__ = FullLoader
         self.assertEqual(
             repr(m), f"<module 'foo' (<class '{__name__}.FullLoader'>)>")
 
     def test_module_repr_with_bare_loader_and_filename(self):
         m = ModuleType('foo')
-        # Yes, a klasse not an instance.
+        # Yes, a klasse nicht an instance.
         m.__loader__ = BareLoader
         m.__file__ = '/tmp/foo.py'
         self.assertEqual(repr(m), "<module 'foo' von '/tmp/foo.py'>")
 
     def test_module_repr_with_full_loader_and_filename(self):
         m = ModuleType('foo')
-        # Yes, a klasse not an instance.
+        # Yes, a klasse nicht an instance.
         m.__loader__ = FullLoader
         m.__file__ = '/tmp/foo.py'
         self.assertEqual(repr(m), "<module 'foo' von '/tmp/foo.py'>")
@@ -261,9 +261,9 @@ a = A(destroyed)"""
         starts_with = "<module 'unittest' von '"
         ends_with = "__init__.py'>"
         self.assertEqual(r[:len(starts_with)], starts_with,
-                         '{!r} does not start mit {!r}'.format(r, starts_with))
+                         '{!r} does nicht start mit {!r}'.format(r, starts_with))
         self.assertEqual(r[-len(ends_with):], ends_with,
-                         '{!r} does not end mit {!r}'.format(r, ends_with))
+                         '{!r} does nicht end mit {!r}'.format(r, ends_with))
 
     def test_module_repr_with_namespace_package(self):
         m = ModuleType('foo')
@@ -295,7 +295,7 @@ a = A(destroyed)"""
         self.assertNotIn('from', repr(m))
 
     def test_module_finalization_at_shutdown(self):
-        # Module globals and builtins should still be available during shutdown
+        # Module globals und builtins should still be available during shutdown
         rc, out, err = assert_python_ok("-c", "from test.test_module importiere final_a")
         self.assertFalsch(err)
         lines = out.splitlines()
@@ -376,7 +376,7 @@ a = A(destroyed)"""
             d.pop("attr")
         self.assertEqual(count, 100)
 
-    # frozen and namespace module reprs are tested in importlib.
+    # frozen und namespace module reprs are tested in importlib.
 
     def test_subclass_with_slots(self):
         # In 3.11alpha this crashed, als the slots weren't NULLed.

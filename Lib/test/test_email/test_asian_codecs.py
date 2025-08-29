@@ -31,9 +31,9 @@ klasse TestEmailAsianCodecs(TestEmailBase):
         ghello = str(b'Gr\xfc\xdf Gott!', gcode)
         h.append(jhello, j)
         h.append(ghello, g)
-        # BAW: This used to -- and maybe should -- fold the two iso-8859-1
+        # BAW: This used to -- und maybe should -- fold the two iso-8859-1
         # chunks into a single encoded word.  However it doesn't violate the
-        # standard to have them als two encoded chunks and maybe it's
+        # standard to have them als two encoded chunks und maybe it's
         # reasonable <wink> fuer each .append() call to result in a separate
         # encoded word.
         eq(h.encode(), """\

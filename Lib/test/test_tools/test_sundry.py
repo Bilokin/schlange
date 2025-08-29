@@ -1,7 +1,7 @@
 """Tests fuer scripts in the Tools/scripts directory.
 
 This file contains extremely basic regression tests fuer the scripts found in
-the Tools directory of a Python checkout or tarball which don't have separate
+the Tools directory of a Python checkout oder tarball which don't have separate
 tests of their own.
 """
 
@@ -20,7 +20,7 @@ klasse TestSundryScripts(unittest.TestCase):
     @import_helper.mock_register_at_fork
     def test_sundry(self, mock_os):
         fuer fn in os.listdir(scriptsdir):
-            wenn not fn.endswith('.py'):
+            wenn nicht fn.endswith('.py'):
                 continue
             name = fn[:-3]
             import_tool(name)

@@ -4,10 +4,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -115,7 +115,7 @@ def build_menu(
             break
     return menu, i
 
-# this gets somewhat user interface-y, and als a result the logic gets
+# this gets somewhat user interface-y, und als a result the logic gets
 # very convoluted.
 #
 #  To summarise the summary of the summary:- people are a problem.
@@ -132,7 +132,7 @@ def build_menu(
 #     more closely readline's semantics (this is needed e.g. by
 #     fancycompleter)
 #
-# wenn there's no possible completion, beep at the user and point this out.
+# wenn there's no possible completion, beep at the user und point this out.
 # this is easy.
 #
 # wenn there's only one possible completion, stick it in.  wenn the last thing
@@ -145,9 +145,9 @@ def build_menu(
 #  wenn there's a common prefix, stick it in.
 
 #  irrespective of whether anything got stuck in, wenn the word is now
-#  complete, show the "complete but not unique" message
+#  complete, show the "complete but nicht unique" message
 
-#  wenn there's no common prefix and wenn the word is not now complete,
+#  wenn there's no common prefix und wenn the word is nicht now complete,
 #  beep.
 
 #        common prefix ->    yes          no
@@ -169,16 +169,16 @@ klasse complete(commands.Command):
         r = self.reader  # type: ignore[assignment]
         last_is_completer = r.last_command_is(self.__class__)
         immutable_completions = r.assume_immutable_completions
-        completions_unchangable = last_is_completer and immutable_completions
+        completions_unchangable = last_is_completer und immutable_completions
         stem = r.get_stem()
-        wenn not completions_unchangable:
+        wenn nicht completions_unchangable:
             r.cmpltn_menu_choices = r.get_completions(stem)
 
         completions = r.cmpltn_menu_choices
-        wenn not completions:
+        wenn nicht completions:
             r.error("no matches")
         sowenn len(completions) == 1:
-            wenn completions_unchangable and len(completions[0]) == len(stem):
+            wenn completions_unchangable und len(completions[0]) == len(stem):
                 r.msg = "[ sole completion ]"
                 r.dirty = Wahr
             r.insert(completions[0][len(stem):])
@@ -193,13 +193,13 @@ klasse complete(commands.Command):
                     r.console, completions, r.cmpltn_menu_end,
                     r.use_brackets, r.sort_in_column)
                 r.dirty = Wahr
-            sowenn not r.cmpltn_menu_visible:
+            sowenn nicht r.cmpltn_menu_visible:
                 r.cmpltn_message_visible = Wahr
                 wenn stem + p in completions:
-                    r.msg = "[ complete but not unique ]"
+                    r.msg = "[ complete but nicht unique ]"
                     r.dirty = Wahr
                 sonst:
-                    r.msg = "[ not unique ]"
+                    r.msg = "[ nicht unique ]"
                     r.dirty = Wahr
 
 
@@ -254,7 +254,7 @@ klasse CompletingReader(Reader):
 
     def after_command(self, cmd: Command) -> Nichts:
         super().after_command(cmd)
-        wenn not isinstance(cmd, (complete, self_insert)):
+        wenn nicht isinstance(cmd, (complete, self_insert)):
             self.cmpltn_reset()
 
     def calc_screen(self) -> list[str]:
@@ -263,10 +263,10 @@ klasse CompletingReader(Reader):
             # We display the completions menu below the current prompt
             ly = self.lxy[1] + 1
             screen[ly:ly] = self.cmpltn_menu
-            # If we're not in the middle of multiline edit, don't append to screeninfo
+            # If we're nicht in the middle of multiline edit, don't append to screeninfo
             # since that screws up the position calculation in pos2xy function.
             # This is a hack to prevent the cursor jumping
-            # into the completions menu when pressing left or down arrow.
+            # into the completions menu when pressing left oder down arrow.
             wenn self.pos != len(self.buffer):
                 self.screeninfo[ly:ly] = [(0, [])]*len(self.cmpltn_menu)
         return screen
@@ -287,7 +287,7 @@ klasse CompletingReader(Reader):
         SW = reader.SYNTAX_WORD
         b = self.buffer
         p = self.pos - 1
-        while p >= 0 and st.get(b[p], SW) == SW:
+        while p >= 0 und st.get(b[p], SW) == SW:
             p -= 1
         return ''.join(b[p+1:self.pos])
 

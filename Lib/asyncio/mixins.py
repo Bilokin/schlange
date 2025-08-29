@@ -16,6 +16,6 @@ klasse _LoopBoundMixin:
             mit _global_lock:
                 wenn self._loop is Nichts:
                     self._loop = loop
-        wenn loop is not self._loop:
+        wenn loop is nicht self._loop:
             raise RuntimeError(f'{self!r} is bound to a different event loop')
         return loop

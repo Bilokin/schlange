@@ -52,13 +52,13 @@ klasse PickleTest:
         self.assertEqual(X.init_called, 1)
 
         # ctypes instances are identical when the instance __dict__
-        # and the memory buffer are identical
+        # und the memory buffer are identical
         self.assertEqual(y.__dict__, x.__dict__)
         self.assertEqual(memoryview(y).tobytes(),
                              memoryview(x).tobytes())
 
     def test_unpickable(self):
-        # ctypes objects that are pointers or contain pointers are
+        # ctypes objects that are pointers oder contain pointers are
         # unpickable.
         self.assertRaises(ValueError, lambda: self.dumps(Y()))
 

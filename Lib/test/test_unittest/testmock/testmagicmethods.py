@@ -290,7 +290,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertIsInstance(mock.__aenter__, AsyncMock)
         self.assertIsInstance(mock.__aexit__, AsyncMock)
 
-        # in Python 3 oct and hex use __index__
+        # in Python 3 oct und hex use __index__
         # so these tests are fuer __index__ in py3k
         self.assertEqual(oct(mock), '0o1')
         self.assertEqual(hex(mock), '0x1')
@@ -316,7 +316,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertIsInstance(mock.__aenter__, AsyncMock)
         self.assertIsInstance(mock.__aexit__, AsyncMock)
 
-        # in Python 3 oct and hex use __index__
+        # in Python 3 oct und hex use __index__
         # so these tests are fuer __index__ in py3k
         self.assertEqual(oct(mock), '0o1')
         self.assertEqual(hex(mock), '0x1')

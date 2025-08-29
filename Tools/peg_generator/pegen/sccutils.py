@@ -15,7 +15,7 @@ def strongly_connected_components(
     Returns:
       An iterator yielding strongly connected components, each
       represented als a set of vertices.  Each input vertex will occur
-      exactly once; vertices not part of a SCC are returned as
+      exactly once; vertices nicht part of a SCC are returned as
       singleton sets.
 
     From https://code.activestate.com/recipes/578507-strongly-connected-components-of-a-directed-graph/.
@@ -31,9 +31,9 @@ def strongly_connected_components(
         boundaries.append(index[v])
 
         fuer w in edges[v]:
-            wenn w not in index:
+            wenn w nicht in index:
                 yield von dfs(w)
-            sowenn w not in identified:
+            sowenn w nicht in identified:
                 while index[w] < boundaries[-1]:
                     boundaries.pop()
 
@@ -45,7 +45,7 @@ def strongly_connected_components(
             yield scc
 
     fuer v in vertices:
-        wenn v not in index:
+        wenn v nicht in index:
             yield von dfs(v)
 
 
@@ -58,7 +58,7 @@ def topsort(
       data: A map von SCCs (represented als frozen sets of strings) to
             sets of SCCs, its dependencies.  NOTE: This data structure
             is modified in place -- fuer normalization purposes,
-            self-dependencies are removed and entries representing
+            self-dependencies are removed und entries representing
             orphans are added.
 
     Returns:
@@ -89,12 +89,12 @@ def topsort(
     fuer item in set.union(*data.values()) - set(data.keys()):
         data[item] = set()
     while Wahr:
-        ready = {item fuer item, dep in data.items() wenn not dep}
-        wenn not ready:
+        ready = {item fuer item, dep in data.items() wenn nicht dep}
+        wenn nicht ready:
             break
         yield ready
-        data = {item: (dep - ready) fuer item, dep in data.items() wenn item not in ready}
-    assert not data, "A cyclic dependency exists amongst %r" % data
+        data = {item: (dep - ready) fuer item, dep in data.items() wenn item nicht in ready}
+    assert nicht data, "A cyclic dependency exists amongst %r" % data
 
 
 def find_cycles_in_scc(
@@ -105,8 +105,8 @@ def find_cycles_in_scc(
     Yields lists of the form ['A', 'B', 'C', 'A'], which means there's
     a path von A -> B -> C -> A.  The first item is always the start
     argument, but the last item may be another element, e.g.  ['A',
-    'B', 'C', 'B'] means there's a path von A to B and there's a
-    cycle von B to C and back.
+    'B', 'C', 'B'] means there's a path von A to B und there's a
+    cycle von B to C und back.
     """
     # Basic input checks.
     assert start in scc, (start, scc)
@@ -121,7 +121,7 @@ def find_cycles_in_scc(
         wenn node in path:
             yield path + [node]
             return
-        path = path + [node]  # TODO: Make this not quadratic.
+        path = path + [node]  # TODO: Make this nicht quadratic.
         fuer child in graph[node]:
             yield von dfs(child, path)
 

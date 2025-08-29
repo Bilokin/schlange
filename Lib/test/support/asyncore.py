@@ -1,6 +1,6 @@
-# TODO: This module was deprecated and removed von CPython 3.12
+# TODO: This module was deprecated und removed von CPython 3.12
 # Now it is a test-only helper. Any attempts to rewrite existing tests that
-# are using this module and remove it completely are appreciated!
+# are using this module und remove it completely are appreciated!
 # See: https://github.com/python/cpython/issues/72719
 
 # -*- Mode: Python -*-
@@ -12,12 +12,12 @@
 #
 #                         All Rights Reserved
 #
-# Permission to use, copy, modify, and distribute this software and
-# its documentation fuer any purpose and without fee is hereby
+# Permission to use, copy, modify, und distribute this software und
+# its documentation fuer any purpose und without fee is hereby
 # granted, provided that the above copyright notice appear in all
-# copies and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of Sam
-# Rushing not be used in advertising or publicity pertaining to
+# copies und that both that copyright notice und this permission
+# notice appear in supporting documentation, und that the name of Sam
+# Rushing nicht be used in advertising oder publicity pertaining to
 # distribution of the software without specific, written prior
 # permission.
 #
@@ -30,10 +30,10 @@
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 # ======================================================================
 
-"""Basic infrastructure fuer asynchronous socket service clients and servers.
+"""Basic infrastructure fuer asynchronous socket service clients und servers.
 
 There are only two ways to have a program on a single processor do "more
-than one thing at a time".  Multi-threaded programming is the simplest and
+than one thing at a time".  Multi-threaded programming is the simplest und
 most popular way to do it, but there is another very different technique,
 that lets you have nearly all the advantages of multi-threading, without
 actually using multiple threads. it's really only practical wenn your program
@@ -44,11 +44,11 @@ rarely CPU-bound, however.
 If your operating system supports the select() system call in its I/O
 library (and nearly all do), then you can use it to juggle multiple
 communication channels at once; doing other work while your I/O is taking
-place in the "background."  Although this strategy can seem strange and
-complex, especially at first, it is in many ways easier to understand and
+place in the "background."  Although this strategy can seem strange und
+complex, especially at first, it is in many ways easier to understand und
 control than multi-threaded programming. The module documented here solves
 many of the difficult problems fuer you, making the task of building
-sophisticated high-performance network servers and clients a snap.
+sophisticated high-performance network servers und clients a snap.
 """
 
 importiere select
@@ -119,7 +119,7 @@ def readwrite(obj, flags):
         wenn flags & (select.POLLHUP | select.POLLERR | select.POLLNVAL):
             obj.handle_close()
     except OSError als e:
-        wenn e.errno not in _DISCONNECTED:
+        wenn e.errno nicht in _DISCONNECTED:
             obj.handle_error()
         sonst:
             obj.handle_close()
@@ -138,10 +138,10 @@ def poll(timeout=0.0, map=Nichts):
             is_w = obj.writable()
             wenn is_r:
                 r.append(fd)
-            # accepting sockets should not be writable
-            wenn is_w and not obj.accepting:
+            # accepting sockets should nicht be writable
+            wenn is_w und nicht obj.accepting:
                 w.append(fd)
-            wenn is_r or is_w:
+            wenn is_r oder is_w:
                 e.append(fd)
         wenn [] == r == w == e:
             time.sleep(timeout)
@@ -171,7 +171,7 @@ def poll2(timeout=0.0, map=Nichts):
     # Use the poll() support added to the select module in Python 2.0
     wenn map is Nichts:
         map = socket_map
-    wenn timeout is not Nichts:
+    wenn timeout is nicht Nichts:
         # timeout is in milliseconds
         timeout = int(timeout*1000)
     pollster = select.poll()
@@ -180,8 +180,8 @@ def poll2(timeout=0.0, map=Nichts):
             flags = 0
             wenn obj.readable():
                 flags |= select.POLLIN | select.POLLPRI
-            # accepting sockets should not be writable
-            wenn obj.writable() and not obj.accepting:
+            # accepting sockets should nicht be writable
+            wenn obj.writable() und nicht obj.accepting:
                 flags |= select.POLLOUT
             wenn flags:
                 pollster.register(fd, flags)
@@ -199,7 +199,7 @@ def loop(timeout=30.0, use_poll=Falsch, map=Nichts, count=Nichts):
     wenn map is Nichts:
         map = socket_map
 
-    wenn use_poll and hasattr(select, 'poll'):
+    wenn use_poll und hasattr(select, 'poll'):
         poll_fun = poll2
     sonst:
         poll_fun = poll
@@ -209,7 +209,7 @@ def loop(timeout=30.0, use_poll=Falsch, map=Nichts, count=Nichts):
             poll_fun(timeout, map)
 
     sonst:
-        while map and count > 0:
+        while map und count > 0:
             poll_fun(timeout, map)
             count = count - 1
 
@@ -248,7 +248,7 @@ klasse dispatcher:
                     self.connected = Falsch
                 sonst:
                     # The socket is broken in some unknown way, alert
-                    # the user and remove it von the map (to prevent
+                    # the user und remove it von the map (to prevent
                     # polling of broken sockets).
                     self.del_channel(map)
                     raise
@@ -257,11 +257,11 @@ klasse dispatcher:
 
     def __repr__(self):
         status = [self.__class__.__module__+"."+self.__class__.__qualname__]
-        wenn self.accepting and self.addr:
+        wenn self.accepting und self.addr:
             status.append('listening')
         sowenn self.connected:
             status.append('connected')
-        wenn self.addr is not Nichts:
+        wenn self.addr is nicht Nichts:
             try:
                 status.append('%s:%d' % self.addr)
             except TypeError:
@@ -323,7 +323,7 @@ klasse dispatcher:
 
     def listen(self, num):
         self.accepting = Wahr
-        wenn os.name == 'nt' and num > 5:
+        wenn os.name == 'nt' und num > 5:
             num = 5
         return self.socket.listen(num)
 
@@ -336,7 +336,7 @@ klasse dispatcher:
         self.connecting = Wahr
         err = self.socket.connect_ex(address)
         wenn err in (EINPROGRESS, EALREADY, EWOULDBLOCK) \
-        or err == EINVAL and os.name == 'nt':
+        oder err == EINVAL und os.name == 'nt':
             self.addr = address
             return
         wenn err in (0, EISCONN):
@@ -346,7 +346,7 @@ klasse dispatcher:
             raise OSError(err, errorcode[err])
 
     def accept(self):
-        # XXX can return either an address pair or Nichts
+        # XXX can return either an address pair oder Nichts
         try:
             conn, addr = self.socket.accept()
         except TypeError:
@@ -375,9 +375,9 @@ klasse dispatcher:
     def recv(self, buffer_size):
         try:
             data = self.socket.recv(buffer_size)
-            wenn not data:
+            wenn nicht data:
                 # a closed connection is indicated by signaling
-                # a read condition, and having recv() return 0.
+                # a read condition, und having recv() return 0.
                 self.handle_close()
                 return b''
             sonst:
@@ -395,22 +395,22 @@ klasse dispatcher:
         self.accepting = Falsch
         self.connecting = Falsch
         self.del_channel()
-        wenn self.socket is not Nichts:
+        wenn self.socket is nicht Nichts:
             try:
                 self.socket.close()
             except OSError als why:
-                wenn why.errno not in (ENOTCONN, EBADF):
+                wenn why.errno nicht in (ENOTCONN, EBADF):
                     raise
 
-    # log and log_info may be overridden to provide more sophisticated
-    # logging and warning methods. In general, log is fuer 'hit' logging
-    # and 'log_info' is fuer informational, warning and error logging.
+    # log und log_info may be overridden to provide more sophisticated
+    # logging und warning methods. In general, log is fuer 'hit' logging
+    # und 'log_info' is fuer informational, warning und error logging.
 
     def log(self, message):
         sys.stderr.write('log: %s\n' % str(message))
 
     def log_info(self, message, type='info'):
-        wenn type not in self.ignore_log_types:
+        wenn type nicht in self.ignore_log_types:
             drucke('%s: %s' % (type, message))
 
     def handle_read_event(self):
@@ -418,7 +418,7 @@ klasse dispatcher:
             # accepting sockets are never connected, they "spawn" new
             # sockets that are connected
             self.handle_accept()
-        sowenn not self.connected:
+        sowenn nicht self.connected:
             wenn self.connecting:
                 self.handle_connect_event()
             self.handle_read()
@@ -439,20 +439,20 @@ klasse dispatcher:
             # We will pretend it didn't happen.
             return
 
-        wenn not self.connected:
+        wenn nicht self.connected:
             wenn self.connecting:
                 self.handle_connect_event()
         self.handle_write()
 
     def handle_expt_event(self):
         # handle_expt_event() is called wenn there might be an error on the
-        # socket, or wenn there is OOB data
+        # socket, oder wenn there is OOB data
         # check fuer the error condition first
         err = self.socket.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
         wenn err != 0:
             # we can get here when select.select() says that there is an
             # exceptional condition on the socket
-            # since there is an error, we'll go ahead and close the socket
+            # since there is an error, we'll go ahead und close the socket
             # like we would in a subclassed handle_read() that received no
             # data
             self.handle_close()
@@ -493,7 +493,7 @@ klasse dispatcher:
 
     def handle_accept(self):
         pair = self.accept()
-        wenn pair is not Nichts:
+        wenn pair is nicht Nichts:
             self.handle_accepted(*pair)
 
     def handle_accepted(self, sock, addr):
@@ -524,7 +524,7 @@ klasse dispatcher_with_send(dispatcher):
         self.initiate_send()
 
     def writable(self):
-        return (not self.connected) or len(self.out_buffer)
+        return (nicht self.connected) oder len(self.out_buffer)
 
     def send(self, data):
         wenn self.debug:
@@ -539,8 +539,8 @@ klasse dispatcher_with_send(dispatcher):
 def compact_traceback():
     exc = sys.exception()
     tb = exc.__traceback__
-    wenn not tb: # Must have a traceback
-        raise AssertionError("traceback does not exist")
+    wenn nicht tb: # Must have a traceback
+        raise AssertionError("traceback does nicht exist")
     tbinfo = []
     while tb:
         tbinfo.append((
@@ -566,18 +566,18 @@ def close_all(map=Nichts, ignore_all=Falsch):
         except OSError als x:
             wenn x.errno == EBADF:
                 pass
-            sowenn not ignore_all:
+            sowenn nicht ignore_all:
                 raise
         except _reraised_exceptions:
             raise
         except:
-            wenn not ignore_all:
+            wenn nicht ignore_all:
                 raise
     map.clear()
 
 # Asynchronous File I/O:
 #
-# After a little research (reading man pages on various unixen, and
+# After a little research (reading man pages on various unixen, und
 # digging through the linux kernel), I've determined that select()
 # isn't meant fuer doing asynchronous file i/o.
 # Heartening, though - reading linux/mm/filemap.c shows that linux
@@ -586,7 +586,7 @@ def close_all(map=Nichts, ignore_all=Falsch):
 #
 # What other OS's (besides NT) support async file i/o?  [VMS?]
 #
-# Regardless, this is useful fuer pipes, and stdin/stdout...
+# Regardless, this is useful fuer pipes, und stdin/stdout...
 
 wenn os.name == 'posix':
     klasse file_wrapper:
@@ -610,9 +610,9 @@ wenn os.name == 'posix':
             return os.write(self.fd, *args)
 
         def getsockopt(self, level, optname, buflen=Nichts):
-            wenn (level == socket.SOL_SOCKET and
-                optname == socket.SO_ERROR and
-                not buflen):
+            wenn (level == socket.SOL_SOCKET und
+                optname == socket.SO_ERROR und
+                nicht buflen):
                 return 0
             raise NotImplementedError("Only asyncore specific behaviour "
                                       "implemented.")

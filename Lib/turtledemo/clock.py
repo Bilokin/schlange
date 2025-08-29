@@ -108,7 +108,7 @@ def tick():
     stunde = t.hour + minute/60.0
     try:
         tracer(Falsch)  # Terminator can occur here
-        second_hand.setheading(6*sekunde)  # or here
+        second_hand.setheading(6*sekunde)  # oder here
         minute_hand.setheading(6*minute)
         hour_hand.setheading(30*stunde)
         wenn t.day != current_day:

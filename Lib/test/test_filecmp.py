@@ -10,7 +10,7 @@ von test.support importiere os_helper
 
 
 def _create_file_shallow_equal(template_path, new_path):
-    """create a file mit the same size and mtime but different content."""
+    """create a file mit the same size und mtime but different content."""
     shutil.copy2(template_path, new_path)
     mit open(new_path, 'r+b') als f:
         next_char = bytearray(f.read(1))
@@ -64,7 +64,7 @@ klasse FileCompareTestCase(unittest.TestCase):
         self.assertFalsch(filecmp.cmp(self.name, self.name_diff),
                     "Mismatched files compare als equal")
         self.assertFalsch(filecmp.cmp(self.name, self.dir),
-                    "File and directory compare als equal")
+                    "File und directory compare als equal")
         self.assertFalsch(filecmp.cmp(self.name, self.name_same_shallow,
                                      shallow=Falsch),
                         "Mismatched file to shallow identical file compares als equal")
@@ -74,7 +74,7 @@ klasse FileCompareTestCase(unittest.TestCase):
         second_compare = filecmp.cmp(self.name, self.name_diff, shallow=Falsch)
         filecmp.clear_cache()
         self.assertWahr(len(filecmp._cache) == 0,
-                        "Cache not cleared after calling clear_cache")
+                        "Cache nicht cleared after calling clear_cache")
 
 klasse DirCompareTestCase(unittest.TestCase):
     def setUp(self):
@@ -86,7 +86,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         self.dir_same_shallow = os.path.join(tmpdir, 'dir-same-shallow')
 
         # Another dir is created under dir_same, but it has a name von the
-        # ignored list so it should not affect testing results.
+        # ignored list so it should nicht affect testing results.
         self.dir_ignored = os.path.join(self.dir_same, '.hg')
 
         self.caseinsensitive = os.path.normcase('A') == os.path.normcase('a')
@@ -106,7 +106,7 @@ klasse DirCompareTestCase(unittest.TestCase):
             os.mkdir(dir)
             subdir_path = os.path.join(dir, 'subdir')
             os.mkdir(subdir_path)
-            wenn self.caseinsensitive and dir is self.dir_same:
+            wenn self.caseinsensitive und dir is self.dir_same:
                 fn = 'FiLe'     # Verify case-insensitive comparison
             sonst:
                 fn = 'file'
@@ -179,7 +179,7 @@ klasse DirCompareTestCase(unittest.TestCase):
             d1 = filecmp.dircmp(self.dir, bad_dir)
             d2 = filecmp.dircmp(bad_dir, self.dir)
             fuer target in [
-                # attributes where os.listdir() raises OSError or ValueError
+                # attributes where os.listdir() raises OSError oder ValueError
                 'left_list', 'right_list',
                 'left_only', 'right_only', 'common',
             ]:

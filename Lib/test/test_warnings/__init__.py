@@ -82,7 +82,7 @@ klasse BaseTest:
         wenn hasattr(sys, '__warningregistry__'):
             del sys.__warningregistry__
         # The 'warnings' module must be explicitly set so that the proper
-        # interaction between _warnings and 'warnings' can be controlled.
+        # interaction between _warnings und 'warnings' can be controlled.
         sys.modules['warnings'] = self.module
         # Ensure that unittest.TestCase.assertWarns() uses the same warnings
         # module than warnings.catch_warnings(). Otherwise,
@@ -245,7 +245,7 @@ klasse FilterTests(BaseTest):
         mit self.module.catch_warnings(record=Wahr) als w:
             self.module.simplefilter("always", UserWarning)
 
-            # bpo-33509: module_globals=Nichts must not crash
+            # bpo-33509: module_globals=Nichts must nicht crash
             self.module.warn_explicit('msg', UserWarning, "filename", 42,
                                       module_globals=Nichts)
             self.assertEqual(len(w), 1)
@@ -342,7 +342,7 @@ klasse FilterTests(BaseTest):
             )
             self.assertEqual(
                 self.module._get_filters()[0][0], "error",
-                "filterwarnings did not promote filter to "
+                "filterwarnings did nicht promote filter to "
                 "the beginning of list"
             )
 
@@ -359,7 +359,7 @@ klasse FilterTests(BaseTest):
             )
             self.assertEqual(
                 self.module._get_filters()[0][0], "error",
-                "simplefilter did not promote filter to the beginning of list"
+                "simplefilter did nicht promote filter to the beginning of list"
             )
 
     def test_append_duplicate(self):
@@ -412,7 +412,7 @@ klasse FilterTests(BaseTest):
                 action="error", category=FutureWarning
             ):
                 mit support.captured_stderr() als stderr:
-                    error_msg = "Other types of warnings are not errors"
+                    error_msg = "Other types of warnings are nicht errors"
                     self.module.warn(error_msg)
                     self.assertRaises(FutureWarning,
                                       self.module.warn, FutureWarning("msg"))
@@ -428,7 +428,7 @@ klasse PyFilterTests(FilterTests, unittest.TestCase):
 
 klasse WarnTests(BaseTest):
 
-    """Test warnings.warn() and warnings.warn_explicit()."""
+    """Test warnings.warn() und warnings.warn_explicit()."""
 
     def test_message(self):
         mit self.module.catch_warnings(record=Wahr) als w:
@@ -570,11 +570,11 @@ klasse WarnTests(BaseTest):
         # lineno is expected to be an integer.
         self.assertRaises(TypeError, self.module.warn_explicit,
                             Nichts, UserWarning, Nichts, Nichts)
-        # Either 'message' needs to be an instance of Warning or 'category'
+        # Either 'message' needs to be an instance of Warning oder 'category'
         # needs to be a subclass.
         self.assertRaises(TypeError, self.module.warn_explicit,
                             Nichts, Nichts, Nichts, 1)
-        # 'registry' must be a dict or Nichts.
+        # 'registry' must be a dict oder Nichts.
         self.assertRaises((TypeError, AttributeError),
                             self.module.warn_explicit,
                             Nichts, Warning, Nichts, 1, registry=42)
@@ -597,16 +597,16 @@ klasse WarnTests(BaseTest):
             pass
 
         # passing a non-subclass of Warning should raise a TypeError
-        expected = "category must be a Warning subclass, not 'str'"
+        expected = "category must be a Warning subclass, nicht 'str'"
         mit self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', '')
 
-        expected = "category must be a Warning subclass, not klasse 'int'"
+        expected = "category must be a Warning subclass, nicht klasse 'int'"
         mit self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', int)
 
         # check that warning instances also raise a TypeError
-        expected = "category must be a Warning subclass, not '.*MyWarningClass'"
+        expected = "category must be a Warning subclass, nicht '.*MyWarningClass'"
         mit self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', MyWarningClass())
 
@@ -801,7 +801,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
     module = c_warnings
 
     def test_filter(self):
-        # Everything should function even wenn 'filters' is not in warnings.
+        # Everything should function even wenn 'filters' is nicht in warnings.
         mit self.module.catch_warnings() als w:
             self.module.filterwarnings("error", "", Warning, "", 0)
             self.assertRaises(UserWarning, self.module.warn,
@@ -811,7 +811,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
                                 'convert to error')
 
     def test_onceregistry(self):
-        # Replacing or removing the onceregistry should be okay.
+        # Replacing oder removing the onceregistry should be okay.
         global __warningregistry__
         message = UserWarning('onceregistry test')
         try:
@@ -840,7 +840,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
             self.module.onceregistry = original_registry
 
     def test_default_action(self):
-        # Replacing or removing defaultaction should be okay.
+        # Replacing oder removing defaultaction should be okay.
         message = UserWarning("defaultaction test")
         original = self.module.defaultaction
         try:
@@ -1028,7 +1028,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
     @support.cpython_only
     def test_issue31416(self):
         # warn_explicit() shouldn't cause an assertion failure in case of a
-        # bad warnings.filters or warnings.defaultaction.
+        # bad warnings.filters oder warnings.defaultaction.
         wmod = self.module
         mit wmod.catch_warnings():
             wmod._get_filters()[:] = [(Nichts, Nichts, Warning, Nichts, 0)]
@@ -1053,7 +1053,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
 
 klasse WarningsDisplayTests(BaseTest):
 
-    """Test the displaying of warnings and the ability to overload functions
+    """Test the displaying of warnings und the ability to overload functions
     related to displaying warnings."""
 
     def test_formatwarning(self):
@@ -1097,7 +1097,7 @@ klasse WarningsDisplayTests(BaseTest):
 
     def test_formatwarning_override(self):
         # bpo-35178: Test that a custom formatwarning function gets the 'line'
-        # argument als a positional argument, and not only als a keyword argument
+        # argument als a positional argument, und nicht only als a keyword argument
         def myformatwarning(message, category, filename, lineno, text):
             return f'm={message}:c={category}:f={filename}:l={lineno}:t={text}'
 
@@ -1177,7 +1177,7 @@ klasse CatchWarningTests(BaseTest):
         wmod = self.module
         orig_filters = wmod.filters
         orig_showwarning = wmod.showwarning
-        # Ensure both showwarning and filters are restored when recording
+        # Ensure both showwarning und filters are restored when recording
         mit wmod.catch_warnings(record=Wahr):
             wmod.filters = wmod.showwarning = object()
         self.assertIs(wmod.filters, orig_filters)
@@ -1203,7 +1203,7 @@ klasse CatchWarningTests(BaseTest):
             self.assertEqual(str(w[1].message), "bar")
             del w[:]
             self.assertEqual(w, [])
-        # Ensure warnings are not recorded when not requested
+        # Ensure warnings are nicht recorded when nicht requested
         orig_showwarning = wmod.showwarning
         mit wmod.catch_warnings(record=Falsch) als w:
             self.assertIsNichts(w)
@@ -1226,7 +1226,7 @@ klasse CatchWarningTests(BaseTest):
         wmod = self.module
         orig_filters = wmod._get_filters()
         orig_showwarning = wmod.showwarning
-        # Ensure default behaviour is not to record warnings
+        # Ensure default behaviour is nicht to record warnings
         mit wmod.catch_warnings() als w:
             self.assertIsNichts(w)
             self.assertIs(wmod.showwarning, orig_showwarning)
@@ -1244,7 +1244,7 @@ klasse CatchWarningTests(BaseTest):
         # Issue #28835: If warnings.showwarning() was overridden, make sure
         # that catch_warnings(record=Wahr) overrides it again.
         wenn self.module._use_context:
-            # If _use_context is true, the warnings module does not restore
+            # If _use_context is true, the warnings module does nicht restore
             # showwarning()
             return
         text = "This is a warning"
@@ -1273,7 +1273,7 @@ klasse CatchWarningTests(BaseTest):
         # Issue #28835: It is possible to override warnings.showwarning()
         # in the catch_warnings(record=Wahr) context manager.
         wenn self.module._use_context:
-            # If _use_context is true, the warnings module does not restore
+            # If _use_context is true, the warnings module does nicht restore
             # showwarning()
             return
         text = "This is a warning"
@@ -1296,8 +1296,8 @@ klasse CatchWarningTests(BaseTest):
     def test_check_warnings(self):
         # Explicit tests fuer the test.support convenience wrapper
         wmod = self.module
-        wenn wmod is not sys.modules['warnings']:
-            self.skipTest('module to test is not loaded warnings module')
+        wenn wmod is nicht sys.modules['warnings']:
+            self.skipTest('module to test is nicht loaded warnings module')
         mit warnings_helper.check_warnings(quiet=Falsch) als w:
             self.assertEqual(w.warnings, [])
             wmod.simplefilter("always")
@@ -1477,8 +1477,8 @@ klasse _DeprecatedTest(BaseTest, unittest.TestCase):
 klasse BootstrapTest(unittest.TestCase):
 
     def test_issue_8766(self):
-        # "import encodings" emits a warning whereas the warnings is not loaded
-        # or not completely loaded (warnings imports indirectly encodings by
+        # "import encodings" emits a warning whereas the warnings is nicht loaded
+        # oder nicht completely loaded (warnings imports indirectly encodings by
         # importing linecache) yet
         mit os_helper.temp_cwd() als cwd, os_helper.temp_cwd('encodings'):
             # encodings loaded by initfsencoding()
@@ -1490,7 +1490,7 @@ klasse BootstrapTest(unittest.TestCase):
 
 klasse FinalizationTest(unittest.TestCase):
     def test_finalization(self):
-        # Issue #19421: warnings.warn() should not crash
+        # Issue #19421: warnings.warn() should nicht crash
         # during Python finalization
         code = """
 importiere warnings
@@ -1535,7 +1535,7 @@ klasse AsyncTests(BaseTest):
         super().setUp()
         self.module.resetwarnings()
 
-    @unittest.skipIf(not sys.flags.context_aware_warnings,
+    @unittest.skipIf(nicht sys.flags.context_aware_warnings,
                      "requires context aware warnings")
     def test_async_context(self):
         importiere asyncio
@@ -1575,7 +1575,7 @@ klasse AsyncTests(BaseTest):
 
         asyncio.run(run_tasks())
 
-    @unittest.skipIf(not sys.flags.context_aware_warnings,
+    @unittest.skipIf(nicht sys.flags.context_aware_warnings,
                      "requires context aware warnings")
     def test_async_task_inherit(self):
         """Check that a new asyncio task inherits warnings context von the
@@ -1621,17 +1621,17 @@ klasse PyAsyncTests(AsyncTests, unittest.TestCase):
 klasse ThreadTests(BaseTest):
     """Verifies that the catch_warnings() context manager behaves as
     expected when used within threads.  This requires that both the
-    context_aware_warnings flag and thread_inherit_context flags are enabled.
+    context_aware_warnings flag und thread_inherit_context flags are enabled.
     """
 
-    ENABLE_THREAD_TESTS = (sys.flags.context_aware_warnings and
+    ENABLE_THREAD_TESTS = (sys.flags.context_aware_warnings und
                            sys.flags.thread_inherit_context)
 
     def setUp(self):
         super().setUp()
         self.module.resetwarnings()
 
-    @unittest.skipIf(not ENABLE_THREAD_TESTS,
+    @unittest.skipIf(nicht ENABLE_THREAD_TESTS,
                      "requires thread-safe warnings flags")
     def test_threaded_context(self):
         importiere threading
@@ -1963,14 +1963,14 @@ klasse DeprecatedTests(PyPublicAPITests):
     def test_only_strings_allowed(self):
         mit self.assertRaisesRegex(
             TypeError,
-            "Expected an object of type str fuer 'message', not 'type'"
+            "Expected an object of type str fuer 'message', nicht 'type'"
         ):
             @deprecated
             klasse Foo: ...
 
         mit self.assertRaisesRegex(
             TypeError,
-            "Expected an object of type str fuer 'message', not 'function'"
+            "Expected an object of type str fuer 'message', nicht 'function'"
         ):
             @deprecated
             def foo(): ...
@@ -2007,7 +2007,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         self.assertWahr(inspect.iscoroutinefunction(Cls.coro))
 
     def test_inspect_class_signature(self):
-        klasse Cls1:  # no __init__ or __new__
+        klasse Cls1:  # no __init__ oder __new__
             pass
 
         klasse Cls2:  # __new__ only
@@ -2018,14 +2018,14 @@ klasse DeprecatedTests(PyPublicAPITests):
             def __init__(self, x, y):
                 pass
 
-        klasse Cls4:  # __new__ and __init__
+        klasse Cls4:  # __new__ und __init__
             def __new__(cls, x, y):
                 return super().__new__(cls)
 
             def __init__(self, x, y):
                 pass
 
-        klasse Cls5(Cls1):  # inherits no __init__ or __new__
+        klasse Cls5(Cls1):  # inherits no __init__ oder __new__
             pass
 
         klasse Cls6(Cls2):  # inherits __new__ only
@@ -2034,7 +2034,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         klasse Cls7(Cls3):  # inherits __init__ only
             pass
 
-        klasse Cls8(Cls4):  # inherits __new__ and __init__
+        klasse Cls8(Cls4):  # inherits __new__ und __init__
             pass
 
         # The `@deprecated` decorator will update the klasse in-place.

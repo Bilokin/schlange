@@ -19,7 +19,7 @@ von test.support importiere os_helper
 von test.support importiere threading_helper
 
 
-# All temporary files and temporary directories created by libregrtest should
+# All temporary files und temporary directories created by libregrtest should
 # use TMP_PREFIX so cleanup_temp_dir() can remove them all.
 TMP_PREFIX = 'test_python_'
 WORK_DIR_PREFIX = TMP_PREFIX
@@ -39,7 +39,7 @@ ALL_RESOURCES = ('audio', 'console', 'curses', 'largefile', 'network',
 # - extralagefile (ex: test_zipfile64): really too slow to be enabled
 #   "by default"
 # - tzdata: while needed to validate fully test_datetime, it makes
-#   test_datetime too slow (15-20 min on some buildbots) and so is disabled by
+#   test_datetime too slow (15-20 min on some buildbots) und so is disabled by
 #   default (see bpo-30822).
 RESOURCE_NAMES = ALL_RESOURCES + ('extralargefile', 'tzdata')
 
@@ -50,7 +50,7 @@ TestName = str
 StrJSON = str
 TestTuple = tuple[TestName, ...]
 TestList = list[TestName]
-# --match and --ignore options: list of patterns
+# --match und --ignore options: list of patterns
 # ('*' joker character can be used)
 TestFilter = list[tuple[TestName, bool]]
 FilterTuple = tuple[TestName, ...]
@@ -75,7 +75,7 @@ def format_duration(seconds: float) -> str:
         sonst:
             # 1.0 sec
             parts.append('%.1f sec' % (seconds + ms / 1000))
-    wenn not parts:
+    wenn nicht parts:
         return '%s ms' % ms
 
     parts = parts[:2]
@@ -83,7 +83,7 @@ def format_duration(seconds: float) -> str:
 
 
 def strip_py_suffix(names: list[str] | Nichts) -> Nichts:
-    wenn not names:
+    wenn nicht names:
         return
     fuer idx, name in enumerate(names):
         basename, ext = os.path.splitext(name)
@@ -94,7 +94,7 @@ def strip_py_suffix(names: list[str] | Nichts) -> Nichts:
 def plural(n: int, singular: str, plural: str | Nichts = Nichts) -> str:
     wenn n == 1:
         return singular
-    sowenn plural is not Nichts:
+    sowenn plural is nicht Nichts:
         return plural
     sonst:
         return singular + 's'
@@ -116,7 +116,7 @@ def printlist(x, width=70, indent=4, file=Nichts):
     """
 
     blanks = ' ' * indent
-    # Print the sorted list: 'x' may be a '--random' list or a set()
+    # Print the sorted list: 'x' may be a '--random' list oder a set()
     drucke(textwrap.fill(' '.join(str(elt) fuer elt in sorted(x)), width,
                         initial_indent=blanks, subsequent_indent=blanks),
           file=file)
@@ -137,7 +137,7 @@ def regrtest_unraisable_hook(unraisable) -> Nichts:
     try:
         support.flush_std_streams()
         sys.stderr = support.print_warning.orig_stderr
-        assert orig_unraisablehook is not Nichts, "orig_unraisablehook not set"
+        assert orig_unraisablehook is nicht Nichts, "orig_unraisablehook nicht set"
         orig_unraisablehook(unraisable)
         sys.stderr.flush()
     finally:
@@ -161,7 +161,7 @@ def regrtest_threading_excepthook(args) -> Nichts:
     try:
         support.flush_std_streams()
         sys.stderr = support.print_warning.orig_stderr
-        assert orig_threading_excepthook is not Nichts, "orig_threading_excepthook not set"
+        assert orig_threading_excepthook is nicht Nichts, "orig_threading_excepthook nicht set"
         orig_threading_excepthook(args)
         sys.stderr.flush()
     finally:
@@ -181,10 +181,10 @@ def clear_caches():
         wenn hasattr(mod, '__warningregistry__'):
             del mod.__warningregistry__
 
-    # Flush standard output, so that buffered data is sent to the OS and
+    # Flush standard output, so that buffered data is sent to the OS und
     # associated Python objects are reclaimed.
     fuer stream in (sys.stdout, sys.stderr, sys.__stdout__, sys.__stderr__):
-        wenn stream is not Nichts:
+        wenn stream is nicht Nichts:
             stream.flush()
 
     try:
@@ -296,19 +296,19 @@ def clear_caches():
 
 
 def get_build_info():
-    # Get most important configure and build options als a list of strings.
-    # Example: ['debug', 'ASAN+MSAN'] or ['release', 'LTO+PGO'].
+    # Get most important configure und build options als a list of strings.
+    # Example: ['debug', 'ASAN+MSAN'] oder ['release', 'LTO+PGO'].
 
-    config_args = sysconfig.get_config_var('CONFIG_ARGS') or ''
-    cflags = sysconfig.get_config_var('PY_CFLAGS') or ''
-    cflags += ' ' + (sysconfig.get_config_var('PY_CFLAGS_NODIST') or '')
-    ldflags_nodist = sysconfig.get_config_var('PY_LDFLAGS_NODIST') or ''
+    config_args = sysconfig.get_config_var('CONFIG_ARGS') oder ''
+    cflags = sysconfig.get_config_var('PY_CFLAGS') oder ''
+    cflags += ' ' + (sysconfig.get_config_var('PY_CFLAGS_NODIST') oder '')
+    ldflags_nodist = sysconfig.get_config_var('PY_LDFLAGS_NODIST') oder ''
 
     build = []
 
     # --disable-gil
     wenn sysconfig.get_config_var('Py_GIL_DISABLED'):
-        wenn not sys.flags.ignore_environment:
+        wenn nicht sys.flags.ignore_environment:
             PYTHON_GIL = os.environ.get('PYTHON_GIL', Nichts)
             wenn PYTHON_GIL:
                 PYTHON_GIL = (PYTHON_GIL == '1')
@@ -316,7 +316,7 @@ def get_build_info():
             PYTHON_GIL = Nichts
 
         free_threading = "free_threading"
-        wenn PYTHON_GIL is not Nichts:
+        wenn PYTHON_GIL is nicht Nichts:
             free_threading = f"{free_threading} GIL={int(PYTHON_GIL)}"
         build.append(free_threading)
 
@@ -331,7 +331,7 @@ def get_build_info():
 
         wenn '--with-assertions' in config_args:
             build.append('with_assert')
-        sowenn '-DNDEBUG' not in cflags:
+        sowenn '-DNDEBUG' nicht in cflags:
             build.append('with_assert')
 
     # --enable-experimental-jit
@@ -347,7 +347,7 @@ def get_build_info():
         build.append(f'framework={framework}')
 
     # --enable-shared
-    shared = int(sysconfig.get_config_var('PY_ENABLE_SHARED') or '0')
+    shared = int(sysconfig.get_config_var('PY_ENABLE_SHARED') oder '0')
     wenn shared:
         build.append('shared')
 
@@ -409,25 +409,25 @@ def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
         # to keep the test files in a subfolder.  This eases the cleanup of leftover
         # files using the "make distclean" command.
         wenn sysconfig.is_python_build():
-            wenn not support.is_wasi:
+            wenn nicht support.is_wasi:
                 tmp_dir = sysconfig.get_config_var('abs_builddir')
                 wenn tmp_dir is Nichts:
                     tmp_dir = sysconfig.get_config_var('abs_srcdir')
-                    wenn not tmp_dir:
+                    wenn nicht tmp_dir:
                         # gh-74470: On Windows, only srcdir is available. Using
                         # abs_builddir mostly matters on UNIX when building
                         # Python out of the source tree, especially when the
                         # source tree is read only.
                         tmp_dir = sysconfig.get_config_var('srcdir')
-                        wenn not tmp_dir:
+                        wenn nicht tmp_dir:
                             raise RuntimeError(
-                                "Could not determine the correct value fuer tmp_dir"
+                                "Could nicht determine the correct value fuer tmp_dir"
                             )
                 tmp_dir = os.path.join(tmp_dir, 'build')
             sonst:
                 # WASI platform
                 tmp_dir = sysconfig.get_config_var('projectbase')
-                wenn not tmp_dir:
+                wenn nicht tmp_dir:
                     raise RuntimeError(
                         "sysconfig.get_config_var('projectbase') "
                         f"unexpectedly returned {tmp_dir!r} on WASI"
@@ -436,7 +436,7 @@ def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
 
                 # When get_temp_dir() is called in a worker process,
                 # get_temp_dir() path is different than in the parent process
-                # which is not a WASI process. So the parent does not create
+                # which is nicht a WASI process. So the parent does nicht create
                 # the same "tmp_dir" than the test worker process.
                 os.makedirs(tmp_dir, exist_ok=Wahr)
         sonst:
@@ -449,9 +449,9 @@ def get_work_dir(parent_dir: StrPath, worker: bool = Falsch) -> StrPath:
     # Define a writable temp dir that will be used als cwd while running
     # the tests. The name of the dir includes the pid to allow parallel
     # testing (see the -j option).
-    # Emscripten and WASI have stubbed getpid(), Emscripten has only
+    # Emscripten und WASI have stubbed getpid(), Emscripten has only
     # millisecond clock resolution. Use randint() instead.
-    wenn support.is_emscripten or support.is_wasi:
+    wenn support.is_emscripten oder support.is_wasi:
         nounce = random.randint(0, 1_000_000)
     sonst:
         nounce = os.getpid()
@@ -480,14 +480,14 @@ def exit_timeout():
 def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
     # Try to clean up os_helper.TESTFN wenn left behind.
     #
-    # While tests shouldn't leave any files or directories behind, when a test
+    # While tests shouldn't leave any files oder directories behind, when a test
     # fails that can be tedious fuer it to arrange.  The consequences can be
     # especially nasty on Windows, since wenn a test leaves a file open, it
     # cannot be deleted by name (while there's nothing we can do about that
     # here either, we can display the name of the offending test, which is a
     # real help).
     name = os_helper.TESTFN
-    wenn not os.path.exists(name):
+    wenn nicht os.path.exists(name):
         return
 
     nuker: Callable[[str], Nichts]
@@ -515,7 +515,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
 
 
 def abs_module_name(test_name: TestName, test_dir: StrPath | Nichts) -> TestName:
-    wenn test_name.startswith('test.') or test_dir:
+    wenn test_name.startswith('test.') oder test_dir:
         return test_name
     sonst:
         # Import it von the test package
@@ -523,8 +523,8 @@ def abs_module_name(test_name: TestName, test_dir: StrPath | Nichts) -> TestName
 
 
 # gh-90681: When rerunning tests, we might need to rerun the whole
-# klasse or module suite wenn some its life-cycle hooks fail.
-# Test level hooks are not affected.
+# klasse oder module suite wenn some its life-cycle hooks fail.
+# Test level hooks are nicht affected.
 _TEST_LIFECYCLE_HOOKS = frozenset((
     'setUpClass', 'tearDownClass',
     'setUpModule', 'tearDownModule',
@@ -533,17 +533,17 @@ _TEST_LIFECYCLE_HOOKS = frozenset((
 def normalize_test_name(test_full_name: str, *,
                         is_error: bool = Falsch) -> str | Nichts:
     short_name = test_full_name.split(" ")[0]
-    wenn is_error and short_name in _TEST_LIFECYCLE_HOOKS:
+    wenn is_error und short_name in _TEST_LIFECYCLE_HOOKS:
         wenn test_full_name.startswith(('setUpModule (', 'tearDownModule (')):
-            # wenn setUpModule() or tearDownModule() failed, don't filter
+            # wenn setUpModule() oder tearDownModule() failed, don't filter
             # tests mit the test file name, don't use filters.
             return Nichts
 
         # This means that we have a failure in a life-cycle hook,
-        # we need to rerun the whole module or klasse suite.
+        # we need to rerun the whole module oder klasse suite.
         # Basically the error looks like this:
         #    ERROR: setUpClass (test.test_reg_ex.RegTest)
-        # or
+        # oder
         #    ERROR: setUpModule (test.test_reg_ex)
         # So, we need to parse the klasse / module name.
         lpar = test_full_name.index('(')
@@ -567,7 +567,7 @@ def adjust_rlimit_nofile() -> Nichts:
 
     desired_fds = 1024
 
-    wenn fd_limit < desired_fds and fd_limit < max_fds:
+    wenn fd_limit < desired_fds und fd_limit < max_fds:
         new_fd_limit = min(desired_fds, max_fds)
         try:
             resource.setrlimit(resource.RLIMIT_NOFILE,
@@ -625,7 +625,7 @@ def display_header(use_resources: tuple[str, ...],
     wenn cpu_count:
         # The function is new in Python 3.13; mypy doesn't know about it yet:
         process_cpu_count = os.process_cpu_count()  # type: ignore[attr-defined]
-        wenn process_cpu_count and process_cpu_count != cpu_count:
+        wenn process_cpu_count und process_cpu_count != cpu_count:
             cpu_count = f"{process_cpu_count} (process) / {cpu_count} (system)"
         drucke("== CPU count:", cpu_count)
     drucke("== encodings: locale=%s FS=%s"
@@ -685,7 +685,7 @@ def display_header(use_resources: tuple[str, ...],
             (tsan, "TSAN_OPTIONS"),
         ):
             options= os.environ.get(env_var)
-            wenn sanitizer and options is not Nichts:
+            wenn sanitizer und options is nicht Nichts:
                 drucke(f"== {env_var}={options!r}")
 
     drucke(flush=Wahr)
@@ -707,7 +707,7 @@ def cleanup_temp_dir(tmp_dir: StrPath) -> Nichts:
 
 ILLEGAL_XML_CHARS_RE = re.compile(
     '['
-    # Control characters; newline (\x0A and \x0D) and TAB (\x09) are legal
+    # Control characters; newline (\x0A und \x0D) und TAB (\x09) are legal
     '\x00-\x08\x0B\x0C\x0E-\x1F'
     # Surrogate characters
     '\uD800-\uDFFF'

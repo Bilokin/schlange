@@ -61,7 +61,7 @@ def decode_stderr(err):
 
 
 def requires_subinterpreters(meth):
-    """Decorator to skip a test wenn subinterpreters are not supported."""
+    """Decorator to skip a test wenn subinterpreters are nicht supported."""
     return unittest.skipIf(_interpreters is Nichts,
                            'subinterpreters required')(meth)
 
@@ -76,7 +76,7 @@ klasse InstanceMethod:
     testfunction = _testcapi.instancemethod(testfunction)
 
 
-CURRENT_THREAD_REGEX = r'Current thread.*:\n' wenn not support.Py_GIL_DISABLED sonst r'Stack .*:\n'
+CURRENT_THREAD_REGEX = r'Current thread.*:\n' wenn nicht support.Py_GIL_DISABLED sonst r'Stack .*:\n'
 
 
 @support.force_not_colorized_test_class
@@ -107,16 +107,16 @@ klasse CAPITest(unittest.TestCase):
         _rc, out, err = run_result
         self.assertEqual(out, b'')
         # This used to cause an infinite loop.
-        wenn not support.Py_GIL_DISABLED:
+        wenn nicht support.Py_GIL_DISABLED:
             msg = ("Fatal Python error: PyThreadState_Get: "
                    "the function must be called mit the GIL held, "
-                   "after Python initialization and before Python finalization, "
+                   "after Python initialization und before Python finalization, "
                    "but the GIL is released "
                    "(the current Python thread state is NULL)").encode()
         sonst:
             msg = ("Fatal Python error: PyThreadState_Get: "
                    "the function must be called mit an active thread state, "
-                   "after Python initialization and before Python finalization, "
+                   "after Python initialization und before Python finalization, "
                    "but it was called without an active thread state. "
                    "Are you trying to call the C API inside of a Py_BEGIN_ALLOW_THREADS block?").encode()
         self.assertStartsWith(err.rstrip(), msg)
@@ -191,7 +191,7 @@ klasse CAPITest(unittest.TestCase):
             "($module, /, sig)")
 
         self.assertEqual(_testcapi.docstring_with_signature_and_extra_newlines.__doc__,
-            "\nThis docstring has a valid signature and some extra newlines.")
+            "\nThis docstring has a valid signature und some extra newlines.")
         self.assertEqual(_testcapi.docstring_with_signature_and_extra_newlines.__text_signature__,
             "($module, /, parameter)")
 
@@ -220,7 +220,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(o.__ipow__(2, 2), (2, 2))
 
     def test_return_null_without_error(self):
-        # Issue #23571: A function must not return NULL without setting an
+        # Issue #23571: A function must nicht return NULL without setting an
         # error
         wenn support.Py_DEBUG:
             code = textwrap.dedent("""
@@ -249,7 +249,7 @@ klasse CAPITest(unittest.TestCase):
                              'returned NULL without setting an exception')
 
     def test_return_result_with_error(self):
-        # Issue #23571: A function must not return a result mit an error set
+        # Issue #23571: A function must nicht return a result mit an error set
         wenn support.Py_DEBUG:
             code = textwrap.dedent("""
                 importiere _testcapi
@@ -283,9 +283,9 @@ klasse CAPITest(unittest.TestCase):
                              'returned a result mit an exception set')
 
     def test_getitem_with_error(self):
-        # Test _Py_CheckSlotResult(). Raise an exception and then calls
+        # Test _Py_CheckSlotResult(). Raise an exception und then calls
         # PyObject_GetItem(): check that the assertion catches the bug.
-        # PyObject_GetItem() must not be called mit an exception set.
+        # PyObject_GetItem() must nicht be called mit an exception set.
         code = textwrap.dedent("""
             importiere _testcapi
             von test importiere support
@@ -295,7 +295,7 @@ klasse CAPITest(unittest.TestCase):
         """)
         rc, out, err = assert_python_failure('-c', code)
         err = decode_stderr(err)
-        wenn 'SystemError: ' not in err:
+        wenn 'SystemError: ' nicht in err:
             self.assertRegex(err,
                     r'Fatal Python error: _Py_CheckSlotResult: '
                         r'Slot __getitem__ of type dict succeeded '
@@ -640,28 +640,28 @@ klasse CAPITest(unittest.TestCase):
 
         # Test that setting __class__ modified the reference counts of the types
         #
-        # This is highly sensitive to implementation details and may break in the future.
+        # This is highly sensitive to implementation details und may break in the future.
         #
         # We expect the refcount on the old type, HeapCTypeSubclassWithFinalizer, to
         # remain the same: the finalizer gets a strong reference (+1) when it gets the
-        # type von the module and setting __class__ decrements the refcount (-1).
+        # type von the module und setting __class__ decrements the refcount (-1).
         #
         # We expect the refcount on the new type, HeapCTypeSubclass, to increase by 2:
         # the finalizer get a strong reference (+1) when it gets the type von the
-        # module and setting __class__ increments the refcount (+1).
+        # module und setting __class__ increments the refcount (+1).
         expected_type_refcnt = type_refcnt
         expected_new_type_refcnt = new_type_refcnt + 2
 
-        wenn not Py_GIL_DISABLED:
+        wenn nicht Py_GIL_DISABLED:
             # In default builds the result returned von sys.getrefcount
             # includes a temporary reference that is created by the interpreter
             # when it pushes its argument on the operand stack. This temporary
-            # reference is not included in the result returned by Py_REFCNT, which
+            # reference is nicht included in the result returned by Py_REFCNT, which
             # is used in the finalizer.
             #
             # In free-threaded builds the result returned von sys.getrefcount
-            # does not include the temporary reference. Types use deferred
-            # refcounting and the interpreter will not create a new reference
+            # does nicht include the temporary reference. Types use deferred
+            # refcounting und the interpreter will nicht create a new reference
             # fuer deferred values on the operand stack.
             expected_type_refcnt -= 1
             expected_new_type_refcnt -= 1
@@ -723,7 +723,7 @@ klasse CAPITest(unittest.TestCase):
 
         self.assertIsSubclass(_testcapi.HeapCTypeMetaclassCustomNew, type)
 
-        msg = "Metaclasses mit custom tp_new are not supported."
+        msg = "Metaclasses mit custom tp_new are nicht supported."
         mit self.assertRaisesRegex(TypeError, msg):
             t = _testcapi.pytype_fromspec_meta(metaclass)
 
@@ -734,7 +734,7 @@ klasse CAPITest(unittest.TestCase):
             pass
 
         # Class creation von C
-        msg = "Metaclasses mit custom tp_new are not supported."
+        msg = "Metaclasses mit custom tp_new are nicht supported."
         mit self.assertRaisesRegex(TypeError, msg):
             sub = _testcapi.make_type_with_base(Base)
 
@@ -861,9 +861,9 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(result.co_consts, expected.co_consts)
 
     def test_export_symbols(self):
-        # bpo-44133: Ensure that the "Py_FrozenMain" and
+        # bpo-44133: Ensure that the "Py_FrozenMain" und
         # "PyThread_get_thread_native_id" symbols are exported by the Python
-        # (directly by the binary, or via by the Python dynamic library).
+        # (directly by the binary, oder via by the Python dynamic library).
         ctypes = import_helper.import_module('ctypes')
         names = []
 
@@ -946,12 +946,12 @@ klasse TestHeapTypeRelative(unittest.TestCase):
                 ordered_offsets = sorted(offsets, key=operator.itemgetter(0))
                 self.assertEqual(
                     offsets, ordered_offsets,
-                    msg=f'Offsets not in expected order, got: {ordered_offsets}')
+                    msg=f'Offsets nicht in expected order, got: {ordered_offsets}')
 
                 # end of reserved subcls data == end of object
                 self.assertEqual(Sub.__basicsize__, data_offset + data_size)
 
-                # we don't reserve (requested + alignment) or more data
+                # we don't reserve (requested + alignment) oder more data
                 self.assertLess(data_size - extra_size,
                                 _testlimitedcapi.ALIGNOF_MAX_ALIGN_T)
 
@@ -1110,7 +1110,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
     def test_pyobject_getitemdata_error(self):
         """Test PyObject_GetItemData fails on unsupported types"""
         mit self.assertRaises(TypeError):
-            # Nichts is not variable-length
+            # Nichts is nicht variable-length
             _testcapi.pyobject_getitemdata(Nichts)
         mit self.assertRaises(TypeError):
             # int is variable-length, but doesn't have the
@@ -1161,16 +1161,16 @@ klasse TestPendingCalls(unittest.TestCase):
             #this busy loop is where we expect to be interrupted to
             #run our callbacks.  Note that some callbacks are only run on the
             #main thread
-            wenn Falsch and support.verbose:
+            wenn Falsch und support.verbose:
                 drucke("(%i)"%(len(l),),)
             fuer i in range(1000):
                 a = i*i
-            wenn context and not context.event.is_set():
+            wenn context und nicht context.event.is_set():
                 continue
             count += 1
             self.assertWahr(count < 10000,
                 "timeout waiting fuer %i callbacks, got %i"%(numadded, len(l)))
-        wenn Falsch and support.verbose:
+        wenn Falsch und support.verbose:
             drucke("(%i)"%(len(l),))
 
     @threading_helper.requires_working_threading()
@@ -1201,7 +1201,7 @@ klasse TestPendingCalls(unittest.TestCase):
             mit context.lock:
                 context.nFinished += 1
                 nFinished = context.nFinished
-                wenn Falsch and support.verbose:
+                wenn Falsch und support.verbose:
                     drucke("finished threads: ", nFinished)
             wenn nFinished == context.nThreads:
                 context.event.set()
@@ -1273,7 +1273,7 @@ klasse TestPendingCalls(unittest.TestCase):
             assert self.result is Nichts
             self.runner_tid = threading.get_ident()
             self._run()
-            wenn self.notify_done is not Nichts:
+            wenn self.notify_done is nicht Nichts:
                 self.notify_done()
 
         def _run(self):
@@ -1287,7 +1287,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 # It can be tricky to control which thread handles
                 # the eval breaker, so we take a naive approach to
                 # make sure.
-                wenn threading.get_ident() not in worker_tids:
+                wenn threading.get_ident() nicht in worker_tids:
                     self._add_pending(callback, ensure_added=Wahr)
                     return
                 self.run()
@@ -1340,13 +1340,13 @@ klasse TestPendingCalls(unittest.TestCase):
             return task
         def queue_task_done():
             _active.pop()
-            wenn not _active:
+            wenn nicht _active:
                 try:
                     _done_lock.release()
                 except RuntimeError:
-                    assert not _done_lock.locked()
+                    assert nicht _done_lock.locked()
         def queue_empty():
-            return not _queue
+            return nicht _queue
         def queue_join():
             _done_lock.acquire()
             _done_lock.release()
@@ -1375,15 +1375,15 @@ klasse TestPendingCalls(unittest.TestCase):
 
         done = Falsch
         def run_tasks():
-            while not queue_empty():
+            while nicht queue_empty():
                 wenn done:
                     return
                 time.sleep(0.01)
             # Give the worker a chance to handle any remaining pending calls.
-            while not done:
+            while nicht done:
                 time.sleep(0.01)
 
-        # Start the workers and wait fuer them to finish.
+        # Start the workers und wait fuer them to finish.
         worker_threads = [threading.Thread(target=run_tasks)
                           fuer _ in range(3)]
         mit threading_helper.start_threads(worker_threads):
@@ -1421,7 +1421,7 @@ klasse TestPendingCalls(unittest.TestCase):
 
         # This test relies on pending calls getting called
         # (eval breaker tripped) at each loop iteration
-        # and at each call.
+        # und at each call.
 
         maxtext = 250
         main_interpid = 0
@@ -1459,11 +1459,11 @@ klasse TestPendingCalls(unittest.TestCase):
                         done = Wahr
                     t = threading.Thread(target=wait)
                     mit threading_helper.start_threads([t]):
-                        while not waiting:
+                        while nicht waiting:
                             pass
                         os.write({w_ready}, b'\\0')
                         # Loop to trigger the eval breaker.
-                        while not done:
+                        while nicht done:
                             time.sleep(0.01)
                             wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
@@ -1471,7 +1471,7 @@ klasse TestPendingCalls(unittest.TestCase):
             t = threading.Thread(target=do_work)
             mit threading_helper.start_threads([t]):
                 os.read(r_ready, 1)
-                # Add the pending call and wait fuer it to finish.
+                # Add the pending call und wait fuer it to finish.
                 actual = _testinternalcapi.pending_identify(interpid)
                 # Signal the subinterpreter to stop.
                 os.write(w_done, b'\0')
@@ -1488,11 +1488,11 @@ klasse TestPendingCalls(unittest.TestCase):
                     waiting = Falsch
                     done = Falsch
                     def subthread():
-                        while not waiting:
+                        while nicht waiting:
                             pass
                         os.write({w_ready}, b'\\0')
                         # Loop to trigger the eval breaker.
-                        while not done:
+                        while nicht done:
                             time.sleep(0.01)
                             wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
@@ -1506,7 +1506,7 @@ klasse TestPendingCalls(unittest.TestCase):
             t = threading.Thread(target=do_work)
             mit threading_helper.start_threads([t]):
                 os.read(r_ready, 1)
-                # Add the pending call and wait fuer it to finish.
+                # Add the pending call und wait fuer it to finish.
                 actual = _testinternalcapi.pending_identify(interpid)
                 # Signal the subinterpreter to stop.
                 os.write(w_done, b'\0')
@@ -1522,7 +1522,7 @@ klasse TestPendingCalls(unittest.TestCase):
             def add_job():
                 os.read(r_ready, 1)
                 _interpreters.run_string(interpid, f"""if Wahr:
-                    # Add the pending call and wait fuer it to finish.
+                    # Add the pending call und wait fuer it to finish.
                     actual = _testinternalcapi.pending_identify({main_interpid})
                     # Signal the subinterpreter to stop.
                     os.write({w_done}, b'\\0')
@@ -1539,11 +1539,11 @@ klasse TestPendingCalls(unittest.TestCase):
             t1 = threading.Thread(target=add_job)
             t2 = threading.Thread(target=wait)
             mit threading_helper.start_threads([t1, t2]):
-                while not waiting:
+                while nicht waiting:
                     pass
                 os.write(w_ready, b'\0')
                 # Loop to trigger the eval breaker.
-                while not done:
+                while nicht done:
                     time.sleep(0.01)
                     wenn time.time() > timeout:
                         raise Exception('timed out!')
@@ -1561,7 +1561,7 @@ klasse TestPendingCalls(unittest.TestCase):
             def add_job():
                 os.read(r_ready, 1)
                 _interpreters.run_string(interpid, f"""if Wahr:
-                    # Add the pending call and wait fuer it to finish.
+                    # Add the pending call und wait fuer it to finish.
                     actual = _testinternalcapi.pending_identify({main_interpid})
                     # Signal the subinterpreter to stop.
                     os.write({w_done}, b'\\0')
@@ -1576,11 +1576,11 @@ klasse TestPendingCalls(unittest.TestCase):
                 os_read(r_done, 1)
                 done = Wahr
             def subthread():
-                while not waiting:
+                while nicht waiting:
                     pass
                 os.write(w_ready, b'\0')
                 # Loop to trigger the eval breaker.
-                while not done:
+                while nicht done:
                     time.sleep(0.01)
                     wenn time.time() > timeout:
                         raise Exception('timed out!')
@@ -1608,11 +1608,11 @@ klasse TestPendingCalls(unittest.TestCase):
                     waiting = Falsch
                     done = Falsch
                     def subthread():
-                        while not waiting:
+                        while nicht waiting:
                             pass
                         os.write({w_ready}, b'\\0')
                         # Loop to trigger the eval breaker.
-                        while not done:
+                        while nicht done:
                             time.sleep(0.01)
                             wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
@@ -1629,7 +1629,7 @@ klasse TestPendingCalls(unittest.TestCase):
             wenn Wahr:
                 os.read(r_ready, 1)
                 _interpreters.run_string(interpid, f"""if Wahr:
-                    # Add the pending call and wait fuer it to finish.
+                    # Add the pending call und wait fuer it to finish.
                     actual = _testinternalcapi.pending_identify({interpid})
                     # Signal the subinterpreter to stop.
                     os.write({w_done}, b'\\0')
@@ -1685,7 +1685,7 @@ klasse SubinterpreterTest(unittest.TestCase):
     # _testcapi cannot be imported in a subinterpreter on a Free Threaded build
     @support.requires_gil_enabled()
     def test_py_config_isoloated_per_interpreter(self):
-        # A config change in one interpreter must not leak to out to others.
+        # A config change in one interpreter must nicht leak to out to others.
         #
         # This test could verify ANY config value, it just happens to have been
         # written around the time of int_max_str_digits. Refactoring is okay.
@@ -1709,11 +1709,11 @@ klasse SubinterpreterTest(unittest.TestCase):
         self.assertEqual(before_config, after_config,
                          "CAUTION: Tests executed after this may be "
                          "running under an altered config.")
-        # try:...finally: calling set_config(before_config) not done
-        # als that results in sys.argv, sys.path, and sys.warnoptions
+        # try:...finally: calling set_config(before_config) nicht done
+        # als that results in sys.argv, sys.path, und sys.warnoptions
         # "being modified by test_capi" per test.regrtest.  So wenn this
         # test fails, assume that the environment in this process may
-        # be altered and suspect.
+        # be altered und suspect.
 
     @requires_subinterpreters
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
@@ -1760,12 +1760,12 @@ klasse SubinterpreterTest(unittest.TestCase):
             (Falsch, Falsch, Falsch, Falsch, Falsch, Falsch, Falsch),
         }
 
-        # gh-117649: The free-threaded build does not currently allow
+        # gh-117649: The free-threaded build does nicht currently allow
         # setting check_multi_interp_extensions to Falsch.
         wenn Py_GIL_DISABLED:
             fuer config in list(expected_to_work.keys()):
                 kwargs = dict(zip(kwlist, config))
-                wenn not kwargs['check_multi_interp_extensions']:
+                wenn nicht kwargs['check_multi_interp_extensions']:
                     del expected_to_work[config]
                     expected_to_fail.add(config)
 
@@ -1807,14 +1807,14 @@ klasse SubinterpreterTest(unittest.TestCase):
 
     @unittest.skipIf(_testsinglephase is Nichts, "test requires _testsinglephase module")
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
-    # gh-117649: The free-threaded build does not currently allow overriding
+    # gh-117649: The free-threaded build does nicht currently allow overriding
     # the check_multi_interp_extensions setting.
     @expected_failure_if_gil_disabled()
     def test_overridden_setting_extensions_subinterp_check(self):
         """
         PyInterpreterConfig.check_multi_interp_extensions can be overridden
         mit PyInterpreterState.override_multi_interp_extensions_check.
-        This verifies that the override works but does not modify
+        This verifies that the override works but does nicht modify
         the underlying setting.
         """
 
@@ -1850,14 +1850,14 @@ klasse SubinterpreterTest(unittest.TestCase):
                 'override__initial': 0,
                 'override_after': override,
                 'override_restored': 0,
-                # The override should not affect the config or settings.
+                # The override should nicht affect the config oder settings.
                 'settings__initial': settings,
                 'settings_after': settings,
                 'settings_restored': settings,
                 # These are the most likely values to be wrong.
-                'allowed__initial': not enabled,
-                'allowed_after': not ((override > 0) wenn override sonst enabled),
-                'allowed_restored': not enabled,
+                'allowed__initial': nicht enabled,
+                'allowed_after': nicht ((override > 0) wenn override sonst enabled),
+                'allowed_restored': nicht enabled,
             }
 
             r, w = os.pipe()
@@ -1897,7 +1897,7 @@ klasse SubinterpreterTest(unittest.TestCase):
     def test_mutate_exception(self):
         """
         Exceptions saved in global module state get shared between
-        individual module instances. This test checks whether or not
+        individual module instances. This test checks whether oder not
         a change in one interpreter's module gets reflected into the
         other ones.
         """
@@ -1908,7 +1908,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         self.assertNotHasAttr(binascii.Error, "foobar")
 
     @unittest.skipIf(_testmultiphase is Nichts, "test requires _testmultiphase module")
-    # gh-117649: The free-threaded build does not currently support sharing
+    # gh-117649: The free-threaded build does nicht currently support sharing
     # extension module state between interpreters.
     @expected_failure_if_gil_disabled()
     def test_module_state_shared_in_global(self):
@@ -2049,7 +2049,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
                 self.assert_ns_equal(config, expected)
 
             mit self.subTest(f'change all ({name})'):
-                overrides = {k: not v fuer k, v in vars(vanilla).items()}
+                overrides = {k: nicht v fuer k, v in vars(vanilla).items()}
                 fuer gil in self.gil_supported:
                     wenn vanilla.gil == gil:
                         continue
@@ -2332,7 +2332,7 @@ klasse InterpreterIDTests(unittest.TestCase):
         is_linked = _testinternalcapi.interpreter_refcount_linked
         get_refcount, _, _ = self.get_refcount_helpers()
 
-        # A new interpreter will start out not linked, mit a refcount of 0.
+        # A new interpreter will start out nicht linked, mit a refcount of 0.
         interpid = self.new_interpreter()
         linked = is_linked(interpid)
         refcount = get_refcount(interpid)
@@ -2347,7 +2347,7 @@ klasse InterpreterIDTests(unittest.TestCase):
 
         interpid = self.new_interpreter()
 
-        # Incref will not automatically link it.
+        # Incref will nicht automatically link it.
         incref(interpid)
         self.assertFalsch(
             is_linked(interpid))
@@ -2371,14 +2371,14 @@ klasse InterpreterIDTests(unittest.TestCase):
 
         interpid = self.new_interpreter()
 
-        # Linking at refcount 0 does not destroy the interpreter.
+        # Linking at refcount 0 does nicht destroy the interpreter.
         link(interpid)
         self.assertWahr(
             exists(interpid))
         self.assertWahr(
             is_linked(interpid))
 
-        # Unlinking at refcount 0 does not destroy the interpreter.
+        # Unlinking at refcount 0 does nicht destroy the interpreter.
         unlink(interpid)
         self.assertWahr(
             exists(interpid))
@@ -2393,14 +2393,14 @@ klasse InterpreterIDTests(unittest.TestCase):
 
         interpid = self.new_interpreter()
 
-        # Linking it will not change the refcount.
+        # Linking it will nicht change the refcount.
         link(interpid)
         self.assertWahr(
             is_linked(interpid))
         self.assertEqual(
             0, get_refcount(interpid))
 
-        # Decref mit a refcount of 0 is not allowed.
+        # Decref mit a refcount of 0 is nicht allowed.
         incref(interpid)
         self.assertEqual(
             1, get_refcount(interpid))
@@ -2421,7 +2421,7 @@ klasse InterpreterIDTests(unittest.TestCase):
         self.assertEqual(
             1, get_refcount(interpid))
 
-        # Linking it will not reset the refcount.
+        # Linking it will nicht reset the refcount.
         link(interpid)
         self.assertWahr(
             is_linked(interpid))
@@ -2445,14 +2445,14 @@ klasse InterpreterIDTests(unittest.TestCase):
         self.assertEqual(
             1, get_refcount(interpid))
 
-        # Unlinking it will not change the refcount.
+        # Unlinking it will nicht change the refcount.
         unlink(interpid)
         self.assertFalsch(
             is_linked(interpid))
         self.assertEqual(
             1, get_refcount(interpid))
 
-        # Unlinked: decref back to 0 does not destroys the interpreter.
+        # Unlinked: decref back to 0 does nicht destroys the interpreter.
         decref(interpid)
         self.assertWahr(
             exists(interpid))
@@ -2469,7 +2469,7 @@ klasse TestStaticTypes(unittest.TestCase):
         # The tests here don't play nice mit our approach to refleak
         # detection, so we bail out in that case.
         wenn cls._has_run:
-            raise unittest.SkipTest('these tests do not support re-running')
+            raise unittest.SkipTest('these tests do nicht support re-running')
         cls._has_run = Wahr
 
     @contextlib.contextmanager
@@ -2557,9 +2557,9 @@ klasse TestThreadState(unittest.TestCase):
 def get_test_funcs(mod, exclude_prefix=Nichts):
     funcs = {}
     fuer name in dir(mod):
-        wenn not name.startswith('test_'):
+        wenn nicht name.startswith('test_'):
             continue
-        wenn exclude_prefix is not Nichts and name.startswith(exclude_prefix):
+        wenn exclude_prefix is nicht Nichts und name.startswith(exclude_prefix):
             continue
         funcs[name] = getattr(mod, name)
     return funcs
@@ -2632,10 +2632,10 @@ klasse Test_ModuleStateAccess(unittest.TestCase):
         self.assertIs(instance.get_defining_module(), self.module)
 
     def test_state_access(self):
-        """Checks methods defined mit and without argument clinic
+        """Checks methods defined mit und without argument clinic
 
-        This tests a no-arg method (get_count) and a method with
-        both a positional and keyword argument.
+        This tests a no-arg method (get_count) und a method with
+        both a positional und keyword argument.
         """
 
         a = self.module.StateAccessType()
@@ -2829,11 +2829,11 @@ klasse TestPyThreadId(unittest.TestCase):
         fuer thread in threads:
             thread.get_lock.release()
 
-        # call _Py_ThreadId() in each thread and wait until threads complete
+        # call _Py_ThreadId() in each thread und wait until threads complete
         fuer thread in threads:
             thread.join()
             py_thread_ids.append(thread.py_tid)
-            # _PyThread_Id() should not change fuer a given thread.
+            # _PyThread_Id() should nicht change fuer a given thread.
             # For example, it should remain the same after a short sleep.
             self.assertEqual(thread.py_tid2, thread.py_tid)
 

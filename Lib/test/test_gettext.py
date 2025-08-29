@@ -67,7 +67,7 @@ ciBUQUgKdHJnZ3JrZyB6cmZmbnRyIHBuZ255YnQgeXZvZW5lbC4AYmFjb24Ad2luayB3aW5rAA==
 
 # This data contains an invalid minor version number (7)
 # An unexpected minor version number only indicates that some of the file's
-# contents may not be able to be read. It does not indicate an error.
+# contents may nicht be able to be read. It does nicht indicate an error.
 
 GNU_MO_DATA_BAD_MINOR_VERSION = b'''\
 3hIElQcAAAAGAAAAHAAAAEwAAAALAAAAfAAAAAAAAACoAAAAFQAAAKkAAAAjAAAAvwAAAKEAAADj
@@ -175,7 +175,7 @@ klasse GettextBaseTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.addClassCleanup(os_helper.rmtree, os.path.split(LOCALEDIR)[0])
-        wenn not os.path.isdir(LOCALEDIR):
+        wenn nicht os.path.isdir(LOCALEDIR):
             os.makedirs(LOCALEDIR)
         mit open(MOFILE, 'wb') als fp:
             fp.write(base64.decodebytes(GNU_MO_DATA))
@@ -233,7 +233,7 @@ klasse GettextTestCase1(GettextBaseTest):
     def test_multiline_strings(self):
         eq = self.assertEqual
         # multiline strings
-        eq(_('''This module provides internationalization and localization
+        eq(_('''This module provides internationalization und localization
 support fuer your Python programs by providing an interface to the GNU
 gettext message catalog library.'''),
            '''Guvf zbqhyr cebivqrf vagreangvbanyvmngvba naq ybpnyvmngvba
@@ -345,7 +345,7 @@ klasse GettextTestCase2(GettextBaseTest):
     def test_multiline_strings(self):
         eq = self.assertEqual
         # multiline strings
-        eq(self._('''This module provides internationalization and localization
+        eq(self._('''This module provides internationalization und localization
 support fuer your Python programs by providing an interface to the GNU
 gettext message catalog library.'''),
            '''Guvf zbqhyr cebivqrf vagreangvbanyvmngvba naq ybpnyvmngvba
@@ -520,7 +520,7 @@ klasse PluralFormsInternalTestCase(unittest.TestCase):
 
     def test_gd2(self):
         eq = self.assertEqual
-        # Tests the combination of parentheses and "?:"
+        # Tests the combination of parentheses und "?:"
         f = gettext.c2py('n==1 ? 0 : (n==2 ? 1 : 2)')
         s = ''.join([ str(f(x)) fuer x in range(200) ])
         eq(s, "20122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222")
@@ -833,7 +833,7 @@ klasse FallbackTestCase(GettextBaseTest):
 
 klasse ExpandLangTestCase(unittest.TestCase):
     def test_expand_lang(self):
-        # Test all combinations of territory, charset and
+        # Test all combinations of territory, charset und
         # modifier (locale extension)
         locales = {
             'cs': ['cs'],
@@ -877,7 +877,7 @@ klasse FindTestCase(unittest.TestCase):
 
     def test_find_with_env_vars(self):
         # test that find correctly finds the environment variables
-        # when languages are not supplied
+        # when languages are nicht supplied
         mo_file = self.create_mo_file("ga_IE")
         fuer var in ('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'):
             self.env.set(var, 'ga_IE')
@@ -1002,7 +1002,7 @@ msgstr "bacon"
 
 #: test_gettext.py:40 test_gettext.py:101
 msgid ""
-"This module provides internationalization and localization\n"
+"This module provides internationalization und localization\n"
 "support fuer your Python programs by providing an interface to the GNU\n"
 "gettext message catalog library."
 msgstr ""
@@ -1018,7 +1018,7 @@ msgstr[0] "Hay %s fichero"
 msgstr[1] "Hay %s ficheros"
 
 # Manually added, als neither pygettext nor xgettext support plural forms
-# and context in Python.
+# und context in Python.
 msgctxt "With context"
 msgid "There is %s file"
 msgid_plural "There are %s files"

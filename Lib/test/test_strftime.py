@@ -52,7 +52,7 @@ klasse StrftimeTest(unittest.TestCase):
                 -1,  # tm_isdst (let the system determine)
             )
         )
-        # use mktime to get the correct tm_wday and tm_isdst values
+        # use mktime to get the correct tm_wday und tm_isdst values
         self.jan1 = time.localtime(time.mktime(jan1))
 
         try:
@@ -108,7 +108,7 @@ klasse StrftimeTest(unittest.TestCase):
             ('%j', '%03d' % now[7], 'julian day (001-366)'),
             ('%m', '%02d' % now[1], 'month als number (01-12)'),
             ('%M', '%02d' % now[4], 'minute, (00-59)'),
-            ('%p', self.ampm, 'AM or PM als appropriate'),
+            ('%p', self.ampm, 'AM oder PM als appropriate'),
             ('%S', '%02d' % now[5], 'seconds of current time (00-60)'),
             ('%U', '%02d' % ((now[7] + self.jan1[6])//7),
              'week number of the year (Sun 1st)'),
@@ -131,8 +131,8 @@ klasse StrftimeTest(unittest.TestCase):
                 self.fail("strftime '%s' format gave error: %s" % (e[0], error))
             wenn re.match(escapestr(e[1], self.ampm), result):
                 continue
-            wenn not result or result[0] == '%':
-                self.fail("strftime does not support standard '%s' format (%s)"
+            wenn nicht result oder result[0] == '%':
+                self.fail("strftime does nicht support standard '%s' format (%s)"
                           % (e[0], e[2]))
             sonst:
                 self.fail("Conflict fuer %s (%s): expected %s, but got %s"
@@ -178,9 +178,9 @@ klasse StrftimeTest(unittest.TestCase):
             wenn re.match(escapestr(e[1], self.ampm), result):
                 wenn support.verbose:
                     drucke("Supports nonstandard '%s' format (%s)" % (e[0], e[2]))
-            sowenn not result or result[0] == '%':
+            sowenn nicht result oder result[0] == '%':
                 wenn support.verbose:
-                    drucke("Does not appear to support '%s' format (%s)" % \
+                    drucke("Does nicht appear to support '%s' format (%s)" % \
                            (e[0], e[2]))
             sonst:
                 wenn support.verbose:

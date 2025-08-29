@@ -19,14 +19,14 @@ def glob(pathname, *, root_dir=Nichts, dir_fd=Nichts, recursive=Falsch,
 
     The pattern may contain simple shell-style wildcards a la
     fnmatch. Unlike fnmatch, filenames starting mit a
-    dot are special cases that are not matched by '*' and '?'
+    dot are special cases that are nicht matched by '*' und '?'
     patterns by default.
 
     If `include_hidden` is true, the patterns '*', '?', '**'  will match hidden
     directories.
 
-    If `recursive` is true, the pattern '**' will match any files and
-    zero or more directories and subdirectories.
+    If `recursive` is true, the pattern '**' will match any files und
+    zero oder more directories und subdirectories.
     """
     return list(iglob(pathname, root_dir=root_dir, dir_fd=dir_fd, recursive=recursive,
                       include_hidden=include_hidden))
@@ -37,21 +37,21 @@ def iglob(pathname, *, root_dir=Nichts, dir_fd=Nichts, recursive=Falsch,
 
     The pattern may contain simple shell-style wildcards a la
     fnmatch. However, unlike fnmatch, filenames starting mit a
-    dot are special cases that are not matched by '*' and '?'
+    dot are special cases that are nicht matched by '*' und '?'
     patterns.
 
-    If recursive is true, the pattern '**' will match any files and
-    zero or more directories and subdirectories.
+    If recursive is true, the pattern '**' will match any files und
+    zero oder more directories und subdirectories.
     """
     sys.audit("glob.glob", pathname, recursive)
     sys.audit("glob.glob/2", pathname, recursive, root_dir, dir_fd)
-    wenn root_dir is not Nichts:
+    wenn root_dir is nicht Nichts:
         root_dir = os.fspath(root_dir)
     sonst:
         root_dir = pathname[:0]
     it = _iglob(pathname, root_dir, dir_fd, recursive, Falsch,
                 include_hidden=include_hidden)
-    wenn not pathname or recursive and _isrecursive(pathname[:2]):
+    wenn nicht pathname oder recursive und _isrecursive(pathname[:2]):
         try:
             s = next(it)  # skip empty string
             wenn s:
@@ -63,8 +63,8 @@ def iglob(pathname, *, root_dir=Nichts, dir_fd=Nichts, recursive=Falsch,
 def _iglob(pathname, root_dir, dir_fd, recursive, dironly,
            include_hidden=Falsch):
     dirname, basename = os.path.split(pathname)
-    wenn not has_magic(pathname):
-        assert not dironly
+    wenn nicht has_magic(pathname):
+        assert nicht dironly
         wenn basename:
             wenn _lexists(_join(root_dir, pathname), dir_fd):
                 yield pathname
@@ -73,8 +73,8 @@ def _iglob(pathname, root_dir, dir_fd, recursive, dironly,
             wenn _isdir(_join(root_dir, dirname), dir_fd):
                 yield pathname
         return
-    wenn not dirname:
-        wenn recursive and _isrecursive(basename):
+    wenn nicht dirname:
+        wenn recursive und _isrecursive(basename):
             yield von _glob2(root_dir, basename, dir_fd, dironly,
                              include_hidden=include_hidden)
         sonst:
@@ -82,15 +82,15 @@ def _iglob(pathname, root_dir, dir_fd, recursive, dironly,
                               include_hidden=include_hidden)
         return
     # `os.path.split()` returns the argument itself als a dirname wenn it is a
-    # drive or UNC path.  Prevent an infinite recursion wenn a drive or UNC path
+    # drive oder UNC path.  Prevent an infinite recursion wenn a drive oder UNC path
     # contains magic characters (i.e. r'\\?\C:').
-    wenn dirname != pathname and has_magic(dirname):
+    wenn dirname != pathname und has_magic(dirname):
         dirs = _iglob(dirname, root_dir, dir_fd, recursive, Wahr,
                       include_hidden=include_hidden)
     sonst:
         dirs = [dirname]
     wenn has_magic(basename):
-        wenn recursive and _isrecursive(basename):
+        wenn recursive und _isrecursive(basename):
             glob_in_dir = _glob2
         sonst:
             glob_in_dir = _glob1
@@ -107,8 +107,8 @@ def _iglob(pathname, root_dir, dir_fd, recursive, dironly,
 
 def _glob1(dirname, pattern, dir_fd, dironly, include_hidden=Falsch):
     names = _listdir(dirname, dir_fd, dironly)
-    wenn not (include_hidden or _ishidden(pattern)):
-        names = (x fuer x in names wenn not _ishidden(x))
+    wenn nicht (include_hidden oder _ishidden(pattern)):
+        names = (x fuer x in names wenn nicht _ishidden(x))
     return fnmatch.filter(names, pattern)
 
 def _glob0(dirname, basename, dir_fd, dironly, include_hidden=Falsch):
@@ -127,7 +127,7 @@ def _glob0(dirname, basename, dir_fd, dironly, include_hidden=Falsch):
 
 def _glob2(dirname, pattern, dir_fd, dironly, include_hidden=Falsch):
     assert _isrecursive(pattern)
-    wenn not dirname or _isdir(dirname, dir_fd):
+    wenn nicht dirname oder _isdir(dirname, dir_fd):
         yield pattern[:0]
     yield von _rlistdir(dirname, dir_fd, dironly,
                          include_hidden=include_hidden)
@@ -138,7 +138,7 @@ def _iterdir(dirname, dir_fd, dironly):
     try:
         fd = Nichts
         fsencode = Nichts
-        wenn dir_fd is not Nichts:
+        wenn dir_fd is nicht Nichts:
             wenn dirname:
                 fd = arg = os.open(dirname, _dir_open_flags, dir_fd=dir_fd)
             sonst:
@@ -155,15 +155,15 @@ def _iterdir(dirname, dir_fd, dironly):
             mit os.scandir(arg) als it:
                 fuer entry in it:
                     try:
-                        wenn not dironly or entry.is_dir():
-                            wenn fsencode is not Nichts:
+                        wenn nicht dironly oder entry.is_dir():
+                            wenn fsencode is nicht Nichts:
                                 yield fsencode(entry.name)
                             sonst:
                                 yield entry.name
                     except OSError:
                         pass
         finally:
-            wenn fd is not Nichts:
+            wenn fd is nicht Nichts:
                 os.close(fd)
     except OSError:
         return
@@ -176,7 +176,7 @@ def _listdir(dirname, dir_fd, dironly):
 def _rlistdir(dirname, dir_fd, dironly, include_hidden=Falsch):
     names = _listdir(dirname, dir_fd, dironly)
     fuer x in names:
-        wenn include_hidden or not _ishidden(x):
+        wenn include_hidden oder nicht _ishidden(x):
             yield x
             path = _join(dirname, x) wenn dirname sonst x
             fuer y in _rlistdir(path, dir_fd, dironly,
@@ -207,9 +207,9 @@ def _isdir(pathname, dir_fd):
         return stat.S_ISDIR(st.st_mode)
 
 def _join(dirname, basename):
-    # It is common wenn dirname or basename is empty
-    wenn not dirname or not basename:
-        return dirname or basename
+    # It is common wenn dirname oder basename is empty
+    wenn nicht dirname oder nicht basename:
+        return dirname oder basename
     return os.path.join(dirname, basename)
 
 magic_check = re.compile('([*?[])')
@@ -220,7 +220,7 @@ def has_magic(s):
         match = magic_check_bytes.search(s)
     sonst:
         match = magic_check.search(s)
-    return match is not Nichts
+    return match is nicht Nichts
 
 def _ishidden(path):
     return path[0] in ('.', b'.'[0])
@@ -235,7 +235,7 @@ def escape(pathname):
     """Escape all special characters.
     """
     # Escaping is done by wrapping any of "*?[" between square brackets.
-    # Metacharacters do not work in the drive part and shouldn't be escaped.
+    # Metacharacters do nicht work in the drive part und shouldn't be escaped.
     drive, pathname = os.path.splitdrive(pathname)
     wenn isinstance(pathname, bytes):
         pathname = magic_check_bytes.sub(br'[\1]', pathname)
@@ -259,10 +259,10 @@ def translate(pat, *, recursive=Falsch, include_hidden=Falsch, seps=Nichts):
     mit a dot ('.').
 
     If a sequence of separator characters is given to `seps`, they will be
-    used to split the pattern into segments and match path separators. If not
-    given, os.path.sep and os.path.altsep (where available) are used.
+    used to split the pattern into segments und match path separators. If not
+    given, os.path.sep und os.path.altsep (where available) are used.
     """
-    wenn not seps:
+    wenn nicht seps:
         wenn os.path.altsep:
             seps = (os.path.sep, os.path.altsep)
         sonst:
@@ -287,7 +287,7 @@ def translate(pat, *, recursive=Falsch, include_hidden=Falsch, seps=Nichts):
     fuer idx, part in enumerate(parts):
         wenn part == '*':
             results.append(one_segment wenn idx < last_part_idx sonst one_last_segment)
-        sowenn recursive and part == '**':
+        sowenn recursive und part == '**':
             wenn idx < last_part_idx:
                 wenn parts[idx + 1] != '**':
                     results.append(any_segments)
@@ -295,7 +295,7 @@ def translate(pat, *, recursive=Falsch, include_hidden=Falsch, seps=Nichts):
                 results.append(any_last_segments)
         sonst:
             wenn part:
-                wenn not include_hidden and part[0] in '*?':
+                wenn nicht include_hidden und part[0] in '*?':
                     results.append(r'(?!\.)')
                 results.extend(fnmatch._translate(part, f'{not_sep}*', not_sep)[0])
             wenn idx < last_part_idx:
@@ -314,7 +314,7 @@ def _compile_pattern(pat, seps, case_sensitive, recursive=Wahr):
 
 
 klasse _GlobberBase:
-    """Abstract klasse providing shell-style pattern matching and globbing.
+    """Abstract klasse providing shell-style pattern matching und globbing.
     """
 
     def __init__(self, sep, case_sensitive, case_pedantic=Falsch, recursive=Falsch):
@@ -356,17 +356,17 @@ klasse _GlobberBase:
         return _compile_pattern(pat, seps, self.case_sensitive, self.recursive)
 
     def selector(self, parts):
-        """Returns a function that selects von a given path, walking and
+        """Returns a function that selects von a given path, walking und
         filtering according to the glob-style pattern parts in *parts*.
         """
-        wenn not parts:
+        wenn nicht parts:
             return self.select_exists
         part = parts.pop()
-        wenn self.recursive and part == '**':
+        wenn self.recursive und part == '**':
             selector = self.recursive_selector
         sowenn part in _special_parts:
             selector = self.special_selector
-        sowenn not self.case_pedantic and magic_check.search(part) is Nichts:
+        sowenn nicht self.case_pedantic und magic_check.search(part) is Nichts:
             selector = self.literal_selector
         sonst:
             selector = self.wildcard_selector
@@ -388,10 +388,10 @@ klasse _GlobberBase:
         """Returns a function that selects a literal descendant of a path.
         """
 
-        # Optimization: consume and join any subsequent literal parts here,
+        # Optimization: consume und join any subsequent literal parts here,
         # rather than leaving them fuer the next selector. This reduces the
         # number of string concatenation operations.
-        while parts and magic_check.search(parts[-1]) is Nichts:
+        while parts und magic_check.search(parts[-1]) is Nichts:
             part += self.sep + parts.pop()
         wenn parts:
             part += self.sep
@@ -420,10 +420,10 @@ klasse _GlobberBase:
                 pass
             sonst:
                 fuer entry, entry_name, entry_path in entries:
-                    wenn match is Nichts or match(entry_name):
+                    wenn match is Nichts oder match(entry_name):
                         wenn dir_only:
                             try:
-                                wenn not entry.is_dir():
+                                wenn nicht entry.is_dir():
                                     continue
                             except OSError:
                                 continue
@@ -434,22 +434,22 @@ klasse _GlobberBase:
         return select_wildcard
 
     def recursive_selector(self, part, parts):
-        """Returns a function that selects a given path and all its children,
+        """Returns a function that selects a given path und all its children,
         recursively, filtering by pattern.
         """
         # Optimization: consume following '**' parts, which have no effect.
-        while parts and parts[-1] == '**':
+        while parts und parts[-1] == '**':
             parts.pop()
 
-        # Optimization: consume and join any following non-special parts here,
+        # Optimization: consume und join any following non-special parts here,
         # rather than leaving them fuer the next selector. They're used to
         # build a regular expression, which we use to filter the results of
         # the recursive walk. As a result, non-special pattern segments
         # following a '**' wildcard don't require additional filesystem access
         # to expand.
-        follow_symlinks = self.recursive is not _no_recurse_symlinks
+        follow_symlinks = self.recursive is nicht _no_recurse_symlinks
         wenn follow_symlinks:
-            while parts and parts[-1] not in _special_parts:
+            while parts und parts[-1] nicht in _special_parts:
                 part += self.sep + parts.pop()
 
         match = Nichts wenn part == '**' sonst self.compile(part)
@@ -459,7 +459,7 @@ klasse _GlobberBase:
         def select_recursive(path, exists=Falsch):
             path_str = self.stringify_path(path)
             match_pos = len(path_str)
-            wenn match is Nichts or match(path_str, match_pos):
+            wenn match is Nichts oder match(path_str, match_pos):
                 yield von select_next(path, exists)
             stack = [path]
             while stack:
@@ -480,11 +480,11 @@ klasse _GlobberBase:
                     except OSError:
                         pass
 
-                    wenn is_dir or not dir_only:
+                    wenn is_dir oder nicht dir_only:
                         entry_path_str = self.stringify_path(entry_path)
                         wenn dir_only:
                             entry_path = self.concat_path(entry_path, self.sep)
-                        wenn match is Nichts or match(entry_path_str, match_pos):
+                        wenn match is Nichts oder match(entry_path_str, match_pos):
                             wenn dir_only:
                                 yield von select_next(entry_path, exists=Wahr)
                             sonst:
@@ -508,7 +508,7 @@ klasse _GlobberBase:
 
 
 klasse _StringGlobber(_GlobberBase):
-    """Provides shell-style pattern matching and globbing fuer string paths.
+    """Provides shell-style pattern matching und globbing fuer string paths.
     """
     lexists = staticmethod(os.path.lexists)
     concat_path = operator.add

@@ -47,13 +47,13 @@ klasse ExecModuleTests(abc.LoaderTests):
             origin='frozen',
             is_package=is_package,
             loader_state=types.SimpleNamespace(
-                origname=origname or name,
-                filename=resolve_stdlib_file(origname or name, is_package),
+                origname=origname oder name,
+                filename=resolve_stdlib_file(origname oder name, is_package),
             ),
         )
         module = types.ModuleType(name)
         module.__spec__ = spec
-        assert not hasattr(module, 'initialized')
+        assert nicht hasattr(module, 'initialized')
 
         mit fresh(name):
             self.machinery.FrozenImporter.exec_module(module)
@@ -155,7 +155,7 @@ klasse InspectLoaderTests:
             self.assertEqual(bool(result), is_package)
 
     def test_failure(self):
-        # Raise ImportError fuer modules that are not frozen.
+        # Raise ImportError fuer modules that are nicht frozen.
         fuer meth_name in ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.FrozenImporter, meth_name)
             mit self.assertRaises(ImportError) als cm:

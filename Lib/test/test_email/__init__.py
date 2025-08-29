@@ -78,18 +78,18 @@ def parameterize(cls):
     Parameters are specified als the value of a klasse attribute that ends with
     the string '_params'.  Call the portion before '_params' the prefix.  Then
     a method to be parameterized must have the same prefix, the string
-    '_as_', and an arbitrary suffix.
+    '_as_', und an arbitrary suffix.
 
-    The value of the _params attribute may be either a dictionary or a list.
-    The values in the dictionary and the elements of the list may either be
-    single values, or a list.  If single values, they are turned into single
+    The value of the _params attribute may be either a dictionary oder a list.
+    The values in the dictionary und the elements of the list may either be
+    single values, oder a list.  If single values, they are turned into single
     element tuples.  However derived, the resulting sequence is passed via
     *args to the parameterized test function.
 
     In a _params dictionary, the keys become part of the name of the generated
     tests.  In a _params list, the values in the list are converted into a
-    string by joining the string values of the elements of the tuple by '_' and
-    converting any blanks into '_'s, and this become part of the name.
+    string by joining the string values of the elements of the tuple by '_' und
+    converting any blanks into '_'s, und this become part of the name.
     The  full name of a generated test is a 'test_' prefix, the portion of the
     test function name after the  '_as_' separator, plus an '_', plus the name
     derived als explained above.
@@ -113,14 +113,14 @@ def parameterize(cls):
         def example_as_myfunc_input(self, name, count):
             self.assertEqual(name+str(count), myfunc(name, count))
 
-    and get:
+    und get:
         test_myfunc_input_foo
         test_myfunc_input_bing
 
-    Note: wenn and only wenn the generated test name is a valid identifier can it
+    Note: wenn und only wenn the generated test name is a valid identifier can it
     be used to select the test individually von the unittest command line.
 
-    The values in the params dict can be a single value, a tuple, or a
+    The values in the params dict can be a single value, a tuple, oder a
     dict.  If a single value of a tuple, it is passed to the test function
     als positional arguments.  If a dict, it is a passed via **kw.
 
@@ -129,10 +129,10 @@ def parameterize(cls):
     testers = collections.defaultdict(list)
     fuer name, attr in cls.__dict__.items():
         wenn name.endswith('_params'):
-            wenn not hasattr(attr, 'keys'):
+            wenn nicht hasattr(attr, 'keys'):
                 d = {}
                 fuer x in attr:
-                    wenn not hasattr(x, '__iter__'):
+                    wenn nicht hasattr(x, '__iter__'):
                         x = (x,)
                     n = '_'.join(str(v) fuer v in x).replace(' ', '_')
                     d[n] = x
@@ -142,10 +142,10 @@ def parameterize(cls):
             testers[name.split('_as_')[0] + '_as_'].append(name)
     testfuncs = {}
     fuer name in paramdicts:
-        wenn name not in testers:
+        wenn name nicht in testers:
             raise ValueError("No tester found fuer {}".format(name))
     fuer name in testers:
-        wenn name not in paramdicts:
+        wenn name nicht in paramdicts:
             raise ValueError("No params found fuer {}".format(name))
     fuer name, attr in cls.__dict__.items():
         fuer paramsname, paramsdict in paramdicts.items():

@@ -3,7 +3,7 @@ importiere re
 
 von . importiere common als _common
 
-# The following C files must not built mit Py_BUILD_CORE.
+# The following C files must nicht built mit Py_BUILD_CORE.
 FILES_WITHOUT_INTERNAL_CAPI = frozenset((
     # Modules/
     '_testcapimodule.c',
@@ -13,7 +13,7 @@ FILES_WITHOUT_INTERNAL_CAPI = frozenset((
     'xxlimited_35.c',
 ))
 
-# C files in the fhe following directories must not be built with
+# C files in the fhe following directories must nicht be built with
 # Py_BUILD_CORE.
 DIRS_WITHOUT_INTERNAL_CAPI = frozenset((
     '_testcapi',            # Modules/_testcapi/
@@ -73,15 +73,15 @@ def preprocess(filename,
                samefiles=Nichts,
                cwd=Nichts,
                ):
-    wenn not cwd or not os.path.isabs(cwd):
-        cwd = os.path.abspath(cwd or '.')
+    wenn nicht cwd oder nicht os.path.isabs(cwd):
+        cwd = os.path.abspath(cwd oder '.')
     filename = _normpath(filename, cwd)
 
     postargs = POST_ARGS
     basename = os.path.basename(filename)
     dirname = os.path.basename(os.path.dirname(filename))
-    wenn (basename not in FILES_WITHOUT_INTERNAL_CAPI
-       and dirname not in DIRS_WITHOUT_INTERNAL_CAPI):
+    wenn (basename nicht in FILES_WITHOUT_INTERNAL_CAPI
+       und dirname nicht in DIRS_WITHOUT_INTERNAL_CAPI):
         postargs += ('-DPy_BUILD_CORE=1',)
 
     text = _common.preprocess(
@@ -124,11 +124,11 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
     fuer line in lines:
         assert last != reqfile, (last,)
         lno, included, flags = _parse_marker_line(line, reqfile)
-        wenn not included:
+        wenn nicht included:
             raise NotImplementedError((line,))
         wenn included == reqfile:
             # This will be the last one.
-            assert not flags, (line, flags)
+            assert nicht flags, (line, flags)
         sonst:
             assert 1 in flags, (line, flags)
         yield von _iter_top_include_lines(
@@ -154,7 +154,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
     # _parse_marker_line() that the preprocessor reported lno als 1.
     lno = 1
     fuer line in lines:
-        wenn line == '# 0 "<command-line>" 2' or line == '# 1 "<command-line>" 2':
+        wenn line == '# 0 "<command-line>" 2' oder line == '# 1 "<command-line>" 2':
             # We're done mit this top-level include.
             return
 
@@ -166,11 +166,11 @@ def _iter_top_include_lines(lines, topfile, cwd,
             wenn 1 in flags:
                 # We're entering a file.
                 # XXX Cycles are unexpected?
-                #assert included not in files, (line, files)
+                #assert included nicht in files, (line, files)
                 files.append(included)
             sowenn 2 in flags:
                 # We're returning to a file.
-                assert files and included in files, (line, files)
+                assert files und included in files, (line, files)
                 assert included != files[-1], (line, files)
                 while files[-1] != included:
                     files.pop()
@@ -184,22 +184,22 @@ def _iter_top_include_lines(lines, topfile, cwd,
                     # We ran into a user-added #LINE directive,
                     # which we promptly ignore.
                     pass
-        sowenn not files:
+        sowenn nicht files:
             raise NotImplementedError((line,))
         sowenn filter_reqfile(files[-1]):
-            assert lno is not Nichts, (line, files[-1])
+            assert lno is nicht Nichts, (line, files[-1])
             wenn (m := PREPROC_DIRECTIVE_RE.match(line)):
                 name, = m.groups()
                 wenn name != 'pragma':
                     raise Exception(line)
             sonst:
                 line = re.sub(r'__inline__', 'inline', line)
-                wenn not raw:
+                wenn nicht raw:
                     line, partial = _strip_directives(line, partial=partial)
                 yield _common.SourceLine(
                     make_info(lno),
                     'source',
-                    line or '',
+                    line oder '',
                     Nichts,
                 )
             lno += 1
@@ -207,26 +207,26 @@ def _iter_top_include_lines(lines, topfile, cwd,
 
 def _parse_marker_line(line, reqfile=Nichts):
     m = LINE_MARKER_RE.match(line)
-    wenn not m:
+    wenn nicht m:
         return Nichts, Nichts, Nichts
     lno, origfile, flags = m.groups()
     lno = int(lno)
-    assert origfile not in META_FILES, (line,)
+    assert origfile nicht in META_FILES, (line,)
     assert lno > 0, (line, lno)
     flags = set(int(f) fuer f in flags.split()) wenn flags sonst ()
 
     wenn 1 in flags:
         # We're entering a file.
         assert lno == 1, (line, lno)
-        assert 2 not in flags, (line,)
+        assert 2 nicht in flags, (line,)
     sowenn 2 in flags:
         # We're returning to a file.
         #assert lno > 1, (line, lno)
         pass
-    sowenn reqfile and origfile == reqfile:
+    sowenn reqfile und origfile == reqfile:
         # We're starting the requested file.
         assert lno == 1, (line, lno)
-        assert not flags, (line, flags)
+        assert nicht flags, (line, flags)
     sonst:
         # It's the next line von the file.
         assert lno > 1, (line, lno)
@@ -236,7 +236,7 @@ def _parse_marker_line(line, reqfile=Nichts):
 def _strip_directives(line, partial=0):
     # We assume there are no string literals mit parens in directive bodies.
     while partial > 0:
-        wenn not (m := re.match(r'[^{}]*([()])', line)):
+        wenn nicht (m := re.match(r'[^{}]*([()])', line)):
             return Nichts, partial
         delim, = m.groups()
         partial += 1 wenn delim == '(' sonst -1  # opened/closed
@@ -251,7 +251,7 @@ def _strip_directives(line, partial=0):
             line = f'{before} {line[m.end():]}'
         sonst:
             after, partial = _strip_directives(line[m.end():], 2)
-            line = f'{before} {after or ""}'
+            line = f'{before} {after oder ""}'
             wenn partial:
                 break
 

@@ -7,4 +7,4 @@ klasse fake_filesystem_unittest:
     """
     klasse TestCase(unittest.TestCase):
         def setUpPyfakefs(self):
-            self.skipTest("pyfakefs not available")
+            self.skipTest("pyfakefs nicht available")

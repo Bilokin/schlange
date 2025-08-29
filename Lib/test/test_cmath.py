@@ -56,7 +56,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
             'cos', 'cosh', 'exp', 'log', 'log10', 'sin', 'sinh',
             'sqrt', 'tan', 'tanh']]
-    # test first and second arguments independently fuer 2-argument log
+    # test first und second arguments independently fuer 2-argument log
     test_functions.append(lambda x : cmath.log(x, 1729. + 0j))
     test_functions.append(lambda x : cmath.log(14.-27j, x))
 
@@ -68,53 +68,53 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def rAssertAlmostEqual(self, a, b, rel_err = 2e-15, abs_err = 5e-323,
                            msg=Nichts):
-        """Fail wenn the two floating-point numbers are not almost equal.
+        """Fail wenn the two floating-point numbers are nicht almost equal.
 
-        Determine whether floating-point values a and b are equal to within
-        a (small) rounding error.  The default values fuer rel_err and
+        Determine whether floating-point values a und b are equal to within
+        a (small) rounding error.  The default values fuer rel_err und
         abs_err are chosen to be suitable fuer platforms where a float is
         represented by an IEEE 754 double.  They allow an error of between
-        9 and 19 ulps.
+        9 und 19 ulps.
         """
 
         # special values testing
         wenn math.isnan(a):
             wenn math.isnan(b):
                 return
-            self.fail(msg or '{!r} should be nan'.format(b))
+            self.fail(msg oder '{!r} should be nan'.format(b))
 
         wenn math.isinf(a):
             wenn a == b:
                 return
-            self.fail(msg or 'finite result where infinity expected: '
+            self.fail(msg oder 'finite result where infinity expected: '
                       'expected {!r}, got {!r}'.format(a, b))
 
-        # wenn both a and b are zero, check whether they have the same sign
+        # wenn both a und b are zero, check whether they have the same sign
         # (in theory there are examples where it would be legitimate fuer a
-        # and b to have opposite signs; in practice these hardly ever
+        # und b to have opposite signs; in practice these hardly ever
         # occur).
-        wenn not a and not b:
+        wenn nicht a und nicht b:
             wenn math.copysign(1., a) != math.copysign(1., b):
-                self.fail(msg or 'zero has wrong sign: expected {!r}, '
+                self.fail(msg oder 'zero has wrong sign: expected {!r}, '
                           'got {!r}'.format(a, b))
 
-        # wenn a-b overflows, or b is infinite, return Falsch.  Again, in
+        # wenn a-b overflows, oder b is infinite, return Falsch.  Again, in
         # theory there are examples where a is within a few ulps of the
-        # max representable float, and then b could legitimately be
+        # max representable float, und then b could legitimately be
         # infinite.  In practice these examples are rare.
         try:
             absolute_error = abs(b-a)
         except OverflowError:
             pass
         sonst:
-            # test passes wenn either the absolute error or the relative
+            # test passes wenn either the absolute error oder the relative
             # error is sufficiently small.  The defaults amount to an
-            # error of between 9 ulps and 19 ulps on an IEEE-754 compliant
+            # error of between 9 ulps und 19 ulps on an IEEE-754 compliant
             # machine.
             wenn absolute_error <= max(abs_err, rel_err * abs(a)):
                 return
-        self.fail(msg or
-                  '{!r} and {!r} are not sufficiently close'.format(a, b))
+        self.fail(msg oder
+                  '{!r} und {!r} are nicht sufficiently close'.format(a, b))
 
     def test_constants(self):
         e_expected = 2.71828182845904523536
@@ -147,12 +147,12 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(repr(cmath.nanj), "nanj")
 
     def test_user_object(self):
-        # Test automatic calling of __complex__ and __float__ by cmath
+        # Test automatic calling of __complex__ und __float__ by cmath
         # functions
 
         # some random values to use als test values; we avoid values
         # fuer which any of the functions in cmath is undefined
-        # (i.e. 0., 1., -1., 1j, -1j) or would cause overflow
+        # (i.e. 0., 1., -1., 1j, -1j) oder would cause overflow
         cx_arg = 4.419414439 + 1.497100113j
         flt_arg = -6.131677725
 
@@ -178,7 +178,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __complex__(self):
                 raise SomeException
 
-        # some classes not providing __float__ or __complex__
+        # some classes nicht providing __float__ oder __complex__
         klasse NeitherComplexNorFloat(object):
             pass
         klasse Index:
@@ -187,7 +187,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         klasse MyInt:
             def __int__(self): return 2
 
-        # other possible combinations of __float__ and __complex__
+        # other possible combinations of __float__ und __complex__
         # that should work
         klasse FloatAndComplex:
             def __float__(self):
@@ -201,13 +201,13 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         fuer f in self.test_functions:
             # usual usage
             self.assertEqual(f(MyComplex(cx_arg)), f(cx_arg))
-            # other combinations of __float__ and __complex__
+            # other combinations of __float__ und __complex__
             self.assertEqual(f(FloatAndComplex()), f(cx_arg))
             self.assertEqual(f(JustFloat()), f(flt_arg))
             self.assertEqual(f(Index()), f(int(Index())))
-            # TypeError should be raised fuer classes not providing
-            # either __complex__ or __float__, even wenn they provide
-            # __int__ or __index__:
+            # TypeError should be raised fuer classes nicht providing
+            # either __complex__ oder __float__, even wenn they provide
+            # __int__ oder __index__:
             self.assertRaises(TypeError, f, NeitherComplexNorFloat())
             self.assertRaises(TypeError, f, MyInt())
             # non-complex return value von __complex__ -> TypeError
@@ -229,7 +229,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.assertRaises(TypeError, f, arg)
 
     def test_cmath_matches_math(self):
-        # check that corresponding cmath and math functions are equal
+        # check that corresponding cmath und math functions are equal
         # fuer floats in the appropriate range
 
         # test_values in (0, 1)
@@ -305,7 +305,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             expected = complex(er, ei)
 
             # Skip certain tests on OS X 10.4.
-            wenn osx_version is not Nichts and osx_version < (10, 5):
+            wenn osx_version is nicht Nichts und osx_version < (10, 5):
                 wenn id in SKIP_ON_TIGER:
                     continue
 
@@ -315,13 +315,13 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                 function = polar_complex
             sonst:
                 function = getattr(cmath, fn)
-            wenn 'divide-by-zero' in flags or 'invalid' in flags:
+            wenn 'divide-by-zero' in flags oder 'invalid' in flags:
                 try:
                     actual = function(arg)
                 except ValueError:
                     continue
                 sonst:
-                    self.fail('ValueError not raised in test '
+                    self.fail('ValueError nicht raised in test '
                           '{}: {}(complex({!r}, {!r}))'.format(id, fn, ar, ai))
 
             wenn 'overflow' in flags:
@@ -330,7 +330,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                 except OverflowError:
                     continue
                 sonst:
-                    self.fail('OverflowError not raised in test '
+                    self.fail('OverflowError nicht raised in test '
                           '{}: {}(complex({!r}, {!r}))'.format(id, fn, ar, ai))
 
             actual = function(arg)
@@ -443,7 +443,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertAlmostEqual(phase(complex(-INF, 2.3)), pi)
         self.assertAlmostEqual(phase(complex(-INF, 0.0)), pi)
 
-        # real or imaginary part NaN
+        # real oder imaginary part NaN
         fuer z in complex_nans:
             self.assertWahr(math.isnan(phase(z)))
 
@@ -456,7 +456,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         fuer z in complex_infinities:
             self.assertEqual(abs(z), INF)
 
-        # real or imaginary part NaN
+        # real oder imaginary part NaN
         self.assertEqual(abs(complex(NAN, -INF)), INF)
         self.assertWahr(math.isnan(abs(complex(NAN, -2.3))))
         self.assertWahr(math.isnan(abs(complex(NAN, -0.0))))
@@ -479,7 +479,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def assertCEqual(self, a, b):
         eps = 1E-7
-        wenn abs(a.real - b[0]) > eps or abs(a.imag - b[1]) > eps:
+        wenn abs(a.real - b[0]) > eps oder abs(a.imag - b[1]) > eps:
             self.fail((a ,b))
 
     def test_rect(self):
@@ -496,7 +496,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             fuer y in real_vals:
                 z = complex(x, y)
                 self.assertEqual(cmath.isfinite(z),
-                                  math.isfinite(x) and math.isfinite(y))
+                                  math.isfinite(x) und math.isfinite(y))
 
     def test_isnan(self):
         self.assertFalsch(cmath.isnan(1))
@@ -525,9 +525,9 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         fuer z in complex_zeros:
             self.assertComplexesAreIdentical(cmath.tanh(z), z)
 
-    # The algorithm used fuer atan and atanh makes use of the system
+    # The algorithm used fuer atan und atanh makes use of the system
     # log1p function; If that system function doesn't respect the sign
-    # of zero, then atan and atanh will also have difficulties with
+    # of zero, then atan und atanh will also have difficulties with
     # the sign of complex zeros.
     @requires_IEEE_754
     def testAtanSign(self):

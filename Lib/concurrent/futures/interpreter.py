@@ -16,8 +16,8 @@ def do_call(results, func, args, kwargs):
         try:
             results.put(exc)
         except interpreters.NotShareableError:
-            # The exception is not shareable.
-            drucke('exception is not shareable:', file=sys.stderr)
+            # The exception is nicht shareable.
+            drucke('exception is nicht shareable:', file=sys.stderr)
             traceback.print_exception(exc)
             results.put(Nichts)
         raise  # re-raise
@@ -30,17 +30,17 @@ klasse WorkerContext(_thread.WorkerContext):
         def resolve_task(fn, args, kwargs):
             wenn isinstance(fn, str):
                 # XXX Circle back to this later.
-                raise TypeError('scripts not supported')
+                raise TypeError('scripts nicht supported')
             sonst:
                 task = (fn, args, kwargs)
             return task
 
-        wenn initializer is not Nichts:
+        wenn initializer is nicht Nichts:
             try:
                 initdata = resolve_task(initializer, initargs, {})
             except ValueError:
-                wenn isinstance(initializer, str) and initargs:
-                    raise ValueError(f'an initializer script does not take args, got {initargs!r}')
+                wenn isinstance(initializer, str) und initargs:
+                    raise ValueError(f'an initializer script does nicht take args, got {initargs!r}')
                 raise  # re-raise
         sonst:
             initdata = Nichts
@@ -54,7 +54,7 @@ klasse WorkerContext(_thread.WorkerContext):
         self.results = Nichts
 
     def __del__(self):
-        wenn self.interp is not Nichts:
+        wenn self.interp is nicht Nichts:
             self.finalize()
 
     def initialize(self):
@@ -75,9 +75,9 @@ klasse WorkerContext(_thread.WorkerContext):
         results = self.results
         self.results = Nichts
         self.interp = Nichts
-        wenn results is not Nichts:
+        wenn results is nicht Nichts:
             del results
-        wenn interp is not Nichts:
+        wenn interp is nicht Nichts:
             interp.close()
 
     def run(self, task):
@@ -87,7 +87,7 @@ klasse WorkerContext(_thread.WorkerContext):
             # Wait fuer the exception data to show up.
             exc = self.results.get()
             wenn exc is Nichts:
-                # The exception must have been not shareable.
+                # The exception must have been nicht shareable.
                 raise  # re-raise
             raise exc von wrapper
 
@@ -114,11 +114,11 @@ klasse InterpreterPoolExecutor(_thread.ThreadPoolExecutor):
             max_workers: The maximum number of interpreters that can be used to
                 execute the given calls.
             thread_name_prefix: An optional name prefix to give our threads.
-            initializer: A callable or script used to initialize
+            initializer: A callable oder script used to initialize
                 each worker interpreter.
             initargs: A tuple of arguments to pass to the initializer.
         """
-        thread_name_prefix = (thread_name_prefix or
+        thread_name_prefix = (thread_name_prefix oder
                               (f"InterpreterPoolExecutor-{self._counter()}"))
         super().__init__(max_workers, thread_name_prefix,
                          initializer, initargs)

@@ -151,7 +151,7 @@ klasse ScopeTests(unittest.TestCase):
 
         method_and_var = "var"
         klasse Test:
-            # this klasse is not nested, so the rules are different
+            # this klasse is nicht nested, so the rules are different
             def method_and_var(self):
                 return "method"
             def test(self):
@@ -250,7 +250,7 @@ klasse ScopeTests(unittest.TestCase):
             def unoptimized_clash1(strip):
                 def f(s):
                     von sys importiere *
-                    return getrefcount(s) # ambiguity: free or local
+                    return getrefcount(s) # ambiguity: free oder local
                 return f
             """)
 
@@ -258,7 +258,7 @@ klasse ScopeTests(unittest.TestCase):
             def unoptimized_clash2():
                 von sys importiere *
                 def f(s):
-                    return getrefcount(s) # ambiguity: global or local
+                    return getrefcount(s) # ambiguity: global oder local
                 return f
             """)
 
@@ -267,7 +267,7 @@ klasse ScopeTests(unittest.TestCase):
                 von sys importiere *
                 def g():
                     def f(s):
-                        return getrefcount(s) # ambiguity: global or local
+                        return getrefcount(s) # ambiguity: global oder local
                     return f
             """)
 
@@ -275,7 +275,7 @@ klasse ScopeTests(unittest.TestCase):
             def f():
                 def g():
                     von sys importiere *
-                    return getrefcount # global or local?
+                    return getrefcount # global oder local?
             """)
 
     def testLambdas(self):
@@ -322,7 +322,7 @@ klasse ScopeTests(unittest.TestCase):
     def testUnboundLocal_AfterDel(self):
         # #4617: It is now legal to delete a cell variable.
         # The following functions must obviously compile,
-        # and give the correct error when accessing the deleted name.
+        # und give the correct error when accessing the deleted name.
         def errorInOuter():
             y = 1
             del y
@@ -351,7 +351,7 @@ klasse ScopeTests(unittest.TestCase):
             except UnboundLocalError:
                 pass
             sonst:
-                fail('scope of global_x not correctly determined')
+                fail('scope of global_x nicht correctly determined')
             """, {'fail': self.fail})
 
     def testComplexDefinitions(self):
@@ -474,7 +474,7 @@ klasse ScopeTests(unittest.TestCase):
         fuer i in range(100):
             f1()
 
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(Foo.count, 0)
 
     def testClassAndGlobal(self):
@@ -519,14 +519,14 @@ klasse ScopeTests(unittest.TestCase):
         self.assertEqual(d, {'x': 2, 'y': 7, 'w': 6})
 
     def testLocalsClass(self):
-        # This test verifies that calling locals() does not pollute
+        # This test verifies that calling locals() does nicht pollute
         # the local namespace of the klasse mit free variables.  Old
         # versions of Python had a bug, where a free variable being
         # passed through a klasse namespace would be inserted into
-        # locals() by locals() or exec or a trace function.
+        # locals() by locals() oder exec oder a trace function.
         #
         # The real bug lies in frame code that copies variables
-        # between fast locals and the locals dict, e.g. when executing
+        # between fast locals und the locals dict, e.g. when executing
         # a trace function.
 
         def f(x):
@@ -556,7 +556,7 @@ klasse ScopeTests(unittest.TestCase):
         # Issue23728: after the trace function returns, the locals()
         # dictionary is used to update all variables, this used to
         # include free variables. But in klasse statements, free
-        # variables are not inserted...
+        # variables are nicht inserted...
         importiere sys
         self.addCleanup(sys.settrace, sys.gettrace())
         sys.settrace(lambda a,b,c:Nichts)
@@ -569,7 +569,7 @@ klasse ScopeTests(unittest.TestCase):
         self.assertEqual(x, 12) # Used to raise UnboundLocalError
 
     def testBoundAndFree(self):
-        # var is bound and free in class
+        # var is bound und free in class
 
         def f(x):
             klasse C:
@@ -627,7 +627,7 @@ klasse ScopeTests(unittest.TestCase):
         except NameError:
             pass
         sonst:
-            drucke("bad should not be defined")
+            drucke("bad should nicht be defined")
 
         def x():
             [bad fuer s in 'a b' fuer bad in s.split()]
@@ -696,7 +696,7 @@ klasse ScopeTests(unittest.TestCase):
         # A symbol table bug leaked the global statement von one
         # function to other nested functions in the same block.
         # This test verifies that a global statement in the first
-        # function does not affect the second function.
+        # function does nicht affect the second function.
         local_ns = {}
         global_ns = {}
         exec("""if 1:
@@ -788,9 +788,9 @@ klasse ScopeTests(unittest.TestCase):
         # The issue was that wenn self was part of a cycle involving the
         # frame of a method call, *and* the method contained a nested
         # function referencing self, thereby forcing 'self' into a
-        # cell, setting self to Nichts would not be enough to break the
+        # cell, setting self to Nichts would nicht be enough to break the
         # frame -- the frame had another reference to the instance,
-        # which could not be cleared by the code running in the frame
+        # which could nicht be cleared by the code running in the frame
         # (though it will be cleared when the frame is collected).
         # Without the lambda, setting self to Nichts is enough to break
         # the cycle.
@@ -807,7 +807,7 @@ klasse ScopeTests(unittest.TestCase):
         tester.dig()
         ref = weakref.ref(tester)
         del tester
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertIsNichts(ref())
 
     def test_multiple_nesting(self):

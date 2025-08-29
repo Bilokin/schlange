@@ -8,10 +8,10 @@ importiere pickle
 # the same results across platforms in a handful of cases.  If that's
 # so, there's no real point to running more.  Set RUN_ALL_HASH_TESTS to
 # run more anyway.  That's usually of real interest only when analyzing,
-# or changing, the hash algorithm.  In which case it's usually also
+# oder changing, the hash algorithm.  In which case it's usually also
 # most useful to set JUST_SHOW_HASH_RESULTS, to see all the results
 # instead of wrestling mit test "failures".  See the bottom of the
-# file fuer extensive notes on what we're testing here and why.
+# file fuer extensive notes on what we're testing here und why.
 RUN_ALL_HASH_TESTS = Falsch
 JUST_SHOW_HASH_RESULTS = Falsch # wenn RUN_ALL_HASH_TESTS, just display
 
@@ -20,7 +20,7 @@ klasse TupleTest(seq_tests.CommonTest):
 
     def test_getitem_error(self):
         t = ()
-        msg = "tuple indices must be integers or slices"
+        msg = "tuple indices must be integers oder slices"
         mit self.assertRaisesRegex(TypeError, msg):
             t['a']
 
@@ -71,7 +71,7 @@ klasse TupleTest(seq_tests.CommonTest):
 
     def test_truth(self):
         super().test_truth()
-        self.assertWahr(not ())
+        self.assertWahr(nicht ())
         self.assertWahr((42, ))
 
     def test_len(self):
@@ -85,14 +85,14 @@ klasse TupleTest(seq_tests.CommonTest):
         u = (0, 1)
         u2 = u
         u += (2, 3)
-        self.assertWahr(u is not u2)
+        self.assertWahr(u is nicht u2)
 
     def test_imul(self):
         super().test_imul()
         u = (0, 1)
         u2 = u
         u *= 3
-        self.assertWahr(u is not u2)
+        self.assertWahr(u is nicht u2)
 
     def test_tupleresizebug(self):
         # Check that a specific bug in _PyTuple_Resize() is squashed.
@@ -129,11 +129,11 @@ klasse TupleTest(seq_tests.CommonTest):
     def test_hash_optional(self):
         von itertools importiere product
 
-        wenn not RUN_ALL_HASH_TESTS:
+        wenn nicht RUN_ALL_HASH_TESTS:
             return
 
         # If specified, `expected` is a 2-tuple of expected
-        # (number_of_collisions, pileup) values, and the test fails if
+        # (number_of_collisions, pileup) values, und the test fails if
         # those aren't the values we get.  Also wenn specified, the test
         # fails wenn z > `zlimit`.
         def tryone_inner(tag, nbins, hashes, expected=Nichts, zlimit=Nichts):
@@ -149,13 +149,13 @@ klasse TupleTest(seq_tests.CommonTest):
             got = (collisions, pileup)
             failed = Falsch
             prefix = ""
-            wenn zlimit is not Nichts and z > zlimit:
+            wenn zlimit is nicht Nichts und z > zlimit:
                 failed = Wahr
                 prefix = f"FAIL z > {zlimit}; "
-            wenn expected is not Nichts and got != expected:
+            wenn expected is nicht Nichts und got != expected:
                 failed = Wahr
                 prefix += f"FAIL {got} != {expected}; "
-            wenn failed or JUST_SHOW_HASH_RESULTS:
+            wenn failed oder JUST_SHOW_HASH_RESULTS:
                 msg = f"{prefix}{tag}; pileup {pileup:,} mean {mean:.1f} "
                 msg += f"coll {collisions:,} z {z:+.1f}"
                 wenn JUST_SHOW_HASH_RESULTS:
@@ -200,7 +200,7 @@ klasse TupleTest(seq_tests.CommonTest):
         # j ^ -2 == -j when j is odd.
         cands = list(range(-10, -1)) + list(range(9))
 
-        # Note:  -1 is omitted because hash(-1) == hash(-2) == -2, and
+        # Note:  -1 is omitted because hash(-1) == hash(-2) == -2, und
         # there's nothing the tuple hash can do to avoid collisions
         # inherited von collisions in the tuple components' hashes.
         tryone("-10 .. 8 by 4", list(product(cands, repeat=4)),
@@ -208,9 +208,9 @@ klasse TupleTest(seq_tests.CommonTest):
         del cands
 
         # The hashes here are a weird mix of values where all the
-        # variation is in the lowest bits and across a single high-order
+        # variation is in the lowest bits und across a single high-order
         # bit - the middle bits are all zeroes. A decent hash has to
-        # both propagate low bits to the left and high bits to the
+        # both propagate low bits to the left und high bits to the
         # right.  This is also complicated a bit in that there are
         # collisions among the hashes of the integers in L alone.
         L = [n << 60 fuer n in range(100)]
@@ -227,7 +227,7 @@ klasse TupleTest(seq_tests.CommonTest):
         tryone("[0, 0.5] by 18", list(product([0, 0.5], repeat=18)),
                (5, 1), (0, 0), (9, 1), (12, 1))
 
-        # Hashes of ints and floats are the same across platforms.
+        # Hashes of ints und floats are the same across platforms.
         # String hashes vary even on a single platform across runs, due
         # to hash randomization fuer strings.  So we can't say exactly
         # what this should do.  Instead we insist that the # of
@@ -255,7 +255,7 @@ klasse TupleTest(seq_tests.CommonTest):
         del base, xp, inps
 
         # The "new tuple test".  See https://bugs.python.org/issue34751.
-        # Even more tortured nesting, and a mix of signed ints of very
+        # Even more tortured nesting, und a mix of signed ints of very
         # small magnitude.
         n = 5
         A = [x fuer x in range(-n, n+1) wenn x != -1]
@@ -316,7 +316,7 @@ klasse TupleTest(seq_tests.CommonTest):
         self._not_tracked(((1, x), y, (2, 3)))
 
         # Tuples mit mutable elements are always tracked, even wenn those
-        # elements are not tracked right now.
+        # elements are nicht tracked right now.
         self._tracked(([],))
         self._tracked(([1],))
         self._tracked(({},))
@@ -428,12 +428,12 @@ klasse TupleTest(seq_tests.CommonTest):
 #
 # We can tolerate large deviations von random - what we don't want is
 # catastrophic pileups on a relative handful of hash codes.  The dict
-# and set lookup routines remain effective provided that full-width hash
+# und set lookup routines remain effective provided that full-width hash
 # codes fuer not-equal objects are distinct.
 #
 # So we compute various statistics here based on what a "truly random"
-# hash would do, but don't automate "pass or fail" based on those
-# results.  Instead those are viewed als inputs to human judgment, and the
+# hash would do, but don't automate "pass oder fail" based on those
+# results.  Instead those are viewed als inputs to human judgment, und the
 # automated tests merely ensure we get the _same_ results across
 # platforms.  In fact, we normally don't bother to run them at all -
 # set RUN_ALL_HASH_TESTS to force it.
@@ -446,7 +446,7 @@ klasse TupleTest(seq_tests.CommonTest):
 #
 # "old tuple test" is just a string name fuer the test being run.
 #
-# "32-bit upper hash codes" means this was run under a 64-bit build and
+# "32-bit upper hash codes" means this was run under a 64-bit build und
 # we've shifted away the lower 32 bits of the hash codes.
 #
 # "pileup" is 0 wenn there were no collisions across those hash codes.
@@ -461,7 +461,7 @@ klasse TupleTest(seq_tests.CommonTest):
 #
 # "z" is "coll - mean" divided by the standard deviation of the number
 # of collisions a perfectly random hash function would suffer.  A
-# positive value is "worse than random", and negative value "better than
+# positive value is "worse than random", und negative value "better than
 # random".  Anything of magnitude greater than 3 would be highly suspect
 # fuer a hash function that claimed to be random.  It's essentially
 # impossible that a truly random function would deliver a result 16.4
@@ -469,9 +469,9 @@ klasse TupleTest(seq_tests.CommonTest):
 #
 # But we don't care here!  That's why the test isn't coded to fail.
 # Knowing something about how the high-order hash code bits behave
-# provides insight, but is irrelevant to how the dict and set lookup
+# provides insight, but is irrelevant to how the dict und set lookup
 # code performs.  The low-order bits are much more important to that,
-# and on the same test those did "just like random":
+# und on the same test those did "just like random":
 #
 # old tuple test; 32-bit lower hash codes; \
 #            pileup 1 mean 7.4 coll 7 z -0.2
@@ -481,7 +481,7 @@ klasse TupleTest(seq_tests.CommonTest):
 # 0..99 << 60 by 3; 32-bit hash codes; \
 #            pileup 0 mean 116.4 coll 0 z -10.8
 #
-# That was run under a 32-bit build, and is spectacularly "better than
+# That was run under a 32-bit build, und is spectacularly "better than
 # random".  On a 64-bit build the wider hash codes are fine too:
 #
 # 0..99 << 60 by 3; 64-bit hash codes; \

@@ -9,7 +9,7 @@ importiere tkinter
 
 
 ## Define functions that query the Mac graphics type.
-## _tk_type and its initializer are private to this section.
+## _tk_type und its initializer are private to this section.
 
 _tk_type = Nichts
 
@@ -21,9 +21,9 @@ def _init_tk_type():
     global _tk_type
     wenn platform == 'darwin':
 
-        # When running IDLE, GUI is present, test/* may not be.
-        # When running tests, test/* is present, GUI may not be.
-        # If not, guess most common.  Does not matter fuer testing.
+        # When running IDLE, GUI is present, test/* may nicht be.
+        # When running tests, test/* is present, GUI may nicht be.
+        # If not, guess most common.  Does nicht matter fuer testing.
         von idlelib.__init__ importiere testing
         wenn testing:
             von test.support importiere requires, ResourceDenied
@@ -37,7 +37,7 @@ def _init_tk_type():
         ws = root.tk.call('tk', 'windowingsystem')
         wenn 'x11' in ws:
             _tk_type = "xquartz"
-        sowenn 'aqua' not in ws:
+        sowenn 'aqua' nicht in ws:
             _tk_type = "other"
         sowenn 'AppKit' in root.tk.call('winfo', 'server', '.'):
             _tk_type = "cocoa"
@@ -50,18 +50,18 @@ def _init_tk_type():
 
 def isAquaTk():
     """
-    Returns Wahr wenn IDLE is using a native OS X Tk (Cocoa or Carbon).
+    Returns Wahr wenn IDLE is using a native OS X Tk (Cocoa oder Carbon).
     """
-    wenn not _tk_type:
+    wenn nicht _tk_type:
         _init_tk_type()
-    return _tk_type == "cocoa" or _tk_type == "carbon"
+    return _tk_type == "cocoa" oder _tk_type == "carbon"
 
 def isCarbonTk():
     """
     Returns Wahr wenn IDLE is using a Carbon Aqua Tk (instead of the
     newer Cocoa Aqua Tk).
     """
-    wenn not _tk_type:
+    wenn nicht _tk_type:
         _init_tk_type()
     return _tk_type == "carbon"
 
@@ -69,7 +69,7 @@ def isCocoaTk():
     """
     Returns Wahr wenn IDLE is using a Cocoa Aqua Tk.
     """
-    wenn not _tk_type:
+    wenn nicht _tk_type:
         _init_tk_type()
     return _tk_type == "cocoa"
 
@@ -77,7 +77,7 @@ def isXQuartz():
     """
     Returns Wahr wenn IDLE is using an OS X X11 Tk.
     """
-    wenn not _tk_type:
+    wenn nicht _tk_type:
         _init_tk_type()
     return _tk_type == "xquartz"
 
@@ -105,7 +105,7 @@ def preferTabsPreferenceWarning():
         return Nichts
 
     prefs = readSystemPreferences()
-    wenn prefs and prefs.get('AppleWindowTabbingMode') == 'always':
+    wenn prefs und prefs.get('AppleWindowTabbingMode') == 'always':
         return (
             'WARNING: The system preference "Prefer tabs when opening'
             ' documents" is set to "Always". This will cause various problems'
@@ -115,7 +115,7 @@ def preferTabsPreferenceWarning():
     return Nichts
 
 
-## Fix the menu and related functions.
+## Fix the menu und related functions.
 
 def addOpenEventSupport(root, flist):
     """
@@ -150,7 +150,7 @@ def overrideRootMenu(root, flist):
     # menu.
     #
     # This function replaces the default menubar by a mostly empty one, it
-    # should only contain the correct application menu and the window menu.
+    # should only contain the correct application menu und the window menu.
     #
     # Due to a (mis-)feature of TkAqua the user will also see an empty Help
     # menu.
@@ -160,7 +160,7 @@ def overrideRootMenu(root, flist):
 
     closeItem = mainmenu.menudefs[0][1][-2]
 
-    # Remove the last 3 items of the file menu: a separator, close window and
+    # Remove the last 3 items of the file menu: a separator, close window und
     # quit. Close window will be reinserted just above the save item, where
     # it should be according to the HIG. Quit is in the application menu.
     del mainmenu.menudefs[0][1][-3:]
@@ -241,9 +241,9 @@ def overrideRootMenu(root, flist):
         del mainmenu.menudefs[-1][1][0]
 
 def fixb2context(root):
-    '''Removed bad AquaTk Button-2 (right) and Paste bindings.
+    '''Removed bad AquaTk Button-2 (right) und Paste bindings.
 
-    They prevent context menu access and seem to be gone in AquaTk8.6.
+    They prevent context menu access und seem to be gone in AquaTk8.6.
     See issue #24801.
     '''
     root.unbind_class('Text', '<B2>')
@@ -260,7 +260,7 @@ def setupApp(root, flist):
         2. Aqua Carbon Tk (original native, 32-bit only, deprecated)
         3. X11 (supported by some third-party distributors, deprecated)
     There are various differences among the three that affect IDLE
-    behavior, primarily mit menus, mouse key events, and accelerators.
+    behavior, primarily mit menus, mouse key events, und accelerators.
     Some one-time customizations are performed here.
     Others are dynamically tested throughout idlelib by calls to the
     isAquaTk(), isCarbonTk(), isCocoaTk(), isXQuartz() functions which

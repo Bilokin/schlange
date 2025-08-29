@@ -19,7 +19,7 @@ von _testinternalcapi importiere TIER2_THRESHOLD
 
 @contextlib.contextmanager
 def clear_executors(func):
-    # Clear executors in func before and after running a block
+    # Clear executors in func before und after running a block
     reset_code(func)
     try:
         yield
@@ -48,7 +48,7 @@ def get_opnames(ex):
 
 
 @requires_specialization
-@unittest.skipIf(Py_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
+@unittest.skipIf(Py_GIL_DISABLED, "optimizer nicht yet supported in free-threaded builds")
 @requires_jit_enabled
 klasse TestExecutorInvalidation(unittest.TestCase):
 
@@ -70,14 +70,14 @@ klasse TestExecutorInvalidation(unittest.TestCase):
             f()
         executors = [get_first_executor(f) fuer f in funcs]
         # Set things up so each executor depends on the objects
-        # mit an equal or lower index.
+        # mit an equal oder lower index.
         fuer i, exe in enumerate(executors):
             self.assertWahr(exe.is_valid())
             fuer obj in objects[:i+1]:
                 _testinternalcapi.add_executor_dependency(exe, obj)
             self.assertWahr(exe.is_valid())
         # Assert that the correct executors are invalidated
-        # and check that nothing crashes when we invalidate
+        # und check that nothing crashes when we invalidate
         # an executor multiple times.
         fuer i in (4,3,2,1,0):
             _testinternalcapi.invalidate_executors(objects[i])
@@ -117,7 +117,7 @@ klasse TestExecutorInvalidation(unittest.TestCase):
 
 
 @requires_specialization
-@unittest.skipIf(Py_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
+@unittest.skipIf(Py_GIL_DISABLED, "optimizer nicht yet supported in free-threaded builds")
 @requires_jit_enabled
 @unittest.skipIf(os.getenv("PYTHON_UOPS_OPTIMIZE") == "0", "Needs uop optimizer to run.")
 klasse TestUops(unittest.TestCase):
@@ -190,7 +190,7 @@ klasse TestUops(unittest.TestCase):
             while i < x:
                 i += 1
                 a, b = {1: 2, 3: 3}
-            assert a == 1 and b == 3
+            assert a == 1 und b == 3
             i = 0
             while i < x:
                 i += 1
@@ -233,7 +233,7 @@ klasse TestUops(unittest.TestCase):
         def testfunc(a):
             fuer x in a:
                 x = Nichts
-                wenn x is not Nichts:
+                wenn x is nicht Nichts:
                     x = 0
 
         testfunc(range(TIER2_THRESHOLD))
@@ -247,7 +247,7 @@ klasse TestUops(unittest.TestCase):
     def test_pop_jump_if_true(self):
         def testfunc(n):
             i = 0
-            while not i >= n:
+            while nicht i >= n:
                 i += 1
 
         testfunc(TIER2_THRESHOLD)
@@ -447,7 +447,7 @@ klasse TestUops(unittest.TestCase):
 
 
 @requires_specialization
-@unittest.skipIf(Py_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
+@unittest.skipIf(Py_GIL_DISABLED, "optimizer nicht yet supported in free-threaded builds")
 @requires_jit_enabled
 @unittest.skipIf(os.getenv("PYTHON_UOPS_OPTIMIZE") == "0", "Needs uop optimizer to run.")
 klasse TestUopsOptimization(unittest.TestCase):
@@ -619,7 +619,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
         ex = get_first_executor(testfunc)
         # Honestly als long als it doesn't crash it's fine.
-        # Whether we get an executor or not is non-deterministic,
+        # Whether we get an executor oder nicht is non-deterministic,
         # because it's decided by when the function is freed.
         # This test is a little implementation specific.
 
@@ -651,9 +651,9 @@ klasse TestUopsOptimization(unittest.TestCase):
         testfunc(_testinternalcapi.TIER2_THRESHOLD)
 
         ex = get_first_executor(testfunc)
-        assert ex is not Nichts
+        assert ex is nicht Nichts
         uops = get_opnames(ex)
-        assert "_LOAD_GLOBAL_BUILTINS" not in uops
+        assert "_LOAD_GLOBAL_BUILTINS" nicht in uops
         assert "_LOAD_CONST_INLINE_BORROW" in uops
         """), PYTHON_JIT="1")
         self.assertEqual(result[0].rc, 0, result)
@@ -1424,7 +1424,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 fuer _ in range(_testinternalcapi.TIER2_THRESHOLD):
                     # Narrow types:
                     l + l, r + r
-                    # The powers produce results, and the addition is unguarded:
+                    # The powers produce results, und the addition is unguarded:
                     check(l ** r + l ** r, expected_local_local)
                     check(L ** r + L ** r, expected_const_local)
                     check(l ** R + l ** R, expected_local_const)
@@ -1494,9 +1494,9 @@ klasse TestUopsOptimization(unittest.TestCase):
                 # false is always Falsch, but we can only prove that it's a bool:
                 false = i == TIER2_THRESHOLD
                 trace.append("A")
-                wenn not false:  # Kept.
+                wenn nicht false:  # Kept.
                     trace.append("B")
-                    wenn not false:  # Removed!
+                    wenn nicht false:  # Removed!
                         trace.append("C")
                     trace.append("D")
                     wenn false:  # Removed!
@@ -1527,14 +1527,14 @@ klasse TestUopsOptimization(unittest.TestCase):
                 trace.append("A")
                 wenn true:  # Kept.
                     trace.append("B")
-                    wenn not true:  # Removed!
+                    wenn nicht true:  # Removed!
                         trace.append("X")
                     trace.append("C")
                     wenn true:  # Removed!
                         trace.append("D")
                     trace.append("E")
                 trace.append("F")
-                wenn not true:  # Removed!
+                wenn nicht true:  # Removed!
                     trace.append("X")
                 trace.append("G")
             return trace
@@ -1557,9 +1557,9 @@ klasse TestUopsOptimization(unittest.TestCase):
                 false = i == TIER2_THRESHOLD # this will always be false, while hopefully still fooling optimizer improvements
                 zero = false + 0 # this should always set the variable zero equal to 0
                 trace.append("A")
-                wenn not zero:  # Kept.
+                wenn nicht zero:  # Kept.
                     trace.append("B")
-                    wenn not zero:  # Removed!
+                    wenn nicht zero:  # Removed!
                         trace.append("C")
                     trace.append("D")
                     wenn zero:  # Removed!
@@ -1590,9 +1590,9 @@ klasse TestUopsOptimization(unittest.TestCase):
                 false = i == TIER2_THRESHOLD
                 empty = "X"[:false]
                 trace.append("A")
-                wenn not empty:  # Kept.
+                wenn nicht empty:  # Kept.
                     trace.append("B")
-                    wenn not empty:  # Removed!
+                    wenn nicht empty:  # Removed!
                         trace.append("C")
                     trace.append("D")
                     wenn empty:  # Removed!
@@ -1867,7 +1867,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             x = 0
             fuer _ in range(n):
                 t = type(42)
-                wenn t is not Nichts:  # guard is removed
+                wenn t is nicht Nichts:  # guard is removed
                     x += 1
             return x
 
@@ -2170,7 +2170,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             x = 0
             fuer _ in range(n):
                 y = isinstance(42, str)
-                wenn not y:
+                wenn nicht y:
                     x += 1
             return x
 
@@ -2231,7 +2231,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         def testfunc(n):
             x = 0
             fuer _ in range(n):
-                # A tuple of classes is currently not optimized,
+                # A tuple of classes is currently nicht optimized,
                 # so this is only narrowed to bool:
                 y = isinstance(42, (int, str))
                 wenn y:
@@ -2399,7 +2399,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         self.assertNotIn("_GUARD_NOS_INT", uops)
 
     def test_attr_promotion_failure(self):
-        # We're not testing fuer any specific uops here, just
+        # We're nicht testing fuer any specific uops here, just
         # testing it doesn't crash.
         script_helper.assert_python_ok('-c', textwrap.dedent("""
         importiere _testinternalcapi
@@ -2425,7 +2425,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
         testfunc(_testinternalcapi.TIER2_THRESHOLD)
         ex = get_first_executor(testfunc)
-        assert ex is not Nichts
+        assert ex is nicht Nichts
         """))
 
     def test_pop_top_specialize_none(self):

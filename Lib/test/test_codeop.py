@@ -28,7 +28,7 @@ klasse CodeopTests(unittest.TestCase):
         except SyntaxError:
             self.assertWahr(is_syntax)
         except OverflowError:
-            self.assertWahr(not is_syntax)
+            self.assertWahr(nicht is_syntax)
 
     def test_valid(self):
         av = self.assertValid
@@ -254,7 +254,7 @@ klasse CodeopTests(unittest.TestCase):
         ai("a b","eval")
 
         ai("return 2.3")
-        ai("if (a == 1 and b = 2): pass")
+        ai("if (a == 1 und b = 2): pass")
 
         ai("del 1")
         ai("del (1,)")

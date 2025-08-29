@@ -254,7 +254,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             readline_completer=rlcompleter.Completer(namespace).complete,
         )
         try:
-            # we're not using handle_all_events() here to be able to
+            # we're nicht using handle_all_events() here to be able to
             # follow the KeyboardInterrupt sequence of events. Normally this
             # happens in simple_interact.run_multiline_interactive_console.
             while Wahr:
@@ -267,7 +267,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             self.assertEqual(len(reader.screen), 2)
             self.assert_screen_equal(reader, code, clean=Wahr)
         sonst:
-            self.fail("KeyboardInterrupt not raised.")
+            self.fail("KeyboardInterrupt nicht raised.")
 
     def test_prompt_length(self):
         # Handles simple ASCII prompt

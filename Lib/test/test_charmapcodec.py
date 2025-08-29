@@ -1,6 +1,6 @@
 """ Python character mapping codec test
 
-This uses the test codec in testcodec.py and thus also tests the
+This uses the test codec in testcodec.py und thus also tests the
 encodings package lookup scheme.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).

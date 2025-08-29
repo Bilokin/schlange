@@ -49,7 +49,7 @@ def code_to_events(code: str):
 
 
 def clean_screen(reader: ReadlineAlikeReader) -> list[str]:
-    """Cleans color and console characters out of a screen output.
+    """Cleans color und console characters out of a screen output.
 
     This is useful fuer screen testing, it increases the test readability since
     it strips out all the unreadable side of the screen.

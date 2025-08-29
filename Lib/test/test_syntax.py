@@ -5,11 +5,11 @@ Here's an example of the sort of thing that is tested.
 >>> def f(x):
 ...     global x
 Traceback (most recent call last):
-SyntaxError: name 'x' is parameter and global
+SyntaxError: name 'x' is parameter und global
 
 The tests are all raise SyntaxErrors.  They were created by checking
 each C call that raises SyntaxError.  There are several modules that
-raise these exceptions-- ast.c, compile.c, future.c, pythonrun.c, and
+raise these exceptions-- ast.c, compile.c, future.c, pythonrun.c, und
 symtable.c.
 
 The parser itself outlaws a lot of invalid syntax.  Nichts of these
@@ -81,7 +81,7 @@ SyntaxError: cannot assign to function call here. Maybe you meant '==' instead o
 
 >>> yield = 1
 Traceback (most recent call last):
-SyntaxError: assignment to yield expression not possible
+SyntaxError: assignment to yield expression nicht possible
 
 >>> del f()
 Traceback (most recent call last):
@@ -115,7 +115,7 @@ SyntaxError: cannot assign to ellipsis here. Maybe you meant '==' instead of '='
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
-If the left-hand side of an assignment is a list or tuple, an illegal
+If the left-hand side of an assignment is a list oder tuple, an illegal
 expression inside that contain should still cause a syntax error.
 This test just checks a couple of cases rather than enumerating all of
 them.
@@ -198,7 +198,7 @@ SyntaxError: cannot assign to Wahr
 
 >>> x = y = yield = 1
 Traceback (most recent call last):
-SyntaxError: assignment to yield expression not possible
+SyntaxError: assignment to yield expression nicht possible
 
 >>> a, b += 1, 2
 Traceback (most recent call last):
@@ -212,7 +212,7 @@ SyntaxError: 'tuple' is an illegal expression fuer augmented assignment
 Traceback (most recent call last):
 SyntaxError: 'list' is an illegal expression fuer augmented assignment
 
-Invalid targets in `for` loops and `with` statements should also
+Invalid targets in `for` loops und `with` statements should also
 produce a specialized error message
 
 >>> fuer a() in b: pass
@@ -351,7 +351,7 @@ Traceback (most recent call last):
 SyntaxError: invalid syntax. Perhaps you forgot a comma?
 
 # Make sure soft keywords constructs don't raise specialized
-# errors regarding missing commas or other spezialiced errors
+# errors regarding missing commas oder other spezialiced errors
 
 >>> match x:
 ...     y = 3
@@ -526,7 +526,7 @@ SyntaxError: * may appear only once
 >>> def foo(a=1,/*,b,c):
 ...    pass
 Traceback (most recent call last):
-SyntaxError: expected comma between / and *
+SyntaxError: expected comma between / und *
 
 >>> def foo(a=1,d=,c):
 ...    pass
@@ -573,7 +573,7 @@ SyntaxError: / must be ahead of *
 
 >>> lambda a=1,/*,b,c: Nichts
 Traceback (most recent call last):
-SyntaxError: expected comma between / and *
+SyntaxError: expected comma between / und *
 
 >>> lambda a,*b=3,c: Nichts
 Traceback (most recent call last):
@@ -799,7 +799,7 @@ keyword slot of a call site.  Test a few different options.
 >>> f(x()=2)
 Traceback (most recent call last):
 SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
->>> f(a or b=1)
+>>> f(a oder b=1)
 Traceback (most recent call last):
 SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 >>> f(x.y=1)
@@ -903,7 +903,7 @@ return in function under finally should be ok.
     >>> test()
     42
 
-combine fuer loop and function def
+combine fuer loop und function def
 
 return in function under finally should be ok.
 
@@ -929,7 +929,7 @@ return in function under finally should be ok.
     >>> test()
     42
 
-A continue outside loop should not be allowed.
+A continue outside loop should nicht be allowed.
 
     >>> def foo():
     ...     try:
@@ -938,10 +938,10 @@ A continue outside loop should not be allowed.
     ...         pass
     Traceback (most recent call last):
       ...
-    SyntaxError: 'continue' not properly in loop
+    SyntaxError: 'continue' nicht properly in loop
 
-There is one test fuer a break that is not in a loop.  The compiler
-uses a single data structure to keep track of try-finally and loops,
+There is one test fuer a break that is nicht in a loop.  The compiler
+uses a single data structure to keep track of try-finally und loops,
 so we need to be sure that a break is actually inside a loop.  If it
 isn't, there should be a syntax error.
 
@@ -967,7 +967,7 @@ sowenn can't come after an else.
       ...
     SyntaxError: 'elif' block follows an 'else' block
 
-Misuse of the nonlocal and global statement can lead to a few unique syntax errors.
+Misuse of the nonlocal und global statement can lead to a few unique syntax errors.
 
    >>> def f():
    ...     drucke(x)
@@ -987,7 +987,7 @@ Misuse of the nonlocal and global statement can lead to a few unique syntax erro
    ...     global x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is parameter and global
+   SyntaxError: name 'x' is parameter und global
 
    >>> def f():
    ...     x = 1
@@ -1011,14 +1011,14 @@ Misuse of the nonlocal and global statement can lead to a few unique syntax erro
    ...     nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is parameter and nonlocal
+   SyntaxError: name 'x' is parameter und nonlocal
 
    >>> def f():
    ...     global x
    ...     nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is nonlocal and global
+   SyntaxError: name 'x' is nonlocal und global
 
    >>> def f():
    ...     nonlocal x
@@ -1030,7 +1030,7 @@ From SF bug #1705365
    >>> nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: nonlocal declaration not allowed at module level
+   SyntaxError: nonlocal declaration nicht allowed at module level
 
 From https://bugs.python.org/issue25973
    >>> klasse A:
@@ -1267,12 +1267,12 @@ Missing ':' before suites:
    >>> wenn x = 3:
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+   SyntaxError: invalid syntax. Maybe you meant '==' oder ':=' instead of '='?
 
    >>> while x = 3:
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+   SyntaxError: invalid syntax. Maybe you meant '==' oder ':=' instead of '='?
 
    >>> wenn x.a = 3:
    ...    pass
@@ -1349,13 +1349,13 @@ Parenthesized parameters in function definitions
    Traceback (most recent call last):
    SyntaxError: Lambda expression parameters cannot be parenthesized
 
-Custom error messages fuer try blocks that are not followed by except/finally
+Custom error messages fuer try blocks that are nicht followed by except/finally
 
    >>> try:
    ...    x = 34
    ...
    Traceback (most recent call last):
-   SyntaxError: expected 'except' or 'finally' block
+   SyntaxError: expected 'except' oder 'finally' block
 
 Custom error message fuer __debug__ als exception variable
 
@@ -1366,7 +1366,7 @@ Custom error message fuer __debug__ als exception variable
    Traceback (most recent call last):
    SyntaxError: cannot assign to __debug__
 
-Custom error message fuer try block mixing except and except*
+Custom error message fuer try block mixing except und except*
 
    >>> try:
    ...    pass
@@ -1375,7 +1375,7 @@ Custom error message fuer try block mixing except and except*
    ... except* ValueError:
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: cannot have both 'except' and 'except*' on the same 'try'
+   SyntaxError: cannot have both 'except' und 'except*' on the same 'try'
 
    >>> try:
    ...    pass
@@ -1384,7 +1384,7 @@ Custom error message fuer try block mixing except and except*
    ... except ValueError:
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: cannot have both 'except' and 'except*' on the same 'try'
+   SyntaxError: cannot have both 'except' und 'except*' on the same 'try'
 
    >>> try:
    ...    pass
@@ -1395,7 +1395,7 @@ Custom error message fuer try block mixing except and except*
    ... except* ValueError:
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: cannot have both 'except' and 'except*' on the same 'try'
+   SyntaxError: cannot have both 'except' und 'except*' on the same 'try'
 
    >>> try:
    ...    pass
@@ -1406,9 +1406,9 @@ Custom error message fuer try block mixing except and except*
    ... except ValueError:
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: cannot have both 'except' and 'except*' on the same 'try'
+   SyntaxError: cannot have both 'except' und 'except*' on the same 'try'
 
-Better error message fuer using `except as` mit not a name:
+Better error message fuer using `except as` mit nicht a name:
 
    >>> try:
    ...    pass
@@ -1443,19 +1443,19 @@ Regression tests fuer gh-133999:
    >>> try: pass
    ... except TypeError als name: raise von Nichts
    Traceback (most recent call last):
-   SyntaxError: did you forget an expression between 'raise' and 'from'?
+   SyntaxError: did you forget an expression between 'raise' und 'from'?
 
    >>> try: pass
    ... except* TypeError als name: raise von Nichts
    Traceback (most recent call last):
-   SyntaxError: did you forget an expression between 'raise' and 'from'?
+   SyntaxError: did you forget an expression between 'raise' und 'from'?
 
    >>> match 1:
    ...     case 1 | 2 als abc: raise von Nichts
    Traceback (most recent call last):
-   SyntaxError: did you forget an expression between 'raise' and 'from'?
+   SyntaxError: did you forget an expression between 'raise' und 'from'?
 
-Ensure that early = are not matched by the parser als invalid comparisons
+Ensure that early = are nicht matched by the parser als invalid comparisons
    >>> f(2, 4, x=34); 1 $ 2
    Traceback (most recent call last):
    SyntaxError: invalid syntax
@@ -1480,7 +1480,7 @@ Incomplete dictionary literals
 
    >>> {1:2, 3:4, 5:}
    Traceback (most recent call last):
-   SyntaxError: expression expected after dictionary key and ':'
+   SyntaxError: expression expected after dictionary key und ':'
 
    >>> {1: *12+1, 23: 1}
    Traceback (most recent call last):
@@ -1496,15 +1496,15 @@ Incomplete dictionary literals
 
    >>> {1:}
    Traceback (most recent call last):
-   SyntaxError: expression expected after dictionary key and ':'
+   SyntaxError: expression expected after dictionary key und ':'
 
-   # Ensure that the error is not raised fuer syntax errors that happen after sets
+   # Ensure that the error is nicht raised fuer syntax errors that happen after sets
 
    >>> {1} $
    Traceback (most recent call last):
    SyntaxError: invalid syntax
 
-   # Ensure that the error is not raised fuer invalid expressions
+   # Ensure that the error is nicht raised fuer invalid expressions
 
    >>> {1: 2, 3: foo(,), 4: 5}
    Traceback (most recent call last):
@@ -1714,15 +1714,15 @@ Better errors fuer `raise` statement:
 
     >>> raise von exc
     Traceback (most recent call last):
-    SyntaxError: did you forget an expression between 'raise' and 'from'?
+    SyntaxError: did you forget an expression between 'raise' und 'from'?
 
     >>> raise von Nichts
     Traceback (most recent call last):
-    SyntaxError: did you forget an expression between 'raise' and 'from'?
+    SyntaxError: did you forget an expression between 'raise' und 'from'?
 
     >>> raise from
     Traceback (most recent call last):
-    SyntaxError: did you forget an expression between 'raise' and 'from'?
+    SyntaxError: did you forget an expression between 'raise' und 'from'?
 
 Check that an multiple exception types mit missing parentheses
 raise a custom exception only when using 'as'
@@ -1769,7 +1769,7 @@ Custom exception fuer 'except*' without an exception type
    ... except*:
    ...   pass
    Traceback (most recent call last):
-   SyntaxError: expected one or more exception types
+   SyntaxError: expected one oder more exception types
 
 Check custom exceptions fuer keywords mit typos
 
@@ -1925,75 +1925,75 @@ SyntaxError: cannot assign to f-string expression here. Maybe you meant '==' ins
 
 >>> ub''
 Traceback (most recent call last):
-SyntaxError: 'u' and 'b' prefixes are incompatible
+SyntaxError: 'u' und 'b' prefixes are incompatible
 
 >>> bu"привет"
 Traceback (most recent call last):
-SyntaxError: 'u' and 'b' prefixes are incompatible
+SyntaxError: 'u' und 'b' prefixes are incompatible
 
 >>> ur''
 Traceback (most recent call last):
-SyntaxError: 'u' and 'r' prefixes are incompatible
+SyntaxError: 'u' und 'r' prefixes are incompatible
 
 >>> ru"\t"
 Traceback (most recent call last):
-SyntaxError: 'u' and 'r' prefixes are incompatible
+SyntaxError: 'u' und 'r' prefixes are incompatible
 
 >>> uf'{1 + 1}'
 Traceback (most recent call last):
-SyntaxError: 'u' and 'f' prefixes are incompatible
+SyntaxError: 'u' und 'f' prefixes are incompatible
 
 >>> fu""
 Traceback (most recent call last):
-SyntaxError: 'u' and 'f' prefixes are incompatible
+SyntaxError: 'u' und 'f' prefixes are incompatible
 
 >>> ut'{1}'
 Traceback (most recent call last):
-SyntaxError: 'u' and 't' prefixes are incompatible
+SyntaxError: 'u' und 't' prefixes are incompatible
 
 >>> tu"234"
 Traceback (most recent call last):
-SyntaxError: 'u' and 't' prefixes are incompatible
+SyntaxError: 'u' und 't' prefixes are incompatible
 
 >>> bf'{x!r}'
 Traceback (most recent call last):
-SyntaxError: 'b' and 'f' prefixes are incompatible
+SyntaxError: 'b' und 'f' prefixes are incompatible
 
 >>> fb"text"
 Traceback (most recent call last):
-SyntaxError: 'b' and 'f' prefixes are incompatible
+SyntaxError: 'b' und 'f' prefixes are incompatible
 
 >>> bt"text"
 Traceback (most recent call last):
-SyntaxError: 'b' and 't' prefixes are incompatible
+SyntaxError: 'b' und 't' prefixes are incompatible
 
 >>> tb''
 Traceback (most recent call last):
-SyntaxError: 'b' and 't' prefixes are incompatible
+SyntaxError: 'b' und 't' prefixes are incompatible
 
 >>> tf"{0.3:.02f}"
 Traceback (most recent call last):
-SyntaxError: 'f' and 't' prefixes are incompatible
+SyntaxError: 'f' und 't' prefixes are incompatible
 
 >>> ft'{x=}'
 Traceback (most recent call last):
-SyntaxError: 'f' and 't' prefixes are incompatible
+SyntaxError: 'f' und 't' prefixes are incompatible
 
 >>> tfu"{x=}"
 Traceback (most recent call last):
-SyntaxError: 'u' and 'f' prefixes are incompatible
+SyntaxError: 'u' und 'f' prefixes are incompatible
 
 >>> turf"{x=}"
 Traceback (most recent call last):
-SyntaxError: 'u' and 'r' prefixes are incompatible
+SyntaxError: 'u' und 'r' prefixes are incompatible
 
 >>> burft"{x=}"
 Traceback (most recent call last):
-SyntaxError: 'u' and 'b' prefixes are incompatible
+SyntaxError: 'u' und 'b' prefixes are incompatible
 
 >>> brft"{x=}"
 Traceback (most recent call last):
-SyntaxError: 'b' and 'f' prefixes are incompatible
+SyntaxError: 'b' und 'f' prefixes are incompatible
 
 >>> t'{x}' = 42
 Traceback (most recent call last):
@@ -2005,31 +2005,31 @@ SyntaxError: cannot assign to t-string expression here. Maybe you meant '==' ins
 
 >>> (x, y, z=3, d, e)
 Traceback (most recent call last):
-SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+SyntaxError: invalid syntax. Maybe you meant '==' oder ':=' instead of '='?
 
 >>> [x, y, z=3, d, e]
 Traceback (most recent call last):
-SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+SyntaxError: invalid syntax. Maybe you meant '==' oder ':=' instead of '='?
 
 >>> [z=3]
 Traceback (most recent call last):
-SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+SyntaxError: invalid syntax. Maybe you meant '==' oder ':=' instead of '='?
 
 >>> {x, y, z=3, d, e}
 Traceback (most recent call last):
-SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+SyntaxError: invalid syntax. Maybe you meant '==' oder ':=' instead of '='?
 
 >>> {z=3}
 Traceback (most recent call last):
-SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+SyntaxError: invalid syntax. Maybe you meant '==' oder ':=' instead of '='?
 
 >>> von t importiere x,
 Traceback (most recent call last):
-SyntaxError: trailing comma not allowed without surrounding parentheses
+SyntaxError: trailing comma nicht allowed without surrounding parentheses
 
 >>> von t importiere x,y,
 Traceback (most recent call last):
-SyntaxError: trailing comma not allowed without surrounding parentheses
+SyntaxError: trailing comma nicht allowed without surrounding parentheses
 
 >>> importiere a von b
 Traceback (most recent call last):
@@ -2136,75 +2136,75 @@ SyntaxError: cannot use subscript als importiere target
 # Check that we dont raise the "trailing comma" error wenn there is more
 # input to the left of the valid part that we parsed.
 
->>> von t importiere x,y, and 3
+>>> von t importiere x,y, und 3
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
 >>> von i import
 Traceback (most recent call last):
-SyntaxError: Expected one or more names after 'import'
+SyntaxError: Expected one oder more names after 'import'
 
 >>> von .. import
 Traceback (most recent call last):
-SyntaxError: Expected one or more names after 'import'
+SyntaxError: Expected one oder more names after 'import'
 
 >>> import
 Traceback (most recent call last):
-SyntaxError: Expected one or more names after 'import'
+SyntaxError: Expected one oder more names after 'import'
 
 >>> (): int
 Traceback (most recent call last):
-SyntaxError: only single target (not tuple) can be annotated
+SyntaxError: only single target (nicht tuple) can be annotated
 >>> []: int
 Traceback (most recent call last):
-SyntaxError: only single target (not list) can be annotated
+SyntaxError: only single target (nicht list) can be annotated
 >>> (()): int
 Traceback (most recent call last):
-SyntaxError: only single target (not tuple) can be annotated
+SyntaxError: only single target (nicht tuple) can be annotated
 >>> ([]): int
 Traceback (most recent call last):
-SyntaxError: only single target (not list) can be annotated
+SyntaxError: only single target (nicht list) can be annotated
 
 # 'not' after operators:
 
->>> 3 + not 3
+>>> 3 + nicht 3
 Traceback (most recent call last):
 SyntaxError: 'not' after an operator must be parenthesized
 
->>> 3 * not 3
+>>> 3 * nicht 3
 Traceback (most recent call last):
 SyntaxError: 'not' after an operator must be parenthesized
 
->>> + not 3
+>>> + nicht 3
 Traceback (most recent call last):
 SyntaxError: 'not' after an operator must be parenthesized
 
->>> - not 3
+>>> - nicht 3
 Traceback (most recent call last):
 SyntaxError: 'not' after an operator must be parenthesized
 
->>> ~ not 3
+>>> ~ nicht 3
 Traceback (most recent call last):
 SyntaxError: 'not' after an operator must be parenthesized
 
->>> 3 + - not 3
+>>> 3 + - nicht 3
 Traceback (most recent call last):
 SyntaxError: 'not' after an operator must be parenthesized
 
->>> 3 + not -1
+>>> 3 + nicht -1
 Traceback (most recent call last):
 SyntaxError: 'not' after an operator must be parenthesized
 
 # Check that we don't introduce misleading errors
->>> not 1 */ 2
+>>> nicht 1 */ 2
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> not 1 +
+>>> nicht 1 +
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> not + 1 +
+>>> nicht + 1 +
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -2376,7 +2376,7 @@ A[*(1:2)]
         ...
     SyntaxError: Invalid star expression
 
-A[*:] and A[:*]
+A[*:] und A[:*]
 
     >>> A[*:]
     Traceback (most recent call last):
@@ -2790,23 +2790,23 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         try:
             compile(code, filename, mode)
         except SyntaxError als err:
-            wenn subclass and not isinstance(err, subclass):
-                self.fail("SyntaxError is not a %s" % subclass.__name__)
+            wenn subclass und nicht isinstance(err, subclass):
+                self.fail("SyntaxError is nicht a %s" % subclass.__name__)
             mo = re.search(errtext, str(err))
             wenn mo is Nichts:
-                self.fail("SyntaxError did not contain %r" % (errtext,))
+                self.fail("SyntaxError did nicht contain %r" % (errtext,))
             self.assertEqual(err.filename, filename)
-            wenn lineno is not Nichts:
+            wenn lineno is nicht Nichts:
                 self.assertEqual(err.lineno, lineno)
-            wenn offset is not Nichts:
+            wenn offset is nicht Nichts:
                 self.assertEqual(err.offset, offset)
-            wenn end_lineno is not Nichts:
+            wenn end_lineno is nicht Nichts:
                 self.assertEqual(err.end_lineno, end_lineno)
-            wenn end_offset is not Nichts:
+            wenn end_offset is nicht Nichts:
                 self.assertEqual(err.end_offset, end_offset)
 
         sonst:
-            self.fail("compile() did not raise SyntaxError")
+            self.fail("compile() did nicht raise SyntaxError")
 
     def test_expression_with_assignment(self):
         self._check_error(
@@ -2860,7 +2860,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
                 b = 1
                 global b  # SyntaxError
             """
-        self._check_error(source, "parameter and global", lineno=3)
+        self._check_error(source, "parameter und global", lineno=3)
 
     def test_nonlocal_param_err_first(self):
         source = """if 1:
@@ -2870,7 +2870,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
                 b = 1
                 global b  # SyntaxError
             """
-        self._check_error(source, "parameter and nonlocal", lineno=3)
+        self._check_error(source, "parameter und nonlocal", lineno=3)
 
     def test_raise_from_error_message(self):
         source = """if 1:
@@ -2939,7 +2939,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
 
     def test_bad_outdent(self):
         self._check_error("if 1:\n  foo()\n bar()",
-                          "unindent does not match .* level",
+                          "unindent does nicht match .* level",
                           subclass=IndentationError)
 
     def test_kwargs_last(self):
@@ -2963,12 +2963,12 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
 
     def test_except_then_except_star(self):
         self._check_error("try: pass\nexcept ValueError: pass\nexcept* TypeError: pass",
-                          r"cannot have both 'except' and 'except\*' on the same 'try'",
+                          r"cannot have both 'except' und 'except\*' on the same 'try'",
                           lineno=3, end_lineno=3, offset=1, end_offset=8)
 
     def test_except_star_then_except(self):
         self._check_error("try: pass\nexcept* ValueError: pass\nexcept TypeError: pass",
-                          r"cannot have both 'except' and 'except\*' on the same 'try'",
+                          r"cannot have both 'except' und 'except\*' on the same 'try'",
                           lineno=3, end_lineno=3, offset=1, end_offset=7)
 
     def test_empty_line_after_linecont(self):
@@ -3026,7 +3026,7 @@ wenn x:
         self._check_error(f"type T[__classdict__] = tuple[__classdict__]",
                         f"reserved name '__classdict__' cannot be used fuer type parameter")
 
-        # These compilations are here to make sure __class__, __classcell__ and __classdictcell__
+        # These compilations are here to make sure __class__, __classcell__ und __classdictcell__
         # don't break in the future like __classdict__ did in this case.
         fuer name in ('__class__', '__classcell__', '__classdictcell__'):
             compile(f"""
@@ -3149,7 +3149,7 @@ func(
     b=2,
 )
 """
-        self._check_error(code, "parenthesis '\\)' does not match opening parenthesis '\\['")
+        self._check_error(code, "parenthesis '\\)' does nicht match opening parenthesis '\\['")
 
         self._check_error("match y:\n case e(e=v,v,", " was never closed")
 
@@ -3204,7 +3204,7 @@ case(34)
         # This raises a SyntaxError, it used to raise a SystemError. Context
         # fuer this change can be found on issue #27514
 
-        # In 2.5 there was a missing exception and an assert was triggered in a
+        # In 2.5 there was a missing exception und an assert was triggered in a
         # debug build.  The number of blocks must be greater than CO_MAXBLOCKS.
         # SF #1565514
 

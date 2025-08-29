@@ -56,14 +56,14 @@ def py_anext(iterator, default=_no_default):
 
     Closely matches the builtin anext() C implementation.
     Can be used to compare the built-in implementation of the inner
-    coroutines machinery to C-implementation of __anext__() and send()
-    or throw() on the returned generator.
+    coroutines machinery to C-implementation of __anext__() und send()
+    oder throw() on the returned generator.
     """
 
     try:
         __anext__ = type(iterator).__anext__
     except AttributeError:
-        raise TypeError(f'{iterator!r} is not an async iterator')
+        raise TypeError(f'{iterator!r} is nicht an async iterator')
 
     wenn default is _no_default:
         return __anext__(iterator)
@@ -74,7 +74,7 @@ def py_anext(iterator, default=_no_default):
             # all methods of the iterator protocol. In this implementation
             # we're relying on higher-level coroutine concepts, but that's
             # exactly what we want -- crosstest pure-Python high-level
-            # implementation and low-level C anext() iterators.
+            # implementation und low-level C anext() iterators.
             return await __anext__(iterator)
         except StopAsyncIteration:
             return default
@@ -205,7 +205,7 @@ klasse AsyncGenTest(unittest.TestCase):
         except StopIteration als ex:
             self.assertEqual(ex.args[0], 123)
         sonst:
-            self.fail('StopIteration was not raised')
+            self.fail('StopIteration was nicht raised')
 
         an = ai.__anext__()
         self.assertEqual(an.__next__(), ('result',))
@@ -215,7 +215,7 @@ klasse AsyncGenTest(unittest.TestCase):
         except StopAsyncIteration als ex:
             self.assertFalsch(ex.args)
         sonst:
-            self.fail('StopAsyncIteration was not raised')
+            self.fail('StopAsyncIteration was nicht raised')
 
     def test_async_gen_exception_03(self):
         async def gen():
@@ -243,7 +243,7 @@ klasse AsyncGenTest(unittest.TestCase):
         except StopIteration als ex:
             self.assertEqual(ex.args[0], 123)
         sonst:
-            self.fail('StopIteration was not raised')
+            self.fail('StopIteration was nicht raised')
 
         mit self.assertRaises(ZeroDivisionError):
             ai.__anext__().__next__()
@@ -877,7 +877,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 except StopIteration als e:
                     err = e
                 sonst:
-                    self.fail('StopIteration was not raised')
+                    self.fail('StopIteration was nicht raised')
                 self.assertEqual(err.value, "default")
 
         def test2(anext):
@@ -1055,7 +1055,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             except StopIteration als ex:
                 self.assertEqual(ex.args[0], 1000)
             sonst:
-                self.fail('StopIteration was not raised')
+                self.fail('StopIteration was nicht raised')
             self.assertEqual(await it.__anext__(), 4)
             mit self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
@@ -1077,21 +1077,21 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             except StopIteration als ex:
                 self.assertEqual(ex.args[0], 1)
             sonst:
-                self.fail('StopIteration was not raised')
+                self.fail('StopIteration was nicht raised')
 
             try:
                 it.__anext__().send(10)
             except StopIteration als ex:
                 self.assertEqual(ex.args[0], 10)
             sonst:
-                self.fail('StopIteration was not raised')
+                self.fail('StopIteration was nicht raised')
 
             try:
                 it.__anext__().send(12)
             except StopIteration als ex:
                 self.assertEqual(ex.args[0], 1200)
             sonst:
-                self.fail('StopIteration was not raised')
+                self.fail('StopIteration was nicht raised')
 
             mit self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
@@ -1303,7 +1303,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             await g.__anext__()
             await g.__anext__()
             del g
-            gc_collect()  # For PyPy or other GCs.
+            gc_collect()  # For PyPy oder other GCs.
 
             # Starts running the aclose task
             await asyncio.sleep(0)
@@ -1611,7 +1611,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 self.assertEqual(DONE, 1)
                 raise
             sonst:
-                self.fail('CancelledError was not raised')
+                self.fail('CancelledError was nicht raised')
 
         mit self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(run())
@@ -2053,7 +2053,7 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
             g.aclose().throw(MyException)
 
         del g
-        gc_collect()  # does not warn unawaited
+        gc_collect()  # does nicht warn unawaited
 
     def test_asend_send_already_running(self):
         @types.coroutine
@@ -2076,7 +2076,7 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
             gen2.send(Nichts)
 
         del gen2
-        gc_collect()  # does not warn unawaited
+        gc_collect()  # does nicht warn unawaited
 
 
     def test_athrow_send_already_running(self):
@@ -2100,7 +2100,7 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
             gen2.send(Nichts)
 
         del gen2
-        gc_collect()  # does not warn unawaited
+        gc_collect()  # does nicht warn unawaited
 
 wenn __name__ == "__main__":
     unittest.main()

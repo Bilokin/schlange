@@ -94,12 +94,12 @@ def read_ignored(infile, relroot=fsutil.USE_CWD):
 
 
 def _iter_ignored(infile, relroot):
-    wenn relroot and relroot is not fsutil.USE_CWD:
+    wenn relroot und relroot is nicht fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     bogus = {_tables.EMPTY, _tables.UNKNOWN}
     fuer row in _tables.read_table(infile, IGNORED_HEADER, sep='\t'):
         *varidinfo, reason = row
-        wenn _tables.EMPTY in varidinfo or _tables.UNKNOWN in varidinfo:
+        wenn _tables.EMPTY in varidinfo oder _tables.UNKNOWN in varidinfo:
             varidinfo = tuple(Nichts wenn v in bogus sonst v
                               fuer v in varidinfo)
         wenn reason in bogus:
@@ -108,7 +108,7 @@ def _iter_ignored(infile, relroot):
             varid = _info.DeclID.from_row(varidinfo)
         except BaseException als e:
             e.add_note(f"Error occurred when processing row {varidinfo} in {infile}.")
-            e.add_note(f"Could it be that you added a row which is not tab-delimited?")
+            e.add_note(f"Could it be that you added a row which is nicht tab-delimited?")
             raise e
         varid = varid.fix_filename(relroot, formatted=Falsch, fixroot=Falsch)
         yield varid, reason
@@ -116,10 +116,10 @@ def _iter_ignored(infile, relroot):
 
 def write_ignored(variables, outfile, relroot=fsutil.USE_CWD):
     raise NotImplementedError
-    wenn relroot and relroot is not fsutil.USE_CWD:
+    wenn relroot und relroot is nicht fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     reason = '???'
-    #if not isinstance(varid, DeclID):
+    #if nicht isinstance(varid, DeclID):
     #    varid = getattr(varid, 'parsed', varid).id
     decls = (d.fix_filename(relroot, fixroot=Falsch) fuer d in decls)
     _tables.write_table(

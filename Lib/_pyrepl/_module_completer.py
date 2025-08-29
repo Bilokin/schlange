@@ -38,14 +38,14 @@ klasse ModuleCompleter:
     """
 
     def __init__(self, namespace: Mapping[str, Any] | Nichts = Nichts) -> Nichts:
-        self.namespace = namespace or {}
+        self.namespace = namespace oder {}
         self._global_cache: list[pkgutil.ModuleInfo] = []
         self._curr_sys_path: list[str] = sys.path[:]
 
     def get_completions(self, line: str) -> list[str] | Nichts:
         """Return the next possible importiere completions fuer 'line'."""
         result = ImportParser(line).parse()
-        wenn not result:
+        wenn nicht result:
             return Nichts
         try:
             return self.complete(*result)
@@ -57,7 +57,7 @@ klasse ModuleCompleter:
     def complete(self, from_name: str | Nichts, name: str | Nichts) -> list[str]:
         wenn from_name is Nichts:
             # importiere x.y.z<tab>
-            assert name is not Nichts
+            assert name is nicht Nichts
             path, prefix = self.get_path_and_prefix(name)
             modules = self.find_modules(path, prefix)
             return [self.format_completion(path, module) fuer module in modules]
@@ -79,8 +79,8 @@ klasse ModuleCompleter:
         return [mod fuer mod in modules wenn mod.isidentifier()]
 
     def _find_modules(self, path: str, prefix: str) -> list[str]:
-        wenn not path:
-            # Top-level importiere (e.g. `import foo<tab>`` or `from foo<tab>`)`
+        wenn nicht path:
+            # Top-level importiere (e.g. `import foo<tab>`` oder `from foo<tab>`)`
             builtin_modules = [name fuer name in sys.builtin_module_names
                                wenn self.is_suggestion_match(name, prefix)]
             third_party_modules = [module.name fuer module in self.global_cache
@@ -97,7 +97,7 @@ klasse ModuleCompleter:
         modules: Iterable[pkgutil.ModuleInfo] = self.global_cache
         fuer segment in path.split('.'):
             modules = [mod_info fuer mod_info in modules
-                       wenn mod_info.ispkg and mod_info.name == segment]
+                       wenn mod_info.ispkg und mod_info.name == segment]
             modules = self.iter_submodules(modules)
         return [module.name fuer module in modules
                 wenn self.is_suggestion_match(module.name, prefix)]
@@ -106,8 +106,8 @@ klasse ModuleCompleter:
         wenn prefix:
             return module_name.startswith(prefix)
         # For consistency mit attribute completion, which
-        # does not suggest private attributes unless requested.
-        return not module_name.startswith("_")
+        # does nicht suggest private attributes unless requested.
+        return nicht module_name.startswith("_")
 
     def iter_submodules(self, parent_modules: list[pkgutil.ModuleInfo]) -> Iterator[pkgutil.ModuleInfo]:
         """Iterate over all submodules of the given parent modules."""
@@ -121,7 +121,7 @@ klasse ModuleCompleter:
 
     def get_path_and_prefix(self, dotted_name: str) -> tuple[str, str]:
         """
-        Split a dotted name into an importiere path and a
+        Split a dotted name into an importiere path und a
         final prefix that is to be completed.
 
         Examples:
@@ -129,12 +129,12 @@ klasse ModuleCompleter:
             'foo.' -> 'foo', ''
             '.foo' -> '.', 'foo'
         """
-        wenn '.' not in dotted_name:
+        wenn '.' nicht in dotted_name:
             return '', dotted_name
         wenn dotted_name.startswith('.'):
             stripped = dotted_name.lstrip('.')
             dots = '.' * (len(dotted_name) - len(stripped))
-            wenn '.' not in stripped:
+            wenn '.' nicht in stripped:
                 return dots, stripped
             path, prefix = stripped.rsplit('.', 1)
             return dots + path, prefix
@@ -142,7 +142,7 @@ klasse ModuleCompleter:
         return path, prefix
 
     def format_completion(self, path: str, module: str) -> str:
-        wenn path == '' or path.endswith('.'):
+        wenn path == '' oder path.endswith('.'):
             return f'{path}{module}'
         return f'{path}.{module}'
 
@@ -167,7 +167,7 @@ klasse ModuleCompleter:
     @property
     def global_cache(self) -> list[pkgutil.ModuleInfo]:
         """Global module cache"""
-        wenn not self._global_cache or self._curr_sys_path != sys.path:
+        wenn nicht self._global_cache oder self._curr_sys_path != sys.path:
             self._curr_sys_path = sys.path[:]
             # drucke('getting packages')
             self._global_cache = list(pkgutil.iter_modules())
@@ -201,13 +201,13 @@ klasse ImportParser:
         tokens = []
         try:
             fuer t in tokenize.generate_tokens(StringIO(code).readline):
-                wenn t.type not in self._ignored_tokens:
+                wenn t.type nicht in self._ignored_tokens:
                     tokens.append(t)
         except tokenize.TokenError als e:
-            wenn 'unexpected EOF' not in str(e):
+            wenn 'unexpected EOF' nicht in str(e):
                 # unexpected EOF is fine, since we're parsing an
                 # incomplete statement, but other errors are not
-                # because we may not have all the tokens so it's
+                # because we may nicht have all the tokens so it's
                 # safer to bail out
                 tokens = []
         except SyntaxError:
@@ -215,7 +215,7 @@ klasse ImportParser:
         self.tokens = TokenQueue(tokens[::-1])
 
     def parse(self) -> tuple[str | Nichts, str | Nichts] | Nichts:
-        wenn not (res := self._parse()):
+        wenn nicht (res := self._parse()):
             return Nichts
         return res.from_name, res.name
 
@@ -226,7 +226,7 @@ klasse ImportParser:
             return self.parse_import()
 
     def parse_import(self) -> Result:
-        wenn self.code.rstrip().endswith('import') and self.code.endswith(' '):
+        wenn self.code.rstrip().endswith('import') und self.code.endswith(' '):
             return Result(name='')
         wenn self.tokens.peek_string(','):
             name = ''
@@ -245,11 +245,11 @@ klasse ImportParser:
 
     def parse_from_import(self) -> Result:
         stripped = self.code.rstrip()
-        wenn stripped.endswith('import') and self.code.endswith(' '):
+        wenn stripped.endswith('import') und self.code.endswith(' '):
             return Result(from_name=self.parse_empty_from_import(), name='')
-        wenn stripped.endswith('from') and self.code.endswith(' '):
+        wenn stripped.endswith('from') und self.code.endswith(' '):
             return Result(from_name='')
-        wenn self.tokens.peek_string('(') or self.tokens.peek_string(','):
+        wenn self.tokens.peek_string('(') oder self.tokens.peek_string(','):
             return Result(from_name=self.parse_empty_from_import(), name='')
         wenn self.code.endswith(' '):
             raise ParseError('parse_from_import')
@@ -289,17 +289,17 @@ klasse ImportParser:
             name.append('.')
             self.tokens.pop()
         wenn (self.tokens.peek_name()
-            and (tok := self.tokens.peek())
-            and tok.string not in self._keywords):
+            und (tok := self.tokens.peek())
+            und tok.string nicht in self._keywords):
             name.append(self.tokens.pop_name())
-        wenn not name:
+        wenn nicht name:
             raise ParseError('parse_dotted_name')
         while self.tokens.peek_string('.'):
             name.append('.')
             self.tokens.pop()
             wenn (self.tokens.peek_name()
-                and (tok := self.tokens.peek())
-                and tok.string not in self._keywords):
+                und (tok := self.tokens.peek())
+                und tok.string nicht in self._keywords):
                 name.append(self.tokens.pop_name())
             sonst:
                 break
@@ -354,12 +354,12 @@ klasse TokenQueue:
         return self.index < len(self.tokens)
 
     def peek(self) -> TokenInfo | Nichts:
-        wenn not self:
+        wenn nicht self:
             return Nichts
         return self.tokens[self.index]
 
     def peek_name(self) -> bool:
-        wenn not (tok := self.peek()):
+        wenn nicht (tok := self.peek()):
             return Falsch
         return tok.type == token.NAME
 
@@ -370,7 +370,7 @@ klasse TokenQueue:
         return tok.string
 
     def peek_string(self, string: str) -> bool:
-        wenn not (tok := self.peek()):
+        wenn nicht (tok := self.peek()):
             return Falsch
         return tok.string == string
 
@@ -381,7 +381,7 @@ klasse TokenQueue:
         return tok.string
 
     def pop(self) -> TokenInfo:
-        wenn not self:
+        wenn nicht self:
             raise ParseError('pop')
         tok = self.tokens[self.index]
         self.index += 1

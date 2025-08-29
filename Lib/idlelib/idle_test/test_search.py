@@ -7,8 +7,8 @@ requires('gui')
 von tkinter importiere Tk, Text, BooleanVar
 von idlelib importiere searchengine
 
-# Does not currently test the event handler wrappers.
-# A usage test should simulate clicks and check highlighting.
+# Does nicht currently test the event handler wrappers.
+# A usage test should simulate clicks und check highlighting.
 # Tests need to be coordinated mit SearchDialogBase tests
 # to avoid duplication.
 
@@ -57,7 +57,7 @@ klasse SearchDialogTest(unittest.TestCase):
         self.assertWahr(self.dialog.find_again(text))
 
     def test_find_selection(self):
-        # Select some text and make sure it's found
+        # Select some text und make sure it's found
         text = self.text
         # Add additional line to find
         self.text.insert('2.0', 'Hello World!')

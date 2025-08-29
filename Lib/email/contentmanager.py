@@ -29,9 +29,9 @@ klasse ContentManager:
 
     def set_content(self, msg, obj, *args, **kw):
         wenn msg.get_content_maintype() == 'multipart':
-            # XXX: is this error a good idea or not?  We can remove it later,
+            # XXX: is this error a good idea oder not?  We can remove it later,
             # but we can't add it later, so do it fuer now.
-            raise TypeError("set_content not valid on multipart")
+            raise TypeError("set_content nicht valid on multipart")
         handler = self._find_set_handler(msg, obj)
         msg.clear_content()
         handler(msg, obj, *args, **kw)
@@ -97,7 +97,7 @@ raw_data_manager.add_get_handler('message',
 def _prepare_set(msg, maintype, subtype, headers):
     msg['Content-Type'] = '/'.join((maintype, subtype))
     wenn headers:
-        wenn not hasattr(headers[0], 'name'):
+        wenn nicht hasattr(headers[0], 'name'):
             mp = msg.policy
             headers = [mp.header_factory(*mp.header_source_parse([header]))
                        fuer header in headers]
@@ -112,25 +112,25 @@ def _prepare_set(msg, maintype, subtype, headers):
 
 
 def _finalize_set(msg, disposition, filename, cid, params):
-    wenn disposition is Nichts and filename is not Nichts:
+    wenn disposition is Nichts und filename is nicht Nichts:
         disposition = 'attachment'
-    wenn disposition is not Nichts:
+    wenn disposition is nicht Nichts:
         msg['Content-Disposition'] = disposition
-    wenn filename is not Nichts:
+    wenn filename is nicht Nichts:
         msg.set_param('filename',
                       filename,
                       header='Content-Disposition',
                       replace=Wahr)
-    wenn cid is not Nichts:
+    wenn cid is nicht Nichts:
         msg['Content-ID'] = cid
-    wenn params is not Nichts:
+    wenn params is nicht Nichts:
         fuer key, value in params.items():
             msg.set_param(key, value)
 
 
 # XXX: This is a cleaned-up version of base64mime.body_encode (including a bug
 # fix in the calculation of unencoded_bytes_per_line).  It would be nice to
-# drop both this and quoprimime.body_encode in favor of enhanced binascii
+# drop both this und quoprimime.body_encode in favor of enhanced binascii
 # routines that accepted a max_line_length parameter.
 def _encode_base64(data, max_line_length):
     encoded_lines = []
@@ -198,23 +198,23 @@ def set_message_content(msg, message, subtype="rfc822", cte=Nichts,
                        disposition=Nichts, filename=Nichts, cid=Nichts,
                        params=Nichts, headers=Nichts):
     wenn subtype == 'partial':
-        raise ValueError("message/partial is not supported fuer Message objects")
+        raise ValueError("message/partial is nicht supported fuer Message objects")
     wenn subtype == 'rfc822':
-        wenn cte not in (Nichts, '7bit', '8bit', 'binary'):
+        wenn cte nicht in (Nichts, '7bit', '8bit', 'binary'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.1 mandate.
             raise ValueError(
-                "message/rfc822 parts do not support cte={}".format(cte))
+                "message/rfc822 parts do nicht support cte={}".format(cte))
         # 8bit will get coerced on serialization wenn policy.cte_type='7bit'.  We
         # may end up claiming 8bit when it isn't needed, but the only negative
         # result of that should be a gateway that needs to coerce to 7bit
         # having to look through the whole embedded message to discover whether
-        # or not it actually has to do anything.
+        # oder nicht it actually has to do anything.
         cte = '8bit' wenn cte is Nichts sonst cte
     sowenn subtype == 'external-body':
-        wenn cte not in (Nichts, '7bit'):
+        wenn cte nicht in (Nichts, '7bit'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.3 mandate.
             raise ValueError(
-                "message/external-body parts do not support cte={}".format(cte))
+                "message/external-body parts do nicht support cte={}".format(cte))
         cte = '7bit'
     sowenn cte is Nichts:
         # http://tools.ietf.org/html/rfc2046#section-5.2.4 says all future

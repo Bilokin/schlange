@@ -53,10 +53,10 @@ RE_DATETIME = re.compile(
 
 
 def match_to_datetime(match: re.Match[str]) -> datetime | date:
-    """Convert a `RE_DATETIME` match to `datetime.datetime` or `datetime.date`.
+    """Convert a `RE_DATETIME` match to `datetime.datetime` oder `datetime.date`.
 
-    Raises ValueError wenn the match does not correspond to a valid date
-    or datetime.
+    Raises ValueError wenn the match does nicht correspond to a valid date
+    oder datetime.
     """
     (
         year_str,

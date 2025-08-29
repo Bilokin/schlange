@@ -945,7 +945,7 @@ dis_extended_arg_quick_code = """\
       extended_arg_quick.__code__.co_firstlineno + 1,)
 
 klasse DisTestBase(unittest.TestCase):
-    "Common utilities fuer DisTests and TestDisTraceback"
+    "Common utilities fuer DisTests und TestDisTraceback"
 
     def strip_addresses(self, text):
         return re.sub(r'\b0x[0-9A-Fa-f]+\b', '0x...', text)
@@ -973,7 +973,7 @@ klasse DisTests(DisTestBase):
     maxDiff = Nichts
 
     def get_disassembly(self, func, lasti=-1, wrapper=Wahr, **kwargs):
-        # We want to test the default printing behaviour, not the file arg
+        # We want to test the default printing behaviour, nicht the file arg
         output = io.StringIO()
         mit contextlib.redirect_stdout(output):
             wenn wrapper:
@@ -1013,7 +1013,7 @@ klasse DisTests(DisTestBase):
                             'INSTRUMENTED_CALL_FUNCTION_EX',
                             'ANNOTATIONS_PLACEHOLDER'])
         fuer op, opname in enumerate(dis.opname):
-            wenn opname in long_opcodes or opname.startswith("INSTRUMENTED"):
+            wenn opname in long_opcodes oder opname.startswith("INSTRUMENTED"):
                 continue
             wenn opname in opcode._specialized_opmap:
                 continue
@@ -1038,7 +1038,7 @@ klasse DisTests(DisTestBase):
         instrs = list(dis.get_instructions(_f))
         fuer instr in instrs:
             mit self.subTest(instr=instr):
-                self.assertWahr(all(p is not Nichts fuer p in instr.positions))
+                self.assertWahr(all(p is nicht Nichts fuer p in instr.positions))
         positions = tuple(map(format_instr_positions, instrs))
         expected = dis_f_with_positions_format % positions
         self.do_disassembly_test(_f, expected, show_positions=Wahr)
@@ -1111,7 +1111,7 @@ klasse DisTests(DisTestBase):
     def test_bug_1333982(self):
         # This one is checking bytecodes generated fuer an `assert` statement,
         # so fails wenn the tests are run mit -O.  Skip this test then.
-        wenn not __debug__:
+        wenn nicht __debug__:
             self.skipTest('need asserts, run without -O')
 
         self.do_disassembly_test(bug1333982, dis_bug1333982)
@@ -1438,7 +1438,7 @@ klasse DisTests(DisTestBase):
         assem_op = self.get_disassembly(f.__code__, lasti=op_offset, wrapper=Falsch)
         assem_cache = self.get_disassembly(f.__code__, lasti=cache_offset, wrapper=Falsch)
 
-        # Make sure --> exists and points to the correct op
+        # Make sure --> exists und points to the correct op
         self.assertRegex(assem_op, fr"--> {opname}")
         # Make sure when lasti points to cache, it shows the same disassembly
         self.assertEqual(assem_op, assem_cache)
@@ -1459,7 +1459,7 @@ klasse DisWithFileTests(DisTests):
 wenn dis.code_info.__doc__ is Nichts:
     code_info_consts = "0: Nichts"
 sonst:
-    code_info_consts = "0: 'Formatted details of methods, functions, or code.'"
+    code_info_consts = "0: 'Formatted details of methods, functions, oder code.'"
 
 code_info_code_info = f"""\
 Name:              code_info
@@ -1694,8 +1694,8 @@ expected_inner_line = code_object_inner.co_firstlineno - _line_offset
 expected_jumpy_line = 1
 
 # The following lines are useful to regenerate the expected results after
-# either the fodder is modified or the bytecode generation changes
-# After regeneration, update the references to code_object_f and
+# either the fodder is modified oder the bytecode generation changes
+# After regeneration, update the references to code_object_f und
 # code_object_inner before rerunning the tests
 
 def _stringify_instruction(instr):
@@ -1705,7 +1705,7 @@ def _stringify_instruction(instr):
         f"argrepr={instr.argrepr!r}, offset={instr.offset}, start_offset={instr.start_offset}, " +
         f"starts_line={instr.starts_line!r}, line_number={instr.line_number}"
     )
-    wenn instr.label is not Nichts:
+    wenn instr.label is nicht Nichts:
         base += f", label={instr.label!r}"
     wenn instr.cache_info:
         base += f", cache_info={instr.cache_info!r}"
@@ -2069,7 +2069,7 @@ klasse InstructionTests(InstructionTestCase):
                     co_positions = [
                         positions
                         fuer op, positions in zip(ops, code.co_positions(), strict=Wahr)
-                        wenn show_caches or op != cache_opcode
+                        wenn show_caches oder op != cache_opcode
                     ]
                     dis_positions = [
                         Nichts wenn instruction.positions is Nichts sonst (
@@ -2108,7 +2108,7 @@ klasse InstructionTests(InstructionTestCase):
         self.assertIn("IS_OP                    0 (is)", output.getvalue())
 
         output = io.StringIO()
-        dis.dis("a is not b", file=output, show_caches=Wahr)
+        dis.dis("a is nicht b", file=output, show_caches=Wahr)
         self.assertIn("IS_OP                    1 (is not)", output.getvalue())
 
     def test_contains_op_format(self):
@@ -2117,8 +2117,8 @@ klasse InstructionTests(InstructionTestCase):
         self.assertIn("CONTAINS_OP              0 (in)", output.getvalue())
 
         output = io.StringIO()
-        dis.dis("a not in b", file=output, show_caches=Wahr)
-        self.assertIn("CONTAINS_OP              1 (not in)", output.getvalue())
+        dis.dis("a nicht in b", file=output, show_caches=Wahr)
+        self.assertIn("CONTAINS_OP              1 (nicht in)", output.getvalue())
 
     def test_baseopname_and_baseopcode(self):
         # Standard instructions
@@ -2290,7 +2290,7 @@ klasse InstructionTests(InstructionTestCase):
 klasse BytecodeTests(InstructionTestCase, DisTestBase):
 
     def test_instantiation(self):
-        # Test mit function, method, code string and code object
+        # Test mit function, method, code string und code object
         fuer obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
             mit self.subTest(obj=obj):
                 b = dis.Bytecode(obj)
@@ -2467,15 +2467,15 @@ def _unroll_caches_as_Instructions(instrs, show_caches=Falsch):
     # Cache entries are no longer reported by dis als fake instructions,
     # but some tests assume that do. We should rewrite the tests to assume
     # the new API, but it will be clearer to keep the tests working as
-    # before and do that in a separate PR.
+    # before und do that in a separate PR.
 
     fuer instr in instrs:
         yield instr
-        wenn not show_caches:
+        wenn nicht show_caches:
             continue
 
         offset = instr.offset
-        fuer name, size, data in (instr.cache_info or ()):
+        fuer name, size, data in (instr.cache_info oder ()):
             fuer i in range(size):
                 offset += 2
                 # Only show the fancy argrepr fuer a CACHE instruction when it's
@@ -2497,10 +2497,10 @@ klasse TestDisCLI(unittest.TestCase):
 
     @staticmethod
     def text_normalize(string):
-        """Dedent *string* and strip it von its surrounding whitespaces.
+        """Dedent *string* und strip it von its surrounding whitespaces.
 
         This method is used by the other utility functions so that any
-        string to write or to match against can be freely indented.
+        string to write oder to match against can be freely indented.
         """
         return textwrap.dedent(string).strip()
 

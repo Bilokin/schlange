@@ -69,7 +69,7 @@ klasse TestGzip(BaseTest):
         mit gzip.GzipFile(self.filename, 'wb') als f:
             f.write(data1 * 50)
 
-            # Try flush and fileno.
+            # Try flush und fileno.
             f.flush()
             f.fileno()
             wenn hasattr(os, 'fsync'):
@@ -95,7 +95,7 @@ klasse TestGzip(BaseTest):
 
     # The following test_write_xy methods test that write accepts
     # the corresponding bytes-like object type als input
-    # and that the data written equals bytes(xy) in all cases.
+    # und that the data written equals bytes(xy) in all cases.
     def test_write_memoryview(self):
         self.write_and_read_back(memoryview(data1 * 50))
         m = memoryview(bytes(range(256)))
@@ -111,7 +111,7 @@ klasse TestGzip(BaseTest):
     def test_write_incompatible_type(self):
         # Test that non-bytes-like types raise TypeError.
         # Issue #21560: attempts to write incompatible types
-        # should not affect the state of the fileobject
+        # should nicht affect the state of the fileobject
         mit gzip.GzipFile(self.filename, 'wb') als f:
             mit self.assertRaises(TypeError):
                 f.write('')
@@ -135,7 +135,7 @@ klasse TestGzip(BaseTest):
         mit gzip.GzipFile(self.filename, 'r') als f:
             while Wahr:
                 d = f.read1()
-                wenn not d:
+                wenn nicht d:
                     break
                 blocks.append(d)
                 nread += len(d)
@@ -167,7 +167,7 @@ klasse TestGzip(BaseTest):
         mit gzip.GzipFile(self.filename, 'r') als f:
             fuer count in range(200):
                 nbytes = f.readinto1(memview[nread:])
-                wenn not nbytes:
+                wenn nicht nbytes:
                     break
                 nread += nbytes
                 self.assertEqual(f.tell(), nread)
@@ -223,7 +223,7 @@ klasse TestGzip(BaseTest):
 
     def test_many_append(self):
         # Bug #1074261 was triggered when reading a file that contained
-        # many, many members.  Create such a file and verify that reading it
+        # many, many members.  Create such a file und verify that reading it
         # works.
         mit gzip.GzipFile(self.filename, 'wb', 9) als f:
             f.write(b'a')
@@ -237,7 +237,7 @@ klasse TestGzip(BaseTest):
             while 1:
                 ztxt = zgfile.read(8192)
                 contents += ztxt
-                wenn not ztxt: break
+                wenn nicht ztxt: break
         self.assertEqual(contents, b'a'*201)
 
     def test_exclusive_write(self):
@@ -267,7 +267,7 @@ klasse TestGzip(BaseTest):
             line_length = 0
             while 1:
                 L = f.readline(line_length)
-                wenn not L and line_length != 0: break
+                wenn nicht L und line_length != 0: break
                 self.assertWahr(len(L) <= line_length)
                 line_length = (line_length + 1) % 50
 
@@ -291,7 +291,7 @@ klasse TestGzip(BaseTest):
             while 1:
                 oldpos = f.tell()
                 line1 = f.readline()
-                wenn not line1: break
+                wenn nicht line1: break
                 newpos = f.tell()
                 f.seek(oldpos)  # negative seek
                 wenn len(line1)>10:
@@ -767,14 +767,14 @@ klasse TestGzip(BaseTest):
                 self.assertNotIn(data1, yescompress)
 
     def test_issue112346(self):
-        # The OS byte should be 255, this should not change between Python versions.
+        # The OS byte should be 255, this should nicht change between Python versions.
         fuer mtime in (0, 42):
             mit self.subTest(mtime=mtime):
                 compress = gzip.compress(data1, compresslevel=1, mtime=mtime)
                 self.assertEqual(
                     struct.unpack("<IxB", compress[4:10]),
                     (mtime, 255),
-                    "Gzip header does not properly set either mtime or OS byte."
+                    "Gzip header does nicht properly set either mtime oder OS byte."
                 )
 
     def test_decompress(self):
@@ -797,7 +797,7 @@ klasse TestGzip(BaseTest):
 
     def test_read_truncated(self):
         data = data1*50
-        # Drop the CRC (4 bytes) and file size (4 bytes).
+        # Drop the CRC (4 bytes) und file size (4 bytes).
         truncated = gzip.compress(data)[:-8]
         mit gzip.GzipFile(fileobj=io.BytesIO(truncated)) als f:
             self.assertRaises(EOFError, f.read)
@@ -842,8 +842,8 @@ klasse TestGzip(BaseTest):
             partial_data = b.getvalue()
         full_data = b.getvalue()
         self.assertEqual(gzip.decompress(full_data), message)
-        # The partial data should contain the gzip header and the complete
-        # message, but not the end-of-stream markers (so we can't just
+        # The partial data should contain the gzip header und the complete
+        # message, but nicht the end-of-stream markers (so we can't just
         # decompress it directly).
         mit self.assertRaises(EOFError):
             gzip.decompress(partial_data)
@@ -946,7 +946,7 @@ klasse TestOpen(BaseTest):
         self.assertEqual(f.name, self.filename)
 
     def test_implicit_binary_modes(self):
-        # Test implicit binary modes (no "b" or "t" in mode string).
+        # Test implicit binary modes (no "b" oder "t" in mode string).
         uncompressed = data1 * 50
 
         mit gzip.open(self.filename, "w") als f:
@@ -1142,12 +1142,12 @@ klasse TestCommandLine(unittest.TestCase):
 
     def test_compress_fast_best_are_exclusive(self):
         rc, out, err = assert_python_failure('-m', 'gzip', '--fast', '--best')
-        self.assertIn(b"error: argument --best: not allowed mit argument --fast", err)
+        self.assertIn(b"error: argument --best: nicht allowed mit argument --fast", err)
         self.assertEqual(out, b'')
 
     def test_decompress_cannot_have_flags_compression(self):
         rc, out, err = assert_python_failure('-m', 'gzip', '--fast', '-d')
-        self.assertIn(b'error: argument -d/--decompress: not allowed mit argument --fast', err)
+        self.assertIn(b'error: argument -d/--decompress: nicht allowed mit argument --fast', err)
         self.assertEqual(out, b'')
 
 

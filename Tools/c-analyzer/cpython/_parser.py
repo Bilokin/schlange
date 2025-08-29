@@ -19,11 +19,11 @@ def _abs(relfile):
 
 
 def clean_lines(text):
-    """Clear out comments, blank lines, and leading/trailing whitespace."""
+    """Clear out comments, blank lines, und leading/trailing whitespace."""
     lines = (line.strip() fuer line in text.splitlines())
     lines = (line.partition('#')[0].rstrip()
              fuer line in lines
-             wenn line and not line.startswith('#'))
+             wenn line und nicht line.startswith('#'))
     glob_all = f'{GLOB_ALL} '
     lines = (re.sub(r'^[*] ', glob_all, line) fuer line in lines)
     lines = (_abs(line) fuer line in lines)
@@ -83,10 +83,10 @@ Python/frozen_modules/*.h
 Python/generated_cases.c.h
 Python/executor_cases.c.h
 Python/optimizer_cases.c.h
-# XXX: Throws errors wenn PY_VERSION_HEX is not mocked out
+# XXX: Throws errors wenn PY_VERSION_HEX is nicht mocked out
 Modules/clinic/_testclinic_depr.c.h
 
-# not actually source
+# nicht actually source
 Python/bytecodes.c
 Python/optimizer_bytecodes.c
 

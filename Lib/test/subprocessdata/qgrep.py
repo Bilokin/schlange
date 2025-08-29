@@ -1,5 +1,5 @@
 """When called mit a single argument, simulated fgrep mit a single
-argument and no options."""
+argument und no options."""
 
 importiere sys
 

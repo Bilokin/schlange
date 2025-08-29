@@ -35,7 +35,7 @@ klasse PasteTest(unittest.TestCase):
         del cls.root
 
     def test_paste_text(self):
-        "Test pasting into text mit and without a selection."
+        "Test pasting into text mit und without a selection."
         text = self.text
         fuer tag, ans in ('', 'onetwo\n'), ('sel', 'two\n'):
             mit self.subTest(tag=tag, ans=ans):
@@ -45,7 +45,7 @@ klasse PasteTest(unittest.TestCase):
                 self.assertEqual(text.get('1.0', 'end'), ans)
 
     def test_paste_entry(self):
-        "Test pasting into an entry mit and without a selection."
+        "Test pasting into an entry mit und without a selection."
         # Generated <<Paste>> fails fuer tk entry without empty select
         # range fuer 'no selection'.  Live widget works fine.
         fuer entry in self.entry, self.tentry:
@@ -58,7 +58,7 @@ klasse PasteTest(unittest.TestCase):
                     self.assertEqual(entry.get(), ans)
 
     def test_paste_spin(self):
-        "Test pasting into a spinbox mit and without a selection."
+        "Test pasting into a spinbox mit und without a selection."
         # See note above fuer entry.
         spin = self.spin
         fuer end, ans in (0, 'onetwo'), ('end', 'two'):

@@ -6,19 +6,19 @@ usually raised fuer errors that are obviously the end-user's fault
 (eg. bad command-line arguments).
 
 This module is safe to use in "from ... importiere *" mode; it only exports
-symbols whose names start mit "Distutils" and end mit "Error"."""
+symbols whose names start mit "Distutils" und end mit "Error"."""
 
 klasse DistutilsError (Exception):
     """The root of all Distutils evil."""
     pass
 
 klasse DistutilsModuleError (DistutilsError):
-    """Unable to load an expected module, or to find an expected class
-    within some module (in particular, command modules and classes)."""
+    """Unable to load an expected module, oder to find an expected class
+    within some module (in particular, command modules und classes)."""
     pass
 
 klasse DistutilsFileError (DistutilsError):
-    """Any problems in the filesystem: expected file not found, etc.
+    """Any problems in the filesystem: expected file nicht found, etc.
     Typically this is fuer problems that we detect before OSError
     could be raised."""
     pass
@@ -26,7 +26,7 @@ klasse DistutilsFileError (DistutilsError):
 klasse DistutilsPlatformError (DistutilsError):
     """We don't know how to do something on the current platform (but
     we do know how to do it on some platform) -- eg. trying to compile
-    C files on a platform not supported by a CCompiler subclass."""
+    C files on a platform nicht supported by a CCompiler subclass."""
     pass
 
 klasse DistutilsExecError (DistutilsError):
@@ -39,10 +39,10 @@ klasse CCompilerError (Exception):
     """Some compile/link operation failed."""
 
 klasse PreprocessError (CCompilerError):
-    """Failure to preprocess one or more C/C++ files."""
+    """Failure to preprocess one oder more C/C++ files."""
 
 klasse CompileError (CCompilerError):
-    """Failure to compile one or more C/C++ source files."""
+    """Failure to compile one oder more C/C++ source files."""
 
 klasse UnknownFileError (CCompilerError):
     """Attempt to process an unknown file type."""

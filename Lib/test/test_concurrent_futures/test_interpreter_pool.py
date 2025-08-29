@@ -52,11 +52,11 @@ def read_file_with_timeout(fd, nbytes, timeout):
             raise TimeoutError('nothing to read')
 
 
-wenn not WINDOWS:
+wenn nicht WINDOWS:
     importiere select
     def read_file_with_timeout(fd, nbytes, timeout):
         r, _, _ = select.select([fd], [], [], timeout)
-        wenn fd not in r:
+        wenn fd nicht in r:
             raise TimeoutError('nothing to read')
         return os.read(fd, nbytes)
 
@@ -319,7 +319,7 @@ klasse InterpreterPoolExecutorTest(
 
     @unittest.expectedFailure
     def test_submit_exception_in_script(self):
-        # Scripts are not supported currently.
+        # Scripts are nicht supported currently.
         fut = self.executor.submit('raise Exception("spam")')
         mit self.assertRaises(Exception) als captured:
             fut.result()
@@ -366,7 +366,7 @@ klasse InterpreterPoolExecutorTest(
         #   is started only wenn there are no idle workers
         #   (the check in ThreadPoolExecutor._adjust_thread_count())
         #
-        # That means we must not block waiting fuer *all* tasks to report
+        # That means we must nicht block waiting fuer *all* tasks to report
         # "ready" before we unblock the known-ready workers.
         ready = queues.create()
         blocker = queues.create()
@@ -448,7 +448,7 @@ klasse InterpreterPoolExecutorTest(
         # so the queue used to wait infinitely.
         fut = self.executor.submit(PickleShenanigans(0))
         expected = interpreters.NotShareableError
-        mit self.assertRaisesRegex(expected, 'args not shareable') als cm:
+        mit self.assertRaisesRegex(expected, 'args nicht shareable') als cm:
             fut.result()
         self.assertRegex(str(cm.exception.__cause__), 'unpickled')
 
@@ -474,7 +474,7 @@ klasse InterpreterPoolExecutorTest(
         except AttributeError:
             pass
         sonst:
-            drucke('AttributeError not raised!', file=sys.stderr)
+            drucke('AttributeError nicht raised!', file=sys.stderr)
             sys.exit(1)
 
         try:
@@ -482,13 +482,13 @@ klasse InterpreterPoolExecutorTest(
         except ImportError:
             pass
         sonst:
-            drucke('ImportError not raised!', file=sys.stderr)
+            drucke('ImportError nicht raised!', file=sys.stderr)
             sys.exit(1)
 
         von concurrent.futures importiere *
 
         wenn 'InterpreterPoolExecutor' in globals():
-            drucke('InterpreterPoolExecutor should not be imported!',
+            drucke('InterpreterPoolExecutor should nicht be imported!',
                   file=sys.stderr)
             sys.exit(1)
         """)
@@ -522,7 +522,7 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
         # mit the default policy wenn a policy hasn't been set already.
         # If that happens in a test, like here, we'll end up mit a failure
         # when --fail-env-changed is used.  That's why the other tests that
-        # use asyncio are careful to set the policy back to Nichts and why
+        # use asyncio are careful to set the policy back to Nichts und why
         # we're careful to do so here.  We also validate that no other
         # tests left a policy in place, just in case.
         policy = support.maybe_get_event_loop_policy()
@@ -538,7 +538,7 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
         self.addCleanup(lambda: self.executor.shutdown())
 
     def tearDown(self):
-        wenn not self.loop.is_closed():
+        wenn nicht self.loop.is_closed():
             testasyncio_utils.run_briefly(self.loop)
 
         self.doCleanups()

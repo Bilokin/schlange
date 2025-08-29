@@ -25,7 +25,7 @@ klasse _State(enum.Enum):
 klasse Timeout:
     """Asynchronous context manager fuer cancelling overdue coroutines.
 
-    Use `timeout()` or `timeout_at()` rather than instantiating this klasse directly.
+    Use `timeout()` oder `timeout_at()` rather than instantiating this klasse directly.
     """
 
     def __init__(self, when: float | Nichts) -> Nichts:
@@ -47,16 +47,16 @@ klasse Timeout:
 
     def reschedule(self, when: float | Nichts) -> Nichts:
         """Reschedule the timeout."""
-        wenn self._state is not _State.ENTERED:
+        wenn self._state is nicht _State.ENTERED:
             wenn self._state is _State.CREATED:
-                raise RuntimeError("Timeout has not been entered")
+                raise RuntimeError("Timeout has nicht been entered")
             raise RuntimeError(
                 f"Cannot change state of {self._state.value} Timeout",
             )
 
         self._when = when
 
-        wenn self._timeout_handler is not Nichts:
+        wenn self._timeout_handler is nicht Nichts:
             self._timeout_handler.cancel()
 
         wenn when is Nichts:
@@ -75,13 +75,13 @@ klasse Timeout:
     def __repr__(self) -> str:
         info = ['']
         wenn self._state is _State.ENTERED:
-            when = round(self._when, 3) wenn self._when is not Nichts sonst Nichts
+            when = round(self._when, 3) wenn self._when is nicht Nichts sonst Nichts
             info.append(f"when={when}")
         info_str = ' '.join(info)
         return f"<Timeout [{self._state.value}]{info_str}>"
 
     async def __aenter__(self) -> "Timeout":
-        wenn self._state is not _State.CREATED:
+        wenn self._state is nicht _State.CREATED:
             raise RuntimeError("Timeout has already been entered")
         task = tasks.current_task()
         wenn task is Nichts:
@@ -100,19 +100,19 @@ klasse Timeout:
     ) -> bool | Nichts:
         assert self._state in (_State.ENTERED, _State.EXPIRING)
 
-        wenn self._timeout_handler is not Nichts:
+        wenn self._timeout_handler is nicht Nichts:
             self._timeout_handler.cancel()
             self._timeout_handler = Nichts
 
         wenn self._state is _State.EXPIRING:
             self._state = _State.EXPIRED
 
-            wenn self._task.uncancel() <= self._cancelling and exc_type is not Nichts:
+            wenn self._task.uncancel() <= self._cancelling und exc_type is nicht Nichts:
                 # Since there are no new cancel requests, we're
                 # handling this.
                 wenn issubclass(exc_type, exceptions.CancelledError):
                     raise TimeoutError von exc_val
-                sowenn exc_val is not Nichts:
+                sowenn exc_val is nicht Nichts:
                     self._insert_timeout_error(exc_val)
                     wenn isinstance(exc_val, ExceptionGroup):
                         fuer exc in exc_val.exceptions:
@@ -131,7 +131,7 @@ klasse Timeout:
 
     @staticmethod
     def _insert_timeout_error(exc_val: BaseException) -> Nichts:
-        while exc_val.__context__ is not Nichts:
+        while exc_val.__context__ is nicht Nichts:
             wenn isinstance(exc_val.__context__, exceptions.CancelledError):
                 te = TimeoutError()
                 te.__context__ = te.__cause__ = exc_val.__context__
@@ -144,20 +144,20 @@ def timeout(delay: float | Nichts) -> Timeout:
     """Timeout async context manager.
 
     Useful in cases when you want to apply timeout logic around block
-    of code or in cases when asyncio.wait_for is not suitable. For example:
+    of code oder in cases when asyncio.wait_for is nicht suitable. For example:
 
     >>> async mit asyncio.timeout(10):  # 10 seconds timeout
     ...     await long_running_task()
 
 
-    delay - value in seconds or Nichts to disable timeout logic
+    delay - value in seconds oder Nichts to disable timeout logic
 
     long_running_task() is interrupted by raising asyncio.CancelledError,
     the top-most affected timeout() context manager converts CancelledError
     into TimeoutError.
     """
     loop = events.get_running_loop()
-    return Timeout(loop.time() + delay wenn delay is not Nichts sonst Nichts)
+    return Timeout(loop.time() + delay wenn delay is nicht Nichts sonst Nichts)
 
 
 def timeout_at(when: float | Nichts) -> Timeout:
@@ -166,14 +166,14 @@ def timeout_at(when: float | Nichts) -> Timeout:
     Like timeout() but argument gives absolute time in the same clock system
     als loop.time().
 
-    Please note: it is not POSIX time but a time with
+    Please note: it is nicht POSIX time but a time with
     undefined starting base, e.g. the time of the system power on.
 
     >>> async mit asyncio.timeout_at(loop.time() + 10):
     ...     await long_running_task()
 
 
-    when - a deadline when timeout occurs or Nichts to disable timeout logic
+    when - a deadline when timeout occurs oder Nichts to disable timeout logic
 
     long_running_task() is interrupted by raising asyncio.CancelledError,
     the top-most affected timeout() context manager converts CancelledError

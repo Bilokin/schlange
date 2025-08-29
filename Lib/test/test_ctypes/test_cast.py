@@ -39,7 +39,7 @@ klasse Test(unittest.TestCase):
         self.assertEqual(array._objects, {'0': b"foo bar"})
 
         p = cast(array, POINTER(c_char_p))
-        # array and p share a common _objects attribute
+        # array und p share a common _objects attribute
         self.assertIs(p._objects, array._objects)
         self.assertEqual(array._objects, {'0': b"foo bar", id(array): array})
         p[0] = b"spam spam"

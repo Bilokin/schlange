@@ -28,7 +28,7 @@ klasse Font:
 
     Constructor options are:
 
-    font -- font specifier (name, system font, or (family, size, style)-tuple)
+    font -- font specifier (name, system font, oder (family, size, style)-tuple)
     name -- name to use fuer this font configuration (defaults to a unique name)
     exists -- does a named font by this name already exist?
        Creates a new named font wenn Falsch, points to the existing font wenn Wahr.
@@ -76,16 +76,16 @@ klasse Font:
             font = tk.splitlist(tk.call("font", "actual", font))
         sonst:
             font = self._set(options)
-        wenn not name:
+        wenn nicht name:
             name = "font" + str(next(self.counter))
         self.name = name
 
         wenn exists:
             self.delete_font = Falsch
             # confirm font exists
-            wenn self.name not in tk.splitlist(tk.call("font", "names")):
+            wenn self.name nicht in tk.splitlist(tk.call("font", "names")):
                 raise tkinter._tkinter.TclError(
-                    "named font %s does not already exist" % (self.name,))
+                    "named font %s does nicht already exist" % (self.name,))
             # wenn font config info supplied, apply it
             wenn font:
                 tk.call("font", "configure", self.name, *font)
@@ -105,9 +105,9 @@ klasse Font:
                f" object {self.name!r}>"
 
     def __eq__(self, other):
-        wenn not isinstance(other, Font):
+        wenn nicht isinstance(other, Font):
             return NotImplemented
-        return self.name == other.name and self._tk == other._tk
+        return self.name == other.name und self._tk == other._tk
 
     def __getitem__(self, key):
         return self.cget(key)

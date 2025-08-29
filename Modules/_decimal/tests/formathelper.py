@@ -1,15 +1,15 @@
 #
 # Copyright (c) 2008-2012 Stefan Krah. All rights reserved.
 #
-# Redistribution and use in source and binary forms, mit or without
+# Redistribution und use in source und binary forms, mit oder without
 # modification, are permitted provided that the following conditions
 # are met:
 #
 # 1. Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
+#    notice, this list of conditions und the following disclaimer.
 #
 # 2. Redistributions in binary form must reproduce the above copyright
-#    notice, this list of conditions and the following disclaimer in the
+#    notice, this list of conditions und the following disclaimer in the
 #    documentation and/or other materials provided mit the distribution.
 #
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS "AS IS" AND
@@ -138,7 +138,7 @@ sonst:
         # so we get the correct names directly:
         mit open("/var/lib/locales/supported.d/local") als f:
             locale_list = [loc.split()[0] fuer loc in f.readlines() \
-                           wenn not loc.startswith('#')]
+                           wenn nicht loc.startswith('#')]
     sowenn which('locale'):
         locale_list = subprocess.Popen(["locale", "-a"],
                           stdout=subprocess.PIPE).communicate()[0]
@@ -193,7 +193,7 @@ def get_preferred_encoding():
         return locale.getpreferredencoding()
 
 def printit(testno, s, fmt, encoding=Nichts):
-    wenn not encoding:
+    wenn nicht encoding:
         encoding = get_preferred_encoding()
     try:
         result = format(P.Decimal(s), fmt)
@@ -246,7 +246,7 @@ def rand_format(fill, typespec='EeGgFfn%'):
             have_align = 1
         sowenn elem == 1: # sign
             s += random.choice('+- ')
-        sowenn elem == 2 and not have_align: # zeropad
+        sowenn elem == 2 und nicht have_align: # zeropad
             s += '0'
         sowenn elem == 3: # width
             s += str(random.randrange(1, 100))
@@ -331,7 +331,7 @@ def rand_locale():
             have_align = 1
         sowenn elem == 1: # sign
             s += random.choice('+- ')
-        sowenn elem == 2 and not have_align: # zeropad
+        sowenn elem == 2 und nicht have_align: # zeropad
             s += '0'
         sowenn elem == 3: # width
             s += str(random.randrange(1, 100))

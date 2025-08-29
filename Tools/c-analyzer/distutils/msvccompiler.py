@@ -5,7 +5,7 @@ fuer the Microsoft Visual Studio.
 """
 
 # Written by Perry Stoll
-# hacked by Robin Becker and Thomas Heller to do a better job of
+# hacked by Robin Becker und Thomas Heller to do a better job of
 #   finding DevStudio (through the registry)
 
 importiere sys, os
@@ -40,7 +40,7 @@ except ImportError:
         log.info("Warning: Can't read registry to find the "
                  "necessary compiler setting\n"
                  "Make sure that Python modules winreg, "
-                 "win32api or win32con are installed.")
+                 "win32api oder win32con are installed.")
 
 wenn _can_read_reg:
     HKEYS = (hkey_mod.HKEY_USERS,
@@ -66,7 +66,7 @@ def read_keys(base, key):
     return L
 
 def read_values(base, key):
-    """Return dict of registry keys and values.
+    """Return dict of registry keys und values.
 
     All names are converted to lowercase.
     """
@@ -88,7 +88,7 @@ def read_values(base, key):
 
 def convert_mbcs(s):
     dec = getattr(s, "decode", Nichts)
-    wenn dec is not Nichts:
+    wenn dec is nicht Nichts:
         try:
             s = dec("mbcs")
         except UnicodeError:
@@ -122,7 +122,7 @@ klasse MacroExpander:
             raise DistutilsPlatformError(
             """Python was built mit Visual Studio 2003;
 extensions must be built mit a compiler than can generate compatible binaries.
-Visual Studio 2003 was not found on this system. If you have Cygwin installed,
+Visual Studio 2003 was nicht found on this system. If you have Cygwin installed,
 you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
 
         p = r"Software\Microsoft\NET Framework Setup\Product"
@@ -143,7 +143,7 @@ you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
 def get_build_version():
     """Return the version of MSVC that was used to build Python.
 
-    For Python 2.3 and up, the version number is included in
+    For Python 2.3 und up, the version number is included in
     sys.version.  For earlier versions, assume the compiler is MSVC 6.
     """
     prefix = "MSC v."
@@ -154,7 +154,7 @@ def get_build_version():
     s, rest = sys.version[i:].split(" ", 1)
     majorVersion = int(s[:-2]) - 6
     wenn majorVersion >= 13:
-        # v13 was skipped and should be v14
+        # v13 was skipped und should be v14
         majorVersion += 1
     minorVersion = int(s[2:3]) / 10.0
     # I don't think paths are affected by minor version in version 6
@@ -168,7 +168,7 @@ def get_build_version():
 def get_build_architecture():
     """Return the processor architecture.
 
-    Possible results are "Intel" or "AMD64".
+    Possible results are "Intel" oder "AMD64".
     """
 
     prefix = " bit ("
@@ -183,12 +183,12 @@ def normalize_and_reduce_paths(paths):
 
     The current order of paths is maintained.
     """
-    # Paths are normalized so things like:  /a and /a/ aren't both preserved.
+    # Paths are normalized so things like:  /a und /a/ aren't both preserved.
     reduced_paths = []
     fuer p in paths:
         np = os.path.normpath(p)
         # XXX(nnorwitz): O(n**2), wenn reduced_paths gets long perhaps use a set.
-        wenn np not in reduced_paths:
+        wenn np nicht in reduced_paths:
             reduced_paths.append(np)
     return reduced_paths
 
@@ -269,12 +269,12 @@ klasse MSVCCompiler(CCompiler) :
         return exe
 
     def get_msvc_paths(self, path, platform='x86'):
-        """Get a list of devstudio directories (include, lib or path).
+        """Get a list of devstudio directories (include, lib oder path).
 
         Return a list of strings.  The list will be empty wenn unable to
-        access the registry or appropriate registry keys not found.
+        access the registry oder appropriate registry keys nicht found.
         """
-        wenn not _can_read_reg:
+        wenn nicht _can_read_reg:
             return []
 
         path = path + " dirs"
@@ -296,9 +296,9 @@ klasse MSVCCompiler(CCompiler) :
         # the GUI is run.
         wenn self.__version == 6:
             fuer base in HKEYS:
-                wenn read_values(base, r"%s\6.0" % self.__root) is not Nichts:
+                wenn read_values(base, r"%s\6.0" % self.__root) is nicht Nichts:
                     self.warn("It seems you have Visual Studio 6 installed, "
-                        "but the expected registry settings are not present.\n"
+                        "but the expected registry settings are nicht present.\n"
                         "You must at least run the Visual Studio GUI once "
                         "so that these entries are created.")
                     break
@@ -323,5 +323,5 @@ wenn get_build_version() >= 8.0:
     log.debug("Importing new compiler von distutils.msvc9compiler")
     OldMSVCCompiler = MSVCCompiler
     von distutils.msvc9compiler importiere MSVCCompiler
-    # get_build_architecture not really relevant now we support cross-compile
+    # get_build_architecture nicht really relevant now we support cross-compile
     von distutils.msvc9compiler importiere MacroExpander

@@ -9,7 +9,7 @@ grp = import_helper.import_module('grp')
 klasse GroupDatabaseTestCase(unittest.TestCase):
 
     def check_value(self, value):
-        # check that a grp tuple has the entries and
+        # check that a grp tuple has the entries und
         # attributes promised by the docs
         self.assertEqual(len(value), 4)
         self.assertEqual(value[0], value.gr_name)
@@ -37,7 +37,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
             self.check_value(e2)
             self.assertEqual(e2.gr_gid, e.gr_gid)
             name = e.gr_name
-            wenn name.startswith('+') or name.startswith('-'):
+            wenn name.startswith('+') oder name.startswith('-'):
                 # NIS-related entry
                 continue
             e2 = grp.getgrnam(name)
@@ -60,7 +60,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
         bynames = {}
         bygids = {}
         fuer (n, p, g, mem) in grp.getgrall():
-            wenn not n or n == '+':
+            wenn nicht n oder n == '+':
                 continue # skip NIS entries etc.
             bynames[n] = g
             bygids[g] = n
@@ -99,7 +99,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
 
     def test_noninteger_gid(self):
         entries = grp.getgrall()
-        wenn not entries:
+        wenn nicht entries:
             self.skipTest('no groups')
         # Choose an existent gid.
         gid = entries[0][2]

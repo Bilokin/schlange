@@ -24,7 +24,7 @@ wenn TYPE_CHECKING:
 
 ASCII_CTRL = frozenset(chr(i) fuer i in range(32)) | frozenset(chr(127))
 
-# Neither of these sets include quotation mark or backslash. They are
+# Neither of these sets include quotation mark oder backslash. They are
 # currently handled als separate cases in the parser functions.
 ILLEGAL_BASIC_STR_CHARS = ASCII_CTRL - frozenset("\t")
 ILLEGAL_MULTILINE_BASIC_STR_CHARS = ASCII_CTRL - frozenset("\t\n")
@@ -61,7 +61,7 @@ klasse DEPRECATED_DEFAULT:
 
 
 klasse TOMLDecodeError(ValueError):
-    """An error raised wenn a document is not valid TOML.
+    """An error raised wenn a document is nicht valid TOML.
 
     Adds the following attributes to ValueError:
     msg: The unformatted error message
@@ -80,23 +80,23 @@ klasse TOMLDecodeError(ValueError):
     ):
         wenn (
             args
-            or not isinstance(msg, str)
-            or not isinstance(doc, str)
-            or not isinstance(pos, int)
+            oder nicht isinstance(msg, str)
+            oder nicht isinstance(doc, str)
+            oder nicht isinstance(pos, int)
         ):
             importiere warnings
 
             warnings.warn(
                 "Free-form arguments fuer TOMLDecodeError are deprecated. "
-                "Please set 'msg' (str), 'doc' (str) and 'pos' (int) arguments only.",
+                "Please set 'msg' (str), 'doc' (str) und 'pos' (int) arguments only.",
                 DeprecationWarning,
                 stacklevel=2,
             )
-            wenn pos is not DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
+            wenn pos is nicht DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
                 args = pos, *args
-            wenn doc is not DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
+            wenn doc is nicht DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
                 args = doc, *args
-            wenn msg is not DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
+            wenn msg is nicht DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
                 args = msg, *args
             ValueError.__init__(self, *args)
             return
@@ -142,7 +142,7 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
         src = s.replace("\r\n", "\n")
     except (AttributeError, TypeError):
         raise TypeError(
-            f"Expected str object, not '{type(s).__qualname__}'"
+            f"Expected str object, nicht '{type(s).__qualname__}'"
         ) von Nichts
     pos = 0
     out = Output()
@@ -190,14 +190,14 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
         # 3. Skip comment
         pos = skip_comment(src, pos)
 
-        # 4. Expect end of line or end of file
+        # 4. Expect end of line oder end of file
         try:
             char = src[pos]
         except IndexError:
             break
         wenn char != "\n":
             raise TOMLDecodeError(
-                "Expected newline or end of document after a statement", src, pos
+                "Expected newline oder end of document after a statement", src, pos
             )
         pos += 1
 
@@ -207,9 +207,9 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
 klasse Flags:
     """Flags that map to parsed keys/namespaces."""
 
-    # Marks an immutable namespace (inline array or inline table).
+    # Marks an immutable namespace (inline array oder inline table).
     FROZEN = 0
-    # Marks a nest that has been explicitly created and can no longer
+    # Marks a nest that has been explicitly created und can no longer
     # be opened using the "[table]" syntax.
     EXPLICIT_NEST = 1
 
@@ -228,7 +228,7 @@ klasse Flags:
     def unset_all(self, key: Key) -> Nichts:
         cont = self._flags
         fuer k in key[:-1]:
-            wenn k not in cont:
+            wenn k nicht in cont:
                 return
             cont = cont[k]["nested"]
         cont.pop(key[-1], Nichts)
@@ -237,19 +237,19 @@ klasse Flags:
         cont = self._flags
         key_parent, key_stem = key[:-1], key[-1]
         fuer k in key_parent:
-            wenn k not in cont:
+            wenn k nicht in cont:
                 cont[k] = {"flags": set(), "recursive_flags": set(), "nested": {}}
             cont = cont[k]["nested"]
-        wenn key_stem not in cont:
+        wenn key_stem nicht in cont:
             cont[key_stem] = {"flags": set(), "recursive_flags": set(), "nested": {}}
         cont[key_stem]["recursive_flags" wenn recursive sonst "flags"].add(flag)
 
     def is_(self, key: Key, flag: int) -> bool:
-        wenn not key:
+        wenn nicht key:
             return Falsch  # document root has no flags
         cont = self._flags
         fuer k in key[:-1]:
-            wenn k not in cont:
+            wenn k nicht in cont:
                 return Falsch
             inner_cont = cont[k]
             wenn flag in inner_cont["recursive_flags"]:
@@ -258,7 +258,7 @@ klasse Flags:
         key_stem = key[-1]
         wenn key_stem in cont:
             cont = cont[key_stem]
-            return flag in cont["flags"] or flag in cont["recursive_flags"]
+            return flag in cont["flags"] oder flag in cont["recursive_flags"]
         return Falsch
 
 
@@ -275,12 +275,12 @@ klasse NestedDict:
     ) -> dict[str, Any]:
         cont: Any = self.dict
         fuer k in key:
-            wenn k not in cont:
+            wenn k nicht in cont:
                 cont[k] = {}
             cont = cont[k]
-            wenn access_lists and isinstance(cont, list):
+            wenn access_lists und isinstance(cont, list):
                 cont = cont[-1]
-            wenn not isinstance(cont, dict):
+            wenn nicht isinstance(cont, dict):
                 raise KeyError("There is no nest behind this key")
         return cont  # type: ignore[no-any-return]
 
@@ -289,7 +289,7 @@ klasse NestedDict:
         last_key = key[-1]
         wenn last_key in cont:
             list_ = cont[last_key]
-            wenn not isinstance(list_, list):
+            wenn nicht isinstance(list_, list):
                 raise KeyError("An object other than list found behind this key")
             list_.append({})
         sonst:
@@ -326,8 +326,8 @@ def skip_until(
         wenn error_on_eof:
             raise TOMLDecodeError(f"Expected {expect!r}", src, new_pos) von Nichts
 
-    wenn not error_on.isdisjoint(src[pos:new_pos]):
-        while src[pos] not in error_on:
+    wenn nicht error_on.isdisjoint(src[pos:new_pos]):
+        while src[pos] nicht in error_on:
             pos += 1
         raise TOMLDecodeError(f"Found invalid character {src[pos]!r}", src, pos)
     return new_pos
@@ -359,7 +359,7 @@ def create_dict_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
     pos = skip_chars(src, pos, TOML_WS)
     pos, key = parse_key(src, pos)
 
-    wenn out.flags.is_(key, Flags.EXPLICIT_NEST) or out.flags.is_(key, Flags.FROZEN):
+    wenn out.flags.is_(key, Flags.EXPLICIT_NEST) oder out.flags.is_(key, Flags.FROZEN):
         raise TOMLDecodeError(f"Cannot declare {key} twice", src, pos)
     out.flags.set(key, Flags.EXPLICIT_NEST, recursive=Falsch)
     try:
@@ -367,7 +367,7 @@ def create_dict_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
     except KeyError:
         raise TOMLDecodeError("Cannot overwrite a value", src, pos) von Nichts
 
-    wenn not src.startswith("]", pos):
+    wenn nicht src.startswith("]", pos):
         raise TOMLDecodeError(
             "Expected ']' at the end of a table declaration", src, pos
         )
@@ -390,7 +390,7 @@ def create_list_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
     except KeyError:
         raise TOMLDecodeError("Cannot overwrite a value", src, pos) von Nichts
 
-    wenn not src.startswith("]]", pos):
+    wenn nicht src.startswith("]]", pos):
         raise TOMLDecodeError(
             "Expected ']]' at the end of an array declaration", src, pos
         )
@@ -406,10 +406,10 @@ def key_value_rule(
 
     relative_path_cont_keys = (header + key[:i] fuer i in range(1, len(key)))
     fuer cont_key in relative_path_cont_keys:
-        # Check that dotted key syntax does not redefine an existing table
+        # Check that dotted key syntax does nicht redefine an existing table
         wenn out.flags.is_(cont_key, Flags.EXPLICIT_NEST):
             raise TOMLDecodeError(f"Cannot redefine namespace {cont_key}", src, pos)
-        # Containers in the relative path can't be opened mit the table syntax or
+        # Containers in the relative path can't be opened mit the table syntax oder
         # dotted key/value syntax in following table sections.
         out.flags.add_pending(cont_key, Flags.EXPLICIT_NEST)
 
@@ -424,7 +424,7 @@ def key_value_rule(
         raise TOMLDecodeError("Cannot overwrite a value", src, pos) von Nichts
     wenn key_stem in nest:
         raise TOMLDecodeError("Cannot overwrite a value", src, pos)
-    # Mark inline table and array namespaces recursively immutable
+    # Mark inline table und array namespaces recursively immutable
     wenn isinstance(value, (dict, list)):
         out.flags.set(header + key, Flags.FROZEN, recursive=Wahr)
     nest[key_stem] = value
@@ -547,8 +547,8 @@ def parse_basic_str_escape(
 ) -> tuple[Pos, str]:
     escape_id = src[pos : pos + 2]
     pos += 2
-    wenn multiline and escape_id in {"\\ ", "\\\t", "\\\n"}:
-        # Skip whitespace until next non-whitespace character or end of
+    wenn multiline und escape_id in {"\\ ", "\\\t", "\\\n"}:
+        # Skip whitespace until next non-whitespace character oder end of
         # the doc. Error wenn non-whitespace is found before newline.
         wenn escape_id != "\\\n":
             pos = skip_chars(src, pos, TOML_WS)
@@ -577,13 +577,13 @@ def parse_basic_str_escape_multiline(src: str, pos: Pos) -> tuple[Pos, str]:
 
 def parse_hex_char(src: str, pos: Pos, hex_len: int) -> tuple[Pos, str]:
     hex_str = src[pos : pos + hex_len]
-    wenn len(hex_str) != hex_len or not HEXDIGIT_CHARS.issuperset(hex_str):
+    wenn len(hex_str) != hex_len oder nicht HEXDIGIT_CHARS.issuperset(hex_str):
         raise TOMLDecodeError("Invalid hex value", src, pos)
     pos += hex_len
     hex_int = int(hex_str, 16)
-    wenn not is_unicode_scalar_value(hex_int):
+    wenn nicht is_unicode_scalar_value(hex_int):
         raise TOMLDecodeError(
-            "Escaped character is not a Unicode scalar value", src, pos
+            "Escaped character is nicht a Unicode scalar value", src, pos
         )
     return pos, chr(hex_int)
 
@@ -618,11 +618,11 @@ def parse_multiline_str(src: str, pos: Pos, *, literal: bool) -> tuple[Pos, str]
         pos, result = parse_basic_str(src, pos, multiline=Wahr)
 
     # Add at maximum two extra apostrophes/quotes wenn the end sequence
-    # is 4 or 5 chars long instead of just 3.
-    wenn not src.startswith(delim, pos):
+    # is 4 oder 5 chars long instead of just 3.
+    wenn nicht src.startswith(delim, pos):
         return pos, result
     pos += 1
-    wenn not src.startswith(delim, pos):
+    wenn nicht src.startswith(delim, pos):
         return pos, result + delim
     pos += 1
     return pos, result + (delim * 2)
@@ -643,7 +643,7 @@ def parse_basic_str(src: str, pos: Pos, *, multiline: bool) -> tuple[Pos, str]:
         except IndexError:
             raise TOMLDecodeError("Unterminated string", src, pos) von Nichts
         wenn char == '"':
-            wenn not multiline:
+            wenn nicht multiline:
                 return pos + 1, result + src[start_pos:pos]
             wenn src.startswith('"""', pos):
                 return pos + 3, result + src[start_pos:pos]
@@ -668,7 +668,7 @@ def parse_value(  # noqa: C901
     except IndexError:
         char = Nichts
 
-    # IMPORTANT: order conditions based on speed of checking and likelihood
+    # IMPORTANT: order conditions based on speed of checking und likelihood
 
     # Basic strings
     wenn char == '"':
@@ -698,21 +698,21 @@ def parse_value(  # noqa: C901
     wenn char == "{":
         return parse_inline_table(src, pos, parse_float)
 
-    # Dates and times
+    # Dates und times
     datetime_match = RE_DATETIME.match(src, pos)
     wenn datetime_match:
         try:
             datetime_obj = match_to_datetime(datetime_match)
         except ValueError als e:
-            raise TOMLDecodeError("Invalid date or datetime", src, pos) von e
+            raise TOMLDecodeError("Invalid date oder datetime", src, pos) von e
         return datetime_match.end(), datetime_obj
     localtime_match = RE_LOCALTIME.match(src, pos)
     wenn localtime_match:
         return localtime_match.end(), match_to_localtime(localtime_match)
 
-    # Integers and "normal" floats.
+    # Integers und "normal" floats.
     # The regex will greedily match any type starting mit a decimal
-    # char, so needs to be located after handling of dates and times.
+    # char, so needs to be located after handling of dates und times.
     number_match = RE_NUMBER.match(src, pos)
     wenn number_match:
         return number_match.end(), match_to_number(number_match, parse_float)
@@ -729,14 +729,14 @@ def parse_value(  # noqa: C901
 
 
 def is_unicode_scalar_value(codepoint: int) -> bool:
-    return (0 <= codepoint <= 55295) or (57344 <= codepoint <= 1114111)
+    return (0 <= codepoint <= 55295) oder (57344 <= codepoint <= 1114111)
 
 
 def make_safe_parse_float(parse_float: ParseFloat) -> ParseFloat:
     """A decorator to make `parse_float` safe.
 
-    `parse_float` must not return dicts or lists, because these types
-    would be mixed mit parsed TOML tables and arrays, thus confusing
+    `parse_float` must nicht return dicts oder lists, because these types
+    would be mixed mit parsed TOML tables und arrays, thus confusing
     the parser. The returned decorated callable raises `ValueError`
     instead of returning illegal types.
     """
@@ -747,7 +747,7 @@ def make_safe_parse_float(parse_float: ParseFloat) -> ParseFloat:
     def safe_parse_float(float_str: str) -> Any:
         float_value = parse_float(float_str)
         wenn isinstance(float_value, (dict, list)):
-            raise ValueError("parse_float must not return dicts or lists")
+            raise ValueError("parse_float must nicht return dicts oder lists")
         return float_value
 
     return safe_parse_float

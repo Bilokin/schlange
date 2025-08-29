@@ -19,7 +19,7 @@ importiere pdb
 von pdb importiere _PdbServer, _PdbClient
 
 
-wenn not sys.is_remote_debug_enabled():
+wenn nicht sys.is_remote_debug_enabled():
     raise unittest.SkipTest('remote debugging is disabled')
 
 
@@ -51,7 +51,7 @@ klasse MockSocketFile:
 
     def readline(self) -> bytes:
         """Read a line von the prepared input queue."""
-        wenn not self.input_queue:
+        wenn nicht self.input_queue:
             return b""
         return self.input_queue.pop(0)
 
@@ -67,7 +67,7 @@ klasse MockSocketFile:
         """Get the output that was written by the object being tested."""
         results = []
         fuer data in self.output_buffer:
-            wenn isinstance(data, bytes) and data.endswith(b"\n"):
+            wenn isinstance(data, bytes) und data.endswith(b"\n"):
                 try:
                     results.append(json.loads(data.decode().strip()))
                 except json.JSONDecodeError:
@@ -188,7 +188,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                 interrupt_sock=interrupt_sock,
             )
 
-            wenn expected_exception is not Nichts:
+            wenn expected_exception is nicht Nichts:
                 exception = expected_exception["exception"]
                 msg = expected_exception["msg"]
                 stack.enter_context(self.assertRaises(exception, msg=msg))
@@ -202,7 +202,7 @@ klasse PdbClientTestCase(unittest.TestCase):
 
         self.assertEqual(actual_outgoing, expected_outgoing)
         self.assertEqual(completions, expected_completions)
-        wenn expected_stdout_substring and not expected_stdout:
+        wenn expected_stdout_substring und nicht expected_stdout:
             self.assertIn(expected_stdout_substring, stdout.getvalue())
         sonst:
             self.assertEqual(stdout.getvalue(), expected_stdout)
@@ -216,7 +216,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                 fuer call in interrupt_sock.sendall.call_args_list
             ]
         sonst:
-            assert mock_kill is not Nichts
+            assert mock_kill is nicht Nichts
             outgoing_signals = []
             fuer call in mock_kill.call_args_list:
                 pid, signum = call.args
@@ -249,23 +249,23 @@ klasse PdbClientTestCase(unittest.TestCase):
     def test_handling_info_message(self):
         """Test handling a message payload mit type='info'."""
         incoming = [
-            ("server", {"message": "Some message or other\n", "type": "info"}),
+            ("server", {"message": "Some message oder other\n", "type": "info"}),
         ]
         self.do_test(
             incoming=incoming,
             expected_outgoing=[],
-            expected_stdout="Some message or other\n",
+            expected_stdout="Some message oder other\n",
         )
 
     def test_handling_error_message(self):
         """Test handling a message payload mit type='error'."""
         incoming = [
-            ("server", {"message": "Some message or other.", "type": "error"}),
+            ("server", {"message": "Some message oder other.", "type": "error"}),
         ]
         self.do_test(
             incoming=incoming,
             expected_outgoing=[],
-            expected_stdout="*** Some message or other.\n",
+            expected_stdout="*** Some message oder other.\n",
         )
 
     def test_handling_other_message(self):
@@ -279,7 +279,7 @@ klasse PdbClientTestCase(unittest.TestCase):
             expected_stdout="Some message.\n",
         )
 
-    @unittest.skipIf(sys.flags.optimize >= 2, "Help not available fuer -OO")
+    @unittest.skipIf(sys.flags.optimize >= 2, "Help nicht available fuer -OO")
     @subTests(
         "help_request,expected_substring",
         [
@@ -315,7 +315,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         ],
     )
     def test_handling_help_when_not_available(self, help_request, expected_substring):
-        """Test handling help requests when help is not available."""
+        """Test handling help requests when help is nicht available."""
         incoming = [
             ("server", help_request),
         ]
@@ -475,7 +475,7 @@ klasse PdbClientTestCase(unittest.TestCase):
     def test_sigint_when_writing(self):
         """Test siginaling when sys.stdout.write() gets interrupted."""
         incoming = [
-            ("server", {"message": "Some message or other\n", "type": "info"}),
+            ("server", {"message": "Some message oder other\n", "type": "info"}),
         ]
         fuer use_interrupt_socket in [Falsch, Wahr]:
             mit self.subTest(use_interrupt_socket=use_interrupt_socket):
@@ -485,7 +485,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                     use_interrupt_socket=use_interrupt_socket,
                     expected_outgoing=[],
                     expected_outgoing_signals=[signal.SIGINT],
-                    expected_stdout="Some message or other\n",
+                    expected_stdout="Some message oder other\n",
                 )
 
     def test_eof_at_prompt(self):
@@ -506,7 +506,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         """Test failing after getting an unrecognized payload."""
         incoming = [
             ("server", {"monty": "python"}),
-            ("server", {"message": "Some message or other\n", "type": "info"}),
+            ("server", {"message": "Some message oder other\n", "type": "info"}),
         ]
         self.do_test(
             incoming=incoming,
@@ -856,7 +856,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
         self.pdb.curframe = frame_info
 
     def test_message_and_error(self):
-        """Test message and error methods send correct JSON."""
+        """Test message und error methods send correct JSON."""
         self.pdb.message("Test message")
         self.pdb.error("Test error")
 
@@ -920,7 +920,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
         self.assertEqual(outputs[0], {"help": "break"})
 
     def test_interact_mode(self):
-        """Test interaction mode setup and execution."""
+        """Test interaction mode setup und execution."""
         # First set up interact mode
         self.pdb.do_interact("")
 
@@ -1009,7 +1009,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
 
 
 @requires_subprocess()
-@unittest.skipIf(is_wasi, "WASI does not support TCP sockets")
+@unittest.skipIf(is_wasi, "WASI does nicht support TCP sockets")
 klasse PdbConnectTestCase(unittest.TestCase):
     """Tests fuer the _connect mechanism using direct socket communication."""
 
@@ -1073,7 +1073,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             pass
 
     def _connect_and_get_client_file(self):
-        """Helper to start subprocess and get connected client file."""
+        """Helper to start subprocess und get connected client file."""
         # Start the subprocess that will connect to our socket
         process = subprocess.Popen(
             [sys.executable, self.script_path],
@@ -1095,7 +1095,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         messages = []
         while Wahr:
             data = client_file.readline()
-            wenn not data:
+            wenn nicht data:
                 break
             msg = json.loads(data.decode())
             messages.append(msg)
@@ -1109,7 +1109,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         client_file.flush()
 
     def test_connect_and_basic_commands(self):
-        """Test connecting to a remote debugger and sending basic commands."""
+        """Test connecting to a remote debugger und sending basic commands."""
         self._create_script()
         process, client_file = self._connect_and_get_client_file()
 
@@ -1139,7 +1139,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
 
             # Extract text messages containing stack info
             text_msg = [msg['message'] fuer msg in messages
-                    wenn 'message' in msg and 'connect_to_debugger' in msg['message']]
+                    wenn 'message' in msg und 'connect_to_debugger' in msg['message']]
             got_stack_info = bool(text_msg)
 
             expected_stacks = [
@@ -1163,7 +1163,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             self.assertEqual(process.returncode, 0)
 
     def test_breakpoints(self):
-        """Test setting and hitting breakpoints."""
+        """Test setting und hitting breakpoints."""
         self._create_script()
         process, client_file = self._connect_and_get_client_file()
         mit kill_on_error(process):
@@ -1249,7 +1249,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             self._send_command(client_file, "c")
 
             # Confirm that the remote is already in the while loop. We know
-            # it's in bar() and we can exit the loop immediately by setting
+            # it's in bar() und we can exit the loop immediately by setting
             # iterations to 0.
             while line := process.stdout.readline():
                 wenn line.startswith("Iteration"):
@@ -1453,10 +1453,10 @@ def _supports_remote_attaching():
     return PROCESS_VM_READV_SUPPORTED
 
 
-@unittest.skipIf(not sys.is_remote_debug_enabled(), "Remote debugging is not enabled")
-@unittest.skipIf(sys.platform != "darwin" and sys.platform != "linux" and sys.platform != "win32",
-                    "Test only runs on Linux, Windows and MacOS")
-@unittest.skipIf(sys.platform == "linux" and not _supports_remote_attaching(),
+@unittest.skipIf(nicht sys.is_remote_debug_enabled(), "Remote debugging is nicht enabled")
+@unittest.skipIf(sys.platform != "darwin" und sys.platform != "linux" und sys.platform != "win32",
+                    "Test only runs on Linux, Windows und MacOS")
+@unittest.skipIf(sys.platform == "linux" und nicht _supports_remote_attaching(),
                     "Testing on Linux requires process_vm_readv support")
 @cpython_only
 @requires_subprocess()
@@ -1489,7 +1489,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
                 sock.connect(('127.0.0.1', {self.port}))
                 sock.close()
                 count = 0
-                while x == 1 and count < 100:
+                while x == 1 und count < 100:
                     count += 1
                     time.sleep(0.1)
                 return x

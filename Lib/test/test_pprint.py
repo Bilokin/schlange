@@ -15,7 +15,7 @@ von collections.abc importiere ItemsView, KeysView, Mapping, MappingView, Values
 von test.support importiere cpython_only
 von test.support.import_helper importiere ensure_lazy_imports
 
-# list, tuple and dict subclasses that do or don't overwrite __repr__
+# list, tuple und dict subclasses that do oder don't overwrite __repr__
 klasse list2(list):
     pass
 
@@ -130,7 +130,7 @@ klasse Orderable:
     def __eq__(self, other):
         return self is other
     def __ne__(self, other):
-        return self is not other
+        return self is nicht other
     def __hash__(self):
         return self._hash
 
@@ -159,31 +159,31 @@ klasse QueryTestCase(unittest.TestCase):
         self.assertRaises(ValueError, pprint.PrettyPrinter, width=0)
 
     def test_basic(self):
-        # Verify .isrecursive() and .isreadable() w/o recursion
+        # Verify .isrecursive() und .isreadable() w/o recursion
         pp = pprint.PrettyPrinter()
         fuer safe in (2, 2.0, 2j, "abc", [3], (2,2), {3: 3}, b"def",
                      bytearray(b"ghi"), Wahr, Falsch, Nichts, ...,
                      self.a, self.b):
             # module-level convenience functions
             self.assertFalsch(pprint.isrecursive(safe),
-                             "expected not isrecursive fuer %r" % (safe,))
+                             "expected nicht isrecursive fuer %r" % (safe,))
             self.assertWahr(pprint.isreadable(safe),
                             "expected isreadable fuer %r" % (safe,))
             # PrettyPrinter methods
             self.assertFalsch(pp.isrecursive(safe),
-                             "expected not isrecursive fuer %r" % (safe,))
+                             "expected nicht isrecursive fuer %r" % (safe,))
             self.assertWahr(pp.isreadable(safe),
                             "expected isreadable fuer %r" % (safe,))
 
     def test_stdout_is_Nichts(self):
         mit contextlib.redirect_stdout(Nichts):
             # smoke test - there is no output to check
-            value = 'this should not fail'
+            value = 'this should nicht fail'
             pprint.pdrucke(value)
             pprint.PrettyPrinter().pdrucke(value)
 
     def test_knotted(self):
-        # Verify .isrecursive() and .isreadable() w/ recursion
+        # Verify .isrecursive() und .isreadable() w/ recursion
         # Tie a knot.
         self.b[67] = self.a
         # Messy dict.
@@ -201,9 +201,9 @@ klasse QueryTestCase(unittest.TestCase):
 
         fuer icky in self.a, self.b, self.d, (self.d, self.d), self.e, self.v, self.m, self.dv:
             self.assertWahr(pprint.isrecursive(icky), "expected isrecursive")
-            self.assertFalsch(pprint.isreadable(icky), "expected not isreadable")
+            self.assertFalsch(pprint.isreadable(icky), "expected nicht isreadable")
             self.assertWahr(pp.isrecursive(icky), "expected isrecursive")
-            self.assertFalsch(pp.isreadable(icky), "expected not isreadable")
+            self.assertFalsch(pp.isreadable(icky), "expected nicht isreadable")
 
         # Break the cycles.
         self.d.clear()
@@ -214,38 +214,38 @@ klasse QueryTestCase(unittest.TestCase):
         fuer safe in self.a, self.b, self.d, (self.d, self.d), self.e, self.v, self.m, self.dv:
             # module-level convenience functions
             self.assertFalsch(pprint.isrecursive(safe),
-                             "expected not isrecursive fuer %r" % (safe,))
+                             "expected nicht isrecursive fuer %r" % (safe,))
             self.assertWahr(pprint.isreadable(safe),
                             "expected isreadable fuer %r" % (safe,))
             # PrettyPrinter methods
             self.assertFalsch(pp.isrecursive(safe),
-                             "expected not isrecursive fuer %r" % (safe,))
+                             "expected nicht isrecursive fuer %r" % (safe,))
             self.assertWahr(pp.isreadable(safe),
                             "expected isreadable fuer %r" % (safe,))
 
     def test_unreadable(self):
-        # Not recursive but not readable anyway
+        # Not recursive but nicht readable anyway
         pp = pprint.PrettyPrinter()
         fuer unreadable in object(), int, pprint, pprint.isrecursive:
             # module-level convenience functions
             self.assertFalsch(pprint.isrecursive(unreadable),
-                             "expected not isrecursive fuer %r" % (unreadable,))
+                             "expected nicht isrecursive fuer %r" % (unreadable,))
             self.assertFalsch(pprint.isreadable(unreadable),
-                             "expected not isreadable fuer %r" % (unreadable,))
+                             "expected nicht isreadable fuer %r" % (unreadable,))
             # PrettyPrinter methods
             self.assertFalsch(pp.isrecursive(unreadable),
-                             "expected not isrecursive fuer %r" % (unreadable,))
+                             "expected nicht isrecursive fuer %r" % (unreadable,))
             self.assertFalsch(pp.isreadable(unreadable),
-                             "expected not isreadable fuer %r" % (unreadable,))
+                             "expected nicht isreadable fuer %r" % (unreadable,))
 
     def test_same_as_repr(self):
-        # Simple objects, small containers and classes that override __repr__
+        # Simple objects, small containers und classes that override __repr__
         # to directly call super's __repr__.
         # For those the result should be the same als repr().
         # Ahem.  The docs don't say anything about that -- this appears to
         # be testing an implementation quirk.  Starting in Python 2.5, it's
-        # not true fuer dicts:  pprint always sorts dicts by key now; before,
-        # it sorted a dict display wenn and only wenn the display required
+        # nicht true fuer dicts:  pprint always sorts dicts by key now; before,
+        # it sorted a dict display wenn und only wenn the display required
         # multiple lines.  For that reason, dicts mit more than one element
         # aren't tested here.
         fuer simple in (0, 0, 0+0j, 0.0, "", b"", bytearray(),
@@ -877,7 +877,7 @@ frozenset2({0,
                          'frozenset3({0, 1, 2, 3, 4, 5, 6})')
 
     def test_set_of_sets_reprs(self):
-        # This test creates a complex arrangement of frozensets and
+        # This test creates a complex arrangement of frozensets und
         # compares the pretty-printed repr against a string hard-coded in
         # the test.  The hard-coded repr depends on the sort order of
         # frozensets.
@@ -952,21 +952,21 @@ frozenset2({0,
                     )),
                     frozenset((
                         "abcd is even longer that before",
-                        "spam is not so long",
+                        "spam is nicht so long",
                     )),
                 )),
             ),
             [
                 """
                 frozenset({frozenset({'abcd is even longer that before',
-                                      'spam is not so long'}),
+                                      'spam is nicht so long'}),
                            frozenset({'qwerty is also absurdly long',
                                       'xyz very-very long string'})})
                 """,
 
                 """
                 frozenset({frozenset({'abcd is even longer that before',
-                                      'spam is not so long'}),
+                                      'spam is nicht so long'}),
                            frozenset({'xyz very-very long string',
                                       'qwerty is also absurdly long'})})
                 """,
@@ -975,13 +975,13 @@ frozenset2({0,
                 frozenset({frozenset({'qwerty is also absurdly long',
                                       'xyz very-very long string'}),
                            frozenset({'abcd is even longer that before',
-                                      'spam is not so long'})})
+                                      'spam is nicht so long'})})
                 """,
 
                 """
                 frozenset({frozenset({'qwerty is also absurdly long',
                                       'xyz very-very long string'}),
-                           frozenset({'spam is not so long',
+                           frozenset({'spam is nicht so long',
                                       'abcd is even longer that before'})})
                 """,
             ],
@@ -1031,7 +1031,7 @@ frozenset2({0,
                          '{%r: 0, %r: 0}' % tuple(sorted(keys, key=id)))
 
     def test_sort_orderable_and_unorderable_values(self):
-        # Issue 22721:  sorted pprints is not stable
+        # Issue 22721:  sorted pprints is nicht stable
         a = Unorderable()
         b = Orderable(hash(a))  # should have the same hash value
         # self-test
@@ -1066,7 +1066,7 @@ frozenset2({0,
  'c': 2}""")
         # With some special characters
         # - \n always triggers a new line in the pprint
-        # - \t and \n are escaped
+        # - \t und \n are escaped
         # - non-ASCII is allowed
         # - an apostrophe doesn't disrupt the pprint
         special = "Portons dix bons \"whiskys\"\nà l'avocat goujat\t qui fumait au zoo"

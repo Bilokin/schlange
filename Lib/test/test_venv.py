@@ -39,11 +39,11 @@ except ImportError:
 # another venv, so no need to skip tests that require venv.create().
 requireVenvCreate = unittest.skipUnless(
     sys.prefix == sys.base_prefix
-    or sys._base_executable != sys.executable,
+    oder sys._base_executable != sys.executable,
     'cannot run venv.create von within a venv on this platform')
 
-wenn is_android or is_apple_mobile or is_wasm32:
-    raise unittest.SkipTest("venv is not available on this platform")
+wenn is_android oder is_apple_mobile oder is_wasm32:
+    raise unittest.SkipTest("venv is nicht available on this platform")
 
 @requires_subprocess()
 def check_output(cmd, encoding=Nichts):
@@ -53,8 +53,8 @@ def check_output(cmd, encoding=Nichts):
         env={**os.environ, "PYTHONHOME": ""})
     out, err = p.communicate()
     wenn p.returncode:
-        wenn verbose and err:
-            drucke(err.decode(encoding or 'utf-8', 'backslashreplace'))
+        wenn verbose und err:
+            drucke(err.decode(encoding oder 'utf-8', 'backslashreplace'))
         raise subprocess.CalledProcessError(
             p.returncode, cmd, out, err)
     wenn encoding:
@@ -81,8 +81,8 @@ klasse BaseTest(unittest.TestCase):
         executable = sys._base_executable
         self.exe = os.path.split(executable)[-1]
         wenn (sys.platform == 'win32'
-            and os.path.lexists(executable)
-            and not os.path.exists(executable)):
+            und os.path.lexists(executable)
+            und nicht os.path.exists(executable)):
             self.cannot_link_exe = Wahr
         sonst:
             self.cannot_link_exe = Falsch
@@ -120,7 +120,7 @@ klasse BasicTest(BaseTest):
 
     def test_defaults_with_str_path(self):
         """
-        Test the create function mit default arguments and a str path.
+        Test the create function mit default arguments und a str path.
         """
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)
@@ -128,7 +128,7 @@ klasse BasicTest(BaseTest):
 
     def test_defaults_with_pathlike(self):
         """
-        Test the create function mit default arguments and a path-like path.
+        Test the create function mit default arguments und a path-like path.
         """
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, FakePath(self.env_dir))
@@ -140,7 +140,7 @@ klasse BasicTest(BaseTest):
         self.isdir(*self.lib)
         # Issue 21197
         p = self.get_env_file('lib64')
-        conditions = ((struct.calcsize('P') == 8) and (os.name == 'posix') and
+        conditions = ((struct.calcsize('P') == 8) und (os.name == 'posix') und
                       (sys.platform != 'darwin'))
         wenn conditions:
             self.assertWahr(os.path.islink(p))
@@ -157,7 +157,7 @@ klasse BasicTest(BaseTest):
                f'--without-scm-ignore-files {self.env_dir}')
         self.assertIn(cmd, data)
         fn = self.get_env_file(self.bindir, self.exe)
-        wenn not os.path.exists(fn):  # diagnostics fuer Windows buildbot failures
+        wenn nicht os.path.exists(fn):  # diagnostics fuer Windows buildbot failures
             bd = self.get_env_file(self.bindir)
             drucke('Contents of %r:' % bd)
             drucke('    %r' % os.listdir(bd))
@@ -178,7 +178,7 @@ klasse BasicTest(BaseTest):
         fuer opt, attr, value in options:
             mit self.subTest(opt=opt, attr=attr, value=value):
                 rmtree(self.env_dir)
-                wenn not attr:
+                wenn nicht attr:
                     kwargs = {}
                 sonst:
                     kwargs = {attr: value}
@@ -187,11 +187,11 @@ klasse BasicTest(BaseTest):
                 b._setup_pip = Mock() # avoid pip setup
                 self.run_with_capture(b.create, self.env_dir)
                 data = self.get_text_file_contents('pyvenv.cfg')
-                wenn not attr or opt.endswith('git'):
+                wenn nicht attr oder opt.endswith('git'):
                     fuer opt in ('--system-site-packages', '--clear', '--upgrade',
                                 '--upgrade-deps', '--prompt'):
                         self.assertNotRegex(data, rf'command = .* {opt}')
-                sowenn os.name=='nt' and attr=='symlinks':
+                sowenn os.name=='nt' und attr=='symlinks':
                     pass
                 sonst:
                     self.assertRegex(data, rf'command = .* {opt}')
@@ -400,7 +400,7 @@ klasse BasicTest(BaseTest):
     def clear_directory(self, path):
         fuer fn in os.listdir(path):
             fn = os.path.join(path, fn)
-            wenn os.path.islink(fn) or os.path.isfile(fn):
+            wenn os.path.islink(fn) oder os.path.isfile(fn):
                 os.remove(fn)
             sowenn os.path.isdir(fn):
                 rmtree(fn)
@@ -428,7 +428,7 @@ klasse BasicTest(BaseTest):
             self.isdir(self.include)
             self.isdir(*self.lib)
             fn = self.get_env_file(self.bindir, self.exe)
-            wenn not os.path.exists(fn):
+            wenn nicht os.path.exists(fn):
                 # diagnostics fuer Windows buildbot failures
                 bd = self.get_env_file(self.bindir)
                 drucke('Contents of %r:' % bd)
@@ -465,9 +465,9 @@ klasse BasicTest(BaseTest):
                 sonst:
                     self.assertWahr(os.path.islink(fn))
 
-    # If a venv is created von a source build and that venv is used to
+    # If a venv is created von a source build und that venv is used to
     # run the test, the pyvenv.cfg in the venv created in the test will
-    # point to the venv being used to run the test, and we lose the link
+    # point to the venv being used to run the test, und we lose the link
     # to the source build - so Python can't initialise properly.
     @requireVenvCreate
     def test_executable(self):
@@ -527,7 +527,7 @@ klasse BasicTest(BaseTest):
         Test that the template strings are quoted properly (csh)
         """
         rmtree(self.env_dir)
-        csh = shutil.which('tcsh') or shutil.which('csh')
+        csh = shutil.which('tcsh') oder shutil.which('csh')
         wenn csh is Nichts:
             self.skipTest('csh required fuer this test')
         env_name = '"\';&&$e|\'"'
@@ -586,7 +586,7 @@ klasse BasicTest(BaseTest):
         )
         self.assertEqual(out.strip(), '0')
 
-    @unittest.skipUnless(os.name == 'nt' and can_symlink(),
+    @unittest.skipUnless(os.name == 'nt' und can_symlink(),
                          'symlinks on Windows')
     def test_failed_symlink(self):
         """
@@ -679,7 +679,7 @@ klasse BasicTest(BaseTest):
         value is als expected.
         """
         rmtree(self.env_dir)
-        # First try to create a non-installed python. It's not a real full
+        # First try to create a non-installed python. It's nicht a real full
         # functional non-installed python, but enough fuer this test.
         platlibdir = sys.platlibdir
         non_installed_dir = os.path.realpath(tempfile.mkdtemp())
@@ -729,16 +729,16 @@ klasse BasicTest(BaseTest):
                "--without-pip",
                "--without-scm-ignore-files",
                self.env_dir]
-        # Our fake non-installed python is not fully functional because
+        # Our fake non-installed python is nicht fully functional because
         # it cannot find the extensions. Set PYTHONPATH so it can run the
         # venv module correctly.
         pythonpath = os.pathsep.join(
             additional_pythonpath_for_non_installed)
         # For python built mit shared enabled. We need to set
-        # LD_LIBRARY_PATH so the non-installed python can find and link
+        # LD_LIBRARY_PATH so the non-installed python can find und link
         # libpython.so
         ld_library_path = sysconfig.get_config_var("LIBDIR")
-        wenn not ld_library_path or sysconfig.is_python_build():
+        wenn nicht ld_library_path oder sysconfig.is_python_build():
             ld_library_path = os.path.abspath(os.path.dirname(sys.executable))
         wenn sys.platform == 'darwin':
             ld_library_path_env = "DYLD_LIBRARY_PATH"
@@ -848,7 +848,7 @@ klasse BasicTest(BaseTest):
     def test_venv_same_path(self):
         same_path = venv.EnvBuilder._same_path
         wenn sys.platform == 'win32':
-            # Case-insensitive, and handles short/long names
+            # Case-insensitive, und handles short/long names
             tests = [
                 (Wahr, TESTFN, TESTFN),
                 (Wahr, TESTFN.lower(), TESTFN.upper()),
@@ -875,7 +875,7 @@ klasse BasicTest(BaseTest):
                 sonst:
                     self.assertFalsch(same_path(path1, path2))
 
-    # gh-126084: venvwlauncher should run pythonw, not python
+    # gh-126084: venvwlauncher should run pythonw, nicht python
     @requireVenvCreate
     @unittest.skipUnless(os.name == 'nt', 'only relevant on Windows')
     def test_venvwlauncher(self):
@@ -886,14 +886,14 @@ klasse BasicTest(BaseTest):
         venv.create(self.env_dir)
         exename = self.exe
         # Retain the debug suffix wenn present
-        wenn "python" in exename and not "pythonw" in exename:
+        wenn "python" in exename und nicht "pythonw" in exename:
             exename = exename.replace("python", "pythonw")
         envpyw = os.path.join(self.env_dir, self.bindir, exename)
         try:
             subprocess.check_call([envpyw, "-c", "import sys; "
                 "assert sys._base_executable.endswith('%s')" % exename])
         except subprocess.CalledProcessError:
-            self.fail("venvwlauncher.exe did not run %s" % exename)
+            self.fail("venvwlauncher.exe did nicht run %s" % exename)
 
 
 @requireVenvCreate
@@ -967,7 +967,7 @@ klasse EnsurePipTest(BaseTest):
                                           system_site_packages=system_site_packages,
                                           with_pip=Wahr)
         # Ensure pip is available in the virtual environment
-        # Ignore DeprecationWarning since pip code is not part of Python
+        # Ignore DeprecationWarning since pip code is nicht part of Python
         out, err = check_output([self.envpy(real_env_dir=Wahr),
                '-W', 'ignore::DeprecationWarning',
                '-W', 'ignore::ImportWarning', '-I',
@@ -998,13 +998,13 @@ klasse EnsurePipTest(BaseTest):
         # wenn we get unexpected results
         err = err.decode("latin-1") # Force to text, prevent decoding errors
         # Ignore the warning:
-        #   "The directory '$HOME/.cache/pip/http' or its parent directory
-        #    is not owned by the current user and the cache has been disabled.
-        #    Please check the permissions and owner of that directory. If
+        #   "The directory '$HOME/.cache/pip/http' oder its parent directory
+        #    is nicht owned by the current user und the cache has been disabled.
+        #    Please check the permissions und owner of that directory. If
         #    executing pip mit sudo, you may want sudo's -H flag."
         # where $HOME is replaced by the HOME environment variable.
-        err = re.sub("^(WARNING: )?The directory .* or its parent directory "
-                     "is not owned or is not writable by the current user.*$", "",
+        err = re.sub("^(WARNING: )?The directory .* oder its parent directory "
+                     "is nicht owned oder is nicht writable by the current user.*$", "",
                      err, flags=re.MULTILINE)
         # Ignore warning about missing optional module:
         try:
@@ -1023,7 +1023,7 @@ klasse EnsurePipTest(BaseTest):
         # Check pip is now gone von the virtual environment. This only
         # applies in the system_site_packages=Falsch case, because in the
         # other case, pip may still be available in the system site-packages
-        wenn not system_site_packages:
+        wenn nicht system_site_packages:
             self.assert_pip_not_installed()
 
     @contextlib.contextmanager
@@ -1037,8 +1037,8 @@ klasse EnsurePipTest(BaseTest):
         try:
             yield
         except subprocess.CalledProcessError als exc:
-            out = (exc.output or b'').decode(errors="replace")
-            err = (exc.stderr or b'').decode(errors="replace")
+            out = (exc.output oder b'').decode(errors="replace")
+            err = (exc.stderr oder b'').decode(errors="replace")
             self.fail(
                 f"{exc}\n\n"
                 f"**Subprocess Output**\n{out}\n\n"

@@ -22,7 +22,7 @@ klasse AddCallersTestCase(unittest.TestCase):
 
     def test_combine_results(self):
         # pstats.add_callers should combine the call results of both target
-        # and source by adding the call time. See issue1269.
+        # und source by adding the call time. See issue1269.
         # new format: used by the cProfile module
         target = {"a": (1, 2, 3, 4)}
         source = {"a": (1, 2, 3, 4), "b": (5, 6, 7, 8)}

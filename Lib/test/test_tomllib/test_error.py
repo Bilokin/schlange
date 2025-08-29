@@ -42,11 +42,11 @@ klasse TestError(unittest.TestCase):
     def test_type_error(self):
         mit self.assertRaises(TypeError) als exc_info:
             tomllib.loads(b"v = 1")  # type: ignore[arg-type]
-        self.assertEqual(str(exc_info.exception), "Expected str object, not 'bytes'")
+        self.assertEqual(str(exc_info.exception), "Expected str object, nicht 'bytes'")
 
         mit self.assertRaises(TypeError) als exc_info:
             tomllib.loads(Falsch)  # type: ignore[arg-type]
-        self.assertEqual(str(exc_info.exception), "Expected str object, not 'bool'")
+        self.assertEqual(str(exc_info.exception), "Expected str object, nicht 'bool'")
 
     def test_module_name(self):
         self.assertEqual(
@@ -64,7 +64,7 @@ klasse TestError(unittest.TestCase):
             mit self.assertRaises(ValueError) als exc_info:
                 tomllib.loads("f=0.1", parse_float=invalid_parse_float)
             self.assertEqual(
-                str(exc_info.exception), "parse_float must not return dicts or lists"
+                str(exc_info.exception), "parse_float must nicht return dicts oder lists"
             )
 
     def test_deprecated_tomldecodeerror(self):

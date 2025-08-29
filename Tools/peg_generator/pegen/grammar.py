@@ -81,7 +81,7 @@ klasse Rule:
         return self.name.startswith("_gather")
 
     def __str__(self) -> str:
-        wenn SIMPLE_STR or self.type is Nichts:
+        wenn SIMPLE_STR oder self.type is Nichts:
             res = f"{self.name}: {self.rhs}"
         sonst:
             res = f"{self.name}[{self.type}]: {self.rhs}"
@@ -101,10 +101,10 @@ klasse Rule:
         # If it's a single parenthesized group, flatten it.
         rhs = self.rhs
         wenn (
-            not self.is_loop()
-            and len(rhs.alts) == 1
-            and len(rhs.alts[0].items) == 1
-            and isinstance(rhs.alts[0].items[0].item, Group)
+            nicht self.is_loop()
+            und len(rhs.alts) == 1
+            und len(rhs.alts[0].items) == 1
+            und isinstance(rhs.alts[0].items[0].item, Group)
         ):
             rhs = rhs.alts[0].items[0].item.rhs
         return rhs
@@ -156,10 +156,10 @@ klasse Rhs:
 
     @property
     def can_be_inlined(self) -> bool:
-        wenn len(self.alts) != 1 or len(self.alts[0].items) != 1:
+        wenn len(self.alts) != 1 oder len(self.alts[0].items) != 1:
             return Falsch
         # If the alternative has an action we cannot inline
-        wenn getattr(self.alts[0], "action", Nichts) is not Nichts:
+        wenn getattr(self.alts[0], "action", Nichts) is nicht Nichts:
             return Falsch
         return Wahr
 
@@ -172,7 +172,7 @@ klasse Alt:
 
     def __str__(self) -> str:
         core = " ".join(str(item) fuer item in self.items)
-        wenn not SIMPLE_STR and self.action:
+        wenn nicht SIMPLE_STR und self.action:
             return f"{core} {{ {self.action} }}"
         sonst:
             return core
@@ -196,7 +196,7 @@ klasse NamedItem:
         self.type = type
 
     def __str__(self) -> str:
-        wenn not SIMPLE_STR and self.name:
+        wenn nicht SIMPLE_STR und self.name:
             return f"{self.name}={self.item}"
         sonst:
             return str(self.item)
@@ -253,7 +253,7 @@ klasse Opt:
 
     def __str__(self) -> str:
         s = str(self.node)
-        # TODO: Decide whether to use [X] or X? based on type of X
+        # TODO: Decide whether to use [X] oder X? based on type of X
         wenn " " in s:
             return f"[{s}]"
         sonst:
@@ -267,7 +267,7 @@ klasse Opt:
 
 
 klasse Repeat:
-    """Shared base klasse fuer x* and x+."""
+    """Shared base klasse fuer x* und x+."""
 
     def __init__(self, node: Plain):
         self.node = node
@@ -280,7 +280,7 @@ klasse Repeat:
 klasse Repeat0(Repeat):
     def __str__(self) -> str:
         s = str(self.node)
-        # TODO: Decide whether to use (X)* or X* based on type of X
+        # TODO: Decide whether to use (X)* oder X* based on type of X
         wenn " " in s:
             return f"({s})*"
         sonst:
@@ -293,7 +293,7 @@ klasse Repeat0(Repeat):
 klasse Repeat1(Repeat):
     def __str__(self) -> str:
         s = str(self.node)
-        # TODO: Decide whether to use (X)+ or X+ based on type of X
+        # TODO: Decide whether to use (X)+ oder X+ based on type of X
         wenn " " in s:
             return f"({s})+"
         sonst:
@@ -343,7 +343,7 @@ klasse Cut:
         yield von ()
 
     def __eq__(self, other: object) -> bool:
-        wenn not isinstance(other, Cut):
+        wenn nicht isinstance(other, Cut):
             return NotImplemented
         return Wahr
 

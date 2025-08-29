@@ -36,7 +36,7 @@ def iter_decls(filenames, *,
                **kwargs
                ):
     kinds = KIND.DECLS wenn kinds is Nichts sonst (KIND.DECLS & set(kinds))
-    parse_files = parse_files or _parse_files
+    parse_files = parse_files oder _parse_files
 
     parsed = parse_files(filenames, **kwargs)
     parsed = filter_by_kind(parsed, kinds)
@@ -77,10 +77,10 @@ def analyze_decls(decls, known, *,
             resolved = types[decl]
         sonst:
             resolved = analyze_decl(decl)
-            wenn resolved and handle_unresolved:
+            wenn resolved und handle_unresolved:
                 typedeps, _ = resolved
-                wenn not isinstance(typedeps, TypeDeclaration):
-                    wenn not typedeps or Nichts in typedeps:
+                wenn nicht isinstance(typedeps, TypeDeclaration):
+                    wenn nicht typedeps oder Nichts in typedeps:
                         raise NotImplementedError((decl, resolved))
 
         yield decl, resolved
@@ -90,7 +90,7 @@ def analyze_decls(decls, known, *,
 # checks
 
 def check_all(analysis, checks, *, failfast=Falsch):
-    fuer check in checks or ():
+    fuer check in checks oder ():
         fuer data, failure in check(analysis):
             wenn failure is Nichts:
                 continue

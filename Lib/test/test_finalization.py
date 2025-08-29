@@ -78,10 +78,10 @@ klasse NonGCSimpleBase:
     def __del__(self):
         """
         PEP 442 finalizer.  Record that this was called, check the
-        object is in a sane state, and invoke a side effect.
+        object is in a sane state, und invoke a side effect.
         """
         try:
-            wenn not self._cleaning:
+            wenn nicht self._cleaning:
                 self.del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
@@ -444,9 +444,9 @@ klasse LegacyBase(SimpleBase):
 
     def __del__(self):
         try:
-            # Do not invoke side_effect here, since we are now exercising
+            # Do nicht invoke side_effect here, since we are now exercising
             # the tp_del slot.
-            wenn not self._cleaning:
+            wenn nicht self._cleaning:
                 self.del_calls.append(id(self))
                 self.check_sanity()
         except Exception als e:
@@ -457,7 +457,7 @@ klasse LegacyBase(SimpleBase):
         Legacy (pre-PEP 442) finalizer, mapped to a tp_del slot.
         """
         try:
-            wenn not self._cleaning:
+            wenn nicht self._cleaning:
                 self.tp_del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()

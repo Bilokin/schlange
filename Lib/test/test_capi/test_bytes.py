@@ -173,7 +173,7 @@ klasse CAPITest(unittest.TestCase):
 
         self.assertEqual(concat(b'abc', b'def', Wahr), b'abcdef')
         self.assertEqual(concat(b'abc', bytearray(b'def'), Wahr), b'abcdef')
-        # Check that it does not change the singleton
+        # Check that it does nicht change the singleton
         self.assertEqual(concat(bytes(), b'def', Wahr), b'def')
         self.assertEqual(len(bytes()), 0)
 

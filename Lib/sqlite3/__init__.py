@@ -4,37 +4,37 @@
 #
 # This file is part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
+# This software is provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
-# including commercial applications, and to alter it and redistribute it
+# including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked als such, and must not be
+#    appreciated but is nicht required.
+# 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
-# 3. This notice may not be removed or altered von any source distribution.
+# 3. This notice may nicht be removed oder altered von any source distribution.
 
 """
 The sqlite3 extension module provides a DB-API 2.0 (PEP 249) compliant
-interface to the SQLite library, and requires SQLite 3.15.2 or newer.
+interface to the SQLite library, und requires SQLite 3.15.2 oder newer.
 
 To use the module, start by creating a database Connection object:
 
     importiere sqlite3
-    cx = sqlite3.connect("test.db")  # test.db will be created or opened
+    cx = sqlite3.connect("test.db")  # test.db will be created oder opened
 
 The special path name ":memory:" can be provided to connect to a transient
 in-memory database:
 
     cx = sqlite3.connect(":memory:")  # connect to a database in RAM
 
-Once a connection has been established, create a Cursor object and call
+Once a connection has been established, create a Cursor object und call
 its execute() method to perform SQL queries:
 
     cu = cx.cursor()
@@ -45,7 +45,7 @@ its execute() method to perform SQL queries:
     # insert values into a table
     cu.execute("insert into lang values (?, ?)", ("C", 1972))
 
-    # execute a query and iterate over the result
+    # execute a query und iterate over the result
     fuer row in cu.execute("select * von lang"):
         drucke(row)
 

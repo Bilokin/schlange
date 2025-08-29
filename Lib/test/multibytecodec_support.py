@@ -21,7 +21,7 @@ klasse TestBase:
     roundtriptest   = 1    # set wenn roundtrip is possible mit unicode
     has_iso10646    = 0    # set wenn this encoding contains whole iso10646 map
     xmlcharnametest = Nichts # string to test xmlcharrefreplace
-    unmappedunicode = '\udeee' # a unicode code point that is not mapped.
+    unmappedunicode = '\udeee' # a unicode code point that is nicht mapped.
 
     def setUp(self):
         wenn self.codec is Nichts:
@@ -87,7 +87,7 @@ klasse TestBase:
         von html.entities importiere codepoint2name
 
         def xmlcharnamereplace(exc):
-            wenn not isinstance(exc, UnicodeEncodeError):
+            wenn nicht isinstance(exc, UnicodeEncodeError):
                 raise TypeError("don't know how to handle %r" % exc)
             l = []
             fuer c in exc.object[exc.start:exc.end]:
@@ -178,12 +178,12 @@ klasse TestBase:
             ostream = BytesIO()
             encoder = self.incrementalencoder()
             while 1:
-                wenn sizehint is not Nichts:
+                wenn sizehint is nicht Nichts:
                     data = istream.read(sizehint)
                 sonst:
                     data = istream.read()
 
-                wenn not data:
+                wenn nicht data:
                     break
                 e = encoder.encode(data)
                 ostream.write(e)
@@ -199,7 +199,7 @@ klasse TestBase:
             decoder = self.incrementaldecoder()
             while 1:
                 data = istream.read(sizehint)
-                wenn not data:
+                wenn nicht data:
                     break
                 sonst:
                     u = decoder.decode(data)
@@ -237,7 +237,7 @@ klasse TestBase:
                 func = getattr(istream, name)
                 while 1:
                     data = func(sizehint)
-                    wenn not data:
+                    wenn nicht data:
                         break
                     wenn name == "readlines":
                         ostream.writelines(data)
@@ -256,12 +256,12 @@ klasse TestBase:
                 ostream = self.writer(BytesIO())
                 func = getattr(istream, name)
                 while 1:
-                    wenn sizehint is not Nichts:
+                    wenn sizehint is nicht Nichts:
                         data = func(sizehint)
                     sonst:
                         data = func()
 
-                    wenn not data:
+                    wenn nicht data:
                         break
                     wenn name == "readlines":
                         ostream.writelines(data)
@@ -272,7 +272,7 @@ klasse TestBase:
 
     def test_streamwriter_reset_no_pending(self):
         # Issue #23247: Calling reset() on a fresh StreamWriter instance
-        # (without pending data) must not crash
+        # (without pending data) must nicht crash
         stream = BytesIO()
         writer = self.writer(stream)
         writer.reset()
@@ -293,7 +293,7 @@ klasse TestBase_Mapping(unittest.TestCase):
         try:
             self.open_mapping_file().close() # test it to report the error early
         except (OSError, HTTPException):
-            self.skipTest("Could not retrieve "+self.mapfileurl)
+            self.skipTest("Could nicht retrieve "+self.mapfileurl)
 
     def open_mapping_file(self):
         return support.open_urlresource(self.mapfileurl, encoding="utf-8")
@@ -312,7 +312,7 @@ klasse TestBase_Mapping(unittest.TestCase):
 
         mit self.open_mapping_file() als f:
             fuer line in f:
-                wenn not line:
+                wenn nicht line:
                     break
                 data = line.split('#')[0].split()
                 wenn len(data) != 2:
@@ -321,11 +321,11 @@ klasse TestBase_Mapping(unittest.TestCase):
                 wenn data[0][:2] != '0x':
                     self.fail(f"Invalid line: {line!r}")
                 csetch = bytes.fromhex(data[0][2:])
-                wenn len(csetch) == 1 and 0x80 <= csetch[0]:
+                wenn len(csetch) == 1 und 0x80 <= csetch[0]:
                     continue
 
                 unich = unichrs(data[1])
-                wenn ord(unich) == 0xfffd or unich in urt_wa:
+                wenn ord(unich) == 0xfffd oder unich in urt_wa:
                     continue
                 urt_wa[unich] = csetch
 
@@ -345,9 +345,9 @@ klasse TestBase_Mapping(unittest.TestCase):
             self._testpoint(*mapping)
 
     def _testpoint(self, csetch, unich):
-        wenn (csetch, unich) not in self.pass_enctest:
+        wenn (csetch, unich) nicht in self.pass_enctest:
             self.assertEqual(unich.encode(self.encoding), csetch)
-        wenn (csetch, unich) not in self.pass_dectest:
+        wenn (csetch, unich) nicht in self.pass_dectest:
             self.assertEqual(str(csetch, self.encoding), unich)
 
     def test_errorhandle(self):

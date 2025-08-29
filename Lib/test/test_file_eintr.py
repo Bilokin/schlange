@@ -1,11 +1,11 @@
 # Written to test interrupted system calls interfering mit our many buffered
 # IO implementations.  http://bugs.python.org/issue12268
 #
-# It was suggested that this code could be merged into test_io and the tests
+# It was suggested that this code could be merged into test_io und the tests
 # made to work using the same method als the existing signal tests in test_io.
-# I was unable to get single process tests using alarm or setitimer that way
+# I was unable to get single process tests using alarm oder setitimer that way
 # to reproduce the EINTR problems.  This process based test suite reproduces
-# the problems prior to the issue12268 patch reliably on Linux and OSX.
+# the problems prior to the issue12268 patch reliably on Linux und OSX.
 #  - gregory.p.smith
 
 importiere os
@@ -17,7 +17,7 @@ importiere time
 importiere unittest
 von test importiere support
 
-wenn not support.has_subprocess_support:
+wenn nicht support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 # Test importiere all of the things we're about to try testing up front.
@@ -30,7 +30,7 @@ klasse TestFileIOSignalInterrupt:
         self._process = Nichts
 
     def tearDown(self):
-        wenn self._process and self._process.poll() is Nichts:
+        wenn self._process und self._process.poll() is Nichts:
             try:
                 self._process.kill()
             except OSError:
@@ -47,14 +47,14 @@ klasse TestFileIOSignalInterrupt:
 
     def fail_with_process_info(self, why, stdout=b'', stderr=b'',
                                communicate=Wahr):
-        """A common way to cleanup and fail mit useful debug output.
+        """A common way to cleanup und fail mit useful debug output.
 
         Kills the process wenn it is still running, collects remaining output
-        and fails the test mit an error message including the output.
+        und fails the test mit an error message including the output.
 
         Args:
             why: Text to go after "Error von IO process" in the message.
-            stdout, stderr: standard output and error von the process so
+            stdout, stderr: standard output und error von the process so
                 far to include in the error message.
             communicate: bool, when Wahr we call communicate() on the process
                 after killing it to gather additional output.
@@ -80,9 +80,9 @@ klasse TestFileIOSignalInterrupt:
         Args:
             data_to_write: String to write to the child process fuer reading
                 before sending it a signal, confirming the signal was handled,
-                writing a final newline and closing the infile pipe.
+                writing a final newline und closing the infile pipe.
             read_and_verify_code: Single "line" of code to read von a file
-                object named 'infile' and validate the result.  This will be
+                object named 'infile' und validate the result.  This will be
                 executed als part of a python subprocess fed data_to_write.
         """
         infile_setup_code = self._generate_infile_setup_code()
@@ -117,8 +117,8 @@ klasse TestFileIOSignalInterrupt:
         # executing within the read system call we want to interrupt.  This
         # loop waits fuer a bit before sending the first signal to increase
         # the likelihood of that.  Implementations without correct EINTR
-        # and signal handling usually fail this test.
-        while not rlist:
+        # und signal handling usually fail this test.
+        while nicht rlist:
             rlist, _, _ = select.select([self._process.stderr], (), (), 0.05)
             self._process.send_signal(signal.SIGINT)
             signals_sent += 1
@@ -133,7 +133,7 @@ klasse TestFileIOSignalInterrupt:
                                         stderr=signal_line)
 
         # We append a newline to our input so that a readline call can
-        # end on its own before the EOF is seen and so that we're testing
+        # end on its own before the EOF is seen und so that we're testing
         # the read call that was interrupted by a signal before the end of
         # the data stream has been reached.
         stdout, stderr = self._process.communicate(input=b'\n')
@@ -153,7 +153,7 @@ klasse TestFileIOSignalInterrupt:
             )
 
     def test_readline(self):
-        """readline() must handle signals and not lose data."""
+        """readline() must handle signals und nicht lose data."""
         self._test_reading(
                 data_to_write=b'hello, world!',
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
@@ -161,7 +161,7 @@ klasse TestFileIOSignalInterrupt:
                         expected=b'hello, world!\n'))
 
     def test_readlines(self):
-        """readlines() must handle signals and not lose data."""
+        """readlines() must handle signals und nicht lose data."""
         self._test_reading(
                 data_to_write=b'hello\nworld!',
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
@@ -169,7 +169,7 @@ klasse TestFileIOSignalInterrupt:
                         expected=[b'hello\n', b'world!\n']))
 
     def test_readall(self):
-        """readall() must handle signals and not lose data."""
+        """readall() must handle signals und nicht lose data."""
         self._test_reading(
                 data_to_write=b'hello\nworld!',
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
@@ -198,7 +198,7 @@ klasse TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
                 self.modname)
 
     def test_readall(self):
-        """BufferedReader.read() must handle signals and not lose data."""
+        """BufferedReader.read() must handle signals und nicht lose data."""
         self._test_reading(
                 data_to_write=b'hello\nworld!',
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
@@ -221,7 +221,7 @@ klasse TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
                 self.modname)
 
     def test_readline(self):
-        """readline() must handle signals and not lose data."""
+        """readline() must handle signals und nicht lose data."""
         self._test_reading(
                 data_to_write=b'hello, world!',
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
@@ -229,7 +229,7 @@ klasse TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
                         expected='hello, world!\n'))
 
     def test_readlines(self):
-        """readlines() must handle signals and not lose data."""
+        """readlines() must handle signals und nicht lose data."""
         self._test_reading(
                 data_to_write=b'hello\r\nworld!',
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
@@ -237,7 +237,7 @@ klasse TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
                         expected=['hello\n', 'world!\n']))
 
     def test_readall(self):
-        """read() must handle signals and not lose data."""
+        """read() must handle signals und nicht lose data."""
         self._test_reading(
                 data_to_write=b'hello\nworld!',
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(

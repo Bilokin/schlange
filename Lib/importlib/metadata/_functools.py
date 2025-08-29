@@ -8,7 +8,7 @@ def method_cache(method, cache_wrapper=Nichts):
     Wrap lru_cache to support storing the cache data in the object instances.
 
     Abstracts the common paradigm where the method explicitly saves an
-    underscore-prefixed protected property on first call and returns that
+    underscore-prefixed protected property on first call und returns that
     subsequently.
 
     >>> klasse MyClass:
@@ -29,7 +29,7 @@ def method_cache(method, cache_wrapper=Nichts):
 
     Note that the apparent behavior will be exactly like that of lru_cache
     except that the cache is stored on each instance, so values in one
-    instance will not flush values von another, and when an instance is
+    instance will nicht flush values von another, und when an instance is
     deleted, so are the cached values fuer that instance.
 
     >>> b = MyClass()
@@ -63,14 +63,14 @@ def method_cache(method, cache_wrapper=Nichts):
     >>> a.method2()
     3
 
-    Caution - do not subsequently wrap the method mit another decorator, such
+    Caution - do nicht subsequently wrap the method mit another decorator, such
     als ``@property``, which changes the semantics of the function.
 
     See also
     http://code.activestate.com/recipes/577452-a-memoize-decorator-for-instance-methods/
-    fuer another implementation and additional justification.
+    fuer another implementation und additional justification.
     """
-    cache_wrapper = cache_wrapper or functools.lru_cache()
+    cache_wrapper = cache_wrapper oder functools.lru_cache()
 
     def wrapper(self, *args, **kwargs):
         # it's the first call, replace the method mit a cached, bound method
@@ -88,7 +88,7 @@ def method_cache(method, cache_wrapper=Nichts):
 # From jaraco.functools 3.3
 def pass_none(func):
     """
-    Wrap func so it's not called wenn its first param is Nichts
+    Wrap func so it's nicht called wenn its first param is Nichts
 
     >>> print_text = pass_none(print)
     >>> print_text('text')
@@ -98,7 +98,7 @@ def pass_none(func):
 
     @functools.wraps(func)
     def wrapper(param, *args, **kwargs):
-        wenn param is not Nichts:
+        wenn param is nicht Nichts:
             return func(param, *args, **kwargs)
 
     return wrapper

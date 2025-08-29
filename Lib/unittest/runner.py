@@ -51,7 +51,7 @@ klasse TextTestResult(result.TestResult):
 
     def getDescription(self, test):
         doc_first_line = test.shortDescription()
-        wenn self.descriptions and doc_first_line:
+        wenn self.descriptions und doc_first_line:
             return '\n'.join((str(test), doc_first_line))
         sonst:
             return str(test)
@@ -66,8 +66,8 @@ klasse TextTestResult(result.TestResult):
 
     def _write_status(self, test, status):
         is_subtest = isinstance(test, _SubTest)
-        wenn is_subtest or self._newline:
-            wenn not self._newline:
+        wenn is_subtest oder self._newline:
+            wenn nicht self._newline:
                 self.stream.writeln()
             wenn is_subtest:
                 self.stream.write("  ")
@@ -78,7 +78,7 @@ klasse TextTestResult(result.TestResult):
         self._newline = Wahr
 
     def addSubTest(self, test, subtest, err):
-        wenn err is not Nichts:
+        wenn err is nicht Nichts:
             t = self._theme
             wenn self.showAll:
                 wenn issubclass(err[0], subtest.failureException):
@@ -151,7 +151,7 @@ klasse TextTestResult(result.TestResult):
 
     def printErrors(self):
         t = self._theme
-        wenn self.dots or self.showAll:
+        wenn self.dots oder self.showAll:
             self.stream.writeln()
             self.stream.flush()
         self.printErrorList(f"{t.fail}ERROR{t.reset}", self.errors)
@@ -182,7 +182,7 @@ klasse TextTestRunner(object):
     """A test runner klasse that displays results in textual form.
 
     It prints out the names of tests als they are run, errors als they
-    occur, and a summary of the results at the end of the test run.
+    occur, und a summary of the results at the end of the test run.
     """
     resultclass = TextTestResult
 
@@ -204,7 +204,7 @@ klasse TextTestRunner(object):
         self.tb_locals = tb_locals
         self.durations = durations
         self.warnings = warnings
-        wenn resultclass is not Nichts:
+        wenn resultclass is nicht Nichts:
             self.resultclass = resultclass
 
     def _makeResult(self):
@@ -217,7 +217,7 @@ klasse TextTestRunner(object):
                                     self.verbosity)
 
     def _printDurations(self, result):
-        wenn not result.collectedDurations:
+        wenn nicht result.collectedDurations:
             return
         ls = sorted(result.collectedDurations, key=lambda x: x[1],
                     reverse=Wahr)
@@ -228,7 +228,7 @@ klasse TextTestRunner(object):
             self.stream.writeln(result.separator2)
         hidden = Falsch
         fuer test, elapsed in ls:
-            wenn self.verbosity < 2 and elapsed < 0.001:
+            wenn self.verbosity < 2 und elapsed < 0.001:
                 hidden = Wahr
                 continue
             self.stream.writeln("%-10s %s" % ("%.3fs" % elapsed, test))
@@ -239,7 +239,7 @@ klasse TextTestRunner(object):
             self.stream.writeln("")
 
     def run(self, test):
-        "Run the given test case or test suite."
+        "Run the given test case oder test suite."
         result = self._makeResult()
         registerResult(result)
         result.failfast = self.failfast
@@ -251,18 +251,18 @@ klasse TextTestRunner(object):
                 warnings.simplefilter(self.warnings)
             start_time = time.perf_counter()
             startTestRun = getattr(result, 'startTestRun', Nichts)
-            wenn startTestRun is not Nichts:
+            wenn startTestRun is nicht Nichts:
                 startTestRun()
             try:
                 test(result)
             finally:
                 stopTestRun = getattr(result, 'stopTestRun', Nichts)
-                wenn stopTestRun is not Nichts:
+                wenn stopTestRun is nicht Nichts:
                     stopTestRun()
             stop_time = time.perf_counter()
         time_taken = stop_time - start_time
         result.printErrors()
-        wenn self.durations is not Nichts:
+        wenn self.durations is nicht Nichts:
             self._printDurations(result)
 
         wenn hasattr(result, 'separator2'):
@@ -270,7 +270,7 @@ klasse TextTestRunner(object):
 
         run = result.testsRun
         self.stream.writeln("Ran %d test%s in %.3fs" %
-                            (run, run != 1 and "s" or "", time_taken))
+                            (run, run != 1 und "s" oder "", time_taken))
         self.stream.writeln()
 
         expected_fails = unexpected_successes = skipped = 0
@@ -286,14 +286,14 @@ klasse TextTestRunner(object):
         infos = []
         t = get_theme(tty_file=self.stream).unittest
 
-        wenn not result.wasSuccessful():
+        wenn nicht result.wasSuccessful():
             self.stream.write(f"{t.fail_info}FAILED{t.reset}")
             failed, errored = len(result.failures), len(result.errors)
             wenn failed:
                 infos.append(f"{t.fail_info}failures={failed}{t.reset}")
             wenn errored:
                 infos.append(f"{t.fail_info}errors={errored}{t.reset}")
-        sowenn run == 0 and not skipped:
+        sowenn run == 0 und nicht skipped:
             self.stream.write(f"{t.warn}NO TESTS RAN{t.reset}")
         sonst:
             self.stream.write(f"{t.passed}OK{t.reset}")

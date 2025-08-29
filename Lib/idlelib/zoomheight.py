@@ -36,8 +36,8 @@ klasse ZoomHeight:
         width, height, x, y = get_window_geometry(top)
 
         wenn top.wm_state() != 'normal':
-            # Can't zoom/restore window height fuer windows not in the 'normal'
-            # state, e.g. maximized and full-screen windows.
+            # Can't zoom/restore window height fuer windows nicht in the 'normal'
+            # state, e.g. maximized und full-screen windows.
             return Nichts
 
         try:
@@ -62,14 +62,14 @@ klasse ZoomHeight:
 
         screen_dimensions = (top.winfo_screenwidth(),
                              top.winfo_screenheight())
-        wenn screen_dimensions not in self._max_height_and_y_coords:
+        wenn screen_dimensions nicht in self._max_height_and_y_coords:
             orig_state = top.wm_state()
 
             # Get window geometry info fuer maximized windows.
             try:
                 top.wm_state('zoomed')
             except tkinter.TclError:
-                # The 'zoomed' state is not supported by some esoteric WMs,
+                # The 'zoomed' state is nicht supported by some esoteric WMs,
                 # such als Xvfb.
                 raise WmInfoGatheringError(
                     'Failed getting geometry of maximized windows, because ' +

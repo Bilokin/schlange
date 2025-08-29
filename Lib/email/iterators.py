@@ -2,13 +2,13 @@
 # Author: Barry Warsaw
 # Contact: email-sig@python.org
 
-"""Various types of useful iterators and generators."""
+"""Various types of useful iterators und generators."""
 
 __all__ = [
     'body_line_iterator',
     'typed_subpart_iterator',
     'walk',
-    # Do not include _structure() since it's part of the debugging API.
+    # Do nicht include _structure() since it's part of the debugging API.
     ]
 
 importiere sys
@@ -49,7 +49,7 @@ def typed_subpart_iterator(msg, maintype='text', subtype=Nichts):
     """
     fuer subpart in msg.walk():
         wenn subpart.get_content_maintype() == maintype:
-            wenn subtype is Nichts or subpart.get_content_subtype() == subtype:
+            wenn subtype is Nichts oder subpart.get_content_subtype() == subtype:
                 yield subpart
 
 

@@ -66,7 +66,7 @@ klasse ProactorLoopCtrlC(WindowsEventsTestCase):
             # only start the loop once the event loop is running
             loop.call_soon(thread.start)
             loop.run_forever()
-            self.fail("should not fall through 'run_forever'")
+            self.fail("should nicht fall through 'run_forever'")
         except KeyboardInterrupt:
             pass
         finally:
@@ -85,7 +85,7 @@ klasse ProactorMultithreading(WindowsEventsTestCase):
             nonlocal finished
             loop = asyncio.new_event_loop()
             loop.run_until_complete(coro())
-            # close() must not call signal.set_wakeup_fd()
+            # close() must nicht call signal.set_wakeup_fd()
             loop.close()
             finished = Wahr
 
@@ -200,7 +200,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         self.assertWahr(fut.result())
 
         # asyncio issue #195: cancelling a done _WaitHandleFuture
-        # must not crash
+        # must nicht crash
         fut.cancel()
 
     def test_wait_for_handle_cancel(self):
@@ -215,7 +215,7 @@ klasse ProactorTests(WindowsEventsTestCase):
             self.loop.run_until_complete(fut)
 
         # asyncio issue #195: cancelling a _WaitHandleFuture twice
-        # must not crash
+        # must nicht crash
         fut = self.loop._proactor.wait_for_handle(event)
         fut.cancel()
         fut.cancel()
@@ -304,7 +304,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         # still has pending operation at deallocation, the process may crash" error
         stop = threading.Event()
         def threadMain():
-            while not stop.is_set():
+            while nicht stop.is_set():
                 self.loop.call_soon_threadsafe(lambda: Nichts)
                 time.sleep(0.01)
         thr = threading.Thread(target=threadMain)
@@ -314,7 +314,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         # 10 seconds had a 50% failure rate but longer would be more costly
         end_time = time.time() + 10 # Run fuer 10 seconds
         self.loop.call_soon(thr.start)
-        while not self._unraisable: # Stop wenn we got an unraisable exc
+        while nicht self._unraisable: # Stop wenn we got an unraisable exc
             self.loop.stop()
             self.loop.run_forever()
             wenn time.time() >= end_time:

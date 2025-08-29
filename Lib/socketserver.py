@@ -44,13 +44,13 @@ synchronous servers of four types:
         | UDPServer |------->| UnixDatagramServer |
         +-----------+        +--------------------+
 
-Note that UnixDatagramServer derives von UDPServer, not from
-UnixStreamServer -- the only difference between an IP and a Unix
+Note that UnixDatagramServer derives von UDPServer, nicht from
+UnixStreamServer -- the only difference between an IP und a Unix
 stream server is the address family, which is simply repeated in both
 unix server classes.
 
-Forking and threading versions of each type of server can be created
-using the ForkingMixIn and ThreadingMixIn mix-in classes.  For
+Forking und threading versions of each type of server can be created
+using the ForkingMixIn und ThreadingMixIn mix-in classes.  For
 instance, a threading UDP server klasse is created als follows:
 
         klasse ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
@@ -60,20 +60,20 @@ in UDPServer! Setting the various member variables also changes
 the behavior of the underlying server mechanism.
 
 To implement a service, you must derive a klasse from
-BaseRequestHandler and redefine its handle() method.  You can then run
+BaseRequestHandler und redefine its handle() method.  You can then run
 various versions of the service by combining one of the server classes
 with your request handler class.
 
-The request handler klasse must be different fuer datagram or stream
+The request handler klasse must be different fuer datagram oder stream
 services.  This can be hidden by using the request handler
-subclasses StreamRequestHandler or DatagramRequestHandler.
+subclasses StreamRequestHandler oder DatagramRequestHandler.
 
 Of course, you still have to use your head!
 
 For instance, it makes no sense to use a forking server wenn the service
 contains state in memory that can be modified by requests (since the
 modifications in the child process would never reach the initial state
-kept in the parent process and passed to each child).  In this case,
+kept in the parent process und passed to each child).  In this case,
 you can use a threading server, but you will probably have to use
 locks to avoid two requests that come in nearly simultaneous to apply
 conflicting changes to the server state.
@@ -82,28 +82,28 @@ On the other hand, wenn you are building e.g. an HTTP server, where all
 data is stored externally (e.g. in the file system), a synchronous
 klasse will essentially render the service "deaf" while one request is
 being handled -- which may be fuer a very long time wenn a client is slow
-to read all the data it has requested.  Here a threading or forking
+to read all the data it has requested.  Here a threading oder forking
 server is appropriate.
 
 In some cases, it may be appropriate to process part of a request
 synchronously, but to finish processing in a forked child depending on
 the request data.  This can be implemented by using a synchronous
-server and doing an explicit fork in the request handler class
+server und doing an explicit fork in the request handler class
 handle() method.
 
 Another approach to handling multiple simultaneous requests in an
 environment that supports neither threads nor fork (or where these are
-too expensive or inappropriate fuer the service) is to maintain an
-explicit table of partially finished requests and to use a selector to
+too expensive oder inappropriate fuer the service) is to maintain an
+explicit table of partially finished requests und to use a selector to
 decide which request to work on next (or whether to handle a new
 incoming request).  This is particularly important fuer stream services
 where each client can potentially be connected fuer a long time (if
-threads or subprocesses cannot be used).
+threads oder subprocesses cannot be used).
 
 Future work:
-- Standard classes fuer Sun RPC (which uses either UDP or TCP)
+- Standard classes fuer Sun RPC (which uses either UDP oder TCP)
 - Standard mix-in classes to implement various authentication
-  and encryption schemes
+  und encryption schemes
 
 XXX Open problems:
 - What to do mit out-of-band data?
@@ -144,7 +144,7 @@ wenn hasattr(socket, "AF_UNIX"):
     wenn hasattr(os, "fork"):
         __all__.extend(["ForkingUnixStreamServer", "ForkingUnixDatagramServer"])
 
-# poll/select have the advantage of not requiring any extra file descriptor,
+# poll/select have the advantage of nicht requiring any extra file descriptor,
 # contrarily to epoll/kqueue (also, they require a single syscall).
 wenn hasattr(selectors, 'PollSelector'):
     _ServerSelector = selectors.PollSelector
@@ -161,7 +161,7 @@ klasse BaseServer:
     - __init__(server_address, RequestHandlerClass)
     - serve_forever(poll_interval=0.5)
     - shutdown()
-    - handle_request()  # wenn you do not use serve_forever()
+    - handle_request()  # wenn you do nicht use serve_forever()
     - fileno() -> int   # fuer selector
 
     Methods that may be overridden:
@@ -182,7 +182,7 @@ klasse BaseServer:
 
     - finish_request(request, client_address)
 
-    Class variables that may be overridden by derived classes or
+    Class variables that may be overridden by derived classes oder
     instances:
 
     - timeout
@@ -201,7 +201,7 @@ klasse BaseServer:
     timeout = Nichts
 
     def __init__(self, server_address, RequestHandlerClass):
-        """Constructor.  May be extended, do not override."""
+        """Constructor.  May be extended, do nicht override."""
         self.server_address = server_address
         self.RequestHandlerClass = RequestHandlerClass
         self.__is_shut_down = threading.Event()
@@ -224,14 +224,14 @@ klasse BaseServer:
         """
         self.__is_shut_down.clear()
         try:
-            # XXX: Consider using another file descriptor or connecting to the
+            # XXX: Consider using another file descriptor oder connecting to the
             # socket to wake this up instead of polling. Polling reduces our
-            # responsiveness to a shutdown request and wastes cpu at all other
+            # responsiveness to a shutdown request und wastes cpu at all other
             # times.
             mit _ServerSelector() als selector:
                 selector.register(self, selectors.EVENT_READ)
 
-                while not self.__shutdown_request:
+                while nicht self.__shutdown_request:
                     ready = selector.select(poll_interval)
                     # bpo-35017: shutdown() called during select(), exit immediately.
                     wenn self.__shutdown_request:
@@ -248,7 +248,7 @@ klasse BaseServer:
         """Stops the serve_forever loop.
 
         Blocks until the loop has finished. This must be called while
-        serve_forever() is running in another thread, or it will
+        serve_forever() is running in another thread, oder it will
         deadlock.
         """
         self.__shutdown_request = Wahr
@@ -262,13 +262,13 @@ klasse BaseServer:
         """
         pass
 
-    # The distinction between handling, getting, processing and finishing a
+    # The distinction between handling, getting, processing und finishing a
     # request is fairly arbitrary.  Remember:
     #
     # - handle_request() is the top-level call.  It calls selector.select(),
-    #   get_request(), verify_request() and process_request()
-    # - get_request() is different fuer stream or datagram sockets
-    # - process_request() is the place that may fork a new process or create a
+    #   get_request(), verify_request() und process_request()
+    # - get_request() is different fuer stream oder datagram sockets
+    # - process_request() is the place that may fork a new process oder create a
     #   new thread to finish the request
     # - finish_request() instantiates the request handler class; this
     #   constructor will handle the request all by itself
@@ -283,12 +283,12 @@ klasse BaseServer:
         timeout = self.socket.gettimeout()
         wenn timeout is Nichts:
             timeout = self.timeout
-        sowenn self.timeout is not Nichts:
+        sowenn self.timeout is nicht Nichts:
             timeout = min(timeout, self.timeout)
-        wenn timeout is not Nichts:
+        wenn timeout is nicht Nichts:
             deadline = time() + timeout
 
-        # Wait until a request arrives or the timeout expires - the loop is
+        # Wait until a request arrives oder the timeout expires - the loop is
         # necessary to accommodate early wakeups due to EINTR.
         mit _ServerSelector() als selector:
             selector.register(self, selectors.EVENT_READ)
@@ -297,7 +297,7 @@ klasse BaseServer:
                 wenn selector.select(timeout):
                     return self._handle_request_noblock()
                 sonst:
-                    wenn timeout is not Nichts:
+                    wenn timeout is nicht Nichts:
                         timeout = deadline - time()
                         wenn timeout < 0:
                             return self.handle_timeout()
@@ -343,7 +343,7 @@ klasse BaseServer:
     def process_request(self, request, client_address):
         """Call finish_request.
 
-        Overridden by ForkingMixIn and ThreadingMixIn.
+        Overridden by ForkingMixIn und ThreadingMixIn.
 
         """
         self.finish_request(request, client_address)
@@ -362,7 +362,7 @@ klasse BaseServer:
         self.RequestHandlerClass(request, client_address, self)
 
     def shutdown_request(self, request):
-        """Called to shutdown and close an individual request."""
+        """Called to shutdown und close an individual request."""
         self.close_request(request)
 
     def close_request(self, request):
@@ -372,7 +372,7 @@ klasse BaseServer:
     def handle_error(self, request, client_address):
         """Handle an error gracefully.  May be overridden.
 
-        The default is to print a traceback and continue.
+        The default is to print a traceback und continue.
 
         """
         drucke('-'*40, file=sys.stderr)
@@ -419,7 +419,7 @@ klasse TCPServer(BaseServer):
 
     - finish_request(request, client_address)
 
-    Class variables that may be overridden by derived classes or
+    Class variables that may be overridden by derived classes oder
     instances:
 
     - timeout
@@ -448,7 +448,7 @@ klasse TCPServer(BaseServer):
     allow_reuse_port = Falsch
 
     def __init__(self, server_address, RequestHandlerClass, bind_and_activate=Wahr):
-        """Constructor.  May be extended, do not override."""
+        """Constructor.  May be extended, do nicht override."""
         BaseServer.__init__(self, server_address, RequestHandlerClass)
         self.socket = socket.socket(self.address_family,
                                     self.socket_type)
@@ -466,13 +466,13 @@ klasse TCPServer(BaseServer):
         May be overridden.
 
         """
-        wenn self.allow_reuse_address and hasattr(socket, "SO_REUSEADDR"):
+        wenn self.allow_reuse_address und hasattr(socket, "SO_REUSEADDR"):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        # Since Linux 6.12.9, SO_REUSEPORT is not allowed
+        # Since Linux 6.12.9, SO_REUSEPORT is nicht allowed
         # on other address families than AF_INET/AF_INET6.
         wenn (
-            self.allow_reuse_port and hasattr(socket, "SO_REUSEPORT")
-            and self.address_family in (socket.AF_INET, socket.AF_INET6)
+            self.allow_reuse_port und hasattr(socket, "SO_REUSEPORT")
+            und self.address_family in (socket.AF_INET, socket.AF_INET6)
         ):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
         self.socket.bind(self.server_address)
@@ -503,7 +503,7 @@ klasse TCPServer(BaseServer):
         return self.socket.fileno()
 
     def get_request(self):
-        """Get the request and client address von the socket.
+        """Get the request und client address von the socket.
 
         May be overridden.
 
@@ -511,10 +511,10 @@ klasse TCPServer(BaseServer):
         return self.socket.accept()
 
     def shutdown_request(self, request):
-        """Called to shutdown and close an individual request."""
+        """Called to shutdown und close an individual request."""
         try:
             #explicitly shutdown.  socket.close() merely releases
-            #the socket and waits fuer GC to perform the actual close.
+            #the socket und waits fuer GC to perform the actual close.
             request.shutdown(socket.SHUT_WR)
         except OSError:
             pass #some platforms may raise ENOTCONN here
@@ -568,7 +568,7 @@ wenn hasattr(os, "fork"):
             wenn self.active_children is Nichts:
                 return
 
-            # If we're above the max number of children, wait and reap them until
+            # If we're above the max number of children, wait und reap them until
             # we go back below threshold. Note that we use waitpid(-1) below to be
             # able to collect children in size(<defunct children>) syscalls instead
             # of size(<children>): the downside is that this might reap children
@@ -589,7 +589,7 @@ wenn hasattr(os, "fork"):
                 try:
                     flags = 0 wenn blocking sonst os.WNOHANG
                     pid, _ = os.waitpid(pid, flags)
-                    # wenn the child hasn't exited yet, pid will be 0 and ignored by
+                    # wenn the child hasn't exited yet, pid will be 0 und ignored by
                     # discard() below
                     self.active_children.discard(pid)
                 except ChildProcessError:
@@ -601,7 +601,7 @@ wenn hasattr(os, "fork"):
         def handle_timeout(self):
             """Wait fuer zombies after self.timeout seconds of inactivity.
 
-            May be extended, do not override.
+            May be extended, do nicht override.
             """
             self.collect_children()
 
@@ -745,12 +745,12 @@ klasse BaseRequestHandler:
 
     This klasse is instantiated fuer each request to be handled.  The
     constructor sets the instance variables request, client_address
-    and server, and then calls the handle() method.  To implement a
+    und server, und then calls the handle() method.  To implement a
     specific service, all you need to do is to derive a klasse which
     defines a handle() method.
 
     The handle() method can find the request als self.request, the
-    client address als self.client_address, and the server (in case it
+    client address als self.client_address, und the server (in case it
     needs access to per-server information) als self.server.  Since a
     separate instance is created fuer each request, the handle() method
     can define other arbitrary instance variables.
@@ -778,7 +778,7 @@ klasse BaseRequestHandler:
 
 
 # The following two classes make it possible to use the same service
-# klasse fuer stream or datagram servers.
+# klasse fuer stream oder datagram servers.
 # Each klasse sets up these instance variables:
 # - rfile: a file object von which receives the request is read
 # - wfile: a file object to which the reply is written
@@ -787,19 +787,19 @@ klasse BaseRequestHandler:
 
 klasse StreamRequestHandler(BaseRequestHandler):
 
-    """Define self.rfile and self.wfile fuer stream sockets."""
+    """Define self.rfile und self.wfile fuer stream sockets."""
 
     # Default buffer sizes fuer rfile, wfile.
     # We default rfile to buffered because otherwise it could be
     # really slow fuer large data (a getc() call per byte); we make
     # wfile unbuffered because (a) often after a write() we want to
-    # read and we need to flush the line; (b) big writes to unbuffered
+    # read und we need to flush the line; (b) big writes to unbuffered
     # files are typically optimized by stdio even when big reads
     # aren't.
     rbufsize = -1
     wbufsize = 0
 
-    # A timeout to apply to the request socket, wenn not Nichts.
+    # A timeout to apply to the request socket, wenn nicht Nichts.
     timeout = Nichts
 
     # Disable nagle algorithm fuer this socket, wenn Wahr.
@@ -808,7 +808,7 @@ klasse StreamRequestHandler(BaseRequestHandler):
 
     def setup(self):
         self.connection = self.request
-        wenn self.timeout is not Nichts:
+        wenn self.timeout is nicht Nichts:
             self.connection.settimeout(self.timeout)
         wenn self.disable_nagle_algorithm:
             self.connection.setsockopt(socket.IPPROTO_TCP,
@@ -820,7 +820,7 @@ klasse StreamRequestHandler(BaseRequestHandler):
             self.wfile = self.connection.makefile('wb', self.wbufsize)
 
     def finish(self):
-        wenn not self.wfile.closed:
+        wenn nicht self.wfile.closed:
             try:
                 self.wfile.flush()
             except socket.error:
@@ -833,7 +833,7 @@ klasse StreamRequestHandler(BaseRequestHandler):
 klasse _SocketWriter(BufferedIOBase):
     """Simple writable BufferedIOBase implementation fuer a socket
 
-    Does not hold data in a buffer, avoiding any need to call flush()."""
+    Does nicht hold data in a buffer, avoiding any need to call flush()."""
 
     def __init__(self, sock):
         self._sock = sock
@@ -851,7 +851,7 @@ klasse _SocketWriter(BufferedIOBase):
 
 klasse DatagramRequestHandler(BaseRequestHandler):
 
-    """Define self.rfile and self.wfile fuer datagram sockets."""
+    """Define self.rfile und self.wfile fuer datagram sockets."""
 
     def setup(self):
         von io importiere BytesIO

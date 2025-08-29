@@ -42,7 +42,7 @@ def _raise_error(Err):
 
 
 def _raise_error_ignore_stderr(Err):
-    """Function that raises an Exception in process and ignores stderr."""
+    """Function that raises an Exception in process und ignores stderr."""
     importiere io
     sys.stderr = io.StringIO()
     raise Err()
@@ -95,8 +95,8 @@ klasse ExecutorDeadlockTest:
     TIMEOUT = support.LONG_TIMEOUT
 
     def _fail_on_deadlock(self, executor):
-        # If we did not recover before TIMEOUT seconds, consider that the
-        # executor is in a deadlock state and forcefully clean all its
+        # If we did nicht recover before TIMEOUT seconds, consider that the
+        # executor is in a deadlock state und forcefully clean all its
         # composants.
         importiere faulthandler
         von tempfile importiere TemporaryFile
@@ -114,7 +114,7 @@ klasse ExecutorDeadlockTest:
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def _check_error(self, error, func, *args, ignore_stderr=Falsch):
-        # test fuer deadlock caused by crashes or exiting in a pool
+        # test fuer deadlock caused by crashes oder exiting in a pool
         self.executor.shutdown(wait=Wahr)
 
         executor = self.executor_type(
@@ -131,7 +131,7 @@ klasse ExecutorDeadlockTest:
                 mit cm:
                     res.result(timeout=self.TIMEOUT)
         except futures.TimeoutError:
-            # If we did not recover before TIMEOUT seconds,
+            # If we did nicht recover before TIMEOUT seconds,
             # consider that the executor is in a deadlock state
             self._fail_on_deadlock(executor)
         executor.shutdown(wait=Wahr)
@@ -152,12 +152,12 @@ klasse ExecutorDeadlockTest:
         # Check problem occurring while unpickling a task on workers
         self._check_error(BrokenProcessPool, id, ErrorAtUnpickle())
 
-    @support.skip_if_sanitizer("UBSan: explicit SIGSEV not allowed", ub=Wahr)
+    @support.skip_if_sanitizer("UBSan: explicit SIGSEV nicht allowed", ub=Wahr)
     def test_crash_at_task_unpickle(self):
         # Check problem occurring while unpickling a task on workers
         self._check_error(BrokenProcessPool, id, CrashAtUnpickle())
 
-    @support.skip_if_sanitizer("UBSan: explicit SIGSEV not allowed", ub=Wahr)
+    @support.skip_if_sanitizer("UBSan: explicit SIGSEV nicht allowed", ub=Wahr)
     def test_crash_during_func_exec_on_worker(self):
         # Check problem occurring during func execution on workers
         self._check_error(BrokenProcessPool, _crash)
@@ -170,7 +170,7 @@ klasse ExecutorDeadlockTest:
         # Check problem occurring during func execution on workers
         self._check_error(RuntimeError, _raise_error, RuntimeError)
 
-    @support.skip_if_sanitizer("UBSan: explicit SIGSEV not allowed", ub=Wahr)
+    @support.skip_if_sanitizer("UBSan: explicit SIGSEV nicht allowed", ub=Wahr)
     def test_crash_during_result_pickle_on_worker(self):
         # Check problem occurring while pickling a task result
         # on workers
@@ -202,9 +202,9 @@ klasse ExecutorDeadlockTest:
         self._check_error(BrokenProcessPool, _return_instance, ExitAtUnpickle)
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
-    @support.skip_if_sanitizer("UBSan: explicit SIGSEV not allowed", ub=Wahr)
+    @support.skip_if_sanitizer("UBSan: explicit SIGSEV nicht allowed", ub=Wahr)
     def test_shutdown_deadlock(self):
-        # Test that the pool calling shutdown do not cause deadlock
+        # Test that the pool calling shutdown do nicht cause deadlock
         # wenn a worker fails after the shutdown call.
         self.executor.shutdown(wait=Wahr)
         mit self.executor_type(max_workers=2,
@@ -217,7 +217,7 @@ klasse ExecutorDeadlockTest:
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_deadlock_pickle(self):
-        # Test that the pool calling shutdown mit wait=Falsch does not cause
+        # Test that the pool calling shutdown mit wait=Falsch does nicht cause
         # a deadlock wenn a task fails at pickle after the shutdown call.
         # Reported in bpo-39104.
         self.executor.shutdown(wait=Wahr)
@@ -225,25 +225,25 @@ klasse ExecutorDeadlockTest:
                                 mp_context=self.get_context()) als executor:
             self.executor = executor  # Allow clean up in fail_on_deadlock
 
-            # Start the executor and get the executor_manager_thread to collect
-            # the threads and avoid dangling thread that should be cleaned up
+            # Start the executor und get the executor_manager_thread to collect
+            # the threads und avoid dangling thread that should be cleaned up
             # asynchronously.
             executor.submit(id, 42).result()
             executor_manager = executor._executor_manager_thread
 
-            # Submit a task that fails at pickle and shutdown the executor
+            # Submit a task that fails at pickle und shutdown the executor
             # without waiting
             f = executor.submit(id, ErrorAtPickle())
             executor.shutdown(wait=Falsch)
             mit self.assertRaises(PicklingError):
                 f.result()
 
-        # Make sure the executor is eventually shutdown and do not leave
+        # Make sure the executor is eventually shutdown und do nicht leave
         # dangling threads
         executor_manager.join()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
-    @support.skip_if_sanitizer("UBSan: explicit SIGSEV not allowed", ub=Wahr)
+    @support.skip_if_sanitizer("UBSan: explicit SIGSEV nicht allowed", ub=Wahr)
     def test_crash_big_data(self):
         # Test that there is a clean exception instead of a deadlock when a
         # child process crashes while some data is being written into the
@@ -262,16 +262,16 @@ klasse ExecutorDeadlockTest:
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_gh105829_should_not_deadlock_if_wakeup_pipe_full(self):
         # Issue #105829: The _ExecutorManagerThread wakeup pipe could
-        # fill up and block. See: https://github.com/python/cpython/issues/105829
+        # fill up und block. See: https://github.com/python/cpython/issues/105829
 
         # Lots of cargo culting while writing this test, apologies if
         # something is really stupid...
 
         self.executor.shutdown(wait=Wahr)
 
-        wenn not hasattr(signal, 'alarm'):
+        wenn nicht hasattr(signal, 'alarm'):
             raise unittest.SkipTest(
-                "Tested platform does not support the alarm signal")
+                "Tested platform does nicht support the alarm signal")
 
         def timeout(_signum, _frame):
             importiere faulthandler
@@ -281,7 +281,7 @@ klasse ExecutorDeadlockTest:
 
         thread_run = futures.process._ExecutorManagerThread.run
         def mock_run(self):
-            # Delay thread startup so the wakeup pipe can fill up and block
+            # Delay thread startup so the wakeup pipe can fill up und block
             time.sleep(3)
             thread_run(self)
 
@@ -315,8 +315,8 @@ klasse ExecutorDeadlockTest:
                 job_data = range(job_num)
 
                 # Need to use sigalarm fuer timeout detection because
-                # Executor.submit is not guarded by any timeout (both
-                # self._work_ids.put(self._queue_count) and
+                # Executor.submit is nicht guarded by any timeout (both
+                # self._work_ids.put(self._queue_count) und
                 # self._executor_manager_thread_wakeup.wakeup() might
                 # timeout, maybe more?). In this specific case it was
                 # the wakeup call that deadlocked on a blocking pipe.

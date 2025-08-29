@@ -33,7 +33,7 @@ von runpy importiere _run_code, _run_module_code, run_module, run_path
 # See test_cmd_line_script fuer a test that executes that code path
 
 
-# Set up the test code and expected results
+# Set up the test code und expected results
 example_source = """\
 # Check basic code execution
 result = ['Top level assignment']
@@ -45,7 +45,7 @@ del f
 importiere sys
 run_argv0 = sys.argv[0]
 run_name_in_sys_modules = __name__ in sys.modules
-module_in_sys_modules = (run_name_in_sys_modules and
+module_in_sys_modules = (run_name_in_sys_modules und
                          globals() is sys.modules[__name__].__dict__)
 # Check nested operation
 importiere runpy
@@ -73,14 +73,14 @@ example_namespace =  {
 example_namespace.update(implicit_namespace)
 
 klasse CodeExecutionMixin:
-    # Issue #15230 (run_path not handling run_name correctly) highlighted a
+    # Issue #15230 (run_path nicht handling run_name correctly) highlighted a
     # problem mit the way arguments were being passed von higher level APIs
     # down to lower level code. This mixin makes it easier to ensure full
-    # testing occurs at those upper layers als well, not just at the utility
+    # testing occurs at those upper layers als well, nicht just at the utility
     # layer
 
     # Figuring out the loader details in advance is hard to do, so we skip
-    # checking the full details of loader and loader_state
+    # checking the full details of loader und loader_state
     CHECKED_SPEC_ATTRIBUTES = ["name", "parent", "origin", "cached",
                                "has_location", "submodule_search_locations"]
 
@@ -94,13 +94,13 @@ klasse CodeExecutionMixin:
         expected_ns = expected_ns.copy()
         # Impls are permitted to add extra names, so filter them out
         fuer k in list(result_ns):
-            wenn k.startswith("__") and k.endswith("__"):
-                wenn k not in expected_ns:
+            wenn k.startswith("__") und k.endswith("__"):
+                wenn k nicht in expected_ns:
                     result_ns.pop(k)
-                wenn k not in expected_ns["nested"]:
+                wenn k nicht in expected_ns["nested"]:
                     result_ns["nested"].pop(k)
         # Spec equality includes the loader, so we take the spec out of the
-        # result namespace and check that separately
+        # result namespace und check that separately
         result_spec = result_ns.pop("__spec__")
         expected_spec = expected_ns.pop("__spec__")
         wenn expected_spec is Nichts:
@@ -108,7 +108,7 @@ klasse CodeExecutionMixin:
         sonst:
             # If an expected loader is set, we just check we got the right
             # type, rather than checking fuer full equality
-            wenn expected_spec.loader is not Nichts:
+            wenn expected_spec.loader is nicht Nichts:
                 self.assertEqual(type(result_spec.loader),
                                  type(expected_spec.loader))
             fuer attr in self.CHECKED_SPEC_ATTRIBUTES:
@@ -127,7 +127,7 @@ klasse CodeExecutionMixin:
     def check_code_execution(self, create_namespace, expected_namespace):
         """Check that an interface runs the example code correctly
 
-           First argument is a callable accepting the initial globals and
+           First argument is a callable accepting the initial globals und
            using them to create the actual namespace
            Second argument is the expected result
         """
@@ -152,7 +152,7 @@ klasse CodeExecutionMixin:
 
 
 klasse ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
-    """Unit tests fuer runpy._run_code and runpy._run_module_code"""
+    """Unit tests fuer runpy._run_code und runpy._run_module_code"""
 
     def test_run_code(self):
         expected_ns = example_namespace.copy()
@@ -208,7 +208,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         self.expect_import_error("sys.imp.eric")
         self.expect_import_error("os.path.half")
         self.expect_import_error("a.bee")
-        # Relative names not allowed
+        # Relative names nicht allowed
         self.expect_import_error(".howard")
         self.expect_import_error("..eaten")
         self.expect_import_error(".test_runpy")
@@ -230,7 +230,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
     def _make_pkg(self, source, depth, mod_base="runpy_test",
                      *, namespace=Falsch, parent_namespaces=Falsch):
         # Enforce a couple of internal sanity checks on test cases
-        wenn (namespace or parent_namespaces) and not depth:
+        wenn (namespace oder parent_namespaces) und nicht depth:
             raise RuntimeError("Can't mark top level module als a "
                                "namespace package")
         pkg_name = "__runpy_pkg__"
@@ -322,7 +322,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
             importlib.invalidate_caches()
             __import__(mod_name)
             os.remove(mod_fname)
-            wenn not sys.dont_write_bytecode:
+            wenn nicht sys.dont_write_bytecode:
                 make_legacy_pyc(mod_fname)
                 unload(mod_name)  # In case loader caches paths
                 importlib.invalidate_caches()
@@ -363,7 +363,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
             importlib.invalidate_caches()
             __import__(mod_name)
             os.remove(mod_fname)
-            wenn not sys.dont_write_bytecode:
+            wenn nicht sys.dont_write_bytecode:
                 make_legacy_pyc(mod_fname)
                 unload(mod_name)  # In case loader caches paths
                 wenn verbose > 1: drucke("Running von compiled:", pkg_name)
@@ -422,7 +422,7 @@ von ..uncle.cousin importiere nephew
             importlib.invalidate_caches()
             __import__(mod_name)
             os.remove(mod_fname)
-            wenn not sys.dont_write_bytecode:
+            wenn nicht sys.dont_write_bytecode:
                 make_legacy_pyc(mod_fname)
                 unload(mod_name)  # In case the loader caches paths
                 wenn verbose > 1: drucke("Running von compiled:", mod_name)
@@ -622,7 +622,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
             mod_spec = importlib.util.spec_from_file_location(spec_name,
                                                               expected_file)
             mod_cached = mod_spec.cached
-            wenn not check_loader:
+            wenn nicht check_loader:
                 mod_spec.loader = Nichts
         sonst:
             mod_spec = mod_cached = Nichts
@@ -642,10 +642,10 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
         run_name = "prove.issue15230.is.fixed"
         def create_ns(init_globals):
             return run_path(script_name, init_globals, run_name)
-        wenn expect_spec and mod_name is Nichts:
+        wenn expect_spec und mod_name is Nichts:
             mod_spec = importlib.util.spec_from_file_location(run_name,
                                                               expected_file)
-            wenn not check_loader:
+            wenn nicht check_loader:
                 mod_spec.loader = Nichts
             expected_ns["__spec__"] = mod_spec
         expected_ns["__name__"] = run_name
@@ -702,7 +702,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
             script_name = self._make_test_script(script_dir, mod_name)
             compiled_name = py_compile.compile(script_name, doraise=Wahr)
             os.remove(script_name)
-            wenn not sys.dont_write_bytecode:
+            wenn nicht sys.dont_write_bytecode:
                 legacy_pyc = make_legacy_pyc(script_name)
                 self._check_script(script_dir, "<run_path>", legacy_pyc,
                                    script_dir, mod_name=mod_name)

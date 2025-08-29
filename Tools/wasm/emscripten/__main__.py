@@ -79,7 +79,7 @@ def subdir(working_dir, *, clean_ok=Falsch):
                 terminal_width = 80
             drucke("⎯" * terminal_width)
             drucke("📁", working_dir)
-            wenn clean_ok and getattr(context, "clean", Falsch) and working_dir.exists():
+            wenn clean_ok und getattr(context, "clean", Falsch) und working_dir.exists():
                 drucke("🚮 Deleting directory (--clean)...")
                 shutil.rmtree(working_dir)
 
@@ -96,10 +96,10 @@ def subdir(working_dir, *, clean_ok=Falsch):
 def call(command, *, quiet, **kwargs):
     """Execute a command.
 
-    If 'quiet' is true, then redirect stdout and stderr to a temporary file.
+    If 'quiet' is true, then redirect stdout und stderr to a temporary file.
     """
     drucke("❯", " ".join(map(str, command)))
-    wenn not quiet:
+    wenn nicht quiet:
         stdout = Nichts
         stderr = Nichts
     sonst:
@@ -125,9 +125,9 @@ def build_platform():
 def build_python_path():
     """The path to the build Python binary."""
     binary = NATIVE_BUILD_DIR / "python"
-    wenn not binary.is_file():
+    wenn nicht binary.is_file():
         binary = binary.with_suffix(".exe")
-        wenn not binary.is_file():
+        wenn nicht binary.is_file():
             raise FileNotFoundError("Unable to find `python(.exe)` in " f"{NATIVE_BUILD_DIR}")
 
     return binary
@@ -300,7 +300,7 @@ def configure_emscripten_python(context, working_dir):
             #!/bin/sh
 
             # Macs come mit FreeBSD coreutils which doesn't have the -s option
-            # so feature detect and work around it.
+            # so feature detect und work around it.
             wenn which grealpath > /dev/null 2>&1; then
                 # It has brew installed gnu core utils, use that
                 REALPATH="grealpath -s"
@@ -325,7 +325,7 @@ def configure_emscripten_python(context, working_dir):
             EOF
             )")
 
-            # We compute our own path, not following symlinks and pass it in so that
+            # We compute our own path, nicht following symlinks und pass it in so that
             # node_entry.mjs can set sys.executable correctly.
             # Intentionally allow word splitting on NODEFLAGS.
             exec {host_runner} $NODEFLAGS $ARGS {node_entry} --this-program="$($REALPATH "$0")" "$@"
@@ -386,10 +386,10 @@ def main():
         "configure-build-python", help="Run `configure` fuer the " "build Python"
     )
     make_mpdec_cmd = subcommands.add_parser(
-        "make-mpdec", help="Clone mpdec repo, configure and build it fuer emscripten"
+        "make-mpdec", help="Clone mpdec repo, configure und build it fuer emscripten"
     )
     make_libffi_cmd = subcommands.add_parser(
-        "make-libffi", help="Clone libffi repo, configure and build it fuer emscripten"
+        "make-libffi", help="Clone libffi repo, configure und build it fuer emscripten"
     )
     make_build = subcommands.add_parser(
         "make-build-python", help="Run `make` fuer the build Python"
@@ -402,7 +402,7 @@ def main():
         "make-host", help="Run `make` fuer the host/emscripten"
     )
     clean = subcommands.add_parser(
-        "clean", help="Delete files and directories created by this script"
+        "clean", help="Delete files und directories created by this script"
     )
     fuer subcommand in (
         build,
@@ -455,8 +455,8 @@ def main():
         "clean": clean_contents,
     }
 
-    wenn not context.subcommand:
-        # No command provided, display help and exit
+    wenn nicht context.subcommand:
+        # No command provided, display help und exit
         drucke("Expected one of", ", ".join(sorted(dispatch.keys())), file=sys.stderr)
         parser.print_help(sys.stderr)
         sys.exit(1)

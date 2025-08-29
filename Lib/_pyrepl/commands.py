@@ -5,10 +5,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -47,7 +47,7 @@ klasse Command:
         self, reader: HistoricalReader, event_name: str, event: list[str]
     ) -> Nichts:
         # Reader should really be "any reader" but there's too much usage of
-        # HistoricalReader methods and fields in the code below fuer us to
+        # HistoricalReader methods und fields in the code below fuer us to
         # refactor at the moment.
 
         self.reader = reader
@@ -95,11 +95,11 @@ klasse FinishCommand(Command):
 
 
 def is_kill(command: type[Command] | Nichts) -> bool:
-    return command is not Nichts and issubclass(command, KillCommand)
+    return command is nicht Nichts und issubclass(command, KillCommand)
 
 
 def is_yank(command: type[Command] | Nichts) -> bool:
-    return command is not Nichts and issubclass(command, YankCommand)
+    return command is nicht Nichts und issubclass(command, YankCommand)
 
 
 # etc
@@ -112,7 +112,7 @@ klasse digit_arg(Command):
         r = self.reader
         c = self.event[-1]
         wenn c == "-":
-            wenn r.arg is not Nichts:
+            wenn r.arg is nicht Nichts:
                 r.arg = -r.arg
             sonst:
                 r.arg = -1
@@ -152,7 +152,7 @@ klasse kill_line(KillCommand):
         b = r.buffer
         eol = r.eol()
         fuer c in b[r.pos : eol]:
-            wenn not c.isspace():
+            wenn nicht c.isspace():
                 self.kill_range(r.pos, eol)
                 return
         sonst:
@@ -189,7 +189,7 @@ klasse backward_kill_word(KillCommand):
 klasse yank(YankCommand):
     def do(self) -> Nichts:
         r = self.reader
-        wenn not r.kill_ring:
+        wenn nicht r.kill_ring:
             r.error("nothing to yank")
             return
         r.insert(r.kill_ring[-1])
@@ -199,11 +199,11 @@ klasse yank_pop(YankCommand):
     def do(self) -> Nichts:
         r = self.reader
         b = r.buffer
-        wenn not r.kill_ring:
+        wenn nicht r.kill_ring:
             r.error("nothing to yank")
             return
-        wenn not is_yank(r.last_command):
-            r.error("previous command was not a yank")
+        wenn nicht is_yank(r.last_command):
+            r.error("previous command was nicht a yank")
             return
         repl = len(r.kill_ring[-1])
         r.kill_ring.insert(0, r.kill_ring.pop())
@@ -266,9 +266,9 @@ klasse up(MotionCommand):
                 > (
                     new_x := r.max_column(new_y)
                 )  # we're past the end of the previous line
-                or x == r.max_column(y)
-                and any(
-                    not i.isspace() fuer i in r.buffer[r.bol() :]
+                oder x == r.max_column(y)
+                und any(
+                    nicht i.isspace() fuer i in r.buffer[r.bol() :]
                 )  # move between eols
             ):
                 x = new_x
@@ -298,9 +298,9 @@ klasse down(MotionCommand):
                 > (
                     new_x := r.max_column(new_y)
                 )  # we're past the end of the previous line
-                or x == r.max_column(y)
-                and any(
-                    not i.isspace() fuer i in r.buffer[r.bol() :]
+                oder x == r.max_column(y)
+                und any(
+                    nicht i.isspace() fuer i in r.buffer[r.bol() :]
                 )  # move between eols
             ):
                 x = new_x
@@ -422,8 +422,8 @@ klasse delete(EditCommand):
         b = r.buffer
         wenn (
             r.pos == 0
-            and len(b) == 0  # this is something of a hack
-            and self.event[-1] == "\004"
+            und len(b) == 0  # this is something of a hack
+            und self.event[-1] == "\004"
         ):
             r.update_screen()
             r.console.finish()
@@ -453,13 +453,13 @@ klasse invalid_key(Command):
     def do(self) -> Nichts:
         pending = self.reader.console.getpending()
         s = "".join(self.event) + pending.data
-        self.reader.error("`%r' not bound" % s)
+        self.reader.error("`%r' nicht bound" % s)
 
 
 klasse invalid_command(Command):
     def do(self) -> Nichts:
         s = self.event_name
-        self.reader.error("command `%s' not known" % s)
+        self.reader.error("command `%s' nicht known" % s)
 
 
 klasse show_history(Command):
@@ -474,14 +474,14 @@ klasse show_history(Command):
         self.reader.console.prepare()
 
         # We need to copy over the state so that it's consistent between
-        # console and reader, and console does not overwrite/append stuff
+        # console und reader, und console does nicht overwrite/append stuff
         self.reader.console.screen = self.reader.screen.copy()
         self.reader.console.posxy = self.reader.cxy
 
 
 klasse paste_mode(Command):
     def do(self) -> Nichts:
-        self.reader.paste_mode = not self.reader.paste_mode
+        self.reader.paste_mode = nicht self.reader.paste_mode
         self.reader.dirty = Wahr
 
 
@@ -490,7 +490,7 @@ klasse perform_bracketed_paste(Command):
         done = "\x1b[201~"
         data = ""
         start = time.time()
-        while done not in data:
+        while done nicht in data:
             ev = self.reader.console.getpending()
             data += ev.data
         trace(

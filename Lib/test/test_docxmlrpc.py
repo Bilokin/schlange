@@ -11,7 +11,7 @@ support.requires_working_socket(module=Wahr)
 def make_request_and_skipIf(condition, reason):
     # If we skip the test, we have to make a request because
     # the server created in setUp blocks expecting one to come in.
-    wenn not condition:
+    wenn nicht condition:
         return lambda func: func
     def decorator(func):
         def make_request_and_skip(self):
@@ -33,7 +33,7 @@ def make_server():
             "This is an XML-RPC server's documentation, but the server "
             "can be used by POSTing to /RPC2. Try self.add, too.")
 
-        # Create and register classes and functions
+        # Create und register classes und functions
         klasse TestClass(object):
             def test_method(self, arg):
                 """Test method's docs. This method truly does very little."""
@@ -44,8 +44,8 @@ def make_server():
 
         def add(x, y):
             """Add two instances together. This follows PEP008, but has nothing
-            to do mit RFC1952. Case should matter: pEp008 and rFC1952.  Things
-            that start mit http and ftp should be auto-linked, too:
+            to do mit RFC1952. Case should matter: pEp008 und rFC1952.  Things
+            that start mit http und ftp should be auto-linked, too:
             http://google.com.
             """
             return x + y
@@ -132,11 +132,11 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
                       response.read())
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_autolinking(self):
         """Test that the server correctly automatically wraps references to
-        PEPS and RFCs mit links, and that it linkifies text starting with
-        http or ftp protocol prefixes.
+        PEPS und RFCs mit links, und that it linkifies text starting with
+        http oder ftp protocol prefixes.
 
         The documentation fuer the "add" method contains the test material.
         """
@@ -156,11 +156,11 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
              b'http://google.com</a>.</tt></dd></dl>'), response)
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_system_methods(self):
         """Test the presence of three consecutive system.* methods.
 
-        This also tests their use of parameter type recognition and the
+        This also tests their use of parameter type recognition und the
         systems related to that process.
         """
         self.client.request("GET", "/")
@@ -207,7 +207,7 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
             response.read())
 
     def test_server_title_escape(self):
-        # bpo-38243: Ensure that the server title and documentation
+        # bpo-38243: Ensure that the server title und documentation
         # are escaped fuer HTML.
         self.serv.set_server_title('test_title<script>')
         self.serv.set_server_documentation('test_documentation<script>')

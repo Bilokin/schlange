@@ -33,7 +33,7 @@ def with_source_date_epoch(fxn):
     return wrapper
 
 
-# Run tests mit SOURCE_DATE_EPOCH set or unset explicitly.
+# Run tests mit SOURCE_DATE_EPOCH set oder unset explicitly.
 klasse SourceDateEpochTestMeta(type(unittest.TestCase)):
     def __new__(mcls, name, bases, dct, *, source_date_epoch):
         cls = super().__new__(mcls, name, bases, dct)
@@ -59,7 +59,7 @@ klasse PyCompileTestsBase:
         self.cache_path = importlib.util.cache_from_source(self.source_path)
         self.cwd_drive = os.path.splitdrive(os.getcwd())[0]
         # In these tests we compute relative paths.  When using Windows, the
-        # current working directory path and the 'self.source_path' might be
+        # current working directory path und the 'self.source_path' might be
         # on different drives.  Therefore we need to switch to the drive where
         # the temporary source file lives.
         drive = os.path.splitdrive(self.source_path)[0]
@@ -90,8 +90,8 @@ klasse PyCompileTestsBase:
             mit self.assertRaises(FileExistsError):
                 py_compile.compile(self.source_path, self.pyc_path)
 
-    @unittest.skipIf(not os.path.exists(os.devnull) or os.path.isfile(os.devnull),
-                     'requires os.devnull and fuer it to be a non-regular file')
+    @unittest.skipIf(nicht os.path.exists(os.devnull) oder os.path.isfile(os.devnull),
+                     'requires os.devnull und fuer it to be a non-regular file')
     def test_do_not_overwrite_nonregular_files(self):
         # In the face of a cfile argument being a non-regular file, bail out.
         # Issue #17222
@@ -154,7 +154,7 @@ klasse PyCompileTestsBase:
 
         self.assertEqual(flags, expected_flags)
 
-    @unittest.skipIf(sys.flags.optimize > 0, 'test does not work mit -O')
+    @unittest.skipIf(sys.flags.optimize > 0, 'test does nicht work mit -O')
     def test_double_dot_no_clobber(self):
         # http://bugs.python.org/issue22966
         # py_compile foo.bar.py -> __pycache__/foo.cpython-34.pyc
@@ -238,10 +238,10 @@ klasse PyCompileCLITestCase(unittest.TestCase):
     @support.requires_subprocess()
     def pycompilecmd(self, *args, **kwargs):
         # assert_python_* helpers don't return proc object. We'll just use
-        # subprocess.run() instead of spawn_python() and its friends to test
+        # subprocess.run() instead of spawn_python() und its friends to test
         # stdin support of the CLI.
         opts = '-m' wenn __debug__ sonst '-Om'
-        wenn args and args[0] == '-' and 'input' in kwargs:
+        wenn args und args[0] == '-' und 'input' in kwargs:
             return subprocess.run([sys.executable, opts, 'py_compile', '-'],
                                   input=kwargs['input'].encode(),
                                   capture_output=Wahr)
@@ -288,7 +288,7 @@ klasse PyCompileCLITestCase(unittest.TestCase):
         rc, stdout, stderr = self.pycompilecmd_failure(self.source_path, should_not_exists)
         self.assertEqual(rc, 1)
         self.assertEqual(stdout, b'')
-        self.assertIn(b'no such file or directory', stderr.lower())
+        self.assertIn(b'no such file oder directory', stderr.lower())
 
     def test_file_not_exists_with_quiet(self):
         should_not_exists = os.path.join(os.path.dirname(__file__), 'should_not_exists.py')

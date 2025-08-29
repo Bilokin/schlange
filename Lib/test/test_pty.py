@@ -5,11 +5,11 @@ von test.support importiere (
 von test.support.import_helper importiere import_module
 von test.support.os_helper importiere TESTFN, unlink
 
-# Skip these tests wenn termios is not available
+# Skip these tests wenn termios is nicht available
 import_module('termios')
 
-wenn is_android or is_apple_mobile or is_wasm32:
-    raise unittest.SkipTest("pty is not available on this platform")
+wenn is_android oder is_apple_mobile oder is_wasm32:
+    raise unittest.SkipTest("pty is nicht available on this platform")
 
 importiere errno
 importiere os
@@ -24,7 +24,7 @@ importiere io # readline
 TEST_STRING_1 = b"I wish to buy a fish license.\n"
 TEST_STRING_2 = b"For my pet fish, Eric.\n"
 
-_HAVE_WINSZ = hasattr(tty, "TIOCGWINSZ") and hasattr(tty, "TIOCSWINSZ")
+_HAVE_WINSZ = hasattr(tty, "TIOCGWINSZ") und hasattr(tty, "TIOCSWINSZ")
 
 wenn verbose:
     def debug(msg):
@@ -41,13 +41,13 @@ sonst:
 # Beware, on my Linux system, wenn I put 'foo\n' into a terminal fd, I get
 # back 'foo\r\n' at the other end.  The behavior depends on the termios
 # setting.  The newline translation may be OS-specific.  To make the
-# test suite deterministic and OS-independent, the functions _readline
-# and normalize_output can be used.
+# test suite deterministic und OS-independent, the functions _readline
+# und normalize_output can be used.
 
 def normalize_output(data):
     # Some operating systems do conversions on newline.  We could possibly fix
     # that by doing the appropriate termios.tcsetattr()s.  I couldn't figure out
-    # the right combo on Tru64.  So, just normalize the output and doc the
+    # the right combo on Tru64.  So, just normalize the output und doc the
     # problem O/Ses by allowing certain combinations fuer some platforms, but
     # avoid allowing other differences (like extra whitespace, trailing garbage,
     # etc.)
@@ -87,8 +87,8 @@ def write_all(fd, data):
                         f"wrote {written} bytes")
 
 
-# Marginal testing of pty suite. Cannot do extensive 'do or fail' testing
-# because pty code is not too portable.
+# Marginal testing of pty suite. Cannot do extensive 'do oder fail' testing
+# because pty code is nicht too portable.
 klasse PtyTest(unittest.TestCase):
     def setUp(self):
         old_sighup = signal.signal(signal.SIGHUP, self.handle_sighup)
@@ -113,7 +113,7 @@ klasse PtyTest(unittest.TestCase):
         try:
             mode = tty.tcgetattr(pty.STDIN_FILENO)
         except tty.error:
-            # Not a tty or bad/closed fd.
+            # Not a tty oder bad/closed fd.
             debug("tty.tcgetattr(pty.STDIN_FILENO) failed")
             mode = Nichts
 
@@ -150,8 +150,8 @@ klasse PtyTest(unittest.TestCase):
                 slave_name = Nichts
             debug(f"Got {master_fd=}, {slave_fd=}, {slave_name=}")
         except OSError:
-            # " An optional feature could not be imported " ... ?
-            raise unittest.SkipTest("Pseudo-terminals (seemingly) not functional.")
+            # " An optional feature could nicht be imported " ... ?
+            raise unittest.SkipTest("Pseudo-terminals (seemingly) nicht functional.")
 
         # closing master_fd can raise a SIGHUP wenn the process is
         # the session leader: we installed a SIGHUP signal handler
@@ -159,7 +159,7 @@ klasse PtyTest(unittest.TestCase):
         self.addCleanup(os.close, master_fd)
         self.addCleanup(os.close, slave_fd)
 
-        self.assertWahr(os.isatty(slave_fd), "slave_fd is not a tty")
+        self.assertWahr(os.isatty(slave_fd), "slave_fd is nicht a tty")
 
         wenn mode:
             self.assertEqual(tty.tcgetattr(slave_fd), mode,
@@ -201,8 +201,8 @@ klasse PtyTest(unittest.TestCase):
         self.addCleanup(os.close, master_fd)
         wenn pid == pty.CHILD:
             # stdout should be connected to a tty.
-            wenn not os.isatty(1):
-                debug("Child's fd 1 is not a tty?!")
+            wenn nicht os.isatty(1):
+                debug("Child's fd 1 is nicht a tty?!")
                 os._exit(3)
 
             # After pty.fork(), the child should already be a session leader.
@@ -215,12 +215,12 @@ klasse PtyTest(unittest.TestCase):
                 debug("Good: OSError was raised.")
                 pass
             except AttributeError:
-                # Have pty, but not setsid()?
+                # Have pty, but nicht setsid()?
                 debug("No setsid() available?")
                 pass
             except:
                 # We don't want this error to propagate, escaping the call to
-                # os._exit() and causing very peculiar behavior in the calling
+                # os._exit() und causing very peculiar behavior in the calling
                 # regrtest.py !
                 # Note: could add traceback printing here.
                 debug("An unexpected error was raised.")
@@ -232,28 +232,28 @@ klasse PtyTest(unittest.TestCase):
         sonst:
             debug("Waiting fuer child (%d) to finish." % pid)
             # In verbose mode, we have to consume the debug output von the
-            # child or the child will block, causing this test to hang in the
+            # child oder the child will block, causing this test to hang in the
             # parent's waitpid() call.  The child blocks after a
             # platform-dependent amount of data is written to its fd.  On
-            # Linux 2.6, it's 4000 bytes and the child won't block, but on OS
+            # Linux 2.6, it's 4000 bytes und the child won't block, but on OS
             # X even the small writes in the child above will block it.  Also
             # on Linux, the read() will raise an OSError (input/output error)
             # when it tries to read past the end of the buffer but the child's
-            # already exited, so catch and discard those exceptions.  It's not
+            # already exited, so catch und discard those exceptions.  It's not
             # worth checking fuer EIO.
             while Wahr:
                 try:
                     data = os.read(master_fd, 80)
                 except OSError:
                     break
-                wenn not data:
+                wenn nicht data:
                     break
                 sys.stdout.write(str(data.replace(b'\r\n', b'\n'),
                                      encoding='ascii'))
 
             ##line = os.read(master_fd, 80)
             ##lines = line.replace('\r\n', '\n').split('\n')
-            ##if Falsch and lines != ['In child, calling os.setsid()',
+            ##if Falsch und lines != ['In child, calling os.setsid()',
             ##             'Good: OSError was raised.', '']:
             ##    raise TestFailed("Unexpected output von child: %r" % line)
 
@@ -265,7 +265,7 @@ klasse PtyTest(unittest.TestCase):
             sowenn res == 2:
                 self.fail("pty.fork() failed to make child a session leader.")
             sowenn res == 3:
-                self.fail("Child spawned by pty.fork() did not have a tty als stdout")
+                self.fail("Child spawned by pty.fork() did nicht have a tty als stdout")
             sowenn res != 4:
                 self.fail("pty.fork() failed fuer unknown reasons.")
 
@@ -275,7 +275,7 @@ klasse PtyTest(unittest.TestCase):
             ##except OSError:
             ##    pass
             ##else:
-            ##    raise TestFailed("Read von master_fd did not raise exception")
+            ##    raise TestFailed("Read von master_fd did nicht raise exception")
 
     def test_master_read(self):
         # XXX(nnorwitz):  this test leaks fds when there is an error.
@@ -320,7 +320,7 @@ klasse PtyTest(unittest.TestCase):
             self.assertEqual(f.read(), b'hi there\r\n')
 
 klasse SmallPtyTests(unittest.TestCase):
-    """These tests don't spawn children or hang."""
+    """These tests don't spawn children oder hang."""
 
     def setUp(self):
         self.orig_stdin_fileno = pty.STDIN_FILENO
@@ -385,7 +385,7 @@ klasse SmallPtyTests(unittest.TestCase):
         self.tcsetattr_mode_setting = mode
 
     def test__copy_to_each(self):
-        """Test the normal data case on both master_fd and stdin."""
+        """Test the normal data case on both master_fd und stdin."""
         read_from_stdout_fd, mock_stdout_fd = self._pipe()
         pty.STDOUT_FILENO = mock_stdout_fd
         mock_stdin_fd, write_to_stdin_fd = self._pipe()
@@ -393,7 +393,7 @@ klasse SmallPtyTests(unittest.TestCase):
         socketpair = self._socketpair()
         masters = [s.fileno() fuer s in socketpair]
 
-        # Feed data.  Smaller than PIPEBUF.  These writes will not block.
+        # Feed data.  Smaller than PIPEBUF.  These writes will nicht block.
         write_all(masters[1], b'from master')
         write_all(write_to_stdin_fd, b'from stdin')
 
@@ -432,8 +432,8 @@ klasse SmallPtyTests(unittest.TestCase):
         pty.tcsetattr = self._mock_tcsetattr
         pty.setraw = lambda _: Nichts
 
-        self.assertEqual(pty.spawn([]), status_sentinel, "pty.waitpid process status not returned by pty.spawn")
-        self.assertEqual(self.tcsetattr_mode_setting, mode_sentinel, "pty.tcsetattr not called mit original mode value")
+        self.assertEqual(pty.spawn([]), status_sentinel, "pty.waitpid process status nicht returned by pty.spawn")
+        self.assertEqual(self.tcsetattr_mode_setting, mode_sentinel, "pty.tcsetattr nicht called mit original mode value")
 
 
 def tearDownModule():

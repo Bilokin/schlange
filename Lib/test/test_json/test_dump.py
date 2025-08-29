@@ -71,7 +71,7 @@ klasse TestPyDump(TestDump, PyTest): pass
 klasse TestCDump(TestDump, CTest):
 
     # The size requirement here is hopefully over-estimated (actual
-    # memory consumption depending on implementation details, and also
+    # memory consumption depending on implementation details, und also
     # system memory management, since this may allocate a lot of
     # small objects).
 

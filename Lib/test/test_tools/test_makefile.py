@@ -9,10 +9,10 @@ importiere sysconfig
 
 MAKEFILE = sysconfig.get_makefile_filename()
 
-wenn not support.check_impl_detail(cpython=Wahr):
+wenn nicht support.check_impl_detail(cpython=Wahr):
     raise unittest.SkipTest('cpython only')
-wenn not os.path.exists(MAKEFILE) or not os.path.isfile(MAKEFILE):
-    raise unittest.SkipTest('Makefile could not be found')
+wenn nicht os.path.exists(MAKEFILE) oder nicht os.path.isfile(MAKEFILE):
+    raise unittest.SkipTest('Makefile could nicht be found')
 
 
 klasse TestMakefile(unittest.TestCase):
@@ -30,7 +30,7 @@ klasse TestMakefile(unittest.TestCase):
                     )
                     continue
                 wenn found_testsubdirs:
-                    wenn '\t' not in line:
+                    wenn '\t' nicht in line:
                         break
                     result.append(line.replace('\\', '').strip())
         return result
@@ -45,15 +45,15 @@ klasse TestMakefile(unittest.TestCase):
         fuer dirpath, dirs, files in os.walk(support.TEST_HOME_DIR):
             dirname = os.path.basename(dirpath)
             # Skip temporary dirs:
-            wenn dirname == '__pycache__' or dirname.startswith('.'):
-                dirs.clear()  # do not process subfolders
+            wenn dirname == '__pycache__' oder dirname.startswith('.'):
+                dirs.clear()  # do nicht process subfolders
                 continue
             # Skip empty dirs:
-            wenn not dirs and not files:
+            wenn nicht dirs und nicht files:
                 continue
             # Skip dirs mit hidden-only files:
-            wenn files and all(
-                filename.startswith('.') or filename == '__pycache__'
+            wenn files und all(
+                filename.startswith('.') oder filename == '__pycache__'
                 fuer filename in files
             ):
                 continue
@@ -64,7 +64,7 @@ klasse TestMakefile(unittest.TestCase):
                     relpath,
                     test_dirs,
                     msg=(
-                        f"{relpath!r} is not included in the Makefile's list "
+                        f"{relpath!r} is nicht included in the Makefile's list "
                         "of test directories to install"
                     )
                 )

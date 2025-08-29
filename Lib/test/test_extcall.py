@@ -80,7 +80,7 @@ Here we add keyword arguments
     >>> f(1, 2, 3, *(4, 5), x=6, y=7, **UserDict(a=8, b=9))
     (1, 2, 3, 4, 5) {'a': 8, 'b': 9, 'x': 6, 'y': 7}
 
-Mix keyword arguments and dict unpacking
+Mix keyword arguments und dict unpacking
 
     >>> d1 = {'a':1}
 
@@ -137,7 +137,7 @@ Verify clearing of SF bug #733667
     >>> g(*Nothing())
     Traceback (most recent call last):
       ...
-    TypeError: test.test_extcall.g() argument after * must be an iterable, not Nothing
+    TypeError: test.test_extcall.g() argument after * must be an iterable, nicht Nothing
 
     >>> klasse Nothing:
     ...     def __len__(self): return 5
@@ -146,7 +146,7 @@ Verify clearing of SF bug #733667
     >>> g(*Nothing())
     Traceback (most recent call last):
       ...
-    TypeError: test.test_extcall.g() argument after * must be an iterable, not Nothing
+    TypeError: test.test_extcall.g() argument after * must be an iterable, nicht Nothing
 
     >>> klasse Nothing():
     ...     def __len__(self): return 5
@@ -266,22 +266,22 @@ What about willful misconduct?
     >>> h(*h)
     Traceback (most recent call last):
       ...
-    TypeError: test.test_extcall.h() argument after * must be an iterable, not function
+    TypeError: test.test_extcall.h() argument after * must be an iterable, nicht function
 
     >>> h(1, *h)
     Traceback (most recent call last):
       ...
-    TypeError: Value after * must be an iterable, not function
+    TypeError: Value after * must be an iterable, nicht function
 
     >>> h(*[1], *h)
     Traceback (most recent call last):
       ...
-    TypeError: Value after * must be an iterable, not function
+    TypeError: Value after * must be an iterable, nicht function
 
     >>> dir(*h)
     Traceback (most recent call last):
       ...
-    TypeError: dir() argument after * must be an iterable, not function
+    TypeError: dir() argument after * must be an iterable, nicht function
 
     >>> nothing = Nichts
     >>> nothing(*h)
@@ -293,37 +293,37 @@ not function
     >>> h(**h)
     Traceback (most recent call last):
       ...
-    TypeError: test.test_extcall.h() argument after ** must be a mapping, not function
+    TypeError: test.test_extcall.h() argument after ** must be a mapping, nicht function
 
     >>> h(**[])
     Traceback (most recent call last):
       ...
-    TypeError: test.test_extcall.h() argument after ** must be a mapping, not list
+    TypeError: test.test_extcall.h() argument after ** must be a mapping, nicht list
 
     >>> h(a=1, **h)
     Traceback (most recent call last):
       ...
-    TypeError: test.test_extcall.h() argument after ** must be a mapping, not function
+    TypeError: test.test_extcall.h() argument after ** must be a mapping, nicht function
 
     >>> h(a=1, **[])
     Traceback (most recent call last):
       ...
-    TypeError: test.test_extcall.h() argument after ** must be a mapping, not list
+    TypeError: test.test_extcall.h() argument after ** must be a mapping, nicht list
 
     >>> h(**{'a': 1}, **h)
     Traceback (most recent call last):
       ...
-    TypeError: test.test_extcall.h() argument after ** must be a mapping, not function
+    TypeError: test.test_extcall.h() argument after ** must be a mapping, nicht function
 
     >>> h(**{'a': 1}, **[])
     Traceback (most recent call last):
       ...
-    TypeError: test.test_extcall.h() argument after ** must be a mapping, not list
+    TypeError: test.test_extcall.h() argument after ** must be a mapping, nicht list
 
     >>> dir(**h)
     Traceback (most recent call last):
       ...
-    TypeError: dir() argument after ** must be a mapping, not function
+    TypeError: dir() argument after ** must be a mapping, nicht function
 
     >>> nothing(**h)
     Traceback (most recent call last):
@@ -433,7 +433,7 @@ Another helper function
 
 A PyCFunction that takes only positional parameters should allow an
 empty keyword dictionary to pass without a complaint, but raise a
-TypeError wenn te dictionary is not empty
+TypeError wenn te dictionary is nicht empty
 
     >>> try:
     ...     silence = id(1, *{})
@@ -499,7 +499,7 @@ Too many arguments:
       ...
     TypeError: f() takes von 1 to 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
 
-Too few and missing arguments:
+Too few und missing arguments:
 
     >>> def f(a): pass
     >>> f()
@@ -510,17 +510,17 @@ Too few and missing arguments:
     >>> f()
     Traceback (most recent call last):
       ...
-    TypeError: f() missing 2 required positional arguments: 'a' and 'b'
+    TypeError: f() missing 2 required positional arguments: 'a' und 'b'
     >>> def f(a, b, c): pass
     >>> f()
     Traceback (most recent call last):
       ...
-    TypeError: f() missing 3 required positional arguments: 'a', 'b', and 'c'
+    TypeError: f() missing 3 required positional arguments: 'a', 'b', und 'c'
     >>> def f(a, b, c, d, e): pass
     >>> f()
     Traceback (most recent call last):
       ...
-    TypeError: f() missing 5 required positional arguments: 'a', 'b', 'c', 'd', and 'e'
+    TypeError: f() missing 5 required positional arguments: 'a', 'b', 'c', 'd', und 'e'
     >>> def f(a, b=4, c=5, d=5): pass
     >>> f(c=12, b=9)
     Traceback (most recent call last):
@@ -538,7 +538,7 @@ Same mit keyword only args:
     >>> f()
     Traceback (most recent call last):
       ...
-    TypeError: f() missing 5 required keyword-only arguments: 'a', 'b', 'c', 'd', and 'e'
+    TypeError: f() missing 5 required keyword-only arguments: 'a', 'b', 'c', 'd', und 'e'
 
 """
 

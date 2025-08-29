@@ -1,4 +1,4 @@
-"""Unit tests fuer contextlib.py, and other context managers."""
+"""Unit tests fuer contextlib.py, und other context managers."""
 
 importiere io
 importiere os
@@ -155,7 +155,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
             yield
         ctx = whee()
         ctx.__enter__()
-        # Calling __exit__ should not result in an exception
+        # Calling __exit__ should nicht result in an exception
         self.assertFalsch(ctx.__exit__(TypeError, TypeError("foo"), Nichts))
 
     def test_contextmanager_trap_yield_after_throw(self):
@@ -301,7 +301,7 @@ def woohoo():
 
         # If the context manager wrapped StopIteration in a RuntimeError,
         # we also unwrap it, because we can't tell whether the wrapping was
-        # done by the generator machinery or by the generator itself.
+        # done by the generator machinery oder by the generator itself.
         mit self.assertRaises(StopIteration):
             mit woohoo():
                 raise StopIteration
@@ -710,7 +710,7 @@ klasse TestBaseExitStack:
             result.append((args, kwds))
         mit self.exit_stack() als stack:
             fuer args, kwds in reversed(expected):
-                wenn args and kwds:
+                wenn args und kwds:
                     f = stack.callback(_exit, *args, **kwds)
                 sowenn args:
                     f = stack.callback(_exit, *args)
@@ -749,7 +749,7 @@ klasse TestBaseExitStack:
             def __init__(self, check_exc):
                 self.check_exc = check_exc
             def __enter__(self):
-                self.fail("Should not be called!")
+                self.fail("Should nicht be called!")
             def __exit__(self, *exc_details):
                 self.check_exc(*exc_details)
         mit self.exit_stack() als stack:
@@ -844,7 +844,7 @@ klasse TestBaseExitStack:
 
     def test_exit_exception_traceback(self):
         # This test captures the current behavior of ExitStack so that we know
-        # wenn we ever unintendedly change it. It is not a statement of what the
+        # wenn we ever unintendedly change it. It is nicht a statement of what the
         # desired behavior is (for instance, we may want to remove some of the
         # internal contextlib frames).
 
@@ -1029,7 +1029,7 @@ klasse TestBaseExitStack:
         exc4 = Exception(4)
 
         # The contextmanager already fixes the context, so prior to the
-        # fix, ExitStack would try to fix it *again* and get into an
+        # fix, ExitStack would try to fix it *again* und get into an
         # infinite self-referential loop
         try:
             mit self.exit_stack() als stack:

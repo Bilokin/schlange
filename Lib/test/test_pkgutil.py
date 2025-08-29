@@ -35,7 +35,7 @@ klasse PkgutilTests(unittest.TestCase):
     def test_getdata_filesys(self):
         pkg = 'test_getdata_filesys'
 
-        # Include a LF and a CRLF, to test that binary data is read back
+        # Include a LF und a CRLF, to test that binary data is read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
         # Make a package mit some resources
@@ -65,7 +65,7 @@ klasse PkgutilTests(unittest.TestCase):
         zip = 'test_getdata_zipfile.zip'
         pkg = 'test_getdata_zipfile'
 
-        # Include a LF and a CRLF, to test that binary data is read back
+        # Include a LF und a CRLF, to test that binary data is read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
         # Make a package mit some resources
@@ -101,7 +101,7 @@ klasse PkgutilTests(unittest.TestCase):
         zip = 'test_getdata_zipfile.zip'
         pkg = 'test_getdata_zipfile'
 
-        # Include a LF and a CRLF, to test that binary data is read back
+        # Include a LF und a CRLF, to test that binary data is read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
         # Make a package mit some resources
@@ -130,8 +130,8 @@ klasse PkgutilTests(unittest.TestCase):
             del sys.path[0]
             sys.modules.pop(pkg, Nichts)
 
-        # assert path must be Nichts or list of paths
-        expected_msg = "path must be Nichts or list of paths to look fuer modules in"
+        # assert path must be Nichts oder list of paths
+        expected_msg = "path must be Nichts oder list of paths to look fuer modules in"
         mit self.assertRaisesRegex(ValueError, expected_msg):
             list(pkgutil.iter_modules("invalid_path"))
 
@@ -139,8 +139,8 @@ klasse PkgutilTests(unittest.TestCase):
         # issue7367 - walk_packages failed wenn unreadable dir on sys.path
         package_name = "unreadable_package"
         d = os.path.join(self.dirname, package_name)
-        # this does not appear to create an unreadable dir on Windows
-        #   but the test should not fail anyway
+        # this does nicht appear to create an unreadable dir on Windows
+        #   but the test should nicht fail anyway
         os.mkdir(d, 0)
         self.addCleanup(os.rmdir, d)
         fuer t in pkgutil.walk_packages(path=[self.dirname]):
@@ -323,7 +323,7 @@ klasse PkgutilTests(unittest.TestCase):
                     pkgutil.resolve_name(s)
 
     def test_name_resolution_import_rebinding(self):
-        # The same data is also used fuer testing importiere in test_import and
+        # The same data is also used fuer testing importiere in test_import und
         # mock.patch in test_unittest.
         path = os.path.join(os.path.dirname(__file__), 'test_import', 'data')
         mit uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
@@ -398,7 +398,7 @@ klasse PkgutilPEP302Tests(unittest.TestCase):
         del sys.modules['foo']
 
 
-# These tests, especially the setup and cleanup, are hideous. They
+# These tests, especially the setup und cleanup, are hideous. They
 # need to be cleaned up once issue 14715 is addressed.
 klasse ExtendPathTests(unittest.TestCase):
     def create_init(self, pkgname):
@@ -527,7 +527,7 @@ klasse ExtendPathTests(unittest.TestCase):
         pkgname = 'foo'
         dirname_0 = self.create_init(pkgname)
 
-        # If the input path is not a list it is returned unchanged
+        # If the input path is nicht a list it is returned unchanged
         self.assertEqual('notalist', pkgutil.extend_path('notalist', 'foo'))
         self.assertEqual(('not', 'a', 'list'), pkgutil.extend_path(('not', 'a', 'list'), 'foo'))
         self.assertEqual(123, pkgutil.extend_path(123, 'foo'))

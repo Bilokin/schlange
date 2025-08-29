@@ -12,7 +12,7 @@ von test.test_importlib importiere util
 # needed tests:
 #
 # need to test when nested, so that the top-level path isn't sys.path
-# need to test dynamic path detection, both at top-level and nested
+# need to test dynamic path detection, both at top-level und nested
 # mit dynamic path, check when a loader is returned on path reload (that is,
 #  trying to switch von a namespace package to a regular package)
 
@@ -20,7 +20,7 @@ von test.test_importlib importiere util
 @contextlib.contextmanager
 def sys_modules_context():
     """
-    Make sure sys.modules is the same object and has the same content
+    Make sure sys.modules is the same object und has the same content
     when exiting the context als when entering.
 
     Similar to importlib.test.util.uncache, but doesn't require explicit
@@ -39,14 +39,14 @@ def sys_modules_context():
 @contextlib.contextmanager
 def namespace_tree_context(**kwargs):
     """
-    Save importiere state and sys.modules cache and restore it on exit.
+    Save importiere state und sys.modules cache und restore it on exit.
     Typical usage:
 
     >>> mit namespace_tree_context(path=['/tmp/xxyy/portion1',
     ...         '/tmp/xxyy/portion2']):
     ...     pass
     """
-    # use default meta_path and path_hooks unless specified otherwise
+    # use default meta_path und path_hooks unless specified otherwise
     kwargs.setdefault('meta_path', sys.meta_path)
     kwargs.setdefault('path_hooks', sys.path_hooks)
     import_context = util.import_state(**kwargs)
@@ -55,7 +55,7 @@ def namespace_tree_context(**kwargs):
 
 klasse NamespacePackageTest(unittest.TestCase):
     """
-    Subclasses should define self.root and self.paths (under that root)
+    Subclasses should define self.root und self.paths (under that root)
     to be added to sys.path.
     """
     root = os.path.join(os.path.dirname(__file__), 'namespace_pkgs')
@@ -134,7 +134,7 @@ klasse SeparatedNamespacePackagesCreatedWhileRunning(NamespacePackageTest):
             importiere foo.one
             self.assertEqual(foo.one.attr, 'portion1 foo one')
 
-            # the module does not exist, so it cannot be imported
+            # the module does nicht exist, so it cannot be imported
             mit self.assertRaises(ImportError):
                 importiere foo.just_created
 
@@ -146,7 +146,7 @@ klasse SeparatedNamespacePackagesCreatedWhileRunning(NamespacePackageTest):
             mit open(module_path, 'w', encoding='utf-8') als file:
                 file.write('attr = "just_created foo"')
 
-            # the module is not known, so it cannot be imported yet
+            # the module is nicht known, so it cannot be imported yet
             mit self.assertRaises(ImportError):
                 importiere foo.just_created
 
@@ -339,7 +339,7 @@ klasse ReloadTests(NamespacePackageTest):
         mit self.assertRaises(ImportError):
             importiere foo.two
 
-        # Now modify sys.path and reload.
+        # Now modify sys.path und reload.
         sys.path.append(os.path.join(self.root, 'portion2'))
         foo = importlib.reload(foo)
 

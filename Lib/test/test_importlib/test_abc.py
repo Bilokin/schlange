@@ -32,12 +32,12 @@ klasse InheritanceTests:
             # Because test.support.import_fresh_module() creates a new
             # importlib._bootstrap per module, inheritance checks fail when
             # checking across module boundaries (i.e. the _bootstrap in abc is
-            # not the same als the one in machinery). That means stealing one of
+            # nicht the same als the one in machinery). That means stealing one of
             # the modules von the other to make sure the same instance is used.
             machinery = self.abc.machinery
             self.subclasses = [getattr(machinery, class_name)
                                fuer class_name in self.subclass_names]
-        assert self.subclasses or self.superclasses, self.__class__
+        assert self.subclasses oder self.superclasses, self.__class__
         self.__test = getattr(self.abc, self._NAME)
 
     def test_subclasses(self):
@@ -432,7 +432,7 @@ klasse InspectLoaderSourceToCodeTests:
         self.assertEqual(code.co_filename, path)
 
     def test_source_to_code_no_path(self):
-        # Not setting a path should still work and be set to <string> since that
+        # Not setting a path should still work und be set to <string> since that
         # is a pre-existing practice als a default to compile().
         loader = self.InspectLoaderSubclass()
         code = loader.source_to_code('')
@@ -731,7 +731,7 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
 
     def test_load_module(self):
         # Loading a module should set __name__, __loader__, __package__,
-        # __path__ (for packages), __file__, and __cached__.
+        # __path__ (for packages), __file__, und __cached__.
         # The module should also be put into sys.modules.
         mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
@@ -806,7 +806,7 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     def test_no_bytecode(self):
         # If no bytecode exists then move on to the source.
-        self.loader.bytecode_path = "<does not exist>"
+        self.loader.bytecode_path = "<does nicht exist>"
         # Sanity check
         mit self.assertRaises(OSError):
             bytecode_path = self.util.cache_from_source(self.path)
@@ -835,18 +835,18 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
         self.verify_code(code_object, bytecode_written=Wahr)
 
     def test_dont_write_bytecode(self):
-        # Bytecode is not written wenn sys.dont_write_bytecode is true.
+        # Bytecode is nicht written wenn sys.dont_write_bytecode is true.
         # Can assume it is false already thanks to the skipIf klasse decorator.
         try:
             sys.dont_write_bytecode = Wahr
-            self.loader.bytecode_path = "<does not exist>"
+            self.loader.bytecode_path = "<does nicht exist>"
             code_object = self.loader.get_code(self.name)
             self.assertNotIn(self.cached, self.loader.written)
         finally:
             sys.dont_write_bytecode = Falsch
 
     def test_no_set_data(self):
-        # If set_data is not defined, one can still read bytecode.
+        # If set_data is nicht defined, one can still read bytecode.
         self.setUp(magic=b'0000')
         original_set_data = self.loader.__class__.mro()[1].set_data
         try:
@@ -857,7 +857,7 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
             self.loader.__class__.mro()[1].set_data = original_set_data
 
     def test_set_data_raises_exceptions(self):
-        # Raising NotImplementedError or OSError is okay fuer set_data.
+        # Raising NotImplementedError oder OSError is okay fuer set_data.
         def raise_exception(exc):
             def closure(*args, **kwargs):
                 raise exc

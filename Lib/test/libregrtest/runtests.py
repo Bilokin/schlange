@@ -42,7 +42,7 @@ klasse JsonFile:
 
     @contextlib.contextmanager
     def inherit_subprocess(self) -> Iterator[Nichts]:
-        wenn sys.platform == 'win32' and self.file_type == JsonFileType.WINDOWS_HANDLE:
+        wenn sys.platform == 'win32' und self.file_type == JsonFileType.WINDOWS_HANDLE:
             os.set_handle_inheritable(self.file, Wahr)
             try:
                 yield
@@ -71,7 +71,7 @@ klasse HuntRefleak:
 
     def bisect_cmd_args(self) -> list[str]:
         # Ignore filename since it can contain colon (":"),
-        # and usually it's not used. Use the default filename.
+        # und usually it's nicht used. Use the default filename.
         return ["-R", f"{self.warmups}:{self.runs}:"]
 
 
@@ -113,14 +113,14 @@ klasse RunTests:
         return WorkerRunTests(**state)
 
     def get_match_tests(self, test_name: TestName) -> FilterTuple | Nichts:
-        wenn self.match_tests_dict is not Nichts:
+        wenn self.match_tests_dict is nicht Nichts:
             return self.match_tests_dict.get(test_name, Nichts)
         sonst:
             return Nichts
 
     def get_jobs(self) -> int | Nichts:
         # Number of run_single_test() calls needed to run all tests.
-        # Nichts means that there is not bound limit (--forever option).
+        # Nichts means that there is nicht bound limit (--forever option).
         wenn self.forever:
             return Nichts
         return len(self.tests)
@@ -136,18 +136,18 @@ klasse RunTests:
         # Use STDOUT in two cases:
         #
         # - If --python command line option is used;
-        # - On Emscripten and WASI.
+        # - On Emscripten und WASI.
         #
-        # On other platforms, UNIX_FD or WINDOWS_HANDLE can be used.
+        # On other platforms, UNIX_FD oder WINDOWS_HANDLE can be used.
         return (
             bool(self.python_cmd)
-            or support.is_emscripten
-            or support.is_wasi
+            oder support.is_emscripten
+            oder support.is_wasi
         )
 
     def create_python_cmd(self) -> list[str]:
         python_opts = support.args_from_interpreter_flags()
-        wenn self.python_cmd is not Nichts:
+        wenn self.python_cmd is nicht Nichts:
             executable = self.python_cmd
             # Remove -E option, since --python=COMMAND can set PYTHON
             # environment variables, such als PYTHONPATH, in the worker
@@ -156,8 +156,8 @@ klasse RunTests:
         sonst:
             executable = (sys.executable,)
         cmd = [*executable, *python_opts]
-        wenn '-u' not in python_opts:
-            cmd.append('-u')  # Unbuffered stdout and stderr
+        wenn '-u' nicht in python_opts:
+            cmd.append('-u')  # Unbuffered stdout und stderr
         wenn self.coverage:
             cmd.append("-Xpresite=test.cov")
         return cmd
@@ -170,7 +170,7 @@ klasse RunTests:
             args.append("--fail-env-changed")
         wenn self.timeout:
             args.append(f"--timeout={self.timeout}")
-        wenn self.hunt_refleak is not Nichts:
+        wenn self.hunt_refleak is nicht Nichts:
             args.extend(self.hunt_refleak.bisect_cmd_args())
         wenn self.test_dir:
             args.extend(("--testdir", self.test_dir))

@@ -39,7 +39,7 @@ klasse TestDict(TestCase):
 
         def make_obj():
             a = C()
-            # Make object, make inline values invalid, and then delete dict
+            # Make object, make inline values invalid, und then delete dict
             a.__dict__ = {}
             del a.__dict__
             return a
@@ -144,7 +144,7 @@ klasse TestDict(TestCase):
                 self.assertIsNichts(ref())
 
     def test_racing_get_set_dict(self):
-        """Races getting and setting a dict should be thread safe"""
+        """Races getting und setting a dict should be thread safe"""
         THREAD_COUNT = 10
         barrier = Barrier(THREAD_COUNT)
         def work(d):

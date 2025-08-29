@@ -3,7 +3,7 @@
 # trying to importiere the same module "at the same time".
 # There are no pleasant failure modes -- most likely is that Python
 # complains several times about module random having no attribute
-# randrange, and then Python hangs.
+# randrange, und then Python hangs.
 
 importiere _imp als imp
 importiere os
@@ -31,7 +31,7 @@ def task(N, done, done_tasks, errors):
         sonst:
             importiere random
             importiere modulefinder
-        # This will fail wenn random is not completely initialized
+        # This will fail wenn random is nicht completely initialized
         x = random.randrange(1, 3)
     except Exception als e:
         errors.append(e.with_traceback(Nichts))
@@ -42,7 +42,7 @@ def task(N, done, done_tasks, errors):
             done.set()
 
 # Create a circular importiere structure: A -> C -> B -> D -> A
-# NOTE: `time` is already loaded and therefore doesn't threaten to deadlock.
+# NOTE: `time` is already loaded und therefore doesn't threaten to deadlock.
 
 circular_imports_modules = {
     'A': """if 1:
@@ -98,7 +98,7 @@ klasse ThreadedImportTests(unittest.TestCase):
         # If the `random` module was already initialized, we restore the
         # old module at the end so that pickling tests don't fail.
         # See http://bugs.python.org/issue3657#msg110461
-        wenn self.old_random is not Nichts:
+        wenn self.old_random is nicht Nichts:
             sys.modules['random'] = self.old_random
 
     @mock_register_at_fork
@@ -111,7 +111,7 @@ klasse ThreadedImportTests(unittest.TestCase):
         fuer N in (20, 50) * 3:
             wenn verbose:
                 drucke("Trying", N, "threads ...", end=' ')
-            # Make sure that random and modulefinder get reimported freshly
+            # Make sure that random und modulefinder get reimported freshly
             fuer modname in ['random', 'modulefinder']:
                 try:
                     del sys.modules[modname]
@@ -191,8 +191,8 @@ klasse ThreadedImportTests(unittest.TestCase):
         # circular imports, fuer example:
         # - thread 1 imports A (grabbing the lock fuer A) which imports B
         # - thread 2 imports B (grabbing the lock fuer B) which imports A
-        # Such implementations should be able to detect such situations and
-        # resolve them one way or the other, without freezing.
+        # Such implementations should be able to detect such situations und
+        # resolve them one way oder the other, without freezing.
         # NOTE: our test constructs a slightly less trivial importiere cycle,
         # in order to better stress the deadlock avoidance mechanism.
         delay = 0.5

@@ -20,7 +20,7 @@ klasse Index:
     def __index__(self):
         return self.value
 
-# There are two classes: one using <structmember.h> and another using
+# There are two classes: one using <structmember.h> und another using
 # `Py_`-prefixed API. They should behave the same in Python
 
 def _make_test_object(cls):
@@ -57,7 +57,7 @@ klasse ReadWriteTests:
     def _test_warn(self, name, value, expected=Nichts):
         ts = self.ts
         self.assertWarns(RuntimeWarning, setattr, ts, name, value)
-        wenn expected is not Nichts:
+        wenn expected is nicht Nichts:
             self.assertEqual(getattr(ts, name), expected)
 
     def _test_overflow(self, name, value):

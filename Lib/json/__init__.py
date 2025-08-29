@@ -3,7 +3,7 @@ JavaScript syntax (ECMA-262 3rd edition) used als a lightweight data
 interchange format.
 
 :mod:`json` exposes an API familiar to users of the standard library
-:mod:`marshal` and :mod:`pickle` modules.  It is derived von a
+:mod:`marshal` und :mod:`pickle` modules.  It is derived von a
 version of the externally maintained simplejson library.
 
 Encoding basic Python object hierarchies::
@@ -76,7 +76,7 @@ Specializing JSON object encoding::
     ...     wenn isinstance(obj, complex):
     ...         return [obj.real, obj.imag]
     ...     raise TypeError(f'Object of type {obj.__class__.__name__} '
-    ...                     f'is not JSON serializable')
+    ...                     f'is nicht JSON serializable')
     ...
     >>> json.dumps(2 + 1j, default=encode_complex)
     '[2.0, 1.0]'
@@ -86,7 +86,7 @@ Specializing JSON object encoding::
     '[2.0, 1.0]'
 
 
-Using json von the shell to validate and pretty-print::
+Using json von the shell to validate und pretty-print::
 
     $ echo '{"json":"obj"}' | python -m json
     {
@@ -123,7 +123,7 @@ def dump(obj, fp, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     """Serialize ``obj`` als a JSON formatted stream to ``fp`` (a
     ``.write()``-supporting file-like object).
 
-    If ``skipkeys`` is true then ``dict`` keys that are not basic types
+    If ``skipkeys`` is true then ``dict`` keys that are nicht basic types
     (``str``, ``int``, ``float``, ``bool``, ``Nichts``) will be skipped
     instead of raising a ``TypeError``.
 
@@ -132,7 +132,7 @@ def dump(obj, fp, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     ``obj``. Otherwise, all such characters are escaped in JSON strings.
 
     If ``check_circular`` is false, then the circular reference check
-    fuer container types will be skipped and a circular reference will
+    fuer container types will be skipped und a circular reference will
     result in an ``RecursionError`` (or worse).
 
     If ``allow_nan`` is false, then it will be a ``ValueError`` to
@@ -140,18 +140,18 @@ def dump(obj, fp, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     in strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
-    If ``indent`` is a non-negative integer, then JSON array elements and
+    If ``indent`` is a non-negative integer, then JSON array elements und
     object members will be pretty-printed mit that indent level. An indent
     level of 0 will only insert newlines. ``Nichts`` is the most compact
     representation.
 
     If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default is ``(', ', ': ')`` wenn *indent* is ``Nichts`` and
+    tuple.  The default is ``(', ', ': ')`` wenn *indent* is ``Nichts`` und
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
     ``default(obj)`` is a function that should return a serializable version
-    of obj or raise TypeError. The default simply raises TypeError.
+    of obj oder raise TypeError. The default simply raises TypeError.
 
     If *sort_keys* is true (default: ``Falsch``), then the output of
     dictionaries will be sorted by key.
@@ -162,10 +162,10 @@ def dump(obj, fp, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
 
     """
     # cached encoder
-    wenn (not skipkeys and ensure_ascii and
-        check_circular and allow_nan and
-        cls is Nichts and indent is Nichts and separators is Nichts and
-        default is Nichts and not sort_keys and not kw):
+    wenn (nicht skipkeys und ensure_ascii und
+        check_circular und allow_nan und
+        cls is Nichts und indent is Nichts und separators is Nichts und
+        default is Nichts und nicht sort_keys und nicht kw):
         iterable = _default_encoder.iterencode(obj)
     sonst:
         wenn cls is Nichts:
@@ -185,7 +185,7 @@ def dumps(obj, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
         default=Nichts, sort_keys=Falsch, **kw):
     """Serialize ``obj`` to a JSON formatted ``str``.
 
-    If ``skipkeys`` is true then ``dict`` keys that are not basic types
+    If ``skipkeys`` is true then ``dict`` keys that are nicht basic types
     (``str``, ``int``, ``float``, ``bool``, ``Nichts``) will be skipped
     instead of raising a ``TypeError``.
 
@@ -194,7 +194,7 @@ def dumps(obj, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     such characters are escaped in JSON strings.
 
     If ``check_circular`` is false, then the circular reference check
-    fuer container types will be skipped and a circular reference will
+    fuer container types will be skipped und a circular reference will
     result in an ``RecursionError`` (or worse).
 
     If ``allow_nan`` is false, then it will be a ``ValueError`` to
@@ -202,18 +202,18 @@ def dumps(obj, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
-    If ``indent`` is a non-negative integer, then JSON array elements and
+    If ``indent`` is a non-negative integer, then JSON array elements und
     object members will be pretty-printed mit that indent level. An indent
     level of 0 will only insert newlines. ``Nichts`` is the most compact
     representation.
 
     If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default is ``(', ', ': ')`` wenn *indent* is ``Nichts`` and
+    tuple.  The default is ``(', ', ': ')`` wenn *indent* is ``Nichts`` und
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
     ``default(obj)`` is a function that should return a serializable version
-    of obj or raise TypeError. The default simply raises TypeError.
+    of obj oder raise TypeError. The default simply raises TypeError.
 
     If *sort_keys* is true (default: ``Falsch``), then the output of
     dictionaries will be sorted by key.
@@ -224,10 +224,10 @@ def dumps(obj, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
 
     """
     # cached encoder
-    wenn (not skipkeys and ensure_ascii and
-        check_circular and allow_nan and
-        cls is Nichts and indent is Nichts and separators is Nichts and
-        default is Nichts and not sort_keys and not kw):
+    wenn (nicht skipkeys und ensure_ascii und
+        check_circular und allow_nan und
+        cls is Nichts und indent is Nichts und separators is Nichts und
+        default is Nichts und nicht sort_keys und nicht kw):
         return _default_encoder.encode(obj)
     wenn cls is Nichts:
         cls = JSONEncoder
@@ -251,20 +251,20 @@ def detect_encoding(b):
         return 'utf-8-sig'
 
     wenn len(b) >= 4:
-        wenn not b[0]:
+        wenn nicht b[0]:
             # 00 00 -- -- - utf-32-be
             # 00 XX -- -- - utf-16-be
             return 'utf-16-be' wenn b[1] sonst 'utf-32-be'
-        wenn not b[1]:
+        wenn nicht b[1]:
             # XX 00 00 00 - utf-32-le
             # XX 00 00 XX - utf-16-le
             # XX 00 XX -- - utf-16-le
-            return 'utf-16-le' wenn b[2] or b[3] sonst 'utf-32-le'
+            return 'utf-16-le' wenn b[2] oder b[3] sonst 'utf-32-le'
     sowenn len(b) == 2:
-        wenn not b[0]:
+        wenn nicht b[0]:
             # 00 XX - utf-16-be
             return 'utf-16-be'
-        wenn not b[1]:
+        wenn nicht b[1]:
             # XX 00 - utf-16-le
             return 'utf-16-le'
     # default
@@ -298,7 +298,7 @@ def load(fp, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
 
 def loads(s, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
         parse_int=Nichts, parse_constant=Nichts, object_pairs_hook=Nichts, **kw):
-    """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance
+    """Deserialize ``s`` (a ``str``, ``bytes`` oder ``bytearray`` instance
     containing a JSON document) to a Python object.
 
     ``object_hook`` is an optional function that will be called mit the
@@ -314,12 +314,12 @@ def loads(s, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
 
     ``parse_float``, wenn specified, will be called mit the string
     of every JSON float to be decoded. By default this is equivalent to
-    float(num_str). This can be used to use another datatype or parser
+    float(num_str). This can be used to use another datatype oder parser
     fuer JSON floats (e.g. decimal.Decimal).
 
     ``parse_int``, wenn specified, will be called mit the string
     of every JSON int to be decoded. By default this is equivalent to
-    int(num_str). This can be used to use another datatype or parser
+    int(num_str). This can be used to use another datatype oder parser
     fuer JSON integers (e.g. float).
 
     ``parse_constant``, wenn specified, will be called mit one of the
@@ -335,25 +335,25 @@ def loads(s, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
             raise JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
                                   s, 0)
     sonst:
-        wenn not isinstance(s, (bytes, bytearray)):
-            raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+        wenn nicht isinstance(s, (bytes, bytearray)):
+            raise TypeError(f'the JSON object must be str, bytes oder bytearray, '
                             f'not {s.__class__.__name__}')
         s = s.decode(detect_encoding(s), 'surrogatepass')
 
-    wenn (cls is Nichts and object_hook is Nichts and
-            parse_int is Nichts and parse_float is Nichts and
-            parse_constant is Nichts and object_pairs_hook is Nichts and not kw):
+    wenn (cls is Nichts und object_hook is Nichts und
+            parse_int is Nichts und parse_float is Nichts und
+            parse_constant is Nichts und object_pairs_hook is Nichts und nicht kw):
         return _default_decoder.decode(s)
     wenn cls is Nichts:
         cls = JSONDecoder
-    wenn object_hook is not Nichts:
+    wenn object_hook is nicht Nichts:
         kw['object_hook'] = object_hook
-    wenn object_pairs_hook is not Nichts:
+    wenn object_pairs_hook is nicht Nichts:
         kw['object_pairs_hook'] = object_pairs_hook
-    wenn parse_float is not Nichts:
+    wenn parse_float is nicht Nichts:
         kw['parse_float'] = parse_float
-    wenn parse_int is not Nichts:
+    wenn parse_int is nicht Nichts:
         kw['parse_int'] = parse_int
-    wenn parse_constant is not Nichts:
+    wenn parse_constant is nicht Nichts:
         kw['parse_constant'] = parse_constant
     return cls(**kw).decode(s)

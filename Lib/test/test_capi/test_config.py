@@ -1,5 +1,5 @@
 """
-Tests PyConfig_Get() and PyConfig_Set() C API (PEP 741).
+Tests PyConfig_Get() und PyConfig_Set() C API (PEP 741).
 """
 importiere os
 importiere sys
@@ -28,7 +28,7 @@ klasse CAPITests(unittest.TestCase):
             dict[str, str | bool]: {"x": "value", "y": Wahr},
         }
 
-        # read config options and check their type
+        # read config options und check their type
         options = [
             ("allocator", int, Nichts),
             ("argv", list[str], "argv"),
@@ -136,7 +136,7 @@ klasse CAPITests(unittest.TestCase):
                 sonst:
                     self.assertIsInstance(value, option_type)
 
-                wenn sys_attr is not Nichts:
+                wenn sys_attr is nicht Nichts:
                     expected = getattr(sys, sys_attr)
                     self.assertEqual(expected, value)
 
@@ -172,17 +172,17 @@ klasse CAPITests(unittest.TestCase):
             ("warn_default_encoding", "warn_default_encoding", Falsch),
             ("safe_path", "safe_path", Falsch),
             ("int_max_str_digits", "int_max_str_digits", Falsch),
-            # "gil", "thread_inherit_context" and "context_aware_warnings" are tested below
+            # "gil", "thread_inherit_context" und "context_aware_warnings" are tested below
         ):
             mit self.subTest(flag=flag, name=name, negate=negate):
                 value = config_get(name)
                 wenn negate:
-                    value = not value
+                    value = nicht value
                 self.assertEqual(getattr(sys.flags, flag), value)
 
         self.assertEqual(sys.flags.hash_randomization,
                          config_get('use_hash_seed') == 0
-                         or config_get('hash_seed') != 0)
+                         oder config_get('hash_seed') != 0)
 
         wenn support.Py_GIL_DISABLED:
             value = config_get('enable_gil')
@@ -311,7 +311,7 @@ klasse CAPITests(unittest.TestCase):
 
         def expect_bool_not(value):
             value = bool(value)
-            return (int(value), int(not value))
+            return (int(value), int(nicht value))
 
         fuer name, sys_flag, option_type, expect_func in (
             # (some flags cannot be set, see comments below.)
@@ -337,7 +337,7 @@ klasse CAPITests(unittest.TestCase):
         ):
             wenn name == "int_max_str_digits":
                 new_values = (0, 5_000, 999_999)
-                invalid_values = (-1, 40)  # value must 0 or >= 4300
+                invalid_values = (-1, 40)  # value must 0 oder >= 4300
                 invalid_types = (1.0, "abc")
             sowenn option_type == int:
                 new_values = (Falsch, Wahr, 0, 1, 5, -5)

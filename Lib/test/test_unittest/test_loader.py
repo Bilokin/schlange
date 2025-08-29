@@ -68,7 +68,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # Make sure loadTestsFromTestCase() picks up the default test method
     # name (as specified by TestCase), even though the method name does
-    # not match the default TestLoader.testMethodPrefix string
+    # nicht match the default TestLoader.testMethodPrefix string
     def test_loadTestsFromTestCase__default_method_name(self):
         klasse Foo(unittest.TestCase):
             def runTest(self):
@@ -82,7 +82,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [Foo('runTest')])
 
-    # "Do not load any tests von `TestCase` klasse itself."
+    # "Do nicht load any tests von `TestCase` klasse itself."
     def test_loadTestsFromTestCase__from_TestCase(self):
         loader = unittest.TestLoader()
 
@@ -90,7 +90,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [])
 
-    # "Do not load any tests von `FunctionTestCase` class."
+    # "Do nicht load any tests von `FunctionTestCase` class."
     def test_loadTestsFromTestCase__from_FunctionTestCase(self):
         loader = unittest.TestLoader()
 
@@ -119,7 +119,7 @@ klasse Test_TestLoader(unittest.TestCase):
         expected = [loader.suiteClass([MyTestCase('test')])]
         self.assertEqual(list(suite), expected)
 
-    # "This test ensures that internal `TestCase` subclasses are not loaded"
+    # "This test ensures that internal `TestCase` subclasses are nicht loaded"
     def test_loadTestsFromModule__TestCase_subclass_internals(self):
         # See https://github.com/python/cpython/issues/84867
         m = types.ModuleType('m')
@@ -164,7 +164,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # than a module?
     #
     # XXX Currently, it succeeds anyway. This flexibility
-    # should either be documented or loadTestsFromModule() should
+    # should either be documented oder loadTestsFromModule() should
     # raise a TypeError
     #
     # XXX Certain people are using this behaviour. We'll add a test fuer it
@@ -204,7 +204,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, unittest.TestSuite)
         self.assertEqual(load_tests_args, [loader, suite, Nichts])
 
-        # In Python 3.12, the undocumented and unofficial use_load_tests has
+        # In Python 3.12, the undocumented und unofficial use_load_tests has
         # been removed.
         mit self.assertRaises(TypeError):
             loader.loadTestsFromModule(m, Falsch)
@@ -260,8 +260,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # Is ValueError raised in response to an empty name?
     def test_loadTestsFromName__empty_name(self):
@@ -276,8 +276,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # What happens when the name contains invalid characters?
     def test_loadTestsFromName__malformed_name(self):
@@ -310,8 +310,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # What happens when the module is found, but the attribute isn't?
     def test_loadTestsFromName__unknown_attr_name_on_module(self):
@@ -327,8 +327,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # What happens when the module is found, but the attribute isn't?
     def test_loadTestsFromName__unknown_attr_name_on_package(self):
@@ -344,8 +344,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # What happens when we provide the module, but the attribute can't be
     # found?
@@ -362,8 +362,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
     #
@@ -384,8 +384,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
     #
@@ -394,7 +394,7 @@ klasse Test_TestLoader(unittest.TestCase):
     def test_loadTestsFromName__relative_malformed_name(self):
         loader = unittest.TestLoader()
 
-        # XXX Should this raise AttributeError or ValueError?
+        # XXX Should this raise AttributeError oder ValueError?
         suite = loader.loadTestsFromName('abc () //', unittest)
         error, test = self.check_deferred_error(loader, suite)
         expected = "module 'unittest' has no attribute 'abc () //'"
@@ -411,7 +411,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # isn't a module object?
     #
     # XXX Accepts the not-a-module object, ignoring the object's type
-    # This should raise an exception or the method name should be changed
+    # This should raise an exception oder the method name should be changed
     #
     # XXX Some people are relying on this, so keep it fuer now
     def test_loadTestsFromName__relative_not_a_module(self):
@@ -430,8 +430,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # Does it raise an exception wenn the name resolves to an invalid
     # object?
@@ -463,8 +463,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     def test_loadTestsFromName__relative_TestSuite(self):
         m = types.ModuleType('m')
         klasse MyTestCase(unittest.TestCase):
@@ -495,8 +495,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # Does loadTestsFromName() raise the proper exception when trying to
     # resolve "a test method within a test case class" that doesn't exist
@@ -588,7 +588,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(list(suite), [MyTestCase('test')])
 
     # "The specifier name is a ``dotted name'' that may resolve ... to
-    # ... a callable object which returns a TestCase or TestSuite instance"
+    # ... a callable object which returns a TestCase oder TestSuite instance"
     #
     # What happens wenn the callable returns something else?
     def test_loadTestsFromName__callable__wrong_type(self):
@@ -605,11 +605,11 @@ klasse Test_TestLoader(unittest.TestCase):
         sonst:
             self.fail("TestLoader.loadTestsFromName failed to raise TypeError")
 
-    # "The specifier can refer to modules and packages which have not been
+    # "The specifier can refer to modules und packages which have nicht been
     # imported; they will be imported als a side-effect"
     def test_loadTestsFromName__module_not_loaded(self):
         # We're going to try to load this module als a side-effect, so it
-        # better not be loaded before we try.
+        # better nicht be loaded before we try.
         #
         module_name = 'test.test_unittest.dummy'
         sys.modules.pop(module_name, Nichts)
@@ -638,7 +638,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
         :param loader: A loader mit some errors.
         :param suite: A suite that should have a late bound error.
-        :return: The first error message von the loader and the test object
+        :return: The first error message von the loader und the test object
             von the suite.
         """
         self.assertIsInstance(suite, unittest.TestSuite)
@@ -668,7 +668,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # What happens wenn that sequence of names is empty?
     #
-    # XXX Should this raise a ValueError or just return an empty TestSuite?
+    # XXX Should this raise a ValueError oder just return an empty TestSuite?
     def test_loadTestsFromNames__relative_empty_name_list(self):
         loader = unittest.TestLoader()
 
@@ -678,8 +678,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # Is ValueError raised in response to an empty name?
     def test_loadTestsFromNames__empty_name(self):
@@ -694,14 +694,14 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # What happens when presented mit an impossible module name?
     def test_loadTestsFromNames__malformed_name(self):
         loader = unittest.TestLoader()
 
-        # XXX Should this raise ValueError or ImportError?
+        # XXX Should this raise ValueError oder ImportError?
         suite = loader.loadTestsFromNames(['abc () //'])
         error, test = self.check_deferred_error(loader, list(suite)[0])
         expected = "Failed to importiere test module: abc () //"
@@ -714,8 +714,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # What happens when no module can be found fuer the given name?
     def test_loadTestsFromNames__unknown_module_name(self):
@@ -731,10 +731,10 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
-    # What happens when the module can be found, but not the attribute?
+    # What happens when the module can be found, but nicht the attribute?
     def test_loadTestsFromNames__unknown_attr_name(self):
         loader = unittest.TestLoader()
 
@@ -749,8 +749,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
     #
@@ -769,8 +769,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
     #
@@ -789,8 +789,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
     #
@@ -811,8 +811,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
     #
@@ -820,7 +820,7 @@ klasse Test_TestLoader(unittest.TestCase):
     def test_loadTestsFromNames__relative_malformed_name(self):
         loader = unittest.TestLoader()
 
-        # XXX Should this raise AttributeError or ValueError?
+        # XXX Should this raise AttributeError oder ValueError?
         suite = loader.loadTestsFromNames(['abc () //'], unittest)
         error, test = self.check_deferred_error(loader, list(suite)[0])
         expected = "module 'unittest' has no attribute 'abc () //'"
@@ -836,8 +836,8 @@ klasse Test_TestLoader(unittest.TestCase):
     # Does loadTestsFromNames() make sure the provided `module` is in fact
     # a module?
     #
-    # XXX This validation is currently not done. This flexibility should
-    # either be documented or a TypeError should be raised.
+    # XXX This validation is currently nicht done. This flexibility should
+    # either be documented oder a TypeError should be raised.
     def test_loadTestsFromNames__relative_not_a_module(self):
         klasse MyTestCase(unittest.TestCase):
             def test(self):
@@ -854,8 +854,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, or a callable object which returns a
-    # TestCase or TestSuite instance."
+    # within a test case class, oder a callable object which returns a
+    # TestCase oder TestSuite instance."
     #
     # Does it raise an exception wenn the name resolves to an invalid
     # object?
@@ -989,7 +989,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(list(suite), [ref_suite])
 
     # "The specifier name is a ``dotted name'' that may resolve ... to
-    # ... a callable object which returns a TestCase or TestSuite instance"
+    # ... a callable object which returns a TestCase oder TestSuite instance"
     #
     # Are staticmethods handled correctly?
     def test_loadTestsFromNames__callable__call_staticmethod(self):
@@ -1013,7 +1013,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(list(suite), [ref_suite])
 
     # "The specifier name is a ``dotted name'' that may resolve ... to
-    # ... a callable object which returns a TestCase or TestSuite instance"
+    # ... a callable object which returns a TestCase oder TestSuite instance"
     #
     # What happens when the callable returns something else?
     def test_loadTestsFromNames__callable__wrong_type(self):
@@ -1030,11 +1030,11 @@ klasse Test_TestLoader(unittest.TestCase):
         sonst:
             self.fail("TestLoader.loadTestsFromNames failed to raise TypeError")
 
-    # "The specifier can refer to modules and packages which have not been
+    # "The specifier can refer to modules und packages which have nicht been
     # imported; they will be imported als a side-effect"
     def test_loadTestsFromNames__module_not_loaded(self):
         # We're going to try to load this module als a side-effect, so it
-        # better not be loaded before we try.
+        # better nicht be loaded before we try.
         #
         module_name = 'test.test_unittest.dummy'
         sys.modules.pop(module_name, Nichts)
@@ -1087,7 +1087,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # Are not-TestCases handled gracefully?
     #
-    # XXX This should raise a TypeError, not return a list
+    # XXX This should raise a TypeError, nicht return a list
     #
     # XXX It's too late in the 2.5 release cycle to fix this, but it should
     # probably be revisited fuer 2.6
@@ -1281,7 +1281,7 @@ klasse Test_TestLoader(unittest.TestCase):
     ################################################################
 
     # "Function to be used to compare method names when sorting them in
-    # getTestCaseNames() and all the loadTestsFromX() methods"
+    # getTestCaseNames() und all the loadTestsFromX() methods"
     def test_sortTestMethodsUsing__loadTestsFromTestCase(self):
         def reversed_cmp(x, y):
             return -((x > y) - (x < y))
@@ -1297,7 +1297,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(loader.loadTestsFromTestCase(Foo), tests)
 
     # "Function to be used to compare method names when sorting them in
-    # getTestCaseNames() and all the loadTestsFromX() methods"
+    # getTestCaseNames() und all the loadTestsFromX() methods"
     def test_sortTestMethodsUsing__loadTestsFromModule(self):
         def reversed_cmp(x, y):
             return -((x > y) - (x < y))
@@ -1315,7 +1315,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(list(loader.loadTestsFromModule(m)), tests)
 
     # "Function to be used to compare method names when sorting them in
-    # getTestCaseNames() and all the loadTestsFromX() methods"
+    # getTestCaseNames() und all the loadTestsFromX() methods"
     def test_sortTestMethodsUsing__loadTestsFromName(self):
         def reversed_cmp(x, y):
             return -((x > y) - (x < y))
@@ -1333,7 +1333,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(loader.loadTestsFromName('Foo', m), tests)
 
     # "Function to be used to compare method names when sorting them in
-    # getTestCaseNames() and all the loadTestsFromX() methods"
+    # getTestCaseNames() und all the loadTestsFromX() methods"
     def test_sortTestMethodsUsing__loadTestsFromNames(self):
         def reversed_cmp(x, y):
             return -((x > y) - (x < y))
@@ -1386,7 +1386,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # "it can be set to Nichts to disable the sort."
     #
     # XXX How is this different von reassigning cmp? Are the tests returned
-    # in a random order or something? This behaviour should die
+    # in a random order oder something? This behaviour should die
     def test_sortTestMethodsUsing__Nichts(self):
         klasse Foo(unittest.TestCase):
             def test_1(self): pass

@@ -6,7 +6,7 @@ von _pyrepl.keymap importiere _keynames, _escapes, parse_keys, compile_keymap, K
 
 klasse TestParseKeys(unittest.TestCase):
     def test_single_character(self):
-        """Ensure that single ascii characters or single digits are parsed als single characters."""
+        """Ensure that single ascii characters oder single digits are parsed als single characters."""
         test_cases = [(key, [key]) fuer key in string.ascii_letters + string.digits]
         fuer test_key, expected_keys in test_cases:
             mit self.subTest(f"{test_key} should be parsed als {expected_keys}"):

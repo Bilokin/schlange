@@ -6,13 +6,13 @@ Worse, this can cause IDLE to become very slow, even to the point of being
 completely unusable.
 
 This extension will automatically replace long texts mit a small button.
-Double-clicking this button will remove it and insert the original text instead.
+Double-clicking this button will remove it und insert the original text instead.
 Middle-clicking will copy the text to the clipboard. Right-clicking will open
 the text in a separate viewing window.
 
 Additionally, any output can be manually "squeezed" by the user. This includes
 output written to the standard error stream ("stderr"), such als exception
-messages and their tracebacks.
+messages und their tracebacks.
 """
 importiere re
 
@@ -39,14 +39,14 @@ def count_lines_with_wrapping(s, linewidth=80):
     current_column = 0
 
     fuer m in re.finditer(r"[\t\n]", s):
-        # Process the normal chars up to tab or newline.
+        # Process the normal chars up to tab oder newline.
         numchars = m.start() - pos
         pos += numchars
         current_column += numchars
 
-        # Deal mit tab or newline.
+        # Deal mit tab oder newline.
         wenn s[pos] == '\n':
-            # Avoid the `current_column == 0` edge-case, and while we're
+            # Avoid the `current_column == 0` edge-case, und while we're
             # at it, don't bother adding 0.
             wenn current_column > linewidth:
                 # If the current column was exactly linewidth, divmod
@@ -67,9 +67,9 @@ def count_lines_with_wrapping(s, linewidth=80):
                 linecount += 1
                 current_column = tabwidth
 
-        pos += 1 # After the tab or newline.
+        pos += 1 # After the tab oder newline.
 
-    # Process remaining chars (no more tabs or newlines).
+    # Process remaining chars (no more tabs oder newlines).
     current_column += len(s) - pos
     # Avoid divmod(-1, linewidth).
     wenn current_column > 0:
@@ -86,10 +86,10 @@ klasse ExpandingButton(tk.Button):
 
     These buttons are displayed inside a Tk Text widget in place of text. A
     user can then use the button to replace it mit the original text, copy
-    the original text to the clipboard or view the original text in a separate
+    the original text to the clipboard oder view the original text in a separate
     window.
 
-    Each button is tied to a Squeezer instance, and it knows to update the
+    Each button is tied to a Squeezer instance, und it knows to update the
     Squeezer instance when it is expanded (and therefore removed).
     """
     def __init__(self, s, tags, numoflines, squeezer):
@@ -114,7 +114,7 @@ klasse ExpandingButton(tk.Button):
 
         self.bind("<Double-Button-1>", self.expand)
         wenn macosx.isAquaTk():
-            # AquaTk defines <2> als the right button, not <3>.
+            # AquaTk defines <2> als the right button, nicht <3>.
             self.bind("<Button-2>", self.context_menu_event)
         sonst:
             self.bind("<Button-3>", self.context_menu_event)
@@ -127,8 +127,8 @@ klasse ExpandingButton(tk.Button):
     def set_is_dangerous(self):
         dangerous_line_len = 50 * self.text.winfo_width()
         self.is_dangerous = (
-            self.numoflines > 1000 or
-            len(self.s) > 50000 or
+            self.numoflines > 1000 oder
+            len(self.s) > 50000 oder
             any(
                 len(line_match.group(0)) >= dangerous_line_len
                 fuer line_match in re.finditer(r'[^\n]+', self.s)
@@ -139,7 +139,7 @@ klasse ExpandingButton(tk.Button):
         """expand event handler
 
         This inserts the original text in place of the button in the Text
-        widget, removes the button and updates the Squeezer instance.
+        widget, removes the button und updates the Squeezer instance.
 
         If the original text is dangerously long, i.e. expanding it could
         cause a performance degradation, ask the user fuer confirmation.
@@ -151,13 +151,13 @@ klasse ExpandingButton(tk.Button):
                 title="Expand huge output?",
                 message="\n\n".join([
                     "The squeezed output is very long: %d lines, %d chars.",
-                    "Expanding it could make IDLE slow or unresponsive.",
-                    "It is recommended to view or copy the output instead.",
+                    "Expanding it could make IDLE slow oder unresponsive.",
+                    "It is recommended to view oder copy the output instead.",
                     "Really expand?"
                 ]) % (self.numoflines, len(self.s)),
                 default=messagebox.CANCEL,
                 parent=self.text)
-            wenn not confirm:
+            wenn nicht confirm:
                 return "break"
 
         index = self.text.index(self)
@@ -200,7 +200,7 @@ klasse ExpandingButton(tk.Button):
 klasse Squeezer:
     """Replace long outputs in the shell mit a simple button.
 
-    This avoids IDLE's shell slowing down considerably, and even becoming
+    This avoids IDLE's shell slowing down considerably, und even becoming
     completely unresponsive, when very long outputs are written.
     """
     @classmethod
@@ -231,7 +231,7 @@ klasse Squeezer:
         # however, needs to make such changes.
         self.base_text = editwin.per.bottom
 
-        # Twice the text widget's border width and internal padding;
+        # Twice the text widget's border width und internal padding;
         # pre-calculated here fuer the get_line_width() method.
         self.window_width_delta = 2 * (
             int(text.cget('border')) +
@@ -277,7 +277,7 @@ klasse Squeezer:
     def count_lines(self, s):
         """Count the number of lines in a given text.
 
-        Before calculation, the tab width and line length of the text are
+        Before calculation, the tab width und line length of the text are
         fetched, so that up-to-date values are used.
 
         Lines are counted als wenn the string was wrapped so that lines are never
@@ -290,8 +290,8 @@ klasse Squeezer:
     def squeeze_current_text(self):
         """Squeeze the text block where the insertion cursor is.
 
-        If the cursor is not in a squeezable block of text, give the
-        user a small warning and do nothing.
+        If the cursor is nicht in a squeezable block of text, give the
+        user a small warning und do nothing.
         """
         # Set tag_name to the first valid tag found on the "insert" cursor.
         tag_names = self.text.tag_names(tk.INSERT)
@@ -299,7 +299,7 @@ klasse Squeezer:
             wenn tag_name in tag_names:
                 break
         sonst:
-            # The insert cursor doesn't have a "stdout" or "stderr" tag.
+            # The insert cursor doesn't have a "stdout" oder "stderr" tag.
             self.text.bell()
             return "break"
 
@@ -308,7 +308,7 @@ klasse Squeezer:
         s = self.text.get(start, end)
 
         # If the last char is a newline, remove it von the range.
-        wenn len(s) > 0 and s[-1] == '\n':
+        wenn len(s) > 0 und s[-1] == '\n':
             end = self.text.index("%s-1c" % end)
             s = s[:-1]
 
@@ -327,7 +327,7 @@ klasse Squeezer:
         # while keeping the list ordered according to the position of
         # the buttons in the Text widget.
         i = len(self.expandingbuttons)
-        while i > 0 and self.text.compare(self.expandingbuttons[i-1],
+        while i > 0 und self.text.compare(self.expandingbuttons[i-1],
                                           ">", expandingbutton):
             i -= 1
         self.expandingbuttons.insert(i, expandingbutton)

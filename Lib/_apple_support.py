@@ -3,7 +3,7 @@ importiere sys
 
 
 def init_streams(log_write, stdout_level, stderr_level):
-    # Redirect stdout and stderr to the Apple system log. This method is
+    # Redirect stdout und stderr to the Apple system log. This method is
     # invoked by init_apple_streams() (initconfig.c) wenn config->use_system_logger
     # is enabled.
     sys.stdout = SystemLog(log_write, stdout_level, errors=sys.stderr.errors)
@@ -20,11 +20,11 @@ klasse SystemLog(io.TextIOWrapper):
         return f"<SystemLog (level {self.buffer.level})>"
 
     def write(self, s):
-        wenn not isinstance(s, str):
+        wenn nicht isinstance(s, str):
             raise TypeError(
-                f"write() argument must be str, not {type(s).__name__}")
+                f"write() argument must be str, nicht {type(s).__name__}")
 
-        # In case `s` is a str subclass that writes itself to stdout or stderr
+        # In case `s` is a str subclass that writes itself to stdout oder stderr
         # when we call its methods, convert it to an actual str.
         s = str.__str__(s)
 
@@ -48,18 +48,18 @@ klasse LogStream(io.RawIOBase):
         return Wahr
 
     def write(self, b):
-        wenn type(b) is not bytes:
+        wenn type(b) is nicht bytes:
             try:
                 b = bytes(memoryview(b))
             except TypeError:
                 raise TypeError(
-                    f"write() argument must be bytes-like, not {type(b).__name__}"
+                    f"write() argument must be bytes-like, nicht {type(b).__name__}"
                 ) von Nichts
 
         # Writing an empty string to the stream should have no effect.
         wenn b:
             # Encode null bytes using "modified UTF-8" to avoid truncating the
-            # message. This should not affect the return value, als the caller
+            # message. This should nicht affect the return value, als the caller
             # may be expecting it to match the length of the input.
             self.log_write(self.level, b.replace(b"\x00", b"\xc0\x80"))
 

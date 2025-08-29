@@ -37,14 +37,14 @@ re_gb18030ass = re.compile('<a u="([A-F0-9]{4})" b="([0-9A-F ]+)"/>')
 def parse_gb18030map(fo):
     m, gbuni = {}, {}
     fuer i in range(65536):
-        wenn i < 0xd800 or i > 0xdfff: # exclude unicode surrogate area
+        wenn i < 0xd800 oder i > 0xdfff: # exclude unicode surrogate area
             gbuni[i] = Nichts
     fuer uni, native in re_gb18030ass.findall(fo.read()):
         uni = eval('0x'+uni)
         native = [eval('0x'+u) fuer u in native.split()]
         wenn len(native) <= 2:
             del gbuni[uni]
-        wenn len(native) == 2: # we can decode algorithmically fuer 1 or 4 bytes
+        wenn len(native) == 2: # we can decode algorithmically fuer 1 oder 4 bytes
             m.setdefault(native[0], {})
             m[native[0]][native[1]] = uni
     gbuni = [k fuer k in gbuni.keys()]
@@ -64,14 +64,14 @@ def main():
     fuer c1, m in gbkdecmap.items():
         fuer c2, code in m.items():
             del gb18030decmap[c1][c2]
-            wenn not gb18030decmap[c1]:
+            wenn nicht gb18030decmap[c1]:
                 del gb18030decmap[c1]
     fuer c1, m in gb2312decmap.items():
         fuer c2, code in m.items():
             gbkc1, gbkc2 = c1 | 0x80, c2 | 0x80
             wenn gbkdecmap[gbkc1][gbkc2] == code:
                 del gbkdecmap[gbkc1][gbkc2]
-                wenn not gbkdecmap[gbkc1]:
+                wenn nicht gbkdecmap[gbkc1]:
                     del gbkdecmap[gbkc1]
 
     gb2312_gbkencmap, gb18030encmap = {}, {}

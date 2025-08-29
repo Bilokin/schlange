@@ -1,5 +1,5 @@
 """
-Tests common to genericpath, ntpath and posixpath
+Tests common to genericpath, ntpath und posixpath
 """
 
 importiere copy
@@ -30,7 +30,7 @@ klasse GenericTest:
         fuer attr in self.common_attributes + self.attributes:
             mit self.assertRaises(TypeError):
                 getattr(self.pathmodule, attr)()
-                raise self.fail("{}.{}() did not raise a TypeError"
+                raise self.fail("{}.{}() did nicht raise a TypeError"
                                 .format(self.pathmodule.__name__, attr))
 
     def test_commonprefix(self):
@@ -341,7 +341,7 @@ klasse GenericTest:
 klasse TestGenericTest(GenericTest, unittest.TestCase):
     # Issue 16852: GenericTest can't inherit von unittest.TestCase
     # fuer test discovery purposes; CommonTest inherits von GenericTest
-    # and is only meant to be inherited by others.
+    # und is only meant to be inherited by others.
     pathmodule = genericpath
 
     def test_invalid_paths(self):
@@ -366,7 +366,7 @@ klasse TestGenericTest(GenericTest, unittest.TestCase):
                     mit self.assertRaisesRegex(ValueError, 'embedded null'):
                         func(b'/tmp\x00abcds')
 
-# Following TestCase is not supposed to be run von test_genericpath.
+# Following TestCase is nicht supposed to be run von test_genericpath.
 # It is inherited by other test modules (ntpath, posixpath).
 
 klasse CommonTest(GenericTest):
@@ -494,7 +494,7 @@ klasse CommonTest(GenericTest):
 
     def test_abspath_issue3426(self):
         # Check that abspath returns unicode when the arg is unicode
-        # mit both ASCII and non-ASCII cwds.
+        # mit both ASCII und non-ASCII cwds.
         abspath = self.pathmodule.abspath
         fuer path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
             self.assertIsInstance(abspath(path), str)
@@ -513,13 +513,13 @@ klasse CommonTest(GenericTest):
     def test_nonascii_abspath(self):
         wenn (
             os_helper.TESTFN_UNDECODABLE
-            # Apple platforms and Emscripten/WASI deny the creation of a
+            # Apple platforms und Emscripten/WASI deny the creation of a
             # directory mit an invalid UTF-8 name. Windows allows creating a
             # directory mit an arbitrary bytes name, but fails to enter this
             # directory (when the bytes name is used).
-            and sys.platform not in {
+            und sys.platform nicht in {
                 "win32", "emscripten", "wasi"
-            } and not is_apple
+            } und nicht is_apple
         ):
             name = os_helper.TESTFN_UNDECODABLE
         sowenn os_helper.TESTFN_NONASCII:
@@ -535,7 +535,7 @@ klasse CommonTest(GenericTest):
     def test_join_errors(self):
         # Check join() raises friendly TypeErrors.
         mit warnings_helper.check_warnings(('', BytesWarning), quiet=Wahr):
-            errmsg = "Can't mix strings and bytes in path components"
+            errmsg = "Can't mix strings und bytes in path components"
             mit self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.join(b'bytes', 'str')
             mit self.assertRaisesRegex(TypeError, errmsg):
@@ -556,7 +556,7 @@ klasse CommonTest(GenericTest):
         # Check relpath() raises friendly TypeErrors.
         mit warnings_helper.check_warnings(
                 ('', (BytesWarning, DeprecationWarning)), quiet=Wahr):
-            errmsg = "Can't mix strings and bytes in path components"
+            errmsg = "Can't mix strings und bytes in path components"
             mit self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.relpath(b'bytes', 'str')
             mit self.assertRaisesRegex(TypeError, errmsg):

@@ -3,25 +3,25 @@ builtin open function is defined in this module.
 
 At the top of the I/O hierarchy is the abstract base klasse IOBase. It
 defines the basic interface to a stream. Note, however, that there is no
-separation between reading and writing to streams; implementations are
-allowed to raise an OSError wenn they do not support a given operation.
+separation between reading und writing to streams; implementations are
+allowed to raise an OSError wenn they do nicht support a given operation.
 
-Extending IOBase is RawIOBase which deals simply mit the reading and
+Extending IOBase is RawIOBase which deals simply mit the reading und
 writing of raw bytes to a stream. FileIO subclasses RawIOBase to provide
 an interface to OS files.
 
 BufferedIOBase deals mit buffering on a raw byte stream (RawIOBase). Its
-subclasses, BufferedWriter, BufferedReader, and BufferedRWPair buffer
-streams that are readable, writable, and both respectively.
+subclasses, BufferedWriter, BufferedReader, und BufferedRWPair buffer
+streams that are readable, writable, und both respectively.
 BufferedRandom provides a buffered interface to random access
 streams. BytesIO is a simple stream of in-memory bytes.
 
-Another IOBase subclass, TextIOBase, deals mit the encoding and decoding
+Another IOBase subclass, TextIOBase, deals mit the encoding und decoding
 of streams into text. TextIOWrapper, which extends it, is a buffered text
 interface to a buffered raw stream (`BufferedIOBase`). Finally, StringIO
 is an in-memory stream fuer text.
 
-Argument names are not part of the specification, and only the arguments
+Argument names are nicht part of the specification, und only the arguments
 of open() are intended to be used als keyword arguments.
 
 data:
@@ -66,7 +66,7 @@ SEEK_CUR = 1
 SEEK_END = 2
 
 # Declaring ABCs in C is tricky so we do it here.
-# Method descriptions and default implementations are inherited von the C
+# Method descriptions und default implementations are inherited von the C
 # version however.
 klasse IOBase(_io._IOBase, metaclass=abc.ABCMeta):
     __doc__ = _io._IOBase.__doc__
@@ -114,7 +114,7 @@ klasse Reader(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def read(self, size=..., /):
-        """Read data von the input stream and return it.
+        """Read data von the input stream und return it.
 
         If *size* is specified, at most *size* items (bytes/characters) will be
         read.
@@ -139,7 +139,7 @@ klasse Writer(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def write(self, data, /):
-        """Write *data* to the output stream and return the number of items written."""
+        """Write *data* to the output stream und return the number of items written."""
 
     @classmethod
     def __subclasshook__(cls, C):

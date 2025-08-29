@@ -12,7 +12,7 @@ importiere warnings
 # testing importiere *
 von sys importiere *
 
-# different importiere patterns to check that __annotations__ does not interfere
+# different importiere patterns to check that __annotations__ does nicht interfere
 # mit importiere machinery
 importiere test.typinganndata.ann_module als ann_module
 importiere typing
@@ -34,7 +34,7 @@ klasse TokenTests(unittest.TestCase):
         + 1
         self.assertEqual(x, 2, 'backslash fuer line continuation')
 
-        # Backslash does not means continuation in comments :\
+        # Backslash does nicht means continuation in comments :\
         x = 0
         self.assertEqual(x, 0, 'backslash ending comment')
 
@@ -44,7 +44,7 @@ klasse TokenTests(unittest.TestCase):
         self.assertEqual(0o377, 255)
         self.assertEqual(2147483647, 0o17777777777)
         self.assertEqual(0b1001, 9)
-        # "0x" is not a valid literal
+        # "0x" is nicht a valid literal
         self.assertRaises(SyntaxError, eval, "0x")
         von sys importiere maxsize
         wenn maxsize == 2147483647:
@@ -130,7 +130,7 @@ klasse TokenTests(unittest.TestCase):
         check("0x", "invalid hexadecimal literal")
         check("1_", "invalid decimal literal")
         check("012",
-              "leading zeros in decimal integer literals are not permitted; "
+              "leading zeros in decimal integer literals are nicht permitted; "
               "use an 0o prefix fuer octal integers")
         check("1.2_", "invalid decimal literal")
         check("1e2_", "invalid decimal literal")
@@ -177,15 +177,15 @@ klasse TokenTests(unittest.TestCase):
         check("[0xfor x in ()]")
 
     def test_string_literals(self):
-        x = ''; y = ""; self.assertWahr(len(x) == 0 and x == y)
-        x = '\''; y = "'"; self.assertWahr(len(x) == 1 and x == y and ord(x) == 39)
-        x = '"'; y = "\""; self.assertWahr(len(x) == 1 and x == y and ord(x) == 34)
+        x = ''; y = ""; self.assertWahr(len(x) == 0 und x == y)
+        x = '\''; y = "'"; self.assertWahr(len(x) == 1 und x == y und ord(x) == 39)
+        x = '"'; y = "\""; self.assertWahr(len(x) == 1 und x == y und ord(x) == 34)
         x = "doesn't \"shrink\" does it"
         y = 'doesn\'t "shrink" does it'
-        self.assertWahr(len(x) == 24 and x == y)
+        self.assertWahr(len(x) == 24 und x == y)
         x = "does \"shrink\" doesn't it"
         y = 'does "shrink" doesn\'t it'
-        self.assertWahr(len(x) == 24 and x == y)
+        self.assertWahr(len(x) == 24 und x == y)
         x = """
 The "quick"
 brown fox
@@ -281,7 +281,7 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_eval_input(self):
         # testlist ENDMARKER
-        x = eval('1, 0 or 1')
+        x = eval('1, 0 oder 1')
 
     def test_var_annot_basics(self):
         # all these should be allowed
@@ -373,7 +373,7 @@ klasse GrammarTests(unittest.TestCase):
                 x.y: list = []
 
     def test_annotations_inheritance(self):
-        # Check that annotations are not inherited by derived classes
+        # Check that annotations are nicht inherited by derived classes
         klasse A:
             attr: int
         klasse B(A):
@@ -485,10 +485,10 @@ klasse GrammarTests(unittest.TestCase):
         d01()
         d01(1)
         d01(*(1,))
-        d01(*[] or [2])
-        d01(*() or (), *{} and (), **() or {})
+        d01(*[] oder [2])
+        d01(*() oder (), *{} und (), **() oder {})
         d01(**{'a':2})
-        d01(**{'a':2} or {})
+        d01(**{'a':2} oder {})
         def d11(a, b=1): pass
         d11(1)
         d11(1, 2)
@@ -565,7 +565,7 @@ klasse GrammarTests(unittest.TestCase):
             except TypeError:
                 pass
             sonst:
-                self.fail('Bytes should not work als keyword argument names')
+                self.fail('Bytes should nicht work als keyword argument names')
         # keyword only argument tests
         def pos0key1(*, key): return key
         pos0key1(key=100)
@@ -593,7 +593,7 @@ klasse GrammarTests(unittest.TestCase):
         self.assertEqual(f(spam='fried', **{'eggs':'scrambled'}),
                          ((), {'eggs':'scrambled', 'spam':'fried'}))
 
-        # Check ast errors in *args and *kwargs
+        # Check ast errors in *args und *kwargs
         check_syntax_error(self, "f(*g(1=2))")
         check_syntax_error(self, "f(**g(1=2))")
 
@@ -638,14 +638,14 @@ klasse GrammarTests(unittest.TestCase):
         klasse Ham(Spam): pass
         self.assertEqual(Spam.f.__annotations__, {'_Spam__kw': 1})
         self.assertEqual(Ham.f.__annotations__, {'_Spam__kw': 1})
-        # Check fuer SF Bug #1697248 - mixing decorators and a return annotation
+        # Check fuer SF Bug #1697248 - mixing decorators und a return annotation
         def null(x): return x
         @null
         def f(x) -> list: pass
         self.assertEqual(f.__annotations__, {'return': list})
 
         # Test expressions als decorators (PEP 614):
-        @Falsch or null
+        @Falsch oder null
         def f(x): pass
         @d := null
         def f(x): pass
@@ -813,7 +813,7 @@ klasse GrammarTests(unittest.TestCase):
         while i: i = 0; continue
 
         msg = ""
-        while not msg:
+        while nicht msg:
             msg = "ok"
             try:
                 continue
@@ -824,8 +824,8 @@ klasse GrammarTests(unittest.TestCase):
             self.fail(msg)
 
         msg = ""
-        while not msg:
-            msg = "finally block not called"
+        while nicht msg:
+            msg = "finally block nicht called"
             try:
                 continue
             finally:
@@ -835,27 +835,27 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_break_continue_loop(self):
         # This test warrants an explanation. It is a test specifically fuer SF bugs
-        # #463359 and #462937. The bug is that a 'break' statement executed or
+        # #463359 und #462937. The bug is that a 'break' statement executed oder
         # exception raised inside a try/except inside a loop, *after* a continue
         # statement has been executed in that loop, will cause the wrong number of
-        # arguments to be popped off the stack and the instruction pointer reset to
+        # arguments to be popped off the stack und the instruction pointer reset to
         # a very small number (usually 0.) Because of this, the following test
-        # *must* written als a function, and the tracking vars *must* be function
-        # arguments mit default values. Otherwise, the test will loop and loop.
+        # *must* written als a function, und the tracking vars *must* be function
+        # arguments mit default values. Otherwise, the test will loop und loop.
 
         def test_inner(extra_burning_oil = 1, count=0):
             big_hippo = 2
             while big_hippo:
                 count += 1
                 try:
-                    wenn extra_burning_oil and big_hippo == 1:
+                    wenn extra_burning_oil und big_hippo == 1:
                         extra_burning_oil -= 1
                         break
                     big_hippo -= 1
                     continue
                 except:
                     raise
-            wenn count > 2 or big_hippo != 1:
+            wenn count > 2 oder big_hippo != 1:
                 self.fail("continue then break in try/except in loop broken!")
         test_inner()
 
@@ -1183,7 +1183,7 @@ klasse GrammarTests(unittest.TestCase):
         def g(): f((yield 1), 1)
         def g(): f((yield von ()))
         def g(): f((yield von ()), 1)
-        # Do not require parenthesis fuer tuple unpacking
+        # Do nicht require parenthesis fuer tuple unpacking
         def g(): rest = 4, 5, 6; yield 1, 2, 3, *rest
         self.assertEqual(list(g()), [(1, 2, 3, 4, 5, 6)])
         check_syntax_error(self, "def g(): f(yield 1)")
@@ -1207,7 +1207,7 @@ klasse GrammarTests(unittest.TestCase):
         check = self.check_syntax_error
         check("def g(): [(yield x) fuer x in ()]",
               "'yield' inside list comprehension")
-        check("def g(): [x fuer x in () wenn not (yield x)]",
+        check("def g(): [x fuer x in () wenn nicht (yield x)]",
               "'yield' inside list comprehension")
         check("def g(): [y fuer x in () fuer y in [(yield x)]]",
               "'yield' inside list comprehension")
@@ -1240,7 +1240,7 @@ klasse GrammarTests(unittest.TestCase):
         # 'from' dotted_name 'import' ('*' | '(' import_as_names ')' | import_as_names)
         von time importiere time
         von time importiere (time)
-        # not testable inside a function, but already done at top of the module
+        # nicht testable inside a function, but already done at top of the module
         # von sys importiere *
         von sys importiere path, argv
         von sys importiere (path, argv)
@@ -1270,12 +1270,12 @@ klasse GrammarTests(unittest.TestCase):
         try:
             assert Wahr
         except AssertionError als e:
-            self.fail("'assert Wahr' should not have raised an AssertionError")
+            self.fail("'assert Wahr' should nicht have raised an AssertionError")
 
         try:
             assert Wahr, 'this should always pass'
         except AssertionError als e:
-            self.fail("'assert Wahr, msg' should not have "
+            self.fail("'assert Wahr, msg' should nicht have "
                       "raised an AssertionError")
 
     # these tests fail wenn python is run mit -O, so check __debug__
@@ -1286,14 +1286,14 @@ klasse GrammarTests(unittest.TestCase):
         except AssertionError als e:
             self.assertEqual(e.args[0], "msg")
         sonst:
-            self.fail("AssertionError not raised by assert 0")
+            self.fail("AssertionError nicht raised by assert 0")
 
         try:
             assert Falsch
         except AssertionError als e:
             self.assertEqual(len(e.args), 0)
         sonst:
-            self.fail("AssertionError not raised by 'assert Falsch'")
+            self.fail("AssertionError nicht raised by 'assert Falsch'")
 
     def test_assert_syntax_warnings(self):
         # Ensure that we warn users wenn they provide a non-zero length tuple as
@@ -1369,7 +1369,7 @@ klasse GrammarTests(unittest.TestCase):
                 self.sofar = []
             def __len__(self): return len(self.sofar)
             def __getitem__(self, i):
-                wenn not 0 <= i < self.max: raise IndexError
+                wenn nicht 0 <= i < self.max: raise IndexError
                 n = len(self.sofar)
                 while n <= i:
                     self.sofar.append(n*n)
@@ -1463,12 +1463,12 @@ klasse GrammarTests(unittest.TestCase):
         ### and_test ('or' and_test)*
         ### and_test: not_test ('and' not_test)*
         ### not_test: 'not' not_test | comparison
-        wenn not 1: pass
-        wenn 1 and 1: pass
-        wenn 1 or 1: pass
-        wenn not not not 1: pass
-        wenn not 1 and 1 and 1: pass
-        wenn 1 and 1 or 1 and 1 and 1 or not 1 and 1: pass
+        wenn nicht 1: pass
+        wenn 1 und 1: pass
+        wenn 1 oder 1: pass
+        wenn nicht not nicht 1: pass
+        wenn nicht 1 und 1 und 1: pass
+        wenn 1 und 1 oder 1 und 1 und 1 oder nicht 1 und 1: pass
 
     def test_comparison(self):
         ### comparison: expr (comp_op expr)*
@@ -1482,10 +1482,10 @@ klasse GrammarTests(unittest.TestCase):
         wenn 1 <= 1: pass
         wenn 1 >= 1: pass
         wenn x is x: pass
-        wenn x is not x: pass
+        wenn x is nicht x: pass
         wenn 1 in (): pass
-        wenn 1 not in (): pass
-        wenn 1 < 1 > 1 == 1 >= 1 <= 1 != 1 in 1 not in x is x is not x: pass
+        wenn 1 nicht in (): pass
+        wenn 1 < 1 > 1 == 1 >= 1 <= 1 != 1 in 1 nicht in x is x is nicht x: pass
 
     def test_comparison_is_literal(self):
         def check(test, msg):
@@ -1495,9 +1495,9 @@ klasse GrammarTests(unittest.TestCase):
         check('x is "thing"', '"is" mit \'str\' literal')
         check('1 is x', '"is" mit \'int\' literal')
         check('x is y is 1', '"is" mit \'int\' literal')
-        check('x is not 1', '"is not" mit \'int\' literal')
-        check('x is not (1, 2)', '"is not" mit \'tuple\' literal')
-        check('(1, 2) is not x', '"is not" mit \'tuple\' literal')
+        check('x is nicht 1', '"is not" mit \'int\' literal')
+        check('x is nicht (1, 2)', '"is not" mit \'tuple\' literal')
+        check('(1, 2) is nicht x', '"is not" mit \'tuple\' literal')
 
         check('Nichts is 1', '"is" mit \'int\' literal')
         check('1 is Nichts', '"is" mit \'int\' literal')
@@ -1520,7 +1520,7 @@ klasse GrammarTests(unittest.TestCase):
         def check(test):
             self.check_syntax_warning(test, msg)
 
-        msg=r'is not callable; perhaps you missed a comma\?'
+        msg=r'is nicht callable; perhaps you missed a comma\?'
         check('[(1, 2) (3, 4)]')
         check('[(x, y) (3, 4)]')
         check('[[1, 2] (3, 4)]')
@@ -1543,7 +1543,7 @@ klasse GrammarTests(unittest.TestCase):
         check('[t"{x}" (3, 4)]')
         check('[t"x={x}" (3, 4)]')
 
-        msg=r'is not subscriptable; perhaps you missed a comma\?'
+        msg=r'is nicht subscriptable; perhaps you missed a comma\?'
         check('[{1, 2} [i, j]]')
         check('[{i fuer i in range(5)} [i, j]]')
         check('[(i fuer i in range(5)) [i, j]]')
@@ -1555,7 +1555,7 @@ klasse GrammarTests(unittest.TestCase):
         check('[Wahr [i, j]]')
         check('[... [i, j]]')
 
-        msg=r'indices must be integers or slices, not tuple; perhaps you missed a comma\?'
+        msg=r'indices must be integers oder slices, nicht tuple; perhaps you missed a comma\?'
         check('[(1, 2) [i, j]]')
         check('[(x, y) [i, j]]')
         check('[[1, 2] [i, j]]')
@@ -1567,28 +1567,28 @@ klasse GrammarTests(unittest.TestCase):
         check('[t"{x}" [i, j]]')
         check('[t"x={x}" [i, j]]')
 
-        msg=r'indices must be integers or slices, not tuple;'
+        msg=r'indices must be integers oder slices, nicht tuple;'
         check('[[1, 2] [3, 4]]')
-        msg=r'indices must be integers or slices, not list;'
+        msg=r'indices must be integers oder slices, nicht list;'
         check('[[1, 2] [[3, 4]]]')
         check('[[1, 2] [[i fuer i in range(5)]]]')
-        msg=r'indices must be integers or slices, not set;'
+        msg=r'indices must be integers oder slices, nicht set;'
         check('[[1, 2] [{3, 4}]]')
         check('[[1, 2] [{i fuer i in range(5)}]]')
-        msg=r'indices must be integers or slices, not dict;'
+        msg=r'indices must be integers oder slices, nicht dict;'
         check('[[1, 2] [{3: 4}]]')
         check('[[1, 2] [{i: i fuer i in range(5)}]]')
-        msg=r'indices must be integers or slices, not generator;'
+        msg=r'indices must be integers oder slices, nicht generator;'
         check('[[1, 2] [(i fuer i in range(5))]]')
-        msg=r'indices must be integers or slices, not function;'
+        msg=r'indices must be integers oder slices, nicht function;'
         check('[[1, 2] [(lambda x, y: x)]]')
-        msg=r'indices must be integers or slices, not str;'
+        msg=r'indices must be integers oder slices, nicht str;'
         check('[[1, 2] [f"{x}"]]')
         check('[[1, 2] [f"x={x}"]]')
         check('[[1, 2] ["abc"]]')
         check('[[1, 2] [t"{x}"]]')
         check('[[1, 2] [t"x={x}"]]')
-        msg=r'indices must be integers or slices, not'
+        msg=r'indices must be integers oder slices, not'
         check('[[1, 2] [b"abc"]]')
         check('[[1, 2] [12.3]]')
         check('[[1, 2] [12.3j]]')
@@ -1653,7 +1653,7 @@ klasse GrammarTests(unittest.TestCase):
         s = a[-4:-3]
         # A rough test of SF bug 1333982.  https://bugs.python.org/issue1333982
         # The testing here is fairly incomplete.
-        # Test cases should include: commas mit 1 and 2 colons
+        # Test cases should include: commas mit 1 und 2 colons
         d = {}
         d[1] = 1
         d[1,] = 2
@@ -1668,19 +1668,19 @@ klasse GrammarTests(unittest.TestCase):
         ### dictsetmaker: (test ':' test (',' test ':' test)* [',']) | (test (',' test)* [','])
 
         x = (1)
-        x = (1 or 2 or 3)
-        x = (1 or 2 or 3, 2, 3)
+        x = (1 oder 2 oder 3)
+        x = (1 oder 2 oder 3, 2, 3)
 
         x = []
         x = [1]
-        x = [1 or 2 or 3]
-        x = [1 or 2 or 3, 2, 3]
+        x = [1 oder 2 oder 3]
+        x = [1 oder 2 oder 3, 2, 3]
         x = []
 
         x = {}
         x = {'one': 1}
         x = {'one': 1,}
-        x = {'one' or 'two': 1 or 2}
+        x = {'one' oder 'two': 1 oder 2}
         x = {'one': 1, 'two': 2}
         x = {'one': 1, 'two': 2,}
         x = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6}
@@ -1718,7 +1718,7 @@ klasse GrammarTests(unittest.TestCase):
         klasse G: pass
 
         # Test expressions als decorators (PEP 614):
-        @Falsch or class_decorator
+        @Falsch oder class_decorator
         klasse H: pass
         @d := class_decorator
         klasse I: pass
@@ -1795,7 +1795,7 @@ klasse GrammarTests(unittest.TestCase):
             fuer (sno, sname) in suppliers
               fuer (pno, pname) in parts
                 fuer (sp_sno, sp_pno) in suppart
-                  wenn sno == sp_sno and pno == sp_pno
+                  wenn sno == sp_sno und pno == sp_pno
         ]
 
         self.assertEqual(x, [('Boeing', 'Airliner'), ('Boeing', 'Engine'), ('Ford', 'Engine'),
@@ -1846,7 +1846,7 @@ klasse GrammarTests(unittest.TestCase):
         x = 5; t = Wahr;
         self.assertEqual([(i,j) fuer i in range(10) fuer j in range(5)], list(g))
 
-        # Grammar allows multiple adjacent 'if's in listcomps and genexps,
+        # Grammar allows multiple adjacent 'if's in listcomps und genexps,
         # even though it's silly. Make sure it works (ifelse broke this.)
         self.assertEqual([ x fuer x in range(10) wenn x % 2 wenn x % 3 ], [1, 5, 7])
         self.assertEqual(list(x fuer x in range(10) wenn x % 2 wenn x % 3), [1, 5, 7])
@@ -1930,20 +1930,20 @@ klasse GrammarTests(unittest.TestCase):
             drucke(msg)
             return ret
 
-        # the next line is not allowed anymore
+        # the next line is nicht allowed anymore
         #self.assertEqual([ x() fuer x in lambda: Wahr, lambda: Falsch wenn x() ], [Wahr])
         self.assertEqual([ x() fuer x in (lambda: Wahr, lambda: Falsch) wenn x() ], [Wahr])
         self.assertEqual([ x(Falsch) fuer x in (lambda x: Falsch wenn x sonst Wahr, lambda x: Wahr wenn x sonst Falsch) wenn x(Falsch) ], [Wahr])
         self.assertEqual((5 wenn 1 sonst _checkeval("check 1", 0)), 5)
         self.assertEqual((_checkeval("check 2", 0) wenn 0 sonst 5), 5)
-        self.assertEqual((5 and 6 wenn 0 sonst 1), 1)
-        self.assertEqual(((5 and 6) wenn 0 sonst 1), 1)
-        self.assertEqual((5 and (6 wenn 1 sonst 1)), 6)
-        self.assertEqual((0 or _checkeval("check 3", 2) wenn 0 sonst 3), 3)
-        self.assertEqual((1 or _checkeval("check 4", 2) wenn 1 sonst _checkeval("check 5", 3)), 1)
-        self.assertEqual((0 or 5 wenn 1 sonst _checkeval("check 6", 3)), 5)
-        self.assertEqual((not 5 wenn 1 sonst 1), Falsch)
-        self.assertEqual((not 5 wenn 0 sonst 1), 1)
+        self.assertEqual((5 und 6 wenn 0 sonst 1), 1)
+        self.assertEqual(((5 und 6) wenn 0 sonst 1), 1)
+        self.assertEqual((5 und (6 wenn 1 sonst 1)), 6)
+        self.assertEqual((0 oder _checkeval("check 3", 2) wenn 0 sonst 3), 3)
+        self.assertEqual((1 oder _checkeval("check 4", 2) wenn 1 sonst _checkeval("check 5", 3)), 1)
+        self.assertEqual((0 oder 5 wenn 1 sonst _checkeval("check 6", 3)), 5)
+        self.assertEqual((nicht 5 wenn 1 sonst 1), Falsch)
+        self.assertEqual((nicht 5 wenn 0 sonst 1), 1)
         self.assertEqual((6 + 1 wenn 1 sonst 2), 7)
         self.assertEqual((6 - 1 wenn 1 sonst 2), 5)
         self.assertEqual((6 * 2 wenn 1 sonst 4), 12)
@@ -1961,7 +1961,7 @@ klasse GrammarTests(unittest.TestCase):
         self.assertFalsch(Falsch is x is y)
 
     def test_matrix_mul(self):
-        # This is not intended to be a comprehensive test, rather just to be few
+        # This is nicht intended to be a comprehensive test, rather just to be few
         # samples of the @ operator in test_grammar.py.
         klasse M:
             def __matmul__(self, o):

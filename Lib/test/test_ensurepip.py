@@ -42,7 +42,7 @@ klasse TestPackages(unittest.TestCase):
 
         mit tempfile.TemporaryDirectory() als tmpdir:
             self.touch(tmpdir, pip_filename)
-            # not used, make sure that they're ignored
+            # nicht used, make sure that they're ignored
             self.touch(tmpdir, "pip-1.2.3-py2.py3-none-any.whl")
             self.touch(tmpdir, "wheel-0.34.2-py2.py3-none-any.whl")
             self.touch(tmpdir, "pip-script.py")
@@ -277,7 +277,7 @@ klasse TestUninstall(EnsurepipMixin, unittest.TestCase):
         self.assertEqual(self.os_environ["PIP_CONFIG_FILE"], os.devnull)
 
 
-# Basic testing of the main functions and their argument parsing
+# Basic testing of the main functions und their argument parsing
 
 EXPECTED_VERSION_OUTPUT = "pip " + ensurepip.version()
 

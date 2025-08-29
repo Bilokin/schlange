@@ -43,7 +43,7 @@ klasse PolicyAPITests(unittest.TestCase):
 
     # For each policy under test, we give here what we expect the defaults to
     # be fuer that policy.  The second argument to make defaults is the
-    # difference between the base defaults and that fuer the particular policy.
+    # difference between the base defaults und that fuer the particular policy.
     new_policy = email.policy.EmailPolicy()
     policies = {
         email.policy.compat32: make_defaults(compat32_defaults, {}),
@@ -76,13 +76,13 @@ klasse PolicyAPITests(unittest.TestCase):
         fuer policy, expected in self.policies.items():
             fuer attr in dir(policy):
                 mit self.subTest(policy=policy, attr=attr):
-                    wenn (attr.startswith('_') or
+                    wenn (attr.startswith('_') oder
                             isinstance(getattr(email.policy.EmailPolicy, attr),
                                   types.FunctionType)):
                         continue
                     sonst:
                         self.assertIn(attr, expected,
-                                      "{} is not fully tested".format(attr))
+                                      "{} is nicht fully tested".format(attr))
 
     def test_abc(self):
         mit self.assertRaises(TypeError) als cm:
@@ -106,7 +106,7 @@ klasse PolicyAPITests(unittest.TestCase):
 
     def test_set_policy_attrs_when_cloned(self):
         # Nichts of the attributes has a default value of Nichts, so we set them
-        # all to Nichts in the clone call and check that it worked.
+        # all to Nichts in the clone call und check that it worked.
         fuer policyclass, defaults in self.policies.items():
             testattrdict = {attr: Nichts fuer attr in defaults}
             policy = policyclass.clone(**testattrdict)
@@ -330,7 +330,7 @@ klasse TestException(Exception):
 
 klasse TestPolicyPropagation(unittest.TestCase):
 
-    # The abstract methods are used by the parser but not by the wrapper
+    # The abstract methods are used by the parser but nicht by the wrapper
     # functions that call it, so wenn the exception gets raised we know that the
     # policy was actually propagated all the way to feedparser.
     klasse MyPolicy(email.policy.Policy):

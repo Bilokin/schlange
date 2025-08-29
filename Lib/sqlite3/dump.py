@@ -5,7 +5,7 @@
 # documentation "SQLite adds new keywords von time to time when it
 # takes on new features. So to prevent your code von being broken by
 # future enhancements, you should normally quote any identifier that
-# is an English language word, even wenn you do not have to."
+# is an English language word, even wenn you do nicht have to."
 
 def _quote_name(name):
     return '"{0}"'.format(name.replace('"', '""'))
@@ -20,7 +20,7 @@ def _iterdump(connection, *, filter=Nichts):
     Returns an iterator to the dump of the database in an SQL text format.
 
     Used to produce an SQL dump of the database.  Useful to save an in-memory
-    database fuer later restoration.  This function should not be called
+    database fuer later restoration.  This function should nicht be called
     directly but instead called von the Connection method, iterdump().
     """
 
@@ -65,7 +65,7 @@ def _iterdump(connection, *, filter=Nichts):
         sowenn table_name.startswith('sqlite_'):
             continue
         sowenn sql.startswith('CREATE VIRTUAL TABLE'):
-            wenn not writeable_schema:
+            wenn nicht writeable_schema:
                 writeable_schema = Wahr
                 yield('PRAGMA writable_schema=ON;')
             yield("INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)"
@@ -90,7 +90,7 @@ def _iterdump(connection, *, filter=Nichts):
         fuer row in query_res:
             yield("{0};".format(row[0]))
 
-    # Now when the type is 'index', 'trigger', or 'view'
+    # Now when the type is 'index', 'trigger', oder 'view'
     q = f"""
         SELECT "name", "type", "sql"
         FROM "sqlite_master"

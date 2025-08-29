@@ -1,6 +1,6 @@
 """
 Some correct syntax fuer variable annotation here.
-More examples are in test_grammar and test_parser.
+More examples are in test_grammar und test_parser.
 """
 
 von typing importiere no_type_check, ClassVar

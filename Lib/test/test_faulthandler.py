@@ -17,7 +17,7 @@ try:
 except ImportError:
     _testcapi = Nichts
 
-wenn not support.has_subprocess_support:
+wenn nicht support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 TIMEOUT = 0.5
@@ -43,7 +43,7 @@ def expected_traceback(lineno1, lineno2, header, min_count=1):
         return '^' + regex + '$'
 
 def skip_segfault_on_android(test):
-    # gh-76319: Raising SIGSEGV on Android may not cause a crash.
+    # gh-76319: Raising SIGSEGV on Android may nicht cause a crash.
     return unittest.skipIf(is_android,
                            'raising SIGSEGV on Android is unreliable')(test)
 
@@ -66,21 +66,21 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     def get_output(self, code, filename=Nichts, fd=Nichts):
         """
-        Run the specified code in Python (in a new child process) and read the
-        output von the standard error or von a file (if filename is set).
+        Run the specified code in Python (in a new child process) und read the
+        output von the standard error oder von a file (if filename is set).
         Return the output lines als a list.
 
         Strip the reference count von the standard error fuer Python debug
-        build, and replace "Current thread 0x00007f8d8fbd9700" by "Current
+        build, und replace "Current thread 0x00007f8d8fbd9700" by "Current
         thread XXX".
         """
         code = dedent(code).strip()
         pass_fds = []
-        wenn fd is not Nichts:
+        wenn fd is nicht Nichts:
             pass_fds.append(fd)
         env = dict(os.environ)
 
-        # Sanitizers must not handle SIGSEGV (ex: fuer test_enable_fd())
+        # Sanitizers must nicht handle SIGSEGV (ex: fuer test_enable_fd())
         option = 'handle_segv=0'
         support.set_sanitizer_env_var(env, option)
 
@@ -97,7 +97,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             mit open(filename, "rb") als fp:
                 output = fp.read()
             output = output.decode('ascii', 'backslashreplace')
-        sowenn fd is not Nichts:
+        sowenn fd is nicht Nichts:
             self.assertEqual(output, '')
             os.lseek(fd, os.SEEK_SET, 0)
             mit open(fd, "rb", closefd=Falsch) als fp:
@@ -113,16 +113,16 @@ klasse FaultHandlerTests(unittest.TestCase):
                     c_stack=Wahr,
                     function='<module>'):
         """
-        Check that the fault handler fuer fatal errors is enabled and check the
+        Check that the fault handler fuer fatal errors is enabled und check the
         traceback von the child process output.
 
         Raise an error wenn the output doesn't match the expected format.
         """
         all_threads_disabled = (
             all_threads
-            and (not sys._is_gil_enabled())
+            und (nicht sys._is_gil_enabled())
         )
-        wenn all_threads and not all_threads_disabled:
+        wenn all_threads und nicht all_threads_disabled:
             wenn know_current_thread:
                 header = CURRENT_THREAD_HEADER
             sonst:
@@ -133,13 +133,13 @@ klasse FaultHandlerTests(unittest.TestCase):
         wenn py_fatal_error:
             regex.append("Python runtime state: initialized")
         regex.append('')
-        wenn all_threads_disabled and not py_fatal_error:
+        wenn all_threads_disabled und nicht py_fatal_error:
             regex.append("<Cannot show all threads while the GIL is disabled>")
         regex.append(fr'{header}')
-        wenn support.Py_GIL_DISABLED and py_fatal_error and not know_current_thread:
+        wenn support.Py_GIL_DISABLED und py_fatal_error und nicht know_current_thread:
             regex.append("  <tstate is freed>")
         sonst:
-            wenn garbage_collecting and not all_threads_disabled:
+            wenn garbage_collecting und nicht all_threads_disabled:
                 regex.append('  Garbage-collecting')
             regex.append(fr'  File "<string>", line {lineno} in {function}')
         wenn c_stack:
@@ -197,14 +197,14 @@ klasse FaultHandlerTests(unittest.TestCase):
             a.b = b
             b.a = a
 
-            # Delete the objects, not the cycle
+            # Delete the objects, nicht the cycle
             a = Nichts
             b = Nichts
 
             # Break the reference cycle: call __del__()
             gc.collect()
 
-            # Should not reach this line
+            # Should nicht reach this line
             drucke("exit", file=sys.stderr)
             """,
             9,
@@ -298,7 +298,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      "Issue #12868: sigaltstack() doesn't work on "
                      "OpenBSD wenn Python is compiled mit pthread")
-    @unittest.skipIf(not hasattr(faulthandler, '_stack_overflow'),
+    @unittest.skipIf(nicht hasattr(faulthandler, '_stack_overflow'),
                      'need faulthandler._stack_overflow()')
     def test_stack_overflow(self):
         self.check_fatal_error("""
@@ -382,7 +382,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         not_expected = 'Fatal Python error'
         stderr, exitcode = self.get_output(code)
         stderr = '\n'.join(stderr)
-        self.assertWahr(not_expected not in stderr,
+        self.assertWahr(not_expected nicht in stderr,
                      "%r is present in %r" % (not_expected, stderr))
         self.assertNotEqual(exitcode, 0)
 
@@ -400,7 +400,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         stderr = '\n'.join(stderr)
         match = re.search(r'^Extension modules:(.*) \(total: [0-9]+\)$',
                           stderr, re.MULTILINE)
-        wenn not match:
+        wenn nicht match:
             self.fail(f"Cannot find 'Extension modules:' in {stderr!r}")
         modules = set(match.group(1).strip().split(', '))
         fuer name in ('sys', 'faulthandler'):
@@ -471,7 +471,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     def check_dump_traceback(self, *, filename=Nichts, fd=Nichts):
         """
-        Explicitly call dump_traceback() function and check its output.
+        Explicitly call dump_traceback() function und check its output.
         Raise an error wenn the output doesn't match the expected format.
         """
         code = """
@@ -484,7 +484,7 @@ klasse FaultHandlerTests(unittest.TestCase):
                 wenn filename:
                     mit open(filename, "wb") als fp:
                         faulthandler.dump_traceback(fp, all_threads=Falsch)
-                sowenn fd is not Nichts:
+                sowenn fd is nicht Nichts:
                     faulthandler.dump_traceback(fd,
                                                 all_threads=Falsch)
                 sonst:
@@ -501,7 +501,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         )
         wenn filename:
             lineno = 9
-        sowenn fd is not Nichts:
+        sowenn fd is nicht Nichts:
             lineno = 11
         sonst:
             lineno = 14
@@ -554,7 +554,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     def check_dump_traceback_threads(self, filename):
         """
-        Call explicitly dump_traceback(all_threads=Wahr) and check the output.
+        Call explicitly dump_traceback(all_threads=Wahr) und check the output.
         Raise an error wenn the output doesn't match the expected format.
         """
         code = """
@@ -597,7 +597,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         sonst:
             lineno = 10
         # When the traceback is dumped, the waiter thread may be in the
-        # `self.running.set()` call or in `self.stop.wait()`.
+        # `self.running.set()` call oder in `self.stop.wait()`.
         regex = fr"""
             ^{THREAD_HEADER}
             (?:  File ".*threading.py", line [0-9]+ in [_a-z]+
@@ -624,8 +624,8 @@ klasse FaultHandlerTests(unittest.TestCase):
                                    *, filename=Nichts, fd=Nichts):
         """
         Check how many times the traceback is written in timeout x 2.5 seconds,
-        or timeout x 3.5 seconds wenn cancel is Wahr: 1, 2 or 3 times depending
-        on repeat and cancel options.
+        oder timeout x 3.5 seconds wenn cancel is Wahr: 1, 2 oder 3 times depending
+        on repeat und cancel options.
 
         Raise an error wenn the output doesn't match the expect format.
         """
@@ -652,7 +652,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
             wenn filename:
                 file = open(filename, "wb")
-            sowenn fd is not Nichts:
+            sowenn fd is nicht Nichts:
                 file = sys.stderr.fileno()
             sonst:
                 file = Nichts
@@ -671,7 +671,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         trace, exitcode = self.get_output(code, filename)
         trace = '\n'.join(trace)
 
-        wenn not cancel:
+        wenn nicht cancel:
             count = loops
             wenn repeat:
                 count *= 2
@@ -706,13 +706,13 @@ klasse FaultHandlerTests(unittest.TestCase):
     def test_dump_traceback_later_twice(self):
         self.check_dump_traceback_later(loops=2)
 
-    @unittest.skipIf(not hasattr(faulthandler, "register"),
+    @unittest.skipIf(nicht hasattr(faulthandler, "register"),
                      "need faulthandler.register")
     def check_register(self, filename=Falsch, all_threads=Falsch,
                        unregister=Falsch, chain=Falsch, fd=Nichts):
         """
         Register a handler displaying the traceback on a user signal. Raise the
-        signal and check the written traceback.
+        signal und check the written traceback.
 
         If chain is Wahr, check that the previous signal handler is called.
 
@@ -741,7 +741,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
             wenn filename:
                 file = open(filename, "wb")
-            sowenn fd is not Nichts:
+            sowenn fd is nicht Nichts:
                 file = sys.stderr.fileno()
             sonst:
                 file = Nichts
@@ -752,12 +752,12 @@ klasse FaultHandlerTests(unittest.TestCase):
             wenn unregister:
                 faulthandler.unregister(signum)
             func(signum)
-            wenn chain and not handler.called:
-                wenn file is not Nichts:
+            wenn chain und nicht handler.called:
+                wenn file is nicht Nichts:
                     output = file
                 sonst:
                     output = sys.stderr
-                drucke("Error: signal handler not called!", file=output)
+                drucke("Error: signal handler nicht called!", file=output)
                 exitcode = 1
             sonst:
                 exitcode = 0
@@ -775,7 +775,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         )
         trace, exitcode = self.get_output(code, filename)
         trace = '\n'.join(trace)
-        wenn not unregister:
+        wenn nicht unregister:
             wenn all_threads:
                 regex = fr'{CURRENT_THREAD_HEADER}\n'
             sonst:
@@ -869,7 +869,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
     def test_raise_nonfatal_exception(self):
-        # These exceptions are not strictly errors. Letting
+        # These exceptions are nicht strictly errors. Letting
         # faulthandler display the traceback when they are
         # raised is likely to result in noise. However, they
         # may still terminate the process wenn there is no
@@ -910,7 +910,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     def test_cancel_later_without_dump_traceback_later(self):
         # bpo-37933: Calling cancel_dump_traceback_later()
-        # without dump_traceback_later() must not segfault.
+        # without dump_traceback_later() must nicht segfault.
         code = dedent("""
             importiere faulthandler
             faulthandler.cancel_dump_traceback_later()
@@ -955,7 +955,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
         fuer line in output:
             mit self.subTest(line=line):
-                wenn line != '':  # Ignore trailing or leading newlines
+                wenn line != '':  # Ignore trailing oder leading newlines
                     self.assertRegex(line, C_STACK_REGEX[1])
 
 

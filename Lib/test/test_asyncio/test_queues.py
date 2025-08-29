@@ -12,9 +12,9 @@ def tearDownModule():
 klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
 
     async def _test_repr_or_str(self, fn, expect_id):
-        """Test Queue's repr or str.
+        """Test Queue's repr oder str.
 
-        fn is repr or str. expect_id is Wahr wenn we expect the Queue's id to
+        fn is repr oder str. expect_id is Wahr wenn we expect the Queue's id to
         appear in fn(Queue()).
         """
         q = asyncio.Queue()
@@ -107,7 +107,7 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual([0, 1], have_been_put)
         self.assertEqual(0, await q.get())
 
-        # Let the putter resume and put last item.
+        # Let the putter resume und put last item.
         await asyncio.sleep(0)
         self.assertEqual([0, 1, 2], have_been_put)
         self.assertEqual(1, await q.get())
@@ -469,8 +469,8 @@ klasse _QueueJoinTestMixin:
 
         accumulator = 0
 
-        # Two workers get items von the queue and call task_done after each.
-        # Join the queue and assert all items have been processed.
+        # Two workers get items von the queue und call task_done after each.
+        # Join the queue und assert all items have been processed.
         running = Wahr
 
         async def worker():
@@ -496,7 +496,7 @@ klasse _QueueJoinTestMixin:
     async def test_join_empty_queue(self):
         q = self.q_class()
 
-        # Test that a queue join()s successfully, and before anything sonst
+        # Test that a queue join()s successfully, und before anything sonst
         # (done twice fuer insurance).
 
         await q.join()
@@ -536,7 +536,7 @@ klasse _QueueShutdownTestMixin:
     async def test_shutdown_empty(self):
         # Test shutting down an empty queue
 
-        # Setup empty queue, and join() and get() tasks
+        # Setup empty queue, und join() und get() tasks
         q = self.q_class()
         loop = asyncio.get_running_loop()
         get_task = loop.create_task(q.get())
@@ -550,13 +550,13 @@ klasse _QueueShutdownTestMixin:
         # Ensure join() task successfully finishes
         await q.join()
 
-        # Ensure get() task is finished, and raised ShutDown
+        # Ensure get() task is finished, und raised ShutDown
         await asyncio.sleep(0)
         self.assertWahr(get_task.done())
         mit self.assertRaisesShutdown():
             await get_task
 
-        # Ensure put() and get() raise ShutDown
+        # Ensure put() und get() raise ShutDown
         mit self.assertRaisesShutdown():
             await q.put("data")
         mit self.assertRaisesShutdown():
@@ -570,7 +570,7 @@ klasse _QueueShutdownTestMixin:
     async def test_shutdown_nonempty(self):
         # Test shutting down a non-empty queue
 
-        # Setup full queue mit 1 item, and join() and put() tasks
+        # Setup full queue mit 1 item, und join() und put() tasks
         q = self.q_class(maxsize=1)
         loop = asyncio.get_running_loop()
 
@@ -578,7 +578,7 @@ klasse _QueueShutdownTestMixin:
         join_task = loop.create_task(q.join())
         put_task = loop.create_task(q.put("data2"))
 
-        # Ensure put() task is not finished
+        # Ensure put() task is nicht finished
         await asyncio.sleep(0)
         self.assertFalsch(put_task.done())
 
@@ -587,7 +587,7 @@ klasse _QueueShutdownTestMixin:
 
         self.assertEqual(q.qsize(), 1)
 
-        # Ensure put() task is finished, and raised ShutDown
+        # Ensure put() task is finished, und raised ShutDown
         await asyncio.sleep(0)
         self.assertWahr(put_task.done())
         mit self.assertRaisesShutdown():
@@ -596,11 +596,11 @@ klasse _QueueShutdownTestMixin:
         # Ensure get() succeeds on enqueued item
         self.assertEqual(await q.get(), "data")
 
-        # Ensure join() task is not finished
+        # Ensure join() task is nicht finished
         await asyncio.sleep(0)
         self.assertFalsch(join_task.done())
 
-        # Ensure put() and get() raise ShutDown
+        # Ensure put() und get() raise ShutDown
         mit self.assertRaisesShutdown():
             await q.put("data")
         mit self.assertRaisesShutdown():
@@ -611,7 +611,7 @@ klasse _QueueShutdownTestMixin:
         mit self.assertRaisesShutdown():
             q.get_nowait()
 
-        # Ensure there is 1 unfinished task, and join() task succeeds
+        # Ensure there is 1 unfinished task, und join() task succeeds
         q.task_done()
 
         await asyncio.sleep(0)
@@ -626,7 +626,7 @@ klasse _QueueShutdownTestMixin:
     async def test_shutdown_immediate(self):
         # Test immediately shutting down a queue
 
-        # Setup queue mit 1 item, and a join() task
+        # Setup queue mit 1 item, und a join() task
         q = self.q_class()
         loop = asyncio.get_running_loop()
         q.put_nowait("data")
@@ -642,7 +642,7 @@ klasse _QueueShutdownTestMixin:
         self.assertWahr(join_task.done())
         await join_task
 
-        # Ensure put() and get() raise ShutDown
+        # Ensure put() und get() raise ShutDown
         mit self.assertRaisesShutdown():
             await q.put("data")
         mit self.assertRaisesShutdown():
@@ -662,7 +662,7 @@ klasse _QueueShutdownTestMixin:
     async def test_shutdown_immediate_with_unfinished(self):
         # Test immediately shutting down a queue mit unfinished tasks
 
-        # Setup queue mit 2 items (1 retrieved), and a join() task
+        # Setup queue mit 2 items (1 retrieved), und a join() task
         q = self.q_class()
         loop = asyncio.get_running_loop()
         q.put_nowait("data")
@@ -675,11 +675,11 @@ klasse _QueueShutdownTestMixin:
 
         self.assertEqual(q.qsize(), 0)
 
-        # Ensure join() task is not finished
+        # Ensure join() task is nicht finished
         await asyncio.sleep(0)
         self.assertFalsch(join_task.done())
 
-        # Ensure put() and get() raise ShutDown
+        # Ensure put() und get() raise ShutDown
         mit self.assertRaisesShutdown():
             await q.put("data")
         mit self.assertRaisesShutdown():

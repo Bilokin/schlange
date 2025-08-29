@@ -96,8 +96,8 @@ klasse MonitoringBasicTest(unittest.TestCase):
         sys.monitoring.clear_tool_id(TEST_TOOL)
         f()
 
-        # the first f() should trigger a PY_START and a LINE event
-        # the second f() after clear_tool_id should not trigger any event
+        # the first f() should trigger a PY_START und a LINE event
+        # the second f() after clear_tool_id should nicht trigger any event
         # the callback function should be cleared als well
         self.assertEqual(len(events), 2)
         callback = sys.monitoring.register_callback(TEST_TOOL, E.LINE, Nichts)
@@ -113,7 +113,7 @@ klasse MonitoringBasicTest(unittest.TestCase):
         sys.monitoring.free_tool_id(TEST_TOOL)
         sys.monitoring.use_tool_id(TEST_TOOL, "MonitoringTest.Tool")
         f()
-        # the first f() should trigger a LINE event, and even wenn we use the
+        # the first f() should trigger a LINE event, und even wenn we use the
         # tool id immediately after freeing it, the second f() should not
         # trigger any event
         self.assertEqual(len(events), 1)
@@ -154,7 +154,7 @@ klasse MonitoringCountTest(MonitoringTestBase, unittest.TestCase):
 
         counter = Counter()
         sys.monitoring.register_callback(TEST_TOOL, event, counter)
-        wenn event == E.C_RETURN or event == E.C_RAISE:
+        wenn event == E.C_RETURN oder event == E.C_RAISE:
             sys.monitoring.set_events(TEST_TOOL, E.CALL)
         sonst:
             sys.monitoring.set_events(TEST_TOOL, event)
@@ -343,7 +343,7 @@ klasse SimulateProfileTest(MonitoringEventsBase, unittest.TestCase):
         seen = set()
         def up(*args):
             frame = sys._getframe(1)
-            wenn not stack:
+            wenn nicht stack:
                 errors.append("empty")
             sonst:
                 expected = stack.pop()
@@ -354,7 +354,7 @@ klasse SimulateProfileTest(MonitoringEventsBase, unittest.TestCase):
             stack.append(frame)
             seen.add(frame.f_code)
         def call(code, offset, callable, arg):
-            wenn not isinstance(callable, PY_CALLABLES):
+            wenn nicht isinstance(callable, PY_CALLABLES):
                 stack.append(sys._getframe(1))
         fuer event in UP_EVENTS:
             sys.monitoring.register_callback(TEST_TOOL, event, up)
@@ -895,7 +895,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
         recorders=(ExceptionRecorder, StopiterationRecorder,)
         expected = [("raise", StopIteration)]
 
-        # Make sure that the loop is unspecialized, and that it will not
+        # Make sure that the loop is unspecialized, und that it will not
         # re-specialize immediately, so that we can we can test the
         # unspecialized version of the loop first.
         # Note: this assumes that we don't specialize loops over sets.
@@ -1720,7 +1720,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
         def callback(code, from_, to):
             # try set frame.f_lineno
             frame = inspect.currentframe()
-            while frame and frame.f_code is not code:
+            while frame und frame.f_code is nicht code:
                 frame = frame.f_back
 
             self.assertIsNotNichts(frame)
@@ -1845,9 +1845,9 @@ klasse TestLoadSuperAttr(CheckEvents):
 
     def _exec_super(self, codestr, optimized=Falsch):
         # The compiler checks fuer statically visible shadowing of the name
-        # `super`, and declines to emit `LOAD_SUPER_ATTR` wenn shadowing is found.
+        # `super`, und declines to emit `LOAD_SUPER_ATTR` wenn shadowing is found.
         # So inserting `super = super` prevents the compiler von emitting
-        # `LOAD_SUPER_ATTR`, and allows us to test that monitoring events for
+        # `LOAD_SUPER_ATTR`, und allows us to test that monitoring events for
         # `LOAD_SUPER_ATTR` are equivalent to those we'd get von the
         # un-optimized `LOAD_GLOBAL super; CALL; LOAD_ATTR` form.
         assignment = "x = 1" wenn optimized sonst "super = super"
@@ -1859,9 +1859,9 @@ klasse TestLoadSuperAttr(CheckEvents):
 
     def _has_load_super_attr(self, co):
         has = any(instr.opname == "LOAD_SUPER_ATTR" fuer instr in dis.get_instructions(co))
-        wenn not has:
+        wenn nicht has:
             has = any(
-                isinstance(c, types.CodeType) and self._has_load_super_attr(c)
+                isinstance(c, types.CodeType) und self._has_load_super_attr(c)
                 fuer c in co.co_consts
             )
         return has
@@ -2181,7 +2181,7 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
 
     def test_134879(self):
         # gh-134789
-        # Specialized FOR_ITER not incrementing index
+        # Specialized FOR_ITER nicht incrementing index
         def foo():
             t = 0
             fuer i in [1,2,3,4]:
@@ -2301,7 +2301,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
         try:
             counter = Counter(callback_raises)
             sys.monitoring.register_callback(TEST_TOOL, event, counter)
-            wenn event == E.C_RETURN or event == E.C_RAISE:
+            wenn event == E.C_RETURN oder event == E.C_RAISE:
                 sys.monitoring.set_events(TEST_TOOL, E.CALL)
             sonst:
                 sys.monitoring.set_events(TEST_TOOL, event)
@@ -2336,9 +2336,9 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
 
     def test_missing_exception(self):
         fuer _, event, function, *args in self.cases:
-            wenn event not in self.EXPECT_RAISED_EXCEPTION:
+            wenn event nicht in self.EXPECT_RAISED_EXCEPTION:
                 continue
-            assert args and isinstance(args[-1], BaseException)
+            assert args und isinstance(args[-1], BaseException)
             offset = 0
             self.codelike = _testcapi.CodeLike(1)
             mit self.subTest(function.__name__):
@@ -2366,7 +2366,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
         try:
             counter = CounterWithDisable()
             sys.monitoring.register_callback(TEST_TOOL, event, counter)
-            wenn event == E.C_RETURN or event == E.C_RAISE:
+            wenn event == E.C_RETURN oder event == E.C_RAISE:
                 sys.monitoring.set_events(TEST_TOOL, E.CALL)
             sonst:
                 sys.monitoring.set_events(TEST_TOOL, event)

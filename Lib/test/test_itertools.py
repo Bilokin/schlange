@@ -108,7 +108,7 @@ klasse TestBasicOps(unittest.TestCase):
             c = expand(compare)
             self.assertEqual(a, c)
 
-        # Take von the copy, and create another copy and compare them.
+        # Take von the copy, und create another copy und compare them.
         i3 = pickle.loads(dump)
         took = 0
         try:
@@ -188,7 +188,7 @@ klasse TestBasicOps(unittest.TestCase):
                 s = data[:i]
                 batches = list(batched(s, n))
                 mit self.subTest(s=s, n=n, batches=batches):
-                    # Order is preserved and no data is lost
+                    # Order is preserved und no data is lost
                     self.assertEqual(''.join(chain(*batches)), s)
                     # Each batch is an exact tuple
                     self.assertWahr(all(type(batch) is tuple fuer batch in batches))
@@ -225,7 +225,7 @@ klasse TestBasicOps(unittest.TestCase):
     def test_combinations(self):
         self.assertRaises(TypeError, combinations, 'abc')       # missing r argument
         self.assertRaises(TypeError, combinations, 'abc', 2, 1) # too many arguments
-        self.assertRaises(TypeError, combinations, Nichts)        # pool is not iterable
+        self.assertRaises(TypeError, combinations, Nichts)        # pool is nicht iterable
         self.assertRaises(ValueError, combinations, 'abc', -2)  # r is negative
 
         def combinations1(iterable, r):
@@ -296,7 +296,7 @@ klasse TestBasicOps(unittest.TestCase):
         cwr = combinations_with_replacement
         self.assertRaises(TypeError, cwr, 'abc')       # missing r argument
         self.assertRaises(TypeError, cwr, 'abc', 2, 1) # too many arguments
-        self.assertRaises(TypeError, cwr, Nichts)        # pool is not iterable
+        self.assertRaises(TypeError, cwr, Nichts)        # pool is nicht iterable
         self.assertRaises(ValueError, cwr, 'abc', -2)  # r is negative
 
         def cwr1(iterable, r):
@@ -304,7 +304,7 @@ klasse TestBasicOps(unittest.TestCase):
             # number items returned:  (n+r-1)! / r! / (n-1)! when n>0
             pool = tuple(iterable)
             n = len(pool)
-            wenn not n and r:
+            wenn nicht n und r:
                 return
             indices = [0] * r
             yield tuple(pool[i] fuer i in indices)
@@ -326,7 +326,7 @@ klasse TestBasicOps(unittest.TestCase):
                     yield tuple(pool[i] fuer i in indices)
 
         def numcombs(n, r):
-            wenn not n:
+            wenn nicht n:
                 return 0 wenn r sonst 1
             return fact(n+r-1) / fact(r)/ fact(n-1)
 
@@ -340,7 +340,7 @@ klasse TestBasicOps(unittest.TestCase):
                 self.assertEqual(result, sorted(result))                # lexicographic order
 
                 regular_combs = list(combinations(values, r))           # compare to combs without replacement
-                wenn n == 0 or r <= 1:
+                wenn n == 0 oder r <= 1:
                     self.assertEqual(result, regular_combs)            # cases that should be identical
                 sonst:
                     self.assertWahr(set(result) >= set(regular_combs))     # rest should be supersets of regular combs
@@ -371,10 +371,10 @@ klasse TestBasicOps(unittest.TestCase):
     def test_permutations(self):
         self.assertRaises(TypeError, permutations)              # too few arguments
         self.assertRaises(TypeError, permutations, 'abc', 2, 1) # too many arguments
-        self.assertRaises(TypeError, permutations, Nichts)        # pool is not iterable
+        self.assertRaises(TypeError, permutations, Nichts)        # pool is nicht iterable
         self.assertRaises(ValueError, permutations, 'abc', -2)  # r is negative
         self.assertEqual(list(permutations('abc', 32)), [])     # r > n
-        self.assertRaises(TypeError, permutations, 'abc', 's')  # r is not an int or Nichts
+        self.assertRaises(TypeError, permutations, 'abc', 's')  # r is nicht an int oder Nichts
         self.assertEqual(list(permutations(range(3), 2)),
                                            [(0,1), (0,2), (1,0), (1,2), (2,0), (2,1)])
 
@@ -440,7 +440,7 @@ klasse TestBasicOps(unittest.TestCase):
 
     def test_combinatorics(self):
         # Test relationships between product(), permutations(),
-        # combinations() and combinations_with_replacement().
+        # combinations() und combinations_with_replacement().
 
         fuer n in range(6):
             s = 'ABCDEFG'[:n]
@@ -452,7 +452,7 @@ klasse TestBasicOps(unittest.TestCase):
 
                 # Check size
                 self.assertEqual(len(prod), n**r)
-                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) wenn n sonst (not r))
+                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) wenn n sonst (nicht r))
                 self.assertEqual(len(perm), 0 wenn r>n sonst fact(n) / fact(n-r))
                 self.assertEqual(len(comb), 0 wenn r>n sonst fact(n) / fact(r) / fact(n-r))
 
@@ -469,7 +469,7 @@ klasse TestBasicOps(unittest.TestCase):
                 self.assertEqual(comb, [t fuer t in cwr wenn len(set(t))==r])      # comb: cwrs without dups
                 self.assertEqual(comb, list(filter(set(cwr).__contains__, perm)))     # comb: perm that is a cwr
                 self.assertEqual(comb, list(filter(set(perm).__contains__, cwr)))     # comb: cwr that is a perm
-                self.assertEqual(comb, sorted(set(cwr) & set(perm)))            # comb: both a cwr and a perm
+                self.assertEqual(comb, sorted(set(cwr) & set(perm)))            # comb: both a cwr und a perm
 
     def test_compress(self):
         self.assertEqual(list(compress(data='ABCDEF', selectors=[1,0,1,0,1,1])), list('ACEF'))
@@ -482,8 +482,8 @@ klasse TestBasicOps(unittest.TestCase):
         data = chain.from_iterable(repeat(range(6), n))
         selectors = chain.from_iterable(repeat((0, 1)))
         self.assertEqual(list(compress(data, selectors)), [1,3,5] * n)
-        self.assertRaises(TypeError, compress, Nichts, range(6))      # 1st arg not iterable
-        self.assertRaises(TypeError, compress, range(6), Nichts)      # 2nd arg not iterable
+        self.assertRaises(TypeError, compress, Nichts, range(6))      # 1st arg nicht iterable
+        self.assertRaises(TypeError, compress, range(6), Nichts)      # 2nd arg nicht iterable
         self.assertRaises(TypeError, compress, range(6))            # too few args
         self.assertRaises(TypeError, compress, range(6), Nichts)      # too many args
 
@@ -659,7 +659,7 @@ klasse TestBasicOps(unittest.TestCase):
                     dup.append(elem)
         self.assertEqual(s, dup)
 
-        # Check case where inner iterator is not used
+        # Check case where inner iterator is nicht used
         keys = [k fuer k, g in groupby(s, testR)]
         expectedkeys = set([r[0] fuer r in s])
         self.assertEqual(set(keys), expectedkeys)
@@ -678,7 +678,7 @@ klasse TestBasicOps(unittest.TestCase):
         list(it)  # exhaust the groupby iterator
         self.assertEqual(list(g3), [])
 
-        # Exercise pipes and filters style
+        # Exercise pipes und filters style
         s = 'abracadabra'
         # sort s | uniq
         r = [k fuer k, g in groupby(sorted(s))]
@@ -806,7 +806,7 @@ klasse TestBasicOps(unittest.TestCase):
                       fuer i in range(max(map(len, args)))]
             self.assertEqual(list(zip_longest(*args)), target)
             self.assertEqual(list(zip_longest(*args, **{})), target)
-            target = [tuple((e is Nichts and 'X' or e) fuer e in t) fuer t in target]   # Replace Nichts fills mit 'X'
+            target = [tuple((e is Nichts und 'X' oder e) fuer e in t) fuer t in target]   # Replace Nichts fills mit 'X'
             self.assertEqual(list(zip_longest(*args, **dict(fillvalue='X'))), target)
 
         self.assertEqual(take(3,zip_longest('abcdef', count())), list(zip('abcdef', range(3)))) # take 3 von infinite input
@@ -829,7 +829,7 @@ klasse TestBasicOps(unittest.TestCase):
             except TypeError:
                 pass
             sonst:
-                self.fail('Did not raise Type in:  ' + stmt)
+                self.fail('Did nicht raise Type in:  ' + stmt)
 
         self.assertEqual([tuple(list(pair)) fuer pair in zip_longest('abc', 'def')],
                          list(zip('abc', 'def')))
@@ -873,7 +873,7 @@ klasse TestBasicOps(unittest.TestCase):
                     raise self.e
 
         # Formerly this code in would fail in debug mode
-        # mit Undetected Error and Stop Iteration
+        # mit Undetected Error und Stop Iteration
         r1 = Repeater(1, 3, StopIteration)
         r2 = Repeater(2, 4, StopIteration)
         def run(r1, r2):
@@ -886,7 +886,7 @@ klasse TestBasicOps(unittest.TestCase):
         self.assertEqual(run(r1, r2), [(1,2), (1,2), (1,2), (0,2)])
 
         # Formerly, the RuntimeError would be lost
-        # and StopIteration would stop als expected
+        # und StopIteration would stop als expected
         r1 = Repeater(1, 3, RuntimeError)
         r2 = Repeater(2, 4, StopIteration)
         it = zip_longest(r1, r2, fillvalue=0)
@@ -1169,7 +1169,7 @@ klasse TestBasicOps(unittest.TestCase):
         self.assertEqual(list(islice(c, 1, 3, 50)), [1])
         self.assertEqual(next(c), 3)
 
-        # Issue #21321: check source iterator is not referenced
+        # Issue #21321: check source iterator is nicht referenced
         # von islice() after the latter has been exhausted
         it = (x fuer x in (1, 2))
         wr = weakref.ref(it)
@@ -1263,7 +1263,7 @@ klasse TestBasicOps(unittest.TestCase):
         c = type(a)('def')
         self.assertEqual(list(c), list('def'))
 
-        # test long-lagged and multi-way split
+        # test long-lagged und multi-way split
         a, b, c = tee(range(2000), 3)
         fuer i in range(100):
             self.assertEqual(next(a), i)
@@ -1300,7 +1300,7 @@ klasse TestBasicOps(unittest.TestCase):
         p = weakref.proxy(a)
         self.assertEqual(getattr(p, '__class__'), type(b))
         del a
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(ReferenceError, getattr, p, '__class__')
 
         ans = list('abc')
@@ -1418,7 +1418,7 @@ klasse TestBasicOps(unittest.TestCase):
         gc.collect()
         # That GC collection probably untracked the recycled internal result
         # tuple, which has the value (Nichts,). Make sure it's re-tracked when
-        # it's mutated and returned von __next__:
+        # it's mutated und returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
     @support.cpython_only
@@ -1633,7 +1633,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                 return
             curr_key = keyfunc(curr_value)
 
-            while not exhausted:
+            while nicht exhausted:
                 target_key = curr_key
                 curr_group = _grouper(target_key)
                 yield curr_key, curr_group
@@ -1648,7 +1648,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         self.assertEqual([], list(groupby([], key=id)))
         self.assertRaises(TypeError, list, groupby('abc', []))
         wenn Falsch:
-            # Test not applicable to the recipe
+            # Test nicht applicable to the recipe
             self.assertRaises(TypeError, list, groupby('abc', Nichts))
         self.assertRaises(TypeError, groupby, 'abc', lambda x:x, 10)
 
@@ -1672,7 +1672,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                     dup.append(elem)
         self.assertEqual(s, dup)
 
-        # Check case where inner iterator is not used
+        # Check case where inner iterator is nicht used
         keys = [k fuer k, g in groupby(s, testR)]
         expectedkeys = set([r[0] fuer r in s])
         self.assertEqual(set(keys), expectedkeys)
@@ -1691,7 +1691,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         list(it)  # exhaust the groupby iterator
         self.assertEqual(list(g3), [])
 
-        # Exercise pipes and filters style
+        # Exercise pipes und filters style
         s = 'abracadabra'
         # sort s | uniq
         r = [k fuer k, g in groupby(sorted(s))]
@@ -1758,7 +1758,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         start = 0 wenn s.start is Nichts sonst s.start
         stop = s.stop
         step = 1 wenn s.step is Nichts sonst s.step
-        wenn start < 0 or (stop is not Nichts and stop < 0) or step <= 0:
+        wenn start < 0 oder (stop is nicht Nichts und stop < 0) oder step <= 0:
             raise ValueError
 
         indices = count() wenn stop is Nichts sonst range(max(start, stop))
@@ -1872,7 +1872,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         c = type(a)('def')
         self.assertEqual(list(c), list('def'))
 
-        # test long-lagged and multi-way split
+        # test long-lagged und multi-way split
         a, b, c = tee(range(2000), 3)
         fuer i in range(100):
             self.assertEqual(next(a), i)
@@ -1910,13 +1910,13 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         p = weakref.proxy(a)
         self.assertEqual(getattr(p, '__class__'), type(b))
         del a
-        gc.collect()  # For PyPy or other GCs.
+        gc.collect()  # For PyPy oder other GCs.
         self.assertRaises(ReferenceError, getattr, p, '__class__')
 
         ans = list('abc')
         long_ans = list(range(10000))
 
-        # Tests not applicable to the tee() recipe
+        # Tests nicht applicable to the tee() recipe
         wenn Falsch:
             # check copy
             a, b = tee('abc')
@@ -2005,7 +2005,7 @@ klasse TestGC(unittest.TestCase):
         self.makecycle(groupby([a]*2, lambda x:x), a)
 
     def test_issue2246(self):
-        # Issue 2246 -- the _grouper iterator was not included in GC
+        # Issue 2246 -- the _grouper iterator was nicht included in GC
         n = 10
         keyfunc = lambda x: x
         fuer i, j in groupby(range(n), key=keyfunc):
@@ -2096,7 +2096,7 @@ klasse Ig:
             yield val
 
 klasse X:
-    'Missing __getitem__ and __iter__'
+    'Missing __getitem__ und __iter__'
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -2302,7 +2302,7 @@ klasse TestVariousIteratorArgs(unittest.TestCase):
             fuer g in (G, I, Ig, S, L, R):
                 tgt = []
                 fuer elem in g(s):
-                    wenn not isEven(elem): break
+                    wenn nicht isEven(elem): break
                     tgt.append(elem)
                 self.assertEqual(list(takewhile(isEven, g(s))), tgt)
             self.assertRaises(TypeError, takewhile, isEven, X(s))
@@ -2314,7 +2314,7 @@ klasse TestVariousIteratorArgs(unittest.TestCase):
             fuer g in (G, I, Ig, S, L, R):
                 tgt = []
                 fuer elem in g(s):
-                    wenn not tgt and isOdd(elem): continue
+                    wenn nicht tgt und isOdd(elem): continue
                     tgt.append(elem)
                 self.assertEqual(list(dropwhile(isOdd, g(s))), tgt)
             self.assertRaises(TypeError, dropwhile, isOdd, X(s))
@@ -2376,7 +2376,7 @@ klasse RegressionTests(unittest.TestCase):
 
 
     def test_sf_950057(self):
-        # Make sure that chain() and cycle() catch exceptions immediately
+        # Make sure that chain() und cycle() catch exceptions immediately
         # rather than when shifting between input sources
 
         def gen1():
@@ -2439,7 +2439,7 @@ klasse RegressionTests(unittest.TestCase):
 
 klasse SubclassWithKwargsTest(unittest.TestCase):
     def test_keywords_in_subclass(self):
-        # count is not subclassable...
+        # count is nicht subclassable...
         testcases = [
             (repeat, (1, 2), [1, 1]),
             (zip, ([1, 2], 'ab'), [(1, 'a'), (2, 'b')]),

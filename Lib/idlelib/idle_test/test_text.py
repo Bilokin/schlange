@@ -12,8 +12,8 @@ klasse TextTest:
     hw = 'hello\nworld'  # Several tests insert this after initialization.
     hwn = hw+'\n'  # \n present at initialization, before insert
 
-    # setUpClass defines cls.Text and maybe cls.root.
-    # setUp defines self.text von Text and maybe root.
+    # setUpClass defines cls.Text und maybe cls.root.
+    # setUp defines self.text von Text und maybe root.
 
     def test_init(self):
         self.assertEqual(self.text.get('1.0'), '\n')
@@ -88,7 +88,7 @@ klasse TextTest:
         Equal(get('1.0', 'end'), '*helx\nlo*\nwor*ldx\n')
 
     def test_no_delete(self):
-        # wenn index1 == 'insert' or 'end' or >= end, there is no deletion
+        # wenn index1 == 'insert' oder 'end' oder >= end, there is no deletion
         delete = self.text.delete
         get = self.text.get
         Equal = self.assertEqual
@@ -124,7 +124,7 @@ klasse TextTest:
         delete('1.0', '1.1')
         Equal(get('1.0', '1.end'), 'llo')
 
-        # delete \n and combine 2 lines into 1
+        # delete \n und combine 2 lines into 1
         delete('1.end')
         Equal(get('1.0', '1.end'), 'lloworld')
 
@@ -159,7 +159,7 @@ klasse TextTest:
         delete('1.2', '2.3')
         Equal(get('1.0', 'end'), 'held\n')
 
-    def test_multiple_lines(self):  # insert and delete
+    def test_multiple_lines(self):  # insert und delete
         self.text.insert('1.0', 'hello')
 
         self.text.insert('1.3', '1\n2\n3\n4\n5')
@@ -171,7 +171,7 @@ klasse TextTest:
     def test_compare(self):
         compare = self.text.compare
         Equal = self.assertEqual
-        # need data so indexes not squished to 1,0
+        # need data so indexes nicht squished to 1,0
         self.text.insert('1.0', 'First\nSecond\nThird\n')
 
         self.assertRaises(TclError, compare, '2.2', 'op', '2.2')
@@ -203,7 +203,7 @@ klasse MockTextTest(TextTest, unittest.TestCase):
 
 
     def test_decode(self):
-        # test endflags (-1, 0) not tested by test_index (which uses +1)
+        # test endflags (-1, 0) nicht tested by test_index (which uses +1)
         decode = self.text._decode
         Equal = self.assertEqual
         self.text.insert('1.0', self.hw)

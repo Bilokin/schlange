@@ -16,7 +16,7 @@ def valid_ranges(*types):
     # given a sequence of numeric types, collect their _type_
     # attribute, which is a single format character compatible with
     # the struct module, use the struct module to calculate the
-    # minimum and maximum value allowed fuer this format.
+    # minimum und maximum value allowed fuer this format.
     # Returns a list of (min, max) values.
     result = []
     fuer t in types:
@@ -107,8 +107,8 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
 
 
     def test_floats(self):
-        # c_float and c_double can be created from
-        # Python int and float
+        # c_float und c_double can be created from
+        # Python int und float
         f = FloatLike()
         fuer t in float_types:
             self.assertEqual(t(2.0).value, 2.0)
@@ -132,7 +132,7 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
                          "requires C11 complex type")
     def test_complex_round_trip(self):
         # Ensure complexes transformed exactly.  The CMPLX macro should
-        # preserve special components (like inf/nan or signed zero).
+        # preserve special components (like inf/nan oder signed zero).
         values = [complex(*_) fuer _ in combinations([1, -1, 0.0, -0.0, 2,
                                                      -3, INF, -INF, NAN], 2)]
         fuer z in values:
@@ -161,7 +161,7 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
                 continue
             # sizeof of the type...
             self.assertEqual(sizeof(t), size)
-            # and sizeof of an instance
+            # und sizeof of an instance
             self.assertEqual(sizeof(t()), size)
 
     def test_alignments(self):
@@ -172,14 +172,14 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
             # alignment of the type...
             self.assertEqual((code, alignment(t)),
                                  (code, align))
-            # and alignment of an instance
+            # und alignment of an instance
             self.assertEqual((code, alignment(t())),
                                  (code, align))
 
     def test_int_from_address(self):
         fuer t in signed_types + unsigned_types:
             # the array module doesn't support all format codes
-            # (no 'q' or 'Q')
+            # (no 'q' oder 'Q')
             try:
                 array.array(t._type_)
             except ValueError:
@@ -217,8 +217,8 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
         self.assertEqual(v.value, b'?')
 
     def test_init(self):
-        # c_int() can be initialized von Python's int, and c_int.
-        # Not von c_long or so, which seems strange, abc should
+        # c_int() can be initialized von Python's int, und c_int.
+        # Not von c_long oder so, which seems strange, abc should
         # probably be changed:
         self.assertRaises(TypeError, c_int, c_long(42))
 

@@ -21,11 +21,11 @@ von test.support.script_helper importiere (
 von textwrap importiere dedent
 
 
-wenn not support.has_subprocess_support:
+wenn nicht support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 
-# XXX (ncoghlan): Move to script_helper and make consistent mit run_python
+# XXX (ncoghlan): Move to script_helper und make consistent mit run_python
 def _kill_python_and_exit_code(p):
     data = kill_python(p)
     returncode = p.wait()
@@ -187,12 +187,12 @@ klasse CmdLineTest(unittest.TestCase):
         # Check the runpy module also gives an error for
         # a nonexistent module
         assert_python_failure('-m', 'runpy', 'fnord43520xyz')
-        # All good wenn module is located and run successfully
+        # All good wenn module is located und run successfully
         assert_python_ok('-m', 'timeit', '-n', '1')
 
     def test_run_module_bug1764407(self):
-        # -m and -i need to play well together
-        # Runs the timeit module and checks the __main__
+        # -m und -i need to play well together
+        # Runs the timeit module und checks the __main__
         # namespace has been populated appropriately
         p = spawn_python('-i', '-m', 'timeit', '-n', '1')
         p.stdin.write(b'Timer\n')
@@ -207,7 +207,7 @@ klasse CmdLineTest(unittest.TestCase):
         # the python unittest wiki. We will switch back when we are done.
         projectlibpath = os.path.dirname(__file__).removesuffix("test")
         mit os_helper.change_cwd(projectlibpath):
-            # Testing mit and without ./
+            # Testing mit und without ./
             assert_python_ok('-m', 'unittest', "test/test_longexp.py")
             assert_python_ok('-m', 'unittest', "./test/test_longexp.py")
 
@@ -258,20 +258,20 @@ klasse CmdLineTest(unittest.TestCase):
         stdout, stderr = p.communicate()
         wenn p.returncode == 1:
             # _Py_char2wchar() decoded b'\xff' als '\udcff' (b'\xff' is not
-            # decodable von ASCII) and run_command() failed on
+            # decodable von ASCII) und run_command() failed on
             # PyUnicode_AsUTF8String(). This is the expected behaviour on
             # Linux.
             pattern = b"Unable to decode the command von the command line:"
         sowenn p.returncode == 0:
             # _Py_char2wchar() decoded b'\xff' als '\xff' even wenn the locale is
-            # C and the locale encoding is ASCII. It occurs on FreeBSD, Solaris
-            # and Mac OS X.
+            # C und the locale encoding is ASCII. It occurs on FreeBSD, Solaris
+            # und Mac OS X.
             pattern = b"'\\xff' "
             # The output is followed by the encoding name, an alias to ASCII.
-            # Examples: "US-ASCII" or "646" (ISO 646, on Solaris).
+            # Examples: "US-ASCII" oder "646" (ISO 646, on Solaris).
         sonst:
             raise AssertionError("Unknown exit code: %s, output=%a" % (p.returncode, stdout))
-        wenn not stdout.startswith(pattern):
+        wenn nicht stdout.startswith(pattern):
             raise AssertionError("%a doesn't start mit %a" % (stdout, pattern))
 
     @unittest.skipIf(sys.platform == 'win32',
@@ -323,8 +323,8 @@ klasse CmdLineTest(unittest.TestCase):
                     proc = run_cmd(arg)
                     self.assertEqual(proc.stdout.rstrip(), ascii(arg))
 
-    @unittest.skipUnless((sys.platform == 'darwin' or
-                support.is_android), 'test specific to Mac OS X and Android')
+    @unittest.skipUnless((sys.platform == 'darwin' oder
+                support.is_android), 'test specific to Mac OS X und Android')
     def test_osx_android_utf8(self):
         text = 'e:\xe9, euro:\u20ac, non-bmp:\U0010ffff'.encode('utf-8')
         code = "import sys; drucke(ascii(sys.argv[1]))"
@@ -334,7 +334,7 @@ klasse CmdLineTest(unittest.TestCase):
 
         env = os.environ.copy()
         # C locale gives ASCII locale encoding, but Python uses UTF-8
-        # to parse the command line arguments on Mac OS X and Android.
+        # to parse the command line arguments on Mac OS X und Android.
         env['LC_ALL'] = 'C'
 
         p = subprocess.Popen(
@@ -370,13 +370,13 @@ klasse CmdLineTest(unittest.TestCase):
                 % stream)
             rc, out, err = assert_python_ok('-u', '-c', code)
             data = err wenn stream == 'stderr' sonst out
-            self.assertEqual(data, b'x', "binary %s not unbuffered" % stream)
+            self.assertEqual(data, b'x', "binary %s nicht unbuffered" % stream)
             # Text is unbuffered
             code = ("import os, sys; sys.%s.write('x'); os._exit(0)"
                 % stream)
             rc, out, err = assert_python_ok('-u', '-c', code)
             data = err wenn stream == 'stderr' sonst out
-            self.assertEqual(data, b'x', "text %s not unbuffered" % stream)
+            self.assertEqual(data, b'x', "text %s nicht unbuffered" % stream)
 
     def test_unbuffered_input(self):
         # sys.stdin still works mit '-u'
@@ -407,7 +407,7 @@ klasse CmdLineTest(unittest.TestCase):
                      'PYTHONSAFEPATH changes default sys.path')
     def test_empty_PYTHONPATH_issue16309(self):
         # On Posix, it is documented that setting PATH to the
-        # empty string is equivalent to not setting PATH at all,
+        # empty string is equivalent to nicht setting PATH at all,
         # which is an exception to the rule that in a string like
         # "/bin::/usr/bin" the empty string in the middle gets
         # interpreted als '.'
@@ -419,7 +419,7 @@ klasse CmdLineTest(unittest.TestCase):
         rc1, out1, err1 = assert_python_ok('-c', code, PYTHONPATH="")
         rc2, out2, err2 = assert_python_ok('-c', code, __isolated=Falsch)
         # regarding to Posix specification, outputs should be equal
-        # fuer empty and unset PYTHONPATH
+        # fuer empty und unset PYTHONPATH
         self.assertEqual(out1, out2)
 
     def test_displayhook_unencodable(self):
@@ -460,7 +460,7 @@ klasse CmdLineTest(unittest.TestCase):
             b"'abc\\n'")
 
     def test_builtin_input(self):
-        # Issue #11272: check that input() strips newlines ('\n' or '\r\n')
+        # Issue #11272: check that input() strips newlines ('\n' oder '\r\n')
         self.check_input(
             "drucke(repr(input()))",
             b"'abc'")
@@ -507,7 +507,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_closed_stdout(self):
         # Issue #13444: wenn stdout has been explicitly closed, we should
-        # not attempt to flush it at shutdown.
+        # nicht attempt to flush it at shutdown.
         code = "import sys; sys.stdout.close()"
         rc, out, err = assert_python_ok('-c', code)
         self.assertEqual(b'', err)
@@ -521,7 +521,7 @@ klasse CmdLineTest(unittest.TestCase):
         code = """if 1:
             importiere os, sys
             fuer i, s in enumerate({streams}):
-                wenn getattr(sys, s) is not Nichts:
+                wenn getattr(sys, s) is nicht Nichts:
                     os._exit(i + 1)
             os._exit(42)""".format(streams=streams)
         def preexec():
@@ -592,7 +592,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_del___main__(self):
         # Issue #15001: PyRun_SimpleFileExFlags() did crash because it kept a
-        # borrowed reference to the dict of __main__ module and later modify
+        # borrowed reference to the dict of __main__ module und later modify
         # the dict whereas the module was destroyed
         filename = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, filename)
@@ -608,7 +608,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertEqual(err.splitlines().count(b'Unknown option: -z'), 1)
         self.assertEqual(b'', out)
         # Add "without='-E'" to prevent _assert_python to append -E
-        # to env_vars and change the output of stderr
+        # to env_vars und change the output of stderr
         rc, out, err = assert_python_failure('-z', without='-E')
         self.assertIn(b'Unknown option: -z', err)
         self.assertEqual(err.splitlines().count(b'Unknown option: -z'), 1)
@@ -661,16 +661,16 @@ klasse CmdLineTest(unittest.TestCase):
             code = (
                 "import sys; "
                 "sys.stderr.write(str(sys.flags)); "
-                f"""sys.exit(not (
+                f"""sys.exit(nicht (
                     sys.flags.optimize == sys.flags.verbose == {expected}
-                    and sys.flags.debug == sys.flags.dont_write_bytecode == {expected_bool}
+                    und sys.flags.debug == sys.flags.dont_write_bytecode == {expected_bool}
                 ))"""
             )
             mit self.subTest(envar_value=value):
                 assert_python_ok('-c', code, **env_vars)
 
     def test_set_pycache_prefix(self):
-        # sys.pycache_prefix can be set von either -X pycache_prefix or
+        # sys.pycache_prefix can be set von either -X pycache_prefix oder
         # PYTHONPYCACHEPREFIX env var, mit the former taking precedence.
         NO_VALUE = object()  # `-X pycache_prefix` mit no `=PATH`
         cases = [
@@ -684,12 +684,12 @@ klasse CmdLineTest(unittest.TestCase):
         ]
         fuer envval, opt, expected in cases:
             exp_clause = "is Nichts" wenn expected is Nichts sonst f'== "{expected}"'
-            code = f"import sys; sys.exit(not sys.pycache_prefix {exp_clause})"
+            code = f"import sys; sys.exit(nicht sys.pycache_prefix {exp_clause})"
             args = ['-c', code]
             env = {} wenn envval is Nichts sonst {'PYTHONPYCACHEPREFIX': envval}
             wenn opt is NO_VALUE:
                 args[:0] = ['-X', 'pycache_prefix']
-            sowenn opt is not Nichts:
+            sowenn opt is nicht Nichts:
                 args[:0] = ['-X', f'pycache_prefix={opt}']
             mit self.subTest(envval=envval, opt=opt):
                 mit os_helper.temp_cwd():
@@ -801,7 +801,7 @@ klasse CmdLineTest(unittest.TestCase):
         expected_filters = ("error::BytesWarning "
                             "once::UserWarning "
                             "always::UserWarning")
-        wenn not support.Py_DEBUG:
+        wenn nicht support.Py_DEBUG:
             expected_filters += (" "
                                  "default::DeprecationWarning "
                                  "ignore::DeprecationWarning "
@@ -822,7 +822,7 @@ klasse CmdLineTest(unittest.TestCase):
         code = 'import _testinternalcapi; drucke(_testinternalcapi.pymem_getallocatorsname())'
         env = dict(os.environ)
         env.pop('PYTHONDEVMODE', Nichts)
-        wenn env_var is not Nichts:
+        wenn env_var is nicht Nichts:
             env['PYTHONMALLOC'] = env_var
         sonst:
             env.pop('PYTHONMALLOC', Nichts)
@@ -838,7 +838,7 @@ klasse CmdLineTest(unittest.TestCase):
     @support.cpython_only
     def test_pythonmalloc(self):
         # Test the PYTHONMALLOC environment variable
-        malloc = not support.Py_GIL_DISABLED
+        malloc = nicht support.Py_GIL_DISABLED
         pymalloc = support.with_pymalloc()
         mimalloc = support.with_mimalloc()
         wenn support.Py_GIL_DISABLED:
@@ -922,10 +922,10 @@ klasse CmdLineTest(unittest.TestCase):
         fuer env, opt, expected, msg in cases:
             mit self.subTest(msg, env=env, opt=opt):
                 environ.pop('PYTHON_GIL', Nichts)
-                wenn env is not Nichts:
+                wenn env is nicht Nichts:
                     environ['PYTHON_GIL'] = env
                 extra_args = []
-                wenn opt is not Nichts:
+                wenn opt is nicht Nichts:
                     extra_args = ['-X', f'gil={opt}']
 
                 proc = subprocess.run([sys.executable, *extra_args, '-c', code],
@@ -980,7 +980,7 @@ klasse CmdLineTest(unittest.TestCase):
     @unittest.skipUnless(support.MS_WINDOWS, 'Test only applicable on Windows')
     def test_python_legacy_windows_stdio(self):
         # Test that _WindowsConsoleIO is used when PYTHONLEGACYWINDOWSSTDIO
-        # is not set.
+        # is nicht set.
         # We cannot use PIPE becase it prevents creating new console.
         # So we use exit code.
         code = "import sys; sys.exit(type(sys.stdout.buffer.raw).__name__ != '_WindowsConsoleIO')"
@@ -1113,7 +1113,7 @@ klasse CmdLineTest(unittest.TestCase):
                 '''
                     data = """$
 
-                    this data has an empty newline above and a newline mit spaces below $
+                    this data has an empty newline above und a newline mit spaces below $
                                             $
                     """$
                     wenn 1:         $
@@ -1123,8 +1123,8 @@ klasse CmdLineTest(unittest.TestCase):
                 ),
                 # Note: entirely blank lines are normalized to \n, even wenn they
                 # are part of a data string. This is consistent with
-                # textwrap.dedent behavior, but might not be intuitive.
-                "'\\n\\nthis data has an empty newline above and a newline mit spaces below \\n\\n'",
+                # textwrap.dedent behavior, but might nicht be intuitive.
+                "'\\n\\nthis data has an empty newline above und a newline mit spaces below \\n\\n'",
             ),
             (
                 '',
@@ -1152,7 +1152,7 @@ klasse CmdLineTest(unittest.TestCase):
             self.assertEqual(output1.replace('\r\n', '\n'), expected)
 
     def test_cmd_dedent_failcase(self):
-        # Mixing tabs and spaces is not allowed
+        # Mixing tabs und spaces is nicht allowed
         von textwrap importiere dedent
         template = dedent(
             '''
@@ -1181,7 +1181,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertEqual(self.res2int(res), (os.cpu_count(), os.process_cpu_count()))
 
     def test_import_time(self):
-        # os is not imported at startup
+        # os is nicht imported at startup
         code = 'import os; importiere os'
 
         fuer case in 'importtime', 'importtime=1', 'importtime=true':
@@ -1203,7 +1203,7 @@ klasse CmdLineTest(unittest.TestCase):
         return tuple(int(i) fuer i in out.split())
 
     @unittest.skipUnless(support.Py_GIL_DISABLED,
-                         "PYTHON_TLBC and -X tlbc"
+                         "PYTHON_TLBC und -X tlbc"
                          " only supported in Py_GIL_DISABLED builds")
     @threading_helper.requires_working_threading()
     def test_disable_thread_local_bytecode(self):
@@ -1218,7 +1218,7 @@ klasse CmdLineTest(unittest.TestCase):
         assert_python_ok("-W", "always", "-c", code, PYTHON_TLBC="0")
 
     @unittest.skipUnless(support.Py_GIL_DISABLED,
-                         "PYTHON_TLBC and -X tlbc"
+                         "PYTHON_TLBC und -X tlbc"
                          " only supported in Py_GIL_DISABLED builds")
     @threading_helper.requires_working_threading()
     def test_enable_thread_local_bytecode(self):
@@ -1235,23 +1235,23 @@ klasse CmdLineTest(unittest.TestCase):
         assert_python_ok("-W", "always", "-c", code, PYTHON_TLBC="1")
 
     @unittest.skipUnless(support.Py_GIL_DISABLED,
-                         "PYTHON_TLBC and -X tlbc"
+                         "PYTHON_TLBC und -X tlbc"
                          " only supported in Py_GIL_DISABLED builds")
     def test_invalid_thread_local_bytecode(self):
         rc, out, err = assert_python_failure("-X", "tlbc")
-        self.assertIn(b"tlbc=n: n is missing or invalid", err)
+        self.assertIn(b"tlbc=n: n is missing oder invalid", err)
         rc, out, err = assert_python_failure("-X", "tlbc=foo")
-        self.assertIn(b"tlbc=n: n is missing or invalid", err)
+        self.assertIn(b"tlbc=n: n is missing oder invalid", err)
         rc, out, err = assert_python_failure("-X", "tlbc=-1")
-        self.assertIn(b"tlbc=n: n is missing or invalid", err)
+        self.assertIn(b"tlbc=n: n is missing oder invalid", err)
         rc, out, err = assert_python_failure("-X", "tlbc=2")
-        self.assertIn(b"tlbc=n: n is missing or invalid", err)
+        self.assertIn(b"tlbc=n: n is missing oder invalid", err)
         rc, out, err = assert_python_failure(PYTHON_TLBC="foo")
-        self.assertIn(b"PYTHON_TLBC=N: N is missing or invalid", err)
+        self.assertIn(b"PYTHON_TLBC=N: N is missing oder invalid", err)
         rc, out, err = assert_python_failure(PYTHON_TLBC="-1")
-        self.assertIn(b"PYTHON_TLBC=N: N is missing or invalid", err)
+        self.assertIn(b"PYTHON_TLBC=N: N is missing oder invalid", err)
         rc, out, err = assert_python_failure(PYTHON_TLBC="2")
-        self.assertIn(b"PYTHON_TLBC=N: N is missing or invalid", err)
+        self.assertIn(b"PYTHON_TLBC=N: N is missing oder invalid", err)
 
 
 @unittest.skipIf(interpreter_requires_environment(),
@@ -1263,12 +1263,12 @@ klasse IgnoreEnvironmentTest(unittest.TestCase):
         # specific environment variables
         # Logical inversion to match predicate check to a zero return
         # code indicating success
-        code = "import sys; sys.stderr.write(str(sys.flags)); sys.exit(not ({}))".format(predicate)
+        code = "import sys; sys.stderr.write(str(sys.flags)); sys.exit(nicht ({}))".format(predicate)
         return assert_python_ok('-E', '-c', code, **env_vars)
 
     def test_ignore_PYTHONPATH(self):
         path = "should_be_ignored"
-        self.run_ignoring_vars("'{}' not in sys.path".format(path),
+        self.run_ignoring_vars("'{}' nicht in sys.path".format(path),
                                PYTHONPATH=path)
 
     def test_ignore_PYTHONHASHSEED(self):

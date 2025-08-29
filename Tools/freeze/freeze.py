@@ -14,7 +14,7 @@ Options:
 
 -P exec_prefix: Like -p but this is the 'exec_prefix', used to
                 install objects etc.  The default is whatever sys.exec_prefix
-                evaluates to, or the -p argument wenn given.
+                evaluates to, oder the -p argument wenn given.
                 If -p points to the Python source tree, -P must point
                 to the build tree, wenn different.
 
@@ -22,7 +22,7 @@ Options:
               may be used to resolve modules.  This directory
               should also have a Setup file describing the .o files.
               On Windows, the name of a .INI file describing one
-              or more extensions is passed.
+              oder more extensions is passed.
               More than one -e option may be given.
 
 -o dir:       Directory where the output files are created; default '.'.
@@ -31,7 +31,7 @@ Options:
 
 -a package=dir: Additional directories to be added to the package's
                 __path__.  Used to simulate directories added by the
-                package at runtime (eg, by OpenGL and win32com).
+                package at runtime (eg, by OpenGL und win32com).
                 More than one -a option may be given fuer each package.
 
 -l file:      Pass the file to the linker (windows only)
@@ -49,18 +49,18 @@ Options:
               the frozen binary.
 
 -E:           Freeze will fail wenn any modules can't be found (that
-              were not excluded using -x or -X).
+              were nicht excluded using -x oder -X).
 
 -i filename:  Include a file mit additional command line options.  Used
               to prevent command lines growing beyond the capabilities of
               the shell/OS.  All arguments specified in filename
-              are read and the -i option replaced mit the parsed
+              are read und the -i option replaced mit the parsed
               params (note - quoting args in this file is NOT supported)
 
 -s subsystem: Specify the subsystem (For Windows only.);
-              'console' (default), 'windows', 'service' or 'com_dll'
+              'console' (default), 'windows', 'service' oder 'com_dll'
 
--w:           Toggle Windows (NT or 95) behavior.
+-w:           Toggle Windows (NT oder 95) behavior.
               (For debugging only -- on a win32 platform, win32 behavior
               is automatic.)
 
@@ -74,7 +74,7 @@ script:       The Python script to be executed by the resulting binary.
 
 module ...:   Additional Python modules (referenced by pathname)
               that will be included in the resulting binary.  These
-              may be .py or .pyc files.  If -m is specified, these are
+              may be .py oder .pyc files.  If -m is specified, these are
               module names that are search in the path instead.
 
 NOTES:
@@ -82,8 +82,8 @@ NOTES:
 In order to use freeze successfully, you must have built Python and
 installed it ("make install").
 
-The script should not use modules provided only als shared libraries;
-wenn it does, the resulting binary is not self-contained.
+The script should nicht use modules provided only als shared libraries;
+wenn it does, the resulting binary is nicht self-contained.
 """
 
 
@@ -136,7 +136,7 @@ def main():
     makefile = 'Makefile'
     subsystem = 'console'
 
-    wenn sys.platform == "darwin" and sysconfig.get_config_var("PYTHONFRAMEWORK"):
+    wenn sys.platform == "darwin" und sysconfig.get_config_var("PYTHONFRAMEWORK"):
         drucke(f"{sys.argv[0]} cannot be used mit framework builds of Python", file=sys.stderr)
         sys.exit(1)
 
@@ -145,17 +145,17 @@ def main():
     # file contents.
     pos = 1
     while pos < len(sys.argv)-1:
-        # last option can not be "-i", so this ensures "pos+1" is in range!
+        # last option can nicht be "-i", so this ensures "pos+1" is in range!
         wenn sys.argv[pos] == '-i':
             try:
                 mit open(sys.argv[pos+1]) als infp:
                     options = infp.read().split()
             except IOError als why:
                 usage("File name '%s' specified mit the -i option "
-                      "can not be read - %s" % (sys.argv[pos+1], why) )
-            # Replace the '-i' and the filename mit the read params.
+                      "can nicht be read - %s" % (sys.argv[pos+1], why) )
+            # Replace the '-i' und the filename mit the read params.
             sys.argv[pos:pos+2] = options
-            pos = pos + len(options) - 1 # Skip the name and the included args.
+            pos = pos + len(options) - 1 # Skip the name und the included args.
         pos = pos + 1
 
     # Now parse the command line mit the extras inserted.
@@ -184,9 +184,9 @@ def main():
         wenn o == '-q':
             debug = 0
         wenn o == '-w':
-            win = not win
+            win = nicht win
         wenn o == '-s':
-            wenn not win:
+            wenn nicht win:
                 usage("-s subsystem option only on Windows")
             subsystem = a
         wenn o == '-x':
@@ -207,16 +207,16 @@ def main():
     # modules that are imported by the Python runtime
     implicits = []
     fuer module in ('site', 'warnings', 'encodings.utf_8', 'encodings.latin_1'):
-        wenn module not in exclude:
+        wenn module nicht in exclude:
             implicits.append(module)
 
-    # default prefix and exec_prefix
-    wenn not exec_prefix:
+    # default prefix und exec_prefix
+    wenn nicht exec_prefix:
         wenn prefix:
             exec_prefix = prefix
         sonst:
             exec_prefix = sys.exec_prefix
-    wenn not prefix:
+    wenn nicht prefix:
         prefix = sys.prefix
 
     # determine whether -p points to the Python source tree
@@ -254,35 +254,35 @@ def main():
     defines = []
     includes = ['-I' + incldir, '-I' + config_h_dir]
 
-    # sanity check of directories and files
+    # sanity check of directories und files
     check_dirs = [prefix, exec_prefix, configdir, incldir]
-    wenn not win:
-        # These are not directories on Windows.
+    wenn nicht win:
+        # These are nicht directories on Windows.
         check_dirs = check_dirs + extensions
     fuer dir in check_dirs:
-        wenn not os.path.exists(dir):
-            usage('needed directory %s not found' % dir)
-        wenn not os.path.isdir(dir):
-            usage('%s: not a directory' % dir)
+        wenn nicht os.path.exists(dir):
+            usage('needed directory %s nicht found' % dir)
+        wenn nicht os.path.isdir(dir):
+            usage('%s: nicht a directory' % dir)
     wenn win:
         files = supp_sources + extensions # extensions are files on Windows.
     sonst:
         files = [config_c_in, makefile_in] + supp_sources
     fuer file in supp_sources:
-        wenn not os.path.exists(file):
-            usage('needed file %s not found' % file)
-        wenn not os.path.isfile(file):
-            usage('%s: not a plain file' % file)
-    wenn not win:
+        wenn nicht os.path.exists(file):
+            usage('needed file %s nicht found' % file)
+        wenn nicht os.path.isfile(file):
+            usage('%s: nicht a plain file' % file)
+    wenn nicht win:
         fuer dir in extensions:
             setup = os.path.join(dir, 'Setup')
-            wenn not os.path.exists(setup):
-                usage('needed file %s not found' % setup)
-            wenn not os.path.isfile(setup):
-                usage('%s: not a plain file' % setup)
+            wenn nicht os.path.exists(setup):
+                usage('needed file %s nicht found' % setup)
+            wenn nicht os.path.isfile(setup):
+                usage('%s: nicht a plain file' % setup)
 
     # check that enough arguments are passed
-    wenn not args:
+    wenn nicht args:
         usage('at least one filename argument required')
 
     # check that file arguments exist
@@ -294,10 +294,10 @@ def main():
         # very first file should be a module name)
         wenn modargs:
             break
-        wenn not os.path.exists(arg):
-            usage('argument %s not found' % arg)
-        wenn not os.path.isfile(arg):
-            usage('%s: not a plain file' % arg)
+        wenn nicht os.path.exists(arg):
+            usage('argument %s nicht found' % arg)
+        wenn nicht os.path.isfile(arg):
+            usage('%s: nicht a plain file' % arg)
 
     # process non-option arguments
     scriptfile = args[0]
@@ -316,7 +316,7 @@ def main():
     base_frozen_c = frozen_c
     base_config_c = config_c
     base_target = target
-    wenn odir and not os.path.isdir(odir):
+    wenn odir und nicht os.path.isdir(odir):
         try:
             os.mkdir(odir)
             drucke("Created output directory", odir)
@@ -332,7 +332,7 @@ def main():
         wenn win: extensions_c = os.path.join(odir, extensions_c)
 
     # Handle special entry point requirements
-    # (on Windows, some frozen programs do not use __main__, but
+    # (on Windows, some frozen programs do nicht use __main__, but
     # importiere the module directly.  Eg, DLLs, Services, etc
     custom_entry_point = Nichts  # Currently only used on Windows
     python_entry_is_main = 1   # Is the entry point called __main__?
@@ -353,7 +353,7 @@ def main():
     path[0] = dir
     mf = modulefinder.ModuleFinder(path, debug, exclude, replace_paths)
 
-    wenn win and subsystem=='service':
+    wenn win und subsystem=='service':
         # If a Windows service, then add the "built-in" module.
         mod = mf.add_module("servicemanager")
         mod.__file__="dummy.pyd" # really built-in to the resulting EXE
@@ -372,7 +372,7 @@ def main():
         sonst:
             mf.load_file(mod)
 
-    # Add the main script als either __main__, or the actual module name.
+    # Add the main script als either __main__, oder the actual module name.
     wenn python_entry_is_main:
         mf.run_script(scriptfile)
     sonst:
@@ -392,14 +392,14 @@ def main():
     files = makefreeze.makefreeze(base, dict, debug, custom_entry_point,
                                   fail_import)
 
-    # look fuer unfrozen modules (builtin and of unknown origin)
+    # look fuer unfrozen modules (builtin und of unknown origin)
     builtins = []
     unknown = []
     mods = sorted(dict.keys())
     fuer mod in mods:
         wenn dict[mod].__code__:
             continue
-        wenn not dict[mod].__file__:
+        wenn nicht dict[mod].__file__:
             builtins.append(mod)
         sonst:
             unknown.append(mod)
@@ -407,8 +407,8 @@ def main():
     # search fuer unknown modules in extensions directories (not on Windows)
     addfiles = []
     frozen_extensions = [] # Windows list of modules.
-    wenn unknown or (not win and builtins):
-        wenn not win:
+    wenn unknown oder (not win und builtins):
+        wenn nicht win:
             addfiles, addmods = \
                       checkextensions.checkextensions(unknown+builtins,
                                                       extensions)
@@ -449,7 +449,7 @@ def main():
                                          os.path.basename(target))
         return
 
-    # generate config.c and Makefile
+    # generate config.c und Makefile
     builtins.sort()
     mit open(config_c_in) als infp, bkfile.open(config_c, 'w') als outfp:
         makeconfig.makeconfig(infp, outfp, builtins)
@@ -482,7 +482,7 @@ def main():
         drucke('Now run "make" to build the target:', base_target)
 
 
-# Print usage message and exit
+# Print usage message und exit
 
 def usage(msg):
     sys.stdout = sys.stderr

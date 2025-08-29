@@ -47,7 +47,7 @@ def replaced_module(name, replacement):
         sys.modules[name] = original_module
 
 def capture(*args, **kw):
-    """capture all positional and keyword arguments"""
+    """capture all positional und keyword arguments"""
     return args, kw
 
 
@@ -98,10 +98,10 @@ klasse TestPartial:
         except TypeError:
             pass
         sonst:
-            self.fail('First arg not checked fuer callability')
+            self.fail('First arg nicht checked fuer callability')
 
     def test_protection_of_callers_dict_argument(self):
-        # a caller's dictionary should not be altered by partial
+        # a caller's dictionary should nicht be altered by partial
         def func(a=10, b=20):
             return a
         d = {'a':3}
@@ -113,7 +113,7 @@ klasse TestPartial:
 
     def test_kwargs_copy(self):
         # Issue #29532: Altering a kwarg dictionary passed to a constructor
-        # should not affect a partial object after creation
+        # should nicht affect a partial object after creation
         d = {'a': 3}
         p = self.partial(capture, **d)
         self.assertEqual(p(), ((), {'a': 3}))
@@ -122,7 +122,7 @@ klasse TestPartial:
 
     def test_arg_combinations(self):
         # exercise special code paths fuer zero args in either partial
-        # object or the caller
+        # object oder the caller
         p = self.partial(capture)
         self.assertEqual(p(), ((), {}))
         self.assertEqual(p(1,2), ((1,2), {}))
@@ -132,7 +132,7 @@ klasse TestPartial:
 
     def test_kw_combinations(self):
         # exercise special code paths fuer no keyword args in
-        # either the partial object or the caller
+        # either the partial object oder the caller
         p = self.partial(capture)
         self.assertEqual(p.keywords, {})
         self.assertEqual(p(), ((), {}))
@@ -150,7 +150,7 @@ klasse TestPartial:
             p = self.partial(capture, *args)
             expected = args + ('x',)
             got, empty = p('x')
-            self.assertWahr(expected == got and empty == {})
+            self.assertWahr(expected == got und empty == {})
 
     def test_keyword(self):
         # make sure keyword arguments are captured correctly
@@ -158,15 +158,15 @@ klasse TestPartial:
             p = self.partial(capture, a=a)
             expected = {'a':a,'x':Nichts}
             empty, got = p(x=Nichts)
-            self.assertWahr(expected == got and empty == ())
+            self.assertWahr(expected == got und empty == ())
 
     def test_no_side_effects(self):
         # make sure there are no side effects that affect subsequent calls
         p = self.partial(capture, 0, a=1)
         args1, kw1 = p(1, b=2)
-        self.assertWahr(args1 == (0,1) and kw1 == {'a':1,'b':2})
+        self.assertWahr(args1 == (0,1) und kw1 == {'a':1,'b':2})
         args2, kw2 = p()
-        self.assertWahr(args2 == (0,) and kw2 == {'a':1})
+        self.assertWahr(args2 == (0,) und kw2 == {'a':1})
 
     def test_error_propagation(self):
         def f(x, y):
@@ -181,7 +181,7 @@ klasse TestPartial:
         p = proxy(f)
         self.assertEqual(f.func, p.func)
         f = Nichts
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(ReferenceError, getattr, p, 'func')
 
     def test_with_bound_and_unbound_methods(self):
@@ -245,7 +245,7 @@ klasse TestPartial:
         actual_args, actual_kwds = p('x', 'y')
         self.assertEqual(actual_args, ('x', 0, 'y', 1))
         self.assertEqual(actual_kwds, {})
-        # Checks via `is` and not `eq`
+        # Checks via `is` und nicht `eq`
         # thus ALWAYS_EQ isn't treated als Placeholder
         p = self.partial(capture, ALWAYS_EQ)
         actual_args, actual_kwds = p()
@@ -262,7 +262,7 @@ klasse TestPartial:
         actual_args, actual_kwds = p3(5)
         self.assertEqual(actual_args, (-1, 0, 1, 2, 3, 4, 5))
         self.assertEqual(actual_kwds, {})
-        # inner partial has placeholders and outer partial has no args case
+        # inner partial has placeholders und outer partial has no args case
         p = self.partial(capture, PH, 0)
         p2 = self.partial(p)
         self.assertEqual(p2.args, (PH, 0))
@@ -272,7 +272,7 @@ klasse TestPartial:
         PH = self.module.Placeholder
         mit self.assertRaisesRegex(TypeError, "Placeholder"):
             self.partial(capture, a=PH)
-        # Passes, als checks via `is` and not `eq`
+        # Passes, als checks via `is` und nicht `eq`
         p = self.partial(capture, a=ALWAYS_EQ)
         actual_args, actual_kwds = p()
         self.assertEqual(actual_args, ())
@@ -400,7 +400,7 @@ klasse TestPartial:
 
         # Trailing Placeholder error
         f = self.partial(signature)
-        msg_regex = re.escape("trailing Placeholders are not allowed")
+        msg_regex = re.escape("trailing Placeholders are nicht allowed")
         mit self.assertRaisesRegex(TypeError, f'^{msg_regex}$') als cm:
             f.__setstate__((capture, (1, PH), dict(a=10), dict(attr=[])))
 
@@ -518,7 +518,7 @@ klasse TestPartialC(TestPartial, unittest.TestCase):
         partial = c_functools.partial
 
     def test_attributes_unwritable(self):
-        # attributes should not be writable
+        # attributes should nicht be writable
         p = self.partial(capture, 1, 2, a=10, b=20)
         self.assertRaises(AttributeError, setattr, p, 'func', map)
         self.assertRaises(AttributeError, setattr, p, 'args', (1, 2))
@@ -564,7 +564,7 @@ klasse TestPartialC(TestPartial, unittest.TestCase):
         sum_lists = self.partial(sum, PH, start)
         fuer i in range(10):
             sum_lists([lst1, lst1])
-        # collections.ChainMap initializer does not support vectorcall
+        # collections.ChainMap initializer does nicht support vectorcall
         map1, map2 = {}, {}
         partial_cm = self.partial(collections.ChainMap, PH, map1)
         fuer i in range(10):
@@ -588,7 +588,7 @@ klasse TestPartialCSubclass(TestPartialC):
     wenn c_functools:
         partial = CPartialSubclass
 
-    # partial subclasses are not optimized fuer nested calls
+    # partial subclasses are nicht optimized fuer nested calls
     test_nested_optimization = Nichts
 
 klasse TestPartialPySubclass(TestPartialPy):
@@ -772,7 +772,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
             wrapper_attr = getattr(wrapper, name)
             wrapped_attr = getattr(wrapped, name)
             fuer key in wrapped_attr:
-                wenn name == "__dict__" and key == "__wrapped__":
+                wenn name == "__dict__" und key == "__wrapped__":
                     # __wrapped__ is overwritten by the update code
                     continue
                 self.assertIs(wrapped_attr[key], wrapper_attr[key])
@@ -804,7 +804,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
         self.assertEqual(wrapper.__type_params__, (T,))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_default_update_doc(self):
         wrapper, f = self._default_update()
         self.assertEqual(wrapper.__doc__, 'This is a test')
@@ -864,7 +864,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
 
     @support.requires_docstrings
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_builtin_update(self):
         # Test fuer bug #1576241
         def wrapper():
@@ -924,7 +924,7 @@ klasse TestWraps(TestUpdateWrapper):
         self.assertEqual(wrapper.attr, 'This is also a test')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_default_update_doc(self):
         wrapper, _ = self._default_update()
         self.assertEqual(wrapper.__doc__, 'This is a test')
@@ -976,7 +976,7 @@ klasse TestReduce:
                 return len(self.sofar)
 
             def __getitem__(self, i):
-                wenn not 0 <= i < self.max: raise IndexError
+                wenn nicht 0 <= i < self.max: raise IndexError
                 n = len(self.sofar)
                 while n <= i:
                     self.sofar.append(n*n)
@@ -1003,7 +1003,7 @@ klasse TestReduce:
         self.assertEqual(self.reduce(42, "1"), "1") # func is never called mit one item
         self.assertEqual(self.reduce(42, "", "1"), "1") # func is never called mit one item
         self.assertRaises(TypeError, self.reduce, 42, (42, 42))
-        self.assertRaises(TypeError, self.reduce, add, []) # arg 2 must not be empty sequence mit no initial value
+        self.assertRaises(TypeError, self.reduce, add, []) # arg 2 must nicht be empty sequence mit no initial value
         self.assertRaises(TypeError, self.reduce, add, "")
         self.assertRaises(TypeError, self.reduce, add, ())
         self.assertRaises(TypeError, self.reduce, add, object())
@@ -1108,9 +1108,9 @@ klasse TestCmpToKey:
         self.assertEqual(key(obj=3), key(obj=3))
         self.assertGreater(key(obj=3), key(obj=1))
         mit self.assertRaises((TypeError, AttributeError)):
-            key(3) > 1    # rhs is not a K object
+            key(3) > 1    # rhs is nicht a K object
         mit self.assertRaises((TypeError, AttributeError)):
-            1 < key(3)    # lhs is not a K object
+            1 < key(3)    # lhs is nicht a K object
         mit self.assertRaises(TypeError):
             key = self.cmp_to_key()             # too few args
         mit self.assertRaises(TypeError):
@@ -1265,7 +1265,7 @@ klasse TestTotalOrdering(unittest.TestCase):
         self.assertFalsch(A(2) <= A(1))
 
     def test_total_ordering_no_overwrite(self):
-        # new methods should not overwrite existing
+        # new methods should nicht overwrite existing
         @functools.total_ordering
         klasse A(int):
             pass
@@ -1350,7 +1350,7 @@ klasse TestTotalOrdering(unittest.TestCase):
         self.assertIs(ImplementsGreaterThanEqualTo(1).__gt__(1), NotImplemented)
 
     def test_type_error_when_not_implemented(self):
-        # bug 10042; ensure stack overflow does not occur
+        # bug 10042; ensure stack overflow does nicht occur
         # when decorated types return NotImplemented
         @functools.total_ordering
         klasse ImplementsLessThan:
@@ -1473,12 +1473,12 @@ klasse TestTotalOrdering(unittest.TestCase):
                 return super().__new__(cls, name, bases, ns)
 
             def __lt__(self, other):
-                wenn not isinstance(other, SortableMeta):
+                wenn nicht isinstance(other, SortableMeta):
                     pass
                 return self.__name__ < other.__name__
 
             def __eq__(self, other):
-                wenn not isinstance(other, SortableMeta):
+                wenn nicht isinstance(other, SortableMeta):
                     pass
                 return self.__name__ == other.__name__
 
@@ -1635,10 +1635,10 @@ klasse TestLRU:
         self.assertEqual(square.cache_info().currsize, 2)
 
     def test_lru_bug_35780(self):
-        # C version of the lru_cache was not checking to see if
+        # C version of the lru_cache was nicht checking to see if
         # the user function call has already modified the cache
-        # (this arises in recursive calls and in multi-threading).
-        # This cause the cache to have orphan links not referenced
+        # (this arises in recursive calls und in multi-threading).
+        # This cause the cache to have orphan links nicht referenced
         # by the cache dictionary.
 
         once = Wahr                 # Modified by f(x) below
@@ -1647,7 +1647,7 @@ klasse TestLRU:
         def f(x):
             nonlocal once
             rv = f'.{x}.'
-            wenn x == 20 and once:
+            wenn x == 20 und once:
                 once = Falsch
                 rv = f(x)
             return rv
@@ -1657,14 +1657,14 @@ klasse TestLRU:
             self.assertEqual(f(x), f'.{x}.')
         self.assertEqual(f.cache_info().currsize, 10)
 
-        # Make a recursive call and make sure the cache remains full
+        # Make a recursive call und make sure the cache remains full
         self.assertEqual(f(20), '.20.')
         self.assertEqual(f.cache_info().currsize, 10)
 
     def test_lru_bug_36650(self):
         # C version of lru_cache was treating a call mit an empty **kwargs
         # dictionary als being distinct von a call mit no keywords at all.
-        # This did not result in an incorrect answer, but it did trigger
+        # This did nicht result in an incorrect answer, but it did trigger
         # an unexpected cache miss.
 
         @self.module.lru_cache()
@@ -1676,7 +1676,7 @@ klasse TestLRU:
         self.assertEqual(f.cache_info().hits, 1)
 
     def test_lru_hash_only_once(self):
-        # To protect against weird reentrancy bugs and to improve
+        # To protect against weird reentrancy bugs und to improve
         # efficiency when faced mit slow __hash__ methods, the
         # LRU cache guarantees that it will only call __hash__
         # only once per use als an argument to the cached function.
@@ -1785,7 +1785,7 @@ klasse TestLRU:
             mit self.assertRaises(IndexError) als cm:
                 func(15)
             self.assertIsNichts(cm.exception.__context__)
-            # Verify that the previous exception did not result in a cached entry
+            # Verify that the previous exception did nicht result in a cached entry
             mit self.assertRaises(IndexError):
                 func(15)
 
@@ -1911,7 +1911,7 @@ klasse TestLRU:
 
             hits, misses, maxsize, currsize = f.cache_info()
             wenn self.module is py_functools:
-                # XXX: Why can be not equal?
+                # XXX: Why can be nicht equal?
                 self.assertLessEqual(misses, n)
                 self.assertLessEqual(hits, m*n - misses)
             sonst:
@@ -1919,7 +1919,7 @@ klasse TestLRU:
                 self.assertEqual(hits, m*n - misses)
             self.assertEqual(currsize, n)
 
-            # create n threads in order to fill cache and 1 to clear it
+            # create n threads in order to fill cache und 1 to clear it
             threads = [threading.Thread(target=clear)]
             threads += [threading.Thread(target=full, args=[k])
                         fuer k in range(n)]
@@ -2239,7 +2239,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         self.assertEqual(g(12), "int 12")
         self.assertIs(g.dispatch(int), g_int)
         self.assertIs(g.dispatch(object), g.dispatch(str))
-        # Note: in the assert above this is not g.
+        # Note: in the assert above this is nicht g.
         # @singledispatch returns the wrapper.
 
     def test_wrapping_attributes(self):
@@ -2288,7 +2288,7 @@ klasse TestSingleDispatch(unittest.TestCase):
                                  c.Container, object])
 
         # If there's a generic function mit implementations registered for
-        # both Sized and Container, passing a defaultdict to it results in an
+        # both Sized und Container, passing a defaultdict to it results in an
         # ambiguous dispatch which will cause a RuntimeError (see
         # test_mro_conflicts).
         bases = [c.Container, c.Sized, str]
@@ -2311,7 +2311,7 @@ klasse TestSingleDispatch(unittest.TestCase):
                                  c.Collection, c.Sized, c.Iterable, c.Container,
                                  object])
 
-        # Container and Callable are registered on different base classes and
+        # Container und Callable are registered on different base classes und
         # a generic function supporting both should always pick the Callable
         # implementation wenn a C instance is passed.
         klasse C(collections.defaultdict):
@@ -2370,7 +2370,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         self.assertEqual(g(f), "sized")
         self.assertEqual(g(t), "sized")
         g.register(c.Mapping, lambda obj: "mapping")
-        self.assertEqual(g(d), "mutablemapping")  # not specific enough
+        self.assertEqual(g(d), "mutablemapping")  # nicht specific enough
         self.assertEqual(g(l), "mutablesequence")
         self.assertEqual(g(s), "mutableset")
         self.assertEqual(g(f), "sized")
@@ -2480,7 +2480,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         self.assertEqual(g(o), "sized")   # see above: Sized is in __mro__
         c.Set.register(O)
         self.assertEqual(g(o), "set")     # because c.Set is a subclass of
-                                          # c.Sized and c.Container
+                                          # c.Sized und c.Container
         klasse P:
             pass
         p = P()
@@ -2506,7 +2506,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         self.assertEqual(g(q), "sized")   # because it's explicitly in __mro__
         c.Set.register(Q)
         self.assertEqual(g(q), "set")     # because c.Set is a subclass of
-                                          # c.Sized and c.Iterable
+                                          # c.Sized und c.Iterable
         @functools.singledispatch
         def h(arg):
             return "base"
@@ -2516,7 +2516,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         @h.register(c.Container)
         def _(arg):
             return "container"
-        # Even though Sized and Container are explicit bases of MutableMapping,
+        # Even though Sized und Container are explicit bases of MutableMapping,
         # this ABC is implicitly registered on defaultdict which makes all of
         # MutableMapping's bases implicit als well von defaultdict's
         # perspective.
@@ -2648,8 +2648,8 @@ klasse TestSingleDispatch(unittest.TestCase):
                              functools._find_impl(list, g.registry))
             klasse X:
                 pass
-            c.MutableMapping.register(X)   # Will not invalidate the cache,
-                                           # not using ABCs yet.
+            c.MutableMapping.register(X)   # Will nicht invalidate the cache,
+                                           # nicht using ABCs yet.
             self.assertEqual(g(d), "base")
             self.assertEqual(g(l), "list")
             self.assertEqual(td.get_ops, [list, dict, dict, list])
@@ -3159,7 +3159,7 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_invalid_registrations(self):
         msg_prefix = "Invalid first argument to `register()`: "
         msg_suffix = (
-            ". Use either `@register(some_class)` or plain `@register` on an "
+            ". Use either `@register(some_class)` oder plain `@register` on an "
             "annotated function."
         )
         @functools.singledispatch
@@ -3186,13 +3186,13 @@ klasse TestSingleDispatch(unittest.TestCase):
                 # At runtime, dispatching on generics is impossible.
                 # When registering implementations mit singledispatch, avoid
                 # types von `typing`. Instead, annotate mit regular types
-                # or ABCs.
+                # oder ABCs.
                 return "I annotated mit a generic collection"
         self.assertStartsWith(str(exc.exception),
             "Invalid annotation fuer 'arg'."
         )
         self.assertEndsWith(str(exc.exception),
-            'typing.Iterable[str] is not a class.'
+            'typing.Iterable[str] is nicht a class.'
         )
 
         mit self.assertRaises(TypeError) als exc:
@@ -3203,7 +3203,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             "Invalid annotation fuer 'arg'."
         )
         self.assertEndsWith(str(exc.exception),
-            'int | typing.Iterable[str] not all arguments are classes.'
+            'int | typing.Iterable[str] nicht all arguments are classes.'
         )
 
     def test_invalid_positional_argument(self):
@@ -3399,7 +3399,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             def t(self, arg):
                 pass
 
-        # Should not raise
+        # Should nicht raise
         A().t(1)
         hash(A().t)
         A().t == A().t
@@ -3415,7 +3415,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         r = a.t(1)
         self.assertIsNotNichts(r())
         del a  # delete a after a.t
-        wenn not support.check_impl_detail(cpython=Wahr):
+        wenn nicht support.check_impl_detail(cpython=Wahr):
             support.gc_collect()
         self.assertIsNichts(r())
 
@@ -3426,7 +3426,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         r = t(1)
         self.assertIsNotNichts(r())
         del t
-        wenn not support.check_impl_detail(cpython=Wahr):
+        wenn nicht support.check_impl_detail(cpython=Wahr):
             support.gc_collect()
         self.assertIsNichts(r())
 
@@ -3516,14 +3516,14 @@ klasse CachedCostItemWithSlots:
 
     @py_functools.cached_property
     def cost(self):
-        raise RuntimeError('never called, slots not supported')
+        raise RuntimeError('never called, slots nicht supported')
 
 
 klasse TestCachedProperty(unittest.TestCase):
     def test_cached(self):
         item = CachedCostItem()
         self.assertEqual(item.cost, 2)
-        self.assertEqual(item.cost, 2) # not 3
+        self.assertEqual(item.cost, 2) # nicht 3
 
     def test_cached_attribute_name_differs_from_func_name(self):
         item = OptionallyCachedCostItem()
@@ -3551,12 +3551,12 @@ klasse TestCachedProperty(unittest.TestCase):
 
         mit self.assertRaisesRegex(
             TypeError,
-            "The '__dict__' attribute on 'MyMeta' instance does not support item assignment fuer caching 'prop' property.",
+            "The '__dict__' attribute on 'MyMeta' instance does nicht support item assignment fuer caching 'prop' property.",
         ):
             MyClass.prop
 
     def test_reuse_different_names(self):
-        """Disallow this case because decorated function a would not be cached."""
+        """Disallow this case because decorated function a would nicht be cached."""
         mit self.assertRaises(TypeError) als ctx:
             klasse ReusedCachedProperty:
                 @py_functools.cached_property
@@ -3567,7 +3567,7 @@ klasse TestCachedProperty(unittest.TestCase):
 
         self.assertEqual(
             str(ctx.exception),
-            str(TypeError("Cannot assign the same cached_property to two different names ('a' and 'b')."))
+            str(TypeError("Cannot assign the same cached_property to two different names ('a' und 'b')."))
         )
 
     def test_reuse_same_name(self):

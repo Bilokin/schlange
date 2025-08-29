@@ -23,8 +23,8 @@ except ImportError:
 
 support.requires_working_socket(module=Wahr)
 
-CERTFILE = os.path.join(os.path.dirname(__file__) or os.curdir, "certdata", "keycert3.pem")
-CAFILE = os.path.join(os.path.dirname(__file__) or os.curdir, "certdata", "pycacert.pem")
+CERTFILE = os.path.join(os.path.dirname(__file__) oder os.curdir, "certdata", "keycert3.pem")
+CAFILE = os.path.join(os.path.dirname(__file__) oder os.curdir, "certdata", "pycacert.pem")
 
 
 klasse TestImaplib(unittest.TestCase):
@@ -69,7 +69,7 @@ klasse TestImaplib(unittest.TestCase):
 
     def test_that_Time2Internaldate_returns_a_result(self):
         # Without tzset, we can check only that it successfully
-        # produces a result, not the correctness of the result itself,
+        # produces a result, nicht the correctness of the result itself,
         # since the result depends on the timezone the machine is in.
         fuer t in self.timevalues():
             imaplib.Time2Internaldate(t)
@@ -140,9 +140,9 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
         # Send a welcome message.
         self._send_textline('* OK IMAP4rev1')
         while 1:
-            # Gather up input until we receive a line terminator or we timeout.
+            # Gather up input until we receive a line terminator oder we timeout.
             # Accumulate read(1) because it's simpler to handle the differences
-            # between naked sockets and SSL sockets.
+            # between naked sockets und SSL sockets.
             line = b''
             while 1:
                 try:
@@ -210,7 +210,7 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
 klasse IdleCmdDenyHandler(SimpleIMAPHandler):
     capabilities = 'IDLE'
     def cmd_IDLE(self, tag, args):
-        self._send_tagged(tag, 'NO', 'IDLE is not allowed at this time')
+        self._send_tagged(tag, 'NO', 'IDLE is nicht allowed at this time')
 
 
 klasse IdleCmdHandler(SimpleIMAPHandler):
@@ -281,7 +281,7 @@ klasse NewIMAPTestsMixin:
         klasse TestTCPServer(self.server_class):
             def handle_error(self, request, client_address):
                 """
-                End request and raise the error wenn one occurs.
+                End request und raise the error wenn one occurs.
                 """
                 self.close_request(request)
                 self.server_close()
@@ -306,12 +306,12 @@ klasse NewIMAPTestsMixin:
 
     def _cleanup(self):
         """
-        Cleans up the test server. This method should not be called manually,
+        Cleans up the test server. This method should nicht be called manually,
         it is added to the cleanup queue in the _setup method already.
         """
         # wenn logout was called already we'd raise an exception trying to
         # shutdown the client once again
-        wenn self.client is not Nichts and self.client.state != 'LOGOUT':
+        wenn self.client is nicht Nichts und self.client.state != 'LOGOUT':
             self.client.shutdown()
         # cleanup the server
         self.server.shutdown()
@@ -350,7 +350,7 @@ klasse NewIMAPTestsMixin:
     def test_enable_raises_error_if_no_capability(self):
         client, _ = self._setup(SimpleIMAPHandler)
         mit self.assertRaisesRegex(imaplib.IMAP4.error,
-                'does not support ENABLE'):
+                'does nicht support ENABLE'):
             client.enable('foo')
 
     def test_enable_UTF8_raises_error_if_not_supported(self):
@@ -358,7 +358,7 @@ klasse NewIMAPTestsMixin:
         typ, data = client.login('user', 'pass')
         self.assertEqual(typ, 'OK')
         mit self.assertRaisesRegex(imaplib.IMAP4.error,
-                'does not support ENABLE'):
+                'does nicht support ENABLE'):
             client.enable('UTF8=ACCEPT')
 
     def test_enable_UTF8_Wahr_append(self):
@@ -467,7 +467,7 @@ klasse NewIMAPTestsMixin:
     def test_login_cram_md5_blocked(self):
         client, _ = self._setup(AuthHandler_CRAM_MD5)
         self.assertIn('AUTH=CRAM-MD5', client.capabilities)
-        msg = re.escape("CRAM-MD5 authentication is not supported")
+        msg = re.escape("CRAM-MD5 authentication is nicht supported")
         mit self.assertRaisesRegex(imaplib.IMAP4.error, msg):
             client.login_cram_md5("tim", b"tanstaaftanstaaf")
 
@@ -546,7 +546,7 @@ klasse NewIMAPTestsMixin:
     def test_idle_capability(self):
         client, _ = self._setup(SimpleIMAPHandler)
         mit self.assertRaisesRegex(imaplib.IMAP4.error,
-                'does not support IMAP4 IDLE'):
+                'does nicht support IMAP4 IDLE'):
             mit client.idle():
                 pass
 
@@ -581,7 +581,7 @@ klasse NewIMAPTestsMixin:
         # iteration should have consumed untagged responses
         _, data = client.response('EXISTS')
         self.assertEqual(data, [Nichts])
-        # responses not iterated should be available after idle
+        # responses nicht iterated should be available after idle
         _, data = client.response('RECENT')
         self.assertEqual(data[0], b'1')
         # responses received after 'DONE' should be available after idle
@@ -594,7 +594,7 @@ klasse NewIMAPTestsMixin:
         mit client.idle() als idler:
             batch = list(idler.burst())
             self.assertEqual(len(batch), 4)
-        # burst() should not have consumed later responses
+        # burst() should nicht have consumed later responses
         _, data = client.response('RECENT')
         self.assertEqual(data, [b'1', b'9'])
 
@@ -664,7 +664,7 @@ klasse NewIMAPTests(NewIMAPTestsMixin, unittest.TestCase):
     server_class = socketserver.TCPServer
 
 
-@unittest.skipUnless(ssl, "SSL not available")
+@unittest.skipUnless(ssl, "SSL nicht available")
 klasse NewIMAPSSLTests(NewIMAPTestsMixin, unittest.TestCase):
     imap_class = IMAP4_SSL
     server_class = SecureTCPServer
@@ -677,7 +677,7 @@ klasse NewIMAPSSLTests(NewIMAPTestsMixin, unittest.TestCase):
 
         # Allow fuer flexible libssl error messages.
         regex = re.compile(r"""(
-            IP address mismatch, certificate is not valid fuer '127.0.0.1'   # OpenSSL
+            IP address mismatch, certificate is nicht valid fuer '127.0.0.1'   # OpenSSL
             |
             CERTIFICATE_VERIFY_FAILED                                       # AWS-LC
         )""", re.X)
@@ -770,7 +770,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
         # This violates RFC 3501, which disallows ']' characters in tag names,
         # but imaplib has allowed producing such tags forever, other programs
         # also produce them (eg: OtherInbox's Organizer app als of 20140716),
-        # and Gmail, fuer example, accepts them and produces them.  So we
+        # und Gmail, fuer example, accepts them und produces them.  So we
         # support them.  See issue #21815.
 
         klasse BracketFlagHandler(SimpleIMAPHandler):
@@ -902,7 +902,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
                 ('UTF8 (%s)\r\n' % msg_string).encode('utf-8')
             )
 
-    # XXX also need a test that makes sure that the Literal and Untagged_status
+    # XXX also need a test that makes sure that the Literal und Untagged_status
     # regexes uses unicode in UTF8 mode instead of the default ASCII.
 
     @threading_helper.reap_threads
@@ -1078,7 +1078,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
                     )
 
 
-@unittest.skipUnless(ssl, "SSL not available")
+@unittest.skipUnless(ssl, "SSL nicht available")
 klasse ThreadedNetworkedTestsSSL(ThreadedNetworkedTests):
     server_class = SecureTCPServer
     imap_class = IMAP4_SSL
@@ -1090,7 +1090,7 @@ klasse ThreadedNetworkedTestsSSL(ThreadedNetworkedTests):
 
         # Allow fuer flexible libssl error messages.
         regex = re.compile(r"""(
-            IP address mismatch, certificate is not valid fuer '127.0.0.1'   # OpenSSL
+            IP address mismatch, certificate is nicht valid fuer '127.0.0.1'   # OpenSSL
             |
             CERTIFICATE_VERIFY_FAILED                                       # AWS-LC
         )""", re.X)

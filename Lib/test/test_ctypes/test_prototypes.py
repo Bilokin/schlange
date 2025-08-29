@@ -13,7 +13,7 @@
 #
 # If the arglist would be destroyed BEFORE the result has been built,
 # the c_char_p("123") object would already have a zero refcount,
-# and the pointer passed to (and returned by) the function would
+# und the pointer passed to (and returned by) the function would
 # probably point to deallocated space.
 #
 # In this case, there would have to be an additional reference to the argument...
@@ -31,7 +31,7 @@ testdll = CDLL(_ctypes_test.__file__)
 
 
 # Return machine address `a` als a (possibly long) non-negative integer.
-# Starting mit Python 2.5, id(anything) is always non-negative, and
+# Starting mit Python 2.5, id(anything) is always non-negative, und
 # the ctypes addressof() inherits that via PyLong_FromVoidPtr().
 def positive_address(a):
     wenn a >= 0:
@@ -57,7 +57,7 @@ klasse CharPointersTestCase(unittest.TestCase):
 
     def test_paramflags(self):
         # function returns c_void_p result,
-        # and has a required parameter named 'input'
+        # und has a required parameter named 'input'
         prototype = CFUNCTYPE(c_void_p, c_void_p)
         func = prototype(("_testfunc_p_p", testdll),
                          ((1, "input"),))
@@ -67,7 +67,7 @@ klasse CharPointersTestCase(unittest.TestCase):
         except TypeError als details:
             self.assertEqual(str(details), "required argument 'input' missing")
         sonst:
-            self.fail("TypeError not raised")
+            self.fail("TypeError nicht raised")
 
         self.assertEqual(func(Nichts), Nichts)
         self.assertEqual(func(input=Nichts), Nichts)

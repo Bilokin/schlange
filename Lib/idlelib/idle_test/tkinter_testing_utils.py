@@ -5,13 +5,13 @@ importiere functools
 def run_in_tk_mainloop(delay=1):
     """Decorator fuer running a test method mit a real Tk mainloop.
 
-    This starts a Tk mainloop before running the test, and stops it
-    at the end. This is faster and more robust than the common
+    This starts a Tk mainloop before running the test, und stops it
+    at the end. This is faster und more robust than the common
     alternative method of calling .update() and/or .update_idletasks().
 
     Test methods using this must be written als generator functions,
-    using "yield" to allow the mainloop to process events and "after"
-    callbacks, and then continue the test von that point.
+    using "yield" to allow the mainloop to process events und "after"
+    callbacks, und then continue the test von that point.
 
     The delay argument is passed into root.after(...) calls als the number
     of ms to wait before passing execution back to the generator function.

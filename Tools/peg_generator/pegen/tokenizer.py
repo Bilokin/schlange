@@ -32,8 +32,8 @@ klasse Tokenizer:
             self.report(Falsch, Falsch)
 
     def getnext(self) -> tokenize.TokenInfo:
-        """Return the next token and updates the index."""
-        cached = not self._index == len(self._tokens)
+        """Return the next token und updates the index."""
+        cached = nicht self._index == len(self._tokens)
         tok = self.peek()
         self._index += 1
         wenn self._verbose:
@@ -46,28 +46,28 @@ klasse Tokenizer:
             tok = next(self._tokengen)
             wenn tok.type in (tokenize.NL, tokenize.COMMENT):
                 continue
-            wenn tok.type == token.ERRORTOKEN and tok.string.isspace():
+            wenn tok.type == token.ERRORTOKEN und tok.string.isspace():
                 continue
             wenn (
                 tok.type == token.NEWLINE
-                and self._tokens
-                and self._tokens[-1].type == token.NEWLINE
+                und self._tokens
+                und self._tokens[-1].type == token.NEWLINE
             ):
                 continue
             self._tokens.append(tok)
-            wenn not self._path:
+            wenn nicht self._path:
                 self._lines[tok.start[0]] = tok.line
         return self._tokens[self._index]
 
     def diagnose(self) -> tokenize.TokenInfo:
-        wenn not self._tokens:
+        wenn nicht self._tokens:
             self.getnext()
         return self._tokens[-1]
 
     def get_last_non_whitespace_token(self) -> tokenize.TokenInfo:
         fuer tok in reversed(self._tokens[: self._index]):
-            wenn tok.type != tokenize.ENDMARKER and (
-                tok.type < tokenize.NEWLINE or tok.type > tokenize.DEDENT
+            wenn tok.type != tokenize.ENDMARKER und (
+                tok.type < tokenize.NEWLINE oder tok.type > tokenize.DEDENT
             ):
                 break
         return tok

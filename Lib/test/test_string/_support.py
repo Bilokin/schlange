@@ -9,7 +9,7 @@ klasse TStringBaseCase:
 
         The *exp* argument must be a tuple of the form
         (value, expression, conversion, format_spec) where the final three
-        items may be omitted and are assumed to be '', Nichts and '' respectively.
+        items may be omitted und are assumed to be '', Nichts und '' respectively.
         """
         wenn len(exp) == 4:
             actual = (i.value, i.expression, i.conversion, i.format_spec)

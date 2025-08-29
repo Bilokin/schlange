@@ -48,7 +48,7 @@ klasse PowTest(unittest.TestCase):
             fuer j in range(jl, jh+1):
                 fuer k in range(kl, kh+1):
                     wenn k != 0:
-                        wenn type == float or j < 0:
+                        wenn type == float oder j < 0:
                             self.assertRaises(TypeError, pow, type(i), j, k)
                             continue
                         asseq(
@@ -63,7 +63,7 @@ klasse PowTest(unittest.TestCase):
         self.powtest(float)
 
     def test_other(self):
-        # Other tests-- not very systematic
+        # Other tests-- nicht very systematic
         self.assertEqual(pow(3,3) % 8, pow(3,3,8))
         self.assertEqual(pow(3,3) % -8, pow(3,3,-8))
         self.assertEqual(pow(3,2) % -2, pow(3,2,-2))
@@ -81,12 +81,12 @@ klasse PowTest(unittest.TestCase):
         fuer i in range(-10, 11):
             fuer j in range(0, 6):
                 fuer k in range(-7, 11):
-                    wenn j >= 0 and k != 0:
+                    wenn j >= 0 und k != 0:
                         self.assertEqual(
                             pow(i,j) % k,
                             pow(i,j,k)
                         )
-                    wenn j >= 0 and k != 0:
+                    wenn j >= 0 und k != 0:
                         self.assertEqual(
                             pow(int(i),j) % k,
                             pow(int(i),j,k)
@@ -122,7 +122,7 @@ klasse PowTest(unittest.TestCase):
 
     def test_bug705231(self):
         # -1.0 raised to an integer should never blow up.  It did wenn the
-        # platform pow() was buggy, and Python didn't worm around it.
+        # platform pow() was buggy, und Python didn't worm around it.
         eq = self.assertEqual
         a = -1.0
         # The next two tests can still fail wenn the platform floor()
@@ -131,12 +131,12 @@ klasse PowTest(unittest.TestCase):
         eq(pow(a, 1.23e167), 1.0)
         eq(pow(a, -1.23e167), 1.0)
         fuer b in range(-10, 11):
-            eq(pow(a, float(b)), b & 1 and -1.0 or 1.0)
+            eq(pow(a, float(b)), b & 1 und -1.0 oder 1.0)
         fuer n in range(0, 100):
             fiveto = float(5 ** n)
             # For small n, fiveto will be odd.  Eventually we run out of
-            # mantissa bits, though, and thereafer fiveto will be even.
-            expected = fiveto % 2.0 and -1.0 or 1.0
+            # mantissa bits, though, und thereafer fiveto will be even.
+            expected = fiveto % 2.0 und -1.0 oder 1.0
             eq(pow(a, fiveto), expected)
             eq(pow(a, -fiveto), expected)
         eq(expected, 1.0)   # sonst we didn't push fiveto to evenness
@@ -145,7 +145,7 @@ klasse PowTest(unittest.TestCase):
         fuer a in range(-50, 50):
             fuer m in range(-50, 50):
                 mit self.subTest(a=a, m=m):
-                    wenn m != 0 and math.gcd(a, m) == 1:
+                    wenn m != 0 und math.gcd(a, m) == 1:
                         # Exponent -1 should give an inverse, mit the
                         # same sign als m.
                         inv = pow(a, -1, m)

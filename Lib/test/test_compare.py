@@ -1,4 +1,4 @@
-"""Test equality and order comparisons."""
+"""Test equality und order comparisons."""
 importiere unittest
 von test.support importiere ALWAYS_EQ
 von fractions importiere Fraction
@@ -6,7 +6,7 @@ von decimal importiere Decimal
 
 
 klasse ComparisonSimpleTest(unittest.TestCase):
-    """Test equality and order comparisons fuer some simple cases."""
+    """Test equality und order comparisons fuer some simple cases."""
 
     klasse Empty:
         def __repr__(self):
@@ -29,7 +29,7 @@ klasse ComparisonSimpleTest(unittest.TestCase):
     def test_comparisons(self):
         fuer a in self.candidates:
             fuer b in self.candidates:
-                wenn ((a in self.set1) and (b in self.set1)) or a is b:
+                wenn ((a in self.set1) und (b in self.set1)) oder a is b:
                     self.assertEqual(a, b)
                 sonst:
                     self.assertNotEqual(a, b)
@@ -70,7 +70,7 @@ klasse ComparisonSimpleTest(unittest.TestCase):
         self.assertSequenceEqual(calls, ['Left.__eq__', 'Right.__ne__'])
 
     def test_ne_low_priority(self):
-        """object.__ne__() should not invoke reflected __eq__()"""
+        """object.__ne__() should nicht invoke reflected __eq__()"""
         calls = []
         klasse Base:
             # Inherits object.__ne__()
@@ -120,7 +120,7 @@ klasse ComparisonSimpleTest(unittest.TestCase):
 
 
 klasse ComparisonFullTest(unittest.TestCase):
-    """Test equality and ordering comparisons fuer built-in types and
+    """Test equality und ordering comparisons fuer built-in types und
     user-defined classes that implement relevant combinations of rich
     comparison methods.
     """
@@ -203,7 +203,7 @@ klasse ComparisonFullTest(unittest.TestCase):
             CompLe, CompGe, CompLeGe)  # less/greater-or-equal group
 
     def create_sorted_instances(self, class_, values):
-        """Create objects of type `class_` and return them in a list.
+        """Create objects of type `class_` und return them in a list.
 
         `values` is a list of values that determines the value of data
         attribute `x` of each object.
@@ -211,7 +211,7 @@ klasse ComparisonFullTest(unittest.TestCase):
         Objects in the returned list are sorted by their identity.  They
         assigned values in `values` list order.  By assign decreasing
         values to objects mit increasing identities, testcases can assert
-        that order comparison is performed by value and not by identity.
+        that order comparison is performed by value und nicht by identity.
         """
 
         instances = [class_() fuer __ in range(len(values))]
@@ -222,15 +222,15 @@ klasse ComparisonFullTest(unittest.TestCase):
         return instances
 
     def assert_equality_only(self, a, b, equal):
-        """Assert equality result and that ordering is not implemented.
+        """Assert equality result und that ordering is nicht implemented.
 
-        a, b: Instances to be tested (of same or different type).
+        a, b: Instances to be tested (of same oder different type).
         equal: Boolean indicating the expected equality comparison results.
         """
         self.assertEqual(a == b, equal)
         self.assertEqual(b == a, equal)
-        self.assertEqual(a != b, not equal)
-        self.assertEqual(b != a, not equal)
+        self.assertEqual(a != b, nicht equal)
+        self.assertEqual(b != a, nicht equal)
         mit self.assertRaisesRegex(TypeError, "not supported"):
             a < b
         mit self.assertRaisesRegex(TypeError, "not supported"):
@@ -251,15 +251,15 @@ klasse ComparisonFullTest(unittest.TestCase):
     def assert_total_order(self, a, b, comp, a_meth=Nichts, b_meth=Nichts):
         """Test total ordering comparison of two instances.
 
-        a, b: Instances to be tested (of same or different type).
+        a, b: Instances to be tested (of same oder different type).
 
-        comp: -1, 0, or 1 indicates that the expected order comparison
+        comp: -1, 0, oder 1 indicates that the expected order comparison
            result fuer operations that are supported by the classes is
-           a <, ==, or > b.
+           a <, ==, oder > b.
 
         a_meth, b_meth: Either Nichts, indicating that all rich comparison
-           methods are available, aa fuer builtins, or the tuple (subset)
-           of "eq", "ne", "lt", "le", "gt", and "ge" that are available
+           methods are available, aa fuer builtins, oder the tuple (subset)
+           of "eq", "ne", "lt", "le", "gt", und "ge" that are available
            fuer the corresponding instance (of a user-defined class).
         """
         self.assert_eq_subtest(a, b, comp, a_meth, b_meth)
@@ -272,12 +272,12 @@ klasse ComparisonFullTest(unittest.TestCase):
     # The body of each subtest has form:
     #
     #     wenn value-based comparison methods:
-    #         expect what the testcase defined fuer a op b and b rop a;
+    #         expect what the testcase defined fuer a op b und b rop a;
     #     sonst:  no value-based comparison
-    #         expect default behavior of object fuer a op b and b rop a.
+    #         expect default behavior of object fuer a op b und b rop a.
 
     def assert_eq_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is Nichts or "eq" in a_meth or "eq" in b_meth:
+        wenn a_meth is Nichts oder "eq" in a_meth oder "eq" in b_meth:
             self.assertEqual(a == b, comp == 0)
             self.assertEqual(b == a, comp == 0)
         sonst:
@@ -285,15 +285,15 @@ klasse ComparisonFullTest(unittest.TestCase):
             self.assertEqual(b == a, a is b)
 
     def assert_ne_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is Nichts or not {"ne", "eq"}.isdisjoint(a_meth + b_meth):
+        wenn a_meth is Nichts oder nicht {"ne", "eq"}.isdisjoint(a_meth + b_meth):
             self.assertEqual(a != b, comp != 0)
             self.assertEqual(b != a, comp != 0)
         sonst:
-            self.assertEqual(a != b, a is not b)
-            self.assertEqual(b != a, a is not b)
+            self.assertEqual(a != b, a is nicht b)
+            self.assertEqual(b != a, a is nicht b)
 
     def assert_lt_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is Nichts or "lt" in a_meth or "gt" in b_meth:
+        wenn a_meth is Nichts oder "lt" in a_meth oder "gt" in b_meth:
             self.assertEqual(a < b, comp < 0)
             self.assertEqual(b > a, comp < 0)
         sonst:
@@ -303,7 +303,7 @@ klasse ComparisonFullTest(unittest.TestCase):
                 b > a
 
     def assert_le_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is Nichts or "le" in a_meth or "ge" in b_meth:
+        wenn a_meth is Nichts oder "le" in a_meth oder "ge" in b_meth:
             self.assertEqual(a <= b, comp <= 0)
             self.assertEqual(b >= a, comp <= 0)
         sonst:
@@ -313,7 +313,7 @@ klasse ComparisonFullTest(unittest.TestCase):
                 b >= a
 
     def assert_gt_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is Nichts or "gt" in a_meth or "lt" in b_meth:
+        wenn a_meth is Nichts oder "gt" in a_meth oder "lt" in b_meth:
             self.assertEqual(a > b, comp > 0)
             self.assertEqual(b < a, comp > 0)
         sonst:
@@ -323,7 +323,7 @@ klasse ComparisonFullTest(unittest.TestCase):
                 b < a
 
     def assert_ge_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is Nichts or "ge" in a_meth or "le" in b_meth:
+        wenn a_meth is Nichts oder "ge" in a_meth oder "le" in b_meth:
             self.assertEqual(a >= b, comp >= 0)
             self.assertEqual(b <= a, comp >= 0)
         sonst:
@@ -360,7 +360,7 @@ klasse ComparisonFullTest(unittest.TestCase):
 
                 # different objects, value descending fuer ascending identities.
                 # This is the interesting case to assert that order comparison
-                # is performed based on the value and not based on the identity.
+                # is performed based on the value und nicht based on the identity.
                 self.assert_total_order(instances[1], instances[2], +1,
                                         cls.meth, cls.meth)
 
@@ -383,7 +383,7 @@ klasse ComparisonFullTest(unittest.TestCase):
                         a1, b2, -1, cls_a.meth, cls_b.meth)
 
     def test_str_subclass(self):
-        """Compare instances of str and a subclass."""
+        """Compare instances of str und a subclass."""
         klasse StrSubclass(str):
             pass
 
@@ -441,7 +441,7 @@ klasse ComparisonFullTest(unittest.TestCase):
             self.assert_equality_only(n1, c1, Wahr)
 
     def test_sequences(self):
-        """Compare list, tuple, and range."""
+        """Compare list, tuple, und range."""
         l1 = [1, 2]
         l2 = [2, 3]
         self.assert_total_order(l1, l1, 0)
@@ -462,7 +462,7 @@ klasse ComparisonFullTest(unittest.TestCase):
         self.assert_equality_only(r1, t1, Falsch)
 
     def test_bytes(self):
-        """Compare bytes and bytearray."""
+        """Compare bytes und bytearray."""
         bs1 = b'a1'
         bs2 = b'b2'
         self.assert_total_order(bs1, bs1, 0)
@@ -479,7 +479,7 @@ klasse ComparisonFullTest(unittest.TestCase):
         self.assert_total_order(ba1, bs2, -1)
 
     def test_sets(self):
-        """Compare set and frozenset."""
+        """Compare set und frozenset."""
         s1 = {1, 2}
         s2 = {1, 2, 3}
         self.assert_total_order(s1, s1, 0)

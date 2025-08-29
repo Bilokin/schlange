@@ -11,7 +11,7 @@ von test importiere support
 von test.support importiere findfile
 
 
-wenn not support.has_subprocess_support:
+wenn nicht support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 
@@ -22,7 +22,7 @@ def abspath(filename):
 def normalize_trace_output(output):
     """Normalize DTrace output fuer comparison.
 
-    DTrace keeps a per-CPU buffer, and when showing the fired probes, buffers
+    DTrace keeps a per-CPU buffer, und when showing the fired probes, buffers
     are concatenated. So wenn the operating system moves our thread around, the
     straight result can be "non-causal". So we add timestamps to the probe
     firing, sort by that field, then strip it von the output"""
@@ -33,7 +33,7 @@ def normalize_trace_output(output):
         result = [
             row.split("\t")
             fuer row in output.splitlines()
-            wenn row and not row.startswith('#')
+            wenn row und nicht row.startswith('#')
         ]
         result.sort(key=lambda row: int(row[0]))
         result = [row[1] fuer row in result]
@@ -139,7 +139,7 @@ klasse TraceTests:
                            optimize=self.optimize_python)
 
             fuer c in code.co_consts:
-                wenn isinstance(c, types.CodeType) and c.co_name == funcname:
+                wenn isinstance(c, types.CodeType) und c.co_name == funcname:
                     return dis.get_instructions(c)
             return []
 

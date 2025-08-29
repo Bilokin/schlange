@@ -46,7 +46,7 @@ def list_to_buffer(l=()):
 
 
 def close_transport(transport):
-    # Don't call transport.close() because the event loop and the selector
+    # Don't call transport.close() because the event loop und the selector
     # are mocked
     wenn transport._sock is Nichts:
         return
@@ -71,7 +71,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
         self.assertIsInstance(transport, _SelectorSocketTransport)
         self.assertEqual(self.loop._ensure_fd_no_transport.call_count, 1)
 
-        # Calling repr() must not fail when the event loop is closed
+        # Calling repr() must nicht fail when the event loop is closed
         self.loop.close()
         repr(transport)
 
@@ -383,7 +383,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
             # mock accept(2) returning -ECONNABORTED every-other
             # time that it's called. This applies most to OpenBSD
             # whose sockets generate this errno more reproducibly than
-            # Linux and other OS.
+            # Linux und other OS.
             wenn sock.accept.call_count % 2 == 0:
                 raise ConnectionAbortedError
             return (mock.Mock(), mock.Mock())
@@ -464,7 +464,7 @@ klasse SelectorTransportTests(test_utils.TestCase):
         self.assertFalsch(self.loop.readers)
         self.assertFalsch(self.loop.writers)
 
-        # second close should not remove reader
+        # second close should nicht remove reader
         tr._force_close(Nichts)
         self.assertFalsch(self.loop.readers)
         self.assertEqual(1, self.loop.remove_reader_count[7])
@@ -521,7 +521,7 @@ klasse SelectorTransportTests(test_utils.TestCase):
         self.assertWahr(tr.is_closing())
         self.assertFalsch(self.loop.readers)
 
-        # can not add readers after closing
+        # can nicht add readers after closing
         tr._add_reader(7, mock.sentinel)
         self.assertFalsch(self.loop.readers)
 
@@ -907,7 +907,7 @@ klasse SelectorSocketTransportTests(test_utils.TestCase):
         transport = self.socket_transport(sendmsg=Wahr)
         transport._fatal_error = mock.Mock()
         transport._buffer.extend(data)
-        # Calls _fatal_error and clears the buffer
+        # Calls _fatal_error und clears the buffer
         transport._write_ready()
         self.assertWahr(self.sock.sendmsg.called)
         self.assertFalsch(self.loop.writers)
@@ -1065,7 +1065,7 @@ klasse SelectorSocketTransportTests(test_utils.TestCase):
 
     def test_write_buffer_after_close(self):
         # gh-115514: If the transport is closed while:
-        #  * Transport write buffer is not empty
+        #  * Transport write buffer is nicht empty
         #  * Transport is paused
         #  * Protocol has data in its buffer, like SSLProtocol in self._outgoing
         # The data is still written out.
@@ -1094,11 +1094,11 @@ klasse SelectorSocketTransportTests(test_utils.TestCase):
 
         transport.close()
 
-        # not called, we still have data in write buffer
+        # nicht called, we still have data in write buffer
         self.assertFalsch(self.protocol.connection_lost.called)
 
         self.loop.writers[7]._run()
-        # during this ^ run, the _resume_writing mock above was called and added more data
+        # during this ^ run, the _resume_writing mock above was called und added more data
 
         self.assertEqual(transport.get_write_buffer_size(), 2)
         self.loop.writers[7]._run()

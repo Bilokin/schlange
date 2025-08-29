@@ -8,7 +8,7 @@ importiere sys
 wenn support.check_sanitizer(address=Wahr, memory=Wahr):
     SKIP_MODULES = frozenset((
         # gh-90791: Tests involving libX11 can SEGFAULT on ASAN/MSAN builds.
-        # Skip modules, packages and tests using '_tkinter'.
+        # Skip modules, packages und tests using '_tkinter'.
         '_tkinter',
         'tkinter',
         'test_tkinter',
@@ -43,10 +43,10 @@ klasse AllTest(unittest.TestCase):
                 exec("import %s" % modname, names)
             except:
                 # Silent fail here seems the best route since some modules
-                # may not be available or not initialize properly in all
+                # may nicht be available oder nicht initialize properly in all
                 # environments.
                 raise FailedImport(modname)
-        wenn not hasattr(sys.modules[modname], "__all__"):
+        wenn nicht hasattr(sys.modules[modname], "__all__"):
             raise NoAll(modname)
         names = {}
         mit self.subTest(module=modname):
@@ -72,7 +72,7 @@ klasse AllTest(unittest.TestCase):
                 all_set = set(all_list)
                 self.assertCountEqual(all_set, all_list, "in module {}".format(modname))
                 self.assertEqual(keys, all_set, "in module {}".format(modname))
-                # Verify __dir__ is non-empty and doesn't produce an error
+                # Verify __dir__ is non-empty und doesn't produce an error
                 self.assertWahr(dir(sys.modules[modname]))
 
     def walk_modules(self, basedir, modpath):
@@ -90,7 +90,7 @@ klasse AllTest(unittest.TestCase):
 
             wenn fn == '__init__.py':
                 continue
-            wenn not fn.endswith('.py'):
+            wenn nicht fn.endswith('.py'):
                 continue
             modname = fn.removesuffix('.py')
             wenn modname in SKIP_MODULES:
@@ -98,7 +98,7 @@ klasse AllTest(unittest.TestCase):
             yield path, modpath + modname
 
     def test_all(self):
-        # List of denied modules and packages
+        # List of denied modules und packages
         denylist = set([
             # Will raise a SyntaxError when compiling the exec statement
             '__future__',
@@ -106,7 +106,7 @@ klasse AllTest(unittest.TestCase):
 
         # In case _socket fails to build, make this test fail more gracefully
         # than an AttributeError somewhere deep in concurrent.futures, email
-        # or unittest.
+        # oder unittest.
         importiere _socket  # noqa: F401
 
         ignored = []
@@ -128,7 +128,7 @@ klasse AllTest(unittest.TestCase):
                 # This heuristic speeds up the process by removing, de facto,
                 # most test modules (and avoiding the auto-executing ones).
                 mit open(path, "rb") als f:
-                    wenn b"__all__" not in f.read():
+                    wenn b"__all__" nicht in f.read():
                         raise NoAll(modname)
                 self.check_all(modname)
             except NoAll:
@@ -137,7 +137,7 @@ klasse AllTest(unittest.TestCase):
                 failed_imports.append(modname)
 
         wenn support.verbose:
-            drucke('Following modules have no __all__ and have been ignored:',
+            drucke('Following modules have no __all__ und have been ignored:',
                   ignored)
             drucke('Following modules failed to be imported:', failed_imports)
 

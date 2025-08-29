@@ -106,15 +106,15 @@ klasse TypeAnnotationTests(unittest.TestCase):
 
             @property
             def __annotations__(self):
-                wenn not hasattr(self, 'my_annotations'):
+                wenn nicht hasattr(self, 'my_annotations'):
                     self.my_annotations = {}
-                wenn not isinstance(self.my_annotations, dict):
+                wenn nicht isinstance(self.my_annotations, dict):
                     self.my_annotations = {}
                 return self.my_annotations
 
             @__annotations__.setter
             def __annotations__(self, value):
-                wenn not isinstance(value, dict):
+                wenn nicht isinstance(value, dict):
                     raise ValueError("can only set __annotations__ to a dict")
                 self.my_annotations = value
 
@@ -302,20 +302,20 @@ klasse AnnotateTests(unittest.TestCase):
         self.assertEqual(f.__annotations__, {})
         self.assertIs(f.__annotate__, Nichts)
 
-        mit self.assertRaisesRegex(TypeError, "__annotate__ must be callable or Nichts"):
+        mit self.assertRaisesRegex(TypeError, "__annotate__ must be callable oder Nichts"):
             f.__annotate__ = 42
         f.__annotate__ = lambda: 42
         mit self.assertRaisesRegex(TypeError, r"takes 0 positional arguments but 1 was given"):
             drucke(f.__annotations__)
 
         f.__annotate__ = lambda x: 42
-        mit self.assertRaisesRegex(TypeError, r"__annotate__\(\) must return a dict, not int"):
+        mit self.assertRaisesRegex(TypeError, r"__annotate__\(\) must return a dict, nicht int"):
             drucke(f.__annotations__)
 
         f.__annotate__ = lambda x: {"x": x}
         self.assertEqual(f.__annotations__, {"x": 1})
 
-        # Setting annotate to Nichts does not invalidate the cached __annotations__
+        # Setting annotate to Nichts does nicht invalidate the cached __annotations__
         f.__annotate__ = Nichts
         self.assertEqual(f.__annotations__, {"x": 1})
 
@@ -570,7 +570,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         ns = run_code(code)
         mit self.assertRaisesRegex(
             NameError,
-            "cannot access free variable 'format' where it is not associated mit a value in enclosing scope",
+            "cannot access free variable 'format' where it is nicht associated mit a value in enclosing scope",
         ):
             ns["f"].__annotations__
 
@@ -582,7 +582,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
                 # Constants (so code might get optimized out)
                 (Wahr, true_annos), (Falsch, false_annos),
                 # Non-constant expressions
-                ("not not len", true_annos), ("not len", false_annos),
+                ("not nicht len", true_annos), ("not len", false_annos),
             ):
                 mit self.subTest(scope=scope, cond=cond):
                     code_to_run = code.format(cond=cond)
@@ -623,7 +623,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 
     def test_if_elif(self):
         code = """
-            wenn not len:
+            wenn nicht len:
                 in_if: "if"
             sowenn {cond}:
                 in_elif: "elif"

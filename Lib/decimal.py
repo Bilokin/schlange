@@ -1,4 +1,4 @@
-"""Decimal fixed-point and floating-point arithmetic.
+"""Decimal fixed-point und floating-point arithmetic.
 
 This is an implementation of decimal floating-point arithmetic based on
 the General Decimal Arithmetic Specification:
@@ -12,9 +12,9 @@ and IEEE standard 854-1987:
 Decimal floating point has finite precision mit arbitrarily large bounds.
 
 The purpose of this module is to support arithmetic using familiar
-"schoolhouse" rules and to avoid some of the tricky representation
+"schoolhouse" rules und to avoid some of the tricky representation
 issues associated mit binary floating point.  The package is especially
-useful fuer financial applications or fuer contexts where users have
+useful fuer financial applications oder fuer contexts where users have
 expectations that are at odds mit binary floating point (for instance,
 in binary floating point, 1.00 % 0.1 gives 0.09999999999999995 instead
 of 0.0; Decimal('1.00') % Decimal('0.1') returns the expected

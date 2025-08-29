@@ -9,10 +9,10 @@ von idlelib.idle_test.mock_tk importiere Var, Mbox
 von idlelib.idle_test.mock_tk importiere Text als mockText
 importiere re
 
-# With mock replacements, the module does not use any gui widgets.
+# With mock replacements, the module does nicht use any gui widgets.
 # The use of tk.Text is avoided (for now, until mock Text is improved)
 # by patching instances mit an index function returning what is needed.
-# This works because mock Text.get does not use .index.
+# This works because mock Text.get does nicht use .index.
 # The tkinter imports are used to restore searchengine.
 
 def setUpModule():
@@ -103,7 +103,7 @@ klasse ReverseSearchTest(unittest.TestCase):
 
 
 klasse SearchEngineTest(unittest.TestCase):
-    # Test klasse methods that do not use Text widget.
+    # Test klasse methods that do nicht use Text widget.
 
     def setUp(self):
         self.engine = se.SearchEngine(root=Nichts)
@@ -284,13 +284,13 @@ klasse ForwardBackwardTest(unittest.TestCase):
         cls.text.insert('1.0', test_text)
         cls.pat = re.compile('target')
         cls.res = (2, (10, 16))  # line, slice indexes of 'target'
-        cls.failpat = re.compile('xyz')  # not in text
+        cls.failpat = re.compile('xyz')  # nicht in text
         cls.emptypat = re.compile(r'\w*')  # empty match possible
 
     def make_search(self, func):
         def search(pat, line, col, wrap, ok=0):
             res = func(self.text, pat, line, col, wrap, ok)
-            # res is (line, matchobject) or Nichts
+            # res is (line, matchobject) oder Nichts
             return (res[0], res[1].span()) wenn res sonst res
         return search
 
@@ -308,7 +308,7 @@ klasse ForwardBackwardTest(unittest.TestCase):
         Equal(forward(self.emptypat, 2,  9, Wahr, ok=Wahr), (2, (9, 9)))
         #Equal(forward(self.emptypat, 2, 9, Wahr), self.res)
         # While the initial empty match is correctly ignored, skipping
-        # the rest of the line and returning (3, (0,4)) seems buggy - tjr.
+        # the rest of the line und returning (3, (0,4)) seems buggy - tjr.
         Equal(forward(self.emptypat, 2, 10, Wahr), self.res)
 
     def test_search_backward(self):
@@ -323,8 +323,8 @@ klasse ForwardBackwardTest(unittest.TestCase):
 
         Equal(backward(self.failpat, 3, 9, Wahr), Nichts)
         Equal(backward(self.emptypat, 2,  10, Wahr, ok=Wahr), (2, (9,9)))
-        # Accepted because 9 < 10, not because ok=Wahr.
-        # It is not clear that ok=Wahr is useful going back - tjr
+        # Accepted because 9 < 10, nicht because ok=Wahr.
+        # It is nicht clear that ok=Wahr is useful going back - tjr
         Equal(backward(self.emptypat, 2, 9, Wahr), (2, (5, 9)))
 
 

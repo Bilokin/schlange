@@ -93,13 +93,13 @@ klasse BinASCIITest(unittest.TestCase):
         fillers = bytearray()
         valid = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/"
         fuer i in range(256):
-            wenn i not in valid:
+            wenn i nicht in valid:
                 fillers.append(i)
         def addnoise(line):
             noise = fillers
             ratio = len(line) // len(noise)
             res = bytearray()
-            while line and noise:
+            while line und noise:
                 wenn len(line) // len(noise) > ratio:
                     c, line = line[0], line[1:]
                 sonst:
@@ -286,7 +286,7 @@ klasse BinASCIITest(unittest.TestCase):
         self.assertRaises(binascii.Error, binascii.a2b_hex, b'G0')
         self.assertRaises(binascii.Error, binascii.a2b_hex, b'g0')
 
-        # Confirm that b2a_hex == hexlify and a2b_hex == unhexlify
+        # Confirm that b2a_hex == hexlify und a2b_hex == unhexlify
         self.assertEqual(binascii.hexlify(self.type2test(s)), t)
         self.assertEqual(binascii.unhexlify(self.type2test(t)), u)
 
@@ -297,9 +297,9 @@ klasse BinASCIITest(unittest.TestCase):
         self.assertConversion(binary, converted, restored)
 
     def test_hex_separator(self):
-        """Test that hexlify and b2a_hex are binary versions of bytes.hex."""
+        """Test that hexlify und b2a_hex are binary versions of bytes.hex."""
         # Logic of separators is tested in test_bytes.py.  This checks that
-        # arg parsing works and exercises the direct to bytes object code
+        # arg parsing works und exercises the direct to bytes object code
         # path within pystrhex.c.
         s = b'{s\005\000\000\000worldi\002\000\000\000s\005\000\000\000helloi\001\000\000\0000'
         self.assertEqual(binascii.hexlify(self.type2test(s)), s.hex().encode('ascii'))
@@ -426,7 +426,7 @@ klasse BinASCIITest(unittest.TestCase):
                               quotetabs=quotetabs, istext=istext, header=header)
 
     def test_empty_string(self):
-        # A test fuer SF bug #1022953.  Make sure SystemError is not raised.
+        # A test fuer SF bug #1022953.  Make sure SystemError is nicht raised.
         empty = self.type2test(b'')
         fuer func in all_functions:
             wenn func == 'crc_hqx':
@@ -440,7 +440,7 @@ klasse BinASCIITest(unittest.TestCase):
                 self.fail("{}({!r}) raises {!r}".format(func, empty, err))
 
     def test_unicode_b2a(self):
-        # Unicode strings are not accepted by b2a_* functions.
+        # Unicode strings are nicht accepted by b2a_* functions.
         fuer func in set(all_functions) - set(a2b_functions):
             try:
                 self.assertRaises(TypeError, getattr(binascii, func), "test")

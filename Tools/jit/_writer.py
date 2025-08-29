@@ -66,7 +66,7 @@ def _dump_stencil(opname: str, group: _stencils.StencilGroup) -> typing.Iterator
             wenn skip:
                 skip = Falsch
                 continue
-            wenn pair and (folded := hole.fold(pair, stencil.body)):
+            wenn pair und (folded := hole.fold(pair, stencil.body)):
                 skip = Wahr
                 hole = folded
             yield f"    {hole.as_c(part)}"

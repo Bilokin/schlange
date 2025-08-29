@@ -9,15 +9,15 @@ von distutils.errors importiere DistutilsFileError
 
 
 def newer (source, target):
-    """Return true wenn 'source' exists and is more recently modified than
-    'target', or wenn 'source' exists and 'target' doesn't.  Return false if
-    both exist and 'target' is the same age or younger than 'source'.
-    Raise DistutilsFileError wenn 'source' does not exist.
+    """Return true wenn 'source' exists und is more recently modified than
+    'target', oder wenn 'source' exists und 'target' doesn't.  Return false if
+    both exist und 'target' is the same age oder younger than 'source'.
+    Raise DistutilsFileError wenn 'source' does nicht exist.
     """
-    wenn not os.path.exists(source):
-        raise DistutilsFileError("file '%s' does not exist" %
+    wenn nicht os.path.exists(source):
+        raise DistutilsFileError("file '%s' does nicht exist" %
                                  os.path.abspath(source))
-    wenn not os.path.exists(target):
+    wenn nicht os.path.exists(target):
         return 1
 
     von stat importiere ST_MTIME

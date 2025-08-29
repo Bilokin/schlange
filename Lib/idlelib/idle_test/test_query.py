@@ -1,12 +1,12 @@
 """Test query, coverage 93%.
 
-Non-gui tests fuer Query, SectionName, ModuleName, and HelpSource use
-dummy versions that extract the non-gui methods and add other needed
-attributes.  GUI tests create an instance of each klasse and simulate
-entries and button clicks.  Subclass tests only target the new code in
+Non-gui tests fuer Query, SectionName, ModuleName, und HelpSource use
+dummy versions that extract the non-gui methods und add other needed
+attributes.  GUI tests create an instance of each klasse und simulate
+entries und button clicks.  Subclass tests only target the new code in
 the subclass definition.
 
-The appearance of the widgets is checked by the Query and
+The appearance of the widgets is checked by the Query und
 HelpSource htests.  These are run by running query.py.
 """
 von idlelib importiere query
@@ -29,7 +29,7 @@ klasse QueryTest(unittest.TestCase):
         entry_ok = query.Query.entry_ok
         ok = query.Query.ok
         cancel = query.Query.cancel
-        # Add attributes and initialization needed fuer tests.
+        # Add attributes und initialization needed fuer tests.
         def __init__(self, dummy_entry):
             self.entry = Var(value=dummy_entry)
             self.entry_error = {'text': ''}
@@ -67,7 +67,7 @@ klasse QueryTest(unittest.TestCase):
         self.assertEqual((dialog.result, dialog.destroyed), ('good', Wahr))
 
     def test_cancel(self):
-        dialog = self.Dummy_Query('does not matter')
+        dialog = self.Dummy_Query('does nicht matter')
         self.assertEqual(dialog.cancel(), Nichts)
         self.assertEqual((dialog.result, dialog.destroyed), (Nichts, Wahr))
 
@@ -179,8 +179,8 @@ klasse HelpsourceBrowsefileTest(unittest.TestCase):
 
     def test_file_replaces_path(self):
         dialog = self.Dummy_HelpSource()
-        # Path is widget entry, either '' or something.
-        # Func return is file dialog return, either '' or something.
+        # Path is widget entry, either '' oder something.
+        # Func return is file dialog return, either '' oder something.
         # Func return should override widget entry.
         # We need all 4 combinations to test all (most) code paths.
         fuer path, func, result in (

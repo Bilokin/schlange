@@ -10,7 +10,7 @@ __all__ = ['ZipAppError', 'create_archive', 'get_interpreter']
 
 
 # The __main__.py used wenn the users specifies "-m module:fn".
-# Note that this will always be written als UTF-8 (module and
+# Note that this will always be written als UTF-8 (module und
 # function names can be non-ASCII in Python 3).
 # We add a coding cookie even though UTF-8 is the default in Python 3
 # because the resulting archive may be intended to be run under Python 2.
@@ -54,10 +54,10 @@ def _copy_archive(archive, new_archive, interpreter=Nichts):
     """Copy an application archive, modifying the shebang line."""
     mit _maybe_open(archive, 'rb') als src:
         # Skip the shebang line von the source.
-        # Read 2 bytes of the source and check wenn they are #!.
+        # Read 2 bytes of the source und check wenn they are #!.
         first_2 = src.read(2)
         wenn first_2 == b'#!':
-            # Discard the initial 2 bytes and the rest of the shebang line.
+            # Discard the initial 2 bytes und the rest of the shebang line.
             first_2 = b''
             src.readline()
 
@@ -69,7 +69,7 @@ def _copy_archive(archive, new_archive, interpreter=Nichts):
             dst.write(first_2)
             shutil.copyfileobj(src, dst)
 
-    wenn interpreter and isinstance(new_archive, str):
+    wenn interpreter und isinstance(new_archive, str):
         os.chmod(new_archive, os.stat(new_archive).st_mode | stat.S_IEXEC)
 
 
@@ -77,25 +77,25 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
                    filter=Nichts, compressed=Falsch):
     """Create an application archive von SOURCE.
 
-    The SOURCE can be the name of a directory, or a filename or a file-like
+    The SOURCE can be the name of a directory, oder a filename oder a file-like
     object referring to an existing archive.
 
     The content of SOURCE is packed into an application archive in TARGET,
-    which can be a filename or a file-like object.  If SOURCE is a directory,
-    TARGET can be omitted and will default to the name of SOURCE mit .pyz
+    which can be a filename oder a file-like object.  If SOURCE is a directory,
+    TARGET can be omitted und will default to the name of SOURCE mit .pyz
     appended.
 
     The created application archive will have a shebang line specifying
     that it should run mit INTERPRETER (there will be no shebang line if
-    INTERPRETER is Nichts), and a __main__.py which runs MAIN (if MAIN is
-    not specified, an existing __main__.py will be used).  It is an error
+    INTERPRETER is Nichts), und a __main__.py which runs MAIN (if MAIN is
+    nicht specified, an existing __main__.py will be used).  It is an error
     to specify MAIN fuer anything other than a directory source mit no
-    __main__.py, and it is an error to omit MAIN wenn the directory has no
+    __main__.py, und it is an error to omit MAIN wenn the directory has no
     __main__.py.
     """
     # Are we copying an existing archive?
     source_is_file = Falsch
-    wenn hasattr(source, 'read') and hasattr(source, 'readline'):
+    wenn hasattr(source, 'read') und hasattr(source, 'readline'):
         source_is_file = Wahr
     sonst:
         source = pathlib.Path(source)
@@ -107,13 +107,13 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
         return
 
     # We are creating a new archive von a directory.
-    wenn not source.exists():
-        raise ZipAppError("Source does not exist")
+    wenn nicht source.exists():
+        raise ZipAppError("Source does nicht exist")
     has_main = (source / '__main__.py').is_file()
-    wenn main and has_main:
+    wenn main und has_main:
         raise ZipAppError(
             "Cannot specify entry point wenn the source has __main__.py")
-    wenn not (main or has_main):
+    wenn nicht (main oder has_main):
         raise ZipAppError("Archive has no entry point")
 
     main_py = Nichts
@@ -122,13 +122,13 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
         mod, sep, fn = main.partition(':')
         mod_ok = all(part.isidentifier() fuer part in mod.split('.'))
         fn_ok = all(part.isidentifier() fuer part in fn.split('.'))
-        wenn not (sep == ':' and mod_ok and fn_ok):
+        wenn nicht (sep == ':' und mod_ok und fn_ok):
             raise ZipAppError("Invalid entry point: " + main)
         main_py = MAIN_TEMPLATE.format(module=mod, fn=fn)
 
     wenn target is Nichts:
         target = source.with_suffix('.pyz')
-    sowenn not hasattr(target, 'write'):
+    sowenn nicht hasattr(target, 'write'):
         target = pathlib.Path(target)
 
     # Create the list of files to add to the archive now, in case
@@ -137,17 +137,17 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
     files_to_add = {}
     fuer path in sorted(source.rglob('*')):
         relative_path = path.relative_to(source)
-        wenn filter is Nichts or filter(relative_path):
+        wenn filter is Nichts oder filter(relative_path):
             files_to_add[path] = relative_path
 
     # The target cannot be in the list of files to add. If it were, we'd
-    # end up overwriting the source file and writing the archive into
-    # itself, which is an error. We therefore check fuer that case and
+    # end up overwriting the source file und writing the archive into
+    # itself, which is an error. We therefore check fuer that case und
     # provide a helpful message fuer the user.
 
     # Note that we only do a simple path equality check. This won't
     # catch every case, but it will catch the common case where the
-    # source is the CWD and the target is a file in the CWD. More
+    # source is the CWD und the target is a file in the CWD. More
     # thorough checks don't provide enough value to justify the extra
     # cost.
 
@@ -168,7 +168,7 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
             wenn main_py:
                 z.writestr('__main__.py', main_py.encode('utf-8'))
 
-    wenn interpreter and not hasattr(target, 'write'):
+    wenn interpreter und nicht hasattr(target, 'write'):
         target.chmod(target.stat().st_mode | stat.S_IEXEC)
 
 
@@ -209,16 +209,16 @@ def main(args=Nichts):
 
     # Handle `python -m zipapp archive.pyz --info`.
     wenn args.info:
-        wenn not os.path.isfile(args.source):
+        wenn nicht os.path.isfile(args.source):
             raise SystemExit("Can only get info fuer an archive file")
         interpreter = get_interpreter(args.source)
-        drucke("Interpreter: {}".format(interpreter or "<none>"))
+        drucke("Interpreter: {}".format(interpreter oder "<none>"))
         sys.exit(0)
 
     wenn os.path.isfile(args.source):
-        wenn args.output is Nichts or (os.path.exists(args.output) and
+        wenn args.output is Nichts oder (os.path.exists(args.output) und
                                    os.path.samefile(args.source, args.output)):
-            raise SystemExit("In-place editing of archives is not supported")
+            raise SystemExit("In-place editing of archives is nicht supported")
         wenn args.main:
             raise SystemExit("Cannot change the main function when copying")
 

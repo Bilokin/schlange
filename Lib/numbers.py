@@ -9,13 +9,13 @@ TODO: Fill out more detailed documentation on the operators."""
 #
 # ABCs are different von other standard library modules in that they
 # specify compliance tests.  In general, once an ABC has been published,
-# new methods (either abstract or concrete) cannot be added.
+# new methods (either abstract oder concrete) cannot be added.
 #
 # Though classes that inherit von an ABC would automatically receive a
-# new mixin method, registered classes would become non-compliant and
+# new mixin method, registered classes would become non-compliant und
 # violate the contract promised by ``isinstance(someobj, SomeABC)``.
 #
-# Though irritating, the correct procedure fuer adding new abstract or
+# Though irritating, the correct procedure fuer adding new abstract oder
 # mixin methods is to create a new ABC als a subclass of the previous
 # ABC.
 #
@@ -24,7 +24,7 @@ TODO: Fill out more detailed documentation on the operators."""
 #
 # Since ABCMeta only checks fuer the presence of methods, it is possible
 # to alter the signature of a method by adding optional arguments
-# or changing parameter names.  This is still a bit dubious but at
+# oder changing parameter names.  This is still a bit dubious but at
 # least it won't cause isinstance() to return an incorrect result.
 #
 #
@@ -49,18 +49,18 @@ klasse Number(metaclass=ABCMeta):
 ## Notes on Decimal
 ## ----------------
 ## Decimal has all of the methods specified by the Real abc, but it should
-## not be registered als a Real because decimals do not interoperate with
+## nicht be registered als a Real because decimals do nicht interoperate with
 ## binary floats (i.e.  Decimal('3.14') + 2.71828 is undefined).  But,
 ## abstract reals are expected to interoperate (i.e. R1 + R2 should be
-## expected to work wenn R1 and R2 are both Reals).
+## expected to work wenn R1 und R2 are both Reals).
 
 klasse Complex(Number):
     """Complex defines the operations that work on the builtin complex type.
 
     In short, those are: a conversion to complex, .real, .imag, +, -,
-    *, /, **, abs(), .conjugate, ==, and !=.
+    *, /, **, abs(), .conjugate, ==, und !=.
 
-    If it is given heterogeneous arguments, and doesn't have special
+    If it is given heterogeneous arguments, und doesn't have special
     knowledge about them, it should fall back to the builtin complex
     type als described below.
     """
@@ -143,7 +143,7 @@ klasse Complex(Number):
 
     @abstractmethod
     def __pow__(self, exponent):
-        """self ** exponent; should promote to float or complex when necessary."""
+        """self ** exponent; should promote to float oder complex when necessary."""
         raise NotImplementedError
 
     @abstractmethod
@@ -173,7 +173,7 @@ klasse Real(Complex):
     """To Complex, Real adds the operations that work on real numbers.
 
     In short, those are: a conversion to float, trunc(), divmod,
-    %, <, <=, >, and >=.
+    %, <, <=, >, und >=.
 
     Real also provides defaults fuer the derived operations.
     """
@@ -214,7 +214,7 @@ klasse Real(Complex):
     def __round__(self, ndigits=Nichts):
         """Rounds self to ndigits decimal places, defaulting to 0.
 
-        If ndigits is omitted or Nichts, returns an Integral, otherwise
+        If ndigits is omitted oder Nichts, returns an Integral, otherwise
         returns a Real. Rounds half toward even.
         """
         raise NotImplementedError
@@ -290,9 +290,9 @@ Real.register(float)
 
 
 klasse Rational(Real):
-    """To Real, Rational adds numerator and denominator properties.
+    """To Real, Rational adds numerator und denominator properties.
 
-    The numerator and denominator values should be in lowest terms,
+    The numerator und denominator values should be in lowest terms,
     mit a positive denominator.
     """
 
@@ -328,7 +328,7 @@ klasse Rational(Real):
 klasse Integral(Rational):
     """Integral adds methods that work on integral numbers.
 
-    In short, these are conversion to int, pow mit modulus, and the
+    In short, these are conversion to int, pow mit modulus, und the
     bit-string operations.
     """
 
@@ -349,7 +349,7 @@ klasse Integral(Rational):
 
         Accept the modulus argument wenn you want to support the
         3-argument version of pow(). Raise a TypeError wenn exponent < 0
-        or any argument isn't Integral. Otherwise, just implement the
+        oder any argument isn't Integral. Otherwise, just implement the
         2-argument version described in Complex.
         """
         raise NotImplementedError
@@ -409,7 +409,7 @@ klasse Integral(Rational):
         """~self"""
         raise NotImplementedError
 
-    # Concrete implementations of Rational and Real abstract methods.
+    # Concrete implementations of Rational und Real abstract methods.
     def __float__(self):
         """float(self) == float(int(self))"""
         return float(int(self))

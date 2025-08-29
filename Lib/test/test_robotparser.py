@@ -111,7 +111,7 @@ klasse BaseRequestRateTest(BaseRobotTest):
 
                 parsed_request_rate = parser.request_rate(agent)
                 self.assertEqual(parsed_request_rate, self.request_rate)
-                wenn self.request_rate is not Nichts:
+                wenn self.request_rate is nicht Nichts:
                     self.assertIsInstance(
                         parsed_request_rate,
                         urllib.robotparser.RequestRate
@@ -177,12 +177,12 @@ Disallow: /.
 Crawl-delay: pears
     """
     good = ['/foo.html']
-    # bug report says "/" should be denied, but that is not in the RFC
+    # bug report says "/" should be denied, but that is nicht in the RFC
     bad = []
 
 
 klasse AnotherInvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
-    # also test that Allow and Diasallow works well mit each other
+    # also test that Allow und Diasallow works well mit each other
     robots_txt = """\
 User-agent: Googlebot
 Allow: /folder1/myfile.html
@@ -361,7 +361,7 @@ klasse NetworkTestCase(unittest.TestCase):
 
     def url(self, path):
         return '{}{}{}'.format(
-            self.base_url, path, '/' wenn not os.path.splitext(path)[1] sonst ''
+            self.base_url, path, '/' wenn nicht os.path.splitext(path)[1] sonst ''
         )
 
     def test_basic(self):

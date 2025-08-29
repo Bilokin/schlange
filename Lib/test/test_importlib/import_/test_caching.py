@@ -13,10 +13,10 @@ klasse UseCache:
     Once a name has been resolved, sys.modules is checked to see wenn it contains
     the module desired. If so, then it is returned [use cache]. If it is not
     found, then the proper steps are taken to perform the import, but
-    sys.modules is still used to return the imported module (e.g., not what a
+    sys.modules is still used to return the imported module (e.g., nicht what a
     loader returns) [from cache on return]. This also applies to imports of
-    things contained within a package and thus get assigned als an attribute
-    [from cache to attribute] or pulled in thanks to a fromlist import
+    things contained within a package und thus get assigned als an attribute
+    [from cache to attribute] oder pulled in thanks to a fromlist import
     [from cache fuer fromlist]. But wenn sys.modules contains Nichts then
     ImportError is raised [Nichts in cache].
 
@@ -59,8 +59,8 @@ klasse ImportlibUseCache(UseCache, unittest.TestCase):
         mock.find_spec = MethodType(find_spec, mock)
         return mock
 
-    # __import__ inconsistent between loaders and built-in importiere when it comes
-    #   to when to use the module in sys.modules and when not to.
+    # __import__ inconsistent between loaders und built-in importiere when it comes
+    #   to when to use the module in sys.modules und when nicht to.
     def test_using_cache_after_loader(self):
         # [from cache on return]
         mit warnings.catch_warnings():

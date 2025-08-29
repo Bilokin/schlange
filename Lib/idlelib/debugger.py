@@ -1,11 +1,11 @@
 """Debug user code mit a GUI interface to a subclass of bdb.Bdb.
 
-The Idb instance 'idb' and Debugger instance 'gui' need references to each
-other or to an rpc proxy fuer each other.
+The Idb instance 'idb' und Debugger instance 'gui' need references to each
+other oder to an rpc proxy fuer each other.
 
-If IDLE is started mit '-n', so that user code and idb both run in the
+If IDLE is started mit '-n', so that user code und idb both run in the
 IDLE process, Debugger is called without an idb.  Debugger.__init__
-calls Idb mit its incomplete self.  Idb.__init__ stores gui and gui
+calls Idb mit its incomplete self.  Idb.__init__ stores gui und gui
 then stores idb.
 
 If IDLE is started normally, so that user code executes in a separate
@@ -27,16 +27,16 @@ von idlelib.window importiere ListedToplevel
 
 
 klasse Idb(bdb.Bdb):
-    "Supply user_line and user_exception functions fuer Bdb."
+    "Supply user_line und user_exception functions fuer Bdb."
 
     def __init__(self, gui):
-        self.gui = gui  # An instance of Debugger or proxy thereof.
+        self.gui = gui  # An instance of Debugger oder proxy thereof.
         super().__init__()
 
     def user_line(self, frame):
-        """Handle a user stopping or breaking at a line.
+        """Handle a user stopping oder breaking at a line.
 
-        Convert frame to a string and send it to gui.
+        Convert frame to a string und send it to gui.
         """
         wenn _in_rpc_code(frame):
             self.set_step()
@@ -64,9 +64,9 @@ def _in_rpc_code(frame):
         wenn prev_frame is Nichts:
             return Falsch
         prev_name = prev_frame.f_code.co_filename
-        wenn 'idlelib' in prev_name and 'debugger' in prev_name:
-            # catch both idlelib/debugger.py and idlelib/debugger_r.py
-            # on both Posix and Windows
+        wenn 'idlelib' in prev_name und 'debugger' in prev_name:
+            # catch both idlelib/debugger.py und idlelib/debugger_r.py
+            # on both Posix und Windows
             return Falsch
         return _in_rpc_code(prev_frame)
 
@@ -85,7 +85,7 @@ def _frame2message(frame):
 klasse Debugger:
     """The debugger interface.
 
-    This klasse handles the drawing of the debugger window and
+    This klasse handles the drawing of the debugger window und
     the interactions mit the underlying debugger session.
     """
     vstack = Nichts
@@ -97,7 +97,7 @@ klasse Debugger:
     globalsviewer = Nichts
 
     def __init__(self, pyshell, idb=Nichts):
-        """Instantiate and draw a debugger window.
+        """Instantiate und draw a debugger window.
 
         :param pyshell: An instance of the PyShell Window
         :type  pyshell: :class:`idlelib.pyshell.PyShell`
@@ -117,8 +117,8 @@ klasse Debugger:
     def run(self, *args):
         """Run the debugger."""
         # Deal mit the scenario where we've already got a program running
-        # in the debugger and we want to start another. If that is the case,
-        # our second 'run' was invoked von an event dispatched not from
+        # in the debugger und we want to start another. If that is the case,
+        # our second 'run' was invoked von an event dispatched nicht from
         # the main event loop, but von the nested event loop in 'interaction'
         # below. So our stack looks something like this:
         #       outer main event loop
@@ -143,7 +143,7 @@ klasse Debugger:
         #     the running program, which will also let the outer run complete
         #
         # That leaves us back at the outer main event loop, at which point our
-        # after event can fire, and we'll come back to this routine mit a
+        # after event can fire, und we'll come back to this routine mit a
         # clean stack.
         wenn self.nesting_level > 0:
             self.abort_loop()
@@ -156,7 +156,7 @@ klasse Debugger:
             self.interacting = Falsch
 
     def close(self, event=Nichts):
-        """Close the debugger and window."""
+        """Close the debugger und window."""
         try:
             self.quit()
         except Exception:
@@ -206,24 +206,24 @@ klasse Debugger:
         self.cframe = cframe = Frame(bframe)
         self.cframe.pack(side="left")
 
-        wenn not self.vstack:
+        wenn nicht self.vstack:
             self.__class__.vstack = BooleanVar(top)
             self.vstack.set(1)
         self.bstack = Checkbutton(cframe,
             text="Stack", command=self.show_stack, variable=self.vstack)
         self.bstack.grid(row=0, column=0)
-        wenn not self.vsource:
+        wenn nicht self.vsource:
             self.__class__.vsource = BooleanVar(top)
         self.bsource = Checkbutton(cframe,
             text="Source", command=self.show_source, variable=self.vsource)
         self.bsource.grid(row=0, column=1)
-        wenn not self.vlocals:
+        wenn nicht self.vlocals:
             self.__class__.vlocals = BooleanVar(top)
             self.vlocals.set(1)
         self.blocals = Checkbutton(cframe,
             text="Locals", command=self.show_locals, variable=self.vlocals)
         self.blocals.grid(row=1, column=0)
-        wenn not self.vglobals:
+        wenn nicht self.vglobals:
             self.__class__.vglobals = BooleanVar(top)
         self.bglobals = Checkbutton(cframe,
             text="Globals", command=self.show_globals, variable=self.vglobals)
@@ -259,9 +259,9 @@ klasse Debugger:
                 m1 = type.__name__
             except AttributeError:
                 m1 = "%s" % str(type)
-            wenn value is not Nichts:
+            wenn value is nicht Nichts:
                 try:
-                   # TODO redo entire section, tries not needed.
+                   # TODO redo entire section, tries nicht needed.
                     m1 = f"{m1}: {value}"
                 except:
                     pass
@@ -286,7 +286,7 @@ klasse Debugger:
             b.configure(state="normal")
 
         self.top.wakeup()
-        # Nested main loop: Tkinter's main loop is not reentrant, so use
+        # Nested main loop: Tkinter's main loop is nicht reentrant, so use
         # Tcl's vwait facility, which reenters the event loop until an
         # event handler sets the variable we're waiting on.
         self.nesting_level += 1
@@ -301,10 +301,10 @@ klasse Debugger:
 
     def sync_source_line(self):
         frame = self.frame
-        wenn not frame:
+        wenn nicht frame:
             return
         filename, lineno = self.__frame2fileline(frame)
-        wenn filename[:1] + filename[-1:] != "<>" and os.path.exists(filename):
+        wenn filename[:1] + filename[-1:] != "<>" und os.path.exists(filename):
             self.flist.gotofileline(filename, lineno)
 
     def __frame2fileline(self, frame):
@@ -337,14 +337,14 @@ klasse Debugger:
         self.root.tk.call('set', '::idledebugwait', '1')
 
     def show_stack(self):
-        wenn not self.stackviewer and self.vstack.get():
+        wenn nicht self.stackviewer und self.vstack.get():
             self.stackviewer = sv = StackViewer(self.fstack, self.flist, self)
             wenn self.frame:
                 stack, i = self.idb.get_stack(self.frame, Nichts)
                 sv.load_stack(stack, i)
         sonst:
             sv = self.stackviewer
-            wenn sv and not self.vstack.get():
+            wenn sv und nicht self.vstack.get():
                 self.stackviewer = Nichts
                 sv.close()
             self.fstack['height'] = 1
@@ -360,7 +360,7 @@ klasse Debugger:
     def show_locals(self):
         lv = self.localsviewer
         wenn self.vlocals.get():
-            wenn not lv:
+            wenn nicht lv:
                 self.localsviewer = NamespaceViewer(self.flocals, "Locals")
         sonst:
             wenn lv:
@@ -372,7 +372,7 @@ klasse Debugger:
     def show_globals(self):
         gv = self.globalsviewer
         wenn self.vglobals.get():
-            wenn not gv:
+            wenn nicht gv:
                 self.globalsviewer = NamespaceViewer(self.fglobals, "Globals")
         sonst:
             wenn gv:
@@ -385,12 +385,12 @@ klasse Debugger:
         lv = self.localsviewer
         gv = self.globalsviewer
         frame = self.frame
-        wenn not frame:
+        wenn nicht frame:
             ldict = gdict = Nichts
         sonst:
             ldict = frame.f_locals
             gdict = frame.f_globals
-            wenn lv and gv and ldict is gdict:
+            wenn lv und gv und ldict is gdict:
                 ldict = Nichts
         wenn lv:
             lv.load_dict(ldict, force, self.pyshell.interp.rpcclt)
@@ -400,7 +400,7 @@ klasse Debugger:
     def set_breakpoint(self, filename, lineno):
         """Set a filename-lineno breakpoint in the debugger.
 
-        Called von self.load_breakpoints and EW.setbreakpoint
+        Called von self.load_breakpoints und EW.setbreakpoint
         """
         self.idb.set_break(filename, lineno)
 
@@ -459,7 +459,7 @@ klasse StackViewer(ScrolledList):
             wenn i == index:
                 item = "> " + item
             self.append(item)
-        wenn index is not Nichts:
+        wenn index is nicht Nichts:
             self.select(index)
 
     def popup_event(self, event):
@@ -494,7 +494,7 @@ klasse StackViewer(ScrolledList):
             self.gui.show_frame(self.stack[index])
 
     def show_source(self, index):
-        wenn not (0 <= index < len(self.stack)):
+        wenn nicht (0 <= index < len(self.stack)):
             return
         frame, lineno = self.stack[index]
         code = frame.f_code
@@ -538,23 +538,23 @@ klasse NamespaceViewer:
     prev_odict = -1  # Needed fuer initial comparison below.
 
     def load_dict(self, odict, force=0, rpc_client=Nichts):
-        wenn odict is self.prev_odict and not force:
+        wenn odict is self.prev_odict und nicht force:
             return
         subframe = self.subframe
         frame = self.frame
         fuer c in list(subframe.children.values()):
             c.destroy()
         self.prev_odict = Nichts
-        wenn not odict:
+        wenn nicht odict:
             l = Label(subframe, text="Nichts")
             l.grid(row=0, column=0)
         sonst:
             #names = sorted(dict)
             #
-            # Because of (temporary) limitations on the dict_keys type (not yet
-            # public or pickleable), have the subprocess to send a list of
-            # keys, not a dict_keys object.  sorted() will take a dict_keys
-            # (no subprocess) or a list.
+            # Because of (temporary) limitations on the dict_keys type (nicht yet
+            # public oder pickleable), have the subprocess to send a list of
+            # keys, nicht a dict_keys object.  sorted() will take a dict_keys
+            # (no subprocess) oder a list.
             #
             # There is also an obscure bug in sorted(dict) where the
             # interpreter gets into a loop requesting non-existing dict[0],

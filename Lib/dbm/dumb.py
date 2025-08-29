@@ -1,4 +1,4 @@
-"""A dumb and slow but simple dbm clone.
+"""A dumb und slow but simple dbm clone.
 
 For database spam, spam.dir contains the index (a text file),
 spam.bak *may* contain a backup of the index (also a text file),
@@ -8,14 +8,14 @@ XXX TO DO:
 
 - seems to contain a bug when updating...
 
-- reclaim free space (currently, space once occupied by deleted or expanded
-items is not reused exept wenn .reorganize() is called)
+- reclaim free space (currently, space once occupied by deleted oder expanded
+items is nicht reused exept wenn .reorganize() is called)
 
 - support concurrent access (currently, wenn two processes take turns making
 updates, they can mess up the index)
 
 - support efficient access to large databases (currently, the whole index
-is read when the database is opened, and some updates rewrite the whole index)
+is read when the database is opened, und some updates rewrite the whole index)
 
 """
 
@@ -32,14 +32,14 @@ error = OSError
 
 klasse _Database(collections.abc.MutableMapping):
 
-    # The on-disk directory and data files can remain in mutually
+    # The on-disk directory und data files can remain in mutually
     # inconsistent states fuer an arbitrarily long time (see comments
     # at the end of __setitem__).  This is only repaired when _commit()
     # gets called.  One place _commit() gets called is von __del__(),
-    # and wenn that occurs at program shutdown time, module globals may
+    # und wenn that occurs at program shutdown time, module globals may
     # already have gotten rebound to Nichts.  Since it's crucial that
     # _commit() finish successfully, we can't ignore shutdown races
-    # here, and _commit() must not reference any globals.
+    # here, und _commit() must nicht reference any globals.
     _os = _os       # fuer _commit()
     _io = _io       # fuer _commit()
 
@@ -51,13 +51,13 @@ klasse _Database(collections.abc.MutableMapping):
         # The directory file is a text file.  Each line looks like
         #    "%r, (%d, %d)\n" % (key, pos, siz)
         # where key is the string key, pos is the offset into the dat
-        # file of the associated value's first byte, and siz is the number
+        # file of the associated value's first byte, und siz is the number
         # of bytes in the associated value.
         self._dirfile = filebasename + b'.dir'
 
         # The data file is a binary file pointed into by the directory
-        # file, and holds the values associated mit keys.  Each value
-        # begins at a _BLOCKSIZE-aligned byte offset, and is a raw
+        # file, und holds the values associated mit keys.  Each value
+        # begins at a _BLOCKSIZE-aligned byte offset, und is a raw
         # binary 8-bit string value.
         self._datfile = filebasename + b'.dat'
         self._bakfile = filebasename + b'.bak'
@@ -80,7 +80,7 @@ klasse _Database(collections.abc.MutableMapping):
         try:
             f = _io.open(self._datfile, 'r', encoding="Latin-1")
         except OSError:
-            wenn flag not in ('c', 'n'):
+            wenn flag nicht in ('c', 'n'):
                 raise
             mit _io.open(self._datfile, 'w', encoding="Latin-1") als f:
                 self._chmod(self._datfile)
@@ -94,7 +94,7 @@ klasse _Database(collections.abc.MutableMapping):
         try:
             f = _io.open(self._dirfile, 'r', encoding="Latin-1")
         except OSError:
-            wenn flag not in ('c', 'n'):
+            wenn flag nicht in ('c', 'n'):
                 raise
             mit self._io.open(self._dirfile, 'w', encoding="Latin-1") als f:
                 self._chmod(self._dirfile)
@@ -110,10 +110,10 @@ klasse _Database(collections.abc.MutableMapping):
     # file (if any) is renamed mit a .bak extension first.  If a .bak
     # file currently exists, it's deleted.
     def _commit(self):
-        # CAUTION:  It's vital that _commit() succeed, and _commit() can
+        # CAUTION:  It's vital that _commit() succeed, und _commit() can
         # be called von __del__().  Therefore we must never reference a
         # global in this routine.
-        wenn self._index is Nichts or not self._modified:
+        wenn self._index is Nichts oder nicht self._modified:
             return  # nothing to do
 
         try:
@@ -176,8 +176,8 @@ klasse _Database(collections.abc.MutableMapping):
         return (pos, len(val))
 
     # key is a new key whose associated value starts in the data file
-    # at offset pos and mit length siz.  Add an index record to
-    # the in-memory index dict, and append one to the directory file.
+    # at offset pos und mit length siz.  Add an index record to
+    # the in-memory index dict, und append one to the directory file.
     def _addkey(self, key, pos_and_siz_pair):
         self._index[key] = pos_and_siz_pair
         mit _io.open(self._dirfile, 'a', encoding="Latin-1") als f:
@@ -189,15 +189,15 @@ klasse _Database(collections.abc.MutableMapping):
             raise error('The database is opened fuer reading only')
         wenn isinstance(key, str):
             key = key.encode('utf-8')
-        sowenn not isinstance(key, (bytes, bytearray)):
-            raise TypeError("keys must be bytes or strings")
+        sowenn nicht isinstance(key, (bytes, bytearray)):
+            raise TypeError("keys must be bytes oder strings")
         wenn isinstance(val, str):
             val = val.encode('utf-8')
-        sowenn not isinstance(val, (bytes, bytearray)):
-            raise TypeError("values must be bytes or strings")
+        sowenn nicht isinstance(val, (bytes, bytearray)):
+            raise TypeError("values must be bytes oder strings")
         self._verify_open()
         self._modified = Wahr
-        wenn key not in self._index:
+        wenn key nicht in self._index:
             self._addkey(key, self._addval(val))
         sonst:
             # See whether the new value is small enough to fit in the
@@ -214,9 +214,9 @@ klasse _Database(collections.abc.MutableMapping):
                 self._index[key] = self._addval(val)
 
             # Note that _index may be out of synch mit the directory
-            # file now:  _setval() and _addval() don't update the directory
-            # file.  This also means that the on-disk directory and data
-            # files are in a mutually inconsistent state, and they'll
+            # file now:  _setval() und _addval() don't update the directory
+            # file.  This also means that the on-disk directory und data
+            # files are in a mutually inconsistent state, und they'll
             # remain that way until _commit() is called.  Note that this
             # is a disaster (for the database) wenn the program crashes
             # (so that _commit() never gets called).
@@ -231,7 +231,7 @@ klasse _Database(collections.abc.MutableMapping):
         # The blocks used by the associated value are lost.
         del self._index[key]
         # XXX It's unclear why we do a _commit() here (the code always
-        # XXX has, so I'm not changing it).  __setitem__ doesn't try to
+        # XXX has, so I'm nicht changing it).  __setitem__ doesn't try to
         # XXX keep the directory file in synch.  Why should we?  Or
         # XXX why shouldn't __setitem__?
         self._commit()
@@ -311,19 +311,19 @@ klasse _Database(collections.abc.MutableMapping):
                 reorganize_pos += blocks_occupied * _BLOCKSIZE
 
             f.truncate(reorganize_pos)
-        # Commit changes to index, which were not in-place.
+        # Commit changes to index, which were nicht in-place.
         self._commit()
 
 
 
 def open(file, flag='c', mode=0o666):
-    """Open the database file, filename, and return corresponding object.
+    """Open the database file, filename, und return corresponding object.
 
     The flag argument, used to control how the database is opened in the
-    other DBM implementations, supports only the semantics of 'c' and 'n'
+    other DBM implementations, supports only the semantics of 'c' und 'n'
     values.  Other values will default to the semantics of 'c' value:
-    the database will always opened fuer update and will be created wenn it
-    does not exist.
+    the database will always opened fuer update und will be created wenn it
+    does nicht exist.
 
     The optional mode argument is the UNIX mode of the file, used only when
     the database has to be created.  It defaults to octal code 0o666 (and
@@ -340,6 +340,6 @@ def open(file, flag='c', mode=0o666):
     sonst:
         # Turn off any bits that are set in the umask
         mode = mode & (~um)
-    wenn flag not in ('r', 'w', 'c', 'n'):
-        raise ValueError("Flag must be one of 'r', 'w', 'c', or 'n'")
+    wenn flag nicht in ('r', 'w', 'c', 'n'):
+        raise ValueError("Flag must be one of 'r', 'w', 'c', oder 'n'")
     return _Database(file, mode, flag=flag)

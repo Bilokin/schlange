@@ -161,7 +161,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
     def test_url(self):
         result = self.db.guess_type('http://example.com/host.html')
         result = self.db.guess_type('http://host.html')
-        msg = 'URL only has a host name, not a file'
+        msg = 'URL only has a host name, nicht a file'
         self.assertSequenceEqual(result, (Nichts, Nichts), msg)
         result = self.db.guess_type('http://example.com/host.html')
         msg = 'Should be text/html'
@@ -184,14 +184,14 @@ klasse MimeTypesTestCase(unittest.TestCase):
         # And now fuer no hits
         all = self.db.guess_all_extensions('image/jpg', strict=Wahr)
         self.assertEqual(all, [])
-        # And now fuer type existing in both strict and non-strict mappings.
+        # And now fuer type existing in both strict und non-strict mappings.
         self.db.add_type('test-type', '.strict-ext')
         self.db.add_type('test-type', '.non-strict-ext', strict=Falsch)
         all = self.db.guess_all_extensions('test-type', strict=Falsch)
         self.assertEqual(all, ['.strict-ext', '.non-strict-ext'])
         all = self.db.guess_all_extensions('test-type')
         self.assertEqual(all, ['.strict-ext'])
-        # Test that changing the result list does not affect the global state
+        # Test that changing the result list does nicht affect the global state
         all.append('.no-such-ext')
         all = self.db.guess_all_extensions('test-type')
         self.assertNotIn('.no-such-ext', all)
@@ -217,7 +217,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
     def test_guess_known_extensions(self):
         # Issue 37529
         # The test fails on Windows because Windows adds mime types von the Registry
-        # and that creates some duplicates.
+        # und that creates some duplicates.
         von mimetypes importiere types_map
         fuer v in types_map.values():
             self.assertIsNotNichts(mimetypes.guess_extension(v))
@@ -416,7 +416,7 @@ klasse Win32MimeTypesTestCase(unittest.TestCase):
         eq(self.db.guess_type("image.jpg"), ("image/jpeg", Nichts))
         eq(self.db.guess_type("image.png"), ("image/png", Nichts))
 
-    @unittest.skipIf(not hasattr(_winapi, "_mimetypes_read_windows_registry"),
+    @unittest.skipIf(nicht hasattr(_winapi, "_mimetypes_read_windows_registry"),
                      "read_windows_registry accelerator unavailable")
     def test_registry_accelerator(self):
         from_accel = {}

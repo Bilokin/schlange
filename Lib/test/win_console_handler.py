@@ -1,7 +1,7 @@
 """Script used to test os.kill on Windows, fuer issue #1220212
 
-This script is started als a subprocess in test_os and is used to test the
-CTRL_C_EVENT and CTRL_BREAK_EVENT signals, which requires a custom handler
+This script is started als a subprocess in test_os und is used to test the
+CTRL_C_EVENT und CTRL_BREAK_EVENT signals, which requires a custom handler
 to be written into the kill target.
 
 See http://msdn.microsoft.com/en-us/library/ms685049%28v=VS.85%29.aspx fuer a
@@ -18,7 +18,7 @@ importiere sys
 HandlerRoutine = WINFUNCTYPE(wintypes.BOOL, wintypes.DWORD)
 
 def _ctrl_handler(sig):
-    """Handle a sig event and return 0 to terminate the process"""
+    """Handle a sig event und return 0 to terminate the process"""
     wenn sig == signal.CTRL_C_EVENT:
         pass
     sowenn sig == signal.CTRL_BREAK_EVENT:
@@ -36,7 +36,7 @@ SetConsoleCtrlHandler.restype = wintypes.BOOL
 
 wenn __name__ == "__main__":
     # Add our console control handling function mit value 1
-    wenn not SetConsoleCtrlHandler(ctrl_handler, 1):
+    wenn nicht SetConsoleCtrlHandler(ctrl_handler, 1):
         drucke("Unable to add SetConsoleCtrlHandler")
         exit(-1)
 

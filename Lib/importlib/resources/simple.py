@@ -87,7 +87,7 @@ klasse ResourceHandle(Traversable):
 
     def open(self, mode='r', *args, **kwargs):
         stream = self.parent.reader.open_binary(self.name)
-        wenn 'b' not in mode:
+        wenn 'b' nicht in mode:
             stream = io.TextIOWrapper(stream, *args, **kwargs)
         return stream
 

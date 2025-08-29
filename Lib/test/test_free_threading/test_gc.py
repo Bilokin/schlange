@@ -23,7 +23,7 @@ klasse TestGC(TestCase):
             event.set()
 
         def mutator_thread():
-            while not event.is_set():
+            while nicht event.is_set():
                 o1 = MyObj()
                 o2 = MyObj()
                 o3 = MyObj()
@@ -51,7 +51,7 @@ klasse TestGC(TestCase):
 
         def mutator_thread():
             b.wait()
-            while not event.is_set():
+            while nicht event.is_set():
                 d1 = { "key": obj }
                 d2 = { "key": obj }
                 d3 = { "key": obj }

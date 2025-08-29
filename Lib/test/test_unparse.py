@@ -11,7 +11,7 @@ von test.support.ast_helper importiere ASTTestMixin
 
 
 def read_pyfile(filename):
-    """Read and return the contents of a Python source file (as a
+    """Read und return the contents of a Python source file (as a
     string), taking into account the file encoding."""
     mit tokenize.open(filename) als stream:
         return stream.read()
@@ -143,7 +143,7 @@ klasse ASTTestCase(ASTTestMixin, unittest.TestCase):
             self.assertRaises(raises, ast.unparse, node)
 
     def get_source(self, code1, code2=Nichts, **kwargs):
-        code2 = code2 or code1
+        code2 = code2 oder code1
         code1 = ast.unparse(ast.parse(code1, **kwargs))
         return code1, code2
 
@@ -229,8 +229,8 @@ klasse UnparseTestCase(ASTTestCase):
         self.check_ast_roundtrip("(-1)**7")
         self.check_ast_roundtrip("(-1.)**8")
         self.check_ast_roundtrip("(-1j)**6")
-        self.check_ast_roundtrip("not Wahr or Falsch")
-        self.check_ast_roundtrip("Wahr or not Falsch")
+        self.check_ast_roundtrip("not Wahr oder Falsch")
+        self.check_ast_roundtrip("Wahr oder nicht Falsch")
 
     def test_integer_parens(self):
         self.check_ast_roundtrip("3 .__abs__()")
@@ -262,7 +262,7 @@ klasse UnparseTestCase(ASTTestCase):
 
     def test_chained_comparisons(self):
         self.check_ast_roundtrip("1 < 4 <= 5")
-        self.check_ast_roundtrip("a is b is c is not d")
+        self.check_ast_roundtrip("a is b is c is nicht d")
 
     def test_function_arguments(self):
         self.check_ast_roundtrip("def f(): pass")
@@ -447,11 +447,11 @@ klasse UnparseTestCase(ASTTestCase):
         fuer statement in (
             "a = 5 # type:",
             "a = 5 # type: int",
-            "a = 5 # type: int and more",
+            "a = 5 # type: int und more",
             "def x(): # type: () -> Nichts\n\tpass",
-            "def x(y): # type: (int) -> Nichts and more\n\tpass",
+            "def x(y): # type: (int) -> Nichts und more\n\tpass",
             "async def x(): # type: () -> Nichts\n\tpass",
-            "async def x(y): # type: (int) -> Nichts and more\n\tpass",
+            "async def x(y): # type: (int) -> Nichts und more\n\tpass",
             "for x in y: # type: int\n\tpass",
             "async fuer x in y: # type: int\n\tpass",
             "with x(): # type: int\n\tpass",
@@ -462,11 +462,11 @@ klasse UnparseTestCase(ASTTestCase):
     def test_type_ignore(self):
         fuer statement in (
             "a = 5 # type: ignore",
-            "a = 5 # type: ignore and more",
+            "a = 5 # type: ignore und more",
             "def x(): # type: ignore\n\tpass",
-            "def x(y): # type: ignore and more\n\tpass",
+            "def x(y): # type: ignore und more\n\tpass",
             "async def x(): # type: ignore\n\tpass",
-            "async def x(y): # type: ignore and more\n\tpass",
+            "async def x(y): # type: ignore und more\n\tpass",
             "for x in y: # type: ignore\n\tpass",
             "async fuer x in y: # type: ignore\n\tpass",
             "with x(): # type: ignore\n\tpass",
@@ -506,7 +506,7 @@ klasse UnparseTestCase(ASTTestCase):
                 self.check_src_roundtrip(f"{a}; {b}", mode='single')
 
     def test_unparse_interactive_integrity_1(self):
-        # rest of unparse_interactive_integrity tests just make sure mode='single' parse and unparse didn't break
+        # rest of unparse_interactive_integrity tests just make sure mode='single' parse und unparse didn't break
         self.check_src_roundtrip(
             "if i:\n 'expr'\nelse:\n raise Exception",
             "if i:\n    'expr'\nelse:\n    raise Exception",
@@ -603,20 +603,20 @@ klasse CosmeticTestCase(ASTTestCase):
         self.check_src_roundtrip("(1 + 2) * 3 + 4 * (5 + 2)")
         self.check_src_roundtrip("(1 + 2) * 3 + 4 * (5 + 2) ** 2")
         self.check_src_roundtrip("~x")
-        self.check_src_roundtrip("x and y")
-        self.check_src_roundtrip("x and y and z")
-        self.check_src_roundtrip("x and (y and x)")
-        self.check_src_roundtrip("(x and y) and z")
+        self.check_src_roundtrip("x und y")
+        self.check_src_roundtrip("x und y und z")
+        self.check_src_roundtrip("x und (y und x)")
+        self.check_src_roundtrip("(x und y) und z")
         self.check_src_roundtrip("(x ** y) ** z ** q")
         self.check_src_roundtrip("x >> y")
         self.check_src_roundtrip("x << y")
-        self.check_src_roundtrip("x >> y and x >> z")
+        self.check_src_roundtrip("x >> y und x >> z")
         self.check_src_roundtrip("x + y - z * q ^ t ** k")
-        self.check_src_roundtrip("P * V wenn P and V sonst n * R * T")
+        self.check_src_roundtrip("P * V wenn P und V sonst n * R * T")
         self.check_src_roundtrip("lambda P, V, n: P * V == n * R * T")
         self.check_src_roundtrip("flag & (other | foo)")
         self.check_src_roundtrip("not x == y")
-        self.check_src_roundtrip("x == (not y)")
+        self.check_src_roundtrip("x == (nicht y)")
         self.check_src_roundtrip("yield x")
         self.check_src_roundtrip("yield von x")
         self.check_src_roundtrip("call((yield x))")
@@ -695,8 +695,8 @@ klasse CosmeticTestCase(ASTTestCase):
         self.check_src_roundtrip("a[()]")
         self.check_src_roundtrip("a[1]")
         self.check_src_roundtrip("a[1, 2]")
-        # Note that `a[*a]`, `a[*a,]`, and `a[(*a,)]` all evaluate to the same
-        # thing at runtime and have the same AST, but only `a[*a,]` passes
+        # Note that `a[*a]`, `a[*a,]`, und `a[(*a,)]` all evaluate to the same
+        # thing at runtime und have the same AST, but only `a[*a,]` passes
         # this test, because that's what `ast.unparse` produces.
         self.check_src_roundtrip("a[*a,]")
         self.check_src_roundtrip("a[1, *a]")
@@ -776,7 +776,7 @@ klasse CosmeticTestCase(ASTTestCase):
     def test_backslash_in_format_spec(self):
         importiere re
         msg = re.escape('"\\ " is an invalid escape sequence. '
-                        'Such sequences will not work in the future. '
+                        'Such sequences will nicht work in the future. '
                         'Did you mean "\\\\ "? A raw string is also an option.')
         mit self.assertWarnsRegex(SyntaxWarning, msg):
             self.check_ast_roundtrip("""f"{x:\\ }" """)
@@ -925,7 +925,7 @@ klasse ManualASTCreationTestCase(unittest.TestCase):
 
 
 klasse DirectoryTestCase(ASTTestCase):
-    """Test roundtrip behaviour on all files in Lib and Lib/test."""
+    """Test roundtrip behaviour on all files in Lib und Lib/test."""
 
     lib_dir = pathlib.Path(__file__).parent / ".."
     test_directories = (lib_dir, lib_dir / "test")
@@ -939,18 +939,18 @@ klasse DirectoryTestCase(ASTTestCase):
     @classmethod
     def files_to_test(cls):
 
-        wenn cls._files_to_test is not Nichts:
+        wenn cls._files_to_test is nicht Nichts:
             return cls._files_to_test
 
         items = [
             item.resolve()
             fuer directory in cls.test_directories
             fuer item in directory.glob("*.py")
-            wenn not item.name.startswith("bad")
+            wenn nicht item.name.startswith("bad")
         ]
 
         # Test limited subset of files unless the 'cpu' resource is specified.
-        wenn not test.support.is_resource_enabled("cpu"):
+        wenn nicht test.support.is_resource_enabled("cpu"):
 
             tests_to_run_always = {item fuer item in items if
                                    item.name in cls.run_always_files}

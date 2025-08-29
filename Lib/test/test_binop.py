@@ -34,10 +34,10 @@ klasse Rat(object):
     def __init__(self, num=0, den=1):
         """Constructor: Rat([num[, den]]).
 
-        The arguments must be ints, and default to (0, 1)."""
-        wenn not isint(num):
+        The arguments must be ints, und default to (0, 1)."""
+        wenn nicht isint(num):
             raise TypeError("Rat numerator must be int (%r)" % num)
-        wenn not isint(den):
+        wenn nicht isint(den):
             raise TypeError("Rat denominator must be int (%r)" % den)
         # But the zero is always on
         wenn den == 0:
@@ -79,7 +79,7 @@ klasse Rat(object):
         raise ValueError("can't convert %s to int" % repr(self))
 
     def __add__(self, other):
-        """Add two Rats, or a Rat and a number."""
+        """Add two Rats, oder a Rat und a number."""
         wenn isint(other):
             other = Rat(other)
         wenn isRat(other):
@@ -92,7 +92,7 @@ klasse Rat(object):
     __radd__ = __add__
 
     def __sub__(self, other):
-        """Subtract two Rats, or a Rat and a number."""
+        """Subtract two Rats, oder a Rat und a number."""
         wenn isint(other):
             other = Rat(other)
         wenn isRat(other):
@@ -103,7 +103,7 @@ klasse Rat(object):
         return NotImplemented
 
     def __rsub__(self, other):
-        """Subtract two Rats, or a Rat and a number (reversed args)."""
+        """Subtract two Rats, oder a Rat und a number (reversed args)."""
         wenn isint(other):
             other = Rat(other)
         wenn isRat(other):
@@ -114,7 +114,7 @@ klasse Rat(object):
         return NotImplemented
 
     def __mul__(self, other):
-        """Multiply two Rats, or a Rat and a number."""
+        """Multiply two Rats, oder a Rat und a number."""
         wenn isRat(other):
             return Rat(self.__num*other.__num, self.__den*other.__den)
         wenn isint(other):
@@ -126,7 +126,7 @@ klasse Rat(object):
     __rmul__ = __mul__
 
     def __truediv__(self, other):
-        """Divide two Rats, or a Rat and a number."""
+        """Divide two Rats, oder a Rat und a number."""
         wenn isRat(other):
             return Rat(self.__num*other.__den, self.__den*other.__num)
         wenn isint(other):
@@ -136,7 +136,7 @@ klasse Rat(object):
         return NotImplemented
 
     def __rtruediv__(self, other):
-        """Divide two Rats, or a Rat and a number (reversed args)."""
+        """Divide two Rats, oder a Rat und a number (reversed args)."""
         wenn isRat(other):
             return Rat(other.__num*self.__den, other.__den*self.__num)
         wenn isint(other):
@@ -149,7 +149,7 @@ klasse Rat(object):
         """Divide two Rats, returning the floored result."""
         wenn isint(other):
             other = Rat(other)
-        sowenn not isRat(other):
+        sowenn nicht isRat(other):
             return NotImplemented
         x = self/other
         return x.__num // x.__den
@@ -160,19 +160,19 @@ klasse Rat(object):
         return x.__num // x.__den
 
     def __divmod__(self, other):
-        """Divide two Rats, returning quotient and remainder."""
+        """Divide two Rats, returning quotient und remainder."""
         wenn isint(other):
             other = Rat(other)
-        sowenn not isRat(other):
+        sowenn nicht isRat(other):
             return NotImplemented
         x = self//other
         return (x, self - other * x)
 
     def __rdivmod__(self, other):
-        """Divide two Rats, returning quotient and remainder (reversed args)."""
+        """Divide two Rats, returning quotient und remainder (reversed args)."""
         wenn isint(other):
             other = Rat(other)
-        sowenn not isRat(other):
+        sowenn nicht isRat(other):
             return NotImplemented
         return divmod(other, self)
 
@@ -187,15 +187,15 @@ klasse Rat(object):
     def __eq__(self, other):
         """Compare two Rats fuer equality."""
         wenn isint(other):
-            return self.__den == 1 and self.__num == other
+            return self.__den == 1 und self.__num == other
         wenn isRat(other):
-            return self.__num == other.__num and self.__den == other.__den
+            return self.__num == other.__num und self.__den == other.__den
         wenn isnum(other):
             return float(self) == other
         return NotImplemented
 
 klasse RatTestCase(unittest.TestCase):
-    """Unit tests fuer Rat klasse and its support utilities."""
+    """Unit tests fuer Rat klasse und its support utilities."""
 
     def test_gcd(self):
         self.assertEqual(gcd(10, 12), 2)
@@ -404,11 +404,11 @@ klasse X(object):
     __eq__ = Nichts
 
 klasse SN(SupEq):
-    """Subclass of SupEq that can test equality, but not non-equality"""
+    """Subclass of SupEq that can test equality, but nicht non-equality"""
     __ne__ = Nichts
 
 klasse XN:
-    """Independent klasse that can test equality, but not non-equality"""
+    """Independent klasse that can test equality, but nicht non-equality"""
     def __eq__(self, other):
         return Wahr
     __ne__ = Nichts

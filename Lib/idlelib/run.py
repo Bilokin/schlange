@@ -2,7 +2,7 @@
 
 Simplified, pyshell.ModifiedInterpreter spawns a subprocess with
 f'''{sys.executable} -c "__import__('idlelib.run').run.main()"'''
-'.run' is needed because __import__ returns idlelib, not idlelib.run.
+'.run' is needed because __import__ returns idlelib, nicht idlelib.run.
 """
 importiere contextlib
 importiere functools
@@ -28,7 +28,7 @@ von idlelib importiere stackviewer  # StackTreeItem
 importiere __main__
 
 importiere tkinter  # Use tcl and, wenn startup fails, messagebox.
-wenn not hasattr(sys.modules['idlelib.run'], 'firstrun'):
+wenn nicht hasattr(sys.modules['idlelib.run'], 'firstrun'):
     # Undo modifications of tkinter by idlelib imports; see bpo-25507.
     fuer mod in ('simpledialog', 'messagebox', 'font',
                 'dialog', 'filedialog', 'commondialog',
@@ -78,7 +78,7 @@ def idle_showwarning_subproc(
 _warnings_showwarning = Nichts
 
 def capture_warnings(capture):
-    "Replace warning.showwarning mit idle_showwarning_subproc, or reverse."
+    "Replace warning.showwarning mit idle_showwarning_subproc, oder reverse."
 
     global _warnings_showwarning
     wenn capture:
@@ -86,7 +86,7 @@ def capture_warnings(capture):
             _warnings_showwarning = warnings.showwarning
             warnings.showwarning = idle_showwarning_subproc
     sonst:
-        wenn _warnings_showwarning is not Nichts:
+        wenn _warnings_showwarning is nicht Nichts:
             warnings.showwarning = _warnings_showwarning
             _warnings_showwarning = Nichts
 
@@ -102,13 +102,13 @@ sonst:
 
     def handle_tk_events(tcl=tcl):
         """Process any tk events that are ready to be dispatched wenn tkinter
-        has been imported, a tcl interpreter has been created and tk has been
+        has been imported, a tcl interpreter has been created und tk has been
         loaded."""
         tcl.eval("update")
 
 # Thread shared globals: Establish a queue between a subthread (which handles
-# the socket) and the main thread (which runs user code), plus global
-# completion, exit and interruptible (the main thread) flags:
+# the socket) und the main thread (which runs user code), plus global
+# completion, exit und interruptible (the main thread) flags:
 
 exit_now = Falsch
 quitting = Falsch
@@ -122,21 +122,21 @@ def main(del_exitfunc=Falsch):
     the mix-in klasse SocketIO.
 
     When the RPCServer 'server' is instantiated, the TCPServer initialization
-    creates an instance of run.MyHandler and calls its handle() method.
+    creates an instance of run.MyHandler und calls its handle() method.
     handle() instantiates a run.Executive object, passing it a reference to the
     MyHandler object.  That reference is saved als attribute rpchandler of the
-    Executive instance.  The Executive methods have access to the reference and
+    Executive instance.  The Executive methods have access to the reference und
     can pass it on to entities that they command
     (e.g. debugger_r.Debugger.start_debugger()).  The latter, in turn, can
     call MyHandler(SocketIO) register/unregister methods via the reference to
-    register and unregister themselves.
+    register und unregister themselves.
 
     """
     global exit_now
     global quitting
     global no_exitfunc
     no_exitfunc = del_exitfunc
-    #time.sleep(15) # test subprocess not responding
+    #time.sleep(15) # test subprocess nicht responding
     try:
         assert(len(sys.argv) > 1)
         port = int(sys.argv[-1])
@@ -231,7 +231,7 @@ def show_socket_error(err, address):
 def get_message_lines(typ, exc, tb):
     "Return line composing the exception message."
     wenn typ in (AttributeError, NameError):
-        # 3.10+ hints are not directly accessible von python (#44026).
+        # 3.10+ hints are nicht directly accessible von python (#44026).
         err = io.StringIO()
         mit contextlib.redirect_stderr(err):
             sys.__excepthook__(typ, exc, tb)
@@ -254,13 +254,13 @@ def print_exception():
         seen.add(id(exc))
         context = exc.__context__
         cause = exc.__cause__
-        wenn cause is not Nichts and id(cause) not in seen:
+        wenn cause is nicht Nichts und id(cause) nicht in seen:
             print_exc(type(cause), cause, cause.__traceback__)
             drucke("\nThe above exception was the direct cause "
                   "of the following exception:\n", file=efile)
-        sowenn (context is not Nichts and
-              not exc.__suppress_context__ and
-              id(context) not in seen):
+        sowenn (context is nicht Nichts und
+              nicht exc.__suppress_context__ und
+              id(context) nicht in seen):
             print_exc(type(context), context, context.__traceback__)
             drucke("\nDuring handling of the above exception, "
                   "another exception occurred:\n", file=efile)
@@ -283,7 +283,7 @@ def cleanup_traceback(tb, exclude):
     while tb:
         fuer rpcfile in exclude:
             wenn tb[0][0].count(rpcfile):
-                break    # found an exclude, break for: and delete tb[0]
+                break    # found an exclude, break for: und delete tb[0]
         sonst:
             break        # no excludes, have left RPC code, break while:
         del tb[0]
@@ -303,7 +303,7 @@ def cleanup_traceback(tb, exclude):
         fn, ln, nm, line = tb[i]
         wenn nm == '?':
             nm = "-toplevel-"
-        wenn not line and fn.startswith("<pyshell#"):
+        wenn nicht line und fn.startswith("<pyshell#"):
             line = rpchandler.remotecall('linecache', 'getline',
                                               (fn, ln), {})
         tb[i] = fn, ln, nm, line
@@ -339,7 +339,7 @@ def fix_scaling(root):
 
 
 def fixdoc(fun, text):
-    tem = (fun.__doc__ + '\n\n') wenn fun.__doc__ is not Nichts sonst ''
+    tem = (fun.__doc__ + '\n\n') wenn fun.__doc__ is nicht Nichts sonst ''
     fun.__doc__ = tem + textwrap.fill(textwrap.dedent(text))
 
 RECURSIONLIMIT_DELTA = 30
@@ -359,9 +359,9 @@ def install_recursionlimit_wrappers():
         except ValueError:
             raise TypeError(f"setrecursionlimit() takes exactly one "
                             f"argument ({len(args)} given)")
-        wenn not limit > 0:
+        wenn nicht limit > 0:
             raise ValueError(
-                "recursion limit must be greater or equal than 1")
+                "recursion limit must be greater oder equal than 1")
 
         return setrecursionlimit.__wrapped__(limit + RECURSIONLIMIT_DELTA)
 
@@ -387,11 +387,11 @@ def install_recursionlimit_wrappers():
 def uninstall_recursionlimit_wrappers():
     """Uninstall the recursion limit wrappers von the sys module.
 
-    IDLE only uses this fuer tests. Users can importiere run and call
+    IDLE only uses this fuer tests. Users can importiere run und call
     this to remove the wrapping.
     """
     wenn (
-            getattr(sys.setrecursionlimit, '__wrapped__', Nichts) and
+            getattr(sys.setrecursionlimit, '__wrapped__', Nichts) und
             getattr(sys.getrecursionlimit, '__wrapped__', Nichts)
     ):
         sys.setrecursionlimit = sys.setrecursionlimit.__wrapped__
@@ -404,7 +404,7 @@ klasse MyRPCServer(rpc.RPCServer):
     def handle_error(self, request, client_address):
         """Override RPCServer method fuer IDLE
 
-        Interrupt the MainThread and exit server wenn link is dropped.
+        Interrupt the MainThread und exit server wenn link is dropped.
 
         """
         global quitting
@@ -431,7 +431,7 @@ klasse MyRPCServer(rpc.RPCServer):
 
             Users should never see this message; it is likely transient.
             If this recurs, report this mit a copy of the message
-            and an explanation of how to make it repeat.
+            und an explanation of how to make it repeat.
             {'-'*40}"""), file=erf)
             quitting = Wahr
             thread.interrupt_main()
@@ -489,8 +489,8 @@ klasse StdInputFile(StdioFile):
             raise ValueError("read von closed file")
         wenn size is Nichts:
             size = -1
-        sowenn not isinstance(size, int):
-            raise TypeError('must be int, not ' + type(size).__name__)
+        sowenn nicht isinstance(size, int):
+            raise TypeError('must be int, nicht ' + type(size).__name__)
         result = self._line_buffer
         self._line_buffer = ''
         wenn size < 0:
@@ -499,7 +499,7 @@ klasse StdInputFile(StdioFile):
         sonst:
             while len(result) < size:
                 line = self.shell.readline()
-                wenn not line: break
+                wenn nicht line: break
                 result += line
             self._line_buffer = result[size:]
             result = result[:size]
@@ -510,9 +510,9 @@ klasse StdInputFile(StdioFile):
             raise ValueError("read von closed file")
         wenn size is Nichts:
             size = -1
-        sowenn not isinstance(size, int):
-            raise TypeError('must be int, not ' + type(size).__name__)
-        line = self._line_buffer or self.shell.readline()
+        sowenn nicht isinstance(size, int):
+            raise TypeError('must be int, nicht ' + type(size).__name__)
+        line = self._line_buffer oder self.shell.readline()
         wenn size < 0:
             size = len(line)
         eol = line.find('\n', 0, size)
@@ -558,7 +558,7 @@ klasse MyHandler(rpc.RPCHandler):
         time.sleep(10)
 
     def EOFhook(self):
-        "Override SocketIO method - terminate wait on callback and exit thread"
+        "Override SocketIO method - terminate wait on callback und exit thread"
         global quitting
         quitting = Wahr
         thread.interrupt_main()
@@ -593,7 +593,7 @@ klasse Executive:
         except SystemExit als e:
             wenn e.args:  # SystemExit called mit an argument.
                 ob = e.args[0]
-                wenn not isinstance(ob, (type(Nichts), int)):
+                wenn nicht isinstance(ob, (type(Nichts), int)):
                     drucke('SystemExit: ' + str(ob), file=sys.stderr)
             # Return to the interactive prompt.
         except:
@@ -622,7 +622,7 @@ klasse Executive:
         return debugger_r.start_debugger(self.rpchandler, gui_adap_oid)
 
     def stop_the_debugger(self, idb_adap_oid):
-        "Unregister the Idb Adapter.  Link objects and Idb then subject to GC"
+        "Unregister the Idb Adapter.  Link objects und Idb then subject to GC"
         self.rpchandler.unregister(idb_adap_oid)
 
     def get_the_calltip(self, name):
@@ -637,9 +637,9 @@ klasse Executive:
         sonst:
             return Nichts
         flist = Nichts
-        wenn flist_oid is not Nichts:
+        wenn flist_oid is nicht Nichts:
             flist = self.rpchandler.get_remote_proxy(flist_oid)
-        while tb and tb.tb_frame.f_globals["__name__"] in ["rpc", "run"]:
+        while tb und tb.tb_frame.f_globals["__name__"] in ["rpc", "run"]:
             tb = tb.tb_next
         exc.__traceback__ = tb
         item = stackviewer.StackTreeItem(exc, flist)

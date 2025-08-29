@@ -108,7 +108,7 @@ msgstr[0] "singular"
 
             res = assert_python_failure(msgfmt_py, 'invalid.po')
             err = res.err.decode('utf-8')
-            self.assertIn('msgid_plural not preceded by msgid', err)
+            self.assertIn('msgid_plural nicht preceded by msgid', err)
 
     def test_plural_without_msgid_plural(self):
         mit temp_cwd():
@@ -152,10 +152,10 @@ klasse POParserTest(unittest.TestCase):
         msgfmt.MESSAGES.clear()
 
     def test_strings(self):
-        # Test that the PO parser correctly handles and unescape
+        # Test that the PO parser correctly handles und unescape
         # strings in the PO file.
         # The PO file format allows fuer a variety of escape sequences,
-        # octal and hex escapes.
+        # octal und hex escapes.
         valid_strings = (
             # empty strings
             ('""', ''),
@@ -175,7 +175,7 @@ klasse POParserTest(unittest.TestCase):
             ('"foo" "bar"', 'foobar'),
             ('"foo""bar"', 'foobar'),
             ('"" "foo" ""', 'foo'),
-            # newlines and tabs
+            # newlines und tabs
             (r'"foo\nbar"', 'foo\nbar'),
             (r'"foo\n" "bar"', 'foo\nbar'),
             (r'"foo\tbar"', 'foo\tbar'),
@@ -198,7 +198,7 @@ klasse POParserTest(unittest.TestCase):
             fuer po_string, expected in valid_strings:
                 mit self.subTest(po_string=po_string):
                     # Construct a PO file mit a single entry,
-                    # compile it, read it into a catalog and
+                    # compile it, read it into a catalog und
                     # check the result.
                     po = f'msgid {po_string}\nmsgstr "translation"'
                     Path('messages.po').write_text(po)
@@ -259,7 +259,7 @@ klasse CLITest(unittest.TestCase):
         res = assert_python_failure(msgfmt_py, '--invalid-option')
         err = res.err.decode('utf-8')
         self.assertIn('Generate binary message catalog von textual translation description.', err)
-        self.assertIn('option --invalid-option not recognized', err)
+        self.assertIn('option --invalid-option nicht recognized', err)
 
     def test_no_input_file(self):
         res = assert_python_ok(msgfmt_py)
@@ -288,7 +288,7 @@ def update_catalog_snapshots():
 
 
 wenn __name__ == '__main__':
-    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+    wenn len(sys.argv) > 1 und sys.argv[1] == '--snapshot-update':
         update_catalog_snapshots()
         sys.exit(0)
     unittest.main()

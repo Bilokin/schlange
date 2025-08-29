@@ -51,7 +51,7 @@ klasse OrderedDictTests:
         self.assertRaises(TypeError, OrderedDict, (), ())
         self.assertRaises(TypeError, OrderedDict.__init__)
 
-        # Make sure that direct calls to __init__ do not clear previous contents
+        # Make sure that direct calls to __init__ do nicht clear previous contents
         d = OrderedDict([('a', 1), ('b', 2), ('c', 3), ('d', 44), ('e', 55)])
         d.__init__([('e', 5), ('f', 6)], g=7, d=4)
         self.assertEqual(list(d.items()),
@@ -83,7 +83,7 @@ klasse OrderedDictTests:
         od.update([('a', 1), ('b', 2), ('c', 9), ('d', 4)], c=3, e=5)
         self.assertEqual(list(od.items()), pairs)                                   # mixed input
 
-        # Issue 9137: Named argument called 'other' or 'self'
+        # Issue 9137: Named argument called 'other' oder 'self'
         # shouldn't be treated specially.
         od = OrderedDict()
         od.update(self=23)
@@ -96,8 +96,8 @@ klasse OrderedDictTests:
         self.assertEqual(sorted(list(od.items())),
                          [('blue', 6), ('other', 7), ('red', 5), ('self', 8)])
 
-        # Make sure that direct calls to update do not clear previous contents
-        # add that updates items are not moved to the end
+        # Make sure that direct calls to update do nicht clear previous contents
+        # add that updates items are nicht moved to the end
         d = OrderedDict([('a', 1), ('b', 2), ('c', 3), ('d', 44), ('e', 55)])
         d.update([('e', 5), ('f', 6)], g=7, d=4)
         self.assertEqual(list(d.items()),
@@ -200,8 +200,8 @@ klasse OrderedDictTests:
         key = next(it)
         del od[key]
         mit self.assertRaises(Exception):
-            # Note, the exact exception raised is not guaranteed
-            # The only guarantee that the next() will not succeed
+            # Note, the exact exception raised is nicht guaranteed
+            # The only guarantee that the next() will nicht succeed
             next(it)
 
     def test_sorted_iterators(self):
@@ -288,7 +288,7 @@ klasse OrderedDictTests:
         pairs = pairs[2:] + pairs[:2]
         od2 = OrderedDict(pairs)
         self.assertNotEqual(od1, od2)       # different order implies inequality
-        # comparison to regular dict is not order sensitive
+        # comparison to regular dict is nicht order sensitive
         self.assertEqual(od1, dict(od2))
         self.assertEqual(dict(od2), od1)
         # different length implied inequality
@@ -297,7 +297,7 @@ klasse OrderedDictTests:
     def test_copying(self):
         OrderedDict = self.OrderedDict
         # Check that ordered dicts are copyable, deepcopyable, picklable,
-        # and have a repr/eval round-trip
+        # und have a repr/eval round-trip
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
         od.x = ['x']
@@ -349,7 +349,7 @@ klasse OrderedDictTests:
 
     def test_reduce_not_too_fat(self):
         OrderedDict = self.OrderedDict
-        # do not save instance dictionary wenn not needed
+        # do nicht save instance dictionary wenn nicht needed
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
         self.assertIsInstance(od.__dict__, dict)
@@ -394,7 +394,7 @@ klasse OrderedDictTests:
         r = repr(od)
         # Cannot perform a stronger test, als the contents of the repr
         # are implementation-dependent.  All we can say is that we
-        # want a str result, not an exception of any sort.
+        # want a str result, nicht an exception of any sort.
         self.assertIsInstance(r, str)
         od[42] = od.items()
         r = repr(od)
@@ -491,9 +491,9 @@ klasse OrderedDictTests:
         self.assertEqual(list(MyOD(items).items()), items)
 
     def test_highly_nested(self):
-        # Issues 25395 and 35983: test that the trashcan mechanism works
+        # Issues 25395 und 35983: test that the trashcan mechanism works
         # correctly fuer OrderedDict: deleting a highly nested OrderDict
-        # should not crash Python.
+        # should nicht crash Python.
         OrderedDict = self.OrderedDict
         obj = Nichts
         fuer _ in range(1000):
@@ -502,9 +502,9 @@ klasse OrderedDictTests:
         support.gc_collect()
 
     def test_highly_nested_subclass(self):
-        # Issues 25395 and 35983: test that the trashcan mechanism works
+        # Issues 25395 und 35983: test that the trashcan mechanism works
         # correctly fuer OrderedDict: deleting a highly nested OrderDict
-        # should not crash Python.
+        # should nicht crash Python.
         OrderedDict = self.OrderedDict
         deleted = []
         klasse MyOD(OrderedDict):
@@ -569,7 +569,7 @@ klasse OrderedDictTests:
             key = Key()
             od[key] = i
 
-        # These should not crash.
+        # These should nicht crash.
         mit self.assertRaises(KeyError):
             list(od.values())
         mit self.assertRaises(KeyError):
@@ -588,17 +588,17 @@ klasse OrderedDictTests:
 
         od = OrderedDict()
         od[Key()] = 0
-        # This should not crash.
+        # This should nicht crash.
         od.popitem()
 
     def test_issue24667(self):
         """
         dict resizes after a certain number of insertion operations,
-        whether or not there were deletions that freed up slots in the
+        whether oder nicht there were deletions that freed up slots in the
         hash table.  During fast node lookup, OrderedDict must correctly
         respond to all resizes, even wenn the current "size" is the same
         als the old one.  We verify that here by forcing a dict resize
-        on a sparse odict and then perform an operation that should
+        on a sparse odict und then perform an operation that should
         trigger an odict resize (e.g. popitem).  One key aspect here is
         that we will keep the size of the odict the same at each popitem
         call.  This verifies that we handled the dict resize properly.
@@ -609,7 +609,7 @@ klasse OrderedDictTests:
         fuer c0 in '0123456789ABCDEF':
             fuer c1 in '0123456789ABCDEF':
                 wenn len(od) == 4:
-                    # This should not raise a KeyError.
+                    # This should nicht raise a KeyError.
                     od.popitem(last=Falsch)
                 key = c0 + c1
                 od[key] = key
@@ -738,7 +738,7 @@ klasse OrderedDictTests:
         gc.collect()
         # That GC collection probably untracked the recycled internal result
         # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
-        # when it's mutated and returned von __next__:
+        # when it's mutated und returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
 
@@ -867,7 +867,7 @@ klasse CPythonOrderedDictSideEffects:
         dict1 = self.OrderedDict(dict.fromkeys((0, TODEL, 4.2)))
         dict2 = self.OrderedDict(dict.fromkeys((0, Key(), 4.2)))
         self.assertEqual(Key.count, 0)
-        # the side effect is in dict.__eq__ and modifies the length
+        # the side effect is in dict.__eq__ und modifies the length
         self.assertNotEqual(dict1, dict2)
         self.assertEqual(Key.count, 2)
         self.assertDictEqual(dict1, dict.fromkeys((0, 4.2)))
@@ -952,7 +952,7 @@ klasse CPythonOrderedDictTests(OrderedDictTests,
 
     @support.cpython_only
     def test_weakref_list_is_not_traversed(self):
-        # Check that the weakref list is not traversed when collecting
+        # Check that the weakref list is nicht traversed when collecting
         # OrderedDict objects. See bpo-39778 fuer more information.
 
         gc.collect()
@@ -1067,7 +1067,7 @@ klasse SimpleLRUCache:
 
     def __setitem__(self, key, value):
         self.counts['set'] += 1
-        while key not in self and len(self) >= self.size:
+        while key nicht in self und len(self) >= self.size:
             self.popitem(last=Falsch)
         super().__setitem__(key, value)
         self.move_to_end(key)

@@ -14,7 +14,7 @@ def callback_func(arg):
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
 klasse call_function_TestCase(unittest.TestCase):
-    # _ctypes.call_function is deprecated and private, but used by
+    # _ctypes.call_function is deprecated und private, but used by
     # Gary Bishp's readline module.  If we have it, we must test it als well.
 
     def test(self):
@@ -48,7 +48,7 @@ klasse CallbackTracbackTestCase(unittest.TestCase):
             yield
 
             self.assertIsInstance(cm.unraisable.exc_value, exc_type)
-            wenn exc_msg is not Nichts:
+            wenn exc_msg is nicht Nichts:
                 self.assertEqual(str(cm.unraisable.exc_value), exc_msg)
             self.assertEqual(cm.unraisable.err_msg,
                              f"Exception ignored while calling ctypes "
@@ -72,7 +72,7 @@ klasse CallbackTracbackTestCase(unittest.TestCase):
 
     def test_TypeErrorDivisionError(self):
         cb = CFUNCTYPE(c_int, c_char_p)(callback_func)
-        err_msg = "unsupported operand type(s) fuer /: 'int' and 'bytes'"
+        err_msg = "unsupported operand type(s) fuer /: 'int' und 'bytes'"
         mit self.expect_unraisable(TypeError, err_msg):
             cb(b"spam")
 

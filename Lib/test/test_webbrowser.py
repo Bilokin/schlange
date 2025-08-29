@@ -34,13 +34,13 @@ klasse PopenMock(mock.MagicMock):
 klasse CommandTestMixin:
 
     def _test(self, meth, *, args=[URL], kw={}, options, arguments):
-        """Given a web browser instance method name along mit arguments and
+        """Given a web browser instance method name along mit arguments und
         keywords fuer same (which defaults to the single argument URL), creates
         a browser instance von the klasse pointed to by self.browser, calls the
-        indicated instance method mit the indicated arguments, and compares
-        the resulting options and arguments passed to Popen by the browser
-        instance against the 'options' and 'args' lists.  Options are compared
-        in a position independent fashion, and the arguments are compared in
+        indicated instance method mit the indicated arguments, und compares
+        the resulting options und arguments passed to Popen by the browser
+        instance against the 'options' und 'args' lists.  Options are compared
+        in a position independent fashion, und the arguments are compared in
         sequence order to whatever is left over after removing the options.
 
         """
@@ -104,7 +104,7 @@ klasse ChromeCommandTest(CommandTestMixin, unittest.TestCase):
     def test_open_bad_new_parameter(self):
         mit self.assertRaisesRegex(webbrowser.Error,
                                     re.escape("Bad 'new' parameter to open(); "
-                                              "expected 0, 1, or 2, got 999")):
+                                              "expected 0, 1, oder 2, got 999")):
             self._test('open',
                        options=[],
                        arguments=[URL],
@@ -246,7 +246,7 @@ klasse IOSBrowserTest(unittest.TestCase):
                      "iOS Webbrowser tests require ctypes")
     def setUp(self):
         # Intercept the objc library. Wrap the calls to get the
-        # references to classes and selectors to return strings, and
+        # references to classes und selectors to return strings, und
         # wrap msgSend to return stringified object references
         self.orig_objc = webbrowser.objc
 
@@ -260,7 +260,7 @@ klasse IOSBrowserTest(unittest.TestCase):
 
     def _test(self, meth, **kwargs):
         # The browser always gets focus, there's no concept of separate browser
-        # windows, and there's no API-level control over creating a new tab.
+        # windows, und there's no API-level control over creating a new tab.
         # Therefore, all calls to webbrowser are effectively the same.
         getattr(webbrowser, meth)(URL, **kwargs)
 
@@ -322,7 +322,7 @@ klasse MockPopenPipe:
 klasse MacOSXOSAScriptTest(unittest.TestCase):
 
     def setUp(self):
-        # Ensure that 'BROWSER' is not set to 'open' or something else.
+        # Ensure that 'BROWSER' is nicht set to 'open' oder something else.
         # See: https://github.com/python/cpython/issues/131254.
         env = self.enterContext(os_helper.EnvironmentVarGuard())
         env.unset("BROWSER")
@@ -401,7 +401,7 @@ klasse BrowserRegistrationTest(unittest.TestCase):
         self.assertEqual(webbrowser._browsers, expected_browsers)
 
         instance = ExampleBrowser()
-        wenn preferred is not Nichts:
+        wenn preferred is nicht Nichts:
             webbrowser.register('example2', ExampleBrowser, instance,
                                 preferred=preferred)
         sonst:
@@ -425,7 +425,7 @@ klasse BrowserRegistrationTest(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == "darwin", "macOS specific test")
     def test_no_xdg_settings_on_macOS(self):
-        # On macOS webbrowser should not use xdg-settings to
+        # On macOS webbrowser should nicht use xdg-settings to
         # look fuer X11 based browsers (for those users with
         # XQuartz installed)
         mit mock.patch("subprocess.check_output") als ck_o:
@@ -526,7 +526,7 @@ klasse CliTest(unittest.TestCase):
 
     def test_parse_args_error(self):
         fuer command in [
-            # Arguments must not both be given
+            # Arguments must nicht both be given
             "https://example.com -n -t",
             "https://example.com --new-window --new-tab",
             "https://example.com -n --new-tab",
@@ -536,7 +536,7 @@ klasse CliTest(unittest.TestCase):
                 mit self.assertRaises(SystemExit):
                     webbrowser.parse_args(shlex.split(command))
                 self.assertIn(
-                    'error: argument -t/--new-tab: not allowed mit argument -n/--new-window',
+                    'error: argument -t/--new-tab: nicht allowed mit argument -n/--new-window',
                     stderr.getvalue(),
                 )
 

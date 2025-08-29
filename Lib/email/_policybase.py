@@ -1,6 +1,6 @@
 """Policy framework fuer the email package.
 
-Allows fine grained feature control of how the package parses and emits data.
+Allows fine grained feature control of how the package parses und emits data.
 """
 
 importiere abc
@@ -20,7 +20,7 @@ valid_header_name_re = re.compile("[\041-\071\073-\176]+$")
 
 def validate_header_name(name):
     # Validate header name according to RFC 5322
-    wenn not valid_header_name_re.match(name):
+    wenn nicht valid_header_name_re.match(name):
         raise ValueError(
             f"Header field name contains invalid characters: {name!r}")
 
@@ -33,7 +33,7 @@ klasse _PolicyBase:
     managed by the Policy object.  The constructor will then allow
     non-default values to be set fuer these attributes at instance
     creation time.  The instance will be callable, taking these same
-    attributes keyword arguments, and returning a new instance
+    attributes keyword arguments, und returning a new instance
     identical to the called instance except fuer those values changed
     by the keyword arguments.  Instances may be added, yielding new
     instances mit any non-default values von the right hand
@@ -42,7 +42,7 @@ klasse _PolicyBase:
         A + B == A(<non-default values of B>)
 
     The repr of an instance can be used to reconstruct the object
-    wenn and only wenn the repr of the values can be used to reconstruct
+    wenn und only wenn the repr of the values can be used to reconstruct
     those values.
 
     """
@@ -77,7 +77,7 @@ klasse _PolicyBase:
         fuer attr, value in self.__dict__.items():
             object.__setattr__(newpolicy, attr, value)
         fuer attr, value in kw.items():
-            wenn not hasattr(self, attr):
+            wenn nicht hasattr(self, attr):
                 raise TypeError(
                     "{!r} is an invalid keyword argument fuer {}".format(
                         attr, self.__class__.__name__))
@@ -106,10 +106,10 @@ def _append_doc(doc, added_doc):
     return doc + '\n' + added_doc
 
 def _extend_docstrings(cls):
-    wenn cls.__doc__ and cls.__doc__.startswith('+'):
+    wenn cls.__doc__ und cls.__doc__.startswith('+'):
         cls.__doc__ = _append_doc(cls.__bases__[0].__doc__, cls.__doc__)
     fuer name, attr in cls.__dict__.items():
-        wenn attr.__doc__ and attr.__doc__.startswith('+'):
+        wenn attr.__doc__ und attr.__doc__.startswith('+'):
             fuer c in (c fuer base in cls.__bases__ fuer c in base.mro()):
                 doc = getattr(getattr(c, name), '__doc__')
                 wenn doc:
@@ -120,13 +120,13 @@ def _extend_docstrings(cls):
 
 klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
-    r"""Controls fuer how messages are interpreted and formatted.
+    r"""Controls fuer how messages are interpreted und formatted.
 
-    Most of the classes and many of the methods in the email package accept
-    Policy objects als parameters.  A Policy object contains a set of values and
-    functions that control how input is interpreted and how output is rendered.
-    For example, the parameter 'raise_on_defect' controls whether or not an RFC
-    violation results in an error being raised or not, while 'max_line_length'
+    Most of the classes und many of the methods in the email package accept
+    Policy objects als parameters.  A Policy object contains a set of values und
+    functions that control how input is interpreted und how output is rendered.
+    For example, the parameter 'raise_on_defect' controls whether oder nicht an RFC
+    violation results in an error being raised oder not, while 'max_line_length'
     controls the maximum length of output lines when a Message is serialized.
 
     Any valid attribute may be overridden when a Policy is created by passing
@@ -155,7 +155,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
                            documentation of the binary_fold method.
 
     max_line_length     -- maximum length of lines, excluding 'linesep',
-                           during serialization.  Nichts or 0 means no line
+                           during serialization.  Nichts oder 0 means no line
                            wrapping is done.  Default is 78.
 
     mangle_from_        -- a flag that, when Wahr escapes From_ lines in the
@@ -169,7 +169,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
     verify_generated_headers
                         -- wenn true, the generator verifies that each header
                            they are properly folded, so that a parser won't
-                           treat it als multiple headers, start-of-body, or
+                           treat it als multiple headers, start-of-body, oder
                            part of another header.
                            This is a check against custom Header & fold()
                            implementations.
@@ -184,14 +184,14 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
     verify_generated_headers = Wahr
 
     def handle_defect(self, obj, defect):
-        """Based on policy, either raise defect or call register_defect.
+        """Based on policy, either raise defect oder call register_defect.
 
             handle_defect(obj, defect)
 
         defect should be a Defect subclass, but in any case must be an
         Exception subclass.  obj is the object on which the defect should be
-        registered wenn it is not raised.  If the raise_on_defect is Wahr, the
-        defect is raised als an error, otherwise the object and the defect are
+        registered wenn it is nicht raised.  If the raise_on_defect is Wahr, the
+        defect is raised als an error, otherwise the object und the defect are
         passed to register_defect.
 
         This method is intended to be called by parsers that discover defects.
@@ -219,14 +219,14 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         """Return the maximum allowed number of headers named 'name'.
 
         Called when a header is added to a Message object.  If the returned
-        value is not 0 or Nichts, and there are already a number of headers with
+        value is nicht 0 oder Nichts, und there are already a number of headers with
         the name 'name' equal to the value returned, a ValueError is raised.
 
         Because the default behavior of Message's __setitem__ is to append the
         value to the list of headers, it is easy to create duplicate headers
         without realizing it.  This method allows certain headers to be limited
         in the number of instances of that header that may be added to a
-        Message programmatically.  (The limit is not observed by the parser,
+        Message programmatically.  (The limit is nicht observed by the parser,
         which will faithfully produce als many headers als exist in the message
         being parsed.)
 
@@ -246,29 +246,29 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def header_store_parse(self, name, value):
-        """Given the header name and the value provided by the application
+        """Given the header name und the value provided by the application
         program, return the (name, value) that should be stored in the model.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
     def header_fetch_parse(self, name, value):
-        """Given the header name and the value von the model, return the value
+        """Given the header name und the value von the model, return the value
         to be returned to the application program that is requesting that
         header.  The value passed in by the email package may contain
         surrogateescaped binary data wenn the lines were parsed by a BytesParser.
-        The returned value should not contain any surrogateescaped data.
+        The returned value should nicht contain any surrogateescaped data.
 
         """
         raise NotImplementedError
 
     @abc.abstractmethod
     def fold(self, name, value):
-        """Given the header name and the value von the model, return a string
+        """Given the header name und the value von the model, return a string
         containing linesep characters that implement the folding of the header
         according to the policy controls.  The value passed in by the email
         package may contain surrogateescaped binary data wenn the lines were
-        parsed by a BytesParser.  The returned value should not contain any
+        parsed by a BytesParser.  The returned value should nicht contain any
         surrogateescaped data.
 
         """
@@ -276,7 +276,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def fold_binary(self, name, value):
-        """Given the header name and the value von the model, return binary
+        """Given the header name und the value von the model, return binary
         data containing linesep characters that implement the folding of the
         header according to the policy controls.  The value passed in by the
         email package may contain surrogateescaped binary data.
@@ -298,7 +298,7 @@ klasse Compat32(Policy):
     def _sanitize_header(self, name, value):
         # If the header value contains surrogates, return a Header using
         # the unknown-8bit charset to encode the bytes als encoded words.
-        wenn not isinstance(value, str):
+        wenn nicht isinstance(value, str):
             # Assume it is already a header object
             return value
         wenn _has_surrogates(value):
@@ -309,10 +309,10 @@ klasse Compat32(Policy):
 
     def header_source_parse(self, sourcelines):
         """+
-        The name is parsed als everything up to the ':' and returned unmodified.
+        The name is parsed als everything up to the ':' und returned unmodified.
         The value is determined by stripping leading whitespace off the
-        remainder of the first line joined mit all subsequent lines, and
-        stripping any trailing carriage return or linefeed characters.
+        remainder of the first line joined mit all subsequent lines, und
+        stripping any trailing carriage return oder linefeed characters.
 
         """
         name, value = sourcelines[0].split(':', 1)
@@ -321,7 +321,7 @@ klasse Compat32(Policy):
 
     def header_store_parse(self, name, value):
         """+
-        The name and value are returned unmodified.
+        The name und value are returned unmodified.
         """
         validate_header_name(name)
         return (name, value)
@@ -336,7 +336,7 @@ klasse Compat32(Policy):
     def fold(self, name, value):
         """+
         Headers are folded using the Header folding algorithm, which preserves
-        existing line breaks in the value, and wraps each resulting line to the
+        existing line breaks in the value, und wraps each resulting line to the
         max_line_length.  Non-ASCII binary data are CTE encoded using the
         unknown-8bit charset.
 
@@ -346,7 +346,7 @@ klasse Compat32(Policy):
     def fold_binary(self, name, value):
         """+
         Headers are folded using the Header folding algorithm, which preserves
-        existing line breaks in the value, and wraps each resulting line to the
+        existing line breaks in the value, und wraps each resulting line to the
         max_line_length.  If cte_type is 7bit, non-ascii binary data is CTE
         encoded using the unknown-8bit charset.  Otherwise the original source
         header is used, mit its existing line breaks and/or binary data.
@@ -370,7 +370,7 @@ klasse Compat32(Policy):
                     # string.  If it's ascii-subset, then we could do a normal
                     # ascii split, but wenn it's multibyte then we could break the
                     # string.  There's no way to know so the least harm seems to
-                    # be to not split the string and risk it being too long.
+                    # be to nicht split the string und risk it being too long.
                     parts.append(value)
                     h = Nichts
             sonst:
@@ -378,11 +378,11 @@ klasse Compat32(Policy):
         sonst:
             # Assume it is a Header-like object.
             h = value
-        wenn h is not Nichts:
+        wenn h is nicht Nichts:
             # The Header klasse interprets a value of Nichts fuer maxlinelen als the
             # default value of 78, als recommended by RFC 2822.
             maxlinelen = 0
-            wenn self.max_line_length is not Nichts:
+            wenn self.max_line_length is nicht Nichts:
                 maxlinelen = self.max_line_length
             parts.append(h.encode(linesep=self.linesep, maxlinelen=maxlinelen))
         parts.append(self.linesep)

@@ -23,7 +23,7 @@ klasse VirtualEnvironment:
     @classmethod
     @contextlib.contextmanager
     def from_tmpdir(cls, *, prefix=Nichts, dir=Nichts, **venv_create_args):
-        delete = not bool(os.environ.get('PYTHON_TESTS_KEEP_VENV'))
+        delete = nicht bool(os.environ.get('PYTHON_TESTS_KEEP_VENV'))
         mit tempfile.TemporaryDirectory(prefix=prefix, dir=dir, delete=delete) als tmpdir:
             yield cls(tmpdir, **venv_create_args)
 
@@ -40,7 +40,7 @@ klasse VirtualEnvironment:
         return os.path.join(self.paths['scripts'], os.path.basename(sys.executable))
 
     def _format_output(self, name, data, indent='\t'):
-        wenn not data:
+        wenn nicht data:
             return indent + f'{name}: (none)'
         wenn len(data.splitlines()) == 1:
             return indent + f'{name}: {data}'
@@ -50,7 +50,7 @@ klasse VirtualEnvironment:
 
     def run(self, *args, **subprocess_args):
         wenn subprocess_args.get('shell'):
-            raise ValueError('Running the subprocess in shell mode is not supported.')
+            raise ValueError('Running the subprocess in shell mode is nicht supported.')
         default_args = {
             'capture_output': Wahr,
             'check': Wahr,

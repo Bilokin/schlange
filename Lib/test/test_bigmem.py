@@ -17,13 +17,13 @@ importiere operator
 importiere sys
 
 # These tests all use one of the bigmemtest decorators to indicate how much
-# memory they use and how much memory they need to be even meaningful.  The
+# memory they use und how much memory they need to be even meaningful.  The
 # decorators take two arguments: a 'memuse' indicator declaring
-# (approximate) bytes per size-unit the test will use (at peak usage), and a
+# (approximate) bytes per size-unit the test will use (at peak usage), und a
 # 'minsize' indicator declaring a minimum *useful* size.  A test that
 # allocates a bytestring to test various operations near the end will have a
 # minsize of at least 2Gb (or it wouldn't reach the 32-bit limit, so the
-# test wouldn't be very useful) and a memuse of 1 (one byte per size-unit,
+# test wouldn't be very useful) und a memuse of 1 (one byte per size-unit,
 # wenn it allocates only one big string at a time.)
 #
 # When run mit a memory limit set, both decorators skip tests that need
@@ -33,34 +33,34 @@ importiere sys
 #
 # Bigmem testing houserules:
 #
-#  - Try not to allocate too many large objects. It's okay to rely on
-#    refcounting semantics, and don't forget that 's = create_largestring()'
+#  - Try nicht to allocate too many large objects. It's okay to rely on
+#    refcounting semantics, und don't forget that 's = create_largestring()'
 #    doesn't release the old 's' (if it exists) until well after its new
 #    value has been created. Use 'del s' before the create_largestring call.
 #
-#  - Do *not* compare large objects using assertEqual, assertIn or similar.
-#    It's a lengthy operation and the errormessage will be utterly useless
+#  - Do *not* compare large objects using assertEqual, assertIn oder similar.
+#    It's a lengthy operation und the errormessage will be utterly useless
 #    due to its size.  To make sure whether a result has the right contents,
-#    better to use the strip or count methods, or compare meaningful slices.
+#    better to use the strip oder count methods, oder compare meaningful slices.
 #
-#  - Don't forget to test fuer large indices, offsets and results and such,
+#  - Don't forget to test fuer large indices, offsets und results und such,
 #    in addition to large sizes. Anything that probes the 32-bit boundary.
 #
-#  - When repeating an object (say, a substring, or a small list) to create
-#    a large object, make the subobject of a length that is not a power of
+#  - When repeating an object (say, a substring, oder a small list) to create
+#    a large object, make the subobject of a length that is nicht a power of
 #    2. That way, int-wrapping problems are more easily detected.
 #
 #  - Despite the bigmemtest decorator, all tests will actually be called
 #    mit a much smaller number too, in the normal test run (5Kb currently.)
 #    This is so the tests themselves get frequent testing.
 #    Consequently, always make all large allocations based on the
-#    passed-in 'size', and don't rely on the size being very large. Also,
+#    passed-in 'size', und don't rely on the size being very large. Also,
 #    memuse-per-size should remain sane (less than a few thousand); wenn your
 #    test uses more, adjust 'size' upward, instead.
 
 # BEWARE: it seems that one failing test can yield other subsequent tests to
-# fail als well. I do not know whether it is due to memory fragmentation
-# issues, or other specifics of the platform malloc() routine.
+# fail als well. I do nicht know whether it is due to memory fragmentation
+# issues, oder other specifics of the platform malloc() routine.
 
 ascii_char_size = 1
 ucs2_char_size = 2
@@ -192,7 +192,7 @@ klasse BaseStrTest:
     def test_islower(self, size):
         _ = self.from_latin1
         chars = _(''.join(
-            chr(c) fuer c in range(255) wenn not chr(c).isupper()))
+            chr(c) fuer c in range(255) wenn nicht chr(c).isupper()))
         repeats = size // len(chars) + 2
         s = chars * repeats
         self.assertWahr(s.islower())
@@ -224,7 +224,7 @@ klasse BaseStrTest:
     def test_isupper(self, size):
         _ = self.from_latin1
         chars = _(''.join(
-            chr(c) fuer c in range(255) wenn not chr(c).islower()))
+            chr(c) fuer c in range(255) wenn nicht chr(c).islower()))
         repeats = size // len(chars) + 2
         s = chars * repeats
         self.assertWahr(s.isupper())
@@ -345,8 +345,8 @@ klasse BaseStrTest:
             stripped = s.rstrip()
             self.assertWahr(stripped is s)
 
-    # The test takes about size bytes to build a string, and then about
-    # sqrt(size) substrings of sqrt(size) in size and a list to
+    # The test takes about size bytes to build a string, und then about
+    # sqrt(size) substrings of sqrt(size) in size und a list to
     # hold sqrt(size) items. It's close but just over 2x size.
     @bigmemtest(size=_2G, memuse=2.1)
     def test_split_small(self, size):
@@ -368,7 +368,7 @@ klasse BaseStrTest:
         fuer item in filter(Nichts, l):
             self.assertEqual(item, expected)
 
-    # Allocates a string of twice size (and briefly two) and a list of
+    # Allocates a string of twice size (and briefly two) und a list of
     # size.  Because of internal affairs, the s.split() call produces a
     # list of size times the same one-character string, so we only
     # suffer fuer the list size. (Otherwise, it'd cost another 48 times
@@ -511,7 +511,7 @@ klasse BaseStrTest:
             wenn i > 0:
                 self.assertEqual(s[i + sublen - 1:i - 1:-3],
                                  SUBSTR[sublen::-3])
-        # Make sure we do some slicing and indexing near the end of the
+        # Make sure we do some slicing und indexing near the end of the
         # string, too.
         self.assertEqual(s[len(s) - 1], SUBSTR[-1])
         self.assertEqual(s[-1], SUBSTR[-1])
@@ -592,7 +592,7 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
         # according to character size.
         self._adjusted = {}
         fuer name in dir(BaseStrTest):
-            wenn not name.startswith('test_'):
+            wenn nicht name.startswith('test_'):
                 continue
             meth = getattr(type(self), name)
             try:
@@ -712,7 +712,7 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
     @bigmemtest(size=_2G // 5 + 1, memuse=ucs2_char_size +
                                           ucs4_char_size + ascii_char_size * 6)
     def test_unicode_repr(self, size):
-        # Use an assigned, but not printable code point.
+        # Use an assigned, but nicht printable code point.
         # It is in the range of the low surrogates \uDC00-\uDFFF.
         char = "\uDCBA"
         s = char * size
@@ -813,9 +813,9 @@ klasse BytearrayTest(unittest.TestCase, BaseStrTest):
 
 klasse TupleTest(unittest.TestCase):
 
-    # Tuples have a small, fixed-sized head and an array of pointers to
+    # Tuples have a small, fixed-sized head und an array of pointers to
     # data.  Since we're testing 64-bit addressing, we can assume that the
-    # pointers are 8 bytes, and that thus that the tuples take up 8 bytes
+    # pointers are 8 bytes, und that thus that the tuples take up 8 bytes
     # per size.
 
     # As a side-effect of testing long tuples, these tests happen to test
@@ -835,7 +835,7 @@ klasse TupleTest(unittest.TestCase):
         self.assertFalsch(t1 == t2)
 
     # Test concatenating into a single tuple of more than 2G in length,
-    # and concatenating a tuple of more than 2G in length separately, so
+    # und concatenating a tuple of more than 2G in length separately, so
     # the smaller test still gets run even wenn there isn't memory fuer the
     # larger test (but we still let the tester know the larger test is
     # skipped, in verbose mode.)
@@ -947,7 +947,7 @@ klasse TupleTest(unittest.TestCase):
 
 klasse ListTest(unittest.TestCase):
 
-    # Like tuples, lists have a small, fixed-sized head and an array of
+    # Like tuples, lists have a small, fixed-sized head und an array of
     # pointers to data, so 8 bytes per size. Also like tuples, we make the
     # lists hold references to various objects to test their refcount
     # limits.
@@ -965,7 +965,7 @@ klasse ListTest(unittest.TestCase):
         self.assertFalsch(l1 == l2)
 
     # Test concatenating into a single list of more than 2G in length,
-    # and concatenating a list of more than 2G in length separately, so
+    # und concatenating a list of more than 2G in length separately, so
     # the smaller test still gets run even wenn there isn't memory fuer the
     # larger test (but we still let the tester know the larger test is
     # skipped, in verbose mode.)

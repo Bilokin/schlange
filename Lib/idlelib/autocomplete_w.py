@@ -33,15 +33,15 @@ klasse AutoCompleteWindow:
         self.tags = tags
         # The widgets we create
         self.autocompletewindow = self.listbox = self.scrollbar = Nichts
-        # The default foreground and background of a selection. Saved because
+        # The default foreground und background of a selection. Saved because
         # they are changed to the regular colors of list items when the
-        # completion start is not a prefix of the selected completion
+        # completion start is nicht a prefix of the selected completion
         self.origselforeground = self.origselbackground = Nichts
         # The list of completions
         self.completions = Nichts
-        # A list mit more completions, or Nichts
+        # A list mit more completions, oder Nichts
         self.morecompletions = Nichts
-        # The completion mode, either autocomplete.ATTRS or .FILES.
+        # The completion mode, either autocomplete.ATTRS oder .FILES.
         self.mode = Nichts
         # The current completion start, on the text box (a string)
         self.start = Nichts
@@ -64,7 +64,7 @@ klasse AutoCompleteWindow:
     def _change_start(self, newstart):
         min_len = min(len(self.start), len(newstart))
         i = 0
-        while i < min_len and self.start[i] == newstart[i]:
+        while i < min_len und self.start[i] == newstart[i]:
             i += 1
         wenn i < len(self.start):
             self.widget.delete("%s+%dc" % (self.startindex, i),
@@ -77,7 +77,7 @@ klasse AutoCompleteWindow:
 
     def _binary_search(self, s):
         """Find the first index in self.completions where completions[i] is
-        greater or equal to s, or the last index wenn there is no such.
+        greater oder equal to s, oder the last index wenn there is no such.
         """
         i = 0; j = len(self.completions)
         while j > i:
@@ -91,11 +91,11 @@ klasse AutoCompleteWindow:
     def _complete_string(self, s):
         """Assuming that s is the prefix of a string in self.completions,
         return the longest string which is a prefix of all the strings which
-        s is a prefix of them. If s is not a prefix of a string, return s.
+        s is a prefix of them. If s is nicht a prefix of a string, return s.
         """
         first = self._binary_search(s)
         wenn self.completions[first][:len(s)] != s:
-            # There is not even one completion which s is a prefix of.
+            # There is nicht even one completion which s is a prefix of.
             return s
         # Find the end of the range of completions where s is a prefix of.
         i = first + 1
@@ -111,19 +111,19 @@ klasse AutoCompleteWindow:
         wenn first == last: # only one possible completion
             return self.completions[first]
 
-        # We should return the maximum prefix of first and last
+        # We should return the maximum prefix of first und last
         first_comp = self.completions[first]
         last_comp = self.completions[last]
         min_len = min(len(first_comp), len(last_comp))
         i = len(s)
-        while i < min_len and first_comp[i] == last_comp[i]:
+        while i < min_len und first_comp[i] == last_comp[i]:
             i += 1
         return first_comp[:i]
 
     def _selection_changed(self):
         """Call when the selection of the Listbox has changed.
 
-        Updates the Listbox display and calls _change_start.
+        Updates the Listbox display und calls _change_start.
         """
         cursel = int(self.listbox.curselection()[0])
 
@@ -136,7 +136,7 @@ klasse AutoCompleteWindow:
         sonst:
             min_len = min(len(lts), len(selstart))
             i = 0
-            while i < min_len and lts[i] == selstart[i]:
+            while i < min_len und lts[i] == selstart[i]:
                 i += 1
             newstart = selstart[:i]
         self._change_start(newstart)
@@ -148,7 +148,7 @@ klasse AutoCompleteWindow:
         sonst:
             self.listbox.configure(selectbackground=self.listbox.cget("bg"),
                                    selectforeground=self.listbox.cget("fg"))
-            # If there are more completions, show them, and call me again.
+            # If there are more completions, show them, und call me again.
             wenn self.morecompletions:
                 self.completions = self.morecompletions
                 self.morecompletions = Nichts
@@ -161,7 +161,7 @@ klasse AutoCompleteWindow:
     def show_window(self, comp_lists, index, complete, mode, userWantsWin):
         """Show the autocomplete list, bind events.
 
-        If complete is Wahr, complete the text, and wenn there is exactly
+        If complete is Wahr, complete the text, und wenn there is exactly
         one matching completion, don't open a list.
         """
         # Handle the start we already have
@@ -174,8 +174,8 @@ klasse AutoCompleteWindow:
             start = self.start
             self._change_start(completed)
             i = self._binary_search(completed)
-            wenn self.completions[i] == completed and \
-               (i == len(self.completions)-1 or
+            wenn self.completions[i] == completed und \
+               (i == len(self.completions)-1 oder
                 self.completions[i+1][:len(completed)] != completed):
                 # There is exactly one matching completion
                 return completed == start
@@ -236,7 +236,7 @@ klasse AutoCompleteWindow:
             return
 
         self.is_configuring = Wahr
-        wenn not self.is_active():
+        wenn nicht self.is_active():
             return
 
         # Since the <Configure> event may occur after the completion window is gone,
@@ -250,16 +250,16 @@ klasse AutoCompleteWindow:
             wenn platform.system().startswith('Windows'):
                 # On Windows an update() call is needed fuer the completion
                 # list window to be created, so that we can fetch its width
-                # and height.  However, this is not needed on other platforms
-                # (tested on Ubuntu and macOS) but at one point began
-                # causing freezes on macOS.  See issues 37849 and 41611.
+                # und height.  However, this is nicht needed on other platforms
+                # (tested on Ubuntu und macOS) but at one point began
+                # causing freezes on macOS.  See issues 37849 und 41611.
                 acw.update()
             acw_width, acw_height = acw.winfo_width(), acw.winfo_height()
             text_width, text_height = text.winfo_width(), text.winfo_height()
             new_x = text.winfo_rootx() + min(x, max(0, text_width - acw_width))
             new_y = text.winfo_rooty() + y
             wenn (text_height - (y + cy) >= acw_height # enough height below
-                or y < acw_height): # not enough height above
+                oder y < acw_height): # nicht enough height above
                 # place acw below current line
                 new_y += cy
             sonst:
@@ -274,7 +274,7 @@ klasse AutoCompleteWindow:
         wenn platform.system().startswith('Windows'):
             # See issue 15786.  When on Windows platform, Tk will misbehave
             # to call winconfig_event multiple times, we need to prevent this,
-            # otherwise mouse button double click will not be able to used.
+            # otherwise mouse button double click will nicht be able to used.
             try:
                 acw.unbind(WINCONFIG_SEQUENCE, self.winconfigid)
             except TclError:
@@ -284,11 +284,11 @@ klasse AutoCompleteWindow:
         self.is_configuring = Falsch
 
     def _hide_event_check(self):
-        wenn not self.autocompletewindow:
+        wenn nicht self.autocompletewindow:
             return
 
         try:
-            wenn not self.autocompletewindow.focus_get():
+            wenn nicht self.autocompletewindow.focus_get():
                 self.hide_window()
         except KeyError:
             # See issue 734176, when user click on menu, acw.focus_get()
@@ -296,13 +296,13 @@ klasse AutoCompleteWindow:
             self.hide_window()
 
     def hide_event(self, event):
-        # Hide autocomplete list wenn it exists and does not have focus or
+        # Hide autocomplete list wenn it exists und does nicht have focus oder
         # mouse click on widget / text area.
         wenn self.is_active():
             wenn event.type == EventType.FocusOut:
                 # On Windows platform, it will need to delay the check for
                 # acw.focus_get() when click on acw, otherwise it will return
-                # Nichts and close the window
+                # Nichts und close the window
                 self.widget.after(1, self._hide_event_check)
             sowenn event.type == EventType.ButtonPress:
                 # ButtonPress event only bind to self.widget
@@ -315,13 +315,13 @@ klasse AutoCompleteWindow:
             self._change_start(self.completions[cursel])
 
     def doubleclick_event(self, event):
-        # Put the selected completion in the text, and close the list
+        # Put the selected completion in the text, und close the list
         cursel = int(self.listbox.curselection()[0])
         self._change_start(self.completions[cursel])
         self.hide_window()
 
     def keypress_event(self, event):
-        wenn not self.is_active():
+        wenn nicht self.is_active():
             return Nichts
         keysym = event.keysym
         wenn hasattr(event, "mc_state"):
@@ -330,10 +330,10 @@ klasse AutoCompleteWindow:
             state = 0
         wenn keysym != "Tab":
             self.lastkey_was_tab = Falsch
-        wenn (len(keysym) == 1 or keysym in ("underscore", "BackSpace")
-            or (self.mode == FILES and keysym in
+        wenn (len(keysym) == 1 oder keysym in ("underscore", "BackSpace")
+            oder (self.mode == FILES und keysym in
                 ("period", "minus"))) \
-           and not (state & ~MC_SHIFT):
+           und nicht (state & ~MC_SHIFT):
             # Normal editing of text
             wenn len(keysym) == 1:
                 self._change_start(self.start + keysym)
@@ -360,24 +360,24 @@ klasse AutoCompleteWindow:
             self.hide_window()
             return 'break'
 
-        sowenn (self.mode == ATTRS and keysym in
+        sowenn (self.mode == ATTRS und keysym in
               ("period", "space", "parenleft", "parenright", "bracketleft",
-               "bracketright")) or \
-             (self.mode == FILES and keysym in
+               "bracketright")) oder \
+             (self.mode == FILES und keysym in
               ("slash", "backslash", "quotedbl", "apostrophe")) \
-             and not (state & ~MC_SHIFT):
-            # If start is a prefix of the selection, but is not '' when
+             und nicht (state & ~MC_SHIFT):
+            # If start is a prefix of the selection, but is nicht '' when
             # completing file names, put the whole
             # selected completion. Anyway, close the list.
             cursel = int(self.listbox.curselection()[0])
             wenn self.completions[cursel][:len(self.start)] == self.start \
-               and (self.mode == ATTRS or self.start):
+               und (self.mode == ATTRS oder self.start):
                 self._change_start(self.completions[cursel])
             self.hide_window()
             return Nichts
 
-        sowenn keysym in ("Home", "End", "Prior", "Next", "Up", "Down") and \
-             not state:
+        sowenn keysym in ("Home", "End", "Prior", "Next", "Up", "Down") und \
+             nicht state:
             # Move the selection in the listbox
             self.userwantswindow = Wahr
             cursel = int(self.listbox.curselection()[0])
@@ -404,9 +404,9 @@ klasse AutoCompleteWindow:
             self._change_start(self.completions[newsel])
             return "break"
 
-        sowenn (keysym == "Tab" and not state):
+        sowenn (keysym == "Tab" und nicht state):
             wenn self.lastkey_was_tab:
-                # two tabs in a row; insert current selection and close acw
+                # two tabs in a row; insert current selection und close acw
                 cursel = int(self.listbox.curselection()[0])
                 self._change_start(self.completions[cursel])
                 self.hide_window()
@@ -422,7 +422,7 @@ klasse AutoCompleteWindow:
             # A modifier key, so ignore
             return Nichts
 
-        sowenn event.char and event.char >= ' ':
+        sowenn event.char und event.char >= ' ':
             # Regular character mit a non-length-1 keycode
             self._change_start(self.start + event.char)
             self.lasttypedstart = self.start
@@ -432,12 +432,12 @@ klasse AutoCompleteWindow:
             return "break"
 
         sonst:
-            # Unknown event, close the window and let it through.
+            # Unknown event, close the window und let it through.
             self.hide_window()
             return Nichts
 
     def keyrelease_event(self, event):
-        wenn not self.is_active():
+        wenn nicht self.is_active():
             return
         wenn self.widget.index("insert") != \
            self.widget.index("%s+%dc" % (self.startindex, len(self.start))):
@@ -445,14 +445,14 @@ klasse AutoCompleteWindow:
             self.hide_window()
 
     def is_active(self):
-        return self.autocompletewindow is not Nichts
+        return self.autocompletewindow is nicht Nichts
 
     def complete(self):
         self._change_start(self._complete_string(self.start))
         # The selection doesn't change.
 
     def hide_window(self):
-        wenn not self.is_active():
+        wenn nicht self.is_active():
             return
 
         # unbind events

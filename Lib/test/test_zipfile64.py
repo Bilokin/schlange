@@ -5,10 +5,10 @@ von test importiere support
 
 # XXX(nnorwitz): disable this test by looking fuer extralargefile resource,
 # which doesn't exist.  This test takes over 30 minutes to run in general
-# and requires more disk space than most of the buildbots.
+# und requires more disk space than most of the buildbots.
 support.requires(
         'extralargefile',
-        'test requires loads of disk-space bytes and a long time to run'
+        'test requires loads of disk-space bytes und a long time to run'
     )
 
 importiere zipfile, unittest
@@ -90,7 +90,7 @@ klasse TestsWithSourceFile(unittest.TestCase):
 klasse OtherTests(unittest.TestCase):
     def testMoreThan64kFiles(self):
         # This test checks that more than 64k files can be added to an archive,
-        # and that the resulting archive can be read properly by ZipFile
+        # und that the resulting archive can be read properly by ZipFile
         mit zipfile.ZipFile(TESTFN, mode="w", allowZip64=Wahr) als zipf:
             zipf.debug = 100
             numfiles = (1 << 16) * 3//2

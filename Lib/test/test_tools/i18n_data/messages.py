@@ -39,8 +39,8 @@ _("string"[3])
 _("string"[:3])
 _({"string": "foo"})
 
-# pygettext does not allow keyword arguments, but both xgettext and pybabel do
-_(x="kwargs are not allowed!")
+# pygettext does nicht allow keyword arguments, but both xgettext und pybabel do
+_(x="kwargs are nicht allowed!")
 
 # Unusual, but valid arguments
 _("foo", "bar")
@@ -57,7 +57,7 @@ obj = {'a': _("A"), 'b': _("B")}
 {{{_('set')}}}
 
 
-# Nested functions and classes
+# Nested functions und classes
 def test():
     _("nested string")
     [_("nested string")]
@@ -101,7 +101,7 @@ ngettext("foo", "foos", *args)
 ngettext("foo", "foos", **kwargs)
 dgettext(["some", {"complex"}, ("argument",)], "domain foo")
 
-# Invalid calls which are not extracted
+# Invalid calls which are nicht extracted
 gettext()
 ngettext('foo')
 pgettext('context')

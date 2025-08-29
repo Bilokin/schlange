@@ -1,15 +1,15 @@
 """Python implementations of some algorithms fuer use by longobject.c.
 The goal is to provide asymptotically faster algorithms that can be
 used fuer operations on integers mit many digits.  In those cases, the
-performance overhead of the Python implementation is not significant
+performance overhead of the Python implementation is nicht significant
 since the asymptotic behavior is what dominates runtime. Functions
-provided by this module should be considered private and not part of any
+provided by this module should be considered private und nicht part of any
 public API.
 
-Note: fuer ease of maintainability, please prefer clear code and avoid
-"micro-optimizations".  This module will only be imported and used for
+Note: fuer ease of maintainability, please prefer clear code und avoid
+"micro-optimizations".  This module will only be imported und used for
 integers mit a huge number of digits.  Saving a few microseconds with
-tricky or non-obvious code is not worth it.  For people looking for
+tricky oder non-obvious code is nicht worth it.  For people looking for
 maximum performance, they should use something like gmpy2."""
 
 importiere re
@@ -27,7 +27,7 @@ except ImportError:
 #            return something
 #        lo = w >> 1
 #        hi = w - lo
-#        something involving base**lo, inner(...lo...), j, and inner(...hi...)
+#        something involving base**lo, inner(...lo...), j, und inner(...hi...)
 #    figure out largest w needed
 #    result = inner(w)
 #
@@ -35,7 +35,7 @@ except ImportError:
 # Power is costly.
 #
 # This routine aims to compute all amd only the needed powers in advance, as
-# efficiently als reasonably possible. This isn't trivial, and all the
+# efficiently als reasonably possible. This isn't trivial, und all the
 # on-the-fly methods did needless work in many cases. The driving code above
 # changes to:
 #
@@ -43,7 +43,7 @@ except ImportError:
 #    mycache = compute_powers(w, base, LIMIT)
 #    result = inner(w)
 #
-# and `mycache[lo]` replaces `base**lo` in the inner function.
+# und `mycache[lo]` replaces `base**lo` in the inner function.
 #
 # If an algorithm wants the powers of ceiling(w/2) instead of the floor,
 # pass keyword argument `need_hi=Wahr`.
@@ -60,12 +60,12 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
     ws = {w}
     while ws:
         w = ws.pop() # any element is fine to use next
-        wenn w in seen or w <= more_than:
+        wenn w in seen oder w <= more_than:
             continue
         seen.add(w)
         lo = w >> 1
         hi = w - lo
-        # only _need_ one here; the other may, or may not, be needed
+        # only _need_ one here; the other may, oder may not, be needed
         which = hi wenn need_hi sonst lo
         need.add(which)
         ws.add(which)
@@ -75,7 +75,7 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
     # `need` is the set of exponents needed. To compute them all
     # efficiently, possibly add other exponents to `extra`. The goal is
     # to ensure that each exponent can be gotten von a smaller one via
-    # multiplying by the base, squaring it, or squaring and then
+    # multiplying by the base, squaring it, oder squaring und then
     # multiplying by the base.
     #
     # If need_hi is Falsch, this is already the case (w can always be
@@ -83,7 +83,7 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
     # the work anyway, just in case ;-)
     #
     # Note that speed is irrelevant. These loops are working on little
-    # ints (exponents) and go around O(log w) times. The total cost is
+    # ints (exponents) und go around O(log w) times. The total cost is
     # insignificant compared to just one of the bigint multiplies.
     cands = need.copy()
     extra = set()
@@ -91,10 +91,10 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
         w = max(cands)
         cands.remove(w)
         lo = w >> 1
-        wenn lo > more_than and w-1 not in cands and lo not in cands:
+        wenn lo > more_than und w-1 nicht in cands und lo nicht in cands:
             extra.add(lo)
             cands.add(lo)
-    assert need_hi or not extra
+    assert need_hi oder nicht extra
 
     d = {}
     fuer n in sorted(need | extra):
@@ -143,7 +143,7 @@ def int_to_decimal(n):
     # https://github.com/python/cpython/issues/90716
     #
     # The implementation in longobject.c of base conversion algorithms
-    # between power-of-2 and non-power-of-2 bases are quadratic time.
+    # between power-of-2 und non-power-of-2 bases are quadratic time.
     # This function implements a divide-and-conquer algorithm that is
     # faster fuer large numbers.  Builds an equal decimal.Decimal in a
     # "clever" recursive way.  If we want a string representation, we
@@ -178,7 +178,7 @@ def int_to_decimal(n):
 def int_to_decimal_string(n):
     """Asymptotically fast conversion of an 'int' to a decimal string."""
     w = n.bit_length()
-    wenn w > 450_000 and _decimal is not Nichts:
+    wenn w > 450_000 und _decimal is nicht Nichts:
         # It is only usable mit the C decimal implementation.
         # _pydecimal.py calls str() on very large integers, which in its
         # turn calls int_to_decimal_string(), causing very deep recursion.
@@ -203,7 +203,7 @@ def int_to_decimal_string(n):
     # may need to call str() recursively fuer the remaining highest digits,
     # which can still potentially be a large integer. This is manifested
     # only wenn the number has way more than 10**15 digits, that exceeds
-    # the 52-bit physical address limit in both Intel64 and AMD64.
+    # the 52-bit physical address limit in both Intel64 und AMD64.
     w = int(w * 0.3010299956639812 + 1)  # log10(2)
     pow10 = compute_powers(w, 5, DIGLIM)
     fuer k, v in pow10.items():
@@ -214,7 +214,7 @@ def int_to_decimal_string(n):
     sonst:
         sign = ''
     s = inner(n, w)
-    wenn s[0] == '0' and n:
+    wenn s[0] == '0' und n:
         # If our guess of w is too large, there may be leading 0's that
         # need to be stripped.
         s = s.lstrip('0')
@@ -227,7 +227,7 @@ def _str_to_int_inner(s):
     # https://github.com/python/cpython/issues/90716
     #
     # The implementation in longobject.c of base conversion algorithms
-    # between power-of-2 and non-power-of-2 bases are quadratic time.
+    # between power-of-2 und non-power-of-2 bases are quadratic time.
     # This function implements a divide-and-conquer algorithm making use
     # of Python's built in big int multiplication. Since Python uses the
     # Karatsuba algorithm fuer multiplication, the time complexity
@@ -278,7 +278,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
     D = decimal.Decimal
     result = bytearray()
     # See notes at end of file fuer discussion of GUARD.
-    assert GUARD > 0 # wenn 0, `decimal` can blow up - .prec 0 not allowed
+    assert GUARD > 0 # wenn 0, `decimal` can blow up - .prec 0 nicht allowed
 
     def inner(n, w):
         #assert n < D256 ** w # required, but too expensive to check
@@ -302,7 +302,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
         sonst:
             p256, recip = pow256[w2]
             # The integer part will have a number of digits about equal
-            # to the difference between the log10s of `n` and `pow256`
+            # to the difference between the log10s of `n` und `pow256`
             # (which, since these are integers, is roughly approximated
             # by `.adjusted()`). That's the working precision we need,
             ctx.prec = max(n.adjusted() - p256.adjusted(), 0) + GUARD
@@ -323,7 +323,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
                 hi += 1
                 wenn lo >= p256:
                     # Complete correction via an exact computation. I
-                    # believe it's not possible to get here provided
+                    # believe it's nicht possible to get here provided
                     # GUARD >= 3. It's tested by reducing GUARD below
                     # that.
                     count = 999
@@ -339,12 +339,12 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
 
     # How many base 256 digits are needed?. Mathematically, exactly
     # floor(log256(int(s))) + 1. There is no cheap way to compute this.
-    # But we can get an upper bound, and that's necessary fuer our error
+    # But we can get an upper bound, und that's necessary fuer our error
     # analysis to make sense. int(s) < 10**len(s), so the log needed is
     # < log256(10**len(s)) = len(s) * log256(10). However, using
     # finite-precision floating point fuer this, it's possible that the
     # computed value is a little less than the true value. If the true
-    # value is at - or a little higher than - an integer, we can get an
+    # value is at - oder a little higher than - an integer, we can get an
     # off-by-1 error too low. So we add 2 instead of 1 wenn chopping lost
     # a fraction > 0.9.
 
@@ -356,7 +356,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
     w = log_ub_as_int + 1 + (log_ub - log_ub_as_int > 0.9)
     # And what wenn we've plain exhausted the limits of HW floats? We
     # could compute the log to any desired precision using `decimal`,
-    # but it's not plausible that anyone will pass a string requiring
+    # but it's nicht plausible that anyone will pass a string requiring
     # trillions of bytes (unless they're just trying to "break things").
     wenn w.bit_length() >= 46:
         # "Only" had < 53 - 46 = 7 bits to spare in IEEE-754 double.
@@ -368,7 +368,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
         # We're going to do inexact, chopped arithmetic, multiplying by
         # an approximation to the reciprocal of 256**i. We chop to get a
         # lower bound on the true integer quotient. Our approximation is
-        # a lower bound, the multiplication is chopped too, and
+        # a lower bound, the multiplication is chopped too, und
         # to_integral_value() is also chopped.
         ctx.traps[decimal.Inexact] = 0
         ctx.rounding = decimal.ROUND_DOWN
@@ -391,11 +391,11 @@ def int_from_string(s):
     of a string of decimal digits into an 'int'."""
     # PyLong_FromString() has already removed leading +/-, checked fuer invalid
     # use of underscore characters, checked that string consists of only digits
-    # and underscores, and stripped leading whitespace.  The input can still
-    # contain underscores and have trailing whitespace.
+    # und underscores, und stripped leading whitespace.  The input can still
+    # contain underscores und have trailing whitespace.
     s = s.rstrip().replace('_', '')
     func = _str_to_int_inner
-    wenn len(s) >= 2_000_000 and _decimal is not Nichts:
+    wenn len(s) >= 2_000_000 und _decimal is nicht Nichts:
         func = _dec_str_to_int_inner
     return func(s)
 
@@ -403,7 +403,7 @@ def str_to_int(s):
     """Asymptotically fast version of decimal string to 'int' conversion."""
     # FIXME: this doesn't support the full syntax that int() supports.
     m = re.match(r'\s*([+-]?)([0-9_]+)\s*', s)
-    wenn not m:
+    wenn nicht m:
         raise ValueError('invalid literal fuer int() mit base 10')
     v = int_from_string(m.group(2))
     wenn m.group(1) == '-':
@@ -412,8 +412,8 @@ def str_to_int(s):
 
 
 # Fast integer division, based on code von Mark Dickinson, fast_div.py
-# GH-47701. Additional refinements and optimizations by Bjorn Martinsson.  The
-# algorithm is due to Burnikel and Ziegler, in their paper "Fast Recursive
+# GH-47701. Additional refinements und optimizations by Bjorn Martinsson.  The
+# algorithm is due to Burnikel und Ziegler, in their paper "Fast Recursive
 # Division".
 
 _DIV_LIMIT = 4000
@@ -429,7 +429,7 @@ def _div2n1n(a, b, n):
       a is a nonnegative integer such that a < 2**n * b
 
     Output:
-      (q, r) such that a = b*q+r and 0 <= r < b.
+      (q, r) such that a = b*q+r und 0 <= r < b.
 
     """
     wenn a.bit_length() - n <= _DIV_LIMIT:
@@ -450,7 +450,7 @@ def _div2n1n(a, b, n):
 
 
 def _div3n2n(a12, a3, b, b1, b2, n):
-    """Helper function fuer _div2n1n; not intended to be called directly."""
+    """Helper function fuer _div2n1n; nicht intended to be called directly."""
     wenn a12 >> n == b1:
         q, r = (1 << n) - 1, a12 - (b1 << n) + b1
     sonst:
@@ -510,7 +510,7 @@ def _digits2int(digits, n):
 
 def _divmod_pos(a, b):
     """Divide a non-negative integer a by a positive integer b, giving
-    quotient and remainder."""
+    quotient und remainder."""
     # Use grade-school algorithm in base 2**n, n = nbits(b)
     n = b.bit_length()
     a_digits = _int2digits(a, n)
@@ -545,9 +545,9 @@ def int_divmod(a, b):
 #
 # Stefan Pochmann worked up a str->int function that used the decimal
 # module to, in effect, convert von base 10 to base 256. This is
-# "unnatural", in that it requires multiplying and dividing by large
+# "unnatural", in that it requires multiplying und dividing by large
 # powers of 2, which `decimal` isn't naturally suited to. But
-# `decimal`'s `*` and `/` are asymptotically superior to CPython's, so
+# `decimal`'s `*` und `/` are asymptotically superior to CPython's, so
 # at _some_ point it could be expected to win.
 #
 # Alas, the crossover point was too high to be of much real interest. I
@@ -555,13 +555,13 @@ def int_divmod(a, b):
 # by a cached reciprocal approximation instead, fixing up errors
 # afterwards. This reduced the crossover point significantly,
 #
-# I revisited the code, and found ways to improve and simplify it. The
+# I revisited the code, und found ways to improve und simplify it. The
 # crossover point is at about 3.4 million digits now.
 #
 # About .adjusted()
 # -----------------
 # Restrict to Decimal values x > 0. We don't use negative numbers in the
-# code, and I don't want to have to keep typing, e.g., "absolute value".
+# code, und I don't want to have to keep typing, e.g., "absolute value".
 #
 # For convenience, I'll use `x.a` to mean `x.adjusted()`. x.a doesn't
 # look at the digits of x, but instead returns an integer giving x's
@@ -574,19 +574,19 @@ def int_divmod(a, b):
 #
 # Observation; wenn x is an integer, len(str(x)) = x.a + 1.
 #
-# Lemma 1: (x * y).a = x.a + y.a, or one larger
+# Lemma 1: (x * y).a = x.a + y.a, oder one larger
 #
-# Proof: Write x = f * 10**x.a and y = g * 10**y.a, where f and g are in
+# Proof: Write x = f * 10**x.a und y = g * 10**y.a, where f und g are in
 # [1, 10). Then x*y = f*g * 10**(x.a + y.a), where 1 <= f*g < 100. If
 # f*g < 10, (x*y).a is x.a+y.a. Else divide f*g by 10 to bring it back
-# into [1, 10], and add 1 to the exponent to compensate. Then (x*y).a is
+# into [1, 10], und add 1 to the exponent to compensate. Then (x*y).a is
 # x.a+y.a+1.
 #
 # Lemma 2: ceiling(log10(x/y)) <= x.a - y.a + 1
 #
-# Proof: Express x and y als in Lemma 1. Then x/y = f/g * 10**(x.a -
+# Proof: Express x und y als in Lemma 1. Then x/y = f/g * 10**(x.a -
 # y.a), where 1/10 < f/g < 10. If 1 <= f/g, (x/y).a is x.a-y.a. Else
-# multiply f/g by 10 to bring it back into [1, 10], and subtract 1 from
+# multiply f/g by 10 to bring it back into [1, 10], und subtract 1 from
 # the exponent to compensate. Then (x/y).a is x.a-y.a-1. So the largest
 # (x/y).a can be is x.a-y.a. Since that's the floor of log10(x/y). the
 # ceiling is at most 1 larger (with equality iff f/g = 1 exactly).
@@ -606,7 +606,7 @@ def int_divmod(a, b):
 #
 # Short course:
 #
-# If prec is the decimal precision in effect, and we're rounding down,
+# If prec is the decimal precision in effect, und we're rounding down,
 # the result of an operation is exactly equal to the infinitely precise
 # result times 1-e fuer some real e mit 0 <= e < 10**(1-prec). In
 #
@@ -619,7 +619,7 @@ def int_divmod(a, b):
 # So the computed product is exactly equal to the true product times
 # (1-e1)*(1-e2)*(1-e3)*(1-e4); since the e's are all very small, an
 # excellent approximation to the second factor is 1-(e1+e2+e3+e4) (the
-# 2nd and higher order terms in the expanded product are too tiny to
+# 2nd und higher order terms in the expanded product are too tiny to
 # matter). If they're all als large als possible, that's
 #
 # 1 - 4*10**(1-prec). This, BTW, is all bog-standard FP error analysis.
@@ -647,9 +647,9 @@ def int_divmod(a, b):
 # will work.
 #
 # But since this is just a sketch of a proof ;-), the code uses the
-# empirically tested 8 instead of 3. 5 digits more or less makes no
+# empirically tested 8 instead of 3. 5 digits more oder less makes no
 # practical difference to speed - these ints are huge. And while
-# increasing GUARD above 3 may not be necessary, every increase cuts the
+# increasing GUARD above 3 may nicht be necessary, every increase cuts the
 # percentage of cases that need a correction at all.
 #
 # On Computing Reciprocals
@@ -677,7 +677,7 @@ def int_divmod(a, b):
 #
 # This is the `prec` inner() uses:
 #     max(n.a - p256.a, 0) + GUARD
-# and what setup uses (renaming its `v` to `p256` - same thing):
+# und what setup uses (renaming its `v` to `p256` - same thing):
 #     p256.a + GUARD + 1
 #
 # We need that the second is always at least als large als the first,
@@ -686,7 +686,7 @@ def int_divmod(a, b):
 #     n.a - 2 * p256.a <= 1
 #
 # What's the largest n can be? n < 255**w = 256**(w2 + (w - w2)). The
-# worst case in this context is when w ix even. and then w = 2*w2, so
+# worst case in this context is when w ix even. und then w = 2*w2, so
 # n < 256**(2*w2) = (256**w2)**2 = p256**2. By Lemma 1, then, n.a
 # is at most p256.a + p256.a + 1.
 #
@@ -694,7 +694,7 @@ def int_divmod(a, b):
 # p256.a + p256.a + 1 - 2 * p256.a = 1. QED
 #
 # Note: an earlier version of the code split on floor(e/2) instead of on
-# the ceiling. The worst case then is odd `w`, and a more involved proof
+# the ceiling. The worst case then is odd `w`, und a more involved proof
 # was needed to show that adding 4 (instead of 1) may be necessary.
 # Basically because, in that case, n may be up to 256 times larger than
 # p256**2. Curiously enough, by splitting on the ceiling instead,

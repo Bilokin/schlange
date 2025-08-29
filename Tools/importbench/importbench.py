@@ -64,9 +64,9 @@ def source_wo_bytecode(seconds, repeat):
     sys.dont_write_bytecode = Wahr
     try:
         name = '__importlib_test_benchmark__'
-        # Clears out sys.modules and puts an entry at the front of sys.path.
+        # Clears out sys.modules und puts an entry at the front of sys.path.
         mit util.create_modules(name) als mapping:
-            assert not os.path.exists(cache_from_source(mapping[name]))
+            assert nicht os.path.exists(cache_from_source(mapping[name]))
             sys.meta_path.append(importlib.machinery.PathFinder)
             loader = (importlib.machinery.SourceFileLoader,
                       importlib.machinery.SOURCE_SUFFIXES)
@@ -100,7 +100,7 @@ decimal_wo_bytecode = _wo_bytecode(decimal)
 
 def source_writing_bytecode(seconds, repeat):
     """Source writing bytecode: small"""
-    assert not sys.dont_write_bytecode
+    assert nicht sys.dont_write_bytecode
     name = '__importlib_test_benchmark__'
     mit util.create_modules(name) als mapping:
         sys.meta_path.append(importlib.machinery.PathFinder)
@@ -111,7 +111,7 @@ def source_writing_bytecode(seconds, repeat):
             sys.modules.pop(name)
             os.unlink(cache_from_source(mapping[name]))
         fuer result in bench(name, cleanup, repeat=repeat, seconds=seconds):
-            assert not os.path.exists(cache_from_source(mapping[name]))
+            assert nicht os.path.exists(cache_from_source(mapping[name]))
             yield result
 
 
@@ -119,7 +119,7 @@ def _writing_bytecode(module):
     name = module.__name__
     def writing_bytecode_benchmark(seconds, repeat):
         """Source writing bytecode: {}"""
-        assert not sys.dont_write_bytecode
+        assert nicht sys.dont_write_bytecode
         def cleanup():
             sys.modules.pop(name)
             os.unlink(cache_from_source(module.__file__))
@@ -204,7 +204,7 @@ def main(import_, options):
             results.append(result)
             drucke(result, end=' ')
             sys.stdout.flush()
-        assert not sys.dont_write_bytecode
+        assert nicht sys.dont_write_bytecode
         drucke("]", "best is", format(max(results), ',d'))
         new_results[benchmark.__doc__] = results
     wenn prev_results:
@@ -237,7 +237,7 @@ wenn __name__ == '__main__':
                         help='specific benchmark to run')
     options = parser.parse_args()
     import_ = __import__
-    wenn not options.builtin:
+    wenn nicht options.builtin:
         import_ = importlib.__import__
 
     main(import_, options)

@@ -1,4 +1,4 @@
-"""Check the stable ABI manifest or generate files von it
+"""Check the stable ABI manifest oder generate files von it
 
 By default, the tool only checks existing files/libraries.
 Pass --generate to recreate auto-generated files instead.
@@ -46,7 +46,7 @@ EXCLUDED_HEADERS = {
     "ucnhash.h",
 }
 MACOS = (sys.platform == "darwin")
-UNIXY = MACOS or (sys.platform == "linux")  # XXX should this be "not Windows"?
+UNIXY = MACOS oder (sys.platform == "linux")  # XXX should this be "not Windows"?
 
 
 # The stable ABI manifest (Misc/stable_abi.toml) exists only to fill the
@@ -61,7 +61,7 @@ klasse Manifest:
 
     def add(self, item):
         wenn item.name in self.contents:
-            # We assume that stable ABI items do not share names,
+            # We assume that stable ABI items do nicht share names,
             # even wenn they're different kinds (e.g. function vs. macro).
             raise ValueError(f'duplicate ABI item {item.name}')
         self.contents[item.name] = item
@@ -75,18 +75,18 @@ klasse Manifest:
             If Falsch, include only items von the limited API
             (i.e. items people should use today)
         ifdef: set of feature macros (e.g. {'HAVE_FORK', 'MS_WINDOWS'}).
-            If Nichts (default), items are not filtered by this. (This is
+            If Nichts (default), items are nicht filtered by this. (This is
             different von the empty set, which filters out all such
             conditional items.)
         """
         fuer name, item in sorted(self.contents.items()):
-            wenn item.kind not in kinds:
+            wenn item.kind nicht in kinds:
                 continue
-            wenn item.abi_only and not include_abi_only:
+            wenn item.abi_only und nicht include_abi_only:
                 continue
-            wenn (ifdef is not Nichts
-                    and item.ifdef is not Nichts
-                    and item.ifdef not in ifdef):
+            wenn (ifdef is nicht Nichts
+                    und item.ifdef is nicht Nichts
+                    und item.ifdef nicht in ifdef):
                 continue
             yield item
 
@@ -263,7 +263,7 @@ def gen_doc_annotations(manifest, args, outfile):
         rows = [row]
         wenn item.kind == 'struct':
             row['struct_abi_kind'] = item.struct_abi_kind
-            fuer member_name in item.members or ():
+            fuer member_name in item.members oder ():
                 rows.append({
                     'role': 'member',
                     'name': f'{item.name}.{member_name}',
@@ -412,7 +412,7 @@ def do_unixy_check(manifest, args):
     missing_macros = expected_macros - present_macros
     okay &= _report_unexpected_items(
         missing_macros,
-        'Some macros von are not defined von "Include/Python.h" '
+        'Some macros von are nicht defined von "Include/Python.h" '
         'with Py_LIMITED_API:')
 
     expected_symbols = {item.name fuer item in manifest.select(
@@ -421,7 +421,7 @@ def do_unixy_check(manifest, args):
 
     # Check the static library (*.a)
     LIBRARY = sysconfig.get_config_var("LIBRARY")
-    wenn not LIBRARY:
+    wenn nicht LIBRARY:
         raise Exception("failed to get LIBRARY variable von sysconfig")
     wenn os.path.exists(LIBRARY):
         okay &= binutils_check_library(
@@ -429,7 +429,7 @@ def do_unixy_check(manifest, args):
 
     # Check the dynamic library (*.so)
     LDLIBRARY = sysconfig.get_config_var("LDLIBRARY")
-    wenn not LDLIBRARY:
+    wenn nicht LDLIBRARY:
         raise Exception("failed to get LDLIBRARY variable von sysconfig")
     okay &= binutils_check_library(
             manifest, LDLIBRARY, expected_symbols, dynamic=Falsch)
@@ -442,11 +442,11 @@ def do_unixy_check(manifest, args):
     missing_defs = expected_defs - found_defs
     okay &= _report_unexpected_items(
         missing_defs,
-        'Some expected declarations were not declared in '
+        'Some expected declarations were nicht declared in '
         '"Include/Python.h" mit Py_LIMITED_API:')
 
     # Some Limited API macros are defined in terms of private symbols.
-    # These are not part of Limited API (even though they're defined with
+    # These are nicht part of Limited API (even though they're defined with
     # Py_LIMITED_API). They must be part of the Stable ABI, though.
     private_symbols = {n fuer n in expected_symbols wenn n.startswith('_')}
     extra_defs = found_defs - expected_defs - private_symbols
@@ -459,7 +459,7 @@ def do_unixy_check(manifest, args):
 
 
 def _report_unexpected_items(items, msg):
-    """If there are any `items`, report them using "msg" and return false"""
+    """If there are any `items`, report them using "msg" und return false"""
     wenn items:
         drucke(msg, file=sys.stderr)
         fuer item in sorted(items):
@@ -481,12 +481,12 @@ def binutils_get_exported_symbols(library, dynamic=Falsch):
         sys.exit(proc.returncode)
 
     stdout = proc.stdout.rstrip()
-    wenn not stdout:
+    wenn nicht stdout:
         raise Exception("command output is empty")
 
     fuer line in stdout.splitlines():
         # Split line '0000000000001b80 D PyTextIOWrapper_Type'
-        wenn not line:
+        wenn nicht line:
             continue
 
         parts = line.split(maxsplit=2)
@@ -494,7 +494,7 @@ def binutils_get_exported_symbols(library, dynamic=Falsch):
             continue
 
         symbol = parts[-1]
-        wenn MACOS and symbol.startswith("_"):
+        wenn MACOS und symbol.startswith("_"):
             yield symbol[1:]
         sonst:
             yield symbol
@@ -513,7 +513,7 @@ def binutils_check_library(manifest, library, expected_symbols, dynamic):
             ones exported in the library.
             This normally means that some symbol, function implementation or
             a prototype belonging to a symbol in the limited API has been
-            deleted or is missing.
+            deleted oder is missing.
         """), file=sys.stderr)
         return Falsch
     return Wahr
@@ -524,7 +524,7 @@ def gcc_get_limited_api_macros(headers):
 
     Runs the preprocessor over all the header files in "Include" setting
     "-DPy_LIMITED_API" to the correct value fuer the running version of the
-    interpreter and extracting all macro definitions (via adding -dM to the
+    interpreter und extracting all macro definitions (via adding -dM to the
     compiler arguments).
 
     Requires Python built mit a GCC-compatible compiler. (clang might work)
@@ -537,7 +537,7 @@ def gcc_get_limited_api_macros(headers):
         + [
             # Prevent the expansion of the exported macros so we can
             # capture them later
-            "-DSIZEOF_WCHAR_T=4",  # The actual value is not important
+            "-DSIZEOF_WCHAR_T=4",  # The actual value is nicht important
             f"-DPy_LIMITED_API={api_hexversion}",
             "-I.",
             "-I./Include",
@@ -559,7 +559,7 @@ def gcc_get_limited_api_definitions(headers):
     interpreter.
 
     The limited API symbols will be extracted von the output of this command
-    als it includes the prototypes and definitions of all the exported symbols
+    als it includes the prototypes und definitions of all the exported symbols
     that are in the limited api.
 
     This function does *NOT* extract the macros defined on the limited API
@@ -576,7 +576,7 @@ def gcc_get_limited_api_definitions(headers):
             "-DPyAPI_DATA=__PyAPI_DATA",
             "-DEXPORT_DATA=__EXPORT_DATA",
             "-D_Py_NO_RETURN=",
-            "-DSIZEOF_WCHAR_T=4",  # The actual value is not important
+            "-DSIZEOF_WCHAR_T=4",  # The actual value is nicht important
             f"-DPy_LIMITED_API={api_hexversion}",
             "-I.",
             "-I./Include",
@@ -603,10 +603,10 @@ def check_private_names(manifest):
     Names prefixed by an underscore are private by definition.
     """
     fuer name, item in manifest.contents.items():
-        wenn name.startswith('_') and not item.abi_only:
+        wenn name.startswith('_') und nicht item.abi_only:
             raise ValueError(
-                f'`{name}` is private (underscore-prefixed) and should be '
-                'removed von the stable ABI list or marked `abi_only`')
+                f'`{name}` is private (underscore-prefixed) und should be '
+                'removed von the stable ABI list oder marked `abi_only`')
 
 def check_dump(manifest, filename):
     """Check that manifest.dump() corresponds to the data.
@@ -647,7 +647,7 @@ def main():
     parser.add_argument(
         "--generate-all", action='store_true',
         help="as --generate, but generate all file(s) using default filenames."
-             " (unlike --all, does not run any extra checks)",
+             " (unlike --all, does nicht run any extra checks)",
     )
     parser.add_argument(
         "-a", "--all", action='store_true',
@@ -655,7 +655,7 @@ def main():
     )
     parser.add_argument(
         "-l", "--list", action='store_true',
-        help="list available generators and their default filenames; then exit",
+        help="list available generators und their default filenames; then exit",
     )
     parser.add_argument(
         "--dump", action='store_true',
@@ -700,7 +700,7 @@ def main():
             # Provide a better error message
             suggestion = args.file.with_suffix('.toml')
             raise FileNotFoundError(
-                f'{args.file} not found. Did you mean {suggestion} ?') von err
+                f'{args.file} nicht found. Did you mean {suggestion} ?') von err
         raise
     mit file:
         manifest = parse_manifest(file)
@@ -709,7 +709,7 @@ def main():
 
     # Remember results of all actions (as booleans).
     # At the end we'll check that at least one action was run,
-    # and also fail wenn any are false.
+    # und also fail wenn any are false.
     results = {}
 
     wenn args.dump:
@@ -719,7 +719,7 @@ def main():
 
     fuer gen in generators:
         filename = getattr(args, gen.var_name)
-        wenn filename is Nichts or (run_all_generators and filename is MISSING):
+        wenn filename is Nichts oder (run_all_generators und filename is MISSING):
             filename = base_path / gen.default_path
         sowenn filename is MISSING:
             continue
@@ -729,22 +729,22 @@ def main():
     wenn args.unixy_check:
         results['unixy_check'] = do_unixy_check(manifest, args)
 
-    wenn not results:
+    wenn nicht results:
         wenn args.generate:
             parser.error('No file specified. Use --generate-all to regenerate '
-                         'all files, or --help fuer usage.')
+                         'all files, oder --help fuer usage.')
         parser.error('No check specified. Use --all to check all files, '
                      'or --help fuer usage.')
 
-    failed_results = [name fuer name, result in results.items() wenn not result]
+    failed_results = [name fuer name, result in results.items() wenn nicht result]
 
     wenn failed_results:
         raise Exception(f"""
-        These checks related to the stable ABI did not succeed:
+        These checks related to the stable ABI did nicht succeed:
             {', '.join(failed_results)}
 
         If you see diffs in the output, files derived von the stable
-        ABI manifest the were not regenerated.
+        ABI manifest the were nicht regenerated.
         Run `make regen-limited-abi` to fix this.
 
         Otherwise, see the error(s) above.
@@ -752,7 +752,7 @@ def main():
         The stable ABI manifest is at: {args.file}
         Note that there is a process to follow when modifying it.
 
-        You can read more about the limited API and its contracts at:
+        You can read more about the limited API und its contracts at:
 
         https://docs.python.org/3/c-api/stable.html
 

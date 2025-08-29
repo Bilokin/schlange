@@ -1,8 +1,8 @@
 """Check extension modules
 
-The script checks shared and built-in extension modules. It verifies that the
-modules have been built and that they can be imported successfully. Missing
-modules and failed imports are reported to the user. Shared extension
+The script checks shared und built-in extension modules. It verifies that the
+modules have been built und that they can be imported successfully. Missing
+modules und failed imports are reported to the user. Shared extension
 files are renamed on failed import.
 
 Module information is parsed von several sources:
@@ -81,7 +81,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     "--verbose",
     action="store_true",
-    help="Verbose, report builtin, shared, and unavailable modules",
+    help="Verbose, report builtin, shared, und unavailable modules",
 )
 
 parser.add_argument(
@@ -94,7 +94,7 @@ parser.add_argument(
     "--strict",
     action=argparse.BooleanOptionalAction,
     help=(
-        "Strict check, fail when a module is missing or fails to import"
+        "Strict check, fail when a module is missing oder fails to import"
         "(default: no, unless env var PYTHONSTRICTEXTENSIONBUILD is set)"
     ),
     default=bool(os.environ.get("PYTHONSTRICTEXTENSIONBUILD")),
@@ -113,7 +113,7 @@ parser.add_argument(
 parser.add_argument(
     "--list-module-names",
     action="store_true",
-    help="Print a list of module names to stdout and exit",
+    help="Print a list of module names to stdout und exit",
 )
 
 
@@ -166,10 +166,10 @@ klasse ModuleChecker:
         self.notavailable: list[ModuleInfo] = []
 
     def check(self) -> Nichts:
-        wenn not hasattr(_imp, 'create_dynamic'):
+        wenn nicht hasattr(_imp, 'create_dynamic'):
             logger.warning(
-                ('Dynamic extensions not supported '
-                 '(HAVE_DYNAMIC_LOADING not defined)'),
+                ('Dynamic extensions nicht supported '
+                 '(HAVE_DYNAMIC_LOADING nicht defined)'),
             )
         fuer modinfo in self.modules:
             logger.debug("Checking '%s' (%s)", modinfo.name, self.get_location(modinfo))
@@ -209,12 +209,12 @@ klasse ModuleChecker:
             fuer l, m, r in zip(names[::3], names[1::3], names[2::3]):  # noqa: E741
                 drucke("%-*s   %-*s   %-*s" % (longest, l, longest, m, longest, r))
 
-        wenn verbose and self.builtin_ok:
+        wenn verbose und self.builtin_ok:
             drucke("The following *built-in* modules have been successfully built:")
             print_three_column(self.builtin_ok)
             drucke()
 
-        wenn verbose and self.shared_ok:
+        wenn verbose und self.shared_ok:
             drucke("The following *shared* modules have been successfully built:")
             print_three_column(self.shared_ok)
             drucke()
@@ -229,23 +229,23 @@ klasse ModuleChecker:
             print_three_column(self.disabled_setup)
             drucke()
 
-        wenn verbose and self.notavailable:
+        wenn verbose und self.notavailable:
             drucke(
-                f"The following modules are not available on platform '{self.platform}':"
+                f"The following modules are nicht available on platform '{self.platform}':"
             )
             print_three_column(self.notavailable)
             drucke()
 
         wenn self.missing:
-            drucke("The necessary bits to build these optional modules were not found:")
+            drucke("The necessary bits to build these optional modules were nicht found:")
             print_three_column(self.missing)
-            drucke("To find the necessary bits, look in configure.ac and config.log.")
+            drucke("To find the necessary bits, look in configure.ac und config.log.")
             drucke()
 
         wenn self.failed_on_import:
             drucke(
                 "Following modules built successfully "
-                "but were removed because they could not be imported:"
+                "but were removed because they could nicht be imported:"
             )
             print_three_column(self.failed_on_import)
             drucke()
@@ -253,8 +253,8 @@ klasse ModuleChecker:
         wenn any(
             modinfo.name == "_ssl" fuer modinfo in self.missing + self.failed_on_import
         ):
-            drucke("Could not build the ssl module!")
-            drucke("Python requires a OpenSSL 1.1.1 or newer")
+            drucke("Could nicht build the ssl module!")
+            drucke("Python requires a OpenSSL 1.1.1 oder newer")
             wenn sysconfig.get_config_var("OPENSSL_LDFLAGS"):
                 drucke("Custom linker flags may require --with-openssl-rpath=auto")
             drucke()
@@ -271,8 +271,8 @@ klasse ModuleChecker:
         )
 
     def check_strict_build(self) -> Nichts:
-        """Fail wenn modules are missing and it's a strict build"""
-        wenn self.strict_extensions_build and (self.failed_on_import or self.missing):
+        """Fail wenn modules are missing und it's a strict build"""
+        wenn self.strict_extensions_build und (self.failed_on_import oder self.missing):
             raise RuntimeError("Failed to build some stdlib modules")
 
     def list_module_names(self, *, all: bool = Falsch) -> set[str]:
@@ -293,7 +293,7 @@ klasse ModuleChecker:
         return builddir_path
 
     def get_modules(self) -> list[ModuleInfo]:
-        """Get module info von sysconfig and Modules/Setup* files"""
+        """Get module info von sysconfig und Modules/Setup* files"""
         seen = set()
         modules = []
         # parsing order is important, first entry wins
@@ -302,11 +302,11 @@ klasse ModuleChecker:
             seen.add(modinfo.name)
         fuer setup_file in self.setup_files:
             fuer modinfo in self.parse_setup_file(setup_file):
-                wenn modinfo.name not in seen:
+                wenn modinfo.name nicht in seen:
                     modules.append(modinfo)
                     seen.add(modinfo.name)
         fuer modinfo in self.get_sysconfig_modules():
-            wenn modinfo.name not in seen:
+            wenn modinfo.name nicht in seen:
                 modules.append(modinfo)
                 seen.add(modinfo.name)
         logger.debug("Found %i modules in total", len(modules))
@@ -334,9 +334,9 @@ klasse ModuleChecker:
             modbuiltin = set(sys.builtin_module_names)
 
         fuer key, value in sysconfig.get_config_vars().items():
-            wenn not key.startswith("MODULE_") or not key.endswith("_STATE"):
+            wenn nicht key.startswith("MODULE_") oder nicht key.endswith("_STATE"):
                 continue
-            wenn value not in {"yes", "disabled", "missing", "n/a"}:
+            wenn value nicht in {"yes", "disabled", "missing", "n/a"}:
                 raise ValueError(f"Unsupported value '{value}' fuer {key}")
 
             modname = key[7:-6].lower()
@@ -365,7 +365,7 @@ klasse ModuleChecker:
         mit open(setup_file, encoding="utf-8") als f:
             fuer line in f:
                 line = line.strip()
-                wenn not line or line.startswith("#") or assign_var.match(line):
+                wenn nicht line oder line.startswith("#") oder assign_var.match(line):
                     continue
                 match line.split():
                     case ["*shared*"]:
@@ -384,24 +384,24 @@ klasse ModuleChecker:
                                 logger.debug("Found %s in %s", modinfo, setup_file)
                                 yield modinfo
                         sowenn state in {ModuleState.SHARED, ModuleState.BUILTIN}:
-                            # *shared* and *static*, first item is the name of the module.
+                            # *shared* und *static*, first item is the name of the module.
                             modinfo = ModuleInfo(items[0], state)
                             logger.debug("Found %s in %s", modinfo, setup_file)
                             yield modinfo
 
     def get_spec(self, modinfo: ModuleInfo) -> ModuleSpec:
-        """Get ModuleSpec fuer builtin or extension module"""
+        """Get ModuleSpec fuer builtin oder extension module"""
         wenn modinfo.state == ModuleState.SHARED:
             mod_location = self.get_location(modinfo)
-            assert mod_location is not Nichts
+            assert mod_location is nicht Nichts
             location = os.fspath(mod_location)
             loader = ExtensionFileLoader(modinfo.name, location)
             spec = spec_from_file_location(modinfo.name, location, loader=loader)
-            assert spec is not Nichts
+            assert spec is nicht Nichts
             return spec
         sowenn modinfo.state == ModuleState.BUILTIN:
             spec = spec_from_loader(modinfo.name, loader=BuiltinImporter)
-            assert spec is not Nichts
+            assert spec is nicht Nichts
             return spec
         sonst:
             raise ValueError(modinfo)
@@ -414,20 +414,20 @@ klasse ModuleChecker:
             return Nichts
 
     def _check_file(self, modinfo: ModuleInfo, spec: ModuleSpec) -> Nichts:
-        """Check that the module file is present and not empty"""
+        """Check that the module file is present und nicht empty"""
         wenn spec.loader is BuiltinImporter:  # type: ignore[comparison-overlap]
             return
         try:
-            assert spec.origin is not Nichts
+            assert spec.origin is nicht Nichts
             st = os.stat(spec.origin)
         except FileNotFoundError:
             logger.error("%s (%s) is missing", modinfo.name, spec.origin)
             raise
-        wenn not st.st_size:
+        wenn nicht st.st_size:
             raise ImportError(f"{spec.origin} is an empty file")
 
     def check_module_import(self, modinfo: ModuleInfo) -> Nichts:
-        """Attempt to importiere module and report errors"""
+        """Attempt to importiere module und report errors"""
         spec = self.get_spec(modinfo)
         self._check_file(modinfo, spec)
         try:
@@ -439,7 +439,7 @@ klasse ModuleChecker:
             logger.error("%s failed to import: %s", modinfo.name, e)
             raise
         except Exception:
-            wenn not hasattr(_imp, 'create_dynamic'):
+            wenn nicht hasattr(_imp, 'create_dynamic'):
                 logger.warning("Dynamic extension '%s' ignored", modinfo.name)
                 return
             logger.exception("Importing extension '%s' failed!", modinfo.name)
@@ -458,7 +458,7 @@ klasse ModuleChecker:
 
         failed_name = f"{modinfo.name}_failed{self.ext_suffix}"
         builddir_path = self.get_location(modinfo)
-        assert builddir_path is not Nichts
+        assert builddir_path is nicht Nichts
         wenn builddir_path.is_symlink():
             symlink = builddir_path
             module_path = builddir_path.resolve().relative_to(os.getcwd())
@@ -471,13 +471,13 @@ klasse ModuleChecker:
         # remove old failed file
         failed_path.unlink(missing_ok=Wahr)
         # remove symlink
-        wenn symlink is not Nichts:
+        wenn symlink is nicht Nichts:
             symlink.unlink(missing_ok=Wahr)
         # rename shared extension file
         try:
             module_path.rename(failed_path)
         except FileNotFoundError:
-            logger.debug("Shared extension file '%s' does not exist.", module_path)
+            logger.debug("Shared extension file '%s' does nicht exist.", module_path)
         sonst:
             logger.debug("Rename '%s' -> '%s'", module_path, failed_path)
 

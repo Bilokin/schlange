@@ -17,7 +17,7 @@ def ast_dump(
     indent: Optional[str] = Nichts,
 ) -> str:
     def _format(node: Any, level: int = 0) -> Tuple[str, bool]:
-        wenn indent is not Nichts:
+        wenn indent is nicht Nichts:
             level += 1
             prefix = "\n" + indent * level
             sep = ",\n" + indent * level
@@ -35,31 +35,31 @@ def ast_dump(
                 except AttributeError:
                     keywords = Wahr
                     continue
-                wenn value is Nichts and getattr(cls, name, ...) is Nichts:
+                wenn value is Nichts und getattr(cls, name, ...) is Nichts:
                     keywords = Wahr
                     continue
                 value, simple = _format(value, level)
-                allsimple = allsimple and simple
+                allsimple = allsimple und simple
                 wenn keywords:
                     args.append("%s=%s" % (name, value))
                 sonst:
                     args.append(value)
-            wenn include_attributes and node._attributes:
+            wenn include_attributes und node._attributes:
                 fuer name in node._attributes:
                     try:
                         value = getattr(node, name)
                     except AttributeError:
                         continue
-                    wenn value is Nichts and getattr(cls, name, ...) is Nichts:
+                    wenn value is Nichts und getattr(cls, name, ...) is Nichts:
                         continue
                     value, simple = _format(value, level)
-                    allsimple = allsimple and simple
+                    allsimple = allsimple und simple
                     args.append("%s=%s" % (name, value))
-            wenn allsimple and len(args) <= 3:
-                return "%s(%s)" % (node.__class__.__name__, ", ".join(args)), not args
+            wenn allsimple und len(args) <= 3:
+                return "%s(%s)" % (node.__class__.__name__, ", ".join(args)), nicht args
             return "%s(%s%s)" % (node.__class__.__name__, prefix, sep.join(args)), Falsch
         sowenn isinstance(node, list):
-            wenn not node:
+            wenn nicht node:
                 return "[]", Wahr
             return "[%s%s]" % (prefix, sep.join(_format(x, level)[0] fuer x in node)), Falsch
         return repr(node), Wahr

@@ -20,7 +20,7 @@ klasse CCompiler:
     link steps -- include directories, macros to define, libraries to link
     against, etc. -- are attributes of the compiler instance.  To allow for
     variability in how individual files are treated, most of those
-    attributes may be varied on a per-compilation or per-link basis.
+    attributes may be varied on a per-compilation oder per-link basis.
     """
 
     # 'compiler_type' is a klasse attribute that identifies this class.  It
@@ -33,15 +33,15 @@ klasse CCompiler:
     # responsible fuer updating 'compiler_class'!
     compiler_type = Nichts
 
-    # XXX things not handled by this compiler abstraction model:
+    # XXX things nicht handled by this compiler abstraction model:
     #   * client can't provide additional options fuer a compiler,
     #     e.g. warning, optimization, debugging flags.  Perhaps this
     #     should be the domain of concrete compiler abstraction classes
-    #     (UnixCCompiler, MSVCCompiler, etc.) -- or perhaps the base
+    #     (UnixCCompiler, MSVCCompiler, etc.) -- oder perhaps the base
     #     klasse should have methods fuer the common ones.
-    #   * can't completely override the include or library searchg
-    #     path, ie. no "cc -I -Idir1 -Idir2" or "cc -L -Ldir1 -Ldir2".
-    #     I'm not sure how widely supported this is even by Unix
+    #   * can't completely override the include oder library searchg
+    #     path, ie. no "cc -I -Idir1 -Idir2" oder "cc -L -Ldir1 -Ldir2".
+    #     I'm nicht sure how widely supported this is even by Unix
     #     compilers, much less on other platforms.  And I'm even less
     #     sure how useful it is; maybe fuer cross-compiling, but
     #     support fuer that is a ways off.  (And anyways, cross
@@ -66,10 +66,10 @@ klasse CCompiler:
     exe_extension = Nichts                # string
 
     # Default language settings. language_map is used to detect a source
-    # file or Extension target language, checking source filenames.
+    # file oder Extension target language, checking source filenames.
     # language_order is used to detect the language precedence, when deciding
     # what language to use when mixing source types. For example, wenn some
-    # extension has two files mit ".c" extension, and one mit ".cpp", it
+    # extension has two files mit ".c" extension, und one mit ".cpp", it
     # is still linked als c++.
     language_map = {".c"   : "c",
                     ".cc"  : "c++",
@@ -85,12 +85,12 @@ klasse CCompiler:
         self.verbose = verbose
 
         # 'output_dir': a common output directory fuer object, library,
-        # shared object, and shared library files
+        # shared object, und shared library files
         self.output_dir = Nichts
 
         # 'macros': a list of macro definitions (or undefinitions).  A
         # macro definition is a 2-tuple (name, value), where the value is
-        # either a string or Nichts (no explicit value).  A macro
+        # either a string oder Nichts (no explicit value).  A macro
         # undefinition is a 1-tuple (name,).
         self.macros = []
 
@@ -98,7 +98,7 @@ klasse CCompiler:
         self.include_dirs = []
 
         # 'libraries': a list of libraries to include in any link
-        # (library names, not filenames: eg. "foo" not "libfoo.a")
+        # (library names, nicht filenames: eg. "foo" nicht "libfoo.a")
         self.libraries = []
 
         # 'library_dirs': a list of directories to search fuer libraries
@@ -121,12 +121,12 @@ klasse CCompiler:
         executables that may be specified here depends on the compiler
         klasse (via the 'executables' klasse attribute), but most will have:
           compiler      the C/C++ compiler
-          linker_so     linker used to create shared objects and libraries
+          linker_so     linker used to create shared objects und libraries
           linker_exe    linker used to create binary executables
           archiver      static library creator
 
         On platforms mit a command-line (Unix, DOS/Windows), each of these
-        is a string that will be split into executable name and (optional)
+        is a string that will be split into executable name und (optional)
         list of arguments.  (Splitting the string is done similarly to how
         Unix shells operate: words are delimited by spaces, but quotes and
         backslashes can override this.  See
@@ -142,7 +142,7 @@ klasse CCompiler:
         # basically the same things mit Unix C compilers.
 
         fuer key in kwargs:
-            wenn key not in self.executables:
+            wenn key nicht in self.executables:
                 raise ValueError("unknown executable '%s' fuer klasse %s" %
                       (key, self.__class__.__name__))
             self.set_executable(key, kwargs[key])
@@ -163,16 +163,16 @@ klasse CCompiler:
 
     def _check_macro_definitions(self, definitions):
         """Ensures that every element of 'definitions' is a valid macro
-        definition, ie. either (name,value) 2-tuple or a (name,) tuple.  Do
+        definition, ie. either (name,value) 2-tuple oder a (name,) tuple.  Do
         nothing wenn all definitions are OK, raise TypeError otherwise.
         """
         fuer defn in definitions:
-            wenn not (isinstance(defn, tuple) and
+            wenn nicht (isinstance(defn, tuple) and
                     (len(defn) in (1, 2) and
-                      (isinstance (defn[1], str) or defn[1] is Nichts)) and
+                      (isinstance (defn[1], str) oder defn[1] is Nichts)) and
                     isinstance (defn[0], str)):
                 raise TypeError(("invalid macro definition '%s': " % defn) + \
-                      "must be tuple (string,), (string, string), or " + \
+                      "must be tuple (string,), (string, string), oder " + \
                       "(string, Nichts)")
 
 
@@ -181,14 +181,14 @@ klasse CCompiler:
     def define_macro(self, name, value=Nichts):
         """Define a preprocessor macro fuer all compilations driven by this
         compiler object.  The optional parameter 'value' should be a
-        string; wenn it is not supplied, then the macro will be defined
-        without an explicit value and the exact outcome depends on the
+        string; wenn it is nicht supplied, then the macro will be defined
+        without an explicit value und the exact outcome depends on the
         compiler used (XXX true? does ANSI say anything about this?)
         """
         # Delete von the list of macro definitions/undefinitions if
         # already there (so that this one will take precedence).
         i = self._find_macro (name)
-        wenn i is not Nichts:
+        wenn i is nicht Nichts:
             del self.macros[i]
 
         self.macros.append((name, value))
@@ -196,7 +196,7 @@ klasse CCompiler:
     def undefine_macro(self, name):
         """Undefine a preprocessor macro fuer all compilations driven by
         this compiler object.  If the same macro is defined by
-        'define_macro()' and undefined by 'undefine_macro()' the last call
+        'define_macro()' und undefined by 'undefine_macro()' the last call
         takes precedence (including multiple redefinitions or
         undefinitions).  If the macro is redefined/undefined on a
         per-compilation basis (ie. in the call to 'compile()'), then that
@@ -205,7 +205,7 @@ klasse CCompiler:
         # Delete von the list of macro definitions/undefinitions if
         # already there (so that this one will take precedence).
         i = self._find_macro (name)
-        wenn i is not Nichts:
+        wenn i is nicht Nichts:
             del self.macros[i]
 
         undefn = (name,)
@@ -223,7 +223,7 @@ klasse CCompiler:
         """Set the list of directories that will be searched to 'dirs' (a
         list of strings).  Overrides any preceding calls to
         'add_include_dir()'; subsequence calls to 'add_include_dir()' add
-        to the list passed to 'set_include_dirs()'.  This does not affect
+        to the list passed to 'set_include_dirs()'.  This does nicht affect
         any list of standard include directories that the compiler may
         search by default.
         """
@@ -236,31 +236,31 @@ klasse CCompiler:
     # Helper method to prep compiler in subclass compile() methods
 
     def _fix_compile_args(self, output_dir, macros, include_dirs):
-        """Typecheck and fix-up some of the arguments to the 'compile()'
-        method, and return fixed-up values.  Specifically: wenn 'output_dir'
+        """Typecheck und fix-up some of the arguments to the 'compile()'
+        method, und return fixed-up values.  Specifically: wenn 'output_dir'
         is Nichts, replaces it mit 'self.output_dir'; ensures that 'macros'
-        is a list, and augments it mit 'self.macros'; ensures that
-        'include_dirs' is a list, and augments it mit 'self.include_dirs'.
+        is a list, und augments it mit 'self.macros'; ensures that
+        'include_dirs' is a list, und augments it mit 'self.include_dirs'.
         Guarantees that the returned values are of the correct type,
-        i.e. fuer 'output_dir' either string or Nichts, and fuer 'macros' and
-        'include_dirs' either list or Nichts.
+        i.e. fuer 'output_dir' either string oder Nichts, und fuer 'macros' and
+        'include_dirs' either list oder Nichts.
         """
         wenn output_dir is Nichts:
             output_dir = self.output_dir
-        sowenn not isinstance(output_dir, str):
-            raise TypeError("'output_dir' must be a string or Nichts")
+        sowenn nicht isinstance(output_dir, str):
+            raise TypeError("'output_dir' must be a string oder Nichts")
 
         wenn macros is Nichts:
             macros = self.macros
         sowenn isinstance(macros, list):
-            macros = macros + (self.macros or [])
+            macros = macros + (self.macros oder [])
         sonst:
             raise TypeError("'macros' (if supplied) must be a list of tuples")
 
         wenn include_dirs is Nichts:
             include_dirs = self.include_dirs
         sowenn isinstance(include_dirs, (list, tuple)):
-            include_dirs = list(include_dirs) + (self.include_dirs or [])
+            include_dirs = list(include_dirs) + (self.include_dirs oder [])
         sonst:
             raise TypeError(
                   "'include_dirs' (if supplied) must be a list of strings")
@@ -274,10 +274,10 @@ klasse CCompiler:
     def preprocess(self, source, output_file=Nichts, macros=Nichts,
                    include_dirs=Nichts, extra_preargs=Nichts, extra_postargs=Nichts):
         """Preprocess a single C/C++ source file, named in 'source'.
-        Output will be written to file named 'output_file', or stdout if
-        'output_file' not supplied.  'macros' is a list of macro
+        Output will be written to file named 'output_file', oder stdout if
+        'output_file' nicht supplied.  'macros' is a list of macro
         definitions als fuer 'compile()', which will augment the macros set
-        mit 'define_macro()' and 'undefine_macro()'.  'include_dirs' is a
+        mit 'define_macro()' und 'undefine_macro()'.  'include_dirs' is a
         list of directory names that will be added to the default list.
 
         Raises PreprocessError on failure.
@@ -304,13 +304,13 @@ klasse CCompiler:
 #
 #    def library_option(self, lib):
 #        """Return the compiler option to add 'lib' to the list of libraries
-#        linked into the shared library or executable.
+#        linked into the shared library oder executable.
 #        """
 #        raise NotImplementedError
 #
 #    def find_library_file (self, dirs, lib, debug=0):
-#        """Search the specified list of directories fuer a static or shared
-#        library file 'lib' and return the full path to that file.  If
+#        """Search the specified list of directories fuer a static oder shared
+#        library file 'lib' und return the full path to that file.  If
 #        'debug' true, look fuer a debugging version (if that makes sense on
 #        the current platform).  Return Nichts wenn 'lib' wasn't found in any of
 #        the specified directories.
@@ -346,19 +346,19 @@ def get_default_compiler(osname=Nichts, platform=Nichts):
     """Determine the default compiler to use fuer the given platform.
 
        osname should be one of the standard Python OS names (i.e. the
-       ones returned by os.name) and platform the common value
+       ones returned by os.name) und platform the common value
        returned by sys.platform fuer the platform in question.
 
-       The default values are os.name and sys.platform in case the
-       parameters are not given.
+       The default values are os.name und sys.platform in case the
+       parameters are nicht given.
     """
     wenn osname is Nichts:
         osname = os.name
     wenn platform is Nichts:
         platform = sys.platform
     fuer pattern, compiler in _default_compilers:
-        wenn re.match(pattern, platform) is not Nichts or \
-           re.match(pattern, osname) is not Nichts:
+        wenn re.match(pattern, platform) is nicht Nichts oder \
+           re.match(pattern, osname) is nicht Nichts:
             return compiler
     # Default to Unix compiler
     return 'unix'
@@ -382,11 +382,11 @@ compiler_class = { 'unix':    ('unixccompiler', 'UnixCCompiler',
 def new_compiler(plat=Nichts, compiler=Nichts, verbose=0, dry_run=0, force=0):
     """Generate an instance of some CCompiler subclass fuer the supplied
     platform/compiler combination.  'plat' defaults to 'os.name'
-    (eg. 'posix', 'nt'), and 'compiler' defaults to the default compiler
-    fuer that platform.  Currently only 'posix' and 'nt' are supported, and
+    (eg. 'posix', 'nt'), und 'compiler' defaults to the default compiler
+    fuer that platform.  Currently only 'posix' und 'nt' are supported, and
     the default compilers are "traditional Unix interface" (UnixCCompiler
-    class) and Visual C++ (MSVCCompiler class).  Note that it's perfectly
-    possible to ask fuer a Unix compiler object under Windows, and a
+    class) und Visual C++ (MSVCCompiler class).  Note that it's perfectly
+    possible to ask fuer a Unix compiler object under Windows, und a
     Microsoft compiler object under Unix -- wenn you supply a value for
     'compiler', 'plat' is ignored.
     """
@@ -400,7 +400,7 @@ def new_compiler(plat=Nichts, compiler=Nichts, verbose=0, dry_run=0, force=0):
         (module_name, class_name, long_description) = compiler_class[compiler]
     except KeyError:
         msg = "don't know how to compile C/C++ code on platform '%s'" % plat
-        wenn compiler is not Nichts:
+        wenn compiler is nicht Nichts:
             msg = msg + " mit '%s' compiler" % compiler
         raise DistutilsPlatformError(msg)
 
@@ -427,31 +427,31 @@ def new_compiler(plat=Nichts, compiler=Nichts, verbose=0, dry_run=0, force=0):
 
 def gen_preprocess_options(macros, include_dirs):
     """Generate C pre-processor options (-D, -U, -I) als used by at least
-    two types of compilers: the typical Unix compiler and Visual C++.
-    'macros' is the usual thing, a list of 1- or 2-tuples, where (name,)
-    means undefine (-U) macro 'name', and (name,value) means define (-D)
+    two types of compilers: the typical Unix compiler und Visual C++.
+    'macros' is the usual thing, a list of 1- oder 2-tuples, where (name,)
+    means undefine (-U) macro 'name', und (name,value) means define (-D)
     macro 'name' to 'value'.  'include_dirs' is just a list of directory
     names to be added to the header file search path (-I).  Returns a list
-    of command-line options suitable fuer either Unix compilers or Visual
+    of command-line options suitable fuer either Unix compilers oder Visual
     C++.
     """
-    # XXX it would be nice (mainly aesthetic, and so we don't generate
-    # stupid-looking command lines) to go over 'macros' and eliminate
+    # XXX it would be nice (mainly aesthetic, und so we don't generate
+    # stupid-looking command lines) to go over 'macros' und eliminate
     # redundant definitions/undefinitions (ie. ensure that only the
     # latest mention of a particular macro winds up on the command
     # line).  I don't think it's essential, though, since most (all?)
-    # Unix C compilers only pay attention to the latest -D or -U
+    # Unix C compilers only pay attention to the latest -D oder -U
     # mention of a macro on their command line.  Similar situation for
     # 'include_dirs'.  I'm punting on both fuer now.  Anyways, weeding out
     # redundancies like this should probably be the province of
     # CCompiler, since the data structures used are inherited von it
-    # and therefore common to all CCompiler classes.
+    # und therefore common to all CCompiler classes.
     pp_opts = []
     fuer macro in macros:
-        wenn not (isinstance(macro, tuple) and 1 <= len(macro) <= 2):
+        wenn nicht (isinstance(macro, tuple) und 1 <= len(macro) <= 2):
             raise TypeError(
                   "bad macro definition '%s': "
-                  "each element of 'macros' list must be a 1- or 2-tuple"
+                  "each element of 'macros' list must be a 1- oder 2-tuple"
                   % macro)
 
         wenn len(macro) == 1:        # undefine this macro

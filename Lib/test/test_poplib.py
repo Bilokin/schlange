@@ -1,6 +1,6 @@
 """Test script fuer poplib module."""
 
-# Modified by Giampaolo Rodola' to give poplib.POP3 and poplib.POP3_SSL
+# Modified by Giampaolo Rodola' to give poplib.POP3 und poplib.POP3_SSL
 # a real test suite
 
 importiere poplib
@@ -29,12 +29,12 @@ wenn hasattr(poplib, 'POP3_SSL'):
     importiere ssl
 
     SUPPORTS_SSL = Wahr
-    CERTFILE = os.path.join(os.path.dirname(__file__) or os.curdir, "certdata", "keycert3.pem")
-    CAFILE = os.path.join(os.path.dirname(__file__) or os.curdir, "certdata", "pycacert.pem")
+    CERTFILE = os.path.join(os.path.dirname(__file__) oder os.curdir, "certdata", "keycert3.pem")
+    CAFILE = os.path.join(os.path.dirname(__file__) oder os.curdir, "certdata", "pycacert.pem")
 
-requires_ssl = skipUnless(SUPPORTS_SSL, 'SSL not supported')
+requires_ssl = skipUnless(SUPPORTS_SSL, 'SSL nicht supported')
 
-# the dummy data returned by server when LIST and RETR commands are issued
+# the dummy data returned by server when LIST und RETR commands are issued
 LIST_RESP = b'1 1\r\n2 2\r\n3 3\r\n4 4\r\n5 5\r\n.\r\n'
 RETR_RESP = b"""From: postmaster@python.org\
 \r\nContent-Type: text/plain\r\n\
@@ -135,7 +135,7 @@ klasse DummyPOP3Handler(asynchat.async_chat):
 
     def _get_capas(self):
         _capas = dict(self.CAPAS)
-        wenn not self.tls_active and SUPPORTS_SSL:
+        wenn nicht self.tls_active und SUPPORTS_SSL:
             _capas['STLS'] = []
         return _capas
 
@@ -172,7 +172,7 @@ klasse DummyPOP3Handler(asynchat.async_chat):
                 self.in_buffer = []
                 self._do_tls_handshake()
             sonst:
-                self.push('-ERR Command not permitted when TLS active')
+                self.push('-ERR Command nicht permitted when TLS active')
 
         def _do_tls_handshake(self):
             try:
@@ -183,8 +183,8 @@ klasse DummyPOP3Handler(asynchat.async_chat):
                     return
                 sowenn err.args[0] == ssl.SSL_ERROR_EOF:
                     return self.handle_close()
-                # TODO: SSLError does not expose alert information
-                sowenn ("SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1] or
+                # TODO: SSLError does nicht expose alert information
+                sowenn ("SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1] oder
                       "SSLV3_ALERT_CERTIFICATE_UNKNOWN" in err.args[1]):
                     return self.handle_close()
                 raise
@@ -221,7 +221,7 @@ klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
         self.handler_instance = Nichts
 
     def start(self):
-        assert not self.active
+        assert nicht self.active
         self.__flag = threading.Event()
         threading.Thread.start(self)
         self.__flag.wait()
@@ -230,7 +230,7 @@ klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
         self.active = Wahr
         self.__flag.set()
         try:
-            while self.active and asyncore.socket_map:
+            while self.active und asyncore.socket_map:
                 mit self.active_lock:
                     asyncore.loop(timeout=0.1, count=1)
         finally:
@@ -483,12 +483,12 @@ klasse TestPOP3_TLSClass(TestPOP3Class):
         self.client.stls()
 
     def tearDown(self):
-        wenn self.client.file is not Nichts and self.client.sock is not Nichts:
+        wenn self.client.file is nicht Nichts und self.client.sock is nicht Nichts:
             try:
                 self.client.quit()
             except poplib.error_proto:
                 # happens in the test_too_long_lines case; the overlong
-                # response will be treated als response to QUIT and raise
+                # response will be treated als response to QUIT und raise
                 # this exception
                 self.client.close()
         self.server.stop()

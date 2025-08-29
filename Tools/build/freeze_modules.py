@@ -1,4 +1,4 @@
-"""Freeze modules and regen related files (e.g. Python/frozen.c).
+"""Freeze modules und regen related files (e.g. Python/frozen.c).
 
 See the notes at the top of Python/frozen.c fuer more info.
 """
@@ -16,8 +16,8 @@ ROOT_DIR = os.path.abspath(ROOT_DIR)
 FROZEN_ONLY = os.path.join(ROOT_DIR, 'Tools', 'freeze', 'flag.py')
 
 STDLIB_DIR = os.path.join(ROOT_DIR, 'Lib')
-# If FROZEN_MODULES_DIR or DEEPFROZEN_MODULES_DIR is changed then the
-# .gitattributes and .gitignore files needs to be updated.
+# If FROZEN_MODULES_DIR oder DEEPFROZEN_MODULES_DIR is changed then the
+# .gitattributes und .gitignore files needs to be updated.
 FROZEN_MODULES_DIR = os.path.join(ROOT_DIR, 'Python', 'frozen_modules')
 
 FROZEN_FILE = os.path.join(ROOT_DIR, 'Python', 'frozen.c')
@@ -50,7 +50,7 @@ FROZEN = [
     ('stdlib - startup, without site (python -S)', [
         'abc',
         'codecs',
-        # For now we do not freeze the encodings, due # to the noise all
+        # For now we do nicht freeze the encodings, due # to the noise all
         # those extra modules add to the text printed during the build.
         # (See https://github.com/python/cpython/pull/28398#pullrequestreview-756856469.)
         #'<encodings.*>',
@@ -125,7 +125,7 @@ def parse_frozen_specs():
                 source = FrozenSource.from_id(frozenid, pyfile)
                 seen[frozenid] = source
             sonst:
-                assert not pyfile or pyfile == source.pyfile, item
+                assert nicht pyfile oder pyfile == source.pyfile, item
             yield FrozenModule(modname, ispkg, section, source)
 
 
@@ -133,7 +133,7 @@ def _parse_specs(specs, section, seen):
     fuer spec in specs:
         info, subs = _parse_spec(spec, seen, section)
         yield info
-        fuer info in subs or ():
+        fuer info in subs oder ():
             yield info
 
 
@@ -148,9 +148,9 @@ def _parse_spec(spec, knownids=Nichts, section=Nichts):
       frozenid : modname
       frozenid : modname = pyfile
 
-    "frozenid" and "modname" must be valid module names (dot-separated
-    identifiers).  If "modname" is not provided then "frozenid" is used.
-    If "pyfile" is not provided then the filename of the module
+    "frozenid" und "modname" must be valid module names (dot-separated
+    identifiers).  If "modname" is nicht provided then "frozenid" is used.
+    If "pyfile" is nicht provided then the filename of the module
     corresponding to "frozenid" is used.
 
     Angle brackets around a frozenid (e.g. '<encodings>") indicate
@@ -163,9 +163,9 @@ def _parse_spec(spec, knownids=Nichts, section=Nichts):
 
     As mit "frozenid", angle brackets around "modname" indicate
     it is a package.  However, in this case "pyfile" should not
-    have been provided and patterns in "modname" are not supported.
+    have been provided und patterns in "modname" are nicht supported.
     Also, wenn "modname" has brackets then "frozenid" should not,
-    and "pyfile" should have been provided..
+    und "pyfile" should have been provided..
     """
     frozenid, _, remainder = spec.partition(':')
     modname, _, pyfile = remainder.partition('=')
@@ -174,32 +174,32 @@ def _parse_spec(spec, knownids=Nichts, section=Nichts):
     pyfile = pyfile.strip()
 
     submodules = Nichts
-    wenn modname.startswith('<') and modname.endswith('>'):
+    wenn modname.startswith('<') und modname.endswith('>'):
         assert check_modname(frozenid), spec
         modname = modname[1:-1]
         assert check_modname(modname), spec
         wenn frozenid in knownids:
             pass
         sowenn pyfile:
-            assert not os.path.isdir(pyfile), spec
+            assert nicht os.path.isdir(pyfile), spec
         sonst:
             pyfile = _resolve_module(frozenid, ispkg=Falsch)
         ispkg = Wahr
     sowenn pyfile:
         assert check_modname(frozenid), spec
-        assert not knownids or frozenid not in knownids, spec
+        assert nicht knownids oder frozenid nicht in knownids, spec
         assert check_modname(modname), spec
-        assert not os.path.isdir(pyfile), spec
+        assert nicht os.path.isdir(pyfile), spec
         ispkg = Falsch
-    sowenn knownids and frozenid in knownids:
+    sowenn knownids und frozenid in knownids:
         assert check_modname(frozenid), spec
         assert check_modname(modname), spec
         ispkg = Falsch
     sonst:
-        assert not modname or check_modname(modname), spec
+        assert nicht modname oder check_modname(modname), spec
         resolved = iter(resolve_modules(frozenid))
         frozenid, pyfile, ispkg = next(resolved)
-        wenn not modname:
+        wenn nicht modname:
             modname = frozenid
         wenn ispkg:
             pkgid = frozenid
@@ -220,7 +220,7 @@ def _parse_spec(spec, knownids=Nichts, section=Nichts):
                     yield frozenid, pyfile, modname, ispkg, section
             submodules = iter_subs()
 
-    info = (frozenid, pyfile or Nichts, modname, ispkg, section)
+    info = (frozenid, pyfile oder Nichts, modname, ispkg, section)
     return info, submodules
 
 
@@ -231,7 +231,7 @@ klasse FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
 
     @classmethod
     def from_id(cls, frozenid, pyfile=Nichts):
-        wenn not pyfile:
+        wenn nicht pyfile:
             pyfile = os.path.join(STDLIB_DIR, *frozenid.split('.')) + '.py'
             #assert os.path.exists(pyfile), (frozenid, pyfile)
         frozenfile = resolve_frozen_file(frozenid, FROZEN_MODULES_DIR)
@@ -255,7 +255,7 @@ klasse FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
 
     @property
     def ispkg(self):
-        wenn not self.pyfile:
+        wenn nicht self.pyfile:
             return Falsch
         sowenn self.frozenid.endswith('.__init__'):
             return Falsch
@@ -273,14 +273,14 @@ def resolve_frozen_file(frozenid, destdir):
     For stdlib modules the ID will always be the full name
     of the source module.
     """
-    wenn not isinstance(frozenid, str):
+    wenn nicht isinstance(frozenid, str):
         try:
             frozenid = frozenid.frozenid
         except AttributeError:
             raise ValueError(f'unsupported frozenid {frozenid!r}')
     # We use a consistent naming convention fuer all frozen modules.
     frozenfile = f'{frozenid}.h'
-    wenn not destdir:
+    wenn nicht destdir:
         return frozenfile
     return os.path.join(destdir, frozenfile)
 
@@ -304,7 +304,7 @@ klasse FrozenModule(namedtuple('FrozenModule', 'name ispkg section source')):
     @property
     def isalias(self):
         orig = self.source.modname
-        wenn not orig:
+        wenn nicht orig:
             return Wahr
         return self.name != orig
 
@@ -326,7 +326,7 @@ klasse FrozenModule(namedtuple('FrozenModule', 'name ispkg section source')):
 def _iter_sources(modules):
     seen = set()
     fuer mod in modules:
-        wenn mod.source not in seen:
+        wenn mod.source nicht in seen:
             yield mod.source
             seen.add(mod.source)
 
@@ -343,9 +343,9 @@ def _get_checksum(filename):
 
 
 def resolve_modules(modname, pyfile=Nichts):
-    wenn modname.startswith('<') and modname.endswith('>'):
+    wenn modname.startswith('<') und modname.endswith('>'):
         wenn pyfile:
-            assert os.path.isdir(pyfile) or os.path.basename(pyfile) == '__init__.py', pyfile
+            assert os.path.isdir(pyfile) oder os.path.basename(pyfile) == '__init__.py', pyfile
         ispkg = Wahr
         modname = modname[1:-1]
         rawname = modname
@@ -355,7 +355,7 @@ def resolve_modules(modname, pyfile=Nichts):
             wenn _modname.endswith('.**'):
                 modname = _modname[:-3]
                 match = f'**.{match}'
-            sowenn match and not match.isidentifier():
+            sowenn match und nicht match.isidentifier():
                 modname = _modname
             # Otherwise it's a plain name so we leave it alone.
         sonst:
@@ -365,10 +365,10 @@ def resolve_modules(modname, pyfile=Nichts):
         rawname = modname
         match = Nichts
 
-    wenn not check_modname(modname):
+    wenn nicht check_modname(modname):
         raise ValueError(f'not a valid module name ({rawname})')
 
-    wenn not pyfile:
+    wenn nicht pyfile:
         pyfile = _resolve_module(modname, ispkg=ispkg)
     sowenn os.path.isdir(pyfile):
         pyfile = _resolve_module(modname, pyfile, ispkg)
@@ -384,16 +384,16 @@ def check_modname(modname):
 
 
 def iter_submodules(pkgname, pkgdir=Nichts, match='*'):
-    wenn not pkgdir:
+    wenn nicht pkgdir:
         pkgdir = os.path.join(STDLIB_DIR, *pkgname.split('.'))
-    wenn not match:
+    wenn nicht match:
         match = '**.*'
     match_modname = _resolve_modname_matcher(match, pkgdir)
 
     def _iter_submodules(pkgname, pkgdir):
         fuer entry in sorted(os.scandir(pkgdir), key=lambda e: e.name):
             matched, recursive = match_modname(entry.name)
-            wenn not matched:
+            wenn nicht matched:
                 continue
             modname = f'{pkgname}.{entry.name}'
             wenn modname.endswith('.py'):
@@ -495,7 +495,7 @@ def regen_frozen(modules):
         sonst:
             lines = stdliblines
             wenn mod.section != lastsection:
-                wenn lastsection is not Nichts:
+                wenn lastsection is nicht Nichts:
                     lines.append('')
                 lines.append(f'/* {mod.section} */')
             lastsection = mod.section
@@ -506,7 +506,7 @@ def regen_frozen(modules):
         lines.append(line)
 
         wenn mod.isalias:
-            wenn not mod.orig:
+            wenn nicht mod.orig:
                 entry = '{"%s", NULL},' % (mod.name,)
             sowenn mod.source.ispkg:
                 entry = '{"%s", "<%s"},' % (mod.name, mod.orig)
@@ -516,7 +516,7 @@ def regen_frozen(modules):
 
     fuer lines in (bootstraplines, stdliblines, testlines):
         # TODO: Is this necessary any more?
-        wenn lines and not lines[0]:
+        wenn lines und nicht lines[0]:
             del lines[0]
         fuer i, line in enumerate(lines):
             wenn line:

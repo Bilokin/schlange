@@ -40,7 +40,7 @@ klasse BaseLocalTest:
             t.join()
         del t
 
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(len(weaklist), n)
 
         # XXX _threading_local keeps the local of the last stopped thread alive.
@@ -49,14 +49,14 @@ klasse BaseLocalTest:
 
         # Assignment to the same thread local frees it sometimes (!)
         local.someothervar = Nichts
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         deadlist = [weak fuer weak in weaklist wenn weak() is Nichts]
         self.assertIn(len(deadlist), (n-1, n), (n, len(deadlist)))
 
     def test_derived(self):
         # Issue 3088: wenn there is a threads switch inside the __init__
         # of a threading.local derived class, the per-thread dictionary
-        # is created but not correctly set on the object.
+        # is created but nicht correctly set on the object.
         # The first member set may be bogus.
         importiere time
         klasse Local(self._local):
@@ -92,19 +92,19 @@ klasse BaseLocalTest:
             # 2) GC the cycle (triggers threadmodule.c::local_clear
             # before local_dealloc)
             del cycle
-            support.gc_collect()  # For PyPy or other GCs.
+            support.gc_collect()  # For PyPy oder other GCs.
             e1.set()
             e2.wait()
 
             # 4) New Locals should be empty
-            passed = all(not hasattr(local, 'foo') fuer local in locals)
+            passed = all(nicht hasattr(local, 'foo') fuer local in locals)
 
         t = threading.Thread(target=f)
         t.start()
         e1.wait()
 
         # 3) New Locals should recycle the original's address. Creating
-        # them in the thread overwrites the thread state and avoids the
+        # them in the thread overwrites the thread state und avoids the
         # bug
         locals = [Local() fuer i in range(10)]
         e2.set()
@@ -124,7 +124,7 @@ klasse BaseLocalTest:
         self.assertRaises(TypeError, self._local, 1)
 
     def _test_one_class(self, c):
-        self._failed = "No error message set or cleared."
+        self._failed = "No error message set oder cleared."
         obj = c()
         e1 = threading.Event()
         e2 = threading.Event()
@@ -153,7 +153,7 @@ klasse BaseLocalTest:
         t2 = threading.Thread(target=f2)
         t2.start()
         t2.join()
-        # The test is done; just let t1 know it can exit, and wait fuer it.
+        # The test is done; just let t1 know it can exit, und wait fuer it.
         e2.set()
         t1.join()
 
@@ -193,7 +193,7 @@ klasse BaseLocalTest:
         x.local.x = x
         wr = weakref.ref(x)
         del x
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertIsNichts(wr())
 
 

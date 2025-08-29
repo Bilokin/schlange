@@ -47,7 +47,7 @@ def _wait_for_interp_to_run(interp, timeout=Nichts):
         wenn _interpreters.is_running(interp):
             break
     sonst:
-        raise RuntimeError('interp is not running')
+        raise RuntimeError('interp is nicht running')
 
 
 @contextlib.contextmanager
@@ -125,12 +125,12 @@ klasse IsShareableTests(unittest.TestCase):
                 # singletons
                 NotImplemented,
                 ...,
-                # builtin types and objects
+                # builtin types und objects
                 type,
                 object,
                 object(),
                 Exception(),
-                # user-defined types and objects
+                # user-defined types und objects
                 Cheese,
                 Cheese('Wensleydale'),
                 SubBytes(b'spam'),
@@ -462,7 +462,7 @@ klasse DestroyTests(TestBase):
                             msg=f"Interp {interp} should be running before destruction.")
 
             mit self.assertRaises(_interpreters.InterpreterError,
-                                   msg=f"Should not be able to destroy interp {interp} while it's still running."):
+                                   msg=f"Should nicht be able to destroy interp {interp} while it's still running."):
                 _interpreters.destroy(interp)
             self.assertWahr(_interpreters.is_running(interp))
 
@@ -474,24 +474,24 @@ klasse CommonTests(TestBase):
 
     def test_signatures(self):
         # See https://github.com/python/cpython/issues/126654
-        msg = r"exec\(\) argument 'shared' must be dict, not int"
+        msg = r"exec\(\) argument 'shared' must be dict, nicht int"
         mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.exec(self.id, 'a', 1)
         mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.exec(self.id, 'a', shared=1)
-        msg = r"run_string\(\) argument 'shared' must be dict, not int"
+        msg = r"run_string\(\) argument 'shared' must be dict, nicht int"
         mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.run_string(self.id, 'a', shared=1)
-        msg = r"run_func\(\) argument 'shared' must be dict, not int"
+        msg = r"run_func\(\) argument 'shared' must be dict, nicht int"
         mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.run_func(self.id, lambda: Nichts, shared=1)
         # See https://github.com/python/cpython/issues/135855
-        msg = r"set___main___attrs\(\) argument 'updates' must be dict, not int"
+        msg = r"set___main___attrs\(\) argument 'updates' must be dict, nicht int"
         mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.set___main___attrs(self.id, 1)
 
     def test_invalid_shared_none(self):
-        msg = r'must be dict, not Nichts'
+        msg = r'must be dict, nicht Nichts'
         mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.exec(self.id, 'a', shared=Nichts)
         mit self.assertRaisesRegex(TypeError, msg):
@@ -504,7 +504,7 @@ klasse CommonTests(TestBase):
     def test_invalid_shared_encoding(self):
         # See https://github.com/python/cpython/issues/127196
         bad_shared = {"\uD82A": 0}
-        msg = 'surrogates not allowed'
+        msg = 'surrogates nicht allowed'
         mit self.assertRaisesRegex(UnicodeEncodeError, msg):
             _interpreters.exec(self.id, 'a', shared=bad_shared)
         mit self.assertRaisesRegex(UnicodeEncodeError, msg):
@@ -1087,7 +1087,7 @@ klasse RunFuncTests(TestBase):
         mit self.assertRaises(ValueError):
             _interpreters.run_func(self.id, script)
 
-#    @unittest.skip("we're not quite there yet")
+#    @unittest.skip("we're nicht quite there yet")
     def test_args(self):
         mit self.subTest('args'):
             def script(a, b=0):
@@ -1097,13 +1097,13 @@ klasse RunFuncTests(TestBase):
 
         mit self.subTest('*args'):
             def script(*args):
-                assert not args
+                assert nicht args
             mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 
         mit self.subTest('**kwargs'):
             def script(**kwargs):
-                assert not kwargs
+                assert nicht kwargs
             mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 

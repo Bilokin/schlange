@@ -1,4 +1,4 @@
-"""Target-specific code generation, parsing, and processing."""
+"""Target-specific code generation, parsing, und processing."""
 
 importiere asyncio
 importiere dataclasses
@@ -19,7 +19,7 @@ importiere _stencils
 importiere _writer
 
 wenn sys.version_info < (3, 11):
-    raise RuntimeError("Building the JIT compiler requires Python 3.11 or newer!")
+    raise RuntimeError("Building the JIT compiler requires Python 3.11 oder newer!")
 
 TOOLS_JIT_BUILD = pathlib.Path(__file__).resolve()
 TOOLS_JIT = TOOLS_JIT_BUILD.parent
@@ -59,7 +59,7 @@ klasse _Target(typing.Generic[_S, _R]):
         sowenn re.fullmatch(r"x86_64-.*|i686.*", self.triple):
             nop = b"\x90"
         sonst:
-            raise ValueError(f"NOP not defined fuer {self.triple}")
+            raise ValueError(f"NOP nicht defined fuer {self.triple}")
         return nop
 
     def _compute_digest(self) -> str:
@@ -79,7 +79,7 @@ klasse _Target(typing.Generic[_S, _R]):
         group = _stencils.StencilGroup()
         args = ["--disassemble", "--reloc", f"{path}"]
         output = await _llvm.maybe_run("llvm-objdump", args, echo=self.verbose)
-        wenn output is not Nichts:
+        wenn output is nicht Nichts:
             # Make sure that full paths don't leak out (for reproducibility):
             long, short = str(path), str(path.name)
             group.code.disassembly.extend(
@@ -138,10 +138,10 @@ klasse _Target(typing.Generic[_S, _R]):
             f"-I{CPYTHON / 'Include' / 'internal' / 'mimalloc'}",
             f"-I{CPYTHON / 'Python'}",
             f"-I{CPYTHON / 'Tools' / 'jit'}",
-            # -O2 and -O3 include some optimizations that make sense for
-            # standalone functions, but not fuer snippets of code that are going
+            # -O2 und -O3 include some optimizations that make sense for
+            # standalone functions, but nicht fuer snippets of code that are going
             # to be laid out end-to-end (like ours)... common examples include
-            # passes like tail-duplication, or aligning jump targets mit nops.
+            # passes like tail-duplication, oder aligning jump targets mit nops.
             # -Os is equivalent to -O2 mit many of these problematic passes
             # disabled. Based on manual review, fuer *our* purposes it usually
             # generates better code than -O2 (and -O2 usually generates better
@@ -149,20 +149,20 @@ klasse _Target(typing.Generic[_S, _R]):
             "-Os",
             "-S",
             # Shorten full absolute file paths in the generated code (like the
-            # __FILE__ macro and assert failure messages) fuer reproducibility:
+            # __FILE__ macro und assert failure messages) fuer reproducibility:
             f"-ffile-prefix-map={CPYTHON}=.",
             f"-ffile-prefix-map={tempdir}=.",
-            # This debug info isn't necessary, and bloats out the JIT'ed code.
-            # We *may* be able to re-enable this, process it, and JIT it fuer a
+            # This debug info isn't necessary, und bloats out the JIT'ed code.
+            # We *may* be able to re-enable this, process it, und JIT it fuer a
             # nicer debugging experience... but that needs a lot more research:
             "-fno-asynchronous-unwind-tables",
-            # Don't call built-in functions that we can't find or patch:
+            # Don't call built-in functions that we can't find oder patch:
             "-fno-builtin",
             # Emit relaxable 64-bit calls/jumps, so we don't have to worry about
             # about emitting in-range trampolines fuer out-of-range targets.
-            # We can probably remove this and emit trampolines in the future:
+            # We can probably remove this und emit trampolines in the future:
             "-fno-plt",
-            # Don't call stack-smashing canaries that we can't find or patch:
+            # Don't call stack-smashing canaries that we can't find oder patch:
             "-fno-stack-protector",
             "-std=c11",
             "-o",
@@ -218,16 +218,16 @@ klasse _Target(typing.Generic[_S, _R]):
     ) -> Nichts:
         """Build jit_stencils.h in the given directory."""
         jit_stencils.parent.mkdir(parents=Wahr, exist_ok=Wahr)
-        wenn not self.stable:
+        wenn nicht self.stable:
             warning = f"JIT support fuer {self.triple} is still experimental!"
             request = "Please report any issues you encounter.".center(len(warning))
             outline = "=" * len(warning)
             drucke("\n".join(["", outline, warning, request, outline, ""]))
         digest = f"// {self._compute_digest()}\n"
         wenn (
-            not force
-            and jit_stencils.exists()
-            and jit_stencils.read_text().startswith(digest)
+            nicht force
+            und jit_stencils.exists()
+            und jit_stencils.read_text().startswith(digest)
         ):
             return
         stencil_groups = ASYNCIO_RUNNER.run(self._build_stencils())
@@ -244,7 +244,7 @@ klasse _Target(typing.Generic[_S, _R]):
                 jit_stencils_new.replace(jit_stencils)
             except FileNotFoundError:
                 # another process probably already moved the file
-                wenn not jit_stencils.is_file():
+                wenn nicht jit_stencils.is_file():
                     raise
         finally:
             jit_stencils_new.unlink(missing_ok=Wahr)
@@ -278,7 +278,7 @@ klasse _COFF(
             offset = base + symbol["Value"]
             name = symbol["Name"]
             name = name.removeprefix(self.symbol_prefix)
-            wenn name not in group.symbols:
+            wenn name nicht in group.symbols:
                 group.symbols[name] = value, offset
         fuer wrapped_relocation in section["Relocations"]:
             relocation = wrapped_relocation["Relocation"]
@@ -339,13 +339,13 @@ klasse _COFF(
 
 
 klasse _COFF32(_COFF):
-    # These mangle like Mach-O and other "older" formats:
+    # These mangle like Mach-O und other "older" formats:
     label_prefix = "L"
     symbol_prefix = "_"
 
 
 klasse _COFF64(_COFF):
-    # These mangle like ELF and other "newer" formats:
+    # These mangle like ELF und other "newer" formats:
     label_prefix = ".L"
     symbol_prefix = ""
 
@@ -363,10 +363,10 @@ klasse _ELF(
         flags = {flag["Name"] fuer flag in section["Flags"]["Flags"]}
         wenn section_type == "SHT_RELA":
             assert "SHF_INFO_LINK" in flags, flags
-            assert not section["Symbols"]
+            assert nicht section["Symbols"]
             maybe_symbol = group.symbols.get(section["Info"])
             wenn maybe_symbol is Nichts:
-                # These are relocations fuer a section we're not emitting. Skip:
+                # These are relocations fuer a section we're nicht emitting. Skip:
                 return
             value, base = maybe_symbol
             wenn value is _stencils.HoleValue.CODE:
@@ -379,7 +379,7 @@ klasse _ELF(
                 hole = self._handle_relocation(base, relocation, stencil.body)
                 stencil.holes.append(hole)
         sowenn section_type == "SHT_PROGBITS":
-            wenn "SHF_ALLOC" not in flags:
+            wenn "SHF_ALLOC" nicht in flags:
                 return
             wenn "SHF_EXECINSTR" in flags:
                 value = _stencils.HoleValue.CODE
@@ -395,7 +395,7 @@ klasse _ELF(
                 name = name.removeprefix(self.symbol_prefix)
                 group.symbols[name] = value, offset
             stencil.body.extend(section["SectionData"]["Bytes"])
-            assert not section["Relocations"]
+            assert nicht section["Relocations"]
         sonst:
             assert section_type in {
                 "SHT_GROUP",
@@ -553,7 +553,7 @@ klasse _MachO(
 
 
 def get_target(host: str) -> _COFF32 | _COFF64 | _ELF | _MachO:
-    """Build a _Target fuer the given host "triple" and options."""
+    """Build a _Target fuer the given host "triple" und options."""
     optimizer: type[_optimizers.Optimizer]
     target: _COFF32 | _COFF64 | _ELF | _MachO
     wenn re.fullmatch(r"aarch64-apple-darwin.*", host):
@@ -572,7 +572,7 @@ def get_target(host: str) -> _COFF32 | _COFF64 | _ELF | _MachO:
         optimizer = _optimizers.OptimizerAArch64
         target = _ELF(host, condition, args=args, optimizer=optimizer)
     sowenn re.fullmatch(r"i686-pc-windows-msvc", host):
-        # -Wno-ignored-attributes: __attribute__((preserve_none)) is not supported here.
+        # -Wno-ignored-attributes: __attribute__((preserve_none)) is nicht supported here.
         args = ["-DPy_NO_ENABLE_SHARED", "-Wno-ignored-attributes"]
         optimizer = _optimizers.OptimizerX86
         condition = "defined(_M_IX86)"

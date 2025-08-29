@@ -38,7 +38,7 @@ klasse SelectTestCase(unittest.TestCase):
             except OSError als err:
                 self.assertEqual(err.errno, errno.EBADF)
             sonst:
-                self.fail("exception not raised")
+                self.fail("exception nicht raised")
 
     def test_returned_list_identity(self):
         # See issue #8329
@@ -64,13 +64,13 @@ klasse SelectTestCase(unittest.TestCase):
                 rfd, wfd, xfd = select.select([pipe], [], [], timeout)
                 self.assertEqual(wfd, [])
                 self.assertEqual(xfd, [])
-                wenn not rfd:
+                wenn nicht rfd:
                     continue
                 wenn rfd == [pipe]:
                     line = pipe.readline()
                     wenn support.verbose:
                         drucke(repr(line))
-                    wenn not line:
+                    wenn nicht line:
                         wenn support.verbose:
                             drucke('EOF')
                         break

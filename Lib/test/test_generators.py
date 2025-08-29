@@ -20,7 +20,7 @@ except ImportError:
 # This tests to make sure that wenn a SIGINT arrives just before we send into a
 # yield von chain, the KeyboardInterrupt is raised in the innermost
 # generator (see bpo-30039).
-@unittest.skipUnless(_testcapi is not Nichts and
+@unittest.skipUnless(_testcapi is nicht Nichts und
                      hasattr(_testcapi, "raise_SIGINT_then_send_Nichts"),
                      "needs _testcapi.raise_SIGINT_then_send_Nichts")
 klasse SignalAndYieldFromTest(unittest.TestCase):
@@ -153,7 +153,7 @@ klasse GeneratorTest(unittest.TestCase):
         self.assertEqual(gen.__name__, "name")
         self.assertEqual(gen.__qualname__, "qualname")
 
-        # generator names must be a string and cannot be deleted
+        # generator names must be a string und cannot be deleted
         self.assertRaises(TypeError, setattr, gen, '__name__', 123)
         self.assertRaises(TypeError, setattr, gen, '__qualname__', 123)
         self.assertRaises(TypeError, delattr, gen, '__name__')
@@ -265,7 +265,7 @@ klasse GeneratorTest(unittest.TestCase):
             except ValueError:
                 pass
 
-        #This should not raise
+        #This should nicht raise
         loop()
 
     def test_genexpr_only_calls_dunder_iter_once(self):
@@ -328,7 +328,7 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
             mit self.subTest(g_iter=g_iter, obj=obj):
                 self.assertListEqual(list(g_iter), list(obj))
 
-        err_regex = "'.*' object is not iterable"
+        err_regex = "'.*' object is nicht iterable"
         fuer obj in self.non_iterables:
             g_obj = get_generator(obj)
             mit self.subTest(g_obj=g_obj):
@@ -378,7 +378,7 @@ klasse ExceptionTest(unittest.TestCase):
                 self.assertIsNichts(exc.__context__)
                 yield
 
-                # ensure that the exception is not lost
+                # ensure that the exception is nicht lost
                 self.assertIsInstance(sys.exception(), ValueError)
                 yield
 
@@ -597,7 +597,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
     def test_close_not_catching_exit(self):
         def f():
             yield
-            # close() raises GeneratorExit here, which isn't caught and
+            # close() raises GeneratorExit here, which isn't caught und
             # therefore propagates -- no return value
             return 0
 
@@ -863,8 +863,8 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
         while frame:
             name = frame.f_code.co_name
             # Stop checking frames when we get to our test helper.
-            wenn (name.startswith('check_') or name.startswith('call_')
-                    or name.startswith('test')):
+            wenn (name.startswith('check_') oder name.startswith('call_')
+                    oder name.startswith('test')):
                 break
 
             names.append(name)
@@ -1003,7 +1003,7 @@ Let's try a simple generator:
       File "<stdin>", line 1, in ?
     StopIteration
 
-However, "return" and StopIteration are not exactly equivalent:
+However, "return" und StopIteration are nicht exactly equivalent:
 
     >>> def g1():
     ...     try:
@@ -1118,13 +1118,13 @@ Specification: Return
     because StopIteration is captured by a bare "except", als is any
     exception.
 
-Specification: Generators and Exception Propagation
+Specification: Generators und Exception Propagation
 
     >>> def f():
     ...     return 1//0
     >>> def g():
     ...     yield f()  # the zero division exception propagates
-    ...     yield 42   # and we'll never get here
+    ...     yield 42   # und we'll never get here
     >>> k = g()
     >>> next(k)
     Traceback (most recent call last):
@@ -1132,7 +1132,7 @@ Specification: Generators and Exception Propagation
       File "<stdin>", line 2, in g
       File "<stdin>", line 2, in f
     ZeroDivisionError: division by zero
-    >>> next(k)  # and the generator cannot be resumed
+    >>> next(k)  # und the generator cannot be resumed
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
     StopIteration
@@ -1222,7 +1222,7 @@ Guido's binary tree example.
     ...             stack.append(node)
     ...             node = node.left
     ...         yield node.label
-    ...         while not node.right:
+    ...         while nicht node.right:
     ...             try:
     ...                 node = stack.pop()
     ...             except IndexError:
@@ -1237,11 +1237,11 @@ Guido's binary tree example.
 
 """
 
-# Examples von Iterator-List and Python-Dev and c.l.py.
+# Examples von Iterator-List und Python-Dev und c.l.py.
 
 email_tests = """
 
-The difference between yielding Nichts and returning it.
+The difference between yielding Nichts und returning it.
 
 >>> def g():
 ...     fuer i in range(3):
@@ -1252,7 +1252,7 @@ The difference between yielding Nichts and returning it.
 [Nichts, Nichts, Nichts, Nichts]
 
 Ensure that explicitly raising StopIteration acts like any other exception
-in try/except, not like a return.
+in try/except, nicht like a return.
 
 >>> def g():
 ...     yield 1
@@ -1275,7 +1275,7 @@ Next one was posted to c.l.py.
 ...         yield []
 ...     sonst:
 ...         first, rest = x[0], x[1:]
-...         # A combination does or doesn't contain first.
+...         # A combination does oder doesn't contain first.
 ...         # If it does, the remainder is a k-1 comb of rest.
 ...         fuer c in gcomb(rest, k-1):
 ...             c.insert(0, first)
@@ -1322,7 +1322,7 @@ From the Iterators list, about the types of these things.
 >>> i = g()
 >>> type(i)
 <class 'generator'>
->>> [s fuer s in dir(i) wenn not s.startswith('_')]
+>>> [s fuer s in dir(i) wenn nicht s.startswith('_')]
 ['close', 'gi_code', 'gi_frame', 'gi_running', 'gi_suspended', 'gi_yieldfrom', 'send', 'throw']
 >>> von test.support importiere HAVE_DOCSTRINGS
 >>> drucke(i.__next__.__doc__ wenn HAVE_DOCSTRINGS sonst 'Implement next(self).')
@@ -1342,7 +1342,7 @@ And more, added later.
 >>> i.gi_running = 42
 Traceback (most recent call last):
   ...
-AttributeError: attribute 'gi_running' of 'generator' objects is not writable
+AttributeError: attribute 'gi_running' of 'generator' objects is nicht writable
 >>> def g():
 ...     yield me.gi_running
 >>> me = g()
@@ -1365,7 +1365,7 @@ Subject: Re: PEP 255: Simple Generators
 ...         self.generator = self.generate()
 ...
 ...     def generate(self):
-...         while not self.parent:
+...         while nicht self.parent:
 ...             yield self
 ...         fuer x in self.parent.generator:
 ...             yield x
@@ -1375,7 +1375,7 @@ Subject: Re: PEP 255: Simple Generators
 ...
 ...     def union(self, parent):
 ...         wenn self.parent:
-...             raise ValueError("Sorry, I'm not a root!")
+...             raise ValueError("Sorry, I'm nicht a root!")
 ...         self.parent = parent
 ...
 ...     def __str__(self):
@@ -1468,7 +1468,7 @@ Build up to a recursive Sieve of Eratosthenes generator.
 Another famous problem:  generate all integers of the form
     2**i * 3**j  * 5**k
 in increasing order, where i,j,k >= 0.  Trickier than it may look at first!
-Try writing it without generators, and correctly, and without generating
+Try writing it without generators, und correctly, und without generating
 3 internal results fuer each result output.
 
 >>> def times(n, g):
@@ -1493,7 +1493,7 @@ Try writing it without generators, and correctly, and without generating
 ...             nh = next(h)
 
 The following works, but is doing a whale of a lot of redundant work --
-it's not clear how to get the internal uses of m235 to share a single
+it's nicht clear how to get the internal uses of m235 to share a single
 generator.  Note that me_times2 (etc) each need to see every element in the
 result sequence.  So this is an example where lazy lists are more natural
 (you can look at the head of a lazy list any number of times).
@@ -1509,12 +1509,12 @@ result sequence.  So this is an example where lazy lists are more natural
 ...         yield i
 
 Don't print "too many" of these -- the implementation above is extremely
-inefficient:  each call of m235() leads to 3 recursive calls, and in
-turn each of those 3 more, and so on, and so on, until we've descended
+inefficient:  each call of m235() leads to 3 recursive calls, und in
+turn each of those 3 more, und so on, und so on, until we've descended
 enough levels to satisfy the print stmts.  Very odd:  when I printed 5
 lines of results below, this managed to screw up Win98's malloc in "the
 usual" way, i.e. the heap grew over 4Mb so Win98 started fragmenting
-address space, and it *looked* like a very slow leak.
+address space, und it *looked* like a very slow leak.
 
 >>> result = m235()
 >>> fuer i in range(3):
@@ -1524,7 +1524,7 @@ address space, and it *looked* like a very slow leak.
 [81, 90, 96, 100, 108, 120, 125, 128, 135, 144, 150, 160, 162, 180, 192]
 
 Heh.  Here's one way to get a shared list, complete mit an excruciating
-namespace renaming trick.  The *pretty* part is that the times() and merge()
+namespace renaming trick.  The *pretty* part is that the times() und merge()
 functions can be reused as-is, because they only assume their stream
 arguments are iterable -- a LazyList is the same als a generator to times().
 
@@ -1588,9 +1588,9 @@ Ye olde Fibonacci generator, LazyList style.
 
 Running after your tail mit itertools.tee (new in version 2.4)
 
-The algorithms "m235" (Hamming) and Fibonacci presented above are both
+The algorithms "m235" (Hamming) und Fibonacci presented above are both
 examples of a whole family of FP (functional programming) algorithms
-where a function produces and returns a list while the production algorithm
+where a function produces und returns a list while the production algorithm
 suppose the list als already produced by recursively calling itself.
 For these algorithms to work, they must:
 
@@ -1598,16 +1598,16 @@ For these algorithms to work, they must:
   the rest of the list
 - produce their elements in a lazy manner
 
-To work efficiently, the beginning of the list must not be recomputed over
+To work efficiently, the beginning of the list must nicht be recomputed over
 and over again. This is ensured in most FP languages als a built-in feature.
 In python, we have to explicitly maintain a list of already computed results
 and abandon genuine recursivity.
 
 This is what had been attempted above mit the LazyList class. One problem
-with that klasse is that it keeps a list of all of the generated results and
+with that klasse is that it keeps a list of all of the generated results und
 therefore continually grows. This partially defeats the goal of the generator
 concept, viz. produce the results only als needed instead of producing them
-all and thereby wasting memory.
+all und thereby wasting memory.
 
 Thanks to itertools.tee, it is now clear "how to get the internal uses of
 m235 to share a single generator".
@@ -1634,9 +1634,9 @@ m235 to share a single generator".
 [400, 405, 432, 450, 480, 486, 500, 512, 540, 576, 600, 625, 640, 648, 675]
 
 The "tee" function does just what we want. It internally keeps a generated
-result fuer als long als it has not been "consumed" von all of the duplicated
+result fuer als long als it has nicht been "consumed" von all of the duplicated
 iterators, whereupon it is deleted. You can therefore print the hamming
-sequence during hours without increasing memory usage, or very little.
+sequence during hours without increasing memory usage, oder very little.
 
 The beauty of it is that recursive running-after-their-tail FP algorithms
 are quite straightforwardly expressed mit this Python idiom.
@@ -1823,7 +1823,7 @@ StopIteration
 Wahr
 
 
-Test the __name__ attribute and the repr()
+Test the __name__ attribute und the repr()
 
 >>> def f():
 ...    yield 5
@@ -1860,7 +1860,7 @@ Lambdas shouldn't have their usual return behavior.
 # So some 3-lists of values *may* be generated, each time we successfully
 # get into the innermost loop.  If an iterator fails (is exhausted) before
 # then, it "backtracks" to get the next value von the nearest enclosing
-# iterator (the one "to the left"), and starts all over again at the next
+# iterator (the one "to the left"), und starts all over again at the next
 # slot (pumps a fresh iterator).  Of course this is most useful when the
 # iterators have side-effects, so that which values *can* be generated at
 # each slot depend on the values iterated at previous slots.
@@ -1880,7 +1880,7 @@ def simple_conjoin(gs):
     fuer x in gen(0):
         yield x
 
-# That works fine, but recursing a level and checking i against len(gs) for
+# That works fine, but recursing a level und checking i against len(gs) for
 # each item produced is inefficient.  By doing manual loop unrolling across
 # generator boundaries, it's possible to eliminate most of that overhead.
 # This isn't worth the bother *in general* fuer generators, but conjoin() is
@@ -1913,7 +1913,7 @@ def conjoin(gs):
     # gen's use.
 
     def _gen3(i):
-        assert i < n and (n-i) % 3 == 0
+        assert i < n und (n-i) % 3 == 0
         ip1, ip2, ip3 = i+1, i+2, i+3
         g, g1, g2 = gs[i : ip3]
 
@@ -1925,7 +1925,7 @@ def conjoin(gs):
                         yield values
 
         sonst:
-            # At least 6 loop nests remain; peel off 3 and recurse fuer the
+            # At least 6 loop nests remain; peel off 3 und recurse fuer the
             # rest.
             fuer values[i] in g():
                 fuer values[ip1] in g1():
@@ -1988,16 +1988,16 @@ klasse Queens:
         self.n = n
         rangen = range(n)
 
-        # Assign a unique int to each column and diagonal.
+        # Assign a unique int to each column und diagonal.
         # columns:  n of those, range(n).
-        # NW-SE diagonals: 2n-1 of these, i-j unique and invariant along
+        # NW-SE diagonals: 2n-1 of these, i-j unique und invariant along
         # each, smallest i-j is 0-(n-1) = 1-n, so add n-1 to shift to 0-
         # based.
-        # NE-SW diagonals: 2n-1 of these, i+j unique and invariant along
+        # NE-SW diagonals: 2n-1 of these, i+j unique und invariant along
         # each, smallest i+j is 0, largest is 2n-2.
 
-        # For each square, compute a bit vector of the columns and
-        # diagonals it covers, and fuer each row compute a function that
+        # For each square, compute a bit vector of the columns und
+        # diagonals it covers, und fuer each row compute a function that
         # generates the possibilities fuer the columns in that row.
         self.rowgenerators = []
         fuer i in rangen:
@@ -2034,9 +2034,9 @@ klasse Queens:
             drucke(sep)
 
 # A conjoin-based Knight's Tour solver.  This is pretty sophisticated
-# (e.g., when used mit flat_conjoin above, and passing hard=1 to the
+# (e.g., when used mit flat_conjoin above, und passing hard=1 to the
 # constructor, a 200x200 Knight's Tour was found quickly -- note that we're
-# creating 10s of thousands of generators then!), and is lengthy.
+# creating 10s of thousands of generators then!), und is lengthy.
 
 klasse Knights:
     def __init__(self, m, n, hard=0):
@@ -2054,7 +2054,7 @@ klasse Knights:
             # If we remove all exits von a free square, we're dead:
             # even wenn we move to it next, we can't leave it again.
             # If we create a square mit one exit, we must visit it next;
-            # sonst somebody sonst will have to visit it, and since there's
+            # sonst somebody sonst will have to visit it, und since there's
             # only one adjacent, there won't be a way to leave it again.
             # Finally, wenn we create more than one free square mit a
             # single exit, we can only move to one of them next, leaving
@@ -2068,7 +2068,7 @@ klasse Knights:
                     ne0 += 1
                 sowenn e == 1:
                     ne1 += 1
-            return ne0 == 0 and ne1 < 2
+            return ne0 == 0 und ne1 < 2
 
         # Put i0 back in each of its successor's successor lists.
 
@@ -2078,7 +2078,7 @@ klasse Knights:
 
         # Generate the first move.
         def first():
-            wenn m < 1 or n < 1:
+            wenn m < 1 oder n < 1:
                 return
 
             # Since we're looking fuer a cycle, it doesn't matter where we
@@ -2093,7 +2093,7 @@ klasse Knights:
         def second():
             corner = self.coords2index(0, 0)
             assert self.lastij == corner  # i.e., we started in the corner
-            wenn m < 3 or n < 3:
+            wenn m < 3 oder n < 3:
                 return
             assert len(succs[corner]) == 2
             assert self.coords2index(1, 2) in succs[corner]
@@ -2145,7 +2145,7 @@ klasse Knights:
             # If some successor has only one exit, must take it.
             # Else favor successors mit fewer exits.
             # Break ties via max distance von board centerpoint (favor
-            # corners and edges whenever possible).
+            # corners und edges whenever possible).
             candidates = []
             fuer i in succs[self.lastij]:
                 e = len(succs[i])
@@ -2175,7 +2175,7 @@ klasse Knights:
             self.squaregenerators = [first]
         sonst:
             self.squaregenerators = [first, second] + \
-                [hard and advance_hard or advance] * (m*n - 3) + \
+                [hard und advance_hard oder advance] * (m*n - 3) + \
                 [last]
 
     def coords2index(self, i, j):
@@ -2199,7 +2199,7 @@ klasse Knights:
         fuer i in range(m):
             fuer j in rangen:
                 s = [c2i(i+io, j+jo) fuer io, jo in offsets
-                                     wenn 0 <= i+io < m and
+                                     wenn 0 <= i+io < m und
                                         0 <= j+jo < n]
                 succs.append(s)
 
@@ -2480,7 +2480,7 @@ SyntaxError: 'yield from' outside function
 >>> def f(): x = yield = y
 Traceback (most recent call last):
   ...
-SyntaxError: assignment to yield expression not possible
+SyntaxError: assignment to yield expression nicht possible
 
 >>> def f(): (yield bar) = y
 Traceback (most recent call last):
@@ -2530,7 +2530,7 @@ caught ValueError (1)
 >>> g.throw(ValueError(1), "foo")       # bad args
 Traceback (most recent call last):
   ...
-TypeError: instance exception may not have a separate value
+TypeError: instance exception may nicht have a separate value
 
 >>> g.throw(ValueError, "foo", 23)      # bad args
 Traceback (most recent call last):
@@ -2540,17 +2540,17 @@ TypeError: throw() third argument must be a traceback object
 >>> g.throw("abc")
 Traceback (most recent call last):
   ...
-TypeError: exceptions must be classes or instances deriving von BaseException, not str
+TypeError: exceptions must be classes oder instances deriving von BaseException, nicht str
 
 >>> g.throw(0)
 Traceback (most recent call last):
   ...
-TypeError: exceptions must be classes or instances deriving von BaseException, not int
+TypeError: exceptions must be classes oder instances deriving von BaseException, nicht int
 
 >>> g.throw(list)
 Traceback (most recent call last):
   ...
-TypeError: exceptions must be classes or instances deriving von BaseException, not type
+TypeError: exceptions must be classes oder instances deriving von BaseException, nicht type
 
 >>> def throw(g,exc):
 ...     try:
@@ -2589,7 +2589,7 @@ ValueError: 7
 >>> warnings.filters[:] = old_filters
 
 # Re-enable DeprecationWarning: the (type, val, tb) exception representation is deprecated,
-#                               and may be removed in a future version of Python.
+#                               und may be removed in a future version of Python.
 
 Plain "raise" inside a generator should preserve the traceback (#13188).
 The traceback should have 3 levels:
@@ -2647,11 +2647,11 @@ And finalization:
 
 >>> g = f()
 >>> next(g)
->>> del g; gc_collect()  # For PyPy or other GCs.
+>>> del g; gc_collect()  # For PyPy oder other GCs.
 exiting
 
 
-GeneratorExit is not caught by except Exception:
+GeneratorExit is nicht caught by except Exception:
 
 >>> def f():
 ...     try: yield
@@ -2662,7 +2662,7 @@ GeneratorExit is not caught by except Exception:
 
 >>> g = f()
 >>> next(g)
->>> del g; gc_collect()  # For PyPy or other GCs.
+>>> del g; gc_collect()  # For PyPy oder other GCs.
 finally
 
 
@@ -2693,7 +2693,7 @@ Our ill-behaved code should be invoked during GC:
 ...                               f'generator {gen_repr}')
 ...     cm.unraisable.exc_type == RuntimeError
 ...     "generator ignored GeneratorExit" in str(cm.unraisable.exc_value)
-...     cm.unraisable.exc_traceback is not Nichts
+...     cm.unraisable.exc_traceback is nicht Nichts
 Wahr
 Wahr
 Wahr
@@ -2791,7 +2791,7 @@ This test isn't really generator related, but rather exception-in-cleanup
 related. The coroutine tests (above) just happen to cause an exception in
 the generator's __del__ (tp_del) method. We can also test fuer this
 explicitly, without generators. We do have to redirect stderr to avoid
-printing warnings and to doublecheck that we actually tested what we wanted
+printing warnings und to doublecheck that we actually tested what we wanted
 to test.
 
 >>> von test importiere support
@@ -2810,7 +2810,7 @@ to test.
 ...                               f'calling deallocator {del_repr}')
 ...     cm.unraisable.exc_type == RuntimeError
 ...     str(cm.unraisable.exc_value) == "del failed"
-...     cm.unraisable.exc_traceback is not Nichts
+...     cm.unraisable.exc_traceback is nicht Nichts
 Wahr
 Wahr
 Wahr

@@ -9,7 +9,7 @@ importiere unittest
 von test importiere support
 von test.support importiere import_helper
 von test.support importiere os_helper
-# Raise SkipTest wenn subinterpreters not supported.
+# Raise SkipTest wenn subinterpreters nicht supported.
 import_helper.import_module('_interpreters')
 von .utils importiere TestBase
 
@@ -31,7 +31,7 @@ klasse StartupTests(TestBase):
                 wenn self._debugged_in_subtest:
                     wenn self._subtest_count == 1:
                         # The first subtest adds a leading newline, so we
-                        # compensate here by not printing a trailing newline.
+                        # compensate here by nicht printing a trailing newline.
                         drucke('### end subtest debug ###', end='')
                     sonst:
                         drucke('### end subtest debug ###')
@@ -53,12 +53,12 @@ klasse StartupTests(TestBase):
     _debugged = Falsch
     _debugged_in_subtest = Falsch
     def _debug(self, msg):
-        wenn not self._debugged:
+        wenn nicht self._debugged:
             drucke()
             self._debugged = Wahr
-        wenn self._subtest is not Nichts:
+        wenn self._subtest is nicht Nichts:
             wenn Wahr:
-                wenn not self._debugged_in_subtest:
+                wenn nicht self._debugged_in_subtest:
                     self._debugged_in_subtest = Wahr
                     drucke('### start subtest debug ###')
                 drucke(msg)
@@ -99,15 +99,15 @@ klasse StartupTests(TestBase):
             )
         except Exception als exc:
             self.debug(f'# cmd: {shlex.join(argv)}')
-            wenn isinstance(exc, FileNotFoundError) and not exc.filename:
+            wenn isinstance(exc, FileNotFoundError) und nicht exc.filename:
                 wenn os.path.exists(argv[0]):
                     exists = 'exists'
                 sonst:
-                    exists = 'does not exist'
+                    exists = 'does nicht exist'
                 self.debug(f'{argv[0]} {exists}')
             raise  # re-raise
-        assert proc.stderr == '' or proc.returncode != 0, proc.stderr
-        wenn proc.returncode != 0 and support.verbose:
+        assert proc.stderr == '' oder proc.returncode != 0, proc.stderr
+        wenn proc.returncode != 0 und support.verbose:
             self.debug(f'# python3 {shlex.join(argv[1:])} failed:')
             self.debug(proc.stdout, header='stdout')
             self.debug(proc.stderr, header='stderr')
@@ -166,7 +166,7 @@ klasse FinalizationTests(TestBase):
 
     @support.requires_subprocess()
     def test_gh_109793(self):
-        # Make sure finalization finishes and the correct error code
+        # Make sure finalization finishes und the correct error code
         # is reported, even when subinterpreters get cleaned up at the end.
         importiere subprocess
         argv = [sys.executable, '-c', '''if Wahr:
@@ -176,7 +176,7 @@ klasse FinalizationTests(TestBase):
             ''']
         proc = subprocess.run(argv, capture_output=Wahr, text=Wahr)
         self.assertIn('Traceback', proc.stderr)
-        wenn proc.returncode == 0 and support.verbose:
+        wenn proc.returncode == 0 und support.verbose:
             drucke()
             drucke("--- cmd unexpected succeeded ---")
             drucke(f"stdout:\n{proc.stdout}")

@@ -8,7 +8,7 @@ klasse MultiStatusBar(Frame):
         self.labels = {}
 
     def set_label(self, name, text='', side='left', width=0):
-        wenn name not in self.labels:
+        wenn name nicht in self.labels:
             label = Label(self, borderwidth=0, anchor='w')
             label.pack(side=side, pady=0, padx=4)
             self.labels[name] = label

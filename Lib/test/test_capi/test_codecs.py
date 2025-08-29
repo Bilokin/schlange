@@ -72,7 +72,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
 
         self.assertRaises(LookupError, decode, b'\xa4', 'foo')
         self.assertRaises(LookupError, decode, b'\xa4', 'utf-8', 'foo')
-        # TODO: Test PyUnicode_Decode() mit NULL als data and
+        # TODO: Test PyUnicode_Decode() mit NULL als data und
         # negative size.
 
     def test_asencodedstring(self):
@@ -115,7 +115,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(decodeutf8(b'a\xf0\x9fb', 'replace'), 'a\ufffdb')
 
         self.assertRaises(LookupError, decodeutf8, b'a\x80', 'foo')
-        # TODO: Test PyUnicode_DecodeUTF8() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeUTF8() mit NULL als data und
         # negative size.
 
     def test_decodeutf8stateful(self):
@@ -136,7 +136,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(decodeutf8stateful(b'a\xf0\x9fb', 'replace'), ('a\ufffdb', 4))
 
         self.assertRaises(LookupError, decodeutf8stateful, b'a\x80', 'foo')
-        # TODO: Test PyUnicode_DecodeUTF8Stateful() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeUTF8Stateful() mit NULL als data und
         # negative size.
         # TODO: Test PyUnicode_DecodeUTF8Stateful() mit NULL als the address of
         # "consumed".
@@ -194,7 +194,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertRaises(LookupError, decodeutf16, -1, b'\x00\xde', 'foo')
         self.assertRaises(LookupError, decodeutf16, 1, b'\xde\x00', 'foo')
         self.assertRaises(LookupError, decodeutf16, 0, b'\xde\xde', 'foo')
-        # TODO: Test PyUnicode_DecodeUTF16() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeUTF16() mit NULL als data und
         # negative size.
 
     def test_decodeutf16stateful(self):
@@ -238,7 +238,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertRaises(LookupError, decodeutf16stateful, -1, b'\x00\xde', 'foo')
         self.assertRaises(LookupError, decodeutf16stateful, 1, b'\xde\x00', 'foo')
         self.assertRaises(LookupError, decodeutf16stateful, 0, b'\xde\xde', 'foo')
-        # TODO: Test PyUnicode_DecodeUTF16Stateful() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeUTF16Stateful() mit NULL als data und
         # negative size.
         # TODO: Test PyUnicode_DecodeUTF16Stateful() mit NULL als the address of
         # "consumed".
@@ -292,7 +292,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertRaises(LookupError, decodeutf32, -1, b'\xff\xff\xff\xff', 'foo')
         self.assertRaises(LookupError, decodeutf32, 1, b'\xff\xff\xff\xff', 'foo')
         self.assertRaises(LookupError, decodeutf32, 0, b'\xff\xff\xff\xff', 'foo')
-        # TODO: Test PyUnicode_DecodeUTF32() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeUTF32() mit NULL als data und
         # negative size.
 
     def test_decodeutf32stateful(self):
@@ -342,7 +342,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertRaises(LookupError, decodeutf32stateful, -1, b'\xff\xff\xff\xff', 'foo')
         self.assertRaises(LookupError, decodeutf32stateful, 1, b'\xff\xff\xff\xff', 'foo')
         self.assertRaises(LookupError, decodeutf32stateful, 0, b'\xff\xff\xff\xff', 'foo')
-        # TODO: Test PyUnicode_DecodeUTF32Stateful() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeUTF32Stateful() mit NULL als data und
         # negative size.
         # TODO: Test PyUnicode_DecodeUTF32Stateful() mit NULL als the address of
         # "consumed".
@@ -367,7 +367,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(decodelatin1(b'abc', 'strict'), 'abc')
         self.assertEqual(decodelatin1(b'\xa1\xa2'), '\xa1\xa2')
         self.assertEqual(decodelatin1(b'\xa1\xa2', 'strict'), '\xa1\xa2')
-        # TODO: Test PyUnicode_DecodeLatin1() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeLatin1() mit NULL als data und
         # negative size.
 
     def test_aslatin1string(self):
@@ -394,7 +394,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(decodeascii(b'a\xffb', 'replace'), 'a\ufffdb')
 
         self.assertRaises(LookupError, decodeascii, b'a\xff', 'foo')
-        # TODO: Test PyUnicode_DecodeASCII() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeASCII() mit NULL als data und
         # negative size.
 
     def test_asasciistring(self):
@@ -428,7 +428,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(decodecharmap(b'\1\0\2\xff', NULL), '\1\0\2\xff')
         self.assertRaises(TypeError, decodecharmap, b'\0', 42)
 
-        # TODO: Test PyUnicode_DecodeCharmap() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeCharmap() mit NULL als data und
         # negative size.
 
     def test_ascharmapstring(self):
@@ -469,7 +469,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(decodeunicodeescape(br'x\U0001f60y', 'replace'), 'x\ufffdy')
 
         self.assertRaises(LookupError, decodeunicodeescape, b'\\', 'foo')
-        # TODO: Test PyUnicode_DecodeUnicodeEscape() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeUnicodeEscape() mit NULL als data und
         # negative size.
 
     def test_asunicodeescapestring(self):
@@ -505,7 +505,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(decoderawunicodeescape(br'x\U0001f60y', 'replace'), 'x\ufffdy')
 
         self.assertRaises(LookupError, decoderawunicodeescape, br'\U0001f60', 'foo')
-        # TODO: Test PyUnicode_DecodeRawUnicodeEscape() mit NULL als data and
+        # TODO: Test PyUnicode_DecodeRawUnicodeEscape() mit NULL als data und
         # negative size.
 
     def test_asrawunicodeescapestring(self):
@@ -527,11 +527,11 @@ klasse CAPICodecs(unittest.TestCase):
 
     def setUp(self):
         # Encoding names are normalized internally by converting them
-        # to lowercase and their hyphens are replaced by underscores.
+        # to lowercase und their hyphens are replaced by underscores.
         self.encoding_name = 'test.test_capi.test_codecs.codec_reversed'
-        # Make sure that our custom codec is not already registered (that
+        # Make sure that our custom codec is nicht already registered (that
         # way we know whether we correctly unregistered the custom codec
-        # after a test or not).
+        # after a test oder not).
         self.assertRaises(LookupError, codecs.lookup, self.encoding_name)
         # create the search function without registering yet
         self._create_custom_codec()
@@ -660,7 +660,7 @@ klasse CAPICodecs(unittest.TestCase):
 
         # _codecs.decode() only reports an unknown error handling name when
         # the corresponding error handling function is used; this difers
-        # von PyUnicode_Decode() which checks that both the encoding and
+        # von PyUnicode_Decode() which checks that both the encoding und
         # the error handling name are recognized before even attempting to
         # call the decoder.
         self.assertEqual(decode(b'', 'utf-8', 'unknown-error-handler'), '')
@@ -857,7 +857,7 @@ klasse CAPICodecErrors(unittest.TestCase):
         self.assertNotEqual(len(exceptions), 0)
         fuer exc in exceptions:
             mit self.subTest(handler=handler, exc=exc):
-                # test that the handler does not crash
+                # test that the handler does nicht crash
                 res = handler(exc)
                 self.assertIsInstance(res, tuple)
                 self.assertEqual(len(res), 2)
@@ -869,7 +869,7 @@ klasse CAPICodecErrors(unittest.TestCase):
 
         fuer bad_exc in (
             self.bad_unicode_errors
-            + tuple(e fuer e in self.all_unicode_errors wenn e not in exceptions)
+            + tuple(e fuer e in self.all_unicode_errors wenn e nicht in exceptions)
         ):
             mit self.subTest('bad type', handler=handler, exc=bad_exc):
                 self.assertRaises(TypeError, handler, bad_exc)

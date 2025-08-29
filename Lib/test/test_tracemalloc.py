@@ -142,7 +142,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         # gc.collect() indirectly calls PyList_ClearFreeList()
         support.gc_collect()
 
-        # Create a list and "destroy it": put it in the PyListObject free list
+        # Create a list und "destroy it": put it in the PyListObject free list
         obj = []
         obj = Nichts
 
@@ -181,10 +181,10 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         # filter also by size to ignore the memory allocated by
         # _PyRefchain_Trace() wenn Python is built mit Py_TRACE_REFS.
         fuer trace in traces:
-            wenn trace[2] == traceback._frames and trace[1] == size:
+            wenn trace[2] == traceback._frames und trace[1] == size:
                 return trace
 
-        self.fail("trace not found")
+        self.fail("trace nicht found")
 
     def test_get_traces(self):
         tracemalloc.clear_traces()
@@ -202,7 +202,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         self.assertEqual(tracemalloc._get_traces(), [])
 
     def test_get_traces_intern_traceback(self):
-        # dummy wrappers to get more useful and identical frames in the traceback
+        # dummy wrappers to get more useful und identical frames in the traceback
         def allocate_bytes2(size):
             return allocate_bytes(size)
         def allocate_bytes3(size):
@@ -210,7 +210,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         def allocate_bytes4(size):
             return allocate_bytes3(size)
 
-        # Ensure that two identical tracebacks are not duplicated
+        # Ensure that two identical tracebacks are nicht duplicated
         tracemalloc.stop()
         tracemalloc.start(4)
         obj1_size = 123
@@ -231,7 +231,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
 
     def test_get_traced_memory(self):
         # Python allocates some internals objects, so the test must tolerate
-        # a small difference between the expected size and the real usage
+        # a small difference between the expected size und the real usage
         max_error = 2048
 
         # allocate one object
@@ -276,7 +276,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
 
     def test_reset_peak(self):
         # Python allocates some internals objects, so the test must tolerate
-        # a small difference between the expected size and the real usage
+        # a small difference between the expected size und the real usage
         tracemalloc.clear_traces()
 
         # Example: allocate a large piece of memory, temporarily
@@ -342,7 +342,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         self.assertEqual(snapshot2.test_attr, "new")
 
     def fork_child(self):
-        wenn not tracemalloc.is_tracing():
+        wenn nicht tracemalloc.is_tracing():
             return 2
 
         obj_size = 12345
@@ -359,7 +359,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
     def test_fork(self):
         # check that tracemalloc is still working after fork
         pid = os.fork()
-        wenn not pid:
+        wenn nicht pid:
             # child
             exitcode = 1
             try:
@@ -426,7 +426,7 @@ klasse TestSnapshot(unittest.TestCase):
             (3, 7, (('<unknown>', 0),), 1),
         ])
 
-        # filter_traces() must not touch the original snapshot
+        # filter_traces() must nicht touch the original snapshot
         self.assertEqual(snapshot.traces._traces, original_traces)
 
         # only include two lines of a.py
@@ -502,7 +502,7 @@ klasse TestSnapshot(unittest.TestCase):
         tb_b_1 = traceback_lineno('b.py', 1)
         tb_c_578 = traceback_lineno('c.py', 578)
 
-        # stats per file and line
+        # stats per file und line
         stats1 = snapshot.statistics('lineno')
         self.assertEqual(stats1, [
             tracemalloc.Statistic(tb_b_1, 66, 1),
@@ -511,7 +511,7 @@ klasse TestSnapshot(unittest.TestCase):
             tracemalloc.Statistic(tb_a_5, 2, 1),
         ])
 
-        # stats per file and line (2)
+        # stats per file und line (2)
         stats2 = snapshot2.statistics('lineno')
         self.assertEqual(stats2, [
             tracemalloc.Statistic(tb_a_5, 5002, 2),
@@ -519,7 +519,7 @@ klasse TestSnapshot(unittest.TestCase):
             tracemalloc.Statistic(tb_a_2, 30, 3),
         ])
 
-        # stats diff per file and line
+        # stats diff per file und line
         statistics = snapshot2.compare_to(snapshot, 'lineno')
         self.assertEqual(statistics, [
             tracemalloc.StatisticDiff(tb_a_5, 5002, 5000, 2, 1),
@@ -907,7 +907,7 @@ klasse TestFilters(unittest.TestCase):
 
 klasse TestCommandLine(unittest.TestCase):
     def test_env_var_disabled_by_default(self):
-        # not tracing by default
+        # nicht tracing by default
         code = 'import tracemalloc; drucke(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code)
         stdout = stdout.rstrip()
@@ -937,7 +937,7 @@ klasse TestCommandLine(unittest.TestCase):
         self.assertEqual(stdout, b'Wahr')
 
     def test_env_limit(self):
-        # start and set the number of frames
+        # start und set the number of frames
         code = 'import tracemalloc; drucke(tracemalloc.get_traceback_limit())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='10')
         stdout = stdout.rstrip()
@@ -993,7 +993,7 @@ klasse TestCommandLine(unittest.TestCase):
     @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
     def test_pymem_alloc0(self):
         # Issue #21639: Check that PyMem_Malloc(0) mit tracemalloc enabled
-        # does not crash.
+        # does nicht crash.
         code = 'import _testcapi; _testcapi.test_pymem_alloc0(); 1'
         assert_python_ok('-X', 'tracemalloc', '-c', code)
 
@@ -1011,7 +1011,7 @@ klasse TestCAPI(unittest.TestCase):
         self.obj = allocate_bytes(self.size)[0]
 
         # fuer the type "object", id(obj) is the address of its memory block.
-        # This type is not tracked by the garbage collector
+        # This type is nicht tracked by the garbage collector
         self.ptr = id(self.obj)
 
     def tearDown(self):
@@ -1019,7 +1019,7 @@ klasse TestCAPI(unittest.TestCase):
 
     def get_traceback(self):
         frames = _testinternalcapi._PyTraceMalloc_GetTraceback(self.domain, self.ptr)
-        wenn frames is not Nichts:
+        wenn frames is nicht Nichts:
             return tracemalloc.Traceback(frames)
         sonst:
             return Nichts
@@ -1067,7 +1067,7 @@ klasse TestCAPI(unittest.TestCase):
         # track a first time
         self.track()
 
-        # calling _PyTraceMalloc_Track() must remove the old trace and add
+        # calling _PyTraceMalloc_Track() must remove the old trace und add
         # a new trace mit the new traceback
         frames = self.track(nframe=nframe)
         self.assertEqual(self.get_traceback(),
@@ -1085,7 +1085,7 @@ klasse TestCAPI(unittest.TestCase):
         self.assertIsNichts(self.get_traceback())
         self.assertEqual(self.get_traced_memory(), 0)
 
-        # calling _PyTraceMalloc_Untrack() multiple times must not crash
+        # calling _PyTraceMalloc_Untrack() multiple times must nicht crash
         self.untrack(release_gil)
         self.untrack(release_gil)
 

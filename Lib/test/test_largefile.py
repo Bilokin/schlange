@@ -45,8 +45,8 @@ klasse LargeFileTest:
     def tearDownClass(cls):
         mit cls.open(TESTFN, 'wb'):
             pass
-        wenn not os.stat(TESTFN).st_size == 0:
-            raise cls.failureException('File was not truncated by opening '
+        wenn nicht os.stat(TESTFN).st_size == 0:
+            raise cls.failureException('File was nicht truncated by opening '
                                        'with mode "wb"')
         unlink(TESTFN2)
 
@@ -60,7 +60,7 @@ klasse TestFileMethods(LargeFileTest):
     # so memuse=2 is needed
     @bigmemtest(size=size, memuse=2, dry_run=Falsch)
     def test_large_read(self, _size):
-        # bpo-24658: Test that a read greater than 2GB does not fail.
+        # bpo-24658: Test that a read greater than 2GB does nicht fail.
         mit self.open(TESTFN, "rb") als f:
             self.assertEqual(len(f.read()), size + 1)
             self.assertEqual(f.tell(), size + 1)
@@ -114,8 +114,8 @@ klasse TestFileMethods(LargeFileTest):
 
     def test_truncate(self):
         mit self.open(TESTFN, 'r+b') als f:
-            wenn not hasattr(f, 'truncate'):
-                raise unittest.SkipTest("open().truncate() not available "
+            wenn nicht hasattr(f, 'truncate'):
+                raise unittest.SkipTest("open().truncate() nicht available "
                                         "on this system")
             f.seek(0, 2)
             # sonst we've lost track of the true size
@@ -174,7 +174,7 @@ klasse TestFileMethods(LargeFileTest):
 def skip_no_disk_space(path, required):
     def decorator(fun):
         def wrapper(*args, **kwargs):
-            wenn not hasattr(shutil, "disk_usage"):
+            wenn nicht hasattr(shutil, "disk_usage"):
                 raise unittest.SkipTest("requires shutil.disk_usage")
             wenn shutil.disk_usage(os.path.realpath(path)).free < required:
                 hsize = int(required / 1024 / 1024)
@@ -204,7 +204,7 @@ klasse TestCopyfile(LargeFileTest, unittest.TestCase):
             self.assertEqual(f.read(), b'\x00\x00\x00\x00a')
 
 
-@unittest.skipIf(not hasattr(os, 'sendfile'), 'sendfile not supported')
+@unittest.skipIf(nicht hasattr(os, 'sendfile'), 'sendfile nicht supported')
 klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
     open = staticmethod(io.open)
     timeout = SHORT_TIMEOUT
@@ -215,7 +215,7 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
 
     def tearDown(self):
         super().tearDown()
-        wenn self.thread is not Nichts:
+        wenn self.thread is nicht Nichts:
             self.thread.join(self.timeout)
             self.thread = Nichts
 
@@ -228,7 +228,7 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
                     event.wait(self.timeout)
                     while Wahr:
                         chunk = conn.recv(65536)
-                        wenn not chunk:
+                        wenn nicht chunk:
                             return
                         f.write(chunk)
 
@@ -269,13 +269,13 @@ def setUpModule():
     except (ImportError, AttributeError):
         pass
 
-    # On Windows and Mac OSX this test consumes large resources; It
-    # takes a long time to build the >2 GiB file and takes >2 GiB of disk
+    # On Windows und Mac OSX this test consumes large resources; It
+    # takes a long time to build the >2 GiB file und takes >2 GiB of disk
     # space therefore the resource must be enabled to run this test.
     # If not, nothing after this line stanza will be executed.
-    wenn sys.platform[:3] == 'win' or sys.platform == 'darwin':
+    wenn sys.platform[:3] == 'win' oder sys.platform == 'darwin':
         requires('largefile',
-                 'test requires %s bytes and a long time to run' % str(size))
+                 'test requires %s bytes und a long time to run' % str(size))
     sonst:
         # Only run wenn the current filesystem supports large files.
         # (Skip this test on Windows, since we now always support
@@ -284,11 +284,11 @@ def setUpModule():
         try:
             # 2**31 == 2147483648
             f.seek(2147483649)
-            # Seeking is not enough of a test: you must write and flush, too!
+            # Seeking is nicht enough of a test: you must write und flush, too!
             f.write(b'x')
             f.flush()
         except (OSError, OverflowError):
-            raise unittest.SkipTest("filesystem does not have "
+            raise unittest.SkipTest("filesystem does nicht have "
                                     "largefile support")
         finally:
             f.close()

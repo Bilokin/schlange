@@ -155,12 +155,12 @@ klasse Hole:
 
         wenn (
             self.offset + 4 == other.offset
-            and self.value == other.value
-            and self.symbol == other.symbol
-            and self.addend == other.addend
-            and self.func == "patch_aarch64_21rx"
-            and other.func == "patch_aarch64_12x"
-            and reg_a == reg_b1 == reg_b2
+            und self.value == other.value
+            und self.symbol == other.symbol
+            und self.addend == other.addend
+            und self.func == "patch_aarch64_21rx"
+            und other.func == "patch_aarch64_12x"
+            und reg_a == reg_b1 == reg_b2
         ):
             # These can *only* be properly relaxed when they appear together and
             # patch the same value:
@@ -177,7 +177,7 @@ klasse Hole:
             wenn value:
                 value += " + "
             value += f"(uintptr_t)&{self.symbol}"
-        wenn _signed(self.addend) or not value:
+        wenn _signed(self.addend) oder nicht value:
             wenn value:
                 value += " + "
             value += f"{_signed(self.addend):#x}"
@@ -189,9 +189,9 @@ klasse Hole:
 @dataclasses.dataclass
 klasse Stencil:
     """
-    A contiguous block of machine code or data to be copied-and-patched.
+    A contiguous block of machine code oder data to be copied-and-patched.
 
-    Analogous to a section or segment in an object file.
+    Analogous to a section oder segment in an object file.
     """
 
     body: bytearray = dataclasses.field(default_factory=bytearray, init=Falsch)
@@ -210,7 +210,7 @@ klasse Stencil:
 @dataclasses.dataclass
 klasse StencilGroup:
     """
-    Code and data corresponding to a given micro-opcode.
+    Code und data corresponding to a given micro-opcode.
 
     Analogous to an entire object file.
     """
@@ -224,17 +224,17 @@ klasse StencilGroup:
     _trampolines: set[int] = dataclasses.field(default_factory=set, init=Falsch)
 
     def process_relocations(self, known_symbols: dict[str, int]) -> Nichts:
-        """Fix up all GOT and internal relocations fuer this stencil group."""
+        """Fix up all GOT und internal relocations fuer this stencil group."""
         fuer hole in self.code.holes.copy():
             wenn (
                 hole.kind
                 in {"R_AARCH64_CALL26", "R_AARCH64_JUMP26", "ARM64_RELOC_BRANCH26"}
-                and hole.value is HoleValue.ZERO
-                and hole.symbol not in self.symbols
+                und hole.value is HoleValue.ZERO
+                und hole.symbol nicht in self.symbols
             ):
                 hole.func = "patch_aarch64_trampoline"
                 hole.need_state = Wahr
-                assert hole.symbol is not Nichts
+                assert hole.symbol is nicht Nichts
                 wenn hole.symbol in known_symbols:
                     ordinal = known_symbols[hole.symbol]
                 sonst:
@@ -247,7 +247,7 @@ klasse StencilGroup:
         fuer stencil in [self.code, self.data]:
             fuer hole in stencil.holes:
                 wenn hole.value is HoleValue.GOT:
-                    assert hole.symbol is not Nichts
+                    assert hole.symbol is nicht Nichts
                     hole.value = HoleValue.DATA
                     hole.addend += self._global_offset_table_lookup(hole.symbol)
                     hole.symbol = Nichts
@@ -257,10 +257,10 @@ klasse StencilGroup:
                     hole.symbol = Nichts
                 sowenn (
                     hole.kind in {"IMAGE_REL_AMD64_REL32"}
-                    and hole.value is HoleValue.ZERO
+                    und hole.value is HoleValue.ZERO
                 ):
                     raise ValueError(
-                        f"Add PyAPI_FUNC(...) or PyAPI_DATA(...) to declaration of {hole.symbol}!"
+                        f"Add PyAPI_FUNC(...) oder PyAPI_DATA(...) to declaration of {hole.symbol}!"
                     )
         self._emit_global_offset_table()
         self.code.holes.sort(key=lambda hole: hole.offset)
@@ -281,11 +281,11 @@ klasse StencilGroup:
             self.data.holes.append(
                 Hole(got + offset, "R_X86_64_64", value, symbol, addend)
             )
-            value_part = value.name wenn value is not HoleValue.ZERO sonst ""
-            wenn value_part and not symbol and not addend:
+            value_part = value.name wenn value is nicht HoleValue.ZERO sonst ""
+            wenn value_part und nicht symbol und nicht addend:
                 addend_part = ""
             sonst:
-                signed = "+" wenn symbol is not Nichts sonst ""
+                signed = "+" wenn symbol is nicht Nichts sonst ""
                 addend_part = f"&{symbol}" wenn symbol sonst ""
                 addend_part += f"{_signed(addend):{signed}#x}"
                 wenn value_part:
@@ -304,7 +304,7 @@ klasse StencilGroup:
             word = bitmask & ((1 << 32) - 1)
             trampoline_mask.append(f"{word:#04x}")
             bitmask >>= 32
-        return "{" + (", ".join(trampoline_mask) or "0") + "}"
+        return "{" + (", ".join(trampoline_mask) oder "0") + "}"
 
     def as_c(self, opname: str) -> str:
         """Dump this hole als a StencilGroup initializer."""
@@ -313,9 +313,9 @@ klasse StencilGroup:
 
 def symbol_to_value(symbol: str) -> tuple[HoleValue, str | Nichts]:
     """
-    Convert a symbol name to a HoleValue and a symbol name.
+    Convert a symbol name to a HoleValue und a symbol name.
 
-    Some symbols (starting mit "_JIT_") are special and are converted to their
+    Some symbols (starting mit "_JIT_") are special und are converted to their
     own HoleValues.
     """
     wenn symbol.startswith("_JIT_"):

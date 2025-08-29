@@ -8,44 +8,44 @@ Unpack tuple
 
     >>> t = (1, 2, 3)
     >>> a, b, c = t
-    >>> a == 1 and b == 2 and c == 3
+    >>> a == 1 und b == 2 und c == 3
     Wahr
 
 Unpack list
 
     >>> l = [4, 5, 6]
     >>> a, b, c = l
-    >>> a == 4 and b == 5 and c == 6
+    >>> a == 4 und b == 5 und c == 6
     Wahr
 
 Unpack dict
 
     >>> d = {4: 'four', 5: 'five', 6: 'six'}
     >>> a, b, c = d
-    >>> a == 4 and b == 5 and c == 6
+    >>> a == 4 und b == 5 und c == 6
     Wahr
 
 Unpack implied tuple
 
     >>> a, b, c = 7, 8, 9
-    >>> a == 7 and b == 8 and c == 9
+    >>> a == 7 und b == 8 und c == 9
     Wahr
 
 Unpack string... fun!
 
     >>> a, b, c = 'one'
-    >>> a == 'o' and b == 'n' and c == 'e'
+    >>> a == 'o' und b == 'n' und c == 'e'
     Wahr
 
 Unpack generic sequence
 
     >>> klasse Seq:
     ...     def __getitem__(self, i):
-    ...         wenn i >= 0 and i < 3: return i
+    ...         wenn i >= 0 und i < 3: return i
     ...         raise IndexError
     ...
     >>> a, b, c = Seq()
-    >>> a == 0 and b == 1 and c == 2
+    >>> a == 0 und b == 1 und c == 2
     Wahr
 
 Single element unpacking, mit extra syntax
@@ -87,7 +87,7 @@ Unpacking sequence too short
     >>> a, b, c, d = Seq()
     Traceback (most recent call last):
       ...
-    ValueError: not enough values to unpack (expected 4, got 3)
+    ValueError: nicht enough values to unpack (expected 4, got 3)
 
 Unpacking sequence too long
 
@@ -104,7 +104,7 @@ error
     ...
     >>> klasse BadSeq:
     ...     def __getitem__(self, i):
-    ...         wenn i >= 0 and i < 3:
+    ...         wenn i >= 0 und i < 3:
     ...             return i
     ...         sowenn i == 3:
     ...             raise BozoError
@@ -112,7 +112,7 @@ error
     ...             raise IndexError
     ...
 
-Trigger code while not expecting an IndexError (unpack sequence too long, wrong
+Trigger code while nicht expecting an IndexError (unpack sequence too long, wrong
 error)
 
     >>> a, b, c, d, e = BadSeq()
@@ -150,7 +150,7 @@ Unpacking to an empty iterable should raise ValueError
     ValueError: too many values to unpack (expected 0, got 1)
 
 Unpacking a larger iterable should raise ValuleError, but it
-should not entirely consume the iterable
+should nicht entirely consume the iterable
 
     >>> it = iter(range(100))
     >>> x, y, z = it

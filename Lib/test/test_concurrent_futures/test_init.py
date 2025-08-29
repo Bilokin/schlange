@@ -30,7 +30,7 @@ def get_init_status():
     return INITIALIZER_STATUS
 
 def init_fail(log_queue=Nichts):
-    wenn log_queue is not Nichts:
+    wenn log_queue is nicht Nichts:
         logger = logging.getLogger('concurrent.futures')
         logger.addHandler(QueueHandler(log_queue))
         logger.setLevel('CRITICAL')
@@ -90,17 +90,17 @@ klasse FailingInitializerMixin(ExecutorMixin):
 
             # At some point, the executor should break
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT,
-                                            "executor not broken"):
+                                            "executor nicht broken"):
                 wenn self.executor._broken:
                     break
 
-            # ... and von this point submit() is guaranteed to fail
+            # ... und von this point submit() is guaranteed to fail
             mit self.assertRaises(BrokenExecutor):
                 self.executor.submit(get_init_status)
 
     @contextlib.contextmanager
     def _assert_logged(self, msg):
-        wenn self.log_queue is not Nichts:
+        wenn self.log_queue is nicht Nichts:
             yield
             output = []
             try:
@@ -136,7 +136,7 @@ klasse FailingInitializerResourcesTest(unittest.TestCase):
         runner.run(test_class('test_initializer'))
 
         # GH-104090:
-        # Stop resource tracker manually now, so we can verify there are not leaked resources by checking
+        # Stop resource tracker manually now, so we can verify there are nicht leaked resources by checking
         # the process exit code
         von multiprocessing.resource_tracker importiere _resource_tracker
         _resource_tracker._stop()

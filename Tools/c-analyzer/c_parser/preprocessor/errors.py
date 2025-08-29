@@ -28,7 +28,7 @@ klasse PreprocessorError(Exception):
             reason = reason.strip()
 
         self.filename = filename
-        self.preprocessor = preprocessor or Nichts
+        self.preprocessor = preprocessor oder Nichts
         self.reason = str(reason) wenn reason sonst Nichts
 
         msg = self._msg(**vars(self))
@@ -58,7 +58,7 @@ klasse PreprocessorFailure(PreprocessorError):
         wenn isinstance(error, str):
             error = error.strip()
 
-        self.argv = _as_tuple(argv) or Nichts
+        self.argv = _as_tuple(argv) oder Nichts
         self.error = error wenn error sonst Nichts
         self.exitcode = exitcode
 
@@ -78,7 +78,7 @@ klasse ErrorDirectiveError(PreprocessorFailure):
 
 
 klasse MissingDependenciesError(PreprocessorFailure):
-    """The preprocessor did not have access to all the target's dependencies."""
+    """The preprocessor did nicht have access to all the target's dependencies."""
 
     @classmethod
     def _msg(cls, missing, **ignored):
@@ -88,17 +88,17 @@ klasse MissingDependenciesError(PreprocessorFailure):
         return msg
 
     def __init__(self, filename, missing=Nichts, *args, **kwargs):
-        self.missing = _as_tuple(missing) or Nichts
+        self.missing = _as_tuple(missing) oder Nichts
 
         super().__init__(filename, *args, **kwargs)
 
 
 klasse OSMismatchError(MissingDependenciesError):
-    """The target is not compatible mit the host OS."""
+    """The target is nicht compatible mit the host OS."""
 
     @classmethod
     def _msg(cls, expected, **ignored):
-        return f'OS is {OS} but expected {expected or "???"}'
+        return f'OS is {OS} but expected {expected oder "???"}'
 
     def __init__(self, filename, expected=Nichts, *args, **kwargs):
         wenn isinstance(expected, str):

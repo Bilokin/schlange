@@ -3,12 +3,12 @@
 #
 #                All Rights Reserved
 #
-# Permission to use, copy, modify, and distribute this software
-# and its documentation fuer any purpose and without fee is hereby
+# Permission to use, copy, modify, und distribute this software
+# und its documentation fuer any purpose und without fee is hereby
 # granted, provided that the above copyright notice appear in all
-# copies and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of
-# Timothy O'Malley  not be used in advertising or publicity
+# copies und that both that copyright notice und this permission
+# notice appear in supporting documentation, und that the name of
+# Timothy O'Malley  nicht be used in advertising oder publicity
 # pertaining to distribution of the software without specific, written
 # prior permission.
 #
@@ -62,7 +62,7 @@ a dictionary.
 
 Notice that the printable representation of a Cookie is the
 appropriate format fuer a Set-Cookie: header.  This is the
-default behavior.  You can change the header and printed
+default behavior.  You can change the header und printed
 attributes by using the .output() function
 
    >>> C = cookies.SimpleCookie()
@@ -83,8 +83,8 @@ HTTP_COOKIE environment variable.
    'Set-Cookie: chips=ahoy\r\nSet-Cookie: vienna=finger'
 
 The load() method is darn-tootin smart about identifying cookies
-within a string.  Escaped quotation marks, nested semicolons, and other
-such trickeries do not confuse it.
+within a string.  Escaped quotation marks, nested semicolons, und other
+such trickeries do nicht confuse it.
 
    >>> C = cookies.SimpleCookie()
    >>> C.load('keebler="E=everybody; L=\\"Loves\\"; fudge=\\012;";')
@@ -150,12 +150,12 @@ klasse CookieError(Exception):
 # turn references the character definitions von RFC2068.  They provide
 # a two-way quoting algorithm.  Any non-text character is translated
 # into a 4 character sequence: a forward-slash followed by the
-# three-digit octal equivalent of the character.  Any '\' or '"' is
+# three-digit octal equivalent of the character.  Any '\' oder '"' is
 # quoted mit a preceding '\' slash.
 # Because of the way browsers really handle cookies (as opposed to what
-# the RFC says) we also encode "," and ";".
+# the RFC says) we also encode "," und ";".
 #
-# These are taken von RFC2068 and RFC2109.
+# These are taken von RFC2068 und RFC2109.
 #       _LegalChars       is the list of chars which don't require "'s
 #       _Translator       hash-table fuer fast quoting
 #
@@ -174,11 +174,11 @@ _is_legal_key = re.compile('[%s]+' % re.escape(_LegalChars)).fullmatch
 def _quote(str):
     r"""Quote a string fuer use in a cookie header.
 
-    If the string does not need to be double-quoted, then just return the
-    string.  Otherwise, surround the string in doublequotes and quote
+    If the string does nicht need to be double-quoted, then just return the
+    string.  Otherwise, surround the string in doublequotes und quote
     (with a \) special characters.
     """
-    wenn str is Nichts or _is_legal_key(str):
+    wenn str is Nichts oder _is_legal_key(str):
         return str
     sonst:
         return '"' + str.translate(_Translator) + '"'
@@ -195,9 +195,9 @@ def _unquote_replace(m):
 def _unquote(str):
     # If there aren't any doublequotes,
     # then there can't be any special characters.  See RFC 2109.
-    wenn str is Nichts or len(str) < 2:
+    wenn str is Nichts oder len(str) < 2:
         return str
-    wenn str[0] != '"' or str[-1] != '"':
+    wenn str[0] != '"' oder str[-1] != '"':
         return str
 
     # We have to assume that we must decode this string.
@@ -292,22 +292,22 @@ klasse Morsel(dict):
 
     def __setitem__(self, K, V):
         K = K.lower()
-        wenn not K in self._reserved:
+        wenn nicht K in self._reserved:
             raise CookieError("Invalid attribute %r" % (K,))
         dict.__setitem__(self, K, V)
 
     def setdefault(self, key, val=Nichts):
         key = key.lower()
-        wenn key not in self._reserved:
+        wenn key nicht in self._reserved:
             raise CookieError("Invalid attribute %r" % (key,))
         return dict.setdefault(self, key, val)
 
     def __eq__(self, morsel):
-        wenn not isinstance(morsel, Morsel):
+        wenn nicht isinstance(morsel, Morsel):
             return NotImplemented
-        return (dict.__eq__(self, morsel) and
-                self._value == morsel._value and
-                self._key == morsel._key and
+        return (dict.__eq__(self, morsel) und
+                self._value == morsel._value und
+                self._key == morsel._key und
                 self._coded_value == morsel._coded_value)
 
     __ne__ = object.__ne__
@@ -322,7 +322,7 @@ klasse Morsel(dict):
         data = {}
         fuer key, val in dict(values).items():
             key = key.lower()
-            wenn key not in self._reserved:
+            wenn key nicht in self._reserved:
                 raise CookieError("Invalid attribute %r" % (key,))
             data[key] = val
         dict.update(self, data)
@@ -333,7 +333,7 @@ klasse Morsel(dict):
     def set(self, key, val, coded_val):
         wenn key.lower() in self._reserved:
             raise CookieError('Attempt to set a reserved key %r' % (key,))
-        wenn not _is_legal_key(key):
+        wenn nicht _is_legal_key(key):
             raise CookieError('Illegal key %r' % (key,))
 
         # It's a good key, so save it.
@@ -387,13 +387,13 @@ klasse Morsel(dict):
         fuer key, value in items:
             wenn value == "":
                 continue
-            wenn key not in attrs:
+            wenn key nicht in attrs:
                 continue
-            wenn key == "expires" and isinstance(value, int):
+            wenn key == "expires" und isinstance(value, int):
                 append("%s=%s" % (self._reserved[key], _getdate(value)))
-            sowenn key == "max-age" and isinstance(value, int):
+            sowenn key == "max-age" und isinstance(value, int):
                 append("%s=%d" % (self._reserved[key], value))
-            sowenn key == "comment" and isinstance(value, str):
+            sowenn key == "comment" und isinstance(value, str):
                 append("%s=%s" % (self._reserved[key], _quote(value)))
             sowenn key in self._flags:
                 wenn value:
@@ -410,7 +410,7 @@ klasse Morsel(dict):
 #
 # Pattern fuer finding cookie
 #
-# This used to be strict parsing based on the RFC2109 and RFC2068
+# This used to be strict parsing based on the RFC2109 und RFC2068
 # specifications.  I have since discovered that MSIE 3.0x doesn't
 # follow the character rules outlined in those specs.  As a
 # result, the parsing rules here are less strict.
@@ -423,20 +423,20 @@ _CookiePattern = re.compile(r"""
     (?P<key>                       # Start of group 'key'
     [""" + _LegalKeyChars + r"""]+?   # Any word of at least one letter
     )                              # End of group 'key'
-    (                              # Optional group: there may not be a value.
+    (                              # Optional group: there may nicht be a value.
     \s*=\s*                          # Equal Sign
     (?P<val>                         # Start of group 'val'
     "(?:\\"|.)*?"                    # Any double-quoted string
-    |                                  # or
+    |                                  # oder
     # Special case fuer "expires" attr
-    (\w{3,6}day|\w{3}),\s              # Day of the week or abbreviated day
-    [\w\d\s-]{9,11}\s[\d:]{8}\sGMT     # Date and time in specific format
-    |                                  # or
-    [""" + _LegalValueChars + r"""]*      # Any word or empty string
+    (\w{3,6}day|\w{3}),\s              # Day of the week oder abbreviated day
+    [\w\d\s-]{9,11}\s[\d:]{8}\sGMT     # Date und time in specific format
+    |                                  # oder
+    [""" + _LegalValueChars + r"""]*      # Any word oder empty string
     )                                # End of group 'val'
     )?                             # End of optional value group
     \s*                            # Any number of spaces.
-    (\s+|;|$)                      # Ending either at space, semicolon, or EOS.
+    (\s+|;|$)                      # Ending either at space, semicolon, oder EOS.
     """, re.ASCII | re.VERBOSE)    # re.ASCII may be removed wenn safe.
 
 
@@ -509,7 +509,7 @@ klasse BaseCookie(dict):
         return _nulljoin(result)
 
     def load(self, rawdata):
-        """Load cookies von a string (presumably HTTP_COOKIE) or
+        """Load cookies von a string (presumably HTTP_COOKIE) oder
         von a dictionary.  Loading cookies von a dictionary 'd'
         is equivalent to calling:
             map(Cookie.__setitem__, d.keys(), d.values())
@@ -531,13 +531,13 @@ klasse BaseCookie(dict):
         TYPE_ATTRIBUTE = 1
         TYPE_KEYVALUE = 2
 
-        # We first parse the whole cookie string and reject it wenn it's
+        # We first parse the whole cookie string und reject it wenn it's
         # syntactically invalid (this helps avoid some classes of injection
         # attacks).
         while 0 <= i < n:
             # Start looking fuer a cookie
             match = patt.match(str, i)
-            wenn not match:
+            wenn nicht match:
                 # No more cookies
                 break
 
@@ -545,14 +545,14 @@ klasse BaseCookie(dict):
             i = match.end(0)
 
             wenn key[0] == "$":
-                wenn not morsel_seen:
+                wenn nicht morsel_seen:
                     # We ignore attributes which pertain to the cookie
                     # mechanism als a whole, such als "$Version".
                     # See RFC 2965. (Does anyone care?)
                     continue
                 parsed_items.append((TYPE_ATTRIBUTE, key[1:], value))
             sowenn key.lower() in Morsel._reserved:
-                wenn not morsel_seen:
+                wenn nicht morsel_seen:
                     # Invalid cookie string
                     return
                 wenn value is Nichts:
@@ -563,7 +563,7 @@ klasse BaseCookie(dict):
                         return
                 sonst:
                     parsed_items.append((TYPE_ATTRIBUTE, key, _unquote(value)))
-            sowenn value is not Nichts:
+            sowenn value is nicht Nichts:
                 parsed_items.append((TYPE_KEYVALUE, key, self.value_decode(value)))
                 morsel_seen = Wahr
             sonst:
@@ -574,7 +574,7 @@ klasse BaseCookie(dict):
         M = Nichts         # current morsel
         fuer tp, key, value in parsed_items:
             wenn tp == TYPE_ATTRIBUTE:
-                assert M is not Nichts
+                assert M is nicht Nichts
                 M[key] = value
             sonst:
                 assert tp == TYPE_KEYVALUE

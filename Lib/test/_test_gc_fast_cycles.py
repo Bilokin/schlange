@@ -17,10 +17,10 @@ klasse IncrementalGCTests(unittest.TestCase):
 
             def __init__(self, next=Nichts, prev=Nichts):
                 self.next = next
-                wenn next is not Nichts:
+                wenn next is nicht Nichts:
                     next.prev = self
                 self.prev = prev
-                wenn prev is not Nichts:
+                wenn prev is nicht Nichts:
                     prev.next = self
 
         def make_ll(depth):

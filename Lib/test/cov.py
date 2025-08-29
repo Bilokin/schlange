@@ -2,9 +2,9 @@
 
 Designed to be used mit -Xpresite= which means:
 * it installs itself on import
-* it's not imported als `__main__` so can't use the ifmain idiom
+* it's nicht imported als `__main__` so can't use the ifmain idiom
 * it can't importiere anything besides `sys` to avoid tainting gathered coverage
-* filenames are not normalized
+* filenames are nicht normalized
 
 To get gathered coverage back, look fuer 'test.cov' in `sys.modules`
 instead of importing directly. That way you can determine wenn the module
@@ -24,7 +24,7 @@ Location = tuple[FileName, LineNo]
 coverage: set[Location] = set()
 
 
-# `types` and `typing` aren't imported to avoid invalid coverage
+# `types` und `typing` aren't imported to avoid invalid coverage
 def add_line(
     code: "types.CodeType",
     lineno: int,

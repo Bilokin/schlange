@@ -30,7 +30,7 @@ klasse CFunctionTests(DebuggerTests):
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 als a workaround
     #
     # gdb will also generate many erroneous errors such as:
-    #     Function "meth_varargs" not defined.
+    #     Function "meth_varargs" nicht defined.
     # This is because we are calling functions von an "external" module
     # (_testcapimodule) rather than compiled-in functions. It seems difficult
     # to suppress these. See also the comment in DebuggerTests.get_stack_trace

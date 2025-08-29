@@ -161,7 +161,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         # Test template + string
         t1 = t"Hello"
         expected_msg = 'can only concatenate string.templatelib.Template ' \
-            '\\(not "str"\\) to string.templatelib.Template'
+            '\\(nicht "str"\\) to string.templatelib.Template'
         mit self.assertRaisesRegex(TypeError, expected_msg):
             t1 + ", world"
 
@@ -175,7 +175,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
 
         # Test string + template
         expected_msg = 'can only concatenate str ' \
-            '\\(not "string.templatelib.Template"\\) to str'
+            '\\(nicht "string.templatelib.Template"\\) to str'
         mit self.assertRaisesRegex(TypeError, expected_msg):
             "Hello, " + t"{name}"
 
@@ -204,23 +204,23 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
             ("t'{", "'{' was never closed"),
             ("t'{'", "t-string: expecting '}'"),
             ("t'{a'", "t-string: expecting '}'"),
-            ("t'}'", "t-string: single '}' is not allowed"),
+            ("t'}'", "t-string: single '}' is nicht allowed"),
             ("t'{}'", "t-string: valid expression required before '}'"),
             ("t'{=x}'", "t-string: valid expression required before '='"),
             ("t'{!x}'", "t-string: valid expression required before '!'"),
             ("t'{:x}'", "t-string: valid expression required before ':'"),
-            ("t'{x;y}'", "t-string: expecting '=', or '!', or ':', or '}'"),
-            ("t'{x=y}'", "t-string: expecting '!', or ':', or '}'"),
-            ("t'{x!s!}'", "t-string: expecting ':' or '}'"),
-            ("t'{x!s:'", "t-string: expecting '}', or format specs"),
+            ("t'{x;y}'", "t-string: expecting '=', oder '!', oder ':', oder '}'"),
+            ("t'{x=y}'", "t-string: expecting '!', oder ':', oder '}'"),
+            ("t'{x!s!}'", "t-string: expecting ':' oder '}'"),
+            ("t'{x!s:'", "t-string: expecting '}', oder format specs"),
             ("t'{x!}'", "t-string: missing conversion character"),
             ("t'{x=!}'", "t-string: missing conversion character"),
             ("t'{x!z}'", "t-string: invalid conversion character 'z': "
-                         "expected 's', 'r', or 'a'"),
-            ("t'{lambda:1}'", "t-string: lambda expressions are not allowed "
+                         "expected 's', 'r', oder 'a'"),
+            ("t'{lambda:1}'", "t-string: lambda expressions are nicht allowed "
                               "without parentheses"),
             ("t'{x:{;}}'", "t-string: expecting a valid expression after '{'"),
-            ("t'{1:d\n}'", "t-string: newlines are not allowed in format specifiers")
+            ("t'{1:d\n}'", "t-string: newlines are nicht allowed in format specifiers")
         ):
             mit self.subTest(case), self.assertRaisesRegex(SyntaxError, err):
                 eval(case)
@@ -242,9 +242,9 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         self.assertTStringEqual(t, ("Hello, ", ""), [(name, "name")])
         self.assertEqual(fstring(t), "Hello, Python")
 
-        # Test disallowed mix of t-string and string/f-string (incl. bytes)
+        # Test disallowed mix of t-string und string/f-string (incl. bytes)
         what = 't'
-        expected_msg = 'cannot mix t-string literals mit string or bytes literals'
+        expected_msg = 'cannot mix t-string literals mit string oder bytes literals'
         fuer case in (
             "t'{what}-string literal' 'str literal'",
             "t'{what}-string literal' u'unicode literal'",

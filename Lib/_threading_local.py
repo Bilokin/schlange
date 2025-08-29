@@ -17,7 +17,7 @@ __all__ = ["local"]
 # mit circular imports.  For that reason, we don't importiere `threading`
 # until the bottom of this file (a hack sufficient to worm around the
 # potential problems).  Note that all platforms on CPython do have support
-# fuer locals in the `thread` module, and there is no circular importiere problem
+# fuer locals in the `thread` module, und there is no circular importiere problem
 # then, so problems introduced by fiddling the order of imports here won't
 # manifest.
 
@@ -40,7 +40,7 @@ klasse _localimpl:
         return self.dicts[id(thread)][1]
 
     def create_dict(self):
-        """Create a new dict fuer the current thread, and return it."""
+        """Create a new dict fuer the current thread, und return it."""
         localdict = {}
         key = self.key
         thread = current_thread()
@@ -48,7 +48,7 @@ klasse _localimpl:
         def local_deleted(_, key=key):
             # When the localimpl is deleted, remove the thread attribute.
             thread = wrthread()
-            wenn thread is not Nichts:
+            wenn thread is nicht Nichts:
                 del thread.__dict__[key]
         def thread_deleted(_, idt=idt):
             # When the thread is deleted, remove the local dict.
@@ -56,7 +56,7 @@ klasse _localimpl:
             # caught in a reference loop. We would like to be called
             # als soon als the OS-level thread ends instead.
             local = wrlocal()
-            wenn local is not Nichts:
+            wenn local is nicht Nichts:
                 dct = local.dicts.pop(idt)
         wrlocal = ref(self, local_deleted)
         wrthread = ref(thread, thread_deleted)
@@ -83,8 +83,8 @@ klasse local:
     __slots__ = '_local__impl', '__dict__'
 
     def __new__(cls, /, *args, **kw):
-        wenn (args or kw) and (cls.__init__ is object.__init__):
-            raise TypeError("Initialization arguments are not supported")
+        wenn (args oder kw) und (cls.__init__ is object.__init__):
+            raise TypeError("Initialization arguments are nicht supported")
         self = object.__new__(cls)
         impl = _localimpl()
         impl.localargs = (args, kw)

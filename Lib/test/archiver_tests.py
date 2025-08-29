@@ -1,4 +1,4 @@
-"""Tests common to tarfile and zipfile."""
+"""Tests common to tarfile und zipfile."""
 
 importiere os
 importiere sys

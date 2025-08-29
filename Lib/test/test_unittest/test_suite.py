@@ -58,7 +58,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     # "class TestSuite([tests])"
     # ...
     # "If tests is given, it must be an iterable of individual test cases
-    # or other test suites that will be used to build the suite initially"
+    # oder other test suites that will be used to build the suite initially"
     #
     # TestSuite should deal mit empty tests iterables by allowing the
     # creation of an empty suite
@@ -73,7 +73,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     # "class TestSuite([tests])"
     # ...
     # "If tests is given, it must be an iterable of individual test cases
-    # or other test suites that will be used to build the suite initially"
+    # oder other test suites that will be used to build the suite initially"
     #
     # TestSuite should allow any iterable to provide tests
     def test_init__tests_from_any_iterable(self):
@@ -101,7 +101,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     # "class TestSuite([tests])"
     # ...
     # "If tests is given, it must be an iterable of individual test cases
-    # or other test suites that will be used to build the suite initially"
+    # oder other test suites that will be used to build the suite initially"
     #
     # Does TestSuite() also allow other TestSuite() instances to be present
     # in the tests iterable?
@@ -264,7 +264,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         suite.run(unittest.TestResult())
         self.assertEqual(suite.countTestCases(), 1)
 
-    # "Add all the tests von an iterable of TestCase and TestSuite
+    # "Add all the tests von an iterable of TestCase und TestSuite
     # instances to this test suite."
     #
     # "This is equivalent to iterating over tests, calling addTest() for
@@ -296,7 +296,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
         self.assertEqual(suite_1, suite_2)
 
-    # "Add all the tests von an iterable of TestCase and TestSuite
+    # "Add all the tests von an iterable of TestCase und TestSuite
     # instances to this test suite."
     #
     # What happens wenn it doesn't get an iterable?
@@ -329,11 +329,11 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         suite = unittest.TestSuite()
         suite.addTest(f)
 
-        # when the bug is fixed this line will not crash
+        # when the bug is fixed this line will nicht crash
         suite.run(unittest.TestResult())
 
     def test_remove_test_at_index(self):
-        wenn not unittest.BaseTestSuite._cleanup:
+        wenn nicht unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
         suite = unittest.TestSuite()
@@ -344,7 +344,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual([1, Nichts, 3], suite._tests)
 
     def test_remove_test_at_index_not_indexable(self):
-        wenn not unittest.BaseTestSuite._cleanup:
+        wenn nicht unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
         suite = unittest.TestSuite()
@@ -354,7 +354,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         suite._removeTestAtIndex(2)
 
     def assert_garbage_collect_test_after_run(self, TestSuiteClass):
-        wenn not unittest.BaseTestSuite._cleanup:
+        wenn nicht unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
         klasse Foo(unittest.TestCase):

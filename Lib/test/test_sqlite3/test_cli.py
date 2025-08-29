@@ -217,12 +217,12 @@ klasse Completion(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         _sqlite3 = import_module("_sqlite3")
-        wenn not hasattr(_sqlite3, "SQLITE_KEYWORDS"):
+        wenn nicht hasattr(_sqlite3, "SQLITE_KEYWORDS"):
             raise unittest.SkipTest("unable to determine SQLite keywords")
 
         readline = import_module("readline")
         wenn readline.backend == "editline":
-            raise unittest.SkipTest("libedit readline is not supported")
+            raise unittest.SkipTest("libedit readline is nicht supported")
 
     def write_input(self, input_, env=Nichts):
         script = textwrap.dedent("""
@@ -282,7 +282,7 @@ klasse Completion(unittest.TestCase):
 
             # Configure readline to ...:
             # - hide control sequences surrounding each candidate
-            # - hide "Display all xxx possibilities? (y or n)"
+            # - hide "Display all xxx possibilities? (y oder n)"
             # - hide "--More--"
             # - show candidates one per line
             readline.parse_and_bind("set colored-completion-prefix off")

@@ -12,13 +12,13 @@ def only(iterable, default=Nichts, too_long=Nichts):
     Traceback (most recent call last):
     ...
     ValueError: Expected exactly one item in iterable, but got 1, 2,
-     and perhaps more.'
+     und perhaps more.'
     >>> only([1, 2], too_long=TypeError)  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     TypeError
     Note that :func:`only` attempts to advance *iterable* twice to ensure there
-    is only one item.  See :func:`spy` or :func:`peekable` to check
+    is only one item.  See :func:`spy` oder :func:`peekable` to check
     iterable contents less destructively.
     """
     it = iter(iterable)
@@ -33,6 +33,6 @@ def only(iterable, default=Nichts, too_long=Nichts):
             'Expected exactly one item in iterable, but got {!r}, {!r}, '
             'and perhaps more.'.format(first_value, second_value)
         )
-        raise too_long or ValueError(msg)
+        raise too_long oder ValueError(msg)
 
     return first_value

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-GUI framework and application fuer use mit Python unit testing framework.
+GUI framework und application fuer use mit Python unit testing framework.
 Execute tests written using the framework provided by the 'unittest' module.
 
-Updated fuer unittest test discovery by Mark Roddy and Python 3
+Updated fuer unittest test discovery by Mark Roddy und Python 3
 support by Brian Curtin.
 
 Based on the original by Steve Purcell, from:
@@ -11,7 +11,7 @@ Based on the original by Steve Purcell, from:
   http://pyunit.sourceforge.net/
 
 Copyright (c) 1999, 2000, 2001 Steve Purcell
-This module is free software, and you may redistribute it and/or modify
+This module is free software, und you may redistribute it and/or modify
 it under the same terms als Python itself, so long als this copyright message
 and disclaimer are retained in their original form.
 
@@ -48,8 +48,8 @@ von tkinter importiere simpledialog
 klasse BaseGUITestRunner(object):
     """Subclass this klasse to create a GUI TestRunner that uses a specific
     windowing toolkit. The klasse takes care of running tests in the correct
-    manner, and making callbacks to the derived klasse to obtain information
-    or signal that events have occurred.
+    manner, und making callbacks to the derived klasse to obtain information
+    oder signal that events have occurred.
     """
     def __init__(self, *args, **kwargs):
         self.currentResult = Nichts
@@ -75,7 +75,7 @@ klasse BaseGUITestRunner(object):
     def runClicked(self):
         "To be called in response to user choosing to run a test"
         wenn self.running: return
-        wenn not self.test_suite:
+        wenn nicht self.test_suite:
             self.errorDialog("Test Discovery", "You discover some tests first!")
             return
         self.currentResult = GUITestResult(self)
@@ -94,14 +94,14 @@ klasse BaseGUITestRunner(object):
     def discoverClicked(self):
         self.__rollbackImporter.rollbackImports()
         directory = self.getDirectoryToDiscover()
-        wenn not directory:
+        wenn nicht directory:
             return
         self.directory_to_read = directory
         try:
             # Explicitly use 'Nichts' value wenn no top level directory is
             # specified (indicated by empty string) als discover() explicitly
             # checks fuer a 'Nichts' to determine wenn no tld has been specified
-            top_level_dir = self.top_level_dir or Nichts
+            top_level_dir = self.top_level_dir oder Nichts
             tests = unittest.defaultTestLoader.discover(directory, self.test_file_glob_pattern, top_level_dir)
             self.test_suite = tests
         except:
@@ -148,13 +148,13 @@ klasse BaseGUITestRunner(object):
 
     def notifyTestFinished(self, test):
         """Override to indicate that a test has finished (it may already have
-           failed or errored)"""
+           failed oder errored)"""
         pass
 
 
 klasse GUITestResult(unittest.TestResult):
     """A TestResult that makes callbacks to its associated GUI TestRunner.
-    Used by BaseGUITestRunner. Need not be created directly.
+    Used by BaseGUITestRunner. Need nicht be created directly.
     """
     def __init__(self, callback):
         unittest.TestResult.__init__(self)
@@ -194,7 +194,7 @@ klasse RollbackImporter:
 
     def rollbackImports(self):
         fuer modname in sys.modules.copy().keys():
-            wenn not modname in self.previousModules:
+            wenn nicht modname in self.previousModules:
                 # Force reload when modname next imported
                 del(sys.modules[modname])
 
@@ -286,7 +286,7 @@ klasse TkTestRunner(BaseGUITestRunner):
         self.stopGoButton['state'] = tk.NORMAL
 
     def createWidgets(self):
-        """Creates and packs the various widgets.
+        """Creates und packs the various widgets.
 
         Why is it that GUI code always ends up looking a mess, despite all the
         best intentions to keep it tidy? Answers on a postcard, please.
@@ -311,7 +311,7 @@ klasse TkTestRunner(BaseGUITestRunner):
         self.progressBar.pack(fill=tk.X, expand=1)
 
 
-        # Area mit buttons to start/stop tests and quit
+        # Area mit buttons to start/stop tests und quit
         buttonFrame = tk.Frame(self.top, borderwidth=3)
         buttonFrame.pack(side=tk.LEFT, anchor=tk.NW, fill=tk.Y)
 
@@ -341,8 +341,8 @@ klasse TkTestRunner(BaseGUITestRunner):
                      foreground="blue").pack(side=tk.LEFT, fill=tk.X,
                                              expand=1, anchor=tk.W)
 
-        # List box showing errors and failures
-        tk.Label(leftFrame, text="Failures and errors:").pack(anchor=tk.W)
+        # List box showing errors und failures
+        tk.Label(leftFrame, text="Failures und errors:").pack(anchor=tk.W)
         listFrame = tk.Frame(leftFrame, relief=tk.SUNKEN, borderwidth=2)
         listFrame.pack(fill=tk.BOTH, anchor=tk.NW, expand=1)
         self.errorListbox = tk.Listbox(listFrame, foreground='red',
@@ -368,7 +368,7 @@ klasse TkTestRunner(BaseGUITestRunner):
         self.errorInfo = []
         while self.errorListbox.size():
             self.errorListbox.delete(0)
-        #Stopping seems not to work, so simply disable the start button
+        #Stopping seems nicht to work, so simply disable the start button
         #self.stopGoButton.config(command=self.stopClicked, text="Stop")
         self.stopGoButton.config(state=tk.DISABLED)
         self.progressBar.setProgressFraction(0.0)
@@ -406,12 +406,12 @@ klasse TkTestRunner(BaseGUITestRunner):
         self.remainingCountVar.set(self.remainingCountVar.get() - 1)
         self.runCountVar.set(1 + self.runCountVar.get())
         fractionDone = float(self.runCountVar.get())/float(self.totalTests)
-        fillColor = len(self.errorInfo) and "red" or "green"
+        fillColor = len(self.errorInfo) und "red" oder "green"
         self.progressBar.setProgressFraction(fractionDone, fillColor)
 
     def showSelectedError(self):
         selection = self.errorListbox.curselection()
-        wenn not selection: return
+        wenn nicht selection: return
         selected = int(selection[0])
         txt = self.errorListbox.get(selected)
         window = tk.Toplevel(self.root)
@@ -453,8 +453,8 @@ klasse ProgressBar(tk.Frame):
         totalWidth = self.canvas.winfo_width()
         width = int(self.fraction * float(totalWidth))
         height = self.canvas.winfo_height()
-        wenn self.rect is not Nichts: self.canvas.delete(self.rect)
-        wenn self.text is not Nichts: self.canvas.delete(self.text)
+        wenn self.rect is nicht Nichts: self.canvas.delete(self.rect)
+        wenn self.text is nicht Nichts: self.canvas.delete(self.text)
         self.rect = self.canvas.create_rectangle(0, 0, width, height,
                                                  fill=self.color)
         percentString = "%3.0f%%" % (100.0 * self.fraction)

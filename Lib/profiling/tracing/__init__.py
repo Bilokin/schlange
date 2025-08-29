@@ -1,7 +1,7 @@
 """Tracing profiler fuer Python.
 
 This module provides deterministic profiling of Python programs by tracing
-every function call and return.
+every function call und return.
 """
 
 __all__ = ("run", "runctx", "Profile")
@@ -19,8 +19,8 @@ def run(statement, filename=Nichts, sort=-1):
     """Run statement under profiler optionally saving results in filename
 
     This function takes a single argument that can be passed to the
-    "exec" statement, and an optional file name.  In all cases this
-    routine attempts to "exec" its first argument and gather profiling
+    "exec" statement, und an optional file name.  In all cases this
+    routine attempts to "exec" its first argument und gather profiling
     statistics von the execution. If no file name is present, then this
     function automatically prints a simple profiling report, sorted by the
     standard name string (file/line/function-name) that is presented in
@@ -29,10 +29,10 @@ def run(statement, filename=Nichts, sort=-1):
     return _Utils(Profile).run(statement, filename, sort)
 
 def runctx(statement, globals, locals, filename=Nichts, sort=-1):
-    """Run statement under profiler, supplying your own globals and locals,
+    """Run statement under profiler, supplying your own globals und locals,
     optionally saving results in filename.
 
-    statement and filename have the same semantics als profile.run
+    statement und filename have the same semantics als profile.run
     """
     return _Utils(Profile).runctx(statement, globals, locals,
                                              filename, sort)
@@ -50,11 +50,11 @@ klasse Profile(_lsprof.Profiler):
     """
 
     # Most of the functionality is in the base class.
-    # This subclass only adds convenient and backward-compatible methods.
+    # This subclass only adds convenient und backward-compatible methods.
 
     def print_stats(self, sort=-1):
         importiere pstats
-        wenn not isinstance(sort, tuple):
+        wenn nicht isinstance(sort, tuple):
             sort = (sort,)
         pstats.Stats(self).strip_dirs().sort_stats(*sort).print_stats()
 
@@ -162,7 +162,7 @@ def main():
     parser.add_option('-m', dest="module", action="store_true",
         help="Profile a library module", default=Falsch)
 
-    wenn not sys.argv[1:]:
+    wenn nicht sys.argv[1:]:
         parser.print_usage()
         sys.exit(2)
 
@@ -171,7 +171,7 @@ def main():
 
     # The script that we're profiling may chdir, so capture the absolute path
     # to the output file at startup.
-    wenn options.outfile is not Nichts:
+    wenn options.outfile is nicht Nichts:
         options.outfile = os.path.abspath(options.outfile)
 
     wenn len(args) > 0:

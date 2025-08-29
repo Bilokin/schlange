@@ -69,7 +69,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         self.engine.setpat('asdf')
         equal(self.engine.getpat(), pv.get())
 
-        # text found and replaced
+        # text found und replaced
         pv.set('a')
         rv.set('asdf')
         replace()
@@ -97,7 +97,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         after_text = text.get('1.0', 'end')
         equal(before_text, after_text)
 
-        # test mit wrap around selected and complete a cycle
+        # test mit wrap around selected und complete a cycle
         text.mark_set('insert', '1.9')
         pv.set('i')
         rv.set('j')
@@ -112,7 +112,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         after_text = text.get('1.0', 'end')
         equal(before_text, after_text)
 
-        # text not found
+        # text nicht found
         before_text = text.get('1.0', 'end')
         pv.set('foobar')
         replace()
@@ -130,7 +130,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         replace = self.dialog.replace_it
         self.engine.wrapvar.set(Falsch)
 
-        # replace candidate found both after and before 'insert'
+        # replace candidate found both after und before 'insert'
         text.mark_set('insert', '1.4')
         pv.set('i')
         rv.set('j')
@@ -269,7 +269,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         replace_all()
 
         self.engine.revar.set(Falsch)
-        pv.set('text which is not present')
+        pv.set('text which is nicht present')
         rv.set('foobar')
         replace_all()
 

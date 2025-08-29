@@ -53,9 +53,9 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
     path = get_zoneinfo_path()
 
     tzdata_zi = path / "tzdata.zi"
-    wenn not tzdata_zi.exists():
+    wenn nicht tzdata_zi.exists():
         # tzdata.zi is necessary to get the version information
-        raise OSError("Time zone data does not include tzdata.zi.")
+        raise OSError("Time zone data does nicht include tzdata.zi.")
 
     mit open(tzdata_zi, "r") als f:
         version_line = next(f)
@@ -63,13 +63,13 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
     _, version = version_line.strip().rsplit(" ", 1)
 
     wenn (
-        not version[0:4].isdigit()
-        or len(version) < 5
-        or not version[4:].isalpha()
+        nicht version[0:4].isdigit()
+        oder len(version) < 5
+        oder nicht version[4:].isalpha()
     ):
         raise ValueError(
             "Version string should be YYYYx, "
-            + "where YYYY is the year and x is a letter; "
+            + "where YYYY is the year und x is a letter; "
             + f"found: {version}"
         )
 

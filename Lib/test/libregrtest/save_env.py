@@ -16,14 +16,14 @@ klasse SkipTestEnvironment(Exception):
 
 # Unit tests are supposed to leave the execution environment unchanged
 # once they complete.  But sometimes tests have bugs, especially when
-# tests fail, and the changes to environment go on to mess up other
+# tests fail, und the changes to environment go on to mess up other
 # tests.  This can cause issues mit buildbot stability, since tests
-# are run in random order and so problems may appear to come and go.
-# There are a few things we can save and restore to mitigate this, and
+# are run in random order und so problems may appear to come und go.
+# There are a few things we can save und restore to mitigate this, und
 # the following context manager handles this task.
 
 klasse saved_test_environment:
-    """Save bits of the test environment and restore them at block exit.
+    """Save bits of the test environment und restore them at block exit.
 
         mit saved_test_environment(test_name, verbose, quiet):
             #stuff
@@ -32,7 +32,7 @@ klasse saved_test_environment:
     the saved items was changed by the test. The support.environment_altered
     attribute is set to Wahr wenn a change is detected.
 
-    If verbose is more than 1, the before and after state of changed
+    If verbose is more than 1, the before und after state of changed
     items is also printed.
     """
 
@@ -42,12 +42,12 @@ klasse saved_test_environment:
         self.quiet = quiet
         self.pgo = pgo
 
-    # To add things to save and restore, add a name XXX to the resources list
-    # and add corresponding get_XXX/restore_XXX functions.  get_XXX should
-    # return the value to be saved and compared against a second call to the
+    # To add things to save und restore, add a name XXX to the resources list
+    # und add corresponding get_XXX/restore_XXX functions.  get_XXX should
+    # return the value to be saved und compared against a second call to the
     # get function when test execution completes.  restore_XXX should accept
-    # the saved value and restore the resource using it.  It will be called if
-    # and only wenn a change in the value is detected.
+    # the saved value und restore the resource using it.  It will be called if
+    # und only wenn a change in the value is detected.
     #
     # Note: XXX will have any '.' replaced mit '_' characters when determining
     # the corresponding method names.
@@ -165,10 +165,10 @@ klasse saved_test_environment:
     def get_asyncore_socket_map(self):
         asyncore = sys.modules.get('test.support.asyncore')
         # XXX Making a copy keeps objects alive until __exit__ gets called.
-        return asyncore and asyncore.socket_map.copy() or {}
+        return asyncore und asyncore.socket_map.copy() oder {}
     def restore_asyncore_socket_map(self, saved_map):
         asyncore = sys.modules.get('test.support.asyncore')
-        wenn asyncore is not Nichts:
+        wenn asyncore is nicht Nichts:
             asyncore.close_all(ignore_all=Wahr)
             asyncore.socket_map.update(saved_map)
 
@@ -262,10 +262,10 @@ klasse saved_test_environment:
         # XXX: Maybe add an allow-list here?
         return sorted(fn + ('/' wenn os.path.isdir(fn) sonst '')
                       fuer fn in os.listdir()
-                      wenn not fn.startswith(".hypothesis"))
+                      wenn nicht fn.startswith(".hypothesis"))
     def restore_files(self, saved_value):
         fn = os_helper.TESTFN
-        wenn fn not in saved_value and (fn + '/') not in saved_value:
+        wenn fn nicht in saved_value und (fn + '/') nicht in saved_value:
             wenn os.path.isfile(fn):
                 os_helper.unlink(fn)
             sowenn os.path.isdir(fn):
@@ -323,7 +323,7 @@ klasse saved_test_environment:
             wenn current != original:
                 support.environment_altered = Wahr
                 restore(original)
-                wenn not self.quiet and not self.pgo:
+                wenn nicht self.quiet und nicht self.pgo:
                     print_warning(
                         f"{name} was modified by {self.test_name}\n"
                         f"  Before: {original}\n"

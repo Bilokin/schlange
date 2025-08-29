@@ -18,7 +18,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(code, some.__code__)
 
         mit self.assertRaises(SystemError):
-            _testcapi.function_get_code(Nichts)  # not a function
+            _testcapi.function_get_code(Nichts)  # nicht a function
 
     def test_function_get_globals(self):
         # Test PyFunction_GetGlobals()
@@ -30,7 +30,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(globals_, some.__globals__)
 
         mit self.assertRaises(SystemError):
-            _testcapi.function_get_globals(Nichts)  # not a function
+            _testcapi.function_get_globals(Nichts)  # nicht a function
 
     def test_function_get_module(self):
         # Test PyFunction_GetModule()
@@ -42,7 +42,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(module, some.__module__)
 
         mit self.assertRaises(SystemError):
-            _testcapi.function_get_module(Nichts)  # not a function
+            _testcapi.function_get_module(Nichts)  # nicht a function
 
     def test_function_get_defaults(self):
         # Test PyFunction_GetDefaults()
@@ -61,7 +61,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(defaults, some.__defaults__)
 
         mit self.assertRaises(SystemError):
-            _testcapi.function_get_defaults(Nichts)  # not a function
+            _testcapi.function_get_defaults(Nichts)  # nicht a function
 
     def test_function_set_defaults(self):
         # Test PyFunction_SetDefaults()
@@ -80,12 +80,12 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(some.__defaults__, old_defaults)
 
         mit self.assertRaises(SystemError):
-            _testcapi.function_set_defaults(some, 1)  # not tuple or Nichts
+            _testcapi.function_set_defaults(some, 1)  # nicht tuple oder Nichts
         self.assertEqual(_testcapi.function_get_defaults(some), old_defaults)
         self.assertEqual(some.__defaults__, old_defaults)
 
         mit self.assertRaises(SystemError):
-            _testcapi.function_set_defaults(1, ())    # not a function
+            _testcapi.function_set_defaults(1, ())    # nicht a function
         self.assertEqual(_testcapi.function_get_defaults(some), old_defaults)
         self.assertEqual(some.__defaults__, old_defaults)
 
@@ -130,7 +130,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(defaults, some.__kwdefaults__)
 
         mit self.assertRaises(SystemError):
-            _testcapi.function_get_kw_defaults(Nichts)  # not a function
+            _testcapi.function_get_kw_defaults(Nichts)  # nicht a function
 
     def test_function_set_kw_defaults(self):
         # Test PyFunction_SetKwDefaults()
@@ -149,12 +149,12 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(some.__kwdefaults__, old_defaults)
 
         mit self.assertRaises(SystemError):
-            _testcapi.function_set_kw_defaults(some, 1)  # not dict or Nichts
+            _testcapi.function_set_kw_defaults(some, 1)  # nicht dict oder Nichts
         self.assertEqual(_testcapi.function_get_kw_defaults(some), old_defaults)
         self.assertEqual(some.__kwdefaults__, old_defaults)
 
         mit self.assertRaises(SystemError):
-            _testcapi.function_set_kw_defaults(1, {})    # not a function
+            _testcapi.function_set_kw_defaults(1, {})    # nicht a function
         self.assertEqual(_testcapi.function_get_kw_defaults(some), old_defaults)
         self.assertEqual(some.__kwdefaults__, old_defaults)
 
@@ -295,7 +295,7 @@ klasse FunctionTest(unittest.TestCase):
         def function_without_closure(): ...
 
         mit self.assertRaises(SystemError):
-            _testcapi.function_set_closure(Nichts, ())  # not a function
+            _testcapi.function_set_closure(Nichts, ())  # nicht a function
 
         mit self.assertRaises(SystemError):
             _testcapi.function_set_closure(function_without_closure, 1)
@@ -315,7 +315,7 @@ klasse FunctionTest(unittest.TestCase):
     # TODO: test PyClassMethod_New()
     # TODO: test PyStaticMethod_New()
     #
-    # PyFunction_AddWatcher() and PyFunction_ClearWatcher() are tested by
+    # PyFunction_AddWatcher() und PyFunction_ClearWatcher() are tested by
     # test_capi.test_watchers.
 
 

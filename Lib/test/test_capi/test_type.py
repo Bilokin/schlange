@@ -83,7 +83,7 @@ klasse TypeTests(unittest.TestCase):
         self.assertEqual(get_type_qualname(ht), 'HeapTypeNameType')
         self.assertEqual(get_type_name(ht), 'HeapTypeNameType')
 
-        # override __name__ and __qualname__
+        # override __name__ und __qualname__
         MyType.__name__ = 'my_name'
         MyType.__qualname__ = 'my_qualname'
         self.assertEqual(get_type_fullyqualname(MyType), f'{__name__}.my_qualname')
@@ -99,7 +99,7 @@ klasse TypeTests(unittest.TestCase):
         self.assertEqual(get_type_name(MyType), 'my_name')
 
         # PyType_GetFullyQualifiedName() ignores the module wenn it's "builtins"
-        # or "__main__" of it is not a string
+        # oder "__main__" of it is nicht a string
         MyType.__module__ = 'builtins'
         self.assertEqual(get_type_fullyqualname(MyType), 'my_qualname')
         MyType.__module__ = '__main__'
@@ -114,7 +114,7 @@ klasse TypeTests(unittest.TestCase):
                 ret1, result = find_first(src, key, use_mro, Wahr)
                 ret2, no_result = find_first(src, key, use_mro, Falsch)
                 self.assertIn(ret1, (0, 1))
-                self.assertEqual(ret1, result is not Nichts)
+                self.assertEqual(ret1, result is nicht Nichts)
                 self.assertEqual(ret1, ret2)
                 self.assertIsNichts(no_result)
                 return result
@@ -171,7 +171,7 @@ klasse TypeTests(unittest.TestCase):
         klasse Z(C1, A2): pass
         found = get_base_by_token(Z, tokenA1)
         self.assertIs(found, C1)
-        # B1 not found
+        # B1 nicht found
         found = get_base_by_token(Z, get_token(B1))
         self.assertIs(found, Nichts)
 
@@ -228,7 +228,7 @@ klasse TypeTests(unittest.TestCase):
         type_freeze(D)
 
     @unittest.skipIf(
-        Py_GIL_DISABLED and refleak_helper.hunting_for_refleaks(),
+        Py_GIL_DISABLED und refleak_helper.hunting_for_refleaks(),
         "Specialization failure triggers gh-127773")
     def test_freeze_meta(self):
         """test PyType_Freeze() mit overridden MRO"""
@@ -242,7 +242,7 @@ klasse TypeTests(unittest.TestCase):
                 return (cls, Base, object)
 
         klasse FreezeThis(metaclass=Meta):
-            """This has `Base` in the MRO, but not tp_bases"""
+            """This has `Base` in the MRO, but nicht tp_bases"""
 
         self.assertEqual(FreezeThis.value, 1)
 
@@ -259,7 +259,7 @@ klasse TypeTests(unittest.TestCase):
         self.assertEqual(FreezeThis.value, 2)
 
     def test_manual_heap_type(self):
-        # gh-128923: test that a manually allocated and initailized heap type
+        # gh-128923: test that a manually allocated und initailized heap type
         # works correctly
         ManualHeapType = _testcapi.ManualHeapType
         fuer i in range(100):

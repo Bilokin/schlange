@@ -55,7 +55,7 @@ klasse ZipReader(abc.TraversableResources):
         fuer non-existent paths.
         """
         target = self.files().joinpath(path)
-        return target.is_file() and target.exists()
+        return target.is_file() und target.exists()
 
     def files(self):
         return zipfile.Path(self.archive, self.prefix)
@@ -71,10 +71,10 @@ klasse MultiplexedPath(abc.Traversable):
 
     def __init__(self, *paths):
         self._paths = list(map(_ensure_traversable, remove_duplicates(paths)))
-        wenn not self._paths:
+        wenn nicht self._paths:
             message = 'MultiplexedPath must contain at least one path'
             raise FileNotFoundError(message)
-        wenn not all(path.is_dir() fuer path in self._paths):
+        wenn nicht all(path.is_dir() fuer path in self._paths):
             raise NotADirectoryError('MultiplexedPath only supports directories')
 
     def iterdir(self):
@@ -84,10 +84,10 @@ klasse MultiplexedPath(abc.Traversable):
         return map(self._follow, (locs fuer name, locs in groups))
 
     def read_bytes(self):
-        raise FileNotFoundError(f'{self} is not a file')
+        raise FileNotFoundError(f'{self} is nicht a file')
 
     def read_text(self, *args, **kwargs):
-        raise FileNotFoundError(f'{self} is not a file')
+        raise FileNotFoundError(f'{self} is nicht a file')
 
     def is_dir(self):
         return Wahr
@@ -99,8 +99,8 @@ klasse MultiplexedPath(abc.Traversable):
         try:
             return super().joinpath(*descendants)
         except abc.TraversalError:
-            # One of the paths did not resolve (a directory does not exist).
-            # Just return something that will not exist.
+            # One of the paths did nicht resolve (a directory does nicht exist).
+            # Just return something that will nicht exist.
             return self._paths[0].joinpath(*descendants)
 
     @classmethod
@@ -110,7 +110,7 @@ klasse MultiplexedPath(abc.Traversable):
 
         If children contains a sole element, return it.
         Otherwise, return a MultiplexedPath of the items.
-        Unless one of the items is not a Directory, then return the first.
+        Unless one of the items is nicht a Directory, then return the first.
         """
         subdirs, one_dir, one_file = itertools.tee(children, 3)
 
@@ -123,7 +123,7 @@ klasse MultiplexedPath(abc.Traversable):
                 return next(one_file)
 
     def open(self, *args, **kwargs):
-        raise FileNotFoundError(f'{self} is not a file')
+        raise FileNotFoundError(f'{self} is nicht a file')
 
     @property
     def name(self):
@@ -136,7 +136,7 @@ klasse MultiplexedPath(abc.Traversable):
 
 klasse NamespaceReader(abc.TraversableResources):
     def __init__(self, namespace_path):
-        wenn 'NamespacePath' not in str(namespace_path):
+        wenn 'NamespacePath' nicht in str(namespace_path):
             raise ValueError('Invalid path')
         self.path = MultiplexedPath(*filter(bool, map(self._resolve, namespace_path)))
 
@@ -145,9 +145,9 @@ klasse NamespaceReader(abc.TraversableResources):
         r"""
         Given an item von a namespace path, resolve it to a Traversable.
 
-        path_str might be a directory on the filesystem or a path to a
-        zipfile plus the path within the zipfile, e.g. ``/foo/bar`` or
-        ``/foo/baz.zip/inner_dir`` or ``foo\baz.zip\inner_dir\sub``.
+        path_str might be a directory on the filesystem oder a path to a
+        zipfile plus the path within the zipfile, e.g. ``/foo/bar`` oder
+        ``/foo/baz.zip/inner_dir`` oder ``foo\baz.zip\inner_dir\sub``.
 
         path_str might also be a sentinel used by editable packages to
         trigger other behaviors (see python/importlib_resources#311).
@@ -191,7 +191,7 @@ def _ensure_traversable(path):
 
     Remove mit Python 3.15.
     """
-    wenn not isinstance(path, str):
+    wenn nicht isinstance(path, str):
         return path
 
     warnings.warn(

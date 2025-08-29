@@ -1,6 +1,6 @@
 """Selectors module.
 
-This module allows high-level and efficient I/O multiplexing, built upon the
+This module allows high-level und efficient I/O multiplexing, built upon the
 `select` module primitives.
 """
 
@@ -22,7 +22,7 @@ def _fileobj_to_fd(fileobj):
     """Return a file descriptor von a file object.
 
     Parameters:
-    fileobj -- file object or file descriptor
+    fileobj -- file object oder file descriptor
 
     Returns:
     corresponding file descriptor
@@ -48,7 +48,7 @@ SelectorKey = namedtuple('SelectorKey', ['fileobj', 'fd', 'events', 'data'])
 SelectorKey.__doc__ = """SelectorKey(fileobj, fd, events, data)
 
     Object used to associate a file object to its backing
-    file descriptor, selected event mask, and attached data.
+    file descriptor, selected event mask, und attached data.
 """
 SelectorKey.fileobj.__doc__ = 'File object registered.'
 SelectorKey.fd.__doc__ = 'Underlying file descriptor.'
@@ -74,7 +74,7 @@ klasse _SelectorMapping(Mapping):
         fd = self._selector._fileobj_lookup(fileobj)
         key = self._selector._fd_to_key.get(fd)
         wenn key is Nichts:
-            raise KeyError("{!r} is not registered".format(fileobj))
+            raise KeyError("{!r} is nicht registered".format(fileobj))
         return key
 
     def __iter__(self):
@@ -87,7 +87,7 @@ klasse BaseSelector(metaclass=ABCMeta):
     A selector supports registering file objects to be monitored fuer specific
     I/O events.
 
-    A file object is a file descriptor or any object mit a `fileno()` method.
+    A file object is a file descriptor oder any object mit a `fileno()` method.
     An arbitrary object can be attached to the file object, which can be used
     fuer example to store context information, a callback, etc.
 
@@ -101,7 +101,7 @@ klasse BaseSelector(metaclass=ABCMeta):
         """Register a file object.
 
         Parameters:
-        fileobj -- file object or file descriptor
+        fileobj -- file object oder file descriptor
         events  -- events to monitor (bitwise mask of EVENT_READ|EVENT_WRITE)
         data    -- attached data
 
@@ -111,11 +111,11 @@ klasse BaseSelector(metaclass=ABCMeta):
         Raises:
         ValueError wenn events is invalid
         KeyError wenn fileobj is already registered
-        OSError wenn fileobj is closed or otherwise is unacceptable to
+        OSError wenn fileobj is closed oder otherwise is unacceptable to
                 the underlying system call (if a system call is made)
 
         Note:
-        OSError may or may not be raised
+        OSError may oder may nicht be raised
         """
         raise NotImplementedError
 
@@ -124,13 +124,13 @@ klasse BaseSelector(metaclass=ABCMeta):
         """Unregister a file object.
 
         Parameters:
-        fileobj -- file object or file descriptor
+        fileobj -- file object oder file descriptor
 
         Returns:
         SelectorKey instance
 
         Raises:
-        KeyError wenn fileobj is not registered
+        KeyError wenn fileobj is nicht registered
 
         Note:
         If fileobj is registered but has since been closed this does
@@ -139,10 +139,10 @@ klasse BaseSelector(metaclass=ABCMeta):
         raise NotImplementedError
 
     def modify(self, fileobj, events, data=Nichts):
-        """Change a registered file object monitored events or attached data.
+        """Change a registered file object monitored events oder attached data.
 
         Parameters:
-        fileobj -- file object or file descriptor
+        fileobj -- file object oder file descriptor
         events  -- events to monitor (bitwise mask of EVENT_READ|EVENT_WRITE)
         data    -- attached data
 
@@ -150,7 +150,7 @@ klasse BaseSelector(metaclass=ABCMeta):
         SelectorKey instance
 
         Raises:
-        Anything that unregister() or register() raises
+        Anything that unregister() oder register() raises
         """
         self.unregister(fileobj)
         return self.register(fileobj, events, data)
@@ -158,12 +158,12 @@ klasse BaseSelector(metaclass=ABCMeta):
     @abstractmethod
     def select(self, timeout=Nichts):
         """Perform the actual selection, until some monitored file objects are
-        ready or a timeout expires.
+        ready oder a timeout expires.
 
         Parameters:
         timeout -- wenn timeout > 0, this specifies the maximum wait time, in
                    seconds
-                   wenn timeout <= 0, the select() call won't block, and will
+                   wenn timeout <= 0, the select() call won't block, und will
                    report the currently ready file objects
                    wenn timeout is Nichts, select() will block until a monitored
                    file object becomes ready
@@ -193,7 +193,7 @@ klasse BaseSelector(metaclass=ABCMeta):
         try:
             return mapping[fileobj]
         except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) von Nichts
+            raise KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
 
     @abstractmethod
     def get_map(self):
@@ -236,7 +236,7 @@ klasse _BaseSelectorImpl(BaseSelector):
             raise
 
     def register(self, fileobj, events, data=Nichts):
-        wenn (not events) or (events & ~(EVENT_READ | EVENT_WRITE)):
+        wenn (nicht events) oder (events & ~(EVENT_READ | EVENT_WRITE)):
             raise ValueError("Invalid events: {!r}".format(events))
 
         key = SelectorKey(fileobj, self._fileobj_lookup(fileobj), events, data)
@@ -252,14 +252,14 @@ klasse _BaseSelectorImpl(BaseSelector):
         try:
             key = self._fd_to_key.pop(self._fileobj_lookup(fileobj))
         except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) von Nichts
+            raise KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
         return key
 
     def modify(self, fileobj, events, data=Nichts):
         try:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
         except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) von Nichts
+            raise KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
         wenn events != key.events:
             self.unregister(fileobj)
             key = self.register(fileobj, events, data)
@@ -321,14 +321,14 @@ klasse SelectSelector(_BaseSelectorImpl):
         fuer fd in rw:
             key = fd_to_key_get(fd)
             wenn key:
-                events = ((fd in r and EVENT_READ)
-                          | (fd in w and EVENT_WRITE))
+                events = ((fd in r und EVENT_READ)
+                          | (fd in w und EVENT_WRITE))
                 ready.append((key, events & key.events))
         return ready
 
 
 klasse _PollLikeSelector(_BaseSelectorImpl):
-    """Base klasse shared between poll, epoll and devpoll selectors."""
+    """Base klasse shared between poll, epoll und devpoll selectors."""
     _selector_cls = Nichts
     _EVENT_READ = Nichts
     _EVENT_WRITE = Nichts
@@ -339,8 +339,8 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
 
     def register(self, fileobj, events, data=Nichts):
         key = super().register(fileobj, events, data)
-        poller_events = ((events & EVENT_READ and self._EVENT_READ)
-                         | (events & EVENT_WRITE and self._EVENT_WRITE) )
+        poller_events = ((events & EVENT_READ und self._EVENT_READ)
+                         | (events & EVENT_WRITE und self._EVENT_WRITE) )
         try:
             self._selector.register(key.fd, poller_events)
         except:
@@ -362,12 +362,12 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
         try:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
         except KeyError:
-            raise KeyError(f"{fileobj!r} is not registered") von Nichts
+            raise KeyError(f"{fileobj!r} is nicht registered") von Nichts
 
         changed = Falsch
         wenn events != key.events:
-            selector_events = ((events & EVENT_READ and self._EVENT_READ)
-                               | (events & EVENT_WRITE and self._EVENT_WRITE))
+            selector_events = ((events & EVENT_READ und self._EVENT_READ)
+                               | (events & EVENT_WRITE und self._EVENT_WRITE))
             try:
                 self._selector.modify(key.fd, selector_events)
             except:
@@ -383,8 +383,8 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
         return key
 
     def select(self, timeout=Nichts):
-        # This is shared between poll() and epoll().
-        # epoll() has a different signature and handling of timeout parameter.
+        # This is shared between poll() und epoll().
+        # epoll() has a different signature und handling of timeout parameter.
         wenn timeout is Nichts:
             timeout = Nichts
         sowenn timeout <= 0:
@@ -403,8 +403,8 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
         fuer fd, event in fd_event_list:
             key = fd_to_key_get(fd)
             wenn key:
-                events = ((event & ~self._EVENT_READ and EVENT_WRITE)
-                           | (event & ~self._EVENT_WRITE and EVENT_READ))
+                events = ((event & ~self._EVENT_READ und EVENT_WRITE)
+                           | (event & ~self._EVENT_WRITE und EVENT_READ))
                 ready.append((key, events & key.events))
         return ready
 
@@ -445,7 +445,7 @@ wenn hasattr(select, 'epoll'):
             # epoll_wait() expects `maxevents` to be greater than zero;
             # we want to make sure that `select()` can be called when no
             # FD is registered.
-            max_ev = len(self._fd_to_key) or 1
+            max_ev = len(self._fd_to_key) oder 1
 
             ready = []
             try:
@@ -457,8 +457,8 @@ wenn hasattr(select, 'epoll'):
             fuer fd, event in fd_event_list:
                 key = fd_to_key.get(fd)
                 wenn key:
-                    events = ((event & _NOT_EPOLLIN and EVENT_WRITE)
-                              | (event & _NOT_EPOLLOUT and EVENT_READ))
+                    events = ((event & _NOT_EPOLLIN und EVENT_WRITE)
+                              | (event & _NOT_EPOLLOUT und EVENT_READ))
                     ready.append((key, events & key.events))
             return ready
 
@@ -542,7 +542,7 @@ wenn hasattr(select, 'kqueue'):
             # If max_ev is 0, kqueue will ignore the timeout. For consistent
             # behavior mit the other selector classes, we prevent that here
             # (using max). See https://bugs.python.org/issue29255
-            max_ev = self._max_events or 1
+            max_ev = self._max_events oder 1
             ready = []
             try:
                 kev_list = self._selector.control(Nichts, max_ev, timeout)
@@ -555,8 +555,8 @@ wenn hasattr(select, 'kqueue'):
                 flag = kev.filter
                 key = fd_to_key_get(fd)
                 wenn key:
-                    events = ((flag == select.KQ_FILTER_READ and EVENT_READ)
-                              | (flag == select.KQ_FILTER_WRITE and EVENT_WRITE))
+                    events = ((flag == select.KQ_FILTER_READ und EVENT_READ)
+                              | (flag == select.KQ_FILTER_WRITE und EVENT_WRITE))
                     ready.append((key, events & key.events))
             return ready
 
@@ -571,17 +571,17 @@ def _can_use(method):
     # Implementation based upon https://github.com/sethmlarson/selectors2/blob/master/selectors2.py
     selector = getattr(select, method, Nichts)
     wenn selector is Nichts:
-        # select module does not implement method
+        # select module does nicht implement method
         return Falsch
-    # check wenn the OS and Kernel actually support the method. Call may fail with
-    # OSError: [Errno 38] Function not implemented
+    # check wenn the OS und Kernel actually support the method. Call may fail with
+    # OSError: [Errno 38] Function nicht implemented
     try:
         selector_obj = selector()
         wenn method == 'poll':
             # check that poll actually works
             selector_obj.poll(0)
         sonst:
-            # close epoll, kqueue, and devpoll fd
+            # close epoll, kqueue, und devpoll fd
             selector_obj.close()
         return Wahr
     except OSError:

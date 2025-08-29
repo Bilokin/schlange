@@ -359,7 +359,7 @@ klasse LexicalPathJoinTest(JoinTestBase, unittest.TestCase):
     cls = LexicalPath
 
 
-wenn not is_pypi:
+wenn nicht is_pypi:
     von pathlib importiere PurePath, Path
 
     klasse PurePathJoinTest(JoinTestBase, unittest.TestCase):

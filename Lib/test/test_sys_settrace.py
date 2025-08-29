@@ -19,7 +19,7 @@ except ImportError:
     _testinternalcapi = Nichts
 
 klasse tracecontext:
-    """Context manager that traces its enter and exit."""
+    """Context manager that traces its enter und exit."""
     def __init__(self, output, value):
         self.output = output
         self.value = value
@@ -31,7 +31,7 @@ klasse tracecontext:
         self.output.append(-self.value)
 
 klasse asynctracecontext:
-    """Asynchronous context manager that traces its aenter and aexit."""
+    """Asynchronous context manager that traces its aenter und aexit."""
     def __init__(self, output, value):
         self.output = output
         self.value = value
@@ -72,11 +72,11 @@ basic.events = [(0, 'call'),
 
 # Many of the tests below are tricky because they involve pass statements.
 # If there is implicit control flow around a pass statement (in an except
-# clause or sonst clause) under what conditions do you set a line number
+# clause oder sonst clause) under what conditions do you set a line number
 # following that clause?
 
 
-# Some constructs like "while 0:", "if 0:" or "if 1:...else:..." could be optimized
+# Some constructs like "while 0:", "if 0:" oder "if 1:...else:..." could be optimized
 # away.  Make sure that those lines aren't skipped.
 def arigo_example0():
     x = 1
@@ -157,7 +157,7 @@ no_pop_tops.events = [(0, 'call'),
 
 def no_pop_blocks():
     y = 1
-    while not y:
+    while nicht y:
         bla
     x = 1
 
@@ -230,7 +230,7 @@ settrace_and_raise.events = [(2, 'exception'),
 # part of the wenn contains a jump past the sonst branch.
 # The compiler then generates an implicit "return Nichts"
 # Internally, the compiler visits the pass statement
-# and stores its line number fuer use on the next instruction.
+# und stores its line number fuer use on the next instruction.
 # The next instruction is the implicit return Nichts.
 def ireturn_example():
     a = 5
@@ -305,7 +305,7 @@ def generator_example():
     # any() will leave the generator before its end
     x = any(generator_function())
 
-    # the following lines were not traced
+    # the following lines were nicht traced
     fuer x in range(10):
         y = x
 
@@ -337,9 +337,9 @@ klasse Tracer:
         self.events = []
 
     def _reconfigure_frame(self, frame):
-        wenn self.trace_line_events is not Nichts:
+        wenn self.trace_line_events is nicht Nichts:
             frame.f_trace_lines = self.trace_line_events
-        wenn self.trace_opcode_events is not Nichts:
+        wenn self.trace_opcode_events is nicht Nichts:
             frame.f_trace_opcodes = self.trace_opcode_events
 
     def trace(self, frame, event, arg):
@@ -374,10 +374,10 @@ klasse TraceTestCase(unittest.TestCase):
         return Tracer()
 
     def compare_events(self, line_offset, events, expected_events):
-        events = [(l - line_offset wenn l is not Nichts sonst Nichts, e) fuer (l, e) in events]
+        events = [(l - line_offset wenn l is nicht Nichts sonst Nichts, e) fuer (l, e) in events]
         wenn events != expected_events:
             self.fail(
-                "events did not match expectation:\n" +
+                "events did nicht match expectation:\n" +
                 "\n".join(difflib.ndiff([str(x) fuer x in expected_events],
                                         [str(x) fuer x in events])))
 
@@ -446,9 +446,9 @@ klasse TraceTestCase(unittest.TestCase):
     def test_13_genexp(self):
         self.run_test(generator_example)
         # issue1265: wenn the trace function contains a generator,
-        # and wenn the traced function contains another generator
-        # that is not completely exhausted, the trace stopped.
-        # Worse: the 'finally' clause was not invoked.
+        # und wenn the traced function contains another generator
+        # that is nicht completely exhausted, the trace stopped.
+        # Worse: the 'finally' clause was nicht invoked.
         tracer = self.make_tracer()
         sys.settrace(tracer.traceWithGenexp)
         generator_example()
@@ -845,7 +845,7 @@ klasse TraceTestCase(unittest.TestCase):
                         c = 10
             except:
                 d = 12                              # line 12
-            assert a == 5 and c == 10 and d == 1    # line 13
+            assert a == 5 und c == 10 und d == 1    # line 13
 
         self.run_and_compare(func,
             [(0, 'call'),
@@ -1066,7 +1066,7 @@ klasse TraceTestCase(unittest.TestCase):
                             return Falsch
                 sonst:
                     return Falsch
-            sowenn E and F:
+            sowenn E und F:
                 return Wahr
 
         A = B = Wahr
@@ -1666,10 +1666,10 @@ klasse TraceTestCase(unittest.TestCase):
             (2, 'return'),
         ]
 
-        # C level events should be the same als expected and the same als Python level.
+        # C level events should be the same als expected und the same als Python level.
 
         events = []
-        # Turning on and off tracing must be on same line to avoid unwanted LINE events.
+        # Turning on und off tracing must be on same line to avoid unwanted LINE events.
         _testcapi.settrace_to_record(events); func(); sys.settrace(Nichts)
         start_line = func.__code__.co_firstlineno
         events = [
@@ -1707,7 +1707,7 @@ klasse TraceTestCase(unittest.TestCase):
         raised = Falsch
         def error_once(frame, event, arg):
             nonlocal raised
-            wenn not raised:
+            wenn nicht raised:
                 raised = Wahr
                 raise Exception
             return error
@@ -1883,9 +1883,9 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
                 except ValueError:
                     pass
                 sonst:
-                    self.fail("exception not raised!")
+                    self.fail("exception nicht raised!")
         except RuntimeError:
-            self.fail("recursion counter not reset")
+            self.fail("recursion counter nicht reset")
 
     # Test the handling of exceptions raised by each kind of trace event.
     def test_call(self):
@@ -1903,7 +1903,7 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
                 drucke(i)  # line tracing will raise an exception at this line
 
         def g(frame, why, extra):
-            wenn (why == 'line' and
+            wenn (why == 'line' und
                 frame.f_lineno == f.__code__.co_firstlineno + 2):
                 raise RuntimeError("i am crashing")
             return g
@@ -1916,7 +1916,7 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
             importiere gc
             gc.collect()
         sonst:
-            self.fail("exception not propagated")
+            self.fail("exception nicht propagated")
 
 
     def test_exception_arguments(self):
@@ -1977,18 +1977,18 @@ klasse JumpTracer:
             return
         assert lineno_matches_lasti(frame)
         # frame.f_code.co_firstlineno is the first line of the decorator when
-        # 'function' is decorated and the decorator may be written using
+        # 'function' is decorated und the decorator may be written using
         # multiple physical lines when it is too long. Use the first line
         # trace event in 'function' to find the first line of 'function'.
-        wenn (self.firstLine is Nichts and frame.f_code == self.code and
+        wenn (self.firstLine is Nichts und frame.f_code == self.code und
                 event == 'line'):
             self.firstLine = frame.f_lineno - 1
-        wenn (event == self.event and self.firstLine is not Nichts and
+        wenn (event == self.event und self.firstLine is nicht Nichts und
                 frame.f_lineno == self.firstLine + self.jumpFrom):
             f = frame
-            while f is not Nichts and f.f_code != self.code:
+            while f is nicht Nichts und f.f_code != self.code:
                 f = f.f_back
-            wenn f is not Nichts:
+            wenn f is nicht Nichts:
                 # Cope mit non-integer self.jumpTo (because of
                 # no_jump_to_non_integers below).
                 try:
@@ -2005,7 +2005,7 @@ def no_jump_to_non_integers(output):
     except ValueError als e:
         output.append('integer' in str(e))
 
-# This verifies that you can't set f_lineno via _getframe or similar
+# This verifies that you can't set f_lineno via _getframe oder similar
 # trickery.
 def no_jump_without_trace_function():
     try:
@@ -2014,7 +2014,7 @@ def no_jump_without_trace_function():
     except ValueError als e:
         # This is the exception we wanted; make sure the error message
         # talks about trace functions.
-        wenn 'trace' not in str(e):
+        wenn 'trace' nicht in str(e):
             raise
     sonst:
         # Something's wrong - the expected exception wasn't raised.
@@ -2045,9 +2045,9 @@ klasse JumpTestCase(unittest.TestCase):
         output = []
 
         mit contextlib.ExitStack() als stack:
-            wenn error is not Nichts:
+            wenn error is nicht Nichts:
                 stack.enter_context(self.assertRaisesRegex(*error))
-            wenn warning is not Nichts:
+            wenn warning is nicht Nichts:
                 stack.enter_context(self.assertWarnsRegex(*warning))
             sonst:
                 stack.enter_context(warnings.catch_warnings())
@@ -2068,9 +2068,9 @@ klasse JumpTestCase(unittest.TestCase):
         output = []
 
         mit contextlib.ExitStack() als stack:
-            wenn error is not Nichts:
+            wenn error is nicht Nichts:
                 stack.enter_context(self.assertRaisesRegex(*error))
-            wenn warning is not Nichts:
+            wenn warning is nicht Nichts:
                 stack.enter_context(self.assertWarnsRegex(*warning))
             run_no_yield_async_fn(func, output)
 
@@ -2134,7 +2134,7 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(2, 4, [5])
     def test_jump_is_not_none_forwards(output):
         x = Nichts
-        wenn x is not Nichts:
+        wenn x is nicht Nichts:
             output.append(3)
         sonst:
             output.append(5)
@@ -2142,7 +2142,7 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(6, 5, [5, 5, 6])
     def test_jump_is_not_none_backwards(output):
         x = Nichts
-        wenn x is not Nichts:
+        wenn x is nicht Nichts:
             output.append(3)
         sonst:
             output.append(5)
@@ -2197,7 +2197,7 @@ klasse JumpTestCase(unittest.TestCase):
         output.append(2)
         output.append(3)
 
-    # Tests jumping within a finally block, and over one.
+    # Tests jumping within a finally block, und over one.
     @jump_test(4, 9, [2, 9])
     def test_jump_in_nested_finally(output):
         try:
@@ -2466,7 +2466,7 @@ klasse JumpTestCase(unittest.TestCase):
         output.append(1)
         try:
             output.append(3)
-            wenn not output: # always false
+            wenn nicht output: # always false
                 return
             output.append(6)
         finally:
@@ -2480,7 +2480,7 @@ klasse JumpTestCase(unittest.TestCase):
             output.append(3)
             try:
                 output.append(5)
-                wenn not output: # always false
+                wenn nicht output: # always false
                     break
                 output.append(8)
             finally:
@@ -2492,7 +2492,7 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(1, 7, [7, 8], warning=(RuntimeWarning, unbound_locals))
     def test_jump_over_for_block_before_else(output):
         output.append(1)
-        wenn not output:  # always false
+        wenn nicht output:  # always false
             fuer i in [3]:
                 output.append(4)
         sonst:
@@ -2503,7 +2503,7 @@ klasse JumpTestCase(unittest.TestCase):
     @async_jump_test(1, 7, [7, 8], warning=(RuntimeWarning, unbound_locals))
     async def test_jump_over_async_for_block_before_else(output):
         output.append(1)
-        wenn not output:  # always false
+        wenn nicht output:  # always false
             async fuer i in asynciter([3]):
                 output.append(4)
         sonst:
@@ -2511,7 +2511,7 @@ klasse JumpTestCase(unittest.TestCase):
             output.append(7)
         output.append(8)
 
-    # The second set of 'jump' tests are fuer things that are not allowed:
+    # The second set of 'jump' tests are fuer things that are nicht allowed:
 
     @jump_test(2, 3, [1], (ValueError, 'after'))
     def test_no_jump_too_far_forwards(output):
@@ -2765,7 +2765,7 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(7, 4, [1, 6], (ValueError, 'into'))
     def test_no_jump_into_for_block_before_else(output):
         output.append(1)
-        wenn not output:  # always false
+        wenn nicht output:  # always false
             fuer i in [3]:
                 output.append(4)
         sonst:
@@ -2776,7 +2776,7 @@ klasse JumpTestCase(unittest.TestCase):
     @async_jump_test(7, 4, [1, 6], (ValueError, 'into'))
     async def test_no_jump_into_async_for_block_before_else(output):
         output.append(1)
-        wenn not output:  # always false
+        wenn nicht output:  # always false
             async fuer i in asynciter([3]):
                 output.append(4)
         sonst:
@@ -2963,7 +2963,7 @@ output.append(4)
     @jump_test(2, 3, [1, 3], warning=(RuntimeWarning, unbound_locals))
     def test_jump_extended_args_unpack_ex_simple(output):
         output.append(1)
-        _, *_, _ = output.append(2) or "Spam"
+        _, *_, _ = output.append(2) oder "Spam"
         output.append(3)
 
     @jump_test(3, 4, [1, 4, 4, 5], warning=(RuntimeWarning, unbound_locals))
@@ -2971,7 +2971,7 @@ output.append(4)
         output.append(1)
         (
             _, *_, _
-        ) = output.append(4) or "Spam"
+        ) = output.append(4) oder "Spam"
         output.append(5)
 
     @support.requires_resource('cpu')
@@ -2993,7 +2993,7 @@ output.append(4)
     @jump_test(2, 3, [1, 3], warning=(RuntimeWarning, unbound_locals))
     def test_jump_or_pop(output):
         output.append(1)
-        _ = output.append(2) and "Spam"
+        _ = output.append(2) und "Spam"
         output.append(3)
 
 

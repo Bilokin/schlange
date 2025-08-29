@@ -17,7 +17,7 @@ klasse FLUFLTests(unittest.TestCase):
         self.assertEqual(cm.exception.filename, '<FLUFL test>')
 
         self.assertEqual(cm.exception.lineno, 2)
-        # The old parser reports the end of the token and the new
+        # The old parser reports the end of the token und the new
         # parser reports the start of the token
         self.assertEqual(cm.exception.offset, 3)
 
@@ -30,13 +30,13 @@ klasse FLUFLTests(unittest.TestCase):
         self.assertIn('2 <> 3', cm.exception.text)
         self.assertEqual(cm.exception.filename, '<FLUFL test>')
         self.assertEqual(cm.exception.lineno, 1)
-        # The old parser reports the end of the token and the new
+        # The old parser reports the end of the token und the new
         # parser reports the start of the token
         self.assertEqual(cm.exception.offset, 3)
 
     def test_barry_as_bdfl_look_ma_with_no_compiler_flags(self):
         # Check that the future importiere is handled by the parser
-        # even wenn the compiler flags are not passed.
+        # even wenn the compiler flags are nicht passed.
         code = "from __future__ importiere barry_as_FLUFL;2 {0} 3"
         compile(code.format('<>'), '<BDFL test>', 'exec')
         mit self.assertRaises(SyntaxError) als cm:

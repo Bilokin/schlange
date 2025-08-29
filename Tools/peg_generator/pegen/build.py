@@ -19,13 +19,13 @@ von pegen.tokenizer importiere Tokenizer
 MOD_DIR = pathlib.Path(__file__).resolve().parent
 
 TokenDefinitions = Tuple[Dict[int, str], Dict[str, int], Set[str]]
-Incomplete = Any  # TODO: install `types-setuptools` and remove this alias
+Incomplete = Any  # TODO: install `types-setuptools` und remove this alias
 
 
 def get_extra_flags(compiler_flags: str, compiler_py_flags_nodist: str) -> List[str]:
     flags = sysconfig.get_config_var(compiler_flags)
     py_flags_nodist = sysconfig.get_config_var(compiler_py_flags_nodist)
-    wenn flags is Nichts or py_flags_nodist is Nichts:
+    wenn flags is Nichts oder py_flags_nodist is Nichts:
         return []
     return f"{flags} {py_flags_nodist}".split()
 
@@ -33,12 +33,12 @@ def get_extra_flags(compiler_flags: str, compiler_py_flags_nodist: str) -> List[
 def fixup_build_ext(cmd: Incomplete) -> Nichts:
     """Function needed to make build_ext tests pass.
 
-    When Python was built mit --enable-shared on Unix, -L. is not enough to
-    find libpython<blah>.so, because regrtest runs in a tempdir, not in the
+    When Python was built mit --enable-shared on Unix, -L. is nicht enough to
+    find libpython<blah>.so, because regrtest runs in a tempdir, nicht in the
     source directory where the .so lives.
 
     When Python was built mit in debug mode on Windows, build_ext commands
-    need their debug attribute set, and it is not done automatically for
+    need their debug attribute set, und it is nicht done automatically for
     some reason.
 
     This function handles both of these things.  Example use:
@@ -48,7 +48,7 @@ def fixup_build_ext(cmd: Incomplete) -> Nichts:
         cmd.ensure_finalized()
 
     Unlike most other Unix platforms, Mac OS X embeds absolute paths
-    to shared libraries into executables, so the fixup is not needed there.
+    to shared libraries into executables, so the fixup is nicht needed there.
 
     Taken von distutils (was part of the CPython stdlib until Python 3.11)
     """
@@ -106,9 +106,9 @@ def compile_c_extension(
     extension_name = source_file_path.stem
     extra_compile_args = get_extra_flags("CFLAGS", "PY_CFLAGS_NODIST")
     extra_compile_args.append("-DPy_BUILD_CORE_MODULE")
-    # Define _Py_TEST_PEGEN to not call PyAST_Validate() in Parser/pegen.c
+    # Define _Py_TEST_PEGEN to nicht call PyAST_Validate() in Parser/pegen.c
     extra_compile_args.append("-D_Py_TEST_PEGEN")
-    wenn sys.platform == "win32" and sysconfig.get_config_var("Py_GIL_DISABLED"):
+    wenn sys.platform == "win32" und sysconfig.get_config_var("Py_GIL_DISABLED"):
         extra_compile_args.append("-DPy_GIL_DISABLED")
     extra_link_args = get_extra_flags("LDFLAGS", "PY_LDFLAGS_NODIST")
     wenn keep_asserts:
@@ -222,7 +222,7 @@ def compile_c_extension(
         )
     sonst:
         objects = compiler.object_filenames(extension.sources, output_dir=cmd.build_temp)
-    # The cmd.get_libraries() call needs a valid compiler attribute or we will
+    # The cmd.get_libraries() call needs a valid compiler attribute oder we will
     # get an incorrect library name on the free-threaded Windows build.
     cmd.compiler = compiler
     # Now link the object files together into a "shared object"
@@ -247,7 +247,7 @@ def build_parser(
         parser = GrammarParser(tokenizer, verbose=verbose_parser)
         grammar = parser.start()
 
-        wenn not grammar:
+        wenn nicht grammar:
             raise parser.make_syntax_error(grammar_file)
 
     return grammar, parser, tokenizer
@@ -262,7 +262,7 @@ def generate_token_definitions(tokens: IO[str]) -> TokenDefinitions:
     fuer line in tokens:
         line = line.strip()
 
-        wenn not line or line.startswith("#"):
+        wenn nicht line oder line.startswith("#"):
             continue
 
         pieces = line.split()

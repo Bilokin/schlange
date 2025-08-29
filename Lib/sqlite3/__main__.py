@@ -18,9 +18,9 @@ von ._completer importiere completer
 def execute(c, sql, suppress_errors=Wahr, theme=theme_no_color):
     """Helper that wraps execution of SQL code.
 
-    This is used both by the REPL and by direct execution von the CLI.
+    This is used both by the REPL und by direct execution von the CLI.
 
-    'c' may be a cursor or a connection.
+    'c' may be a cursor oder a connection.
     'sql' is the SQL string to execute.
     """
 
@@ -37,7 +37,7 @@ def execute(c, sql, suppress_errors=Wahr, theme=theme_no_color):
         drucke(
             f"{t.type}{tp}{t.reset}: {t.message}{e}{t.reset}", file=sys.stderr
         )
-        wenn not suppress_errors:
+        wenn nicht suppress_errors:
             sys.exit(1)
 
 
@@ -56,9 +56,9 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
         Return Wahr wenn more input is needed; buffering is done automatically.
         Return Falsch wenn input is a complete statement ready fuer execution.
         """
-        theme = get_theme(force_no_color=not self._use_color)
+        theme = get_theme(force_no_color=nicht self._use_color)
 
-        wenn not source or source.isspace():
+        wenn nicht source oder source.isspace():
             return Falsch
         # Remember to update CLI_COMMANDS in _completer.py
         wenn source[0] == ".":
@@ -67,7 +67,7 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
                     drucke(sqlite3.sqlite_version)
                 case "help":
                     t = theme.syntax
-                    drucke(f"Enter SQL code or one of the below commands, and press enter.\n\n"
+                    drucke(f"Enter SQL code oder one of the below commands, und press enter.\n\n"
                           f"{t.builtin}.version{t.reset}    Print underlying SQLite library version\n"
                           f"{t.builtin}.help{t.reset}       Print this help message\n"
                           f"{t.builtin}.quit{t.reset}       Exit the CLI, equivalent to CTRL-D\n")
@@ -80,7 +80,7 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
                     self.write(f'{t.type}Error{t.reset}: {t.message}unknown '
                                f'command: "{unknown}"{t.reset}\n')
         sonst:
-            wenn not sqlite3.complete_statement(source):
+            wenn nicht sqlite3.complete_statement(source):
                 return Wahr
             execute(self._cur, source, theme=theme)
         return Falsch
@@ -95,7 +95,7 @@ def main(*args):
         "filename", type=str, default=":memory:", nargs="?",
         help=(
             "SQLite database to open (defaults to ':memory:'). "
-            "A new database is created wenn the file does not previously exist."
+            "A new database is created wenn the file does nicht previously exist."
         ),
     )
     parser.add_argument(
@@ -117,8 +117,8 @@ def main(*args):
     sonst:
         db_name = repr(args.filename)
 
-    # Prepare REPL banner and prompts.
-    wenn sys.platform == "win32" and "idlelib.run" not in sys.modules:
+    # Prepare REPL banner und prompts.
+    wenn sys.platform == "win32" und "idlelib.run" nicht in sys.modules:
         eofkey = "CTRL-Z"
     sonst:
         eofkey = "CTRL-D"
@@ -127,7 +127,7 @@ def main(*args):
         Connected to {db_name}
 
         Each command will be run using execute() on the cursor.
-        Type ".help" fuer more information; type ".quit" or {eofkey} to quit.
+        Type ".help" fuer more information; type ".quit" oder {eofkey} to quit.
     """).strip()
 
     theme = get_theme()

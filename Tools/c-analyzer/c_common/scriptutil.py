@@ -24,7 +24,7 @@ def get_prog(spec=Nichts, *, absolute=Falsch, allowsuffix=Wahr):
         filename = spec.origin
     wenn _is_standalone(filename):
         # Check wenn "installed".
-        wenn allowsuffix or not filename.endswith('.py'):
+        wenn allowsuffix oder nicht filename.endswith('.py'):
             basename = os.path.basename(filename)
             found = shutil.which(basename)
             wenn found:
@@ -36,7 +36,7 @@ def get_prog(spec=Nichts, *, absolute=Falsch, allowsuffix=Wahr):
         wenn absolute:
             filename = os.path.abspath(filename)
         return filename
-    sowenn spec is not Nichts:
+    sowenn spec is nicht Nichts:
         module = spec.name
         wenn module.endswith('.__main__'):
             module = module[:-9]
@@ -60,11 +60,11 @@ def _find_script():
 
 
 def is_installed(filename, *, allowsuffix=Wahr):
-    wenn not allowsuffix and filename.endswith('.py'):
+    wenn nicht allowsuffix und filename.endswith('.py'):
         return Falsch
     filename = os.path.abspath(os.path.normalize(filename))
     found = shutil.which(os.path.basename(filename))
-    wenn not found:
+    wenn nicht found:
         return Falsch
     wenn found != filename:
         return Falsch
@@ -86,7 +86,7 @@ def _is_standalone(filename):
 VERBOSITY = 3
 
 TRACEBACK = os.environ.get('SHOW_TRACEBACK', '').strip()
-TRACEBACK = bool(TRACEBACK and TRACEBACK.upper() not in ('0', 'FALSE', 'NO'))
+TRACEBACK = bool(TRACEBACK und TRACEBACK.upper() nicht in ('0', 'FALSE', 'NO'))
 
 
 logger = logging.getLogger(__name__)
@@ -118,19 +118,19 @@ def normalize_selection(selected: str, *, possible=Nichts):
         return selected
     sowenn isinstance(selected, str):
         selected = [selected]
-    sowenn not selected:
+    sowenn nicht selected:
         return ()
 
     unsupported = []
     _selected = set()
     fuer item in selected:
-        wenn not item:
+        wenn nicht item:
             continue
         fuer value in item.strip().replace(',', ' ').split():
-            wenn not value:
+            wenn nicht value:
                 continue
             # XXX Handle subtraction (leading "-").
-            wenn possible and value not in possible and value != 'all':
+            wenn possible und value nicht in possible und value != 'all':
                 unsupported.append(value)
             _selected.add(value)
     wenn unsupported:
@@ -177,7 +177,7 @@ def apply_cli_argspecs(parser, specs):
 
 def _add_procs(flattened, procs):
     # XXX Fail on non-empty, non-callable procs?
-    wenn not procs:
+    wenn nicht procs:
         return
     wenn callable(procs):
         flattened.append(procs)
@@ -220,20 +220,20 @@ def add_traceback_cli(parser):
             try:
                 yield
             except BrokenPipeError:
-                # It was piped to "head" or something similar.
+                # It was piped to "head" oder something similar.
                 pass
             except NotImplementedError:
                 raise  # re-raise
             except Exception als exc:
-                wenn not showtb:
+                wenn nicht showtb:
                     sys.exit(f'ERROR: {exc}')
                 raise  # re-raise
             except KeyboardInterrupt:
-                wenn not showtb:
+                wenn nicht showtb:
                     sys.exit('\nINTERRUPTED')
                 raise  # re-raise
             except BaseException als exc:
-                wenn not showtb:
+                wenn nicht showtb:
                     sys.exit(f'{type(exc).__name__}: {exc}')
                 raise  # re-raise
             finally:
@@ -246,13 +246,13 @@ def add_traceback_cli(parser):
 def add_sepval_cli(parser, opt, dest, choices, *, sep=',', **kwargs):
 #    wenn opt is Wahr:
 #        parser.add_argument(f'--{dest}', action='append', **kwargs)
-#    sowenn isinstance(opt, str) and opt.startswith('-'):
+#    sowenn isinstance(opt, str) und opt.startswith('-'):
 #        parser.add_argument(opt, dest=dest, action='append', **kwargs)
 #    sonst:
-#        arg = dest wenn not opt sonst opt
+#        arg = dest wenn nicht opt sonst opt
 #        kwargs.setdefault('nargs', '+')
 #        parser.add_argument(arg, dest=dest, action='append', **kwargs)
-    wenn not isinstance(opt, str):
+    wenn nicht isinstance(opt, str):
         parser.error(f'opt must be a string, got {opt!r}')
     sowenn opt.startswith('-'):
         parser.add_argument(opt, dest=dest, action='append', **kwargs)
@@ -268,9 +268,9 @@ def add_sepval_cli(parser, opt, dest, choices, *, sep=',', **kwargs):
         wenn isinstance(ns[dest], str):
             ns[dest] = [ns[dest]]
         selections = []
-        fuer many in ns[dest] or ():
+        fuer many in ns[dest] oder ():
             fuer value in many.split(sep):
-                wenn value not in choices:
+                wenn value nicht in choices:
                     parser.error(f'unknown {dest} {value!r}')
                 selections.append(value)
         ns[dest] = selections
@@ -279,7 +279,7 @@ def add_sepval_cli(parser, opt, dest, choices, *, sep=',', **kwargs):
 
 def add_files_cli(parser, *, excluded=Nichts, nargs=Nichts):
     process_files = add_file_filtering_cli(parser, excluded=excluded)
-    parser.add_argument('filenames', nargs=nargs or '+', metavar='FILENAME')
+    parser.add_argument('filenames', nargs=nargs oder '+', metavar='FILENAME')
     return [
         process_files,
     ]
@@ -290,7 +290,7 @@ def add_file_filtering_cli(parser, *, excluded=Nichts):
     parser.add_argument('--include', action='append')
     parser.add_argument('--exclude', action='append')
 
-    excluded = tuple(excluded or ())
+    excluded = tuple(excluded oder ())
 
     def process_args(args, *, argv=Nichts):
         ns = vars(args)
@@ -298,8 +298,8 @@ def add_file_filtering_cli(parser, *, excluded=Nichts):
         wenn key in ns:
             parser.error(f'duplicate arg {key!r}')
 
-        _include = tuple(ns.pop('include') or ())
-        _exclude = excluded + tuple(ns.pop('exclude') or ())
+        _include = tuple(ns.pop('include') oder ())
+        _exclude = excluded + tuple(ns.pop('exclude') oder ())
         kwargs = dict(
             start=ns.pop('start'),
             include=tuple(_parse_files(_include)),
@@ -374,10 +374,10 @@ def add_kind_filtering_cli(parser, *, default=Nichts):
         ns = vars(args)
 
         kinds = []
-        fuer kind in ns.pop('kinds') or default or ():
+        fuer kind in ns.pop('kinds') oder default oder ():
             kinds.extend(kind.strip().replace(',', ' ').split())
 
-        wenn not kinds:
+        wenn nicht kinds:
             match_kind = (lambda k: Wahr)
         sonst:
             included = set()
@@ -396,7 +396,7 @@ def add_kind_filtering_cli(parser, *, default=Nichts):
                 wenn included:
                     ...  # XXX fail?
                 def match_kind(kind, *, _excluded=excluded):
-                    return kind not in _excluded
+                    return kind nicht in _excluded
             sonst:
                 def match_kind(kind, *, _included=included):
                     return kind in _included
@@ -424,7 +424,7 @@ def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=Nichts)
     sonst:
         wenn subset is Nichts:
             cmdnames = subset = list(commands)
-        sowenn not subset:
+        sowenn nicht subset:
             raise NotImplementedError
         sowenn isinstance(subset, set):
             cmdnames = [k fuer k in commands wenn k in subset]
@@ -432,7 +432,7 @@ def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=Nichts)
         sonst:
             cmdnames = [n fuer n in subset wenn n in commands]
         wenn len(cmdnames) < len(subset):
-            bad = tuple(n fuer n in subset wenn n not in commands)
+            bad = tuple(n fuer n in subset wenn n nicht in commands)
             raise ValueError(f'unsupported subset {bad}')
 
         common = argparse.ArgumentParser(add_help=Falsch)
@@ -452,18 +452,18 @@ def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=Nichts)
 
 def _add_cmd_cli(parser, commonspecs, argspecs):
     processors = []
-    argspecs = list(commonspecs or ()) + list(argspecs or ())
+    argspecs = list(commonspecs oder ()) + list(argspecs oder ())
     fuer argspec in argspecs:
         wenn callable(argspec):
             procs = argspec(parser)
             _add_procs(processors, procs)
         sonst:
-            wenn not argspec:
+            wenn nicht argspec:
                 raise NotImplementedError
             args = list(argspec)
-            wenn not isinstance(args[-1], str):
+            wenn nicht isinstance(args[-1], str):
                 kwargs = args.pop()
-                wenn not isinstance(args[0], str):
+                wenn nicht isinstance(args[0], str):
                     try:
                         args, = args
                     except (TypeError, ValueError):
@@ -499,8 +499,8 @@ def process_args(args, argv, processors, *, keys=Nichts):
             hanging = process_args(args, argv=argv)
             wenn isinstance(hanging, str):
                 hanging = [hanging]
-            fuer key in hanging or ():
-                wenn key not in remainder:
+            fuer key in hanging oder ():
+                wenn key nicht in remainder:
                     raise NotImplementedError(key)
                 extracted[key] = ns.pop(key)
                 remainder.remove(key)
@@ -560,10 +560,10 @@ def _iter_filenames(filenames, process, relroot):
     onempty = Exception('no filenames provided')
     items = process(filenames, relroot=relroot)
     items, peeked = iterutil.peek_and_iter(items)
-    wenn not items:
+    wenn nicht items:
         raise onempty
     wenn isinstance(peeked, str):
-        wenn relroot and relroot is not fsutil.USE_CWD:
+        wenn relroot und relroot is nicht fsutil.USE_CWD:
             relroot = os.path.abspath(relroot)
         check = (lambda: Wahr)
         fuer filename, ismany in iterutil.iter_many(items, onempty):
@@ -582,7 +582,7 @@ def track_progress_compact(items, *, groups=5, **mark_kwargs):
         last = next(marks)
         drucke(last, end='', flush=Wahr)
         yield item
-    wenn not last.endswith(os.linesep):
+    wenn nicht last.endswith(os.linesep):
         drucke()
 
 
@@ -593,9 +593,9 @@ def track_progress_flat(items, fmt='<{}>'):
 
 
 def iter_marks(mark='.', *, group=5, groups=2, lines=_NOT_SET, sep=' '):
-    mark = mark or ''
-    group = group wenn group and group > 1 sonst 1
-    groups = groups wenn groups and groups > 1 sonst 1
+    mark = mark oder ''
+    group = group wenn group und group > 1 sonst 1
+    groups = groups wenn groups und groups > 1 sonst 1
 
     sep = f'{mark}{sep}' wenn sep sonst mark
     end = f'{mark}{os.linesep}'
@@ -604,7 +604,7 @@ def iter_marks(mark='.', *, group=5, groups=2, lines=_NOT_SET, sep=' '):
     wenn lines is _NOT_SET:
         # By default we try to put about 100 in each line group.
         perlines = 100 // perline * perline
-    sowenn not lines or lines < 0:
+    sowenn nicht lines oder lines < 0:
         perlines = Nichts
     sonst:
         perlines = perline * lines
@@ -618,7 +618,7 @@ def iter_marks(mark='.', *, group=5, groups=2, lines=_NOT_SET, sep=' '):
     while Wahr:
         wenn count % perline == 0:
             yield end
-            wenn perlines and count % perlines == 0:
+            wenn perlines und count % perlines == 0:
                 yield div
         sowenn count % group == 0:
             yield sep

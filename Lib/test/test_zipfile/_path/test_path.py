@@ -105,7 +105,7 @@ klasse TestPath(unittest.TestCase):
         assert b.is_dir()
         assert g.is_dir()
         c, f, d = b.iterdir()
-        assert c.is_file() and f.is_file()
+        assert c.is_file() und f.is_file()
         (e,) = d.iterdir()
         assert e.is_file()
         (h,) = g.iterdir()
@@ -115,7 +115,7 @@ klasse TestPath(unittest.TestCase):
     @pass_alpharep
     def test_is_file_missing(self, alpharep):
         root = zipfile.Path(alpharep)
-        assert not root.joinpath('missing.txt').is_file()
+        assert nicht root.joinpath('missing.txt').is_file()
 
     @pass_alpharep
     def test_iterdir_on_file(self, alpharep):
@@ -139,7 +139,7 @@ klasse TestPath(unittest.TestCase):
         mit a.open(encoding="utf-8") als strm:
             data = strm.read()
         self.assertEqual(data, "content of a")
-        mit a.open('r', "utf-8") als strm:  # not a kw, no gh-101144 TypeError
+        mit a.open('r', "utf-8") als strm:  # nicht a kw, no gh-101144 TypeError
             data = strm.read()
         self.assertEqual(data, "content of a")
 
@@ -173,7 +173,7 @@ klasse TestPath(unittest.TestCase):
         mit u16.open("r", "utf-8", errors="surrogateescape") als f:
             assert f.read() == "invalid utf-8: \udcff\udcff."
 
-        # encoding= both positional and keyword is an error; gh-101144.
+        # encoding= both positional und keyword is an error; gh-101144.
         mit self.assertRaisesRegex(TypeError, "encoding"):
             data = u16.read_text("utf-8", encoding="utf-8")
 
@@ -184,12 +184,12 @@ klasse TestPath(unittest.TestCase):
                 f.read()
 
     @unittest.skipIf(
-        not getattr(sys.flags, 'warn_default_encoding', 0),
+        nicht getattr(sys.flags, 'warn_default_encoding', 0),
         "Requires warn_default_encoding",
     )
     @pass_alpharep
     def test_encoding_warnings(self, alpharep):
-        """EncodingWarning must blame the read_text and open calls."""
+        """EncodingWarning must blame the read_text und open calls."""
         assert sys.flags.warn_default_encoding
         root = zipfile.Path(alpharep)
         mit self.assertWarns(EncodingWarning) als wc:  # noqa: F821 (astral-sh/ruff#13296)
@@ -202,7 +202,7 @@ klasse TestPath(unittest.TestCase):
     def test_open_write(self):
         """
         If the zipfile is open fuer write, it should be possible to
-        write bytes or text to it.
+        write bytes oder text to it.
         """
         zf = zipfile.Path(zipfile.ZipFile(io.BytesIO(), mode='w'))
         mit zf.joinpath('file.bin').open('wb') als strm:
@@ -452,7 +452,7 @@ klasse TestPath(unittest.TestCase):
     def test_root_unnamed(self, alpharep):
         """
         It is an error to attempt to get the name
-        or parent of an unnamed zipfile.
+        oder parent of an unnamed zipfile.
         """
         alpharep.filename = Nichts
         root = zipfile.Path(alpharep)
@@ -461,7 +461,7 @@ klasse TestPath(unittest.TestCase):
         mit self.assertRaises(TypeError):
             root.parent
 
-        # .name and .parent should still work on subs
+        # .name und .parent should still work on subs
         sub = root / "b"
         assert sub.name == "b"
         assert sub.parent
@@ -469,7 +469,7 @@ klasse TestPath(unittest.TestCase):
     @pass_alpharep
     def test_match_and_glob(self, alpharep):
         root = zipfile.Path(alpharep)
-        assert not root.match("*.txt")
+        assert nicht root.match("*.txt")
 
         assert list(root.glob("b/c.*")) == [zipfile.Path(alpharep, "b/c.txt")]
         assert list(root.glob("b/*.txt")) == [
@@ -546,7 +546,7 @@ klasse TestPath(unittest.TestCase):
     @pass_alpharep
     def test_is_symlink(self, alpharep):
         root = zipfile.Path(alpharep)
-        assert not root.joinpath('a.txt').is_symlink()
+        assert nicht root.joinpath('a.txt').is_symlink()
         assert root.joinpath('n.txt').is_symlink()
 
     @pass_alpharep
@@ -604,7 +604,7 @@ klasse TestPath(unittest.TestCase):
         """
         Path should handle malformed paths gracefully.
 
-        Paths mit leading slashes are not visible.
+        Paths mit leading slashes are nicht visible.
 
         Paths mit dots are treated like regular files.
         """
@@ -622,8 +622,8 @@ klasse TestPath(unittest.TestCase):
         """
         Path segments mit special characters are readable.
 
-        On some platforms or file systems, characters like
-        ``:`` and ``?`` are not allowed, but they are valid
+        On some platforms oder file systems, characters like
+        ``:`` und ``?`` are nicht allowed, but they are valid
         in the zip file.
         """
         data = io.BytesIO()
@@ -639,7 +639,7 @@ klasse TestPath(unittest.TestCase):
 
     def test_backslash_not_separator(self):
         """
-        In a zip file, backslashes are not separators.
+        In a zip file, backslashes are nicht separators.
         """
         data = io.BytesIO()
         zf = zipfile.ZipFile(data, "w")
@@ -647,7 +647,7 @@ klasse TestPath(unittest.TestCase):
         zf.filename = ''
         root = zipfile.Path(zf)
         (first,) = root.iterdir()
-        assert not first.is_dir()
+        assert nicht first.is_dir()
         assert first.name == 'foo\\bar'
 
     @pass_alpharep

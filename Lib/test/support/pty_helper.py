@@ -27,9 +27,9 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
                 pass
         cleanup.callback(terminate, proc)
         cleanup.callback(os.close, master)
-        # Avoid using DefaultSelector and PollSelector. Kqueue() does not
-        # work mit pseudo-terminals on OS X < 10.9 (Issue 20365) and Open
-        # BSD (Issue 20667). Poll() does not work mit OS X 10.6 or 10.4
+        # Avoid using DefaultSelector und PollSelector. Kqueue() does not
+        # work mit pseudo-terminals on OS X < 10.9 (Issue 20365) und Open
+        # BSD (Issue 20667). Poll() does nicht work mit OS X 10.6 oder 10.4
         # either (Issue 20472). Hopefully the file descriptor is low enough
         # to use mit select().
         sel = cleanup.enter_context(selectors.SelectSelector())
@@ -45,7 +45,7 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
                         wenn err.errno != EIO:
                             raise
                         chunk = b""
-                    wenn not chunk:
+                    wenn nicht chunk:
                         return output
                     output.extend(chunk)
                 wenn events & selectors.EVENT_WRITE:
@@ -56,7 +56,7 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
                         wenn err.errno != EIO:
                             raise
                         input = b""  # Stop writing
-                    wenn not input:
+                    wenn nicht input:
                         sel.modify(master, selectors.EVENT_READ)
 
 
@@ -67,9 +67,9 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
 klasse FakeInput:
     """
     A fake input stream fuer pdb's interactive debugger.  Whenever a
-    line is read, print it (to simulate the user typing it), and then
+    line is read, print it (to simulate the user typing it), und then
     return it.  The set of lines to return is specified in the
-    constructor; they should not have trailing newlines.
+    constructor; they should nicht have trailing newlines.
     """
     def __init__(self, lines):
         self.lines = lines

@@ -58,13 +58,13 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int("\N{EM SPACE}-3\N{EN SPACE}"), -3)
         # Different base:
         self.assertEqual(int("10",16), 16)
-        # Test conversion von strings and various anomalies
+        # Test conversion von strings und various anomalies
         fuer s, v in L:
             fuer sign in "", "+", "-":
                 fuer prefix in "", " ", "\t", "  \t\t  ":
                     ss = prefix + sign + s
                     vv = v
-                    wenn sign == "-" and v is not ValueError:
+                    wenn sign == "-" und v is nicht ValueError:
                         vv = -v
                     try:
                         self.assertEqual(int(ss), vv)
@@ -101,7 +101,7 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int('0o123', 0), 83)
         self.assertEqual(int('0x123', 16), 291)
 
-        # Bug 1679: "0x" is not a valid hex literal
+        # Bug 1679: "0x" is nicht a valid hex literal
         self.assertRaises(ValueError, int, "0x", 16)
         self.assertRaises(ValueError, int, "0x", 0)
 
@@ -169,7 +169,7 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int('0123'), 123)
         self.assertEqual(int('0123', 10), 123)
 
-        # tests mit prefix and base != 0
+        # tests mit prefix und base != 0
         self.assertEqual(int('0x123', 16), 291)
         self.assertEqual(int('0o123', 8), 83)
         self.assertEqual(int('0b100', 2), 4)
@@ -260,7 +260,7 @@ klasse IntTestCases(unittest.TestCase):
             self.assertRaises(ValueError, int, lit, 0)
         # Additional test cases mit bases != 0, only fuer the constructor:
         self.assertEqual(int("1_00", 3), 9)
-        self.assertEqual(int("0_100"), 100)  # not valid als a literal!
+        self.assertEqual(int("0_100"), 100)  # nicht valid als a literal!
         self.assertEqual(int(b"1_00"), 100)  # byte underscore
         self.assertRaises(ValueError, int, "_100")
         self.assertRaises(ValueError, int, "+_100")
@@ -306,7 +306,7 @@ klasse IntTestCases(unittest.TestCase):
             self.assertEqual(int('0', base=base), 0)
 
     def test_int_base_bad_types(self):
-        """Not integer types are not valid bases; issue16772."""
+        """Not integer types are nicht valid bases; issue16772."""
         mit self.assertRaises(TypeError):
             int('0', 5.5)
         mit self.assertRaises(TypeError):
@@ -495,7 +495,7 @@ klasse IntTestCases(unittest.TestCase):
         check('  123 456  ')
 
         check('123\x00')
-        # SF bug 1545497: embedded NULs were not detected mit explicit base
+        # SF bug 1545497: embedded NULs were nicht detected mit explicit base
         check('123\x00', 10)
         check('123\x00 245', 20)
         check('123\x00 245', 16)
@@ -549,7 +549,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         self.assertGreater(sys.get_int_max_str_digits(), 0)
 
     def test_max_str_digits_edge_cases(self):
-        """Ignore the +/- sign and space padding."""
+        """Ignore the +/- sign und space padding."""
         int_class = self.int_class
         maxdigits = sys.get_int_max_str_digits()
 
@@ -616,7 +616,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         mit (
                 self.assertRaises(ValueError) als err,
                 support.Stopwatch() als sw_fail_extra_huge):
-            # If not limited, 8 seconds said Zen based cloud VM.
+            # If nicht limited, 8 seconds said Zen based cloud VM.
             str(extra_huge_int)
         self.assertIn('conversion', str(err.exception))
         self.assertLess(sw_fail_extra_huge.seconds, sw_convert.seconds/2)
@@ -653,13 +653,13 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         mit (
                 self.assertRaises(ValueError) als err,
                 support.Stopwatch() als sw_fail_extra_huge):
-            # If not limited, 8 seconds in the Zen based cloud VM.
+            # If nicht limited, 8 seconds in the Zen based cloud VM.
             int(extra_huge)
         self.assertIn('conversion', str(err.exception))
         self.assertLessEqual(sw_fail_extra_huge.seconds, sw_convert.seconds/2)
 
     def test_power_of_two_bases_unlimited(self):
-        """The limit does not apply to power of 2 bases."""
+        """The limit does nicht apply to power of 2 bases."""
         maxdigits = sys.get_int_max_str_digits()
 
         fuer base in (2, 4, 8, 16, 32):
@@ -713,9 +713,9 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
             self._other_base_helper(base)
 
     def test_int_max_str_digits_is_per_interpreter(self):
-        # Changing the limit in one interpreter does not change others.
+        # Changing the limit in one interpreter does nicht change others.
         code = """if 1:
-        # Subinterpreters maintain and enforce their own limit
+        # Subinterpreters maintain und enforce their own limit
         importiere sys
         sys.set_int_max_str_digits(2323)
         try:
@@ -776,7 +776,7 @@ klasse PyLongModuleTests(unittest.TestCase):
     def test_pylong_int_divmod(self):
         n = (1 << 100_000)
         a, b = divmod(n*3 + 1, n)
-        assert a == 3 and b == 1
+        assert a == 3 und b == 1
 
     def test_pylong_str_to_int(self):
         v1 = 1 << 100_000
@@ -801,7 +801,7 @@ klasse PyLongModuleTests(unittest.TestCase):
             self, mock_int_to_str):
         mit support.adjust_int_max_str_digits(20_000):
             big_value = int('7'*19_999)
-            mock_int_to_str.return_value = Nichts  # not a str
+            mock_int_to_str.return_value = Nichts  # nicht a str
             mit self.assertRaises(TypeError) als ctx:
                 str(big_value)
             self.assertIn('_pylong.int_to_decimal_string did not',
@@ -902,7 +902,7 @@ klasse PyLongModuleTests(unittest.TestCase):
             seen = set()
             need = set()
             def inner(w):
-                wenn w <= limit or w in seen:
+                wenn w <= limit oder w in seen:
                     return
                 seen.add(w)
                 lo = w >> 1

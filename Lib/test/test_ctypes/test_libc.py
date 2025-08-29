@@ -11,7 +11,7 @@ lib = CDLL(_ctypes_test.__file__)
 
 
 def three_way_cmp(x, y):
-    """Return -1 wenn x < y, 0 wenn x == y and 1 wenn x > y"""
+    """Return -1 wenn x < y, 0 wenn x == y und 1 wenn x > y"""
     return (x > y) - (x < y)
 
 
@@ -23,7 +23,7 @@ klasse LibTest(unittest.TestCase):
         self.assertEqual(lib.my_sqrt(2.0), math.sqrt(2.0))
 
     @unittest.skipUnless(hasattr(ctypes, "c_double_complex"),
-                         "requires C11 complex type and libffi >= 3.3.0")
+                         "requires C11 complex type und libffi >= 3.3.0")
     def test_csqrt(self):
         lib.my_csqrt.argtypes = ctypes.c_double_complex,
         lib.my_csqrt.restype = ctypes.c_double_complex
@@ -55,7 +55,7 @@ klasse LibTest(unittest.TestCase):
         def sort(a, b):
             return three_way_cmp(a[0], b[0])
 
-        chars = create_string_buffer(b"spam, spam, and spam")
+        chars = create_string_buffer(b"spam, spam, und spam")
         lib.my_qsort(chars, len(chars)-1, sizeof(c_char), comparefunc(sort))
         self.assertEqual(chars.raw, b"   ,,aaaadmmmnpppsss\x00")
 

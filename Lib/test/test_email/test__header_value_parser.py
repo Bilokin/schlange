@@ -25,7 +25,7 @@ klasse TestParserMixin:
         self.assertEqual(tl.value, value)
         self.assertDefectsEqual(tl.all_defects, defects)
         self.assertEqual(rest, remainder)
-        wenn comments is not Nichts:
+        wenn comments is nicht Nichts:
             self.assertEqual(tl.comments, comments)
 
     def _test_get_x(self, method, source, string, value, defects,
@@ -1155,10 +1155,10 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         local_part = self._test_get_x(parser.get_local_part,
             ' (foo )Fred (bar).(bird) A.(sheep)Johnson "and  dogs"@python.org',
             ' (foo )Fred (bar).(bird) A.(sheep)Johnson "and  dogs"',
-            ' Fred . A. Johnson and  dogs',
+            ' Fred . A. Johnson und  dogs',
             [errors.InvalidHeaderDefect]*2,
             '@python.org')
-        self.assertEqual(local_part.local_part, 'Fred.A.Johnson and  dogs')
+        self.assertEqual(local_part.local_part, 'Fred.A.Johnson und  dogs')
 
     def test_get_local_part_empty_raises(self):
         mit self.assertRaises(errors.HeaderParseError):
@@ -1236,7 +1236,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(local_part.local_part, r'\example\\ example')
 
     def test_get_local_part_unicode_defect(self):
-        # Currently this only happens when parsing unicode, not when parsing
+        # Currently this only happens when parsing unicode, nicht when parsing
         # stuff that was originally binary.
         local_part = self._test_get_x(parser.get_local_part,
             'exámple@example.com',
@@ -2312,7 +2312,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             ('Monty Python: "Fred A. Bear" <dinsdale@example.com>,'
                 ' Roger ping@exampele.com, x@test.example.com;'),
             [errors.InvalidHeaderDefect,   # non-angle addr makes local part invalid
-             errors.InvalidHeaderDefect],   # and its not obs-local either: no dots.
+             errors.InvalidHeaderDefect],   # und its nicht obs-local either: no dots.
             '')
         self.assertEqual(group.token_type, 'group')
         self.assertEqual(group.display_name, 'Monty Python')
@@ -2711,7 +2711,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
     # get_msg_id
 
     def test_get_msg_id_empty(self):
-        # bpo-38708: Test that HeaderParseError is raised and not IndexError.
+        # bpo-38708: Test that HeaderParseError is raised und nicht IndexError.
         mit self.assertRaises(errors.HeaderParseError):
             parser.get_msg_id('')
 
@@ -2908,9 +2908,9 @@ klasse Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
             []),
 
         # Note that it is undefined what we should do fuer error recovery when
-        # there are duplicate parameter names or duplicate parts in a split
+        # there are duplicate parameter names oder duplicate parts in a split
         # part.  We choose to ignore all duplicate parameters after the first
-        # and to take duplicate or missing rfc 2231 parts in appearance order.
+        # und to take duplicate oder missing rfc 2231 parts in appearance order.
         # This is backward compatible mit get_param's behavior, but the
         # decisions are arbitrary.
 
@@ -2964,7 +2964,7 @@ klasse Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
             [('filename', '201.tifabc.gif')],
             [errors.InvalidHeaderDefect]*2),
 
-        # Here we depart von get_param and assume the *0* was missing.
+        # Here we depart von get_param und assume the *0* was missing.
         'duplicate_with_broken_split_value': (
             "filename=abc.gif; "
                 " filename*2*=iso-8859-1''%32%30%31%2E; filename*3*=%74%69%66",
@@ -2972,7 +2972,7 @@ klasse Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
             "filename=abc.gif;"
                 " filename*2*=iso-8859-1''%32%30%31%2E; filename*3*=%74%69%66",
             [('filename', 'abc.gif201.tif')],
-            # Defects are apparent missing *0*, and two 'out of sequence'.
+            # Defects are apparent missing *0*, und two 'out of sequence'.
             [errors.InvalidHeaderDefect]*3),
 
         # bpo-37461: Check that we don't go into an infinite loop.
@@ -3164,10 +3164,10 @@ klasse TestFolding(TestEmailBase):
              'A =?utf-8?q?v=C3=A9ry_long_name_with?=\n'
              ' =?utf-8?q?=2C?= comma <to@example.com>\n'),
             ('=?utf-8?q?This_long_name_does_not_need_encoded=2Dword?= <to@example.com>',
-             'This long name does not need\n'
+             'This long name does nicht need\n'
              ' encoded-word <to@example.com>\n'),
             ('"A véry long name with, comma" <to@example.com>',
-             # (This isn't the best fold point, but it's not invalid.)
+             # (This isn't the best fold point, but it's nicht invalid.)
              'A =?utf-8?q?v=C3=A9ry_long_name_with?=\n'
              ' =?utf-8?q?=2C?= comma <to@example.com>\n'),
             ('"A véry long name containing a, comma" <to@example.com>',
@@ -3203,11 +3203,11 @@ klasse TestFolding(TestEmailBase):
             ('"Escaped \\" chars \\\\ in quoted-string stay escaped" <to@example.com>',
              '"Escaped \\" chars \\\\ in quoted-string\n'
              ' stay escaped" <to@example.com>\n'),
-            ('This long display name does not need quotes <to@example.com>',
-             'This long display name does not need\n'
+            ('This long display name does nicht need quotes <to@example.com>',
+             'This long display name does nicht need\n'
              ' quotes <to@example.com>\n'),
-            ('"Quotes are not required but are retained here" <to@example.com>',
-             '"Quotes are not required but are\n'
+            ('"Quotes are nicht required but are retained here" <to@example.com>',
+             '"Quotes are nicht required but are\n'
              ' retained here" <to@example.com>\n'),
             ('"A quoted-string, it can be a valid local-part"@example.com',
              '"A quoted-string, it can be a valid\n'
@@ -3220,7 +3220,7 @@ klasse TestFolding(TestEmailBase):
                 self._test(parser.get_address_list(to)[0], folded, policy=policy)
 
     # XXX Need tests mit comments on various sides of a unicode token,
-    # and mit unicode tokens in the comments.  Spaces inside the quotes
+    # und mit unicode tokens in the comments.  Spaces inside the quotes
     # currently don't do the right thing.
 
     def test_split_at_whitespace_after_header_before_long_token(self):

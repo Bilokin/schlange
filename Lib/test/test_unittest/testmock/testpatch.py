@@ -30,7 +30,7 @@ def _get_proxy(obj, get_only=Wahr):
     klasse Proxy(object):
         def __getattr__(self, name):
             return getattr(obj, name)
-    wenn not get_only:
+    wenn nicht get_only:
         def __setattr__(self, name, value):
             setattr(obj, name, value)
         def __delattr__(self, name):
@@ -88,7 +88,7 @@ klasse PatchTest(unittest.TestCase):
 
     def assertNotCallable(self, obj, magic=Wahr):
         MockClass = NonCallableMagicMock
-        wenn not magic:
+        wenn nicht magic:
             MockClass = NonCallableMock
 
         self.assertRaises(TypeError, obj)
@@ -106,10 +106,10 @@ klasse PatchTest(unittest.TestCase):
 
         test()
         self.assertEqual(Something.attribute, sentinel.Original,
-                         "patch not restored")
+                         "patch nicht restored")
 
     def test_patchobject_with_string_as_target(self):
-        msg = "'Something' must be the actual object to be patched, not a str"
+        msg = "'Something' must be the actual object to be patched, nicht a str"
         mit self.assertRaisesRegex(TypeError, msg):
             patch.object('Something', 'do_something')
 
@@ -123,7 +123,7 @@ klasse PatchTest(unittest.TestCase):
 
         test()
         self.assertEqual(Something.attribute, sentinel.Original,
-                         "patch not restored")
+                         "patch nicht restored")
 
 
     def test_multiple_patchobject(self):
@@ -141,9 +141,9 @@ klasse PatchTest(unittest.TestCase):
 
         test()
         self.assertEqual(Something.attribute, sentinel.Original,
-                         "patch not restored")
+                         "patch nicht restored")
         self.assertEqual(Something.next_attribute, sentinel.Original2,
-                         "patch not restored")
+                         "patch nicht restored")
 
 
     def test_object_lookup_is_quite_lazy(self):
@@ -169,7 +169,7 @@ klasse PatchTest(unittest.TestCase):
 
         test()
         self.assertEqual(PTModule.something, sentinel.Something,
-                         "patch not restored")
+                         "patch nicht restored")
 
         @patch('%s.something' % __name__, sentinel.Something2)
         @patch('%s.something_else' % __name__, sentinel.SomethingElse)
@@ -180,28 +180,28 @@ klasse PatchTest(unittest.TestCase):
                              "unpatched")
 
         self.assertEqual(PTModule.something, sentinel.Something,
-                         "patch not restored")
+                         "patch nicht restored")
         self.assertEqual(PTModule.something_else, sentinel.SomethingElse,
-                         "patch not restored")
+                         "patch nicht restored")
 
-        # Test the patching and restoring works a second time
+        # Test the patching und restoring works a second time
         test()
 
         self.assertEqual(PTModule.something, sentinel.Something,
-                         "patch not restored")
+                         "patch nicht restored")
         self.assertEqual(PTModule.something_else, sentinel.SomethingElse,
-                         "patch not restored")
+                         "patch nicht restored")
 
         mock = Mock()
         mock.return_value = sentinel.Handle
         @patch('%s.open' % builtin_string, mock)
         def test():
             self.assertEqual(open('filename', 'r'), sentinel.Handle,
-                             "open not patched")
+                             "open nicht patched")
         test()
         test()
 
-        self.assertNotEqual(open, mock, "patch not restored")
+        self.assertNotEqual(open, mock, "patch nicht restored")
 
 
     def test_patch_class_attribute(self):
@@ -213,7 +213,7 @@ klasse PatchTest(unittest.TestCase):
         test()
 
         self.assertIsNichts(PTModule.SomeClass.class_attribute,
-                          "patch not restored")
+                          "patch nicht restored")
 
 
     def test_patchobject_with_default_mock(self):
@@ -224,9 +224,9 @@ klasse PatchTest(unittest.TestCase):
         @patch.object(Test, 'something')
         def test(mock):
             self.assertEqual(mock, Test.something,
-                             "Mock not passed into test function")
+                             "Mock nicht passed into test function")
             self.assertIsInstance(mock, MagicMock,
-                            "patch mit two arguments did not create a mock")
+                            "patch mit two arguments did nicht create a mock")
 
         test()
 
@@ -238,13 +238,13 @@ klasse PatchTest(unittest.TestCase):
             self.assertEqual(this2, sentinel.this2,
                              "Patched function didn't receive second argument")
             self.assertEqual(mock1, Test.something2,
-                             "Mock not passed into test function")
+                             "Mock nicht passed into test function")
             self.assertEqual(mock2, Test.something,
-                             "Second Mock not passed into test function")
+                             "Second Mock nicht passed into test function")
             self.assertIsInstance(mock2, MagicMock,
-                            "patch mit two arguments did not create a mock")
+                            "patch mit two arguments did nicht create a mock")
             self.assertIsInstance(mock2, MagicMock,
-                            "patch mit two arguments did not create a mock")
+                            "patch mit two arguments did nicht create a mock")
 
             # A hack to test that new mocks are passed the second time
             self.assertNotEqual(outerMock1, mock1, "unexpected value fuer mock1")
@@ -317,7 +317,7 @@ klasse PatchTest(unittest.TestCase):
         @patch('%s.SomeClass' % __name__, spec=Wahr)
         def test(MockSomeClass):
             self.assertEqual(SomeClass, MockSomeClass)
-            # Should not raise attribute error
+            # Should nicht raise attribute error
             MockSomeClass.wibble
 
             self.assertRaises(AttributeError, lambda: MockSomeClass.not_wibble)
@@ -329,7 +329,7 @@ klasse PatchTest(unittest.TestCase):
         @patch.object(PTModule, 'SomeClass', spec=Wahr)
         def test(MockSomeClass):
             self.assertEqual(SomeClass, MockSomeClass)
-            # Should not raise attribute error
+            # Should nicht raise attribute error
             MockSomeClass.wibble
 
             self.assertRaises(AttributeError, lambda: MockSomeClass.not_wibble)
@@ -343,7 +343,7 @@ klasse PatchTest(unittest.TestCase):
             self.assertWahr(is_instance(MockSomeClass, MagicMock))
             instance = MockSomeClass()
             self.assertNotCallable(instance)
-            # Should not raise attribute error
+            # Should nicht raise attribute error
             instance.wibble
 
             self.assertRaises(AttributeError, lambda: instance.not_wibble)
@@ -464,7 +464,7 @@ klasse PatchTest(unittest.TestCase):
         f.not_test_method()
 
         self.assertEqual(Something.attribute, sentinel.Original,
-                         "patch not restored")
+                         "patch nicht restored")
 
 
     def test_patch_class_decorator(self):
@@ -488,9 +488,9 @@ klasse PatchTest(unittest.TestCase):
         f.not_test_method()
 
         self.assertEqual(Something.attribute, sentinel.Original,
-                         "patch not restored")
+                         "patch nicht restored")
         self.assertEqual(PTModule.something, sentinel.Something,
-                         "patch not restored")
+                         "patch nicht restored")
 
 
     def test_patchobject_twice(self):
@@ -506,7 +506,7 @@ klasse PatchTest(unittest.TestCase):
         test()
 
         self.assertEqual(Something.attribute, sentinel.Original,
-                         "patch not restored")
+                         "patch nicht restored")
 
 
     def test_patch_dict(self):
@@ -1481,7 +1481,7 @@ klasse PatchTest(unittest.TestCase):
 
 
     def test_patch_multiple_spec_set(self):
-        # wenn spec_set works then we can assume that spec and autospec also
+        # wenn spec_set works then we can assume that spec und autospec also
         # work als the underlying machinery is the same
         patcher = patch.multiple(Foo, foo=DEFAULT, spec_set=['a', 'b'])
         result = patcher.start()
@@ -1773,15 +1773,15 @@ klasse PatchTest(unittest.TestCase):
 
         self.assertIs(holder.exc_info[0], RuntimeError)
         self.assertIsNotNichts(holder.exc_info[1],
-                            'exception value not propagated')
+                            'exception value nicht propagated')
         self.assertIsNotNichts(holder.exc_info[2],
-                            'exception traceback not propagated')
+                            'exception traceback nicht propagated')
 
 
     def test_name_resolution_import_rebinding(self):
         # Currently mock.patch uses pkgutil.resolve_name(), but repeat
         # similar tests just fuer the case.
-        # The same data is also used fuer testing importiere in test_import and
+        # The same data is also used fuer testing importiere in test_import und
         # pkgutil.resolve_name() in test_pkgutil.
         path = os.path.join(os.path.dirname(test.__file__), 'test_import', 'data')
         def check(name):
@@ -1878,7 +1878,7 @@ klasse PatchTest(unittest.TestCase):
         p = patch(MODNAME, spec=Falsch, spec_set=Falsch, autospec=Falsch)
         mock = p.start()
         try:
-            # no spec should have been set, so attribute access should not fail
+            # no spec should have been set, so attribute access should nicht fail
             mock.does_not_exist
             mock.does_not_exist = 3
         finally:

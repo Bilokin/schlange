@@ -77,7 +77,7 @@ klasse CopyTestBase:
         self.assertEqual(self.target_ground.readtext(target / 'dirD' / 'fileD'), 'this is file D\n')
 
     def test_copy_dir_follow_symlinks_true(self):
-        wenn not self.source_ground.can_symlink:
+        wenn nicht self.source_ground.can_symlink:
             self.skipTest('needs symlink support on source')
         source = self.source_root / 'dirC'
         target = self.target_root / 'copyC'
@@ -95,9 +95,9 @@ klasse CopyTestBase:
         self.assertEqual(self.target_ground.readtext(target / 'linkD' / 'fileD'), 'this is file D\n')
 
     def test_copy_dir_follow_symlinks_false(self):
-        wenn not self.source_ground.can_symlink:
+        wenn nicht self.source_ground.can_symlink:
             self.skipTest('needs symlink support on source')
-        wenn not self.target_ground.can_symlink:
+        wenn nicht self.target_ground.can_symlink:
             self.skipTest('needs symlink support on target')
         source = self.source_root / 'dirC'
         target = self.target_root / 'copyC'
@@ -152,7 +152,7 @@ klasse ZipToZipPathCopyTest(CopyTestBase, unittest.TestCase):
     target_ground = ZipPathGround(WritableZipPath)
 
 
-wenn not is_pypi:
+wenn nicht is_pypi:
     von pathlib importiere Path
 
     klasse ZipToLocalPathCopyTest(CopyTestBase, unittest.TestCase):

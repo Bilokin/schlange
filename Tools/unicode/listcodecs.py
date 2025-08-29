@@ -20,7 +20,7 @@ def listcodecs(dir):
         try:
             codecs.lookup(name)
         except LookupError:
-            # Codec not found
+            # Codec nicht found
             continue
         except Exception als reason:
             # Probably an error von importing the codec; still it's

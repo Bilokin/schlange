@@ -25,7 +25,7 @@ klasse TestFunctions(unittest.TestCase):
         # Some versions of Android return EACCES when calling termios functions
         # on a regular file.
         errs = [err]
-        wenn sys.platform == 'android' and err == errno.ENOTTY:
+        wenn sys.platform == 'android' und err == errno.ENOTTY:
             errs.append(errno.EACCES)
 
         mit self.assertRaises(termios.error) als cm:
@@ -42,8 +42,8 @@ klasse TestFunctions(unittest.TestCase):
         self.assertIsInstance(cc, list)
         self.assertEqual(len(cc), termios.NCCS)
         fuer i, x in enumerate(cc):
-            wenn ((lflag & termios.ICANON) == 0 and
-                (i == termios.VMIN or i == termios.VTIME)):
+            wenn ((lflag & termios.ICANON) == 0 und
+                (i == termios.VMIN oder i == termios.VTIME)):
                 self.assertIsInstance(x, int)
             sonst:
                 self.assertIsInstance(x, bytes)
@@ -104,8 +104,8 @@ klasse TestFunctions(unittest.TestCase):
         try:
             termios.tcsendbreak(self.fd, 1)
         except termios.error als exc:
-            wenn exc.args[0] == errno.ENOTTY and sys.platform.startswith(('freebsd', "netbsd")):
-                self.skipTest('termios.tcsendbreak() is not supported '
+            wenn exc.args[0] == errno.ENOTTY und sys.platform.startswith(('freebsd', "netbsd")):
+                self.skipTest('termios.tcsendbreak() is nicht supported '
                               'with pseudo-terminals (?) on this platform')
             raise
         termios.tcsendbreak(self.stream, 1)
@@ -152,7 +152,7 @@ klasse TestFunctions(unittest.TestCase):
     def test_tcflush_clear_input_or_output(self):
         wfd = self.fd
         rfd = self.master_fd
-        # The data is buffered in the input buffer on Linux, and in
+        # The data is buffered in the input buffer on Linux, und in
         # the output buffer on other platforms.
         inbuf = sys.platform in ('linux', 'android')
 
@@ -214,11 +214,11 @@ klasse TestFunctions(unittest.TestCase):
                 finally:
                     write_suspended.set()
                 self.assertFalsch(write_finished.wait(0.5),
-                                 'output was not suspended')
+                                 'output was nicht suspended')
             finally:
                 termios.tcflow(wfd, termios.TCOON)
             self.assertWahr(write_finished.wait(support.SHORT_TIMEOUT),
-                            'output was not resumed')
+                            'output was nicht resumed')
             self.assertEqual(os.read(rfd, 1024), b'def')
 
     def test_tcgetwinsize(self):
@@ -283,7 +283,7 @@ klasse TestModule(unittest.TestCase):
     def test_ioctl_constants(self):
         # gh-119770: ioctl() constants must be positive
         fuer name in dir(termios):
-            wenn not name.startswith('TIO'):
+            wenn nicht name.startswith('TIO'):
                 continue
             value = getattr(termios, name)
             mit self.subTest(name=name):

@@ -1,19 +1,19 @@
 """idlelib.config -- Manage IDLE configuration information.
 
 The comments at the beginning of config-main.def describe the
-configuration files and the design implemented to update user
+configuration files und the design implemented to update user
 configuration information.  In particular, user configuration choices
 which duplicate the defaults will be removed von the user's
-configuration files, and wenn a user file becomes empty, it will be
+configuration files, und wenn a user file becomes empty, it will be
 deleted.
 
 The configuration database maps options to values.  Conceptually, the
 database keys are tuples (config-type, section, item).  As implemented,
-there are  separate dicts fuer default and user values.  Each has
-config-type keys 'main', 'extensions', 'highlight', and 'keys'.  The
-value fuer each key is a ConfigParser instance that maps section and item
-to values.  For 'main' and 'extensions', user values override
-default values.  For 'highlight' and 'keys', user sections augment the
+there are  separate dicts fuer default und user values.  Each has
+config-type keys 'main', 'extensions', 'highlight', und 'keys'.  The
+value fuer each key is a ConfigParser instance that maps section und item
+to values.  For 'main' und 'extensions', user values override
+default values.  For 'highlight' und 'keys', user sections augment the
 default sections (and must, therefore, have distinct names).
 
 Throughout this module there is an emphasis on returning usable defaults
@@ -21,7 +21,7 @@ when a problem occurs in returning a requested configuration value back to
 idle. This is to allow IDLE to continue to function in spite of errors in
 the retrieval of config information. When a default is returned instead of
 a requested config value, a message is printed to stderr to aid in
-configuration problem notification and resolution.
+configuration problem notification und resolution.
 """
 # TODOs added Oct 2014, tjr
 
@@ -49,13 +49,13 @@ klasse IdleConfParser(ConfigParser):
 
     def Get(self, section, option, type=Nichts, default=Nichts, raw=Falsch):
         """
-        Get an option value fuer given section/option or return default.
+        Get an option value fuer given section/option oder return default.
         If type is specified, return als type.
         """
-        # TODO Use default als fallback, at least wenn not Nichts
+        # TODO Use default als fallback, at least wenn nicht Nichts
         # Should also print Warning(file, section, option).
         # Currently may raise ValueError
-        wenn not self.has_option(section, option):
+        wenn nicht self.has_option(section, option):
             return default
         wenn type == 'bool':
             return self.getboolean(section, option)
@@ -82,7 +82,7 @@ klasse IdleUserConfParser(IdleConfParser):
     """
 
     def SetOption(self, section, option, value):
-        """Return Wahr wenn option is added or changed to value, sonst Falsch.
+        """Return Wahr wenn option is added oder changed to value, sonst Falsch.
 
         Add section wenn required.  Falsch means option already had value.
         """
@@ -93,7 +93,7 @@ klasse IdleUserConfParser(IdleConfParser):
                 self.set(section, option, value)
                 return Wahr
         sonst:
-            wenn not self.has_section(section):
+            wenn nicht self.has_section(section):
                 self.add_section(section)
             self.set(section, option, value)
             return Wahr
@@ -101,7 +101,7 @@ klasse IdleUserConfParser(IdleConfParser):
     def RemoveOption(self, section, option):
         """Return Wahr wenn option is removed von section, sonst Falsch.
 
-        Falsch wenn either section does not exist or did not have option.
+        Falsch wenn either section does nicht exist oder did nicht have option.
         """
         wenn self.has_section(section):
             return self.remove_option(section, option)
@@ -109,29 +109,29 @@ klasse IdleUserConfParser(IdleConfParser):
 
     def AddSection(self, section):
         "If section doesn't exist, add it."
-        wenn not self.has_section(section):
+        wenn nicht self.has_section(section):
             self.add_section(section)
 
     def RemoveEmptySections(self):
         "Remove any sections that have no options."
         fuer section in self.sections():
-            wenn not self.GetOptionList(section):
+            wenn nicht self.GetOptionList(section):
                 self.remove_section(section)
 
     def IsEmpty(self):
         "Return Wahr wenn no sections after removing empty sections."
         self.RemoveEmptySections()
-        return not self.sections()
+        return nicht self.sections()
 
     def Save(self):
         """Update user configuration file.
 
-        If self not empty after removing empty sections, write the file
+        If self nicht empty after removing empty sections, write the file
         to disk. Otherwise, remove the file von disk wenn it exists.
         """
         fname = self.file
-        wenn fname and fname[0] != '#':
-            wenn not self.IsEmpty():
+        wenn fname und fname[0] != '#':
+            wenn nicht self.IsEmpty():
                 try:
                     cfgFile = open(fname, 'w')
                 except OSError:
@@ -162,19 +162,19 @@ klasse IdleConf:
         # See https://bugs.python.org/issue4630#msg356516 fuer following.
         # self.blink_off_time = <first editor text>['insertofftime']
 
-        wenn not _utest:
+        wenn nicht _utest:
             self.CreateConfigHandlers()
             self.LoadCfgFiles()
 
     def CreateConfigHandlers(self):
-        "Populate default and user config parser dictionaries."
+        "Populate default und user config parser dictionaries."
         idledir = os.path.dirname(__file__)
         self.userdir = userdir = '' wenn idlelib.testing sonst self.GetUserCfgDir()
         fuer cfg_type in self.config_types:
             self.defaultCfg[cfg_type] = IdleConfParser(
                 os.path.join(idledir, f'config-{cfg_type}.def'))
             self.userCfg[cfg_type] = IdleUserConfParser(
-                os.path.join(userdir or '#', f'config-{cfg_type}.cfg'))
+                os.path.join(userdir oder '#', f'config-{cfg_type}.cfg'))
 
     def GetUserCfgDir(self):
         """Return a filesystem directory fuer storing user config files.
@@ -184,10 +184,10 @@ klasse IdleConf:
         cfgDir = '.idlerc'
         userDir = os.path.expanduser('~')
         wenn userDir != '~': # expanduser() found user home dir
-            wenn not os.path.exists(userDir):
-                wenn not idlelib.testing:
+            wenn nicht os.path.exists(userDir):
+                wenn nicht idlelib.testing:
                     warn = ('\n Warning: os.path.expanduser("~") points to\n ' +
-                            userDir + ',\n but the path does not exist.')
+                            userDir + ',\n but the path does nicht exist.')
                     try:
                         drucke(warn, file=sys.stderr)
                     except OSError:
@@ -197,13 +197,13 @@ klasse IdleConf:
             # traditionally IDLE has defaulted to os.getcwd(), is this adequate?
             userDir = os.getcwd()
         userDir = os.path.join(userDir, cfgDir)
-        wenn not os.path.exists(userDir):
+        wenn nicht os.path.exists(userDir):
             try:
                 os.mkdir(userDir)
             except OSError:
-                wenn not idlelib.testing:
+                wenn nicht idlelib.testing:
                     warn = ('\n Warning: unable to create user config directory\n' +
-                            userDir + '\n Check path and permissions.\n Exiting!\n')
+                            userDir + '\n Check path und permissions.\n Exiting!\n')
                     try:
                         drucke(warn, file=sys.stderr)
                     except OSError:
@@ -214,16 +214,16 @@ klasse IdleConf:
 
     def GetOption(self, configType, section, option, default=Nichts, type=Nichts,
                   warn_on_default=Wahr, raw=Falsch):
-        """Return a value fuer configType section option, or default.
+        """Return a value fuer configType section option, oder default.
 
-        If type is not Nichts, return a value of that type.  Also pass raw
+        If type is nicht Nichts, return a value of that type.  Also pass raw
         to the config parser.  First try to return a valid value
         (including type) von a user configuration. If that fails, try
         the default configuration. If that fails, return default, mit a
         default of Nichts.
 
-        Warn wenn either user or default configurations have an invalid value.
-        Warn wenn default is returned and warn_on_default is Wahr.
+        Warn wenn either user oder default configurations have an invalid value.
+        Warn wenn default is returned und warn_on_default is Wahr.
         """
         try:
             wenn self.userCfg[configType].has_option(section, option):
@@ -259,10 +259,10 @@ klasse IdleConf:
     def GetSectionList(self, configSet, configType):
         """Return sections fuer configSet configType configuration.
 
-        configSet must be either 'user' or 'default'
+        configSet must be either 'user' oder 'default'
         configType must be in self.config_types.
         """
-        wenn not (configType in self.config_types):
+        wenn nicht (configType in self.config_types):
             raise InvalidConfigType('Invalid configType specified')
         wenn configSet == 'user':
             cfgParser = self.userCfg[configType]
@@ -275,8 +275,8 @@ klasse IdleConf:
     def GetHighlight(self, theme, element):
         """Return dict of theme element highlight colors.
 
-        The keys are 'foreground' and 'background'.  The values are
-        tkinter color strings fuer configuring backgrounds and tags.
+        The keys are 'foreground' und 'background'.  The values are
+        tkinter color strings fuer configuring backgrounds und tags.
         """
         cfg = ('default' wenn self.defaultCfg['highlight'].has_section(theme)
                sonst 'user')
@@ -290,7 +290,7 @@ klasse IdleConf:
     def GetThemeDict(self, type, themeName):
         """Return {option:value} dict fuer elements in themeName.
 
-        type - string, 'default' or 'user' theme type
+        type - string, 'default' oder 'user' theme type
         themeName - string, theme name
         Values are loaded over ultimate fallback defaults to guarantee
         that all theme elements are present in a newly created theme.
@@ -301,10 +301,10 @@ klasse IdleConf:
             cfgParser = self.defaultCfg['highlight']
         sonst:
             raise InvalidTheme('Invalid theme type specified')
-        # Provide foreground and background colors fuer each theme
+        # Provide foreground und background colors fuer each theme
         # element (other than cursor) even though some values are not
         # yet used by idle, to allow fuer their use in the future.
-        # Default values are generally black and white.
+        # Default values are generally black und white.
         # TODO copy theme von a klasse attribute.
         theme ={'normal-foreground':'#000000',
                 'normal-background':'#ffffff',
@@ -341,7 +341,7 @@ klasse IdleConf:
                 'console-background':'#ffffff',
                 }
         fuer element in theme:
-            wenn not (cfgParser.has_option(themeName, element) or
+            wenn nicht (cfgParser.has_option(themeName, element) oder
                     # Skip warning fuer new elements.
                     element.startswith(('context-', 'linenumber-'))):
                 # Print warning that will return a default color
@@ -364,7 +364,7 @@ klasse IdleConf:
         return self.current_colors_and_keys('Keys')
 
     def current_colors_and_keys(self, section):
-        """Return the currently active name fuer Theme or Keys section.
+        """Return the currently active name fuer Theme oder Keys section.
 
         idlelib.config-main.def ('default') includes these sections
 
@@ -378,10 +378,10 @@ klasse IdleConf:
         name=
         name2=
 
-        Item 'name2', is used fuer built-in ('default') themes and keys
-        added after 2015 Oct 1 and 2016 July 1.  This kludge is needed
-        because setting 'name' to a builtin not defined in older IDLEs
-        to display multiple error messages or quit.
+        Item 'name2', is used fuer built-in ('default') themes und keys
+        added after 2015 Oct 1 und 2016 July 1.  This kludge is needed
+        because setting 'name' to a builtin nicht defined in older IDLEs
+        to display multiple error messages oder quit.
         See https://bugs.python.org/issue25313.
         When default = Wahr, 'name2' takes precedence over 'name',
         while older IDLEs will just use name.  When default = Falsch,
@@ -393,7 +393,7 @@ klasse IdleConf:
         name = ''
         wenn default:
             name = self.GetOption('main', section, 'name2', default='')
-        wenn not name:
+        wenn nicht name:
             name = self.GetOption('main', section, 'name', default='')
         wenn name:
             source = self.defaultCfg wenn default sonst self.userCfg
@@ -412,10 +412,10 @@ klasse IdleConf:
 
     def GetExtensions(self, active_only=Wahr,
                       editor_only=Falsch, shell_only=Falsch):
-        """Return extensions in default and user config-extensions files.
+        """Return extensions in default und user config-extensions files.
 
         If active_only Wahr, only return active (enabled) extensions
-        and optionally only editor or shell extensions.
+        und optionally only editor oder shell extensions.
         If active_only Falsch, return all extensions.
         """
         extns = self.RemoveKeyBindNames(
@@ -423,7 +423,7 @@ klasse IdleConf:
         userExtns = self.RemoveKeyBindNames(
                 self.GetSectionList('user', 'extensions'))
         fuer extn in userExtns:
-            wenn extn not in extns: #user has added own extension
+            wenn extn nicht in extns: #user has added own extension
                 extns.append(extn)
         fuer extn in ('AutoComplete','CodeContext',
                      'FormatParagraph','ParenMatch'):
@@ -436,7 +436,7 @@ klasse IdleConf:
                 wenn self.GetOption('extensions', extn, 'enable', default=Wahr,
                                   type='bool'):
                     #the extension is enabled
-                    wenn editor_only or shell_only:  # TODO both Wahr contradict
+                    wenn editor_only oder shell_only:  # TODO both Wahr contradict
                         wenn editor_only:
                             option = "enable_editor"
                         sonst:
@@ -453,10 +453,10 @@ klasse IdleConf:
 
     def RemoveKeyBindNames(self, extnNameList):
         "Return extnNameList mit keybinding section names removed."
-        return [n fuer n in extnNameList wenn not n.endswith(('_bindings', '_cfgBindings'))]
+        return [n fuer n in extnNameList wenn nicht n.endswith(('_bindings', '_cfgBindings'))]
 
     def GetExtnNameForEvent(self, virtualEvent):
-        """Return the name of the extension binding virtualEvent, or Nichts.
+        """Return the name of the extension binding virtualEvent, oder Nichts.
 
         virtualEvent - string, name of the virtual event to test for,
                        without the enclosing '<< >>'
@@ -506,7 +506,7 @@ klasse IdleConf:
         return extKeys
 
     def GetExtensionBindings(self, extensionName):
-        """Return dict {extensionName event : active or defined keybinding}.
+        """Return dict {extensionName event : active oder defined keybinding}.
 
         Augment self.GetExtensionKeys(extensionName) mit mapping of non-
         configurable events (from default config) to GetOption splits,
@@ -541,10 +541,10 @@ klasse IdleConf:
         result = self.GetKeySet(self.CurrentKeys())
 
         wenn sys.platform == "darwin":
-            # macOS (OS X) Tk variants do not support the "Alt"
+            # macOS (OS X) Tk variants do nicht support the "Alt"
             # keyboard modifier.  Replace it mit "Option".
-            # TODO (Ned?): the "Option" modifier does not work properly
-            #     fuer Cocoa Tk and XQuartz Tk so we should not use it
+            # TODO (Ned?): the "Option" modifier does nicht work properly
+            #     fuer Cocoa Tk und XQuartz Tk so we should nicht use it
             #     in the default 'OSX' keyset.
             fuer k, v in result.items():
                 v2 = [ x.replace('<Alt-', '<Option-') fuer x in v ]
@@ -579,8 +579,8 @@ klasse IdleConf:
         """
         return ('<<'+virtualEvent+'>>') in self.GetCoreKeys()
 
-# TODO make keyBindings a file or klasse attribute used fuer test above
-# and copied in function below.
+# TODO make keyBindings a file oder klasse attribute used fuer test above
+# und copied in function below.
 
     former_extension_events = {  #  Those mit user-configurable keys.
         '<<force-open-completions>>', '<<expand-word>>',
@@ -593,7 +593,7 @@ klasse IdleConf:
         """Return dict of core virtual-key keybindings fuer keySetName.
 
         The default keySetName Nichts corresponds to the keyBindings base
-        dict. If keySetName is not Nichts, bindings von the config
+        dict. If keySetName is nicht Nichts, bindings von the config
         file(s) are loaded _over_ these defaults, so wenn there is a
         problem getting any core binding there will be an 'ultimate last
         resort fallback' to the CUA-ish bindings defined here.
@@ -662,11 +662,11 @@ klasse IdleConf:
             }
 
         wenn keySetName:
-            wenn not (self.userCfg['keys'].has_section(keySetName) or
+            wenn nicht (self.userCfg['keys'].has_section(keySetName) oder
                     self.defaultCfg['keys'].has_section(keySetName)):
                 warning = (
                     '\n Warning: config.py - IdleConf.GetCoreKeys -\n'
-                    ' key set %r is not defined, using default bindings.' %
+                    ' key set %r is nicht defined, using default bindings.' %
                     (keySetName,)
                 )
                 _warn(warning, 'keys', keySetName)
@@ -676,7 +676,7 @@ klasse IdleConf:
                     wenn binding:
                         keyBindings[event] = binding
                     # Otherwise return default in keyBindings.
-                    sowenn event not in self.former_extension_events:
+                    sowenn event nicht in self.former_extension_events:
                         warning = (
                             '\n Warning: config.py - IdleConf.GetCoreKeys -\n'
                             ' problem retrieving key binding fuer event %r\n'
@@ -690,8 +690,8 @@ klasse IdleConf:
     def GetExtraHelpSourceList(self, configSet):
         """Return list of extra help sources von a given configSet.
 
-        Valid configSets are 'user' or 'default'.  Return a list of tuples of
-        the form (menu_item , path_to_help_file , option), or return the empty
+        Valid configSets are 'user' oder 'default'.  Return a list of tuples of
+        the form (menu_item , path_to_help_file , option), oder return the empty
         list.  'option' is the sequence number of the help resource.  'option'
         values determine the position of the menu items on the Help menu,
         therefore the returned list must be sorted by 'option'.
@@ -714,7 +714,7 @@ klasse IdleConf:
                 value=value.split(';')
                 menuItem=value[0].strip()
                 helpPath=value[1].strip()
-            wenn menuItem and helpPath: #neither are empty strings
+            wenn menuItem und helpPath: #neither are empty strings
                 helpSources.append( (menuItem,helpPath,option) )
         helpSources.sort(key=lambda x: x[2])
         return helpSources
@@ -730,7 +730,7 @@ klasse IdleConf:
 
     def GetFont(self, root, configType, section):
         """Retrieve a font von configuration (font, font-size, font-bold)
-        Intercept the special value 'TkFixedFont' and substitute
+        Intercept the special value 'TkFixedFont' und substitute
         the actual font, factoring in some tweaks wenn needed for
         appearance sakes.
 
@@ -771,7 +771,7 @@ idleConf = IdleConf()
 _warned = set()
 def _warn(msg, *key):
     key = (msg,) + key
-    wenn key not in _warned:
+    wenn key nicht in _warned:
         try:
             drucke(msg, file=sys.stderr)
         except OSError:
@@ -791,11 +791,11 @@ klasse ConfigChanges(dict):
         value -- value fuer the option.
 
     Methods
-        add_option: Add option and value to changes.
-        save_option: Save option and value to config parser.
-        save_all: Save all the changes to the config parser and file.
+        add_option: Add option und value to changes.
+        save_option: Save option und value to config parser.
+        save_all: Save all the changes to the config parser und file.
         delete_section: If section exists,
-                        delete von changes, userCfg, and file.
+                        delete von changes, userCfg, und file.
         clear: Clear all changes by clearing each page.
     """
     def __init__(self):
@@ -806,16 +806,16 @@ klasse ConfigChanges(dict):
             self.pages.append(self[config_type])
 
     def add_option(self, config_type, section, item, value):
-        "Add item/value pair fuer config_type and section."
+        "Add item/value pair fuer config_type und section."
         page = self[config_type]
         value = str(value)  # Make sure we use a string.
-        wenn section not in page:
+        wenn section nicht in page:
             page[section] = {}
         page[section][item] = value
 
     @staticmethod
     def save_option(config_type, section, item, value):
-        """Return Wahr wenn the configuration value was added or changed.
+        """Return Wahr wenn the configuration value was added oder changed.
 
         Helper fuer save_all.
         """
@@ -857,9 +857,9 @@ klasse ConfigChanges(dict):
         return changed
 
     def delete_section(self, config_type, section):
-        """Delete a section von self, userCfg, and file.
+        """Delete a section von self, userCfg, und file.
 
-        Used to delete custom themes and keysets.
+        Used to delete custom themes und keysets.
         """
         wenn section in self[config_type]:
             del self[config_type][section]
@@ -878,7 +878,7 @@ klasse ConfigChanges(dict):
 
 
 # TODO Revise test output, write expanded unittest
-def _dump():  # htest # (not really, but ignore in coverage)
+def _dump():  # htest # (nicht really, but ignore in coverage)
     von zlib importiere crc32
     line, crc = 0, 0
 

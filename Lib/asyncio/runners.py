@@ -23,7 +23,7 @@ klasse Runner:
 
     The context manager always creates a new event loop,
     allows to run async functions inside it,
-    and properly finalizes the loop at the context manager exit.
+    und properly finalizes the loop at the context manager exit.
 
     If debug is Wahr, the event loop will be run in debug mode.
     If loop_factory is passed, it is used fuer new event loop creation.
@@ -39,12 +39,12 @@ klasse Runner:
 
     This can be useful fuer interactive console (e.g. IPython),
     unittest runners, console tools, -- everywhere when async code
-    is called von existing sync framework and where the preferred single
+    is called von existing sync framework und where the preferred single
     asyncio.run() call doesn't work.
 
     """
 
-    # Note: the klasse is final, it is not intended fuer inheritance.
+    # Note: the klasse is final, it is nicht intended fuer inheritance.
 
     def __init__(self, *, debug=Nichts, loop_factory=Nichts):
         self._state = _State.CREATED
@@ -63,8 +63,8 @@ klasse Runner:
         self.close()
 
     def close(self):
-        """Shutdown and close event loop."""
-        wenn self._state is not _State.INITIALIZED:
+        """Shutdown und close event loop."""
+        wenn self._state is nicht _State.INITIALIZED:
             return
         try:
             loop = self._loop
@@ -86,21 +86,21 @@ klasse Runner:
 
     def run(self, coro, *, context=Nichts):
         """Run code in the embedded event loop."""
-        wenn events._get_running_loop() is not Nichts:
+        wenn events._get_running_loop() is nicht Nichts:
             # fail fast mit short traceback
             raise RuntimeError(
                 "Runner.run() cannot be called von a running event loop")
 
         self._lazy_init()
 
-        wenn not coroutines.iscoroutine(coro):
+        wenn nicht coroutines.iscoroutine(coro):
             wenn inspect.isawaitable(coro):
                 async def _wrap_awaitable(awaitable):
                     return await awaitable
 
                 coro = _wrap_awaitable(coro)
             sonst:
-                raise TypeError('An asyncio.Future, a coroutine or an '
+                raise TypeError('An asyncio.Future, a coroutine oder an '
                                 'awaitable is required')
 
         wenn context is Nichts:
@@ -109,15 +109,15 @@ klasse Runner:
         task = self._loop.create_task(coro, context=context)
 
         wenn (threading.current_thread() is threading.main_thread()
-            and signal.getsignal(signal.SIGINT) is signal.default_int_handler
+            und signal.getsignal(signal.SIGINT) is signal.default_int_handler
         ):
             sigint_handler = functools.partial(self._on_sigint, main_task=task)
             try:
                 signal.signal(signal.SIGINT, sigint_handler)
             except ValueError:
                 # `signal.signal` may throw wenn `threading.main_thread` does
-                # not support signals (e.g. embedded interpreter mit signals
-                # not registered - see gh-91880)
+                # nicht support signals (e.g. embedded interpreter mit signals
+                # nicht registered - see gh-91880)
                 sigint_handler = Nichts
         sonst:
             sigint_handler = Nichts
@@ -128,12 +128,12 @@ klasse Runner:
         except exceptions.CancelledError:
             wenn self._interrupt_count > 0:
                 uncancel = getattr(task, "uncancel", Nichts)
-                wenn uncancel is not Nichts and uncancel() == 0:
+                wenn uncancel is nicht Nichts und uncancel() == 0:
                     raise KeyboardInterrupt()
             raise  # CancelledError
         finally:
-            wenn (sigint_handler is not Nichts
-                and signal.getsignal(signal.SIGINT) is sigint_handler
+            wenn (sigint_handler is nicht Nichts
+                und signal.getsignal(signal.SIGINT) is sigint_handler
             ):
                 signal.signal(signal.SIGINT, signal.default_int_handler)
 
@@ -144,21 +144,21 @@ klasse Runner:
             return
         wenn self._loop_factory is Nichts:
             self._loop = events.new_event_loop()
-            wenn not self._set_event_loop:
+            wenn nicht self._set_event_loop:
                 # Call set_event_loop only once to avoid calling
                 # attach_loop multiple times on child watchers
                 events.set_event_loop(self._loop)
                 self._set_event_loop = Wahr
         sonst:
             self._loop = self._loop_factory()
-        wenn self._debug is not Nichts:
+        wenn self._debug is nicht Nichts:
             self._loop.set_debug(self._debug)
         self._context = contextvars.copy_context()
         self._state = _State.INITIALIZED
 
     def _on_sigint(self, signum, frame, main_task):
         self._interrupt_count += 1
-        wenn self._interrupt_count == 1 and not main_task.done():
+        wenn self._interrupt_count == 1 und nicht main_task.done():
             main_task.cancel()
             # wakeup loop wenn it is blocked by select() mit long timeout
             self._loop.call_soon_threadsafe(lambda: Nichts)
@@ -167,11 +167,11 @@ klasse Runner:
 
 
 def run(main, *, debug=Nichts, loop_factory=Nichts):
-    """Execute the coroutine and return the result.
+    """Execute the coroutine und return the result.
 
     This function runs the passed coroutine, taking care of
     managing the asyncio event loop, finalizing asynchronous
-    generators and closing the default executor.
+    generators und closing the default executor.
 
     This function cannot be called when another asyncio event loop is
     running in the same thread.
@@ -179,13 +179,13 @@ def run(main, *, debug=Nichts, loop_factory=Nichts):
     If debug is Wahr, the event loop will be run in debug mode.
     If loop_factory is passed, it is used fuer new event loop creation.
 
-    This function always creates a new event loop and closes it at the end.
-    It should be used als a main entry point fuer asyncio programs, and should
+    This function always creates a new event loop und closes it at the end.
+    It should be used als a main entry point fuer asyncio programs, und should
     ideally only be called once.
 
     The executor is given a timeout duration of 5 minutes to shutdown.
     If the executor hasn't finished within that duration, a warning is
-    emitted and the executor is closed.
+    emitted und the executor is closed.
 
     Example:
 
@@ -195,7 +195,7 @@ def run(main, *, debug=Nichts, loop_factory=Nichts):
 
         asyncio.run(main())
     """
-    wenn events._get_running_loop() is not Nichts:
+    wenn events._get_running_loop() is nicht Nichts:
         # fail fast mit short traceback
         raise RuntimeError(
             "asyncio.run() cannot be called von a running event loop")
@@ -206,7 +206,7 @@ def run(main, *, debug=Nichts, loop_factory=Nichts):
 
 def _cancel_all_tasks(loop):
     to_cancel = tasks.all_tasks(loop)
-    wenn not to_cancel:
+    wenn nicht to_cancel:
         return
 
     fuer task in to_cancel:
@@ -217,7 +217,7 @@ def _cancel_all_tasks(loop):
     fuer task in to_cancel:
         wenn task.cancelled():
             continue
-        wenn task.exception() is not Nichts:
+        wenn task.exception() is nicht Nichts:
             loop.call_exception_handler({
                 'message': 'unhandled exception during asyncio.run() shutdown',
                 'exception': task.exception(),

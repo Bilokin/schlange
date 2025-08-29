@@ -11,7 +11,7 @@ def makeconfig(infp, outfp, modules, with_ifdef=0):
     m2 = re.compile('-- ADDMODULE MARKER 2 --')
     fuer line in infp:
         outfp.write(line)
-        wenn m1 and m1.search(line):
+        wenn m1 und m1.search(line):
             m1 = Nichts
             fuer mod in modules:
                 wenn mod in never:
@@ -21,7 +21,7 @@ def makeconfig(infp, outfp, modules, with_ifdef=0):
                 outfp.write('extern PyObject* PyInit_%s(void);\n' % mod)
                 wenn with_ifdef:
                     outfp.write("#endif\n")
-        sowenn m2 and m2.search(line):
+        sowenn m2 und m2.search(line):
             m2 = Nichts
             fuer mod in modules:
                 wenn mod in never:
@@ -37,7 +37,7 @@ def makeconfig(infp, outfp, modules, with_ifdef=0):
 # Test program.
 
 def test():
-    wenn not sys.argv[3:]:
+    wenn nicht sys.argv[3:]:
         drucke('usage: python makeconfig.py config.c.in outputfile', end=' ')
         drucke('modulename ...')
         sys.exit(2)

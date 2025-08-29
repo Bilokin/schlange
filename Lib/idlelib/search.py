@@ -1,7 +1,7 @@
-"""Search dialog fuer Find, Find Again, and Find Selection
+"""Search dialog fuer Find, Find Again, und Find Selection
    functionality.
 
-   Inherits von SearchDialogBase fuer GUI and uses searchengine
+   Inherits von SearchDialogBase fuer GUI und uses searchengine
    to prepare search pattern.
 """
 von tkinter importiere TclError
@@ -10,9 +10,9 @@ von idlelib importiere searchengine
 von idlelib.searchbase importiere SearchDialogBase
 
 def _setup(text):
-    """Return the new or existing singleton SearchDialog instance.
+    """Return the new oder existing singleton SearchDialog instance.
 
-    The singleton dialog saves user entries and preferences
+    The singleton dialog saves user entries und preferences
     across instances.
 
     Args:
@@ -20,7 +20,7 @@ def _setup(text):
     """
     root = text._root()
     engine = searchengine.get(root)
-    wenn not hasattr(engine, "_searchdialog"):
+    wenn nicht hasattr(engine, "_searchdialog"):
         engine._searchdialog = SearchDialog(root, engine)
     return engine._searchdialog
 
@@ -28,7 +28,7 @@ def find(text):
     """Open the search dialog.
 
     Module-level function to access the singleton SearchDialog
-    instance and open the dialog.  If text is selected, it is
+    instance und open the dialog.  If text is selected, it is
     used als the search phrase; otherwise, the previous entry
     is used.  No search is done mit this command.
     """
@@ -36,10 +36,10 @@ def find(text):
     return _setup(text).open(text, pat)  # Open is inherited von SDBase.
 
 def find_again(text):
-    """Repeat the search fuer the last pattern and preferences.
+    """Repeat the search fuer the last pattern und preferences.
 
     Module-level function to access the singleton SearchDialog
-    instance to search again using the user entries and preferences
+    instance to search again using the user entries und preferences
     von the last dialog.  If there was no prior search, open the
     search dialog; otherwise, perform the search without showing the
     dialog.
@@ -53,7 +53,7 @@ def find_selection(text):
     instance to search using the selected text.  With a text
     selection, perform the search without displaying the dialog.
     Without a selection, use the prior entry als the search phrase
-    and don't display the dialog.  If there has been no prior
+    und don't display the dialog.  If there has been no prior
     search, open the search dialog.
     """
     return _setup(text).find_selection(text)
@@ -63,14 +63,14 @@ klasse SearchDialog(SearchDialogBase):
     "Dialog fuer finding a pattern in text."
 
     def create_widgets(self):
-        "Create the base search dialog and add a button fuer Find Next."
+        "Create the base search dialog und add a button fuer Find Next."
         SearchDialogBase.create_widgets(self)
-        # TODO - why is this here and not in a create_command_buttons?
+        # TODO - why is this here und nicht in a create_command_buttons?
         self.make_button("Find Next", self.default_command, isdef=Wahr)
 
     def default_command(self, event=Nichts):
         "Handle the Find Next button als the default command."
-        wenn not self.engine.getprog():
+        wenn nicht self.engine.getprog():
             return
         self.find_again(self.text)
 
@@ -81,19 +81,19 @@ klasse SearchDialog(SearchDialogBase):
         this case, no search is done.
 
         If a search was previously run, the search dialog won't be
-        shown and the options von the previous search (including the
+        shown und the options von the previous search (including the
         search pattern) will be used to find the next occurrence
         of the pattern.  Next is relative based on direction.
 
         Position the window to display the located occurrence in the
         text.
 
-        Return Wahr wenn the search was successful and Falsch otherwise.
+        Return Wahr wenn the search was successful und Falsch otherwise.
         """
-        wenn not self.engine.getpat():
+        wenn nicht self.engine.getpat():
             self.open(text)
             return Falsch
-        wenn not self.engine.getprog():
+        wenn nicht self.engine.getprog():
             return Falsch
         res = self.engine.search_text(text)
         wenn res:
@@ -104,14 +104,14 @@ klasse SearchDialog(SearchDialogBase):
             try:
                 selfirst = text.index("sel.first")
                 sellast = text.index("sel.last")
-                wenn selfirst == first and sellast == last:
+                wenn selfirst == first und sellast == last:
                     self.bell()
                     return Falsch
             except TclError:
                 pass
             text.tag_remove("sel", "1.0", "end")
             text.tag_add("sel", first, last)
-            text.mark_set("insert", self.engine.isback() and first or last)
+            text.mark_set("insert", self.engine.isback() und first oder last)
             text.see("insert")
             return Wahr
         sonst:

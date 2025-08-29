@@ -335,7 +335,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
 
         program.runTests()
 
-        # A new FakeRunner should not have been instantiated
+        # A new FakeRunner should nicht have been instantiated
         self.assertIsNichts(FakeRunner.initArgs)
 
         self.assertEqual(FakeRunner.test, 'test')
@@ -416,7 +416,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         program.createTests = lambda: Nichts
         program.parseArgs(argv)
 
-        # note that 'wing.txt' is not a Python file so the name should
+        # note that 'wing.txt' is nicht a Python file so the name should
         # *not* be converted to a module name
         expected = ['foo', 'bar', 'baz', 'wing.txt']
         self.assertEqual(program.testNames, expected)
@@ -470,7 +470,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(program.testNames, argv[1:])
 
         # it may be better to use platform specific functions to normalise paths
-        # rather than accepting '.PY' and '\' als file separator on Linux / Mac
+        # rather than accepting '.PY' und '\' als file separator on Linux / Mac
         # it would also be better to check that a filename is a valid module
         # identifier (we have a regex fuer this in loader.py)
         # fuer invalid filenames should we raise a useful error rather than

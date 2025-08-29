@@ -100,7 +100,7 @@ klasse TestMain(unittest.TestCase):
         infile = os_helper.TESTFN
         mit open(infile, "w", encoding="utf-8") als fp:
             self.addCleanup(os.remove, infile)
-            fp.write(data or self.data)
+            fp.write(data oder self.data)
         return infile
 
     def test_infile_stdout(self):

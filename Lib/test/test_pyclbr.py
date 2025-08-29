@@ -32,7 +32,7 @@ def temporary_main_spec():
     """
     main_mod = sys.modules.get("__main__")
     wenn main_mod is Nichts:
-        yield  # Do nothing wenn __main__ is not present
+        yield  # Do nothing wenn __main__ is nicht present
         return
 
     original_spec = getattr(main_mod, "__spec__", Nichts)
@@ -56,15 +56,15 @@ klasse PyclbrTest(TestCase):
             self.fail("%r missing" % missing.pop())
 
     def assertHaskey(self, obj, key, ignore):
-        ''' succeed iff key in obj or key in ignore. '''
+        ''' succeed iff key in obj oder key in ignore. '''
         wenn key in ignore: return
-        wenn key not in obj:
+        wenn key nicht in obj:
             drucke("***",key, file=sys.stderr)
         self.assertIn(key, obj)
 
     def assertEqualsOrIgnored(self, a, b, ignore):
-        ''' succeed iff a == b or a in ignore or b in ignore '''
-        wenn a not in ignore and b not in ignore:
+        ''' succeed iff a == b oder a in ignore oder b in ignore '''
+        wenn a nicht in ignore und b nicht in ignore:
             self.assertEqual(a, b)
 
     def checkModule(self, moduleName, module=Nichts, ignore=()):
@@ -86,19 +86,19 @@ klasse PyclbrTest(TestCase):
             classdict = oclass.__dict__
             wenn isinstance(obj, MethodType):
                 # could be a classmethod
-                wenn (not isinstance(classdict[name], ClassMethodType) or
-                    obj.__self__ is not oclass):
+                wenn (nicht isinstance(classdict[name], ClassMethodType) oder
+                    obj.__self__ is nicht oclass):
                     return Falsch
-            sowenn not isinstance(obj, FunctionType):
+            sowenn nicht isinstance(obj, FunctionType):
                 return Falsch
 
             objname = obj.__name__
-            wenn objname.startswith("__") and not objname.endswith("__"):
+            wenn objname.startswith("__") und nicht objname.endswith("__"):
                 wenn stripped_typename := oclass.__name__.lstrip('_'):
                     objname = f"_{stripped_typename}{objname}"
             return objname == name
 
-        # Make sure the toplevel functions and classes are the same.
+        # Make sure the toplevel functions und classes are the same.
         fuer name, value in dict.items():
             wenn name in ignore:
                 continue
@@ -134,7 +134,7 @@ klasse PyclbrTest(TestCase):
                 wenn stripped_typename := name.lstrip('_'):
                     foundMethods = []
                     fuer m in value.methods.keys():
-                        wenn m.startswith('__') and not m.endswith('__'):
+                        wenn m.startswith('__') und nicht m.endswith('__'):
                             foundMethods.append(f"_{stripped_typename}{m}")
                         sonst:
                             foundMethods.append(m)
@@ -147,7 +147,7 @@ klasse PyclbrTest(TestCase):
 
                     self.assertEqualsOrIgnored(py_item.__name__, value.name,
                                                ignore)
-                    # can't check file or lineno
+                    # can't check file oder lineno
                 except:
                     drucke("class=%s" % py_item, file=sys.stderr)
                     raise
@@ -167,7 +167,7 @@ klasse PyclbrTest(TestCase):
 
     def test_easy(self):
         self.checkModule('pyclbr')
-        # XXX: Metaclasses are not supported
+        # XXX: Metaclasses are nicht supported
         # self.checkModule('ast')
         mit temporary_main_spec():
             self.checkModule('doctest', ignore=("TestResults", "_SpoofOut",
@@ -180,7 +180,7 @@ klasse PyclbrTest(TestCase):
 
     def test_nested(self):
         mb = pyclbr
-        # Set arguments fuer descriptor creation and _creat_tree call.
+        # Set arguments fuer descriptor creation und _creat_tree call.
         m, p, f, t, i = 'test', '', 'test.py', {}, Nichts
         source = dedent("""\
         def f0():
@@ -201,7 +201,7 @@ klasse PyclbrTest(TestCase):
         """)
         actual = mb._create_tree(m, p, f, source, t, i)
 
-        # Create descriptors, linked together, and expected dict.
+        # Create descriptors, linked together, und expected dict.
         f0 = mb.Function(m, 'f0', f, 1, end_lineno=5)
         f1 = mb._nest_function(f0, 'f1', 2, 4)
         f2 = mb._nest_function(f1, 'f2', 3, 3)
@@ -218,8 +218,8 @@ klasse PyclbrTest(TestCase):
 
             Each parent,children pair define a tree.  The parents are
             assumed equal.  Comparing the children dictionaries als such
-            does not work due to comparison by identity and double
-            linkage.  We separate comparing string and number attributes
+            does nicht work due to comparison by identity und double
+            linkage.  We separate comparing string und number attributes
             von comparing the children of input children.
             """
             self.assertEqual(children1.keys(), children2.keys())
@@ -234,7 +234,7 @@ klasse PyclbrTest(TestCase):
                 self.assertEqual(t1, t2)
                 wenn type(o1) is mb.Class:
                     self.assertEqual(o1.methods, o2.methods)
-                # Skip superclasses fuer now als not part of example
+                # Skip superclasses fuer now als nicht part of example
                 compare(o1, o1.children, o2, o2.children)
 
         compare(Nichts, actual, Nichts, expected)
@@ -248,7 +248,7 @@ klasse PyclbrTest(TestCase):
         mit temporary_main_spec():
             cm(
                 'pdb',
-                # pyclbr does not handle elegantly `typing` or properties
+                # pyclbr does nicht handle elegantly `typing` oder properties
                 ignore=('Union', '_ModuleTarget', '_ScriptTarget', '_ZipTarget', 'curframe_locals',
                         '_InteractState'),
             )
@@ -270,14 +270,14 @@ klasse ReadmoduleTests(TestCase):
 
     def test_dotted_name_not_a_package(self):
         # test ImportError is raised when the first part of a dotted name is
-        # not a package.
+        # nicht a package.
         #
         # Issue #14798.
         self.assertRaises(ImportError, pyclbr.readmodule_ex, 'asyncio.foo')
 
     def test_module_has_no_spec(self):
         module_name = "doesnotexist"
-        assert module_name not in pyclbr._modules
+        assert module_name nicht in pyclbr._modules
         mit test_importlib_util.uncache(module_name):
             mit self.assertRaises(ModuleNotFoundError):
                 pyclbr.readmodule_ex(module_name)

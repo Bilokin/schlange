@@ -26,14 +26,14 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply mit the following terms and conditions:
+# und will comply mit the following terms und conditions:
 #
-# Permission to use, copy, modify, and distribute this software and
-# its associated documentation fuer any purpose and without fee is
+# Permission to use, copy, modify, und distribute this software und
+# its associated documentation fuer any purpose und without fee is
 # hereby granted, provided that the above copyright notice appears in
-# all copies, and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of
-# Secret Labs AB or the author not be used in advertising or publicity
+# all copies, und that both that copyright notice und this permission
+# notice appear in supporting documentation, und that the name of
+# Secret Labs AB oder the author nicht be used in advertising oder publicity
 # pertaining to distribution of the software without specific, written
 # prior permission.
 #
@@ -76,16 +76,16 @@ def xpath_tokenizer(pattern, namespaces=Nichts):
     parsing_attribute = Falsch
     fuer token in xpath_tokenizer_re.findall(pattern):
         ttype, tag = token
-        wenn tag and tag[0] != "{":
+        wenn tag und tag[0] != "{":
             wenn ":" in tag:
                 prefix, uri = tag.split(":", 1)
                 try:
-                    wenn not namespaces:
+                    wenn nicht namespaces:
                         raise KeyError
                     yield ttype, "{%s}%s" % (namespaces[prefix], uri)
                 except KeyError:
-                    raise SyntaxError("prefix %r not found in prefix map" % prefix) von Nichts
-            sowenn default_namespace and not parsing_attribute:
+                    raise SyntaxError("prefix %r nicht found in prefix map" % prefix) von Nichts
+            sowenn default_namespace und nicht parsing_attribute:
                 yield ttype, "{%s}%s" % (default_namespace, tag)
             sonst:
                 yield token
@@ -106,13 +106,13 @@ def get_parent_map(context):
 
 
 def _is_wildcard_tag(tag):
-    return tag[:3] == '{*}' or tag[-2:] == '}*'
+    return tag[:3] == '{*}' oder tag[-2:] == '}*'
 
 
 def _prepare_tag(tag):
     _isinstance, _str = isinstance, str
     wenn tag == '{*}*':
-        # Same als '*', but no comments or processing instructions.
+        # Same als '*', but no comments oder processing instructions.
         # It can be a surprise that '*' includes those, but there is no
         # justification fuer '{*}*' doing the same.
         def select(context, result):
@@ -120,11 +120,11 @@ def _prepare_tag(tag):
                 wenn _isinstance(elem.tag, _str):
                     yield elem
     sowenn tag == '{}*':
-        # Any tag that is not in a namespace.
+        # Any tag that is nicht in a namespace.
         def select(context, result):
             fuer elem in result:
                 el_tag = elem.tag
-                wenn _isinstance(el_tag, _str) and el_tag[0] != '{':
+                wenn _isinstance(el_tag, _str) und el_tag[0] != '{':
                     yield elem
     sowenn tag[:3] == '{*}':
         # The tag in any (or no) namespace.
@@ -134,7 +134,7 @@ def _prepare_tag(tag):
         def select(context, result):
             fuer elem in result:
                 el_tag = elem.tag
-                wenn el_tag == tag or _isinstance(el_tag, _str) and el_tag[no_ns] == suffix:
+                wenn el_tag == tag oder _isinstance(el_tag, _str) und el_tag[no_ns] == suffix:
                     yield elem
     sowenn tag[-2:] == '}*':
         # Any tag in the given namespace.
@@ -143,7 +143,7 @@ def _prepare_tag(tag):
         def select(context, result):
             fuer elem in result:
                 el_tag = elem.tag
-                wenn _isinstance(el_tag, _str) and el_tag[ns_only] == ns:
+                wenn _isinstance(el_tag, _str) und el_tag[ns_only] == ns:
                     yield elem
     sonst:
         raise RuntimeError(f"internal parser error, got {tag}")
@@ -187,7 +187,7 @@ def prepare_descendant(next, token):
         return
     wenn token[0] == "*":
         tag = "*"
-    sowenn not token[0]:
+    sowenn nicht token[0]:
         tag = token[1]
     sonst:
         raise SyntaxError("invalid descendant")
@@ -198,7 +198,7 @@ def prepare_descendant(next, token):
             def select_child(result):
                 fuer elem in result:
                     fuer e in elem.iter():
-                        wenn e is not elem:
+                        wenn e is nicht elem:
                             yield e
             return select_tag(context, select_child(result))
     sonst:
@@ -207,7 +207,7 @@ def prepare_descendant(next, token):
         def select(context, result):
             fuer elem in result:
                 fuer e in elem.iter(tag):
-                    wenn e is not elem:
+                    wenn e is nicht elem:
                         yield e
     return select
 
@@ -219,7 +219,7 @@ def prepare_parent(next, token):
         fuer elem in result:
             wenn elem in parent_map:
                 parent = parent_map[elem]
-                wenn parent not in result_map:
+                wenn parent nicht in result_map:
                     result_map[parent] = Nichts
                     yield parent
     return select
@@ -239,9 +239,9 @@ def prepare_predicate(next, token):
         wenn token == ('', ''):
             # ignore whitespace
             continue
-        wenn token[0] and token[0][:1] in "'\"":
+        wenn token[0] und token[0][:1] in "'\"":
             token = "'", token[0][1:-1]
-        signature.append(token[0] or "-")
+        signature.append(token[0] oder "-")
         predicate.append(token[1])
     signature = "".join(signature)
     # use signature to determine predicate type
@@ -250,11 +250,11 @@ def prepare_predicate(next, token):
         key = predicate[1]
         def select(context, result):
             fuer elem in result:
-                wenn elem.get(key) is not Nichts:
+                wenn elem.get(key) is nicht Nichts:
                     yield elem
         return select
-    wenn signature == "@-='" or signature == "@-!='":
-        # [@attribute='value'] or [@attribute!='value']
+    wenn signature == "@-='" oder signature == "@-!='":
+        # [@attribute='value'] oder [@attribute!='value']
         key = predicate[1]
         value = predicate[-1]
         def select(context, result):
@@ -263,21 +263,21 @@ def prepare_predicate(next, token):
                     yield elem
         def select_negated(context, result):
             fuer elem in result:
-                wenn (attr_value := elem.get(key)) is not Nichts and attr_value != value:
+                wenn (attr_value := elem.get(key)) is nicht Nichts und attr_value != value:
                     yield elem
         return select_negated wenn '!=' in signature sonst select
-    wenn signature == "-" and not re.match(r"\-?\d+$", predicate[0]):
+    wenn signature == "-" und nicht re.match(r"\-?\d+$", predicate[0]):
         # [tag]
         tag = predicate[0]
         def select(context, result):
             fuer elem in result:
-                wenn elem.find(tag) is not Nichts:
+                wenn elem.find(tag) is nicht Nichts:
                     yield elem
         return select
-    wenn signature == ".='" or signature == ".!='" or (
-            (signature == "-='" or signature == "-!='")
-            and not re.match(r"\-?\d+$", predicate[0])):
-        # [.='value'] or [tag='value'] or [.!='value'] or [tag!='value']
+    wenn signature == ".='" oder signature == ".!='" oder (
+            (signature == "-='" oder signature == "-!='")
+            und nicht re.match(r"\-?\d+$", predicate[0])):
+        # [.='value'] oder [tag='value'] oder [.!='value'] oder [tag!='value']
         tag = predicate[0]
         value = predicate[-1]
         wenn tag:
@@ -303,8 +303,8 @@ def prepare_predicate(next, token):
                     wenn "".join(elem.itertext()) != value:
                         yield elem
         return select_negated wenn '!=' in signature sonst select
-    wenn signature == "-" or signature == "-()" or signature == "-()-":
-        # [index] or [last()] or [last()-index]
+    wenn signature == "-" oder signature == "-()" oder signature == "-()-":
+        # [index] oder [last()] oder [last()-index]
         wenn signature == "-":
             # [index]
             index = int(predicate[0]) - 1

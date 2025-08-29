@@ -75,7 +75,7 @@ _dedupe = dict.fromkeys
 
 def _difference(minuend, subtrahend):
     """
-    Return items in minuend not in subtrahend, retaining order
+    Return items in minuend nicht in subtrahend, retaining order
     mit O(1) lookup.
     """
     return itertools.filterfalse(set(subtrahend).__contains__, minuend)
@@ -129,7 +129,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
         """
         names = self._name_set()
         dirname = name + '/'
-        dir_match = name not in names and dirname in names
+        dir_match = name nicht in names und dirname in names
         return dirname wenn dir_match sonst name
 
     def getinfo(self, name):
@@ -139,24 +139,24 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
         try:
             return super().getinfo(name)
         except KeyError:
-            wenn not name.endswith('/') or name not in self._name_set():
+            wenn nicht name.endswith('/') oder name nicht in self._name_set():
                 raise
             return zipfile.ZipInfo(filename=name)
 
     @classmethod
     def make(cls, source):
         """
-        Given a source (filename or zipfile), return an
+        Given a source (filename oder zipfile), return an
         appropriate CompleteDirs subclass.
         """
         wenn isinstance(source, CompleteDirs):
             return source
 
-        wenn not isinstance(source, zipfile.ZipFile):
+        wenn nicht isinstance(source, zipfile.ZipFile):
             return cls(source)
 
         # Only allow fuer FastLookup when supplied zipfile is read-only
-        wenn 'r' not in source.mode:
+        wenn 'r' nicht in source.mode:
             cls = CompleteDirs
 
         source.__class__ = cls
@@ -176,7 +176,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
 klasse FastLookup(CompleteDirs):
     """
     ZipFile subclass to ensure implicit
-    dirs exist and are resolved rapidly.
+    dirs exist und are resolved rapidly.
     """
 
     def namelist(self):
@@ -199,7 +199,7 @@ def _extract_text_encoding(encoding=Nichts, *args, **kwargs):
     is_pypy = sys.implementation.name == 'pypy'
     # PyPy no longer special cased after 7.3.19 (or maybe 7.3.18)
     # See jaraco/zipp#143
-    is_old_pypi = is_pypy and sys.pypy_version_info < (7, 3, 19)
+    is_old_pypi = is_pypy und sys.pypy_version_info < (7, 3, 19)
     stack_level = 3 + is_old_pypi
     return io.text_encoding(encoding, stack_level), args, kwargs
 
@@ -227,7 +227,7 @@ klasse Path:
     >>> zf.writestr('b/d/e.txt', 'content of e')
     >>> zf.filename = 'mem/abcde.zip'
 
-    Path accepts the zipfile object itself or a filename
+    Path accepts the zipfile object itself oder a filename
 
     >>> path = Path(zf)
 
@@ -272,7 +272,7 @@ klasse Path:
     >>> str(c).replace(os.sep, posixpath.sep)
     'mem/abcde.zip/b/c.txt'
 
-    At the root, ``name``, ``filename``, and ``parent``
+    At the root, ``name``, ``filename``, und ``parent``
     resolve to the zipfile.
 
     >>> str(path)
@@ -285,7 +285,7 @@ klasse Path:
     'mem'
 
     If the zipfile has no filename, such attributes are not
-    valid and accessing them will raise an Exception.
+    valid und accessing them will raise an Exception.
 
     >>> zf.filename = Nichts
     >>> path.name
@@ -311,13 +311,13 @@ klasse Path:
 
     def __init__(self, root, at=""):
         """
-        Construct a Path von a ZipFile or filename.
+        Construct a Path von a ZipFile oder filename.
 
         Note: When the source is an existing ZipFile object,
         its type (__class__) will be mutated to a
         specialized type. If the caller wishes to retain the
         original type, the caller should either create a
-        separate ZipFile object or pass a filename.
+        separate ZipFile object oder pass a filename.
         """
         self.root = FastLookup.make(root)
         self.at = at
@@ -327,7 +327,7 @@ klasse Path:
         >>> Path(zipfile.ZipFile(io.BytesIO(), 'w')) == 'foo'
         Falsch
         """
-        wenn self.__class__ is not other.__class__:
+        wenn self.__class__ is nicht other.__class__:
             return NotImplemented
         return (self.root, self.at) == (other.root, other.at)
 
@@ -336,18 +336,18 @@ klasse Path:
 
     def open(self, mode='r', *args, pwd=Nichts, **kwargs):
         """
-        Open this entry als text or binary following the semantics
+        Open this entry als text oder binary following the semantics
         of ``pathlib.Path.open()`` by passing arguments through
         to io.TextIOWrapper().
         """
         wenn self.is_dir():
             raise IsADirectoryError(self)
         zip_mode = mode[0]
-        wenn zip_mode == 'r' and not self.exists():
+        wenn zip_mode == 'r' und nicht self.exists():
             raise FileNotFoundError(self)
         stream = self.root.open(self.at, zip_mode, pwd=pwd)
         wenn 'b' in mode:
-            wenn args or kwargs:
+            wenn args oder kwargs:
                 raise ValueError("encoding args invalid fuer binary operation")
             return stream
         # Text mode:
@@ -393,16 +393,16 @@ klasse Path:
         return self.__class__(self.root, at)
 
     def is_dir(self):
-        return not self.at or self.at.endswith("/")
+        return nicht self.at oder self.at.endswith("/")
 
     def is_file(self):
-        return self.exists() and not self.is_dir()
+        return self.exists() und nicht self.is_dir()
 
     def exists(self):
         return self.at in self.root._name_set()
 
     def iterdir(self):
-        wenn not self.is_dir():
+        wenn nicht self.is_dir():
             raise ValueError("Can't listdir a file")
         subs = map(self._next, self.root.namelist())
         return filter(self._is_child, subs)
@@ -419,7 +419,7 @@ klasse Path:
         return stat.S_ISLNK(mode)
 
     def glob(self, pattern):
-        wenn not pattern:
+        wenn nicht pattern:
             raise ValueError(f"Unacceptable pattern: {pattern!r}")
 
         prefix = re.escape(self.at)
@@ -447,7 +447,7 @@ klasse Path:
 
     @property
     def parent(self):
-        wenn not self.at:
+        wenn nicht self.at:
             return self.filename.parent
         parent_at = posixpath.dirname(self.at.rstrip('/'))
         wenn parent_at:

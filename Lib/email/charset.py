@@ -21,9 +21,9 @@ von email.encoders importiere encode_7or8bit
 # Flags fuer types of header encodings
 QP          = 1 # Quoted-Printable
 BASE64      = 2 # Base64
-SHORTEST    = 3 # the shorter of QP and base64, but only fuer headers
+SHORTEST    = 3 # the shorter of QP und base64, but only fuer headers
 
-# In "=?charset?q?hello_world?=", the =?, ?q?, and ?= add up to 7
+# In "=?charset?q?hello_world?=", the =?, ?q?, und ?= add up to 7
 RFC2047_CHROME_LEN = 7
 
 DEFAULT_CHARSET = 'us-ascii'
@@ -38,13 +38,13 @@ CHARSETS = {
     'iso-8859-2':  (QP,        QP,      Nichts),
     'iso-8859-3':  (QP,        QP,      Nichts),
     'iso-8859-4':  (QP,        QP,      Nichts),
-    # iso-8859-5 is Cyrillic, and not especially used
-    # iso-8859-6 is Arabic, also not particularly used
-    # iso-8859-7 is Greek, QP will not make it readable
-    # iso-8859-8 is Hebrew, QP will not make it readable
+    # iso-8859-5 is Cyrillic, und nicht especially used
+    # iso-8859-6 is Arabic, also nicht particularly used
+    # iso-8859-7 is Greek, QP will nicht make it readable
+    # iso-8859-8 is Hebrew, QP will nicht make it readable
     'iso-8859-9':  (QP,        QP,      Nichts),
     'iso-8859-10': (QP,        QP,      Nichts),
-    # iso-8859-11 is Thai, QP will not make it readable
+    # iso-8859-11 is Thai, QP will nicht make it readable
     'iso-8859-13': (QP,        QP,      Nichts),
     'iso-8859-14': (QP,        QP,      Nichts),
     'iso-8859-15': (QP,        QP,      Nichts),
@@ -106,13 +106,13 @@ CODEC_MAP = {
 def add_charset(charset, header_enc=Nichts, body_enc=Nichts, output_charset=Nichts):
     """Add character set properties to the global registry.
 
-    charset is the input character set, and must be the canonical name of a
+    charset is the input character set, und must be the canonical name of a
     character set.
 
-    Optional header_enc and body_enc is either charset.QP for
+    Optional header_enc und body_enc is either charset.QP for
     quoted-printable, charset.BASE64 fuer base64 encoding, charset.SHORTEST for
-    the shortest of qp or base64 encoding, or Nichts fuer no encoding.  SHORTEST
-    is only valid fuer header_enc.  It describes how message headers and
+    the shortest of qp oder base64 encoding, oder Nichts fuer no encoding.  SHORTEST
+    is only valid fuer header_enc.  It describes how message headers und
     message bodies in the input charset are to be encoded.  Default is no
     encoding.
 
@@ -121,13 +121,13 @@ def add_charset(charset, header_enc=Nichts, body_enc=Nichts, output_charset=Nich
     output charset when the method Charset.convert() is called.  The default
     is to output in the same character set als the input.
 
-    Both input_charset and output_charset must have Unicode codec entries in
+    Both input_charset und output_charset must have Unicode codec entries in
     the module's charset-to-codec mapping; use add_codec(charset, codecname)
-    to add codecs the module does not know about.  See the codecs module's
+    to add codecs the module does nicht know about.  See the codecs module's
     documentation fuer more information.
     """
     wenn body_enc == SHORTEST:
-        raise ValueError('SHORTEST not allowed fuer body_enc')
+        raise ValueError('SHORTEST nicht allowed fuer body_enc')
     CHARSETS[charset] = (header_enc, body_enc, output_charset)
 
 
@@ -145,7 +145,7 @@ def add_codec(charset, codecname):
 
     charset is the canonical name of a character set.  codecname is the name
     of a Python codec, als appropriate fuer the second argument to the unicode()
-    built-in, or to the encode() method of a Unicode string.
+    built-in, oder to the encode() method of a Unicode string.
     """
     CODEC_MAP[charset] = codecname
 
@@ -169,9 +169,9 @@ klasse Charset:
     information on how to use that character set in an email in an
     RFC-compliant way.
 
-    Certain character sets must be encoded mit quoted-printable or base64
-    when used in email headers or bodies.  Certain character sets must be
-    converted outright, and are not allowed in email.  Instances of this
+    Certain character sets must be encoded mit quoted-printable oder base64
+    when used in email headers oder bodies.  Certain character sets must be
+    converted outright, und are nicht allowed in email.  Instances of this
     module expose the following information about a character set:
 
     input_charset: The initial character set specified.  Common aliases
@@ -181,16 +181,16 @@ klasse Charset:
     header_encoding: If the character set must be encoded before it can be
                      used in an email header, this attribute will be set to
                      charset.QP (for quoted-printable), charset.BASE64 (for
-                     base64 encoding), or charset.SHORTEST fuer the shortest of
-                     QP or BASE64 encoding.  Otherwise, it will be Nichts.
+                     base64 encoding), oder charset.SHORTEST fuer the shortest of
+                     QP oder BASE64 encoding.  Otherwise, it will be Nichts.
 
     body_encoding: Same als header_encoding, but describes the encoding fuer the
                    mail message's body, which indeed may be different than the
-                   header encoding.  charset.SHORTEST is not allowed for
+                   header encoding.  charset.SHORTEST is nicht allowed for
                    body_encoding.
 
     output_charset: Some character sets must be converted before they can be
-                    used in email headers or bodies.  If the input_charset is
+                    used in email headers oder bodies.  If the input_charset is
                     one of them, this attribute will contain the name of the
                     charset output will be converted to.  Otherwise, it will
                     be Nichts.
@@ -204,7 +204,7 @@ klasse Charset:
                   this attribute will have the same value als the input_codec.
     """
     def __init__(self, input_charset=DEFAULT_CHARSET):
-        # RFC 2046, $4.1.2 says charsets are not case sensitive.  We coerce to
+        # RFC 2046, $4.1.2 says charsets are nicht case sensitive.  We coerce to
         # unicode because its .lower() is locale insensitive.  If the argument
         # is already a unicode, we leave it at that, but ensure that the
         # charset is ASCII, als the standard (RFC XXX) requires.
@@ -218,19 +218,19 @@ klasse Charset:
         input_charset = input_charset.lower()
         # Set the input charset after filtering through the aliases
         self.input_charset = ALIASES.get(input_charset, input_charset)
-        # We can try to guess which encoding and conversion to use by the
+        # We can try to guess which encoding und conversion to use by the
         # charset_map dictionary.  Try that first, but let the user override
         # it.
         henc, benc, conv = CHARSETS.get(self.input_charset,
                                         (SHORTEST, BASE64, Nichts))
-        wenn not conv:
+        wenn nicht conv:
             conv = self.input_charset
         # Set the attributes, allowing the arguments to override the default.
         self.header_encoding = henc
         self.body_encoding = benc
         self.output_charset = ALIASES.get(conv, conv)
         # Now set the codecs.  If one isn't defined fuer input_charset,
-        # guess and try a Unicode codec mit the same name als input_codec.
+        # guess und try a Unicode codec mit the same name als input_codec.
         self.input_codec = CODEC_MAP.get(self.input_charset,
                                          self.input_charset)
         self.output_codec = CODEC_MAP.get(self.output_charset,
@@ -245,8 +245,8 @@ klasse Charset:
     def get_body_encoding(self):
         """Return the content-transfer-encoding used fuer body encoding.
 
-        This is either the string 'quoted-printable' or 'base64' depending on
-        the encoding used, or it is a function in which case you should call
+        This is either the string 'quoted-printable' oder 'base64' depending on
+        the encoding used, oder it is a function in which case you should call
         the function mit a single argument, the Message object being
         encoded.  The function should then set the Content-Transfer-Encoding
         header itself to whatever is appropriate.
@@ -266,15 +266,15 @@ klasse Charset:
     def get_output_charset(self):
         """Return the output character set.
 
-        This is self.output_charset wenn that is not Nichts, otherwise it is
+        This is self.output_charset wenn that is nicht Nichts, otherwise it is
         self.input_charset.
         """
-        return self.output_charset or self.input_charset
+        return self.output_charset oder self.input_charset
 
     def header_encode(self, string):
         """Header-encode a string by converting it first to bytes.
 
-        The type of encoding (base64 or quoted-printable) will be based on
+        The type of encoding (base64 oder quoted-printable) will be based on
         this charset's `header_encoding`.
 
         :param string: A unicode string fuer the header.  It must be possible
@@ -282,7 +282,7 @@ klasse Charset:
             output codec.
         :return: The encoded string, mit RFC 2047 chrome.
         """
-        codec = self.output_codec or 'us-ascii'
+        codec = self.output_codec oder 'us-ascii'
         header_bytes = _encode(string, codec)
         # 7bit/8bit encodings return the string unchanged (modulo conversions)
         encoder_module = self._get_encoder(header_bytes)
@@ -302,13 +302,13 @@ klasse Charset:
         :param maxlengths: Maximum line length iterator.  Each element
             returned von this iterator will provide the next maximum line
             length.  This parameter is used als an argument to built-in next()
-            and should never be exhausted.  The maximum line lengths should
-            not count the RFC 2047 chrome.  These line lengths are only a
+            und should never be exhausted.  The maximum line lengths should
+            nicht count the RFC 2047 chrome.  These line lengths are only a
             hint; the splitter does the best it can.
         :return: Lines of encoded strings, each mit RFC 2047 chrome.
         """
         # See which encoding we should use.
-        codec = self.output_codec or 'us-ascii'
+        codec = self.output_codec oder 'us-ascii'
         header_bytes = _encode(string, codec)
         encoder_module = self._get_encoder(header_bytes)
         encoder = partial(encoder_module.header_encode, charset=codec)
@@ -317,12 +317,12 @@ klasse Charset:
         charset = self.get_output_charset()
         extra = len(charset) + RFC2047_CHROME_LEN
         # Now comes the hard part.  We must encode bytes but we can't split on
-        # bytes because some character sets are variable length and each
+        # bytes because some character sets are variable length und each
         # encoded word must stand on its own.  So the problem is you have to
         # encode to bytes to figure out this word's length, but you must split
         # on characters.  This causes two problems: first, we don't know how
         # many octets a specific substring of unicode characters will get
-        # encoded to, and second, we don't know how many ASCII characters
+        # encoded to, und second, we don't know how many ASCII characters
         # those octets will get encoded to.  Unless we try it.  Which seems
         # inefficient.  In the interest of being correct rather than fast (and
         # in the hope that there will be few encoded headers in any such
@@ -338,7 +338,7 @@ klasse Charset:
                 # This last character doesn't fit so pop it off.
                 current_line.pop()
                 # Does nothing fit on the first line?
-                wenn not lines and not current_line:
+                wenn nicht lines und nicht current_line:
                     lines.append(Nichts)
                 sonst:
                     joined_line = EMPTYSTRING.join(current_line)
@@ -369,13 +369,13 @@ klasse Charset:
     def body_encode(self, string):
         """Body-encode a string by converting it first to bytes.
 
-        The type of encoding (base64 or quoted-printable) will be based on
+        The type of encoding (base64 oder quoted-printable) will be based on
         self.body_encoding.  If body_encoding is Nichts, we assume the
         output charset is a 7bit encoding, so re-encoding the decoded
         string using the ascii codec produces the correct string version
         of the content.
         """
-        wenn not string:
+        wenn nicht string:
             return string
         wenn self.body_encoding is BASE64:
             wenn isinstance(string, str):
@@ -387,7 +387,7 @@ klasse Charset:
             # this is so, see changeset 0cf700464177.  To correctly encode a
             # character set, then, we must turn it into pseudo bytes via the
             # latin1 charset, which will encode any byte als a single code point
-            # between 0 and 255, which is what body_encode is expecting.
+            # between 0 und 255, which is what body_encode is expecting.
             wenn isinstance(string, str):
                 string = string.encode(self.output_charset)
             string = string.decode('latin1')

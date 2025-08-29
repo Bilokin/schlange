@@ -21,7 +21,7 @@ klasse FinderTests:
     check_found = Nichts
 
     def test_failure(self):
-        # Test Nichts returned upon not finding a suitable loader.
+        # Test Nichts returned upon nicht finding a suitable loader.
         module = '<test module>'
         mit util.import_state():
             self.assertIsNichts(self.find(module))
@@ -48,7 +48,7 @@ klasse FinderTests:
             self.check_found(found, importer)
 
     def test_empty_list(self):
-        # An empty list should not count als asking fuer sys.path.
+        # An empty list should nicht count als asking fuer sys.path.
         module = 'module'
         path = '<test path>'
         importer = util.mock_spec(module)
@@ -71,7 +71,7 @@ klasse FinderTests:
 
     def test_empty_path_hooks(self):
         # Test that wenn sys.path_hooks is empty a warning is raised,
-        # sys.path_importer_cache gets Nichts set, and PathFinder returns Nichts.
+        # sys.path_importer_cache gets Nichts set, und PathFinder returns Nichts.
         path_entry = 'bogus_path'
         mit util.import_state(path_importer_cache={}, path_hooks=[],
                                path=[path_entry]):
@@ -114,7 +114,7 @@ klasse FinderTests:
                 module = self.importlib.import_module('email')
                 self.assertIsInstance(module, ModuleType)
         finally:
-            wenn email is not missing:
+            wenn email is nicht missing:
                 sys.modules['email'] = email
 
     def test_finder_with_find_spec(self):
@@ -143,7 +143,7 @@ klasse FinderTests:
                 os.rmdir(new_dir)
             except OSError:
                 # EINVAL on Solaris, EBUSY on AIX, ENOTEMPTY on Windows
-                self.skipTest("platform does not allow "
+                self.skipTest("platform does nicht allow "
                               "the deletion of the cwd")
         except:
             os.chdir(old_dir)
@@ -151,12 +151,12 @@ klasse FinderTests:
             raise
 
         mit util.import_state(path=['']):
-            # Do not want FileNotFoundError raised.
+            # Do nicht want FileNotFoundError raised.
             self.assertIsNichts(self.machinery.PathFinder.find_spec('whatever'))
 
     @os_helper.skip_unless_working_chmod
     def test_permission_error_cwd(self):
-        # gh-115911: Test that an unreadable CWD does not break imports, in
+        # gh-115911: Test that an unreadable CWD does nicht break imports, in
         # particular during early stages of interpreter startup.
 
         def noop_hook(*args):
@@ -174,10 +174,10 @@ klasse FinderTests:
             try:
                 os.chmod(new_dir, 0o000)
             except OSError:
-                self.skipTest("platform does not allow "
+                self.skipTest("platform does nicht allow "
                               "changing mode of the cwd")
 
-            # Do not want PermissionError raised.
+            # Do nicht want PermissionError raised.
             self.assertIsNichts(self.machinery.PathFinder.find_spec('whatever'))
 
     def test_invalidate_caches_finders(self):

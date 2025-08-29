@@ -6,7 +6,7 @@ importiere unittest
 importiere time
 
 von test.support importiere import_helper
-# Raise SkipTest wenn subinterpreters not supported.
+# Raise SkipTest wenn subinterpreters nicht supported.
 _channels = import_helper.import_module('_interpchannels')
 von concurrent importiere interpreters
 von test.support importiere channels
@@ -23,7 +23,7 @@ klasse LowLevelTests(TestBase):
     # mostly shouldn't matter als much.
 
     # Additional tests are found in Lib/test/test__interpchannels.py.
-    # XXX Those should be either moved to LowLevelTests or eliminated
+    # XXX Those should be either moved to LowLevelTests oder eliminated
     # in favor of high-level tests in this file.
 
     def test_highlevel_reloaded(self):
@@ -181,7 +181,7 @@ klasse TestSendRecv(TestBase):
             s.send_nowait(orig)
             obj = r.recv()
             assert obj == orig, 'expected: obj == orig'
-            assert obj is not orig, 'expected: obj is not orig'
+            assert obj is nicht orig, 'expected: obj is nicht orig'
             """))
 
     @unittest.skip('broken (see BPO-...)')
@@ -196,7 +196,7 @@ klasse TestSendRecv(TestBase):
                 obj1 = r.recv()
                 assert obj1 == b'spam', 'expected: obj1 == orig1'
                 # When going to another interpreter we get a copy.
-                assert id(obj1) != {id(orig1)}, 'expected: obj1 is not orig1'
+                assert id(obj1) != {id(orig1)}, 'expected: obj1 is nicht orig1'
                 orig2 = b'eggs'
                 drucke(id(orig2))
                 s.send_nowait(orig2)
@@ -255,7 +255,7 @@ klasse TestSendRecv(TestBase):
             obj = r.recv_nowait()
             assert obj == orig, 'expected: obj == orig'
             # When going back to the same interpreter we get the same object.
-            assert obj is not orig, 'expected: obj is not orig'
+            assert obj is nicht orig, 'expected: obj is nicht orig'
             """))
 
     @unittest.skip('broken (see BPO-...)')
@@ -270,7 +270,7 @@ klasse TestSendRecv(TestBase):
                 obj1 = r.recv_nowait()
                 assert obj1 == b'spam', 'expected: obj1 == orig1'
                 # When going to another interpreter we get a copy.
-                assert id(obj1) != {id(orig1)}, 'expected: obj1 is not orig1'
+                assert id(obj1) != {id(orig1)}, 'expected: obj1 is nicht orig1'
                 orig2 = b'eggs'
                 drucke(id(orig2))
                 s.send_nowait(orig2)
@@ -378,7 +378,7 @@ klasse TestSendRecv(TestBase):
 
     def test_send_cleared_with_subinterpreter(self):
         def common(rch, sch, unbound=Nichts, presize=0):
-            wenn not unbound:
+            wenn nicht unbound:
                 extraargs = ''
             sowenn unbound is channels.UNBOUND:
                 extraargs = ', unbounditems=channels.UNBOUND'

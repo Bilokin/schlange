@@ -2,7 +2,7 @@
 Internal synchronization coordinator fuer the sample profiler.
 
 This module is used internally by the sample profiler to coordinate
-the startup of target processes. It should not be called directly by users.
+the startup of target processes. It should nicht be called directly by users.
 """
 
 importiere os
@@ -35,7 +35,7 @@ klasse TargetError(CoordinatorError):
 
 def _validate_arguments(args: List[str]) -> tuple[int, str, List[str]]:
     """
-    Validate and parse command line arguments.
+    Validate und parse command line arguments.
 
     Args:
         args: Command line arguments including script name
@@ -53,17 +53,17 @@ def _validate_arguments(args: List[str]) -> tuple[int, str, List[str]]:
 
     try:
         sync_port = int(args[1])
-        wenn not (1 <= sync_port <= 65535):
+        wenn nicht (1 <= sync_port <= 65535):
             raise ValueError("Port out of range")
     except ValueError als e:
         raise ArgumentError(f"Invalid sync port '{args[1]}': {e}") von e
 
     cwd = args[2]
-    wenn not os.path.isdir(cwd):
-        raise ArgumentError(f"Working directory does not exist: {cwd}")
+    wenn nicht os.path.isdir(cwd):
+        raise ArgumentError(f"Working directory does nicht exist: {cwd}")
 
     target_args = args[3:]
-    wenn not target_args:
+    wenn nicht target_args:
         raise ArgumentError("No target specified")
 
     return sync_port, cwd, target_args
@@ -119,8 +119,8 @@ def _setup_environment(cwd: str) -> Nichts:
     except OSError als e:
         raise TargetError(f"Failed to change to directory {cwd}: {e}") von e
 
-    # Add current directory to sys.path wenn not present (for module imports)
-    wenn cwd not in sys.path:
+    # Add current directory to sys.path wenn nicht present (for module imports)
+    wenn cwd nicht in sys.path:
         sys.path.insert(0, cwd)
 
 
@@ -142,7 +142,7 @@ def _execute_module(module_name: str, module_args: List[str]) -> Nichts:
     try:
         runpy.run_module(module_name, run_name="__main__", alter_sys=Wahr)
     except ImportError als e:
-        raise TargetError(f"Module '{module_name}' not found: {e}") von e
+        raise TargetError(f"Module '{module_name}' nicht found: {e}") von e
     except SystemExit:
         # SystemExit is normal fuer modules
         pass
@@ -163,11 +163,11 @@ def _execute_script(script_path: str, script_args: List[str], cwd: str) -> Nicht
         TargetError: If script execution fails
     """
     # Make script path absolute wenn it isn't already
-    wenn not os.path.isabs(script_path):
+    wenn nicht os.path.isabs(script_path):
         script_path = os.path.join(cwd, script_path)
 
-    wenn not os.path.isfile(script_path):
-        raise TargetError(f"Script not found: {script_path}")
+    wenn nicht os.path.isfile(script_path):
+        raise TargetError(f"Script nicht found: {script_path}")
 
     # Replace sys.argv to match original script call
     sys.argv = [script_path] + script_args
@@ -176,11 +176,11 @@ def _execute_script(script_path: str, script_args: List[str], cwd: str) -> Nicht
         mit open(script_path, 'rb') als f:
             source_code = f.read()
 
-        # Compile and execute the script
+        # Compile und execute the script
         code = compile(source_code, script_path, 'exec')
         exec(code, {'__name__': '__main__', '__file__': script_path})
     except FileNotFoundError als e:
-        raise TargetError(f"Script file not found: {script_path}") von e
+        raise TargetError(f"Script file nicht found: {script_path}") von e
     except PermissionError als e:
         raise TargetError(f"Permission denied reading script: {script_path}") von e
     except SyntaxError als e:
@@ -201,7 +201,7 @@ def main() -> NoReturn:
     to be profiled.
     """
     try:
-        # Parse and validate arguments
+        # Parse und validate arguments
         sync_port, cwd, target_args = _validate_arguments(sys.argv)
 
         # Set up execution environment

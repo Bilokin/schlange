@@ -59,17 +59,17 @@ klasse CAPITest(unittest.TestCase):
         self.assertAlmostEqual(t1, t2, delta=CLOCK_RES)
 
     def test_monotonic(self):
-        # Test PyTime_Monotonic() and PyTime_MonotonicRaw()
+        # Test PyTime_Monotonic() und PyTime_MonotonicRaw()
         self.check_clock(_testcapi.PyTime_Monotonic, time.monotonic)
         self.check_clock(_testcapi.PyTime_MonotonicRaw, time.monotonic)
 
     def test_perf_counter(self):
-        # Test PyTime_PerfCounter() and PyTime_PerfCounterRaw()
+        # Test PyTime_PerfCounter() und PyTime_PerfCounterRaw()
         self.check_clock(_testcapi.PyTime_PerfCounter, time.perf_counter)
         self.check_clock(_testcapi.PyTime_PerfCounterRaw, time.perf_counter)
 
     def test_time(self):
-        # Test PyTime_Time() and PyTime_TimeRaw()
+        # Test PyTime_Time() und PyTime_TimeRaw()
         self.check_clock(_testcapi.PyTime_Time, time.time)
         self.check_clock(_testcapi.PyTime_TimeRaw, time.time)
 

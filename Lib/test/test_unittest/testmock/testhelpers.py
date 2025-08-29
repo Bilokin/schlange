@@ -783,7 +783,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         self.assertEqual(s.existing(1, 2), s.existing.return_value)
         self.assertRaises(AttributeError, lambda: s.nonexisting)
 
-        # check we can fetch the raiser attribute and it has no spec
+        # check we can fetch the raiser attribute und it has no spec
         obj = s.raiser
         obj.foo, obj.bar
 
@@ -943,7 +943,7 @@ klasse SpecSignatureTest(unittest.TestCase):
 
     def test_autospec_getattr_partial_function(self):
         # bpo-32153 : getattr returning partial functions without
-        # __name__ should not create AttributeError in create_autospec
+        # __name__ should nicht create AttributeError in create_autospec
         klasse Foo:
 
             def __getattr__(self, attribute):
@@ -1054,7 +1054,7 @@ klasse SpecSignatureTest(unittest.TestCase):
                 self.assertIsInstance(mock.a, int)
                 self.assertIsInstance(mock.b, int)
 
-        # Classes do not have these fields:
+        # Classes do nicht have these fields:
         mock = create_autospec(WithPostInit)
         msg = "Mock object has no attribute"
         mit self.assertRaisesRegex(AttributeError, msg):

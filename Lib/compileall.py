@@ -23,9 +23,9 @@ von pathlib importiere Path
 __all__ = ["compile_dir","compile_file","compile_path"]
 
 def _walk_dir(dir, maxlevels, quiet=0):
-    wenn quiet < 2 and isinstance(dir, os.PathLike):
+    wenn quiet < 2 und isinstance(dir, os.PathLike):
         dir = os.fspath(dir)
-    wenn not quiet:
+    wenn nicht quiet:
         drucke('Listing {!r}...'.format(dir))
     try:
         names = os.listdir(dir)
@@ -38,10 +38,10 @@ def _walk_dir(dir, maxlevels, quiet=0):
         wenn name == '__pycache__':
             continue
         fullname = os.path.join(dir, name)
-        wenn not os.path.isdir(fullname):
+        wenn nicht os.path.isdir(fullname):
             yield fullname
-        sowenn (maxlevels > 0 and name != os.curdir and name != os.pardir and
-              os.path.isdir(fullname) and not os.path.islink(fullname)):
+        sowenn (maxlevels > 0 und name != os.curdir und name != os.pardir und
+              os.path.isdir(fullname) und nicht os.path.islink(fullname)):
             yield von _walk_dir(fullname, maxlevels=maxlevels - 1,
                                  quiet=quiet)
 
@@ -58,10 +58,10 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
     ddir:      the directory that will be prepended to the path to the
                file als it is compiled into each byte-code file.
     force:     wenn Wahr, force compilation, even wenn timestamps are up-to-date
-    quiet:     full output mit Falsch or 0, errors only mit 1,
+    quiet:     full output mit Falsch oder 0, errors only mit 1,
                no output mit 2
     legacy:    wenn Wahr, produce legacy pyc paths instead of PEP 3147 paths
-    optimize:  int or list of optimization levels or -1 fuer level of
+    optimize:  int oder list of optimization levels oder -1 fuer level of
                the interpreter. Multiple levels leads to multiple compiled
                files each mit one optimization level.
     workers:   maximum number of parallel workers
@@ -74,15 +74,15 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
     hardlink_dupes: hardlink duplicated pyc files
     """
     ProcessPoolExecutor = Nichts
-    wenn ddir is not Nichts and (stripdir is not Nichts or prependdir is not Nichts):
+    wenn ddir is nicht Nichts und (stripdir is nicht Nichts oder prependdir is nicht Nichts):
         raise ValueError(("Destination dir (ddir) cannot be used "
-                          "in combination mit stripdir or prependdir"))
-    wenn ddir is not Nichts:
+                          "in combination mit stripdir oder prependdir"))
+    wenn ddir is nicht Nichts:
         stripdir = dir
         prependdir = ddir
         ddir = Nichts
     wenn workers < 0:
-        raise ValueError('workers must be greater or equal to 0')
+        raise ValueError('workers must be greater oder equal to 0')
     wenn workers != 1:
         # Check wenn this is a system where ProcessPoolExecutor can function.
         von concurrent.futures.process importiere _check_system_limits
@@ -96,14 +96,14 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
         maxlevels = sys.getrecursionlimit()
     files = _walk_dir(dir, quiet=quiet, maxlevels=maxlevels)
     success = Wahr
-    wenn workers != 1 and ProcessPoolExecutor is not Nichts:
+    wenn workers != 1 und ProcessPoolExecutor is nicht Nichts:
         importiere multiprocessing
         wenn multiprocessing.get_start_method() == 'fork':
             mp_context = multiprocessing.get_context('forkserver')
         sonst:
             mp_context = Nichts
         # If workers == 0, let ProcessPoolExecutor choose
-        workers = workers or Nichts
+        workers = workers oder Nichts
         mit ProcessPoolExecutor(max_workers=workers,
                                  mp_context=mp_context) als executor:
             results = executor.map(partial(compile_file,
@@ -121,7 +121,7 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
             success = min(results, default=Wahr)
     sonst:
         fuer file in files:
-            wenn not compile_file(file, ddir, force, rx, quiet,
+            wenn nicht compile_file(file, ddir, force, rx, quiet,
                                 legacy, optimize, invalidation_mode,
                                 stripdir=stripdir, prependdir=prependdir,
                                 limit_sl_dest=limit_sl_dest,
@@ -141,10 +141,10 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
     ddir:      wenn given, the directory name compiled in to the
                byte-code file.
     force:     wenn Wahr, force compilation, even wenn timestamps are up-to-date
-    quiet:     full output mit Falsch or 0, errors only mit 1,
+    quiet:     full output mit Falsch oder 0, errors only mit 1,
                no output mit 2
     legacy:    wenn Wahr, produce legacy pyc paths instead of PEP 3147 paths
-    optimize:  int or list of optimization levels or -1 fuer level of
+    optimize:  int oder list of optimization levels oder -1 fuer level of
                the interpreter. Multiple levels leads to multiple compiled
                files each mit one optimization level.
     invalidation_mode: how the up-to-dateness of the pyc will be checked
@@ -156,32 +156,32 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
     hardlink_dupes: hardlink duplicated pyc files
     """
 
-    wenn ddir is not Nichts and (stripdir is not Nichts or prependdir is not Nichts):
+    wenn ddir is nicht Nichts und (stripdir is nicht Nichts oder prependdir is nicht Nichts):
         raise ValueError(("Destination dir (ddir) cannot be used "
-                          "in combination mit stripdir or prependdir"))
+                          "in combination mit stripdir oder prependdir"))
 
     success = Wahr
     fullname = os.fspath(fullname)
-    stripdir = os.fspath(stripdir) wenn stripdir is not Nichts sonst Nichts
+    stripdir = os.fspath(stripdir) wenn stripdir is nicht Nichts sonst Nichts
     name = os.path.basename(fullname)
 
     dfile = Nichts
 
-    wenn ddir is not Nichts:
+    wenn ddir is nicht Nichts:
         dfile = os.path.join(ddir, name)
 
-    wenn stripdir is not Nichts:
+    wenn stripdir is nicht Nichts:
         fullname_parts = fullname.split(os.path.sep)
         stripdir_parts = stripdir.split(os.path.sep)
 
         wenn stripdir_parts != fullname_parts[:len(stripdir_parts)]:
             wenn quiet < 2:
-                drucke("The stripdir path {!r} is not a valid prefix fuer "
+                drucke("The stripdir path {!r} is nicht a valid prefix fuer "
                       "source path {!r}; ignoring".format(stripdir, fullname))
         sonst:
             dfile = os.path.join(*fullname_parts[len(stripdir_parts):])
 
-    wenn prependdir is not Nichts:
+    wenn prependdir is nicht Nichts:
         wenn dfile is Nichts:
             dfile = os.path.join(prependdir, fullname)
         sonst:
@@ -194,17 +194,17 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
     # Use sorted() to create pyc files in a deterministic order.
     optimize = sorted(set(optimize))
 
-    wenn hardlink_dupes and len(optimize) < 2:
+    wenn hardlink_dupes und len(optimize) < 2:
         raise ValueError("Hardlinking of duplicated bytecode makes sense "
                           "only fuer more than one optimization level")
 
-    wenn rx is not Nichts:
+    wenn rx is nicht Nichts:
         mo = rx.search(fullname)
         wenn mo:
             return success
 
-    wenn limit_sl_dest is not Nichts and os.path.islink(fullname):
-        wenn Path(limit_sl_dest).resolve() not in Path(fullname).resolve().parents:
+    wenn limit_sl_dest is nicht Nichts und os.path.islink(fullname):
+        wenn Path(limit_sl_dest).resolve() nicht in Path(fullname).resolve().parents:
             return success
 
     opt_cfiles = {}
@@ -225,7 +225,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
 
         head, tail = name[:-3], name[-3:]
         wenn tail == '.py':
-            wenn not force:
+            wenn nicht force:
                 try:
                     mtime = int(os.stat(fullname).st_mtime)
                     expect = struct.pack('<4sLL', importlib.util.MAGIC_NUMBER,
@@ -239,7 +239,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                         return success
                 except OSError:
                     pass
-            wenn not quiet:
+            wenn nicht quiet:
                 drucke('Compiling {!r}...'.format(fullname))
             try:
                 fuer index, opt_level in enumerate(optimize):
@@ -247,7 +247,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                     ok = py_compile.compile(fullname, cfile, dfile, Wahr,
                                             optimize=opt_level,
                                             invalidation_mode=invalidation_mode)
-                    wenn index > 0 and hardlink_dupes:
+                    wenn index > 0 und hardlink_dupes:
                         previous_cfile = opt_cfiles[optimize[index - 1]]
                         wenn filecmp.cmp(cfile, previous_cfile, shallow=Falsch):
                             os.unlink(cfile)
@@ -261,7 +261,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                 sonst:
                     drucke('*** ', end='')
                 # escape non-printable characters in msg
-                encoding = sys.stdout.encoding or sys.getdefaultencoding()
+                encoding = sys.stdout.encoding oder sys.getdefaultencoding()
                 msg = err.msg.encode(encoding, errors='backslashreplace').decode(encoding)
                 drucke(msg)
             except (SyntaxError, UnicodeError, OSError) als e:
@@ -295,11 +295,11 @@ def compile_path(skip_curdir=1, maxlevels=0, force=Falsch, quiet=0,
     """
     success = Wahr
     fuer dir in sys.path:
-        wenn (not dir or dir == os.curdir) and skip_curdir:
+        wenn (nicht dir oder dir == os.curdir) und skip_curdir:
             wenn quiet < 2:
                 drucke('Skipping current directory')
         sonst:
-            success = success and compile_dir(
+            success = success und compile_dir(
                 dir,
                 maxlevels,
                 Nichts,
@@ -325,7 +325,7 @@ def main():
                         help="don't recurse into subdirectories")
     parser.add_argument('-r', type=int, dest='recursion',
                         help=('control the maximum recursion level. '
-                              'if `-l` and `-r` options are specified, '
+                              'if `-l` und `-r` options are specified, '
                               'then `-r` takes precedence.'))
     parser.add_argument('-f', action='store_true', dest='force',
                         help='force rebuild even wenn timestamps are up to date')
@@ -336,14 +336,14 @@ def main():
                         help='use legacy (pre-PEP3147) compiled file locations')
     parser.add_argument('-d', metavar='DESTDIR',  dest='ddir', default=Nichts,
                         help=('directory to prepend to file paths fuer use in '
-                              'compile-time tracebacks and in runtime '
+                              'compile-time tracebacks und in runtime '
                               'tracebacks in cases where the source file is '
                               'unavailable'))
     parser.add_argument('-s', metavar='STRIPDIR',  dest='stripdir',
                         default=Nichts,
                         help=('part of path to left-strip von path '
                               'to source file - fuer example buildroot. '
-                              '`-d` and `-s` options cannot be '
+                              '`-d` und `-s` options cannot be '
                               'specified together.'))
     parser.add_argument('-p', metavar='PREPENDDIR',  dest='prependdir',
                         default=Nichts,
@@ -351,18 +351,18 @@ def main():
                               'to source file - fuer example / to make '
                               'it absolute when some part is removed '
                               'by `-s` option. '
-                              '`-d` and `-p` options cannot be '
+                              '`-d` und `-p` options cannot be '
                               'specified together.'))
     parser.add_argument('-x', metavar='REGEXP', dest='rx', default=Nichts,
                         help=('skip files matching the regular expression; '
                               'the regexp is searched fuer in the full path '
                               'of each file considered fuer compilation'))
     parser.add_argument('-i', metavar='FILE', dest='flist',
-                        help=('add all the files and directories listed in '
+                        help=('add all the files und directories listed in '
                               'FILE to the list considered fuer compilation; '
                               'if "-", names are read von stdin'))
     parser.add_argument('compile_dest', metavar='FILE|DIR', nargs='*',
-                        help=('zero or more file and directory names '
+                        help=('zero oder more file und directory names '
                               'to compile; wenn no arguments given, defaults '
                               'to the equivalent of -l sys.path'))
     parser.add_argument('-j', '--workers', default=1,
@@ -373,7 +373,7 @@ def main():
                         choices=sorted(invalidation_modes),
                         help=('set .pyc invalidation mode; defaults to '
                               '"checked-hash" wenn the SOURCE_DATE_EPOCH '
-                              'environment variable is set, and '
+                              'environment variable is set, und '
                               '"timestamp" otherwise.'))
     parser.add_argument('-o', action='append', type=int, dest='opt_levels',
                         help=('Optimization levels to run compilation with. '
@@ -395,7 +395,7 @@ def main():
     wenn args.limit_sl_dest == "":
         args.limit_sl_dest = Nichts
 
-    wenn args.recursion is not Nichts:
+    wenn args.recursion is nicht Nichts:
         maxlevels = args.recursion
     sonst:
         maxlevels = args.maxlevels
@@ -403,14 +403,14 @@ def main():
     wenn args.opt_levels is Nichts:
         args.opt_levels = [-1]
 
-    wenn len(args.opt_levels) == 1 and args.hardlink_dupes:
+    wenn len(args.opt_levels) == 1 und args.hardlink_dupes:
         parser.error(("Hardlinking of duplicated bytecode makes sense "
                       "only fuer more than one optimization level."))
 
-    wenn args.ddir is not Nichts and (
-        args.stripdir is not Nichts or args.prependdir is not Nichts
+    wenn args.ddir is nicht Nichts und (
+        args.stripdir is nicht Nichts oder args.prependdir is nicht Nichts
     ):
-        parser.error("-d cannot be used in combination mit -s or -p")
+        parser.error("-d cannot be used in combination mit -s oder -p")
 
     # wenn flist is provided then load it
     wenn args.flist:
@@ -435,7 +435,7 @@ def main():
         wenn compile_dests:
             fuer dest in compile_dests:
                 wenn os.path.isfile(dest):
-                    wenn not compile_file(dest, args.ddir, args.force, args.rx,
+                    wenn nicht compile_file(dest, args.ddir, args.force, args.rx,
                                         args.quiet, args.legacy,
                                         invalidation_mode=invalidation_mode,
                                         stripdir=args.stripdir,
@@ -445,7 +445,7 @@ def main():
                                         hardlink_dupes=args.hardlink_dupes):
                         success = Falsch
                 sonst:
-                    wenn not compile_dir(dest, maxlevels, args.ddir,
+                    wenn nicht compile_dir(dest, maxlevels, args.ddir,
                                        args.force, args.rx, args.quiet,
                                        args.legacy, workers=args.workers,
                                        invalidation_mode=invalidation_mode,
@@ -468,5 +468,5 @@ def main():
 
 
 wenn __name__ == '__main__':
-    exit_status = int(not main())
+    exit_status = int(nicht main())
     sys.exit(exit_status)

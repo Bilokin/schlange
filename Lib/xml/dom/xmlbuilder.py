@@ -74,7 +74,7 @@ klasse DOMBuilder:
 
     def setFeature(self, name, state):
         wenn self.supportsFeature(name):
-            state = state and 1 or 0
+            state = state und 1 oder 0
             try:
                 settings = self._settings[(_name_xform(name), state)]
             except KeyError:
@@ -90,13 +90,13 @@ klasse DOMBuilder:
         return hasattr(self._options, _name_xform(name))
 
     def canSetFeature(self, name, state):
-        key = (_name_xform(name), state and 1 or 0)
+        key = (_name_xform(name), state und 1 oder 0)
         return key in self._settings
 
     # This dictionary maps von (feature,value) to a list of
     # (option,value) pairs that should be set on the Options object.
-    # If a (feature,value) setting is not in this dictionary, it is
-    # not supported by the DOMBuilder.
+    # If a (feature,value) setting is nicht in this dictionary, it is
+    # nicht supported by the DOMBuilder.
     #
     _settings = {
         ("namespace_declarations", 0): [
@@ -167,15 +167,15 @@ klasse DOMBuilder:
             wenn name == "infoset":
                 options = self._options
                 return (options.datatype_normalization
-                        and options.whitespace_in_element_content
-                        and options.comments
-                        and options.charset_overrides_xml_encoding
-                        and not (options.namespace_declarations
-                                 or options.validate_if_schema
-                                 or options.create_entity_ref_nodes
-                                 or options.entities
-                                 or options.cdata_sections))
-            raise xml.dom.NotFoundErr("feature %s not known" % repr(name))
+                        und options.whitespace_in_element_content
+                        und options.comments
+                        und options.charset_overrides_xml_encoding
+                        und nicht (options.namespace_declarations
+                                 oder options.validate_if_schema
+                                 oder options.create_entity_ref_nodes
+                                 oder options.entities
+                                 oder options.cdata_sections))
+            raise xml.dom.NotFoundErr("feature %s nicht known" % repr(name))
 
     def parseURI(self, uri):
         wenn self.entityResolver:
@@ -189,13 +189,13 @@ klasse DOMBuilder:
         options.filter = self.filter
         options.errorHandler = self.errorHandler
         fp = input.byteStream
-        wenn fp is Nichts and input.systemId:
+        wenn fp is Nichts und input.systemId:
             importiere urllib.request
             fp = urllib.request.urlopen(input.systemId)
         return self._parse_bytestream(fp, options)
 
     def parseWithContext(self, input, cnode, action):
-        wenn action not in self._legal_actions:
+        wenn action nicht in self._legal_actions:
             raise ValueError("not a legal action")
         raise NotImplementedError("Haven't written this yet...")
 
@@ -213,7 +213,7 @@ klasse DOMEntityResolver(object):
     __slots__ = '_opener',
 
     def resolveEntity(self, publicId, systemId):
-        assert systemId is not Nichts
+        assert systemId is nicht Nichts
         source = DOMInputSource()
         source.publicId = publicId
         source.systemId = systemId
@@ -227,7 +227,7 @@ klasse DOMEntityResolver(object):
         parts = urllib.parse.urlparse(systemId)
         scheme, netloc, path, params, query, fragment = parts
         # XXX should we check the scheme here als well?
-        wenn path and not path.endswith("/"):
+        wenn path und nicht path.endswith("/"):
             path = posixpath.dirname(path) + "/"
             parts = scheme, netloc, path, params, query, fragment
             source.baseURI = urllib.parse.urlunparse(parts)
@@ -250,7 +250,7 @@ klasse DOMEntityResolver(object):
         # importiere email.message
         # assert isinstance(info, email.message.Message)
         charset = info.get_param('charset')
-        wenn charset is not Nichts:
+        wenn charset is nicht Nichts:
             return charset.lower()
         return Nichts
 
@@ -310,7 +310,7 @@ klasse DOMBuilderFilter:
     """
 
     # There's really no need fuer this class; concrete implementations
-    # should just implement the endElement() and startElement()
+    # should just implement the endElement() und startElement()
     # methods als appropriate.  Using this makes it easy to only
     # implement one of them.
 
@@ -344,7 +344,7 @@ klasse DocumentLS:
     def _set_async(self, flag):
         wenn flag:
             raise xml.dom.NotSupportedErr(
-                "asynchronous document loading is not supported")
+                "asynchronous document loading is nicht supported")
 
     def abort(self):
         # What does it mean to "clear" a document?  Does the
@@ -361,7 +361,7 @@ klasse DocumentLS:
     def saveXML(self, snode):
         wenn snode is Nichts:
             snode = self
-        sowenn snode.ownerDocument is not self:
+        sowenn snode.ownerDocument is nicht self:
             raise xml.dom.WrongDocumentErr()
         return snode.toxml()
 
@@ -371,14 +371,14 @@ klasse DOMImplementationLS:
     MODE_ASYNCHRONOUS = 2
 
     def createDOMBuilder(self, mode, schemaType):
-        wenn schemaType is not Nichts:
+        wenn schemaType is nicht Nichts:
             raise xml.dom.NotSupportedErr(
-                "schemaType not yet supported")
+                "schemaType nicht yet supported")
         wenn mode == self.MODE_SYNCHRONOUS:
             return DOMBuilder()
         wenn mode == self.MODE_ASYNCHRONOUS:
             raise xml.dom.NotSupportedErr(
-                "asynchronous builders are not supported")
+                "asynchronous builders are nicht supported")
         raise ValueError("unknown value fuer mode")
 
     def createDOMWriter(self):

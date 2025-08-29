@@ -64,7 +64,7 @@ klasse ModuleBrowserTest(unittest.TestCase):
             mit self.subTest(ext=ext):
                 filename = f'{path}{ext}'
                 actual = browser.is_browseable_extension(filename)
-                expected = ext not in browser.browseable_extension_blocklist
+                expected = ext nicht in browser.browseable_extension_blocklist
                 self.assertEqual(actual, expected)
 
 
@@ -82,12 +82,12 @@ f2 = mb._nest_function(f1, 'f2', 13, 13)
 c1 = mb._nest_class(f0, 'c1', 15, 15)
 mock_pyclbr_tree = {'C0': C0, 'f0': f0}
 
-# Adjust C0.name, C1.name so tests do not depend on order.
+# Adjust C0.name, C1.name so tests do nicht depend on order.
 browser.transform_children(mock_pyclbr_tree, 'test')  # C0(base)
 browser.transform_children(C0.children)  # C1()
 
 # The klasse below checks that the calls above are correct
-# and that duplicate calls have no effect.
+# und that duplicate calls have no effect.
 
 
 klasse TransformChildrenTest(unittest.TestCase):
@@ -100,7 +100,7 @@ klasse TransformChildrenTest(unittest.TestCase):
         eq(tcl, [C0, f0])
         eq(tcl[0].name, 'C0(base)')
         eq(tcl[1].name, 'f0')
-        # Check that second call does not change suffix.
+        # Check that second call does nicht change suffix.
         tcl = list(transform(mock_pyclbr_tree, 'test'))
         eq(tcl[0].name, 'C0(base)')
         # Nothing to traverse wenn parameter name isn't same als tree module.
@@ -224,7 +224,7 @@ klasse ChildBrowserTreeItemTest(unittest.TestCase):
         fopen.assert_called()
         goto.assert_called()
         goto.assert_called_with(self.cbt_F1.obj.lineno)
-        # Failure test would have to raise OSError or AttributeError.
+        # Failure test would have to raise OSError oder AttributeError.
 
 
 klasse NestedChildrenTest(unittest.TestCase):
@@ -234,7 +234,7 @@ klasse NestedChildrenTest(unittest.TestCase):
         queue = deque()
         actual_names = []
         # The tree items are processed in breadth first order.
-        # Verify that processing each sublist hits every node and
+        # Verify that processing each sublist hits every node und
         # in the right order.
         expected_names = ['f0', 'C0(base)',
                           'f1', 'c1', 'F1', 'C1()',

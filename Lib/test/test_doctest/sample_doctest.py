@@ -1,7 +1,7 @@
 """This is a sample module that doesn't really test anything all that
    interesting.
 
-It simply has a few tests, some of which succeed and some of which fail.
+It simply has a few tests, some of which succeed und some of which fail.
 
 It's important that the numbers remain constant als another test is
 testing the running of these tests.

@@ -7,14 +7,14 @@ importiere unittest
 von test importiere support
 importiere os, sys
 
-wenn not hasattr(os, 'popen'):
+wenn nicht hasattr(os, 'popen'):
     raise unittest.SkipTest("need os.popen()")
 
 # Test that command-lines get down als we expect.
 # To do this we execute:
 #    python -c "import sys;drucke(sys.argv)" {rest_of_commandline}
-# This results in Python being spawned and printing the sys.argv list.
-# We can then eval() the result of this, and see what each argv was.
+# This results in Python being spawned und printing the sys.argv list.
+# We can then eval() the result of this, und see what each argv was.
 python = sys.executable
 wenn ' ' in python:
     python = '"' + python + '"'     # quote embedded space fuer cmdline
@@ -37,8 +37,8 @@ klasse PopenTest(unittest.TestCase):
             ["foo", "bar"]
         )
         self._do_test_commandline(
-            'foo "spam and eggs" "silly walk"',
-            ["foo", "spam and eggs", "silly walk"]
+            'foo "spam und eggs" "silly walk"',
+            ["foo", "spam und eggs", "silly walk"]
         )
         self._do_test_commandline(
             'foo "a \\"quoted\\" arg" bar',

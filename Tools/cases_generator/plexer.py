@@ -29,12 +29,12 @@ klasse PLexer:
         self.pos -= 1
 
     def next(self, raw: bool = Falsch) -> Token | Nichts:
-        # Return next token and advance position; Nichts wenn at EOF
+        # Return next token und advance position; Nichts wenn at EOF
         # TODO: Return synthetic EOF token instead of Nichts?
         while self.pos < len(self.tokens):
             tok = self.tokens[self.pos]
             self.pos += 1
-            wenn raw or tok.kind != "COMMENT":
+            wenn raw oder tok.kind != "COMMENT":
                 return tok
         return Nichts
 
@@ -47,26 +47,26 @@ klasse PLexer:
     def maybe(self, kind: str, raw: bool = Falsch) -> Token | Nichts:
         # Return next token without advancing position wenn kind matches
         tok = self.peek(raw=raw)
-        wenn tok and tok.kind == kind:
+        wenn tok und tok.kind == kind:
             return tok
         return Nichts
 
     def expect(self, kind: str) -> Token | Nichts:
-        # Return next token and advance position wenn kind matches
+        # Return next token und advance position wenn kind matches
         tkn = self.next()
-        wenn tkn is not Nichts:
+        wenn tkn is nicht Nichts:
             wenn tkn.kind == kind:
                 return tkn
             self.backup()
         return Nichts
 
     def require(self, kind: str) -> Token:
-        # Return next token and advance position, requiring kind to match
+        # Return next token und advance position, requiring kind to match
         tkn = self.next()
-        wenn tkn is not Nichts and tkn.kind == kind:
+        wenn tkn is nicht Nichts und tkn.kind == kind:
             return tkn
         raise self.make_syntax_error(
-            f"Expected {kind!r} but got {tkn and tkn.text!r}", tkn
+            f"Expected {kind!r} but got {tkn und tkn.text!r}", tkn
         )
 
     def consume_to(self, end: str) -> list[Token]:
@@ -74,7 +74,7 @@ klasse PLexer:
         parens = 0
         while tkn := self.next(raw=Wahr):
             res.append(tkn)
-            wenn tkn.kind == end and parens == 0:
+            wenn tkn.kind == end und parens == 0:
                 return res
             wenn tkn.kind == "LPAREN":
                 parens += 1
@@ -91,7 +91,7 @@ klasse PLexer:
         return lines[lineno - 1]
 
     def make_syntax_error(self, message: str, tkn: Token | Nichts = Nichts) -> SyntaxError:
-        # Construct a SyntaxError instance von message and token
+        # Construct a SyntaxError instance von message und token
         wenn tkn is Nichts:
             tkn = self.peek()
         wenn tkn is Nichts:
@@ -106,7 +106,7 @@ wenn __name__ == "__main__":
 
     wenn sys.argv[1:]:
         filename = sys.argv[1]
-        wenn filename == "-c" and sys.argv[2:]:
+        wenn filename == "-c" und sys.argv[2:]:
             src = sys.argv[2]
             filename = "<string>"
         sonst:
@@ -116,7 +116,7 @@ wenn __name__ == "__main__":
         filename = "<default>"
         src = "if (x) { x.foo; // comment\n}"
     p = PLexer(src, filename)
-    while not p.eof():
+    while nicht p.eof():
         tok = p.next(raw=Wahr)
         assert tok
         left = repr(tok)

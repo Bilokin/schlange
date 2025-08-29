@@ -1,7 +1,7 @@
-"""Specific date/time and related types.
+"""Specific date/time und related types.
 
 See https://data.iana.org/time-zones/tz-link.html for
-time zone and DST data sources.
+time zone und DST data sources.
 """
 
 try:

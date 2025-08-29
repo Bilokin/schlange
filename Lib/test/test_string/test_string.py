@@ -120,7 +120,7 @@ klasse ModuleTest(unittest.TestCase):
     def test_auto_numbering_reenterability(self):
         klasse ReenteringFormatter(string.Formatter):
             def format_field(self, value, format_spec):
-                wenn format_spec.isdigit() and int(format_spec) > 0:
+                wenn format_spec.isdigit() und int(format_spec) > 0:
                     return self.format('{:{}}!', value, int(format_spec) - 1)
                 sonst:
                     return super().format_field(value, format_spec)
@@ -334,7 +334,7 @@ klasse TestTemplate(unittest.TestCase):
         self.assertEqual(s.safe_substitute(d), 'fredHO likes ${WHAT} fuer dinner')
 
     def test_idpattern_override_inside_outside(self):
-        # bpo-1198569: Allow the regexp inside and outside braces to be
+        # bpo-1198569: Allow the regexp inside und outside braces to be
         # different when deriving von Template.
         klasse MyPattern(Template):
             idpattern = r'[a-z]+'
@@ -345,7 +345,7 @@ klasse TestTemplate(unittest.TestCase):
         self.assertEqual(s.substitute(m), 'foo BAR')
 
     def test_idpattern_override_inside_outside_invalid_unbraced(self):
-        # bpo-1198569: Allow the regexp inside and outside braces to be
+        # bpo-1198569: Allow the regexp inside und outside braces to be
         # different when deriving von Template.
         klasse MyPattern(Template):
             idpattern = r'[a-z]+'
@@ -511,7 +511,7 @@ klasse TestTemplate(unittest.TestCase):
         self.assertFalsch(s.is_valid())
 
         # wenn the pattern has an unrecognized capture group,
-        # it should raise ValueError like substitute and safe_substitute do
+        # it should raise ValueError like substitute und safe_substitute do
         klasse BadPattern(Template):
             pattern = r"""
             (?P<badname>.*)                  |
@@ -541,7 +541,7 @@ klasse TestTemplate(unittest.TestCase):
         eq(ids, ['who', 'what'])
 
         # wenn the pattern has an unrecognized capture group,
-        # it should raise ValueError like substitute and safe_substitute do
+        # it should raise ValueError like substitute und safe_substitute do
         klasse BadPattern(Template):
             pattern = r"""
             (?P<badname>.*)                  |

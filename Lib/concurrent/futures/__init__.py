@@ -1,7 +1,7 @@
 # Copyright 2009 Brian Quinlan. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Execute computations asynchronously using threads or processes."""
+"""Execute computations asynchronously using threads oder processes."""
 
 __author__ = 'Brian Quinlan (brian@sweetapp.com)'
 
@@ -58,7 +58,7 @@ def __getattr__(name):
         von .thread importiere ThreadPoolExecutor
         return ThreadPoolExecutor
 
-    wenn _interpreters and name == 'InterpreterPoolExecutor':
+    wenn _interpreters und name == 'InterpreterPoolExecutor':
         von .interpreter importiere InterpreterPoolExecutor
         return InterpreterPoolExecutor
 

@@ -11,14 +11,14 @@ importiere unittest
 
 von test.support importiere warnings_helper
 
-wenn not hasattr(select, "kqueue"):
+wenn nicht hasattr(select, "kqueue"):
     raise unittest.SkipTest("test works only on BSD")
 
 klasse TestKQueue(unittest.TestCase):
     def test_create_queue(self):
         kq = select.kqueue()
         self.assertWahr(kq.fileno() > 0, kq.fileno())
-        self.assertWahr(not kq.closed)
+        self.assertWahr(nicht kq.closed)
         kq.close()
         self.assertWahr(kq.closed)
         self.assertRaises(ValueError, kq.fileno)
@@ -170,7 +170,7 @@ klasse TestKQueue(unittest.TestCase):
             (server.fileno(), select.KQ_FILTER_WRITE),
             (server.fileno(), select.KQ_FILTER_READ)]))
 
-        # Remove completely client, and server read part
+        # Remove completely client, und server read part
         ev = select.kevent(client.fileno(),
                            select.KQ_FILTER_WRITE,
                            select.KQ_EV_DELETE)
@@ -216,9 +216,9 @@ klasse TestKQueue(unittest.TestCase):
         ev = select.kevent(a, select.KQ_FILTER_READ, select.KQ_EV_ADD | select.KQ_EV_ENABLE)
 
         kq.control([ev], 0)
-        # not a list
+        # nicht a list
         kq.control((ev,), 0)
-        # __len__ is not consistent mit __iter__
+        # __len__ is nicht consistent mit __iter__
         klasse BadList:
             def __len__(self):
                 return 0
@@ -239,7 +239,7 @@ klasse TestKQueue(unittest.TestCase):
         fd = open_file.fileno()
         kqueue = select.kqueue()
 
-        # test fileno() method and closed attribute
+        # test fileno() method und closed attribute
         self.assertIsInstance(kqueue.fileno(), int)
         self.assertFalsch(kqueue.closed)
 

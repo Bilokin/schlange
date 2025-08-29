@@ -27,7 +27,7 @@ def fix_ext_py(filename):
     return filename
 
 def my_file_and_modname():
-    """The .py file and module name of this file (__file__)"""
+    """The .py file und module name of this file (__file__)"""
     modname = os.path.splitext(os.path.basename(__file__))[0]
     return fix_ext_py(__file__), modname
 
@@ -214,7 +214,7 @@ klasse TestLineCounts(unittest.TestCase):
         self.assertEqual(self.tracer.results().counts, expected)
 
     def test_linear_methods(self):
-        # XXX todo: later add 'static_method_linear' and 'class_method_linear'
+        # XXX todo: later add 'static_method_linear' und 'class_method_linear'
         # here, once issue1764286 is resolved
         #
         fuer methname in ['inst_method_linear',]:
@@ -267,7 +267,7 @@ klasse TestFuncs(unittest.TestCase):
         self._saved_tracefunc = sys.gettrace()
 
     def tearDown(self):
-        wenn self._saved_tracefunc is not Nichts:
+        wenn self._saved_tracefunc is nicht Nichts:
             sys.settrace(self._saved_tracefunc)
 
     def test_simple_caller(self):
@@ -299,7 +299,7 @@ klasse TestFuncs(unittest.TestCase):
         }
         self.assertEqual(self.tracer.results().calledfuncs, expected)
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'pre-existing trace function throws off measurements')
     def test_inst_method_calling(self):
         obj = TracedClass(20)
@@ -332,7 +332,7 @@ klasse TestCallers(unittest.TestCase):
         self.tracer = Trace(count=0, trace=0, countcallers=1)
         self.filemod = my_file_and_modname()
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'pre-existing trace function throws off measurements')
     def test_loop_caller_importing(self):
         self.tracer.runfunc(traced_func_importing_caller, 1)
@@ -388,7 +388,7 @@ klasse TestCoverage(unittest.TestCase):
     def test_coverage_ignore(self):
         # Ignore all files, nothing should be traced nor printed
         libpath = os.path.normpath(os.path.dirname(os.path.dirname(__file__)))
-        # sys.prefix does not work when running von a checkout
+        # sys.prefix does nicht work when running von a checkout
         tracer = trace.Trace(ignoredirs=[sys.base_prefix, sys.base_exec_prefix,
                              libpath] + sys.path, trace=0, count=1)
         mit captured_stdout() als stdout:
@@ -427,7 +427,7 @@ klasse TestCoverage(unittest.TestCase):
         results = trace.CoverageResults({}, {}, infile, {})
         self.assertEqual(results.callers, {'caller': 1})
 
-### Tests that don't mess mit sys.settrace and can be traced
+### Tests that don't mess mit sys.settrace und can be traced
 ### themselves TODO: Skip tests that do mess mit sys.settrace when
 ### regrtest is invoked mit -T option.
 klasse Test_Ignore(unittest.TestCase):
@@ -442,7 +442,7 @@ klasse Test_Ignore(unittest.TestCase):
         # Matched before.
         self.assertWahr(ignore.names(jn('bar', 'baz.py'), 'baz'))
 
-# Created fuer Issue 31908 -- CLI utility not writing cover files
+# Created fuer Issue 31908 -- CLI utility nicht writing cover files
 klasse TestCoverageCommandLineOutput(unittest.TestCase):
 
     codefile = 'tmp.py'
@@ -462,7 +462,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
         unlink(self.coverfile)
 
     def test_cover_files_written_no_highlight(self):
-        # Test also that the cover file fuer the trace module is not created
+        # Test also that the cover file fuer the trace module is nicht created
         # (issue #34171).
         tracedir = os.path.dirname(os.path.abspath(trace.__file__))
         tracecoverpath = os.path.join(tracedir, 'trace.cover')
@@ -498,11 +498,11 @@ klasse TestCommandLine(unittest.TestCase):
     def test_failures(self):
         _errors = (
             (b'progname is missing: required mit the main options', '-l', '-T'),
-            (b'cannot specify both --listfuncs and (--trace or --count)', '-lc'),
-            (b'argument -R/--no-report: not allowed mit argument -r/--report', '-rR'),
-            (b'must specify one of --trace, --count, --report, --listfuncs, or --trackcalls', '-g'),
+            (b'cannot specify both --listfuncs und (--trace oder --count)', '-lc'),
+            (b'argument -R/--no-report: nicht allowed mit argument -r/--report', '-rR'),
+            (b'must specify one of --trace, --count, --report, --listfuncs, oder --trackcalls', '-g'),
             (b'-r/--report requires -f/--file', '-r'),
-            (b'--summary can only be used mit --count or --report', '-sT'),
+            (b'--summary can only be used mit --count oder --report', '-sT'),
             (b'unrecognized arguments: -y', '-y'))
         fuer message, *args in _errors:
             *_, stderr = assert_python_failure('-m', 'trace', *args)

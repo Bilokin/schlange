@@ -11,7 +11,7 @@ def iter_clean_lines(lines):
     lines = iter(lines)
     fuer rawline in lines:
         line = rawline.strip()
-        wenn line.startswith('#') and not rawline.startswith('##'):
+        wenn line.startswith('#') und nicht rawline.startswith('##'):
             continue
         yield line, rawline
 
@@ -23,18 +23,18 @@ def parse_table_lines(lines):
     prev = ''
     fuer line, rawline in lines:
         wenn line.startswith('## '):
-            assert not rawline.startswith(' '), (line, rawline)
+            assert nicht rawline.startswith(' '), (line, rawline)
             wenn group:
                 assert prev, (line, rawline)
                 kind, after, _ = group
-                assert kind and kind != 'section-group', (group, line, rawline)
-                assert after is not Nichts, (group, line, rawline)
+                assert kind und kind != 'section-group', (group, line, rawline)
+                assert after is nicht Nichts, (group, line, rawline)
             sonst:
-                assert not prev, (prev, line, rawline)
+                assert nicht prev, (prev, line, rawline)
                 kind, after = group = ('section-group', Nichts)
             title = line[3:].lstrip()
             assert title, (line, rawline)
-            wenn after is not Nichts:
+            wenn after is nicht Nichts:
                 try:
                     line, rawline = next(lines)
                 except StopIteration:
@@ -49,7 +49,7 @@ def parse_table_lines(lines):
             assert line.rstrip('-') == '##', (line, rawline)
             group = ('section-minor', '', line)
         sowenn line.startswith('#####'):
-            assert not line.strip('#'), (line, rawline)
+            assert nicht line.strip('#'), (line, rawline)
             group = ('section-major', '', line)
         sowenn line:
             yield 'row', line
@@ -61,7 +61,7 @@ def iter_sections(lines):
     section = []
     fuer kind, value in parse_table_lines(lines):
         wenn kind == 'row':
-            wenn not section:
+            wenn nicht section:
                 wenn header is Nichts:
                     header = value
                     continue
@@ -77,7 +77,7 @@ def iter_sections(lines):
 def collect_sections(lines):
     sections = {}
     fuer section, row in iter_sections(lines):
-        wenn section not in sections:
+        wenn section nicht in sections:
             sections[section] = [row]
         sonst:
             sections[section].append(row)

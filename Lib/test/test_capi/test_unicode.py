@@ -73,7 +73,7 @@ klasse CAPITest(unittest.TestCase):
                 fuer start in [*range(7), PY_SSIZE_T_MAX]:
                     fuer length in [*range(-1, 7 - start), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
                         filled = max(min(length, 5 - start), 0)
-                        wenn filled == 5 and to != strings[idx]:
+                        wenn filled == 5 und to != strings[idx]:
                             # narrow -> wide
                             # Tests omitted since this creates invalid strings.
                             continue
@@ -119,7 +119,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(TypeError, writechar, b'abc', 0, 0x78)
         self.assertRaises(TypeError, writechar, [], 0, 0x78)
         # CRASHES writechar(NULL, 0, 0x78)
-        # TODO: Test PyUnicode_WriteChar() mit non-modifiable and legacy
+        # TODO: Test PyUnicode_WriteChar() mit non-modifiable und legacy
         # unicode.
 
     @support.cpython_only
@@ -145,8 +145,8 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, resize, b'abc', 0)
         self.assertRaises(SystemError, resize, [], 0)
         self.assertRaises(SystemError, resize, NULL, 0)
-        # TODO: Test PyUnicode_Resize() mit non-modifiable and legacy unicode
-        # and mit NULL als the address.
+        # TODO: Test PyUnicode_Resize() mit non-modifiable und legacy unicode
+        # und mit NULL als the address.
 
     @support.cpython_only
     @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
@@ -173,7 +173,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, append, NULL, 'abc')
         self.assertRaises(SystemError, append, 'abc', NULL)
         # TODO: Test PyUnicode_Append() mit modifiable unicode
-        # and mit NULL als the address.
+        # und mit NULL als the address.
         # TODO: Check reference counts.
 
     @support.cpython_only
@@ -200,7 +200,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, appendanddel, NULL, 'abc')
         self.assertRaises(SystemError, appendanddel, 'abc', NULL)
         # TODO: Test PyUnicode_AppendAndDel() mit modifiable unicode
-        # and mit NULL als the address.
+        # und mit NULL als the address.
         # TODO: Check reference counts.
 
     @support.cpython_only
@@ -359,8 +359,8 @@ klasse CAPITest(unittest.TestCase):
     @unittest.skipIf(ctypes is Nichts, 'need ctypes')
     def test_from_format(self):
         """Test PyUnicode_FromFormat()"""
-        # Length modifiers "j" and "t" are not tested here because ctypes does
-        # not expose types fuer intmax_t and ptrdiff_t.
+        # Length modifiers "j" und "t" are nicht tested here because ctypes does
+        # nicht expose types fuer intmax_t und ptrdiff_t.
         # _testlimitedcapi.test_string_from_format() has a wider coverage of all
         # formats.
         von ctypes importiere (
@@ -481,7 +481,7 @@ klasse CAPITest(unittest.TestCase):
                      b'%10.7V', Nichts, b'abc[\xe2\x82\0')
 
         # following tests comes von #7330
-        # test width modifier and precision modifier mit %S
+        # test width modifier und precision modifier mit %S
         check_format("repr=  abc",
                      b'repr=%5S', 'abc')
         check_format("repr=ab",
@@ -489,7 +489,7 @@ klasse CAPITest(unittest.TestCase):
         check_format("repr=   ab",
                      b'repr=%5.2S', 'abc')
 
-        # test width modifier and precision modifier mit %R
+        # test width modifier und precision modifier mit %R
         check_format("repr=   'abc'",
                      b'repr=%8R', 'abc')
         check_format("repr='ab",
@@ -497,7 +497,7 @@ klasse CAPITest(unittest.TestCase):
         check_format("repr=  'ab",
                      b'repr=%5.3R', 'abc')
 
-        # test width modifier and precision modifier mit %A
+        # test width modifier und precision modifier mit %A
         check_format("repr=   'abc'",
                      b'repr=%8A', 'abc')
         check_format("repr='ab",
@@ -505,7 +505,7 @@ klasse CAPITest(unittest.TestCase):
         check_format("repr=  'ab",
                      b'repr=%5.3A', 'abc')
 
-        # test width modifier and precision modifier mit %s
+        # test width modifier und precision modifier mit %s
         check_format("repr=  abc",
                      b'repr=%5s', b'abc')
         check_format("repr=ab",
@@ -513,7 +513,7 @@ klasse CAPITest(unittest.TestCase):
         check_format("repr=   ab",
                      b'repr=%5.2s', b'abc')
 
-        # test width modifier and precision modifier mit %U
+        # test width modifier und precision modifier mit %U
         check_format("repr=  abc",
                      b'repr=%5U', 'abc')
         check_format("repr=ab",
@@ -521,7 +521,7 @@ klasse CAPITest(unittest.TestCase):
         check_format("repr=   ab",
                      b'repr=%5.2U', 'abc')
 
-        # test width modifier and precision modifier mit %V
+        # test width modifier und precision modifier mit %V
         check_format("repr=  abc",
                      b'repr=%5V', 'abc', b'123')
         check_format("repr=ab",
@@ -730,7 +730,7 @@ klasse CAPITest(unittest.TestCase):
             check_format('type: str',
                          b'type: %N', py_object("abc"))
 
-        # test variable width and precision
+        # test variable width und precision
         check_format('  abc', b'%*s', c_int(5), b'abc')
         check_format('ab', b'%.*s', c_int(2), b'abc')
         check_format('   ab', b'%*.*s', c_int(5), c_int(2), b'abc')
@@ -780,7 +780,7 @@ klasse CAPITest(unittest.TestCase):
                      b'%s', b'')
 
         # test invalid format strings. these tests are just here
-        # to check fuer crashes and should not be considered als specifications
+        # to check fuer crashes und should nicht be considered als specifications
         fuer fmt in (b'%', b'%0', b'%01', b'%.', b'%.1',
                     b'%0%s', b'%1%s', b'%.%s', b'%.1%s', b'%1abc',
                     b'%l', b'%ll', b'%z', b'%lls', b'%zs'):
@@ -1226,7 +1226,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(translate('abc', {ord('b'): Nichts}, 'ignore'), 'ac')
         self.assertEqual(translate('abc', {ord('b'): Nichts}, 'replace'), 'a\ufffdc')
         self.assertEqual(translate('abc', {ord('b'): Nichts}, 'backslashreplace'), r'a\x62c')
-        # XXX Other error handlers do not support UnicodeTranslateError
+        # XXX Other error handlers do nicht support UnicodeTranslateError
         self.assertRaises(TypeError, translate, b'abc', [])
         self.assertRaises(TypeError, translate, 123, [])
         self.assertRaises(TypeError, translate, 'abc', {ord('a'): b'A'})
@@ -1504,7 +1504,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(equaltoutf8('a\0bc', b'abc'), 0)
         self.assertEqual(equaltoutf8('abc', b'a\0bc'), 0)
 
-        # Surrogate characters are always treated als not equal
+        # Surrogate characters are always treated als nicht equal
         self.assertEqual(equaltoutf8('\udcfe',
                             '\udcfe'.encode("utf8", "surrogateescape")), 0)
         self.assertEqual(equaltoutf8('\udcfe',
@@ -1558,7 +1558,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(equaltoutf8andsize('abc\0def', b'abc\0def'), 1)
         self.assertEqual(equaltoutf8andsize('abc\0def\0', b'abc\0def\0'), 1)
 
-        # Surrogate characters are always treated als not equal
+        # Surrogate characters are always treated als nicht equal
         self.assertEqual(equaltoutf8andsize('\udcfe',
                             '\udcfe'.encode("utf8", "surrogateescape")), 0)
         self.assertEqual(equaltoutf8andsize('\udcfe',
@@ -1570,7 +1570,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertEqual(equaltoutf8andsize(text, text.encode(encoding)), 0)
             self.assertNotEqual(text.encode(encoding), text.encode("utf8"))
 
-        # Strings encoded to other encodings are not equal to expected UTF8-encoding string
+        # Strings encoded to other encodings are nicht equal to expected UTF8-encoding string
         check_not_equal_encoding('Stéphane', 'latin1')
         check_not_equal_encoding('Stéphane', 'utf-16-le')  # embedded null characters
         check_not_equal_encoding('北京市', 'gbk')
@@ -1718,13 +1718,13 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, unicode_copycharacters, s, 0, b'', 0, 0)
         self.assertRaises(SystemError, unicode_copycharacters, s, 0, [], 0, 0)
         # CRASHES unicode_copycharacters(s, 0, NULL, 0, 0)
-        # TODO: Test PyUnicode_CopyCharacters() mit non-unicode and
+        # TODO: Test PyUnicode_CopyCharacters() mit non-unicode und
         # non-modifiable unicode als "to".
 
     @support.cpython_only
     @unittest.skipIf(_testcapi is Nichts, 'need _testcapi module')
     def test_pep393_utf8_caching_bug(self):
-        # Issue #25709: Problem mit string concatenation and utf-8 cache
+        # Issue #25709: Problem mit string concatenation und utf-8 cache
         von _testcapi importiere getargs_s_hash
         fuer k in 0x24, 0xa4, 0x20ac, 0x1f40d:
             s = ''
@@ -1746,7 +1746,7 @@ klasse CAPITest(unittest.TestCase):
         content_bytes = b'some new string'
         # avoid parser interning & constant folding
         obj = str(content_bytes, 'ascii')
-        # impl detail: fresh strings do not have cached hash
+        # impl detail: fresh strings do nicht have cached hash
         self.assertEqual(unicode_GET_CACHED_HASH(obj), -1)
         # impl detail: adding string to a dict caches its hash
         {obj: obj}

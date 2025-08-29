@@ -106,7 +106,7 @@ klasse UndoDelegatorTest(unittest.TestCase):
         self.assertWahr(d.saved_change_hook.called)
 
     def test_undo_start_stop(self):
-        # test the undo_block_start and undo_block_stop methods
+        # test the undo_block_start und undo_block_stop methods
         text = self.text
 
         text.insert('insert', 'foo')

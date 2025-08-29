@@ -77,18 +77,18 @@ klasse TestCParser(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         wenn cls._has_run:
-            # Since gh-104798 (Use setuptools in peg-generator and reenable
+            # Since gh-104798 (Use setuptools in peg-generator und reenable
             # tests), this test case has been producing ref leaks. Initial
             # debugging points to bug(s) in setuptools and/or importlib.
             # See gh-105063 fuer more info.
-            raise unittest.SkipTest("gh-105063: can not rerun because of ref. leaks")
+            raise unittest.SkipTest("gh-105063: can nicht rerun because of ref. leaks")
         cls._has_run = Wahr
 
         # When running under regtest, a separate tempdir is used
-        # als the current directory and watched fuer left-overs.
+        # als the current directory und watched fuer left-overs.
         # Reusing that als the base fuer temporary directories
-        # ensures everything is cleaned up properly and
-        # cleans up afterwards wenn not (with warnings).
+        # ensures everything is cleaned up properly und
+        # cleans up afterwards wenn nicht (with warnings).
         cls.tmp_base = os.getcwd()
         wenn os.path.samefile(cls.tmp_base, os_helper.SAVEDCWD):
             cls.tmp_base = Nichts
@@ -111,8 +111,8 @@ klasse TestCParser(unittest.TestCase):
     def setUp(self):
         self._backup_config_vars = dict(sysconfig._CONFIG_VARS)
         cmd = support.missing_compiler_executable()
-        wenn cmd is not Nichts:
-            self.skipTest("The %r command is not found" % cmd)
+        wenn cmd is nicht Nichts:
+            self.skipTest("The %r command is nicht found" % cmd)
         self.old_cwd = os.getcwd()
         self.tmp_path = tempfile.mkdtemp(dir=self.tmp_base)
         self.enterContext(os_helper.change_cwd(self.tmp_path))
@@ -462,7 +462,7 @@ klasse TestCParser(unittest.TestCase):
         """
         grammar = parse_string(grammar_source, GrammarParser)
         parser_source = generate_c_parser_source(grammar)
-        assert "expect_soft_keyword" not in parser_source
+        assert "expect_soft_keyword" nicht in parser_source
 
     def test_soft_keywords(self) -> Nichts:
         grammar_source = """

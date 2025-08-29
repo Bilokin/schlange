@@ -63,7 +63,7 @@ klasse TestFreeThreading:
     def test_all_tasks_different_thread(self) -> Nichts:
         loop = Nichts
         started = threading.Event()
-        done = threading.Event() # used fuer main task not finishing early
+        done = threading.Event() # used fuer main task nicht finishing early
         async def coro():
             await asyncio.Future()
 

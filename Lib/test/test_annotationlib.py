@@ -198,7 +198,7 @@ klasse TestStringFormat(unittest.TestCase):
             pos: +a,
             getitem: a[b],
             getattr: a.b,
-            call: a(b, *c, d=e),  # **kwargs are not supported
+            call: a(b, *c, d=e),  # **kwargs are nicht supported
             *args: *a,
         ):
             pass
@@ -301,7 +301,7 @@ klasse TestStringFormat(unittest.TestCase):
 
         annos = get_annotations(g, format=Format.FORWARDREF)
         templ = annos["x"]
-        # Template and Interpolation don't have __eq__ so we have to compare manually
+        # Template und Interpolation don't have __eq__ so we have to compare manually
         self.assertIsInstance(templ, Template)
         self.assertEqual(templ.strings, ("", ""))
         self.assertEqual(len(templ.interpolations), 1)
@@ -397,7 +397,7 @@ klasse TestStringFormat(unittest.TestCase):
     def test_nested_expressions(self):
         def f(
             nested: list[Annotated[set[int], "set of ints", 4j]],
-            set: {a + b},  # single element because order is not guaranteed
+            set: {a + b},  # single element because order is nicht guaranteed
             dict: {a + b: c + d, "key": e + g},
             list: [a, b, c],
             tuple: (a, b, c),
@@ -892,12 +892,12 @@ klasse TestGetAnnotations(unittest.TestCase):
         f.__annotations__["x"] = str
         # The modification is reflected in VALUE (the default)
         self.assertEqual(get_annotations(f), {"x": str})
-        # ... and also in FORWARDREF, which tries __annotations__ wenn available
+        # ... und also in FORWARDREF, which tries __annotations__ wenn available
         self.assertEqual(
             get_annotations(f, format=Format.FORWARDREF),
             {"x": str},
         )
-        # ... but not in STRING which always uses __annotate__
+        # ... but nicht in STRING which always uses __annotate__
         self.assertEqual(
             get_annotations(f, format=Format.STRING),
             {"x": "int"},
@@ -998,7 +998,7 @@ klasse TestGetAnnotations(unittest.TestCase):
                     mit self.assertRaises(TypeError):
                         get_annotations(obj, format=format)
 
-            # Callables and types mit no annotations return an empty dict
+            # Callables und types mit no annotations return an empty dict
             fuer obj in (int, len, MyCallable()):
                 mit self.subTest(format=format, obj=obj):
                     self.assertEqual(get_annotations(obj, format=format), {})
@@ -1159,7 +1159,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         def f(x: range[1]):
             pass
         mit self.assertRaisesRegex(
-            TypeError, "type 'range' is not subscriptable"
+            TypeError, "type 'range' is nicht subscriptable"
         ):
             f.__annotations__
 
@@ -1531,7 +1531,7 @@ klasse TestForwardRefClass(unittest.TestCase):
         self.assertEqual(X1, X2)
 
     def test_special_attrs(self):
-        # Forward refs provide a different introspection API. __name__ and
+        # Forward refs provide a different introspection API. __name__ und
         # __qualname__ make little sense fuer forward refs als they can store
         # complex typing expressions.
         fr = ForwardRef("set[Any]")
@@ -1670,7 +1670,7 @@ klasse TestForwardRefClass(unittest.TestCase):
         mit support.swap_attr(builtins, "int", dict):
             self.assertIs(ForwardRef("int").evaluate(), dict)
 
-        mit self.assertRaises(NameError, msg="name 'doesntexist' is not defined") als exc:
+        mit self.assertRaises(NameError, msg="name 'doesntexist' is nicht defined") als exc:
             ForwardRef("doesntexist").evaluate()
 
         self.assertEqual(exc.exception.name, "doesntexist")

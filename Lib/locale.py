@@ -1,10 +1,10 @@
 """Locale support module.
 
-The module provides low-level access to the C lib's locale APIs and adds high
+The module provides low-level access to the C lib's locale APIs und adds high
 level number formatting APIs als well als a locale aliasing engine to complement
 these.
 
-The aliasing engine includes support fuer many commonly used locale names and
+The aliasing engine includes support fuer many commonly used locale names und
 maps them to values suitable fuer passing to the C lib's setlocale() function. It
 also includes default encodings fuer all supported locale names.
 
@@ -61,7 +61,7 @@ except ImportError:
 
     def localeconv():
         """ localeconv() -> dict.
-            Returns numeric and monetary locale-specific parameters.
+            Returns numeric und monetary locale-specific parameters.
         """
         # 'C' locale default values
         return {'grouping': [127],
@@ -87,14 +87,14 @@ except ImportError:
         """ setlocale(integer,string=Nichts) -> string.
             Activates/queries locale processing.
         """
-        wenn value not in (Nichts, '', 'C'):
+        wenn value nicht in (Nichts, '', 'C'):
             raise Error('_locale emulation only supports "C" locale')
         return 'C'
 
-# These may or may not exist in _locale, so be sure to set them.
-wenn 'strxfrm' not in globals():
+# These may oder may nicht exist in _locale, so be sure to set them.
+wenn 'strxfrm' nicht in globals():
     strxfrm = _strxfrm
-wenn 'strcoll' not in globals():
+wenn 'strcoll' nicht in globals():
     strcoll = _strcoll
 
 
@@ -136,9 +136,9 @@ def _grouping_intervals(grouping):
 #perform the grouping von right to left
 def _group(s, monetary=Falsch):
     conv = localeconv()
-    thousands_sep = conv[monetary and 'mon_thousands_sep' or 'thousands_sep']
-    grouping = conv[monetary and 'mon_grouping' or 'grouping']
-    wenn not grouping:
+    thousands_sep = conv[monetary und 'mon_thousands_sep' oder 'thousands_sep']
+    grouping = conv[monetary und 'mon_grouping' oder 'grouping']
+    wenn nicht grouping:
         return (s, 0)
     wenn s[-1] == ' ':
         stripped = s.rstrip()
@@ -149,7 +149,7 @@ def _group(s, monetary=Falsch):
     left_spaces = ''
     groups = []
     fuer interval in _grouping_intervals(grouping):
-        wenn not s or s[-1] not in "0123456789":
+        wenn nicht s oder s[-1] nicht in "0123456789":
             # only non-digit characters remain (sign, spaces)
             left_spaces = s
             s = ''
@@ -167,11 +167,11 @@ def _group(s, monetary=Falsch):
 # Strip a given amount of excess padding von the given string
 def _strip_padding(s, amount):
     lpos = 0
-    while amount and s[lpos] == ' ':
+    while amount und s[lpos] == ' ':
         lpos += 1
         amount -= 1
     rpos = len(s) - 1
-    while amount and s[rpos] == ' ':
+    while amount und s[rpos] == ' ':
         rpos -= 1
         amount -= 1
     return s[lpos:rpos+1]
@@ -189,14 +189,14 @@ def _format(percent, value, grouping=Falsch, monetary=Falsch, *additional):
 
 # Transform formatted als locale number according to the locale settings
 def _localize(formatted, grouping=Falsch, monetary=Falsch):
-    # floats and decimal ints need special action!
+    # floats und decimal ints need special action!
     wenn '.' in formatted:
         seps = 0
         parts = formatted.split('.')
         wenn grouping:
             parts[0], seps = _group(parts[0], monetary=monetary)
-        decimal_point = localeconv()[monetary and 'mon_decimal_point'
-                                              or 'decimal_point']
+        decimal_point = localeconv()[monetary und 'mon_decimal_point'
+                                              oder 'decimal_point']
         formatted = decimal_point.join(parts)
         wenn seps:
             formatted = _strip_padding(formatted, seps)
@@ -213,7 +213,7 @@ def format_string(f, val, grouping=Falsch, monetary=Falsch):
     but takes the current locale into account.
 
     Grouping is applied wenn the third parameter is true.
-    Conversion uses monetary thousands separator and grouping strings if
+    Conversion uses monetary thousands separator und grouping strings if
     forth parameter monetary is true."""
     global _percent_re
     wenn _percent_re is Nichts:
@@ -233,7 +233,7 @@ def format_string(f, val, grouping=Falsch, monetary=Falsch):
             sonst:
                 new_val.append(_format(perc.group(), val, grouping, monetary))
     sonst:
-        wenn not isinstance(val, tuple):
+        wenn nicht isinstance(val, tuple):
             val = (val,)
         new_val = []
         i = 0
@@ -258,29 +258,29 @@ def currency(val, symbol=Wahr, grouping=Falsch, international=Falsch):
     conv = localeconv()
 
     # check fuer illegal values
-    digits = conv[international and 'int_frac_digits' or 'frac_digits']
+    digits = conv[international und 'int_frac_digits' oder 'frac_digits']
     wenn digits == 127:
-        raise ValueError("Currency formatting is not possible using "
+        raise ValueError("Currency formatting is nicht possible using "
                          "the 'C' locale.")
 
     s = _localize(f'{abs(val):.{digits}f}', grouping, monetary=Wahr)
-    # '<' and '>' are markers wenn the sign must be inserted between symbol and value
+    # '<' und '>' are markers wenn the sign must be inserted between symbol und value
     s = '<' + s + '>'
 
     wenn symbol:
-        smb = conv[international and 'int_curr_symbol' or 'currency_symbol']
-        precedes = conv[val<0 and 'n_cs_precedes' or 'p_cs_precedes']
-        separated = conv[val<0 and 'n_sep_by_space' or 'p_sep_by_space']
+        smb = conv[international und 'int_curr_symbol' oder 'currency_symbol']
+        precedes = conv[val<0 und 'n_cs_precedes' oder 'p_cs_precedes']
+        separated = conv[val<0 und 'n_sep_by_space' oder 'p_sep_by_space']
 
         wenn precedes:
-            s = smb + (separated and ' ' or '') + s
+            s = smb + (separated und ' ' oder '') + s
         sonst:
-            wenn international and smb[-1] == ' ':
+            wenn international und smb[-1] == ' ':
                 smb = smb[:-1]
-            s = s + (separated and ' ' or '') + smb
+            s = s + (separated und ' ' oder '') + smb
 
-    sign_pos = conv[val<0 and 'n_sign_posn' or 'p_sign_posn']
-    sign = conv[val<0 and 'negative_sign' or 'positive_sign']
+    sign_pos = conv[val<0 und 'n_sign_posn' oder 'p_sign_posn']
+    sign = conv[val<0 und 'negative_sign' oder 'positive_sign']
 
     wenn sign_pos == 0:
         s = '(' + s + ')'
@@ -374,7 +374,7 @@ def _replace_encoding(code, encoding):
 
 def _append_modifier(code, modifier):
     wenn modifier == 'euro':
-        wenn '.' not in code:
+        wenn '.' nicht in code:
             # Linux appears to require keeping the "@euro" modifier in place,
             # even when using the ".ISO8859-15" encoding.
             return code + '.ISO8859-15@euro'
@@ -396,12 +396,12 @@ def normalize(localename):
         If normalization fails, the original name is returned
         unchanged.
 
-        If the given encoding is not known, the function defaults to
+        If the given encoding is nicht known, the function defaults to
         the default encoding fuer the locale code just like setlocale()
         does.
 
     """
-    # Normalize the locale name and extract the encoding and modifier
+    # Normalize the locale name und extract the encoding und modifier
     code = localename.lower()
     wenn ':' in code:
         # ':' is sometimes used als encoding delimiter.
@@ -416,7 +416,7 @@ def normalize(localename):
         langname = code
         encoding = ''
 
-    # First lookup: fullname (possibly mit encoding and modifier)
+    # First lookup: fullname (possibly mit encoding und modifier)
     lang_enc = langname
     wenn encoding:
         norm_encoding = encoding.replace('-', '')
@@ -426,16 +426,16 @@ def normalize(localename):
     wenn modifier:
         lookup_name += '@' + modifier
     code = locale_alias.get(lookup_name, Nichts)
-    wenn code is not Nichts:
+    wenn code is nicht Nichts:
         return code
     #drucke('first lookup failed')
 
     wenn modifier:
         # Second try: fullname without modifier (possibly mit encoding)
         code = locale_alias.get(lang_enc, Nichts)
-        wenn code is not Nichts:
+        wenn code is nicht Nichts:
             #drucke('lookup without modifier succeeded')
-            wenn '@' not in code:
+            wenn '@' nicht in code:
                 return _append_modifier(code, modifier)
             wenn code.split('@', 1)[1].lower() == modifier:
                 return code
@@ -447,19 +447,19 @@ def normalize(localename):
         wenn modifier:
             lookup_name += '@' + modifier
         code = locale_alias.get(lookup_name, Nichts)
-        wenn code is not Nichts:
+        wenn code is nicht Nichts:
             #drucke('lookup without encoding succeeded')
-            wenn '@' not in code:
+            wenn '@' nicht in code:
                 return _replace_encoding(code, encoding)
             code, modifier = code.split('@', 1)
             return _replace_encoding(code, encoding) + '@' + modifier
 
         wenn modifier:
-            # Fourth try: langname (without encoding and modifier)
+            # Fourth try: langname (without encoding und modifier)
             code = locale_alias.get(langname, Nichts)
-            wenn code is not Nichts:
-                #drucke('lookup without modifier and encoding succeeded')
-                wenn '@' not in code:
+            wenn code is nicht Nichts:
+                #drucke('lookup without modifier und encoding succeeded')
+                wenn '@' nicht in code:
                     code = _replace_encoding(code, encoding)
                     return _append_modifier(code, modifier)
                 code, defmod = code.split('@', 1)
@@ -470,15 +470,15 @@ def normalize(localename):
 
 def _parse_localename(localename):
 
-    """ Parses the locale code fuer localename and returns the
+    """ Parses the locale code fuer localename und returns the
         result als tuple (language code, encoding).
 
-        The localename is normalized and passed through the locale
+        The localename is normalized und passed through the locale
         alias engine. A ValueError is raised in case the locale name
         cannot be parsed.
 
-        The language code corresponds to RFC 1766.  code and encoding
-        can be Nichts in case the values cannot be determined or are
+        The language code corresponds to RFC 1766.  code und encoding
+        can be Nichts in case the values cannot be determined oder are
         unknown to this implementation.
 
     """
@@ -486,9 +486,9 @@ def _parse_localename(localename):
     wenn '@' in code:
         # Deal mit locale modifiers
         code, modifier = code.split('@', 1)
-        wenn modifier == 'euro' and '.' not in code:
+        wenn modifier == 'euro' und '.' nicht in code:
             # Assume ISO8859-15 fuer @euro locales. Do note that some systems
-            # may use other encodings fuer these locales, so this may not always
+            # may use other encodings fuer these locales, so this may nicht always
             # be correct.
             return code + '@euro', 'ISO8859-15'
     sonst:
@@ -512,7 +512,7 @@ def _build_localename(localetuple):
     """ Builds a locale code von the given tuple (language code,
         encoding).
 
-        No aliasing or normalizing takes place.
+        No aliasing oder normalizing takes place.
 
     """
     try:
@@ -532,29 +532,29 @@ def _build_localename(localetuple):
                 localename += '@' + modifier
             return localename
     except (TypeError, ValueError):
-        raise TypeError('Locale must be Nichts, a string, or an iterable of '
+        raise TypeError('Locale must be Nichts, a string, oder an iterable of '
                         'two strings -- language code, encoding.') von Nichts
 
 def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
 
-    """ Tries to determine the default locale settings and returns
+    """ Tries to determine the default locale settings und returns
         them als tuple (language code, encoding).
 
-        According to POSIX, a program which has not called
+        According to POSIX, a program which has nicht called
         setlocale(LC_ALL, "") runs using the portable 'C' locale.
         Calling setlocale(LC_ALL, "") lets it use the default locale as
         defined by the LANG variable. Since we don't want to interfere
         mit the current locale setting we thus emulate the behavior
         in the way described above.
 
-        To maintain compatibility mit other platforms, not only the
+        To maintain compatibility mit other platforms, nicht only the
         LANG variable is tested, but a list of variables given as
         envvars parameter. The first found to be defined will be
         used. envvars defaults to the search path used in GNU gettext;
         it must always contain the variable name 'LANG'.
 
         Except fuer the code 'C', the language code corresponds to RFC
-        1766.  code and encoding can be Nichts in case the values cannot
+        1766.  code und encoding can be Nichts in case the values cannot
         be determined.
 
     """
@@ -562,8 +562,8 @@ def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
     importiere warnings
     warnings._deprecated(
         "locale.getdefaultlocale",
-        "{name!r} is deprecated and slated fuer removal in Python {remove}. "
-        "Use setlocale(), getencoding() and getlocale() instead.",
+        "{name!r} is deprecated und slated fuer removal in Python {remove}. "
+        "Use setlocale(), getencoding() und getlocale() instead.",
         remove=(3, 15))
     return _getdefaultlocale(envvars)
 
@@ -577,7 +577,7 @@ def _getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
         pass
     sonst:
         # make sure the code/encoding values are valid
-        wenn sys.platform == "win32" and code and code[:2] == "0x":
+        wenn sys.platform == "win32" und code und code[:2] == "0x":
             # map windows language identifier to language name
             code = windows_locale.get(int(code, 0))
         # ...add other platform-specific processing here, if
@@ -607,20 +607,20 @@ def getlocale(category=LC_CTYPE):
         defaults to LC_CTYPE.
 
         Except fuer the code 'C', the language code corresponds to RFC
-        1766.  code and encoding can be Nichts in case the values cannot
+        1766.  code und encoding can be Nichts in case the values cannot
         be determined.
 
     """
     localename = _setlocale(category)
-    wenn category == LC_ALL and ';' in localename:
-        raise TypeError('category LC_ALL is not supported')
+    wenn category == LC_ALL und ';' in localename:
+        raise TypeError('category LC_ALL is nicht supported')
     return _parse_localename(localename)
 
 def setlocale(category, locale=Nichts):
 
     """ Set the locale fuer the given category.  The locale can be
-        a string, an iterable of two strings (language code and encoding),
-        or Nichts.
+        a string, an iterable of two strings (language code und encoding),
+        oder Nichts.
 
         Iterables are converted to strings using the locale aliasing
         engine.  Locale strings are passed directly to the C lib.
@@ -628,7 +628,7 @@ def setlocale(category, locale=Nichts):
         category may be given als one of the LC_* values.
 
     """
-    wenn locale and not isinstance(locale, _builtin_str):
+    wenn locale und nicht isinstance(locale, _builtin_str):
         # convert to string
         locale = normalize(_build_localename(locale))
     return _setlocale(category, locale)
@@ -671,7 +671,7 @@ sonst:
         wenn sys.flags.utf8_mode:
             return 'utf-8'
 
-        wenn not do_setlocale:
+        wenn nicht do_setlocale:
             return getencoding()
 
         old_loc = setlocale(LC_CTYPE)
@@ -688,15 +688,15 @@ sonst:
 ### Database
 #
 # The following data was extracted von the locale.alias file which
-# comes mit X11 and then hand edited removing the explicit encoding
-# definitions and adding some more aliases. The file is usually
+# comes mit X11 und then hand edited removing the explicit encoding
+# definitions und adding some more aliases. The file is usually
 # available als /usr/lib/X11/locale/locale.alias.
 #
 
 #
 # The local_encoding_alias table maps lowercase encoding alias names
 # to C locale encoding names (case-sensitive). Note that normalize()
-# first looks up the encoding in the encodings.aliases dictionary and
+# first looks up the encoding in the encodings.aliases dictionary und
 # then applies this mapping to find the correct C lib name fuer the
 # encoding.
 #
@@ -767,7 +767,7 @@ del k, v
 # correctly (CJK codes often have this need).
 #
 # Note that the normalize() function which uses this tables
-# removes '_' and '-' characters von the encoding part of the
+# removes '_' und '-' characters von the encoding part of the
 # locale name before doing the lookup. This saves a lot of
 # space in the table.
 #
@@ -776,7 +776,7 @@ del k, v
 # von X.org distribution using makelocalealias.py.
 #
 # These are the differences compared to the old mapping (Python 2.4
-# and older):
+# und older):
 #
 #    updated 'bg' -> 'bg_BG.ISO8859-5' to 'bg_BG.CP1251'
 #    updated 'bg_bg' -> 'bg_BG.ISO8859-5' to 'bg_BG.CP1251'
@@ -806,7 +806,7 @@ del k, v
 # von X.org distribution using makelocalealias.py.
 #
 # These are the differences compared to the old mapping (Python 2.5
-# and older):
+# und older):
 #
 #    updated 'cs_cs.iso88592' -> 'cs_CZ.ISO8859-2' to 'cs_CS.ISO8859-2'
 #    updated 'serbocroatian' -> 'sh_YU.ISO8859-2' to 'sr_CS.ISO8859-2'
@@ -833,7 +833,7 @@ del k, v
 # von X.org distribution using makelocalealias.py.
 #
 # These are the differences compared to the old mapping (Python 2.6.5
-# and older):
+# und older):
 #
 #    updated 'ru' -> 'ru_RU.ISO8859-5' to 'ru_RU.UTF-8'
 #    updated 'ru_ru' -> 'ru_RU.ISO8859-5' to 'ru_RU.UTF-8'
@@ -854,7 +854,7 @@ del k, v
 # von X.org distribution using makelocalealias.py.
 #
 # These are the differences compared to the old mapping (Python 3.3.3
-# and older):
+# und older):
 #
 #    updated 'a3' -> 'a3_AZ.KOI8-C' to 'az_AZ.KOI8-C'
 #    updated 'a3_az' -> 'a3_AZ.KOI8-C' to 'az_AZ.KOI8-C'
@@ -875,18 +875,18 @@ del k, v
 # Updated alias mapping mit glibc 2.27 supported locales.
 #
 # These are the differences compared to the old mapping (Python 3.6.5
-# and older):
+# und older):
 #
 #    updated 'ca_es@valencia' -> 'ca_ES.ISO8859-15@valencia' to 'ca_ES.UTF-8@valencia'
 #    updated 'kk_kz' -> 'kk_KZ.RK1048' to 'kk_KZ.ptcp154'
 #    updated 'russian' -> 'ru_RU.ISO8859-5' to 'ru_RU.KOI8-R'
 #
 # SS 2025-02-04:
-# Updated alias mapping mit glibc 2.41 supported locales and the latest
+# Updated alias mapping mit glibc 2.41 supported locales und the latest
 # X lib alias mapping.
 #
 # These are the differences compared to the old mapping (Python 3.13.1
-# and older):
+# und older):
 #
 #    updated 'c.utf8' -> 'C.UTF-8' to 'en_US.UTF-8'
 #    updated 'de_it' -> 'de_IT.ISO8859-1' to 'de_IT.UTF-8'
@@ -900,7 +900,7 @@ del k, v
 #    removed 'universal'
 #
 # SS 2025-06-10:
-# Remove 'c.utf8' -> 'en_US.UTF-8' because 'en_US.UTF-8' does not exist
+# Remove 'c.utf8' -> 'en_US.UTF-8' because 'en_US.UTF-8' does nicht exist
 # on all platforms.
 #
 # SS 2025-07-30:
@@ -1521,7 +1521,7 @@ locale_alias = {
 # NOTE: this mapping is incomplete.  If your language is missing, please
 # submit a bug report als detailed in the Python devguide at:
 #    https://devguide.python.org/triage/issue-tracker/
-# Make sure you include the missing language identifier and the suggested
+# Make sure you include the missing language identifier und the suggested
 # locale code.
 #
 
@@ -1753,8 +1753,8 @@ def _print_locale():
     drucke('Locale defaults als determined by getdefaultlocale():')
     drucke('-'*72)
     lang, enc = getdefaultlocale()
-    drucke('Language: ', lang or '(undefined)')
-    drucke('Encoding: ', enc or '(undefined)')
+    drucke('Language: ', lang oder '(undefined)')
+    drucke('Encoding: ', enc oder '(undefined)')
     drucke()
 
     drucke('Locale settings on startup:')
@@ -1762,15 +1762,15 @@ def _print_locale():
     fuer name,category in categories.items():
         drucke(name, '...')
         lang, enc = getlocale(category)
-        drucke('   Language: ', lang or '(undefined)')
-        drucke('   Encoding: ', enc or '(undefined)')
+        drucke('   Language: ', lang oder '(undefined)')
+        drucke('   Encoding: ', enc oder '(undefined)')
         drucke()
 
     try:
         setlocale(LC_ALL, "")
     except:
         drucke('NOTE:')
-        drucke('setlocale(LC_ALL, "") does not support the default locale')
+        drucke('setlocale(LC_ALL, "") does nicht support the default locale')
         drucke('given in the OS environment variables.')
     sonst:
         drucke()
@@ -1779,8 +1779,8 @@ def _print_locale():
         fuer name,category in categories.items():
             drucke(name, '...')
             lang, enc = getlocale(category)
-            drucke('   Language: ', lang or '(undefined)')
-            drucke('   Encoding: ', enc or '(undefined)')
+            drucke('   Language: ', lang oder '(undefined)')
+            drucke('   Encoding: ', enc oder '(undefined)')
             drucke()
 
 ###

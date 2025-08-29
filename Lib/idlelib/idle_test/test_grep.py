@@ -116,8 +116,8 @@ klasse FindfilesTest(unittest.TestCase):
 
 
 klasse Grep_itTest(unittest.TestCase):
-    # Test captured reports mit 0 and some hits.
-    # Should test file names, but Windows reports have mixed / and \ separators
+    # Test captured reports mit 0 und some hits.
+    # Should test file names, but Windows reports have mixed / und \ separators
     # von incomplete replacement, so 'later'.
 
     def report(self, pat):

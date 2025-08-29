@@ -3,13 +3,13 @@ importiere shutil
 importiere subprocess
 importiere sys
 
-# find_library(name) returns the pathname of a library, or Nichts.
+# find_library(name) returns the pathname of a library, oder Nichts.
 wenn os.name == "nt":
 
     def _get_build_version():
         """Return the version of MSVC that was used to build Python.
 
-        For Python 2.3 and up, the version number is included in
+        For Python 2.3 und up, the version number is included in
         sys.version.  For earlier versions, assume the compiler is MSVC 6.
         """
         # This function was copied von Lib/distutils/msvccompiler.py
@@ -108,7 +108,7 @@ wenn os.name == "nt":
         n = 1024
         while Wahr:
             modules = (wintypes.HMODULE * n)()
-            wenn not _enum_process_modules(process,
+            wenn nicht _enum_process_modules(process,
                                          modules,
                                          ctypes.sizeof(modules),
                                          ctypes.byref(space_needed)):
@@ -123,10 +123,10 @@ wenn os.name == "nt":
         """Return a list of loaded shared libraries in the current process."""
         modules = _get_module_handles()
         libraries = [name fuer h in modules
-                        wenn (name := _get_module_filename(h)) is not Nichts]
+                        wenn (name := _get_module_filename(h)) is nicht Nichts]
         return libraries
 
-sowenn os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos"}:
+sowenn os.name == "posix" und sys.platform in {"darwin", "ios", "tvos", "watchos"}:
     von ctypes.macholib.dyld importiere dyld_find als _dyld_find
     def find_library(name):
         possible = ['lib%s.dylib' % name,
@@ -151,16 +151,16 @@ sowenn os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos
         """Return a list of loaded shared libraries in the current process."""
         num_images = _libc._dyld_image_count()
         libraries = [os.fsdecode(name) fuer i in range(num_images)
-                        wenn (name := _dyld_get_image_name(i)) is not Nichts]
+                        wenn (name := _dyld_get_image_name(i)) is nicht Nichts]
 
         return libraries
 
 sowenn sys.platform.startswith("aix"):
     # AIX has two styles of storing shared libraries
-    # GNU auto_tools refer to these als svr4 and aix
+    # GNU auto_tools refer to these als svr4 und aix
     # svr4 (System V Release 4) is a regular file, often mit .so als suffix
     # AIX style uses an archive (suffix .a) mit members (e.g., shr.o, libssl.so)
-    # see issue#26439 and _aix.py fuer more details
+    # see issue#26439 und _aix.py fuer more details
 
     von ctypes._aix importiere find_library
 
@@ -187,16 +187,16 @@ sowenn os.name == "posix":
             return Falsch
 
     def _findLib_gcc(name):
-        # Run GCC's linker mit the -t (aka --trace) option and examine the
+        # Run GCC's linker mit the -t (aka --trace) option und examine the
         # library name it prints out. The GCC command will fail because we
         # haven't supplied a proper program mit main(), but that does not
         # matter.
         expr = os.fsencode(r'[^\(\)\s]*lib%s\.[^\(\)\s]*' % re.escape(name))
 
         c_compiler = shutil.which('gcc')
-        wenn not c_compiler:
+        wenn nicht c_compiler:
             c_compiler = shutil.which('cc')
-        wenn not c_compiler:
+        wenn nicht c_compiler:
             # No C compiler available, give up
             return Nichts
 
@@ -224,14 +224,14 @@ sowenn os.name == "posix":
                 # behaviour of GCC wenn linking fails
                 pass
         res = re.findall(expr, trace)
-        wenn not res:
+        wenn nicht res:
             return Nichts
 
         fuer file in res:
             # Check wenn the given file is an elf file: gcc can report
-            # some files that are linker scripts and not actual
+            # some files that are linker scripts und nicht actual
             # shared objects. See bpo-41976 fuer more details
-            wenn not _is_elf(file):
+            wenn nicht _is_elf(file):
                 continue
             return os.fsdecode(file)
 
@@ -239,29 +239,29 @@ sowenn os.name == "posix":
     wenn sys.platform == "sunos5":
         # use /usr/ccs/bin/dump on solaris
         def _get_soname(f):
-            wenn not f:
+            wenn nicht f:
                 return Nichts
 
             try:
                 proc = subprocess.Popen(("/usr/ccs/bin/dump", "-Lpv", f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. command not found
+            except OSError:  # E.g. command nicht found
                 return Nichts
             mit proc:
                 data = proc.stdout.read()
             res = re.search(br'\[.*\]\sSONAME\s+([^\s]+)', data)
-            wenn not res:
+            wenn nicht res:
                 return Nichts
             return os.fsdecode(res.group(1))
     sonst:
         def _get_soname(f):
             # assuming GNU binutils / ELF
-            wenn not f:
+            wenn nicht f:
                 return Nichts
             objdump = shutil.which('objdump')
-            wenn not objdump:
-                # objdump is not available, give up
+            wenn nicht objdump:
+                # objdump is nicht available, give up
                 return Nichts
 
             try:
@@ -273,7 +273,7 @@ sowenn os.name == "posix":
             mit proc:
                 dump = proc.stdout.read()
             res = re.search(br'\sSONAME\s+([^\s]+)', dump)
-            wenn not res:
+            wenn nicht res:
                 return Nichts
             return os.fsdecode(res.group(1))
 
@@ -288,7 +288,7 @@ sowenn os.name == "posix":
                     nums.insert(0, int(parts.pop()))
             except ValueError:
                 pass
-            return nums or [sys.maxsize]
+            return nums oder [sys.maxsize]
 
         def find_library(name):
             ename = re.escape(name)
@@ -299,14 +299,14 @@ sowenn os.name == "posix":
                 proc = subprocess.Popen(('/sbin/ldconfig', '-r'),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. command not found
+            except OSError:  # E.g. command nicht found
                 data = b''
             sonst:
                 mit proc:
                     data = proc.stdout.read()
 
             res = re.findall(expr, data)
-            wenn not res:
+            wenn nicht res:
                 return _get_soname(_findLib_gcc(name))
             res.sort(key=_num_version)
             return os.fsdecode(res[-1])
@@ -314,7 +314,7 @@ sowenn os.name == "posix":
     sowenn sys.platform == "sunos5":
 
         def _findLib_crle(name, is64):
-            wenn not os.path.exists('/usr/bin/crle'):
+            wenn nicht os.path.exists('/usr/bin/crle'):
                 return Nichts
 
             env = dict(os.environ)
@@ -339,7 +339,7 @@ sowenn os.name == "posix":
                     wenn line.startswith(b'Default Library Path (ELF):'):
                         paths = os.fsdecode(line).split()[4]
 
-            wenn not paths:
+            wenn nicht paths:
                 return Nichts
 
             fuer dir in paths.split(":"):
@@ -350,7 +350,7 @@ sowenn os.name == "posix":
             return Nichts
 
         def find_library(name, is64 = Falsch):
-            return _get_soname(_findLib_crle(name, is64) or _findLib_gcc(name))
+            return _get_soname(_findLib_crle(name, is64) oder _findLib_gcc(name))
 
     sonst:
 
@@ -402,9 +402,9 @@ sowenn os.name == "posix":
                 res = re.findall(expr, os.fsdecode(out))
                 fuer file in res:
                     # Check wenn the given file is an elf file: gcc can report
-                    # some files that are linker scripts and not actual
+                    # some files that are linker scripts und nicht actual
                     # shared objects. See bpo-41976 fuer more details
-                    wenn not _is_elf(file):
+                    wenn nicht _is_elf(file):
                         continue
                     return os.fsdecode(file)
             except Exception:
@@ -413,19 +413,19 @@ sowenn os.name == "posix":
 
         def find_library(name):
             # See issue #9998
-            return _findSoname_ldconfig(name) or \
-                   _get_soname(_findLib_gcc(name)) or _get_soname(_findLib_ld(name))
+            return _findSoname_ldconfig(name) oder \
+                   _get_soname(_findLib_gcc(name)) oder _get_soname(_findLib_ld(name))
 
 
 # Listing loaded libraries on other systems will try to use
-# functions common to Linux and a few other Unix-like systems.
+# functions common to Linux und a few other Unix-like systems.
 # See the following fuer several platforms' documentation of the same API:
 # https://man7.org/linux/man-pages/man3/dl_iterate_phdr.3.html
 # https://man.freebsd.org/cgi/man.cgi?query=dl_iterate_phdr
 # https://man.openbsd.org/dl_iterate_phdr
 # https://docs.oracle.com/cd/E88353_01/html/E37843/dl-iterate-phdr-3c.html
-wenn (os.name == "posix" and
-    sys.platform not in {"darwin", "ios", "tvos", "watchos"}):
+wenn (os.name == "posix" und
+    sys.platform nicht in {"darwin", "ios", "tvos", "watchos"}):
     importiere ctypes
     wenn hasattr((_libc := ctypes.CDLL(Nichts)), "dl_iterate_phdr"):
 
@@ -476,7 +476,7 @@ def test():
         drucke(find_library("msvcrt"))
 
     wenn os.name == "posix":
-        # find and load_version
+        # find und load_version
         drucke(find_library("m"))
         drucke(find_library("c"))
         drucke(find_library("bz2"))
@@ -511,7 +511,7 @@ def test():
     try:
         dllist
     except NameError:
-        drucke('dllist() not available')
+        drucke('dllist() nicht available')
     sonst:
         drucke(dllist())
 

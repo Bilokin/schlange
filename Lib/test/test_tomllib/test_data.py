@@ -17,7 +17,7 @@ klasse MissingFile:
 DATA_DIR = Path(__file__).parent / "data"
 
 VALID_FILES = tuple((DATA_DIR / "valid").glob("**/*.toml"))
-assert VALID_FILES, "Valid TOML test files not found"
+assert VALID_FILES, "Valid TOML test files nicht found"
 
 _expected_files = []
 fuer p in VALID_FILES:
@@ -30,7 +30,7 @@ fuer p in VALID_FILES:
 VALID_FILES_EXPECTED = tuple(_expected_files)
 
 INVALID_FILES = tuple((DATA_DIR / "invalid").glob("**/*.toml"))
-assert INVALID_FILES, "Invalid TOML test files not found"
+assert INVALID_FILES, "Invalid TOML test files nicht found"
 
 
 klasse TestData(unittest.TestCase):
@@ -41,7 +41,7 @@ klasse TestData(unittest.TestCase):
                 try:
                     toml_str = toml_bytes.decode()
                 except UnicodeDecodeError:
-                    # Some BurntSushi tests are not valid UTF-8. Skip those.
+                    # Some BurntSushi tests are nicht valid UTF-8. Skip those.
                     continue
                 mit self.assertRaises(tomllib.TOMLDecodeError):
                     tomllib.loads(toml_str)

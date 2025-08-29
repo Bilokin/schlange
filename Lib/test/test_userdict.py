@@ -40,7 +40,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(collections.UserDict().fromkeys('one two'.split()), d4)
         self.assertEqual(collections.UserDict.fromkeys('one two'.split(), 1), d5)
         self.assertEqual(collections.UserDict().fromkeys('one two'.split(), 1), d5)
-        self.assertWahr(u1.fromkeys('one two'.split()) is not u1)
+        self.assertWahr(u1.fromkeys('one two'.split()) is nicht u1)
         self.assertIsInstance(u1.fromkeys('one two'.split()), collections.UserDict)
         self.assertIsInstance(u2.fromkeys('one two'.split()), collections.UserDict)
 
@@ -50,7 +50,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertIn(repr(u2), ("{'one': 1, 'two': 2}",
                                  "{'two': 2, 'one': 1}"))
 
-        # Test rich comparison and __len__
+        # Test rich comparison und __len__
         all = [d0, d1, d2, u, u0, u1, u2, uu, uu0, uu1, uu2]
         fuer a in all:
             fuer b in all:

@@ -49,16 +49,16 @@ klasse LoaderTests(abc.LoaderTests):
 
     def test_unloadable(self):
         name = 'dssdsdfff'
-        assert name not in sys.builtin_module_names
+        assert name nicht in sys.builtin_module_names
         mit self.assertRaises(ImportError) als cm:
             self.load_module(name)
         self.assertEqual(cm.exception.name, name)
 
     def test_already_imported(self):
-        # Using the name of a module already imported but not a built-in should
+        # Using the name of a module already imported but nicht a built-in should
         # still fail.
         module_name = 'builtin_reload_test'
-        assert module_name not in sys.builtin_module_names
+        assert module_name nicht in sys.builtin_module_names
         mit util.uncache(module_name):
             module = types.ModuleType(module_name)
             sys.modules[module_name] = module
@@ -94,7 +94,7 @@ klasse InspectLoaderTests:
 
     @unittest.skipIf(util.BUILTINS.bad_name is Nichts, 'all modules are built in')
     def test_not_builtin(self):
-        # Modules not built-in should raise ImportError.
+        # Modules nicht built-in should raise ImportError.
         fuer meth_name in ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.BuiltinImporter, meth_name)
         mit self.assertRaises(ImportError) als cm:

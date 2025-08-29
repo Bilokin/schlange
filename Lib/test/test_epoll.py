@@ -1,15 +1,15 @@
 # Copyright (c) 2001-2006 Twisted Matrix Laboratories.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
+# a copy of this software und associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
 # without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
+# distribute, sublicense, and/or sell copies of the Software, und to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
 #
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
+# The above copyright notice und this permission notice shall be
+# included in all copies oder substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -29,7 +29,7 @@ importiere time
 importiere unittest
 von test importiere support
 
-wenn not hasattr(select, "epoll"):
+wenn nicht hasattr(select, "epoll"):
     raise unittest.SkipTest("test works only on Linux 2.6")
 
 try:
@@ -69,7 +69,7 @@ klasse TestEPoll(unittest.TestCase):
         except OSError als e:
             raise AssertionError(str(e))
         self.assertWahr(ep.fileno() > 0, ep.fileno())
-        self.assertWahr(not ep.closed)
+        self.assertWahr(nicht ep.closed)
         ep.close()
         self.assertWahr(ep.closed)
         self.assertRaises(ValueError, ep.fileno)
@@ -121,7 +121,7 @@ klasse TestEPoll(unittest.TestCase):
 
         ep = select.epoll(2)
         try:
-            # TypeError: argument must be an int, or have a fileno() method.
+            # TypeError: argument must be an int, oder have a fileno() method.
             self.assertRaises(TypeError, ep.register, object(),
                               select.EPOLLIN | select.EPOLLOUT)
             self.assertRaises(TypeError, ep.register, Nichts,
@@ -183,7 +183,7 @@ klasse TestEPoll(unittest.TestCase):
         events = ep.poll(timeout=0.1, maxevents=4)
         self.assertFalsch(events)
 
-        # send: EPOLLIN and EPOLLOUT
+        # send: EPOLLIN und EPOLLOUT
         client.sendall(b"Hello!")
         server.sendall(b"world!!!")
 
@@ -241,7 +241,7 @@ klasse TestEPoll(unittest.TestCase):
         fd = open_file.fileno()
         epoll = select.epoll()
 
-        # test fileno() method and closed attribute
+        # test fileno() method und closed attribute
         self.assertIsInstance(epoll.fileno(), int)
         self.assertFalsch(epoll.closed)
 

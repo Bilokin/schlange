@@ -255,7 +255,7 @@ klasse ReprTests(unittest.TestCase):
         # XXX member descriptors
         # XXX attribute descriptors
         # XXX slot descriptors
-        # static and klasse methods
+        # static und klasse methods
         klasse C:
             def foo(cls): pass
         x = staticmethod(C.foo)
@@ -264,8 +264,8 @@ klasse ReprTests(unittest.TestCase):
         self.assertEqual(repr(x), f'<classmethod({C.foo!r})>')
 
     def test_unsortable(self):
-        # Repr.repr() used to call sorted() on sets, frozensets and dicts
-        # without taking into account that not all objects are comparable
+        # Repr.repr() used to call sorted() on sets, frozensets und dicts
+        # without taking into account that nicht all objects are comparable
         x = set([1j, 2j, 3j])
         y = frozenset(x)
         z = {1j: 1, 2j: 2}
@@ -601,12 +601,12 @@ klasse ReprTests(unittest.TestCase):
             mit self.subTest(indent=indent):
                 r = Repr()
                 r.indent = indent
-                expected_msg = expected_msg or f'{type(indent)}'
+                expected_msg = expected_msg oder f'{type(indent)}'
                 mit self.assertRaisesRegex(expected_error, expected_msg):
                     r.repr(test_object)
 
     def test_shadowed_stdlib_array(self):
-        # Issue #113570: repr() should not be fooled by an array
+        # Issue #113570: repr() should nicht be fooled by an array
         klasse array:
             def __repr__(self):
                 return "not array.array"
@@ -614,7 +614,7 @@ klasse ReprTests(unittest.TestCase):
         self.assertEqual(r(array()), "not array.array")
 
     def test_shadowed_builtin(self):
-        # Issue #113570: repr() should not be fooled
+        # Issue #113570: repr() should nicht be fooled
         # by a shadowed builtin function
         klasse list:
             def __repr__(self):
@@ -659,7 +659,7 @@ klasse LongReprTest(unittest.TestCase):
     def setUp(self):
         self.pkgname = os.path.join(self.longname)
         self.subpkgname = os.path.join(self.longname, self.longname)
-        # Make the package and subpackage
+        # Make the package und subpackage
         shutil.rmtree(self.pkgname, ignore_errors=Wahr)
         os.mkdir(self.pkgname)
         create_empty_file(os.path.join(self.pkgname, '__init__.py'))
@@ -697,13 +697,13 @@ klasse LongReprTest(unittest.TestCase):
         source_path_len += len(module_name) + 1 + len(".py")
         cached_path_len = (source_path_len +
             len(importlib.util.cache_from_source("x.py")) - len("x.py"))
-        wenn os.name == 'nt' and cached_path_len >= 258:
+        wenn os.name == 'nt' und cached_path_len >= 258:
             # Under Windows, the max path len is 260 including C's terminating
             # NUL character.
             # (see http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx#maxpath)
             self.skipTest("test paths too long (%d characters) fuer Windows' 260 character limit"
                           % cached_path_len)
-        sowenn os.name == 'nt' and verbose:
+        sowenn os.name == 'nt' und verbose:
             drucke("cached_path_len =", cached_path_len)
 
     def test_module(self):
@@ -778,7 +778,7 @@ klasse aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
     @unittest.skip('needs a built-in function mit a really long name')
     def test_builtin_function(self):
-        # XXX test built-in functions and methods mit really long names
+        # XXX test built-in functions und methods mit really long names
         pass
 
 klasse ClassWithRepr:

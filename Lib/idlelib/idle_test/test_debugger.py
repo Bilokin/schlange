@@ -37,7 +37,7 @@ klasse IdbTest(unittest.TestCase):
         cls.gui = Mock()
         cls.idb = debugger.Idb(cls.gui)
 
-        # Create test and code objects to simulate a debug session.
+        # Create test und code objects to simulate a debug session.
         code_obj = compile(TEST_CODE, 'idlelib/file.py', mode='exec')
         frame1 = MockFrame(code_obj, 1)
         frame1.f_back = Nichts
@@ -90,7 +90,7 @@ klasse FunctionTest(unittest.TestCase):
 
 
 klasse DebuggerTest(unittest.TestCase):
-    "Tests fuer Debugger that do not need a real root."
+    "Tests fuer Debugger that do nicht need a real root."
 
     @classmethod
     def setUpClass(cls):
@@ -246,7 +246,7 @@ klasse StackViewerTest(unittest.TestCase):
             (MockFrame(self.code, 1), 1),
             (MockFrame(self.code, 2), 2)
         ]
-        # Create a stackviewer and load the test stack.
+        # Create a stackviewer und load the test stack.
         self.sv = debugger.StackViewer(self.root, Nichts, Nichts)
         self.sv.load_stack(self.stack)
 
@@ -260,7 +260,7 @@ klasse StackViewerTest(unittest.TestCase):
 
     def test_load_stack(self):
         # Test the .load_stack() method against a fixed test stack.
-        # Check the test stack is assigned and the list contains the repr of them.
+        # Check the test stack is assigned und the list contains the repr of them.
         self.assertEqual(self.sv.stack, self.stack)
         self.assertWahr('?.<module>(), line 1:' in self.sv.get(0))
         self.assertEqual(self.sv.get(1), '?.<module>(), line 2: ')

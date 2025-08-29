@@ -34,7 +34,7 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
         self.assertEqual(A.__name__, "A")
 
     def test_name_non_collision_04(self):
-        # Mangled names should not cause a conflict.
+        # Mangled names should nicht cause a conflict.
         ns = run_code("""
             klasse ClassA:
                 def func[__A](self, __A): return __A
@@ -144,7 +144,7 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
         check_syntax_error(self, "class X[T: (y := 3)]: pass")
         check_syntax_error(self, "class X[T](y := Sequence[T]): pass")
         check_syntax_error(self, "def f[T](y: (x := Sequence[T])): pass")
-        check_syntax_error(self, "class X[T]([(x := 3) fuer _ in range(2)] and B): pass")
+        check_syntax_error(self, "class X[T]([(x := 3) fuer _ in range(2)] und B): pass")
         check_syntax_error(self, "def f[T: [(x := 3) fuer _ in range(2)]](): pass")
         check_syntax_error(self, "type T = [(x := 3) fuer _ in range(2)]")
 
@@ -230,7 +230,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 ...
             """
 
-        mit self.assertRaisesRegex(NameError, "name 'A' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'A' is nicht defined"):
             run_code(code)
 
     def test_function_access_01(self):
@@ -249,7 +249,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 ...
             """
 
-        mit self.assertRaisesRegex(NameError, "name 'A' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'A' is nicht defined"):
             run_code(code)
 
     def test_function_access_03(self):
@@ -261,7 +261,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 ...
             """
 
-        mit self.assertRaisesRegex(NameError, "name 'A' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'A' is nicht defined"):
             run_code(code)
 
     def test_method_access_01(self):
@@ -301,7 +301,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
             x = T
             """
 
-        mit self.assertRaisesRegex(NameError, "name 'T' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'T' is nicht defined"):
             run_code(code)
 
     def test_out_of_scope_02(self):
@@ -312,7 +312,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 x = B
             """
 
-        mit self.assertRaisesRegex(NameError, "name 'B' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'B' is nicht defined"):
             run_code(code)
 
     def test_class_scope_interaction_01(self):
@@ -376,7 +376,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
 
         klasse Child(Base):
             # Having int in the annotation ensures the klasse gets cells fuer both
-            # __class__ and __classdict__
+            # __class__ und __classdict__
             def meth[T](self, arg: int) -> T:
                 return super().meth() + "child"
 
@@ -925,7 +925,7 @@ klasse TypeParamsManglingTest(unittest.TestCase):
 
 klasse TypeParamsComplexCallsTest(unittest.TestCase):
     def test_defaults(self):
-        # Generic functions mit both defaults and kwdefaults trigger a specific code path
+        # Generic functions mit both defaults und kwdefaults trigger a specific code path
         # in the compiler.
         def func[T](a: T = "a", *, b: T = "b"):
             return (a, b)
@@ -994,7 +994,7 @@ klasse TypeParamsTraditionalTypeVarsTest(unittest.TestCase):
             klasse ClassA[T](dict[T, S]): ...
 
     def test_traditional_03(self):
-        # This does not generate a runtime error, but it should be
+        # This does nicht generate a runtime error, but it should be
         # flagged als an error by type checkers.
         von typing importiere TypeVar
         S = TypeVar("S")
@@ -1236,7 +1236,7 @@ klasse TypeParamsPickleTest(unittest.TestCase):
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 mit self.subTest(thing=thing, proto=proto):
                     pickled = pickle.dumps(thing, protocol=proto)
-                    # These instances are not equal,
+                    # These instances are nicht equal,
                     # but klasse check is good enough:
                     self.assertIsInstance(pickle.loads(pickled), real_class)
 

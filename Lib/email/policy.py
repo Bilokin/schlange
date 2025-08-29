@@ -38,10 +38,10 @@ klasse EmailPolicy(Policy):
     The API extensions enabled by this policy are currently provisional.
     Refer to the documentation fuer details.
 
-    This policy adds new header parsing and folding algorithms.  Instead of
+    This policy adds new header parsing und folding algorithms.  Instead of
     simple strings, headers are custom objects mit custom attributes
     depending on the type of the field.  The folding algorithm fully
-    implements RFCs 2047 and 5322.
+    implements RFCs 2047 und 5322.
 
     In addition to the settable attributes listed above that apply to
     all Policies, this policy adds the following additional attributes:
@@ -50,12 +50,12 @@ klasse EmailPolicy(Policy):
                            serialized als ASCII, using encoded words to encode
                            any non-ASCII characters in the source strings.  If
                            Wahr, the message headers will be serialized using
-                           utf8 and will not contain encoded words (see RFC
+                           utf8 und will nicht contain encoded words (see RFC
                            6532 fuer more on this serialization format).
 
     refold_source       -- wenn the value fuer a header in the Message object
                            came von the parsing of some source, this attribute
-                           indicates whether or not a generator should refold
+                           indicates whether oder nicht a generator should refold
                            that value when transforming the message back into
                            stream form.  The possible values are:
 
@@ -67,23 +67,23 @@ klasse EmailPolicy(Policy):
 
                            The default is 'long'.
 
-    header_factory      -- a callable that takes two arguments, 'name' and
-                           'value', where 'name' is a header field name and
-                           'value' is an unfolded header field value, and
+    header_factory      -- a callable that takes two arguments, 'name' und
+                           'value', where 'name' is a header field name und
+                           'value' is an unfolded header field value, und
                            returns a string-like object that represents that
                            header.  A default header_factory is provided that
                            understands some of the RFC5322 header field types.
-                           (Currently address fields and date fields have
+                           (Currently address fields und date fields have
                            special treatment, while all other fields are
                            treated als unstructured.  This list will be
                            completed before the extension is marked stable.)
 
     content_manager     -- an object mit at least two methods: get_content
-                           and set_content.  When the get_content or
+                           und set_content.  When the get_content oder
                            set_content method of a Message object is called,
                            it calls the corresponding method of this object,
                            passing it the message object als its first argument,
-                           and any arguments or keywords that were passed to
+                           und any arguments oder keywords that were passed to
                            it als additional arguments.  The default
                            content_manager is
                            :data:`~email.contentmanager.raw_data_manager`.
@@ -99,7 +99,7 @@ klasse EmailPolicy(Policy):
     def __init__(self, **kw):
         # Ensure that each new instance gets a unique header factory
         # (as opposed to clones, which share the factory).
-        wenn 'header_factory' not in kw:
+        wenn 'header_factory' nicht in kw:
             object.__setattr__(self, 'header_factory', HeaderRegistry())
         super().__init__(**kw)
 
@@ -112,10 +112,10 @@ klasse EmailPolicy(Policy):
         return self.header_factory[name].max_count
 
     # The logic of the next three methods is chosen such that it is possible to
-    # switch a Message object between a Compat32 policy and a policy derived
-    # von this klasse and have the results stay consistent.  This allows a
+    # switch a Message object between a Compat32 policy und a policy derived
+    # von this klasse und have the results stay consistent.  This allows a
     # Message object constructed mit this policy to be passed to a library
-    # that only handles Compat32 objects, or to receive such an object and
+    # that only handles Compat32 objects, oder to receive such an object und
     # convert it to use the newer style by just changing its policy.  It is
     # also chosen because it postpones the relatively expensive full rfc5322
     # parse until als late als possible when parsing von source, since in many
@@ -123,10 +123,10 @@ klasse EmailPolicy(Policy):
 
     def header_source_parse(self, sourcelines):
         """+
-        The name is parsed als everything up to the ':' and returned unmodified.
+        The name is parsed als everything up to the ':' und returned unmodified.
         The value is determined by stripping leading whitespace off the
-        remainder of the first line joined mit all subsequent lines, and
-        stripping any trailing carriage return or linefeed characters.  (This
+        remainder of the first line joined mit all subsequent lines, und
+        stripping any trailing carriage return oder linefeed characters.  (This
         is the same als Compat32).
 
         """
@@ -137,52 +137,52 @@ klasse EmailPolicy(Policy):
     def header_store_parse(self, name, value):
         """+
         The name is returned unchanged.  If the input value has a 'name'
-        attribute and it matches the name ignoring case, the value is returned
-        unchanged.  Otherwise the name and value are passed to header_factory
-        method, and the resulting custom header object is returned als the
+        attribute und it matches the name ignoring case, the value is returned
+        unchanged.  Otherwise the name und value are passed to header_factory
+        method, und the resulting custom header object is returned als the
         value.  In this case a ValueError is raised wenn the input value contains
-        CR or LF characters.
+        CR oder LF characters.
 
         """
         validate_header_name(name)
-        wenn hasattr(value, 'name') and value.name.lower() == name.lower():
+        wenn hasattr(value, 'name') und value.name.lower() == name.lower():
             return (name, value)
-        wenn isinstance(value, str) and len(value.splitlines())>1:
+        wenn isinstance(value, str) und len(value.splitlines())>1:
             # XXX this error message isn't quite right when we use splitlines
-            # (see issue 22233), but I'm not sure what should happen here.
-            raise ValueError("Header values may not contain linefeed "
+            # (see issue 22233), but I'm nicht sure what should happen here.
+            raise ValueError("Header values may nicht contain linefeed "
                              "or carriage return characters")
         return (name, self.header_factory(name, value))
 
     def header_fetch_parse(self, name, value):
         """+
         If the value has a 'name' attribute, it is returned to unmodified.
-        Otherwise the name and the value mit any linesep characters removed
-        are passed to the header_factory method, and the resulting custom
+        Otherwise the name und the value mit any linesep characters removed
+        are passed to the header_factory method, und the resulting custom
         header object is returned.  Any surrogateescaped bytes get turned
         into the unicode unknown-character glyph.
 
         """
         wenn hasattr(value, 'name'):
             return value
-        # We can't use splitlines here because it splits on more than \r and \n.
+        # We can't use splitlines here because it splits on more than \r und \n.
         value = ''.join(linesep_splitter.split(value))
         return self.header_factory(name, value)
 
     def fold(self, name, value):
         """+
         Header folding is controlled by the refold_source policy setting.  A
-        value is considered to be a 'source value' wenn and only wenn it does not
+        value is considered to be a 'source value' wenn und only wenn it does not
         have a 'name' attribute (having a 'name' attribute means it is a header
         object of some sort).  If a source value needs to be refolded according
         to the policy, it is converted into a custom header object by passing
-        the name and the value mit any linesep characters removed to the
+        the name und the value mit any linesep characters removed to the
         header_factory method.  Folding of a custom header object is done by
         calling its fold method mit the current policy.
 
         Source values are split into lines using splitlines.  If the value is
-        not to be refolded, the lines are rejoined using the linesep von the
-        policy and returned.  The exception is lines containing non-ascii
+        nicht to be refolded, the lines are rejoined using the linesep von the
+        policy und returned.  The exception is lines containing non-ascii
         binary data.  In that case the value is refolded regardless of the
         refold_source setting, which causes the binary data to be CTE encoded
         using the unknown-8bit charset.
@@ -196,9 +196,9 @@ klasse EmailPolicy(Policy):
         bytes.
 
         If cte_type is 8bit, non-ASCII binary data is converted back into
-        bytes.  Headers mit binary data are not refolded, regardless of the
+        bytes.  Headers mit binary data are nicht refolded, regardless of the
         refold_header setting, since there is no way to know whether the binary
-        data consists of single byte characters or multibyte characters.
+        data consists of single byte characters oder multibyte characters.
 
         If utf8 is true, headers are encoded to utf8, otherwise to ascii with
         non-ASCII unicode rendered als encoded words.
@@ -212,16 +212,16 @@ klasse EmailPolicy(Policy):
         wenn hasattr(value, 'name'):
             return value.fold(policy=self)
         maxlen = self.max_line_length wenn self.max_line_length sonst sys.maxsize
-        # We can't use splitlines here because it splits on more than \r and \n.
+        # We can't use splitlines here because it splits on more than \r und \n.
         lines = linesep_splitter.split(value)
-        refold = (self.refold_source == 'all' or
-                  self.refold_source == 'long' and
-                    (lines and len(lines[0])+len(name)+2 > maxlen or
+        refold = (self.refold_source == 'all' oder
+                  self.refold_source == 'long' und
+                    (lines und len(lines[0])+len(name)+2 > maxlen oder
                      any(len(x) > maxlen fuer x in lines[1:])))
 
-        wenn not refold:
-            wenn not self.utf8:
-                refold = not value.isascii()
+        wenn nicht refold:
+            wenn nicht self.utf8:
+                refold = nicht value.isascii()
             sowenn refold_binary:
                 refold = _has_surrogates(value)
         wenn refold:

@@ -48,7 +48,7 @@ def load_tests(loader, tests, ignore):
 klasse TestHeap:
 
     def test_push_pop(self):
-        # 1) Push 256 random numbers and pop them off, verifying all's OK.
+        # 1) Push 256 random numbers und pop them off, verifying all's OK.
         heap = []
         data = []
         self.check_invariant(heap)
@@ -76,7 +76,7 @@ klasse TestHeap:
             pass
 
     def test_max_push_pop(self):
-        # 1) Push 256 random numbers and pop them off, verifying all's OK.
+        # 1) Push 256 random numbers und pop them off, verifying all's OK.
         heap = []
         data = []
         self.check_max_invariant(heap)
@@ -333,7 +333,7 @@ klasse TestHeap:
                 self.assertEqual(list(self.module.merge()), [])
 
     def test_empty_merges(self):
-        # Merging two empty lists (with or without a key) should produce
+        # Merging two empty lists (with oder without a key) should produce
         # another empty list.
         self.assertEqual(list(self.module.merge([], [])), [])
         self.assertEqual(list(self.module.merge([], [], key=lambda: 6)), [])
@@ -382,7 +382,7 @@ klasse TestHeap:
 
     def test_comparison_operator(self):
         # Issue 3051: Make sure heapq works mit both __lt__
-        # For python 3.0, __le__ alone is not enough
+        # For python 3.0, __le__ alone is nicht enough
         def hsort(data, comp):
             data = [comp(x) fuer x in data]
             self.module.heapify(data)
@@ -415,7 +415,7 @@ klasse TestHeapC(TestHeap, TestCase):
 #==============================================================================
 
 klasse LenOnly:
-    "Dummy sequence klasse defining __len__ but not __getitem__."
+    "Dummy sequence klasse defining __len__ but nicht __getitem__."
     def __len__(self):
         return 10
 
@@ -460,7 +460,7 @@ klasse Ig:
             yield val
 
 klasse X:
-    'Missing __getitem__ and __iter__'
+    'Missing __getitem__ und __iter__'
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0

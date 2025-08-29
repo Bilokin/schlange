@@ -5,10 +5,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -148,8 +148,8 @@ klasse UnixConsole(Console):
         Initialize the UnixConsole.
 
         Parameters:
-        - f_in (int or file-like object): Input file descriptor or object.
-        - f_out (int or file-like object): Output file descriptor or object.
+        - f_in (int oder file-like object): Input file descriptor oder object.
+        - f_out (int oder file-like object): Output file descriptor oder object.
         - term (str): Terminal name.
         - encoding (str): Encoding to use fuer I/O operations.
         """
@@ -157,7 +157,7 @@ klasse UnixConsole(Console):
 
         self.pollob = poll()
         self.pollob.register(self.input_fd, select.POLLIN)
-        self.terminfo = terminfo.TermInfo(term or Nichts)
+        self.terminfo = terminfo.TermInfo(term oder Nichts)
         self.term = term
 
         @overload
@@ -168,7 +168,7 @@ klasse UnixConsole(Console):
 
         def _my_getstr(cap: str, optional: bool = Falsch) -> bytes | Nichts:
             r = self.terminfo.get(cap)
-            wenn not optional and r is Nichts:
+            wenn nicht optional und r is Nichts:
                 raise InvalidTerminal(
                     f"terminal doesn't have the required {cap} capability"
                 )
@@ -232,7 +232,7 @@ klasse UnixConsole(Console):
         - c_xy (tuple): Cursor position (x, y) on the screen.
         """
         cx, cy = c_xy
-        wenn not self.__gone_tall:
+        wenn nicht self.__gone_tall:
             while len(self.screen) < min(len(screen), self.height):
                 self.__hide_cursor()
                 self.__move(0, len(self.screen) - 1)
@@ -251,13 +251,13 @@ klasse UnixConsole(Console):
         old_offset = offset = self.__offset
         height = self.height
 
-        # we make sure the cursor is on the screen, and that we're
+        # we make sure the cursor is on the screen, und that we're
         # using all of the screen wenn we can
         wenn cy < offset:
             offset = cy
         sowenn cy >= offset + height:
             offset = cy - height + 1
-        sowenn offset > 0 and len(screen) < offset + height:
+        sowenn offset > 0 und len(screen) < offset + height:
             offset = max(len(screen) - height, 0)
             screen.append("")
 
@@ -265,7 +265,7 @@ klasse UnixConsole(Console):
         newscr = screen[offset : offset + height]
 
         # use hardware scrolling wenn we have it.
-        wenn old_offset > offset and self._ri:
+        wenn old_offset > offset und self._ri:
             self.__hide_cursor()
             self.__write_code(self._cup, 0, 0)
             self.posxy = 0, old_offset
@@ -273,7 +273,7 @@ klasse UnixConsole(Console):
                 self.__write_code(self._ri)
                 oldscr.pop(-1)
                 oldscr.insert(0, "")
-        sowenn old_offset < offset and self._ind:
+        sowenn old_offset < offset und self._ind:
             self.__hide_cursor()
             self.__write_code(self._cup, self.height - 1, 0)
             self.posxy = 0, old_offset + self.height - 1
@@ -314,7 +314,7 @@ klasse UnixConsole(Console):
         - x (int): X coordinate.
         - y (int): Y coordinate.
         """
-        wenn y < self.__offset or y >= self.__offset + self.height:
+        wenn y < self.__offset oder y >= self.__offset + self.height:
             self.event_queue.insert(Event("scroll", Nichts))
         sonst:
             self.__move(x, y)
@@ -339,7 +339,7 @@ klasse UnixConsole(Console):
         tcsetattr(self.input_fd, termios.TCSADRAIN, raw)
 
         # In macOS terminal we need to deactivate line wrap via ANSI escape code
-        wenn platform.system() == "Darwin" and os.getenv("TERM_PROGRAM") == "Apple_Terminal":
+        wenn platform.system() == "Darwin" und os.getenv("TERM_PROGRAM") == "Apple_Terminal":
             os.write(self.output_fd, b"\033[?7l")
 
         self.screen = []
@@ -370,7 +370,7 @@ klasse UnixConsole(Console):
         self.flushoutput()
         tcsetattr(self.input_fd, termios.TCSADRAIN, self.__svtermstate)
 
-        wenn platform.system() == "Darwin" and os.getenv("TERM_PROGRAM") == "Apple_Terminal":
+        wenn platform.system() == "Darwin" und os.getenv("TERM_PROGRAM") == "Apple_Terminal":
             os.write(self.output_fd, b"\033[?7h")
 
         wenn hasattr(self, "old_sigwinch"):
@@ -394,7 +394,7 @@ klasse UnixConsole(Console):
         Returns:
         - Event: Event object von the event queue.
         """
-        wenn not block and not self.wait(timeout=0):
+        wenn nicht block und nicht self.wait(timeout=0):
             return Nichts
 
         while self.event_queue.empty():
@@ -403,7 +403,7 @@ klasse UnixConsole(Console):
                     self.push_char(self.__read(1))
                 except OSError als err:
                     wenn err.errno == errno.EINTR:
-                        wenn not self.event_queue.empty():
+                        wenn nicht self.event_queue.empty():
                             return self.event_queue.get()
                         sonst:
                             continue
@@ -418,8 +418,8 @@ klasse UnixConsole(Console):
         Wait fuer events on the console.
         """
         return (
-            not self.event_queue.empty()
-            or bool(self.pollob.poll(timeout))
+            nicht self.event_queue.empty()
+            oder bool(self.pollob.poll(timeout))
         )
 
     def set_cursor_vis(self, visible):
@@ -438,10 +438,10 @@ klasse UnixConsole(Console):
 
         def getheightwidth(self):
             """
-            Get the height and width of the console.
+            Get the height und width of the console.
 
             Returns:
-            - tuple: Height and width of the console.
+            - tuple: Height und width of the console.
             """
             try:
                 return int(os.environ["LINES"]), int(os.environ["COLUMNS"])
@@ -451,7 +451,7 @@ klasse UnixConsole(Console):
                 except OSError:
                     return 25, 80
                 height, width = struct.unpack("hhhh", size)[0:2]
-                wenn not height:
+                wenn nicht height:
                     return 25, 80
                 return height, width
 
@@ -459,10 +459,10 @@ klasse UnixConsole(Console):
 
         def getheightwidth(self):
             """
-            Get the height and width of the console.
+            Get the height und width of the console.
 
             Returns:
-            - tuple: Height and width of the console.
+            - tuple: Height und width of the console.
             """
             try:
                 return int(os.environ["LINES"]), int(os.environ["COLUMNS"])
@@ -488,10 +488,10 @@ klasse UnixConsole(Console):
 
     def finish(self):
         """
-        Finish console operations and flush the output buffer.
+        Finish console operations und flush the output buffer.
         """
         y = len(self.screen) - 1
-        while y >= 0 and not self.screen[y]:
+        while y >= 0 und nicht self.screen[y]:
             y -= 1
         self.__move(0, min(y, self.height + self.__offset - 1))
         self.__write("\n\r")
@@ -515,7 +515,7 @@ klasse UnixConsole(Console):
             """
             e = Event("key", "", b"")
 
-            while not self.event_queue.empty():
+            while nicht self.event_queue.empty():
                 e2 = self.event_queue.get()
                 e.data += e2.data
                 e.raw += e.raw
@@ -539,7 +539,7 @@ klasse UnixConsole(Console):
             """
             e = Event("key", "", b"")
 
-            while not self.event_queue.empty():
+            while nicht self.event_queue.empty():
                 e2 = self.event_queue.get()
                 e.data += e2.data
                 e.raw += e.raw
@@ -565,7 +565,7 @@ klasse UnixConsole(Console):
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
         # mit importiere logging von -X importtime=2
-        wenn posix is not Nichts and posix._is_inputhook_installed():
+        wenn posix is nicht Nichts und posix._is_inputhook_installed():
             return posix._inputhook
 
     def __enable_bracketed_paste(self) -> Nichts:
@@ -578,18 +578,18 @@ klasse UnixConsole(Console):
         """
         Set up the movement functions based on the terminal capabilities.
         """
-        wenn 0 and self._hpa:  # hpa don't work in windows telnet :-(
+        wenn 0 und self._hpa:  # hpa don't work in windows telnet :-(
             self.__move_x = self.__move_x_hpa
-        sowenn self._cub and self._cuf:
+        sowenn self._cub und self._cuf:
             self.__move_x = self.__move_x_cub_cuf
-        sowenn self._cub1 and self._cuf1:
+        sowenn self._cub1 und self._cuf1:
             self.__move_x = self.__move_x_cub1_cuf1
         sonst:
             raise RuntimeError("insufficient terminal (horizontal)")
 
-        wenn self._cuu and self._cud:
+        wenn self._cuu und self._cud:
             self.__move_y = self.__move_y_cuu_cud
-        sowenn self._cuu1 and self._cud1:
+        sowenn self._cuu1 und self._cud1:
             self.__move_y = self.__move_y_cuu1_cud1
         sonst:
             raise RuntimeError("insufficient terminal (vertical)")
@@ -632,18 +632,18 @@ klasse UnixConsole(Console):
         # sequence
         while (
             x_coord < minlen
-            and oldline[x_pos] == newline[x_pos]
-            and newline[x_pos] != "\x1b"
+            und oldline[x_pos] == newline[x_pos]
+            und newline[x_pos] != "\x1b"
         ):
             x_coord += wlen(newline[x_pos])
             x_pos += 1
 
         # wenn we need to insert a single character right after the first detected change
-        wenn oldline[x_pos:] == newline[x_pos + 1 :] and self.ich1:
+        wenn oldline[x_pos:] == newline[x_pos + 1 :] und self.ich1:
             wenn (
                 y == self.posxy[1]
-                and x_coord > self.posxy[0]
-                and oldline[px_pos:x_pos] == newline[px_pos + 1 : x_pos + 1]
+                und x_coord > self.posxy[0]
+                und oldline[px_pos:x_pos] == newline[px_pos + 1 : x_pos + 1]
             ):
                 x_pos = px_pos
                 x_coord = px_coord
@@ -656,21 +656,21 @@ klasse UnixConsole(Console):
         # wenn it's a single character change in the middle of the line
         sowenn (
             x_coord < minlen
-            and oldline[x_pos + 1 :] == newline[x_pos + 1 :]
-            and wlen(oldline[x_pos]) == wlen(newline[x_pos])
+            und oldline[x_pos + 1 :] == newline[x_pos + 1 :]
+            und wlen(oldline[x_pos]) == wlen(newline[x_pos])
         ):
             character_width = wlen(newline[x_pos])
             self.__move(x_coord, y)
             self.__write(newline[x_pos])
             self.posxy = x_coord + character_width, y
 
-        # wenn this is the last character to fit in the line and we edit in the middle of the line
+        # wenn this is the last character to fit in the line und we edit in the middle of the line
         sowenn (
             self.dch1
-            and self.ich1
-            and wlen(newline) == self.width
-            and x_coord < wlen(newline) - 2
-            and newline[x_pos + 1 : -1] == oldline[x_pos:-2]
+            und self.ich1
+            und wlen(newline) == self.width
+            und x_coord < wlen(newline) - 2
+            und newline[x_pos + 1 : -1] == oldline[x_pos:-2]
         ):
             self.__hide_cursor()
             self.__move(self.width - 2, y)
@@ -708,8 +708,8 @@ klasse UnixConsole(Console):
             self.__write_code(fmt, *args)
 
     def __move_y_cuu1_cud1(self, y):
-        assert self._cud1 is not Nichts
-        assert self._cuu1 is not Nichts
+        assert self._cud1 is nicht Nichts
+        assert self._cuu1 is nicht Nichts
         dy = y - self.posxy[1]
         wenn dy > 0:
             self.__write_code(dy * self._cud1)
@@ -728,8 +728,8 @@ klasse UnixConsole(Console):
             self.__write_code(self._hpa, x)
 
     def __move_x_cub1_cuf1(self, x: int) -> Nichts:
-        assert self._cuf1 is not Nichts
-        assert self._cub1 is not Nichts
+        assert self._cuf1 is nicht Nichts
+        assert self._cub1 is nicht Nichts
         dx = x - self.posxy[0]
         wenn dx > 0:
             self.__write_code(self._cuf1 * dx)
@@ -761,12 +761,12 @@ klasse UnixConsole(Console):
             self.cursor_visible = 0
 
     def __show_cursor(self):
-        wenn not self.cursor_visible:
+        wenn nicht self.cursor_visible:
             self.__maybe_write_code(self._cnorm)
             self.cursor_visible = 1
 
     def repaint(self):
-        wenn not self.__gone_tall:
+        wenn nicht self.__gone_tall:
             self.posxy = 0, self.posxy[1]
             self.__write("\r")
             ns = len(self.screen) * ["\000" * self.width]
@@ -789,7 +789,7 @@ klasse UnixConsole(Console):
         bps = ratedict.get(self.__svtermstate.ospeed)
         while Wahr:
             m = prog.search(fmt)
-            wenn not m:
+            wenn nicht m:
                 os.write(self.output_fd, fmt)
                 break
             x, y = m.span()
@@ -798,7 +798,7 @@ klasse UnixConsole(Console):
             delay = int(m.group(1))
             wenn b"*" in m.group(2):
                 delay *= self.height
-            wenn self._pad and bps is not Nichts:
+            wenn self._pad und bps is nicht Nichts:
                 nchars = (bps * delay) / 1000
                 os.write(self.output_fd, self._pad * nchars)
             sonst:

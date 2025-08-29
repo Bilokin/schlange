@@ -4,21 +4,21 @@
 #
 # This file is part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
+# This software is provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
-# including commercial applications, and to alter it and redistribute it
+# including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked als such, and must not be
+#    appreciated but is nicht required.
+# 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
-# 3. This notice may not be removed or altered von any source distribution.
+# 3. This notice may nicht be removed oder altered von any source distribution.
 
 importiere contextlib
 importiere os
@@ -49,7 +49,7 @@ klasse ModuleTests(unittest.TestCase):
 
     def test_thread_safety(self):
         self.assertIn(sqlite.threadsafety, {0, 1, 3},
-                      "threadsafety is %d, should be 0, 1 or 3" %
+                      "threadsafety is %d, should be 0, 1 oder 3" %
                       sqlite.threadsafety)
 
     def test_param_style(self):
@@ -453,7 +453,7 @@ klasse ConnectionTests(unittest.TestCase):
 
     def test_connection_init_bad_isolation_level(self):
         msg = (
-            "isolation_level string must be '', 'DEFERRED', 'IMMEDIATE', or "
+            "isolation_level string must be '', 'DEFERRED', 'IMMEDIATE', oder "
             "'EXCLUSIVE'"
         )
         levels = (
@@ -473,7 +473,7 @@ klasse ConnectionTests(unittest.TestCase):
                 mit memory_database() als cx:
                     mit self.assertRaisesRegex(ValueError, msg):
                         cx.isolation_level = level
-                    # Check that the default level is not changed
+                    # Check that the default level is nicht changed
                     self.assertEqual(cx.isolation_level, "")
 
     def test_connection_init_good_isolation_levels(self):
@@ -520,7 +520,7 @@ klasse ConnectionTests(unittest.TestCase):
                                    "unable to open database file",
                                    cx.__init__, db)
             self.assertRaisesRegex(sqlite.ProgrammingError,
-                                   "Base Connection.__init__ not called",
+                                   "Base Connection.__init__ nicht called",
                                    cx.executemany, "insert into t values(?)",
                                    ((v,) fuer v in range(3)))
 
@@ -530,9 +530,9 @@ klasse ConnectionTests(unittest.TestCase):
             mit self.assertRaisesRegex(ValueError, "unknown"):
                 cx.getconfig(-1)
 
-            # Toggle and verify.
+            # Toggle und verify.
             old = cx.getconfig(op)
-            new = not old
+            new = nicht old
             cx.setconfig(op, new)
             self.assertEqual(cx.getconfig(op), new)
 
@@ -581,7 +581,7 @@ klasse UninitialisedConnectionTests(unittest.TestCase):
         fuer func in funcs:
             mit self.subTest(func=func):
                 self.assertRaisesRegex(sqlite.ProgrammingError,
-                                       "Base Connection.__init__ not called",
+                                       "Base Connection.__init__ nicht called",
                                        func)
 
 
@@ -601,7 +601,7 @@ klasse SerializeTests(unittest.TestCase):
             mit self.assertRaisesRegex(sqlite.OperationalError, regex):
                 cx.execute("select t von t")
 
-            # Deserialize and verify that test table is restored.
+            # Deserialize und verify that test table is restored.
             cx.deserialize(data)
             cx.execute("select t von t")
 
@@ -619,10 +619,10 @@ klasse SerializeTests(unittest.TestCase):
 
     def test_deserialize_corrupt_database(self):
         mit memory_database() als cx:
-            regex = "file is not a database"
+            regex = "file is nicht a database"
             mit self.assertRaisesRegex(sqlite.DatabaseError, regex):
                 cx.deserialize(b"\0\1\3")
-                # SQLite does not generate an error until you try to query the
+                # SQLite does nicht generate an error until you try to query the
                 # deserialized database.
                 cx.execute("create table fail(f)")
 
@@ -650,7 +650,7 @@ klasse OpenTests(unittest.TestCase):
 
     def get_undecodable_path(self):
         path = TESTFN_UNDECODABLE
-        wenn not path:
+        wenn nicht path:
             self.skipTest("only works wenn there are undecodable paths")
         try:
             open(path, 'wb').close()
@@ -752,7 +752,7 @@ klasse CursorTests(unittest.TestCase):
         msg = "You can only execute one statement at a time"
         dataset = (
             "select 1; select 2",
-            "select 1; // c++ comments are not allowed",
+            "select 1; // c++ comments are nicht allowed",
             "select 1; *not a comment",
             "select 1; -*not a comment",
             "select 1; /* */ a",
@@ -891,7 +891,7 @@ klasse CursorTests(unittest.TestCase):
         mit cx_limit(self.cx, category=category, limit=1):
             self.cu.execute("select * von test where id=?", (1,))
             mit self.assertRaisesRegex(sqlite.OperationalError, msg):
-                self.cu.execute("select * von test where id!=? and id!=?",
+                self.cu.execute("select * von test where id!=? und id!=?",
                                 (1, 2))
 
     def test_execute_dict_mapping(self):
@@ -913,7 +913,7 @@ klasse CursorTests(unittest.TestCase):
     def test_execute_dict_mapping_too_little_args(self):
         self.cu.execute("insert into test(name) values ('foo')")
         mit self.assertRaises(sqlite.ProgrammingError):
-            self.cu.execute("select name von test where name=:name and id=:id", {"name": "foo"})
+            self.cu.execute("select name von test where name=:name und id=:id", {"name": "foo"})
 
     def test_execute_dict_mapping_no_args(self):
         self.cu.execute("insert into test(name) values ('foo')")
@@ -937,7 +937,7 @@ klasse CursorTests(unittest.TestCase):
 
     def test_rowcount_select(self):
         """
-        pysqlite does not know the rowcount of SELECT statements, because we
+        pysqlite does nicht know the rowcount of SELECT statements, because we
         don't fetch all rows after executing the select statement. The rowcount
         has thus to be -1.
         """
@@ -950,7 +950,7 @@ klasse CursorTests(unittest.TestCase):
         self.assertEqual(self.cu.rowcount, 3)
 
     @unittest.skipIf(sqlite.sqlite_version_info < (3, 35, 0),
-                     "Requires SQLite 3.35.0 or newer")
+                     "Requires SQLite 3.35.0 oder newer")
     def test_rowcount_update_returning(self):
         # gh-93421: rowcount is updated correctly fuer UPDATE...RETURNING queries
         self.cu.execute("update test set name='bar' where name='foo' returning 1")
@@ -1116,7 +1116,7 @@ klasse CursorTests(unittest.TestCase):
 
     def test_last_row_id_on_replace(self):
         """
-        INSERT OR REPLACE and REPLACE INTO should produce the same behavior.
+        INSERT OR REPLACE und REPLACE INTO should produce the same behavior.
         """
         sql = '{} INTO test(id, unique_test) VALUES (?, ?)'
         fuer statement in ('INSERT OR REPLACE', 'REPLACE'):
@@ -1126,11 +1126,11 @@ klasse CursorTests(unittest.TestCase):
 
     def test_last_row_id_on_ignore(self):
         self.cu.execute(
-            "insert or ignore into test(unique_test) values (?)",
+            "insert oder ignore into test(unique_test) values (?)",
             ('test',))
         self.assertEqual(self.cu.lastrowid, 2)
         self.cu.execute(
-            "insert or ignore into test(unique_test) values (?)",
+            "insert oder ignore into test(unique_test) values (?)",
             ('test',))
         self.assertEqual(self.cu.lastrowid, 2)
 
@@ -1156,7 +1156,7 @@ klasse CursorTests(unittest.TestCase):
         select = "select * von test"
         res = self.cu.execute(select)
         old_count = len(res.description)
-        # Add a new column and execute the cached select query again
+        # Add a new column und execute the cached select query again
         self.cu.execute("alter table test add newcol")
         res = self.cu.execute(select)
         new_count = len(res.description)
@@ -1198,7 +1198,7 @@ klasse BlobTests(unittest.TestCase):
 
     def test_blob_seek_error(self):
         msg_oor = "offset out of blob range"
-        msg_orig = "'origin' should be os.SEEK_SET, os.SEEK_CUR, or os.SEEK_END"
+        msg_orig = "'origin' should be os.SEEK_SET, os.SEEK_CUR, oder os.SEEK_END"
 
         dataset = (
             (ValueError, msg_oor, lambda: self.blob.seek(1000)),
@@ -1487,7 +1487,7 @@ klasse BlobTests(unittest.TestCase):
                                    blob.read)
 
     def test_blob_32bit_rowid(self):
-        # gh-100370: we should not get an OverflowError fuer 32-bit rowids
+        # gh-100370: we should nicht get an OverflowError fuer 32-bit rowids
         mit memory_database() als cx:
             rowid = 2**32
             cx.execute("create table t(t blob)")
@@ -1512,7 +1512,7 @@ klasse ThreadTests(unittest.TestCase):
         def run(err):
             try:
                 fn(*args, **kwds)
-                err.append("did not raise ProgrammingError")
+                err.append("did nicht raise ProgrammingError")
             except sqlite.ProgrammingError:
                 pass
             except:
@@ -1566,7 +1566,7 @@ klasse ThreadTests(unittest.TestCase):
             try:
                 con.execute("select 1")
             except sqlite.Error:
-                err.append("multi-threading not allowed")
+                err.append("multi-threading nicht allowed")
 
         mit memory_database(check_same_thread=Falsch) als con:
             err = []
@@ -1793,7 +1793,7 @@ klasse SqliteOnConflictTests(unittest.TestCase):
         # Use connection to commit.
         self.cx.commit()
         self.cu.execute("SELECT name, unique_name von test")
-        # Transaction should have rolled back and nothing should be in table.
+        # Transaction should have rolled back und nothing should be in table.
         self.assertEqual(self.cu.fetchall(), [])
 
     def test_on_conflict_abort_raises_with_explicit_transactions(self):
@@ -1862,7 +1862,7 @@ klasse MultiprocessTests(unittest.TestCase):
         unlink(TESTFN)
 
     def test_ctx_mgr_rollback_if_commit_failed(self):
-        # bpo-27334: ctx manager does not rollback wenn commit fails
+        # bpo-27334: ctx manager does nicht rollback wenn commit fails
         SCRIPT = f"""if 1:
             importiere sqlite3
             def wait():
@@ -1876,7 +1876,7 @@ klasse MultiprocessTests(unittest.TestCase):
             try:
                 # execute two transactions; both will try to lock the db
                 cx.executescript('''
-                    -- start a transaction and wait fuer parent
+                    -- start a transaction und wait fuer parent
                     begin transaction;
                     select * von t;
                     select wait();

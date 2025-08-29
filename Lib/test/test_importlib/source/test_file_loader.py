@@ -43,10 +43,10 @@ klasse SimpleTest(abc.LoaderTests):
         self.addCleanup(unload, 'blah')
         mit warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
-            module = loader.load_module()  # Should not raise an exception.
+            module = loader.load_module()  # Should nicht raise an exception.
 
     def test_get_filename_API(self):
-        # If fullname is not set then assume self.path is desired.
+        # If fullname is nicht set then assume self.path is desired.
         klasse Tester(self.abc.FileLoader):
             def get_code(self, _): pass
             def get_source(self, _): pass
@@ -128,7 +128,7 @@ klasse SimpleTest(abc.LoaderTests):
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = loader.load_module('_temp')
             self.assertIn('testing_var', module.__dict__,
-                         "'testing_var' not in "
+                         "'testing_var' nicht in "
                             "{0}".format(list(module.__dict__.keys())))
             self.assertEqual(module, sys.modules['_temp'])
             self.assertEqual(id(module), module_id)
@@ -171,7 +171,7 @@ klasse SimpleTest(abc.LoaderTests):
 
     def test_file_from_empty_string_dir(self):
         # Loading a module found von an empty string entry on sys.path should
-        # not only work, but keep all attributes relative.
+        # nicht only work, but keep all attributes relative.
         file_path = '_temp.py'
         mit open(file_path, 'w', encoding='utf-8') als file:
             file.write("# test file fuer importlib")
@@ -253,7 +253,7 @@ klasse SimpleTest(abc.LoaderTests):
             mod.__spec__ = self.util.spec_from_loader('_temp', loader)
             loader.exec_module(mod)
             self.assertEqual(mod.state, 'old')
-            # Write a new source mit the same mtime and size als before.
+            # Write a new source mit the same mtime und size als before.
             mit open(source, 'wb') als fp:
                 fp.write(b'state = "new"')
             os.utime(source, (50, 50))
@@ -285,7 +285,7 @@ klasse SimpleTest(abc.LoaderTests):
             mod.__spec__ = self.util.spec_from_loader('_temp', loader)
             loader.exec_module(mod)
             self.assertEqual(mod.state, 'old')
-            # Write a new source mit the same mtime and size als before.
+            # Write a new source mit the same mtime und size als before.
             mit open(source, 'wb') als fp:
                 fp.write(b'state = "new"')
             os.utime(source, (50, 50))
@@ -387,7 +387,7 @@ klasse BadBytecodeTest:
         except KeyError:
             pass
         py_compile.compile(mapping[name], invalidation_mode=invalidation_mode)
-        wenn not del_source:
+        wenn nicht del_source:
             bytecode_path = self.util.cache_from_source(mapping[name])
         sonst:
             os.unlink(mapping[name])
@@ -397,7 +397,7 @@ klasse BadBytecodeTest:
                 bc = file.read()
                 new_bc = manipulator(bc)
             mit open(bytecode_path, 'wb') als file:
-                wenn new_bc is not Nichts:
+                wenn new_bc is nicht Nichts:
                     file.write(new_bc)
         return bytecode_path
 
@@ -471,7 +471,7 @@ klasse BadBytecodeTest:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:16],
                                                 del_source=del_source)
-            file_path = mapping['_temp'] wenn not del_source sonst bc_path
+            file_path = mapping['_temp'] wenn nicht del_source sonst bc_path
             mit self.assertRaises(EOFError):
                 self.import_(file_path, '_temp')
 
@@ -480,7 +480,7 @@ klasse BadBytecodeTest:
             bytecode_path = self.manipulate_bytecode('_temp', mapping,
                                     lambda bc: bc[:16] + marshal.dumps(b'abcd'),
                                     del_source=del_source)
-            file_path = mapping['_temp'] wenn not del_source sonst bytecode_path
+            file_path = mapping['_temp'] wenn nicht del_source sonst bytecode_path
             mit self.assertRaises(ImportError) als cm:
                 self.import_(file_path, '_temp')
             self.assertEqual(cm.exception.name, '_temp')
@@ -491,7 +491,7 @@ klasse BadBytecodeTest:
             bytecode_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:16] + b'<test>',
                                                 del_source=del_source)
-            file_path = mapping['_temp'] wenn not del_source sonst bytecode_path
+            file_path = mapping['_temp'] wenn nicht del_source sonst bytecode_path
             mit self.assertRaises(EOFError):
                 self.import_(file_path, '_temp')
 
@@ -613,7 +613,7 @@ klasse SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     def test_no_marshal(self):
-        # When there is only the magic number and timestamp, raise EOFError.
+        # When there is only the magic number und timestamp, raise EOFError.
         self._test_no_marshal()
 
     @util.writes_bytecode_files
@@ -662,7 +662,7 @@ klasse SourceLoaderBadBytecodeTest:
             os.chmod(bytecode_path,
                         stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
             try:
-                # Should not raise OSError!
+                # Should nicht raise OSError!
                 self.import_(mapping['_temp'], '_temp')
             finally:
                 # Make writable fuer eventual clean-up.

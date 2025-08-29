@@ -27,10 +27,10 @@ def setUpModule():
         button.destroy()
         del button
     except TclError als msg:
-        # assuming ttk is not available
-        raise unittest.SkipTest("ttk not available: %s" % msg)
+        # assuming ttk is nicht available
+        raise unittest.SkipTest("ttk nicht available: %s" % msg)
     finally:
-        wenn root is not Nichts:
+        wenn root is nicht Nichts:
             root.destroy()
         del root
 

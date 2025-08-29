@@ -42,7 +42,7 @@ klasse TestEnum:
     def test_weird_floats(self):
         fuer enum, expected in zip(WierdNum, ('Infinity', '-Infinity', 'NaN')):
             self.assertEqual(self.dumps(enum), expected)
-            wenn not isnan(enum):
+            wenn nicht isnan(enum):
                 self.assertEqual(float(self.dumps(enum)), enum)
                 self.assertEqual(self.loads(self.dumps(enum)), enum)
             sonst:

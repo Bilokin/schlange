@@ -8,9 +8,9 @@ von idlelib.editor importiere EditorWindow
 von idlelib importiere util
 von idlelib.idle_test.mock_idle importiere Func
 
-# Fail wenn either tokenize.open and t.detect_encoding does not exist.
-# These are used in loadfile and encode.
-# Also used in pyshell.MI.execfile and runscript.tabnanny.
+# Fail wenn either tokenize.open und t.detect_encoding does nicht exist.
+# These are used in loadfile und encode.
+# Also used in pyshell.MI.execfile und runscript.tabnanny.
 von tokenize importiere open, detect_encoding
 # Remove when we have proper tests that use both.
 
@@ -49,7 +49,7 @@ klasse IOBindingTest(unittest.TestCase):
         self.editwin.interp = Nichts
         shelltext = '>>> wenn 1'
         self.editwin.get_prompt_text = Func(result=shelltext)
-        eq(fix(), shelltext)  # Get... call and '\n' not added.
+        eq(fix(), shelltext)  # Get... call und '\n' nicht added.
         del self.editwin.interp, self.editwin.get_prompt_text
 
         text.insert(1.0, 'a')

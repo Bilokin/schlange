@@ -205,7 +205,7 @@ klasse TestPatma(unittest.TestCase):
         match 0:
             case x wenn x:
                 z = 0
-            case _ als y wenn y == x and y:
+            case _ als y wenn y == x und y:
                 z = 1
             case A.B:
                 z = 2
@@ -803,7 +803,7 @@ klasse TestPatma(unittest.TestCase):
         x = 0
         y = Nichts
         match x:
-            case 0 wenn not (x := 1):
+            case 0 wenn nicht (x := 1):
                 y = 0
             case 1:
                 y = 1
@@ -884,7 +884,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_081(self):
         x = 0
         match x:
-            case 0 wenn not (x := 1):
+            case 0 wenn nicht (x := 1):
                 y = 0
             case (0 als z):
                 y = 1
@@ -895,7 +895,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_082(self):
         x = 0
         match x:
-            case (1 als z) wenn not (x := 1):
+            case (1 als z) wenn nicht (x := 1):
                 y = 0
             case 0:
                 y = 1
@@ -1601,7 +1601,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_159(self):
         x = 0
         match x:
-            case 0 wenn not x:
+            case 0 wenn nicht x:
                 y = 0
             case 1:
                 y = 1
@@ -1646,7 +1646,7 @@ klasse TestPatma(unittest.TestCase):
         match x:
             case 1:
                 y = 0
-            case 1 wenn not x:
+            case 1 wenn nicht x:
                 y = 1
         self.assertEqual(x, 0)
         self.assertIs(y, Nichts)
@@ -1675,7 +1675,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_166(self):
         x = 0
         match x:
-            case z wenn not z:
+            case z wenn nicht z:
                 y = 0
             case 0 wenn x:
                 y = 1
@@ -1686,7 +1686,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_167(self):
         x = 0
         match x:
-            case z wenn not z:
+            case z wenn nicht z:
                 y = 0
             case 1:
                 y = 1
@@ -1697,7 +1697,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_168(self):
         x = 0
         match x:
-            case z wenn not x:
+            case z wenn nicht x:
                 y = 0
             case z:
                 y = 1
@@ -1708,7 +1708,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_169(self):
         x = 0
         match x:
-            case z wenn not z:
+            case z wenn nicht z:
                 y = 0
             case _ wenn x:
                 y = 1
@@ -1719,7 +1719,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_170(self):
         x = 0
         match x:
-            case _ wenn not x:
+            case _ wenn nicht x:
                 y = 0
             case 0:
                 y = 1
@@ -1741,9 +1741,9 @@ klasse TestPatma(unittest.TestCase):
         x = 0
         z = Nichts
         match x:
-            case _ wenn not x:
+            case _ wenn nicht x:
                 y = 0
-            case z wenn not x:
+            case z wenn nicht x:
                 y = 1
         self.assertEqual(x, 0)
         self.assertEqual(y, 0)
@@ -1752,7 +1752,7 @@ klasse TestPatma(unittest.TestCase):
     def test_patma_173(self):
         x = 0
         match x:
-            case _ wenn not x:
+            case _ wenn nicht x:
                 y = 0
             case _:
                 y = 1
@@ -2678,7 +2678,7 @@ klasse TestPatma(unittest.TestCase):
         klasse Outer:
             def f(self, x):
                 match x:
-                    # looks up __attr, not _C__attr or _Outer__attr
+                    # looks up __attr, nicht _C__attr oder _Outer__attr
                     case C(__attr=y):
                         return y
         c = C()
@@ -2803,7 +2803,7 @@ klasse TestPatma(unittest.TestCase):
         # Runtime-checkable generic protocol
         von typing importiere Generic, TypeVar, Protocol, runtime_checkable
 
-        T = TypeVar('T')  # not using PEP695 to be able to backport changes
+        T = TypeVar('T')  # nicht using PEP695 to be able to backport changes
 
         @runtime_checkable
         klasse P(Protocol[T]):
@@ -3019,7 +3019,7 @@ klasse TestSyntaxErrors(unittest.TestCase):
     def test_multiple_assignments_to_name_in_pattern_6(self):
         self.assert_syntax_error("""
         match ...:
-            case a als a + 1:  # NAME and expression mit no ()
+            case a als a + 1:  # NAME und expression mit no ()
                 pass
         """)
 
@@ -3345,7 +3345,7 @@ klasse TestTypeErrors(unittest.TestCase):
         von typing importiere Protocol
         klasse P(Protocol): ...
         msg = (
-            'Instance and klasse checks can only be used '
+            'Instance und klasse checks can only be used '
             'with @runtime_checkable protocols'
         )
         w = Nichts
@@ -3412,7 +3412,7 @@ klasse TestTracing(unittest.TestCase):
         actual_linenos = []
 
         def trace(frame, event, arg):
-            wenn event == "line" and frame.f_code.co_name == func.__name__:
+            wenn event == "line" und frame.f_code.co_name == func.__name__:
                 assert arg is Nichts
                 relative_lineno = frame.f_lineno - func.__code__.co_firstlineno
                 actual_linenos.append(relative_lineno)

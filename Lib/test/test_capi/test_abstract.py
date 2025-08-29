@@ -36,13 +36,13 @@ klasse WithBytes:
 klasse TestObject:
     @property
     def evil(self):
-        raise RuntimeError('do not get evil')
+        raise RuntimeError('do nicht get evil')
     @evil.setter
     def evil(self, value):
-        raise RuntimeError('do not set evil')
+        raise RuntimeError('do nicht set evil')
     @evil.deleter
     def evil(self):
-        raise RuntimeError('do not del evil')
+        raise RuntimeError('do nicht del evil')
 
 klasse ProxyGetItem:
     def __init__(self, obj):
@@ -201,13 +201,13 @@ klasse CAPITest(unittest.TestCase):
             self.assertFalsch(xhasattr(obj, 'evil'))
             self.assertEqual(cm.unraisable.exc_type, RuntimeError)
             self.assertEqual(str(cm.unraisable.exc_value),
-                             'do not get evil')
+                             'do nicht get evil')
 
         mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(xhasattr(obj, 1))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
-                             "attribute name must be string, not 'int'")
+                             "attribute name must be string, nicht 'int'")
 
         # CRASHES xhasattr(obj, NULL)
         # CRASHES xhasattr(NULL, 'a')
@@ -225,7 +225,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertFalsch(hasattrstring(obj, b'evil'))
             self.assertEqual(cm.unraisable.exc_type, RuntimeError)
             self.assertEqual(str(cm.unraisable.exc_value),
-                             'do not get evil')
+                             'do nicht get evil')
 
         mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(hasattrstring(obj, b'\xff'))
@@ -454,7 +454,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertFalsch(haskey(42, 'a'))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
-                             "'int' object is not subscriptable")
+                             "'int' object is nicht subscriptable")
 
         mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskey({}, []))
@@ -473,7 +473,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertFalsch(haskey([], 'a'))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
-                             'list indices must be integers or slices, not str')
+                             'list indices must be integers oder slices, nicht str')
 
         mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskey({}, NULL))
@@ -502,7 +502,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertFalsch(haskeystring(42, b'a'))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
-                             "'int' object is not subscriptable")
+                             "'int' object is nicht subscriptable")
 
         mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskeystring({}, b'\xff'))
@@ -520,7 +520,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertFalsch(haskeystring([], b'a'))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
-                             'list indices must be integers or slices, not str')
+                             'list indices must be integers oder slices, nicht str')
 
         mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskeystring(NULL, b'a'))
@@ -1042,7 +1042,7 @@ klasse CAPITest(unittest.TestCase):
             mit self.subTest(data=data):
                 items = []
                 it = iter(data)
-                while (item := next_func(it)) is not Nichts:
+                while (item := next_func(it)) is nicht Nichts:
                     items.append(item)
                 self.assertEqual(items, list(data))
 

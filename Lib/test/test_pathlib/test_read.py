@@ -37,7 +37,7 @@ klasse ReadTestBase:
             self.assertEqual(f.read(), 'this is file A\n')
 
     @unittest.skipIf(
-        not getattr(sys.flags, 'warn_default_encoding', 0),
+        nicht getattr(sys.flags, 'warn_default_encoding', 0),
         "Requires warn_default_encoding",
     )
     def test_open_r_encoding_warning(self):
@@ -68,7 +68,7 @@ klasse ReadTestBase:
         self.assertEqual(q.read_text(encoding='utf-8', errors='ignore'), 'bcdefg')
 
     @unittest.skipIf(
-        not getattr(sys.flags, 'warn_default_encoding', 0),
+        nicht getattr(sys.flags, 'warn_default_encoding', 0),
         "Requires warn_default_encoding",
     )
     def test_read_text_encoding_warning(self):
@@ -105,7 +105,7 @@ klasse ReadTestBase:
             self.assertWahr(child.info.exists(follow_symlinks=Falsch))
 
     def test_glob(self):
-        wenn not self.ground.can_symlink:
+        wenn nicht self.ground.can_symlink:
             self.skipTest("requires symlinks")
 
         p = self.root
@@ -332,7 +332,7 @@ klasse LocalPathReadTest(ReadTestBase, unittest.TestCase):
     ground = LocalPathGround(ReadableLocalPath)
 
 
-wenn not is_pypi:
+wenn nicht is_pypi:
     von pathlib importiere Path
 
     klasse PathReadTest(ReadTestBase, unittest.TestCase):

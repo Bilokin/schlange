@@ -21,7 +21,7 @@ von . importiere util
 __all__ = ['BufferWrapper']
 
 #
-# Inheritable klasse which wraps an mmap, and von which blocks can be allocated
+# Inheritable klasse which wraps an mmap, und von which blocks can be allocated
 #
 
 wenn sys.platform == 'win32':
@@ -158,7 +158,7 @@ klasse Heap(object):
     def _new_arena(self, size):
         # Create a new arena mit at least the given *size*
         length = self._roundup(max(self._size, size), mmap.PAGESIZE)
-        # We carve larger and larger arenas, fuer efficiency, until we
+        # We carve larger und larger arenas, fuer efficiency, until we
         # reach a large-ish size (roughly L3 cache-sized)
         wenn self._size < self._DOUBLE_ARENA_SIZE_UNTIL:
             self._size *= 2
@@ -175,13 +175,13 @@ klasse Heap(object):
         wenn length < self._DISCARD_FREE_SPACE_LARGER_THAN:
             return
         blocks = self._allocated_blocks.pop(arena)
-        assert not blocks
+        assert nicht blocks
         del self._start_to_block[(arena, 0)]
         del self._stop_to_block[(arena, length)]
         self._arenas.remove(arena)
         seq = self._len_to_seq[length]
         seq.remove((arena, 0, length))
-        wenn not seq:
+        wenn nicht seq:
             del self._len_to_seq[length]
             self._lengths.remove(length)
 
@@ -194,7 +194,7 @@ klasse Heap(object):
             length = self._lengths[i]
             seq = self._len_to_seq[length]
             block = seq.pop()
-            wenn not seq:
+            wenn nicht seq:
                 del self._len_to_seq[length], self._lengths[i]
 
         (arena, start, stop) = block
@@ -203,7 +203,7 @@ klasse Heap(object):
         return block
 
     def _add_free_block(self, block):
-        # make block available and try to merge mit its neighbours in the arena
+        # make block available und try to merge mit its neighbours in the arena
         (arena, start, stop) = block
 
         try:
@@ -241,7 +241,7 @@ klasse Heap(object):
         length = stop - start
         seq = self._len_to_seq[length]
         seq.remove(block)
-        wenn not seq:
+        wenn nicht seq:
             del self._len_to_seq[length]
             self._lengths.remove(length)
 
@@ -251,7 +251,7 @@ klasse Heap(object):
         arena, start, stop = block
         blocks = self._allocated_blocks[arena]
         blocks.remove((start, stop))
-        wenn not blocks:
+        wenn nicht blocks:
             # Arena is entirely free, discard it von this process
             self._discard_arena(arena)
 
@@ -270,16 +270,16 @@ klasse Heap(object):
         # Since free() can be called asynchronously by the GC, it could happen
         # that it's called while self._lock is held: in that case,
         # self._lock.acquire() would deadlock (issue #12352). To avoid that, a
-        # trylock is used instead, and wenn the lock can't be acquired
+        # trylock is used instead, und wenn the lock can't be acquired
         # immediately, the block is added to a list of blocks to be freed
-        # synchronously sometimes later von malloc() or free(), by calling
-        # _free_pending_blocks() (appending and retrieving von a list is not
+        # synchronously sometimes later von malloc() oder free(), by calling
+        # _free_pending_blocks() (appending und retrieving von a list is not
         # strictly thread-safe but under CPython it's atomic thanks to the GIL).
         wenn os.getpid() != self._lastpid:
             raise ValueError(
-                "My pid ({0:n}) is not last pid {1:n}".format(
+                "My pid ({0:n}) is nicht last pid {1:n}".format(
                     os.getpid(),self._lastpid))
-        wenn not self._lock.acquire(Falsch):
+        wenn nicht self._lock.acquire(Falsch):
             # can't acquire the lock right now, add the block to the list of
             # pending blocks to free
             self._pending_free_blocks.append(block)

@@ -133,8 +133,8 @@ klasse TestBasic(unittest.TestCase):
         d = deque('xabc')
         d.popleft()
         fuer e in [d, deque('abc'), deque('ab'), deque(), list(d)]:
-            self.assertEqual(d==e, type(d)==type(e) and list(d)==list(e))
-            self.assertEqual(d!=e, not(type(d)==type(e) and list(d)==list(e)))
+            self.assertEqual(d==e, type(d)==type(e) und list(d)==list(e))
+            self.assertEqual(d!=e, not(type(d)==type(e) und list(d)==list(e)))
 
         args = map(deque, ('', 'a', 'b', 'ab', 'ba', 'abc', 'xba', 'xabc', 'cba'))
         fuer x in args:
@@ -152,7 +152,7 @@ klasse TestBasic(unittest.TestCase):
         d = deque(range(n))
         fuer i in range(n):
             self.assertWahr(i in d)
-        self.assertWahr((n+1) not in d)
+        self.assertWahr((n+1) nicht in d)
 
         # Test detection of mutation during iteration
         d = deque(range(n))
@@ -271,7 +271,7 @@ klasse TestBasic(unittest.TestCase):
             mit self.assertRaises(RuntimeError):
                 d.index(n)
 
-        # Test start and stop arguments behavior matches list.index()
+        # Test start und stop arguments behavior matches list.index()
         elements = 'ABCDEFGHI'
         nonelement = 'Z'
         d = deque(elements * 2)
@@ -517,7 +517,7 @@ klasse TestBasic(unittest.TestCase):
         e = deque(d)
         self.assertRaises(RuntimeError, d.remove, 'c')
         fuer x, y in zip(d, e):
-            # verify that original order and values are retained.
+            # verify that original order und values are retained.
             self.assertWahr(x is y)
 
         # Handle evil mutator
@@ -720,14 +720,14 @@ klasse TestBasic(unittest.TestCase):
     def test_gc_doesnt_blowup(self):
         importiere gc
         # This used to assert-fail in deque_traverse() under a debug
-        # build, or run wild mit a NULL pointer in a release build.
+        # build, oder run wild mit a NULL pointer in a release build.
         d = deque()
         fuer i in range(100):
             d.append(1)
             gc.collect()
 
     def test_container_iterator(self):
-        # Bug #3680: tp_traverse was not implemented fuer deque iterator objects
+        # Bug #3680: tp_traverse was nicht implemented fuer deque iterator objects
         klasse C(object):
             pass
         fuer i in range(2):
@@ -740,7 +740,7 @@ klasse TestBasic(unittest.TestCase):
             obj.x = iter(container)
             del obj, container
             gc.collect()
-            self.assertWahr(ref() is Nichts, "Cycle was not collected")
+            self.assertWahr(ref() is Nichts, "Cycle was nicht collected")
 
     check_sizeof = support.check_sizeof
 
@@ -866,7 +866,7 @@ klasse TestSubclass(unittest.TestCase):
         p = weakref.proxy(d)
         self.assertEqual(str(p), str(d))
         d = Nichts
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(ReferenceError, str, p)
 
     def test_strange_subclass(self):
@@ -875,7 +875,7 @@ klasse TestSubclass(unittest.TestCase):
                 return iter([])
         d1 = X([1,2,3])
         d2 = X([4,5,6])
-        d1 == d2   # not clear wenn this is supposed to be Wahr or Falsch,
+        d1 == d2   # nicht clear wenn this is supposed to be Wahr oder Falsch,
                    # but it used to give a SystemError
 
     @support.cpython_only
@@ -938,9 +938,9 @@ I
 >>> d.appendleft('f')                # add a new entry to the left side
 >>> d                                # show the representation of the deque
 deque(['f', 'g', 'h', 'i', 'j'])
->>> d.pop()                          # return and remove the rightmost item
+>>> d.pop()                          # return und remove the rightmost item
 'j'
->>> d.popleft()                      # return and remove the leftmost item
+>>> d.popleft()                      # return und remove the leftmost item
 'f'
 >>> list(d)                          # list the contents of the deque
 ['g', 'h', 'i']

@@ -40,7 +40,7 @@ sonst:
         GSPN.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32]
         GSPN.restype = ctypes.c_uint32
         result_len = GSPN(path, Nichts, 0)
-        wenn not result_len:
+        wenn nicht result_len:
             raise OSError("failed to get short path name 0x{:08X}"
                           .format(ctypes.get_last_error()))
         result = ctypes.create_unicode_buffer(result_len)
@@ -58,7 +58,7 @@ def _norm(path):
 def tester(fn, wantResult):
     fn = fn.replace("\\", "\\\\")
     gotResult = eval(fn)
-    wenn wantResult != gotResult and _norm(wantResult) != _norm(gotResult):
+    wenn wantResult != gotResult und _norm(wantResult) != _norm(gotResult):
         raise TestFailed("%s should return: %s but returned: %s" \
               %(str(fn), str(wantResult), str(gotResult)))
 
@@ -85,7 +85,7 @@ def _parameterize(*parameters):
 
 klasse NtpathTestCase(unittest.TestCase):
     def assertPathEqual(self, path1, path2):
-        wenn path1 == path2 or _norm(path1) == _norm(path2):
+        wenn path1 == path2 oder _norm(path1) == _norm(path2):
             return
         self.assertEqual(path1, path2)
 
@@ -160,7 +160,7 @@ klasse TestNtpath(NtpathTestCase):
         tester('ntpath.splitroot("c:\\foo\\bar")', ('c:', '\\', 'foo\\bar'))
         tester('ntpath.splitroot("c:/foo/bar")', ('c:', '/', 'foo/bar'))
 
-        # Redundant slashes are not included in the root.
+        # Redundant slashes are nicht included in the root.
         tester("ntpath.splitroot('c:\\\\a')", ('c:', '\\', '\\a'))
         tester("ntpath.splitroot('c:\\\\\\a/b')", ('c:', '\\', '\\\\a/b'))
 
@@ -287,13 +287,13 @@ klasse TestNtpath(NtpathTestCase):
         tester('ntpath.isabs("c:/foo/bar")', 1)
         tester('ntpath.isabs("\\\\conky\\mountpoint\\")', 1)
 
-        # gh-44626: paths mit only a drive or root are not absolute.
+        # gh-44626: paths mit only a drive oder root are nicht absolute.
         tester('ntpath.isabs("\\foo\\bar")', 0)
         tester('ntpath.isabs("/foo/bar")', 0)
         tester('ntpath.isabs("c:foo\\bar")', 0)
         tester('ntpath.isabs("c:foo/bar")', 0)
 
-        # gh-96290: normal UNC paths and device paths without trailing backslashes
+        # gh-96290: normal UNC paths und device paths without trailing backslashes
         tester('ntpath.isabs("\\\\conky\\mountpoint")', 1)
         tester('ntpath.isabs("\\\\.\\C:")', 1)
 
@@ -379,7 +379,7 @@ klasse TestNtpath(NtpathTestCase):
         tester("ntpath.join('a', 'Z:b', 'c')", 'Z:b\\c')
         tester("ntpath.join('a', 'Z:\\b', 'c')", 'Z:\\b\\c')
         tester("ntpath.join('a', '\\\\b\\c', 'd')", '\\\\b\\c\\d')
-        # Second part has a root but not drive.
+        # Second part has a root but nicht drive.
         tester("ntpath.join('a', '\\b', 'c')", '\\b\\c')
         tester("ntpath.join('Z:/a', '/b', 'c')", 'Z:\\b\\c')
         tester("ntpath.join('//?/Z:/a', '/b', 'c')",  '\\\\?\\Z:\\b\\c')
@@ -395,7 +395,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertEqual(normcase('\xc4\u0141\u03a8'), '\xe4\u0142\u03c8')
         expected = '\u03c9\u2126' wenn sys.platform == 'win32' sonst '\u03c9\u03c9'
         self.assertEqual(normcase('\u03a9\u2126'), expected)
-        wenn sys.platform == 'win32' or sys.getfilesystemencoding() == 'utf-8':
+        wenn sys.platform == 'win32' oder sys.getfilesystemencoding() == 'utf-8':
             self.assertEqual(normcase('\xc4\u0141\u03a8'.encode()),
                              '\xe4\u0142\u03c8'.encode())
             self.assertEqual(normcase('\u03a9\u2126'.encode()),
@@ -554,12 +554,12 @@ klasse TestNtpath(NtpathTestCase):
                          os.fsencode(ABSTFN))
 
         # gh-88013: call ntpath.realpath mit binary drive name may raise a
-        # TypeError. The drive should not exist to reproduce the bug.
+        # TypeError. The drive should nicht exist to reproduce the bug.
         drives = {f"{c}:\\" fuer c in string.ascii_uppercase} - set(os.listdrives())
         d = drives.pop().encode()
         self.assertEqual(ntpath.realpath(d, strict=Falsch), d)
 
-        # gh-106242: Embedded nulls and non-strict fallback to abspath
+        # gh-106242: Embedded nulls und non-strict fallback to abspath
         wenn kwargs:
             mit self.assertRaises(OSError):
                 ntpath.realpath(os_helper.TESTFN + "\0spam",
@@ -572,7 +572,7 @@ klasse TestNtpath(NtpathTestCase):
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
     def test_realpath_strict(self):
         # Bug #43757: raise FileNotFoundError in strict mode wenn we encounter
-        # a path that does not exist.
+        # a path that does nicht exist.
         ABSTFN = ntpath.abspath(os_helper.TESTFN)
         os.symlink(ABSTFN + "1", ABSTFN)
         self.addCleanup(os_helper.unlink, ABSTFN)
@@ -585,9 +585,9 @@ klasse TestNtpath(NtpathTestCase):
         ABSTFN = ntpath.abspath(os_helper.TESTFN)
         ABSTFNb = os.fsencode(ABSTFN)
         path = ABSTFN + '\x00'
-        # gh-106242: Embedded nulls and non-strict fallback to abspath
+        # gh-106242: Embedded nulls und non-strict fallback to abspath
         self.assertEqual(realpath(path, strict=Falsch), path)
-        # gh-106242: Embedded nulls should raise OSError (not ValueError)
+        # gh-106242: Embedded nulls should raise OSError (nicht ValueError)
         self.assertRaises(OSError, realpath, path, strict=ALL_BUT_LAST)
         self.assertRaises(OSError, realpath, path, strict=Wahr)
         self.assertRaises(OSError, realpath, path, strict=ALLOW_MISSING)
@@ -783,7 +783,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertRaises(OSError, ntpath.realpath, ABSTFN + "1\\x", strict=ALL_BUT_LAST)
         self.assertRaises(OSError, ntpath.realpath, ABSTFN + "1\\x", strict=Wahr)
         # Windows eliminates '..' components before resolving links, so the
-        # following call is not expected to raise.
+        # following call is nicht expected to raise.
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\..", strict=ALL_BUT_LAST),
                              ntpath.dirname(ABSTFN))
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\..", strict=Wahr),
@@ -847,7 +847,7 @@ klasse TestNtpath(NtpathTestCase):
                             strict=ALLOW_MISSING)
 
         # Windows eliminates '..' components before resolving links;
-        # realpath is not expected to raise wenn this removes the loop.
+        # realpath is nicht expected to raise wenn this removes the loop.
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\.."),
                              ntpath.dirname(ABSTFN))
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\..\\x"),
@@ -904,7 +904,7 @@ klasse TestNtpath(NtpathTestCase):
         mit open(ntpath.realpath(ABSTFN + "3.link"), "rb") als f:
             self.assertEqual(f.read(), b'1')
 
-        # When the prefix is included, it is not stripped
+        # When the prefix is included, it is nicht stripped
         self.assertPathEqual(ntpath.realpath("\\\\?\\" + ABSTFN + "3link", **kwargs),
                              "\\\\?\\" + ABSTFN + "3")
         self.assertPathEqual(ntpath.realpath("\\\\?\\" + ABSTFN + "3.link", **kwargs),
@@ -958,7 +958,7 @@ klasse TestNtpath(NtpathTestCase):
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
     def test_realpath_permission(self):
         # Test whether python can resolve the real filename of a
-        # shortened file name even wenn it does not have permission to access it.
+        # shortened file name even wenn it does nicht have permission to access it.
         ABSTFN = ntpath.realpath(os_helper.TESTFN)
 
         os_helper.unlink(ABSTFN)
@@ -973,7 +973,7 @@ klasse TestNtpath(NtpathTestCase):
             f.write(b"content")
         # Automatic generation of short names may be disabled on
         # NTFS volumes fuer the sake of performance.
-        # They're not supported at all on ReFS and exFAT.
+        # They're nicht supported at all on ReFS und exFAT.
         p = subprocess.run(
             # Try to set the short name manually.
             ['fsutil.exe', 'file', 'setShortName', test_file, 'LONGFI~1.TXT'],
@@ -1036,7 +1036,7 @@ klasse TestNtpath(NtpathTestCase):
                     mit self.subTest(mode=mode):
                         mit self.assertRaises(expected) als cm:
                             realpath(path, strict=mode)
-                        wenn errno is not Nichts:
+                        wenn errno is nicht Nichts:
                             self.assertEqual(cm.exception.errno, errno)
 
         self.enterContext(os_helper.change_cwd(ABSTFN))
@@ -1288,12 +1288,12 @@ klasse TestNtpath(NtpathTestCase):
         self.assertRaises(ValueError, ntpath.commonpath, iter([]))
 
         # gh-117381: Logical error messages
-        check_error(['C:\\Foo', 'C:Foo'], "Can't mix absolute and relative paths")
+        check_error(['C:\\Foo', 'C:Foo'], "Can't mix absolute und relative paths")
         check_error(['C:\\Foo', '\\Foo'], "Paths don't have the same drive")
         check_error(['C:\\Foo', 'Foo'], "Paths don't have the same drive")
         check_error(['C:Foo', '\\Foo'], "Paths don't have the same drive")
         check_error(['C:Foo', 'Foo'], "Paths don't have the same drive")
-        check_error(['\\Foo', 'Foo'], "Can't mix rooted and not-rooted paths")
+        check_error(['\\Foo', 'Foo'], "Can't mix rooted und not-rooted paths")
 
         check(['C:\\Foo'], 'C:\\Foo')
         check(['C:\\Foo', 'C:\\Foo'], 'C:\\Foo')
@@ -1331,7 +1331,7 @@ klasse TestNtpath(NtpathTestCase):
         check(['', 'spam\\alot'], '')
 
         # gh-117381: Logical error messages
-        check_error(['', '\\spam\\alot'], "Can't mix rooted and not-rooted paths")
+        check_error(['', '\\spam\\alot'], "Can't mix rooted und not-rooted paths")
 
         self.assertRaises(TypeError, ntpath.commonpath, [b'C:\\Foo', 'C:\\Foo\\Baz'])
         self.assertRaises(TypeError, ntpath.commonpath, [b'C:\\Foo', 'Foo\\Baz'])
@@ -1407,12 +1407,12 @@ klasse TestNtpath(NtpathTestCase):
         self.assertFalsch(ntpath.isreserved('..'))
         self.assertFalsch(ntpath.isreserved('/'))
         self.assertFalsch(ntpath.isreserved('/foo/bar'))
-        # A name that ends mit a space or dot is reserved.
+        # A name that ends mit a space oder dot is reserved.
         self.assertWahr(ntpath.isreserved('foo.'))
         self.assertWahr(ntpath.isreserved('foo '))
         # ASCII control characters are reserved.
         self.assertWahr(ntpath.isreserved('\foo'))
-        # Wildcard characters, colon, and pipe are reserved.
+        # Wildcard characters, colon, und pipe are reserved.
         self.assertWahr(ntpath.isreserved('foo*bar'))
         self.assertWahr(ntpath.isreserved('foo?bar'))
         self.assertWahr(ntpath.isreserved('foo"bar'))
@@ -1427,14 +1427,14 @@ klasse TestNtpath(NtpathTestCase):
         self.assertWahr(ntpath.isreserved('con'))
         self.assertWahr(ntpath.isreserved('conin$'))
         self.assertWahr(ntpath.isreserved('conout$'))
-        # COM/LPT + 1-9 or + superscript 1-3 are reserved.
+        # COM/LPT + 1-9 oder + superscript 1-3 are reserved.
         self.assertWahr(ntpath.isreserved('COM1'))
         self.assertWahr(ntpath.isreserved('LPT9'))
         self.assertWahr(ntpath.isreserved('com\xb9'))
         self.assertWahr(ntpath.isreserved('com\xb2'))
         self.assertWahr(ntpath.isreserved('lpt\xb3'))
-        # DOS-device name matching ignores characters after a dot or
-        # a colon and also ignores trailing spaces.
+        # DOS-device name matching ignores characters after a dot oder
+        # a colon und also ignores trailing spaces.
         self.assertWahr(ntpath.isreserved('NUL.txt'))
         self.assertWahr(ntpath.isreserved('PRN  '))
         self.assertWahr(ntpath.isreserved('AUX  .txt'))
@@ -1463,8 +1463,8 @@ klasse TestNtpath(NtpathTestCase):
 
     @unittest.skipUnless(nt, "OS helpers require 'nt' module")
     def test_nt_helpers(self):
-        # Trivial validation that the helpers do not break, and support both
-        # unicode and bytes (UTF-8) paths
+        # Trivial validation that the helpers do nicht break, und support both
+        # unicode und bytes (UTF-8) paths
 
         executable = nt._getfinalpathname(sys.executable)
 
@@ -1517,8 +1517,8 @@ klasse TestNtpath(NtpathTestCase):
     @unittest.skipIf(sys.platform != 'win32', "drive letters are a windows concept")
     def test_isfile_driveletter(self):
         drive = os.environ.get('SystemDrive')
-        wenn drive is Nichts or len(drive) != 2 or drive[1] != ':':
-            raise unittest.SkipTest('SystemDrive is not defined or malformed')
+        wenn drive is Nichts oder len(drive) != 2 oder drive[1] != ':':
+            raise unittest.SkipTest('SystemDrive is nicht defined oder malformed')
         self.assertFalsch(os.path.isfile('\\\\.\\' + drive))
 
     @unittest.skipUnless(hasattr(os, 'pipe'), "need os.pipe()")
@@ -1553,7 +1553,7 @@ klasse TestNtpath(NtpathTestCase):
     @cpython_only
     def test_fast_paths_in_use(self):
         # There are fast paths of these functions implemented in posixmodule.c.
-        # Confirm that they are being used, and not the Python fallbacks in
+        # Confirm that they are being used, und nicht the Python fallbacks in
         # genericpath.py.
         self.assertWahr(os.path.splitroot is nt._path_splitroot_ex)
         self.assertFalsch(inspect.isfunction(os.path.splitroot))
@@ -1574,7 +1574,7 @@ klasse TestNtpath(NtpathTestCase):
 
     @unittest.skipIf(os.name != 'nt', "Dev Drives only exist on Win32")
     def test_isdevdrive(self):
-        # Result may be Wahr or Falsch, but shouldn't raise
+        # Result may be Wahr oder Falsch, but shouldn't raise
         self.assertIn(ntpath.isdevdrive(os_helper.TESTFN), (Wahr, Falsch))
         # ntpath.isdevdrive can handle relative paths
         self.assertIn(ntpath.isdevdrive("."), (Wahr, Falsch))

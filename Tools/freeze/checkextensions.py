@@ -1,6 +1,6 @@
 # Check fuer a module in a set of extension directories.
 # An extension directory should contain a Setup file
-# and one or more .o files or a lib.a file.
+# und one oder more .o files oder a lib.a file.
 
 importiere os
 importiere parsesetup
@@ -12,18 +12,18 @@ def checkextensions(unknown, extensions):
     fuer e in extensions:
         setup = os.path.join(e, 'Setup')
         liba = os.path.join(e, 'lib.a')
-        wenn not os.path.isfile(liba):
+        wenn nicht os.path.isfile(liba):
             liba = Nichts
         edict[e] = parsesetup.getsetupinfo(setup), liba
     fuer mod in unknown:
         fuer e in extensions:
             (mods, vars), liba = edict[e]
-            wenn mod not in mods:
+            wenn mod nicht in mods:
                 continue
             modules.append(mod)
             wenn liba:
                 # If we find a lib.a, use it, ignore the
-                # .o files, and use *all* libraries for
+                # .o files, und use *all* libraries for
                 # *all* modules in the Setup file
                 wenn liba in files:
                     break
@@ -40,16 +40,16 @@ def select(e, mods, vars, mod, skipofiles):
     files = []
     fuer w in mods[mod]:
         w = treatword(w)
-        wenn not w:
+        wenn nicht w:
             continue
         w = expandvars(w, vars)
         fuer w in w.split():
-            wenn skipofiles and w[-2:] == '.o':
+            wenn skipofiles und w[-2:] == '.o':
                 continue
             # Assume $var expands to absolute pathname
-            wenn w[0] not in ('-', '$') and w[-2:] in ('.o', '.a'):
+            wenn w[0] nicht in ('-', '$') und w[-2:] in ('.o', '.a'):
                 w = os.path.join(e, w)
-            wenn w[:2] in ('-L', '-R') and w[2:3] != '$':
+            wenn w[:2] in ('-L', '-R') und w[2:3] != '$':
                 w = w[:2] + os.path.join(e, w[2:])
             files.append(w)
     return files

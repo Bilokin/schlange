@@ -206,7 +206,7 @@ klasse TestMessageAPI(TestEmailBase):
     def test_make_boundary(self):
         msg = MIMEMultipart('form-data')
         # Note that when the boundary gets created is an implementation
-        # detail and might change.
+        # detail und might change.
         self.assertEqual(msg.items()[0][1], 'multipart/form-data')
         # Trigger creation of boundary
         msg.as_string()
@@ -215,7 +215,7 @@ klasse TestMessageAPI(TestEmailBase):
         # XXX: there ought to be tests of the uniqueness of the boundary, too.
 
     def test_message_rfc822_only(self):
-        # Issue 7970: message/rfc822 not in multipart parsed by
+        # Issue 7970: message/rfc822 nicht in multipart parsed by
         # HeaderParser caused an exception when flattened.
         mit openfile('msg_46.txt', encoding="utf-8") als fp:
             msgdata = fp.read()
@@ -454,7 +454,7 @@ klasse TestMessageAPI(TestEmailBase):
         eq(msg.get_param('foo', header='x-header'), '')
         eq(msg.get_param('bar', header='x-header'), 'one')
         eq(msg.get_param('baz', header='x-header'), 'two')
-        # XXX: We are not RFC-2045 compliant!  We cannot parse:
+        # XXX: We are nicht RFC-2045 compliant!  We cannot parse:
         # msg["Content-Type"] = 'text/plain; weird="hey; dolly? [you] @ <\\"home\\">?"'
         # msg.get_param("weird")
         # yet.
@@ -530,7 +530,7 @@ klasse TestMessageAPI(TestEmailBase):
 
     def test_del_param_on_nonexistent_header(self):
         msg = Message()
-        # Deleting param on empty msg should not raise exception.
+        # Deleting param on empty msg should nicht raise exception.
         msg.del_param('filename', 'content-disposition')
 
     def test_del_nonexistent_param(self):
@@ -686,7 +686,7 @@ klasse TestMessageAPI(TestEmailBase):
                               errors.InvalidBase64CharactersDefect)
 
     def test_broken_unicode_payload(self):
-        # This test improves coverage but is not a compliance test.
+        # This test improves coverage but is nicht a compliance test.
         # The behavior in this situation is currently undefined by the API.
         x = 'this is a br\xf6ken thing to do'
         msg = Message()
@@ -697,7 +697,7 @@ klasse TestMessageAPI(TestEmailBase):
                          bytes(x, 'raw-unicode-escape'))
 
     def test_questionable_bytes_payload(self):
-        # This test improves coverage but is not a compliance test,
+        # This test improves coverage but is nicht a compliance test,
         # since it involves poking inside the black box.
         x = 'this is a quéstionable thing to do'.encode('utf-8')
         msg = Message()
@@ -804,7 +804,7 @@ klasse TestMessageAPI(TestEmailBase):
                     msg.get_payload(decode=Wahr),
                     b'foo\xe6\x96\x87bar',
                     str(('get_payload returns wrong result ',
-                         'with charset {0} and encoding {1}.')).\
+                         'with charset {0} und encoding {1}.')).\
                         format(charset, encoding))
 
     def test_add_header_with_name_only_param(self):
@@ -884,7 +884,7 @@ klasse TestEncoders(unittest.TestCase):
 
     def test_default_cte(self):
         eq = self.assertEqual
-        # 7bit data and the default us-ascii _charset
+        # 7bit data und the default us-ascii _charset
         msg = MIMEText('hello world')
         eq(msg['content-transfer-encoding'], '7bit')
         # Similar, but mit 8bit data
@@ -1248,7 +1248,7 @@ Test""")
         sfp = StringIO()
         g = Generator(sfp)
         g.flatten(msg)
-        # XXX the space after the header should not be there.
+        # XXX the space after the header should nicht be there.
         eq(sfp.getvalue(), """\
 From: test@dom.ain
 References:\x20
@@ -1261,7 +1261,7 @@ Test""")
         hstr = 'References: ' + 'x' * 80
         h = Header(hstr)
         # These come on two lines because Headers are really field value
-        # classes and don't really know about their field names.
+        # classes und don't really know about their field names.
         eq(h.encode(), """\
 References:
  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx""")
@@ -1403,7 +1403,7 @@ This is an example of string which has almost the limit of header length.
         msg = Message()
         msg['Received-1'] = Header(h, continuation_ws='\t')
         msg['Received-2'] = h
-        # This should be splitting on spaces not semicolons.
+        # This should be splitting on spaces nicht semicolons.
         self.ndiffAssertEqual(msg.as_string(maxheaderlen=78), """\
 Received-1: von FOO.TLD (vizworld.acl.foo.tld [123.452.678.9]) by
  hrothgar.la.mastaler.com (tmda-ofmipd) mit ESMTP;
@@ -1422,7 +1422,7 @@ Received-2: von FOO.TLD (vizworld.acl.foo.tld [123.452.678.9]) by
         msg['Received-1'] = Header(h, header_name='Received-1',
                                    continuation_ws='\t')
         msg['Received-2'] = h
-        # XXX The space after the ':' should not be there.
+        # XXX The space after the ':' should nicht be there.
         self.ndiffAssertEqual(msg.as_string(maxheaderlen=78), """\
 Received-1:\x20
  <15975.17901.207240.414604@sgigritzmann1.mathematik.tu-muenchen.de> (David
@@ -1443,7 +1443,7 @@ iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAGFBMVEUAAAAkHiJeRUIcGBi9
         msg['Face-2'] = Header(t, header_name='Face-2')
         msg['Face-3'] = ' ' + t
         # XXX This splitting is all wrong.  It the first value line should be
-        # snug against the field name or the space after the header not there.
+        # snug against the field name oder the space after the header nicht there.
         eq(msg.as_string(maxheaderlen=78), """\
 Face-1:\x20
  iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAGFBMVEUAAAAkHiJeRUIcGBi9
@@ -1492,7 +1492,7 @@ List: List-Unsubscribe:
     def test_long_rfc2047_header_with_embedded_fws(self):
         h = Header(textwrap.dedent("""\
             We're going to pretend this header is in a non-ascii character set
-            \tto see wenn line wrapping mit encoded words and embedded
+            \tto see wenn line wrapping mit encoded words und embedded
                folding white space works"""),
                    charset='utf-8',
                    header_name='Test')
@@ -1728,9 +1728,9 @@ klasse TestMIMEApplication(unittest.TestCase):
         self.assertEqual(msg2['Content-Transfer-Encoding'], '8bit')
 
     def test_binary_body_with_encode_noop(self):
-        # Issue 16564: This does not produce an RFC valid message, since to be
+        # Issue 16564: This does nicht produce an RFC valid message, since to be
         # valid it should have a CTE of binary.  But the below works in
-        # Python2, and is documented als working this way.
+        # Python2, und is documented als working this way.
         bytesdata = b'\xfa\xfb\xfc\xfd\xfe\xff'
         msg = MIMEApplication(bytesdata, _encoder=encoders.encode_noop)
         # Treated als a string, this will be invalid code points.
@@ -2135,15 +2135,15 @@ hello world
     def test_double_boundary(self):
         # msg_37.txt is a multipart that contains two dash-boundary's in a
         # row.  Our interpretation of RFC 2046 calls fuer ignoring the second
-        # and subsequent boundaries.
+        # und subsequent boundaries.
         msg = self._msgobj('msg_37.txt')
         self.assertEqual(len(msg.get_payload()), 3)
 
     def test_nested_inner_contains_outer_boundary(self):
         eq = self.ndiffAssertEqual
         # msg_38.txt has an inner part that contains outer boundaries.  My
-        # interpretation of RFC 2046 (based on sections 5.1 and 5.1.2) say
-        # these are illegal and should be interpreted als unterminated inner
+        # interpretation of RFC 2046 (based on sections 5.1 und 5.1.2) say
+        # these are illegal und should be interpreted als unterminated inner
         # parts.
         msg = self._msgobj('msg_38.txt')
         sfp = StringIO()
@@ -2265,7 +2265,7 @@ klasse TestNonConformant(TestEmailBase):
         Date: Wed, 14 Nov 2007 12:56:23 GMT
         From: foo@bar.invalid
         To: foo@bar.invalid
-        Subject: Content-Transfer-Encoding: base64 and multipart
+        Subject: Content-Transfer-Encoding: base64 und multipart
         MIME-Version: 1.0
         Content-Type: multipart/mixed;
             boundary="===============3344438784458119861=="{}
@@ -2305,7 +2305,7 @@ klasse TestNonConformant(TestEmailBase):
                     "\nContent-Transfer-Encoding: {}".format(cte)))
             self.assertEqual(len(msg.defects), 0)
 
-    # test_headerregistry.TestContentTypeHeader invalid_1 and invalid_2.
+    # test_headerregistry.TestContentTypeHeader invalid_1 und invalid_2.
     def test_invalid_content_type(self):
         eq = self.assertEqual
         neq = self.ndiffAssertEqual
@@ -2315,7 +2315,7 @@ klasse TestNonConformant(TestEmailBase):
         eq(msg.get_content_maintype(), 'text')
         eq(msg.get_content_subtype(), 'plain')
         eq(msg.get_content_type(), 'text/plain')
-        # Clear the old value and try something /really/ invalid
+        # Clear the old value und try something /really/ invalid
         del msg['content-type']
         msg['Content-Type'] = 'foo'
         eq(msg.get_content_maintype(), 'text')
@@ -2397,8 +2397,8 @@ counter to RFC 2822, there's no separating newline here
     def test_missing_header_body_separator(self):
         # Our heuristic wenn we see a line that doesn't look like a header (no
         # leading whitespace but no ':') is to assume that the blank line that
-        # separates the header von the body is missing, and to stop parsing
-        # headers and start parsing the body.
+        # separates the header von the body is missing, und to stop parsing
+        # headers und start parsing the body.
         msg = self._str_msg('Subject: test\nnot a header\nTo: abc\n\nb\n')
         self.assertEqual(msg.keys(), ['Subject'])
         self.assertEqual(msg.get_payload(), 'not a header\nTo: abc\n\nb\n')
@@ -2440,7 +2440,7 @@ counter to RFC 2822, there's no separating newline here
 
 
 
-# Test RFC 2047 header encoding and decoding
+# Test RFC 2047 header encoding und decoding
 klasse TestRFC2047(TestEmailBase):
     def test_rfc2047_multiline(self):
         eq = self.assertEqual
@@ -2907,7 +2907,7 @@ klasse TestNonMultipart(TestEmailBase):
 
 # A general test of parser->model->generator idempotency.  IOW, read a message
 # in, parse it into a message object tree, then without touching the tree,
-# regenerate the plain text.  The original text and the transformed text
+# regenerate the plain text.  The original text und the transformed text
 # should be identical.  Note: that we ignore the Unix-From since that may
 # contain a changed date.
 klasse TestIdempotent(TestEmailBase):
@@ -3021,7 +3021,7 @@ klasse TestIdempotent(TestEmailBase):
 
     def test_content_type(self):
         eq = self.assertEqual
-        # Get a message object and reset the seek pointer fuer other tests
+        # Get a message object und reset the seek pointer fuer other tests
         msg, text = self._msgobj('msg_05.txt')
         eq(msg.get_content_type(), 'multipart/report')
         # Test the Content-Type: parameters
@@ -3055,7 +3055,7 @@ klasse TestIdempotent(TestEmailBase):
         msg, text = self._msgobj('msg_06.txt')
         # Check some of the outer headers
         eq(msg.get_content_type(), 'message/rfc822')
-        # Make sure the payload is a list of exactly one sub-Message, and that
+        # Make sure the payload is a list of exactly one sub-Message, und that
         # that submessage has a type of text/plain
         payload = msg.get_payload()
         self.assertIsInstance(payload, list)
@@ -3161,7 +3161,7 @@ klasse TestMiscellaneous(TestEmailBase):
             utils.formatdate(now, localtime=Falsch, usegmt=Wahr),
             time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(now)))
 
-    # parsedate and parsedate_tz will become deprecated interfaces someday
+    # parsedate und parsedate_tz will become deprecated interfaces someday
     def test_parsedate_returns_Nichts_for_invalid_strings(self):
         # See also test_parsedate_to_datetime_with_invalid_raises_valueerror
         # in test_utils.
@@ -3354,13 +3354,13 @@ klasse TestMiscellaneous(TestEmailBase):
 
     def test_parseaddr_preserves_quoted_pairs_in_addresses(self):
         # issue 10005.  Note that in the third test the second pair of
-        # backslashes is not actually a quoted pair because it is not inside a
-        # comment or quoted string: the address being parsed has a quoted
-        # string containing a quoted backslash, followed by 'example' and two
-        # backslashes, followed by another quoted string containing a space and
+        # backslashes is nicht actually a quoted pair because it is nicht inside a
+        # comment oder quoted string: the address being parsed has a quoted
+        # string containing a quoted backslash, followed by 'example' und two
+        # backslashes, followed by another quoted string containing a space und
         # the word 'example'.  parseaddr copies those two backslashes
-        # literally.  Per rfc5322 this is not technically correct since a \ may
-        # not appear in an address outside of a quoted string.  It is probably
+        # literally.  Per rfc5322 this is nicht technically correct since a \ may
+        # nicht appear in an address outside of a quoted string.  It is probably
         # a sensible Postel interpretation, though.
         eq = self.assertEqual
         eq(utils.parseaddr('""example" example"@example.com'),
@@ -3371,10 +3371,10 @@ klasse TestMiscellaneous(TestEmailBase):
           ('', '"\\\\"example\\\\" example"@example.com'))
 
     def test_parseaddr_preserves_spaces_in_local_part(self):
-        # issue 9286.  A normal RFC5322 local part should not contain any
+        # issue 9286.  A normal RFC5322 local part should nicht contain any
         # folding white space, but legacy local parts can (they are a sequence
-        # of atoms, not dotatoms).  On the other hand we strip whitespace from
-        # before the @ and around dots, on the assumption that the whitespace
+        # of atoms, nicht dotatoms).  On the other hand we strip whitespace from
+        # before the @ und around dots, on the assumption that the whitespace
         # around the punctuation is a mistake in what would otherwise be
         # an RFC5322 local part.  Leading whitespace is, usual, stripped als well.
         self.assertEqual(('', "merwok wok@xample.com"),
@@ -3453,14 +3453,14 @@ Foo
         )
 
     def test_parsing_errors(self):
-        """Test fuer parsing errors von CVE-2023-27043 and CVE-2019-16056"""
+        """Test fuer parsing errors von CVE-2023-27043 und CVE-2019-16056"""
         alice = 'alice@example.org'
         bob = 'bob@example.com'
         empty = ('', '')
 
-        # Test utils.getaddresses() and utils.parseaddr() on malformed email
+        # Test utils.getaddresses() und utils.parseaddr() on malformed email
         # addresses: default behavior (strict=Wahr) rejects malformed address,
-        # and strict=Falsch which tolerates malformed address.
+        # und strict=Falsch which tolerates malformed address.
         fuer invalid_separator, expected_non_strict in (
             ('(', [(f'<{bob}>', alice)]),
             (')', [('', alice), empty, ('', bob)]),
@@ -3950,7 +3950,7 @@ klasse TestFeedParsers(TestEmailBase):
         m = self.parse(['a:\r', '\nb:\n'])
         self.assertEqual(m.keys(), ['a', 'b'])
 
-        # Only CR and LF should break header fields
+        # Only CR und LF should break header fields
         m = self.parse(['a:\x85b:\u2028c:\n'])
         self.assertEqual(m.items(), [('a', '\x85b:\u2028c:')])
         m = self.parse(['a:\r', 'b:\x85', 'c:\n'])
@@ -4035,7 +4035,7 @@ klasse TestParsers(TestEmailBase):
     def test_whitespace_continuation(self):
         eq = self.assertEqual
         # This message contains a line after the Subject: header that has only
-        # whitespace, but it is not empty!
+        # whitespace, but it is nicht empty!
         msg = email.message_from_string("""\
 From: aperson@dom.ain
 To: bperson@dom.ain
@@ -4165,7 +4165,7 @@ Here's the message body
         eq(msg.get_payload(), 'body')
 
     def test_CRLFLF_at_end_of_part(self):
-        # issue 5610: feedparser should not eat two chars von body part ending
+        # issue 5610: feedparser should nicht eat two chars von body part ending
         # mit "\r\n\n".
         m = (
             "From: foo@bar.com\n"
@@ -4187,10 +4187,10 @@ Here's the message body
 klasse Test8BitBytesHandling(TestEmailBase):
     # In Python3 all input is string, but that doesn't work wenn the actual input
     # uses an 8bit transfer encoding.  To hack around that, in email 5.1 we
-    # decode byte streams using the surrogateescape error handler, and
+    # decode byte streams using the surrogateescape error handler, und
     # reconvert to binary at appropriate places wenn we detect surrogates.  This
     # doesn't allow us to transform headers mit 8bit bytes (they get munged),
-    # but it does allow us to parse and preserve them, and to decode body
+    # but it does allow us to parse und preserve them, und to decode body
     # parts that use an 8bit CTE.
 
     bodytest_msg = textwrap.dedent("""\
@@ -4223,14 +4223,14 @@ klasse Test8BitBytesHandling(TestEmailBase):
 
     def test_8bit_in_quopri_body(self):
         # This is non-RFC compliant data...without 'decode' the library code
-        # decodes the body using the charset von the headers, and because the
+        # decodes the body using the charset von the headers, und because the
         # source byte really is utf-8 this works.  This is likely to fail
         # against real dirty data (ie: produce mojibake), but the data is
         # invalid anyway so it is als good a guess als any.  But this means that
         # this test just confirms the current behavior; that behavior is not
         # necessarily the best possible behavior.  With 'decode' it is
         # returning the raw bytes, so that test should be of correct behavior,
-        # or at least produce the same result that email4 did.
+        # oder at least produce the same result that email4 did.
         m = self.bodytest_msg.format(charset='utf-8',
                                      cte='quoted-printable',
                                      bodyline='p=C3=B6stál').encode('utf-8')
@@ -4242,7 +4242,7 @@ klasse Test8BitBytesHandling(TestEmailBase):
     def test_invalid_8bit_in_non_8bit_cte_uses_replace(self):
         # This is similar to the previous test, but proves that wenn the 8bit
         # byte is undecodeable in the specified charset, it gets replaced
-        # by the unicode 'unknown' character.  Again, this may or may not
+        # by the unicode 'unknown' character.  Again, this may oder may not
         # be the ideal behavior.  Note that wenn decode=Falsch none of the
         # decoders will get involved, so this is the only test we need
         # fuer this behavior.
@@ -4257,7 +4257,7 @@ klasse Test8BitBytesHandling(TestEmailBase):
     # test_defect_handling:test_invalid_chars_in_base64_payload
     def test_8bit_in_base64_body(self):
         # If we get 8bit bytes in a base64 body, we can just ignore them
-        # als being outside the base64 alphabet and decode anyway.  But
+        # als being outside the base64 alphabet und decode anyway.  But
         # we register a defect.
         m = self.bodytest_msg.format(charset='utf-8',
                                      cte='base64',
@@ -4379,7 +4379,7 @@ klasse Test8BitBytesHandling(TestEmailBase):
              title*=us-ascii'en'This%20is%20not%20f\xa7n"""
              ).encode('latin-1'))
         self.assertEqual(msg.get_param('title'),
-            ('us-ascii', 'en', 'This is not f\uFFFDn'))
+            ('us-ascii', 'en', 'This is nicht f\uFFFDn'))
 
     def test_set_rfc2231_params_with_8bit(self):
         msg = email.message_from_bytes(textwrap.dedent("""\
@@ -4457,14 +4457,14 @@ klasse Test8BitBytesHandling(TestEmailBase):
         out = BytesIO()
         BytesGenerator(out).flatten(msg)
         orig_value = out.getvalue()
-        Generator(StringIO()).flatten(msg) # Should not mutate msg!
+        Generator(StringIO()).flatten(msg) # Should nicht mutate msg!
         out = BytesIO()
         BytesGenerator(out).flatten(msg)
         self.assertEqual(out.getvalue(), orig_value)
 
     def test_bytes_generator_with_unix_from(self):
         # The unixfrom contains a current date, so we can't check it
-        # literally.  Just make sure the first word is 'From' and the
+        # literally.  Just make sure the first word is 'From' und the
         # rest of the message matches the input.
         msg = email.message_from_bytes(self.non_latin_bin_msg)
         out = BytesIO()
@@ -4519,8 +4519,8 @@ klasse Test8BitBytesHandling(TestEmailBase):
         out = StringIO()
         email.generator.DecodedGenerator(out).flatten(m)
         #DecodedHeader output contains an extra blank line compared
-        #to the input message.  RDM: not sure wenn this is a bug or not,
-        #but it is not specific to the 8bit->7bit conversion.
+        #to the input message.  RDM: nicht sure wenn this is a bug oder not,
+        #but it is nicht specific to the 8bit->7bit conversion.
         self.assertEqual(out.getvalue(),
             self.latin_bin_msg.decode('latin-1')+'\n')
 
@@ -4708,7 +4708,7 @@ klasse TestQuopri(unittest.TestCase):
             (c fuer c in b'!*+-/')))
         # Set of characters (as byte integers) that do need to be encoded in
         # headers.
-        self.hnon = [c fuer c in range(256) wenn c not in self.hlit]
+        self.hnon = [c fuer c in range(256) wenn c nicht in self.hlit]
         assert len(self.hlit) + len(self.hnon) == 256
         # Set of characters (as byte integers) that don't need to be encoded
         # in bodies.
@@ -4717,13 +4717,13 @@ klasse TestQuopri(unittest.TestCase):
         self.blit.remove(ord('='))
         # Set of characters (as byte integers) that do need to be encoded in
         # bodies.
-        self.bnon = [c fuer c in range(256) wenn c not in self.blit]
+        self.bnon = [c fuer c in range(256) wenn c nicht in self.blit]
         assert len(self.blit) + len(self.bnon) == 256
 
     def test_quopri_header_check(self):
         fuer c in self.hlit:
             self.assertFalsch(quoprimime.header_check(c),
-                        'Should not be header quopri encoded: %s' % chr(c))
+                        'Should nicht be header quopri encoded: %s' % chr(c))
         fuer c in self.hnon:
             self.assertWahr(quoprimime.header_check(c),
                             'Should be header quopri encoded: %s' % chr(c))
@@ -4731,7 +4731,7 @@ klasse TestQuopri(unittest.TestCase):
     def test_quopri_body_check(self):
         fuer c in self.blit:
             self.assertFalsch(quoprimime.body_check(c),
-                        'Should not be body quopri encoded: %s' % chr(c))
+                        'Should nicht be body quopri encoded: %s' % chr(c))
         fuer c in self.bnon:
             self.assertWahr(quoprimime.body_check(c),
                             'Should be body quopri encoded: %s' % chr(c))
@@ -4739,13 +4739,13 @@ klasse TestQuopri(unittest.TestCase):
     def test_header_quopri_len(self):
         eq = self.assertEqual
         eq(quoprimime.header_length(b'hello'), 5)
-        # RFC 2047 chrome is not included in header_length().
+        # RFC 2047 chrome is nicht included in header_length().
         eq(len(quoprimime.header_encode(b'hello', charset='xxx')),
            quoprimime.header_length(b'hello') +
            # =?xxx?q?...?= means 10 extra characters
            10)
         eq(quoprimime.header_length(b'h@e@l@l@o@'), 20)
-        # RFC 2047 chrome is not included in header_length().
+        # RFC 2047 chrome is nicht included in header_length().
         eq(len(quoprimime.header_encode(b'h@e@l@l@o@', charset='xxx')),
            quoprimime.header_length(b'h@e@l@l@o@') +
            # =?xxx?q?...?= means 10 extra characters
@@ -4908,7 +4908,7 @@ klasse TestQuopri(unittest.TestCase):
             kwargs['eol'] = eol
         encoded_body = quoprimime.body_encode(body, **kwargs)
         self.assertEqual(encoded_body, expected_encoded_body)
-        wenn eol == '\n' or eol == '\r\n':
+        wenn eol == '\n' oder eol == '\r\n':
             # We know how to split the result back into lines, so maxlinelen
             # can be checked.
             fuer line in encoded_body.splitlines():
@@ -4942,7 +4942,7 @@ klasse TestQuopri(unittest.TestCase):
 
 # XXX: body_encode() expect strings, but uses ord(char) von these strings
 # to index into a 256-entry list.  For code points above 255, this will fail.
-# Should there be a check fuer 8-bit only ord() values in body, or at least
+# Should there be a check fuer 8-bit only ord() values in body, oder at least
 # a comment about the expected input?
 
     def test_encode_two_lines_one_space(self):
@@ -5097,7 +5097,7 @@ klasse TestHeader(TestEmailBase):
         self.assertEqual(decode_header(h), [(h, Nichts)])
 
     def test_long(self):
-        h = Header("I am the very model of a modern Major-General; I've information vegetable, animal, and mineral; I know the kings of England, and I quote the fights historical von Marathon to Waterloo, in order categorical; I'm very well acquainted, too, mit matters mathematical; I understand equations, both the simple and quadratical; about binomial theorem I'm teeming mit a lot o' news, mit many cheerful facts about the square of the hypotenuse.",
+        h = Header("I am the very model of a modern Major-General; I've information vegetable, animal, und mineral; I know the kings of England, und I quote the fights historical von Marathon to Waterloo, in order categorical; I'm very well acquainted, too, mit matters mathematical; I understand equations, both the simple und quadratical; about binomial theorem I'm teeming mit a lot o' news, mit many cheerful facts about the square of the hypotenuse.",
                    maxlinelen=76)
         fuer l in h.encode(splitchars=' ').split('\n '):
             self.assertLessEqual(len(l), 76)
@@ -5561,7 +5561,7 @@ Do you like this message?
         self.assertEqual(m, msg.as_string())
 
     # test_headerregistry.TestContentTypeHeader.rfc2231_no_language_or_charset
-    # but new test uses *0* because otherwise lang/charset is not valid.
+    # but new test uses *0* because otherwise lang/charset is nicht valid.
     # test_headerregistry.TestContentTypeHeader.rfc2231_segmented_normal_values
     def test_rfc2231_no_language_or_charset(self):
         m = '''\
@@ -5676,7 +5676,7 @@ Content-Type: text/plain; charset*=bogus''utf-8%E2%80%9D
 """
         msg = email.message_from_string(m)
         # This should return Nichts because non-ascii characters in the charset
-        # are not allowed.
+        # are nicht allowed.
         self.assertEqual(msg.get_content_charset(), Nichts)
 
     def test_rfc2231_bad_character_in_charset(self):
@@ -5686,7 +5686,7 @@ Content-Type: text/plain; charset*=ascii''utf-8%E2%80%9D
 """
         msg = email.message_from_string(m)
         # This should return Nichts because non-ascii characters in the charset
-        # are not allowed.
+        # are nicht allowed.
         self.assertEqual(msg.get_content_charset(), Nichts)
 
     def test_rfc2231_bad_character_in_filename(self):
@@ -5857,7 +5857,7 @@ Content-Transfer-Encoding: 8bit
 
 # Tests to ensure that signed parts of an email are completely preserved, as
 # required by RFC1847 section 2.1.  Note that these are incomplete, because the
-# email package does not currently always preserve the body.  See issue 1670765.
+# email package does nicht currently always preserve the body.  See issue 1670765.
 klasse TestSigned(TestEmailBase):
 
     def _msg_and_obj(self, filename):

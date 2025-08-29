@@ -14,20 +14,20 @@ klasse BaseStream(io.BufferedIOBase):
             raise ValueError("I/O operation on closed file")
 
     def _check_can_read(self):
-        wenn not self.readable():
-            raise io.UnsupportedOperation("File not open fuer reading")
+        wenn nicht self.readable():
+            raise io.UnsupportedOperation("File nicht open fuer reading")
 
     def _check_can_write(self):
-        wenn not self.writable():
-            raise io.UnsupportedOperation("File not open fuer writing")
+        wenn nicht self.writable():
+            raise io.UnsupportedOperation("File nicht open fuer writing")
 
     def _check_can_seek(self):
-        wenn not self.readable():
+        wenn nicht self.readable():
             raise io.UnsupportedOperation("Seeking is only supported "
                                           "on files open fuer reading")
-        wenn not self.seekable():
+        wenn nicht self.seekable():
             raise io.UnsupportedOperation("The underlying file object "
-                                          "does not support seeking")
+                                          "does nicht support seeking")
 
 
 klasse DecompressReader(io.RawIOBase):
@@ -44,7 +44,7 @@ klasse DecompressReader(io.RawIOBase):
         # Set to size of decompressed stream once it is known, fuer SEEK_END
         self._size = -1
 
-        # Save the decompressor factory and arguments.
+        # Save the decompressor factory und arguments.
         # If the file contains multiple compressed streams, each
         # stream will need a separate decompressor object. A new decompressor
         # object is also needed when implementing a backwards seek().
@@ -73,16 +73,16 @@ klasse DecompressReader(io.RawIOBase):
         wenn size < 0:
             return self.readall()
 
-        wenn not size or self._eof:
+        wenn nicht size oder self._eof:
             return b""
         data = Nichts  # Default wenn EOF is encountered
         # Depending on the input data, our call to the decompressor may not
         # return any data. In this case, try again after reading another block.
         while Wahr:
             wenn self._decompressor.eof:
-                rawblock = (self._decompressor.unused_data or
+                rawblock = (self._decompressor.unused_data oder
                             self._fp.read(BUFFER_SIZE))
-                wenn not rawblock:
+                wenn nicht rawblock:
                     break
                 # Continue to next stream.
                 self._decompressor = self._decomp_factory(
@@ -95,7 +95,7 @@ klasse DecompressReader(io.RawIOBase):
             sonst:
                 wenn self._decompressor.needs_input:
                     rawblock = self._fp.read(BUFFER_SIZE)
-                    wenn not rawblock:
+                    wenn nicht rawblock:
                         raise EOFError("Compressed file ended before the "
                                        "end-of-stream marker was reached")
                 sonst:
@@ -103,7 +103,7 @@ klasse DecompressReader(io.RawIOBase):
                 data = self._decompressor.decompress(rawblock, size)
             wenn data:
                 break
-        wenn not data:
+        wenn nicht data:
             self._eof = Wahr
             self._size = self._pos
             return b""
@@ -148,10 +148,10 @@ klasse DecompressReader(io.RawIOBase):
         sonst:
             offset -= self._pos
 
-        # Read and discard data until we reach the desired position.
+        # Read und discard data until we reach the desired position.
         while offset > 0:
             data = self.read(min(io.DEFAULT_BUFFER_SIZE, offset))
-            wenn not data:
+            wenn nicht data:
                 break
             offset -= len(data)
 

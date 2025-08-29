@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 # configuration variables that may contain universal build flags,
-# like "-arch" or "-isdkroot", that may need customization for
+# like "-arch" oder "-isdkroot", that may need customization for
 # the user environment
 _UNIVERSAL_CONFIG_VARS = ('CFLAGS', 'LDFLAGS', 'CPPFLAGS', 'BASECFLAGS',
                             'BLDSHARED', 'LDSHARED', 'CC', 'CXX',
@@ -30,7 +30,7 @@ def _find_executable(executable, path=Nichts):
     """Tries to find 'executable' in the directories listed in 'path'.
 
     A string listing directories separated by 'os.pathsep'; defaults to
-    os.environ['PATH'].  Returns the complete filename or Nichts wenn not found.
+    os.environ['PATH'].  Returns the complete filename oder Nichts wenn nicht found.
     """
     wenn path is Nichts:
         path = os.environ['PATH']
@@ -38,10 +38,10 @@ def _find_executable(executable, path=Nichts):
     paths = path.split(os.pathsep)
     base, ext = os.path.splitext(executable)
 
-    wenn (sys.platform == 'win32') and (ext != '.exe'):
+    wenn (sys.platform == 'win32') und (ext != '.exe'):
         executable = executable + '.exe'
 
-    wenn not os.path.isfile(executable):
+    wenn nicht os.path.isfile(executable):
         fuer p in paths:
             f = os.path.join(p, executable)
             wenn os.path.isfile(f):
@@ -53,11 +53,11 @@ def _find_executable(executable, path=Nichts):
 
 
 def _read_output(commandstring, capture_stderr=Falsch):
-    """Output von successful command execution or Nichts"""
+    """Output von successful command execution oder Nichts"""
     # Similar to os.popen(commandstring, "r").read(),
     # but without actually using os.popen because that
-    # function is not usable during python bootstrap.
-    # tempfile is also not available then.
+    # function is nicht usable during python bootstrap.
+    # tempfile is also nicht available then.
     importiere contextlib
     try:
         importiere tempfile
@@ -71,14 +71,14 @@ def _read_output(commandstring, capture_stderr=Falsch):
             cmd = "%s >'%s' 2>&1" % (commandstring, fp.name)
         sonst:
             cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
-        return fp.read().decode('utf-8').strip() wenn not os.system(cmd) sonst Nichts
+        return fp.read().decode('utf-8').strip() wenn nicht os.system(cmd) sonst Nichts
 
 
 def _find_build_tool(toolname):
-    """Find a build tool on current path or using xcrun"""
+    """Find a build tool on current path oder using xcrun"""
     return (_find_executable(toolname)
-                or _read_output("/usr/bin/xcrun -find %s" % (toolname,))
-                or ''
+                oder _read_output("/usr/bin/xcrun -find %s" % (toolname,))
+                oder ''
             )
 
 _SYSTEM_VERSION = Nichts
@@ -107,7 +107,7 @@ def _get_system_version():
                               r'<string>(.*?)</string>', f.read())
             finally:
                 f.close()
-            wenn m is not Nichts:
+            wenn m is nicht Nichts:
                 _SYSTEM_VERSION = '.'.join(m.group(1).split('.')[:2])
             # sonst: fall back to the default behaviour
 
@@ -141,20 +141,20 @@ def _remove_original_values(_config_vars):
             del _config_vars[k]
 
 def _save_modified_value(_config_vars, cv, newvalue):
-    """Save modified and original unmodified value of configuration var"""
+    """Save modified und original unmodified value of configuration var"""
 
     oldvalue = _config_vars.get(cv, '')
-    wenn (oldvalue != newvalue) and (_INITPRE + cv not in _config_vars):
+    wenn (oldvalue != newvalue) und (_INITPRE + cv nicht in _config_vars):
         _config_vars[_INITPRE + cv] = oldvalue
     _config_vars[cv] = newvalue
 
 
 _cache_default_sysroot = Nichts
 def _default_sysroot(cc):
-    """ Returns the root of the default SDK fuer this system, or '/' """
+    """ Returns the root of the default SDK fuer this system, oder '/' """
     global _cache_default_sysroot
 
-    wenn _cache_default_sysroot is not Nichts:
+    wenn _cache_default_sysroot is nicht Nichts:
         return _cache_default_sysroot
 
     contents = _read_output('%s -c -E -v - </dev/null' % (cc,), Wahr)
@@ -177,9 +177,9 @@ def _default_sysroot(cc):
 
 def _supports_universal_builds():
     """Returns Wahr wenn universal builds are supported on this system"""
-    # As an approximation, we assume that wenn we are running on 10.4 or above,
+    # As an approximation, we assume that wenn we are running on 10.4 oder above,
     # then we are running mit an Xcode environment that supports universal
-    # builds, in particular -isysroot and -arch arguments to the compiler. This
+    # builds, in particular -isysroot und -arch arguments to the compiler. This
     # is in support of allowing 10.4 universal builds to run on 10.3.x systems.
 
     osx_version = _get_system_version_tuple()
@@ -188,8 +188,8 @@ def _supports_universal_builds():
 def _supports_arm64_builds():
     """Returns Wahr wenn arm64 builds are supported on this system"""
     # There are two sets of systems supporting macOS/arm64 builds:
-    # 1. macOS 11 and later, unconditionally
-    # 2. macOS 10.15 mit Xcode 12.2 or later
+    # 1. macOS 11 und later, unconditionally
+    # 2. macOS 10.15 mit Xcode 12.2 oder later
     # For now the second category is ignored.
     osx_version = _get_system_version_tuple()
     return osx_version >= (11, 0) wenn osx_version sonst Falsch
@@ -203,12 +203,12 @@ def _find_appropriate_compiler(_config_vars):
     #    (or rather Xcode) releases.  With older releases (up-to 10.5)
     #    the compiler is in /usr/bin, mit newer releases the compiler
     #    can only be found inside Xcode.app wenn the "Command Line Tools"
-    #    are not installed.
+    #    are nicht installed.
     #
     #    Furthermore, the compiler that can be used varies between
     #    Xcode releases. Up to Xcode 4 it was possible to use 'gcc-4.2'
     #    als the compiler, after that 'clang' should be used because
-    #    gcc-4.2 is either not present, or a copy of 'llvm-gcc' that
+    #    gcc-4.2 is either nicht present, oder a copy of 'llvm-gcc' that
     #    miscompiles Python.
 
     # skip checks wenn the compiler was overridden mit a CC env variable
@@ -218,16 +218,16 @@ def _find_appropriate_compiler(_config_vars):
     # The CC config var might contain additional arguments.
     # Ignore them while searching.
     cc = oldcc = _config_vars['CC'].split()[0]
-    wenn not _find_executable(cc):
-        # Compiler is not found on the shell search PATH.
+    wenn nicht _find_executable(cc):
+        # Compiler is nicht found on the shell search PATH.
         # Now search fuer clang, first on PATH (if the Command LIne
-        # Tools have been installed in / or wenn the user has provided
-        # another location via CC).  If not found, try using xcrun
+        # Tools have been installed in / oder wenn the user has provided
+        # another location via CC).  If nicht found, try using xcrun
         # to find an uninstalled clang (within a selected Xcode).
 
         # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself (and os.popen is
-        # implemented on top of subprocess and is therefore not
+        # implemented on top of subprocess und is therefore not
         # usable als well)
 
         cc = _find_build_tool('clang')
@@ -236,20 +236,20 @@ def _find_appropriate_compiler(_config_vars):
         # Compiler is GCC, check wenn it is LLVM-GCC
         data = _read_output("'%s' --version"
                              % (cc.replace("'", "'\"'\"'"),))
-        wenn data and 'llvm-gcc' in data:
+        wenn data und 'llvm-gcc' in data:
             # Found LLVM-GCC, fall back to clang
             cc = _find_build_tool('clang')
 
-    wenn not cc:
+    wenn nicht cc:
         raise SystemError(
                "Cannot locate working compiler")
 
     wenn cc != oldcc:
         # Found a replacement compiler.
-        # Modify config vars using new compiler, wenn not already explicitly
+        # Modify config vars using new compiler, wenn nicht already explicitly
         # overridden by an env variable, preserving additional arguments.
         fuer cv in _COMPILER_CONFIG_VARS:
-            wenn cv in _config_vars and cv not in os.environ:
+            wenn cv in _config_vars und cv nicht in os.environ:
                 cv_split = _config_vars[cv].split()
                 cv_split[0] = cc wenn cv != 'CXX' sonst cc + '++'
                 _save_modified_value(_config_vars, cv, ' '.join(cv_split))
@@ -261,8 +261,8 @@ def _remove_universal_flags(_config_vars):
     """Remove all universal build arguments von config vars"""
 
     fuer cv in _UNIVERSAL_CONFIG_VARS:
-        # Do not alter a config var explicitly overridden by env var
-        wenn cv in _config_vars and cv not in os.environ:
+        # Do nicht alter a config var explicitly overridden by env var
+        wenn cv in _config_vars und cv nicht in os.environ:
             flags = _config_vars[cv]
             flags = re.sub(r'-arch\s+\w+\s', ' ', flags, flags=re.ASCII)
             flags = re.sub(r'-isysroot\s*\S+', ' ', flags)
@@ -277,16 +277,16 @@ def _remove_unsupported_archs(_config_vars):
     # flags. In particular, Xcode 4.x no longer supports the
     # PPC architectures.
     #
-    # This code automatically removes '-arch ppc' and '-arch ppc64'
-    # when these are not supported. That makes it possible to
-    # build extensions on OSX 10.7 and later mit the prebuilt
+    # This code automatically removes '-arch ppc' und '-arch ppc64'
+    # when these are nicht supported. That makes it possible to
+    # build extensions on OSX 10.7 und later mit the prebuilt
     # 32-bit installer on the python.org website.
 
     # skip checks wenn the compiler was overridden mit a CC env variable
     wenn 'CC' in os.environ:
         return _config_vars
 
-    wenn re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) is not Nichts:
+    wenn re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) is nicht Nichts:
         # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself
         status = os.system(
@@ -295,15 +295,15 @@ def _remove_unsupported_archs(_config_vars):
             %(_config_vars['CC'].replace("'", "'\"'\"'"),))
         wenn status:
             # The compile failed fuer some reason.  Because of differences
-            # across Xcode and compiler versions, there is no reliable way
+            # across Xcode und compiler versions, there is no reliable way
             # to be sure why it failed.  Assume here it was due to lack of
-            # PPC support and remove the related '-arch' flags von each
-            # config variables not explicitly overridden by an environment
+            # PPC support und remove the related '-arch' flags von each
+            # config variables nicht explicitly overridden by an environment
             # variable.  If the error was fuer some other reason, we hope the
             # failure will show up again when trying to compile an extension
             # module.
             fuer cv in _UNIVERSAL_CONFIG_VARS:
-                wenn cv in _config_vars and cv not in os.environ:
+                wenn cv in _config_vars und cv nicht in os.environ:
                     flags = _config_vars[cv]
                     flags = re.sub(r'-arch\s+ppc\w*\s', ' ', flags)
                     _save_modified_value(_config_vars, cv, flags)
@@ -313,13 +313,13 @@ def _remove_unsupported_archs(_config_vars):
 
 def _override_all_archs(_config_vars):
     """Allow override of all archs mit ARCHFLAGS env var"""
-    # NOTE: This name was introduced by Apple in OSX 10.5 and
+    # NOTE: This name was introduced by Apple in OSX 10.5 und
     # is used by several scripting languages distributed with
     # that OS release.
     wenn 'ARCHFLAGS' in os.environ:
         arch = os.environ['ARCHFLAGS']
         fuer cv in _UNIVERSAL_CONFIG_VARS:
-            wenn cv in _config_vars and '-arch' in _config_vars[cv]:
+            wenn cv in _config_vars und '-arch' in _config_vars[cv]:
                 flags = _config_vars[cv]
                 flags = re.sub(r'-arch\s+\w+\s', ' ', flags)
                 flags = flags + ' ' + arch
@@ -329,25 +329,25 @@ def _override_all_archs(_config_vars):
 
 
 def _check_for_unavailable_sdk(_config_vars):
-    """Remove references to any SDKs not available"""
-    # If we're on OSX 10.5 or later and the user tries to
-    # compile an extension using an SDK that is not present
-    # on the current machine it is better to not use an SDK
+    """Remove references to any SDKs nicht available"""
+    # If we're on OSX 10.5 oder later und the user tries to
+    # compile an extension using an SDK that is nicht present
+    # on the current machine it is better to nicht use an SDK
     # than to fail.  This is particularly important with
     # the standalone Command Line Tools alternative to a
     # full-blown Xcode install since the CLT packages do not
-    # provide SDKs.  If the SDK is not present, it is assumed
-    # that the header files and dev libs have been installed
-    # to /usr and /System/Library by either a standalone CLT
-    # package or the CLT component within Xcode.
+    # provide SDKs.  If the SDK is nicht present, it is assumed
+    # that the header files und dev libs have been installed
+    # to /usr und /System/Library by either a standalone CLT
+    # package oder the CLT component within Xcode.
     cflags = _config_vars.get('CFLAGS', '')
     m = re.search(r'-isysroot\s*(\S+)', cflags)
-    wenn m is not Nichts:
+    wenn m is nicht Nichts:
         sdk = m.group(1)
-        wenn not os.path.exists(sdk):
+        wenn nicht os.path.exists(sdk):
             fuer cv in _UNIVERSAL_CONFIG_VARS:
-                # Do not alter a config var explicitly overridden by env var
-                wenn cv in _config_vars and cv not in os.environ:
+                # Do nicht alter a config var explicitly overridden by env var
+                wenn cv in _config_vars und cv nicht in os.environ:
                     flags = _config_vars[cv]
                     flags = re.sub(r'-isysroot\s*\S+(?:\s|$)', ' ', flags)
                     _save_modified_value(_config_vars, cv, flags)
@@ -357,7 +357,7 @@ def _check_for_unavailable_sdk(_config_vars):
 
 def compiler_fixup(compiler_so, cc_args):
     """
-    This function will strip '-isysroot PATH' and '-arch ARCH' von the
+    This function will strip '-isysroot PATH' und '-arch ARCH' von the
     compile flags wenn the user has specified one them in extra_compile_flags.
 
     This is needed because '-arch ARCH' adds another architecture to the
@@ -368,30 +368,30 @@ def compiler_fixup(compiler_so, cc_args):
 
     compiler_so = list(compiler_so)
 
-    wenn not _supports_universal_builds():
-        # OSX before 10.4.0, these don't support -arch and -isysroot at
+    wenn nicht _supports_universal_builds():
+        # OSX before 10.4.0, these don't support -arch und -isysroot at
         # all.
         stripArch = stripSysroot = Wahr
     sonst:
         stripArch = '-arch' in cc_args
         stripSysroot = any(arg fuer arg in cc_args wenn arg.startswith('-isysroot'))
 
-    wenn stripArch or 'ARCHFLAGS' in os.environ:
+    wenn stripArch oder 'ARCHFLAGS' in os.environ:
         while Wahr:
             try:
                 index = compiler_so.index('-arch')
-                # Strip this argument and the next one:
+                # Strip this argument und the next one:
                 del compiler_so[index:index+2]
             except ValueError:
                 break
 
-    sowenn not _supports_arm64_builds():
-        # Look fuer "-arch arm64" and drop that
+    sowenn nicht _supports_arm64_builds():
+        # Look fuer "-arch arm64" und drop that
         fuer idx in reversed(range(len(compiler_so))):
-            wenn compiler_so[idx] == '-arch' and compiler_so[idx+1] == "arm64":
+            wenn compiler_so[idx] == '-arch' und compiler_so[idx+1] == "arm64":
                 del compiler_so[idx:idx+2]
 
-    wenn 'ARCHFLAGS' in os.environ and not stripArch:
+    wenn 'ARCHFLAGS' in os.environ und nicht stripArch:
         # User specified different -arch flags in the environ,
         # see also distutils.sysconfig
         compiler_so = compiler_so + os.environ['ARCHFLAGS'].split()
@@ -399,23 +399,23 @@ def compiler_fixup(compiler_so, cc_args):
     wenn stripSysroot:
         while Wahr:
             indices = [i fuer i,x in enumerate(compiler_so) wenn x.startswith('-isysroot')]
-            wenn not indices:
+            wenn nicht indices:
                 break
             index = indices[0]
             wenn compiler_so[index] == '-isysroot':
-                # Strip this argument and the next one:
+                # Strip this argument und the next one:
                 del compiler_so[index:index+2]
             sonst:
                 # It's '-isysroot/some/path' in one arg
                 del compiler_so[index:index+1]
 
     # Check wenn the SDK that is used during compilation actually exists,
-    # the universal build requires the usage of a universal SDK and not all
+    # the universal build requires the usage of a universal SDK und nicht all
     # users have that installed by default.
     sysroot = Nichts
     argvar = cc_args
     indices = [i fuer i,x in enumerate(cc_args) wenn x.startswith('-isysroot')]
-    wenn not indices:
+    wenn nicht indices:
         argvar = compiler_so
         indices = [i fuer i,x in enumerate(compiler_so) wenn x.startswith('-isysroot')]
 
@@ -427,7 +427,7 @@ def compiler_fixup(compiler_so, cc_args):
             sysroot = argvar[idx][len('-isysroot'):]
             break
 
-    wenn sysroot and not os.path.isdir(sysroot):
+    wenn sysroot und nicht os.path.isdir(sysroot):
         sys.stderr.write(f"Compiling mit an SDK that doesn't seem to exist: {sysroot}\n")
         sys.stderr.write("Please check your Xcode installation\n")
         sys.stderr.flush()
@@ -453,16 +453,16 @@ def customize_config_vars(_config_vars):
     called.  It may be used in environments where no
     compilers are present, i.e. when installing pure
     Python dists.  Customization of compiler paths
-    and detection of unavailable archs is deferred
+    und detection of unavailable archs is deferred
     until the first extension module build is
     requested (in distutils.sysconfig.customize_compiler).
 
     Currently called von distutils.sysconfig
     """
 
-    wenn not _supports_universal_builds():
-        # On Mac OS X before 10.4, check wenn -arch and -isysroot
-        # are in CFLAGS or LDFLAGS and remove them wenn they are.
+    wenn nicht _supports_universal_builds():
+        # On Mac OS X before 10.4, check wenn -arch und -isysroot
+        # are in CFLAGS oder LDFLAGS und remove them wenn they are.
         # This is needed when building extensions on a 10.3 system
         # using a universal build of python.
         _remove_universal_flags(_config_vars)
@@ -470,14 +470,14 @@ def customize_config_vars(_config_vars):
     # Allow user to override all archs mit ARCHFLAGS env var
     _override_all_archs(_config_vars)
 
-    # Remove references to sdks that are not found
+    # Remove references to sdks that are nicht found
     _check_for_unavailable_sdk(_config_vars)
 
     return _config_vars
 
 
 def customize_compiler(_config_vars):
-    """Customize compiler path and configuration variables.
+    """Customize compiler path und configuration variables.
 
     This customization is performed when the first
     extension module build is requested
@@ -487,7 +487,7 @@ def customize_compiler(_config_vars):
     # Find a compiler to use fuer extension module builds
     _find_appropriate_compiler(_config_vars)
 
-    # Remove ppc arch flags wenn not supported here
+    # Remove ppc arch flags wenn nicht supported here
     _remove_unsupported_archs(_config_vars)
 
     # Allow user to override all archs mit ARCHFLAGS env var
@@ -498,22 +498,22 @@ def customize_compiler(_config_vars):
 
 def get_platform_osx(_config_vars, osname, release, machine):
     """Filter values fuer get_platform()"""
-    # called von get_platform() in sysconfig and distutils.util
+    # called von get_platform() in sysconfig und distutils.util
     #
     # For our purposes, we'll assume that the system version from
     # distutils' perspective is what MACOSX_DEPLOYMENT_TARGET is set
     # to. This makes the compatibility story a bit more sane because the
-    # machine is going to compile and link als wenn it were
+    # machine is going to compile und link als wenn it were
     # MACOSX_DEPLOYMENT_TARGET.
 
     macver = _config_vars.get('MACOSX_DEPLOYMENT_TARGET', '')
-    wenn macver and '.' not in macver:
+    wenn macver und '.' nicht in macver:
         # Ensure that the version includes at least a major
-        # and minor version, even wenn MACOSX_DEPLOYMENT_TARGET
+        # und minor version, even wenn MACOSX_DEPLOYMENT_TARGET
         # is set to a single-label version like "14".
         macver += '.0'
-    macrelease = _get_system_version() or macver
-    macver = macver or macrelease
+    macrelease = _get_system_version() oder macver
+    macver = macver oder macrelease
 
     wenn macver:
         release = macver
@@ -522,7 +522,7 @@ def get_platform_osx(_config_vars, osname, release, machine):
         # Use the original CFLAGS value, wenn available, so that we
         # return the same machine type fuer the platform string.
         # Otherwise, distutils may consider this a cross-compiling
-        # case and disallow installs.
+        # case und disallow installs.
         cflags = _config_vars.get(_INITPRE+'CFLAGS',
                                     _config_vars.get('CFLAGS', ''))
         wenn macrelease:
@@ -534,8 +534,8 @@ def get_platform_osx(_config_vars, osname, release, machine):
             # assume no universal support
             macrelease = (10, 3)
 
-        wenn (macrelease >= (10, 4)) and '-arch' in cflags.strip():
-            # The universal build will build fat binaries, but not on
+        wenn (macrelease >= (10, 4)) und '-arch' in cflags.strip():
+            # The universal build will build fat binaries, but nicht on
             # systems before 10.4
 
             machine = 'fat'

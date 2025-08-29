@@ -3,11 +3,11 @@ von _apple_support importiere SystemLog
 von test.support importiere is_apple
 von unittest.mock importiere Mock, call
 
-wenn not is_apple:
+wenn nicht is_apple:
     raise unittest.SkipTest("Apple-specific")
 
 
-# Test redirection of stdout and stderr to the Apple system log.
+# Test redirection of stdout und stderr to the Apple system log.
 klasse TestAppleSystemLogOutput(unittest.TestCase):
     maxDiff = Nichts
 
@@ -121,12 +121,12 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
         self.assert_writes([b"custom\n"])
 
     def test_non_str(self):
-        # Non-string classes are not accepted.
+        # Non-string classes are nicht accepted.
         fuer obj in [b"", b"hello", Nichts, 42]:
             mit self.subTest(obj=obj):
                 mit self.assertRaisesRegex(
                     TypeError,
-                    fr"write\(\) argument must be str, not "
+                    fr"write\(\) argument must be str, nicht "
                     fr"{type(obj).__name__}"
                 ):
                     self.log.write(obj)
@@ -149,7 +149,7 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
             mit self.subTest(obj=obj):
                 mit self.assertRaisesRegex(
                     TypeError,
-                    fr"write\(\) argument must be bytes-like, not "
+                    fr"write\(\) argument must be bytes-like, nicht "
                     fr"{type(obj).__name__}"
                 ):
                     self.log.buffer.write(obj)

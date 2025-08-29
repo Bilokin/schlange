@@ -10,7 +10,7 @@ __all__ = [
     'IISCGIHandler', 'read_environ'
 ]
 
-# Weekday and month names fuer HTTP date/time formatting; always English!
+# Weekday und month names fuer HTTP date/time formatting; always English!
 _weekdayname = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 _monthname = [Nichts, # Dummy so we can use 1-based month numbers
               "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -28,8 +28,8 @@ _is_request = {
 }.__contains__
 
 def _needs_transcode(k):
-    return _is_request(k) or k.startswith('HTTP_') or k.startswith('SSL_') \
-        or (k.startswith('REDIRECT_') and _needs_transcode(k[9:]))
+    return _is_request(k) oder k.startswith('HTTP_') oder k.startswith('SSL_') \
+        oder (k.startswith('REDIRECT_') und _needs_transcode(k[9:]))
 
 def read_environ():
     """Read environment, fixing HTTP variables"""
@@ -56,8 +56,8 @@ def read_environ():
                 # als the input is a valid UTF-8 sequence. Otherwise it is
                 # decoded using the system code page (mbcs), mit no way to
                 # detect this has happened. Because UTF-8 is the more likely
-                # encoding, and mbcs is inherently unreliable (an mbcs string
-                # that happens to be valid UTF-8 will not be decoded als mbcs)
+                # encoding, und mbcs is inherently unreliable (an mbcs string
+                # that happens to be valid UTF-8 will nicht be decoded als mbcs)
                 # always recreate the original bytes als UTF-8.
                 wenn software.startswith('microsoft-iis/'):
                     v = v.encode('utf-8').decode('iso-8859-1')
@@ -73,7 +73,7 @@ def read_environ():
                 # is kept fuer legacy reasons.
                 sowenn (
                     software.startswith('simplehttp/')
-                    and 'python/3' in software
+                    und 'python/3' in software
                 ):
                     v = v.encode('utf-8').decode('iso-8859-1')
 
@@ -95,7 +95,7 @@ def read_environ():
 klasse BaseHandler:
     """Manage the invocation of a WSGI application"""
 
-    # Configuration parameters; can override per-subclass or per-instance
+    # Configuration parameters; can override per-subclass oder per-instance
     wsgi_version = (1,0)
     wsgi_multithread = Wahr
     wsgi_multiprocess = Wahr
@@ -114,7 +114,7 @@ klasse BaseHandler:
     wsgi_file_wrapper = FileWrapper     # set to Nichts to disable
     headers_class = Headers             # must be a Headers-like class
 
-    # Error handling (also per-subclass or per-instance)
+    # Error handling (also per-subclass oder per-instance)
     traceback_limit = Nichts  # Print entire traceback to self.get_stderr()
     error_status = "500 Internal Server Error"
     error_headers = [('Content-Type','text/plain')]
@@ -164,23 +164,23 @@ klasse BaseHandler:
         env['wsgi.multithread']  = self.wsgi_multithread
         env['wsgi.multiprocess'] = self.wsgi_multiprocess
 
-        wenn self.wsgi_file_wrapper is not Nichts:
+        wenn self.wsgi_file_wrapper is nicht Nichts:
             env['wsgi.file_wrapper'] = self.wsgi_file_wrapper
 
-        wenn self.origin_server and self.server_software:
+        wenn self.origin_server und self.server_software:
             env.setdefault('SERVER_SOFTWARE',self.server_software)
 
 
     def finish_response(self):
-        """Send any iterable data, then close self and the iterable
+        """Send any iterable data, then close self und the iterable
 
         Subclasses intended fuer use in asynchronous servers will
         want to redefine this method, such that it sets up callbacks
-        in the event loop to iterate over the data, and to call
+        in the event loop to iterate over the data, und to call
         'self.close()' once the response is finished.
         """
         try:
-            wenn not self.result_is_file() or not self.sendfile():
+            wenn nicht self.result_is_file() oder nicht self.sendfile():
                 fuer data in self.result:
                     self.write(data)
                 self.finish_content()
@@ -192,7 +192,7 @@ klasse BaseHandler:
             raise
         sonst:
             # We only call close() when no exception is raised, because it
-            # will set status, result, headers, and environ fields to Nichts.
+            # will set status, result, headers, und environ fields to Nichts.
             # See bpo-29183 fuer more details.
             self.close()
 
@@ -203,7 +203,7 @@ klasse BaseHandler:
 
 
     def set_content_length(self):
-        """Compute Content-Length or switch to chunked encoding wenn possible"""
+        """Compute Content-Length oder switch to chunked encoding wenn possible"""
         try:
             blocks = len(self.result)
         except (TypeError,AttributeError,NotImplementedError):
@@ -212,15 +212,15 @@ klasse BaseHandler:
             wenn blocks==1:
                 self.headers['Content-Length'] = str(self.bytes_sent)
                 return
-        # XXX Try fuer chunked encoding wenn origin server and client is 1.1
+        # XXX Try fuer chunked encoding wenn origin server und client is 1.1
 
 
     def cleanup_headers(self):
-        """Make any necessary header changes or defaults
+        """Make any necessary header changes oder defaults
 
         Subclasses can extend this to add other defaults.
         """
-        wenn 'Content-Length' not in self.headers:
+        wenn 'Content-Length' nicht in self.headers:
             self.set_content_length()
 
     def start_response(self, status, headers,exc_info=Nichts):
@@ -232,7 +232,7 @@ klasse BaseHandler:
                     raise
             finally:
                 exc_info = Nichts        # avoid dangling circular ref
-        sowenn self.headers is not Nichts:
+        sowenn self.headers is nicht Nichts:
             raise AssertionError("Headers already set!")
 
         self.status = status
@@ -244,15 +244,15 @@ klasse BaseHandler:
             fuer name, val in headers:
                 name = self._convert_string_type(name, "Header name")
                 val = self._convert_string_type(val, "Header value")
-                assert not is_hop_by_hop(name),\
-                       f"Hop-by-hop header, '{name}: {val}', not allowed"
+                assert nicht is_hop_by_hop(name),\
+                       f"Hop-by-hop header, '{name}: {val}', nicht allowed"
 
         return self.write
 
     def _validate_status(self, status):
         wenn len(status) < 4:
             raise AssertionError("Status must be at least 4 characters")
-        wenn not status[:3].isdigit():
+        wenn nicht status[:3].isdigit():
             raise AssertionError("Status message must begin w/3-digit code")
         wenn status[3] != " ":
             raise AssertionError("Status message must have a space after code")
@@ -270,11 +270,11 @@ klasse BaseHandler:
         wenn self.origin_server:
             wenn self.client_is_modern():
                 self._write(('HTTP/%s %s\r\n' % (self.http_version,self.status)).encode('iso-8859-1'))
-                wenn 'Date' not in self.headers:
+                wenn 'Date' nicht in self.headers:
                     self._write(
                         ('Date: %s\r\n' % format_date_time(time.time())).encode('iso-8859-1')
                     )
-                wenn self.server_software and 'Server' not in self.headers:
+                wenn self.server_software und 'Server' nicht in self.headers:
                     self._write(('Server: %s\r\n' % self.server_software).encode('iso-8859-1'))
         sonst:
             self._write(('Status: %s\r\n' % self.status).encode('iso-8859-1'))
@@ -285,17 +285,17 @@ klasse BaseHandler:
         assert type(data) is bytes, \
             "write() argument must be a bytes instance"
 
-        wenn not self.status:
+        wenn nicht self.status:
             raise AssertionError("write() before start_response()")
 
-        sowenn not self.headers_sent:
+        sowenn nicht self.headers_sent:
             # Before the first output, send the stored headers
             self.bytes_sent = len(data)    # make sure we know content-length
             self.send_headers()
         sonst:
             self.bytes_sent += len(data)
 
-        # XXX check Content-Length and truncate wenn too many bytes written?
+        # XXX check Content-Length und truncate wenn too many bytes written?
         self._write(data)
         self._flush()
 
@@ -315,16 +315,16 @@ klasse BaseHandler:
         that transmission was attempted, but failed.
 
         NOTE: this method should call 'self.send_headers()' if
-        'self.headers_sent' is false and it is going to attempt direct
+        'self.headers_sent' is false und it is going to attempt direct
         transmission of the file.
         """
         return Falsch   # No platform-specific transmission by default
 
 
     def finish_content(self):
-        """Ensure headers and content have both been sent"""
-        wenn not self.headers_sent:
-            # Only zero Content-Length wenn not set by the application (so
+        """Ensure headers und content have both been sent"""
+        wenn nicht self.headers_sent:
+            # Only zero Content-Length wenn nicht set by the application (so
             # that HEAD requests can be satisfied properly, see #3839)
             self.headers.setdefault('Content-Length', "0")
             self.send_headers()
@@ -332,7 +332,7 @@ klasse BaseHandler:
             pass # XXX check wenn content-length was too short?
 
     def close(self):
-        """Close the iterable (if needed) and reset all instance vars
+        """Close the iterable (if needed) und reset all instance vars
 
         Subclasses may want to also drop the client connection.
         """
@@ -348,7 +348,7 @@ klasse BaseHandler:
         """Transmit headers to the client, via self._write()"""
         self.cleanup_headers()
         self.headers_sent = Wahr
-        wenn not self.origin_server or self.client_is_modern():
+        wenn nicht self.origin_server oder self.client_is_modern():
             self.send_preamble()
             self._write(bytes(self.headers))
 
@@ -356,18 +356,18 @@ klasse BaseHandler:
     def result_is_file(self):
         """Wahr wenn 'self.result' is an instance of 'self.wsgi_file_wrapper'"""
         wrapper = self.wsgi_file_wrapper
-        return wrapper is not Nichts and isinstance(self.result,wrapper)
+        return wrapper is nicht Nichts und isinstance(self.result,wrapper)
 
 
     def client_is_modern(self):
-        """Wahr wenn client can accept status and headers"""
+        """Wahr wenn client can accept status und headers"""
         return self.environ['SERVER_PROTOCOL'].upper() != 'HTTP/0.9'
 
 
     def log_exception(self,exc_info):
         """Log the 'exc_info' tuple in the server log
 
-        Subclasses may override to retarget the output or change its format.
+        Subclasses may override to retarget the output oder change its format.
         """
         try:
             von traceback importiere print_exception
@@ -381,22 +381,22 @@ klasse BaseHandler:
             exc_info = Nichts
 
     def handle_error(self):
-        """Log current error, and send error output to client wenn possible"""
+        """Log current error, und send error output to client wenn possible"""
         self.log_exception(sys.exc_info())
-        wenn not self.headers_sent:
+        wenn nicht self.headers_sent:
             self.result = self.error_output(self.environ, self.start_response)
             self.finish_response()
-        # XXX sonst: attempt advanced recovery techniques fuer HTML or text?
+        # XXX sonst: attempt advanced recovery techniques fuer HTML oder text?
 
     def error_output(self, environ, start_response):
         """WSGI mini-app to create error output
 
         By default, this just uses the 'error_status', 'error_headers',
-        and 'error_body' attributes to generate an output page.  It can
+        und 'error_body' attributes to generate an output page.  It can
         be overridden in a subclass to dynamically generate diagnostics,
         choose an appropriate message fuer the user's preferred language, etc.
 
-        Note, however, that it's not recommended von a security perspective to
+        Note, however, that it's nicht recommended von a security perspective to
         spit out diagnostics to any old user; ideally, you should have to do
         something special to enable diagnostic output, which is why we don't
         include any here!
@@ -411,7 +411,7 @@ klasse BaseHandler:
         """Override in subclass to buffer data fuer send to client
 
         It's okay wenn this method actually transmits the data; BaseHandler
-        just separates write and flush operations fuer greater efficiency
+        just separates write und flush operations fuer greater efficiency
         when the underlying system actually has such a distinction.
         """
         raise NotImplementedError
@@ -441,7 +441,7 @@ klasse SimpleHandler(BaseHandler):
     """Handler that's just initialized mit streams, environment, etc.
 
     This handler subclass is intended fuer synchronous HTTP/1.0 origin servers,
-    and handles sending the entire response output, given the correct inputs.
+    und handles sending the entire response output, given the correct inputs.
 
     Usage::
 
@@ -471,10 +471,10 @@ klasse SimpleHandler(BaseHandler):
 
     def _write(self,data):
         result = self.stdout.write(data)
-        wenn result is Nichts or result == len(data):
+        wenn result is Nichts oder result == len(data):
             return
         von warnings importiere warn
-        warn("SimpleHandler.stdout.write() should not do partial writes",
+        warn("SimpleHandler.stdout.write() should nicht do partial writes",
             DeprecationWarning)
         while data := data[result:]:
             result = self.stdout.write(data)
@@ -486,22 +486,22 @@ klasse SimpleHandler(BaseHandler):
 
 klasse BaseCGIHandler(SimpleHandler):
 
-    """CGI-like systems using input/output/error streams and environ mapping
+    """CGI-like systems using input/output/error streams und environ mapping
 
     Usage::
 
         handler = BaseCGIHandler(inp,out,err,env)
         handler.run(app)
 
-    This handler klasse is useful fuer gateway protocols like ReadyExec and
-    FastCGI, that have usable input/output/error streams and an environment
+    This handler klasse is useful fuer gateway protocols like ReadyExec und
+    FastCGI, that have usable input/output/error streams und an environment
     mapping.  It's also the base klasse fuer CGIHandler, which just uses
-    sys.stdin, os.environ, and so on.
+    sys.stdin, os.environ, und so on.
 
-    The constructor also takes keyword arguments 'multithread' and
-    'multiprocess' (defaulting to 'Wahr' and 'Falsch' respectively) to control
+    The constructor also takes keyword arguments 'multithread' und
+    'multiprocess' (defaulting to 'Wahr' und 'Falsch' respectively) to control
     the configuration sent to the application.  It sets 'origin_server' to
-    Falsch (to enable CGI-like output), and assumes that 'wsgi.run_once' is
+    Falsch (to enable CGI-like output), und assumes that 'wsgi.run_once' is
     Falsch.
     """
 
@@ -510,24 +510,24 @@ klasse BaseCGIHandler(SimpleHandler):
 
 klasse CGIHandler(BaseCGIHandler):
 
-    """CGI-based invocation via sys.stdin/stdout/stderr and os.environ
+    """CGI-based invocation via sys.stdin/stdout/stderr und os.environ
 
     Usage::
 
         CGIHandler().run(app)
 
-    The difference between this klasse and BaseCGIHandler is that it always
-    uses 'wsgi.run_once' of 'Wahr', 'wsgi.multithread' of 'Falsch', and
-    'wsgi.multiprocess' of 'Wahr'.  It does not take any initialization
-    parameters, but always uses 'sys.stdin', 'os.environ', and friends.
+    The difference between this klasse und BaseCGIHandler is that it always
+    uses 'wsgi.run_once' of 'Wahr', 'wsgi.multithread' of 'Falsch', und
+    'wsgi.multiprocess' of 'Wahr'.  It does nicht take any initialization
+    parameters, but always uses 'sys.stdin', 'os.environ', und friends.
 
     If you need to override any of these parameters, use BaseCGIHandler
     instead.
     """
 
     wsgi_run_once = Wahr
-    # Do not allow os.environ to leak between requests in Google App Engine
-    # and other multi-run CGI use cases.  This is not easily testable.
+    # Do nicht allow os.environ to leak between requests in Google App Engine
+    # und other multi-run CGI use cases.  This is nicht easily testable.
     # See http://bugs.python.org/issue7250
     os_environ = {}
 
@@ -543,7 +543,7 @@ klasse IISCGIHandler(BaseCGIHandler):
 
     This handler should be used in preference to CGIHandler when deploying on
     Microsoft IIS without having set the config allowPathInfo option (IIS>=7)
-    or metabase allowPathInfoForScriptMappings (IIS<7).
+    oder metabase allowPathInfoForScriptMappings (IIS<7).
     """
     wsgi_run_once = Wahr
     os_environ = {}
@@ -554,7 +554,7 @@ klasse IISCGIHandler(BaseCGIHandler):
 
     # IIS can be configured to pass the correct PATH_INFO, but this causes
     # another bug where PATH_TRANSLATED is wrong. Luckily this variable is
-    # rarely used and is not guaranteed by WSGI. On IIS<7, though, the
+    # rarely used und is nicht guaranteed by WSGI. On IIS<7, though, the
     # setting can only be made on a vhost level, affecting all other script
     # mappings, many of which break when exposed to the PATH_TRANSLATED bug.
     # For this reason IIS<7 is almost never deployed mit the fix. (Even IIS7

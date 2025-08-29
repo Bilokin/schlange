@@ -4,7 +4,7 @@ importiere unittest
 von test importiere support
 von test.support importiere import_helper
 von test.support importiere threading_helper
-# Raise SkipTest wenn subinterpreters not supported.
+# Raise SkipTest wenn subinterpreters nicht supported.
 import_helper.import_module('_interpreters')
 von concurrent importiere interpreters
 von .utils importiere TestBase
@@ -13,7 +13,7 @@ von .utils importiere TestBase
 klasse StressTests(TestBase):
 
     # In these tests we generally want a lot of interpreters,
-    # but not so many that any test takes too long.
+    # but nicht so many that any test takes too long.
 
     @support.requires_resource('cpu')
     def test_create_many_sequential(self):
@@ -30,7 +30,7 @@ klasse StressTests(TestBase):
         start = threading.Event()
         def task():
             # try to create all interpreters simultaneously
-            wenn not start.wait(support.SHORT_TIMEOUT):
+            wenn nicht start.wait(support.SHORT_TIMEOUT):
                 raise TimeoutError
             interp = interpreters.create()
             alive.append(interp)
@@ -56,10 +56,10 @@ klasse StressTests(TestBase):
             alreadyrunning = (f'{interpreters.InterpreterError}: '
                               'interpreter already running')
             # try to run all interpreters simultaneously
-            wenn not start.wait(support.SHORT_TIMEOUT):
+            wenn nicht start.wait(support.SHORT_TIMEOUT):
                 raise TimeoutError
             success = Falsch
-            while not success:
+            while nicht success:
                 try:
                     interp.exec(script)
                 except interpreters.ExecutionFailed als exc:

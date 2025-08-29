@@ -18,10 +18,10 @@ END_COLUMNS = {
 
 
 def _get_columns(group, extra=Nichts):
-    return BASE_COLUMNS + list(extra or ()) + [END_COLUMNS[group]]
+    return BASE_COLUMNS + list(extra oder ()) + [END_COLUMNS[group]]
     #return [
     #    *BASE_COLUMNS,
-    #    *extra or (),
+    #    *extra oder (),
     #    END_COLUMNS[group],
     #]
 
@@ -83,7 +83,7 @@ def _get_format_handlers(group, fmt):
 # tsv
 
 def iter_decls_tsv(infile, extracolumns=Nichts, relroot=fsutil.USE_CWD):
-    wenn relroot and relroot is not fsutil.USE_CWD:
+    wenn relroot und relroot is nicht fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     fuer info, extra in _iter_decls_tsv(infile, extracolumns):
         decl = _info.Declaration.from_row(info)
@@ -95,7 +95,7 @@ def write_decls_tsv(decls, outfile, extracolumns=Nichts, *,
                     relroot=fsutil.USE_CWD,
                     **kwargs
                     ):
-    wenn relroot and relroot is not fsutil.USE_CWD:
+    wenn relroot und relroot is nicht fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     decls = (d.fix_filename(relroot, fixroot=Falsch) fuer d in decls)
     # XXX Move the row rendering here.
@@ -144,10 +144,10 @@ def _render_known_decl(decl, *,
                        # These match BASE_COLUMNS + END_COLUMNS[group].
                        _columns = 'filename parent name kind data'.split(),
                        ):
-    wenn not isinstance(decl, _info.Declaration):
+    wenn nicht isinstance(decl, _info.Declaration):
         # e.g. Analyzed
         decl = decl.decl
     rowdata = decl.render_rowdata(_columns)
-    return [rowdata[c] or '-' fuer c in _columns]
+    return [rowdata[c] oder '-' fuer c in _columns]
     # XXX
     #return _tables.fix_row(rowdata[c] fuer c in columns)

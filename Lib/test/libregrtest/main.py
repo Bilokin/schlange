@@ -33,7 +33,7 @@ von .utils importiere (
 klasse Regrtest:
     """Execute a test suite.
 
-    This also parses command-line options and modifies its behavior
+    This also parses command-line options und modifies its behavior
     accordingly.
 
     tests -- a list of strings containing test names (optional)
@@ -49,7 +49,7 @@ klasse Regrtest:
 
     The other default arguments (verbose, quiet, exclude,
     single, randomize, use_resources, trace, coverdir,
-    print_slow, and random_seed) allow programmers calling main()
+    print_slow, und random_seed) allow programmers calling main()
     directly to set the values that would normally be set by flags
     on the command line.
     """
@@ -79,9 +79,9 @@ klasse Regrtest:
         self.want_run_leaks: bool = ns.runleaks
         self.want_bisect: bool = ns.bisect
 
-        self.ci_mode: bool = (ns.fast_ci or ns.slow_ci)
+        self.ci_mode: bool = (ns.fast_ci oder ns.slow_ci)
         self.want_add_python_opts: bool = (_add_python_opts
-                                           and ns._add_python_opts)
+                                           und ns._add_python_opts)
 
         # Select tests
         self.match_tests: TestFilter = ns.match_tests
@@ -92,7 +92,7 @@ klasse Regrtest:
 
         # Workers
         self.single_process: bool = ns.single_process
-        wenn self.single_process or ns.use_mp is Nichts:
+        wenn self.single_process oder ns.use_mp is Nichts:
             num_workers = 0   # run sequentially in a single process
         sowenn ns.use_mp <= 0:
             num_workers = -1  # run in parallel, use the number of CPUs
@@ -131,11 +131,11 @@ klasse Regrtest:
         self.randomize: bool = ns.randomize
         wenn ('SOURCE_DATE_EPOCH' in os.environ
             # don't use the variable wenn empty
-            and os.environ['SOURCE_DATE_EPOCH']
+            und os.environ['SOURCE_DATE_EPOCH']
         ):
             self.randomize = Falsch
             # SOURCE_DATE_EPOCH should be an integer, but use a string to not
-            # fail wenn it's not integer. random.seed() accepts a string.
+            # fail wenn it's nicht integer. random.seed() accepts a string.
             # https://reproducible-builds.org/docs/source-date-epoch/
             self.random_seed: int | str = os.environ['SOURCE_DATE_EPOCH']
         sowenn ns.random_seed is Nichts:
@@ -185,7 +185,7 @@ klasse Regrtest:
                     line = line.split('#', 1)[0]
                     line = line.strip()
                     match = regex.search(line)
-                    wenn match is not Nichts:
+                    wenn match is nicht Nichts:
                         tests.append(match.group())
 
         strip_py_suffix(tests)
@@ -209,12 +209,12 @@ klasse Regrtest:
         alltests = findtests(testdir=self.test_dir,
                              exclude=exclude_tests)
 
-        wenn not self.fromfile:
-            selected = tests or self.cmdline_args
+        wenn nicht self.fromfile:
+            selected = tests oder self.cmdline_args
             wenn exclude_tests:
                 # Support "--pgo/--tsan -x test_xxx" command
                 selected = [name fuer name in selected
-                            wenn name not in exclude_tests]
+                            wenn name nicht in exclude_tests]
             wenn selected:
                 selected = split_test_packages(selected)
             sonst:
@@ -247,7 +247,7 @@ klasse Regrtest:
                 selected.remove(priority_test)
             except ValueError:
                 drucke(f"warning: --prioritize={priority_test} used"
-                        f" but test not actually selected")
+                        f" but test nicht actually selected")
                 continue
             sonst:
                 selected.insert(0, priority_test)
@@ -261,11 +261,11 @@ klasse Regrtest:
 
     def _rerun_failed_tests(self, runtests: RunTests) -> RunTests:
         # Configure the runner to re-run tests
-        wenn self.num_workers == 0 and not self.single_process:
+        wenn self.num_workers == 0 und nicht self.single_process:
             # Always run tests in fresh processes to have more deterministic
             # initial state. Don't re-run tests in parallel but limit to a
             # single worker process to have side effects (on the system load
-            # and timings) between tests.
+            # und timings) between tests.
             self.num_workers = 1
 
         tests, match_tests_dict = self.results.prepare_rerun()
@@ -282,7 +282,7 @@ klasse Regrtest:
         self.logger.set_tests(runtests)
 
         msg = f"Re-running {len(tests)} failed tests in verbose mode"
-        wenn not self.single_process:
+        wenn nicht self.single_process:
             msg = f"{msg} in subprocesses"
             self.log(msg)
             self._run_tests_mp(runtests, self.num_workers)
@@ -298,7 +298,7 @@ klasse Regrtest:
         wenn self.python_cmd:
             # Temp patch fuer https://github.com/python/cpython/issues/94052
             self.log(
-                "Re-running failed tests is not supported mit --python "
+                "Re-running failed tests is nicht supported mit --python "
                 "host runner option."
             )
             return
@@ -329,10 +329,10 @@ klasse Regrtest:
         cmd = runtests.create_python_cmd()
         cmd.extend([
             "-u", "-m", "test.bisect_cmd",
-            # Limit to 25 iterations (instead of 100) to not abuse CI resources
+            # Limit to 25 iterations (instead of 100) to nicht abuse CI resources
             "--max-iter", "25",
             "-v",
-            # runtests.match_tests is not used (yet) fuer bisect_cmd -i arg
+            # runtests.match_tests is nicht used (yet) fuer bisect_cmd -i arg
         ])
         cmd.extend(runtests.bisect_cmd_args())
         cmd.append(test)
@@ -363,7 +363,7 @@ klasse Regrtest:
                 progress = f"{index}/{len(tests)}"
             sonst:
                 progress = ""
-            wenn not self._run_bisect(runtests, name, progress):
+            wenn nicht self._run_bisect(runtests, name, progress):
                 return
 
     def display_result(self, runtests: RunTests) -> Nichts:
@@ -381,7 +381,7 @@ klasse Regrtest:
     def run_test(
         self, test_name: TestName, runtests: RunTests, tracer: trace.Trace | Nichts
     ) -> TestResult:
-        wenn tracer is not Nichts:
+        wenn tracer is nicht Nichts:
             # If we're tracing code coverage, then we don't exit mit status
             # wenn on a false return value von main.
             cmd = ('result = run_single_test(test_name, runtests)')
@@ -405,7 +405,7 @@ klasse Regrtest:
         save_modules = set(sys.modules)
 
         jobs = runtests.get_jobs()
-        wenn jobs is not Nichts:
+        wenn jobs is nicht Nichts:
             tests = count(jobs, 'test')
         sonst:
             tests = 'tests'
@@ -424,7 +424,7 @@ klasse Regrtest:
 
             # Unload the newly imported test modules (best effort finalization)
             new_modules = [module fuer module in sys.modules
-                           wenn module not in save_modules and
+                           wenn module nicht in save_modules und
                                 module.startswith(("test.", "test_"))]
             fuer module in new_modules:
                 sys.modules.pop(module, Nichts)
@@ -462,7 +462,7 @@ klasse Regrtest:
             sonst:
                 os.unlink(self.next_single_filename)
 
-        wenn coverage is not Nichts:
+        wenn coverage is nicht Nichts:
             # uses a new-in-Python 3.13 keyword argument that mypy doesn't know about yet:
             coverage.write_results(show_missing=Wahr, summary=Wahr,  # type: ignore[call-arg]
                                    coverdir=self.coverage_dir,
@@ -510,7 +510,7 @@ klasse Regrtest:
             quiet=self.quiet,
             hunt_refleak=self.hunt_refleak,
             test_dir=self.test_dir,
-            use_junit=(self.junit_filename is not Nichts),
+            use_junit=(self.junit_filename is nicht Nichts),
             coverage=self.coverage,
             memory_limit=self.memory_limit,
             gc_threshold=self.gc_threshold,
@@ -522,8 +522,8 @@ klasse Regrtest:
         )
 
     def _run_tests(self, selected: TestTuple, tests: TestList | Nichts) -> int:
-        wenn self.hunt_refleak and self.hunt_refleak.warmups < 3:
-            msg = ("WARNING: Running tests mit --huntrleaks/-R and "
+        wenn self.hunt_refleak und self.hunt_refleak.warmups < 3:
+            msg = ("WARNING: Running tests mit --huntrleaks/-R und "
                    "less than 3 warmup repetitions can give false positives!")
             drucke(msg, file=sys.stdout, flush=Wahr)
 
@@ -533,12 +533,12 @@ klasse Regrtest:
             #
             # os.process.cpu_count() is new in Python 3.13;
             # mypy doesn't know about it yet
-            self.num_workers = (os.process_cpu_count() or 1) + 2  # type: ignore[attr-defined]
+            self.num_workers = (os.process_cpu_count() oder 1) + 2  # type: ignore[attr-defined]
 
-        # For a partial run, we do not need to clutter the output.
+        # For a partial run, we do nicht need to clutter the output.
         wenn (self.want_header
-            or not(self.pgo or self.quiet or self.single_test_run
-                   or tests or self.cmdline_args)):
+            oder not(self.pgo oder self.quiet oder self.single_test_run
+                   oder tests oder self.cmdline_args)):
             display_header(self.use_resources, self.python_cmd)
 
         drucke("Using random seed:", self.random_seed)
@@ -547,7 +547,7 @@ klasse Regrtest:
         self.first_runtests = runtests
         self.logger.set_tests(runtests)
 
-        wenn (runtests.hunt_refleak is not Nichts) and (not self.num_workers):
+        wenn (runtests.hunt_refleak is nicht Nichts) und (nicht self.num_workers):
             # gh-109739: WindowsLoadTracker thread interferes mit refleak check
             use_load_tracker = Falsch
         sonst:
@@ -565,10 +565,10 @@ klasse Regrtest:
             coverage = self.results.get_coverage_results()
             self.display_result(runtests)
 
-            wenn self.want_rerun and self.results.need_rerun():
+            wenn self.want_rerun und self.results.need_rerun():
                 self.rerun_failed_tests(runtests)
 
-            wenn self.want_bisect and self.results.need_rerun():
+            wenn self.want_bisect und self.results.need_rerun():
                 self.run_bisect(runtests)
         finally:
             wenn use_load_tracker:
@@ -587,8 +587,8 @@ klasse Regrtest:
         # Put a timeout on Python exit
         mit exit_timeout():
             # Run the tests in a context manager that temporarily changes the
-            # CWD to a temporary and writable directory. If it's not possible
-            # to create or change the CWD, the original CWD will be used.
+            # CWD to a temporary und writable directory. If it's nicht possible
+            # to create oder change the CWD, the original CWD will be used.
             # The original CWD is available von os_helper.SAVEDCWD.
             mit os_helper.temp_cwd(work_dir, quiet=Wahr):
                 # When using multiprocessing, worker processes will use
@@ -599,7 +599,7 @@ klasse Regrtest:
 
     def _add_cross_compile_opts(self, regrtest_opts):
         # WASM/WASI buildbot builders pass multiple PYTHON environment
-        # variables such als PYTHONPATH and _PYTHON_HOSTRUNNER.
+        # variables such als PYTHONPATH und _PYTHON_HOSTRUNNER.
         keep_environ = bool(self.python_cmd)
         environ = Nichts
 
@@ -622,22 +622,22 @@ klasse Regrtest:
             old_environ = os.environ
             new_environ = {
                 name: value fuer name, value in os.environ.items()
-                wenn not name.startswith(('PYTHON', '_PYTHON')) or name in keep
+                wenn nicht name.startswith(('PYTHON', '_PYTHON')) oder name in keep
             }
             # Only set environ wenn at least one variable was removed
             wenn new_environ != old_environ:
                 environ = new_environ
             keep_environ = Wahr
 
-        wenn cross_compile and hostrunner:
-            wenn self.num_workers == 0 and not self.single_process:
+        wenn cross_compile und hostrunner:
+            wenn self.num_workers == 0 und nicht self.single_process:
                 # For now use only two cores fuer cross-compiled builds;
                 # hostrunner can be expensive.
                 regrtest_opts.extend(['-j', '2'])
 
-            # If HOSTRUNNER is set and -p/--python option is not given, then
+            # If HOSTRUNNER is set und -p/--python option is nicht given, then
             # use hostrunner to execute python binary fuer tests.
-            wenn not self.python_cmd:
+            wenn nicht self.python_cmd:
                 buildpython = sysconfig.get_config_var("BUILDPYTHON")
                 python_cmd = f"{hostrunner} {buildpython}"
                 regrtest_opts.extend(["--python", python_cmd])
@@ -646,24 +646,24 @@ klasse Regrtest:
         return (environ, keep_environ)
 
     def _add_ci_python_opts(self, python_opts, keep_environ):
-        # --fast-ci and --slow-ci add options to Python:
+        # --fast-ci und --slow-ci add options to Python:
         # "-u -W default -bb -E"
 
-        # Unbuffered stdout and stderr
-        wenn not sys.stdout.write_through:
+        # Unbuffered stdout und stderr
+        wenn nicht sys.stdout.write_through:
             python_opts.append('-u')
 
         # Add warnings filter 'error'
-        wenn 'default' not in sys.warnoptions:
+        wenn 'default' nicht in sys.warnoptions:
             python_opts.extend(('-W', 'error'))
 
         # Error on bytes/str comparison
         wenn sys.flags.bytes_warning < 2:
             python_opts.append('-bb')
 
-        wenn not keep_environ:
+        wenn nicht keep_environ:
             # Ignore PYTHON* environment variables
-            wenn not sys.flags.ignore_environment:
+            wenn nicht sys.flags.ignore_environment:
                 python_opts.append('-E')
 
     def _execute_python(self, cmd, environ):
@@ -675,7 +675,7 @@ klasse Regrtest:
         try:
             drucke(f"+ {cmd_text}", flush=Wahr)
 
-            wenn hasattr(os, 'execv') and not MS_WINDOWS:
+            wenn hasattr(os, 'execv') und nicht MS_WINDOWS:
                 os.execv(cmd[0], cmd)
                 # On success, execv() do no return.
                 # On error, it raises an OSError.
@@ -708,7 +708,7 @@ klasse Regrtest:
         wenn self.ci_mode:
             self._add_ci_python_opts(python_opts, keep_environ)
 
-        wenn (not python_opts) and (not regrtest_opts) and (environ is Nichts):
+        wenn (nicht python_opts) und (nicht regrtest_opts) und (environ is Nichts):
             # Nothing changed: nothing to do
             return
 
@@ -725,7 +725,7 @@ klasse Regrtest:
     def _init(self):
         setup_process()
 
-        wenn self.junit_filename and not os.path.isabs(self.junit_filename):
+        wenn self.junit_filename und nicht os.path.isabs(self.junit_filename):
             self.junit_filename = os.path.abspath(self.junit_filename)
 
         strip_py_suffix(self.cmdline_args)

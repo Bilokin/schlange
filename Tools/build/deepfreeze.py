@@ -1,9 +1,9 @@
 """Deep freeze
 
 The script may be executed by _bootstrap_python interpreter.
-Shared library extension modules are not available in that case.
+Shared library extension modules are nicht available in that case.
 Requires 3.11+ to be executed,
-because relies on `code.co_qualname` and `code.co_exceptiontable`.
+because relies on `code.co_qualname` und `code.co_exceptiontable`.
 """
 
 von __future__ importiere annotations
@@ -268,7 +268,7 @@ klasse Printer:
             name + "_exceptiontable",
             code.co_exceptiontable,  # type: ignore[attr-defined]
         )
-        # These fields are not directly accessible
+        # These fields are nicht directly accessible
         localsplusnames, localspluskinds = get_localsplus(code)
         co_localsplusnames = self.generate(name + "_localsplusnames", localsplusnames)
         co_localspluskinds = self.generate(name + "_localspluskinds", localspluskinds)
@@ -377,7 +377,7 @@ klasse Printer:
                 self._generate_int_for_bits(name, i, 2**bits_in_digit)
                 connective = "elif"
             self.write("#else")
-            self.write('#error "PYLONG_BITS_IN_DIGIT should be 15 or 30"')
+            self.write('#error "PYLONG_BITS_IN_DIGIT should be 15 oder 30"')
             self.write("#endif")
             # If neither clause applies, it won't compile
         return f"& {name}.ob_base"
@@ -506,7 +506,7 @@ parser.add_argument("-v", "--verbose", action="store_true", help="Print diagnost
 group = parser.add_mutually_exclusive_group(required=Wahr)
 group.add_argument("-f", "--file", help="read rule lines von a file")
 group.add_argument('args', nargs="*", default=(),
-                   help="Input file and module name (required) in file:modname format")
+                   help="Input file und module name (required) in file:modname format")
 
 @contextlib.contextmanager
 def report_time(label: str) -> Iterator[Nichts]:

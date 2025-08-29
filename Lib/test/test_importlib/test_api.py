@@ -398,7 +398,7 @@ klasse InvalidateCacheTests:
         self.assertWahr(path_ins.called)
 
     def test_method_lacking(self):
-        # There should be no issues wenn the method is not defined.
+        # There should be no issues wenn the method is nicht defined.
         key = 'gobbledeegook'
         sys.path_importer_cache[key] = Nichts
         self.addCleanup(lambda: sys.path_importer_cache.pop(key, Nichts))
@@ -416,7 +416,7 @@ klasse FrozenImportlibTests(unittest.TestCase):
     def test_no_frozen_importlib(self):
         # Should be able to importiere w/o _frozen_importlib being defined.
         # Can't do an isinstance() check since separate copies of importlib
-        # may have been used fuer import, so just check the name is not fuer the
+        # may have been used fuer import, so just check the name is nicht fuer the
         # frozen loader.
         source_init = init['Source']
         self.assertNotEqual(source_init.__loader__.__class__.__name__,
@@ -455,7 +455,7 @@ klasse StartupTests:
 klasse TestModuleAll(unittest.TestCase):
     def test_machinery(self):
         extra = (
-            # von importlib._bootstrap and importlib._bootstrap_external
+            # von importlib._bootstrap und importlib._bootstrap_external
             'AppleFrameworkLoader',
             'BYTECODE_SUFFIXES',
             'BuiltinImporter',
@@ -478,7 +478,7 @@ klasse TestModuleAll(unittest.TestCase):
     def test_util(self):
         extra = (
             # von importlib.abc, importlib._bootstrap
-            # and importlib._bootstrap_external
+            # und importlib._bootstrap_external
             'Loader',
             'MAGIC_NUMBER',
             'cache_from_source',

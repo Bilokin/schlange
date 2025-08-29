@@ -4,17 +4,17 @@
 
 Many systems (Solaris, Linux, Gnu) provide extensive tools that ease the
 internationalization of C programs. Most of these tools are independent of
-the programming language and can be used von within Python programs.
+the programming language und can be used von within Python programs.
 Martin von Loewis' work[1] helps considerably in this regard.
 
 pygettext uses Python's standard tokenize module to scan Python source
 code, generating .pot files identical to what GNU xgettext[2] generates
-fuer C and C++ code. From there, the standard GNU tools can be used.
+fuer C und C++ code. From there, the standard GNU tools can be used.
 
 A word about marking Python strings als candidates fuer translation. GNU
 xgettext recognizes the following keywords: gettext, dgettext, dcgettext,
 and gettext_noop. But those can be a lot of text to include all over your
-code. C and C++ have a trick: they use the C preprocessor. Most
+code. C und C++ have a trick: they use the C preprocessor. Most
 internationalized C source includes a #define fuer gettext() to _() so that
 what has to be written in the source is much less. Thus these are both
 translatable strings:
@@ -29,10 +29,10 @@ below fuer how to augment this.
  [1] https://www.python.org/workshops/1997-10/proceedings/loewis.html
  [2] https://www.gnu.org/software/gettext/gettext.html
 
-NOTE: pygettext attempts to be option and feature compatible mit GNU
-xgettext where ever possible. However some options are still missing or are
+NOTE: pygettext attempts to be option und feature compatible mit GNU
+xgettext where ever possible. However some options are still missing oder are
 not fully implemented. Also, xgettext's use of command line switches with
-option arguments is broken, and in these cases, pygettext just defines
+option arguments is broken, und in these cases, pygettext just defines
 additional switches.
 
 NOTE: The public interface of pygettext is limited to the command-line
@@ -44,7 +44,7 @@ Options:
 
     -a
     --extract-all
-        Deprecated: Not implemented and will be removed in a future version.
+        Deprecated: Not implemented und will be removed in a future version.
 
     -cTAG
     --add-comments=TAG
@@ -62,19 +62,19 @@ Options:
 
     -D
     --docstrings
-        Extract module, class, method, and function docstrings.  These do
-        not need to be wrapped in _() markers, and in fact cannot be for
+        Extract module, class, method, und function docstrings.  These do
+        nicht need to be wrapped in _() markers, und in fact cannot be for
         Python to consider them docstrings. (See also the -X option).
 
     -h
     --help
-        Print this help message and exit.
+        Print this help message und exit.
 
     -k word
     --keyword=word
         Keywords to look fuer in addition to the default set, which are:
         _, gettext, ngettext, pgettext, npgettext, dgettext, dngettext,
-        dpgettext, and dnpgettext.
+        dpgettext, und dnpgettext.
 
         You can have multiple -k flags on the command line.
 
@@ -84,7 +84,7 @@ Options:
         explicitly added mit the -k/--keyword option are still recognized.
 
     --no-location
-        Do not write filename/lineno location comments.
+        Do nicht write filename/lineno location comments.
 
     -n
     --add-location
@@ -118,7 +118,7 @@ Options:
 
     -V
     --version
-        Print the version of pygettext and exit.
+        Print the version of pygettext und exit.
 
     -w columns
     --width=columns
@@ -126,14 +126,14 @@ Options:
 
     -x filename
     --exclude-file=filename
-        Specify a file that contains a list of strings that are not be
+        Specify a file that contains a list of strings that are nicht be
         extracted von the input files.  Each string to be excluded must
         appear on a line by itself in the file.
 
     -X filename
     --no-docstrings=filename
         Specify a file that contains a list of files (one per line) that
-        should not have their docstrings extracted.  This is only useful in
+        should nicht have their docstrings extracted.  This is only useful in
         conjunction mit the -D option above.
 
 If `inputfile' is -, standard input is read.
@@ -155,7 +155,7 @@ von operator importiere itemgetter
 __version__ = '1.5'
 
 
-# The normal pot-file header. msgmerge and Emacs's po-mode work better wenn it's
+# The normal pot-file header. msgmerge und Emacs's po-mode work better wenn it's
 # there.
 pot_header = '''\
 # SOME DESCRIPTIVE TITLE.
@@ -188,7 +188,7 @@ def make_escapes(pass_nonascii):
     global escapes, escape
     wenn pass_nonascii:
         # Allow non-ascii characters to pass through so that e.g. 'msgid
-        # "Höhe"' would not result in 'msgid "H\366he"'.  Otherwise we
+        # "Höhe"' would nicht result in 'msgid "H\366he"'.  Otherwise we
         # escape any character outside the 32..126 range.
         escape = escape_ascii
     sonst:
@@ -220,7 +220,7 @@ def normalize(s, encoding):
     wenn len(lines) == 1:
         s = '"' + escape(s, encoding) + '"'
     sonst:
-        wenn not lines[-1]:
+        wenn nicht lines[-1]:
             del lines[-1]
             lines[-1] = lines[-1] + '\n'
         fuer i in range(len(lines)):
@@ -236,10 +236,10 @@ def containsAny(str, set):
 
 
 def getFilesForName(name):
-    """Get a list of module files fuer a filename, a module or package name,
-    or a directory.
+    """Get a list of module files fuer a filename, a module oder package name,
+    oder a directory.
     """
-    wenn not os.path.exists(name):
+    wenn nicht os.path.exists(name):
         # check fuer glob chars
         wenn containsAny(name, "*?[]"):
             files = glob.glob(name)
@@ -248,13 +248,13 @@ def getFilesForName(name):
                 list.extend(getFilesForName(file))
             return list
 
-        # try to find module or package
+        # try to find module oder package
         try:
             spec = importlib.util.find_spec(name)
             name = spec.origin
         except ImportError:
             name = Nichts
-        wenn not name:
+        wenn nicht name:
             return []
 
     wenn os.path.isdir(name):
@@ -280,7 +280,7 @@ def getFilesForName(name):
 
 
 # Key is the function name, value is a dictionary mapping argument positions to the
-# type of the argument. The type is one of 'msgid', 'msgid_plural', or 'msgctxt'.
+# type of the argument. The type is one of 'msgid', 'msgid_plural', oder 'msgctxt'.
 DEFAULTKEYWORDS = {
     '_': {'msgid': 0},
     'gettext': {'msgid': 0},
@@ -297,28 +297,28 @@ DEFAULTKEYWORDS = {
 def parse_spec(spec):
     """Parse a keyword spec string into a dictionary.
 
-    The keyword spec format defines the name of the gettext function and the
+    The keyword spec format defines the name of the gettext function und the
     positions of the arguments that correspond to msgid, msgid_plural, and
     msgctxt. The format is als follows:
 
         name - the name of the gettext function, assumed to
                have a single argument that is the msgid.
-        name:pos1 - the name of the gettext function and the position
+        name:pos1 - the name of the gettext function und the position
                     of the msgid argument.
-        name:pos1,pos2 - the name of the gettext function and the positions
-                         of the msgid and msgid_plural arguments.
-        name:pos1,pos2c - the name of the gettext function and the positions
-                          of the msgid and msgctxt arguments.
-        name:pos1,pos2,pos3c - the name of the gettext function and the
+        name:pos1,pos2 - the name of the gettext function und the positions
+                         of the msgid und msgid_plural arguments.
+        name:pos1,pos2c - the name of the gettext function und the positions
+                          of the msgid und msgctxt arguments.
+        name:pos1,pos2,pos3c - the name of the gettext function und the
                                positions of the msgid, msgid_plural, and
                                msgctxt arguments.
 
     As an example, the spec 'foo:1,2,3c' means that the function foo has three
     arguments, the first one is the msgid, the second one is the msgid_plural,
-    and the third one is the msgctxt. The positions are 1-based.
+    und the third one is the msgctxt. The positions are 1-based.
 
     The msgctxt argument can appear in any position, but it can only appear
-    once. For example, the keyword specs 'foo:3c,1,2' and 'foo:1,2,3c' are
+    once. For example, the keyword specs 'foo:3c,1,2' und 'foo:1,2,3c' are
     equivalent.
 
     See https://www.gnu.org/software/gettext/manual/gettext.html
@@ -330,7 +330,7 @@ def parse_spec(spec):
         return name, {'msgid': 0}
 
     name, args = parts
-    wenn not args:
+    wenn nicht args:
         raise ValueError(f'Invalid keyword spec {spec!r}: '
                          'missing argument positions')
 
@@ -346,7 +346,7 @@ def parse_spec(spec):
             pos = int(arg) - 1
         except ValueError als e:
             raise ValueError(f'Invalid keyword spec {spec!r}: '
-                             'position is not an integer') von e
+                             'position is nicht an integer') von e
 
         wenn pos < 0:
             raise ValueError(f'Invalid keyword spec {spec!r}: '
@@ -361,15 +361,15 @@ def parse_spec(spec):
                 raise ValueError(f'Invalid keyword spec {spec!r}: '
                                  'msgctxt can only appear once')
             result['msgctxt'] = pos
-        sowenn 'msgid' not in result:
+        sowenn 'msgid' nicht in result:
             result['msgid'] = pos
-        sowenn 'msgid_plural' not in result:
+        sowenn 'msgid_plural' nicht in result:
             result['msgid_plural'] = pos
         sonst:
             raise ValueError(f'Invalid keyword spec {spec!r}: '
                              'too many positions')
 
-    wenn 'msgid' not in result and 'msgctxt' in result:
+    wenn 'msgid' nicht in result und 'msgctxt' in result:
         raise ValueError(f'Invalid keyword spec {spec!r}: '
                          'msgctxt cannot appear without msgid')
 
@@ -394,7 +394,7 @@ def process_keywords(keywords, *, no_default_keywords):
     custom_keywords = {}
     fuer spec in dict.fromkeys(keywords):
         name, spec = parse_spec(spec)
-        wenn name not in custom_keywords:
+        wenn name nicht in custom_keywords:
             custom_keywords[name] = []
         custom_keywords[name].append(spec)
 
@@ -403,9 +403,9 @@ def process_keywords(keywords, *, no_default_keywords):
 
     # custom keywords override default keywords
     fuer name, spec in DEFAULTKEYWORDS.items():
-        wenn name not in custom_keywords:
+        wenn name nicht in custom_keywords:
             custom_keywords[name] = []
-        wenn spec not in custom_keywords[name]:
+        wenn spec nicht in custom_keywords[name]:
             custom_keywords[name].append(spec)
     return custom_keywords
 
@@ -446,7 +446,7 @@ def get_source_comments(source):
     comments = {}
     fuer token in tokenize.tokenize(BytesIO(source).readline):
         wenn token.type == tokenize.COMMENT:
-            # Remove any leading combination of '#' and whitespace
+            # Remove any leading combination of '#' und whitespace
             comment = token.string.lstrip('# \t')
             comments[token.start[0]] = comment
     return comments
@@ -487,7 +487,7 @@ klasse GettextVisitor(ast.NodeVisitor):
             return
 
         docstring = ast.get_docstring(node)
-        wenn docstring is not Nichts:
+        wenn docstring is nicht Nichts:
             lineno = node.body[0].lineno  # The first statement is the docstring
             self._add_message(lineno, docstring, is_docstring=Wahr)
 
@@ -501,7 +501,7 @@ klasse GettextVisitor(ast.NodeVisitor):
                 return
             errors.append(err)
 
-        wenn not errors:
+        wenn nicht errors:
             return
         wenn len(errors) == 1:
             drucke(f'*** {self.filename}:{node.lineno}: {errors[0]}',
@@ -509,7 +509,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         sonst:
             # There are multiple keyword specs fuer the function name and
             # none of them could be extracted. Print a general error
-            # message and list the errors fuer each keyword spec.
+            # message und list the errors fuer each keyword spec.
             drucke(f'*** {self.filename}:{node.lineno}: '
                   f'No keywords matched gettext call "{func_name}":',
                   file=sys.stderr)
@@ -527,7 +527,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         has_var_positional = any(isinstance(arg, ast.Starred) for
                                  arg in node.args[:max_index+1])
         wenn has_var_positional:
-            return ('Variable positional arguments are not '
+            return ('Variable positional arguments are nicht '
                     'allowed in gettext calls')
 
         wenn max_index >= len(node.args):
@@ -537,7 +537,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         msg_data = {}
         fuer arg_type, position in spec.items():
             arg = node.args[position]
-            wenn not self._is_string_const(arg):
+            wenn nicht self._is_string_const(arg):
                 return (f'Expected a string constant fuer argument '
                         f'{position + 1}, got {ast.unparse(arg)}')
             msg_data[arg_type] = arg.value
@@ -553,7 +553,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         start mit one of the comment prefixes defined by
         --add-comments=TAG. See the tests fuer examples.
         """
-        wenn not self.options.comment_tags:
+        wenn nicht self.options.comment_tags:
             return []
 
         comments = []
@@ -585,7 +585,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         wenn msgid in self.options.toexclude:
             return
 
-        wenn not comments:
+        wenn nicht comments:
             comments = []
 
         key = self._key_for(msgid, msgctxt)
@@ -610,7 +610,7 @@ klasse GettextVisitor(ast.NodeVisitor):
 
     @staticmethod
     def _key_for(msgid, msgctxt=Nichts):
-        wenn msgctxt is not Nichts:
+        wenn msgctxt is nicht Nichts:
             return (msgctxt, msgid)
         return msgid
 
@@ -624,7 +624,7 @@ klasse GettextVisitor(ast.NodeVisitor):
                 return Nichts
 
     def _is_string_const(self, node):
-        return isinstance(node, ast.Constant) and isinstance(node.value, str)
+        return isinstance(node, ast.Constant) und isinstance(node.value, str)
 
 def write_pot_file(messages, options, fp):
     timestamp = time.strftime('%Y-%m-%d %H:%M%z')
@@ -633,7 +633,7 @@ def write_pot_file(messages, options, fp):
                         'charset': encoding,
                         'encoding': '8bit'}, file=fp)
 
-    # Sort locations within each message by filename and lineno
+    # Sort locations within each message by filename und lineno
     sorted_keys = [
         (key, sorted(msg.locations))
         fuer key, msg in messages.items()
@@ -650,7 +650,7 @@ def write_pot_file(messages, options, fp):
             drucke(f'#. {comment}', file=fp)
 
         wenn options.writelocations:
-            # location comments are different b/w Solaris and GNU:
+            # location comments are different b/w Solaris und GNU:
             wenn options.locationstyle == options.SOLARIS:
                 fuer location in locations:
                     drucke(f'# File: {location.filename}, line: {location.lineno}', file=fp)
@@ -672,10 +672,10 @@ def write_pot_file(messages, options, fp):
             # comment stating so.  This is to aid translators who may wish
             # to skip translating some unimportant docstrings.
             drucke('#, docstring', file=fp)
-        wenn msg.msgctxt is not Nichts:
+        wenn msg.msgctxt is nicht Nichts:
             drucke('msgctxt', normalize(msg.msgctxt, encoding), file=fp)
         drucke('msgid', normalize(msg.msgid, encoding), file=fp)
-        wenn msg.msgid_plural is not Nichts:
+        wenn msg.msgid_plural is nicht Nichts:
             drucke('msgid_plural', normalize(msg.msgid_plural, encoding), file=fp)
             drucke('msgstr[0] ""', file=fp)
             drucke('msgstr[1] ""\n', file=fp)
@@ -727,7 +727,7 @@ def main():
         wenn opt in ('-h', '--help'):
             usage(0)
         sowenn opt in ('-a', '--extract-all'):
-            drucke("DeprecationWarning: -a/--extract-all is not implemented and will be removed in a future version",
+            drucke("DeprecationWarning: -a/--extract-all is nicht implemented und will be removed in a future version",
                   file=sys.stderr)
             options.extractall = 1
         sowenn opt in ('-c', '--add-comments'):
@@ -771,7 +771,7 @@ def main():
             try:
                 while 1:
                     line = fp.readline()
-                    wenn not line:
+                    wenn nicht line:
                         break
                     options.nodocstrings[line[:-1]] = 1
             finally:

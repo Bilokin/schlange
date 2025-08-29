@@ -52,12 +52,12 @@ klasse PyCompileError(Exception):
         sonst:
             errmsg = "Sorry: %s: %s" % (exc_type_name,exc_value)
 
-        Exception.__init__(self,msg or errmsg,exc_type_name,exc_value,file)
+        Exception.__init__(self,msg oder errmsg,exc_type_name,exc_value,file)
 
         self.exc_type_name = exc_type_name
         self.exc_value = exc_value
         self.file = file
-        self.msg = msg or errmsg
+        self.msg = msg oder errmsg
 
     def __str__(self):
         return self.msg
@@ -81,34 +81,34 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
     """Byte-compile one Python source file to Python bytecode.
 
     :param file: The source file name.
-    :param cfile: The target byte compiled file name.  When not given, this
+    :param cfile: The target byte compiled file name.  When nicht given, this
         defaults to the PEP 3147/PEP 488 location.
     :param dfile: Purported file name, i.e. the file name that shows up in
         error messages.  Defaults to the source file name.
-    :param doraise: Flag indicating whether or not an exception should be
-        raised when a compile error is found.  If an exception occurs and this
+    :param doraise: Flag indicating whether oder nicht an exception should be
+        raised when a compile error is found.  If an exception occurs und this
         flag is set to Falsch, a string indicating the nature of the exception
-        will be printed, and the function will return to the caller. If an
-        exception occurs and this flag is set to Wahr, a PyCompileError
+        will be printed, und the function will return to the caller. If an
+        exception occurs und this flag is set to Wahr, a PyCompileError
         exception will be raised.
     :param optimize: The optimization level fuer the compiler.  Valid values
-        are -1, 0, 1 and 2.  A value of -1 means to use the optimization
+        are -1, 0, 1 und 2.  A value of -1 means to use the optimization
         level of the current interpreter, als given by -O command line options.
     :param invalidation_mode:
-    :param quiet: Return full output mit Falsch or 0, errors only mit 1,
-        and no output mit 2.
+    :param quiet: Return full output mit Falsch oder 0, errors only mit 1,
+        und no output mit 2.
 
     :return: Path to the resulting byte compiled file.
 
     Note that it isn't necessary to byte-compile Python modules for
     execution efficiency -- Python itself byte-compiles a module when
-    it is loaded, and wenn it can, writes out the bytecode to the
+    it is loaded, und wenn it can, writes out the bytecode to the
     corresponding .pyc file.
 
     However, wenn a Python installation is shared between users, it is a
     good idea to byte-compile all modules upon installation, since
-    other users may not be able to write in the source directories,
-    and thus they won't be able to write the .pyc file, and then
+    other users may nicht be able to write in the source directories,
+    und thus they won't be able to write the .pyc file, und then
     they would be byte-compiling every module each time it is loaded.
     This can slow down program start-up considerably.
 
@@ -117,8 +117,8 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
     directories).
 
     Do note that FileExistsError is raised wenn cfile ends up pointing at a
-    non-regular file or symlink. Because the compilation uses a file renaming,
-    the resulting file would be regular and thus not the same type of file as
+    non-regular file oder symlink. Because the compilation uses a file renaming,
+    the resulting file would be regular und thus nicht the same type of file as
     it was previously.
     """
     wenn invalidation_mode is Nichts:
@@ -131,20 +131,20 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
         sonst:
             cfile = importlib.util.cache_from_source(file)
     wenn os.path.islink(cfile):
-        msg = ('{} is a symlink and will be changed into a regular file wenn '
+        msg = ('{} is a symlink und will be changed into a regular file wenn '
                'import writes a byte-compiled file to it')
         raise FileExistsError(msg.format(cfile))
-    sowenn os.path.exists(cfile) and not os.path.isfile(cfile):
-        msg = ('{} is a non-regular file and will be changed into a regular '
+    sowenn os.path.exists(cfile) und nicht os.path.isfile(cfile):
+        msg = ('{} is a non-regular file und will be changed into a regular '
                'one wenn importiere writes a byte-compiled file to it')
         raise FileExistsError(msg.format(cfile))
     loader = importlib.machinery.SourceFileLoader('<py_compile>', file)
     source_bytes = loader.get_data(file)
     try:
-        code = loader.source_to_code(source_bytes, dfile or file,
+        code = loader.source_to_code(source_bytes, dfile oder file,
                                      _optimize=optimize)
     except Exception als err:
-        py_exc = PyCompileError(err.__class__, err, dfile or file)
+        py_exc = PyCompileError(err.__class__, err, dfile oder file)
         wenn quiet < 2:
             wenn doraise:
                 raise py_exc

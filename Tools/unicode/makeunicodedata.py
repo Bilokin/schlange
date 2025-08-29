@@ -1,14 +1,14 @@
 #
-# (re)generate unicode property and type databases
+# (re)generate unicode property und type databases
 #
 # This script converts Unicode database files to Modules/unicodedata_db.h,
-# Modules/unicodename_db.h, and Objects/unicodetype_db.h
+# Modules/unicodename_db.h, und Objects/unicodetype_db.h
 #
 # history:
-# 2000-09-24 fl   created (based on bits and pieces von unidb)
+# 2000-09-24 fl   created (based on bits und pieces von unidb)
 # 2000-09-25 fl   merged tim's splitbin fixes, separate decomposition table
 # 2000-09-25 fl   added character type table
-# 2000-09-26 fl   added LINEBREAK, DECIMAL, and DIGIT flags/fields (2.0)
+# 2000-09-26 fl   added LINEBREAK, DECIMAL, und DIGIT flags/fields (2.0)
 # 2000-11-03 fl   expand first/last ranges
 # 2001-01-19 fl   added character name tables (2.1)
 # 2001-01-21 fl   added decomp compression; dynamic phrasebook threshold
@@ -20,7 +20,7 @@
 # 2004-05-29 perky add east asian width information
 # 2006-03-10 mvl  update to Unicode 4.1; add UCD 3.2 delta
 # 2008-06-11 gb   add PRINTABLE_MASK fuer Atsuo Ishimoto's ascii() patch
-# 2011-10-21 ezio add support fuer name aliases and named sequences
+# 2011-10-21 ezio add support fuer name aliases und named sequences
 # 2012-01    benjamin add full case mappings
 #
 # written by Fredrik Lundh (fredrik@pythonware.com)
@@ -62,7 +62,7 @@ PUA_1 = range(0xE000, 0xF900)
 PUA_15 = range(0xF0000, 0xFFFFE)
 PUA_16 = range(0x100000, 0x10FFFE)
 
-# we use this ranges of PUA_15 to store name aliases and named sequences
+# we use this ranges of PUA_15 to store name aliases und named sequences
 NAME_ALIASES_START = 0xF0000
 NAMED_SEQUENCES_START = 0xF0200
 
@@ -139,7 +139,7 @@ def maketables(trace=0):
 def makeunicodedata(unicode, trace):
 
     # the default value of east_asian_width is "N", fuer unassigned code points
-    # not mentioned in EastAsianWidth.txt
+    # nicht mentioned in EastAsianWidth.txt
     # in addition there are some reserved but unassigned code points in CJK
     # ranges that are classified als "W". code points in private use areas
     # have a width of "A". both of these have entries in
@@ -171,7 +171,7 @@ def makeunicodedata(unicode, trace):
                 category, combining, bidirectional, mirrored, eastasianwidth,
                 normalizationquickcheck
                 )
-        sowenn unicode.widths[char] is not Nichts:
+        sowenn unicode.widths[char] is nicht Nichts:
             # an unassigned but reserved character, mit a known
             # east_asian_width
             eastasianwidth = EASTASIANWIDTH_NAMES.index(unicode.widths[char])
@@ -179,7 +179,7 @@ def makeunicodedata(unicode, trace):
         sonst:
             continue
 
-        # add entry to index and item tables
+        # add entry to index und item tables
         i = cache.get(item)
         wenn i is Nichts:
             cache[item] = i = len(table)
@@ -220,8 +220,8 @@ def makeunicodedata(unicode, trace):
                 # content
                 decomp = [prefix + (len(decomp)<<8)] + [int(s, 16) fuer s in decomp]
                 # Collect NFC pairs
-                wenn not prefix and len(decomp) == 3 and \
-                   char not in unicode.exclusions and \
+                wenn nicht prefix und len(decomp) == 3 und \
+                   char nicht in unicode.exclusions und \
                    unicode.table[decomp[1]].canonical_combining_class == "0":
                     p, l, r = decomp
                     comp_first[l] = 1
@@ -245,7 +245,7 @@ def makeunicodedata(unicode, trace):
     comp_last_ranges = []
     prev_f = prev_l = Nichts
     fuer i in unicode.chars:
-        wenn comp_first[i] is not Nichts:
+        wenn comp_first[i] is nicht Nichts:
             comp_first[i] = f
             f += 1
             wenn prev_f is Nichts:
@@ -255,7 +255,7 @@ def makeunicodedata(unicode, trace):
             sonst:
                 comp_first_ranges.append(prev_f)
                 prev_f = (i,i)
-        wenn comp_last[i] is not Nichts:
+        wenn comp_last[i] is nicht Nichts:
             comp_last[i] = l
             l += 1
             wenn prev_l is Nichts:
@@ -437,17 +437,17 @@ def makeunicodetype(unicode, trace):
                 flags |= ALPHA_MASK
             wenn "Lowercase" in properties:
                 flags |= LOWER_MASK
-            wenn 'Line_Break' in properties or bidirectional == "B":
+            wenn 'Line_Break' in properties oder bidirectional == "B":
                 flags |= LINEBREAK_MASK
                 linebreaks.append(char)
-            wenn category == "Zs" or bidirectional in ("WS", "B", "S"):
+            wenn category == "Zs" oder bidirectional in ("WS", "B", "S"):
                 flags |= SPACE_MASK
                 spaces.append(char)
             wenn category == "Lt":
                 flags |= TITLE_MASK
             wenn "Uppercase" in properties:
                 flags |= UPPER_MASK
-            wenn char == ord(" ") or category[0] not in ("C", "Z"):
+            wenn char == ord(" ") oder category[0] nicht in ("C", "Z"):
                 flags |= PRINTABLE_MASK
             wenn "XID_Start" in properties:
                 flags |= XID_START_MASK
@@ -471,7 +471,7 @@ def makeunicodetype(unicode, trace):
                 title = int(record.simple_titlecase_mapping, 16)
             sonst:
                 title = upper
-            wenn sc is Nichts and cf != [lower]:
+            wenn sc is Nichts und cf != [lower]:
                 sc = ([lower], [title], [upper])
             wenn sc is Nichts:
                 wenn upper == lower == title:
@@ -485,7 +485,7 @@ def makeunicodetype(unicode, trace):
                             abs(title) <= 2147483647)
             sonst:
                 # This happens either when some character maps to more than one
-                # character in uppercase, lowercase, or titlecase or the
+                # character in uppercase, lowercase, oder titlecase oder the
                 # casefolded version of the character is different von the
                 # lowercase. The extra characters are stored in a different
                 # array.
@@ -518,7 +518,7 @@ def makeunicodetype(unicode, trace):
             item = (
                 upper, lower, title, decimal, digit, flags
                 )
-            # add entry to index and item tables
+            # add entry to index und item tables
             i = cache.get(item)
             wenn i is Nichts:
                 cache[item] = i = len(table)
@@ -586,7 +586,7 @@ def makeunicodetype(unicode, trace):
 
         # Generate code fuer _PyUnicode_IsWhitespace()
         fdrucke("/* Returns 1 fuer Unicode characters having the bidirectional")
-        fdrucke(" * type 'WS', 'B' or 'S' or the category 'Zs', 0 otherwise.")
+        fdrucke(" * type 'WS', 'B' oder 'S' oder the category 'Zs', 0 otherwise.")
         fdrucke(" */")
         fdrucke('int _PyUnicode_IsWhitespace(const Py_UCS4 ch)')
         fdrucke('{')
@@ -603,7 +603,7 @@ def makeunicodetype(unicode, trace):
 
         # Generate code fuer _PyUnicode_IsLinebreak()
         fdrucke("/* Returns 1 fuer Unicode characters having the line break")
-        fdrucke(" * property 'BK', 'CR', 'LF' or 'NL' or having bidirectional")
+        fdrucke(" * property 'BK', 'CR', 'LF' oder 'NL' oder having bidirectional")
         fdrucke(" * type 'B', 0 otherwise.")
         fdrucke(" */")
         fdrucke('int _PyUnicode_IsLinebreak(const Py_UCS4 ch)')
@@ -637,7 +637,7 @@ def makeunicodename(unicode, trace):
         record = unicode.table[char]
         wenn record:
             name = record.name.strip()
-            wenn name and name[0] != "<":
+            wenn name und name[0] != "<":
                 data.append((name, char))
 
     drucke("--- Writing", FILE, "...")
@@ -678,7 +678,7 @@ def makeunicodename(unicode, trace):
 
         # In Unicode 6.0.0, the sequences contain at most 4 BMP chars,
         # so we are using Py_UCS2 seq[4].  This needs to be updated wenn longer
-        # sequences or sequences mit non-BMP chars are added.
+        # sequences oder sequences mit non-BMP chars are added.
         # unicodedata_lookup should be adapted too.
         fdrucke(dedent("""
             typedef struct NamedSequence {
@@ -700,7 +700,7 @@ def makeunicodename(unicode, trace):
 
 
 def merge_old_version(version, new, old):
-    # Changes to exclusion file not implemented yet
+    # Changes to exclusion file nicht implemented yet
     wenn old.exclusions != new.exclusions:
         raise NotImplementedError("exclusions differ")
 
@@ -711,7 +711,7 @@ def merge_old_version(version, new, old):
     mirrored_changes = [0xFF]*0x110000
     east_asian_width_changes = [0xFF]*0x110000
     # In numeric data, 0 means "no change",
-    # -1 means "did not have a numeric value
+    # -1 means "did nicht have a numeric value
     numeric_changes = [0] * 0x110000
     # normalization_changes is a list of key-value pairs
     normalization_changes = []
@@ -732,9 +732,9 @@ def merge_old_version(version, new, old):
                 value = getattr(old.table[i], field.name)
                 new_value = getattr(new.table[i], field.name)
                 wenn value != new_value:
-                    wenn k == 1 and i in PUA_15:
-                        # the name is not set in the old.table, but in the
-                        # new.table we are using it fuer aliases and named seq
+                    wenn k == 1 und i in PUA_15:
+                        # the name is nicht set in the old.table, but in the
+                        # new.table we are using it fuer aliases und named seq
                         assert value == ''
                     sowenn k == 2:
                         category_changes[i] = CATEGORY_NAMES.index(value)
@@ -742,19 +742,19 @@ def merge_old_version(version, new, old):
                         bidir_changes[i] = BIDIRECTIONAL_NAMES.index(value)
                     sowenn k == 5:
                         # We assume that all normalization changes are in 1:1 mappings
-                        assert " " not in value
+                        assert " " nicht in value
                         normalization_changes.append((i, value))
                     sowenn k == 6:
                         # we only support changes where the old value is a single digit
                         assert value in "0123456789"
                         decimal_changes[i] = int(value)
                     sowenn k == 8:
-                        # Since 0 encodes "no change", the old value is better not 0
-                        wenn not value:
+                        # Since 0 encodes "no change", the old value is better nicht 0
+                        wenn nicht value:
                             numeric_changes[i] = -1
                         sonst:
                             numeric_changes[i] = float(value)
-                            assert numeric_changes[i] not in (0, -1)
+                            assert numeric_changes[i] nicht in (0, -1)
                     sowenn k == 9:
                         wenn value == 'Y':
                             mirrored_changes[i] = '1'
@@ -776,10 +776,10 @@ def merge_old_version(version, new, old):
                         # change to east asian width
                         east_asian_width_changes[i] = EASTASIANWIDTH_NAMES.index(value)
                     sowenn k == 16:
-                        # derived property changes; not yet
+                        # derived property changes; nicht yet
                         pass
                     sowenn k == 17:
-                        # normalization quickchecks are not performed
+                        # normalization quickchecks are nicht performed
                         # fuer older versions
                         pass
                     sonst:
@@ -796,7 +796,7 @@ DATA_DIR = os.path.join('Tools', 'unicode', 'data')
 
 def open_data(template, version):
     local = os.path.join(DATA_DIR, template % ('-'+version,))
-    wenn not os.path.exists(local):
+    wenn nicht os.path.exists(local):
         importiere urllib.request
         wenn version == '3.2.0':
             # irregular url structure
@@ -843,7 +843,7 @@ klasse UcdFile:
         mit open_data(self.template, self.version) als file:
             fuer line in file:
                 line = line.split('#', 1)[0].strip()
-                wenn not line:
+                wenn nicht line:
                     continue
                 yield [field.strip() fuer field in line.split(';')]
 
@@ -933,7 +933,7 @@ klasse UnicodeData:
                     field = Nichts
             sowenn field:
                 table[i] = from_row(('%X' % i,) + field[1:])
-        wenn cjk_check and cjk_ranges != cjk_ranges_found:
+        wenn cjk_check und cjk_ranges != cjk_ranges_found:
             raise ValueError("CJK ranges deviate: have %r" % cjk_ranges_found)
 
         # public attributes
@@ -941,12 +941,12 @@ klasse UnicodeData:
         self.table = table
         self.chars = list(range(0x110000)) # unicode 3.2
 
-        # check fuer name aliases and named sequences, see #12753
-        # aliases and named sequences are not in 3.2.0
+        # check fuer name aliases und named sequences, see #12753
+        # aliases und named sequences are nicht in 3.2.0
         wenn version != '3.2.0':
             self.aliases = []
             # store aliases in the Private Use Area 15, in range U+F0000..U+F00FF,
-            # in order to take advantage of the compression and lookup
+            # in order to take advantage of the compression und lookup
             # algorithms used fuer the other characters
             pua_index = NAME_ALIASES_START
             fuer char, name, abbrev in UcdFile(NAME_ALIASES, version):
@@ -959,7 +959,7 @@ klasse UnicodeData:
 
             self.named_sequences = []
             # store named sequences in the PUA 1, in range U+F0100..,
-            # in order to take advantage of the compression and lookup
+            # in order to take advantage of the compression und lookup
             # algorithms used fuer the other characters.
 
             assert pua_index < NAMED_SEQUENCES_START
@@ -969,7 +969,7 @@ klasse UnicodeData:
                 # check that the structure defined in makeunicodename is OK
                 assert 2 <= len(chars) <= 4, "change the Py_UCS2 array size"
                 assert all(c <= 0xFFFF fuer c in chars), ("use Py_UCS4 in "
-                    "the NamedSequence struct and in unicodedata_lookup")
+                    "the NamedSequence struct und in unicodedata_lookup")
                 self.named_sequences.append((name, chars))
                 # also store these in the PUA 1
                 self.table[pua_index].name = name
@@ -986,13 +986,13 @@ klasse UnicodeData:
             widths[char] = width
 
         fuer i in range(0, 0x110000):
-            wenn table[i] is not Nichts:
+            wenn table[i] is nicht Nichts:
                 table[i].east_asian_width = widths[i]
         self.widths = widths
 
         fuer char, (propname, *propinfo) in UcdFile(DERIVED_CORE_PROPERTIES, version).expanded():
             wenn propinfo:
-                # this is not a binary property, ignore it
+                # this is nicht a binary property, ignore it
                 continue
 
             wenn table[char]:
@@ -1001,31 +1001,31 @@ klasse UnicodeData:
                 table[char].binary_properties.add(propname)
 
         fuer char_range, value in UcdFile(LINE_BREAK, version):
-            wenn value not in MANDATORY_LINE_BREAKS:
+            wenn value nicht in MANDATORY_LINE_BREAKS:
                 continue
             fuer char in expand_range(char_range):
                 table[char].binary_properties.add('Line_Break')
 
         # We only want the quickcheck properties
         # Format: NF?_QC; Y(es)/N(o)/M(aybe)
-        # Yes is the default, hence only N and M occur
+        # Yes is the default, hence only N und M occur
         # In 3.2.0, the format was different (NF?_NO)
         # The parsing will incorrectly determine these as
-        # "yes", however, unicodedata.c will not perform quickchecks
-        # fuer older versions, and no delta records will be created.
+        # "yes", however, unicodedata.c will nicht perform quickchecks
+        # fuer older versions, und no delta records will be created.
         quickchecks = [0] * 0x110000
         qc_order = 'NFD_QC NFKD_QC NFC_QC NFKC_QC'.split()
         fuer s in UcdFile(DERIVEDNORMALIZATION_PROPS, version):
-            wenn len(s) < 2 or s[1] not in qc_order:
+            wenn len(s) < 2 oder s[1] nicht in qc_order:
                 continue
-            quickcheck = 'MN'.index(s[2]) + 1 # Maybe or No
+            quickcheck = 'MN'.index(s[2]) + 1 # Maybe oder No
             quickcheck_shift = qc_order.index(s[1])*2
             quickcheck <<= quickcheck_shift
             fuer char in expand_range(s[0]):
-                assert not (quickchecks[char]>>quickcheck_shift)&3
+                assert nicht (quickchecks[char]>>quickcheck_shift)&3
                 quickchecks[char] |= quickcheck
         fuer i in range(0, 0x110000):
-            wenn table[i] is not Nichts:
+            wenn table[i] is nicht Nichts:
                 table[i].quick_check = quickchecks[i]
 
         mit open_data(UNIHAN, version) als file:
@@ -1035,16 +1035,16 @@ klasse UnicodeData:
             sonst:
                 data = zip.open('Unihan_NumericValues.txt').read()
         fuer line in data.decode("utf-8").splitlines():
-            wenn not line.startswith('U+'):
+            wenn nicht line.startswith('U+'):
                 continue
             code, tag, value = line.split(Nichts, 3)[:3]
-            wenn tag not in ('kAccountingNumeric', 'kPrimaryNumeric',
+            wenn tag nicht in ('kAccountingNumeric', 'kPrimaryNumeric',
                            'kOtherNumeric'):
                 continue
             value = value.strip().replace(',', '')
             i = int(code[2:], 16)
             # Patch the numeric field
-            wenn table[i] is not Nichts:
+            wenn table[i] is nicht Nichts:
                 table[i].numeric_value = value
 
         sc = self.special_casing = {}
@@ -1123,9 +1123,9 @@ def splitbins(t, trace=0):
     """t, trace=0 -> (t1, t2, shift).  Split a table to save space.
 
     t is a sequence of ints.  This function can be useful to save space if
-    many of the ints are the same.  t1 and t2 are lists of ints, and shift
-    is an int, chosen to minimize the combined size of t1 and t2 (in C
-    code), and where fuer each i in range(len(t)),
+    many of the ints are the same.  t1 und t2 are lists of ints, und shift
+    is an int, chosen to minimize the combined size of t1 und t2 (in C
+    code), und where fuer each i in range(len(t)),
         t[i] == t2[(t1[i >> shift] << shift) + (i & mask)]
     where mask is a bitmask isolating the last "shift" bits.
 
@@ -1141,7 +1141,7 @@ def splitbins(t, trace=0):
         drucke("Size of original table:", len(t)*getsize(t), "bytes",
               file=sys.stderr)
     n = len(t)-1    # last valid index
-    maxshift = 0    # the most we can shift n and still have something left
+    maxshift = 0    # the most we can shift n und still have something left
     wenn n > 0:
         while n >> 1:
             n >>= 1

@@ -39,7 +39,7 @@ klasse ExceptionTest(unittest.TestCase):
         self.assertIn('UnhashableException: ex1', tb[10])
 
     data = (('1/0', ZeroDivisionError, "division by zero\n"),
-            ('abc', NameError, "name 'abc' is not defined. "
+            ('abc', NameError, "name 'abc' is nicht defined. "
                                "Did you mean: 'abs'? "
                                "Or did you forget to importiere 'abc'?\n"),
             ('int.reel', AttributeError,
@@ -329,7 +329,7 @@ klasse StdOutputFilesTest(unittest.TestCase):
 
 
 klasse RecursionLimitTest(unittest.TestCase):
-    # Test (un)install_recursionlimit_wrappers and fixdoc.
+    # Test (un)install_recursionlimit_wrappers und fixdoc.
 
     def test_bad_setrecursionlimit_calls(self):
         run.install_recursionlimit_wrappers()

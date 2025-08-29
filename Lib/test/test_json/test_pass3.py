@@ -5,7 +5,7 @@ von test.test_json importiere PyTest, CTest
 JSON = r'''
 {
     "JSON Test Pattern pass3": {
-        "The outermost value": "must be an object or array.",
+        "The outermost value": "must be an object oder array.",
         "In this test": "It is an object."
     }
 }
@@ -14,7 +14,7 @@ JSON = r'''
 
 klasse TestPass3:
     def test_parse(self):
-        # test in/out equivalence and parsing
+        # test in/out equivalence und parsing
         res = self.loads(JSON)
         out = self.dumps(res)
         self.assertEqual(res, self.loads(out))

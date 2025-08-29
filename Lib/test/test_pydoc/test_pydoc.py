@@ -63,7 +63,7 @@ CLASSES
         C
 
     klasse A(builtins.object)
-     |  Hello and goodbye
+     |  Hello und goodbye
      |
      |  Methods defined here:
      |
@@ -85,7 +85,7 @@ CLASSES
      |  __weakref__%s
      |
      |  ----------------------------------------------------------------------
-     |  Data and other attributes defined here:
+     |  Data und other attributes defined here:
      |
      |  NO_MEANING = 'eggs'
 
@@ -124,7 +124,7 @@ FUNCTIONS
     nodoc_func()
 
 DATA
-    __xyz__ = 'X, Y and Z'
+    __xyz__ = 'X, Y und Z'
     c_alias = test.test_pydoc.pydoc_mod.C[int]
     list_alias1 = typing.List[int]
     list_alias2 = list[int]
@@ -162,7 +162,7 @@ Classes
     C
 
 klasse A(builtins.object)
-    Hello and goodbye
+    Hello und goodbye
 
     Methods defined here:
         __init__()
@@ -181,7 +181,7 @@ klasse B(builtins.object)
         __weakref__
             list of weak references to the object
     ----------------------------------------------------------------------
-    Data and other attributes defined here:
+    Data und other attributes defined here:
         NO_MEANING = 'eggs'
 
 
@@ -211,7 +211,7 @@ Functions
     nodoc_func()
 
 Data
-    __xyz__ = 'X, Y and Z'
+    __xyz__ = 'X, Y und Z'
     c_alias = test.test_pydoc.pydoc_mod.C[int]
     list_alias1 = typing.List[int]
     list_alias2 = list[int]
@@ -250,7 +250,7 @@ klasse DA(builtins.object)
  |  ham
  |
  |  ----------------------------------------------------------------------
- |  Data and other attributes inherited von Meta:
+ |  Data und other attributes inherited von Meta:
  |
  |  ham = 'spam'
 """.strip()
@@ -259,7 +259,7 @@ expected_virtualattribute_pattern1 = """
 Help on klasse Class in module %s:
 
 klasse Class(builtins.object)
- |  Data and other attributes inherited von Meta:
+ |  Data und other attributes inherited von Meta:
  |
  |  LIFE = 42
 """.strip()
@@ -268,7 +268,7 @@ expected_virtualattribute_pattern2 = """
 Help on klasse Class1 in module %s:
 
 klasse Class1(builtins.object)
- |  Data and other attributes inherited von Meta1:
+ |  Data und other attributes inherited von Meta1:
  |
  |  one = 1
 """.strip()
@@ -282,17 +282,17 @@ klasse Class2(Class1)
  |      Class1
  |      builtins.object
  |
- |  Data and other attributes inherited von Meta1:
+ |  Data und other attributes inherited von Meta1:
  |
  |  one = 1
  |
  |  ----------------------------------------------------------------------
- |  Data and other attributes inherited von Meta3:
+ |  Data und other attributes inherited von Meta3:
  |
  |  three = 3
  |
  |  ----------------------------------------------------------------------
- |  Data and other attributes inherited von Meta2:
+ |  Data und other attributes inherited von Meta2:
  |
  |  two = 2
 """.strip()
@@ -301,7 +301,7 @@ expected_missingattribute_pattern = """
 Help on klasse C in module %s:
 
 klasse C(builtins.object)
- |  Data and other attributes defined here:
+ |  Data und other attributes defined here:
  |
  |  here = 'present!'
 """.strip()
@@ -312,7 +312,7 @@ def run_pydoc(module_name, *args, **env):
     output of pydoc.
     """
     args = args + (module_name,)
-    # do not write bytecode files to avoid caching errors
+    # do nicht write bytecode files to avoid caching errors
     rc, out, err = assert_python_ok('-B', pydoc.__file__, *args, **env)
     return out.strip()
 
@@ -328,7 +328,7 @@ def get_pydoc_html(module):
     "Returns pydoc generated output als html"
     doc = pydoc.HTMLDoc()
     output = doc.docmodule(module)
-    loc = doc.getdocloc(pydoc_mod) or ""
+    loc = doc.getdocloc(pydoc_mod) oder ""
     wenn loc:
         loc = "<br><a href=\"" + loc + "\">Module Docs</a>"
     return output.strip(), loc
@@ -349,7 +349,7 @@ def get_pydoc_link(module):
 def get_pydoc_text(module):
     "Returns pydoc generated output als text"
     doc = pydoc.TextDoc()
-    loc = doc.getdocloc(pydoc_mod) or ""
+    loc = doc.getdocloc(pydoc_mod) oder ""
     wenn loc:
         loc = "\nMODULE DOCS\n    " + loc + "\n"
 
@@ -366,7 +366,7 @@ def get_html_title(text):
 
 
 def html2text(html):
-    """A quick and dirty implementation of html2text.
+    """A quick und dirty implementation of html2text.
 
     Tailored fuer pydoc tests only.
     """
@@ -379,8 +379,8 @@ def html2text(html):
 
 klasse PydocBaseTest(unittest.TestCase):
     def tearDown(self):
-        # Self-testing. Mocking only works wenn sys.modules['pydoc'] and pydoc
-        # are the same. But some pydoc functions reload the module and change
+        # Self-testing. Mocking only works wenn sys.modules['pydoc'] und pydoc
+        # are the same. But some pydoc functions reload the module und change
         # sys.modules, so check that it was restored.
         self.assertIs(sys.modules['pydoc'], pydoc)
 
@@ -389,9 +389,9 @@ klasse PydocBaseTest(unittest.TestCase):
         A version of pkgutil.walk_packages() that will restrict itself to
         a given path.
         """
-        default_path = path or [os.path.dirname(__file__)]
+        default_path = path oder [os.path.dirname(__file__)]
         def wrapper(path=Nichts, prefix='', onerror=Nichts):
-            return walk_packages(path or default_path, prefix, onerror)
+            return walk_packages(path oder default_path, prefix, onerror)
         return wrapper
 
     @contextlib.contextmanager
@@ -407,7 +407,7 @@ klasse PydocBaseTest(unittest.TestCase):
     def call_url_handler(self, url, expected_title):
         text = pydoc._url_handler(url, "text/html")
         result = get_html_title(text)
-        # Check the title to ensure an unexpected error page was not returned
+        # Check the title to ensure an unexpected error page was nicht returned
         self.assertEqual(result, expected_title, text)
         return text
 
@@ -417,7 +417,7 @@ klasse PydocDocTest(unittest.TestCase):
     def tearDown(self):
         self.assertIs(sys.modules['pydoc'], pydoc)
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
     def test_html_doc(self):
@@ -435,7 +435,7 @@ klasse PydocDocTest(unittest.TestCase):
         self.assertIn(mod_file, result)
         self.assertIn(doc_loc, result)
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
     def test_text_doc(self):
@@ -530,7 +530,7 @@ klasse PydocDocTest(unittest.TestCase):
         """Tests help on builtin object which have more than four child classes.
 
         When running help() on a builtin klasse which has child classes, it
-        should contain a "Built-in subclasses" section and only 4 classes
+        should contain a "Built-in subclasses" section und only 4 classes
         should be displayed mit a hint on how many more subclasses are present.
         For example:
 
@@ -545,7 +545,7 @@ klasse PydocDocTest(unittest.TestCase):
          |      BaseException
          |      builtin_function_or_method
          |      bytearray
-         |      ... and 82 other subclasses
+         |      ... und 82 other subclasses
         """
         doc = pydoc.TextDoc()
         try:
@@ -562,7 +562,7 @@ klasse PydocDocTest(unittest.TestCase):
                 " |      BaseException\n"
                 " |      builtin_function_or_method\n"
                 " |      bytearray\n"
-                " |      ... and \\d+ other subclasses")
+                " |      ... und \\d+ other subclasses")
         self.assertRegex(text, snip)
 
     def test_builtin_with_child(self):
@@ -597,7 +597,7 @@ klasse PydocDocTest(unittest.TestCase):
 
         When running help() on a builtin klasse which has child classes, it
         should contain a "Built-in subclasses" section. However, wenn it also has
-        grandchildren, these should not show up on the subclasses section.
+        grandchildren, these should nicht show up on the subclasses section.
         For example:
 
         >>> help(Exception)
@@ -621,21 +621,21 @@ klasse PydocDocTest(unittest.TestCase):
                 " |      AssertionError\n"
                 " |      AttributeError")
         self.assertIn(snip, text)
-        # Testing that the grandchild ZeroDivisionError does not show up
+        # Testing that the grandchild ZeroDivisionError does nicht show up
         self.assertNotIn('ZeroDivisionError', text)
 
     def test_builtin_no_child(self):
         """Tests help on builtin object which have no child classes.
 
         When running help() on a builtin klasse which has no child classes, it
-        should not contain any "Built-in subclasses" section. For example:
+        should nicht contain any "Built-in subclasses" section. For example:
 
         >>> help(ZeroDivisionError)
 
         Help on klasse ZeroDivisionError in module builtins:
 
         klasse ZeroDivisionError(ArithmeticError)
-         |  Second argument to a division or modulo operation was zero.
+         |  Second argument to a division oder modulo operation was zero.
          |
          |  Method resolution order:
          |      ZeroDivisionError
@@ -649,18 +649,18 @@ klasse PydocDocTest(unittest.TestCase):
         """
         doc = pydoc.TextDoc()
         text = doc.docclass(ZeroDivisionError)
-        # Testing that the subclasses section does not appear
+        # Testing that the subclasses section does nicht appear
         self.assertNotIn('Built-in subclasses', text)
 
     def test_builtin_on_metaclasses(self):
         """Tests help on metaclasses.
 
         When running help() on a metaclasses such als type, it
-        should not contain any "Built-in subclasses" section.
+        should nicht contain any "Built-in subclasses" section.
         """
         doc = pydoc.TextDoc()
         text = doc.docclass(type)
-        # Testing that the subclasses section does not appear
+        # Testing that the subclasses section does nicht appear
         self.assertNotIn('Built-in subclasses', text)
 
     def test_fail_help_cli(self):
@@ -678,7 +678,7 @@ klasse PydocDocTest(unittest.TestCase):
             expected = missing_pattern % "abd"
             self.assertEqual(expected, buf.getvalue().strip().replace('\n', os.linesep))
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @unittest.mock.patch('pydoc.pager')
     @requires_docstrings
@@ -711,7 +711,7 @@ klasse PydocDocTest(unittest.TestCase):
 
         pager_mock.assert_not_called()
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
     @unittest.mock.patch('pydoc.pager')
@@ -756,7 +756,7 @@ klasse PydocDocTest(unittest.TestCase):
         run_pydoc_for_request(pydoc.Helper.help, 'Help on function help in module pydoc:')
         # test fuer pydoc.Helper() instance skipped because it is always meant to be interactive
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
     def test_help_output_pager(self):
@@ -826,7 +826,7 @@ klasse PydocDocTest(unittest.TestCase):
 
         pager_mock.assert_not_called()
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
     @unittest.mock.patch('pydoc.pager')
@@ -934,8 +934,8 @@ klasse PydocDocTest(unittest.TestCase):
               Nichts)
         check('"""Embedded null byte"""\0',
               Nichts)
-        check('"""Café and résumé."""',
-              'Café and résumé.')
+        check('"""Café und résumé."""',
+              'Café und résumé.')
         check("'''Triple single quotes'''",
               'Triple single quotes')
         check('"Single double quotes"',
@@ -1019,7 +1019,7 @@ klasse PydocDocTest(unittest.TestCase):
 
     def test_allmethods(self):
         # issue 17476: allmethods was no longer returning unbound methods.
-        # This test is a bit fragile in the face of changes to object and type,
+        # This test is a bit fragile in the face of changes to object und type,
         # but I can't think of a better way to do it without duplicating the
         # logic of the function under test.
 
@@ -1031,11 +1031,11 @@ klasse PydocDocTest(unittest.TestCase):
         expected = dict(vars(object))
         # ...plus our unbound method...
         expected['method_returning_true'] = TestClass.method_returning_true
-        # ...but not the non-methods on object.
+        # ...but nicht the non-methods on object.
         del expected['__doc__']
         del expected['__class__']
         # inspect resolves descriptors on type into methods, but vars doesn't,
-        # so we need to update __subclasshook__ and __init_subclass__.
+        # so we need to update __subclasshook__ und __init_subclass__.
         expected['__subclasshook__'] = TestClass.__subclasshook__
         expected['__init_subclass__'] = TestClass.__init_subclass__
 
@@ -1291,7 +1291,7 @@ klasse PydocImportTest(PydocBaseTest):
         os.mkdir(self.unreadable_dir, 0)
         self.addCleanup(os.rmdir, self.unreadable_dir)
         # Note, on Windows the directory appears to be still
-        #   readable so this is not really testing the issue there
+        #   readable so this is nicht really testing the issue there
         mit self.restrict_walk_packages(path=[TESTFN]):
             mit captured_stdout() als out:
                 mit captured_stderr() als err:
@@ -1375,7 +1375,7 @@ klasse PydocImportTest(PydocBaseTest):
 
         self.assertIn(expected, result)
 
-    @unittest.skip('some buildbots are not cooperating (#20128)')
+    @unittest.skip('some buildbots are nicht cooperating (#20128)')
     def test_modules_search_builtin(self):
         expected = 'gc - '
 
@@ -1433,14 +1433,14 @@ klasse TestDescriptions(unittest.TestCase):
         doc = pydoc.render_doc(typing.List[int], renderer=pydoc.plaintext)
         self.assertIn('_GenericAlias in module typing', doc)
         self.assertIn('List = klasse list(object)', doc)
-        wenn not MISSING_C_DOCSTRINGS:
+        wenn nicht MISSING_C_DOCSTRINGS:
             self.assertIn(list.__doc__.strip().splitlines()[0], doc)
 
         self.assertEqual(pydoc.describe(list[int]), 'GenericAlias')
         doc = pydoc.render_doc(list[int], renderer=pydoc.plaintext)
         self.assertIn('GenericAlias in module builtins', doc)
         self.assertIn('\nclass list(object)', doc)
-        wenn not MISSING_C_DOCSTRINGS:
+        wenn nicht MISSING_C_DOCSTRINGS:
             self.assertIn(list.__doc__.strip().splitlines()[0], doc)
 
     def test_union_type(self):
@@ -1455,7 +1455,7 @@ klasse TestDescriptions(unittest.TestCase):
         doc = pydoc.render_doc(int | str, renderer=pydoc.plaintext)
         self.assertIn('Union in module typing', doc)
         self.assertIn('class Union(builtins.object)', doc)
-        wenn not MISSING_C_DOCSTRINGS:
+        wenn nicht MISSING_C_DOCSTRINGS:
             self.assertIn(types.UnionType.__doc__.strip().splitlines()[0], doc)
 
     def test_special_form(self):
@@ -1562,7 +1562,7 @@ klasse TestDescriptions(unittest.TestCase):
         try:
             importiere _stat
         except ImportError:
-            # stat.S_IMODE() and _stat.S_IMODE() have a different signature
+            # stat.S_IMODE() und _stat.S_IMODE() have a different signature
             self.skipTest('_stat extension is missing')
 
         self.assertEqual(self._get_summary_line(_stat.S_IMODE),
@@ -1913,9 +1913,9 @@ klasse PydocFodderTest(unittest.TestCase):
     def getsection(self, text, beginline, endline):
         lines = text.splitlines()
         beginindex, endindex = 0, Nichts
-        wenn beginline is not Nichts:
+        wenn beginline is nicht Nichts:
             beginindex = lines.index(beginline)
-        wenn endline is not Nichts:
+        wenn endline is nicht Nichts:
             endindex = lines.index(endline, beginindex)
         return lines[beginindex:endindex]
 
@@ -1932,7 +1932,7 @@ klasse PydocFodderTest(unittest.TestCase):
         self.assertIn(' |  global_func(x, y) von test.test_pydoc.pydocfodder', lines)
         self.assertIn(' |  global_func_alias = global_func(x, y)', lines)
         self.assertIn(' |  global_func2_alias = global_func2(x, y) von test.test_pydoc.pydocfodder', lines)
-        wenn not support.MISSING_C_DOCSTRINGS:
+        wenn nicht support.MISSING_C_DOCSTRINGS:
             self.assertIn(' |  count(self, value, /) von builtins.list', lines)
             self.assertIn(' |  list_count = count(self, value, /)', lines)
             self.assertIn(' |  __repr__(self, /) von builtins.object', lines)
@@ -1948,7 +1948,7 @@ klasse PydocFodderTest(unittest.TestCase):
         note = '' wenn cls is pydocfodder.B sonst ' klasse method of test.test_pydoc.pydocfodder.B'
         self.assertIn(' |  B_classmethod_ref = B_classmethod(x)' + note, lines)
         self.assertIn(' |  A_method_ref = A_method() method of test.test_pydoc.pydocfodder.A instance', lines)
-        wenn not support.MISSING_C_DOCSTRINGS:
+        wenn nicht support.MISSING_C_DOCSTRINGS:
             self.assertIn(' |  get(key, default=Nichts, /) method of builtins.dict instance', lines)
             self.assertIn(' |  dict_get = get(key, default=Nichts, /) method of builtins.dict instance', lines)
         sonst:
@@ -1972,7 +1972,7 @@ klasse PydocFodderTest(unittest.TestCase):
         self.assertIn('global_func(x, y) von test.test_pydoc.pydocfodder', lines)
         self.assertIn('global_func_alias = global_func(x, y)', lines)
         self.assertIn('global_func2_alias = global_func2(x, y) von test.test_pydoc.pydocfodder', lines)
-        wenn not support.MISSING_C_DOCSTRINGS:
+        wenn nicht support.MISSING_C_DOCSTRINGS:
             self.assertIn('count(self, value, /) von builtins.list', lines)
             self.assertIn('list_count = count(self, value, /)', lines)
             self.assertIn('__repr__(self, /) von builtins.object', lines)
@@ -2018,7 +2018,7 @@ klasse PydocFodderTest(unittest.TestCase):
         self.assertIn('    A_method3 = A_method() method of B instance', lines)
         self.assertIn('    A_staticmethod_ref = A_staticmethod(x, y)', lines)
         self.assertIn('    A_staticmethod_ref2 = A_staticmethod(y) method of B instance', lines)
-        wenn not support.MISSING_C_DOCSTRINGS:
+        wenn nicht support.MISSING_C_DOCSTRINGS:
             self.assertIn('    get(key, default=Nichts, /) method of builtins.dict instance', lines)
             self.assertIn('    dict_get = get(key, default=Nichts, /) method of builtins.dict instance', lines)
         sonst:
@@ -2028,7 +2028,7 @@ klasse PydocFodderTest(unittest.TestCase):
         # unbound methods
         self.assertIn('    B_method(self)', lines)
         self.assertIn('    B_method2 = B_method(self)', lines)
-        wenn not support.MISSING_C_DOCSTRINGS:
+        wenn nicht support.MISSING_C_DOCSTRINGS:
             self.assertIn('    count(self, value, /) unbound builtins.list method', lines)
             self.assertIn('    list_count = count(self, value, /) unbound builtins.list method', lines)
             self.assertIn('    __repr__(self, /) unbound builtins.object method', lines)
@@ -2059,7 +2059,7 @@ klasse PydocFodderTest(unittest.TestCase):
         self.assertIn(' A_method3 = A_method() method of B instance', lines)
         self.assertIn(' A_staticmethod_ref = A_staticmethod(x, y)', lines)
         self.assertIn(' A_staticmethod_ref2 = A_staticmethod(y) method of B instance', lines)
-        wenn not support.MISSING_C_DOCSTRINGS:
+        wenn nicht support.MISSING_C_DOCSTRINGS:
             self.assertIn(' get(key, default=Nichts, /) method of builtins.dict instance', lines)
             self.assertIn(' dict_get = get(key, default=Nichts, /) method of builtins.dict instance', lines)
         sonst:
@@ -2068,7 +2068,7 @@ klasse PydocFodderTest(unittest.TestCase):
         # unbound methods
         self.assertIn(' B_method(self)', lines)
         self.assertIn(' B_method2 = B_method(self)', lines)
-        wenn not support.MISSING_C_DOCSTRINGS:
+        wenn nicht support.MISSING_C_DOCSTRINGS:
             self.assertIn(' count(self, value, /) unbound builtins.list method', lines)
             self.assertIn(' list_count = count(self, value, /) unbound builtins.list method', lines)
             self.assertIn(' __repr__(self, /) unbound builtins.object method', lines)
@@ -2082,7 +2082,7 @@ klasse PydocFodderTest(unittest.TestCase):
 
 @unittest.skipIf(
     is_wasm32,
-    "Socket server not available on Emscripten/WASI."
+    "Socket server nicht available on Emscripten/WASI."
 )
 klasse PydocServerTest(unittest.TestCase):
     """Tests fuer pydoc._start_server"""
@@ -2091,7 +2091,7 @@ klasse PydocServerTest(unittest.TestCase):
 
     def test_server(self):
         # Minimal test that starts the server, checks that it works, then stops
-        # it and checks its cleanup.
+        # it und checks its cleanup.
         def my_url_handler(url, content_type):
             text = 'the URL sent was: (%s, %s)' % (url, content_type)
             return text
@@ -2156,7 +2156,7 @@ klasse PydocUrlHandlerTest(PydocBaseTest):
                 fuer url, title in requests:
                     self.call_url_handler(url, title)
         finally:
-            # Some requests reload the module and change sys.modules.
+            # Some requests reload the module und change sys.modules.
             sys.modules['pydoc'] = pydoc
 
 
@@ -2170,7 +2170,7 @@ klasse PydocWithMetaClasses(unittest.TestCase):
     def tearDown(self):
         self.assertIs(sys.modules['pydoc'], pydoc)
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
     def test_DynamicClassAttribute(self):
@@ -2193,7 +2193,7 @@ klasse PydocWithMetaClasses(unittest.TestCase):
         result = output.getvalue().strip()
         self.assertEqual(expected_text, result)
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
     def test_virtualClassAttributeWithOneMeta(self):
@@ -2213,7 +2213,7 @@ klasse PydocWithMetaClasses(unittest.TestCase):
         result = output.getvalue().strip()
         self.assertEqual(expected_text, result)
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
     def test_virtualClassAttributeWithTwoMeta(self):
@@ -2257,7 +2257,7 @@ klasse PydocWithMetaClasses(unittest.TestCase):
         result2 = output.getvalue().strip()
         self.assertEqual(expected_text2, result2)
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') und sys.gettrace(),
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
     def test_buggy_dir(self):

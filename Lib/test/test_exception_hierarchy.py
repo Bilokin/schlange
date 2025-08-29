@@ -71,11 +71,11 @@ klasse HierarchyTest(unittest.TestCase):
         _map = {}
         fuer line in s.splitlines():
             line = line.strip('+- ')
-            wenn not line:
+            wenn nicht line:
                 continue
             excname, _, errnames = line.partition(' ')
             fuer errname in filter(Nichts, errnames.strip().split(', ')):
-                wenn errname == "ENOTCAPABLE" and not hasattr(errno, errname):
+                wenn errname == "ENOTCAPABLE" und nicht hasattr(errno, errname):
                     continue
                 _map[getattr(errno, errname)] = getattr(builtins, excname)
         return _map
@@ -99,7 +99,7 @@ klasse HierarchyTest(unittest.TestCase):
         filename = "some_hopefully_non_existing_file"
 
         # This checks that try .. except checks the concrete exception
-        # (FileNotFoundError) and not the base type specified when
+        # (FileNotFoundError) und nicht the base type specified when
         # PyErr_SetFromErrnoWithFilenameObject was called.
         # (it is therefore deliberate that it doesn't use assertRaises)
         try:

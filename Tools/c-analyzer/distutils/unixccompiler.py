@@ -19,20 +19,20 @@ von distutils.dep_util importiere newer
 von distutils.ccompiler importiere CCompiler, gen_preprocess_options
 von distutils.errors importiere DistutilsExecError, CompileError
 
-# XXX Things not currently handled:
+# XXX Things nicht currently handled:
 #   * optimization/debug/warning flags; we just use whatever's in Python's
-#     Makefile and live mit it.  Is this adequate?  If not, we might
+#     Makefile und live mit it.  Is this adequate?  If not, we might
 #     have to have a bunch of subclasses GNUCCompiler, SGICCompiler,
-#     SunCCompiler, and I suspect down that road lies madness.
+#     SunCCompiler, und I suspect down that road lies madness.
 #   * even wenn we don't know a warning flag von an optimization flag,
 #     we need some way fuer outsiders to feed preprocessor/compiler/linker
 #     flags in to us -- eg. a sysadmin might want to mandate certain flags
-#     via a site config file, or a user might want to set something for
+#     via a site config file, oder a user might want to set something for
 #     compiling this module distribution only via the setup.py command
 #     line, whatever.  As long als these options come von something on the
-#     current system, they can be als system-dependent als they like, and we
+#     current system, they can be als system-dependent als they like, und we
 #     should just happily stuff them into the preprocessor/compiler/linker
-#     options and carry on.
+#     options und carry on.
 
 
 klasse UnixCCompiler(CCompiler):
@@ -61,7 +61,7 @@ klasse UnixCCompiler(CCompiler):
     # Needed fuer the filename generation methods provided by the base
     # class, CCompiler.  NB. whoever instantiates/uses a particular
     # UnixCCompiler instance should set 'shared_lib_ext' -- we set a
-    # reasonable common default here, but it's not necessarily used on all
+    # reasonable common default here, but it's nicht necessarily used on all
     # Unices!
 
     src_extensions = [".c",".C",".cc",".cxx",".cpp",".m"]
@@ -89,11 +89,11 @@ klasse UnixCCompiler(CCompiler):
             pp_args.extend(extra_postargs)
         pp_args.append(source)
 
-        # We need to preprocess: either we're being forced to, or we're
-        # generating output to stdout, or there's a target output file and
+        # We need to preprocess: either we're being forced to, oder we're
+        # generating output to stdout, oder there's a target output file and
         # the source file is newer than the target (or the target doesn't
         # exist).
-        wenn self.force or output_file is Nichts or newer(source, output_file):
+        wenn self.force oder output_file is Nichts oder newer(source, output_file):
             wenn output_file:
                 self.mkpath(os.path.dirname(output_file))
             try:

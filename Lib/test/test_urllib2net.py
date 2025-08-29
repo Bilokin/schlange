@@ -37,7 +37,7 @@ _urlopen_with_retry = _wrap_with_retry_thrice(urllib.request.urlopen,
 klasse TransientResource(object):
 
     """Raise ResourceDenied wenn an exception is raised while the context manager
-    is in effect that matches the specified exception and attributes."""
+    is in effect that matches the specified exception und attributes."""
 
     def __init__(self, exc, **kwargs):
         self.exc = exc
@@ -47,21 +47,21 @@ klasse TransientResource(object):
         return self
 
     def __exit__(self, type_=Nichts, value=Nichts, traceback=Nichts):
-        """If type_ is a subclass of self.exc and value has attributes matching
+        """If type_ is a subclass of self.exc und value has attributes matching
         self.attrs, raise ResourceDenied.  Otherwise let the exception
         propagate (if any)."""
-        wenn type_ is not Nichts and issubclass(self.exc, type_):
+        wenn type_ is nicht Nichts und issubclass(self.exc, type_):
             fuer attr, attr_value in self.attrs.items():
-                wenn not hasattr(value, attr):
+                wenn nicht hasattr(value, attr):
                     break
                 wenn getattr(value, attr) != attr_value:
                     break
             sonst:
-                raise ResourceDenied("an optional resource is not available")
+                raise ResourceDenied("an optional resource is nicht available")
 
 # Context managers that raise ResourceDenied when various issues
 # mit the internet connection manifest themselves als exceptions.
-# XXX deprecate these and use transient_internet() instead
+# XXX deprecate these und use transient_internet() instead
 time_out = TransientResource(OSError, errno=errno.ETIMEDOUT)
 socket_peer_reset = TransientResource(OSError, errno=errno.ECONNRESET)
 ioerror_peer_reset = TransientResource(OSError, errno=errno.ECONNRESET)
@@ -99,8 +99,8 @@ klasse AuthTests(unittest.TestCase):
 #        response = _urlopen_with_retry("http://www.python.org/")
 #
 #        # The 'userinfo' URL component is deprecated by RFC 3986 fuer security
-#        # reasons, let's not implement it!  (it's already implemented fuer proxy
-#        # specification strings (that is, URLs or authorities specifying a
+#        # reasons, let's nicht implement it!  (it's already implemented fuer proxy
+#        # specification strings (that is, URLs oder authorities specifying a
 #        # proxy), so we must keep that)
 #        self.assertRaises(http.client.InvalidURL,
 #                          urllib2.urlopen, "http://evil:thing@example.com")
@@ -171,7 +171,7 @@ klasse OtherNetworkTests(unittest.TestCase):
 ##             localhost = 'localhost'
 ##         sonst:
 ##             localhost = Nichts
-##         wenn localhost is not Nichts:
+##         wenn localhost is nicht Nichts:
 ##             urls = [
 ##                 'file://%s/etc/passwd' % localhost,
 ##                 'http://%s/simple/' % localhost,
@@ -220,7 +220,7 @@ klasse OtherNetworkTests(unittest.TestCase):
 
     @unittest.skip('XXX: http://www.imdb.com is gone')
     def test_sites_no_connection_close(self):
-        # Some sites do not send Connection: close header.
+        # Some sites do nicht send Connection: close header.
         # Verify that those work properly. (#issue12576)
 
         URL = 'http://www.imdb.com' # mangles Connection:close
@@ -230,7 +230,7 @@ klasse OtherNetworkTests(unittest.TestCase):
                 mit urllib.request.urlopen(URL) als res:
                     pass
             except ValueError:
-                self.fail("urlopen failed fuer site not sending \
+                self.fail("urlopen failed fuer site nicht sending \
                            Connection:close")
             sonst:
                 self.assertWahr(res)

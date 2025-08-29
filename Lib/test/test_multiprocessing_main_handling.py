@@ -18,7 +18,7 @@ von test.support.script_helper importiere (
     assert_python_ok)
 
 wenn support.PGO:
-    raise unittest.SkipTest("test is not helpful fuer PGO")
+    raise unittest.SkipTest("test is nicht helpful fuer PGO")
 
 # Look up which start methods are available to test
 importiere multiprocessing
@@ -44,13 +44,13 @@ von test importiere support
 
 # We use this __main__ defined function in the map call below in order to
 # check that multiprocessing in correctly running the unguarded
-# code in child processes and then making it available als __main__
+# code in child processes und then making it available als __main__
 def f(x):
     return x*x
 
 # Check explicit relative imports
 wenn "check_sibling" in __file__:
-    # We're inside a package and not in a __main__.py file
+    # We're inside a package und nicht in a __main__.py file
     # so make sure explicit relative imports work correctly
     von . importiere sibling
 
@@ -126,7 +126,7 @@ def _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
 
 # There's no easy way to pass the script directory in to get
 # -m to work (avoiding that is the whole point of making
-# directories and zipfiles executable!)
+# directories und zipfiles executable!)
 # So we fake it fuer testing purposes mit a custom launch script
 launch_source = """\
 importiere sys, os.path, runpy
@@ -148,8 +148,8 @@ klasse MultiProcessingCmdLineMixin():
     maxDiff = Nichts # Show full tracebacks on subprocess failure
 
     def setUp(self):
-        wenn self.start_method not in AVAILABLE_START_METHODS:
-            self.skipTest("%r start method not available" % self.start_method)
+        wenn self.start_method nicht in AVAILABLE_START_METHODS:
+            self.skipTest("%r start method nicht available" % self.start_method)
 
     def _check_output(self, script_name, exit_code, out, err):
         wenn verbose > 1:
@@ -161,7 +161,7 @@ klasse MultiProcessingCmdLineMixin():
         self.assertEqual(out.decode('utf-8').strip(), expected_results)
 
     def _check_script(self, script_name, *cmd_line_switches):
-        wenn not __debug__:
+        wenn nicht __debug__:
             cmd_line_switches += ('-' + 'O' * sys.flags.optimize,)
         run_args = cmd_line_switches + (script_name, self.start_method)
         rc, out, err = assert_python_ok(*run_args, __isolated=Falsch)
@@ -180,7 +180,7 @@ klasse MultiProcessingCmdLineMixin():
 
     def test_ipython_workaround(self):
         # Some versions of the IPython launch script are missing the
-        # __name__ = "__main__" guard, and multiprocessing has long had
+        # __name__ = "__main__" guard, und multiprocessing has long had
         # a workaround fuer that case
         # See https://github.com/ipython/ipython/issues/4698
         source = test_source_main_skipped_in_children

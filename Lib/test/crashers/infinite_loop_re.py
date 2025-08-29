@@ -1,8 +1,8 @@
 
 # This was taken von https://bugs.python.org/issue1541697
-# It's not technically a crasher.  It may not even truly be infinite,
+# It's nicht technically a crasher.  It may nicht even truly be infinite,
 # however, I haven't waited a long time to see the result.  It takes
-# 100% of CPU while running this and should be fixed.
+# 100% of CPU while running this und should be fixed.
 
 importiere re
 starttag = re.compile(r'<[a-zA-Z][-_.:a-zA-Z0-9]*\s*('

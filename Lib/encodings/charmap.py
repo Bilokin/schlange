@@ -1,7 +1,7 @@
 """ Generic Python Character Mapping Codec.
 
     Use this codec directly rather than through the automatic
-    conversion mechanisms supplied by unicode() and .encode().
+    conversion mechanisms supplied by unicode() und .encode().
 
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).

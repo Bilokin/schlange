@@ -10,7 +10,7 @@ _reply_data = Nichts
 
 # This is used to queue up data to be read through socket.makefile, typically
 # *before* the socket object is even created. It is intended to handle a single
-# line which the socket will feed on recv() or makefile().
+# line which the socket will feed on recv() oder makefile().
 def reply_with(line):
     global _reply_data
     _reply_data = line

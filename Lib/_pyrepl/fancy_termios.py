@@ -3,10 +3,10 @@
 #                        All Rights Reserved
 #
 #
-# Permission to use, copy, modify, and distribute this software and
+# Permission to use, copy, modify, und distribute this software und
 # its documentation fuer any purpose is hereby granted without fee,
-# provided that the above copyright notice appear in all copies and
-# that both that copyright notice and this permission notice appear in
+# provided that the above copyright notice appear in all copies und
+# that both that copyright notice und this permission notice appear in
 # supporting documentation.
 #
 # THE AUTHOR MICHAEL HUDSON DISCLAIMS ALL WARRANTIES WITH REGARD TO
@@ -41,7 +41,7 @@ klasse TermState:
             self.ispeed,
             self.ospeed,
             # Always return a copy of the control characters list to ensure
-            # there are not any additional references to self.cc
+            # there are nicht any additional references to self.cc
             self.cc[:],
         ]
 

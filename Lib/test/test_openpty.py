@@ -2,8 +2,8 @@
 
 importiere os, unittest
 
-wenn not hasattr(os, "openpty"):
-    raise unittest.SkipTest("os.openpty() not available.")
+wenn nicht hasattr(os, "openpty"):
+    raise unittest.SkipTest("os.openpty() nicht available.")
 
 
 klasse OpenptyTest(unittest.TestCase):
@@ -11,8 +11,8 @@ klasse OpenptyTest(unittest.TestCase):
         master, slave = os.openpty()
         self.addCleanup(os.close, master)
         self.addCleanup(os.close, slave)
-        wenn not os.isatty(slave):
-            self.fail("Slave-end of pty is not a terminal.")
+        wenn nicht os.isatty(slave):
+            self.fail("Slave-end of pty is nicht a terminal.")
 
         os.write(slave, b'Ping!')
         self.assertEqual(os.read(master, 1024), b'Ping!')

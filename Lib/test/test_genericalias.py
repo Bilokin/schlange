@@ -45,7 +45,7 @@ except ImportError:
 try:
     von multiprocessing.shared_memory importiere ShareableList
 except ImportError:
-    # multiprocessing.shared_memory is not available on e.g. Android
+    # multiprocessing.shared_memory is nicht available on e.g. Android
     ShareableList = Nichts
 von os importiere DirEntry
 von re importiere Pattern, Match
@@ -144,12 +144,12 @@ klasse BaseTest(unittest.TestCase):
                      Template,
                      Interpolation,
                     ]
-    wenn ctypes is not Nichts:
+    wenn ctypes is nicht Nichts:
         generic_types.extend((ctypes.Array, ctypes.LibraryLoader, ctypes.py_object))
-    wenn ValueProxy is not Nichts:
+    wenn ValueProxy is nicht Nichts:
         generic_types.extend((ValueProxy, DictProxy, ListProxy, ApplyResult,
                               MPSimpleQueue, MPQueue, MPJoinableQueue))
-    wenn Event is not Nichts:
+    wenn Event is nicht Nichts:
         generic_types.append(Event)
 
     def test_subscriptable(self):
@@ -557,7 +557,7 @@ klasse TypeIterationTests(unittest.TestCase):
     def test_cannot_iterate(self):
         fuer test_type in self._UNITERABLE_TYPES:
             mit self.subTest(type=test_type):
-                expected_error_regex = "object is not iterable"
+                expected_error_regex = "object is nicht iterable"
                 mit self.assertRaisesRegex(TypeError, expected_error_regex):
                     iter(test_type)
                 mit self.assertRaisesRegex(TypeError, expected_error_regex):

@@ -24,7 +24,7 @@ klasse Delegator:
         self.__cache.clear()
 
     def setdelegate(self, delegate):
-        "Reset attributes and change delegate."
+        "Reset attributes und change delegate."
         self.resetcache()
         self.delegate = delegate
 

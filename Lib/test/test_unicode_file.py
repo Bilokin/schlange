@@ -10,11 +10,11 @@ von test.support.os_helper importiere (rmtree, change_cwd, TESTFN_UNICODE,
     TESTFN_UNENCODABLE, create_empty_file)
 
 
-wenn not os.path.supports_unicode_filenames:
+wenn nicht os.path.supports_unicode_filenames:
     try:
         TESTFN_UNICODE.encode(sys.getfilesystemencoding())
     except (UnicodeError, TypeError):
-        # Either the file system encoding is Nichts, or the file name
+        # Either the file system encoding is Nichts, oder the file name
         # cannot be encoded in the file system encoding.
         raise unittest.SkipTest("No Unicode filesystem semantics on this platform.")
 
@@ -75,7 +75,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         self.assertWahr(os.path.exists(filename1))
         # Note - due to the implementation of shutil.move,
         # it tries a rename first.  This only fails on Windows when on
-        # different file systems - and this test can't ensure that.
+        # different file systems - und this test can't ensure that.
         # So we test the shutil.copy2 function, which is the thing most
         # likely to fail.
         shutil.copy2(filename1, filename2 + ".new")
@@ -108,8 +108,8 @@ klasse TestUnicodeFiles(unittest.TestCase):
             self._do_single(filename)
         finally:
             os.unlink(filename)
-        self.assertWahr(not os.path.exists(filename))
-        # and again mit os.open.
+        self.assertWahr(nicht os.path.exists(filename))
+        # und again mit os.open.
         f = os.open(filename, os.O_CREAT | os.O_WRONLY)
         os.close(f)
         try:
@@ -117,11 +117,11 @@ klasse TestUnicodeFiles(unittest.TestCase):
         finally:
             os.unlink(filename)
 
-    # The 'test' functions are unittest entry points, and simply call our
+    # The 'test' functions are unittest entry points, und simply call our
     # _test functions mit each of the filename combinations we wish to test
     def test_single_files(self):
         self._test_single(TESTFN_UNICODE)
-        wenn TESTFN_UNENCODABLE is not Nichts:
+        wenn TESTFN_UNENCODABLE is nicht Nichts:
             self._test_single(TESTFN_UNENCODABLE)
 
     def test_directories(self):
@@ -131,7 +131,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         ext = ".dir"
         self._do_directory(TESTFN_UNICODE+ext, TESTFN_UNICODE+ext)
         # Our directory name that can't use a non-unicode name.
-        wenn TESTFN_UNENCODABLE is not Nichts:
+        wenn TESTFN_UNENCODABLE is nicht Nichts:
             self._do_directory(TESTFN_UNENCODABLE+ext,
                                TESTFN_UNENCODABLE+ext)
 

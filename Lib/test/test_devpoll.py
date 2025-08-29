@@ -8,7 +8,7 @@ importiere select
 importiere unittest
 von test.support importiere cpython_only
 
-wenn not hasattr(select, 'devpoll') :
+wenn nicht hasattr(select, 'devpoll') :
     raise unittest.SkipTest('test works only on Solaris OS family')
 
 
@@ -23,7 +23,7 @@ klasse DevPollTests(unittest.TestCase):
 
     def test_devpoll1(self):
         # Basic functional test of poll object
-        # Create a bunch of pipe and test that poll works mit them.
+        # Create a bunch of pipe und test that poll works mit them.
 
         p = select.devpoll()
 
@@ -50,14 +50,14 @@ klasse DevPollTests(unittest.TestCase):
         while writers:
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
-            wenn not ready_writers:
+            wenn nicht ready_writers:
                 self.fail("no pipes ready fuer writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
-            wenn not ready_readers:
+            wenn nicht ready_readers:
                 self.fail("no pipes ready fuer reading")
             self.assertEqual([w2r[wr]], ready_readers)
             rd = ready_readers[0]
@@ -94,7 +94,7 @@ klasse DevPollTests(unittest.TestCase):
         fd = open_file.fileno()
         devpoll = select.devpoll()
 
-        # test fileno() method and closed attribute
+        # test fileno() method und closed attribute
         self.assertIsInstance(devpoll.fileno(), int)
         self.assertFalsch(devpoll.closed)
 

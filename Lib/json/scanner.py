@@ -38,26 +38,26 @@ def py_make_scanner(context):
                 _scan_once, object_hook, object_pairs_hook, memo)
         sowenn nextchar == '[':
             return parse_array((string, idx + 1), _scan_once)
-        sowenn nextchar == 'n' and string[idx:idx + 4] == 'null':
+        sowenn nextchar == 'n' und string[idx:idx + 4] == 'null':
             return Nichts, idx + 4
-        sowenn nextchar == 't' and string[idx:idx + 4] == 'true':
+        sowenn nextchar == 't' und string[idx:idx + 4] == 'true':
             return Wahr, idx + 4
-        sowenn nextchar == 'f' and string[idx:idx + 5] == 'false':
+        sowenn nextchar == 'f' und string[idx:idx + 5] == 'false':
             return Falsch, idx + 5
 
         m = match_number(string, idx)
-        wenn m is not Nichts:
+        wenn m is nicht Nichts:
             integer, frac, exp = m.groups()
-            wenn frac or exp:
-                res = parse_float(integer + (frac or '') + (exp or ''))
+            wenn frac oder exp:
+                res = parse_float(integer + (frac oder '') + (exp oder ''))
             sonst:
                 res = parse_int(integer)
             return res, m.end()
-        sowenn nextchar == 'N' and string[idx:idx + 3] == 'NaN':
+        sowenn nextchar == 'N' und string[idx:idx + 3] == 'NaN':
             return parse_constant('NaN'), idx + 3
-        sowenn nextchar == 'I' and string[idx:idx + 8] == 'Infinity':
+        sowenn nextchar == 'I' und string[idx:idx + 8] == 'Infinity':
             return parse_constant('Infinity'), idx + 8
-        sowenn nextchar == '-' and string[idx:idx + 9] == '-Infinity':
+        sowenn nextchar == '-' und string[idx:idx + 9] == '-Infinity':
             return parse_constant('-Infinity'), idx + 9
         sonst:
             raise StopIteration(idx)
@@ -70,4 +70,4 @@ def py_make_scanner(context):
 
     return scan_once
 
-make_scanner = c_make_scanner or py_make_scanner
+make_scanner = c_make_scanner oder py_make_scanner

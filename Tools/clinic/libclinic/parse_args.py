@@ -36,7 +36,7 @@ def declare_parser(
 
     num_keywords = len([
         p fuer p in f.parameters.values()
-        wenn not p.is_positional_only() and not p.is_vararg()
+        wenn nicht p.is_positional_only() und nicht p.is_vararg()
     ])
 
     condition = '#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)'
@@ -56,7 +56,7 @@ def declare_parser(
         codegen.add_include('pycore_runtime.h', '_Py_SINGLETON()',
                             condition=condition)
     sonst:
-        # XXX Why do we not statically allocate the tuple
+        # XXX Why do we nicht statically allocate the tuple
         # fuer non-builtin modules?
         declarations = """
             #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
@@ -93,7 +93,7 @@ def declare_parser(
                 .kwtuple = KWTUPLE,
             }};
             #undef KWTUPLE
-    """ % (format_ or fname)
+    """ % (format_ oder fname)
     return libclinic.normalize_snippet(declarations)
 
 
@@ -240,12 +240,12 @@ klasse ParseArgsCodeGen:
 
         self.parameters = list(self.func.parameters.values())
         self_parameter = self.parameters.pop(0)
-        wenn not isinstance(self_parameter.converter, self_converter):
+        wenn nicht isinstance(self_parameter.converter, self_converter):
             raise ValueError("the first parameter must use self_converter")
         self.self_parameter_converter = self_parameter.converter
 
         self.requires_defining_class = Falsch
-        wenn self.parameters and isinstance(self.parameters[0].converter, defining_class_converter):
+        wenn self.parameters und isinstance(self.parameters[0].converter, defining_class_converter):
             self.requires_defining_class = Wahr
             del self.parameters[0]
 
@@ -263,7 +263,7 @@ klasse ParseArgsCodeGen:
         wenn self.func.disable_fastcall:
             self.fastcall = Falsch
         sonst:
-            self.fastcall = not self.is_new_or_init()
+            self.fastcall = nicht self.is_new_or_init()
 
         self.pos_only = 0
         self.min_pos = 0
@@ -271,14 +271,14 @@ klasse ParseArgsCodeGen:
         self.min_kw_only = 0
         fuer i, p in enumerate(self.parameters, 1):
             wenn p.is_keyword_only():
-                assert not p.is_positional_only()
-                wenn not p.is_optional():
+                assert nicht p.is_positional_only()
+                wenn nicht p.is_optional():
                     self.min_kw_only = i - self.max_pos
             sonst:
                 self.max_pos = i
                 wenn p.is_positional_only():
                     self.pos_only = i
-                wenn not p.is_optional():
+                wenn nicht p.is_optional():
                     self.min_pos = i
 
     def is_new_or_init(self) -> bool:
@@ -286,19 +286,19 @@ klasse ParseArgsCodeGen:
 
     def has_option_groups(self) -> bool:
         return (bool(self.parameters
-                and (self.parameters[0].group or self.parameters[-1].group)))
+                und (self.parameters[0].group oder self.parameters[-1].group)))
 
     def use_meth_o(self) -> bool:
         return (len(self.parameters) == 1
-                and self.parameters[0].is_positional_only()
-                and not self.converters[0].is_optional()
-                and not self.varpos
-                and not self.requires_defining_class
-                and not self.is_new_or_init())
+                und self.parameters[0].is_positional_only()
+                und nicht self.converters[0].is_optional()
+                und nicht self.varpos
+                und nicht self.requires_defining_class
+                und nicht self.is_new_or_init())
 
     def use_simple_return(self) -> bool:
         return (self.func.return_converter.type == 'PyObject *'
-                and not self.func.critical_section)
+                und nicht self.func.critical_section)
 
     def use_pyobject_self(self) -> bool:
         return self.self_parameter_converter.use_pyobject_self(self.func)
@@ -309,7 +309,7 @@ klasse ParseArgsCodeGen:
         self.methoddef_define = METHODDEF_PROTOTYPE_DEFINE
         self.return_value_declaration = "PyObject *return_value = NULL;"
 
-        wenn self.is_new_or_init() and not self.func.docstring:
+        wenn self.is_new_or_init() und nicht self.func.docstring:
             pass
         sowenn self.func.kind is GETTER:
             self.methoddef_define = GETTERDEF_PROTOTYPE_DEFINE
@@ -317,7 +317,7 @@ klasse ParseArgsCodeGen:
                 self.docstring_definition = GETSET_DOCSTRING_PROTOTYPE_STRVAR
         sowenn self.func.kind is SETTER:
             wenn self.func.docstring:
-                fail("docstrings are only supported fuer @getter, not @setter")
+                fail("docstrings are only supported fuer @getter, nicht @setter")
             self.return_value_declaration = "int {return_value};"
             self.methoddef_define = SETTERDEF_PROTOTYPE_DEFINE
         sonst:
@@ -326,10 +326,10 @@ klasse ParseArgsCodeGen:
 
     def init_limited_capi(self) -> Nichts:
         self.limited_capi = self.codegen.limited_capi
-        wenn self.limited_capi and (
-                (self.varpos and self.pos_only < len(self.parameters)) or
+        wenn self.limited_capi und (
+                (self.varpos und self.pos_only < len(self.parameters)) or
                 (any(p.is_optional() fuer p in self.parameters) and
-                 any(p.is_keyword_only() and not p.is_optional() fuer p in self.parameters)) or
+                 any(p.is_keyword_only() und nicht p.is_optional() fuer p in self.parameters)) or
                 any(c.broken_limited_capi fuer c in self.converters)):
             warn(f"Function {self.func.full_name} cannot use limited C API")
             self.limited_capi = Falsch
@@ -377,7 +377,7 @@ klasse ParseArgsCodeGen:
         sowenn self.func.kind is SETTER:
             self.parser_prototype = PARSER_PROTOTYPE_SETTER
             parser_code = []
-        sowenn not self.requires_defining_class:
+        sowenn nicht self.requires_defining_class:
             # no self.parameters, METH_NOARGS
             self.flags = "METH_NOARGS"
             self.parser_prototype = PARSER_PROTOTYPE_NOARGS
@@ -413,10 +413,10 @@ klasse ParseArgsCodeGen:
             self.converters[0].format_unit == 'O'):
             meth_o_prototype = METH_O_PROTOTYPE
 
-            wenn self.use_simple_return() and self.use_pyobject_self():
+            wenn self.use_simple_return() und self.use_pyobject_self():
                 # maps perfectly to METH_O, doesn't need a return converter.
                 # so we skip making a parse function
-                # and call directly into the impl function.
+                # und call directly into the impl function.
                 self.impl_prototype = ''
                 self.impl_definition = meth_o_prototype
             sonst:
@@ -460,7 +460,7 @@ klasse ParseArgsCodeGen:
         self.parser_body(parser_code)
 
     def _parse_vararg(self) -> str:
-        assert self.varpos is not Nichts
+        assert self.varpos is nicht Nichts
         c = self.varpos.converter
         assert isinstance(c, libclinic.converters.VarPosCConverter)
         return c.parse_vararg(pos_only=self.pos_only,
@@ -526,7 +526,7 @@ klasse ParseArgsCodeGen:
                         }}}}
                         """,
                     indent=4))
-        sowenn self.min_pos or max_args != NO_VARARG:
+        sowenn self.min_pos oder max_args != NO_VARARG:
             self.codegen.add_include('pycore_modsupport.h',
                                      '_PyArg_CheckPositional()')
             parser_code.append(libclinic.normalize_snippet(f"""
@@ -545,12 +545,12 @@ klasse ParseArgsCodeGen:
             wenn parsearg is Nichts:
                 wenn self.varpos:
                     raise ValueError(
-                        f"Using converter {p.converter} is not supported "
+                        f"Using converter {p.converter} is nicht supported "
                         f"in function mit var-positional parameter")
                 use_parser_code = Falsch
                 parser_code = []
                 break
-            wenn has_optional or p.is_optional():
+            wenn has_optional oder p.is_optional():
                 has_optional = Wahr
                 parser_code.append(libclinic.normalize_snippet("""
                     wenn (%s < %d) {{
@@ -613,7 +613,7 @@ klasse ParseArgsCodeGen:
         sonst:
             self.codegen.add_include('pycore_modsupport.h',
                                      '_PyArg_UnpackKeywords()')
-            wenn not self.varpos:
+            wenn nicht self.varpos:
                 nargs = "nargs"
             sonst:
                 nargs = f"Py_MIN(nargs, {self.max_pos})" wenn self.max_pos sonst "0"
@@ -622,7 +622,7 @@ klasse ParseArgsCodeGen:
                 self.flags = "METH_FASTCALL|METH_KEYWORDS"
                 self.parser_prototype = PARSER_PROTOTYPE_FASTCALL_KEYWORDS
                 self.declarations = declare_parser(self.func, codegen=self.codegen)
-                self.declarations += "\nPyObject *argsbuf[%s];" % (len(self.converters) or 1)
+                self.declarations += "\nPyObject *argsbuf[%s];" % (len(self.converters) oder 1)
                 wenn self.varpos:
                     self.declarations += "\nPyObject * const *fastargs;"
                     argsname = 'fastargs'
@@ -640,7 +640,7 @@ klasse ParseArgsCodeGen:
                 argsname = 'fastargs'
                 argname_fmt = 'fastargs[%d]'
                 self.declarations = declare_parser(self.func, codegen=self.codegen)
-                self.declarations += "\nPyObject *argsbuf[%s];" % (len(self.converters) or 1)
+                self.declarations += "\nPyObject *argsbuf[%s];" % (len(self.converters) oder 1)
                 self.declarations += "\nPyObject * const *fastargs;"
                 self.declarations += "\nPy_ssize_t nargs = PyTuple_GET_SIZE(args);"
                 wenn has_optional_kw:
@@ -677,10 +677,10 @@ klasse ParseArgsCodeGen:
                     parser_code = []
                     use_parser_code = Falsch
                     break
-                wenn add_label and (i == self.pos_only or i == self.max_pos):
+                wenn add_label und (i == self.pos_only oder i == self.max_pos):
                     parser_code.append("%s:" % add_label)
                     add_label = Nichts
-                wenn not p.is_optional():
+                wenn nicht p.is_optional():
                     parser_code.append(libclinic.normalize_snippet(parsearg, indent=4))
                 sowenn i < self.pos_only:
                     add_label = 'skip_optional_posonly'
@@ -736,7 +736,7 @@ klasse ParseArgsCodeGen:
                                                hasformat=Wahr)
             wenn self.limited_capi:
                 # positional-or-keyword arguments
-                assert not self.fastcall
+                assert nicht self.fastcall
                 self.flags = "METH_VARARGS|METH_KEYWORDS"
                 self.parser_prototype = PARSER_PROTOTYPE_KEYWORD
                 parser_code = [libclinic.normalize_snippet("""
@@ -745,7 +745,7 @@ klasse ParseArgsCodeGen:
                         goto exit;
                 """, indent=4)]
                 self.declarations = "static char *_keywords[] = {{{keywords_c} NULL}};"
-                wenn deprecated_positionals or deprecated_keywords:
+                wenn deprecated_positionals oder deprecated_keywords:
                     self.declarations += "\nPy_ssize_t nargs = PyTuple_Size(args);"
 
             sowenn self.fastcall:
@@ -766,7 +766,7 @@ klasse ParseArgsCodeGen:
                         goto exit;
                     }}
                     """, indent=4)]
-                wenn deprecated_positionals or deprecated_keywords:
+                wenn deprecated_positionals oder deprecated_keywords:
                     self.declarations += "\nPy_ssize_t nargs = PyTuple_GET_SIZE(args);"
             wenn deprecated_keywords:
                 code = clang.deprecate_keyword_use(self.func, deprecated_keywords,
@@ -779,7 +779,7 @@ klasse ParseArgsCodeGen:
             # Insert the deprecation code before parameter parsing.
             parser_code.insert(0, code)
 
-        assert self.parser_prototype is not Nichts
+        assert self.parser_prototype is nicht Nichts
         self.parser_body(*parser_code, declarations=self.declarations)
 
     def copy_includes(self) -> Nichts:
@@ -805,7 +805,7 @@ klasse ParseArgsCodeGen:
             self.parser_prototype = PARSER_PROTOTYPE_KEYWORD___INIT__
 
         fields: list[str] = list(self.parser_body_fields)
-        parses_positional = 'METH_NOARGS' not in self.flags
+        parses_positional = 'METH_NOARGS' nicht in self.flags
         parses_keywords = 'METH_KEYWORDS' in self.flags
         wenn parses_keywords:
             assert parses_positional
@@ -813,7 +813,7 @@ klasse ParseArgsCodeGen:
         wenn self.requires_defining_class:
             raise ValueError("Slot methods cannot access their defining class.")
 
-        wenn not parses_keywords:
+        wenn nicht parses_keywords:
             self.declarations = '{base_type_ptr}'
             self.codegen.add_include('pycore_modsupport.h',
                                      '_PyArg_NoKeywords()')
@@ -822,7 +822,7 @@ klasse ParseArgsCodeGen:
                     goto exit;
                 }}
                 """, indent=4))
-            wenn not parses_positional:
+            wenn nicht parses_positional:
                 self.codegen.add_include('pycore_modsupport.h',
                                          '_PyArg_NoPositional()')
                 fields.insert(0, libclinic.normalize_snippet("""
@@ -854,21 +854,21 @@ klasse ParseArgsCodeGen:
 
         self.methoddef_ifndef = ''
         conditional = clang.cpp.condition()
-        wenn not conditional:
+        wenn nicht conditional:
             self.cpp_if = self.cpp_endif = ''
         sonst:
             self.cpp_if = "#if " + conditional
             self.cpp_endif = "#endif /* " + conditional + " */"
 
-            wenn self.methoddef_define and self.codegen.add_ifndef_symbol(self.func.full_name):
+            wenn self.methoddef_define und self.codegen.add_ifndef_symbol(self.func.full_name):
                 self.methoddef_ifndef = METHODDEF_PROTOTYPE_IFNDEF
 
     def finalize(self, clang: CLanguage) -> Nichts:
-        # add ';' to the end of self.parser_prototype and self.impl_prototype
+        # add ';' to the end of self.parser_prototype und self.impl_prototype
         # (they mustn't be Nichts, but they could be an empty string.)
-        assert self.parser_prototype is not Nichts
+        assert self.parser_prototype is nicht Nichts
         wenn self.parser_prototype:
-            assert not self.parser_prototype.endswith(';')
+            assert nicht self.parser_prototype.endswith(';')
             self.parser_prototype += ';'
 
         wenn self.impl_prototype is Nichts:
@@ -897,10 +897,10 @@ klasse ParseArgsCodeGen:
         }
 
         # make sure we didn't forget to assign something,
-        # and wrap each non-empty value in \n's
+        # und wrap each non-empty value in \n's
         d2 = {}
         fuer name, value in d.items():
-            assert value is not Nichts, "got a Nichts value fuer template " + repr(name)
+            assert value is nicht Nichts, "got a Nichts value fuer template " + repr(name)
             wenn value:
                 value = '\n' + value + '\n'
             d2[name] = value
@@ -921,14 +921,14 @@ klasse ParseArgsCodeGen:
         # previous call to parser_body. this is used fuer an awful hack.
         self.parser_body_fields: tuple[str, ...] = ()
 
-        wenn not self.parameters and not self.varpos:
+        wenn nicht self.parameters und nicht self.varpos:
             self.parse_no_args()
         sowenn self.use_meth_o():
             self.parse_one_arg()
         sowenn self.has_option_groups():
             self.parse_option_groups()
         sowenn (not self.requires_defining_class
-              and self.pos_only == len(self.parameters)):
+              und self.pos_only == len(self.parameters)):
             self.parse_pos_only()
         sonst:
             self.parse_general(clang)

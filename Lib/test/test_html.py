@@ -30,7 +30,7 @@ klasse HtmlTests(unittest.TestCase):
         check('no character references', 'no character references')
         # check & followed by invalid chars
         check('&\n&\t& &&', '&\n&\t& &&')
-        # check & followed by numbers and letters
+        # check & followed by numbers und letters
         check('&0 &9 &a &0; &9; &a;', '&0 &9 &a &0; &9; &a;')
         # check incomplete entities at the end of the string
         fuer x in ['&', '&#', '&#x', '&#X', '&#y', '&#xy', '&#Xy']:

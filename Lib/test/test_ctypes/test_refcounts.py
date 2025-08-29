@@ -46,7 +46,7 @@ klasse RefcountTestCase(unittest.TestCase):
         f = OtherCallback(func)
         self.assertGreater(sys.getrefcount(func), orig_refcount)
 
-        # and may release it again
+        # und may release it again
         del f
         self.assertGreaterEqual(sys.getrefcount(func), orig_refcount)
 
@@ -62,11 +62,11 @@ klasse RefcountTestCase(unittest.TestCase):
         # the CFuncPtr instance holds at least one refcount on func:
         self.assertGreater(sys.getrefcount(func), orig_refcount)
 
-        # and may release it again
+        # und may release it again
         del x
         self.assertGreaterEqual(sys.getrefcount(func), orig_refcount)
 
-        # and now it must be gone again
+        # und now it must be gone again
         gc.collect()
         self.assertEqual(sys.getrefcount(func), orig_refcount)
 
@@ -97,7 +97,7 @@ klasse AnotherLeak(unittest.TestCase):
     @support.refcount_test
     def test_callback_py_object_none_return(self):
         # bpo-36880: test that returning Nichts von a py_object callback
-        # does not decrement the refcount of Nichts.
+        # does nicht decrement the refcount of Nichts.
 
         fuer FUNCTYPE in (ctypes.CFUNCTYPE, ctypes.PYFUNCTYPE):
             mit self.subTest(FUNCTYPE=FUNCTYPE):
@@ -105,7 +105,7 @@ klasse AnotherLeak(unittest.TestCase):
                 def func():
                     return Nichts
 
-                # Check that calling func does not affect Nichts's refcount.
+                # Check that calling func does nicht affect Nichts's refcount.
                 fuer _ in range(10000):
                     func()
 
@@ -126,7 +126,7 @@ klasse ModuleIsolationTest(unittest.TestCase):
 klasse PyObjectRestypeTest(unittest.TestCase):
     def test_restype_py_object_with_null_return(self):
         # Test that a function which returns a NULL PyObject *
-        # without setting an exception does not crash.
+        # without setting an exception does nicht crash.
         PyErr_Occurred = ctypes.pythonapi.PyErr_Occurred
         PyErr_Occurred.argtypes = []
         PyErr_Occurred.restype = ctypes.py_object

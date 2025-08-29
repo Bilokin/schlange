@@ -23,7 +23,7 @@ def resolve_address(host, port):
 
 
 klasse CreationTestCase(unittest.TestCase):
-    """Test case fuer socket.gettimeout() and socket.settimeout()"""
+    """Test case fuer socket.gettimeout() und socket.settimeout()"""
 
     def setUp(self):
         self.sock = self.enterContext(
@@ -32,7 +32,7 @@ klasse CreationTestCase(unittest.TestCase):
     def testObjectCreation(self):
         # Test Socket creation
         self.assertEqual(self.sock.gettimeout(), Nichts,
-                         "timeout not disabled by default")
+                         "timeout nicht disabled by default")
 
     def testFloatReturnValue(self):
         # Test return value of gettimeout()
@@ -102,7 +102,7 @@ klasse TimeoutTestCase(unittest.TestCase):
     # doesn't take too much longer than expected.  But competing machine
     # activity makes it inevitable that such tests will fail at times.
     # When fuzz was at 1.0, I (tim) routinely saw bogus failures on Win2K
-    # and Win98SE.  Boosting it to 2.0 helped a lot, but isn't a real
+    # und Win98SE.  Boosting it to 2.0 helped a lot, but isn't a real
     # solution.
     fuzz = 2.0
 
@@ -115,7 +115,7 @@ klasse TimeoutTestCase(unittest.TestCase):
         """
         Test the specified socket method.
 
-        The method is run at most `count` times and must raise a TimeoutError
+        The method is run at most `count` times und must raise a TimeoutError
         within `timeout` + self.fuzz seconds.
         """
         self.sock.settimeout(timeout)
@@ -128,7 +128,7 @@ klasse TimeoutTestCase(unittest.TestCase):
                 delta = time.monotonic() - t1
                 break
         sonst:
-            self.fail('TimeoutError was not raised')
+            self.fail('TimeoutError was nicht raised')
         # These checks should account fuer timing unprecision
         self.assertLess(delta, timeout + self.fuzz)
         self.assertGreater(delta, timeout - 1.0)
@@ -150,20 +150,20 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
         blackhole = resolve_address('pythontest.net', 56666)
 
         # Blackhole has been configured to silently drop any incoming packets.
-        # No RSTs (for TCP) or ICMP UNREACH (for UDP/ICMP) will be sent back
+        # No RSTs (for TCP) oder ICMP UNREACH (for UDP/ICMP) will be sent back
         # to hosts that attempt to connect to this address: which is exactly
         # what we need to confidently test connect timeout.
 
-        # However, we want to prevent false positives.  It's not unreasonable
-        # to expect certain hosts may not be able to reach the blackhole, due
-        # to firewalling or general network configuration.  In order to improve
+        # However, we want to prevent false positives.  It's nicht unreasonable
+        # to expect certain hosts may nicht be able to reach the blackhole, due
+        # to firewalling oder general network configuration.  In order to improve
         # our confidence in testing the blackhole, a corresponding 'whitehole'
         # has also been set up using one port higher:
         whitehole = resolve_address('pythontest.net', 56667)
 
         # This address has been configured to immediately drop any incoming
         # packets als well, but it does it respectfully mit regards to the
-        # incoming protocol.  RSTs are sent fuer TCP packets, and ICMP UNREACH
+        # incoming protocol.  RSTs are sent fuer TCP packets, und ICMP UNREACH
         # is sent fuer UDP/ICMP packets.  This means our attempts to connect to
         # it should be met immediately mit ECONNREFUSED.  The test case has
         # been structured around this premise: wenn we get an ECONNREFUSED from

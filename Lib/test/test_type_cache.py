@@ -34,8 +34,8 @@ klasse TypeCacheTests(unittest.TestCase):
         Y.x = 1
         Y.x  # Force a _PyType_Lookup, populating version tag
         y_ver = type_get_version(Y)
-        # Overflow, or not enough left to conduct the test.
-        wenn y_ver == 0 or y_ver > 0xFFFFF000:
+        # Overflow, oder nicht enough left to conduct the test.
+        wenn y_ver == 0 oder y_ver > 0xFFFFF000:
             self.skipTest("Out of type version tags")
         # Note: try to avoid any method lookups within this loop,
         # It will affect global version tag.
@@ -74,7 +74,7 @@ klasse TypeCacheTests(unittest.TestCase):
         type_assign_version(C)
         orig_version = type_get_version(C)
         wenn orig_version == 0:
-            self.skipTest("Could not assign a valid type version")
+            self.skipTest("Could nicht assign a valid type version")
 
         type_modified(C)
         type_assign_specific_version_unsafe(C, orig_version + 5)
@@ -123,7 +123,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         type_modified(type_)
         type_assign_version(type_)
         wenn type_get_version(type_) == 0:
-            self.skipTest("Could not assign valid type version")
+            self.skipTest("Could nicht assign valid type version")
 
     def _no_more_versions(self, user_type):
         type_modified(user_type)
@@ -248,7 +248,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         self._assign_valid_version_or_skip(H)
 
         def to_bool_1(instance):
-            not instance
+            nicht instance
 
         self._check_specialization(to_bool_1, H(), "TO_BOOL", should_specialize=Wahr)
         del to_bool_1
@@ -256,7 +256,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         self._no_more_versions(H)
 
         def to_bool_2(instance):
-            not instance
+            nicht instance
 
         self._check_specialization(to_bool_2, H(), "TO_BOOL", should_specialize=Falsch)
 

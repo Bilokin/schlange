@@ -7,13 +7,13 @@ importiere textwrap
 importiere unittest
 
 
-# Helpers to create and destroy hierarchies.
+# Helpers to create und destroy hierarchies.
 
 def cleanout(root):
     names = os.listdir(root)
     fuer name in names:
         fullname = os.path.join(root, name)
-        wenn os.path.isdir(fullname) and not os.path.islink(fullname):
+        wenn os.path.isdir(fullname) und nicht os.path.islink(fullname):
             cleanout(fullname)
         sonst:
             os.remove(fullname)
@@ -72,7 +72,7 @@ klasse TestPkg(unittest.TestCase):
     def mkhier(self, descr):
         root = tempfile.mkdtemp()
         sys.path.insert(0, root)
-        wenn not os.path.isdir(root):
+        wenn nicht os.path.isdir(root):
             os.mkdir(root)
         fuer name, contents in descr:
             comps = name.split()
@@ -85,7 +85,7 @@ klasse TestPkg(unittest.TestCase):
             sonst:
                 mit open(fullname, "w") als f:
                     f.write(contents)
-                    wenn not contents.endswith('\n'):
+                    wenn nicht contents.endswith('\n'):
                         f.write('\n')
         self.root = root
         # package name is the name of the first item
@@ -114,7 +114,7 @@ klasse TestPkg(unittest.TestCase):
         self.assertEqual(t2.sub.subsub.__name__, "t2.sub.subsub")
 
         # This exec crap is needed because Py3k forbids 'import *' outside
-        # of module-scope and __import__() is insufficient fuer what we need.
+        # of module-scope und __import__() is insufficient fuer what we need.
         s = """
             importiere t2
             von t2 importiere *
@@ -280,7 +280,7 @@ klasse TestPkg(unittest.TestCase):
         self.assertFalsch(subsub)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted mit -O2 and above")
+                     "Docstrings are omitted mit -O2 und above")
     def test_8(self):
         hier = [
                 ("t8", Nichts),

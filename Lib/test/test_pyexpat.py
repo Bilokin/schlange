@@ -1,5 +1,5 @@
-# XXX TypeErrors on calling handlers, or on bad return values von a
-# handler, are obscure and unhelpful.
+# XXX TypeErrors on calling handlers, oder on bad return values von a
+# handler, are obscure und unhelpful.
 
 importiere os
 importiere sys
@@ -182,7 +182,7 @@ klasse ParseTest(unittest.TestCase):
 
     def _hookup_callbacks(self, parser, handler):
         """
-        Set each of the callbacks defined on handler and named in
+        Set each of the callbacks defined on handler und named in
         self.handler_names on the given parser.
         """
         fuer name in self.handler_names:
@@ -275,7 +275,7 @@ klasse ParseTest(unittest.TestCase):
 klasse NamespaceSeparatorTest(unittest.TestCase):
     def test_legal(self):
         # Tests that make sure we get errors when the namespace_separator value
-        # is illegal, and that we don't fuer good values:
+        # is illegal, und that we don't fuer good values:
         expat.ParserCreate()
         expat.ParserCreate(namespace_separator=Nichts)
         expat.ParserCreate(namespace_separator=' ')
@@ -283,7 +283,7 @@ klasse NamespaceSeparatorTest(unittest.TestCase):
     def test_illegal(self):
         mit self.assertRaisesRegex(TypeError,
                 r"ParserCreate\(\) argument (2|'namespace_separator') "
-                r"must be str or Nichts, not int"):
+                r"must be str oder Nichts, nicht int"):
             expat.ParserCreate(namespace_separator=42)
 
         try:
@@ -291,12 +291,12 @@ klasse NamespaceSeparatorTest(unittest.TestCase):
             self.fail()
         except ValueError als e:
             self.assertEqual(str(e),
-                'namespace_separator must be at most one character, omitted, or Nichts')
+                'namespace_separator must be at most one character, omitted, oder Nichts')
 
     def test_zero_length(self):
         # ParserCreate() needs to accept a namespace_separator of zero length
         # to satisfy the requirements of RDF applications that are required
-        # to simply glue together the namespace URI and the localname.  Though
+        # to simply glue together the namespace URI und the localname.  Though
         # considered a wart of the RDF specifications, it needs to be supported.
         #
         # See XML-SIG mailing list thread starting with
@@ -318,7 +318,7 @@ klasse InterningTest(unittest.TestCase):
         tag = L[0]
         self.assertEqual(len(L), 6)
         fuer entry in L:
-            # L should have the same string repeated over and over.
+            # L should have the same string repeated over und over.
             self.assertWahr(tag is entry)
 
     def test_issue9402(self):
@@ -383,7 +383,7 @@ klasse BufferTextTest(unittest.TestCase):
         self.assertWahr(self.parser.buffer_text)
         self.parser.Parse(b"<a>1<b/>2<c/>3</a>", Wahr)
         self.assertEqual(self.stuff, ['123'],
-                         "buffered text not properly collapsed")
+                         "buffered text nicht properly collapsed")
 
     def test1(self):
         # XXX This test exposes more detail of Expat's text chunking than we
@@ -392,18 +392,18 @@ klasse BufferTextTest(unittest.TestCase):
         self.parser.Parse(b"<a>1<b buffer-text='no'/>2\n3<c buffer-text='yes'/>4\n5</a>", Wahr)
         self.assertEqual(self.stuff,
                          ["<a>", "1", "<b>", "2", "\n", "3", "<c>", "4\n5"],
-                         "buffering control not reacting als expected")
+                         "buffering control nicht reacting als expected")
 
     def test2(self):
         self.parser.Parse(b"<a>1<b/>&lt;2&gt;<c/>&#32;\n&#x20;3</a>", Wahr)
         self.assertEqual(self.stuff, ["1<2> \n 3"],
-                         "buffered text not properly collapsed")
+                         "buffered text nicht properly collapsed")
 
     def test3(self):
         self.setHandlers(["StartElementHandler"])
         self.parser.Parse(b"<a>1<b/>2<c/>3</a>", Wahr)
         self.assertEqual(self.stuff, ["<a>", "1", "<b>", "2", "<c>", "3"],
-                         "buffered text not properly split")
+                         "buffered text nicht properly split")
 
     def test4(self):
         self.setHandlers(["StartElementHandler", "EndElementHandler"])
@@ -424,7 +424,7 @@ klasse BufferTextTest(unittest.TestCase):
         self.parser.Parse(b"<a>1<b/>2<c></c>345</a> ", Wahr)
         self.assertEqual(self.stuff,
             ["<a>", "1", "<b>", "</b>", "2", "<c>", "</c>", "345", "</a>"],
-            "buffered text not properly split")
+            "buffered text nicht properly split")
 
     def test7(self):
         self.setHandlers(["CommentHandler", "EndElementHandler",
@@ -433,7 +433,7 @@ klasse BufferTextTest(unittest.TestCase):
         self.assertEqual(self.stuff,
                          ["<a>", "1", "<b>", "</b>", "2", "<c>", "</c>", "3",
                           "<!--abc-->", "4", "<!--def-->", "5", "</a>"],
-                         "buffered text not properly split")
+                         "buffered text nicht properly split")
 
     def test_change_character_data_handler_in_callback(self):
         # Test that xmlparse_handler_setter() properly handles
@@ -485,7 +485,7 @@ klasse HandlerExceptionTest(unittest.TestCase):
         try:
             parser.Parse(b"<a><b><c/></b></a>", Wahr)
 
-            self.fail("the parser did not raise RuntimeError")
+            self.fail("the parser did nicht raise RuntimeError")
         except RuntimeError als exc:
             self.assertEqual(exc.args[0], 'StartElementHandler: <a>', exc)
             entries = traceback.extract_tb(exc.__traceback__)
@@ -502,7 +502,7 @@ klasse HandlerExceptionTest(unittest.TestCase):
         # Check that the traceback contains the relevant line in
         # Modules/pyexpat.c. Skip the test wenn Modules/pyexpat.c is not
         # available.
-        wenn have_source and os.path.exists(PYEXPAT_C):
+        wenn have_source und os.path.exists(PYEXPAT_C):
             self.assertIn('call_with_frame("StartElement"',
                           entries[1].line)
 
@@ -620,7 +620,7 @@ klasse ChardataBufferTest(unittest.TestCase):
         self.assertEqual(parser.buffer_size, 1024)
         self.assertEqual(self.n, 1)
 
-        # Turn off buffering and parse the next chunk.
+        # Turn off buffering und parse the next chunk.
         parser.buffer_text = 0
         self.assertFalsch(parser.buffer_text)
         self.assertEqual(parser.buffer_size, 1024)
@@ -694,13 +694,13 @@ klasse MalformedInputTest(unittest.TestCase):
         # \xc2\x85 is UTF-8 encoded U+0085 (NEXT LINE)
         xml = b"<?xml version\xc2\x85='1.0'?>\r\n"
         parser = expat.ParserCreate()
-        err_pattern = r'XML declaration not well-formed: line 1, column \d+'
+        err_pattern = r'XML declaration nicht well-formed: line 1, column \d+'
         mit self.assertRaisesRegex(expat.ExpatError, err_pattern):
             parser.Parse(xml, Wahr)
 
 klasse ErrorMessageTest(unittest.TestCase):
     def test_codes(self):
-        # verify mapping of errors.codes and errors.messages
+        # verify mapping of errors.codes und errors.messages
         self.assertEqual(errors.XML_ERROR_SYNTAX,
                          errors.messages[errors.codes[errors.XML_ERROR_SYNTAX]])
 
@@ -721,9 +721,9 @@ klasse ForeignDTDTests(unittest.TestCase):
     """
     def test_use_foreign_dtd(self):
         """
-        If UseForeignDTD is passed Wahr and a document without an external
+        If UseForeignDTD is passed Wahr und a document without an external
         entity reference is parsed, ExternalEntityRefHandler is first called
-        mit Nichts fuer the public and system ids.
+        mit Nichts fuer the public und system ids.
         """
         handler_call_args = []
         def resolve_entity(context, base, system_id, public_id):
@@ -749,9 +749,9 @@ klasse ForeignDTDTests(unittest.TestCase):
 
     def test_ignore_use_foreign_dtd(self):
         """
-        If UseForeignDTD is passed Wahr and a document mit an external
+        If UseForeignDTD is passed Wahr und a document mit an external
         entity reference is parsed, ExternalEntityRefHandler is called with
-        the public and system ids von the document.
+        the public und system ids von the document.
         """
         handler_call_args = []
         def resolve_entity(context, base, system_id, public_id):
@@ -780,7 +780,7 @@ klasse ReparseDeferralTest(unittest.TestCase):
 
     def test_reparse_deferral_enabled(self):
         wenn expat.version_info < (2, 6, 0):
-            self.skipTest(f'Expat {expat.version_info} does not '
+            self.skipTest(f'Expat {expat.version_info} does nicht '
                           'support reparse deferral')
 
         started = []

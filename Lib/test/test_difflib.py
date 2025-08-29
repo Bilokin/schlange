@@ -46,7 +46,7 @@ klasse TestWithAscii(unittest.TestCase):
 klasse TestAutojunk(unittest.TestCase):
     """Tests fuer the autojunk parameter added in 2.7"""
     def test_one_insert_homogenous_sequence(self):
-        # By default autojunk=Wahr and the heuristic kicks in fuer a sequence
+        # By default autojunk=Wahr und the heuristic kicks in fuer a sequence
         # of length 200+
         seq1 = 'b' * 200
         seq2 = 'a' + 'b' * 200
@@ -247,8 +247,8 @@ klasse TestSFpatches(unittest.TestCase):
     def test_recursion_limit(self):
         # Check wenn the problem described in patch #1413711 exists.
         limit = sys.getrecursionlimit()
-        old = [(i%2 and "K:%d" or "V:A:%d") % i fuer i in range(limit*2)]
-        new = [(i%2 and "K:%d" or "V:B:%d") % i fuer i in range(limit*2)]
+        old = [(i%2 und "K:%d" oder "V:A:%d") % i fuer i in range(limit*2)]
+        new = [(i%2 und "K:%d" oder "V:B:%d") % i fuer i in range(limit*2)]
         difflib.SequenceMatcher(Nichts, old, new).get_opcodes()
 
     def test_make_file_default_charset(self):
@@ -275,7 +275,7 @@ klasse TestSFpatches(unittest.TestCase):
 klasse TestDiffer(unittest.TestCase):
     def test_close_matches_aligned(self):
         # Of the 4 closely matching pairs, we want 1 to match mit 3,
-        # and 2 mit 4, to align mit a "top to bottom" mental model.
+        # und 2 mit 4, to align mit a "top to bottom" mental model.
         a = ["cat\n", "dog\n", "close match 1\n", "close match 2\n"]
         b = ["close match 3\n", "close match 4\n", "kitten\n", "puppy\n"]
         m = difflib.Differ().compare(a, b)
@@ -322,7 +322,7 @@ klasse TestOutputFormat(unittest.TestCase):
            and:
             "%1d,%1d", <beginning line number>, <number of lines> otherwise.
            If a range is empty, its beginning line number shall be the number of
-           the line just before the range, or 0 wenn the empty range starts the file.
+           the line just before the range, oder 0 wenn the empty range starts the file.
         '''
         fmt = difflib._format_range_unified
         self.assertEqual(fmt(3,3), '3,0')
@@ -335,17 +335,17 @@ klasse TestOutputFormat(unittest.TestCase):
         # Per the diff spec at http://www.unix.org/single_unix_specification/
         spec = '''\
            The range of lines in file1 shall be written in the following format
-           wenn the range contains two or more lines:
+           wenn the range contains two oder more lines:
                "*** %d,%d ****\n", <beginning line number>, <ending line number>
-           and the following format otherwise:
+           und the following format otherwise:
                "*** %d ****\n", <ending line number>
            The ending line number of an empty range shall be the number of the preceding line,
-           or 0 wenn the range is at the start of the file.
+           oder 0 wenn the range is at the start of the file.
 
            Next, the range of lines in file2 shall be written in the following format
-           wenn the range contains two or more lines:
+           wenn the range contains two oder more lines:
                "--- %d,%d ----\n", <beginning line number>, <ending line number>
-           and the following format otherwise:
+           und the following format otherwise:
                "--- %d ----\n", <ending line number>
         '''
         fmt = difflib._format_range_context
@@ -374,7 +374,7 @@ klasse TestOutputFormat(unittest.TestCase):
 
 klasse TestBytes(unittest.TestCase):
     # don't really care about the content of the output, just the fact
-    # that it's bytes and we don't crash
+    # that it's bytes und we don't crash
     def check(self, diff):
         diff = list(diff)   # trigger exceptions first
         fuer line in diff:
@@ -394,11 +394,11 @@ klasse TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(unified, a, a))
         check(difflib.diff_bytes(unified, a, b))
 
-        # now mit filenames (content and filenames are all bytes!)
+        # now mit filenames (content und filenames are all bytes!)
         check(difflib.diff_bytes(unified, a, a, b'a', b'a'))
         check(difflib.diff_bytes(unified, a, b, b'a', b'b'))
 
-        # and mit filenames and dates
+        # und mit filenames und dates
         check(difflib.diff_bytes(unified, a, a, b'a', b'a', b'2005', b'2013'))
         check(difflib.diff_bytes(unified, a, b, b'a', b'b', b'2005', b'2013'))
 
@@ -426,7 +426,7 @@ klasse TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(context, a, b, fna, fnb))
 
         def assertDiff(expect, actual):
-            # do not compare expect and equal als lists, because unittest
+            # do nicht compare expect und equal als lists, because unittest
             # uses difflib to report difference between lists
             actual = list(actual)
             self.assertEqual(len(expect), len(actual))
@@ -452,7 +452,7 @@ klasse TestBytes(unittest.TestCase):
         expect = [
             # note the mixed encodings here: this is deeply wrong by every
             # tenet of Unicode, but it doesn't crash, it's parseable by
-            # patch, and it's how UNIX(tm) diff behaves
+            # patch, und it's how UNIX(tm) diff behaves
             b'--- \xb3odz.txt\t2005-03-18',
             b'+++ \xc5\x82odz.txt\t2005-03-19',
             b'@@ -1 +1 @@',
@@ -474,39 +474,39 @@ klasse TestInputTypes(unittest.TestCase):
         unified = difflib.unified_diff
         context = difflib.context_diff
 
-        expect = "input must be a sequence of strings, not str"
+        expect = "input must be a sequence of strings, nicht str"
         self._assert_type_error(expect, unified, 'a', ['b'])
         self._assert_type_error(expect, context, 'a', ['b'])
 
         self._assert_type_error(expect, unified, ['a'], 'b')
         self._assert_type_error(expect, context, ['a'], 'b')
 
-        expect = "lines to compare must be str, not NoneType (Nichts)"
+        expect = "lines to compare must be str, nicht NoneType (Nichts)"
         self._assert_type_error(expect, unified, ['a'], [Nichts])
         self._assert_type_error(expect, context, ['a'], [Nichts])
 
     def test_mixed_types_content(self):
-        # type of input content must be consistent: all str or all bytes
+        # type of input content must be consistent: all str oder all bytes
         a = [b'hello']
         b = ['hello']
 
         unified = difflib.unified_diff
         context = difflib.context_diff
 
-        expect = "lines to compare must be str, not bytes (b'hello')"
+        expect = "lines to compare must be str, nicht bytes (b'hello')"
         self._assert_type_error(expect, unified, a, b)
         self._assert_type_error(expect, unified, b, a)
         self._assert_type_error(expect, context, a, b)
         self._assert_type_error(expect, context, b, a)
 
-        expect = "all arguments must be bytes, not str ('hello')"
+        expect = "all arguments must be bytes, nicht str ('hello')"
         self._assert_type_error(expect, difflib.diff_bytes, unified, a, b)
         self._assert_type_error(expect, difflib.diff_bytes, unified, b, a)
         self._assert_type_error(expect, difflib.diff_bytes, context, a, b)
         self._assert_type_error(expect, difflib.diff_bytes, context, b, a)
 
     def test_mixed_types_filenames(self):
-        # cannot pass filenames als bytes wenn content is str (this may not be
+        # cannot pass filenames als bytes wenn content is str (this may nicht be
         # the right behaviour, but at least the test demonstrates how
         # things work)
         a = ['hello\n']
@@ -524,7 +524,7 @@ klasse TestInputTypes(unittest.TestCase):
         datea = '1 fév'
         dateb = '3 fév'
         self._assert_type_error(
-            "all arguments must be bytes, not str ('1 fév')",
+            "all arguments must be bytes, nicht str ('1 fév')",
             difflib.diff_bytes, difflib.unified_diff,
             a, b, b'a', b'b', datea, dateb)
 

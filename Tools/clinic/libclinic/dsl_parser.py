@@ -116,7 +116,7 @@ klasse ParamState(enum.IntEnum):
     01   2          3       4    5           6     <- state transitions
     """
     # Before we've seen anything.
-    # Legal transitions: to LEFT_SQUARE_BEFORE or REQUIRED
+    # Legal transitions: to LEFT_SQUARE_BEFORE oder REQUIRED
     START = 0
 
     # Left square brackets before required params.
@@ -125,11 +125,11 @@ klasse ParamState(enum.IntEnum):
     # In a group, before required params.
     GROUP_BEFORE = 2
 
-    # Required params, positional-or-keyword or positional-only (we
+    # Required params, positional-or-keyword oder positional-only (we
     # don't know yet). Renumber left groups!
     REQUIRED = 3
 
-    # Positional-or-keyword or positional-only params that now must have
+    # Positional-or-keyword oder positional-only params that now must have
     # default values.
     OPTIONAL = 4
 
@@ -175,7 +175,7 @@ klasse IndentStack:
         self.margin: str | Nichts = Nichts
 
     def _ensure(self) -> Nichts:
-        wenn not self.indents:
+        wenn nicht self.indents:
             fail('IndentStack expected indents, but none are defined.')
 
     def measure(self, line: str) -> int:
@@ -185,7 +185,7 @@ klasse IndentStack:
         wenn '\t' in line:
             fail('Tab characters are illegal in the Argument Clinic DSL.')
         stripped = line.lstrip()
-        wenn not len(stripped):
+        wenn nicht len(stripped):
             # we can't tell anything von an empty line
             # so just pretend it's indented like our current indent
             self._ensure()
@@ -197,12 +197,12 @@ klasse IndentStack:
         Infer what is now the current margin based on this line.
         Returns:
             1 wenn we have indented (or this is the first margin)
-            0 wenn the margin has not changed
+            0 wenn the margin has nicht changed
            -N wenn we have dedented N times
         """
         indent = self.measure(line)
         margin = ' ' * indent
-        wenn not self.indents:
+        wenn nicht self.indents:
             self.indents.append(indent)
             self.margin = margin
             return 1
@@ -214,7 +214,7 @@ klasse IndentStack:
             self.margin = margin
             return 1
         # indent < current
-        wenn indent not in self.indents:
+        wenn indent nicht in self.indents:
             fail("Illegal outdent.")
         outdent_count = 0
         while indent != current:
@@ -235,11 +235,11 @@ klasse IndentStack:
         """
         Dedents a line by the currently defined margin.
         """
-        assert self.margin is not Nichts, "Cannot call .dedent() before calling .infer()"
+        assert self.margin is nicht Nichts, "Cannot call .dedent() before calling .infer()"
         margin = self.margin
         indent = self.indents[-1]
-        wenn not line.startswith(margin):
-            fail('Cannot dedent; line does not start mit the previous margin.')
+        wenn nicht line.startswith(margin):
+            fail('Cannot dedent; line does nicht start mit the previous margin.')
         return line[indent:]
 
 
@@ -326,7 +326,7 @@ klasse DSLParser:
         name = fields.pop()
         module, cls = self.clinic._module_and_class(fields)
 
-        parent = cls or module
+        parent = cls oder module
         wenn name in parent.classes:
             fail(f"Already defined klasse {name!r}!")
 
@@ -335,7 +335,7 @@ klasse DSLParser:
         self.block.signatures.append(c)
 
     def directive_set(self, name: str, value: str) -> Nichts:
-        wenn name not in ("line_prefix", "line_suffix"):
+        wenn name nicht in ("line_prefix", "line_suffix"):
             fail(f"unknown variable {name!r}")
 
         value = value.format_map({
@@ -369,7 +369,7 @@ klasse DSLParser:
 
         wenn command_or_name == "preset":
             preset = self.clinic.presets.get(destination)
-            wenn not preset:
+            wenn nicht preset:
                 fail(f"Unknown preset {destination!r}!")
             fd.update(preset)
             return
@@ -379,7 +379,7 @@ klasse DSLParser:
             return
 
         wenn command_or_name == "pop":
-            wenn not self.clinic.destination_buffers_stack:
+            wenn nicht self.clinic.destination_buffers_stack:
                 fail("Can't 'output pop', stack is empty!")
             previous_fd = self.clinic.destination_buffers_stack.pop()
             fd.update(previous_fd)
@@ -398,10 +398,10 @@ klasse DSLParser:
                 fd[name] = d
             return
 
-        wenn command_or_name not in fd:
+        wenn command_or_name nicht in fd:
             allowed = ["preset", "push", "pop", "print", "everything"]
             allowed.extend(fd)
-            fail(f"Invalid command or destination name {command_or_name!r}. "
+            fail(f"Invalid command oder destination name {command_or_name!r}. "
                  "Must be one of:\n -",
                  "\n - ".join([repr(word) fuer word in allowed]))
         fd[command_or_name] = d
@@ -419,8 +419,8 @@ klasse DSLParser:
         self.preserve_output = Wahr
 
     def at_classmethod(self) -> Nichts:
-        wenn self.kind is not CALLABLE:
-            fail("Can't set @classmethod, function is not a normal callable")
+        wenn self.kind is nicht CALLABLE:
+            fail("Can't set @classmethod, function is nicht a normal callable")
         self.kind = CLASS_METHOD
 
     def at_critical_section(self, *args: str) -> Nichts:
@@ -430,9 +430,9 @@ klasse DSLParser:
         self.critical_section = Wahr
 
     def at_disable(self, *args: str) -> Nichts:
-        wenn self.kind is not CALLABLE:
-            fail("Can't set @disable, function is not a normal callable")
-        wenn not args:
+        wenn self.kind is nicht CALLABLE:
+            fail("Can't set @disable, function is nicht a normal callable")
+        wenn nicht args:
             fail("@disable expects at least one argument")
         features = list(args)
         wenn 'fastcall' in features:
@@ -446,7 +446,7 @@ klasse DSLParser:
             case FunctionKind.GETTER:
                 fail("Cannot apply @getter twice to the same function!")
             case FunctionKind.SETTER:
-                fail("Cannot apply both @getter and @setter to the same function!")
+                fail("Cannot apply both @getter und @setter to the same function!")
             case _:
                 self.kind = FunctionKind.GETTER
 
@@ -455,13 +455,13 @@ klasse DSLParser:
             case FunctionKind.SETTER:
                 fail("Cannot apply @setter twice to the same function!")
             case FunctionKind.GETTER:
-                fail("Cannot apply both @getter and @setter to the same function!")
+                fail("Cannot apply both @getter und @setter to the same function!")
             case _:
                 self.kind = FunctionKind.SETTER
 
     def at_staticmethod(self) -> Nichts:
-        wenn self.kind is not CALLABLE:
-            fail("Can't set @staticmethod, function is not a normal callable")
+        wenn self.kind is nicht CALLABLE:
+            fail("Can't set @staticmethod, function is nicht a normal callable")
         self.kind = STATIC_METHOD
 
     def at_coexist(self) -> Nichts:
@@ -524,8 +524,8 @@ klasse DSLParser:
             return Falsch
 
         # Ignore empty lines too
-        # (but not in docstring sections!)
-        wenn not self.in_docstring() and not line.strip():
+        # (but nicht in docstring sections!)
+        wenn nicht self.in_docstring() und nicht line.strip():
             return Falsch
 
         return Wahr
@@ -536,11 +536,11 @@ klasse DSLParser:
             line: str | Nichts = Nichts
     ) -> Nichts:
         self.state = state
-        wenn line is not Nichts:
+        wenn line is nicht Nichts:
             self.state(line)
 
     def state_dsl_start(self, line: str) -> Nichts:
-        wenn not self.valid_line(line):
+        wenn nicht self.valid_line(line):
             return
 
         # is it a directive?
@@ -560,36 +560,36 @@ klasse DSLParser:
         left, as_, right = line.partition(' als ')
         full_name = left.strip()
         c_basename = right.strip()
-        wenn as_ and not c_basename:
+        wenn as_ und nicht c_basename:
             fail("No C basename provided after 'as' keyword")
-        wenn not c_basename:
+        wenn nicht c_basename:
             fields = full_name.split(".")
             wenn fields[-1] == '__new__':
                 fields.pop()
             c_basename = "_".join(fields)
-        wenn not libclinic.is_legal_py_identifier(full_name):
+        wenn nicht libclinic.is_legal_py_identifier(full_name):
             fail(f"Illegal function name: {full_name!r}")
-        wenn not libclinic.is_legal_c_identifier(c_basename):
+        wenn nicht libclinic.is_legal_c_identifier(c_basename):
             fail(f"Illegal C basename: {c_basename!r}")
         names = FunctionNames(full_name=full_name, c_basename=c_basename)
         self.normalize_function_kind(names.full_name)
         return names
 
     def normalize_function_kind(self, fullname: str) -> Nichts:
-        # Fetch the method name and possibly class.
+        # Fetch the method name und possibly class.
         fields = fullname.split('.')
         name = fields.pop()
         _, cls = self.clinic._module_and_class(fields)
 
         # Check special method requirements.
         wenn name in unsupported_special_methods:
-            fail(f"{name!r} is a special method and cannot be converted to Argument Clinic!")
-        wenn name == '__init__' and (self.kind is not CALLABLE or not cls):
+            fail(f"{name!r} is a special method und cannot be converted to Argument Clinic!")
+        wenn name == '__init__' und (self.kind is nicht CALLABLE oder nicht cls):
             fail(f"{name!r} must be a normal method; got '{self.kind}'!")
-        wenn name == '__new__' and (self.kind is not CLASS_METHOD or not cls):
+        wenn name == '__new__' und (self.kind is nicht CLASS_METHOD oder nicht cls):
             fail("'__new__' must be a klasse method!")
-        wenn self.kind in {GETTER, SETTER} and not cls:
-            fail("@getter and @setter must be methods")
+        wenn self.kind in {GETTER, SETTER} und nicht cls:
+            fail("@getter und @setter must be methods")
 
         # Normalise self.kind.
         wenn name == '__new__':
@@ -615,8 +615,8 @@ klasse DSLParser:
             try:
                 name, legacy, kwargs = self.parse_converter(function_node.returns)
                 wenn legacy:
-                    fail(f"Legacy converter {name!r} not allowed als a return converter")
-                wenn name not in return_converters:
+                    fail(f"Legacy converter {name!r} nicht allowed als a return converter")
+                wenn name nicht in return_converters:
                     fail(f"No available return converter called {name!r}")
                 return return_converters[name](**kwargs)
             except ValueError:
@@ -631,14 +631,14 @@ klasse DSLParser:
         fields = [x.strip() fuer x in existing.split('.')]
         function_name = fields.pop()
         module, cls = self.clinic._module_and_class(fields)
-        parent = cls or module
+        parent = cls oder module
 
         fuer existing_function in parent.functions:
             wenn existing_function.name == function_name:
                 break
         sonst:
             drucke(f"{cls=}, {module=}, {existing=}", file=sys.stderr)
-            drucke(f"{(cls or module).functions=}", file=sys.stderr)
+            drucke(f"{(cls oder module).functions=}", file=sys.stderr)
             fail(f"Couldn't find existing function {existing!r}!")
 
         fields = [x.strip() fuer x in full_name.split('.')]
@@ -653,20 +653,20 @@ klasse DSLParser:
             "c_basename": c_basename,
             "docstring": "",
         }
-        wenn not (existing_function.kind is self.kind and
+        wenn nicht (existing_function.kind is self.kind and
                 existing_function.coexist == self.coexist):
-            # Allow __new__ or __init__ methods.
+            # Allow __new__ oder __init__ methods.
             wenn existing_function.kind.new_or_init:
                 overrides["kind"] = self.kind
                 # Future enhancement: allow custom return converters
                 overrides["return_converter"] = CReturnConverter()
             sonst:
-                fail("'kind' of function and cloned function don't match! "
+                fail("'kind' of function und cloned function don't match! "
                      "(@classmethod/@staticmethod/@coexist)")
         function = existing_function.copy(**overrides)
         self.function = function
         self.block.signatures.append(function)
-        (cls or module).functions.append(function)
+        (cls oder module).functions.append(function)
         self.next(self.state_function_docstring)
 
     def state_modulename_name(self, line: str) -> Nichts:
@@ -677,7 +677,7 @@ klasse DSLParser:
         #
         # alternatively:
         #     modulename.fnname [as c_basename] = modulename.existing_fn_name
-        # clones the parameters and return converter von that
+        # clones the parameters und return converter von that
         # function.  you can't modify them.  you must enter a
         # new docstring.
         #
@@ -730,7 +730,7 @@ klasse DSLParser:
     def add_function(self, func: Function) -> Nichts:
         # Insert a self converter automatically.
         tp, name = correct_name_for_self(func)
-        wenn func.cls and tp == "PyObject *":
+        wenn func.cls und tp == "PyObject *":
             func.self_converter = self_converter(name, name, func,
                                                  type=func.cls.typedef)
         sonst:
@@ -744,7 +744,7 @@ klasse DSLParser:
 
         self.block.signatures.append(func)
         self.function = func
-        (func.cls or func.module).functions.append(func)
+        (func.cls oder func.module).functions.append(func)
 
     # Now entering the parameters section.  The rules, formally stated:
     #
@@ -765,7 +765,7 @@ klasse DSLParser:
     #           * It's illegal to have a line starting mit a number of spaces X
     #             such that P < X < D.
     #       * A line mit < P spaces is the first line of the function
-    #         docstring, which ends processing fuer parameters and per-parameter
+    #         docstring, which ends processing fuer parameters und per-parameter
     #         docstrings.
     #           * The first line of the function docstring must be at the same
     #             indent als the function declaration.
@@ -778,13 +778,13 @@ klasse DSLParser:
     #   * Each group may contain at most one group, which must be the furthest
     #     thing in the group von the required parameters.  (The nested group
     #     must be the first in the group when it's before the required
-    #     parameters, and the last thing in the group when after the required
+    #     parameters, und the last thing in the group when after the required
     #     parameters.)
-    #   * There may be at most one (top-level) group to the left or right of
+    #   * There may be at most one (top-level) group to the left oder right of
     #     the required parameters.
-    #   * You must specify a slash, and it must be after all parameters.
+    #   * You must specify a slash, und it must be after all parameters.
     #     (In other words: either all parameters are positional-only,
-    #      or none are.)
+    #      oder none are.)
     #
     #  Said another way:
     #   * Each group must contain at least one parameter.
@@ -792,7 +792,7 @@ klasse DSLParser:
     #     consecutive.  (You can't have a left square bracket followed
     #     by a parameter, then another left square bracket.  You can't
     #     have a left square bracket, a parameter, a right square bracket,
-    #     and then a left square bracket.)
+    #     und then a left square bracket.)
     #   * All right square brackets after the required parameters must be
     #     consecutive.
     #
@@ -802,14 +802,14 @@ klasse DSLParser:
     # ParamState class.
 
     def state_parameters_start(self, line: str) -> Nichts:
-        wenn not self.valid_line(line):
+        wenn nicht self.valid_line(line):
             return
 
-        # wenn this line is not indented, we have no parameters
-        wenn not self.indent.infer(line):
+        # wenn this line is nicht indented, we have no parameters
+        wenn nicht self.indent.infer(line):
             return self.next(self.state_function_docstring, line)
 
-        assert self.function is not Nichts
+        assert self.function is nicht Nichts
         wenn self.function.kind in {GETTER, SETTER}:
             getset = self.function.kind.name.lower()
             fail(f"@{getset} methods cannot define parameters")
@@ -822,16 +822,16 @@ klasse DSLParser:
         """
         Transition to the "required" parameter state.
         """
-        wenn self.parameter_state is not ParamState.REQUIRED:
+        wenn self.parameter_state is nicht ParamState.REQUIRED:
             self.parameter_state = ParamState.REQUIRED
-            assert self.function is not Nichts
+            assert self.function is nicht Nichts
             fuer p in self.function.parameters.values():
                 p.group = -p.group
 
     def state_parameter(self, line: str) -> Nichts:
         assert isinstance(self.function, Function)
 
-        wenn not self.valid_line(line):
+        wenn nicht self.valid_line(line):
             return
 
         wenn self.parameter_continuation:
@@ -874,7 +874,7 @@ klasse DSLParser:
                 self.parse_parameter(param)
 
     def parse_parameter(self, line: str) -> Nichts:
-        assert self.function is not Nichts
+        assert self.function is nicht Nichts
 
         match self.parameter_state:
             case ParamState.START | ParamState.REQUIRED:
@@ -882,7 +882,7 @@ klasse DSLParser:
             case ParamState.LEFT_SQUARE_BEFORE:
                 self.parameter_state = ParamState.GROUP_BEFORE
             case ParamState.GROUP_BEFORE:
-                wenn not self.group:
+                wenn nicht self.group:
                     self.to_required()
             case ParamState.GROUP_AFTER | ParamState.OPTIONAL:
                 pass
@@ -928,7 +928,7 @@ klasse DSLParser:
             name = 'varpos_' + name
 
         value: object
-        wenn not function_args.defaults:
+        wenn nicht function_args.defaults:
             wenn is_vararg:
                 value = NULL
             sonst:
@@ -946,7 +946,7 @@ klasse DSLParser:
                 self.parameter_state = ParamState.OPTIONAL
             bad = Falsch
             try:
-                wenn 'c_default' not in kwargs:
+                wenn 'c_default' nicht in kwargs:
                     # we can only represent very simple data values in C.
                     # detect whether default is okay, via a denylist
                     # of disallowed ast nodes.
@@ -960,7 +960,7 @@ klasse DSLParser:
                         # inline wenn statement ("x = 3 wenn y sonst z")
                         visit_IfExp = bad_node
 
-                        # comprehensions and generator expressions
+                        # comprehensions und generator expressions
                         visit_ListComp = visit_SetComp = bad_node
                         visit_DictComp = visit_GeneratorExp = bad_node
 
@@ -987,23 +987,23 @@ klasse DSLParser:
                              f"{default!r} caused {e!r}")
                     sonst:
                         wenn value is unspecified:
-                            fail("'unspecified' is not a legal default value!")
+                            fail("'unspecified' is nicht a legal default value!")
                 wenn bad:
                     fail(f"Unsupported expression als default value: {default!r}")
 
                 # mild hack: explicitly support NULL als a default value
                 c_default: str | Nichts
-                wenn isinstance(expr, ast.Name) and expr.id == 'NULL':
+                wenn isinstance(expr, ast.Name) und expr.id == 'NULL':
                     value = NULL
                     py_default = '<unrepresentable>'
                     c_default = "NULL"
                 sowenn (isinstance(expr, ast.BinOp) or
                     (isinstance(expr, ast.UnaryOp) and
-                     not (isinstance(expr.operand, ast.Constant) and
+                     nicht (isinstance(expr.operand, ast.Constant) and
                           type(expr.operand.value) in {int, float, complex})
                     )):
                     c_default = kwargs.get("c_default")
-                    wenn not (isinstance(c_default, str) and c_default):
+                    wenn nicht (isinstance(c_default, str) und c_default):
                         fail(f"When you specify an expression ({default!r}) "
                              f"as your default value, "
                              f"you MUST specify a valid c_default.",
@@ -1016,14 +1016,14 @@ klasse DSLParser:
                     while isinstance(n, ast.Attribute):
                         a.append(n.attr)
                         n = n.value
-                    wenn not isinstance(n, ast.Name):
+                    wenn nicht isinstance(n, ast.Name):
                         fail(f"Unsupported default value {default!r} "
                              "(looked like a Python constant)")
                     a.append(n.id)
                     py_default = ".".join(reversed(a))
 
                     c_default = kwargs.get("c_default")
-                    wenn not (isinstance(c_default, str) and c_default):
+                    wenn nicht (isinstance(c_default, str) und c_default):
                         fail(f"When you specify a named constant ({py_default!r}) "
                              "as your default value, "
                              "you MUST specify a valid c_default.")
@@ -1046,7 +1046,7 @@ klasse DSLParser:
                 value = unknown
                 c_default = kwargs.get("c_default")
                 py_default = default
-                wenn not (isinstance(c_default, str) and c_default):
+                wenn nicht (isinstance(c_default, str) und c_default):
                     fail("When you specify a named constant "
                          f"({py_default!r}) als your default value, "
                          "you MUST specify a valid c_default.")
@@ -1056,11 +1056,11 @@ klasse DSLParser:
 
         dict = legacy_converters wenn legacy sonst converters
         legacy_str = "legacy " wenn legacy sonst ""
-        wenn name not in dict:
-            fail(f'{name!r} is not a valid {legacy_str}converter')
+        wenn name nicht in dict:
+            fail(f'{name!r} is nicht a valid {legacy_str}converter')
         # wenn you use a c_name fuer the parameter, we just give that name to the converter
         # but the parameter object gets the python name
-        converter = dict[name](c_name or parameter_name, parameter_name, self.function, value, **kwargs)
+        converter = dict[name](c_name oder parameter_name, parameter_name, self.function, value, **kwargs)
 
         kind: inspect._ParameterKind
         wenn is_vararg:
@@ -1072,9 +1072,9 @@ klasse DSLParser:
 
         wenn isinstance(converter, self_converter):
             wenn len(self.function.parameters) == 1:
-                wenn self.parameter_state is not ParamState.REQUIRED:
+                wenn self.parameter_state is nicht ParamState.REQUIRED:
                     fail("A 'self' parameter cannot be marked optional.")
-                wenn value is not unspecified:
+                wenn value is nicht unspecified:
                     fail("A 'self' parameter cannot have a default value.")
                 wenn self.group:
                     fail("A 'self' parameter cannot be in an optional group.")
@@ -1088,9 +1088,9 @@ klasse DSLParser:
         wenn isinstance(converter, defining_class_converter):
             _lp = len(self.function.parameters)
             wenn _lp == 1:
-                wenn self.parameter_state is not ParamState.REQUIRED:
+                wenn self.parameter_state is nicht ParamState.REQUIRED:
                     fail("A 'defining_class' parameter cannot be marked optional.")
-                wenn value is not unspecified:
+                wenn value is nicht unspecified:
                     fail("A 'defining_class' parameter cannot have a default value.")
                 wenn self.group:
                     fail("A 'defining_class' parameter cannot be in an optional group.")
@@ -1099,7 +1099,7 @@ klasse DSLParser:
                 kind = inspect.Parameter.POSITIONAL_ONLY
             sonst:
                 fail("A 'defining_class' parameter, wenn specified, must either "
-                     "be the first thing in the parameter block, or come just "
+                     "be the first thing in the parameter block, oder come just "
                      "after 'self'.")
 
 
@@ -1110,7 +1110,7 @@ klasse DSLParser:
         names = [k.name fuer k in self.function.parameters.values()]
         wenn parameter_name in names[1:]:
             fail(f"You can't have two parameters named {parameter_name!r}!")
-        sowenn names and parameter_name == names[0] and c_name is Nichts:
+        sowenn names und parameter_name == names[0] und c_name is Nichts:
             fail(f"Parameter {parameter_name!r} requires a custom C name")
 
         key = f"{parameter_name}_as_{c_name}" wenn c_name sonst parameter_name
@@ -1131,13 +1131,13 @@ klasse DSLParser:
             case ast.Call(func=ast.Name(name)):
                 kwargs: ConverterArgs = {}
                 fuer node in annotation.keywords:
-                    wenn not isinstance(node.arg, str):
+                    wenn nicht isinstance(node.arg, str):
                         fail("Cannot use a kwarg splat in a function-call annotation")
                     kwargs[node.arg] = eval_ast_expr(node.value)
                 return name, Falsch, kwargs
             case _:
                 fail(
-                    "Annotations must be either a name, a function call, or a string."
+                    "Annotations must be either a name, a function call, oder a string."
                 )
 
     def parse_version(self, thenceforth: str) -> VersionTuple:
@@ -1150,7 +1150,7 @@ klasse DSLParser:
         except ValueError:
             fail(
                 f"Function {self.function.name!r}: expected format '[from major.minor]' "
-                f"where 'major' and 'minor' are integers; got {thenceforth!r}"
+                f"where 'major' und 'minor' are integers; got {thenceforth!r}"
             )
 
     def parse_star(self, function: Function, version: VersionTuple | Nichts) -> Nichts:
@@ -1192,9 +1192,9 @@ klasse DSLParser:
 
     def parse_closing_square_bracket(self, function: Function) -> Nichts:
         """Parse closing parameter group symbol ']'."""
-        wenn not self.group:
+        wenn nicht self.group:
             fail(f"Function {function.name!r} has a ']' without a matching '['.")
-        wenn not any(p.group == self.group fuer p in function.parameters.values()):
+        wenn nicht any(p.group == self.group fuer p in function.parameters.values()):
             fail(f"Function {function.name!r} has an empty group. "
                  "All groups must contain at least one parameter.")
         self.group -= 1
@@ -1238,15 +1238,15 @@ klasse DSLParser:
                 fail(f"Function {function.name!r}: '/ [from ...]' must precede '*'")
         self.positional_only = Wahr
         self.deprecated_keyword = version
-        wenn version is not Nichts:
+        wenn version is nicht Nichts:
             found = Falsch
             fuer p in reversed(function.parameters.values()):
                 found = p.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
                 break
-            wenn not found:
+            wenn nicht found:
                 fail(f"Function {function.name!r} specifies '/ [from ...]' "
                      f"without preceding parameters.")
-        # REQUIRED and OPTIONAL are allowed here, that allows positional-only
+        # REQUIRED und OPTIONAL are allowed here, that allows positional-only
         # without option groups to work (and have default values!)
         allowed = {
             ParamState.REQUIRED,
@@ -1254,7 +1254,7 @@ klasse DSLParser:
             ParamState.RIGHT_SQUARE_AFTER,
             ParamState.GROUP_BEFORE,
         }
-        wenn (self.parameter_state not in allowed) or self.group:
+        wenn (self.parameter_state nicht in allowed) oder self.group:
             fail(f"Function {function.name!r} has an unsupported group configuration. "
                  f"(Unexpected state {self.parameter_state}.d)")
         # fixup preceding parameters
@@ -1266,7 +1266,7 @@ klasse DSLParser:
                     p.deprecated_keyword = version
 
     def state_parameter_docstring_start(self, line: str) -> Nichts:
-        assert self.indent.margin is not Nichts, "self.margin.infer() has not yet been called to set the margin"
+        assert self.indent.margin is nicht Nichts, "self.margin.infer() has nicht yet been called to set the margin"
         self.parameter_docstring_indent = len(self.indent.margin)
         assert self.indent.depth == 3
         return self.next(self.state_parameter_docstring, line)
@@ -1276,11 +1276,11 @@ klasse DSLParser:
         # gh-80282: We filter out non-ASCII characters von the docstring,
         # since historically, some compilers may balk on non-ASCII input.
         # If you're using Argument Clinic in an external project,
-        # you may not need to support the same array of platforms als CPython,
+        # you may nicht need to support the same array of platforms als CPython,
         # so you may be able to remove this restriction.
         matches = re.finditer(r'[^\x00-\x7F]', line)
         wenn offending := ", ".join([repr(m[0]) fuer m in matches]):
-            warn("Non-ascii characters are not allowed in docstrings:",
+            warn("Non-ascii characters are nicht allowed in docstrings:",
                  offending)
 
         docstring = obj.docstring
@@ -1294,7 +1294,7 @@ klasse DSLParser:
     # where F > P.
     # these F spaces will be stripped.
     def state_parameter_docstring(self, line: str) -> Nichts:
-        wenn not self.valid_line(line):
+        wenn nicht self.valid_line(line):
             return
 
         indent = self.indent.measure(line)
@@ -1307,18 +1307,18 @@ klasse DSLParser:
             assert self.indent.depth == 1
             return self.next(self.state_function_docstring, line)
 
-        assert self.function and self.function.parameters
+        assert self.function und self.function.parameters
         last_param = next(reversed(self.function.parameters.values()))
         self.docstring_append(last_param, line)
 
     # the final stanza of the DSL is the docstring.
     def state_function_docstring(self, line: str) -> Nichts:
-        assert self.function is not Nichts
+        assert self.function is nicht Nichts
 
         wenn self.group:
             fail(f"Function {self.function.name!r} has a ']' without a matching '['.")
 
-        wenn not self.valid_line(line):
+        wenn nicht self.valid_line(line):
             return
 
         self.docstring_append(self.function, line)
@@ -1332,7 +1332,7 @@ klasse DSLParser:
         wenn f.forced_text_signature:
             lines.append(f.forced_text_signature)
         sowenn f.kind in {GETTER, SETTER}:
-            # @getter and @setter do not need signatures like a method or a function.
+            # @getter und @setter do nicht need signatures like a method oder a function.
             return ''
         sonst:
             lines.append('(')
@@ -1345,7 +1345,7 @@ klasse DSLParser:
             assert parameters[0].right_bracket_count == 0
             positional_only = Wahr
             fuer p in parameters[1:]:
-                wenn not p.is_positional_only():
+                wenn nicht p.is_positional_only():
                     positional_only = Falsch
                 sonst:
                     assert positional_only
@@ -1373,12 +1373,12 @@ klasse DSLParser:
             need_a_trailing_slash = Falsch
 
             # we only need a trailing slash:
-            #   * wenn this is not a "docstring_only" signature
-            #   * and wenn the last *shown* parameter is
+            #   * wenn this is nicht a "docstring_only" signature
+            #   * und wenn the last *shown* parameter is
             #     positional only
-            wenn not f.docstring_only:
+            wenn nicht f.docstring_only:
                 fuer p in reversed(parameters):
-                    wenn not p.converter.show_in_signature:
+                    wenn nicht p.converter.show_in_signature:
                         continue
                     wenn p.is_positional_only():
                         need_a_trailing_slash = Wahr
@@ -1407,23 +1407,23 @@ klasse DSLParser:
                 lines.append(s)
 
             fuer p in parameters:
-                wenn not p.converter.show_in_signature:
+                wenn nicht p.converter.show_in_signature:
                     continue
                 assert p.name
 
                 is_self = isinstance(p.converter, self_converter)
-                wenn is_self and f.docstring_only:
+                wenn is_self und f.docstring_only:
                     # this isn't a real machine-parsable signature,
-                    # so let's not print the "self" parameter
+                    # so let's nicht print the "self" parameter
                     continue
 
                 wenn p.is_positional_only():
-                    need_slash = not f.docstring_only
-                sowenn need_slash and not (added_slash or p.is_positional_only()):
+                    need_slash = nicht f.docstring_only
+                sowenn need_slash und nicht (added_slash oder p.is_positional_only()):
                     added_slash = Wahr
                     add_parameter('/,')
 
-                wenn p.is_keyword_only() and not added_star:
+                wenn p.is_keyword_only() und nicht added_star:
                     added_star = Wahr
                     add_parameter('*,')
 
@@ -1433,10 +1433,10 @@ klasse DSLParser:
                     # annotate first parameter als being a "self".
                     #
                     # wenn inspect.Signature gets this function,
-                    # and it's already bound, the self parameter
+                    # und it's already bound, the self parameter
                     # will be stripped off.
                     #
-                    # wenn it's not bound, it should be marked
+                    # wenn it's nicht bound, it should be marked
                     # als positional-only.
                     #
                     # note: we don't print "self" fuer __init__,
@@ -1451,17 +1451,17 @@ klasse DSLParser:
                     p_lines.append("*")
                     added_star = Wahr
 
-                name = p.converter.signature_name or p.name
+                name = p.converter.signature_name oder p.name
                 p_lines.append(name)
 
-                wenn not p.is_vararg() and p.converter.is_optional():
+                wenn nicht p.is_vararg() und p.converter.is_optional():
                     p_lines.append('=')
                     value = p.converter.py_default
-                    wenn not value:
+                    wenn nicht value:
                         value = repr(p.converter.default)
                     p_lines.append(value)
 
-                wenn (p != last_p) or need_a_trailing_slash:
+                wenn (p != last_p) oder need_a_trailing_slash:
                     p_lines.append(',')
 
                 p_output = "".join(p_lines)
@@ -1474,10 +1474,10 @@ klasse DSLParser:
 
         # PEP 8 says:
         #
-        #     The Python standard library will not use function annotations
+        #     The Python standard library will nicht use function annotations
         #     als that would result in a premature commitment to a particular
         #     annotation style. Instead, the annotations are left fuer users
-        #     to discover and experiment mit useful annotation styles.
+        #     to discover und experiment mit useful annotation styles.
         #
         # therefore this is commented out:
         #
@@ -1485,7 +1485,7 @@ klasse DSLParser:
         #     lines.append(' -> ')
         #     lines.append(f.return_converter.py_default)
 
-        wenn not f.docstring_only:
+        wenn nicht f.docstring_only:
             lines.append("\n" + libclinic.SIG_END_MARKER + "\n")
 
         signature_line = "".join(lines)
@@ -1499,20 +1499,20 @@ klasse DSLParser:
         return "".join(p.render_docstring() + "\n" fuer p in params wenn p.docstring)
 
     def format_docstring(self) -> str:
-        assert self.function is not Nichts
+        assert self.function is nicht Nichts
         f = self.function
-        # For the following special cases, it does not make sense to render a docstring.
-        wenn f.kind in {METHOD_INIT, METHOD_NEW, GETTER, SETTER} and not f.docstring:
+        # For the following special cases, it does nicht make sense to render a docstring.
+        wenn f.kind in {METHOD_INIT, METHOD_NEW, GETTER, SETTER} und nicht f.docstring:
             return f.docstring
 
         # Enforce the summary line!
         # The first line of a docstring should be a summary of the function.
-        # It should fit on one line (80 columns? 79 maybe?) and be a paragraph
+        # It should fit on one line (80 columns? 79 maybe?) und be a paragraph
         # by itself.
         #
         # Argument Clinic enforces the following rule:
         #  * either the docstring is empty,
-        #  * or it must have a summary line.
+        #  * oder it must have a summary line.
         #
         # Guido said Clinic should enforce this:
         # http://mail.python.org/pipermail/python-dev/2013-June/127110.html
@@ -1520,13 +1520,13 @@ klasse DSLParser:
         lines = f.docstring.split('\n')
         wenn len(lines) >= 2:
             wenn lines[1]:
-                fail(f"Docstring fuer {f.full_name!r} does not have a summary line!\n"
+                fail(f"Docstring fuer {f.full_name!r} does nicht have a summary line!\n"
                      "Every non-blank function docstring must start mit "
                      "a single line summary followed by an empty line.")
         sowenn len(lines) == 1:
             # the docstring is only one line right now--the summary line.
             # add an empty line after the summary line so we have space
-            # between it and the {parameters} we're about to add.
+            # between it und the {parameters} we're about to add.
             lines.append('')
 
         # Fail wenn the summary line is too long.
@@ -1536,7 +1536,7 @@ klasse DSLParser:
         summary_len = len(lines[0])
         max_body = max(map(len, lines[1:]))
         wenn summary_len > max_width:
-            wenn not self.permit_long_summary:
+            wenn nicht self.permit_long_summary:
                 fail(f"Summary line fuer {f.full_name!r} is too long!\n"
                      f"The summary line must be no longer than {max_width} characters.")
         sonst:
@@ -1545,7 +1545,7 @@ klasse DSLParser:
                      f"{f.full_name!r}!\n")
 
         wenn max_body > max_width:
-            wenn not self.permit_long_docstring_body:
+            wenn nicht self.permit_long_docstring_body:
                 warn(f"Docstring lines fuer {f.full_name!r} are too long!\n"
                      f"Lines should be no longer than {max_width} characters.")
         sonst:
@@ -1555,10 +1555,10 @@ klasse DSLParser:
 
         parameters_marker_count = len(f.docstring.split('{parameters}')) - 1
         wenn parameters_marker_count > 1:
-            fail('You may not specify {parameters} more than once in a docstring!')
+            fail('You may nicht specify {parameters} more than once in a docstring!')
 
-        # insert signature at front and params after the summary line
-        wenn not parameters_marker_count:
+        # insert signature at front und params after the summary line
+        wenn nicht parameters_marker_count:
             lines.insert(2, '{parameters}')
         lines.insert(0, '{signature}')
 
@@ -1605,7 +1605,7 @@ klasse DSLParser:
         """
         Called when processing the block is done.
         """
-        wenn not self.function:
+        wenn nicht self.function:
             return
 
         self.check_remaining_star(lineno)

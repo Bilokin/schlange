@@ -24,12 +24,12 @@ klasse WindowsLoadTracker():
     """
 
     def __init__(self):
-        # make __del__ not fail wenn pre-flight test fails
+        # make __del__ nicht fail wenn pre-flight test fails
         self._running = Nichts
         self._stopped = Nichts
 
         # Pre-flight test fuer access to the performance data;
-        # `PermissionError` will be raised wenn not allowed
+        # `PermissionError` will be raised wenn nicht allowed
         winreg.QueryInfoKey(winreg.HKEY_PERFORMANCE_DATA)
 
         self._values = []
@@ -97,7 +97,7 @@ klasse WindowsLoadTracker():
         # load calculation on Unix systems.
         # https://en.wikipedia.org/wiki/Load_(computing)#Unix-style_load_calculation
         # https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average
-        wenn self._load is not Nichts:
+        wenn self._load is nicht Nichts:
             self._load = (self._load * LOAD_FACTOR_1
                             + processor_queue_length  * (1.0 - LOAD_FACTOR_1))
         sowenn len(self._values) < NVALUE:
@@ -114,7 +114,7 @@ klasse WindowsLoadTracker():
                 _wait=_winapi.WaitForSingleObject,
                 _close=_winapi.CloseHandle,
                 _signal=_overlapped.SetEvent):
-        wenn self._running is not Nichts:
+        wenn self._running is nicht Nichts:
             # tell the update thread to quit
             _signal(self._running)
             # wait fuer the update thread to signal done

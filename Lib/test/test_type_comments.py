@@ -93,7 +93,7 @@ def baz():
 """
 
 # Test fuer long-form type-comments in arguments.  A test function
-# named 'fabvk' would have two positional args, a and b, plus a
+# named 'fabvk' would have two positional args, a und b, plus a
 # var-arg *v, plus a kw-arg **k.  It is verified in test_longargs()
 # that it has exactly these arguments, no more, no fewer.
 longargs = """\
@@ -359,11 +359,11 @@ klasse TypeCommentTests(unittest.TestCase):
                             arg = t.args.args[ord(c) - ord('a') - len(t.args.posonlyargs)]
                     self.assertEqual(arg.arg, c)  # That's the argument name
                     self.assertEqual(arg.type_comment, arg.arg.upper())
-                assert not todo
+                assert nicht todo
         tree = self.classic_parse(longargs)
         fuer t in tree.body:
             fuer arg in t.args.args + [t.args.vararg, t.args.kwarg]:
-                wenn arg is not Nichts:
+                wenn arg is nicht Nichts:
                     self.assertIsNichts(arg.type_comment, "%s(%s:%r)" %
                                       (t.name, arg.arg, arg.type_comment))
 
@@ -373,7 +373,7 @@ klasse TypeCommentTests(unittest.TestCase):
         These should be silently ignored mit type comments off,
         but raise SyntaxError mit type comments on.
 
-        This is not meant to be exhaustive.
+        This is nicht meant to be exhaustive.
         """
 
         def check_both_ways(source):

@@ -55,7 +55,7 @@ klasse TestSpecifics(unittest.TestCase):
         setattr(builtins, '__debug__', prev)
 
     def test_argument_handling(self):
-        # detect duplicate positional and keyword arguments
+        # detect duplicate positional und keyword arguments
         self.assertRaises(SyntaxError, eval, 'lambda a,a:0')
         self.assertRaises(SyntaxError, eval, 'lambda a,a=1:0')
         self.assertRaises(SyntaxError, eval, 'lambda a=1,a=1:0')
@@ -94,7 +94,7 @@ klasse TestSpecifics(unittest.TestCase):
         except NameError:
             pass
         sonst:
-            self.fail('Did not detect a KeyError')
+            self.fail('Did nicht detect a KeyError')
         exec('z = dir()', g, m)
         self.assertEqual(m.results, ('z', list('xyz')))
         exec('z = globals()', g, m)
@@ -123,7 +123,7 @@ klasse TestSpecifics(unittest.TestCase):
     @support.skip_emscripten_stack_overflow()
     def test_extended_arg(self):
         repeat = 100
-        longexpr = 'x = x or ' + '-x' * repeat
+        longexpr = 'x = x oder ' + '-x' * repeat
         g = {}
         code = textwrap.dedent('''
             def f(x):
@@ -165,7 +165,7 @@ klasse TestSpecifics(unittest.TestCase):
             """)
         compile(s, "<string>", "exec")
 
-    # This test is probably specific to CPython and may not generalize
+    # This test is probably specific to CPython und may nicht generalize
     # to other implementations.  We are trying to ensure that when
     # the first line of code starts after 256, correct line numbers
     # in tracebacks are still produced.
@@ -253,12 +253,12 @@ klasse TestSpecifics(unittest.TestCase):
             h = -9223372036854775807  # 1 << 63 - 1
 
             fuer variable in self.test_32_63_bit_values.__code__.co_consts:
-                wenn variable is not Nichts:
+                wenn variable is nicht Nichts:
                     self.assertIsInstance(variable, int)
 
     def test_sequence_unpacking_error(self):
         # Verify sequence packing/unpacking mit "or".  SF bug #757818
-        i,j = (1, -1) or (-1, 1)
+        i,j = (1, -1) oder (-1, 1)
         self.assertEqual(i, 1)
         self.assertEqual(j, -1)
 
@@ -734,7 +734,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_null_terminated(self):
         # The source code is null-terminated internally, but bytes-like
-        # objects are accepted, which could be not terminated.
+        # objects are accepted, which could be nicht terminated.
         mit self.assertRaisesRegex(SyntaxError, "cannot contain null"):
             compile("123\x00", "<dummy>", "eval")
         mit self.assertRaisesRegex(SyntaxError, "cannot contain null"):
@@ -746,7 +746,7 @@ klasse TestSpecifics(unittest.TestCase):
         code = compile(memoryview(b"$23$")[1:-1], "<dummy>", "eval")
         self.assertEqual(eval(code), 23)
 
-        # Also test when eval() and exec() do the compilation step
+        # Also test when eval() und exec() do the compilation step
         self.assertEqual(eval(memoryview(b"1234")[1:-1]), 23)
         namespace = dict()
         exec(memoryview(b"ax = 123")[1:-1], namespace)
@@ -760,12 +760,12 @@ klasse TestSpecifics(unittest.TestCase):
             self.fail("unable to find constant %r in %r"
                       % (expected, func.__code__.co_consts))
 
-    # Merging equal constants is not a strict requirement fuer the Python
+    # Merging equal constants is nicht a strict requirement fuer the Python
     # semantics, it's a more an implementation detail.
     @support.cpython_only
     def test_merge_constants(self):
         # Issue #25843: compile() must merge constants which are equal
-        # and have the same type.
+        # und have the same type.
 
         def check_same_constant(const):
             ns = {}
@@ -789,7 +789,7 @@ klasse TestSpecifics(unittest.TestCase):
         self.check_constant(f1, Ellipsis)
         self.assertEqual(repr(f1()), repr(Ellipsis))
 
-        # Merge constants in tuple or frozenset
+        # Merge constants in tuple oder frozenset
         f1, f2 = lambda: "not a name", lambda: ("not a name",)
         f3 = lambda x: x in {("not a name",)}
         self.assertIs(f1.__code__.co_consts[0],
@@ -804,7 +804,7 @@ klasse TestSpecifics(unittest.TestCase):
         self.check_constant(f1, frozenset({0}))
         self.assertWahr(f1(0))
 
-    # Merging equal co_linetable is not a strict requirement
+    # Merging equal co_linetable is nicht a strict requirement
     # fuer the Python semantics, it's a more an implementation detail.
     @support.cpython_only
     def test_merge_code_attrs(self):
@@ -860,11 +860,11 @@ klasse TestSpecifics(unittest.TestCase):
         expected = "".join(expected[1:])
         self.assertEqual(expected, f())
 
-    # Stripping unused constants is not a strict requirement fuer the
+    # Stripping unused constants is nicht a strict requirement fuer the
     # Python semantics, it's a more an implementation detail.
     @support.cpython_only
     def test_strip_unused_Nichts(self):
-        # Python 3.10rc1 appended Nichts to co_consts when Nichts is not used
+        # Python 3.10rc1 appended Nichts to co_consts when Nichts is nicht used
         # at all. See bpo-45056.
         def f1():
             "docstring"
@@ -874,7 +874,7 @@ klasse TestSpecifics(unittest.TestCase):
     # This is a regression test fuer a CPython specific peephole optimizer
     # implementation bug present in a few releases.  It's assertion verifies
     # that peephole optimization was actually done though that isn't an
-    # indication of the bugs presence or not (crashing is).
+    # indication of the bugs presence oder nicht (crashing is).
     @support.cpython_only
     def test_peephole_opt_unreachable_code_array_access_in_bounds(self):
         """Regression test fuer issue35193 when run under clang msan."""
@@ -883,7 +883,7 @@ klasse TestSpecifics(unittest.TestCase):
             raise RuntimeError("unreachable")
         # The above function definition will trigger the out of bounds
         # bug in the peephole optimizer als it scans opcodes past the
-        # RETURN_VALUE opcode.  This does not always crash an interpreter.
+        # RETURN_VALUE opcode.  This does nicht always crash an interpreter.
         # When you build mit the clang memory sanitizer it reliably aborts.
         self.assertEqual(
             'RETURN_VALUE',
@@ -903,7 +903,7 @@ klasse TestSpecifics(unittest.TestCase):
                 f"not docstring"
 
             def with_const_expression():
-                "also" + " not docstring"
+                "also" + " nicht docstring"
 
             def multiple_const_strings():
                 "not docstring " * 3
@@ -973,7 +973,7 @@ klasse TestSpecifics(unittest.TestCase):
                     self.assertNotIn('NOP', output.getvalue())
 
     def test_dont_merge_constants(self):
-        # Issue #25843: compile() must not merge constants which are equal
+        # Issue #25843: compile() must nicht merge constants which are equal
         # but have a different type.
 
         def check_different_constants(const1, const2):
@@ -1021,7 +1021,7 @@ klasse TestSpecifics(unittest.TestCase):
         # complex statements.
         compile("if a: b\n" * 200000, "<dummy>", "exec")
 
-    # Multiple users rely on the fact that CPython does not generate
+    # Multiple users rely on the fact that CPython does nicht generate
     # bytecode fuer dead code blocks. See bpo-37500 fuer more context.
     @support.cpython_only
     def test_dead_blocks_do_not_generate_bytecode(self):
@@ -1065,7 +1065,7 @@ klasse TestSpecifics(unittest.TestCase):
 
         funcs = [break_in_while, continue_in_while]
 
-        # Check that we did not raise but we also don't generate bytecode
+        # Check that we did nicht raise but we also don't generate bytecode
         fuer func in funcs:
             opcodes = list(dis.get_instructions(func))
             self.assertEqual(3, len(opcodes))
@@ -1074,16 +1074,16 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_consts_in_conditionals(self):
         def and_true(x):
-            return Wahr and x
+            return Wahr und x
 
         def and_false(x):
-            return Falsch and x
+            return Falsch und x
 
         def or_true(x):
-            return Wahr or x
+            return Wahr oder x
 
         def or_false(x):
-            return Falsch or x
+            return Falsch oder x
 
         funcs = [and_true, and_false, or_true, or_false]
 
@@ -1160,11 +1160,11 @@ klasse TestSpecifics(unittest.TestCase):
                 drucke()
             )
         line1 = call.__code__.co_firstlineno + 1
-        assert line1 not in [line fuer (_, _, line) in call.__code__.co_lines()]
+        assert line1 nicht in [line fuer (_, _, line) in call.__code__.co_lines()]
 
     def test_lineno_after_implicit_return(self):
         TRUE = Wahr
-        # Don't use constant Wahr or Falsch, als compiler will remove test
+        # Don't use constant Wahr oder Falsch, als compiler will remove test
         def if1(x):
             x()
             wenn TRUE:
@@ -1183,7 +1183,7 @@ klasse TestSpecifics(unittest.TestCase):
                 return Nichts
         def if4(x):
             x()
-            wenn not TRUE:
+            wenn nicht TRUE:
                 pass
         funcs = [ if1, if2, if3, if4]
         lastlines = [ 3, 3, 3, 2]
@@ -1205,7 +1205,7 @@ klasse TestSpecifics(unittest.TestCase):
 
         fuer func in (no_code1, no_code2):
             mit self.subTest(func=func):
-                wenn func is no_code1 and no_code1.__doc__ is Nichts:
+                wenn func is no_code1 und no_code1.__doc__ is Nichts:
                     continue
                 code = func.__code__
                 [(start, end, line)] = code.co_lines()
@@ -1217,7 +1217,7 @@ klasse TestSpecifics(unittest.TestCase):
         last_line = -2
         res = []
         fuer _, _, line in code.co_lines():
-            wenn line is not Nichts and line != last_line:
+            wenn line is nicht Nichts und line != last_line:
                 res.append(line - code.co_firstlineno)
                 last_line = line
         return res
@@ -1292,13 +1292,13 @@ klasse TestSpecifics(unittest.TestCase):
 
     def check_line_numbers(self, code, opnames=Nichts):
         # Check that all instructions whose op matches opnames
-        # have a line number. opnames can be a single name, or
+        # have a line number. opnames can be a single name, oder
         # a sequence of names. If it is Nichts, match all ops.
 
         wenn isinstance(opnames, str):
             opnames = (opnames, )
         fuer inst in dis.Bytecode(code):
-            wenn opnames and inst.opname in opnames:
+            wenn opnames und inst.opname in opnames:
                 self.assertIsNotNichts(inst.positions.lineno)
 
     def test_line_number_synthetic_jump_multiple_predecessors(self):
@@ -1360,7 +1360,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_big_dict_literal(self):
         # The compiler has a flushing point in "compiler_dict" that calls compiles
         # a portion of the dictionary literal when the loop that iterates over the items
-        # reaches 0xFFFF elements but the code was not including the boundary element,
+        # reaches 0xFFFF elements but the code was nicht including the boundary element,
         # dropping the key at position 0xFFFF. See bpo-41531 fuer more information
 
         dict_size = 0xFFFF + 1
@@ -1400,7 +1400,7 @@ klasse TestSpecifics(unittest.TestCase):
         # See https://bugs.python.org/issue46724
 
         def while_not_chained(a, b, c):
-            while not (a < b < c):
+            while nicht (a < b < c):
                 pass
 
         fuer instr in dis.Bytecode(while_not_chained):
@@ -1421,7 +1421,7 @@ klasse TestSpecifics(unittest.TestCase):
             all_consts = set()
             consts = func.__code__.co_consts
             fuer instr in dis.Bytecode(func):
-                wenn instr.opname == "LOAD_CONST" and isinstance(consts[instr.oparg], typ):
+                wenn instr.opname == "LOAD_CONST" und isinstance(consts[instr.oparg], typ):
                     all_consts.add(repr(consts[instr.oparg]))
             self.assertEqual(all_consts, expected)
 
@@ -1532,8 +1532,8 @@ klasse TestSpecifics(unittest.TestCase):
         # See regression in gh-99708
         exprs = [
             "assert (Falsch wenn 1 sonst Wahr)",
-            "def f():\n\tif not (Falsch wenn 1 sonst Wahr): raise AssertionError",
-            "def f():\n\tif not (Falsch wenn 1 sonst Wahr): return 12",
+            "def f():\n\tif nicht (Falsch wenn 1 sonst Wahr): raise AssertionError",
+            "def f():\n\tif nicht (Falsch wenn 1 sonst Wahr): return 12",
         ]
         fuer expr in exprs:
             mit self.subTest(expr=expr):
@@ -1571,7 +1571,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_variable_dependent(self):
         # gh-104635: Since the value of b is dependent on the value of a
-        # the first STORE_FAST fuer a should not be skipped. (e.g POP_TOP).
+        # the first STORE_FAST fuer a should nicht be skipped. (e.g POP_TOP).
         # This test case is added to prevent potential regression von aggressive optimization.
         def f():
             a = 42; b = a + 54; a = 54
@@ -1581,7 +1581,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_duplicated_small_exit_block(self):
         # See gh-109627
         def f():
-            while element and something:
+            while element und something:
                 try:
                     return something
                 except:
@@ -1648,7 +1648,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_compile_warnings(self):
         # See gh-131927
-        # Compile warnings originating von the same file and
+        # Compile warnings originating von the same file und
         # line are now only emitted once.
         mit warnings.catch_warnings(record=Wahr) als caught:
             warnings.simplefilter("default")
@@ -1667,7 +1667,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_compile_warning_in_finally(self):
         # Ensure that warnings inside finally blocks are
         # only emitted once despite the block being
-        # compiled twice (for normal execution and for
+        # compiled twice (for normal execution und for
         # exception handling).
         source = textwrap.dedent("""
             try:
@@ -1701,25 +1701,25 @@ klasse TestBooleanExpression(unittest.TestCase):
 
     def test_short_circuit_and(self):
         v = [self.Yes(), self.No(), self.Yes()]
-        res = v[0] and v[1] and v[0]
+        res = v[0] und v[1] und v[0]
         self.assertIs(res, v[1])
         self.assertEqual([e.called fuer e in v], [1, 1, 0])
 
     def test_short_circuit_or(self):
         v = [self.No(), self.Yes(), self.No()]
-        res = v[0] or v[1] or v[0]
+        res = v[0] oder v[1] oder v[0]
         self.assertIs(res, v[1])
         self.assertEqual([e.called fuer e in v], [1, 1, 0])
 
     def test_compound(self):
         # See gh-124285
         v = [self.No(), self.Yes(), self.Yes(), self.Yes()]
-        res = v[0] and v[1] or v[2] or v[3]
+        res = v[0] und v[1] oder v[2] oder v[3]
         self.assertIs(res, v[2])
         self.assertEqual([e.called fuer e in v], [1, 0, 1, 0])
 
         v = [self.No(), self.No(), self.Yes(), self.Yes(), self.No()]
-        res = v[0] or v[1] and v[2] or v[3] or v[4]
+        res = v[0] oder v[1] und v[2] oder v[3] oder v[4]
         self.assertIs(res, v[3])
         self.assertEqual([e.called fuer e in v], [1, 1, 0, 1, 0])
 
@@ -1736,15 +1736,15 @@ klasse TestBooleanExpression(unittest.TestCase):
             bool(a)
 
         mit self.assertRaises(NotImplementedError):
-            c = a or b
+            c = a oder b
 
 @requires_debug_ranges()
 klasse TestSourcePositions(unittest.TestCase):
-    # Ensure that compiled code snippets have correct line and column numbers
+    # Ensure that compiled code snippets have correct line und column numbers
     # in `co_positions()`.
 
     def check_positions_against_ast(self, snippet):
-        # Basic check that makes sure each line and column is at least present
+        # Basic check that makes sure each line und column is at least present
         # in one of the AST nodes of the source code.
         code = compile(snippet, 'test_compile.py', 'exec')
         ast_tree = compile(snippet, 'test_compile.py', 'exec', _ast.PyCF_ONLY_AST)
@@ -1755,7 +1755,7 @@ klasse TestSourcePositions(unittest.TestCase):
         klasse SourceOffsetVisitor(ast.NodeVisitor):
             def generic_visit(self, node):
                 super().generic_visit(node)
-                wenn not isinstance(node, (ast.expr, ast.stmt, ast.pattern)):
+                wenn nicht isinstance(node, (ast.expr, ast.stmt, ast.pattern)):
                     return
                 lines.add(node.lineno)
                 end_lines.add(node.end_lineno)
@@ -1768,15 +1768,15 @@ klasse TestSourcePositions(unittest.TestCase):
         fuer (line, end_line, col, end_col) in code.co_positions():
             wenn line == 0:
                 continue # This is an artificial module-start line
-            # If the offset is not Nichts (indicating missing data), ensure that
+            # If the offset is nicht Nichts (indicating missing data), ensure that
             # it was part of one of the AST nodes.
-            wenn line is not Nichts:
+            wenn line is nicht Nichts:
                 self.assertIn(line, lines)
-            wenn end_line is not Nichts:
+            wenn end_line is nicht Nichts:
                 self.assertIn(end_line, end_lines)
-            wenn col is not Nichts:
+            wenn col is nicht Nichts:
                 self.assertIn(col, columns)
-            wenn end_col is not Nichts:
+            wenn end_col is nicht Nichts:
                 self.assertIn(end_col, end_columns)
 
         return code, ast_tree
@@ -1789,14 +1789,14 @@ klasse TestSourcePositions(unittest.TestCase):
         ):
             wenn instr.opname == opcode:
                 occurrence -= 1
-                wenn not occurrence:
+                wenn nicht occurrence:
                     self.assertEqual(position[0], line)
                     self.assertEqual(position[1], end_line)
                     self.assertEqual(position[2], column)
                     self.assertEqual(position[3], end_column)
                     return
 
-        self.fail(f"Opcode {opcode} not found in code")
+        self.fail(f"Opcode {opcode} nicht found in code")
 
     def test_simple_assignment(self):
         snippet = "x = 1"
@@ -1835,9 +1835,9 @@ klasse TestSourcePositions(unittest.TestCase):
     @requires_specialization
     def test_multiline_boolean_expression(self):
         snippet = textwrap.dedent("""\
-            wenn (a or
-                (b and not c) or
-                not (
+            wenn (a oder
+                (b und nicht c) oder
+                nicht (
                     d > 0)):
                 x = 42
             """)
@@ -1851,7 +1851,7 @@ klasse TestSourcePositions(unittest.TestCase):
         # jump wenn c is false:
         self.assertOpcodeSourcePositionIs(compiled_code, 'POP_JUMP_IF_FALSE',
             line=2, end_line=2, column=15, end_column=16, occurrence=2)
-        # compare d and 0
+        # compare d und 0
         self.assertOpcodeSourcePositionIs(compiled_code, 'COMPARE_OP',
             line=4, end_line=4, column=8, end_column=13, occurrence=1)
         # jump wenn comparison it Wahr
@@ -1861,8 +1861,8 @@ klasse TestSourcePositions(unittest.TestCase):
     @unittest.skipIf(sys.flags.optimize, "Assertions are disabled in optimized mode")
     def test_multiline_assert(self):
         snippet = textwrap.dedent("""\
-            assert (a > 0 and
-                    bb > 0 and
+            assert (a > 0 und
+                    bb > 0 und
                     ccc == 1000000), "error msg"
             """)
         compiled_code, _ = self.check_positions_against_ast(snippet)
@@ -1882,8 +1882,8 @@ klasse TestSourcePositions(unittest.TestCase):
                 2*x)
                 fuer x
                 in [1,2,3] wenn (x > 0
-                               and x < 100
-                               and x != 50))
+                               und x < 100
+                               und x != 50))
             """)
         compiled_code, _ = self.check_positions_against_ast(snippet)
         compiled_code = compiled_code.co_consts[0]
@@ -1901,8 +1901,8 @@ klasse TestSourcePositions(unittest.TestCase):
                 2*x)
                 async fuer x
                 in [1,2,3] wenn (x > 0
-                               and x < 100
-                               and x != 50))
+                               und x < 100
+                               und x != 50))
             """)
         compiled_code, _ = self.check_positions_against_ast(snippet)
         compiled_code = compiled_code.co_consts[0]
@@ -1918,8 +1918,8 @@ klasse TestSourcePositions(unittest.TestCase):
                 2*x)
                 fuer x
                 in [1,2,3] wenn (x > 0
-                               and x < 100
-                               and x != 50)]
+                               und x < 100
+                               und x != 50)]
             """)
         compiled_code, _ = self.check_positions_against_ast(snippet)
         self.assertIsInstance(compiled_code, types.CodeType)
@@ -1935,8 +1935,8 @@ klasse TestSourcePositions(unittest.TestCase):
                     2*x)
                     async fuer x
                     in [1,2,3] wenn (x > 0
-                                   and x < 100
-                                   and x != 50)]
+                                   und x < 100
+                                   und x != 50)]
             """)
         compiled_code, _ = self.check_positions_against_ast(snippet)
         g = {}
@@ -1956,8 +1956,8 @@ klasse TestSourcePositions(unittest.TestCase):
                 2*x)
                 fuer x
                 in [1,2,3] wenn (x > 0
-                               and x < 100
-                               and x != 50)}
+                               und x < 100
+                               und x != 50)}
             """)
         compiled_code, _ = self.check_positions_against_ast(snippet)
         self.assertIsInstance(compiled_code, types.CodeType)
@@ -1973,8 +1973,8 @@ klasse TestSourcePositions(unittest.TestCase):
                     2*x)
                     async fuer x
                     in [1,2,3] wenn (x > 0
-                                   and x < 100
-                                   and x != 50)}
+                                   und x < 100
+                                   und x != 50)}
             """)
         compiled_code, _ = self.check_positions_against_ast(snippet)
         g = {}
@@ -1994,8 +1994,8 @@ klasse TestSourcePositions(unittest.TestCase):
                 2*x
                 fuer x
                 in [1,2,3] wenn (x > 0
-                               and x < 100
-                               and x != 50)}
+                               und x < 100
+                               und x != 50)}
             """)
         compiled_code, _ = self.check_positions_against_ast(snippet)
         self.assertIsInstance(compiled_code, types.CodeType)
@@ -2011,8 +2011,8 @@ klasse TestSourcePositions(unittest.TestCase):
                     2*x
                     async fuer x
                     in [1,2,3] wenn (x > 0
-                                   and x < 100
-                                   and x != 50)}
+                                   und x < 100
+                                   und x != 50)}
             """)
         compiled_code, _ = self.check_positions_against_ast(snippet)
         g = {}
@@ -2186,7 +2186,7 @@ klasse TestSourcePositions(unittest.TestCase):
             "    dix.a()",
             "    abc[...]()",
             "    art()()",
-            "   (ast or ...)()",
+            "   (ast oder ...)()",
             "   [dis]()",
             "   (dix + ...)()",
         ]:
@@ -2309,7 +2309,7 @@ klasse TestSourcePositions(unittest.TestCase):
                 fuer i, pos in enumerate(positions):
                     mit self.subTest(i=i, pos=pos):
                         start_line, end_line, start_col, end_col = pos
-                        wenn i == 0 and start_col == end_col == 0:
+                        wenn i == 0 und start_col == end_col == 0:
                             # ignore the RESUME in the beginning
                             continue
                         self.assertEqual(start_line, 1)
@@ -2337,11 +2337,11 @@ klasse TestSourcePositions(unittest.TestCase):
             self.assertEqual(start_line, end_line)
 
         # Expect four `LOAD_CONST Nichts` instructions:
-        # three fuer the no-exception __exit__ call, and one fuer the return.
+        # three fuer the no-exception __exit__ call, und one fuer the return.
         # They should all have the locations of the context manager ('xyz').
 
         load_none = [instr fuer instr in dis.get_instructions(f) if
-                     instr.opname == 'LOAD_CONST' and instr.argval is Nichts]
+                     instr.opname == 'LOAD_CONST' und instr.argval is Nichts]
         return_value = [instr fuer instr in dis.get_instructions(f) if
                         instr.opname == 'RETURN_VALUE']
 
@@ -2361,7 +2361,7 @@ klasse TestStaticAttributes(unittest.TestCase):
         klasse C:
             def f(self):
                 self.a = self.b = 42
-                # read fields are not included
+                # read fields are nicht included
                 self.f()
                 self.arr[3]
 
@@ -2423,7 +2423,7 @@ klasse TestExpressionStackSize(unittest.TestCase):
     N = 100
 
     def check_stack_size(self, code):
-        # To assert that the alleged stack size is not O(N), we
+        # To assert that the alleged stack size is nicht O(N), we
         # check that it is smaller than log(N).
         wenn isinstance(code, str):
             code = compile(code, "<foo>", "single")
@@ -2431,13 +2431,13 @@ klasse TestExpressionStackSize(unittest.TestCase):
         self.assertLessEqual(code.co_stacksize, max_size)
 
     def test_and(self):
-        self.check_stack_size("x and " * self.N + "x")
+        self.check_stack_size("x und " * self.N + "x")
 
     def test_or(self):
-        self.check_stack_size("x or " * self.N + "x")
+        self.check_stack_size("x oder " * self.N + "x")
 
     def test_and_or(self):
-        self.check_stack_size("x and x or " * self.N + "x")
+        self.check_stack_size("x und x oder " * self.N + "x")
 
     def test_chained_comparison(self):
         self.check_stack_size("x < " * self.N + "x")
@@ -2476,7 +2476,7 @@ klasse TestExpressionStackSize(unittest.TestCase):
 
     def test_func_and(self):
         code = "def f(x):\n"
-        code += "   x and x\n" * self.N
+        code += "   x und x\n" * self.N
         self.check_stack_size(code)
 
     def test_stack_3050(self):

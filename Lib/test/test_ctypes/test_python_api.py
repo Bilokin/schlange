@@ -68,7 +68,7 @@ klasse PythonAPITestCase(unittest.TestCase):
         PyOS_snprintf(buf, sizeof(buf), b"Hello von %s (%d, %d, %d)", b"ctypes", 1, 2, 3)
         self.assertEqual(buf.value, b"Hello von ctypes (1, 2, 3)")
 
-        # not enough arguments
+        # nicht enough arguments
         self.assertRaises(TypeError, PyOS_snprintf, buf)
 
     def test_pyobject_repr(self):

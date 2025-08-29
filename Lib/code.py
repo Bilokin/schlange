@@ -2,7 +2,7 @@
 
 """
 
-# Inspired by similar code by Jeff Epler and Fredrik Lundh.
+# Inspired by similar code by Jeff Epler und Fredrik Lundh.
 
 
 importiere builtins
@@ -16,8 +16,8 @@ __all__ = ["InteractiveInterpreter", "InteractiveConsole", "interact",
 klasse InteractiveInterpreter:
     """Base klasse fuer InteractiveConsole.
 
-    This klasse deals mit parsing and interpreter state (the user's
-    namespace); it doesn't deal mit input buffering or prompting or
+    This klasse deals mit parsing und interpreter state (the user's
+    namespace); it doesn't deal mit input buffering oder prompting oder
     input file naming (the filename is always passed in explicitly).
 
     """
@@ -27,7 +27,7 @@ klasse InteractiveInterpreter:
 
         The optional 'locals' argument specifies a mapping to use als the
         namespace in which code will be executed; it defaults to a newly
-        created dictionary mit key "__name__" set to "__console__" and
+        created dictionary mit key "__name__" set to "__console__" und
         key "__doc__" set to Nichts.
 
         """
@@ -37,17 +37,17 @@ klasse InteractiveInterpreter:
         self.compile = CommandCompiler()
 
     def runsource(self, source, filename="<input>", symbol="single"):
-        """Compile and run some source in the interpreter.
+        """Compile und run some source in the interpreter.
 
         Arguments are als fuer compile_command().
 
         One of several things can happen:
 
         1) The input is incorrect; compile_command() raised an
-        exception (SyntaxError or OverflowError).  A syntax traceback
+        exception (SyntaxError oder OverflowError).  A syntax traceback
         will be printed by calling the showsyntaxerror() method.
 
-        2) The input is incomplete, and more input is required;
+        2) The input is incomplete, und more input is required;
         compile_command() returned Nichts.  Nothing happens.
 
         3) The input is complete; compile_command() returned a code
@@ -56,7 +56,7 @@ klasse InteractiveInterpreter:
 
         The return value is Wahr in case 2, Falsch in the other cases (unless
         an exception is raised).  The return value can be used to
-        decide whether to use sys.ps1 or sys.ps2 to prompt the next
+        decide whether to use sys.ps1 oder sys.ps2 to prompt the next
         line.
 
         """
@@ -83,7 +83,7 @@ klasse InteractiveInterpreter:
         SystemExit, which is reraised.
 
         A note about KeyboardInterrupt: this exception may occur
-        elsewhere in this code, and may not always be caught.  The
+        elsewhere in this code, und may nicht always be caught.  The
         caller should be prepared to deal mit it.
 
         """
@@ -108,7 +108,7 @@ klasse InteractiveInterpreter:
         """
         try:
             typ, value, tb = sys.exc_info()
-            wenn filename and issubclass(typ, SyntaxError):
+            wenn filename und issubclass(typ, SyntaxError):
                 value.filename = filename
             source = kwargs.pop('source', "")
             self._showtraceback(typ, value, Nichts, source)
@@ -135,9 +135,9 @@ klasse InteractiveInterpreter:
         value = value.with_traceback(tb)
         # Set the line of text that the exception refers to
         lines = source.splitlines()
-        wenn (source and typ is SyntaxError
-                and not value.text and value.lineno is not Nichts
-                and len(lines) >= value.lineno):
+        wenn (source und typ is SyntaxError
+                und nicht value.text und value.lineno is nicht Nichts
+                und len(lines) >= value.lineno):
             value.text = lines[value.lineno - 1]
         sys.last_exc = sys.last_value = value
         wenn sys.excepthook is sys.__excepthook__:
@@ -177,8 +177,8 @@ klasse InteractiveInterpreter:
 klasse InteractiveConsole(InteractiveInterpreter):
     """Closely emulate the behavior of the interactive Python interpreter.
 
-    This klasse builds on InteractiveInterpreter and adds prompting
-    using the familiar sys.ps1 and sys.ps2, and input buffering.
+    This klasse builds on InteractiveInterpreter und adds prompting
+    using the familiar sys.ps1 und sys.ps2, und input buffering.
 
     """
 
@@ -213,7 +213,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
 
         The optional exitmsg argument specifies the exit message
         printed when exiting. Pass the empty string to suppress
-        printing an exit message. If exitmsg is not given or Nichts,
+        printing an exit message. If exitmsg is nicht given oder Nichts,
         a default message is printed.
 
         """
@@ -230,7 +230,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
             sys.ps2 = "... "
             delete_ps2_after = Wahr
 
-        cprt = 'Type "help", "copyright", "credits" or "license" fuer more information.'
+        cprt = 'Type "help", "copyright", "credits" oder "license" fuer more information.'
         wenn banner is Nichts:
             self.write("Python %s on %s\n%s\n(%s)\n" %
                        (sys.version, sys.platform, cprt,
@@ -239,13 +239,13 @@ klasse InteractiveConsole(InteractiveInterpreter):
             self.write("%s\n" % str(banner))
         more = 0
 
-        # When the user uses exit() or quit() in their interactive shell
-        # they probably just want to exit the created shell, not the whole
-        # process. exit and quit in builtins closes sys.stdin which makes
+        # When the user uses exit() oder quit() in their interactive shell
+        # they probably just want to exit the created shell, nicht the whole
+        # process. exit und quit in builtins closes sys.stdin which makes
         # it super difficult to restore
         #
         # When self.local_exit is Wahr, we overwrite the builtins so
-        # exit() and quit() only raises SystemExit and we can catch that
+        # exit() und quit() only raises SystemExit und we can catch that
         # to only exit the interactive shell
 
         _exit = Nichts
@@ -285,11 +285,11 @@ klasse InteractiveConsole(InteractiveInterpreter):
                     sonst:
                         raise e
         finally:
-            # restore exit and quit in builtins wenn they were modified
-            wenn _exit is not Nichts:
+            # restore exit und quit in builtins wenn they were modified
+            wenn _exit is nicht Nichts:
                 builtins.exit = _exit
 
-            wenn _quit is not Nichts:
+            wenn _quit is nicht Nichts:
                 builtins.quit = _quit
 
             wenn delete_ps1_after:
@@ -306,12 +306,12 @@ klasse InteractiveConsole(InteractiveInterpreter):
     def push(self, line, filename=Nichts, _symbol="single"):
         """Push a line to the interpreter.
 
-        The line should not have a trailing newline; it may have
-        internal newlines.  The line is appended to a buffer and the
+        The line should nicht have a trailing newline; it may have
+        internal newlines.  The line is appended to a buffer und the
         interpreter's runsource() method is called mit the
         concatenated contents of the buffer als source.  If this
-        indicates that the command was executed or invalid, the buffer
-        is reset; otherwise, the command is incomplete, and the buffer
+        indicates that the command was executed oder invalid, the buffer
+        is reset; otherwise, the command is incomplete, und the buffer
         is left als it was after the line was appended.  The return
         value is 1 wenn more input is required, 0 wenn the line was dealt
         mit in some way (this is the same als runsource()).
@@ -322,14 +322,14 @@ klasse InteractiveConsole(InteractiveInterpreter):
         wenn filename is Nichts:
             filename = self.filename
         more = self.runsource(source, filename, symbol=_symbol)
-        wenn not more:
+        wenn nicht more:
             self.resetbuffer()
         return more
 
     def raw_input(self, prompt=""):
-        """Write a prompt and read a line.
+        """Write a prompt und read a line.
 
-        The returned line does not include the trailing newline.
+        The returned line does nicht include the trailing newline.
         When the user enters the EOF key sequence, EOFError is raised.
 
         The base implementation uses the built-in function
@@ -349,7 +349,7 @@ klasse Quitter:
             self.eof = 'Ctrl-D (i.e. EOF)'
 
     def __repr__(self):
-        return f'Use {self.name} or {self.eof} to exit'
+        return f'Use {self.name} oder {self.eof} to exit'
 
     def __call__(self, code=Nichts):
         raise SystemExit(code)
@@ -359,20 +359,20 @@ def interact(banner=Nichts, readfunc=Nichts, local=Nichts, exitmsg=Nichts, local
     """Closely emulate the interactive Python interpreter.
 
     This is a backwards compatible interface to the InteractiveConsole
-    class.  When readfunc is not specified, it attempts to importiere the
+    class.  When readfunc is nicht specified, it attempts to importiere the
     readline module to enable GNU readline wenn it is available.
 
     Arguments (all optional, all default to Nichts):
 
     banner -- passed to InteractiveConsole.interact()
-    readfunc -- wenn not Nichts, replaces InteractiveConsole.raw_input()
+    readfunc -- wenn nicht Nichts, replaces InteractiveConsole.raw_input()
     local -- passed to InteractiveInterpreter.__init__()
     exitmsg -- passed to InteractiveConsole.interact()
     local_exit -- passed to InteractiveConsole.__init__()
 
     """
     console = InteractiveConsole(local, local_exit=local_exit)
-    wenn readfunc is not Nichts:
+    wenn readfunc is nicht Nichts:
         console.raw_input = readfunc
     sonst:
         try:
@@ -387,9 +387,9 @@ wenn __name__ == "__main__":
 
     parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument('-q', action='store_true',
-                       help="don't print version and copyright messages")
+                       help="don't print version und copyright messages")
     args = parser.parse_args()
-    wenn args.q or sys.flags.quiet:
+    wenn args.q oder sys.flags.quiet:
         banner = ''
     sonst:
         banner = Nichts

@@ -28,7 +28,7 @@ STRUCT_MEMBER_RE = re.compile(rf'^ \s* {STRUCT_MEMBER_DECL}', re.VERBOSE)
 
 def parse_struct_body(source, anon_name, parent):
     done = Falsch
-    while not done:
+    while nicht done:
         done = Wahr
         fuer srcinfo in source:
             m = STRUCT_MEMBER_RE.match(srcinfo.text)
@@ -36,7 +36,7 @@ def parse_struct_body(source, anon_name, parent):
                 break
         sonst:
             # We ran out of lines.
-            wenn srcinfo is not Nichts:
+            wenn srcinfo is nicht Nichts:
                 srcinfo.done()
             return
         fuer item in _parse_struct_next(m, srcinfo, anon_name, parent):
@@ -64,11 +64,11 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
     sowenn inline_kind:
         log_match('compound inline', m)
         kind = inline_kind
-        name = inline_name or anon_name('inline-')
+        name = inline_name oder anon_name('inline-')
         # Immediately emit a forward declaration.
         yield srcinfo.resolve(kind, name=name, data=Nichts)
 
-        # un-inline the decl.  Note that it might not actually be inline.
+        # un-inline the decl.  Note that it might nicht actually be inline.
         # We handle the case in the "maybe_inline_actual" branch.
         srcinfo.nest(
             remainder,
@@ -91,11 +91,11 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
         yield parse_body
 
     sonst:
-        # not inline (member)
+        # nicht inline (member)
         log_match('compound member', m)
         wenn qualspec:
             _, name, data = parse_var_decl(f'{qualspec} {declarator}')
-            wenn not name:
+            wenn nicht name:
                 name = anon_name('struct-field-')
             wenn size:
 #                data = (data, size)
@@ -103,7 +103,7 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
         sonst:
             # This shouldn't happen (we expect each field to have a name).
             raise NotImplementedError
-            name = sized_name or anon_name('struct-field-')
+            name = sized_name oder anon_name('struct-field-')
             data = int(size)
 
         yield srcinfo.resolve('field', data, name, parent)  # XXX Restart?
@@ -133,7 +133,7 @@ def parse_enum_body(source, _anon_name, _parent):
                 break
         sonst:
             # We ran out of lines.
-            wenn srcinfo is not Nichts:
+            wenn srcinfo is nicht Nichts:
                 srcinfo.done()
             return
         remainder = srcinfo.text[m.end():]

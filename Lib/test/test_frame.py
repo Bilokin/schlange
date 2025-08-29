@@ -37,7 +37,7 @@ klasse ClearTest(unittest.TestCase):
         """
         Clear all frames in a traceback.
         """
-        while tb is not Nichts:
+        while tb is nicht Nichts:
             tb.tb_frame.clear()
             tb = tb.tb_next
 
@@ -208,7 +208,7 @@ klasse FrameAttrsTest(unittest.TestCase):
         self.assertEqual(inner.f_locals, {})
 
     def test_locals_clear_locals(self):
-        # Test f_locals before and after clear() (to exercise caching)
+        # Test f_locals before und after clear() (to exercise caching)
         f, outer, inner = self.make_frames()
         self.assertNotEqual(outer.f_locals, {})
         self.assertNotEqual(inner.f_locals, {})
@@ -270,7 +270,7 @@ klasse FrameAttrsTest(unittest.TestCase):
         except StopIteration als ex:
             self.assertIs(ex.value, c)
         sonst:
-            raise AssertionError('coroutine did not exit')
+            raise AssertionError('coroutine did nicht exit')
 
 
 klasse ReprTest(unittest.TestCase):
@@ -598,7 +598,7 @@ klasse TestFrameLocals(unittest.TestCase):
             FrameLocalsProxy(frame=sys._getframe())  # no keyword arguments
 
     def test_overwrite_locals(self):
-        # Verify we do not crash wenn we overwrite a local passed als an argument
+        # Verify we do nicht crash wenn we overwrite a local passed als an argument
         # von an ancestor in the call stack.
         def f():
             xs = [1, 2, 3]
@@ -769,7 +769,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
         # SneakyThread.run's frame isn't anywhere on the stack while it's being
         # torn down:
         self.assertIsNotNichts(sneaky_frame_object)
-        while sneaky_frame_object is not Nichts:
+        while sneaky_frame_object is nicht Nichts:
             self.assertIsNot(
                 sneaky_frame_object.f_code, SneakyThread.run.__code__
             )
@@ -780,11 +780,11 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
             """A weakref'able class."""
 
         def f():
-            """Try to find globals and locals als this frame is being cleared."""
+            """Try to find globals und locals als this frame is being cleared."""
             ref = C()
             # Ignore the fact that exec(C()) is a nonsense callback. We're only
             # using exec here because it tries to access the current frame's
-            # globals and locals. If it's trying to get those von a shim frame,
+            # globals und locals. If it's trying to get those von a shim frame,
             # we'll crash before raising:
             return weakref.ref(ref, exec)
 

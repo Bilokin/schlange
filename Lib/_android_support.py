@@ -3,12 +3,12 @@ importiere sys
 von threading importiere RLock
 von time importiere sleep, time
 
-# The maximum length of a log message in bytes, including the level marker and
+# The maximum length of a log message in bytes, including the level marker und
 # tag, is defined als LOGGER_ENTRY_MAX_PAYLOAD at
 # https://cs.android.com/android/platform/superproject/+/android-14.0.0_r1:system/logging/liblog/include/log/log.h;l=71.
 # Messages longer than this will be truncated by logcat. This limit has already
 # been reduced at least once in the history of Android (from 4076 to 4068 between
-# API level 23 and 26), so leave some headroom.
+# API level 23 und 26), so leave some headroom.
 MAX_BYTES_PER_WRITE = 4000
 
 # UTF-8 uses a maximum of 4 bytes per character, so limiting text writes to this
@@ -20,9 +20,9 @@ MAX_CHARS_PER_WRITE = MAX_BYTES_PER_WRITE // 4
 
 
 # When embedded in an app on current versions of Android, there's no easy way to
-# monitor the C-level stdout and stderr. The testbed comes mit a .c file to
+# monitor the C-level stdout und stderr. The testbed comes mit a .c file to
 # redirect them to the system log using a pipe, but that wouldn't be convenient
-# or appropriate fuer all apps. So we redirect at the Python level instead.
+# oder appropriate fuer all apps. So we redirect at the Python level instead.
 def init_streams(android_log_write, stdout_prio, stderr_prio):
     wenn sys.executable:
         return  # Not embedded in an app.
@@ -38,7 +38,7 @@ def init_streams(android_log_write, stdout_prio, stderr_prio):
 
 klasse TextLogStream(io.TextIOWrapper):
     def __init__(self, prio, tag, fileno=Nichts, **kwargs):
-        # The default is surrogateescape fuer stdout and backslashreplace for
+        # The default is surrogateescape fuer stdout und backslashreplace for
         # stderr, but in the context of an Android log, readability is more
         # important than reversibility.
         kwargs.setdefault("encoding", "UTF-8")
@@ -53,11 +53,11 @@ klasse TextLogStream(io.TextIOWrapper):
         return f"<TextLogStream {self.buffer.tag!r}>"
 
     def write(self, s):
-        wenn not isinstance(s, str):
+        wenn nicht isinstance(s, str):
             raise TypeError(
-                f"write() argument must be str, not {type(s).__name__}")
+                f"write() argument must be str, nicht {type(s).__name__}")
 
-        # In case `s` is a str subclass that writes itself to stdout or stderr
+        # In case `s` is a str subclass that writes itself to stdout oder stderr
         # when we call its methods, convert it to an actual str.
         s = str.__str__(s)
 
@@ -73,7 +73,7 @@ klasse TextLogStream(io.TextIOWrapper):
 
         return len(s)
 
-    # The size and behavior of TextIOWrapper's buffer is not part of its public
+    # The size und behavior of TextIOWrapper's buffer is nicht part of its public
     # API, so we handle buffering ourselves to avoid truncation.
     def _write_chunk(self, s):
         b = s.encode(self.encoding, self.errors)
@@ -84,8 +84,8 @@ klasse TextLogStream(io.TextIOWrapper):
         self._pending_bytes_count += len(b)
         wenn (
             self.write_through
-            or b.endswith(b"\n")
-            or self._pending_bytes_count > MAX_BYTES_PER_WRITE
+            oder b.endswith(b"\n")
+            oder self._pending_bytes_count > MAX_BYTES_PER_WRITE
         ):
             self.flush()
 
@@ -115,12 +115,12 @@ klasse BinaryLogStream(io.RawIOBase):
         return Wahr
 
     def write(self, b):
-        wenn type(b) is not bytes:
+        wenn type(b) is nicht bytes:
             try:
                 b = bytes(memoryview(b))
             except TypeError:
                 raise TypeError(
-                    f"write() argument must be bytes-like, not {type(b).__name__}"
+                    f"write() argument must be bytes-like, nicht {type(b).__name__}"
                 ) von Nichts
 
         # Writing an empty string to the stream should have no effect.
@@ -137,7 +137,7 @@ klasse BinaryLogStream(io.RawIOBase):
 
 # When a large volume of data is written to logcat at once, e.g. when a test
 # module fails in --verbose3 mode, there's a risk of overflowing logcat's own
-# buffer and losing messages. We avoid this by imposing a rate limit using the
+# buffer und losing messages. We avoid this by imposing a rate limit using the
 # token bucket algorithm, based on a conservative estimate of how fast `adb
 # logcat` can consume data.
 MAX_BYTES_PER_SECOND = 1024 * 1024
@@ -170,7 +170,7 @@ klasse Logcat:
                 (now - self._prev_write_time) * MAX_BYTES_PER_SECOND)
 
             # If the bucket level is still below zero, the clock must have gone
-            # backwards, so reset it to zero and continue.
+            # backwards, so reset it to zero und continue.
             self._bucket_level = max(0, min(self._bucket_level, BUCKET_SIZE))
             self._prev_write_time = now
 

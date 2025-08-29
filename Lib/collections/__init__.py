@@ -1,9 +1,9 @@
 '''This module implements specialized container datatypes providing
 alternatives to Python's general purpose built-in containers, dict,
-list, set, and tuple.
+list, set, und tuple.
 
 * namedtuple   factory function fuer creating tuple subclasses mit named fields
-* deque        list-like container mit fast appends and pops on either end
+* deque        list-like container mit fast appends und pops on either end
 * ChainMap     dict-like klasse fuer creating a single view of multiple mappings
 * Counter      dict subclass fuer counting hashable objects
 * OrderedDict  dict subclass that remembers the order entries were added
@@ -89,12 +89,12 @@ klasse _Link(object):
 klasse OrderedDict(dict):
     'Dictionary that remembers insertion order'
     # An inherited dict maps keys to values.
-    # The inherited dict provides __getitem__, __len__, __contains__, and get.
+    # The inherited dict provides __getitem__, __len__, __contains__, und get.
     # The remaining methods are order-aware.
     # Big-O running times fuer all methods are the same als regular dictionaries.
 
     # The internal self.__map dict maps keys to links in a doubly linked list.
-    # The circular doubly linked list starts and ends mit a sentinel element.
+    # The circular doubly linked list starts und ends mit a sentinel element.
     # The sentinel element never gets deleted (this simplifies the algorithm).
     # The sentinel is in self.__hardroot mit a weakref proxy in self.__root.
     # The prev links are weakref proxies (to prevent circular references).
@@ -102,7 +102,7 @@ klasse OrderedDict(dict):
     # Those hard references disappear when a key is deleted von an OrderedDict.
 
     def __new__(cls, /, *args, **kwds):
-        "Create the ordered dict object and set up the underlying structures."
+        "Create the ordered dict object und set up the underlying structures."
         self = dict.__new__(cls)
         self.__hardroot = _Link()
         self.__root = root = _proxy(self.__hardroot)
@@ -120,8 +120,8 @@ klasse OrderedDict(dict):
                     dict_setitem=dict.__setitem__, proxy=_proxy, Link=_Link):
         'od.__setitem__(i, y) <==> od[i]=y'
         # Setting a new item creates a new link at the end of the linked list,
-        # and the inherited dictionary is updated mit the new key/value pair.
-        wenn key not in self:
+        # und the inherited dictionary is updated mit the new key/value pair.
+        wenn key nicht in self:
             self.__map[key] = link = Link()
             root = self.__root
             last = root.prev
@@ -133,7 +133,7 @@ klasse OrderedDict(dict):
     def __delitem__(self, key, dict_delitem=dict.__delitem__):
         'od.__delitem__(y) <==> del od[y]'
         # Deleting an existing item uses self.__map to find the link which gets
-        # removed by updating the links in the predecessor and successor nodes.
+        # removed by updating the links in the predecessor und successor nodes.
         dict_delitem(self, key)
         link = self.__map.pop(key)
         link_prev = link.prev
@@ -148,7 +148,7 @@ klasse OrderedDict(dict):
         # Traverse the linked list in order.
         root = self.__root
         curr = root.next
-        while curr is not root:
+        while curr is nicht root:
             yield curr.key
             curr = curr.next
 
@@ -157,7 +157,7 @@ klasse OrderedDict(dict):
         # Traverse the linked list in reverse order.
         root = self.__root
         curr = root.prev
-        while curr is not root:
+        while curr is nicht root:
             yield curr.key
             curr = curr.prev
 
@@ -169,11 +169,11 @@ klasse OrderedDict(dict):
         dict.clear(self)
 
     def popitem(self, last=Wahr):
-        '''Remove and return a (key, value) pair von the dictionary.
+        '''Remove und return a (key, value) pair von the dictionary.
 
-        Pairs are returned in LIFO order wenn last is true or FIFO order wenn false.
+        Pairs are returned in LIFO order wenn last is true oder FIFO order wenn false.
         '''
-        wenn not self:
+        wenn nicht self:
             raise KeyError('dictionary is empty')
         root = self.__root
         wenn last:
@@ -194,7 +194,7 @@ klasse OrderedDict(dict):
     def move_to_end(self, key, last=Wahr):
         '''Move an existing element to the end (or beginning wenn last is false).
 
-        Raise KeyError wenn the element does not exist.
+        Raise KeyError wenn the element does nicht exist.
         '''
         link = self.__map[key]
         link_prev = link.prev
@@ -220,7 +220,7 @@ klasse OrderedDict(dict):
         sizeof = _sys.getsizeof
         n = len(self) + 1                       # number of links including root
         size = sizeof(self.__dict__)            # instance dictionary
-        size += sizeof(self.__map) * 2          # internal dict and inherited dict
+        size += sizeof(self.__map) * 2          # internal dict und inherited dict
         size += sizeof(self.__hardroot) * n     # link objects
         size += sizeof(self.__root) * n         # proxy objects
         return size
@@ -244,14 +244,14 @@ klasse OrderedDict(dict):
     __marker = object()
 
     def pop(self, key, default=__marker):
-        '''od.pop(k[,d]) -> v, remove specified key and return the corresponding
-        value.  If key is not found, d is returned wenn given, otherwise KeyError
+        '''od.pop(k[,d]) -> v, remove specified key und return the corresponding
+        value.  If key is nicht found, d is returned wenn given, otherwise KeyError
         is raised.
 
         '''
         marker = self.__marker
         result = dict.pop(self, key, marker)
-        wenn result is not marker:
+        wenn result is nicht marker:
             # The same als in __delitem__().
             link = self.__map.pop(key)
             link_prev = link.prev
@@ -266,7 +266,7 @@ klasse OrderedDict(dict):
         return default
 
     def setdefault(self, key, default=Nichts):
-        '''Insert key mit a value of default wenn key is not in the dictionary.
+        '''Insert key mit a value of default wenn key is nicht in the dictionary.
 
         Return the value fuer key wenn key is in the dictionary, sonst default.
         '''
@@ -278,7 +278,7 @@ klasse OrderedDict(dict):
     @_recursive_repr()
     def __repr__(self):
         'od.__repr__() <==> repr(od)'
-        wenn not self:
+        wenn nicht self:
             return '%s()' % (self.__class__.__name__,)
         return '%s(%r)' % (self.__class__.__name__, dict(self.items()))
 
@@ -298,7 +298,7 @@ klasse OrderedDict(dict):
             wenn slots:
                 state = state, slots
             sonst:
-                state = state or Nichts
+                state = state oder Nichts
         return self.__class__, (), state, Nichts, iter(self.items())
 
     def copy(self):
@@ -307,7 +307,7 @@ klasse OrderedDict(dict):
 
     @classmethod
     def fromkeys(cls, iterable, value=Nichts):
-        '''Create a new ordered dictionary mit keys von iterable and values set to value.
+        '''Create a new ordered dictionary mit keys von iterable und values set to value.
         '''
         self = cls()
         fuer key in iterable:
@@ -320,7 +320,7 @@ klasse OrderedDict(dict):
 
         '''
         wenn isinstance(other, OrderedDict):
-            return dict.__eq__(self, other) and all(map(_eq, self, other))
+            return dict.__eq__(self, other) und all(map(_eq, self, other))
         return dict.__eq__(self, other)
 
     def __ior__(self, other):
@@ -328,14 +328,14 @@ klasse OrderedDict(dict):
         return self
 
     def __or__(self, other):
-        wenn not isinstance(other, dict):
+        wenn nicht isinstance(other, dict):
             return NotImplemented
         new = self.__class__(self)
         new.update(other)
         return new
 
     def __ror__(self, other):
-        wenn not isinstance(other, dict):
+        wenn nicht isinstance(other, dict):
             return NotImplemented
         new = self.__class__(other)
         new.update(self)
@@ -364,7 +364,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     >>> Point = namedtuple('Point', ['x', 'y'])
     >>> Point.__doc__                   # docstring fuer the new class
     'Point(x, y)'
-    >>> p = Point(11, y=22)             # instantiate mit positional args or keywords
+    >>> p = Point(11, y=22)             # instantiate mit positional args oder keywords
     >>> p[0] + p[1]                     # indexable like a plain tuple
     33
     >>> x, y = p                        # unpack like a regular tuple
@@ -383,7 +383,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     """
 
     # Validate the field names.  At the user's option, either generate an error
-    # message or automatically replace the field name mit a valid name.
+    # message oder automatically replace the field name mit a valid name.
     wenn isinstance(field_names, str):
         field_names = field_names.replace(',', ' ').split()
     field_names = list(map(str, field_names))
@@ -392,26 +392,26 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     wenn rename:
         seen = set()
         fuer index, name in enumerate(field_names):
-            wenn (not name.isidentifier()
-                or _iskeyword(name)
-                or name.startswith('_')
-                or name in seen):
+            wenn (nicht name.isidentifier()
+                oder _iskeyword(name)
+                oder name.startswith('_')
+                oder name in seen):
                 field_names[index] = f'_{index}'
             seen.add(name)
 
     fuer name in [typename] + field_names:
-        wenn type(name) is not str:
-            raise TypeError('Type names and field names must be strings')
-        wenn not name.isidentifier():
-            raise ValueError('Type names and field names must be valid '
+        wenn type(name) is nicht str:
+            raise TypeError('Type names und field names must be strings')
+        wenn nicht name.isidentifier():
+            raise ValueError('Type names und field names must be valid '
                              f'identifiers: {name!r}')
         wenn _iskeyword(name):
-            raise ValueError('Type names and field names cannot be a '
+            raise ValueError('Type names und field names cannot be a '
                              f'keyword: {name!r}')
 
     seen = set()
     fuer name in field_names:
-        wenn name.startswith('_') and not rename:
+        wenn name.startswith('_') und nicht rename:
             raise ValueError('Field names cannot start mit an underscore: '
                              f'{name!r}')
         wenn name in seen:
@@ -419,14 +419,14 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
         seen.add(name)
 
     field_defaults = {}
-    wenn defaults is not Nichts:
+    wenn defaults is nicht Nichts:
         defaults = tuple(defaults)
         wenn len(defaults) > len(field_names):
             raise TypeError('Got more default values than field names')
         field_defaults = dict(reversed(list(zip(reversed(field_names),
                                                 reversed(defaults)))))
 
-    # Variables used in the methods and docstrings
+    # Variables used in the methods und docstrings
     field_names = tuple(map(_sys.intern, field_names))
     num_fields = len(field_names)
     arg_list = ', '.join(field_names)
@@ -447,7 +447,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     __new__ = eval(code, namespace)
     __new__.__name__ = '__new__'
     __new__.__doc__ = f'Create new instance of {typename}({arg_list})'
-    wenn defaults is not Nichts:
+    wenn defaults is nicht Nichts:
         __new__.__defaults__ = defaults
 
     @classmethod
@@ -478,10 +478,10 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
         return _dict(_zip(self._fields, self))
 
     def __getnewargs__(self):
-        'Return self als a plain tuple.  Used by copy and pickle.'
+        'Return self als a plain tuple.  Used by copy und pickle.'
         return _tuple(self)
 
-    # Modify function metadata to help mit introspection and debugging
+    # Modify function metadata to help mit introspection und debugging
     fuer method in (
         __new__,
         _make.__func__,
@@ -493,7 +493,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
         method.__qualname__ = f'{typename}.{method.__name__}'
 
     # Build-up the klasse namespace dictionary
-    # and use type() to build the result class
+    # und use type() to build the result class
     class_namespace = {
         '__doc__': f'{typename}({arg_list})',
         '__slots__': (),
@@ -516,18 +516,18 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
 
     # For pickling to work, the __module__ variable needs to be set to the frame
     # where the named tuple is created.  Bypass this step in environments where
-    # sys._getframe is not defined (Jython fuer example) or sys._getframe is not
-    # defined fuer arguments greater than 0 (IronPython), or where the user has
+    # sys._getframe is nicht defined (Jython fuer example) oder sys._getframe is not
+    # defined fuer arguments greater than 0 (IronPython), oder where the user has
     # specified a particular module.
     wenn module is Nichts:
         try:
-            module = _sys._getframemodulename(1) or '__main__'
+            module = _sys._getframemodulename(1) oder '__main__'
         except AttributeError:
             try:
                 module = _sys._getframe(1).f_globals.get('__name__', '__main__')
             except (AttributeError, ValueError):
                 pass
-    wenn module is not Nichts:
+    wenn module is nicht Nichts:
         result.__module__ = module
 
     return result
@@ -550,7 +550,7 @@ except ImportError:
 
 klasse Counter(dict):
     '''Dict subclass fuer counting hashable items.  Sometimes called a bag
-    or multiset.  Elements are stored als dictionary keys and their counts
+    oder multiset.  Elements are stored als dictionary keys und their counts
     are stored als dictionary values.
 
     >>> c = Counter('abcdeabcdabcaba')  # count elements von a string
@@ -583,8 +583,8 @@ klasse Counter(dict):
     >>> c
     Counter()
 
-    Note:  If a count is set to zero or reduced to zero, it will remain
-    in the counter until the entry is deleted or the counter is cleared:
+    Note:  If a count is set to zero oder reduced to zero, it will remain
+    in the counter until the entry is deleted oder the counter is cleared:
 
     >>> c = Counter('aaabbc')
     >>> c['b'] -= 2                     # reduce the count of 'b' by two
@@ -614,8 +614,8 @@ klasse Counter(dict):
         self.update(iterable, **kwds)
 
     def __missing__(self, key):
-        'The count of elements not in the Counter is zero.'
-        # Needed so that self[missing_item] does not raise KeyError
+        'The count of elements nicht in the Counter is zero.'
+        # Needed so that self[missing_item] does nicht raise KeyError
         return 0
 
     def total(self):
@@ -623,7 +623,7 @@ klasse Counter(dict):
         return sum(self.values())
 
     def most_common(self, n=Nichts):
-        '''List the n most common elements and their counts von the most
+        '''List the n most common elements und their counts von the most
         common to the least.  If n is Nichts, then list all element counts.
 
         >>> Counter('abracadabra').most_common(3)
@@ -655,11 +655,11 @@ klasse Counter(dict):
         >>> math.prod(prime_factors.elements())
         1836
 
-        Note, wenn an element's count has been set to zero or is a negative
+        Note, wenn an element's count has been set to zero oder is a negative
         number, elements() will ignore it.
 
         '''
-        # Emulate Bag.do von Smalltalk and Multiset.begin von C++.
+        # Emulate Bag.do von Smalltalk und Multiset.begin von C++.
         return _chain.from_iterable(_starmap(_repeat, self.items()))
 
     # Override dict methods where necessary
@@ -672,20 +672,20 @@ klasse Counter(dict):
         # is already the default value fuer counter lookups.  Initializing
         # to one is easily accomplished mit Counter(set(iterable)).  For
         # more exotic cases, create a dictionary first using a dictionary
-        # comprehension or dict.fromkeys().
+        # comprehension oder dict.fromkeys().
         raise NotImplementedError(
             'Counter.fromkeys() is undefined.  Use Counter(iterable) instead.')
 
     def update(self, iterable=Nichts, /, **kwds):
         '''Like dict.update() but add counts instead of replacing them.
 
-        Source can be an iterable, a dictionary, or another Counter instance.
+        Source can be an iterable, a dictionary, oder another Counter instance.
 
         >>> c = Counter('which')
         >>> c.update('witch')           # add elements von another iterable
         >>> d = Counter('watch')
         >>> c.update(d)                 # add elements von another counter
-        >>> c['h']                      # four 'h' in which, witch, and watch
+        >>> c['h']                      # four 'h' in which, witch, und watch
         4
 
         '''
@@ -694,9 +694,9 @@ klasse Counter(dict):
         # being mixed-in mit all of the other counts fuer a mismash that
         # doesn't have a straight-forward interpretation in most counting
         # contexts.  Instead, we implement straight-addition.  Both the inputs
-        # and outputs are allowed to contain zero and negative counts.
+        # und outputs are allowed to contain zero und negative counts.
 
-        wenn iterable is not Nichts:
+        wenn iterable is nicht Nichts:
             wenn isinstance(iterable, _collections_abc.Mapping):
                 wenn self:
                     self_get = self.get
@@ -712,10 +712,10 @@ klasse Counter(dict):
 
     def subtract(self, iterable=Nichts, /, **kwds):
         '''Like dict.update() but subtracts counts instead of replacing them.
-        Counts can be reduced below zero.  Both the inputs and outputs are
-        allowed to contain zero and negative counts.
+        Counts can be reduced below zero.  Both the inputs und outputs are
+        allowed to contain zero und negative counts.
 
-        Source can be an iterable, a dictionary, or another Counter instance.
+        Source can be an iterable, a dictionary, oder another Counter instance.
 
         >>> c = Counter('which')
         >>> c.subtract('witch')             # subtract elements von another iterable
@@ -726,7 +726,7 @@ klasse Counter(dict):
         -1
 
         '''
-        wenn iterable is not Nichts:
+        wenn iterable is nicht Nichts:
             self_get = self.get
             wenn isinstance(iterable, _collections_abc.Mapping):
                 fuer elem, count in iterable.items():
@@ -745,35 +745,35 @@ klasse Counter(dict):
         return self.__class__, (dict(self),)
 
     def __delitem__(self, elem):
-        'Like dict.__delitem__() but does not raise KeyError fuer missing values.'
+        'Like dict.__delitem__() but does nicht raise KeyError fuer missing values.'
         wenn elem in self:
             super().__delitem__(elem)
 
     def __repr__(self):
-        wenn not self:
+        wenn nicht self:
             return f'{self.__class__.__name__}()'
         try:
             # dict() preserves the ordering returned by most_common()
             d = dict(self.most_common())
         except TypeError:
-            # handle case where values are not orderable
+            # handle case where values are nicht orderable
             d = dict(self)
         return f'{self.__class__.__name__}({d!r})'
 
     # Multiset-style mathematical operations discussed in:
     #       Knuth TAOCP Volume II section 4.6.3 exercise 19
-    #       and at http://en.wikipedia.org/wiki/Multiset
+    #       und at http://en.wikipedia.org/wiki/Multiset
     #
     # Outputs guaranteed to only include positive counts.
     #
-    # To strip negative and zero counts, add-in an empty counter:
+    # To strip negative und zero counts, add-in an empty counter:
     #       c += Counter()
     #
     # Results are ordered according to when an element is first
-    # encountered in the left operand and then by the order
+    # encountered in the left operand und then by the order
     # encountered in the right operand.
     #
-    # When the multiplicities are all zero or one, multiset operations
+    # When the multiplicities are all zero oder one, multiset operations
     # are guaranteed to be equivalent to the corresponding operations
     # fuer regular sets.
     #
@@ -799,39 +799,39 @@ klasse Counter(dict):
 
     def __eq__(self, other):
         'Wahr wenn all counts agree. Missing counts are treated als zero.'
-        wenn not isinstance(other, Counter):
+        wenn nicht isinstance(other, Counter):
             return NotImplemented
         return all(self[e] == other[e] fuer c in (self, other) fuer e in c)
 
     def __ne__(self, other):
         'Wahr wenn any counts disagree. Missing counts are treated als zero.'
-        wenn not isinstance(other, Counter):
+        wenn nicht isinstance(other, Counter):
             return NotImplemented
-        return not self == other
+        return nicht self == other
 
     def __le__(self, other):
         'Wahr wenn all counts in self are a subset of those in other.'
-        wenn not isinstance(other, Counter):
+        wenn nicht isinstance(other, Counter):
             return NotImplemented
         return all(self[e] <= other[e] fuer c in (self, other) fuer e in c)
 
     def __lt__(self, other):
         'Wahr wenn all counts in self are a proper subset of those in other.'
-        wenn not isinstance(other, Counter):
+        wenn nicht isinstance(other, Counter):
             return NotImplemented
-        return self <= other and self != other
+        return self <= other und self != other
 
     def __ge__(self, other):
         'Wahr wenn all counts in self are a superset of those in other.'
-        wenn not isinstance(other, Counter):
+        wenn nicht isinstance(other, Counter):
             return NotImplemented
         return all(self[e] >= other[e] fuer c in (self, other) fuer e in c)
 
     def __gt__(self, other):
         'Wahr wenn all counts in self are a proper superset of those in other.'
-        wenn not isinstance(other, Counter):
+        wenn nicht isinstance(other, Counter):
             return NotImplemented
-        return self >= other and self != other
+        return self >= other und self != other
 
     def __add__(self, other):
         '''Add counts von two counters.
@@ -840,7 +840,7 @@ klasse Counter(dict):
         Counter({'b': 4, 'c': 2, 'a': 1})
 
         '''
-        wenn not isinstance(other, Counter):
+        wenn nicht isinstance(other, Counter):
             return NotImplemented
         result = Counter()
         fuer elem, count in self.items():
@@ -848,7 +848,7 @@ klasse Counter(dict):
             wenn newcount > 0:
                 result[elem] = newcount
         fuer elem, count in other.items():
-            wenn elem not in self and count > 0:
+            wenn elem nicht in self und count > 0:
                 result[elem] = count
         return result
 
@@ -859,7 +859,7 @@ klasse Counter(dict):
         Counter({'b': 2, 'a': 1})
 
         '''
-        wenn not isinstance(other, Counter):
+        wenn nicht isinstance(other, Counter):
             return NotImplemented
         result = Counter()
         fuer elem, count in self.items():
@@ -867,7 +867,7 @@ klasse Counter(dict):
             wenn newcount > 0:
                 result[elem] = newcount
         fuer elem, count in other.items():
-            wenn elem not in self and count < 0:
+            wenn elem nicht in self und count < 0:
                 result[elem] = 0 - count
         return result
 
@@ -878,7 +878,7 @@ klasse Counter(dict):
         Counter({'b': 3, 'c': 2, 'a': 1})
 
         '''
-        wenn not isinstance(other, Counter):
+        wenn nicht isinstance(other, Counter):
             return NotImplemented
         result = Counter()
         fuer elem, count in self.items():
@@ -887,7 +887,7 @@ klasse Counter(dict):
             wenn newcount > 0:
                 result[elem] = newcount
         fuer elem, count in other.items():
-            wenn elem not in self and count > 0:
+            wenn elem nicht in self und count > 0:
                 result[elem] = count
         return result
 
@@ -898,7 +898,7 @@ klasse Counter(dict):
         Counter({'b': 1})
 
         '''
-        wenn not isinstance(other, Counter):
+        wenn nicht isinstance(other, Counter):
             return NotImplemented
         result = Counter()
         fuer elem, count in self.items():
@@ -909,7 +909,7 @@ klasse Counter(dict):
         return result
 
     def __pos__(self):
-        'Adds an empty counter, effectively stripping negative and zero counts'
+        'Adds an empty counter, effectively stripping negative und zero counts'
         result = Counter()
         fuer elem, count in self.items():
             wenn count > 0:
@@ -917,8 +917,8 @@ klasse Counter(dict):
         return result
 
     def __neg__(self):
-        '''Subtracts von an empty counter.  Strips positive and zero counts,
-        and flips the sign on negative counts.
+        '''Subtracts von an empty counter.  Strips positive und zero counts,
+        und flips the sign on negative counts.
 
         '''
         result = Counter()
@@ -928,8 +928,8 @@ klasse Counter(dict):
         return result
 
     def _keep_positive(self):
-        '''Internal method to strip elements mit a negative or zero count'''
-        nonpositive = [elem fuer elem, count in self.items() wenn not count > 0]
+        '''Internal method to strip elements mit a negative oder zero count'''
+        nonpositive = [elem fuer elem, count in self.items() wenn nicht count > 0]
         fuer elem in nonpositive:
             del self[elem]
         return self
@@ -999,12 +999,12 @@ klasse ChainMap(_collections_abc.MutableMapping):
     ''' A ChainMap groups multiple dicts (or other mappings) together
     to create a single, updateable view.
 
-    The underlying mappings are stored in a list.  That list is public and can
-    be accessed or updated using the *maps* attribute.  There is no other
+    The underlying mappings are stored in a list.  That list is public und can
+    be accessed oder updated using the *maps* attribute.  There is no other
     state.
 
     Lookups search the underlying mappings successively until a key is found.
-    In contrast, writes, updates, and deletions only operate on the first
+    In contrast, writes, updates, und deletions only operate on the first
     mapping.
 
     '''
@@ -1014,7 +1014,7 @@ klasse ChainMap(_collections_abc.MutableMapping):
         If no mappings are provided, a single empty dictionary is used.
 
         '''
-        self.maps = list(maps) or [{}]          # always at least one map
+        self.maps = list(maps) oder [{}]          # always at least one map
 
     def __missing__(self, key):
         raise KeyError(key)
@@ -1054,11 +1054,11 @@ klasse ChainMap(_collections_abc.MutableMapping):
 
     @classmethod
     def fromkeys(cls, iterable, value=Nichts, /):
-        'Create a new ChainMap mit keys von iterable and values set to value.'
+        'Create a new ChainMap mit keys von iterable und values set to value.'
         return cls(dict.fromkeys(iterable, value))
 
     def copy(self):
-        'New ChainMap or subclass mit a new copy of maps[0] and refs to maps[1:]'
+        'New ChainMap oder subclass mit a new copy of maps[0] und refs to maps[1:]'
         return self.__class__(self.maps[0].copy(), *self.maps[1:])
 
     __copy__ = copy
@@ -1066,7 +1066,7 @@ klasse ChainMap(_collections_abc.MutableMapping):
     def new_child(self, m=Nichts, **kwargs):      # like Django's Context.push()
         '''New ChainMap mit a new map followed by all previous maps.
         If no map is provided, an empty dict is used.
-        Keyword arguments update the map or new empty dict.
+        Keyword arguments update the map oder new empty dict.
         '''
         wenn m is Nichts:
             m = kwargs
@@ -1086,21 +1086,21 @@ klasse ChainMap(_collections_abc.MutableMapping):
         try:
             del self.maps[0][key]
         except KeyError:
-            raise KeyError(f'Key not found in the first mapping: {key!r}')
+            raise KeyError(f'Key nicht found in the first mapping: {key!r}')
 
     def popitem(self):
-        'Remove and return an item pair von maps[0]. Raise KeyError is maps[0] is empty.'
+        'Remove und return an item pair von maps[0]. Raise KeyError is maps[0] is empty.'
         try:
             return self.maps[0].popitem()
         except KeyError:
             raise KeyError('No keys found in the first mapping.')
 
     def pop(self, key, *args):
-        'Remove *key* von maps[0] and return its value. Raise KeyError wenn *key* not in maps[0].'
+        'Remove *key* von maps[0] und return its value. Raise KeyError wenn *key* nicht in maps[0].'
         try:
             return self.maps[0].pop(key, *args)
         except KeyError:
-            raise KeyError(f'Key not found in the first mapping: {key!r}')
+            raise KeyError(f'Key nicht found in the first mapping: {key!r}')
 
     def clear(self):
         'Clear maps[0], leaving maps[1:] intact.'
@@ -1111,14 +1111,14 @@ klasse ChainMap(_collections_abc.MutableMapping):
         return self
 
     def __or__(self, other):
-        wenn not isinstance(other, _collections_abc.Mapping):
+        wenn nicht isinstance(other, _collections_abc.Mapping):
             return NotImplemented
         m = self.copy()
         m.maps[0].update(other)
         return m
 
     def __ror__(self, other):
-        wenn not isinstance(other, _collections_abc.Mapping):
+        wenn nicht isinstance(other, _collections_abc.Mapping):
             return NotImplemented
         m = dict(other)
         fuer child in reversed(self.maps):
@@ -1135,7 +1135,7 @@ klasse UserDict(_collections_abc.MutableMapping):
     # Start by filling-out the abstract methods
     def __init__(self, dict=Nichts, /, **kwargs):
         self.data = {}
-        wenn dict is not Nichts:
+        wenn dict is nicht Nichts:
             self.update(dict)
         wenn kwargs:
             self.update(kwargs)
@@ -1159,7 +1159,7 @@ klasse UserDict(_collections_abc.MutableMapping):
     def __iter__(self):
         return iter(self.data)
 
-    # Modify __contains__ and get() to work like dict
+    # Modify __contains__ und get() to work like dict
     # does when __missing__ is present.
     def __contains__(self, key):
         return key in self.data
@@ -1170,7 +1170,7 @@ klasse UserDict(_collections_abc.MutableMapping):
         return default
 
 
-    # Now, add the methods in dicts but not in MutableMapping
+    # Now, add the methods in dicts but nicht in MutableMapping
     def __repr__(self):
         return repr(self.data)
 
@@ -1198,7 +1198,7 @@ klasse UserDict(_collections_abc.MutableMapping):
     def __copy__(self):
         inst = self.__class__.__new__(self.__class__)
         inst.__dict__.update(self.__dict__)
-        # Create a copy and avoid triggering descriptors
+        # Create a copy und avoid triggering descriptors
         inst.__dict__["data"] = self.__dict__["data"].copy()
         return inst
 
@@ -1228,11 +1228,11 @@ klasse UserDict(_collections_abc.MutableMapping):
 ################################################################################
 
 klasse UserList(_collections_abc.MutableSequence):
-    """A more or less complete user-defined wrapper around list objects."""
+    """A more oder less complete user-defined wrapper around list objects."""
 
     def __init__(self, initlist=Nichts):
         self.data = []
-        wenn initlist is not Nichts:
+        wenn initlist is nicht Nichts:
             # XXX should this accept an arbitrary sequence?
             wenn type(initlist) == type(self.data):
                 self.data[:] = initlist
@@ -1315,7 +1315,7 @@ klasse UserList(_collections_abc.MutableSequence):
     def __copy__(self):
         inst = self.__class__.__new__(self.__class__)
         inst.__dict__.update(self.__dict__)
-        # Create a copy and avoid triggering descriptors
+        # Create a copy und avoid triggering descriptors
         inst.__dict__["data"] = self.__dict__["data"][:]
         return inst
 

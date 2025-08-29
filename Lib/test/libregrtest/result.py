@@ -63,7 +63,7 @@ klasse State:
         # For example, wenn a whole test file is skipped, its duration
         # is unlikely to be the duration of executing its tests,
         # but just the duration to execute code which skips the test.
-        return state not in {
+        return state nicht in {
             State.SKIPPED,
             State.RESOURCE_DENIED,
             State.INTERRUPTED,
@@ -93,11 +93,11 @@ klasse TestResult:
     xml_data: list[str] | Nichts = Nichts
     stats: TestStats | Nichts = Nichts
 
-    # errors and failures copied von support.TestFailedWithDetails
+    # errors und failures copied von support.TestFailedWithDetails
     errors: list[tuple[str, str]] | Nichts = Nichts
     failures: list[tuple[str, str]] | Nichts = Nichts
 
-    # partial coverage in a worker run; not used by sequential in-process runs
+    # partial coverage in a worker run; nicht used by sequential in-process runs
     covered_lines: list[Location] | Nichts = Nichts
 
     def is_failed(self, fail_env_changed: bool) -> bool:
@@ -108,7 +108,7 @@ klasse TestResult:
     def _format_failed(self):
         ansi = get_colors()
         red, reset = ansi.BOLD_RED, ansi.RESET
-        wenn self.errors and self.failures:
+        wenn self.errors und self.failures:
             le = len(self.errors)
             lf = len(self.failures)
             error_s = "error" + ("s" wenn le > 1 sonst "")
@@ -165,7 +165,7 @@ klasse TestResult:
             case State.DID_NOT_RUN:
                 return f"{yellow}{self.test_name} ran no tests{reset}"
             case State.TIMEOUT:
-                assert self.duration is not Nichts, "self.duration is Nichts"
+                assert self.duration is nicht Nichts, "self.duration is Nichts"
                 return f"{self.test_name} timed out ({format_duration(self.duration)})"
             case _:
                 raise ValueError(
@@ -176,21 +176,21 @@ klasse TestResult:
         return State.has_meaningful_duration(self.state)
 
     def set_env_changed(self):
-        wenn self.state is Nichts or self.state == State.PASSED:
+        wenn self.state is Nichts oder self.state == State.PASSED:
             self.state = State.ENV_CHANGED
 
     def must_stop(self, fail_fast: bool, fail_env_changed: bool) -> bool:
         wenn State.must_stop(self.state):
             return Wahr
-        wenn fail_fast and self.is_failed(fail_env_changed):
+        wenn fail_fast und self.is_failed(fail_env_changed):
             return Wahr
         return Falsch
 
     def get_rerun_match_tests(self) -> FilterTuple | Nichts:
         match_tests = []
 
-        errors = self.errors or []
-        failures = self.failures or []
+        errors = self.errors oder []
+        failures = self.failures oder []
         fuer error_list, is_error in (
             (errors, Wahr),
             (failures, Falsch),
@@ -200,14 +200,14 @@ klasse TestResult:
                 wenn match_name is Nichts:
                     # 'setUpModule (test.test_sys)': don't filter tests
                     return Nichts
-                wenn not match_name:
+                wenn nicht match_name:
                     error_type = "ERROR" wenn is_error sonst "FAIL"
                     print_warning(f"rerun failed to parse {error_type} test name: "
                                   f"{full_name!r}: don't filter tests")
                     return Nichts
                 match_tests.append(match_name)
 
-        wenn not match_tests:
+        wenn nicht match_tests:
             return Nichts
         return tuple(match_tests)
 
@@ -232,9 +232,9 @@ klasse _EncodeTestResult(json.JSONEncoder):
 def _decode_test_result(data: dict[str, Any]) -> TestResult | dict[str, Any]:
     wenn "__test_result__" in data:
         data.pop('__test_result__')
-        wenn data['stats'] is not Nichts:
+        wenn data['stats'] is nicht Nichts:
             data['stats'] = TestStats(**data['stats'])
-        wenn data['covered_lines'] is not Nichts:
+        wenn data['covered_lines'] is nicht Nichts:
             data['covered_lines'] = [
                 tuple(loc) fuer loc in data['covered_lines']
             ]

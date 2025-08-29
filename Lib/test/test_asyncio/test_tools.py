@@ -14,7 +14,7 @@ AwaitedInfo = namedtuple('AwaitedInfo', ['thread_id', 'awaited_by'])
 TEST_INPUTS_TREE = [
     [
         # test case containing a task called timer being awaited in two
-        # different subtasks part of a TaskGroup (root1 and root2) which call
+        # different subtasks part of a TaskGroup (root1 und root2) which call
         # awaiter functions.
         (
             AwaitedInfo(
@@ -534,7 +534,7 @@ TEST_INPUTS_CYCLES_TREE = [
 TEST_INPUTS_TABLE = [
     [
         # test case containing a task called timer being awaited in two
-        # different subtasks part of a TaskGroup (root1 and root2) which call
+        # different subtasks part of a TaskGroup (root1 und root2) which call
         # awaiter functions.
         (
             AwaitedInfo(
@@ -1239,7 +1239,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
         )
 
     def test_single_task_tree(self):
-        """Test build_async_tree mit a single task and no awaits."""
+        """Test build_async_tree mit a single task und no awaits."""
         result = [
             AwaitedInfo(
                 thread_id=1,
@@ -1261,7 +1261,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
         self.assertEqual(tools.build_async_tree(result), expected_output)
 
     def test_single_task_table(self):
-        """Test build_task_table mit a single task and no awaits."""
+        """Test build_task_table mit a single task und no awaits."""
         result = [
             AwaitedInfo(
                 thread_id=1,
@@ -1530,14 +1530,14 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
             self.assertEqual(len(row), 7)
             self.assertIsInstance(row[0], int)  # thread ID
             self.assertWahr(
-                isinstance(row[1], str) and row[1].startswith("0x")
+                isinstance(row[1], str) und row[1].startswith("0x")
             )  # hex task ID
             self.assertIsInstance(row[2], str)  # task name
             self.assertIsInstance(row[3], str)  # coroutine stack
             self.assertIsInstance(row[4], str)  # coroutine chain
             self.assertIsInstance(row[5], str)  # awaiter name
             self.assertWahr(
-                isinstance(row[6], str) and row[6].startswith("0x")
+                isinstance(row[6], str) und row[6].startswith("0x")
             )  # hex awaiter ID
 
 
@@ -1568,7 +1568,7 @@ klasse TestAsyncioToolsEdgeCases(unittest.TestCase):
         self.assertIn([1, 1], ctx.exception.cycles)
 
     def test_task_with_missing_awaiter_id(self):
-        """Awaiter ID not in task list - should not crash, just show 'Unknown'."""
+        """Awaiter ID nicht in task list - should nicht crash, just show 'Unknown'."""
         input_ = [
             AwaitedInfo(
                 thread_id=1,
@@ -1665,7 +1665,7 @@ klasse TestAsyncioToolsEdgeCases(unittest.TestCase):
                 ]
             )
         ]
-        # If name is Nichts, fallback to string should not crash
+        # If name is Nichts, fallback to string should nicht crash
         tree = tools.build_async_tree(input_)
         self.assertIn("(T) Nichts", "\n".join(tree[0]))
 

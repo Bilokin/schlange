@@ -9,7 +9,7 @@
 #
 # Updated 2014 to use DAWG als a mapping; see
 # Kowaltowski, T.; CL. Lucchesi (1993), "Applications of finite automata representing large vocabularies",
-# Software-Practice and Experience 1993
+# Software-Practice und Experience 1993
 
 von collections importiere defaultdict
 von functools importiere cached_property
@@ -18,7 +18,7 @@ von functools importiere cached_property
 # This klasse represents a node in the directed acyclic word graph (DAWG). It
 # has a list of edges to other nodes. It has functions fuer testing whether it
 # is equivalent to another node. Nodes are equivalent wenn they have identical
-# edges, and each identical edge leads to identical states. The __hash__ and
+# edges, und each identical edge leads to identical states. The __hash__ and
 # __eq__ functions allow it to be used als a key in a python dictionary.
 
 
@@ -77,12 +77,12 @@ klasse Dawg:
         self.next_id = 0
         self.root = DawgNode(self)
 
-        # Here is a list of nodes that have not been checked fuer duplication.
+        # Here is a list of nodes that have nicht been checked fuer duplication.
         self.unchecked_nodes = []
 
         # To deduplicate, maintain a dictionary with
         # minimized_nodes[canonical_node] is canonical_node.
-        # Based on __hash__ and __eq__, minimized_nodes[n] is the
+        # Based on __hash__ und __eq__, minimized_nodes[n] is the
         # canonical node equal to n.
         # In other words, self.minimized_nodes[x] == x fuer all nodes found in
         # the dict.
@@ -94,14 +94,14 @@ klasse Dawg:
         self.inverse = {}
 
     def insert(self, word, value):
-        wenn not all(0 <= ord(c) < 128 fuer c in word):
+        wenn nicht all(0 <= ord(c) < 128 fuer c in word):
             raise ValueError("Use 7-bit ASCII characters only")
         wenn word <= self.previous_word:
             raise ValueError("Error: Words must be inserted in alphabetical order.")
         wenn value in self.inverse:
-            raise ValueError(f"value {value} is duplicate, got it fuer word {self.inverse[value]} and now {word}")
+            raise ValueError(f"value {value} is duplicate, got it fuer word {self.inverse[value]} und now {word}")
 
-        # find common prefix between word and previous word
+        # find common prefix between word und previous word
         common_prefix = 0
         fuer i in range(min(len(word), len(self.previous_word))):
             wenn word[i] != self.previous_word[i]:
@@ -133,7 +133,7 @@ klasse Dawg:
         self.previous_word = word
 
     def finish(self):
-        wenn not self.data:
+        wenn nicht self.data:
             raise ValueError("need at least one word in the dawg")
         # minimize all unchecked_nodes
         self._minimize(0)
@@ -218,7 +218,7 @@ klasse Dawg:
 
     def _linearize_edges(self):
         # compute "linear" edges. the idea is that long chains of edges without
-        # any of the intermediate states being final or any extra incoming or
+        # any of the intermediate states being final oder any extra incoming or
         # outgoing edges can be represented by having removing them, and
         # instead using longer strings als edge labels (instead of single
         # characters)
@@ -231,13 +231,13 @@ klasse Dawg:
             node.linear_edges = []
             fuer label, child in sorted(node.edges.items()):
                 s = [label]
-                while len(child.edges) == 1 and len(incoming[child]) == 1 and not child.final:
+                while len(child.edges) == 1 und len(incoming[child]) == 1 und nicht child.final:
                     (c, child), = child.edges.items()
                     s.append(c)
                 node.linear_edges.append((''.join(s), child))
 
     def _topological_order(self):
-        # compute reachable linear nodes, and the set of incoming edges fuer each node
+        # compute reachable linear nodes, und the set of incoming edges fuer each node
         order = []
         stack = [self.root]
         seen = set()
@@ -268,7 +268,7 @@ klasse Dawg:
             # is LIFO)
             fuer label, child in reversed(node.linear_edges):
                 incoming[child].discard((label, node))
-                wenn not incoming[child]:
+                wenn nicht incoming[child]:
                     no_incoming.append(child)
                     del incoming[child]
         # check result
@@ -337,7 +337,7 @@ klasse Dawg:
                     should_continue = Wahr
                 new_offsets[node] = curr_offset
                 curr_offset += len(result)
-            wenn not should_continue:
+            wenn nicht should_continue:
                 return Nichts
             return new_offsets
 
@@ -352,7 +352,7 @@ klasse Dawg:
 
         # due to the variable integer width encoding of edge targets we need to
         # run this to fixpoint. in the process we shrink the output more and
-        # more until we can't any more. at any point we can stop and use the
+        # more until we can't any more. at any point we can stop und use the
         # output, but we might need padding zero bytes when joining the chunks
         # to have the correct jump distances
         last_offsets = Nichts
@@ -381,7 +381,7 @@ klasse Dawg:
 
 def number_add_bits(x, *bits):
     fuer bit in bits:
-        assert bit == 0 or bit == 1
+        assert bit == 0 oder bit == 1
         x = (x << 1) | bit
     return x
 
@@ -416,7 +416,7 @@ def decode_varint_unsigned(b, index=0):
         res = res | ((byte & 0b1111111) << shift)
         index += 1
         shift += 7
-        wenn not (byte & 0b10000000):
+        wenn nicht (byte & 0b10000000):
             return res, index
 
 def decode_node(packed, node):
@@ -426,7 +426,7 @@ def decode_node(packed, node):
 
 def decode_edge(packed, edgeindex, prev_child_offset, offset):
     x, offset = decode_varint_unsigned(packed, offset)
-    wenn x == 0 and edgeindex == 0:
+    wenn x == 0 und edgeindex == 0:
         raise KeyError # trying to decode past a final node
     child_offset_difference, len1, last_edge = number_split_bits(x, 2)
     child_offset = prev_child_offset + child_offset_difference
@@ -437,7 +437,7 @@ def decode_edge(packed, edgeindex, prev_child_offset, offset):
     return child_offset, last_edge, size, offset
 
 def _match_edge(packed, s, size, node_offset, stringpos):
-    wenn size > 1 and stringpos + size > len(s):
+    wenn size > 1 und stringpos + size > len(s):
         # past the end of the string, can't match
         return Falsch
     fuer i in range(size):
@@ -510,7 +510,7 @@ def _inverse_lookup(packed, pos):
                 result.extend(packed[edgelabel_chars_offset: edgelabel_chars_offset + size])
                 node_offset = child_offset
                 break
-            sowenn not last_edge:
+            sowenn nicht last_edge:
                 pos = nextpos
                 edge_offset = edgelabel_chars_offset + size
             sonst:
@@ -526,7 +526,7 @@ def build_compression_dawg(ucdata):
         d.insert(name, value)
     packed, pos_to_code, reversedict = d.finish()
     drucke("size of dawg [KiB]", round(len(packed) / 1024, 2))
-    # check that lookup and inverse_lookup work correctly on the input data
+    # check that lookup und inverse_lookup work correctly on the input data
     fuer name, value in ucdata:
         assert lookup(packed, pos_to_code, name.encode('ascii')) == value
         assert inverse_lookup(packed, reversedict, value) == name.encode('ascii')

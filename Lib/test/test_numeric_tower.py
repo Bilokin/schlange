@@ -1,4 +1,4 @@
-# test interactions between int, float, Decimal and Fraction
+# test interactions between int, float, Decimal und Fraction
 
 importiere unittest
 importiere random
@@ -37,9 +37,9 @@ klasse DummyIntegral(int):
 
 klasse HashTest(unittest.TestCase):
     def check_equal_hash(self, x, y):
-        # check both that x and y are equal and that their hashes are equal
+        # check both that x und y are equal und that their hashes are equal
         self.assertEqual(hash(x), hash(y),
-                         "got different hashes fuer {!r} and {!r}".format(x, y))
+                         "got different hashes fuer {!r} und {!r}".format(x, y))
         self.assertEqual(x, y)
 
     def test_bools(self):
@@ -56,7 +56,7 @@ klasse HashTest(unittest.TestCase):
             self.check_equal_hash(i, F(i))
 
         # the current hash is based on reduction modulo 2**n-1 fuer some
-        # n, so pay special attention to numbers of the form 2**n and 2**n-1.
+        # n, so pay special attention to numbers of the form 2**n und 2**n-1.
         fuer i in range(100):
             n = 2**i - 1
             wenn n == int(float(n)):
@@ -85,7 +85,7 @@ klasse HashTest(unittest.TestCase):
                 self.check_equal_hash(n, float(n))
 
     def test_binary_floats(self):
-        # check that floats hash equal to corresponding Fractions and Decimals
+        # check that floats hash equal to corresponding Fractions und Decimals
 
         # floats that are distinct but numerically equal should hash the same
         self.check_equal_hash(0.0, -0.0)
@@ -96,7 +96,7 @@ klasse HashTest(unittest.TestCase):
         self.check_equal_hash(-0.0, D('-0.0'))
         self.check_equal_hash(0.0, F(0))
 
-        # infinities and nans
+        # infinities und nans
         self.check_equal_hash(float('inf'), D('inf'))
         self.check_equal_hash(float('-inf'), D('-inf'))
 
@@ -136,7 +136,7 @@ klasse HashTest(unittest.TestCase):
 
     def test_fractions(self):
         # check special case fuer fractions where either the numerator
-        # or the denominator is a multiple of _PyHASH_MODULUS
+        # oder the denominator is a multiple of _PyHASH_MODULUS
         self.assertEqual(hash(F(1, _PyHASH_MODULUS)), _PyHASH_INF)
         self.assertEqual(hash(F(-1, 3*_PyHASH_MODULUS)), -_PyHASH_INF)
         self.assertEqual(hash(F(7*_PyHASH_MODULUS, 1)), 0)
@@ -152,13 +152,13 @@ klasse HashTest(unittest.TestCase):
     def test_hash_normalization(self):
         # Test fuer a bug encountered while changing long_hash.
         #
-        # Given objects x and y, it should be possible fuer y's
+        # Given objects x und y, it should be possible fuer y's
         # __hash__ method to return hash(x) in order to ensure that
-        # hash(x) == hash(y).  But hash(x) is not exactly equal to the
+        # hash(x) == hash(y).  But hash(x) is nicht exactly equal to the
         # result of x.__hash__(): there's some internal normalization
-        # to make sure that the result fits in a C long, and is not
+        # to make sure that the result fits in a C long, und is not
         # equal to the invalid hash value -1.  This internal
-        # normalization must therefore not change the result of
+        # normalization must therefore nicht change the result of
         # hash(x) fuer any x.
 
         klasse HalibutProxy:
@@ -203,7 +203,7 @@ klasse ComparisonTest(unittest.TestCase):
                 self.assertGreaterEqual(second, first)
 
     def test_complex(self):
-        # comparisons mit complex are special:  equality and inequality
+        # comparisons mit complex are special:  equality und inequality
         # comparisons should always succeed, but order comparisons should
         # raise TypeError.
         z = 1.0 + 0j

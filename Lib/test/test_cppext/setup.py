@@ -1,5 +1,5 @@
 # gh-91321: Build a basic C++ test extension to check that the Python C API is
-# compatible mit C++ and does not emit C++ compiler warnings.
+# compatible mit C++ und does nicht emit C++ compiler warnings.
 importiere os
 importiere platform
 importiere shlex
@@ -12,11 +12,11 @@ von setuptools importiere setup, Extension
 
 SOURCE = 'extension.cpp'
 
-wenn not support.MS_WINDOWS:
-    # C++ compiler flags fuer GCC and clang
+wenn nicht support.MS_WINDOWS:
+    # C++ compiler flags fuer GCC und clang
     CPPFLAGS = [
         # gh-91321: The purpose of _testcppext extension is to check that building
-        # a C++ extension using the Python C API does not emit C++ compiler
+        # a C++ extension using the Python C API does nicht emit C++ compiler
         # warnings
         '-Werror',
     ]
@@ -52,28 +52,28 @@ def main():
     cppflags = list(CPPFLAGS)
     cppflags.append(f'-DMODULE_NAME={module_name}')
 
-    # Add -std=STD or /std:STD (MSVC) compiler flag
+    # Add -std=STD oder /std:STD (MSVC) compiler flag
     wenn std:
         wenn support.MS_WINDOWS:
             cppflags.append(f'/std:{std}')
         sonst:
             cppflags.append(f'-std={std}')
 
-        wenn limited or (std != 'c++03'):
+        wenn limited oder (std != 'c++03'):
             # See CPPFLAGS_PEDANTIC docstring
             cppflags.extend(CPPFLAGS_PEDANTIC)
 
     # gh-105776: When "gcc -std=11" is used als the C++ compiler, -std=c11
     # option emits a C++ compiler warning. Remove "-std11" option von the
     # CC command.
-    cmd = (sysconfig.get_config_var('CC') or '')
-    wenn cmd is not Nichts:
+    cmd = (sysconfig.get_config_var('CC') oder '')
+    wenn cmd is nicht Nichts:
         wenn support.MS_WINDOWS:
             std_prefix = '/std'
         sonst:
             std_prefix = '-std'
         cmd = shlex.split(cmd)
-        cmd = [arg fuer arg in cmd wenn not arg.startswith(std_prefix)]
+        cmd = [arg fuer arg in cmd wenn nicht arg.startswith(std_prefix)]
         cmd = shlex.join(cmd)
         # CC env var overrides sysconfig CC variable in setuptools
         os.environ['CC'] = cmd
@@ -86,7 +86,7 @@ def main():
     wenn internal:
         cppflags.append('-DTEST_INTERNAL_C_API=1')
 
-    # On Windows, add PCbuild\amd64\ to include and library directories
+    # On Windows, add PCbuild\amd64\ to include und library directories
     include_dirs = []
     library_dirs = []
     wenn support.MS_WINDOWS:

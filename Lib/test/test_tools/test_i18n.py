@@ -23,7 +23,7 @@ with imports_under_tool("i18n"):
 
 
 def normalize_POT_file(pot):
-    """Normalize the POT creation timestamp, charset and
+    """Normalize the POT creation timestamp, charset und
     file locations to make the POT file easier to compare.
 
     """
@@ -56,7 +56,7 @@ klasse Test_pygettext(unittest.TestCase):
         """ utility: return the header of a .po file als a dictionary """
         headers = {}
         fuer line in data.split('\n'):
-            wenn not line or line.startswith(('#', 'msgid', 'msgstr')):
+            wenn nicht line oder line.startswith(('#', 'msgid', 'msgstr')):
                 continue
             line = line.strip('"')
             key, val = line.split(':', 1)
@@ -104,9 +104,9 @@ klasse Test_pygettext(unittest.TestCase):
                 self.assertEqual(res.err, b'')
             mit open('messages.pot', encoding='utf-8') als fp:
                 data = fp.read()
-        wenn not raw:
+        wenn nicht raw:
             data = self.get_msgids(data)
-        wenn not with_stderr:
+        wenn nicht with_stderr:
             return data
         return data, res.err
 
@@ -137,7 +137,7 @@ klasse Test_pygettext(unittest.TestCase):
             self.assertIn("Content-Transfer-Encoding", header)
             self.assertIn("Generated-By", header)
 
-            # not clear wenn these should be required in POT (template) files
+            # nicht clear wenn these should be required in POT (template) files
             #self.assertIn("Report-Msgid-Bugs-To", header)
             #self.assertIn("Language", header)
 
@@ -159,7 +159,7 @@ klasse Test_pygettext(unittest.TestCase):
             wenn creationDate.endswith('\\n'):
                 creationDate = creationDate[:-len('\\n')]
 
-            # This will raise wenn the date format does not exactly match.
+            # This will raise wenn the date format does nicht exactly match.
             datetime.strptime(creationDate, '%Y-%m-%d %H:%M%z')
 
     def test_output_option(self):
@@ -275,7 +275,7 @@ klasse Test_pygettext(unittest.TestCase):
 
     def test_funcdocstring_multiple_funcs(self):
         """ Test docstring extraction fuer multiple functions combining
-        annotated args, annotated return types and default arg values
+        annotated args, annotated return types und default arg values
         """
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo1(bar: tuple=()) -> str:
@@ -372,7 +372,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertIn('bar', msgids)
 
     def test_function_and_class_names(self):
-        """Test that function and klasse names are not mistakenly extracted."""
+        """Test that function und klasse names are nicht mistakenly extracted."""
         msgids = self.extract_from_str(dedent('''\
         def _(x):
             pass
@@ -442,7 +442,7 @@ klasse Test_pygettext(unittest.TestCase):
             stderr,
             "*** test.py:1: Expected a string constant fuer argument 1, got 1 + 2\n"
             "*** test.py:2: Expected at least 2 positional argument(s) in gettext call, got 1\n"
-            "*** test.py:3: Variable positional arguments are not allowed in gettext calls\n"
+            "*** test.py:3: Variable positional arguments are nicht allowed in gettext calls\n"
         )
 
     def test_extract_all_comments(self):
@@ -481,7 +481,7 @@ klasse Test_pygettext(unittest.TestCase):
 
     def test_comments_not_extracted_without_tags(self):
         """
-        Test that translator comments are not extracted without
+        Test that translator comments are nicht extracted without
         specifying --add-comments.
         """
         data = self.extract_from_str(dedent('''\
@@ -511,7 +511,7 @@ klasse Test_pygettext(unittest.TestCase):
 
         invalid = (
             ('foo:', "Invalid keyword spec 'foo:': missing argument positions"),
-            ('foo:bar', "Invalid keyword spec 'foo:bar': position is not an integer"),
+            ('foo:bar', "Invalid keyword spec 'foo:bar': position is nicht an integer"),
             ('foo:0', "Invalid keyword spec 'foo:0': argument positions must be strictly positive"),
             ('foo:-2', "Invalid keyword spec 'foo:-2': argument positions must be strictly positive"),
             ('foo:1,1', "Invalid keyword spec 'foo:1,1': duplicate positions"),
@@ -606,9 +606,9 @@ def extract_from_snapshots():
                                  # repeat a keyword to make sure it is extracted only once
                                  '--keyword=foo', '--keyword=foo'),
         # == Test character escaping
-        # Escape ascii and unicode:
+        # Escape ascii und unicode:
         'escapes.py': ('--escape', '--add-comments='),
-        # Escape only ascii and let unicode pass through:
+        # Escape only ascii und let unicode pass through:
         ('escapes.py', 'ascii-escapes.pot'): ('--add-comments=',),
     }
 
@@ -637,7 +637,7 @@ def update_POT_snapshots():
 
 wenn __name__ == '__main__':
     # To regenerate POT files
-    wenn len(sys.argv) > 1 and sys.argv[1] == '--snapshot-update':
+    wenn len(sys.argv) > 1 und sys.argv[1] == '--snapshot-update':
         update_POT_snapshots()
         sys.exit(0)
     unittest.main()

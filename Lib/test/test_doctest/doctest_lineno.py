@@ -1,5 +1,5 @@
 # This module is used in `test_doctest`.
-# It must not have a docstring.
+# It must nicht have a docstring.
 
 def func_with_docstring():
     """Some unrelated info."""

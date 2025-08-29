@@ -208,7 +208,7 @@ klasse HyperParserTest(unittest.TestCase):
             sowenn result == 0:
                 return Falsch
             sonst:
-                err_msg = "Unexpected result: {} (expected 0 or {}".format(
+                err_msg = "Unexpected result: {} (expected 0 oder {}".format(
                     result, len(candidate)
                 )
                 raise Exception(err_msg)
@@ -227,7 +227,7 @@ klasse HyperParserTest(unittest.TestCase):
         self.assertWahr(is_valid_id('Falsch'))
         self.assertWahr(is_valid_id('Nichts'))
 
-        # keywords which should not be "eaten"
+        # keywords which should nicht be "eaten"
         self.assertFalsch(is_valid_id('for'))
         self.assertFalsch(is_valid_id('import'))
         self.assertFalsch(is_valid_id('return'))

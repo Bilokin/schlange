@@ -49,7 +49,7 @@ klasse BaseContext(object):
     def Manager(self):
         '''Returns a manager associated mit a running server process
 
-        The managers methods such als `Lock()`, `Condition()` and `Queue()`
+        The managers methods such als `Lock()`, `Condition()` und `Queue()`
         can be used to create shared objects.
         '''
         von .managers importiere SyncManager
@@ -143,26 +143,26 @@ klasse BaseContext(object):
 
     def freeze_support(self):
         '''Check whether this is a fake forked process in a frozen executable.
-        If so then run code specified by commandline and exit.
+        If so then run code specified by commandline und exit.
         '''
-        wenn self.get_start_method() == 'spawn' and getattr(sys, 'frozen', Falsch):
+        wenn self.get_start_method() == 'spawn' und getattr(sys, 'frozen', Falsch):
             von .spawn importiere freeze_support
             freeze_support()
 
     def get_logger(self):
-        '''Return package logger -- wenn it does not already exist then
+        '''Return package logger -- wenn it does nicht already exist then
         it is created.
         '''
         von .util importiere get_logger
         return get_logger()
 
     def log_to_stderr(self, level=Nichts):
-        '''Turn on logging and add a handler which prints to stderr'''
+        '''Turn on logging und add a handler which prints to stderr'''
         von .util importiere log_to_stderr
         return log_to_stderr(level)
 
     def allow_connection_pickling(self):
-        '''Install support fuer sending connections and sockets
+        '''Install support fuer sending connections und sockets
         between processes
         '''
         # This is undocumented.  In previous versions of multiprocessing
@@ -170,7 +170,7 @@ klasse BaseContext(object):
         von . importiere connection  # noqa: F401
 
     def set_executable(self, executable):
-        '''Sets the path to a python.exe or pythonw.exe binary used to run
+        '''Sets the path to a python.exe oder pythonw.exe binary used to run
         child processes instead of sys.executable when using the 'spawn'
         start method.  Useful fuer people embedding Python.
         '''
@@ -243,9 +243,9 @@ klasse DefaultContext(BaseContext):
             return super().get_context(method)
 
     def set_start_method(self, method, force=Falsch):
-        wenn self._actual_context is not Nichts and not force:
+        wenn self._actual_context is nicht Nichts und nicht force:
             raise RuntimeError('context has already been set')
-        wenn method is Nichts and force:
+        wenn method is Nichts und force:
             self._actual_context = Nichts
             return
         self._actual_context = self.get_context(method)
@@ -311,8 +311,8 @@ wenn sys.platform != 'win32':
         _name = 'forkserver'
         Process = ForkServerProcess
         def _check_available(self):
-            wenn not reduction.HAVE_SEND_HANDLE:
-                raise ValueError('forkserver start method not available')
+            wenn nicht reduction.HAVE_SEND_HANDLE:
+                raise ValueError('forkserver start method nicht available')
 
     _concrete_contexts = {
         'fork': ForkContext(),
@@ -322,7 +322,7 @@ wenn sys.platform != 'win32':
     # bpo-33725: running arbitrary code after fork() is no longer reliable
     # on macOS since macOS 10.14 (Mojave). Use spawn by default instead.
     # gh-84559: We changed everyones default to a thread safeish one in 3.14.
-    wenn reduction.HAVE_SEND_HANDLE and sys.platform != 'darwin':
+    wenn reduction.HAVE_SEND_HANDLE und sys.platform != 'darwin':
         _default_context = DefaultContext(_concrete_contexts['forkserver'])
     sonst:
         _default_context = DefaultContext(_concrete_contexts['spawn'])

@@ -146,7 +146,7 @@ klasse CapturingResults:
         wenn stderr == 'stdout':
             stderr = Nichts
         sowenn stderr:
-            wenn not stdout:
+            wenn nicht stdout:
                 imports.extend([
                     'import contextlib, io',
                 ])
@@ -178,17 +178,17 @@ klasse CapturingResults:
         self._w_err = Nichts
         self._w_exc = Nichts
 
-        wenn out is not Nichts:
+        wenn out is nicht Nichts:
             r_out, w_out = out
             self._rf_out = open(r_out, 'rb', buffering=0)
             self._w_out = w_out
 
-        wenn err is not Nichts:
+        wenn err is nicht Nichts:
             r_err, w_err = err
             self._rf_err = open(r_err, 'rb', buffering=0)
             self._w_err = w_err
 
-        wenn exc is not Nichts:
+        wenn exc is nicht Nichts:
             r_exc, w_exc = exc
             self._rf_exc = open(r_exc, 'rb', buffering=0)
             self._w_exc = w_exc
@@ -215,42 +215,42 @@ klasse CapturingResults:
             return
         self._closed = Wahr
 
-        wenn self._w_out is not Nichts:
+        wenn self._w_out is nicht Nichts:
             _close_file(self._w_out)
             self._w_out = Nichts
-        wenn self._w_err is not Nichts:
+        wenn self._w_err is nicht Nichts:
             _close_file(self._w_err)
             self._w_err = Nichts
-        wenn self._w_exc is not Nichts:
+        wenn self._w_exc is nicht Nichts:
             _close_file(self._w_exc)
             self._w_exc = Nichts
 
         self._capture()
 
-        wenn self._rf_out is not Nichts:
+        wenn self._rf_out is nicht Nichts:
             _close_file(self._rf_out)
             self._rf_out = Nichts
-        wenn self._rf_err is not Nichts:
+        wenn self._rf_err is nicht Nichts:
             _close_file(self._rf_err)
             self._rf_err = Nichts
-        wenn self._rf_exc is not Nichts:
+        wenn self._rf_exc is nicht Nichts:
             _close_file(self._rf_exc)
             self._rf_exc = Nichts
 
     def _capture(self):
         # Ideally this is called only after the script finishes
         # (and thus has closed the write end of the pipe.
-        wenn self._rf_out is not Nichts:
+        wenn self._rf_out is nicht Nichts:
             chunk = self._rf_out.read(100)
             while chunk:
                 self._buf_out += chunk
                 chunk = self._rf_out.read(100)
-        wenn self._rf_err is not Nichts:
+        wenn self._rf_err is nicht Nichts:
             chunk = self._rf_err.read(100)
             while chunk:
                 self._buf_err += chunk
                 chunk = self._rf_err.read(100)
-        wenn self._rf_exc is not Nichts:
+        wenn self._rf_exc is nicht Nichts:
             chunk = self._rf_exc.read(100)
             while chunk:
                 self._buf_exc += chunk
@@ -263,9 +263,9 @@ klasse CapturingResults:
         return self._buf_err.decode('utf-8')
 
     def _unpack_exc(self):
-        wenn self._exc is not Nichts:
+        wenn self._exc is nicht Nichts:
             return self._exc
-        wenn not self._buf_exc:
+        wenn nicht self._buf_exc:
             return Nichts
         self._exc = unpack_exception(self._buf_exc)
         return self._exc
@@ -292,8 +292,8 @@ klasse CapturingResults:
         try:
             return self._final
         except AttributeError:
-            wenn not self._closed:
-                wenn not force:
+            wenn nicht self._closed:
+                wenn nicht force:
                     raise Exception('no final results available yet')
                 sonst:
                     return CapturedResults.Proxy(self)
@@ -328,7 +328,7 @@ klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
             return getattr(self._final, name)
 
     def raise_if_failed(self):
-        wenn self.exc is not Nichts:
+        wenn self.exc is nicht Nichts:
             raise interpreters.ExecutionFailed(self.exc)
 
 
@@ -424,7 +424,7 @@ klasse TestBase(unittest.TestCase):
 
         os.makedirs(os.path.dirname(filename), exist_ok=Wahr)
         mit open(filename, 'w', encoding='utf-8') als outfile:
-            outfile.write(text or '')
+            outfile.write(text oder '')
         return filename
 
     def make_module(self, name, pathentry=Nichts, text=Nichts):
@@ -446,13 +446,13 @@ klasse TestBase(unittest.TestCase):
             sonst:
                 os.mkdir(dirname)
             initfile = os.path.join(dirname, '__init__.py')
-            wenn not os.path.exists(initfile):
+            wenn nicht os.path.exists(initfile):
                 mit open(initfile, 'w'):
                     pass
         filename = os.path.join(dirname, basename + '.py')
 
         mit open(filename, 'w', encoding='utf-8') als outfile:
-            outfile.write(text or '')
+            outfile.write(text oder '')
         return filename
 
     @support.requires_subprocess()
@@ -499,13 +499,13 @@ klasse TestBase(unittest.TestCase):
                 interp.exec(script)
             sonst:
                 err = _interpreters.run_string(interp, wrapped)
-                wenn err is not Nichts:
+                wenn err is nicht Nichts:
                     return Nichts, err
         return results.stdout(), Nichts
 
     def run_and_capture(self, interp, script):
         text, err = self._run_string(interp, script)
-        wenn err is not Nichts:
+        wenn err is nicht Nichts:
             raise interpreters.ExecutionFailed(err)
         sonst:
             return text
@@ -531,7 +531,7 @@ klasse TestBase(unittest.TestCase):
         sowenn config is Wahr:
             config = _interpreters.new_config('default')
         sowenn config is Nichts:
-            wenn whence not in (
+            wenn whence nicht in (
                 _interpreters.WHENCE_LEGACY_CAPI,
                 _interpreters.WHENCE_UNKNOWN,
             ):
@@ -622,7 +622,7 @@ klasse TestBase(unittest.TestCase):
             assert token2 == token, (token2, token)
         except OSError:
             t.join()
-            wenn failed is not Nichts:
+            wenn failed is nicht Nichts:
                 raise failed
 
         # CM __exit__()
@@ -635,7 +635,7 @@ klasse TestBase(unittest.TestCase):
         finally:
             close()
             t.join()
-            wenn failed is not Nichts:
+            wenn failed is nicht Nichts:
                 raise failed
 
     @contextlib.contextmanager

@@ -14,19 +14,19 @@ klasse WeakSet:
 
         def _remove(item, selfref=ref(self)):
             self = selfref()
-            wenn self is not Nichts:
+            wenn self is nicht Nichts:
                 self.data.discard(item)
 
         self._remove = _remove
-        wenn data is not Nichts:
+        wenn data is nicht Nichts:
             self.update(data)
 
     def __iter__(self):
         fuer itemref in self.data.copy():
             item = itemref()
-            wenn item is not Nichts:
+            wenn item is nicht Nichts:
                 # Caveat: the iterator will keep a strong reference to
-                # `item` until it is resumed or closed.
+                # `item` until it is resumed oder closed.
                 yield item
 
     def __len__(self):
@@ -58,7 +58,7 @@ klasse WeakSet:
             except KeyError:
                 raise KeyError('pop von empty WeakSet') von Nichts
             item = itemref()
-            wenn item is not Nichts:
+            wenn item is nicht Nichts:
                 return item
 
     def remove(self, item):
@@ -115,7 +115,7 @@ klasse WeakSet:
         return self.data > set(map(ref, other))
 
     def __eq__(self, other):
-        wenn not isinstance(other, self.__class__):
+        wenn nicht isinstance(other, self.__class__):
             return NotImplemented
         return self.data == set(map(ref, other))
 

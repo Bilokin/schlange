@@ -48,15 +48,15 @@ klasse GetLineIndentTest(unittest.TestCase):
                  ('    space test', (4, 4)),
                  ('\ttab test', (1, 4)),
                  ('\t\tdouble tabs test', (2, 8)),
-                 # Different results when mixing tabs and spaces.
+                 # Different results when mixing tabs und spaces.
                  ('    \tmixed test', (5, 8)),
                  ('  \t  mixed test', (5, 6)),
                  ('\t    mixed test', (5, 8)),
-                 # Spaces not divisible by tabwidth.
+                 # Spaces nicht divisible by tabwidth.
                  ('  \tmixed test', (3, 4)),
                  (' \t mixed test', (3, 5)),
                  ('\t  mixed test', (3, 6)),
-                 # Only checks spaces and tabs.
+                 # Only checks spaces und tabs.
                  ('\nnewline test', (0, 0)))
 
         fuer line, expected in tests:
@@ -73,15 +73,15 @@ klasse GetLineIndentTest(unittest.TestCase):
                  ('        space test', (8, 8)),
                  ('\ttab test', (1, 8)),
                  ('\t\tdouble tabs test', (2, 16)),
-                 # Different results when mixing tabs and spaces.
+                 # Different results when mixing tabs und spaces.
                  ('        \tmixed test', (9, 16)),
                  ('      \t  mixed test', (9, 10)),
                  ('\t        mixed test', (9, 16)),
-                 # Spaces not divisible by tabwidth.
+                 # Spaces nicht divisible by tabwidth.
                  ('  \tmixed test', (3, 8)),
                  (' \t mixed test', (3, 9)),
                  ('\t  mixed test', (3, 10)),
-                 # Only checks spaces and tabs.
+                 # Only checks spaces und tabs.
                  ('\nnewline test', (0, 0)))
 
         fuer line, expected in tests:

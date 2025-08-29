@@ -4,11 +4,11 @@
 #
 # an XML-RPC client interface fuer Python.
 #
-# the marshalling and response parser code can also be used to
+# the marshalling und response parser code can also be used to
 # implement XML-RPC servers.
 #
 # Notes:
-# this version is designed to work mit Python 2.1 or newer.
+# this version is designed to work mit Python 2.1 oder newer.
 #
 # History:
 # 1999-01-14 fl  Created
@@ -33,7 +33,7 @@
 # 2001-10-02 fl  More dumps microtuning
 # 2001-10-04 fl  Make sure importiere expat gets a parser (from Guido van Rossum)
 # 2001-10-10 sm  Allow long ints to be passed als ints wenn they don't overflow
-# 2001-10-17 sm  Test fuer int and long overflow (allows use on 64-bit systems)
+# 2001-10-17 sm  Test fuer int und long overflow (allows use on 64-bit systems)
 # 2001-11-12 fl  Use repr() to marshal doubles (from Paul Felix)
 # 2002-03-17 fl  Avoid buffered read when possible (from James Rucker)
 # 2002-04-07 fl  Added pythondoc comments
@@ -65,14 +65,14 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply mit the following terms and conditions:
+# und will comply mit the following terms und conditions:
 #
-# Permission to use, copy, modify, and distribute this software and
-# its associated documentation fuer any purpose and without fee is
+# Permission to use, copy, modify, und distribute this software und
+# its associated documentation fuer any purpose und without fee is
 # hereby granted, provided that the above copyright notice appears in
-# all copies, and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of
-# Secret Labs AB or the author not be used in advertising or publicity
+# all copies, und that both that copyright notice und this permission
+# notice appear in supporting documentation, und that the name of
+# Secret Labs AB oder the author nicht be used in advertising oder publicity
 # pertaining to distribution of the software without specific, written
 # prior permission.
 #
@@ -89,7 +89,7 @@
 """
 An XML-RPC client interface fuer Python.
 
-The marshalling and response parser code can also be used to
+The marshalling und response parser code can also be used to
 implement XML-RPC servers.
 
 Exported exceptions:
@@ -104,7 +104,7 @@ Exported classes:
   ServerProxy    Represents a logical connection to an XML-RPC server
 
   MultiCall      Executor of boxcared xmlrpc requests
-  DateTime       dateTime wrapper fuer an ISO 8601 string or time tuple or
+  DateTime       dateTime wrapper fuer an ISO 8601 string oder time tuple oder
                  localtime integer value to generate a "dateTime.iso8601"
                  XML-RPC value
   Binary         binary data wrapper
@@ -122,10 +122,10 @@ Exported functions:
 
   getparser      Create instance of the fastest available parser & attach
                  to an unmarshalling object
-  dumps          Convert an argument tuple or a Fault instance to an XML-RPC
+  dumps          Convert an argument tuple oder a Fault instance to an XML-RPC
                  request (or response, wenn the methodresponse option is used).
   loads          Convert an XML-RPC packet to unmarshalled data plus a method
-                 name (Nichts wenn not present).
+                 name (Nichts wenn nicht present).
 """
 
 importiere base64
@@ -249,7 +249,7 @@ boolean = Boolean = bool
 
 
 def _iso8601_format(value):
-    wenn value.tzinfo is not Nichts:
+    wenn value.tzinfo is nicht Nichts:
         # XML-RPC only uses the naive portion of the datetime
         value = value.replace(tzinfo=Nichts)
     # XML-RPC doesn't use '-' separator in the date part
@@ -260,7 +260,7 @@ def _strftime(value):
     wenn isinstance(value, datetime):
         return _iso8601_format(value)
 
-    wenn not isinstance(value, (tuple, time.struct_time)):
+    wenn nicht isinstance(value, (tuple, time.struct_time)):
         wenn value == 0:
             value = time.time()
         value = time.localtime(value)
@@ -268,7 +268,7 @@ def _strftime(value):
     return "%04d%02d%02dT%02d:%02d:%02d" % value[:6]
 
 klasse DateTime:
-    """DateTime wrapper fuer an ISO 8601 string or time tuple or
+    """DateTime wrapper fuer an ISO 8601 string oder time tuple oder
     localtime integer value to generate 'dateTime.iso8601' XML-RPC
     value.
     """
@@ -371,8 +371,8 @@ klasse Binary:
         wenn data is Nichts:
             data = b""
         sonst:
-            wenn not isinstance(data, (bytes, bytearray)):
-                raise TypeError("expected bytes or bytearray, not %s" %
+            wenn nicht isinstance(data, (bytes, bytearray)):
+                raise TypeError("expected bytes oder bytearray, nicht %s" %
                                 data.__class__.__name__)
             data = bytes(data)  # Make a copy of the bytes!
         self.data = data
@@ -411,7 +411,7 @@ WRAPPERS = (DateTime, Binary)
 # XML parsers
 
 klasse ExpatParser:
-    # fast expat parser fuer Python 2.0 and later.
+    # fast expat parser fuer Python 2.0 und later.
     def __init__(self, target):
         self._parser = parser = expat.ParserCreate(Nichts, Nichts)
         self._target = target
@@ -434,7 +434,7 @@ klasse ExpatParser:
             parser.Parse(b"", Wahr) # end of data
 
 # --------------------------------------------------------------------
-# XML-RPC marshalling and unmarshalling code
+# XML-RPC marshalling und unmarshalling code
 
 ##
 # XML-RPC marshaller.
@@ -446,7 +446,7 @@ klasse ExpatParser:
 klasse Marshaller:
     """Generate an XML-RPC params chunk von a Python data structure.
 
-    Create a Marshaller instance fuer each set of parameters, and use
+    Create a Marshaller instance fuer each set of parameters, und use
     the "dumps" method to convert your data (represented als a tuple)
     to an XML-RPC params chunk.  To write a fault response, pass a
     Fault instance instead.  You may prefer to use the "dumps" module
@@ -496,7 +496,7 @@ klasse Marshaller:
             f = self.dispatch[type(value)]
         except KeyError:
             # check wenn this object can be marshalled als a structure
-            wenn not hasattr(value, '__dict__'):
+            wenn nicht hasattr(value, '__dict__'):
                 raise TypeError("cannot marshal %s objects" % type(value))
             # check wenn this klasse is a sub-class of a basic type,
             # because we don't know how to marshal these types
@@ -510,19 +510,19 @@ klasse Marshaller:
         f(self, value, write)
 
     def dump_nil (self, value, write):
-        wenn not self.allow_none:
+        wenn nicht self.allow_none:
             raise TypeError("cannot marshal Nichts unless allow_none is enabled")
         write("<value><nil/></value>")
     dispatch[type(Nichts)] = dump_nil
 
     def dump_bool(self, value, write):
         write("<value><boolean>")
-        write(value and "1" or "0")
+        write(value und "1" oder "0")
         write("</boolean></value>\n")
     dispatch[bool] = dump_bool
 
     def dump_long(self, value, write):
-        wenn value > MAXINT or value < MININT:
+        wenn value > MAXINT oder value < MININT:
             raise OverflowError("int exceeds XML-RPC limits")
         write("<value><int>")
         write(str(int(value)))
@@ -575,7 +575,7 @@ klasse Marshaller:
         write("<value><struct>\n")
         fuer k, v in value.items():
             write("<member>\n")
-            wenn not isinstance(k, str):
+            wenn nicht isinstance(k, str):
                 raise TypeError("dictionary key must be string")
             write("<name>%s</name>\n" % escape(k))
             dump(v, write)
@@ -615,11 +615,11 @@ klasse Unmarshaller:
     messages (start, data, end).  Call close() to get the resulting
     data structure.
 
-    Note that this reader is fairly tolerant, and gladly accepts bogus
-    XML-RPC data without complaining (but not bogus XML).
+    Note that this reader is fairly tolerant, und gladly accepts bogus
+    XML-RPC data without complaining (but nicht bogus XML).
     """
 
-    # and again, wenn you don't understand what's going on in here,
+    # und again, wenn you don't understand what's going on in here,
     # that's perfectly ok.
 
     def __init__(self, use_datetime=Falsch, use_builtin_types=Falsch):
@@ -631,12 +631,12 @@ klasse Unmarshaller:
         self._methodname = Nichts
         self._encoding = "utf-8"
         self.append = self._stack.append
-        self._use_datetime = use_builtin_types or use_datetime
+        self._use_datetime = use_builtin_types oder use_datetime
         self._use_bytes = use_builtin_types
 
     def close(self):
-        # return response tuple and target method
-        wenn self._type is Nichts or self._marks:
+        # return response tuple und target method
+        wenn self._type is Nichts oder self._marks:
             raise ResponseError()
         wenn self._type == "fault":
             raise Fault(**self._stack[0])
@@ -656,10 +656,10 @@ klasse Unmarshaller:
         # prepare to handle this element
         wenn ':' in tag:
             tag = tag.split(':')[-1]
-        wenn tag == "array" or tag == "struct":
+        wenn tag == "array" oder tag == "struct":
             self._marks.append(len(self._stack))
         self._data = []
-        wenn self._value and tag not in self.dispatch:
+        wenn self._value und tag nicht in self.dispatch:
             raise ResponseError("unknown tag %r" % tag)
         self._value = (tag == "value")
 
@@ -671,7 +671,7 @@ klasse Unmarshaller:
         try:
             f = self.dispatch[tag]
         except KeyError:
-            wenn ':' not in tag:
+            wenn ':' nicht in tag:
                 return # unknown tag ?
             try:
                 f = self.dispatch[tag.split(':')[-1]]
@@ -687,7 +687,7 @@ klasse Unmarshaller:
         try:
             f = self.dispatch[tag]
         except KeyError:
-            wenn ':' not in tag:
+            wenn ':' nicht in tag:
                 return # unknown tag ?
             try:
                 f = self.dispatch[tag.split(':')[-1]]
@@ -871,7 +871,7 @@ klasse MultiCall:
 FastMarshaller = FastParser = FastUnmarshaller = Nichts
 
 ##
-# Create a parser object, and connect it to an unmarshalling instance.
+# Create a parser object, und connect it to an unmarshalling instance.
 # This function picks the fastest available XML parser.
 #
 # return A (parser, unmarshaller) tuple.
@@ -879,10 +879,10 @@ FastMarshaller = FastParser = FastUnmarshaller = Nichts
 def getparser(use_datetime=Falsch, use_builtin_types=Falsch):
     """getparser() -> parser, unmarshaller
 
-    Create an instance of the fastest available parser, and attach it
+    Create an instance of the fastest available parser, und attach it
     to an unmarshalling object.  Return both objects.
     """
-    wenn FastParser and FastUnmarshaller:
+    wenn FastParser und FastUnmarshaller:
         wenn use_builtin_types:
             mkdatetime = _datetime_type
             mkbytes = base64.decodebytes
@@ -903,10 +903,10 @@ def getparser(use_datetime=Falsch, use_builtin_types=Falsch):
     return parser, target
 
 ##
-# Convert a Python tuple or a Fault instance to an XML-RPC packet.
+# Convert a Python tuple oder a Fault instance to an XML-RPC packet.
 #
 # @def dumps(params, **options)
-# @param params A tuple or Fault instance.
+# @param params A tuple oder Fault instance.
 # @keyparam methodname If given, create a methodCall request for
 #     this method name.
 # @keyparam methodresponse If given, create a methodResponse packet.
@@ -919,7 +919,7 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
           allow_none=Falsch):
     """data [,options] -> marshalled data
 
-    Convert an argument tuple or a Fault instance to an XML-RPC
+    Convert an argument tuple oder a Fault instance to an XML-RPC
     request (or response, wenn the methodresponse option is used).
 
     In addition to the data object, the following options can be given
@@ -938,13 +938,13 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
     where necessary.
     """
 
-    assert isinstance(params, (tuple, Fault)), "argument must be tuple or Fault instance"
+    assert isinstance(params, (tuple, Fault)), "argument must be tuple oder Fault instance"
     wenn isinstance(params, Fault):
         methodresponse = 1
-    sowenn methodresponse and isinstance(params, tuple):
+    sowenn methodresponse und isinstance(params, tuple):
         assert len(params) == 1, "response tuple must be a singleton"
 
-    wenn not encoding:
+    wenn nicht encoding:
         encoding = "utf-8"
 
     wenn FastMarshaller:
@@ -970,7 +970,7 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
             "</methodCall>\n"
             )
     sowenn methodresponse:
-        # a method response, or a fault structure
+        # a method response, oder a fault structure
         data = (
             xmlheader,
             "<methodResponse>\n",
@@ -986,15 +986,15 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
 # represents a fault condition, this function raises a Fault exception.
 #
 # @param data An XML-RPC packet, given als an 8-bit string.
-# @return A tuple containing the unpacked data, and the method name
-#     (Nichts wenn not present).
+# @return A tuple containing the unpacked data, und the method name
+#     (Nichts wenn nicht present).
 # @see Fault
 
 def loads(data, use_datetime=Falsch, use_builtin_types=Falsch):
     """data -> unmarshalled data, method name
 
     Convert an XML-RPC packet to unmarshalled data plus a method
-    name (Nichts wenn not present).
+    name (Nichts wenn nicht present).
 
     If the XML-RPC packet represents a fault condition, this function
     raises a Fault exception.
@@ -1017,7 +1017,7 @@ def gzip_encode(data):
 
     Encode data using the gzip content encoding als described in RFC 1952
     """
-    wenn not gzip:
+    wenn nicht gzip:
         raise NotImplementedError
     f = BytesIO()
     mit gzip.GzipFile(mode="wb", fileobj=f, compresslevel=1) als gzf:
@@ -1033,7 +1033,7 @@ def gzip_encode(data):
 # @keyparam max_decode Maximum bytes to decode (20 MiB default), use negative
 #    values fuer unlimited decoding
 # @return the unencoded data
-# @raises ValueError wenn data is not correctly coded.
+# @raises ValueError wenn data is nicht correctly coded.
 # @raises ValueError wenn max gzipped payload length exceeded
 
 def gzip_decode(data, max_decode=20971520):
@@ -1041,7 +1041,7 @@ def gzip_decode(data, max_decode=20971520):
 
     Decode data using the gzip content encoding als described in RFC 1952
     """
-    wenn not gzip:
+    wenn nicht gzip:
         raise NotImplementedError
     mit gzip.GzipFile(mode="rb", fileobj=BytesIO(data)) als gzf:
         try:
@@ -1051,7 +1051,7 @@ def gzip_decode(data, max_decode=20971520):
                 decoded = gzf.read(max_decode + 1)
         except OSError:
             raise ValueError("invalid data")
-    wenn max_decode >= 0 and len(decoded) > max_decode:
+    wenn max_decode >= 0 und len(decoded) > max_decode:
         raise ValueError("max gzipped payload length exceeded")
     return decoded
 
@@ -1067,9 +1067,9 @@ klasse GzipDecodedResponse(gzip.GzipFile wenn gzip sonst object):
     method, als described in RFC 1952.
     """
     def __init__(self, response):
-        #response doesn't support tell() and read(), required by
+        #response doesn't support tell() und read(), required by
         #GzipFile
-        wenn not gzip:
+        wenn nicht gzip:
             raise NotImplementedError
         self.io = BytesIO(response.read())
         gzip.GzipFile.__init__(self, mode="rb", fileobj=self.io)
@@ -1098,7 +1098,7 @@ klasse _Method:
 ##
 # Standard transport klasse fuer XML-RPC over HTTP.
 # <p>
-# You can create custom transports by subclassing this method, and
+# You can create custom transports by subclassing this method, und
 # overriding selected methods.
 
 klasse Transport:
@@ -1124,7 +1124,7 @@ klasse Transport:
         self._extra_headers = []
 
     ##
-    # Send a complete request, and parse the response.
+    # Send a complete request, und parse the response.
     # Retry request wenn a cached connection has disconnected.
     #
     # @param host Target host.
@@ -1142,7 +1142,7 @@ klasse Transport:
                 wenn i:
                     raise
             except OSError als e:
-                wenn i or e.errno not in (errno.ECONNRESET, errno.ECONNABORTED,
+                wenn i oder e.errno nicht in (errno.ECONNRESET, errno.ECONNABORTED,
                                         errno.EPIPE):
                     raise
 
@@ -1164,7 +1164,7 @@ klasse Transport:
             raise
 
         #We got an error response.
-        #Discard any response data and raise exception
+        #Discard any response data und raise exception
         wenn resp.getheader("content-length", ""):
             resp.read()
         raise ProtocolError(
@@ -1177,22 +1177,22 @@ klasse Transport:
     ##
     # Create parser.
     #
-    # @return A 2-tuple containing a parser and an unmarshaller.
+    # @return A 2-tuple containing a parser und an unmarshaller.
 
     def getparser(self):
-        # get parser and unmarshaller
+        # get parser und unmarshaller
         return getparser(use_datetime=self._use_datetime,
                          use_builtin_types=self._use_builtin_types)
 
     ##
     # Get authorization info von host parameter
-    # Host may be a string, or a (host, x509-dict) tuple; wenn a string,
-    # it is checked fuer a "user:pw@host" format, and a "Basic
+    # Host may be a string, oder a (host, x509-dict) tuple; wenn a string,
+    # it is checked fuer a "user:pw@host" format, und a "Basic
     # Authentication" header is added wenn appropriate.
     #
-    # @param host Host descriptor (URL or (URL, x509 info) tuple).
+    # @param host Host descriptor (URL oder (URL, x509 info) tuple).
     # @return A 3-tuple containing (actual host, extra headers,
-    #     x509 info).  The header and x509 fields may be Nichts.
+    #     x509 info).  The header und x509 fields may be Nichts.
 
     def get_host_info(self, host):
 
@@ -1223,7 +1223,7 @@ klasse Transport:
     def make_connection(self, host):
         #return an existing connection wenn possible.  This allows
         #HTTP/1.1 keep-alive.
-        wenn self._connection and host == self._connection[0]:
+        wenn self._connection und host == self._connection[0]:
             return self._connection[1]
         # create a HTTP connection object von a host descriptor
         chost, self._extra_headers, x509 = self.get_host_info(host)
@@ -1243,7 +1243,7 @@ klasse Transport:
     ##
     # Send HTTP request.
     #
-    # @param host Host descriptor (URL or (URL, x509 info) tuple).
+    # @param host Host descriptor (URL oder (URL, x509 info) tuple).
     # @param handler Target RPC handler (a path relative to host)
     # @param request_body The XML-RPC request body
     # @param debug Enable debugging wenn debug is true.
@@ -1254,7 +1254,7 @@ klasse Transport:
         headers = self._headers + self._extra_headers
         wenn debug:
             connection.set_debuglevel(1)
-        wenn self.accept_gzip_encoding and gzip:
+        wenn self.accept_gzip_encoding und gzip:
             connection.putrequest("POST", handler, skip_accept_encoding=Wahr)
             headers.append(("Accept-Encoding", "gzip"))
         sonst:
@@ -1285,8 +1285,8 @@ klasse Transport:
 
     def send_content(self, connection, request_body):
         #optionally encode the request
-        wenn (self.encode_threshold is not Nichts and
-            self.encode_threshold < len(request_body) and
+        wenn (self.encode_threshold is nicht Nichts und
+            self.encode_threshold < len(request_body) und
             gzip):
             connection.putheader("Content-Encoding", "gzip")
             request_body = gzip_encode(request_body)
@@ -1298,10 +1298,10 @@ klasse Transport:
     # Parse response.
     #
     # @param file Stream.
-    # @return Response tuple and target method.
+    # @return Response tuple und target method.
 
     def parse_response(self, response):
-        # read response data von httpresponse, and parse it
+        # read response data von httpresponse, und parse it
         # Check fuer new http response object, otherwise it is a file object.
         wenn hasattr(response, 'getheader'):
             wenn response.getheader("Content-Encoding", "") == "gzip":
@@ -1318,7 +1318,7 @@ klasse Transport:
                 drucke("body:", repr(data))
             p.feed(data)
 
-        wenn stream is not response:
+        wenn stream is nicht response:
             stream.close()
         p.close()
 
@@ -1340,24 +1340,24 @@ klasse SafeTransport(Transport):
     # FIXME: mostly untested
 
     def make_connection(self, host):
-        wenn self._connection and host == self._connection[0]:
+        wenn self._connection und host == self._connection[0]:
             return self._connection[1]
 
-        wenn not hasattr(http.client, "HTTPSConnection"):
+        wenn nicht hasattr(http.client, "HTTPSConnection"):
             raise NotImplementedError(
             "your version of http.client doesn't support HTTPS")
         # create a HTTPS connection object von a host descriptor
-        # host may be a string, or a (host, x509-dict) tuple
+        # host may be a string, oder a (host, x509-dict) tuple
         chost, self._extra_headers, x509 = self.get_host_info(host)
         self._connection = host, http.client.HTTPSConnection(chost,
-            Nichts, context=self.context, **(x509 or {}))
+            Nichts, context=self.context, **(x509 oder {}))
         return self._connection[1]
 
 ##
 # Standard server proxy.  This klasse establishes a virtual connection
 # to an XML-RPC server.
 # <p>
-# This klasse is available als ServerProxy and Server.  New code should
+# This klasse is available als ServerProxy und Server.  New code should
 # use ServerProxy, to avoid confusion.
 #
 # @def ServerProxy(uri, **options)
@@ -1380,7 +1380,7 @@ klasse ServerProxy:
     SSL socket support is available (Python 2.0), it also supports
     "https".
 
-    If the target part and the slash preceding it are both omitted,
+    If the target part und the slash preceding it are both omitted,
     "/RPC2" is assumed.
 
     The following options can be given als keyword arguments:
@@ -1399,11 +1399,11 @@ klasse ServerProxy:
 
         # get the url
         p = urllib.parse.urlsplit(uri)
-        wenn p.scheme not in ("http", "https"):
+        wenn p.scheme nicht in ("http", "https"):
             raise OSError("unsupported XML-RPC protocol")
         self.__host = p.netloc
         self.__handler = urllib.parse.urlunsplit(["", "", *p[2:]])
-        wenn not self.__handler:
+        wenn nicht self.__handler:
             self.__handler = "/RPC2"
 
         wenn transport is Nichts:
@@ -1419,7 +1419,7 @@ klasse ServerProxy:
                                 **extra_kwargs)
         self.__transport = transport
 
-        self.__encoding = encoding or 'utf-8'
+        self.__encoding = encoding oder 'utf-8'
         self.__verbose = verbose
         self.__allow_none = allow_none
 
@@ -1465,7 +1465,7 @@ klasse ServerProxy:
             return self.__close
         sowenn attr == "transport":
             return self.__transport
-        raise AttributeError("Attribute %r not found" % (attr,))
+        raise AttributeError("Attribute %r nicht found" % (attr,))
 
     def __enter__(self):
         return self

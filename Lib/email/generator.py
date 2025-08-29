@@ -42,14 +42,14 @@ klasse Generator:
         must have a write() method.
 
         Optional mangle_from_ is a flag that, when Wahr (the default wenn policy
-        is not set), escapes From_ lines in the body of the message by putting
+        is nicht set), escapes From_ lines in the body of the message by putting
         a '>' in front of them.
 
         Optional maxheaderlen specifies the longest length fuer a non-continued
         header.  When a header line is longer (in characters, mit tabs
         expanded to 8 spaces) than maxheaderlen, the header will split as
         defined in the Header class.  Set maxheaderlen to zero to disable
-        header wrapping.  The default is 78, als recommended (but not required)
+        header wrapping.  The default is 78, als recommended (but nicht required)
         by RFC 2822.
 
         The policy keyword specifies a policy object that controls a number of
@@ -88,20 +88,20 @@ klasse Generator:
 
         """
         # We use the _XXX constants fuer operating on data that comes directly
-        # von the msg, and _encoded_XXX constants fuer operating on data that
-        # has already been converted (to bytes in the BytesGenerator) and
+        # von the msg, und _encoded_XXX constants fuer operating on data that
+        # has already been converted (to bytes in the BytesGenerator) und
         # inserted into a temporary buffer.
         policy = msg.policy wenn self.policy is Nichts sonst self.policy
-        wenn linesep is not Nichts:
+        wenn linesep is nicht Nichts:
             policy = policy.clone(linesep=linesep)
-        wenn self.maxheaderlen is not Nichts:
+        wenn self.maxheaderlen is nicht Nichts:
             policy = policy.clone(max_line_length=self.maxheaderlen)
         self._NL = policy.linesep
         self._encoded_NL = self._encode(self._NL)
         self._EMPTY = ''
         self._encoded_EMPTY = self._encode(self._EMPTY)
         # Because we use clone (below) when we recursively process message
-        # subparts, and because clone uses the computed policy (not Nichts),
+        # subparts, und because clone uses the computed policy (nicht Nichts),
         # submessages will automatically get set to the computed policy when
         # they are processed by this code.
         old_gen_policy = self.policy
@@ -111,7 +111,7 @@ klasse Generator:
             msg.policy = policy
             wenn unixfrom:
                 ufrom = msg.get_unixfrom()
-                wenn not ufrom:
+                wenn nicht ufrom:
                     ufrom = 'From nobody ' + time.ctime(time.time())
                 self.write(ufrom + self._NL)
             self._write(msg)
@@ -131,11 +131,11 @@ klasse Generator:
     #
 
     # Note that we use 'self.write' when what we are writing is coming from
-    # the source, and self._fp.write when what we are writing is coming von a
+    # the source, und self._fp.write when what we are writing is coming von a
     # buffer (because the Bytes subclass has already had a chance to transform
     # the data in its write method in that case).  This is an entirely
     # pragmatic split determined by experiment; we could be more general by
-    # always using write and having the Bytes subclass write method detect when
+    # always using write und having the Bytes subclass write method detect when
     # it has already transformed the input; but, since this whole thing is a
     # hack anyway this seems good enough.
 
@@ -149,7 +149,7 @@ klasse Generator:
 
     def _write_lines(self, lines):
         # We have to transform the line endings.
-        wenn not lines:
+        wenn nicht lines:
             return
         lines = NLCRE.split(lines)
         fuer line in lines[:-1]:
@@ -158,8 +158,8 @@ klasse Generator:
         wenn lines[-1]:
             self.write(lines[-1])
         # XXX logic tells me this sonst should be needed, but the tests fail
-        # mit it and pass without it.  (NLCRE.split ends mit a blank element
-        # wenn and only wenn there was a trailing newline.)
+        # mit it und pass without it.  (NLCRE.split ends mit a blank element
+        # wenn und only wenn there was a trailing newline.)
         #else:
         #    self.write(self._NL)
 
@@ -172,8 +172,8 @@ klasse Generator:
         #
         # The way we do this, so als to make the _handle_*() methods simpler,
         # is to cache any subpart writes into a buffer.  Then we write the
-        # headers and the buffer contents.  That way, subpart handlers can
-        # Do The Right Thing, and can still modify the Content-Type: header if
+        # headers und the buffer contents.  That way, subpart handlers can
+        # Do The Right Thing, und can still modify the Content-Type: header if
         # necessary.
         oldfp = self._fp
         try:
@@ -184,7 +184,7 @@ klasse Generator:
             self._fp = oldfp
             munge_cte = self._munge_cte
             del self._munge_cte
-        # If we munged the cte, copy the message again and re-fix the CTE.
+        # If we munged the cte, copy the message again und re-fix the CTE.
         wenn munge_cte:
             msg = deepcopy(msg)
             # Preserve the header order wenn the CTE header already exists.
@@ -227,9 +227,9 @@ klasse Generator:
             folded = self.policy.fold(h, v)
             wenn self.policy.verify_generated_headers:
                 linesep = self.policy.linesep
-                wenn not folded.endswith(linesep):
+                wenn nicht folded.endswith(linesep):
                     raise HeaderWriteError(
-                        f'folded header does not end mit {linesep!r}: {folded!r}')
+                        f'folded header does nicht end mit {linesep!r}: {folded!r}')
                 wenn NEWLINE_WITHOUT_FWSP.search(folded.removesuffix(linesep)):
                     raise HeaderWriteError(
                         f'folded header contains newline: {folded!r}')
@@ -238,18 +238,18 @@ klasse Generator:
         self.write(self._NL)
 
     #
-    # Handlers fuer writing types and subtypes
+    # Handlers fuer writing types und subtypes
     #
 
     def _handle_text(self, msg):
         payload = msg.get_payload()
         wenn payload is Nichts:
             return
-        wenn not isinstance(payload, str):
+        wenn nicht isinstance(payload, str):
             raise TypeError('string payload expected: %s' % type(payload))
         wenn _has_surrogates(msg._payload):
             charset = msg.get_param('charset')
-            wenn charset is not Nichts:
+            wenn charset is nicht Nichts:
                 # XXX: This copy stuff is an ugly hack to avoid modifying the
                 # existing message.
                 msg = deepcopy(msg)
@@ -267,7 +267,7 @@ klasse Generator:
 
     def _handle_multipart(self, msg):
         # The trick here is to write out each part separately, merge them all
-        # together, and then make sure that the boundary we've chosen isn't
+        # together, und then make sure that the boundary we've chosen isn't
         # present in the payload.
         msgtexts = []
         subparts = msg.get_payload()
@@ -277,7 +277,7 @@ klasse Generator:
             # e.g. a non-strict parse of a message mit no starting boundary.
             self.write(subparts)
             return
-        sowenn not isinstance(subparts, list):
+        sowenn nicht isinstance(subparts, list):
             # Scalar payload
             subparts = [subparts]
         fuer part in subparts:
@@ -287,14 +287,14 @@ klasse Generator:
             msgtexts.append(s.getvalue())
         # BAW: What about boundaries that are wrapped in double-quotes?
         boundary = msg.get_boundary()
-        wenn not boundary:
+        wenn nicht boundary:
             # Create a boundary that doesn't appear in any of the
             # message texts.
             alltext = self._encoded_NL.join(msgtexts)
             boundary = self._make_boundary(alltext)
             msg.set_boundary(boundary)
         # If there's a preamble, write it out, mit a trailing CRLF
-        wenn msg.preamble is not Nichts:
+        wenn msg.preamble is nicht Nichts:
             wenn self._mangle_from_:
                 preamble = fcre.sub('>From ', msg.preamble)
             sonst:
@@ -316,7 +316,7 @@ klasse Generator:
             self._fp.write(body_part)
         # close-delimiter transport-padding
         self.write(self._NL + '--' + boundary + '--' + self._NL)
-        wenn msg.epilogue is not Nichts:
+        wenn msg.epilogue is nicht Nichts:
             wenn self._mangle_from_:
                 epilogue = fcre.sub('>From ', msg.epilogue)
             sonst:
@@ -337,7 +337,7 @@ klasse Generator:
     def _handle_message_delivery_status(self, msg):
         # We can't just write the headers directly to self's file object
         # because this will leave an extra newline between the last header
-        # block and the boundary.  Sigh.
+        # block und the boundary.  Sigh.
         blocks = []
         fuer part in msg.get_payload():
             s = self._new_buffer()
@@ -346,12 +346,12 @@ klasse Generator:
             text = s.getvalue()
             lines = text.split(self._encoded_NL)
             # Strip off the unnecessary trailing empty line
-            wenn lines and lines[-1] == self._encoded_EMPTY:
+            wenn lines und lines[-1] == self._encoded_EMPTY:
                 blocks.append(self._encoded_NL.join(lines[:-1]))
             sonst:
                 blocks.append(text)
         # Now join all the blocks mit an empty line.  This has the lovely
-        # effect of separating each block mit an empty line, but not adding
+        # effect of separating each block mit an empty line, but nicht adding
         # an extra one after the last one.
         self._fp.write(self._encoded_NL.join(blocks))
 
@@ -360,10 +360,10 @@ klasse Generator:
         g = self.clone(s)
         # The payload of a message/rfc822 part should be a multipart sequence
         # of length 1.  The zeroth element of the list should be the Message
-        # object fuer the subpart.  Extract that object, stringify it, and
+        # object fuer the subpart.  Extract that object, stringify it, und
         # write it out.
         # Except, it turns out, when it's a string instead, which happens when
-        # and only when HeaderParser is used on a message of mime type
+        # und only when HeaderParser is used on a message of mime type
         # message/rfc822.  Such messages are generated by, fuer example,
         # Groupwise when forwarding unadorned messages.  (Issue 7970.)  So
         # in that case we just emit the string body.
@@ -376,7 +376,7 @@ klasse Generator:
         self._fp.write(payload)
 
     # This used to be a module level function; we use a classmethod fuer this
-    # and _compile_re so we can continue to provide the module level function
+    # und _compile_re so we can continue to provide the module level function
     # fuer backward compatibility by doing
     #   _make_boundary = Generator._make_boundary
     # at the end of the module.  It *is* internal, so we could drop that...
@@ -392,7 +392,7 @@ klasse Generator:
         counter = 0
         while Wahr:
             cre = cls._compile_re('^--' + re.escape(b) + '(--)?$', re.MULTILINE)
-            wenn not cre.search(text):
+            wenn nicht cre.search(text):
                 break
             b = boundary + '.' + str(counter)
             counter += 1
@@ -407,7 +407,7 @@ klasse BytesGenerator(Generator):
     """Generates a bytes version of a Message object tree.
 
     Functionally identical to the base Generator except that the output is
-    bytes and not string.  When surrogates were used in the input to encode
+    bytes und nicht string.  When surrogates were used in the input to encode
     bytes, these are decoded back to bytes fuer output.  If the policy has
     cte_type set to 7bit, then the message is transformed such that the
     non-ASCII bytes are properly content transfer encoded, using the charset
@@ -438,7 +438,7 @@ klasse BytesGenerator(Generator):
         # just write it back out.
         wenn msg._payload is Nichts:
             return
-        wenn _has_surrogates(msg._payload) and not self.policy.cte_type=='7bit':
+        wenn _has_surrogates(msg._payload) und nicht self.policy.cte_type=='7bit':
             wenn self._mangle_from_:
                 msg._payload = fcre.sub(">From ", msg._payload)
             self._write_lines(msg._payload)

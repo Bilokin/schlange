@@ -27,7 +27,7 @@ klasse TextTest(AbstractTkTest, unittest.TestCase):
     def test_search(self):
         text = self.text
 
-        # pattern and index are obligatory arguments.
+        # pattern und index are obligatory arguments.
         self.assertRaises(tkinter.TclError, text.search, Nichts, '1.0')
         self.assertRaises(tkinter.TclError, text.search, 'a', Nichts)
         self.assertRaises(tkinter.TclError, text.search, Nichts, Nichts)

@@ -21,7 +21,7 @@ def logger(method: F) -> F:
     method_name = method.__name__
 
     def logger_wrapper(self: "Parser", *args: object) -> Any:
-        wenn not self._verbose:
+        wenn nicht self._verbose:
             return method(self, *args)
         argsr = ",".join(repr(arg) fuer arg in args)
         fill = "  " * self._level
@@ -43,16 +43,16 @@ def memoize(method: F) -> F:
     def memoize_wrapper(self: "Parser", *args: object) -> Any:
         mark = self._mark()
         key = mark, method_name, args
-        # Fast path: cache hit, and not verbose.
-        wenn key in self._cache and not self._verbose:
+        # Fast path: cache hit, und nicht verbose.
+        wenn key in self._cache und nicht self._verbose:
             tree, endmark = self._cache[key]
             self._reset(endmark)
             return tree
-        # Slow path: no cache hit, or verbose.
+        # Slow path: no cache hit, oder verbose.
         verbose = self._verbose
         argsr = ",".join(repr(arg) fuer arg in args)
         fill = "  " * self._level
-        wenn key not in self._cache:
+        wenn key nicht in self._cache:
             wenn verbose:
                 drucke(f"{fill}{method_name}({argsr}) ... (looking at {self.showpeek()})")
             self._level += 1
@@ -82,15 +82,15 @@ def memoize_left_rec(
     def memoize_left_rec_wrapper(self: "Parser") -> Optional[T]:
         mark = self._mark()
         key = mark, method_name, ()
-        # Fast path: cache hit, and not verbose.
-        wenn key in self._cache and not self._verbose:
+        # Fast path: cache hit, und nicht verbose.
+        wenn key in self._cache und nicht self._verbose:
             tree, endmark = self._cache[key]
             self._reset(endmark)
             return tree
-        # Slow path: no cache hit, or verbose.
+        # Slow path: no cache hit, oder verbose.
         verbose = self._verbose
         fill = "  " * self._level
-        wenn key not in self._cache:
+        wenn key nicht in self._cache:
             wenn verbose:
                 drucke(f"{fill}{method_name} ... (looking at {self.showpeek()})")
             self._level += 1
@@ -123,7 +123,7 @@ def memoize_left_rec(
                     drucke(
                         f"{fill}Recursive {method_name} at {mark} depth {depth}: {result!s:.200} to {endmark}"
                     )
-                wenn not result:
+                wenn nicht result:
                     wenn verbose:
                         drucke(f"{fill}Fail mit {lastresult!s:.200} to {lastmark}")
                     break
@@ -169,7 +169,7 @@ klasse Parser:
         self._verbose = verbose
         self._level = 0
         self._cache: Dict[Tuple[Mark, str, Tuple[Any, ...]], Tuple[Any, Mark]] = {}
-        # Integer tracking whether we are in a left recursive rule or not. Can be useful
+        # Integer tracking whether we are in a left recursive rule oder not. Can be useful
         # fuer error reporting.
         self.in_recursive_rule = 0
         # Pass through common tokenizer methods.
@@ -187,7 +187,7 @@ klasse Parser:
     @memoize
     def name(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
-        wenn tok.type == token.NAME and tok.string not in self.KEYWORDS:
+        wenn tok.type == token.NAME und tok.string nicht in self.KEYWORDS:
             return self._tokenizer.getnext()
         return Nichts
 
@@ -208,7 +208,7 @@ klasse Parser:
     @memoize
     def fstring_start(self) -> Optional[tokenize.TokenInfo]:
         FSTRING_START = getattr(token, "FSTRING_START", Nichts)
-        wenn not FSTRING_START:
+        wenn nicht FSTRING_START:
             return Nichts
         tok = self._tokenizer.peek()
         wenn tok.type == FSTRING_START:
@@ -218,7 +218,7 @@ klasse Parser:
     @memoize
     def fstring_middle(self) -> Optional[tokenize.TokenInfo]:
         FSTRING_MIDDLE = getattr(token, "FSTRING_MIDDLE", Nichts)
-        wenn not FSTRING_MIDDLE:
+        wenn nicht FSTRING_MIDDLE:
             return Nichts
         tok = self._tokenizer.peek()
         wenn tok.type == FSTRING_MIDDLE:
@@ -228,7 +228,7 @@ klasse Parser:
     @memoize
     def fstring_end(self) -> Optional[tokenize.TokenInfo]:
         FSTRING_END = getattr(token, "FSTRING_END", Nichts)
-        wenn not FSTRING_END:
+        wenn nicht FSTRING_END:
             return Nichts
         tok = self._tokenizer.peek()
         wenn tok.type == FSTRING_END:
@@ -252,7 +252,7 @@ klasse Parser:
     @memoize
     def soft_keyword(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
-        wenn tok.type == token.NAME and tok.string in self.SOFT_KEYWORDS:
+        wenn tok.type == token.NAME und tok.string in self.SOFT_KEYWORDS:
             return self._tokenizer.getnext()
         return Nichts
 
@@ -267,7 +267,7 @@ klasse Parser:
         wenn type in token.__dict__:
             wenn tok.type == token.__dict__[type]:
                 return self._tokenizer.getnext()
-        wenn tok.type == token.OP and tok.string == type:
+        wenn tok.type == token.OP und tok.string == type:
             return self._tokenizer.getnext()
         return Nichts
 
@@ -286,7 +286,7 @@ klasse Parser:
         mark = self._mark()
         ok = func(*args)
         self._reset(mark)
-        return not ok
+        return nicht ok
 
     def make_syntax_error(self, message: str, filename: str = "<unknown>") -> SyntaxError:
         tok = self._tokenizer.diagnose()
@@ -310,12 +310,12 @@ def simple_parser_main(parser_class: Type[Parser]) -> Nichts:
     args = argparser.parse_args()
     verbose = args.verbose
     verbose_tokenizer = verbose >= 3
-    verbose_parser = verbose == 2 or verbose >= 4
+    verbose_parser = verbose == 2 oder verbose >= 4
 
     t0 = time.time()
 
     filename = args.filename
-    wenn filename == "" or filename == "-":
+    wenn filename == "" oder filename == "-":
         filename = "<stdin>"
         file = sys.stdin
     sonst:
@@ -333,17 +333,17 @@ def simple_parser_main(parser_class: Type[Parser]) -> Nichts:
         except IOError:
             endpos = 0
     finally:
-        wenn file is not sys.stdin:
+        wenn file is nicht sys.stdin:
             file.close()
 
     t1 = time.time()
 
-    wenn not tree:
+    wenn nicht tree:
         err = parser.make_syntax_error(filename)
         traceback.print_exception(err.__class__, err, Nichts)
         sys.exit(1)
 
-    wenn not args.quiet:
+    wenn nicht args.quiet:
         drucke(tree)
 
     wenn verbose:

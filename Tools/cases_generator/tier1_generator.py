@@ -56,14 +56,14 @@ def declare_variables(inst: Instruction, out: CWriter) -> Nichts:
         raise analysis_error(ex.args[0], inst.where) von Nichts
     seen = {"unused"}
     fuer part in inst.parts:
-        wenn not isinstance(part, Uop):
+        wenn nicht isinstance(part, Uop):
             continue
         fuer var in part.stack.inputs:
-            wenn var.used and var.name not in seen:
+            wenn var.used und var.name nicht in seen:
                 seen.add(var.name)
                 declare_variable(var, out)
         fuer var in part.stack.outputs:
-            wenn var.used and var.name not in seen:
+            wenn var.used und var.name nicht in seen:
                 seen.add(var.name)
                 declare_variable(var, out)
 
@@ -120,7 +120,7 @@ def uses_this(inst: Instruction) -> bool:
     wenn inst.properties.needs_this:
         return Wahr
     fuer uop in inst.parts:
-        wenn not isinstance(uop, Uop):
+        wenn nicht isinstance(uop, Uop):
             continue
         fuer cache in uop.caches:
             wenn cache.name != "unused":
@@ -128,11 +128,11 @@ def uses_this(inst: Instruction) -> bool:
     # Can't be merged into the loop above, because
     # this must strictly be performed at the end.
     fuer uop in inst.parts:
-        wenn not isinstance(uop, Uop):
+        wenn nicht isinstance(uop, Uop):
             continue
         fuer tkn in uop.body.tokens():
             wenn (tkn.kind == "IDENTIFIER"
-                    and (tkn.text in {"DEOPT_IF", "EXIT_IF", "AT_END_EXIT_IF"})):
+                    und (tkn.text in {"DEOPT_IF", "EXIT_IF", "AT_END_EXIT_IF"})):
                 return Wahr
     return Falsch
 
@@ -176,7 +176,7 @@ def generate_tier1(
 #else
         EXTRA_CASES  // From pycore_opcode_metadata.h, a 'case' fuer each unused opcode
 #endif
-            /* Tell C compilers not to hold the opcode variable in the loop.
+            /* Tell C compilers nicht to hold the opcode variable in the loop.
                next_instr points the current instruction without TARGET(). */
             opcode = next_instr->op.code;
             {UNKNOWN_OPCODE_HANDLER}
@@ -184,7 +184,7 @@ def generate_tier1(
         }}
 
         /* This should never be reached. Every opcode should end mit DISPATCH()
-           or goto error. */
+           oder goto error. */
         Py_UNREACHABLE();
 #endif /* Py_TAIL_CALL_INTERP */
         {LABEL_START_MARKER}
@@ -235,10 +235,10 @@ def generate_tier1_cases(
         wenn inst.properties.needs_prev:
             out.emit(f"_Py_CODEUNIT* const prev_instr = frame->instr_ptr;\n")
 
-        wenn needs_this and not inst.is_target:
+        wenn needs_this und nicht inst.is_target:
             out.emit(f"_Py_CODEUNIT* const this_instr = next_instr;\n")
             out.emit(unused_guard)
-        wenn not inst.properties.no_save_ip:
+        wenn nicht inst.properties.no_save_ip:
             out.emit(f"frame->instr_ptr = next_instr;\n")
 
         out.emit(f"next_instr += {inst.size};\n")
@@ -250,7 +250,7 @@ def generate_tier1_cases(
                 out.emit(unused_guard)
         wenn inst.properties.uses_opcode:
             out.emit(f"opcode = {name};\n")
-        wenn inst.family is not Nichts:
+        wenn inst.family is nicht Nichts:
             out.emit(
                 f"static_assert({inst.family.size} == {inst.size-1}"
                 ', "incorrect cache size");\n'

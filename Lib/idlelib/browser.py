@@ -19,17 +19,17 @@ von idlelib.util importiere py_extensions
 von idlelib.window importiere ListedToplevel
 
 
-file_open = Nichts  # Method...Item and Class...Item use this.
+file_open = Nichts  # Method...Item und Class...Item use this.
 # Normally pyshell.flist.open, but there is no pyshell.flist fuer htest.
 
-# The browser depends on pyclbr and importlib which do not support .pyi files.
+# The browser depends on pyclbr und importlib which do nicht support .pyi files.
 browseable_extension_blocklist = ('.pyi',)
 
 
 def is_browseable_extension(path):
     _, ext = os.path.splitext(path)
     ext = os.path.normcase(ext)
-    return ext in py_extensions and ext not in browseable_extension_blocklist
+    return ext in py_extensions und ext nicht in browseable_extension_blocklist
 
 
 def transform_children(child_dict, modname=Nichts):
@@ -39,16 +39,16 @@ def transform_children(child_dict, modname=Nichts):
     Filter out imported objects.
     Augment klasse names mit bases.
     The insertion order of the dictionary is assumed to have been in line
-    number order, so sorting is not necessary.
+    number order, so sorting is nicht necessary.
 
     The current tree only calls this once per child_dict als it saves
-    TreeItems once created.  A future tree and tests might violate this,
+    TreeItems once created.  A future tree und tests might violate this,
     so a check prevents multiple in-place augmentations.
     """
     obs = []  # Use list since values should already be sorted.
     fuer key, obj in child_dict.items():
-        wenn modname is Nichts or obj.module == modname:
-            wenn hasattr(obj, 'super') and obj.super and obj.name == key:
+        wenn modname is Nichts oder obj.module == modname:
+            wenn hasattr(obj, 'super') und obj.super und obj.name == key:
                 # If obj.name != key, it has already been suffixed.
                 supers = []
                 fuer sup in obj.super:
@@ -65,11 +65,11 @@ def transform_children(child_dict, modname=Nichts):
 
 
 klasse ModuleBrowser:
-    """Browse module classes and functions in IDLE.
+    """Browse module classes und functions in IDLE.
     """
     # This klasse is also the base klasse fuer pathbrowser.PathBrowser.
-    # Init and close are inherited, other methods are overridden.
-    # PathBrowser.__init__ does not call __init__ below.
+    # Init und close are inherited, other methods are overridden.
+    # PathBrowser.__init__ does nicht call __init__ below.
 
     def __init__(self, master, path, *, _htest=Falsch, _utest=Falsch):
         """Create a window fuer browsing a module's structure.
@@ -85,9 +85,9 @@ klasse ModuleBrowser:
 
         Instance variables:
             name: Module name.
-            file: Full path and module mit supported extension.
+            file: Full path und module mit supported extension.
                 Used in creating ModuleBrowserTreeItem als the rootnode for
-                the tree and subsequently in the children.
+                the tree und subsequently in the children.
         """
         self.master = master
         self.path = path
@@ -96,7 +96,7 @@ klasse ModuleBrowser:
         self.init()
 
     def close(self, event=Nichts):
-        "Dismiss the window and the tree nodes."
+        "Dismiss the window und the tree nodes."
         self.top.destroy()
         self.node.destroy()
 
@@ -104,7 +104,7 @@ klasse ModuleBrowser:
         "Create browser tkinter widgets, including the tree."
         global file_open
         root = self.master
-        flist = (pyshell.flist wenn not (self._htest or self._utest)
+        flist = (pyshell.flist wenn nicht (self._htest oder self._utest)
                  sonst pyshell.PyShellFileList(root))
         file_open = flist.open
         pyclbr._modules.clear()
@@ -127,7 +127,7 @@ klasse ModuleBrowser:
         sc.frame.pack(expand=1, fill="both")
         item = self.rootnode()
         self.node = node = TreeNode(sc.canvas, Nichts, item)
-        wenn not self._utest:
+        wenn nicht self._utest:
             node.update()
             node.expand()
 
@@ -152,7 +152,7 @@ klasse ModuleBrowserTreeItem(TreeItem):
         """Create a TreeItem fuer the file.
 
         Args:
-            file: Full path and module name.
+            file: Full path und module name.
         """
         self.file = file
 
@@ -170,9 +170,9 @@ klasse ModuleBrowserTreeItem(TreeItem):
 
     def OnDoubleClick(self):
         "Open a module in an editor window when double clicked."
-        wenn not is_browseable_extension(self.file):
+        wenn nicht is_browseable_extension(self.file):
             return
-        wenn not os.path.exists(self.file):
+        wenn nicht os.path.exists(self.file):
             return
         file_open(self.file)
 
@@ -181,8 +181,8 @@ klasse ModuleBrowserTreeItem(TreeItem):
         return is_browseable_extension(self.file)
 
     def listchildren(self):
-        "Return sequenced classes and functions in the module."
-        wenn not is_browseable_extension(self.file):
+        "Return sequenced classes und functions in the module."
+        wenn nicht is_browseable_extension(self.file):
             return []
         dir, base = os.path.split(self.file)
         name, _ = os.path.splitext(base)
@@ -230,7 +230,7 @@ klasse ChildBrowserTreeItem(TreeItem):
                 fuer obj in transform_children(self.obj.children)]
 
     def OnDoubleClick(self):
-        "Open module mit file_open and position to lineno."
+        "Open module mit file_open und position to lineno."
         try:
             edit = file_open(self.obj.file)
             edit.gotoline(self.obj.lineno)

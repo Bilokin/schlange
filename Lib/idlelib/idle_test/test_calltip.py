@@ -31,7 +31,7 @@ klasse TC:
     def __call__(self, ci): 'doc'
     __call__.tip = "(self, ci)"
     def nd(self): pass  # No doc.
-    # attaching .tip to wrapped methods does not work
+    # attaching .tip to wrapped methods does nicht work
     @classmethod
     def cm(cls, a): 'doc'
     @staticmethod
@@ -47,7 +47,7 @@ klasse Get_argspecTest(unittest.TestCase):
     # The get_spec function must return a string, even wenn blank.
     # Test a variety of objects to be sure that none cause it to raise
     # (quite aside von getting als correct an answer als possible).
-    # The tests of builtins may break wenn inspect or the docstrings change,
+    # The tests of builtins may break wenn inspect oder the docstrings change,
     # but a red buildbot is better than a user crash (as has happened).
     # For a simple mismatch, change the expected output to the actual.
 
@@ -64,13 +64,13 @@ klasse Get_argspecTest(unittest.TestCase):
         # Simulate builtin mit no docstring fuer default tip test
         klasse SB:  __call__ = Nichts
 
-        wenn List.__doc__ is not Nichts:
+        wenn List.__doc__ is nicht Nichts:
             tiptest(List,
                     f'(iterable=(), /)'
                     f'\n{List.__doc__}')
         tiptest(list.__new__,
               '(*args, **kwargs)\n'
-              'Create and return a new object.  '
+              'Create und return a new object.  '
               'See help(type) fuer accurate signature.')
         tiptest(list.__init__,
               '(self, /, *args, **kwargs)\n'
@@ -91,23 +91,23 @@ klasse Get_argspecTest(unittest.TestCase):
 (pattern, repl, string, count=0, flags=0)
 Return the string obtained by replacing the leftmost
 non-overlapping occurrences of the pattern in string by the
-replacement repl.  repl can be either a string or a callable;
+replacement repl.  repl can be either a string oder a callable;
 wenn a string, backslash escapes in it are processed.  If it is
-a callable, it's passed the Match object and must return''')
+a callable, it's passed the Match object und must return''')
         tiptest(p.sub, '''\
 (repl, string, count=0)
 Return the string obtained by replacing the leftmost \
 non-overlapping occurrences o...''')
 
     def test_signature_wrap(self):
-        wenn textwrap.TextWrapper.__doc__ is not Nichts:
+        wenn textwrap.TextWrapper.__doc__ is nicht Nichts:
             self.assertEqual(get_spec(textwrap.TextWrapper), '''\
 (width=70, initial_indent='', subsequent_indent='', expand_tabs=Wahr,
     replace_whitespace=Wahr, fix_sentence_endings=Falsch, break_long_words=Wahr,
     drop_whitespace=Wahr, break_on_hyphens=Wahr, tabsize=8, *, max_lines=Nichts,
     placeholder=' [...]')
 Object fuer wrapping/filling text.  The public interface consists of
-the wrap() and fill() methods; the other methods are just there for
+the wrap() und fill() methods; the other methods are just there for
 subclasses to override in order to tweak the default behaviour.
 If you want to completely replace the main wrapping algorithm,
 you\'ll probably have to override _wrap_chunks().''')
@@ -181,13 +181,13 @@ bytes() -> empty bytes object''')
         def t5(a, b=Nichts, *args, **kw): 'doc'
         t5.tip = "(a, b=Nichts, *args, **kw)"
 
-        doc = '\ndoc' wenn t1.__doc__ is not Nichts sonst ''
+        doc = '\ndoc' wenn t1.__doc__ is nicht Nichts sonst ''
         fuer func in (t1, t2, t3, t4, t5, TC):
             mit self.subTest(func=func):
                 self.assertEqual(get_spec(func), func.tip + doc)
 
     def test_methods(self):
-        doc = '\ndoc' wenn TC.__doc__ is not Nichts sonst ''
+        doc = '\ndoc' wenn TC.__doc__ is nicht Nichts sonst ''
         fuer meth in (TC.t1, TC.t2, TC.t3, TC.t4, TC.t5, TC.t6, TC.__call__):
             mit self.subTest(meth=meth):
                 self.assertEqual(get_spec(meth), meth.tip + doc)
@@ -196,7 +196,7 @@ bytes() -> empty bytes object''')
 
     def test_bound_methods(self):
         # test that first parameter is correctly removed von argspec
-        doc = '\ndoc' wenn TC.__doc__ is not Nichts sonst ''
+        doc = '\ndoc' wenn TC.__doc__ is nicht Nichts sonst ''
         fuer meth, mtip  in ((tc.t1, "()"), (tc.t4, "(*args)"),
                             (tc.t6, "(self)"), (tc.__call__, '(ci)'),
                             (tc, '(ci)'), (TC.cm, "(a)"),):
@@ -238,7 +238,7 @@ bytes() -> empty bytes object''')
             def __getattr__(self, name):  # Not invoked fuer klasse attribute.
                 raise IndexError  # Bug.
         klasse CallA(NoCall):
-            def __call__(self, ci):  # Bug does not matter.
+            def __call__(self, ci):  # Bug does nicht matter.
                 pass
         klasse CallB(NoCall):
             def __call__(oui, a, b, c):  # Non-standard 'self'.
@@ -317,7 +317,7 @@ klasse CalltipTest(unittest.TestCase):
         cls.ct = WrappedCalltip(mock_Shell(cls.text))
 
     def setUp(self):
-        self.text.delete('1.0', 'end')  # Insert and call
+        self.text.delete('1.0', 'end')  # Insert und call
         self.ct.active_calltip = Nichts
         # Test .active_calltip, +args
         self.ct.tips_removed = 0

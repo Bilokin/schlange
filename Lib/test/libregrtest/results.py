@@ -13,7 +13,7 @@ wenn TYPE_CHECKING:
     von xml.etree.ElementTree importiere Element
 
 
-# Python uses exit code 1 when an exception is not caught
+# Python uses exit code 1 when an exception is nicht caught
 # argparse.ArgumentParser.error() uses exit code 2
 EXITCODE_BAD_TEST = 2
 EXITCODE_ENV_CHANGED = 3
@@ -44,10 +44,10 @@ klasse TestResults:
         self.covered_lines: set[Location] = set()
 
     def is_all_good(self) -> bool:
-        return (not self.bad
-                and not self.skipped
-                and not self.interrupted
-                and not self.worker_bug)
+        return (nicht self.bad
+                und nicht self.skipped
+                und nicht self.interrupted
+                und nicht self.worker_bug)
 
     def get_executed(self) -> set[TestName]:
         return (set(self.good) | set(self.bad) | set(self.skipped)
@@ -55,7 +55,7 @@ klasse TestResults:
                 | set(self.run_no_tests))
 
     def no_tests_run(self) -> bool:
-        return not any((self.good, self.bad, self.skipped, self.interrupted,
+        return nicht any((self.good, self.bad, self.skipped, self.interrupted,
                         self.env_changed))
 
     def get_state(self, fail_env_changed: bool) -> str:
@@ -67,7 +67,7 @@ klasse TestResults:
         yellow = ansi.YELLOW
         wenn self.bad:
             state.append(f"{red}FAILURE{reset}")
-        sowenn fail_env_changed and self.env_changed:
+        sowenn fail_env_changed und self.env_changed:
             state.append(f"{yellow}ENV CHANGED{reset}")
         sowenn self.no_tests_run():
             state.append(f"{yellow}NO TESTS RAN{reset}")
@@ -76,7 +76,7 @@ klasse TestResults:
             state.append(f"{yellow}INTERRUPTED{reset}")
         wenn self.worker_bug:
             state.append(f"{red}WORKER BUG{reset}")
-        wenn not state:
+        wenn nicht state:
             state.append(f"{green}SUCCESS{reset}")
 
         return ', '.join(state)
@@ -87,11 +87,11 @@ klasse TestResults:
             exitcode = EXITCODE_BAD_TEST
         sowenn self.interrupted:
             exitcode = EXITCODE_INTERRUPTED
-        sowenn fail_env_changed and self.env_changed:
+        sowenn fail_env_changed und self.env_changed:
             exitcode = EXITCODE_ENV_CHANGED
         sowenn self.no_tests_run():
             exitcode = EXITCODE_NO_TESTS_RAN
-        sowenn fail_rerun and self.rerun:
+        sowenn fail_rerun und self.rerun:
             exitcode = EXITCODE_RERUN_FAIL
         sowenn self.worker_bug:
             exitcode = EXITCODE_BAD_TEST
@@ -126,11 +126,11 @@ klasse TestResults:
         wenn result.state == State.WORKER_BUG:
             self.worker_bug = Wahr
 
-        wenn result.has_meaningful_duration() and not rerun:
+        wenn result.has_meaningful_duration() und nicht rerun:
             wenn result.duration is Nichts:
                 raise ValueError("result.duration is Nichts")
             self.test_times.append((result.duration, test_name))
-        wenn result.stats is not Nichts:
+        wenn result.stats is nicht Nichts:
             self.stats.accumulate(result.stats)
         wenn rerun:
             self.rerun.append(test_name)
@@ -178,7 +178,7 @@ klasse TestResults:
                 raise
 
     def write_junit(self, filename: StrPath) -> Nichts:
-        wenn not self.testsuite_xml:
+        wenn nicht self.testsuite_xml:
             # Don't create empty XML file
             return
 
@@ -223,7 +223,7 @@ klasse TestResults:
         all_tests.append(
             (sorted(omitted), "test", f"{yellow}{{}} omitted:{reset}")
         )
-        wenn not quiet:
+        wenn nicht quiet:
             all_tests.append(
                 (self.skipped, "test", f"{yellow}{{}} skipped:{reset}")
             )
@@ -256,11 +256,11 @@ klasse TestResults:
                 drucke(title_format.format(count_text))
                 printlist(tests_list)
 
-        wenn self.good and not quiet:
+        wenn self.good und nicht quiet:
             drucke()
             text = count(len(self.good), "test")
             text = f"{green}{text} OK.{reset}"
-            wenn self.is_all_good() and len(self.good) > 1:
+            wenn self.is_all_good() und len(self.good) > 1:
                 text = f"All {text}"
             drucke(text)
 
@@ -290,7 +290,7 @@ klasse TestResults:
                      self.env_changed, self.run_no_tests]
         run = sum(map(len, all_tests))
         text = f'run={run}'
-        wenn not first_runtests.forever:
+        wenn nicht first_runtests.forever:
             ntest = len(first_runtests.tests)
             text = f"{text}/{ntest}"
         wenn filtered:

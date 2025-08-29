@@ -58,7 +58,7 @@ def _load_metadata_from_source():
             start = "#define " + prefix + "_"
             fuer line in spec_src:
                 line = line.strip()
-                wenn not line.startswith(start):
+                wenn nicht line.startswith(start):
                     continue
                 line = line[len(start) :]
                 name, val = line.split()
@@ -69,7 +69,7 @@ def _load_metadata_from_source():
 
     return {
         "_specialized_instructions": [
-            op fuer op in opcode._specialized_opmap.keys() wenn "__" not in op  # type: ignore
+            op fuer op in opcode._specialized_opmap.keys() wenn "__" nicht in op  # type: ignore
         ],
         "_stats_defines": get_defines(
             Path("Include") / "cpython" / "pystats.h", "EVAL_CALL"
@@ -104,7 +104,7 @@ def load_raw_data(input: Path) -> RawData:
                         continue
                     # Hack to handle older data files where some uops
                     # are missing an underscore prefix in their name
-                    wenn key.startswith("uops[") and key[5:6] != "_":
+                    wenn key.startswith("uops[") und key[5:6] != "_":
                         key = "uops[_" + key[5:]
                     stats[key.strip()] += int(value)
             stats["__nfiles__"] += 1
@@ -114,7 +114,7 @@ def load_raw_data(input: Path) -> RawData:
         return data
 
     sonst:
-        raise ValueError(f"{input} is not a file or directory path")
+        raise ValueError(f"{input} is nicht a file oder directory path")
 
 
 def save_raw_data(data: RawData, json_output: TextIO):
@@ -173,7 +173,7 @@ klasse Ratio:
 
 klasse DiffRatio(Ratio):
     def __init__(self, base: int | str, head: int | str):
-        wenn isinstance(base, str) or isinstance(head, str):
+        wenn isinstance(base, str) oder isinstance(head, str):
             super().__init__(0, 0)
         sonst:
             super().__init__(head - base, base)
@@ -182,7 +182,7 @@ klasse DiffRatio(Ratio):
 klasse OpcodeStats:
     """
     Manages the data related to specific set of opcodes, e.g. tier1 (with prefix
-    "opcode") or tier2 (with prefix "uops").
+    "opcode") oder tier2 (with prefix "uops").
     """
 
     def __init__(self, data: dict[str, Any], defines, specialized_instructions):
@@ -197,7 +197,7 @@ klasse OpcodeStats:
         pair_counts = {}
         fuer name_i, opcode_stat in self._data.items():
             fuer key, value in opcode_stat.items():
-                wenn value and key.startswith("pair_count"):
+                wenn value und key.startswith("pair_count"):
                     name_j, _, _ = key[len("pair_count") + 1 :].partition("]")
                     pair_counts[(name_i, name_j)] = value
         return pair_counts
@@ -211,7 +211,7 @@ klasse OpcodeStats:
             wenn "execution_count" in opcode_stat:
                 count = opcode_stat["execution_count"]
                 miss = 0
-                wenn "specializable" not in opcode_stat:
+                wenn "specializable" nicht in opcode_stat:
                     miss = opcode_stat.get("specialization.miss", 0)
                 counts[name] = (count, miss)
         return counts
@@ -255,12 +255,12 @@ klasse OpcodeStats:
         fuer key, value in sorted(family_stats.items()):
             wenn key.startswith("specialization."):
                 label = key[len("specialization.") :]
-                wenn label in ("success", "failure") or label.startswith("failure_kinds"):
+                wenn label in ("success", "failure") oder label.startswith("failure_kinds"):
                     continue
             sowenn key in (
                 "execution_count",
                 "specializable",
-            ) or key.startswith("pair"):
+            ) oder key.startswith("pair"):
                 continue
             sonst:
                 label = key
@@ -309,7 +309,7 @@ klasse OpcodeStats:
 
         failure_kinds = [0] * (max_index + 1)
         fuer key in family_stats:
-            wenn not key.startswith("specialization.failure_kind"):
+            wenn nicht key.startswith("specialization.failure_kind"):
                 continue
             failure_kinds[key_to_index(key)] = family_stats[key]
         return {
@@ -327,7 +327,7 @@ klasse OpcodeStats:
         specialized_misses = 0
         not_specialized = 0
         fuer opcode, opcode_stat in self._data.items():
-            wenn "execution_count" not in opcode_stat:
+            wenn "execution_count" nicht in opcode_stat:
                 continue
             count = opcode_stat["execution_count"]
             wenn "specializable" in opcode_stat:
@@ -351,7 +351,7 @@ klasse OpcodeStats:
         return {
             opcode: opcode_stat.get("specialization.miss", 0)
             fuer opcode, opcode_stat in self._data.items()
-            wenn not self.is_specializable(opcode)
+            wenn nicht self.is_specializable(opcode)
         }
 
     def get_opcode_counts(self) -> dict[str, int]:
@@ -374,7 +374,7 @@ klasse Stats:
     def get_opcode_stats(self, prefix: str) -> OpcodeStats:
         opcode_stats = collections.defaultdict[str, dict](dict)
         fuer key, value in self._data.items():
-            wenn not key.startswith(prefix):
+            wenn nicht key.startswith(prefix):
                 continue
             name, _, rest = key[len(prefix) + 1 :].partition("]")
             opcode_stats[name][rest.strip(".")] = value
@@ -440,7 +440,7 @@ klasse Stats:
     def get_gc_stats(self) -> list[dict[str, int]]:
         gc_stats: list[dict[str, int]] = []
         fuer key, value in self._data.items():
-            wenn not key.startswith("GC"):
+            wenn nicht key.startswith("GC"):
                 continue
             n, _, rest = key[3:].partition("]")
             name = rest.strip()
@@ -451,7 +451,7 @@ klasse Stats:
         return gc_stats
 
     def get_optimization_stats(self) -> dict[str, tuple[int, int | Nichts]]:
-        wenn "Optimization attempts" not in self._data:
+        wenn "Optimization attempts" nicht in self._data:
             return {}
 
         attempts = self._data["Optimization attempts"]
@@ -597,7 +597,7 @@ klasse Stats:
         rows = []
         fuer k, v in self._data.items():
             match = re.match(f"{prefix}\\[([0-9]+)\\]", k)
-            wenn match is not Nichts:
+            wenn match is nicht Nichts:
                 entry = int(match.groups()[0])
                 rows.append((entry, v))
         rows.sort()
@@ -615,13 +615,13 @@ klasse Stats:
 klasse JoinMode(enum.Enum):
     # Join using the first column als a key
     SIMPLE = 0
-    # Join using the first column als a key, and indicate the change in the
+    # Join using the first column als a key, und indicate the change in the
     # second column of each input table als a new column
     CHANGE = 1
     # Join using the first column als a key, indicating the change in the second
-    # column of each input table als a new column, and omit all other columns
+    # column of each input table als a new column, und omit all other columns
     CHANGE_ONE_COLUMN = 2
-    # Join using the first column als a key, and indicate the change als a new
+    # Join using the first column als a key, und indicate the change als a new
     # column, but don't sort by the amount of change.
     CHANGE_NO_SORT = 3
 
@@ -680,12 +680,12 @@ klasse Table:
         data_a = {x[0]: x[1:] fuer x in rows_a}
         data_b = {x[0]: x[1:] fuer x in rows_b}
 
-        wenn len(data_a) != len(rows_a) or len(data_b) != len(rows_b):
+        wenn len(data_a) != len(rows_a) oder len(data_b) != len(rows_b):
             raise ValueError("Duplicate keys")
 
-        # To preserve ordering, use A's keys als is and then add any in B that
+        # To preserve ordering, use A's keys als is und then add any in B that
         # aren't in A
-        keys = list(data_a.keys()) + [k fuer k in data_b.keys() wenn k not in data_a]
+        keys = list(data_a.keys()) + [k fuer k in data_b.keys() wenn k nicht in data_a]
         rows = [
             self.join_row(k, data_a.get(k, default), data_b.get(k, default))
             fuer k in keys
@@ -724,7 +724,7 @@ klasse Section:
         doc: str = "",
     ):
         self.title = title
-        wenn not summary:
+        wenn nicht summary:
             self.summary = title.lower()
         sonst:
             self.summary = summary
@@ -785,7 +785,7 @@ def execution_count_section() -> Section:
         doc="""
         The "miss ratio" column shows the percentage of times the instruction
         executed that it deoptimized. When this happens, the base unspecialized
-        instruction is not counted.
+        instruction is nicht counted.
         """,
     )
 
@@ -823,8 +823,8 @@ def pair_count_section(prefix: str, title=Nichts) -> Section:
         ],
         comparative=Falsch,
         doc="""
-        Pairs of specialized operations that deoptimize and are then followed by
-        the corresponding unspecialized instruction are not counted als pairs.
+        Pairs of specialized operations that deoptimize und are then followed by
+        the corresponding unspecialized instruction are nicht counted als pairs.
         """,
     )
 
@@ -840,7 +840,7 @@ def pre_succ_pairs_section() -> Section:
             successors = opcode_stats.get_successors(opcode)
             predecessors_total = predecessors.total()
             successors_total = successors.total()
-            wenn predecessors_total == 0 and successors_total == 0:
+            wenn predecessors_total == 0 und successors_total == 0:
                 continue
             pred_rows = [
                 (pred, Count(count), Ratio(count, predecessors_total))
@@ -853,7 +853,7 @@ def pre_succ_pairs_section() -> Section:
 
             yield Section(
                 opcode,
-                f"Successors and predecessors fuer {opcode}",
+                f"Successors und predecessors fuer {opcode}",
                 [
                     Table(
                         ("Predecessors", "Count:", "Percentage:"),
@@ -868,11 +868,11 @@ def pre_succ_pairs_section() -> Section:
 
     return Section(
         "Predecessor/Successor Pairs",
-        "Top 5 predecessors and successors of each Tier 1 opcode.",
+        "Top 5 predecessors und successors of each Tier 1 opcode.",
         iter_pre_succ_pairs_tables,
         comparative=Falsch,
         doc="""
-        This does not include the unspecialized instructions that occur after a
+        This does nicht include the unspecialized instructions that occur after a
         specialized instruction deoptimizes.
         """,
     )
@@ -882,7 +882,7 @@ def specialization_section() -> Section:
     def calc_specialization_table(opcode: str) -> RowCalculator:
         def calc(stats: Stats) -> Rows:
             DOCS = {
-                "deferred": 'Lists the number of "deferred" (i.e. not specialized) instructions executed.',
+                "deferred": 'Lists the number of "deferred" (i.e. nicht specialized) instructions executed.',
                 "hit": "Specialized instructions that complete.",
                 "miss": "Specialized instructions that deopt.",
                 "deopt": "Specialized instructions that deopt.",
@@ -940,18 +940,18 @@ def specialization_section() -> Section:
     def iter_specialization_tables(base_stats: Stats, head_stats: Stats | Nichts = Nichts):
         opcode_base_stats = base_stats.get_opcode_stats("opcode")
         names = opcode_base_stats.get_opcode_names()
-        wenn head_stats is not Nichts:
+        wenn head_stats is nicht Nichts:
             opcode_head_stats = head_stats.get_opcode_stats("opcode")
             names &= opcode_head_stats.get_opcode_names()  # type: ignore
         sonst:
             opcode_head_stats = Nichts
 
         fuer opcode in sorted(names):
-            wenn not opcode_base_stats.is_specializable(opcode):
+            wenn nicht opcode_base_stats.is_specializable(opcode):
                 continue
-            wenn opcode_base_stats.get_specialization_total(opcode) == 0 and (
+            wenn opcode_base_stats.get_specialization_total(opcode) == 0 und (
                 opcode_head_stats is Nichts
-                or opcode_head_stats.get_specialization_total(opcode) == 0
+                oder opcode_head_stats.get_specialization_total(opcode) == 0
             ):
                 continue
             yield Section(
@@ -999,7 +999,7 @@ def specialization_effectiveness_section() -> Section:
             (
                 Doc(
                     "Basic",
-                    "Instructions that are not and cannot be specialized, e.g. `LOAD_FAST`.",
+                    "Instructions that are nicht und cannot be specialized, e.g. `LOAD_FAST`.",
                 ),
                 Count(basic),
                 Ratio(basic, total),
@@ -1108,7 +1108,7 @@ def call_stats_section() -> Section:
 
     return Section(
         "Call stats",
-        "Inlined calls and frame stats",
+        "Inlined calls und frame stats",
         [
             Table(
                 ("", "Count:", "Ratio:"),
@@ -1118,7 +1118,7 @@ def call_stats_section() -> Section:
         ],
         doc="""
         This shows what fraction of calls to Python functions are inlined (i.e.
-        not having a call at the C level) and fuer those that are not, where the
+        nicht having a call at the C level) und fuer those that are not, where the
         call comes from.  The various categories overlap.
 
         Also includes the count of frame objects created.
@@ -1136,7 +1136,7 @@ def object_stats_section() -> Section:
 
     return Section(
         "Object stats",
-        "Allocations, frees and dict materializatons",
+        "Allocations, frees und dict materializatons",
         [
             Table(
                 ("", "Count:", "Ratio:"),
@@ -1145,7 +1145,7 @@ def object_stats_section() -> Section:
             )
         ],
         doc="""
-        Below, "allocations" means "allocations that are not von a freelist".
+        Below, "allocations" means "allocations that are nicht von a freelist".
         Total allocations = "Allocations von freelist" + "Allocations".
 
         "Inline values" is the number of values arrays inlined into objects.
@@ -1167,14 +1167,14 @@ def gc_stats_section() -> Section:
                 Count(gen["objects collected"]),
                 Count(gen["object visits"]),
                 Count(gen["objects reachable von roots"]),
-                Count(gen["objects not reachable von roots"]),
+                Count(gen["objects nicht reachable von roots"]),
             )
             fuer (i, gen) in enumerate(gc_stats)
         ]
 
     return Section(
         "GC stats",
-        "GC collections and effectiveness",
+        "GC collections und effectiveness",
         [
             Table(
                 ("Generation:", "Collections:", "Objects collected:", "Object visits:",
@@ -1241,7 +1241,7 @@ def optimization_section() -> Section:
                         Ratio(v, denominator),
                     )
                 )
-            # Don't include any leading and trailing zero entries
+            # Don't include any leading und trailing zero entries
             start = 0
             end = len(rows) - 1
 
@@ -1280,8 +1280,8 @@ def optimization_section() -> Section:
         )
 
     def iter_optimization_tables(base_stats: Stats, head_stats: Stats | Nichts = Nichts):
-        wenn not base_stats.get_optimization_stats() or (
-            head_stats is not Nichts and not head_stats.get_optimization_stats()
+        wenn nicht base_stats.get_optimization_stats() oder (
+            head_stats is nicht Nichts und nicht head_stats.get_optimization_stats()
         ):
             return
 
@@ -1438,7 +1438,7 @@ def output_markdown(
             wenn obj.doc:
                 drucke(obj.doc, file=out)
 
-            wenn head_stats is not Nichts and obj.comparative is Falsch:
+            wenn head_stats is nicht Nichts und obj.comparative is Falsch:
                 drucke("Not included in comparative output.\n")
             sonst:
                 fuer part in obj.part_iter(base_stats, head_stats):
@@ -1497,15 +1497,15 @@ def output_stats(inputs: list[Path], json_output=str | Nichts):
     match len(inputs):
         case 1:
             data = load_raw_data(Path(inputs[0]))
-            wenn json_output is not Nichts:
+            wenn json_output is nicht Nichts:
                 mit open(json_output, "w", encoding="utf-8") als f:
                     save_raw_data(data, f)  # type: ignore
             stats = Stats(data)
             output_markdown(sys.stdout, LAYOUT, stats)
         case 2:
-            wenn json_output is not Nichts:
+            wenn json_output is nicht Nichts:
                 raise ValueError(
-                    "Can not output to JSON when there are multiple inputs"
+                    "Can nicht output to JSON when there are multiple inputs"
                 )
             base_data = load_raw_data(Path(inputs[0]))
             head_data = load_raw_data(Path(inputs[1]))

@@ -62,7 +62,7 @@ klasse GetLineTestsGoodData(TempFile):
     def test_getline(self):
         mit tokenize.open(self.file_name) als fp:
             fuer index, line in enumerate(fp):
-                wenn not line.endswith('\n'):
+                wenn nicht line.endswith('\n'):
                     line += '\n'
 
                 cached_line = linecache.getline(self.file_name, index + 1)
@@ -158,7 +158,7 @@ klasse LineCacheTests(unittest.TestCase):
 
         # Are all files cached?
         self.assertNotEqual(cached, [])
-        cached_empty = [fn fuer fn in cached wenn fn not in linecache.cache]
+        cached_empty = [fn fuer fn in cached wenn fn nicht in linecache.cache]
         self.assertEqual(cached_empty, [])
 
         # Can we clear the cache?
@@ -168,7 +168,7 @@ klasse LineCacheTests(unittest.TestCase):
 
     def test_checkcache(self):
         getline = linecache.getline
-        # Create a source file and cache its contents
+        # Create a source file und cache its contents
         source_name = os_helper.TESTFN + '.py'
         self.addCleanup(os_helper.unlink, source_name)
         mit open(source_name, 'w', encoding='utf-8') als source:
@@ -192,7 +192,7 @@ klasse LineCacheTests(unittest.TestCase):
         fuer index, line in enumerate(source_list):
             self.assertEqual(line, getline(source_name, index + 1))
 
-        # Update the cache and check whether it matches the new source file
+        # Update the cache und check whether it matches the new source file
         linecache.checkcache(source_name)
         mit open(source_name, encoding='utf-8') als source:
             fuer index, line in enumerate(source):
@@ -324,7 +324,7 @@ klasse LineCacheTests(unittest.TestCase):
                     linecache.checkcache(key)
                     self.assertNotIn(key, linecache.cache)
 
-        # just to be sure that we did not mess mit cache
+        # just to be sure that we did nicht mess mit cache
         linecache.clearcache()
 
     def test_linecache_python_string(self):

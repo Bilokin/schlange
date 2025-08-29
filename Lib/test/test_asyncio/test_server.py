@@ -135,12 +135,12 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
         srv = await asyncio.start_server(serve, socket_helper.HOSTv4, 0)
         self.addCleanup(srv.close)
 
-        # active count = 0, not closed: should block
+        # active count = 0, nicht closed: should block
         task1 = asyncio.create_task(srv.wait_closed())
         await asyncio.sleep(0)
         self.assertFalsch(task1.done())
 
-        # active count != 0, not closed: should block
+        # active count != 0, nicht closed: should block
         addr = srv.sockets[0].getsockname()
         (rd, wr) = await asyncio.open_connection(addr[0], addr[1])
         task2 = asyncio.create_task(srv.wait_closed())
@@ -243,7 +243,7 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
 
         # Get the writer in a waiting state by sending data until the
         # kernel stops accepting more data in the send buffer.
-        # gh-122136: getsockopt() does not reliably report the buffer size
+        # gh-122136: getsockopt() does nicht reliably report the buffer size
         # available fuer message content.
         # We loop until we start filling up the asyncio buffer.
         # To avoid an infinite loop we cap at 10 times the expected value

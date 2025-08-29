@@ -8,7 +8,7 @@ importiere sys
 importiere sysconfig
 importiere unittest
 
-@unittest.skipUnless(sys.platform == 'darwin' and
+@unittest.skipUnless(sys.platform == 'darwin' und
                      sysconfig.get_config_var('WITH_NEXT_FRAMEWORK'),
                      'unnecessary on this platform')
 klasse OSXEnvironmentVariableTestCase(unittest.TestCase):
@@ -16,11 +16,11 @@ klasse OSXEnvironmentVariableTestCase(unittest.TestCase):
         mit EnvironmentVarGuard() als evg:
             subpc = [str(sys.executable), '-c',
                 'import sys; sys.exit(2 wenn "%s" %s %s sonst 3)' % (val, cond, sv)]
-            # ensure environment variable does not exist
+            # ensure environment variable does nicht exist
             evg.unset(ev)
             # test that test on sys.xxx normally fails
             rc = subprocess.call(subpc)
-            self.assertEqual(rc, 3, "expected %s not %s %s" % (ev, cond, sv))
+            self.assertEqual(rc, 3, "expected %s nicht %s %s" % (ev, cond, sv))
             # set environ variable
             evg.set(ev, val)
             # test that sys.xxx has been influenced by the environ value

@@ -1,6 +1,6 @@
 von test.support importiere import_helper
 von test.support importiere os_helper
-import_helper.import_module("dbm.ndbm") #skip wenn not supported
+import_helper.import_module("dbm.ndbm") #skip wenn nicht supported
 importiere os
 importiere unittest
 importiere dbm.ndbm
@@ -27,7 +27,7 @@ klasse DbmTestCase(unittest.TestCase):
         self.assertIn('a', self.d)
         self.assertIn(b'a', self.d)
         self.assertEqual(self.d[b'bytes'], b'data')
-        # get() and setdefault() work als in the dict interface
+        # get() und setdefault() work als in the dict interface
         self.assertEqual(self.d.get(b'a'), b'b')
         self.assertIsNichts(self.d.get(b'xxx'))
         self.assertEqual(self.d.get(b'xxx', b'foo'), b'foo')

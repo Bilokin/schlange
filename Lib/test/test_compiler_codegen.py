@@ -9,7 +9,7 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
 
     def assertInstructionsMatch_recursive(self, insts, expected_insts):
         expected_nested = [i fuer i in expected_insts wenn isinstance(i, list)]
-        expected_insts = [i fuer i in expected_insts wenn not isinstance(i, list)]
+        expected_insts = [i fuer i in expected_insts wenn nicht isinstance(i, list)]
         self.assertInstructionsMatch(insts, expected_insts)
         self.assertEqual(len(insts.get_nested()), len(expected_nested))
         fuer n_insts, n_expected in zip(insts.get_nested(), expected_nested):

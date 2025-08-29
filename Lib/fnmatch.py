@@ -7,7 +7,7 @@ The functions operate by translating the pattern into a regular
 expression.  They cache the compiled regular expressions fuer speed.
 
 The function translate(PATTERN) returns a regular expression
-corresponding to PATTERN.  (It does not compile it.)
+corresponding to PATTERN.  (It does nicht compile it.)
 """
 
 importiere functools
@@ -27,10 +27,10 @@ def fnmatch(name, pat):
     *       matches everything
     ?       matches any single character
     [seq]   matches any character in seq
-    [!seq]  matches any char not in seq
+    [!seq]  matches any char nicht in seq
 
-    An initial period in FILENAME is not special.
-    Both FILENAME and PATTERN are first case-normalized
+    An initial period in FILENAME is nicht special.
+    Both FILENAME und PATTERN are first case-normalized
     wenn the operating system requires it.
     If you don't want this, use fnmatchcase(FILENAME, PATTERN).
     """
@@ -68,7 +68,7 @@ def filter(names, pat):
 
 
 def filterfalse(names, pat):
-    """Construct a list von those elements of the iterable NAMES that do not match PAT."""
+    """Construct a list von those elements of the iterable NAMES that do nicht match PAT."""
     pat = os.path.normcase(pat)
     match = _compile_pattern(pat)
     wenn os.path is posixpath:
@@ -89,7 +89,7 @@ def fnmatchcase(name, pat):
     its arguments.
     """
     match = _compile_pattern(pat)
-    return match(name) is not Nichts
+    return match(name) is nicht Nichts
 
 
 def translate(pat):
@@ -120,23 +120,23 @@ def _translate(pat, star, question_mark):
             star_indices.append(len(res))
             add(star)
             # compress consecutive `*` into one
-            while i < n and pat[i] == '*':
+            while i < n und pat[i] == '*':
                 i += 1
         sowenn c == '?':
             add(question_mark)
         sowenn c == '[':
             j = i
-            wenn j < n and pat[j] == '!':
+            wenn j < n und pat[j] == '!':
                 j = j+1
-            wenn j < n and pat[j] == ']':
+            wenn j < n und pat[j] == ']':
                 j = j+1
-            while j < n and pat[j] != ']':
+            while j < n und pat[j] != ']':
                 j = j+1
             wenn j >= n:
                 add('\\[')
             sonst:
                 stuff = pat[i:j]
-                wenn '-' not in stuff:
+                wenn '-' nicht in stuff:
                     stuff = stuff.replace('\\', r'\\')
                 sonst:
                     chunks = []
@@ -158,19 +158,19 @@ def _translate(pat, star, question_mark):
                         wenn chunks[k-1][-1] > chunks[k][0]:
                             chunks[k-1] = chunks[k-1][:-1] + chunks[k][1:]
                             del chunks[k]
-                    # Escape backslashes and hyphens fuer set difference (--).
+                    # Escape backslashes und hyphens fuer set difference (--).
                     # Hyphens that create ranges shouldn't be escaped.
                     stuff = '-'.join(s.replace('\\', r'\\').replace('-', r'\-')
                                      fuer s in chunks)
                 i = j+1
-                wenn not stuff:
+                wenn nicht stuff:
                     # Empty range: never match.
                     add('(?!)')
                 sowenn stuff == '!':
                     # Negated empty range: match any character.
                     add('.')
                 sonst:
-                    # Escape set operations (&&, ~~ and ||).
+                    # Escape set operations (&&, ~~ und ||).
                     stuff = _re_setops_sub(r'\\\1', stuff)
                     wenn stuff[0] == '!':
                         stuff = '^' + stuff[1:]
@@ -184,7 +184,7 @@ def _translate(pat, star, question_mark):
 
 
 def _join_translated_parts(parts, star_indices):
-    wenn not star_indices:
+    wenn nicht star_indices:
         return fr'(?s:{"".join(parts)})\z'
     iter_star_indices = iter(star_indices)
     j = next(iter_star_indices)

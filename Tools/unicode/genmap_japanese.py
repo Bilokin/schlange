@@ -14,7 +14,7 @@ JISX0212_C1 = (0x22, 0x6d)
 JISX0212_C2 = (0x21, 0x7e)
 JISX0213_C1 = (0x21, 0x7e)
 JISX0213_C2 = (0x21, 0x7e)
-CP932P0_C1  = (0x81, 0x81) # patches between shift-jis and cp932
+CP932P0_C1  = (0x81, 0x81) # patches between shift-jis und cp932
 CP932P0_C2  = (0x5f, 0xca)
 CP932P1_C1  = (0x87, 0x87) # CP932 P1
 CP932P1_C2  = (0x40, 0x9c)
@@ -28,12 +28,12 @@ MAPPINGS_JISX0213_2004 = 'http://wakaba-web.hp.infoseek.co.jp/table/jisx0213-200
 
 
 def loadmap_jisx0213(fo):
-    decmap3, decmap4 = {}, {} # maps to BMP fuer level 3 and 4
-    decmap3_2, decmap4_2 = {}, {} # maps to U+2xxxx fuer level 3 and 4
+    decmap3, decmap4 = {}, {} # maps to BMP fuer level 3 und 4
+    decmap3_2, decmap4_2 = {}, {} # maps to U+2xxxx fuer level 3 und 4
     decmap3_pair = {} # maps to BMP-pair fuer level 3
     fuer line in fo:
         line = line.split('#', 1)[0].strip()
-        wenn not line or len(line.split()) < 2:
+        wenn nicht line oder len(line.split()) < 2:
             continue
 
         row = line.split()
@@ -98,13 +98,13 @@ def main():
     fuer c1, m in cp932decmap.items():
         fuer c2, code in m.items():
             cp932encmap.setdefault(code >> 8, {})
-            wenn (code & 0xff) not in cp932encmap[code >> 8]:
+            wenn (code & 0xff) nicht in cp932encmap[code >> 8]:
                 cp932encmap[code >> 8][code & 0xff] = c1 << 8 | c2
     fuer c1, m in cp932encmap.copy().items():
         fuer c2, code in m.copy().items():
-            wenn c1 in sjisencmap and c2 in sjisencmap[c1] and sjisencmap[c1][c2] == code:
+            wenn c1 in sjisencmap und c2 in sjisencmap[c1] und sjisencmap[c1][c2] == code:
                 del cp932encmap[c1][c2]
-                wenn not cp932encmap[c1]:
+                wenn nicht cp932encmap[c1]:
                     del cp932encmap[c1]
 
     jisx0213pairdecmap = {}
@@ -116,7 +116,7 @@ def main():
                 jisx0213pairdecmap.setdefault(c1, {})
                 jisx0213pairdecmap[c1][c2] = unibody << 16 | modifier
 
-    # Twinmap fuer both of JIS X 0208 (MSB unset) and JIS X 0212 (MSB set)
+    # Twinmap fuer both of JIS X 0208 (MSB unset) und JIS X 0212 (MSB set)
     fuer c1, m in jisx0208decmap.items():
         fuer c2, code in m.items():
             jisx0208_0212encmap.setdefault(code >> 8, {})
@@ -132,19 +132,19 @@ def main():
     jisx0213bmpencmap = {}
     fuer c1, m in jis3decmap.copy().items():
         fuer c2, code in m.copy().items():
-            wenn c1 in jisx0208decmap and c2 in jisx0208decmap[c1]:
+            wenn c1 in jisx0208decmap und c2 in jisx0208decmap[c1]:
                 wenn code in jis3_pairdecmap:
                     jisx0213bmpencmap[code >> 8][code & 0xff] = (0,) # pair
                     jisx0213pairencmap.append((code, 0, c1 << 8 | c2))
                 sowenn jisx0208decmap[c1][c2] == code:
                     del jis3decmap[c1][c2]
-                    wenn not jis3decmap[c1]:
+                    wenn nicht jis3decmap[c1]:
                         del jis3decmap[c1]
                 sonst:
-                    raise ValueError("Difference between JIS X 0208 and JIS X 0213 Plane 1 is found.")
+                    raise ValueError("Difference between JIS X 0208 und JIS X 0213 Plane 1 is found.")
             sonst:
                 jisx0213bmpencmap.setdefault(code >> 8, {})
-                wenn code not in jis3_pairdecmap:
+                wenn code nicht in jis3_pairdecmap:
                     jisx0213bmpencmap[code >> 8][code & 0xff] = c1 << 8 | c2
                 sonst:
                     jisx0213bmpencmap[code >> 8][code & 0xff] = (0,) # pair

@@ -19,7 +19,7 @@ klasse Using__package__:
           base = package.rsplit('.', level)[0]
           return '{0}.{1}'.format(base, name)
 
-    But since there is no guarantee that __package__ has been set (or not been
+    But since there is no guarantee that __package__ has been set (or nicht been
     set to Nichts [Nichts]), there has to be a way to calculate the attribute's value
     [__name__]::
 
@@ -106,7 +106,7 @@ klasse Using__package__PEP451(Using__package__):
 
 klasse Setting__package__:
 
-    """Because __package__ is a new feature, it is not always set by a loader.
+    """Because __package__ is a new feature, it is nicht always set by a loader.
     Import will set it als needed to help mit the transition to relying on
     __package__.
 

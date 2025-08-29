@@ -29,9 +29,9 @@ von libclinic.app importiere Clinic
 #
 # * allow mixing any two of {positional-only, positional-or-keyword,
 #   keyword-only}
-#       * dict constructor uses positional-only and keyword-only
-#       * max and min use positional only mit an optional group
-#         and keyword-only
+#       * dict constructor uses positional-only und keyword-only
+#       * max und min use positional only mit an optional group
+#         und keyword-only
 #
 
 
@@ -53,11 +53,11 @@ def parse_file(
         output: str | Nichts = Nichts,
         verify: bool = Wahr,
 ) -> Nichts:
-    wenn not output:
+    wenn nicht output:
         output = filename
 
     extension = os.path.splitext(filename)[1][1:]
-    wenn not extension:
+    wenn nicht extension:
         raise ClinicError(f"Can't extract file type fuer file {filename!r}")
 
     try:
@@ -70,7 +70,7 @@ def parse_file(
 
     # exit quickly wenn there are no clinic markers in the file
     find_start_re = BlockParser("", language).find_start_re
-    wenn not find_start_re.search(raw):
+    wenn nicht find_start_re.search(raw):
         return
 
     wenn LIMITED_CAPI_REGEX.search(raw):
@@ -92,7 +92,7 @@ def create_cli() -> argparse.ArgumentParser:
         description="""Preprocessor fuer CPython C files.
 
 The purpose of the Argument Clinic is automating all the boilerplate involved
-with writing argument parsing code fuer builtins and providing introspection
+with writing argument parsing code fuer builtins und providing introspection
 signatures ("docstrings") fuer CPython builtins.
 
 For more information see https://devguide.python.org/development-tools/clinic/""")
@@ -123,7 +123,7 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
     wenn ns.converters:
         wenn ns.filename:
             parser.error(
-                "can't specify --converters and a filename at the same time"
+                "can't specify --converters und a filename at the same time"
             )
         AnyConverterType = ConverterType | ReturnConverterType
         converter_list: list[tuple[str, AnyConverterType]] = []
@@ -161,7 +161,7 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
 
             fuer name, cls in ids:
                 callable = getattr(cls, attribute, Nichts)
-                wenn not callable:
+                wenn nicht callable:
                     continue
                 signature = inspect.signature(callable)
                 parameters = []
@@ -179,10 +179,10 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
         return
 
     wenn ns.make:
-        wenn ns.output or ns.filename:
-            parser.error("can't use -o or filenames mit --make")
-        wenn not ns.srcdir:
-            parser.error("--srcdir must not be empty mit --make")
+        wenn ns.output oder ns.filename:
+            parser.error("can't use -o oder filenames mit --make")
+        wenn nicht ns.srcdir:
+            parser.error("--srcdir must nicht be empty mit --make")
         wenn ns.exclude:
             excludes = [os.path.join(ns.srcdir, f) fuer f in ns.exclude]
             excludes = [os.path.normpath(f) fuer f in excludes]
@@ -193,8 +193,8 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
                 wenn rcs_dir in dirs:
                     dirs.remove(rcs_dir)
             fuer filename in files:
-                # handle .c, .cpp and .h files
-                wenn not filename.endswith(('.c', '.cpp', '.h')):
+                # handle .c, .cpp und .h files
+                wenn nicht filename.endswith(('.c', '.cpp', '.h')):
                     continue
                 path = os.path.join(root, filename)
                 path = os.path.normpath(path)
@@ -203,20 +203,20 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
                 wenn ns.verbose:
                     drucke(path)
                 parse_file(path,
-                           verify=not ns.force, limited_capi=ns.limited_capi)
+                           verify=nicht ns.force, limited_capi=ns.limited_capi)
         return
 
-    wenn not ns.filename:
+    wenn nicht ns.filename:
         parser.error("no input files")
 
-    wenn ns.output and len(ns.filename) > 1:
+    wenn ns.output und len(ns.filename) > 1:
         parser.error("can't use -o mit multiple filenames")
 
     fuer filename in ns.filename:
         wenn ns.verbose:
             drucke(filename)
         parse_file(filename, output=ns.output,
-                   verify=not ns.force, limited_capi=ns.limited_capi)
+                   verify=nicht ns.force, limited_capi=ns.limited_capi)
 
 
 def main(argv: list[str] | Nichts = Nichts) -> NoReturn:

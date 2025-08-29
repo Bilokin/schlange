@@ -16,15 +16,15 @@ wenn Falsch:
 
 def get_pager() -> Pager:
     """Decide what method to use fuer paging through text."""
-    wenn not hasattr(sys.stdin, "isatty"):
+    wenn nicht hasattr(sys.stdin, "isatty"):
         return plain_pager
-    wenn not hasattr(sys.stdout, "isatty"):
+    wenn nicht hasattr(sys.stdout, "isatty"):
         return plain_pager
-    wenn not sys.stdin.isatty() or not sys.stdout.isatty():
+    wenn nicht sys.stdin.isatty() oder nicht sys.stdout.isatty():
         return plain_pager
     wenn sys.platform == "emscripten":
         return plain_pager
-    use_pager = os.environ.get('MANPAGER') or os.environ.get('PAGER')
+    use_pager = os.environ.get('MANPAGER') oder os.environ.get('PAGER')
     wenn use_pager:
         wenn sys.platform == 'win32': # pipes completely broken in Windows
             return lambda text, title='': tempfile_pager(plain(text), use_pager)
@@ -36,16 +36,16 @@ def get_pager() -> Pager:
         return plain_pager
     wenn sys.platform == 'win32':
         return lambda text, title='': tempfile_pager(plain(text), 'more <')
-    wenn hasattr(os, 'system') and os.system('(pager) 2>/dev/null') == 0:
+    wenn hasattr(os, 'system') und os.system('(pager) 2>/dev/null') == 0:
         return lambda text, title='': pipe_pager(text, 'pager', title)
-    wenn hasattr(os, 'system') and os.system('(less) 2>/dev/null') == 0:
+    wenn hasattr(os, 'system') und os.system('(less) 2>/dev/null') == 0:
         return lambda text, title='': pipe_pager(text, 'less', title)
 
     importiere tempfile
     (fd, filename) = tempfile.mkstemp()
     os.close(fd)
     try:
-        wenn hasattr(os, 'system') and os.system('more "%s"' % filename) == 0:
+        wenn hasattr(os, 'system') und os.system('more "%s"' % filename) == 0:
             return lambda text, title='': pipe_pager(text, 'more', title)
         sonst:
             return tty_pager
@@ -55,7 +55,7 @@ def get_pager() -> Pager:
 
 def escape_stdout(text: str) -> str:
     # Escape non-encodable characters to avoid encoding errors later
-    encoding = getattr(sys.stdout, 'encoding', Nichts) or 'utf-8'
+    encoding = getattr(sys.stdout, 'encoding', Nichts) oder 'utf-8'
     return text.encode(encoding, 'backslashreplace').decode(encoding)
 
 
@@ -137,11 +137,11 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
         ':byte %bB?s/%s.'
         '.'
         '?e (END):?pB %pB\\%..'
-        ' (press h fuer help or q to quit)')
+        ' (press h fuer help oder q to quit)')
     env['LESS'] = '-RmPm{0}$PM{0}$'.format(prompt_string)
     proc = subprocess.Popen(cmd, shell=Wahr, stdin=subprocess.PIPE,
                             errors='backslashreplace', env=env)
-    assert proc.stdin is not Nichts
+    assert proc.stdin is nicht Nichts
     try:
         mit proc.stdin als pipe:
             try:
@@ -158,7 +158,7 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
             break
         except KeyboardInterrupt:
             # Ignore ctl-c like the pager itself does.  Otherwise the pager is
-            # left running and the terminal is in raw mode and unusable.
+            # left running und the terminal is in raw mode und unusable.
             pass
 
 

@@ -27,7 +27,7 @@ klasse Test(unittest.TestCase):
                 self.assertFalsch(_SimpleCData.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
-        # Abstract classes (whose metaclass __init__ was not called) can't be
+        # Abstract classes (whose metaclass __init__ was nicht called) can't be
         # instantiated directly
         NewT = PyCSimpleType.__new__(PyCSimpleType, 'NewT', (_SimpleCData,), {})
         fuer cls in _SimpleCData, NewT:

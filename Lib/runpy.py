@@ -1,6 +1,6 @@
-"""runpy.py - locating and running Python code using the module namespace
+"""runpy.py - locating und running Python code using the module namespace
 
-Provides support fuer locating and running Python scripts using the Python
+Provides support fuer locating und running Python scripts using the Python
 module namespace instead of the native filesystem.
 
 This allows Python code to play nicely mit non-filesystem based PEP 302
@@ -52,7 +52,7 @@ klasse _ModifiedArgv0(object):
         self._saved_value = self._sentinel = object()
 
     def __enter__(self):
-        wenn self._saved_value is not self._sentinel:
+        wenn self._saved_value is nicht self._sentinel:
             raise RuntimeError("Already preserving saved value")
         self._saved_value = sys.argv[0]
         sys.argv[0] = self.value
@@ -66,7 +66,7 @@ def _run_code(code, run_globals, init_globals=Nichts,
               mod_name=Nichts, mod_spec=Nichts,
               pkg_name=Nichts, script_name=Nichts):
     """Helper to run code in nominated namespace"""
-    wenn init_globals is not Nichts:
+    wenn init_globals is nicht Nichts:
         run_globals.update(init_globals)
     wenn mod_spec is Nichts:
         loader = Nichts
@@ -101,25 +101,25 @@ def _run_module_code(code, init_globals=Nichts,
     # may be cleared when the temporary module goes away
     return mod_globals.copy()
 
-# Helper to get the full name, spec and code fuer a module
+# Helper to get the full name, spec und code fuer a module
 def _get_module_details(mod_name, error=ImportError):
     wenn mod_name.startswith("."):
-        raise error("Relative module names not supported")
+        raise error("Relative module names nicht supported")
     pkg_name, _, _ = mod_name.rpartition(".")
     wenn pkg_name:
         # Try importing the parent to avoid catching initialization errors
         try:
             __import__(pkg_name)
         except ImportError als e:
-            # If the parent or higher ancestor package is missing, let the
-            # error be raised by find_spec() below and then be caught. But do
-            # not allow other errors to be caught.
-            wenn e.name is Nichts or (e.name != pkg_name and
-                    not pkg_name.startswith(e.name + ".")):
+            # If the parent oder higher ancestor package is missing, let the
+            # error be raised by find_spec() below und then be caught. But do
+            # nicht allow other errors to be caught.
+            wenn e.name is Nichts oder (e.name != pkg_name und
+                    nicht pkg_name.startswith(e.name + ".")):
                 raise
         # Warn wenn the module has already been imported under its normal name
         existing = sys.modules.get(mod_name)
-        wenn existing is not Nichts and not hasattr(existing, "__path__"):
+        wenn existing is nicht Nichts und nicht hasattr(existing, "__path__"):
             von warnings importiere warn
             msg = "{mod_name!r} found in sys.modules after importiere of " \
                 "package {pkg_name!r}, but prior to execution of " \
@@ -130,7 +130,7 @@ def _get_module_details(mod_name, error=ImportError):
     try:
         spec = importlib.util.find_spec(mod_name)
     except (ImportError, AttributeError, TypeError, ValueError) als ex:
-        # This hack fixes an impedance mismatch between pkgutil and
+        # This hack fixes an impedance mismatch between pkgutil und
         # importlib, where the latter raises other errors fuer cases where
         # pkgutil previously raised ImportError
         msg = "Error while finding module specification fuer {!r} ({}: {})"
@@ -140,20 +140,20 @@ def _get_module_details(mod_name, error=ImportError):
         raise error(msg.format(mod_name, type(ex).__name__, ex)) von ex
     wenn spec is Nichts:
         raise error("No module named %s" % mod_name)
-    wenn spec.submodule_search_locations is not Nichts:
-        wenn mod_name == "__main__" or mod_name.endswith(".__main__"):
+    wenn spec.submodule_search_locations is nicht Nichts:
+        wenn mod_name == "__main__" oder mod_name.endswith(".__main__"):
             raise error("Cannot use package als __main__ module")
         try:
             pkg_main_name = mod_name + ".__main__"
             return _get_module_details(pkg_main_name, error)
         except error als e:
-            wenn mod_name not in sys.modules:
+            wenn mod_name nicht in sys.modules:
                 raise  # No module loaded; being a package is irrelevant
-            raise error(("%s; %r is a package and cannot " +
+            raise error(("%s; %r is a package und cannot " +
                                "be directly executed") %(e, mod_name))
     loader = spec.loader
     wenn loader is Nichts:
-        raise error("%r is a namespace package and cannot be executed"
+        raise error("%r is a namespace package und cannot be executed"
                                                                  % mod_name)
     try:
         code = loader.get_code(mod_name)
@@ -166,7 +166,7 @@ def _get_module_details(mod_name, error=ImportError):
 klasse _Error(Exception):
     """Error that _run_module_as_main() should report without a traceback"""
 
-# XXX ncoghlan: Should this be documented and made public?
+# XXX ncoghlan: Should this be documented und made public?
 # (Current thoughts: don't repeat the mistake that lead to its
 # creation when run_module() no longer met the needs of
 # mainmodule.c, but couldn't be changed because it was public)
@@ -174,7 +174,7 @@ def _run_module_as_main(mod_name, alter_argv=Wahr):
     """Runs the designated module in the __main__ namespace
 
        Note that the executed module will have full access to the
-       __main__ namespace. If this is not desirable, the run_module()
+       __main__ namespace. If this is nicht desirable, the run_module()
        function should be used to run the module code in a fresh namespace.
 
        At the very least, these variables in __main__ will be overwritten:
@@ -185,9 +185,9 @@ def _run_module_as_main(mod_name, alter_argv=Wahr):
            __package__
     """
     try:
-        wenn alter_argv or mod_name != "__main__": # i.e. -m switch
+        wenn alter_argv oder mod_name != "__main__": # i.e. -m switch
             mod_name, mod_spec, code = _get_module_details(mod_name, _Error)
-        sonst:          # i.e. directory or zipfile execution
+        sonst:          # i.e. directory oder zipfile execution
             mod_name, mod_spec, code = _get_main_module_details(_Error)
     except _Error als exc:
         msg = "%s: %s" % (sys.executable, exc)
@@ -202,18 +202,18 @@ def run_module(mod_name, init_globals=Nichts,
                run_name=Nichts, alter_sys=Falsch):
     """Execute a module's code without importing it.
 
-       mod_name -- an absolute module name or package name.
+       mod_name -- an absolute module name oder package name.
 
        Optional arguments:
        init_globals -- dictionary used to pre-populate the module’s
        globals dictionary before the code is executed.
 
-       run_name -- wenn not Nichts, this will be used fuer setting __name__;
+       run_name -- wenn nicht Nichts, this will be used fuer setting __name__;
        otherwise, __name__ will be set to mod_name + '__main__' wenn the
-       named module is a package and to just mod_name otherwise.
+       named module is a package und to just mod_name otherwise.
 
        alter_sys -- wenn Wahr, sys.argv[0] is updated mit the value of
-       __file__ and sys.modules[__name__] is updated mit a temporary
+       __file__ und sys.modules[__name__] is updated mit a temporary
        module object fuer the module being executed. Both are
        restored to their original values before the function returns.
 
@@ -230,7 +230,7 @@ def run_module(mod_name, init_globals=Nichts,
 
 def _get_main_module_details(error=ImportError):
     # Helper that gives a nicer error message when attempting to
-    # execute a zipfile or directory by invoking __main__.py
+    # execute a zipfile oder directory by invoking __main__.py
     # Also moves the standard __main__ out of the way so that the
     # preexisting __loader__ entry doesn't cause issues
     main_name = "__main__"
@@ -263,13 +263,13 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
     """Execute code located at the specified filesystem location.
 
        path_name -- filesystem location of a Python script, zipfile,
-       or directory containing a top level __main__.py script.
+       oder directory containing a top level __main__.py script.
 
        Optional arguments:
        init_globals -- dictionary used to pre-populate the module’s
        globals dictionary before the code is executed.
 
-       run_name -- wenn not Nichts, this will be used to set __name__;
+       run_name -- wenn nicht Nichts, this will be used to set __name__;
        otherwise, '<run_path>' will be used fuer __name__.
 
        Returns the resulting module globals dictionary.
@@ -293,8 +293,8 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
         try:
             # Here's where things are a little different von the run_module
             # case. There, we only had to replace the module in sys while the
-            # code was running and doing so was somewhat optional. Here, we
-            # have no choice and we have to remove it even while we read the
+            # code was running und doing so was somewhat optional. Here, we
+            # have no choice und we have to remove it even while we read the
             # code. If we don't do this, a __loader__ attribute in the
             # existing __main__ module may prevent location of the new module.
             mod_name, mod_spec, code = _get_main_module_details()

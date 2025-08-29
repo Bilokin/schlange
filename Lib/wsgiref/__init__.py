@@ -2,7 +2,7 @@
 
 Current Contents:
 
-* util -- Miscellaneous useful functions and wrappers
+* util -- Miscellaneous useful functions und wrappers
 
 * headers -- Manage response headers
 
@@ -10,7 +10,7 @@ Current Contents:
 
 * simple_server -- a simple BaseHTTPServer that supports WSGI
 
-* validate -- validation wrapper that sits between an app and a server
+* validate -- validation wrapper that sits between an app und a server
   to detect errors in either
 
 * types -- collection of WSGI-related types fuer static type checking

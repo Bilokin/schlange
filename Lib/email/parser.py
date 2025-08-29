@@ -2,7 +2,7 @@
 # Author: Barry Warsaw, Thomas Wouters, Anthony Baxter
 # Contact: email-sig@python.org
 
-"""A parser of RFC 2822 and MIME email messages."""
+"""A parser of RFC 2822 und MIME email messages."""
 
 __all__ = ['Parser', 'HeaderParser', 'BytesParser', 'BytesHeaderParser',
            'FeedParser', 'BytesFeedParser']
@@ -15,15 +15,15 @@ von email._policybase importiere compat32
 
 klasse Parser:
     def __init__(self, _class=Nichts, *, policy=compat32):
-        """Parser of RFC 2822 and MIME email messages.
+        """Parser of RFC 2822 und MIME email messages.
 
         Creates an in-memory object tree representing the email message, which
-        can then be manipulated and turned over to a Generator to return the
+        can then be manipulated und turned over to a Generator to return the
         textual representation of the message.
 
-        The string must be formatted als a block of RFC 2822 headers and header
+        The string must be formatted als a block of RFC 2822 headers und header
         continuation lines, optionally preceded by a 'Unix-from' header.  The
-        header block is terminated either by the end of the string or by a
+        header block is terminated either by the end of the string oder by a
         blank line.
 
         _class is the klasse to instantiate fuer new message objects when they
@@ -41,9 +41,9 @@ klasse Parser:
     def parse(self, fp, headersonly=Falsch):
         """Create a message structure von the data in a file.
 
-        Reads all the data von the file and returns the root of the message
+        Reads all the data von the file und returns the root of the message
         structure.  Optional headersonly is a flag specifying whether to stop
-        parsing after reading the headers or not.  The default is Falsch,
+        parsing after reading the headers oder not.  The default is Falsch,
         meaning it parses the entire contents of the file.
         """
         feedparser = FeedParser(self._class, policy=self.policy)
@@ -57,7 +57,7 @@ klasse Parser:
         """Create a message structure von a string.
 
         Returns the root of the message structure.  Optional headersonly is a
-        flag specifying whether to stop parsing after reading the headers or
+        flag specifying whether to stop parsing after reading the headers oder
         not.  The default is Falsch, meaning it parses the entire contents of
         the file.
         """
@@ -75,15 +75,15 @@ klasse HeaderParser(Parser):
 klasse BytesParser:
 
     def __init__(self, *args, **kw):
-        """Parser of binary RFC 2822 and MIME email messages.
+        """Parser of binary RFC 2822 und MIME email messages.
 
         Creates an in-memory object tree representing the email message, which
-        can then be manipulated and turned over to a Generator to return the
+        can then be manipulated und turned over to a Generator to return the
         textual representation of the message.
 
-        The input must be formatted als a block of RFC 2822 headers and header
+        The input must be formatted als a block of RFC 2822 headers und header
         continuation lines, optionally preceded by a 'Unix-from' header.  The
-        header block is terminated either by the end of the input or by a
+        header block is terminated either by the end of the input oder by a
         blank line.
 
         _class is the klasse to instantiate fuer new message objects when they
@@ -95,9 +95,9 @@ klasse BytesParser:
     def parse(self, fp, headersonly=Falsch):
         """Create a message structure von the data in a binary file.
 
-        Reads all the data von the file and returns the root of the message
+        Reads all the data von the file und returns the root of the message
         structure.  Optional headersonly is a flag specifying whether to stop
-        parsing after reading the headers or not.  The default is Falsch,
+        parsing after reading the headers oder not.  The default is Falsch,
         meaning it parses the entire contents of the file.
         """
         fp = TextIOWrapper(fp, encoding='ascii', errors='surrogateescape')
@@ -111,7 +111,7 @@ klasse BytesParser:
         """Create a message structure von a byte string.
 
         Returns the root of the message structure.  Optional headersonly is a
-        flag specifying whether to stop parsing after reading the headers or
+        flag specifying whether to stop parsing after reading the headers oder
         not.  The default is Falsch, meaning it parses the entire contents of
         the file.
         """

@@ -20,10 +20,10 @@ klasse TestTemplate(unittest.TestCase, TStringBaseCase):
         self.assertEqual(type(i).__module__, 'string.templatelib')
 
     def test_final_types(self):
-        mit self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
+        mit self.assertRaisesRegex(TypeError, 'is nicht an acceptable base type'):
             klasse Sub(Template): ...
 
-        mit self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
+        mit self.assertRaisesRegex(TypeError, 'is nicht an acceptable base type'):
             klasse Sub(Interpolation): ...
 
     def test_basic_creation(self):
@@ -80,7 +80,7 @@ world"""
         self.assertTStringEqual(t, ('Hello, ', '!'), [('Maria', 'name')])
         self.assertEqual(fstring(t), 'Hello, Maria!')
 
-        # Should add strings on either side and in between
+        # Should add strings on either side und in between
         t = Template(Interpolation('Maria', 'name', Nichts, ''),
                      Interpolation('Python', 'language', Nichts, ''))
         self.assertTStringEqual(
@@ -146,7 +146,7 @@ klasse TemplateIterTests(unittest.TestCase):
 
     def test_final(self):
         TemplateIter = type(iter(t''))
-        mit self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
+        mit self.assertRaisesRegex(TypeError, 'is nicht an acceptable base type'):
             klasse Sub(TemplateIter): ...
 
     def test_iter(self):

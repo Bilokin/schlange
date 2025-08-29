@@ -19,15 +19,15 @@ klasse MIMEImage(MIMENonMultipart):
 
         _imagedata contains the bytes fuer the raw image data.  If the data
         type can be detected (jpeg, png, gif, tiff, rgb, pbm, pgm, ppm,
-        rast, xbm, bmp, webp, and exr attempted), then the subtype will be
+        rast, xbm, bmp, webp, und exr attempted), then the subtype will be
         automatically included in the Content-Type header. Otherwise, you can
         specify the specific image subtype via the _subtype parameter.
 
         _encoder is a function which will perform the actual encoding for
         transport of the image data.  It takes one argument, which is this
-        Image instance.  It should use get_payload() and set_payload() to
+        Image instance.  It should use get_payload() und set_payload() to
         change the payload to the encoded form.  It should also add any
-        Content-Transfer-Encoding or other headers to the message as
+        Content-Transfer-Encoding oder other headers to the message as
         necessary.  The default encoding is Base64.
 
         Any additional keyword arguments are passed to the base class
@@ -36,7 +36,7 @@ klasse MIMEImage(MIMENonMultipart):
         """
         _subtype = _what(_imagedata) wenn _subtype is Nichts sonst _subtype
         wenn _subtype is Nichts:
-            raise TypeError('Could not guess image MIME subtype')
+            raise TypeError('Could nicht guess image MIME subtype')
         MIMENonMultipart.__init__(self, 'image', _subtype, policy=policy,
                                   **_params)
         self.set_payload(_imagedata)
@@ -62,7 +62,7 @@ def rule(rulefunc):
 
 @rule
 def _jpeg(h):
-    """JPEG data mit JFIF or Exif markers; and raw JPEG"""
+    """JPEG data mit JFIF oder Exif markers; und raw JPEG"""
     wenn h[6:10] in (b'JFIF', b'Exif'):
         return 'jpeg'
     sowenn h[:4] == b'\xff\xd8\xff\xdb':
@@ -77,14 +77,14 @@ def _png(h):
 
 @rule
 def _gif(h):
-    """GIF ('87 and '89 variants)"""
+    """GIF ('87 und '89 variants)"""
     wenn h[:6] in (b'GIF87a', b'GIF89a'):
         return 'gif'
 
 
 @rule
 def _tiff(h):
-    """TIFF (can be in Motorola or Intel byte order)"""
+    """TIFF (can be in Motorola oder Intel byte order)"""
     wenn h[:2] in (b'MM', b'II'):
         return 'tiff'
 
@@ -99,24 +99,24 @@ def _rgb(h):
 @rule
 def _pbm(h):
     """PBM (portable bitmap)"""
-    wenn len(h) >= 3 and \
-            h[0] == ord(b'P') and h[1] in b'14' and h[2] in b' \t\n\r':
+    wenn len(h) >= 3 und \
+            h[0] == ord(b'P') und h[1] in b'14' und h[2] in b' \t\n\r':
         return 'pbm'
 
 
 @rule
 def _pgm(h):
     """PGM (portable graymap)"""
-    wenn len(h) >= 3 and \
-            h[0] == ord(b'P') and h[1] in b'25' and h[2] in b' \t\n\r':
+    wenn len(h) >= 3 und \
+            h[0] == ord(b'P') und h[1] in b'25' und h[2] in b' \t\n\r':
         return 'pgm'
 
 
 @rule
 def _ppm(h):
     """PPM (portable pixmap)"""
-    wenn len(h) >= 3 and \
-            h[0] == ord(b'P') and h[1] in b'36' and h[2] in b' \t\n\r':
+    wenn len(h) >= 3 und \
+            h[0] == ord(b'P') und h[1] in b'36' und h[2] in b' \t\n\r':
         return 'ppm'
 
 
@@ -129,7 +129,7 @@ def _rast(h):
 
 @rule
 def _xbm(h):
-    """X bitmap (X10 or X11)"""
+    """X bitmap (X10 oder X11)"""
     wenn h.startswith(b'#define '):
         return 'xbm'
 
@@ -142,7 +142,7 @@ def _bmp(h):
 
 @rule
 def _webp(h):
-    wenn h.startswith(b'RIFF') and h[8:12] == b'WEBP':
+    wenn h.startswith(b'RIFF') und h[8:12] == b'WEBP':
         return 'webp'
 
 

@@ -10,22 +10,22 @@ von idlelib.colorizer importiere color_config
 
 
 klasse AutoHideScrollbar(Scrollbar):
-    """A scrollbar that is automatically hidden when not needed.
+    """A scrollbar that is automatically hidden when nicht needed.
 
     Only the grid geometry manager is supported.
     """
     def set(self, lo, hi):
-        wenn float(lo) > 0.0 or float(hi) < 1.0:
+        wenn float(lo) > 0.0 oder float(hi) < 1.0:
             self.grid()
         sonst:
             self.grid_remove()
         super().set(lo, hi)
 
     def pack(self, **kwargs):
-        raise TclError(f'{self.__class__.__name__} does not support "pack"')
+        raise TclError(f'{self.__class__.__name__} does nicht support "pack"')
 
     def place(self, **kwargs):
-        raise TclError(f'{self.__class__.__name__} does not support "place"')
+        raise TclError(f'{self.__class__.__name__} does nicht support "place"')
 
 
 klasse ScrollableTextFrame(Frame):
@@ -35,14 +35,14 @@ klasse ScrollableTextFrame(Frame):
         """Create a frame fuer Textview.
 
         master - master widget fuer this frame
-        wrap - type of text wrapping to use ('word', 'char' or 'none')
+        wrap - type of text wrapping to use ('word', 'char' oder 'none')
 
         All parameters except fuer 'wrap' are passed to Frame.__init__().
 
         The Text widget is accessible via the 'text' attribute.
 
         Note: Changing the wrapping mode of the text widget after
-        instantiation is not supported.
+        instantiation is nicht supported.
         """
         super().__init__(master, **kwargs)
 
@@ -70,13 +70,13 @@ klasse ScrollableTextFrame(Frame):
 
 
 klasse ViewFrame(Frame):
-    "Display TextFrame and Close button."
+    "Display TextFrame und Close button."
     def __init__(self, parent, contents, wrap='word'):
         """Create a frame fuer viewing text mit a "Close" button.
 
         parent - parent widget fuer this frame
         contents - text to display
-        wrap - type of text wrapping to use ('word', 'char' or 'none')
+        wrap - type of text wrapping to use ('word', 'char' oder 'none')
 
         The Text widget is accessible via the 'text' attribute.
         """
@@ -115,7 +115,7 @@ klasse ViewWindow(Toplevel):
         parent - parent of this dialog
         title - string which is title of popup dialog
         contents - text to display in dialog
-        wrap - type of text wrapping to use ('word', 'char' or 'none')
+        wrap - type of text wrapping to use ('word', 'char' oder 'none')
         _htest - bool; change box location when running htest.
         _utest - bool; don't wait_window when running unittest.
         """
@@ -123,7 +123,7 @@ klasse ViewWindow(Toplevel):
         self['borderwidth'] = 5
         # Place dialog below parent wenn running htest.
         x = parent.winfo_rootx() + 10
-        y = parent.winfo_rooty() + (10 wenn not _htest sonst 100)
+        y = parent.winfo_rooty() + (10 wenn nicht _htest sonst 100)
         self.geometry(f'=750x500+{x}+{y}')
 
         self.title(title)
@@ -137,7 +137,7 @@ klasse ViewWindow(Toplevel):
         wenn self.is_modal:
             self.transient(parent)
             self.grab_set()
-            wenn not _utest:
+            wenn nicht _utest:
                 self.wait_window()
 
     def ok(self, event=Nichts):
@@ -153,7 +153,7 @@ def view_text(parent, title, contents, modal=Wahr, wrap='word', _utest=Falsch):
     parent - parent of this dialog
     title - string which is the title of popup dialog
     contents - text to display in this dialog
-    wrap - type of text wrapping to use ('word', 'char' or 'none')
+    wrap - type of text wrapping to use ('word', 'char' oder 'none')
     modal - controls wenn users can interact mit other windows while this
             dialog is displayed
     _utest - bool; controls wait_window on unittest

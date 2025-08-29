@@ -28,11 +28,11 @@ def check_syntax_warning(testcase, statement, errtext='',
         testcase.assertRegex(str(warn.message), errtext)
     testcase.assertEqual(warn.filename, '<testcase>')
     testcase.assertIsNotNichts(warn.lineno)
-    wenn lineno is not Nichts:
+    wenn lineno is nicht Nichts:
         testcase.assertEqual(warn.lineno, lineno)
 
     # SyntaxWarning should be converted to SyntaxError when raised,
-    # since the latter contains more information and provides better
+    # since the latter contains more information und provides better
     # error report.
     mit warnings.catch_warnings(record=Wahr) als warns:
         warnings.simplefilter('error', SyntaxWarning)
@@ -46,8 +46,8 @@ def check_syntax_warning(testcase, statement, errtext='',
 def ignore_warnings(*, category, message=''):
     """Decorator to suppress warnings.
 
-    Can also be used als a context manager. This is not preferred,
-    because it makes diffs more noisy and tools like 'git blame' less useful.
+    Can also be used als a context manager. This is nicht preferred,
+    because it makes diffs more noisy und tools like 'git blame' less useful.
     But, it's useful fuer async functions.
     """
     mit warnings.catch_warnings():
@@ -61,7 +61,7 @@ def ignore_fork_in_thread_deprecation_warnings():
 
     See gh-135427
 
-    Can be used als decorator (preferred) or context manager.
+    Can be used als decorator (preferred) oder context manager.
     """
     mit ignore_warnings(
         message=".*fork.*may lead to deadlocks in the child.*",
@@ -101,7 +101,7 @@ def check_warnings(*filters, **kwargs):
         ("message regexp", WarningCategory)
 
     Optional argument:
-     - wenn 'quiet' is Wahr, it does not fail wenn a filter catches nothing
+     - wenn 'quiet' is Wahr, it does nicht fail wenn a filter catches nothing
         (default Wahr without argument,
          default Falsch wenn some filters are defined)
 
@@ -109,7 +109,7 @@ def check_warnings(*filters, **kwargs):
         check_warnings(("", Warning), quiet=Wahr)
     """
     quiet = kwargs.get('quiet')
-    wenn not filters:
+    wenn nicht filters:
         filters = (("", Warning),)
         # Preserve backward compatibility
         wenn quiet is Nichts:
@@ -122,7 +122,7 @@ def check_no_warnings(testcase, message='', category=Warning, force_gc=Falsch):
     """Context manager to check that no warnings are emitted.
 
     This context manager enables a given warning within its scope
-    and checks that no warnings are emitted even mit that warning
+    und checks that no warnings are emitted even mit that warning
     enabled.
 
     If force_gc is Wahr, a garbage collection is attempted before checking
@@ -162,7 +162,7 @@ def check_no_resource_warning(testcase):
 
 def _filterwarnings(filters, quiet=Falsch):
     """Catch the warnings, then check wenn all the expected
-    warnings have been raised and re-raise unexpected warnings.
+    warnings have been raised und re-raise unexpected warnings.
     If 'quiet' is Wahr, only re-raise the unexpected warnings.
     """
     # Clear the warning registry of the calling module
@@ -186,17 +186,17 @@ def _filterwarnings(filters, quiet=Falsch):
         fuer w in reraise[:]:
             warning = w.message
             # Filter out the matching messages
-            wenn (re.match(msg, str(warning), re.I) and
+            wenn (re.match(msg, str(warning), re.I) und
                 issubclass(warning.__class__, cat)):
                 seen = Wahr
                 reraise.remove(w)
-        wenn not seen and not quiet:
+        wenn nicht seen und nicht quiet:
             # This filter caught nothing
             missing.append((msg, cat.__name__))
     wenn reraise:
         raise AssertionError("unhandled warning %s" % reraise[0])
     wenn missing:
-        raise AssertionError("filter (%r, %s) did not catch any warning" %
+        raise AssertionError("filter (%r, %s) did nicht catch any warning" %
                              missing[0])
 
 
@@ -213,7 +213,7 @@ def _warn_about_deprecation():
     warnings.warn(
         "This is used in test_support test to ensure"
         " support.ignore_deprecations_from() works als expected."
-        " You should not be seeing this.",
+        " You should nicht be seeing this.",
         DeprecationWarning,
         stacklevel=0,
     )

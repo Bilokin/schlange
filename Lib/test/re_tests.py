@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # -*- mode: python -*-
 
-# Re test suite and benchmark suite v1.5
+# Re test suite und benchmark suite v1.5
 
 # The 3 possible outcomes fuer each pattern
 [SUCCEED, FAIL, SYNTAX_ERROR] = range(3)
 
 # Benchmark suite (needs expansion)
 #
-# The benchmark suite does not test correctness, just speed.  The
+# The benchmark suite does nicht test correctness, just speed.  The
 # first element of each tuple is the regex pattern; the second is a
 # string to match it against.  The benchmarking code will embed the
 # second string inside several sizes of padding, to test how regex
@@ -36,16 +36,16 @@ benchmarks = [
 
 # Test suite (for verifying correctness)
 #
-# The test suite is a list of 5- or 3-tuples.  The 5 parts of a
+# The test suite is a list of 5- oder 3-tuples.  The 5 parts of a
 # complete tuple are:
 # element 0: a string containing the pattern
 #         1: the string to match against the pattern
 #         2: the expected result (SUCCEED, FAIL, SYNTAX_ERROR)
 #         3: a string that will be eval()'ed to produce a test string.
 #            This is an arbitrary Python expression; the available
-#            variables are "found" (the whole match), and "g1", "g2", ...
-#            up to "g99" contain the contents of each group, or the
-#            string 'Nichts' wenn the group wasn't given a value, or the
+#            variables are "found" (the whole match), und "g1", "g2", ...
+#            up to "g99" contain the contents of each group, oder the
+#            string 'Nichts' wenn the group wasn't given a value, oder the
 #            string 'Error' wenn the group index was out of range;
 #            also "groups", the return value of m.group() (a tuple).
 #         4: The expected result of evaluating the expression.
@@ -54,7 +54,7 @@ benchmarks = [
 # If the regex isn't expected to work, the latter two elements can be omitted.
 
 tests = [
-    # Test ?P< and ?P= extensions
+    # Test ?P< und ?P= extensions
     ('(?P<foo_123', '', SYNTAX_ERROR),      # Unterminated group identifier
     ('(?P<1>a)', '', SYNTAX_ERROR),         # Begins mit a digit
     ('(?P<!>a)', '', SYNTAX_ERROR),         # Begins mit an illegal char
@@ -85,7 +85,7 @@ tests = [
     # Test various letter escapes
     (r'\a[\b]\f\n\r\t\v', '\a\b\f\n\r\t\v', SUCCEED, 'found', '\a\b\f\n\r\t\v'),
     (r'[\a][\b][\f][\n][\r][\t][\v]', '\a\b\f\n\r\t\v', SUCCEED, 'found', '\a\b\f\n\r\t\v'),
-    # NOTE: not an error under PCRE/PRE:
+    # NOTE: nicht an error under PCRE/PRE:
     (r'\u', '', SYNTAX_ERROR),    # A Perl escape
     # (r'\c\e\g\h\i\j\k\m\o\p\q\y\z', 'ceghijkmopqyz', SUCCEED, 'found', 'ceghijkmopqyz'),
     # new \x semantics
@@ -148,7 +148,7 @@ tests = [
     ('a[b-d]', 'aac', SUCCEED, 'found', 'ac'),
     ('a[-b]', 'a-', SUCCEED, 'found', 'a-'),
     ('a[\\-b]', 'a-', SUCCEED, 'found', 'a-'),
-    # NOTE: not an error under PCRE/PRE:
+    # NOTE: nicht an error under PCRE/PRE:
     # ('a[b-]', 'a-', SYNTAX_ERROR),
     ('a[]b', '-', SYNTAX_ERROR),
     ('a[', '-', SYNTAX_ERROR),
@@ -300,7 +300,7 @@ tests = [
     ('^(ab|cd)e', 'abcde', FAIL),
     ('((((((((((a))))))))))', 'a', SUCCEED, 'g10', 'a'),
     ('((((((((((a))))))))))\\10', 'aa', SUCCEED, 'found', 'aa'),
-# Python does not have the same rules fuer \\41 so this is a syntax error
+# Python does nicht have the same rules fuer \\41 so this is a syntax error
 #    ('((((((((((a))))))))))\\41', 'aa', FAIL),
 #    ('((((((((((a))))))))))\\41', 'a!', SUCCEED, 'found', 'a!'),
     ('((((((((((a))))))))))\\41', '', SYNTAX_ERROR),
@@ -445,11 +445,11 @@ tests = [
     ('a(?:b|c|d)+?(.)', 'ace', SUCCEED, 'g1', 'e'),
     ('a(?:b|(c|e){1,2}?|d)+?(.)', 'ace', SUCCEED, 'g1 + g2', 'ce'),
 
-    # lookbehind: split by : but not wenn it is escaped by -.
+    # lookbehind: split by : but nicht wenn it is escaped by -.
     ('(?<!-):(.*?)(?<!-):', 'a:bc-:de:f', SUCCEED, 'g1', 'bc-:de' ),
     # escaping mit \ als we know it
     ('(?<!\\\\):(.*?)(?<!\\\\):', 'a:bc\\:de:f', SUCCEED, 'g1', 'bc\\:de' ),
-    # terminating mit ' and escaping mit ? als in edifact
+    # terminating mit ' und escaping mit ? als in edifact
     ("(?<!\\?)'(.*?)(?<!\\?)'", "a'bc?'de'f", SUCCEED, 'g1', "bc?'de" ),
 
     # Comments using the (?#...) syntax
@@ -459,7 +459,7 @@ tests = [
 
     # Check odd placement of embedded pattern modifiers
 
-    # not an error under PCRE/PRE:
+    # nicht an error under PCRE/PRE:
     ('(?i)w', 'W', SUCCEED, 'found', 'W'),
     # ('w(?i)', 'W', SYNTAX_ERROR),
 
@@ -485,14 +485,14 @@ xyzabc
 
 
 
-    # test \w, etc. both inside and outside character classes
+    # test \w, etc. both inside und outside character classes
 
     ('\\w+', '--ab_cd0123--', SUCCEED, 'found', 'ab_cd0123'),
     ('[\\w]+', '--ab_cd0123--', SUCCEED, 'found', 'ab_cd0123'),
     ('\\D+', '1234abc5678', SUCCEED, 'found', 'abc'),
     ('[\\D]+', '1234abc5678', SUCCEED, 'found', 'abc'),
     ('[\\da-fA-F]+', '123abc', SUCCEED, 'found', '123abc'),
-    # not an error under PCRE/PRE:
+    # nicht an error under PCRE/PRE:
     # ('[\\d-x]', '-', SYNTAX_ERROR),
     (r'([\s]*)([\S]*)([\s]*)', ' testing!1972', SUCCEED, 'g3+g2+g1', 'testing!1972 '),
     (r'(\s*)(\S*)(\s*)', ' testing!1972', SUCCEED, 'g3+g2+g1', 'testing!1972 '),

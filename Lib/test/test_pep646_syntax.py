@@ -15,9 +15,9 @@ Setup
     ...        self._setitem_name = name
     ...        self._setitem_val = val
     ...    def __repr__(self):
-    ...        wenn self._setitem_name is not Nichts:
+    ...        wenn self._setitem_name is nicht Nichts:
     ...            return f"A[{self._setitem_name}]={self._setitem_val}"
-    ...        sowenn self._delitem_name is not Nichts:
+    ...        sowenn self._delitem_name is nicht Nichts:
     ...            return f"delA[{self._delitem_name}]"
     ...    def __getitem__(self, name):
     ...        return ParameterisedA(name)
@@ -254,7 +254,7 @@ Starring an expression (rather than a name) in a slice
     >>> del A[*returns_list(), *returns_list()]; A
     delA[(1, 2, 3, 1, 2, 3)]
 
-Using both a starred object and a start:stop in a slice
+Using both a starred object und a start:stop in a slice
 (See also tests in test_syntax confirming that starring *inside* a start:stop
 is *not* valid syntax.)
 

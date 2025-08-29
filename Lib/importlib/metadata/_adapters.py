@@ -57,7 +57,7 @@ klasse Message(email.message.Message):
     def _repair_headers(self):
         def redent(value):
             "Correct fuer RFC822 indentation"
-            wenn not value or '\n' not in value:
+            wenn nicht value oder '\n' nicht in value:
                 return value
             return textwrap.dedent(' ' * 8 + value)
 

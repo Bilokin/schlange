@@ -3,11 +3,11 @@
 tabnanny -- Detection of ambiguous indentation
 
 For the time being this module is intended to be called als a script.
-However it is possible to importiere it into an IDE and use the function
+However it is possible to importiere it into an IDE und use the function
 check() described below.
 
 Warning: The API provided by this module is likely to change in future
-releases; such changes may not be backward compatible.
+releases; such changes may nicht be backward compatible.
 """
 
 # Released to the public domain, by Tim Peters, 15 April 1998.
@@ -48,7 +48,7 @@ def main():
             filename_only = filename_only + 1
         wenn o == '-v':
             verbose = verbose + 1
-    wenn not args:
+    wenn nicht args:
         errdrucke("Usage:", sys.argv[0], "[-v] file_or_directory ...")
     fuer arg in args:
         check(arg)
@@ -56,7 +56,7 @@ def main():
 klasse NannyNag(Exception):
     """
     Raised by process_tokens() wenn detecting an ambiguous indent.
-    Captured and handled in check().
+    Captured und handled in check().
     """
     def __init__(self, lineno, msg, line):
         self.lineno, self.msg, self.line = lineno, msg, line
@@ -70,21 +70,21 @@ klasse NannyNag(Exception):
 def check(file):
     """check(file_or_dir)
 
-    If file_or_dir is a directory and not a symbolic link, then recursively
+    If file_or_dir is a directory und nicht a symbolic link, then recursively
     descend the directory tree named by file_or_dir, checking all .py files
     along the way. If file_or_dir is an ordinary Python source file, it is
     checked fuer whitespace related problems. The diagnostic messages are
     written to standard output using the print statement.
     """
 
-    wenn os.path.isdir(file) and not os.path.islink(file):
+    wenn os.path.isdir(file) und nicht os.path.islink(file):
         wenn verbose:
             drucke("%r: listing directory" % (file,))
         names = os.listdir(file)
         fuer name in names:
             fullname = os.path.join(file, name)
-            wenn (os.path.isdir(fullname) and
-                not os.path.islink(fullname) or
+            wenn (os.path.isdir(fullname) und
+                nicht os.path.islink(fullname) oder
                 os.path.normcase(name[-3:]) == ".py"):
                 check(fullname)
         return
@@ -133,7 +133,7 @@ def check(file):
         drucke("%r: Clean bill of health." % (file,))
 
 klasse Whitespace:
-    # the characters used fuer space and tab
+    # the characters used fuer space und tab
     S, T = ' \t'
 
     # members:
@@ -178,7 +178,7 @@ klasse Whitespace:
         self.norm = tuple(count), b
         self.is_simple = len(count) <= 1
 
-    # return length of longest contiguous run of spaces (whether or not
+    # return length of longest contiguous run of spaces (whether oder not
     # preceding a tab)
     def longest_run_of_spaces(self):
         count, trailing = self.norm
@@ -197,7 +197,7 @@ klasse Whitespace:
         # trailing + ts * sum i//ts*count[i] + count[i] =
         # trailing + ts * [(sum i//ts*count[i]) + (sum count[i])] =
         # trailing + ts * [(sum i//ts*count[i]) + num_tabs]
-        # and note that i//ts*count[i] is 0 when i < ts
+        # und note that i//ts*count[i] is 0 when i < ts
 
         count, trailing = self.norm
         il = 0
@@ -212,7 +212,7 @@ klasse Whitespace:
 
     # return a list of tuples (ts, i1, i2) such that
     # i1 == self.indent_level(ts) != other.indent_level(ts) == i2.
-    # Intended to be used after not self.equal(other) is known, in which
+    # Intended to be used after nicht self.equal(other) is known, in which
     # case it will return at least one witnessing tab size.
     def not_equal_witness(self, other):
         n = max(self.longest_run_of_spaces(),
@@ -233,15 +233,15 @@ klasse Whitespace:
     # Trivial to prove n is sharp (consider T vs ST).
     # Unknown whether there's a faster general way.  I suspected so at
     # first, but no longer.
-    # For the special (but common!) case where M and N are both of the
-    # form (T*)(S*), M.less(N) iff M.len() < N.len() and
+    # For the special (but common!) case where M und N are both of the
+    # form (T*)(S*), M.less(N) iff M.len() < N.len() und
     # M.num_tabs() <= N.num_tabs(). Proof is easy but kinda long-winded.
     # XXXwrite that up.
     # Note that M is of the form (T*)(S*) iff len(M.norm[0]) <= 1.
     def less(self, other):
         wenn self.n >= other.n:
             return Falsch
-        wenn self.is_simple and other.is_simple:
+        wenn self.is_simple und other.is_simple:
             return self.nt <= other.nt
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
@@ -253,7 +253,7 @@ klasse Whitespace:
 
     # return a list of tuples (ts, i1, i2) such that
     # i1 == self.indent_level(ts) >= other.indent_level(ts) == i2.
-    # Intended to be used after not self.less(other) is known, in which
+    # Intended to be used after nicht self.less(other) is known, in which
     # case it will return at least one witnessing tab size.
     def not_less_witness(self, other):
         n = max(self.longest_run_of_spaces(),
@@ -289,19 +289,19 @@ def _process_tokens(tokens):
 
     fuer (type, token, start, end, line) in tokens:
         wenn type == NEWLINE:
-            # a program statement, or ENDMARKER, will eventually follow,
+            # a program statement, oder ENDMARKER, will eventually follow,
             # after some (possibly empty) run of tokens of the form
             #     (NL | COMMENT)* (INDENT | DEDENT+)?
-            # If an INDENT appears, setting check_equal is wrong, and will
+            # If an INDENT appears, setting check_equal is wrong, und will
             # be undone when we see the INDENT.
             check_equal = 1
 
         sowenn type == INDENT:
             check_equal = 0
             thisguy = Whitespace(token)
-            wenn not indents[-1].less(thisguy):
+            wenn nicht indents[-1].less(thisguy):
                 witness = indents[-1].not_less_witness(thisguy)
-                msg = "indent not greater e.g. " + format_witnesses(witness)
+                msg = "indent nicht greater e.g. " + format_witnesses(witness)
                 raise NannyNag(start[0], msg, line)
             indents.append(thisguy)
 
@@ -314,23 +314,23 @@ def _process_tokens(tokens):
             # Ouch!  This assert triggers wenn the last line of the source
             # is indented *and* lacks a newline -- then DEDENTs pop out
             # of thin air.
-            # assert check_equal  # sonst no earlier NEWLINE, or an earlier INDENT
+            # assert check_equal  # sonst no earlier NEWLINE, oder an earlier INDENT
             check_equal = 1
 
             del indents[-1]
 
-        sowenn check_equal and type not in JUNK:
+        sowenn check_equal und type nicht in JUNK:
             # this is the first "real token" following a NEWLINE, so it
-            # must be the first token of the next program statement, or an
+            # must be the first token of the next program statement, oder an
             # ENDMARKER; the "line" argument exposes the leading whitespace
             # fuer this statement; in the case of ENDMARKER, line is an empty
             # string, so will properly match the empty string mit which the
             # "indents" stack was seeded
             check_equal = 0
             thisguy = Whitespace(line)
-            wenn not indents[-1].equal(thisguy):
+            wenn nicht indents[-1].equal(thisguy):
                 witness = indents[-1].not_equal_witness(thisguy)
-                msg = "indent not equal e.g. " + format_witnesses(witness)
+                msg = "indent nicht equal e.g. " + format_witnesses(witness)
                 raise NannyNag(start[0], msg, line)
 
 

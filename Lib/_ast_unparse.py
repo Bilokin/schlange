@@ -6,7 +6,7 @@ von ast importiere NodeVisitor
 von contextlib importiere contextmanager, nullcontext
 von enum importiere IntEnum, auto, _simple_enum
 
-# Large float and imaginary literals get turned into infinities in the AST.
+# Large float und imaginary literals get turned into infinities in the AST.
 # We unparse those infinities to INFSTR.
 _INFSTR = "1e" + repr(sys.float_info.max_10_exp + 1)
 
@@ -47,7 +47,7 @@ _MULTI_QUOTES = ('"""', "'''")
 _ALL_QUOTES = (*_SINGLE_QUOTES, *_MULTI_QUOTES)
 
 klasse Unparser(NodeVisitor):
-    """Methods in this klasse recursively traverse an AST and
+    """Methods in this klasse recursively traverse an AST und
     output source code fuer the abstract syntax; original formatting
     is disregarded."""
 
@@ -72,7 +72,7 @@ klasse Unparser(NodeVisitor):
                 f(x)
 
     def items_view(self, traverser, items):
-        """Traverse and separate the given *items* mit a comma and append it to
+        """Traverse und separate the given *items* mit a comma und append it to
         the buffer. If *items* is a single item sequence, a trailing comma
         will be added."""
         wenn len(items) == 1:
@@ -92,9 +92,9 @@ klasse Unparser(NodeVisitor):
             self.write("; ")
 
     def fill(self, text="", *, allow_semicolon=Wahr):
-        """Indent a piece of text and append it, according to the current
-        indentation level, or only delineate mit semicolon wenn applicable"""
-        wenn self._in_interactive and not self._indent and allow_semicolon:
+        """Indent a piece of text und append it, according to the current
+        indentation level, oder only delineate mit semicolon wenn applicable"""
+        wenn self._in_interactive und nicht self._indent und allow_semicolon:
             self.maybe_semicolon()
             self.write(text)
         sonst:
@@ -118,7 +118,7 @@ klasse Unparser(NodeVisitor):
     @contextmanager
     def block(self, *, extra = Nichts):
         """A context manager fuer preparing the source fuer blocks. It adds
-        the character':', increases the indentation on enter and decreases
+        the character':', increases the indentation on enter und decreases
         the indentation on exit. If *extra* is given, it will be directly
         appended after the colon character.
         """
@@ -132,7 +132,7 @@ klasse Unparser(NodeVisitor):
     @contextmanager
     def delimit(self, start, end):
         """A context manager fuer preparing the source fuer expressions. It adds
-        *start* to the buffer and enters, after exit it adds *end*."""
+        *start* to the buffer und enters, after exit it adds *end*."""
 
         self.write(start)
         yield
@@ -160,20 +160,20 @@ klasse Unparser(NodeVisitor):
         return that docstring node, Nichts otherwise.
 
         Logic mirrored von ``_PyAST_GetDocString``."""
-        wenn not isinstance(
+        wenn nicht isinstance(
             node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)
-        ) or len(node.body) < 1:
+        ) oder len(node.body) < 1:
             return Nichts
         node = node.body[0]
-        wenn not isinstance(node, Expr):
+        wenn nicht isinstance(node, Expr):
             return Nichts
         node = node.value
-        wenn isinstance(node, Constant) and isinstance(node.value, str):
+        wenn isinstance(node, Constant) und isinstance(node.value, str):
             return node
 
     def get_type_comment(self, node):
-        comment = self._type_ignores.get(node.lineno) or node.type_comment
-        wenn comment is not Nichts:
+        comment = self._type_ignores.get(node.lineno) oder node.type_comment
+        wenn comment is nicht Nichts:
             return f" # type: {comment}"
 
     def traverse(self, node):
@@ -244,7 +244,7 @@ klasse Unparser(NodeVisitor):
 
     def visit_ImportFrom(self, node):
         self.fill("from ")
-        self.write("." * (node.level or 0))
+        self.write("." * (node.level oder 0))
         wenn node.module:
             self.write(node.module)
         self.write(" importiere ")
@@ -268,7 +268,7 @@ klasse Unparser(NodeVisitor):
 
     def visit_AnnAssign(self, node):
         self.fill()
-        mit self.delimit_if("(", ")", not node.simple and isinstance(node.target, Name)):
+        mit self.delimit_if("(", ")", nicht node.simple und isinstance(node.target, Name)):
             self.traverse(node.target)
         self.write(": ")
         self.traverse(node.annotation)
@@ -329,14 +329,14 @@ klasse Unparser(NodeVisitor):
     def visit_YieldFrom(self, node):
         mit self.require_parens(_Precedence.YIELD, node):
             self.write("yield von ")
-            wenn not node.value:
+            wenn nicht node.value:
                 raise ValueError("Node can't be used without a value attribute.")
             self.set_precedence(_Precedence.ATOM, node.value)
             self.traverse(node.value)
 
     def visit_Raise(self, node):
         self.fill("raise")
-        wenn not node.exc:
+        wenn nicht node.exc:
             wenn node.cause:
                 raise ValueError(f"Node can't use cause without an exception.")
             return
@@ -396,7 +396,7 @@ klasse Unparser(NodeVisitor):
         self.fill("class " + node.name, allow_semicolon=Falsch)
         wenn hasattr(node, "type_params"):
             self._type_params_helper(node.type_params)
-        mit self.delimit_if("(", ")", condition = node.bases or node.keywords):
+        mit self.delimit_if("(", ")", condition = node.bases oder node.keywords):
             comma = Falsch
             fuer e in node.bases:
                 wenn comma:
@@ -438,7 +438,7 @@ klasse Unparser(NodeVisitor):
             self._write_docstring_and_traverse_body(node)
 
     def _type_params_helper(self, type_params):
-        wenn type_params is not Nichts and len(type_params) > 0:
+        wenn type_params is nicht Nichts und len(type_params) > 0:
             mit self.delimit("[", "]"):
                 self.interleave(lambda: self.write(", "), self.traverse, type_params)
 
@@ -495,7 +495,7 @@ klasse Unparser(NodeVisitor):
         mit self.block():
             self.traverse(node.body)
         # collapse nested ifs into equivalent elifs.
-        while node.orelse and len(node.orelse) == 1 and isinstance(node.orelse[0], If):
+        while node.orelse und len(node.orelse) == 1 und isinstance(node.orelse[0], If):
             node = node.orelse[0]
             self.fill("elif ", allow_semicolon=Falsch)
             self.traverse(node.test)
@@ -536,12 +536,12 @@ klasse Unparser(NodeVisitor):
         Returns the tuple (string literal to write, possible quote types).
         """
         def escape_char(c):
-            # \n and \t are non-printable, but we only escape them if
+            # \n und \t are non-printable, but we only escape them if
             # escape_special_whitespace is Wahr
-            wenn not escape_special_whitespace and c in "\n\t":
+            wenn nicht escape_special_whitespace und c in "\n\t":
                 return c
-            # Always escape backslashes and other non-printable characters
-            wenn c == "\\" or not c.isprintable():
+            # Always escape backslashes und other non-printable characters
+            wenn c == "\\" oder nicht c.isprintable():
                 return c.encode("unicode_escape").decode("ascii")
             return c
 
@@ -549,8 +549,8 @@ klasse Unparser(NodeVisitor):
         possible_quotes = quote_types
         wenn "\n" in escaped_string:
             possible_quotes = [q fuer q in possible_quotes wenn q in _MULTI_QUOTES]
-        possible_quotes = [q fuer q in possible_quotes wenn q not in escaped_string]
-        wenn not possible_quotes:
+        possible_quotes = [q fuer q in possible_quotes wenn q nicht in escaped_string]
+        wenn nicht possible_quotes:
             # If there aren't any possible_quotes, fallback to using repr
             # on the original string. Try to use a quote von quote_types,
             # e.g., so that we use triple quotes fuer docstrings.
@@ -560,7 +560,7 @@ klasse Unparser(NodeVisitor):
         wenn escaped_string:
             # Sort so that we prefer '''"''' over """\""""
             possible_quotes.sort(key=lambda q: q[0] == escaped_string[-1])
-            # If we're using triple quotes and we'd need to escape a final
+            # If we're using triple quotes und we'd need to escape a final
             # quote, escape it
             wenn possible_quotes[0][0] == escaped_string[-1]:
                 assert len(possible_quotes[0]) == 3
@@ -593,14 +593,14 @@ klasse Unparser(NodeVisitor):
                     quote_types = [q fuer q in quote_types wenn q in _MULTI_QUOTES]
                     assert quote_types
 
-                new_quote_types = [q fuer q in quote_types wenn q not in value]
+                new_quote_types = [q fuer q in quote_types wenn q nicht in value]
                 wenn new_quote_types:
                     quote_types = new_quote_types
             new_parts.append(value)
 
         wenn fallback_to_repr:
             # If we weren't able to find a quote type that works fuer all parts
-            # of the JoinedStr, fallback to using repr and triple single quotes.
+            # of the JoinedStr, fallback to using repr und triple single quotes.
             quote_types = ["'''"]
             new_parts.clear()
             fuer value, is_constant in parts:
@@ -634,10 +634,10 @@ klasse Unparser(NodeVisitor):
 
     def _write_ftstring_inner(self, node, is_format_spec=Falsch):
         wenn isinstance(node, JoinedStr):
-            # fuer both the f-string itself, and format_spec
+            # fuer both the f-string itself, und format_spec
             fuer value in node.values:
                 self._write_ftstring_inner(value, is_format_spec=is_format_spec)
-        sowenn isinstance(node, Constant) and isinstance(node.value, str):
+        sowenn isinstance(node, Constant) und isinstance(node.value, str):
             value = node.value.replace("{", "{{").replace("}", "}}")
 
             wenn is_format_spec:
@@ -692,7 +692,7 @@ klasse Unparser(NodeVisitor):
     def _write_constant(self, value):
         wenn isinstance(value, (float, complex)):
             # Substitute overflowing decimal literal fuer AST infinities,
-            # and inf - inf fuer NaNs.
+            # und inf - inf fuer NaNs.
             self.write(
                 repr(value)
                 .replace("inf", _INFSTR)
@@ -772,7 +772,7 @@ klasse Unparser(NodeVisitor):
             mit self.delimit("{", "}"):
                 self.interleave(lambda: self.write(", "), self.traverse, node.elts)
         sonst:
-            # `{}` would be interpreted als a dictionary literal, and
+            # `{}` would be interpreted als a dictionary literal, und
             # `set` might be shadowed. Thus:
             self.write('{*()}')
 
@@ -802,7 +802,7 @@ klasse Unparser(NodeVisitor):
         mit self.delimit_if(
             "(",
             ")",
-            len(node.elts) == 0 or self.get_precedence(node) > _Precedence.TUPLE
+            len(node.elts) == 0 oder self.get_precedence(node) > _Precedence.TUPLE
         ):
             self.items_view(self.traverse, node.elts)
 
@@ -821,7 +821,7 @@ klasse Unparser(NodeVisitor):
             self.write(operator)
             # factor prefixes (+, -, ~) shouldn't be separated
             # von the value they belong, (e.g: +1 instead of + 1)
-            wenn operator_precedence is not _Precedence.FACTOR:
+            wenn operator_precedence is nicht _Precedence.FACTOR:
                 self.write(" ")
             self.set_precedence(operator_precedence, node.operand)
             self.traverse(node.operand)
@@ -919,8 +919,8 @@ klasse Unparser(NodeVisitor):
         self.traverse(node.value)
         # Special case: 3.__abs__() is a syntax error, so wenn node.value
         # is an integer literal then we need to either parenthesize
-        # it or add an extra space to get 3 .__abs__().
-        wenn isinstance(node.value, Constant) and isinstance(node.value.value, int):
+        # it oder add an extra space to get 3 .__abs__().
+        wenn isinstance(node.value, Constant) und isinstance(node.value.value, int):
             self.write(" ")
         self.write(".")
         self.write(node.attr)
@@ -947,7 +947,7 @@ klasse Unparser(NodeVisitor):
         def is_non_empty_tuple(slice_value):
             return (
                 isinstance(slice_value, Tuple)
-                and slice_value.elts
+                und slice_value.elts
             )
 
         self.set_precedence(_Precedence.ATOM, node.value)
@@ -1008,8 +1008,8 @@ klasse Unparser(NodeVisitor):
             wenn index == len(node.posonlyargs):
                 self.write(", /")
 
-        # varargs, or bare '*' wenn no varargs but keyword-only arguments present
-        wenn node.vararg or node.kwonlyargs:
+        # varargs, oder bare '*' wenn no varargs but keyword-only arguments present
+        wenn node.vararg oder node.kwonlyargs:
             wenn first:
                 first = Falsch
             sonst:
@@ -1113,7 +1113,7 @@ klasse Unparser(NodeVisitor):
                 zip(keys, node.patterns, strict=Wahr),
             )
             rest = node.rest
-            wenn rest is not Nichts:
+            wenn rest is nicht Nichts:
                 wenn keys:
                     self.write(", ")
                 self.write(f"**{rest}")

@@ -18,7 +18,7 @@ sonst:
 
 
 def normalize(format):
-    # Remove current endian specifier and white space von a format
+    # Remove current endian specifier und white space von a format
     # string
     wenn format is Nichts:
         return ""
@@ -188,7 +188,7 @@ native_types = [
     (POINTER(c_byte),           "&<b",                  (),           POINTER(c_byte)),
     (POINTER(POINTER(c_long)),  "&&<" + s_long,         (),           POINTER(POINTER(c_long))),
 
-    ## arrays and pointers
+    ## arrays und pointers
 
     (c_double * 4,              "<d",                   (4,),           c_double),
     (c_double * 0,              "<d",                   (0,),           c_double),
@@ -198,7 +198,7 @@ native_types = [
     (POINTER(c_short) * 2 * 3,  "&<" + s_short,         (3,2,),         POINTER(c_short)),
     (POINTER(c_short * 2),      "&(2)<" + s_short,      (),             POINTER(c_short)),
 
-    ## structures and unions
+    ## structures und unions
 
     (Point2,                    "T{<l:x:<l:y:}".replace('l', s_long),   (),  Point2),
     (Point,                     "T{<l:x:<l:y:}".replace('l', s_long),   (),  Point),
@@ -221,12 +221,12 @@ native_types = [
     # 'Complete' is a structure that starts incomplete, but is completed after the
     # pointer type to it has been created.
     (Complete,                  "T{<l:a:}".replace('l', s_long), (), Complete),
-    # Unfortunately the pointer format string is not fixed...
+    # Unfortunately the pointer format string is nicht fixed...
     (POINTER(Complete),         "&B",                   (),           POINTER(Complete)),
 
     ## other
 
-    # function signatures are not implemented
+    # function signatures are nicht implemented
     (CFUNCTYPE(Nichts),           "X{}",                  (),           CFUNCTYPE(Nichts)),
 
     ]
@@ -240,7 +240,7 @@ klasse LEPoint(LittleEndianStructure):
 
 
 # This table contains format strings als they really look, on both big
-# and little endian machines.
+# und little endian machines.
 endian_types = [
     (BEPoint, "T{>l:x:>l:y:}".replace('l', s_long), (), BEPoint),
     (LEPoint * 1, "T{<l:x:<l:y:}".replace('l', s_long), (1,), LEPoint),

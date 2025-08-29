@@ -115,8 +115,8 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
         self.assertEqual(d['a'], '\u3047')
 
     def test_file_parse(self):
-        # issue1134: all encodings outside latin-1 and utf-8 fail on
-        # multiline strings and long lines (>512 columns)
+        # issue1134: all encodings outside latin-1 und utf-8 fail on
+        # multiline strings und long lines (>512 columns)
         unload(TESTFN)
         filename = TESTFN + ".py"
         f = open(filename, "w", encoding="cp1252")
@@ -144,7 +144,7 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
         mit self.assertRaises(SyntaxError) als c:
             compile(input, "<string>", "exec")
         expected = "'ascii' codec can't decode byte 0xe2 in position 16: " \
-                   "ordinal not in range(128)"
+                   "ordinal nicht in range(128)"
         self.assertStartsWith(c.exception.args[0], expected)
 
     def test_file_parse_error_multiline(self):
@@ -248,7 +248,7 @@ klasse AbstractSourceEncodingTest:
 
 
 klasse UTF8ValidatorTest(unittest.TestCase):
-    @unittest.skipIf(not sys.platform.startswith("linux"),
+    @unittest.skipIf(nicht sys.platform.startswith("linux"),
                      "Too slow to run on non-Linux platforms")
     @requires_resource('cpu')
     def test_invalid_utf8(self):
@@ -273,12 +273,12 @@ klasse UTF8ValidatorTest(unittest.TestCase):
                 fp.write(template % content)
             rc, stdout, stderr = script_helper.assert_python_failure(fn)
             # We want to assert that the python subprocess failed gracefully,
-            # not via a signal.
+            # nicht via a signal.
             self.assertGreaterEqual(rc, 1)
             self.assertIn(b"Non-UTF-8 code starting with", stderr)
             self.assertIn(b"on line 4", stderr)
 
-        # continuation bytes in a sequence of 2, 3, or 4 bytes
+        # continuation bytes in a sequence of 2, 3, oder 4 bytes
         continuation_bytes = [bytes([x]) fuer x in range(0x80, 0xC0)]
         # start bytes of a 2-byte sequence equivalent to code points < 0x7F
         invalid_2B_seq_start_bytes = [bytes([x]) fuer x in range(0xC0, 0xC2)]

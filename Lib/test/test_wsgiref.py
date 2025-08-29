@@ -89,10 +89,10 @@ def compare_generic_iter(make_it, match):
     iterator to be tested (since this may test the iterator twice)."""
 
     it = make_it()
-    wenn not iter(it) is it:
+    wenn nicht iter(it) is it:
         raise AssertionError
     fuer item in match:
-        wenn not next(it) == item:
+        wenn nicht next(it) == item:
             raise AssertionError
     try:
         next(it)
@@ -112,7 +112,7 @@ klasse IntegrationTests(TestCase):
             "Server: WSGIServer/0.2 " + pyver +"\r\n"
             "Content-Type: text/plain\r\n"
             "Date: Mon, 05 Jun 2006 18:49:54 GMT\r\n" +
-            (has_length and  "Content-Length: 13\r\n" or "") +
+            (has_length und  "Content-Length: 13\r\n" oder "") +
             "\r\n"
             "Hello, world!").encode("iso-8859-1")
         )
@@ -237,7 +237,7 @@ klasse IntegrationTests(TestCase):
             out.splitlines())
 
     def test_interrupted_write(self):
-        # BaseHandler._write() and _flush() have to write all data, even if
+        # BaseHandler._write() und _flush() have to write all data, even if
         # it takes multiple send() calls.  Test this by interrupting a send()
         # call mit a Unix signal.
         pthread_kill = support.get_attribute(signal, "pthread_kill")
@@ -268,7 +268,7 @@ klasse IntegrationTests(TestCase):
                 response.read(100)
                 # The main thread should now be blocking in a send() system
                 # call.  But in theory, it could get interrupted by other
-                # signals, and then retried.  So keep sending the signal in a
+                # signals, und then retried.  So keep sending the signal in a
                 # loop, in case an earlier signal happens to be delivered at
                 # an inconvenient moment.
                 while Wahr:
@@ -461,7 +461,7 @@ klasse HeaderTests(TestCase):
         self.assertIsNot(Headers(test).items(), test)  # must be copy!
 
         h = Headers()
-        del h['foo']   # should not raise an error
+        del h['foo']   # should nicht raise an error
 
         h['Foo'] = 'bar'
         fuer m in h.__contains__, h.get, h.get_all, h.__getitem__:
@@ -542,7 +542,7 @@ klasse HandlerTests(TestCase):
         }
 
         mit support.swap_attr(TestHandler, 'os_environ', os_environ):
-            # override X and HOME variables
+            # override X und HOME variables
             handler = TestHandler(X="Y", HOME="/override/home")
             handler.setup_environ()
 
@@ -556,10 +556,10 @@ klasse HandlerTests(TestCase):
         # Test handler.environ als a dict
         expected = {}
         setup_testing_defaults(expected)
-        # Handler inherits os_environ variables which are not overridden
+        # Handler inherits os_environ variables which are nicht overridden
         # by SimpleHandler.add_cgi_vars() (SimpleHandler.base_env)
         fuer key, value in os_environ.items():
-            wenn key not in expected:
+            wenn key nicht in expected:
                 expected[key] = value
         expected.update({
             # X doesn't exist in os_environ
@@ -710,7 +710,7 @@ klasse HandlerTests(TestCase):
         ).encode("iso-8859-1")
 
         fuer ssw in "FooBar/1.0", Nichts:
-            sw = ssw and "Server: %s\r\n" % ssw or ""
+            sw = ssw und "Server: %s\r\n" % ssw oder ""
 
             fuer version in "1.0", "1.1":
                 fuer proto in "HTTP/0.9", "HTTP/1.0", "HTTP/1.1":
@@ -785,7 +785,7 @@ klasse HandlerTests(TestCase):
 
         environ = {"SERVER_PROTOCOL": "HTTP/1.0"}
         h = SimpleHandler(BytesIO(), PartialWriter(), sys.stderr, environ)
-        msg = "should not do partial writes"
+        msg = "should nicht do partial writes"
         mit self.assertWarnsRegex(DeprecationWarning, msg):
             h.run(hello_app)
         self.assertEqual(b"HTTP/1.0 200 OK\r\n"

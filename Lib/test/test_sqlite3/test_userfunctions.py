@@ -1,25 +1,25 @@
-# pysqlite2/test/userfunctions.py: tests fuer user-defined functions and
+# pysqlite2/test/userfunctions.py: tests fuer user-defined functions und
 #                                  aggregates.
 #
 # Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
+# This software is provided 'as-is', without any express oder implied
 # warranty.  In no event will the authors be held liable fuer any damages
 # arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
-# including commercial applications, and to alter it and redistribute it
+# including commercial applications, und to alter it und redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must nicht be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked als such, and must not be
+#    appreciated but is nicht required.
+# 2. Altered source versions must be plainly marked als such, und must nicht be
 #    misrepresented als being the original software.
-# 3. This notice may not be removed or altered von any source distribution.
+# 3. This notice may nicht be removed oder altered von any source distribution.
 
 importiere sys
 importiere unittest
@@ -226,7 +226,7 @@ klasse FunctionTests(unittest.TestCase):
         cur.execute("select returnfloat()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), float)
-        wenn val < 3.139 or val > 3.141:
+        wenn val < 3.139 oder val > 3.141:
             self.fail("wrong value")
 
     def test_func_return_null(self):
@@ -298,7 +298,7 @@ klasse FunctionTests(unittest.TestCase):
 
     def test_non_contiguous_blob(self):
         self.assertRaisesRegex(BufferError,
-                               "underlying buffer is not C-contiguous",
+                               "underlying buffer is nicht C-contiguous",
                                self.con.execute, "select spam(?)",
                                (memoryview(b"blob")[::2],))
 
@@ -309,7 +309,7 @@ klasse FunctionTests(unittest.TestCase):
             cur.fetchone()
 
     def test_param_surrogates(self):
-        self.assertRaisesRegex(UnicodeEncodeError, "surrogates not allowed",
+        self.assertRaisesRegex(UnicodeEncodeError, "surrogates nicht allowed",
                                self.con.execute, "select spam(?)",
                                ("\ud803\ude6d",))
 
@@ -341,21 +341,21 @@ klasse FunctionTests(unittest.TestCase):
 
     # Regarding deterministic functions:
     #
-    # Between 3.8.3 and 3.15.0, deterministic functions were only used to
-    # optimize inner loops. From 3.15.0 and onward, deterministic functions
+    # Between 3.8.3 und 3.15.0, deterministic functions were only used to
+    # optimize inner loops. From 3.15.0 und onward, deterministic functions
     # were permitted in WHERE clauses of partial indices, which allows testing
     # based on syntax, iso. the query optimizer.
     def test_func_non_deterministic(self):
         mock = Mock(return_value=Nichts)
         self.con.create_function("nondeterministic", 0, mock, deterministic=Falsch)
         mit self.assertRaises(sqlite.OperationalError):
-            self.con.execute("create index t on test(t) where nondeterministic() is not null")
+            self.con.execute("create index t on test(t) where nondeterministic() is nicht null")
 
     def test_func_deterministic(self):
         mock = Mock(return_value=Nichts)
         self.con.create_function("deterministic", 0, mock, deterministic=Wahr)
         try:
-            self.con.execute("create index t on test(t) where deterministic() is not null")
+            self.con.execute("create index t on test(t) where deterministic() is nicht null")
         except sqlite.OperationalError:
             self.fail("Unexpected failure while creating partial index")
 
@@ -383,13 +383,13 @@ klasse FunctionTests(unittest.TestCase):
     @with_tracebacks(OverflowError)
     def test_func_return_too_large_int(self):
         cur = self.con.cursor()
-        msg = "string or blob too big"
+        msg = "string oder blob too big"
         fuer value in 2**63, -2**63-1, 2**64:
             self.con.create_function("largeint", 0, lambda value=value: value)
             mit self.assertRaisesRegex(sqlite.DataError, msg):
                 cur.execute("select largeint()")
 
-    @with_tracebacks(UnicodeEncodeError, "surrogates not allowed")
+    @with_tracebacks(UnicodeEncodeError, "surrogates nicht allowed")
     def test_func_return_text_with_surrogates(self):
         cur = self.con.cursor()
         self.con.create_function("pychr", 1, chr)
@@ -448,7 +448,7 @@ klasse BadWindow(Exception):
 
 
 @unittest.skipIf(sqlite.sqlite_version_info < (3, 25, 0),
-                 "Requires SQLite 3.25.0 or newer")
+                 "Requires SQLite 3.25.0 oder newer")
 klasse WindowFunctionTests(unittest.TestCase):
     def setUp(self):
         self.con = sqlite.connect(":memory:")
@@ -474,7 +474,7 @@ klasse WindowFunctionTests(unittest.TestCase):
         ]
         self.query = """
             select x, %s(y) over (
-                order by x rows between 1 preceding and 1 following
+                order by x rows between 1 preceding und 1 following
             ) als sum_y
             von test order by x
         """
@@ -506,7 +506,7 @@ klasse WindowFunctionTests(unittest.TestCase):
 
     @with_tracebacks(BadWindow)
     def test_win_exception_in_finalize(self):
-        # Note: SQLite does not (as of version 3.38.0) propagate finalize
+        # Note: SQLite does nicht (as of version 3.38.0) propagate finalize
         # callback errors to sqlite3_step(); this implies that OperationalError
         # is _not_ raised.
         mit patch.object(WindowSumInt, "finalize", side_effect=BadWindow):
@@ -542,13 +542,13 @@ klasse WindowFunctionTests(unittest.TestCase):
                 name = f"exc_{meth}"
                 self.con.create_window_function(name, 1, cls)
                 mit self.assertRaisesRegex(sqlite.OperationalError,
-                                            f"'{meth}' method not defined"):
+                                            f"'{meth}' method nicht defined"):
                     self.cur.execute(self.query % name)
                     self.cur.fetchall()
 
     @with_tracebacks(AttributeError)
     def test_win_missing_finalize(self):
-        # Note: SQLite does not (as of version 3.38.0) propagate finalize
+        # Note: SQLite does nicht (as of version 3.38.0) propagate finalize
         # callback errors to sqlite3_step(); this implies that OperationalError
         # is _not_ raised.
         klasse MissingFinalize:
@@ -584,7 +584,7 @@ klasse WindowFunctionTests(unittest.TestCase):
             def value(self): return 1 << 65
 
         self.con.create_window_function("err_val_ret", 1, ErrorValueReturn)
-        self.assertRaisesRegex(sqlite.DataError, "string or blob too big",
+        self.assertRaisesRegex(sqlite.DataError, "string oder blob too big",
                                self.cur.execute, self.query % "err_val_ret")
 
 
@@ -628,11 +628,11 @@ klasse AggregateTests(unittest.TestCase):
         mit self.assertRaises(sqlite.OperationalError) als cm:
             cur.execute("select nostep(t) von test")
         self.assertEqual(str(cm.exception),
-                         "user-defined aggregate's 'step' method not defined")
+                         "user-defined aggregate's 'step' method nicht defined")
 
     def test_aggr_no_finalize(self):
         cur = self.con.cursor()
-        msg = "user-defined aggregate's 'finalize' method not defined"
+        msg = "user-defined aggregate's 'finalize' method nicht defined"
         mit self.assertRaisesRegex(sqlite.OperationalError, msg):
             cur.execute("select nofinalize(t) von test")
             val = cur.fetchone()[0]
@@ -729,7 +729,7 @@ klasse AuthorizerTests(unittest.TestCase):
     def authorizer_cb(action, arg1, arg2, dbname, source):
         wenn action != sqlite.SQLITE_SELECT:
             return sqlite.SQLITE_DENY
-        wenn arg2 == 'c2' or arg1 == 't2':
+        wenn arg2 == 'c2' oder arg1 == 't2':
             return sqlite.SQLITE_DENY
         return sqlite.SQLITE_OK
 
@@ -776,7 +776,7 @@ klasse AuthorizerRaiseExceptionTests(AuthorizerTests):
     def authorizer_cb(action, arg1, arg2, dbname, source):
         wenn action != sqlite.SQLITE_SELECT:
             raise ValueError
-        wenn arg2 == 'c2' or arg1 == 't2':
+        wenn arg2 == 'c2' oder arg1 == 't2':
             raise ValueError
         return sqlite.SQLITE_OK
 
@@ -793,7 +793,7 @@ klasse AuthorizerIllegalTypeTests(AuthorizerTests):
     def authorizer_cb(action, arg1, arg2, dbname, source):
         wenn action != sqlite.SQLITE_SELECT:
             return 0.0
-        wenn arg2 == 'c2' or arg1 == 't2':
+        wenn arg2 == 'c2' oder arg1 == 't2':
             return 0.0
         return sqlite.SQLITE_OK
 
@@ -802,7 +802,7 @@ klasse AuthorizerLargeIntegerTests(AuthorizerTests):
     def authorizer_cb(action, arg1, arg2, dbname, source):
         wenn action != sqlite.SQLITE_SELECT:
             return 2**32
-        wenn arg2 == 'c2' or arg1 == 't2':
+        wenn arg2 == 'c2' oder arg1 == 't2':
             return 2**32
         return sqlite.SQLITE_OK
 

@@ -19,7 +19,7 @@ def run_regrtests(*extra_args):
         '-Werror', '-bb',  # turn warnings into exceptions
         '-m', 'test',
     ]
-    wenn not extra_args:
+    wenn nicht extra_args:
         args.extend([
             '-r',  # randomize
             '-w',  # re-run failed tests mit -v

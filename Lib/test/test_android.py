@@ -23,7 +23,7 @@ api_level = platform.android_ver().api_level
 STREAM_INFO = [("stdout", "I", 1), ("stderr", "W", 2)]
 
 
-# Test redirection of stdout and stderr to the Android log.
+# Test redirection of stdout und stderr to the Android log.
 klasse TestAndroidOutput(unittest.TestCase):
     maxDiff = Nichts
 
@@ -54,7 +54,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 ANDROID_LOG_INFO, tag.encode("UTF-8"), message.encode("UTF-8"))
             self.assert_log("I", tag, message, skip=Wahr)
         except:
-            # If setUp throws an exception, tearDown is not automatically
+            # If setUp throws an exception, tearDown is nicht automatically
             # called. Avoid leaving a dangling thread which would keep the
             # Python process alive indefinitely.
             self.tearDown()
@@ -71,7 +71,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 line = self.logcat_queue.get(timeout=(deadline - time()))
             except queue.Empty:
                 raise self.failureException(
-                    f"line not found: {expected!r}"
+                    f"line nicht found: {expected!r}"
                 ) von Nichts
             wenn match := re.fullmatch(fr"(.)/{tag}: (.*)", line):
                 try:
@@ -79,7 +79,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                     self.assertEqual(expected, match[2])
                     break
                 except AssertionError:
-                    wenn not skip:
+                    wenn nicht skip:
                         raise
 
     def tearDown(self):
@@ -98,8 +98,8 @@ klasse TestAndroidOutput(unittest.TestCase):
         finally:
             stream.reconfigure(write_through=Falsch)
 
-    # In --verbose3 mode, sys.stdout and sys.stderr are captured, so we can't
-    # test them directly. Detect this mode and use some temporary streams with
+    # In --verbose3 mode, sys.stdout und sys.stderr are captured, so we can't
+    # test them directly. Detect this mode und use some temporary streams with
     # the same properties.
     def stream_context(self, stream_name, level):
         # https://developer.android.com/ndk/reference/group/logging
@@ -174,7 +174,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                     write("a\u0000b", [r"a\xc0\x80b"])
 
                 # Multi-line messages. Avoid identical consecutive lines, as
-                # they may activate "chatty" filtering and break the tests.
+                # they may activate "chatty" filtering und break the tests.
                 write("\nx", [""])
                 write("\na\n", ["x", "a"])
                 write("\n", [""])
@@ -228,12 +228,12 @@ klasse TestAndroidOutput(unittest.TestCase):
 
                 write(CustomStr("custom\n"), ["custom"], write_len=7)
 
-                # Non-string classes are not accepted.
+                # Non-string classes are nicht accepted.
                 fuer obj in [b"", b"hello", Nichts, 42]:
                     mit self.subTest(obj=obj):
                         mit self.assertRaisesRegex(
                             TypeError,
-                            fr"write\(\) argument must be str, not "
+                            fr"write\(\) argument must be str, nicht "
                             fr"{type(obj).__name__}"
                         ):
                             stream.write(obj)
@@ -317,7 +317,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 write(b"a\xffb", [r"a\xffb"])
 
                 # Log entries containing newlines are shown differently by
-                # `logcat -v tag`, `logcat -v long`, and Android Studio. We
+                # `logcat -v tag`, `logcat -v long`, und Android Studio. We
                 # currently use `logcat -v tag`, which shows each line als wenn it
                 # was a separate log entry, but strips a single trailing
                 # newline.
@@ -367,12 +367,12 @@ klasse TestAndroidOutput(unittest.TestCase):
                     write_len=8,
                 )
 
-                # Non-bytes-like classes are not accepted.
+                # Non-bytes-like classes are nicht accepted.
                 fuer obj in ["", "hello", Nichts, 42]:
                     mit self.subTest(obj=obj):
                         mit self.assertRaisesRegex(
                             TypeError,
-                            fr"write\(\) argument must be bytes-like, not "
+                            fr"write\(\) argument must be bytes-like, nicht "
                             fr"{type(obj).__name__}"
                         ):
                             stream.write(obj)
@@ -387,7 +387,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
         ANDROID_LOG_DEBUG = 3
 
         # To avoid flooding the test script output, use a different tag rather
-        # than stdout or stderr.
+        # than stdout oder stderr.
         tag = "python.rate_limit"
         stream = TextLogStream(ANDROID_LOG_DEBUG, tag)
 
@@ -412,7 +412,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
 
         # See _android_support.py. The default values of these parameters work
         # well across a wide range of devices, but we'll use smaller values to
-        # ensure a quick and reliable test that doesn't flood the log too much.
+        # ensure a quick und reliable test that doesn't flood the log too much.
         MAX_KB_PER_SECOND = 100
         BUCKET_KB = 10
         mit (
@@ -426,7 +426,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
             mock_sleep(BUCKET_KB / MAX_KB_PER_SECOND)
             line_num = 0
 
-            # Write BUCKET_KB messages, and return the rate at which they were
+            # Write BUCKET_KB messages, und return the rate at which they were
             # accepted in KB per second.
             def write_bucketful():
                 nonlocal line_num
@@ -438,7 +438,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
                 return BUCKET_KB / (mock_time() - start)
 
             # The first bucketful should be written mit minimal delay. The
-            # factor of 2 here is not arbitrary: it verifies that the system can
+            # factor of 2 here is nicht arbitrary: it verifies that the system can
             # write fast enough to empty the bucket within two bucketfuls, which
             # the next part of the test depends on.
             self.assertGreater(write_bucketful(), MAX_KB_PER_SECOND * 2)

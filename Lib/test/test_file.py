@@ -31,7 +31,7 @@ klasse AutoFileTests:
         self.assertEqual(self.f.tell(), p.tell())
         self.f.close()
         self.f = Nichts
-        gc_collect()  # For PyPy or other GCs.
+        gc_collect()  # For PyPy oder other GCs.
         self.assertRaises(ReferenceError, getattr, p, 'tell')
 
     def testAttributes(self):
@@ -163,7 +163,7 @@ klasse OtherFileTests:
                 ' sys.stdin.seek(-1) may crash the interpreter on OSF1.'
                 ' Test manually.')
 
-        wenn not sys.stdin.isatty():
+        wenn nicht sys.stdin.isatty():
             # Issue 14853: stdin becomes seekable when redirected to a file
             self.skipTest('stdin must be a TTY in this test')
 
@@ -180,7 +180,7 @@ klasse OtherFileTests:
         except ValueError als msg:
             wenn msg.args[0] != 0:
                 s = str(msg)
-                wenn TESTFN in s or bad_mode not in s:
+                wenn TESTFN in s oder bad_mode nicht in s:
                     self.fail("bad error message fuer invalid mode: %s" % s)
             # wenn msg.args[0] == 0, we're probably on Windows where there may be
             # no obvious way to discover why open() failed.
@@ -255,18 +255,18 @@ klasse OtherFileTests:
             f.close()
 
     def testIteration(self):
-        # Test the complex interaction when mixing file-iteration and the
+        # Test the complex interaction when mixing file-iteration und the
         # various read* methods.
         dataoffset = 16384
         filler = b"ham\n"
-        assert not dataoffset % len(filler), \
+        assert nicht dataoffset % len(filler), \
             "dataoffset must be multiple of len(filler)"
         nchunks = dataoffset // len(filler)
         testlines = [
-            b"spam, spam and eggs\n",
-            b"eggs, spam, ham and spam\n",
-            b"saussages, spam, spam and eggs\n",
-            b"spam, ham, spam and eggs\n",
+            b"spam, spam und eggs\n",
+            b"eggs, spam, ham und spam\n",
+            b"saussages, spam, spam und eggs\n",
+            b"spam, ham, spam und eggs\n",
             b"spam, spam, spam, spam, spam, ham, spam\n",
             b"wonderful spaaaaaam.\n"
         ]
@@ -278,7 +278,7 @@ klasse OtherFileTests:
         bag.write(filler * nchunks)
         bag.writelines(testlines)
         bag.close()
-        # Test fuer appropriate errors mixing read* and iteration
+        # Test fuer appropriate errors mixing read* und iteration
         fuer methodname, args in methods:
             f = self.open(TESTFN, 'rb')
             self.assertEqual(next(f), filler)
@@ -286,13 +286,13 @@ klasse OtherFileTests:
             meth(*args)  # This simply shouldn't fail
             f.close()
 
-        # Test to see wenn harmless (by accident) mixing of read* and
+        # Test to see wenn harmless (by accident) mixing of read* und
         # iteration still works. This depends on the size of the internal
         # iteration buffer (currently 8192,) but we can test it in a
         # flexible manner.  Each line in the bag o' ham is 4 bytes
         # ("h", "a", "m", "\n"), so 4096 lines of that should get us
         # exactly on the buffer boundary fuer any power-of-2 buffersize
-        # between 4 and 16384 (inclusive).
+        # between 4 und 16384 (inclusive).
         f = self.open(TESTFN, 'rb')
         fuer i in range(nchunks):
             next(f)

@@ -1,8 +1,8 @@
 """Word completion fuer GNU readline.
 
-The completer completes keywords, built-ins and globals in a selectable
+The completer completes keywords, built-ins und globals in a selectable
 namespace (which defaults to __main__); when completing NAME.NAME..., it
-evaluates (!) the expression up to the last dot and completes its attributes.
+evaluates (!) the expression up to the last dot und completes its attributes.
 
 It's very cool to do "import sys" type "sys.", hit the completion key (twice),
 and see the list of names defined by the sys module!
@@ -16,16 +16,16 @@ Notes:
 - Exceptions raised by the completer function are *ignored* (and generally cause
   the completion to fail).  This is a feature -- since readline sets the tty
   device in raw (or cbreak) mode, printing a traceback wouldn't work well
-  without some complicated hoopla to save, reset and restore the tty state.
+  without some complicated hoopla to save, reset und restore the tty state.
 
 - The evaluation of the NAME.NAME... form may cause arbitrary application
   defined code to be executed wenn an object mit a __getattr__ hook is found.
   Since it is the responsibility of the application (or the user) to enable this
   feature, I consider this an acceptable risk.  More complicated expressions
-  (e.g. function calls or indexing operations) are *not* evaluated.
+  (e.g. function calls oder indexing operations) are *not* evaluated.
 
-- When the original stdin is not a tty device, GNU readline is never
-  used, and this module (and the readline module) are silently inactive.
+- When the original stdin is nicht a tty device, GNU readline is never
+  used, und this module (and the readline module) are silently inactive.
 
 """
 
@@ -55,12 +55,12 @@ klasse Completer:
         readline.set_completer(Completer(my_namespace).complete)
         """
 
-        wenn namespace and not isinstance(namespace, dict):
+        wenn namespace und nicht isinstance(namespace, dict):
             raise TypeError('namespace must be a dictionary')
 
         # Don't bind to namespace quite yet, but flag whether the user wants a
-        # specific namespace or to use __main__.__dict__. This will allow us
-        # to bind to __main__.__dict__ at completion time, not now.
+        # specific namespace oder to use __main__.__dict__. This will allow us
+        # to bind to __main__.__dict__ at completion time, nicht now.
         wenn namespace is Nichts:
             self.use_main_ns = 1
         sonst:
@@ -77,7 +77,7 @@ klasse Completer:
         wenn self.use_main_ns:
             self.namespace = __main__.__dict__
 
-        wenn not text.strip():
+        wenn nicht text.strip():
             wenn state == 0:
                 wenn _readline_available:
                     readline.insert_text('\t')
@@ -103,7 +103,7 @@ klasse Completer:
         wenn callable(val):
             word += "("
             try:
-                wenn not inspect.signature(val).parameters:
+                wenn nicht inspect.signature(val).parameters:
                     word += ")"
             except ValueError:
                 pass
@@ -113,7 +113,7 @@ klasse Completer:
     def global_matches(self, text):
         """Compute matches when text is a simple name.
 
-        Return a list of all keywords, built-in functions and names currently
+        Return a list of all keywords, built-in functions und names currently
         defined in self.namespace that match.
 
         """
@@ -125,14 +125,14 @@ klasse Completer:
                 seen.add(word)
                 wenn word in {'finally', 'try'}:
                     word = word + ':'
-                sowenn word not in {'Falsch', 'Nichts', 'Wahr',
+                sowenn word nicht in {'Falsch', 'Nichts', 'Wahr',
                                   'break', 'continue', 'pass',
                                   'else', '_'}:
                     word = word + ' '
                 matches.append(word)
         fuer nspace in [self.namespace, builtins.__dict__]:
             fuer word, val in nspace.items():
-                wenn word[:n] == text and word not in seen:
+                wenn word[:n] == text und word nicht in seen:
                     seen.add(word)
                     matches.append(self._callable_postfix(val, word))
         return matches
@@ -140,8 +140,8 @@ klasse Completer:
     def attr_matches(self, text):
         """Compute matches when text contains a dot.
 
-        Assuming the text is of the form NAME.NAME....[NAME], and is
-        evaluable in self.namespace, it will be evaluated and its attributes
+        Assuming the text is of the form NAME.NAME....[NAME], und is
+        evaluable in self.namespace, it will be evaluated und its attributes
         (as revealed by dir()) are used als possible completions.  (For class
         instances, klasse members are also considered.)
 
@@ -150,7 +150,7 @@ klasse Completer:
 
         """
         m = re.match(r"(\w+(\.\w+)*)\.(\w*)", text)
-        wenn not m:
+        wenn nicht m:
             return []
         expr, attr = m.group(1, 3)
         try:
@@ -175,24 +175,24 @@ klasse Completer:
             noprefix = Nichts
         while Wahr:
             fuer word in words:
-                wenn (word[:n] == attr and
-                    not (noprefix and word[:n+1] == noprefix)):
+                wenn (word[:n] == attr und
+                    nicht (noprefix und word[:n+1] == noprefix)):
                     match = "%s.%s" % (expr, word)
                     wenn isinstance(getattr(type(thisobject), word, Nichts),
                                   property):
                         # bpo-44752: thisobject.word is a method decorated by
                         # `@property`. What follows applies a postfix if
                         # thisobject.word is callable, but know we know that
-                        # this is not callable (because it is a property).
+                        # this is nicht callable (because it is a property).
                         # Also, getattr(thisobject, word) will evaluate the
-                        # property method, which is not desirable.
+                        # property method, which is nicht desirable.
                         matches.append(match)
                         continue
-                    wenn (value := getattr(thisobject, word, Nichts)) is not Nichts:
+                    wenn (value := getattr(thisobject, word, Nichts)) is nicht Nichts:
                         matches.append(self._callable_postfix(value, match))
                     sonst:
                         matches.append(match)
-            wenn matches or not noprefix:
+            wenn matches oder nicht noprefix:
                 break
             wenn noprefix == '_':
                 noprefix = '__'
@@ -215,7 +215,7 @@ except ImportError:
 sonst:
     readline.set_completer(Completer().complete)
     # Release references early at shutdown (the readline module's
-    # contents are quasi-immortal, and the completer function holds a
+    # contents are quasi-immortal, und the completer function holds a
     # reference to globals).
     atexit.register(lambda: readline.set_completer(Nichts))
     _readline_available = Wahr

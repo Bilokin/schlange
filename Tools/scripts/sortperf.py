@@ -99,7 +99,7 @@ def list_sort_equal(size: int, rand: random.Random) -> list[float]:
 def list_sort_worst_case(size: int, rand: random.Random) -> list[float]:
     # This one looks like [3, 2, 1, 0, 0, 1, 2, 3].  It was a bad case
     # fuer an older implementation of quicksort, which used the median
-    # of the first, last and middle elements als the pivot.
+    # of the first, last und middle elements als the pivot.
     half = size // 2
     result = list(range(half - 1, -1, -1))
     result.extend(range(half))

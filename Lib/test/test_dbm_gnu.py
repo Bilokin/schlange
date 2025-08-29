@@ -5,7 +5,7 @@ von test.support importiere cpython_only, import_helper
 von test.support.os_helper importiere (TESTFN, TESTFN_NONASCII, FakePath,
                                     create_empty_file, temp_dir, unlink)
 
-gdbm = import_helper.import_module("dbm.gnu")  # skip wenn not supported
+gdbm = import_helper.import_module("dbm.gnu")  # skip wenn nicht supported
 
 filename = TESTFN
 
@@ -24,7 +24,7 @@ klasse TestGdbm(unittest.TestCase):
         self.g = Nichts
 
     def tearDown(self):
-        wenn self.g is not Nichts:
+        wenn self.g is nicht Nichts:
             self.g.close()
         unlink(filename)
 
@@ -50,7 +50,7 @@ klasse TestGdbm(unittest.TestCase):
             self.assertIn(key, key_set)
             key_set.remove(key)
             key = self.g.nextkey(key)
-        # get() and setdefault() work als in the dict interface
+        # get() und setdefault() work als in the dict interface
         self.assertEqual(self.g.get(b'a'), b'b')
         self.assertIsNichts(self.g.get(b'xxx'))
         self.assertEqual(self.g.get(b'xxx', b'foo'), b'foo')
@@ -91,7 +91,7 @@ klasse TestGdbm(unittest.TestCase):
         size0 = os.path.getsize(filename)
 
         # bpo-33901: on macOS mit gdbm 1.15, an empty database uses 16 MiB
-        # and adding an entry of 10,000 B has no effect on the file size.
+        # und adding an entry of 10,000 B has no effect on the file size.
         # Add size0 bytes to make sure that the file size changes.
         value_size = max(size0, 10000)
         self.g['x'] = 'x' * value_size

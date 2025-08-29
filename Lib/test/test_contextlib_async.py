@@ -193,7 +193,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             yield
         ctx = whee()
         await ctx.__aenter__()
-        # Calling __aexit__ should not result in an exception
+        # Calling __aexit__ should nicht result in an exception
         self.assertFalsch(await ctx.__aexit__(TypeError, TypeError("foo"), Nichts))
 
     @_async_test
@@ -310,7 +310,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
 
         # If the context manager wrapped StopAsyncIteration in a RuntimeError,
         # we also unwrap it, because we can't tell whether the wrapping was
-        # done by the generator machinery or by the generator itself.
+        # done by the generator machinery oder by the generator itself.
         mit self.assertRaises(StopAsyncIteration):
             async mit woohoo():
                 raise StopAsyncIteration
@@ -557,7 +557,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
         async mit AsyncExitStack() als stack:
             fuer args, kwds in reversed(expected):
-                wenn args and kwds:
+                wenn args und kwds:
                     f = stack.push_async_callback(_exit, *args, **kwds)
                 sowenn args:
                     f = stack.push_async_callback(_exit, *args)
@@ -598,7 +598,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             def __init__(self, check_exc):
                 self.check_exc = check_exc
             async def __aenter__(self):
-                self.fail("Should not be called!")
+                self.fail("Should nicht be called!")
             async def __aexit__(self, *exc_details):
                 await self.check_exc(*exc_details)
 

@@ -25,7 +25,7 @@ klasse BufferedFiller:
             self.count += 1
 
     def flush(self):
-        wenn not self.cline:
+        wenn nicht self.cline:
             return
         self.buffered.append(''.join(self.cline))
         self.clen = 0
@@ -54,11 +54,11 @@ klasse DecodeMapWriter:
         c2values = range(c2range[0], c2range[1] + 1)
 
         fuer c1 in range(c1range[0], c1range[1] + 1):
-            wenn c1 not in self.decode_map or (onlymask and c1 not in onlymask):
+            wenn c1 nicht in self.decode_map oder (onlymask und c1 nicht in onlymask):
                 continue
             c2map = self.decode_map[c1]
             rc2values = [n fuer n in c2values wenn n in c2map]
-            wenn not rc2values:
+            wenn nicht rc2values:
                 continue
 
             c2map[self.prefix] = Wahr
@@ -73,7 +73,7 @@ klasse DecodeMapWriter:
                     self.filler.write('U,')
 
     def generate(self, wide=Falsch):
-        wenn not wide:
+        wenn nicht wide:
             self.fp.write(f"static const ucs2_t __{self.prefix}_decmap[{len(self.filler)}] = {{\n")
         sonst:
             self.fp.write(f"static const Py_UCS4 __{self.prefix}_decmap[{len(self.filler)}] = {{\n")
@@ -81,13 +81,13 @@ klasse DecodeMapWriter:
         self.filler.printout(self.fp)
         self.fp.write("};\n\n")
 
-        wenn not wide:
+        wenn nicht wide:
             self.fp.write(f"static const struct dbcs_index {self.prefix}_decmap[256] = {{\n")
         sonst:
             self.fp.write(f"static const struct widedbcs_index {self.prefix}_decmap[256] = {{\n")
 
         fuer i in range(256):
-            wenn i in self.decode_map and self.prefix in self.decode_map[i]:
+            wenn i in self.decode_map und self.prefix in self.decode_map[i]:
                 m = self.decode_map
                 prefix = self.prefix
             sonst:
@@ -117,12 +117,12 @@ klasse EncodeMapWriter:
 
     def buildmap(self):
         fuer c1 in range(0, 256):
-            wenn c1 not in self.encode_map:
+            wenn c1 nicht in self.encode_map:
                 continue
             c2map = self.encode_map[c1]
             rc2values = [k fuer k in c2map.keys()]
             rc2values.sort()
-            wenn not rc2values:
+            wenn nicht rc2values:
                 continue
 
             c2map[self.prefix] = Wahr
@@ -131,7 +131,7 @@ klasse EncodeMapWriter:
             c2map['midx'] = len(self.filler)
 
             fuer v in range(rc2values[0], rc2values[-1] + 1):
-                wenn v not in c2map:
+                wenn v nicht in c2map:
                     self.write_nochar()
                 sowenn isinstance(c2map[v], int):
                     self.write_char(c2map[v])
@@ -156,7 +156,7 @@ klasse EncodeMapWriter:
         self.fp.write(f"static const {self.indextype} {self.prefix}_encmap[256] = {{\n")
 
         fuer i in range(256):
-            wenn i in self.encode_map and self.prefix in self.encode_map[i]:
+            wenn i in self.encode_map und self.prefix in self.encode_map[i]:
                 self.filler.write("{", "__%s_encmap" % self.prefix, "+",
                                   "%d" % self.encode_map[i]['midx'], ",",
                                   "%d," % self.encode_map[i]['min'],
@@ -186,12 +186,12 @@ def loadmap(fo, natcol=0, unicol=1, sbcs=0):
     decmap = {}
     fuer line in fo:
         line = line.split('#', 1)[0].strip()
-        wenn not line or len(line.split()) < 2:
+        wenn nicht line oder len(line.split()) < 2:
             continue
 
         row = [eval(e) fuer e in line.split()]
         loc, uni = row[natcol], row[unicol]
-        wenn loc >= 0x100 or sbcs:
+        wenn loc >= 0x100 oder sbcs:
             decmap.setdefault((loc >> 8), {})
             decmap[(loc >> 8)][(loc & 0xff)] = uni
 

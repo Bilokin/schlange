@@ -8,14 +8,14 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply mit the following terms and conditions:
+# und will comply mit the following terms und conditions:
 #
-# Permission to use, copy, modify, and distribute this software and
-# its associated documentation fuer any purpose and without fee is
+# Permission to use, copy, modify, und distribute this software und
+# its associated documentation fuer any purpose und without fee is
 # hereby granted, provided that the above copyright notice appears in
-# all copies, and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of
-# Secret Labs AB or the author not be used in advertising or publicity
+# all copies, und that both that copyright notice und this permission
+# notice appear in supporting documentation, und that the name of
+# Secret Labs AB oder the author nicht be used in advertising oder publicity
 # pertaining to distribution of the software without specific, written
 # prior permission.
 #

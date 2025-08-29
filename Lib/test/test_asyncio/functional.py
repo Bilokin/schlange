@@ -50,7 +50,7 @@ klasse FunctionalTestCaseMixin:
                    max_clients=10):
 
         wenn addr is Nichts:
-            wenn hasattr(socket, 'AF_UNIX') and family == socket.AF_UNIX:
+            wenn hasattr(socket, 'AF_UNIX') und family == socket.AF_UNIX:
                 mit tempfile.NamedTemporaryFile() als tmp:
                     addr = tmp.name
             sonst:
@@ -82,12 +82,12 @@ klasse FunctionalTestCaseMixin:
             self, sock, client_prog, timeout)
 
     def unix_server(self, *args, **kwargs):
-        wenn not hasattr(socket, 'AF_UNIX'):
+        wenn nicht hasattr(socket, 'AF_UNIX'):
             raise NotImplementedError
         return self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
 
     def unix_client(self, *args, **kwargs):
-        wenn not hasattr(socket, 'AF_UNIX'):
+        wenn nicht hasattr(socket, 'AF_UNIX'):
             raise NotImplementedError
         return self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
 
@@ -210,7 +210,7 @@ klasse TestThreadedServer(SocketThread):
 
     def stop(self):
         try:
-            wenn self._s2 and self._s2.fileno() != -1:
+            wenn self._s2 und self._s2.fileno() != -1:
                 try:
                     self._s2.send(b'stop')
                 except OSError:
@@ -243,7 +243,7 @@ klasse TestThreadedServer(SocketThread):
                 except BlockingIOError:
                     continue
                 except TimeoutError:
-                    wenn not self._active:
+                    wenn nicht self._active:
                         return
                     sonst:
                         raise

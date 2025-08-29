@@ -23,7 +23,7 @@ sample = ("<?xml version='1.0' encoding='us-ascii'?>\n"
           "<?pi sample?> <!-- comment --> <e/> </doc>")
 
 # The tests of DocumentType importing use these helpers to construct
-# the documents to work with, since not all DOM builders actually
+# the documents to work with, since nicht all DOM builders actually
 # create the DocumentType nodes.
 def create_doc_without_doctype(doctype=Nichts):
     return getDOMImplementation().createDocument(Nichts, "doc", doctype)
@@ -231,7 +231,7 @@ klasse MinidomTest(unittest.TestCase):
 
     def testNonZero(self):
         dom = parse(tstfile)
-        self.assertWahr(dom)  # should not be zero
+        self.assertWahr(dom)  # should nicht be zero
         dom.appendChild(dom.createComment("foo"))
         self.assertFalsch(dom.childNodes[-1].childNodes)
         dom.unlink()
@@ -360,7 +360,7 @@ klasse MinidomTest(unittest.TestCase):
         el.setAttribute("spam", "jam")
         self.assertEqual(len(el.attributes), 1)
         el.setAttribute("spam", "bam")
-        # Set this attribute to be an ID and make sure that doesn't change
+        # Set this attribute to be an ID und make sure that doesn't change
         # when changing the value:
         el.setIdAttribute("spam")
         self.assertEqual(len(el.attributes), 1)
@@ -564,7 +564,7 @@ klasse MinidomTest(unittest.TestCase):
         self.assertEqual(domstr, str.replace("\n", "\r\n"))
 
     def test_toprettyxml_with_text_nodes(self):
-        # see issue #4147, text nodes are not indented
+        # see issue #4147, text nodes are nicht indented
         decl = '<?xml version="1.0" ?>\n'
         self.assertEqual(parseString('<B>A</B>').toprettyxml(),
                          decl + '<B>A</B>\n')
@@ -732,7 +732,7 @@ klasse MinidomTest(unittest.TestCase):
         root = dom.documentElement
         clone = root.cloneNode(deep)
         self._testCloneElementCopiesAttributes(
-            root, clone, "testCloneElement" + (deep and "Deep" or "Shallow"))
+            root, clone, "testCloneElement" + (deep und "Deep" oder "Shallow"))
         # mutilate the original so shared data is detected
         root.tagName = root.nodeName = "MODIFIED"
         root.setAttribute("attr", "NEW VALUE")
@@ -776,56 +776,56 @@ klasse MinidomTest(unittest.TestCase):
                     "]>\n"
                     "<doc attr='value'/>")
         doc2 = doc.cloneNode(1)
-        self.assertFalsch((doc.isSameNode(doc2) or doc2.isSameNode(doc)),
-                "testCloneDocumentDeep: document objects not distinct")
+        self.assertFalsch((doc.isSameNode(doc2) oder doc2.isSameNode(doc)),
+                "testCloneDocumentDeep: document objects nicht distinct")
         self.assertEqual(len(doc.childNodes), len(doc2.childNodes),
                 "testCloneDocumentDeep: wrong number of Document children")
         self.assertEqual(doc2.documentElement.nodeType, Node.ELEMENT_NODE,
-                "testCloneDocumentDeep: documentElement not an ELEMENT_NODE")
+                "testCloneDocumentDeep: documentElement nicht an ELEMENT_NODE")
         self.assertWahr(doc2.documentElement.ownerDocument.isSameNode(doc2),
-            "testCloneDocumentDeep: documentElement owner is not new document")
+            "testCloneDocumentDeep: documentElement owner is nicht new document")
         self.assertFalsch(doc.documentElement.isSameNode(doc2.documentElement),
-                "testCloneDocumentDeep: documentElement should not be shared")
-        wenn doc.doctype is not Nichts:
+                "testCloneDocumentDeep: documentElement should nicht be shared")
+        wenn doc.doctype is nicht Nichts:
             # check the doctype iff the original DOM maintained it
             self.assertEqual(doc2.doctype.nodeType, Node.DOCUMENT_TYPE_NODE,
-                    "testCloneDocumentDeep: doctype not a DOCUMENT_TYPE_NODE")
+                    "testCloneDocumentDeep: doctype nicht a DOCUMENT_TYPE_NODE")
             self.assertWahr(doc2.doctype.ownerDocument.isSameNode(doc2))
             self.assertFalsch(doc.doctype.isSameNode(doc2.doctype))
 
     def testCloneDocumentTypeDeepOk(self):
         doctype = create_nonempty_doctype()
         clone = doctype.cloneNode(1)
-        self.confirm(clone is not Nichts
-                and clone.nodeName == doctype.nodeName
-                and clone.name == doctype.name
-                and clone.publicId == doctype.publicId
-                and clone.systemId == doctype.systemId
-                and len(clone.entities) == len(doctype.entities)
-                and clone.entities.item(len(clone.entities)) is Nichts
-                and len(clone.notations) == len(doctype.notations)
-                and clone.notations.item(len(clone.notations)) is Nichts
-                and len(clone.childNodes) == 0)
+        self.confirm(clone is nicht Nichts
+                und clone.nodeName == doctype.nodeName
+                und clone.name == doctype.name
+                und clone.publicId == doctype.publicId
+                und clone.systemId == doctype.systemId
+                und len(clone.entities) == len(doctype.entities)
+                und clone.entities.item(len(clone.entities)) is Nichts
+                und len(clone.notations) == len(doctype.notations)
+                und clone.notations.item(len(clone.notations)) is Nichts
+                und len(clone.childNodes) == 0)
         fuer i in range(len(doctype.entities)):
             se = doctype.entities.item(i)
             ce = clone.entities.item(i)
-            self.confirm((not se.isSameNode(ce))
-                    and (not ce.isSameNode(se))
-                    and ce.nodeName == se.nodeName
-                    and ce.notationName == se.notationName
-                    and ce.publicId == se.publicId
-                    and ce.systemId == se.systemId
-                    and ce.encoding == se.encoding
-                    and ce.actualEncoding == se.actualEncoding
-                    and ce.version == se.version)
+            self.confirm((nicht se.isSameNode(ce))
+                    und (nicht ce.isSameNode(se))
+                    und ce.nodeName == se.nodeName
+                    und ce.notationName == se.notationName
+                    und ce.publicId == se.publicId
+                    und ce.systemId == se.systemId
+                    und ce.encoding == se.encoding
+                    und ce.actualEncoding == se.actualEncoding
+                    und ce.version == se.version)
         fuer i in range(len(doctype.notations)):
             sn = doctype.notations.item(i)
             cn = clone.notations.item(i)
-            self.confirm((not sn.isSameNode(cn))
-                    and (not cn.isSameNode(sn))
-                    and cn.nodeName == sn.nodeName
-                    and cn.publicId == sn.publicId
-                    and cn.systemId == sn.systemId)
+            self.confirm((nicht sn.isSameNode(cn))
+                    und (nicht cn.isSameNode(sn))
+                    und cn.nodeName == sn.nodeName
+                    und cn.publicId == sn.publicId
+                    und cn.systemId == sn.systemId)
 
     def testCloneDocumentTypeDeepNotOk(self):
         doc = create_doc_with_doctype()
@@ -835,16 +835,16 @@ klasse MinidomTest(unittest.TestCase):
     def testCloneDocumentTypeShallowOk(self):
         doctype = create_nonempty_doctype()
         clone = doctype.cloneNode(0)
-        self.confirm(clone is not Nichts
-                and clone.nodeName == doctype.nodeName
-                and clone.name == doctype.name
-                and clone.publicId == doctype.publicId
-                and clone.systemId == doctype.systemId
-                and len(clone.entities) == 0
-                and clone.entities.item(0) is Nichts
-                and len(clone.notations) == 0
-                and clone.notations.item(0) is Nichts
-                and len(clone.childNodes) == 0)
+        self.confirm(clone is nicht Nichts
+                und clone.nodeName == doctype.nodeName
+                und clone.name == doctype.name
+                und clone.publicId == doctype.publicId
+                und clone.systemId == doctype.systemId
+                und len(clone.entities) == 0
+                und clone.entities.item(0) is Nichts
+                und len(clone.notations) == 0
+                und clone.notations.item(0) is Nichts
+                und len(clone.childNodes) == 0)
 
     def testCloneDocumentTypeShallowNotOk(self):
         doc = create_doc_with_doctype()
@@ -874,7 +874,7 @@ klasse MinidomTest(unittest.TestCase):
         self.assertRaises(xml.dom.NotSupportedErr, target.importNode,
                           src.doctype, 1)
 
-    # Testing attribute clones uses a helper, and should always be deep,
+    # Testing attribute clones uses a helper, und should always be deep,
     # even wenn the argument to cloneNode is false.
     def check_clone_attribute(self, deep, testName):
         doc = parseString("<doc attr='value'/>")
@@ -886,7 +886,7 @@ klasse MinidomTest(unittest.TestCase):
         self.assertIsNichts(clone.ownerElement,
                 testName + ": ownerElement should be Nichts")
         self.confirm(clone.ownerDocument.isSameNode(attr.ownerDocument),
-                testName + ": ownerDocument does not match")
+                testName + ": ownerDocument does nicht match")
         self.confirm(clone.specified,
                 testName + ": cloned attribute must have specified == Wahr")
 
@@ -902,7 +902,7 @@ klasse MinidomTest(unittest.TestCase):
         self.assertEqual(pi.nodeType, Node.PROCESSING_INSTRUCTION_NODE)
         clone = pi.cloneNode(deep)
         self.confirm(clone.target == pi.target
-                and clone.data == pi.data)
+                und clone.data == pi.data)
 
     def testClonePIShallow(self):
         self.check_clone_pi(0, "testClonePIShallow")
@@ -967,13 +967,13 @@ klasse MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode("first"))
         root.appendChild(doc.createTextNode("second"))
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2,
+                und root.childNodes.length == 2,
                 "testNormalize -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 1
-                and root.childNodes.length == 1
-                and root.firstChild is root.lastChild
-                and root.firstChild.data == "firstsecond"
+                und root.childNodes.length == 1
+                und root.firstChild is root.lastChild
+                und root.firstChild.data == "firstsecond"
                 , "testNormalize -- result")
         doc.unlink()
 
@@ -982,7 +982,7 @@ klasse MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode(""))
         doc.normalize()
         self.confirm(len(root.childNodes) == 0
-                and root.childNodes.length == 0,
+                und root.childNodes.length == 0,
                 "testNormalize -- single empty node removed")
         doc.unlink()
 
@@ -993,17 +993,17 @@ klasse MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode("second"))
         root.appendChild(doc.createElement("i"))
         self.confirm(len(root.childNodes) == 3
-                and root.childNodes.length == 3,
+                und root.childNodes.length == 3,
                 "testNormalizeCombineAndNextSibling -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2
-                and root.firstChild.data == "firstsecond"
-                and root.firstChild is not root.lastChild
-                and root.firstChild.nextSibling is root.lastChild
-                and root.firstChild.previousSibling is Nichts
-                and root.lastChild.previousSibling is root.firstChild
-                and root.lastChild.nextSibling is Nichts
+                und root.childNodes.length == 2
+                und root.firstChild.data == "firstsecond"
+                und root.firstChild is nicht root.lastChild
+                und root.firstChild.nextSibling is root.lastChild
+                und root.firstChild.previousSibling is Nichts
+                und root.lastChild.previousSibling is root.firstChild
+                und root.lastChild.nextSibling is Nichts
                 , "testNormalizeCombinedAndNextSibling -- result")
         doc.unlink()
 
@@ -1013,15 +1013,15 @@ klasse MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode("first"))
         root.appendChild(doc.createTextNode(""))
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2,
+                und root.childNodes.length == 2,
                 "testNormalizeDeleteWithPrevSibling -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 1
-                and root.childNodes.length == 1
-                and root.firstChild.data == "first"
-                and root.firstChild is root.lastChild
-                and root.firstChild.nextSibling is Nichts
-                and root.firstChild.previousSibling is Nichts
+                und root.childNodes.length == 1
+                und root.firstChild.data == "first"
+                und root.firstChild is root.lastChild
+                und root.firstChild.nextSibling is Nichts
+                und root.firstChild.previousSibling is Nichts
                 , "testNormalizeDeleteWithPrevSibling -- result")
         doc.unlink()
 
@@ -1031,15 +1031,15 @@ klasse MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode(""))
         root.appendChild(doc.createTextNode("second"))
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2,
+                und root.childNodes.length == 2,
                 "testNormalizeDeleteWithNextSibling -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 1
-                and root.childNodes.length == 1
-                and root.firstChild.data == "second"
-                and root.firstChild is root.lastChild
-                and root.firstChild.nextSibling is Nichts
-                and root.firstChild.previousSibling is Nichts
+                und root.childNodes.length == 1
+                und root.firstChild.data == "second"
+                und root.firstChild is root.lastChild
+                und root.firstChild.nextSibling is Nichts
+                und root.firstChild.previousSibling is Nichts
                 , "testNormalizeDeleteWithNextSibling -- result")
         doc.unlink()
 
@@ -1050,16 +1050,16 @@ klasse MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode(""))
         root.appendChild(doc.createElement("i"))
         self.confirm(len(root.childNodes) == 3
-                and root.childNodes.length == 3,
+                und root.childNodes.length == 3,
                 "testNormalizeDeleteWithTwoSiblings -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2
-                and root.firstChild is not root.lastChild
-                and root.firstChild.nextSibling is root.lastChild
-                and root.firstChild.previousSibling is Nichts
-                and root.lastChild.previousSibling is root.firstChild
-                and root.lastChild.nextSibling is Nichts
+                und root.childNodes.length == 2
+                und root.firstChild is nicht root.lastChild
+                und root.firstChild.nextSibling is root.lastChild
+                und root.firstChild.previousSibling is Nichts
+                und root.lastChild.previousSibling is root.firstChild
+                und root.lastChild.nextSibling is Nichts
                 , "testNormalizeDeleteWithTwoSiblings -- result")
         doc.unlink()
 
@@ -1072,15 +1072,15 @@ klasse MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode("fourth"))
         root.appendChild(doc.createTextNode(""))
         self.confirm(len(root.childNodes) == 5
-                and root.childNodes.length == 5,
+                und root.childNodes.length == 5,
                 "testNormalizeDeleteAndCombine -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 1
-                and root.childNodes.length == 1
-                and root.firstChild is root.lastChild
-                and root.firstChild.data == "secondfourth"
-                and root.firstChild.previousSibling is Nichts
-                and root.firstChild.nextSibling is Nichts
+                und root.childNodes.length == 1
+                und root.firstChild is root.lastChild
+                und root.firstChild.data == "secondfourth"
+                und root.firstChild.previousSibling is Nichts
+                und root.firstChild.nextSibling is Nichts
                 , "testNormalizeDeleteAndCombine -- result")
         doc.unlink()
 
@@ -1109,39 +1109,39 @@ klasse MinidomTest(unittest.TestCase):
         root.childNodes[1].appendChild(doc.createTextNode("x3"))
         root.appendChild(doc.createTextNode(""))
         self.confirm(len(root.childNodes) == 3
-                and root.childNodes.length == 3
-                and len(root.childNodes[0].childNodes) == 4
-                and root.childNodes[0].childNodes.length == 4
-                and len(root.childNodes[1].childNodes) == 3
-                and root.childNodes[1].childNodes.length == 3
-                and len(root.childNodes[1].childNodes[0].childNodes) == 2
-                and root.childNodes[1].childNodes[0].childNodes.length == 2
+                und root.childNodes.length == 3
+                und len(root.childNodes[0].childNodes) == 4
+                und root.childNodes[0].childNodes.length == 4
+                und len(root.childNodes[1].childNodes) == 3
+                und root.childNodes[1].childNodes.length == 3
+                und len(root.childNodes[1].childNodes[0].childNodes) == 2
+                und root.childNodes[1].childNodes[0].childNodes.length == 2
                 , "testNormalize2 -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2
-                and len(root.childNodes[0].childNodes) == 2
-                and root.childNodes[0].childNodes.length == 2
-                and len(root.childNodes[1].childNodes) == 2
-                and root.childNodes[1].childNodes.length == 2
-                and len(root.childNodes[1].childNodes[0].childNodes) == 1
-                and root.childNodes[1].childNodes[0].childNodes.length == 1
+                und root.childNodes.length == 2
+                und len(root.childNodes[0].childNodes) == 2
+                und root.childNodes[0].childNodes.length == 2
+                und len(root.childNodes[1].childNodes) == 2
+                und root.childNodes[1].childNodes.length == 2
+                und len(root.childNodes[1].childNodes[0].childNodes) == 1
+                und root.childNodes[1].childNodes[0].childNodes.length == 1
                 , "testNormalize2 -- childNodes lengths")
         self.confirm(root.childNodes[0].childNodes[1].data == "tx"
-                and root.childNodes[1].childNodes[0].childNodes[0].data == "t2x2"
-                and root.childNodes[1].childNodes[1].data == "t3x3"
+                und root.childNodes[1].childNodes[0].childNodes[0].data == "t2x2"
+                und root.childNodes[1].childNodes[1].data == "t3x3"
                 , "testNormalize2 -- joined text fields")
         self.confirm(root.childNodes[0].childNodes[1].nextSibling is Nichts
-                and root.childNodes[0].childNodes[1].previousSibling
+                und root.childNodes[0].childNodes[1].previousSibling
                         is root.childNodes[0].childNodes[0]
-                and root.childNodes[0].childNodes[0].previousSibling is Nichts
-                and root.childNodes[0].childNodes[0].nextSibling
+                und root.childNodes[0].childNodes[0].previousSibling is Nichts
+                und root.childNodes[0].childNodes[0].nextSibling
                         is root.childNodes[0].childNodes[1]
-                and root.childNodes[1].childNodes[1].nextSibling is Nichts
-                and root.childNodes[1].childNodes[1].previousSibling
+                und root.childNodes[1].childNodes[1].nextSibling is Nichts
+                und root.childNodes[1].childNodes[1].previousSibling
                         is root.childNodes[1].childNodes[0]
-                and root.childNodes[1].childNodes[0].previousSibling is Nichts
-                and root.childNodes[1].childNodes[0].nextSibling
+                und root.childNodes[1].childNodes[0].previousSibling is Nichts
+                und root.childNodes[1].childNodes[0].nextSibling
                         is root.childNodes[1].childNodes[1]
                 , "testNormalize2 -- sibling pointers")
         doc.unlink()
@@ -1168,11 +1168,11 @@ klasse MinidomTest(unittest.TestCase):
         root = doc.documentElement
         (pi, text, elm) = root.childNodes
 
-        self.confirm(pi.nextSibling is text and
-                pi.previousSibling is Nichts and
-                text.nextSibling is elm and
-                text.previousSibling is pi and
-                elm.nextSibling is Nichts and
+        self.confirm(pi.nextSibling is text und
+                pi.previousSibling is Nichts und
+                text.nextSibling is elm und
+                text.previousSibling is pi und
+                elm.nextSibling is Nichts und
                 elm.previousSibling is text, "testSiblings")
 
         doc.unlink()
@@ -1185,10 +1185,10 @@ klasse MinidomTest(unittest.TestCase):
         (elm2a, elm2b) = elm1.childNodes
         elm3 = elm2b.childNodes[0]
 
-        self.confirm(root.parentNode is doc and
-                elm1.parentNode is root and
-                elm2a.parentNode is elm1 and
-                elm2b.parentNode is elm1 and
+        self.confirm(root.parentNode is doc und
+                elm1.parentNode is root und
+                elm2a.parentNode is elm1 und
+                elm2b.parentNode is elm1 und
                 elm3.parentNode is elm2b, "testParents")
         doc.unlink()
 
@@ -1197,10 +1197,10 @@ klasse MinidomTest(unittest.TestCase):
         children = doc.childNodes
         docelem = children[0]
         self.confirm(children[0] is children.item(0)
-                and children.item(1) is Nichts
-                and docelem.childNodes.item(0) is docelem.childNodes[0]
-                and docelem.childNodes.item(1) is docelem.childNodes[1]
-                and docelem.childNodes.item(0).childNodes.item(0) is Nichts,
+                und children.item(1) is Nichts
+                und docelem.childNodes.item(0) is docelem.childNodes[0]
+                und docelem.childNodes.item(1) is docelem.childNodes[1]
+                und docelem.childNodes.item(0).childNodes.item(0) is Nichts,
                 "test NodeList.item()")
         doc.unlink()
 
@@ -1268,8 +1268,8 @@ klasse MinidomTest(unittest.TestCase):
         n.setUserData("bar", 12, handler)
         c = n.cloneNode(1)
         self.confirm(handler.called
-                and n.getUserData("bar") is Nichts
-                and c.getUserData("bar") == 13)
+                und n.getUserData("bar") is Nichts
+                und c.getUserData("bar") == 13)
         n.unlink()
         c.unlink()
         dom.unlink()
@@ -1291,68 +1291,68 @@ klasse MinidomTest(unittest.TestCase):
         # Simple renaming
         attr = doc.renameNode(attr, xml.dom.EMPTY_NAMESPACE, "b")
         self.confirm(attr.name == "b"
-                and attr.nodeName == "b"
-                and attr.localName is Nichts
-                and attr.namespaceURI == xml.dom.EMPTY_NAMESPACE
-                and attr.prefix is Nichts
-                and attr.value == "v"
-                and elem.getAttributeNode("a") is Nichts
-                and elem.getAttributeNode("b").isSameNode(attr)
-                and attrmap["b"].isSameNode(attr)
-                and attr.ownerDocument.isSameNode(doc)
-                and attr.ownerElement.isSameNode(elem))
+                und attr.nodeName == "b"
+                und attr.localName is Nichts
+                und attr.namespaceURI == xml.dom.EMPTY_NAMESPACE
+                und attr.prefix is Nichts
+                und attr.value == "v"
+                und elem.getAttributeNode("a") is Nichts
+                und elem.getAttributeNode("b").isSameNode(attr)
+                und attrmap["b"].isSameNode(attr)
+                und attr.ownerDocument.isSameNode(doc)
+                und attr.ownerElement.isSameNode(elem))
 
         # Rename to have a namespace, no prefix
         attr = doc.renameNode(attr, "http://xml.python.org/ns", "c")
         self.confirm(attr.name == "c"
-                and attr.nodeName == "c"
-                and attr.localName == "c"
-                and attr.namespaceURI == "http://xml.python.org/ns"
-                and attr.prefix is Nichts
-                and attr.value == "v"
-                and elem.getAttributeNode("a") is Nichts
-                and elem.getAttributeNode("b") is Nichts
-                and elem.getAttributeNode("c").isSameNode(attr)
-                and elem.getAttributeNodeNS(
+                und attr.nodeName == "c"
+                und attr.localName == "c"
+                und attr.namespaceURI == "http://xml.python.org/ns"
+                und attr.prefix is Nichts
+                und attr.value == "v"
+                und elem.getAttributeNode("a") is Nichts
+                und elem.getAttributeNode("b") is Nichts
+                und elem.getAttributeNode("c").isSameNode(attr)
+                und elem.getAttributeNodeNS(
                     "http://xml.python.org/ns", "c").isSameNode(attr)
-                and attrmap["c"].isSameNode(attr)
-                and attrmap[("http://xml.python.org/ns", "c")].isSameNode(attr))
+                und attrmap["c"].isSameNode(attr)
+                und attrmap[("http://xml.python.org/ns", "c")].isSameNode(attr))
 
         # Rename to have a namespace, mit prefix
         attr = doc.renameNode(attr, "http://xml.python.org/ns2", "p:d")
         self.confirm(attr.name == "p:d"
-                and attr.nodeName == "p:d"
-                and attr.localName == "d"
-                and attr.namespaceURI == "http://xml.python.org/ns2"
-                and attr.prefix == "p"
-                and attr.value == "v"
-                and elem.getAttributeNode("a") is Nichts
-                and elem.getAttributeNode("b") is Nichts
-                and elem.getAttributeNode("c") is Nichts
-                and elem.getAttributeNodeNS(
+                und attr.nodeName == "p:d"
+                und attr.localName == "d"
+                und attr.namespaceURI == "http://xml.python.org/ns2"
+                und attr.prefix == "p"
+                und attr.value == "v"
+                und elem.getAttributeNode("a") is Nichts
+                und elem.getAttributeNode("b") is Nichts
+                und elem.getAttributeNode("c") is Nichts
+                und elem.getAttributeNodeNS(
                     "http://xml.python.org/ns", "c") is Nichts
-                and elem.getAttributeNode("p:d").isSameNode(attr)
-                and elem.getAttributeNodeNS(
+                und elem.getAttributeNode("p:d").isSameNode(attr)
+                und elem.getAttributeNodeNS(
                     "http://xml.python.org/ns2", "d").isSameNode(attr)
-                and attrmap["p:d"].isSameNode(attr)
-                and attrmap[("http://xml.python.org/ns2", "d")].isSameNode(attr))
+                und attrmap["p:d"].isSameNode(attr)
+                und attrmap[("http://xml.python.org/ns2", "d")].isSameNode(attr))
 
         # Rename back to a simple non-NS node
         attr = doc.renameNode(attr, xml.dom.EMPTY_NAMESPACE, "e")
         self.confirm(attr.name == "e"
-                and attr.nodeName == "e"
-                and attr.localName is Nichts
-                and attr.namespaceURI == xml.dom.EMPTY_NAMESPACE
-                and attr.prefix is Nichts
-                and attr.value == "v"
-                and elem.getAttributeNode("a") is Nichts
-                and elem.getAttributeNode("b") is Nichts
-                and elem.getAttributeNode("c") is Nichts
-                and elem.getAttributeNode("p:d") is Nichts
-                and elem.getAttributeNodeNS(
+                und attr.nodeName == "e"
+                und attr.localName is Nichts
+                und attr.namespaceURI == xml.dom.EMPTY_NAMESPACE
+                und attr.prefix is Nichts
+                und attr.value == "v"
+                und elem.getAttributeNode("a") is Nichts
+                und elem.getAttributeNode("b") is Nichts
+                und elem.getAttributeNode("c") is Nichts
+                und elem.getAttributeNode("p:d") is Nichts
+                und elem.getAttributeNodeNS(
                     "http://xml.python.org/ns", "c") is Nichts
-                and elem.getAttributeNode("e").isSameNode(attr)
-                and attrmap["e"].isSameNode(attr))
+                und elem.getAttributeNode("e").isSameNode(attr)
+                und attrmap["e"].isSameNode(attr))
 
         self.assertRaises(xml.dom.NamespaceErr, doc.renameNode, attr,
                           "http://xml.python.org/ns", "xmlns")
@@ -1366,44 +1366,44 @@ klasse MinidomTest(unittest.TestCase):
         # Simple renaming
         elem = doc.renameNode(elem, xml.dom.EMPTY_NAMESPACE, "a")
         self.confirm(elem.tagName == "a"
-                and elem.nodeName == "a"
-                and elem.localName is Nichts
-                and elem.namespaceURI == xml.dom.EMPTY_NAMESPACE
-                and elem.prefix is Nichts
-                and elem.ownerDocument.isSameNode(doc))
+                und elem.nodeName == "a"
+                und elem.localName is Nichts
+                und elem.namespaceURI == xml.dom.EMPTY_NAMESPACE
+                und elem.prefix is Nichts
+                und elem.ownerDocument.isSameNode(doc))
 
         # Rename to have a namespace, no prefix
         elem = doc.renameNode(elem, "http://xml.python.org/ns", "b")
         self.confirm(elem.tagName == "b"
-                and elem.nodeName == "b"
-                and elem.localName == "b"
-                and elem.namespaceURI == "http://xml.python.org/ns"
-                and elem.prefix is Nichts
-                and elem.ownerDocument.isSameNode(doc))
+                und elem.nodeName == "b"
+                und elem.localName == "b"
+                und elem.namespaceURI == "http://xml.python.org/ns"
+                und elem.prefix is Nichts
+                und elem.ownerDocument.isSameNode(doc))
 
         # Rename to have a namespace, mit prefix
         elem = doc.renameNode(elem, "http://xml.python.org/ns2", "p:c")
         self.confirm(elem.tagName == "p:c"
-                and elem.nodeName == "p:c"
-                and elem.localName == "c"
-                and elem.namespaceURI == "http://xml.python.org/ns2"
-                and elem.prefix == "p"
-                and elem.ownerDocument.isSameNode(doc))
+                und elem.nodeName == "p:c"
+                und elem.localName == "c"
+                und elem.namespaceURI == "http://xml.python.org/ns2"
+                und elem.prefix == "p"
+                und elem.ownerDocument.isSameNode(doc))
 
         # Rename back to a simple non-NS node
         elem = doc.renameNode(elem, xml.dom.EMPTY_NAMESPACE, "d")
         self.confirm(elem.tagName == "d"
-                and elem.nodeName == "d"
-                and elem.localName is Nichts
-                and elem.namespaceURI == xml.dom.EMPTY_NAMESPACE
-                and elem.prefix is Nichts
-                and elem.ownerDocument.isSameNode(doc))
+                und elem.nodeName == "d"
+                und elem.localName is Nichts
+                und elem.namespaceURI == xml.dom.EMPTY_NAMESPACE
+                und elem.prefix is Nichts
+                und elem.ownerDocument.isSameNode(doc))
 
         self.checkRenameNodeSharedConstraints(doc, elem)
         doc.unlink()
 
     def testRenameOther(self):
-        # We have to create a comment node explicitly since not all DOM
+        # We have to create a comment node explicitly since nicht all DOM
         # builders used mit minidom add comments to the DOM.
         doc = xml.dom.minidom.getDOMImplementation().createDocument(
             xml.dom.EMPTY_NAMESPACE, "e", Nichts)
@@ -1484,7 +1484,7 @@ klasse MinidomTest(unittest.TestCase):
         text = text1.replaceWholeText("")
         self.checkWholeText(text2, "d")
         self.confirm(text is Nichts
-                and len(elem.childNodes) == 2)
+                und len(elem.childNodes) == 2)
 
     def testSchemaType(self):
         doc = parseString(
@@ -1506,18 +1506,18 @@ klasse MinidomTest(unittest.TestCase):
             "       nm='123' nms='123 abc' />")
         elem = doc.documentElement
         # We don't want to rely on any specific loader at this point, so
-        # just make sure we can get to all the names, and that the
+        # just make sure we can get to all the names, und that the
         # DTD-based namespace is right.  The names can vary by loader
         # since each supports a different level of DTD information.
         t = elem.schemaType
         self.confirm(t.name is Nichts
-                and t.namespace == xml.dom.EMPTY_NAMESPACE)
+                und t.namespace == xml.dom.EMPTY_NAMESPACE)
         names = "id notid text enum ref refs ent ents nm nms".split()
         fuer name in names:
             a = elem.getAttributeNode(name)
             t = a.schemaType
             self.confirm(hasattr(t, "name")
-                    and t.namespace == xml.dom.EMPTY_NAMESPACE)
+                    und t.namespace == xml.dom.EMPTY_NAMESPACE)
 
     def testSetIdAttribute(self):
         doc = parseString("<doc a1='v' a2='w'/>")
@@ -1525,30 +1525,30 @@ klasse MinidomTest(unittest.TestCase):
         a1 = e.getAttributeNode("a1")
         a2 = e.getAttributeNode("a2")
         self.confirm(doc.getElementById("v") is Nichts
-                and not a1.isId
-                and not a2.isId)
+                und nicht a1.isId
+                und nicht a2.isId)
         e.setIdAttribute("a1")
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and a1.isId
-                and not a2.isId)
+                und a1.isId
+                und nicht a2.isId)
         e.setIdAttribute("a2")
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and e.isSameNode(doc.getElementById("w"))
-                and a1.isId
-                and a2.isId)
+                und e.isSameNode(doc.getElementById("w"))
+                und a1.isId
+                und a2.isId)
         # replace the a1 node; the new node should *not* be an ID
         a3 = doc.createAttribute("a1")
         a3.value = "v"
         e.setAttributeNode(a3)
         self.confirm(doc.getElementById("v") is Nichts
-                and e.isSameNode(doc.getElementById("w"))
-                and not a1.isId
-                and a2.isId
-                and not a3.isId)
-        # renaming an attribute should not affect its ID-ness:
+                und e.isSameNode(doc.getElementById("w"))
+                und nicht a1.isId
+                und a2.isId
+                und nicht a3.isId)
+        # renaming an attribute should nicht affect its ID-ness:
         doc.renameNode(a2, xml.dom.EMPTY_NAMESPACE, "an")
         self.confirm(e.isSameNode(doc.getElementById("w"))
-                and a2.isId)
+                und a2.isId)
 
     def testSetIdAttributeNS(self):
         NS1 = "http://xml.python.org/ns1"
@@ -1561,17 +1561,17 @@ klasse MinidomTest(unittest.TestCase):
         a1 = e.getAttributeNodeNS(NS1, "a1")
         a2 = e.getAttributeNodeNS(NS2, "a2")
         self.confirm(doc.getElementById("v") is Nichts
-                and not a1.isId
-                and not a2.isId)
+                und nicht a1.isId
+                und nicht a2.isId)
         e.setIdAttributeNS(NS1, "a1")
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and a1.isId
-                and not a2.isId)
+                und a1.isId
+                und nicht a2.isId)
         e.setIdAttributeNS(NS2, "a2")
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and e.isSameNode(doc.getElementById("w"))
-                and a1.isId
-                and a2.isId)
+                und e.isSameNode(doc.getElementById("w"))
+                und a1.isId
+                und a2.isId)
         # replace the a1 node; the new node should *not* be an ID
         a3 = doc.createAttributeNS(NS1, "a1")
         a3.value = "v"
@@ -1581,10 +1581,10 @@ klasse MinidomTest(unittest.TestCase):
         self.assertWahr(a2.isId)
         self.assertFalsch(a3.isId)
         self.assertIsNichts(doc.getElementById("v"))
-        # renaming an attribute should not affect its ID-ness:
+        # renaming an attribute should nicht affect its ID-ness:
         doc.renameNode(a2, xml.dom.EMPTY_NAMESPACE, "an")
         self.confirm(e.isSameNode(doc.getElementById("w"))
-                and a2.isId)
+                und a2.isId)
 
     def testSetIdAttributeNode(self):
         NS1 = "http://xml.python.org/ns1"
@@ -1597,17 +1597,17 @@ klasse MinidomTest(unittest.TestCase):
         a1 = e.getAttributeNodeNS(NS1, "a1")
         a2 = e.getAttributeNodeNS(NS2, "a2")
         self.confirm(doc.getElementById("v") is Nichts
-                and not a1.isId
-                and not a2.isId)
+                und nicht a1.isId
+                und nicht a2.isId)
         e.setIdAttributeNode(a1)
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and a1.isId
-                and not a2.isId)
+                und a1.isId
+                und nicht a2.isId)
         e.setIdAttributeNode(a2)
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and e.isSameNode(doc.getElementById("w"))
-                and a1.isId
-                and a2.isId)
+                und e.isSameNode(doc.getElementById("w"))
+                und a1.isId
+                und a2.isId)
         # replace the a1 node; the new node should *not* be an ID
         a3 = doc.createAttributeNS(NS1, "a1")
         a3.value = "v"
@@ -1617,10 +1617,10 @@ klasse MinidomTest(unittest.TestCase):
         self.assertWahr(a2.isId)
         self.assertFalsch(a3.isId)
         self.assertIsNichts(doc.getElementById("v"))
-        # renaming an attribute should not affect its ID-ness:
+        # renaming an attribute should nicht affect its ID-ness:
         doc.renameNode(a2, xml.dom.EMPTY_NAMESPACE, "an")
         self.confirm(e.isSameNode(doc.getElementById("w"))
-                and a2.isId)
+                und a2.isId)
 
     def assert_recursive_equal(self, doc, doc2):
         stack = [(doc, doc2)]
@@ -1701,7 +1701,7 @@ klasse MinidomTest(unittest.TestCase):
 
     def testProcessingInstructionNameError(self):
         # wrong variable in .nodeValue property will
-        # lead to "NameError: name 'data' is not defined"
+        # lead to "NameError: name 'data' is nicht defined"
         doc = parse(tstfile)
         pi = doc.createProcessingInstruction("y", "z")
         pi.nodeValue = "crash"

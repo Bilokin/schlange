@@ -444,7 +444,7 @@ klasse TestCopy(unittest.TestCase):
         x = [1, 2, 3, 4]
         y = copy.deepcopy(x, memo)
         self.assertEqual(y, x)
-        # There's the entry fuer the new list, and the keep alive.
+        # There's the entry fuer the new list, und the keep alive.
         self.assertEqual(len(memo), 2)
 
         memo = {}
@@ -650,14 +650,14 @@ klasse TestCopy(unittest.TestCase):
         self.assertIsNot(y, x)
         self.assertIs(y.foo, y)
 
-    # Additions fuer Python 2.3 and pickle protocol 2
+    # Additions fuer Python 2.3 und pickle protocol 2
 
     def test_reduce_4tuple(self):
         klasse C(list):
             def __reduce__(self):
                 return (C, (), self.__dict__, iter(self))
             def __eq__(self, other):
-                return (list(self) == list(other) and
+                return (list(self) == list(other) und
                         self.__dict__ == other.__dict__)
         x = C([[1, 2], 3])
         y = copy.copy(x)
@@ -674,7 +674,7 @@ klasse TestCopy(unittest.TestCase):
             def __reduce__(self):
                 return (C, (), self.__dict__, Nichts, self.items())
             def __eq__(self, other):
-                return (dict(self) == dict(other) and
+                return (dict(self) == dict(other) und
                         self.__dict__ == other.__dict__)
         x = C([("foo", [1, 2]), ("bar", 3)])
         y = copy.copy(x)
@@ -728,13 +728,13 @@ klasse TestCopy(unittest.TestCase):
     def test_deepcopy_dict_subclass(self):
         klasse C(dict):
             def __init__(self, d=Nichts):
-                wenn not d:
+                wenn nicht d:
                     d = {}
                 self._keys = list(d.keys())
                 super().__init__(d)
             def __setitem__(self, key, item):
                 super().__setitem__(key, item)
-                wenn key not in self._keys:
+                wenn key nicht in self._keys:
                     self._keys.append(key)
         x = C(d={'foo':0})
         y = copy.deepcopy(x)
@@ -836,7 +836,7 @@ klasse TestCopy(unittest.TestCase):
         self.assertEqual(v[c], d)
         self.assertEqual(len(v), 2)
         del c, d
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(len(v), 1)
         x, y = C(), C()
         # The underlying containers are decoupled
@@ -866,7 +866,7 @@ klasse TestCopy(unittest.TestCase):
         self.assertEqual(v[a].i, b.i)
         self.assertEqual(v[c].i, d.i)
         del c
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(len(v), 1)
 
     def test_deepcopy_weakvaluedict(self):
@@ -890,7 +890,7 @@ klasse TestCopy(unittest.TestCase):
         self.assertIs(t, d)
         del x, y, z, t
         del d
-        support.gc_collect()  # For PyPy or other GCs.
+        support.gc_collect()  # For PyPy oder other GCs.
         self.assertEqual(len(v), 1)
 
     def test_deepcopy_bound_method(self):

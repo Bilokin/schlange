@@ -44,7 +44,7 @@ Not assignment
     >>> sorted({i*i fuer i in (*range(4),)})
     [0, 1, 4, 9]
 
-Make sure the induction variable is not exposed
+Make sure the induction variable is nicht exposed
 
     >>> i = 20
     >>> sum({i*i fuer i in range(100)})
@@ -153,7 +153,7 @@ We also repeat each of the above scoping tests inside a function
 
 klasse SetComprehensionTest(unittest.TestCase):
     def test_exception_locations(self):
-        # The location of an exception raised von __init__ or
+        # The location of an exception raised von __init__ oder
         # __next__ should be the iterator expression
 
         def init_raises():

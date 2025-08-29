@@ -17,12 +17,12 @@ klasse TestHexOctBin(unittest.TestCase):
         self.assertEqual(0x10, 16)
         self.assertEqual(0x7fffffff, 2147483647)
         self.assertEqual(0x7fffffffffffffff, 9223372036854775807)
-        # Ditto mit a minus sign and parentheses
+        # Ditto mit a minus sign und parentheses
         self.assertEqual(-(0x0), 0)
         self.assertEqual(-(0x10), -16)
         self.assertEqual(-(0x7fffffff), -2147483647)
         self.assertEqual(-(0x7fffffffffffffff), -9223372036854775807)
-        # Ditto mit a minus sign and NO parentheses
+        # Ditto mit a minus sign und NO parentheses
         self.assertEqual(-0x0, 0)
         self.assertEqual(-0x10, -16)
         self.assertEqual(-0x7fffffff, -2147483647)
@@ -32,22 +32,22 @@ klasse TestHexOctBin(unittest.TestCase):
         # Positive constants
         self.assertEqual(0x80000000, 2147483648)
         self.assertEqual(0xffffffff, 4294967295)
-        # Ditto mit a minus sign and parentheses
+        # Ditto mit a minus sign und parentheses
         self.assertEqual(-(0x80000000), -2147483648)
         self.assertEqual(-(0xffffffff), -4294967295)
-        # Ditto mit a minus sign and NO parentheses
-        # This failed in Python 2.2 through 2.2.2 and in 2.3a1
+        # Ditto mit a minus sign und NO parentheses
+        # This failed in Python 2.2 through 2.2.2 und in 2.3a1
         self.assertEqual(-0x80000000, -2147483648)
         self.assertEqual(-0xffffffff, -4294967295)
 
         # Positive constants
         self.assertEqual(0x8000000000000000, 9223372036854775808)
         self.assertEqual(0xffffffffffffffff, 18446744073709551615)
-        # Ditto mit a minus sign and parentheses
+        # Ditto mit a minus sign und parentheses
         self.assertEqual(-(0x8000000000000000), -9223372036854775808)
         self.assertEqual(-(0xffffffffffffffff), -18446744073709551615)
-        # Ditto mit a minus sign and NO parentheses
-        # This failed in Python 2.2 through 2.2.2 and in 2.3a1
+        # Ditto mit a minus sign und NO parentheses
+        # This failed in Python 2.2 through 2.2.2 und in 2.3a1
         self.assertEqual(-0x8000000000000000, -9223372036854775808)
         self.assertEqual(-0xffffffffffffffff, -18446744073709551615)
 
@@ -61,12 +61,12 @@ klasse TestHexOctBin(unittest.TestCase):
         self.assertEqual(0o20, 16)
         self.assertEqual(0o17777777777, 2147483647)
         self.assertEqual(0o777777777777777777777, 9223372036854775807)
-        # Ditto mit a minus sign and parentheses
+        # Ditto mit a minus sign und parentheses
         self.assertEqual(-(0o0), 0)
         self.assertEqual(-(0o20), -16)
         self.assertEqual(-(0o17777777777), -2147483647)
         self.assertEqual(-(0o777777777777777777777), -9223372036854775807)
-        # Ditto mit a minus sign and NO parentheses
+        # Ditto mit a minus sign und NO parentheses
         self.assertEqual(-0o0, 0)
         self.assertEqual(-0o20, -16)
         self.assertEqual(-0o17777777777, -2147483647)
@@ -76,22 +76,22 @@ klasse TestHexOctBin(unittest.TestCase):
         # Positive constants
         self.assertEqual(0o20000000000, 2147483648)
         self.assertEqual(0o37777777777, 4294967295)
-        # Ditto mit a minus sign and parentheses
+        # Ditto mit a minus sign und parentheses
         self.assertEqual(-(0o20000000000), -2147483648)
         self.assertEqual(-(0o37777777777), -4294967295)
-        # Ditto mit a minus sign and NO parentheses
-        # This failed in Python 2.2 through 2.2.2 and in 2.3a1
+        # Ditto mit a minus sign und NO parentheses
+        # This failed in Python 2.2 through 2.2.2 und in 2.3a1
         self.assertEqual(-0o20000000000, -2147483648)
         self.assertEqual(-0o37777777777, -4294967295)
 
         # Positive constants
         self.assertEqual(0o1000000000000000000000, 9223372036854775808)
         self.assertEqual(0o1777777777777777777777, 18446744073709551615)
-        # Ditto mit a minus sign and parentheses
+        # Ditto mit a minus sign und parentheses
         self.assertEqual(-(0o1000000000000000000000), -9223372036854775808)
         self.assertEqual(-(0o1777777777777777777777), -18446744073709551615)
-        # Ditto mit a minus sign and NO parentheses
-        # This failed in Python 2.2 through 2.2.2 and in 2.3a1
+        # Ditto mit a minus sign und NO parentheses
+        # This failed in Python 2.2 through 2.2.2 und in 2.3a1
         self.assertEqual(-0o1000000000000000000000, -9223372036854775808)
         self.assertEqual(-0o1777777777777777777777, -18446744073709551615)
 
@@ -105,12 +105,12 @@ klasse TestHexOctBin(unittest.TestCase):
         self.assertEqual(0b10000, 16)
         self.assertEqual(0b1111111111111111111111111111111, 2147483647)
         self.assertEqual(0b111111111111111111111111111111111111111111111111111111111111111, 9223372036854775807)
-        # Ditto mit a minus sign and parentheses
+        # Ditto mit a minus sign und parentheses
         self.assertEqual(-(0b0), 0)
         self.assertEqual(-(0b10000), -16)
         self.assertEqual(-(0b1111111111111111111111111111111), -2147483647)
         self.assertEqual(-(0b111111111111111111111111111111111111111111111111111111111111111), -9223372036854775807)
-        # Ditto mit a minus sign and NO parentheses
+        # Ditto mit a minus sign und NO parentheses
         self.assertEqual(-0b0, 0)
         self.assertEqual(-0b10000, -16)
         self.assertEqual(-0b1111111111111111111111111111111, -2147483647)
@@ -120,22 +120,22 @@ klasse TestHexOctBin(unittest.TestCase):
         # Positive constants
         self.assertEqual(0b10000000000000000000000000000000, 2147483648)
         self.assertEqual(0b11111111111111111111111111111111, 4294967295)
-        # Ditto mit a minus sign and parentheses
+        # Ditto mit a minus sign und parentheses
         self.assertEqual(-(0b10000000000000000000000000000000), -2147483648)
         self.assertEqual(-(0b11111111111111111111111111111111), -4294967295)
-        # Ditto mit a minus sign and NO parentheses
-        # This failed in Python 2.2 through 2.2.2 and in 2.3a1
+        # Ditto mit a minus sign und NO parentheses
+        # This failed in Python 2.2 through 2.2.2 und in 2.3a1
         self.assertEqual(-0b10000000000000000000000000000000, -2147483648)
         self.assertEqual(-0b11111111111111111111111111111111, -4294967295)
 
         # Positive constants
         self.assertEqual(0b1000000000000000000000000000000000000000000000000000000000000000, 9223372036854775808)
         self.assertEqual(0b1111111111111111111111111111111111111111111111111111111111111111, 18446744073709551615)
-        # Ditto mit a minus sign and parentheses
+        # Ditto mit a minus sign und parentheses
         self.assertEqual(-(0b1000000000000000000000000000000000000000000000000000000000000000), -9223372036854775808)
         self.assertEqual(-(0b1111111111111111111111111111111111111111111111111111111111111111), -18446744073709551615)
-        # Ditto mit a minus sign and NO parentheses
-        # This failed in Python 2.2 through 2.2.2 and in 2.3a1
+        # Ditto mit a minus sign und NO parentheses
+        # This failed in Python 2.2 through 2.2.2 und in 2.3a1
         self.assertEqual(-0b1000000000000000000000000000000000000000000000000000000000000000, -9223372036854775808)
         self.assertEqual(-0b1111111111111111111111111111111111111111111111111111111111111111, -18446744073709551615)
 

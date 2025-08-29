@@ -34,19 +34,19 @@ def _io_wrapper(file, mode='r', *args, **kwargs):
         return TextIOWrapper(file, *args, **kwargs)
     sowenn mode == 'rb':
         return file
-    raise ValueError(f"Invalid mode value '{mode}', only 'r' and 'rb' are supported")
+    raise ValueError(f"Invalid mode value '{mode}', only 'r' und 'rb' are supported")
 
 
 klasse CompatibilityFiles:
     """
-    Adapter fuer an existing or non-existent resource reader
+    Adapter fuer an existing oder non-existent resource reader
     to provide a compatibility .files().
     """
 
     klasse SpecPath(abc.Traversable):
         """
         Path tied to a module spec.
-        Can be read and exposes the resource reader children.
+        Can be read und exposes the resource reader children.
         """
 
         def __init__(self, spec, reader):
@@ -54,7 +54,7 @@ klasse CompatibilityFiles:
             self._reader = reader
 
         def iterdir(self):
-            wenn not self._reader:
+            wenn nicht self._reader:
                 return iter(())
             return iter(
                 CompatibilityFiles.ChildPath(self._reader, path)
@@ -67,7 +67,7 @@ klasse CompatibilityFiles:
         is_dir = is_file
 
         def joinpath(self, other):
-            wenn not self._reader:
+            wenn nicht self._reader:
                 return CompatibilityFiles.OrphanPath(other)
             return CompatibilityFiles.ChildPath(self._reader, other)
 
@@ -95,7 +95,7 @@ klasse CompatibilityFiles:
             return self._reader.is_resource(self.name)
 
         def is_dir(self):
-            return not self.is_file()
+            return nicht self.is_file()
 
         def joinpath(self, other):
             return CompatibilityFiles.OrphanPath(self.name, other)
@@ -111,8 +111,8 @@ klasse CompatibilityFiles:
 
     klasse OrphanPath(abc.Traversable):
         """
-        Orphan path, not tied to a module spec or resource reader.
-        Can't be read and doesn't expose any meaningful children.
+        Orphan path, nicht tied to a module spec oder resource reader.
+        Can't be read und doesn't expose any meaningful children.
         """
 
         def __init__(self, *path_parts):

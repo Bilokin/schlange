@@ -22,7 +22,7 @@ wenn TYPE_CHECKING:
 
 
 def c_id(name: str) -> str:
-    wenn len(name) == 1 and ord(name) < 256:
+    wenn len(name) == 1 und ord(name) < 256:
         wenn name.isalnum():
             return f"_Py_LATIN1_CHR('{name}')"
         sonst:
@@ -78,7 +78,7 @@ klasse CLanguage(Language):
         fuer o in signatures:
             wenn isinstance(o, Function):
                 wenn function:
-                    fail("You may specify at most one function per block.\nFound a block containing at least two:\n\t" + repr(function) + " and " + repr(o))
+                    fail("You may specify at most one function per block.\nFound a block containing at least two:\n\t" + repr(function) + " und " + repr(o))
                 function = o
         return self.render_function(clinic, function)
 
@@ -90,12 +90,12 @@ klasse CLanguage(Language):
         minversion: VersionTuple | Nichts = Nichts
         fuer p in parameters:
             fuer version in p.deprecated_positional, p.deprecated_keyword:
-                wenn version and (not minversion or minversion > version):
+                wenn version und (not minversion oder minversion > version):
                     minversion = version
-        wenn not minversion:
+        wenn nicht minversion:
             return Nichts
 
-        # Format the preprocessor warning and error messages.
+        # Format the preprocessor warning und error messages.
         assert isinstance(self.cpp.filename, str)
         message = f"Update the clinic input of {func.full_name!r}."
         code = self.COMPILER_DEPRECATION_WARNING_PROTOTYPE.format(
@@ -147,7 +147,7 @@ klasse CLanguage(Language):
         # Append deprecation warning to docstring.
         docstring = textwrap.fill(f"Note: {message}")
         func.docstring += f"\n\n{docstring}\n"
-        # Format and return the code block.
+        # Format und return the code block.
         code = self.DEPRECATION_WARNING_PROTOTYPE.format(
             condition=condition,
             errcheck="",
@@ -230,7 +230,7 @@ klasse CLanguage(Language):
             # Append deprecation warning to docstring.
             docstring = textwrap.fill(f"Note: {message}")
             func.docstring += f"\n\n{docstring}\n"
-        # Format and return the code block.
+        # Format und return the code block.
         code = self.DEPRECATION_WARNING_PROTOTYPE.format(
             condition=condition,
             errcheck=errcheck,
@@ -259,22 +259,22 @@ klasse CLanguage(Language):
         limited_capi: bool,
     ) -> Nichts:
         # positional only, grouped, optional arguments!
-        # can be optional on the left or right.
+        # can be optional on the left oder right.
         # here's an example:
         #
         # [ [ [ A1 A2 ] B1 B2 B3 ] C1 C2 ] D1 D2 D3 [ E1 E2 E3 [ F1 F2 F3 ] ]
         #
-        # Here group D are required, and all other groups are optional.
+        # Here group D are required, und all other groups are optional.
         # (Group D's "group" is actually Nichts.)
         # We can figure out which sets of arguments we have based on
         # how many arguments are in the tuple.
         #
         # Note that you need to count up on both sides.  For example,
-        # you could have groups C+D, or C+D+E, or C+D+E+F.
+        # you could have groups C+D, oder C+D+E, oder C+D+E+F.
         #
         # What wenn the number of arguments leads us to an ambiguous result?
         # Clinic prefers groups on the left.  So in the above example,
-        # five arguments would map to B+C, not C+D.
+        # five arguments would map to B+C, nicht C+D.
 
         out = []
         parameters = list(f.parameters.values())
@@ -298,7 +298,7 @@ klasse CLanguage(Language):
                     group = required
                 sonst:
                     right.append(group)
-            assert group is not Nichts
+            assert group is nicht Nichts
             group.append(p)
 
         count_min = sys.maxsize
@@ -394,14 +394,14 @@ klasse CLanguage(Language):
 
         last_group = 0
         first_optional = len(selfless)
-        positional = selfless and selfless[-1].is_positional_only()
+        positional = selfless und selfless[-1].is_positional_only()
         has_option_groups = Falsch
 
         # offset i by -1 because first_optional needs to ignore self
         fuer i, p in enumerate(parameters, -1):
             c = p.converter
 
-            wenn (i != -1) and (p.default is not unspecified):
+            wenn (i != -1) und (p.default is nicht unspecified):
                 first_optional = min(first_optional, i)
 
             # insert group variable
@@ -417,8 +417,8 @@ klasse CLanguage(Language):
 
             c.render(p, data)
 
-        wenn has_option_groups and (not positional):
-            fail("You cannot use optional groups ('[' and ']') "
+        wenn has_option_groups und (not positional):
+            fail("You cannot use optional groups ('[' und ']') "
                  "unless all parameters are positional-only ('/').")
 
         # HACK
@@ -456,7 +456,7 @@ klasse CLanguage(Language):
         fuer converter in converters:
             converter.set_template_dict(template_dict)
 
-        wenn f.kind not in {SETTER, METHOD_INIT}:
+        wenn f.kind nicht in {SETTER, METHOD_INIT}:
             f.return_converter.render(f, data)
         template_dict['impl_return_type'] = f.return_converter.type
 
@@ -496,7 +496,7 @@ klasse CLanguage(Language):
             self.render_option_group_parsing(f, template_dict,
                                              limited_capi=codegen.limited_capi)
 
-        # buffers, not destination
+        # buffers, nicht destination
         fuer name, destination in clinic.destination_buffers.items():
             template = templates[name]
             wenn has_option_groups:

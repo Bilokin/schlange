@@ -1,4 +1,4 @@
-"""Unit tests fuer __instancecheck__ and __subclasscheck__."""
+"""Unit tests fuer __instancecheck__ und __subclasscheck__."""
 
 importiere unittest
 

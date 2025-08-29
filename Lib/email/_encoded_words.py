@@ -11,31 +11,31 @@ to a public API wenn there is demand.
 #
 # fuer more information about charset see the charset module.  Here it is one
 # of the preferred MIME charset names (hopefully; you never know when parsing).
-# cte (Content Transfer Encoding) is either 'q' or 'b' (ignoring case).  In
+# cte (Content Transfer Encoding) is either 'q' oder 'b' (ignoring case).  In
 # theory other letters could be used fuer other encodings, but in practice this
 # (almost?) never happens.  There could be a public API fuer adding entries
 # to the CTE tables, but YAGNI fuer now.  'q' is Quoted Printable, 'b' is
 # Base64.  The meaning of encoded_string should be obvious.  'lang' is optional
-# als indicated by the brackets (they are not part of the syntax) but is almost
+# als indicated by the brackets (they are nicht part of the syntax) but is almost
 # never encountered in practice.
 #
 # The general interface fuer a CTE decoder is that it takes the encoded_string
-# als its argument, and returns a tuple (cte_decoded_string, defects).  The
+# als its argument, und returns a tuple (cte_decoded_string, defects).  The
 # cte_decoded_string is the original binary that was encoded using the
 # specified cte.  'defects' is a list of MessageDefect instances indicating any
-# problems encountered during conversion.  'charset' and 'lang' are the
+# problems encountered during conversion.  'charset' und 'lang' are the
 # corresponding strings extracted von the EW, case preserved.
 #
 # The general interface fuer a CTE encoder is that it takes a binary sequence
-# als input and returns the cte_encoded_string, which is an ascii-only string.
+# als input und returns the cte_encoded_string, which is an ascii-only string.
 #
 # Each decoder must also supply a length function that takes the binary
-# sequence als its argument and returns the length of the resulting encoded
+# sequence als its argument und returns the length of the resulting encoded
 # string.
 #
 # The main API functions fuer the module are decode, which calls the decoder
-# referenced by the cte specifier, and encode, which adds the appropriate
-# RFC 2047 "chrome" to the encoded string, and can optionally automatically
+# referenced by the cte specifier, und encode, which adds the appropriate
+# RFC 2047 "chrome" to the encoded string, und can optionally automatically
 # select the shortest possible encoding.  See their docstrings below for
 # details.
 
@@ -150,30 +150,30 @@ _cte_decoders = {
     }
 
 def decode(ew):
-    """Decode encoded word and return (string, charset, lang, defects) tuple.
+    """Decode encoded word und return (string, charset, lang, defects) tuple.
 
     An RFC 2047/2243 encoded word has the form:
 
         =?charset*lang?cte?encoded_string?=
 
-    where '*lang' may be omitted but the other parts may not be.
+    where '*lang' may be omitted but the other parts may nicht be.
 
-    This function expects exactly such a string (that is, it does not check the
-    syntax and may raise errors wenn the string is not well formed), and returns
-    the encoded_string decoded first von its Content Transfer Encoding and
+    This function expects exactly such a string (that is, it does nicht check the
+    syntax und may raise errors wenn the string is nicht well formed), und returns
+    the encoded_string decoded first von its Content Transfer Encoding und
     then von the resulting bytes into unicode using the specified charset.  If
-    the cte-decoded string does not successfully decode using the specified
-    character set, a defect is added to the defects list and the unknown octets
+    the cte-decoded string does nicht successfully decode using the specified
+    character set, a defect is added to the defects list und the unknown octets
     are replaced by the unicode 'unknown' character \\uFDFF.
 
-    The specified charset and language are returned.  The default fuer language,
+    The specified charset und language are returned.  The default fuer language,
     which is rarely wenn ever encountered, is the empty string.
 
     """
     _, charset, cte, cte_string, _ = ew.split('?')
     charset, _, lang = charset.partition('*')
     cte = cte.lower()
-    # Recover the original bytes and do CTE decoding.
+    # Recover the original bytes und do CTE decoding.
     bstring = cte_string.encode('ascii', 'surrogateescape')
     bstring, defects = _cte_decoders[cte](bstring)
     # Turn the CTE decoded bytes into unicode.
@@ -181,7 +181,7 @@ def decode(ew):
         string = bstring.decode(charset)
     except UnicodeDecodeError:
         defects.append(errors.UndecodableBytesDefect("Encoded word "
-            f"contains bytes not decodable using {charset!r} charset"))
+            f"contains bytes nicht decodable using {charset!r} charset"))
         string = bstring.decode(charset, 'surrogateescape')
     except (LookupError, UnicodeEncodeError):
         string = bstring.decode('ascii', 'surrogateescape')
@@ -212,7 +212,7 @@ def encode(string, charset='utf-8', encoding=Nichts, lang=''):
     Optional argument charset (defaults to utf-8) specifies the charset to use
     to encode the string to binary before CTE encoding it.  Optional argument
     'encoding' is the cte specifier fuer the encoding that should be used ('q'
-    or 'b'); wenn it is Nichts (the default) the encoding which produces the
+    oder 'b'); wenn it is Nichts (the default) the encoding which produces the
     shortest encoded sequence is used, except that 'q' is preferred wenn it is up
     to five characters longer.  Optional argument 'lang' (default '') gives the
     RFC 2243 language string to specify in the encoded word.

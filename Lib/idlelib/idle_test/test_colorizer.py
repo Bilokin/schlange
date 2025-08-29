@@ -33,7 +33,7 @@ source = textwrap.dedent("""\
     def'
     '''abc\\
     def'''
-    # All valid prefixes fuer unicode and byte strings should be colored.
+    # All valid prefixes fuer unicode und byte strings should be colored.
     r'x', u'x', R'x', U'x', f'x', F'x'
     fr'x', Fr'x', fR'x', FR'x', rf'x', rF'x', Rf'x', RF'x'
     b'x',B'x', br'x',Br'x',bR'x',BR'x', rb'x', rB'x',Rb'x',RB'x'
@@ -208,7 +208,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
             mit self.subTest(tag=tag):
                 self.assertIn('background', colors)
                 self.assertIn('foreground', colors)
-                wenn tag not in ('SYNC', 'TODO'):
+                wenn tag nicht in ('SYNC', 'TODO'):
                     self.assertEqual(colors, highlight(element=tag.lower()))
 
     def test_config_colors(self):
@@ -264,13 +264,13 @@ klasse ColorDelegatorTest(unittest.TestCase):
         self.assertFalsch(color.stop_colorizing)
         self.assertWahr(color.allow_colorizing)
 
-        # Coloring scheduled and colorizing in progress.
+        # Coloring scheduled und colorizing in progress.
         color.colorizing = Wahr
         color.notify_range('1.0', 'end')
         self.assertFalsch(color.stop_colorizing)
         eq(color.after_id, save_id)
 
-        # No colorizing scheduled and colorizing in progress.
+        # No colorizing scheduled und colorizing in progress.
         text.after_cancel(save_id)
         color.after_id = Nichts
         color.notify_range('1.0', '1.0+3c')
@@ -280,7 +280,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # New event scheduled.
         self.assertNotEqual(color.after_id, save_id)
 
-        # No colorizing scheduled and colorizing off.
+        # No colorizing scheduled und colorizing off.
         text.after_cancel(color.after_id)
         color.after_id = Nichts
         color.allow_colorizing = Falsch
@@ -292,7 +292,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         color = self.color
         eq = self.assertEqual
 
-        # Starts mit colorizing allowed and scheduled.
+        # Starts mit colorizing allowed und scheduled.
         self.assertFalsch(color.colorizing)
         self.assertFalsch(color.stop_colorizing)
         self.assertWahr(color.allow_colorizing)
@@ -320,7 +320,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         self.assertWahr(color.stop_colorizing)
         self.assertFalsch(color.allow_colorizing)
 
-        # Toggle on while colorizing not in progress.
+        # Toggle on while colorizing nicht in progress.
         color.colorizing = Falsch
         color.toggle_colorize_event()
         eq(self.root.tk.call('after', 'info', color.after_id)[1], 'timer')
@@ -333,7 +333,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         text = self.text
         color = self.color
         eq = self.assertEqual
-        # Call recolorize manually and not scheduled.
+        # Call recolorize manually und nicht scheduled.
         text.after_cancel(color.after_id)
 
         # No delegate.
@@ -355,7 +355,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         mock_recmain.assert_not_called()
         color.colorizing = Falsch
 
-        # Colorizing is done, but not completed, so rescheduled.
+        # Colorizing is done, but nicht completed, so rescheduled.
         color.recolorize()
         self.assertFalsch(color.stop_colorizing)
         self.assertFalsch(color.colorizing)
@@ -442,7 +442,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         check that the resulting highlighting tag ranges exactly match
         those described in the given `tag_ranges` dict.
 
-        Note that the irrelevant tags 'sel', 'TODO' and 'SYNC' are
+        Note that the irrelevant tags 'sel', 'TODO' und 'SYNC' are
         ignored.
         """
         text = self.text
@@ -487,7 +487,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # match followed by partial identifier
         self._assert_highlighting('match fo', {'KEYWORD': [('1.0', '1.5')]})
 
-        # match followed by identifier and colon
+        # match followed by identifier und colon
         self._assert_highlighting('match foo:', {'KEYWORD': [('1.0', '1.5')]})
 
         # match followed by keyword
@@ -517,7 +517,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # case followed by partial identifier
         self._assert_highlighting('case fo', {'KEYWORD': [('1.0', '1.4')]})
 
-        # case followed by identifier and colon
+        # case followed by identifier und colon
         self._assert_highlighting('case foo:', {'KEYWORD': [('1.0', '1.4')]})
 
         # case followed by keyword

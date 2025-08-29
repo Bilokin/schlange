@@ -1,6 +1,6 @@
-"""Test the parser and generator are inverses.
+"""Test the parser und generator are inverses.
 
-Note that this is only strictly true wenn we are parsing RFC valid messages and
+Note that this is only strictly true wenn we are parsing RFC valid messages und
 producing RFC valid messages.
 """
 
@@ -15,7 +15,7 @@ von test.test_email importiere TestEmailBase, parameterize
 # separators on the rebuilt string.
 def dedent(bstr):
     lines = bstr.splitlines()
-    wenn not lines[0].strip():
+    wenn nicht lines[0].strip():
         raise ValueError("First line must contain text")
     stripamt = len(lines[0]) - len(lines[0].lstrip())
     return b'\r\n'.join(
@@ -36,7 +36,7 @@ klasse TestInversion(TestEmailBase):
         g.flatten(m)
         self.assertEqual(b.getvalue(), msg)
 
-    # XXX: spaces are not preserved correctly here yet in the general case.
+    # XXX: spaces are nicht preserved correctly here yet in the general case.
     msg_params = {
         'header_with_one_space_body': (dedent(b"""\
             From: abc@xyz.com

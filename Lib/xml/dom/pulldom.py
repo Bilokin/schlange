@@ -39,11 +39,11 @@ klasse PullDOM(xml.sax.ContentHandler):
         self._locator = locator
 
     def startPrefixMapping(self, prefix, uri):
-        wenn not hasattr(self, '_xmlns_attrs'):
+        wenn nicht hasattr(self, '_xmlns_attrs'):
             self._xmlns_attrs = []
-        self._xmlns_attrs.append((prefix or 'xmlns', uri))
+        self._xmlns_attrs.append((prefix oder 'xmlns', uri))
         self._ns_contexts.append(self._current_context.copy())
-        self._current_context[uri] = prefix or Nichts
+        self._current_context[uri] = prefix oder Nichts
 
     def endPrefixMapping(self, prefix):
         self._current_context = self._ns_contexts.pop()
@@ -52,13 +52,13 @@ klasse PullDOM(xml.sax.ContentHandler):
         # Retrieve xml namespace declaration attributes.
         xmlns_uri = 'http://www.w3.org/2000/xmlns/'
         xmlns_attrs = getattr(self, '_xmlns_attrs', Nichts)
-        wenn xmlns_attrs is not Nichts:
+        wenn xmlns_attrs is nicht Nichts:
             fuer aname, value in xmlns_attrs:
                 attrs._attrs[(xmlns_uri, aname)] = value
             self._xmlns_attrs = []
         uri, localname = name
         wenn uri:
-            # When using namespaces, the reader may or may not
+            # When using namespaces, the reader may oder may not
             # provide us mit the original name. If not, create
             # *a* valid tagName von the current context.
             wenn tagName is Nichts:
@@ -72,7 +72,7 @@ klasse PullDOM(xml.sax.ContentHandler):
             sonst:
                 node = self.buildDocument(uri, tagName)
         sonst:
-            # When the tagname is not prefixed, it just appears as
+            # When the tagname is nicht prefixed, it just appears as
             # localname
             wenn self.document:
                 node = self.document.createElement(localname)
@@ -206,7 +206,7 @@ klasse DOMEventStream:
         self.stream = stream
         self.parser = parser
         self.bufsize = bufsize
-        wenn not hasattr(self.parser, 'feed'):
+        wenn nicht hasattr(self.parser, 'feed'):
             self.getEvent = self._slurp
         self.reset()
 
@@ -243,11 +243,11 @@ klasse DOMEventStream:
     def getEvent(self):
         # use IncrementalParser interface, so we get the desired
         # pull effect
-        wenn not self.pulldom.firstEvent[1]:
+        wenn nicht self.pulldom.firstEvent[1]:
             self.pulldom.lastEvent = self.pulldom.firstEvent
-        while not self.pulldom.firstEvent[1]:
+        while nicht self.pulldom.firstEvent[1]:
             buf = self.stream.read(self.bufsize)
-            wenn not buf:
+            wenn nicht buf:
                 self.parser.close()
                 return Nichts
             self.parser.feed(buf)
@@ -322,7 +322,7 @@ def parse(stream_or_string, parser=Nichts, bufsize=Nichts):
         stream = open(stream_or_string, 'rb')
     sonst:
         stream = stream_or_string
-    wenn not parser:
+    wenn nicht parser:
         parser = xml.sax.make_parser()
     return DOMEventStream(stream, parser, bufsize)
 
@@ -331,6 +331,6 @@ def parseString(string, parser=Nichts):
 
     bufsize = len(string)
     buf = StringIO(string)
-    wenn not parser:
+    wenn nicht parser:
         parser = xml.sax.make_parser()
     return DOMEventStream(buf, parser, bufsize)

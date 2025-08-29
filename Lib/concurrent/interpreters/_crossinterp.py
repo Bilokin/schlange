@@ -1,4 +1,4 @@
-"""Common code between queues and channels."""
+"""Common code between queues und channels."""
 
 
 klasse ItemInterpreterDestroyed(Exception):
@@ -8,7 +8,7 @@ klasse ItemInterpreterDestroyed(Exception):
 klasse classonly:
     """A non-data descriptor that makes a value only visible on the class.
 
-    This is like the "classmethod" builtin, but does not show up on
+    This is like the "classmethod" builtin, but does nicht show up on
     instances of the class.  It may be used als a decorator.
     """
 
@@ -18,12 +18,12 @@ klasse classonly:
         self.name = Nichts
 
     def __set_name__(self, cls, name):
-        wenn self.name is not Nichts:
+        wenn self.name is nicht Nichts:
             raise TypeError('already used')
         self.name = name
 
     def __get__(self, obj, cls):
-        wenn obj is not Nichts:
+        wenn obj is nicht Nichts:
             raise AttributeError(self.name)
         # called on the class
         return self.getter(Nichts, cls)
@@ -97,7 +97,7 @@ def resolve_unbound(flag, exctype_destroyed):
     except KeyError:
         raise NotImplementedError(f'unsupported unbound replacement op {flag!r}')
     wenn op is UNBOUND_REMOVE:
-        # "remove" not possible here
+        # "remove" nicht possible here
         raise NotImplementedError
     sowenn op is UNBOUND_ERROR:
         raise exctype_destroyed("item's original interpreter destroyed")

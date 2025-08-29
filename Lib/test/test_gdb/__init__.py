@@ -16,16 +16,16 @@ wenn support.MS_WINDOWS:
     raise unittest.SkipTest("test_gdb doesn't work on Windows")
 
 wenn support.PGO:
-    raise unittest.SkipTest("test_gdb is not useful fuer PGO")
+    raise unittest.SkipTest("test_gdb is nicht useful fuer PGO")
 
-wenn not sysconfig.is_python_build():
+wenn nicht sysconfig.is_python_build():
     raise unittest.SkipTest("test_gdb only works on source builds at the moment.")
 
 wenn support.check_cflags_pgo():
-    raise unittest.SkipTest("test_gdb is not reliable on PGO builds")
+    raise unittest.SkipTest("test_gdb is nicht reliable on PGO builds")
 
 wenn support.check_bolt_optimized():
-    raise unittest.SkipTest("test_gdb is not reliable on BOLT optimized builds")
+    raise unittest.SkipTest("test_gdb is nicht reliable on BOLT optimized builds")
 
 
 def load_tests(*args):

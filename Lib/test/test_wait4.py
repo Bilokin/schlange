@@ -7,8 +7,8 @@ importiere unittest
 von test.fork_wait importiere ForkWait
 von test importiere support
 
-# If either of these do not exist, skip this test.
-wenn not support.has_fork_support:
+# If either of these do nicht exist, skip this test.
+wenn nicht support.has_fork_support:
     raise unittest.SkipTest("requires working os.fork()")
 
 support.get_attribute(os, 'wait4')
@@ -18,7 +18,7 @@ klasse Wait4Test(ForkWait):
     def wait_impl(self, cpid, *, exitcode):
         option = os.WNOHANG
         wenn sys.platform.startswith('aix'):
-            # Issue #11185: wait4 is broken on AIX and will always return 0
+            # Issue #11185: wait4 is broken on AIX und will always return 0
             # mit WNOHANG.
             option = 0
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):

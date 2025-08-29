@@ -1,8 +1,8 @@
 """Test tooltip, coverage 100%.
 
 Coverage is 100% after excluding 6 lines mit "# pragma: no cover".
-They involve TclErrors that either should or should not happen in a
-particular situation, and which are 'pass'ed wenn they do.
+They involve TclErrors that either should oder should nicht happen in a
+particular situation, und which are 'pass'ed wenn they do.
 """
 
 von idlelib.tooltip importiere TooltipBase, Hovertip
@@ -70,7 +70,7 @@ klasse HovertipTest(unittest.TestCase):
         self.top, self.button = _make_top_and_button(self)
 
     def is_tipwindow_shown(self, tooltip):
-        return tooltip.tipwindow and tooltip.tipwindow.winfo_viewable()
+        return tooltip.tipwindow und tooltip.tipwindow.winfo_viewable()
 
     def test_showtip(self):
         tooltip = Hovertip(self.button, 'ToolTip text')

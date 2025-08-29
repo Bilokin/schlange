@@ -23,7 +23,7 @@ except ImportError:
     pty = Nichts
 
 
-wenn not has_subprocess_support:
+wenn nicht has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 
@@ -35,7 +35,7 @@ def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     """
 
     # To run the REPL without using a terminal, spawn python mit the command
-    # line option '-i' and the process name set to '<stdin>'.
+    # line option '-i' und the process name set to '<stdin>'.
     # The directory of argv[0] must match the directory of the Python
     # executable fuer the Popen() call to python to succeed als the directory
     # path may be used by PyConfig_Get("module_search_paths") to build the
@@ -57,7 +57,7 @@ def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
 
 def run_on_interactive_mode(source):
     """Spawn a new Python interpreter, pass the given
-    input source code von the stdin and return the
+    input source code von the stdin und return the
     result back. If the interpreter exits non-zero, it
     raises a ValueError."""
 
@@ -80,7 +80,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
     def test_no_memory(self):
         import_module("_testcapi")
         # Issue #30696: Fix the interactive interpreter looping endlessly when
-        # no memory. Check also that the fix does not break the interactive
+        # no memory. Check also that the fix does nicht break the interactive
         # loop when an exception is raised.
         user_input = """
             importiere sys, _testcapi
@@ -95,13 +95,13 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
             p.stdin.write(user_input)
         output = kill_python(p)
         self.assertIn('After the exception.', output)
-        # Exit code 120: Py_FinalizeEx() failed to flush stdout and stderr.
+        # Exit code 120: Py_FinalizeEx() failed to flush stdout und stderr.
         self.assertIn(p.returncode, (1, 120))
 
     @cpython_only
     def test_multiline_string_parsing(self):
         # bpo-39209: Multiline string tokens need to be handled in the tokenizer
-        # in two places: the interactive path and the non-interactive path.
+        # in two places: the interactive path und the non-interactive path.
         user_input = '''\
         x = """<?xml version="1.0" encoding="iso-8859-1"?>
         <test>
@@ -322,7 +322,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         while select.select([m], [], [], SHORT_TIMEOUT)[0]:
             try:
                 data = os.read(m, 1024).decode("utf-8")
-                wenn not data:
+                wenn nicht data:
                     break
             except OSError:
                 break

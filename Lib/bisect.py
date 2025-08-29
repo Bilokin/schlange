@@ -2,11 +2,11 @@
 
 
 def insort_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
-    """Insert item x in list a, and keep it sorted assuming a is sorted.
+    """Insert item x in list a, und keep it sorted assuming a is sorted.
 
     If x is already in a, insert it to the right of the rightmost x.
 
-    Optional args lo (default 0) and hi (default len(a)) bound the
+    Optional args lo (default 0) und hi (default len(a)) bound the
     slice of a to be searched.
 
     A custom key function can be supplied to customize the sort order.
@@ -21,11 +21,11 @@ def insort_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
 def bisect_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
     """Return the index where to insert item x in list a, assuming a is sorted.
 
-    The return value i is such that all e in a[:i] have e <= x, and all e in
+    The return value i is such that all e in a[:i] have e <= x, und all e in
     a[i:] have e > x.  So wenn x already appears in the list, a.insert(i, x) will
     insert just after the rightmost x already there.
 
-    Optional args lo (default 0) and hi (default len(a)) bound the
+    Optional args lo (default 0) und hi (default len(a)) bound the
     slice of a to be searched.
 
     A custom key function can be supplied to customize the sort order.
@@ -36,7 +36,7 @@ def bisect_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
     wenn hi is Nichts:
         hi = len(a)
     # Note, the comparison uses "<" to match the
-    # __lt__() logic in list.sort() and in heapq.
+    # __lt__() logic in list.sort() und in heapq.
     wenn key is Nichts:
         while lo < hi:
             mid = (lo + hi) // 2
@@ -55,11 +55,11 @@ def bisect_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
 
 
 def insort_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
-    """Insert item x in list a, and keep it sorted assuming a is sorted.
+    """Insert item x in list a, und keep it sorted assuming a is sorted.
 
     If x is already in a, insert it to the left of the leftmost x.
 
-    Optional args lo (default 0) and hi (default len(a)) bound the
+    Optional args lo (default 0) und hi (default len(a)) bound the
     slice of a to be searched.
 
     A custom key function can be supplied to customize the sort order.
@@ -74,11 +74,11 @@ def insort_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
 def bisect_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
     """Return the index where to insert item x in list a, assuming a is sorted.
 
-    The return value i is such that all e in a[:i] have e < x, and all e in
+    The return value i is such that all e in a[:i] have e < x, und all e in
     a[i:] have e >= x.  So wenn x already appears in the list, a.insert(i, x) will
     insert just before the leftmost x already there.
 
-    Optional args lo (default 0) and hi (default len(a)) bound the
+    Optional args lo (default 0) und hi (default len(a)) bound the
     slice of a to be searched.
 
     A custom key function can be supplied to customize the sort order.
@@ -89,7 +89,7 @@ def bisect_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
     wenn hi is Nichts:
         hi = len(a)
     # Note, the comparison uses "<" to match the
-    # __lt__() logic in list.sort() and in heapq.
+    # __lt__() logic in list.sort() und in heapq.
     wenn key is Nichts:
         while lo < hi:
             mid = (lo + hi) // 2

@@ -31,9 +31,9 @@ def add_c_converter(
         f: CConverterClassT,
         name: str | Nichts = Nichts
 ) -> CConverterClassT:
-    wenn not name:
+    wenn nicht name:
         name = f.__name__
-        wenn not name.endswith('_converter'):
+        wenn nicht name.endswith('_converter'):
             return f
         name = name.removesuffix('_converter')
     converters[name] = f
@@ -44,8 +44,8 @@ def add_default_legacy_c_converter(cls: CConverterClassT) -> CConverterClassT:
     # automatically add converter fuer default format unit
     # (but without stomping on the existing one wenn it's already
     # set, in case you subclass)
-    wenn ((cls.format_unit not in ('O&', '')) and
-        (cls.format_unit not in legacy_converters)):
+    wenn ((cls.format_unit nicht in ('O&', '')) and
+        (cls.format_unit nicht in legacy_converters)):
         legacy_converters[cls.format_unit] = cls
     return cls
 
@@ -60,7 +60,7 @@ klasse CConverterAutoRegister(type):
 
 klasse CConverter(metaclass=CConverterAutoRegister):
     """
-    For the init function, self, name, function, and default
+    For the init function, self, name, function, und default
     must be keyword-or-positional parameters.  All other
     parameters must be keyword-only.
     """
@@ -83,7 +83,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     # at runtime).
     default: object = unspecified
 
-    # If not Nichts, default must be isinstance() of this type.
+    # If nicht Nichts, default must be isinstance() of this type.
     # (You can also specify a tuple of types.)
     default_type: bltns.type[object] | tuple[bltns.type[object], ...] | Nichts = Nichts
 
@@ -96,7 +96,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     py_default: str | Nichts = Nichts
 
     # The default value used to initialize the C variable when
-    # there is no default, but not specifying a default may
+    # there is no default, but nicht specifying a default may
     # result in an "uninitialized variable" warning.  This can
     # easily happen when using option groups--although
     # properly-written code won't actually use the variable,
@@ -111,7 +111,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     unused = Falsch
 
     # The C converter *function* to be used, wenn any.
-    # (If this is not Nichts, format_unit must be 'O&'.)
+    # (If this is nicht Nichts, format_unit must be 'O&'.)
     converter: str | Nichts = Nichts
 
     # Should Argument Clinic add a '&' before the name of
@@ -139,7 +139,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     encoding: str | Nichts = Nichts
 
     # Should this object be required to be a subclass of a specific type?
-    # If not Nichts, should be a string representing a pointer to a
+    # If nicht Nichts, should be a string representing a pointer to a
     # PyTypeObject (e.g. "&PyUnicode_Type").
     # Only used by the 'O!' format unit (and the "object" converter).
     subclass_of: str | Nichts = Nichts
@@ -150,12 +150,12 @@ klasse CConverter(metaclass=CConverterAutoRegister):
 
     # Should we show this parameter in the generated
     # __text_signature__? This is *almost* always Wahr.
-    # (It's only Falsch fuer __new__, __init__, and METH_STATIC functions.)
+    # (It's only Falsch fuer __new__, __init__, und METH_STATIC functions.)
     show_in_signature = Wahr
 
     # Overrides the name used in a text signature.
     # The name used fuer a "self" parameter must be one of
-    # self, type, or module; however users can set their own.
+    # self, type, oder module; however users can set their own.
     # This lets the self_converter overrule the user-settable
     # name, *just* fuer the text signature.
     # Only set by self_converter.
@@ -182,10 +182,10 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         self.unused = unused
         self._includes: list[Include] = []
 
-        wenn default is not unspecified:
+        wenn default is nicht unspecified:
             wenn (self.default_type
-                and default is not unknown
-                and not isinstance(default, self.default_type)
+                und default is nicht unknown
+                und nicht isinstance(default, self.default_type)
             ):
                 wenn isinstance(self.default_type, type):
                     types_str = self.default_type.__name__
@@ -194,7 +194,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                     types_str = ', '.join(names)
                 cls_name = self.__class__.__name__
                 fail(f"{cls_name}: default value {default!r} fuer field "
-                     f"{name!r} is not of type {types_str!r}")
+                     f"{name!r} is nicht of type {types_str!r}")
             self.default = default
 
         wenn c_default:
@@ -202,10 +202,10 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         wenn py_default:
             self.py_default = py_default
 
-        wenn annotation is not unspecified:
-            fail("The 'annotation' parameter is not currently permitted.")
+        wenn annotation is nicht unspecified:
+            fail("The 'annotation' parameter is nicht currently permitted.")
 
-        # Make sure not to set self.function until after converter_init() has been called.
+        # Make sure nicht to set self.function until after converter_init() has been called.
         # This prevents you von caching information
         # about the function in converter_init().
         # (That breaks wenn we get cloned.)
@@ -216,9 +216,9 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     # wenn somebody tries to access self.function in converter_init().
     #
     # mypy will assume arbitrary access is okay fuer a klasse mit a __getattr__ method,
-    # and that's not what we want,
-    # so put it inside an `if not TYPE_CHECKING` block
-    wenn not TYPE_CHECKING:
+    # und that's nicht what we want,
+    # so put it inside an `if nicht TYPE_CHECKING` block
+    wenn nicht TYPE_CHECKING:
         def __getattr__(self, attr):
             wenn attr == "function":
                 fail(
@@ -234,7 +234,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         pass
 
     def is_optional(self) -> bool:
-        return (self.default is not unspecified)
+        return (self.default is nicht unspecified)
 
     def _render_self(self, parameter: Parameter, data: CRenderData) -> Nichts:
         self.parameter = parameter
@@ -282,9 +282,9 @@ klasse CConverter(metaclass=CConverterAutoRegister):
             data.keywords.append(parameter.name)
 
         # format_units
-        wenn self.is_optional() and '|' not in data.format_units:
+        wenn self.is_optional() und '|' nicht in data.format_units:
             data.format_units.append('|')
-        wenn parameter.is_keyword_only() and '$' not in data.format_units:
+        wenn parameter.is_keyword_only() und '$' nicht in data.format_units:
             data.format_units.append('$')
         data.format_units.append(self.format_unit)
 
@@ -311,14 +311,14 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     @functools.cached_property
     def length_name(self) -> str:
         """Computes the name of the associated "length" variable."""
-        assert self.length is not Nichts
+        assert self.length is nicht Nichts
         return self.name + "_length"
 
     # Why is this one broken out separately?
     # For "positional-only" function parsing,
     # which generates a bunch of PyArg_ParseTuple calls.
     def parse_argument(self, args: list[str]) -> Nichts:
-        assert not (self.converter and self.encoding)
+        assert nicht (self.converter und self.encoding)
         wenn self.format_unit == 'O&':
             assert self.converter
             args.append(self.converter)
@@ -346,12 +346,12 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     ) -> str:
         """
         Computes the basic declaration of the variable.
-        Used in computing the prototype declaration and the
+        Used in computing the prototype declaration und the
         variable declaration.
         """
         assert isinstance(self.type, str)
         prototype = [self.type]
-        wenn by_reference or not self.type.endswith('*'):
+        wenn by_reference oder nicht self.type.endswith('*'):
             prototype.append(" ")
         wenn by_reference:
             prototype.append('*')
@@ -370,7 +370,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         """
         declaration = [self.simple_declaration(in_parser=Wahr)]
         default = self.c_default
-        wenn not default and self.parameter.group:
+        wenn nicht default und self.parameter.group:
             default = self.c_ignored_default
         wenn default:
             declaration.append(" = ")
@@ -422,15 +422,15 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         pass
 
     def bad_argument(self, displayname: str, expected: str, *, limited_capi: bool, expected_literal: bool = Wahr) -> str:
-        assert '"' not in expected
+        assert '"' nicht in expected
         wenn limited_capi:
             wenn expected_literal:
                 return (f'PyErr_Format(PyExc_TypeError, '
-                        f'"{{{{name}}}}() {displayname} must be {expected}, not %T", '
+                        f'"{{{{name}}}}() {displayname} must be {expected}, nicht %T", '
                         f'{{argname}});')
             sonst:
                 return (f'PyErr_Format(PyExc_TypeError, '
-                        f'"{{{{name}}}}() {displayname} must be %s, not %T", '
+                        f'"{{{{name}}}}() {displayname} must be %s, nicht %T", '
                         f'"{expected}", {{argname}});')
         sonst:
             wenn expected_literal:
@@ -444,11 +444,11 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                     bad_argument2: str | Nichts = Nichts,
                     **kwargs: Any) -> str:
         wenn '{bad_argument}' in fmt:
-            wenn not bad_argument:
+            wenn nicht bad_argument:
                 raise TypeError("required 'bad_argument' argument")
             fmt = fmt.replace('{bad_argument}', bad_argument)
         wenn '{bad_argument2}' in fmt:
-            wenn not bad_argument2:
+            wenn nicht bad_argument2:
                 raise TypeError("required 'bad_argument2' argument")
             fmt = fmt.replace('{bad_argument2}', bad_argument2)
         return fmt.format(argname=argname, paramname=self.parser_name, **kwargs)
@@ -527,7 +527,7 @@ ConverterDict = dict[str, ConverterType]
 #   def foo(name, default, *, ...)
 # The callable may have any number of keyword-only parameters.
 # The callable must return a CConverter object.
-# The callable should not call builtins.print.
+# The callable should nicht call builtins.print.
 converters: ConverterDict = {}
 
 # maps strings to callables.
@@ -542,7 +542,7 @@ def add_legacy_c_converter(
 ) -> Callable[[CConverterClassT], CConverterClassT]:
     def closure(f: CConverterClassT) -> CConverterClassT:
         added_f: Callable[..., CConverter]
-        wenn not kwargs:
+        wenn nicht kwargs:
             added_f = f
         sonst:
             added_f = functools.partial(f, **kwargs)

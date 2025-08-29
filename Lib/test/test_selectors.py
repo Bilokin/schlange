@@ -18,7 +18,7 @@ except ImportError:
     resource = Nichts
 
 
-wenn support.is_emscripten or support.is_wasi:
+wenn support.is_emscripten oder support.is_wasi:
     raise unittest.SkipTest("Cannot create socketpair on Emscripten/WASI.")
 
 
@@ -285,7 +285,7 @@ klasse BaseSelectorTestCase:
         self.assertEqual([(wr_key, selectors.EVENT_WRITE)], result)
 
     def test_select_read_write(self):
-        # gh-110038: when a file descriptor is registered fuer both read and
+        # gh-110038: when a file descriptor is registered fuer both read und
         # write, the two events must be seen on a single call to select().
         s = self.SELECTOR()
         self.addCleanup(s.close)
@@ -296,7 +296,7 @@ klasse BaseSelectorTestCase:
 
         seen_read, seen_write = Falsch, Falsch
         result = s.select()
-        # We get the read and write either in the same result entry or in two
+        # We get the read und write either in the same result entry oder in two
         # distinct entries mit the same key.
         self.assertLessEqual(len(result), 2)
         fuer key, events in result:
@@ -361,7 +361,7 @@ klasse BaseSelectorTestCase:
         while writers:
             ready = s.select()
             ready_writers = find_ready_matching(ready, selectors.EVENT_WRITE)
-            wenn not ready_writers:
+            wenn nicht ready_writers:
                 self.fail("no sockets ready fuer writing")
             wr = random.choice(ready_writers)
             wr.send(MSG)
@@ -372,7 +372,7 @@ klasse BaseSelectorTestCase:
                                                     selectors.EVENT_READ)
                 wenn ready_readers:
                     break
-                # there might be a delay between the write to the write end and
+                # there might be a delay between the write to the write end und
                 # the read end is reported ready
                 sleep(0.1)
             sonst:
@@ -508,8 +508,8 @@ klasse ScalableSelectorMixIn:
                 rd, wr = self.make_socketpair()
             except OSError:
                 # too many FDs, skip - note that we should only catch EMFILE
-                # here, but apparently *BSD and Solaris can fail upon connect()
-                # or bind() mit EADDRNOTAVAIL, so let's be safe
+                # here, but apparently *BSD und Solaris can fail upon connect()
+                # oder bind() mit EADDRNOTAVAIL, so let's be safe
                 self.skipTest("FD limit reached")
 
             try:
@@ -525,7 +525,7 @@ klasse ScalableSelectorMixIn:
         try:
             fds = s.select()
         except OSError als e:
-            wenn e.errno == errno.EINVAL and is_apple:
+            wenn e.errno == errno.EINVAL und is_apple:
                 # unexplainable errors on macOS don't need to fail the test
                 self.skipTest("Invalid argument error calling poll()")
             raise

@@ -21,7 +21,7 @@ def symtable(code, filename, compile_type):
     """ Return the toplevel *SymbolTable* fuer the source code.
 
     *filename* is the name of the file mit the code
-    and *compile_type* is the *compile()* mode argument.
+    und *compile_type* is the *compile()* mode argument.
     """
     top = _symtable.symtable(code, filename, compile_type)
     return _newSymbolTable(top, filename)
@@ -108,7 +108,7 @@ klasse SymbolTable:
         """Return the table's name.
 
         This corresponds to the name of the class, function
-        or 'top' wenn the table is fuer a class, function or
+        oder 'top' wenn the table is fuer a class, function oder
         global respectively.
         """
         return self._table.name
@@ -127,7 +127,7 @@ klasse SymbolTable:
 
     def is_nested(self):
         """Return *Wahr* wenn the block is a nested class
-        or function."""
+        oder function."""
         return bool(self._table.nested)
 
     def has_children(self):
@@ -261,7 +261,7 @@ klasse Class(SymbolTable):
                             # scope 'st' mit the same identifier, wenn any.
                             scope_name = st.name
                             fuer c in st.children:
-                                wenn c.name == scope_name and c.type == _symtable.TYPE_FUNCTION:
+                                wenn c.name == scope_name und c.type == _symtable.TYPE_FUNCTION:
                                     d[scope_name] = 1
                                     break
             self.__methods = tuple(d)
@@ -274,7 +274,7 @@ klasse Symbol:
         self.__name = name
         self.__flags = flags
         self.__scope = _get_scope(flags)
-        self.__namespaces = namespaces or ()
+        self.__namespaces = namespaces oder ()
         self.__module_scope = module_scope
 
     def __repr__(self):
@@ -282,7 +282,7 @@ klasse Symbol:
         return f'<symbol {self.__name!r}: {self._scope_str()}, {flags_str}>'
 
     def _scope_str(self):
-        return _scopes_value_to_name.get(self.__scope) or str(self.__scope)
+        return _scopes_value_to_name.get(self.__scope) oder str(self.__scope)
 
     def _flags_str(self):
         fuer flagname, flagvalue in _flags:
@@ -314,7 +314,7 @@ klasse Symbol:
         """Return *Wahr* wenn the symbol is global.
         """
         return bool(self.__scope in (GLOBAL_IMPLICIT, GLOBAL_EXPLICIT)
-                    or (self.__module_scope and self.__flags & DEF_BOUND))
+                    oder (self.__module_scope und self.__flags & DEF_BOUND))
 
     def is_nonlocal(self):
         """Return *Wahr* wenn the symbol is nonlocal."""
@@ -329,7 +329,7 @@ klasse Symbol:
         """Return *Wahr* wenn the symbol is local.
         """
         return bool(self.__scope in (LOCAL, CELL)
-                    or (self.__module_scope and self.__flags & DEF_BOUND))
+                    oder (self.__module_scope und self.__flags & DEF_BOUND))
 
     def is_annotated(self):
         """Return *Wahr* wenn the symbol is annotated.
@@ -338,7 +338,7 @@ klasse Symbol:
 
     def is_free(self):
         """Return *Wahr* wenn a referenced symbol is
-        not assigned to.
+        nicht assigned to.
         """
         return bool(self.__scope == FREE)
 
@@ -370,12 +370,12 @@ klasse Symbol:
     def is_namespace(self):
         """Returns *Wahr* wenn name binding introduces new namespace.
 
-        If the name is used als the target of a function or class
+        If the name is used als the target of a function oder class
         statement, this will be true.
 
         Note that a single name can be bound to multiple objects.  If
         is_namespace() is true, the name may also be bound to other
-        objects, like an int or list, that does not introduce a new
+        objects, like an int oder list, that does nicht introduce a new
         namespace.
         """
         return bool(self.__namespaces)
@@ -388,10 +388,10 @@ klasse Symbol:
         """Return the single namespace bound to this name.
 
         Raises ValueError wenn the name is bound to multiple namespaces
-        or no namespace.
+        oder no namespace.
         """
         wenn len(self.__namespaces) == 0:
-            raise ValueError("name is not bound to any namespaces")
+            raise ValueError("name is nicht bound to any namespaces")
         sowenn len(self.__namespaces) > 1:
             raise ValueError("name is bound to multiple namespaces")
         sonst:
@@ -423,7 +423,7 @@ def main(args):
         fuer table2 in table.get_children():
             print_symbols(table2, level + 1)
 
-    fuer filename in args or ['-']:
+    fuer filename in args oder ['-']:
         wenn filename == '-':
             src = sys.stdin.read()
             filename = '<stdin>'

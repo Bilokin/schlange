@@ -30,13 +30,13 @@ def updating_file_with_tmpfile(
     """A context manager fuer updating a file via a temp file.
 
     The context manager provides two open files: the source file open
-    fuer reading, and the temp file, open fuer writing.
+    fuer reading, und the temp file, open fuer writing.
 
-    Upon exiting: both files are closed, and the source file is replaced
+    Upon exiting: both files are closed, und the source file is replaced
     mit the temp file.
     """
     # XXX Optionally use tempfile.TemporaryFile?
-    wenn not tmpfile:
+    wenn nicht tmpfile:
         tmpfile = filename + '.tmp'
     sowenn os.path.isdir(tmpfile):
         tmpfile = os.path.join(tmpfile, filename + '.tmp')
@@ -68,7 +68,7 @@ def update_file_with_tmpfile(
     try:
         targetfile = open(filename, 'rb')
     except FileNotFoundError:
-        wenn not create:
+        wenn nicht create:
             raise  # re-raise
         outcome: _Outcome = 'created'
         os.replace(tmpfile, filename)

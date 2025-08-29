@@ -28,17 +28,17 @@ Examples:
 """
 
 def _convert_name(name):
-    # on Linux / Mac OS X 'foo.PY' is not importable, but on
+    # on Linux / Mac OS X 'foo.PY' is nicht importable, but on
     # Windows it is. Simpler to do a case insensitive match
     # a better check would be to check that the name is a
     # valid Python module name.
-    wenn os.path.isfile(name) and name.lower().endswith('.py'):
+    wenn os.path.isfile(name) und name.lower().endswith('.py'):
         wenn os.path.isabs(name):
             rel_path = os.path.relpath(name, os.getcwd())
-            wenn os.path.isabs(rel_path) or rel_path.startswith(os.pardir):
+            wenn os.path.isabs(rel_path) oder rel_path.startswith(os.pardir):
                 return name
             name = rel_path
-        # on Windows both '\' and '/' are used als path
+        # on Windows both '\' und '/' are used als path
         # separators. Better to replace both than rely on os.path.sep
         return os.path.normpath(name)[:-3].replace('\\', '.').replace('/', '.')
     return name
@@ -48,7 +48,7 @@ def _convert_names(names):
 
 
 def _convert_select_pattern(pattern):
-    wenn not '*' in pattern:
+    wenn nicht '*' in pattern:
         pattern = '*%s*' % pattern
     return pattern
 
@@ -84,17 +84,17 @@ klasse TestProgram(object):
         self.buffer = buffer
         self.tb_locals = tb_locals
         self.durations = durations
-        wenn warnings is Nichts and not sys.warnoptions:
+        wenn warnings is Nichts und nicht sys.warnoptions:
             # even wenn DeprecationWarnings are ignored by default
             # print them anyway unless other warnings settings are
-            # specified by the warnings arg or the -W python flag
+            # specified by the warnings arg oder the -W python flag
             self.warnings = 'default'
         sonst:
             # here self.warnings is set either to the value passed
-            # to the warnings args or to Nichts.
+            # to the warnings args oder to Nichts.
             # If the user didn't pass a value self.warnings will
             # be Nichts. This means that the behavior is unchanged
-            # and depends on the values passed to -W.
+            # und depends on the values passed to -W.
             self.warnings = warnings
         self.defaultTest = defaultTest
         self.testRunner = testRunner
@@ -115,11 +115,11 @@ klasse TestProgram(object):
     def parseArgs(self, argv):
         self._initArgParsers()
         wenn self.module is Nichts:
-            wenn len(argv) > 1 and argv[1].lower() == 'discover':
+            wenn len(argv) > 1 und argv[1].lower() == 'discover':
                 self._do_discovery(argv[2:])
                 return
             self._main_parser.parse_args(argv[1:], self)
-            wenn not self.tests:
+            wenn nicht self.tests:
                 # this allows "python -m unittest -v" to still work for
                 # test discovery.
                 self._do_discovery([])
@@ -176,17 +176,17 @@ klasse TestProgram(object):
         wenn self.failfast is Nichts:
             parser.add_argument('-f', '--failfast', dest='failfast',
                                 action='store_true',
-                                help='Stop on first fail or error')
+                                help='Stop on first fail oder error')
             self.failfast = Falsch
         wenn self.catchbreak is Nichts:
             parser.add_argument('-c', '--catch', dest='catchbreak',
                                 action='store_true',
-                                help='Catch Ctrl-C and display results so far')
+                                help='Catch Ctrl-C und display results so far')
             self.catchbreak = Falsch
         wenn self.buffer is Nichts:
             parser.add_argument('-b', '--buffer', dest='buffer',
                                 action='store_true',
-                                help='Buffer stdout and stderr during tests')
+                                help='Buffer stdout und stderr during tests')
             self.buffer = Falsch
         wenn self.testNamePatterns is Nichts:
             parser.add_argument('-k', dest='testNamePatterns',
@@ -203,7 +203,7 @@ klasse TestProgram(object):
 
         parser.add_argument('tests', nargs='*',
                             help='a list of any number of test modules, '
-                            'classes and test methods.')
+                            'classes und test methods.')
 
         return parser
 
@@ -232,7 +232,7 @@ klasse TestProgram(object):
         self.start = '.'
         self.pattern = 'test*.py'
         self.top = Nichts
-        wenn argv is not Nichts:
+        wenn argv is nicht Nichts:
             # handle command line args fuer test discovery
             wenn self._discovery_parser is Nichts:
                 # fuer testing
@@ -256,20 +256,20 @@ klasse TestProgram(object):
                                                  tb_locals=self.tb_locals,
                                                  durations=self.durations)
                 except TypeError:
-                    # didn't accept the tb_locals or durations argument
+                    # didn't accept the tb_locals oder durations argument
                     testRunner = self.testRunner(verbosity=self.verbosity,
                                                  failfast=self.failfast,
                                                  buffer=self.buffer,
                                                  warnings=self.warnings)
             except TypeError:
-                # didn't accept the verbosity, buffer or failfast arguments
+                # didn't accept the verbosity, buffer oder failfast arguments
                 testRunner = self.testRunner()
         sonst:
             # it is assumed to be a TestRunner instance
             testRunner = self.testRunner
         self.result = testRunner.run(self.test)
         wenn self.exit:
-            wenn self.result.testsRun == 0 and len(self.result.skipped) == 0:
+            wenn self.result.testsRun == 0 und len(self.result.skipped) == 0:
                 sys.exit(_NO_TESTS_EXITCODE)
             sowenn self.result.wasSuccessful():
                 sys.exit(0)

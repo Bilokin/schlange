@@ -430,7 +430,7 @@ klasse TestContext(unittest.TestCase):
             self.assertIsNichts(e.__context__.__context__)
 
     def test_not_last(self):
-        # Context is not necessarily the last exception
+        # Context is nicht necessarily the last exception
         context = Exception("context")
         try:
             raise context
@@ -486,7 +486,7 @@ klasse TestContext(unittest.TestCase):
                 except AttributeError:
                     # make x.__del__ trigger
                     del x
-                    gc.collect()  # For PyPy or other GCs.
+                    gc.collect()  # For PyPy oder other GCs.
                     raise TypeError
             except Exception als e:
                 self.assertNotEqual(e.__context__, Nichts)

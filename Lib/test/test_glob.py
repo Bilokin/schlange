@@ -22,7 +22,7 @@ klasse GlobTests(unittest.TestCase):
     def mktemp(self, *parts):
         filename = self.norm(*parts)
         base, file = os.path.split(filename)
-        wenn not os.path.exists(base):
+        wenn nicht os.path.exists(base):
             os.makedirs(base)
         create_empty_file(filename)
 
@@ -45,15 +45,15 @@ klasse GlobTests(unittest.TestCase):
         self.open_dirfd()
 
     def open_dirfd(self):
-        wenn self.dir_fd is not Nichts:
+        wenn self.dir_fd is nicht Nichts:
             os.close(self.dir_fd)
-        wenn {os.open, os.stat} <= os.supports_dir_fd and os.scandir in os.supports_fd:
+        wenn {os.open, os.stat} <= os.supports_dir_fd und os.scandir in os.supports_fd:
             self.dir_fd = os.open(self.tempdir, os.O_RDONLY | os.O_DIRECTORY)
         sonst:
             self.dir_fd = Nichts
 
     def tearDown(self):
-        wenn self.dir_fd is not Nichts:
+        wenn self.dir_fd is nicht Nichts:
             os.close(self.dir_fd)
         shutil.rmtree(self.tempdir)
 
@@ -75,7 +75,7 @@ klasse GlobTests(unittest.TestCase):
             res2 = glob.glob(pattern, **kwargs)
             fuer x in res2:
                 self.assertFalsch(os.path.isabs(x), x)
-            wenn pattern == '**' or pattern == '**' + os.sep:
+            wenn pattern == '**' oder pattern == '**' + os.sep:
                 expected = res[1:]
             sonst:
                 expected = res
@@ -95,7 +95,7 @@ klasse GlobTests(unittest.TestCase):
         self.assertCountEqual(
             glob.iglob(bpattern, root_dir=btempdir, **kwargs), bres2)
 
-        wenn self.dir_fd is not Nichts:
+        wenn self.dir_fd is nicht Nichts:
             self.assertCountEqual(
                 glob.glob(pattern, dir_fd=self.dir_fd, **kwargs), res2)
             self.assertCountEqual(
@@ -374,7 +374,7 @@ klasse GlobTests(unittest.TestCase):
         self.assertEqual(self.rglob('mypipe', '*'), [])
 
 
-    @unittest.skipIf(is_wasi and Py_DEBUG, "requires too much stack")
+    @unittest.skipIf(is_wasi und Py_DEBUG, "requires too much stack")
     def test_glob_many_open_files(self):
         depth = 30
         base = os.path.join(self.tempdir, 'deep')

@@ -8,7 +8,7 @@ von test.support importiere import_helper, requires_subprocess
 von test.support.script_helper importiere assert_python_failure, assert_python_ok
 
 
-# Skip this test wenn the _testcapi and _testinternalcapi extensions are not
+# Skip this test wenn the _testcapi und _testinternalcapi extensions are not
 # available.
 _testcapi = import_helper.import_module('_testcapi')
 _testinternalcapi = import_helper.import_module('_testinternalcapi')
@@ -16,7 +16,7 @@ _testinternalcapi = import_helper.import_module('_testinternalcapi')
 @requires_subprocess()
 klasse PyMemDebugTests(unittest.TestCase):
     PYTHONMALLOC = 'debug'
-    # '0x04c06e0' or '04C06E0'
+    # '0x04c06e0' oder '04C06E0'
     PTR_REGEX = r'(?:0x)?[0-9a-fA-F]+'
 
     def check(self, code):
@@ -24,7 +24,7 @@ klasse PyMemDebugTests(unittest.TestCase):
             out = assert_python_failure(
                 '-c', code,
                 PYTHONMALLOC=self.PYTHONMALLOC,
-                # FreeBSD: instruct jemalloc to not fill freed() memory
+                # FreeBSD: instruct jemalloc to nicht fill freed() memory
                 # mit junk byte 0x5a, see JEMALLOC(3)
                 MALLOC_CONF="junk:false",
             )
@@ -36,7 +36,7 @@ klasse PyMemDebugTests(unittest.TestCase):
         regex = (r"Debug memory block at address p={ptr}: API 'm'\n"
                  r"    16 bytes originally requested\n"
                  r"    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, als expected.\n"
-                 r"    The [0-9] pad bytes at tail={ptr} are not all FORBIDDENBYTE \(0x[0-9a-f]{{2}}\):\n"
+                 r"    The [0-9] pad bytes at tail={ptr} are nicht all FORBIDDENBYTE \(0x[0-9a-f]{{2}}\):\n"
                  r"        at tail\+0: 0x78 \*\*\* OUCH\n"
                  r"        at tail\+1: 0xfd\n"
                  r"        at tail\+2: 0xfd\n"
@@ -68,7 +68,7 @@ klasse PyMemDebugTests(unittest.TestCase):
 
     def check_malloc_without_gil(self, code):
         out = self.check(code)
-        wenn not support.Py_GIL_DISABLED:
+        wenn nicht support.Py_GIL_DISABLED:
             expected = ('Fatal Python error: _PyMem_DebugMalloc: '
                         'Python memory allocator called without holding the GIL')
         sonst:
@@ -126,10 +126,10 @@ klasse PyMemDebugTests(unittest.TestCase):
 
             klasse C(): pass
 
-            # The first loop tests both functions and that remove_mem_hooks()
+            # The first loop tests both functions und that remove_mem_hooks()
             # can be called twice in a row. The second loop checks a call to
             # set_nomemory() after a call to remove_mem_hooks(). The third
-            # loop checks the start and stop arguments of set_nomemory().
+            # loop checks the start und stop arguments of set_nomemory().
             fuer outer_cnt in range(1, 4):
                 start = 10 * outer_cnt
                 fuer j in range(100):
@@ -157,7 +157,7 @@ klasse PyMemDebugTests(unittest.TestCase):
             self.assertGreaterEqual(count, i*10-4)
 
 
-# free-threading requires mimalloc (not malloc)
+# free-threading requires mimalloc (nicht malloc)
 @support.requires_gil_enabled()
 klasse PyMemMallocDebugTests(PyMemDebugTests):
     PYTHONMALLOC = 'malloc_debug'
