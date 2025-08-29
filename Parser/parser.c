@@ -26,6 +26,7 @@ static KeywordToken *reserved_keywords[] = {
         {NULL, -1},
     },
     (KeywordToken[]) {
+        {"gib", 522},
         {"von", 638},
         {"del", 630},
         {"def", 704},
@@ -45,7 +46,6 @@ static KeywordToken *reserved_keywords[] = {
     },
     (KeywordToken[]) {
         {"raise", 628},
-        {"yield", 588},
         {"async", 703},
         {"sonst", 691},
         {"nicht", 708},
@@ -53,7 +53,6 @@ static KeywordToken *reserved_keywords[] = {
         {NULL, -1},
     },
     (KeywordToken[]) {
-        {"return", 522},
         {"assert", 533},
         {"breche", 528},
         {"weiter", 529},
@@ -67,6 +66,7 @@ static KeywordToken *reserved_keywords[] = {
         {NULL, -1},
     },
     (KeywordToken[]) {
+        {"liefere", 588},
         {"finally", 678},
         {NULL, -1},
     },
@@ -1547,12 +1547,12 @@ simple_stmts_rule(Parser *p)
 //     | assignment
 //     | &"type" type_alias
 //     | star_expressions
-//     | &'return' return_stmt
+//     | &'gib' return_stmt
 //     | &('importiere' | 'von') import_stmt
 //     | &'raise' raise_stmt
 //     | &'pass' pass_stmt
 //     | &'del' del_stmt
-//     | &'yield' yield_stmt
+//     | &'liefere' yield_stmt
 //     | &'assert' assert_stmt
 //     | &'breche' break_stmt
 //     | &'weiter' continue_stmt
@@ -1656,26 +1656,26 @@ simple_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "star_expressions"));
     }
-    { // &'return' return_stmt
+    { // &'gib' return_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'return' return_stmt"));
+        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'gib' return_stmt"));
         stmt_ty return_stmt_var;
         if (
-            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 522)  // token='return'
+            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 522)  // token='gib'
             &&
             (return_stmt_var = return_stmt_rule(p))  // return_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'return' return_stmt"));
+            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'gib' return_stmt"));
             _res = return_stmt_var;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'return' return_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'gib' return_stmt"));
     }
     { // &('importiere' | 'von') import_stmt
         if (p->error_indicator) {
@@ -1761,26 +1761,26 @@ simple_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'del' del_stmt"));
     }
-    { // &'yield' yield_stmt
+    { // &'liefere' yield_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'yield' yield_stmt"));
+        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'liefere' yield_stmt"));
         stmt_ty yield_stmt_var;
         if (
-            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 588)  // token='yield'
+            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 588)  // token='liefere'
             &&
             (yield_stmt_var = yield_stmt_rule(p))  // yield_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'yield' yield_stmt"));
+            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'liefere' yield_stmt"));
             _res = yield_stmt_var;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'yield' yield_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'liefere' yield_stmt"));
     }
     { // &'assert' assert_stmt
         if (p->error_indicator) {
@@ -2711,7 +2711,7 @@ augassign_rule(Parser *p)
     return _res;
 }
 
-// return_stmt: 'return' star_expressions?
+// return_stmt: 'gib' star_expressions?
 static stmt_ty
 return_stmt_rule(Parser *p)
 {
@@ -2733,21 +2733,21 @@ return_stmt_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'return' star_expressions?
+    { // 'gib' star_expressions?
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> return_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'return' star_expressions?"));
+        D(fprintf(stderr, "%*c> return_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'gib' star_expressions?"));
         Token * _keyword;
         void *a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 522))  // token='return'
+            (_keyword = _PyPegen_expect_token(p, 522))  // token='gib'
             &&
             (a = star_expressions_rule(p), !p->error_indicator)  // star_expressions?
         )
         {
-            D(fprintf(stderr, "%*c+ return_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'return' star_expressions?"));
+            D(fprintf(stderr, "%*c+ return_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'gib' star_expressions?"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -2767,7 +2767,7 @@ return_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s return_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'return' star_expressions?"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'gib' star_expressions?"));
     }
     _res = NULL;
   done:
@@ -11553,7 +11553,7 @@ expression_rule(Parser *p)
     return _res;
 }
 
-// yield_expr: 'yield' 'von' expression | 'yield' star_expressions?
+// yield_expr: 'liefere' 'von' expression | 'liefere' star_expressions?
 static expr_ty
 yield_expr_rule(Parser *p)
 {
@@ -11575,24 +11575,24 @@ yield_expr_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'yield' 'von' expression
+    { // 'liefere' 'von' expression
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> yield_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'yield' 'von' expression"));
+        D(fprintf(stderr, "%*c> yield_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'liefere' 'von' expression"));
         Token * _keyword;
         Token * _keyword_1;
         expr_ty a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 588))  // token='yield'
+            (_keyword = _PyPegen_expect_token(p, 588))  // token='liefere'
             &&
             (_keyword_1 = _PyPegen_expect_token(p, 638))  // token='von'
             &&
             (a = expression_rule(p))  // expression
         )
         {
-            D(fprintf(stderr, "%*c+ yield_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'yield' 'von' expression"));
+            D(fprintf(stderr, "%*c+ yield_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'liefere' 'von' expression"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -11612,23 +11612,23 @@ yield_expr_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s yield_expr[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'yield' 'von' expression"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'liefere' 'von' expression"));
     }
-    { // 'yield' star_expressions?
+    { // 'liefere' star_expressions?
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> yield_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'yield' star_expressions?"));
+        D(fprintf(stderr, "%*c> yield_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'liefere' star_expressions?"));
         Token * _keyword;
         void *a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 588))  // token='yield'
+            (_keyword = _PyPegen_expect_token(p, 588))  // token='liefere'
             &&
             (a = star_expressions_rule(p), !p->error_indicator)  // star_expressions?
         )
         {
-            D(fprintf(stderr, "%*c+ yield_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'yield' star_expressions?"));
+            D(fprintf(stderr, "%*c+ yield_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'liefere' star_expressions?"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -11648,7 +11648,7 @@ yield_expr_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s yield_expr[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'yield' star_expressions?"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'liefere' star_expressions?"));
     }
     _res = NULL;
   done:

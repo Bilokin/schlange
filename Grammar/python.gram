@@ -122,12 +122,12 @@ simple_stmt[stmt_ty] (memo):
     | assignment
     | &"type" type_alias
     | e=star_expressions { _PyAST_Expr(e, EXTRA) }
-    | &'return' return_stmt
+    | &'gib' return_stmt
     | &('importiere' | 'von') import_stmt
     | &'raise' raise_stmt
     | &'pass' pass_stmt
     | &'del' del_stmt
-    | &'yield' yield_stmt
+    | &'liefere' yield_stmt
     | &'assert' assert_stmt
     | &'breche' break_stmt
     | &'weiter' continue_stmt
@@ -147,7 +147,7 @@ compound_stmt[stmt_ty]:
 # SIMPLE STATEMENTS
 # =================
 
-# NOTE: annotated_rhs may start with 'yield'; yield_expr must start with 'yield'
+# NOTE: annotated_rhs may start with 'liefere'; yield_expr must start with 'liefere'
 assignment[stmt_ty]:
     | a=NAME ':' b=expression c=['=' d=annotated_rhs { d }] {
         CHECK_VERSION(
@@ -183,7 +183,7 @@ augassign[AugOperator*]:
     | '//=' { _PyPegen_augoperator(p, FloorDiv) }
 
 return_stmt[stmt_ty]:
-    | 'return' a=[star_expressions] { _PyAST_Return(a, EXTRA) }
+    | 'gib' a=[star_expressions] { _PyAST_Return(a, EXTRA) }
 
 raise_stmt[stmt_ty]:
     | 'raise' a=expression 'von' b=expression { _PyAST_Raise(a, b, EXTRA) }
@@ -713,8 +713,8 @@ expression[expr_ty] (memo):
     | lambdef
 
 yield_expr[expr_ty]:
-    | 'yield' 'von' a=expression { _PyAST_YieldFrom(a, EXTRA) }
-    | 'yield' a=[star_expressions] { _PyAST_Yield(a, EXTRA) }
+    | 'liefere' 'von' a=expression { _PyAST_YieldFrom(a, EXTRA) }
+    | 'liefere' a=[star_expressions] { _PyAST_Yield(a, EXTRA) }
 
 star_expressions[expr_ty]:
     | a=star_expression b=(',' c=star_expression { c })+ [','] {

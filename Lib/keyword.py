@@ -29,19 +29,20 @@ kwlist = [
     'except',
     'finally',
     'fuer',
+    'gib',
     'global',
     'importiere',
     'in',
     'is',
     'klasse',
     'lambda',
+    'liefere',
     'mit',
     'nicht',
     'nonlocal',
     'oder',
     'pass',
     'raise',
-    'return',
     'sonst',
     'sowenn',
     'try',
@@ -49,8 +50,7 @@ kwlist = [
     'von',
     'waehrend',
     'weiter',
-    'wenn',
-    'yield'
+    'wenn'
 ]
 
 softkwlist = [
