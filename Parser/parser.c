@@ -16,7 +16,7 @@
 #else
 #  define MAXSTACK 6000
 #endif
-static const int n_keyword_lists = 9;
+static const int n_keyword_lists = 11;
 static KeywordToken *reserved_keywords[] = {
     (KeywordToken[]) {{NULL, -1}},
     (KeywordToken[]) {{NULL, -1}},
@@ -28,6 +28,7 @@ static KeywordToken *reserved_keywords[] = {
         {NULL, -1},
     },
     (KeywordToken[]) {
+        {"von", 638},
         {"del", 630},
         {"def", 704},
         {"try", 661},
@@ -36,7 +37,6 @@ static KeywordToken *reserved_keywords[] = {
         {NULL, -1},
     },
     (KeywordToken[]) {
-        {"from", 638},
         {"pass", 527},
         {"wenn", 687},
         {"with", 652},
@@ -56,7 +56,6 @@ static KeywordToken *reserved_keywords[] = {
     },
     (KeywordToken[]) {
         {"return", 522},
-        {"import", 639},
         {"assert", 533},
         {"global", 530},
         {"klasse", 706},
@@ -74,6 +73,11 @@ static KeywordToken *reserved_keywords[] = {
     (KeywordToken[]) {
         {"continue", 529},
         {"nonlocal", 531},
+        {NULL, -1},
+    },
+    (KeywordToken[]) {{NULL, -1}},
+    (KeywordToken[]) {
+        {"importiere", 639},
         {NULL, -1},
     },
 };
@@ -1544,7 +1548,7 @@ simple_stmts_rule(Parser *p)
 //     | &"type" type_alias
 //     | star_expressions
 //     | &'return' return_stmt
-//     | &('import' | 'from') import_stmt
+//     | &('importiere' | 'von') import_stmt
 //     | &'raise' raise_stmt
 //     | &'pass' pass_stmt
 //     | &'del' del_stmt
@@ -1673,12 +1677,12 @@ simple_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'return' return_stmt"));
     }
-    { // &('import' | 'from') import_stmt
+    { // &('importiere' | 'von') import_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&('import' | 'from') import_stmt"));
+        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&('importiere' | 'von') import_stmt"));
         stmt_ty import_stmt_var;
         if (
             _PyPegen_lookahead(1, _tmp_5_rule, p)
@@ -1686,13 +1690,13 @@ simple_stmt_rule(Parser *p)
             (import_stmt_var = import_stmt_rule(p))  // import_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&('import' | 'from') import_stmt"));
+            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&('importiere' | 'von') import_stmt"));
             _res = import_stmt_var;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&('import' | 'from') import_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&('importiere' | 'von') import_stmt"));
     }
     { // &'raise' raise_stmt
         if (p->error_indicator) {
@@ -2772,7 +2776,7 @@ return_stmt_rule(Parser *p)
 }
 
 // raise_stmt:
-//     | 'raise' expression 'from' expression
+//     | 'raise' expression 'von' expression
 //     | invalid_raise_stmt
 //     | 'raise' expression
 //     | 'raise'
@@ -2797,12 +2801,12 @@ raise_stmt_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'raise' expression 'from' expression
+    { // 'raise' expression 'von' expression
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> raise_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'raise' expression 'from' expression"));
+        D(fprintf(stderr, "%*c> raise_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'raise' expression 'von' expression"));
         Token * _keyword;
         Token * _keyword_1;
         expr_ty a;
@@ -2812,12 +2816,12 @@ raise_stmt_rule(Parser *p)
             &&
             (a = expression_rule(p))  // expression
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 638))  // token='from'
+            (_keyword_1 = _PyPegen_expect_token(p, 638))  // token='von'
             &&
             (b = expression_rule(p))  // expression
         )
         {
-            D(fprintf(stderr, "%*c+ raise_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'raise' expression 'from' expression"));
+            D(fprintf(stderr, "%*c+ raise_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'raise' expression 'von' expression"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -2837,7 +2841,7 @@ raise_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s raise_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'raise' expression 'from' expression"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'raise' expression 'von' expression"));
     }
     if (p->call_invalid_rules) { // invalid_raise_stmt
         if (p->error_indicator) {
@@ -3533,7 +3537,7 @@ import_stmt_rule(Parser *p)
     return _res;
 }
 
-// import_name: 'import' dotted_as_names
+// import_name: 'importiere' dotted_as_names
 static stmt_ty
 import_name_rule(Parser *p)
 {
@@ -3555,21 +3559,21 @@ import_name_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'import' dotted_as_names
+    { // 'importiere' dotted_as_names
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> import_name[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'import' dotted_as_names"));
+        D(fprintf(stderr, "%*c> import_name[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'importiere' dotted_as_names"));
         Token * _keyword;
         asdl_alias_seq* a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 639))  // token='import'
+            (_keyword = _PyPegen_expect_token(p, 639))  // token='importiere'
             &&
             (a = dotted_as_names_rule(p))  // dotted_as_names
         )
         {
-            D(fprintf(stderr, "%*c+ import_name[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'import' dotted_as_names"));
+            D(fprintf(stderr, "%*c+ import_name[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'importiere' dotted_as_names"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -3589,7 +3593,7 @@ import_name_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s import_name[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'import' dotted_as_names"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'importiere' dotted_as_names"));
     }
     _res = NULL;
   done:
@@ -3598,8 +3602,8 @@ import_name_rule(Parser *p)
 }
 
 // import_from:
-//     | 'from' (('.' | '...'))* dotted_name 'import' import_from_targets
-//     | 'from' (('.' | '...'))+ 'import' import_from_targets
+//     | 'von' (('.' | '...'))* dotted_name 'importiere' import_from_targets
+//     | 'von' (('.' | '...'))+ 'importiere' import_from_targets
 static stmt_ty
 import_from_rule(Parser *p)
 {
@@ -3621,30 +3625,30 @@ import_from_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'from' (('.' | '...'))* dotted_name 'import' import_from_targets
+    { // 'von' (('.' | '...'))* dotted_name 'importiere' import_from_targets
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> import_from[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'from' (('.' | '...'))* dotted_name 'import' import_from_targets"));
+        D(fprintf(stderr, "%*c> import_from[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'von' (('.' | '...'))* dotted_name 'importiere' import_from_targets"));
         Token * _keyword;
         Token * _keyword_1;
         asdl_seq * a;
         expr_ty b;
         asdl_alias_seq* c;
         if (
-            (_keyword = _PyPegen_expect_token(p, 638))  // token='from'
+            (_keyword = _PyPegen_expect_token(p, 638))  // token='von'
             &&
             (a = _loop0_17_rule(p))  // (('.' | '...'))*
             &&
             (b = dotted_name_rule(p))  // dotted_name
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 639))  // token='import'
+            (_keyword_1 = _PyPegen_expect_token(p, 639))  // token='importiere'
             &&
             (c = import_from_targets_rule(p))  // import_from_targets
         )
         {
-            D(fprintf(stderr, "%*c+ import_from[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'from' (('.' | '...'))* dotted_name 'import' import_from_targets"));
+            D(fprintf(stderr, "%*c+ import_from[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'von' (('.' | '...'))* dotted_name 'importiere' import_from_targets"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -3664,29 +3668,29 @@ import_from_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s import_from[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'from' (('.' | '...'))* dotted_name 'import' import_from_targets"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'von' (('.' | '...'))* dotted_name 'importiere' import_from_targets"));
     }
-    { // 'from' (('.' | '...'))+ 'import' import_from_targets
+    { // 'von' (('.' | '...'))+ 'importiere' import_from_targets
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> import_from[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'from' (('.' | '...'))+ 'import' import_from_targets"));
+        D(fprintf(stderr, "%*c> import_from[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'von' (('.' | '...'))+ 'importiere' import_from_targets"));
         Token * _keyword;
         Token * _keyword_1;
         asdl_seq * a;
         asdl_alias_seq* b;
         if (
-            (_keyword = _PyPegen_expect_token(p, 638))  // token='from'
+            (_keyword = _PyPegen_expect_token(p, 638))  // token='von'
             &&
             (a = _loop1_18_rule(p))  // (('.' | '...'))+
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 639))  // token='import'
+            (_keyword_1 = _PyPegen_expect_token(p, 639))  // token='importiere'
             &&
             (b = import_from_targets_rule(p))  // import_from_targets
         )
         {
-            D(fprintf(stderr, "%*c+ import_from[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'from' (('.' | '...'))+ 'import' import_from_targets"));
+            D(fprintf(stderr, "%*c+ import_from[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'von' (('.' | '...'))+ 'importiere' import_from_targets"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -3706,7 +3710,7 @@ import_from_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s import_from[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'from' (('.' | '...'))+ 'import' import_from_targets"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'von' (('.' | '...'))+ 'importiere' import_from_targets"));
     }
     _res = NULL;
   done:
@@ -11549,7 +11553,7 @@ expression_rule(Parser *p)
     return _res;
 }
 
-// yield_expr: 'yield' 'from' expression | 'yield' star_expressions?
+// yield_expr: 'yield' 'von' expression | 'yield' star_expressions?
 static expr_ty
 yield_expr_rule(Parser *p)
 {
@@ -11571,24 +11575,24 @@ yield_expr_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'yield' 'from' expression
+    { // 'yield' 'von' expression
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> yield_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'yield' 'from' expression"));
+        D(fprintf(stderr, "%*c> yield_expr[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'yield' 'von' expression"));
         Token * _keyword;
         Token * _keyword_1;
         expr_ty a;
         if (
             (_keyword = _PyPegen_expect_token(p, 588))  // token='yield'
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 638))  // token='from'
+            (_keyword_1 = _PyPegen_expect_token(p, 638))  // token='von'
             &&
             (a = expression_rule(p))  // expression
         )
         {
-            D(fprintf(stderr, "%*c+ yield_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'yield' 'from' expression"));
+            D(fprintf(stderr, "%*c+ yield_expr[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'yield' 'von' expression"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -11608,7 +11612,7 @@ yield_expr_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s yield_expr[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'yield' 'from' expression"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'yield' 'von' expression"));
     }
     { // 'yield' star_expressions?
         if (p->error_indicator) {
@@ -22007,7 +22011,7 @@ invalid_ann_assign_target_rule(Parser *p)
     return _res;
 }
 
-// invalid_raise_stmt: 'raise' 'from' | 'raise' expression 'from'
+// invalid_raise_stmt: 'raise' 'von' | 'raise' expression 'von'
 static void *
 invalid_raise_stmt_rule(Parser *p)
 {
@@ -22020,22 +22024,22 @@ invalid_raise_stmt_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'raise' 'from'
+    { // 'raise' 'von'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_raise_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'raise' 'from'"));
+        D(fprintf(stderr, "%*c> invalid_raise_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'raise' 'von'"));
         Token * a;
         Token * b;
         if (
             (a = _PyPegen_expect_token(p, 628))  // token='raise'
             &&
-            (b = _PyPegen_expect_token(p, 638))  // token='from'
+            (b = _PyPegen_expect_token(p, 638))  // token='von'
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_raise_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'raise' 'from'"));
-            _res = RAISE_SYNTAX_ERROR_KNOWN_RANGE ( a , b , "did you forget an expression between 'raise' and 'from'?" );
+            D(fprintf(stderr, "%*c+ invalid_raise_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'raise' 'von'"));
+            _res = RAISE_SYNTAX_ERROR_KNOWN_RANGE ( a , b , "did you forget an expression between 'raise' and 'von'?" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -22045,14 +22049,14 @@ invalid_raise_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_raise_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'raise' 'from'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'raise' 'von'"));
     }
-    { // 'raise' expression 'from'
+    { // 'raise' expression 'von'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_raise_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'raise' expression 'from'"));
+        D(fprintf(stderr, "%*c> invalid_raise_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'raise' expression 'von'"));
         Token * _keyword;
         Token * a;
         expr_ty expression_var;
@@ -22061,11 +22065,11 @@ invalid_raise_stmt_rule(Parser *p)
             &&
             (expression_var = expression_rule(p))  // expression
             &&
-            (a = _PyPegen_expect_token(p, 638))  // token='from'
+            (a = _PyPegen_expect_token(p, 638))  // token='von'
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_raise_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'raise' expression 'from'"));
-            _res = RAISE_SYNTAX_ERROR_KNOWN_LOCATION ( a , "did you forget an expression after 'from'?" );
+            D(fprintf(stderr, "%*c+ invalid_raise_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'raise' expression 'von'"));
+            _res = RAISE_SYNTAX_ERROR_KNOWN_LOCATION ( a , "did you forget an expression after 'von'?" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -22075,7 +22079,7 @@ invalid_raise_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_raise_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'raise' expression 'from'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'raise' expression 'von'"));
     }
     _res = NULL;
   done:
@@ -23751,7 +23755,7 @@ invalid_group_rule(Parser *p)
     return _res;
 }
 
-// invalid_import: 'import' ','.dotted_name+ 'from' dotted_name | 'import' NEWLINE
+// invalid_import: 'importiere' ','.dotted_name+ 'von' dotted_name | 'importiere' NEWLINE
 static void *
 invalid_import_rule(Parser *p)
 {
@@ -23764,27 +23768,27 @@ invalid_import_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'import' ','.dotted_name+ 'from' dotted_name
+    { // 'importiere' ','.dotted_name+ 'von' dotted_name
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_import[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'import' ','.dotted_name+ 'from' dotted_name"));
+        D(fprintf(stderr, "%*c> invalid_import[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'importiere' ','.dotted_name+ 'von' dotted_name"));
         asdl_seq * _gather_137_var;
         Token * _keyword;
         Token * a;
         expr_ty dotted_name_var;
         if (
-            (a = _PyPegen_expect_token(p, 639))  // token='import'
+            (a = _PyPegen_expect_token(p, 639))  // token='importiere'
             &&
             (_gather_137_var = _gather_137_rule(p))  // ','.dotted_name+
             &&
-            (_keyword = _PyPegen_expect_token(p, 638))  // token='from'
+            (_keyword = _PyPegen_expect_token(p, 638))  // token='von'
             &&
             (dotted_name_var = dotted_name_rule(p))  // dotted_name
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_import[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'import' ','.dotted_name+ 'from' dotted_name"));
+            D(fprintf(stderr, "%*c+ invalid_import[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'importiere' ','.dotted_name+ 'von' dotted_name"));
             _res = RAISE_SYNTAX_ERROR_STARTING_FROM ( a , "Did you mean to use 'from ... import ...' instead?" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -23795,24 +23799,24 @@ invalid_import_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_import[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'import' ','.dotted_name+ 'from' dotted_name"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'importiere' ','.dotted_name+ 'von' dotted_name"));
     }
-    { // 'import' NEWLINE
+    { // 'importiere' NEWLINE
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_import[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'import' NEWLINE"));
+        D(fprintf(stderr, "%*c> invalid_import[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'importiere' NEWLINE"));
         Token * _keyword;
         Token * token;
         if (
-            (_keyword = _PyPegen_expect_token(p, 639))  // token='import'
+            (_keyword = _PyPegen_expect_token(p, 639))  // token='importiere'
             &&
             (token = _PyPegen_expect_token(p, NEWLINE))  // token='NEWLINE'
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_import[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'import' NEWLINE"));
-            _res = RAISE_SYNTAX_ERROR_STARTING_FROM ( token , "Expected one or more names after 'import'" );
+            D(fprintf(stderr, "%*c+ invalid_import[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'importiere' NEWLINE"));
+            _res = RAISE_SYNTAX_ERROR_STARTING_FROM ( token , "Expected one or more names after 'importiere'" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -23822,7 +23826,7 @@ invalid_import_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_import[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'import' NEWLINE"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'importiere' NEWLINE"));
     }
     _res = NULL;
   done:
@@ -23987,7 +23991,7 @@ invalid_import_from_targets_rule(Parser *p)
         )
         {
             D(fprintf(stderr, "%*c+ invalid_import_from_targets[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "NEWLINE"));
-            _res = RAISE_SYNTAX_ERROR_STARTING_FROM ( token , "Expected one or more names after 'import'" );
+            _res = RAISE_SYNTAX_ERROR_STARTING_FROM ( token , "Expected one or more names after 'importiere'" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -27659,7 +27663,7 @@ _gather_4_rule(Parser *p)
     return _res;
 }
 
-// _tmp_5: 'import' | 'from'
+// _tmp_5: 'importiere' | 'von'
 static void *
 _tmp_5_rule(Parser *p)
 {
@@ -27672,43 +27676,43 @@ _tmp_5_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'import'
+    { // 'importiere'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_5[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'import'"));
+        D(fprintf(stderr, "%*c> _tmp_5[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'importiere'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 639))  // token='import'
+            (_keyword = _PyPegen_expect_token(p, 639))  // token='importiere'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_5[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'import'"));
+            D(fprintf(stderr, "%*c+ _tmp_5[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'importiere'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_5[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'import'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'importiere'"));
     }
-    { // 'from'
+    { // 'von'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_5[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'from'"));
+        D(fprintf(stderr, "%*c> _tmp_5[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'von'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 638))  // token='from'
+            (_keyword = _PyPegen_expect_token(p, 638))  // token='von'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_5[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'from'"));
+            D(fprintf(stderr, "%*c+ _tmp_5[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'von'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_5[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'from'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'von'"));
     }
     _res = NULL;
   done:

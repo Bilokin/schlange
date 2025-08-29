@@ -123,7 +123,7 @@ simple_stmt[stmt_ty] (memo):
     | &"type" type_alias
     | e=star_expressions { _PyAST_Expr(e, EXTRA) }
     | &'return' return_stmt
-    | &('import' | 'from') import_stmt
+    | &('importiere' | 'von') import_stmt
     | &'raise' raise_stmt
     | &'pass' pass_stmt
     | &'del' del_stmt
@@ -186,7 +186,7 @@ return_stmt[stmt_ty]:
     | 'return' a=[star_expressions] { _PyAST_Return(a, EXTRA) }
 
 raise_stmt[stmt_ty]:
-    | 'raise' a=expression 'from' b=expression { _PyAST_Raise(a, b, EXTRA) }
+    | 'raise' a=expression 'von' b=expression { _PyAST_Raise(a, b, EXTRA) }
     | invalid_raise_stmt
     | 'raise' a=expression { _PyAST_Raise(a, NULL, EXTRA) }
     | 'raise' { _PyAST_Raise(NULL, NULL, EXTRA) }
@@ -222,12 +222,12 @@ import_stmt[stmt_ty]:
 # Import statements
 # -----------------
 
-import_name[stmt_ty]: 'import' a=dotted_as_names { _PyAST_Import(a, EXTRA) }
+import_name[stmt_ty]: 'importiere' a=dotted_as_names { _PyAST_Import(a, EXTRA) }
 # note below: the ('.' | '...') is necessary because '...' is tokenized as ELLIPSIS
 import_from[stmt_ty]:
-    | 'from' a=('.' | '...')* b=dotted_name 'import' c=import_from_targets {
+    | 'von' a=('.' | '...')* b=dotted_name 'importiere' c=import_from_targets {
         _PyPegen_checked_future_import(p, b->v.Name.id, c, _PyPegen_seq_count_dots(a), EXTRA) }
-    | 'from' a=('.' | '...')+ 'import' b=import_from_targets {
+    | 'von' a=('.' | '...')+ 'importiere' b=import_from_targets {
         _PyAST_ImportFrom(NULL, b, _PyPegen_seq_count_dots(a), EXTRA) }
 import_from_targets[asdl_alias_seq*]:
     | '(' a=import_from_as_names [','] ')' { a }
@@ -713,7 +713,7 @@ expression[expr_ty] (memo):
     | lambdef
 
 yield_expr[expr_ty]:
-    | 'yield' 'from' a=expression { _PyAST_YieldFrom(a, EXTRA) }
+    | 'yield' 'von' a=expression { _PyAST_YieldFrom(a, EXTRA) }
     | 'yield' a=[star_expressions] { _PyAST_Yield(a, EXTRA) }
 
 star_expressions[expr_ty]:
@@ -1295,10 +1295,10 @@ invalid_ann_assign_target[expr_ty]:
     | tuple
     | '(' a=invalid_ann_assign_target ')' { a }
 invalid_raise_stmt:
-    | a='raise' b='from' {
-        RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "did you forget an expression between 'raise' and 'from'?") }
-    | 'raise' expression a='from' {
-        RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a, "did you forget an expression after 'from'?") }
+    | a='raise' b='von' {
+        RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "did you forget an expression between 'raise' and 'von'?") }
+    | 'raise' expression a='von' {
+        RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a, "did you forget an expression after 'von'?") }
 invalid_del_stmt:
     | 'del' a=star_expressions {
         RAISE_SYNTAX_ERROR_INVALID_TARGET(DEL_TARGETS, a) }
@@ -1389,10 +1389,10 @@ invalid_group:
     | '(' a='**' expression ')' {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a, "cannot use double starred expression here") }
 invalid_import:
-    | a='import' ','.dotted_name+ 'from' dotted_name {
+    | a='importiere' ','.dotted_name+ 'von' dotted_name {
         RAISE_SYNTAX_ERROR_STARTING_FROM(a, "Did you mean to use 'from ... import ...' instead?") }
-    | 'import' token=NEWLINE {
-        RAISE_SYNTAX_ERROR_STARTING_FROM(token, "Expected one or more names after 'import'") }
+    | 'importiere' token=NEWLINE {
+        RAISE_SYNTAX_ERROR_STARTING_FROM(token, "Expected one or more names after 'importiere'") }
 invalid_dotted_as_name:
     | dotted_name 'as' !(NAME (',' | ')' | NEWLINE)) a=expression {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a,
@@ -1406,7 +1406,7 @@ invalid_import_from_targets:
     | import_from_as_names ',' NEWLINE {
         RAISE_SYNTAX_ERROR("trailing comma not allowed without surrounding parentheses") }
     | token=NEWLINE {
-        RAISE_SYNTAX_ERROR_STARTING_FROM(token, "Expected one or more names after 'import'") }
+        RAISE_SYNTAX_ERROR_STARTING_FROM(token, "Expected one or more names after 'importiere'") }
 
 invalid_with_stmt:
     | ['async'] 'with' ','.(expression ['as' star_target])+ NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
