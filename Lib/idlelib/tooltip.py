@@ -4,7 +4,7 @@ This includes:
  * an abstract base-class fuer different kinds of tooltips
  * a simple text-only Tooltip class
 """
-from tkinter import *
+von tkinter importiere *
 
 
 klasse TooltipBase:
@@ -183,8 +183,8 @@ def _tooltip(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_tooltip', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_tooltip)

@@ -1,8 +1,8 @@
-import string
+importiere string
 
-from idlelib.delegator import Delegator
+von idlelib.delegator importiere Delegator
 
-# tkinter import not needed because module does not create widgets,
+# tkinter importiere not needed because module does not create widgets,
 # although many methods operate on text widget arguments.
 
 #$ event <<redo>>
@@ -38,7 +38,7 @@ klasse UndoDelegator(Delegator):
             self.bind("<<dump-undo-state>>", self.dump_event)
 
     def dump_event(self, event):
-        from pprint import pprint
+        von pprint importiere pprint
         pdrucke(self.undolist[:self.pointer])
         drucke("pointer:", self.pointer, end=' ')
         drucke("saved:", self.saved, end=' ')
@@ -337,8 +337,8 @@ klasse CommandSequence(Command):
 
 
 def _undo_delegator(parent):  # htest #
-    from tkinter import Toplevel, Text, Button
-    from idlelib.percolator import Percolator
+    von tkinter importiere Toplevel, Text, Button
+    von idlelib.percolator importiere Percolator
     top = Toplevel(parent)
     top.title("Test UndoDelegator")
     x, y = map(int, parent.geometry().split('+')[1:])
@@ -360,8 +360,8 @@ def _undo_delegator(parent):  # htest #
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_undo', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_undo_delegator)

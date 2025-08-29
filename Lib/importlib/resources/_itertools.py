@@ -1,4 +1,4 @@
-# from more_itertools 9.0
+# von more_itertools 9.0
 def only(iterable, default=Nichts, too_long=Nichts):
     """If *iterable* has only one item, return it.
     If it has zero items, return *default*.

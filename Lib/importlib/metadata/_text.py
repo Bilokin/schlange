@@ -1,9 +1,9 @@
-import re
+importiere re
 
-from ._functools import method_cache
+von ._functools importiere method_cache
 
 
-# from jaraco.text 3.5
+# von jaraco.text 3.5
 klasse FoldedCase(str):
     """
     A case insensitive string class; behaves just like str

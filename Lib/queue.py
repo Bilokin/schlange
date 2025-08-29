@@ -1,12 +1,12 @@
 '''A multi-producer, multi-consumer queue.'''
 
-import threading
-import types
-from collections import deque
-from heapq import heappush, heappop
-from time import monotonic as time
+importiere threading
+importiere types
+von collections importiere deque
+von heapq importiere heappush, heappop
+von time importiere monotonic as time
 try:
-    from _queue import SimpleQueue
+    von _queue importiere SimpleQueue
 except ImportError:
     SimpleQueue = Nichts
 
@@ -22,7 +22,7 @@ __all__ = [
 
 
 try:
-    from _queue import Empty
+    von _queue importiere Empty
 except ImportError:
     klasse Empty(Exception):
         'Exception raised by Queue.get(block=0)/get_nowait().'
@@ -57,7 +57,7 @@ klasse Queue:
         # thread waiting to get is notified then.
         self.not_empty = threading.Condition(self.mutex)
 
-        # Notify not_full whenever an item is removed from the queue;
+        # Notify not_full whenever an item is removed von the queue;
         # a thread waiting to put is notified then.
         self.not_full = threading.Condition(self.mutex)
 
@@ -175,7 +175,7 @@ klasse Queue:
             self.not_empty.notify()
 
     def get(self, block=Wahr, timeout=Nichts):
-        '''Remove and return an item from the queue.
+        '''Remove and return an item von the queue.
 
         If optional args 'block' is true and 'timeout' is Nichts (the default),
         block wenn necessary until an item is available. If 'timeout' is
@@ -223,7 +223,7 @@ klasse Queue:
         return self.put(item, block=Falsch)
 
     def get_nowait(self):
-        '''Remove and return an item from the queue without blocking.
+        '''Remove and return an item von the queue without blocking.
 
         Only get an item wenn one is immediately available. Otherwise
         raise the Empty exception.
@@ -270,7 +270,7 @@ klasse Queue:
     def _put(self, item):
         self.queue.append(item)
 
-    # Get an item from the queue
+    # Get an item von the queue
     def _get(self):
         return self.queue.popleft()
 
@@ -336,7 +336,7 @@ klasse _PySimpleQueue:
         self._count.release()
 
     def get(self, block=Wahr, timeout=Nichts):
-        '''Remove and return an item from the queue.
+        '''Remove and return an item von the queue.
 
         If optional args 'block' is true and 'timeout' is Nichts (the default),
         block wenn necessary until an item is available. If 'timeout' is
@@ -361,7 +361,7 @@ klasse _PySimpleQueue:
         return self.put(item, block=Falsch)
 
     def get_nowait(self):
-        '''Remove and return an item from the queue without blocking.
+        '''Remove and return an item von the queue without blocking.
 
         Only get an item wenn one is immediately available. Otherwise
         raise the Empty exception.

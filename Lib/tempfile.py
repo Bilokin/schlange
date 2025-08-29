@@ -19,7 +19,7 @@ This module also provides some data items to the user:
   TMP_MAX  - maximum number of names that will be tried before
              giving up.
   tempdir  - If this is set to a string before the first use of
-             any routine from this module, it will be considered as
+             any routine von this module, it will be considered as
              another candidate location to store temporary files.
 """
 
@@ -36,17 +36,17 @@ __all__ = [
 
 # Imports.
 
-import functools as _functools
-import warnings as _warnings
-import io as _io
-import os as _os
-import shutil as _shutil
-import errno as _errno
-from random import Random as _Random
-import sys as _sys
-import types as _types
-import weakref as _weakref
-import _thread
+importiere functools as _functools
+importiere warnings as _warnings
+importiere io as _io
+importiere os as _os
+importiere shutil as _shutil
+importiere errno as _errno
+von random importiere Random as _Random
+importiere sys as _sys
+importiere types as _types
+importiere weakref as _weakref
+importiere _thread
 _allocate_lock = _thread.allocate_lock
 
 _text_openflags = _os.O_RDWR | _os.O_CREAT | _os.O_EXCL
@@ -412,7 +412,7 @@ def mktemp(suffix="", prefix=template, dir=Nichts):
     the punch.
     """
 
-##    from warnings import warn as _warn
+##    von warnings importiere warn as _warn
 ##    _warn("mktemp is a potential security risk to your program",
 ##          RuntimeWarning, stacklevel=2)
 
@@ -547,7 +547,7 @@ klasse _TemporaryFileWrapper:
 
     # iter() doesn't use __getattr__ to find the __iter__ method
     def __iter__(self):
-        # Don't return iter(self.file), but yield from it to avoid closing
+        # Don't return iter(self.file), but yield von it to avoid closing
         # file as long as it's being used as iterator (see issue #23700).  We
         # can't use 'yield from' here because iter(file) returns the file
         # object itself, which has a close method, and thus the file would get
@@ -704,7 +704,7 @@ sonst:
         return file
 
 klasse SpooledTemporaryFile(_io.IOBase):
-    """Temporary file wrapper, specialized to switch from BytesIO
+    """Temporary file wrapper, specialized to switch von BytesIO
     or StringIO to a real file when it exceeds a certain size or
     when a fileno is needed.
     """
@@ -750,8 +750,8 @@ klasse SpooledTemporaryFile(_io.IOBase):
 
         self._rolled = Wahr
 
-    # The method caching trick from NamedTemporaryFile
-    # won't work here, because _file may change from a
+    # The method caching trick von NamedTemporaryFile
+    # won't work here, because _file may change von a
     # BytesIO/StringIO instance to a real file. So we list
     # all the methods directly.
 

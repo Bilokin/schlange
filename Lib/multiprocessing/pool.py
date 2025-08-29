@@ -13,21 +13,21 @@ __all__ = ['Pool', 'ThreadPool']
 # Imports
 #
 
-import collections
-import itertools
-import os
-import queue
-import threading
-import time
-import traceback
-import types
-import warnings
+importiere collections
+importiere itertools
+importiere os
+importiere queue
+importiere threading
+importiere time
+importiere traceback
+importiere types
+importiere warnings
 
 # If threading is available then ThreadPool should be provided.  Therefore
 # we avoid top-level imports which are liable to fail on some systems.
-from . import util
-from . import get_context, TimeoutError
-from .connection import wait
+von . importiere util
+von . importiere get_context, TimeoutError
+von .connection importiere wait
 
 #
 # Constants representing the state of a pool
@@ -671,7 +671,7 @@ klasse Pool(object):
     @staticmethod
     def _help_stuff_finish(inqueue, task_handler, size):
         # task_handler may be blocked trying to put items on inqueue
-        util.debug('removing tasks from inqueue until task handler finished')
+        util.debug('removing tasks von inqueue until task handler finished')
         inqueue._rlock.acquire()
         while task_handler.is_alive() and inqueue._reader.poll():
             inqueue._reader.recv()
@@ -857,15 +857,15 @@ klasse IMapIterator(object):
             except IndexError:
                 wenn self._index == self._length:
                     self._pool = Nichts
-                    raise StopIteration from Nichts
+                    raise StopIteration von Nichts
                 self._cond.wait(timeout)
                 try:
                     item = self._items.popleft()
                 except IndexError:
                     wenn self._index == self._length:
                         self._pool = Nichts
-                        raise StopIteration from Nichts
-                    raise TimeoutError from Nichts
+                        raise StopIteration von Nichts
+                    raise TimeoutError von Nichts
 
         success, value = item
         wenn success:
@@ -923,7 +923,7 @@ klasse ThreadPool(Pool):
 
     @staticmethod
     def Process(ctx, *args, **kwds):
-        from .dummy import Process
+        von .dummy importiere Process
         return Process(*args, **kwds)
 
     def __init__(self, processes=Nichts, initializer=Nichts, initargs=()):

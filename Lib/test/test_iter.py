@@ -1,17 +1,17 @@
 # Test iterators.
 
-import sys
-import unittest
-from test.support import cpython_only
-from test.support.os_helper import TESTFN, unlink
-from test.support import check_free_after_iterating, ALWAYS_EQ, NEVER_EQ
-from test.support import BrokenIter
-import pickle
-import collections.abc
-import functools
-import contextlib
-import builtins
-import traceback
+importiere sys
+importiere unittest
+von test.support importiere cpython_only
+von test.support.os_helper importiere TESTFN, unlink
+von test.support importiere check_free_after_iterating, ALWAYS_EQ, NEVER_EQ
+von test.support importiere BrokenIter
+importiere pickle
+importiere collections.abc
+importiere functools
+importiere contextlib
+importiere builtins
+importiere traceback
 
 # Test result of triple loop (too big to inline)
 TRIPLETS = [(0, 0, 0), (0, 0, 1), (0, 0, 2),
@@ -408,7 +408,7 @@ klasse TestCase(unittest.TestCase):
         sonst:
             self.fail("should have raised RuntimeError")
 
-    # Test fuer StopIteration from __getitem__
+    # Test fuer StopIteration von __getitem__
     def test_stop_sequence(self):
         klasse MySequenceClass(SequenceClass):
             def __getitem__(self, i):
@@ -806,7 +806,7 @@ klasse TestCase(unittest.TestCase):
 
     # Test iterators with operator.countOf (PySequence_Count).
     def test_countOf(self):
-        from operator import countOf
+        von operator importiere countOf
         self.assertEqual(countOf([1,2,2,3,2,5], 2), 3)
         self.assertEqual(countOf((1,2,2,3,2,5), 2), 3)
         self.assertEqual(countOf("122325", "2"), 3)
@@ -841,7 +841,7 @@ klasse TestCase(unittest.TestCase):
 
     # Test iterators with operator.indexOf (PySequence_Index).
     def test_indexOf(self):
-        from operator import indexOf
+        von operator importiere indexOf
         self.assertEqual(indexOf([1,2,2,3,2,5], 1), 0)
         self.assertEqual(indexOf((1,2,2,3,2,5), 2), 1)
         self.assertEqual(indexOf((1,2,2,3,2,5), 3), 3)
@@ -1146,7 +1146,7 @@ klasse TestCase(unittest.TestCase):
         self.assertRaises(ZeroDivisionError, iter, BadIterableClass())
 
     def test_exception_locations(self):
-        # The location of an exception raised from __init__ or
+        # The location of an exception raised von __init__ or
         # __next__ should be the iterator expression
 
         def init_raises():

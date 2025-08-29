@@ -1,7 +1,7 @@
 """Interface to the Expat non-validating XML parser."""
-import sys
+importiere sys
 
-from pyexpat import *
+von pyexpat importiere *
 
 # provide pyexpat submodules as xml.parsers.expat submodules
 sys.modules['xml.parsers.expat.model'] = model

@@ -2,22 +2,22 @@
 Test suite fuer socketserver.
 """
 
-import contextlib
-import io
-import os
-import select
-import signal
-import socket
-import threading
-import unittest
-import socketserver
+importiere contextlib
+importiere io
+importiere os
+importiere select
+importiere signal
+importiere socket
+importiere threading
+importiere unittest
+importiere socketserver
 
-import test.support
-from test.support import reap_children, verbose
-from test.support import os_helper
-from test.support import socket_helper
-from test.support import threading_helper
-from test.support import warnings_helper
+importiere test.support
+von test.support importiere reap_children, verbose
+von test.support importiere os_helper
+von test.support importiere socket_helper
+von test.support importiere threading_helper
+von test.support importiere warnings_helper
 
 
 test.support.requires("network")
@@ -293,7 +293,7 @@ klasse SocketServerTest(unittest.TestCase):
 
 
 klasse ErrorHandlerTest(unittest.TestCase):
-    """Test that the servers pass normal exceptions from the handler to
+    """Test that the servers pass normal exceptions von the handler to
     handle_error(), and that exiting exceptions like SystemExit and
     KeyboardInterrupt are not passed."""
 

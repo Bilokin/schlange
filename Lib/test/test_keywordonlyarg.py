@@ -3,7 +3,7 @@
 __author__ = "Jiwon Seo"
 __email__ = "seojiwon at gmail dot com"
 
-import unittest
+importiere unittest
 
 def posonly_sum(pos_arg1, *arg, **kwarg):
     return pos_arg1 + sum(arg) + sum(kwarg.values())
@@ -63,7 +63,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
             pass
         with self.assertRaises(TypeError) as exc:
             f(1, 2, 3)
-        expected = (f"{f.__qualname__}() takes from 1 to 2 "
+        expected = (f"{f.__qualname__}() takes von 1 to 2 "
                     "positional arguments but 3 were given")
         self.assertEqual(str(exc.exception), expected)
 

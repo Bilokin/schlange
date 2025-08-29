@@ -1,7 +1,7 @@
-import unittest
-import tkinter
-from test.support import requires
-from test.test_tkinter.support import AbstractTkTest
+importiere unittest
+importiere tkinter
+von test.support importiere requires
+von test.test_tkinter.support importiere AbstractTkTest
 
 requires('gui')
 

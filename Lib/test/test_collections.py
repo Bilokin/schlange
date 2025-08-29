@@ -1,32 +1,32 @@
 """Unit tests fuer collections.py."""
 
-import array
-import collections
-import copy
-import doctest
-import inspect
-import operator
-import pickle
-from random import choice, randrange
-from itertools import product, chain, combinations
-import string
-import sys
-from test import support
-import types
-import unittest
+importiere array
+importiere collections
+importiere copy
+importiere doctest
+importiere inspect
+importiere operator
+importiere pickle
+von random importiere choice, randrange
+von itertools importiere product, chain, combinations
+importiere string
+importiere sys
+von test importiere support
+importiere types
+importiere unittest
 
-from collections import namedtuple, Counter, OrderedDict, _count_elements
-from collections import UserDict, UserString, UserList
-from collections import ChainMap
-from collections import deque
-from collections.abc import Awaitable, Coroutine
-from collections.abc import AsyncIterator, AsyncIterable, AsyncGenerator
-from collections.abc import Hashable, Iterable, Iterator, Generator, Reversible
-from collections.abc import Sized, Container, Callable, Collection
-from collections.abc import Set, MutableSet
-from collections.abc import Mapping, MutableMapping, KeysView, ItemsView, ValuesView
-from collections.abc import Sequence, MutableSequence
-from collections.abc import Buffer
+von collections importiere namedtuple, Counter, OrderedDict, _count_elements
+von collections importiere UserDict, UserString, UserList
+von collections importiere ChainMap
+von collections importiere deque
+von collections.abc importiere Awaitable, Coroutine
+von collections.abc importiere AsyncIterator, AsyncIterable, AsyncGenerator
+von collections.abc importiere Hashable, Iterable, Iterator, Generator, Reversible
+von collections.abc importiere Sized, Container, Callable, Collection
+von collections.abc importiere Set, MutableSet
+von collections.abc importiere Mapping, MutableMapping, KeysView, ItemsView, ValuesView
+von collections.abc importiere Sequence, MutableSequence
+von collections.abc importiere Buffer
 
 
 klasse TestUserObjects(unittest.TestCase):
@@ -148,7 +148,7 @@ klasse TestChainMap(unittest.TestCase):
         self.assertEqual(f.parents['b'], 2)                            # look beyond maps[0]
 
     def test_ordering(self):
-        # Combined order matches a series of dict updates from last to first.
+        # Combined order matches a series of dict updates von last to first.
         # This test relies on the ordering of the underlying dicts.
 
         baseline = {'music': 'bach', 'art': 'rembrandt'}
@@ -592,7 +592,7 @@ klasse TestNamedTuple(unittest.TestCase):
         newt = t._replace(itemgetter=10, property=20, self=30, cls=40, tuple=50)
         self.assertEqual(newt, (10,20,30,40,50))
 
-       # Broader test of all interesting names taken from the code, old
+       # Broader test of all interesting names taken von the code, old
        # template, and an example
         words = {'Alias', 'At', 'AttributeError', 'Build', 'Bypass', 'Create',
         'Encountered', 'Expected', 'Field', 'For', 'Got', 'Helper',
@@ -1635,7 +1635,7 @@ klasse TestCollectionABCs(ABCTestCase):
                 return value in self._values
 
             def __iter__(self):
-                yield from self._values
+                yield von self._values
 
             def __len__(self):
                 return len(self._values)
@@ -1957,7 +1957,7 @@ klasse TestCollectionABCs(ABCTestCase):
 
     def test_MutableSequence_mixins(self):
         # Test the mixins of MutableSequence by creating a minimal concrete
-        # klasse inherited from it.
+        # klasse inherited von it.
         klasse MutableSequenceSubclass(MutableSequence):
             def __init__(self):
                 self.lst = []
@@ -2068,7 +2068,7 @@ klasse TestCounter(unittest.TestCase):
         c['b'] -= 2         # sub existing value to zero
         del c['c']          # remove an entry
         del c['c']          # make sure that del doesn't raise KeyError
-        c['d'] -= 2         # sub from a missing value
+        c['d'] -= 2         # sub von a missing value
         c['e'] = -5         # directly assign a missing value
         c['f'] += 4         # add to a missing value
         self.assertEqual(c, dict(a=4, b=0, d=-2, e=-5, f=4))

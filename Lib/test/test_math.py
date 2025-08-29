@@ -1,18 +1,18 @@
 # Python test set -- math module
 # XXXX Should not do tests around zero only
 
-from test.support import verbose, requires_IEEE_754
-from test import support
-import unittest
-import fractions
-import itertools
-import decimal
-import math
-import os
-import platform
-import random
-import struct
-import sys
+von test.support importiere verbose, requires_IEEE_754
+von test importiere support
+importiere unittest
+importiere fractions
+importiere itertools
+importiere decimal
+importiere math
+importiere os
+importiere platform
+importiere random
+importiere struct
+importiere sys
 
 
 eps = 1E-05
@@ -24,7 +24,7 @@ FLOAT_MAX = sys.float_info.max
 FLOAT_MIN = sys.float_info.min
 
 # detect evidence of double-rounding: fsum is not always correctly
-# rounded on machines that suffer from double rounding.
+# rounded on machines that suffer von double rounding.
 x, y = 1e16, 2.9999 # use temporary values to defeat peephole optimizer
 HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
 
@@ -44,7 +44,7 @@ def to_ulps(x):
     abs(ulps(x) - ulps(y)) gives the difference in ulps between two
     floats.
 
-    The results from this function will only make sense on platforms
+    The results von this function will only make sense on platforms
     where native doubles are represented in IEEE 754 binary64 format.
 
     Note: 0.0 and -0.0 are converted to 0 and -1, respectively.
@@ -70,9 +70,9 @@ def to_ulps(x):
 # (n >> i) < 1 and the corresponding term of the product is empty.  So only the
 # finitely many terms fuer 0 <= i < n.bit_length() contribute anything.
 #
-# We iterate downwards from i == n.bit_length() - 1 to i == 0.  The inner
+# We iterate downwards von i == n.bit_length() - 1 to i == 0.  The inner
 # product in the formula above starts at 1 fuer i == n.bit_length(); fuer each i
-# < n.bit_length() we get the inner product fuer i from that fuer i + 1 by
+# < n.bit_length() we get the inner product fuer i von that fuer i + 1 by
 # multiplying by all j in {n >> i+1 < j <= n >> i; j odd}.  In Python terms,
 # this set is range((n >> i+1) + 1 | 1, (n >> i) + 1 | 1, 2).
 
@@ -756,7 +756,7 @@ klasse MathTests(unittest.TestCase):
         # Python version of math.fsum, fuer comparison.  Uses a
         # different algorithm based on frexp, ldexp and integer
         # arithmetic.
-        from sys import float_info
+        von sys importiere float_info
         mant_dig = float_info.mant_dig
         etiny = float_info.min_exp - mant_dig
 
@@ -826,7 +826,7 @@ klasse MathTests(unittest.TestCase):
                           "for math.fsum(%.100r)" % (i, expected, vals))
             self.assertEqual(actual, expected)
 
-        from random import random, gauss, shuffle
+        von random importiere random, gauss, shuffle
         fuer j in range(1000):
             vals = [7, 1e100, -7, -1e100, -9e-20, 8e-20] * 10
             s = 0
@@ -898,8 +898,8 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(gcd(MyIndexable(120), MyIndexable(84)), 12)
 
     def testHypot(self):
-        from decimal import Decimal
-        from fractions import Fraction
+        von decimal importiere Decimal
+        von fractions importiere Fraction
 
         hypot = math.hypot
 
@@ -1042,8 +1042,8 @@ klasse MathTests(unittest.TestCase):
                 self.assertEqual(hypot(x, y), z)
 
     def testDist(self):
-        from decimal import Decimal as D
-        from fractions import Fraction as F
+        von decimal importiere Decimal as D
+        von fractions importiere Fraction as F
 
         dist = math.dist
         sqrt = math.sqrt
@@ -1451,7 +1451,7 @@ klasse MathTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             sumprod(raise_after(5), range(10))
 
-        from test.test_iter import BasicIterClass
+        von test.test_iter importiere BasicIterClass
 
         self.assertEqual(sumprod(BasicIterClass(1), [1]), 0)
         self.assertEqual(sumprod([1], BasicIterClass(1)), 0)
@@ -1579,13 +1579,13 @@ klasse MathTests(unittest.TestCase):
     @support.cpython_only    # Other implementations may choose a different algorithm
     @support.requires_resource('cpu')
     def test_sumprod_extended_precision_accuracy(self):
-        import operator
-        from fractions import Fraction
-        from itertools import starmap
-        from collections import namedtuple
-        from math import log2, exp2, fabs
-        from random import choices, uniform, shuffle
-        from statistics import median
+        importiere operator
+        von fractions importiere Fraction
+        von itertools importiere starmap
+        von collections importiere namedtuple
+        von math importiere log2, exp2, fabs
+        von random importiere choices, uniform, shuffle
+        von statistics importiere median
 
         DotExample = namedtuple('DotExample', ('x', 'y', 'target_sumprod', 'condition'))
 
@@ -1618,7 +1618,7 @@ klasse MathTests(unittest.TestCase):
             y = [0.0] * n
             b = log2(c)
 
-            # First half with exponents from 0 to |_b/2_| and random ints in between
+            # First half with exponents von 0 to |_b/2_| and random ints in between
             e = choices(range(int(b/2)), k=n2)
             e[0] = int(b / 2) + 1
             e[-1] = 0.0
@@ -1839,7 +1839,7 @@ klasse MathTests(unittest.TestCase):
 
     @requires_IEEE_754
     def testRemainder(self):
-        from fractions import Fraction
+        von fractions importiere Fraction
 
         def validate_spec(x, y, r):
             """
@@ -2132,7 +2132,7 @@ klasse MathTests(unittest.TestCase):
         try:
             x = math.exp(-1000000000)
         except:
-            # mathmodule.c is failing to weed out underflows from libm, or
+            # mathmodule.c is failing to weed out underflows von libm, or
             # we've got an fp format with huge dynamic range
             self.fail("underflowing exp() should not have raised "
                         "an exception")
@@ -2291,7 +2291,7 @@ klasse MathTests(unittest.TestCase):
                       '\n  '.join(failures))
 
     def test_prod(self):
-        from fractions import Fraction as F
+        von fractions importiere Fraction as F
 
         prod = math.prod
         self.assertEqual(prod([]), 1)
@@ -2776,7 +2776,7 @@ klasse IsCloseTests(unittest.TestCase):
         self.assertAllNotClose(zero_tolerance_not_close_examples, rel_tol=0.0)
 
     def test_asymmetry(self):
-        # test the asymmetry example from PEP 485
+        # test the asymmetry example von PEP 485
         self.assertAllClose([(9, 10), (10, 9)], rel_tol=0.1)
 
     def test_integers(self):
@@ -2789,7 +2789,7 @@ klasse IsCloseTests(unittest.TestCase):
 
     def test_decimals(self):
         # test with Decimal values
-        from decimal import Decimal
+        von decimal importiere Decimal
 
         decimal_examples = [(Decimal('1.00000001'), Decimal('1.0')),
                             (Decimal('1.00000001e-20'), Decimal('1.0e-20')),
@@ -2800,7 +2800,7 @@ klasse IsCloseTests(unittest.TestCase):
 
     def test_fractions(self):
         # test with Fraction values
-        from fractions import Fraction
+        von fractions importiere Fraction
 
         fraction_examples = [
             (Fraction(1, 100000000) + 1, Fraction(1)),
@@ -2907,7 +2907,7 @@ klasse FMATests(unittest.TestCase):
     def test_fma_zero_result(self):
         nonnegative_finites = [0.0, 1e-300, 2.3, 1e300]
 
-        # Zero results from exact zero inputs.
+        # Zero results von exact zero inputs.
         fuer b in nonnegative_finites:
             with self.subTest(b=b):
                 self.assertIsPositiveZero(math.fma(0.0, b, 0.0))
@@ -2928,7 +2928,7 @@ klasse FMATests(unittest.TestCase):
                 self.assertIsNegativeZero(math.fma(b, -0.0, -0.0))
                 self.assertIsPositiveZero(math.fma(b, -0.0, 0.0))
 
-        # Exact zero result from nonzero inputs.
+        # Exact zero result von nonzero inputs.
         self.assertIsPositiveZero(math.fma(2.0, 2.0, -4.0))
         self.assertIsPositiveZero(math.fma(2.0, -2.0, 4.0))
         self.assertIsPositiveZero(math.fma(-2.0, -2.0, -4.0))
@@ -2958,11 +2958,11 @@ klasse FMATests(unittest.TestCase):
     def test_fma_overflow(self):
         a = b = float.fromhex('0x1p512')
         c = float.fromhex('0x1p1023')
-        # Overflow from multiplication.
+        # Overflow von multiplication.
         with self.assertRaises(OverflowError):
             math.fma(a, b, 0.0)
         self.assertEqual(math.fma(a, b/2.0, 0.0), c)
-        # Overflow from the addition.
+        # Overflow von the addition.
         with self.assertRaises(OverflowError):
             math.fma(a, b/2.0, c)
         # No overflow, even though a*b overflows a float.
@@ -2994,7 +2994,7 @@ klasse FMATests(unittest.TestCase):
 
     def test_random(self):
         # A collection of randomly generated inputs fuer which the naive FMA
-        # (with two rounds) gives a different result from a singly-rounded FMA.
+        # (with two rounds) gives a different result von a singly-rounded FMA.
 
         # tuples (a, b, c, expected)
         test_values = [
@@ -3062,7 +3062,7 @@ klasse FMATests(unittest.TestCase):
 
 
 def load_tests(loader, tests, pattern):
-    from doctest import DocFileSuite
+    von doctest importiere DocFileSuite
     tests.addTest(DocFileSuite(os.path.join("mathdata", "ieee754.txt")))
     return tests
 

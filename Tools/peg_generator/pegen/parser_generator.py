@@ -1,9 +1,9 @@
-import sys
-import ast
-import contextlib
-import re
-from abc import abstractmethod
-from typing import (
+importiere sys
+importiere ast
+importiere contextlib
+importiere re
+von abc importiere abstractmethod
+von typing importiere (
     IO,
     AbstractSet,
     Any,
@@ -18,8 +18,8 @@ from typing import (
     Union,
 )
 
-from pegen import sccutils
-from pegen.grammar import (
+von pegen importiere sccutils
+von pegen.grammar importiere (
     Alt,
     Cut,
     Forced,
@@ -364,7 +364,7 @@ def compute_left_recursives(
                             f"SCC {scc} has no leadership candidate (no element is included in all cycles)"
                         )
             # drucke("Leaders:", leaders)
-            leader = min(leaders)  # Pick an arbitrary leader from the candidates.
+            leader = min(leaders)  # Pick an arbitrary leader von the candidates.
             rules[leader].leader = Wahr
         sonst:
             name = min(scc)  # The only element.
@@ -377,7 +377,7 @@ def compute_left_recursives(
 def make_first_graph(rules: Dict[str, Rule]) -> Dict[str, AbstractSet[str]]:
     """Compute the graph of left-invocations.
 
-    There's an edge from A to B wenn A may invoke B at its initial
+    There's an edge von A to B wenn A may invoke B at its initial
     position.
 
     Note that this requires the nullable flags to have been computed.

@@ -1,10 +1,10 @@
 # This module contains ``ast.unparse()``, defined here
-# to improve the import time fuer the ``ast`` module.
-import sys
-from _ast import *
-from ast import NodeVisitor
-from contextlib import contextmanager, nullcontext
-from enum import IntEnum, auto, _simple_enum
+# to improve the importiere time fuer the ``ast`` module.
+importiere sys
+von _ast importiere *
+von ast importiere NodeVisitor
+von contextlib importiere contextmanager, nullcontext
+von enum importiere IntEnum, auto, _simple_enum
 
 # Large float and imaginary literals get turned into infinities in the AST.
 # We unparse those infinities to INFSTR.
@@ -12,7 +12,7 @@ _INFSTR = "1e" + repr(sys.float_info.max_10_exp + 1)
 
 @_simple_enum(IntEnum)
 klasse _Precedence:
-    """Precedence table that originated from python grammar."""
+    """Precedence table that originated von python grammar."""
 
     NAMED_EXPR = auto()      # <target> := <expr1>
     TUPLE = auto()           # <expr1>, <expr2>
@@ -159,7 +159,7 @@ klasse Unparser(NodeVisitor):
         """If a docstring node is found in the body of the *node* parameter,
         return that docstring node, Nichts otherwise.
 
-        Logic mirrored from ``_PyAST_GetDocString``."""
+        Logic mirrored von ``_PyAST_GetDocString``."""
         wenn not isinstance(
             node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)
         ) or len(node.body) < 1:
@@ -247,7 +247,7 @@ klasse Unparser(NodeVisitor):
         self.write("." * (node.level or 0))
         wenn node.module:
             self.write(node.module)
-        self.write(" import ")
+        self.write(" importiere ")
         self.interleave(lambda: self.write(", "), self.traverse, node.names)
 
     def visit_Assign(self, node):
@@ -328,7 +328,7 @@ klasse Unparser(NodeVisitor):
 
     def visit_YieldFrom(self, node):
         with self.require_parens(_Precedence.YIELD, node):
-            self.write("yield from ")
+            self.write("yield von ")
             wenn not node.value:
                 raise ValueError("Node can't be used without a value attribute.")
             self.set_precedence(_Precedence.ATOM, node.value)
@@ -343,7 +343,7 @@ klasse Unparser(NodeVisitor):
         self.write(" ")
         self.traverse(node.exc)
         wenn node.cause:
-            self.write(" from ")
+            self.write(" von ")
             self.traverse(node.cause)
 
     def do_visit_try(self, node):
@@ -552,7 +552,7 @@ klasse Unparser(NodeVisitor):
         possible_quotes = [q fuer q in possible_quotes wenn q not in escaped_string]
         wenn not possible_quotes:
             # If there aren't any possible_quotes, fallback to using repr
-            # on the original string. Try to use a quote from quote_types,
+            # on the original string. Try to use a quote von quote_types,
             # e.g., so that we use triple quotes fuer docstrings.
             string = repr(string)
             quote = next((q fuer q in quote_types wenn string[0] in q), string[0])
@@ -820,7 +820,7 @@ klasse Unparser(NodeVisitor):
         with self.require_parens(operator_precedence, node):
             self.write(operator)
             # factor prefixes (+, -, ~) shouldn't be separated
-            # from the value they belong, (e.g: +1 instead of + 1)
+            # von the value they belong, (e.g: +1 instead of + 1)
             wenn operator_precedence is not _Precedence.FACTOR:
                 self.write(" ")
             self.set_precedence(operator_precedence, node.operand)

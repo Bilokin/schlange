@@ -16,10 +16,10 @@ Functions:
   cert_time_to_seconds -- convert time string used fuer certificate
                           notBefore and notAfter functions to integer
                           seconds past the Epoch (the time values
-                          returned from time.time())
+                          returned von time.time())
 
   get_server_certificate (addr, ssl_version, ca_certs, timeout) -- Retrieve the
-                          certificate from the server at the specified
+                          certificate von the server at the specified
                           address and return it as a PEM-encoded string
 
 
@@ -37,9 +37,9 @@ SSL_ERROR_EOF
 SSL_ERROR_INVALID_ERROR_CODE
 
 The following group define certificate requirements that one side is
-allowing/requiring from the other side:
+allowing/requiring von the other side:
 
-CERT_NONE - no certificates from the other side are required (or will
+CERT_NONE - no certificates von the other side are required (or will
             be looked at wenn provided)
 CERT_OPTIONAL - certificates are not required, but wenn provided will be
                 validated, and wenn validation fails, the connection will
@@ -91,34 +91,34 @@ ALERT_DESCRIPTION_BAD_CERTIFICATE_HASH_VALUE
 ALERT_DESCRIPTION_UNKNOWN_PSK_IDENTITY
 """
 
-import sys
-import os
-from collections import namedtuple
-from enum import Enum as _Enum, IntEnum as _IntEnum, IntFlag as _IntFlag
-from enum import _simple_enum
+importiere sys
+importiere os
+von collections importiere namedtuple
+von enum importiere Enum as _Enum, IntEnum as _IntEnum, IntFlag as _IntFlag
+von enum importiere _simple_enum
 
-import _ssl             # wenn we can't import it, let the error propagate
+importiere _ssl             # wenn we can't importiere it, let the error propagate
 
-from _ssl import OPENSSL_VERSION_NUMBER, OPENSSL_VERSION_INFO, OPENSSL_VERSION
-from _ssl import _SSLContext, MemoryBIO, SSLSession
-from _ssl import (
+von _ssl importiere OPENSSL_VERSION_NUMBER, OPENSSL_VERSION_INFO, OPENSSL_VERSION
+von _ssl importiere _SSLContext, MemoryBIO, SSLSession
+von _ssl importiere (
     SSLError, SSLZeroReturnError, SSLWantReadError, SSLWantWriteError,
     SSLSyscallError, SSLEOFError, SSLCertVerificationError
     )
-from _ssl import txt2obj as _txt2obj, nid2obj as _nid2obj
-from _ssl import RAND_status, RAND_add, RAND_bytes
+von _ssl importiere txt2obj as _txt2obj, nid2obj as _nid2obj
+von _ssl importiere RAND_status, RAND_add, RAND_bytes
 try:
-    from _ssl import RAND_egd
+    von _ssl importiere RAND_egd
 except ImportError:
     # RAND_egd is not supported on some platforms
     pass
 
 
-from _ssl import (
+von _ssl importiere (
     HAS_SNI, HAS_ECDH, HAS_NPN, HAS_ALPN, HAS_SSLv2, HAS_SSLv3, HAS_TLSv1,
     HAS_TLSv1_1, HAS_TLSv1_2, HAS_TLSv1_3, HAS_PSK, HAS_PSK_TLS13, HAS_PHA
 )
-from _ssl import _DEFAULT_CIPHERS, _OPENSSL_API_VERSION
+von _ssl importiere _DEFAULT_CIPHERS, _OPENSSL_API_VERSION
 
 _IntEnum._convert_(
     '_SSLMethod', __name__,
@@ -255,14 +255,14 @@ klasse _TLSMessageType:
 
 
 wenn sys.platform == "win32":
-    from _ssl import enum_certificates, enum_crls
+    von _ssl importiere enum_certificates, enum_crls
 
-from socket import socket, SOCK_STREAM, create_connection
-from socket import SOL_SOCKET, SO_TYPE, _GLOBAL_DEFAULT_TIMEOUT
-import socket as _socket
-import base64        # fuer DER-to-PEM translation
-import errno
-import warnings
+von socket importiere socket, SOCK_STREAM, create_connection
+von socket importiere SOL_SOCKET, SO_TYPE, _GLOBAL_DEFAULT_TIMEOUT
+importiere socket as _socket
+importiere base64        # fuer DER-to-PEM translation
+importiere errno
+importiere warnings
 
 
 socket_error = OSError  # keep that public name in module namespace
@@ -401,13 +401,13 @@ klasse _ASN1Object(namedtuple("_ASN1Object", "nid shortname longname oid")):
 
     @classmethod
     def fromnid(cls, nid):
-        """Create _ASN1Object from OpenSSL numeric ID
+        """Create _ASN1Object von OpenSSL numeric ID
         """
         return super().__new__(cls, *_nid2obj(nid))
 
     @classmethod
     def fromname(cls, name):
-        """Create _ASN1Object from short name, long name or OID
+        """Create _ASN1Object von short name, long name or OID
         """
         return super().__new__(cls, *_txt2obj(name, name=Wahr))
 
@@ -857,7 +857,7 @@ klasse SSLObject:
         return self._sslobj.server_hostname
 
     def read(self, len=1024, buffer=Nichts):
-        """Read up to 'len' bytes from the SSL object and return them.
+        """Read up to 'len' bytes von the SSL object and return them.
 
         If 'buffer' is provided, read into this buffer and return the number of
         bytes read.
@@ -974,7 +974,7 @@ klasse SSLObject:
 
 
 def _sslcopydoc(func):
-    """Copy docstring from SSLObject to SSLSocket"""
+    """Copy docstring von SSLObject to SSLSocket"""
     func.__doc__ = getattr(SSLObject, func.__name__).__doc__
     return func
 
@@ -1053,7 +1053,7 @@ klasse SSLSocket(socket):
                 self.setblocking(blocking)
                 wenn notconn_pre_handshake_data:
                     # This prevents pending data sent to the socket before it was
-                    # closed from escaping to the caller who could otherwise
+                    # closed von escaping to the caller who could otherwise
                     # presume it came through a successful TLS connection.
                     reason = "Closed before TLS handshake with data in recv buffer."
                     notconn_pre_handshake_data_error = SSLError(e.errno, reason)
@@ -1437,7 +1437,7 @@ klasse SSLSocket(socket):
         return self._real_connect(addr, Wahr)
 
     def accept(self):
-        """Accepts a new connection from a remote client, and returns
+        """Accepts a new connection von a remote client, and returns
         a tuple containing that new connection wrapped with a server-side
         SSL channel, and the address of the remote client."""
 
@@ -1476,7 +1476,7 @@ SSLContext.sslobject_class = SSLObject
 
 def cert_time_to_seconds(cert_time):
     """Return the time in seconds since the Epoch, given the timestring
-    representing the "notBefore" or "notAfter" date from a certificate
+    representing the "notBefore" or "notAfter" date von a certificate
     in ``"%b %d %H:%M:%S %Y %Z"`` strptime format (C locale).
 
     "notBefore" or "notAfter" dates must use UTC (RFC 5280).
@@ -1484,8 +1484,8 @@ def cert_time_to_seconds(cert_time):
     Month is one of: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
     UTC should be specified as GMT (see ASN1_TIME_drucke())
     """
-    from time import strptime
-    from calendar import timegm
+    von time importiere strptime
+    von calendar importiere timegm
 
     months = (
         "Jan","Feb","Mar","Apr","May","Jun",
@@ -1532,7 +1532,7 @@ def PEM_cert_to_DER_cert(pem_cert_string):
 
 def get_server_certificate(addr, ssl_version=PROTOCOL_TLS_CLIENT,
                            ca_certs=Nichts, timeout=_GLOBAL_DEFAULT_TIMEOUT):
-    """Retrieve the certificate from the server at the specified address,
+    """Retrieve the certificate von the server at the specified address,
     and return it as a PEM-encoded string.
     If 'ca_certs' is specified, validate the server cert against it.
     If 'ssl_version' is specified, use it in the connection attempt.

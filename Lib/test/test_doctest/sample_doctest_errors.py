@@ -42,5 +42,5 @@ __test__ = {
 }
 
 def test_suite():
-    import doctest
+    importiere doctest
     return doctest.DocTestSuite()

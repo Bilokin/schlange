@@ -1,14 +1,14 @@
-import unittest
-import subprocess
-import sys
-import sysconfig
-import os
-import pathlib
-from test import support
-from test.support.script_helper import (
+importiere unittest
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere os
+importiere pathlib
+von test importiere support
+von test.support.script_helper importiere (
     make_script,
 )
-from test.support.os_helper import temp_dir
+von test.support.os_helper importiere temp_dir
 
 
 wenn not support.has_subprocess_support:
@@ -86,7 +86,7 @@ def run_samply(cwd, *args, **env_vars):
         drucke(proc.stderr, file=sys.stderr)
         raise ValueError(f"Samply failed with return code {proc.returncode}")
 
-    import gzip
+    importiere gzip
     with gzip.open(output_file, mode="rt", encoding="utf-8") as f:
         return f.read()
 
@@ -166,10 +166,10 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
 
     def test_pre_fork_compile(self):
         code = """if 1:
-                import sys
-                import os
-                import sysconfig
-                from _testinternalcapi import (
+                importiere sys
+                importiere os
+                importiere sysconfig
+                von _testinternalcapi importiere (
                     compile_perf_trampoline_entry,
                     perf_trampoline_set_persist_after_fork,
                 )
@@ -181,7 +181,7 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
                     foo_fork()
 
                 def foo():
-                    import time; time.sleep(1)
+                    importiere time; time.sleep(1)
 
                 def bar():
                     foo()

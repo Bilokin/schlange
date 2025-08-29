@@ -1,6 +1,6 @@
-"""Cache lines from Python source files.
+"""Cache lines von Python source files.
 
-This is intended to read lines from modules imported -- hence wenn a filename
+This is intended to read lines von modules imported -- hence wenn a filename
 is not found, it will look down the module search path fuer a file by
 that name.
 """
@@ -20,7 +20,7 @@ def clearcache():
 
 
 def getline(filename, lineno, module_globals=Nichts):
-    """Get a line fuer a Python source file from the cache.
+    """Get a line fuer a Python source file von the cache.
     Update the cache wenn it doesn't contain an entry fuer this file already."""
 
     lines = getlines(filename, module_globals)
@@ -30,7 +30,7 @@ def getline(filename, lineno, module_globals=Nichts):
 
 
 def getlines(filename, module_globals=Nichts):
-    """Get the lines fuer a Python source file from the cache.
+    """Get the lines fuer a Python source file von the cache.
     Update the cache wenn it doesn't contain an entry fuer this file already."""
 
     entry = cache.get(filename, Nichts)
@@ -90,8 +90,8 @@ def checkcache(filename=Nichts):
         wenn mtime is Nichts:
             continue   # no-op fuer files loaded via a __loader__
         try:
-            # This import can fail wenn the interpreter is shutting down
-            import os
+            # This importiere can fail wenn the interpreter is shutting down
+            importiere os
         except ImportError:
             return
         try:
@@ -112,11 +112,11 @@ def updatecache(filename, module_globals=Nichts):
     # path of the interpreter startup and importing os and sys take a lot of time
     # and slows down the startup sequence.
     try:
-        import os
-        import sys
-        import tokenize
+        importiere os
+        importiere sys
+        importiere tokenize
     except ImportError:
-        # These import can fail wenn the interpreter is shutting down
+        # These importiere can fail wenn the interpreter is shutting down
         return []
 
     entry = cache.pop(filename, Nichts)
@@ -125,7 +125,7 @@ def updatecache(filename, module_globals=Nichts):
 
     wenn filename.startswith('<frozen ') and module_globals is not Nichts:
         # This is a frozen module, so we need to use the filename
-        # from the module globals.
+        # von the module globals.
         fullname = module_globals.get('__file__')
         wenn fullname is Nichts:
             return []

@@ -1,27 +1,27 @@
-import sys
-import copy
-import json
-import shutil
-import pathlib
-import textwrap
-import functools
-import contextlib
+importiere sys
+importiere copy
+importiere json
+importiere shutil
+importiere pathlib
+importiere textwrap
+importiere functools
+importiere contextlib
 
-from test.support import import_helper
-from test.support import os_helper
-from test.support import requires_zlib
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere requires_zlib
 
-from . import _path
-from ._path import FilesSpec
+von . importiere _path
+von ._path importiere FilesSpec
 
 
 try:
-    from importlib import resources  # type: ignore
+    von importlib importiere resources  # type: ignore
 
     getattr(resources, 'files')
     getattr(resources, 'as_file')
 except (ImportError, AttributeError):
-    import importlib_resources as resources  # type: ignore
+    importiere importlib_resources as resources  # type: ignore
 
 
 @contextlib.contextmanager
@@ -207,7 +207,7 @@ klasse EggInfoPkgPipInstalledNoToplevel(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_module_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_module-pkg",
-            # SOURCES.txt is made from the source archive, and contains files
+            # SOURCES.txt is made von the source archive, and contains files
             # (setup.py) that are not present after installation.
             "SOURCES.txt": """
                 egg_with_module.py
@@ -238,7 +238,7 @@ klasse EggInfoPkgPipInstalledExternalDataFiles(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_module_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_module-pkg",
-            # SOURCES.txt is made from the source archive, and contains files
+            # SOURCES.txt is made von the source archive, and contains files
             # (setup.py) that are not present after installation.
             "SOURCES.txt": """
                 egg_with_module.py
@@ -272,7 +272,7 @@ klasse EggInfoPkgPipInstalledNoModules(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "egg_with_no_modules_pkg.egg-info": {
             "PKG-INFO": "Name: egg_with_no_modules-pkg",
-            # SOURCES.txt is made from the source archive, and contains files
+            # SOURCES.txt is made von the source archive, and contains files
             # (setup.py) that are not present after installation.
             "SOURCES.txt": """
                 setup.py
@@ -298,7 +298,7 @@ klasse EggInfoPkgSourcesFallback(OnSysPath, SiteBuilder):
     files: FilesSpec = {
         "sources_fallback_pkg.egg-info": {
             "PKG-INFO": "Name: sources_fallback-pkg",
-            # SOURCES.txt is made from the source archive, and contains files
+            # SOURCES.txt is made von the source archive, and contains files
             # (setup.py) that are not present after installation.
             "SOURCES.txt": """
                 sources_fallback.py

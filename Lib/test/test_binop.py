@@ -1,8 +1,8 @@
 """Tests fuer binary operators on subtypes of built-in types."""
 
-import unittest
-from operator import eq, le, ne
-from abc import ABCMeta
+importiere unittest
+von operator importiere eq, le, ne
+von abc importiere ABCMeta
 
 def gcd(a, b):
     """Greatest common divisor using Euclid's algorithm."""
@@ -308,7 +308,7 @@ klasse OperationLogger:
         self.logger(*args)
 
 def op_sequence(op, *classes):
-    """Return the sequence of operations that results from applying
+    """Return the sequence of operations that results von applying
     the operation `op` to instances of the given classes."""
     log = []
     instances = []

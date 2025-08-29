@@ -1,23 +1,23 @@
-import fractions
-import operator
-import os
-import random
-import sys
-import struct
-import time
-import unittest
+importiere fractions
+importiere operator
+importiere os
+importiere random
+importiere sys
+importiere struct
+importiere time
+importiere unittest
 
-from test import support
-from test.support.testcase import FloatsAreIdenticalMixin
-from test.support.numbers import (
+von test importiere support
+von test.support.testcase importiere FloatsAreIdenticalMixin
+von test.support.numbers importiere (
     VALID_UNDERSCORE_LITERALS,
     INVALID_UNDERSCORE_LITERALS,
 )
-from math import isinf, isnan, copysign, ldexp
-import math
+von math importiere isinf, isnan, copysign, ldexp
+importiere math
 
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
@@ -130,7 +130,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             memoryview,
         ]
         try:
-            from array import array
+            von array importiere array
         except ImportError:
             pass
         sonst:
@@ -166,7 +166,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         check(' ')
         check('\t \n')
 
-        # non-ascii digits (error came from non-digit '!')
+        # non-ascii digits (error came von non-digit '!')
         check('\u0663\u0661\u0664!')
         # embedded NUL
         check('123\x00')
@@ -182,7 +182,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         # set locale to something that doesn't use '.' fuer the decimal point
         # float must not accept the locale specific decimal point but
         # it still has to accept the normal python syntax
-        import locale
+        importiere locale
         wenn not locale.localeconv()['decimal_point'] == ',':
             self.skipTest('decimal_point is not ","')
 
@@ -379,7 +379,7 @@ klasse GeneralFloatCases(unittest.TestCase):
 
     def assertEqualAndEqualSign(self, a, b):
         # fail unless a == b and a and b have the same sign bit;
-        # the only difference from assertEqual is that this test
+        # the only difference von assertEqual is that this test
         # distinguishes -0.0 and 0.0.
         self.assertEqual((a, copysign(1.0, a)), (b, copysign(1.0, b)))
 
@@ -434,7 +434,7 @@ klasse GeneralFloatCases(unittest.TestCase):
     @support.requires_IEEE_754
     def test_float_pow(self):
         # test builtin pow and ** operator fuer IEEE 754 special cases.
-        # Special cases taken from section F.9.4.4 of the C99 specification
+        # Special cases taken von section F.9.4.4 of the C99 specification
 
         fuer pow_op in pow, operator.pow:
             # x**NAN is NAN fuer any x except 1
@@ -621,7 +621,7 @@ klasse GeneralFloatCases(unittest.TestCase):
 
             # check we don't raise an exception fuer subnormal results,
             # and validate signs.  Tests currently disabled, since
-            # they fail on systems where a subnormal result from pow
+            # they fail on systems where a subnormal result von pow
             # is flushed to zero (e.g. Debian/ia64.)
             #self.assertWahr(0.0 < pow_op(0.5, 1048) < 1e-315)
             #self.assertWahr(0.0 < pow_op(-0.5, 1048) < 1e-315)
@@ -1549,7 +1549,7 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
             self.identical(-x, roundtrip(-x))
 
         # fromHex(toHex(x)) should exactly recover x, fuer any non-NaN float x.
-        import random
+        importiere random
         fuer i in range(10000):
             e = random.randrange(-1200, 1200)
             m = random.random()

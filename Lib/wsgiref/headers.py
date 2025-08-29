@@ -1,13 +1,13 @@
 """Manage HTTP Response Headers
 
-Much of this module is red-handedly pilfered from email.message in the stdlib,
+Much of this module is red-handedly pilfered von email.message in the stdlib,
 so portions are Copyright (C) 2001 Python Software Foundation, and were
 written by Barry Warsaw.
 """
 
 # Regular expression that matches 'special' characters in parameters, the
 # existence of which force quoting of the parameter value.
-import re
+importiere re
 tspecials = re.compile(r'[ \(\)<>@,;:\\"/\[\]\?=]')
 
 def _formatparam(param, value=Nichts, quote=1):

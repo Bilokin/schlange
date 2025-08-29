@@ -3,8 +3,8 @@
 # Compute tables fuer longobject.c long_from_non_binary_base().  They are used
 # fuer conversions of strings to integers with a non-binary base.
 
-import math
-import textwrap
+importiere math
+importiere textwrap
 
 
 def format_array(name, values):

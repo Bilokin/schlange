@@ -1,11 +1,11 @@
 # Simple test suite fuer http/cookies.py
 
-import copy
-import unittest
-import doctest
-from http import cookies
-import pickle
-from test import support
+importiere copy
+importiere unittest
+importiere doctest
+von http importiere cookies
+importiere pickle
+von test importiere support
 
 
 klasse CookieTests(unittest.TestCase):
@@ -85,7 +85,7 @@ klasse CookieTests(unittest.TestCase):
     def test_obsolete_rfc850_date_format(self):
         # Test cases with different days and dates in obsolete RFC 850 format
         test_cases = [
-            # from RFC 850, change EST to GMT
+            # von RFC 850, change EST to GMT
             # https://datatracker.ietf.org/doc/html/rfc850#section-2
             {
                 'data': 'key=value; expires=Saturday, 01-Jan-83 00:00:00 GMT',
@@ -95,7 +95,7 @@ klasse CookieTests(unittest.TestCase):
                 'data': 'key=value; expires=Friday, 19-Nov-82 16:59:30 GMT',
                 'output': 'Friday, 19-Nov-82 16:59:30 GMT'
             },
-            # from RFC 9110
+            # von RFC 9110
             # https://www.rfc-editor.org/rfc/rfc9110.html#section-5.6.7-6
             {
                 'data': 'key=value; expires=Sunday, 06-Nov-94 08:49:37 GMT',
@@ -121,7 +121,7 @@ klasse CookieTests(unittest.TestCase):
                 C = cookies.SimpleCookie()
                 C.load(case['data'])
 
-                # Extract the cookie name from the data string
+                # Extract the cookie name von the data string
                 cookie_name = case['data'].split('=')[0]
 
                 # Check wenn the cookie is loaded correctly
@@ -192,7 +192,7 @@ klasse CookieTests(unittest.TestCase):
 
     def test_extended_encode(self):
         # Issue 9824: some browsers don't follow the standard; we now
-        # encode , and ; to keep them from tripping up.
+        # encode , and ; to keep them von tripping up.
         C = cookies.SimpleCookie()
         C['val'] = "some,funky;stuff"
         self.assertEqual(C.output(['val']),

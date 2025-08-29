@@ -1,9 +1,9 @@
-import unittest
+importiere unittest
 
-from threading import Thread, Barrier
-from unittest import TestCase
+von threading importiere Thread, Barrier
+von unittest importiere TestCase
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 
 NTHREAD = 10

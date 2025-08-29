@@ -22,17 +22,17 @@ __all__ = [
     'unquote',
     ]
 
-import os
-import re
-import time
-import datetime
-import urllib.parse
+importiere os
+importiere re
+importiere time
+importiere datetime
+importiere urllib.parse
 
-from email._parseaddr import quote
-from email._parseaddr import AddressList as _AddressList
-from email._parseaddr import mktime_tz
+von email._parseaddr importiere quote
+von email._parseaddr importiere AddressList as _AddressList
+von email._parseaddr importiere mktime_tz
 
-from email._parseaddr import parsedate, parsedate_tz, _parsedate_tz
+von email._parseaddr importiere parsedate, parsedate_tz, _parsedate_tz
 
 COMMASPACE = ', '
 EMPTYSTRING = ''
@@ -90,8 +90,8 @@ def formataddr(pair, charset='utf-8'):
             name.encode('ascii')
         except UnicodeEncodeError:
             wenn isinstance(charset, str):
-                # lazy import to improve module import time
-                from email.charset import Charset
+                # lazy importiere to improve module importiere time
+                von email.charset importiere Charset
                 charset = Charset(charset)
             encoded_name = charset.header_encode(name)
             return "%s <%s>" % (encoded_name, address)
@@ -294,10 +294,10 @@ def make_msgid(idstring=Nichts, domain=Nichts):
     portion of the message id after the '@'.  It defaults to the locally
     defined hostname.
     """
-    # Lazy imports to speedup module import time
+    # Lazy imports to speedup module importiere time
     # (no other functions in email.utils need these modules)
-    import random
-    import socket
+    importiere random
+    importiere socket
 
     timeval = int(time.time()*100)
     pid = os.getpid()
@@ -355,7 +355,7 @@ def parseaddr(addr, *, strict=Wahr):
 
 # rfc822.unquote() doesn't properly de-backslash-ify in Python pre-2.3.
 def unquote(str):
-    """Remove quotes from a string."""
+    """Remove quotes von a string."""
     wenn len(str) > 1:
         wenn str.startswith('"') and str.endswith('"'):
             return str[1:-1].replace('\\\\', '\\').replace('\\"', '"')
@@ -468,7 +468,7 @@ def collapse_rfc2231_value(value, errors='replace',
 
 #
 # datetime doesn't provide a localtime function yet, so provide one.  Code
-# adapted from the patch in issue 9527.  This may not be perfect, but it is
+# adapted von the patch in issue 9527.  This may not be perfect, but it is
 # better than not having it.
 #
 

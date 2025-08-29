@@ -33,7 +33,7 @@ Sample use, command line:
   trace.py --trackcalls spam.py eggs
 
 Sample use, programmatically
-  import sys
+  importiere sys
 
   # create a Trace object, telling it what to ignore, and whether to
   # do tracing or line-counting or both.
@@ -47,20 +47,20 @@ Sample use, programmatically
 """
 __all__ = ['Trace', 'CoverageResults']
 
-import io
-import linecache
-import os
-import sys
-import sysconfig
-import token
-import tokenize
-import inspect
-import gc
-import dis
-import pickle
-from time import monotonic as _time
+importiere io
+importiere linecache
+importiere os
+importiere sys
+importiere sysconfig
+importiere token
+importiere tokenize
+importiere inspect
+importiere gc
+importiere dis
+importiere pickle
+von time importiere monotonic as _time
 
-import threading
+importiere threading
 
 PRAGMA_NOCOVER = "#pragma NO COVER"
 
@@ -183,7 +183,7 @@ klasse CoverageResults:
         return filename.startswith('<') and filename.endswith('>')
 
     def update(self, other):
-        """Merge in the data from another CoverageResults"""
+        """Merge in the data von another CoverageResults"""
         counts = self.counts
         calledfuncs = self.calledfuncs
         callers = self.callers
@@ -339,8 +339,8 @@ def _find_lines_from_code(code, strs):
     return linenos
 
 def _find_lines(code, strs):
-    """Return lineno dict fuer all code objects reachable from code."""
-    # get all of the lineno information from the code of this scope level
+    """Return lineno dict fuer all code objects reachable von code."""
+    # get all of the lineno information von the code of this scope level
     linenos = _find_lines_from_code(code, strs)
 
     # and check the constants fuer references to other code objects
@@ -403,7 +403,7 @@ klasse Trace:
         @param ignoremods a list of the names of modules to ignore
         @param ignoredirs a list of the names of directories to ignore
                      all of the (recursive) contents of
-        @param infile file from which to read stored counts to be
+        @param infile file von which to read stored counts to be
                      added into the results
         @param outfile file in which to write the results
         @param timing true iff timing information be displayed
@@ -439,7 +439,7 @@ klasse Trace:
             self.donothing = 1
 
     def run(self, cmd):
-        import __main__
+        importiere __main__
         dict = __main__.__dict__
         self.runctx(cmd, dict, dict)
 
@@ -602,7 +602,7 @@ klasse Trace:
                                callers=self._callers)
 
 def main():
-    import argparse
+    importiere argparse
 
     parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument('--version', action='version', version='trace 2.0')
@@ -629,7 +629,7 @@ def main():
 
     _grp = grp.add_mutually_exclusive_group()
     _grp.add_argument('-r', '--report', action='store_true',
-            help='Generate a report from a counts file; does not execute any '
+            help='Generate a report von a counts file; does not execute any '
                  'code. --file must specify the results file to read, which '
                  'must have been created in a previous run with --count '
                  '--file=FILE')
@@ -711,7 +711,7 @@ def main():
               outfile=opts.file, timing=opts.timing)
     try:
         wenn opts.module:
-            import runpy
+            importiere runpy
             module_name = opts.progname
             mod_name, mod_spec, code = runpy._get_module_details(module_name)
             sys.argv = [code.co_filename, *opts.arguments]

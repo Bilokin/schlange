@@ -1,7 +1,7 @@
-import logging
-import collections
+importiere logging
+importiere collections
 
-from .case import _BaseTestCaseContext
+von .case importiere _BaseTestCaseContext
 
 
 _LoggingWatcher = collections.namedtuple("_LoggingWatcher",

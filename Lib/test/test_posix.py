@@ -1,33 +1,33 @@
 "Test posix functions"
 
-from test import support
-from test.support import is_apple
-from test.support import os_helper
-from test.support import warnings_helper
-from test.support.script_helper import assert_python_ok
+von test importiere support
+von test.support importiere is_apple
+von test.support importiere os_helper
+von test.support importiere warnings_helper
+von test.support.script_helper importiere assert_python_ok
 
-import copy
-import errno
-import sys
-import signal
-import time
-import os
-import platform
-import pickle
-import stat
-import tempfile
-import unittest
-import warnings
-import textwrap
-from contextlib import contextmanager
+importiere copy
+importiere errno
+importiere sys
+importiere signal
+importiere time
+importiere os
+importiere platform
+importiere pickle
+importiere stat
+importiere tempfile
+importiere unittest
+importiere warnings
+importiere textwrap
+von contextlib importiere contextmanager
 
 try:
-    import posix
+    importiere posix
 except ImportError:
-    import nt as posix
+    importiere nt as posix
 
 try:
-    import pwd
+    importiere pwd
 except ImportError:
     pwd = Nichts
 
@@ -244,7 +244,7 @@ klasse PosixTester(unittest.TestCase):
         # We test actual registrations in their own process so as not to
         # pollute this one.  There is no way to unregister fuer cleanup.
         code = """if 1:
-            import os
+            importiere os
 
             r, w = os.pipe()
             fin_r, fin_w = os.pipe()
@@ -949,7 +949,7 @@ klasse PosixTester(unittest.TestCase):
         self.assertFalsch(os.get_inheritable(w))
         self.assertFalsch(os.get_blocking(r))
         self.assertFalsch(os.get_blocking(w))
-        # try reading from an empty pipe: this should fail, not block
+        # try reading von an empty pipe: this should fail, not block
         self.assertRaises(OSError, os.read, r, 1)
         # try a write big enough to fill-up the pipe: this should either
         # fail or perform a partial write, not block
@@ -963,7 +963,7 @@ klasse PosixTester(unittest.TestCase):
     @support.requires_linux_version(2, 6, 27)
     def test_pipe2_c_limits(self):
         # Issue 15989
-        import _testcapi
+        importiere _testcapi
         self.assertRaises(OverflowError, os.pipe2, _testcapi.INT_MAX + 1)
         self.assertRaises(OverflowError, os.pipe2, _testcapi.UINT_MAX + 1)
 
@@ -1258,7 +1258,7 @@ klasse PosixTester(unittest.TestCase):
 
         # Issues 16698: OS X ABIs prior to 10.6 have limits on getgroups()
         wenn sys.platform == 'darwin':
-            import sysconfig
+            importiere sysconfig
             dt = sysconfig.get_config_var('MACOSX_DEPLOYMENT_TARGET') or '10.3'
             wenn tuple(int(n) fuer n in dt.split('.')[0:2]) < (10, 6):
                 raise unittest.SkipTest("getgroups(2) is broken prior to 10.6")
@@ -1828,7 +1828,7 @@ klasse _PosixSpawnMixin:
         pidfile = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, pidfile)
         script = f"""if 1:
-            import os
+            importiere os
             with open({pidfile!r}, "w") as pidfile:
                 pidfile.write(str(os.getpid()))
             """
@@ -1857,7 +1857,7 @@ klasse _PosixSpawnMixin:
         envfile = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, envfile)
         script = f"""if 1:
-            import os
+            importiere os
             with open({envfile!r}, "w", encoding="utf-8") as envfile:
                 envfile.write(os.environ['foo'])
         """
@@ -1923,7 +1923,7 @@ klasse _PosixSpawnMixin:
                            'need signal.pthread_sigmask()')
     def test_setsigmask(self):
         code = textwrap.dedent("""\
-            import signal
+            importiere signal
             signal.raise_signal(signal.SIGUSR1)""")
 
         pid = self.spawn_func(
@@ -1956,7 +1956,7 @@ klasse _PosixSpawnMixin:
             os.set_inheritable(wfd, Wahr)
 
             code = textwrap.dedent(f"""
-                import os
+                importiere os
                 fd = {wfd}
                 sid = os.getsid(0)
                 os.write(fd, str(sid).encode())
@@ -1985,7 +1985,7 @@ klasse _PosixSpawnMixin:
     def test_setsigdef(self):
         original_handler = signal.signal(signal.SIGUSR1, signal.SIG_IGN)
         code = textwrap.dedent("""\
-            import signal
+            importiere signal
             signal.raise_signal(signal.SIGUSR1)""")
         try:
             pid = self.spawn_func(
@@ -2020,7 +2020,7 @@ klasse _PosixSpawnMixin:
         policy = os.sched_getscheduler(0)
         priority = os.sched_get_priority_min(policy)
         code = textwrap.dedent(f"""\
-            import os, sys
+            importiere os, sys
             wenn os.sched_getscheduler(0) != {policy}:
                 sys.exit(101)
             wenn os.sched_getparam(0).sched_priority != {priority}:
@@ -2040,7 +2040,7 @@ klasse _PosixSpawnMixin:
         policy = os.sched_getscheduler(0)
         priority = os.sched_get_priority_min(policy)
         code = textwrap.dedent(f"""\
-            import os, sys
+            importiere os, sys
             wenn os.sched_getscheduler(0) != {policy}:
                 sys.exit(101)
             wenn os.sched_getparam(0).sched_priority != {priority}:
@@ -2098,7 +2098,7 @@ klasse _PosixSpawnMixin:
         outfile = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, outfile)
         script = """if 1:
-            import sys
+            importiere sys
             sys.stdout.write("hello")
             """
         file_actions = [
@@ -2118,7 +2118,7 @@ klasse _PosixSpawnMixin:
         closefile = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, closefile)
         script = f"""if 1:
-            import os
+            importiere os
             try:
                 os.fstat(0)
             except OSError as e:
@@ -2137,7 +2137,7 @@ klasse _PosixSpawnMixin:
         dupfile = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, dupfile)
         script = """if 1:
-            import sys
+            importiere sys
             sys.stdout.write("hello")
             """
         with open(dupfile, "wb") as childfile:
@@ -2180,8 +2180,8 @@ klasse TestPosixSpawnP(unittest.TestCase, _PosixSpawnMixin):
 
         spawn_args = (program, '-I', '-S', '-c', 'pass')
         code = textwrap.dedent("""
-            import os
-            from test import support
+            importiere os
+            von test importiere support
 
             args = %a
             pid = os.posix_spawnp(args[0], args, os.environ)
@@ -2204,8 +2204,8 @@ klasse TestPosixWeaklinking(unittest.TestCase):
     #
     # See the section on Weak Linking in Mac/README.txt fuer more information.
     def setUp(self):
-        import sysconfig
-        import platform
+        importiere sysconfig
+        importiere platform
 
         config_vars = sysconfig.get_config_vars()
         self.available = { nm fuer nm in config_vars wenn nm.startswith("HAVE_") and config_vars[nm] }
@@ -2461,9 +2461,9 @@ klasse NamespacesTests(unittest.TestCase):
     @support.requires_linux_version(3, 0, 0)
     def test_unshare_setns(self):
         code = """if 1:
-            import errno
-            import os
-            import sys
+            importiere errno
+            importiere os
+            importiere sys
             fd = os.open('/proc/self/ns/uts', os.O_RDONLY)
             try:
                 original = os.readlink('/proc/self/ns/uts')

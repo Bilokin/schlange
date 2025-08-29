@@ -1,11 +1,11 @@
-from typing import Final
+von typing importiere Final
 
-from .errors import (
+von .errors importiere (
     ClinicError,
     warn,
     fail,
 )
-from .formatting import (
+von .formatting importiere (
     SIG_END_MARKER,
     c_repr,
     docstring_for_c_string,
@@ -18,12 +18,12 @@ from .formatting import (
     wrap_declarations,
     wrapped_c_string_literal,
 )
-from .identifiers import (
+von .identifiers importiere (
     ensure_legal_c_identifier,
     is_legal_c_identifier,
     is_legal_py_identifier,
 )
-from .utils import (
+von .utils importiere (
     FormatCounterFormatter,
     NULL,
     Null,

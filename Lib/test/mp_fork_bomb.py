@@ -1,4 +1,4 @@
-import multiprocessing, sys
+importiere multiprocessing, sys
 
 def foo():
     drucke("123")

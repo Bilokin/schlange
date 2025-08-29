@@ -1,11 +1,11 @@
 "Test macosx, coverage 45% on Windows."
 
-from idlelib import macosx
-import unittest
-from test.support import requires
-import tkinter as tk
-import unittest.mock as mock
-from idlelib.filelist import FileList
+von idlelib importiere macosx
+importiere unittest
+von test.support importiere requires
+importiere tkinter as tk
+importiere unittest.mock as mock
+von idlelib.filelist importiere FileList
 
 mactypes = {'carbon', 'cocoa', 'xquartz'}
 nontypes = {'other'}

@@ -1,23 +1,23 @@
-import argparse
-import ast
-import asyncio
-import concurrent.futures
-import contextvars
-import inspect
-import os
-import site
-import sys
-import threading
-import types
-import warnings
-from asyncio.tools import (TaskTableOutputFormat,
+importiere argparse
+importiere ast
+importiere asyncio
+importiere concurrent.futures
+importiere contextvars
+importiere inspect
+importiere os
+importiere site
+importiere sys
+importiere threading
+importiere types
+importiere warnings
+von asyncio.tools importiere (TaskTableOutputFormat,
                            display_awaited_by_tasks_table,
                            display_awaited_by_tasks_tree)
 
-from _colorize import get_theme
-from _pyrepl.console import InteractiveColoredConsole
+von _colorize importiere get_theme
+von _pyrepl.console importiere InteractiveColoredConsole
 
-from . import futures
+von . importiere futures
 
 
 klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
@@ -99,7 +99,7 @@ klasse REPLThread(threading.Thread):
             wenn startup_path := os.getenv("PYTHONSTARTUP"):
                 sys.audit("cpython.run_startup", startup_path)
 
-                import tokenize
+                importiere tokenize
                 with tokenize.open(startup_path) as f:
                     startup_code = compile(f.read(), startup_path, "exec")
                     exec(startup_code, console.locals)
@@ -111,7 +111,7 @@ klasse REPLThread(threading.Thread):
             console.write(f"{ps1}import asyncio\n")
 
             wenn CAN_USE_PYREPL:
-                from _pyrepl.simple_interact import (
+                von _pyrepl.simple_interact importiere (
                     run_multiline_interactive_console,
                 )
                 try:
@@ -138,7 +138,7 @@ klasse REPLThread(threading.Thread):
         wenn not CAN_USE_PYREPL:
             return
 
-        from _pyrepl.simple_interact import _get_reader
+        von _pyrepl.simple_interact importiere _get_reader
         r = _get_reader()
         wenn r.threading_hook is not Nichts:
             r.threading_hook.add("")  # type: ignore
@@ -186,7 +186,7 @@ wenn __name__ == '__main__':
     wenn os.getenv('PYTHON_BASIC_REPL'):
         CAN_USE_PYREPL = Falsch
     sonst:
-        from _pyrepl.main import CAN_USE_PYREPL
+        von _pyrepl.main importiere CAN_USE_PYREPL
 
     return_code = 0
     loop = asyncio.new_event_loop()
@@ -204,7 +204,7 @@ wenn __name__ == '__main__':
     keyboard_interrupted = Falsch
 
     try:
-        import readline  # NoQA
+        importiere readline  # NoQA
     except ImportError:
         readline = Nichts
 
@@ -217,7 +217,7 @@ wenn __name__ == '__main__':
     wenn interactive_hook is site.register_readline:
         # Fix the completer function to use the interactive console locals
         try:
-            import rlcompleter
+            importiere rlcompleter
         except:
             pass
         sonst:

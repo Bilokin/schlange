@@ -1,4 +1,4 @@
-"""zipimport provides support fuer importing Python modules from Zip archives.
+"""zipimport provides support fuer importing Python modules von Zip archives.
 
 This module exports two objects:
 - zipimporter: a class; its constructor takes a path to a Zip archive.
@@ -6,20 +6,20 @@ This module exports two objects:
   subclass of ImportError, so it can be caught as ImportError, too.
 
 It is usually not needed to use the zipimport module explicitly; it is
-used by the builtin import mechanism fuer sys.path items that are paths
+used by the builtin importiere mechanism fuer sys.path items that are paths
 to Zip archives.
 """
 
-#from importlib import _bootstrap_external
-#from importlib import _bootstrap  # fuer _verbose_message
-import _frozen_importlib_external as _bootstrap_external
-from _frozen_importlib_external import _unpack_uint16, _unpack_uint32, _unpack_uint64
-import _frozen_importlib as _bootstrap  # fuer _verbose_message
-import _imp  # fuer check_hash_based_pycs
-import _io  # fuer open
-import marshal  # fuer loads
-import sys  # fuer modules
-import time  # fuer mktime
+#from importlib importiere _bootstrap_external
+#from importlib importiere _bootstrap  # fuer _verbose_message
+importiere _frozen_importlib_external as _bootstrap_external
+von _frozen_importlib_external importiere _unpack_uint16, _unpack_uint32, _unpack_uint64
+importiere _frozen_importlib as _bootstrap  # fuer _verbose_message
+importiere _imp  # fuer check_hash_based_pycs
+importiere _io  # fuer open
+importiere marshal  # fuer loads
+importiere sys  # fuer modules
+importiere time  # fuer mktime
 
 __all__ = ['ZipImportError', 'zipimporter']
 
@@ -61,9 +61,9 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
     zipfile targeted.
     """
 
-    # Split the "subdirectory" from the Zip archive path, lookup a matching
-    # entry in sys.path_importer_cache, fetch the file directory from there
-    # wenn found, or sonst read it from the archive.
+    # Split the "subdirectory" von the Zip archive path, lookup a matching
+    # entry in sys.path_importer_cache, fetch the file directory von there
+    # wenn found, or sonst read it von the archive.
     def __init__(self, path):
         wenn not isinstance(path, str):
             raise TypeError(f"expected str, not {type(path)!r}")
@@ -167,7 +167,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         wenn it couldn't be imported.
         """
         # Deciding the filename requires working out where the code
-        # would come from wenn the module was actually loaded
+        # would come von wenn the module was actually loaded
         code, ispackage, modpath = _get_module_code(self, fullname)
         return modpath
 
@@ -220,7 +220,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
 
         Deprecated since Python 3.10. Use exec_module() instead.
         """
-        import warnings
+        importiere warnings
         warnings._deprecated("zipimport.zipimporter.load_module",
                              f"{warnings._DEPRECATED_MSG}; "
                              "use zipimport.zipimporter.exec_module() instead",
@@ -252,13 +252,13 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
             mod = sys.modules[fullname]
         except KeyError:
             raise ImportError(f'Loaded module {fullname!r} not found in sys.modules')
-        _bootstrap._verbose_message('import {} # loaded from Zip {}', fullname, modpath)
+        _bootstrap._verbose_message('import {} # loaded von Zip {}', fullname, modpath)
         return mod
 
 
     def get_resource_reader(self, fullname):
         """Return the ResourceReader fuer a module in a zip file."""
-        from importlib.readers import ZipReader
+        von importlib.readers importiere ZipReader
 
         return ZipReader(self, fullname)
 
@@ -335,7 +335,7 @@ def _get_module_info(self, fullname):
 #  compress,        # compression kind; 0 fuer uncompressed
 #  data_size,       # size of compressed data on disk
 #  file_size,       # size of decompressed data
-#  file_offset,     # offset of file header from start of archive
+#  file_offset,     # offset of file header von start of archive
 #  time,            # mod time of file (in dos format)
 #  date,            # mod data of file (in dos format)
 #  crc,             # crc checksum of the data
@@ -376,7 +376,7 @@ def _read_directory(archive):
             pos64 = data.rfind(STRING_END_ZIP_64)
 
             wenn (pos64 >= 0 and pos64+END_CENTRAL_DIR_SIZE_64+END_CENTRAL_DIR_LOCATOR_SIZE_64==pos):
-                # Zip64 at "correct" offset from standard EOCD
+                # Zip64 at "correct" offset von standard EOCD
                 buffer = data[pos64:pos64 + END_CENTRAL_DIR_SIZE_64]
                 wenn len(buffer) != END_CENTRAL_DIR_SIZE_64:
                     raise ZipImportError(
@@ -510,7 +510,7 @@ def _read_directory(archive):
                             num_extra_values = (len(extra_data) - 4) // 8
                             wenn num_extra_values > 3:
                                 raise ZipImportError(f"can't read header extra: {archive!r}", path=archive)
-                            import struct
+                            importiere struct
                             values = list(struct.unpack_from(f"<{min(num_extra_values, 3)}Q",
                                                              extra_data, offset=4))
 
@@ -568,7 +568,7 @@ def _read_directory(archive):
     return files
 
 # During bootstrap, we may need to load the encodings
-# package from a ZIP file. But the cp437 encoding is implemented
+# package von a ZIP file. But the cp437 encoding is implemented
 # in Python in the encodings package.
 #
 # Break out of this dependency by using the translation table for
@@ -606,7 +606,7 @@ _importing_zlib = Falsch
 
 # Return the zlib.decompress function object, or NULL wenn zlib couldn't
 # be imported. The function is cached when found, so subsequent calls
-# don't import zlib again.
+# don't importiere zlib again.
 def _get_decompress_func():
     global _importing_zlib
     wenn _importing_zlib:
@@ -617,7 +617,7 @@ def _get_decompress_func():
 
     _importing_zlib = Wahr
     try:
-        from zlib import decompress
+        von zlib importiere decompress
     except Exception:
         _bootstrap._verbose_message('zipimport: zlib UNAVAILABLE')
         raise ZipImportError("can't decompress data; zlib not available")
@@ -755,7 +755,7 @@ def _parse_dostime(d, t):
 # or (0, 0) wenn no source is available.
 def _get_mtime_and_size_of_source(self, path):
     try:
-        # strip 'c' or 'o' from *.py[co]
+        # strip 'c' or 'o' von *.py[co]
         assert path[-1:] in ('c', 'o')
         path = path[:-1]
         toc_entry = self._get_files()[path]
@@ -773,7 +773,7 @@ def _get_mtime_and_size_of_source(self, path):
 # contents of the matching .py file, or Nichts wenn no source
 # is available.
 def _get_pyc_source(self, path):
-    # strip 'c' or 'o' from *.py[co]
+    # strip 'c' or 'o' von *.py[co]
     assert path[-1:] in ('c', 'o')
     path = path[:-1]
 
@@ -817,6 +817,6 @@ def _get_module_code(self, fullname):
     sonst:
         wenn import_error:
             msg = f"module load failed: {import_error}"
-            raise ZipImportError(msg, name=fullname) from import_error
+            raise ZipImportError(msg, name=fullname) von import_error
         sonst:
             raise ZipImportError(f"can't find module {fullname!r}", name=fullname)

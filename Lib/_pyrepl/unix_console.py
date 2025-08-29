@@ -19,31 +19,31 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import errno
-import os
-import re
-import select
-import signal
-import struct
-import termios
-import time
-import types
-import platform
-from fcntl import ioctl
+importiere errno
+importiere os
+importiere re
+importiere select
+importiere signal
+importiere struct
+importiere termios
+importiere time
+importiere types
+importiere platform
+von fcntl importiere ioctl
 
-from . import terminfo
-from .console import Console, Event
-from .fancy_termios import tcgetattr, tcsetattr
-from .trace import trace
-from .unix_eventqueue import EventQueue
-from .utils import wlen
+von . importiere terminfo
+von .console importiere Console, Event
+von .fancy_termios importiere tcgetattr, tcsetattr
+von .trace importiere trace
+von .unix_eventqueue importiere EventQueue
+von .utils importiere wlen
 
 # declare posix optional to allow Nichts assignment on other platforms
 posix: types.ModuleType | Nichts
 try:
-    import posix
+    importiere posix
 except ImportError:
     posix = Nichts
 
@@ -51,7 +51,7 @@ TYPE_CHECKING = Falsch
 
 # types
 wenn TYPE_CHECKING:
-    from typing import IO, Literal, overload
+    von typing importiere IO, Literal, overload
 sonst:
     overload = lambda func: Nichts
 
@@ -386,13 +386,13 @@ klasse UnixConsole(Console):
 
     def get_event(self, block: bool = Wahr) -> Event | Nichts:
         """
-        Get an event from the console event queue.
+        Get an event von the console event queue.
 
         Parameters:
         - block (bool): Whether to block until an event is available.
 
         Returns:
-        - Event: Event object from the event queue.
+        - Event: Event object von the event queue.
         """
         wenn not block and not self.wait(timeout=0):
             return Nichts
@@ -508,10 +508,10 @@ klasse UnixConsole(Console):
 
         def getpending(self):
             """
-            Get pending events from the console event queue.
+            Get pending events von the console event queue.
 
             Returns:
-            - Event: Pending event from the event queue.
+            - Event: Pending event von the event queue.
             """
             e = Event("key", "", b"")
 
@@ -532,10 +532,10 @@ klasse UnixConsole(Console):
 
         def getpending(self):
             """
-            Get pending events from the console event queue.
+            Get pending events von the console event queue.
 
             Returns:
-            - Event: Pending event from the event queue.
+            - Event: Pending event von the event queue.
             """
             e = Event("key", "", b"")
 
@@ -564,7 +564,7 @@ klasse UnixConsole(Console):
     @property
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
-        # with import logging from -X importtime=2
+        # with importiere logging von -X importtime=2
         wenn posix is not Nichts and posix._is_inputhook_installed():
             return posix._inputhook
 

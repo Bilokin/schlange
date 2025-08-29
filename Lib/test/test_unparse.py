@@ -1,13 +1,13 @@
 """Tests fuer ast.unparse."""
 
-import unittest
-import test.support
-import pathlib
-import random
-import tokenize
-import warnings
-import ast
-from test.support.ast_helper import ASTTestMixin
+importiere unittest
+importiere test.support
+importiere pathlib
+importiere random
+importiere tokenize
+importiere warnings
+importiere ast
+von test.support.ast_helper importiere ASTTestMixin
 
 
 def read_pyfile(filename):
@@ -36,9 +36,9 @@ def g():
 """
 
 relative_import = """\
-from . import fred
-from .. import barney
-from .australia import shrimp as prawns
+von . importiere fred
+von .. importiere barney
+von .australia importiere shrimp as prawns
 """
 
 nonlocal_ex = """\
@@ -57,7 +57,7 @@ raise_from = """\
 try:
     1 / 0
 except ZeroDivisionError as e:
-    raise ArithmeticError from e
+    raise ArithmeticError von e
 """
 
 klasse_decorator = """\
@@ -403,9 +403,9 @@ klasse UnparseTestCase(ASTTestCase):
 
     def test_import_from_level_none(self):
         tree = ast.ImportFrom(module='mod', names=[ast.alias(name='x')])
-        self.assertEqual(ast.unparse(tree), "from mod import x")
+        self.assertEqual(ast.unparse(tree), "from mod importiere x")
         tree = ast.ImportFrom(module='mod', names=[ast.alias(name='x')], level=Nichts)
-        self.assertEqual(ast.unparse(tree), "from mod import x")
+        self.assertEqual(ast.unparse(tree), "from mod importiere x")
 
     def test_docstrings(self):
         docstrings = (
@@ -482,7 +482,7 @@ klasse UnparseTestCase(ASTTestCase):
             "'expr'",
             "(i := 1)",
             "import foo",
-            "from foo import bar",
+            "from foo importiere bar",
             "i = 1",
             "i += 1",
             "i: int = 1",
@@ -496,7 +496,7 @@ klasse UnparseTestCase(ASTTestCase):
             "nonlocal j",
             "await i",
             "yield i",
-            "yield from i",
+            "yield von i",
             "raise i",
             "type t[T] = ...",
             "i",
@@ -618,7 +618,7 @@ klasse CosmeticTestCase(ASTTestCase):
         self.check_src_roundtrip("not x == y")
         self.check_src_roundtrip("x == (not y)")
         self.check_src_roundtrip("yield x")
-        self.check_src_roundtrip("yield from x")
+        self.check_src_roundtrip("yield von x")
         self.check_src_roundtrip("call((yield x))")
         self.check_src_roundtrip("return x + (yield x)")
 
@@ -774,7 +774,7 @@ klasse CosmeticTestCase(ASTTestCase):
         self.check_ast_roundtrip("""f'''""\"''\\'{""\"\\n\\"'''""\" '''\\n'''}''' """)
 
     def test_backslash_in_format_spec(self):
-        import re
+        importiere re
         msg = re.escape('"\\ " is an invalid escape sequence. '
                         'Such sequences will not work in the future. '
                         'Did you mean "\\\\ "? A raw string is also an option.')

@@ -1,4 +1,4 @@
-"""Execute code from an editor.
+"""Execute code von an editor.
 
 Check module: do a full syntax check of the current module.
 Also run the tabnanny to catch any inconsistent tabs.
@@ -9,18 +9,18 @@ sys.modules, and is also added to the __main__ namespace.
 
 TODO: Specify command line arguments in a dialog box.
 """
-import os
-import tabnanny
-import time
-import tokenize
+importiere os
+importiere tabnanny
+importiere time
+importiere tokenize
 
-from tkinter import messagebox
+von tkinter importiere messagebox
 
-from idlelib.config import idleConf
-from idlelib import macosx
-from idlelib import pyshell
-from idlelib.query import CustomRun
-from idlelib import outwin
+von idlelib.config importiere idleConf
+von idlelib importiere macosx
+von idlelib importiere pyshell
+von idlelib.query importiere CustomRun
+von idlelib importiere outwin
 
 indent_message = """Error: Inconsistent indentation detected!
 
@@ -70,7 +70,7 @@ klasse ScriptBinding:
                               "Token Error: %s" % msgtxt)
                 return Falsch
             except tabnanny.NannyNag as nag:
-                # The error messages from tabnanny are too confusing...
+                # The error messages von tabnanny are too confusing...
                 self.editwin.gotoline(nag.get_lineno())
                 self.errorbox("Tab/space error", indent_message)
                 return Falsch
@@ -148,14 +148,14 @@ klasse ScriptBinding:
             argv += self.cli_args
         interp.runcommand(f"""if 1:
             __file__ = {filename!r}
-            import sys as _sys
-            from os.path import basename as _basename
+            importiere sys as _sys
+            von os.path importiere basename as _basename
             argv = {argv!r}
             wenn (not _sys.argv or
                 _basename(_sys.argv[0]) != _basename(__file__) or
                 len(argv) > 1):
                 _sys.argv = argv
-            import os as _os
+            importiere os as _os
             _os.chdir({dirname!r})
             del _sys, argv, _basename, _os
             \n""")
@@ -209,5 +209,5 @@ klasse ScriptBinding:
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_runscript', verbosity=2,)

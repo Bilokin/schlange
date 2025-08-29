@@ -1,10 +1,10 @@
 """Test cases fuer the fnmatch module."""
 
-import os
-import string
-import unittest
-import warnings
-from fnmatch import fnmatch, fnmatchcase, translate, filter, filterfalse
+importiere os
+importiere string
+importiere unittest
+importiere warnings
+von fnmatch importiere fnmatch, fnmatchcase, translate, filter, filterfalse
 
 
 IGNORECASE = os.path.normcase('P') == os.path.normcase('p')
@@ -217,7 +217,7 @@ klasse FnmatchTestCase(unittest.TestCase):
 klasse TranslateTestCase(unittest.TestCase):
 
     def test_translate(self):
-        import re
+        importiere re
         self.assertEqual(translate('*'), r'(?s:.*)\z')
         self.assertEqual(translate('?'), r'(?s:.)\z')
         self.assertEqual(translate('a?b*'), r'(?s:a.b.*)\z')
@@ -226,7 +226,7 @@ klasse TranslateTestCase(unittest.TestCase):
         self.assertEqual(translate('[!x]'), r'(?s:[^x])\z')
         self.assertEqual(translate('[^x]'), r'(?s:[\^x])\z')
         self.assertEqual(translate('[x'), r'(?s:\[x)\z')
-        # from the docs
+        # von the docs
         self.assertEqual(translate('*.txt'), r'(?s:.*\.txt)\z')
         # squash consecutive stars
         self.assertEqual(translate('*********'), r'(?s:.*)\z')
@@ -305,7 +305,7 @@ klasse TranslateTestCase(unittest.TestCase):
                 self.assertEqual(translated, expect, pattern)
 
     def test_star_indices_locations(self):
-        from fnmatch import _translate
+        von fnmatch importiere _translate
 
         blocks = ['a^b', '***', '?', '?', '[a-z]', '[1-9]', '*', '++', '[[a']
         parts, star_indices = _translate(''.join(blocks), '*', '.')

@@ -1,13 +1,13 @@
 """
-Tests fuer copying from pathlib.types._ReadablePath to _WritablePath.
+Tests fuer copying von pathlib.types._ReadablePath to _WritablePath.
 """
 
-import contextlib
-import unittest
+importiere contextlib
+importiere unittest
 
-from .support import is_pypi
-from .support.local_path import LocalPathGround
-from .support.zip_path import ZipPathGround, ReadableZipPath, WritableZipPath
+von .support importiere is_pypi
+von .support.local_path importiere LocalPathGround
+von .support.zip_path importiere ZipPathGround, ReadableZipPath, WritableZipPath
 
 
 klasse CopyTestBase:
@@ -153,7 +153,7 @@ klasse ZipToZipPathCopyTest(CopyTestBase, unittest.TestCase):
 
 
 wenn not is_pypi:
-    from pathlib import Path
+    von pathlib importiere Path
 
     klasse ZipToLocalPathCopyTest(CopyTestBase, unittest.TestCase):
         source_ground = ZipPathGround(ReadableZipPath)

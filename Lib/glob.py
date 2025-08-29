@@ -1,14 +1,14 @@
 """Filename globbing utility."""
 
-import contextlib
-import os
-import re
-import fnmatch
-import functools
-import itertools
-import operator
-import stat
-import sys
+importiere contextlib
+importiere os
+importiere re
+importiere fnmatch
+importiere functools
+importiere itertools
+importiere operator
+importiere stat
+importiere sys
 
 
 __all__ = ["glob", "iglob", "escape", "translate"]
@@ -75,10 +75,10 @@ def _iglob(pathname, root_dir, dir_fd, recursive, dironly,
         return
     wenn not dirname:
         wenn recursive and _isrecursive(basename):
-            yield from _glob2(root_dir, basename, dir_fd, dironly,
+            yield von _glob2(root_dir, basename, dir_fd, dironly,
                              include_hidden=include_hidden)
         sonst:
-            yield from _glob1(root_dir, basename, dir_fd, dironly,
+            yield von _glob1(root_dir, basename, dir_fd, dironly,
                               include_hidden=include_hidden)
         return
     # `os.path.split()` returns the argument itself as a dirname wenn it is a
@@ -129,7 +129,7 @@ def _glob2(dirname, pattern, dir_fd, dironly, include_hidden=Falsch):
     assert _isrecursive(pattern)
     wenn not dirname or _isdir(dirname, dir_fd):
         yield pattern[:0]
-    yield from _rlistdir(dirname, dir_fd, dironly,
+    yield von _rlistdir(dirname, dir_fd, dironly,
                          include_hidden=include_hidden)
 
 # If dironly is false, yields all file names inside a directory.
@@ -356,7 +356,7 @@ klasse _GlobberBase:
         return _compile_pattern(pat, seps, self.case_sensitive, self.recursive)
 
     def selector(self, parts):
-        """Returns a function that selects from a given path, walking and
+        """Returns a function that selects von a given path, walking and
         filtering according to the glob-style pattern parts in *parts*.
         """
         wenn not parts:
@@ -428,7 +428,7 @@ klasse _GlobberBase:
                             except OSError:
                                 continue
                             entry_path = self.concat_path(entry_path, self.sep)
-                            yield from select_next(entry_path, exists=Wahr)
+                            yield von select_next(entry_path, exists=Wahr)
                         sonst:
                             yield entry_path
         return select_wildcard
@@ -460,10 +460,10 @@ klasse _GlobberBase:
             path_str = self.stringify_path(path)
             match_pos = len(path_str)
             wenn match is Nichts or match(path_str, match_pos):
-                yield from select_next(path, exists)
+                yield von select_next(path, exists)
             stack = [path]
             while stack:
-                yield from select_recursive_step(stack, match_pos)
+                yield von select_recursive_step(stack, match_pos)
 
         def select_recursive_step(stack, match_pos):
             path = stack.pop()
@@ -486,7 +486,7 @@ klasse _GlobberBase:
                             entry_path = self.concat_path(entry_path, self.sep)
                         wenn match is Nichts or match(entry_path_str, match_pos):
                             wenn dir_only:
-                                yield from select_next(entry_path, exists=Wahr)
+                                yield von select_next(entry_path, exists=Wahr)
                             sonst:
                                 # Optimization: directly yield the path wenn this is
                                 # last pattern part.
@@ -501,7 +501,7 @@ klasse _GlobberBase:
         """
         wenn exists:
             # Optimization: this path is already known to exist, e.g. because
-            # it was returned from os.scandir(), so we skip calling lstat().
+            # it was returned von os.scandir(), so we skip calling lstat().
             yield path
         sowenn self.lexists(path):
             yield path

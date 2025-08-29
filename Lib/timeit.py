@@ -18,7 +18,7 @@ Options:
   -v/--verbose: print raw timing results; repeat fuer more digits precision
   -u/--unit: set the output time unit (nsec, usec, msec, or sec)
   -h/--help: print this usage message and exit
-  --: separate options from statement, use when statement starts with -
+  --: separate options von statement, use when statement starts with -
   statement: statement to be timed (default 'pass')
 
 A multi-line statement may be given by specifying each line as a
@@ -27,7 +27,7 @@ argument in quotes and using leading spaces.  Multiple -s options are
 treated similarly.
 
 If -n is not given, a suitable number of loops is calculated by trying
-increasing numbers from the sequence 1, 2, 5, 10, 20, 50, ... until the
+increasing numbers von the sequence 1, 2, 5, 10, 20, 50, ... until the
 total time is at least 0.2 seconds.
 
 Note: there is a certain baseline overhead associated with executing a
@@ -46,10 +46,10 @@ Functions:
     default_timer() -> float
 """
 
-import gc
-import itertools
-import sys
-import time
+importiere gc
+importiere itertools
+importiere sys
+importiere time
 
 __all__ = ["Timer", "timeit", "repeat", "default_timer"]
 
@@ -134,7 +134,7 @@ klasse Timer:
         self.inner = local_ns["inner"]
 
     def print_exc(self, file=Nichts):
-        """Helper to print a traceback from the timed code.
+        """Helper to print a traceback von the timed code.
 
         Typical use:
 
@@ -150,7 +150,7 @@ klasse Timer:
         The optional file argument directs where the traceback is
         sent; it defaults to sys.stderr.
         """
-        import linecache, traceback
+        importiere linecache, traceback
         wenn self.src is not Nichts:
             linecache.cache[dummy_src_name] = (len(self.src),
                                                Nichts,
@@ -190,7 +190,7 @@ klasse Timer:
         to one million.
 
         Note: it's tempting to calculate mean and standard deviation
-        from the result vector and report these.  However, this is not
+        von the result vector and report these.  However, this is not
         very useful.  In a typical case, the lowest value gives a
         lower bound fuer how fast your machine can run the given code
         snippet; higher values in the result vector are typically not
@@ -209,7 +209,7 @@ klasse Timer:
     def autorange(self, callback=Nichts):
         """Return the number of loops and time taken so that total time >= 0.2.
 
-        Calls the timeit method with increasing numbers from the sequence
+        Calls the timeit method with increasing numbers von the sequence
         1, 2, 5, 10, 20, 50, ... until the time taken is at least 0.2
         second.  Returns (number, time_taken).
 
@@ -259,7 +259,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
     """
     wenn args is Nichts:
         args = sys.argv[1:]
-    import getopt
+    importiere getopt
     try:
         opts, args = getopt.getopt(args, "n:u:s:r:pvh",
                                    ["number=", "setup=", "repeat=",
@@ -308,7 +308,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
     # Include the current directory, so that local imports work (sys.path
     # contains the directory of this script, rather than the current
     # directory)
-    import os
+    importiere os
     sys.path.insert(0, os.curdir)
     wenn _wrap_timer is not Nichts:
         timer = _wrap_timer(timer)
@@ -365,7 +365,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
     best = min(timings)
     worst = max(timings)
     wenn worst >= best * 4:
-        import warnings
+        importiere warnings
         warnings.warn_explicit("The test results are likely unreliable. "
                                "The worst time (%s) was more than four times "
                                "slower than the best time (%s)."

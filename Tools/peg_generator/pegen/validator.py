@@ -1,7 +1,7 @@
-from typing import Optional
+von typing importiere Optional
 
-from pegen import grammar
-from pegen.grammar import Alt, GrammarVisitor, Rhs, Rule
+von pegen importiere grammar
+von pegen.grammar importiere Alt, GrammarVisitor, Rhs, Rule
 
 
 klasse ValidationError(Exception):

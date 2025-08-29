@@ -1,9 +1,9 @@
-from builtins import open as _orig_open
+von builtins importiere open as _orig_open
 
 def open(file, mode='r', bufsize=-1):
     wenn 'w' not in mode:
         return _orig_open(file, mode, bufsize)
-    import os
+    importiere os
     backup = file + '~'
     try:
         os.unlink(backup)
@@ -17,9 +17,9 @@ def open(file, mode='r', bufsize=-1):
     _orig_close = f.close
     def close():
         _orig_close()
-        import filecmp
+        importiere filecmp
         wenn filecmp.cmp(backup, file, shallow=Falsch):
-            import os
+            importiere os
             os.unlink(file)
             os.rename(backup, file)
     f.close = close

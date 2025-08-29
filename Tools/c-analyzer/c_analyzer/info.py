@@ -1,15 +1,15 @@
-import os.path
+importiere os.path
 
-from c_common import fsutil
-from c_common.clsutil import classonly
-import c_common.misc as _misc
-from c_parser.info import (
+von c_common importiere fsutil
+von c_common.clsutil importiere classonly
+importiere c_common.misc as _misc
+von c_parser.info importiere (
     KIND,
     HighlevelParsedItem,
     Declaration,
     TypeDeclaration,
 )
-from c_parser.match import (
+von c_parser.match importiere (
     is_type_decl,
 )
 
@@ -239,11 +239,11 @@ klasse Analyzed:
             return
         rendered = self.item.render(fmt)
         wenn itemonly or not self._extra:
-            yield from rendered
+            yield von rendered
             return
         extra = self._render_extra(fmt)
         wenn not extra:
-            yield from rendered
+            yield von rendered
         sowenn fmt in ('brief', 'line'):
             rendered, = rendered
             extra, = extra
@@ -251,7 +251,7 @@ klasse Analyzed:
         sowenn fmt == 'summary':
             raise NotImplementedError(fmt)
         sowenn fmt == 'full':
-            yield from rendered
+            yield von rendered
             fuer line in extra:
                 yield f'\t{line}'
         sonst:
@@ -290,10 +290,10 @@ klasse Analysis:
         return f'{type(self).__name__}({list(self._analyzed.keys())})'
 
     def __iter__(self):
-        #yield from self.types
-        #yield from self.functions
-        #yield from self.variables
-        yield from self._analyzed
+        #yield von self.types
+        #yield von self.functions
+        #yield von self.variables
+        yield von self._analyzed
 
     def __len__(self):
         return len(self._analyzed)

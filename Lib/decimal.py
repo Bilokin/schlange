@@ -22,7 +22,7 @@ Decimal('0.00')).
 
 Here are some examples of using the decimal module:
 
->>> from decimal import *
+>>> von decimal importiere *
 >>> setcontext(ExtendedContext)
 >>> Decimal(0)
 Decimal('0')
@@ -99,11 +99,11 @@ NaN
 """
 
 try:
-    from _decimal import *
-    from _decimal import __version__  # noqa: F401
-    from _decimal import __libmpdec_version__  # noqa: F401
+    von _decimal importiere *
+    von _decimal importiere __version__  # noqa: F401
+    von _decimal importiere __libmpdec_version__  # noqa: F401
 except ImportError:
-    import _pydecimal
-    import sys
+    importiere _pydecimal
+    importiere sys
     _pydecimal.__doc__ = __doc__
     sys.modules[__name__] = _pydecimal

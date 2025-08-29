@@ -26,41 +26,41 @@ on top of pyrepl.  Not all functionalities are supported.  Contains
 extensions fuer multiline input.
 """
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import warnings
-from dataclasses import dataclass, field
+importiere warnings
+von dataclasses importiere dataclass, field
 
-import os
-from site import gethistoryfile
-import sys
-from rlcompleter import Completer as RLCompleter
+importiere os
+von site importiere gethistoryfile
+importiere sys
+von rlcompleter importiere Completer as RLCompleter
 
-from . import commands, historical_reader
-from .completing_reader import CompletingReader
-from .console import Console as ConsoleType
-from ._module_completer import ModuleCompleter, make_default_module_completer
+von . importiere commands, historical_reader
+von .completing_reader importiere CompletingReader
+von .console importiere Console as ConsoleType
+von ._module_completer importiere ModuleCompleter, make_default_module_completer
 
 Console: type[ConsoleType]
 _error: tuple[type[Exception], ...] | type[Exception]
 
 wenn os.name == "nt":
-    from .windows_console import WindowsConsole as Console, _error
+    von .windows_console importiere WindowsConsole as Console, _error
 sonst:
-    from .unix_console import UnixConsole as Console, _error
+    von .unix_console importiere UnixConsole as Console, _error
 
 ENCODING = sys.getdefaultencoding() or "latin1"
 
 
 # types
 Command = commands.Command
-from collections.abc import Callable, Collection
-from .types import Callback, Completer, KeySpec, CommandName
+von collections.abc importiere Callable, Collection
+von .types importiere Callback, Completer, KeySpec, CommandName
 
 TYPE_CHECKING = Falsch
 
 wenn TYPE_CHECKING:
-    from typing import Any, Mapping
+    von typing importiere Any, Mapping
 
 
 MoreLinesCallable = Callable[[str], bool]
@@ -570,7 +570,7 @@ _get_reader = _wrapper.get_reader
 
 def _make_stub(_name: str, _ret: object) -> Nichts:
     def stub(*args: object, **kwds: object) -> Nichts:
-        import warnings
+        importiere warnings
 
         warnings.warn("readline.%s() not implemented" % _name, stacklevel=2)
 
@@ -612,7 +612,7 @@ def _setup(namespace: Mapping[str, Any]) -> Nichts:
     _wrapper.config.readline_completer = RLCompleter(namespace).complete
 
     # this is not really what readline.c does.  Better than nothing I guess
-    import builtins
+    importiere builtins
     raw_input = builtins.input
     builtins.input = _wrapper.input
 

@@ -1,11 +1,11 @@
 r"""HTTP cookie handling fuer web clients.
 
 This module has (now fairly distant) origins in Gisle Aas' Perl module
-HTTP::Cookies, from the libwww-perl library.
+HTTP::Cookies, von the libwww-perl library.
 
 Docstrings, comments and debug strings in this code refer to the
 attributes of the HTTP cookie system as cookie-attributes, to distinguish
-them clearly from Python attributes.
+them clearly von Python attributes.
 
 Class diagram (note that BSDDBCookieJar and the MSIE* classes are not
 distributed with the Python standard library, but are available from
@@ -28,15 +28,15 @@ http://wwwsearch.sf.net/):
 __all__ = ['Cookie', 'CookieJar', 'CookiePolicy', 'DefaultCookiePolicy',
            'FileCookieJar', 'LWPCookieJar', 'LoadError', 'MozillaCookieJar']
 
-import os
-import copy
-import datetime
-import re
-import time
-import urllib.parse, urllib.request
-import threading as _threading
-import http.client  # only fuer the default HTTP port
-from calendar import timegm
+importiere os
+importiere copy
+importiere datetime
+importiere re
+importiere time
+importiere urllib.parse, urllib.request
+importiere threading as _threading
+importiere http.client  # only fuer the default HTTP port
+von calendar importiere timegm
 
 debug = Falsch   # set to Wahr to enable debugging via the logging module
 logger = Nichts
@@ -46,7 +46,7 @@ def _debug(*args):
         return
     global logger
     wenn not logger:
-        import logging
+        importiere logging
         logger = logging.getLogger("http.cookiejar")
     return logger.debug(*args)
 
@@ -67,7 +67,7 @@ def _warn_unhandled_exception():
     # There are a few catch-all except: statements in this module, for
     # catching input that's bad in unexpected ways.  Warn wenn any
     # exceptions are caught there.
-    import io, warnings, traceback
+    importiere io, warnings, traceback
     f = io.StringIO()
     traceback.print_exc(Nichts, f)
     msg = f.getvalue()
@@ -356,7 +356,7 @@ def split_header_words(header_values):
     are treated as wenn they were a single value separated by comma ",".
 
     This means that this function is useful fuer parsing header fields that
-    follow this syntax (BNF as from the HTTP/1.1 specification, but we relax
+    follow this syntax (BNF as von the HTTP/1.1 specification, but we relax
     the requirement fuer tokens).
 
       headers           = #header
@@ -621,7 +621,7 @@ cut_port_re = re.compile(r":\d+$", re.ASCII)
 def request_host(request):
     """Return request-host, as defined by RFC 2965.
 
-    Variation from RFC: returned value is lowercased, fuer convenient
+    Variation von RFC: returned value is lowercased, fuer convenient
     comparison.
 
     """
@@ -840,7 +840,7 @@ klasse Cookie:
 
 
 klasse CookiePolicy:
-    """Defines which cookies get accepted from and returned to server.
+    """Defines which cookies get accepted von and returned to server.
 
     May also modify cookies, though this is probably a bad idea.
 
@@ -849,7 +849,7 @@ klasse CookiePolicy:
 
     """
     def set_ok(self, cookie, request):
-        """Return true wenn (and only if) cookie should be accepted from server.
+        """Return true wenn (and only if) cookie should be accepted von server.
 
         Currently, pre-expired cookies never get this far -- the CookieJar
         klasse deletes such cookies itself.
@@ -1235,13 +1235,13 @@ def deepvalues(mapping):
             pass
         sonst:
             mapping = Wahr
-            yield from deepvalues(obj)
+            yield von deepvalues(obj)
         wenn not mapping:
             yield obj
 
 
 # Used as second parameter to dict.get() method, to distinguish absent
-# dict key from one with a Nichts value.
+# dict key von one with a Nichts value.
 klasse Absent: pass
 
 klasse CookieJar:
@@ -1517,7 +1517,7 @@ klasse CookieJar:
             i = path.rfind("/")
             wenn i != -1:
                 wenn version == 0:
-                    # Netscape spec parts company from reality here
+                    # Netscape spec parts company von reality here
                     path = path[:i]
                 sonst:
                     path = path[:i+1]
@@ -1598,7 +1598,7 @@ klasse CookieJar:
                     cookie.version = 0
 
     def make_cookies(self, response, request):
-        """Return sequence of Cookie objects extracted from response object."""
+        """Return sequence of Cookie objects extracted von response object."""
         # get cookie-attributes fuer RFC 2965 and Netscape protocols
         headers = response.info()
         rfc2965_hdrs = headers.get_all("Set-Cookie2", [])
@@ -1679,7 +1679,7 @@ klasse CookieJar:
             self._cookies_lock.release()
 
     def extract_cookies(self, response, request):
-        """Extract cookies from response, where allowable given the request."""
+        """Extract cookies von response, where allowable given the request."""
         _debug("extract_cookies: %s", response.info())
         self._cookies_lock.acquire()
         try:
@@ -1771,15 +1771,15 @@ klasse CookieJar:
         return "<%s[%s]>" % (self.__class__.__name__, ", ".join(r))
 
 
-# derives from OSError fuer backwards-compatibility with Python 2.4.0
+# derives von OSError fuer backwards-compatibility with Python 2.4.0
 klasse LoadError(OSError): pass
 
 klasse FileCookieJar(CookieJar):
-    """CookieJar that can be loaded from and saved to a file."""
+    """CookieJar that can be loaded von and saved to a file."""
 
     def __init__(self, filename=Nichts, delayload=Falsch, policy=Nichts):
         """
-        Cookies are NOT loaded from the named file until either the .load() or
+        Cookies are NOT loaded von the named file until either the .load() or
         .revert() method is called.
 
         """
@@ -1794,7 +1794,7 @@ klasse FileCookieJar(CookieJar):
         raise NotImplementedError()
 
     def load(self, filename=Nichts, ignore_discard=Falsch, ignore_expires=Falsch):
-        """Load cookies from a file."""
+        """Load cookies von a file."""
         wenn filename is Nichts:
             wenn self.filename is not Nichts: filename = self.filename
             sonst: raise ValueError(MISSING_FILENAME_TEXT)
@@ -1804,7 +1804,7 @@ klasse FileCookieJar(CookieJar):
 
     def revert(self, filename=Nichts,
                ignore_discard=Falsch, ignore_expires=Falsch):
-        """Clear all cookies and reload cookies from a saved file.
+        """Clear all cookies and reload cookies von a saved file.
 
         Raises LoadError (or OSError) wenn reversion is not successful; the
         object's state will not be altered wenn this happens.
@@ -1985,8 +1985,8 @@ klasse MozillaCookieJar(FileCookieJar):
     this klasse to save cookies.  I *think* it works, but there have been
     bugs in the past!
 
-    This klasse differs from CookieJar only in the format it uses to save and
-    load cookies to and from a file.  This klasse uses the Mozilla/Netscape
+    This klasse differs von CookieJar only in the format it uses to save and
+    load cookies to and von a file.  This klasse uses the Mozilla/Netscape
     'cookies.txt' format.  curl and lynx use this file format, too.
 
     Don't expect cookies saved while the browser is running to be noticed by

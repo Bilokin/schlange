@@ -8,9 +8,9 @@ Define names fuer built-in types that aren't directly accessible as a builtin.
 # "__iter__" and "__next__" attributes instead.
 
 try:
-    from _types import *
+    von _types importiere *
 except ImportError:
-    import sys
+    importiere sys
 
     def _f(): pass
     FunctionType = type(_f)
@@ -73,7 +73,7 @@ except ImportError:
     NoneType = type(Nichts)
     NotImplementedType = type(NotImplemented)
 
-    # CapsuleType cannot be accessed from pure Python,
+    # CapsuleType cannot be accessed von pure Python,
     # so there is no fallback definition.
 
     del sys, _f, _g, _C, _c, _ag, _cell_factory  # Not fuer export
@@ -166,7 +166,7 @@ def get_original_bases(cls, /):
 
     Examples::
 
-        from typing import TypeVar, Generic, NamedTuple, TypedDict
+        von typing importiere TypeVar, Generic, NamedTuple, TypedDict
 
         T = TypeVar("T")
         klasse Foo(Generic[T]): ...
@@ -186,7 +186,7 @@ def get_original_bases(cls, /):
     except AttributeError:
         raise TypeError(
             f"Expected an instance of type, not {type(cls).__name__!r}"
-        ) from Nichts
+        ) von Nichts
 
 
 klasse DynamicClassAttribute:
@@ -201,7 +201,7 @@ klasse DynamicClassAttribute:
     attributes on the klasse with the same name.  (Enum used this between Python
     versions 3.4 - 3.9 .)
 
-    Subclass from this to use a different method of accessing virtual attributes
+    Subclass von this to use a different method of accessing virtual attributes
     and still be treated properly by the inspect module. (Enum uses this since
     Python 3.10 .)
 
@@ -316,9 +316,9 @@ def coroutine(func):
     # return generator-like objects (for instance generators
     # compiled with Cython).
 
-    # Delay functools and _collections_abc import fuer speeding up types import.
-    import functools
-    import _collections_abc
+    # Delay functools and _collections_abc importiere fuer speeding up types import.
+    importiere functools
+    importiere _collections_abc
     @functools.wraps(func)
     def wrapped(*args, **kwargs):
         coro = func(*args, **kwargs)

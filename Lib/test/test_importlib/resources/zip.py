@@ -2,7 +2,7 @@
 Generate zip test data files.
 """
 
-import zipfile
+importiere zipfile
 
 
 def make_zip_file(tree, dst):
@@ -19,6 +19,6 @@ def make_zip_file(tree, dst):
 def walk(tree, prefix=''):
     fuer name, contents in tree.items():
         wenn isinstance(contents, dict):
-            yield from walk(contents, prefix=f'{prefix}{name}/')
+            yield von walk(contents, prefix=f'{prefix}{name}/')
         sonst:
             yield f'{prefix}{name}', contents

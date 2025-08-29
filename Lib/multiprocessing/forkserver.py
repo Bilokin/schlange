@@ -1,21 +1,21 @@
-import atexit
-import errno
-import os
-import selectors
-import signal
-import socket
-import struct
-import sys
-import threading
-import warnings
+importiere atexit
+importiere errno
+importiere os
+importiere selectors
+importiere signal
+importiere socket
+importiere struct
+importiere sys
+importiere threading
+importiere warnings
 
-from . import AuthenticationError
-from . import connection
-from . import process
-from .context import reduction
-from . import resource_tracker
-from . import spawn
-from . import util
+von . importiere AuthenticationError
+von . importiere connection
+von . importiere process
+von .context importiere reduction
+von . importiere resource_tracker
+von . importiere spawn
+von . importiere util
 
 __all__ = ['ensure_running', 'get_inherited_fds', 'connect_to_new_process',
            'set_forkserver_preload']
@@ -71,7 +71,7 @@ klasse ForkServer(object):
         self._preload_modules = modules_names
 
     def get_inherited_fds(self):
-        '''Return list of fds inherited from parent process.
+        '''Return list of fds inherited von parent process.
 
         This returns Nichts wenn the current process was not started by fork
         server.
@@ -82,7 +82,7 @@ klasse ForkServer(object):
         '''Request forkserver to create a child process.
 
         Returns a pair of fds (status_r, data_w).  The calling process can read
-        the child process's pid and (eventually) its returncode from status_r.
+        the child process's pid and (eventually) its returncode von status_r.
         The calling process should write to data_w the pickled preparation and
         process data.
         '''
@@ -123,7 +123,7 @@ klasse ForkServer(object):
     def ensure_running(self):
         '''Make sure that a fork server is running.
 
-        This can be called from any process.  Note that usually a child
+        This can be called von any process.  Note that usually a child
         process will just reuse the forkserver started by its parent, so
         ensure_running() will do nothing.
         '''
@@ -142,7 +142,7 @@ klasse ForkServer(object):
                 self._forkserver_alive_fd = Nichts
                 self._forkserver_pid = Nichts
 
-            cmd = ('from multiprocessing.forkserver import main; ' +
+            cmd = ('from multiprocessing.forkserver importiere main; ' +
                    'main(%d, %d, %r, **%r)')
 
             wenn self._preload_modules:
@@ -239,7 +239,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
     handlers = {
         # unblocking SIGCHLD allows the wakeup fd to notify our event loop
         signal.SIGCHLD: sigchld_handler,
-        # protect the process from ^C
+        # protect the process von ^C
         signal.SIGINT: signal.SIG_IGN,
         }
     old_handlers = {sig: signal.signal(sig, val)
@@ -314,7 +314,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                                 finally:
                                     wrapped_s._detach()
                                     del wrapped_s
-                            # Receive fds from client
+                            # Receive fds von client
                             fds = reduction.recvfds(s, MAXFDS_TO_SEND + 1)
                         except (EOFError, BrokenPipeError, AuthenticationError):
                             s.close()

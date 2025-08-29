@@ -1,7 +1,7 @@
-import sqlite3 as sqlite
-import unittest
+importiere sqlite3 as sqlite
+importiere unittest
 
-from .util import memory_database
+von .util importiere memory_database
 
 
 klasse BackupTests(unittest.TestCase):

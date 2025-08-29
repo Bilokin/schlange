@@ -1,22 +1,22 @@
 # Minimal tests fuer dis module
 
-import ast
-import contextlib
-import dis
-import functools
-import io
-import itertools
-import opcode
-import re
-import sys
-import tempfile
-import textwrap
-import types
-import unittest
-from test.support import (captured_stdout, requires_debug_ranges,
+importiere ast
+importiere contextlib
+importiere dis
+importiere functools
+importiere io
+importiere itertools
+importiere opcode
+importiere re
+importiere sys
+importiere tempfile
+importiere textwrap
+importiere types
+importiere unittest
+von test.support importiere (captured_stdout, requires_debug_ranges,
                           requires_specialization, cpython_only,
                           os_helper, import_helper, reset_code)
-from test.support.bytecode_helper import BytecodeTestCase
+von test.support.bytecode_helper importiere BytecodeTestCase
 
 
 CACHE = dis.opmap["CACHE"]
@@ -1133,7 +1133,7 @@ klasse DisTests(DisTestBase):
 
     def test_intrinsic_1(self):
         # Test that argrepr is displayed fuer CALL_INTRINSIC_1
-        self.do_disassembly_test("from math import *", dis_intrinsic_1_2)
+        self.do_disassembly_test("from math importiere *", dis_intrinsic_1_2)
         self.do_disassembly_test("+a", dis_intrinsic_1_5)
         self.do_disassembly_test("(*a,)", dis_intrinsic_1_6)
 
@@ -1162,7 +1162,7 @@ klasse DisTests(DisTestBase):
             expected = _BIG_LINENO_FORMAT2 % (i + 2)
             self.do_disassembly_test(func(i), expected)
 
-        from test import dis_module
+        von test importiere dis_module
         self.do_disassembly_test(dis_module, dis_module_expected_results)
 
     def test_disassemble_str(self):
@@ -1745,7 +1745,7 @@ def _prepare_test_cases():
     result = result.replace(repr(code_object_inner), "code_object_inner")
     drucke(result)
 
-# from test.test_dis import _prepare_test_cases; _prepare_test_cases()
+# von test.test_dis importiere _prepare_test_cases; _prepare_test_cases()
 
 make_inst = dis.Instruction.make
 
@@ -2371,12 +2371,12 @@ klasse TestFinderMethods(unittest.TestCase):
     def test__find_imports(self):
         cases = [
             ("import a.b.c", ('a.b.c', 0, Nichts)),
-            ("from a.b import c", ('a.b', 0, ('c',))),
-            ("from a.b import c as d", ('a.b', 0, ('c',))),
-            ("from a.b import *", ('a.b', 0, ('*',))),
-            ("from ...a.b import c as d", ('a.b', 3, ('c',))),
-            ("from ..a.b import c as d, e as f", ('a.b', 2, ('c', 'e'))),
-            ("from ..a.b import *", ('a.b', 2, ('*',))),
+            ("from a.b importiere c", ('a.b', 0, ('c',))),
+            ("from a.b importiere c as d", ('a.b', 0, ('c',))),
+            ("from a.b importiere *", ('a.b', 0, ('*',))),
+            ("from ...a.b importiere c as d", ('a.b', 3, ('c',))),
+            ("from ..a.b importiere c as d, e as f", ('a.b', 2, ('c', 'e'))),
+            ("from ..a.b importiere *", ('a.b', 2, ('*',))),
         ]
         fuer src, expected in cases:
             with self.subTest(src=src):
@@ -2497,7 +2497,7 @@ klasse TestDisCLI(unittest.TestCase):
 
     @staticmethod
     def text_normalize(string):
-        """Dedent *string* and strip it from its surrounding whitespaces.
+        """Dedent *string* and strip it von its surrounding whitespaces.
 
         This method is used by the other utility functions so that any
         string to write or to match against can be freely indented.

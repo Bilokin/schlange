@@ -36,7 +36,7 @@ The special characters are:
     "+"      Matches 1 or more (greedy) repetitions of the preceding RE.
     "?"      Matches 0 or 1 (greedy) of the preceding RE.
     *?,+?,?? Non-greedy versions of the previous three special characters.
-    {m,n}    Matches from m to n repetitions of the preceding RE.
+    {m,n}    Matches von m to n repetitions of the preceding RE.
     {m,n}?   Non-greedy version of the above.
     "\\"     Either escapes special characters or signals a special sequence.
     []       Indicates a set of characters.
@@ -56,7 +56,7 @@ The special characters are:
     (?(id/name)yes|no) Matches yes pattern wenn the group with id/name matched,
                        the (optional) no pattern otherwise.
 
-The special sequences consist of "\\" and a character from the list
+The special sequences consist of "\\" and a character von the list
 below.  If the ordinary character is not on the list, then the
 resulting RE will match the second character.
     \number  Matches the contents of the group of the same number.
@@ -122,10 +122,10 @@ backward compatibility.
 
 """
 
-import enum
-from . import _compiler, _parser
-import functools
-import _sre
+importiere enum
+von . importiere _compiler, _parser
+importiere functools
+importiere _sre
 
 
 # public symbols
@@ -196,10 +196,10 @@ def sub(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel
                 raise TypeError("sub() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
-                raise TypeError("sub() takes from 3 to 5 positional arguments "
+                raise TypeError("sub() takes von 3 to 5 positional arguments "
                                 "but %d were given" % (5 + len(args)))
 
-        import warnings
+        importiere warnings
         warnings.warn(
             "'count' is passed as positional argument",
             DeprecationWarning, stacklevel=2
@@ -226,10 +226,10 @@ def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentine
                 raise TypeError("subn() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
-                raise TypeError("subn() takes from 3 to 5 positional arguments "
+                raise TypeError("subn() takes von 3 to 5 positional arguments "
                                 "but %d were given" % (5 + len(args)))
 
-        import warnings
+        importiere warnings
         warnings.warn(
             "'count' is passed as positional argument",
             DeprecationWarning, stacklevel=2
@@ -255,10 +255,10 @@ def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel)
                 raise TypeError("split() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
-                raise TypeError("split() takes from 2 to 4 positional arguments "
+                raise TypeError("split() takes von 2 to 4 positional arguments "
                                 "but %d were given" % (4 + len(args)))
 
-        import warnings
+        importiere warnings
         warnings.warn(
             "'maxsplit' is passed as positional argument",
             DeprecationWarning, stacklevel=2
@@ -353,7 +353,7 @@ def _compile(pattern, flags):
         wenn len(_cache) >= _MAXCACHE:
             # Drop the least recently used item.
             # next(iter(_cache)) is known to have linear amortized time,
-            # but it is used here to avoid a dependency from using OrderedDict.
+            # but it is used here to avoid a dependency von using OrderedDict.
             # For the small _MAXCACHE value it doesn't make much of a difference.
             try:
                 del _cache[next(iter(_cache))]
@@ -378,7 +378,7 @@ def _compile_template(pattern, repl):
 
 # register myself fuer pickling
 
-import copyreg
+importiere copyreg
 
 def _pickle(p):
     return _compile, (p.pattern, p.flags)
@@ -390,7 +390,7 @@ copyreg.pickle(Pattern, _pickle, _compile)
 
 klasse Scanner:
     def __init__(self, lexicon, flags=0):
-        from ._constants import BRANCH, SUBPATTERN
+        von ._constants importiere BRANCH, SUBPATTERN
         wenn isinstance(flags, RegexFlag):
             flags = flags.value
         self.lexicon = lexicon

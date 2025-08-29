@@ -1,14 +1,14 @@
 """Test case-sensitivity (PEP 235)."""
-import sys
+importiere sys
 
-from test.test_importlib import util
+von test.test_importlib importiere util
 
 importlib = util.import_importlib('importlib')
 machinery = util.import_importlib('importlib.machinery')
 
-import os
-from test.support import os_helper
-import unittest
+importiere os
+von test.support importiere os_helper
+importiere unittest
 
 
 @util.case_insensitive_tests

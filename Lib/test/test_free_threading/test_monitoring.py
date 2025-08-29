@@ -1,17 +1,17 @@
 """Tests monitoring, sys.settrace, and sys.setprofile in a multi-threaded
 environment to verify things are thread-safe in a free-threaded build"""
 
-import sys
-import threading
-import time
-import unittest
-import weakref
+importiere sys
+importiere threading
+importiere time
+importiere unittest
+importiere weakref
 
-from contextlib import contextmanager
-from sys import monitoring
-from test.support import threading_helper
-from threading import Thread, _PyRLock, Barrier
-from unittest import TestCase
+von contextlib importiere contextmanager
+von sys importiere monitoring
+von test.support importiere threading_helper
+von threading importiere Thread, _PyRLock, Barrier
+von unittest importiere TestCase
 
 
 klasse InstrumentationMultiThreadedMixin:
@@ -447,7 +447,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         self.observe_threads(noop, buf)
 
     def test_trace_concurrent(self):
-        # Test calling a function concurrently from a tracing and a non-tracing
+        # Test calling a function concurrently von a tracing and a non-tracing
         # thread
         b = threading.Barrier(2)
 

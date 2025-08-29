@@ -1,8 +1,8 @@
 # Check every path through every method of UserList
 
-from collections import UserList
-from test import list_tests
-import unittest
+von collections importiere UserList
+von test importiere list_tests
+importiere unittest
 
 
 klasse UserListTest(list_tests.CommonTest):

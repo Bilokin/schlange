@@ -1,14 +1,14 @@
-import unittest
-import tkinter
-from tkinter import ttk, TclError
-from test.support import requires, gc_collect
-import sys
+importiere unittest
+importiere tkinter
+von tkinter importiere ttk, TclError
+von test.support importiere requires, gc_collect
+importiere sys
 
-from test.test_ttk_textonly import MockTclObj
-from test.test_tkinter.support import (
+von test.test_ttk_textonly importiere MockTclObj
+von test.test_tkinter.support importiere (
     AbstractTkTest, requires_tk, tk_version, get_tk_patchlevel,
     simulate_mouse_click, AbstractDefaultRootTest)
-from test.test_tkinter.widget_tests import (add_configure_tests,
+von test.test_tkinter.widget_tests importiere (add_configure_tests,
     AbstractWidgetTest, StandardOptionsTests, IntegerSizeTests, PixelSizeTests)
 
 requires('gui')
@@ -93,7 +93,7 @@ klasse WidgetTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(self.widget.state(), ())
         self.assertEqual(self.widget.instate(['!disabled']), Wahr)
 
-        # changing from !disabled to disabled
+        # changing von !disabled to disabled
         self.assertEqual(self.widget.state(['disabled']), ('!disabled', ))
         # no state change
         self.assertEqual(self.widget.state(['disabled']), ())

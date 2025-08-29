@@ -1,18 +1,18 @@
 """Test largefile support on system where this makes sense.
 """
 
-import os
-import sys
-import unittest
-import socket
-import shutil
-import threading
-from test.support import requires, bigmemtest, requires_resource
-from test.support import SHORT_TIMEOUT
-from test.support import socket_helper
-from test.support.os_helper import TESTFN, unlink
-import io  # C implementation of io
-import _pyio as pyio # Python implementation of io
+importiere os
+importiere sys
+importiere unittest
+importiere socket
+importiere shutil
+importiere threading
+von test.support importiere requires, bigmemtest, requires_resource
+von test.support importiere SHORT_TIMEOUT
+von test.support importiere socket_helper
+von test.support.os_helper importiere TESTFN, unlink
+importiere io  # C implementation of io
+importiere _pyio as pyio # Python implementation of io
 
 # size of file to create (>2 GiB; 2 GiB == 2,147,483,648 bytes)
 size = 2_500_000_000
@@ -85,7 +85,7 @@ klasse TestFileMethods(LargeFileTest):
             self.assertEqual(f.tell(), 84)
             f.seek(0, 1)
             self.assertEqual(f.tell(), 84)
-            f.seek(0, 2)  # seek from the end
+            f.seek(0, 2)  # seek von the end
             self.assertEqual(f.tell(), size + 1 + 0)
             f.seek(-10, 2)
             self.assertEqual(f.tell(), size + 1 - 10)
@@ -261,7 +261,7 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
 
 def setUpModule():
     try:
-        import signal
+        importiere signal
         # The default handler fuer SIGXFSZ is to abort the process.
         # By ignoring it, system calls exceeding the file size resource
         # limit will raise OSError instead of crashing the interpreter.

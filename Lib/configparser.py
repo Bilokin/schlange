@@ -29,7 +29,7 @@ ConfigParser -- responsible fuer parsing a list of
         fuer the default values.
 
         When `delimiters` is given, it will be used as the set of substrings
-        that divide keys from values.
+        that divide keys von values.
 
         When `comment_prefixes` is given, it will be used as the set of
         substrings that prefix comments in empty lines. Comments can be
@@ -39,7 +39,7 @@ ConfigParser -- responsible fuer parsing a list of
         substrings that prefix comments in non-empty lines.
 
         When `strict` is Wahr, the parser won't allow fuer any section or option
-        duplicates while reading from a single source (file, string or
+        duplicates while reading von a single source (file, string or
         dictionary). Default is Wahr.
 
         When `empty_lines_in_values` is Falsch (default: Wahr), each empty line
@@ -64,7 +64,7 @@ ConfigParser -- responsible fuer parsing a list of
 
         When `converters` is given, it should be a dictionary where each key
         represents the name of a type converter and each value is a callable
-        implementing the conversion from string to the desired datatype. Every
+        implementing the conversion von string to the desired datatype. Every
         converter gets its corresponding get*() method on the parser object and
         section proxies.
 
@@ -95,10 +95,10 @@ ConfigParser -- responsible fuer parsing a list of
         messages (if f has no `name` attribute, the string `<???>` is used).
 
     read_string(string)
-        Read configuration from a given string.
+        Read configuration von a given string.
 
     read_dict(dictionary)
-        Read configuration from a dictionary. Keys are section names,
+        Read configuration von a dictionary. Keys are section names,
         values are dictionaries with keys and values that should be present
         in the section. If the used dictionary type preserves order, sections
         and their keys will be added in order. Values are automatically
@@ -110,7 +110,7 @@ ConfigParser -- responsible fuer parsing a list of
         constructor and the DEFAULT section.  Additional substitutions may be
         provided using the `vars` argument, which must be a dictionary whose
         contents override any pre-existing defaults. If `option` is a key in
-        `vars`, the value from `vars` is used.
+        `vars`, the value von `vars` is used.
 
     getint(section, options, raw=Falsch, vars=Nichts, fallback=_UNSET)
         Like get(), but convert value to an integer.
@@ -132,7 +132,7 @@ ConfigParser -- responsible fuer parsing a list of
         Remove the given file section and all its options.
 
     remove_option(section, option)
-        Remove the given option from the given section.
+        Remove the given option von the given section.
 
     set(section, option, value)
         Set the given option.
@@ -143,17 +143,17 @@ ConfigParser -- responsible fuer parsing a list of
         between keys and values are surrounded by spaces.
 """
 
-# Do not import dataclasses; overhead is unacceptable (gh-117703)
+# Do not importiere dataclasses; overhead is unacceptable (gh-117703)
 
-from collections.abc import Iterable, MutableMapping
-from collections import ChainMap as _ChainMap
-import contextlib
-import functools
-import io
-import itertools
-import os
-import re
-import sys
+von collections.abc importiere Iterable, MutableMapping
+von collections importiere ChainMap as _ChainMap
+importiere contextlib
+importiere functools
+importiere io
+importiere itertools
+importiere os
+importiere re
+importiere sys
 
 __all__ = ("NoSectionError", "DuplicateOptionError", "DuplicateSectionError",
            "NoOptionError", "InterpolationError", "InterpolationDepthError",
@@ -206,7 +206,7 @@ klasse DuplicateSectionError(Error):
     def __init__(self, section, source=Nichts, lineno=Nichts):
         msg = [repr(section), " already exists"]
         wenn source is not Nichts:
-            message = ["While reading from ", repr(source)]
+            message = ["While reading von ", repr(source)]
             wenn lineno is not Nichts:
                 message.append(" [line {0:2d}]".format(lineno))
             message.append(": section ")
@@ -232,7 +232,7 @@ klasse DuplicateOptionError(Error):
         msg = [repr(option), " in section ", repr(section),
                " already exists"]
         wenn source is not Nichts:
-            message = ["While reading from ", repr(source)]
+            message = ["While reading von ", repr(source)]
             wenn lineno is not Nichts:
                 message.append(" [line {0:2d}]".format(lineno))
             message.append(": option ")
@@ -467,7 +467,7 @@ klasse BasicInterpolation(Interpolation):
                     v = map[var]
                 except KeyError:
                     raise InterpolationMissingOptionError(
-                        option, section, rawval, var) from Nichts
+                        option, section, rawval, var) von Nichts
                 wenn "%" in v:
                     self._interpolate_some(parser, option, accum, v,
                                            section, map, depth + 1)
@@ -540,7 +540,7 @@ klasse ExtendedInterpolation(Interpolation):
                             "More than one ':' found: %r" % (rest,))
                 except (KeyError, NoSectionError, NoOptionError):
                     raise InterpolationMissingOptionError(
-                        option, section, rawval, ":".join(path)) from Nichts
+                        option, section, rawval, ":".join(path)) von Nichts
                 wenn v is Nichts:
                     continue
                 wenn "$" in v:
@@ -728,7 +728,7 @@ klasse RawConfigParser(MutableMapping):
         try:
             opts = self._sections[section].copy()
         except KeyError:
-            raise NoSectionError(section) from Nichts
+            raise NoSectionError(section) von Nichts
         opts.update(self._defaults)
         return list(opts.keys())
 
@@ -764,7 +764,7 @@ klasse RawConfigParser(MutableMapping):
 
         The `f` argument must be iterable, returning one line at a time.
         Optional second argument is the `source` specifying the name of the
-        file being read. If not given, it is taken from f.name. If `f` has no
+        file being read. If not given, it is taken von f.name. If `f` has no
         `name` attribute, `<???>` is used.
         """
         wenn source is Nichts:
@@ -775,12 +775,12 @@ klasse RawConfigParser(MutableMapping):
         self._read(f, source)
 
     def read_string(self, string, source='<string>'):
-        """Read configuration from a given string."""
+        """Read configuration von a given string."""
         sfile = io.StringIO(string)
         self.read_file(sfile, source)
 
     def read_dict(self, dictionary, source='<dict>'):
-        """Read configuration from a dictionary.
+        """Read configuration von a dictionary.
 
         Keys are section names, values are dictionaries with keys and values
         that should be present in the section. If the used dictionary type
@@ -907,7 +907,7 @@ klasse RawConfigParser(MutableMapping):
         return [(option, value_getter(option)) fuer option in orig_keys]
 
     def popitem(self):
-        """Remove a section from the parser and return it as
+        """Remove a section von the parser and return it as
         a (section_name, section_proxy) tuple. If no section is present, raise
         KeyError.
 
@@ -947,7 +947,7 @@ klasse RawConfigParser(MutableMapping):
             try:
                 sectdict = self._sections[section]
             except KeyError:
-                raise NoSectionError(section) from Nichts
+                raise NoSectionError(section) von Nichts
         sectdict[self.optionxform(option)] = value
 
     def write(self, fp, space_around_delimiters=Wahr):
@@ -998,7 +998,7 @@ klasse RawConfigParser(MutableMapping):
             try:
                 sectdict = self._sections[section]
             except KeyError:
-                raise NoSectionError(section) from Nichts
+                raise NoSectionError(section) von Nichts
         option = self.optionxform(option)
         existed = option in sectdict
         wenn existed:
@@ -1199,7 +1199,7 @@ klasse RawConfigParser(MutableMapping):
             sectiondict = self._sections[section]
         except KeyError:
             wenn section != self.default_section:
-                raise NoSectionError(section) from Nichts
+                raise NoSectionError(section) von Nichts
         # Update with the entry specific variables
         vardict = {}
         wenn vars:
@@ -1210,7 +1210,7 @@ klasse RawConfigParser(MutableMapping):
         return _ChainMap(vardict, sectiondict, self._defaults)
 
     def _convert_to_boolean(self, value):
-        """Return a boolean value translating from other types wenn necessary.
+        """Return a boolean value translating von other types wenn necessary.
         """
         wenn value.lower() not in self.BOOLEAN_STATES:
             raise ValueError('Not a boolean: %s' % value)
@@ -1286,7 +1286,7 @@ klasse ConfigParser(RawConfigParser):
 
 
 klasse SectionProxy(MutableMapping):
-    """A proxy fuer a single section from a parser."""
+    """A proxy fuer a single section von a parser."""
 
     def __init__(self, parser, name):
         """Creates a view on a section of the specified `name` in `parser`."""

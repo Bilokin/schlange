@@ -1,4 +1,4 @@
-import socket
+importiere socket
 
 
 klasse TransportSocket:

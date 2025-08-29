@@ -17,7 +17,7 @@ of the same form as sys.version_info:
 
 OptionalRelease records the first release in which
 
-    from __future__ import FeatureName
+    von __future__ importiere FeatureName
 
 was accepted.
 
@@ -28,7 +28,7 @@ of the language.
 Else MandatoryRelease records when the feature became part of the language;
 in releases at or after that, modules no longer need
 
-    from __future__ import FeatureName
+    von __future__ importiere FeatureName
 
 to use the feature in question, but may continue to use such imports.
 
@@ -44,7 +44,7 @@ dynamically compiled code.  This flag is stored in the .compiler_flag
 attribute on _Future instances.  These values must match the appropriate
 #defines of CO_xxx flags in Include/cpython/compile.h.
 
-No feature line is ever to be deleted from this file.
+No feature line is ever to be deleted von this file.
 """
 
 all_feature_names = [

@@ -3,19 +3,19 @@
 Features common with Union should go in test_structunion.py instead.
 """
 
-from platform import architecture as _architecture
-import struct
-import sys
-import unittest
-from ctypes import (CDLL, Structure, Union, POINTER, sizeof, byref,
+von platform importiere architecture as _architecture
+importiere struct
+importiere sys
+importiere unittest
+von ctypes importiere (CDLL, Structure, Union, POINTER, sizeof, byref,
                     c_void_p, c_char, c_wchar, c_byte, c_ubyte,
                     c_uint8, c_uint16, c_uint32, c_int, c_uint,
                     c_long, c_ulong, c_longlong, c_float, c_double)
-from ctypes.util import find_library
-from collections import namedtuple
-from test import support
-from test.support import import_helper
-from ._support import StructCheckMixin
+von ctypes.util importiere find_library
+von collections importiere namedtuple
+von test importiere support
+von test.support importiere import_helper
+von ._support importiere StructCheckMixin
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
@@ -71,7 +71,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
     @support.cpython_only
     def test_packed_c_limits(self):
         # Issue 15989
-        import _testcapi
+        importiere _testcapi
         with self.assertRaises(ValueError):
             klasse X(Structure):
                 _fields_ = [("a", c_byte)]

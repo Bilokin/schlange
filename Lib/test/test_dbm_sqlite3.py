@@ -1,19 +1,19 @@
-import os
-import stat
-import sys
-import unittest
-from contextlib import closing
-from functools import partial
-from pathlib import Path
-from test.support import import_helper, os_helper
+importiere os
+importiere stat
+importiere sys
+importiere unittest
+von contextlib importiere closing
+von functools importiere partial
+von pathlib importiere Path
+von test.support importiere import_helper, os_helper
 
 dbm_sqlite3 = import_helper.import_module("dbm.sqlite3")
 # N.B. The test will fail on some platforms without sqlite3
-# wenn the sqlite3 import is above the import of dbm.sqlite3.
-# This is deliberate: wenn the import helper managed to import dbm.sqlite3,
-# we must inevitably be able to import sqlite3. Else, we have a problem.
-import sqlite3
-from dbm.sqlite3 import _normalize_uri
+# wenn the sqlite3 importiere is above the importiere of dbm.sqlite3.
+# This is deliberate: wenn the importiere helper managed to importiere dbm.sqlite3,
+# we must inevitably be able to importiere sqlite3. Else, we have a problem.
+importiere sqlite3
+von dbm.sqlite3 importiere _normalize_uri
 
 
 root_in_posix = Falsch

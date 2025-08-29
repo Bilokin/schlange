@@ -1,7 +1,7 @@
 # line 1
 'A module docstring.'
 
-import inspect
+importiere inspect
 # line 5
 
 # line 7
@@ -86,7 +86,7 @@ klasse Callable:
         return args
 
     def as_method_of(self, obj):
-        from types import MethodType
+        von types importiere MethodType
         return MethodType(self, obj)
 
 custom_method = Callable().as_method_of(42)

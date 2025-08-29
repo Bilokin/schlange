@@ -1,9 +1,9 @@
 "Test autoexpand, coverage 100%."
 
-from idlelib.autoexpand import AutoExpand
-import unittest
-from test.support import requires
-from tkinter import Text, Tk
+von idlelib.autoexpand importiere AutoExpand
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Text, Tk
 
 
 klasse DummyEditwin:
@@ -28,11 +28,11 @@ klasse AutoExpandTest(unittest.TestCase):
 ##            requires('gui')
 ##            #raise ResourceDenied()  # Uncomment to test mock.
 ##        except ResourceDenied:
-##            from idlelib.idle_test.mock_tk import Text
+##            von idlelib.idle_test.mock_tk importiere Text
 ##            cls.text = Text()
 ##            cls.text.bell = lambda: Nichts
 ##        sonst:
-##            from tkinter import Tk, Text
+##            von tkinter importiere Tk, Text
 ##            cls.tk = Tk()
 ##            cls.text = Text(cls.tk)
 

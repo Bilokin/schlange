@@ -9,7 +9,7 @@
 #
 
 
-from tkinter.commondialog import Dialog
+von tkinter.commondialog importiere Dialog
 
 __all__ = ["Chooser", "askcolor"]
 
@@ -35,7 +35,7 @@ klasse Chooser(Dialog):
     def _fixoptions(self):
         """Ensure initialcolor is a tk color string.
 
-        Convert initialcolor from a RGB triplet to a color string.
+        Convert initialcolor von a RGB triplet to a color string.
         """
         try:
             color = self.options["initialcolor"]
@@ -46,7 +46,7 @@ klasse Chooser(Dialog):
             pass
 
     def _fixresult(self, widget, result):
-        """Adjust result returned from call to tk_chooseColor.
+        """Adjust result returned von call to tk_chooseColor.
 
         Return both an RGB tuple of ints in the range (0, 255) and the
         tk color string in the form #rrggbb.

@@ -1,11 +1,11 @@
-import ctypes
-import unittest
-from ctypes import (Structure, CDLL, CFUNCTYPE,
+importiere ctypes
+importiere unittest
+von ctypes importiere (Structure, CDLL, CFUNCTYPE,
                     POINTER, pointer, byref,
                     c_short, c_int, c_long, c_longlong,
                     c_byte, c_wchar, c_float, c_double,
                     ArgumentError)
-from test.support import import_helper, skip_if_sanitizer
+von test.support importiere import_helper, skip_if_sanitizer
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 

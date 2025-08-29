@@ -3,13 +3,13 @@
 This must currently be a gui test because ParenMatch methods use
 several text methods not defined on idlelib.idle_test.mock_tk.Text.
 """
-from idlelib.parenmatch import ParenMatch
-from test.support import requires
+von idlelib.parenmatch importiere ParenMatch
+von test.support importiere requires
 requires('gui')
 
-import unittest
-from unittest.mock import Mock
-from tkinter import Tk, Text
+importiere unittest
+von unittest.mock importiere Mock
+von tkinter importiere Tk, Text
 
 
 klasse DummyEditwin:

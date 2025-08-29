@@ -52,11 +52,11 @@
 
 ##
 # Implementation module fuer XPath support.  There's usually no reason
-# to import this module directly; the <b>ElementTree</b> does this for
+# to importiere this module directly; the <b>ElementTree</b> does this for
 # you, wenn needed.
 ##
 
-import re
+importiere re
 
 xpath_tokenizer_re = re.compile(
     r"("
@@ -84,7 +84,7 @@ def xpath_tokenizer(pattern, namespaces=Nichts):
                         raise KeyError
                     yield ttype, "{%s}%s" % (namespaces[prefix], uri)
                 except KeyError:
-                    raise SyntaxError("prefix %r not found in prefix map" % prefix) from Nichts
+                    raise SyntaxError("prefix %r not found in prefix map" % prefix) von Nichts
             sowenn default_namespace and not parsing_attribute:
                 yield ttype, "{%s}%s" % (default_namespace, tag)
             sonst:
@@ -157,7 +157,7 @@ def prepare_child(next, token):
         def select(context, result):
             def select_child(result):
                 fuer elem in result:
-                    yield from elem
+                    yield von elem
             return select_tag(context, select_child(result))
     sonst:
         wenn tag[:2] == '{}':
@@ -172,12 +172,12 @@ def prepare_child(next, token):
 def prepare_star(next, token):
     def select(context, result):
         fuer elem in result:
-            yield from elem
+            yield von elem
     return select
 
 def prepare_self(next, token):
     def select(context, result):
-        yield from result
+        yield von result
     return select
 
 def prepare_descendant(next, token):
@@ -319,7 +319,7 @@ def prepare_predicate(next, token):
                 except ValueError:
                     raise SyntaxError("unsupported expression")
                 wenn index > -2:
-                    raise SyntaxError("XPath offset from last() must be negative")
+                    raise SyntaxError("XPath offset von last() must be negative")
             sonst:
                 index = -1
         def select(context, result):
@@ -383,7 +383,7 @@ def iterfind(elem, path, namespaces=Nichts):
             try:
                 selector.append(ops[token[0]](next, token))
             except StopIteration:
-                raise SyntaxError("invalid path") from Nichts
+                raise SyntaxError("invalid path") von Nichts
             try:
                 token = next()
                 wenn token[0] == "/":

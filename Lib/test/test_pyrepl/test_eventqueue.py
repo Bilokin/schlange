@@ -1,23 +1,23 @@
-import tempfile
-import unittest
-from unittest.mock import patch
-from test import support
+importiere tempfile
+importiere unittest
+von unittest.mock importiere patch
+von test importiere support
 
-from _pyrepl import terminfo
+von _pyrepl importiere terminfo
 
 try:
-    from _pyrepl.console import Event
-    from _pyrepl import base_eventqueue
+    von _pyrepl.console importiere Event
+    von _pyrepl importiere base_eventqueue
 except ImportError:
     pass
 
 try:
-    from _pyrepl import unix_eventqueue
+    von _pyrepl importiere unix_eventqueue
 except ImportError:
     pass
 
 try:
-    from _pyrepl import windows_eventqueue
+    von _pyrepl importiere windows_eventqueue
 except ImportError:
     pass
 

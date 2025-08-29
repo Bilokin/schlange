@@ -7,14 +7,14 @@ https://github.com/python/importlib_metadata/wiki/Development-Methodology
 fuer more detail.
 """
 
-from ._common import (
+von ._common importiere (
     as_file,
     files,
     Package,
     Anchor,
 )
 
-from ._functional import (
+von ._functional importiere (
     contents,
     is_resource,
     open_binary,
@@ -24,7 +24,7 @@ from ._functional import (
     read_text,
 )
 
-from .abc import ResourceReader
+von .abc importiere ResourceReader
 
 
 __all__ = [

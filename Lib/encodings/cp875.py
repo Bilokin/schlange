@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec cp875 generated from 'MAPPINGS/VENDORS/MICSFT/EBCDIC/CP875.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp875 generated von 'MAPPINGS/VENDORS/MICSFT/EBCDIC/CP875.TXT' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

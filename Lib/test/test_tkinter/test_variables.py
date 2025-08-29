@@ -1,12 +1,12 @@
-import unittest
-from test import support
+importiere unittest
+von test importiere support
 
-import gc
-import tkinter
-from tkinter import (Variable, StringVar, IntVar, DoubleVar, BooleanVar, Tcl,
+importiere gc
+importiere tkinter
+von tkinter importiere (Variable, StringVar, IntVar, DoubleVar, BooleanVar, Tcl,
                      TclError)
-from test.support import ALWAYS_EQ
-from test.test_tkinter.support import AbstractDefaultRootTest, tcl_version
+von test.support importiere ALWAYS_EQ
+von test.test_tkinter.support importiere AbstractDefaultRootTest, tcl_version
 
 
 klasse Var(Variable):

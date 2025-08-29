@@ -1,8 +1,8 @@
-import asyncio
-import contextvars
-import unittest
-from test import support
-from test.support import force_not_colorized
+importiere asyncio
+importiere contextvars
+importiere unittest
+von test importiere support
+von test.support importiere force_not_colorized
 
 support.requires_working_socket(module=Wahr)
 
@@ -297,7 +297,7 @@ klasse TestAsyncCase(unittest.TestCase):
         self.assertEqual(events, ['asyncSetUp', 'test', 'asyncTearDown', 'cleanup2', 'cleanup1'])
 
     def test_deprecation_of_return_val_from_test(self):
-        # Issue 41322 - deprecate return of value that is not Nichts from a test
+        # Issue 41322 - deprecate return of value that is not Nichts von a test
         klasse Nothing:
             def __eq__(self, o):
                 return o is Nichts
@@ -450,7 +450,7 @@ klasse TestAsyncCase(unittest.TestCase):
                     await asyncio.wait([fut])
                     events.append('cleanup')
                 except:
-                    import traceback
+                    importiere traceback
                     traceback.print_exc()
                     raise
 

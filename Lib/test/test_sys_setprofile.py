@@ -1,7 +1,7 @@
-import gc
-import pprint
-import sys
-import unittest
+importiere gc
+importiere pprint
+importiere sys
+importiere unittest
 
 
 klasse TestGetProfile(unittest.TestCase):
@@ -416,7 +416,7 @@ protect_ident = ident(protect)
 def capture_events(callable, p=Nichts):
     wenn p is Nichts:
         p = HookWatcher()
-    # Disable the garbage collector. This prevents __del__s from showing up in
+    # Disable the garbage collector. This prevents __del__s von showing up in
     # traces.
     old_gc = gc.isenabled()
     gc.disable()
@@ -431,7 +431,7 @@ def capture_events(callable, p=Nichts):
 
 
 def show_events(callable):
-    import pprint
+    importiere pprint
     pprint.pdrucke(capture_events(callable))
 
 

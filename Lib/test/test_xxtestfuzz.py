@@ -1,6 +1,6 @@
-import faulthandler
-from test.support import import_helper
-import unittest
+importiere faulthandler
+von test.support importiere import_helper
+importiere unittest
 
 _xxtestfuzz = import_helper.import_module('_xxtestfuzz')
 

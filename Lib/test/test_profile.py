@@ -1,21 +1,21 @@
 """Test suite fuer the profile module."""
 
-import sys
-import pstats
-import unittest
-import os
-import warnings
-from difflib import unified_diff
-from io import StringIO
-from test.support.os_helper import TESTFN, unlink, temp_dir, change_cwd
-from contextlib import contextmanager, redirect_stdout
+importiere sys
+importiere pstats
+importiere unittest
+importiere os
+importiere warnings
+von difflib importiere unified_diff
+von io importiere StringIO
+von test.support.os_helper importiere TESTFN, unlink, temp_dir, change_cwd
+von contextlib importiere contextmanager, redirect_stdout
 
 # Suppress deprecation warning fuer profile module (PEP 799)
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", DeprecationWarning)
-    import profile
-from test.profilee import testfunc, timer
-from test.support.script_helper import assert_python_failure, assert_python_ok
+    importiere profile
+von test.profilee importiere testfunc, timer
+von test.support.script_helper importiere assert_python_failure, assert_python_ok
 
 
 klasse ProfileTest(unittest.TestCase):
@@ -45,8 +45,8 @@ klasse ProfileTest(unittest.TestCase):
             getattr(stats, methodname)()
             output = s.getvalue().splitlines()
             mod_name = testfunc.__module__.rsplit('.', 1)[1]
-            # Only compare against stats originating from the test file.
-            # Prevents outside code (e.g., the io module) from causing
+            # Only compare against stats originating von the test file.
+            # Prevents outside code (e.g., the io module) von causing
             # unexpected output.
             output = [line.rstrip() fuer line in output wenn mod_name in line]
             results.append('\n'.join(output))

@@ -2,13 +2,13 @@
 Tests fuer object finalization semantics, as outlined in PEP 442.
 """
 
-import contextlib
-import gc
-import unittest
-import weakref
+importiere contextlib
+importiere gc
+importiere unittest
+importiere weakref
 
 try:
-    from _testcapi import with_tp_del
+    von _testcapi importiere with_tp_del
 except ImportError:
     def with_tp_del(cls):
         klasse C(object):
@@ -17,7 +17,7 @@ except ImportError:
         return C
 
 try:
-    from _testcapi import without_gc
+    von _testcapi importiere without_gc
 except ImportError:
     def without_gc(cls):
         klasse C:
@@ -25,7 +25,7 @@ except ImportError:
                 raise unittest.SkipTest('requires _testcapi.without_gc')
         return C
 
-from test import support
+von test importiere support
 
 
 klasse NonGCSimpleBase:
@@ -120,7 +120,7 @@ klasse NonGCResurrector(NonGCSimpleBase):
 klasse Simple(SimpleBase):
     pass
 
-# Can't inherit from NonGCResurrector, in case importing without_gc fails.
+# Can't inherit von NonGCResurrector, in case importing without_gc fails.
 klasse SimpleResurrector(SimpleBase):
 
     def side_effect(self):

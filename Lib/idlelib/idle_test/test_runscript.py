@@ -1,10 +1,10 @@
 "Test runscript, coverage 16%."
 
-from idlelib import runscript
-import unittest
-from test.support import requires
-from tkinter import Tk
-from idlelib.editor import EditorWindow
+von idlelib importiere runscript
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk
+von idlelib.editor importiere EditorWindow
 
 
 klasse ScriptBindingTest(unittest.TestCase):

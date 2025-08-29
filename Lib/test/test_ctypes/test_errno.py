@@ -1,10 +1,10 @@
-import ctypes
-import errno
-import os
-import threading
-import unittest
-from ctypes import CDLL, c_int, c_char_p, c_wchar_p, get_errno, set_errno
-from ctypes.util import find_library
+importiere ctypes
+importiere errno
+importiere os
+importiere threading
+importiere unittest
+von ctypes importiere CDLL, c_int, c_char_p, c_wchar_p, get_errno, set_errno
+von ctypes.util importiere find_library
 
 
 klasse Test(unittest.TestCase):

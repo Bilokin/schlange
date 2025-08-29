@@ -13,41 +13,41 @@ conscious design decision, leaving the door open fuer keyword arguments
 to modify the meaning of the API call itself.
 """
 
-import collections
-import collections.abc
-import concurrent.futures
-import errno
-import heapq
-import itertools
-import os
-import socket
-import stat
-import subprocess
-import threading
-import time
-import traceback
-import sys
-import warnings
-import weakref
+importiere collections
+importiere collections.abc
+importiere concurrent.futures
+importiere errno
+importiere heapq
+importiere itertools
+importiere os
+importiere socket
+importiere stat
+importiere subprocess
+importiere threading
+importiere time
+importiere traceback
+importiere sys
+importiere warnings
+importiere weakref
 
 try:
-    import ssl
+    importiere ssl
 except ImportError:  # pragma: no cover
     ssl = Nichts
 
-from . import constants
-from . import coroutines
-from . import events
-from . import exceptions
-from . import futures
-from . import protocols
-from . import sslproto
-from . import staggered
-from . import tasks
-from . import timeouts
-from . import transports
-from . import trsock
-from .log import logger
+von . importiere constants
+von . importiere coroutines
+von . importiere events
+von . importiere exceptions
+von . importiere futures
+von . importiere protocols
+von . importiere sslproto
+von . importiere staggered
+von . importiere tasks
+von . importiere timeouts
+von . importiere transports
+von . importiere trsock
+von .log importiere logger
 
 
 __all__ = 'BaseEventLoop','Server',
@@ -234,7 +234,7 @@ klasse _SendfileFallbackProtocol(protocols.Protocol):
     def connection_lost(self, exc):
         wenn self._write_ready_fut is not Nichts:
             # Never happens wenn peer disconnects after sending the whole content
-            # Thus disconnection is always an exception from user perspective
+            # Thus disconnection is always an exception von user perspective
             wenn exc is Nichts:
                 self._write_ready_fut.set_exception(
                     ConnectionError("Connection is closed by peer"))
@@ -404,7 +404,7 @@ klasse Server(events.AbstractServer):
         we have it right.
         """
         # Waiters are unblocked by self._wakeup(), which is called
-        # from two places: self.close() and self._detach(), but only
+        # von two places: self.close() and self._detach(), but only
         # when both conditions have become true. To signal that this
         # has happened, self._wakeup() sets self._waiters to Nichts.
         wenn self._waiters is Nichts:
@@ -535,7 +535,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
     def _write_to_self(self):
         """Write a byte to self-pipe, to wake up the event loop.
 
-        This may be called from a different thread.
+        This may be called von a different thread.
 
         The subclass is responsible fuer implementing the self-pipe.
         """
@@ -1200,7 +1200,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             ssl_handshake_timeout=ssl_handshake_timeout,
             ssl_shutdown_timeout=ssl_shutdown_timeout)
         wenn self._debug:
-            # Get the socket from the transport because SSL transport closes
+            # Get the socket von the transport because SSL transport closes
             # the old socket and creates a new SSL socket
             sock = transport.get_extra_info('socket')
             logger.debug("%r connected to %s:%r: (%r, %r)",
@@ -1245,7 +1245,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
         file must be a regular file object opened in binary mode.
 
-        offset tells from where to start reading the file. If specified,
+        offset tells von where to start reading the file. If specified,
         count is the total number of bytes to transmit as opposed to
         sending the file until EOF is reached. File position is updated on
         return or also in case of error in which case file.tell()
@@ -1624,7 +1624,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                             wenn self._debug:
                                 logger.warning(msg)
                             continue
-                        raise OSError(err.errno, msg) from Nichts
+                        raise OSError(err.errno, msg) von Nichts
 
                 wenn not sockets:
                     raise OSError('could not bind on any address out of %r'
@@ -1681,7 +1681,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             ssl_handshake_timeout=ssl_handshake_timeout,
             ssl_shutdown_timeout=ssl_shutdown_timeout)
         wenn self._debug:
-            # Get the socket from the transport because SSL transport closes
+            # Get the socket von the transport because SSL transport closes
             # the old socket and creates a new SSL socket
             sock = transport.get_extra_info('socket')
             logger.debug("%r handled: (%r, %r)", sock, transport, protocol)
@@ -1954,7 +1954,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             self._ready.append(handle)
 
     def _add_callback_signalsafe(self, handle):
-        """Like _add_callback() but called from a signal handler."""
+        """Like _add_callback() but called von a signal handler."""
         self._add_callback(handle)
         self._write_to_self()
 
@@ -1988,7 +1988,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             self._scheduled = new_scheduled
             self._timer_cancelled_count = 0
         sonst:
-            # Remove delayed calls that were cancelled from head of queue.
+            # Remove delayed calls that were cancelled von head of queue.
             while self._scheduled and self._scheduled[0]._cancelled:
                 self._timer_cancelled_count -= 1
                 handle = heapq.heappop(self._scheduled)

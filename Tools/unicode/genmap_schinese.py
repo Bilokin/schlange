@@ -4,10 +4,10 @@
 # Original Author:  Hye-Shik Chang <perky@FreeBSD.org>
 # Modified Author:  Donghee Na <donghee.na92@gmail.com>
 #
-import os
-import re
+importiere os
+importiere re
 
-from genmap_support import *
+von genmap_support importiere *
 
 
 GB2312_C1   = (0x21, 0x7e)

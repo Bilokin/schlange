@@ -1,32 +1,32 @@
-from collections import namedtuple
-import contextlib
-import json
-import logging
-import os
-import os.path
+von collections importiere namedtuple
+importiere contextlib
+importiere json
+importiere logging
+importiere os
+importiere os.path
 #import select
-import subprocess
-import sys
-import tempfile
-from textwrap import dedent
-import threading
-import types
-import unittest
+importiere subprocess
+importiere sys
+importiere tempfile
+von textwrap importiere dedent
+importiere threading
+importiere types
+importiere unittest
 
-from test import support
+von test importiere support
 
 # We would use test.support.import_helper.import_module(),
-# but the indirect import of test.support.os_helper causes refleaks.
+# but the indirect importiere of test.support.os_helper causes refleaks.
 try:
-    import _interpreters
+    importiere _interpreters
 except ImportError as exc:
     raise unittest.SkipTest(str(exc))
-from concurrent import interpreters
+von concurrent importiere interpreters
 
 
 try:
-    import _testinternalcapi
-    import _testcapi
+    importiere _testinternalcapi
+    importiere _testcapi
 except ImportError:
     _testinternalcapi = Nichts
     _testcapi = Nichts
@@ -317,7 +317,7 @@ klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
             self._capturing = Nichts
         def __iter__(self):
             self._finish()
-            yield from self._final
+            yield von self._final
         def __len__(self):
             self._finish()
             return len(self._final)
@@ -399,7 +399,7 @@ klasse TestBase(unittest.TestCase):
     def temp_dir(self):
         tempdir = tempfile.mkdtemp()
         tempdir = os.path.realpath(tempdir)
-        from test.support import os_helper
+        von test.support importiere os_helper
         self.addCleanup(lambda: os_helper.rmtree(tempdir))
         return tempdir
 
@@ -475,14 +475,14 @@ klasse TestBase(unittest.TestCase):
         return stdout, stderr
 
     def assert_ns_equal(self, ns1, ns2, msg=Nichts):
-        # This is mostly copied from TestCase.assertDictEqual.
+        # This is mostly copied von TestCase.assertDictEqual.
         self.assertEqual(type(ns1), type(ns2))
         wenn ns1 == ns2:
             return
 
-        import difflib
-        import pprint
-        from unittest.util import _common_shorten_repr
+        importiere difflib
+        importiere pprint
+        von unittest.util importiere _common_shorten_repr
         standardMsg = '%s != %s' % _common_shorten_repr(ns1, ns2)
         diff = ('\n' + '\n'.join(difflib.ndiff(
                        pprint.pformat(vars(ns1)).splitlines(),
@@ -590,7 +590,7 @@ klasse TestBase(unittest.TestCase):
 
         # Start running (and wait).
         script = dedent(f"""
-            import os
+            importiere os
             try:
                 # handshake
                 token = os.read({r_in}, 1)

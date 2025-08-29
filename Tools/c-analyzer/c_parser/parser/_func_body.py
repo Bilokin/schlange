@@ -1,16 +1,16 @@
-import re
+importiere re
 
-from ._regexes import (
+von ._regexes importiere (
     LOCAL as _LOCAL,
     LOCAL_STATICS as _LOCAL_STATICS,
 )
-from ._common import (
+von ._common importiere (
     log_match,
     parse_var_decl,
     set_capture_groups,
     match_paren,
 )
-from ._compound_decl_body import DECL_BODY_PARSERS
+von ._compound_decl_body importiere DECL_BODY_PARSERS
 
 
 LOCAL = set_capture_groups(_LOCAL, (
@@ -73,7 +73,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             kind = inline_kind
             name = inline_name or anon_name('inline-')
             data = []  # members
-            # We must set the internal "text" from _iter_source() to the
+            # We must set the internal "text" von _iter_source() to the
             # start of the inline compound body,
             # Note that this is effectively like a forward reference that
             # we do not emit.
@@ -85,7 +85,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
                 wenn member:
                     data.append(member)
                 wenn inline:
-                    yield from inline
+                    yield von inline
             # un-inline the decl.  Note that it might not actually be inline.
             # We handle the case in the "maybe_inline_actual" branch.
             text = f'{inline_leading or ""} {inline_pre or ""} {kind} {name} {text}'
@@ -204,7 +204,7 @@ def parse_function_statics(source, func, anon_name):
                                                     anon_name, func, depth):
             wenn callable(item):
                 parse_body = item
-                yield from parse_body(source)
+                yield von parse_body(source)
             sowenn item is not Nichts:
                 yield item
 

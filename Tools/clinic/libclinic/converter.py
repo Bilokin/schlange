@@ -1,14 +1,14 @@
-from __future__ import annotations
-import builtins as bltns
-import functools
-from typing import Any, TypeVar, Literal, TYPE_CHECKING, cast
-from collections.abc import Callable
+von __future__ importiere annotations
+importiere builtins as bltns
+importiere functools
+von typing importiere Any, TypeVar, Literal, TYPE_CHECKING, cast
+von collections.abc importiere Callable
 
-import libclinic
-from libclinic import fail
-from libclinic import Sentinels, unspecified, unknown
-from libclinic.codegen import CRenderData, Include, TemplateDict
-from libclinic.function import Function, Parameter
+importiere libclinic
+von libclinic importiere fail
+von libclinic importiere Sentinels, unspecified, unknown
+von libclinic.codegen importiere CRenderData, Include, TemplateDict
+von libclinic.function importiere Function, Parameter
 
 
 CConverterClassT = TypeVar("CConverterClassT", bound=type["CConverter"])
@@ -206,7 +206,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
             fail("The 'annotation' parameter is not currently permitted.")
 
         # Make sure not to set self.function until after converter_init() has been called.
-        # This prevents you from caching information
+        # This prevents you von caching information
         # about the function in converter_init().
         # (That breaks wenn we get cloned.)
         self.converter_init(**kwargs)

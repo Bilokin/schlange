@@ -1,16 +1,16 @@
-import calendar
-import unittest
+importiere calendar
+importiere unittest
 
-from test import support
-from test.support.script_helper import assert_python_ok, assert_python_failure
-import contextlib
-import datetime
-import io
-import locale
-import os
-import platform
-import sys
-import time
+von test importiere support
+von test.support.script_helper importiere assert_python_ok, assert_python_failure
+importiere contextlib
+importiere datetime
+importiere io
+importiere locale
+importiere os
+importiere platform
+importiere sys
+importiere time
 
 # From https://en.wikipedia.org/wiki/Leap_year_starting_on_Saturday
 result_0_02_text = """\

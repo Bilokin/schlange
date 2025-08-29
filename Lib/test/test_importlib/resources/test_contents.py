@@ -1,7 +1,7 @@
-import unittest
-from importlib import resources
+importiere unittest
+von importlib importiere resources
 
-from . import util
+von . importiere util
 
 
 klasse ContentsTests:

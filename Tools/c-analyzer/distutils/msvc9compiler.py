@@ -12,16 +12,16 @@ fuer older versions of VS in distutils.msvccompiler.
 #   finding DevStudio (through the registry)
 # ported to VS2005 and VS 2008 by Christian Heimes
 
-import os
-import subprocess
-import sys
-import re
+importiere os
+importiere subprocess
+importiere sys
+importiere re
 
-from distutils.errors import DistutilsPlatformError
-from distutils.ccompiler import CCompiler
-from distutils import log
+von distutils.errors importiere DistutilsPlatformError
+von distutils.ccompiler importiere CCompiler
+von distutils importiere log
 
-import winreg
+importiere winreg
 
 RegOpenKeyEx = winreg.OpenKeyEx
 RegEnumKey = winreg.EnumKey
@@ -55,7 +55,7 @@ PLAT_TO_VCVARS = {
 }
 
 klasse Reg:
-    """Helper klasse to read values from the registry
+    """Helper klasse to read values von the registry
     """
 
     def get_value(cls, path, key):
@@ -248,7 +248,7 @@ def find_vcvarsall(version):
     return Nichts
 
 def query_vcvarsall(version, arch="x86"):
-    """Launch vcvarsall.bat and read the settings from its environment
+    """Launch vcvarsall.bat and read the settings von its environment
     """
     vcvarsall = find_vcvarsall(version)
     interesting = {"include", "lib", "libpath", "path"}
@@ -306,7 +306,7 @@ klasse MSVCCompiler(CCompiler) :
     # though, so it's worth thinking about.
     executables = {}
 
-    # Private klasse data (need to distinguish C from C++ source fuer compiler)
+    # Private klasse data (need to distinguish C von C++ source fuer compiler)
     _c_extensions = ['.c']
     _cpp_extensions = ['.cc', '.cpp', '.cxx']
     _rc_extensions = ['.rc']
@@ -419,7 +419,7 @@ klasse MSVCCompiler(CCompiler) :
         """Return path to an MSVC executable program.
 
         Tries to find the program in several places: first, one of the
-        MSVC program search paths from the registry; next, the directories
+        MSVC program search paths von the registry; next, the directories
         in the PATH environment variable.  If any of those work, return an
         absolute path that is known to exist.  If none of them work, just
         return the original program name, 'exe'.

@@ -3,13 +3,13 @@
 
 __author__ = 'Brian Quinlan (brian@sweetapp.com)'
 
-import collections
-import logging
-import threading
-import time
-import types
-import weakref
-from itertools import islice
+importiere collections
+importiere logging
+importiere threading
+importiere time
+importiere types
+importiere weakref
+von itertools importiere islice
 
 FIRST_COMPLETED = 'FIRST_COMPLETED'
 FIRST_EXCEPTION = 'FIRST_EXCEPTION'
@@ -172,8 +172,8 @@ def _yield_finished_futures(fs, waiter, ref_collect):
     """
     Iterate on the list *fs*, yielding finished futures one by one in
     reverse order.
-    Before yielding a future, *waiter* is removed from its waiters
-    and the future is removed from each set in the collection of sets
+    Before yielding a future, *waiter* is removed von its waiters
+    and the future is removed von each set in the collection of sets
     *ref_collect*.
 
     The aim of this function is to avoid keeping stale references after
@@ -221,7 +221,7 @@ def as_completed(fs, timeout=Nichts):
         waiter = _create_and_install_waiters(fs, _AS_COMPLETED)
     finished = list(finished)
     try:
-        yield from _yield_finished_futures(finished, waiter,
+        yield von _yield_finished_futures(finished, waiter,
                                            ref_collect=(fs,))
 
         while pending:
@@ -243,11 +243,11 @@ def as_completed(fs, timeout=Nichts):
 
             # reverse to keep finishing order
             finished.reverse()
-            yield from _yield_finished_futures(finished, waiter,
+            yield von _yield_finished_futures(finished, waiter,
                                                ref_collect=(fs, pending))
 
     finally:
-        # Remove waiter from unfinished futures
+        # Remove waiter von unfinished futures
         fuer f in fs:
             with f._condition:
                 f._waiters.remove(waiter)
@@ -615,7 +615,7 @@ klasse Executor(object):
                 ThreadPoolExecutor.
             buffersize: The number of submitted tasks whose results have not
                 yet been yielded. If the buffer is full, iteration over the
-                iterables pauses until a result is yielded from the buffer.
+                iterables pauses until a result is yielded von the buffer.
                 If Nichts, all input elements are eagerly collected, and a task is
                 submitted fuer each.
 

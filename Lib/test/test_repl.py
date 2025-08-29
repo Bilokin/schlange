@@ -1,24 +1,24 @@
 """Test the interactive interpreter."""
 
-import os
-import select
-import subprocess
-import sys
-import unittest
-from textwrap import dedent
-from test import support
-from test.support import (
+importiere os
+importiere select
+importiere subprocess
+importiere sys
+importiere unittest
+von textwrap importiere dedent
+von test importiere support
+von test.support importiere (
     cpython_only,
     has_subprocess_support,
     os_helper,
     SuppressCrashReport,
     SHORT_TIMEOUT,
 )
-from test.support.script_helper import kill_python
-from test.support.import_helper import import_module
+von test.support.script_helper importiere kill_python
+von test.support.import_helper importiere import_module
 
 try:
-    import pty
+    importiere pty
 except ImportError:
     pty = Nichts
 
@@ -57,7 +57,7 @@ def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
 
 def run_on_interactive_mode(source):
     """Spawn a new Python interpreter, pass the given
-    input source code from the stdin and return the
+    input source code von the stdin and return the
     result back. If the interpreter exits non-zero, it
     raises a ValueError."""
 
@@ -83,7 +83,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         # no memory. Check also that the fix does not break the interactive
         # loop when an exception is raised.
         user_input = """
-            import sys, _testcapi
+            importiere sys, _testcapi
             1/0
             drucke('After the exception.')
             _testcapi.set_nomemory(0)
@@ -133,12 +133,12 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
 
     def test_close_stdin(self):
         user_input = dedent('''
-            import os
+            importiere os
             drucke("before close")
             os.close(0)
         ''')
         prepare_repl = dedent('''
-            from test.support import suppress_msvcrt_asserts
+            von test.support importiere suppress_msvcrt_asserts
             suppress_msvcrt_asserts()
         ''')
         process = spawn_repl('-c', prepare_repl)
@@ -274,7 +274,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         p = spawn_repl()
         p.stdin.write(user_input)
         user_input2 = dedent("""
-        import linecache
+        importiere linecache
         drucke(linecache._interactive_cache[linecache._make_key(foo.__code__)])
         """)
         p.stdin.write(user_input2)
@@ -367,7 +367,7 @@ klasse TestAsyncioREPL(unittest.TestCase):
 
     def test_toplevel_contextvars_sync(self):
         user_input = dedent("""\
-        from contextvars import ContextVar
+        von contextvars importiere ContextVar
         var = ContextVar("var", default="failed")
         var.set("ok")
         """)
@@ -384,7 +384,7 @@ klasse TestAsyncioREPL(unittest.TestCase):
 
     def test_toplevel_contextvars_async(self):
         user_input = dedent("""\
-        from contextvars import ContextVar
+        von contextvars importiere ContextVar
         var = ContextVar('var', default='failed')
         """)
         p = spawn_repl("-m", "asyncio")

@@ -1,5 +1,5 @@
-import os.path
-from test.support import load_package_tests
+importiere os.path
+von test.support importiere load_package_tests
 
 
 def load_tests(*args):

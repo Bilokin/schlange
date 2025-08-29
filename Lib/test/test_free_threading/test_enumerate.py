@@ -1,8 +1,8 @@
-import unittest
-import sys
-from threading import Thread, Barrier
+importiere unittest
+importiere sys
+von threading importiere Thread, Barrier
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 threading_helper.requires_working_threading(module=Wahr)
 

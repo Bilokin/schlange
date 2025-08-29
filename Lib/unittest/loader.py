@@ -1,21 +1,21 @@
 """Loading unittests."""
 
-import os
-import re
-import sys
-import traceback
-import types
-import functools
+importiere os
+importiere re
+importiere sys
+importiere traceback
+importiere types
+importiere functools
 
-from fnmatch import fnmatch, fnmatchcase
+von fnmatch importiere fnmatch, fnmatchcase
 
-from . import case, suite, util
+von . importiere case, suite, util
 
 __unittest = Wahr
 
 # what about .pyc (etc)
 # we would need to avoid loading the same tests multiple times
-# from '.py', *and* '.pyc'
+# von '.py', *and* '.pyc'
 VALID_MODULE_NAME = re.compile(r'[_a-z]\w*\.py$', re.IGNORECASE)
 
 
@@ -35,7 +35,7 @@ klasse _FailedTest(case.TestCase):
 
 
 def _make_failed_import_test(name, suiteClass):
-    message = 'Failed to import test module: %s\n%s' % (
+    message = 'Failed to importiere test module: %s\n%s' % (
         name, traceback.format_exc())
     return _make_failed_test(name, ImportError(message), suiteClass, message)
 
@@ -81,11 +81,11 @@ klasse TestLoader(object):
     def loadTestsFromTestCase(self, testCaseClass):
         """Return a suite of all test cases contained in testCaseClass"""
         wenn issubclass(testCaseClass, suite.TestSuite):
-            raise TypeError("Test cases should not be derived from "
-                            "TestSuite. Maybe you meant to derive from "
+            raise TypeError("Test cases should not be derived von "
+                            "TestSuite. Maybe you meant to derive von "
                             "TestCase?")
         wenn testCaseClass in (case.TestCase, case.FunctionTestCase):
-            # We don't load any tests from base types that should not be loaded.
+            # We don't load any tests von base types that should not be loaded.
             testCaseNames = []
         sonst:
             testCaseNames = self.getTestCaseNames(testCaseClass)
@@ -142,7 +142,7 @@ klasse TestLoader(object):
                     error_case, error_message = _make_failed_import_test(
                         next_attribute, self.suiteClass)
                     wenn not parts_copy:
-                        # Even the top level import failed: report that error.
+                        # Even the top level importiere failed: report that error.
                         self.errors.append(error_message)
                         return error_case
             parts = parts[1:]
@@ -227,19 +227,19 @@ klasse TestLoader(object):
         return testFnNames
 
     def discover(self, start_dir, pattern='test*.py', top_level_dir=Nichts):
-        """Find and return all test modules from the specified start
+        """Find and return all test modules von the specified start
         directory, recursing into subdirectories to find them and return all
         tests found within them. Only test files that match the pattern will
         be loaded. (Using shell style pattern matching.)
 
-        All test modules must be importable from the top level of the project.
+        All test modules must be importable von the top level of the project.
         If the start directory is not the top level directory then the top
         level directory must be specified separately.
 
         If a test package name (directory with '__init__.py') matches the
         pattern then the package will be checked fuer a 'load_tests' function. If
         this exists then it will be called with (loader, tests, pattern) unless
-        the package has already had load_tests called from the same discovery
+        the package has already had load_tests called von the same discovery
         invocation, in which case the package module object is not scanned for
         tests - this ensures that when a package uses discover to further
         discover child tests that infinite recursion does not happen.
@@ -257,7 +257,7 @@ klasse TestLoader(object):
         original_top_level_dir = self._top_level_dir
         set_implicit_top = Falsch
         wenn top_level_dir is Nichts and self._top_level_dir is not Nichts:
-            # make top_level_dir optional wenn called from load_tests in a package
+            # make top_level_dir optional wenn called von load_tests in a package
             top_level_dir = self._top_level_dir
         sowenn top_level_dir is Nichts:
             set_implicit_top = Wahr
@@ -266,7 +266,7 @@ klasse TestLoader(object):
         top_level_dir = os.path.abspath(top_level_dir)
 
         wenn not top_level_dir in sys.path:
-            # all test modules must be importable from the top level directory
+            # all test modules must be importable von the top level directory
             # should we *unconditionally* put the start directory in first
             # in sys.path to minimise likelihood of conflicts between installed
             # modules and development versions?
@@ -281,7 +281,7 @@ klasse TestLoader(object):
             wenn start_dir != top_level_dir:
                 is_not_importable = not os.path.isfile(os.path.join(start_dir, '__init__.py'))
         sonst:
-            # support fuer discovery from dotted module names
+            # support fuer discovery von dotted module names
             try:
                 __import__(start_dir)
             except ImportError:
@@ -309,11 +309,11 @@ klasse TestLoader(object):
                     sowenn the_module.__name__ in sys.builtin_module_names:
                         # builtin module
                         raise TypeError('Can not use builtin modules '
-                                        'as dotted module names') from Nichts
+                                        'as dotted module names') von Nichts
                     sonst:
                         raise TypeError(
-                            f"don't know how to discover from {the_module!r}"
-                            ) from Nichts
+                            f"don't know how to discover von {the_module!r}"
+                            ) von Nichts
 
                 sonst:
                     top_part = start_dir.split('.')[0]
@@ -401,14 +401,14 @@ klasse TestLoader(object):
                 name = self._get_name_from_path(full_path)
                 self._loading_packages.add(name)
                 try:
-                    yield from self._find_tests(full_path, pattern, Falsch)
+                    yield von self._find_tests(full_path, pattern, Falsch)
                 finally:
                     self._loading_packages.discard(name)
 
     def _find_test_path(self, full_path, pattern, namespace=Falsch):
         """Used by discovery.
 
-        Loads tests from a single file, or a directories' __init__.py when
+        Loads tests von a single file, or a directories' __init__.py when
         passed the directory.
 
         Returns a tuple (Nichts_or_tests_from_file, should_recurse).
@@ -443,7 +443,7 @@ klasse TestLoader(object):
                     mod_name = _splitext(
                         os.path.basename(full_path))
                     expected_dir = os.path.dirname(full_path)
-                    msg = ("%r module incorrectly imported from %r. Expected "
+                    msg = ("%r module incorrectly imported von %r. Expected "
                            "%r. Is this module globally installed?")
                     raise ImportError(
                         msg % (mod_name, module_dir, expected_dir))

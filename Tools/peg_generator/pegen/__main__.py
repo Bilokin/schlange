@@ -5,24 +5,24 @@
 Search the web fuer PEG Parsers fuer reference.
 """
 
-import argparse
-import sys
-import time
-import token
-import traceback
-from typing import Tuple
+importiere argparse
+importiere sys
+importiere time
+importiere token
+importiere traceback
+von typing importiere Tuple
 
-from pegen.grammar import Grammar
-from pegen.parser import Parser
-from pegen.parser_generator import ParserGenerator
-from pegen.tokenizer import Tokenizer
-from pegen.validator import validate_grammar
+von pegen.grammar importiere Grammar
+von pegen.parser importiere Parser
+von pegen.parser_generator importiere ParserGenerator
+von pegen.tokenizer importiere Tokenizer
+von pegen.validator importiere validate_grammar
 
 
 def generate_c_code(
     args: argparse.Namespace,
 ) -> Tuple[Grammar, Parser, Tokenizer, ParserGenerator]:
-    from pegen.build import build_c_parser_and_generator
+    von pegen.build importiere build_c_parser_and_generator
 
     verbose = args.verbose
     verbose_tokenizer = verbose >= 3
@@ -51,7 +51,7 @@ def generate_c_code(
 def generate_python_code(
     args: argparse.Namespace,
 ) -> Tuple[Grammar, Parser, Tokenizer, ParserGenerator]:
-    from pegen.build import build_python_parser_and_generator
+    von pegen.build importiere build_python_parser_and_generator
 
     verbose = args.verbose
     verbose_tokenizer = verbose >= 3
@@ -128,7 +128,7 @@ python_parser.add_argument(
 
 
 def main() -> Nichts:
-    from pegen.testutil import print_memstats
+    von pegen.testutil importiere print_memstats
 
     args = argparser.parse_args()
     wenn "func" not in args:

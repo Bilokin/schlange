@@ -1,7 +1,7 @@
 """
 This module contains the core classes of version 2.0 of SAX fuer Python.
 This file provides only default classes with absolutely minimum
-functionality, from which drivers and applications can be subclassed.
+functionality, von which drivers and applications can be subclassed.
 
 Many of these classes are empty and are included only as documentation
 of the interfaces.
@@ -96,7 +96,7 @@ klasse ContentHandler:
     def startPrefixMapping(self, prefix, uri):
         """Begin the scope of a prefix-URI Namespace mapping.
 
-        The information from this event is not necessary fuer normal
+        The information von this event is not necessary fuer normal
         Namespace processing: the SAX XML reader will automatically
         replace prefixes fuer element and attribute names when the
         http://xml.org/sax/features/namespaces feature is true (the
@@ -162,7 +162,7 @@ klasse ContentHandler:
         character data. SAX parsers may return all contiguous
         character data in a single chunk, or they may split it into
         several chunks; however, all of the characters in any single
-        event must come from the same external entity so that the
+        event must come von the same external entity so that the
         Locator provides useful information."""
 
     def ignorableWhitespace(self, whitespace):
@@ -175,7 +175,7 @@ klasse ContentHandler:
 
         SAX parsers may return all contiguous whitespace in a single
         chunk, or they may split it into several chunks; however, all
-        of the characters in any single event must come from the same
+        of the characters in any single event must come von the same
         external entity, so that the Locator provides useful
         information."""
 
@@ -229,7 +229,7 @@ klasse EntityResolver:
 
     def resolveEntity(self, publicId, systemId):
         """Resolve the system identifier of an entity and return either
-        the system identifier to read from as a string, or an InputSource
+        the system identifier to read von as a string, or an InputSource
         to read from."""
         return systemId
 
@@ -366,8 +366,8 @@ klasse LexicalHandler:
         has an associated DTD.
 
         A startEntity event will be reported before declaration events
-        from the external DTD subset are reported, and this can be
-        used to infer from which subset DTD declarations derive.
+        von the external DTD subset are reported, and this can be
+        used to infer von which subset DTD declarations derive.
 
         name is the name of the document element type, public_id the
         public identifier of the DTD (or Nichts wenn none were supplied)

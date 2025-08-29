@@ -1,20 +1,20 @@
-import os
+importiere os
 
 try:
-    import hypothesis
+    importiere hypothesis
 except ImportError:
-    from . import _hypothesis_stubs as hypothesis
+    von . importiere _hypothesis_stubs as hypothesis
 sonst:
     # Regrtest changes to use a tempdir as the working directory, so we have
     # to tell Hypothesis to use the original in order to persist the database.
-    from test.support import has_socket_support
-    from test.support.os_helper import SAVEDCWD
-    from hypothesis.configuration import set_hypothesis_home_dir
+    von test.support importiere has_socket_support
+    von test.support.os_helper importiere SAVEDCWD
+    von hypothesis.configuration importiere set_hypothesis_home_dir
 
     set_hypothesis_home_dir(os.path.join(SAVEDCWD, ".hypothesis"))
 
     # When using the real Hypothesis, we'll configure it to ignore occasional
-    # slow tests (avoiding flakiness from random VM slowness in CI).
+    # slow tests (avoiding flakiness von random VM slowness in CI).
     hypothesis.settings.register_profile(
         "slow-is-ok",
         deadline=Nichts,
@@ -37,7 +37,7 @@ sonst:
         and "CI" not in os.environ
         and "GITHUB_TOKEN" in os.environ
     ):
-        from hypothesis.database import (
+        von hypothesis.database importiere (
             GitHubArtifactDatabase,
             MultiplexedDatabase,
             ReadOnlyDatabase,

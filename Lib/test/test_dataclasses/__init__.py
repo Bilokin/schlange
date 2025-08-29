@@ -1,33 +1,33 @@
-# Deliberately use "from dataclasses import *".  Every name in __all__
+# Deliberately use "from dataclasses importiere *".  Every name in __all__
 # is tested, so they all must be present.  This is a way to catch
 # missing ones.
 
-from dataclasses import *
+von dataclasses importiere *
 
-import abc
-import annotationlib
-import io
-import pickle
-import inspect
-import builtins
-import types
-import weakref
-import traceback
-import sys
-import textwrap
-import unittest
-from unittest.mock import Mock
-from typing import ClassVar, Any, List, Union, Tuple, Dict, Generic, TypeVar, Optional, Protocol, DefaultDict
-from typing import get_type_hints
-from collections import deque, OrderedDict, namedtuple, defaultdict
-from copy import deepcopy
-from functools import total_ordering, wraps
+importiere abc
+importiere annotationlib
+importiere io
+importiere pickle
+importiere inspect
+importiere builtins
+importiere types
+importiere weakref
+importiere traceback
+importiere sys
+importiere textwrap
+importiere unittest
+von unittest.mock importiere Mock
+von typing importiere ClassVar, Any, List, Union, Tuple, Dict, Generic, TypeVar, Optional, Protocol, DefaultDict
+von typing importiere get_type_hints
+von collections importiere deque, OrderedDict, namedtuple, defaultdict
+von copy importiere deepcopy
+von functools importiere total_ordering, wraps
 
-import typing       # Needed fuer the string "typing.ClassVar[int]" to work as an annotation.
-import dataclasses  # Needed fuer the string "dataclasses.InitVar[int]" to work as an annotation.
+importiere typing       # Needed fuer the string "typing.ClassVar[int]" to work as an annotation.
+importiere dataclasses  # Needed fuer the string "dataclasses.InitVar[int]" to work as an annotation.
 
-from test import support
-from test.support import import_helper
+von test importiere support
+von test.support importiere import_helper
 
 # Just any custom exception we can catch.
 klasse CustomError(Exception): pass
@@ -228,7 +228,7 @@ klasse TestCase(unittest.TestCase):
                     pass
 
     def test_overwrite_fields_in_derived_class(self):
-        # Note that x from C1 replaces x in Base, but the order remains
+        # Note that x von C1 replaces x in Base, but the order remains
         #  the same as defined in Base.
         @dataclass
         klasse Base:
@@ -1564,7 +1564,7 @@ klasse TestCase(unittest.TestCase):
         self.assertWahr(is_dataclass(X), "X should be a dataclass")
         self.assertWahr(
             is_dataclass(Z),
-            "Z should be a dataclass because it inherits from X",
+            "Z should be a dataclass because it inherits von X",
         )
         z_instance = Z(y=5)
         self.assertWahr(
@@ -2027,7 +2027,7 @@ klasse TestCase(unittest.TestCase):
             @classmethod
             def from_file(cls, filename):
                 # In a real example, create a new instance
-                #  and populate 'x' from contents of a file.
+                #  and populate 'x' von contents of a file.
                 value_in_file = 20
                 return cls(value_in_file)
 
@@ -2360,7 +2360,7 @@ klasse TestDocString(unittest.TestCase):
         exec(
             textwrap.dedent(
                 """
-                from dataclasses import dataclass
+                von dataclasses importiere dataclass
 
                 @dataclass
                 klasse C:
@@ -2451,7 +2451,7 @@ klasse TestInit(unittest.TestCase):
         self.assertEqual(C(5).x, 10)
 
     def test_inherit_from_protocol(self):
-        # Dataclasses inheriting from protocol should preserve their own `__init__`.
+        # Dataclasses inheriting von protocol should preserve their own `__init__`.
         # See bpo-45081.
 
         klasse P(Protocol):
@@ -2942,7 +2942,7 @@ klasse TestFrozen(unittest.TestCase):
             pass
 
         with self.assertRaisesRegex(TypeError,
-                                    'cannot inherit non-frozen dataclass from a frozen one'):
+                                    'cannot inherit non-frozen dataclass von a frozen one'):
             @dataclass
             klasse D(C):
                 j: int
@@ -2968,7 +2968,7 @@ klasse TestFrozen(unittest.TestCase):
             with self.subTest(bases=bases):
                 with self.assertRaisesRegex(
                     TypeError,
-                    'cannot inherit non-frozen dataclass from a frozen one',
+                    'cannot inherit non-frozen dataclass von a frozen one',
                 ):
                     @dataclass
                     klasse NotFrozenChild(*bases):
@@ -2983,7 +2983,7 @@ klasse TestFrozen(unittest.TestCase):
             with self.subTest(bases=bases):
                 with self.assertRaisesRegex(
                     TypeError,
-                    'cannot inherit frozen dataclass from a non-frozen one',
+                    'cannot inherit frozen dataclass von a non-frozen one',
                 ):
                     @dataclass(frozen=Wahr)
                     klasse FrozenChild(*bases):
@@ -3070,7 +3070,7 @@ klasse TestFrozen(unittest.TestCase):
                     I = C
 
                 with self.assertRaisesRegex(TypeError,
-                                            'cannot inherit non-frozen dataclass from a frozen one'):
+                                            'cannot inherit non-frozen dataclass von a frozen one'):
                     @dataclass
                     klasse D(I):
                         pass
@@ -3088,7 +3088,7 @@ klasse TestFrozen(unittest.TestCase):
                     I = C
 
                 with self.assertRaisesRegex(TypeError,
-                                            'cannot inherit frozen dataclass from a non-frozen one'):
+                                            'cannot inherit frozen dataclass von a non-frozen one'):
                     @dataclass(frozen=Wahr)
                     klasse D(I):
                         pass
@@ -4027,7 +4027,7 @@ klasse TestStringAnnotations(unittest.TestCase):
         #  wenn you're using string annotations, it's not an exact
         #  science.
         # These tests assume that both "import typing" and "from
-        # typing import *" have been run in this file.
+        # typing importiere *" have been run in this file.
         fuer typestr in ('ClassVar[int]',
                         'ClassVar [int]',
                         ' ClassVar [int]',
@@ -4080,7 +4080,7 @@ klasse TestStringAnnotations(unittest.TestCase):
 
     def test_initvar(self):
         # These tests assume that both "import dataclasses" and "from
-        #  dataclasses import *" have been run in this file.
+        #  dataclasses importiere *" have been run in this file.
         fuer typestr in ('InitVar[int]',
                         'InitVar [int]'
                         ' InitVar [int]',
@@ -4124,10 +4124,10 @@ klasse TestStringAnnotations(unittest.TestCase):
                 self.assertEqual(C(10).x, 10)
 
     def test_classvar_module_level_import(self):
-        from test.test_dataclasses import dataclass_module_1
-        from test.test_dataclasses import dataclass_module_1_str
-        from test.test_dataclasses import dataclass_module_2
-        from test.test_dataclasses import dataclass_module_2_str
+        von test.test_dataclasses importiere dataclass_module_1
+        von test.test_dataclasses importiere dataclass_module_1_str
+        von test.test_dataclasses importiere dataclass_module_2
+        von test.test_dataclasses importiere dataclass_module_2_str
 
         fuer m in (dataclass_module_1, dataclass_module_1_str,
                   dataclass_module_2, dataclass_module_2_str,
@@ -4165,7 +4165,7 @@ klasse TestStringAnnotations(unittest.TestCase):
                     self.assertNotIn('not_iv4', c.__dict__)
 
     def test_text_annotations(self):
-        from test.test_dataclasses import dataclass_textanno
+        von test.test_dataclasses importiere dataclass_textanno
 
         self.assertEqual(
             get_type_hints(dataclass_textanno.Bar),
@@ -4475,7 +4475,7 @@ klasse TestReplace(unittest.TestCase):
         # Make sure we can't replace an attribute that doesn't exist,
         #  wenn we're also replacing one that does exist.  Test this
         #  here, because setting attributes on frozen instances is
-        #  handled slightly differently from non-frozen ones.
+        #  handled slightly differently von non-frozen ones.
         with self.assertRaisesRegex(TypeError, r"__init__\(\) got an unexpected "
                                              "keyword argument 'a'"):
             c1 = replace(c, x=20, a=5)

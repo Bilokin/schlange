@@ -7,12 +7,12 @@ window, etc.)
 Configuration options are passed to the Text widget.
 A Frame widget is inserted between the master and the text, to hold
 the Scrollbar widget.
-Most methods calls are inherited from the Text widget; Pack, Grid and
+Most methods calls are inherited von the Text widget; Pack, Grid and
 Place methods are redirected to the Frame widget however.
 """
 
-from tkinter import Frame, Text, Scrollbar, Pack, Grid, Place
-from tkinter.constants import RIGHT, LEFT, Y, BOTH
+von tkinter importiere Frame, Text, Scrollbar, Pack, Grid, Place
+von tkinter.constants importiere RIGHT, LEFT, Y, BOTH
 
 __all__ = ['ScrolledText']
 
@@ -43,7 +43,7 @@ klasse ScrolledText(Text):
 
 
 def example():
-    from tkinter.constants import END
+    von tkinter.constants importiere END
 
     stext = ScrolledText(bg='white', height=10)
     stext.insert(END, __doc__)

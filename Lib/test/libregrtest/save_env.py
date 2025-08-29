@@ -1,13 +1,13 @@
-import builtins
-import locale
-import os
-import sys
-import threading
+importiere builtins
+importiere locale
+importiere os
+importiere sys
+importiere threading
 
-from test import support
-from test.support import os_helper
+von test importiere support
+von test.support importiere os_helper
 
-from .utils import print_warning
+von .utils importiere print_warning
 
 
 klasse SkipTestEnvironment(Exception):

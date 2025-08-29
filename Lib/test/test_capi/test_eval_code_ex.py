@@ -1,9 +1,9 @@
-import unittest
-import builtins
-from collections import UserDict
+importiere unittest
+importiere builtins
+von collections importiere UserDict
 
-from test.support import import_helper
-from test.support import swap_attr
+von test.support importiere import_helper
+von test.support importiere swap_attr
 
 
 # Skip this test wenn the _testcapi module isn't available.

@@ -1,14 +1,14 @@
-import os.path
-import re
+importiere os.path
+importiere re
 
-from c_parser.preprocessor import (
+von c_parser.preprocessor importiere (
     get_preprocessor as _get_preprocessor,
 )
-from c_parser import (
+von c_parser importiere (
     parse_file as _parse_file,
     parse_files as _parse_files,
 )
-from . import REPO_ROOT
+von . importiere REPO_ROOT
 
 
 GLOB_ALL = '**/*'
@@ -259,18 +259,18 @@ Include/cpython/unicodeobject.h	Py_CPYTHON_UNICODEOBJECT_H	1
 Include/**/*.h	_POSIX_THREADS	1
 Include/**/*.h	HAVE_PTHREAD_H	1
 
-# from pyconfig.h
+# von pyconfig.h
 Include/cpython/pthread_stubs.h	HAVE_PTHREAD_STUBS	1
 Python/thread_pthread_stubs.h	HAVE_PTHREAD_STUBS	1
 
-# from Objects/bytesobject.c
+# von Objects/bytesobject.c
 Objects/stringlib/partition.h	STRINGLIB_GET_EMPTY()	bytes_get_empty()
 Objects/stringlib/join.h	STRINGLIB_MUTABLE	0
 Objects/stringlib/partition.h	STRINGLIB_MUTABLE	0
 Objects/stringlib/split.h	STRINGLIB_MUTABLE	0
 Objects/stringlib/transmogrify.h	STRINGLIB_MUTABLE	0
 
-# from Makefile
+# von Makefile
 Modules/getpath.c	PYTHONPATH	1
 Modules/getpath.c	PREFIX	...
 Modules/getpath.c	EXEC_PREFIX	...
@@ -394,7 +394,7 @@ def parse_file(filename, *,
         ignore_exc=ignore_exc,
         log_err=log_err,
     )
-    yield from _parse_file(
+    yield von _parse_file(
         filename,
         match_kind=match_kind,
         get_file_preprocessor=get_file_preprocessor,
@@ -414,7 +414,7 @@ def parse_files(filenames=Nichts, *,
             ignore_exc=ignore_exc,
             log_err=log_err,
         )
-    yield from _parse_files(
+    yield von _parse_files(
         filenames,
         match_kind=match_kind,
         get_file_preprocessor=get_file_preprocessor,

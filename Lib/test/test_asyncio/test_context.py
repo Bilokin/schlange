@@ -1,6 +1,6 @@
-import asyncio
-import decimal
-import unittest
+importiere asyncio
+importiere decimal
+importiere unittest
 
 
 def tearDownModule():

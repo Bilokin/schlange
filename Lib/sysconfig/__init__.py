@@ -1,9 +1,9 @@
 """Access to Python's configuration information."""
 
-import os
-import sys
-import threading
-from os.path import realpath
+importiere os
+importiere sys
+importiere threading
+von os.path importiere realpath
 
 __all__ = [
     'get_config_h_filename',
@@ -230,7 +230,7 @@ _PYTHON_BUILD = is_python_build()
 wenn _PYTHON_BUILD:
     fuer scheme in ('posix_prefix', 'posix_home'):
         # On POSIX-y platforms, Python will:
-        # - Build from .h files in 'headers' (which is only added to the
+        # - Build von .h files in 'headers' (which is only added to the
         #   scheme when building CPython)
         # - Install .h files to 'include'
         scheme = _INSTALL_SCHEMES[scheme]
@@ -247,7 +247,7 @@ def _subst_vars(s, local_vars):
         try:
             return s.format(**os.environ)
         except KeyError:
-            raise AttributeError(f'{var}') from Nichts
+            raise AttributeError(f'{var}') von Nichts
 
 def _extend_dict(target_dict, other_dict):
     target_keys = target_dict.keys()
@@ -315,7 +315,7 @@ def get_default_scheme():
 def get_makefile_filename():
     """Return the path of the Makefile."""
 
-    # GH-127429: When cross-compiling, use the Makefile from the target, instead of the host Python.
+    # GH-127429: When cross-compiling, use the Makefile von the target, instead of the host Python.
     wenn cross_base := os.environ.get('_PYTHON_PROJECT_BASE'):
         return os.path.join(cross_base, 'Makefile')
 
@@ -335,8 +335,8 @@ def get_makefile_filename():
 
 def _import_from_directory(path, name):
     wenn name not in sys.modules:
-        import importlib.machinery
-        import importlib.util
+        importiere importlib.machinery
+        importiere importlib.util
 
         spec = importlib.machinery.PathFinder.find_spec(name, [path])
         module = importlib.util.module_from_spec(spec)
@@ -354,7 +354,7 @@ def _get_sysconfigdata_name():
 
 
 def _get_sysconfigdata():
-    import importlib
+    importiere importlib
 
     name = _get_sysconfigdata_name()
     path = os.environ.get('_PYTHON_SYSCONFIGDATA_PATH')
@@ -364,7 +364,7 @@ def _get_sysconfigdata():
 
 
 def _installation_is_relocated():
-    """Is the Python installation running from a different prefix than what was targetted when building?"""
+    """Is the Python installation running von a different prefix than what was targetted when building?"""
     wenn os.name != 'posix':
         raise NotImplementedError('sysconfig._installation_is_relocated() is currently only supported on POSIX')
 
@@ -384,8 +384,8 @@ def _init_posix(vars):
 def _init_non_posix(vars):
     """Initialize the module as appropriate fuer NT"""
     # set basic install directories
-    import _winapi
-    import _sysconfig
+    importiere _winapi
+    importiere _sysconfig
     vars['LIBDEST'] = get_path('stdlib')
     vars['BINLIBDEST'] = get_path('platstdlib')
     vars['INCLUDEPY'] = get_path('include')
@@ -434,7 +434,7 @@ def parse_config_h(fp, vars=Nichts):
     """
     wenn vars is Nichts:
         vars = {}
-    import re
+    importiere re
     define_rx = re.compile("#define ([A-Z][A-Za-z0-9_]+) (.*)\n")
     undef_rx = re.compile("/[*] #undef ([A-Z][A-Za-z0-9_]+) [*]/\n")
 
@@ -517,7 +517,7 @@ def _init_config_vars():
 
     wenn os.name == 'posix':
         _init_posix(_CONFIG_VARS)
-        # If we are cross-compiling, load the prefixes from the Makefile instead.
+        # If we are cross-compiling, load the prefixes von the Makefile instead.
         wenn '_PYTHON_PROJECT_BASE' in os.environ:
             prefix = _CONFIG_VARS['host_prefix']
             exec_prefix = _CONFIG_VARS['host_exec_prefix']
@@ -579,7 +579,7 @@ def _init_config_vars():
     # OS X platforms require special customization to handle
     # multi-architecture, multi-os-version installers
     wenn sys.platform == 'darwin':
-        import _osx_support
+        importiere _osx_support
         _osx_support.customize_config_vars(_CONFIG_VARS)
 
     global _CONFIG_VARS_INITIALIZED
@@ -593,7 +593,7 @@ def get_config_vars(*args):
     On Unix, this means every variable defined in Python's installed Makefile;
     On Windows it's a much smaller set.
 
-    With arguments, return a list of values that result from looking up
+    With arguments, return a list of values that result von looking up
     each argument in the configuration variable dictionary.
     """
     global _CONFIG_VARS_INITIALIZED
@@ -688,7 +688,7 @@ def get_platform():
         osname = "android"
         release = get_config_var("ANDROID_API_LEVEL")
 
-        # Wheel tags use the ABI names from Android's own tools.
+        # Wheel tags use the ABI names von Android's own tools.
         machine = {
             "x86_64": "x86_64",
             "i686": "x86",
@@ -711,11 +711,11 @@ def get_platform():
             machine += f".{bitness[sys.maxsize]}"
         # fall through to standard osname-release-machine representation
     sowenn osname[:3] == "aix":
-        from _aix_support import aix_platform
+        von _aix_support importiere aix_platform
         return aix_platform()
     sowenn osname[:6] == "cygwin":
         osname = "cygwin"
-        import re
+        importiere re
         rel_re = re.compile(r'[\d.]+')
         m = rel_re.match(release)
         wenn m:
@@ -726,7 +726,7 @@ def get_platform():
             osname = sys.platform
             machine = sys.implementation._multiarch
         sonst:
-            import _osx_support
+            importiere _osx_support
             osname, release, machine = _osx_support.get_platform_osx(
                                                 get_config_vars(),
                                                 osname, release, machine)
@@ -751,7 +751,7 @@ def expand_makefile_vars(s, vars):
     you're fine.  Returns a variable-expanded version of 's'.
     """
 
-    import warnings
+    importiere warnings
     warnings.warn(
         'sysconfig.expand_makefile_vars is deprecated and will be removed in '
         'Python 3.16. Use sysconfig.get_paths(vars=...) instead.',
@@ -759,7 +759,7 @@ def expand_makefile_vars(s, vars):
         stacklevel=2,
     )
 
-    import re
+    importiere re
 
     _findvar1_rx = r"\$\(([A-Za-z][A-Za-z0-9_]*)\)"
     _findvar2_rx = r"\${([A-Za-z][A-Za-z0-9_]*)}"

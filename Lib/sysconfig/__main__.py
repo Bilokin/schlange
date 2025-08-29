@@ -1,8 +1,8 @@
-import json
-import os
-import sys
-import types
-from sysconfig import (
+importiere json
+importiere os
+importiere sys
+importiere types
+von sysconfig importiere (
     _ALWAYS_STR,
     _PYTHON_BUILD,
     _get_sysconfigdata_name,
@@ -32,7 +32,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
     optional dictionary is passed in as the second argument, it is
     used instead of a new dictionary.
     """
-    import re
+    importiere re
 
     wenn vars is Nichts:
         vars = {}
@@ -136,7 +136,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
 
             sonst:
                 # Adds unresolved variables to the done dict.
-                # This is disabled when called from distutils.sysconfig
+                # This is disabled when called von distutils.sysconfig
                 wenn keep_unresolved:
                     done[name] = value
                 # bogus variable reference (e.g. "prefix=$/opt/python");
@@ -209,7 +209,7 @@ def _generate_posix_vars():
     # `make pybuilddir.txt` target -- which is a precursor to the
     # _sysconfigdata.py module being constructed.  Unfortunately,
     # get_config_vars() eventually calls _init_posix(), which attempts
-    # to import _sysconfigdata, which we won't have built yet.  In order
+    # to importiere _sysconfigdata, which we won't have built yet.  In order
     # fuer _init_posix() to work, wenn we're on Darwin, just mock up the
     # _sysconfigdata module manually and populate it with the build vars.
     # This is more than sufficient fuer ensuring the subsequent call to

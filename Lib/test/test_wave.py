@@ -1,11 +1,11 @@
-import unittest
-from test import audiotests
-from test import support
-import io
-import os
-import struct
-import sys
-import wave
+importiere unittest
+von test importiere audiotests
+von test importiere support
+importiere io
+importiere os
+importiere struct
+importiere sys
+importiere wave
 
 
 klasse WaveTest(audiotests.AudioWriteTests,

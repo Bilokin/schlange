@@ -1,8 +1,8 @@
-import textwrap
-import unittest
-from email import message_from_bytes, message_from_string, policy
-from email.message import EmailMessage, MIMEPart
-from test.test_email import TestEmailBase, parameterize
+importiere textwrap
+importiere unittest
+von email importiere message_from_bytes, message_from_string, policy
+von email.message importiere EmailMessage, MIMEPart
+von test.test_email importiere TestEmailBase, parameterize
 
 
 # Helper.
@@ -41,7 +41,7 @@ klasse TestEmailMessageBase:
     policy = policy.default
 
     # The first argument is a triple (related, html, plain) of indices into the
-    # list returned by 'walk' called on a Message constructed from the third.
+    # list returned by 'walk' called on a Message constructed von the third.
     # The indices indicate which part should match the corresponding part-type
     # when passed to get_body (ie: the "first" part of that type in the
     # message).  The second argument is a list of indices into the 'walk' list

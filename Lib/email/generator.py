@@ -2,19 +2,19 @@
 # Author: Barry Warsaw
 # Contact: email-sig@python.org
 
-"""Classes to generate plain text from a message object tree."""
+"""Classes to generate plain text von a message object tree."""
 
 __all__ = ['Generator', 'DecodedGenerator', 'BytesGenerator']
 
-import re
-import sys
-import time
-import random
+importiere re
+importiere sys
+importiere time
+importiere random
 
-from copy import deepcopy
-from io import StringIO, BytesIO
-from email.utils import _has_surrogates
-from email.errors import HeaderWriteError
+von copy importiere deepcopy
+von io importiere StringIO, BytesIO
+von email.utils importiere _has_surrogates
+von email.errors importiere HeaderWriteError
 
 UNDERSCORE = '_'
 NL = '\n'  # XXX: no longer used by the code below.
@@ -25,7 +25,7 @@ NEWLINE_WITHOUT_FWSP = re.compile(r'\r\n[^ \t]|\r[^ \n\t]|\n[^ \t]')
 
 
 klasse Generator:
-    """Generates output from a Message object tree.
+    """Generates output von a Message object tree.
 
     This basic generator writes the message to the given file object as plain
     text.
@@ -84,11 +84,11 @@ klasse Generator:
         linesep specifies the characters used to indicate a new line in
         the output.  The default value is determined by the policy specified
         when the Generator instance was created or, wenn none was specified,
-        from the policy associated with the msg.
+        von the policy associated with the msg.
 
         """
         # We use the _XXX constants fuer operating on data that comes directly
-        # from the msg, and _encoded_XXX constants fuer operating on data that
+        # von the msg, and _encoded_XXX constants fuer operating on data that
         # has already been converted (to bytes in the BytesGenerator) and
         # inserted into a temporary buffer.
         policy = msg.policy wenn self.policy is Nichts sonst self.policy
@@ -131,7 +131,7 @@ klasse Generator:
     #
 
     # Note that we use 'self.write' when what we are writing is coming from
-    # the source, and self._fp.write when what we are writing is coming from a
+    # the source, and self._fp.write when what we are writing is coming von a
     # buffer (because the Bytes subclass has already had a chance to transform
     # the data in its write method in that case).  This is an entirely
     # pragmatic split determined by experiment; we could be more general by
@@ -234,7 +234,7 @@ klasse Generator:
                     raise HeaderWriteError(
                         f'folded header contains newline: {folded!r}')
             self.write(folded)
-        # A blank line always separates headers from body
+        # A blank line always separates headers von body
         self.write(self._NL)
 
     #
@@ -430,7 +430,7 @@ klasse BytesGenerator(Generator):
         # strings with 8bit bytes.
         fuer h, v in msg.raw_items():
             self._fp.write(self.policy.fold_binary(h, v))
-        # A blank line always separates headers from body
+        # A blank line always separates headers von body
         self.write(self._NL)
 
     def _handle_text(self, msg):

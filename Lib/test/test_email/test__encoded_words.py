@@ -1,7 +1,7 @@
-import unittest
-from email import _encoded_words as _ew
-from email import errors
-from test.test_email import TestEmailBase
+importiere unittest
+von email importiere _encoded_words as _ew
+von email importiere errors
+von test.test_email importiere TestEmailBase
 
 
 klasse TestDecodeQ(TestEmailBase):

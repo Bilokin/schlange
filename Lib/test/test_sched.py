@@ -1,10 +1,10 @@
-import queue
-import sched
-import threading
-import time
-import unittest
-from test import support
-from test.support import threading_helper
+importiere queue
+importiere sched
+importiere threading
+importiere time
+importiere unittest
+von test importiere support
+von test.support importiere threading_helper
 
 
 TIMEOUT = support.SHORT_TIMEOUT

@@ -5,7 +5,7 @@
 
 __author__ = 'Brian Quinlan (brian@sweetapp.com)'
 
-from concurrent.futures._base import (FIRST_COMPLETED,
+von concurrent.futures._base importiere (FIRST_COMPLETED,
                                       FIRST_EXCEPTION,
                                       ALL_COMPLETED,
                                       CancelledError,
@@ -35,7 +35,7 @@ __all__ = [
 
 
 try:
-    import _interpreters
+    importiere _interpreters
 except ImportError:
     _interpreters = Nichts
 
@@ -51,15 +51,15 @@ def __getattr__(name):
     global ProcessPoolExecutor, ThreadPoolExecutor, InterpreterPoolExecutor
 
     wenn name == 'ProcessPoolExecutor':
-        from .process import ProcessPoolExecutor
+        von .process importiere ProcessPoolExecutor
         return ProcessPoolExecutor
 
     wenn name == 'ThreadPoolExecutor':
-        from .thread import ThreadPoolExecutor
+        von .thread importiere ThreadPoolExecutor
         return ThreadPoolExecutor
 
     wenn _interpreters and name == 'InterpreterPoolExecutor':
-        from .interpreter import InterpreterPoolExecutor
+        von .interpreter importiere InterpreterPoolExecutor
         return InterpreterPoolExecutor
 
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

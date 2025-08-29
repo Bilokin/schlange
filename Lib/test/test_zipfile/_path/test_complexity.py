@@ -1,14 +1,14 @@
-import io
-import itertools
-import math
-import re
-import string
-import unittest
-import zipfile
+importiere io
+importiere itertools
+importiere math
+importiere re
+importiere string
+importiere unittest
+importiere zipfile
 
-from ._functools import compose
-from ._itertools import consume
-from ._support import import_or_skip
+von ._functools importiere compose
+von ._itertools importiere consume
+von ._support importiere import_or_skip
 
 big_o = import_or_skip('big_o')
 pytest = import_or_skip('pytest')

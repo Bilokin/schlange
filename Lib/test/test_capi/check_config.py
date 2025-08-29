@@ -1,16 +1,16 @@
 # This script is used by test_misc.
 
-import _imp
-import _testinternalcapi
-import json
-import os
-import sys
+importiere _imp
+importiere _testinternalcapi
+importiere json
+importiere os
+importiere sys
 
 
 def import_singlephase():
     assert '_testsinglephase' not in sys.modules
     try:
-        import _testsinglephase  # noqa: F401
+        importiere _testsinglephase  # noqa: F401
     except ImportError:
         sys.modules.pop('_testsinglephase', Nichts)
         return Falsch

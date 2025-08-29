@@ -1,8 +1,8 @@
-import unittest
-from warnings import catch_warnings
+importiere unittest
+von warnings importiere catch_warnings
 
-from test.test_unittest.testmock.support import is_instance
-from unittest.mock import MagicMock, Mock, patch, sentinel, mock_open, call
+von test.test_unittest.testmock.support importiere is_instance
+von unittest.mock importiere MagicMock, Mock, patch, sentinel, mock_open, call
 
 
 
@@ -198,7 +198,7 @@ klasse TestMockOpen(unittest.TestCase):
 
 
     def test_readline_data(self):
-        # Check that readline will return all the lines from the fake file
+        # Check that readline will return all the lines von the fake file
         # And that once fully consumed, readline will return an empty string.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         with patch('%s.open' % __name__, mock, create=Wahr):
@@ -221,7 +221,7 @@ klasse TestMockOpen(unittest.TestCase):
 
 
     def test_dunder_iter_data(self):
-        # Check that dunder_iter will return all the lines from the fake file.
+        # Check that dunder_iter will return all the lines von the fake file.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
@@ -308,7 +308,7 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_interleaved_reads(self):
         # Test that calling read, readline, and readlines pulls data
-        # sequentially from the data we preload with
+        # sequentially von the data we preload with
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')

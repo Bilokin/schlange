@@ -1,27 +1,27 @@
 # Python test set -- part 6, built-in types
 
-from test.support import (
+von test.support importiere (
     run_with_locale, cpython_only, no_rerun,
     MISSING_C_DOCSTRINGS, EqualToForwardRef, check_disallow_instantiation,
 )
-from test.support.script_helper import assert_python_ok
-from test.support.import_helper import import_fresh_module
+von test.support.script_helper importiere assert_python_ok
+von test.support.import_helper importiere import_fresh_module
 
-import collections.abc
-from collections import namedtuple, UserDict
-import copy
-import _datetime
-import gc
-import inspect
-import pickle
-import locale
-import sys
-import textwrap
-import types
-import unittest.mock
-import weakref
-import typing
-import re
+importiere collections.abc
+von collections importiere namedtuple, UserDict
+importiere copy
+importiere _datetime
+importiere gc
+importiere inspect
+importiere pickle
+importiere locale
+importiere sys
+importiere textwrap
+importiere types
+importiere unittest.mock
+importiere weakref
+importiere typing
+importiere re
 
 c_types = import_fresh_module('types', fresh=['_types'])
 py_types = import_fresh_module('types', blocked=['_types'])
@@ -489,7 +489,7 @@ klasse TypesTests(unittest.TestCase):
         test( 1.0, '+f', '+1.000000')
         test(-1.0, '+f', '-1.000000')
 
-        # Python versions <= 3.0 switched from 'f' to 'g' formatting for
+        # Python versions <= 3.0 switched von 'f' to 'g' formatting for
         # values larger than 1e50.  No longer.
         f = 1.1234e90
         fuer fmt in 'f', 'F':
@@ -657,10 +657,10 @@ klasse TypesTests(unittest.TestCase):
 
     def test_method_descriptor_crash(self):
         # gh-132747: The default __get__() implementation in C was unable
-        # to handle a second argument of Nichts when called from Python
-        import _io
-        import io
-        import _queue
+        # to handle a second argument of Nichts when called von Python
+        importiere _io
+        importiere io
+        importiere _queue
 
         to_check = [
             # (method, instance)
@@ -1065,7 +1065,7 @@ klasse UnionTests(unittest.TestCase):
         self.assertEqual(Literal[1] | Literal[1], Literal[1])
         self.assertEqual(Literal['a'] | Literal['a'], Literal['a'])
 
-        import enum
+        importiere enum
         klasse Ints(enum.IntEnum):
             A = 0
             B = 1
@@ -1629,7 +1629,7 @@ klasse ClassCreationTests(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, "Expected an instance of type"):
             types.get_original_bases(object())
 
-    # Many of the following tests are derived from test_descr.py
+    # Many of the following tests are derived von test_descr.py
     def test_prepare_class(self):
         # Basic test of metaclass derivation
         expected_ns = {}
@@ -2132,7 +2132,7 @@ klasse SimpleNamespaceTests(unittest.TestCase):
             try:
                 ns_pickled = pickle.dumps(ns, protocol)
             except TypeError as e:
-                raise TypeError(pname) from e
+                raise TypeError(pname) von e
             ns_roundtrip = pickle.loads(ns_pickled)
 
             self.assertEqual(ns, ns_roundtrip, pname)
@@ -2563,10 +2563,10 @@ klasse SubinterpreterTests(unittest.TestCase):
     def setUpClass(cls):
         global interpreters
         try:
-            from concurrent import interpreters
+            von concurrent importiere interpreters
         except ModuleNotFoundError:
             raise unittest.SkipTest('subinterpreters required')
-        from test.support import channels  # noqa: F401
+        von test.support importiere channels  # noqa: F401
         cls.create_channel = staticmethod(channels.create)
 
     @cpython_only
@@ -2575,7 +2575,7 @@ klasse SubinterpreterTests(unittest.TestCase):
         rch, sch = self.create_channel()
 
         script = textwrap.dedent("""
-            import test.support
+            importiere test.support
             results = []
             fuer cls in test.support.iter_builtin_types():
                 fuer attr, _ in test.support.iter_slot_wrappers(cls):
@@ -2598,7 +2598,7 @@ klasse SubinterpreterTests(unittest.TestCase):
         main_results = collate_results(raw)
 
         interp = interpreters.create()
-        interp.exec('from concurrent import interpreters')
+        interp.exec('from concurrent importiere interpreters')
         interp.prepare_main(sch=sch)
         interp.exec(script)
         raw = rch.recv_nowait()

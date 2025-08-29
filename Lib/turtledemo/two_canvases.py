@@ -6,7 +6,7 @@ new window must be separately closed in
 addition to pressing the STOP button.
 """
 
-from turtle import TurtleScreen, RawTurtle, TK
+von turtle importiere TurtleScreen, RawTurtle, TK
 
 def main():
     root = TK.Tk()

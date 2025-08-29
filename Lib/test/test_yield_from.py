@@ -3,15 +3,15 @@
 """
 Test suite fuer PEP 380 implementation
 
-adapted from original tests written by Greg Ewing
+adapted von original tests written by Greg Ewing
 see <http://www.cosc.canterbury.ac.nz/greg.ewing/python/yield-from/YieldFrom-Python3.1.2-rev5.zip>
 """
 
-import unittest
-import inspect
+importiere unittest
+importiere inspect
 
-from test.support import captured_stderr, disable_gc, gc_collect
-from test import support
+von test.support importiere captured_stderr, disable_gc, gc_collect
+von test importiere support
 
 klasse TestPEP380Operation(unittest.TestCase):
     """
@@ -25,7 +25,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         trace = []
         def g1():
             trace.append("Starting g1")
-            yield from g2()
+            yield von g2()
             trace.append("Finishing g1")
         def g2():
             trace.append("Starting g2")
@@ -49,7 +49,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         def g1():
             try:
                 trace.append("Starting g1")
-                yield from g2()
+                yield von g2()
             finally:
                 trace.append("Finishing g1")
         def g2():
@@ -80,7 +80,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         def g1():
             trace.append("Starting g1")
             yield "g1 ham"
-            yield from g2()
+            yield von g2()
             yield "g1 eggs"
             trace.append("Finishing g1")
         def g2():
@@ -110,7 +110,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             try:
                 trace.append("Starting g1")
                 yield "g1 ham"
-                yield from g2()
+                yield von g2()
                 yield "g1 eggs"
             finally:
                 trace.append("Finishing g1")
@@ -147,7 +147,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             trace.append("Starting g1")
             x = yield "g1 ham"
             trace.append("g1 received %s" % (x,))
-            yield from g2()
+            yield von g2()
             x = yield "g1 eggs"
             trace.append("g1 received %s" % (x,))
             trace.append("Finishing g1")
@@ -191,7 +191,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             trace.append("Starting g1")
             x = yield "g1 ham"
             trace.append("g1 received %s" % (x,))
-            yield from g2()
+            yield von g2()
             x = yield "g1 eggs"
             trace.append("g1 received %s" % (x,))
             trace.append("Finishing g1")
@@ -232,7 +232,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             try:
                 trace.append("Starting g1")
                 yield "g1 ham"
-                yield from g2()
+                yield von g2()
                 yield "g1 eggs"
             finally:
                 trace.append("Finishing g1")
@@ -266,7 +266,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             try:
                 trace.append("Starting g1")
                 yield "g1 ham"
-                yield from g2()
+                yield von g2()
                 yield "g1 eggs"
             finally:
                 trace.append("Finishing g1")
@@ -307,7 +307,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             try:
                 trace.append("Starting g1")
                 yield "g1 ham"
-                yield from g2()
+                yield von g2()
                 yield "g1 eggs"
             finally:
                 trace.append("Finishing g1")
@@ -366,7 +366,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         # There used to be a refcount error when the return value
         # stored in the StopIteration has a refcount of 1.
         def g1():
-            yield from g2()
+            yield von g2()
         def g2():
             yield "g2"
             return [42]
@@ -381,10 +381,10 @@ klasse TestPEP380Operation(unittest.TestCase):
         def g1():
             trace.append("Starting g1")
             yield "g1 ham"
-            ret = yield from g2()
+            ret = yield von g2()
             trace.append("g2 returned %r" % (ret,))
             fuer v in 1, (2,), StopIteration(3):
-                ret = yield from g2(v)
+                ret = yield von g2(v)
                 trace.append("g2 returned %r" % (ret,))
             yield "g1 eggs"
             trace.append("Finishing g1")
@@ -430,7 +430,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g():
-            yield from range(3)
+            yield von range(3)
         fuer x in g():
             trace.append("Yielded %s" % (x,))
         self.assertEqual(trace,[
@@ -446,7 +446,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g():
-            yield from range(3)
+            yield von range(3)
         gi = g()
         fuer x in range(3):
             y = gi.send(Nichts)
@@ -465,7 +465,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         def g():
             try:
                 trace.append("starting g")
-                yield from range(3)
+                yield von range(3)
                 trace.append("g should not be here")
             finally:
                 trace.append("finishing g")
@@ -487,7 +487,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         def g():
             try:
                 trace.append("Starting g")
-                yield from range(10)
+                yield von range(10)
             finally:
                 trace.append("Finishing g")
         try:
@@ -519,7 +519,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         def g():
             try:
                 trace.append("starting g")
-                yield from range(3)
+                yield von range(3)
                 trace.append("g should not be here")
             finally:
                 trace.append("finishing g")
@@ -551,7 +551,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 1/0
 
         def g():
-            yield from Broken()
+            yield von Broken()
 
         with self.assertRaises(ZeroDivisionError):
             gi = g()
@@ -576,8 +576,8 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g1():
-            trace.append("g1 about to yield from g2")
-            yield from g2()
+            trace.append("g1 about to yield von g2")
+            yield von g2()
             trace.append("g1 should not be here")
         def g2():
             yield 1/0
@@ -586,7 +586,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             next(gi)
         self.assertRaises(ZeroDivisionError,run)
         self.assertEqual(trace,[
-            "g1 about to yield from g2"
+            "g1 about to yield von g2"
         ])
 
     def test_attempted_yield_from_loop(self):
@@ -597,15 +597,15 @@ klasse TestPEP380Operation(unittest.TestCase):
         def g1():
             trace.append("g1: starting")
             yield "y1"
-            trace.append("g1: about to yield from g2")
-            yield from g2()
+            trace.append("g1: about to yield von g2")
+            yield von g2()
             trace.append("g1 should not be here")
 
         def g2():
             trace.append("g2: starting")
             yield "y2"
-            trace.append("g2: about to yield from g1")
-            yield from gi
+            trace.append("g2: about to yield von g1")
+            yield von gi
             trace.append("g2 should not be here")
         try:
             gi = g1()
@@ -618,22 +618,22 @@ klasse TestPEP380Operation(unittest.TestCase):
         self.assertEqual(trace,[
             "g1: starting",
             "Yielded: y1",
-            "g1: about to yield from g2",
+            "g1: about to yield von g2",
             "g2: starting",
             "Yielded: y2",
-            "g2: about to yield from g1",
+            "g2: about to yield von g1",
         ])
 
     def test_returning_value_from_delegated_throw(self):
         """
-        Test returning value from delegated 'throw'
+        Test returning value von delegated 'throw'
         """
         trace = []
         def g1():
             try:
                 trace.append("Starting g1")
                 yield "g1 ham"
-                yield from g2()
+                yield von g2()
                 yield "g1 eggs"
             finally:
                 trace.append("Finishing g1")
@@ -769,7 +769,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             return value
 
         def outer():
-            v = yield from inner()
+            v = yield von inner()
             trace.append("inner returned %r to outer" % (v,))
             yield v
 
@@ -800,7 +800,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 return
         def g():
             trace.append("Enter g")
-            yield from f()
+            yield von f()
             trace.append("Exit g")
         try:
             gi = g()
@@ -830,7 +830,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 yield
         def g():
             trace.append("Enter g")
-            yield from f()
+            yield von f()
             trace.append("Exit g")
         try:
             gi = g()
@@ -860,7 +860,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 raise ValueError("Vorpal bunny encountered")
         def g():
             trace.append("Enter g")
-            yield from f()
+            yield von f()
             trace.append("Exit g")
         try:
             gi = g()
@@ -878,19 +878,19 @@ klasse TestPEP380Operation(unittest.TestCase):
 
     def test_yield_from_empty(self):
         def g():
-            yield from ()
+            yield von ()
         self.assertRaises(StopIteration, next, g())
 
     def test_delegating_generators_claim_to_be_running(self):
         # Check with basic iteration
         def one():
             yield 0
-            yield from two()
+            yield von two()
             yield 3
         def two():
             yield 1
             try:
-                yield from g1
+                yield von g1
             except ValueError:
                 pass
             yield 2
@@ -916,7 +916,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 yield 0
             except MyErr:
                 pass
-            yield from two()
+            yield von two()
             try:
                 yield 3
             except MyErr:
@@ -927,7 +927,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             except MyErr:
                 pass
             try:
-                yield from g1
+                yield von g1
             except ValueError:
                 pass
             try:
@@ -956,7 +956,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 self.assertWahr(g1.gi_running)
                 self.assertRaises(ValueError, next, g1)
         def one():
-            yield from MyIt()
+            yield von MyIt()
         g1 = one()
         next(g1)
         g1.close()
@@ -971,10 +971,10 @@ klasse TestPEP380Operation(unittest.TestCase):
             yield call_stack()
 
         def spam(g):
-            yield from g
+            yield von g
 
         def eggs(g):
-            yield from g
+            yield von g
 
         fuer stack in spam(gen()):
             self.assertWahr('spam' in stack)
@@ -991,7 +991,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 raise StopIteration(42)
         def gen():
             nonlocal ret
-            ret = yield from MyIter()
+            ret = yield von MyIter()
         ret = Nichts
         list(gen())
         self.assertEqual(ret, 42)
@@ -1019,10 +1019,10 @@ klasse TestPEP380Operation(unittest.TestCase):
             yield
         def inner():
             outer_gen = yield
-            yield from innermost()
+            yield von innermost()
         def outer():
             inner_gen = yield
-            yield from inner_gen
+            yield von inner_gen
 
         with disable_gc():
             inner_gen = inner()
@@ -1047,7 +1047,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 v = what
                 return Nichts
         def outer():
-            v = yield from MyGen()
+            v = yield von MyGen()
         g = outer()
         next(g)
         v = Nichts
@@ -1080,7 +1080,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
             return returned
 
         def outer():
-            return (yield from inner())
+            return (yield von inner())
 
         with self.subTest("close"):
             g = outer()
@@ -1144,7 +1144,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
                 raise raised
 
         def outer():
-            return (yield from inner())
+            return (yield von inner())
 
         with self.subTest("close"):
             g = outer()
@@ -1220,7 +1220,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
                 raise raised
 
         def outer():
-            return (yield from inner())
+            return (yield von inner())
 
         with self.subTest("close"):
             g = outer()
@@ -1303,7 +1303,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
                 raise raised
 
         def outer():
-            return (yield from inner())
+            return (yield von inner())
 
         with self.subTest("close"):
             g = outer()
@@ -1381,7 +1381,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
                 raise raised
 
         def outer():
-            return (yield from inner())
+            return (yield von inner())
 
         with self.subTest("close"):
             g = outer()
@@ -1458,7 +1458,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
             return returned
 
         def outer():
-            return (yield from inner())
+            return (yield von inner())
 
         with self.subTest("close"):
             g = outer()
@@ -1530,7 +1530,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
             return returned
 
         def outer():
-            return (yield from inner())
+            return (yield von inner())
 
         with self.subTest("close"):
             g = outer()
@@ -1590,7 +1590,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
                 raise RuntimeError("nobody expects the spanish inquisition")
 
         def my_generator():
-            yield from Silly()
+            yield von Silly()
 
         with self.assertRaisesRegex(RuntimeError, "nobody expects the spanish inquisition"):
             next(iter(my_generator()))

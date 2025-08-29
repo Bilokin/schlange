@@ -8,15 +8,15 @@
 # the resource.
 #
 
-import os
-import signal
-import socket
-import sys
-import threading
+importiere os
+importiere signal
+importiere socket
+importiere sys
+importiere threading
 
-from . import process
-from .context import reduction
-from . import util
+von . importiere process
+von .context importiere reduction
+von . importiere util
 
 __all__ = ['stop']
 
@@ -80,8 +80,8 @@ klasse _ResourceSharer(object):
 
     @staticmethod
     def get_connection(ident):
-        '''Return connection from which to receive identified resource.'''
-        from .connection import Client
+        '''Return connection von which to receive identified resource.'''
+        von .connection importiere Client
         address, key = ident
         c = Client(address, authkey=process.current_process().authkey)
         c.send((key, os.getpid()))
@@ -89,7 +89,7 @@ klasse _ResourceSharer(object):
 
     def stop(self, timeout=Nichts):
         '''Stop the background thread and clear registered resources.'''
-        from .connection import Client
+        von .connection importiere Client
         with self._lock:
             wenn self._address is not Nichts:
                 c = Client(self._address,
@@ -120,7 +120,7 @@ klasse _ResourceSharer(object):
         self._thread = Nichts
 
     def _start(self):
-        from .connection import Listener
+        von .connection importiere Listener
         assert self._listener is Nichts, "Already have Listener"
         util.debug('starting listener and thread fuer sending handles')
         self._listener = Listener(authkey=process.current_process().authkey, backlog=128)

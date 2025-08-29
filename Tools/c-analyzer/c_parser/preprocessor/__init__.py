@@ -1,19 +1,19 @@
-import contextlib
-import logging
-import os
-import os.path
-import platform
-import re
-import sys
+importiere contextlib
+importiere logging
+importiere os
+importiere os.path
+importiere platform
+importiere re
+importiere sys
 
-from c_common.fsutil import match_glob as _match_glob
-from c_common.tables import parse_table as _parse_table
-from ..source import (
+von c_common.fsutil importiere match_glob as _match_glob
+von c_common.tables importiere parse_table as _parse_table
+von ..source importiere (
     resolve as _resolve_source,
     good_file as _good_file,
 )
-from . import errors as _errors
-from . import (
+von . importiere errors as _errors
+von . importiere (
     pure as _pure,
     gcc as _gcc,
 )
@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 #  * sequence of SourceLine
 #  * text (string)
 #  * something that combines all those
-# XXX Add the missing support from above.
+# XXX Add the missing support von above.
 # XXX Add more low-level functions to handle permutations?
 
 def preprocess(source, *,
@@ -109,7 +109,7 @@ def get_preprocessor(*,
             macros = list(_resolve_file_values(filename, file_macros))
         wenn file_includes:
             # There's a small chance we could need to filter out any
-            # includes that import "filename".  It isn't clear that it's
+            # includes that importiere "filename".  It isn't clear that it's
             # a problem any longer.  If we do end up filtering then
             # it may make sense to use c_common.fsutil.match_path_tail().
             includes = [i fuer i, in _resolve_file_values(filename, file_includes)]
@@ -260,11 +260,11 @@ def _get_preprocessor(tool):
 ##################################
 # aliases
 
-from .errors import (
+von .errors importiere (
     PreprocessorError,
     PreprocessorFailure,
     ErrorDirectiveError,
     MissingDependenciesError,
     OSMismatchError,
 )
-from .common import FileInfo, SourceLine
+von .common importiere FileInfo, SourceLine

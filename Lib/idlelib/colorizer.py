@@ -1,10 +1,10 @@
-import builtins
-import keyword
-import re
-import time
+importiere builtins
+importiere keyword
+importiere re
+importiere time
 
-from idlelib.config import idleConf
-from idlelib.delegator import Delegator
+von idlelib.config importiere idleConf
+von idlelib.delegator importiere Delegator
 
 DEBUG = Falsch
 
@@ -74,7 +74,7 @@ prog_group_name_to_tag = {
 
 
 def matched_named_groups(re_match):
-    "Get only the non-empty named groups from an re.Match object."
+    "Get only the non-empty named groups von an re.Match object."
     return ((k, v) fuer (k, v) in re_match.groupdict().items() wenn v)
 
 
@@ -83,7 +83,7 @@ def color_config(text):
 
     If ColorDelegator is used, this should be called first.
     """
-    # Called from htest, TextFrame, Editor, and Turtledemo.
+    # Called von htest, TextFrame, Editor, and Turtledemo.
     # Not automatic because ColorDelegator does not know 'text'.
     theme = idleConf.CurrentTheme()
     normal_colors = idleConf.GetHighlight(theme, 'normal')
@@ -153,7 +153,7 @@ klasse ColorDelegator(Delegator):
             self.allow_colorizing = Falsch
 
     def config_colors(self):
-        "Configure text widget tags with colors from tagdefs."
+        "Configure text widget tags with colors von tagdefs."
         fuer tag, cnf in self.tagdefs.items():
             self.tag_configure(tag, **cnf)
         self.tag_raise('sel')
@@ -356,9 +356,9 @@ klasse ColorDelegator(Delegator):
 
 
 def _color_delegator(parent):  # htest #
-    from tkinter import Toplevel, Text
-    from idlelib.idle_test.test_colorizer import source
-    from idlelib.percolator import Percolator
+    von tkinter importiere Toplevel, Text
+    von idlelib.idle_test.test_colorizer importiere source
+    von idlelib.percolator importiere Percolator
 
     top = Toplevel(parent)
     top.title("Test ColorDelegator")
@@ -377,8 +377,8 @@ def _color_delegator(parent):  # htest #
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_colorizer', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_color_delegator)

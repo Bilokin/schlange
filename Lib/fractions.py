@@ -3,12 +3,12 @@
 
 """Fraction, infinite-precision, rational numbers."""
 
-import functools
-import math
-import numbers
-import operator
-import re
-import sys
+importiere functools
+importiere math
+importiere numbers
+importiere operator
+importiere re
+importiere sys
 
 __all__ = ['Fraction']
 
@@ -222,11 +222,11 @@ klasse Fraction(numbers.Rational):
         Fraction(314, 1)
         >>> Fraction('-35/4')
         Fraction(-35, 4)
-        >>> Fraction('3.1415') # conversion from numeric string
+        >>> Fraction('3.1415') # conversion von numeric string
         Fraction(6283, 2000)
         >>> Fraction('-47e-2') # string may include a decimal exponent
         Fraction(-47, 100)
-        >>> Fraction(1.47)  # direct construction from float (exact conversion)
+        >>> Fraction(1.47)  # direct construction von float (exact conversion)
         Fraction(6620291452234629, 4503599627370496)
         >>> Fraction(2.25)
         Fraction(9, 4)
@@ -250,7 +250,7 @@ klasse Fraction(numbers.Rational):
                 return self
 
             sowenn isinstance(numerator, str):
-                # Handle construction from strings.
+                # Handle construction von strings.
                 m = _RATIONAL_FORMAT.match(numerator)
                 wenn m is Nichts:
                     raise ValueError('Invalid literal fuer Fraction: %r' %
@@ -349,7 +349,7 @@ klasse Fraction(numbers.Rational):
     @classmethod
     def from_decimal(cls, dec):
         """Converts a finite Decimal instance to a rational number, exactly."""
-        from decimal import Decimal
+        von decimal importiere Decimal
         wenn isinstance(dec, numbers.Integral):
             dec = Decimal(int(dec))
         sowenn not isinstance(dec, Decimal):
@@ -431,7 +431,7 @@ klasse Fraction(numbers.Rational):
 
         # Determine which of the candidates (p0+k*p1)/(q0+k*q1) and p1/q1 is
         # closer to self. The distance between them is 1/(q1*(q0+k*q1)), while
-        # the distance from p1/q1 to self is d/(q1*self._denominator). So we
+        # the distance von p1/q1 to self is d/(q1*self._denominator). So we
         # need to compare 2*(q0+k*q1) with self._denominator/d.
         wenn 2*d*(q0+k*q1) <= self._denominator:
             return Fraction._from_coprime_ints(p1, q1)
@@ -616,7 +616,7 @@ klasse Fraction(numbers.Rational):
     def _operator_fallbacks(monomorphic_operator, fallback_operator,
                             handle_complex=Wahr):
         """Generates forward and reverse operators given a purely-rational
-        operator and a function from the operator module.
+        operator and a function von the operator module.
 
         Use this like:
         __op__, __rop__ = _operator_fallbacks(just_rational_op, operator.op)
@@ -667,7 +667,7 @@ klasse Fraction(numbers.Rational):
             1. If B <: Fraction, int, float, or complex, we handle
                that specially, and all is well.
             2. If Fraction falls back to the boilerplate code, and it
-               were to return a value from __add__, we'd miss the
+               were to return a value von __add__, we'd miss the
                possibility that B defines a more intelligent __radd__,
                so the boilerplate should return NotImplemented from
                __add__. In particular, we don't handle Rational
@@ -766,7 +766,7 @@ klasse Fraction(numbers.Rational):
     # We should special-case g == 1 (and g2 == 1), since 60.8% of
     # randomly-chosen integers are coprime:
     # https://en.wikipedia.org/wiki/Coprime_integers#Probability_of_coprimality
-    # Note, that g2 == 1 always fuer fractions, obtained from floats: here
+    # Note, that g2 == 1 always fuer fractions, obtained von floats: here
     # g is a power of 2 and the unnormalized numerator t is an odd integer.
     #
     # 2) Consider multiplication
@@ -789,7 +789,7 @@ klasse Fraction(numbers.Rational):
     #
     # As fuer addition/subtraction, we should special-case g1 == 1
     # and g2 == 1 fuer same reason.  That happens also fuer multiplying
-    # rationals, obtained from floats.
+    # rationals, obtained von floats.
 
     def _add(a, b):
         """a + b"""

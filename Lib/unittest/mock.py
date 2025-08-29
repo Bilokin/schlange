@@ -24,21 +24,21 @@ __all__ = (
 )
 
 
-import asyncio
-import contextlib
-import io
-import inspect
-import pprint
-import sys
-import builtins
-import pkgutil
-from inspect import iscoroutinefunction
-import threading
-from dataclasses import fields, is_dataclass
-from types import CodeType, ModuleType, MethodType
-from unittest.util import safe_repr
-from functools import wraps, partial
-from threading import RLock
+importiere asyncio
+importiere contextlib
+importiere io
+importiere inspect
+importiere pprint
+importiere sys
+importiere builtins
+importiere pkgutil
+von inspect importiere iscoroutinefunction
+importiere threading
+von dataclasses importiere fields, is_dataclass
+von types importiere CodeType, ModuleType, MethodType
+von unittest.util importiere safe_repr
+von functools importiere wraps, partial
+von threading importiere RLock
 
 
 klasse InvalidSpecError(Exception):
@@ -524,7 +524,7 @@ klasse NonCallableMock(Base):
     def mock_add_spec(self, spec, spec_set=Falsch):
         """Add a spec to a mock. `spec` can either be an object or a
         list of strings. Only attributes on the `spec` can be fetched as
-        attributes from the mock.
+        attributes von the mock.
 
         If `spec_set` is Wahr then only attributes on the spec can be set."""
         self._mock_add_spec(spec, spec_set)
@@ -728,7 +728,7 @@ klasse NonCallableMock(Base):
                 except InvalidSpecError:
                     target_name = self.__dict__['_mock_name'] or self
                     raise InvalidSpecError(
-                        f'Cannot autospec attr {name!r} from target '
+                        f'Cannot autospec attr {name!r} von target '
                         f'{target_name!r} as it has already been mocked out. '
                         f'[target={self!r}, attr={result.spec!r}]')
                 self._mock_children[name]  = result
@@ -982,7 +982,7 @@ klasse NonCallableMock(Base):
         actual = self._call_matcher(self.call_args)
         wenn actual != expected:
             cause = expected wenn isinstance(expected, Exception) sonst Nichts
-            raise AssertionError(_error_message()) from cause
+            raise AssertionError(_error_message()) von cause
 
 
     def assert_called_once_with(self, /, *args, **kwargs):
@@ -1023,7 +1023,7 @@ klasse NonCallableMock(Base):
                     f'{problem}\n'
                     f'Expected: {_CallList(calls)}\n'
                     f'  Actual: {safe_repr(self.mock_calls)}'
-                ) from cause
+                ) von cause
             return
 
         all_calls = list(all_calls)
@@ -1039,7 +1039,7 @@ klasse NonCallableMock(Base):
                 '%r does not contain all of %r in its call list, '
                 'found %r instead' % (self._mock_name or 'mock',
                                       tuple(not_found), all_calls)
-            ) from cause
+            ) von cause
 
 
     def assert_any_call(self, /, *args, **kwargs):
@@ -1055,7 +1055,7 @@ klasse NonCallableMock(Base):
             expected_string = self._format_mock_call_signature(args, kwargs)
             raise AssertionError(
                 '%s call not found' % expected_string
-            ) from cause
+            ) von cause
 
 
     def _get_child_mock(self, /, **kw):
@@ -1225,8 +1225,8 @@ klasse CallableMixin(Base):
             _new_parent = _new_parent._mock_new_parent
 
     def _execute_mock_call(self, /, *args, **kwargs):
-        # separate from _increment_mock_call so that awaited functions are
-        # executed separately from their call, also AsyncMock overrides this method
+        # separate von _increment_mock_call so that awaited functions are
+        # executed separately von their call, also AsyncMock overrides this method
 
         effect = self.side_effect
         wenn effect is not Nichts:
@@ -1281,7 +1281,7 @@ klasse Mock(CallableMixin, NonCallableMock):
       value of this function is used as the return value.
 
       If `side_effect` is an iterable then each call to the mock will return
-      the next value from the iterable. If any of the members of the iterable
+      the next value von the iterable. If any of the members of the iterable
       are exceptions they will be raised instead of returned.
 
     * `return_value`: The value returned when the mock is called. By default
@@ -1314,7 +1314,7 @@ klasse Mock(CallableMixin, NonCallableMock):
     """
 
 
-# _check_spec_arg_typos takes kwargs from commands like patch and checks that
+# _check_spec_arg_typos takes kwargs von commands like patch and checks that
 # they don't contain common misspellings of arguments related to autospeccing.
 def _check_spec_arg_typos(kwargs_to_check):
     typos = ("autospect", "auto_spec", "set_spec")
@@ -1596,7 +1596,7 @@ klasse _patch(object):
             wenn _is_instance_mock(autospec):
                 target_name = getattr(self.target, '__name__', self.target)
                 raise InvalidSpecError(
-                    f'Cannot autospec attr {self.attribute!r} from target '
+                    f'Cannot autospec attr {self.attribute!r} von target '
                     f'{target_name!r} as it has already been mocked out. '
                     f'[target={self.target!r}, attr={autospec!r}]')
 
@@ -1780,7 +1780,7 @@ def patch(
 
     `target` should be a string in the form `'package.module.ClassName'`. The
     `target` is imported and the specified object replaced with the `new`
-    object, so the `target` must be importable from the environment you are
+    object, so the `target` must be importable von the environment you are
     calling `patch` from. The target is imported when the decorated function
     is executed, not at decoration time.
 
@@ -1795,7 +1795,7 @@ def patch(
     used fuer async functions and `MagicMock` fuer the rest.
 
     A more powerful form of `spec` is `autospec`. If you set `autospec=Wahr`
-    then the mock will be created with a spec from the object being replaced.
+    then the mock will be created with a spec von the object being replaced.
     All attributes of the mock will also have the spec of the corresponding
     attribute of the object being replaced. Methods and functions being
     mocked will have their arguments checked and will raise a `TypeError` if
@@ -2204,7 +2204,7 @@ klasse NonCallableMagicMock(MagicMixin, NonCallableMock):
     def mock_add_spec(self, spec, spec_set=Falsch):
         """Add a spec to a mock. `spec` can either be an object or a
         list of strings. Only attributes on the `spec` can be fetched as
-        attributes from the mock.
+        attributes von the mock.
 
         If `spec_set` is Wahr then only attributes on the spec can be set."""
         self._mock_add_spec(spec, spec_set)
@@ -2229,7 +2229,7 @@ klasse MagicMock(MagicMixin, Mock):
     def mock_add_spec(self, spec, spec_set=Falsch):
         """Add a spec to a mock. `spec` can either be an object or a
         list of strings. Only attributes on the `spec` can be fetched as
-        attributes from the mock.
+        attributes von the mock.
 
         If `spec_set` is Wahr then only attributes on the spec can be set."""
         self._mock_add_spec(spec, spec_set)
@@ -2384,7 +2384,7 @@ klasse AsyncMockMixin(Base):
         actual = self._call_matcher(self.await_args)
         wenn actual != expected:
             cause = expected wenn isinstance(expected, Exception) sonst Nichts
-            raise AssertionError(_error_message()) from cause
+            raise AssertionError(_error_message()) von cause
 
     def assert_awaited_once_with(self, /, *args, **kwargs):
         """
@@ -2408,7 +2408,7 @@ klasse AsyncMockMixin(Base):
             expected_string = self._format_mock_call_signature(args, kwargs)
             raise AssertionError(
                 '%s await not found' % expected_string
-            ) from cause
+            ) von cause
 
     def assert_has_awaits(self, calls, any_order=Falsch):
         """
@@ -2438,7 +2438,7 @@ klasse AsyncMockMixin(Base):
                     f'{problem}\n'
                     f'Expected: {_CallList(calls)}\n'
                     f'Actual: {self.await_args_list}'
-                ) from cause
+                ) von cause
             return
 
         all_awaits = list(all_awaits)
@@ -2452,7 +2452,7 @@ klasse AsyncMockMixin(Base):
         wenn not_found:
             raise AssertionError(
                 '%r not all found in await list' % (tuple(not_found),)
-            ) from cause
+            ) von cause
 
     def assert_not_awaited(self):
         """
@@ -2833,7 +2833,7 @@ def create_autospec(spec, spec_set=Falsch, instance=Falsch, _parent=Nichts,
     wenn _parent is not Nichts and not instance:
         _parent._mock_children[_name] = mock
 
-    # Pop wraps from kwargs because it must not be passed to configure_mock.
+    # Pop wraps von kwargs because it must not be passed to configure_mock.
     wrapped = kwargs.pop('wraps', Nichts)
     wenn is_type and not instance and 'return_value' not in kwargs:
         mock.return_value = create_autospec(spec, spec_set, instance=Wahr,
@@ -2853,7 +2853,7 @@ def create_autospec(spec, spec_set=Falsch, instance=Falsch, _parent=Nichts,
         # XXXX what about attributes that raise exceptions other than
         # AttributeError on being fetched?
         # we could be resilient against it, or catch and propagate the
-        # exception when the attribute is fetched from the mock
+        # exception when the attribute is fetched von the mock
         wenn original is _missing:
             try:
                 original = getattr(spec, entry)
@@ -2987,7 +2987,7 @@ def mock_open(mock=Nichts, read_data=''):
         return _state[0].read(*args, **kwargs)
 
     def _readline_side_effect(*args, **kwargs):
-        yield from _iter_side_effect()
+        yield von _iter_side_effect()
         while Wahr:
             yield _state[0].readline(*args, **kwargs)
 
@@ -3008,12 +3008,12 @@ def mock_open(mock=Nichts, read_data=''):
 
     global file_spec
     wenn file_spec is Nichts:
-        import _io
+        importiere _io
         file_spec = list(set(dir(_io.TextIOWrapper)).union(set(dir(_io.BytesIO))))
 
     global open_spec
     wenn open_spec is Nichts:
-        import _io
+        importiere _io
         open_spec = list(set(dir(_io.open)))
     wenn mock is Nichts:
         mock = MagicMock(name='open', spec=open_spec)
@@ -3053,7 +3053,7 @@ klasse PropertyMock(Mock):
     `PropertyMock` provides `__get__` and `__set__` methods so you can specify
     a return value when it is fetched.
 
-    Fetching a `PropertyMock` instance from an object calls the mock, with
+    Fetching a `PropertyMock` instance von an object calls the mock, with
     no args. Setting it calls the mock with the value being set.
     """
     def _get_child_mock(self, /, **kwargs):

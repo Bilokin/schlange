@@ -1,28 +1,28 @@
-import contextlib
-import dis
-import io
-import itertools
-import math
-import opcode
-import os
-import unittest
-import sys
-import ast
-import _ast
-import tempfile
-import types
-import textwrap
-import warnings
+importiere contextlib
+importiere dis
+importiere io
+importiere itertools
+importiere math
+importiere opcode
+importiere os
+importiere unittest
+importiere sys
+importiere ast
+importiere _ast
+importiere tempfile
+importiere types
+importiere textwrap
+importiere warnings
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = Nichts
 
-from test import support
-from test.support import (script_helper, requires_debug_ranges, run_code,
+von test importiere support
+von test.support importiere (script_helper, requires_debug_ranges, run_code,
                           requires_specialization)
-from test.support.bytecode_helper import instructions_with_positions
-from test.support.os_helper import FakePath
+von test.support.bytecode_helper importiere instructions_with_positions
+von test.support.os_helper importiere FakePath
 
 klasse TestSpecifics(unittest.TestCase):
 
@@ -48,7 +48,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_debug_assignment(self):
         # catch assignments to __debug__
         self.assertRaises(SyntaxError, compile, '__debug__ = 1', '?', 'single')
-        import builtins
+        importiere builtins
         prev = builtins.__debug__
         setattr(builtins, '__debug__', 'sure')
         self.assertEqual(__debug__, prev)
@@ -75,7 +75,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_exec_with_general_mapping_for_locals(self):
 
         klasse M:
-            "Test mapping interface versus possible calls from eval()."
+            "Test mapping interface versus possible calls von eval()."
             def __getitem__(self, key):
                 wenn key == 'a':
                     return 12
@@ -274,8 +274,8 @@ klasse TestSpecifics(unittest.TestCase):
             'def f(Nichts): pass',
             'import Nichts',
             'import x as Nichts',
-            'from x import Nichts',
-            'from x import y as Nichts'
+            'from x importiere Nichts',
+            'from x importiere y as Nichts'
         ]
         fuer stmt in stmts:
             stmt += "\n"
@@ -288,17 +288,17 @@ klasse TestSpecifics(unittest.TestCase):
             'import os, sys',
             'import os as bar',
             'import os.path as bar',
-            'from __future__ import nested_scopes, generators',
-            'from __future__ import (nested_scopes,\ngenerators)',
-            'from __future__ import (nested_scopes,\ngenerators,)',
-            'from sys import stdin, stderr, stdout',
-            'from sys import (stdin, stderr,\nstdout)',
-            'from sys import (stdin, stderr,\nstdout,)',
-            'from sys import (stdin\n, stderr, stdout)',
-            'from sys import (stdin\n, stderr, stdout,)',
-            'from sys import stdin as si, stdout as so, stderr as se',
-            'from sys import (stdin as si, stdout as so, stderr as se)',
-            'from sys import (stdin as si, stdout as so, stderr as se,)',
+            'from __future__ importiere nested_scopes, generators',
+            'from __future__ importiere (nested_scopes,\ngenerators)',
+            'from __future__ importiere (nested_scopes,\ngenerators,)',
+            'from sys importiere stdin, stderr, stdout',
+            'from sys importiere (stdin, stderr,\nstdout)',
+            'from sys importiere (stdin, stderr,\nstdout,)',
+            'from sys importiere (stdin\n, stderr, stdout)',
+            'from sys importiere (stdin\n, stderr, stdout,)',
+            'from sys importiere stdin as si, stdout as so, stderr as se',
+            'from sys importiere (stdin as si, stdout as so, stderr as se)',
+            'from sys importiere (stdin as si, stdout as so, stderr as se,)',
             ]
         fail = [
             'import (os, sys)',
@@ -309,20 +309,20 @@ klasse TestSpecifics(unittest.TestCase):
             'import (os,)',
             'import os As bar',
             'import os.path a bar',
-            'from sys import stdin As stdout',
-            'from sys import stdin a stdout',
-            'from (sys) import stdin',
-            'from __future__ import (nested_scopes',
-            'from __future__ import nested_scopes)',
-            'from __future__ import nested_scopes,\ngenerators',
-            'from sys import (stdin',
-            'from sys import stdin)',
-            'from sys import stdin, stdout,\nstderr',
-            'from sys import stdin si',
-            'from sys import stdin,',
-            'from sys import (*)',
-            'from sys import (stdin,, stdout, stderr)',
-            'from sys import (stdin, stdout),',
+            'from sys importiere stdin As stdout',
+            'from sys importiere stdin a stdout',
+            'from (sys) importiere stdin',
+            'from __future__ importiere (nested_scopes',
+            'from __future__ importiere nested_scopes)',
+            'from __future__ importiere nested_scopes,\ngenerators',
+            'from sys importiere (stdin',
+            'from sys importiere stdin)',
+            'from sys importiere stdin, stdout,\nstderr',
+            'from sys importiere stdin si',
+            'from sys importiere stdin,',
+            'from sys importiere (*)',
+            'from sys importiere (stdin,, stdout, stderr)',
+            'from sys importiere (stdin, stdout),',
             ]
         fuer stmt in succeed:
             compile(stmt, 'tmp', 'exec')
@@ -450,8 +450,8 @@ klasse TestSpecifics(unittest.TestCase):
             def f():
                 __mangled = 1
                 __not_mangled__ = 2
-                import __mangled_mod       # noqa: F401
-                import __package__.module  # noqa: F401
+                importiere __mangled_mod       # noqa: F401
+                importiere __package__.module  # noqa: F401
 
         self.assertIn("_A__mangled", A.f.__code__.co_varnames)
         self.assertIn("__not_mangled__", A.f.__code__.co_varnames)
@@ -596,7 +596,7 @@ klasse TestSpecifics(unittest.TestCase):
             self.assertWahr(type(ast) == _ast.Module)
             co2 = compile(ast, '%s3' % fname, 'exec')
             self.assertEqual(co1, co2)
-            # the code object's filename comes from the second compilation step
+            # the code object's filename comes von the second compilation step
             self.assertEqual(co2.co_filename, '%s3' % fname)
 
         # raise exception when node type doesn't match with compile mode
@@ -1098,22 +1098,22 @@ klasse TestSpecifics(unittest.TestCase):
     def test_imported_load_method(self):
         sources = [
             """\
-            import os
+            importiere os
             def foo():
                 return os.uname()
             """,
             """\
-            import os as operating_system
+            importiere os as operating_system
             def foo():
                 return operating_system.uname()
             """,
             """\
-            from os import path
+            von os importiere path
             def foo(x):
                 return path.join(x)
             """,
             """\
-            from os import path as os_path
+            von os importiere path as os_path
             def foo(x):
                 return os_path.join(x)
             """
@@ -1572,7 +1572,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_variable_dependent(self):
         # gh-104635: Since the value of b is dependent on the value of a
         # the first STORE_FAST fuer a should not be skipped. (e.g POP_TOP).
-        # This test case is added to prevent potential regression from aggressive optimization.
+        # This test case is added to prevent potential regression von aggressive optimization.
         def f():
             a = 42; b = a + 54; a = 54
             return a, b
@@ -1648,7 +1648,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_compile_warnings(self):
         # See gh-131927
-        # Compile warnings originating from the same file and
+        # Compile warnings originating von the same file and
         # line are now only emitted once.
         with warnings.catch_warnings(record=Wahr) as caught:
             warnings.simplefilter("default")
@@ -2168,8 +2168,8 @@ klasse TestSourcePositions(unittest.TestCase):
 
     def test_push_null_load_global_positions(self):
         source_template = """
-        import abc, dis
-        import ast as art
+        importiere abc, dis
+        importiere ast as art
 
         abc = Nichts
         dix = dis
@@ -2511,7 +2511,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
         sizes = [compile_snippet(i).co_stacksize fuer i in range(2, 5)]
         wenn len(set(sizes)) != 1:
-            import dis, io
+            importiere dis, io
             out = io.StringIO()
             dis.dis(compile_snippet(1), file=out)
             self.fail("stack sizes diverge with # of consecutive snippets: "

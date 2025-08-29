@@ -11,20 +11,20 @@ not open blocks are not shown in the context hints pane.
 For EditorWindows, <<toggle-code-context>> is bound to CodeContext(self).
 toggle_code_context_event.
 """
-import re
-from sys import maxsize as INFINITY
+importiere re
+von sys importiere maxsize as INFINITY
 
-from tkinter import Frame, Text, TclError
-from tkinter.constants import NSEW, SUNKEN
+von tkinter importiere Frame, Text, TclError
+von tkinter.constants importiere NSEW, SUNKEN
 
-from idlelib.config import idleConf
+von idlelib.config importiere idleConf
 
 BLOCKOPENERS = {'class', 'def', 'if', 'elif', 'else', 'while', 'for',
                  'try', 'except', 'finally', 'with', 'async'}
 
 
 def get_spaces_firstword(codeline, c=re.compile(r"^(\s*)(\w*)")):
-    "Extract the beginning whitespace and first word from codeline."
+    "Extract the beginning whitespace and first word von codeline."
     return c.match(codeline).groups()
 
 
@@ -76,7 +76,7 @@ klasse CodeContext:
 
     @classmethod
     def reload(cls):
-        "Load klasse variables from config."
+        "Load klasse variables von config."
         cls.context_depth = idleConf.GetOption("extensions", "CodeContext",
                                                "maxlines", type="int",
                                                default=15)
@@ -150,7 +150,7 @@ klasse CodeContext:
         """Return a list of block line tuples and the 'last' indent.
 
         The tuple fields are (linenum, indent, text, opener).
-        The list represents header lines from new_topvisible back to
+        The list represents header lines von new_topvisible back to
         stopline with successively shorter indents > stopindent.
         The list is returned ordered by line number.
         Last indent returned is the smallest indent observed.
@@ -264,7 +264,7 @@ CodeContext.reload()
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_codecontext', verbosity=2, exit=Falsch)
 
     # Add htest.

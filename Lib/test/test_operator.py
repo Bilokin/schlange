@@ -1,12 +1,12 @@
-import unittest
-import inspect
-import pickle
-import sys
-from decimal import Decimal
-from fractions import Fraction
+importiere unittest
+importiere inspect
+importiere pickle
+importiere sys
+von decimal importiere Decimal
+von fractions importiere Fraction
 
-from test import support
-from test.support import import_helper
+von test importiere support
+von test.support importiere import_helper
 
 
 py_operator = import_helper.import_fresh_module('operator',

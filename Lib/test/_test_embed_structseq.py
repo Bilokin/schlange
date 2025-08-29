@@ -1,6 +1,6 @@
-import sys
-import types
-import unittest
+importiere sys
+importiere types
+importiere unittest
 
 
 # bpo-46417: Test that structseq types used by the sys module are still

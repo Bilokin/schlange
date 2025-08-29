@@ -1,7 +1,7 @@
-import sys
-import unittest
-import test.support
-from ctypes import (CDLL, PyDLL, ArgumentError,
+importiere sys
+importiere unittest
+importiere test.support
+von ctypes importiere (CDLL, PyDLL, ArgumentError,
                     Structure, Array, Union,
                     _Pointer, _SimpleCData, _CFuncPtr,
                     POINTER, pointer, byref, sizeof,
@@ -14,14 +14,14 @@ from ctypes import (CDLL, PyDLL, ArgumentError,
                     c_long, c_ulong,
                     c_longlong, c_ulonglong,
                     c_float, c_double, c_longdouble)
-from test.support import import_helper
+von test.support importiere import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
 klasse SimpleTypesTestCase(unittest.TestCase):
     def setUp(self):
         try:
-            from _ctypes import set_conversion_mode
+            von _ctypes importiere set_conversion_mode
         except ImportError:
             pass
         sonst:
@@ -29,7 +29,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
 
     def tearDown(self):
         try:
-            from _ctypes import set_conversion_mode
+            von _ctypes importiere set_conversion_mode
         except ImportError:
             pass
         sonst:

@@ -1,17 +1,17 @@
 """Subset of importlib.abc used to reduce importlib.util imports."""
-from . import _bootstrap
-import abc
+von . importiere _bootstrap
+importiere abc
 
 
 klasse Loader(metaclass=abc.ABCMeta):
 
-    """Abstract base klasse fuer import loaders."""
+    """Abstract base klasse fuer importiere loaders."""
 
     def create_module(self, spec):
         """Return a module to initialize and into which to load.
 
         This method should raise ImportError wenn anything prevents it
-        from creating a new module.  It may return Nichts to indicate
+        von creating a new module.  It may return Nichts to indicate
         that the spec should create the new module.
         """
         # By default, defer to default semantics fuer the new module.

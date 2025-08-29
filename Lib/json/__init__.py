@@ -3,12 +3,12 @@ JavaScript syntax (ECMA-262 3rd edition) used as a lightweight data
 interchange format.
 
 :mod:`json` exposes an API familiar to users of the standard library
-:mod:`marshal` and :mod:`pickle` modules.  It is derived from a
+:mod:`marshal` and :mod:`pickle` modules.  It is derived von a
 version of the externally maintained simplejson library.
 
 Encoding basic Python object hierarchies::
 
-    >>> import json
+    >>> importiere json
     >>> json.dumps(['foo', {'bar': ('baz', Nichts, 1.0, 2)}])
     '["foo", {"bar": ["baz", null, 1.0, 2]}]'
     >>> drucke(json.dumps("\"foo\bar"))
@@ -19,7 +19,7 @@ Encoding basic Python object hierarchies::
     "\\"
     >>> drucke(json.dumps({"c": 0, "b": 0, "a": 0}, sort_keys=Wahr))
     {"a": 0, "b": 0, "c": 0}
-    >>> from io import StringIO
+    >>> von io importiere StringIO
     >>> io = StringIO()
     >>> json.dump(['streaming API'], io)
     >>> io.getvalue()
@@ -27,14 +27,14 @@ Encoding basic Python object hierarchies::
 
 Compact encoding::
 
-    >>> import json
+    >>> importiere json
     >>> mydict = {'4': 5, '6': 7}
     >>> json.dumps([1,2,3,mydict], separators=(',', ':'))
     '[1,2,3,{"4":5,"6":7}]'
 
 Pretty printing::
 
-    >>> import json
+    >>> importiere json
     >>> drucke(json.dumps({'4': 5, '6': 7}, sort_keys=Wahr, indent=4))
     {
         "4": 5,
@@ -43,20 +43,20 @@ Pretty printing::
 
 Decoding JSON::
 
-    >>> import json
+    >>> importiere json
     >>> obj = ['foo', {'bar': ['baz', Nichts, 1.0, 2]}]
     >>> json.loads('["foo", {"bar":["baz", null, 1.0, 2]}]') == obj
     Wahr
     >>> json.loads('"\\"foo\\bar"') == '"foo\x08ar'
     Wahr
-    >>> from io import StringIO
+    >>> von io importiere StringIO
     >>> io = StringIO('["streaming API"]')
     >>> json.load(io)[0] == 'streaming API'
     Wahr
 
 Specializing JSON object decoding::
 
-    >>> import json
+    >>> importiere json
     >>> def as_complex(dct):
     ...     wenn '__complex__' in dct:
     ...         return complex(dct['real'], dct['imag'])
@@ -65,13 +65,13 @@ Specializing JSON object decoding::
     >>> json.loads('{"__complex__": true, "real": 1, "imag": 2}',
     ...     object_hook=as_complex)
     (1+2j)
-    >>> from decimal import Decimal
+    >>> von decimal importiere Decimal
     >>> json.loads('1.1', parse_float=Decimal) == Decimal('1.1')
     Wahr
 
 Specializing JSON object encoding::
 
-    >>> import json
+    >>> importiere json
     >>> def encode_complex(obj):
     ...     wenn isinstance(obj, complex):
     ...         return [obj.real, obj.imag]
@@ -86,7 +86,7 @@ Specializing JSON object encoding::
     '[2.0, 1.0]'
 
 
-Using json from the shell to validate and pretty-print::
+Using json von the shell to validate and pretty-print::
 
     $ echo '{"json":"obj"}' | python -m json
     {
@@ -103,9 +103,9 @@ __all__ = [
 
 __author__ = 'Bob Ippolito <bob@redivi.com>'
 
-from .decoder import JSONDecoder, JSONDecodeError
-from .encoder import JSONEncoder
-import codecs
+von .decoder importiere JSONDecoder, JSONDecodeError
+von .encoder importiere JSONEncoder
+importiere codecs
 
 _default_encoder = JSONEncoder(
     skipkeys=Falsch,

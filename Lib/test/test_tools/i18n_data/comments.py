@@ -1,4 +1,4 @@
-from gettext import gettext as _
+von gettext importiere gettext as _
 
 # Not a translator comment
 _('foo')

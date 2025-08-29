@@ -1,8 +1,8 @@
 "Zoom a window to maximum height."
 
-import re
-import sys
-import tkinter
+importiere re
+importiere sys
+importiere tkinter
 
 
 klasse WmInfoGatheringError(Exception):
@@ -118,7 +118,7 @@ def set_window_geometry(top, geometry):
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_zoomheight', verbosity=2, exit=Falsch)
 
     # Add htest?

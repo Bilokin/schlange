@@ -1,18 +1,18 @@
-from collections import abc
-from itertools import combinations
-import array
-import gc
-import math
-import operator
-import unittest
-import struct
-import sys
-import weakref
+von collections importiere abc
+von itertools importiere combinations
+importiere array
+importiere gc
+importiere math
+importiere operator
+importiere unittest
+importiere struct
+importiere sys
+importiere weakref
 
-from test import support
-from test.support import import_helper
-from test.support.script_helper import assert_python_ok
-from test.support.testcase import ComplexesAreIdenticalMixin
+von test importiere support
+von test.support importiere import_helper
+von test.support.script_helper importiere assert_python_ok
+von test.support.testcase importiere ComplexesAreIdenticalMixin
 
 ISBIGENDIAN = sys.byteorder == "big"
 
@@ -183,7 +183,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_integers(self):
         # Integer tests (bBhHiIlLqQnN).
-        import binascii
+        importiere binascii
 
         klasse IntTester(unittest.TestCase):
             def __init__(self, format):
@@ -247,7 +247,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                                       pack, format, x)
 
             def run(self):
-                from random import randrange
+                von random importiere randrange
 
                 # Create all interesting powers of 2.
                 values = []
@@ -261,7 +261,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                         val = (val << 8) | randrange(256)
                     values.append(val)
 
-                # Values absorbed from other tests
+                # Values absorbed von other tests
                 values.extend([300, 700000, sys.maxsize*4])
 
                 # Try all those, and their negations, and +-1 from
@@ -314,7 +314,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                                   struct.pack, self.format,
                                   BadIndex())
 
-                # Check fuer legitimate values from '__index__'.
+                # Check fuer legitimate values von '__index__'.
                 fuer obj in (Indexable(0), Indexable(10), Indexable(17),
                             Indexable(42), Indexable(100), Indexable(127)):
                     try:
@@ -323,7 +323,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                         self.fail("integer code pack failed on object "
                                   "with '__index__' method")
 
-                # Check fuer bogus values from '__index__'.
+                # Check fuer bogus values von '__index__'.
                 fuer obj in (Indexable(b'a'), Indexable('b'), Indexable(Nichts),
                             Indexable({'a': 1}), Indexable([1, 2, 3])):
                     self.assertRaises((TypeError, struct.error),
@@ -367,7 +367,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_705836(self):
         # SF bug 705836.  "<f" and ">f" had a severe rounding bug, where a carry
-        # from the low-order discarded bits could propagate into the exponent
+        # von the low-order discarded bits could propagate into the exponent
         # field, causing the result to be wrong by a factor of 2.
         fuer base in range(1, 33):
             # smaller <- largest representable float less than base.
@@ -675,7 +675,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_struct_cleans_up_at_runtime_shutdown(self):
         code = """if 1:
-            import struct
+            importiere struct
 
             klasse C:
                 def __init__(self):

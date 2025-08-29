@@ -1,11 +1,11 @@
-import unittest
+importiere unittest
 
-from test.support import import_helper, threading_helper
-from test.support.threading_helper import run_concurrently
+von test.support importiere import_helper, threading_helper
+von test.support.threading_helper importiere run_concurrently
 
 grp = import_helper.import_module("grp")
 
-from test import test_grp
+von test importiere test_grp
 
 
 NTHREADS = 10

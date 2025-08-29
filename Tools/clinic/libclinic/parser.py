@@ -1,17 +1,17 @@
-from __future__ import annotations
-import contextlib
-import functools
-import io
-from types import NoneType
-from typing import Any, Protocol, TYPE_CHECKING
+von __future__ importiere annotations
+importiere contextlib
+importiere functools
+importiere io
+von types importiere NoneType
+von typing importiere Any, Protocol, TYPE_CHECKING
 
-from libclinic import unspecified
-from libclinic.block_parser import Block
-from libclinic.converter import CConverter, converters
-from libclinic.converters import buffer, robuffer, rwbuffer
-from libclinic.return_converters import CReturnConverter, return_converters
+von libclinic importiere unspecified
+von libclinic.block_parser importiere Block
+von libclinic.converter importiere CConverter, converters
+von libclinic.converters importiere buffer, robuffer, rwbuffer
+von libclinic.return_converters importiere CReturnConverter, return_converters
 wenn TYPE_CHECKING:
-    from libclinic.app import Clinic
+    von libclinic.app importiere Clinic
 
 
 klasse Parser(Protocol):

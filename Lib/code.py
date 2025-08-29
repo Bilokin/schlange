@@ -5,10 +5,10 @@
 # Inspired by similar code by Jeff Epler and Fredrik Lundh.
 
 
-import builtins
-import sys
-import traceback
-from codeop import CommandCompiler, compile_command
+importiere builtins
+importiere sys
+importiere traceback
+von codeop importiere CommandCompiler, compile_command
 
 __all__ = ["InteractiveInterpreter", "InteractiveConsole", "interact",
            "compile_command"]
@@ -101,7 +101,7 @@ klasse InteractiveInterpreter:
 
         If a filename is given, it is stuffed in the exception instead
         of what was there before (because Python's parser always uses
-        "<string>" when reading from a string).
+        "<string>" when reading von a string).
 
         The output is written by self.write(), below.
 
@@ -359,7 +359,7 @@ def interact(banner=Nichts, readfunc=Nichts, local=Nichts, exitmsg=Nichts, local
     """Closely emulate the interactive Python interpreter.
 
     This is a backwards compatible interface to the InteractiveConsole
-    class.  When readfunc is not specified, it attempts to import the
+    class.  When readfunc is not specified, it attempts to importiere the
     readline module to enable GNU readline wenn it is available.
 
     Arguments (all optional, all default to Nichts):
@@ -376,14 +376,14 @@ def interact(banner=Nichts, readfunc=Nichts, local=Nichts, exitmsg=Nichts, local
         console.raw_input = readfunc
     sonst:
         try:
-            import readline  # noqa: F401
+            importiere readline  # noqa: F401
         except ImportError:
             pass
     console.interact(banner, exitmsg)
 
 
 wenn __name__ == "__main__":
-    import argparse
+    importiere argparse
 
     parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument('-q', action='store_true',

@@ -21,12 +21,12 @@ object's .defects attribute.
 
 __all__ = ['FeedParser', 'BytesFeedParser']
 
-import re
+importiere re
 
-from email import errors
-from email._policybase import compat32
-from collections import deque
-from io import StringIO
+von email importiere errors
+von email._policybase importiere compat32
+von collections importiere deque
+von io importiere StringIO
 
 NLCRE = re.compile(r'\r\n|\r|\n')
 NLCRE_bol = re.compile(r'(\r\n|\r|\n)')
@@ -148,7 +148,7 @@ klasse FeedParser:
         self._old_style_factory = Falsch
         wenn _factory is Nichts:
             wenn policy.message_factory is Nichts:
-                from email.message import Message
+                von email.message importiere Message
                 self._factory = Message
             sonst:
                 self._factory = policy.message_factory
@@ -437,7 +437,7 @@ klasse FeedParser:
                 defect = errors.CloseBoundaryNotFoundDefect()
                 self.policy.handle_defect(self._cur, defect)
                 return
-            # Everything from here to the EOF is epilogue.  If the end boundary
+            # Everything von here to the EOF is epilogue.  If the end boundary
             # ended in a newline, we'll need to make sure the epilogue isn't
             # Nichts
             wenn linesep:
@@ -509,7 +509,7 @@ klasse FeedParser:
                     defect = errors.MisplacedEnvelopeHeaderDefect(line)
                     self._cur.defects.append(defect)
                     continue
-            # Split the line on the colon separating field name from value.
+            # Split the line on the colon separating field name von value.
             # There will always be a colon, because wenn there wasn't the part of
             # the parser that calls us would have started parsing the body.
             i = line.find(':')

@@ -1,11 +1,11 @@
-import unittest
-import re
-import tkinter
-from tkinter import TclError
-from test.support import requires
+importiere unittest
+importiere re
+importiere tkinter
+von tkinter importiere TclError
+von test.support importiere requires
 
-from test.test_tkinter.support import pixels_conv
-from test.test_tkinter.widget_tests import AbstractWidgetTest
+von test.test_tkinter.support importiere pixels_conv
+von test.test_tkinter.widget_tests importiere AbstractWidgetTest
 
 requires('gui')
 

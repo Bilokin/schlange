@@ -1,5 +1,5 @@
-import os
-from test import support
+importiere os
+von test importiere support
 
 
 def load_tests(*args):

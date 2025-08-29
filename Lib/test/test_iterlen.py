@@ -41,10 +41,10 @@ enumerate(iter('abc')).
 
 """
 
-import unittest
-from itertools import repeat
-from collections import deque
-from operator import length_hint
+importiere unittest
+von itertools importiere repeat
+von collections importiere deque
+von operator importiere length_hint
 
 n = 10
 

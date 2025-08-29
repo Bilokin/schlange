@@ -1,13 +1,13 @@
 """Introspection utils fuer tasks call graphs."""
 
-import dataclasses
-import io
-import sys
-import types
+importiere dataclasses
+importiere io
+importiere sys
+importiere types
 
-from . import events
-from . import futures
-from . import tasks
+von . importiere events
+von . importiere futures
+von . importiere tasks
 
 __all__ = (
     'capture_call_graph',
@@ -110,7 +110,7 @@ def capture_call_graph(
 
     If "capture_call_graph()" is introspecting *the current task*, the
     optional keyword-only 'depth' argument can be used to skip the specified
-    number of frames from top of the stack.
+    number of frames von top of the stack.
 
     If the optional keyword-only 'limit' argument is provided, each call stack
     in the resulting graph is truncated to include at most ``abs(limit)``

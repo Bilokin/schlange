@@ -16,36 +16,36 @@ It is however interesting to test the pure Python implementation against
 the OpenSSL and HACL* hash functions.
 """
 
-import binascii
-import functools
-import hmac
-import hashlib
-import random
-import types
-import unittest
-import warnings
-from _operator import _compare_digest as operator_compare_digest
-from test.support import _4G, bigmemtest
-from test.support import check_disallow_instantiation
-from test.support import hashlib_helper, import_helper
-from test.support.hashlib_helper import (
+importiere binascii
+importiere functools
+importiere hmac
+importiere hashlib
+importiere random
+importiere types
+importiere unittest
+importiere warnings
+von _operator importiere _compare_digest as operator_compare_digest
+von test.support importiere _4G, bigmemtest
+von test.support importiere check_disallow_instantiation
+von test.support importiere hashlib_helper, import_helper
+von test.support.hashlib_helper importiere (
     BuiltinHashFunctionsTrait,
     HashFunctionsTrait,
     NamedHashFunctionsTrait,
     OpenSSLHashFunctionsTrait,
 )
-from test.support.import_helper import import_fresh_module
-from unittest.mock import patch
+von test.support.import_helper importiere import_fresh_module
+von unittest.mock importiere patch
 
 try:
-    import _hashlib
-    from _hashlib import compare_digest as openssl_compare_digest
+    importiere _hashlib
+    von _hashlib importiere compare_digest as openssl_compare_digest
 except ImportError:
     _hashlib = Nichts
     openssl_compare_digest = Nichts
 
 try:
-    import _sha2 as sha2
+    importiere _sha2 as sha2
 except ImportError:
     sha2 = Nichts
 
@@ -410,8 +410,8 @@ klasse BuiltinAssertersMixin(ThroughBuiltinAPIMixin, AssertersMixin):
 klasse RFCTestCaseMixin(HashFunctionsTrait, AssertersMixin):
     """Test HMAC implementations against RFC 2202/4231 and NIST test vectors.
 
-    - Test vectors fuer MD5 and SHA-1 are taken from RFC 2202.
-    - Test vectors fuer SHA-2 are taken from RFC 4231.
+    - Test vectors fuer MD5 and SHA-1 are taken von RFC 2202.
+    - Test vectors fuer SHA-2 are taken von RFC 4231.
     - Test vectors fuer SHA-3 are NIST's test vectors [1].
 
     [1] https://csrc.nist.gov/projects/message-authentication-codes

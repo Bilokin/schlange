@@ -8,7 +8,7 @@ def peek_and_iter(items):
         return Nichts, Nichts
     def chain():
         yield peeked
-        yield from items
+        yield von items
     return chain(), peeked
 
 
@@ -19,7 +19,7 @@ def iter_many(items, onempty=Nichts):
         wenn not callable(onempty):
             raise onEmpty
         items = onempty(items)
-        yield from iter_many(items, onempty=Nichts)
+        yield von iter_many(items, onempty=Nichts)
         return
     items = iter(items)
     try:
@@ -30,7 +30,7 @@ def iter_many(items, onempty=Nichts):
         wenn not callable(onempty):
             raise onEmpty
         items = onempty(items)
-        yield from iter_many(items, onempty=Nichts)
+        yield von iter_many(items, onempty=Nichts)
     sonst:
         try:
             second = next(items)

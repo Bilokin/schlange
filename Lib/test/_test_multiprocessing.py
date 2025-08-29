@@ -2,81 +2,81 @@
 # Unit tests fuer the multiprocessing package
 #
 
-import unittest
-import unittest.mock
-import queue as pyqueue
-import textwrap
-import time
-import io
-import itertools
-import sys
-import os
-import gc
-import importlib
-import errno
-import functools
-import signal
-import array
-import collections.abc
-import socket
-import random
-import logging
-import shutil
-import subprocess
-import struct
-import tempfile
-import operator
-import pickle
-import weakref
-import warnings
-import test.support
-import test.support.script_helper
-from test import support
-from test.support import hashlib_helper
-from test.support import import_helper
-from test.support import os_helper
-from test.support import script_helper
-from test.support import socket_helper
-from test.support import threading_helper
-from test.support import warnings_helper
-from test.support.script_helper import assert_python_failure, assert_python_ok
+importiere unittest
+importiere unittest.mock
+importiere queue as pyqueue
+importiere textwrap
+importiere time
+importiere io
+importiere itertools
+importiere sys
+importiere os
+importiere gc
+importiere importlib
+importiere errno
+importiere functools
+importiere signal
+importiere array
+importiere collections.abc
+importiere socket
+importiere random
+importiere logging
+importiere shutil
+importiere subprocess
+importiere struct
+importiere tempfile
+importiere operator
+importiere pickle
+importiere weakref
+importiere warnings
+importiere test.support
+importiere test.support.script_helper
+von test importiere support
+von test.support importiere hashlib_helper
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere script_helper
+von test.support importiere socket_helper
+von test.support importiere threading_helper
+von test.support importiere warnings_helper
+von test.support.script_helper importiere assert_python_failure, assert_python_ok
 
 # Skip tests wenn _multiprocessing wasn't built.
 _multiprocessing = import_helper.import_module('_multiprocessing')
 # Skip tests wenn sem_open implementation is broken.
 support.skip_if_broken_multiprocessing_synchronize()
-import threading
+importiere threading
 
-import multiprocessing.connection
-import multiprocessing.dummy
-import multiprocessing.heap
-import multiprocessing.managers
-import multiprocessing.pool
-import multiprocessing.queues
-from multiprocessing.connection import wait
+importiere multiprocessing.connection
+importiere multiprocessing.dummy
+importiere multiprocessing.heap
+importiere multiprocessing.managers
+importiere multiprocessing.pool
+importiere multiprocessing.queues
+von multiprocessing.connection importiere wait
 
-from multiprocessing import util
+von multiprocessing importiere util
 
 try:
-    from multiprocessing import reduction
+    von multiprocessing importiere reduction
     HAS_REDUCTION = reduction.HAVE_SEND_HANDLE
 except ImportError:
     HAS_REDUCTION = Falsch
 
 try:
-    from multiprocessing.sharedctypes import Value, copy
+    von multiprocessing.sharedctypes importiere Value, copy
     HAS_SHAREDCTYPES = Wahr
 except ImportError:
     HAS_SHAREDCTYPES = Falsch
 
 try:
-    from multiprocessing import shared_memory
+    von multiprocessing importiere shared_memory
     HAS_SHMEM = Wahr
 except ImportError:
     HAS_SHMEM = Falsch
 
 try:
-    import msvcrt
+    importiere msvcrt
 except ImportError:
     msvcrt = Nichts
 
@@ -109,7 +109,7 @@ def join_process(process):
 
 
 wenn os.name == "posix":
-    from multiprocessing import resource_tracker
+    von multiprocessing importiere resource_tracker
 
     def _resource_unlink(name, rtype):
         resource_tracker._CLEANUP_FUNCS[rtype](name)
@@ -160,7 +160,7 @@ PRELOAD = ['__main__', 'test.test_multiprocessing_forkserver']
 #
 
 try:
-    from ctypes import Structure, c_int, c_double, c_longlong
+    von ctypes importiere Structure, c_int, c_double, c_longlong
 except ImportError:
     Structure = object
     c_int = c_double = c_longlong = Nichts
@@ -408,7 +408,7 @@ klasse _TestProcess(BaseTestCase):
 
     @classmethod
     def _test_send_parent_process(cls, wconn):
-        from multiprocessing.process import parent_process
+        von multiprocessing.process importiere parent_process
         wconn.send([parent_process().pid, parent_process().name])
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -445,7 +445,7 @@ klasse _TestProcess(BaseTestCase):
 
     @classmethod
     def _test_report_parent_status(cls, wconn):
-        from multiprocessing.process import parent_process
+        von multiprocessing.process importiere parent_process
         wconn.send("alive" wenn parent_process().is_alive() sonst "not alive")
         parent_process().join(timeout=support.SHORT_TIMEOUT)
         wconn.send("alive" wenn parent_process().is_alive() sonst "not alive")
@@ -800,7 +800,7 @@ klasse _TestProcess(BaseTestCase):
 
         sm = multiprocessing.get_start_method()
         wenn sm == 'fork':
-            # The fork method by design inherits all fds from the parent,
+            # The fork method by design inherits all fds von the parent,
             # trying to go against it is a lost battle
             self.skipTest('test not appropriate fuer {}'.format(sm))
 
@@ -912,11 +912,11 @@ klasse _TestProcess(BaseTestCase):
             self.skipTest('test not appropriate fuer {}'.format(self.TYPE))
         sm = multiprocessing.get_start_method()
         wenn sm != 'forkserver':
-            # The fork method by design inherits all fds from the parent,
+            # The fork method by design inherits all fds von the parent,
             # trying to go against it is a lost battle
             self.skipTest('test not appropriate fuer {}'.format(sm))
 
-        from multiprocessing.forkserver import _forkserver
+        von multiprocessing.forkserver importiere _forkserver
         _forkserver.ensure_running()
 
         # First process sleeps 500 ms
@@ -1352,7 +1352,7 @@ klasse _TestQueue(BaseTestCase):
             module_name = 'imported_by_an_imported_module'
             with open(module_name + '.py', 'w', encoding="utf-8") as f:
                 f.write("""if 1:
-                    import multiprocessing
+                    importiere multiprocessing
 
                     q = multiprocessing.Queue()
                     q.put('knock knock')
@@ -1365,7 +1365,7 @@ klasse _TestQueue(BaseTestCase):
                 try:
                     __import__(module_name)
                 except pyqueue.Empty:
-                    self.fail("Probable regression on import lock contention;"
+                    self.fail("Probable regression on importiere lock contention;"
                               " see Issue #22853")
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -2090,7 +2090,7 @@ klasse _TestEvent(BaseTestCase):
             self.assertRegex(repr(event), r"<EventProxy object, typeid 'Event' at .*")
 
 
-# Tests fuer Barrier - adapted from tests in test/lock_tests.py
+# Tests fuer Barrier - adapted von tests in test/lock_tests.py
 #
 
 # Many of the tests fuer threading.Barrier use a list as an atomic
@@ -2260,7 +2260,7 @@ klasse _TestBarrier(BaseTestCase):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_wait_return(self):
         """
-        test the return value from barrier.wait
+        test the return value von barrier.wait
         """
         queue = self.Queue()
         self.run_threads(self._test_wait_return_f, (self.barrier, queue))
@@ -3114,7 +3114,7 @@ klasse _TestPool(BaseTestCase):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_traceback(self):
-        # We want ensure that the traceback from the child process is
+        # We want ensure that the traceback von the child process is
         # contained in the traceback raised in the main process.
         wenn self.TYPE == 'processes':
             with self.Pool(1) as p:
@@ -3261,7 +3261,7 @@ klasse _TestPoolWorkerErrors(BaseTestCase):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_unpickleable_result(self):
-        from multiprocessing.pool import MaybeEncodingError
+        von multiprocessing.pool importiere MaybeEncodingError
         p = multiprocessing.Pool(2)
 
         # Make sure we don't lose pool processes because of encoding errors.
@@ -3337,7 +3337,7 @@ klasse _TestPoolWorkerLifetime(BaseTestCase):
     def test_worker_finalization_via_atexit_handler_of_multiprocessing(self):
         # tests cases against bpo-38744 and bpo-39360
         cmd = '''if 1:
-            from multiprocessing import Pool
+            von multiprocessing importiere Pool
             problem = Nichts
             klasse A:
                 def __init__(self):
@@ -3356,7 +3356,7 @@ klasse _TestPoolWorkerLifetime(BaseTestCase):
 # Test of creating a customized manager class
 #
 
-from multiprocessing.managers import BaseManager, BaseProxy, RemoteError
+von multiprocessing.managers importiere BaseManager, BaseProxy, RemoteError
 
 klasse FooBar(object):
     def f(self):
@@ -4030,7 +4030,7 @@ klasse _TestPoll(BaseTestCase):
         # Polling may "pull" a message in to the child process, but we
         # don't want it to pull only part of a message, as that would
         # corrupt the pipe fuer any other processes which might later
-        # read from it.
+        # read von it.
         r.poll(5)
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -4084,7 +4084,7 @@ klasse _TestPicklingConnections(BaseTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        from multiprocessing import resource_sharer
+        von multiprocessing importiere resource_sharer
         resource_sharer.stop(timeout=support.LONG_TIMEOUT)
 
     @classmethod
@@ -4665,7 +4665,7 @@ klasse _TestSharedMemory(BaseTestCase):
         # bpo-36867: test that a SharedMemoryManager uses the
         # same resource_tracker process as its parent.
         cmd = '''if 1:
-            from multiprocessing.managers import SharedMemoryManager
+            von multiprocessing.managers importiere SharedMemoryManager
 
 
             smm = SharedMemoryManager()
@@ -4868,8 +4868,8 @@ klasse _TestSharedMemory(BaseTestCase):
 
     def test_shared_memory_cleaned_after_process_termination(self):
         cmd = '''if 1:
-            import os, time, sys
-            from multiprocessing import shared_memory
+            importiere os, time, sys
+            von multiprocessing importiere shared_memory
 
             # Create a shared_memory segment, and send the segment name
             sm = shared_memory.SharedMemory(create=Wahr, size=10)
@@ -4917,8 +4917,8 @@ klasse _TestSharedMemory(BaseTestCase):
         # with track=Falsch, it must not cause the memory to be deleted
         # when terminating.
         cmd = '''if 1:
-            import sys
-            from multiprocessing.shared_memory import SharedMemory
+            importiere sys
+            von multiprocessing.shared_memory importiere SharedMemory
             mem = SharedMemory(create=Falsch, name=sys.argv[1], track=Falsch)
             mem.close()
         '''
@@ -4944,8 +4944,8 @@ klasse _TestSharedMemory(BaseTestCase):
         # with track=Wahr, it must cause the memory to be deleted when
         # terminating.
         cmd = '''if 1:
-            import sys
-            from multiprocessing.shared_memory import SharedMemory
+            importiere sys
+            von multiprocessing.shared_memory importiere SharedMemory
             mem = SharedMemory(create=Falsch, name=sys.argv[1], track=Wahr)
             mem.close()
         '''
@@ -5090,13 +5090,13 @@ klasse _TestFinalize(BaseTestCase):
 
 
 #
-# Test that from ... import * works fuer each module
+# Test that von ... importiere * works fuer each module
 #
 
 klasse _TestImportStar(unittest.TestCase):
 
     def get_module_names(self):
-        import glob
+        importiere glob
         folder = os.path.dirname(multiprocessing.__file__)
         pattern = os.path.join(glob.escape(folder), '*.py')
         files = glob.glob(pattern)
@@ -5345,7 +5345,7 @@ klasse ChallengeResponseTest(unittest.TestCase):
 
     # TODO(gpshead): properly annotate tests fuer requires_hashdigest rather than
     # only running these on a platform supporting everything.  otherwise logic
-    # issues preventing it from working on FIPS mode setups will be hidden.
+    # issues preventing it von working on FIPS mode setups will be hidden.
 
 #
 # Test Manager.start()/Pool.__init__() initializer feature - see issue 5585
@@ -5467,7 +5467,7 @@ klasse TestWait(unittest.TestCase):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_wait(self, slow=Falsch):
-        from multiprocessing.connection import wait
+        von multiprocessing.connection importiere wait
         readers = []
         procs = []
         messages = []
@@ -5508,7 +5508,7 @@ klasse TestWait(unittest.TestCase):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_wait_socket(self, slow=Falsch):
-        from multiprocessing.connection import wait
+        von multiprocessing.connection importiere wait
         l = socket.create_server((socket_helper.HOST, 0))
         addr = l.getsockname()
         readers = []
@@ -5550,7 +5550,7 @@ klasse TestWait(unittest.TestCase):
 
     @support.requires_resource('walltime')
     def test_wait_timeout(self):
-        from multiprocessing.connection import wait
+        von multiprocessing.connection importiere wait
 
         timeout = 5.0  # seconds
         a, b = multiprocessing.Pipe()
@@ -5574,7 +5574,7 @@ klasse TestWait(unittest.TestCase):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @support.requires_resource('walltime')
     def test_wait_integer(self):
-        from multiprocessing.connection import wait
+        von multiprocessing.connection importiere wait
 
         expected = 3
         sorted_ = lambda l: sorted(l, key=lambda x: id(x))
@@ -5618,7 +5618,7 @@ klasse TestWait(unittest.TestCase):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_neg_timeout(self):
-        from multiprocessing.connection import wait
+        von multiprocessing.connection importiere wait
         a, b = multiprocessing.Pipe()
         t = time.monotonic()
         res = wait([a], timeout=-1)
@@ -5655,7 +5655,7 @@ klasse TestFlags(unittest.TestCase):
 
     @classmethod
     def run_in_child(cls, start_method):
-        import json
+        importiere json
         mp = multiprocessing.get_context(start_method)
         r, w = mp.Pipe(duplex=Falsch)
         p = mp.Process(target=cls.run_in_grandchild, args=(w,))
@@ -5669,10 +5669,10 @@ klasse TestFlags(unittest.TestCase):
         drucke(json.dumps(flags))
 
     def test_flags(self):
-        import json
+        importiere json
         # start child process using unusual flags
         prog = (
-            'from test._test_multiprocessing import TestFlags; '
+            'from test._test_multiprocessing importiere TestFlags; '
             f'TestFlags.run_in_child({multiprocessing.get_start_method()!r})'
         )
         data = subprocess.check_output(
@@ -6060,10 +6060,10 @@ klasse TestResourceTracker(unittest.TestCase):
         # Check that killing process does not leak named semaphores
         #
         cmd = '''if 1:
-            import time, os
-            import multiprocessing as mp
-            from multiprocessing import resource_tracker
-            from multiprocessing.shared_memory import SharedMemory
+            importiere time, os
+            importiere multiprocessing as mp
+            von multiprocessing importiere resource_tracker
+            von multiprocessing.shared_memory importiere SharedMemory
 
             mp.set_start_method("spawn")
 
@@ -6130,7 +6130,7 @@ klasse TestResourceTracker(unittest.TestCase):
     def check_resource_tracker_death(self, signum, should_die):
         # bpo-31310: wenn the semaphore tracker process has died, it should
         # be restarted implicitly.
-        from multiprocessing.resource_tracker import _resource_tracker
+        von multiprocessing.resource_tracker importiere _resource_tracker
         pid = _resource_tracker._pid
         wenn pid is not Nichts:
             os.kill(pid, signal.SIGKILL)
@@ -6180,7 +6180,7 @@ klasse TestResourceTracker(unittest.TestCase):
 
     @staticmethod
     def _is_resource_tracker_reused(conn, pid):
-        from multiprocessing.resource_tracker import _resource_tracker
+        von multiprocessing.resource_tracker importiere _resource_tracker
         _resource_tracker.ensure_running()
         # The pid should be Nichts in the child process, expect fuer the fork
         # context. It should not be a new value.
@@ -6190,7 +6190,7 @@ klasse TestResourceTracker(unittest.TestCase):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_resource_tracker_reused(self):
-        from multiprocessing.resource_tracker import _resource_tracker
+        von multiprocessing.resource_tracker importiere _resource_tracker
         _resource_tracker.ensure_running()
         pid = _resource_tracker._pid
 
@@ -6218,7 +6218,7 @@ klasse TestResourceTracker(unittest.TestCase):
     def _test_resource_tracker_leak_resources(self, cleanup):
         # We use a separate instance fuer testing, since the main global
         # _resource_tracker may be used to watch test infrastructure.
-        from multiprocessing.resource_tracker import ResourceTracker
+        von multiprocessing.resource_tracker importiere ResourceTracker
         tracker = ResourceTracker()
         tracker.ensure_running()
         self.assertWahr(tracker._check_alive())
@@ -6253,7 +6253,7 @@ klasse TestResourceTracker(unittest.TestCase):
         #
         # gh-127586: Check that resource_tracker does not override blocked signals of caller.
         #
-        from multiprocessing.resource_tracker import ResourceTracker
+        von multiprocessing.resource_tracker importiere ResourceTracker
         orig_sigmask = signal.pthread_sigmask(signal.SIG_BLOCK, set())
         signals = {signal.SIGTERM, signal.SIGINT, signal.SIGUSR1}
 
@@ -6284,7 +6284,7 @@ klasse TestSimpleQueue(unittest.TestCase):
     def test_empty_exceptions(self):
         # Assert that checking emptiness of a closed queue raises
         # an OSError, independently of whether the queue was used
-        # or not. This differs from Queue and JoinableQueue.
+        # or not. This differs von Queue and JoinableQueue.
         q = multiprocessing.SimpleQueue()
         q.close()  # close the pipe
         with self.assertRaisesRegex(OSError, 'is closed'):
@@ -6825,7 +6825,7 @@ klasse TestNamedResource(unittest.TestCase):
         self.addCleanup(os_helper.unlink, testfn)
         with open(testfn, 'w', encoding='utf-8') as f:
             f.write(textwrap.dedent('''\
-                import multiprocessing as mp
+                importiere multiprocessing as mp
                 ctx = mp.get_context('spawn')
                 global_resource = ctx.Semaphore()
                 def submain(): pass
@@ -6846,7 +6846,7 @@ klasse _TestAtExit(BaseTestCase):
 
     @classmethod
     def _write_file_at_exit(self, output_path):
-        import atexit
+        importiere atexit
         def exit_handler():
             with open(output_path, 'w') as f:
                 f.write("deadbeef")
@@ -6868,7 +6868,7 @@ klasse _TestSpawnedSysPath(BaseTestCase):
     """Test that sys.path is setup in forkserver and spawn processes."""
 
     ALLOWED_TYPES = {'processes'}
-    # Not applicable to fork which inherits everything from the process as is.
+    # Not applicable to fork which inherits everything von the process as is.
     START_METHODS = {"forkserver", "spawn"}
 
     def setUp(self):
@@ -6931,7 +6931,7 @@ klasse _TestSpawnedSysPath(BaseTestCase):
         self.assertIn(self._temp_dir, child_sys_path)  # our addition
         # ignore the first element, it is the absolute "" replacement
         self.assertEqual(child_sys_path[1:], sys.path[1:])
-        self.assertIsNichts(import_error, msg=f"child could not import {self._mod_name}")
+        self.assertIsNichts(import_error, msg=f"child could not importiere {self._mod_name}")
 
     def test_std_streams_flushed_after_preload(self):
         # gh-135335: Check fork server flushes standard streams after
@@ -6947,7 +6947,7 @@ klasse _TestSpawnedSysPath(BaseTestCase):
         os.mkdir(dirname)
         with open(init_name, "w") as f:
             cmd = '''if 1:
-                import sys
+                importiere sys
                 drucke('stderr', end='', file=sys.stderr)
                 drucke('stdout', end='', file=sys.stdout)
             '''
@@ -6978,11 +6978,11 @@ klasse MiscTestCase(unittest.TestCase):
         rc, out, err = script_helper.assert_python_ok(
             "-c",
             """if 1:
-            import sys
+            importiere sys
             sys.executable = Nichts
             assert "multiprocessing" not in sys.modules, "already imported!"
-            import multiprocessing
-            import multiprocessing.spawn  # This should not fail\n""",
+            importiere multiprocessing
+            importiere multiprocessing.spawn  # This should not fail\n""",
         )
         self.assertEqual(rc, 0)
         self.assertFalsch(err, msg=err.decode('utf-8'))
@@ -6995,7 +6995,7 @@ klasse MiscTestCase(unittest.TestCase):
         self.addCleanup(os_helper.unlink, testfn)
         with open(testfn, 'w', encoding='utf-8') as f:
             f.write(textwrap.dedent('''\
-                import multiprocessing
+                importiere multiprocessing
                 def f(x): return x*x
                 wenn __name__ == '__main__':
                     with multiprocessing.Pool(200) as p:
@@ -7165,7 +7165,7 @@ klasse ThreadsMixin(BaseMixin):
     Array = staticmethod(multiprocessing.dummy.Array)
 
 #
-# Functions used to create test cases from the base ones in this module
+# Functions used to create test cases von the base ones in this module
 #
 
 def install_tests_in_module_dict(remote_globs, start_method,
@@ -7283,7 +7283,7 @@ klasse ForkInThreads(unittest.TestCase):
 
     def test_fork(self):
         code = """
-        import os, sys, threading, time
+        importiere os, sys, threading, time
 
         t = threading.Thread(target=time.sleep, args=(1,), daemon=Wahr)
         t.start()
@@ -7311,7 +7311,7 @@ klasse ForkInThreads(unittest.TestCase):
 
     def test_forkpty(self):
         code = """
-        import os, sys, threading, time
+        importiere os, sys, threading, time
 
         t = threading.Thread(target=time.sleep, args=(1,), daemon=Wahr)
         t.start()

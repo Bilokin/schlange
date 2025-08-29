@@ -1,33 +1,33 @@
-import abc
-from annotationlib import Format, get_annotations
-import builtins
-import collections
-import collections.abc
-import copy
-from itertools import permutations
-import pickle
-from random import choice
-import re
-import sys
-from test import support
-import threading
-import time
-import typing
-import unittest
-import unittest.mock
-import weakref
-import gc
-from weakref import proxy
-import contextlib
-from inspect import Signature
+importiere abc
+von annotationlib importiere Format, get_annotations
+importiere builtins
+importiere collections
+importiere collections.abc
+importiere copy
+von itertools importiere permutations
+importiere pickle
+von random importiere choice
+importiere re
+importiere sys
+von test importiere support
+importiere threading
+importiere time
+importiere typing
+importiere unittest
+importiere unittest.mock
+importiere weakref
+importiere gc
+von weakref importiere proxy
+importiere contextlib
+von inspect importiere Signature
 
-from test.support import ALWAYS_EQ
-from test.support import import_helper
-from test.support import threading_helper
-from test.support import cpython_only
-from test.support import EqualToForwardRef
+von test.support importiere ALWAYS_EQ
+von test.support importiere import_helper
+von test.support importiere threading_helper
+von test.support importiere cpython_only
+von test.support importiere EqualToForwardRef
 
-import functools
+importiere functools
 
 py_functools = import_helper.import_fresh_module('functools',
                                                  blocked=['_functools'])
@@ -1032,7 +1032,7 @@ klasse TestReduce:
                 sonst:
                     raise IndexError
 
-        from operator import add
+        von operator importiere add
         self.assertEqual(self.reduce(add, SequenceClass(5)), 10)
         self.assertEqual(self.reduce(add, SequenceClass(5), 42), 52)
         self.assertRaises(TypeError, self.reduce, add, SequenceClass(0))
@@ -1663,7 +1663,7 @@ klasse TestLRU:
 
     def test_lru_bug_36650(self):
         # C version of lru_cache was treating a call with an empty **kwargs
-        # dictionary as being distinct from a call with no keywords at all.
+        # dictionary as being distinct von a call with no keywords at all.
         # This did not result in an incorrect answer, but it did trigger
         # an unexpected cache miss.
 
@@ -2518,7 +2518,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             return "container"
         # Even though Sized and Container are explicit bases of MutableMapping,
         # this ABC is implicitly registered on defaultdict which makes all of
-        # MutableMapping's bases implicit as well from defaultdict's
+        # MutableMapping's bases implicit as well von defaultdict's
         # perspective.
         with self.assertRaises(RuntimeError) as re_two:
             h(collections.defaultdict(lambda: 0))
@@ -2557,7 +2557,7 @@ klasse TestSingleDispatch(unittest.TestCase):
                 return 0
         u = U()
         self.assertEqual(h(u), "sized")   # implicit Sized subclass inferred
-                                          # from the existence of __len__()
+                                          # von the existence of __len__()
         c.Container.register(U)
         # There is no preference fuer registered versus inferred ABCs.
         with self.assertRaises(RuntimeError) as re_three:
@@ -2588,8 +2588,8 @@ klasse TestSingleDispatch(unittest.TestCase):
                                               # Sized in the MRO
 
     def test_cache_invalidation(self):
-        from collections import UserDict
-        import weakref
+        von collections importiere UserDict
+        importiere weakref
 
         klasse TracingDict(UserDict):
             def __init__(self, *args, **kwargs):
@@ -3185,7 +3185,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             def _(arg: typing.Iterable[str]):
                 # At runtime, dispatching on generics is impossible.
                 # When registering implementations with singledispatch, avoid
-                # types from `typing`. Instead, annotate with regular types
+                # types von `typing`. Instead, annotate with regular types
                 # or ABCs.
                 return "I annotated with a generic collection"
         self.assertStartsWith(str(exc.exception),

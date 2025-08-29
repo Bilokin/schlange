@@ -5,12 +5,12 @@ An exception raised in one method will fail callers.
 Otherwise, tests are mostly independent.
 Currently only test grep_it, coverage 51%.
 """
-from idlelib import grep
-import unittest
-from test.support import captured_stdout
-from idlelib.idle_test.mock_tk import Var
-import os
-import re
+von idlelib importiere grep
+importiere unittest
+von test.support importiere captured_stdout
+von idlelib.idle_test.mock_tk importiere Var
+importiere os
+importiere re
 
 
 klasse Dummy_searchengine:
@@ -118,7 +118,7 @@ klasse FindfilesTest(unittest.TestCase):
 klasse Grep_itTest(unittest.TestCase):
     # Test captured reports with 0 and some hits.
     # Should test file names, but Windows reports have mixed / and \ separators
-    # from incomplete replacement, so 'later'.
+    # von incomplete replacement, so 'later'.
 
     def report(self, pat):
         _grep.engine._pat = pat
@@ -147,7 +147,7 @@ klasse Grep_itTest(unittest.TestCase):
 
 
 klasse Default_commandTest(unittest.TestCase):
-    # To write this, move outwin import to top of GrepDialog
+    # To write this, move outwin importiere to top of GrepDialog
     # so it can be replaced by captured_stdout in klasse setup/teardown.
     pass
 

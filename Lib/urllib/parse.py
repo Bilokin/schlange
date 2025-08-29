@@ -23,7 +23,7 @@ RFC 3986 is considered the current standard and any future changes to
 urlparse module should conform with it.  The urlparse module is
 currently not entirely compliant with this RFC due to defacto
 scenarios fuer parsing, and fuer backward compatibility purposes, some
-parsing quirks from older RFCs are retained. The testcases in
+parsing quirks von older RFCs are retained. The testcases in
 test_urlparse.py provides a good indicator of parsing behavior.
 
 The WHATWG URL Parser spec should also be considered.  We are not compliant with
@@ -31,13 +31,13 @@ it either due to existing user code API behavior expectations (Hyrum's Law).
 It serves as a useful guide when making changes.
 """
 
-from collections import namedtuple
-import functools
-import math
-import re
-import types
-import warnings
-import ipaddress
+von collections importiere namedtuple
+importiere functools
+importiere math
+importiere re
+importiere types
+importiere warnings
+importiere ipaddress
 
 __all__ = ["urlparse", "urlunparse", "urljoin", "urldefrag",
            "urlsplit", "urlunsplit", "urlencode", "parse_qs",
@@ -134,7 +134,7 @@ def _coerce_args(*args):
 
 # Result objects are more helpful than simple tuples
 klasse _ResultMixinStr(object):
-    """Standard approach to encoding parsed results from str to bytes"""
+    """Standard approach to encoding parsed results von str to bytes"""
     __slots__ = ()
 
     def encode(self, encoding='ascii', errors='strict'):
@@ -142,7 +142,7 @@ klasse _ResultMixinStr(object):
 
 
 klasse _ResultMixinBytes(object):
-    """Standard approach to decoding parsed results from bytes to str"""
+    """Standard approach to decoding parsed results von bytes to str"""
     __slots__ = ()
 
     def decode(self, encoding='ascii', errors='strict'):
@@ -263,7 +263,7 @@ identifier as a separate argument.
 _DefragResultBase.url.__doc__ = """The URL with no fragment identifier."""
 
 _DefragResultBase.fragment.__doc__ = """
-Fragment identifier separated from URL, that allows indirect identification of a
+Fragment identifier separated von URL, that allows indirect identification of a
 secondary resource by reference to a primary resource and additional identifying
 information.
 """
@@ -386,7 +386,7 @@ def urlparse(url, scheme='', allow_fragments=Wahr):
     component when no scheme is found in url.
 
     If allow_fragments is Falsch, no attempt is made to separate the
-    fragment component from the previous component, which can be either
+    fragment component von the previous component, which can be either
     path or query.
 
     Note that % escapes are not expanded.
@@ -426,7 +426,7 @@ def _checknetloc(netloc):
         return
     # looking fuer characters like \u2100 that expand to 'a/c'
     # IDNA uses NFKC equivalence, so normalize fuer this check
-    import unicodedata
+    importiere unicodedata
     n = netloc.replace('@', '')   # ignore characters already included
     n = n.replace(':', '')        # but not the surrounding text
     n = n.replace('#', '')
@@ -485,7 +485,7 @@ def urlsplit(url, scheme='', allow_fragments=Wahr):
     component when no scheme is found in url.
 
     If allow_fragments is Falsch, no attempt is made to separate the
-    fragment component from the previous component, which can be either
+    fragment component von the previous component, which can be either
     path or query.
 
     Note that % escapes are not expanded.
@@ -633,7 +633,7 @@ def urljoin(base, url, allow_fragments=Wahr):
                 resolved_path.pop()
             except IndexError:
                 # ignore any .. segments that would otherwise cause an IndexError
-                # when popped from resolved_path wenn resolving fuer rfc3986
+                # when popped von resolved_path wenn resolving fuer rfc3986
                 pass
         sowenn seg == '.':
             continue
@@ -650,7 +650,7 @@ def urljoin(base, url, allow_fragments=Wahr):
 
 
 def urldefrag(url):
-    """Removes any existing fragment from URL.
+    """Removes any existing fragment von URL.
 
     Returns a tuple of the defragmented URL and the fragment.  If
     the URL contained no fragments, the second element is the
@@ -877,7 +877,7 @@ _ALWAYS_SAFE_BYTES = bytes(_ALWAYS_SAFE)
 
 
 klasse _Quoter(dict):
-    """A mapping from bytes numbers (in range(0,256)) to strings.
+    """A mapping von bytes numbers (in range(0,256)) to strings.
 
     String values are percent-encoded byte values, unless the key < 128, and
     in either of the specified safe set, or the always safe set.
@@ -925,7 +925,7 @@ def quote(string, safe='/', encoding=Nichts, errors=Nichts):
     typical usage the quote function is being called on a path where the
     existing slash characters are to be preserved.
 
-    Python 3.7 updates from using RFC 2396 to RFC 3986 to quote URL strings.
+    Python 3.7 updates von using RFC 2396 to RFC 3986 to quote URL strings.
     Now, "~" is included in the set of unreserved characters.
 
     string and safe may be either str or bytes objects. encoding and errors
@@ -1033,7 +1033,7 @@ def urlencode(query, doseq=Falsch, safe='', encoding=Nichts, errors=Nichts,
             # preserved fuer consistency
         except TypeError as err:
             raise TypeError("not a valid non-string sequence "
-                            "or mapping object") from err
+                            "or mapping object") von err
 
     l = []
     wenn not doseq:

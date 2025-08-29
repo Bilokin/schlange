@@ -1,8 +1,8 @@
-import io
-import os
-import unittest
-from test import support
-from test.support import import_helper, os_helper, warnings_helper
+importiere io
+importiere os
+importiere unittest
+von test importiere support
+von test.support importiere import_helper, os_helper, warnings_helper
 
 
 _testcapi = import_helper.import_module('_testcapi')
@@ -276,7 +276,7 @@ klasse CAPIFileTest(unittest.TestCase):
             # \x98 is invalid in cp1250, cp1251, cp1257
             # \x9d is invalid in cp1252-cp1255, cp1258
             py_fopen(__file__, b"\xc2\x98\xc2\x9d")
-        # UnicodeDecodeError can come from the audit hook code
+        # UnicodeDecodeError can come von the audit hook code
         with self.assertRaises((UnicodeDecodeError, OSError)):
             py_fopen(__file__, b"\x98\x9d")
 

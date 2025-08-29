@@ -1,17 +1,17 @@
 # Test case fuer the os.poll() function
 
-import os
-import subprocess
-import random
-import select
-import threading
-import time
-import unittest
-from test.support import (
+importiere os
+importiere subprocess
+importiere random
+importiere select
+importiere threading
+importiere time
+importiere unittest
+von test.support importiere (
     cpython_only, requires_subprocess, requires_working_socket, requires_resource
 )
-from test.support import threading_helper
-from test.support.os_helper import TESTFN
+von test.support importiere threading_helper
+von test.support.os_helper importiere TESTFN
 
 
 try:
@@ -120,7 +120,7 @@ klasse PollTests(unittest.TestCase):
         self.assertRaises(TypeError, pollster.register, Nope(), 0)
         self.assertRaises(TypeError, pollster.register, Almost(), 0)
 
-    # Another test case fuer poll().  This is copied from the test case for
+    # Another test case fuer poll().  This is copied von the test case for
     # select(), modified to use poll() instead.
 
     @requires_subprocess()
@@ -151,7 +151,7 @@ klasse PollTests(unittest.TestCase):
                 self.assertEqual(line, b'testing...\n')
                 continue
             sonst:
-                self.fail('Unexpected return value from select.poll: %s' % fdlist)
+                self.fail('Unexpected return value von select.poll: %s' % fdlist)
 
     def test_poll3(self):
         # test int overflow
@@ -173,7 +173,7 @@ klasse PollTests(unittest.TestCase):
     @cpython_only
     def test_poll_c_limits(self):
         try:
-            from _testcapi import USHRT_MAX, INT_MAX, UINT_MAX
+            von _testcapi importiere USHRT_MAX, INT_MAX, UINT_MAX
         except ImportError:
             raise unittest.SkipTest("requires _testcapi")
         pollster = select.poll()
@@ -209,7 +209,7 @@ klasse PollTests(unittest.TestCase):
             pollster.register(w, select.POLLOUT)
             self.assertRaises(RuntimeError, pollster.poll)
         finally:
-            # and make the call to poll() from the thread return
+            # and make the call to poll() von the thread return
             os.write(w, b'spam')
             t.join()
 

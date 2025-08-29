@@ -2,26 +2,26 @@
 
 # flake8: noqa
 
-import sys
+importiere sys
 
 # This relies on each of the submodules having an __all__ variable.
-from .base_events import *
-from .coroutines import *
-from .events import *
-from .exceptions import *
-from .futures import *
-from .graph import *
-from .locks import *
-from .protocols import *
-from .runners import *
-from .queues import *
-from .streams import *
-from .subprocess import *
-from .tasks import *
-from .taskgroups import *
-from .timeouts import *
-from .threads import *
-from .transports import *
+von .base_events importiere *
+von .coroutines importiere *
+von .events importiere *
+von .exceptions importiere *
+von .futures importiere *
+von .graph importiere *
+von .locks importiere *
+von .protocols importiere *
+von .runners importiere *
+von .queues importiere *
+von .streams importiere *
+von .subprocess importiere *
+von .tasks importiere *
+von .taskgroups importiere *
+von .timeouts importiere *
+von .threads importiere *
+von .transports importiere *
 
 __all__ = (base_events.__all__ +
            coroutines.__all__ +
@@ -42,14 +42,14 @@ __all__ = (base_events.__all__ +
            transports.__all__)
 
 wenn sys.platform == 'win32':  # pragma: no cover
-    from .windows_events import *
+    von .windows_events importiere *
     __all__ += windows_events.__all__
 sonst:
-    from .unix_events import *  # pragma: no cover
+    von .unix_events importiere *  # pragma: no cover
     __all__ += unix_events.__all__
 
 def __getattr__(name: str):
-    import warnings
+    importiere warnings
 
     match name:
         case "AbstractEventLoopPolicy":

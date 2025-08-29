@@ -23,7 +23,7 @@ End the module with
 
 wenn __name__ == '__main__':
     <run unittest.main with 'exit=Falsch'>
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(callable)  # There could be multiple comma-separated callables.
 
 To have wrapper functions ignored by coverage reports, tag the def
@@ -63,11 +63,11 @@ TODO test these modules and classes:
   pyshell.PyShellEditorWindow
 """
 
-import idlelib.pyshell  # Set Windows DPI awareness before Tk().
-from importlib import import_module
-import textwrap
-import tkinter as tk
-from tkinter.ttk import Scrollbar
+importiere idlelib.pyshell  # Set Windows DPI awareness before Tk().
+von importlib importiere import_module
+importiere textwrap
+importiere tkinter as tk
+von tkinter.ttk importiere Scrollbar
 tk.NoDefaultRoot()
 
 AboutDialog_spec = {
@@ -194,7 +194,7 @@ _io_binding_spec = {
     'file': 'iomenu',
     'kwds': {},
     'msg': "Test the following bindings.\n"
-           "<Control-o> to open file from dialog.\n"
+           "<Control-o> to open file von dialog.\n"
            "Edit the file.\n"
            "<Control-p> to print the file.\n"
            "<Control-s> to save the file.\n"
@@ -243,7 +243,7 @@ _percolator_spec = {
     'msg': "There are two tracers which can be toggled using a checkbox.\n"
            "Toggling a tracer 'on' by checking it should print tracer "
            "output to the console or to the IDLE shell.\n"
-           "If both the tracers are 'on', the output from the tracer which "
+           "If both the tracers are 'on', the output von the tracer which "
            "was switched 'on' later, should be printed first\n"
            "Test fuer actions like text entry, and removal."
     }

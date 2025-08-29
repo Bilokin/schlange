@@ -1,4 +1,4 @@
-import sys
+importiere sys
 
 
 OS = sys.platform

@@ -1,21 +1,21 @@
-import errno
-import inspect
-import os
-import posixpath
-import random
-import sys
-import unittest
-from functools import partial
-from posixpath import realpath, abspath, dirname, basename, ALL_BUT_LAST, ALLOW_MISSING
-from test import support
-from test import test_genericpath
-from test.support import import_helper
-from test.support import os_helper
-from test.support.os_helper import FakePath, TESTFN
-from unittest import mock
+importiere errno
+importiere inspect
+importiere os
+importiere posixpath
+importiere random
+importiere sys
+importiere unittest
+von functools importiere partial
+von posixpath importiere realpath, abspath, dirname, basename, ALL_BUT_LAST, ALLOW_MISSING
+von test importiere support
+von test importiere test_genericpath
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support.os_helper importiere FakePath, TESTFN
+von unittest importiere mock
 
 try:
-    import posix
+    importiere posix
 except ImportError:
     posix = Nichts
 
@@ -246,7 +246,7 @@ klasse PosixPathTest(unittest.TestCase):
 
     @unittest.skipIf(posix is Nichts, "Test requires posix module")
     def test_ismount_different_device(self):
-        # Simulate the path being on a different device from its parent by
+        # Simulate the path being on a different device von its parent by
         # mocking out st_dev.
         save_lstat = os.lstat
         def fake_lstat(path):

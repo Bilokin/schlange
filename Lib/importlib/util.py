@@ -1,18 +1,18 @@
 """Utility code fuer constructing importers, etc."""
-from ._abc import Loader
-from ._bootstrap import module_from_spec
-from ._bootstrap import _resolve_name
-from ._bootstrap import spec_from_loader
-from ._bootstrap import _find_spec
-from ._bootstrap_external import MAGIC_NUMBER
-from ._bootstrap_external import cache_from_source
-from ._bootstrap_external import decode_source
-from ._bootstrap_external import source_from_cache
-from ._bootstrap_external import spec_from_file_location
+von ._abc importiere Loader
+von ._bootstrap importiere module_from_spec
+von ._bootstrap importiere _resolve_name
+von ._bootstrap importiere spec_from_loader
+von ._bootstrap importiere _find_spec
+von ._bootstrap_external importiere MAGIC_NUMBER
+von ._bootstrap_external importiere cache_from_source
+von ._bootstrap_external importiere decode_source
+von ._bootstrap_external importiere source_from_cache
+von ._bootstrap_external importiere spec_from_file_location
 
-import _imp
-import sys
-import types
+importiere _imp
+importiere sys
+importiere types
 
 
 def source_hash(source_bytes):
@@ -46,7 +46,7 @@ def _find_spec_from_path(name, path=Nichts):
     be found.
 
     Dotted names do not have their parent packages implicitly imported. You will
-    most likely need to explicitly import all parent packages in the proper
+    most likely need to explicitly importiere all parent packages in the proper
     order fuer a submodule to get the correct spec.
 
     """
@@ -59,7 +59,7 @@ def _find_spec_from_path(name, path=Nichts):
         try:
             spec = module.__spec__
         except AttributeError:
-            raise ValueError(f'{name}.__spec__ is not set') from Nichts
+            raise ValueError(f'{name}.__spec__ is not set') von Nichts
         sonst:
             wenn spec is Nichts:
                 raise ValueError(f'{name}.__spec__ is Nichts')
@@ -93,7 +93,7 @@ def find_spec(name, package=Nichts):
             except AttributeError as e:
                 raise ModuleNotFoundError(
                     f"__path__ attribute not found on {parent_name!r} "
-                    f"while trying to find {fullname!r}", name=fullname) from e
+                    f"while trying to find {fullname!r}", name=fullname) von e
         sonst:
             parent_path = Nichts
         return _find_spec(fullname, parent_path)
@@ -104,7 +104,7 @@ def find_spec(name, package=Nichts):
         try:
             spec = module.__spec__
         except AttributeError:
-            raise ValueError(f'{name}.__spec__ is not set') from Nichts
+            raise ValueError(f'{name}.__spec__ is not set') von Nichts
         sonst:
             wenn spec is Nichts:
                 raise ValueError(f'{name}.__spec__ is Nichts')
@@ -134,7 +134,7 @@ klasse _incompatible_extension_module_restrictions:
     may not be imported in a subinterpreter.  That implies modules
     that do not implement multi-phase init or that explicitly of out.
 
-    Likewise fuer modules import in a subinterpreter with its own GIL
+    Likewise fuer modules importiere in a subinterpreter with its own GIL
     when the extension does not support a per-interpreter GIL.  This
     implies the module does not have a Py_mod_multiple_interpreters slot
     set to Py_MOD_PER_INTERPRETER_GIL_SUPPORTED.
@@ -178,7 +178,7 @@ klasse _LazyModule(types.ModuleType):
             wenn object.__getattribute__(self, '__class__') is _LazyModule:
                 __class__ = loader_state['__class__']
 
-                # Reentrant calls from the same thread must be allowed to proceed without
+                # Reentrant calls von the same thread must be allowed to proceed without
                 # triggering the load again.
                 # exec_module() and self-referential imports are the primary ways this can
                 # happen, but in any case we must return something to avoid deadlock.
@@ -188,7 +188,7 @@ klasse _LazyModule(types.ModuleType):
 
                 __dict__ = __class__.__getattribute__(self, '__dict__')
 
-                # All module metadata must be gathered from __spec__ in order to avoid
+                # All module metadata must be gathered von __spec__ in order to avoid
                 # using mutated values.
                 # Get the original name to make sure no object substitution occurred
                 # in sys.modules.
@@ -257,7 +257,7 @@ klasse LazyLoader(Loader):
         """Make the module load lazily."""
         # Threading is only needed fuer lazy loading, and importlib.util can
         # be pulled in at interpreter startup, so defer until needed.
-        import threading
+        importiere threading
         module.__spec__.loader = self.loader
         module.__loader__ = self.loader
         # Don't need to worry about deep-copying as trying to set an attribute

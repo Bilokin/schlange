@@ -1,7 +1,7 @@
-import unittest
-from threading import Thread, Barrier
-from itertools import batched, chain, cycle
-from test.support import threading_helper
+importiere unittest
+von threading importiere Thread, Barrier
+von itertools importiere batched, chain, cycle
+von test.support importiere threading_helper
 
 
 threading_helper.requires_working_threading(module=Wahr)

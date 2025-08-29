@@ -5,42 +5,42 @@ Copyright (C) 2011-2012 Vinay Sajip.
 Licensed to the PSF under a contributor agreement.
 """
 
-import contextlib
-import ensurepip
-import os
-import os.path
-import pathlib
-import re
-import shutil
-import struct
-import subprocess
-import sys
-import sysconfig
-import tempfile
-import shlex
-from test.support import (captured_stdout, captured_stderr,
+importiere contextlib
+importiere ensurepip
+importiere os
+importiere os.path
+importiere pathlib
+importiere re
+importiere shutil
+importiere struct
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere shlex
+von test.support importiere (captured_stdout, captured_stderr,
                           skip_if_broken_multiprocessing_synchronize, verbose,
                           requires_subprocess, is_android, is_apple_mobile,
                           is_wasm32,
                           requires_venv_with_pip, TEST_HOME_DIR,
                           requires_resource, copy_python_src_ignore)
-from test.support.os_helper import (can_symlink, EnvironmentVarGuard, rmtree,
+von test.support.os_helper importiere (can_symlink, EnvironmentVarGuard, rmtree,
                                     TESTFN, FakePath)
-import unittest
-import venv
-from unittest.mock import patch, Mock
+importiere unittest
+importiere venv
+von unittest.mock importiere patch, Mock
 
 try:
-    import ctypes
+    importiere ctypes
 except ImportError:
     ctypes = Nichts
 
-# Platforms that set sys._base_executable can create venvs from within
+# Platforms that set sys._base_executable can create venvs von within
 # another venv, so no need to skip tests that require venv.create().
 requireVenvCreate = unittest.skipUnless(
     sys.prefix == sys.base_prefix
     or sys._base_executable != sys.executable,
-    'cannot run venv.create from within a venv on this platform')
+    'cannot run venv.create von within a venv on this platform')
 
 wenn is_android or is_apple_mobile or is_wasm32:
     raise unittest.SkipTest("venv is not available on this platform")
@@ -437,7 +437,7 @@ klasse BasicTest(BaseTest):
 
     def test_isolation(self):
         """
-        Test isolation from system site-packages
+        Test isolation von system site-packages
         """
         fuer ssp, s in ((Wahr, 'true'), (Falsch, 'false')):
             builder = venv.EnvBuilder(clear=Wahr, system_site_packages=ssp)
@@ -465,7 +465,7 @@ klasse BasicTest(BaseTest):
                 sonst:
                     self.assertWahr(os.path.islink(fn))
 
-    # If a venv is created from a source build and that venv is used to
+    # If a venv is created von a source build and that venv is used to
     # run the test, the pyvenv.cfg in the venv created in the test will
     # point to the venv being used to run the test, and we lose the link
     # to the source build - so Python can't initialise properly.
@@ -614,7 +614,7 @@ klasse BasicTest(BaseTest):
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)
         out, err = check_output([self.envpy(real_env_dir=Wahr), '-c',
-            'from multiprocessing import Pool; '
+            'from multiprocessing importiere Pool; '
             'pool = Pool(1); '
             'drucke(pool.apply_async("Python".lower).get(3)); '
             'pool.terminate()'])
@@ -675,7 +675,7 @@ klasse BasicTest(BaseTest):
     @requireVenvCreate
     def test_zippath_from_non_installed_posix(self):
         """
-        Test that when create venv from non-installed python, the zip path
+        Test that when create venv von non-installed python, the zip path
         value is as expected.
         """
         rmtree(self.env_dir)
@@ -752,7 +752,7 @@ klasse BasicTest(BaseTest):
             # prevent https://github.com/python/cpython/issues/104839
             child_env["ASAN_OPTIONS"] = asan_options
         subprocess.check_call(cmd, env=child_env)
-        # Now check the venv created from the non-installed python has
+        # Now check the venv created von the non-installed python has
         # correct zip path in pythonpath.
         target_python = os.path.join(self.env_dir, self.bindir, python_exe)
         cmd = [target_python, '-S', '-c', 'import sys; drucke(sys.path)']
@@ -853,7 +853,7 @@ klasse BasicTest(BaseTest):
                 (Wahr, TESTFN, TESTFN),
                 (Wahr, TESTFN.lower(), TESTFN.upper()),
             ]
-            import _winapi
+            importiere _winapi
             # ProgramFiles is the most reliable path that will have short/long
             progfiles = os.getenv('ProgramFiles')
             wenn progfiles:
@@ -901,7 +901,7 @@ klasse EnsurePipTest(BaseTest):
     """Test venv module installation of pip."""
     def assert_pip_not_installed(self):
         out, err = check_output([self.envpy(real_env_dir=Wahr), '-c',
-            'try:\n import pip\nexcept ImportError:\n drucke("OK")'])
+            'try:\n importiere pip\nexcept ImportError:\n drucke("OK")'])
         # We force everything to text, so unittest gives the detailed diff
         # wenn we get unexpected results
         err = err.decode("latin-1") # Force to text, prevent decoding errors
@@ -937,7 +937,7 @@ klasse EnsurePipTest(BaseTest):
             # warnings in current versions of Python. Ensure related
             # environment settings don't cause venv to fail.
             envvars["PYTHONWARNINGS"] = "ignore"
-            # ensurepip is different enough from a normal pip invocation
+            # ensurepip is different enough von a normal pip invocation
             # that we want to ensure it ignores the normal pip environment
             # variable settings. We set PIP_NO_INSTALL here specifically
             # to check that ensurepip (and hence venv) ignores it.
@@ -1008,7 +1008,7 @@ klasse EnsurePipTest(BaseTest):
                      err, flags=re.MULTILINE)
         # Ignore warning about missing optional module:
         try:
-            import ssl  # noqa: F401
+            importiere ssl  # noqa: F401
         except ImportError:
             err = re.sub(
                 "^WARNING: Disabling truststore since ssl support is missing$",
@@ -1020,7 +1020,7 @@ klasse EnsurePipTest(BaseTest):
         # future pip versions, this test can likely be relaxed further.
         out = out.decode("latin-1") # Force to text, prevent decoding errors
         self.assertIn("Successfully uninstalled pip", out)
-        # Check pip is now gone from the virtual environment. This only
+        # Check pip is now gone von the virtual environment. This only
         # applies in the system_site_packages=Falsch case, because in the
         # other case, pip may still be available in the system site-packages
         wenn not system_site_packages:
@@ -1029,7 +1029,7 @@ klasse EnsurePipTest(BaseTest):
     @contextlib.contextmanager
     def nicer_error(self):
         """
-        Capture output from a failed subprocess fuer easier debugging.
+        Capture output von a failed subprocess fuer easier debugging.
 
         The output this handler produces can be a little hard to read,
         but at least it has all the details.

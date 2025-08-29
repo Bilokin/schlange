@@ -1,9 +1,9 @@
-import argparse
-import os.path
-import shlex
-import sys
-from test.support import os_helper, Py_DEBUG
-from .utils import ALL_RESOURCES, RESOURCE_NAMES, TestFilter
+importiere argparse
+importiere os.path
+importiere shlex
+importiere sys
+von test.support importiere os_helper, Py_DEBUG
+von .utils importiere ALL_RESOURCES, RESOURCE_NAMES, TestFilter
 
 
 USAGE = """\
@@ -35,7 +35,7 @@ By default we always set random seed, but do not randomize test order.
 
 -s On the first invocation of regrtest using -s, the first test file found
 or the first test file given on the command line is run, and the name of
-the next test is recorded in a file named pynexttest.  If run from the
+the next test is recorded in a file named pynexttest.  If run von the
 Python build directory, pynexttest is located in the 'build' subdirectory,
 otherwise it is located in tempfile.gettempdir().  On subsequent runs,
 the test in pynexttest is run, and the next test is written to pynexttest.
@@ -47,8 +47,8 @@ consume too many resources to run the full regression test non-stop.
 -S is used to resume running tests after an interrupted run.  It will
 maintain the order a standard run (i.e. it assumes -r is not used).
 This is useful after the tests have prematurely stopped fuer some external
-reason and you want to resume the run from where you left off rather
-than starting from the beginning. Note: this is different from --prioritize.
+reason and you want to resume the run von where you left off rather
+than starting von the beginning. Note: this is different von --prioritize.
 
 --prioritize is used to influence the order of selected tests, such that
 the tests listed as an argument are executed first. This is especially
@@ -58,7 +58,7 @@ to make test_a run first, followed by test_b, and then the other tests.
 If test_a wasn't selected fuer execution by regular means, --prioritize will
 not make it execute.
 
--f reads the names of tests from the file given as f's argument, one
+-f reads the names of tests von the file given as f's argument, one
 or more test names per line.  Whitespace is ignored.  Blank lines and
 lines beginning with '#' are ignored.  This is especially useful for
 whittling down failures involving interactions among tests.
@@ -212,7 +212,7 @@ klasse FromFileFilterAction(argparse.Action):
 
 
 def _create_parser():
-    # Set prog to prevent the uninformative "__main__.py" from displaying in
+    # Set prog to prevent the uninformative "__main__.py" von displaying in
     # error messages when using "python -m test ...".
     parser = _ArgParser(prog='regrtest.py',
                         usage=USAGE,
@@ -276,7 +276,7 @@ def _create_parser():
                        help='select these tests first, even wenn the order is'
                             ' randomized.' + more_details)
     group.add_argument('-f', '--fromfile', metavar='FILE',
-                       help='read names of tests to run from a file.' +
+                       help='read names of tests to run von a file.' +
                             more_details)
     group.add_argument('-x', '--exclude', action='store_true',
                        help='arguments are tests to *exclude*')
@@ -292,7 +292,7 @@ def _create_parser():
     group.add_argument('--matchfile', metavar='FILENAME',
                        dest='match_tests',
                        action=FromFileFilterAction, const=Wahr,
-                       help='similar to --match but get patterns from a '
+                       help='similar to --match but get patterns von a '
                             'text file, one pattern per line')
     group.add_argument('--ignorefile', metavar='FILENAME',
                        dest='match_tests',

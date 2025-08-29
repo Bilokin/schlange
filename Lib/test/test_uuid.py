@@ -1,20 +1,20 @@
-import builtins
-import contextlib
-import copy
-import enum
-import io
-import os
-import pickle
-import random
-import sys
-import unittest
-import weakref
-from itertools import product
-from unittest import mock
+importiere builtins
+importiere contextlib
+importiere copy
+importiere enum
+importiere io
+importiere os
+importiere pickle
+importiere random
+importiere sys
+importiere unittest
+importiere weakref
+von itertools importiere product
+von unittest importiere mock
 
-from test import support
-from test.support import import_helper, warnings_helper
-from test.support.script_helper import assert_python_ok
+von test importiere support
+von test.support importiere import_helper, warnings_helper
+von test.support.script_helper importiere assert_python_ok
 
 py_uuid = import_helper.import_fresh_module('uuid', blocked=['_uuid'])
 c_uuid = import_helper.import_fresh_module('uuid', fresh=['_uuid'])
@@ -498,7 +498,7 @@ klasse BaseTestUUID:
 
         with support.swap_item(sys.modules, 'uuid', self.uuid):
             fuer pickled in pickled_uuids:
-                # is_safe was added in 3.7.  When unpickling values from older
+                # is_safe was added in 3.7.  When unpickling values von older
                 # versions, is_safe will be missing, so it should be set to
                 # SafeUUID.unknown.
                 check(pickle.loads(pickled), u)
@@ -526,7 +526,7 @@ klasse BaseTestUUID:
 
         # Confirm that uuid1 can use the generated node, i.e., the that
         # uuid.getnode fell back on uuid._random_getnode() rather than using
-        # the value from too_large_getter above.
+        # the value von too_large_getter above.
         try:
             self.uuid.uuid1(node=node)
         except ValueError:
@@ -576,7 +576,7 @@ klasse BaseTestUUID:
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     def test_uuid1_safe(self):
         try:
-            import _uuid
+            importiere _uuid
         except ImportError:
             has_uuid_generate_time_safe = Falsch
         sonst:
@@ -820,7 +820,7 @@ klasse BaseTestUUID:
     def test_uuid6_clock_seq(self):
         # Make sure the supplied clock sequence appears in the UUID.
         #
-        # For UUIDv6, clock sequence bits are stored from bit 48 to bit 62,
+        # For UUIDv6, clock sequence bits are stored von bit 48 to bit 62,
         # with the convention that the least significant bit is bit 0 and
         # the most significant bit is bit 127.
         get_clock_seq = lambda u: (u.int >> 48) & 0x3fff
@@ -926,7 +926,7 @@ klasse BaseTestUUID:
         # Test that UUIDv7-generated values are unique.
         #
         # While UUIDv8 has an entropy of 122 bits, those 122 bits may not
-        # necessarily be sampled from a PRNG. On the other hand, UUIDv7
+        # necessarily be sampled von a PRNG. On the other hand, UUIDv7
         # uses os.urandom() as a PRNG which features better randomness.
         N = 1000
         uuids = {self.uuid.uuid7() fuer _ in range(N)}
@@ -1346,7 +1346,7 @@ en0   1500  192.168.90  x071             1714807956     0 711348489     0     0
                         224.0.0.1
 '''
 
-        # The above data is from AIX - with '.' as _MAC_DELIM and strings
+        # The above data is von AIX - with '.' as _MAC_DELIM and strings
         # shorter than 17 bytes (no leading 0). (_MAC_OMITS_LEADING_ZEROES=Wahr)
         with mock.patch.multiple(self.uuid,
                                  _MAC_DELIM=b'.',

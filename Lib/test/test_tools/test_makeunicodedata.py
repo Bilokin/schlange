@@ -1,7 +1,7 @@
-import unittest
-from test.test_tools import skip_if_missing, imports_under_tool
-from test import support
-from test.support.hypothesis_helper import hypothesis
+importiere unittest
+von test.test_tools importiere skip_if_missing, imports_under_tool
+von test importiere support
+von test.support.hypothesis_helper importiere hypothesis
 
 st = hypothesis.strategies
 given = hypothesis.given
@@ -10,7 +10,7 @@ example = hypothesis.example
 
 skip_if_missing("unicode")
 with imports_under_tool("unicode"):
-    from dawg import Dawg, build_compression_dawg, lookup, inverse_lookup
+    von dawg importiere Dawg, build_compression_dawg, lookup, inverse_lookup
 
 
 @st.composite
@@ -25,7 +25,7 @@ def char_name_db(draw, min_length=1, max_length=30):
 
 klasse TestDawg(unittest.TestCase):
     """Tests fuer the directed acyclic word graph data structure that is used
-    to store the unicode character names in unicodedata. Tests ported from PyPy
+    to store the unicode character names in unicodedata. Tests ported von PyPy
     """
 
     def test_dawg_direct_simple(self):

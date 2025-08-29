@@ -1,27 +1,27 @@
-from contextlib import contextmanager
-import linecache
-import os
-import importlib
-import inspect
-from io import StringIO
-import re
-import sys
-import textwrap
-import types
-from typing import overload, get_overloads
-import unittest
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-from test.support import warnings_helper
-from test.support import force_not_colorized
-from test.support.script_helper import assert_python_ok, assert_python_failure
+von contextlib importiere contextmanager
+importiere linecache
+importiere os
+importiere importlib
+importiere inspect
+von io importiere StringIO
+importiere re
+importiere sys
+importiere textwrap
+importiere types
+von typing importiere overload, get_overloads
+importiere unittest
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere warnings_helper
+von test.support importiere force_not_colorized
+von test.support.script_helper importiere assert_python_ok, assert_python_failure
 
-from test.test_warnings.data import package_helper
-from test.test_warnings.data import stacklevel as warning_tests
+von test.test_warnings.data importiere package_helper
+von test.test_warnings.data importiere stacklevel as warning_tests
 
-import warnings as original_warnings
-from warnings import deprecated
+importiere warnings as original_warnings
+von warnings importiere deprecated
 
 
 py_warnings = import_helper.import_fresh_module('_py_warnings')
@@ -492,7 +492,7 @@ klasse WarnTests(BaseTest):
         with warnings_state(self.module):
             with self.module.catch_warnings(record=Wahr) as w:
                 self.module.simplefilter('always')
-                import test.test_warnings.data.import_warning  # noqa: F401
+                importiere test.test_warnings.data.import_warning  # noqa: F401
                 self.assertEqual(len(w), 1)
                 self.assertEqual(w[0].filename, __file__)
 
@@ -1369,7 +1369,7 @@ klasse EnvironmentVariableTests(BaseTest):
         self.assertEqual(stderr.splitlines(),
             [b"Traceback (most recent call last):",
              b"  File \"<string>\", line 1, in <module>",
-             b'    import sys, warnings; sys.stdout.write(str(sys.warnoptions)); warnings.w'
+             b'    importiere sys, warnings; sys.stdout.write(str(sys.warnoptions)); warnings.w'
              b"arn('Message', DeprecationWarning)",
              b'                                                                  ~~~~~~~~~~'
              b'~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
@@ -1493,7 +1493,7 @@ klasse FinalizationTest(unittest.TestCase):
         # Issue #19421: warnings.warn() should not crash
         # during Python finalization
         code = """
-import warnings
+importiere warnings
 warn = warnings.warn
 
 klasse A:
@@ -1512,13 +1512,13 @@ a=A()
 
         expected = b"<sys>:0: ResourceWarning: unclosed file "
 
-        # don't import the warnings module
-        # (_warnings will try to import it)
+        # don't importiere the warnings module
+        # (_warnings will try to importiere it)
         code = "f = open(%a)" % __file__
         rc, out, err = assert_python_ok("-Wd", "-c", code)
         self.assertStartsWith(err, expected)
 
-        # import the warnings module
+        # importiere the warnings module
         code = "import warnings; f = open(%a)" % __file__
         rc, out, err = assert_python_ok("-Wd", "-c", code)
         self.assertStartsWith(err, expected)
@@ -1538,7 +1538,7 @@ klasse AsyncTests(BaseTest):
     @unittest.skipIf(not sys.flags.context_aware_warnings,
                      "requires context aware warnings")
     def test_async_context(self):
-        import asyncio
+        importiere asyncio
 
         # Events to force the execution interleaving we want.
         step_a1 = asyncio.Event()
@@ -1578,10 +1578,10 @@ klasse AsyncTests(BaseTest):
     @unittest.skipIf(not sys.flags.context_aware_warnings,
                      "requires context aware warnings")
     def test_async_task_inherit(self):
-        """Check that a new asyncio task inherits warnings context from the
+        """Check that a new asyncio task inherits warnings context von the
         coroutine that spawns it.
         """
-        import asyncio
+        importiere asyncio
 
         step1 = asyncio.Event()
         step2 = asyncio.Event()
@@ -1634,7 +1634,7 @@ klasse ThreadTests(BaseTest):
     @unittest.skipIf(not ENABLE_THREAD_TESTS,
                      "requires thread-safe warnings flags")
     def test_threaded_context(self):
-        import threading
+        importiere threading
 
         barrier = threading.Barrier(2, timeout=2)
 

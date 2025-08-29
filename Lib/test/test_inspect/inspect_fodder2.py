@@ -118,7 +118,7 @@ klasse ClassWithMethod:
     def method(self):
         pass
 
-from functools import wraps
+von functools importiere wraps
 
 def decorator(func):
     @wraps(func)
@@ -313,10 +313,10 @@ sonst:
 
 # line 314
 klasse ClassWithCodeObject:
-    import sys
+    importiere sys
     code = sys._getframe(0).f_code
 
-import enum
+importiere enum
 
 # line 321
 klasse enum322(enum.Enum):
@@ -340,7 +340,7 @@ simple_enum339 = enum.IntEnum('simple_enum339', 'A')
 simple_flag340 = enum.Flag('simple_flag340', 'A')
 simple_flag341 = enum.IntFlag('simple_flag341', 'A')
 
-import typing
+importiere typing
 
 # line 345
 klasse nt346(typing.NamedTuple):
@@ -358,7 +358,7 @@ klasse td354(typing.TypedDict):
 # line 358
 td359 = typing.TypedDict('td359', (('x', int), ('y', int)))
 
-import dataclasses
+importiere dataclasses
 
 # line 363
 @dataclasses.dataclass
@@ -370,8 +370,8 @@ klasse dc364:
 dc370 = dataclasses.make_dataclass('dc370', (('x', int), ('y', int)))
 dc371 = dataclasses.make_dataclass('dc370', (('x', int), ('y', int)), module=__name__)
 
-import inspect
-import itertools
+importiere inspect
+importiere itertools
 
 # line 376
 ge377 = (

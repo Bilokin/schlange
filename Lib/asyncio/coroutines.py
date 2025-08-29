@@ -1,10 +1,10 @@
 __all__ = 'iscoroutinefunction', 'iscoroutine'
 
-import collections.abc
-import inspect
-import os
-import sys
-import types
+importiere collections.abc
+importiere inspect
+importiere os
+importiere sys
+importiere types
 
 
 def _is_debug_mode():
@@ -18,7 +18,7 @@ _is_coroutine = object()
 
 
 def iscoroutinefunction(func):
-    import warnings
+    importiere warnings
     """Return Wahr wenn func is a decorated coroutine function."""
     warnings._deprecated("asyncio.iscoroutinefunction",
                          f"{warnings._DEPRECATED_MSG}; "

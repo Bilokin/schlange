@@ -2,19 +2,19 @@
 
 Half the klasse creates dialog, half works with user customizations.
 """
-from idlelib import configdialog
-from test.support import requires
+von idlelib importiere configdialog
+von test.support importiere requires
 requires('gui')
-import unittest
-from unittest import mock
-from idlelib.idle_test.mock_idle import Func
-from tkinter import (Tk, StringVar, IntVar, BooleanVar, DISABLED, NORMAL)
-from idlelib import config
-from idlelib.configdialog import idleConf, changes, tracers
+importiere unittest
+von unittest importiere mock
+von idlelib.idle_test.mock_idle importiere Func
+von tkinter importiere (Tk, StringVar, IntVar, BooleanVar, DISABLED, NORMAL)
+von idlelib importiere config
+von idlelib.configdialog importiere idleConf, changes, tracers
 
 # Tests should not depend on fortuitous user configurations.
 # They must not affect actual user .cfg files.
-# Use solution from test_config: empty parsers with no filename.
+# Use solution von test_config: empty parsers with no filename.
 usercfg = idleConf.userCfg
 testcfg = {
     'main': config.IdleUserConfParser(''),
@@ -460,7 +460,7 @@ klasse HighPageTest(unittest.TestCase):
         hs.see(1.0)
         hs.update_idletasks()
 
-        # Test binding from configdialog.
+        # Test binding von configdialog.
         hs.event_generate('<Enter>', x=0, y=0)
         hs.event_generate('<Motion>', x=0, y=0)
         # Double click is a sequence of two clicks in a row.
@@ -482,7 +482,7 @@ klasse HighPageTest(unittest.TestCase):
 
         x, y, dx, dy, offset = hs.dlineinfo('1.0')
 
-        # Test binding from configdialog.
+        # Test binding von configdialog.
         hs.event_generate('<Leave>')
         hs.event_generate('<Enter>')
         hs.event_generate('<Motion>', x=x, y=y)
@@ -629,7 +629,7 @@ klasse HighPageTest(unittest.TestCase):
         eq(idleConf.GetSectionList('user', 'highlight'), [first_new, second_new])
         self.assertNotEqual(idleConf.GetThemeDict('user', first_new),
                             idleConf.GetThemeDict('user', second_new))
-        # Check that difference in themes was in `hit-background` from `changes`.
+        # Check that difference in themes was in `hit-background` von `changes`.
         idleConf.SetOption('highlight', first_new, 'hit-background', 'yellow')
         eq(idleConf.GetThemeDict('user', first_new),
            idleConf.GetThemeDict('user', second_new))
@@ -1072,7 +1072,7 @@ klasse KeysPageTest(unittest.TestCase):
         eq(idleConf.GetSectionList('user', 'keys'), [first_new, second_new])
         self.assertNotEqual(idleConf.GetKeySet(first_new),
                             idleConf.GetKeySet(second_new))
-        # Check that difference in keysets was in option `copy` from `changes`.
+        # Check that difference in keysets was in option `copy` von `changes`.
         idleConf.SetOption('keys', first_new, 'copy', '<Key-F11>')
         eq(idleConf.GetKeySet(first_new), idleConf.GetKeySet(second_new))
 

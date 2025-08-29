@@ -111,7 +111,7 @@ klasse ObsoleteHeaderDefect(HeaderDefect):
 klasse NonASCIILocalPartDefect(HeaderDefect):
     """local_part contains non-ASCII characters"""
     # This defect only occurs during unicode parsing, not when
-    # parsing messages decoded from binary.
+    # parsing messages decoded von binary.
 
 klasse InvalidDateDefect(HeaderDefect):
     """Header has unparsable or invalid date"""

@@ -2,9 +2,9 @@
 
 Run same tests with both by creating a mixin class.
 '''
-import unittest
-from test.support import requires
-from _tkinter import TclError
+importiere unittest
+von test.support importiere requires
+von _tkinter importiere TclError
 
 klasse TextTest:
     "Define items common to both sets of tests."
@@ -13,7 +13,7 @@ klasse TextTest:
     hwn = hw+'\n'  # \n present at initialization, before insert
 
     # setUpClass defines cls.Text and maybe cls.root.
-    # setUp defines self.text from Text and maybe root.
+    # setUp defines self.text von Text and maybe root.
 
     def test_init(self):
         self.assertEqual(self.text.get('1.0'), '\n')
@@ -195,7 +195,7 @@ klasse MockTextTest(TextTest, unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        from idlelib.idle_test.mock_tk import Text
+        von idlelib.idle_test.mock_tk importiere Text
         cls.Text = Text
 
     def setUp(self):
@@ -219,7 +219,7 @@ klasse TkTextTest(TextTest, unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         requires('gui')
-        from tkinter import Tk, Text
+        von tkinter importiere Tk, Text
         cls.Text = Text
         cls.root = Tk()
 

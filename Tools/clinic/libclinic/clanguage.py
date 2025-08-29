@@ -1,24 +1,24 @@
-from __future__ import annotations
-import itertools
-import sys
-import textwrap
-from typing import TYPE_CHECKING, Literal, Final
-from operator import attrgetter
-from collections.abc import Iterable
+von __future__ importiere annotations
+importiere itertools
+importiere sys
+importiere textwrap
+von typing importiere TYPE_CHECKING, Literal, Final
+von operator importiere attrgetter
+von collections.abc importiere Iterable
 
-import libclinic
-from libclinic import (
+importiere libclinic
+von libclinic importiere (
     unspecified, fail, Sentinels, VersionTuple)
-from libclinic.codegen import CRenderData, TemplateDict, CodeGen
-from libclinic.language import Language
-from libclinic.function import (
+von libclinic.codegen importiere CRenderData, TemplateDict, CodeGen
+von libclinic.language importiere Language
+von libclinic.function importiere (
     Module, Class, Function, Parameter,
     permute_optional_groups,
     GETTER, SETTER, METHOD_INIT)
-from libclinic.converters import self_converter
-from libclinic.parse_args import ParseArgsCodeGen
+von libclinic.converters importiere self_converter
+von libclinic.parse_args importiere ParseArgsCodeGen
 wenn TYPE_CHECKING:
-    from libclinic.app import Clinic
+    von libclinic.app importiere Clinic
 
 
 def c_id(name: str) -> str:

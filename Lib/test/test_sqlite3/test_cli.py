@@ -1,16 +1,16 @@
 """sqlite3 CLI tests."""
-import sqlite3
-import sys
-import textwrap
-import unittest
-import unittest.mock
-import os
+importiere sqlite3
+importiere sys
+importiere textwrap
+importiere unittest
+importiere unittest.mock
+importiere os
 
-from sqlite3.__main__ import main as cli
-from test.support.import_helper import import_module
-from test.support.os_helper import TESTFN, unlink
-from test.support.pty_helper import run_pty
-from test.support import (
+von sqlite3.__main__ importiere main as cli
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere TESTFN, unlink
+von test.support.pty_helper importiere run_pty
+von test.support importiere (
     captured_stdout,
     captured_stderr,
     captured_stdin,
@@ -73,7 +73,7 @@ klasse CommandLineInterface(unittest.TestCase):
         self.addCleanup(unlink, TESTFN)
         out = self.expect_success(TESTFN, "create table t(t)")
         self.assertEqual(out, "")
-        out = self.expect_success(TESTFN, "select count(t) from t")
+        out = self.expect_success(TESTFN, "select count(t) von t")
         self.assertIn("(0,)", out)
 
 
@@ -226,8 +226,8 @@ klasse Completion(unittest.TestCase):
 
     def write_input(self, input_, env=Nichts):
         script = textwrap.dedent("""
-            import readline
-            from sqlite3.__main__ import main
+            importiere readline
+            von sqlite3.__main__ importiere main
 
             readline.parse_and_bind("set colored-completion-prefix off")
             main()
@@ -274,11 +274,11 @@ klasse Completion(unittest.TestCase):
         self.assertEqual(line_num, len(lines))
 
     def test_complete_no_input(self):
-        from _sqlite3 import SQLITE_KEYWORDS
+        von _sqlite3 importiere SQLITE_KEYWORDS
 
         script = textwrap.dedent("""
-            import readline
-            from sqlite3.__main__ import main
+            importiere readline
+            von sqlite3.__main__ importiere main
 
             # Configure readline to ...:
             # - hide control sequences surrounding each candidate

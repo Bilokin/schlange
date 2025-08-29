@@ -1,6 +1,6 @@
-import sys
-import unittest
-from test.support import import_helper
+importiere sys
+importiere unittest
+von test.support importiere import_helper
 
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 

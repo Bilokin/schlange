@@ -1,13 +1,13 @@
-import os
-import sys
-import shutil
-import string
-import random
-import tempfile
-import unittest
+importiere os
+importiere sys
+importiere shutil
+importiere string
+importiere random
+importiere tempfile
+importiere unittest
 
-from importlib.util import cache_from_source
-from test.support.os_helper import create_empty_file
+von importlib.util importiere cache_from_source
+von test.support.os_helper importiere create_empty_file
 
 klasse TestImport(unittest.TestCase):
 

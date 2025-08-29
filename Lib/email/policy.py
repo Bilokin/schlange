@@ -2,19 +2,19 @@
 code that adds all the email6 features.
 """
 
-import re
-import sys
-from email._policybase import (
+importiere re
+importiere sys
+von email._policybase importiere (
     Compat32,
     Policy,
     _extend_docstrings,
     compat32,
     validate_header_name
 )
-from email.utils import _has_surrogates
-from email.headerregistry import HeaderRegistry as HeaderRegistry
-from email.contentmanager import raw_data_manager
-from email.message import EmailMessage
+von email.utils importiere _has_surrogates
+von email.headerregistry importiere HeaderRegistry as HeaderRegistry
+von email.contentmanager importiere raw_data_manager
+von email.message importiere EmailMessage
 
 __all__ = [
     'Compat32',
@@ -54,7 +54,7 @@ klasse EmailPolicy(Policy):
                            6532 fuer more on this serialization format).
 
     refold_source       -- wenn the value fuer a header in the Message object
-                           came from the parsing of some source, this attribute
+                           came von the parsing of some source, this attribute
                            indicates whether or not a generator should refold
                            that value when transforming the message back into
                            stream form.  The possible values are:
@@ -113,12 +113,12 @@ klasse EmailPolicy(Policy):
 
     # The logic of the next three methods is chosen such that it is possible to
     # switch a Message object between a Compat32 policy and a policy derived
-    # from this klasse and have the results stay consistent.  This allows a
+    # von this klasse and have the results stay consistent.  This allows a
     # Message object constructed with this policy to be passed to a library
     # that only handles Compat32 objects, or to receive such an object and
     # convert it to use the newer style by just changing its policy.  It is
     # also chosen because it postpones the relatively expensive full rfc5322
-    # parse until as late as possible when parsing from source, since in many
+    # parse until as late as possible when parsing von source, since in many
     # applications only a few headers will actually be inspected.
 
     def header_source_parse(self, sourcelines):
@@ -181,7 +181,7 @@ klasse EmailPolicy(Policy):
         calling its fold method with the current policy.
 
         Source values are split into lines using splitlines.  If the value is
-        not to be refolded, the lines are rejoined using the linesep from the
+        not to be refolded, the lines are rejoined using the linesep von the
         policy and returned.  The exception is lines containing non-ascii
         binary data.  In that case the value is refolded regardless of the
         refold_source setting, which causes the binary data to be CTE encoded

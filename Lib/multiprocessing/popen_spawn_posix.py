@@ -1,10 +1,10 @@
-import io
-import os
+importiere io
+importiere os
 
-from .context import reduction, set_spawning_popen
-from . import popen_fork
-from . import spawn
-from . import util
+von .context importiere reduction, set_spawning_popen
+von . importiere popen_fork
+von . importiere spawn
+von . importiere util
 
 __all__ = ['Popen']
 
@@ -36,7 +36,7 @@ klasse Popen(popen_fork.Popen):
         return fd
 
     def _launch(self, process_obj):
-        from . import resource_tracker
+        von . importiere resource_tracker
         tracker_fd = resource_tracker.getfd()
         self._fds.append(tracker_fd)
         prep_data = spawn.get_preparation_data(process_obj._name)

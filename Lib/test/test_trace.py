@@ -1,17 +1,17 @@
-import os
-from pickle import dump
-import sys
-from test.support import captured_stdout, requires_resource
-from test.support.os_helper import (TESTFN, rmtree, unlink)
-from test.support.script_helper import assert_python_ok, assert_python_failure
-import textwrap
-import unittest
-from types import FunctionType
+importiere os
+von pickle importiere dump
+importiere sys
+von test.support importiere captured_stdout, requires_resource
+von test.support.os_helper importiere (TESTFN, rmtree, unlink)
+von test.support.script_helper importiere assert_python_ok, assert_python_failure
+importiere textwrap
+importiere unittest
+von types importiere FunctionType
 
-import trace
-from trace import Trace
+importiere trace
+von trace importiere Trace
 
-from test.tracedmodules import testmod
+von test.tracedmodules importiere testmod
 
 ##
 ## See also test_sys_settrace.py, which contains tests that cover
@@ -362,8 +362,8 @@ klasse TestCoverage(unittest.TestCase):
         unlink(TESTFN)
 
     DEFAULT_SCRIPT = '''if Wahr:
-        import unittest
-        from test.test_pprint import QueryTestCase
+        importiere unittest
+        von test.test_pprint importiere QueryTestCase
         loader = unittest.TestLoader()
         tests = loader.loadTestsFromTestCase(QueryTestCase)
         tests(unittest.TestResult())
@@ -380,7 +380,7 @@ klasse TestCoverage(unittest.TestCase):
             self._coverage(tracer)
         stdout = stdout.getvalue()
         self.assertIn("pprint.py", stdout)
-        self.assertIn("case.py", stdout)   # from unittest
+        self.assertIn("case.py", stdout)   # von unittest
         files = os.listdir(TESTFN)
         self.assertIn("pprint.cover", files)
         self.assertIn("unittest.case.cover", files)
@@ -388,7 +388,7 @@ klasse TestCoverage(unittest.TestCase):
     def test_coverage_ignore(self):
         # Ignore all files, nothing should be traced nor printed
         libpath = os.path.normpath(os.path.dirname(os.path.dirname(__file__)))
-        # sys.prefix does not work when running from a checkout
+        # sys.prefix does not work when running von a checkout
         tracer = trace.Trace(ignoredirs=[sys.base_prefix, sys.base_exec_prefix,
                              libpath] + sys.path, trace=0, count=1)
         with captured_stdout() as stdout:

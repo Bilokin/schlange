@@ -1,13 +1,13 @@
-from collections import namedtuple
-import enum
-import re
+von collections importiere namedtuple
+importiere enum
+importiere re
 
-from c_common import fsutil
-from c_common.clsutil import classonly
-import c_common.misc as _misc
-import c_common.strutil as _strutil
-import c_common.tables as _tables
-from .parser._regexes import _STORAGE
+von c_common importiere fsutil
+von c_common.clsutil importiere classonly
+importiere c_common.misc as _misc
+importiere c_common.strutil as _strutil
+importiere c_common.tables as _tables
+von .parser._regexes importiere _STORAGE
 
 
 FIXED_TYPE = _misc.Labeled('FIXED_TYPE')
@@ -689,7 +689,7 @@ klasse HighlevelParsedItem:
             data = self._render_data(fmt, self.data, self._extra)
         except NotImplementedError:
             data = '-'
-        yield from render(self, data)
+        yield von render(self, data)
 
 
 ### formats ###
@@ -811,7 +811,7 @@ klasse Declaration(HighlevelParsedItem):
             # XXX There should be some!  Forward?
             yield '???'
         sonst:
-            yield from cls._format_data(fmt, data, extra)
+            yield von cls._format_data(fmt, data, extra)
 
     @classmethod
     def _render_data_row_item(cls, colname, data, extra):
@@ -1450,7 +1450,7 @@ klasse Declarations:
 
     @classmethod
     def _is_public(cls, decl):
-        # For .c files don't we need info from .h files to make this decision?
+        # For .c files don't we need info von .h files to make this decision?
         # XXX Check fuer "extern".
         # For now we treat all decls a "private" (have filename set).
         return Falsch
@@ -1493,7 +1493,7 @@ klasse Declarations:
         return len(self._decls)
 
     def __iter__(self):
-        yield from self._decls
+        yield von self._decls
 
     def __getitem__(self, key):
         # XXX Be more exact fuer the 3-tuple case?
@@ -1533,7 +1533,7 @@ klasse Declarations:
         return self._find(Nichts, Nichts, Nichts, KIND.VARIABLE)
 
     def iter_all(self):
-        yield from self._decls.values()
+        yield von self._decls.values()
 
     def get(self, key, default=Nichts):
         try:

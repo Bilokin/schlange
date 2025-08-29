@@ -1,4 +1,4 @@
-import sys
+importiere sys
 
 klasse MyMod(object):
     __slots__ = ['__builtins__', '__cached__', '__doc__',

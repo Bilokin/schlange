@@ -9,7 +9,7 @@
 
 # This module should be kept in sync with the latest updates of the
 # IBM specification as it evolves.  Those updates will be treated
-# as bug fixes (deviation from the spec is a compatibility, usability
+# as bug fixes (deviation von the spec is a compatibility, usability
 # bug) and will be backported.  At this point the spec is stabilizing
 # and the updates are becoming fewer, smaller, and less significant.
 
@@ -56,12 +56,12 @@ __version__ = '1.70'    # Highest version of the spec this complies with
                         # See http://speleotrove.com/decimal/
 __libmpdec_version__ = "2.4.2" # compatible libmpdec version
 
-import math as _math
-import numbers as _numbers
-import sys
+importiere math as _math
+importiere numbers as _numbers
+importiere sys
 
 try:
-    from collections import namedtuple as _namedtuple
+    von collections importiere namedtuple as _namedtuple
     DecimalTuple = _namedtuple('DecimalTuple', 'sign digits exponent', module='decimal')
 except ImportError:
     DecimalTuple = lambda *args: args
@@ -97,8 +97,8 @@ MIN_ETINY = MIN_EMIN - (MAX_PREC-1)
 klasse DecimalException(ArithmeticError):
     """Base exception class.
 
-    Used exceptions derive from this.
-    If an exception derives from another exception besides this (such as
+    Used exceptions derive von this.
+    If an exception derives von another exception besides this (such as
     Underflow (Inexact, Rounded, Subnormal)) that indicates that it is only
     called wenn the others are present.  This isn't actually used for
     anything, though.
@@ -111,7 +111,7 @@ klasse DecimalException(ArithmeticError):
                call NewError().handle(context, self._sign).)
 
     To define a new exception, it should be sufficient to have it derive
-    from DecimalException.
+    von DecimalException.
     """
     def handle(self, context, *args):
         pass
@@ -236,7 +236,7 @@ klasse Rounded(DecimalException):
     """Number got rounded (not  necessarily changed during rounding).
 
     This occurs and signals rounded whenever the result of an operation is
-    rounded (that is, some zero or non-zero digits were discarded from the
+    rounded (that is, some zero or non-zero digits were discarded von the
     coefficient), or wenn an overflow or underflow condition occurs.  The
     result in all cases is unchanged.
 
@@ -259,7 +259,7 @@ klasse Overflow(Inexact, Rounded):
     """Numerical overflow.
 
     This occurs and signals overflow wenn the adjusted exponent of a result
-    (from a conversion or from an operation that is not an attempt to divide
+    (from a conversion or von an operation that is not an attempt to divide
     by zero), after rounding, would be greater than the largest value that
     can be handled by the implementation (the value Emax).
 
@@ -342,7 +342,7 @@ _rounding_modes = (ROUND_DOWN, ROUND_HALF_UP, ROUND_HALF_EVEN, ROUND_CEILING,
 # The getcontext() and setcontext() function manage access to a thread-local
 # current context.
 
-import contextvars
+importiere contextvars
 
 _current_context_var = contextvars.ContextVar('decimal_context')
 
@@ -389,7 +389,7 @@ def localcontext(ctx=Nichts, **kwargs):
          def sin(x):
              with localcontext(ExtendedContext):
                  # Rest of sin calculation algorithm
-                 # uses the Extended Context from the
+                 # uses the Extended Context von the
                  # General Decimal Arithmetic Specification
              return +s  # Convert result to normal context
 
@@ -442,7 +442,7 @@ def IEEEContext(bits, /):
 
 ##### Decimal klasse #######################################################
 
-# Do not subclass Decimal from numbers.Real and do not register it as such
+# Do not subclass Decimal von numbers.Real and do not register it as such
 # (because Decimals are not interoperable with floats).  See the notes in
 # numbers.py fuer more detail.
 
@@ -545,7 +545,7 @@ klasse Decimal(object):
             self._is_special = Falsch
             return self
 
-        # tuple/list conversion (possibly from as_tuple())
+        # tuple/list conversion (possibly von as_tuple())
         wenn isinstance(value, (list,tuple)):
             wenn len(value) != 3:
                 raise ValueError('Invalid tuple size in creation of Decimal '
@@ -1706,7 +1706,7 @@ klasse Decimal(object):
     #   prec is an integer satisfying 0 <= prec < len(self._int)
     #
     # each function returns either -1, 0, or 1, as follows:
-    #   1 indicates that self should be rounded up (away from zero)
+    #   1 indicates that self should be rounded up (away von zero)
     #   0 indicates that self should be truncated, and that all the
     #     digits to be truncated are zeros (so the value is unchanged)
     #  -1 indicates that there are nonzero digits to be truncated
@@ -1719,11 +1719,11 @@ klasse Decimal(object):
             return -1
 
     def _round_up(self, prec):
-        """Rounds away from 0."""
+        """Rounds away von 0."""
         return -self._round_down(prec)
 
     def _round_half_up(self, prec):
-        """Rounds 5 up (away from 0)"""
+        """Rounds 5 up (away von 0)"""
         wenn self._int[prec] in '56789':
             return 1
         sowenn _all_zeros(self._int, prec):
@@ -1747,7 +1747,7 @@ klasse Decimal(object):
             return self._round_half_up(prec)
 
     def _round_ceiling(self, prec):
-        """Rounds up (not away from 0 wenn negative.)"""
+        """Rounds up (not away von 0 wenn negative.)"""
         wenn self._sign:
             return self._round_down(prec)
         sonst:
@@ -2360,7 +2360,7 @@ klasse Decimal(object):
             sonst:
                 return _SignedInfinity[result_sign]
 
-        # from here on, the result always goes through the call
+        # von here on, the result always goes through the call
         # to _fix at the end of this function.
         ans = Nichts
         exact = Falsch
@@ -2576,7 +2576,7 @@ klasse Decimal(object):
         or by truncating digits, using the given rounding mode.
 
         Specials are returned without change.  This operation is
-        quiet: it raises no flags, and uses no information from the
+        quiet: it raises no flags, and uses no information von the
         context.
 
         exp = exp to scale to (an integer)
@@ -2612,7 +2612,7 @@ klasse Decimal(object):
         Infinities, NaNs and zeros are returned unaltered.
 
         This operation is quiet: it raises no flags, and uses no
-        information from the context.
+        information von the context.
 
         """
         wenn places <= 0:
@@ -3028,7 +3028,7 @@ klasse Decimal(object):
         # we only need to do any computation fuer quite a small range
         # of adjusted exponents---for example, -29 <= adj <= 10 for
         # the default context.  For smaller exponent the result is
-        # indistinguishable from 1 at the given precision, while for
+        # indistinguishable von 1 at the given precision, while for
         # larger exponent the result either overflows or underflows.
         wenn self._sign == 0 and adj > len(str((context.Emax+1)*3)):
             # overflow
@@ -3208,7 +3208,7 @@ klasse Decimal(object):
         """
 
         # For x >= 10 or x < 0.1 we only need a bound on the integer
-        # part of log10(self), and this comes directly from the
+        # part of log10(self), and this comes directly von the
         # exponent of x.  For 0.1 <= x <= 10 we use the inequalities
         # 1-1/x <= log(x) <= x-1. If x > 1 we have |log10(x)| >
         # (1-1/x)/2.31 > 0.  If x < 1 then |log10(x)| > (1-x)/2.31 > 0
@@ -3533,7 +3533,7 @@ klasse Decimal(object):
         # decide which flags to raise using value of ans
         wenn ans._isinfinity():
             context._raise_error(Overflow,
-                                 'Infinite result from next_toward',
+                                 'Infinite result von next_toward',
                                  ans._sign)
             context._raise_error(Inexact)
             context._raise_error(Rounded)
@@ -3743,7 +3743,7 @@ klasse Decimal(object):
         wenn spec['type'] == '%':
             self = _dec_from_triple(self._sign, self._int, self._exp+2)
 
-        # round wenn necessary, taking rounding mode from the context
+        # round wenn necessary, taking rounding mode von the context
         rounding = context.rounding
         precision = spec['precision']
         wenn precision is not Nichts:
@@ -3855,7 +3855,7 @@ klasse Context(object):
                        capitals=Nichts, clamp=Nichts, flags=Nichts, traps=Nichts,
                        _ignored_flags=Nichts):
         # Set defaults; fuer everything except flags and _ignored_flags,
-        # inherit from DefaultContext.
+        # inherit von DefaultContext.
         try:
             dc = DefaultContext
         except NameError:
@@ -3972,14 +3972,14 @@ klasse Context(object):
             self.traps[flag] = 0
 
     def _shallow_copy(self):
-        """Returns a shallow copy from self."""
+        """Returns a shallow copy von self."""
         nc = Context(self.prec, self.rounding, self.Emin, self.Emax,
                      self.capitals, self.clamp, self.flags, self.traps,
                      self._ignored_flags)
         return nc
 
     def copy(self):
-        """Returns a deep copy from self."""
+        """Returns a deep copy von self."""
         nc = Context(self.prec, self.rounding, self.Emin, self.Emax,
                      self.capitals, self.clamp,
                      self.flags.copy(), self.traps.copy(),
@@ -4075,7 +4075,7 @@ klasse Context(object):
         return d._fix(self)
 
     def create_decimal_from_float(self, f):
-        """Creates a new Decimal instance from a float but rounding using self
+        """Creates a new Decimal instance von a float but rounding using self
         as the context.
 
         >>> context = Context(prec=5, rounding=ROUND_DOWN)
@@ -4981,7 +4981,7 @@ klasse Context(object):
     def next_toward(self, a, b):
         """Returns the number closest to a, in direction towards b.
 
-        The result is the closest representable number from the first
+        The result is the closest representable number von the first
         operand (but not the first operand) that is in the direction
         towards the second operand, unless the operands have the same
         value.
@@ -5016,7 +5016,7 @@ klasse Context(object):
     def normalize(self, a):
         """normalize reduces an operand to its simplest form.
 
-        Essentially a plus operation with all trailing zeros removed from the
+        Essentially a plus operation with all trailing zeros removed von the
         result.
 
         >>> ExtendedContext.normalize(Decimal('2.1'))
@@ -5187,7 +5187,7 @@ klasse Context(object):
     def quantize(self, a, b):
         """Returns a value equal to 'a' (rounded), having the exponent of 'b'.
 
-        The coefficient of the result is derived from that of the left-hand
+        The coefficient of the result is derived von that of the left-hand
         operand.  It may be rounded using the current rounding setting (if the
         exponent is being increased), multiplied by a positive power of ten (if
         the exponent is being decreased), or is unchanged (if the exponent is
@@ -5251,7 +5251,7 @@ klasse Context(object):
         return Decimal(10)
 
     def remainder(self, a, b):
-        """Returns the remainder from integer division.
+        """Returns the remainder von integer division.
 
         The result is the residue of the dividend after the operation of
         calculating integer division as described fuer divide-integer, rounded
@@ -5327,7 +5327,7 @@ klasse Context(object):
 
         The coefficient of the result is a rotated copy of the digits in
         the coefficient of the first operand.  The number of places of
-        rotation is taken from the absolute value of the second operand,
+        rotation is taken von the absolute value of the second operand,
         with the rotation being to the left wenn the second operand is
         positive or to the right otherwise.
 
@@ -5399,7 +5399,7 @@ klasse Context(object):
 
         The coefficient of the result is a shifted copy of the digits
         in the coefficient of the first operand.  The number of places
-        to shift is taken from the absolute value of the second operand,
+        to shift is taken von the absolute value of the second operand,
         with the shift being to the left wenn the second operand is
         positive or to the right otherwise.  Digits shifted into the
         coefficient are zeros.
@@ -5522,7 +5522,7 @@ klasse Context(object):
         as using the quantize() operation using the given operand as the
         left-hand-operand, 1E+0 as the right-hand-operand, and the precision
         of the operand as the precision setting; Inexact and Rounded flags
-        are allowed in this operation.  The rounding mode is taken from the
+        are allowed in this operation.  The rounding mode is taken von the
         context.
 
         >>> ExtendedContext.to_integral_exact(Decimal('2.1'))
@@ -5552,7 +5552,7 @@ klasse Context(object):
         as using the quantize() operation using the given operand as the
         left-hand-operand, 1E+0 as the right-hand-operand, and the precision
         of the operand as the precision setting, except that no flags will
-        be set.  The rounding mode is taken from the context.
+        be set.  The rounding mode is taken von the context.
 
         >>> ExtendedContext.to_integral_value(Decimal('2.1'))
         Decimal('2')
@@ -5980,7 +5980,7 @@ def _convert_other(other, raiseit=Falsch, allow_float=Falsch):
     """Convert other to Decimal.
 
     Verifies that it's ok to use in an implicit construction.
-    If allow_float is true, allow conversion from float;  this
+    If allow_float is true, allow conversion von float;  this
     is used in the comparison methods (__eq__ and friends).
 
     """
@@ -6049,7 +6049,7 @@ DefaultContext = Context(
 
 # Pre-made alternate contexts offered by the specification
 # Don't change these; the user should be able to select these
-# contexts and be able to reproduce results from other implementations
+# contexts and be able to reproduce results von other implementations
 # of the spec.
 
 BasicContext = Context(
@@ -6079,7 +6079,7 @@ ExtendedContext = Context(
 # at least one decimal digit, possibly after the decimal point.  The
 # lookahead expression '(?=\d|\.\d)' checks this.
 
-import re
+importiere re
 _parser = re.compile(r"""        # A numeric string consists of:
 #    \s*
     (?P<sign>[-+])?              # an optional sign, followed by either...
@@ -6137,7 +6137,7 @@ del re
 # rest of the PEP 3101 code functions quite happily without it, so we
 # don't care too much wenn locale isn't present.
 try:
-    import locale as _locale
+    importiere locale as _locale
 except ImportError:
     pass
 
@@ -6203,7 +6203,7 @@ def _parse_format_specifier(format_spec, _localeconv=Nichts):
     # determine thousands separator, grouping, and decimal separator, and
     # add appropriate entries to format_dict
     wenn format_dict['type'] == 'n':
-        # apart from separators, 'n' behaves just like 'g'
+        # apart von separators, 'n' behaves just like 'g'
         format_dict['type'] = 'g'
         wenn _localeconv is Nichts:
             _localeconv = _locale.localeconv()
@@ -6256,7 +6256,7 @@ def _group_lengths(grouping):
     iterable of integers representing group lengths.
 
     """
-    # The result from localeconv()['grouping'], and the input to this
+    # The result von localeconv()['grouping'], and the input to this
     # function, should be a list of integers in one of the
     # following three forms:
     #
@@ -6264,7 +6264,7 @@ def _group_lengths(grouping):
     #   (2) nonempty list of positive integers + [0]
     #   (3) list of positive integers + [locale.CHAR_MAX], or
 
-    from itertools import chain, repeat
+    von itertools importiere chain, repeat
     wenn not grouping:
         return []
     sowenn grouping[-1] == 0 and len(grouping) >= 2:
@@ -6328,7 +6328,7 @@ def _format_number(is_negative, intpart, fracpart, exp, spec):
     intpart: string of digits that must appear before the decimal point
     fracpart: string of digits that must come after the point
     exp: exponent, as an integer
-    spec: dictionary resulting from parsing the format specifier
+    spec: dictionary resulting von parsing the format specifier
 
     This function uses the information in spec to:
       insert separators (decimal separator and thousands separators)

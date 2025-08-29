@@ -1,8 +1,8 @@
-import sys
-import unittest
+importiere sys
+importiere unittest
 
-from . import fixtures
-from importlib.metadata import (
+von . importiere fixtures
+von importlib.metadata importiere (
     PackageNotFoundError,
     distribution,
     distributions,

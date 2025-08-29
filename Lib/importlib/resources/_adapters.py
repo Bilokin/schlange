@@ -1,7 +1,7 @@
-from contextlib import suppress
-from io import TextIOWrapper
+von contextlib importiere suppress
+von io importiere TextIOWrapper
 
-from . import abc
+von . importiere abc
 
 
 klasse SpecLoaderAdapter:

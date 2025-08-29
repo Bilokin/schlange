@@ -1,30 +1,30 @@
-import contextlib
-import errno
-import importlib
-import itertools
-import inspect
-import io
-import logging
-import os
-import shutil
-import signal
-import socket
-import stat
-import subprocess
-import sys
-import sysconfig
-import tempfile
-import textwrap
-import unittest
-import warnings
+importiere contextlib
+importiere errno
+importiere importlib
+importiere itertools
+importiere inspect
+importiere io
+importiere logging
+importiere os
+importiere shutil
+importiere signal
+importiere socket
+importiere stat
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere textwrap
+importiere unittest
+importiere warnings
 
-from test import support
-from test.support import hashlib_helper
-from test.support import import_helper
-from test.support import os_helper
-from test.support import script_helper
-from test.support import socket_helper
-from test.support import warnings_helper
+von test importiere support
+von test.support importiere hashlib_helper
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere script_helper
+von test.support importiere socket_helper
+von test.support importiere warnings_helper
 
 TESTFN = os_helper.TESTFN
 
@@ -101,7 +101,7 @@ klasse TestSupport(unittest.TestCase):
         self.assertEqual(support.get_original_stdout(), sys.stdout)
 
     def test_unload(self):
-        import sched  # noqa: F401
+        importiere sched  # noqa: F401
         self.assertIn("sched", sys.modules)
         import_helper.unload("sched")
         self.assertNotIn("sched", sys.modules)
@@ -241,9 +241,9 @@ klasse TestSupport(unittest.TestCase):
         # See bpo-30028 fuer details.
         # Run the test as an external script, because it uses fork.
         script_helper.assert_python_ok("-c", textwrap.dedent("""
-            import os
-            from test import support
-            from test.support import os_helper
+            importiere os
+            von test importiere support
+            von test.support importiere os_helper
             with os_helper.temp_cwd() as temp_path:
                 pid = os.fork()
                 wenn pid != 0:
@@ -363,7 +363,7 @@ klasse TestSupport(unittest.TestCase):
             support.check_syntax_error(self, "x=1")
 
     def test_CleanImport(self):
-        import importlib
+        importiere importlib
         with import_helper.CleanImport("pprint"):
             importlib.import_module("pprint")
 
@@ -388,7 +388,7 @@ klasse TestSupport(unittest.TestCase):
         with support.captured_stdin() as stdin:
             stdin.write('hello\n')
             stdin.seek(0)
-            # call test code that consumes from sys.stdin
+            # call test code that consumes von sys.stdin
             captured = input()
         self.assertEqual(captured, "hello")
 
@@ -525,7 +525,7 @@ klasse TestSupport(unittest.TestCase):
 
     @support.requires_subprocess()
     def check_options(self, args, func, expected=Nichts):
-        code = f'from test.support import {func}; drucke(repr({func}()))'
+        code = f'from test.support importiere {func}; drucke(repr({func}()))'
         cmd = [sys.executable, *args, '-c', code]
         env = {key: value fuer key, value in os.environ.items()
                wenn not key.startswith('PYTHON')}
@@ -626,8 +626,8 @@ klasse TestSupport(unittest.TestCase):
     def test_get_recursion_depth(self):
         # test support.get_recursion_depth()
         code = textwrap.dedent("""
-            from test import support
-            import sys
+            von test importiere support
+            importiere sys
 
             def check(cond):
                 wenn not cond:

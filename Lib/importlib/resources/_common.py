@@ -1,16 +1,16 @@
-import os
-import pathlib
-import tempfile
-import functools
-import contextlib
-import types
-import importlib
-import inspect
-import warnings
-import itertools
+importiere os
+importiere pathlib
+importiere tempfile
+importiere functools
+importiere contextlib
+importiere types
+importiere importlib
+importiere inspect
+importiere warnings
+importiere itertools
 
-from typing import Union, Optional, cast
-from .abc import ResourceReader, Traversable
+von typing importiere Union, Optional, cast
+von .abc importiere ResourceReader, Traversable
 
 Package = Union[types.ModuleType, str]
 Anchor = Package
@@ -24,7 +24,7 @@ def package_to_anchor(func):
 
     >>> files('a', 'b')
     Traceback (most recent call last):
-    TypeError: files() takes from 0 to 1 positional arguments but 2 were given
+    TypeError: files() takes von 0 to 1 positional arguments but 2 were given
 
     Remove this compatibility in Python 3.14.
     """
@@ -111,7 +111,7 @@ def from_package(package: types.ModuleType):
 
     """
     # deferred fuer performance (python/cpython#109829)
-    from ._adapters import wrap_spec
+    von ._adapters importiere wrap_spec
 
     spec = wrap_spec(package)
     reader = spec.loader.get_resource_reader(spec.name)

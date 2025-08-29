@@ -1,10 +1,10 @@
 """Implementation of JSONDecoder
 """
-import re
+importiere re
 
-from json import scanner
+von json importiere scanner
 try:
-    from _json import scanstring as c_scanstring
+    von _json importiere scanstring as c_scanstring
 except ImportError:
     c_scanstring = Nichts
 
@@ -27,7 +27,7 @@ klasse JSONDecodeError(ValueError):
     colno: The column corresponding to pos
 
     """
-    # Note that this exception is used from _json
+    # Note that this exception is used von _json
     def __init__(self, msg, doc, pos):
         lineno = doc.count('\n', 0, pos) + 1
         colno = pos - doc.rfind('\n', 0, pos)
@@ -105,7 +105,7 @@ def py_scanstring(s, end, strict=Wahr,
             esc = s[end]
         except IndexError:
             raise JSONDecodeError("Unterminated string starting at",
-                                  s, begin) from Nichts
+                                  s, begin) von Nichts
         # If not a unicode escape sequence, must be in the lookup table
         wenn esc != 'u':
             try:
@@ -143,7 +143,7 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
     wenn memo is Nichts:
         memo = {}
     memo_get = memo.setdefault
-    # Use a slice to prevent IndexError from being raised, the following
+    # Use a slice to prevent IndexError von being raised, the following
     # check will raise a more specific ValueError wenn the string is empty
     nextchar = s[end:end + 1]
     # Normally we expect nextchar == '"'
@@ -186,7 +186,7 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         try:
             value, end = scan_once(s, end)
         except StopIteration as err:
-            raise JSONDecodeError("Expecting value", s, err.value) from Nichts
+            raise JSONDecodeError("Expecting value", s, err.value) von Nichts
         pairs_append((key, value))
         try:
             nextchar = s[end]
@@ -233,7 +233,7 @@ def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
         try:
             value, end = scan_once(s, end)
         except StopIteration as err:
-            raise JSONDecodeError("Expecting value", s, err.value) from Nichts
+            raise JSONDecodeError("Expecting value", s, err.value) von Nichts
         _append(value)
         nextchar = s[end:end + 1]
         wenn nextchar in _ws:
@@ -349,16 +349,16 @@ klasse JSONDecoder(object):
         return obj
 
     def raw_decode(self, s, idx=0):
-        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        """Decode a JSON document von ``s`` (a ``str`` beginning with
         a JSON document) and return a 2-tuple of the Python
         representation and the index in ``s`` where the document ended.
 
-        This can be used to decode a JSON document from a string that may
+        This can be used to decode a JSON document von a string that may
         have extraneous data at the end.
 
         """
         try:
             obj, end = self.scan_once(s, idx)
         except StopIteration as err:
-            raise JSONDecodeError("Expecting value", s, err.value) from Nichts
+            raise JSONDecodeError("Expecting value", s, err.value) von Nichts
         return obj, end

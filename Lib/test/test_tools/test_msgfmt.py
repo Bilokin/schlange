@@ -1,15 +1,15 @@
 """Tests fuer the Tools/i18n/msgfmt.py tool."""
 
-import json
-import struct
-import sys
-import unittest
-from gettext import GNUTranslations
-from pathlib import Path
+importiere json
+importiere struct
+importiere sys
+importiere unittest
+von gettext importiere GNUTranslations
+von pathlib importiere Path
 
-from test.support.os_helper import temp_cwd
-from test.support.script_helper import assert_python_failure, assert_python_ok
-from test.test_tools import imports_under_tool, skip_if_missing, toolsdir
+von test.support.os_helper importiere temp_cwd
+von test.support.script_helper importiere assert_python_failure, assert_python_ok
+von test.test_tools importiere imports_under_tool, skip_if_missing, toolsdir
 
 
 skip_if_missing('i18n')
@@ -19,7 +19,7 @@ script_dir = Path(toolsdir) / 'i18n'
 msgfmt_py = script_dir / 'msgfmt.py'
 
 with imports_under_tool("i18n"):
-    import msgfmt
+    importiere msgfmt
 
 
 def compile_messages(po_file, mo_file):
@@ -247,7 +247,7 @@ klasse CLITest(unittest.TestCase):
         fuer option in ('--help', '-h'):
             res = assert_python_ok(msgfmt_py, option)
             err = res.err.decode('utf-8')
-            self.assertIn('Generate binary message catalog from textual translation description.', err)
+            self.assertIn('Generate binary message catalog von textual translation description.', err)
 
     def test_version(self):
         fuer option in ('--version', '-V'):
@@ -258,7 +258,7 @@ klasse CLITest(unittest.TestCase):
     def test_invalid_option(self):
         res = assert_python_failure(msgfmt_py, '--invalid-option')
         err = res.err.decode('utf-8')
-        self.assertIn('Generate binary message catalog from textual translation description.', err)
+        self.assertIn('Generate binary message catalog von textual translation description.', err)
         self.assertIn('option --invalid-option not recognized', err)
 
     def test_no_input_file(self):

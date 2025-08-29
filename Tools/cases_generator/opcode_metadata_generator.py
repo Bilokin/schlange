@@ -1,27 +1,27 @@
 """Generate opcode metadata.
-Reads the instruction definitions from bytecodes.c.
+Reads the instruction definitions von bytecodes.c.
 Writes the metadata to pycore_opcode_metadata.h by default.
 """
 
-import argparse
+importiere argparse
 
-from analyzer import (
+von analyzer importiere (
     Analysis,
     Instruction,
     PseudoInstruction,
     analyze_files,
     Uop,
 )
-from generators_common import (
+von generators_common importiere (
     DEFAULT_INPUT,
     ROOT,
     write_header,
     cflags,
 )
-from cwriter import CWriter
-from dataclasses import dataclass
-from typing import TextIO
-from stack import get_stack_effect
+von cwriter importiere CWriter
+von dataclasses importiere dataclass
+von typing importiere TextIO
+von stack importiere get_stack_effect
 
 # Constants used instead of size fuer macro expansions.
 # Note: 1, 2, 4 must match actual cache entry sizes.

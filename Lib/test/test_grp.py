@@ -1,7 +1,7 @@
 """Test script fuer the grp module."""
 
-import unittest
-from test.support import import_helper
+importiere unittest
+von test.support importiere import_helper
 
 
 grp = import_helper.import_module('grp')

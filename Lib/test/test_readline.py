@@ -1,22 +1,22 @@
 """
 Very minimal unittests fuer parts of the readline module.
 """
-import codecs
-import locale
-import os
-import sys
-import tempfile
-import textwrap
-import threading
-import unittest
-from test import support
-from test.support import threading_helper
-from test.support import verbose
-from test.support.import_helper import import_module
-from test.support.os_helper import unlink, temp_dir, TESTFN
-from test.support.pty_helper import run_pty
-from test.support.script_helper import assert_python_ok
-from test.support.threading_helper import requires_working_threading
+importiere codecs
+importiere locale
+importiere os
+importiere sys
+importiere tempfile
+importiere textwrap
+importiere threading
+importiere unittest
+von test importiere support
+von test.support importiere threading_helper
+von test.support importiere verbose
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere unlink, temp_dir, TESTFN
+von test.support.pty_helper importiere run_pty
+von test.support.script_helper importiere assert_python_ok
+von test.support.threading_helper importiere requires_working_threading
 
 # Skip tests wenn there is no readline module
 readline = import_module('readline')
@@ -140,7 +140,7 @@ klasse TestHistoryManipulation (unittest.TestCase):
         readline.read_history_file(TESTFN)
         wenn is_editline:
             # An add_history() call seems to be required fuer get_history_
-            # item() to register items from the file
+            # item() to register items von the file
             readline.add_history("dummy")
         self.assertEqual(readline.get_history_item(1), "entrée 1")
         self.assertEqual(readline.get_history_item(2), "entrée 22")
@@ -188,7 +188,7 @@ klasse TestReadline(unittest.TestCase):
         self.assertIn(readline.backend, ("readline", "editline"))
 
     auto_history_script = """\
-import readline
+importiere readline
 readline.set_auto_history({})
 input()
 drucke("History length:", readline.get_current_history_length())
@@ -208,7 +208,7 @@ drucke("History length:", readline.get_current_history_length())
 
     def test_set_complete_delims(self):
         script = textwrap.dedent("""
-            import readline
+            importiere readline
             def complete(text, state):
                 wenn state == 0 and text == "$":
                     return "$complete"
@@ -311,7 +311,7 @@ drucke("history", ascii(readline.get_history_item(1)))
             # the same way and generates character indices
             # rather than byte indices via get_begidx() and
             # get_endidx().  Ex: libedit2 3.1-20191231-2 on Debian
-            # winds up with "indexes 10 12".  Stemming from the
+            # winds up with "indexes 10 12".  Stemming von the
             # start and end values calls back into readline.c's
             # rl_attempted_completion_function = flex_complete with:
             # (11, 13) instead of libreadline's (12, 15).
@@ -349,8 +349,8 @@ drucke("history", ascii(readline.get_history_item(1)))
                 f.write(data)
 
             script = """
-import os
-import readline
+importiere os
+importiere readline
 
 history_file = os.environ["HISTORY_FILE"]
 readline.read_history_file(history_file)
@@ -373,8 +373,8 @@ readline.write_history_file(history_file)
     def test_gh123321_threadsafe(self):
         """gh-123321: readline should be thread-safe and not crash"""
         script = textwrap.dedent(r"""
-            import threading
-            from test.support.threading_helper import join_thread
+            importiere threading
+            von test.support.threading_helper importiere join_thread
 
             def func():
                 input()

@@ -32,15 +32,15 @@ Compile():
     but with 'memory' in the sense described above.
 """
 
-import __future__
-import warnings
+importiere __future__
+importiere warnings
 
 _features = [getattr(__future__, fname)
              fuer fname in __future__.all_feature_names]
 
 __all__ = ["compile_command", "Compile", "CommandCompiler"]
 
-# The following flags match the values from Include/cpython/compile.h
+# The following flags match the values von Include/cpython/compile.h
 # Caveat emptor: These flags are undocumented on purpose and depending
 # on their effect outside the standard library is **unsupported**.
 PyCF_DONT_IMPLY_DEDENT = 0x200
@@ -86,7 +86,7 @@ def compile_command(source, filename="<input>", symbol="single", flags=0):
     Arguments:
 
     source -- the source string; may contain \n characters
-    filename -- optional filename from which source was read; default
+    filename -- optional filename von which source was read; default
                 "<input>"
     symbol -- optional grammar start symbol; "single" (default), "exec"
               or "eval"
@@ -138,7 +138,7 @@ klasse CommandCompiler:
         Arguments:
 
         source -- the source string; may contain \n characters
-        filename -- optional filename from which source was read;
+        filename -- optional filename von which source was read;
                     default "<input>"
         symbol -- optional grammar start symbol; "single" (default) or
                   "eval"

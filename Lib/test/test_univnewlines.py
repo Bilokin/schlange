@@ -1,10 +1,10 @@
 # Tests universal newline support fuer both reading and parsing files.
-import io
-import _pyio as pyio
-import unittest
-import os
-import sys
-from test.support import os_helper
+importiere io
+importiere _pyio as pyio
+importiere unittest
+importiere os
+importiere sys
+von test.support importiere os_helper
 
 
 wenn not hasattr(sys.stdin, 'newlines'):

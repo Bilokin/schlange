@@ -1,8 +1,8 @@
-import unittest
-import sys
-from io import StringIO
+importiere unittest
+importiere sys
+von io importiere StringIO
 
-from test import support
+von test importiere support
 
 NotDefined = object()
 
@@ -120,7 +120,7 @@ klasse TestPrint(unittest.TestCase):
         self.assertEqual(f.written, '123\n')
         self.assertEqual(f.flushed, 2)
 
-        # ensure exceptions from flush are passed through
+        # ensure exceptions von flush are passed through
         klasse noflush:
             def write(self, str):
                 pass

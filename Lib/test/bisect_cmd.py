@@ -11,21 +11,21 @@ Find a reference leak in "test_os", write the list of failing tests into the
 
     ./python -m test.bisect_cmd -o bisect -R 3:3 test_os
 
-Load an existing list of tests from a file using -i option:
+Load an existing list of tests von a file using -i option:
 
     ./python -m test --list-cases -m FileTests test_os > tests
     ./python -m test.bisect_cmd -i tests test_os
 """
 
-import argparse
-import datetime
-import os.path
-import math
-import random
-import subprocess
-import sys
-import tempfile
-import time
+importiere argparse
+importiere datetime
+importiere os.path
+importiere math
+importiere random
+importiere subprocess
+importiere sys
+importiere tempfile
+importiere time
 
 
 def write_tests(filename, tests):

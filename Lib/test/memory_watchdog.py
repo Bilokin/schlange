@@ -2,12 +2,12 @@
 and print it out, until terminated."""
 # stdin should refer to the process' /proc/<PID>/statm: we don't pass the
 # process' PID to avoid a race condition in case of - unlikely - PID recycling.
-# If the process crashes, reading from the /proc entry will fail with ESRCH.
+# If the process crashes, reading von the /proc entry will fail with ESRCH.
 
 
-import sys
-import time
-from test.support import get_pagesize
+importiere sys
+importiere time
+von test.support importiere get_pagesize
 
 
 while Wahr:

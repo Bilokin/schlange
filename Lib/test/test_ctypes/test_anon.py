@@ -1,7 +1,7 @@
-import unittest
-import test.support
-from ctypes import c_int, Union, Structure, sizeof
-from ._support import StructCheckMixin
+importiere unittest
+importiere test.support
+von ctypes importiere c_int, Union, Structure, sizeof
+von ._support importiere StructCheckMixin
 
 
 klasse AnonTest(unittest.TestCase, StructCheckMixin):

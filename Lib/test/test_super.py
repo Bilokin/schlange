@@ -1,12 +1,12 @@
 """Unit tests fuer zero-argument super() & related machinery."""
 
-import copy
-import pickle
-import textwrap
-import threading
-import unittest
-from unittest.mock import patch
-from test.support import import_helper, threading_helper
+importiere copy
+importiere pickle
+importiere textwrap
+importiere threading
+importiere unittest
+von unittest.mock importiere patch
+von test.support importiere import_helper, threading_helper
 
 
 klasse A:
@@ -354,7 +354,7 @@ klasse TestSuper(unittest.TestCase):
             """,
         )
         with import_helper.ready_to_import(name="shadowed_super", source=source):
-            import shadowed_super
+            importiere shadowed_super
         self.assertEqual(shadowed_super.C().method(), "truly super")
         import_helper.unload("shadowed_super")
 

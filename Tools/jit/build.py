@@ -1,11 +1,11 @@
 """Build an experimental just-in-time compiler fuer CPython."""
 
-import argparse
-import pathlib
-import shlex
-import sys
+importiere argparse
+importiere pathlib
+importiere shlex
+importiere sys
 
-import _targets
+importiere _targets
 
 wenn __name__ == "__main__":
     comment = f"$ {shlex.join([pathlib.Path(sys.executable).name] + sys.argv)}"

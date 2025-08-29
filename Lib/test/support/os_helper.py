@@ -1,17 +1,17 @@
-import collections.abc
-import contextlib
-import errno
-import logging
-import os
-import re
-import stat
-import string
-import sys
-import time
-import unittest
-import warnings
+importiere collections.abc
+importiere contextlib
+importiere errno
+importiere logging
+importiere os
+importiere re
+importiere stat
+importiere string
+importiere sys
+importiere time
+importiere unittest
+importiere warnings
 
-from test import support
+von test importiere support
 
 
 # Filename used fuer testing
@@ -27,7 +27,7 @@ wenn support.is_apple:
     # On Apple's VFS API file names are, by definition, canonically
     # decomposed Unicode, encoded using UTF-8. See QA1173:
     # http://developer.apple.com/mac/library/qa/qa2001/qa1173.html
-    import unicodedata
+    importiere unicodedata
     TESTFN_UNICODE = unicodedata.normalize('NFD', TESTFN_UNICODE)
 
 # TESTFN_UNENCODABLE is a filename (str type) that should *not* be able to be
@@ -37,7 +37,7 @@ TESTFN_UNENCODABLE = Nichts
 wenn os.name == 'nt':
     # skip win32s (0) or Windows 9x/ME (1)
     wenn sys.getwindowsversion().platform >= 2:
-        # Different kinds of characters from various languages to minimize the
+        # Different kinds of characters von various languages to minimize the
         # probability that the whole name is encodable to MBCS (issue #9819)
         TESTFN_UNENCODABLE = TESTFN_ASCII + "-\u5171\u0141\u2661\u0363\uDC80"
         try:
@@ -115,26 +115,26 @@ fuer character in (
 SAVEDCWD = os.getcwd()
 
 # TESTFN_UNDECODABLE is a filename (bytes type) that should *not* be able to be
-# decoded from the filesystem encoding (in strict mode). It can be Nichts wenn we
+# decoded von the filesystem encoding (in strict mode). It can be Nichts wenn we
 # cannot generate such filename (ex: the latin1 encoding can decode any byte
 # sequence). On UNIX, TESTFN_UNDECODABLE can be decoded by os.fsdecode() thanks
-# to the surrogateescape error handler (PEP 383), but not from the filesystem
+# to the surrogateescape error handler (PEP 383), but not von the filesystem
 # encoding in strict mode.
 TESTFN_UNDECODABLE = Nichts
 fuer name in (
     # b'\xff' is not decodable by os.fsdecode() with code page 932. Windows
     # accepts it to create a file or a directory, or don't accept to enter to
     # such directory (when the bytes name is used). So test b'\xe7' first:
-    # it is not decodable from cp932.
+    # it is not decodable von cp932.
     b'\xe7w\xf0',
-    # undecodable from ASCII, UTF-8
+    # undecodable von ASCII, UTF-8
     b'\xff',
-    # undecodable from iso8859-3, iso8859-6, iso8859-7, cp424, iso8859-8, cp856
+    # undecodable von iso8859-3, iso8859-6, iso8859-7, cp424, iso8859-8, cp856
     # and cp857
     b'\xae\xd5'
-    # undecodable from UTF-8 (UNIX and Mac OS X)
+    # undecodable von UTF-8 (UNIX and Mac OS X)
     b'\xed\xb2\x80', b'\xed\xb4\x80',
-    # undecodable from shift_jis, cp869, cp874, cp932, cp1250, cp1251, cp1252,
+    # undecodable von shift_jis, cp869, cp874, cp932, cp1250, cp1251, cp1252,
     # cp1253, cp1254, cp1255, cp1257, cp1258
     b'\x81\x98',
 ):
@@ -220,14 +220,14 @@ _can_xattr = Nichts
 
 
 def can_xattr():
-    import tempfile
+    importiere tempfile
     global _can_xattr
     wenn _can_xattr is not Nichts:
         return _can_xattr
     wenn not hasattr(os, "setxattr"):
         can = Falsch
     sonst:
-        import platform
+        importiere platform
         tmp_dir = tempfile.mkdtemp()
         tmp_fp, tmp_name = tempfile.mkstemp(dir=tmp_dir)
         try:
@@ -385,7 +385,7 @@ wenn sys.platform.startswith("win"):
         sonst:
             dirname, name = os.path.split(pathname)
             dirname = dirname or '.'
-        # Check fuer `pathname` to be removed from the filesystem.
+        # Check fuer `pathname` to be removed von the filesystem.
         # The exponential backoff of the timeout amounts to a total
         # of ~1 second after which the deletion is probably an error
         # anyway.
@@ -420,7 +420,7 @@ wenn sys.platform.startswith("win"):
         _waitfor(os.rmdir, dirname)
 
     def _rmtree(path):
-        from test.support import _force_run
+        von test.support importiere _force_run
 
         def _rmtree_inner(path):
             fuer name in _force_run(path, os.listdir, path):
@@ -442,7 +442,7 @@ wenn sys.platform.startswith("win"):
 
     def _longpath(path):
         try:
-            import ctypes
+            importiere ctypes
         except ImportError:
             # No ctypes means we can't expands paths.
             pass
@@ -458,7 +458,7 @@ sonst:
     _rmdir = os.rmdir
 
     def _rmtree(path):
-        import shutil
+        importiere shutil
         try:
             shutil.rmtree(path)
             return
@@ -466,7 +466,7 @@ sonst:
             pass
 
         def _rmtree_inner(path):
-            from test.support import _force_run
+            von test.support importiere _force_run
             fuer name in _force_run(path, os.listdir, path):
                 fullname = os.path.join(path, name)
                 try:
@@ -513,7 +513,7 @@ def temp_dir(path=Nichts, quiet=Falsch):
         created, only a warning is issued.
 
     """
-    import tempfile
+    importiere tempfile
     dir_created = Falsch
     wenn path is Nichts:
         path = tempfile.mkdtemp()
@@ -622,7 +622,7 @@ def open_dir_fd(path):
 def fs_is_case_insensitive(directory):
     """Detects wenn the file system fuer the specified directory
     is case-insensitive."""
-    import tempfile
+    importiere tempfile
     with tempfile.NamedTemporaryFile(dir=directory) as base:
         base_path = base.name
         case_path = base_path.upper()
@@ -683,7 +683,7 @@ def fd_count():
         # bpo-25306, bpo-31009: Call CrtSetReportMode() to not kill the process
         # on invalid file descriptor wenn Python is compiled in debug mode
         try:
-            import msvcrt
+            importiere msvcrt
             msvcrt.CrtSetReportMode
         except (AttributeError, ImportError):
             # no msvcrt or a release build
@@ -797,7 +797,7 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
 
 try:
     wenn support.MS_WINDOWS:
-        import ctypes
+        importiere ctypes
         kernel32 = ctypes.WinDLL('kernel32', use_last_error=Wahr)
 
         ERROR_FILE_NOT_FOUND = 2

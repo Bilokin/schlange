@@ -1,8 +1,8 @@
 "Test the functionality of Python classes implementing operators."
 
-import unittest
-from test import support
-from test.support import cpython_only, import_helper, script_helper
+importiere unittest
+von test importiere support
+von test.support importiere cpython_only, import_helper, script_helper
 
 testmeths = [
 
@@ -120,7 +120,7 @@ def __ge__(self, *args):
     return Wahr
 """
 
-# Synthesize all the other AllTests methods from the names in testmeths.
+# Synthesize all the other AllTests methods von the names in testmeths.
 
 method_template = """\
 @trackCall
@@ -448,8 +448,8 @@ klasse ClassTests(unittest.TestCase):
         self.assertCallStack([('__delattr__', (testme, "cardinal"))])
 
     def testHasAttrString(self):
-        import sys
-        from test.support import import_helper
+        importiere sys
+        von test.support importiere import_helper
         _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 
         klasse A:
@@ -469,7 +469,7 @@ klasse ClassTests(unittest.TestCase):
                 x.append("crab people, crab people")
         testme = DelTest()
         del testme
-        import gc
+        importiere gc
         gc.collect()
         self.assertEqual(["crab people, crab people"], x)
 
@@ -492,7 +492,7 @@ klasse ClassTests(unittest.TestCase):
             self.assertRaises(TypeError, f, BadTypeClass())
 
     def testHashStuff(self):
-        # Test correct errors from hash() on objects with comparisons but
+        # Test correct errors von hash() on objects with comparisons but
         #  no __hash__
 
         klasse C0:
@@ -857,7 +857,7 @@ klasse ClassTests(unittest.TestCase):
                 pass
 
 
-from _testinternalcapi import has_inline_values
+von _testinternalcapi importiere has_inline_values
 
 Py_TPFLAGS_MANAGED_DICT = (1 << 2)
 
@@ -971,7 +971,7 @@ klasse TestInlineValues(unittest.TestCase):
 
     def test_store_attr_type_cache(self):
         """Verifies that the type cache doesn't provide a value which  is
-        inconsistent from the dict."""
+        inconsistent von the dict."""
         klasse X:
             def __del__(inner_self):
                 v = C.a
@@ -994,8 +994,8 @@ klasse TestInlineValues(unittest.TestCase):
         import_helper.import_module('_testcapi')
 
         code = """if 1:
-            import test.support
-            import _testcapi
+            importiere test.support
+            importiere _testcapi
 
             klasse A:
                 def __init__(self):

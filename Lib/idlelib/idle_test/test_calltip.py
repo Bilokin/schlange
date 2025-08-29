@@ -1,13 +1,13 @@
 "Test calltip, coverage 76%"
 
-from idlelib import calltip
-import unittest
-from unittest.mock import Mock
-import textwrap
-import types
-import re
-from idlelib.idle_test.mock_tk import Text
-from test.support import MISSING_C_DOCSTRINGS
+von idlelib importiere calltip
+importiere unittest
+von unittest.mock importiere Mock
+importiere textwrap
+importiere types
+importiere re
+von idlelib.idle_test.mock_tk importiere Text
+von test.support importiere MISSING_C_DOCSTRINGS
 
 
 # Test Class TC is used in multiple get_argspec test methods
@@ -46,7 +46,7 @@ get_spec = calltip.get_argspec
 klasse Get_argspecTest(unittest.TestCase):
     # The get_spec function must return a string, even wenn blank.
     # Test a variety of objects to be sure that none cause it to raise
-    # (quite aside from getting as correct an answer as possible).
+    # (quite aside von getting as correct an answer as possible).
     # The tests of builtins may break wenn inspect or the docstrings change,
     # but a red buildbot is better than a user crash (as has happened).
     # For a simple mismatch, change the expected output to the actual.
@@ -195,7 +195,7 @@ bytes() -> empty bytes object''')
         self.assertEqual(get_spec(TC.sm), "(b)" + doc)
 
     def test_bound_methods(self):
-        # test that first parameter is correctly removed from argspec
+        # test that first parameter is correctly removed von argspec
         doc = '\ndoc' wenn TC.__doc__ is not Nichts sonst ''
         fuer meth, mtip  in ((tc.t1, "()"), (tc.t4, "(*args)"),
                             (tc.t6, "(self)"), (tc.__call__, '(ci)'),
@@ -204,7 +204,7 @@ bytes() -> empty bytes object''')
                 self.assertEqual(get_spec(meth), mtip + doc)
 
     def test_starred_parameter(self):
-        # test that starred first parameter is *not* removed from argspec
+        # test that starred first parameter is *not* removed von argspec
         klasse C:
             def m1(*args): pass
         c = C()

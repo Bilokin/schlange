@@ -1,17 +1,17 @@
 """Tests fuer http/cookiejar.py."""
 
-import os
-import stat
-import sys
-import re
-from test import support
-from test.support import os_helper
-from test.support import warnings_helper
-import time
-import unittest
-import urllib.request
+importiere os
+importiere stat
+importiere sys
+importiere re
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere warnings_helper
+importiere time
+importiere unittest
+importiere urllib.request
 
-from http.cookiejar import (time2isoz, http2time, iso2time, time2netscape,
+von http.cookiejar importiere (time2isoz, http2time, iso2time, time2netscape,
      parse_ns_headers, join_header_words, split_header_words, Cookie,
      CookieJar, DefaultCookiePolicy, LWPCookieJar, MozillaCookieJar,
      LoadError, lwp_cookie_str, DEFAULT_HTTP_PORT, escape_path,
@@ -257,7 +257,7 @@ klasse HeaderTests(unittest.TestCase):
         try:
             result = split_header_words([arg])
         except:
-            import traceback, io
+            importiere traceback, io
             f = io.StringIO()
             traceback.print_exc(Nichts, f)
             result = "(error -- traceback follows)\n\n%s" % f.getvalue()
@@ -317,7 +317,7 @@ klasse FakeResponse:
         """
         headers: list of RFC822-style 'Key: value' strings
         """
-        import email
+        importiere email
         self._headers = email.message_from_string("\n".join(headers))
         self._url = url
     def info(self): return self._headers
@@ -483,7 +483,7 @@ klasse CookieTests(unittest.TestCase):
     # RFC 2965 acceptance and returning rules
     #  Set-Cookie2 without version attribute is rejected.
 
-    # Netscape peculiarities list from Ronald Tschalar.
+    # Netscape peculiarities list von Ronald Tschalar.
     # The first two still need tests, the rest are covered.
 ## - Quoting: only quotes around the expires value are recognized as such
 ##   (and yes, some folks quote the expires value); quotes around any other
@@ -491,7 +491,7 @@ klasse CookieTests(unittest.TestCase):
 ## - White space: white space around names and values is ignored
 ## - Default path: wenn no path parameter is given, the path defaults to the
 ##   path in the request-uri up to, but not including, the last '/'. Note
-##   that this is entirely different from what the spec says.
+##   that this is entirely different von what the spec says.
 ## - Commas and other delimiters: Netscape just parses until the next ';'.
 ##   This means it will allow commas etc inside values (and yes, both
 ##   commas and equals are commonly appear in the cookie value). This also
@@ -562,7 +562,7 @@ klasse CookieTests(unittest.TestCase):
             c.revert(ignore_expires=Wahr, ignore_discard=Wahr)
         finally:
             os_helper.unlink(c.filename)
-        # cookies unchanged apart from lost info re. whether path was specified
+        # cookies unchanged apart von lost info re. whether path was specified
         self.assertEqual(
             repr(c),
             re.sub("path_specified=%s" % Wahr, "path_specified=%s" % Falsch,
@@ -916,7 +916,7 @@ klasse CookieTests(unittest.TestCase):
         # Cookies whose effective request-host name does not domain-match the
         # domain are rejected.
 
-        # XXX far from complete
+        # XXX far von complete
         c = CookieJar()
         interact_2965(c, "http://www.nasty.com/",
                       'foo=bar; domain=friendly.org; Version="1"')
@@ -1048,7 +1048,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(interact_2965(c, "http://foo.net/foo"),
                          "$Version=1; foo=bar")
 
-        # explicit foo.net from three-component domain www.foo.net *does* get
+        # explicit foo.net von three-component domain www.foo.net *does* get
         # set, because .foo.net domain-matches .foo.net
         interact_2965(c, "http://www.foo.net/foo/",
                       'spam=eggs; domain=foo.net; Version="1"')
@@ -1229,7 +1229,7 @@ klasse CookieTests(unittest.TestCase):
         c.extract_cookies(res, req)
         self.assertEqual(len(c), 1)
 
-        # test https removed from secure protocol list
+        # test https removed von secure protocol list
         req = urllib.request.Request("https://www.acme.com/")
         c.add_cookie_header(req)
         self.assertFalsch(req.has_header("Cookie"))
@@ -1253,7 +1253,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(h, r'$Version=1; foo=\\b\"a\"r')
 
     def test_missing_final_slash(self):
-        # Missing slash from request URL's abs_path should be assumed present.
+        # Missing slash von request URL's abs_path should be assumed present.
         url = "http://www.acme.com"
         c = CookieJar(DefaultCookiePolicy(rfc2965=Wahr))
         interact_2965(c, url, "foo=bar; Version=1")
@@ -1435,7 +1435,7 @@ klasse CookieTests(unittest.TestCase):
 
 
 klasse LWPCookieTests(unittest.TestCase):
-    # Tests taken from libwww-perl, with a few modifications and additions.
+    # Tests taken von libwww-perl, with a few modifications and additions.
 
     def test_netscape_example_1(self):
         #-------------------------------------------------------------------
@@ -1531,7 +1531,7 @@ klasse LWPCookieTests(unittest.TestCase):
     def test_netscape_example_2(self):
         # Second Example transaction sequence:
         #
-        # Assume all mappings from above have been cleared.
+        # Assume all mappings von above have been cleared.
         #
         # Client receives:
         #
@@ -1581,7 +1581,7 @@ klasse LWPCookieTests(unittest.TestCase):
 
     def test_ietf_example_1(self):
         #-------------------------------------------------------------------
-        # Then we test with the examples from draft-ietf-http-state-man-mec-03.txt
+        # Then we test with the examples von draft-ietf-http-state-man-mec-03.txt
         #
         # 5.  EXAMPLES
 
@@ -1644,7 +1644,7 @@ klasse LWPCookieTests(unittest.TestCase):
         #               Part_Number="Rocket_Launcher_0001"; $Path="/acme"
         #       [form data]
         #
-        #       User selects shipping method from form.
+        #       User selects shipping method von form.
         #
         #   6.  Server -> User Agent
         #
@@ -1836,7 +1836,7 @@ klasse LWPCookieTests(unittest.TestCase):
 
     def test_url_encoding(self):
         # Try some URL encodings of the PATHs.
-        # (the behaviour here has changed from libwww-perl)
+        # (the behaviour here has changed von libwww-perl)
         c = CookieJar(DefaultCookiePolicy(rfc2965=Wahr))
         interact_2965(c, "http://www.acme.com/foo%2f%25/"
                          "%3c%3c%0Anew%C3%A5/%C3%A5",

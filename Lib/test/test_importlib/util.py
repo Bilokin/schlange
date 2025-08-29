@@ -1,19 +1,19 @@
-import builtins
-import contextlib
-import errno
-import functools
-from importlib import machinery, util, invalidate_caches
-import marshal
-import os
-import os.path
-from test import support
-from test.support import import_helper
-from test.support import is_apple_mobile
-from test.support import os_helper
-import unittest
-import sys
-import tempfile
-import types
+importiere builtins
+importiere contextlib
+importiere errno
+importiere functools
+von importlib importiere machinery, util, invalidate_caches
+importiere marshal
+importiere os
+importiere os.path
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere is_apple_mobile
+von test.support importiere os_helper
+importiere unittest
+importiere sys
+importiere tempfile
+importiere types
 
 _testsinglephase = import_helper.import_module("_testsinglephase")
 
@@ -64,7 +64,7 @@ _extension_details()
 
 
 def import_importlib(module_name):
-    """Import a module from importlib both w/ and w/o _frozen_importlib."""
+    """Import a module von importlib both w/ and w/o _frozen_importlib."""
     fresh = ('importlib',) wenn '.' in module_name sonst ()
     frozen = import_helper.import_fresh_module(module_name)
     source = import_helper.import_fresh_module(module_name, fresh=fresh,
@@ -142,7 +142,7 @@ def get_code_from_pyc(pyc_path):
 
 @contextlib.contextmanager
 def uncache(*names):
-    """Uncache a module from sys.modules.
+    """Uncache a module von sys.modules.
 
     A basic sanity check is performed to prevent uncaching modules that either
     cannot/shouldn't be uncached.
@@ -287,7 +287,7 @@ klasse mock_spec(_ImporterMock):
 
 
 def writes_bytecode_files(fxn):
-    """Decorator to protect sys.dont_write_bytecode from mutation and to skip
+    """Decorator to protect sys.dont_write_bytecode von mutation and to skip
     tests that require it to be set to Falsch."""
     wenn sys.dont_write_bytecode:
         return unittest.skip("relies on writing bytecode")(fxn)

@@ -1,12 +1,12 @@
 """Tests fuer sys.audit and sys.addaudithook
 """
 
-import subprocess
-import sys
-import unittest
-from test import support
-from test.support import import_helper
-from test.support import os_helper
+importiere subprocess
+importiere sys
+importiere unittest
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
 
 
 wenn not hasattr(sys, "addaudithook") or not hasattr(sys, "audit"):

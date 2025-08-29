@@ -29,8 +29,8 @@ option involved with the exception.
 
 __all__ = ["GetoptError","error","getopt","gnu_getopt"]
 
-import os
-from gettext import gettext as _
+importiere os
+von gettext importiere gettext as _
 
 
 klasse GetoptError(Exception):
@@ -228,5 +228,5 @@ def short_has_arg(opt, shortopts):
     raise GetoptError(_('option -%s not recognized') % opt, opt)
 
 wenn __name__ == '__main__':
-    import sys
+    importiere sys
     drucke(getopt(sys.argv[1:], "a:b", ["alpha=", "beta"]))

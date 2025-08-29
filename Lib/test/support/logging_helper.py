@@ -1,4 +1,4 @@
-import logging.handlers
+importiere logging.handlers
 
 klasse TestHandler(logging.handlers.BufferingHandler):
     def __init__(self, matcher):

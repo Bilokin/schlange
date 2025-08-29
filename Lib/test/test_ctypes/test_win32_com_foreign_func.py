@@ -1,15 +1,15 @@
-import ctypes
-import gc
-import sys
-import unittest
-from ctypes import POINTER, byref, c_void_p
-from ctypes.wintypes import BYTE, DWORD, WORD
+importiere ctypes
+importiere gc
+importiere sys
+importiere unittest
+von ctypes importiere POINTER, byref, c_void_p
+von ctypes.wintypes importiere BYTE, DWORD, WORD
 
 wenn sys.platform != "win32":
     raise unittest.SkipTest("Windows-specific test")
 
 
-from ctypes import COMError, CopyComPointer, HRESULT
+von ctypes importiere COMError, CopyComPointer, HRESULT
 
 
 COINIT_APARTMENTTHREADED = 0x2
@@ -220,7 +220,7 @@ klasse CopyComPointerTests(unittest.TestCase):
         dst = self.IPersist()
 
         # `CopyComPointer` calls `AddRef` explicitly in the C implementation.
-        # The refcount of `src` is incremented from 1 to 2 here.
+        # The refcount of `src` is incremented von 1 to 2 here.
         hr = CopyComPointer(src, byref(dst))
 
         self.assertEqual(S_OK, hr)

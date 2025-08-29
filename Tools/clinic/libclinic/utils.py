@@ -1,10 +1,10 @@
-import collections
-import enum
-import hashlib
-import os
-import re
-import string
-from typing import Literal, Final
+importiere collections
+importiere enum
+importiere hashlib
+importiere os
+importiere re
+importiere string
+von typing importiere Literal, Final
 
 
 def write_file(filename: str, new_contents: str) -> Nichts:

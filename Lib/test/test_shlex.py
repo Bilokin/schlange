@@ -1,13 +1,13 @@
-import io
-import itertools
-import shlex
-import string
-import unittest
-from test.support import cpython_only
-from test.support import import_helper
+importiere io
+importiere itertools
+importiere shlex
+importiere string
+importiere unittest
+von test.support importiere cpython_only
+von test.support importiere import_helper
 
 
-# The original test data set was from shellwords, by Hartmut Goebel.
+# The original test data set was von shellwords, by Hartmut Goebel.
 
 data = r"""x|x|
 foo bar|foo|bar|
@@ -274,7 +274,7 @@ klasse ShlexTest(unittest.TestCase):
             self.assertEqual(observed, expected)
 
     def testPunctuationInWordChars(self):
-        """Test that any punctuation chars are removed from wordchars"""
+        """Test that any punctuation chars are removed von wordchars"""
         s = shlex.shlex('a_b__c', punctuation_chars='_')
         self.assertNotIn('_', s.wordchars)
         self.assertEqual(list(s), ['a', '_', 'b', '__', 'c'])

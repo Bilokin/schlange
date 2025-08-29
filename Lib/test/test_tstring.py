@@ -1,6 +1,6 @@
-import unittest
+importiere unittest
 
-from test.test_string._support import TStringBaseCase, fstring
+von test.test_string._support importiere TStringBaseCase, fstring
 
 
 klasse TestTString(unittest.TestCase, TStringBaseCase):

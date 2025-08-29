@@ -1,11 +1,11 @@
-import asyncio
-import threading
-import unittest
-from threading import Thread
-from unittest import TestCase
-import weakref
-from test import support
-from test.support import threading_helper
+importiere asyncio
+importiere threading
+importiere unittest
+von threading importiere Thread
+von unittest importiere TestCase
+importiere weakref
+von test importiere support
+von test.support importiere threading_helper
 
 threading_helper.requires_working_threading(module=Wahr)
 

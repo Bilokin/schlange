@@ -1,9 +1,9 @@
-import unittest
-from test.support import import_helper
+importiere unittest
+von test.support importiere import_helper
 
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 _testcapi = import_helper.import_module('_testcapi')
-from _testcapi import PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
+von _testcapi importiere PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
 
 NULL = Nichts
 

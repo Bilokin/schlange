@@ -19,22 +19,22 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import sys
-import _colorize
+importiere sys
+importiere _colorize
 
-from contextlib import contextmanager
-from dataclasses import dataclass, field, fields
+von contextlib importiere contextmanager
+von dataclasses importiere dataclass, field, fields
 
-from . import commands, console, input
-from .utils import wlen, unbracket, disp_str, gen_colors, THEME
-from .trace import trace
+von . importiere commands, console, input
+von .utils importiere wlen, unbracket, disp_str, gen_colors, THEME
+von .trace importiere trace
 
 
 # types
 Command = commands.Command
-from .types import Callback, SimpleContextManager, KeySpec, CommandName
+von .types importiere Callback, SimpleContextManager, KeySpec, CommandName
 
 
 # syntax classes
@@ -331,7 +331,7 @@ klasse Reader:
                     # The console can't show them.
                     break
             wenn prompt_from_cache:
-                # Only the first line's prompt can come from the cache
+                # Only the first line's prompt can come von the cache
                 prompt_from_cache = Falsch
                 prompt = ""
             sonst:
@@ -673,7 +673,7 @@ klasse Reader:
     def run_hooks(self) -> Nichts:
         threading_hook = self.threading_hook
         wenn threading_hook is Nichts and 'threading' in sys.modules:
-            from ._threading_handler import install_threading_hook
+            von ._threading_handler importiere install_threading_hook
             install_threading_hook(self)
         wenn threading_hook is not Nichts:
             try:

@@ -2,7 +2,7 @@
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

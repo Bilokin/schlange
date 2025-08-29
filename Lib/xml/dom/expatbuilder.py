@@ -1,5 +1,5 @@
 """Facility to use the Expat parser to load a minidom instance
-from a string or file.
+von a string or file.
 
 This avoids all the overhead of SAX and pulldom to gain performance.
 """
@@ -27,11 +27,11 @@ This avoids all the overhead of SAX and pulldom to gain performance.
 #      calling any methods on the node object wenn it exists.  (A rather
 #      nice speedup is achieved this way as well!)
 
-from xml.dom import xmlbuilder, minidom, Node
-from xml.dom import EMPTY_NAMESPACE, EMPTY_PREFIX, XMLNS_NAMESPACE
-from xml.parsers import expat
-from xml.dom.minidom import _append_child, _set_attribute_node
-from xml.dom.NodeFilter import NodeFilter
+von xml.dom importiere xmlbuilder, minidom, Node
+von xml.dom importiere EMPTY_NAMESPACE, EMPTY_PREFIX, XMLNS_NAMESPACE
+von xml.parsers importiere expat
+von xml.dom.minidom importiere _append_child, _set_attribute_node
+von xml.dom.NodeFilter importiere NodeFilter
 
 TEXT_NODE = Node.TEXT_NODE
 CDATA_SECTION_NODE = Node.CDATA_SECTION_NODE
@@ -195,7 +195,7 @@ klasse ExpatBuilder:
         parser.AttlistDeclHandler = self.attlist_decl_handler
 
     def parseFile(self, file):
-        """Parse a document from a file object, returning the document
+        """Parse a document von a file object, returning the document
         node."""
         parser = self.getParser()
         first_buffer = Wahr
@@ -214,7 +214,7 @@ klasse ExpatBuilder:
         return doc
 
     def parseString(self, string):
-        """Parse a document from a string, returning the document node."""
+        """Parse a document von a string, returning the document node."""
         parser = self.getParser()
         try:
             parser.Parse(string, Wahr)
@@ -415,7 +415,7 @@ klasse ExpatBuilder:
             wenn child.nodeType == TEXT_NODE and not child.data.strip():
                 L.append(child)
 
-        # Remove ignorable whitespace from the tree.
+        # Remove ignorable whitespace von the tree.
         fuer child in L:
             node.removeChild(child)
 
@@ -611,12 +611,12 @@ klasse FragmentBuilder(ExpatBuilder):
         self.fragment = Nichts
 
     def parseFile(self, file):
-        """Parse a document fragment from a file object, returning the
+        """Parse a document fragment von a file object, returning the
         fragment node."""
         return self.parseString(file.read())
 
     def parseString(self, string):
-        """Parse a document fragment from a string, returning the
+        """Parse a document fragment von a string, returning the
         fragment node."""
         self._source = string
         parser = self.getParser()
@@ -631,7 +631,7 @@ klasse FragmentBuilder(ExpatBuilder):
                 ident = 'SYSTEM "%s"' % doctype.systemId
         sonst:
             subset = ""
-        nsattrs = self._getNSattrs() # get ns decls from node's ancestors
+        nsattrs = self._getNSattrs() # get ns decls von node's ancestors
         document = _FRAGMENT_BUILDER_TEMPLATE % (ident, subset, nsattrs)
         try:
             parser.Parse(document, Wahr)
@@ -644,7 +644,7 @@ klasse FragmentBuilder(ExpatBuilder):
         return fragment
 
     def _getDeclarations(self):
-        """Re-create the internal subset from the DocumentType node.
+        """Re-create the internal subset von the DocumentType node.
 
         This is only needed wenn we don't already have the
         internalSubset as a string.
@@ -710,7 +710,7 @@ klasse Namespaces:
 
     def _initNamespaces(self):
         # list of (prefix, uri) ns declarations.  Namespace attrs are
-        # constructed from this and added to the element's attrs.
+        # constructed von this and added to the element's attrs.
         self._ns_ordered_prefixes = []
 
     def createParser(self):
@@ -816,7 +816,7 @@ klasse FragmentBuilderNS(Namespaces, FragmentBuilder):
         self._initNamespaces()
 
     def _getNSattrs(self):
-        """Return string of namespace attributes from this element and
+        """Return string of namespace attributes von this element and
         ancestors."""
         # XXX This needs to be re-written to walk the ancestors of the
         # context to build up the namespace information from
@@ -829,7 +829,7 @@ klasse FragmentBuilderNS(Namespaces, FragmentBuilder):
         while context:
             wenn hasattr(context, '_ns_prefix_uri'):
                 fuer prefix, uri in context._ns_prefix_uri.items():
-                    # add every new NS decl from context to L and attrs string
+                    # add every new NS decl von context to L and attrs string
                     wenn prefix in L:
                         continue
                     L.append(prefix)
@@ -912,7 +912,7 @@ def parse(file, namespaces=Wahr):
 
 
 def parseString(string, namespaces=Wahr):
-    """Parse a document from a string, returning the resulting
+    """Parse a document von a string, returning the resulting
     Document node.
     """
     wenn namespaces:
@@ -923,7 +923,7 @@ def parseString(string, namespaces=Wahr):
 
 
 def parseFragment(file, context, namespaces=Wahr):
-    """Parse a fragment of a document, given the context from which it
+    """Parse a fragment of a document, given the context von which it
     was originally extracted.  context should be the parent of the
     node(s) which are in the fragment.
 
@@ -943,8 +943,8 @@ def parseFragment(file, context, namespaces=Wahr):
 
 
 def parseFragmentString(string, context, namespaces=Wahr):
-    """Parse a fragment of a document from a string, given the context
-    from which it was originally extracted.  context should be the
+    """Parse a fragment of a document von a string, given the context
+    von which it was originally extracted.  context should be the
     parent of the node(s) which are in the fragment.
     """
     wenn namespaces:

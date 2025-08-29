@@ -1,8 +1,8 @@
 # Used by test_typing to verify that Final wrapped in ForwardRef works.
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-from typing import Final
+von typing importiere Final
 
 name: Final[str] = "final"
 

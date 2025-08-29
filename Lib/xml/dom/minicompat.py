@@ -42,7 +42,7 @@ should not be imported; use xml.dom.minidom instead.
 
 __all__ = ["NodeList", "EmptyNodeList", "StringTypes", "defproperty"]
 
-import xml.dom
+importiere xml.dom
 
 StringTypes = (str,)
 

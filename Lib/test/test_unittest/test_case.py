@@ -1,26 +1,26 @@
-import contextlib
-import difflib
-import pprint
-import pickle
-import re
-import sys
-import logging
-import warnings
-import weakref
-import inspect
-import types
+importiere contextlib
+importiere difflib
+importiere pprint
+importiere pickle
+importiere re
+importiere sys
+importiere logging
+importiere warnings
+importiere weakref
+importiere inspect
+importiere types
 
-from collections import UserString
-from copy import deepcopy
-from test import support
+von collections importiere UserString
+von copy importiere deepcopy
+von test importiere support
 
-import unittest
+importiere unittest
 
-from test.test_unittest.support import (
+von test.test_unittest.support importiere (
     TestEquality, TestHashing, LoggingResult, LegacyLoggingResult,
     ResultWithNoStartTestRunStopTestRun
 )
-from test.support import captured_stderr, gc_collect
+von test.support importiere captured_stderr, gc_collect
 
 
 log_foo = logging.getLogger('foo')
@@ -313,7 +313,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             Foo('test').run()
 
     def test_deprecation_of_return_val_from_test(self):
-        # Issue 41322 - deprecate return of value that is not Nichts from a test
+        # Issue 41322 - deprecate return of value that is not Nichts von a test
         klasse Nothing:
             def __eq__(self, o):
                 return o is Nichts
@@ -691,7 +691,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.addTypeEqualityFunc(SadSnake, AllSnakesCreatedEqual)
         self.assertEqual(s1, s2)
         # No this doesn't clean up and remove the SadSnake equality func
-        # from this TestCase instance but since it's local nothing sonst
+        # von this TestCase instance but since it's local nothing sonst
         # will ever notice that.
 
     def testAssertIs(self):
@@ -1259,7 +1259,7 @@ test case
 http://www.python.org/doc/2.4.1/lib/module-unittest.html
 test case
     A test case is the smallest unit of testing. [...] You may provide your
-    own implementation that does not subclass from TestCase, of course.
+    own implementation that does not subclass von TestCase, of course.
 """
         sample_text_error = """\
 - http://www.python.org/doc/2.3/lib/module-unittest.html
@@ -1270,7 +1270,7 @@ test case
 -     A test case is the smallest unit of testing. [...]
 +     A test case is the smallest unit of testing. [...] You may provide your
 ?                                                       +++++++++++++++++++++
-+     own implementation that does not subclass from TestCase, of course.
++     own implementation that does not subclass von TestCase, of course.
 """
         self.maxDiff = Nichts
         try:
@@ -1320,7 +1320,7 @@ test case
             self.fail(f'{self.failureException} not raised')
 
     def testAssertEqualMultipleLinesMissingNewlineTerminator(self):
-        '''Verifying format of diff output from assertEqual involving strings
+        '''Verifying format of diff output von assertEqual involving strings
          with multiple lines, but missing the terminating newline on both.
         '''
         sample_text = 'laden swallows\nfly sloely'
@@ -1342,7 +1342,7 @@ test case
             self.fail(f'{self.failureException} not raised')
 
     def testAssertEqualMultipleLinesMismatchedNewlinesTerminators(self):
-        '''Verifying format of diff output from assertEqual involving strings
+        '''Verifying format of diff output von assertEqual involving strings
          with multiple lines and mismatched newlines. The output should
          include a - on it's own line to indicate the newline difference
          between the two strings

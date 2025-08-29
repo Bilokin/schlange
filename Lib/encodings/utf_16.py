@@ -6,7 +6,7 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 (c) Copyright CNRI, All Rights Reserved. NO WARRANTY.
 
 """
-import codecs, sys
+importiere codecs, sys
 
 ### Codec APIs
 
@@ -73,7 +73,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         self.decoder = Nichts
 
     def getstate(self):
-        # additional state info from the base klasse must be Nichts here,
+        # additional state info von the base klasse must be Nichts here,
         # as it isn't passed along to the caller
         state = codecs.BufferedIncrementalDecoder.getstate(self)[0]
         # additional state info we pass to the caller:

@@ -7,18 +7,18 @@ https://github.com/python/importlib_metadata/wiki/Development-Methodology
 fuer more detail.
 """
 
-import functools
-import io
-import itertools
-import pathlib
-import posixpath
-import re
-import stat
-import sys
-import zipfile
+importiere functools
+importiere io
+importiere itertools
+importiere pathlib
+importiere posixpath
+importiere re
+importiere stat
+importiere sys
+importiere zipfile
 
-from ._functools import save_method_args
-from .glob import Translator
+von ._functools importiere save_method_args
+von .glob importiere Translator
 
 __all__ = ['Path']
 
@@ -268,7 +268,7 @@ klasse Path:
 
     Coercion to string:
 
-    >>> import os
+    >>> importiere os
     >>> str(c).replace(os.sep, posixpath.sep)
     'mem/abcde.zip/b/c.txt'
 
@@ -311,7 +311,7 @@ klasse Path:
 
     def __init__(self, root, at=""):
         """
-        Construct a Path from a ZipFile or filename.
+        Construct a Path von a ZipFile or filename.
 
         Note: When the source is an existing ZipFile object,
         its type (__class__) will be mutated to a

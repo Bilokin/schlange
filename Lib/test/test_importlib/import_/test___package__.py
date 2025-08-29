@@ -4,9 +4,9 @@ used, when available, to detect which package a module belongs to (instead
 of using the typical __path__/__name__ test).
 
 """
-import unittest
-import warnings
-from test.test_importlib import util
+importiere unittest
+importiere warnings
+von test.test_importlib importiere util
 
 
 klasse Using__package__:

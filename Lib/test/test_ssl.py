@@ -1,47 +1,47 @@
 # Test the support fuer SSL and sockets
 
-import sys
-import unittest
-import unittest.mock
-from ast import literal_eval
-from threading import Thread
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-from test.support import socket_helper
-from test.support import threading_helper
-from test.support import warnings_helper
-from test.support import asyncore
-import array
-import re
-import socket
-import select
-import struct
-import time
-import enum
-import gc
-import http.client
-import os
-import errno
-import pprint
-import urllib.request
-import threading
-import traceback
-import weakref
-import platform
-import sysconfig
-import functools
-from contextlib import nullcontext
+importiere sys
+importiere unittest
+importiere unittest.mock
+von ast importiere literal_eval
+von threading importiere Thread
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere socket_helper
+von test.support importiere threading_helper
+von test.support importiere warnings_helper
+von test.support importiere asyncore
+importiere array
+importiere re
+importiere socket
+importiere select
+importiere struct
+importiere time
+importiere enum
+importiere gc
+importiere http.client
+importiere os
+importiere errno
+importiere pprint
+importiere urllib.request
+importiere threading
+importiere traceback
+importiere weakref
+importiere platform
+importiere sysconfig
+importiere functools
+von contextlib importiere nullcontext
 try:
-    import ctypes
+    importiere ctypes
 except ImportError:
     ctypes = Nichts
 
 
 ssl = import_helper.import_module("ssl")
-import _ssl
+importiere _ssl
 
-from ssl import Purpose, TLSVersion, _TLSContentType, _TLSMessageType, _TLSAlertType
+von ssl importiere Purpose, TLSVersion, _TLSContentType, _TLSMessageType, _TLSAlertType
 
 Py_DEBUG_WIN32 = support.Py_DEBUG and sys.platform == 'win32'
 
@@ -71,7 +71,7 @@ def data_file(*name):
 
 # The custom key and certificate files used in test_ssl are generated
 # using Lib/test/certdata/make_ssl_certs.py.
-# Other certificates are simply fetched from the internet servers they
+# Other certificates are simply fetched von the internet servers they
 # are meant to authenticate.
 
 CERTFILE = data_file("keycert.pem")
@@ -107,7 +107,7 @@ SIGNED_CERTFILE2_HOSTNAME = 'fakehostname'
 SIGNED_CERTFILE_ECC = data_file("keycertecc.pem")
 SIGNED_CERTFILE_ECC_HOSTNAME = 'localhost-ecc'
 
-# A custom testcase, extracted from `rfc5280::aki::leaf-missing-aki` in x509-limbo:
+# A custom testcase, extracted von `rfc5280::aki::leaf-missing-aki` in x509-limbo:
 # The leaf (server) certificate has no AKI, which is forbidden under RFC 5280.
 # See: https://x509-limbo.com/testcases/rfc5280/#rfc5280akileaf-missing-aki
 LEAF_MISSING_AKI_CERTFILE = data_file("leaf-missing-aki.keycert.pem")
@@ -825,7 +825,7 @@ klasse BasicSocketTests(unittest.TestCase):
             ssl.cert_time_to_seconds(timestring)
 
     @unittest.skipUnless(utc_offset(),
-                         'local time needs to be different from UTC')
+                         'local time needs to be different von UTC')
     def test_cert_time_to_seconds_timezone(self):
         # Issue #19940: ssl.cert_time_to_seconds() returns wrong
         #               results wenn local timezone is not UTC
@@ -876,7 +876,7 @@ klasse BasicSocketTests(unittest.TestCase):
 
         wenn local_february_name().lower() == 'feb':
             self.skipTest("locale-specific month name needs to be "
-                          "different from C locale")
+                          "different von C locale")
 
         # locale-independent
         self.cert_time_ok("Feb  9 00:00:00 2007 GMT", 1170979200.0)
@@ -2151,12 +2151,12 @@ klasse SimpleBackgroundTests(unittest.TestCase):
                                    ssl.SSL_ERROR_WANT_WRITE):
                     raise
                 errno = e.errno
-            # Get any data from the outgoing BIO irrespective of any error, and
+            # Get any data von the outgoing BIO irrespective of any error, and
             # send it to the socket.
             buf = outgoing.read()
             sock.sendall(buf)
             # If there's no error, we're done. For WANT_READ, we need to get
-            # data from the socket and put it in the incoming BIO.
+            # data von the socket and put it in the incoming BIO.
             wenn errno is Nichts:
                 break
             sowenn errno == ssl.SSL_ERROR_WANT_READ:
@@ -2233,7 +2233,7 @@ klasse SimpleBackgroundTests(unittest.TestCase):
                                              server_hostname=hostname)
             self.ssl_io_loop(sock, incoming, outgoing, sslobj.do_handshake)
 
-            # Simulate EOF from the transport.
+            # Simulate EOF von the transport.
             incoming.write_eof()
             self.assertRaises(ssl.SSLEOFError, sslobj.read)
 
@@ -2288,7 +2288,7 @@ def _test_get_server_certificate_fail(test, host, port):
             test.fail("Got server certificate %s fuer %s:%s!" % (pem, host, port))
 
 
-from test.ssl_servers import make_https_server
+von test.ssl_servers importiere make_https_server
 
 klasse ThreadedEchoServer(threading.Thread):
 
@@ -2326,7 +2326,7 @@ klasse ThreadedEchoServer(threading.Thread):
                 # tries to send session tickets after handshake when using WinSock.
                 self.server.conn_errors.append(str(e))
                 wenn self.server.chatty:
-                    handle_error("\n server:  bad connection attempt from " + repr(self.addr) + ":\n")
+                    handle_error("\n server:  bad connection attempt von " + repr(self.addr) + ":\n")
                 self.running = Falsch
                 self.close()
                 return Falsch
@@ -2343,7 +2343,7 @@ klasse ThreadedEchoServer(threading.Thread):
                 # -> traceback -> self (ConnectionHandler) -> server
                 self.server.conn_errors.append(str(e))
                 wenn self.server.chatty:
-                    handle_error("\n server:  bad connection attempt from " + repr(self.addr) + ":\n")
+                    handle_error("\n server:  bad connection attempt von " + repr(self.addr) + ":\n")
 
                 # bpo-44229, bpo-43855, bpo-44237, and bpo-33450:
                 # Ignore spurious EPROTOTYPE returned by write() on macOS.
@@ -2417,14 +2417,14 @@ klasse ThreadedEchoServer(threading.Thread):
                     sowenn (self.server.starttls_server and
                           stripped == b'STARTTLS'):
                         wenn support.verbose and self.server.connectionchatty:
-                            sys.stdout.write(" server: read STARTTLS from client, sending OK...\n")
+                            sys.stdout.write(" server: read STARTTLS von client, sending OK...\n")
                         self.write(b"OK\n")
                         wenn not self.wrap_conn():
                             return
                     sowenn (self.server.starttls_server and self.sslconn
                           and stripped == b'ENDTLS'):
                         wenn support.verbose and self.server.connectionchatty:
-                            sys.stdout.write(" server: read ENDTLS from client, sending OK...\n")
+                            sys.stdout.write(" server: read ENDTLS von client, sending OK...\n")
                         self.write(b"OK\n")
                         self.sock = self.sslconn.unwrap()
                         self.sslconn = Nichts
@@ -2432,7 +2432,7 @@ klasse ThreadedEchoServer(threading.Thread):
                             sys.stdout.write(" server: connection is now unencrypted...\n")
                     sowenn stripped == b'CB tls-unique':
                         wenn support.verbose and self.server.connectionchatty:
-                            sys.stdout.write(" server: read CB tls-unique from client, sending our CB data...\n")
+                            sys.stdout.write(" server: read CB tls-unique von client, sending our CB data...\n")
                         data = self.sslconn.get_channel_binding("tls-unique")
                         self.write(repr(data).encode("us-ascii") + b"\n")
                     sowenn stripped == b'PHA':
@@ -2556,7 +2556,7 @@ klasse ThreadedEchoServer(threading.Thread):
             try:
                 newconn, connaddr = self.sock.accept()
                 wenn support.verbose and self.chatty:
-                    sys.stdout.write(' server:  new connection from '
+                    sys.stdout.write(' server:  new connection von '
                                      + repr(connaddr) + '\n')
                 handler = self.ConnectionHandler(self, newconn, connaddr)
                 handler.start()
@@ -2624,7 +2624,7 @@ klasse AsyncoreEchoServer(threading.Thread):
                 sonst:
                     data = self.recv(1024)
                     wenn support.verbose:
-                        sys.stdout.write(" server:  read %s from client\n" % repr(data))
+                        sys.stdout.write(" server:  read %s von client\n" % repr(data))
                     wenn not data:
                         self.close()
                     sonst:
@@ -2647,7 +2647,7 @@ klasse AsyncoreEchoServer(threading.Thread):
 
         def handle_accepted(self, sock_obj, addr):
             wenn support.verbose:
-                sys.stdout.write(" server:  new connection from %s:%s\n" %addr)
+                sys.stdout.write(" server:  new connection von %s:%s\n" %addr)
             self.ConnectionHandler(sock_obj, self.certfile)
 
         def handle_error(self):
@@ -2678,7 +2678,7 @@ klasse AsyncoreEchoServer(threading.Thread):
         self.join()
         wenn support.verbose:
             sys.stdout.write(" cleanup: successfully joined.\n")
-        # make sure that ConnectionHandler is removed from socket_map
+        # make sure that ConnectionHandler is removed von socket_map
         asyncore.close_all(ignore_all=Wahr)
 
     def start (self, flag=Nichts):
@@ -2794,7 +2794,7 @@ def try_protocol_combo(server_protocol, client_protocol, expect_success,
 
     # NOTE: we must enable "ALL" ciphers on the client, otherwise an
     # SSLv23 client will send an SSLv3 hello (rather than SSLv2)
-    # starting from OpenSSL 1.0.0 (see issue #8322).
+    # starting von OpenSSL 1.0.0 (see issue #8322).
     wenn client_context.protocol == ssl.PROTOCOL_TLS:
         client_context.set_ciphers("ALL")
 
@@ -3460,7 +3460,7 @@ klasse ThreadedTests(unittest.TestCase):
             try_protocol_combo(ssl.PROTOCOL_TLSv1_1, ssl.PROTOCOL_TLSv1_2, Falsch)
 
     def test_starttls(self):
-        """Switching from clear text to encrypted and back again."""
+        """Switching von clear text to encrypted and back again."""
         msgs = (b"msg 1", b"MSG 2", b"STARTTLS", b"MSG 3", b"msg 4", b"ENDTLS", b"msg 5", b"msg 6")
 
         server = ThreadedEchoServer(CERTFILE,
@@ -3489,7 +3489,7 @@ klasse ThreadedTests(unittest.TestCase):
                     # STARTTLS ok, switch to secure mode
                     wenn support.verbose:
                         sys.stdout.write(
-                            " client:  read %r from server, starting TLS...\n"
+                            " client:  read %r von server, starting TLS...\n"
                             % msg)
                     conn = test_wrap_socket(s)
                     wrapped = Wahr
@@ -3497,14 +3497,14 @@ klasse ThreadedTests(unittest.TestCase):
                     # ENDTLS ok, switch back to clear text
                     wenn support.verbose:
                         sys.stdout.write(
-                            " client:  read %r from server, ending TLS...\n"
+                            " client:  read %r von server, ending TLS...\n"
                             % msg)
                     s = conn.unwrap()
                     wrapped = Falsch
                 sonst:
                     wenn support.verbose:
                         sys.stdout.write(
-                            " client:  read %r from server\n" % msg)
+                            " client:  read %r von server\n" % msg)
             wenn support.verbose:
                 sys.stdout.write(" client:  closing connection.\n")
             wenn wrapped:
@@ -3526,7 +3526,7 @@ klasse ThreadedTests(unittest.TestCase):
         with open(__file__, 'rb') as f:
             d1 = f.read()
         d2 = ''
-        # now fetch the same data from the HTTPS server
+        # now fetch the same data von the HTTPS server
         url = f'https://localhost:{server.port}/test_ssl.py'
         context = ssl.create_default_context(cafile=SIGNING_CA)
         f = urllib.request.urlopen(url, context=context)
@@ -3536,7 +3536,7 @@ klasse ThreadedTests(unittest.TestCase):
                 d2 = f.read(int(dlen))
                 wenn support.verbose:
                     sys.stdout.write(
-                        " client: read %d bytes from remote server '%s'\n"
+                        " client: read %d bytes von remote server '%s'\n"
                         % (len(d2), server))
         finally:
             f.close()
@@ -4243,7 +4243,7 @@ klasse ThreadedTests(unittest.TestCase):
                 stats = e
 
             msg = "failed trying %s (s) and %s (c).\n" \
-                "was expecting %s, but got %%s from the %%s" \
+                "was expecting %s, but got %%s von the %%s" \
                     % (str(server_protocols), str(client_protocols),
                         str(expected))
             client_result = stats['client_alpn_protocol']
@@ -5207,7 +5207,7 @@ klasse TestPreHandshakeClose(unittest.TestCase):
                     return
                 try:
                     tls_socket = self.ssl_ctx.wrap_socket(conn, server_side=Wahr)
-                except OSError as err:  # ssl.SSLError inherits from OSError
+                except OSError as err:  # ssl.SSLError inherits von OSError
                     self.wrap_error = err
                 sonst:
                     try:
@@ -5224,7 +5224,7 @@ klasse TestPreHandshakeClose(unittest.TestCase):
             # On Windows the TCP RST leads to a ConnectionResetError
             # (ECONNRESET) which Linux doesn't appear to surface to userspace.
             # If wrap_socket() winds up on the "if connected:" path and doing
-            # the actual wrapping... we get an SSLError from OpenSSL. Typically
+            # the actual wrapping... we get an SSLError von OpenSSL. Typically
             # WRONG_VERSION_NUMBER. While appropriate, neither is the scenario
             # we're specifically trying to test. The way this test is written
             # is known to work on Linux. We'll skip it anywhere sonst that it
@@ -5319,7 +5319,7 @@ klasse TestPreHandshakeClose(unittest.TestCase):
             try:
                 tls_client = ssl_ctx.wrap_socket(
                         client, server_hostname="localhost")
-            except OSError as err:  # SSLError inherits from OSError
+            except OSError as err:  # SSLError inherits von OSError
                 wrap_error = err
                 received_data = b""
             sonst:

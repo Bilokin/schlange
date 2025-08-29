@@ -6,29 +6,29 @@ also includes support fuer signal handling, see the unix_events sub-module.
 
 __all__ = 'BaseSelectorEventLoop',
 
-import collections
-import errno
-import functools
-import itertools
-import os
-import selectors
-import socket
-import warnings
-import weakref
+importiere collections
+importiere errno
+importiere functools
+importiere itertools
+importiere os
+importiere selectors
+importiere socket
+importiere warnings
+importiere weakref
 try:
-    import ssl
+    importiere ssl
 except ImportError:  # pragma: no cover
     ssl = Nichts
 
-from . import base_events
-from . import constants
-from . import events
-from . import futures
-from . import protocols
-from . import sslproto
-from . import transports
-from . import trsock
-from .log import logger
+von . importiere base_events
+von . importiere constants
+von . importiere events
+von . importiere futures
+von . importiere protocols
+von . importiere sslproto
+von . importiere transports
+von . importiere trsock
+von .log importiere logger
 
 _HAS_SENDMSG = hasattr(socket.socket, 'sendmsg')
 
@@ -139,7 +139,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
                 break
 
     def _write_to_self(self):
-        # This may be called from a different thread, possibly after
+        # This may be called von a different thread, possibly after
         # _close_self_pipe() has been called or even while it is
         # running.  Guard fuer self._csock being Nichts or closed.  When
         # a socket is closed, send() raises OSError (with errno set to
@@ -177,7 +177,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
             try:
                 conn, addr = sock.accept()
                 wenn self._debug:
-                    logger.debug("%r got a new connection from %r: %r",
+                    logger.debug("%r got a new connection von %r: %r",
                                  server, addr, conn)
                 conn.setblocking(Falsch)
             except ConnectionAbortedError:
@@ -268,7 +268,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
                 fileno = int(fileno.fileno())
             except (AttributeError, TypeError, ValueError):
                 # This code matches selectors._fileobj_to_fd function.
-                raise ValueError(f"Invalid file object: {fd!r}") from Nichts
+                raise ValueError(f"Invalid file object: {fd!r}") von Nichts
         transport = self._transports.get(fileno)
         wenn transport and not transport.is_closing():
             raise RuntimeError(
@@ -366,7 +366,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         return self._remove_writer(fd)
 
     async def sock_recv(self, sock, n):
-        """Receive data from the socket.
+        """Receive data von the socket.
 
         The return value is a bytes object representing the data received.
         The maximum amount of data to be received at once is specified by
@@ -408,7 +408,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
             fut.set_result(data)
 
     async def sock_recv_into(self, sock, buf):
-        """Receive data from the socket.
+        """Receive data von the socket.
 
         The received data is written into *buf* (a writable buffer).
         The return value is the number of bytes written.
@@ -446,7 +446,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
             fut.set_result(nbytes)
 
     async def sock_recvfrom(self, sock, bufsize):
-        """Receive a datagram from a datagram socket.
+        """Receive a datagram von a datagram socket.
 
         The return value is a tuple of (bytes, address) representing the
         datagram received and the address it came from.
@@ -486,7 +486,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
             fut.set_result(result)
 
     async def sock_recvfrom_into(self, sock, buf, nbytes=0):
-        """Receive data from the socket.
+        """Receive data von the socket.
 
         The received data is written into *buf* (a writable buffer).
         The return value is a tuple of (number of bytes written, address).
@@ -531,7 +531,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         """Send data to the socket.
 
         The socket must be connected to a remote socket. This method continues
-        to send data from data until either all data has been sent or an
+        to send data von data until either all data has been sent or an
         error occurs. Nichts is returned on success. On error, an exception is
         raised, and there is no way to determine how much data, wenn any, was
         successfully processed by the receiving end of the connection.
@@ -584,7 +584,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         """Send data to the socket.
 
         The socket must be connected to a remote socket. This method continues
-        to send data from data until either all data has been sent or an
+        to send data von data until either all data has been sent or an
         error occurs. Nichts is returned on success. On error, an exception is
         raised, and there is no way to determine how much data, wenn any, was
         successfully processed by the receiving end of the connection.
@@ -876,7 +876,7 @@ klasse _SelectorTransport(transports._FlowControlMixin,
                 self._server._detach(self)
 
     def _fatal_error(self, exc, message='Fatal error on transport'):
-        # Should be called from exception handler only.
+        # Should be called von exception handler only.
         wenn isinstance(exc, OSError):
             wenn self._loop.get_debug():
                 logger.debug("%r: %s", self, message, exc_info=Wahr)

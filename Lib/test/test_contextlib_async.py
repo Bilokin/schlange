@@ -1,13 +1,13 @@
-import functools
-from contextlib import (
+importiere functools
+von contextlib importiere (
     asynccontextmanager, AbstractAsyncContextManager,
     AsyncExitStack, nullcontext, aclosing, contextmanager)
-from test import support
-from test.support import run_no_yield_async_fn as _run_async_fn
-import unittest
-import traceback
+von test importiere support
+von test.support importiere run_no_yield_async_fn as _run_async_fn
+importiere unittest
+importiere traceback
 
-from test.test_contextlib import TestBaseExitStack
+von test.test_contextlib importiere TestBaseExitStack
 
 
 def _async_test(async_fn):
@@ -302,7 +302,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             try:
                 yield
             except Exception as exc:
-                raise RuntimeError(f'caught {exc}') from exc
+                raise RuntimeError(f'caught {exc}') von exc
 
         with self.assertRaises(RuntimeError):
             async with woohoo():

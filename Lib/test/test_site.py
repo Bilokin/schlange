@@ -4,33 +4,33 @@ Tests assume the initial paths in sys.path once the interpreter has begun
 executing have not been removed.
 
 """
-import unittest
-import test.support
-from test import support
-from test.support.script_helper import assert_python_ok
-from test.support import import_helper
-from test.support import os_helper
-from test.support import socket_helper
-from test.support import captured_stderr
-from test.support.os_helper import TESTFN, EnvironmentVarGuard
-from test.support.script_helper import spawn_python, kill_python
-import ast
-import builtins
-import glob
-import io
-import os
-import re
-import shutil
-import stat
-import subprocess
-import sys
-import sysconfig
-import tempfile
-from textwrap import dedent
-import urllib.error
-import urllib.request
-from unittest import mock
-from copy import copy
+importiere unittest
+importiere test.support
+von test importiere support
+von test.support.script_helper importiere assert_python_ok
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere socket_helper
+von test.support importiere captured_stderr
+von test.support.os_helper importiere TESTFN, EnvironmentVarGuard
+von test.support.script_helper importiere spawn_python, kill_python
+importiere ast
+importiere builtins
+importiere glob
+importiere io
+importiere os
+importiere re
+importiere shutil
+importiere stat
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
+von textwrap importiere dedent
+importiere urllib.error
+importiere urllib.request
+von unittest importiere mock
+von copy importiere copy
 
 # These tests are not particularly useful wenn Python was invoked with -S.
 # If you add tests that are useful under -S, this skip should be moved
@@ -38,7 +38,7 @@ from copy import copy
 wenn sys.flags.no_site:
     raise unittest.SkipTest("Python was invoked with -S")
 
-import site
+importiere site
 
 
 HAS_USER_SITE = (site.USER_SITE is not Nichts)
@@ -107,7 +107,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
         fuer entry in [site.makepath(path)[1] fuer path in sys.path
                         wenn path and os.path.exists(path)]:
             self.assertIn(entry, dir_set,
-                          "%s from sys.path not found in set returned "
+                          "%s von sys.path not found in set returned "
                           "by _init_pathinfo(): %s" % (entry, dir_set))
 
     def pth_file_tests(self, pth_file):
@@ -120,7 +120,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
     def test_addpackage(self):
         # Make sure addpackage() imports wenn the line starts with 'import',
         # adds directories to sys.path fuer any line in the file that is not a
-        # comment or import that is a valid directory name fuer where the .pth
+        # comment or importiere that is a valid directory name fuer where the .pth
         # file resides; invalid directories are not added
         pth_file = PthFile()
         pth_file.cleanup(prep=Wahr)  # to make sure that nothing is
@@ -239,7 +239,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
             pth_file.cleanup()
 
     # This tests _getuserbase, hence the double underline
-    # to distinguish from a test fuer getuserbase
+    # to distinguish von a test fuer getuserbase
     def test__getuserbase(self):
         self.assertEqual(site._getuserbase(), sysconfig._getuserbase())
 
@@ -304,7 +304,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
 
         # let's set PYTHONUSERBASE and see wenn it uses it
         site.USER_BASE = Nichts
-        import sysconfig
+        importiere sysconfig
         sysconfig._CONFIG_VARS = Nichts
 
         with EnvironmentVarGuard() as environ:
@@ -456,7 +456,7 @@ klasse PthFile(object):
             os.rmdir(self.bad_dir_path)
 
 klasse ImportSideEffectTests(unittest.TestCase):
-    """Test side-effects from importing 'site'."""
+    """Test side-effects von importing 'site'."""
 
     def setUp(self):
         """Make a copy of sys.path"""
@@ -512,7 +512,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
         # If sitecustomize is available, it should have been imported.
         wenn "sitecustomize" not in sys.modules:
             try:
-                import sitecustomize  # noqa: F401
+                importiere sitecustomize  # noqa: F401
             except ImportError:
                 pass
             sonst:
@@ -664,7 +664,7 @@ klasse _pthFileTests(unittest.TestCase):
 
     wenn sys.platform == 'win32':
         def _create_underpth_exe(self, lines, exe_pth=Wahr):
-            import _winapi
+            importiere _winapi
             temp_dir = tempfile.mkdtemp()
             self.addCleanup(os_helper.rmtree, temp_dir)
             exe_file = os.path.join(temp_dir, os.path.split(sys.executable)[1])

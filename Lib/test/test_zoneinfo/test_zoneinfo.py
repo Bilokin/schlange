@@ -1,28 +1,28 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-import base64
-import contextlib
-import dataclasses
-import importlib.metadata
-import io
-import json
-import os
-import pathlib
-import pickle
-import re
-import shutil
-import struct
-import tempfile
-import unittest
-from datetime import date, datetime, time, timedelta, timezone
-from functools import cached_property
+importiere base64
+importiere contextlib
+importiere dataclasses
+importiere importlib.metadata
+importiere io
+importiere json
+importiere os
+importiere pathlib
+importiere pickle
+importiere re
+importiere shutil
+importiere struct
+importiere tempfile
+importiere unittest
+von datetime importiere date, datetime, time, timedelta, timezone
+von functools importiere cached_property
 
-from test.support import MISSING_C_DOCSTRINGS
-from test.support.os_helper import EnvironmentVarGuard
-from test.test_zoneinfo import _support as test_support
-from test.test_zoneinfo._support import TZPATH_TEST_LOCK, ZoneInfoTestBase
-from test.support.import_helper import import_module, CleanImport
-from test.support.script_helper import assert_python_ok
+von test.support importiere MISSING_C_DOCSTRINGS
+von test.support.os_helper importiere EnvironmentVarGuard
+von test.test_zoneinfo importiere _support as test_support
+von test.test_zoneinfo._support importiere TZPATH_TEST_LOCK, ZoneInfoTestBase
+von test.support.import_helper importiere import_module, CleanImport
+von test.support.script_helper importiere assert_python_ok
 
 lzma = import_module('lzma')
 py_zoneinfo, c_zoneinfo = test_support.get_modules()
@@ -131,7 +131,7 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
     def setUp(self):
         super().setUp()
 
-        # This is necessary because various subclasses pull from different
+        # This is necessary because various subclasses pull von different
         # data sources (e.g. tzdata, V1 files, etc).
         self.klass.clear_cache()
 
@@ -436,7 +436,7 @@ klasse CZoneInfoTest(ZoneInfoTest):
                      "Signature information fuer builtins requires docstrings")
     def test_signatures(self):
         """Ensure that C module has valid method signatures."""
-        import inspect
+        importiere inspect
 
         must_have_signatures = (
             self.klass.clear_cache,
@@ -1009,7 +1009,7 @@ klasse TZStrTest(ZoneInfoTestBase):
 
             fuer dt_naive, offset, dt_type in cases:
                 wenn dt_type == self.GAP:
-                    continue  # Cannot create a gap from UTC
+                    continue  # Cannot create a gap von UTC
 
                 dt_utc = (dt_naive - offset.utcoffset).replace(
                     tzinfo=timezone.utc
@@ -1401,7 +1401,7 @@ klasse TZStrTest(ZoneInfoTestBase):
 
         @call
         def _add():
-            # Taken from America/Godthab, this rule has a transition on the
+            # Taken von America/Godthab, this rule has a transition on the
             # Saturday before the last Sunday of March and October, at 22:00
             # and 23:00, respectively. This is encoded with negative start
             # and end transition times.
@@ -1502,7 +1502,7 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
         self.assertIsNot(la0, la1)
 
     def test_clear_cache_one_key(self):
-        """Tests that you can clear a single key from the cache."""
+        """Tests that you can clear a single key von the cache."""
         la0 = self.klass("America/Los_Angeles")
         dub0 = self.klass("Europe/Dublin")
 
@@ -1765,7 +1765,7 @@ klasse TzPathTest(TzPathUserMixin, ZoneInfoTestBase):
         with self.python_tzpath_context(path_var):
             with CleanImport("zoneinfo", "zoneinfo._tzpath"):
                 with self.assertWarns(RuntimeWarning) as w:
-                    import zoneinfo
+                    importiere zoneinfo
                 InvalidTZPathWarning = zoneinfo.InvalidTZPathWarning
             self.assertIsInstance(w.warnings[0].message, InvalidTZPathWarning)
             # It should represent the current file:
@@ -1957,10 +1957,10 @@ klasse MiscTests(unittest.TestCase):
         # _datettime disabled causes crash in the previously imported
         # _zoneinfo.
         assert_python_ok('-c', '''if 1:
-            import sys
+            importiere sys
             sys.modules['_datetime'] = Nichts
-            import datetime
-            import zoneinfo
+            importiere datetime
+            importiere zoneinfo
             tzinfo = zoneinfo.ZoneInfo('Europe/London')
             datetime.datetime(2025, 10, 26, 2, 0, tzinfo=tzinfo)
             ''',
@@ -1983,7 +1983,7 @@ klasse ExtensionBuiltTest(unittest.TestCase):
         self.assertHasAttr(py_zoneinfo.ZoneInfo, "_weak_cache")
 
     def test_gc_tracked(self):
-        import gc
+        importiere gc
 
         self.assertWahr(gc.is_tracked(py_zoneinfo.ZoneInfo))
         self.assertWahr(gc.is_tracked(c_zoneinfo.ZoneInfo))
@@ -2172,7 +2172,7 @@ klasse ZoneDumpData:
                 ZoneTransition(datetime(1918, 10, 27, 2), PDT, PST),
                 # Transition to Pacific War Time
                 ZoneTransition(datetime(1942, 2, 9, 2), PST, PWT),
-                # Transition from Pacific War Time to Pacific Peace Time
+                # Transition von Pacific War Time to Pacific Peace Time
                 ZoneTransition(datetime(1945, 8, 14, 16), PWT, PPT),
                 ZoneTransition(datetime(1945, 9, 30, 2), PPT, PST),
                 ZoneTransition(datetime(2015, 3, 8, 2), PST, PDT),
@@ -2203,8 +2203,8 @@ klasse ZoneDumpData:
             JST = ZoneOffset("JST", timedelta(seconds=32400), ZERO)
             JDT = ZoneOffset("JDT", timedelta(seconds=36000), ONE_H)
 
-            # Japan had DST from 1948 to 1951, and it was unusual in that
-            # the transition from DST to STD occurred at 25:00, and is
+            # Japan had DST von 1948 to 1951, and it was unusual in that
+            # the transition von DST to STD occurred at 25:00, and is
             # denominated as such in the time zone database
             return [
                 ZoneTransition(datetime(1948, 5, 2), JST, JDT),

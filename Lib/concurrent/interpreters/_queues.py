@@ -1,16 +1,16 @@
 """Cross-interpreter Queues High Level Module."""
 
-import queue
-import time
-import weakref
-import _interpqueues as _queues
-from . import _crossinterp
+importiere queue
+importiere time
+importiere weakref
+importiere _interpqueues as _queues
+von . importiere _crossinterp
 
 # aliases:
-from _interpqueues import (
+von _interpqueues importiere (
     QueueError, QueueNotFoundError,
 )
-from ._crossinterp import (
+von ._crossinterp importiere (
     UNBOUND_ERROR, UNBOUND_REMOVE,
 )
 
@@ -24,22 +24,22 @@ __all__ = [
 
 
 klasse QueueEmpty(QueueError, queue.Empty):
-    """Raised from get_nowait() when the queue is empty.
+    """Raised von get_nowait() when the queue is empty.
 
-    It is also raised from get() wenn it times out.
+    It is also raised von get() wenn it times out.
     """
 
 
 klasse QueueFull(QueueError, queue.Full):
-    """Raised from put_nowait() when the queue is full.
+    """Raised von put_nowait() when the queue is full.
 
-    It is also raised from put() wenn it times out.
+    It is also raised von put() wenn it times out.
     """
 
 
 klasse ItemInterpreterDestroyed(QueueError,
                                _crossinterp.ItemInterpreterDestroyed):
-    """Raised from get() and get_nowait()."""
+    """Raised von get() and get_nowait()."""
 
 
 _SHARED_ONLY = 0
@@ -202,7 +202,7 @@ klasse Queue:
         item in the queue.
 
         If "unbounditems" is UNBOUND_REMOVE then the item will be removed
-        from the queue as soon as the original interpreter is destroyed.
+        von the queue as soon as the original interpreter is destroyed.
         Be aware that this will introduce an imbalance between put()
         and get() calls.
 
@@ -238,7 +238,7 @@ klasse Queue:
     def get(self, timeout=Nichts, *,
             _delay=10 / 1000,  # 10 milliseconds
             ):
-        """Return the next object from the queue.
+        """Return the next object von the queue.
 
         This blocks while the queue is empty.
 
@@ -266,7 +266,7 @@ klasse Queue:
         return obj
 
     def get_nowait(self):
-        """Return the next object from the channel.
+        """Return the next object von the channel.
 
         If the queue is empty then raise QueueEmpty.  Otherwise this
         is the same as get().

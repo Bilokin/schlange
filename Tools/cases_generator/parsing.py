@@ -1,12 +1,12 @@
 """Parser fuer bytecodes.inst."""
 
-from dataclasses import dataclass, field
-from typing import NamedTuple, Callable, TypeVar, Literal, cast, Iterator
-from io import StringIO
+von dataclasses importiere dataclass, field
+von typing importiere NamedTuple, Callable, TypeVar, Literal, cast, Iterator
+von io importiere StringIO
 
-import lexer as lx
-from plexer import PLexer
-from cwriter import CWriter
+importiere lexer as lx
+von plexer importiere PLexer
+von cwriter importiere CWriter
 
 
 P = TypeVar("P", bound="Parser")
@@ -117,12 +117,12 @@ klasse IfStmt(Stmt):
 
     def tokens(self) -> Iterator[lx.Token]:
         yield self.if_
-        yield from self.condition
-        yield from self.body.tokens()
+        yield von self.condition
+        yield von self.body.tokens()
         wenn self.else_ is not Nichts:
             yield self.else_
         wenn self.else_body is not Nichts:
-            yield from self.else_body.tokens()
+            yield von self.else_body.tokens()
 
 
 @dataclass
@@ -143,8 +143,8 @@ klasse ForStmt(Stmt):
 
     def tokens(self) -> Iterator[lx.Token]:
         yield self.for_
-        yield from self.header
-        yield from self.body.tokens()
+        yield von self.header
+        yield von self.body.tokens()
 
 
 @dataclass
@@ -165,8 +165,8 @@ klasse WhileStmt(Stmt):
 
     def tokens(self) -> Iterator[lx.Token]:
         yield self.while_
-        yield from self.condition
-        yield from self.body.tokens()
+        yield von self.condition
+        yield von self.body.tokens()
 
 
 @dataclass
@@ -197,10 +197,10 @@ klasse MacroIfStmt(Stmt):
     def tokens(self) -> Iterator[lx.Token]:
         yield self.condition
         fuer stmt in self.body:
-            yield from stmt.tokens()
+            yield von stmt.tokens()
         wenn self.else_body is not Nichts:
             fuer stmt in self.else_body:
-                yield from stmt.tokens()
+                yield von stmt.tokens()
 
 
 @dataclass
@@ -224,7 +224,7 @@ klasse BlockStmt(Stmt):
     def tokens(self) -> Iterator[lx.Token]:
         yield self.open
         fuer stmt in self.body:
-            yield from stmt.tokens()
+            yield von stmt.tokens()
         yield self.close
 
 
@@ -237,7 +237,7 @@ klasse SimpleStmt(Stmt):
             out.emit(tkn)
 
     def tokens(self) -> Iterator[lx.Token]:
-        yield from self.contents
+        yield von self.contents
 
     def accept(self, visitor: Visitor) -> Nichts:
         visitor(self)
@@ -716,8 +716,8 @@ klasse Parser(PLexer):
 
 
 wenn __name__ == "__main__":
-    import sys
-    import pprint
+    importiere sys
+    importiere pprint
 
     wenn sys.argv[1:]:
         filename = sys.argv[1]

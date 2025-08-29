@@ -4,9 +4,9 @@
 # on accessible hardware.
 #
 
-import sys
-from decimal import *
-from gmpy import mpz
+importiere sys
+von decimal importiere *
+von gmpy importiere mpz
 
 
 _PyHASH_MODULUS = sys.hash_info.modulus

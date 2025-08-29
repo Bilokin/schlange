@@ -1,12 +1,12 @@
-import os
-import pickle
-import re
-import tempfile
-import unittest
-import unittest.mock
-from test import support
-from test.support import import_helper
-from test.support import os_helper
+importiere os
+importiere pickle
+importiere re
+importiere tempfile
+importiere unittest
+importiere unittest.mock
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
 
 
 turtle = import_helper.import_module('turtle')
@@ -638,7 +638,7 @@ klasse TestTurtle(unittest.TestCase):
 
 klasse TestModuleLevel(unittest.TestCase):
     def test_all_signatures(self):
-        import inspect
+        importiere inspect
 
         known_signatures = {
             'teleport':

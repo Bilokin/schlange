@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec fuer CP858, modified from cp850.
+""" Python Character Mapping Codec fuer CP858, modified von cp850.
 
 """
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

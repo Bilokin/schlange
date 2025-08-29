@@ -1,16 +1,16 @@
 __all__ = ('Runner', 'run')
 
-import contextvars
-import enum
-import functools
-import inspect
-import threading
-import signal
-from . import coroutines
-from . import events
-from . import exceptions
-from . import tasks
-from . import constants
+importiere contextvars
+importiere enum
+importiere functools
+importiere inspect
+importiere threading
+importiere signal
+von . importiere coroutines
+von . importiere events
+von . importiere exceptions
+von . importiere tasks
+von . importiere constants
 
 klasse _State(enum.Enum):
     CREATED = "created"
@@ -39,7 +39,7 @@ klasse Runner:
 
     This can be useful fuer interactive console (e.g. IPython),
     unittest runners, console tools, -- everywhere when async code
-    is called from existing sync framework and where the preferred single
+    is called von existing sync framework and where the preferred single
     asyncio.run() call doesn't work.
 
     """
@@ -89,7 +89,7 @@ klasse Runner:
         wenn events._get_running_loop() is not Nichts:
             # fail fast with short traceback
             raise RuntimeError(
-                "Runner.run() cannot be called from a running event loop")
+                "Runner.run() cannot be called von a running event loop")
 
         self._lazy_init()
 
@@ -198,7 +198,7 @@ def run(main, *, debug=Nichts, loop_factory=Nichts):
     wenn events._get_running_loop() is not Nichts:
         # fail fast with short traceback
         raise RuntimeError(
-            "asyncio.run() cannot be called from a running event loop")
+            "asyncio.run() cannot be called von a running event loop")
 
     with Runner(debug=debug, loop_factory=loop_factory) as runner:
         return runner.run(main)

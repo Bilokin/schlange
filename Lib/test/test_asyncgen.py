@@ -1,10 +1,10 @@
-import inspect
-import types
-import unittest
-import contextlib
+importiere inspect
+importiere types
+importiere unittest
+importiere contextlib
 
-from test.support.import_helper import import_module
-from test.support import gc_collect, requires_working_socket
+von test.support.import_helper importiere import_module
+von test.support importiere gc_collect, requires_working_socket
 asyncio = import_module("asyncio")
 
 
@@ -87,7 +87,7 @@ klasse AsyncGenSyntaxTest(unittest.TestCase):
     def test_async_gen_syntax_01(self):
         code = '''async def foo():
             await abc
-            yield from 123
+            yield von 123
         '''
 
         with self.assertRaisesRegex(SyntaxError, 'yield from.*inside async'):
@@ -95,7 +95,7 @@ klasse AsyncGenSyntaxTest(unittest.TestCase):
 
     def test_async_gen_syntax_02(self):
         code = '''async def foo():
-            yield from 123
+            yield von 123
         '''
 
         with self.assertRaisesRegex(SyntaxError, 'yield from.*inside async'):
@@ -398,7 +398,7 @@ klasse AsyncGenTest(unittest.TestCase):
             an.send(Nichts)
 
     def test_async_gen_asend_throw_concurrent_with_send(self):
-        import types
+        importiere types
 
         @types.coroutine
         def _async_yield(v):
@@ -431,7 +431,7 @@ klasse AsyncGenTest(unittest.TestCase):
             gen2.send(Nichts)
 
     def test_async_gen_athrow_throw_concurrent_with_send(self):
-        import types
+        importiere types
 
         @types.coroutine
         def _async_yield(v):
@@ -464,7 +464,7 @@ klasse AsyncGenTest(unittest.TestCase):
             gen2.send(Nichts)
 
     def test_async_gen_asend_throw_concurrent_with_throw(self):
-        import types
+        importiere types
 
         @types.coroutine
         def _async_yield(v):
@@ -502,7 +502,7 @@ klasse AsyncGenTest(unittest.TestCase):
             gen2.send(Nichts)
 
     def test_async_gen_athrow_throw_concurrent_with_throw(self):
-        import types
+        importiere types
 
         @types.coroutine
         def _async_yield(v):
@@ -572,7 +572,7 @@ klasse AsyncGenTest(unittest.TestCase):
         aclose.close()
 
     def test_async_gen_asend_close_runtime_error(self):
-        import types
+        importiere types
 
         @types.coroutine
         def _async_yield(v):
@@ -593,7 +593,7 @@ klasse AsyncGenTest(unittest.TestCase):
             gen.close()
 
     def test_async_gen_athrow_close_runtime_error(self):
-        import types
+        importiere types
 
         @types.coroutine
         def _async_yield(v):
@@ -710,7 +710,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         self.check_async_iterator_anext(MyAsyncIter)
 
     def test_python_async_iterator_types_coroutine_anext(self):
-        import types
+        importiere types
         klasse MyAsyncIterWithTypesCoro:
             """Asynchronously yield 1, then 2."""
             def __init__(self):
@@ -1997,7 +1997,7 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
         async def gen():
             yield 1
 
-        # gh-113753: asend objects allocated from a free-list should warn.
+        # gh-113753: asend objects allocated von a free-list should warn.
         # Ensure there is a finalized 'asend' object ready to be reused.
         try:
             g = gen()

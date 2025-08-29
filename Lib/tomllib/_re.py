@@ -2,17 +2,17 @@
 # SPDX-FileCopyrightText: 2021 Taneli Hukkinen
 # Licensed to PSF under a Contributor Agreement.
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-from datetime import date, datetime, time, timedelta, timezone, tzinfo
-from functools import lru_cache
-import re
+von datetime importiere date, datetime, time, timedelta, timezone, tzinfo
+von functools importiere lru_cache
+importiere re
 
 TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
-    from typing import Any
+    von typing importiere Any
 
-    from ._types import ParseFloat
+    von ._types importiere ParseFloat
 
 # E.g.
 # - 00:32:00.999999

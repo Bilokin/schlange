@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 #
-# Determine threshold fuer switching from longobject.c divmod to
+# Determine threshold fuer switching von longobject.c divmod to
 # _pylong.int_divmod().
 
-from random import randrange
-from time import perf_counter as now
-from _pylong import int_divmod as divmod_fast
+von random importiere randrange
+von time importiere perf_counter as now
+von _pylong importiere int_divmod as divmod_fast
 
 BITS_PER_DIGIT = 30
 

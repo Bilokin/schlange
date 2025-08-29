@@ -1,5 +1,5 @@
-from test.support import import_helper, Py_GIL_DISABLED, refleak_helper
-import unittest
+von test.support importiere import_helper, Py_GIL_DISABLED, refleak_helper
+importiere unittest
 
 _testcapi = import_helper.import_module('_testcapi')
 
@@ -42,11 +42,11 @@ klasse TypeTests(unittest.TestCase):
         klasse MyType:
             pass
 
-        from _testcapi import (
+        von _testcapi importiere (
             get_type_name, get_type_qualname,
             get_type_fullyqualname, get_type_module_name)
 
-        from collections import OrderedDict
+        von collections importiere OrderedDict
         ht = _testcapi.get_heaptype_for_name()
         fuer cls, fullname, modname, qualname, name in (
             (int,
@@ -139,7 +139,7 @@ klasse TypeTests(unittest.TestCase):
         self.assertWahr(get_token(B1) == id(self))
 
         tokenA1 = get_token(A1)
-        # find A1 from A1
+        # find A1 von A1
         found = get_base_by_token(A1, tokenA1)
         self.assertIs(found, A1)
 

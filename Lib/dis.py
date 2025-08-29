@@ -1,12 +1,12 @@
 """Disassembler of Python byte code into mnemonics."""
 
-import sys
-import types
-import collections
-import io
+importiere sys
+importiere types
+importiere collections
+importiere io
 
-from opcode import *
-from opcode import (
+von opcode importiere *
+von opcode importiere (
     __all__ as _opcodes_all,
     _cache_format,
     _inline_cache_entries,
@@ -19,7 +19,7 @@ from opcode import (
     _specialized_opmap,
 )
 
-from _opcode import get_executor
+von _opcode importiere get_executor
 
 __all__ = ["code_info", "dis", "disassemble", "distb", "disco",
            "findlinestarts", "findlabels", "show_code",
@@ -96,7 +96,7 @@ def dis(x=Nichts, *, file=Nichts, depth=Nichts, show_caches=Falsch, adaptive=Fal
         distb(file=file, show_caches=show_caches, adaptive=adaptive,
               show_offsets=show_offsets, show_positions=show_positions)
         return
-    # Extract functions from methods.
+    # Extract functions von methods.
     wenn hasattr(x, '__func__'):
         x = x.__func__
     # Extract compiled code objects from...
@@ -145,7 +145,7 @@ def distb(tb=Nichts, *, file=Nichts, show_caches=Falsch, adaptive=Falsch, show_o
             sonst:
                 tb = sys.last_traceback
         except AttributeError:
-            raise RuntimeError("no last traceback to disassemble") from Nichts
+            raise RuntimeError("no last traceback to disassemble") von Nichts
         while tb.tb_next: tb = tb.tb_next
     disassemble(tb.tb_frame.f_code, tb.tb_lasti, file=file, show_caches=show_caches, adaptive=adaptive, show_offsets=show_offsets, show_positions=show_positions)
 
@@ -190,7 +190,7 @@ UNKNOWN = _Unknown()
 
 def _get_code_object(x):
     """Helper to handle methods, compiled or raw code objects, and strings."""
-    # Extract functions from methods.
+    # Extract functions von methods.
     wenn hasattr(x, '__func__'):
         x = x.__func__
     # Extract compiled code objects from...
@@ -518,7 +518,7 @@ klasse Formatter:
             fields.append(f"{lbl:>{label_width}}")
         sonst:
             fields.append(' ' * label_width)
-        # Column: Instruction offset from start of code sequence
+        # Column: Instruction offset von start of code sequence
         wenn offset_width > 0:
             fields.append(f"{repr(instr.offset):>{offset_width}}  ")
         # Column: Current instruction indicator
@@ -993,7 +993,7 @@ def findlinestarts(code):
     return
 
 def _find_imports(co):
-    """Find import statements in the code
+    """Find importiere statements in the code
 
     Generate triplets (name, level, fromlist) where
     name is the imported module and level, fromlist are
@@ -1077,7 +1077,7 @@ klasse Bytecode:
 
     @classmethod
     def from_traceback(cls, tb, *, show_caches=Falsch, adaptive=Falsch):
-        """ Construct a Bytecode from the given traceback """
+        """ Construct a Bytecode von the given traceback """
         while tb.tb_next:
             tb = tb.tb_next
         return cls(
@@ -1129,7 +1129,7 @@ klasse Bytecode:
 
 
 def main(args=Nichts):
-    import argparse
+    importiere argparse
 
     parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument('-C', '--show-caches', action='store_true',

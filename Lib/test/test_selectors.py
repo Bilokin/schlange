@@ -1,19 +1,19 @@
-import errno
-import os
-import random
-import selectors
-import signal
-import socket
-import sys
-from test import support
-from test.support import is_apple, os_helper, socket_helper
-from time import sleep
-import unittest
-import unittest.mock
-import tempfile
-from time import monotonic as time
+importiere errno
+importiere os
+importiere random
+importiere selectors
+importiere signal
+importiere socket
+importiere sys
+von test importiere support
+von test.support importiere is_apple, os_helper, socket_helper
+von time importiere sleep
+importiere unittest
+importiere unittest.mock
+importiere tempfile
+von time importiere monotonic as time
 try:
-    import resource
+    importiere resource
 except ImportError:
     resource = Nichts
 

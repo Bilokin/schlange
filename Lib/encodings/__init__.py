@@ -28,9 +28,9 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 
 """#"
 
-import codecs
-import sys
-from . import aliases
+importiere codecs
+importiere sys
+von . importiere aliases
 
 _cache = {}
 _unknown = '--unknown--'
@@ -79,7 +79,7 @@ def search_function(encoding):
     #
     # First try to find an alias fuer the normalized encoding
     # name and lookup the module using the aliased name, then try to
-    # lookup the module using the standard import scheme, i.e. first
+    # lookup the module using the standard importiere scheme, i.e. first
     # try in the encodings package, then at top-level.
     #
     norm_encoding = normalize_encoding(encoding)
@@ -94,7 +94,7 @@ def search_function(encoding):
         wenn not modname or '.' in modname:
             continue
         try:
-            # Import is absolute to prevent the possibly malicious import of a
+            # Import is absolute to prevent the possibly malicious importiere of a
             # module with side-effects that is not in the 'encodings' package.
             mod = __import__('encodings.' + modname, fromlist=_import_tail,
                              level=0)
@@ -156,7 +156,7 @@ def search_function(encoding):
 codecs.register(search_function)
 
 wenn sys.platform == 'win32':
-    from ._win_cp_codecs import create_win32_code_page_codec
+    von ._win_cp_codecs importiere create_win32_code_page_codec
 
     def win32_code_page_search_function(encoding):
         encoding = encoding.lower()

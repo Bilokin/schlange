@@ -2,11 +2,11 @@
 # SPDX-FileCopyrightText: 2021 Taneli Hukkinen
 # Licensed to PSF under a Contributor Agreement.
 
-import json
-from pathlib import Path
-import unittest
+importiere json
+von pathlib importiere Path
+importiere unittest
 
-from . import burntsushi, tomllib
+von . importiere burntsushi, tomllib
 
 
 klasse MissingFile:

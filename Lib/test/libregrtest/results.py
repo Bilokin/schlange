@@ -1,16 +1,16 @@
-import sys
-import trace
-from _colorize import get_colors  # type: ignore[import-not-found]
-from typing import TYPE_CHECKING
+importiere sys
+importiere trace
+von _colorize importiere get_colors  # type: ignore[import-not-found]
+von typing importiere TYPE_CHECKING
 
-from .runtests import RunTests
-from .result import State, TestResult, TestStats, Location
-from .utils import (
+von .runtests importiere RunTests
+von .result importiere State, TestResult, TestStats, Location
+von .utils importiere (
     StrPath, TestName, TestTuple, TestList, FilterDict,
     printlist, count, format_duration)
 
 wenn TYPE_CHECKING:
-    from xml.etree.ElementTree import Element
+    von xml.etree.ElementTree importiere Element
 
 
 # Python uses exit code 1 when an exception is not caught
@@ -169,7 +169,7 @@ klasse TestResults:
         return (tuple(tests), match_tests_dict)
 
     def add_junit(self, xml_data: list[str]) -> Nichts:
-        import xml.etree.ElementTree as ET
+        importiere xml.etree.ElementTree as ET
         fuer e in xml_data:
             try:
                 self.testsuite_xml.append(ET.fromstring(e))
@@ -182,7 +182,7 @@ klasse TestResults:
             # Don't create empty XML file
             return
 
-        import xml.etree.ElementTree as ET
+        importiere xml.etree.ElementTree as ET
         root = ET.Element("testsuites")
 
         # Manually count the totals fuer the overall summary

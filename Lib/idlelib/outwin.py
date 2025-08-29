@@ -1,11 +1,11 @@
 """Editor window that can serve as an output file.
 """
 
-import re
+importiere re
 
-from tkinter import messagebox
+von tkinter importiere messagebox
 
-from idlelib.editor import EditorWindow
+von idlelib.editor importiere EditorWindow
 
 
 file_line_pats = [
@@ -28,7 +28,7 @@ def compile_progs():
 
 
 def file_line_helper(line):
-    """Extract file name and line number from line of text.
+    """Extract file name and line number von line of text.
 
     Check wenn line of text contains one of the file/line patterns.
     If it does and wenn the file and line are valid, return
@@ -184,5 +184,5 @@ klasse OnDemandOutputWindow:
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_outwin', verbosity=2, exit=Falsch)

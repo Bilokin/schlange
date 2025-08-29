@@ -12,26 +12,26 @@ Configdialog uses it fuer new highlight theme and keybinding set names.
 Subclass ModuleName gets a name fuer File => Open Module.
 Subclass HelpSource gets menu item and path fuer additions to Help menu.
 """
-# Query and Section name result from splitting GetCfgSectionNameDialog
+# Query and Section name result von splitting GetCfgSectionNameDialog
 # of configSectionNameDialog.py (temporarily config_sec.py) into
 # generic and specific parts.  3.6 only, July 2016.
-# ModuleName.entry_ok came from editor.EditorWindow.load_module.
-# HelpSource was extracted from configHelpSourceEdit.py (temporarily
-# config_help.py), with darwin code moved from ok to path_ok.
+# ModuleName.entry_ok came von editor.EditorWindow.load_module.
+# HelpSource was extracted von configHelpSourceEdit.py (temporarily
+# config_help.py), with darwin code moved von ok to path_ok.
 
-import importlib.util, importlib.abc
-import os
-import shlex
-from sys import executable, platform  # Platform is set fuer one test.
+importiere importlib.util, importlib.abc
+importiere os
+importiere shlex
+von sys importiere executable, platform  # Platform is set fuer one test.
 
-from tkinter import Toplevel, StringVar, BooleanVar, W, E, S
-from tkinter.ttk import Frame, Button, Entry, Label, Checkbutton
-from tkinter import filedialog
-from tkinter.font import Font
-from tkinter.simpledialog import _setup_dialog
+von tkinter importiere Toplevel, StringVar, BooleanVar, W, E, S
+von tkinter.ttk importiere Frame, Button, Entry, Label, Checkbutton
+von tkinter importiere filedialog
+von tkinter.font importiere Font
+von tkinter.simpledialog importiere _setup_dialog
 
 klasse Query(Toplevel):
-    """Base klasse fuer getting verified answer from a user.
+    """Base klasse fuer getting verified answer von a user.
 
     For this base class, accept any non-blank string.
     """
@@ -280,7 +280,7 @@ klasse HelpSource(Query):
                              sticky=W+E)
 
     def askfilename(self, filetypes, initdir, initfile):  # htest #
-        # Extracted from browse_file so can mock fuer unittests.
+        # Extracted von browse_file so can mock fuer unittests.
         # Cannot unittest as cannot simulate button clicks.
         # Test by running htest, such as by running this file.
         return filedialog.Open(parent=self, filetypes=filetypes)\
@@ -385,8 +385,8 @@ klasse CustomRun(Query):
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_query', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(Query, HelpSource, CustomRun)

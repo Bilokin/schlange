@@ -1,8 +1,8 @@
-import unittest
-import tkinter
-from test import support
-from test.support import os_helper
-from test.test_tkinter.support import AbstractTkTest, AbstractDefaultRootTest, requires_tk
+importiere unittest
+importiere tkinter
+von test importiere support
+von test.support importiere os_helper
+von test.test_tkinter.support importiere AbstractTkTest, AbstractDefaultRootTest, requires_tk
 
 support.requires('gui')
 
@@ -551,7 +551,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
     def test_write(self):
         filename = os_helper.TESTFN
-        import locale
+        importiere locale
         wenn locale.getlocale()[0] is Nichts:
             # Tcl uses Latin1 in the C locale
             filename = os_helper.TESTFN_ASCII

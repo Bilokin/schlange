@@ -1,21 +1,21 @@
-import array
-from io import BytesIO, UnsupportedOperation, DEFAULT_BUFFER_SIZE
-import os
-import pickle
-import random
-import sys
-from test import support
-import unittest
-from compression._common import _streams
+importiere array
+von io importiere BytesIO, UnsupportedOperation, DEFAULT_BUFFER_SIZE
+importiere os
+importiere pickle
+importiere random
+importiere sys
+von test importiere support
+importiere unittest
+von compression._common importiere _streams
 
-from test.support import _4G, bigmemtest
-from test.support.import_helper import import_module
-from test.support.os_helper import (
+von test.support importiere _4G, bigmemtest
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere (
     TESTFN, unlink, FakePath
 )
 
 lzma = import_module("lzma")
-from lzma import LZMACompressor, LZMADecompressor, LZMAError, LZMAFile
+von lzma importiere LZMACompressor, LZMADecompressor, LZMAError, LZMAFile
 
 
 klasse CompressorDecompressorTestCase(unittest.TestCase):

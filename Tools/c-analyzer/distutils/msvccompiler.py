@@ -8,14 +8,14 @@ fuer the Microsoft Visual Studio.
 # hacked by Robin Becker and Thomas Heller to do a better job of
 #   finding DevStudio (through the registry)
 
-import sys, os
-from distutils.errors import DistutilsPlatformError
-from distutils.ccompiler import CCompiler
-from distutils import log
+importiere sys, os
+von distutils.errors importiere DistutilsPlatformError
+von distutils.ccompiler importiere CCompiler
+von distutils importiere log
 
 _can_read_reg = Falsch
 try:
-    import winreg
+    importiere winreg
 
     _can_read_reg = Wahr
     hkey_mod = winreg
@@ -27,8 +27,8 @@ try:
 
 except ImportError:
     try:
-        import win32api
-        import win32con
+        importiere win32api
+        importiere win32con
         _can_read_reg = Wahr
         hkey_mod = win32con
 
@@ -206,7 +206,7 @@ klasse MSVCCompiler(CCompiler) :
     # though, so it's worth thinking about.
     executables = {}
 
-    # Private klasse data (need to distinguish C from C++ source fuer compiler)
+    # Private klasse data (need to distinguish C von C++ source fuer compiler)
     _c_extensions = ['.c']
     _cpp_extensions = ['.cc', '.cpp', '.cxx']
     _rc_extensions = ['.rc']
@@ -250,7 +250,7 @@ klasse MSVCCompiler(CCompiler) :
         """Return path to an MSVC executable program.
 
         Tries to find the program in several places: first, one of the
-        MSVC program search paths from the registry; next, the directories
+        MSVC program search paths von the registry; next, the directories
         in the PATH environment variable.  If any of those work, return an
         absolute path that is known to exist.  If none of them work, just
         return the original program name, 'exe'.
@@ -320,8 +320,8 @@ klasse MSVCCompiler(CCompiler) :
 
 
 wenn get_build_version() >= 8.0:
-    log.debug("Importing new compiler from distutils.msvc9compiler")
+    log.debug("Importing new compiler von distutils.msvc9compiler")
     OldMSVCCompiler = MSVCCompiler
-    from distutils.msvc9compiler import MSVCCompiler
+    von distutils.msvc9compiler importiere MSVCCompiler
     # get_build_architecture not really relevant now we support cross-compile
-    from distutils.msvc9compiler import MacroExpander
+    von distutils.msvc9compiler importiere MacroExpander

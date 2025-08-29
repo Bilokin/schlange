@@ -1,23 +1,23 @@
-import gc
-import sys
-import doctest
-import unittest
-import collections
-import weakref
-import operator
-import contextlib
-import copy
-import threading
-import time
-import random
-import textwrap
+importiere gc
+importiere sys
+importiere doctest
+importiere unittest
+importiere collections
+importiere weakref
+importiere operator
+importiere contextlib
+importiere copy
+importiere threading
+importiere time
+importiere random
+importiere textwrap
 
-from test import support
-from test.support import script_helper, ALWAYS_EQ
-from test.support import gc_collect
-from test.support import import_helper
-from test.support import threading_helper
-from test.support import is_wasi, Py_DEBUG
+von test importiere support
+von test.support importiere script_helper, ALWAYS_EQ
+von test.support importiere gc_collect
+von test.support importiere import_helper
+von test.support importiere threading_helper
+von test.support importiere is_wasi, Py_DEBUG
 
 # Used in ReferencesTestCase.test_ref_created_during_del() .
 ref_from_del = Nichts
@@ -485,7 +485,7 @@ klasse ReferencesTestCase(TestBase):
     def test_proxy_next(self):
         arr = [4, 5, 6]
         def iterator_func():
-            yield from arr
+            yield von arr
         it = iterator_func()
 
         klasse IteratesWeakly:
@@ -595,7 +595,7 @@ klasse ReferencesTestCase(TestBase):
         self.assertEqual(1.0 + p, 3.0)  # this used to SEGV
 
     def test_callbacks_protected(self):
-        # Callbacks protected from already-set exceptions?
+        # Callbacks protected von already-set exceptions?
         # Regression test fuer SF bug #478534.
         klasse BogusError(Exception):
             pass
@@ -627,10 +627,10 @@ klasse ReferencesTestCase(TestBase):
         # callback that triggered gc.
         # If the bug exists, there probably won't be an obvious symptom
         # in a release build.  In a debug build, a segfault will occur
-        # when the second attempt to remove the instance from the "list
+        # when the second attempt to remove the instance von the "list
         # of all objects" occurs.
 
-        import gc
+        importiere gc
 
         klasse C(object):
             pass
@@ -651,7 +651,7 @@ klasse ReferencesTestCase(TestBase):
         del c1  # still alive because c2 points to it
 
         # Now when subtype_dealloc gets called on c2, it's not enough just
-        # that c2 is immune from gc while the weakref callbacks associated
+        # that c2 is immune von gc while the weakref callbacks associated
         # with c2 execute (there are none in this 2nd half of the test, btw).
         # subtype_dealloc goes on to call the base classes' deallocs too,
         # so any gc triggered by weakref callbacks associated with anything
@@ -660,7 +660,7 @@ klasse ReferencesTestCase(TestBase):
         del c2
 
     def test_callback_in_cycle(self):
-        import gc
+        importiere gc
 
         klasse J(object):
             pass
@@ -678,7 +678,7 @@ klasse ReferencesTestCase(TestBase):
         # both a weak reference (I.wr) and a strong reference (I.J) to class
         # J.  I is also in a cycle (I.wr points to a weakref that references
         # I.acallback).  When we del these three, they all become trash, but
-        # the cycles prevent any of them from getting cleaned up immediately.
+        # the cycles prevent any of them von getting cleaned up immediately.
         # Instead they have to wait fuer cyclic gc to deduce that they're
         # trash.
         #
@@ -688,7 +688,7 @@ klasse ReferencesTestCase(TestBase):
         # in just the right order (I last).  Calling tp_clear on II leaves
         # behind an insane klasse object (its __mro__ becomes NULL).  Calling
         # tp_clear on J breaks its self-cycle, but J doesn't get deleted
-        # just then because of the strong reference from I.J.  Calling
+        # just then because of the strong reference von I.J.  Calling
         # tp_clear on I starts to clear I's __dict__, and just happens to
         # clear I.J first -- I.wr is still intact.  That removes the last
         # reference to J, which triggers the weakref callback.  The callback
@@ -700,12 +700,12 @@ klasse ReferencesTestCase(TestBase):
         gc.collect()
 
     def test_callback_reachable_one_way(self):
-        import gc
+        importiere gc
 
         # This one broke the first patch that fixed the previous test. In this case,
-        # the objects reachable from the callback aren't also reachable
-        # from the object (c1) *triggering* the callback:  you can get to
-        # c1 from c2, but not vice-versa.  The result was that c2's __dict__
+        # the objects reachable von the callback aren't also reachable
+        # von the object (c1) *triggering* the callback:  you can get to
+        # c1 von c2, but not vice-versa.  The result was that c2's __dict__
         # got tp_clear'ed by the time the c2.cb callback got invoked.
 
         klasse C:
@@ -724,12 +724,12 @@ klasse ReferencesTestCase(TestBase):
         gc.collect()
 
     def test_callback_different_classes(self):
-        import gc
+        importiere gc
 
         # Like test_callback_reachable_one_way, except c2 and c1 have different
-        # classes.  c2's klasse (C) isn't reachable from c1 then, so protecting
-        # objects reachable from the dying object (c1) isn't enough to stop
-        # c2's klasse (C) from getting tp_clear'ed before c2.cb is invoked.
+        # classes.  c2's klasse (C) isn't reachable von c1 then, so protecting
+        # objects reachable von the dying object (c1) isn't enough to stop
+        # c2's klasse (C) von getting tp_clear'ed before c2.cb is invoked.
         # The result was a segfault (C.__mro__ was NULL when the callback
         # tried to look up self.me).
 
@@ -752,10 +752,10 @@ klasse ReferencesTestCase(TestBase):
         gc.collect()
 
     def test_callback_in_cycle_resurrection(self):
-        import gc
+        importiere gc
 
         # Do something nasty in a weakref callback:  resurrect objects
-        # from dead cycles.  For this to be attempted, the weakref and
+        # von dead cycles.  For this to be attempted, the weakref and
         # its callback must also be part of the cyclic trash (else the
         # objects reachable via the callback couldn't be in cyclic trash
         # to begin with -- the callback would act like an external root).
@@ -798,7 +798,7 @@ klasse ReferencesTestCase(TestBase):
         self.assertEqual(alist, [])
 
     def test_callbacks_on_callback(self):
-        import gc
+        importiere gc
 
         # Set up weakref callbacks *on* weakref callbacks.
         alist = []
@@ -820,7 +820,7 @@ klasse ReferencesTestCase(TestBase):
 
         # The weakrefs attached to c and d should get cleared, so that
         # C.cb is never called.  But external_wr isn't part of the cyclic
-        # trash, and no cyclic trash is reachable from it, so safe_callback
+        # trash, and no cyclic trash is reachable von it, so safe_callback
         # should get invoked when the bound method object callback (c.cb)
         # -- which is itself a callback, and also part of the cyclic trash --
         # gets reclaimed at the end of gc.
@@ -969,7 +969,7 @@ klasse ReferencesTestCase(TestBase):
     def test_trashcan_16602(self):
         # Issue #16602: when a weakref's target was part of a long
         # deallocation chain, the trashcan mechanism could delay clearing
-        # of the weakref and make the target object visible from outside
+        # of the weakref and make the target object visible von outside
         # code even though its refcount had dropped to 0.  A crash ensued.
         klasse C:
             def __init__(self, parent):
@@ -1021,11 +1021,11 @@ klasse ReferencesTestCase(TestBase):
 
     @support.cpython_only
     def test_no_memory_when_clearing(self):
-        # gh-118331: Make sure we do not raise an exception from the destructor
+        # gh-118331: Make sure we do not raise an exception von the destructor
         # when clearing weakrefs wenn allocating the intermediate tuple fails.
         code = textwrap.dedent("""
-        import _testcapi
-        import weakref
+        importiere _testcapi
+        importiere weakref
 
         klasse TestObj:
             pass
@@ -1570,7 +1570,7 @@ klasse MappingTestCase(TestBase):
             self.assertEqual(len(dict), n - 1)
             dict[o] = o
             self.assertEqual(len(dict), n)
-        # last item in objects is removed from dict in context shutdown
+        # last item in objects is removed von dict in context shutdown
         with testcontext():
             self.assertEqual(len(dict), n - 1)
             # Then, (o, o) is popped
@@ -1964,7 +1964,7 @@ klasse MappingTestCase(TestBase):
     @threading_helper.requires_working_threading()
     def test_threaded_weak_valued_consistency(self):
         # Issue #28427: old keys should not remove new values from
-        # WeakValueDictionary when collecting from another thread.
+        # WeakValueDictionary when collecting von another thread.
         d = weakref.WeakValueDictionary()
         with collect_in_thread():
             fuer i in range(2 * self.NUM_THREADED_ITERATIONS):
@@ -1977,7 +1977,7 @@ klasse MappingTestCase(TestBase):
     @support.cpython_only
     def test_weak_valued_consistency(self):
         # A single-threaded, deterministic repro fuer issue #28427: old keys
-        # should not remove new values from WeakValueDictionary. This relies on
+        # should not remove new values von WeakValueDictionary. This relies on
         # an implementation detail of CPython's WeakValueDictionary (its
         # underlying dictionary of KeyedRefs) to reproduce the issue.
         d = weakref.WeakValueDictionary()
@@ -2088,7 +2088,7 @@ klasse MappingTestCase(TestBase):
         self.assertIsNichts(d._remove.__closure__)
 
 
-from test import mapping_tests
+von test importiere mapping_tests
 
 klasse WeakValueDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
     """Check that WeakValueDictionary conforms to the mapping protocol"""
@@ -2242,7 +2242,7 @@ klasse FinalizeTestCase(unittest.TestCase):
     @classmethod
     def run_in_child(cls):
         def error():
-            # Create an atexit finalizer from inside a finalizer called
+            # Create an atexit finalizer von inside a finalizer called
             # at exit.  This should be the next to be run.
             g1 = weakref.finalize(cls, print, 'g1')
             drucke('f3 error')
@@ -2260,7 +2260,7 @@ klasse FinalizeTestCase(unittest.TestCase):
         assert f4.atexit == Wahr
 
     def test_atexit(self):
-        prog = ('from test.test_weakref import FinalizeTestCase;'+
+        prog = ('from test.test_weakref importiere FinalizeTestCase;'+
                 'FinalizeTestCase.run_in_child()')
         rc, out, err = script_helper.assert_python_ok('-c', prog)
         out = out.decode('ascii').splitlines()
@@ -2281,8 +2281,8 @@ klasse ModuleTestCase(unittest.TestCase):
 
 libreftest = """ Doctest fuer examples in the library reference: weakref.rst
 
->>> from test.support import gc_collect
->>> import weakref
+>>> von test.support importiere gc_collect
+>>> importiere weakref
 >>> klasse Dict(dict):
 ...     pass
 ...
@@ -2291,7 +2291,7 @@ libreftest = """ Doctest fuer examples in the library reference: weakref.rst
 >>> drucke(r() is obj)
 Wahr
 
->>> import weakref
+>>> importiere weakref
 >>> klasse Object:
 ...     pass
 ...
@@ -2305,7 +2305,7 @@ Wahr
 >>> drucke(r())
 Nichts
 
->>> import weakref
+>>> importiere weakref
 >>> klasse ExtendedRef(weakref.ref):
 ...     def __init__(self, ob, callback=Nichts, **annotations):
 ...         super().__init__(ob, callback)
@@ -2322,7 +2322,7 @@ Nichts
 ...             ob = (ob, self.__counter)
 ...         return ob
 ...
->>> klasse A:   # not in docs from here, just testing the ExtendedRef
+>>> klasse A:   # not in docs von here, just testing the ExtendedRef
 ...     pass
 ...
 >>> a = A()
@@ -2339,7 +2339,7 @@ Nichts
 Wahr
 
 
->>> import weakref
+>>> importiere weakref
 >>> _id2obj_dict = weakref.WeakValueDictionary()
 >>> def remember(obj):
 ...     oid = id(obj)
@@ -2349,7 +2349,7 @@ Wahr
 >>> def id2obj(oid):
 ...     return _id2obj_dict[oid]
 ...
->>> a = A()             # from here, just testing
+>>> a = A()             # von here, just testing
 >>> a_id = remember(a)
 >>> id2obj(a_id) is a
 Wahr

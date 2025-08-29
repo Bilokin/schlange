@@ -1,18 +1,18 @@
 """bytecode_helper - support tools fuer testing correct bytecode generation"""
 
-import unittest
-import dis
-import io
-import opcode
+importiere unittest
+importiere dis
+importiere io
+importiere opcode
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = Nichts
 
 _UNSPECIFIED = object()
 
 def instructions_with_positions(instrs, co_positions):
-    # Return (instr, positions) pairs from the instrs list and co_positions
+    # Return (instr, positions) pairs von the instrs list and co_positions
     # iterator. The latter contains items fuer cache lines and the former
     # doesn't, so those need to be skipped.
 

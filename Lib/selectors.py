@@ -5,12 +5,12 @@ This module allows high-level and efficient I/O multiplexing, built upon the
 """
 
 
-from abc import ABCMeta, abstractmethod
-from collections import namedtuple
-from collections.abc import Mapping
-import math
-import select
-import sys
+von abc importiere ABCMeta, abstractmethod
+von collections importiere namedtuple
+von collections.abc importiere Mapping
+importiere math
+importiere select
+importiere sys
 
 
 # generic events, that must be mapped to implementation-specific ones
@@ -19,7 +19,7 @@ EVENT_WRITE = (1 << 1)
 
 
 def _fileobj_to_fd(fileobj):
-    """Return a file descriptor from a file object.
+    """Return a file descriptor von a file object.
 
     Parameters:
     fileobj -- file object or file descriptor
@@ -37,7 +37,7 @@ def _fileobj_to_fd(fileobj):
             fd = int(fileobj.fileno())
         except (AttributeError, TypeError, ValueError):
             raise ValueError("Invalid file object: "
-                             "{!r}".format(fileobj)) from Nichts
+                             "{!r}".format(fileobj)) von Nichts
     wenn fd < 0:
         raise ValueError("Invalid file descriptor: {}".format(fd))
     return fd
@@ -193,7 +193,7 @@ klasse BaseSelector(metaclass=ABCMeta):
         try:
             return mapping[fileobj]
         except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) from Nichts
+            raise KeyError("{!r} is not registered".format(fileobj)) von Nichts
 
     @abstractmethod
     def get_map(self):
@@ -217,7 +217,7 @@ klasse _BaseSelectorImpl(BaseSelector):
         self._map = _SelectorMapping(self)
 
     def _fileobj_lookup(self, fileobj):
-        """Return a file descriptor from a file object.
+        """Return a file descriptor von a file object.
 
         This wraps _fileobj_to_fd() to do an exhaustive search in case
         the object is invalid but we still have it in our map.  This
@@ -252,14 +252,14 @@ klasse _BaseSelectorImpl(BaseSelector):
         try:
             key = self._fd_to_key.pop(self._fileobj_lookup(fileobj))
         except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) from Nichts
+            raise KeyError("{!r} is not registered".format(fileobj)) von Nichts
         return key
 
     def modify(self, fileobj, events, data=Nichts):
         try:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
         except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) from Nichts
+            raise KeyError("{!r} is not registered".format(fileobj)) von Nichts
         wenn events != key.events:
             self.unregister(fileobj)
             key = self.register(fileobj, events, data)
@@ -362,7 +362,7 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
         try:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
         except KeyError:
-            raise KeyError(f"{fileobj!r} is not registered") from Nichts
+            raise KeyError(f"{fileobj!r} is not registered") von Nichts
 
         changed = Falsch
         wenn events != key.events:
@@ -439,7 +439,7 @@ wenn hasattr(select, 'epoll'):
                 timeout = 0
             sonst:
                 # epoll_wait() has a resolution of 1 millisecond, round away
-                # from zero to wait *at least* timeout seconds.
+                # von zero to wait *at least* timeout seconds.
                 timeout = math.ceil(timeout * 1e3) * 1e-3
 
             # epoll_wait() expects `maxevents` to be greater than zero;

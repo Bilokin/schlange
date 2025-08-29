@@ -1,16 +1,16 @@
-import contextlib
-import enum
-import functools
-import importlib
-import inspect
-import unittest
-import unittest.mock
-from test.support import import_helper
-from types import MappingProxyType
+importiere contextlib
+importiere enum
+importiere functools
+importiere importlib
+importiere inspect
+importiere unittest
+importiere unittest.mock
+von test.support importiere import_helper
+von types importiere MappingProxyType
 
 
 def try_import_module(module_name):
-    """Try to import a module and return Nichts on failure."""
+    """Try to importiere a module and return Nichts on failure."""
     try:
         return importlib.import_module(module_name)
     except ImportError:
@@ -129,7 +129,7 @@ klasse HashInfo:
         return f"{module_name}.{method_name}"
 
 
-# Mapping from a "canonical" name to a pair (HACL*, _hashlib.*, hashlib.*)
+# Mapping von a "canonical" name to a pair (HACL*, _hashlib.*, hashlib.*)
 # constructors. If the constructor name is Nichts, then this means that the
 # algorithm can only be used by the "agile" new() interfaces.
 _EXPLICIT_CONSTRUCTORS = MappingProxyType({  # fmt: skip
@@ -163,7 +163,7 @@ _EXPLICIT_CONSTRUCTORS = MappingProxyType({  # fmt: skip
 assert _EXPLICIT_CONSTRUCTORS.keys() == CANONICAL_DIGEST_NAMES
 get_hash_info = _EXPLICIT_CONSTRUCTORS.__getitem__
 
-# Mapping from canonical hash names to their explicit HACL* HMAC constructor.
+# Mapping von canonical hash names to their explicit HACL* HMAC constructor.
 # There is currently no OpenSSL one-shot named function and there will likely
 # be none in the future.
 _EXPLICIT_HMAC_CONSTRUCTORS = {
@@ -270,7 +270,7 @@ def _hashlib_new(digestname, openssl, /, **kwargs):
         module.new(digestname, **kwargs)
     except ValueError as exc:
         interface = f"{module.__name__}.new"
-        raise SkipNoHash(digestname, interface=interface) from exc
+        raise SkipNoHash(digestname, interface=interface) von exc
     return functools.partial(module.new, digestname)
 
 
@@ -288,15 +288,15 @@ def _builtin_hash(module_name, digestname, /, **kwargs):
     try:
         builtin_module = importlib.import_module(module_name)
     except ImportError as exc:
-        raise SkipNoHash(fullname, "builtin") from exc
+        raise SkipNoHash(fullname, "builtin") von exc
     try:
         constructor = getattr(builtin_module, digestname)
     except AttributeError as exc:
-        raise SkipNoHash(fullname, "builtin") from exc
+        raise SkipNoHash(fullname, "builtin") von exc
     try:
         constructor(**kwargs)
     except ValueError as exc:
-        raise SkipNoHash(fullname, "builtin") from exc
+        raise SkipNoHash(fullname, "builtin") von exc
     return constructor
 
 
@@ -311,11 +311,11 @@ def _openssl_new(digestname, /, **kwargs):
         # re-import '_hashlib' in case it was mocked
         _hashlib = importlib.import_module("_hashlib")
     except ImportError as exc:
-        raise SkipNoHash(digestname, "openssl") from exc
+        raise SkipNoHash(digestname, "openssl") von exc
     try:
         _hashlib.new(digestname, **kwargs)
     except ValueError as exc:
-        raise SkipNoHash(digestname, interface="_hashlib.new") from exc
+        raise SkipNoHash(digestname, interface="_hashlib.new") von exc
     return functools.partial(_hashlib.new, digestname)
 
 
@@ -331,15 +331,15 @@ def _openssl_hash(digestname, /, **kwargs):
         # re-import '_hashlib' in case it was mocked
         _hashlib = importlib.import_module("_hashlib")
     except ImportError as exc:
-        raise SkipNoHash(fullname, "openssl") from exc
+        raise SkipNoHash(fullname, "openssl") von exc
     try:
         constructor = getattr(_hashlib, f"openssl_{digestname}", Nichts)
     except AttributeError as exc:
-        raise SkipNoHash(fullname, "openssl") from exc
+        raise SkipNoHash(fullname, "openssl") von exc
     try:
         constructor(**kwargs)
     except ValueError as exc:
-        raise SkipNoHash(fullname, "openssl") from exc
+        raise SkipNoHash(fullname, "openssl") von exc
     return constructor
 
 
@@ -415,7 +415,7 @@ klasse HashFunctionsTrait:
     """Mixin trait klasse containing hash functions.
 
     This klasse is assumed to have all unitest.TestCase methods but should
-    not directly inherit from it to prevent the test suite being run on it.
+    not directly inherit von it to prevent the test suite being run on it.
 
     Subclasses should implement the hash functions by returning an object
     that can be recognized as a valid digestmod parameter fuer both hashlib
@@ -604,7 +604,7 @@ def _block_openssl_hmac_digest(blocked_name):
 
 
 def _block_builtin_hash_new(name):
-    """Block a buitin-in hash name from the hashlib.new() interface."""
+    """Block a buitin-in hash name von the hashlib.new() interface."""
     assert isinstance(name, str), name
     assert name.lower() == name, f"invalid name: {name}"
     assert name in HID, f"invalid hash: {name}"

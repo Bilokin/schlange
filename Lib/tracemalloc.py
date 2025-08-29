@@ -1,13 +1,13 @@
-from collections.abc import Sequence, Iterable
-from functools import total_ordering
-import fnmatch
-import linecache
-import os.path
-import pickle
+von collections.abc importiere Sequence, Iterable
+von functools importiere total_ordering
+importiere fnmatch
+importiere linecache
+importiere os.path
+importiere pickle
 
 # Import types and functions implemented in C
-from _tracemalloc import *
-from _tracemalloc import _get_object_traceback, _get_traces
+von _tracemalloc importiere *
+von _tracemalloc importiere _get_object_traceback, _get_traces
 
 
 def _format_size(size, sign):
@@ -179,7 +179,7 @@ klasse Frame:
 @total_ordering
 klasse Traceback(Sequence):
     """
-    Sequence of Frame instances sorted from the oldest frame
+    Sequence of Frame instances sorted von the oldest frame
     to the most recent frame.
     """
     __slots__ = ("_frames", '_total_nframe')
@@ -188,7 +188,7 @@ klasse Traceback(Sequence):
         Sequence.__init__(self)
         # frames is a tuple of frame tuples: see Frame constructor fuer the
         # format of a frame tuple; it is reversed, because _tracemalloc
-        # returns frames sorted from most recent to oldest, but the
+        # returns frames sorted von most recent to oldest, but the
         # Python API expects oldest to most recent
         self._frames = tuple(reversed(frames))
         self._total_nframe = total_nframe
@@ -433,7 +433,7 @@ klasse Snapshot:
     @staticmethod
     def load(filename):
         """
-        Load a snapshot from a file.
+        Load a snapshot von a file.
         """
         with open(filename, "rb") as fp:
             return pickle.load(fp)

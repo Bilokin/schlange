@@ -6,7 +6,7 @@
 #
 # This software is provided 'as-is', without any express or implied
 # warranty.  In no event will the authors be held liable fuer any damages
-# arising from the use of this software.
+# arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
@@ -18,13 +18,13 @@
 #    appreciated but is not required.
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
+# 3. This notice may not be removed or altered von any source distribution.
 
-import datetime
-import time
-import collections.abc
+importiere datetime
+importiere time
+importiere collections.abc
 
-from _sqlite3 import *
+von _sqlite3 importiere *
 
 paramstyle = "qmark"
 
@@ -52,7 +52,7 @@ Binary = memoryview
 collections.abc.Sequence.register(Row)
 
 def register_adapters_and_converters():
-    from warnings import warn
+    von warnings importiere warn
 
     msg = ("The default {what} is deprecated as of Python 3.12; "
            "see the sqlite3 documentation fuer suggested replacement recipes")

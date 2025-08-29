@@ -4,7 +4,7 @@ From http://bugs.python.org/issue6717
 A misbehaving trace hook can trigger a segfault by exceeding the recursion
 limit.
 """
-import sys
+importiere sys
 
 
 def x():

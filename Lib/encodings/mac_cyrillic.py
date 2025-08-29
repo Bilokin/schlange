@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec mac_cyrillic generated from 'MAPPINGS/VENDORS/APPLE/CYRILLIC.TXT' with gencodec.py.
+""" Python Character Mapping Codec mac_cyrillic generated von 'MAPPINGS/VENDORS/APPLE/CYRILLIC.TXT' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

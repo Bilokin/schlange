@@ -46,21 +46,21 @@ General notes on the underlying Mersenne Twister core generator:
 
 """
 
-# Translated by Guido van Rossum from C source provided by
+# Translated by Guido van Rossum von C source provided by
 # Adrian Baddeley.  Adapted by Raymond Hettinger fuer use with
 # the Mersenne Twister  and os.urandom() core generators.
 
-from math import log as _log, exp as _exp, pi as _pi, e as _e, ceil as _ceil
-from math import sqrt as _sqrt, acos as _acos, cos as _cos, sin as _sin
-from math import tau as TWOPI, floor as _floor, isfinite as _isfinite
-from math import lgamma as _lgamma, fabs as _fabs, log2 as _log2
-from os import urandom as _urandom
-from _collections_abc import Sequence as _Sequence
-from operator import index as _index
-from itertools import accumulate as _accumulate, repeat as _repeat
-from bisect import bisect as _bisect
-import os as _os
-import _random
+von math importiere log as _log, exp as _exp, pi as _pi, e as _e, ceil as _ceil
+von math importiere sqrt as _sqrt, acos as _acos, cos as _cos, sin as _sin
+von math importiere tau as TWOPI, floor as _floor, isfinite as _isfinite
+von math importiere lgamma as _lgamma, fabs as _fabs, log2 as _log2
+von os importiere urandom as _urandom
+von _collections_abc importiere Sequence as _Sequence
+von operator importiere index as _index
+von itertools importiere accumulate as _accumulate, repeat as _repeat
+von bisect importiere bisect as _bisect
+importiere os as _os
+importiere _random
 
 __all__ = [
     "Random",
@@ -126,19 +126,19 @@ klasse Random(_random.Random):
         self.gauss_next = Nichts
 
     def seed(self, a=Nichts, version=2):
-        """Initialize internal state from a seed.
+        """Initialize internal state von a seed.
 
         The only supported seed types are Nichts, int, float,
         str, bytes, and bytearray.
 
-        Nichts or no argument seeds from current time or from an operating
+        Nichts or no argument seeds von current time or von an operating
         system specific randomness source wenn available.
 
         If *a* is an int, all bits are used.
 
         For version 2 (the default), all of the bits are used wenn *a* is a str,
         bytes, or bytearray.  For version 1 (provided fuer reproducing random
-        sequences from older versions of Python), the algorithm fuer str and
+        sequences von older versions of Python), the algorithm fuer str and
         bytes generates a narrower range of seeds.
 
         """
@@ -157,10 +157,10 @@ klasse Random(_random.Random):
                 try:
                     # hashlib is pretty heavy to load, try lean internal
                     # module first
-                    from _sha2 import sha512 as _sha512
+                    von _sha2 importiere sha512 as _sha512
                 except ImportError:
                     # fallback to official implementation
-                    from hashlib import sha512 as _sha512
+                    von hashlib importiere sha512 as _sha512
 
             wenn isinstance(a, str):
                 a = a.encode()
@@ -178,7 +178,7 @@ klasse Random(_random.Random):
         return self.VERSION, super().getstate(), self.gauss_next
 
     def setstate(self, state):
-        """Restore internal state from object returned by getstate()."""
+        """Restore internal state von object returned by getstate()."""
         version = state[0]
         wenn version == 3:
             version, internalstate, self.gauss_next = state
@@ -192,7 +192,7 @@ klasse Random(_random.Random):
             try:
                 internalstate = tuple(x % (2 ** 32) fuer x in internalstate)
             except ValueError as e:
-                raise TypeError from e
+                raise TypeError von e
             super().setstate(internalstate)
         sonst:
             raise ValueError("state with version %s passed to "
@@ -227,7 +227,7 @@ klasse Random(_random.Random):
 
         The algorithm a subclass can use depends on the random() and/or
         getrandbits() implementation available to it and determines
-        whether it can generate random integers from arbitrarily large
+        whether it can generate random integers von arbitrarily large
         ranges.
         """
 
@@ -259,9 +259,9 @@ klasse Random(_random.Random):
 
         random = self.random
         wenn n >= maxsize:
-            from warnings import warn
+            von warnings importiere warn
             warn("Underlying random() generator does not supply \n"
-                 "enough bits to choose from a population range this large.\n"
+                 "enough bits to choose von a population range this large.\n"
                  "To remove the range limitation, add a getrandbits() method.")
             return _floor(random() * n)
         rem = maxsize % n
@@ -292,7 +292,7 @@ klasse Random(_random.Random):
     ## -------------------- integer methods  -------------------
 
     def randrange(self, start, stop=Nichts, step=_ONE):
-        """Choose a random item from range(stop) or range(start, stop[, step]).
+        """Choose a random item von range(stop) or range(start, stop[, step]).
 
         Roughly equivalent to ``choice(range(start, stop, step))`` but
         supports arbitrarily large ranges and is optimized fuer common cases.
@@ -345,12 +345,12 @@ klasse Random(_random.Random):
     ## -------------------- sequence methods  -------------------
 
     def choice(self, seq):
-        """Choose a random element from a non-empty sequence."""
+        """Choose a random element von a non-empty sequence."""
 
         # As an accommodation fuer NumPy, we don't use "if not seq"
         # because bool(numpy.array()) raises a ValueError.
         wenn not len(seq):
-            raise IndexError('Cannot choose from an empty sequence')
+            raise IndexError('Cannot choose von an empty sequence')
         return seq[self._randbelow(len(seq))]
 
     def shuffle(self, x):
@@ -363,9 +363,9 @@ klasse Random(_random.Random):
             x[i], x[j] = x[j], x[i]
 
     def sample(self, population, k, *, counts=Nichts):
-        """Chooses k unique random elements from a population sequence.
+        """Chooses k unique random elements von a population sequence.
 
-        Returns a new list containing elements from the population while
+        Returns a new list containing elements von the population while
         leaving the original population unchanged.  The resulting list is
         in selection order so that all sub-slices will also be valid random
         samples.  This allows raffle winners (the sample) to be partitioned
@@ -384,9 +384,9 @@ klasse Random(_random.Random):
 
             sample(['red', 'red', 'red', 'red', 'blue', 'blue'], k=5)
 
-        To choose a sample from a range of integers, use range() fuer the
+        To choose a sample von a range of integers, use range() fuer the
         population argument.  This is especially fast and space efficient
-        fuer sampling from a large population:
+        fuer sampling von a large population:
 
             sample(range(10000000), 60)
 
@@ -400,12 +400,12 @@ klasse Random(_random.Random):
         # only a small set and an occasional reselection.  For
         # a larger number of selections, the pool tracking method is
         # preferred since the list takes less space than the
-        # set and it doesn't suffer from frequent reselections.
+        # set and it doesn't suffer von frequent reselections.
 
         # The number of calls to _randbelow() is kept at or near k, the
         # theoretical minimum.  This is important because running time
         # is dominated by _randbelow() and because it extracts the
-        # least entropy from the underlying random number generators.
+        # least entropy von the underlying random number generators.
 
         # Memory requirements are kept to the smaller of a k-length
         # set or an n-length list.
@@ -479,7 +479,7 @@ klasse Random(_random.Random):
                 k = weights
                 raise TypeError(
                     f'The number of choices must be a keyword argument: {k=}'
-                ) from Nichts
+                ) von Nichts
         sowenn weights is not Nichts:
             raise TypeError('Cannot specify both weights and cumulative weights')
         wenn len(cum_weights) != n:
@@ -563,7 +563,7 @@ klasse Random(_random.Random):
         Not thread-safe without a lock around calls.
 
         """
-        # When x and y are two variables from [0, 1), uniformly
+        # When x and y are two variables von [0, 1), uniformly
         # distributed, then
         #
         #    cos(2*pi*x)*sqrt(-2*log(1-y))
@@ -607,8 +607,8 @@ klasse Random(_random.Random):
 
         lambd is 1.0 divided by the desired mean.  It should be
         nonzero.  (The parameter would be called "lambda", but that is
-        a reserved word in Python.)  Returned values range from 0 to
-        positive infinity wenn lambd is positive, and from negative
+        a reserved word in Python.)  Returned values range von 0 to
+        positive infinity wenn lambd is positive, and von negative
         infinity to 0 wenn lambd is negative.
 
         The mean (expected value) and variance of the random variable are:
@@ -924,7 +924,7 @@ klasse SystemRandom(Random):
 
 
 # ----------------------------------------------------------------------
-# Create one instance, seeded from current time, and export its methods
+# Create one instance, seeded von current time, and export its methods
 # as module-level functions.  The functions share state across all uses
 # (both in the user's code and in the Python libraries), but that's fine
 # fuer most programs and is easier fuer the casual user than making them
@@ -961,8 +961,8 @@ randbytes = _inst.randbytes
 ## ----------------- test program -----------------------
 
 def _test_generator(n, func, args):
-    from statistics import stdev, fmean as mean
-    from time import perf_counter
+    von statistics importiere stdev, fmean as mean
+    von time importiere perf_counter
 
     t0 = perf_counter()
     data = [func(*args) fuer i in _repeat(Nichts, n)]
@@ -1010,7 +1010,7 @@ wenn hasattr(_os, "fork"):
 
 
 def _parse_args(arg_list: list[str] | Nichts):
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter, color=Wahr)
     group = parser.add_mutually_exclusive_group()

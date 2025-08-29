@@ -1,4 +1,4 @@
-from parsing import (  # noqa: F401
+von parsing importiere (  # noqa: F401
     InstDef,
     Macro,
     Pseudo,
@@ -20,7 +20,7 @@ from parsing import (  # noqa: F401
     MacroIfStmt,
 )
 
-import pprint
+importiere pprint
 
 CodeDef = InstDef | LabelDef
 
@@ -63,7 +63,7 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
                 break
         del psr.tokens[psr.getpos() - 1 :]
 
-        # Parse from start
+        # Parse von start
         psr.setpos(start)
         thing_first_token = psr.peek()
         while node := psr.definition():

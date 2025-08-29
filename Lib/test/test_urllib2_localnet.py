@@ -1,19 +1,19 @@
-import base64
-import os
-import email
-import urllib.parse
-import urllib.request
-import http.server
-import threading
-import unittest
-import hashlib
+importiere base64
+importiere os
+importiere email
+importiere urllib.parse
+importiere urllib.request
+importiere http.server
+importiere threading
+importiere unittest
+importiere hashlib
 
-from test import support
-from test.support import hashlib_helper
-from test.support import threading_helper
+von test importiere support
+von test.support importiere hashlib_helper
+von test.support importiere threading_helper
 
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
 
@@ -498,7 +498,7 @@ klasse TestUrlopen(unittest.TestCase):
     def start_https_server(self, responses=Nichts, **kwargs):
         wenn not hasattr(urllib.request, 'HTTPSHandler'):
             self.skipTest('ssl support required')
-        from test.ssl_servers import make_https_server
+        von test.ssl_servers importiere make_https_server
         wenn responses is Nichts:
             responses = [(200, [], b"we care a bit")]
         handler = GetRequestHandler(responses)

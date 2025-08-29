@@ -1,8 +1,8 @@
-import sys
-import unicodedata
-import unittest
-import urllib.parse
-from test import support
+importiere sys
+importiere unicodedata
+importiere unittest
+importiere urllib.parse
+von test importiere support
 
 RFC1808_BASE = "http://a/b/c/d;p?q#f"
 RFC2396_BASE = "http://a/b/c/d;p?q"
@@ -362,7 +362,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(urllib.parse.urlunparse(urllib.parse.urlparse(u)), u)
 
     def test_RFC1808(self):
-        # "normal" cases from RFC 1808:
+        # "normal" cases von RFC 1808:
         self.checkJoin(RFC1808_BASE, 'g:h', 'g:h')
         self.checkJoin(RFC1808_BASE, 'g', 'http://a/b/c/g')
         self.checkJoin(RFC1808_BASE, './g', 'http://a/b/c/g')
@@ -386,7 +386,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.checkJoin(RFC1808_BASE, '../../', 'http://a/')
         self.checkJoin(RFC1808_BASE, '../../g', 'http://a/g')
 
-        # "abnormal" cases from RFC 1808:
+        # "abnormal" cases von RFC 1808:
         self.checkJoin(RFC1808_BASE, '', 'http://a/b/c/d;p?q#f')
         self.checkJoin(RFC1808_BASE, 'g.', 'http://a/b/c/g.')
         self.checkJoin(RFC1808_BASE, '.g', 'http://a/b/c/.g')
@@ -415,7 +415,7 @@ klasse UrlParseTestCase(unittest.TestCase):
                 ('mailto', '', '1337@example.org', '', '', ''))
 
     def test_RFC2396(self):
-        # cases from RFC 2396
+        # cases von RFC 2396
 
         self.checkJoin(RFC2396_BASE, 'g:h', 'g:h')
         self.checkJoin(RFC2396_BASE, 'g', 'http://a/b/c/g')
@@ -879,7 +879,7 @@ klasse UrlParseTestCase(unittest.TestCase):
             p.port
 
     def test_urlsplit_remove_unsafe_bytes(self):
-        # Remove ASCII tabs and newlines from input
+        # Remove ASCII tabs and newlines von input
         url = "http\t://www.python\n.org\t/java\nscript:\talert('msg\r\n')/?query\n=\tsomething#frag\nment"
         p = urllib.parse.urlsplit(url)
         self.assertEqual(p.scheme, "http")
@@ -893,7 +893,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.port, Nichts)
         self.assertEqual(p.geturl(), "http://www.python.org/javascript:alert('msg')/?query=something#fragment")
 
-        # Remove ASCII tabs and newlines from input as bytes.
+        # Remove ASCII tabs and newlines von input as bytes.
         url = b"http\t://www.python\n.org\t/java\nscript:\talert('msg\r\n')/?query\n=\tsomething#frag\nment"
         p = urllib.parse.urlsplit(url)
         self.assertEqual(p.scheme, b"http")
@@ -1005,7 +1005,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.scheme, b"" wenn bytes sonst "")
 
     def test_attributes_without_netloc(self):
-        # This example is straight from RFC 3261.  It looks like it
+        # This example is straight von RFC 3261.  It looks like it
         # should allow the username, hostname, and port to be filled
         # in, but doesn't.  Since it's a URI and doesn't use the
         # scheme://netloc syntax, the netloc and related attributes
@@ -1072,7 +1072,7 @@ klasse UrlParseTestCase(unittest.TestCase):
                 (b'http',b'www.python.org:80',b'',b'',b'',b''))
 
     def test_portseparator(self):
-        # Issue 754016 makes changes fuer port separator ':' from scheme separator
+        # Issue 754016 makes changes fuer port separator ':' von scheme separator
         self.assertEqual(urllib.parse.urlparse("http:80"), ('http','','80','','',''))
         self.assertEqual(urllib.parse.urlparse("https:80"), ('https','','80','','',''))
         self.assertEqual(urllib.parse.urlparse("path:80"), ('path','','80','','',''))

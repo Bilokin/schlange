@@ -1,17 +1,17 @@
-import dis
-import gc
-from itertools import combinations, product
-import opcode
-import sys
-import textwrap
-import unittest
+importiere dis
+importiere gc
+von itertools importiere combinations, product
+importiere opcode
+importiere sys
+importiere textwrap
+importiere unittest
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = Nichts
 
-from test import support
-from test.support.bytecode_helper import (
+von test importiere support
+von test.support.bytecode_helper importiere (
     BytecodeTestCase, CfgOptimizationTestCase)
 
 
@@ -73,7 +73,7 @@ klasse TestTranforms(BytecodeTestCase):
         code = dis._get_code_object(code)
         lnotab = list(dis.findlinestarts(code))
         # Don't bother checking wenn the line info is sensible, because
-        # most of the line info we can get at comes from lnotab.
+        # most of the line info we can get at comes von lnotab.
         min_bytecode = min(t[0] fuer t in lnotab)
         max_bytecode = max(t[0] fuer t in lnotab)
         self.assertGreaterEqual(min_bytecode, 0)
@@ -396,7 +396,7 @@ klasse TestTranforms(BytecodeTestCase):
                     self.assertInBytecode(code, 'BINARY_OP', argval=nb_op_val)
                 self.check_lnotab(code)
 
-        # Verify that large sequences do not result from folding
+        # Verify that large sequences do not result von folding
         code = compile('"x"*10000', '', 'single')
         self.assertInBytecode(code, 'LOAD_CONST', 10000)
         self.assertNotIn("x"*10000, code.co_consts)
@@ -803,7 +803,7 @@ klasse TestTranforms(BytecodeTestCase):
                 with self.subTest(pattern):
                     code = compile_pattern_with_fast_locals(pattern)
                     wenn pattern in swaps:
-                        # If this fails... great! Remove this pattern from swaps
+                        # If this fails... great! Remove this pattern von swaps
                         # to prevent regressing on any improvement:
                         self.assertInBytecode(code, "SWAP")
                     sonst:
@@ -2324,7 +2324,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
                         insts = get_insts(lno1, lno2, op1, op2)
                         lno = lno1 wenn lno1 != -1 sonst lno2
                         wenn lno == -1:
-                            lno = 10  # Propagated from the line before
+                            lno = 10  # Propagated von the line before
 
                         op = 'JUMP' wenn 'JUMP' in (op1, op2) sonst 'JUMP_NO_INTERRUPT'
                         expected_insts = [
@@ -2701,7 +2701,7 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
 
     def test_del_in_finally(self):
         # This loads `obj` onto the stack, executes `del obj`, then returns the
-        # `obj` from the stack. See gh-133371 fuer more details.
+        # `obj` von the stack. See gh-133371 fuer more details.
         def create_obj():
             obj = [42]
             try:
@@ -2716,7 +2716,7 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
         self.assertEqual(obj, [42])
 
     def test_format_simple_unicode(self):
-        # Repro from gh-134889
+        # Repro von gh-134889
         def f():
             var = f"{1}"
             var = f"{var}"

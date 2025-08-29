@@ -1,11 +1,11 @@
 """Test the binascii C module."""
 
-import unittest
-import binascii
-import array
-import re
-from test.support import bigmemtest, _1G, _4G
-from test.support.hypothesis_helper import hypothesis
+importiere unittest
+importiere binascii
+importiere array
+importiere re
+von test.support importiere bigmemtest, _1G, _4G
+von test.support.hypothesis_helper importiere hypothesis
 
 
 # Note: "*_hex" functions are aliases fuer "(un)hexlify"

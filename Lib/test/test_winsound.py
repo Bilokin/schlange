@@ -1,13 +1,13 @@
 # Ridiculously simple test of the winsound module fuer Windows.
 
-import functools
-import os
-import time
-import unittest
+importiere functools
+importiere os
+importiere time
+importiere unittest
 
-from test import support
-from test.support import import_helper
-from test.support import os_helper
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
 
 
 support.requires('audio')

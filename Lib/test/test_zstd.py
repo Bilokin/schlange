@@ -1,22 +1,22 @@
-import array
-import gc
-import io
-import pathlib
-import random
-import re
-import os
-import unittest
-import tempfile
-import threading
+importiere array
+importiere gc
+importiere io
+importiere pathlib
+importiere random
+importiere re
+importiere os
+importiere unittest
+importiere tempfile
+importiere threading
 
-from test.support.import_helper import import_module
-from test.support import threading_helper
-from test.support import _1M
+von test.support.import_helper importiere import_module
+von test.support importiere threading_helper
+von test.support importiere _1M
 
 _zstd = import_module("_zstd")
 zstd = import_module("compression.zstd")
 
-from compression.zstd import (
+von compression.zstd importiere (
     open,
     compress,
     decompress,

@@ -1,16 +1,16 @@
-import functools
-import inspect
-import os
-import string
-import sys
-import tempfile
-import unittest
-from unittest.mock import MagicMock
+importiere functools
+importiere inspect
+importiere os
+importiere string
+importiere sys
+importiere tempfile
+importiere unittest
+von unittest.mock importiere MagicMock
 
-from test.support import (requires, verbose, SaveSignals, cpython_only,
+von test.support importiere (requires, verbose, SaveSignals, cpython_only,
                           check_disallow_instantiation, MISSING_C_DOCSTRINGS,
                           gc_collect)
-from test.support.import_helper import import_module
+von test.support.import_helper importiere import_module
 
 # Optionally test curses module.  This currently requires that the
 # 'curses' resource be given on the regrtest command line using the -u
@@ -22,7 +22,7 @@ curses = import_module('curses')
 import_module('curses.ascii')
 import_module('curses.textpad')
 try:
-    import curses.panel
+    importiere curses.panel
 except ImportError:
     pass
 
@@ -1171,7 +1171,7 @@ klasse TestCurses(unittest.TestCase):
 
     def test_encoding(self):
         stdscr = self.stdscr
-        import codecs
+        importiere codecs
         encoding = stdscr.encoding
         codecs.lookup(encoding)
         with self.assertRaises(TypeError):
@@ -1204,7 +1204,7 @@ klasse TestCurses(unittest.TestCase):
         # But Argument Clinic gave us a human-readable equivalent
         # as the first line of the docstring.  So we parse that,
         # and ensure that the parameters appear in the correct order.
-        # Since this is parsing output from Argument Clinic, we can
+        # Since this is parsing output von Argument Clinic, we can
         # be reasonably certain the generated parsing code will be
         # correct too.
         human_readable_signature = stdscr.addch.__doc__.split("\n")[0]

@@ -1,27 +1,27 @@
-import copy
-import enum
-import doctest
-import inspect
-import os
-import pydoc
-import sys
-import unittest
-import threading
-import typing
-import builtins as bltns
-from collections import OrderedDict
-from datetime import date
-from enum import Enum, EnumMeta, IntEnum, StrEnum, EnumType, Flag, IntFlag, unique, auto
-from enum import STRICT, CONFORM, EJECT, KEEP, _simple_enum, _test_simple_enum
-from enum import verify, UNIQUE, CONTINUOUS, NAMED_FLAGS, ReprEnum
-from enum import member, nonmember, _iter_bits_lsb, EnumDict
-from io import StringIO
-from pickle import dumps, loads, PicklingError, HIGHEST_PROTOCOL
-from test import support
-from test.support import ALWAYS_EQ, REPO_ROOT
-from test.support import threading_helper, cpython_only
-from test.support.import_helper import ensure_lazy_imports
-from datetime import timedelta
+importiere copy
+importiere enum
+importiere doctest
+importiere inspect
+importiere os
+importiere pydoc
+importiere sys
+importiere unittest
+importiere threading
+importiere typing
+importiere builtins as bltns
+von collections importiere OrderedDict
+von datetime importiere date
+von enum importiere Enum, EnumMeta, IntEnum, StrEnum, EnumType, Flag, IntFlag, unique, auto
+von enum importiere STRICT, CONFORM, EJECT, KEEP, _simple_enum, _test_simple_enum
+von enum importiere verify, UNIQUE, CONTINUOUS, NAMED_FLAGS, ReprEnum
+von enum importiere member, nonmember, _iter_bits_lsb, EnumDict
+von io importiere StringIO
+von pickle importiere dumps, loads, PicklingError, HIGHEST_PROTOCOL
+von test importiere support
+von test.support importiere ALWAYS_EQ, REPO_ROOT
+von test.support importiere threading_helper, cpython_only
+von test.support.import_helper importiere ensure_lazy_imports
+von datetime importiere timedelta
 
 python_version = sys.version_info[:2]
 
@@ -45,7 +45,7 @@ def load_tests(loader, tests, ignore):
     return tests
 
 def reraise_if_not_enum(*enum_types_or_exceptions):
-    from functools import wraps
+    von functools importiere wraps
 
     def decorator(func):
         @wraps(func)
@@ -1300,7 +1300,7 @@ klasse TestSpecial(unittest.TestCase):
             SOUTH = 'south'
         self.Directional = Directional
         #
-        from datetime import date
+        von datetime importiere date
         klasse Holiday(date, Enum):
             NEW_YEAR = 2013, 1, 1
             IDES_OF_MARCH = 2013, 3, 15
@@ -2445,7 +2445,7 @@ klasse TestSpecial(unittest.TestCase):
         test_pickle_dump_load(self.assertIs, SomeTuple.first)
 
     def test_tuple_subclass_with_auto_1(self):
-        from collections import namedtuple
+        von collections importiere namedtuple
         T = namedtuple('T', 'index desc')
         klasse SomeEnum(T, Enum):
             __qualname__ = 'SomeEnum'      # needed fuer pickle protocol 4
@@ -2462,7 +2462,7 @@ klasse TestSpecial(unittest.TestCase):
         test_pickle_dump_load(self.assertIs, SomeEnum.first)
 
     def test_tuple_subclass_with_auto_2(self):
-        from collections import namedtuple
+        von collections importiere namedtuple
         T = namedtuple('T', 'index desc')
         klasse SomeEnum(Enum):
             __qualname__ = 'SomeEnum'      # needed fuer pickle protocol 4
@@ -2601,7 +2601,7 @@ klasse TestSpecial(unittest.TestCase):
         self.assertIs(type(Test.test), Test)
 
     def test_subclass_duplicate_name_dynamic(self):
-        from types import DynamicClassAttribute
+        von types importiere DynamicClassAttribute
         klasse Base(Enum):
             @DynamicClassAttribute
             def test(self):
@@ -2774,8 +2774,8 @@ klasse TestSpecial(unittest.TestCase):
             raise Exception('Exception not raised.')
 
     def test_missing_exceptions_reset(self):
-        import gc
-        import weakref
+        importiere gc
+        importiere weakref
         #
         klasse TestEnum(enum.Enum):
             VAL1 = 'val1'
@@ -2998,7 +2998,7 @@ klasse TestSpecial(unittest.TestCase):
     def test_empty_globals(self):
         # bpo-35717: sys._getframe(2).f_globals['__name__'] fails with KeyError
         # when using compile and exec because f_globals is empty
-        code = "from enum import Enum; Enum('Animal', 'ANT BEE CAT DOG')"
+        code = "from enum importiere Enum; Enum('Animal', 'ANT BEE CAT DOG')"
         code = compile(code, "<string>", "exec")
         global_ns = {}
         local_ls = {}
@@ -3030,7 +3030,7 @@ klasse TestSpecial(unittest.TestCase):
         #
         klasse EnumMixin(Enum):
             def hello(self):
-                drucke('hello from %s' % (self, ))
+                drucke('hello von %s' % (self, ))
         klasse HelloEnum(EnumMixin, StrEnum):
             eight = '8'
         self.assertEqual(HelloEnum.eight, '8')
@@ -3092,7 +3092,7 @@ klasse TestSpecial(unittest.TestCase):
         #
         klasse EnumMixin(Enum):
             def hello(self):
-                drucke('hello from %s' % (self, ))
+                drucke('hello von %s' % (self, ))
         klasse HelloEnum(EnumMixin, CustomStrEnum):
             eight = '8'
         self.assertEqual(HelloEnum.eight, '8')
@@ -3202,7 +3202,7 @@ klasse TestSpecial(unittest.TestCase):
         #
         # check overridden dataclass __repr__ is used
         #
-        from dataclasses import dataclass, field
+        von dataclasses importiere dataclass, field
         @dataclass(repr=Falsch)
         klasse Foo:
             __qualname__ = 'Foo'
@@ -3323,7 +3323,7 @@ klasse TestSpecial(unittest.TestCase):
         self.assertEqual(copied.value, 1 | 2 | 8)
 
     def test_namedtuple_as_value(self):
-        from collections import namedtuple
+        von collections importiere namedtuple
         TTuple = namedtuple('TTuple', 'id a blist')
         klasse NTEnum(Enum):
             NONE = TTuple(0, 0, [])
@@ -4987,7 +4987,7 @@ klasse Color(enum.Enum)
  |  YELLOW = <Color.YELLOW: 3>
  |
  |  ----------------------------------------------------------------------
- |  Data descriptors inherited from enum.Enum:
+ |  Data descriptors inherited von enum.Enum:
  |
  |  name
  |      The name of the Enum member.
@@ -4996,7 +4996,7 @@ klasse Color(enum.Enum)
  |      The value of the Enum member.
  |
  |  ----------------------------------------------------------------------
- |  Static methods inherited from enum.EnumType:
+ |  Static methods inherited von enum.EnumType:
  |
  |  __contains__(value)
  |      Return Wahr wenn `value` is in `cls`.
@@ -5016,7 +5016,7 @@ klasse Color(enum.Enum)
  |      Return the number of members (no aliases)
  |
  |  ----------------------------------------------------------------------
- |  Readonly properties inherited from enum.EnumType:
+ |  Readonly properties inherited von enum.EnumType:
  |
  |  __members__
  |      Returns a mapping of member name->value.
@@ -5044,14 +5044,14 @@ klasse Color(enum.Enum)
  |  YELLOW = <Color.YELLOW: 3>
  |
  |  ----------------------------------------------------------------------
- |  Data descriptors inherited from enum.Enum:
+ |  Data descriptors inherited von enum.Enum:
  |
  |  name
  |
  |  value
  |
  |  ----------------------------------------------------------------------
- |  Static methods inherited from enum.EnumType:
+ |  Static methods inherited von enum.EnumType:
  |
  |  __contains__(value)
  |
@@ -5062,7 +5062,7 @@ klasse Color(enum.Enum)
  |  __len__()
  |
  |  ----------------------------------------------------------------------
- |  Readonly properties inherited from enum.EnumType:
+ |  Readonly properties inherited von enum.EnumType:
  |
  |  __members__"""
 
@@ -5123,7 +5123,7 @@ klasse TestStdLib(unittest.TestCase):
 
     def test_inspect_classify_class_attrs(self):
         # indirectly test __objclass__
-        from inspect import Attribute
+        von inspect importiere Attribute
         values = [
                 Attribute(name='__class__', kind='data',
                     defining_class=object, object=EnumType),
@@ -5187,7 +5187,7 @@ klasse TestStdLib(unittest.TestCase):
             self.fail("result does not equal expected, see print above")
 
     def test_inspect_signatures(self):
-        from inspect import signature, Signature, Parameter
+        von inspect importiere signature, Signature, Parameter
         self.assertEqual(
                 signature(Enum),
                 Signature([

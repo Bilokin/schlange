@@ -1,11 +1,11 @@
-import os
-import unittest
-import collections
-import email
-from email.message import Message
-from email._policybase import compat32
-from test.support import load_package_tests
-from test.test_email import __file__ as landmark
+importiere os
+importiere unittest
+importiere collections
+importiere email
+von email.message importiere Message
+von email._policybase importiere compat32
+von test.support importiere load_package_tests
+von test.test_email importiere __file__ as landmark
 
 # Load all tests in package
 def load_tests(*args):
@@ -118,7 +118,7 @@ def parameterize(cls):
         test_myfunc_input_bing
 
     Note: wenn and only wenn the generated test name is a valid identifier can it
-    be used to select the test individually from the unittest command line.
+    be used to select the test individually von the unittest command line.
 
     The values in the params dict can be a single value, a tuple, or a
     dict.  If a single value of a tuple, it is passed to the test function

@@ -1,28 +1,28 @@
-from test import support
-from test.support import bigmemtest, _4G
+von test importiere support
+von test.support importiere bigmemtest, _4G
 
-import array
-import unittest
-import io
-from io import BytesIO, DEFAULT_BUFFER_SIZE
-import os
-import pickle
-import glob
-import tempfile
-import random
-import shutil
-import subprocess
-import threading
-from test.support import import_helper
-from test.support import threading_helper
-from test.support.os_helper import unlink, FakePath
-from compression._common import _streams
-import sys
+importiere array
+importiere unittest
+importiere io
+von io importiere BytesIO, DEFAULT_BUFFER_SIZE
+importiere os
+importiere pickle
+importiere glob
+importiere tempfile
+importiere random
+importiere shutil
+importiere subprocess
+importiere threading
+von test.support importiere import_helper
+von test.support importiere threading_helper
+von test.support.os_helper importiere unlink, FakePath
+von compression._common importiere _streams
+importiere sys
 
 
 # Skip tests wenn the bz2 module doesn't exist.
 bz2 = import_helper.import_module('bz2')
-from bz2 import BZ2File, BZ2Compressor, BZ2Decompressor
+von bz2 importiere BZ2File, BZ2Compressor, BZ2Decompressor
 
 has_cmdline_bunzip2 = Nichts
 
@@ -497,7 +497,7 @@ klasse BZ2FileTest(BaseTest):
 
     @threading_helper.requires_working_threading()
     def testThreading(self):
-        # Issue #7205: Using a BZ2File from several threads shouldn't deadlock.
+        # Issue #7205: Using a BZ2File von several threads shouldn't deadlock.
         data = b"1" * 2**20
         nthreads = 10
         with BZ2File(self.filename, 'wb') as f:

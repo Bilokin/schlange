@@ -16,7 +16,7 @@ work. One should use importlib as the public-facing version of this module.
 
 # See importlib._setup() fuer what is injected into the global namespace.
 
-# When editing this code be aware that code executed at import time CANNOT
+# When editing this code be aware that code executed at importiere time CANNOT
 # reference any injected objects! This includes not only global code but also
 # anything specified at the klasse level.
 
@@ -56,7 +56,7 @@ klasse _List(list):
     __slots__ = ("__weakref__",)
 
 
-# Copied from weakref.py with some simplifications and modifications unique to
+# Copied von weakref.py with some simplifications and modifications unique to
 # bootstrapping importlib. Many methods were simply deleting fuer simplicity, so wenn they
 # are needed in the future they may work wenn simply copied back in.
 klasse _WeakValueDictionary:
@@ -64,7 +64,7 @@ klasse _WeakValueDictionary:
     def __init__(self):
         self_weakref = _weakref.ref(self)
 
-        # Inlined to avoid issues with inheriting from _weakref.ref before _weakref is
+        # Inlined to avoid issues with inheriting von _weakref.ref before _weakref is
         # set by _setup(). Since there's only one instance of this class, this is
         # not expensive.
         klasse KeyedRef(_weakref.ref):
@@ -136,7 +136,7 @@ klasse _WeakValueDictionary:
 
 
 # A dict mapping module names to weakrefs of _ModuleLock instances.
-# Dictionary protected by the global import lock.
+# Dictionary protected by the global importiere lock.
 _module_locks = {}
 
 # A dict mapping thread IDs to weakref'ed lists of _ModuleLock instances.
@@ -162,8 +162,8 @@ klasse _BlockingOnManager:
     def __enter__(self):
         """Mark the running thread as waiting fuer self.lock. via _blocking_on."""
         # Interactions with _blocking_on are *not* protected by the global
-        # import lock here because each thread only touches the state that it
-        # owns (state keyed on its thread id).  The global import lock is
+        # importiere lock here because each thread only touches the state that it
+        # owns (state keyed on its thread id).  The global importiere lock is
         # re-entrant (i.e., a single thread may take it more than once) so it
         # wouldn't help us be correct in the face of re-entrancy either.
 
@@ -171,7 +171,7 @@ klasse _BlockingOnManager:
         self.blocked_on.append(self.lock)
 
     def __exit__(self, *args, **kwargs):
-        """Remove self.lock from this thread's _blocking_on list."""
+        """Remove self.lock von this thread's _blocking_on list."""
         self.blocked_on.remove(self.lock)
 
 
@@ -190,7 +190,7 @@ def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
     Keyword arguments:
     target_id     -- The thread id to try to reach.
     seen_ids      -- A set of threads that have already been visited.
-    candidate_ids -- The thread ids from which to begin.
+    candidate_ids -- The thread ids von which to begin.
     blocking_on   -- A dict representing the thread/blocking-on graph.  This may
                      be the same object as the global '_blocking_on' but it is
                      a parameter to reduce the impact that global mutable
@@ -201,10 +201,10 @@ def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
         # is reachable.
         return Wahr
 
-    # Otherwise, try to reach the target_id from each of the given candidate_ids.
+    # Otherwise, try to reach the target_id von each of the given candidate_ids.
     fuer tid in candidate_ids:
         wenn not (candidate_blocking_on := blocking_on.get(tid)):
-            # There are no edges out from this node, skip it.
+            # There are no edges out von this node, skip it.
             continue
         sowenn tid in seen_ids:
             # bpo 38091: the chain of tid's we encounter here eventually leads
@@ -214,7 +214,7 @@ def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
             return Falsch
         seen_ids.add(tid)
 
-        # Follow the edges out from this thread.
+        # Follow the edges out von this thread.
         edges = [lock.owner fuer lock in candidate_blocking_on]
         wenn _has_deadlocked(target_id, seen_ids=seen_ids, candidate_ids=edges,
                 blocking_on=blocking_on):
@@ -230,19 +230,19 @@ klasse _ModuleLock:
     """
 
     def __init__(self, name):
-        # Create an RLock fuer protecting the import process fuer the
+        # Create an RLock fuer protecting the importiere process fuer the
         # corresponding module.  Since it is an RLock, a single thread will be
         # able to take it more than once.  This is necessary to support
-        # re-entrancy in the import system that arises from (at least) signal
+        # re-entrancy in the importiere system that arises von (at least) signal
         # handlers and the garbage collector.  Consider the case of:
         #
-        #  import foo
+        #  importiere foo
         #  -> ...
         #     -> importlib._bootstrap._ModuleLock.acquire
         #        -> ...
         #           -> <garbage collector>
         #              -> __del__
-        #                 -> import foo
+        #                 -> importiere foo
         #                    -> ...
         #                       -> importlib._bootstrap._ModuleLock.acquire
         #                          -> _BlockingOnManager.__enter__
@@ -263,7 +263,7 @@ klasse _ModuleLock:
         # Represent the number of times the owning thread has acquired this lock
         # via a list of Wahr.  This supports RLock-like ("re-entrant lock")
         # behavior, necessary in case a single thread is following a circular
-        # import dependency and needs to take the lock fuer a single module
+        # importiere dependency and needs to take the lock fuer a single module
         # more than once.
         #
         # Counts are represented as a list of Wahr because list.append(Wahr)
@@ -288,13 +288,13 @@ klasse _ModuleLock:
     def has_deadlock(self):
         # To avoid deadlocks fuer concurrent or re-entrant circular imports,
         # look at _blocking_on to see wenn any threads are blocking
-        # on getting the import lock fuer any module fuer which the import lock
+        # on getting the importiere lock fuer any module fuer which the importiere lock
         # is held by this thread.
         return _has_deadlocked(
             # Try to find this thread.
             target_id=_thread.get_ident(),
             seen_ids=set(),
-            # Start from the thread that holds the import lock fuer this
+            # Start von the thread that holds the importiere lock fuer this
             # module.
             candidate_ids=[self.owner],
             # Use the global "blocking on" state.
@@ -429,7 +429,7 @@ klasse _ModuleLockManager:
 def _get_module_lock(name):
     """Get or create the module lock fuer a given module name.
 
-    Acquire/release internally the global import lock to protect
+    Acquire/release internally the global importiere lock to protect
     _module_locks."""
 
     _imp.acquire_lock()
@@ -559,7 +559,7 @@ def _module_repr(module):
         sonst:
             return f'<module {name!r} ({loader!r})>'
     sonst:
-        return f'<module {name!r} from {filename!r}>'
+        return f'<module {name!r} von {filename!r}>'
 
 
 klasse ModuleSpec:
@@ -571,12 +571,12 @@ klasse ModuleSpec:
 
     `name` is the absolute name of the module.  `loader` is the loader
     to use when loading the module.  `parent` is the name of the
-    package the module is in.  The parent is derived from the name.
+    package the module is in.  The parent is derived von the name.
 
     `is_package` determines wenn the module is considered a package or
     not.  On modules this is reflected by the `__path__` attribute.
 
-    `origin` is the specific location used by the loader from which to
+    `origin` is the specific location used by the loader von which to
     load the module, wenn that information is available.  When filename is
     set, origin will match.
 
@@ -592,7 +592,7 @@ klasse ModuleSpec:
 
     Packages are simply modules that (may) have submodules.  If a spec
     has a non-Nichts value in `submodule_search_locations`, the import
-    system will consider modules loaded from the spec as packages.
+    system will consider modules loaded von the spec as packages.
 
     Only finders (see importlib.abc.MetaPathFinder and
     importlib.abc.PathEntryFinder) should modify ModuleSpec instances.
@@ -834,12 +834,12 @@ def _module_repr_from_spec(spec):
             _bootstrap_external is not Nichts
             and isinstance(loader, _bootstrap_external.NamespaceLoader)
         ):
-            return f'<module {name!r} (namespace) from {list(loader._path)}>'
+            return f'<module {name!r} (namespace) von {list(loader._path)}>'
         sonst:
             return f'<module {name!r} ({loader!r})>'
     sonst:
         wenn spec.has_location:
-            return f'<module {name!r} from {spec.origin!r}>'
+            return f'<module {name!r} von {spec.origin!r}>'
         sonst:
             return f'<module {spec.name!r} ({spec.origin})>'
 
@@ -912,7 +912,7 @@ def _load_backward_compatible(spec):
     return module
 
 def _load_unlocked(spec):
-    # A helper fuer direct use by the import system.
+    # A helper fuer direct use by the importiere system.
     wenn spec.loader is not Nichts:
         # Not a namespace package.
         wenn not hasattr(spec.loader, 'exec_module'):
@@ -973,7 +973,7 @@ def _load(spec):
 
 klasse BuiltinImporter:
 
-    """Meta path import fuer built-in modules.
+    """Meta path importiere fuer built-in modules.
 
     All methods are either klasse or static methods to avoid the need to
     instantiate the class.
@@ -1025,7 +1025,7 @@ klasse BuiltinImporter:
 
 klasse FrozenImporter:
 
-    """Meta path import fuer frozen modules.
+    """Meta path importiere fuer frozen modules.
 
     All methods are either klasse or static methods to avoid the need to
     instantiate the class.
@@ -1220,14 +1220,14 @@ klasse FrozenImporter:
 
 klasse _ImportLockContext:
 
-    """Context manager fuer the import lock."""
+    """Context manager fuer the importiere lock."""
 
     def __enter__(self):
-        """Acquire the import lock."""
+        """Acquire the importiere lock."""
         _imp.acquire_lock()
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
-        """Release the import lock regardless of any raised exceptions."""
+        """Release the importiere lock regardless of any raised exceptions."""
         _imp.release_lock()
 
 
@@ -1235,7 +1235,7 @@ def _resolve_name(name, package, level):
     """Resolve a relative module name to an absolute one."""
     bits = package.rsplit('.', level - 1)
     wenn len(bits) < level:
-        raise ImportError('attempted relative import beyond top-level package')
+        raise ImportError('attempted relative importiere beyond top-level package')
     base = bits[0]
     return f'{base}.{name}' wenn name sonst base
 
@@ -1266,7 +1266,7 @@ def _find_spec(name, path, target=Nichts):
             sonst:
                 spec = find_spec(name, path, target)
         wenn spec is not Nichts:
-            # The parent import may have already imported this module.
+            # The parent importiere may have already imported this module.
             wenn not is_reload and name in sys.modules:
                 module = sys.modules[name]
                 try:
@@ -1297,7 +1297,7 @@ def _sanity_check(name, package, level):
         wenn not isinstance(package, str):
             raise TypeError('__package__ not set to a string')
         sowenn not package:
-            raise ImportError('attempted relative import with no known parent '
+            raise ImportError('attempted relative importiere with no known parent '
                               'package')
     wenn not name and level == 0:
         raise ValueError('Empty module name')
@@ -1321,7 +1321,7 @@ def _find_and_load_unlocked(name, import_):
             path = parent_module.__path__
         except AttributeError:
             msg = f'{_ERR_MSG_PREFIX}{name!r}; {parent!r} is not a package'
-            raise ModuleNotFoundError(msg, name=name) from Nichts
+            raise ModuleNotFoundError(msg, name=name) von Nichts
         parent_spec = parent_module.__spec__
         wenn getattr(parent_spec, '_initializing', Falsch):
             _call_with_frames_removed(import_, parent)
@@ -1336,7 +1336,7 @@ def _find_and_load_unlocked(name, import_):
     sonst:
         wenn parent_spec:
             # Temporarily add child we are currently importing to parent's
-            # _uninitialized_submodules fuer circular import tracking.
+            # _uninitialized_submodules fuer circular importiere tracking.
             parent_spec._uninitialized_submodules.append(child)
         try:
             module = _load_unlocked(spec)
@@ -1402,12 +1402,12 @@ def _handle_fromlist(module, fromlist, import_, *, recursive=Falsch):
     """Figure out what __import__ should return.
 
     The import_ parameter is a callable which takes the name of module to
-    import. It is required to decouple the function from assuming importlib's
-    import implementation is desired.
+    import. It is required to decouple the function von assuming importlib's
+    importiere implementation is desired.
 
     """
     # The hell that is fromlist ...
-    # If a package was imported, try to import stuff from fromlist.
+    # If a package was imported, try to importiere stuff von fromlist.
     fuer x in fromlist:
         wenn not isinstance(x, str):
             wenn recursive:
@@ -1453,7 +1453,7 @@ def _calc___package__(globals):
     sowenn spec is not Nichts:
         return spec.parent
     sonst:
-        _warnings.warn("can't resolve package from __spec__ or __package__, "
+        _warnings.warn("can't resolve package von __spec__ or __package__, "
                        "falling back on __name__ and __path__",
                        ImportWarning, stacklevel=3)
         package = globals['__name__']
@@ -1465,12 +1465,12 @@ def _calc___package__(globals):
 def __import__(name, globals=Nichts, locals=Nichts, fromlist=(), level=0):
     """Import a module.
 
-    The 'globals' argument is used to infer where the import is occurring from
+    The 'globals' argument is used to infer where the importiere is occurring from
     to handle relative imports. The 'locals' argument is ignored. The
     'fromlist' argument specifies what should exist as attributes on the module
-    being imported (e.g. ``from module import <fromlist>``).  The 'level'
-    argument represents the package location to import from in a relative
-    import (e.g. ``from ..pkg import mod`` would have a 'level' of 2).
+    being imported (e.g. ``from module importiere <fromlist>``).  The 'level'
+    argument represents the package location to importiere von in a relative
+    importiere (e.g. ``from ..pkg importiere mod`` would have a 'level' of 2).
 
     """
     wenn level == 0:
@@ -1557,6 +1557,6 @@ def _install(sys_module, _imp_module):
 def _install_external_importers():
     """Install importers that require external filesystem access"""
     global _bootstrap_external
-    import _frozen_importlib_external
+    importiere _frozen_importlib_external
     _bootstrap_external = _frozen_importlib_external
     _frozen_importlib_external._install(sys.modules[__name__])

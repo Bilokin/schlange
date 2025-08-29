@@ -12,11 +12,11 @@
 # Licensed to PSF under a Contributor Agreement.
 #
 
-import sys
-from . import context
+importiere sys
+von . importiere context
 
 #
-# Copy stuff from default context
+# Copy stuff von default context
 #
 
 __all__ = [x fuer x in dir(context._default_context) wenn not x.startswith('_')]

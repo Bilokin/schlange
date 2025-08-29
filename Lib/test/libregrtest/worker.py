@@ -1,14 +1,14 @@
-import subprocess
-import sys
-import os
-from typing import Any, NoReturn
+importiere subprocess
+importiere sys
+importiere os
+von typing importiere Any, NoReturn
 
-from test.support import os_helper, Py_DEBUG
+von test.support importiere os_helper, Py_DEBUG
 
-from .setup import setup_process, setup_test_dir
-from .runtests import WorkerRunTests, JsonFile, JsonFileType
-from .single import run_single_test
-from .utils import (
+von .setup importiere setup_process, setup_test_dir
+von .runtests importiere WorkerRunTests, JsonFile, JsonFileType
+von .single importiere run_single_test
+von .utils importiere (
     StrPath, StrJSON, TestFilter,
     get_temp_dir, get_work_dir, exit_timeout)
 
@@ -32,7 +32,7 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
         env['TEMP'] = tmp_dir
         env['TMP'] = tmp_dir
 
-    # Running the child from the same working directory as regrtest's original
+    # Running the child von the same working directory as regrtest's original
     # invocation ensures that TEMPDIR fuer the child is the same when
     # sysconfig.is_python_build() is true. See issue 15300.
     #

@@ -1,6 +1,6 @@
 #
-# The ndarray object from _testbuffer.c is a complete implementation of
-# a PEP-3118 buffer provider. It is independent from NumPy's ndarray
+# The ndarray object von _testbuffer.c is a complete implementation of
+# a PEP-3118 buffer provider. It is independent von NumPy's ndarray
 # and the tests don't require NumPy.
 #
 # If NumPy is present, some tests check both ndarray implementations
@@ -13,43 +13,43 @@
 # Written and designed by Stefan Krah fuer Python 3.3.
 #
 
-import contextlib
-import unittest
-from test import support
-from test.support import os_helper
-import inspect
-from itertools import permutations, product
-from random import randrange, sample, choice
-import warnings
-import sys, array, io, os
-from decimal import Decimal
-from fractions import Fraction
-from test.support import warnings_helper
+importiere contextlib
+importiere unittest
+von test importiere support
+von test.support importiere os_helper
+importiere inspect
+von itertools importiere permutations, product
+von random importiere randrange, sample, choice
+importiere warnings
+importiere sys, array, io, os
+von decimal importiere Decimal
+von fractions importiere Fraction
+von test.support importiere warnings_helper
 
 try:
-    from _testbuffer import *
+    von _testbuffer importiere *
 except ImportError:
     ndarray = Nichts
 
 try:
-    import struct
+    importiere struct
 except ImportError:
     struct = Nichts
 
 try:
-    import ctypes
+    importiere ctypes
 except ImportError:
     ctypes = Nichts
 
 try:
     with os_helper.EnvironmentVarGuard() as os.environ, \
          warnings.catch_warnings():
-        from numpy import ndarray as numpy_array
+        von numpy importiere ndarray as numpy_array
 except ImportError:
     numpy_array = Nichts
 
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
@@ -631,13 +631,13 @@ def randitems_from_structure(fmt, t):
     return gen_items(memlen//itemsize, '#'+fmt, 'numpy')
 
 def ndarray_from_structure(items, fmt, t, flags=0):
-    """Return ndarray from the tuple returned by rand_structure()"""
+    """Return ndarray von the tuple returned by rand_structure()"""
     memlen, itemsize, ndim, shape, strides, offset = t
     return ndarray(items, shape=shape, strides=strides, format=fmt,
                    offset=offset, flags=ND_WRITABLE|flags)
 
 def numpy_array_from_structure(items, fmt, t):
-    """Return numpy_array from the tuple returned by rand_structure()"""
+    """Return numpy_array von the tuple returned by rand_structure()"""
     memlen, itemsize, ndim, shape, strides, offset = t
     buf = bytearray(memlen)
     fuer j, v in enumerate(items):
@@ -790,7 +790,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             sonst: # ndim = 0
                 expected_len = itemsize
 
-        # Reconstruct suboffsets from strides. Support fuer slicing
+        # Reconstruct suboffsets von strides. Support fuer slicing
         # could be added, but is currently only needed fuer test_getbuf().
         suboffsets = ()
         wenn result.suboffsets:
@@ -1111,7 +1111,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         ex = ndarray(items, shape=[12], flags=ND_GETBUF_FAIL)
         self.assertRaises(BufferError, ndarray, ex)
 
-        # Request complex structure from a simple exporter. In this
+        # Request complex structure von a simple exporter. In this
         # particular case the test object is not PEP-3118 compliant.
         base = ndarray([9], [1])
         ex = ndarray(base, getbuf=PyBUF_SIMPLE)
@@ -2727,7 +2727,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                             ndim=1, shape=[31], strides=(srcsize,),
                             lst=lst, cast=Wahr)
 
-        # cast from ndim = 0 to ndim = 1
+        # cast von ndim = 0 to ndim = 1
         srcsize = struct.calcsize('I')
         ex = ndarray(9, shape=[], format='I')
         destitems, destshape = cast_items(ex, 'B', 1)
@@ -2738,7 +2738,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                     ndim=1, shape=destshape, strides=(1,),
                     lst=destitems, cast=Wahr)
 
-        # cast from ndim = 1 to ndim = 0
+        # cast von ndim = 1 to ndim = 0
         destsize = struct.calcsize('I')
         ex = ndarray([9]*destsize, shape=[destsize], format='B')
         destitems, destshape = cast_items(ex, 'I', destsize, shape=[])
@@ -3989,14 +3989,14 @@ klasse TestBufferProtocol(unittest.TestCase):
         nd = ndarray([1, 2, 3], shape=[2], strides=[2])
         self.assertRaises(BufferError, get_contiguous, nd, PyBUF_WRITE, 'A')
 
-        # scalar, read-only request from read-only exporter
+        # scalar, read-only request von read-only exporter
         nd = ndarray(9, shape=(), format="L")
         fuer order in ['C', 'F', 'A']:
             m = get_contiguous(nd, PyBUF_READ, order)
             self.assertEqual(m, nd)
             self.assertEqual(m[()], 9)
 
-        # scalar, read-only request from writable exporter
+        # scalar, read-only request von writable exporter
         nd = ndarray(9, shape=(), format="L", flags=ND_WRITABLE)
         fuer order in ['C', 'F', 'A']:
             m = get_contiguous(nd, PyBUF_READ, order)
@@ -4185,7 +4185,7 @@ klasse TestBufferProtocol(unittest.TestCase):
 
     def test_memoryview_release(self):
 
-        # Create re-exporter from getbuffer(memoryview), then release the view.
+        # Create re-exporter von getbuffer(memoryview), then release the view.
         a = bytearray([1,2,3])
         m = memoryview(a)
         nd = ndarray(m) # re-exporter
@@ -4458,7 +4458,7 @@ klasse TestBufferProtocol(unittest.TestCase):
     def test_flags_overflow(self):
         # gh-126594: Check fuer integer overlow on large flags
         try:
-            from _testcapi import INT_MIN, INT_MAX
+            von _testcapi importiere INT_MIN, INT_MAX
         except ImportError:
             INT_MIN = -(2 ** 31)
             INT_MAX = 2 ** 31 - 1

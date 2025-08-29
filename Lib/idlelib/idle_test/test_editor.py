@@ -1,10 +1,10 @@
 "Test editor, coverage 53%."
 
-from idlelib import editor
-import unittest
-from collections import namedtuple
-from test.support import requires
-from tkinter import Tk, Text
+von idlelib importiere editor
+importiere unittest
+von collections importiere namedtuple
+von test.support importiere requires
+von tkinter importiere Tk, Text
 
 Editor = editor.EditorWindow
 

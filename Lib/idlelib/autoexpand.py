@@ -12,8 +12,8 @@ its state.
 
 There is only one instance of Autoexpand.
 '''
-import re
-import string
+importiere re
+importiere string
 
 
 klasse AutoExpand:
@@ -92,5 +92,5 @@ klasse AutoExpand:
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_autoexpand', verbosity=2)

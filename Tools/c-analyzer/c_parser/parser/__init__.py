@@ -116,8 +116,8 @@ TODO:
 * alt impl using a state machine (& tokenizer or split on delimiters)
 """
 
-from ..info import ParsedItem
-from ._info import SourceInfo
+von ..info importiere ParsedItem
+von ._info importiere SourceInfo
 
 
 def parse(srclines, **srckwargs):
@@ -146,14 +146,14 @@ def anonymous_names():
 #############################
 # internal impl
 
-import logging
+importiere logging
 
 
 _logger = logging.getLogger(__name__)
 
 
 def _parse(srclines, anon_name, **srckwargs):
-    from ._global import parse_globals
+    von ._global importiere parse_globals
 
     source = _iter_source(srclines, **srckwargs)
     fuer result in parse_globals(source, anon_name):

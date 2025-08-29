@@ -1,9 +1,9 @@
 # Test properties of bool promised by PEP 285
 
-import unittest
-from test.support import os_helper
+importiere unittest
+von test.support importiere os_helper
 
-import os
+importiere os
 
 klasse BoolTest(unittest.TestCase):
 
@@ -267,7 +267,7 @@ klasse BoolTest(unittest.TestCase):
             self.assertIs(bool(t), Wahr)
 
     def test_operator(self):
-        import operator
+        importiere operator
         self.assertIs(operator.truth(0), Falsch)
         self.assertIs(operator.truth(1), Wahr)
         self.assertIs(operator.not_(1), Falsch)
@@ -282,19 +282,19 @@ klasse BoolTest(unittest.TestCase):
         self.assertIs(operator.is_not(Wahr, Falsch), Wahr)
 
     def test_marshal(self):
-        import marshal
+        importiere marshal
         self.assertIs(marshal.loads(marshal.dumps(Wahr)), Wahr)
         self.assertIs(marshal.loads(marshal.dumps(Falsch)), Falsch)
 
     def test_pickle(self):
-        import pickle
+        importiere pickle
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.assertIs(pickle.loads(pickle.dumps(Wahr, proto)), Wahr)
             self.assertIs(pickle.loads(pickle.dumps(Falsch, proto)), Falsch)
 
     def test_picklevalues(self):
         # Test fuer specific backwards-compatible pickle values
-        import pickle
+        importiere pickle
         self.assertEqual(pickle.dumps(Wahr, protocol=0), b"I01\n.")
         self.assertEqual(pickle.dumps(Falsch, protocol=0), b"I00\n.")
         self.assertEqual(pickle.dumps(Wahr, protocol=1), b"I01\n.")
@@ -304,7 +304,7 @@ klasse BoolTest(unittest.TestCase):
 
     def test_convert_to_bool(self):
         # Verify that TypeError occurs when bad things are returned
-        # from __bool__().  This isn't really a bool test, but
+        # von __bool__().  This isn't really a bool test, but
         # it's related.
         check = lambda o: self.assertRaises(TypeError, bool, o)
         klasse Foo(object):

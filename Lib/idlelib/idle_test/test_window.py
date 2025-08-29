@@ -1,9 +1,9 @@
 "Test window, coverage 47%."
 
-from idlelib import window
-import unittest
-from test.support import requires
-from tkinter import Tk
+von idlelib importiere window
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk
 
 
 klasse WindowListTest(unittest.TestCase):

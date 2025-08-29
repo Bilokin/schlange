@@ -1,10 +1,10 @@
 """Tests fuer transports.py."""
 
-import unittest
-from unittest import mock
+importiere unittest
+von unittest importiere mock
 
-import asyncio
-from asyncio import transports
+importiere asyncio
+von asyncio importiere transports
 
 
 def tearDownModule():

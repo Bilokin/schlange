@@ -32,7 +32,7 @@ def bar():
 def test_silly_setup():
     """
 
-    >>> import test.test_doctest.test_doctest
+    >>> importiere test.test_doctest.test_doctest
     >>> test.test_doctest.test_doctest.sillySetup
     Wahr
     """
@@ -72,5 +72,5 @@ __test__ = {'good': """
            }
 
 def test_suite():
-    import doctest
+    importiere doctest
     return doctest.DocTestSuite()

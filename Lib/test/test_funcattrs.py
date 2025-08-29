@@ -1,9 +1,9 @@
-import textwrap
-import types
-import typing
-import unittest
-import warnings
-from test import support
+importiere textwrap
+importiere types
+importiere typing
+importiere unittest
+importiere warnings
+von test importiere support
 
 
 def global_function():
@@ -357,7 +357,7 @@ klasse ArbitraryFunctionAttrTest(FuncAttrsTest):
 klasse FunctionDictsTest(FuncAttrsTest):
     def test_setting_dict_to_invalid(self):
         self.cannot_set_attr(self.b, '__dict__', Nichts, TypeError)
-        from collections import UserDict
+        von collections importiere UserDict
         d = UserDict({'known_attr': 7})
         self.cannot_set_attr(self.fi.a.__func__, '__dict__', d, TypeError)
 
@@ -460,7 +460,7 @@ klasse BuiltinFunctionPropertiesTest(unittest.TestCase):
     # test module specifically fuer builtin_function_or_method.
 
     def test_builtin__qualname__(self):
-        import time
+        importiere time
 
         # builtin function:
         self.assertEqual(len.__qualname__, 'len')
@@ -482,8 +482,8 @@ klasse BuiltinFunctionPropertiesTest(unittest.TestCase):
     @support.cpython_only
     def test_builtin__self__(self):
         # See https://github.com/python/cpython/issues/58211.
-        import builtins
-        import time
+        importiere builtins
+        importiere time
 
         # builtin function:
         self.assertIs(len.__self__, builtins)

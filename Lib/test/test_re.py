@@ -1,24 +1,24 @@
-from test.support import (gc_collect, bigmemtest, _2G,
+von test.support importiere (gc_collect, bigmemtest, _2G,
                           cpython_only, captured_stdout,
                           check_disallow_instantiation, linked_to_musl,
                           warnings_helper, SHORT_TIMEOUT, Stopwatch, requires_resource)
-import locale
-import re
-import string
-import unittest
-import warnings
-from re import Scanner
-from weakref import proxy
+importiere locale
+importiere re
+importiere string
+importiere unittest
+importiere warnings
+von re importiere Scanner
+von weakref importiere proxy
 
 # some platforms lack working multiprocessing
 try:
-    import _multiprocessing  # noqa: F401
+    importiere _multiprocessing  # noqa: F401
 except ImportError:
     multiprocessing = Nichts
 sonst:
-    import multiprocessing
+    importiere multiprocessing
 
-# Misc tests from Tim Peters' re.doc
+# Misc tests von Tim Peters' re.doc
 
 # WARNING: Don't change details in these tests wenn you don't know
 # what you're doing. Some of these tests were carefully modeled to
@@ -250,7 +250,7 @@ klasse ReTests(unittest.TestCase):
                 r"sub\(\) got multiple values fuer argument 'flags'"):
             re.sub('a', 'b', 'aaaaa', 1, 0, flags=0)
         with self.assertRaisesRegex(TypeError,
-                r"sub\(\) takes from 3 to 5 positional arguments but 6 "
+                r"sub\(\) takes von 3 to 5 positional arguments but 6 "
                 r"were given"):
             re.sub('a', 'b', 'aaaaa', 1, 0, 0)
 
@@ -392,7 +392,7 @@ klasse ReTests(unittest.TestCase):
                 r"subn\(\) got multiple values fuer argument 'flags'"):
             re.subn('a', 'b', 'aaaaa', 1, 0, flags=0)
         with self.assertRaisesRegex(TypeError,
-                r"subn\(\) takes from 3 to 5 positional arguments but 6 "
+                r"subn\(\) takes von 3 to 5 positional arguments but 6 "
                 r"were given"):
             re.subn('a', 'b', 'aaaaa', 1, 0, 0)
 
@@ -469,7 +469,7 @@ klasse ReTests(unittest.TestCase):
                 r"split\(\) got multiple values fuer argument 'flags'"):
             re.split(":", ":a:b::c", 2, 0, flags=0)
         with self.assertRaisesRegex(TypeError,
-                r"split\(\) takes from 2 to 4 positional arguments but 5 "
+                r"split\(\) takes von 2 to 4 positional arguments but 5 "
                 r"were given"):
             re.split(":", ":a:b::c", 2, 0, 0)
 
@@ -699,7 +699,7 @@ klasse ReTests(unittest.TestCase):
                 re.compile(r'()(?(1)\x%02x?)' % i)
 
     def test_re_groupref_overflow(self):
-        from re._constants import MAXGROUPS
+        von re._constants importiere MAXGROUPS
         self.checkTemplateError('()', r'\g<%s>' % MAXGROUPS, 'xx',
                                 'invalid group reference %d' % MAXGROUPS, 3)
         self.checkPatternError(r'(?P<a>)(?(%d))' % MAXGROUPS,
@@ -1412,17 +1412,17 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(len(res), 2)
 
     def test_pickling(self):
-        import pickle
+        importiere pickle
         oldpat = re.compile('a(?:b|(c|e){1,2}?|d)+?(.)', re.UNICODE)
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(oldpat, proto)
             newpat = pickle.loads(pickled)
             self.assertEqual(newpat, oldpat)
         # current pickle expects the _compile() reconstructor in re module
-        from re import _compile  # noqa: F401
+        von re importiere _compile  # noqa: F401
 
     def test_copying(self):
-        import copy
+        importiere copy
         p = re.compile(r'(?P<int>\d+)(?:\.(?P<frac>\d*))?')
         self.assertIs(copy.copy(p), p)
         self.assertIs(copy.deepcopy(p), p)
@@ -1752,7 +1752,7 @@ klasse ReTests(unittest.TestCase):
     @warnings_helper.ignore_warnings(category=DeprecationWarning)  # gh-80480 array('u')
     def test_empty_array(self):
         # SF buf 1647541
-        import array
+        importiere array
         fuer typecode in 'bBhuwHiIlLfd':
             a = array.array(typecode)
             self.assertIsNichts(re.compile(b"bla").match(a))
@@ -2485,7 +2485,7 @@ klasse ReTests(unittest.TestCase):
     def test_possessive_quantifiers(self):
         """Test Possessive Quantifiers
         Test quantifiers of the form @+ fuer some repetition operator @,
-        e.g. x{3,5}+ meaning match from 3 to 5 greadily and proceed
+        e.g. x{3,5}+ meaning match von 3 to 5 greadily and proceed
         without creating a stack frame fuer rolling the stack back and
         trying 1 or more fewer matches."""
         self.assertIsNichts(re.match('e*+e', 'eeee'))
@@ -2928,7 +2928,7 @@ klasse ImplementationTest(unittest.TestCase):
 
     @cpython_only
     def test_case_helpers(self):
-        import _sre
+        importiere _sre
         fuer i in range(128):
             c = chr(i)
             lo = ord(c.lower())
@@ -2956,7 +2956,7 @@ klasse ImplementationTest(unittest.TestCase):
     @cpython_only
     def test_dealloc(self):
         # issue 3299: check fuer segfault in debug build
-        import _sre
+        importiere _sre
         # the overflow limit is different on wide and narrow builds and it
         # depends on the definition of SRE_CODE (see sre.h).
         # 2**128 should be big enough to overflow on both. For smaller values
@@ -2974,7 +2974,7 @@ klasse ImplementationTest(unittest.TestCase):
     @cpython_only
     def test_repeat_minmax_overflow_maxrepeat(self):
         try:
-            from _sre import MAXREPEAT
+            von _sre importiere MAXREPEAT
         except ImportError:
             self.skipTest('requires _sre.MAXREPEAT constant')
         string = "x" * 100000
@@ -2989,7 +2989,7 @@ klasse ImplementationTest(unittest.TestCase):
     @cpython_only
     def test_sre_template_invalid_group_index(self):
         # see gh-106524
-        import _sre
+        importiere _sre
         with self.assertRaises(TypeError) as cm:
             _sre.template("", ["", -1, ""])
         self.assertIn("invalid template", str(cm.exception))
@@ -3002,7 +3002,7 @@ klasse ExternalTests(unittest.TestCase):
 
     def test_re_benchmarks(self):
         're_tests benchmarks'
-        from test.re_tests import benchmarks
+        von test.re_tests importiere benchmarks
         fuer pattern, s in benchmarks:
             with self.subTest(pattern=pattern, string=s):
                 p = re.compile(pattern)
@@ -3017,7 +3017,7 @@ klasse ExternalTests(unittest.TestCase):
 
     def test_re_tests(self):
         're_tests test suite'
-        from test.re_tests import tests, FAIL, SYNTAX_ERROR
+        von test.re_tests importiere tests, FAIL, SYNTAX_ERROR
         fuer t in tests:
             pattern = s = outcome = repl = expected = Nichts
             wenn len(t) == 5:

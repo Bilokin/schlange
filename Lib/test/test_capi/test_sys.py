@@ -1,11 +1,11 @@
-import unittest
-import contextlib
-import sys
-from test import support
-from test.support import import_helper
+importiere unittest
+importiere contextlib
+importiere sys
+von test importiere support
+von test.support importiere import_helper
 
 try:
-    import _testlimitedcapi
+    importiere _testlimitedcapi
 except ImportError:
     _testlimitedcapi = Nichts
 
@@ -154,7 +154,7 @@ klasse CAPITest(unittest.TestCase):
 
     def _test_sys_formatstream(self, funname, streamname):
         import_helper.import_module('ctypes')
-        from ctypes import pythonapi, c_char_p, py_object
+        von ctypes importiere pythonapi, c_char_p, py_object
         func = getattr(pythonapi, funname)
         func.argtypes = (c_char_p,)
 
@@ -183,7 +183,7 @@ klasse CAPITest(unittest.TestCase):
 
     def _test_sys_writestream(self, funname, streamname):
         import_helper.import_module('ctypes')
-        from ctypes import pythonapi, c_char_p
+        von ctypes importiere pythonapi, c_char_p
         func = getattr(pythonapi, funname)
         func.argtypes = (c_char_p,)
 

@@ -1,25 +1,25 @@
-from test.test_importlib import abc, util
+von test.test_importlib importiere abc, util
 
 importlib = util.import_importlib('importlib')
 importlib_abc = util.import_importlib('importlib.abc')
 machinery = util.import_importlib('importlib.machinery')
 importlib_util = util.import_importlib('importlib.util')
 
-import errno
-import marshal
-import os
-import py_compile
-import shutil
-import stat
-import sys
-import types
-import unittest
-import warnings
+importiere errno
+importiere marshal
+importiere os
+importiere py_compile
+importiere shutil
+importiere stat
+importiere sys
+importiere types
+importiere unittest
+importiere warnings
 
-from test.support.import_helper import make_legacy_pyc, unload
+von test.support.import_helper importiere make_legacy_pyc, unload
 
-from test.test_py_compile import without_source_date_epoch
-from test.test_py_compile import SourceDateEpochTestMeta
+von test.test_py_compile importiere without_source_date_epoch
+von test.test_py_compile importiere SourceDateEpochTestMeta
 
 
 klasse SimpleTest(abc.LoaderTests):
@@ -170,7 +170,7 @@ klasse SimpleTest(abc.LoaderTests):
             self.assertNotIn('_temp', sys.modules)
 
     def test_file_from_empty_string_dir(self):
-        # Loading a module found from an empty string entry on sys.path should
+        # Loading a module found von an empty string entry on sys.path should
         # not only work, but keep all attributes relative.
         file_path = '_temp.py'
         with open(file_path, 'w', encoding='utf-8') as file:

@@ -2,7 +2,7 @@
 
 # Module and documentation by Eric S. Raymond, 21 Dec 1998
 
-import os, stat
+importiere os, stat
 
 __all__ = ["netrc", "NetrcParseError"]
 
@@ -14,7 +14,7 @@ def _can_security_check():
 
 def _getpwuid(uid):
     try:
-        import pwd
+        importiere pwd
         return pwd.getpwuid(uid)[0]
     except (ImportError, LookupError):
         return f'uid {uid}'

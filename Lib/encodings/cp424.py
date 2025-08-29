@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec cp424 generated from 'MAPPINGS/VENDORS/MISC/CP424.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp424 generated von 'MAPPINGS/VENDORS/MISC/CP424.TXT' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

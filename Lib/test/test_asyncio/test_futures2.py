@@ -1,9 +1,9 @@
 # IsolatedAsyncioTestCase based tests
-import asyncio
-import contextvars
-import traceback
-import unittest
-from asyncio import tasks
+importiere asyncio
+importiere contextvars
+importiere traceback
+importiere unittest
+von asyncio importiere tasks
 
 
 def tearDownModule():

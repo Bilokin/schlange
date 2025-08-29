@@ -1,6 +1,6 @@
-import multiprocessing
-import random
-import sys
+importiere multiprocessing
+importiere random
+importiere sys
 
 def fill_queue(queue, code):
     queue.put(code)

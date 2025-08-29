@@ -1,4 +1,4 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
 a:int=3
 b:str="foo"

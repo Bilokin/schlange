@@ -1,10 +1,10 @@
 "Test pyshell, coverage 12%."
 # Plus coverage of test_warning.  Was 20% with test_openshell.
 
-from idlelib import pyshell
-import unittest
-from test.support import requires
-from tkinter import Tk
+von idlelib importiere pyshell
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk
 
 
 klasse FunctionTest(unittest.TestCase):

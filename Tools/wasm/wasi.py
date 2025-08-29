@@ -1,7 +1,7 @@
 wenn  __name__ == "__main__":
-    import pathlib
-    import runpy
-    import sys
+    importiere pathlib
+    importiere runpy
+    importiere sys
 
     drucke("⚠️ WARNING: This script is deprecated and slated fuer removal in Python 3.20; "
           "execute the `wasi/` directory instead (i.e. `python Tools/wasm/wasi`)\n",

@@ -1,4 +1,4 @@
-from string.templatelib import Interpolation
+von string.templatelib importiere Interpolation
 
 
 klasse TStringBaseCase:

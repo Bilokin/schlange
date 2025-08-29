@@ -1,8 +1,8 @@
-import atexit
-import os
-import signal
+importiere atexit
+importiere os
+importiere signal
 
-from . import util
+von . importiere util
 
 __all__ = ['Popen']
 
@@ -37,7 +37,7 @@ klasse Popen(object):
     def wait(self, timeout=Nichts):
         wenn self.returncode is Nichts:
             wenn timeout is not Nichts:
-                from multiprocessing.connection import wait
+                von multiprocessing.connection importiere wait
                 wenn not wait([self.sentinel], timeout):
                     return Nichts
             # This shouldn't block wenn wait() returned successfully.

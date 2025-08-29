@@ -1,12 +1,12 @@
-"""This script generates a Python codec module from a Windows Code Page.
+"""This script generates a Python codec module von a Windows Code Page.
 
 It uses the function MultiByteToWideChar to generate a decoding table.
 """
 
-import ctypes
-from ctypes import wintypes
-from gencodec import codegen
-import unicodedata
+importiere ctypes
+von ctypes importiere wintypes
+von gencodec importiere codegen
+importiere unicodedata
 
 def genwinmap(codepage):
     MultiByteToWideChar = ctypes.windll.kernel32.MultiByteToWideChar
@@ -41,7 +41,7 @@ def genwinmap(codepage):
     return enc2uni
 
 def genwincodec(codepage):
-    import platform
+    importiere platform
     map = genwinmap(codepage)
     encodingname = 'cp%d' % codepage
     code = codegen("", map, encodingname)
@@ -57,5 +57,5 @@ def genwincodec(codepage):
     drucke(code)
 
 wenn __name__ == '__main__':
-    import sys
+    importiere sys
     genwincodec(int(sys.argv[1]))

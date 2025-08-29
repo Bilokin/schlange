@@ -1,11 +1,11 @@
-from __future__ import annotations
+von __future__ importiere annotations
 USING_STRINGS = Wahr
 
 # dataclass_module_2.py and dataclass_module_2_str.py are identical
 # except only the latter uses string annotations.
 
-from dataclasses import dataclass, InitVar
-from typing import ClassVar
+von dataclasses importiere dataclass, InitVar
+von typing importiere ClassVar
 
 T_CV2 = ClassVar[int]
 T_CV3 = ClassVar

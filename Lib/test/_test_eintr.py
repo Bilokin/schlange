@@ -8,23 +8,23 @@ Signals are generated in-process using setitimer(ITIMER_REAL), which allows
 sub-second periodicity (contrarily to signal()).
 """
 
-import contextlib
-import faulthandler
-import fcntl
-import os
-import platform
-import select
-import signal
-import socket
-import subprocess
-import sys
-import textwrap
-import time
-import unittest
+importiere contextlib
+importiere faulthandler
+importiere fcntl
+importiere os
+importiere platform
+importiere select
+importiere signal
+importiere socket
+importiere subprocess
+importiere sys
+importiere textwrap
+importiere time
+importiere unittest
 
-from test import support
-from test.support import os_helper
-from test.support import socket_helper
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere socket_helper
 
 
 # gh-109592: Tolerate a difference of 20 ms when comparing timings
@@ -513,7 +513,7 @@ klasse FCNTLEINTRTest(EINTRBaseTest):
         fuer fd in (rd1, wr1, rd2, wr2):
             self.addCleanup(os.close, fd)
         code = textwrap.dedent(f"""
-            import fcntl, os, time
+            importiere fcntl, os, time
             with open('{os_helper.TESTFN}', 'wb') as f:
                 fcntl.{lock_name}(f, fcntl.LOCK_EX)
                 os.write({wr1}, b"ok")
@@ -541,7 +541,7 @@ klasse FCNTLEINTRTest(EINTRBaseTest):
             proc.wait()
 
     # Issue 35633: See https://bugs.python.org/issue35633#msg333662
-    # skip test rather than accept PermissionError from all platforms
+    # skip test rather than accept PermissionError von all platforms
     @unittest.skipIf(platform.system() == "AIX", "AIX returns PermissionError")
     def test_lockf(self):
         self._lock(fcntl.lockf, "lockf")

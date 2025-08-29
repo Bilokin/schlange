@@ -1,17 +1,17 @@
 """Implementation of JSONEncoder
 """
-import re
+importiere re
 
 try:
-    from _json import encode_basestring_ascii as c_encode_basestring_ascii
+    von _json importiere encode_basestring_ascii as c_encode_basestring_ascii
 except ImportError:
     c_encode_basestring_ascii = Nichts
 try:
-    from _json import encode_basestring as c_encode_basestring
+    von _json importiere encode_basestring as c_encode_basestring
 except ImportError:
     c_encode_basestring = Nichts
 try:
-    from _json import make_encoder as c_make_encoder
+    von _json importiere make_encoder as c_make_encoder
 except ImportError:
     c_make_encoder = Nichts
 
@@ -183,7 +183,7 @@ klasse JSONEncoder(object):
     def encode(self, o):
         """Return a JSON string representation of a Python data structure.
 
-        >>> from json.encoder import JSONEncoder
+        >>> von json.encoder importiere JSONEncoder
         >>> JSONEncoder().encode({"foo": ["bar", "baz"]})
         '{"foo": ["bar", "baz"]}'
 
@@ -321,7 +321,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                         chunks = _iterencode_dict(value, _current_indent_level)
                     sonst:
                         chunks = _iterencode(value, _current_indent_level)
-                    yield from chunks
+                    yield von chunks
             except GeneratorExit:
                 raise
             except BaseException as exc:
@@ -408,7 +408,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                         chunks = _iterencode_dict(value, _current_indent_level)
                     sonst:
                         chunks = _iterencode(value, _current_indent_level)
-                    yield from chunks
+                    yield von chunks
             except GeneratorExit:
                 raise
             except BaseException as exc:
@@ -437,9 +437,9 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             # see comment fuer int/float in _make_iterencode
             yield _floatstr(o)
         sowenn isinstance(o, (list, tuple)):
-            yield from _iterencode_list(o, _current_indent_level)
+            yield von _iterencode_list(o, _current_indent_level)
         sowenn isinstance(o, dict):
-            yield from _iterencode_dict(o, _current_indent_level)
+            yield von _iterencode_dict(o, _current_indent_level)
         sonst:
             wenn markers is not Nichts:
                 markerid = id(o)
@@ -448,7 +448,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 markers[markerid] = o
             newobj = _default(o)
             try:
-                yield from _iterencode(newobj, _current_indent_level)
+                yield von _iterencode(newobj, _current_indent_level)
             except GeneratorExit:
                 raise
             except BaseException as exc:

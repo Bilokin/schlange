@@ -8,7 +8,7 @@ command.
 
 """
 
-from turtle import *
+von turtle importiere *
 
 def yin(radius, color1, color2):
     width(3)

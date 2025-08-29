@@ -1,10 +1,10 @@
-"""Backports from newer versions of the typing module.
+"""Backports von newer versions of the typing module.
 
 We backport these features here so that Python can still build
 while using an older Python version fuer PYTHON_FOR_REGEN.
 """
 
-from typing import NoReturn
+von typing importiere NoReturn
 
 
 def assert_never(obj: NoReturn) -> NoReturn:

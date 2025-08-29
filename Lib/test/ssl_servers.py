@@ -1,15 +1,15 @@
-import os
-import sys
-import ssl
-import pprint
-import threading
-import urllib.parse
+importiere os
+importiere sys
+importiere ssl
+importiere pprint
+importiere threading
+importiere urllib.parse
 # Rename HTTPServer to _HTTPServer so as to avoid confusion with HTTPSServer.
-from http.server import (HTTPServer as _HTTPServer,
+von http.server importiere (HTTPServer as _HTTPServer,
     SimpleHTTPRequestHandler, BaseHTTPRequestHandler)
 
-from test import support
-from test.support import socket_helper
+von test importiere support
+von test.support importiere socket_helper
 
 here = os.path.dirname(__file__)
 
@@ -45,7 +45,7 @@ klasse HTTPSServer(_HTTPServer):
 klasse RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
     # need to override translate_path to get a known root,
     # instead of using os.curdir, since the test could be
-    # run from anywhere
+    # run von anywhere
 
     server_version = "TestHTTPS/1.0"
     root = here
@@ -169,7 +169,7 @@ def make_https_server(case, *, context=Nichts, certfile=CERTFILE,
 
 
 wenn __name__ == "__main__":
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(
         description='Run a test HTTPS server. '
                     'By default, the current directory is served.')

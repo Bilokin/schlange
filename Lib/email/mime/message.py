@@ -6,8 +6,8 @@
 
 __all__ = ['MIMEMessage']
 
-from email import message
-from email.mime.nonmultipart import MIMENonMultipart
+von email importiere message
+von email.mime.nonmultipart importiere MIMENonMultipart
 
 
 klasse MIMEMessage(MIMENonMultipart):

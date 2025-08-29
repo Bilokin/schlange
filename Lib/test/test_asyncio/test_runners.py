@@ -1,14 +1,14 @@
-import _thread
-import asyncio
-import contextvars
-import re
-import signal
-import sys
-import threading
-import unittest
-from test.test_asyncio import utils as test_utils
-from unittest import mock
-from unittest.mock import patch
+importiere _thread
+importiere asyncio
+importiere contextvars
+importiere re
+importiere signal
+importiere sys
+importiere threading
+importiere unittest
+von test.test_asyncio importiere utils as test_utils
+von unittest importiere mock
+von unittest.mock importiere patch
 
 
 def tearDownModule():
@@ -44,7 +44,7 @@ klasse BaseTest(unittest.TestCase):
     def new_loop(self):
         loop = asyncio.BaseEventLoop()
         loop._process_events = mock.Mock()
-        # Mock waking event loop from select
+        # Mock waking event loop von select
         loop._write_to_self = mock.Mock()
         loop._write_to_self.return_value = Nichts
         loop._selector = mock.Mock()
@@ -120,7 +120,7 @@ klasse RunTests(BaseTest):
                 coro.close()  # Suppress ResourceWarning
 
         with self.assertRaisesRegex(RuntimeError,
-                                    'cannot be called from a running'):
+                                    'cannot be called von a running'):
             asyncio.run(main())
 
     def test_asyncio_run_cancels_hanging_tasks(self):
@@ -417,7 +417,7 @@ klasse RunnerTests(BaseTest):
                 with self.assertRaisesRegex(
                     RuntimeError,
                     re.escape(
-                        "Runner.run() cannot be called from a running event loop"
+                        "Runner.run() cannot be called von a running event loop"
                     ),
                 ):
                     runner.run(f())

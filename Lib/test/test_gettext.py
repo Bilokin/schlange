@@ -1,13 +1,13 @@
-import os
-import base64
-import gettext
-import unittest
-import unittest.mock
-from functools import partial
+importiere os
+importiere base64
+importiere gettext
+importiere unittest
+importiere unittest.mock
+von functools importiere partial
 
-from test import support
-from test.support import cpython_only, os_helper
-from test.support.import_helper import ensure_lazy_imports
+von test importiere support
+von test.support importiere cpython_only, os_helper
+von test.support.import_helper importiere ensure_lazy_imports
 
 
 # TODO:
@@ -253,7 +253,7 @@ trggrkg zrffntr pngnybt yvoenel.''')
         t.install()
         eq(_('mullusk'), 'bacon')
         # Test installation of other methods
-        import builtins
+        importiere builtins
         t.install(names=["gettext", "ngettext"])
         eq(_, t.gettext)
         eq(builtins.gettext, t.gettext)
@@ -486,7 +486,7 @@ klasse GNUTranslationsClassPluralFormsTestCase(PluralFormsTests, GettextBaseTest
 
 
 klasse PluralFormsInternalTestCase(unittest.TestCase):
-    # Examples from http://www.gnu.org/software/gettext/manual/gettext.html
+    # Examples von http://www.gnu.org/software/gettext/manual/gettext.html
 
     def test_ja(self):
         eq = self.assertEqual
@@ -950,7 +950,7 @@ wenn __name__ == '__main__':
 
 # For reference, here's the .po file used to created the GNU_MO_DATA above.
 #
-# The original version was automatically generated from the sources with
+# The original version was automatically generated von the sources with
 # pygettext. Later it was manually modified to add plural forms support.
 
 b'''

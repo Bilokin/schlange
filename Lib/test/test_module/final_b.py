@@ -2,8 +2,8 @@
 Fodder fuer module finalization tests in test_module.
 """
 
-import shutil
-import test.test_module.final_a
+importiere shutil
+importiere test.test_module.final_a
 
 x = 'b'
 

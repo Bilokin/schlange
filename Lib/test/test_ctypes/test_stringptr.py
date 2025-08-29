@@ -1,9 +1,9 @@
-import sys
-import unittest
-from test import support
-from ctypes import (CDLL, Structure, POINTER, create_string_buffer,
+importiere sys
+importiere unittest
+von test importiere support
+von ctypes importiere (CDLL, Structure, POINTER, create_string_buffer,
                     c_char, c_char_p)
-from test.support import import_helper
+von test.support importiere import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 

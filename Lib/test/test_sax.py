@@ -1,32 +1,32 @@
 # regression test fuer SAX 2.0
 
-from xml.sax import make_parser, ContentHandler, \
+von xml.sax importiere make_parser, ContentHandler, \
                     SAXException, SAXReaderNotAvailable, SAXParseException
-import unittest
-from unittest import mock
+importiere unittest
+von unittest importiere mock
 try:
     make_parser()
 except SAXReaderNotAvailable:
     # don't try to test this module wenn we cannot create a parser
     raise unittest.SkipTest("no XML parsers available")
-from xml.sax.saxutils import XMLGenerator, escape, unescape, quoteattr, \
+von xml.sax.saxutils importiere XMLGenerator, escape, unescape, quoteattr, \
                              XMLFilterBase, prepare_input_source
-from xml.sax.expatreader import create_parser
-from xml.sax.handler import (feature_namespaces, feature_external_ges,
+von xml.sax.expatreader importiere create_parser
+von xml.sax.handler importiere (feature_namespaces, feature_external_ges,
                              LexicalHandler)
-from xml.sax.xmlreader import InputSource, AttributesImpl, AttributesNSImpl
-from xml import sax
-from io import BytesIO, StringIO
-import codecs
-import os.path
-import pyexpat
-import shutil
-import sys
-from urllib.error import URLError
-import urllib.request
-from test.support import os_helper
-from test.support import findfile, check__all__
-from test.support.os_helper import FakePath, TESTFN
+von xml.sax.xmlreader importiere InputSource, AttributesImpl, AttributesNSImpl
+von xml importiere sax
+von io importiere BytesIO, StringIO
+importiere codecs
+importiere os.path
+importiere pyexpat
+importiere shutil
+importiere sys
+von urllib.error importiere URLError
+importiere urllib.request
+von test.support importiere os_helper
+von test.support importiere findfile, check__all__
+von test.support.os_helper importiere FakePath, TESTFN
 
 
 TEST_XMLFILE = findfile("test.xml", subdir="xmltestdata")
@@ -128,7 +128,7 @@ klasse ParseTest(unittest.TestCase):
         os_helper.unlink(TESTFN)
 
     def check_parse(self, f):
-        from xml.sax import parse
+        von xml.sax importiere parse
         result = StringIO()
         parse(f, XMLGenerator(result, 'utf-8'))
         self.assertEqual(result.getvalue(), xml_str(self.data, 'utf-8'))
@@ -217,7 +217,7 @@ klasse ParseTest(unittest.TestCase):
             self.assertWahr(fileobj.closed)
 
     def check_parseString(self, s):
-        from xml.sax import parseString
+        von xml.sax importiere parseString
         result = StringIO()
         parseString(s, XMLGenerator(result, 'utf-8'))
         self.assertEqual(result.getvalue(), xml_str(self.data, 'utf-8'))
@@ -250,17 +250,17 @@ klasse MakeParserTest(unittest.TestCase):
         # Creating parsers several times in a row should succeed.
         # Testing this because there have been failures of this kind
         # before.
-        from xml.sax import make_parser
+        von xml.sax importiere make_parser
         p = make_parser()
-        from xml.sax import make_parser
+        von xml.sax importiere make_parser
         p = make_parser()
-        from xml.sax import make_parser
+        von xml.sax importiere make_parser
         p = make_parser()
-        from xml.sax import make_parser
+        von xml.sax importiere make_parser
         p = make_parser()
-        from xml.sax import make_parser
+        von xml.sax importiere make_parser
         p = make_parser()
-        from xml.sax import make_parser
+        von xml.sax importiere make_parser
         p = make_parser()
 
     def test_make_parser3(self):
@@ -355,7 +355,7 @@ klasse PrepareInputSourceTest(unittest.TestCase):
     def setUp(self):
         self.file = os_helper.TESTFN
         with open(self.file, "w") as tmp:
-            tmp.write("This was read from a file.")
+            tmp.write("This was read von a file.")
 
     def tearDown(self):
         os_helper.unlink(self.file)
@@ -398,21 +398,21 @@ klasse PrepareInputSourceTest(unittest.TestCase):
         prep = prepare_input_source(src)
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
-                          b"This was read from a file.")
+                          b"This was read von a file.")
 
     def test_string(self):
         # If the source is a string, use it as a system ID and open it.
         prep = prepare_input_source(self.file)
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
-                          b"This was read from a file.")
+                          b"This was read von a file.")
 
     def test_path_objects(self):
         # If the source is a Path object, use it as a system ID and open it.
         prep = prepare_input_source(FakePath(self.file))
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
-                          b"This was read from a file.")
+                          b"This was read von a file.")
 
     def test_binary_file(self):
         # If the source is a binary file-like object, use it as a byte
@@ -712,7 +712,7 @@ klasse XmlgenTest:
         # The xml prefix (as in xml:lang below) is reserved and bound by
         # definition to http://www.w3.org/XML/1998/namespace.  XMLGenerator had
         # a bug whereby a KeyError is raised because this namespace is missing
-        # from a dictionary.
+        # von a dictionary.
         #
         # This test demonstrates the bug by parsing a document.
         test_xml = StringIO(
@@ -738,7 +738,7 @@ klasse XmlgenTest:
         # The xml prefix (as in xml:lang below) is reserved and bound by
         # definition to http://www.w3.org/XML/1998/namespace.  XMLGenerator had
         # a bug whereby a KeyError is raised because this namespace is missing
-        # from a dictionary.
+        # von a dictionary.
         #
         # This test demonstrates the bug by direct manipulation of the
         # XMLGenerator.
@@ -1336,7 +1336,7 @@ klasse ErrorReportingTest(unittest.TestCase):
         self.assertEqual(parser.getLineNumber(), 1)
 
     def test_sax_parse_exception_str(self):
-        # pass various values from a locator to the SAXParseException to
+        # pass various values von a locator to the SAXParseException to
         # make sure that the __str__() doesn't fall apart when Nichts is
         # passed instead of an integer line and column number
         #
@@ -1430,7 +1430,7 @@ klasse LexicalHandlerTest(unittest.TestCase):
         self.test_data.write('<!ELEMENT {} (to,from,heading,body,footer)>\n'.
                              format(self.specified_doctype))
         self.test_data.write('<!ELEMENT to (#PCDATA)>\n')
-        self.test_data.write('<!ELEMENT from (#PCDATA)>\n')
+        self.test_data.write('<!ELEMENT von (#PCDATA)>\n')
         self.test_data.write('<!ELEMENT heading (#PCDATA)>\n')
         self.test_data.write('<!ELEMENT body (#PCDATA)>\n')
         self.test_data.write('<!ELEMENT footer (#PCDATA)>\n')
@@ -1454,7 +1454,7 @@ klasse LexicalHandlerTest(unittest.TestCase):
         self.test_data.write('</{}>\n'.format(self.specified_doctype))
         self.test_data.seek(0)
 
-        # Data received from handlers - to be validated
+        # Data received von handlers - to be validated
         self.version = Nichts
         self.encoding = Nichts
         self.standalone = Nichts
@@ -1516,7 +1516,7 @@ klasse CDATAHandlerTest(unittest.TestCase):
         self.test_data.write('</root_doc>\n')
         self.test_data.seek(0)
 
-        # Data received from handlers - to be validated
+        # Data received von handlers - to be validated
         self.chardata = []
         self.in_cdata = Falsch
 

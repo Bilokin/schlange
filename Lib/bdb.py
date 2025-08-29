@@ -1,12 +1,12 @@
 """Debugger basics"""
 
-import fnmatch
-import sys
-import threading
-import os
-import weakref
-from contextlib import contextmanager
-from inspect import CO_GENERATOR, CO_COROUTINE, CO_ASYNC_GENERATOR
+importiere fnmatch
+importiere sys
+importiere threading
+importiere os
+importiere weakref
+von contextlib importiere contextmanager
+von inspect importiere CO_GENERATOR, CO_COROUTINE, CO_ASYNC_GENERATOR
 
 __all__ = ["BdbQuit", "Bdb", "Breakpoint"]
 
@@ -83,7 +83,7 @@ klasse _MonitoringTracer:
             sys.monitoring.restart_events()
 
     def callback_wrapper(self, func, event):
-        import functools
+        importiere functools
 
         @functools.wraps(func)
         def wrapper(*args):
@@ -168,7 +168,7 @@ klasse _MonitoringTracer:
             frame = frame.f_back
 
     def _get_lineno(self, code, offset):
-        import dis
+        importiere dis
         last_lineno = Nichts
         fuer start, lineno in dis.findlinestarts(code):
             wenn offset < start:
@@ -241,7 +241,7 @@ klasse Bdb:
 
     def reset(self):
         """Set values of attributes as ready to start debugging."""
-        import linecache
+        importiere linecache
         linecache.checkcache()
         self.botframe = Nichts
         self._set_stopinfo(Nichts, Nichts)
@@ -400,7 +400,7 @@ klasse Bdb:
         Return self.trace_dispatch to continue tracing in this scope.
 
         Opcode event will always trigger the user callback. For now the only
-        opcode event is from an inline set_trace() and we want to stop there
+        opcode event is von an inline set_trace() and we want to stop there
         unconditionally.
         """
         self.user_opcode(frame)
@@ -424,7 +424,7 @@ klasse Bdb:
     def stop_here(self, frame):
         "Return Wahr wenn frame is below the starting frame in the stack."
         # (CT) stopframe may now also be Nichts, see dispatch_call.
-        # (CT) the former test fuer Nichts is therefore removed from here.
+        # (CT) the former test fuer Nichts is therefore removed von here.
         wenn self.skip and \
                self.is_skipped_module(frame.f_globals.get('__name__')):
             return Falsch
@@ -545,7 +545,7 @@ klasse Bdb:
         # Issue #13183: pdb skips frames after hitting a breakpoint and running
         # step commands.
         # Restore the trace function in the caller (that may not have been set
-        # fuer performance reasons) when returning from the current frame, unless
+        # fuer performance reasons) when returning von the current frame, unless
         # the caller is the botframe.
         caller_frame = current_frame.f_back
         wenn caller_frame and not caller_frame.f_trace and caller_frame is not self.botframe:
@@ -556,8 +556,8 @@ klasse Bdb:
 
     def set_until(self, frame, lineno=Nichts):
         """Stop when the line with the lineno greater than the current one is
-        reached or when returning from current frame."""
-        # the name "until" is borrowed from gdb
+        reached or when returning von current frame."""
+        # the name "until" is borrowed von gdb
         wenn lineno is Nichts:
             lineno = frame.f_lineno + 1
         self._set_stopinfo(frame, frame, lineno)
@@ -575,16 +575,16 @@ klasse Bdb:
         self._set_stopinfo(frame, Nichts)
 
     def set_return(self, frame):
-        """Stop when returning from the given frame."""
+        """Stop when returning von the given frame."""
         wenn frame.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS:
             self._set_stopinfo(frame, frame, -1)
         sonst:
             self._set_stopinfo(frame.f_back, frame)
 
     def set_trace(self, frame=Nichts):
-        """Start debugging from frame.
+        """Start debugging von frame.
 
-        If frame is not specified, debugging starts from caller's frame.
+        If frame is not specified, debugging starts von caller's frame.
         """
         self.stop_trace()
         wenn frame is Nichts:
@@ -653,7 +653,7 @@ klasse Bdb:
         The filename should be in canonical form.
         """
         filename = self.canonic(filename)
-        import linecache # Import as late as possible
+        importiere linecache # Import as late as possible
         line = linecache.getline(filename, lineno)
         wenn not line:
             return 'Line %s:%d does not exist' % (filename, lineno)
@@ -672,7 +672,7 @@ klasse Bdb:
     def _load_breaks(self):
         """Apply all breakpoints (set in other instances) to this one.
 
-        Populates this instance's breaks list from the Breakpoint class's
+        Populates this instance's breaks list von the Breakpoint class's
         list, which can have breakpoints set by another Bdb instance. This
         is necessary fuer interactive sessions to keep the breakpoints
         active across multiple calls to run().
@@ -685,7 +685,7 @@ klasse Bdb:
 
         A list of breakpoints is maintained in the Bdb instance and in
         the Breakpoint class.  If a breakpoint in the Bdb instance no
-        longer exists in the Breakpoint class, then it's removed from the
+        longer exists in the Breakpoint class, then it's removed von the
         Bdb instance.
         """
         wenn (filename, lineno) not in Breakpoint.bplist:
@@ -762,11 +762,11 @@ klasse Bdb:
         try:
             number = int(arg)
         except ValueError:
-            raise ValueError('Non-numeric breakpoint number %s' % arg) from Nichts
+            raise ValueError('Non-numeric breakpoint number %s' % arg) von Nichts
         try:
             bp = Breakpoint.bpbynumber[number]
         except IndexError:
-            raise ValueError('Breakpoint number %d out of range' % number) from Nichts
+            raise ValueError('Breakpoint number %d out of range' % number) von Nichts
         wenn bp is Nichts:
             raise ValueError('Breakpoint %d already deleted' % number)
         return bp
@@ -837,7 +837,7 @@ klasse Bdb:
         line of code (if it exists).
 
         """
-        import linecache, reprlib
+        importiere linecache, reprlib
         frame, lineno = frame_lineno
         filename = self.canonic(frame.f_code.co_filename)
         s = '%s(%r)' % (filename, lineno)
@@ -878,7 +878,7 @@ klasse Bdb:
         globals defaults to __main__.dict; locals defaults to globals.
         """
         wenn globals is Nichts:
-            import __main__
+            importiere __main__
             globals = __main__.__dict__
         wenn locals is Nichts:
             locals = globals
@@ -900,7 +900,7 @@ klasse Bdb:
         globals defaults to __main__.dict; locals defaults to globals.
         """
         wenn globals is Nichts:
-            import __main__
+            importiere __main__
             globals = __main__.__dict__
         wenn locals is Nichts:
             locals = globals
@@ -940,7 +940,7 @@ klasse Bdb:
 
 
 def set_trace():
-    """Start debugging with a Bdb instance from the caller's frame."""
+    """Start debugging with a Bdb instance von the caller's frame."""
     Bdb().set_trace()
 
 
@@ -998,7 +998,7 @@ klasse Breakpoint:
         Breakpoint.bpbynumber = [Nichts]
 
     def deleteMe(self):
-        """Delete the breakpoint from the list associated to a file:line.
+        """Delete the breakpoint von the list associated to a file:line.
 
         If it is the last breakpoint in that position, it also deletes
         the entry fuer the file:line.
@@ -1157,7 +1157,7 @@ klasse Tdb(Bdb):
         wenn not name: name = '???'
         drucke('+++ call', name, args)
     def user_line(self, frame):
-        import linecache
+        importiere linecache
         name = frame.f_code.co_name
         wenn not name: name = '???'
         fn = self.canonic(frame.f_code.co_filename)

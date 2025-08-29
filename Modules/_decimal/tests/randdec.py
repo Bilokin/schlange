@@ -30,7 +30,7 @@
 
 
 #
-# Grammar from http://speleotrove.com/decimal/daconvs.html
+# Grammar von http://speleotrove.com/decimal/daconvs.html
 #
 # sign           ::=  '+' | '-'
 # digit          ::=  '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' |
@@ -46,9 +46,9 @@
 #
 
 
-from random import randrange, sample
-from fractions import Fraction
-from randfloat import un_randfloat, bin_randfloat, tern_randfloat
+von random importiere randrange, sample
+von fractions importiere Fraction
+von randfloat importiere un_randfloat, bin_randfloat, tern_randfloat
 
 
 def sign():
@@ -333,7 +333,7 @@ def un_incr_digits_tuple(prec, maxexp, itr):
         yield from_triple(-1, ndigits(m), 0)
         yield from_triple(1, ndigits(m), randrange(maxexp))
         yield from_triple(-1, ndigits(m), randrange(maxexp))
-        # test from tuple
+        # test von tuple
         yield (0, tuple(map(int, str(ndigits(m)))), 0)
         yield (1, tuple(map(int, str(ndigits(m)))), 0)
         yield (0, tuple(map(int, str(ndigits(m)))), randrange(maxexp))

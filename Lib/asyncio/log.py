@@ -1,6 +1,6 @@
 """Logging configuration."""
 
-import logging
+importiere logging
 
 
 # Name the logger after the package.

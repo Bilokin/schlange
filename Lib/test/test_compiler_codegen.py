@@ -1,9 +1,9 @@
 
-import textwrap
-from test.support.bytecode_helper import CodegenTestCase
+importiere textwrap
+von test.support.bytecode_helper importiere CodegenTestCase
 
 # Tests fuer the code-generation stage of the compiler.
-# Examine the un-optimized code generated from the AST.
+# Examine the un-optimized code generated von the AST.
 
 klasse IsolatedCodeGenTests(CodegenTestCase):
 
@@ -16,7 +16,7 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
             self.assertInstructionsMatch_recursive(n_insts, n_expected)
 
     def codegen_test(self, snippet, expected_insts):
-        import ast
+        importiere ast
         a = ast.parse(snippet, "my_file.py", "exec")
         insts = self.generate_code(a)
         self.assertInstructionsMatch_recursive(insts, expected_insts)

@@ -1,21 +1,21 @@
-import enum
-import errno
-from http import client, HTTPStatus
-import io
-import itertools
-import os
-import array
-import re
-import socket
-import threading
+importiere enum
+importiere errno
+von http importiere client, HTTPStatus
+importiere io
+importiere itertools
+importiere os
+importiere array
+importiere re
+importiere socket
+importiere threading
 
-import unittest
-from unittest import mock
+importiere unittest
+von unittest importiere mock
 TestCase = unittest.TestCase
 
-from test import support
-from test.support import os_helper
-from test.support import socket_helper
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere socket_helper
 
 support.requires_working_socket(module=Wahr)
 
@@ -70,7 +70,7 @@ klasse FakeSocket:
     def makefile(self, mode, bufsize=Nichts):
         wenn mode != 'r' and mode != 'rb':
             raise client.UnimplementedFileMode()
-        # keep the file around so we can check how much was read from it
+        # keep the file around so we can check how much was read von it
         self.file = self.fileclass(self.text)
         self.file.close = self.file_close #nerf close ()
         return self.file
@@ -103,7 +103,7 @@ klasse NoEOFBytesIO(io.BytesIO):
     """Like BytesIO, but raises AssertionError on EOF.
 
     This is used below to test that http.client doesn't try to read
-    more from the underlying file than it should.
+    more von the underlying file than it should.
     """
     def read(self, n=-1):
         data = io.BytesIO.read(self, n)
@@ -592,7 +592,7 @@ klasse BasicTest(TestCase):
         klasse CheckedHTTPStatus(enum.IntEnum):
             """HTTP status codes and reason phrases
 
-            Status codes from the following RFCs are all observed:
+            Status codes von the following RFCs are all observed:
 
                 * RFC 7231: Hypertext Transfer Protocol (HTTP/1.1), obsoletes 2616
                 * RFC 6585: Additional HTTP Status Codes
@@ -649,7 +649,7 @@ klasse BasicTest(TestCase):
             ACCEPTED = (202, 'Accepted',
                 'Request accepted, processing continues off-line')
             NON_AUTHORITATIVE_INFORMATION = (203,
-                'Non-Authoritative Information', 'Request fulfilled from cache')
+                'Non-Authoritative Information', 'Request fulfilled von cache')
             NO_CONTENT = 204, 'No Content', 'Request fulfilled, nothing follows'
             RESET_CONTENT = 205, 'Reset Content', 'Clear input form fuer further input'
             PARTIAL_CONTENT = 206, 'Partial Content', 'Partial content follows'
@@ -746,7 +746,7 @@ klasse BasicTest(TestCase):
             NOT_IMPLEMENTED = (501, 'Not Implemented',
                 'Server does not support this operation')
             BAD_GATEWAY = (502, 'Bad Gateway',
-                'Invalid responses from another server/proxy')
+                'Invalid responses von another server/proxy')
             SERVICE_UNAVAILABLE = (503, 'Service Unavailable',
                 'The server cannot process the request due to a high load')
             GATEWAY_TIMEOUT = (504, 'Gateway Timeout',
@@ -1000,7 +1000,7 @@ klasse BasicTest(TestCase):
 
     def test_read_head(self):
         # Test that the library doesn't attempt to read any data
-        # from a HEAD request.  (Tickles SF bug #622042.)
+        # von a HEAD request.  (Tickles SF bug #622042.)
         sock = FakeSocket(
             'HTTP/1.1 200 OK\r\n'
             'Content-Length: 14432\r\n'
@@ -1009,11 +1009,11 @@ klasse BasicTest(TestCase):
         resp = client.HTTPResponse(sock, method="HEAD")
         resp.begin()
         wenn resp.read():
-            self.fail("Did not expect response from HEAD request")
+            self.fail("Did not expect response von HEAD request")
 
     def test_readinto_head(self):
         # Test that the library doesn't attempt to read any data
-        # from a HEAD request.  (Tickles SF bug #622042.)
+        # von a HEAD request.  (Tickles SF bug #622042.)
         sock = FakeSocket(
             'HTTP/1.1 200 OK\r\n'
             'Content-Length: 14432\r\n'
@@ -1023,7 +1023,7 @@ klasse BasicTest(TestCase):
         resp.begin()
         b = bytearray(5)
         wenn resp.readinto(b) != 0:
-            self.fail("Did not expect response from HEAD request")
+            self.fail("Did not expect response von HEAD request")
         self.assertEqual(bytes(b), b'\x00'*5)
 
     def test_too_many_headers(self):
@@ -1912,7 +1912,7 @@ klasse TimeoutTest(TestCase):
 klasse PersistenceTest(TestCase):
 
     def test_reuse_reconnect(self):
-        # Should reuse or reconnect depending on header from server
+        # Should reuse or reconnect depending on header von server
         tests = (
             ('1.0', '', Falsch),
             ('1.0', 'Connection: keep-alive\r\n', Wahr),
@@ -1988,7 +1988,7 @@ klasse HTTPSTest(TestCase):
             self.skipTest('ssl support required')
 
     def make_server(self, certfile):
-        from test.ssl_servers import make_https_server
+        von test.ssl_servers importiere make_https_server
         return make_https_server(self, certfile=certfile)
 
     def test_attributes(self):
@@ -1997,8 +1997,8 @@ klasse HTTPSTest(TestCase):
         self.assertEqual(h.timeout, 30)
 
     def test_networked(self):
-        # Default settings: requires a valid cert from a trusted CA
-        import ssl
+        # Default settings: requires a valid cert von a trusted CA
+        importiere ssl
         support.requires('network')
         with socket_helper.transient_internet('self-signed.pythontest.net'):
             h = client.HTTPSConnection('self-signed.pythontest.net', 443)
@@ -2008,7 +2008,7 @@ klasse HTTPSTest(TestCase):
 
     def test_networked_noverification(self):
         # Switch off cert verification
-        import ssl
+        importiere ssl
         support.requires('network')
         with socket_helper.transient_internet('self-signed.pythontest.net'):
             context = ssl._create_unverified_context()
@@ -2022,7 +2022,7 @@ klasse HTTPSTest(TestCase):
 
     @support.system_must_validate_cert
     def test_networked_trusted_by_default_cert(self):
-        # Default settings: requires a valid cert from a trusted CA
+        # Default settings: requires a valid cert von a trusted CA
         support.requires('network')
         with socket_helper.transient_internet('www.python.org'):
             h = client.HTTPSConnection('www.python.org', 443)
@@ -2035,7 +2035,7 @@ klasse HTTPSTest(TestCase):
 
     def test_networked_good_cert(self):
         # We feed the server's cert as a validating cert
-        import ssl
+        importiere ssl
         support.requires('network')
         selfsigned_pythontestdotnet = 'self-signed.pythontest.net'
         with socket_helper.transient_internet(selfsigned_pythontestdotnet):
@@ -2069,7 +2069,7 @@ klasse HTTPSTest(TestCase):
     @support.requires_resource('walltime')
     def test_networked_bad_cert(self):
         # We feed a "CA" cert that is unrelated to the server's cert
-        import ssl
+        importiere ssl
         support.requires('network')
         with socket_helper.transient_internet('self-signed.pythontest.net'):
             context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -2081,7 +2081,7 @@ klasse HTTPSTest(TestCase):
 
     def test_local_unknown_cert(self):
         # The custom cert isn't known to the default trust bundle
-        import ssl
+        importiere ssl
         server = self.make_server(CERT_localhost)
         h = client.HTTPSConnection('localhost', server.port)
         with self.assertRaises(ssl.SSLError) as exc_info:
@@ -2090,7 +2090,7 @@ klasse HTTPSTest(TestCase):
 
     def test_local_good_hostname(self):
         # The (valid) cert validates the HTTPS hostname
-        import ssl
+        importiere ssl
         server = self.make_server(CERT_localhost)
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         context.load_verify_locations(CERT_localhost)
@@ -2103,7 +2103,7 @@ klasse HTTPSTest(TestCase):
 
     def test_local_bad_hostname(self):
         # The (valid) cert doesn't validate the HTTPS hostname
-        import ssl
+        importiere ssl
         server = self.make_server(CERT_fakehostname)
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         context.load_verify_locations(CERT_fakehostname)
@@ -2147,7 +2147,7 @@ klasse HTTPSTest(TestCase):
             self.assertEqual(p, c.port)
 
     def test_tls13_pha(self):
-        import ssl
+        importiere ssl
         wenn not ssl.HAS_TLSv1_3 or not ssl.HAS_PHA:
             self.skipTest('TLS 1.3 PHA support required')
         # just check status of PHA flag

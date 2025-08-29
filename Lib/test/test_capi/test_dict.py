@@ -1,8 +1,8 @@
-import unittest
-from collections import OrderedDict, UserDict
-from types import MappingProxyType
-from test import support
-from test.support import import_helper
+importiere unittest
+von collections importiere OrderedDict, UserDict
+von types importiere MappingProxyType
+von test importiere support
+von test.support importiere import_helper
 
 
 _testcapi = import_helper.import_module("_testcapi")

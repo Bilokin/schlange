@@ -1,12 +1,12 @@
-import doctest
-import traceback
-import unittest
+importiere doctest
+importiere traceback
+importiere unittest
 
-from test.support import BrokenIter
+von test.support importiere BrokenIter
 
 
 doctests = """
-########### Tests mostly copied from test_listcomps.py ############
+########### Tests mostly copied von test_listcomps.py ############
 
 Test simple loop with conditional
 
@@ -153,7 +153,7 @@ We also repeat each of the above scoping tests inside a function
 
 klasse SetComprehensionTest(unittest.TestCase):
     def test_exception_locations(self):
-        # The location of an exception raised from __init__ or
+        # The location of an exception raised von __init__ or
         # __next__ should be the iterator expression
 
         def init_raises():

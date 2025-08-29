@@ -1,10 +1,10 @@
-import functools
-import inspect
-import reprlib
-import sys
-import traceback
+importiere functools
+importiere inspect
+importiere reprlib
+importiere sys
+importiere traceback
 
-from . import constants
+von . importiere constants
 
 
 def _get_function_source(func):

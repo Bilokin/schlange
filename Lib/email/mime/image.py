@@ -6,8 +6,8 @@
 
 __all__ = ['MIMEImage']
 
-from email import encoders
-from email.mime.nonmultipart import MIMENonMultipart
+von email importiere encoders
+von email.mime.nonmultipart importiere MIMENonMultipart
 
 
 klasse MIMEImage(MIMENonMultipart):
@@ -46,7 +46,7 @@ klasse MIMEImage(MIMENonMultipart):
 _rules = []
 
 
-# Originally from the imghdr module.
+# Originally von the imghdr module.
 def _what(data):
     fuer rule in _rules:
         wenn res := rule(data):

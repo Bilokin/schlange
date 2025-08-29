@@ -2,7 +2,7 @@
 OptionMenu widget modified to allow dynamic menu reconfiguration
 and setting of highlightthickness
 """
-from tkinter import OptionMenu, _setit, StringVar, Button
+von tkinter importiere OptionMenu, _setit, StringVar, Button
 
 klasse DynOptionMenu(OptionMenu):
     """Add SetMenu and highlightthickness to OptionMenu.
@@ -31,7 +31,7 @@ klasse DynOptionMenu(OptionMenu):
 
 
 def _dyn_option_menu(parent):  # htest #
-    from tkinter import Toplevel # + StringVar, Button
+    von tkinter importiere Toplevel # + StringVar, Button
 
     top = Toplevel(parent)
     top.title("Test dynamic option menu")
@@ -53,5 +53,5 @@ def _dyn_option_menu(parent):  # htest #
 
 wenn __name__ == '__main__':
     # Only module without unittests because of intention to replace.
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_dyn_option_menu)

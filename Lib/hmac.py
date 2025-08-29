@@ -4,17 +4,17 @@ Implements the HMAC algorithm as described by RFC 2104.
 """
 
 try:
-    import _hashlib as _hashopenssl
+    importiere _hashlib as _hashopenssl
 except ImportError:
     _hashopenssl = Nichts
     _functype = Nichts
-    from _operator import _compare_digest as compare_digest
+    von _operator importiere _compare_digest as compare_digest
 sonst:
     compare_digest = _hashopenssl.compare_digest
     _functype = type(_hashopenssl.openssl_sha256)  # builtin type
 
 try:
-    import _hmac
+    importiere _hmac
 except ImportError:
     _hmac = Nichts
 
@@ -22,7 +22,7 @@ trans_5C = bytes((x ^ 0x5C) fuer x in range(256))
 trans_36 = bytes((x ^ 0x36) fuer x in range(256))
 
 # The size of the digests returned by HMAC depends on the underlying
-# hashing module used.  Use digest_size from the instance of HMAC instead.
+# hashing module used.  Use digest_size von the instance of HMAC instead.
 digest_size = Nichts
 
 
@@ -41,7 +41,7 @@ def _get_digest_constructor(digest_like):
         return digest_like
     wenn isinstance(digest_like, str):
         def digest_wrapper(d=b''):
-            import hashlib
+            importiere hashlib
             return hashlib.new(digest_like, d)
     sonst:
         def digest_wrapper(d=b''):
@@ -116,7 +116,7 @@ klasse HMAC:
         self.block_size = self._hmac.block_size
 
     def _init_old(self, key, msg, digestmod):
-        import warnings
+        importiere warnings
 
         digest_cons = _get_digest_constructor(digestmod)
         wenn _is_shake_constructor(digest_cons):
@@ -159,7 +159,7 @@ klasse HMAC:
             return f"hmac-{self._inner.name}"
 
     def update(self, msg):
-        """Feed data from msg into this hashing object."""
+        """Feed data von msg into this hashing object."""
         inst = self._hmac or self._inner
         inst.update(msg)
 

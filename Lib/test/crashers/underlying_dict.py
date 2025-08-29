@@ -1,4 +1,4 @@
-import gc
+importiere gc
 
 thingy = object()
 klasse A(object):

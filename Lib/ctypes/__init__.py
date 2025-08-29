@@ -1,26 +1,26 @@
 """create and manipulate C data types in Python"""
 
-import os as _os, sys as _sys
-import types as _types
+importiere os as _os, sys as _sys
+importiere types as _types
 
 __version__ = "1.1.0"
 
-from _ctypes import Union, Structure, Array
-from _ctypes import _Pointer
-from _ctypes import CFuncPtr as _CFuncPtr
-from _ctypes import __version__ as _ctypes_version
-from _ctypes import RTLD_LOCAL, RTLD_GLOBAL
-from _ctypes import ArgumentError
-from _ctypes import SIZEOF_TIME_T
-from _ctypes import CField
+von _ctypes importiere Union, Structure, Array
+von _ctypes importiere _Pointer
+von _ctypes importiere CFuncPtr as _CFuncPtr
+von _ctypes importiere __version__ as _ctypes_version
+von _ctypes importiere RTLD_LOCAL, RTLD_GLOBAL
+von _ctypes importiere ArgumentError
+von _ctypes importiere SIZEOF_TIME_T
+von _ctypes importiere CField
 
-from struct import calcsize as _calcsize
+von struct importiere calcsize as _calcsize
 
 wenn __version__ != _ctypes_version:
     raise Exception("Version number mismatch", __version__, _ctypes_version)
 
 wenn _os.name == "nt":
-    from _ctypes import COMError, CopyComPointer, FormatError
+    von _ctypes importiere COMError, CopyComPointer, FormatError
 
 DEFAULT_MODE = RTLD_LOCAL
 wenn _os.name == "posix" and _sys.platform == "darwin":
@@ -32,7 +32,7 @@ wenn _os.name == "posix" and _sys.platform == "darwin":
     wenn int(_os.uname().release.split('.')[0]) < 8:
         DEFAULT_MODE = RTLD_GLOBAL
 
-from _ctypes import FUNCFLAG_CDECL as _FUNCFLAG_CDECL, \
+von _ctypes importiere FUNCFLAG_CDECL as _FUNCFLAG_CDECL, \
      FUNCFLAG_PYTHONAPI as _FUNCFLAG_PYTHONAPI, \
      FUNCFLAG_USE_ERRNO as _FUNCFLAG_USE_ERRNO, \
      FUNCFLAG_USE_LASTERROR as _FUNCFLAG_USE_LASTERROR
@@ -82,7 +82,7 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     callable object:
 
     prototype(integer address) -> foreign function
-    prototype(callable) -> create and return a C callable function from callable
+    prototype(callable) -> create and return a C callable function von callable
     prototype(integer index, method name[, paramflags]) -> foreign function calling a COM method
     prototype((ordinal number, dll object)[, paramflags]) -> foreign function exported by ordinal
     prototype((function name, dll object)[, paramflags]) -> foreign function exported by name
@@ -108,8 +108,8 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     return CFunctionType
 
 wenn _os.name == "nt":
-    from _ctypes import LoadLibrary as _dlopen
-    from _ctypes import FUNCFLAG_STDCALL as _FUNCFLAG_STDCALL
+    von _ctypes importiere LoadLibrary as _dlopen
+    von _ctypes importiere FUNCFLAG_STDCALL as _FUNCFLAG_STDCALL
 
     _win_functype_cache = {}
     def WINFUNCTYPE(restype, *argtypes, **kw):
@@ -137,16 +137,16 @@ wenn _os.name == "nt":
         WINFUNCTYPE.__doc__ = CFUNCTYPE.__doc__.replace("CFUNCTYPE", "WINFUNCTYPE")
 
 sowenn _os.name == "posix":
-    from _ctypes import dlopen as _dlopen
+    von _ctypes importiere dlopen as _dlopen
 
-from _ctypes import sizeof, byref, addressof, alignment, resize
-from _ctypes import get_errno, set_errno
-from _ctypes import _SimpleCData
+von _ctypes importiere sizeof, byref, addressof, alignment, resize
+von _ctypes importiere get_errno, set_errno
+von _ctypes importiere _SimpleCData
 
 def _check_size(typ, typecode=Nichts):
     # Check wenn sizeof(ctypes_type) against struct.calcsize.  This
     # should protect somewhat against a misconfigured libffi.
-    from struct import calcsize
+    von struct importiere calcsize
     wenn typecode is Nichts:
         # Most _type_ codes are the same as used in struct
         typecode = typ._type_
@@ -280,7 +280,7 @@ def POINTER(cls):
         pass
     wenn isinstance(cls, str):
         # handle old-style incomplete types (see test_ctypes.test_incomplete)
-        import warnings
+        importiere warnings
         warnings._deprecated("ctypes.POINTER with string", remove=(3, 19))
         try:
             return _pointer_type_cache_fallback[cls]
@@ -304,7 +304,7 @@ def pointer(obj):
 
 klasse _PointerTypeCache:
     def __setitem__(self, cls, pointer_type):
-        import warnings
+        importiere warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
         try:
             cls.__pointer_type__ = pointer_type
@@ -312,7 +312,7 @@ klasse _PointerTypeCache:
             _pointer_type_cache_fallback[cls] = pointer_type
 
     def __getitem__(self, cls):
-        import warnings
+        importiere warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
         try:
             return cls.__pointer_type__
@@ -320,7 +320,7 @@ klasse _PointerTypeCache:
             return _pointer_type_cache_fallback[cls]
 
     def get(self, cls, default=Nichts):
-        import warnings
+        importiere warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
         try:
             return cls.__pointer_type__
@@ -441,7 +441,7 @@ klasse CDLL(object):
             wenn winmode is not Nichts:
                 mode = winmode
             sonst:
-                import nt
+                importiere nt
                 mode = nt._LOAD_LIBRARY_SEARCH_DEFAULT_DIRS
                 wenn '/' in name or '\\' in name:
                     self._name = nt._getfullpathname(self._name)
@@ -492,8 +492,8 @@ wenn _os.name == "nt":
         _func_flags_ = _FUNCFLAG_STDCALL
 
     # XXX Hm, what about HRESULT as normal parameter?
-    # Mustn't it derive from c_long then?
-    from _ctypes import _check_HRESULT, _SimpleCData
+    # Mustn't it derive von c_long then?
+    von _ctypes importiere _check_HRESULT, _SimpleCData
     klasse HRESULT(_SimpleCData):
         _type_ = "l"
         # _check_retval_ is called with the function's result when it
@@ -556,7 +556,7 @@ wenn _os.name == "nt":
     oledll = LibraryLoader(OleDLL)
 
     GetLastError = windll.kernel32.GetLastError
-    from _ctypes import get_last_error, set_last_error
+    von _ctypes importiere get_last_error, set_last_error
 
     def WinError(code=Nichts, descr=Nichts):
         wenn code is Nichts:
@@ -577,8 +577,8 @@ sowenn sizeof(c_ulonglong) == sizeof(c_void_p):
 
 # functions
 
-from _ctypes import _memmove_addr, _memset_addr, _string_at_addr, _cast_addr
-from _ctypes import _memoryview_at_addr
+von _ctypes importiere _memmove_addr, _memset_addr, _string_at_addr, _cast_addr
+von _ctypes importiere _memoryview_at_addr
 
 ## void *memmove(void *, const void *, size_t);
 memmove = CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_size_t)(_memmove_addr)
@@ -613,7 +613,7 @@ def memoryview_at(ptr, size, readonly=Falsch):
     return _memoryview_at(ptr, size, bool(readonly))
 
 try:
-    from _ctypes import _wstring_at_addr
+    von _ctypes importiere _wstring_at_addr
 except ImportError:
     pass
 sonst:
@@ -641,8 +641,8 @@ wenn _os.name == "nt": # COM stuff
             return 0 # S_OK
         return ccom.DllCanUnloadNow()
 
-from ctypes._endian import BigEndianStructure, LittleEndianStructure
-from ctypes._endian import BigEndianUnion, LittleEndianUnion
+von ctypes._endian importiere BigEndianStructure, LittleEndianStructure
+von ctypes._endian importiere BigEndianUnion, LittleEndianUnion
 
 # Fill in specifically-sized types
 c_int8 = c_byte

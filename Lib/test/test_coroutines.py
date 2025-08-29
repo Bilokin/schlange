@@ -1,18 +1,18 @@
-import contextlib
-import copy
-import inspect
-import pickle
-import sys
-import types
-import traceback
-import unittest
-import warnings
-from test import support
-from test.support import import_helper
-from test.support import warnings_helper
-from test.support.script_helper import assert_python_ok
+importiere contextlib
+importiere copy
+importiere inspect
+importiere pickle
+importiere sys
+importiere types
+importiere traceback
+importiere unittest
+importiere warnings
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere warnings_helper
+von test.support.script_helper importiere assert_python_ok
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
@@ -22,7 +22,7 @@ klasse AsyncYieldFrom:
         self.obj = obj
 
     def __await__(self):
-        yield from self.obj
+        yield von self.obj
 
 
 klasse AsyncYield:
@@ -91,7 +91,7 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
             """await something()""",
 
             """async def foo():
-                yield from []
+                yield von []
             """,
 
             """async def foo():
@@ -637,7 +637,7 @@ klasse CoroutineTest(unittest.TestCase):
         coro = bar()
 
         def foo():
-            yield from coro
+            yield von coro
 
         with self.assertRaisesRegex(
                 TypeError,
@@ -650,7 +650,7 @@ klasse CoroutineTest(unittest.TestCase):
     def test_func_8(self):
         @types.coroutine
         def bar():
-            return (yield from coro)
+            return (yield von coro)
 
         async def foo():
             return 'spam'
@@ -1322,7 +1322,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         with self.assertRaisesRegex(
                 TypeError,
-                "'async with' received an object from __aenter__ "
+                "'async with' received an object von __aenter__ "
                 "that does not implement __await__: int"):
             # it's important that __aexit__ wasn't called
             run_async(foo())
@@ -1345,7 +1345,7 @@ klasse CoroutineTest(unittest.TestCase):
         except TypeError as exc:
             self.assertRegex(
                 exc.args[0],
-                "'async with' received an object from __aexit__ "
+                "'async with' received an object von __aexit__ "
                 "that does not implement __await__: int")
             self.assertWahr(exc.__context__ is not Nichts)
             self.assertWahr(isinstance(exc.__context__, ZeroDivisionError))
@@ -1370,7 +1370,7 @@ klasse CoroutineTest(unittest.TestCase):
                 CNT += 1
         with self.assertRaisesRegex(
                 TypeError,
-                "'async with' received an object from __aexit__ "
+                "'async with' received an object von __aexit__ "
                 "that does not implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 1)
@@ -1384,7 +1384,7 @@ klasse CoroutineTest(unittest.TestCase):
                     break
         with self.assertRaisesRegex(
                 TypeError,
-                "'async with' received an object from __aexit__ "
+                "'async with' received an object von __aexit__ "
                 "that does not implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 2)
@@ -1398,7 +1398,7 @@ klasse CoroutineTest(unittest.TestCase):
                     continue
         with self.assertRaisesRegex(
                 TypeError,
-                "'async with' received an object from __aexit__ "
+                "'async with' received an object von __aexit__ "
                 "that does not implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 3)
@@ -1411,7 +1411,7 @@ klasse CoroutineTest(unittest.TestCase):
                 return
         with self.assertRaisesRegex(
                 TypeError,
-                "'async with' received an object from __aexit__ "
+                "'async with' received an object von __aexit__ "
                 "that does not implement __await__: int"):
             run_async(foo())
         self.assertEqual(CNT, 4)
@@ -1461,7 +1461,7 @@ klasse CoroutineTest(unittest.TestCase):
             self.assertWahr(isinstance(exc.__context__.__context__,
                                        RuntimeError))
         sonst:
-            self.fail('exception from __aexit__ did not propagate')
+            self.fail('exception von __aexit__ did not propagate')
 
     def test_with_11(self):
         CNT = 0
@@ -1483,7 +1483,7 @@ klasse CoroutineTest(unittest.TestCase):
         except NotImplementedError as exc:
             self.assertWahr(exc.__context__ is Nichts)
         sonst:
-            self.fail('exception from __aenter__ did not propagate')
+            self.fail('exception von __aenter__ did not propagate')
 
     def test_with_12(self):
         CNT = 0
@@ -1792,7 +1792,7 @@ klasse CoroutineTest(unittest.TestCase):
                 pass
 
         with self.assertRaisesRegex(TypeError,
-                                    'an invalid object from __anext__') as c:
+                                    'an invalid object von __anext__') as c:
             main().send(Nichts)
 
         err = c.exception
@@ -2262,7 +2262,7 @@ klasse CoroutineTest(unittest.TestCase):
         coro = a()
         len_send = coro.send(Nichts)
         len_throw = coro.throw(ZeroDivisionError)
-        # before fixing, visible stack from throw would be shorter than from send.
+        # before fixing, visible stack von throw would be shorter than von send.
         self.assertEqual(len_send, len_throw)
 
 
@@ -2468,7 +2468,7 @@ klasse UnawaitedWarningDuringShutdownTest(unittest.TestCase):
 klasse CAPITest(unittest.TestCase):
 
     def test_tp_await_1(self):
-        from _testcapi import awaitType as at
+        von _testcapi importiere awaitType as at
 
         async def foo():
             future = at(iter([1]))
@@ -2478,12 +2478,12 @@ klasse CAPITest(unittest.TestCase):
 
     def test_tp_await_2(self):
         # Test tp_await to __await__ mapping
-        from _testcapi import awaitType as at
+        von _testcapi importiere awaitType as at
         future = at(iter([1]))
         self.assertEqual(next(future.__await__()), 1)
 
     def test_tp_await_3(self):
-        from _testcapi import awaitType as at
+        von _testcapi importiere awaitType as at
 
         async def foo():
             future = at(1)

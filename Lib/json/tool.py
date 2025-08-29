@@ -3,11 +3,11 @@
 See `json.__main__` fuer a usage example (invocation as
 `python -m json.tool` is supported fuer backwards compatibility).
 """
-import argparse
-import json
-import re
-import sys
-from _colorize import get_theme, can_colorize
+importiere argparse
+importiere json
+importiere re
+importiere sys
+von _colorize importiere get_theme, can_colorize
 
 
 # The string we are colorizing is valid JSON,

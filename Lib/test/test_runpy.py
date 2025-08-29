@@ -1,18 +1,18 @@
 # Test the runpy module
-import contextlib
-import importlib.machinery, importlib.util
-import os.path
-import pathlib
-import py_compile
-import re
-import signal
-import subprocess
-import sys
-import tempfile
-import textwrap
-import unittest
-import warnings
-from test.support import (
+importiere contextlib
+importiere importlib.machinery, importlib.util
+importiere os.path
+importiere pathlib
+importiere py_compile
+importiere re
+importiere signal
+importiere subprocess
+importiere sys
+importiere tempfile
+importiere textwrap
+importiere unittest
+importiere warnings
+von test.support importiere (
     force_not_colorized_test_class,
     infinite_recursion,
     no_tracing,
@@ -20,13 +20,13 @@ from test.support import (
     requires_subprocess,
     verbose,
 )
-from test.support.import_helper import forget, make_legacy_pyc, unload
-from test.support.os_helper import create_empty_file, temp_dir, FakePath
-from test.support.script_helper import make_script, make_zip_script
+von test.support.import_helper importiere forget, make_legacy_pyc, unload
+von test.support.os_helper importiere create_empty_file, temp_dir, FakePath
+von test.support.script_helper importiere make_script, make_zip_script
 
 
-import runpy
-from runpy import _run_code, _run_module_code, run_module, run_path
+importiere runpy
+von runpy importiere _run_code, _run_module_code, run_module, run_path
 # Note: This module can't safely test _run_module_as_main as it
 # runs its tests in the current process, which would mess with the
 # real __main__ module (usually test.regrtest)
@@ -42,13 +42,13 @@ def f():
 f()
 del f
 # Check the sys module
-import sys
+importiere sys
 run_argv0 = sys.argv[0]
 run_name_in_sys_modules = __name__ in sys.modules
 module_in_sys_modules = (run_name_in_sys_modules and
                          globals() is sys.modules[__name__].__dict__)
 # Check nested operation
-import runpy
+importiere runpy
 nested = runpy._run_module_code('x=1\\n', mod_name='<run>')
 """
 
@@ -74,7 +74,7 @@ example_namespace.update(implicit_namespace)
 
 klasse CodeExecutionMixin:
     # Issue #15230 (run_path not handling run_name correctly) highlighted a
-    # problem with the way arguments were being passed from higher level APIs
+    # problem with the way arguments were being passed von higher level APIs
     # down to lower level code. This mixin makes it easier to ensure full
     # testing occurs at those upper layers as well, not just at the utility
     # layer
@@ -199,7 +199,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         except ImportError:
             pass
         sonst:
-            self.fail("Expected import error fuer " + mod_name)
+            self.fail("Expected importiere error fuer " + mod_name)
 
     def test_invalid_names(self):
         # Builtin module
@@ -317,7 +317,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         def create_ns(init_globals):
             return run_module(mod_name, init_globals, alter_sys=alter_sys)
         try:
-            wenn verbose > 1: drucke("Running from source:", mod_name)
+            wenn verbose > 1: drucke("Running von source:", mod_name)
             self.check_code_execution(create_ns, expected_ns)
             importlib.invalidate_caches()
             __import__(mod_name)
@@ -326,7 +326,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
                 make_legacy_pyc(mod_fname)
                 unload(mod_name)  # In case loader caches paths
                 importlib.invalidate_caches()
-                wenn verbose > 1: drucke("Running from compiled:", mod_name)
+                wenn verbose > 1: drucke("Running von compiled:", mod_name)
                 self._fix_ns_for_legacy_pyc(expected_ns, alter_sys)
                 self.check_code_execution(create_ns, expected_ns)
         finally:
@@ -358,7 +358,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         def create_ns(init_globals):
             return run_module(pkg_name, init_globals, alter_sys=alter_sys)
         try:
-            wenn verbose > 1: drucke("Running from source:", pkg_name)
+            wenn verbose > 1: drucke("Running von source:", pkg_name)
             self.check_code_execution(create_ns, expected_ns)
             importlib.invalidate_caches()
             __import__(mod_name)
@@ -366,7 +366,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
             wenn not sys.dont_write_bytecode:
                 make_legacy_pyc(mod_fname)
                 unload(mod_name)  # In case loader caches paths
-                wenn verbose > 1: drucke("Running from compiled:", pkg_name)
+                wenn verbose > 1: drucke("Running von compiled:", pkg_name)
                 importlib.invalidate_caches()
                 self._fix_ns_for_legacy_pyc(expected_ns, alter_sys)
                 self.check_code_execution(create_ns, expected_ns)
@@ -399,9 +399,9 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
 
     def _check_relative_imports(self, depth, run_name=Nichts):
         contents = r"""\
-from __future__ import absolute_import
-from . import sibling
-from ..uncle.cousin import nephew
+von __future__ importiere absolute_import
+von . importiere sibling
+von ..uncle.cousin importiere nephew
 """
         pkg_dir, mod_fname, mod_name, mod_spec = (
                self._make_pkg(contents, depth))
@@ -412,8 +412,8 @@ from ..uncle.cousin import nephew
         try:
             self._add_relative_modules(pkg_dir, contents, depth)
             pkg_name = mod_name.rpartition('.')[0]
-            wenn verbose > 1: drucke("Running from source:", mod_name)
-            d1 = run_module(mod_name, run_name=run_name) # Read from source
+            wenn verbose > 1: drucke("Running von source:", mod_name)
+            d1 = run_module(mod_name, run_name=run_name) # Read von source
             self.assertEqual(d1["__name__"], expected_name)
             self.assertEqual(d1["__package__"], pkg_name)
             self.assertIn("sibling", d1)
@@ -425,9 +425,9 @@ from ..uncle.cousin import nephew
             wenn not sys.dont_write_bytecode:
                 make_legacy_pyc(mod_fname)
                 unload(mod_name)  # In case the loader caches paths
-                wenn verbose > 1: drucke("Running from compiled:", mod_name)
+                wenn verbose > 1: drucke("Running von compiled:", mod_name)
                 importlib.invalidate_caches()
-                d2 = run_module(mod_name, run_name=run_name) # Read from bytecode
+                d2 = run_module(mod_name, run_name=run_name) # Read von bytecode
                 self.assertEqual(d2["__name__"], expected_name)
                 self.assertEqual(d2["__package__"], pkg_name)
                 self.assertIn("sibling", d2)
@@ -564,7 +564,7 @@ from ..uncle.cousin import nephew
     def test_pkgutil_walk_packages(self):
         # This is a dodgy hack to use the test_runpy infrastructure to test
         # issue #15343. Issue #15348 declares this is indeed a dodgy hack ;)
-        import pkgutil
+        importiere pkgutil
         max_depth = 4
         base_name = "__runpy_pkg__"
         package_suffixes = ["uncle", "uncle.cousin"]
@@ -808,7 +808,7 @@ klasse TestExit(unittest.TestCase):
         run_module.write_text(
             textwrap.dedent(
                 """\
-                import runpy
+                importiere runpy
                 runpy.run_module("ham")
                 """
             )
@@ -821,7 +821,7 @@ klasse TestExit(unittest.TestCase):
         run_module_as_main.write_text(
             textwrap.dedent(
                 """\
-                import runpy
+                importiere runpy
                 runpy._run_module_as_main("ham")
                 """
             )

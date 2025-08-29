@@ -1,12 +1,12 @@
 # Test some Unicode file name semantics
 # We don't test many operations on files other than
 # that their names can be used with Unicode characters.
-import os, glob, time, shutil
-import sys
-import unicodedata
+importiere os, glob, time, shutil
+importiere sys
+importiere unicodedata
 
-import unittest
-from test.support.os_helper import (rmtree, change_cwd, TESTFN_UNICODE,
+importiere unittest
+von test.support.os_helper importiere (rmtree, change_cwd, TESTFN_UNICODE,
     TESTFN_UNENCODABLE, create_empty_file)
 
 

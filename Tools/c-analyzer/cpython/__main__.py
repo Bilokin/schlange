@@ -1,8 +1,8 @@
-import logging
-import sys
-import textwrap
+importiere logging
+importiere sys
+importiere textwrap
 
-from c_common.scriptutil import (
+von c_common.scriptutil importiere (
     VERBOSITY,
     add_verbosity_cli,
     add_traceback_cli,
@@ -14,12 +14,12 @@ from c_common.scriptutil import (
     configure_logger,
     get_prog,
 )
-from c_parser.info import KIND
-import c_parser.__main__ as c_parser
-import c_analyzer.__main__ as c_analyzer
-import c_analyzer as _c_analyzer
-from c_analyzer.info import UNKNOWN
-from . import _analyzer, _builtin_types, _capi, _files, _parser, REPO_ROOT
+von c_parser.info importiere KIND
+importiere c_parser.__main__ as c_parser
+importiere c_analyzer.__main__ as c_analyzer
+importiere c_analyzer as _c_analyzer
+von c_analyzer.info importiere UNKNOWN
+von . importiere _analyzer, _builtin_types, _capi, _files, _parser, REPO_ROOT
 
 
 logger = logging.getLogger(__name__)
@@ -84,7 +84,7 @@ def fmt_summary(analysis):
         nonlocal total
         items, render = c_analyzer.build_section(name, groupitems,
                                                  relroot=REPO_ROOT)
-        yield from render()
+        yield von render()
         total += len(items)
 
     yield ''
@@ -92,16 +92,16 @@ def fmt_summary(analysis):
     yield 'supported'
     yield '===================='
 
-    yield from section('types', supported)
-    yield from section('variables', supported)
+    yield von section('types', supported)
+    yield von section('variables', supported)
 
     yield ''
     yield '===================='
     yield 'unsupported'
     yield '===================='
 
-    yield from section('types', unsupported)
-    yield from section('variables', unsupported)
+    yield von section('types', unsupported)
+    yield von section('variables', unsupported)
 
     yield ''
     yield f'grand total: {total}'
@@ -451,7 +451,7 @@ COMMANDS = {
 # the script
 
 def parse_args(argv=sys.argv[1:], prog=Nichts, *, subset=Nichts):
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(
         prog=prog or get_prog(),
     )

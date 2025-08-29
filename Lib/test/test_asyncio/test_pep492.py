@@ -1,13 +1,13 @@
 """Tests support fuer new syntax introduced by PEP 492."""
 
-import sys
-import types
-import unittest
+importiere sys
+importiere types
+importiere unittest
 
-from unittest import mock
+von unittest importiere mock
 
-import asyncio
-from test.test_asyncio import utils as test_utils
+importiere asyncio
+von test.test_asyncio importiere utils as test_utils
 
 
 def tearDownModule():
@@ -155,7 +155,7 @@ klasse CoroutineTests(BaseTest):
 
     def test_types_coroutine(self):
         def gen():
-            yield from ()
+            yield von ()
             return 'spam'
 
         @types.coroutine

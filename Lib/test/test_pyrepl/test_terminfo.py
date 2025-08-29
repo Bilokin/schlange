@@ -1,25 +1,25 @@
 """Tests comparing PyREPL's pure Python curses implementation with the standard curses module."""
 
-import json
-import os
-import subprocess
-import sys
-import unittest
-from test.support import requires, has_subprocess_support
-from textwrap import dedent
+importiere json
+importiere os
+importiere subprocess
+importiere sys
+importiere unittest
+von test.support importiere requires, has_subprocess_support
+von textwrap importiere dedent
 
 # Only run these tests wenn curses is available
 requires("curses")
 
 try:
-    import _curses
+    importiere _curses
 except ImportError:
     try:
-        import curses as _curses
+        importiere curses as _curses
     except ImportError:
         _curses = Nichts
 
-from _pyrepl import terminfo
+von _pyrepl importiere terminfo
 
 
 ABSENT_STRING = terminfo.ABSENT_STRING
@@ -93,8 +93,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
             with self.subTest(term=term):
                 ncurses_code = dedent(
                     f"""
-                    import _curses
-                    import json
+                    importiere _curses
+                    importiere json
                     try:
                         _curses.setupterm({repr(term)}, 1)
                         drucke(json.dumps({{"success": Wahr}}))
@@ -131,12 +131,12 @@ klasse TestCursesCompatibility(unittest.TestCase):
                     pass
 
     def test_setupterm_none(self):
-        """Test setupterm with Nichts (uses TERM from environment)."""
+        """Test setupterm with Nichts (uses TERM von environment)."""
         # Test with current TERM
         ncurses_code = dedent(
             """
-            import _curses
-            import json
+            importiere _curses
+            importiere json
             try:
                 _curses.setupterm(Nichts, 1)
                 drucke(json.dumps({"success": Wahr}))
@@ -171,13 +171,13 @@ klasse TestCursesCompatibility(unittest.TestCase):
         # Test with a known terminal type
         term = "xterm"
 
-        # Get ALL capabilities from infocmp
+        # Get ALL capabilities von infocmp
         all_caps = self.infocmp(term)
 
         ncurses_code = dedent(
             f"""
-            import _curses
-            import json
+            importiere _curses
+            importiere json
             _curses.setupterm({repr(term)}, 1)
             results = {{}}
             fuer cap in {repr(all_caps)}:
@@ -235,8 +235,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
         # Test standard curses behavior with string in subprocess
         ncurses_code = dedent(
             f"""
-            import _curses
-            import json
+            importiere _curses
+            importiere json
             _curses.setupterm({repr(term)}, 1)
 
             # Test with string input
@@ -310,8 +310,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
             # Get ncurses results in subprocess
             ncurses_code = dedent(
                 f"""
-                import _curses
-                import json
+                importiere _curses
+                importiere json
                 _curses.setupterm({repr(term)}, 1)
 
                 # Get cup capability
@@ -341,7 +341,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
             fuer row, col in test_cases:
                 with self.subTest(row=row, col=col):
-                    # Standard curses tparm from subprocess
+                    # Standard curses tparm von subprocess
                     key = f"{row},{col}"
                     wenn (
                         isinstance(ncurses_data[key], dict)
@@ -382,7 +382,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
             "ich": 1,  # insert_character with count
         }
 
-        # Get all capabilities from PyREPL first
+        # Get all capabilities von PyREPL first
         pyrepl_caps = {}
         fuer cap in param_caps:
             cap_value = ti.get(cap)
@@ -398,8 +398,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
         # Get ncurses results in subprocess
         ncurses_code = dedent(
             f"""
-            import _curses
-            import json
+            importiere _curses
+            importiere json
             _curses.setupterm({repr(term)}, 1)
 
             param_caps = {repr(param_caps)}
@@ -459,8 +459,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
         ncurses_code = dedent(
             f"""
-            import _curses
-            import json
+            importiere _curses
+            importiere json
             _curses.setupterm({repr(term)}, 1)
 
             # Test with Nichts
@@ -508,15 +508,15 @@ klasse TestCursesCompatibility(unittest.TestCase):
             "tmux",  # tmux
         ]
 
-        # Get all string capabilities from ncurses
+        # Get all string capabilities von ncurses
         fuer term in special_terms:
             with self.subTest(term=term):
                 all_caps = self.infocmp(term)
                 ncurses_code = dedent(
                     f"""
-                    import _curses
-                    import json
-                    import sys
+                    importiere _curses
+                    importiere json
+                    importiere sys
 
                     try:
                         _curses.setupterm({repr(term)}, 1)
@@ -595,8 +595,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
         # Check wenn standard curses can setup this terminal in subprocess
         ncurses_code = dedent(
             f"""
-            import _curses
-            import json
+            importiere _curses
+            importiere json
             try:
                 _curses.setupterm({repr(fake_term)}, 1)
                 drucke(json.dumps({{"success": Wahr}}))

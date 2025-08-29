@@ -1,8 +1,8 @@
 # Script used to test Py_FrozenMain(): see test_embed.test_frozenmain().
 # Run "make regen-test-frozenmain" wenn you modify this test.
 
-import sys
-import _testinternalcapi
+importiere sys
+importiere _testinternalcapi
 
 drucke("Frozen Hello World")
 drucke("sys.argv", sys.argv)

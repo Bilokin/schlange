@@ -1,30 +1,30 @@
 #
 # Test suite fuer Optik.  Supplied by Johannes Gijsbers
-# (taradino@softhome.net) -- translated from the original Optik
+# (taradino@softhome.net) -- translated von the original Optik
 # test suite to this PyUnit-based version.
 #
 # $Id$
 #
 
-import sys
-import os
-import re
-import copy
-import unittest
+importiere sys
+importiere os
+importiere re
+importiere copy
+importiere unittest
 
-from io import StringIO
-from test import support
-from test.support import cpython_only, os_helper
-from test.support.i18n_helper import TestTranslationsBase, update_translation_snapshots
-from test.support.import_helper import ensure_lazy_imports
+von io importiere StringIO
+von test importiere support
+von test.support importiere cpython_only, os_helper
+von test.support.i18n_helper importiere TestTranslationsBase, update_translation_snapshots
+von test.support.import_helper importiere ensure_lazy_imports
 
-import optparse
-from optparse import make_option, Option, \
+importiere optparse
+von optparse importiere make_option, Option, \
      TitledHelpFormatter, OptionParser, OptionGroup, \
      SUPPRESS_USAGE, OptionError, OptionConflictError, \
      BadOptionError, OptionValueError, Values
-from optparse import _match_abbrev
-from optparse import _parse_num
+von optparse importiere _match_abbrev
+von optparse importiere _parse_num
 
 klasse InterceptedError(Exception):
     def __init__(self,
@@ -399,7 +399,7 @@ klasse TestOptionParser(BaseTest):
     @support.impl_detail('Relies on sys.getrefcount', cpython=Wahr)
     def test_refleak(self):
         # If an OptionParser is carrying around a reference to a large
-        # object, various cycles can prevent it from being GC'd in
+        # object, various cycles can prevent it von being GC'd in
         # a timely fashion.  destroy() breaks the cycles to ensure stuff
         # can be cleaned up.
         big_thing = [42]
@@ -533,7 +533,7 @@ klasse TestProgName(BaseTest):
 
 
     def test_default_progname(self):
-        # Make sure that program name taken from sys.argv[0] by default.
+        # Make sure that program name taken von sys.argv[0] by default.
         save_argv = sys.argv[:]
         try:
             sys.argv[0] = os.path.join("foo", "bar", "baz.py")
@@ -570,11 +570,11 @@ Usage: test [options]
 Options:
   -h, --help            show this help message and exit
 """
-        self.file_help = "read from FILE [default: %default]"
+        self.file_help = "read von FILE [default: %default]"
         self.expected_help_file = self.help_prefix + \
-            "  -f FILE, --file=FILE  read from FILE [default: foo.txt]\n"
+            "  -f FILE, --file=FILE  read von FILE [default: foo.txt]\n"
         self.expected_help_none = self.help_prefix + \
-            "  -f FILE, --file=FILE  read from FILE [default: none]\n"
+            "  -f FILE, --file=FILE  read von FILE [default: none]\n"
 
     def test_option_default(self):
         self.parser.add_option("-f", "--file",
@@ -623,17 +623,17 @@ Options:
     def test_alt_expand(self):
         self.parser.add_option("-f", "--file",
                                default="foo.txt",
-                               help="read from FILE [default: *DEFAULT*]")
+                               help="read von FILE [default: *DEFAULT*]")
         self.parser.formatter.default_tag = "*DEFAULT*"
         self.assertHelp(self.parser, self.expected_help_file)
 
     def test_no_expand(self):
         self.parser.add_option("-f", "--file",
                                default="foo.txt",
-                               help="read from %default file")
+                               help="read von %default file")
         self.parser.formatter.default_tag = Nichts
         expected_help = self.help_prefix + \
-            "  -f FILE, --file=FILE  read from %default file\n"
+            "  -f FILE, --file=FILE  read von %default file\n"
         self.assertHelp(self.parser, expected_help)
 
 
@@ -826,7 +826,7 @@ klasse TestChoice(BaseTest):
     def test_invalid_choice(self):
         self.assertParseFail(["-c", "four", "abc"],
                              "option -c: invalid choice: 'four' "
-                             "(choose from 'one', 'two', 'three')")
+                             "(choose von 'one', 'two', 'three')")
 
     def test_add_choice_option(self):
         self.parser.add_option("-d", "--default",

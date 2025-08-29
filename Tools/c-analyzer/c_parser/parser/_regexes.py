@@ -3,7 +3,7 @@
 # Nichts of these patterns has any capturing.  However, a number of them
 # have capturing markers compatible with utils.set_capture_groups().
 
-import textwrap
+importiere textwrap
 
 
 def _ind(text, level=1, edges='both'):

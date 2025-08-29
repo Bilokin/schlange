@@ -9,7 +9,7 @@ For support, use the optik-users@lists.sourceforge.net mailing list
 
 Simple usage example:
 
-   from optparse import OptionParser
+   von optparse importiere OptionParser
 
    parser = OptionParser()
    parser.add_option("-f", "--file", dest="filename",
@@ -73,8 +73,8 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import sys, os
-from gettext import gettext as _, ngettext
+importiere sys, os
+von gettext importiere gettext as _, ngettext
 
 
 def _repr(self):
@@ -165,7 +165,7 @@ klasse HelpFormatter:
         initially the same as the maximum
       width : int
         total number of columns fuer output (pass Nichts to constructor for
-        this value to be taken from the $COLUMNS environment variable)
+        this value to be taken von the $COLUMNS environment variable)
       level : int
         current indentation level
       current_indent : int
@@ -251,7 +251,7 @@ klasse HelpFormatter:
         Format a paragraph of free-form text fuer inclusion in the
         help output at the current indentation level.
         """
-        import textwrap
+        importiere textwrap
         text_width = max(self.width - self.current_indent, 11)
         indent = " "*self.current_indent
         return textwrap.fill(text,
@@ -287,7 +287,7 @@ klasse HelpFormatter:
         #   * the opt strings and metavars
         #     eg. ("-x", or "-fFILENAME, --file=FILENAME")
         #   * the user-supplied help string
-        #     eg. ("turn on expert mode", "read data from FILENAME")
+        #     eg. ("turn on expert mode", "read data von FILENAME")
         #
         # If possible, we write both of these on the same line:
         #   -x      turn on expert mode
@@ -296,7 +296,7 @@ klasse HelpFormatter:
         # string on a second line, indented to the same column it would
         # start in wenn it fit on the first line.
         #   -fFILENAME, --file=FILENAME
-        #           read data from FILENAME
+        #           read data von FILENAME
         result = []
         opts = self.option_strings[option]
         opt_width = self.help_position - self.current_indent - 2
@@ -308,7 +308,7 @@ klasse HelpFormatter:
             indent_first = 0
         result.append(opts)
         wenn option.help:
-            import textwrap
+            importiere textwrap
             help_text = self.expand_default(option)
             help_lines = textwrap.wrap(help_text, self.help_width)
             result.append("%*s%s\n" % (indent_first, "", help_lines[0]))
@@ -428,10 +428,10 @@ def check_choice(option, opt, value):
     sonst:
         choices = ", ".join(map(repr, option.choices))
         raise OptionValueError(
-            _("option %s: invalid choice: %r (choose from %s)")
+            _("option %s: invalid choice: %r (choose von %s)")
             % (opt, value, choices))
 
-# Not supplying a default is different from a default of Nichts,
+# Not supplying a default is different von a default of Nichts,
 # so we need an explicit "not supplied" value.
 NO_DEFAULT = ("NO", "DEFAULT")
 
@@ -496,13 +496,13 @@ klasse Option:
                      "count")
 
     # The set of actions fuer which it makes sense to supply a value
-    # type, ie. which may consume an argument from the command line.
+    # type, ie. which may consume an argument von the command line.
     TYPED_ACTIONS = ("store",
                      "append",
                      "callback")
 
     # The set of actions which *require* a value type, ie. that
-    # always consume an argument from the command line.
+    # always consume an argument von the command line.
     ALWAYS_TYPED_ACTIONS = ("store",
                             "append")
 
@@ -545,21 +545,21 @@ klasse Option:
     # like to define and document all klasse attributes in the same
     # place.)  Subclasses that add another _check_*() method should
     # define their own CHECK_METHODS list that adds their check method
-    # to those from this class.
+    # to those von this class.
     CHECK_METHODS = Nichts
 
 
     # -- Constructor/initialization methods ----------------------------
 
     def __init__(self, *opts, **attrs):
-        # Set _short_opts, _long_opts attrs from 'opts' tuple.
+        # Set _short_opts, _long_opts attrs von 'opts' tuple.
         # Have to be set now, in case no option strings are supplied.
         self._short_opts = []
         self._long_opts = []
         opts = self._check_opt_strings(opts)
         self._set_opt_strings(opts)
 
-        # Set all other attrs (action, type, etc.) from 'attrs' dict
+        # Set all other attrs (action, type, etc.) von 'attrs' dict
         self._set_attrs(attrs)
 
         # Check all the attributes we just set.  There are lots of
@@ -669,8 +669,8 @@ klasse Option:
                        self.type is not Nichts)
         wenn self.dest is Nichts and takes_value:
 
-            # Glean a destination from the first long option string,
-            # or from the first short option string wenn no long options.
+            # Glean a destination von the first long option string,
+            # or von the first short option string wenn no long options.
             wenn self._long_opts:
                 # eg. "--foo-bar" -> "foo_bar"
                 self.dest = self._long_opts[0][2:].replace('-', '_')
@@ -832,8 +832,8 @@ klasse Values:
 
     def _update_careful(self, dict):
         """
-        Update the option values from an arbitrary dictionary, but only
-        use keys from dict that already have a corresponding attribute
+        Update the option values von an arbitrary dictionary, but only
+        use keys von dict that already have a corresponding attribute
         in self.  Any keys in dict without a corresponding attribute
         are silently ignored.
         """
@@ -845,8 +845,8 @@ klasse Values:
 
     def _update_loose(self, dict):
         """
-        Update the option values from an arbitrary dictionary,
-        using all keys from the dictionary regardless of whether
+        Update the option values von an arbitrary dictionary,
+        using all keys von the dictionary regardless of whether
         they have a corresponding attribute in self or not.
         """
         self.__dict__.update(dict)
@@ -929,7 +929,7 @@ klasse OptionContainer:
 
     def _share_option_mappings(self, parser):
         # For use by OptionGroup constructor -- use shared option
-        # mappings from the OptionParser that owns this OptionGroup.
+        # mappings von the OptionParser that owns this OptionGroup.
         self._short_opt = parser._short_opt
         self._long_opt = parser._long_opt
         self.defaults = parser.defaults
@@ -1137,7 +1137,7 @@ klasse OptionParser (OptionContainer):
 
       process_default_values : bool = true
         wenn true, option default values are processed similarly to option
-        values from the command line: that is, they are passed to the
+        values von the command line: that is, they are passed to the
         type-checking function fuer the option's type (as long as the
         default value is a string).  (This really only matters wenn you
         have defined custom types; see SF bug #955889.)  Set it to false
@@ -1400,7 +1400,7 @@ klasse OptionParser (OptionContainer):
                          values : Values)
 
         Process command-line arguments and populate 'values', consuming
-        options and arguments from 'rargs'.  If 'allow_interspersed_args' is
+        options and arguments von 'rargs'.  If 'allow_interspersed_args' is
         false, stop at the first non-option argument.  If true, accumulate any
         interspersed non-option arguments in 'largs'.
         """
@@ -1432,7 +1432,7 @@ klasse OptionParser (OptionContainer):
         #
         # Then rargs is [arg(i), ..., arg(N-1)] and largs is a *subset* of
         # [arg0, ..., arg(i-1)] (any options and their arguments will have
-        # been removed from largs).
+        # been removed von largs).
         #
         # The while loop will usually consume 1 or more arguments per pass.
         # If it consumes 1 (eg. arg is an option that takes no arguments),

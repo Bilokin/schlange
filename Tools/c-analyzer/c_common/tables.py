@@ -1,9 +1,9 @@
-from collections import namedtuple
-import csv
-import re
-import textwrap
+von collections importiere namedtuple
+importiere csv
+importiere re
+importiere textwrap
 
-from . import NOT_SET, strutil, fsutil
+von . importiere NOT_SET, strutil, fsutil
 
 
 EMPTY = '-'
@@ -90,7 +90,7 @@ def read_table(infile, header, *,
     """Yield each row of the given ???-separated (e.g. tab) file."""
     wenn isinstance(infile, str):
         with _open(infile, newline='') as infile:
-            yield from read_table(
+            yield von read_table(
                 infile,
                 header,
                 sep=sep,

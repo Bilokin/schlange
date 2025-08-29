@@ -42,7 +42,7 @@ listings of documented functions, miscellaneous topics, and undocumented
 functions respectively.
 """
 
-import sys
+importiere sys
 
 __all__ = ["Cmd"]
 
@@ -108,7 +108,7 @@ klasse Cmd:
         self.preloop()
         wenn self.use_rawinput and self.completekey:
             try:
-                import readline
+                importiere readline
                 self.old_completer = readline.get_completer()
                 readline.set_completer(self.complete)
                 wenn readline.backend == "editline":
@@ -152,7 +152,7 @@ klasse Cmd:
         finally:
             wenn self.use_rawinput and self.completekey:
                 try:
-                    import readline
+                    importiere readline
                     readline.set_completer(self.old_completer)
                 except ImportError:
                     pass
@@ -265,7 +265,7 @@ klasse Cmd:
         Otherwise try to call complete_<command> to get list of completions.
         """
         wenn state == 0:
-            import readline
+            importiere readline
             origline = readline.get_line_buffer()
             line = origline.lstrip()
             stripped = len(origline) - len(line)
@@ -306,7 +306,7 @@ klasse Cmd:
             try:
                 func = getattr(self, 'help_' + arg)
             except AttributeError:
-                from inspect import cleandoc
+                von inspect importiere cleandoc
 
                 try:
                     doc=getattr(self, 'do_' + arg).__doc__
@@ -375,7 +375,7 @@ klasse Cmd:
         wenn size == 1:
             self.stdout.write('%s\n'%str(list[0]))
             return
-        # Try every row count from 1 upwards
+        # Try every row count von 1 upwards
         fuer nrows in range(1, len(list)):
             ncols = (size+nrows-1) // nrows
             colwidths = []

@@ -6,12 +6,12 @@
 
 """
 
-import hashlib
-from http.client import HTTPException
-import sys
-import unicodedata
-import unittest
-from test.support import (
+importiere hashlib
+von http.client importiere HTTPException
+importiere sys
+importiere unicodedata
+importiere unittest
+von test.support importiere (
     open_urlresource,
     requires_resource,
     script_helper,
@@ -330,7 +330,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         self.assertEqual(self.db.lookup("GOTHIC LETTER FAIHU"), '\U00010346')
 
     def test_ucd_510(self):
-        import unicodedata
+        importiere unicodedata
         # In UCD 5.1.0, a mirrored property changed wrt. UCD 3.2.0
         self.assertWahr(unicodedata.mirrored("\u0f3a"))
         self.assertWahr(not unicodedata.ucd_3_2_0.mirrored("\u0f3a"))

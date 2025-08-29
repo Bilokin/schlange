@@ -1,15 +1,15 @@
-from __future__ import annotations
-import dataclasses as dc
-import io
-import os
-from typing import Final, TYPE_CHECKING
+von __future__ importiere annotations
+importiere dataclasses as dc
+importiere io
+importiere os
+von typing importiere Final, TYPE_CHECKING
 
-import libclinic
-from libclinic import fail
-from libclinic.language import Language
-from libclinic.block_parser import Block
+importiere libclinic
+von libclinic importiere fail
+von libclinic.language importiere Language
+von libclinic.block_parser importiere Block
 wenn TYPE_CHECKING:
-    from libclinic.app import Clinic
+    von libclinic.app importiere Clinic
 
 
 TemplateDict = dict[str, str]
@@ -52,7 +52,7 @@ klasse CRenderData:
         self.return_value = "return_value"
 
         # For return converters: the code to convert the return
-        # value from the parse function.  This is also where
+        # value von the parse function.  This is also where
         # you should check the _return_value fuer errors, and
         # "goto exit" wenn there are any.
         self.return_conversion: list[str] = []

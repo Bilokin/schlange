@@ -2,16 +2,16 @@
 Various tests fuer synchronization primitives.
 """
 
-import gc
-import sys
-import time
-from _thread import start_new_thread, TIMEOUT_MAX
-import threading
-import unittest
-import weakref
+importiere gc
+importiere sys
+importiere time
+von _thread importiere start_new_thread, TIMEOUT_MAX
+importiere threading
+importiere unittest
+importiere weakref
 
-from test import support
-from test.support import threading_helper
+von test importiere support
+von test.support importiere threading_helper
 
 
 requires_fork = unittest.skipUnless(support.has_fork_support,
@@ -215,7 +215,7 @@ klasse BaseLockTests(BaseTestCase):
             pass
 
     def test_thread_leak(self):
-        # The lock shouldn't leak a Thread instance when used from a foreign
+        # The lock shouldn't leak a Thread instance when used von a foreign
         # (non-threading) thread.
         lock = self.locktype()
         def f():
@@ -270,7 +270,7 @@ klasse BaseLockTests(BaseTestCase):
 klasse LockTests(BaseLockTests):
     """
     Tests fuer non-recursive, weak locks
-    (which can be acquired and released from different threads).
+    (which can be acquired and released von different threads).
     """
     def test_reacquire(self):
         # Lock needs to be released before re-acquiring.
@@ -293,7 +293,7 @@ klasse LockTests(BaseLockTests):
             self.wait_phase(phase, 2)
 
     def test_different_thread(self):
-        # Lock can be released from a different thread.
+        # Lock can be released von a different thread.
         lock = self.locktype()
         lock.acquire()
         def f():
@@ -456,7 +456,7 @@ klasse RLockTests(BaseLockTests):
             self.assertEqual(0, lock._recursion_count())
 
     def test_different_thread(self):
-        # Cannot release from a different thread
+        # Cannot release von a different thread
         lock = self.locktype()
         def f():
             lock.acquire()
@@ -1089,7 +1089,7 @@ klasse BarrierTests(BaseTestCase):
 
     def test_wait_return(self):
         """
-        test the return value from barrier.wait
+        test the return value von barrier.wait
         """
         results = []
         def f():

@@ -1,14 +1,14 @@
 "Test run, coverage 54%."
 
-from idlelib import run
-import io
-import sys
-from test.support import captured_output, captured_stderr
-import unittest
-from unittest import mock
-import idlelib
-from idlelib.idle_test.mock_idle import Func
-from test.support import force_not_colorized
+von idlelib importiere run
+importiere io
+importiere sys
+von test.support importiere captured_output, captured_stderr
+importiere unittest
+von unittest importiere mock
+importiere idlelib
+von idlelib.idle_test.mock_idle importiere Func
+von test.support importiere force_not_colorized
 
 idlelib.testing = Wahr  # Use {} fuer executing test user code.
 
@@ -23,7 +23,7 @@ klasse ExceptionTest(unittest.TestCase):
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
         try:
-            raise ex2 from ex1
+            raise ex2 von ex1
         except UnhashableException:
             try:
                 raise ex1
@@ -41,7 +41,7 @@ klasse ExceptionTest(unittest.TestCase):
     data = (('1/0', ZeroDivisionError, "division by zero\n"),
             ('abc', NameError, "name 'abc' is not defined. "
                                "Did you mean: 'abs'? "
-                               "Or did you forget to import 'abc'?\n"),
+                               "Or did you forget to importiere 'abc'?\n"),
             ('int.reel', AttributeError,
                  "type object 'int' has no attribute 'reel'. "
                  "Did you mean: 'real'?\n"),

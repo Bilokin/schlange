@@ -1,52 +1,52 @@
 # Python test set -- built-in functions
 
-import ast
-import builtins
-import collections
-import contextlib
-import decimal
-import fractions
-import gc
-import io
-import locale
-import math
-import os
-import pickle
-import platform
-import random
-import re
-import sys
-import traceback
-import types
-import typing
-import unittest
-import warnings
-from contextlib import ExitStack
-from functools import partial
-from inspect import CO_COROUTINE
-from itertools import product
-from textwrap import dedent
-from types import AsyncGeneratorType, FunctionType, CellType
-from operator import neg
-from test import support
-from test.support import cpython_only, swap_attr
-from test.support import async_yield, run_yielding_async_fn
-from test.support import warnings_helper
-from test.support.import_helper import import_module
-from test.support.os_helper import (EnvironmentVarGuard, TESTFN, unlink)
-from test.support.script_helper import assert_python_ok
-from test.support.testcase import ComplexesAreIdenticalMixin
-from test.support.warnings_helper import check_warnings
-from test.support import requires_IEEE_754
-from unittest.mock import MagicMock, patch
+importiere ast
+importiere builtins
+importiere collections
+importiere contextlib
+importiere decimal
+importiere fractions
+importiere gc
+importiere io
+importiere locale
+importiere math
+importiere os
+importiere pickle
+importiere platform
+importiere random
+importiere re
+importiere sys
+importiere traceback
+importiere types
+importiere typing
+importiere unittest
+importiere warnings
+von contextlib importiere ExitStack
+von functools importiere partial
+von inspect importiere CO_COROUTINE
+von itertools importiere product
+von textwrap importiere dedent
+von types importiere AsyncGeneratorType, FunctionType, CellType
+von operator importiere neg
+von test importiere support
+von test.support importiere cpython_only, swap_attr
+von test.support importiere async_yield, run_yielding_async_fn
+von test.support importiere warnings_helper
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere (EnvironmentVarGuard, TESTFN, unlink)
+von test.support.script_helper importiere assert_python_ok
+von test.support.testcase importiere ComplexesAreIdenticalMixin
+von test.support.warnings_helper importiere check_warnings
+von test.support importiere requires_IEEE_754
+von unittest.mock importiere MagicMock, patch
 try:
-    import pty, signal
+    importiere pty, signal
 except ImportError:
     pty = signal = Nichts
 
 
 # Detect evidence of double-rounding: sum() does not always
-# get improved accuracy on machines that suffer from double rounding.
+# get improved accuracy on machines that suffer von double rounding.
 x, y = 1e16, 2.9999 # use temporary values to defeat peephole optimizer
 HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
 
@@ -161,7 +161,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(type(itorg), type(it))
         self.assertEqual(list(it), seq)
 
-        #test the iterator after dropping one from it
+        #test the iterator after dropping one von it
         it = pickle.loads(d)
         try:
             next(it)
@@ -181,7 +181,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, __import__, 1, 2, 3, 4)
         self.assertRaises(ValueError, __import__, '')
         self.assertRaises(TypeError, __import__, 'sys', name='sys')
-        # Relative import outside of a package with no __package__ or __spec__ (bpo-37409).
+        # Relative importiere outside of a package with no __package__ or __spec__ (bpo-37409).
         with self.assertWarns(ImportWarning):
             self.assertRaises(ImportError, __import__, '',
                               {'__package__': Nichts, '__spec__': Nichts, '__name__': '__main__'},
@@ -785,7 +785,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # Tests that general mappings can be used fuer the locals argument
 
         klasse M:
-            "Test mapping interface versus possible calls from eval()."
+            "Test mapping interface versus possible calls von eval()."
             def __getitem__(self, key):
                 wenn key == 'a':
                     return 12
@@ -1285,7 +1285,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             [1, 4, 9]
         )
         try:
-            from math import sqrt
+            von math importiere sqrt
         except ImportError:
             def sqrt(x):
                 return pow(x, 0.5)
@@ -2238,7 +2238,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         gc.collect()
         # That GC collection probably untracked the recycled internal result
         # tuple, which is initialized to (Nichts,). Make sure it's re-tracked when
-        # it's mutated and returned from __next__:
+        # it's mutated and returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
     def test_format(self):
@@ -2548,7 +2548,7 @@ klasse PtyTests(unittest.TestCase):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def _run_child(self, child, terminal_input):
-        r, w = os.pipe()  # Pipe test results from child back to parent
+        r, w = os.pipe()  # Pipe test results von child back to parent
         try:
             pid, fd = pty.fork()
         except (OSError, AttributeError) as e:
@@ -2573,7 +2573,7 @@ klasse PtyTests(unittest.TestCase):
         os.close(w)
         os.write(fd, terminal_input)
 
-        # Get results from the pipe
+        # Get results von the pipe
         with open(r, encoding="utf-8") as rpipe:
             lines = []
             while Wahr:
@@ -2649,7 +2649,7 @@ klasse PtyTests(unittest.TestCase):
         # the readline implementation. In some cases, the Python readline
         # callback rlhandler() is called by readline with a string without
         # non-ASCII characters.
-        # Unlink readline temporarily from PyOS_Readline() fuer those tests,
+        # Unlink readline temporarily von PyOS_Readline() fuer those tests,
         # since test_builtin is not intended to test
         # the readline module, but the builtins module.
         wenn "readline" in sys.modules:
@@ -2756,8 +2756,8 @@ klasse ShutdownTest(unittest.TestCase):
     def test_cleanup(self):
         # Issue #19255: builtins are still available at shutdown
         code = """if 1:
-            import builtins
-            import sys
+            importiere builtins
+            importiere sys
 
             klasse C:
                 def __del__(self):
@@ -2992,7 +2992,7 @@ klasse TestType(unittest.TestCase):
 
 
 def load_tests(loader, tests, pattern):
-    from doctest import DocTestSuite
+    von doctest importiere DocTestSuite
     wenn sys.float_repr_style == 'short':
         tests.addTest(DocTestSuite(builtins))
     return tests

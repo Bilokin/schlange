@@ -1,7 +1,7 @@
-import collections
-import os
+importiere collections
+importiere os
 
-from .collector import Collector
+von .collector importiere Collector
 
 
 klasse StackTraceCollector(Collector):

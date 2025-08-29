@@ -1,5 +1,5 @@
-import types
-import unittest
+importiere types
+importiere unittest
 
 
 klasse Test(unittest.TestCase):

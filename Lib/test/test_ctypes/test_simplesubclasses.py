@@ -1,6 +1,6 @@
-import unittest
-from ctypes import Structure, CFUNCTYPE, c_int, _SimpleCData
-from ._support import (_CData, PyCSimpleType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
+importiere unittest
+von ctypes importiere Structure, CFUNCTYPE, c_int, _SimpleCData
+von ._support importiere (_CData, PyCSimpleType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
                        Py_TPFLAGS_IMMUTABLETYPE)
 
 

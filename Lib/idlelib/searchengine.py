@@ -1,8 +1,8 @@
 '''Define SearchEngine fuer search dialogs.'''
-import re
+importiere re
 
-from tkinter import StringVar, BooleanVar, TclError
-from tkinter import messagebox
+von tkinter importiere StringVar, BooleanVar, TclError
+von tkinter importiere messagebox
 
 def get(root):
     '''Return the singleton SearchEngine instance fuer the process.
@@ -210,7 +210,7 @@ def search_reverse(prog, chars, col):
     return found
 
 def get_selection(text):
-    '''Return tuple of 'line.col' indexes from selection or insert mark.
+    '''Return tuple of 'line.col' indexes von selection or insert mark.
     '''
     try:
         first = text.index("sel.first")
@@ -224,11 +224,11 @@ def get_selection(text):
     return first, last
 
 def get_line_col(index):
-    '''Return (line, col) tuple of ints from 'line.col' string.'''
+    '''Return (line, col) tuple of ints von 'line.col' string.'''
     line, col = map(int, index.split(".")) # Fails on invalid index
     return line, col
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_searchengine', verbosity=2)

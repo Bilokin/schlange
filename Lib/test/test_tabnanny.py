@@ -3,16 +3,16 @@
 Glossary:
     * errored    : Whitespace related problems present in file.
 """
-from unittest import TestCase, mock
-import errno
-import os
-import tabnanny
-import tokenize
-import tempfile
-import textwrap
-from test.support import (captured_stderr, captured_stdout, script_helper,
+von unittest importiere TestCase, mock
+importiere errno
+importiere os
+importiere tabnanny
+importiere tokenize
+importiere tempfile
+importiere textwrap
+von test.support importiere (captured_stderr, captured_stdout, script_helper,
                           findfile)
-from test.support.os_helper import unlink
+von test.support.os_helper importiere unlink
 
 
 SOURCE_CODES = {

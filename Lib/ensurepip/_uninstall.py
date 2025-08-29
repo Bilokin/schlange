@@ -1,8 +1,8 @@
 """Basic pip uninstallation support, helper fuer the Windows uninstaller"""
 
-import argparse
-import ensurepip
-import sys
+importiere argparse
+importiere ensurepip
+importiere sys
 
 
 def _main(argv=Nichts):

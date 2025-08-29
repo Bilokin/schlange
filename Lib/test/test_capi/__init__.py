@@ -1,7 +1,7 @@
-import os
-import unittest
-from test.support import load_package_tests
-from test.support import TEST_MODULES_ENABLED
+importiere os
+importiere unittest
+von test.support importiere load_package_tests
+von test.support importiere TEST_MODULES_ENABLED
 
 
 wenn not TEST_MODULES_ENABLED:

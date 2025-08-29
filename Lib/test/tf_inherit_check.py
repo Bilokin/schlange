@@ -2,9 +2,9 @@
 # descriptor which should _not_ be open.  Check this by attempting to
 # write to it -- wenn we succeed, something is wrong.
 
-import sys
-import os
-from test.support import SuppressCrashReport
+importiere sys
+importiere os
+von test.support importiere SuppressCrashReport
 
 with SuppressCrashReport():
     verbose = (sys.argv[1] == 'v')

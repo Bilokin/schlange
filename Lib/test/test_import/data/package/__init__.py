@@ -1,2 +1,2 @@
-import package.submodule
+importiere package.submodule
 package.submodule

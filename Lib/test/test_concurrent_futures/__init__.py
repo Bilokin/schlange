@@ -1,7 +1,7 @@
-import os.path
-import unittest
-from test import support
-from test.support import threading_helper
+importiere os.path
+importiere unittest
+von test importiere support
+von test.support importiere threading_helper
 
 
 # Adjust wenn we ever have a platform with processes but not threads.

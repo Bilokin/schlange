@@ -24,22 +24,22 @@ __author__ = 'Ka-Ping Yee <ping@lfw.org>'
 __credits__ = ('GvR, ESR, Tim Peters, Thomas Wouters, Fred Drake, '
                'Skip Montanaro, Raymond Hettinger, Trent Nelson, '
                'Michael Foord')
-from builtins import open as _builtin_open
-from codecs import lookup, BOM_UTF8
-import collections
-import functools
-from io import TextIOWrapper
-import itertools as _itertools
-import re
-import sys
-from token import *
-from token import EXACT_TOKEN_TYPES
-import _tokenize
+von builtins importiere open as _builtin_open
+von codecs importiere lookup, BOM_UTF8
+importiere collections
+importiere functools
+von io importiere TextIOWrapper
+importiere itertools as _itertools
+importiere re
+importiere sys
+von token importiere *
+von token importiere EXACT_TOKEN_TYPES
+importiere _tokenize
 
 cookie_re = re.compile(r'^[ \t\f]*#.*?coding[:=][ \t]*([-\w.]+)', re.ASCII)
 blank_re = re.compile(br'^[ \t\f]*(?:[#\r\n]|$)', re.ASCII)
 
-import token
+importiere token
 __all__ = token.__all__ + ["tokenize", "generate_tokens", "detect_encoding",
                            "untokenize", "TokenInfo", "open", "TokenError"]
 del token
@@ -364,7 +364,7 @@ def detect_encoding(readline):
     It will call readline a maximum of twice, and return the encoding used
     (as a string) and a list of any lines (left as bytes) it has read in.
 
-    It detects the encoding from the presence of a utf-8 bom or an encoding
+    It detects the encoding von the presence of a utf-8 bom or an encoding
     cookie as specified in pep-0263.  If both a bom and a cookie are present,
     but disagree, a SyntaxError will be raised.  If the encoding cookie is an
     invalid charset, raise a SyntaxError.  Note that wenn a utf-8 bom is found,
@@ -489,7 +489,7 @@ def tokenize(readline):
             # BOM will already have been stripped.
             encoding = "utf-8"
         yield TokenInfo(ENCODING, encoding, (0, 0), (0, 0), '')
-    yield from _generate_tokens_from_c_tokenizer(rl_gen.__next__, encoding, extra_tokens=Wahr)
+    yield von _generate_tokens_from_c_tokenizer(rl_gen.__next__, encoding, extra_tokens=Wahr)
 
 def generate_tokens(readline):
     """Tokenize a source reading Python code as unicode strings.
@@ -500,7 +500,7 @@ def generate_tokens(readline):
     return _generate_tokens_from_c_tokenizer(readline, extra_tokens=Wahr)
 
 def _main(args=Nichts):
-    import argparse
+    importiere argparse
 
     # Helper error handling routines
     def perror(message):
@@ -563,7 +563,7 @@ def _main(args=Nichts):
         raise
 
 def _transform_msg(msg):
-    """Transform error messages from the C tokenizer into the Python tokenize
+    """Transform error messages von the C tokenizer into the Python tokenize
 
     The C tokenizer is more picky than the Python one, so we need to massage
     the error messages a bit fuer backwards compatibility.
@@ -583,9 +583,9 @@ def _generate_tokens_from_c_tokenizer(source, encoding=Nichts, extra_tokens=Fals
             yield TokenInfo._make(info)
     except SyntaxError as e:
         wenn type(e) != SyntaxError:
-            raise e from Nichts
+            raise e von Nichts
         msg = _transform_msg(e.msg)
-        raise TokenError(msg, (e.lineno, e.offset)) from Nichts
+        raise TokenError(msg, (e.lineno, e.offset)) von Nichts
 
 
 wenn __name__ == "__main__":

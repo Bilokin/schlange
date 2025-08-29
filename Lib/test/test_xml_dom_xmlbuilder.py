@@ -1,9 +1,9 @@
-import io
-import unittest
-from http import client
-from test.test_httplib import FakeSocket
-from unittest import mock
-from xml.dom import getDOMImplementation, minidom, xmlbuilder
+importiere io
+importiere unittest
+von http importiere client
+von test.test_httplib importiere FakeSocket
+von unittest importiere mock
+von xml.dom importiere getDOMImplementation, minidom, xmlbuilder
 
 SMALL_SAMPLE = b"""<?xml version="1.0"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xdc="http://www.xml.com/books">

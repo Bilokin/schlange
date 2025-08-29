@@ -1,17 +1,17 @@
-from test.test_importlib import util as test_util
+von test.test_importlib importiere util as test_util
 machinery = test_util.import_importlib('importlib.machinery')
 
-import os
-import re
-import sys
-import unittest
-from test import support
-from test.support import import_helper
-from contextlib import contextmanager
-from test.test_importlib.util import temp_module
+importiere os
+importiere re
+importiere sys
+importiere unittest
+von test importiere support
+von test.support importiere import_helper
+von contextlib importiere contextmanager
+von test.test_importlib.util importiere temp_module
 
 import_helper.import_module('winreg', required_on=['win'])
-from winreg import (
+von winreg importiere (
     CreateKey, HKEY_CURRENT_USER,
     SetValue, REG_SZ, KEY_ALL_ACCESS,
     EnumKey, CloseKey, DeleteKey, OpenKey
@@ -165,7 +165,7 @@ klasse WindowsExtensionSuffixTests:
 @unittest.skipUnless(sys.platform.startswith('win'), 'requires Windows')
 klasse WindowsBootstrapPathTests(unittest.TestCase):
     def check_join(self, expected, *inputs):
-        from importlib._bootstrap_external import _path_join
+        von importlib._bootstrap_external importiere _path_join
         actual = _path_join(*inputs)
         wenn expected.casefold() == actual.casefold():
             return

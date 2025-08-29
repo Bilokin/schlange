@@ -4,7 +4,7 @@ Based on RFC 959: File Transfer Protocol (FTP), by J. Postel and J. Reynolds
 
 Example:
 
->>> from ftplib import FTP
+>>> von ftplib importiere FTP
 >>> ftp = FTP('ftp.python.org') # connect to host, default port
 >>> ftp.login() # default, i.e.: user anonymous, passwd anonymous@
 '230 Guest login ok, access restrictions apply.'
@@ -36,14 +36,14 @@ python ftplib.py -d localhost -l -p -l
 # Modified by Giampaolo Rodola' to add TLS support.
 #
 
-import sys
-import socket
-from socket import _GLOBAL_DEFAULT_TIMEOUT
+importiere sys
+importiere socket
+von socket importiere _GLOBAL_DEFAULT_TIMEOUT
 
 __all__ = ["FTP", "error_reply", "error_temp", "error_perm", "error_proto",
            "all_errors"]
 
-# Magic number from <socket.h>
+# Magic number von <socket.h>
 MSG_OOB = 0x1                           # Process data out of band
 
 
@@ -163,7 +163,7 @@ klasse FTP:
         return self.welcome
 
     def getwelcome(self):
-        '''Get the welcome message from the server.
+        '''Get the welcome message von the server.
         (this is read and squirreled away by connect())'''
         wenn self.debugging:
             drucke('*welcome*', self.sanitize(self.welcome))
@@ -206,7 +206,7 @@ klasse FTP:
         wenn self.debugging: drucke('*cmd*', self.sanitize(line))
         self.putline(line)
 
-    # Internal: return one line from the server, stripping CRLF.
+    # Internal: return one line von the server, stripping CRLF.
     # Raise EOFError wenn the connection is closed
     def getline(self):
         line = self.file.readline(self.maxline + 1)
@@ -222,7 +222,7 @@ klasse FTP:
             line = line[:-1]
         return line
 
-    # Internal: get a response from the server, which may possibly
+    # Internal: get a response von the server, which may possibly
     # consist of multiple lines.  Return a single string with no
     # trailing CRLF.  If the response consists of multiple lines,
     # these are separated by '\n' characters in the string
@@ -238,7 +238,7 @@ klasse FTP:
                     break
         return line
 
-    # Internal: get a response from the server.
+    # Internal: get a response von the server.
     # Raise various errors wenn the response indicates an error
     def getresp(self):
         resp = self.getmultiline()
@@ -263,7 +263,7 @@ klasse FTP:
 
     def abort(self):
         '''Abort a file transfer.  Uses out-of-band data.
-        This does not follow the procedure from the RFC to send Telnet
+        This does not follow the procedure von the RFC to send Telnet
         IP and Synch; that doesn't seem to work with the servers I've
         tried.  Instead, just send the ABOR command as OOB data.'''
         line = b'ABOR' + B_CRLF
@@ -425,7 +425,7 @@ klasse FTP:
           cmd: A RETR command.
           callback: A single parameter callable to be called on each
                     block of data read.
-          blocksize: The maximum number of bytes to read from the
+          blocksize: The maximum number of bytes to read von the
                      socket at one time.  [default: 8192]
           rest: Passed to transfercmd().  [default: Nichts]
 
@@ -482,7 +482,7 @@ klasse FTP:
         Args:
           cmd: A STOR command.
           fp: A file-like object with a read(num_bytes) method.
-          blocksize: The maximum data size to read from fp and send over
+          blocksize: The maximum data size to read von fp and send over
                      the connection at once.  [default: 8192]
           callback: An optional single parameter callable that is called on
                     each block of data after it is sent.  [default: Nichts]
@@ -668,7 +668,7 @@ klasse FTP:
                 sock.close()
 
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     _SSLSocket = Nichts
 sonst:
@@ -685,7 +685,7 @@ sonst:
         fuer it by calling prot_p() method.
 
         Usage example:
-        >>> from ftplib import FTP_TLS
+        >>> von ftplib importiere FTP_TLS
         >>> ftps = FTP_TLS('ftp.python.org')
         >>> ftps.login()  # login anonymously previously securing control channel
         '230 Guest login ok, access restrictions apply.'
@@ -798,7 +798,7 @@ def parse150(resp):
         raise error_reply(resp)
     global _150_re
     wenn _150_re is Nichts:
-        import re
+        importiere re
         _150_re = re.compile(
             r"150 .* \((\d+) bytes\)", re.IGNORECASE | re.ASCII)
     m = _150_re.match(resp)
@@ -817,7 +817,7 @@ def parse227(resp):
         raise error_reply(resp)
     global _227_re
     wenn _227_re is Nichts:
-        import re
+        importiere re
         _227_re = re.compile(r'(\d+),(\d+),(\d+),(\d+),(\d+),(\d+)', re.ASCII)
     m = _227_re.search(resp)
     wenn not m:
@@ -877,7 +877,7 @@ def print_line(line):
 
 
 def ftpcp(source, sourcename, target, targetname = '', type = 'I'):
-    '''Copy file from one FTP-instance to another.'''
+    '''Copy file von one FTP-instance to another.'''
     wenn not targetname:
         targetname = sourcename
     type = 'TYPE ' + type
@@ -917,7 +917,7 @@ def test():
         drucke(test.__doc__)
         sys.exit(0)
 
-    import netrc
+    importiere netrc
 
     debugging = 0
     rcfile = Nichts

@@ -1,24 +1,24 @@
 """A simple SQLite CLI fuer the sqlite3 module.
 
-Apart from using 'argparse' fuer the command-line interface,
+Apart von using 'argparse' fuer the command-line interface,
 this module implements the REPL as a thin wrapper around
-the InteractiveConsole klasse from the 'code' stdlib module.
+the InteractiveConsole klasse von the 'code' stdlib module.
 """
-import sqlite3
-import sys
+importiere sqlite3
+importiere sys
 
-from argparse import ArgumentParser
-from code import InteractiveConsole
-from textwrap import dedent
-from _colorize import get_theme, theme_no_color
+von argparse importiere ArgumentParser
+von code importiere InteractiveConsole
+von textwrap importiere dedent
+von _colorize importiere get_theme, theme_no_color
 
-from ._completer import completer
+von ._completer importiere completer
 
 
 def execute(c, sql, suppress_errors=Wahr, theme=theme_no_color):
     """Helper that wraps execution of SQL code.
 
-    This is used both by the REPL and by direct execution from the CLI.
+    This is used both by the REPL and by direct execution von the CLI.
 
     'c' may be a cursor or a connection.
     'sql' is the SQL string to execute.

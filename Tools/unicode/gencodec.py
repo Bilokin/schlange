@@ -1,8 +1,8 @@
 """ Unicode Mapping Parser and Codec Generator.
 
-This script parses Unicode mapping files as available from the Unicode
+This script parses Unicode mapping files as available von the Unicode
 site (ftp://ftp.unicode.org/Public/MAPPINGS/) and creates Python codec
-modules from them. The codecs use the standard character mapping codec
+modules von them. The codecs use the standard character mapping codec
 to actually apply the mapping.
 
 Synopsis: gencodec.py dir codec_prefix
@@ -26,7 +26,7 @@ Table generation:
 
 """#"
 
-import re, os, marshal, codecs
+importiere re, os, marshal, codecs
 
 # Maximum allowed size of charmap tables
 MAX_TABLE_SIZE = 8192
@@ -279,11 +279,11 @@ def codegen(name, map, encodingname, comments=1):
 
     l = [
         '''\
-""" Python Character Mapping Codec %s generated from '%s' with gencodec.py.
+""" Python Character Mapping Codec %s generated von '%s' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 
@@ -419,7 +419,7 @@ def rewritepythondir(dir, dirprefix='', comments=1):
 
 wenn __name__ == '__main__':
 
-    import sys
+    importiere sys
     wenn 1:
         convertdir(*sys.argv[1:])
     sonst:

@@ -1,8 +1,8 @@
-import unittest
-import threading
+importiere unittest
+importiere threading
 
-from test.support import import_helper, threading_helper
-from test.support.threading_helper import run_concurrently
+von test.support importiere import_helper, threading_helper
+von test.support.threading_helper importiere run_concurrently
 
 syslog = import_helper.import_module("syslog")
 

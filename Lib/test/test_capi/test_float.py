@@ -1,13 +1,13 @@
-import math
-import random
-import sys
-import unittest
-import warnings
+importiere math
+importiere random
+importiere sys
+importiere unittest
+importiere warnings
 
-from test.test_capi.test_getargs import (Float, FloatSubclass, FloatSubclass2,
+von test.test_capi.test_getargs importiere (Float, FloatSubclass, FloatSubclass2,
                                          BadIndex2, BadFloat2, Index, BadIndex,
                                          BadFloat)
-from test.support import import_helper
+von test.support importiere import_helper
 
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')

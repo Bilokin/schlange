@@ -4,8 +4,8 @@ See extend.txt fuer more details on creating an extension.
 See config-extension.def fuer configuring an extension.
 """
 
-from idlelib.config import idleConf
-from functools import wraps
+von idlelib.config importiere idleConf
+von functools importiere wraps
 
 
 def format_selection(format_line):
@@ -24,7 +24,7 @@ def format_selection(format_line):
 
 
 klasse ZzDummy:
-    """Prepend or remove initial text from selected lines."""
+    """Prepend or remove initial text von selected lines."""
 
     # Extend the format menu.
     menudefs = [
@@ -42,7 +42,7 @@ klasse ZzDummy:
 
     @classmethod
     def reload(cls):
-        "Load klasse variables from config."
+        "Load klasse variables von config."
         cls.ztext = idleConf.GetOption('extensions', 'ZzDummy', 'z-text')
 
     @format_selection
@@ -56,7 +56,7 @@ klasse ZzDummy:
 
     @format_selection
     def z_out_event(self, line):
-        """Remove specific text from the beginning of each selected line.
+        """Remove specific text von the beginning of each selected line.
 
         This is bound to the <<z-out>> virtual event when the extensions
         are loaded.
@@ -69,5 +69,5 @@ ZzDummy.reload()
 
 
 wenn __name__ == "__main__":
-    import unittest
+    importiere unittest
     unittest.main('idlelib.idle_test.test_zzdummy', verbosity=2, exit=Falsch)

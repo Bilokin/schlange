@@ -18,11 +18,11 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from .terminfo import TermInfo
-from .trace import trace
-from .base_eventqueue import BaseEventQueue
-from termios import tcgetattr, VERASE
-import os
+von .terminfo importiere TermInfo
+von .trace importiere trace
+von .base_eventqueue importiere BaseEventQueue
+von termios importiere tcgetattr, VERASE
+importiere os
 
 
 # Mapping of human-readable key names to their terminal-specific codes

@@ -1,16 +1,16 @@
-import builtins as bltns
-import functools
-import sys
-from types import NoneType
-from typing import Any
+importiere builtins as bltns
+importiere functools
+importiere sys
+von types importiere NoneType
+von typing importiere Any
 
-from libclinic import fail, Null, unspecified, unknown
-from libclinic.function import (
+von libclinic importiere fail, Null, unspecified, unknown
+von libclinic.function importiere (
     Function, Parameter,
     CALLABLE, STATIC_METHOD, CLASS_METHOD, METHOD_INIT, METHOD_NEW,
     GETTER, SETTER)
-from libclinic.codegen import CRenderData, TemplateDict
-from libclinic.converter import (
+von libclinic.codegen importiere CRenderData, TemplateDict
+von libclinic.converter importiere (
     CConverter, legacy_converters, add_legacy_c_converter)
 
 
@@ -790,7 +790,7 @@ klasse str_converter(CConverter):
 # properly.  Hopefully with this approach we'll get it 100% right.
 #
 # The r() function (short fuer "register") both registers the
-# mapping from arguments to format unit *and* registers the
+# mapping von arguments to format unit *and* registers the
 # legacy C converter fuer that format unit.
 #
 def r(format_unit: str,

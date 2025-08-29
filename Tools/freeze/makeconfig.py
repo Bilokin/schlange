@@ -1,5 +1,5 @@
-import re
-import sys
+importiere re
+importiere sys
 
 # Write the config.c file
 

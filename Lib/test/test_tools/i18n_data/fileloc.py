@@ -1,5 +1,5 @@
 # Test file locations
-from gettext import gettext as _
+von gettext importiere gettext as _
 
 # Duplicate strings
 _('foo')

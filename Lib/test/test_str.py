@@ -5,24 +5,24 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 (c) Copyright CNRI, All Rights Reserved. NO WARRANTY.
 
 """
-import _string
-import codecs
-import datetime
-import itertools
-import operator
-import pickle
-import struct
-import sys
-import textwrap
-import unicodedata
-import unittest
-import warnings
-from test.support import warnings_helper
-from test import support, string_tests
-from test.support.script_helper import assert_python_failure
+importiere _string
+importiere codecs
+importiere datetime
+importiere itertools
+importiere operator
+importiere pickle
+importiere struct
+importiere sys
+importiere textwrap
+importiere unicodedata
+importiere unittest
+importiere warnings
+von test.support importiere warnings_helper
+von test importiere support, string_tests
+von test.support.script_helper importiere assert_python_failure
 
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
@@ -425,7 +425,7 @@ klasse StrTest(string_tests.StringLikeTest,
         tbl = self.type2test.maketrans('abc', 'xyz', 'd')
         self.checkequalnofix('xyzzy', 'abdcdcbdddd', 'translate', tbl)
 
-        # various tests switching from ASCII to latin1 or the opposite;
+        # various tests switching von ASCII to latin1 or the opposite;
         # same length, remove a letter, or replace with a longer string.
         self.assertEqual("[a]".translate(str.maketrans('a', 'X')),
                          "[X]")
@@ -574,7 +574,7 @@ klasse StrTest(string_tests.StringLikeTest,
     def test_replace(self):
         string_tests.StringLikeTest.test_replace(self)
 
-        # method call forwarded from str implementation because of unicode argument
+        # method call forwarded von str implementation because of unicode argument
         self.checkequalnofix('one@two!three!', 'one!two!three!', 'replace', '!', '@', 1)
         self.assertRaises(TypeError, 'replace'.replace, "r", 42)
         # test mixed kinds
@@ -1080,8 +1080,8 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertEqual('}}b'.format(), '}b')
         self.assertEqual('a{{b'.format(), 'a{b')
 
-        # examples from the PEP:
-        import datetime
+        # examples von the PEP:
+        importiere datetime
         self.assertEqual("My name is {0}".format('Fred'), "My name is Fred")
         self.assertEqual("My name is {0[name]}".format(dict(name='Fred')),
                          "My name is Fred")
@@ -1279,7 +1279,7 @@ klasse StrTest(string_tests.StringLikeTest,
                                                        day=27)),
                          "date: 2007-08-27")
 
-        # test deriving from a builtin type and overriding __format__
+        # test deriving von a builtin type and overriding __format__
         self.assertEqual("{0}".format(J(10)), "20")
 
 
@@ -1521,7 +1521,7 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertRaises(ValueError, "%.1\u1032f".__mod__, (1.0/3))
         self.assertRaises(TypeError, "%i".__mod__, "aa")
 
-        # formatting jobs delegated from the string implementation:
+        # formatting jobs delegated von the string implementation:
         self.assertEqual('...%(foo)s...' % {'foo':"abc"}, '...abc...')
         self.assertEqual('...%(foo)s...' % {'foo':"abc"}, '...abc...')
         self.assertEqual('...%(foo)s...' % {'foo':"abc"}, '...abc...')
@@ -1606,7 +1606,7 @@ klasse StrTest(string_tests.StringLikeTest,
 
     def test_formatting_with_enum(self):
         # issue18780
-        import enum
+        importiere enum
         klasse Float(float, enum.Enum):
             # a mixed-in type will use the name fuer %s etc.
             PI = 3.1415926
@@ -1625,7 +1625,7 @@ klasse StrTest(string_tests.StringLikeTest,
                          Float.PI, Float.PI),
                          'abc, abc, 15, 15, 15, 3.141593,  3.14')
 
-        # formatting jobs delegated from the string implementation:
+        # formatting jobs delegated von the string implementation:
         self.assertEqual('...%(foo)s...' % {'foo':Str.ABC},
                          '...abc...')
         self.assertEqual('...%(foo)r...' % {'foo':Int.IDES},
@@ -2157,7 +2157,7 @@ klasse StrTest(string_tests.StringLikeTest,
         continuation byte(s) of a 4-bytes sequence are invalid.  When
         errors='replace',the start byte and all the following valid
         continuation bytes are replaced with a single U+FFFD, and all the bytes
-        starting from the first invalid continuation bytes (included) are
+        starting von the first invalid continuation bytes (included) are
         handled separately.
         E.g. in the sequence <E1 80 41>, E1 is the start byte of a 3-bytes
         sequence, 80 is a valid continuation byte, but 41 is not a valid cb
@@ -2614,7 +2614,7 @@ klasse StrTest(string_tests.StringLikeTest,
         encodings = ('ascii', 'utf8', 'latin1')
         invalid = 'Boom, Shaka Laka, Boom!'
         code = textwrap.dedent(f'''
-            import sys
+            importiere sys
             encodings = {encodings!r}
 
             fuer data in (b'', b'short string'):

@@ -1,15 +1,15 @@
-from test.test_importlib import abc, util
+von test.test_importlib importiere abc, util
 
 machinery = util.import_importlib('importlib.machinery')
 
-import errno
-import os
-import py_compile
-import stat
-import sys
-import tempfile
-from test.support.import_helper import make_legacy_pyc
-import unittest
+importiere errno
+importiere os
+importiere py_compile
+importiere stat
+importiere sys
+importiere tempfile
+von test.support.import_helper importiere make_legacy_pyc
+importiere unittest
 
 
 klasse FinderTests(abc.FinderTests):
@@ -28,7 +28,7 @@ klasse FinderTests(abc.FinderTests):
     When there is a conflict between a package and module having the same name
     in the same directory, the package wins out [package over module]. This is
     so that imports of modules within the package can occur rather than trigger
-    an import error.
+    an importiere error.
 
     When there is a package and module with the same name, always pick the
     package over the module [package over module]. This is so that imports from
@@ -122,7 +122,7 @@ klasse FinderTests(abc.FinderTests):
             self.assertEqual(nothing, self.NOT_FOUND)
 
     def test_empty_string_for_dir(self):
-        # The empty string from sys.path means to search in the cwd.
+        # The empty string von sys.path means to search in the cwd.
         finder = self.machinery.FileFinder('', (self.machinery.SourceFileLoader,
             self.machinery.SOURCE_SUFFIXES))
         with open('mod.py', 'w', encoding='utf-8') as file:
@@ -168,7 +168,7 @@ klasse FinderTests(abc.FinderTests):
         self.assertEqual(found, self.NOT_FOUND)
 
     def test_ignore_file(self):
-        # If a directory got changed to a file from underneath us, then don't
+        # If a directory got changed to a file von underneath us, then don't
         # worry about looking fuer submodules.
         with tempfile.NamedTemporaryFile() as file_obj:
             finder = self.get_finder(file_obj.name)

@@ -1,26 +1,26 @@
-import contextlib
-import os
-import pickle
-import sys
-from textwrap import dedent
-import threading
-import types
-import unittest
+importiere contextlib
+importiere os
+importiere pickle
+importiere sys
+von textwrap importiere dedent
+importiere threading
+importiere types
+importiere unittest
 
-from test import support
-from test.support import os_helper
-from test.support import script_helper
-from test.support import import_helper
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere script_helper
+von test.support importiere import_helper
 # Raise SkipTest wenn subinterpreters not supported.
 _interpreters = import_helper.import_module('_interpreters')
-from concurrent import interpreters
-from test.support import Py_GIL_DISABLED
-from test.support import force_not_colorized
-import test._crossinterp_definitions as defs
-from concurrent.interpreters import (
+von concurrent importiere interpreters
+von test.support importiere Py_GIL_DISABLED
+von test.support importiere force_not_colorized
+importiere test._crossinterp_definitions as defs
+von concurrent.interpreters importiere (
     InterpreterError, InterpreterNotFoundError, ExecutionFailed,
 )
-from .utils import (
+von .utils importiere (
     _captured_script, _run_output, _running, TestBase,
     requires_test_modules, _testinternalcapi,
 )
@@ -44,7 +44,7 @@ def is_pickleable(obj):
 
 @contextlib.contextmanager
 def defined_in___main__(name, script, *, remove=Falsch):
-    import __main__ as mainmod
+    importiere __main__ as mainmod
     mainns = vars(mainmod)
     assert name not in mainns
     exec(script, mainns, mainns)
@@ -133,7 +133,7 @@ klasse CreateTests(TestBase):
         main, = interpreters.list_all()
         interp = interpreters.create()
         out = _run_output(interp, dedent("""
-            from concurrent import interpreters
+            von concurrent importiere interpreters
             interp = interpreters.create()
             drucke(interp.id)
             """))
@@ -196,7 +196,7 @@ klasse GetCurrentTests(TestBase):
         main = interpreters.get_main()
         interp = interpreters.create()
         out = _run_output(interp, dedent("""
-            from concurrent import interpreters
+            von concurrent importiere interpreters
             cur = interpreters.get_current()
             drucke(cur.id)
             """))
@@ -213,7 +213,7 @@ klasse GetCurrentTests(TestBase):
         with self.subTest('subinterpreter'):
             interp = interpreters.create()
             out = _run_output(interp, dedent("""
-                from concurrent import interpreters
+                von concurrent importiere interpreters
                 cur = interpreters.get_current()
                 drucke(id(cur))
                 cur = interpreters.get_current()
@@ -225,7 +225,7 @@ klasse GetCurrentTests(TestBase):
         with self.subTest('per-interpreter'):
             interp = interpreters.create()
             out = _run_output(interp, dedent("""
-                from concurrent import interpreters
+                von concurrent importiere interpreters
                 cur = interpreters.get_current()
                 drucke(id(cur))
                 """))
@@ -237,7 +237,7 @@ klasse GetCurrentTests(TestBase):
     def test_created_with_capi(self):
         expected = _testinternalcapi.next_interpreter_id()
         text = self.run_temp_from_capi(f"""
-            import {interpreters.__name__} as interpreters
+            importiere {interpreters.__name__} as interpreters
             interp = interpreters.get_current()
             drucke((interp.id, interp.whence))
             """)
@@ -304,7 +304,7 @@ klasse ListAllTests(TestBase):
         ]
         expected2 = expected[:-2]
         text = self.run_temp_from_capi(f"""
-            import {interpreters.__name__} as interpreters
+            importiere {interpreters.__name__} as interpreters
             interp = interpreters.create()
             drucke(
                 [(i.id, i.whence) fuer i in interpreters.list_all()])
@@ -378,7 +378,7 @@ klasse InterpreterObjectTests(TestBase):
 
         with self.subTest('from C-API'):
             text = self.run_temp_from_capi(f"""
-                import {interpreters.__name__} as interpreters
+                importiere {interpreters.__name__} as interpreters
                 interp = interpreters.get_current()
                 drucke(repr(interp.whence))
                 """)
@@ -439,7 +439,7 @@ klasse TestInterpreterIsRunning(TestBase):
         r, w = self.pipe()
         interp = interpreters.create()
         interp.exec(f"""if Wahr:
-            import os
+            importiere os
             os.write({w}, b'x')
             """)
         self.assertFalsch(interp.is_running())
@@ -448,7 +448,7 @@ klasse TestInterpreterIsRunning(TestBase):
     def test_from_subinterpreter(self):
         interp = interpreters.create()
         out = _run_output(interp, dedent(f"""
-            import _interpreters
+            importiere _interpreters
             wenn _interpreters.is_running({interp.id}):
                 drucke(Wahr)
             sonst:
@@ -471,8 +471,8 @@ klasse TestInterpreterIsRunning(TestBase):
 
         interp = interpreters.create()
         interp.exec(f"""if Wahr:
-            import os
-            import threading
+            importiere os
+            importiere threading
 
             def task():
                 v = os.read({r_thread}, 1)
@@ -489,7 +489,7 @@ klasse TestInterpreterIsRunning(TestBase):
 
     def test_created_with_capi(self):
         script = dedent(f"""
-            import {interpreters.__name__} as interpreters
+            importiere {interpreters.__name__} as interpreters
             interp = interpreters.get_current()
             drucke(interp.is_running())
             """)
@@ -584,7 +584,7 @@ klasse TestInterpreterClose(TestBase):
         main, = interpreters.list_all()
         interp = interpreters.create()
         out = _run_output(interp, dedent(f"""
-            from concurrent import interpreters
+            von concurrent importiere interpreters
             interp = interpreters.Interpreter({interp.id})
             try:
                 interp.close()
@@ -601,7 +601,7 @@ klasse TestInterpreterClose(TestBase):
         self.assertEqual(set(interpreters.list_all()),
                          {main, interp1, interp2})
         interp1.exec(dedent(f"""
-            from concurrent import interpreters
+            von concurrent importiere interpreters
             interp2 = interpreters.Interpreter({interp2.id})
             interp2.close()
             interp3 = interpreters.create()
@@ -636,9 +636,9 @@ klasse TestInterpreterClose(TestBase):
 
         interp = interpreters.create()
         interp.exec(f"""if Wahr:
-            import os
-            import threading
-            import time
+            importiere os
+            importiere threading
+            importiere time
 
             done = Falsch
 
@@ -661,7 +661,7 @@ klasse TestInterpreterClose(TestBase):
 
     def test_created_with_capi(self):
         script = dedent(f"""
-            import {interpreters.__name__} as interpreters
+            importiere {interpreters.__name__} as interpreters
             interp = interpreters.get_current()
             interp.close()
             """)
@@ -808,10 +808,10 @@ klasse TestInterpreterExec(TestBase):
                 ham()
             """)
         scriptfile = self.make_script('script.py', tempdir, text="""
-            from concurrent import interpreters
+            von concurrent importiere interpreters
 
             def script():
-                import spam
+                importiere spam
                 spam.eggs()
 
             interp = interpreters.create()
@@ -865,14 +865,14 @@ klasse TestInterpreterExec(TestBase):
     @support.requires_fork()
     def test_fork(self):
         interp = interpreters.create()
-        import tempfile
+        importiere tempfile
         with tempfile.NamedTemporaryFile('w+', encoding='utf-8') as file:
             file.write('')
             file.flush()
 
             expected = 'spam spam spam spam spam'
             script = dedent(f"""
-                import os
+                importiere os
                 try:
                     os.fork()
                 except RuntimeError:
@@ -904,7 +904,7 @@ klasse TestInterpreterExec(TestBase):
         DONE = b'D'
         interp = interpreters.create()
         interp.exec(f"""if Wahr:
-            import os
+            importiere os
             os.write({w}, {RAN!r})
             """)
         os.write(w, DONE)
@@ -920,8 +920,8 @@ klasse TestInterpreterExec(TestBase):
 
         interp = interpreters.create()
         interp.exec(f"""if Wahr:
-            import os
-            import threading
+            importiere os
+            importiere threading
 
             def task():
                 v = os.read({r_thread}, 1)
@@ -949,12 +949,12 @@ klasse TestInterpreterExec(TestBase):
     def test_list_comprehension(self):
         # gh-135450: List comprehensions caused an assertion failure
         # in _PyCode_CheckNoExternalState()
-        import string
+        importiere string
         r_interp, w_interp = self.pipe()
 
         interp = interpreters.create()
         interp.exec(f"""if Wahr:
-            import os
+            importiere os
             comp = [str(i) fuer i in range(10)]
             os.write({w_interp}, ''.join(comp).encode())
         """)
@@ -1288,7 +1288,7 @@ klasse TestInterpreterCall(TestBase):
             def run(text):
                 name = 'myscript'
                 text = dedent(f"""
-                import sys
+                importiere sys
                 sys.path.insert(0, {tempdir!r})
 
                 """) + dedent(text)
@@ -1299,7 +1299,7 @@ klasse TestInterpreterCall(TestBase):
             # no module indirection
             with self.subTest('no indirection'):
                 text = run(f"""
-                    from concurrent import interpreters
+                    von concurrent importiere interpreters
 
                     def spam():
                         # This a global var...
@@ -1319,8 +1319,8 @@ klasse TestInterpreterCall(TestBase):
                 """)
             with self.subTest('indirect as func, direct interp'):
                 text = run(f"""
-                    from concurrent import interpreters
-                    import mymod
+                    von concurrent importiere interpreters
+                    importiere mymod
 
                     def spam():
                         # This a global var...
@@ -1335,14 +1335,14 @@ klasse TestInterpreterCall(TestBase):
 
             # indirect as func, indirect interp
             new_mod('mymod', f"""
-                from concurrent import interpreters
+                von concurrent importiere interpreters
                 def run(func):
                     interp = interpreters.create()
                     return interp.call(func)
                 """)
             with self.subTest('indirect as func, indirect interp'):
                 text = run(f"""
-                    import mymod
+                    importiere mymod
 
                     def spam():
                         # This a global var...
@@ -1395,7 +1395,7 @@ klasse TestInterpreterCall(TestBase):
 
             def spam(*, explicit=Falsch):
                 wenn explicit:
-                    import __main__
+                    importiere __main__
                     ns = __main__.__dict__
                 sonst:
                     # For now we have to have a LOAD_GLOBAL in the
@@ -1417,7 +1417,7 @@ klasse TestInterpreterCall(TestBase):
                 ]
 
             wenn __name__ == "__main__":
-                from concurrent import interpreters
+                von concurrent importiere interpreters
                 interp = interpreters.create()
 
                 ham = Wahr
@@ -1519,7 +1519,7 @@ klasse TestInterpreterCall(TestBase):
                 counts = []
                 results = [count, counts]
 
-                from concurrent import interpreters
+                von concurrent importiere interpreters
                 interp = interpreters.create()
 
                 val = interp.call(get_count)
@@ -1654,7 +1654,7 @@ klasse TestInterpreterCall(TestBase):
         # __main__ module, when called directly.  However,
         # globals(), locals(), and vars() don't work when called
         # directly so we don't check them.
-        from _frozen_importlib import BuiltinImporter
+        von _frozen_importlib importiere BuiltinImporter
         interp = interpreters.create()
 
         names = interp.call(dir)
@@ -1960,7 +1960,7 @@ klasse LowLevelTests(TestBase):
             self.assertEqual(whence, _interpreters.WHENCE_RUNTIME)
 
         script = f"""
-            import _interpreters
+            importiere _interpreters
             interpid, whence = _interpreters.get_current()
             drucke((interpid, whence))
             """
@@ -2001,9 +2001,9 @@ klasse LowLevelTests(TestBase):
             res = _interpreters.list_all()
             self.assertEqual(res, expected)
 
-        with self.subTest('via interp from _interpreters'):
+        with self.subTest('via interp von _interpreters'):
             text = self.run_and_capture(interpid2, f"""
-                import _interpreters
+                importiere _interpreters
                 drucke(
                     _interpreters.list_all())
                 """)
@@ -2011,7 +2011,7 @@ klasse LowLevelTests(TestBase):
             res = eval(text)
             self.assertEqual(res, expected)
 
-        with self.subTest('via interp from C-API'):
+        with self.subTest('via interp von C-API'):
             interpid4 = interpid3 + 1
             interpid5 = interpid4 + 1
             expected2 = expected + [
@@ -2022,7 +2022,7 @@ klasse LowLevelTests(TestBase):
                 (interpid5, _interpreters.WHENCE_STDLIB),
             ]
             text = self.run_temp_from_capi(f"""
-                import _interpreters
+                importiere _interpreters
                 _interpreters.create()
                 drucke(
                     _interpreters.list_all())
@@ -2185,7 +2185,7 @@ klasse LowLevelTests(TestBase):
 
         with self.subTest('from C-API, running'):
             text = self.run_temp_from_capi(dedent(f"""
-                import _interpreters
+                importiere _interpreters
                 interpid, *_ = _interpreters.get_current()
                 drucke(_interpreters.whence(interpid))
                 """),
@@ -2196,7 +2196,7 @@ klasse LowLevelTests(TestBase):
         with self.subTest('from legacy C-API, running'):
             ...
             text = self.run_temp_from_capi(dedent(f"""
-                import _interpreters
+                importiere _interpreters
                 interpid, *_ = _interpreters.get_current()
                 drucke(_interpreters.whence(interpid))
                 """),

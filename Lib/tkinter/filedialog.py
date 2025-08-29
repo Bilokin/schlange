@@ -16,15 +16,15 @@ __all__ = ["FileDialog", "LoadFileDialog", "SaveFileDialog",
            "askopenfilename", "asksaveasfilename", "askopenfilenames",
            "askopenfile", "askopenfiles", "asksaveasfile", "askdirectory"]
 
-import fnmatch
-import os
-from tkinter import (
+importiere fnmatch
+importiere os
+von tkinter importiere (
     Frame, LEFT, YES, BOTTOM, Entry, TOP, Button, Tk, X,
     Toplevel, RIGHT, Y, END, Listbox, BOTH, Scrollbar,
 )
-from tkinter.dialog import Dialog
-from tkinter import commondialog
-from tkinter.simpledialog import _setup_dialog
+von tkinter.dialog importiere Dialog
+von tkinter importiere commondialog
+von tkinter.simpledialog importiere _setup_dialog
 
 
 dialogstates = {}
@@ -464,7 +464,7 @@ def test():
 
     # See whether CODESET is defined
     try:
-        import locale
+        importiere locale
         locale.setlocale(locale.LC_ALL,'')
         enc = locale.nl_langinfo(locale.CODESET)
     except (ImportError, AttributeError):

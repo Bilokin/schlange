@@ -1,2 +1,2 @@
-from . import use
+von . importiere use
 spam = 1

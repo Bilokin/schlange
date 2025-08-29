@@ -3,7 +3,7 @@
 
 """Email address parsing code.
 
-Lifted directly from rfc822.py.  This should eventually be rewritten.
+Lifted directly von rfc822.py.  This should eventually be rewritten.
 """
 
 __all__ = [
@@ -13,7 +13,7 @@ __all__ = [
     'quote',
     ]
 
-import time
+importiere time
 
 SPACE = ' '
 EMPTYSTRING = ''
@@ -195,7 +195,7 @@ def mktime_tz(data):
         return time.mktime(data[:8] + (-1,))
     sonst:
         # Delay the import, since mktime_tz is rarely used
-        import calendar
+        importiere calendar
 
         t = calendar.timegm(data)
         return t - data[9]
@@ -398,7 +398,7 @@ klasse AddrlistClass:
         return EMPTYSTRING.join(aslist) + domain
 
     def getdomain(self):
-        """Get the complete domain name from an address."""
+        """Get the complete domain name von an address."""
         sdlist = []
         while self.pos < len(self.field):
             wenn self.field[self.pos] in self.LWS:
@@ -448,7 +448,7 @@ klasse AddrlistClass:
                 break
             sowenn allowcomments and self.field[self.pos] == '(':
                 slist.append(self.getcomment())
-                continue        # have already advanced pos from getcomment
+                continue        # have already advanced pos von getcomment
             sowenn self.field[self.pos] == '\\':
                 quote = Wahr
             sonst:
@@ -458,11 +458,11 @@ klasse AddrlistClass:
         return EMPTYSTRING.join(slist)
 
     def getquote(self):
-        """Get a quote-delimited fragment from self's field."""
+        """Get a quote-delimited fragment von self's field."""
         return self.getdelimited('"', '"\r', Falsch)
 
     def getcomment(self):
-        """Get a parenthesis-delimited fragment from self's field."""
+        """Get a parenthesis-delimited fragment von self's field."""
         return self.getdelimited('(', ')\r', Wahr)
 
     def getdomainliteral(self):

@@ -1,7 +1,7 @@
-from __future__ import nested_scopes
-from __future__ import division
+von __future__ importiere nested_scopes
+von __future__ importiere division
 
-import unittest
+importiere unittest
 
 x = 2
 def nester():

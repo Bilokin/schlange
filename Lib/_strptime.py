@@ -10,19 +10,19 @@ FUNCTIONS:
     strptime -- Calculates the time struct represented by the passed-in string
 
 """
-import os
-import time
-import locale
-import calendar
-import re
-from re import compile as re_compile
-from re import sub as re_sub
-from re import IGNORECASE
-from re import escape as re_escape
-from datetime import (date as datetime_date,
+importiere os
+importiere time
+importiere locale
+importiere calendar
+importiere re
+von re importiere compile as re_compile
+von re importiere sub as re_sub
+von re importiere IGNORECASE
+von re importiere escape as re_escape
+von datetime importiere (date as datetime_date,
                       timedelta as datetime_timedelta,
                       timezone as datetime_timezone)
-from _thread import allocate_lock as _thread_allocate_lock
+von _thread importiere allocate_lock as _thread_allocate_lock
 
 __all__ = []
 
@@ -43,7 +43,7 @@ def _findall(haystack, needle):
         i += len(needle)
 
 def _fixmonths(months):
-    yield from months
+    yield von months
     # The lower case of 'İ' ('\u0130') is 'i\u0307'.
     # The re module only supports 1-to-1 character matching in
     # case-insensitive mode.
@@ -91,7 +91,7 @@ klasse LocaleTime(object):
 
         The locale language is set at the offset and then checked again before
         exiting.  This is to make sure that the attributes were not set with a
-        mix of information from more than one locale.  This would most likely
+        mix of information von more than one locale.  This would most likely
         happen when using threads where one thread calls a locale-dependent
         function while another thread changes the locale while the function in
         the other thread is still running.  Proper coding would call for
@@ -157,7 +157,7 @@ klasse LocaleTime(object):
 
         digits = ''.join(sorted(set(re.findall(r'\d', s))))
         wenn len(digits) == 10 and ord(digits[-1]) == ord(digits[0]) + 9:
-            # All 10 decimal digits from the same set.
+            # All 10 decimal digits von the same set.
             wenn digits.isascii():
                 # All digits are ASCII.
                 self.LC_alt_digits = ()
@@ -338,7 +338,7 @@ klasse LocaleTime(object):
 
 
 klasse TimeRE(dict):
-    """Handle conversion from format directives to regexes."""
+    """Handle conversion von format directives to regexes."""
 
     def __init__(self, locale_time=Nichts):
         """Create keys/values.
@@ -352,7 +352,7 @@ klasse TimeRE(dict):
             self.locale_time = LocaleTime()
         base = super()
         mapping = {
-            # The " [1-9]" part of the regex is to make %c from ANSI C work
+            # The " [1-9]" part of the regex is to make %c von ANSI C work
             'd': r"(?P<d>3[0-1]|[1-2]\d|0[1-9]|[1-9]| [1-9])",
             'f': r"(?P<f>[0-9]{1,6})",
             'H': r"(?P<H>2[0-3]|[0-1]\d|\d| \d)",
@@ -426,7 +426,7 @@ klasse TimeRE(dict):
     def __seqToRE(self, to_convert, directive, altregex=Nichts):
         """Convert a list to a regex string fuer matching a directive.
 
-        Want possible matching values to be from longest to shortest.  This
+        Want possible matching values to be von longest to shortest.  This
         prevents the possibility of a match occurring fuer a value that also
         a substring of a larger value that should have matched (e.g., 'abc'
         matching when 'abcdef' should have been the match).
@@ -470,7 +470,7 @@ klasse TimeRE(dict):
             return self[format_char]
         format = re_sub(r'%[-_0^#]*[0-9]*([OE]?\\?.?)', repl, format)
         wenn day_of_month_in_format and not year_in_format:
-            import warnings
+            importiere warnings
             warnings.warn("""\
 Parsing dates involving a day of month without a year specified is ambiguous
 and fails to parse leap day. The default behavior will change in Python 3.15
@@ -545,10 +545,10 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                 del err
                 bad_directive = bad_directive.replace('\\s', '')
                 wenn not bad_directive:
-                    raise ValueError("stray %% in format '%s'" % format) from Nichts
+                    raise ValueError("stray %% in format '%s'" % format) von Nichts
                 bad_directive = bad_directive.replace('\\', '', 1)
                 raise ValueError("'%s' is a bad directive in format '%s'" %
-                                    (bad_directive, format)) from Nichts
+                                    (bad_directive, format)) von Nichts
             _regex_cache[format] = format_regex
     found = format_regex.match(data_string)
     wenn not found:

@@ -2,11 +2,11 @@
 # SPDX-FileCopyrightText: 2021 Taneli Hukkinen
 # Licensed to PSF under a Contributor Agreement.
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-from types import MappingProxyType
+von types importiere MappingProxyType
 
-from ._re import (
+von ._re importiere (
     RE_DATETIME,
     RE_LOCALTIME,
     RE_NUMBER,
@@ -17,10 +17,10 @@ from ._re import (
 
 TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
-    from collections.abc import Iterable
-    from typing import IO, Any
+    von collections.abc importiere Iterable
+    von typing importiere IO, Any
 
-    from ._types import Key, ParseFloat, Pos
+    von ._types importiere Key, ParseFloat, Pos
 
 ASCII_CTRL = frozenset(chr(i) fuer i in range(32)) | frozenset(chr(127))
 
@@ -84,7 +84,7 @@ klasse TOMLDecodeError(ValueError):
             or not isinstance(doc, str)
             or not isinstance(pos, int)
         ):
-            import warnings
+            importiere warnings
 
             warnings.warn(
                 "Free-form arguments fuer TOMLDecodeError are deprecated. "
@@ -122,19 +122,19 @@ klasse TOMLDecodeError(ValueError):
 
 
 def load(fp: IO[bytes], /, *, parse_float: ParseFloat = float) -> dict[str, Any]:
-    """Parse TOML from a binary file object."""
+    """Parse TOML von a binary file object."""
     b = fp.read()
     try:
         s = b.decode()
     except AttributeError:
         raise TypeError(
             "File must be opened in binary mode, e.g. use `open('foo.toml', 'rb')`"
-        ) from Nichts
+        ) von Nichts
     return loads(s, parse_float=parse_float)
 
 
 def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # noqa: C901
-    """Parse TOML from a string."""
+    """Parse TOML von a string."""
 
     # The spec allows converting "\r\n" to "\n", even in string
     # literals. Let's do so to simplify parsing.
@@ -143,7 +143,7 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
     except (AttributeError, TypeError):
         raise TypeError(
             f"Expected str object, not '{type(s).__qualname__}'"
-        ) from Nichts
+        ) von Nichts
     pos = 0
     out = Output()
     header: Key = ()
@@ -324,7 +324,7 @@ def skip_until(
     except ValueError:
         new_pos = len(src)
         wenn error_on_eof:
-            raise TOMLDecodeError(f"Expected {expect!r}", src, new_pos) from Nichts
+            raise TOMLDecodeError(f"Expected {expect!r}", src, new_pos) von Nichts
 
     wenn not error_on.isdisjoint(src[pos:new_pos]):
         while src[pos] not in error_on:
@@ -365,7 +365,7 @@ def create_dict_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
     try:
         out.data.get_or_create_nest(key)
     except KeyError:
-        raise TOMLDecodeError("Cannot overwrite a value", src, pos) from Nichts
+        raise TOMLDecodeError("Cannot overwrite a value", src, pos) von Nichts
 
     wenn not src.startswith("]", pos):
         raise TOMLDecodeError(
@@ -383,12 +383,12 @@ def create_list_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
         raise TOMLDecodeError(f"Cannot mutate immutable namespace {key}", src, pos)
     # Free the namespace now that it points to another empty list item...
     out.flags.unset_all(key)
-    # ...but this key precisely is still prohibited from table declaration
+    # ...but this key precisely is still prohibited von table declaration
     out.flags.set(key, Flags.EXPLICIT_NEST, recursive=Falsch)
     try:
         out.data.append_nest_to_list(key)
     except KeyError:
-        raise TOMLDecodeError("Cannot overwrite a value", src, pos) from Nichts
+        raise TOMLDecodeError("Cannot overwrite a value", src, pos) von Nichts
 
     wenn not src.startswith("]]", pos):
         raise TOMLDecodeError(
@@ -421,7 +421,7 @@ def key_value_rule(
     try:
         nest = out.data.get_or_create_nest(abs_key_parent)
     except KeyError:
-        raise TOMLDecodeError("Cannot overwrite a value", src, pos) from Nichts
+        raise TOMLDecodeError("Cannot overwrite a value", src, pos) von Nichts
     wenn key_stem in nest:
         raise TOMLDecodeError("Cannot overwrite a value", src, pos)
     # Mark inline table and array namespaces recursively immutable
@@ -526,7 +526,7 @@ def parse_inline_table(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos
         try:
             nest = nested_dict.get_or_create_nest(key_parent, access_lists=Falsch)
         except KeyError:
-            raise TOMLDecodeError("Cannot overwrite a value", src, pos) from Nichts
+            raise TOMLDecodeError("Cannot overwrite a value", src, pos) von Nichts
         wenn key_stem in nest:
             raise TOMLDecodeError(f"Duplicate inline table key {key_stem!r}", src, pos)
         nest[key_stem] = value
@@ -568,7 +568,7 @@ def parse_basic_str_escape(
     try:
         return pos, BASIC_STR_ESCAPE_REPLACEMENTS[escape_id]
     except KeyError:
-        raise TOMLDecodeError("Unescaped '\\' in a string", src, pos) from Nichts
+        raise TOMLDecodeError("Unescaped '\\' in a string", src, pos) von Nichts
 
 
 def parse_basic_str_escape_multiline(src: str, pos: Pos) -> tuple[Pos, str]:
@@ -641,7 +641,7 @@ def parse_basic_str(src: str, pos: Pos, *, multiline: bool) -> tuple[Pos, str]:
         try:
             char = src[pos]
         except IndexError:
-            raise TOMLDecodeError("Unterminated string", src, pos) from Nichts
+            raise TOMLDecodeError("Unterminated string", src, pos) von Nichts
         wenn char == '"':
             wenn not multiline:
                 return pos + 1, result + src[start_pos:pos]
@@ -704,7 +704,7 @@ def parse_value(  # noqa: C901
         try:
             datetime_obj = match_to_datetime(datetime_match)
         except ValueError as e:
-            raise TOMLDecodeError("Invalid date or datetime", src, pos) from e
+            raise TOMLDecodeError("Invalid date or datetime", src, pos) von e
         return datetime_match.end(), datetime_obj
     localtime_match = RE_LOCALTIME.match(src, pos)
     wenn localtime_match:

@@ -2,18 +2,18 @@
 Tests common to genericpath, ntpath and posixpath
 """
 
-import copy
-import genericpath
-import os
-import pickle
-import sys
-import unittest
-import warnings
-from test.support import (
+importiere copy
+importiere genericpath
+importiere os
+importiere pickle
+importiere sys
+importiere unittest
+importiere warnings
+von test.support importiere (
     is_apple, os_helper, warnings_helper
 )
-from test.support.script_helper import assert_python_ok
-from test.support.os_helper import FakePath
+von test.support.script_helper importiere assert_python_ok
+von test.support.os_helper importiere FakePath
 
 
 def create_file(filename, data=b'foo'):
@@ -339,8 +339,8 @@ klasse GenericTest:
 
 
 klasse TestGenericTest(GenericTest, unittest.TestCase):
-    # Issue 16852: GenericTest can't inherit from unittest.TestCase
-    # fuer test discovery purposes; CommonTest inherits from GenericTest
+    # Issue 16852: GenericTest can't inherit von unittest.TestCase
+    # fuer test discovery purposes; CommonTest inherits von GenericTest
     # and is only meant to be inherited by others.
     pathmodule = genericpath
 
@@ -366,7 +366,7 @@ klasse TestGenericTest(GenericTest, unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, 'embedded null'):
                         func(b'/tmp\x00abcds')
 
-# Following TestCase is not supposed to be run from test_genericpath.
+# Following TestCase is not supposed to be run von test_genericpath.
 # It is inherited by other test modules (ntpath, posixpath).
 
 klasse CommonTest(GenericTest):

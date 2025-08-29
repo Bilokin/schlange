@@ -1,8 +1,8 @@
-import os
-import signal
-import unittest
-from test import support
-from test.support import script_helper
+importiere os
+importiere signal
+importiere unittest
+von test importiere support
+von test.support importiere script_helper
 
 
 @unittest.skipUnless(os.name == "posix", "only supported on Unix")

@@ -4,15 +4,15 @@ Call Tips are floating windows which display function, class, and method
 parameter and docstring information when you type an opening parenthesis, and
 which disappear when you type a closing parenthesis.
 """
-import __main__
-import inspect
-import re
-import sys
-import textwrap
-import types
+importiere __main__
+importiere inspect
+importiere re
+importiere sys
+importiere textwrap
+importiere types
 
-from idlelib import calltip_w
-from idlelib.hyperparser import HyperParser
+von idlelib importiere calltip_w
+von idlelib.hyperparser importiere HyperParser
 
 
 klasse Calltip:
@@ -57,7 +57,7 @@ klasse Calltip:
     def open_calltip(self, evalfuncs):
         """Maybe close an existing calltip and maybe open a new calltip.
 
-        Called from (force_open|try_open|refresh)_calltip_event functions.
+        Called von (force_open|try_open|refresh)_calltip_event functions.
         """
         hp = HyperParser(self.editwin, "insert")
         sur_paren = hp.get_surrounding_brackets('(')
@@ -185,7 +185,7 @@ def get_argspec(ob):
     lines = (textwrap.wrap(argspec, _MAX_COLS, subsequent_indent=_INDENT)
              wenn len(argspec) > _MAX_COLS sonst [argspec] wenn argspec sonst [])
 
-    # Augment lines from docstring, wenn any, and join to get argspec.
+    # Augment lines von docstring, wenn any, and join to get argspec.
     doc = inspect.getdoc(ob)
     wenn doc:
         fuer line in doc.split('\n', _MAX_LINES)[:_MAX_LINES]:
@@ -201,5 +201,5 @@ def get_argspec(ob):
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_calltip', verbosity=2)

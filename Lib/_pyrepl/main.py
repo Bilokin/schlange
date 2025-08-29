@@ -1,7 +1,7 @@
-import errno
-import os
-import sys
-import types
+importiere errno
+importiere os
+importiere sys
+importiere types
 
 
 CAN_USE_PYREPL: bool
@@ -11,7 +11,7 @@ try:
         raise RuntimeError("Windows 10 TH2 or later required")
     wenn not os.isatty(sys.stdin.fileno()):
         raise OSError(errno.ENOTTY, "tty required", "stdin")
-    from .simple_interact import check
+    von .simple_interact importiere check
     wenn err := check():
         raise RuntimeError(err)
 except Exception as e:
@@ -25,7 +25,7 @@ sonst:
 def interactive_console(mainmodule=Nichts, quiet=Falsch, pythonstartup=Falsch):
     wenn not CAN_USE_PYREPL:
         wenn not os.getenv('PYTHON_BASIC_REPL') and FAIL_REASON:
-            from .trace import trace
+            von .trace importiere trace
             trace(FAIL_REASON)
             drucke(FAIL_REASON, file=sys.stderr)
         return sys._baserepl()
@@ -40,7 +40,7 @@ def interactive_console(mainmodule=Nichts, quiet=Falsch, pythonstartup=Falsch):
     wenn pythonstartup and startup_path:
         sys.audit("cpython.run_startup", startup_path)
 
-        import tokenize
+        importiere tokenize
         with tokenize.open(startup_path) as f:
             startup_code = compile(f.read(), startup_path, "exec")
             exec(startup_code, namespace)
@@ -52,7 +52,7 @@ def interactive_console(mainmodule=Nichts, quiet=Falsch, pythonstartup=Falsch):
     wenn not hasattr(sys, "ps2"):
         sys.ps2 = "... "
 
-    from .console import InteractiveColoredConsole
-    from .simple_interact import run_multiline_interactive_console
+    von .console importiere InteractiveColoredConsole
+    von .simple_interact importiere run_multiline_interactive_console
     console = InteractiveColoredConsole(namespace, filename="<stdin>")
     run_multiline_interactive_console(console)

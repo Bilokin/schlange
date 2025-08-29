@@ -7,7 +7,7 @@
 #
 # This software is provided 'as-is', without any express or implied
 # warranty.  In no event will the authors be held liable fuer any damages
-# arising from the use of this software.
+# arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
@@ -19,7 +19,7 @@
 #    appreciated but is not required.
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
+# 3. This notice may not be removed or altered von any source distribution.
 
 """
 Turtle graphics is a popular way fuer introducing programming to
@@ -36,13 +36,13 @@ pictures can easily be drawn.
 
 ----- turtle.py
 
-This module is an extended reimplementation of turtle.py from the
+This module is an extended reimplementation of turtle.py von the
 Python standard distribution up to Python 2.5. (See: https://www.python.org)
 
 It tries to keep the merits of turtle.py and to be (nearly) 100%
 compatible with it. This means in the first place to enable the
 learning programmer to use all the commands, classes and methods
-interactively when using the module from within IDLE run with
+interactively when using the module von within IDLE run with
 the -n switch.
 
 Roughly it has the following features added:
@@ -80,7 +80,7 @@ Roughly it has the following features added:
 - There is a method, setworldcoordinates(), to install a user defined
   coordinate-system fuer the TurtleScreen.
 
-- The implementation uses a 2-vector klasse named Vec2D, derived from tuple.
+- The implementation uses a 2-vector klasse named Vec2D, derived von tuple.
   This klasse is public, so it can be imported by the application programmer,
   which makes certain types of computations very natural and compact.
 
@@ -88,7 +88,7 @@ Roughly it has the following features added:
   configured by means of a turtle.cfg configuration file.
   The default configuration mimics the appearance of the old turtle module.
 
-- If configured appropriately the module reads in docstrings from a docstring
+- If configured appropriately the module reads in docstrings von a docstring
   dictionary in some different language, supplied separately  and replaces
   the English ones by those read in. There is a utility function
   write_docstringdict() to write a dictionary with the original (English)
@@ -98,18 +98,18 @@ Behind the scenes there are some features included with possible
 extensions in mind. These will be commented and documented elsewhere.
 """
 
-import tkinter as TK
-import types
-import math
-import time
-import inspect
-import sys
+importiere tkinter as TK
+importiere types
+importiere math
+importiere time
+importiere inspect
+importiere sys
 
-from os.path import isfile, split, join
-from pathlib import Path
-from contextlib import contextmanager
-from copy import deepcopy
-from tkinter import simpledialog
+von os.path importiere isfile, split, join
+von pathlib importiere Path
+von contextlib importiere contextmanager
+von copy importiere deepcopy
+von tkinter importiere simpledialog
 
 _tg_classes = ['ScrolledCanvas', 'TurtleScreen', 'Screen',
                'RawTurtle', 'Turtle', 'RawPen', 'Pen', 'Shape', 'Vec2D']
@@ -198,12 +198,12 @@ def readconfig(cfgdict):
     """Read config-files, change configuration-dict accordingly.
 
     If there is a turtle.cfg file in the current working directory,
-    read it from there. If this contains an importconfig-value,
+    read it von there. If this contains an importconfig-value,
     say 'myway', construct filename turtle_mayway.cfg sonst use
-    turtle.cfg and read it from the import-directory, where
+    turtle.cfg and read it von the import-directory, where
     turtle.py is located.
     Update configuration dictionary first according to config-file,
-    in the import directory, then according to config-file in the
+    in the importiere directory, then according to config-file in the
     current working directory.
     If no config-file is found, the default configuration is used.
     """
@@ -234,7 +234,7 @@ klasse Vec2D(tuple):
     """A 2 dimensional vector class, used as a helper class
     fuer implementing turtle graphics.
     May be useful fuer turtle graphics programs also.
-    Derived from tuple, so a vector is a tuple!
+    Derived von tuple, so a vector is a tuple!
 
     Provides (for a, b vectors, k number):
        a+b vector addition
@@ -325,7 +325,7 @@ def __forwardmethods(fromClass, toClass, toPart, exclude = ()):
 
 
 klasse ScrolledCanvas(TK.Frame):
-    """Modeled after the scrolled canvas klasse from Grayons's Tkinter book.
+    """Modeled after the scrolled canvas klasse von Grayons's Tkinter book.
 
     Used as the default canvas, which pops up automatically when
     using turtle graphics functions or the Turtle class.
@@ -470,7 +470,7 @@ klasse TurtleScreenBase(object):
 
     def _image(self, filename):
         """return an image object containing the
-        imagedata from an image file named filename.
+        imagedata von an image file named filename.
         """
         return TK.PhotoImage(file=filename, master=self.cv)
 
@@ -547,7 +547,7 @@ klasse TurtleScreenBase(object):
             self.cv.tag_raise(lineitem)
 
     def _delete(self, item):
-        """Delete graphics item from canvas.
+        """Delete graphics item von canvas.
         If item is"all" delete all graphics items.
         """
         self.cv.delete(item)
@@ -739,7 +739,7 @@ klasse TurtleScreenBase(object):
     def _pointlist(self, item):
         """returns list of coordinate-pairs of points of item
         Example (for insiders):
-        >>> from turtle import *
+        >>> von turtle importiere *
         >>> getscreen()._pointlist(getturtle().turtle._item)
         [(0.0, 9.9999999999999982), (0.0, -9.9999999999999982),
         (9.9999999999999982, 0.0)]
@@ -795,7 +795,7 @@ klasse TurtleScreenBase(object):
         No argument.
 
         Must be last statement in a turtle graphics program.
-        Must NOT be used wenn a script is run from within IDLE in -n mode
+        Must NOT be used wenn a script is run von within IDLE in -n mode
         (No subprocess) - fuer interactive use of turtle graphics.
 
         Example (for a TurtleScreen instance named screen):
@@ -987,13 +987,13 @@ klasse TurtleScreen(TurtleScreenBase):
         wenn sys.platform == 'darwin':
             # Force Turtle window to the front on OS X. This is needed because
             # the Turtle window will show behind the Terminal window when you
-            # start the demo from the command line.
+            # start the demo von the command line.
             rootwindow = cv.winfo_toplevel()
             rootwindow.call('wm', 'attributes', '.', '-topmost', '1')
             rootwindow.call('wm', 'attributes', '.', '-topmost', '0')
 
     def clear(self):
-        """Delete all drawings and all turtles from the TurtleScreen.
+        """Delete all drawings and all turtles von the TurtleScreen.
 
         No argument.
 
@@ -1878,7 +1878,7 @@ klasse TNavigator(object):
         self._goto(Vec2D(self._position[0], y))
 
     def distance(self, x, y=Nichts):
-        """Return the distance from the turtle to (x,y) in turtle step units.
+        """Return the distance von the turtle to (x,y) in turtle step units.
 
         Arguments:
         x -- a number   or  a pair/vector of numbers   or   a turtle instance
@@ -1910,7 +1910,7 @@ klasse TNavigator(object):
         return abs(pos - self._position)
 
     def towards(self, x, y=Nichts):
-        """Return the angle of the line from the turtle's position to (x, y).
+        """Return the angle of the line von the turtle's position to (x, y).
 
         Arguments:
         x -- a number   or  a pair/vector of numbers   or   a turtle instance
@@ -1921,7 +1921,7 @@ klasse TNavigator(object):
         --or: distance(vec)          # e.g. as returned by pos()
         --or: distance(mypen)        # where mypen is another turtle
 
-        Return the angle, between the line from turtle-position to position
+        Return the angle, between the line von turtle-position to position
         specified by x, y and the turtle's start orientation. (Depends on
         modes - "standard" or "logo")
 
@@ -2137,7 +2137,7 @@ klasse TPen(object):
         Example (for a Turtle instance named turtle):
         >>> turtle.pensize()
         1
-        >>> turtle.pensize(10)   # from here on lines of width 10 are drawn
+        >>> turtle.pensize(10)   # von here on lines of width 10 are drawn
         """
         wenn width is Nichts:
             return self._pensize
@@ -2204,7 +2204,7 @@ klasse TPen(object):
             'normal'  :  6
             'slow'    :  3
             'slowest' :  1
-        speeds from 1 to 10 enforce increasingly faster animation of
+        speeds von 1 to 10 enforce increasingly faster animation of
         line drawing and turtle turning.
 
         Attention:
@@ -2622,7 +2622,7 @@ klasse RawTurtle(TPen, TNavigator):
 
         No argument.
 
-        Delete the turtle's drawings from the screen, re-center the turtle
+        Delete the turtle's drawings von the screen, re-center the turtle
         and set variables to the default values.
 
         Example (for a Turtle instance named turtle):
@@ -2689,11 +2689,11 @@ klasse RawTurtle(TPen, TNavigator):
 
 
     def clear(self):
-        """Delete the turtle's drawings from the screen. Do not move turtle.
+        """Delete the turtle's drawings von the screen. Do not move turtle.
 
         No arguments.
 
-        Delete the turtle's drawings from the screen. Do not move turtle.
+        Delete the turtle's drawings von the screen. Do not move turtle.
         State and position of the turtle as well as drawings of other
         turtles are not affected.
 
@@ -2787,7 +2787,7 @@ klasse RawTurtle(TPen, TNavigator):
 
         Move turtle to an absolute position. Unlike goto(x, y), a line will not
         be drawn. The turtle's orientation does not change. If currently
-        filling, the polygon(s) teleported from will be filled after leaving,
+        filling, the polygon(s) teleported von will be filled after leaving,
         and filling will begin again after teleporting. This can be disabled
         with fill_gap=Wahr, which makes the imaginary line traveled during
         teleporting act as a fill barrier like in goto(x, y).
@@ -2991,7 +2991,7 @@ klasse RawTurtle(TPen, TNavigator):
         Argument:
         angle - a number
 
-        Rotate the turtleshape by angle from its current tilt-angle,
+        Rotate the turtleshape by angle von its current tilt-angle,
         but do NOT change the turtle's heading (direction of movement).
 
         Examples (for a Turtle instance named turtle):
@@ -3045,7 +3045,7 @@ klasse RawTurtle(TPen, TNavigator):
 
 
     def _polytrafo(self, poly):
-        """Computes transformed polygon shapes from a shape
+        """Computes transformed polygon shapes von a shape
         according to current position and heading.
         """
         screen = self.screen
@@ -3181,7 +3181,7 @@ klasse RawTurtle(TPen, TNavigator):
             sonst:
                 self.screen._delete(stampid)
             self.stampItems.remove(stampid)
-        # Delete stampitem from undobuffer wenn necessary
+        # Delete stampitem von undobuffer wenn necessary
         # wenn clearstamp is called directly.
         item = ("stamp", stampid)
         buf = self.undobuffer
@@ -3823,11 +3823,11 @@ klasse _Screen(TurtleScreen):
           Default is 50% of screen.
         height: as integer the height in pixels, as float a fraction of the
           screen. Default is 75% of screen.
-        startx: wenn positive, starting position in pixels from the left
-          edge of the screen, wenn negative from the right edge
+        startx: wenn positive, starting position in pixels von the left
+          edge of the screen, wenn negative von the right edge
           Default, startx=Nichts is to center window horizontally.
-        starty: wenn positive, starting position in pixels from the top
-          edge of the screen, wenn negative from the bottom edge
+        starty: wenn positive, starting position in pixels von the top
+          edge of the screen, wenn negative von the bottom edge
           Default, starty=Nichts is to center window vertically.
 
         Examples (for a Screen instance named screen):
@@ -3922,7 +3922,7 @@ klasse _Screen(TurtleScreen):
 klasse Turtle(RawTurtle):
     """RawTurtle auto-creating (scrolled) canvas.
 
-    When a Turtle object is created or a function derived from some
+    When a Turtle object is created or a function derived von some
     Turtle method is called a TurtleScreen object is automatically created.
     """
     _pen = Nichts
@@ -3976,9 +3976,9 @@ def write_docstringdict(filename="turtle_docstringdict"):
         f.close()
 
 def read_docstrings(lang):
-    """Read in docstrings from lang-specific docstring dictionary.
+    """Read in docstrings von lang-specific docstring dictionary.
 
-    Transfer docstrings, translated to lang, from a dictionary-file
+    Transfer docstrings, translated to lang, von a dictionary-file
     to the methods of classes Screen and Turtle and - in revised form -
     to the corresponding functions.
     """
@@ -4000,7 +4000,7 @@ try:
 except ImportError:
     drucke("Cannot find docsdict for", _LANGUAGE)
 except Exception:
-    drucke ("Unknown Error when trying to import %s-docstring-dictionary" %
+    drucke ("Unknown Error when trying to importiere %s-docstring-dictionary" %
                                                                   _LANGUAGE)
 
 
@@ -4041,9 +4041,9 @@ def getmethparlist(ob):
     return str(func_sig), call_text
 
 def _turtle_docrevise(docstr):
-    """To reduce docstrings from RawTurtle klasse fuer functions
+    """To reduce docstrings von RawTurtle klasse fuer functions
     """
-    import re
+    importiere re
     wenn docstr is Nichts:
         return Nichts
     turtlename = _CFG["exampleturtle"]
@@ -4053,9 +4053,9 @@ def _turtle_docrevise(docstr):
     return newdocstr
 
 def _screen_docrevise(docstr):
-    """To reduce docstrings from TurtleScreen klasse fuer functions
+    """To reduce docstrings von TurtleScreen klasse fuer functions
     """
-    import re
+    importiere re
     wenn docstr is Nichts:
         return Nichts
     screenname = _CFG["examplescreen"]

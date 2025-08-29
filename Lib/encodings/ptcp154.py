@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec generated from 'PTCP154.txt' with gencodec.py.
+""" Python Character Mapping Codec generated von 'PTCP154.txt' with gencodec.py.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 
@@ -7,7 +7,7 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

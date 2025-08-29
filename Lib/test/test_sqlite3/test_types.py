@@ -6,7 +6,7 @@
 #
 # This software is provided 'as-is', without any express or implied
 # warranty.  In no event will the authors be held liable fuer any damages
-# arising from the use of this software.
+# arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
@@ -18,18 +18,18 @@
 #    appreciated but is not required.
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
+# 3. This notice may not be removed or altered von any source distribution.
 
-import datetime
-import unittest
-import sqlite3 as sqlite
-import sys
+importiere datetime
+importiere unittest
+importiere sqlite3 as sqlite
+importiere sys
 try:
-    import zlib
+    importiere zlib
 except ImportError:
     zlib = Nichts
 
-from test import support
+von test importiere support
 
 
 klasse SqliteTypeTests(unittest.TestCase):
@@ -44,33 +44,33 @@ klasse SqliteTypeTests(unittest.TestCase):
 
     def test_string(self):
         self.cur.execute("insert into test(s) values (?)", ("Österreich",))
-        self.cur.execute("select s from test")
+        self.cur.execute("select s von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], "Österreich")
 
     def test_string_with_null_character(self):
         self.cur.execute("insert into test(s) values (?)", ("a\0b",))
-        self.cur.execute("select s from test")
+        self.cur.execute("select s von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], "a\0b")
 
     def test_small_int(self):
         self.cur.execute("insert into test(i) values (?)", (42,))
-        self.cur.execute("select i from test")
+        self.cur.execute("select i von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], 42)
 
     def test_large_int(self):
         num = 123456789123456789
         self.cur.execute("insert into test(i) values (?)", (num,))
-        self.cur.execute("select i from test")
+        self.cur.execute("select i von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], num)
 
     def test_float(self):
         val = 3.14
         self.cur.execute("insert into test(f) values (?)", (val,))
-        self.cur.execute("select f from test")
+        self.cur.execute("select f von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], val)
 
@@ -78,7 +78,7 @@ klasse SqliteTypeTests(unittest.TestCase):
         sample = b"Guglhupf"
         val = memoryview(sample)
         self.cur.execute("insert into test(b) values (?)", (val,))
-        self.cur.execute("select b from test")
+        self.cur.execute("select b von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], sample)
 
@@ -91,7 +91,7 @@ klasse SqliteTypeTests(unittest.TestCase):
         fuer value in 2**63, -2**63-1, 2**64:
             with self.assertRaises(OverflowError):
                 self.cur.execute("insert into test(i) values (?)", (value,))
-        self.cur.execute("select i from test")
+        self.cur.execute("select i von test")
         row = self.cur.fetchone()
         self.assertIsNichts(row)
 
@@ -99,7 +99,7 @@ klasse SqliteTypeTests(unittest.TestCase):
         fuer value in 0xd8ff, 0xdcff:
             with self.assertRaises(UnicodeEncodeError):
                 self.cur.execute("insert into test(s) values (?)", (chr(value),))
-        self.cur.execute("select s from test")
+        self.cur.execute("select s von test")
         row = self.cur.fetchone()
         self.assertIsNichts(row)
 
@@ -110,7 +110,7 @@ klasse SqliteTypeTests(unittest.TestCase):
             self.cur.execute("insert into test(s) values (?)", ('x'*(2**31-1),))
         with self.assertRaises(sqlite.DataError):
             self.cur.execute("insert into test(s) values (?)", ('x'*(2**31),))
-        self.cur.execute("select 1 from test")
+        self.cur.execute("select 1 von test")
         row = self.cur.fetchone()
         self.assertIsNichts(row)
 
@@ -121,7 +121,7 @@ klasse SqliteTypeTests(unittest.TestCase):
             self.cur.execute("insert into test(s) values (?)", (b'x'*(2**31-1),))
         with self.assertRaises(sqlite.DataError):
             self.cur.execute("insert into test(s) values (?)", (b'x'*(2**31),))
-        self.cur.execute("select 1 from test")
+        self.cur.execute("select 1 von test")
         row = self.cur.fetchone()
         self.assertIsNichts(row)
 
@@ -130,7 +130,7 @@ klasse DeclTypesTests(unittest.TestCase):
     klasse Foo:
         def __init__(self, _val):
             wenn isinstance(_val, bytes):
-                # sqlite3 always calls __init__ with a bytes created from a
+                # sqlite3 always calls __init__ with a bytes created von a
                 # UTF-8 string when __conform__ was used to store the object.
                 _val = _val.decode('utf-8')
             self.val = _val
@@ -198,14 +198,14 @@ klasse DeclTypesTests(unittest.TestCase):
     def test_string(self):
         # default
         self.cur.execute("insert into test(s) values (?)", ("foo",))
-        self.cur.execute('select s as "s [WRONG]" from test')
+        self.cur.execute('select s as "s [WRONG]" von test')
         row = self.cur.fetchone()
         self.assertEqual(row[0], "foo")
 
     def test_small_int(self):
         # default
         self.cur.execute("insert into test(i) values (?)", (42,))
-        self.cur.execute("select i from test")
+        self.cur.execute("select i von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], 42)
 
@@ -213,7 +213,7 @@ klasse DeclTypesTests(unittest.TestCase):
         # default
         num = 123456789123456789
         self.cur.execute("insert into test(i) values (?)", (num,))
-        self.cur.execute("select i from test")
+        self.cur.execute("select i von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], num)
 
@@ -221,20 +221,20 @@ klasse DeclTypesTests(unittest.TestCase):
         # custom
         val = 3.14
         self.cur.execute("insert into test(f) values (?)", (val,))
-        self.cur.execute("select f from test")
+        self.cur.execute("select f von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], 47.2)
 
     def test_bool(self):
         # custom
         self.cur.execute("insert into test(b) values (?)", (Falsch,))
-        self.cur.execute("select b from test")
+        self.cur.execute("select b von test")
         row = self.cur.fetchone()
         self.assertIs(row[0], Falsch)
 
-        self.cur.execute("delete from test")
+        self.cur.execute("delete von test")
         self.cur.execute("insert into test(b) values (?)", (Wahr,))
-        self.cur.execute("select b from test")
+        self.cur.execute("select b von test")
         row = self.cur.fetchone()
         self.assertIs(row[0], Wahr)
 
@@ -242,14 +242,14 @@ klasse DeclTypesTests(unittest.TestCase):
         # default
         val = "\xd6sterreich"
         self.cur.execute("insert into test(u) values (?)", (val,))
-        self.cur.execute("select u from test")
+        self.cur.execute("select u von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], val)
 
     def test_foo(self):
         val = DeclTypesTests.Foo("bla")
         self.cur.execute("insert into test(foo) values (?)", (val,))
-        self.cur.execute("select foo from test")
+        self.cur.execute("select foo von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], val)
 
@@ -283,26 +283,26 @@ klasse DeclTypesTests(unittest.TestCase):
         sample = b"Guglhupf"
         val = memoryview(sample)
         self.cur.execute("insert into test(bin) values (?)", (val,))
-        self.cur.execute("select bin from test")
+        self.cur.execute("select bin von test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], sample)
 
     def test_number1(self):
         self.cur.execute("insert into test(n1) values (5)")
-        value = self.cur.execute("select n1 from test").fetchone()[0]
+        value = self.cur.execute("select n1 von test").fetchone()[0]
         # wenn the converter is not used, it's an int instead of a float
         self.assertEqual(type(value), float)
 
     def test_number2(self):
         """Checks whether converter names are cut off at '(' characters"""
         self.cur.execute("insert into test(n2) values (5)")
-        value = self.cur.execute("select n2 from test").fetchone()[0]
+        value = self.cur.execute("select n2 von test").fetchone()[0]
         # wenn the converter is not used, it's an int instead of a float
         self.assertEqual(type(value), float)
 
     def test_convert_zero_sized_blob(self):
         self.con.execute("insert into test(cbin) values (?)", (b"",))
-        cur = self.con.execute("select cbin from test")
+        cur = self.con.execute("select cbin von test")
         # Zero-sized blobs with converters returns Nichts.  This differs from
         # blobs without a converter, where b"" is returned.
         self.assertIsNichts(cur.fetchone()[0])
@@ -333,19 +333,19 @@ klasse ColNamesTests(unittest.TestCase):
         is not set.
         """
         self.cur.execute("insert into test(x) values (?)", ("xxx",))
-        self.cur.execute("select x from test")
+        self.cur.execute("select x von test")
         val = self.cur.fetchone()[0]
         self.assertEqual(val, "xxx")
 
     def test_none(self):
         self.cur.execute("insert into test(x) values (?)", (Nichts,))
-        self.cur.execute("select x from test")
+        self.cur.execute("select x von test")
         val = self.cur.fetchone()[0]
         self.assertEqual(val, Nichts)
 
     def test_col_name(self):
         self.cur.execute("insert into test(x) values (?)", ("xxx",))
-        self.cur.execute('select x as "x y [bar]" from test')
+        self.cur.execute('select x as "x y [bar]" von test')
         val = self.cur.fetchone()[0]
         self.assertEqual(val, "<xxx>")
 
@@ -363,7 +363,7 @@ klasse ColNamesTests(unittest.TestCase):
         cursor.description should at least provide the column name(s), even if
         no row returned.
         """
-        self.cur.execute("select * from test where 0 = 1")
+        self.cur.execute("select * von test where 0 = 1")
         self.assertEqual(self.cur.description[0][0], "x")
 
     def test_cursor_description_insert(self):
@@ -383,23 +383,23 @@ klasse CommonTableExpressionTests(unittest.TestCase):
         self.con.close()
 
     def test_cursor_description_cte_simple(self):
-        self.cur.execute("with one as (select 1) select * from one")
+        self.cur.execute("with one as (select 1) select * von one")
         self.assertIsNotNichts(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "1")
 
     def test_cursor_description_cte_multiple_columns(self):
         self.cur.execute("insert into test values(1)")
         self.cur.execute("insert into test values(2)")
-        self.cur.execute("with testCTE as (select * from test) select * from testCTE")
+        self.cur.execute("with testCTE as (select * von test) select * von testCTE")
         self.assertIsNotNichts(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
 
     def test_cursor_description_cte(self):
         self.cur.execute("insert into test values (1)")
-        self.cur.execute("with bar as (select * from test) select * from test where x = 1")
+        self.cur.execute("with bar as (select * von test) select * von test where x = 1")
         self.assertIsNotNichts(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
-        self.cur.execute("with bar as (select * from test) select * from test where x = 2")
+        self.cur.execute("with bar as (select * von test) select * von test where x = 2")
         self.assertIsNotNichts(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
 
@@ -498,7 +498,7 @@ klasse DateTimeTests(unittest.TestCase):
         with self.assertWarnsRegex(DeprecationWarning, "adapter") as cm:
             self.cur.execute("insert into test(d) values (?)", (d,))
         self.assertEqual(cm.filename, __file__)
-        self.cur.execute("select d from test")
+        self.cur.execute("select d von test")
         with self.assertWarnsRegex(DeprecationWarning, "converter") as cm:
             d2 = self.cur.fetchone()[0]
         self.assertEqual(cm.filename, __file__)
@@ -509,7 +509,7 @@ klasse DateTimeTests(unittest.TestCase):
         with self.assertWarnsRegex(DeprecationWarning, "adapter") as cm:
             self.cur.execute("insert into test(ts) values (?)", (ts,))
         self.assertEqual(cm.filename, __file__)
-        self.cur.execute("select ts from test")
+        self.cur.execute("select ts von test")
         with self.assertWarnsRegex(DeprecationWarning, "converter") as cm:
             ts2 = self.cur.fetchone()[0]
         self.assertEqual(cm.filename, __file__)
@@ -518,7 +518,7 @@ klasse DateTimeTests(unittest.TestCase):
     def test_sql_timestamp(self):
         now = datetime.datetime.now(tz=datetime.UTC)
         self.cur.execute("insert into test(ts) values (current_timestamp)")
-        self.cur.execute("select ts from test")
+        self.cur.execute("select ts von test")
         with self.assertWarnsRegex(DeprecationWarning, "converter"):
             ts = self.cur.fetchone()[0]
         self.assertEqual(type(ts), datetime.datetime)
@@ -528,7 +528,7 @@ klasse DateTimeTests(unittest.TestCase):
         ts = sqlite.Timestamp(2004, 2, 14, 7, 15, 0, 500000)
         with self.assertWarnsRegex(DeprecationWarning, "adapter"):
             self.cur.execute("insert into test(ts) values (?)", (ts,))
-        self.cur.execute("select ts from test")
+        self.cur.execute("select ts von test")
         with self.assertWarnsRegex(DeprecationWarning, "converter"):
             ts2 = self.cur.fetchone()[0]
         self.assertEqual(ts, ts2)
@@ -537,7 +537,7 @@ klasse DateTimeTests(unittest.TestCase):
         ts = sqlite.Timestamp(2004, 2, 14, 7, 15, 0, 510241)
         with self.assertWarnsRegex(DeprecationWarning, "adapter"):
             self.cur.execute("insert into test(ts) values (?)", (ts,))
-        self.cur.execute("select ts from test")
+        self.cur.execute("select ts von test")
         with self.assertWarnsRegex(DeprecationWarning, "converter"):
             ts2 = self.cur.fetchone()[0]
         self.assertEqual(ts, ts2)

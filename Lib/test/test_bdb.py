@@ -48,18 +48,18 @@
             The arguments of the set method wenn any, packed in a tuple.
 """
 
-import bdb as _bdb
-import sys
-import os
-import unittest
-import textwrap
-import importlib
-import linecache
-from contextlib import contextmanager
-from itertools import islice, repeat
-from test.support import import_helper
-from test.support import os_helper
-from test.support import patch_list
+importiere bdb as _bdb
+importiere sys
+importiere os
+importiere unittest
+importiere textwrap
+importiere importlib
+importiere linecache
+von contextlib importiere contextmanager
+von itertools importiere islice, repeat
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere patch_list
 
 
 klasse BdbException(Exception): pass
@@ -473,7 +473,7 @@ def run_test(modules, set_list, skip=Nichts):
 
     *****************************   SCRIPT   ********************************
 
-    from test.test_bdb import run_test, break_in_func
+    von test.test_bdb importiere run_test, break_in_func
 
     code = '''
         def func():
@@ -522,7 +522,7 @@ def run_test(modules, set_list, skip=Nichts):
         except StopIteration:
             return
 
-    # Step over the import statement in tfunc_import using 'next' and step
+    # Step over the importiere statement in tfunc_import using 'next' and step
     # into main() in test_module.
     sl = [('next', ), ('step', )]
     sl.extend(set_list)
@@ -558,7 +558,7 @@ def break_in_func(funcname, fname=__file__, temporary=Falsch, cond=Nichts):
 TEST_MODULE = 'test_module_for_bdb'
 TEST_MODULE_FNAME = TEST_MODULE + '.py'
 def tfunc_import():
-    import test_module_for_bdb
+    importiere test_module_for_bdb
     test_module_for_bdb.main()
 
 def tfunc_main():
@@ -583,9 +583,9 @@ klasse BaseTestCase(unittest.TestCase):
     dry_run = dry_run
 
     def fail(self, msg=Nichts):
-        # Override fail() to use 'raise from Nichts' to avoid repetition of the
+        # Override fail() to use 'raise von Nichts' to avoid repetition of the
         # error message and traceback.
-        raise self.failureException(msg) from Nichts
+        raise self.failureException(msg) von Nichts
 
 klasse StateTestCase(BaseTestCase):
     """Test the step, next, return, until and quit 'set_' methods."""
@@ -730,7 +730,7 @@ klasse StateTestCase(BaseTestCase):
 
     @patch_list(sys.meta_path)
     def test_skip(self):
-        # Check that tracing is skipped over the import statement in
+        # Check that tracing is skipped over the importiere statement in
         # 'tfunc_import()'.
 
         # Remove all but the standard importers.
@@ -1045,7 +1045,7 @@ klasse RunTestCase(BaseTestCase):
                 ('return', 3, 'main'),     ('step', ),
                 ('return', 1, '<module>'), ('quit', ),
             ]
-            import test_module_for_bdb
+            importiere test_module_for_bdb
             ns = {'test_module_for_bdb': test_module_for_bdb}
             with TracerRun(self) as tracer:
                 tracer.runeval('test_module_for_bdb.main()', ns, ns)
@@ -1058,7 +1058,7 @@ klasse IssuesTestCase(BaseTestCase):
         # Check that the tracer does step into the caller frame when the
         # trace function is not set in that frame.
         code_1 = """
-            from test_module_for_bdb_2 import func
+            von test_module_for_bdb_2 importiere func
             def main():
                 func()
                 lno = 5
@@ -1163,7 +1163,7 @@ klasse IssuesTestCase(BaseTestCase):
                 return 123
 
             def test_gen():
-                x = yield from test_subgen()
+                x = yield von test_subgen()
                 return 456
 
             def main():
@@ -1194,7 +1194,7 @@ klasse IssuesTestCase(BaseTestCase):
                 return 123
 
             def test_gen():
-                x = yield from test_subgen()
+                x = yield von test_subgen()
                 return 456
 
             def main():

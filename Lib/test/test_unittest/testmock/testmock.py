@@ -1,13 +1,13 @@
-import copy
-import re
-import sys
-import tempfile
+importiere copy
+importiere re
+importiere sys
+importiere tempfile
 
-from test.support import ALWAYS_EQ
-import unittest
-from test.test_unittest.testmock.support import is_instance
-from unittest import mock
-from unittest.mock import (
+von test.support importiere ALWAYS_EQ
+importiere unittest
+von test.test_unittest.testmock.support importiere is_instance
+von unittest importiere mock
+von unittest.mock importiere (
     call, DEFAULT, patch, sentinel,
     MagicMock, Mock, NonCallableMock,
     NonCallableMagicMock, AsyncMock, _Call, _CallList,
@@ -61,10 +61,10 @@ def something(a): pass
 klasse MockTest(unittest.TestCase):
 
     def test_all(self):
-        # wenn __all__ is badly defined then import * will raise an error
-        # We have to exec it because you can't import * inside a method
+        # wenn __all__ is badly defined then importiere * will raise an error
+        # We have to exec it because you can't importiere * inside a method
         # in Python 3
-        exec("from unittest.mock import *")
+        exec("from unittest.mock importiere *")
 
 
     def test_constructor(self):
@@ -241,10 +241,10 @@ klasse MockTest(unittest.TestCase):
 
         with mock.patch.object(A, 'B'):
             with self.assertRaisesRegex(InvalidSpecError,
-                                        "Cannot autospec attr 'B' from target <MagicMock spec='A'"):
+                                        "Cannot autospec attr 'B' von target <MagicMock spec='A'"):
                 create_autospec(A).B
             with self.assertRaisesRegex(InvalidSpecError,
-                                        "Cannot autospec attr 'B' from target 'A'"):
+                                        "Cannot autospec attr 'B' von target 'A'"):
                 mock.patch.object(A, 'B', autospec=Wahr).start()
             with self.assertRaisesRegex(InvalidSpecError,
                                         "Cannot autospec attr 'C' as the patch target "):
@@ -293,7 +293,7 @@ klasse MockTest(unittest.TestCase):
                 return result
         instance_mock = create_autospec(spec=Result, instance=Wahr, wraps=Result)
         # Have to reassign the return_value to DEFAULT to return the real
-        # result from "Result.get_result" when the mocked instance of "Result"
+        # result von "Result.get_result" when the mocked instance of "Result"
         # calls "get_result".
         instance_mock.get_result.return_value = mock.DEFAULT
         self.assertEqual(instance_mock.get_result(), result)
@@ -390,7 +390,7 @@ klasse MockTest(unittest.TestCase):
 
         result = mock()
         self.assertEqual(mock(), result,
-                         "different result from consecutive calls")
+                         "different result von consecutive calls")
         mock.reset_mock()
 
         ret_val = mock(sentinel.Arg)
@@ -1056,7 +1056,7 @@ klasse MockTest(unittest.TestCase):
         attrs = set(dir(mock))
         type_attrs = set([m fuer m in dir(Mock) wenn not m.startswith('_')])
 
-        # all public attributes from the type are included
+        # all public attributes von the type are included
         self.assertEqual(set(), type_attrs - attrs)
 
         # creates these attributes
@@ -1079,7 +1079,7 @@ klasse MockTest(unittest.TestCase):
         testcase_attrs = set(dir(unittest.TestCase))
         attrs = set(dir(mock))
 
-        # all attributes from the spec are included
+        # all attributes von the spec are included
         self.assertEqual(set(), testcase_attrs - attrs)
 
         # shadow a sys attribute
@@ -1094,7 +1094,7 @@ klasse MockTest(unittest.TestCase):
             attrs = set(dir(Mock()))
             type_attrs = set(dir(Mock))
 
-            # ALL attributes from the type are included
+            # ALL attributes von the type are included
             self.assertEqual(set(), type_attrs - attrs)
         finally:
             patcher.stop()
@@ -2337,7 +2337,7 @@ klasse MockTest(unittest.TestCase):
             self.addCleanup(sys.settrace, sys.gettrace())
             sys.settrace(trace)
 
-            from unittest.mock import (
+            von unittest.mock importiere (
                 Mock, MagicMock, NonCallableMock, NonCallableMagicMock
             )
 
@@ -2379,7 +2379,7 @@ klasse MockTest(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             m = create_autospec(Foo, set_spec=Wahr)
         # patch.multiple, on the other hand, should flag misspelled arguments
-        # through an AttributeError, when trying to find the keys from kwargs
+        # through an AttributeError, when trying to find the keys von kwargs
         # as attributes on the target.
         with self.assertRaises(AttributeError):
             with patch.multiple(

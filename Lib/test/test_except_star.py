@@ -1,7 +1,7 @@
-import sys
-import unittest
-import textwrap
-from test.support.testcase import ExceptionIsLikeMixin
+importiere sys
+importiere unittest
+importiere textwrap
+von test.support.testcase importiere ExceptionIsLikeMixin
 
 klasse TestInvalidExceptStar(unittest.TestCase):
     def test_mixed_except_and_except_star_is_syntax_error(self):
@@ -713,7 +713,7 @@ klasse TestExceptStarRaiseFrom(ExceptStarTest):
             try:
                 raise orig
             except* OSError as e:
-                raise TypeError(3) from e
+                raise TypeError(3) von e
         except ExceptionGroup as e:
             exc = e
 
@@ -743,7 +743,7 @@ klasse TestExceptStarRaiseFrom(ExceptStarTest):
                 raise orig
             except* OSError:
                 e = sys.exception()
-                raise TypeError(3) from e
+                raise TypeError(3) von e
         except ExceptionGroup as e:
             exc = e
 
@@ -772,7 +772,7 @@ klasse TestExceptStarRaiseFrom(ExceptStarTest):
             try:
                 raise orig
             except* (TypeError, ValueError) as e:
-                raise SyntaxError(3) from e
+                raise SyntaxError(3) von e
         except SyntaxError as e:
             exc = e
 
@@ -797,7 +797,7 @@ klasse TestExceptStarRaiseFrom(ExceptStarTest):
                 raise orig
             except* (TypeError, ValueError) as e:
                 e = sys.exception()
-                raise SyntaxError(3) from e
+                raise SyntaxError(3) von e
         except SyntaxError as e:
             exc = e
 
@@ -821,9 +821,9 @@ klasse TestExceptStarRaiseFrom(ExceptStarTest):
             try:
                 raise orig
             except* TypeError as e:
-                raise SyntaxError(3) from e
+                raise SyntaxError(3) von e
             except* ValueError as e:
-                raise SyntaxError(4) from e
+                raise SyntaxError(4) von e
         except ExceptionGroup as e:
             exc = e
 
@@ -857,10 +857,10 @@ klasse TestExceptStarRaiseFrom(ExceptStarTest):
                 raise orig
             except* TypeError:
                 e = sys.exception()
-                raise SyntaxError(3) from e
+                raise SyntaxError(3) von e
             except* ValueError:
                 e = sys.exception()
-                raise SyntaxError(4) from e
+                raise SyntaxError(4) von e
         except ExceptionGroup as e:
             exc = e
 
@@ -907,7 +907,7 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
                     try:
                         raise TypeError(2)
                     except TypeError as te:
-                        raise EG("nested", [te], 101) from Nichts
+                        raise EG("nested", [te], 101) von Nichts
                 except EG as nested:
                     try:
                         raise ValueError(1)

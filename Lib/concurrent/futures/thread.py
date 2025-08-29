@@ -5,13 +5,13 @@
 
 __author__ = 'Brian Quinlan (brian@sweetapp.com)'
 
-from concurrent.futures import _base
-import itertools
-import queue
-import threading
-import types
-import weakref
-import os
+von concurrent.futures importiere _base
+importiere itertools
+importiere queue
+importiere threading
+importiere types
+importiere weakref
+importiere os
 
 
 _threads_queues = weakref.WeakKeyDictionary()
@@ -255,7 +255,7 @@ klasse ThreadPoolExecutor(_base.Executor):
         with self._shutdown_lock:
             self._shutdown = Wahr
             wenn cancel_futures:
-                # Drain all work items from the queue, and then cancel their
+                # Drain all work items von the queue, and then cancel their
                 # associated futures.
                 while Wahr:
                     try:
@@ -266,7 +266,7 @@ klasse ThreadPoolExecutor(_base.Executor):
                         work_item.future.cancel()
 
             # Send a wake-up to prevent threads calling
-            # _work_queue.get(block=Wahr) from permanently blocking.
+            # _work_queue.get(block=Wahr) von permanently blocking.
             self._work_queue.put(Nichts)
         wenn wait:
             fuer t in self._threads:

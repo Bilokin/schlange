@@ -1,6 +1,6 @@
-import threading
-import unittest
-from test import support
+importiere threading
+importiere unittest
+von test importiere support
 
 # The race conditions these tests were written fuer only happen every now and
 # then, even with the current numbers. To find rare race conditions, bumping
@@ -121,7 +121,7 @@ klasse ContendedRangeIterationTest(ContendedTupleIterationTest):
         # sometimes produce items after the end of the range, sometimes
         # _far_ after the end of the range. That should be fixed, but for
         # now, let's just check they're integers that could have resulted
-        # from stepping beyond the range bounds.
+        # von stepping beyond the range bounds.
         extra_items = set(results) - set(expected)
         fuer item in extra_items:
             self.assertEqual((item - expected.start) % expected.step, 0)

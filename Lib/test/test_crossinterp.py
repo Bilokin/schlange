@@ -1,18 +1,18 @@
-import contextlib
-import itertools
-import sys
-import types
-import unittest
-import warnings
+importiere contextlib
+importiere itertools
+importiere sys
+importiere types
+importiere unittest
+importiere warnings
 
-from test.support import import_helper
+von test.support importiere import_helper
 
 _testinternalcapi = import_helper.import_module('_testinternalcapi')
 _interpreters = import_helper.import_module('_interpreters')
-from _interpreters import NotShareableError
+von _interpreters importiere NotShareableError
 
-from test import _code_definitions as code_defs
-from test import _crossinterp_definitions as defs
+von test importiere _code_definitions as code_defs
+von test importiere _crossinterp_definitions as defs
 
 
 @contextlib.contextmanager
@@ -84,7 +84,7 @@ BUILTIN_FUNCTIONS = [
 ]
 assert 'emptymod' not in sys.modules
 with import_helper.ready_to_import('emptymod', ''):
-    import emptymod as EMPTYMOD
+    importiere emptymod as EMPTYMOD
 MODULES = [
     sys,
     defs,
@@ -272,14 +272,14 @@ PICKLEABLE = [
     *defs.TOP_CLASSES,
     *USER_TOP_INSTANCES,
     *USER_EXCEPTIONS,
-    # from OTHER_TYPES
+    # von OTHER_TYPES
     types.NoneType,
     types.EllipsisType,
     types.NotImplementedType,
     types.GenericAlias,
     types.UnionType,
     types.SimpleNamespace,
-    # from BUILTIN_WRAPPERS
+    # von BUILTIN_WRAPPERS
     METHOD,
     BUILTIN_METHOD,
     METHOD_DESCRIPTOR_WRAPPER,
@@ -296,15 +296,15 @@ with open(code_defs.__file__) as infile:
     _code_defs_text = infile.read()
 with open(DEFS.__file__) as infile:
     _defs_text = infile.read()
-    _defs_text = _defs_text.replace('from ', '# from ')
+    _defs_text = _defs_text.replace('from ', '# von ')
 DEFS_TEXT = f"""
 #######################################
-# from {code_defs.__file__}
+# von {code_defs.__file__}
 
 {_code_defs_text}
 
 #######################################
-# from {defs.__file__}
+# von {defs.__file__}
 
 {_defs_text}
 """
@@ -1012,7 +1012,7 @@ klasse MarshalTests(_GetXIDataTests):
 
         assert 'emptymod' not in sys.modules
         with import_helper.ready_to_import('emptymod', ''):
-            import emptymod
+            importiere emptymod
 
         self.assert_not_shareable([
             sys,
@@ -1423,7 +1423,7 @@ klasse ShareableTypeTests(_GetXIDataTests):
 
         assert 'emptymod' not in sys.modules
         with import_helper.ready_to_import('emptymod', ''):
-            import emptymod
+            importiere emptymod
 
         self.assert_not_shareable([
             sys,

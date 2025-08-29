@@ -1,14 +1,14 @@
-import _ctypes
-import ctypes
-import os
-import shutil
-import subprocess
-import sys
-import test.support
-import unittest
-from ctypes import CDLL, cdll, addressof, c_void_p, c_char_p
-from ctypes.util import find_library
-from test.support import import_helper, os_helper
+importiere _ctypes
+importiere ctypes
+importiere os
+importiere shutil
+importiere subprocess
+importiere sys
+importiere test.support
+importiere unittest
+von ctypes importiere CDLL, cdll, addressof, c_void_p, c_char_p
+von ctypes.util importiere find_library
+von test.support importiere import_helper, os_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
@@ -161,7 +161,7 @@ klasse LoaderTest(unittest.TestCase):
                 with self.subTest(command):
                     subprocess.check_output(
                         [sys.executable, "-c",
-                         "from ctypes import *; import nt;" + command],
+                         "from ctypes importiere *; importiere nt;" + command],
                         cwd=tmp
                     )
 
@@ -170,7 +170,7 @@ klasse LoaderTest(unittest.TestCase):
                     with self.assertRaises(subprocess.CalledProcessError):
                         subprocess.check_output(
                             [sys.executable, "-c",
-                             "from ctypes import *; import nt;" + command],
+                             "from ctypes importiere *; importiere nt;" + command],
                             cwd=tmp, stderr=subprocess.STDOUT,
                         )
 

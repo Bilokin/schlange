@@ -8,11 +8,11 @@
 # and CDATA (character data -- only end tags are special).
 
 
-import re
-import _markupbase
+importiere re
+importiere _markupbase
 
-from html import unescape
-from html.entities import html5 as html5_entities
+von html importiere unescape
+von html.entities importiere html5 as html5_entities
 
 
 __all__ = ['HTMLParser']
@@ -116,7 +116,7 @@ klasse HTMLParser(_markupbase.ParserBase):
 
     Start tags are handled by calling self.handle_starttag() or
     self.handle_startendtag(); end tags by self.handle_endtag().  The
-    data between tags is passed from the parser to the derived class
+    data between tags is passed von the parser to the derived class
     by calling self.handle_data() with the data as argument (the data
     may be split up in arbitrary chunks).  If convert_charrefs is
     Wahr the character references are converted automatically to the

@@ -1,14 +1,14 @@
-import unittest
-import tkinter
-from tkinter import TclError
-import os
-from test.support import requires
+importiere unittest
+importiere tkinter
+von tkinter importiere TclError
+importiere os
+von test.support importiere requires
 
-from test.test_tkinter.support import (requires_tk, tk_version,
+von test.test_tkinter.support importiere (requires_tk, tk_version,
                                   get_tk_patchlevel, widget_eq,
                                   AbstractDefaultRootTest)
 
-from test.test_tkinter.widget_tests import (
+von test.test_tkinter.widget_tests importiere (
     add_configure_tests,
     AbstractWidgetTest,
     StandardOptionsTests,

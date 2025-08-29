@@ -27,12 +27,12 @@ vs. double quotes or singly- vs. triply-quoted strings: that's dealt
 with elsewhere (I assume).
 """
 
-import os
-import sys
-import shutil
-import tempfile
-import unittest
-import warnings
+importiere os
+importiere sys
+importiere shutil
+importiere tempfile
+importiere unittest
+importiere warnings
 
 
 TEMPLATE = r"""# coding: %s

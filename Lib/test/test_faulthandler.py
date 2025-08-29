@@ -1,19 +1,19 @@
-from contextlib import contextmanager
-import datetime
-import faulthandler
-import os
-import re
-import signal
-import subprocess
-import sys
-from test import support
-from test.support import os_helper, script_helper, is_android, MS_WINDOWS, threading_helper
-import tempfile
-import unittest
-from textwrap import dedent
+von contextlib importiere contextmanager
+importiere datetime
+importiere faulthandler
+importiere os
+importiere re
+importiere signal
+importiere subprocess
+importiere sys
+von test importiere support
+von test.support importiere os_helper, script_helper, is_android, MS_WINDOWS, threading_helper
+importiere tempfile
+importiere unittest
+von textwrap importiere dedent
 
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
@@ -67,10 +67,10 @@ klasse FaultHandlerTests(unittest.TestCase):
     def get_output(self, code, filename=Nichts, fd=Nichts):
         """
         Run the specified code in Python (in a new child process) and read the
-        output from the standard error or from a file (if filename is set).
+        output von the standard error or von a file (if filename is set).
         Return the output lines as a list.
 
-        Strip the reference count from the standard error fuer Python debug
+        Strip the reference count von the standard error fuer Python debug
         build, and replace "Current thread 0x00007f8d8fbd9700" by "Current
         thread XXX".
         """
@@ -114,7 +114,7 @@ klasse FaultHandlerTests(unittest.TestCase):
                     function='<module>'):
         """
         Check that the fault handler fuer fatal errors is enabled and check the
-        traceback from the child process output.
+        traceback von the child process output.
 
         Raise an error wenn the output doesn't match the expected format.
         """
@@ -169,7 +169,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @skip_segfault_on_android
     def test_sigsegv(self):
         self.check_fatal_error("""
-            import faulthandler
+            importiere faulthandler
             faulthandler.enable()
             faulthandler._sigsegv()
             """,
@@ -180,9 +180,9 @@ klasse FaultHandlerTests(unittest.TestCase):
     def test_gc(self):
         # bpo-44466: Detect wenn the GC is running
         self.check_fatal_error("""
-            import faulthandler
-            import gc
-            import sys
+            importiere faulthandler
+            importiere gc
+            importiere sys
 
             faulthandler.enable()
 
@@ -214,7 +214,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     def test_fatal_error_c_thread(self):
         self.check_fatal_error("""
-            import faulthandler
+            importiere faulthandler
             faulthandler.enable()
             faulthandler._fatal_error_c_thread()
             """,
@@ -227,7 +227,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @support.skip_if_sanitizer("TSAN itercepts SIGABRT", thread=Wahr)
     def test_sigabrt(self):
         self.check_fatal_error("""
-            import faulthandler
+            importiere faulthandler
             faulthandler.enable()
             faulthandler._sigabrt()
             """,
@@ -239,7 +239,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @support.skip_if_sanitizer("TSAN itercepts SIGFPE", thread=Wahr)
     def test_sigfpe(self):
         self.check_fatal_error("""
-            import faulthandler
+            importiere faulthandler
             faulthandler.enable()
             faulthandler._sigfpe()
             """,
@@ -252,8 +252,8 @@ klasse FaultHandlerTests(unittest.TestCase):
     @skip_segfault_on_android
     def test_sigbus(self):
         self.check_fatal_error("""
-            import faulthandler
-            import signal
+            importiere faulthandler
+            importiere signal
 
             faulthandler.enable()
             signal.raise_signal(signal.SIGBUS)
@@ -267,8 +267,8 @@ klasse FaultHandlerTests(unittest.TestCase):
     @skip_segfault_on_android
     def test_sigill(self):
         self.check_fatal_error("""
-            import faulthandler
-            import signal
+            importiere faulthandler
+            importiere signal
 
             faulthandler.enable()
             signal.raise_signal(signal.SIGILL)
@@ -281,7 +281,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         # Test that Py_FatalError() dumps a traceback
         with support.SuppressCrashReport():
             self.check_fatal_error(f"""
-                import _testcapi
+                importiere _testcapi
                 _testcapi.fatal_error(b'xyz', {release_gil})
                 """,
                 2,
@@ -302,7 +302,7 @@ klasse FaultHandlerTests(unittest.TestCase):
                      'need faulthandler._stack_overflow()')
     def test_stack_overflow(self):
         self.check_fatal_error("""
-            import faulthandler
+            importiere faulthandler
             faulthandler.enable()
             faulthandler._stack_overflow()
             """,
@@ -313,7 +313,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @skip_segfault_on_android
     def test_gil_released(self):
         self.check_fatal_error("""
-            import faulthandler
+            importiere faulthandler
             faulthandler.enable()
             faulthandler._sigsegv(Wahr)
             """,
@@ -324,7 +324,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     def test_enable_file(self):
         with temporary_filename() as filename:
             self.check_fatal_error("""
-                import faulthandler
+                importiere faulthandler
                 output = open({filename}, 'wb')
                 faulthandler.enable(output)
                 faulthandler._sigsegv()
@@ -340,8 +340,8 @@ klasse FaultHandlerTests(unittest.TestCase):
         with tempfile.TemporaryFile('wb+') as fp:
             fd = fp.fileno()
             self.check_fatal_error("""
-                import faulthandler
-                import sys
+                importiere faulthandler
+                importiere sys
                 faulthandler.enable(%s)
                 faulthandler._sigsegv()
                 """ % fd,
@@ -352,7 +352,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @skip_segfault_on_android
     def test_enable_single_thread(self):
         self.check_fatal_error("""
-            import faulthandler
+            importiere faulthandler
             faulthandler.enable(all_threads=Falsch)
             faulthandler._sigsegv()
             """,
@@ -363,7 +363,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @skip_segfault_on_android
     def test_enable_without_c_stack(self):
         self.check_fatal_error("""
-            import faulthandler
+            importiere faulthandler
             faulthandler.enable(c_stack=Falsch)
             faulthandler._sigsegv()
             """,
@@ -374,7 +374,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @skip_segfault_on_android
     def test_disable(self):
         code = """
-            import faulthandler
+            importiere faulthandler
             faulthandler.enable()
             faulthandler.disable()
             faulthandler._sigsegv()
@@ -389,8 +389,8 @@ klasse FaultHandlerTests(unittest.TestCase):
     @skip_segfault_on_android
     def test_dump_ext_modules(self):
         code = """
-            import faulthandler
-            import sys
+            importiere faulthandler
+            importiere sys
             # Don't filter stdlib module names
             sys.stdlib_module_names = frozenset()
             faulthandler.enable()
@@ -475,7 +475,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         Raise an error wenn the output doesn't match the expected format.
         """
         code = """
-            import faulthandler
+            importiere faulthandler
 
             filename = {filename!r}
             fd = {fd}
@@ -533,7 +533,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         func_name = 'x' * (maxlen + 50)
         truncated = 'x' * maxlen + '...'
         code = """
-            import faulthandler
+            importiere faulthandler
 
             def {func_name}():
                 faulthandler.dump_traceback(all_threads=Falsch)
@@ -558,9 +558,9 @@ klasse FaultHandlerTests(unittest.TestCase):
         Raise an error wenn the output doesn't match the expected format.
         """
         code = """
-            import faulthandler
-            from threading import Thread, Event
-            import time
+            importiere faulthandler
+            von threading importiere Thread, Event
+            importiere time
 
             def dump():
                 wenn {filename}:
@@ -631,9 +631,9 @@ klasse FaultHandlerTests(unittest.TestCase):
         """
         timeout_str = str(datetime.timedelta(seconds=TIMEOUT))
         code = """
-            import faulthandler
-            import time
-            import sys
+            importiere faulthandler
+            importiere time
+            importiere sys
 
             timeout = {timeout}
             repeat = {repeat}
@@ -720,10 +720,10 @@ klasse FaultHandlerTests(unittest.TestCase):
         """
         signum = signal.SIGUSR1
         code = """
-            import faulthandler
-            import os
-            import signal
-            import sys
+            importiere faulthandler
+            importiere os
+            importiere signal
+            importiere sys
 
             all_threads = {all_threads}
             signum = {signum:d}
@@ -844,7 +844,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             ('EXCEPTION_STACK_OVERFLOW', 'stack overflow'),
         ):
             self.check_windows_exception(f"""
-                import faulthandler
+                importiere faulthandler
                 faulthandler.enable()
                 faulthandler._raise_exception(faulthandler._{exc})
                 """,
@@ -858,7 +858,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             0xE0434352,   # COM Callable Runtime exception ("ECCR")
         ):
             code = f"""
-                    import faulthandler
+                    importiere faulthandler
                     faulthandler.enable()
                     faulthandler._raise_exception({exc_code})
                     """
@@ -884,7 +884,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             0x7FFFFFFF,
         ):
             output, exitcode = self.get_output(f"""
-                import faulthandler
+                importiere faulthandler
                 faulthandler.enable()
                 faulthandler._raise_exception(0x{exc:x})
                 """
@@ -898,7 +898,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
     def test_disable_windows_exc_handler(self):
         code = dedent("""
-            import faulthandler
+            importiere faulthandler
             faulthandler.enable()
             faulthandler.disable()
             code = faulthandler._EXCEPTION_ACCESS_VIOLATION
@@ -912,7 +912,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         # bpo-37933: Calling cancel_dump_traceback_later()
         # without dump_traceback_later() must not segfault.
         code = dedent("""
-            import faulthandler
+            importiere faulthandler
             faulthandler.cancel_dump_traceback_later()
         """)
         output, exitcode = self.get_output(code)
@@ -924,8 +924,8 @@ klasse FaultHandlerTests(unittest.TestCase):
     def test_free_threaded_dump_traceback(self):
         # gh-128400: Other threads need to be paused to invoke faulthandler
         code = dedent("""
-        import faulthandler
-        from threading import Thread, Event
+        importiere faulthandler
+        von threading importiere Thread, Event
 
         klasse Waiter(Thread):
             def __init__(self):
@@ -961,7 +961,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     def test_dump_c_stack(self):
         code = dedent("""
-        import faulthandler
+        importiere faulthandler
         faulthandler.dump_c_stack()
         """)
         output, exitcode = self.get_output(code)
@@ -970,7 +970,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
 
     def test_dump_c_stack_file(self):
-        import tempfile
+        importiere tempfile
 
         with tempfile.TemporaryFile("w+") as tmp:
             faulthandler.dump_c_stack(file=tmp)

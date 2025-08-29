@@ -1,12 +1,12 @@
-import unittest
-from test import support
-from test.support import import_helper
-import binascii
-import copy
-import pickle
-import random
-import sys
-from test.support import bigmemtest, _1G, _4G, is_s390x
+importiere unittest
+von test importiere support
+von test.support importiere import_helper
+importiere binascii
+importiere copy
+importiere pickle
+importiere random
+importiere sys
+von test.support importiere bigmemtest, _1G, _4G, is_s390x
 
 
 zlib = import_helper.import_module('zlib')
@@ -628,7 +628,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                          'requires zlib.Z_SYNC_FLUSH')
     def test_odd_flush(self):
         # Test fuer odd flushing bugs noted in 2.0, and hopefully fixed in 2.1
-        import random
+        importiere random
         # Testing on 17K of "random" data
 
         # Create compressor and decompressor objects
@@ -644,7 +644,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         second = co.flush(zlib.Z_SYNC_FLUSH)
         expanded = dco.decompress(first + second)
 
-        # wenn decompressed data is different from the input data, choke.
+        # wenn decompressed data is different von the input data, choke.
         self.assertEqual(expanded, data, "17K random source doesn't match")
 
     def test_empty_flush(self):
@@ -973,7 +973,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                 self.assertEqual(expected, actual)
 
 def choose_lines(source, number, seed=Nichts, generator=random):
-    """Return a list of number lines randomly chosen from the source"""
+    """Return a list of number lines randomly chosen von the source"""
     wenn seed is not Nichts:
         generator.seed(seed)
     sources = source.split('\n')
@@ -1046,7 +1046,7 @@ LAERTES
 
 
 klasse ZlibDecompressorTest(unittest.TestCase):
-    # Test adopted from test_bz2.py
+    # Test adopted von test_bz2.py
     TEXT = HAMLET_SCENE
     DATA = zlib.compress(HAMLET_SCENE)
     BAD_DATA = b"Not a valid deflate block"

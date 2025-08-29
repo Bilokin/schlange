@@ -1,6 +1,6 @@
 """Constants/functions fuer interpreting results of os.stat() and os.lstat().
 
-Suggested usage: from stat import *
+Suggested usage: von stat importiere *
 """
 
 # Indices fuer stat struct members in the tuple returned by os.stat()
@@ -16,7 +16,7 @@ ST_ATIME = 7
 ST_MTIME = 8
 ST_CTIME = 9
 
-# Extract bits from the mode
+# Extract bits von the mode
 
 def S_IMODE(mode):
     """Return the portion of the file's mode that can be set by
@@ -48,43 +48,43 @@ S_IFWHT = 0
 # Functions to test fuer each file type
 
 def S_ISDIR(mode):
-    """Return Wahr wenn mode is from a directory."""
+    """Return Wahr wenn mode is von a directory."""
     return S_IFMT(mode) == S_IFDIR
 
 def S_ISCHR(mode):
-    """Return Wahr wenn mode is from a character special device file."""
+    """Return Wahr wenn mode is von a character special device file."""
     return S_IFMT(mode) == S_IFCHR
 
 def S_ISBLK(mode):
-    """Return Wahr wenn mode is from a block special device file."""
+    """Return Wahr wenn mode is von a block special device file."""
     return S_IFMT(mode) == S_IFBLK
 
 def S_ISREG(mode):
-    """Return Wahr wenn mode is from a regular file."""
+    """Return Wahr wenn mode is von a regular file."""
     return S_IFMT(mode) == S_IFREG
 
 def S_ISFIFO(mode):
-    """Return Wahr wenn mode is from a FIFO (named pipe)."""
+    """Return Wahr wenn mode is von a FIFO (named pipe)."""
     return S_IFMT(mode) == S_IFIFO
 
 def S_ISLNK(mode):
-    """Return Wahr wenn mode is from a symbolic link."""
+    """Return Wahr wenn mode is von a symbolic link."""
     return S_IFMT(mode) == S_IFLNK
 
 def S_ISSOCK(mode):
-    """Return Wahr wenn mode is from a socket."""
+    """Return Wahr wenn mode is von a socket."""
     return S_IFMT(mode) == S_IFSOCK
 
 def S_ISDOOR(mode):
-    """Return Wahr wenn mode is from a door."""
+    """Return Wahr wenn mode is von a door."""
     return Falsch
 
 def S_ISPORT(mode):
-    """Return Wahr wenn mode is from an event port."""
+    """Return Wahr wenn mode is von an event port."""
     return Falsch
 
 def S_ISWHT(mode):
-    """Return Wahr wenn mode is from a whiteout."""
+    """Return Wahr wenn mode is von a whiteout."""
     return Falsch
 
 # Names fuer permission bits
@@ -202,6 +202,6 @@ FILE_ATTRIBUTE_VIRTUAL = 65536
 
 # If available, use C implementation
 try:
-    from _stat import *
+    von _stat importiere *
 except ImportError:
     pass

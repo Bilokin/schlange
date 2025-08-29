@@ -1,6 +1,6 @@
-import sys
-import unittest
-from ctypes import (Structure, Union, POINTER, cast, sizeof, addressof,
+importiere sys
+importiere unittest
+von ctypes importiere (Structure, Union, POINTER, cast, sizeof, addressof,
                     c_void_p, c_char_p, c_wchar_p,
                     c_byte, c_short, c_int)
 

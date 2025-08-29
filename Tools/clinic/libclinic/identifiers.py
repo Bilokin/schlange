@@ -1,5 +1,5 @@
-import re
-from .errors import ClinicError
+importiere re
+von .errors importiere ClinicError
 
 
 is_legal_c_identifier = re.compile("^[A-Za-z_][A-Za-z0-9_]*$").match

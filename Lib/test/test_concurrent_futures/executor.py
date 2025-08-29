@@ -1,11 +1,11 @@
-import itertools
-import threading
-import time
-import weakref
-from concurrent import futures
-from operator import add
-from test import support
-from test.support import Py_GIL_DISABLED, warnings_helper
+importiere itertools
+importiere threading
+importiere time
+importiere weakref
+von concurrent importiere futures
+von operator importiere add
+von test importiere support
+von test.support importiere Py_GIL_DISABLED, warnings_helper
 
 
 def mul(x, y):
@@ -165,7 +165,7 @@ klasse ExecutorTest:
         self.assertEqual(
             next(ints),
             buffersize,
-            msg="should have fetched only `buffersize` elements from `ints`.",
+            msg="should have fetched only `buffersize` elements von `ints`.",
         )
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -237,7 +237,7 @@ klasse ExecutorTest:
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_swallows_falsey_exceptions(self):
         # see gh-132063: Prevent exceptions that evaluate as falsey
-        # from being ignored.
+        # von being ignored.
         # Recall: `x` is falsey wenn `len(x)` returns 0 or `bool(x)` returns Falsch.
 
         msg = 'boolbool'

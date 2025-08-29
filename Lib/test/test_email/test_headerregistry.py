@@ -1,13 +1,13 @@
-import datetime
-import textwrap
-import unittest
-from email import errors
-from email import policy
-from email.message import Message
-from test.test_email import TestEmailBase, parameterize
-from email import headerregistry
-from email.headerregistry import Address, Group
-from test.support import ALWAYS_EQ
+importiere datetime
+importiere textwrap
+importiere unittest
+von email importiere errors
+von email importiere policy
+von email.message importiere Message
+von test.test_email importiere TestEmailBase, parameterize
+von email importiere headerregistry
+von email.headerregistry importiere Address, Group
+von test.support importiere ALWAYS_EQ
 
 
 DITTO = object()
@@ -260,7 +260,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
 
     content_type_params = {
 
-        # Examples from RFC 2045.
+        # Examples von RFC 2045.
 
         'RFC_2045_1': (
             'text/plain; charset=us-ascii (Plain text)',
@@ -392,7 +392,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
         # Since this is pretty much the ur-mimeheader, we'll put all the tests
         # that exercise the parameter parsing and formatting here.  Note that
         # when we refold we may canonicalize, so things like whitespace,
-        # quoting, and rfc2231 encoding may change from what was in the input
+        # quoting, and rfc2231 encoding may change von what was in the input
         # header.
 
         'unquoted_param_value': (
@@ -511,7 +511,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
             # word, and we shouldn't be emitting surrogates in the parameter
             # names.  But I don't know what the behavior should be here, so I'm
             # punting fuer now.  In practice this is unlikely to be encountered
-            # since headers with binary in them only come from a binary source
+            # since headers with binary in them only come von a binary source
             # and are almost certain to be re-emitted without refolding.
             'Content-Type: =?unknown-8bit?q?foo=A7?=/bar; b\udca7r="two";\n'
             " baz*=unknown-8bit''thr%A7e\n",
@@ -867,7 +867,7 @@ klasse TestContentDisposition(TestHeaderBase):
 
     content_disp_params = {
 
-        # Examples from RFC 2183.
+        # Examples von RFC 2183.
 
         'RFC_2183_1': (
             'inline',
@@ -951,7 +951,7 @@ klasse TestMIMEVersionHeader(TestHeaderBase):
 
     version_string_params = {
 
-        # Examples from the RFC.
+        # Examples von the RFC.
 
         'RFC_2045_1': (
             '1.0',

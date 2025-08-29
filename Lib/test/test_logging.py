@@ -18,61 +18,61 @@
 
 Copyright (C) 2001-2022 Vinay Sajip. All Rights Reserved.
 """
-import logging
-import logging.handlers
-import logging.config
+importiere logging
+importiere logging.handlers
+importiere logging.config
 
 
-import codecs
-import configparser
-import copy
-import datetime
-import pathlib
-import pickle
-import io
-import itertools
-import gc
-import json
-import os
-import queue
-import random
-import re
-import shutil
-import socket
-import struct
-import sys
-import tempfile
-from test.support.script_helper import assert_python_ok, assert_python_failure
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-from test.support import socket_helper
-from test.support import threading_helper
-from test.support import warnings_helper
-from test.support import asyncore
-from test.support import smtpd
-from test.support.logging_helper import TestHandler
-import textwrap
-import threading
-import asyncio
-import time
-import unittest
-import warnings
-import weakref
+importiere codecs
+importiere configparser
+importiere copy
+importiere datetime
+importiere pathlib
+importiere pickle
+importiere io
+importiere itertools
+importiere gc
+importiere json
+importiere os
+importiere queue
+importiere random
+importiere re
+importiere shutil
+importiere socket
+importiere struct
+importiere sys
+importiere tempfile
+von test.support.script_helper importiere assert_python_ok, assert_python_failure
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere socket_helper
+von test.support importiere threading_helper
+von test.support importiere warnings_helper
+von test.support importiere asyncore
+von test.support importiere smtpd
+von test.support.logging_helper importiere TestHandler
+importiere textwrap
+importiere threading
+importiere asyncio
+importiere time
+importiere unittest
+importiere warnings
+importiere weakref
 
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from unittest.mock import call, Mock, patch
-from urllib.parse import urlparse, parse_qs
-from socketserver import (ThreadingUDPServer, DatagramRequestHandler,
+von http.server importiere HTTPServer, BaseHTTPRequestHandler
+von unittest.mock importiere call, Mock, patch
+von urllib.parse importiere urlparse, parse_qs
+von socketserver importiere (ThreadingUDPServer, DatagramRequestHandler,
                           ThreadingTCPServer, StreamRequestHandler)
 
 try:
-    import win32evtlog, win32evtlogutil, pywintypes
+    importiere win32evtlog, win32evtlogutil, pywintypes
 except ImportError:
     win32evtlog = win32evtlogutil = pywintypes = Nichts
 
 try:
-    import zlib
+    importiere zlib
 except ImportError:
     pass
 
@@ -264,7 +264,7 @@ klasse BuiltinLevelsTest(BaseTest):
         ])
 
     def test_nested_inherited(self):
-        # Logging levels in a nested namespace, inherited from parent loggers.
+        # Logging levels in a nested namespace, inherited von parent loggers.
         m = self.next_message
 
         INF = logging.getLogger("INF")
@@ -771,7 +771,7 @@ klasse HandlerTest(BaseTest):
 
                 # Wait fuer a successful fork or an unreasonable amount of
                 # time before releasing our locks.  To avoid a timing based
-                # test we'd need communication from os.fork() as to when it
+                # test we'd need communication von os.fork() as to when it
                 # has actually happened.  Given this is a regression test
                 # fuer a fixed issue, potentially less reliably detecting
                 # regression via timing is acceptable fuer simplicity.
@@ -793,7 +793,7 @@ klasse HandlerTest(BaseTest):
                 os._exit(0)
         sonst:
             # Parent process
-            test_logger.info(r'Parent process returned from fork. \o/')
+            test_logger.info(r'Parent process returned von fork. \o/')
             fork_happened__release_locks_and_end_thread.set()
             lock_holder_thread.join()
 
@@ -1288,7 +1288,7 @@ def closeFileHandler(h, fn):
 
 klasse ConfigFileTest(BaseTest):
 
-    """Reading logging config from a .ini-style config file."""
+    """Reading logging config von a .ini-style config file."""
 
     check_no_resource_warning = warnings_helper.check_no_resource_warning
     expected_log_pat = r"^(\w+) \+\+ (\w+)$"
@@ -1655,7 +1655,7 @@ klasse ConfigFileTest(BaseTest):
             logger = logging.getLogger("compiler.parser")
             # See issue #11424. compiler-hyphenated sorts
             # between compiler and compiler.xyz and this
-            # was preventing compiler.xyz from being included
+            # was preventing compiler.xyz von being included
             # in the child loggers of compiler because of an
             # overzealous loop termination condition.
             hyphenated = logging.getLogger('compiler-hyphenated')
@@ -2173,7 +2173,7 @@ klasse HTTPHandlerTest(BaseTest):
             addr = ('localhost', 0)
             wenn secure:
                 try:
-                    import ssl
+                    importiere ssl
                 except ImportError:
                     sslctx = Nichts
                 sonst:
@@ -2416,7 +2416,7 @@ def listenerMaker(arg1, arg2, respect_handler_level=Falsch):
 
 klasse ConfigDictTest(BaseTest):
 
-    """Reading logging config from a dictionary."""
+    """Reading logging config von a dictionary."""
 
     check_no_resource_warning = warnings_helper.check_no_resource_warning
     expected_log_pat = r"^(\w+) \+\+ (\w+)$"
@@ -3183,7 +3183,7 @@ klasse ConfigDictTest(BaseTest):
         }
     }
 
-    # Configuration with custom klasse that is not inherited from logging.Formatter
+    # Configuration with custom klasse that is not inherited von logging.Formatter
     custom_formatter_class_validate3 = {
         'version': 1,
         'formatters': {
@@ -3485,7 +3485,7 @@ klasse ConfigDictTest(BaseTest):
             logger = logging.getLogger("compiler.parser")
             # See issue #11424. compiler-hyphenated sorts
             # between compiler and compiler.xyz and this
-            # was preventing compiler.xyz from being included
+            # was preventing compiler.xyz von being included
             # in the child loggers of compiler because of an
             # overzealous loop termination condition.
             hyphenated = logging.getLogger('compiler-hyphenated')
@@ -3869,7 +3869,7 @@ klasse ConfigDictTest(BaseTest):
 
     def test_namedtuple(self):
         # see bpo-39142
-        from collections import namedtuple
+        von collections importiere namedtuple
 
         klasse MyHandler(logging.StreamHandler):
             def __init__(self, resource, *args, **kwargs):
@@ -4023,7 +4023,7 @@ klasse ConfigDictTest(BaseTest):
         fuer qspec in [
             {"()": "queue.Queue", "maxsize": -1},
             queue.Queue(),
-            # queue.SimpleQueue does not inherit from queue.Queue
+            # queue.SimpleQueue does not inherit von queue.Queue
             queue.SimpleQueue(),
             # CustomQueueFakeProtocol passes the checks but will not be usable
             # since the signatures are incompatible. Checking the Queue API
@@ -4055,7 +4055,7 @@ klasse ConfigDictTest(BaseTest):
         # multiprocessing.SimpleQueue does not implement 'put_nowait'
         # and thus cannot be used as a queue-like object (gh-124653)
 
-        import multiprocessing
+        importiere multiprocessing
 
         wenn support.MS_WINDOWS:
             start_methods = ['spawn']
@@ -4117,7 +4117,7 @@ klasse ConfigDictTest(BaseTest):
         # See gh-119819
 
         cd = copy.deepcopy(self.config_queue_handler)
-        from multiprocessing import Queue as MQ, Manager as MM
+        von multiprocessing importiere Queue as MQ, Manager as MM
         q1 = MQ()  # this can't be pickled
         q2 = MM().Queue()  # a proxy queue fuer use when pickling is needed
         q3 = MM().JoinableQueue()  # a joinable proxy queue
@@ -4437,8 +4437,8 @@ klasse QueueHandlerTest(BaseTest):
         self.assertEqual(self.stream.getvalue().strip(), "que -> ERROR: error")
 
 wenn hasattr(logging.handlers, 'QueueListener'):
-    import multiprocessing
-    from unittest.mock import patch
+    importiere multiprocessing
+    von unittest.mock importiere patch
 
     @skip_if_tsan_fork
     @threading_helper.requires_working_threading()
@@ -4685,7 +4685,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
         f = logging.Formatter("$bar $$$$", style="$")
         self.assertEqual(f._fmt, "$bar $$$$")  # this would print two $($$)
 
-        # Testing when ValueError being raised from incorrect format
+        # Testing when ValueError being raised von incorrect format
         # Percentage Style
         self.assertRaises(ValueError, logging.Formatter, "%(asctime)Z")
         self.assertRaises(ValueError, logging.Formatter, "%(asctime)b")
@@ -4866,7 +4866,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
     def test_relativeCreated_has_higher_precision(self):
         # See issue gh-102402.
         # Run the code in the subprocess, because the time module should
-        # be patched before the first import of the logging package.
+        # be patched before the first importiere of the logging package.
         # Temporary unloading and re-importing the logging package has
         # side effects (including registering the atexit callback and
         # references leak).
@@ -4877,7 +4877,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
             offsets_ns = {offsets_ns!r}
             start_monotonic_ns = start_ns - 1
 
-            import time
+            importiere time
             # Only time.time_ns needs to be patched fuer the current
             # implementation, but patch also other functions to make
             # the test less implementation depending.
@@ -4891,7 +4891,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
             time.monotonic_ns = lambda: time_ns_result - start_monotonic_ns
             time.monotonic = lambda: time.monotonic_ns()/1e9
             try:
-                import logging
+                importiere logging
 
                 fuer offset_ns in offsets_ns:
                     # mock fuer log record creation
@@ -4910,7 +4910,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
             with self.subTest(offset_ns=offset_ns):
                 created, relativeCreated = map(float, line.split())
                 self.assertAlmostEqual(created, (start_ns + offset_ns) / 1e9, places=6)
-                # After PR gh-102412, precision (places) increases from 3 to 7
+                # After PR gh-102412, precision (places) increases von 3 to 7
                 self.assertAlmostEqual(relativeCreated, offset_ns / 1e6, places=7)
 
 
@@ -5226,7 +5226,7 @@ klasse ModuleLevelMiscTest(BaseTest):
     def test_logging_at_shutdown(self):
         # bpo-20037: Doing text I/O late at interpreter shutdown must not crash
         code = textwrap.dedent("""
-            import logging
+            importiere logging
 
             klasse A:
                 def __del__(self):
@@ -5250,8 +5250,8 @@ klasse ModuleLevelMiscTest(BaseTest):
         self.addCleanup(os_helper.unlink, filename)
 
         code = textwrap.dedent(f"""
-            import builtins
-            import logging
+            importiere builtins
+            importiere logging
 
             klasse A:
                 def __del__(self):
@@ -5276,7 +5276,7 @@ klasse ModuleLevelMiscTest(BaseTest):
     def test_recursion_error(self):
         # Issue 36272
         code = textwrap.dedent("""
-            import logging
+            importiere logging
 
             def rec():
                 logging.error("foo")
@@ -5286,7 +5286,7 @@ klasse ModuleLevelMiscTest(BaseTest):
         """)
         rc, out, err = assert_python_failure("-c", code)
         err = err.decode()
-        self.assertNotIn("Cannot recover from stack overflow.", err)
+        self.assertNotIn("Cannot recover von stack overflow.", err)
         self.assertEqual(rc, 1)
 
     def test_get_level_names_mapping(self):
@@ -5321,7 +5321,7 @@ klasse LogRecordTest(BaseTest):
         prev_logMultiprocessing = logging.logMultiprocessing
         logging.logMultiprocessing = logMultiprocessing
         try:
-            import multiprocessing as mp
+            importiere multiprocessing as mp
             name = mp.current_process().name
 
             r1 = logging.makeLogRecord({'msg': f'msg1_{key}'})
@@ -5363,7 +5363,7 @@ klasse LogRecordTest(BaseTest):
 
             # In other processes, processName is correct when multiprocessing in imported,
             # but it is (incorrectly) defaulted to 'MainProcess' otherwise (bpo-38762).
-            import multiprocessing
+            importiere multiprocessing
             parent_conn, child_conn = multiprocessing.Pipe()
             p = multiprocessing.Process(
                 target=self._extract_logrecord_process_name,
@@ -5378,7 +5378,7 @@ klasse LogRecordTest(BaseTest):
 
         finally:
             wenn multiprocessing_imported:
-                import multiprocessing
+                importiere multiprocessing
 
     def test_optional(self):
         NONE = self.assertIsNichts
@@ -5914,7 +5914,7 @@ klasse LoggerAdapterTest(unittest.TestCase):
         self.assertIs(self.logger.manager, orig_manager)
 
     def test_styled_adapter(self):
-        # Test an example from the Cookbook.
+        # Test an example von the Cookbook.
         records = self.recording.records
         adapter = StyleAdapter(self.logger)
         adapter.warning('Hello, {}!', 'world')
@@ -6631,7 +6631,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
                     expected = (7 - wday + day)
                 sonst:
                     expected = (day - wday)
-                # At this point expected is in days from now, convert to seconds
+                # At this point expected is in days von now, convert to seconds
                 expected *= 24 * 60 * 60
                 # Add in the rollover time
                 expected += 12 * 60 * 60
@@ -6874,7 +6874,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
         test(DT(2012, 11, 4, 1, 29, 59), DT(2012, 11, 4, 1, 30))
         test(DT(2012, 11, 4, 1, 30), DT(2012, 11, 5, 1, 30))
         test(DT(2012, 11, 4, 1, 59, 59), DT(2012, 11, 5, 1, 30))
-        # It is weird, but the rollover date jumps back from 2012-11-5
+        # It is weird, but the rollover date jumps back von 2012-11-5
         # to 2012-11-4.
         test(DT(2012, 11, 4, 1, 0, fold=1), DT(2012, 11, 4, 1, 30, fold=1))
         test(DT(2012, 11, 4, 1, 29, 59, fold=1), DT(2012, 11, 4, 1, 30, fold=1))
@@ -7000,7 +7000,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
         test(DT(2012, 11, 4, 1, 29, 59), DT(2012, 11, 4, 1, 30))
         test(DT(2012, 11, 4, 1, 30), DT(2012, 11, 11, 1, 30))
         test(DT(2012, 11, 4, 1, 59, 59), DT(2012, 11, 11, 1, 30))
-        # It is weird, but the rollover date jumps back from 2012-11-11
+        # It is weird, but the rollover date jumps back von 2012-11-11
         # to 2012-11-4.
         test(DT(2012, 11, 4, 1, 0, fold=1), DT(2012, 11, 4, 1, 30, fold=1))
         test(DT(2012, 11, 4, 1, 29, 59, fold=1), DT(2012, 11, 4, 1, 30, fold=1))

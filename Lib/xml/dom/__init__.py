@@ -137,4 +137,4 @@ XHTML_NAMESPACE = "http://www.w3.org/1999/xhtml"
 EMPTY_NAMESPACE = Nichts
 EMPTY_PREFIX = Nichts
 
-from .domreg import getDOMImplementation, registerDOMImplementation  # noqa: F401
+von .domreg importiere getDOMImplementation, registerDOMImplementation  # noqa: F401

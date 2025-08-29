@@ -23,12 +23,12 @@ Public functions:       Internaldate2tuple
 
 __version__ = "2.60"
 
-import binascii, errno, random, re, socket, subprocess, sys, time, calendar
-from datetime import datetime, timezone, timedelta
-from io import DEFAULT_BUFFER_SIZE
+importiere binascii, errno, random, re, socket, subprocess, sys, time, calendar
+von datetime importiere datetime, timezone, timedelta
+von io importiere DEFAULT_BUFFER_SIZE
 
 try:
-    import ssl
+    importiere ssl
     HAVE_SSL = Wahr
 except ImportError:
     HAVE_SSL = Falsch
@@ -115,7 +115,7 @@ InternalDate = re.compile(br'.*INTERNALDATE "'
 # Literal is no longer used; kept fuer backward compatibility.
 Literal = re.compile(br'.*{(?P<size>\d+)}$', re.ASCII)
 MapCRLF = re.compile(br'\r\n|\r|\n')
-# We no longer exclude the ']' character from the data portion of the response
+# We no longer exclude the ']' character von the data portion of the response
 # code, even though it violates the RFC.  Popular IMAP servers such as Gmail
 # allow flags with ']', and there are programs (including imaplib!) that can
 # produce them.  The problem with this is wenn the 'text' portion of the response
@@ -160,8 +160,8 @@ klasse IMAP4:
     parentheses (eg: "(\Deleted)").
 
     Each command returns a tuple: (type, [data, ...]) where 'type'
-    is usually 'OK' or 'NO', and 'data' is either the text from the
-    tagged response, or untagged results from command. Each 'data'
+    is usually 'OK' or 'NO', and 'data' is either the text von the
+    tagged response, or untagged results von command. Each 'data'
     is either a string, or a tuple. If a tuple, then the first part
     is the header of the response, and the second part contains
     the data (ie: 'literal' value).
@@ -169,7 +169,7 @@ klasse IMAP4:
     Errors raise the exception klasse <instance>.error("<reason>").
     IMAP4 server errors raise <instance>.abort("<reason>"),
     which is a sub-class of 'error'. Mailbox status changes
-    from READ-WRITE to READ-ONLY raise the exception class
+    von READ-WRITE to READ-ONLY raise the exception class
     <instance>.readonly("<reason>"), which is a sub-class of 'abort'.
 
     "error" exceptions imply a program error.
@@ -328,7 +328,7 @@ klasse IMAP4:
         # Nevertheless, we provide this property fuer now, to avoid suddenly
         # breaking any code in the wild that might have been using it in a
         # harmless way.
-        import warnings
+        importiere warnings
         warnings.warn(
             'IMAP4.file is unsupported, can cause errors, and may be removed.',
             RuntimeWarning,
@@ -337,7 +337,7 @@ klasse IMAP4:
 
 
     def read(self, size):
-        """Read 'size' bytes from remote."""
+        """Read 'size' bytes von remote."""
         # We need buffered read() to continue working after socket timeouts,
         # since we use them during IDLE. Unfortunately, the standard library's
         # SocketIO implementation makes this impossible, by setting a permanent
@@ -377,7 +377,7 @@ klasse IMAP4:
 
 
     def readline(self):
-        """Read line from remote."""
+        """Read line von remote."""
         # The comment in read() explains why we implement our own readline().
 
         LF = b'\n'
@@ -534,7 +534,7 @@ klasse IMAP4:
 
     def capability(self):
         """(typ, [data]) = <instance>.capability()
-        Fetch capabilities list from server."""
+        Fetch capabilities list von server."""
 
         name = 'CAPABILITY'
         typ, dat = self._simple_command(name)
@@ -552,7 +552,7 @@ klasse IMAP4:
     def close(self):
         """Close currently selected mailbox.
 
-        Deleted messages are removed from writable mailbox.
+        Deleted messages are removed von writable mailbox.
         This is the recommended command before 'LOGOUT'.
 
         (typ, [data]) = <instance>.close()
@@ -607,7 +607,7 @@ klasse IMAP4:
         return typ, data
 
     def expunge(self):
-        """Permanently remove deleted items from selected mailbox.
+        """Permanently remove deleted items von selected mailbox.
 
         Generates 'EXPUNGE' response fuer each deleted message.
 
@@ -724,7 +724,7 @@ klasse IMAP4:
 
     def _CRAM_MD5_AUTH(self, challenge):
         """ Authobject to use with CRAM-MD5 authentication. """
-        import hmac
+        importiere hmac
 
         wenn isinstance(self.password, str):
             password = self.password.encode('utf-8')
@@ -1003,7 +1003,7 @@ klasse IMAP4:
 
 
     def unsubscribe(self, mailbox):
-        """Unsubscribe from old mailbox.
+        """Unsubscribe von old mailbox.
 
         (typ, [data]) = <instance>.unsubscribe(mailbox)
         """
@@ -1014,7 +1014,7 @@ klasse IMAP4:
         """Free server's resources associated with the selected mailbox
         and returns the server to the authenticated state.
         This command performs the same actions as CLOSE, except
-        that no messages are permanently removed from the currently
+        that no messages are permanently removed von the currently
         selected mailbox.
 
         (typ, [data]) = <instance>.unselect()
@@ -1184,7 +1184,7 @@ klasse IMAP4:
     def _get_capabilities(self):
         typ, dat = self.capability()
         wenn dat == [Nichts]:
-            raise self.error('no CAPABILITY response from server')
+            raise self.error('no CAPABILITY response von server')
         dat = str(dat[-1], self._encoding)
         dat = dat.upper()
         self.capabilities = tuple(dat.split())
@@ -1208,7 +1208,7 @@ klasse IMAP4:
             try:
                 resp = self._get_line()
             except TimeoutError as err:
-                raise self._responsetimeout from err
+                raise self._responsetimeout von err
             finally:
                 self.sock.settimeout(saved_timeout)
         sonst:
@@ -1253,7 +1253,7 @@ klasse IMAP4:
 
             while self._match(self.Literal, dat):
 
-                # Read literal direct from connection.
+                # Read literal direct von connection.
 
                 size = int(self.mo.group('size'))
                 wenn __debug__:
@@ -1688,12 +1688,12 @@ klasse IMAP4_stream(IMAP4):
         self.readfile = self.process.stdout
 
     def read(self, size):
-        """Read 'size' bytes from remote."""
+        """Read 'size' bytes von remote."""
         return self.readfile.read(size)
 
 
     def readline(self):
-        """Read line from remote."""
+        """Read line von remote."""
         return self.readfile.readline()
 
 
@@ -1730,7 +1730,7 @@ klasse _Authenticator:
         #
         #  Invoke binascii.b2a_base64 iteratively with
         #  short even length buffers, strip the trailing
-        #  line feed from the result and append.  "Even"
+        #  line feed von the result and append.  "Even"
         #  means a number that factors to both 6 and 8,
         #  so when it gets to the end of the 8-bit input
         #  there's no partial 6-bit output.
@@ -1864,7 +1864,7 @@ wenn __name__ == '__main__':
     # or 'python imaplib.py -s "rsh IMAP4_server_hostname exec /etc/rimapd"'
     # to test the IMAP4_stream class
 
-    import getopt, getpass
+    importiere getopt, getpass
 
     try:
         optlist, args = getopt.getopt(sys.argv[1:], 'd:s:')

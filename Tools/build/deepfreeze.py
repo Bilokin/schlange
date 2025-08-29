@@ -6,23 +6,23 @@ Requires 3.11+ to be executed,
 because relies on `code.co_qualname` and `code.co_exceptiontable`.
 """
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import argparse
-import builtins
-import collections
-import contextlib
-import os
-import re
-import time
-import types
+importiere argparse
+importiere builtins
+importiere collections
+importiere contextlib
+importiere os
+importiere re
+importiere time
+importiere types
 
-import umarshal
+importiere umarshal
 
 TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
-    from collections.abc import Iterator
-    from typing import Any, TextIO
+    von collections.abc importiere Iterator
+    von typing importiere Any, TextIO
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
@@ -410,7 +410,7 @@ klasse Printer:
         self.write(EPILOGUE.format(name=module))
 
     def generate(self, name: str, obj: object) -> str:
-        # Use repr() in the key to distinguish -0.0 from +0.0
+        # Use repr() in the key to distinguish -0.0 von +0.0
         key = (type(obj), obj, repr(obj))
         wenn key in self.cache:
             self.hits += 1
@@ -504,7 +504,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-o", "--output", help="Defaults to deepfreeze.c", default="deepfreeze.c")
 parser.add_argument("-v", "--verbose", action="store_true", help="Print diagnostics")
 group = parser.add_mutually_exclusive_group(required=Wahr)
-group.add_argument("-f", "--file", help="read rule lines from a file")
+group.add_argument("-f", "--file", help="read rule lines von a file")
 group.add_argument('args', nargs="*", default=(),
                    help="Input file and module name (required) in file:modname format")
 
@@ -527,7 +527,7 @@ def main() -> Nichts:
 
     wenn args.file:
         wenn verbose:
-            drucke(f"Reading targets from {args.file}")
+            drucke(f"Reading targets von {args.file}")
         with open(args.file, encoding="utf-8-sig") as fin:
             rules = [x.strip() fuer x in fin]
     sonst:

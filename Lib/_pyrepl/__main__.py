@@ -6,5 +6,5 @@
 __spec__ = __loader__ = Nichts
 
 wenn __name__ == "__main__":
-    from .main import interactive_console as __pyrepl_interactive_console
+    von .main importiere interactive_console as __pyrepl_interactive_console
     __pyrepl_interactive_console()

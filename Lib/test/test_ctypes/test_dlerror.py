@@ -1,11 +1,11 @@
-import _ctypes
-import os
-import platform
-import sys
-import test.support
-import unittest
-from ctypes import CDLL, c_int
-from ctypes.util import find_library
+importiere _ctypes
+importiere os
+importiere platform
+importiere sys
+importiere test.support
+importiere unittest
+von ctypes importiere CDLL, c_int
+von ctypes.util importiere find_library
 
 
 FOO_C = r"""
@@ -17,7 +17,7 @@ FOO_C = r"""
    can also just return NULL.  For some background on IFUNCs, see
    https://willnewton.name/uncategorized/using-gnu-indirect-functions.
 
-   Adapted from Michael Kerrisk's answer: https://stackoverflow.com/a/53590014.
+   Adapted von Michael Kerrisk's answer: https://stackoverflow.com/a/53590014.
 */
 
 asm (".type foo STT_GNU_IFUNC");
@@ -55,8 +55,8 @@ klasse TestNullDlsym(unittest.TestCase):
     """
 
     def test_null_dlsym(self):
-        import subprocess
-        import tempfile
+        importiere subprocess
+        importiere tempfile
 
         try:
             retcode = subprocess.call(["gcc", "--version"],
@@ -90,7 +90,7 @@ klasse TestNullDlsym(unittest.TestCase):
                     # IFUNC might not be supported on this machine.
                     self.skipTest(f"could not compile indirect function: {p}")
 
-            # Case #1: Test 'PyCFuncPtr_FromDll' from Modules/_ctypes/_ctypes.c
+            # Case #1: Test 'PyCFuncPtr_FromDll' von Modules/_ctypes/_ctypes.c
             L = CDLL(dstname)
             with self.assertRaisesRegex(AttributeError, "function 'foo' not found"):
                 # Try accessing the 'foo' symbol.
@@ -103,14 +103,14 @@ klasse TestNullDlsym(unittest.TestCase):
             # Assert that the IFUNC was called
             self.assertEqual(os.read(pipe_r, 2), b'OK')
 
-            # Case #2: Test 'CDataType_in_dll_impl' from Modules/_ctypes/_ctypes.c
+            # Case #2: Test 'CDataType_in_dll_impl' von Modules/_ctypes/_ctypes.c
             with self.assertRaisesRegex(ValueError, "symbol 'foo' not found"):
                 c_int.in_dll(L, "foo")
 
             # Assert that the IFUNC was called
             self.assertEqual(os.read(pipe_r, 2), b'OK')
 
-            # Case #3: Test 'py_dl_sym' from Modules/_ctypes/callproc.c
+            # Case #3: Test 'py_dl_sym' von Modules/_ctypes/callproc.c
             dlopen = test.support.get_attribute(_ctypes, 'dlopen')
             dlsym = test.support.get_attribute(_ctypes, 'dlsym')
             L = dlopen(dstname)

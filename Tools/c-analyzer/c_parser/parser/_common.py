@@ -1,6 +1,6 @@
-import re
+importiere re
 
-from ._regexes import (
+von ._regexes importiere (
     _ind,
     STRING_LITERAL,
     VAR_DECL as _VAR_DECL,
@@ -8,7 +8,7 @@ from ._regexes import (
 
 
 def log_match(group, m, depth_before=Nichts, depth_after=Nichts):
-    from . import _logger
+    von . importiere _logger
 
     wenn m is not Nichts:
         text = m.group(0)

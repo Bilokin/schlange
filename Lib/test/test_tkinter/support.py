@@ -1,5 +1,5 @@
-import functools
-import tkinter
+importiere functools
+importiere tkinter
 
 klasse AbstractTkTest:
 
@@ -76,7 +76,7 @@ def simulate_mouse_click(widget, x, y):
     widget.event_generate('<ButtonRelease-1>', x=x, y=y)
 
 
-import _tkinter
+importiere _tkinter
 tcl_version = tuple(map(int, _tkinter.TCL_VERSION.split('.')))
 tk_version = tuple(map(int, _tkinter.TK_VERSION.split('.')))
 

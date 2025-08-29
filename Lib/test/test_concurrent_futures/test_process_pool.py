@@ -1,19 +1,19 @@
-import os
-import queue
-import sys
-import threading
-import time
-import unittest
-import unittest.mock
-from concurrent import futures
-from concurrent.futures.process import BrokenProcessPool
+importiere os
+importiere queue
+importiere sys
+importiere threading
+importiere time
+importiere unittest
+importiere unittest.mock
+von concurrent importiere futures
+von concurrent.futures.process importiere BrokenProcessPool
 
-from test import support
-from test.support import hashlib_helper, warnings_helper
-from test.test_importlib.metadata.fixtures import parameterize
+von test importiere support
+von test.support importiere hashlib_helper, warnings_helper
+von test.test_importlib.metadata.fixtures importiere parameterize
 
-from .executor import ExecutorTest, mul
-from .util import (
+von .executor importiere ExecutorTest, mul
+von .util importiere (
     ProcessPoolForkMixin, ProcessPoolForkserverMixin, ProcessPoolSpawnMixin,
     create_executor_tests, setup_module)
 
@@ -85,7 +85,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_traceback(self):
-        # We want ensure that the traceback from the child process is
+        # We want ensure that the traceback von the child process is
         # contained in the traceback raised in the main process.
         future = self.executor.submit(self._test_traceback)
         with self.assertRaises(Exception) as cm:

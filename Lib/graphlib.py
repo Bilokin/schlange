@@ -1,4 +1,4 @@
-from types import GenericAlias
+von types importiere GenericAlias
 
 __all__ = ["TopologicalSorter", "CycleError"]
 
@@ -248,7 +248,7 @@ klasse TopologicalSorter:
         self.prepare()
         while self.is_active():
             node_group = self.get_ready()
-            yield from node_group
+            yield von node_group
             self.done(*node_group)
 
     __class_getitem__ = classmethod(GenericAlias)

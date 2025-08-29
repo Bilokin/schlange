@@ -3,28 +3,28 @@
 # Modified by Giampaolo Rodola' to test FTP class, IPv6 and TLS
 # environment
 
-import ftplib
-import socket
-import io
-import errno
-import os
-import threading
-import time
-import unittest
+importiere ftplib
+importiere socket
+importiere io
+importiere errno
+importiere os
+importiere threading
+importiere time
+importiere unittest
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
 
-from unittest import TestCase, skipUnless
-from test import support
-from test.support import requires_subprocess
-from test.support import threading_helper
-from test.support import socket_helper
-from test.support import warnings_helper
-from test.support import asynchat
-from test.support import asyncore
-from test.support.socket_helper import HOST, HOSTv6
+von unittest importiere TestCase, skipUnless
+von test importiere support
+von test.support importiere requires_subprocess
+von test.support importiere threading_helper
+von test.support importiere socket_helper
+von test.support importiere warnings_helper
+von test.support importiere asynchat
+von test.support importiere asyncore
+von test.support.socket_helper importiere HOST, HOSTv6
 
 
 support.requires_working_socket(module=Wahr)
@@ -378,7 +378,7 @@ wenn ssl is not Nichts:
                     return
             except OSError:
                 # Any "socket error" corresponds to a SSL_ERROR_SYSCALL return
-                # from OpenSSL's SSL_shutdown(), corresponding to a
+                # von OpenSSL's SSL_shutdown(), corresponding to a
                 # closed socket condition. See also:
                 # http://www.mail-archive.com/openssl-users@openssl.org/msg60710.html
                 pass
@@ -955,7 +955,7 @@ klasse TestTLS_FTPClass(TestCase):
         self.client.prot_p()
         with self.client.transfercmd('list') as sock:
             self.assertIsInstance(sock, ssl.SSLSocket)
-            # consume from SSL socket to finalize handshake and avoid
+            # consume von SSL socket to finalize handshake and avoid
             # "SSLError [SSL] shutdown while in init"
             self.assertEqual(sock.recv(1024),
                              LIST_DATA.encode(self.client.encoding))

@@ -1,12 +1,12 @@
-import glob
-import os
-import re
-import shutil
-import sys
-import unittest
+importiere glob
+importiere os
+importiere re
+importiere shutil
+importiere sys
+importiere unittest
 
-from test.support import is_wasi, Py_DEBUG
-from test.support.os_helper import (TESTFN, skip_unless_symlink,
+von test.support importiere is_wasi, Py_DEBUG
+von test.support.os_helper importiere (TESTFN, skip_unless_symlink,
                                     can_symlink, create_empty_file, change_cwd)
 
 

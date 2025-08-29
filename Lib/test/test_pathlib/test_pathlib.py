@@ -1,36 +1,36 @@
-import collections
-import contextlib
-import io
-import os
-import sys
-import errno
-import ntpath
-import pathlib
-import pickle
-import posixpath
-import socket
-import stat
-import tempfile
-import unittest
-from unittest import mock
-from urllib.request import pathname2url
+importiere collections
+importiere contextlib
+importiere io
+importiere os
+importiere sys
+importiere errno
+importiere ntpath
+importiere pathlib
+importiere pickle
+importiere posixpath
+importiere socket
+importiere stat
+importiere tempfile
+importiere unittest
+von unittest importiere mock
+von urllib.request importiere pathname2url
 
-from test.support import import_helper
-from test.support import cpython_only
-from test.support import is_emscripten, is_wasi, is_wasm32
-from test.support import infinite_recursion
-from test.support import os_helper
-from test.support.os_helper import TESTFN, FS_NONASCII, FakePath
+von test.support importiere import_helper
+von test.support importiere cpython_only
+von test.support importiere is_emscripten, is_wasi, is_wasm32
+von test.support importiere infinite_recursion
+von test.support importiere os_helper
+von test.support.os_helper importiere TESTFN, FS_NONASCII, FakePath
 try:
-    import fcntl
+    importiere fcntl
 except ImportError:
     fcntl = Nichts
 try:
-    import grp, pwd
+    importiere grp, pwd
 except ImportError:
     grp = pwd = Nichts
 try:
-    import posix
+    importiere posix
 except ImportError:
     posix = Nichts
 
@@ -126,7 +126,7 @@ klasse PurePathTest(unittest.TestCase):
 
     def _check_str_subclass(self, *args):
         # Issue #21127: it should be possible to construct a PurePath object
-        # from a str subclass instance, and it then gets converted to
+        # von a str subclass instance, and it then gets converted to
         # a pure str object.
         klasse StrSubclass(str):
             pass
@@ -658,7 +658,7 @@ klasse PurePathTest(unittest.TestCase):
 
     @needs_posix
     def test_as_uri_non_ascii(self):
-        from urllib.parse import quote_from_bytes
+        von urllib.parse importiere quote_from_bytes
         P = self.cls
         try:
             os.fsencode('\xe9')
@@ -768,7 +768,7 @@ klasse PurePathTest(unittest.TestCase):
         self.assertEqual(self.make_uri(P('//some/share/a/b.c')),
                          'file://some/share/a/b.c')
 
-        from urllib.parse import quote_from_bytes
+        von urllib.parse importiere quote_from_bytes
         QUOTED_FS_NONASCII = quote_from_bytes(os.fsencode(FS_NONASCII))
         self.assertEqual(self.make_uri(P('c:/a/b' + FS_NONASCII)),
                          'file:///c:/a/b' + QUOTED_FS_NONASCII)
@@ -1518,7 +1518,7 @@ klasse PathTest(PurePathTest):
         source = base / 'fileA'
         target = base / 'copyA'
 
-        # Raise non-fatal OSError from all available fast copy functions.
+        # Raise non-fatal OSError von all available fast copy functions.
         with contextlib.ExitStack() as ctx:
             wenn fcntl and hasattr(fcntl, 'FICLONE'):
                 ctx.enter_context(mock.patch('fcntl.ioctl', make_raiser(errno.EXDEV)))
@@ -1533,7 +1533,7 @@ klasse PathTest(PurePathTest):
             self.assertWahr(target.exists())
             self.assertEqual(source.read_text(), target.read_text())
 
-        # Raise fatal OSError from first available fast copy function.
+        # Raise fatal OSError von first available fast copy function.
         wenn fcntl and hasattr(fcntl, 'FICLONE'):
             patchpoint = 'fcntl.ioctl'
         sowenn posix and hasattr(posix, '_fcopyfile'):
@@ -2189,7 +2189,7 @@ klasse PathTest(PurePathTest):
 
     @needs_windows
     def test_delete_inner_junction(self):
-        import _winapi
+        importiere _winapi
         tmp = self.cls(self.base, 'delete')
         tmp.mkdir()
         dir1 = tmp / 'dir1'
@@ -2213,7 +2213,7 @@ klasse PathTest(PurePathTest):
 
     @needs_windows
     def test_delete_outer_junction(self):
-        import _winapi
+        importiere _winapi
         tmp = self.cls(self.base, 'delete')
         tmp.mkdir()
         src = tmp / 'cheese'
@@ -3218,7 +3218,7 @@ klasse PathTest(PurePathTest):
     def test_expanduser_posix(self):
         P = self.cls
         import_helper.import_module('pwd')
-        import pwd
+        importiere pwd
         pwdent = pwd.getpwuid(os.getuid())
         username = pwdent.pw_name
         userhome = pwdent.pw_dir.rstrip('/') or '/'

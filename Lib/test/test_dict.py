@@ -1,15 +1,15 @@
-import collections
-import collections.abc
-import gc
-import pickle
-import random
-import re
-import string
-import sys
-import unittest
-import weakref
-from test import support
-from test.support import import_helper
+importiere collections
+importiere collections.abc
+importiere gc
+importiere pickle
+importiere random
+importiere re
+importiere string
+importiere sys
+importiere unittest
+importiere weakref
+von test importiere support
+von test.support importiere import_helper
 
 
 klasse DictTest(unittest.TestCase):
@@ -1432,7 +1432,7 @@ klasse DictTest(unittest.TestCase):
         gc.collect()
         # That GC collection probably untracked the recycled internal result
         # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
-        # when it's mutated and returned from __next__:
+        # when it's mutated and returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
     @support.cpython_only
@@ -1633,7 +1633,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(Exc, dict_getitem_knownhash, d, k2, hash(k2))
 
 
-from test import mapping_tests
+von test importiere mapping_tests
 
 klasse GeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
     type2test = dict

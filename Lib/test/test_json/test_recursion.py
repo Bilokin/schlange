@@ -1,5 +1,5 @@
-from test import support
-from test.test_json import PyTest, CTest
+von test importiere support
+von test.test_json importiere PyTest, CTest
 
 
 klasse JSONTestObject:

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import argparse
-from http import server
+importiere argparse
+von http importiere server
 
 parser = argparse.ArgumentParser(
     description="Start a local webserver with a Python terminal."

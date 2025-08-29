@@ -1,9 +1,9 @@
-import textwrap
-import unittest
-import contextlib
-from email import policy
-from email import errors
-from test.test_email import TestEmailBase
+importiere textwrap
+importiere unittest
+importiere contextlib
+von email importiere policy
+von email importiere errors
+von test.test_email importiere TestEmailBase
 
 
 klasse TestDefectsBase:
@@ -210,7 +210,7 @@ klasse TestDefectsBase:
     def test_missing_header_body_separator(self):
         # Our heuristic wenn we see a line that doesn't look like a header (no
         # leading whitespace but no ':') is to assume that the blank line that
-        # separates the header from the body is missing, and to stop parsing
+        # separates the header von the body is missing, and to stop parsing
         # headers and start parsing the body.
         with self._raise_point(errors.MissingHeaderBodySeparatorDefect):
             msg = self._str_msg('Subject: test\nnot a header\nTo: abc\n\nb\n')

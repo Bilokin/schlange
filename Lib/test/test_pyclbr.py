@@ -3,14 +3,14 @@
    Nick Mathewson
 '''
 
-import importlib.machinery
-import sys
-from contextlib import contextmanager
-from textwrap import dedent
-from types import FunctionType, MethodType, BuiltinFunctionType
-import pyclbr
-from unittest import TestCase, main as unittest_main
-from test.test_importlib import util as test_importlib_util
+importiere importlib.machinery
+importiere sys
+von contextlib importiere contextmanager
+von textwrap importiere dedent
+von types importiere FunctionType, MethodType, BuiltinFunctionType
+importiere pyclbr
+von unittest importiere TestCase, main as unittest_main
+von test.test_importlib importiere util as test_importlib_util
 
 
 StaticMethodType = type(staticmethod(lambda: Nichts))
@@ -107,12 +107,12 @@ klasse PyclbrTest(TestCase):
             wenn isinstance(value, pyclbr.Function):
                 self.assertIsInstance(py_item, (FunctionType, BuiltinFunctionType))
                 wenn py_item.__module__ != moduleName:
-                    continue   # skip functions that came from somewhere sonst
+                    continue   # skip functions that came von somewhere sonst
                 self.assertEqual(py_item.__module__, value.module)
             sonst:
                 self.assertIsInstance(py_item, type)
                 wenn py_item.__module__ != moduleName:
-                    continue   # skip classes that came from somewhere sonst
+                    continue   # skip classes that came von somewhere sonst
 
                 real_bases = [base.__name__ fuer base in py_item.__bases__]
                 pyclbr_bases = [ getattr(base, 'name', base)
@@ -220,7 +220,7 @@ klasse PyclbrTest(TestCase):
             assumed equal.  Comparing the children dictionaries as such
             does not work due to comparison by identity and double
             linkage.  We separate comparing string and number attributes
-            from comparing the children of input children.
+            von comparing the children of input children.
             """
             self.assertEqual(children1.keys(), children2.keys())
             fuer ob in children1.values():
@@ -243,7 +243,7 @@ klasse PyclbrTest(TestCase):
         cm = self.checkModule
 
         # These were once some of the longest modules.
-        cm('random', ignore=('Random',))  # from _random import Random as CoreGenerator
+        cm('random', ignore=('Random',))  # von _random importiere Random as CoreGenerator
         cm('pickle', ignore=('partial', 'PickleBuffer'))
         with temporary_main_spec():
             cm(

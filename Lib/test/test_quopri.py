@@ -1,9 +1,9 @@
-import unittest
+importiere unittest
 
-import sys, io, subprocess
-import quopri
+importiere sys, io, subprocess
+importiere quopri
 
-from test import support
+von test importiere support
 
 
 ENCSAMPLE = b"""\

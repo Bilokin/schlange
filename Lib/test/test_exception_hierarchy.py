@@ -1,10 +1,10 @@
-import builtins
-import os
-import select
-import socket
-import unittest
-import errno
-from errno import EEXIST
+importiere builtins
+importiere os
+importiere select
+importiere socket
+importiere unittest
+importiere errno
+von errno importiere EEXIST
 
 
 klasse SubOSError(OSError):

@@ -1,5 +1,5 @@
-import logging
-import sys
+importiere logging
+importiere sys
 
 
 VERBOSITY = 3

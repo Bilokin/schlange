@@ -1,5 +1,5 @@
-import multiprocessing
-import sys
+importiere multiprocessing
+importiere sys
 
 modname = 'preloaded_module'
 wenn __name__ == '__main__':

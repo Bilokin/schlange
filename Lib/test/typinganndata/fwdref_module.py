@@ -1,4 +1,4 @@
-from typing import ForwardRef
+von typing importiere ForwardRef
 
 MyList = list[int]
 MyDict = dict[str, 'MyList']

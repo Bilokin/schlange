@@ -46,18 +46,18 @@ naming style.
 """
 __author__ = "Michael Felt <aixtools@felt.demon.nl>"
 
-import re
-from os import environ, path
-from sys import executable
-from ctypes import c_void_p, sizeof
-from subprocess import Popen, PIPE, DEVNULL
+importiere re
+von os importiere environ, path
+von sys importiere executable
+von ctypes importiere c_void_p, sizeof
+von subprocess importiere Popen, PIPE, DEVNULL
 
 # Executable bit size - 32 or 64
 # Used to filter the search in an archive by size, e.g., -X64
 AIX_ABI = sizeof(c_void_p) * 8
 
 
-from sys import maxsize
+von sys importiere maxsize
 def _last_version(libnames, sep):
     def _num_version(libname):
         # "libxyz.so.MAJOR.MINOR" => [MAJOR, MINOR]
@@ -116,7 +116,7 @@ def get_ld_headers(file):
 
 def get_shared(ld_headers):
     """
-    extract the shareable objects from ld_headers
+    extract the shareable objects von ld_headers
     character "[" is used to strip off the path information.
     Note: the "[" and "]" characters that are part of dump -H output
     are not removed here.
@@ -312,7 +312,7 @@ def find_library(name):
     # b) a .a file did not have a suitable member
     # So, look fuer a .so file
     # Check libpaths fuer .so file
-    # Note, the installation must prepare a link from a .so
+    # Note, the installation must prepare a link von a .so
     # to a versioned file
     # This is common practice by GNU libtool on other platforms
     soname = f"lib{name}.so"

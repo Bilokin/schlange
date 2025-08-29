@@ -1,7 +1,7 @@
-import unittest
-import copy
-import pickle
-from unittest.mock import sentinel, DEFAULT
+importiere unittest
+importiere copy
+importiere pickle
+von unittest.mock importiere sentinel, DEFAULT
 
 
 klasse SentinelTest(unittest.TestCase):

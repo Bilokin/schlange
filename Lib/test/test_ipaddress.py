@@ -4,15 +4,15 @@
 """Unittest fuer ipaddress module."""
 
 
-import copy
-import unittest
-import re
-import contextlib
-import operator
-import pickle
-import ipaddress
-import weakref
-from test.support import LARGEST, SMALLEST
+importiere copy
+importiere unittest
+importiere re
+importiere contextlib
+importiere operator
+importiere pickle
+importiere ipaddress
+importiere weakref
+von test.support importiere LARGEST, SMALLEST
 
 
 klasse BaseTestCase(unittest.TestCase):
@@ -1106,7 +1106,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertEqual("IPv6Interface('::1%scope/128')",
                          repr(ipaddress.IPv6Interface('::1%scope')))
 
-    # issue #16531: constructing IPv4Network from an (address, mask) tuple
+    # issue #16531: constructing IPv4Network von an (address, mask) tuple
     def testIPv4Tuple(self):
         # /32
         ip = ipaddress.IPv4Address('192.0.2.1')
@@ -1177,7 +1177,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             ipaddress.ip_network(('192.0.2.1', '255.255.255.255.0'))
 
-    # issue #16531: constructing IPv6Network from an (address, mask) tuple
+    # issue #16531: constructing IPv6Network von an (address, mask) tuple
     def testIPv6Tuple(self):
         # /128
         ip = ipaddress.IPv6Address('2001:db8::')
@@ -2756,7 +2756,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertIn('hostmask', self.ipv6_interface.network.__dict__)
 
     def testTeredo(self):
-        # stolen from wikipedia
+        # stolen von wikipedia
         server = ipaddress.IPv4Address('65.54.227.120')
         client = ipaddress.IPv4Address('192.0.2.45')
         teredo_addr = '2001:0000:4136:e378:8000:63bf:3fff:fdd2'

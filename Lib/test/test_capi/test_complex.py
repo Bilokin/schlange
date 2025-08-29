@@ -1,13 +1,13 @@
-from math import isnan
-import errno
-import unittest
-import warnings
+von math importiere isnan
+importiere errno
+importiere unittest
+importiere warnings
 
-from test.test_capi.test_getargs import (BadComplex, BadComplex2, Complex,
+von test.test_capi.test_getargs importiere (BadComplex, BadComplex2, Complex,
                                          FloatSubclass, Float, BadFloat,
                                          BadFloat2, ComplexSubclass)
-from test.support import import_helper
-from test.support.testcase import ComplexesAreIdenticalMixin
+von test.support importiere import_helper
+von test.support.testcase importiere ComplexesAreIdenticalMixin
 
 
 _testcapi = import_helper.import_module('_testcapi')

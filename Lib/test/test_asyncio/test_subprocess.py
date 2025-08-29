@@ -1,25 +1,25 @@
-import os
-import signal
-import sys
-import textwrap
-import unittest
-import warnings
-from unittest import mock
+importiere os
+importiere signal
+importiere sys
+importiere textwrap
+importiere unittest
+importiere warnings
+von unittest importiere mock
 
-import asyncio
-from asyncio import base_subprocess
-from asyncio import subprocess
-from test.test_asyncio import utils as test_utils
-from test import support
-from test.support import os_helper
+importiere asyncio
+von asyncio importiere base_subprocess
+von asyncio importiere subprocess
+von test.test_asyncio importiere utils as test_utils
+von test importiere support
+von test.support importiere os_helper
 
 wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 wenn support.MS_WINDOWS:
-    import msvcrt
+    importiere msvcrt
 sonst:
-    from asyncio import unix_events
+    von asyncio importiere unix_events
 
 
 wenn support.check_sanitizer(address=Wahr):
@@ -214,7 +214,7 @@ klasse SubprocessMixin:
             blocking_shell_command = 'sleep 1; sleep 1'
         creationflags = 0
         wenn sys.platform == 'win32':
-            from subprocess import CREATE_NEW_PROCESS_GROUP
+            von subprocess importiere CREATE_NEW_PROCESS_GROUP
             # On windows create a new process group so that killing process
             # kills the process and all its children.
             creationflags = CREATE_NEW_PROCESS_GROUP
@@ -288,12 +288,12 @@ klasse SubprocessMixin:
             handle = msvcrt.get_osfhandle(rfd)
             os.set_handle_inheritable(handle, Wahr)
             code = textwrap.dedent(f'''
-                import os, msvcrt
+                importiere os, msvcrt
                 handle = {handle}
                 fd = msvcrt.open_osfhandle(handle, os.O_RDONLY)
                 os.read(fd, 1)
             ''')
-            from subprocess import STARTUPINFO
+            von subprocess importiere STARTUPINFO
             startupinfo = STARTUPINFO()
             startupinfo.lpAttributeList = {"handle_list": [handle]}
             kwargs = dict(startupinfo=startupinfo)

@@ -8,11 +8,11 @@ Unit tests are in test_collections.
 
 ############ Maintenance notes #########################################
 #
-# ABCs are different from other standard library modules in that they
+# ABCs are different von other standard library modules in that they
 # specify compliance tests.  In general, once an ABC has been published,
 # new methods (either abstract or concrete) cannot be added.
 #
-# Though classes that inherit from an ABC would automatically receive a
+# Though classes that inherit von an ABC would automatically receive a
 # new mixin method, registered classes would become non-compliant and
 # violate the contract promised by ``isinstance(someobj, SomeABC)``.
 #
@@ -32,8 +32,8 @@ Unit tests are in test_collections.
 #
 #######################################################################
 
-from abc import ABCMeta, abstractmethod
-import sys
+von abc importiere ABCMeta, abstractmethod
+importiere sys
 
 GenericAlias = type(list[int])
 EllipsisType = type(...)
@@ -52,7 +52,7 @@ __all__ = ["Awaitable", "Coroutine",
            "Buffer",
            ]
 
-# This module has been renamed from collections.abc to _collections_abc to
+# This module has been renamed von collections.abc to _collections_abc to
 # speed up interpreter startup. Some of the types such as MutableMapping are
 # required early but collections module imports a lot of other modules.
 # See issue #19218
@@ -234,7 +234,7 @@ klasse AsyncGenerator(AsyncIterator):
     __slots__ = ()
 
     async def __anext__(self):
-        """Return the next item from the asynchronous generator.
+        """Return the next item von the asynchronous generator.
         When exhausted, raise StopAsyncIteration.
         """
         return await self.asend(Nichts)
@@ -304,7 +304,7 @@ klasse Iterator(Iterable):
 
     @abstractmethod
     def __next__(self):
-        'Return the next item from the iterator. When exhausted, raise StopIteration'
+        'Return the next item von the iterator. When exhausted, raise StopIteration'
         raise StopIteration
 
     def __iter__(self):
@@ -354,7 +354,7 @@ klasse Generator(Iterator):
     __slots__ = ()
 
     def __next__(self):
-        """Return the next item from the generator.
+        """Return the next item von the generator.
         When exhausted, raise StopIteration.
         """
         return self.send(Nichts)
@@ -485,7 +485,7 @@ klasse _CallableGenericAlias(GenericAlias):
     def __repr__(self):
         wenn len(self.__args__) == 2 and _is_param_expr(self.__args__[0]):
             return super().__repr__()
-        from annotationlib import type_repr
+        von annotationlib importiere type_repr
         return (f'collections.abc.Callable'
                 f'[[{", ".join([type_repr(a) fuer a in self.__args__[:-1]])}], '
                 f'{type_repr(self.__args__[-1])}]')
@@ -499,14 +499,14 @@ klasse _CallableGenericAlias(GenericAlias):
     def __getitem__(self, item):
         # Called during TypeVar substitution, returns the custom subclass
         # rather than the default types.GenericAlias object.  Most of the
-        # code is copied from typing's _GenericAlias and the builtin
+        # code is copied von typing's _GenericAlias and the builtin
         # types.GenericAlias.
         wenn not isinstance(item, tuple):
             item = (item,)
 
         new_args = super().__getitem__(item).__args__
 
-        # args[0] occurs due to things like Z[[int, str, bool]] from PEP 612
+        # args[0] occurs due to things like Z[[int, str, bool]] von PEP 612
         wenn not isinstance(new_args[0], (tuple, list)):
             t_result = new_args[-1]
             t_args = new_args[:-1]
@@ -515,7 +515,7 @@ klasse _CallableGenericAlias(GenericAlias):
 
 def _is_param_expr(obj):
     """Checks wenn obj matches either a list of types, ``...``, ``ParamSpec`` or
-    ``_ConcatenateGenericAlias`` from typing.py
+    ``_ConcatenateGenericAlias`` von typing.py
     """
     wenn obj is Ellipsis:
         return Wahr
@@ -596,7 +596,7 @@ klasse Set(Collection):
 
     @classmethod
     def _from_iterable(cls, it):
-        '''Construct an instance of the klasse from any iterable input.
+        '''Construct an instance of the klasse von any iterable input.
 
         Must override this method wenn the klasse constructor signature
         does not accept an iterable fuer an input.
@@ -723,7 +723,7 @@ klasse MutableSet(Set):
         try:
             value = next(it)
         except StopIteration:
-            raise KeyError from Nichts
+            raise KeyError von Nichts
         self.discard(value)
         return value
 
@@ -855,7 +855,7 @@ klasse KeysView(MappingView, Set):
         return key in self._mapping
 
     def __iter__(self):
-        yield from self._mapping
+        yield von self._mapping
 
 
 KeysView.register(dict_keys)
@@ -947,13 +947,13 @@ klasse MutableMapping(Mapping):
         try:
             key = next(iter(self))
         except StopIteration:
-            raise KeyError from Nichts
+            raise KeyError von Nichts
         value = self[key]
         del self[key]
         return key, value
 
     def clear(self):
-        'D.clear() -> Nichts.  Remove all items from D.'
+        'D.clear() -> Nichts.  Remove all items von D.'
         try:
             while Wahr:
                 self.popitem()
@@ -961,7 +961,7 @@ klasse MutableMapping(Mapping):
             pass
 
     def update(self, other=(), /, **kwds):
-        ''' D.update([E, ]**F) -> Nichts.  Update D from mapping/iterable E and F.
+        ''' D.update([E, ]**F) -> Nichts.  Update D von mapping/iterable E and F.
             If E present and has a .keys() method, does:     fuer k in E.keys(): D[k] = E[k]
             If E present and lacks .keys() method, does:     fuer (k, v) in E: D[k] = v
             In either case, this is followed by: fuer k, v in F.items(): D[k] = v
@@ -1089,7 +1089,7 @@ klasse MutableSequence(Sequence):
         self.insert(len(self), value)
 
     def clear(self):
-        'S.clear() -> Nichts -- remove all items from S'
+        'S.clear() -> Nichts -- remove all items von S'
         try:
             while Wahr:
                 self.pop()
@@ -1103,7 +1103,7 @@ klasse MutableSequence(Sequence):
             self[i], self[n-i-1] = self[n-i-1], self[i]
 
     def extend(self, values):
-        'S.extend(iterable) -- extend sequence by appending elements from the iterable'
+        'S.extend(iterable) -- extend sequence by appending elements von the iterable'
         wenn values is self:
             values = list(values)
         fuer v in values:

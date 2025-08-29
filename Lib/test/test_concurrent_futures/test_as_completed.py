@@ -1,15 +1,15 @@
-import itertools
-import time
-import unittest
-import weakref
-from concurrent import futures
-from concurrent.futures._base import (
+importiere itertools
+importiere time
+importiere unittest
+importiere weakref
+von concurrent importiere futures
+von concurrent.futures._base importiere (
     CANCELLED_AND_NOTIFIED, FINISHED, Future)
 
-from test import support
-from test.support import warnings_helper
+von test importiere support
+von test.support importiere warnings_helper
 
-from .util import (
+von .util importiere (
     PENDING_FUTURE, RUNNING_FUTURE,
     CANCELLED_AND_NOTIFIED_FUTURE, EXCEPTION_FUTURE, SUCCESSFUL_FUTURE,
     create_future, create_executor_tests, setup_module)

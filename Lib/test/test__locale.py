@@ -1,15 +1,15 @@
-from _locale import (setlocale, LC_ALL, LC_CTYPE, LC_NUMERIC, LC_TIME, localeconv, Error)
+von _locale importiere (setlocale, LC_ALL, LC_CTYPE, LC_NUMERIC, LC_TIME, localeconv, Error)
 try:
-    from _locale import (RADIXCHAR, THOUSEP, nl_langinfo)
+    von _locale importiere (RADIXCHAR, THOUSEP, nl_langinfo)
 except ImportError:
     nl_langinfo = Nichts
 
-import locale
-import sys
-import unittest
-from platform import uname
+importiere locale
+importiere sys
+importiere unittest
+von platform importiere uname
 
-from test import support
+von test importiere support
 
 wenn uname().system == "Darwin":
     maj, min, mic = [int(part) fuer part in uname().release.split(".")]

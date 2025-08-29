@@ -1,13 +1,13 @@
 "Test zzdummy, coverage 100%."
 
-from idlelib import zzdummy
-import unittest
-from test.support import requires
-from tkinter import Tk, Text
-from unittest import mock
-from idlelib import config
-from idlelib import editor
-from idlelib import format
+von idlelib importiere zzdummy
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk, Text
+von unittest importiere mock
+von idlelib importiere config
+von idlelib importiere editor
+von idlelib importiere format
 
 
 usercfg = zzdummy.idleConf.userCfg

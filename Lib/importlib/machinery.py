@@ -1,21 +1,21 @@
 """The machinery of importlib: finders, loaders, hooks, etc."""
 
-from ._bootstrap import ModuleSpec
-from ._bootstrap import BuiltinImporter
-from ._bootstrap import FrozenImporter
-from ._bootstrap_external import (
+von ._bootstrap importiere ModuleSpec
+von ._bootstrap importiere BuiltinImporter
+von ._bootstrap importiere FrozenImporter
+von ._bootstrap_external importiere (
     SOURCE_SUFFIXES, BYTECODE_SUFFIXES, EXTENSION_SUFFIXES,
     DEBUG_BYTECODE_SUFFIXES as _DEBUG_BYTECODE_SUFFIXES,
     OPTIMIZED_BYTECODE_SUFFIXES as _OPTIMIZED_BYTECODE_SUFFIXES
 )
-from ._bootstrap_external import WindowsRegistryFinder
-from ._bootstrap_external import PathFinder
-from ._bootstrap_external import FileFinder
-from ._bootstrap_external import SourceFileLoader
-from ._bootstrap_external import SourcelessFileLoader
-from ._bootstrap_external import ExtensionFileLoader
-from ._bootstrap_external import AppleFrameworkLoader
-from ._bootstrap_external import NamespaceLoader
+von ._bootstrap_external importiere WindowsRegistryFinder
+von ._bootstrap_external importiere PathFinder
+von ._bootstrap_external importiere FileFinder
+von ._bootstrap_external importiere SourceFileLoader
+von ._bootstrap_external importiere SourcelessFileLoader
+von ._bootstrap_external importiere ExtensionFileLoader
+von ._bootstrap_external importiere AppleFrameworkLoader
+von ._bootstrap_external importiere NamespaceLoader
 
 
 def all_suffixes():
@@ -32,7 +32,7 @@ __all__ = ['AppleFrameworkLoader', 'BYTECODE_SUFFIXES', 'BuiltinImporter',
 
 
 def __getattr__(name):
-    import warnings
+    importiere warnings
 
     wenn name == 'DEBUG_BYTECODE_SUFFIXES':
         warnings.warn('importlib.machinery.DEBUG_BYTECODE_SUFFIXES is '

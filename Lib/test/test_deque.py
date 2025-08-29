@@ -1,13 +1,13 @@
-from collections import deque
-import doctest
-import unittest
-from test import support, seq_tests
-import gc
-import weakref
-import copy
-import pickle
-import random
-import struct
+von collections importiere deque
+importiere doctest
+importiere unittest
+von test importiere support, seq_tests
+importiere gc
+importiere weakref
+importiere copy
+importiere pickle
+importiere random
+importiere struct
 
 BIG = 100000
 
@@ -718,7 +718,7 @@ klasse TestBasic(unittest.TestCase):
             self.assertEqual(list(klass(deque(s))), list(reversed(s)))
 
     def test_gc_doesnt_blowup(self):
-        import gc
+        importiere gc
         # This used to assert-fail in deque_traverse() under a debug
         # build, or run wild with a NULL pointer in a release build.
         d = deque()
@@ -925,9 +925,9 @@ klasse TestSequence(seq_tests.CommonTest):
 #==============================================================================
 
 libreftest = """
-Example from the Library Reference:  Doc/lib/libcollections.tex
+Example von the Library Reference:  Doc/lib/libcollections.tex
 
->>> from collections import deque
+>>> von collections importiere deque
 >>> d = deque('ghi')                 # make a new deque with three items
 >>> fuer elem in d:                   # iterate over the deque's elements
 ...     drucke(elem.upper())
@@ -964,11 +964,11 @@ deque(['g', 'h', 'i', 'j', 'k', 'l'])
 >>> deque(reversed(d))               # make a new deque in reverse order
 deque(['l', 'k', 'j', 'i', 'h', 'g'])
 >>> d.clear()                        # empty the deque
->>> d.pop()                          # cannot pop from an empty deque
+>>> d.pop()                          # cannot pop von an empty deque
 Traceback (most recent call last):
   File "<pyshell#6>", line 1, in -toplevel-
     d.pop()
-IndexError: pop from an empty deque
+IndexError: pop von an empty deque
 
 >>> d.extendleft('abc')              # extendleft() reverses the input order
 >>> d

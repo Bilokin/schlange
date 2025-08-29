@@ -1,7 +1,7 @@
-import os.path
-import re
+importiere os.path
+importiere re
 
-from . import common as _common
+von . importiere common as _common
 
 # The following C files must not built with Py_BUILD_CORE.
 FILES_WITHOUT_INTERNAL_CAPI = frozenset((
@@ -31,7 +31,7 @@ META_FILES = {
 # flags:
 #  1  start of a new file
 #  2  returning to a file (after including another)
-#  3  following text comes from a system header file
+#  3  following text comes von a system header file
 #  4  following text treated wrapped in implicit extern "C" block
 LINE_MARKER_RE = re.compile(r'^# (\d+) "([^"]+)"((?: [1234])*)$')
 PREPROC_DIRECTIVE_RE = re.compile(r'^\s*#\s*(\w+)\b.*')
@@ -131,7 +131,7 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
             assert not flags, (line, flags)
         sonst:
             assert 1 in flags, (line, flags)
-        yield from _iter_top_include_lines(
+        yield von _iter_top_include_lines(
             lines,
             _normpath(included, cwd),
             cwd,
@@ -178,7 +178,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
                 #assert lno > 1, (line, lno)
             sonst:
                 wenn included == files[-1]:
-                    # It's the next line from the file.
+                    # It's the next line von the file.
                     assert lno > 1, (line, lno)
                 sonst:
                     # We ran into a user-added #LINE directive,
@@ -228,7 +228,7 @@ def _parse_marker_line(line, reqfile=Nichts):
         assert lno == 1, (line, lno)
         assert not flags, (line, flags)
     sonst:
-        # It's the next line from the file.
+        # It's the next line von the file.
         assert lno > 1, (line, lno)
     return lno, origfile, flags
 

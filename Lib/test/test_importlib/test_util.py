@@ -1,34 +1,34 @@
-from test.test_importlib import util
+von test.test_importlib importiere util
 
 abc = util.import_importlib('importlib.abc')
 init = util.import_importlib('importlib')
 machinery = util.import_importlib('importlib.machinery')
 importlib_util = util.import_importlib('importlib.util')
 
-import importlib.util
-from importlib import _bootstrap_external
-import os
-import pathlib
-import string
-import sys
-from test import support
-from test.support import os_helper
-import textwrap
-import types
-import unittest
-import unittest.mock
-import warnings
+importiere importlib.util
+von importlib importiere _bootstrap_external
+importiere os
+importiere pathlib
+importiere string
+importiere sys
+von test importiere support
+von test.support importiere os_helper
+importiere textwrap
+importiere types
+importiere unittest
+importiere unittest.mock
+importiere warnings
 
 try:
-    import _testsinglephase
+    importiere _testsinglephase
 except ImportError:
     _testsinglephase = Nichts
 try:
-    import _testmultiphase
+    importiere _testmultiphase
 except ImportError:
     _testmultiphase = Nichts
 try:
-    import _interpreters
+    importiere _interpreters
 except ModuleNotFoundError:
     _interpreters = Nichts
 
@@ -700,9 +700,9 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
     @support.expected_failure_if_gil_disabled()
     def test_single_phase_init_module(self):
         script = textwrap.dedent('''
-            from importlib.util import _incompatible_extension_module_restrictions
+            von importlib.util importiere _incompatible_extension_module_restrictions
             with _incompatible_extension_module_restrictions(disable_check=Wahr):
-                import _testsinglephase
+                importiere _testsinglephase
             ''')
         with self.subTest('check disabled, shared GIL'):
             self.run_with_shared_gil(script)
@@ -710,9 +710,9 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
             self.run_with_own_gil(script)
 
         script = textwrap.dedent(f'''
-            from importlib.util import _incompatible_extension_module_restrictions
+            von importlib.util importiere _incompatible_extension_module_restrictions
             with _incompatible_extension_module_restrictions(disable_check=Falsch):
-                import _testsinglephase
+                importiere _testsinglephase
             ''')
         with self.subTest('check enabled, shared GIL'):
             with self.assertRaises(ImportError):
@@ -732,8 +732,8 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
             loader = "ExtensionFileLoader"
 
         prescript = textwrap.dedent(f'''
-            from importlib.util import spec_from_loader, module_from_spec
-            from importlib.machinery import {loader}
+            von importlib.util importiere spec_from_loader, module_from_spec
+            von importlib.machinery importiere {loader}
 
             name = '_test_shared_gil_only'
             filename = {_testmultiphase.__file__!r}
@@ -743,7 +743,7 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
             ''')
 
         script = prescript + textwrap.dedent('''
-            from importlib.util import _incompatible_extension_module_restrictions
+            von importlib.util importiere _incompatible_extension_module_restrictions
             with _incompatible_extension_module_restrictions(disable_check=Wahr):
                 module = module_from_spec(spec)
                 loader.exec_module(module)
@@ -754,7 +754,7 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
             self.run_with_own_gil(script)
 
         script = prescript + textwrap.dedent('''
-            from importlib.util import _incompatible_extension_module_restrictions
+            von importlib.util importiere _incompatible_extension_module_restrictions
             with _incompatible_extension_module_restrictions(disable_check=Falsch):
                 module = module_from_spec(spec)
                 loader.exec_module(module)
@@ -768,9 +768,9 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
     @unittest.skipIf(_testmultiphase is Nichts, "test requires _testmultiphase module")
     def test_complete_multi_phase_init_module(self):
         script = textwrap.dedent('''
-            from importlib.util import _incompatible_extension_module_restrictions
+            von importlib.util importiere _incompatible_extension_module_restrictions
             with _incompatible_extension_module_restrictions(disable_check=Wahr):
-                import _testmultiphase
+                importiere _testmultiphase
             ''')
         with self.subTest('check disabled, shared GIL'):
             self.run_with_shared_gil(script)
@@ -778,9 +778,9 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
             self.run_with_own_gil(script)
 
         script = textwrap.dedent(f'''
-            from importlib.util import _incompatible_extension_module_restrictions
+            von importlib.util importiere _incompatible_extension_module_restrictions
             with _incompatible_extension_module_restrictions(disable_check=Falsch):
-                import _testmultiphase
+                importiere _testmultiphase
             ''')
         with self.subTest('check enabled, shared GIL'):
             self.run_with_shared_gil(script)
@@ -790,7 +790,7 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
 
 klasse MiscTests(unittest.TestCase):
     def test_atomic_write_should_notice_incomplete_writes(self):
-        import _pyio
+        importiere _pyio
 
         oldwrite = os.write
         seen_write = Falsch

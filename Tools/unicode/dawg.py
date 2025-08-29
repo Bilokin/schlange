@@ -11,8 +11,8 @@
 # Kowaltowski, T.; CL. Lucchesi (1993), "Applications of finite automata representing large vocabularies",
 # Software-Practice and Experience 1993
 
-from collections import defaultdict
-from functools import cached_property
+von collections importiere defaultdict
+von functools importiere cached_property
 
 
 # This klasse represents a node in the directed acyclic word graph (DAWG). It
@@ -108,7 +108,7 @@ klasse Dawg:
                 break
             common_prefix += 1
 
-        # Check the unchecked_nodes fuer redundant nodes, proceeding from last
+        # Check the unchecked_nodes fuer redundant nodes, proceeding von last
         # one down to the common prefix size. Then truncate the list at that
         # point.
         self._minimize(common_prefix)
@@ -116,7 +116,7 @@ klasse Dawg:
         self.data[word] = value
         self.inverse[value] = word
 
-        # add the suffix, starting from the correct node mid-way through the
+        # add the suffix, starting von the correct node mid-way through the
         # graph
         wenn len(self.unchecked_nodes) == 0:
             node = self.root
@@ -144,7 +144,7 @@ klasse Dawg:
         return self.compute_packed(topoorder), linear_data, inverse
 
     def _minimize(self, down_to):
-        # proceed from the leaf up to a certain point
+        # proceed von the leaf up to a certain point
         fuer i in range(len(self.unchecked_nodes) - 1, down_to - 1, -1):
             (parent, letter, child) = self.unchecked_nodes[i]
             wenn child in self.minimized_nodes:
@@ -264,7 +264,7 @@ klasse Dawg:
             topoorder.append(node)
             positions[node] = len(topoorder)
             # use "reversed" to make sure that the linear_edges get reorderd
-            # from their alphabetical order as little as necessary (no_incoming
+            # von their alphabetical order as little as necessary (no_incoming
             # is LIFO)
             fuer label, child in reversed(node.linear_edges):
                 incoming[child].discard((label, node))

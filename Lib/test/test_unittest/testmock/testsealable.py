@@ -1,5 +1,5 @@
-import unittest
-from unittest import mock
+importiere unittest
+von unittest importiere mock
 
 
 klasse SampleObject:

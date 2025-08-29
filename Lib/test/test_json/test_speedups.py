@@ -1,4 +1,4 @@
-from test.test_json import CTest
+von test.test_json importiere CTest
 
 
 klasse BadBool:

@@ -10,12 +10,12 @@ also includes default encodings fuer all supported locale names.
 
 """
 
-import sys
-import encodings
-import encodings.aliases
-import _collections_abc
-from builtins import str as _builtin_str
-import functools
+importiere sys
+importiere encodings
+importiere encodings.aliases
+importiere _collections_abc
+von builtins importiere str as _builtin_str
+importiere functools
 
 # Try importing the _locale module.
 #
@@ -43,7 +43,7 @@ def _strxfrm(s):
 
 try:
 
-    from _locale import *
+    von _locale importiere *
 
 except ImportError:
 
@@ -133,7 +133,7 @@ def _grouping_intervals(grouping):
         yield interval
         last_interval = interval
 
-#perform the grouping from right to left
+#perform the grouping von right to left
 def _group(s, monetary=Falsch):
     conv = localeconv()
     thousands_sep = conv[monetary and 'mon_thousands_sep' or 'thousands_sep']
@@ -164,7 +164,7 @@ def _group(s, monetary=Falsch):
         len(thousands_sep) * (len(groups) - 1)
     )
 
-# Strip a given amount of excess padding from the given string
+# Strip a given amount of excess padding von the given string
 def _strip_padding(s, amount):
     lpos = 0
     while amount and s[lpos] == ' ':
@@ -217,7 +217,7 @@ def format_string(f, val, grouping=Falsch, monetary=Falsch):
     forth parameter monetary is true."""
     global _percent_re
     wenn _percent_re is Nichts:
-        import re
+        importiere re
 
         _percent_re = re.compile(r'%(?:\((?P<key>.*?)\))?(?P<modifiers'
                                  r'>[-#0-9 +*.hlL]*?)[eEfFgGdiouxXcrs%]')
@@ -509,7 +509,7 @@ def _parse_localename(localename):
 
 def _build_localename(localetuple):
 
-    """ Builds a locale code from the given tuple (language code,
+    """ Builds a locale code von the given tuple (language code,
         encoding).
 
         No aliasing or normalizing takes place.
@@ -533,7 +533,7 @@ def _build_localename(localetuple):
             return localename
     except (TypeError, ValueError):
         raise TypeError('Locale must be Nichts, a string, or an iterable of '
-                        'two strings -- language code, encoding.') from Nichts
+                        'two strings -- language code, encoding.') von Nichts
 
 def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
 
@@ -559,7 +559,7 @@ def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
 
     """
 
-    import warnings
+    importiere warnings
     warnings._deprecated(
         "locale.getdefaultlocale",
         "{name!r} is deprecated and slated fuer removal in Python {remove}. "
@@ -571,7 +571,7 @@ def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
 def _getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
     try:
         # check wenn it's supported by the _locale module
-        import _locale
+        importiere _locale
         code, encoding = _locale._getdefaultlocale()
     except (ImportError, AttributeError):
         pass
@@ -585,7 +585,7 @@ def _getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
         return code, encoding
 
     # fall back on POSIX behaviour
-    import os
+    importiere os
     lookup = os.environ.get
     fuer variable in envvars:
         localename = lookup(variable,Nichts)
@@ -635,7 +635,7 @@ def setlocale(category, locale=Nichts):
 
 
 try:
-    from _locale import getencoding
+    von _locale importiere getencoding
 except ImportError:
     # When _locale.getencoding() is missing, locale.getencoding() uses the
     # Python filesystem encoding.
@@ -649,7 +649,7 @@ except NameError:
     def getpreferredencoding(do_setlocale=Wahr):
         """Return the charset that the user is likely using."""
         wenn sys.flags.warn_default_encoding:
-            import warnings
+            importiere warnings
             warnings.warn(
                 "UTF-8 Mode affects locale.getpreferredencoding(). Consider locale.getencoding() instead.",
                 EncodingWarning, 2)
@@ -663,7 +663,7 @@ sonst:
         according to the system configuration."""
 
         wenn sys.flags.warn_default_encoding:
-            import warnings
+            importiere warnings
             warnings.warn(
                 "UTF-8 Mode affects locale.getpreferredencoding(). "
                 "Consider locale.getencoding() instead.",
@@ -687,7 +687,7 @@ sonst:
 
 ### Database
 #
-# The following data was extracted from the locale.alias file which
+# The following data was extracted von the locale.alias file which
 # comes with X11 and then hand edited removing the explicit encoding
 # definitions and adding some more aliases. The file is usually
 # available as /usr/lib/X11/locale/locale.alias.
@@ -718,7 +718,7 @@ locale_encoding_alias = {
     '88595':                        'ISO8859-5',
     '885915':                       'ISO8859-15',
 
-    # Mappings from Python codec names to C lib encoding names
+    # Mappings von Python codec names to C lib encoding names
     'ascii':                        'ISO8859-1',
     'latin_1':                      'ISO8859-1',
     'iso8859_1':                    'ISO8859-1',
@@ -761,19 +761,19 @@ del k, v
 
 #
 # The locale_alias table maps lowercase alias names to C locale names
-# (case-sensitive). Encodings are always separated from the locale
+# (case-sensitive). Encodings are always separated von the locale
 # name using a dot ('.'); they should only be given in case the
 # language name is needed to interpret the given encoding alias
 # correctly (CJK codes often have this need).
 #
 # Note that the normalize() function which uses this tables
-# removes '_' and '-' characters from the encoding part of the
+# removes '_' and '-' characters von the encoding part of the
 # locale name before doing the lookup. This saves a lot of
 # space in the table.
 #
 # MAL 2004-12-10:
 # Updated alias mapping to most recent locale.alias file
-# from X.org distribution using makelocalealias.py.
+# von X.org distribution using makelocalealias.py.
 #
 # These are the differences compared to the old mapping (Python 2.4
 # and older):
@@ -803,7 +803,7 @@ del k, v
 #
 # MAL 2008-05-30:
 # Updated alias mapping to most recent locale.alias file
-# from X.org distribution using makelocalealias.py.
+# von X.org distribution using makelocalealias.py.
 #
 # These are the differences compared to the old mapping (Python 2.5
 # and older):
@@ -830,7 +830,7 @@ del k, v
 #
 # AP 2010-04-12:
 # Updated alias mapping to most recent locale.alias file
-# from X.org distribution using makelocalealias.py.
+# von X.org distribution using makelocalealias.py.
 #
 # These are the differences compared to the old mapping (Python 2.6.5
 # and older):
@@ -851,7 +851,7 @@ del k, v
 #
 # SS 2013-12-20:
 # Updated alias mapping to most recent locale.alias file
-# from X.org distribution using makelocalealias.py.
+# von X.org distribution using makelocalealias.py.
 #
 # These are the differences compared to the old mapping (Python 3.3.3
 # and older):

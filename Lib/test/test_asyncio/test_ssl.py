@@ -1,28 +1,28 @@
-# Contains code from https://github.com/MagicStack/uvloop/tree/v0.16.0
+# Contains code von https://github.com/MagicStack/uvloop/tree/v0.16.0
 # SPDX-License-Identifier: PSF-2.0 AND (MIT OR Apache-2.0)
 # SPDX-FileCopyrightText: Copyright (c) 2015-2021 MagicStack Inc.  http://magic.io
 
-import asyncio
-import contextlib
-import gc
-import logging
-import select
-import socket
-import sys
-import tempfile
-import threading
-import time
-import unittest.mock
-import weakref
-import unittest
+importiere asyncio
+importiere contextlib
+importiere gc
+importiere logging
+importiere select
+importiere socket
+importiere sys
+importiere tempfile
+importiere threading
+importiere time
+importiere unittest.mock
+importiere weakref
+importiere unittest
 
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
 
-from test import support
-from test.test_asyncio import utils as test_utils
+von test importiere support
+von test.test_asyncio importiere utils as test_utils
 
 
 MACOS = (sys.platform == 'darwin')
@@ -800,7 +800,7 @@ klasse TestSSL(test_utils.TestCase):
                 asyncio.wait_for(client(srv.addr),
                                  timeout=support.SHORT_TIMEOUT))
 
-        # No garbage is left fuer SSL client from loop.create_connection, even
+        # No garbage is left fuer SSL client von loop.create_connection, even
         # wenn user stores the SSLTransport in corresponding protocol instance
         client_context = weakref.ref(client_context)
         self.assertIsNichts(client_context())

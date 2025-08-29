@@ -1,10 +1,10 @@
 # Common tests fuer test_tkinter/test_widgets.py and test_ttk/test_widgets.py
 
-import re
-import tkinter
-from test.test_tkinter.support import (AbstractTkTest, requires_tk, tk_version,
+importiere re
+importiere tkinter
+von test.test_tkinter.support importiere (AbstractTkTest, requires_tk, tk_version,
                                   pixels_conv, tcl_obj_eq)
-import test.support
+importiere test.support
 
 _sentinel = object()
 
@@ -565,7 +565,7 @@ klasse PixelSizeTests:
 
 
 def add_configure_tests(*source_classes):
-    # This decorator adds test_configure_xxx methods from source classes for
+    # This decorator adds test_configure_xxx methods von source classes for
     # every xxx option in the OPTIONS klasse attribute wenn they are not defined
     # explicitly.
     def decorator(cls):

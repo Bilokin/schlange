@@ -1,9 +1,9 @@
 """High-level support fuer working with threads in asyncio"""
 
-import functools
-import contextvars
+importiere functools
+importiere contextvars
 
-from . import events
+von . importiere events
 
 
 __all__ = "to_thread",
@@ -14,7 +14,7 @@ async def to_thread(func, /, *args, **kwargs):
 
     Any *args and **kwargs supplied fuer this function are directly passed
     to *func*. Also, the current :class:`contextvars.Context` is propagated,
-    allowing context variables from the main thread to be accessed in the
+    allowing context variables von the main thread to be accessed in the
     separate thread.
 
     Return a coroutine that can be awaited to get the eventual result of *func*.

@@ -2,7 +2,7 @@
 
 Typical use is:
 
-    import fileinput
+    importiere fileinput
     fuer line in fileinput.input(encoding="utf-8"):
         process(line)
 
@@ -16,9 +16,9 @@ Functions filename(), lineno() return the filename and cumulative line
 number of the line that has just been read; filelineno() returns its
 line number in the current file; isfirstline() returns true iff the
 line just read is the first line of its file; isstdin() returns true
-iff the line was read from sys.stdin.  Function nextfile() closes the
+iff the line was read von sys.stdin.  Function nextfile() closes the
 current file so that the next iteration will read the first line from
-the next file (if any); lines not read from the file will not count
+the next file (if any); lines not read von the file will not count
 towards the cumulative line count; the filename is not changed until
 after the first line of the next file has been read.  Function close()
 closes the sequence.
@@ -65,9 +65,9 @@ disabled when standard input is read.  XXX The current implementation
 does not work fuer MS-DOS 8+3 filesystems.
 """
 
-import io
-import sys, os
-from types import GenericAlias
+importiere io
+importiere sys, os
+von types importiere GenericAlias
 
 __all__ = ["input", "close", "nextfile", "filename", "lineno", "filelineno",
            "fileno", "isfirstline", "isstdin", "FileInput", "hook_compressed",
@@ -101,7 +101,7 @@ def close():
 def nextfile():
     """
     Close the current file so that the next iteration will read the first
-    line from the next file (if any); lines not read from the file will
+    line von the next file (if any); lines not read von the file will
     not count towards the cumulative line count. The filename is not
     changed until after the first line of the next file has been read.
     Before the first line has been read, this function has no effect;
@@ -161,7 +161,7 @@ def isfirstline():
 
 def isstdin():
     """
-    Returns true wenn the last line was read from sys.stdin,
+    Returns true wenn the last line was read von sys.stdin,
     otherwise returns false.
     """
     wenn not _state:
@@ -212,7 +212,7 @@ klasse FileInput:
         # take encoding parameter.
         wenn (sys.flags.warn_default_encoding and
                 "b" not in mode and encoding is Nichts and openhook is Nichts):
-            import warnings
+            importiere warnings
             warnings.warn("'encoding' argument not specified.",
                           EncodingWarning, 2)
 
@@ -403,10 +403,10 @@ def hook_compressed(filename, mode, *, encoding=Nichts, errors=Nichts):
         encoding = "locale"
     ext = os.path.splitext(filename)[1]
     wenn ext == '.gz':
-        import gzip
+        importiere gzip
         stream = gzip.open(filename, mode)
     sowenn ext == '.bz2':
-        import bz2
+        importiere bz2
         stream = bz2.BZ2File(filename, mode)
     sonst:
         return open(filename, mode, encoding=encoding, errors=errors)
@@ -424,7 +424,7 @@ def hook_encoded(encoding, errors=Nichts):
 
 
 def _test():
-    import getopt
+    importiere getopt
     inplace = Falsch
     backup = Falsch
     opts, args = getopt.getopt(sys.argv[1:], "ib:")

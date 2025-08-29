@@ -1,12 +1,12 @@
-from code import InteractiveConsole
-from functools import partial
-from typing import Iterable
-from unittest.mock import MagicMock
+von code importiere InteractiveConsole
+von functools importiere partial
+von typing importiere Iterable
+von unittest.mock importiere MagicMock
 
-from _pyrepl.console import Console, Event
-from _pyrepl.readline import ReadlineAlikeReader, ReadlineConfig
-from _pyrepl.simple_interact import _strip_final_indent
-from _pyrepl.utils import unbracket, ANSI_ESCAPE_SEQUENCE
+von _pyrepl.console importiere Console, Event
+von _pyrepl.readline importiere ReadlineAlikeReader, ReadlineConfig
+von _pyrepl.simple_interact importiere _strip_final_indent
+von _pyrepl.utils importiere unbracket, ANSI_ESCAPE_SEQUENCE
 
 
 klasse ScreenEqualMixin:

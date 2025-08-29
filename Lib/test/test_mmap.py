@@ -1,23 +1,23 @@
-from test.support import (
+von test.support importiere (
     requires, _2G, _4G, gc_collect, cpython_only, is_emscripten, is_apple,
     in_systemd_nspawn_sync_suppressed,
 )
-from test.support.import_helper import import_module
-from test.support.os_helper import TESTFN, unlink
-from test.support.script_helper import assert_python_ok
-import unittest
-import errno
-import os
-import re
-import itertools
-import random
-import socket
-import string
-import sys
-import textwrap
-import weakref
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere TESTFN, unlink
+von test.support.script_helper importiere assert_python_ok
+importiere unittest
+importiere errno
+importiere os
+importiere re
+importiere itertools
+importiere random
+importiere socket
+importiere string
+importiere sys
+importiere textwrap
+importiere weakref
 
-# Skip test wenn we can't import mmap.
+# Skip test wenn we can't importiere mmap.
 mmap = import_module('mmap')
 
 PAGESIZE = mmap.PAGESIZE
@@ -213,7 +213,7 @@ klasse MmapTests(unittest.TestCase):
                     self.fail("Opening mmap with size+1 should raise ValueError.")
                 m.close()
             wenn sys.platform.startswith('win'):
-                # Repair damage from the resizing test.
+                # Repair damage von the resizing test.
                 with open(TESTFN, 'r+b') as f:
                     f.truncate(mapsize)
 
@@ -378,7 +378,7 @@ klasse MmapTests(unittest.TestCase):
             PROT_NONE = 0
             PROT_READ = mmap.PROT_READ
         except AttributeError as e:
-            raise unittest.SkipTest("mmap flags unavailable") from e
+            raise unittest.SkipTest("mmap flags unavailable") von e
         fuer i in range(0, 2049):
             with mmap.mmap(-1, PAGESIZE * (i + 1),
                            flags=flags, prot=PROT_NONE) as guard:
@@ -1065,14 +1065,14 @@ klasse MmapTests(unittest.TestCase):
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     @unittest.skipUnless(hasattr(mmap.mmap, '_protect'), 'test needs debug build')
     def test_access_violations(self):
-        from test.support.os_helper import TESTFN
+        von test.support.os_helper importiere TESTFN
 
         code = textwrap.dedent("""
-            import faulthandler
-            import mmap
-            import os
-            import sys
-            from contextlib import suppress
+            importiere faulthandler
+            importiere mmap
+            importiere os
+            importiere sys
+            von contextlib importiere suppress
 
             # Prevent logging access violations to stderr.
             faulthandler.disable()

@@ -1,6 +1,6 @@
-import unittest
-from test.support import import_helper, threading_helper
-import random
+importiere unittest
+von test.support importiere import_helper, threading_helper
+importiere random
 
 py_bisect = import_helper.import_fresh_module('bisect', blocked=['_bisect'])
 c_bisect = import_helper.import_fresh_module('bisect', fresh=['_bisect'])

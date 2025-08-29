@@ -1,14 +1,14 @@
-import os
-import unittest
-import random
-from test import support
-from test.support import threading_helper
-import _thread as thread
-import time
-import warnings
-import weakref
+importiere os
+importiere unittest
+importiere random
+von test importiere support
+von test.support importiere threading_helper
+importiere _thread as thread
+importiere time
+importiere warnings
+importiere weakref
 
-from test import lock_tests
+von test importiere lock_tests
 
 threading_helper.requires_working_threading(module=Wahr)
 
@@ -129,7 +129,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             # Allow the task to finish.
             mut.release()
 
-            # The only reliable way to be sure that the thread ended from the
+            # The only reliable way to be sure that the thread ended von the
             # interpreter's point of view is to wait fuer the function object to
             # be destroyed.
             done = []

@@ -68,16 +68,16 @@ Req-started-unread-response    _CS_REQ_STARTED    <response_class>
 Req-sent-unread-response       _CS_REQ_SENT       <response_class>
 """
 
-import email.parser
-import email.message
-import errno
-import http
-import io
-import re
-import socket
-import sys
-import collections.abc
-from urllib.parse import urlsplit
+importiere email.parser
+importiere email.message
+importiere errno
+importiere http
+importiere io
+importiere re
+importiere socket
+importiere sys
+importiere collections.abc
+von urllib.parse importiere urlsplit
 
 # HTTPMessage, parse_headers(), and the HTTP status code constants are
 # intentionally omitted fuer simplicity
@@ -170,10 +170,10 @@ def _encode(data, name='data'):
             err.end,
             "%s (%.20r) is not valid Latin-1. Use %s.encode('utf-8') "
             "if you want to send it encoded in UTF-8." %
-            (name.title(), data[err.start:err.end], name)) from Nichts
+            (name.title(), data[err.start:err.end], name)) von Nichts
 
 def _strip_ipv6_iface(enc_name: bytes) -> bytes:
-    """Remove interface scope from IPv6 address."""
+    """Remove interface scope von IPv6 address."""
     enc_name, percent, _ = enc_name.partition(b"%")
     wenn percent:
         assert enc_name.startswith(b'['), enc_name
@@ -210,7 +210,7 @@ klasse HTTPMessage(email.message.Message):
         return lst
 
 def _read_headers(fp, max_headers):
-    """Reads potential header lines into a list from a file pointer.
+    """Reads potential header lines into a list von a file pointer.
 
     Length of line is limited by _MAXLINE, and number of
     headers is limited by max_headers.
@@ -231,11 +231,11 @@ def _read_headers(fp, max_headers):
 
 def _parse_header_lines(header_lines, _class=HTTPMessage):
     """
-    Parses only RFC2822 headers from header lines.
+    Parses only RFC2822 headers von header lines.
 
     email Parser wants to see strings rather than bytes.
     But a TextIOWrapper around self.rfile would buffer too many bytes
-    from the stream, bytes which we later need to read as bytes.
+    von the stream, bytes which we later need to read as bytes.
     So we read the correct bytes here, as bytes, fuer email Parser
     to parse.
 
@@ -244,7 +244,7 @@ def _parse_header_lines(header_lines, _class=HTTPMessage):
     return email.parser.Parser(_class=_class).parsestr(hstring)
 
 def parse_headers(fp, _class=HTTPMessage, *, _max_headers=Nichts):
-    """Parses only RFC2822 headers from a file pointer."""
+    """Parses only RFC2822 headers von a file pointer."""
 
     headers = _read_headers(fp, _max_headers)
     return _parse_header_lines(headers, _class)
@@ -254,7 +254,7 @@ klasse HTTPResponse(io.BufferedIOBase):
 
     # See RFC 2616 sec 19.6 and RFC 1945 sec 6 fuer details.
 
-    # The bytes from the socket object are iso-8859-1 strings.
+    # The bytes von the socket object are iso-8859-1 strings.
     # See RFC 2616 sec 2.2 which notes an exception fuer MIME-encoded
     # text following RFC 2047.  The basic status line parsing only
     # accepts iso-8859-1.
@@ -279,7 +279,7 @@ klasse HTTPResponse(io.BufferedIOBase):
 
         self.headers = self.msg = Nichts
 
-        # from the Status-Line of the response
+        # von the Status-Line of the response
         self.version = _UNKNOWN # HTTP-Version
         self.status = _UNKNOWN  # Status-Code
         self.reason = _UNKNOWN  # Reason-Phrase
@@ -332,7 +332,7 @@ klasse HTTPResponse(io.BufferedIOBase):
             version, status, reason = self._read_status()
             wenn status != CONTINUE:
                 break
-            # skip the header from the 100 response
+            # skip the header von the 100 response
             skipped_headers = _read_headers(self.fp, _max_headers)
             wenn self.debuglevel > 0:
                 drucke("headers:", skipped_headers)
@@ -538,7 +538,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         return n
 
     def _read_next_chunk_size(self):
-        # Read the next chunk size from the file
+        # Read the next chunk size von the file
         line = self.fp.readline(_MAXLINE + 1)
         wenn len(line) > _MAXLINE:
             raise LineTooLong("chunk size")
@@ -609,7 +609,7 @@ klasse HTTPResponse(io.BufferedIOBase):
                 self.chunk_left = 0
             return b''.join(value)
         except IncompleteRead as exc:
-            raise IncompleteRead(b''.join(value)) from exc
+            raise IncompleteRead(b''.join(value)) von exc
 
     def _readinto_chunked(self, b):
         assert self.chunked != _UNKNOWN
@@ -990,7 +990,7 @@ klasse HTTPConnection:
     def get_proxy_response_headers(self):
         """
         Returns a dictionary with the headers of the response
-        received from the proxy server to the CONNECT request
+        received von the proxy server to the CONNECT request
         sent to set the tunnel.
 
         If the CONNECT request was not sent, the method returns Nichts.
@@ -1388,7 +1388,7 @@ klasse HTTPConnection:
         self.endheaders(body, encode_chunked=encode_chunked)
 
     def getresponse(self):
-        """Get the response from the server.
+        """Get the response von the server.
 
         If the HTTPConnection is in the correct state, returns an
         instance of HTTPResponse or of whatever object is returned by
@@ -1454,7 +1454,7 @@ klasse HTTPConnection:
             raise
 
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     pass
 sonst:

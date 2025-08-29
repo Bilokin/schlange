@@ -1,5 +1,5 @@
-import lzma
+importiere lzma
 __doc__ = lzma.__doc__
 del lzma
 
-from lzma import *
+von lzma importiere *

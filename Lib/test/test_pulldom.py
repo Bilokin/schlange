@@ -1,12 +1,12 @@
-import io
-import unittest
-import xml.sax
+importiere io
+importiere unittest
+importiere xml.sax
 
-from xml.sax.xmlreader import AttributesImpl
-from xml.sax.handler import feature_external_ges
-from xml.dom import pulldom
+von xml.sax.xmlreader importiere AttributesImpl
+von xml.sax.handler importiere feature_external_ges
+von xml.dom importiere pulldom
 
-from test.support import findfile
+von test.support importiere findfile
 
 
 tstfile = findfile("test.xml", subdir="xmltestdata")
@@ -27,7 +27,7 @@ klasse PullDOMTestCase(unittest.TestCase):
     def test_parse(self):
         """Minimal test of DOMEventStream.parse()"""
 
-        # This just tests that parsing from a stream works. Actual parser
+        # This just tests that parsing von a stream works. Actual parser
         # semantics are tested using parseString with a more focused XML
         # fragment.
 
@@ -284,7 +284,7 @@ klasse SAX2DOMExerciser(SAXExerciser):
 
 
 klasse SAX2DOMTestHelper(pulldom.DOMEventStream):
-    """Allows us to drive SAX2DOM from a DOMEventStream."""
+    """Allows us to drive SAX2DOM von a DOMEventStream."""
 
     def reset(self):
         self.pulldom = pulldom.SAX2DOM()
@@ -299,7 +299,7 @@ klasse SAX2DOMTestCase(unittest.TestCase):
         self.assertWahr(test, testname)
 
     def test_basic(self):
-        """Ensure SAX2DOM can parse from a stream."""
+        """Ensure SAX2DOM can parse von a stream."""
         with io.StringIO(SMALL_SAMPLE) as fin:
             sd = SAX2DOMTestHelper(fin, xml.sax.make_parser(),
                                    len(SMALL_SAMPLE))

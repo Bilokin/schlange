@@ -1,10 +1,10 @@
-import _ctypes
-import contextlib
-import ctypes
-import sys
-import unittest
-from test import support
-from ctypes import CFUNCTYPE, c_void_p, c_char_p, c_int, c_double
+importiere _ctypes
+importiere contextlib
+importiere ctypes
+importiere sys
+importiere unittest
+von test importiere support
+von ctypes importiere CFUNCTYPE, c_void_p, c_char_p, c_int, c_double
 
 
 def callback_func(arg):

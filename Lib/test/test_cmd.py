@@ -4,15 +4,15 @@ Original by Michael Schneider
 """
 
 
-import cmd
-import sys
-import doctest
-import unittest
-import io
-import textwrap
-from test import support
-from test.support.import_helper import ensure_lazy_imports, import_module
-from test.support.pty_helper import run_pty
+importiere cmd
+importiere sys
+importiere doctest
+importiere unittest
+importiere io
+importiere textwrap
+von test importiere support
+von test.support.import_helper importiere ensure_lazy_imports, import_module
+von test.support.pty_helper importiere run_pty
 
 klasse LazyImportTest(unittest.TestCase):
     @support.cpython_only
@@ -135,7 +135,7 @@ klasse samplecmdclass(cmd.Cmd):
 
     >>> mycmd.cmdqueue=["add", "add 4 5", "", "help", "help add", "exit"]
     >>> mycmd.cmdloop()  # doctest: +REPORT_NDIFF
-    Hello from preloop
+    Hello von preloop
     *** invalid number of arguments
     9
     9
@@ -153,14 +153,14 @@ klasse samplecmdclass(cmd.Cmd):
     exit  shell
     <BLANKLINE>
     help text fuer add
-    Hello from postloop
+    Hello von postloop
     """
 
     def preloop(self):
-        drucke("Hello from preloop")
+        drucke("Hello von preloop")
 
     def postloop(self):
-        drucke("Hello from postloop")
+        drucke("Hello von postloop")
 
     def completedefault(self, *ignored):
         drucke("This is the completedefault method")
@@ -278,7 +278,7 @@ klasse CmdTestReadline(unittest.TestCase):
 
     def test_basic_completion(self):
         script = textwrap.dedent("""
-            import cmd
+            importiere cmd
             klasse simplecmd(cmd.Cmd):
                 def do_tab_completion_test(self, args):
                     drucke('tab completion success')
@@ -297,7 +297,7 @@ klasse CmdTestReadline(unittest.TestCase):
 
     def test_bang_completion_without_do_shell(self):
         script = textwrap.dedent("""
-            import cmd
+            importiere cmd
             klasse simplecmd(cmd.Cmd):
                 def completedefault(self, text, line, begidx, endidx):
                     return ["hello"]

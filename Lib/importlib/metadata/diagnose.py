@@ -1,6 +1,6 @@
-import sys
+importiere sys
 
-from . import Distribution
+von . importiere Distribution
 
 
 def inspect(path):

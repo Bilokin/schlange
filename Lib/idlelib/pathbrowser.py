@@ -1,9 +1,9 @@
-import importlib.machinery
-import os
-import sys
+importiere importlib.machinery
+importiere os
+importiere sys
 
-from idlelib.browser import ModuleBrowser, ModuleBrowserTreeItem
-from idlelib.tree import TreeItem
+von idlelib.browser importiere ModuleBrowser, ModuleBrowserTreeItem
+von idlelib.tree importiere TreeItem
 
 
 klasse PathBrowser(ModuleBrowser):
@@ -100,8 +100,8 @@ klasse DirBrowserTreeItem(TreeItem):
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_pathbrowser', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(PathBrowser)

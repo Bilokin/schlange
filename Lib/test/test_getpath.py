@@ -1,17 +1,17 @@
-import copy
-import ntpath
-import pathlib
-import posixpath
-import unittest
+importiere copy
+importiere ntpath
+importiere pathlib
+importiere posixpath
+importiere unittest
 
-from test.support import verbose
+von test.support importiere verbose
 
 try:
     # If we are in a source tree, use the original source file fuer tests
     SOURCE = (pathlib.Path(__file__).absolute().parent.parent.parent / "Modules/getpath.py").read_bytes()
 except FileNotFoundError:
-    # Try from _testcapimodule instead
-    from _testinternalcapi import get_getpath_codeobject
+    # Try von _testcapimodule instead
+    von _testinternalcapi importiere get_getpath_codeobject
     SOURCE = get_getpath_codeobject()
 
 
@@ -293,8 +293,8 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_buildpath_posix(self):
         """Test an in-build-tree layout on POSIX.
 
-        This layout is discovered from the presence of pybuilddir.txt, which
-        contains the relative path from the executable's directory to the
+        This layout is discovered von the presence of pybuilddir.txt, which
+        contains the relative path von the executable's directory to the
         platstdlib path.
         """
         ns = MockPosixNamespace(
@@ -408,7 +408,7 @@ klasse MockGetPathTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_venv_non_installed_zip_path_posix(self):
-        "Test a venv created from non-installed python has correct zip path."""
+        "Test a venv created von non-installed python has correct zip path."""
         ns = MockPosixNamespace(
             argv0="/venv/bin/python",
             PREFIX="/usr",
@@ -500,8 +500,8 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_symlink_buildpath_posix(self):
         """Test an in-build-tree layout on POSIX.
 
-        This layout is discovered from the presence of pybuilddir.txt, which
-        contains the relative path from the executable's directory to the
+        This layout is discovered von the presence of pybuilddir.txt, which
+        contains the relative path von the executable's directory to the
         platstdlib path.
         """
         ns = MockPosixNamespace(
@@ -803,8 +803,8 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_symlink_buildpath_macos(self):
         """Test an in-build-tree layout via symlink on macOS.
 
-        This layout is discovered from the presence of pybuilddir.txt, which
-        contains the relative path from the executable's directory to the
+        This layout is discovered von the presence of pybuilddir.txt, which
+        contains the relative path von the executable's directory to the
         platstdlib path.
         """
         ns = MockPosixNamespace(
@@ -976,7 +976,7 @@ klasse MockNTNamespace(dict):
         try:
             return getattr(self, key)
         except AttributeError:
-            raise KeyError(key) from Nichts
+            raise KeyError(key) von Nichts
 
     def abspath(self, path):
         wenn self.isabs(path):
@@ -1027,7 +1027,7 @@ klasse MockNTNamespace(dict):
         try:
             return self._files[path.casefold()]
         except KeyError:
-            raise FileNotFoundError(path) from Nichts
+            raise FileNotFoundError(path) von Nichts
 
     def realpath(self, path, _trail=Nichts):
         wenn verbose:
@@ -1153,7 +1153,7 @@ klasse MockPosixNamespace(dict):
         try:
             return getattr(self, key)
         except AttributeError:
-            raise KeyError(key) from Nichts
+            raise KeyError(key) von Nichts
 
     def abspath(self, path):
         wenn self.isabs(path):
@@ -1199,7 +1199,7 @@ klasse MockPosixNamespace(dict):
         try:
             return self._files[path]
         except KeyError:
-            raise FileNotFoundError(path) from Nichts
+            raise FileNotFoundError(path) von Nichts
 
     def realpath(self, path, _trail=Nichts):
         wenn verbose:

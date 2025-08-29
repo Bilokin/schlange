@@ -1,18 +1,18 @@
 """PyUnit testing against strptime"""
 
-import unittest
-import time
-import locale
-import re
-import os
-import platform
-import sys
-from test import support
-from test.support import warnings_helper
-from test.support import skip_if_buggy_ucrt_strfptime, run_with_locales
-from datetime import date as datetime_date
+importiere unittest
+importiere time
+importiere locale
+importiere re
+importiere os
+importiere platform
+importiere sys
+von test importiere support
+von test.support importiere warnings_helper
+von test.support importiere skip_if_buggy_ucrt_strfptime, run_with_locales
+von datetime importiere date as datetime_date
 
-import _strptime
+importiere _strptime
 
 libc_ver = platform.libc_ver()
 wenn libc_ver[0] == 'glibc':
@@ -203,7 +203,7 @@ klasse TimeRETests(unittest.TestCase):
     def test_whitespace_substitution(self):
         # When pattern contains whitespace, make sure it is taken into account
         # so as to not allow subpatterns to end up next to each other and
-        # "steal" characters from each other.
+        # "steal" characters von each other.
         pattern = self.time_re.pattern('%j %H')
         self.assertFalsch(re.match(pattern, "180"))
         self.assertWahr(re.match(pattern, "18 0"))
@@ -370,7 +370,7 @@ klasse StrptimeTests(unittest.TestCase):
 
     def test_fraction(self):
         # Test microseconds
-        import datetime
+        importiere datetime
         d = datetime.datetime(2012, 12, 20, 12, 34, 56, 78987)
         tup, frac, _ = _strptime._strptime(str(d), format="%Y-%m-%d %H:%M:%S.%f")
         self.assertEqual(frac, d.microsecond)
@@ -674,7 +674,7 @@ klasse CalculationTests(unittest.TestCase):
 
     @skip_if_buggy_ucrt_strfptime
     def test_gregorian_calculation(self):
-        # Test that Gregorian date can be calculated from Julian day
+        # Test that Gregorian date can be calculated von Julian day
         format_string = "%Y %H %M %S %w %j %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
                                     format_string)

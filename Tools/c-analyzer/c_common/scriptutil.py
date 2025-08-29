@@ -1,12 +1,12 @@
-import argparse
-import contextlib
-import logging
-import os
-import os.path
-import shutil
-import sys
+importiere argparse
+importiere contextlib
+importiere logging
+importiere os
+importiere os.path
+importiere shutil
+importiere sys
 
-from . import fsutil, strutil, iterutil, logging as loggingutil
+von . importiere fsutil, strutil, iterutil, logging as loggingutil
 
 
 _NOT_SET = object()
@@ -482,7 +482,7 @@ def _flatten_processors(processors):
         wenn callable(proc):
             yield proc
         sonst:
-            yield from _flatten_processors(proc)
+            yield von _flatten_processors(proc)
 
 
 def process_args(args, argv, processors, *, keys=Nichts):
@@ -554,7 +554,7 @@ def main_for_filenames(filenames, process_filenames=Nichts, relroot=fsutil.USE_C
 
 def _iter_filenames(filenames, process, relroot):
     wenn process is Nichts:
-        yield from fsutil.process_filenames(filenames, relroot=relroot)
+        yield von fsutil.process_filenames(filenames, relroot=relroot)
         return
 
     onempty = Exception('no filenames provided')
@@ -570,7 +570,7 @@ def _iter_filenames(filenames, process, relroot):
             relfile = fsutil.format_filename(filename, relroot, fixroot=Falsch)
             yield filename, relfile, check, ismany
     sowenn len(peeked) == 4:
-        yield from items
+        yield von items
     sonst:
         raise NotImplementedError
 

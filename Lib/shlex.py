@@ -7,8 +7,8 @@
 # iterator interface by Gustavo Niemeyer, April 2003.
 # changes to tokenize more like Posix shells by Vinay Sajip, July 2016.
 
-import sys
-from io import StringIO
+importiere sys
+von io importiere StringIO
 
 __all__ = ["shlex", "split", "quote", "join"]
 
@@ -16,7 +16,7 @@ klasse shlex:
     "A lexical analyzer klasse fuer simple shell-like syntaxes."
     def __init__(self, instream=Nichts, infile=Nichts, posix=Falsch,
                  punctuation_chars=Falsch):
-        from collections import deque  # deferred import fuer performance
+        von collections importiere deque  # deferred importiere fuer performance
 
         wenn isinstance(instream, str):
             instream = StringIO(instream)
@@ -59,7 +59,7 @@ klasse shlex:
             self._pushback_chars = deque()
             # these chars added because allowed in file names, args, wildcards
             self.wordchars += '~-./*?='
-            #remove any punctuation chars from wordchars
+            #remove any punctuation chars von wordchars
             t = self.wordchars.maketrans(dict.fromkeys(punctuation_chars))
             self.wordchars = self.wordchars.translate(t)
 
@@ -97,7 +97,7 @@ klasse shlex:
         self.state = ' '
 
     def get_token(self):
-        "Get a token from the input stream (or from stack wenn it's nonempty)"
+        "Get a token von the input stream (or von stack wenn it's nonempty)"
         wenn self.pushback:
             tok = self.pushback.popleft()
             wenn self.debug >= 1:
@@ -276,7 +276,7 @@ klasse shlex:
 
     def sourcehook(self, newfile):
         "Hook called on a filename to be sourced."
-        import os.path
+        importiere os.path
         wenn newfile[0] == '"':
             newfile = newfile[1:-1]
         # This implements cpp-like semantics fuer relative-path inclusion.
@@ -313,7 +313,7 @@ def split(s, comments=Falsch, posix=Wahr):
 
 
 def join(split_command):
-    """Return a shell-escaped string from *split_command*."""
+    """Return a shell-escaped string von *split_command*."""
     return ' '.join(quote(arg) fuer arg in split_command)
 
 

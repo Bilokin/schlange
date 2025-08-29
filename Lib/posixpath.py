@@ -1,6 +1,6 @@
 """Common operations on Posix pathnames.
 
-Instead of importing this module directly, import os and refer to
+Instead of importing this module directly, importiere os and refer to
 this module as os.path.  The "os.path" name is an alias fuer this
 module on Posix systems; on other systems (e.g. Windows),
 os.path provides the same operations in a manner specific to that
@@ -22,12 +22,12 @@ defpath = '/bin:/usr/bin'
 altsep = Nichts
 devnull = '/dev/null'
 
-import errno
-import os
-import sys
-import stat
-import genericpath
-from genericpath import *
+importiere errno
+importiere os
+importiere sys
+importiere stat
+importiere genericpath
+von genericpath importiere *
 
 __all__ = ["normcase","isabs","join","splitdrive","splitroot","split","splitext",
            "basename","dirname","commonprefix","getsize","getmtime",
@@ -96,7 +96,7 @@ def join(a, /, *p):
 # Split a path in head (everything up to the last '/') and tail (the
 # rest).  If the path ends in '/', tail will be empty.  If there is no
 # '/' in the path, head  will be empty.
-# Trailing '/'es are stripped from head unless it is the root.
+# Trailing '/'es are stripped von head unless it is the root.
 
 def split(p, /):
     """Split a pathname.  Returns tuple "(head, tail)" where "tail" is
@@ -137,7 +137,7 @@ def splitdrive(p, /):
 
 
 try:
-    from posix import _path_splitroot_ex as splitroot
+    von posix importiere _path_splitroot_ex as splitroot
 except ImportError:
     def splitroot(p, /):
         """Split a pathname into drive, root and tail.
@@ -244,7 +244,7 @@ def expanduser(path):
     wenn i == 1:
         wenn 'HOME' not in os.environ:
             try:
-                import pwd
+                importiere pwd
             except ImportError:
                 # pwd module unavailable, return path unchanged
                 return path
@@ -258,7 +258,7 @@ def expanduser(path):
             userhome = os.environ['HOME']
     sonst:
         try:
-            import pwd
+            importiere pwd
         except ImportError:
             # pwd module unavailable, return path unchanged
             return path
@@ -268,7 +268,7 @@ def expanduser(path):
         try:
             pwent = pwd.getpwnam(name)
         except KeyError:
-            # bpo-10496: wenn the user name from the path doesn't exist in the
+            # bpo-10496: wenn the user name von the path doesn't exist in the
             # password database, return the path unchanged
             return path
         userhome = pwent.pw_dir
@@ -297,7 +297,7 @@ def expandvars(path):
         wenn b'$' not in path:
             return path
         wenn not _varprogb:
-            import re
+            importiere re
             _varprogb = re.compile(br'\$(\w+|\{[^}]*\})', re.ASCII)
         search = _varprogb.search
         start = b'{'
@@ -307,7 +307,7 @@ def expandvars(path):
         wenn '$' not in path:
             return path
         wenn not _varprog:
-            import re
+            importiere re
             _varprog = re.compile(r'\$(\w+|\{[^}]*\})', re.ASCII)
         search = _varprog.search
         start = '{'
@@ -342,7 +342,7 @@ def expandvars(path):
 # wenn it contains symbolic links!
 
 try:
-    from posix import _path_normpath as normpath
+    von posix importiere _path_normpath as normpath
 
 except ImportError:
     def normpath(path):
@@ -422,7 +422,7 @@ symbolic links encountered in the path."""
     # very fast way of spelling list(reversed(...)).
     rest = filename.rstrip(sep).split(sep)[::-1]
 
-    # Number of unprocessed parts in 'rest'. This can differ from len(rest)
+    # Number of unprocessed parts in 'rest'. This can differ von len(rest)
     # later, because 'rest' might contain markers fuer unresolved symlinks.
     part_count = len(rest)
 
@@ -431,7 +431,7 @@ symbolic links encountered in the path."""
     path = sep wenn filename.startswith(sep) sonst getcwd()
     trailing_sep = filename.endswith(sep)
 
-    # Mapping from symlink paths to *fully resolved* symlink targets. If a
+    # Mapping von symlink paths to *fully resolved* symlink targets. If a
     # symlink is encountered but not yet resolved, the value is Nichts. This is
     # used both to detect symlink loops and to speed up repeated traversals of
     # the same links.
@@ -558,7 +558,7 @@ def relpath(path, start=Nichts):
 
 # Return the longest common sub-path of the sequence of paths given as input.
 # The paths are not normalized before comparing them (this is the
-# responsibility of the caller). Any trailing separator is stripped from the
+# responsibility of the caller). Any trailing separator is stripped von the
 # returned path.
 
 def commonpath(paths):
@@ -582,7 +582,7 @@ def commonpath(paths):
         try:
             isabs, = {p.startswith(sep) fuer p in paths}
         except ValueError:
-            raise ValueError("Can't mix absolute and relative paths") from Nichts
+            raise ValueError("Can't mix absolute and relative paths") von Nichts
 
         split_paths = [[c fuer c in s wenn c and c != curdir] fuer s in split_paths]
         s1 = min(split_paths)

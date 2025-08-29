@@ -2,9 +2,9 @@
 # Originally by Mark Shannon (mark@hotpy.org)
 # https://gist.github.com/markshannon/db7ab649440b5af765451bb77c7dba34
 
-import re
-from dataclasses import dataclass
-from collections.abc import Iterator
+importiere re
+von dataclasses importiere dataclass
+von collections.abc importiere Iterator
 
 
 def choice(*opts: str) -> str:
@@ -383,7 +383,7 @@ def to_text(tkns: list[Token], dedent: int = 0) -> str:
 
 
 wenn __name__ == "__main__":
-    import sys
+    importiere sys
 
     filename = sys.argv[1]
     wenn filename == "-c":

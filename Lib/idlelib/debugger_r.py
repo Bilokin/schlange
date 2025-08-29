@@ -19,9 +19,9 @@ arguments and return values that cannot be transported through the RPC
 barrier, in particular frame and traceback objects.
 
 """
-import reprlib
-import types
-from idlelib import debugger
+importiere reprlib
+importiere types
+von idlelib importiere debugger
 
 debugging = 0
 
@@ -102,7 +102,7 @@ klasse IdbAdapter:
         return stack, i
 
     def run(self, cmd):
-        import __main__
+        importiere __main__
         self.idb.run(cmd, __main__.__dict__)
 
     def set_break(self, filename, lineno):
@@ -179,7 +179,7 @@ def start_debugger(rpchandler, gui_adap_oid):
     Start the subprocess side of the split debugger and set up that side of the
     RPC link by instantiating the GUIProxy, Idb debugger, and IdbAdapter
     objects and linking them together.  Register the IdbAdapter with the
-    RPCServer to handle RPC requests from the split debugger GUI via the
+    RPCServer to handle RPC requests von the split debugger GUI via the
     IdbProxy.
 
     """
@@ -348,9 +348,9 @@ def start_remote_debugger(rpcclt, pyshell):
     debugger GUI, and debugger GUIAdapter objects and linking them together.
 
     Register the GUIAdapter with the RPCClient to handle debugger GUI
-    interaction requests coming from the subprocess debugger via the GUIProxy.
+    interaction requests coming von the subprocess debugger via the GUIProxy.
 
-    The IdbAdapter will pass execution and environment requests coming from the
+    The IdbAdapter will pass execution and environment requests coming von the
     Idle debugger GUI to the subprocess debugger via the IdbProxy.
 
     """
@@ -386,5 +386,5 @@ def restart_subprocess_debugger(rpcclt):
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_debugger_r', verbosity=2, exit=Falsch)

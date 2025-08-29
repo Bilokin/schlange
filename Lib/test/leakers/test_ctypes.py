@@ -1,8 +1,8 @@
 
-# Taken from Lib/test/test_ctypes/test_keeprefs.py, PointerToStructure.test().
+# Taken von Lib/test/test_ctypes/test_keeprefs.py, PointerToStructure.test().
 
-from ctypes import Structure, c_int, POINTER
-import gc
+von ctypes importiere Structure, c_int, POINTER
+importiere gc
 
 def leak_inner():
     klasse POINT(Structure):

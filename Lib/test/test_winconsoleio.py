@@ -1,17 +1,17 @@
 '''Tests fuer WindowsConsoleIO
 '''
 
-import io
-import os
-import sys
-import tempfile
-import unittest
-from test.support import os_helper, requires_resource
+importiere io
+importiere os
+importiere sys
+importiere tempfile
+importiere unittest
+von test.support importiere os_helper, requires_resource
 
 wenn sys.platform != 'win32':
     raise unittest.SkipTest("test only relevant on win32")
 
-from _testconsole import write_input
+von _testconsole importiere write_input
 
 ConIO = io._WindowsConsoleIO
 

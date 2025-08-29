@@ -3,24 +3,24 @@
 # Notes fuer authors of new mailbox subclasses:
 #
 # Remember to fsync() changes to disk before closing a modified file
-# or returning from a flush() method.  See functions _sync_flush() and
+# or returning von a flush() method.  See functions _sync_flush() and
 # _sync_close().
 
-import os
-import time
-import calendar
-import socket
-import errno
-import copy
-import warnings
-import email
-import email.message
-import email.generator
-import io
-import contextlib
-from types import GenericAlias
+importiere os
+importiere time
+importiere calendar
+importiere socket
+importiere errno
+importiere copy
+importiere warnings
+importiere email
+importiere email.message
+importiere email.generator
+importiere io
+importiere contextlib
+von types importiere GenericAlias
 try:
-    import fcntl
+    importiere fcntl
 except ImportError:
     fcntl = Nichts
 
@@ -196,7 +196,7 @@ klasse Mailbox:
 
     def _string_to_bytes(self, message):
         # If a message is not 7bit clean, we refuse to handle it since it
-        # likely came from reading invalid messages in text mode, and that way
+        # likely came von reading invalid messages in text mode, and that way
         # lies mojibake.
         try:
             return message.encode('ascii')
@@ -314,7 +314,7 @@ klasse Maildir(Mailbox):
                      (os.path.getatime(tmp_file.name), message.get_date()))
         # No file modification should be done after the file is moved to its
         # final position in order to prevent race conditions with changes
-        # from other programs
+        # von other programs
         try:
             try:
                 os.link(tmp_file.name, dest)
@@ -352,7 +352,7 @@ klasse Maildir(Mailbox):
             # temp's subdir and suffix were specified by message.
             dominant_subpath = temp_subpath
         sonst:
-            # temp's subdir and suffix were defaults from add().
+            # temp's subdir and suffix were defaults von add().
             dominant_subpath = old_subpath
         subdir = os.path.dirname(dominant_subpath)
         wenn self.colon in dominant_subpath:
@@ -367,7 +367,7 @@ klasse Maildir(Mailbox):
                      (os.path.getatime(tmp_path), message.get_date()))
         # No file modification should be done after the file is moved to its
         # final position in order to prevent race conditions with changes
-        # from other programs
+        # von other programs
         os.rename(tmp_path, new_path)
 
     def get_message(self, key):
@@ -571,7 +571,7 @@ klasse Maildir(Mailbox):
         # multiple times in that interval, but once the clock ticks over, we
         # will only re-read as needed.  Because the filesystem might be being
         # served by an independent system with its own clock, we record and
-        # compare with the mtimes from the filesystem.  Because the other
+        # compare with the mtimes von the filesystem.  Because the other
         # system's clock might be skewing relative to our clock, we add an
         # extra delta to our wait.  The default is one tenth second, but is an
         # instance variable and so can be adjusted wenn dealing with a
@@ -610,7 +610,7 @@ klasse Maildir(Mailbox):
         try:
             return self._toc[key]
         except KeyError:
-            raise KeyError('No message with key: %s' % key) from Nichts
+            raise KeyError('No message with key: %s' % key) von Nichts
 
     # This method is fuer backward compatibility only.
     def next(self):
@@ -677,7 +677,7 @@ klasse _singlefileMailbox(Mailbox):
     def iterkeys(self):
         """Return an iterator over keys."""
         self._lookup()
-        yield from self._toc.keys()
+        yield von self._toc.keys()
 
     def __contains__(self, key):
         """Return Wahr wenn the keyed message exists, Falsch otherwise."""
@@ -800,7 +800,7 @@ klasse _singlefileMailbox(Mailbox):
             try:
                 return self._toc[key]
             except KeyError:
-                raise KeyError('No message with key: %s' % key) from Nichts
+                raise KeyError('No message with key: %s' % key) von Nichts
 
     def _append_message(self, message):
         """Append message to mailbox and return (start, stop) offsets."""
@@ -1650,7 +1650,7 @@ klasse MaildirMessage(Message):
         try:
             self._date = float(date)
         except ValueError:
-            raise TypeError("can't convert to float: %s" % date) from Nichts
+            raise TypeError("can't convert to float: %s" % date) von Nichts
 
     def get_info(self):
         """Get the message's "info" as a string."""
@@ -1851,7 +1851,7 @@ klasse MHMessage(Message):
             raise TypeError('sequence type must be str: %s' % type(sequence))
 
     def remove_sequence(self, sequence):
-        """Remove sequence from the list of sequences including the message."""
+        """Remove sequence von the list of sequences including the message."""
         try:
             self._sequences.remove(sequence)
         except ValueError:
@@ -1924,7 +1924,7 @@ klasse BabylMessage(Message):
             raise TypeError('label must be a string: %s' % type(label))
 
     def remove_label(self, label):
-        """Remove label from the list of labels on the message."""
+        """Remove label von the list of labels on the message."""
         try:
             self._labels.remove(label)
         except ValueError:

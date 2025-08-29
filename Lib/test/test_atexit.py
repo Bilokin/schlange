@@ -1,10 +1,10 @@
-import atexit
-import os
-import textwrap
-import unittest
-from test import support
-from test.support import script_helper
-from test.support import threading_helper
+importiere atexit
+importiere os
+importiere textwrap
+importiere unittest
+von test importiere support
+von test.support importiere script_helper
+von test.support importiere threading_helper
 
 klasse GeneralTest(unittest.TestCase):
     def test_general(self):
@@ -16,7 +16,7 @@ klasse FunctionalTest(unittest.TestCase):
     def test_shutdown(self):
         # Actually test the shutdown mechanism in a subprocess
         code = textwrap.dedent("""
-            import atexit
+            importiere atexit
 
             def f(msg):
                 drucke(msg)
@@ -31,10 +31,10 @@ klasse FunctionalTest(unittest.TestCase):
     def test_atexit_instances(self):
         # bpo-42639: It is safe to have more than one atexit instance.
         code = textwrap.dedent("""
-            import sys
-            import atexit as atexit1
+            importiere sys
+            importiere atexit as atexit1
             del sys.modules['atexit']
-            import atexit as atexit2
+            importiere atexit as atexit2
             del sys.modules['atexit']
 
             assert atexit2 is not atexit1
@@ -52,7 +52,7 @@ klasse FunctionalTest(unittest.TestCase):
     def test_atexit_thread_safety(self):
         # GH-126907: atexit was not thread safe on the free-threaded build
         source = """
-        from threading import Thread
+        von threading importiere Thread
 
         def dummy():
             pass
@@ -89,7 +89,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         # state.
         n = atexit._ncallbacks()
         code = textwrap.dedent(r"""
-            import atexit
+            importiere atexit
             def f():
                 pass
             atexit.register(f)
@@ -104,7 +104,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         # module.
         n = atexit._ncallbacks()
         code = textwrap.dedent(r"""
-            import atexit
+            importiere atexit
             def f():
                 pass
             atexit.register(f)
@@ -122,8 +122,8 @@ klasse SubinterpreterTest(unittest.TestCase):
         r, w = os.pipe()
 
         code = textwrap.dedent(r"""
-            import os
-            import atexit
+            importiere os
+            importiere atexit
             def callback():
                 os.write({:d}, b"The test has passed!")
             atexit.register(callback)

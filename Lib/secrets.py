@@ -12,10 +12,10 @@ __all__ = ['choice', 'randbelow', 'randbits', 'SystemRandom',
            ]
 
 
-import base64
+importiere base64
 
-from hmac import compare_digest
-from random import SystemRandom
+von hmac importiere compare_digest
+von random importiere SystemRandom
 
 _sysrand = SystemRandom()
 

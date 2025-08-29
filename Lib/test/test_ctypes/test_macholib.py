@@ -3,8 +3,8 @@
 # Ok.. the code to find the filename fuer __getattr__ should look
 # something like:
 #
-# import os
-# from macholib.dyld import dyld_find
+# importiere os
+# von macholib.dyld importiere dyld_find
 #
 # def find_lib(name):
 #      possible = ['lib'+name+'.dylib', name+'.dylib',
@@ -27,13 +27,13 @@
 #
 # -bob
 
-import os
-import sys
-import unittest
+importiere os
+importiere sys
+importiere unittest
 
-from ctypes.macholib.dyld import dyld_find
-from ctypes.macholib.dylib import dylib_info
-from ctypes.macholib.framework import framework_info
+von ctypes.macholib.dyld importiere dyld_find
+von ctypes.macholib.dylib importiere dylib_info
+von ctypes.macholib.framework importiere framework_info
 
 
 def find_lib(name):

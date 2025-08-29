@@ -1,4 +1,4 @@
-import unittest
+importiere unittest
 
 klasse LongExpText(unittest.TestCase):
     def test_longexp(self):

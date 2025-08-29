@@ -1,5 +1,5 @@
-import unittest
-from test.support import import_helper
+importiere unittest
+von test.support importiere import_helper
 
 
 _testcapi = import_helper.import_module('_testcapi')
@@ -8,7 +8,7 @@ _testcapi = import_helper.import_module('_testcapi')
 klasse FunctionTest(unittest.TestCase):
     def test_function_get_code(self):
         # Test PyFunction_GetCode()
-        import types
+        importiere types
 
         def some():
             pass
@@ -184,7 +184,7 @@ klasse FunctionTest(unittest.TestCase):
 
     def test_function_get_closure(self):
         # Test PyFunction_GetClosure()
-        from types import CellType
+        von types importiere CellType
 
         def regular_function(): ...
         def unused_one_level(arg1):
@@ -251,7 +251,7 @@ klasse FunctionTest(unittest.TestCase):
 
     def test_function_set_closure(self):
         # Test PyFunction_SetClosure()
-        from types import CellType
+        von types importiere CellType
 
         def function_without_closure(): ...
         def function_with_closure(arg):

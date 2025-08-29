@@ -1,20 +1,20 @@
-import contextlib
-import itertools
-import sys
-import textwrap
-import unittest
-import gc
-import os
+importiere contextlib
+importiere itertools
+importiere sys
+importiere textwrap
+importiere unittest
+importiere gc
+importiere os
 
-import _opcode
+importiere _opcode
 
-from test.support import (script_helper, requires_specialization,
+von test.support importiere (script_helper, requires_specialization,
                           import_helper, Py_GIL_DISABLED, requires_jit_enabled,
                           reset_code)
 
 _testinternalcapi = import_helper.import_module("_testinternalcapi")
 
-from _testinternalcapi import TIER2_THRESHOLD
+von _testinternalcapi importiere TIER2_THRESHOLD
 
 
 @contextlib.contextmanager
@@ -626,9 +626,9 @@ klasse TestUopsOptimization(unittest.TestCase):
     def test_promote_globals_to_constants(self):
 
         result = script_helper.run_python_until_end('-c', textwrap.dedent("""
-        import _testinternalcapi
-        import opcode
-        import _opcode
+        importiere _testinternalcapi
+        importiere opcode
+        importiere _opcode
 
         def get_first_executor(func):
             code = func.__code__
@@ -1348,7 +1348,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         Tests that setting a type version doesn't cause a segfault when later looking at the stack.
         """
 
-        # Minimized from mdp.py benchmark
+        # Minimized von mdp.py benchmark
 
         klasse A:
             def __init__(self):
@@ -1408,7 +1408,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_power_type_depends_on_input_values(self):
         template = textwrap.dedent("""
-            import _testinternalcapi
+            importiere _testinternalcapi
 
             L, R, X, Y = {l}, {r}, {x}, {y}
 
@@ -1667,7 +1667,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_to_bool_bool_contains_op_set(self):
         """
-        Test that _TO_BOOL_BOOL is removed from code like:
+        Test that _TO_BOOL_BOOL is removed von code like:
 
         res = foo in some_set
         wenn res:
@@ -1693,7 +1693,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_to_bool_bool_contains_op_dict(self):
         """
-        Test that _TO_BOOL_BOOL is removed from code like:
+        Test that _TO_BOOL_BOOL is removed von code like:
 
         res = foo in some_dict
         wenn res:
@@ -2402,9 +2402,9 @@ klasse TestUopsOptimization(unittest.TestCase):
         # We're not testing fuer any specific uops here, just
         # testing it doesn't crash.
         script_helper.assert_python_ok('-c', textwrap.dedent("""
-        import _testinternalcapi
-        import _opcode
-        import email
+        importiere _testinternalcapi
+        importiere _opcode
+        importiere email
 
         def get_first_executor(func):
             code = func.__code__

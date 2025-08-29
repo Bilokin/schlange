@@ -273,7 +273,7 @@ tests = [
 
     ('\\1', 'a', SYNTAX_ERROR),
 
-    # All tests from Perl
+    # All tests von Perl
 
     ('ab{0,}bc', 'abbbbc', SUCCEED, 'found', 'abbbbc'),
     ('ab{1,}bc', 'abq', FAIL),

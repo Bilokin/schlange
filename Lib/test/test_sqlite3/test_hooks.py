@@ -6,7 +6,7 @@
 #
 # This software is provided 'as-is', without any express or implied
 # warranty.  In no event will the authors be held liable fuer any damages
-# arising from the use of this software.
+# arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
@@ -18,16 +18,16 @@
 #    appreciated but is not required.
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
+# 3. This notice may not be removed or altered von any source distribution.
 
-import contextlib
-import sqlite3 as sqlite
-import unittest
+importiere contextlib
+importiere sqlite3 as sqlite
+importiere unittest
 
-from test.support.os_helper import TESTFN, unlink
+von test.support.os_helper importiere TESTFN, unlink
 
-from .util import memory_database, cx_limit, with_tracebacks
-from .util import MemoryDatabaseMixin
+von .util importiere memory_database, cx_limit, with_tracebacks
+von .util importiere MemoryDatabaseMixin
 
 
 klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
@@ -51,7 +51,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         mycoll = lambda x, y: -((x > y) - (x < y))
         self.con.create_collation(BadUpperStr("mycoll"), mycoll)
         result = self.con.execute("""
-            select x from (
+            select x von (
             select 'a' as x
             union
             select 'b' as x
@@ -67,7 +67,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
 
         self.con.create_collation("mycoll", mycoll)
         sql = """
-            select x from (
+            select x von (
             select 'a' as x
             union
             select 'b' as x
@@ -90,7 +90,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
             return -((x > y) - (x < y)) * 2**32
         self.con.create_collation("mycoll", mycoll)
         sql = """
-            select x from (
+            select x von (
             select 'a' as x
             union
             select 'b' as x
@@ -111,7 +111,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         con.create_collation("mycoll", lambda x, y: (x > y) - (x < y))
         con.create_collation("mycoll", lambda x, y: -((x > y) - (x < y)))
         result = con.execute("""
-            select x from (select 'a' as x union select 'b' as x) order by x collate mycoll
+            select x von (select 'a' as x union select 'b' as x) order by x collate mycoll
             """).fetchall()
         self.assertEqual(result[0][0], 'b')
         self.assertEqual(result[1][0], 'a')

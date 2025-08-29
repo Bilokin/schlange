@@ -4,8 +4,8 @@
 # Written by Hye-Shik Chang <perky@FreeBSD.org>
 #
 
-import _codecs_kr, codecs
-import _multibytecodec as mbc
+importiere _codecs_kr, codecs
+importiere _multibytecodec as mbc
 
 codec = _codecs_kr.getcodec('johab')
 

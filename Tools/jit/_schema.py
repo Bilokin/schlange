@@ -1,6 +1,6 @@
 """Schema fuer the JSON produced by llvm-readobj --elf-output-style=JSON."""
 
-import typing
+importiere typing
 
 HoleKind: typing.TypeAlias = typing.Literal[
     "ARM64_RELOC_BRANCH26",

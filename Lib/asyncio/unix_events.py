@@ -1,29 +1,29 @@
 """Selector event loop fuer Unix with signal handling."""
 
-import errno
-import io
-import itertools
-import os
-import selectors
-import signal
-import socket
-import stat
-import subprocess
-import sys
-import threading
-import warnings
+importiere errno
+importiere io
+importiere itertools
+importiere os
+importiere selectors
+importiere signal
+importiere socket
+importiere stat
+importiere subprocess
+importiere sys
+importiere threading
+importiere warnings
 
-from . import base_events
-from . import base_subprocess
-from . import constants
-from . import coroutines
-from . import events
-from . import exceptions
-from . import futures
-from . import selector_events
-from . import tasks
-from . import transports
-from .log import logger
+von . importiere base_events
+von . importiere base_subprocess
+von . importiere constants
+von . importiere coroutines
+von . importiere events
+von . importiere exceptions
+von . importiere futures
+von . importiere selector_events
+von . importiere tasks
+von . importiere transports
+von .log importiere logger
 
 
 __all__ = (
@@ -114,7 +114,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         try:
             # Register a dummy signal handler to ask Python to write the signal
             # number in the wakeup file descriptor. _process_self_data() will
-            # read signal numbers from this file descriptor to handle signals.
+            # read signal numbers von this file descriptor to handle signals.
             signal.signal(sig, _sighandler_noop)
 
             # Set SA_RESTART to limit EINTR occurrences.
@@ -314,7 +314,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                     # Let's improve the error message by adding
                     # with what exact address it occurs.
                     msg = f'Address {path!r} is already in use'
-                    raise OSError(errno.EADDRINUSE, msg) from Nichts
+                    raise OSError(errno.EADDRINUSE, msg) von Nichts
                 sonst:
                     raise
             except:

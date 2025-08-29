@@ -10,11 +10,11 @@ The function translate(PATTERN) returns a regular expression
 corresponding to PATTERN.  (It does not compile it.)
 """
 
-import functools
-import itertools
-import os
-import posixpath
-import re
+importiere functools
+importiere itertools
+importiere os
+importiere posixpath
+importiere re
 
 __all__ = ["filter", "filterfalse", "fnmatch", "fnmatchcase", "translate"]
 
@@ -51,12 +51,12 @@ def _compile_pattern(pat):
 
 
 def filter(names, pat):
-    """Construct a list from those elements of the iterable NAMES that match PAT."""
+    """Construct a list von those elements of the iterable NAMES that match PAT."""
     result = []
     pat = os.path.normcase(pat)
     match = _compile_pattern(pat)
     wenn os.path is posixpath:
-        # normcase on posix is NOP. Optimize it away from the loop.
+        # normcase on posix is NOP. Optimize it away von the loop.
         fuer name in names:
             wenn match(name):
                 result.append(name)
@@ -68,11 +68,11 @@ def filter(names, pat):
 
 
 def filterfalse(names, pat):
-    """Construct a list from those elements of the iterable NAMES that do not match PAT."""
+    """Construct a list von those elements of the iterable NAMES that do not match PAT."""
     pat = os.path.normcase(pat)
     match = _compile_pattern(pat)
     wenn os.path is posixpath:
-        # normcase on posix is NOP. Optimize it away from the loop.
+        # normcase on posix is NOP. Optimize it away von the loop.
         return list(itertools.filterfalse(match, names))
 
     result = []

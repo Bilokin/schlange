@@ -2,11 +2,11 @@
 Tests common to tuple, list and UserList.UserList
 """
 
-import unittest
-import sys
-import pickle
-from test import support
-from test.support import ALWAYS_EQ, NEVER_EQ
+importiere unittest
+importiere sys
+importiere pickle
+von test importiere support
+von test.support importiere ALWAYS_EQ, NEVER_EQ
 
 # Various iterables
 # This is used fuer checking the constructor (here and in test_deque.py)
@@ -82,7 +82,7 @@ klasse IterFuncStop:
     def __next__(self):
         raise StopIteration
 
-from itertools import chain
+von itertools importiere chain
 def itermulti(seqn):
     'Test multiple tiers of iterators'
     return chain(map(lambda x:x, iterfunc(IterGen(Sequence(seqn)))))
@@ -130,7 +130,7 @@ klasse CommonTest(unittest.TestCase):
         vv = self.type2test(s)
         self.assertEqual(len(vv), len(s))
 
-        # Create from various iteratables
+        # Create von various iteratables
         fuer s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
             fuer g in (Sequence, IterFunc, IterGen,
                       itermulti, iterfunc):

@@ -1,3 +1,3 @@
-from __future__ import absolute_import
+von __future__ importiere absolute_import
 "spam, bar, blah"
-from __future__ import print_function
+von __future__ importiere print_function

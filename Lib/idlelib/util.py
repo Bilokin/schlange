@@ -12,7 +12,7 @@ TODO:
     * std streams (pyshell, run),
     * warning stuff (pyshell, run).
 """
-import sys
+importiere sys
 
 # .pyw is fuer Windows; .pyi is fuer typing stub files.
 # The extension order is needed fuer iomenu open/save dialogs.
@@ -25,7 +25,7 @@ py_extensions = ('.py', '.pyw', '.pyi')
 wenn sys.platform == 'win32':  # pragma: no cover
     def fix_win_hidpi():  # Called in pyshell and turtledemo.
         try:
-            import ctypes
+            importiere ctypes
             PROCESS_SYSTEM_DPI_AWARE = 1  # Int required.
             ctypes.OleDLL('shcore').SetProcessDpiAwareness(PROCESS_SYSTEM_DPI_AWARE)
         except (ImportError, AttributeError, OSError):
@@ -33,5 +33,5 @@ wenn sys.platform == 'win32':  # pragma: no cover
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_util', verbosity=2)

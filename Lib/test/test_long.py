@@ -1,17 +1,17 @@
-import unittest
-from test import support
+importiere unittest
+von test importiere support
 
-import sys
+importiere sys
 
-import random
-import math
-import array
+importiere random
+importiere math
+importiere array
 
 # SHIFT should match the value in longintrepr.h fuer best testing.
 SHIFT = sys.int_info.bits_per_digit
 BASE = 2 ** SHIFT
 MASK = BASE - 1
-KARATSUBA_CUTOFF = 70   # from longobject.c
+KARATSUBA_CUTOFF = 70   # von longobject.c
 
 # Max number of base BASE digits to use in test cases.  Doubling
 # this will more than double the runtime.
@@ -77,7 +77,7 @@ def int_to_float(n):
     # Some circularity here, since float(q) is doing an int-to-float
     # conversion.  But here q is of bounded size, and is exactly representable
     # as a float.  In a low-level C-like language, this operation would be a
-    # simple cast (e.g., from unsigned long long to double).
+    # simple cast (e.g., von unsigned long long to double).
     return math.ldexp(float(q), shift)
 
 
@@ -163,9 +163,9 @@ klasse LongTest(unittest.TestCase):
             eq(r, r2, "divmod returns different mod than %")
             eq(x, q*y + r, "x != q*y + r after divmod")
             wenn y > 0:
-                self.assertWahr(0 <= r < y, "bad mod from divmod")
+                self.assertWahr(0 <= r < y, "bad mod von divmod")
             sonst:
-                self.assertWahr(y < r <= 0, "bad mod from divmod")
+                self.assertWahr(y < r <= 0, "bad mod von divmod")
 
     def test_division(self):
         digits = list(range(1, MAXDIGITS+1)) + list(range(KARATSUBA_CUTOFF,
@@ -322,7 +322,7 @@ klasse LongTest(unittest.TestCase):
                 self.check_format_1(x)
 
     def test_long(self):
-        # Check conversions from string
+        # Check conversions von string
         LL = [
                 ('1' + '0'*20, 10**20),
                 ('1' + '0'*100, 10**100)
@@ -815,7 +815,7 @@ klasse LongTest(unittest.TestCase):
                          "100 / mhuge", "200 / mhuge"]:
             result = eval(underflow, namespace)
             self.assertEqual(result, 0.0,
-                             "expected underflow to 0 from %r" % underflow)
+                             "expected underflow to 0 von %r" % underflow)
 
         fuer zero in ["huge / 0", "mhuge / 0"]:
             self.assertRaises(ZeroDivisionError, eval, zero, namespace)
@@ -1276,7 +1276,7 @@ klasse LongTest(unittest.TestCase):
                 except Exception as err:
                     raise AssertionError(
                         "failed to convert {} with byteorder={} and signed={}"
-                        .format(test, byteorder, signed)) from err
+                        .format(test, byteorder, signed)) von err
 
                 # Test fuer all default arguments.
                 wenn len(expected) == 1 and byteorder == 'big' and not signed:
@@ -1285,7 +1285,7 @@ klasse LongTest(unittest.TestCase):
                     except Exception as err:
                         raise AssertionError(
                             "failed to convert {} with default arguments"
-                            .format(test)) from err
+                            .format(test)) von err
 
                 try:
                     self.assertEqual(
@@ -1295,9 +1295,9 @@ klasse LongTest(unittest.TestCase):
                     )
                 except Exception as err:
                     raise AssertionError(
-                        "Code equivalent from docs is not equivalent fuer "
+                        "Code equivalent von docs is not equivalent fuer "
                         "conversion of {0} with byteorder byteorder={1} and "
-                        "signed={2}".format(test, byteorder, signed)) from err
+                        "signed={2}".format(test, byteorder, signed)) von err
 
         # Convert integers to signed big-endian byte arrays.
         tests1 = {
@@ -1414,7 +1414,7 @@ klasse LongTest(unittest.TestCase):
                 except Exception as err:
                     raise AssertionError(
                         "failed to convert {} with byteorder={!r} and signed={}"
-                        .format(test, byteorder, signed)) from err
+                        .format(test, byteorder, signed)) von err
 
                 # Test fuer all default arguments.
                 wenn byteorder == 'big' and not signed:
@@ -1425,7 +1425,7 @@ klasse LongTest(unittest.TestCase):
                     except Exception as err:
                         raise AssertionError(
                             "failed to convert {} with default arguments"
-                            .format(test)) from err
+                            .format(test)) von err
 
                 try:
                     self.assertEqual(
@@ -1434,9 +1434,9 @@ klasse LongTest(unittest.TestCase):
                     )
                 except Exception as err:
                     raise AssertionError(
-                        "Code equivalent from docs is not equivalent fuer "
+                        "Code equivalent von docs is not equivalent fuer "
                         "conversion of {0} with byteorder={1!r} and signed={2}"
-                        .format(test, byteorder, signed)) from err
+                        .format(test, byteorder, signed)) von err
 
         # Convert signed big-endian byte arrays to integers.
         tests1 = {

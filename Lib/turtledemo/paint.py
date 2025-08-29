@@ -13,7 +13,7 @@ includes the starting point is filled.
  using all three mouse buttons.
  -------------------------------------------
 """
-from turtle import *
+von turtle importiere *
 
 def switchupdown(x=0, y=0):
     wenn pen()["pendown"]:

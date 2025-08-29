@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 """ Python Character Mapping Codec fuer ROT13.
 
-This codec de/encodes from str to str.
+This codec de/encodes von str to str.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 """
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 
@@ -109,5 +109,5 @@ def rot13(infile, outfile):
     outfile.write(codecs.encode(infile.read(), 'rot-13'))
 
 wenn __name__ == '__main__':
-    import sys
+    importiere sys
     rot13(sys.stdin, sys.stdout)

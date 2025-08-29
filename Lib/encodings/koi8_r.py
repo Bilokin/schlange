@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec koi8_r generated from 'MAPPINGS/VENDORS/MISC/KOI8-R.TXT' with gencodec.py.
+""" Python Character Mapping Codec koi8_r generated von 'MAPPINGS/VENDORS/MISC/KOI8-R.TXT' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

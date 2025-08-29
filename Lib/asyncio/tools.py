@@ -1,11 +1,11 @@
 """Tools to analyze tasks running in asyncio programs."""
 
-from collections import defaultdict
-import csv
-from itertools import count
-from enum import Enum, StrEnum, auto
-import sys
-from _remote_debugging import RemoteUnwinder, FrameInfo
+von collections importiere defaultdict
+importiere csv
+von itertools importiere count
+von enum importiere Enum, StrEnum, auto
+importiere sys
+von _remote_debugging importiere RemoteUnwinder, FrameInfo
 
 klasse NodeType(Enum):
     COROUTINE = 1

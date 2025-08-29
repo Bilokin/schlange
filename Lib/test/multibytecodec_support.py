@@ -3,14 +3,14 @@
 #   Common Unittest Routines fuer CJK codecs
 #
 
-import codecs
-import os
-import re
-import sys
-import unittest
-from http.client import HTTPException
-from test import support
-from io import BytesIO
+importiere codecs
+importiere os
+importiere re
+importiere sys
+importiere unittest
+von http.client importiere HTTPException
+von test importiere support
+von io importiere BytesIO
 
 klasse TestBase:
     encoding        = ''   # codec name
@@ -84,7 +84,7 @@ klasse TestBase:
         wenn self.has_iso10646:
             self.skipTest('encoding contains full ISO 10646 map')
 
-        from html.entities import codepoint2name
+        von html.entities importiere codepoint2name
 
         def xmlcharnamereplace(exc):
             wenn not isinstance(exc, UnicodeEncodeError):

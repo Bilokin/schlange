@@ -1,17 +1,17 @@
-from __future__ import annotations
-from typing import TYPE_CHECKING, Final
+von __future__ importiere annotations
+von typing importiere TYPE_CHECKING, Final
 
-import libclinic
-from libclinic import fail, warn
-from libclinic.function import (
+importiere libclinic
+von libclinic importiere fail, warn
+von libclinic.function importiere (
     Function, Parameter,
     GETTER, SETTER, METHOD_NEW)
-from libclinic.converter import CConverter
-from libclinic.converters import (
+von libclinic.converter importiere CConverter
+von libclinic.converters importiere (
     defining_class_converter, object_converter, self_converter)
 wenn TYPE_CHECKING:
-    from libclinic.clanguage import CLanguage
-    from libclinic.codegen import CodeGen
+    von libclinic.clanguage importiere CLanguage
+    von libclinic.codegen importiere CodeGen
 
 
 def declare_parser(
@@ -783,7 +783,7 @@ klasse ParseArgsCodeGen:
         self.parser_body(*parser_code, declarations=self.declarations)
 
     def copy_includes(self) -> Nichts:
-        # Copy includes from parameters to Clinic after parse_arg()
+        # Copy includes von parameters to Clinic after parse_arg()
         # has been called above.
         converters = self.converters
         wenn self.varpos:

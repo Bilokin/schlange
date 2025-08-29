@@ -1,8 +1,8 @@
-import binascii
-import email.charset
-import email.message
-import email.errors
-from email import quoprimime
+importiere binascii
+importiere email.charset
+importiere email.message
+importiere email.errors
+von email importiere quoprimime
 
 klasse ContentManager:
 
@@ -108,7 +108,7 @@ def _prepare_set(msg, maintype, subtype, headers):
                 msg[header.name] = header
         except email.errors.HeaderDefect as exc:
             raise ValueError("Invalid header: {}".format(
-                                header.fold(policy=msg.policy))) from exc
+                                header.fold(policy=msg.policy))) von exc
 
 
 def _finalize_set(msg, disposition, filename, cid, params):

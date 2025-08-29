@@ -1,7 +1,7 @@
-import collections
-import marshal
+importiere collections
+importiere marshal
 
-from .collector import Collector
+von .collector importiere Collector
 
 
 klasse PstatsCollector(Collector):

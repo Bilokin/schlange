@@ -1,36 +1,36 @@
-import compileall
-import contextlib
-import filecmp
-import importlib.util
-import io
-import os
-import py_compile
-import shutil
-import struct
-import sys
-import tempfile
-import test.test_importlib.util
-import time
-import unittest
+importiere compileall
+importiere contextlib
+importiere filecmp
+importiere importlib.util
+importiere io
+importiere os
+importiere py_compile
+importiere shutil
+importiere struct
+importiere sys
+importiere tempfile
+importiere test.test_importlib.util
+importiere time
+importiere unittest
 
-from unittest import mock, skipUnless
+von unittest importiere mock, skipUnless
 try:
     # compileall relies on ProcessPoolExecutor wenn ProcessPoolExecutor exists
     # and it can function.
-    from multiprocessing.util import _cleanup_tests as multiprocessing_cleanup_tests
-    from concurrent.futures import ProcessPoolExecutor  # noqa: F401
-    from concurrent.futures.process import _check_system_limits
+    von multiprocessing.util importiere _cleanup_tests as multiprocessing_cleanup_tests
+    von concurrent.futures importiere ProcessPoolExecutor  # noqa: F401
+    von concurrent.futures.process importiere _check_system_limits
     _check_system_limits()
     _have_multiprocessing = Wahr
 except (NotImplementedError, ModuleNotFoundError):
     _have_multiprocessing = Falsch
 
-from test import support
-from test.support import os_helper
-from test.support import script_helper
-from test.test_py_compile import without_source_date_epoch
-from test.test_py_compile import SourceDateEpochTestMeta
-from test.support.os_helper import FakePath
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere script_helper
+von test.test_py_compile importiere without_source_date_epoch
+von test.test_py_compile importiere SourceDateEpochTestMeta
+von test.support.os_helper importiere FakePath
 
 
 def get_pyc(script, opt):
@@ -1115,7 +1115,7 @@ klasse HardlinkDedupTestsBase:
             self.assertFalsch(filecmp.cmp(pycs[1], pycs[2], shallow=Wahr))
 
     def test_import(self):
-        # Test that import updates a single pyc file when pyc files already
+        # Test that importiere updates a single pyc file when pyc files already
         # exists and the script content changed
         with self.temporary_directory():
             script = self.make_script(self.create_code(), name="module")

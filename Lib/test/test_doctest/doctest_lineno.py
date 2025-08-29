@@ -70,7 +70,7 @@ str_wrapper = object().__str__
 
 
 # https://github.com/python/cpython/issues/115392
-from test.test_doctest.decorator_mod import decorator
+von test.test_doctest.decorator_mod importiere decorator
 
 @decorator
 @decorator
@@ -79,7 +79,7 @@ def func_with_docstring_wrapped():
 
 
 # https://github.com/python/cpython/issues/136914
-import functools
+importiere functools
 
 
 @functools.cache

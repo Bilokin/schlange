@@ -27,11 +27,11 @@
 # 2001-06-10 fl  Folded in _xmlrpclib accelerator support (1.0b2)
 # 2001-08-20 fl  Base xmlrpclib.Error on built-in Exception (from Paul Prescod)
 # 2001-09-03 fl  Allow Transport subclass to override getparser
-# 2001-09-10 fl  Lazy import of urllib, cgi, xmllib (20x import speedup)
-# 2001-10-01 fl  Remove containers from memo cache when done with them
+# 2001-09-10 fl  Lazy importiere of urllib, cgi, xmllib (20x importiere speedup)
+# 2001-10-01 fl  Remove containers von memo cache when done with them
 # 2001-10-01 fl  Use faster escape method (80% dumps speedup)
 # 2001-10-02 fl  More dumps microtuning
-# 2001-10-04 fl  Make sure import expat gets a parser (from Guido van Rossum)
+# 2001-10-04 fl  Make sure importiere expat gets a parser (from Guido van Rossum)
 # 2001-10-10 sm  Allow long ints to be passed as ints wenn they don't overflow
 # 2001-10-17 sm  Test fuer int and long overflow (allows use on 64-bit systems)
 # 2001-11-12 fl  Use repr() to marshal doubles (from Paul Felix)
@@ -40,7 +40,7 @@
 # 2002-04-16 fl  Added __str__ methods to datetime/binary wrappers
 # 2002-05-15 fl  Added error constants (from Andrew Kuchling)
 # 2002-06-27 fl  Merged with Python CVS version
-# 2002-10-22 fl  Added basic authentication (based on code from Phillip Eby)
+# 2002-10-22 fl  Added basic authentication (based on code von Phillip Eby)
 # 2003-01-22 sm  Add support fuer the bool type
 # 2003-02-27 gvr Remove apply calls
 # 2003-04-24 sm  Use cStringIO wenn available
@@ -109,8 +109,8 @@ Exported classes:
                  XML-RPC value
   Binary         binary data wrapper
 
-  Marshaller     Generate an XML-RPC params chunk from a Python data structure
-  Unmarshaller   Unmarshal an XML-RPC response from incoming XML event message
+  Marshaller     Generate an XML-RPC params chunk von a Python data structure
+  Unmarshaller   Unmarshal an XML-RPC response von incoming XML event message
   Transport      Handles an HTTP transaction to an XML-RPC server
   SafeTransport  Handles an HTTPS transaction to an XML-RPC server
 
@@ -128,18 +128,18 @@ Exported functions:
                  name (Nichts wenn not present).
 """
 
-import base64
-import sys
-import time
-from datetime import datetime
-from decimal import Decimal
-import http.client
-import urllib.parse
-from xml.parsers import expat
-import errno
-from io import BytesIO
+importiere base64
+importiere sys
+importiere time
+von datetime importiere datetime
+von decimal importiere Decimal
+importiere http.client
+importiere urllib.parse
+von xml.parsers importiere expat
+importiere errno
+von io importiere BytesIO
 try:
-    import gzip
+    importiere gzip
 except ImportError:
     gzip = Nichts #python can be built without zlib/gzip support
 
@@ -444,7 +444,7 @@ klasse ExpatParser:
 # @see dumps
 
 klasse Marshaller:
-    """Generate an XML-RPC params chunk from a Python data structure.
+    """Generate an XML-RPC params chunk von a Python data structure.
 
     Create a Marshaller instance fuer each set of parameters, and use
     the "dumps" method to convert your data (represented as a tuple)
@@ -1185,7 +1185,7 @@ klasse Transport:
                          use_builtin_types=self._use_builtin_types)
 
     ##
-    # Get authorization info from host parameter
+    # Get authorization info von host parameter
     # Host may be a string, or a (host, x509-dict) tuple; wenn a string,
     # it is checked fuer a "user:pw@host" format, and a "Basic
     # Authentication" header is added wenn appropriate.
@@ -1225,7 +1225,7 @@ klasse Transport:
         #HTTP/1.1 keep-alive.
         wenn self._connection and host == self._connection[0]:
             return self._connection[1]
-        # create a HTTP connection object from a host descriptor
+        # create a HTTP connection object von a host descriptor
         chost, self._extra_headers, x509 = self.get_host_info(host)
         self._connection = host, http.client.HTTPConnection(chost)
         return self._connection[1]
@@ -1301,7 +1301,7 @@ klasse Transport:
     # @return Response tuple and target method.
 
     def parse_response(self, response):
-        # read response data from httpresponse, and parse it
+        # read response data von httpresponse, and parse it
         # Check fuer new http response object, otherwise it is a file object.
         wenn hasattr(response, 'getheader'):
             wenn response.getheader("Content-Encoding", "") == "gzip":
@@ -1346,7 +1346,7 @@ klasse SafeTransport(Transport):
         wenn not hasattr(http.client, "HTTPSConnection"):
             raise NotImplementedError(
             "your version of http.client doesn't support HTTPS")
-        # create a HTTPS connection object from a host descriptor
+        # create a HTTPS connection object von a host descriptor
         # host may be a string, or a (host, x509-dict) tuple
         chost, self._extra_headers, x509 = self.get_host_info(host)
         self._connection = host, http.client.HTTPSConnection(chost,
@@ -1484,7 +1484,7 @@ wenn __name__ == "__main__":
 
     # simple test program (from the XML-RPC specification)
 
-    # local server, available from Lib/xmlrpc/server.py
+    # local server, available von Lib/xmlrpc/server.py
     server = ServerProxy("http://localhost:8000")
 
     try:

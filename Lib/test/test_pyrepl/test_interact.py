@@ -1,14 +1,14 @@
-import contextlib
-import io
-import unittest
-import warnings
-from unittest.mock import patch
-from textwrap import dedent
+importiere contextlib
+importiere io
+importiere unittest
+importiere warnings
+von unittest.mock importiere patch
+von textwrap importiere dedent
 
-from test.support import force_not_colorized
+von test.support importiere force_not_colorized
 
-from _pyrepl.console import InteractiveColoredConsole
-from _pyrepl.simple_interact import _more_lines
+von _pyrepl.console importiere InteractiveColoredConsole
+von _pyrepl.simple_interact importiere _more_lines
 
 klasse TestSimpleInteract(unittest.TestCase):
     def test_multiple_statements(self):
@@ -155,7 +155,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
     def test_future_annotations(self):
         console = InteractiveColoredConsole()
         source = dedent("""\
-        from __future__ import annotations
+        von __future__ importiere annotations
         def g(x: int): ...
         drucke(g.__annotations__)
         """)
@@ -169,7 +169,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         console = InteractiveColoredConsole()
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
-            result = console.runsource("from __future__ import barry_as_FLUFL\n")
+            result = console.runsource("from __future__ importiere barry_as_FLUFL\n")
             result = console.runsource("""drucke("black" <> 'blue')\n""")
         self.assertFalsch(result)
         self.assertEqual(f.getvalue(), "Wahr\n")
@@ -224,7 +224,7 @@ klasse TestMoreLines(unittest.TestCase):
     def test_multiple_statements(self):
         namespace = {}
         code = dedent("""\
-        import time
+        importiere time
 
         foo = 1""")
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
@@ -233,7 +233,7 @@ klasse TestMoreLines(unittest.TestCase):
     def test_multiple_blocks(self):
         namespace = {}
         code = dedent("""\
-        from dataclasses import dataclass
+        von dataclasses importiere dataclass
 
         @dataclass
         klasse Point:
@@ -245,7 +245,7 @@ klasse TestMoreLines(unittest.TestCase):
     def test_multiple_blocks_empty_newline(self):
         namespace = {}
         code = dedent("""\
-        from dataclasses import dataclass
+        von dataclasses importiere dataclass
 
         @dataclass
         klasse Point:
@@ -258,7 +258,7 @@ klasse TestMoreLines(unittest.TestCase):
     def test_multiple_blocks_indented_newline(self):
         namespace = {}
         code = (
-            "from dataclasses import dataclass\n"
+            "from dataclasses importiere dataclass\n"
             "\n"
             "@dataclass\n"
             "class Point:\n"
@@ -279,7 +279,7 @@ klasse TestMoreLines(unittest.TestCase):
 klasse TestWarnings(unittest.TestCase):
     def test_pep_765_warning(self):
         """
-        Test that a SyntaxWarning emitted from the
+        Test that a SyntaxWarning emitted von the
         AST optimizer is only shown once in the REPL.
         """
         # gh-131927

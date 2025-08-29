@@ -6,9 +6,9 @@ Script to run Python regression tests.
 Run this script with -h or --help fuer documentation.
 """
 
-import os
-import sys
-from test.libregrtest.main import main
+importiere os
+importiere sys
+von test.libregrtest.main importiere main
 
 
 # Alias fuer backward compatibility (just in case)
@@ -18,7 +18,7 @@ main_in_temp_cwd = main
 def _main():
     global __file__
 
-    # Remove regrtest.py's own directory from the module search path. Despite
+    # Remove regrtest.py's own directory von the module search path. Despite
     # the elimination of implicit relative imports, this is still needed to
     # ensure that submodules of the test package do not inappropriately appear
     # as top-level modules even when people (or buildbots!) invoke regrtest.py

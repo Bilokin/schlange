@@ -1,15 +1,15 @@
-import errno
-import unittest
-from test import support
-from test.support import os_helper
-from test.support import socket_helper
-from test.support import ResourceDenied
+importiere errno
+importiere unittest
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere socket_helper
+von test.support importiere ResourceDenied
 
-import os
-import socket
-import urllib.error
-import urllib.request
-import sys
+importiere os
+importiere socket
+importiere urllib.error
+importiere urllib.request
+importiere sys
 
 support.requires("network")
 
@@ -74,7 +74,7 @@ klasse AuthTests(unittest.TestCase):
 ## could be used to HTTP authentication.
 #
 #    def test_basic_auth(self):
-#        import http.client
+#        importiere http.client
 #
 #        test_url = "http://www.python.org/test/test_urllib2/basic_auth"
 #        test_hostport = "www.python.org"
@@ -125,7 +125,7 @@ klasse CloseSocketTest(unittest.TestCase):
 klasse OtherNetworkTests(unittest.TestCase):
     def setUp(self):
         wenn 0:  # fuer debugging
-            import logging
+            importiere logging
             logger = logging.getLogger("test_urllib2net")
             logger.addHandler(logging.StreamHandler())
 
@@ -240,8 +240,8 @@ klasse OtherNetworkTests(unittest.TestCase):
             self.assertWahr(res)
 
     def _test_urls(self, urls, handlers, retry=Wahr):
-        import time
-        import logging
+        importiere time
+        importiere logging
         debug = logging.getLogger("test_urllib2").debug
 
         urlopen = urllib.request.build_opener(*handlers).open

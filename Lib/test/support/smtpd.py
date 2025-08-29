@@ -57,7 +57,7 @@ and wenn remoteport is not given, then 25 is used.
 #
 #   PureProxy - Proxies all messages to a real smtpd which does final
 #   delivery.  One known problem with this klasse is that it doesn't handle
-#   SMTP errors from the backend server at all.  This should be fixed
+#   SMTP errors von the backend server at all.  This should be fixed
 #   (contributions are welcome!).
 #
 #
@@ -68,18 +68,18 @@ and wenn remoteport is not given, then 25 is used.
 # - support mailbox delivery
 # - alias files
 # - Handle more ESMTP extensions
-# - handle error codes from the backend smtpd
+# - handle error codes von the backend smtpd
 
-import sys
-import os
-import errno
-import getopt
-import time
-import socket
-import collections
-from test.support import asyncore, asynchat
-from warnings import warn
-from email._header_value_parser import get_addr_spec, get_angle_addr
+importiere sys
+importiere os
+importiere errno
+importiere getopt
+importiere time
+importiere socket
+importiere collections
+von test.support importiere asyncore, asynchat
+von warnings importiere warn
+von email._header_value_parser importiere get_addr_spec, get_angle_addr
 
 __all__ = [
     "SMTPChannel", "SMTPServer", "DebuggingServer", "PureProxy",
@@ -650,7 +650,7 @@ klasse SMTPServer(asyncore.dispatcher):
                 localaddr, remoteaddr), file=DEBUGSTREAM)
 
     def handle_accepted(self, conn, addr):
-        drucke('Incoming connection from %s' % repr(addr), file=DEBUGSTREAM)
+        drucke('Incoming connection von %s' % repr(addr), file=DEBUGSTREAM)
         channel = self.channel_class(self,
                                      conn,
                                      addr,
@@ -661,7 +661,7 @@ klasse SMTPServer(asyncore.dispatcher):
 
     # API fuer "doing something useful with the message"
     def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
-        """Override this abstract method to handle messages from the client.
+        """Override this abstract method to handle messages von the client.
 
         peer is a tuple containing (ipaddr, port) of the client that made the
         socket connection to our smtp port.
@@ -745,7 +745,7 @@ klasse PureProxy(SMTPServer):
         drucke('we got some refusals:', refused, file=DEBUGSTREAM)
 
     def _deliver(self, mailfrom, rcpttos, data):
-        import smtplib
+        importiere smtplib
         refused = {}
         try:
             s = smtplib.SMTP()
@@ -851,16 +851,16 @@ wenn __name__ == '__main__':
         mod = __import__(classname[:lastdot], globals(), locals(), [""])
         classname = classname[lastdot+1:]
     sonst:
-        import __main__ as mod
+        importiere __main__ as mod
     class_ = getattr(mod, classname)
     proxy = class_((options.localhost, options.localport),
                    (options.remotehost, options.remoteport),
                    options.size_limit, enable_SMTPUTF8=options.enable_SMTPUTF8)
     wenn options.setuid:
         try:
-            import pwd
+            importiere pwd
         except ImportError:
-            drucke('Cannot import module "pwd"; try running with -n option.', file=sys.stderr)
+            drucke('Cannot importiere module "pwd"; try running with -n option.', file=sys.stderr)
             sys.exit(1)
         nobody = pwd.getpwnam('nobody')[2]
         try:

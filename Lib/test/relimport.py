@@ -1,1 +1,1 @@
-from .test_import import *
+von .test_import importiere *

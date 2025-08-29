@@ -6,7 +6,7 @@ always fail. We rely on string comparison of the base classes instead.
 TODO: Remove the above-described hack.
 """
 
-from typing import Any, Optional, Tuple
+von typing importiere Any, Optional, Tuple
 
 
 def ast_dump(

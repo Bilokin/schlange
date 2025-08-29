@@ -17,15 +17,15 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import io
-import os
-import sys
+importiere io
+importiere os
+importiere sys
 
-import ctypes
-import types
-from ctypes.wintypes import (
+importiere ctypes
+importiere types
+von ctypes.wintypes importiere (
     _COORD,
     WORD,
     SMALL_RECT,
@@ -36,17 +36,17 @@ from ctypes.wintypes import (
     WCHAR,
     SHORT,
 )
-from ctypes import Structure, POINTER, Union
-from .console import Event, Console
-from .trace import trace
-from .utils import wlen
-from .windows_eventqueue import EventQueue
+von ctypes importiere Structure, POINTER, Union
+von .console importiere Event, Console
+von .trace importiere trace
+von .utils importiere wlen
+von .windows_eventqueue importiere EventQueue
 
 try:
-    from ctypes import get_last_error, GetLastError, WinDLL, windll, WinError  # type: ignore[attr-defined]
+    von ctypes importiere get_last_error, GetLastError, WinDLL, windll, WinError  # type: ignore[attr-defined]
 except:
     # Keep MyPy happy off Windows
-    from ctypes import CDLL as WinDLL, cdll as windll
+    von ctypes importiere CDLL as WinDLL, cdll as windll
 
     def GetLastError() -> int:
         return 42
@@ -62,14 +62,14 @@ except:
 # declare nt optional to allow Nichts assignment on other platforms
 nt: types.ModuleType | Nichts
 try:
-    import nt
+    importiere nt
 except ImportError:
     nt = Nichts
 
 TYPE_CHECKING = Falsch
 
 wenn TYPE_CHECKING:
-    from typing import IO
+    von typing importiere IO
 
 # Virtual-Key Codes: https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 VK_MAP: dict[int, str] = {
@@ -119,7 +119,7 @@ CTRL_ACTIVE = 0x04 | 0x08
 WAIT_TIMEOUT = 0x102
 WAIT_FAILED = 0xFFFFFFFF
 
-# from winbase.h
+# von winbase.h
 INFINITE = 0xFFFFFFFF
 
 
@@ -242,7 +242,7 @@ klasse WindowsConsole(Console):
     @property
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
-        # with import logging from -X importtime=2
+        # with importiere logging von -X importtime=2
         wenn nt is not Nichts and nt._is_inputhook_installed():
             return nt._inputhook
 

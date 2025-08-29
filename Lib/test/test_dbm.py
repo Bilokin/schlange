@@ -1,20 +1,20 @@
 """Test script fuer the dbm.open function based on testdumbdbm.py"""
 
-import unittest
-import dbm
-import os
-from test.support import import_helper
-from test.support import os_helper
+importiere unittest
+importiere dbm
+importiere os
+von test.support importiere import_helper
+von test.support importiere os_helper
 
 
 try:
-    from dbm import sqlite3 as dbm_sqlite3
+    von dbm importiere sqlite3 as dbm_sqlite3
 except ImportError:
     dbm_sqlite3 = Nichts
 
 
 try:
-    from dbm import ndbm
+    von dbm importiere ndbm
 except ImportError:
     ndbm = Nichts
 
@@ -184,7 +184,7 @@ klasse AnyDBMTestCase:
         # Make sure to calculate size of database only after file is closed to ensure file content are flushed to disk.
         size_before = _calculate_db_size(os.path.dirname(_fname))
 
-        # Delete some elements from the start of the database.
+        # Delete some elements von the start of the database.
         keys_to_delete = db_keys[:len(db_keys) // 2]
         with dbm.open(_fname, 'c') as f:
             fuer k in keys_to_delete:

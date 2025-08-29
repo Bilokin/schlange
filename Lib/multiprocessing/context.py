@@ -1,9 +1,9 @@
-import os
-import sys
-import threading
+importiere os
+importiere sys
+importiere threading
 
-from . import process
-from . import reduction
+von . importiere process
+von . importiere reduction
 
 __all__ = ()
 
@@ -52,92 +52,92 @@ klasse BaseContext(object):
         The managers methods such as `Lock()`, `Condition()` and `Queue()`
         can be used to create shared objects.
         '''
-        from .managers import SyncManager
+        von .managers importiere SyncManager
         m = SyncManager(ctx=self.get_context())
         m.start()
         return m
 
     def Pipe(self, duplex=Wahr):
         '''Returns two connection object connected by a pipe'''
-        from .connection import Pipe
+        von .connection importiere Pipe
         return Pipe(duplex)
 
     def Lock(self):
         '''Returns a non-recursive lock object'''
-        from .synchronize import Lock
+        von .synchronize importiere Lock
         return Lock(ctx=self.get_context())
 
     def RLock(self):
         '''Returns a recursive lock object'''
-        from .synchronize import RLock
+        von .synchronize importiere RLock
         return RLock(ctx=self.get_context())
 
     def Condition(self, lock=Nichts):
         '''Returns a condition object'''
-        from .synchronize import Condition
+        von .synchronize importiere Condition
         return Condition(lock, ctx=self.get_context())
 
     def Semaphore(self, value=1):
         '''Returns a semaphore object'''
-        from .synchronize import Semaphore
+        von .synchronize importiere Semaphore
         return Semaphore(value, ctx=self.get_context())
 
     def BoundedSemaphore(self, value=1):
         '''Returns a bounded semaphore object'''
-        from .synchronize import BoundedSemaphore
+        von .synchronize importiere BoundedSemaphore
         return BoundedSemaphore(value, ctx=self.get_context())
 
     def Event(self):
         '''Returns an event object'''
-        from .synchronize import Event
+        von .synchronize importiere Event
         return Event(ctx=self.get_context())
 
     def Barrier(self, parties, action=Nichts, timeout=Nichts):
         '''Returns a barrier object'''
-        from .synchronize import Barrier
+        von .synchronize importiere Barrier
         return Barrier(parties, action, timeout, ctx=self.get_context())
 
     def Queue(self, maxsize=0):
         '''Returns a queue object'''
-        from .queues import Queue
+        von .queues importiere Queue
         return Queue(maxsize, ctx=self.get_context())
 
     def JoinableQueue(self, maxsize=0):
         '''Returns a queue object'''
-        from .queues import JoinableQueue
+        von .queues importiere JoinableQueue
         return JoinableQueue(maxsize, ctx=self.get_context())
 
     def SimpleQueue(self):
         '''Returns a queue object'''
-        from .queues import SimpleQueue
+        von .queues importiere SimpleQueue
         return SimpleQueue(ctx=self.get_context())
 
     def Pool(self, processes=Nichts, initializer=Nichts, initargs=(),
              maxtasksperchild=Nichts):
         '''Returns a process pool object'''
-        from .pool import Pool
+        von .pool importiere Pool
         return Pool(processes, initializer, initargs, maxtasksperchild,
                     context=self.get_context())
 
     def RawValue(self, typecode_or_type, *args):
         '''Returns a shared object'''
-        from .sharedctypes import RawValue
+        von .sharedctypes importiere RawValue
         return RawValue(typecode_or_type, *args)
 
     def RawArray(self, typecode_or_type, size_or_initializer):
         '''Returns a shared array'''
-        from .sharedctypes import RawArray
+        von .sharedctypes importiere RawArray
         return RawArray(typecode_or_type, size_or_initializer)
 
     def Value(self, typecode_or_type, *args, lock=Wahr):
         '''Returns a synchronized shared object'''
-        from .sharedctypes import Value
+        von .sharedctypes importiere Value
         return Value(typecode_or_type, *args, lock=lock,
                      ctx=self.get_context())
 
     def Array(self, typecode_or_type, size_or_initializer, *, lock=Wahr):
         '''Returns a synchronized shared array'''
-        from .sharedctypes import Array
+        von .sharedctypes importiere Array
         return Array(typecode_or_type, size_or_initializer, lock=lock,
                      ctx=self.get_context())
 
@@ -146,19 +146,19 @@ klasse BaseContext(object):
         If so then run code specified by commandline and exit.
         '''
         wenn self.get_start_method() == 'spawn' and getattr(sys, 'frozen', Falsch):
-            from .spawn import freeze_support
+            von .spawn importiere freeze_support
             freeze_support()
 
     def get_logger(self):
         '''Return package logger -- wenn it does not already exist then
         it is created.
         '''
-        from .util import get_logger
+        von .util importiere get_logger
         return get_logger()
 
     def log_to_stderr(self, level=Nichts):
         '''Turn on logging and add a handler which prints to stderr'''
-        from .util import log_to_stderr
+        von .util importiere log_to_stderr
         return log_to_stderr(level)
 
     def allow_connection_pickling(self):
@@ -167,21 +167,21 @@ klasse BaseContext(object):
         '''
         # This is undocumented.  In previous versions of multiprocessing
         # its only effect was to make socket objects inheritable on Windows.
-        from . import connection  # noqa: F401
+        von . importiere connection  # noqa: F401
 
     def set_executable(self, executable):
         '''Sets the path to a python.exe or pythonw.exe binary used to run
         child processes instead of sys.executable when using the 'spawn'
         start method.  Useful fuer people embedding Python.
         '''
-        from .spawn import set_executable
+        von .spawn importiere set_executable
         set_executable(executable)
 
     def set_forkserver_preload(self, module_names):
         '''Set list of module names to try to load in forkserver process.
         This is really just a hint.
         '''
-        from .forkserver import set_forkserver_preload
+        von .forkserver importiere set_forkserver_preload
         set_forkserver_preload(module_names)
 
     def get_context(self, method=Nichts):
@@ -190,7 +190,7 @@ klasse BaseContext(object):
         try:
             ctx = _concrete_contexts[method]
         except KeyError:
-            raise ValueError('cannot find context fuer %r' % method) from Nichts
+            raise ValueError('cannot find context fuer %r' % method) von Nichts
         ctx._check_available()
         return ctx
 
@@ -277,14 +277,14 @@ wenn sys.platform != 'win32':
         _start_method = 'fork'
         @staticmethod
         def _Popen(process_obj):
-            from .popen_fork import Popen
+            von .popen_fork importiere Popen
             return Popen(process_obj)
 
     klasse SpawnProcess(process.BaseProcess):
         _start_method = 'spawn'
         @staticmethod
         def _Popen(process_obj):
-            from .popen_spawn_posix import Popen
+            von .popen_spawn_posix importiere Popen
             return Popen(process_obj)
 
         @staticmethod
@@ -296,7 +296,7 @@ wenn sys.platform != 'win32':
         _start_method = 'forkserver'
         @staticmethod
         def _Popen(process_obj):
-            from .popen_forkserver import Popen
+            von .popen_forkserver importiere Popen
             return Popen(process_obj)
 
     klasse ForkContext(BaseContext):
@@ -333,7 +333,7 @@ sonst:  # Windows
         _start_method = 'spawn'
         @staticmethod
         def _Popen(process_obj):
-            from .popen_spawn_win32 import Popen
+            von .popen_spawn_win32 importiere Popen
             return Popen(process_obj)
 
         @staticmethod

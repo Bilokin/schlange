@@ -1,20 +1,20 @@
-import array
-import ctypes
-import gc
-import sys
-import unittest
-from ctypes import (CDLL, CFUNCTYPE, Structure,
+importiere array
+importiere ctypes
+importiere gc
+importiere sys
+importiere unittest
+von ctypes importiere (CDLL, CFUNCTYPE, Structure,
                     POINTER, pointer, _Pointer,
                     byref, sizeof,
                     c_void_p, c_char_p,
                     c_byte, c_ubyte, c_short, c_ushort, c_int, c_uint,
                     c_long, c_ulong, c_longlong, c_ulonglong,
                     c_float, c_double)
-from ctypes import _pointer_type_cache, _pointer_type_cache_fallback
-from test.support import import_helper
-from weakref import WeakSet
+von ctypes importiere _pointer_type_cache, _pointer_type_cache_fallback
+von test.support importiere import_helper
+von weakref importiere WeakSet
 _ctypes_test = import_helper.import_module("_ctypes_test")
-from ._support import (_CData, PyCPointerType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
+von ._support importiere (_CData, PyCPointerType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
                        Py_TPFLAGS_IMMUTABLETYPE)
 
 

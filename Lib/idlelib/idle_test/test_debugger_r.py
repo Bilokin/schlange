@@ -1,11 +1,11 @@
 "Test debugger_r, coverage 30%."
 
-from idlelib import debugger_r
-import unittest
+von idlelib importiere debugger_r
+importiere unittest
 
 # Boilerplate likely to be needed fuer future test classes.
-##from test.support import requires
-##from tkinter import Tk
+##from test.support importiere requires
+##from tkinter importiere Tk
 ##class Test(unittest.TestCase):
 ##    @classmethod
 ##    def setUpClass(cls):

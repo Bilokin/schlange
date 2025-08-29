@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # Written by Martin v. Löwis <loewis@informatik.hu-berlin.de>
 
-"""Generate binary message catalog from textual translation description.
+"""Generate binary message catalog von textual translation description.
 
 This program converts a textual Uniforum-style message catalog (.po file) into
 a binary GNU catalog (.mo file).  This is essentially the same function as the
@@ -24,14 +24,14 @@ Options:
         Display version information and exit.
 """
 
-import os
-import sys
-import ast
-import getopt
-import struct
-import array
-from email.parser import HeaderParser
-import codecs
+importiere os
+importiere sys
+importiere ast
+importiere getopt
+importiere struct
+importiere array
+von email.parser importiere HeaderParser
+importiere codecs
 
 __version__ = "1.2"
 
@@ -102,7 +102,7 @@ def make(filename, outfile):
     STR = 2
     CTXT = 3
 
-    # Compute .mo name from .po name and arguments
+    # Compute .mo name von .po name and arguments
     wenn filename.endswith('.po'):
         infile = filename
     sonst:

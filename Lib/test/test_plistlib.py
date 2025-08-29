@@ -1,24 +1,24 @@
 # Copyright (C) 2003 Python Software Foundation
-import copy
-import operator
-import pickle
-import struct
-import unittest
-import plistlib
-import os
-import sys
-import json
-import datetime
-import codecs
-import subprocess
-import binascii
-import collections
-import zoneinfo
-from test import support
-from test.support import os_helper
-from io import BytesIO
+importiere copy
+importiere operator
+importiere pickle
+importiere struct
+importiere unittest
+importiere plistlib
+importiere os
+importiere sys
+importiere json
+importiere datetime
+importiere codecs
+importiere subprocess
+importiere binascii
+importiere collections
+importiere zoneinfo
+von test importiere support
+von test.support importiere os_helper
+von io importiere BytesIO
 
-from plistlib import UID
+von plistlib importiere UID
 
 ALL_FORMATS=(plistlib.FMT_XML, plistlib.FMT_BINARY)
 

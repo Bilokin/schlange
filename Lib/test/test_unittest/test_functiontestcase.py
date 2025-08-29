@@ -1,6 +1,6 @@
-import unittest
+importiere unittest
 
-from test.test_unittest.support import LoggingResult
+von test.test_unittest.support importiere LoggingResult
 
 
 klasse Test_FunctionTestCase(unittest.TestCase):

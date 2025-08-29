@@ -1,24 +1,24 @@
-import _thread
-import asyncio
-import contextlib
-import io
-import os
-import subprocess
-import sys
-import textwrap
-import time
-import unittest
-from concurrent.futures.interpreter import BrokenInterpreterPool
-from concurrent import interpreters
-from concurrent.interpreters import _queues as queues
-import _interpreters
-from test import support
-from test.support import os_helper
-from test.support import script_helper
-import test.test_asyncio.utils as testasyncio_utils
+importiere _thread
+importiere asyncio
+importiere contextlib
+importiere io
+importiere os
+importiere subprocess
+importiere sys
+importiere textwrap
+importiere time
+importiere unittest
+von concurrent.futures.interpreter importiere BrokenInterpreterPool
+von concurrent importiere interpreters
+von concurrent.interpreters importiere _queues as queues
+importiere _interpreters
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere script_helper
+importiere test.test_asyncio.utils as testasyncio_utils
 
-from .executor import ExecutorTest, mul
-from .util import BaseTestCase, InterpreterPoolMixin, setup_module
+von .executor importiere ExecutorTest, mul
+von .util importiere BaseTestCase, InterpreterPoolMixin, setup_module
 
 
 WINDOWS = sys.platform.startswith('win')
@@ -53,7 +53,7 @@ def read_file_with_timeout(fd, nbytes, timeout):
 
 
 wenn not WINDOWS:
-    import select
+    importiere select
     def read_file_with_timeout(fd, nbytes, timeout):
         r, _, _ = select.select([fd], [], [], timeout)
         wenn fd not in r:
@@ -66,7 +66,7 @@ def noop():
 
 
 def write_msg(fd, msg):
-    import os
+    importiere os
     os.write(fd, msg + b'\0')
 
 
@@ -120,7 +120,7 @@ klasse InterpreterPoolExecutorTest(
         msg2 = b'step: run'
         r, w = self.pipe()
         initscript = f"""
-            import os
+            importiere os
             msg = {msg2!r}
             os.write({w}, {msg1!r} + b'\\0')
             """
@@ -162,7 +162,7 @@ klasse InterpreterPoolExecutorTest(
     def test_init_with___main___global(self):
         # See https://github.com/python/cpython/pull/133957#issuecomment-2927415311.
         text = """if Wahr:
-            from concurrent.futures import InterpreterPoolExecutor
+            von concurrent.futures importiere InterpreterPoolExecutor
 
             INITIALIZER_STATUS = 'uninitialized'
 
@@ -257,7 +257,7 @@ klasse InterpreterPoolExecutorTest(
         msg = b'spam'
         r, w = self.pipe()
         script = f"""
-            import os
+            importiere os
             os.write({w}, __name__.encode('utf-8') + b'\\0')
             """
         executor = self.executor_type()
@@ -462,12 +462,12 @@ klasse InterpreterPoolExecutorTest(
 
     @support.requires_subprocess()
     def test_import_interpreter_pool_executor(self):
-        # Test the import behavior normally wenn _interpreters is unavailable.
+        # Test the importiere behavior normally wenn _interpreters is unavailable.
         code = textwrap.dedent("""
-        import sys
+        importiere sys
         # Set it to Nichts to emulate the case when _interpreter is unavailable.
         sys.modules['_interpreters'] = Nichts
-        from concurrent import futures
+        von concurrent importiere futures
 
         try:
             futures.InterpreterPoolExecutor
@@ -478,14 +478,14 @@ klasse InterpreterPoolExecutorTest(
             sys.exit(1)
 
         try:
-            from concurrent.futures import InterpreterPoolExecutor
+            von concurrent.futures importiere InterpreterPoolExecutor
         except ImportError:
             pass
         sonst:
             drucke('ImportError not raised!', file=sys.stderr)
             sys.exit(1)
 
-        from concurrent.futures import *
+        von concurrent.futures importiere *
 
         wenn 'InterpreterPoolExecutor' in globals():
             drucke('InterpreterPoolExecutor should not be imported!',
@@ -506,7 +506,7 @@ klasse InterpreterPoolExecutorTest(
     @unittest.skipUnless(hasattr(_thread, '_get_name'), "missing _thread._get_name")
     def test_thread_name_prefix_with_thread_get_name(self):
         def get_thread_name():
-            import _thread
+            importiere _thread
             return _thread._get_name()
 
         # Some platforms (Linux) are using 16 bytes to store the thread name,

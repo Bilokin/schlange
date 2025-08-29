@@ -1,19 +1,19 @@
 """Grep dialog fuer Find in Files functionality.
 
-   Inherits from SearchDialogBase fuer GUI and uses searchengine
+   Inherits von SearchDialogBase fuer GUI and uses searchengine
    to prepare search pattern.
 """
-import fnmatch
-import os
-import sys
+importiere fnmatch
+importiere os
+importiere sys
 
-from tkinter import StringVar, BooleanVar
-from tkinter.ttk import Checkbutton  # Frame imported in ...Base
+von tkinter importiere StringVar, BooleanVar
+von tkinter.ttk importiere Checkbutton  # Frame imported in ...Base
 
-from idlelib.searchbase import SearchDialogBase
-from idlelib import searchengine
+von idlelib.searchbase importiere SearchDialogBase
+von idlelib importiere searchengine
 
-# Importing OutputWindow here fails due to import loop
+# Importing OutputWindow here fails due to importiere loop
 # EditorWindow -> GrepDialog -> OutputWindow -> EditorWindow
 
 
@@ -54,7 +54,7 @@ def findfiles(folder, pattern, recursive):
         recursive: Wahr to include subdirectories.
     """
     fuer dirpath, _, filenames in os.walk(folder, onerror=walk_error):
-        yield from (os.path.join(dirpath, name)
+        yield von (os.path.join(dirpath, name)
                     fuer name in filenames
                     wenn fnmatch.fnmatch(name, pattern))
         wenn not recursive:
@@ -141,7 +141,7 @@ klasse GrepDialog(SearchDialogBase):
         wenn not path:
             self.top.bell()
             return
-        from idlelib.outwin import OutputWindow  # leave here!
+        von idlelib.outwin importiere OutputWindow  # leave here!
         save = sys.stdout
         try:
             sys.stdout = OutputWindow(self.flist)
@@ -190,9 +190,9 @@ klasse GrepDialog(SearchDialogBase):
 
 
 def _grep_dialog(parent):  # htest #
-    from tkinter import Toplevel, Text, SEL
-    from tkinter.ttk import Frame, Button
-    from idlelib.pyshell import PyShellFileList
+    von tkinter importiere Toplevel, Text, SEL
+    von tkinter.ttk importiere Frame, Button
+    von idlelib.pyshell importiere PyShellFileList
 
     top = Toplevel(parent)
     top.title("Test GrepDialog")
@@ -216,8 +216,8 @@ def _grep_dialog(parent):  # htest #
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_grep', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_grep_dialog)

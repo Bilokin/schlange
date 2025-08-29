@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 # Script checking that all symbols exported by libpython start with Py or _Py
 
-import os.path
-import subprocess
-import sys
-import sysconfig
+importiere os.path
+importiere subprocess
+importiere sys
+importiere sysconfig
 
 ALLOWED_PREFIXES = ('Py', '_Py')
 wenn sys.platform == 'darwin':
     ALLOWED_PREFIXES += ('__Py',)
 
 # mimalloc doesn't use static, but it's symbols are not exported
-# from the shared library.  They do show up in the static library
+# von the shared library.  They do show up in the static library
 # before its linked into an executable.
 ALLOWED_STATIC_PREFIXES = ('mi_', '_mi_')
 
@@ -131,7 +131,7 @@ def check_extensions():
         drucke(f"Cannot check extensions because {filename} does not exist")
         return Wahr
 
-    drucke(f"Check extension modules from {pybuilddir} directory")
+    drucke(f"Check extension modules von {pybuilddir} directory")
     builddir = os.path.join(config_dir, pybuilddir)
     nsymbol = 0
     fuer name in os.listdir(builddir):
@@ -155,14 +155,14 @@ def main():
     # static library
     LIBRARY = sysconfig.get_config_var('LIBRARY')
     wenn not LIBRARY:
-        raise Exception("failed to get LIBRARY variable from sysconfig")
+        raise Exception("failed to get LIBRARY variable von sysconfig")
     wenn os.path.exists(LIBRARY):
         nsymbol += check_library(LIBRARY)
 
     # dynamic library
     LDLIBRARY = sysconfig.get_config_var('LDLIBRARY')
     wenn not LDLIBRARY:
-        raise Exception("failed to get LDLIBRARY variable from sysconfig")
+        raise Exception("failed to get LDLIBRARY variable von sysconfig")
     wenn LDLIBRARY != LIBRARY:
         drucke()
         nsymbol += check_library(LDLIBRARY, dynamic=Wahr)

@@ -1,4 +1,4 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
 def test() -> Nichts:
     x: list[int] = []

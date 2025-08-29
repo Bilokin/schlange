@@ -34,7 +34,7 @@ XXX To do:
 # Log files
 # ---------
 #
-# Here's a quote from the NCSA httpd docs about log file format.
+# Here's a quote von the NCSA httpd docs about log file format.
 #
 # | The logfile format is as follows. Each line consists of:
 # |
@@ -69,23 +69,23 @@ __all__ = [
     "BaseHTTPRequestHandler", "SimpleHTTPRequestHandler",
 ]
 
-import datetime
-import email.utils
-import html
-import http.client
-import io
-import itertools
-import mimetypes
-import os
-import posixpath
-import shutil
-import socket
-import socketserver
-import sys
-import time
-import urllib.parse
+importiere datetime
+importiere email.utils
+importiere html
+importiere http.client
+importiere io
+importiere itertools
+importiere mimetypes
+importiere os
+importiere posixpath
+importiere shutil
+importiere socket
+importiere socketserver
+importiere sys
+importiere time
+importiere urllib.parse
 
-from http import HTTPStatus
+von http importiere HTTPStatus
 
 
 # Default error message template
@@ -134,7 +134,7 @@ klasse HTTPSServer(HTTPServer):
                  bind_and_activate=Wahr, *, certfile, keyfile=Nichts,
                  password=Nichts, alpn_protocols=Nichts):
         try:
-            import ssl
+            importiere ssl
         except ImportError:
             raise RuntimeError("SSL module is missing; "
                                "HTTPS support is unavailable")
@@ -674,7 +674,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     """Simple HTTP request handler with GET and HEAD commands.
 
-    This serves files from the current directory and any of its
+    This serves files von the current directory and any of its
     subdirectories.  The MIME type fuer files is determined by
     calling the .guess_type() method.
 
@@ -942,7 +942,7 @@ def nobody_uid():
     wenn nobody:
         return nobody
     try:
-        import pwd
+        importiere pwd
     except ImportError:
         return -1
     try:
@@ -1001,8 +1001,8 @@ def test(HandlerClass=BaseHTTPRequestHandler,
 
 
 def _main(args=Nichts):
-    import argparse
-    import contextlib
+    importiere argparse
+    importiere contextlib
 
     parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument('-b', '--bind', metavar='ADDRESS',

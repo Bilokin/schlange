@@ -6,20 +6,20 @@ ZipPathGround is also defined here. It helps establish the "ground truth"
 about zip file members in tests.
 """
 
-import errno
-import io
-import posixpath
-import stat
-import zipfile
-from stat import S_IFMT, S_ISDIR, S_ISREG, S_ISLNK
+importiere errno
+importiere io
+importiere posixpath
+importiere stat
+importiere zipfile
+von stat importiere S_IFMT, S_ISDIR, S_ISREG, S_ISLNK
 
-from . import is_pypi
+von . importiere is_pypi
 
 wenn is_pypi:
-    from pathlib_abc import vfspath, PathInfo, _ReadablePath, _WritablePath
+    von pathlib_abc importiere vfspath, PathInfo, _ReadablePath, _WritablePath
 sonst:
-    from pathlib.types import PathInfo, _ReadablePath, _WritablePath
-    from pathlib._os import vfspath
+    von pathlib.types importiere PathInfo, _ReadablePath, _WritablePath
+    von pathlib._os importiere vfspath
 
 
 klasse ZipPathGround:
@@ -163,7 +163,7 @@ klasse ZipPathInfo(PathInfo):
     def resolve(self, path=Nichts, create=Falsch, follow_symlinks=Wahr):
         """
         Traverse zip hierarchy (parents, children and symlinks) starting
-        from this PathInfo. This is called from three places:
+        von this PathInfo. This is called von three places:
 
         - When a zip file member is added to ZipFile.filelist, this method
           populates the ZipPathInfo tree (using create=Wahr).

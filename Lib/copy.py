@@ -2,7 +2,7 @@
 
 Interface summary:
 
-        import copy
+        importiere copy
 
         x = copy.copy(y)                # make a shallow copy of y
         x = copy.deepcopy(y)            # make a deep copy of y
@@ -49,9 +49,9 @@ __getstate__() and __setstate__().  See the documentation fuer module
 "pickle" fuer information on these methods.
 """
 
-import types
-import weakref
-from copyreg import dispatch_table
+importiere types
+importiere weakref
+von copyreg importiere dispatch_table
 
 klasse Error(Exception):
     pass

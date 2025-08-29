@@ -1,14 +1,14 @@
 "Test undo, coverage 77%."
 # Only test UndoDelegator so far.
 
-from idlelib.undo import UndoDelegator
-import unittest
-from test.support import requires
+von idlelib.undo importiere UndoDelegator
+importiere unittest
+von test.support importiere requires
 requires('gui')
 
-from unittest.mock import Mock
-from tkinter import Text, Tk
-from idlelib.percolator import Percolator
+von unittest.mock importiere Mock
+von tkinter importiere Text, Tk
+von idlelib.percolator importiere Percolator
 
 
 klasse UndoDelegatorTest(unittest.TestCase):

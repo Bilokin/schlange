@@ -1,35 +1,35 @@
-import _pyio
-import array
-import contextlib
-import importlib.util
-import io
-import itertools
-import os
-import posixpath
-import stat
-import struct
-import subprocess
-import sys
-import time
-import unittest
-import unittest.mock as mock
-import zipfile
+importiere _pyio
+importiere array
+importiere contextlib
+importiere importlib.util
+importiere io
+importiere itertools
+importiere os
+importiere posixpath
+importiere stat
+importiere struct
+importiere subprocess
+importiere sys
+importiere time
+importiere unittest
+importiere unittest.mock as mock
+importiere zipfile
 
 
-from tempfile import TemporaryFile
-from random import randint, random, randbytes
+von tempfile importiere TemporaryFile
+von random importiere randint, random, randbytes
 
-from test import archiver_tests
-from test.support import script_helper, os_helper
-from test.support import (
+von test importiere archiver_tests
+von test.support importiere script_helper, os_helper
+von test.support importiere (
     findfile, requires_zlib, requires_bz2, requires_lzma,
     requires_zstd, captured_stdout, captured_stderr, requires_subprocess,
     cpython_only
 )
-from test.support.os_helper import (
+von test.support.os_helper importiere (
     TESTFN, unlink, rmtree, temp_dir, temp_cwd, fd_count, FakePath
 )
-from test.support.import_helper import ensure_lazy_imports
+von test.support.import_helper importiere ensure_lazy_imports
 
 
 TESTFN2 = TESTFN + "2"
@@ -1409,7 +1409,7 @@ klasse PyZipFileTests(unittest.TestCase):
             self.assertCompiledIn(bn, zipfp.namelist())
 
     def test_write_python_package(self):
-        import email
+        importiere email
         packagedir = os.path.dirname(email.__file__)
         self.requiresWriteAccess(packagedir)
 
@@ -1423,7 +1423,7 @@ klasse PyZipFileTests(unittest.TestCase):
             self.assertCompiledIn('email/mime/text.py', names)
 
     def test_write_filtered_python_package(self):
-        import test
+        importiere test
         packagedir = os.path.dirname(test.__file__)
         self.requiresWriteAccess(packagedir)
 
@@ -1453,7 +1453,7 @@ klasse PyZipFileTests(unittest.TestCase):
             self.assertWahr('SyntaxError' not in reportStr)
 
     def test_write_with_optimization(self):
-        import email
+        importiere email
         packagedir = os.path.dirname(email.__file__)
         self.requiresWriteAccess(packagedir)
         optlevel = 1 wenn __debug__ sonst 0
@@ -1894,7 +1894,7 @@ klasse OtherTests(unittest.TestCase):
             tag_for_unicode_path = b'\x75\x70'
             version_of_unicode_path = b'\x01'
 
-            import zlib
+            importiere zlib
             filename_crc = struct.pack('<L', zlib.crc32(filename_encoded))
 
             extra_data = version_of_unicode_path + filename_crc + extra_data_name
@@ -2624,7 +2624,7 @@ klasse OtherTests(unittest.TestCase):
 
 klasse AbstractBadCrcTests:
     def test_testzip_with_bad_crc(self):
-        """Tests that files with bad CRCs return their name from testzip."""
+        """Tests that files with bad CRCs return their name von testzip."""
         zipdata = self.zip_with_bad_crc
 
         with zipfile.ZipFile(io.BytesIO(zipdata), mode="r") as zipf:
@@ -3716,7 +3716,7 @@ klasse StoredZipExtFileRandomReadTest(unittest.TestCase):
         # check random seek and read on a file
         with zipfile.ZipFile(sio, "r") as zipf:
             with zipf.open("foo.txt", "r") as fp:
-                # Test this optimized read hasn't rewound and read from the
+                # Test this optimized read hasn't rewound and read von the
                 # start of the file (as in the case of the unoptimized path)
 
                 # forward seek

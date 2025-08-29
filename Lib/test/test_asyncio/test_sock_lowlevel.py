@@ -1,14 +1,14 @@
-import socket
-import asyncio
-import sys
-import unittest
+importiere socket
+importiere asyncio
+importiere sys
+importiere unittest
 
-from asyncio import proactor_events
-from itertools import cycle, islice
-from unittest.mock import Mock
-from test.test_asyncio import utils as test_utils
-from test import support
-from test.support import socket_helper
+von asyncio importiere proactor_events
+von itertools importiere cycle, islice
+von unittest.mock importiere Mock
+von test.test_asyncio importiere utils as test_utils
+von test importiere support
+von test.support importiere socket_helper
 
 wenn socket_helper.tcp_blackhole():
     raise unittest.SkipTest('Not relevant to ProactorEventLoop')
@@ -643,7 +643,7 @@ wenn sys.platform == 'win32':
                     recvfrom_into))
 
 sonst:
-    import selectors
+    importiere selectors
 
     wenn hasattr(selectors, 'KqueueSelector'):
         klasse KqueueEventLoopTests(BaseSockTestsMixin,

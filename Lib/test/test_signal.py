@@ -1,24 +1,24 @@
-import enum
-import errno
-import functools
-import inspect
-import os
-import random
-import signal
-import socket
-import statistics
-import subprocess
-import sys
-import threading
-import time
-import unittest
-from test import support
-from test.support import (
+importiere enum
+importiere errno
+importiere functools
+importiere inspect
+importiere os
+importiere random
+importiere signal
+importiere socket
+importiere statistics
+importiere subprocess
+importiere sys
+importiere threading
+importiere time
+importiere unittest
+von test importiere support
+von test.support importiere (
     force_not_colorized, is_apple, is_apple_mobile, os_helper, threading_helper
 )
-from test.support.script_helper import assert_python_ok, spawn_python
+von test.support.script_helper importiere assert_python_ok, spawn_python
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
@@ -316,10 +316,10 @@ klasse WakeupSignalTests(unittest.TestCase):
     def check_wakeup(self, test_body, *signals, ordered=Wahr):
         # use a subprocess to have only one thread
         code = """if 1:
-        import _testcapi
-        import os
-        import signal
-        import struct
+        importiere _testcapi
+        importiere os
+        importiere signal
+        importiere struct
 
         signals = {!r}
 
@@ -359,12 +359,12 @@ klasse WakeupSignalTests(unittest.TestCase):
         # pass silently.
         # Use a subprocess to have only one thread.
         code = """if 1:
-        import _testcapi
-        import errno
-        import os
-        import signal
-        import sys
-        from test.support import captured_stderr
+        importiere _testcapi
+        importiere errno
+        importiere os
+        importiere signal
+        importiere sys
+        von test.support importiere captured_stderr
 
         def handler(signum, frame):
             1/0
@@ -407,8 +407,8 @@ klasse WakeupSignalTests(unittest.TestCase):
 
     def test_wakeup_fd_early(self):
         self.check_wakeup("""def test():
-            import select
-            import time
+            importiere select
+            importiere time
 
             TIMEOUT_FULL = 10
             TIMEOUT_HALF = 5
@@ -441,8 +441,8 @@ klasse WakeupSignalTests(unittest.TestCase):
 
     def test_wakeup_fd_during(self):
         self.check_wakeup("""def test():
-            import select
-            import time
+            importiere select
+            importiere time
 
             TIMEOUT_FULL = 10
             TIMEOUT_HALF = 5
@@ -501,10 +501,10 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
     def test_socket(self):
         # use a subprocess to have only one thread
         code = """if 1:
-        import signal
-        import socket
-        import struct
-        import _testcapi
+        importiere signal
+        importiere socket
+        importiere struct
+        importiere _testcapi
 
         signum = signal.SIGINT
         signals = (signum,)
@@ -541,13 +541,13 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
         sonst:
             action = 'write'
         code = """if 1:
-        import errno
-        import signal
-        import socket
-        import sys
-        import time
-        import _testcapi
-        from test.support import captured_stderr
+        importiere errno
+        importiere signal
+        importiere socket
+        importiere sys
+        importiere time
+        importiere _testcapi
+        von test.support importiere captured_stderr
 
         signum = signal.SIGINT
 
@@ -584,13 +584,13 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
         sonst:
             action = 'write'
         code = """if 1:
-        import errno
-        import signal
-        import socket
-        import sys
-        import time
-        import _testcapi
-        from test.support import captured_stderr
+        importiere errno
+        importiere signal
+        importiere socket
+        importiere sys
+        importiere time
+        importiere _testcapi
+        von test.support importiere captured_stderr
 
         signum = signal.SIGINT
 
@@ -704,10 +704,10 @@ klasse SiginterruptTest(unittest.TestCase):
         # use a subprocess to have only one thread, to have a timeout on the
         # blocking read and to not touch signal handling in this process
         code = """if 1:
-            import errno
-            import os
-            import signal
-            import sys
+            importiere errno
+            importiere os
+            importiere signal
+            importiere sys
 
             interrupt = %r
             r, w = os.pipe()
@@ -728,7 +728,7 @@ klasse SiginterruptTest(unittest.TestCase):
                     # send a SIGALRM in a second (during the read)
                     signal.alarm(1)
                     try:
-                        # blocking call: read from a pipe without data
+                        # blocking call: read von a pipe without data
                         os.read(r, 1)
                     except ZeroDivisionError:
                         pass
@@ -893,8 +893,8 @@ klasse PendingSignalsTests(unittest.TestCase):
                          'need signal.sigpending()')
     def test_sigpending(self):
         code = """if 1:
-            import os
-            import signal
+            importiere os
+            importiere signal
 
             def handler(signum, frame):
                 1/0
@@ -923,9 +923,9 @@ klasse PendingSignalsTests(unittest.TestCase):
     @threading_helper.requires_working_threading()
     def test_pthread_kill(self):
         code = """if 1:
-            import signal
-            import threading
-            import sys
+            importiere signal
+            importiere threading
+            importiere sys
 
             signum = signal.SIGUSR1
 
@@ -952,9 +952,9 @@ klasse PendingSignalsTests(unittest.TestCase):
         blocked: number of the blocked signal
         """
         code = '''if 1:
-        import signal
-        import sys
-        from signal import Signals
+        importiere signal
+        importiere sys
+        von signal importiere Signals
 
         def handler(signum, frame):
             1/0
@@ -1030,7 +1030,7 @@ klasse PendingSignalsTests(unittest.TestCase):
         # check that polling with sigtimedwait works
         self.wait_helper(signal.SIGALRM, '''
         def test(signum):
-            import os
+            importiere os
             os.kill(os.getpid(), signum)
             info = signal.sigtimedwait([signum], 0)
             wenn info.si_signo != signum:
@@ -1059,12 +1059,12 @@ klasse PendingSignalsTests(unittest.TestCase):
                          'need signal.pthread_sigmask()')
     @threading_helper.requires_working_threading()
     def test_sigwait_thread(self):
-        # Check that calling sigwait() from a thread doesn't suspend the whole
+        # Check that calling sigwait() von a thread doesn't suspend the whole
         # process. A new interpreter is spawned to avoid problems when mixing
         # threads and fork(): only async-safe functions are allowed between
         # fork() and exec().
         assert_python_ok("-c", """if Wahr:
-            import os, threading, sys, time, signal
+            importiere os, threading, sys, time, signal
 
             # the default handler terminates the process
             signum = signal.SIGUSR1
@@ -1116,8 +1116,8 @@ klasse PendingSignalsTests(unittest.TestCase):
     @threading_helper.requires_working_threading()
     def test_pthread_sigmask(self):
         code = """if 1:
-        import signal
-        import os; import threading
+        importiere signal
+        importiere os; importiere threading
 
         def handler(signum, frame):
             1/0
@@ -1196,9 +1196,9 @@ klasse PendingSignalsTests(unittest.TestCase):
         # Test that a signal can be sent to the main thread with pthread_kill()
         # before any other thread has been created (see issue #12392).
         code = """if Wahr:
-            import threading
-            import signal
-            import sys
+            importiere threading
+            importiere signal
+            importiere sys
 
             def handler(signum, frame):
                 sys.exit(3)
@@ -1440,7 +1440,7 @@ klasse RaiseSignalTest(unittest.TestCase):
     def test__thread_interrupt_main(self):
         # See https://github.com/python/cpython/issues/102397
         code = """if 1:
-        import _thread
+        importiere _thread
         klasse Foo():
             def __del__(self):
                 _thread.interrupt_main()

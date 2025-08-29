@@ -1,8 +1,8 @@
-import decimal
-from io import StringIO
-from collections import OrderedDict
-from test.test_json import PyTest, CTest
-from test import support
+importiere decimal
+von io importiere StringIO
+von collections importiere OrderedDict
+von test.test_json importiere PyTest, CTest
+von test importiere support
 
 
 klasse TestDecode:

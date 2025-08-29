@@ -1,15 +1,15 @@
 """Line numbering implementation fuer IDLE as an extension.
 Includes BaseSideBar which can be extended fuer other sidebar based extensions
 """
-import contextlib
-import functools
-import itertools
+importiere contextlib
+importiere functools
+importiere itertools
 
-import tkinter as tk
-from tkinter.font import Font
-from idlelib.config import idleConf
-from idlelib.delegator import Delegator
-from idlelib import macosx
+importiere tkinter as tk
+von tkinter.font importiere Font
+von idlelib.config importiere idleConf
+von idlelib.delegator importiere Delegator
+von idlelib importiere macosx
 
 
 def get_lineno(text, index):
@@ -514,7 +514,7 @@ klasse ShellSidebar(BaseSideBar):
 
 
 def _sidebar_number_scrolling(parent):  # htest #
-    from idlelib.idle_test.test_sidebar import Dummy_editwin
+    von idlelib.idle_test.test_sidebar importiere Dummy_editwin
 
     top = tk.Toplevel(parent)
     text_frame = tk.Frame(top)
@@ -536,8 +536,8 @@ def _sidebar_number_scrolling(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_sidebar', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_sidebar_number_scrolling)

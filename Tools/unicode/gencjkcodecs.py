@@ -1,4 +1,4 @@
-import os, string
+importiere os, string
 
 codecs = {
     'cn': ('gb2312', 'gbk', 'gb18030', 'hz'),
@@ -19,8 +19,8 @@ TEMPLATE = string.Template("""\
 # Written by Hye-Shik Chang <perky@FreeBSD.org>
 #
 
-import _codecs_$owner, codecs
-import _multibytecodec as mbc
+importiere _codecs_$owner, codecs
+importiere _multibytecodec as mbc
 
 codec = _codecs_$owner.getcodec('$encoding')
 
@@ -65,5 +65,5 @@ def gencodecs(prefix):
                 f.write(code)
 
 wenn __name__ == '__main__':
-    import sys
+    importiere sys
     gencodecs(sys.argv[1])

@@ -1,9 +1,9 @@
 "Test calltip_w, coverage 18%."
 
-from idlelib import calltip_w
-import unittest
-from test.support import requires
-from tkinter import Tk, Text
+von idlelib importiere calltip_w
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk, Text
 
 
 klasse CallTipWindowTest(unittest.TestCase):

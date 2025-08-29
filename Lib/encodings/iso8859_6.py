@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec iso8859_6 generated from 'MAPPINGS/ISO8859/8859-6.TXT' with gencodec.py.
+""" Python Character Mapping Codec iso8859_6 generated von 'MAPPINGS/ISO8859/8859-6.TXT' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

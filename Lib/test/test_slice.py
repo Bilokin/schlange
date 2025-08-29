@@ -1,14 +1,14 @@
 # tests fuer slice objects; in particular the indices method.
 
-import itertools
-import operator
-import sys
-import unittest
-import weakref
-import copy
+importiere itertools
+importiere operator
+importiere sys
+importiere unittest
+importiere weakref
+importiere copy
 
-from pickle import loads, dumps
-from test import support
+von pickle importiere loads, dumps
+von test importiere support
 
 
 def evaluate_slice_index(arg):
@@ -242,7 +242,7 @@ klasse SliceTest(unittest.TestCase):
         self.assertEqual(tmp, [(slice(1, 2), 42)])
 
     def test_pickle(self):
-        import pickle
+        importiere pickle
 
         s = slice(10, 20, 3)
         fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):

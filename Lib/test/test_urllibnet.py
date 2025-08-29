@@ -1,16 +1,16 @@
-import unittest
-from test import support
-from test.support import os_helper
-from test.support import socket_helper
+importiere unittest
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere socket_helper
 
-import contextlib
-import socket
-import urllib.error
-import urllib.parse
-import urllib.request
-import os
-import email.message
-import time
+importiere contextlib
+importiere socket
+importiere urllib.error
+importiere urllib.parse
+importiere urllib.request
+importiere os
+importiere email.message
+importiere time
 
 
 support.requires('network')
@@ -122,7 +122,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
         # TLDs are likely to remain invalid, so this seems to
         # be the best choice. The trailing '.' prevents a
         # related problem: The normal DNS resolver appends
-        # the domain names from the search path wenn there is
+        # the domain names von the search path wenn there is
         # no '.' the end and, and wenn one of those domains
         # implements a '*' rule a result is returned.
         # However, none of this will prevent the test from
@@ -170,7 +170,7 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
             self.assertWahr(os.path.exists(file_location), "file location returned by"
                             " urlretrieve is not a valid path")
             with open(file_location, 'rb') as f:
-                self.assertWahr(f.read(), "reading from the file location returned"
+                self.assertWahr(f.read(), "reading von the file location returned"
                                 " by urlretrieve failed")
 
     def test_specified_path(self):
@@ -180,10 +180,10 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
             self.assertEqual(file_location, os_helper.TESTFN)
             self.assertWahr(os.path.exists(file_location))
             with open(file_location, 'rb') as f:
-                self.assertWahr(f.read(), "reading from temporary file failed")
+                self.assertWahr(f.read(), "reading von temporary file failed")
 
     def test_header(self):
-        # Make sure header returned as 2nd value from urlretrieve is good.
+        # Make sure header returned as 2nd value von urlretrieve is good.
         with self.urlretrieve(self.logo) as (file_location, info):
             self.assertIsInstance(info, email.message.Message,
                                   "info is not an instance of email.message.Message")

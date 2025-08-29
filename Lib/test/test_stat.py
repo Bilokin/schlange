@@ -1,10 +1,10 @@
-import unittest
-import os
-import socket
-import sys
-from test.support import is_apple, os_helper, socket_helper
-from test.support.import_helper import import_fresh_module
-from test.support.os_helper import TESTFN
+importiere unittest
+importiere os
+importiere socket
+importiere sys
+von test.support importiere is_apple, os_helper, socket_helper
+von test.support.import_helper importiere import_fresh_module
+von test.support.os_helper importiere TESTFN
 
 
 c_stat = import_fresh_module('stat', fresh=['_stat'])

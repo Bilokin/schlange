@@ -1,10 +1,10 @@
-import unittest
-import operator
-import sys
-import pickle
-import gc
+importiere unittest
+importiere operator
+importiere sys
+importiere pickle
+importiere gc
 
-from test import support
+von test importiere support
 
 klasse G:
     'Sequence using __getitem__'
@@ -156,7 +156,7 @@ klasse EnumerateTestCase(unittest.TestCase, PickleTest):
         gc.collect()
         # That GC collection probably untracked the recycled internal result
         # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
-        # when it's mutated and returned from __next__:
+        # when it's mutated and returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
 klasse MyEnum(enumerate):

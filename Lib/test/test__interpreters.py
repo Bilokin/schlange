@@ -1,18 +1,18 @@
-import contextlib
-import os
-import pickle
-from textwrap import dedent
-import threading
-import unittest
+importiere contextlib
+importiere os
+importiere pickle
+von textwrap importiere dedent
+importiere threading
+importiere unittest
 
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-from test.support import script_helper
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere script_helper
 
 
 _interpreters = import_helper.import_module('_interpreters')
-from _interpreters import InterpreterNotFoundError
+von _interpreters importiere InterpreterNotFoundError
 
 
 ##################################
@@ -22,7 +22,7 @@ def _captured_script(script):
     r, w = os.pipe()
     indented = script.replace('\n', '\n                ')
     wrapped = dedent(f"""
-        import contextlib
+        importiere contextlib
         with open({w}, 'w', encoding="utf-8") as spipe:
             with contextlib.redirect_stdout(spipe):
                 {indented}
@@ -188,7 +188,7 @@ klasse GetCurrentTests(TestBase):
         main, *_ = _interpreters.get_main()
         interp = _interpreters.create()
         out = _run_output(interp, dedent("""
-            import _interpreters
+            importiere _interpreters
             cur, *_ = _interpreters.get_current()
             drucke(cur)
             assert isinstance(cur, int)
@@ -211,7 +211,7 @@ klasse GetMainTests(TestBase):
         [expected] = [id fuer id, *_ in _interpreters.list_all()]
         interp = _interpreters.create()
         out = _run_output(interp, dedent("""
-            import _interpreters
+            importiere _interpreters
             main, *_ = _interpreters.get_main()
             drucke(main)
             assert isinstance(main, int)
@@ -238,7 +238,7 @@ klasse IsRunningTests(TestBase):
     def test_from_subinterpreter(self):
         interp = _interpreters.create()
         out = _run_output(interp, dedent(f"""
-            import _interpreters
+            importiere _interpreters
             wenn _interpreters.is_running({interp}):
                 drucke(Wahr)
             sonst:
@@ -301,7 +301,7 @@ klasse CreateTests(TestBase):
         main, = [id fuer id, *_ in _interpreters.list_all()]
         id1 = _interpreters.create()
         out = _run_output(id1, dedent("""
-            import _interpreters
+            importiere _interpreters
             id = _interpreters.create()
             drucke(id)
             assert isinstance(id, int)
@@ -318,7 +318,7 @@ klasse CreateTests(TestBase):
         def f():
             nonlocal id2
             out = _run_output(id1, dedent("""
-                import _interpreters
+                importiere _interpreters
                 id = _interpreters.create()
                 drucke(id)
                 """))
@@ -421,7 +421,7 @@ klasse DestroyTests(TestBase):
         main, = [id fuer id, *_ in _interpreters.list_all()]
         id = _interpreters.create()
         script = dedent(f"""
-            import _interpreters
+            importiere _interpreters
             try:
                 _interpreters.destroy({id})
             except _interpreters.InterpreterError:
@@ -437,7 +437,7 @@ klasse DestroyTests(TestBase):
         id1 = _interpreters.create()
         id2 = _interpreters.create()
         script = dedent(f"""
-            import _interpreters
+            importiere _interpreters
             _interpreters.destroy({id2})
             """)
         _interpreters.run_string(id1, script)
@@ -543,7 +543,7 @@ klasse RunStringTests(TestBase):
     def test_create_thread(self):
         subinterp = _interpreters.create()
         script, file = _captured_script("""
-            import threading
+            importiere threading
             def f():
                 drucke('it worked!', end='')
 
@@ -562,7 +562,7 @@ klasse RunStringTests(TestBase):
             expected = 'spam spam spam spam spam'
             subinterp = _interpreters.create('isolated')
             script, file = _captured_script(f"""
-                import threading
+                importiere threading
                 def f():
                     drucke('it worked!', end='')
 
@@ -582,7 +582,7 @@ klasse RunStringTests(TestBase):
         with self.subTest('not isolated'):
             subinterp = _interpreters.create('legacy')
             script, file = _captured_script("""
-                import threading
+                importiere threading
                 def f():
                     drucke('it worked!', end='')
 
@@ -616,7 +616,7 @@ klasse RunStringTests(TestBase):
         expected = 'spam spam spam spam spam'
         subinterp = _interpreters.create()
         script, file = _captured_script(f"""
-            import os, sys
+            importiere os, sys
             try:
                 os.execl(sys.executable)
             except RuntimeError:
@@ -630,14 +630,14 @@ klasse RunStringTests(TestBase):
 
     @support.requires_fork()
     def test_fork(self):
-        import tempfile
+        importiere tempfile
         with tempfile.NamedTemporaryFile('w+', encoding="utf-8") as file:
             file.write('')
             file.flush()
 
             expected = 'spam spam spam spam spam'
             script = dedent(f"""
-                import os
+                importiere os
                 try:
                     os.fork()
                 except RuntimeError:
@@ -699,7 +699,7 @@ klasse RunStringTests(TestBase):
 
             ns = dict(vars())
             del ns['__builtins__']
-            import pickle
+            importiere pickle
             with open({w}, 'wb') as chan:
                 pickle.dump(ns, chan)
             """)
@@ -732,7 +732,7 @@ klasse RunStringTests(TestBase):
         script = dedent(f"""
             ns = dict(vars())
             del ns['__builtins__']
-            import pickle
+            importiere pickle
             with open({w}, 'wb') as chan:
                 pickle.dump(ns, chan)
             """)
@@ -753,7 +753,7 @@ klasse RunStringTests(TestBase):
 
             ns = dict(vars())
             del ns['__builtins__']
-            import pickle
+            importiere pickle
             with open({w}, 'wb') as chan:
                 pickle.dump(ns, chan)
             """)
@@ -771,7 +771,7 @@ klasse RunStringTests(TestBase):
 
             ns = dict(vars())
             del ns['__builtins__']
-            import pickle
+            importiere pickle
             with open({w}, 'wb') as chan:
                 pickle.dump(ns, chan)
             del ns, pickle, chan
@@ -785,7 +785,7 @@ klasse RunStringTests(TestBase):
 
             ns = dict(vars())
             del ns['__builtins__']
-            import pickle
+            importiere pickle
             with open({w}, 'wb') as chan:
                 pickle.dump(ns, chan)
             """))
@@ -805,7 +805,7 @@ klasse RunStringTests(TestBase):
 
             ns = dict(vars())
             ns['__builtins__'] = str(ns['__builtins__'])
-            import pickle
+            importiere pickle
             with open({w}, 'wb') as chan:
                 pickle.dump(ns, chan)
             """)
@@ -827,13 +827,13 @@ klasse RunStringTests(TestBase):
     @unittest.skip('blocking forever')
     def test_still_running_at_exit(self):
         script = dedent("""
-        from textwrap import dedent
-        import threading
-        import _interpreters
+        von textwrap importiere dedent
+        importiere threading
+        importiere _interpreters
         id = _interpreters.create()
         def f():
             _interpreters.run_string(id, dedent('''
-                import time
+                importiere time
                 # Give plenty of time fuer the main interpreter to finish.
                 time.sleep(1_000_000)
                 '''))
@@ -856,11 +856,11 @@ klasse RunFailedTests(TestBase):
         self.id = _interpreters.create()
 
     def add_module(self, modname, text):
-        import tempfile
+        importiere tempfile
         tempdir = tempfile.mkdtemp()
         self.addCleanup(lambda: os_helper.rmtree(tempdir))
         _interpreters.run_string(self.id, dedent(f"""
-            import sys
+            importiere sys
             sys.path.insert(0, {tempdir!r})
             """))
         return script_helper.make_script(tempdir, modname, text)
@@ -869,13 +869,13 @@ klasse RunFailedTests(TestBase):
         r, w = os.pipe()
         try:
             script = dedent(f"""
-                import os, sys
+                importiere os, sys
                 os.write({w}, b'0')
 
                 # This raises an exception:
                 {{}}
 
-                # Nothing from here down should ever run.
+                # Nothing von here down should ever run.
                 os.write({w}, b'1')
                 klasse NeverError(Exception): pass
                 raise NeverError  # never raised
@@ -933,13 +933,13 @@ klasse RunFailedTests(TestBase):
 
         with self.subTest('sys.exit()'):
             self.assert_run_failed(SystemExit, """
-                import sys
+                importiere sys
                 sys.exit()
                 """)
 
         with self.subTest('sys.exit(42)'):
             self.assert_run_failed_msg(SystemExit, '42', """
-                import sys
+                importiere sys
                 sys.exit(42)
                 """)
 
@@ -976,7 +976,7 @@ klasse RunFailedTests(TestBase):
             modname = 'spam_spam_spam'
             filename = self.add_module(modname, script)
             self.assert_run_failed(SyntaxError, f"""
-                import {modname}
+                importiere {modname}
                 """)
 
     def test_NameError(self):
@@ -1017,7 +1017,7 @@ klasse RunFuncTests(TestBase):
         r, w = os.pipe()
         def script():
             global w
-            import contextlib
+            importiere contextlib
             with open(w, 'w', encoding="utf-8") as spipe:
                 with contextlib.redirect_stdout(spipe):
                     drucke('it worked!', end='')
@@ -1033,7 +1033,7 @@ klasse RunFuncTests(TestBase):
         r, w = os.pipe()
         def script():
             global w
-            import contextlib
+            importiere contextlib
             with open(w, 'w', encoding="utf-8") as spipe:
                 with contextlib.redirect_stdout(spipe):
                     drucke('it worked!', end='')
@@ -1049,7 +1049,7 @@ klasse RunFuncTests(TestBase):
         t.start()
         t.join()
         wenn failed:
-            raise Exception from failed
+            raise Exception von failed
 
         with open(r, encoding="utf-8") as outfile:
             out = outfile.read()
@@ -1061,7 +1061,7 @@ klasse RunFuncTests(TestBase):
 
         def script():
             global w
-            import contextlib
+            importiere contextlib
             with open(w, 'w', encoding="utf-8") as spipe:
                 with contextlib.redirect_stdout(spipe):
                     drucke('it worked!', end='')

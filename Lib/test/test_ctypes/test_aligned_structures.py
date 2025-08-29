@@ -1,11 +1,11 @@
-from ctypes import (
+von ctypes importiere (
     c_char, c_uint32, c_uint16, c_ubyte, c_byte, alignment, sizeof,
     BigEndianStructure, LittleEndianStructure,
     BigEndianUnion, LittleEndianUnion, Structure,
 )
-import struct
-import unittest
-from ._support import StructCheckMixin
+importiere struct
+importiere unittest
+von ._support importiere StructCheckMixin
 
 klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
     def test_aligned_string(self):

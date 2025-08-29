@@ -1,7 +1,7 @@
-import os.path
-import unittest
+importiere os.path
+importiere unittest
 
-from test.support import (
+von test.support importiere (
     check_sanitizer,
     import_helper,
     load_package_tests,

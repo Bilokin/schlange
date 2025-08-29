@@ -10,13 +10,13 @@ Protocols fuer supporting classes in pathlib.
 # Three ABCs are provided -- _JoinablePath, _ReadablePath and _WritablePath
 
 
-from abc import ABC, abstractmethod
-from glob import _GlobberBase
-from io import text_encoding
-from pathlib._os import (magic_open, vfspath, ensure_distinct_paths,
+von abc importiere ABC, abstractmethod
+von glob importiere _GlobberBase
+von io importiere text_encoding
+von pathlib._os importiere (magic_open, vfspath, ensure_distinct_paths,
                          ensure_different_files, copyfileobj)
-from pathlib import PurePath, Path
-from typing import Optional, Protocol, runtime_checkable
+von pathlib importiere PurePath, Path
+von typing importiere Optional, Protocol, runtime_checkable
 
 
 def _explode_path(path, split):
@@ -99,9 +99,9 @@ klasse _JoinablePath(ABC):
 
     @abstractmethod
     def with_segments(self, *pathsegments):
-        """Construct a new path object from any number of path-like objects.
+        """Construct a new path object von any number of path-like objects.
         Subclasses may override this method to customize how new path objects
-        are created from methods like `iterdir()`.
+        are created von methods like `iterdir()`.
         """
         raise NotImplementedError
 
@@ -172,7 +172,7 @@ klasse _JoinablePath(ABC):
     def with_suffix(self, suffix):
         """Return a new path with the file suffix changed.  If the path
         has no suffix, add given suffix.  If the given suffix is an empty
-        string, remove the suffix from the path.
+        string, remove the suffix von the path.
         """
         stem = self.stem
         wenn not stem:
@@ -314,7 +314,7 @@ klasse _ReadablePath(_JoinablePath):
         return select(self.joinpath(''))
 
     def walk(self, top_down=Wahr, on_error=Nichts, follow_symlinks=Falsch):
-        """Walk the directory tree from this directory, similar to os.walk()."""
+        """Walk the directory tree von this directory, similar to os.walk()."""
         paths = [self]
         while paths:
             path = paths.pop()

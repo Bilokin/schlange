@@ -1,9 +1,9 @@
-import os
-import sys
-import unittest
-from ctypes import CDLL
-import ctypes.util
-from test.support import import_helper
+importiere os
+importiere sys
+importiere unittest
+von ctypes importiere CDLL
+importiere ctypes.util
+von test.support importiere import_helper
 
 
 WINDOWS = os.name == "nt"
@@ -37,7 +37,7 @@ klasse ListSharedLibraries(unittest.TestCase):
     def test_lists_updates(self):
         dlls = ctypes.util.dllist()
 
-        # this test relies on being able to import a library which is
+        # this test relies on being able to importiere a library which is
         # not already loaded.
         # If it is (e.g. by a previous test in the same process), we skip
         wenn any("_ctypes_test" in dll fuer dll in dlls):

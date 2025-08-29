@@ -1,11 +1,11 @@
-import timeit
-import unittest
-import sys
-import io
-from textwrap import dedent
+importiere timeit
+importiere unittest
+importiere sys
+importiere io
+von textwrap importiere dedent
 
-from test.support import captured_stdout
-from test.support import captured_stderr
+von test.support importiere captured_stdout
+von test.support importiere captured_stderr
 
 # timeit's default number of iterations.
 DEFAULT_NUMBER = 1000000
@@ -73,10 +73,10 @@ klasse TestTimeit(unittest.TestCase):
         self.assertRaises(ValueError, timeit.Timer, stmt=Nichts)
         self.assertRaises(SyntaxError, timeit.Timer, stmt='return')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='yield')
-        self.assertRaises(SyntaxError, timeit.Timer, stmt='yield from ()')
+        self.assertRaises(SyntaxError, timeit.Timer, stmt='yield von ()')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='break')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='continue')
-        self.assertRaises(SyntaxError, timeit.Timer, stmt='from timeit import *')
+        self.assertRaises(SyntaxError, timeit.Timer, stmt='from timeit importiere *')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='  pass')
         self.assertRaises(SyntaxError, timeit.Timer,
                           setup='while Falsch:\n  pass', stmt='  break')
@@ -85,10 +85,10 @@ klasse TestTimeit(unittest.TestCase):
         self.assertRaises(ValueError, timeit.Timer, setup=Nichts)
         self.assertRaises(SyntaxError, timeit.Timer, setup='return')
         self.assertRaises(SyntaxError, timeit.Timer, setup='yield')
-        self.assertRaises(SyntaxError, timeit.Timer, setup='yield from ()')
+        self.assertRaises(SyntaxError, timeit.Timer, setup='yield von ()')
         self.assertRaises(SyntaxError, timeit.Timer, setup='break')
         self.assertRaises(SyntaxError, timeit.Timer, setup='continue')
-        self.assertRaises(SyntaxError, timeit.Timer, setup='from timeit import *')
+        self.assertRaises(SyntaxError, timeit.Timer, setup='from timeit importiere *')
         self.assertRaises(SyntaxError, timeit.Timer, setup='  pass')
 
     def test_timer_empty_stmt(self):

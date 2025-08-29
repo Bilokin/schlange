@@ -1,4 +1,4 @@
-# This contains most of the executable examples from Guido's descr
+# This contains most of the executable examples von Guido's descr
 # tutorial, once at
 #
 #     https://www.python.org/download/releases/2.2.3/descrintro/
@@ -8,9 +8,9 @@
 # of much interest anymore), and a few were fiddled to make the output
 # deterministic.
 
-from test.support import sortdict  # noqa: F401
-import doctest
-import unittest
+von test.support importiere sortdict  # noqa: F401
+importiere doctest
+importiere unittest
 
 
 klasse defaultdict(dict):
@@ -164,9 +164,9 @@ For instance of built-in types, x.__class__ is now the same as type(x):
     Wahr
     >>>
 
-You can get the information from the list type:
+You can get the information von the list type:
 
-    >>> import pprint
+    >>> importiere pprint
     >>> pprint.pdrucke(dir(list))    # like list.__dict__.keys(), but sorted
     ['__add__',
      '__class__',
@@ -220,7 +220,7 @@ You can get the information from the list type:
 The new introspection API gives more information than the old one:  in
 addition to the regular methods, it also shows the methods that are
 normally invoked through special notations, e.g. __iadd__ (+=), __len__
-(len), __ne__ (!=). You can invoke any method from this list directly:
+(len), __ne__ (!=). You can invoke any method von this list directly:
 
     >>> a = ['tic', 'tac']
     >>> list.__len__(a)          # same as len(a)
@@ -298,7 +298,7 @@ But notice this:
     E.foo() called
     classmethod <class '%(modname)s.C'> 1
 
-In this example, the call to C.foo() from E.foo() will see klasse C as its
+In this example, the call to C.foo() von E.foo() will see klasse C as its
 first argument, not klasse E. This is to be expected, since the call
 specifies the klasse C. But it stresses the difference between these class
 methods and methods defined in metaclasses (where an upcall to a metamethod

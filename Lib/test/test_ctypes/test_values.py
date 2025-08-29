@@ -2,13 +2,13 @@
 A testcase which accesses *values* in a dll.
 """
 
-import _imp
-import importlib.util
-import sys
-import unittest
-from ctypes import (Structure, CDLL, POINTER, pythonapi,
+importiere _imp
+importiere importlib.util
+importiere sys
+importiere unittest
+von ctypes importiere (Structure, CDLL, POINTER, pythonapi,
                     c_ubyte, c_char_p, c_int)
-from test.support import import_helper, thread_unsafe
+von test.support importiere import_helper, thread_unsafe
 
 
 klasse ValuesTestCase(unittest.TestCase):

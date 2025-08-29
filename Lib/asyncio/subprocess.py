@@ -1,12 +1,12 @@
 __all__ = 'create_subprocess_exec', 'create_subprocess_shell'
 
-import subprocess
+importiere subprocess
 
-from . import events
-from . import protocols
-from . import streams
-from . import tasks
-from .log import logger
+von . importiere events
+von . importiere protocols
+von . importiere streams
+von . importiere tasks
+von .log importiere logger
 
 
 PIPE = subprocess.PIPE

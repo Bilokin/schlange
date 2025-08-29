@@ -1,46 +1,46 @@
-import unittest
-from unittest import mock
-from test import support
-from test.support import (
+importiere unittest
+von unittest importiere mock
+von test importiere support
+von test.support importiere (
     cpython_only, is_apple, os_helper, refleak_helper, socket_helper, threading_helper
 )
-from test.support.import_helper import ensure_lazy_imports
-import _thread as thread
-import array
-import contextlib
-import errno
-import gc
-import io
-import itertools
-import math
-import os
-import pickle
-import platform
-import queue
-import random
-import re
-import select
-import signal
-import socket
-import string
-import struct
-import sys
-import tempfile
-import threading
-import time
-import traceback
-import warnings
-from weakref import proxy
+von test.support.import_helper importiere ensure_lazy_imports
+importiere _thread as thread
+importiere array
+importiere contextlib
+importiere errno
+importiere gc
+importiere io
+importiere itertools
+importiere math
+importiere os
+importiere pickle
+importiere platform
+importiere queue
+importiere random
+importiere re
+importiere select
+importiere signal
+importiere socket
+importiere string
+importiere struct
+importiere sys
+importiere tempfile
+importiere threading
+importiere time
+importiere traceback
+importiere warnings
+von weakref importiere proxy
 try:
-    import multiprocessing
+    importiere multiprocessing
 except ImportError:
     multiprocessing = Falsch
 try:
-    import fcntl
+    importiere fcntl
 except ImportError:
     fcntl = Nichts
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
@@ -55,7 +55,7 @@ AIX = platform.system() == "AIX"
 WSL = "microsoft-standard-WSL" in platform.release()
 
 try:
-    import _socket
+    importiere _socket
 except ImportError:
     _socket = Nichts
 
@@ -363,8 +363,8 @@ klasse ThreadableTest:
     """Threadable Test class
 
     The ThreadableTest klasse makes it easy to create a threaded
-    client/server pair from an existing unit test. To create a
-    new threaded klasse from an existing unit test, use multiple
+    client/server pair von an existing unit test. To create a
+    new threaded klasse von an existing unit test, use multiple
     inheritance:
 
         klasse NewClass (OldClass, ThreadableTest):
@@ -917,7 +917,7 @@ klasse GeneralModuleTests(unittest.TestCase):
             _socket.socket.foo = 1
 
     def test_SocketType_is_socketobject(self):
-        import _socket
+        importiere _socket
         self.assertWahr(socket.SocketType is _socket.socket)
         s = socket.socket()
         self.assertIsInstance(s, socket.SocketType)
@@ -1337,7 +1337,7 @@ klasse GeneralModuleTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(socket, 'inet_pton'),
                          'test needs socket.inet_pton()')
     def testIPv4toString(self):
-        from socket import inet_aton as f, inet_pton, AF_INET
+        von socket importiere inet_aton as f, inet_pton, AF_INET
         g = lambda a: inet_pton(AF_INET, a)
 
         assertInvalid = lambda func,a: self.assertRaises(
@@ -1371,11 +1371,11 @@ klasse GeneralModuleTests(unittest.TestCase):
                          'test needs socket.inet_pton()')
     def testIPv6toString(self):
         try:
-            from socket import inet_pton, AF_INET6, has_ipv6
+            von socket importiere inet_pton, AF_INET6, has_ipv6
             wenn not has_ipv6:
                 self.skipTest('IPv6 not available')
         except ImportError:
-            self.skipTest('could not import needed symbols from socket')
+            self.skipTest('could not importiere needed symbols von socket')
 
         wenn sys.platform == "win32":
             try:
@@ -1434,7 +1434,7 @@ klasse GeneralModuleTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(socket, 'inet_ntop'),
                          'test needs socket.inet_ntop()')
     def testStringToIPv4(self):
-        from socket import inet_ntoa as f, inet_ntop, AF_INET
+        von socket importiere inet_ntoa as f, inet_ntop, AF_INET
         g = lambda a: inet_ntop(AF_INET, a)
         assertInvalid = lambda func,a: self.assertRaises(
             (OSError, ValueError), func, a
@@ -1461,11 +1461,11 @@ klasse GeneralModuleTests(unittest.TestCase):
                          'test needs socket.inet_ntop()')
     def testStringToIPv6(self):
         try:
-            from socket import inet_ntop, AF_INET6, has_ipv6
+            von socket importiere inet_ntop, AF_INET6, has_ipv6
             wenn not has_ipv6:
                 self.skipTest('IPv6 not available')
         except ImportError:
-            self.skipTest('could not import needed symbols from socket')
+            self.skipTest('could not importiere needed symbols von socket')
 
         wenn sys.platform == "win32":
             try:
@@ -1740,14 +1740,14 @@ klasse GeneralModuleTests(unittest.TestCase):
         # POSIX getaddrinfo() never specify the valid range fuer "service"
         # decimal port number values. For IPv4 and IPv6 they are technically
         # unsigned 16-bit values, but the API is protocol agnostic. Which values
-        # trigger an error from the C library function varies by platform as
+        # trigger an error von the C library function varies by platform as
         # they do not all perform validation.
 
         # The key here is that we don't want to produce OverflowError as Python
         # prior to 3.12 did fuer ints outside of a [LONG_MIN, LONG_MAX] range.
         # Leave the error up to the underlying string based platform C API.
 
-        from _testcapi import ULONG_MAX, LONG_MAX, LONG_MIN
+        von _testcapi importiere ULONG_MAX, LONG_MAX, LONG_MIN
         try:
             socket.getaddrinfo(Nichts, ULONG_MAX + 1, type=socket.SOCK_STREAM)
         except OverflowError:
@@ -1930,7 +1930,7 @@ klasse GeneralModuleTests(unittest.TestCase):
     @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def test_listen_backlog_overflow(self):
         # Issue 15989
-        import _testcapi
+        importiere _testcapi
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as srv:
             srv.bind((HOST, 0))
             self.assertRaises(OverflowError, srv.listen, _testcapi.INT_MAX + 1)
@@ -2169,7 +2169,7 @@ klasse GeneralModuleTests(unittest.TestCase):
             self.assertEqual(cm.exception.errno, errno.ENOTSOCK)
 
     def test_addressfamily_enum(self):
-        import _socket, enum
+        importiere _socket, enum
         CheckedAddressFamily = enum._old_convert_(
                 enum.IntEnum, 'AddressFamily', 'socket',
                 lambda C: C.isupper() and C.startswith('AF_'),
@@ -2178,7 +2178,7 @@ klasse GeneralModuleTests(unittest.TestCase):
         enum._test_simple_enum(CheckedAddressFamily, socket.AddressFamily)
 
     def test_socketkind_enum(self):
-        import _socket, enum
+        importiere _socket, enum
         CheckedSocketKind = enum._old_convert_(
                 enum.IntEnum, 'SocketKind', 'socket',
                 lambda C: C.isupper() and C.startswith('SOCK_'),
@@ -2187,7 +2187,7 @@ klasse GeneralModuleTests(unittest.TestCase):
         enum._test_simple_enum(CheckedSocketKind, socket.SocketKind)
 
     def test_msgflag_enum(self):
-        import _socket, enum
+        importiere _socket, enum
         CheckedMsgFlag = enum._old_convert_(
                 enum.IntFlag, 'MsgFlag', 'socket',
                 lambda C: C.isupper() and C.startswith('MSG_'),
@@ -2196,7 +2196,7 @@ klasse GeneralModuleTests(unittest.TestCase):
         enum._test_simple_enum(CheckedMsgFlag, socket.MsgFlag)
 
     def test_addressinfo_enum(self):
-        import _socket, enum
+        importiere _socket, enum
         CheckedAddressInfo = enum._old_convert_(
                 enum.IntFlag, 'AddressInfo', 'socket',
                 lambda C: C.isupper() and C.startswith('AI_'),
@@ -3081,7 +3081,7 @@ klasse BasicTCPTest(SocketConnectedTest):
     @support.cpython_only
     @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def _testShutdown_overflow(self):
-        import _testcapi
+        importiere _testcapi
         self.serv_conn.send(MSG)
         # Issue 15989
         self.assertRaises(OverflowError, self.serv_conn.shutdown,
@@ -3175,7 +3175,7 @@ klasse BasicUDPLITETest(ThreadedUDPLITESocketTest):
 # using recvmsg_into().
 #
 # The generic test classes such as SendmsgTests and
-# RecvmsgGenericTests inherit from SendrecvmsgBase and expect to be
+# RecvmsgGenericTests inherit von SendrecvmsgBase and expect to be
 # supplied with sockets cli_sock and serv_sock representing the
 # client's and the server's end of the connection respectively, and
 # attributes cli_addr and serv_addr holding their (numeric where
@@ -3404,7 +3404,7 @@ klasse SendmsgTests(SendrecvmsgServerTimeoutBase):
         self.assertEqual(self.sendmsgToServer([MSG]), len(MSG))
 
     def testSendmsgDataGenerator(self):
-        # Send from buffer obtained from a generator (not a sequence).
+        # Send von buffer obtained von a generator (not a sequence).
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
     def _testSendmsgDataGenerator(self):
@@ -3412,7 +3412,7 @@ klasse SendmsgTests(SendrecvmsgServerTimeoutBase):
                          len(MSG))
 
     def testSendmsgAncillaryGenerator(self):
-        # Gather (empty) ancillary data from a generator.
+        # Gather (empty) ancillary data von a generator.
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
     def _testSendmsgAncillaryGenerator(self):
@@ -3420,7 +3420,7 @@ klasse SendmsgTests(SendrecvmsgServerTimeoutBase):
                          len(MSG))
 
     def testSendmsgArray(self):
-        # Send data from an array instead of the usual bytes object.
+        # Send data von an array instead of the usual bytes object.
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
     def _testSendmsgArray(self):
@@ -3428,7 +3428,7 @@ klasse SendmsgTests(SendrecvmsgServerTimeoutBase):
                          len(MSG))
 
     def testSendmsgGather(self):
-        # Send message data from more than one buffer (gather write).
+        # Send message data von more than one buffer (gather write).
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
     def _testSendmsgGather(self):
@@ -3838,7 +3838,7 @@ klasse RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
         self.sendToServer(MSG)
 
     def testRecvmsgIntoGenerator(self):
-        # Receive into buffer obtained from a generator (not a sequence).
+        # Receive into buffer obtained von a generator (not a sequence).
         buf = bytearray(len(MSG))
         nbytes, ancdata, flags, addr = self.serv_sock.recvmsg_into(
             (o fuer o in [buf]))
@@ -3890,7 +3890,7 @@ klasse CmsgMacroTests(unittest.TestCase):
 
     # Match the definition in socketmodule.c
     try:
-        import _testcapi
+        importiere _testcapi
     except ImportError:
         socklen_t_limit = 0x7fffffff
     sonst:
@@ -3974,7 +3974,7 @@ klasse SCMRightsTest(SendrecvmsgServerTimeoutBase):
 
     def closeRecvmsgFDs(self, recvmsg_result):
         # Close all file descriptors specified in the ancillary data
-        # of the given return value from recvmsg() or recvmsg_into().
+        # of the given return value von recvmsg() or recvmsg_into().
         fuer cmsg_level, cmsg_type, cmsg_data in recvmsg_result[1]:
             wenn (cmsg_level == socket.SOL_SOCKET and
                     cmsg_type == socket.SCM_RIGHTS):
@@ -4022,7 +4022,7 @@ klasse SCMRightsTest(SendrecvmsgServerTimeoutBase):
         self.checkFDs(fds)
 
     def testFDPassSimple(self):
-        # Pass a single FD (array read from bytes object).
+        # Pass a single FD (array read von bytes object).
         self.checkRecvmsgFDs(1, self.doRecvmsg(self.serv_sock,
                                                len(MSG), 10240))
 
@@ -5349,7 +5349,7 @@ klasse NonBlockingTCPTests(ThreadedTCPSocketTest):
     @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def testSetBlocking_overflow(self):
         # Issue 15989
-        import _testcapi
+        importiere _testcapi
         wenn _testcapi.UINT_MAX >= _testcapi.ULONG_MAX:
             self.skipTest('needs UINT_MAX < ULONG_MAX')
 
@@ -5497,8 +5497,8 @@ klasse FileObjectClassTestCase(SocketConnectedTest):
     """Unit tests fuer the object returned by socket.makefile()
 
     self.read_file is the io object returned by makefile() on
-    the client connection.  You can read from this file to
-    get output from the server.
+    the client connection.  You can read von this file to
+    get output von the server.
 
     self.write_file is the io object returned by makefile() on the
     server connection.  You can write to this file to send output
@@ -5560,7 +5560,7 @@ klasse FileObjectClassTestCase(SocketConnectedTest):
         # Second read is disallowed
         with self.assertRaises(OSError) as ctx:
             self.read_file.read(1)
-        self.assertIn("cannot read from timed out object", str(ctx.exception))
+        self.assertIn("cannot read von timed out object", str(ctx.exception))
 
     def _testReadAfterTimeout(self):
         self.write_file.write(self.write_msg[0:3])
@@ -5658,13 +5658,13 @@ klasse FileObjectClassTestCase(SocketConnectedTest):
 
 klasse UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
 
-    """Repeat the tests from FileObjectClassTestCase with bufsize==0.
+    """Repeat the tests von FileObjectClassTestCase with bufsize==0.
 
     In this case (and in this case only), it should be possible to
-    create a file object, read a line from it, create another file
-    object, read another line from it, without loss of data in the
+    create a file object, read a line von it, create another file
+    object, read another line von it, without loss of data in the
     first file object's buffer.  Note that http.client relies on this
-    when reading multiple requests from the same socket."""
+    when reading multiple requests von the same socket."""
 
     bufsize = 0 # Use unbuffered mode
 
@@ -6563,7 +6563,7 @@ klasse NonblockConstantTest(unittest.TestCase):
                 self.assertFalsch(s.getblocking())
             sonst:
                 # If timeout > 0, the socket will be in a "blocking" mode
-                # from the standpoint of the Python API.  For Python socket
+                # von the standpoint of the Python API.  For Python socket
                 # object, "blocking" means that operations like 'sock.recv()'
                 # will block.  Internally, file descriptors for
                 # "blocking" Python sockets *with timeouts* are in a
@@ -6618,7 +6618,7 @@ klasse TestSocketSharing(SocketTCPTest):
     # won't be able to bootstrap it.
     @classmethod
     def remoteProcessServer(cls, q):
-        # Recreate socket from shared data
+        # Recreate socket von shared data
         sdata = q.get()
         message = q.get()
 
@@ -6632,7 +6632,7 @@ klasse TestSocketSharing(SocketTCPTest):
 
     def testShare(self):
         # Transfer the listening server socket to another process
-        # and service it from there.
+        # and service it von there.
 
         # Create process:
         q = multiprocessing.Queue()
@@ -6682,7 +6682,7 @@ klasse TestSocketSharing(SocketTCPTest):
         # internally windows will have picked the correct value.
         # Python introspection on the socket however will still return
         # 0.  For the shared socket, the python value is recreated
-        # from the actual value, so it may not compare correctly.
+        # von the actual value, so it may not compare correctly.
         wenn org.proto != 0:
             self.assertEqual(org.proto, other.proto)
 

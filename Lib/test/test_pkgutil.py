@@ -1,20 +1,20 @@
-from pathlib import Path
-from test.support.import_helper import unload
-from test.support.warnings_helper import check_warnings
-import unittest
-import sys
-import importlib
-from importlib.util import spec_from_file_location
-import pkgutil
-import os
-import os.path
-import tempfile
-import shutil
-import zipfile
+von pathlib importiere Path
+von test.support.import_helper importiere unload
+von test.support.warnings_helper importiere check_warnings
+importiere unittest
+importiere sys
+importiere importlib
+von importlib.util importiere spec_from_file_location
+importiere pkgutil
+importiere os
+importiere os.path
+importiere tempfile
+importiere shutil
+importiere zipfile
 
-from test.support.import_helper import DirsOnSysPath
-from test.support.os_helper import FakePath
-from test.test_importlib.util import uncache
+von test.support.import_helper importiere DirsOnSysPath
+von test.support.os_helper importiere FakePath
+von test.test_importlib.util importiere uncache
 
 # Note: pkgutil.walk_packages is currently tested in test_runpy. This is
 # a hack to get a major issue resolved fuer 3.3b2. Longer term, it should
@@ -232,8 +232,8 @@ klasse PkgutilTests(unittest.TestCase):
             list(pkgutil.walk_packages(bytes_input))
 
     def test_name_resolution(self):
-        import logging
-        import logging.handlers
+        importiere logging
+        importiere logging.handlers
 
         success_cases = (
             ('os', os),
@@ -301,7 +301,7 @@ klasse PkgutilTests(unittest.TestCase):
             with open(f, 'w') as f:
                 f.write('')
                 f.flush()
-            # now import the package we just created; clearing the caches is
+            # now importiere the package we just created; clearing the caches is
             # needed, otherwise the newly created package isn't found
             importlib.invalidate_caches()
             mod = importlib.import_module(uw)
@@ -323,7 +323,7 @@ klasse PkgutilTests(unittest.TestCase):
                     pkgutil.resolve_name(s)
 
     def test_name_resolution_import_rebinding(self):
-        # The same data is also used fuer testing import in test_import and
+        # The same data is also used fuer testing importiere in test_import and
         # mock.patch in test_unittest.
         path = os.path.join(os.path.dirname(__file__), 'test_import', 'data')
         with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
@@ -391,7 +391,7 @@ klasse PkgutilPEP302Tests(unittest.TestCase):
         # Ensure that get_data works without reloading - the "loads" module
         # variable in the example loader should count how many times a reload
         # occurs.
-        import foo
+        importiere foo
         self.assertEqual(foo.loads, 1)
         self.assertEqual(pkgutil.get_data('foo', 'dummy'), "Hello, world!")
         self.assertEqual(foo.loads, 1)
@@ -408,7 +408,7 @@ klasse ExtendPathTests(unittest.TestCase):
         pkgdir = os.path.join(dirname, pkgname)
         os.mkdir(pkgdir)
         with open(os.path.join(pkgdir, '__init__.py'), 'w') as fl:
-            fl.write('from pkgutil import extend_path\n__path__ = extend_path(__path__, __name__)\n')
+            fl.write('from pkgutil importiere extend_path\n__path__ = extend_path(__path__, __name__)\n')
 
         return dirname
 
@@ -423,8 +423,8 @@ klasse ExtendPathTests(unittest.TestCase):
         dirname_1 = self.create_init(pkgname)
         self.create_submodule(dirname_0, pkgname, 'bar', 0)
         self.create_submodule(dirname_1, pkgname, 'baz', 1)
-        import foo.bar
-        import foo.baz
+        importiere foo.bar
+        importiere foo.baz
         # Ensure we read the expected values
         self.assertEqual(foo.bar.value, 0)
         self.assertEqual(foo.baz.value, 1)
@@ -502,8 +502,8 @@ klasse ExtendPathTests(unittest.TestCase):
         # Turn this into a PEP 420 namespace package
         os.unlink(os.path.join(dirname_0, pkgname, '__init__.py'))
         self.create_submodule(dirname_1, pkgname, 'baz', 1)
-        import foo.bar
-        import foo.baz
+        importiere foo.bar
+        importiere foo.baz
         # Ensure we read the expected values
         self.assertEqual(foo.bar.value, 0)
         self.assertEqual(foo.baz.value, 1)
@@ -590,20 +590,20 @@ klasse NestedNamespacePackageTest(unittest.TestCase):
         self.create_module('b.pkg.subpkg.d', 'd = 2')
         sys.path.insert(0, os.path.join(self.basedir, 'a'))
         sys.path.insert(0, os.path.join(self.basedir, 'b'))
-        import pkg
+        importiere pkg
         self.addCleanup(unload, 'pkg')
         self.assertEqual(len(pkg.__path__), 2)
-        import pkg.subpkg
+        importiere pkg.subpkg
         self.addCleanup(unload, 'pkg.subpkg')
         self.assertEqual(len(pkg.subpkg.__path__), 2)
-        from pkg.subpkg.c import c
-        from pkg.subpkg.d import d
+        von pkg.subpkg.c importiere c
+        von pkg.subpkg.d importiere d
         self.assertEqual(c, 1)
         self.assertEqual(d, 2)
 
 
 klasse ImportlibMigrationTests(unittest.TestCase):
-    # With full PEP 302 support in the standard import machinery, the
+    # With full PEP 302 support in the standard importiere machinery, the
     # PEP 302 emulation in this module is in the process of being
     # deprecated in favour of importlib proper
 
@@ -627,8 +627,8 @@ klasse ImportlibMigrationTests(unittest.TestCase):
 
 def tearDownModule():
     # this is necessary wenn test is run repeated (like when finding leaks)
-    import zipimport
-    import importlib
+    importiere zipimport
+    importiere importlib
     zipimport._zip_directory_cache.clear()
     importlib.invalidate_caches()
 

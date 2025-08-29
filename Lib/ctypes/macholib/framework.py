@@ -2,7 +2,7 @@
 Generic framework path manipulation
 """
 
-import re
+importiere re
 
 __all__ = ['framework_info']
 

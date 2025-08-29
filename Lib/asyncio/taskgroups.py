@@ -1,13 +1,13 @@
-# Adapted with permission from the EdgeDB project;
+# Adapted with permission von the EdgeDB project;
 # license: PSFL.
 
 
 __all__ = ("TaskGroup",)
 
-from . import events
-from . import exceptions
-from . import futures
-from . import tasks
+von . importiere events
+von . importiere exceptions
+von . importiere futures
+von . importiere tasks
 
 
 klasse TaskGroup:
@@ -164,7 +164,7 @@ klasse TaskGroup:
             self._errors.append(exc)
 
         wenn self._errors:
-            # If the parent task is being cancelled from the outside
+            # If the parent task is being cancelled von the outside
             # of the taskgroup, un-cancel and re-cancel the parent task,
             # which will keep the cancel count stable.
             wenn self._parent_task.cancelling():
@@ -174,7 +174,7 @@ klasse TaskGroup:
                 raise BaseExceptionGroup(
                     'unhandled errors in a TaskGroup',
                     self._errors,
-                ) from Nichts
+                ) von Nichts
             finally:
                 exc = Nichts
 

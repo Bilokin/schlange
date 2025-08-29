@@ -1,11 +1,11 @@
-import os.path
+importiere os.path
 
-from c_common import fsutil
-import c_common.tables as _tables
-import c_parser.info as _info
-import c_parser.match as _match
-import c_parser.datafiles as _parser
-from . import analyze as _analyze
+von c_common importiere fsutil
+importiere c_common.tables as _tables
+importiere c_parser.info as _info
+importiere c_parser.match as _match
+importiere c_parser.datafiles as _parser
+von . importiere analyze as _analyze
 
 
 #############################

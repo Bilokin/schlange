@@ -1,12 +1,12 @@
 """
 Tests PyConfig_Get() and PyConfig_Set() C API (PEP 741).
 """
-import os
-import sys
-import types
-import unittest
-from test import support
-from test.support import import_helper
+importiere os
+importiere sys
+importiere types
+importiere unittest
+von test importiere support
+von test.support importiere import_helper
 
 _testcapi = import_helper.import_module('_testcapi')
 

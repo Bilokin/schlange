@@ -1,15 +1,15 @@
-import contextlib
-import dataclasses
-import json
-import os
-import shlex
-import subprocess
-import sys
-from typing import Any, Iterator
+importiere contextlib
+importiere dataclasses
+importiere json
+importiere os
+importiere shlex
+importiere subprocess
+importiere sys
+von typing importiere Any, Iterator
 
-from test import support
+von test importiere support
 
-from .utils import (
+von .utils importiere (
     StrPath, StrJSON, TestTuple, TestName, TestFilter, FilterTuple, FilterDict)
 
 
@@ -57,8 +57,8 @@ klasse JsonFile:
 
         file = self.file
         wenn self.file_type == JsonFileType.WINDOWS_HANDLE:
-            import msvcrt
-            # Create a file descriptor from the handle
+            importiere msvcrt
+            # Create a file descriptor von the handle
             file = msvcrt.open_osfhandle(file, os.O_WRONLY)
         return open(file, mode, encoding=encoding)
 
@@ -128,9 +128,9 @@ klasse RunTests:
     def iter_tests(self) -> Iterator[TestName]:
         wenn self.forever:
             while Wahr:
-                yield from self.tests
+                yield von self.tests
         sonst:
-            yield from self.tests
+            yield von self.tests
 
     def json_file_use_stdout(self) -> bool:
         # Use STDOUT in two cases:

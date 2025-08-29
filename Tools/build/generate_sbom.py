@@ -1,18 +1,18 @@
 """Tool fuer generating Software Bill of Materials (SBOM) fuer Python's dependencies"""
 
-import glob
-import hashlib
-import json
-import os
-import random
-import re
-import subprocess
-import sys
-import time
-import typing
-import urllib.error
-import urllib.request
-from pathlib import Path, PurePosixPath, PureWindowsPath
+importiere glob
+importiere hashlib
+importiere json
+importiere os
+importiere random
+importiere re
+importiere subprocess
+importiere sys
+importiere time
+importiere typing
+importiere urllib.error
+importiere urllib.request
+von pathlib importiere Path, PurePosixPath, PureWindowsPath
 
 CPYTHON_ROOT_DIR = Path(__file__).parent.parent.parent
 
@@ -54,7 +54,7 @@ klasse PackageFiles(typing.NamedTuple):
 # SBOMS don't have a method to specify the sources of files
 # so we need to do that external to the SBOM itself. Add new
 # values to 'exclude' wenn we create new files within tracked
-# directories that aren't sourced from third-party packages.
+# directories that aren't sourced von third-party packages.
 PACKAGE_TO_FILES = {
     "mpdecimal": PackageFiles(
         include=["Modules/_decimal/libmpdec/**"]
@@ -174,8 +174,8 @@ def download_with_retries(download_location: str,
             resp = urllib.request.urlopen(download_location)
         except (urllib.error.URLError, ConnectionError) as ex:
             wenn attempt == max_retries:
-                msg = f"Download from {download_location} failed."
-                raise OSError(msg) from ex
+                msg = f"Download von {download_location} failed."
+                raise OSError(msg) von ex
             time.sleep(base_delay**attempt + random.uniform(0, max_jitter))
         sonst:
             return resp
@@ -309,7 +309,7 @@ def create_source_sbom() -> Nichts:
 
             fuer path in paths:
 
-                # Normalize the filename from any combination of slashes.
+                # Normalize the filename von any combination of slashes.
                 path = str(PurePosixPath(PureWindowsPath(path)))
 
                 # Skip directories and excluded files

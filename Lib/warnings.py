@@ -1,4 +1,4 @@
-import sys
+importiere sys
 
 __all__ = [
     "warn",
@@ -12,7 +12,7 @@ __all__ = [
     "deprecated",
 ]
 
-from _py_warnings import (
+von _py_warnings importiere (
     WarningMessage,
     _DEPRECATED_MSG,
     _OptionError,
@@ -62,7 +62,7 @@ from _py_warnings import (
 try:
     # Try to use the C extension, this will replace some parts of the
     # _py_warnings implementation imported above.
-    from _warnings import (
+    von _warnings importiere (
         _acquire_lock,
         _defaultaction as defaultaction,
         _filters_mutated_lock_held,

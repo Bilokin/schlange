@@ -6,18 +6,18 @@ This avoids wholesale rebuilds when a code (re)generation phase does not
 actually change the in-tree generated code.
 """
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import contextlib
-import os
-import os.path
-import sys
+importiere contextlib
+importiere os
+importiere os.path
+importiere sys
 
 TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
-    import typing
-    from collections.abc import Iterator
-    from io import TextIOWrapper
+    importiere typing
+    von collections.abc importiere Iterator
+    von io importiere TextIOWrapper
 
     _Outcome: typing.TypeAlias = typing.Literal['created', 'updated', 'same']
 
@@ -88,7 +88,7 @@ def update_file_with_tmpfile(
 
 
 wenn __name__ == '__main__':
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--create', action='store_true')
     parser.add_argument('--exitcode', action='store_true')

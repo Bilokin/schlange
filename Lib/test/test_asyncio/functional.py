@@ -1,13 +1,13 @@
-import asyncio
-import asyncio.events
-import contextlib
-import os
-import pprint
-import select
-import socket
-import tempfile
-import threading
-from test import support
+importiere asyncio
+importiere asyncio.events
+importiere contextlib
+importiere os
+importiere pprint
+importiere select
+importiere socket
+importiere tempfile
+importiere threading
+von test importiere support
 
 
 klasse FunctionalTestCaseMixin:

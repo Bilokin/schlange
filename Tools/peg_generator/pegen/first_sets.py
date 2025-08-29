@@ -1,12 +1,12 @@
 #!/usr/bin/env python3.8
 
-import argparse
-import pprint
-import sys
-from typing import Dict, Set
+importiere argparse
+importiere pprint
+importiere sys
+von typing importiere Dict, Set
 
-from pegen.build import build_parser
-from pegen.grammar import (
+von pegen.build importiere build_parser
+von pegen.grammar importiere (
     Alt,
     Cut,
     Gather,
@@ -23,7 +23,7 @@ from pegen.grammar import (
     Rule,
     StringLeaf,
 )
-from pegen.parser_generator import compute_nullables
+von pegen.parser_generator importiere compute_nullables
 
 argparser = argparse.ArgumentParser(
     prog="calculate_first_sets",

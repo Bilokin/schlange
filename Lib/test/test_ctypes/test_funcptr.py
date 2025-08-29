@@ -1,10 +1,10 @@
-import ctypes
-import unittest
-from ctypes import (CDLL, Structure, CFUNCTYPE, sizeof, _CFuncPtr,
+importiere ctypes
+importiere unittest
+von ctypes importiere (CDLL, Structure, CFUNCTYPE, sizeof, _CFuncPtr,
                     c_void_p, c_char_p, c_char, c_int, c_uint, c_long)
-from test.support import import_helper
+von test.support importiere import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
-from ._support import (_CData, PyCFuncPtrType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
+von ._support importiere (_CData, PyCFuncPtrType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
                        Py_TPFLAGS_IMMUTABLETYPE, StructCheckMixin)
 
 

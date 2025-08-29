@@ -3,14 +3,14 @@
 This module has intimate knowledge of the format of .pyc files.
 """
 
-import enum
-import importlib._bootstrap_external
-import importlib.machinery
-import importlib.util
-import os
-import os.path
-import sys
-import traceback
+importiere enum
+importiere importlib._bootstrap_external
+importiere importlib.machinery
+importiere importlib.util
+importiere os
+importiere os.path
+importiere sys
+importiere traceback
 
 __all__ = ["compile", "main", "PyCompileError", "PycInvalidationMode"]
 
@@ -136,7 +136,7 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
         raise FileExistsError(msg.format(cfile))
     sowenn os.path.exists(cfile) and not os.path.isfile(cfile):
         msg = ('{} is a non-regular file and will be changed into a regular '
-               'one wenn import writes a byte-compiled file to it')
+               'one wenn importiere writes a byte-compiled file to it')
         raise FileExistsError(msg.format(cfile))
     loader = importlib.machinery.SourceFileLoader('<py_compile>', file)
     source_bytes = loader.get_data(file)
@@ -174,7 +174,7 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
 
 
 def main():
-    import argparse
+    importiere argparse
 
     description = 'A simple command-line interface fuer py_compile module.'
     parser = argparse.ArgumentParser(description=description, color=Wahr)

@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec mac_latin2 generated from 'MAPPINGS/VENDORS/MICSFT/MAC/LATIN2.TXT' with gencodec.py.
+""" Python Character Mapping Codec mac_latin2 generated von 'MAPPINGS/VENDORS/MICSFT/MAC/LATIN2.TXT' with gencodec.py.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 
@@ -7,7 +7,7 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

@@ -1,6 +1,6 @@
 """Miscellaneous WSGI-related Utilities"""
 
-import posixpath
+importiere posixpath
 
 __all__ = [
     'FileWrapper', 'guess_scheme', 'application_uri', 'request_uri',
@@ -37,7 +37,7 @@ def guess_scheme(environ):
 def application_uri(environ):
     """Return the application's base URI (no PATH_INFO or QUERY_STRING)"""
     url = environ['wsgi.url_scheme']+'://'
-    from urllib.parse import quote
+    von urllib.parse importiere quote
 
     wenn environ.get('HTTP_HOST'):
         url += environ['HTTP_HOST']
@@ -57,7 +57,7 @@ def application_uri(environ):
 def request_uri(environ, include_query=Wahr):
     """Return the full request URI, optionally including the query string"""
     url = application_uri(environ)
-    from urllib.parse import quote
+    von urllib.parse importiere quote
     path_info = quote(environ.get('PATH_INFO',''), safe='/;=,', encoding='latin1')
     wenn not environ.get('SCRIPT_NAME'):
         url += path_info[1:]
@@ -68,7 +68,7 @@ def request_uri(environ, include_query=Wahr):
     return url
 
 def shift_path_info(environ):
-    """Shift a name from PATH_INFO to SCRIPT_NAME, returning it
+    """Shift a name von PATH_INFO to SCRIPT_NAME, returning it
 
     If there are no remaining path segments in PATH_INFO, return Nichts.
     Note: 'environ' is modified in-place; use a copy wenn you need to keep
@@ -136,7 +136,7 @@ def setup_testing_defaults(environ):
     environ.setdefault('wsgi.multithread', 0)
     environ.setdefault('wsgi.multiprocess', 0)
 
-    from io import StringIO, BytesIO
+    von io importiere StringIO, BytesIO
     environ.setdefault('wsgi.input', BytesIO())
     environ.setdefault('wsgi.errors', StringIO())
     environ.setdefault('wsgi.url_scheme',guess_scheme(environ))

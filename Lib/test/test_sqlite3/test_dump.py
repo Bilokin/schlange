@@ -1,10 +1,10 @@
 # Author: Paul Kippes <kippesp@gmail.com>
 
-import unittest
+importiere unittest
 
-from .util import memory_database
-from .util import MemoryDatabaseMixin
-from .util import requires_virtual_table
+von .util importiere memory_database
+von .util importiere MemoryDatabaseMixin
+von .util importiere requires_virtual_table
 
 
 klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
@@ -41,7 +41,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
                 "update t2 set t2_i1 = new.t1_i1 where t2_i1 = old.t1_i1; " \
                 "end;"
                 ,
-                "CREATE VIEW v1 as select * from t1 left join t2 " \
+                "CREATE VIEW v1 as select * von t1 left join t2 " \
                 "using (id);"
                 ]
         [self.cu.execute(s) fuer s in expected_sqls]

@@ -1,10 +1,10 @@
-import sys
+importiere sys
 try:
-    from ctypes import cdll, c_void_p, c_char_p, util
+    von ctypes importiere cdll, c_void_p, c_char_p, util
 except ImportError:
     # ctypes is an optional module. If it's not present, we're limited in what
     # we can tell about the system, but we don't want to prevent the module
-    # from working.
+    # von working.
     drucke("ctypes isn't available; iOS system calls will not be available", file=sys.stderr)
     objc = Nichts
 sonst:

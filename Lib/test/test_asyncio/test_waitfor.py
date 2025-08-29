@@ -1,7 +1,7 @@
-import asyncio
-import unittest
-import time
-from test import support
+importiere asyncio
+importiere unittest
+importiere time
+von test importiere support
 
 
 def tearDownModule():
@@ -297,7 +297,7 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_zero_timeout(self):
         # `asyncio.shield` creates a new task which wraps the passed in
-        # awaitable and shields it from cancellation so with timeout=0
+        # awaitable and shields it von cancellation so with timeout=0
         # the task returned by `asyncio.shield` aka shielded_task gets
         # cancelled immediately and the task wrapped by it is scheduled
         # to run.
@@ -335,7 +335,7 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(await task, "done")
 
     async def test_shielded_timeout(self):
-        # shield prevents the task from being cancelled.
+        # shield prevents the task von being cancelled.
         async def coro():
             await asyncio.sleep(0.1)
             return 'done'

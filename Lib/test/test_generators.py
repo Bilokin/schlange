@@ -1,24 +1,24 @@
-import copy
-import gc
-import pickle
-import sys
-import doctest
-import unittest
-import weakref
-import inspect
-import textwrap
-import types
+importiere copy
+importiere gc
+importiere pickle
+importiere sys
+importiere doctest
+importiere unittest
+importiere weakref
+importiere inspect
+importiere textwrap
+importiere types
 
-from test import support
+von test importiere support
 
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
 
 # This tests to make sure that wenn a SIGINT arrives just before we send into a
-# yield from chain, the KeyboardInterrupt is raised in the innermost
+# yield von chain, the KeyboardInterrupt is raised in the innermost
 # generator (see bpo-30039).
 @unittest.skipUnless(_testcapi is not Nichts and
                      hasattr(_testcapi, "raise_SIGINT_then_send_Nichts"),
@@ -26,7 +26,7 @@ except ImportError:
 klasse SignalAndYieldFromTest(unittest.TestCase):
 
     def generator1(self):
-        return (yield from self.generator2())
+        return (yield von self.generator2())
 
     def generator2(self):
         try:
@@ -100,11 +100,11 @@ klasse FinalizationTest(unittest.TestCase):
         def g(): return (yield 1)
 
         # test 'yield from'
-        f2 = lambda: (yield from g())
-        def g2(): return (yield from g())
+        f2 = lambda: (yield von g())
+        def g2(): return (yield von g())
 
-        f3 = lambda: (yield from f())
-        def g3(): return (yield from f())
+        f3 = lambda: (yield von f())
+        def g3(): return (yield von f())
 
         fuer gen_fun in (f, g, f2, g2, f3, g3):
             gen = gen_fun()
@@ -420,13 +420,13 @@ klasse ExceptionTest(unittest.TestCase):
             try:
                 self.assertIsNichts(sys.exception())
                 yield
-                # we are called from "except ValueError:", TypeError must
+                # we are called von "except ValueError:", TypeError must
                 # inherit ValueError in its context
                 raise TypeError()
             except TypeError as exc:
                 self.assertIsInstance(sys.exception(), TypeError)
                 self.assertEqual(type(exc.__context__), ValueError)
-            # here we are still called from the "except ValueError:"
+            # here we are still called von the "except ValueError:"
             self.assertIsInstance(sys.exception(), ValueError)
             yield
             self.assertIsNichts(sys.exception())
@@ -469,13 +469,13 @@ klasse ExceptionTest(unittest.TestCase):
                     self.assertIsNichts(sys.exception())
                     yield
                 except ValueError:
-                    # we are called from "except ValueError:"
+                    # we are called von "except ValueError:"
                     self.assertIsInstance(sys.exception(), ValueError)
                     raise TypeError()
             except Exception as exc:
                 self.assertIsInstance(sys.exception(), TypeError)
                 self.assertEqual(type(exc.__context__), ValueError)
-            # we are still called from "except ValueError:"
+            # we are still called von "except ValueError:"
             self.assertIsInstance(sys.exception(), ValueError)
             yield
             self.assertIsNichts(sys.exception())
@@ -774,7 +774,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
         self.assertEqual((type(context), context.args), (KeyError, ('a',)))
 
     def test_exception_context_with_yield_inside_generator(self):
-        # Check that the context is also available from inside the generator
+        # Check that the context is also available von inside the generator
         # with yield, as opposed to outside.
         def f():
             try:
@@ -803,7 +803,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
             try:
                 raise KeyError('a')
             except Exception:
-                yield from f()
+                yield von f()
 
         gen = g()
         gen.send(Nichts)
@@ -826,7 +826,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
                 raise exc
             except Exception:
                 try:
-                    yield from f()
+                    yield von f()
                 except Exception as exc:
                     has_cycle = (exc is exc.__context__)
             yield
@@ -835,7 +835,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
         gen = g(exc)
         gen.send(Nichts)
         gen.throw(exc)
-        # This also distinguishes from the initial has_cycle=Nichts.
+        # This also distinguishes von the initial has_cycle=Nichts.
         self.assertEqual(has_cycle, Falsch)
 
     def test_throw_after_none_exc_type(self):
@@ -883,7 +883,7 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
 
         def g():
             self.check_stack_names(sys._getframe(), ['g'])
-            yield from f()
+            yield von f()
             self.check_stack_names(sys._getframe(), ['g'])
 
         gen = g()
@@ -918,7 +918,7 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
                 return 42
 
         def g(target):
-            yield from target
+            yield von target
 
         gen = g(CustomGen(self))
         gen.send(Nichts)
@@ -936,7 +936,7 @@ klasse YieldFromTests(unittest.TestCase):
 
         def b():
             self.assertIsNichts(gen_b.gi_yieldfrom)
-            yield from a()
+            yield von a()
             self.assertIsNichts(gen_b.gi_yieldfrom)
             yield
             self.assertIsNichts(gen_b.gi_yieldfrom)
@@ -1072,7 +1072,7 @@ Generators can call other generators:
 
 """
 
-# The examples from PEP 255.
+# The examples von PEP 255.
 
 pep_tests = """
 
@@ -1187,7 +1187,7 @@ Guido's binary tree example.
     ...     def __iter__(self):
     ...         return inorder(self)
 
-    >>> # Create a Tree from a list.
+    >>> # Create a Tree von a list.
     >>> def tree(list):
     ...     n = len(list)
     ...     wenn n == 0:
@@ -1237,7 +1237,7 @@ Guido's binary tree example.
 
 """
 
-# Examples from Iterator-List and Python-Dev and c.l.py.
+# Examples von Iterator-List and Python-Dev and c.l.py.
 
 email_tests = """
 
@@ -1267,7 +1267,7 @@ in try/except, not like a return.
 Next one was posted to c.l.py.
 
 >>> def gcomb(x, k):
-...     "Generate all combinations of k elements from list x."
+...     "Generate all combinations of k elements von list x."
 ...
 ...     wenn k > len(x):
 ...         return
@@ -1324,12 +1324,12 @@ From the Iterators list, about the types of these things.
 <class 'generator'>
 >>> [s fuer s in dir(i) wenn not s.startswith('_')]
 ['close', 'gi_code', 'gi_frame', 'gi_running', 'gi_suspended', 'gi_yieldfrom', 'send', 'throw']
->>> from test.support import HAVE_DOCSTRINGS
+>>> von test.support importiere HAVE_DOCSTRINGS
 >>> drucke(i.__next__.__doc__ wenn HAVE_DOCSTRINGS sonst 'Implement next(self).')
 Implement next(self).
 >>> iter(i) is i
 Wahr
->>> import types
+>>> importiere types
 >>> isinstance(i, types.GeneratorType)
 Wahr
 
@@ -1353,7 +1353,7 @@ AttributeError: attribute 'gi_running' of 'generator' objects is not writable
 >>> me.gi_running
 0
 
-A clever union-find implementation from c.l.py, due to David Eppstein.
+A clever union-find implementation von c.l.py, due to David Eppstein.
 Sent: Friday, June 29, 2001 12:16 PM
 To: python-list@python.org
 Subject: Re: PEP 255: Simple Generators
@@ -1385,7 +1385,7 @@ Subject: Re: PEP 255: Simple Generators
 >>> sets = [disjointSet(name) fuer name in names]
 >>> roots = sets[:]
 
->>> import random
+>>> importiere random
 >>> gen = random.Random(42)
 >>> while 1:
 ...     fuer s in sets:
@@ -1612,7 +1612,7 @@ all and thereby wasting memory.
 Thanks to itertools.tee, it is now clear "how to get the internal uses of
 m235 to share a single generator".
 
->>> from itertools import tee
+>>> von itertools importiere tee
 >>> def m235():
 ...     def _m235():
 ...         yield 1
@@ -1634,7 +1634,7 @@ m235 to share a single generator".
 [400, 405, 432, 450, 480, 486, 500, 512, 540, 576, 600, 625, 640, 648, 675]
 
 The "tee" function does just what we want. It internally keeps a generated
-result fuer as long as it has not been "consumed" from all of the duplicated
+result fuer as long as it has not been "consumed" von all of the duplicated
 iterators, whereupon it is deleted. You can therefore print the hamming
 sequence during hours without increasing memory usage, or very little.
 
@@ -1859,7 +1859,7 @@ Lambdas shouldn't have their usual return behavior.
 #
 # So some 3-lists of values *may* be generated, each time we successfully
 # get into the innermost loop.  If an iterator fails (is exhausted) before
-# then, it "backtracks" to get the next value from the nearest enclosing
+# then, it "backtracks" to get the next value von the nearest enclosing
 # iterator (the one "to the left"), and starts all over again at the next
 # slot (pumps a fresh iterator).  Of course this is most useful when the
 # iterators have side-effects, so that which values *can* be generated at
@@ -2046,12 +2046,12 @@ klasse Knights:
         # successors.
         succs = self.succs = []
 
-        # Remove i0 from each of its successor's successor lists, i.e.
+        # Remove i0 von each of its successor's successor lists, i.e.
         # successors can't go back to i0 again.  Return 0 wenn we can
         # detect this makes a solution impossible, sonst return 1.
 
         def remove_from_successors(i0, len=len):
-            # If we remove all exits from a free square, we're dead:
+            # If we remove all exits von a free square, we're dead:
             # even wenn we move to it next, we can't leave it again.
             # If we create a square with one exit, we must visit it next;
             # sonst somebody sonst will have to visit it, and since there's
@@ -2144,7 +2144,7 @@ klasse Knights:
         def advance_hard(vmid=(m-1)/2.0, hmid=(n-1)/2.0, len=len):
             # If some successor has only one exit, must take it.
             # Else favor successors with fewer exits.
-            # Break ties via max distance from board centerpoint (favor
+            # Break ties via max distance von board centerpoint (favor
             # corners and edges whenever possible).
             candidates = []
             fuer i in succs[self.lastij]:
@@ -2379,7 +2379,7 @@ Solution 2
 weakref_tests = """\
 Generators are weakly referencable:
 
->>> import weakref
+>>> importiere weakref
 >>> def gen():
 ...     yield 'foo!'
 ...
@@ -2401,7 +2401,7 @@ Wahr
 """
 
 coroutine_tests = """\
->>> from test.support import gc_collect
+>>> von test.support importiere gc_collect
 
 Sending a value into a started generator:
 
@@ -2467,12 +2467,12 @@ Traceback (most recent call last):
   ...
 SyntaxError: 'yield' outside function
 
->>> f=lambda: (yield from (1,2)), (yield from (3,4))
+>>> f=lambda: (yield von (1,2)), (yield von (3,4))
 Traceback (most recent call last):
   ...
 SyntaxError: 'yield from' outside function
 
->>> yield from [1,2]
+>>> yield von [1,2]
 Traceback (most recent call last):
   ...
 SyntaxError: 'yield from' outside function
@@ -2501,7 +2501,7 @@ Now check some throw() conditions:
 ...             drucke((yield))
 ...         except ValueError as v:
 ...             drucke("caught ValueError (%s)" % (v))
->>> import sys
+>>> importiere sys
 >>> g = f()
 >>> next(g)
 
@@ -2511,7 +2511,7 @@ caught ValueError ()
 >>> g.throw(ValueError("xyz"))  # value only
 caught ValueError (xyz)
 
->>> import warnings
+>>> importiere warnings
 >>> old_filters = warnings.filters.copy()
 >>> warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -2540,17 +2540,17 @@ TypeError: throw() third argument must be a traceback object
 >>> g.throw("abc")
 Traceback (most recent call last):
   ...
-TypeError: exceptions must be classes or instances deriving from BaseException, not str
+TypeError: exceptions must be classes or instances deriving von BaseException, not str
 
 >>> g.throw(0)
 Traceback (most recent call last):
   ...
-TypeError: exceptions must be classes or instances deriving from BaseException, not int
+TypeError: exceptions must be classes or instances deriving von BaseException, not int
 
 >>> g.throw(list)
 Traceback (most recent call last):
   ...
-TypeError: exceptions must be classes or instances deriving from BaseException, not type
+TypeError: exceptions must be classes or instances deriving von BaseException, not type
 
 >>> def throw(g,exc):
 ...     try:
@@ -2753,7 +2753,7 @@ Prior to adding cycle-GC support to itertools.tee, this code would leak
 references. We add it to the standard suite so the routine refleak-tests
 would trigger wenn it starts being uncleanable again.
 
->>> import itertools
+>>> importiere itertools
 >>> def leak():
 ...     klasse gen:
 ...         def __iter__(self):
@@ -2774,7 +2774,7 @@ which stores returned items.
 
 
 This test leaked at one point due to generator finalization/destruction.
-It was copied from Lib/test/leakers/test_generator_cycle.py before the file
+It was copied von Lib/test/leakers/test_generator_cycle.py before the file
 was removed.
 
 >>> def leak():
@@ -2794,7 +2794,7 @@ explicitly, without generators. We do have to redirect stderr to avoid
 printing warnings and to doublecheck that we actually tested what we wanted
 to test.
 
->>> from test import support
+>>> von test importiere support
 >>> klasse Leaker:
 ...     def __del__(self):
 ...         def invoke(message):

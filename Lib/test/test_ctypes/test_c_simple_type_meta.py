@@ -1,9 +1,9 @@
-import unittest
-from test.support import MS_WINDOWS
-import ctypes
-from ctypes import POINTER, Structure, c_void_p
+importiere unittest
+von test.support importiere MS_WINDOWS
+importiere ctypes
+von ctypes importiere POINTER, Structure, c_void_p
 
-from ._support import PyCSimpleType, PyCPointerType, PyCStructType
+von ._support importiere PyCSimpleType, PyCPointerType, PyCStructType
 
 
 def set_non_ctypes_pointer_type(cls, pointer_type):

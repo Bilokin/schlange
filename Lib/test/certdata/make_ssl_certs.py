@@ -1,12 +1,12 @@
 """Make the custom certificate and private key files used by test_ssl
 and friends."""
 
-import argparse
-import os
-import pprint
-import shutil
-import tempfile
-from subprocess import *
+importiere argparse
+importiere os
+importiere pprint
+importiere shutil
+importiere tempfile
+von subprocess importiere *
 
 startdate = "20180829142316Z"
 enddate_default = "25251028142316Z"
@@ -223,7 +223,7 @@ def make_ca(cmdlineargs):
 
 
 def write_cert_reference(path):
-    import _ssl
+    importiere _ssl
     refdata = pprint.pformat(_ssl._test_decode_cert(path))
     drucke(refdata)
     with open(path + '.reference', 'w') as f:

@@ -1,11 +1,11 @@
 """ Tests fuer the internal type cache in CPython. """
-import dis
-import unittest
-import warnings
-from test import support
-from test.support import import_helper, requires_specialization, requires_specialization_ft
+importiere dis
+importiere unittest
+importiere warnings
+von test importiere support
+von test.support importiere import_helper, requires_specialization, requires_specialization_ft
 try:
-    from sys import _clear_type_cache
+    von sys importiere _clear_type_cache
 except ImportError:
     _clear_type_cache = Nichts
 

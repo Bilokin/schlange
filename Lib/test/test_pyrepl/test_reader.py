@@ -1,17 +1,17 @@
-import itertools
-import functools
-import rlcompleter
-from textwrap import dedent
-from unittest import TestCase
-from unittest.mock import MagicMock
-from test.support import force_colorized_test_class, force_not_colorized_test_class
+importiere itertools
+importiere functools
+importiere rlcompleter
+von textwrap importiere dedent
+von unittest importiere TestCase
+von unittest.mock importiere MagicMock
+von test.support importiere force_colorized_test_class, force_not_colorized_test_class
 
-from .support import handle_all_events, handle_events_narrow_console
-from .support import ScreenEqualMixin, code_to_events
-from .support import prepare_reader, prepare_console
-from _pyrepl.console import Event
-from _pyrepl.reader import Reader
-from _colorize import default_theme
+von .support importiere handle_all_events, handle_events_narrow_console
+von .support importiere ScreenEqualMixin, code_to_events
+von .support importiere prepare_reader, prepare_console
+von _pyrepl.console importiere Event
+von _pyrepl.reader importiere Reader
+von _colorize importiere default_theme
 
 
 overrides = {"reset": "z", "soft_keyword": "K"}
@@ -363,7 +363,7 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
     def test_syntax_highlighting_basic(self):
         code = dedent(
             """\
-            import re, sys
+            importiere re, sys
             def funct(case: str = sys.platform) -> Nichts:
                 match = re.search(
                     "(me)",

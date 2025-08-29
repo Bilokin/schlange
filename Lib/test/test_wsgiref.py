@@ -1,26 +1,26 @@
-from unittest import mock
-from test import support
-from test.support import socket_helper
-from test.test_httpservers import NoLogRequestHandler
-from unittest import TestCase
-from wsgiref.util import setup_testing_defaults
-from wsgiref.headers import Headers
-from wsgiref.handlers import BaseHandler, BaseCGIHandler, SimpleHandler
-from wsgiref import util
-from wsgiref.validate import validator
-from wsgiref.simple_server import WSGIServer, WSGIRequestHandler
-from wsgiref.simple_server import make_server
-from http.client import HTTPConnection
-from io import StringIO, BytesIO, BufferedReader
-from socketserver import BaseServer
-from platform import python_implementation
+von unittest importiere mock
+von test importiere support
+von test.support importiere socket_helper
+von test.test_httpservers importiere NoLogRequestHandler
+von unittest importiere TestCase
+von wsgiref.util importiere setup_testing_defaults
+von wsgiref.headers importiere Headers
+von wsgiref.handlers importiere BaseHandler, BaseCGIHandler, SimpleHandler
+von wsgiref importiere util
+von wsgiref.validate importiere validator
+von wsgiref.simple_server importiere WSGIServer, WSGIRequestHandler
+von wsgiref.simple_server importiere make_server
+von http.client importiere HTTPConnection
+von io importiere StringIO, BytesIO, BufferedReader
+von socketserver importiere BaseServer
+von platform importiere python_implementation
 
-import os
-import re
-import signal
-import sys
-import threading
-import unittest
+importiere os
+importiere re
+importiere signal
+importiere sys
+importiere threading
+importiere unittest
 
 
 klasse MockServer(WSGIServer):
@@ -99,7 +99,7 @@ def compare_generic_iter(make_it, match):
     except StopIteration:
         pass
     sonst:
-        raise AssertionError("Too many items from .__next__()", it)
+        raise AssertionError("Too many items von .__next__()", it)
 
 
 klasse IntegrationTests(TestCase):
@@ -506,7 +506,7 @@ klasse HeaderTests(TestCase):
 klasse ErrorHandler(BaseCGIHandler):
     """Simple handler subclass fuer testing BaseHandler"""
 
-    # BaseHandler records the OS environment at import time, but envvars
+    # BaseHandler records the OS environment at importiere time, but envvars
     # might have been changed later by other tests, which trips up
     # HandlerTests.testEnviron().
     os_environ = dict(os.environ.items())

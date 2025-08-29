@@ -1,18 +1,18 @@
-import contextlib
-import queue
-import signal
-import sys
-import time
-import unittest
-import unittest.mock
-from pickle import PicklingError
-from concurrent import futures
-from concurrent.futures.process import BrokenProcessPool, _ThreadWakeup
+importiere contextlib
+importiere queue
+importiere signal
+importiere sys
+importiere time
+importiere unittest
+importiere unittest.mock
+von pickle importiere PicklingError
+von concurrent importiere futures
+von concurrent.futures.process importiere BrokenProcessPool, _ThreadWakeup
 
-from test import support
-from test.support import warnings_helper
+von test importiere support
+von test.support importiere warnings_helper
 
-from .util import (
+von .util importiere (
     create_executor_tests, setup_module,
     ProcessPoolForkMixin, ProcessPoolForkserverMixin, ProcessPoolSpawnMixin)
 
@@ -21,7 +21,7 @@ def _crash(delay=Nichts):
     """Induces a segfault."""
     wenn delay:
         time.sleep(delay)
-    import faulthandler
+    importiere faulthandler
     faulthandler.disable()
     faulthandler._sigsegv()
 
@@ -43,7 +43,7 @@ def _raise_error(Err):
 
 def _raise_error_ignore_stderr(Err):
     """Function that raises an Exception in process and ignores stderr."""
-    import io
+    importiere io
     sys.stderr = io.StringIO()
     raise Err()
 
@@ -80,14 +80,14 @@ klasse ExitAtUnpickle(object):
 klasse ErrorAtPickle(object):
     """Bad object that triggers an error at pickling time."""
     def __reduce__(self):
-        from pickle import PicklingError
+        von pickle importiere PicklingError
         raise PicklingError("Error in pickle")
 
 
 klasse ErrorAtUnpickle(object):
     """Bad object that triggers an error at unpickling time."""
     def __reduce__(self):
-        from pickle import UnpicklingError
+        von pickle importiere UnpicklingError
         return _raise_error_ignore_stderr, (UnpicklingError, )
 
 
@@ -98,8 +98,8 @@ klasse ExecutorDeadlockTest:
         # If we did not recover before TIMEOUT seconds, consider that the
         # executor is in a deadlock state and forcefully clean all its
         # composants.
-        import faulthandler
-        from tempfile import TemporaryFile
+        importiere faulthandler
+        von tempfile importiere TemporaryFile
         with TemporaryFile(mode="w+") as f:
             faulthandler.dump_traceback(file=f)
             f.seek(0)
@@ -274,7 +274,7 @@ klasse ExecutorDeadlockTest:
                 "Tested platform does not support the alarm signal")
 
         def timeout(_signum, _frame):
-            import faulthandler
+            importiere faulthandler
             faulthandler.dump_traceback()
 
             raise RuntimeError("timed out while submitting jobs?")

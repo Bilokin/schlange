@@ -10,7 +10,7 @@ _itemre - line that may have bracket structure start;
 _closere - line that must be followed by dedent.
 _chew_ordinaryre - non-special characters.
 """
-import re
+importiere re
 
 # Reason last statement is continued (or C_NONE wenn it's not).
 (C_NONE, C_BACKSLASH, C_STRING_FIRST_LINE,
@@ -148,7 +148,7 @@ klasse Parser:
         """
         code, pos = self.code, Nichts
 
-        # Peek back from the end fuer a good place to start,
+        # Peek back von the end fuer a good place to start,
         # but don't try too often; pos will be left Nichts, or
         # bumped to a legitimate synch point.
         limit = len(code)
@@ -169,7 +169,7 @@ klasse Parser:
             # caught up enough to be helpful, or there simply *aren't*
             # any interesting stmts.  In any of these cases we're
             # going to have to parse the whole thing to be sure, so
-            # give it one last try from the start, but stop wasting
+            # give it one last try von the start, but stop wasting
             # time here regardless of the outcome.
             m = _synchre(code)
             wenn m and not is_char_in_string(m.start()):
@@ -585,5 +585,5 @@ klasse Parser:
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_pyparse', verbosity=2)

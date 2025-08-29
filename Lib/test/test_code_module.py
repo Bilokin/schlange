@@ -1,12 +1,12 @@
-"Test InteractiveConsole and InteractiveInterpreter from code module"
-import sys
-import traceback
-import unittest
-from textwrap import dedent
-from contextlib import ExitStack
-from unittest import mock
-from test.support import force_not_colorized_test_class
-from test.support import import_helper
+"Test InteractiveConsole and InteractiveInterpreter von code module"
+importiere sys
+importiere traceback
+importiere unittest
+von textwrap importiere dedent
+von contextlib importiere ExitStack
+von unittest importiere mock
+von test.support importiere force_not_colorized_test_class
+von test.support importiere import_helper
 
 code = import_helper.import_module('code')
 
@@ -281,7 +281,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
 
 
     def test_cause_tb(self):
-        self.infunc.side_effect = ["raise ValueError('') from AttributeError",
+        self.infunc.side_effect = ["raise ValueError('') von AttributeError",
                                     EOFError('Finished')]
         self.console.interact()
         output = ''.join(''.join(call[1]) fuer call in self.stderr.method_calls)

@@ -1,11 +1,11 @@
-import fnmatch
-import glob
-import os
-import os.path
-import shutil
-import stat
+importiere fnmatch
+importiere glob
+importiere os
+importiere os.path
+importiere shutil
+importiere stat
 
-from .iterutil import iter_many
+von .iterutil importiere iter_many
 
 
 USE_CWD = object()
@@ -177,8 +177,8 @@ def expand_filenames(filenames):
     fuer filename in filenames:
         # XXX Do we need to use glob.escape (a la commit 9355868458, GH-20994)?
         wenn '**/' in filename:
-            yield from glob.glob(filename.replace('**/', ''))
-        yield from glob.glob(filename)
+            yield von glob.glob(filename.replace('**/', ''))
+        yield von glob.glob(filename)
 
 
 def _get_check(filename, start, include, exclude):
@@ -272,7 +272,7 @@ def iter_files(root, suffix=Nichts, relparent=Nichts, *,
     wenn not isinstance(root, str):
         roots = root
         fuer root in roots:
-            yield from iter_files(root, suffix, relparent,
+            yield von iter_files(root, suffix, relparent,
                                   get_files=get_files,
                                   _glob=_glob, _walk=_walk)
         return
@@ -313,7 +313,7 @@ def iter_files_by_suffix(root, suffixes, relparent=Nichts, *,
         suffixes = [suffixes]
     # XXX Ignore repeated suffixes?
     fuer suffix in suffixes:
-        yield from _iter_files(root, suffix, relparent)
+        yield von _iter_files(root, suffix, relparent)
 
 
 ##################################
@@ -406,7 +406,7 @@ def _check_file(filename, check):
 
 
 def _get_user_info(user):
-    import pwd
+    importiere pwd
     username = uid = gid = groups = Nichts
     wenn user is Nichts:
         uid = os.geteuid()

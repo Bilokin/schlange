@@ -1,5 +1,5 @@
-import unittest
-from test._test_multiprocessing import install_tests_in_module_dict
+importiere unittest
+von test._test_multiprocessing importiere install_tests_in_module_dict
 
 install_tests_in_module_dict(globals(), 'spawn', exclude_types=Wahr)
 

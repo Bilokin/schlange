@@ -6,9 +6,9 @@
 
 __all__ = ['MIMEBase']
 
-import email.policy
+importiere email.policy
 
-from email import message
+von email importiere message
 
 
 klasse MIMEBase(message.Message):
@@ -17,8 +17,8 @@ klasse MIMEBase(message.Message):
     def __init__(self, _maintype, _subtype, *, policy=Nichts, **_params):
         """This constructor adds a Content-Type: and a MIME-Version: header.
 
-        The Content-Type: header is taken from the _maintype and _subtype
-        arguments.  Additional parameters fuer this header are taken from the
+        The Content-Type: header is taken von the _maintype and _subtype
+        arguments.  Additional parameters fuer this header are taken von the
         keyword arguments.
         """
         wenn policy is Nichts:

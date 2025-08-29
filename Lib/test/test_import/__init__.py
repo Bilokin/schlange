@@ -1,34 +1,34 @@
-import builtins
-import errno
-import glob
-import json
-import importlib.util
-from importlib._bootstrap_external import _get_sourcefile
-from importlib.machinery import (
+importiere builtins
+importiere errno
+importiere glob
+importiere json
+importiere importlib.util
+von importlib._bootstrap_external importiere _get_sourcefile
+von importlib.machinery importiere (
     AppleFrameworkLoader,
     BuiltinImporter,
     ExtensionFileLoader,
     FrozenImporter,
     SourceFileLoader,
 )
-import marshal
-import os
-import py_compile
-import random
-import shutil
-import stat
-import subprocess
-import sys
-import textwrap
-import threading
-import time
-import types
-import unittest
-from unittest import mock
-import _imp
+importiere marshal
+importiere os
+importiere py_compile
+importiere random
+importiere shutil
+importiere stat
+importiere subprocess
+importiere sys
+importiere textwrap
+importiere threading
+importiere time
+importiere types
+importiere unittest
+von unittest importiere mock
+importiere _imp
 
-from test.support import os_helper
-from test.support import (
+von test.support importiere os_helper
+von test.support importiere (
     STDLIB_DIR,
     swap_attr,
     swap_item,
@@ -44,29 +44,29 @@ from test.support import (
     no_rerun,
     force_not_colorized_test_class,
 )
-from test.support.import_helper import (
+von test.support.import_helper importiere (
     forget, make_legacy_pyc, unlink, unload, ready_to_import,
     DirsOnSysPath, CleanImport, import_module)
-from test.support.os_helper import (
+von test.support.os_helper importiere (
     TESTFN, rmtree, temp_umask, TESTFN_UNENCODABLE)
-from test.support import script_helper
-from test.support import threading_helper
-from test.test_importlib.util import uncache
-from types import ModuleType
+von test.support importiere script_helper
+von test.support importiere threading_helper
+von test.test_importlib.util importiere uncache
+von types importiere ModuleType
 try:
-    import _testsinglephase
+    importiere _testsinglephase
 except ImportError:
     _testsinglephase = Nichts
 try:
-    import _testmultiphase
+    importiere _testmultiphase
 except ImportError:
     _testmultiphase = Nichts
 try:
-    import _interpreters
+    importiere _interpreters
 except ModuleNotFoundError:
     _interpreters = Nichts
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = Nichts
 
@@ -158,7 +158,7 @@ wenn _testsinglephase is not Nichts:
         _orig._clear_globals()
         origin = _orig.__spec__.origin
         _testinternalcapi.clear_extension('_testsinglephase', origin)
-        import _testsinglephase
+        importiere _testsinglephase
 
 
 def requires_singlephase_init(meth):
@@ -230,7 +230,7 @@ klasse ModuleSnapshot(types.SimpleNamespace):
         {postscript}
         ''')
     IMPORTS = textwrap.dedent('''
-        import sys
+        importiere sys
         ''').strip()
     SCRIPT_BODY = textwrap.dedent('''
         # Capture the snapshot data.
@@ -281,9 +281,9 @@ klasse ModuleSnapshot(types.SimpleNamespace):
         wenn import_first:
             prescript += textwrap.dedent(f'''
 
-                # Now import the module.
+                # Now importiere the module.
                 assert name not in sys.modules
-                import {name}''')
+                importiere {name}''')
 
         return cls.SCRIPT.format(
             imports=cls.IMPORTS.strip(),
@@ -320,8 +320,8 @@ klasse ModuleSnapshot(types.SimpleNamespace):
         # Build the script.
         postscript = textwrap.dedent(f'''
             # Send the result over the pipe.
-            import json
-            import os
+            importiere json
+            importiere os
             os.write({w}, json.dumps(snapshot).encode())
 
             ''')
@@ -357,62 +357,62 @@ klasse ImportTests(unittest.TestCase):
 
     def test_import_raises_ModuleNotFoundError(self):
         with self.assertRaises(ModuleNotFoundError):
-            import something_that_should_not_exist_anywhere
+            importiere something_that_should_not_exist_anywhere
 
     def test_from_import_missing_module_raises_ModuleNotFoundError(self):
         with self.assertRaises(ModuleNotFoundError):
-            from something_that_should_not_exist_anywhere import blah
+            von something_that_should_not_exist_anywhere importiere blah
 
     def test_from_import_missing_attr_raises_ImportError(self):
         with self.assertRaises(ImportError):
-            from importlib import something_that_should_not_exist_anywhere
+            von importlib importiere something_that_should_not_exist_anywhere
 
     def test_from_import_missing_attr_has_name_and_path(self):
         with CleanImport('os'):
-            import os
+            importiere os
             with self.assertRaises(ImportError) as cm:
-                from os import i_dont_exist
+                von os importiere i_dont_exist
         self.assertEqual(cm.exception.name, 'os')
         self.assertEqual(cm.exception.path, os.__file__)
-        self.assertRegex(str(cm.exception), r"cannot import name 'i_dont_exist' from 'os' \(.*os.py\)")
+        self.assertRegex(str(cm.exception), r"cannot importiere name 'i_dont_exist' von 'os' \(.*os.py\)")
 
     @cpython_only
     def test_from_import_missing_attr_has_name_and_so_path(self):
         _testcapi = import_module("_testcapi")
         with self.assertRaises(ImportError) as cm:
-            from _testcapi import i_dont_exist
+            von _testcapi importiere i_dont_exist
         self.assertEqual(cm.exception.name, '_testcapi')
         wenn hasattr(_testcapi, "__file__"):
             # The path on the exception is strictly the spec origin, not the
             # module's __file__. For most cases, these are the same; but on
             # iOS, the Framework relocation process results in the exception
-            # being raised from the spec location.
+            # being raised von the spec location.
             self.assertEqual(cm.exception.path, _testcapi.__spec__.origin)
             self.assertRegex(
                 str(cm.exception),
-                r"cannot import name 'i_dont_exist' from '_testcapi' \(.*(\.(so|pyd))?\)"
+                r"cannot importiere name 'i_dont_exist' von '_testcapi' \(.*(\.(so|pyd))?\)"
             )
         sonst:
             self.assertEqual(
                 str(cm.exception),
-                "cannot import name 'i_dont_exist' from '_testcapi' (unknown location)"
+                "cannot importiere name 'i_dont_exist' von '_testcapi' (unknown location)"
             )
 
     def test_from_import_missing_attr_has_name(self):
         with self.assertRaises(ImportError) as cm:
             # _warning has no path as it's a built-in module.
-            from _warning import i_dont_exist
+            von _warning importiere i_dont_exist
         self.assertEqual(cm.exception.name, '_warning')
         self.assertIsNichts(cm.exception.path)
 
     def test_from_import_missing_attr_path_is_canonical(self):
         with self.assertRaises(ImportError) as cm:
-            from os.path import i_dont_exist
+            von os.path importiere i_dont_exist
         self.assertIn(cm.exception.name, {'posixpath', 'ntpath'})
         self.assertIsNotNichts(cm.exception)
 
     def test_from_import_star_invalid_type(self):
-        import re
+        importiere re
         with ready_to_import() as (name, path):
             with open(path, 'w', encoding='utf-8') as f:
                 f.write("__all__ = [b'invalid_type']")
@@ -420,7 +420,7 @@ klasse ImportTests(unittest.TestCase):
             with self.assertRaisesRegex(
                 TypeError, f"{re.escape(name)}\\.__all__ must be str"
             ):
-                exec(f"from {name} import *", globals)
+                exec(f"from {name} importiere *", globals)
             self.assertNotIn(b"invalid_type", globals)
         with ready_to_import() as (name, path):
             with open(path, 'w', encoding='utf-8') as f:
@@ -429,22 +429,22 @@ klasse ImportTests(unittest.TestCase):
             with self.assertRaisesRegex(
                 TypeError, f"{re.escape(name)}\\.__dict__ must be str"
             ):
-                exec(f"from {name} import *", globals)
+                exec(f"from {name} importiere *", globals)
             self.assertNotIn(b"invalid_type", globals)
 
     def test_case_sensitivity(self):
-        # Brief digression to test that import is case-sensitive:  wenn we got
+        # Brief digression to test that importiere is case-sensitive:  wenn we got
         # this far, we know fuer sure that "random" exists.
         with self.assertRaises(ImportError):
-            import RAnDoM
+            importiere RAnDoM
 
     def test_double_const(self):
         # Importing double_const checks that float constants
         # serialized by marshal as PYC files don't lose precision
         # (SF bug 422177).
-        from test.test_import.data import double_const
+        von test.test_import.data importiere double_const
         unload('test.test_import.data.double_const')
-        from test.test_import.data import double_const  # noqa: F811
+        von test.test_import.data importiere double_const  # noqa: F811
 
     def test_import(self):
         def test_with_extension(ext):
@@ -453,7 +453,7 @@ klasse ImportTests(unittest.TestCase):
             pyc = TESTFN + ".pyc"
 
             with open(source, "w", encoding='utf-8') as f:
-                drucke("# This tests Python's ability to import a",
+                drucke("# This tests Python's ability to importiere a",
                       ext, "file.", file=f)
                 a = random.randrange(1000)
                 b = random.randrange(1000)
@@ -467,7 +467,7 @@ klasse ImportTests(unittest.TestCase):
                 try:
                     mod = __import__(TESTFN)
                 except ImportError as err:
-                    self.fail("import from %s failed: %s" % (ext, err))
+                    self.fail("import von %s failed: %s" % (ext, err))
 
                 self.assertEqual(mod.a, a,
                     "module loaded (%s) but contents invalid" % mod)
@@ -500,12 +500,12 @@ klasse ImportTests(unittest.TestCase):
 
         try:
             # Compile & remove .py file; we only need .pyc.
-            # Bytecode must be relocated from the PEP 3147 bytecode-only location.
+            # Bytecode must be relocated von the PEP 3147 bytecode-only location.
             py_compile.compile(filename)
         finally:
             unlink(filename)
 
-        # Need to be able to load from current dir.
+        # Need to be able to load von current dir.
         sys.path.append('')
         importlib.invalidate_caches()
 
@@ -532,7 +532,7 @@ klasse ImportTests(unittest.TestCase):
         with open(source, "w", encoding='utf-8') as f:
             drucke("a = 1/0", file=f)
 
-        # New in 2.4, we shouldn't be able to import that no matter how often
+        # New in 2.4, we shouldn't be able to importiere that no matter how often
         # we try.
         sys.path.insert(0, os.curdir)
         importlib.invalidate_caches()
@@ -548,32 +548,32 @@ klasse ImportTests(unittest.TestCase):
             remove_files(TESTFN)
 
     def test_import_name_binding(self):
-        # import x.y.z binds x in the current namespace
-        import test as x
-        import test.support
+        # importiere x.y.z binds x in the current namespace
+        importiere test as x
+        importiere test.support
         self.assertIs(x, test, x.__name__)
         self.assertHasAttr(test.support, "__file__")
 
-        # import x.y.z as w binds z as w
-        import test.support as y
+        # importiere x.y.z as w binds z as w
+        importiere test.support as y
         self.assertIs(y, test.support, y.__name__)
 
     def test_issue31286(self):
-        # import in a 'finally' block resulted in SystemError
+        # importiere in a 'finally' block resulted in SystemError
         try:
             x = ...
         finally:
-            import test.support.script_helper as x
+            importiere test.support.script_helper as x
 
-        # import in a 'while' loop resulted in stack overflow
+        # importiere in a 'while' loop resulted in stack overflow
         i = 0
         while i < 10:
-            import test.support.script_helper as x
+            importiere test.support.script_helper as x
             i += 1
 
-        # import in a 'for' loop resulted in segmentation fault
+        # importiere in a 'for' loop resulted in segmentation fault
         fuer i in range(2):
-            import test.support.script_helper as x  # noqa: F811
+            importiere test.support.script_helper as x  # noqa: F811
 
     def test_failing_reload(self):
         # A failing reload should leave the module object in sys.modules.
@@ -650,10 +650,10 @@ klasse ImportTests(unittest.TestCase):
     def test_import_in_del_does_not_crash(self):
         # Issue 4236
         testfn = script_helper.make_script('', TESTFN, textwrap.dedent("""\
-            import sys
+            importiere sys
             klasse C:
                def __del__(self):
-                  import importlib
+                  importiere importlib
             sys.argv.insert(0, C())
             """))
         script_helper.assert_python_ok(testfn)
@@ -692,21 +692,21 @@ klasse ImportTests(unittest.TestCase):
 
     @cpython_only
     def test_delete_builtins_import(self):
-        args = ["-c", "del __builtins__.__import__; import os"]
+        args = ["-c", "del __builtins__.__import__; importiere os"]
         popen = script_helper.spawn_python(*args)
         stdout, stderr = popen.communicate()
         self.assertIn(b"ImportError", stdout)
 
     def test_from_import_message_for_nonexistent_module(self):
         with self.assertRaisesRegex(ImportError, "^No module named 'bogus'"):
-            from bogus import foo
+            von bogus importiere foo
 
     def test_from_import_message_for_existing_module(self):
-        with self.assertRaisesRegex(ImportError, "^cannot import name 'bogus'"):
-            from re import bogus
+        with self.assertRaisesRegex(ImportError, "^cannot importiere name 'bogus'"):
+            von re importiere bogus
 
     def test_from_import_AttributeError(self):
-        # Issue #24492: trying to import an attribute that raises an
+        # Issue #24492: trying to importiere an attribute that raises an
         # AttributeError should lead to an ImportError.
         klasse AlwaysAttributeError:
             def __getattr__(self, _):
@@ -716,19 +716,19 @@ klasse ImportTests(unittest.TestCase):
         self.addCleanup(unload, module_name)
         sys.modules[module_name] = AlwaysAttributeError()
         with self.assertRaises(ImportError) as cm:
-            from test_from_import_AttributeError import does_not_exist
+            von test_from_import_AttributeError importiere does_not_exist
 
         self.assertEqual(str(cm.exception),
-            "cannot import name 'does_not_exist' from '<unknown module name>' (unknown location)")
+            "cannot importiere name 'does_not_exist' von '<unknown module name>' (unknown location)")
 
     @cpython_only
     def test_issue31492(self):
         # There shouldn't be an assertion failure in case of failing to import
-        # from a module with a bad __name__ attribute, or in case of failing
+        # von a module with a bad __name__ attribute, or in case of failing
         # to access an attribute of such a module.
         with swap_attr(os, '__name__', Nichts):
             with self.assertRaises(ImportError):
-                from os import does_not_exist
+                von os importiere does_not_exist
 
             with self.assertRaises(AttributeError):
                 os.does_not_exist
@@ -748,7 +748,7 @@ klasse ImportTests(unittest.TestCase):
                 sys.settrace(delay_has_deadlock)
                 event.wait()
                 try:
-                    import package
+                    importiere package
                 except BaseException as e:
                     nonlocal exc
                     exc = e
@@ -770,7 +770,7 @@ klasse ImportTests(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == "win32", "Windows-specific")
     def test_dll_dependency_import(self):
-        from _winapi import GetModuleFileName
+        von _winapi importiere GetModuleFileName
         dllname = GetModuleFileName(sys.dllhandle)
         pydname = importlib.util.find_spec("_sqlite3").origin
         depname = os.path.join(
@@ -793,7 +793,7 @@ klasse ImportTests(unittest.TestCase):
             env = {k.upper(): os.environ[k] fuer k in os.environ}
             env["PYTHONPATH"] = tmp2 + ";" + STDLIB_DIR
 
-            # Test 1: import with added DLL directory
+            # Test 1: importiere with added DLL directory
             subprocess.check_call([
                 pyexe, "-Sc", ";".join([
                     "import os",
@@ -806,7 +806,7 @@ klasse ImportTests(unittest.TestCase):
                 env=env,
                 cwd=os.path.dirname(pyexe))
 
-            # Test 2: import with DLL adjacent to PYD
+            # Test 2: importiere with DLL adjacent to PYD
             shutil.copy(depname, tmp2)
             subprocess.check_call([pyexe, "-Sc", "import _sqlite3"],
                                     stderr=subprocess.STDOUT,
@@ -822,42 +822,42 @@ klasse ImportTests(unittest.TestCase):
 
     def test_frozen_module_from_import_error(self):
         with self.assertRaises(ImportError) as cm:
-            from os import this_will_never_exist
+            von os importiere this_will_never_exist
         self.assertIn(
-            f"cannot import name 'this_will_never_exist' from 'os' ({os.__file__})",
+            f"cannot importiere name 'this_will_never_exist' von 'os' ({os.__file__})",
             str(cm.exception),
         )
         with self.assertRaises(ImportError) as cm:
-            from sys import this_will_never_exist
+            von sys importiere this_will_never_exist
         self.assertIn(
-            "cannot import name 'this_will_never_exist' from 'sys' (unknown location)",
+            "cannot importiere name 'this_will_never_exist' von 'sys' (unknown location)",
             str(cm.exception),
         )
 
         scripts = [
             """
-import os
+importiere os
 os.__spec__.has_location = Falsch
 os.__file__ = []
-from os import this_will_never_exist
+von os importiere this_will_never_exist
 """,
             """
-import os
+importiere os
 os.__spec__.has_location = Falsch
 del os.__file__
-from os import this_will_never_exist
+von os importiere this_will_never_exist
 """,
               """
-import os
+importiere os
 os.__spec__.origin = []
 os.__file__ = []
-from os import this_will_never_exist
+von os importiere this_will_never_exist
 """
         ]
         fuer script in scripts:
             with self.subTest(script=script):
                 expected_error = (
-                    b"cannot import name 'this_will_never_exist' "
+                    b"cannot importiere name 'this_will_never_exist' "
                     b"from 'os' (unknown location)"
                 )
                 popen = script_helper.spawn_python("-c", script)
@@ -866,21 +866,21 @@ from os import this_will_never_exist
 
     def test_non_module_from_import_error(self):
         prefix = """
-import sys
+importiere sys
 klasse NotAModule: ...
 nm = NotAModule()
 nm.symbol = 123
 sys.modules["not_a_module"] = nm
-from not_a_module import symbol
+von not_a_module importiere symbol
 """
         scripts = [
-            prefix + "from not_a_module import missing_symbol",
-            prefix + "nm.__spec__ = []\nfrom not_a_module import missing_symbol",
+            prefix + "from not_a_module importiere missing_symbol",
+            prefix + "nm.__spec__ = []\nfrom not_a_module importiere missing_symbol",
         ]
         fuer script in scripts:
             with self.subTest(script=script):
                 expected_error = (
-                    b"ImportError: cannot import name 'missing_symbol' from "
+                    b"ImportError: cannot importiere name 'missing_symbol' von "
                     b"'<unknown module name>' (unknown location)"
                 )
             popen = script_helper.spawn_python("-c", script)
@@ -894,8 +894,8 @@ from not_a_module import symbol
                 rb"AttributeError: module 'fractions' has no attribute 'Fraction'"
             ),
             (
-                "from fractions import Fraction",
-                rb"ImportError: cannot import name 'Fraction' from 'fractions'"
+                "from fractions importiere Fraction",
+                rb"ImportError: cannot importiere name 'Fraction' von 'fractions'"
             )
         ]
         fuer script, error in script_errors:
@@ -949,8 +949,8 @@ from not_a_module import symbol
                 rb"AttributeError: module 'fractions' has no attribute 'Fraction'"
             ),
             (
-                "from fractions import Fraction",
-                rb"ImportError: cannot import name 'Fraction' from 'fractions'"
+                "from fractions importiere Fraction",
+                rb"ImportError: cannot importiere name 'Fraction' von 'fractions'"
             )
         ]
         fuer script, error in script_errors:
@@ -990,8 +990,8 @@ from not_a_module import symbol
                 rb"AttributeError: module 'numpy' has no attribute 'array'"
             ),
             (
-                "from numpy import array",
-                rb"ImportError: cannot import name 'array' from 'numpy'"
+                "from numpy importiere array",
+                rb"ImportError: cannot importiere name 'array' von 'numpy'"
             )
         ]
         fuer script, error in script_errors:
@@ -1029,9 +1029,9 @@ from not_a_module import symbol
             self.assertRegex(stdout, expected_error)
 
             expected_error = (
-                rb"ImportError: cannot import name 'attr' from 'numpy' \(.*\)\s+\z"
+                rb"ImportError: cannot importiere name 'attr' von 'numpy' \(.*\)\s+\z"
             )
-            popen = script_helper.spawn_python('-c', 'from numpy import attr', cwd=tmp)
+            popen = script_helper.spawn_python('-c', 'from numpy importiere attr', cwd=tmp)
             stdout, stderr = popen.communicate()
             self.assertRegex(stdout, expected_error)
 
@@ -1043,7 +1043,7 @@ from not_a_module import symbol
             # Unhashable str subclass
             with open(os.path.join(tmp, "main.py"), "w", encoding='utf-8') as f:
                 f.write("""
-import fractions
+importiere fractions
 fractions.shadowing_module
 klasse substr(str):
     __hash__ = Nichts
@@ -1059,13 +1059,13 @@ except TypeError as e:
 
             with open(os.path.join(tmp, "main.py"), "w", encoding='utf-8') as f:
                 f.write("""
-import fractions
+importiere fractions
 fractions.shadowing_module
 klasse substr(str):
     __hash__ = Nichts
 fractions.__name__ = substr('fractions')
 try:
-    from fractions import Fraction
+    von fractions importiere Fraction
 except TypeError as e:
     drucke(str(e))
 """)
@@ -1077,10 +1077,10 @@ except TypeError as e:
             # Various issues with sys module
             with open(os.path.join(tmp, "main.py"), "w", encoding='utf-8') as f:
                 f.write("""
-import fractions
+importiere fractions
 fractions.shadowing_module
 
-import sys
+importiere sys
 sys.stdlib_module_names = Nichts
 try:
     fractions.Fraction
@@ -1108,25 +1108,25 @@ except AttributeError as e:
 
             with open(os.path.join(tmp, "main.py"), "w", encoding='utf-8') as f:
                 f.write("""
-import fractions
+importiere fractions
 fractions.shadowing_module
 
-import sys
+importiere sys
 sys.stdlib_module_names = Nichts
 try:
-    from fractions import Fraction
+    von fractions importiere Fraction
 except ImportError as e:
     drucke(str(e))
 
 del sys.stdlib_module_names
 try:
-    from fractions import Fraction
+    von fractions importiere Fraction
 except ImportError as e:
     drucke(str(e))
 
 sys.path = [0]
 try:
-    from fractions import Fraction
+    von fractions importiere Fraction
 except ImportError as e:
     drucke(str(e))
 """)
@@ -1135,12 +1135,12 @@ except ImportError as e:
             lines = stdout.splitlines()
             self.assertEqual(len(lines), 3)
             fuer line in lines:
-                self.assertRegex(line, rb"cannot import name 'Fraction' from 'fractions' \(.*\)")
+                self.assertRegex(line, rb"cannot importiere name 'Fraction' von 'fractions' \(.*\)")
 
             # Various issues with origin
             with open(os.path.join(tmp, "main.py"), "w", encoding='utf-8') as f:
                 f.write("""
-import fractions
+importiere fractions
 fractions.shadowing_module
 del fractions.__spec__.origin
 try:
@@ -1164,17 +1164,17 @@ except AttributeError as e:
 
             with open(os.path.join(tmp, "main.py"), "w", encoding='utf-8') as f:
                 f.write("""
-import fractions
+importiere fractions
 fractions.shadowing_module
 del fractions.__spec__.origin
 try:
-    from fractions import Fraction
+    von fractions importiere Fraction
 except ImportError as e:
     drucke(str(e))
 
 fractions.__spec__.origin = []
 try:
-    from fractions import Fraction
+    von fractions importiere Fraction
 except ImportError as e:
     drucke(str(e))
 """)
@@ -1183,7 +1183,7 @@ except ImportError as e:
             lines = stdout.splitlines()
             self.assertEqual(len(lines), 2)
             fuer line in lines:
-                self.assertRegex(line, rb"cannot import name 'Fraction' from 'fractions' \(.*\)")
+                self.assertRegex(line, rb"cannot importiere name 'Fraction' von 'fractions' \(.*\)")
 
     @unittest.skipIf(sys.platform == 'win32', 'Cannot delete cwd on Windows')
     @unittest.skipIf(sys.platform == 'sunos5', 'Cannot delete cwd on Solaris/Illumos')
@@ -1193,11 +1193,11 @@ except ImportError as e:
             os.mkdir(subtmp)
             with open(os.path.join(subtmp, "main.py"), "w", encoding='utf-8') as f:
                 f.write(f"""
-import sys
+importiere sys
 assert sys.path[0] == ''
 
-import os
-import shutil
+importiere os
+importiere shutil
 shutil.rmtree(os.getcwd())
 
 os.does_not_exist
@@ -1215,8 +1215,8 @@ os.does_not_exist
                 rb"AttributeError: module 'fractions' has no attribute 'Fraction'"
             ),
             (
-                "from fractions import Fraction",
-                rb"ImportError: cannot import name 'Fraction' from 'fractions'"
+                "from fractions importiere Fraction",
+                rb"ImportError: cannot importiere name 'Fraction' von 'fractions'"
             )
         ]
         fuer script, error in script_errors:
@@ -1313,7 +1313,7 @@ klasse FilePermissionTests(unittest.TestCase):
         # Initially read-only .pyc files on Windows used to cause problems
         # with later updates, see issue #6074 fuer details
         with ready_to_import() as (name, path):
-            # Write a Python file, make it read-only and import it
+            # Write a Python file, make it read-only and importiere it
             with open(path, 'w', encoding='utf-8') as f:
                 f.write("x = 'original'\n")
             # Tweak the mtime of the source to ensure pyc gets updated later
@@ -1347,7 +1347,7 @@ klasse PycRewritingTests(unittest.TestCase):
 
     module_name = "unlikely_module_name"
     module_source = """
-import sys
+importiere sys
 code_filename = sys._getframe().f_code.co_filename
 module_filename = __file__
 constant = 1000
@@ -1460,7 +1460,7 @@ klasse PathsTests(unittest.TestCase):
         importlib.invalidate_caches()
         # Create the UNC path, like \\myhost\c$\foo\bar.
         path = os.path.abspath(self.path)
-        import socket
+        importiere socket
         hn = socket.gethostname()
         drive = path[0]
         unc = "\\\\%s\\%s$"%(hn, drive)
@@ -1476,7 +1476,7 @@ klasse PathsTests(unittest.TestCase):
         try:
             mod = __import__("test_unc_path")
         except ImportError as e:
-            self.fail("could not import 'test_unc_path' from %r: %r"
+            self.fail("could not importiere 'test_unc_path' von %r: %r"
                       % (unc, e))
         self.assertEqual(mod.testdata, 'test_unc_path')
         self.assertStartsWith(mod.__file__, unc)
@@ -1490,65 +1490,65 @@ klasse RelativeImportTests(unittest.TestCase):
     setUp = tearDown
 
     def test_relimport_star(self):
-        # This will import * from .test_import.
-        from .. import relimport
+        # This will importiere * von .test_import.
+        von .. importiere relimport
         self.assertHasAttr(relimport, "RelativeImportTests")
 
     def test_issue3221(self):
-        # Note fuer mergers: the 'absolute' tests from the 2.x branch
+        # Note fuer mergers: the 'absolute' tests von the 2.x branch
         # are missing in Py3k because implicit relative imports are
         # a thing of the past
         #
         # Regression test fuer http://bugs.python.org/issue3221.
         def check_relative():
-            exec("from . import relimport", ns)
+            exec("from . importiere relimport", ns)
 
-        # Check relative import OK with __package__ and __name__ correct
+        # Check relative importiere OK with __package__ and __name__ correct
         ns = dict(__package__='test', __name__='test.notarealmodule')
         check_relative()
 
-        # Check relative import OK with only __name__ wrong
+        # Check relative importiere OK with only __name__ wrong
         ns = dict(__package__='test', __name__='notarealpkg.notarealmodule')
         check_relative()
 
-        # Check relative import fails with only __package__ wrong
+        # Check relative importiere fails with only __package__ wrong
         ns = dict(__package__='foo', __name__='test.notarealmodule')
         self.assertRaises(ModuleNotFoundError, check_relative)
 
-        # Check relative import fails with __package__ and __name__ wrong
+        # Check relative importiere fails with __package__ and __name__ wrong
         ns = dict(__package__='foo', __name__='notarealpkg.notarealmodule')
         self.assertRaises(ModuleNotFoundError, check_relative)
 
-        # Check relative import fails with package set to a non-string
+        # Check relative importiere fails with package set to a non-string
         ns = dict(__package__=object())
         self.assertRaises(TypeError, check_relative)
 
     def test_parentless_import_shadowed_by_global(self):
-        # Test as wenn this were done from the REPL where this error most commonly occurs (bpo-37409).
+        # Test as wenn this were done von the REPL where this error most commonly occurs (bpo-37409).
         script_helper.assert_python_failure('-W', 'ignore', '-c',
-            "foo = 1; from . import foo")
+            "foo = 1; von . importiere foo")
 
     def test_absolute_import_without_future(self):
-        # If explicit relative import syntax is used, then do not try
-        # to perform an absolute import in the face of failure.
+        # If explicit relative importiere syntax is used, then do not try
+        # to perform an absolute importiere in the face of failure.
         # Issue #7902.
         with self.assertRaises(ImportError):
-            from .os import sep
-            self.fail("explicit relative import triggered an "
+            von .os importiere sep
+            self.fail("explicit relative importiere triggered an "
                       "implicit absolute import")
 
     def test_import_from_non_package(self):
         path = os.path.join(os.path.dirname(__file__), 'data', 'package2')
         with uncache('submodule1', 'submodule2'), DirsOnSysPath(path):
             with self.assertRaises(ImportError):
-                import submodule1
+                importiere submodule1
             self.assertNotIn('submodule1', sys.modules)
             self.assertNotIn('submodule2', sys.modules)
 
     def test_import_from_unloaded_package(self):
         with uncache('package2', 'package2.submodule1', 'package2.submodule2'), \
              DirsOnSysPath(os.path.join(os.path.dirname(__file__), 'data')):
-            import package2.submodule1
+            importiere package2.submodule1
             package2.submodule1.submodule2
 
     def test_rebinding(self):
@@ -1556,37 +1556,37 @@ klasse RelativeImportTests(unittest.TestCase):
         # in test_pkgutil and mock.patch in test_unittest.
         path = os.path.join(os.path.dirname(__file__), 'data')
         with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
-            from package3 import submodule
+            von package3 importiere submodule
             self.assertEqual(submodule.attr, 'rebound')
-            import package3.submodule as submodule
+            importiere package3.submodule as submodule
             self.assertEqual(submodule.attr, 'rebound')
         with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
-            import package3.submodule as submodule
+            importiere package3.submodule as submodule
             self.assertEqual(submodule.attr, 'rebound')
-            from package3 import submodule
+            von package3 importiere submodule
             self.assertEqual(submodule.attr, 'rebound')
 
     def test_rebinding2(self):
         path = os.path.join(os.path.dirname(__file__), 'data')
         with uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
-            import package4.submodule as submodule
+            importiere package4.submodule as submodule
             self.assertEqual(submodule.attr, 'submodule')
-            from package4 import submodule
+            von package4 importiere submodule
             self.assertEqual(submodule.attr, 'submodule')
         with uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
-            from package4 import submodule
+            von package4 importiere submodule
             self.assertEqual(submodule.attr, 'origin')
-            import package4.submodule as submodule
+            importiere package4.submodule as submodule
             self.assertEqual(submodule.attr, 'submodule')
 
 
 klasse OverridingImportBuiltinTests(unittest.TestCase):
     def test_override_builtin(self):
         # Test that overriding builtins.__import__ can bypass sys.modules.
-        import os
+        importiere os
 
         def foo():
-            import os
+            importiere os
             return os
         self.assertEqual(foo(), os)  # Quick sanity check.
 
@@ -1594,7 +1594,7 @@ klasse OverridingImportBuiltinTests(unittest.TestCase):
             self.assertEqual(foo(), 5)
 
         # Test what happens when we shadow __import__ in globals(); this
-        # currently does not impact the import process, but wenn this changes,
+        # currently does not impact the importiere process, but wenn this changes,
         # other code will need to change, so keep this test as a tripwire.
         with swap_item(globals(), "__import__", lambda *x: 5):
             self.assertEqual(foo(), os)
@@ -1639,7 +1639,7 @@ klasse PycacheTests(unittest.TestCase):
     @unittest.skipIf(is_emscripten, "umask is a stub")
     def test_unwritable_directory(self):
         # When the umask causes the new __pycache__ directory to be
-        # unwritable, the import still succeeds but no .pyc file is written.
+        # unwritable, the importiere still succeeds but no .pyc file is written.
         with temp_umask(0o222):
             __import__(TESTFN)
         self.assertWahr(os.path.exists('__pycache__'))
@@ -1725,7 +1725,7 @@ klasse PycacheTests(unittest.TestCase):
                          os.path.join(os.getcwd(), foo_pyc))
 
     def test_package___cached___from_pyc(self):
-        # Like test___cached__ but ensuring __cached__ when imported from a
+        # Like test___cached__ but ensuring __cached__ when imported von a
         # PEP 3147 pyc file.
         def cleanup():
             rmtree('pep3147')
@@ -1772,7 +1772,7 @@ klasse TestSymbolicallyLinkedPackage(unittest.TestCase):
         self.orig_sys_path = sys.path[:]
 
         # create a sample package; imagine you have a package with a tag and
-        #  you want to symbolically link it from its untagged name.
+        #  you want to symbolically link it von its untagged name.
         os.mkdir(self.tagged)
         self.addCleanup(os_helper.rmtree, self.tagged)
         init_file = os.path.join(self.tagged, '__init__.py')
@@ -1799,12 +1799,12 @@ klasse TestSymbolicallyLinkedPackage(unittest.TestCase):
         "Windows Vista or later required")
     @os_helper.skip_unless_symlink
     def test_symlinked_dir_importable(self):
-        # make sure sample can only be imported from the current directory.
+        # make sure sample can only be imported von the current directory.
         sys.path[:] = ['.']
         assert os.path.exists(self.package_name)
         assert os.path.exists(os.path.join(self.package_name, '__init__.py'))
 
-        # Try to import the package
+        # Try to importiere the package
         importlib.import_module(self.package_name)
 
 
@@ -1817,7 +1817,7 @@ klasse ImportlibBootstrapTests(unittest.TestCase):
         self.assertWahr(mod)
 
     def test_frozen_importlib_is_bootstrap(self):
-        from importlib import _bootstrap
+        von importlib importiere _bootstrap
         mod = sys.modules['_frozen_importlib']
         self.assertIs(mod, _bootstrap)
         self.assertEqual(mod.__name__, 'importlib._bootstrap')
@@ -1825,7 +1825,7 @@ klasse ImportlibBootstrapTests(unittest.TestCase):
         self.assertEndsWith(mod.__file__, '_bootstrap.py')
 
     def test_frozen_importlib_external_is_bootstrap_external(self):
-        from importlib import _bootstrap_external
+        von importlib importiere _bootstrap_external
         mod = sys.modules['_frozen_importlib_external']
         self.assertIs(mod, _bootstrap_external)
         self.assertEqual(mod.__name__, 'importlib._bootstrap_external')
@@ -1836,7 +1836,7 @@ klasse ImportlibBootstrapTests(unittest.TestCase):
         # Issue #15386 revealed a tricky loophole in the bootstrapping
         # This test is technically redundant, since the bug caused importing
         # this test module to crash completely, but it helps prove the point
-        from importlib import machinery
+        von importlib importiere machinery
         mod = sys.modules['_frozen_importlib']
         self.assertIs(machinery.ModuleSpec, mod.ModuleSpec)
 
@@ -1909,7 +1909,7 @@ klasse ImportTracebackTests(unittest.TestCase):
     def test_nonexistent_module(self):
         try:
             # assertRaises() clears __traceback__
-            import nonexistent_xyzzy
+            importiere nonexistent_xyzzy
         except ImportError as e:
             tb = e.__traceback__
         sonst:
@@ -1919,7 +1919,7 @@ klasse ImportTracebackTests(unittest.TestCase):
     def test_nonexistent_module_nested(self):
         self.create_module("foo", "import nonexistent_xyzzy")
         try:
-            import foo
+            importiere foo
         except ImportError as e:
             tb = e.__traceback__
         sonst:
@@ -1929,7 +1929,7 @@ klasse ImportTracebackTests(unittest.TestCase):
     def test_exec_failure(self):
         self.create_module("foo", "1/0")
         try:
-            import foo
+            importiere foo
         except ZeroDivisionError as e:
             tb = e.__traceback__
         sonst:
@@ -1940,18 +1940,18 @@ klasse ImportTracebackTests(unittest.TestCase):
         self.create_module("foo", "import bar")
         self.create_module("bar", "1/0")
         try:
-            import foo
+            importiere foo
         except ZeroDivisionError as e:
             tb = e.__traceback__
         sonst:
             self.fail("ZeroDivisionError should have been raised")
         self.assert_traceback(tb, [__file__, 'foo.py', 'bar.py'])
 
-    # A few more examples from issue #15425
+    # A few more examples von issue #15425
     def test_syntax_error(self):
         self.create_module("foo", "invalid syntax is invalid")
         try:
-            import foo
+            importiere foo
         except SyntaxError as e:
             tb = e.__traceback__
         sonst:
@@ -1976,7 +1976,7 @@ klasse ImportTracebackTests(unittest.TestCase):
     def test_broken_submodule(self):
         init_path, bar_path = self._setup_broken_package("", "1/0")
         try:
-            import _parent_foo.bar
+            importiere _parent_foo.bar
         except ZeroDivisionError as e:
             tb = e.__traceback__
         sonst:
@@ -1986,7 +1986,7 @@ klasse ImportTracebackTests(unittest.TestCase):
     def test_broken_from(self):
         init_path, bar_path = self._setup_broken_package("", "1/0")
         try:
-            from _parent_foo import bar
+            von _parent_foo importiere bar
         except ZeroDivisionError as e:
             tb = e.__traceback__
         sonst:
@@ -1996,7 +1996,7 @@ klasse ImportTracebackTests(unittest.TestCase):
     def test_broken_parent(self):
         init_path, bar_path = self._setup_broken_package("1/0", "")
         try:
-            import _parent_foo.bar
+            importiere _parent_foo.bar
         except ZeroDivisionError as e:
             tb = e.__traceback__
         sonst:
@@ -2006,7 +2006,7 @@ klasse ImportTracebackTests(unittest.TestCase):
     def test_broken_parent_from(self):
         init_path, bar_path = self._setup_broken_package("1/0", "")
         try:
-            from _parent_foo import bar
+            von _parent_foo importiere bar
         except ZeroDivisionError as e:
             tb = e.__traceback__
         sonst:
@@ -2016,7 +2016,7 @@ klasse ImportTracebackTests(unittest.TestCase):
     @cpython_only
     def test_import_bug(self):
         # We simulate a bug in importlib and check that it's not stripped
-        # away from the traceback.
+        # away von the traceback.
         self.create_module("foo", "")
         importlib = sys.modules['_frozen_importlib_external']
         wenn 'load_module' in vars(importlib.SourceLoader):
@@ -2028,7 +2028,7 @@ klasse ImportTracebackTests(unittest.TestCase):
                 1/0
             importlib.SourceLoader.exec_module = exec_module
             try:
-                import foo
+                importiere foo
             except ZeroDivisionError as e:
                 tb = e.__traceback__
             sonst:
@@ -2042,7 +2042,7 @@ klasse ImportTracebackTests(unittest.TestCase):
 
     @unittest.skipUnless(TESTFN_UNENCODABLE, 'need TESTFN_UNENCODABLE')
     def test_unencodable_filename(self):
-        # Issue #11619: The Python parser and the import machinery must not
+        # Issue #11619: The Python parser and the importiere machinery must not
         # encode filenames, especially on Windows
         pyname = script_helper.make_script('', TESTFN_UNENCODABLE, 'pass')
         self.addCleanup(unlink, pyname)
@@ -2065,44 +2065,44 @@ klasse CircularImportTests(unittest.TestCase):
 
     def test_direct(self):
         try:
-            import test.test_import.data.circular_imports.basic
+            importiere test.test_import.data.circular_imports.basic
         except ImportError:
-            self.fail('circular import through relative imports failed')
+            self.fail('circular importiere through relative imports failed')
 
     def test_indirect(self):
         try:
-            import test.test_import.data.circular_imports.indirect
+            importiere test.test_import.data.circular_imports.indirect
         except ImportError:
-            self.fail('relative import in module contributing to circular '
+            self.fail('relative importiere in module contributing to circular '
                       'import failed')
 
     def test_subpackage(self):
         try:
-            import test.test_import.data.circular_imports.subpackage
+            importiere test.test_import.data.circular_imports.subpackage
         except ImportError:
-            self.fail('circular import involving a subpackage failed')
+            self.fail('circular importiere involving a subpackage failed')
 
     def test_rebinding(self):
         try:
-            import test.test_import.data.circular_imports.rebinding as rebinding
+            importiere test.test_import.data.circular_imports.rebinding as rebinding
         except ImportError:
-            self.fail('circular import with rebinding of module attribute failed')
-        from test.test_import.data.circular_imports.subpkg import util
+            self.fail('circular importiere with rebinding of module attribute failed')
+        von test.test_import.data.circular_imports.subpkg importiere util
         self.assertIs(util.util, rebinding.util)
 
     def test_binding(self):
         try:
-            import test.test_import.data.circular_imports.binding
+            importiere test.test_import.data.circular_imports.binding
         except ImportError:
-            self.fail('circular import with binding a submodule to a name failed')
+            self.fail('circular importiere with binding a submodule to a name failed')
 
     def test_crossreference1(self):
-        import test.test_import.data.circular_imports.use
-        import test.test_import.data.circular_imports.source
+        importiere test.test_import.data.circular_imports.use
+        importiere test.test_import.data.circular_imports.source
 
     def test_crossreference2(self):
         with self.assertRaises(AttributeError) as cm:
-            import test.test_import.data.circular_imports.source
+            importiere test.test_import.data.circular_imports.source
         errmsg = str(cm.exception)
         self.assertIn('test.test_import.data.circular_imports.source', errmsg)
         self.assertIn('spam', errmsg)
@@ -2111,9 +2111,9 @@ klasse CircularImportTests(unittest.TestCase):
 
     def test_circular_from_import(self):
         with self.assertRaises(ImportError) as cm:
-            import test.test_import.data.circular_imports.from_cycle1
+            importiere test.test_import.data.circular_imports.from_cycle1
         self.assertIn(
-            "cannot import name 'b' from partially initialized module "
+            "cannot importiere name 'b' von partially initialized module "
             "'test.test_import.data.circular_imports.from_cycle1' "
             "(most likely due to a circular import)",
             str(cm.exception),
@@ -2125,11 +2125,11 @@ klasse CircularImportTests(unittest.TestCase):
             r"partially initialized module 'test.test_import.data.circular_imports.import_cycle' "
             r"from '.*' has no attribute 'some_attribute' \(most likely due to a circular import\)"
         ):
-            import test.test_import.data.circular_imports.import_cycle
+            importiere test.test_import.data.circular_imports.import_cycle
 
     def test_absolute_circular_submodule(self):
         with self.assertRaises(AttributeError) as cm:
-            import test.test_import.data.circular_imports.subpkg2.parent
+            importiere test.test_import.data.circular_imports.subpkg2.parent
         self.assertIn(
             "cannot access submodule 'parent' of module "
             "'test.test_import.data.circular_imports.subpkg2' "
@@ -2143,7 +2143,7 @@ klasse CircularImportTests(unittest.TestCase):
         """Regression test fuer gh-123950
 
         Import a single-phase-init module that imports itself
-        from the PyInit_* function (before it's added to sys.modules).
+        von the PyInit_* function (before it's added to sys.modules).
         Manages its own cache (which is `static`, and so incompatible
         with multiple interpreters or interpreter reset).
         """
@@ -2152,7 +2152,7 @@ klasse CircularImportTests(unittest.TestCase):
         with uncache(name, helper_name):
             filename = _testsinglephase.__file__
             # We don't put the module in sys.modules: that the *inner*
-            # import should do that.
+            # importiere should do that.
             mod = import_extension_from_file(name, filename,
                                              put_in_sys_modules=Falsch)
 
@@ -2172,9 +2172,9 @@ klasse CircularImportTests(unittest.TestCase):
         self.addCleanup(unload, "test.test_import.data.unwritable")
         self.addCleanup(unload, "test.test_import.data.unwritable.x")
 
-        import test.test_import.data.unwritable as unwritable
+        importiere test.test_import.data.unwritable as unwritable
         with self.assertWarns(ImportWarning):
-            from test.test_import.data.unwritable import x
+            von test.test_import.data.unwritable importiere x
 
         self.assertNotEqual(type(unwritable), ModuleType)
         self.assertEqual(type(x), ModuleType)
@@ -2211,7 +2211,7 @@ klasse SubinterpImportTests(unittest.TestCase):
         override_text = ''
         wenn check_override is not Nichts:
             override_text = f'''
-                import _imp
+                importiere _imp
                 _imp._override_multi_interp_extensions_check({check_override})
                 '''
         wenn filename:
@@ -2223,9 +2223,9 @@ klasse SubinterpImportTests(unittest.TestCase):
                 loader = "ExtensionFileLoader"
 
             return textwrap.dedent(f'''
-                from importlib.util import spec_from_loader, module_from_spec
-                from importlib.machinery import {loader}
-                import os, sys
+                von importlib.util importiere spec_from_loader, module_from_spec
+                von importlib.machinery importiere {loader}
+                importiere os, sys
                 {override_text}
                 loader = {loader}({name!r}, {filename!r})
                 spec = spec_from_loader({name!r}, loader)
@@ -2240,10 +2240,10 @@ klasse SubinterpImportTests(unittest.TestCase):
                 ''')
         sonst:
             return textwrap.dedent(f'''
-                import os, sys
+                importiere os, sys
                 {override_text}
                 try:
-                    import {name}
+                    importiere {name}
                 except ImportError as exc:
                     text = 'ImportError: ' + str(exc)
                 sonst:
@@ -2300,8 +2300,8 @@ klasse SubinterpImportTests(unittest.TestCase):
         self.assertEqual(out, b'okay')
 
     def check_incompatible_here(self, name, filename=Nichts, *, isolated=Falsch):
-        # Differences from check_compatible_here():
-        #  * verify that import fails
+        # Differences von check_compatible_here():
+        #  * verify that importiere fails
         #  * "strict" is always Wahr
         out = self.run_here(name, filename,
                             check_singlephase_setting=Wahr,
@@ -2313,7 +2313,7 @@ klasse SubinterpImportTests(unittest.TestCase):
         )
 
     def check_compatible_fresh(self, name, *, strict=Falsch, isolated=Falsch):
-        # Differences from check_compatible_here():
+        # Differences von check_compatible_here():
         #  * subinterpreter in a new process
         #  * module has never been imported before in that process
         #  * this tests importing the module fuer the first time
@@ -2326,7 +2326,7 @@ klasse SubinterpImportTests(unittest.TestCase):
         kwargs['gil'] = 'default' wenn gil == 0 sonst (
             'shared' wenn gil == 1 sonst 'own' wenn gil == 2 sonst gil)
         _, out, err = script_helper.assert_python_ok('-c', textwrap.dedent(f'''
-            import _testinternalcapi, sys
+            importiere _testinternalcapi, sys
             assert (
                 {name!r} in sys.builtin_module_names or
                 {name!r} not in sys.modules
@@ -2342,8 +2342,8 @@ klasse SubinterpImportTests(unittest.TestCase):
         self.assertEqual(out, b'okay')
 
     def check_incompatible_fresh(self, name, *, isolated=Falsch):
-        # Differences from check_compatible_fresh():
-        #  * verify that import fails
+        # Differences von check_compatible_fresh():
+        #  * verify that importiere fails
         #  * "strict" is always Wahr
         kwargs = dict(
             **self.RUN_KWARGS,
@@ -2354,7 +2354,7 @@ klasse SubinterpImportTests(unittest.TestCase):
         kwargs['gil'] = 'default' wenn gil == 0 sonst (
             'shared' wenn gil == 1 sonst 'own' wenn gil == 2 sonst gil)
         _, out, err = script_helper.assert_python_ok('-c', textwrap.dedent(f'''
-            import _testinternalcapi, sys
+            importiere _testinternalcapi, sys
             assert {name!r} not in sys.modules, {name!r}
             config = type(sys.implementation)(**{kwargs})
             ret = _testinternalcapi.run_in_subinterp_with_config(
@@ -2527,7 +2527,7 @@ klasse SubinterpImportTests(unittest.TestCase):
     def test_disallowed_reimport(self):
         # See https://github.com/python/cpython/issues/104621.
         script = textwrap.dedent('''
-            import _testsinglephase
+            importiere _testsinglephase
             drucke(_testsinglephase)
             ''')
         interpid = _interpreters.create()
@@ -2543,7 +2543,7 @@ klasse SubinterpImportTests(unittest.TestCase):
 klasse TestSinglePhaseSnapshot(ModuleSnapshot):
     """A representation of a single-phase init module fuer testing.
 
-    Fields from ModuleSnapshot:
+    Fields von ModuleSnapshot:
 
     * id - id(mod)
     * module - mod or a SimpleNamespace with __file__ & __spec__
@@ -2560,12 +2560,12 @@ klasse TestSinglePhaseSnapshot(ModuleSnapshot):
     * state_initialized - the result of calling "mod.state_initialized()"
     * init_count - (optional) the result of calling "mod.initialized_count()"
 
-    Overridden methods from ModuleSnapshot:
+    Overridden methods von ModuleSnapshot:
 
     * from_module()
     * parse()
 
-    Other methods from ModuleSnapshot:
+    Other methods von ModuleSnapshot:
 
     * build_script()
     * from_subinterp()
@@ -2627,7 +2627,7 @@ klasse TestSinglePhaseSnapshot(ModuleSnapshot):
     * already loaded
        * (same as initial load except fuer ns and state_initialized)
        * ns: matches the initial load, incl. IDs of contained objects
-       * state_initialized: no change from initial load
+       * state_initialized: no change von initial load
 
     For _testsinglephase_with_reinit:
 
@@ -2740,8 +2740,8 @@ klasse SinglephaseInitTests(unittest.TestCase):
         """
         Load an extension module.
         """
-        # This is essentially copied from the old imp module.
-        from importlib._bootstrap import _load
+        # This is essentially copied von the old imp module.
+        von importlib._bootstrap importiere _load
         loader = self.LOADER(name, path)
 
         # Issue bpo-24748: Skip the sys.modules check in _load_module_shim;
@@ -2786,8 +2786,8 @@ klasse SinglephaseInitTests(unittest.TestCase):
                 pass
         self.addCleanup(ensure_destroyed)
         _interpreters.exec(interpid, textwrap.dedent('''
-            import sys
-            import _testinternalcapi
+            importiere sys
+            importiere _testinternalcapi
             '''))
         def clean_up():
             _interpreters.exec(interpid, textwrap.dedent(f'''
@@ -2843,7 +2843,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
 
         mod = loaded.module
         wenn not mod:
-            # It came from a subinterpreter.
+            # It came von a subinterpreter.
             isolated = Wahr
             mod = loaded.snapshot.module
         # mod.__name__  might not match, but the spec will.
@@ -2910,7 +2910,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         # _PyRuntime.imports.extensions was set.
         self.assertEqual(snap.init_count, 1)
         # The global state was initialized.
-        # The module attrs were initialized from that state.
+        # The module attrs were initialized von that state.
         self.assertEqual(snap.module._module_initialized,
                          snap.state_initialized)
 
@@ -2928,7 +2928,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         self.assertNotEqual(snap.id, prev.snapshot.id)
         self.assertEqual(snap.init_count, prev.snapshot.init_count + 1)
         # The global state was updated.
-        # The module attrs were initialized from that state.
+        # The module attrs were initialized von that state.
         self.assertEqual(snap.module._module_initialized,
                          snap.state_initialized)
         self.assertNotEqual(snap.state_initialized,
@@ -2948,7 +2948,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         self.assertNotEqual(snap.id, base.snapshot.id)
         self.assertEqual(snap.init_count, base.snapshot.init_count)
         # The global state was not updated since the init func did not run.
-        # The module attrs were not directly initialized from that state.
+        # The module attrs were not directly initialized von that state.
         # The state and module attrs still match the previous loading.
         self.assertEqual(snap.module._module_initialized,
                          snap.state_initialized)
@@ -3187,7 +3187,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         #  * alive in 1 interpreter (main)
         #  * module def in _PyRuntime.imports.extensions
         #  * mod init func ran fuer the first time (since reset, at least)
-        #  * m_copy was copied from the main interpreter (was NULL)
+        #  * m_copy was copied von the main interpreter (was NULL)
         #  * module's global state was initialized
 
         # Use an interpreter that gets destroyed right away.
@@ -3200,7 +3200,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         #  * module def still in _PyRuntime.imports.extensions
         #  * mod init func ran again
         #  * m_copy is NULL (cleared when the interpreter was destroyed)
-        #    (was from main interpreter)
+        #    (was von main interpreter)
         #  * module's global state was updated, not reset
 
         # Use a subinterpreter that sticks around.
@@ -3212,7 +3212,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         #  * alive in 2 interpreters (main, interp1)
         #  * module def still in _PyRuntime.imports.extensions
         #  * mod init func ran again
-        #  * m_copy was copied from interp1
+        #  * m_copy was copied von interp1
         #  * module's global state was updated, not reset
 
         # Use a subinterpreter while the previous one is still alive.
@@ -3224,7 +3224,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         #  * alive in 3 interpreters (main, interp1, interp2)
         #  * module def still in _PyRuntime.imports.extensions
         #  * mod init func ran again
-        #  * m_copy was copied from interp2 (was from interp1)
+        #  * m_copy was copied von interp2 (was von interp1)
         #  * module's global state was updated, not reset
 
     @no_rerun(reason="rerun not possible; module state is never cleared (see gh-102251)")
@@ -3346,7 +3346,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         #  * alive in 1 interpreter (interp1)
         #  * module def still in _PyRuntime.imports.extensions
         #  * mod init func ran again
-        #  * m_copy was copied from interp1 (was NULL)
+        #  * m_copy was copied von interp1 (was NULL)
         #  * module's global state was initialized, not reset
 
         # Use a subinterpreter while the previous one is still alive.
@@ -3358,7 +3358,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         #  * alive in 2 interpreters (interp2, interp2)
         #  * module def still in _PyRuntime.imports.extensions
         #  * mod init func ran again
-        #  * m_copy was copied from interp2 (was from interp1)
+        #  * m_copy was copied von interp2 (was von interp1)
         #  * module's global state was initialized, not reset
 
 

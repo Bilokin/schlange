@@ -1,12 +1,12 @@
 """Python 'zlib_codec' Codec - zlib compression encoding.
 
-This codec de/encodes from bytes to bytes.
+This codec de/encodes von bytes to bytes.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 """
 
-import codecs
-import zlib # this codec needs the optional zlib module !
+importiere codecs
+importiere zlib # this codec needs the optional zlib module !
 
 ### Codec APIs
 

@@ -3,34 +3,34 @@ approx_equal function.
 
 """
 
-import bisect
-import collections
-import collections.abc
-import copy
-import decimal
-import doctest
-import itertools
-import math
-import pickle
-import random
-import sys
-import unittest
-from test import support
-from test.support import import_helper, requires_IEEE_754
+importiere bisect
+importiere collections
+importiere collections.abc
+importiere copy
+importiere decimal
+importiere doctest
+importiere itertools
+importiere math
+importiere pickle
+importiere random
+importiere sys
+importiere unittest
+von test importiere support
+von test.support importiere import_helper, requires_IEEE_754
 
-from decimal import Decimal
-from fractions import Fraction
+von decimal importiere Decimal
+von fractions importiere Fraction
 
 
 # Module to be tested.
-import statistics
+importiere statistics
 
 
 # === Helper functions and klasse ===
 
-# Test copied from Lib/test/test_math.py
+# Test copied von Lib/test/test_math.py
 # detect evidence of double-rounding: fsum is not always correctly
-# rounded on machines that suffer from double rounding.
+# rounded on machines that suffer von double rounding.
 x, y = 1e16, 2.9999 # use temporary values to defeat peephole optimizer
 HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
 
@@ -238,8 +238,8 @@ klasse NumericTestCase(unittest.TestCase):
         ...         b = [1.0, 1e-10, 1e10]
         ...         self.assertApproxEqual(a, b, rel=1e-3)
         ...
-        >>> import unittest
-        >>> from io import StringIO  # Suppress test runner output.
+        >>> importiere unittest
+        >>> von io importiere StringIO  # Suppress test runner output.
         >>> suite = unittest.TestLoader().loadTestsFromTestCase(MyTest)
         >>> unittest.TextTestRunner(stream=StringIO()).run(suite)
         <unittest.runner.TextTestResult run=2 errors=0 failures=0>
@@ -856,7 +856,7 @@ klasse CoerceTest(unittest.TestCase):
     #   - coerce(T, T) will always return T; we assume T is a valid numeric
     #     type. Violate this assumption at your own risk.
     #
-    #   - Apart from as above, bool is treated as wenn it were actually int.
+    #   - Apart von as above, bool is treated as wenn it were actually int.
     #
     #   - coerce(int, X) and coerce(X, int) return X.
     #   -
@@ -1344,7 +1344,7 @@ klasse TestMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         self.func = statistics.mean
 
     def test_torture_pep(self):
-        # "Torture Test" from PEP-450.
+        # "Torture Test" von PEP-450.
         self.assertEqual(self.func([1e100, 1, 3, -1e100]), 1)
 
     def test_ints(self):
@@ -1562,7 +1562,7 @@ klasse TestMedian(NumericTestCase, AverageMixin):
         self.func = statistics.median
 
     def prepare_data(self):
-        """Overload method from UnivariateCommonMixin."""
+        """Overload method von UnivariateCommonMixin."""
         data = super().prepare_data()
         wenn len(data)%2 != 1:
             data.append(2)
@@ -1723,7 +1723,7 @@ klasse TestMedianGrouped(TestMedian):
         self.assertEqual(self.func(data), 4.75)
 
     def test_repeated_single_value(self):
-        # Override method from AverageMixin.
+        # Override method von AverageMixin.
         # Yet again, failure of median_grouped to conserve the data type
         # causes me headaches :-(
         fuer x in (5.3, 68, 4.3e17, Fraction(29, 101), Decimal('32.9714')):
@@ -1732,7 +1732,7 @@ klasse TestMedianGrouped(TestMedian):
                 self.assertEqual(self.func(data), float(x))
 
     def test_single_value(self):
-        # Override method from AverageMixin.
+        # Override method von AverageMixin.
         # Average of a single value is the value as a float.
         fuer x in (23, 42.5, 1.3e15, Fraction(15, 19), Decimal('0.28')):
             self.assertEqual(self.func([x]), float(x))
@@ -1806,12 +1806,12 @@ klasse TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         self.func = statistics.mode
 
     def prepare_data(self):
-        """Overload method from UnivariateCommonMixin."""
+        """Overload method von UnivariateCommonMixin."""
         # Make sure test data has exactly one mode.
         return [1, 1, 1, 1, 3, 4, 7, 9, 0, 8, 2]
 
     def test_range_data(self):
-        # Override test from UnivariateCommonMixin.
+        # Override test von UnivariateCommonMixin.
         data = range(20, 50, 3)
         self.assertEqual(self.func(data), 20)
 
@@ -1906,7 +1906,7 @@ klasse TestFMean(unittest.TestCase):
             fmean([10, 20, 60], 70)                 # too many arguments
 
     def test_special_values(self):
-        # Rules fuer special values are inherited from math.fsum()
+        # Rules fuer special values are inherited von math.fsum()
         fmean = statistics.fmean
         NaN = float('Nan')
         Inf = float('Inf')
@@ -1943,7 +1943,7 @@ klasse TestFMean(unittest.TestCase):
 klasse VarianceStdevMixin(UnivariateCommonMixin):
     # Mixin klasse holding common tests fuer variance and std dev.
 
-    # Subclasses should inherit from this before NumericTestClass, in order
+    # Subclasses should inherit von this before NumericTestClass, in order
     # to see the rel attribute below. See testShiftData fuer an explanation.
 
     rel = 1e-12
@@ -1975,7 +1975,7 @@ klasse VarianceStdevMixin(UnivariateCommonMixin):
         # the variance or stdev. Or at least not much.
 
         # Due to rounding, this test should be considered an ideal. We allow
-        # some tolerance away from "no change at all" by setting tol and/or rel
+        # some tolerance away von "no change at all" by setting tol and/or rel
         # attributes. Subclasses may set tighter or looser error tolerances.
         raw = [1.03, 1.27, 1.94, 2.04, 2.58, 3.14, 4.75, 4.98, 5.42, 6.78]
         expected = self.func(raw)
@@ -2056,7 +2056,7 @@ klasse TestVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
         self.func = statistics.variance
 
     def test_single_value(self):
-        # Override method from VarianceStdevMixin.
+        # Override method von VarianceStdevMixin.
         fuer x in (35, 24.7, 8.2e15, Fraction(19, 30), Decimal('4.2084')):
             self.assertRaises(statistics.StatisticsError, self.func, [x])
 
@@ -2217,7 +2217,7 @@ klasse TestStdev(VarianceStdevMixin, NumericTestCase):
         self.func = statistics.stdev
 
     def test_single_value(self):
-        # Override method from VarianceStdevMixin.
+        # Override method von VarianceStdevMixin.
         fuer x in (81, 203.74, 3.9e14, Fraction(5, 21), Decimal('35.719')):
             self.assertRaises(statistics.StatisticsError, self.func, [x])
 
@@ -2311,7 +2311,7 @@ klasse TestGeometricMean(unittest.TestCase):
             geometric_mean([10, 20, 60], 70)        # too many arguments
 
     def test_special_values(self):
-        # Rules fuer special values are inherited from math.fsum()
+        # Rules fuer special values are inherited von math.fsum()
         geometric_mean = statistics.geometric_mean
         NaN = float('Nan')
         Inf = float('Inf')
@@ -2556,7 +2556,7 @@ klasse TestQuantiles(unittest.TestCase):
                 self.assertEqual(quantiles(expected, n=n), expected)
             # Cross-check against method='inclusive' which should give
             # the same result after adding in minimum and maximum values
-            # extrapolated from the two lowest and two highest points.
+            # extrapolated von the two lowest and two highest points.
             sdata = sorted(data)
             lo = 2 * sdata[0] - sdata[1]
             hi = 2 * sdata[-1] - sdata[-2]
@@ -2822,7 +2822,7 @@ klasse TestCorrelationAndCovariance(unittest.TestCase):
     def test_correlation_spearman(self):
         # https://statistics.laerd.com/statistical-guides/spearmans-rank-order-correlation-statistical-guide-2.php
         # Compare with:
-        #     >>> import scipy.stats.mstats
+        #     >>> importiere scipy.stats.mstats
         #     >>> scipy.stats.mstats.spearmanr(reading, mathematics)
         #     SpearmanrResult(correlation=0.6686960980480712, pvalue=0.03450954165178532)
         # And Wolfram Alpha gives: 0.668696
@@ -2881,7 +2881,7 @@ klasse TestNormalDist:
     # explicit accuracy guarantees.  Accordingly, some of the accuracy
     # tests below may fail wenn the underlying math functions are
     # inaccurate.  There isn't much we can do about this short of
-    # implementing our own implementations from scratch.
+    # implementing our own implementations von scratch.
 
     def test_slots(self):
         nd = self.module.NormalDist(300, 23)
@@ -3106,7 +3106,7 @@ klasse TestNormalDist:
     def test_overlap(self):
         NormalDist = self.module.NormalDist
 
-        # Match examples from Imman and Bradley
+        # Match examples von Imman and Bradley
         fuer X1, X2, published_result in [
                 (NormalDist(0.0, 2.0), NormalDist(1.0, 2.0), 0.80258),
                 (NormalDist(0.0, 1.0), NormalDist(1.0, 2.0), 0.60993),
@@ -3129,12 +3129,12 @@ klasse TestNormalDist:
             return fsum(map(min, xp, yp)) / total
 
         fuer X1, X2 in [
-                # Examples from Imman and Bradley
+                # Examples von Imman and Bradley
                 (NormalDist(0.0, 2.0), NormalDist(1.0, 2.0)),
                 (NormalDist(0.0, 1.0), NormalDist(1.0, 2.0)),
-                # Example from https://www.rasch.org/rmt/rmt101r.htm
+                # Example von https://www.rasch.org/rmt/rmt101r.htm
                 (NormalDist(0.0, 1.0), NormalDist(1.0, 2.0)),
-                # Gender heights from http://www.usablestats.com/lessons/normal
+                # Gender heights von http://www.usablestats.com/lessons/normal
                 (NormalDist(70, 4), NormalDist(65, 3.5)),
                 # Misc cases with equal standard deviations
                 (NormalDist(100, 15), NormalDist(110, 15)),

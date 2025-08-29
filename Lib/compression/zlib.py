@@ -1,5 +1,5 @@
-import zlib
+importiere zlib
 __doc__ = zlib.__doc__
 del zlib
 
-from zlib import *
+von zlib importiere *

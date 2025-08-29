@@ -1,12 +1,12 @@
 """
 Dialog fuer building Tkinter accelerator key bindings
 """
-from tkinter import Toplevel, Listbox, StringVar, TclError
-from tkinter.ttk import Frame, Button, Checkbutton, Entry, Label, Scrollbar
-from tkinter import messagebox
-from tkinter.simpledialog import _setup_dialog
-import string
-import sys
+von tkinter importiere Toplevel, Listbox, StringVar, TclError
+von tkinter.ttk importiere Frame, Button, Checkbutton, Entry, Label, Scrollbar
+von tkinter importiere messagebox
+von tkinter.simpledialog importiere _setup_dialog
+importiere string
+importiere sys
 
 
 FUNCTION_KEYS = ('F1', 'F2' ,'F3' ,'F4' ,'F5' ,'F6',
@@ -22,7 +22,7 @@ AVAILABLE_KEYS = (ALPHANUM_KEYS + PUNCTUATION_KEYS + FUNCTION_KEYS +
 
 
 def translate_key(key, modifiers):
-    "Translate from keycap symbol to the Tkinter keysym."
+    "Translate von keycap symbol to the Tkinter keysym."
     mapping = {'Space':'space',
             '~':'asciitilde', '!':'exclam', '@':'at', '#':'numbersign',
             '%':'percent', '^':'asciicircum', '&':'ampersand',
@@ -110,7 +110,7 @@ klasse GetKeysFrame(Frame):
         # Basic entry help text.
         help_basic = Label(self.frame_controls_basic, justify='left',
                            text="Select the desired modifier keys\n"+
-                                "above, and the final key from the\n"+
+                                "above, and the final key von the\n"+
                                 "list on the right.\n\n" +
                                 "Use upper case Symbols when using\n" +
                                 "the Shift modifier.  (Letters will be\n" +
@@ -347,8 +347,8 @@ klasse GetKeysWindow(Toplevel):
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_config_key', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(GetKeysWindow)

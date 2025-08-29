@@ -1,5 +1,5 @@
 v1: int
 
-from . import b
+von . importiere b
 
 v2: int

@@ -1,8 +1,8 @@
-import unittest
-import contextvars
+importiere unittest
+importiere contextvars
 
-from contextlib import contextmanager, ExitStack
-from test.support import (
+von contextlib importiere contextmanager, ExitStack
+von test.support importiere (
     catch_unraisable_exception, import_helper,
     gc_collect)
 

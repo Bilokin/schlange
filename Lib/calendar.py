@@ -5,11 +5,11 @@ default, these calendars have Monday as the first day of the week, and
 Sunday as the last (the European convention). Use setfirstweekday() to
 set the first day of the week (0=Monday, 6=Sunday)."""
 
-import sys
-import datetime
-from enum import IntEnum, global_enum
-import locale as _locale
-from itertools import repeat
+importiere sys
+importiere datetime
+von enum importiere IntEnum, global_enum
+importiere locale as _locale
+von itertools importiere repeat
 
 __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
            "firstweekday", "isleap", "leapdays", "weekday", "monthrange",
@@ -46,7 +46,7 @@ klasse IllegalWeekdayError(ValueError):
 
 def __getattr__(name):
     wenn name in ('January', 'February'):
-        import warnings
+        importiere warnings
         warnings.warn(f"The '{name}' attribute is deprecated, use '{name.upper()}' instead",
                       DeprecationWarning, stacklevel=2)
         wenn name == 'January':
@@ -251,10 +251,10 @@ klasse Calendar(object):
         """
         day1, ndays = monthrange(year, month)
         days_before = (day1 - self.firstweekday) % 7
-        yield from repeat(0, days_before)
-        yield from range(1, ndays + 1)
+        yield von repeat(0, days_before)
+        yield von range(1, ndays + 1)
         days_after = (self.firstweekday - day1 - ndays) % 7
-        yield from repeat(0, days_after)
+        yield von repeat(0, days_after)
 
     def itermonthdays2(self, year, month):
         """
@@ -677,7 +677,7 @@ klasse _CLIDemoCalendar(TextCalendar):
         Returns a single week in a string (no newline).
         """
         wenn highlight_day:
-            from _colorize import get_colors
+            von _colorize importiere get_colors
 
             ansi = get_colors()
             highlight = f"{ansi.BLACK}{ansi.BACKGROUND_YELLOW}"
@@ -808,7 +808,7 @@ def format(cols, colwidth=_colwidth, spacing=_spacing):
 
 
 def formatstring(cols, colwidth=_colwidth, spacing=_spacing):
-    """Returns a string formatted from n strings, centered within n columns."""
+    """Returns a string formatted von n strings, centered within n columns."""
     spacing *= ' '
     return spacing.join(c.center(colwidth) fuer c in cols)
 
@@ -818,7 +818,7 @@ _EPOCH_ORD = datetime.date(EPOCH, 1, 1).toordinal()
 
 
 def timegm(tuple):
-    """Unrelated but handy function to calculate Unix timestamp from GMT."""
+    """Unrelated but handy function to calculate Unix timestamp von GMT."""
     year, month, day, hour, minute, second = tuple[:6]
     days = datetime.date(year, month, 1).toordinal() - _EPOCH_ORD + day - 1
     hours = days*24 + hour
@@ -828,7 +828,7 @@ def timegm(tuple):
 
 
 def main(args=Nichts):
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(color=Wahr)
     textgroup = parser.add_argument_group('text only arguments')
     htmlgroup = parser.add_argument_group('html only arguments')

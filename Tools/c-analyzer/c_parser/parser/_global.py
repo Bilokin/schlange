@@ -1,15 +1,15 @@
-import re
+importiere re
 
-from ._regexes import (
+von ._regexes importiere (
     GLOBAL as _GLOBAL,
 )
-from ._common import (
+von ._common importiere (
     log_match,
     parse_var_decl,
     set_capture_groups,
 )
-from ._compound_decl_body import DECL_BODY_PARSERS
-from ._func_body import parse_function_statics as parse_function_body
+von ._compound_decl_body importiere DECL_BODY_PARSERS
+von ._func_body importiere parse_function_statics as parse_function_body
 
 
 GLOBAL = set_capture_groups(_GLOBAL, (
@@ -43,7 +43,7 @@ def parse_globals(source, anon_name):
         fuer item in _parse_next(m, srcinfo, anon_name):
             wenn callable(item):
                 parse_body = item
-                yield from parse_body(source)
+                yield von parse_body(source)
             sonst:
                 yield item
     sonst:
@@ -150,7 +150,7 @@ def _parse_next(m, srcinfo, anon_name):
 
         wenn func_delim == '{' or func_legacy_params:
             def parse_body(source):
-                yield from parse_function_body(source, name, anon_name)
+                yield von parse_function_body(source, name, anon_name)
             yield parse_body
 
     sowenn var_ending:

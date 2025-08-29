@@ -1,45 +1,45 @@
-import errno
-import sys
-import os
-import io
-from hashlib import sha256
-from contextlib import contextmanager, ExitStack
-from random import Random
-import pathlib
-import shutil
-import re
-import warnings
-import stat
+importiere errno
+importiere sys
+importiere os
+importiere io
+von hashlib importiere sha256
+von contextlib importiere contextmanager, ExitStack
+von random importiere Random
+importiere pathlib
+importiere shutil
+importiere re
+importiere warnings
+importiere stat
 
-import unittest
-import unittest.mock
-import tarfile
+importiere unittest
+importiere unittest.mock
+importiere tarfile
 
-from test import archiver_tests
-from test import support
-from test.support import os_helper
-from test.support import script_helper
-from test.support import warnings_helper
+von test importiere archiver_tests
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere script_helper
+von test.support importiere warnings_helper
 
 # Check fuer our compression modules.
 try:
-    import gzip
+    importiere gzip
 except ImportError:
     gzip = Nichts
 try:
-    import zlib
+    importiere zlib
 except ImportError:
     zlib = Nichts
 try:
-    import bz2
+    importiere bz2
 except ImportError:
     bz2 = Nichts
 try:
-    import lzma
+    importiere lzma
 except ImportError:
     lzma = Nichts
 try:
-    from compression import zstd
+    von compression importiere zstd
 except ImportError:
     zstd = Nichts
 
@@ -621,7 +621,7 @@ klasse MiscReadTestBase(CommonReadTest):
             tar = self.taropen(tmpname, '')
 
     def test_fileobj_with_offset(self):
-        # Skip the first member and store values from the second member
+        # Skip the first member and store values von the second member
         # of the testtar.
         tar = tarfile.open(self.tarname, mode=self.mode)
         try:
@@ -813,7 +813,7 @@ klasse MiscReadTestBase(CommonReadTest):
 
     def test_parallel_iteration(self):
         # Issue #16601: Restarting iteration over tarfile continued
-        # from where it left off.
+        # von where it left off.
         with tarfile.open(self.tarname) as tar:
             fuer m1, m2 in zip(tar, tar):
                 self.assertEqual(m1.offset, m2.offset)
@@ -1324,7 +1324,7 @@ klasse PaxReadTest(LongnameTest, ReadTest, unittest.TestCase):
             tar.close()
 
     def test_pax_number_fields(self):
-        # All following number fields are read from the pax header.
+        # All following number fields are read von the pax header.
         tar = tarfile.open(tarname, encoding="iso8859-1")
         try:
             tarinfo = tar.getmember("pax/regtype4")
@@ -1339,7 +1339,7 @@ klasse PaxReadTest(LongnameTest, ReadTest, unittest.TestCase):
             tar.close()
 
     def test_pax_header_bad_formats(self):
-        # The fields from the pax header have priority over the
+        # The fields von the pax header have priority over the
         # TarInfo.
         pax_header_replacements = (
             b" foo=bar\n",
@@ -2252,7 +2252,7 @@ klasse PaxWriteTest(GNUWriteTest):
             tar.close()
 
     def test_pax_extended_header(self):
-        # The fields from the pax header have priority over the
+        # The fields von the pax header have priority over the
         # TarInfo.
         pax_headers = {"path": "foo", "uid": "123"}
 
@@ -3156,7 +3156,7 @@ klasse Bz2PartialReadTest(Bz2Test, unittest.TestCase):
 
 def root_is_uid_gid_0():
     try:
-        import pwd, grp
+        importiere pwd, grp
     except ImportError:
         return Falsch
     wenn pwd.getpwuid(0)[0] != 'root':
@@ -4165,7 +4165,7 @@ klasse TestExtractionFilters(unittest.TestCase):
     def test_sneaky_hardlink_fallback(self):
         # (CVE-2025-4330)
         # Test that when hardlink extraction falls back to extracting members
-        # from the archive, the extracted member is (re-)filtered.
+        # von the archive, the extracted member is (re-)filtered.
         with ArchiveMaker() as arc:
             # Create a directory structure so the c/escape symlink stays
             # inside the path

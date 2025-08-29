@@ -1,13 +1,13 @@
-import pathlib
-import functools
+importiere pathlib
+importiere functools
 
-from typing import Dict, Union
-from typing import runtime_checkable
-from typing import Protocol
+von typing importiere Dict, Union
+von typing importiere runtime_checkable
+von typing importiere Protocol
 
 
 ####
-# from jaraco.path 3.7.1
+# von jaraco.path 3.7.1
 
 
 klasse Symlink(str):
@@ -90,5 +90,5 @@ def _(content: Symlink, path):
     path.symlink_to(content)
 
 
-# end from jaraco.path
+# end von jaraco.path
 ####

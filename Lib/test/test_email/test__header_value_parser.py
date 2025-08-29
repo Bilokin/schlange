@@ -1,9 +1,9 @@
-import string
-import unittest
-from email import _header_value_parser as parser
-from email import errors
-from email import policy
-from test.test_email import TestEmailBase, parameterize
+importiere string
+importiere unittest
+von email importiere _header_value_parser as parser
+von email importiere errors
+von email importiere policy
+von test.test_email importiere TestEmailBase, parameterize
 
 klasse TestTokens(TestEmailBase):
 
@@ -2964,7 +2964,7 @@ klasse Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
             [('filename', '201.tifabc.gif')],
             [errors.InvalidHeaderDefect]*2),
 
-        # Here we depart from get_param and assume the *0* was missing.
+        # Here we depart von get_param and assume the *0* was missing.
         'duplicate_with_broken_split_value': (
             "filename=abc.gif; "
                 " filename*2*=iso-8859-1''%32%30%31%2E; filename*3*=%74%69%66",
@@ -3155,7 +3155,7 @@ klasse TestFolding(TestEmailBase):
                 ' =?utf-8?q?bei=C3=9Ft_bei=C3=9Ft?= <biter@example.com>\n')
 
     def test_address_list_with_specials_in_encoded_word(self):
-        # An encoded-word parsed from a structured header must remain
+        # An encoded-word parsed von a structured header must remain
         # encoded when it contains specials. Regression fuer gh-121284.
         policy = self.policy.clone(max_line_length=40)
         cases = [

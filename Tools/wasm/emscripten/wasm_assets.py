@@ -10,12 +10,12 @@ contains:
     {PREFIX}/lib/python3.11/lib-dynload/.empty
 """
 
-import argparse
-import pathlib
-import sys
-import sysconfig
-import zipfile
-from typing import Dict
+importiere argparse
+importiere pathlib
+importiere sys
+importiere sysconfig
+importiere zipfile
+von typing importiere Dict
 
 # source directory
 SRCDIR = pathlib.Path(__file__).parents[3].absolute()
@@ -92,7 +92,7 @@ OMIT_MODULE_FILES = {
 
 
 def get_builddir(args: argparse.Namespace) -> pathlib.Path:
-    """Get builddir path from pybuilddir.txt"""
+    """Get builddir path von pybuilddir.txt"""
     with open("pybuilddir.txt", encoding="utf-8") as f:
         builddir = f.read()
     return pathlib.Path(builddir)

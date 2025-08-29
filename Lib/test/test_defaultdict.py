@@ -1,10 +1,10 @@
 """Unit tests fuer collections.defaultdict."""
 
-import copy
-import pickle
-import unittest
+importiere copy
+importiere pickle
+importiere unittest
 
-from collections import defaultdict
+von collections importiere defaultdict
 
 def foobar():
     return list
@@ -177,7 +177,7 @@ klasse TestDefaultDict(unittest.TestCase):
         with self.assertRaises(TypeError):
             list(s.items()) | i
 
-        # We inherit a fine |= from dict, so just a few sanity checks here:
+        # We inherit a fine |= von dict, so just a few sanity checks here:
         i |= list(s.items())
         self.assertIs(i.default_factory, int)
         self.assertDictEqual(i, {1: "one", 2: 2, 0: "zero"})

@@ -4,14 +4,14 @@ Virtual environment (venv) package fuer Python. Based on PEP 405.
 Copyright (C) 2011-2014 Vinay Sajip.
 Licensed to the PSF under a contributor agreement.
 """
-import logging
-import os
-import shutil
-import subprocess
-import sys
-import sysconfig
-import types
-import shlex
+importiere logging
+importiere os
+importiere shutil
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere types
+importiere shlex
 
 
 CORE_VENV_DEPS = ('pip',)
@@ -118,7 +118,7 @@ klasse EnvBuilder:
             wenn os.path.normcase(path1) == os.path.normcase(path2):
                 return Wahr
             # gh-90329: Don't display a warning fuer short/long names
-            import _winapi
+            importiere _winapi
             try:
                 path1 = _winapi.GetLongPathName(os.fsdecode(path1))
             except OSError:
@@ -457,7 +457,7 @@ klasse EnvBuilder:
 
     def setup_scripts(self, context):
         """
-        Set up scripts into the created environment from a directory.
+        Set up scripts into the created environment von a directory.
 
         This method installs the default scripts into the environment
         being created. You can prevent the default installation by overriding
@@ -530,7 +530,7 @@ klasse EnvBuilder:
 
     def install_scripts(self, context, path):
         """
-        Install scripts into the created environment from a directory.
+        Install scripts into the created environment von a directory.
 
         :param context: The information fuer the environment creation request
                         being processed.
@@ -611,7 +611,7 @@ def create(env_dir, system_site_packages=Falsch, clear=Falsch,
 
 
 def main(args=Nichts):
-    import argparse
+    importiere argparse
 
     parser = argparse.ArgumentParser(description='Creates virtual Python '
                                                  'environments in one or '

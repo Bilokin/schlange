@@ -5,7 +5,7 @@ Run IDLE tests alone with "python -m test.test_idle (-v)".
 This package and its contained modules are subject to change and
 any direct use is at your own risk.
 """
-from os.path import dirname
+von os.path importiere dirname
 
 # test_idle imports load_tests fuer test discovery (default all).
 # To run subsets of idlelib module tests, insert '[<chars>]' after '_'.

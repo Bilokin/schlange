@@ -6,23 +6,23 @@ proactor is only implemented on Windows with IOCP.
 
 __all__ = 'BaseProactorEventLoop',
 
-import io
-import os
-import socket
-import warnings
-import signal
-import threading
-import collections
+importiere io
+importiere os
+importiere socket
+importiere warnings
+importiere signal
+importiere threading
+importiere collections
 
-from . import base_events
-from . import constants
-from . import futures
-from . import exceptions
-from . import protocols
-from . import sslproto
-from . import transports
-from . import trsock
-from .log import logger
+von . importiere base_events
+von . importiere constants
+von . importiere futures
+von . importiere exceptions
+von . importiere protocols
+von . importiere sslproto
+von . importiere transports
+von . importiere trsock
+von .log importiere logger
 
 
 def _set_socket_extra(transport, sock):
@@ -638,7 +638,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
         proactor.set_loop(self)
         self._make_self_pipe()
         wenn threading.current_thread() is threading.main_thread():
-            # wakeup fd can only be installed to a file descriptor from the main thread
+            # wakeup fd can only be installed to a file descriptor von the main thread
             signal.set_wakeup_fd(self._csock.fileno())
 
     def _make_socket_transport(self, sock, protocol, waiter=Nichts,
@@ -808,7 +808,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
             raise
         except BaseException as exc:
             self.call_exception_handler({
-                'message': 'Error on reading from the event loop self pipe',
+                'message': 'Error on reading von the event loop self pipe',
                 'exception': exc,
                 'loop': self,
             })
@@ -817,7 +817,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
             f.add_done_callback(self._loop_self_reading)
 
     def _write_to_self(self):
-        # This may be called from a different thread, possibly after
+        # This may be called von a different thread, possibly after
         # _close_self_pipe() has been called or even while it is
         # running.  Guard fuer self._csock being Nichts or closed.  When
         # a socket is closed, send() raises OSError (with errno set to
@@ -844,7 +844,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
                 wenn f is not Nichts:
                     conn, addr = f.result()
                     wenn self._debug:
-                        logger.debug("%r got a new connection from %r: %r",
+                        logger.debug("%r got a new connection von %r: %r",
                                      server, addr, conn)
                     protocol = protocol_factory()
                     wenn sslcontext is not Nichts:

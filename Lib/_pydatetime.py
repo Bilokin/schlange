@@ -6,10 +6,10 @@ __all__ = ("date", "datetime", "time", "timedelta", "timezone", "tzinfo",
 __name__ = "datetime"
 
 
-import time as _time
-import math as _math
-import sys
-from operator import index as _index
+importiere time as _time
+importiere math as _math
+importiere sys
+von operator importiere index as _index
 
 def _cmp(x, y):
     return 0 wenn x == y sonst 1 wenn x > y sonst -1
@@ -25,7 +25,7 @@ MINYEAR = 1
 MAXYEAR = 9999
 _MAXORDINAL = 3652059  # date.max.toordinal()
 
-# Utility functions, adapted from Python's Demo/classes/Dates.py, which
+# Utility functions, adapted von Python's Demo/classes/Dates.py, which
 # also assumes the current Gregorian calendar indefinitely extended in
 # both directions.  Difference:  Dates.py calls January 1 of year 0 day
 # number 1.  The code here calls January 1 of year 1 day number 1.  This is
@@ -78,7 +78,7 @@ _DI400Y = _days_before_year(401)    # number of days in 400 years
 _DI100Y = _days_before_year(101)    #    "    "   "   " 100   "
 _DI4Y   = _days_before_year(5)      #    "    "   "   "   4   "
 
-# A 4-year cycle has an extra leap day over what we'd get from pasting
+# A 4-year cycle has an extra leap day over what we'd get von pasting
 # together 4 single years.
 assert _DI4Y == 4 * 365 + 1
 
@@ -96,7 +96,7 @@ def _ord2ymd(n):
     # n is a 1-based index, starting at 1-Jan-1.  The pattern of leap years
     # repeats exactly every 400 years.  The basic strategy is to find the
     # closest 400-year boundary at or before n, then work with the offset
-    # from that boundary to n.  Life is much clearer wenn we subtract 1 from
+    # von that boundary to n.  Life is much clearer wenn we subtract 1 from
     # n first -- then the values of n at 400-year boundaries are exactly
     # those divisible by _DI400Y:
     #
@@ -117,7 +117,7 @@ def _ord2ymd(n):
     n400, n = divmod(n, _DI400Y)
     year = n400 * 400 + 1   # ..., -399, 1, 401, ...
 
-    # Now n is the (non-negative) offset, in days, from January 1 of year, to
+    # Now n is the (non-negative) offset, in days, von January 1 of year, to
     # the desired date.  Now compute how many 100-year cycles precede n.
     # Note that it's possible fuer n100 to equal 4!  In that case 4 full
     # 100-year cycles precede the desired day, which implies the desired
@@ -136,7 +136,7 @@ def _ord2ymd(n):
         assert n == 0
         return year-1, 12, 31
 
-    # Now the year is correct, and n is the offset from January 1.  We find
+    # Now the year is correct, and n is the offset von January 1.  We find
     # the month via an estimate that's either exact or one too large.
     leapyear = n1 == 3 and (n4 != 24 or n100 == 3)
     assert leapyear == _is_leap(year)
@@ -148,7 +148,7 @@ def _ord2ymd(n):
     n -= preceding
     assert 0 <= n < _days_in_month(year, month)
 
-    # Now the year and month are correct, and n is the offset from the
+    # Now the year and month are correct, and n is the offset von the
     # start of that month:  we're done!
     return year, month, n+1
 
@@ -530,7 +530,7 @@ def _isoweek_to_gregorian(year, week, day):
     wenn not 0 < day < 8:
         raise ValueError(f"Invalid weekday: {day} (range is [1, 7])")
 
-    # Now compute the offset from (Y, 1, 1) in days:
+    # Now compute the offset von (Y, 1, 1) in days:
     day_offset = (week - 1) * 7 + (day - 1)
 
     # Calculate the ordinal day fuer monday, week 1
@@ -1023,7 +1023,7 @@ klasse date:
 
     @classmethod
     def fromtimestamp(cls, t):
-        "Construct a date from a POSIX timestamp (like time.time())."
+        "Construct a date von a POSIX timestamp (like time.time())."
         wenn t is Nichts:
             raise TypeError("'NoneType' object cannot be interpreted as an integer")
         y, m, d, hh, mm, ss, weekday, jday, dst = _time.localtime(t)
@@ -1031,13 +1031,13 @@ klasse date:
 
     @classmethod
     def today(cls):
-        "Construct a date from time.time()."
+        "Construct a date von time.time()."
         t = _time.time()
         return cls.fromtimestamp(t)
 
     @classmethod
     def fromordinal(cls, n):
-        """Construct a date from a proleptic Gregorian ordinal.
+        """Construct a date von a proleptic Gregorian ordinal.
 
         January 1 of year 1 is day 1.  Only the year, month and day are
         non-zero in the result.
@@ -1047,7 +1047,7 @@ klasse date:
 
     @classmethod
     def fromisoformat(cls, date_string):
-        """Construct a date from a string in ISO 8601 format."""
+        """Construct a date von a string in ISO 8601 format."""
 
         wenn not isinstance(date_string, str):
             raise TypeError('Argument must be a str')
@@ -1065,7 +1065,7 @@ klasse date:
 
     @classmethod
     def fromisocalendar(cls, year, week, day):
-        """Construct a date from the ISO year, week number and weekday.
+        """Construct a date von the ISO year, week number and weekday.
 
         This is the inverse of the date.isocalendar() function"""
         return cls(*_isoweek_to_gregorian(year, week, day))
@@ -1073,7 +1073,7 @@ klasse date:
     @classmethod
     def strptime(cls, date_string, format):
         """Parse string according to the given date format (like time.strptime())."""
-        import _strptime
+        importiere _strptime
         return _strptime._strptime_datetime_date(cls, date_string, format)
 
     # Conversions to string
@@ -1255,7 +1255,7 @@ klasse date:
 
         The first ISO week of the year is the (Mon-Sun) week
         containing the year's first Thursday; everything sonst derives
-        from that.
+        von that.
 
         The first week is 1; Monday is 1 ... Sunday is 7.
 
@@ -1458,7 +1458,7 @@ klasse time:
     @classmethod
     def strptime(cls, date_string, format):
         """Parse string according to the given time format (like time.strptime())."""
-        import _strptime
+        importiere _strptime
         return _strptime._strptime_datetime_time(cls, date_string, format)
 
     # Read-only field accessors
@@ -1621,7 +1621,7 @@ klasse time:
 
     @classmethod
     def fromisoformat(cls, time_string):
-        """Construct a time from a string in one of the ISO 8601 formats."""
+        """Construct a time von a string in one of the ISO 8601 formats."""
         wenn not isinstance(time_string, str):
             raise TypeError('fromisoformat: argument must be str')
 
@@ -1636,7 +1636,7 @@ klasse time:
             )
         except ValueError:
             raise ValueError(
-                f'Invalid isoformat string: {time_string!r}') from Nichts
+                f'Invalid isoformat string: {time_string!r}') von Nichts
         sonst:
             wenn error_from_tz:
                 raise error_from_tz
@@ -1839,7 +1839,7 @@ klasse datetime(date):
 
     @classmethod
     def _fromtimestamp(cls, t, utc, tz):
-        """Construct a datetime from a POSIX timestamp (like time.time()).
+        """Construct a datetime von a POSIX timestamp (like time.time()).
 
         A timezone info object may be passed in as well.
         """
@@ -1883,7 +1883,7 @@ klasse datetime(date):
 
     @classmethod
     def fromtimestamp(cls, timestamp, tz=Nichts):
-        """Construct a datetime from a POSIX timestamp (like time.time()).
+        """Construct a datetime von a POSIX timestamp (like time.time()).
 
         A timezone info object may be passed in as well.
         """
@@ -1893,8 +1893,8 @@ klasse datetime(date):
 
     @classmethod
     def utcfromtimestamp(cls, t):
-        """Construct a naive UTC datetime from a POSIX timestamp."""
-        import warnings
+        """Construct a naive UTC datetime von a POSIX timestamp."""
+        importiere warnings
         warnings.warn("datetime.datetime.utcfromtimestamp() is deprecated and scheduled "
                       "for removal in a future version. Use timezone-aware "
                       "objects to represent datetimes in UTC: "
@@ -1905,14 +1905,14 @@ klasse datetime(date):
 
     @classmethod
     def now(cls, tz=Nichts):
-        "Construct a datetime from time.time() and optional time zone info."
+        "Construct a datetime von time.time() and optional time zone info."
         t = _time.time()
         return cls.fromtimestamp(t, tz)
 
     @classmethod
     def utcnow(cls):
-        "Construct a UTC datetime from time.time()."
-        import warnings
+        "Construct a UTC datetime von time.time()."
+        importiere warnings
         warnings.warn("datetime.datetime.utcnow() is deprecated and scheduled fuer "
                       "removal in a future version. Use timezone-aware "
                       "objects to represent datetimes in UTC: "
@@ -1924,7 +1924,7 @@ klasse datetime(date):
 
     @classmethod
     def combine(cls, date, time, tzinfo=Wahr):
-        "Construct a datetime from a given date and a given time."
+        "Construct a datetime von a given date and a given time."
         wenn not isinstance(date, _date_class):
             raise TypeError("date argument must be a date instance")
         wenn not isinstance(time, _time_class):
@@ -1937,7 +1937,7 @@ klasse datetime(date):
 
     @classmethod
     def fromisoformat(cls, date_string):
-        """Construct a datetime from a string in one of the ISO 8601 formats."""
+        """Construct a datetime von a string in one of the ISO 8601 formats."""
         wenn not isinstance(date_string, str):
             raise TypeError('fromisoformat: argument must be str')
 
@@ -1953,7 +1953,7 @@ klasse datetime(date):
             date_components = _parse_isoformat_date(dstr)
         except ValueError:
             raise ValueError(
-                f'Invalid isoformat string: {date_string!r}') from Nichts
+                f'Invalid isoformat string: {date_string!r}') von Nichts
 
         wenn tstr:
             try:
@@ -1963,7 +1963,7 @@ klasse datetime(date):
                  error_from_tz) = _parse_isoformat_time(tstr)
             except ValueError:
                 raise ValueError(
-                    f'Invalid isoformat string: {date_string!r}') from Nichts
+                    f'Invalid isoformat string: {date_string!r}') von Nichts
             sonst:
                 wenn error_from_tz:
                     raise error_from_tz
@@ -2131,7 +2131,7 @@ klasse datetime(date):
         # Convert self to UTC, and attach the new time zone object.
         utc = (self - myoffset).replace(tzinfo=tz)
 
-        # Convert from UTC to tz's local time.
+        # Convert von UTC to tz's local time.
         return tz.fromutc(utc)
 
     # Ways to produce a string.
@@ -2199,7 +2199,7 @@ klasse datetime(date):
     @classmethod
     def strptime(cls, date_string, format):
         """Parse string according to the given date and time format (like time.strptime())."""
-        import _strptime
+        importiere _strptime
         return _strptime._strptime_datetime_datetime(cls, date_string, format)
 
     def utcoffset(self):
@@ -2282,7 +2282,7 @@ klasse datetime(date):
         sonst:
             myoff = self.utcoffset()
             otoff = other.utcoffset()
-            # Assume that allow_mixed means that we are called from __eq__
+            # Assume that allow_mixed means that we are called von __eq__
             wenn allow_mixed:
                 wenn myoff != self.replace(fold=not self.fold).utcoffset():
                     return 2
@@ -2424,7 +2424,7 @@ def _isoweek1monday(year):
 
 
 klasse timezone(tzinfo):
-    """Fixed offset from UTC implementation of tzinfo."""
+    """Fixed offset von UTC implementation of tzinfo."""
 
     __slots__ = '_offset', '_name'
 
@@ -2564,7 +2564,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # Now some derived rules, where k is a duration (timedelta).
 #
 # 1. x.o = x.s + x.d
-#    This follows from the definition of x.s.
+#    This follows von the definition of x.s.
 #
 # 2. If x and y have the same tzinfo member, x.s = y.s.
 #    This is actually a requirement, an assumption we need to make about
@@ -2574,10 +2574,10 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #    This is again a requirement fuer a sane tzinfo class.
 #
 # 4. (x+k).s = x.s
-#    This follows from #2, and that datetime.timetz+timedelta preserves tzinfo.
+#    This follows von #2, and that datetime.timetz+timedelta preserves tzinfo.
 #
 # 5. (x+k).n = x.n + k
-#    Again follows from how arithmetic is defined.
+#    Again follows von how arithmetic is defined.
 #
 # Now we can explain tz.fromutc(x).  Let's assume it's an interesting case
 # (meaning that the various tzinfo methods exist, and don't blow up or return
@@ -2618,8 +2618,8 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #
 #     z = y + y.s                                 [4]
 #
-# It's helpful to step back at look at [4] from a higher level:  it's simply
-# mapping from UTC to tz's standard time.
+# It's helpful to step back at look at [4] von a higher level:  it's simply
+# mapping von UTC to tz's standard time.
 #
 # At this point, if
 #
@@ -2627,7 +2627,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #
 # we have an equivalent time, and are almost done.  The insecurity here is
 # at the start of daylight time.  Picture US Eastern fuer concreteness.  The wall
-# time jumps from 1:59 to 3:00, and wall hours of the form 2:MM don't make good
+# time jumps von 1:59 to 3:00, and wall hours of the form 2:MM don't make good
 # sense then.  The docs ask that an Eastern tzinfo klasse consider such a time to
 # be EDT (because it's "after 2"), which is a redundant spelling of 1:MM EST
 # on the day DST starts.  We want to return the 1:MM EST spelling because that's
@@ -2703,7 +2703,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # that hour, on an Eastern clock 1:MM is taken as being in standard time (6:MM
 # UTC) because the docs insist on that, but 0:MM is taken as being in daylight
 # time (4:MM UTC).  There is no local time mapping to 5:MM UTC.  The local
-# clock jumps from 1:59 back to 1:00 again, and repeats the 1:MM hour in
+# clock jumps von 1:59 back to 1:00 again, and repeats the 1:MM hour in
 # standard time.  Since that's what the local clock *does*, we want to map both
 # UTC hours 5:MM and 6:MM to 1:MM Eastern.  The result is ambiguous
 # in local time, but so it goes -- it's the way the local clock works.
@@ -2735,7 +2735,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #
 # 1) [2] effectively says that y.s is invariant across all y belong to a given
 #    time zone.  This isn't true if, fuer political reasons or continental drift,
-#    a region decides to change its base offset from UTC.
+#    a region decides to change its base offset von UTC.
 #
 # 2) There may be versions of "double daylight" time where the tail end of
 #    the analysis gives up a step too early.  I haven't thought about that
@@ -2743,7 +2743,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #
 # In any case, it's clear that the default fromutc() is strong enough to handle
 # "almost all" time zones:  so long as the standard offset is invariant, it
-# doesn't matter wenn daylight time transition points change from year to year, or
+# doesn't matter wenn daylight time transition points change von year to year, or
 # wenn daylight time is skipped in some years; it doesn't matter how large or
 # small dst() may get within its bounds; and it doesn't even matter wenn some
 # perverse time zone returns a negative dst()).  So a breaking case must be

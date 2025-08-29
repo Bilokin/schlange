@@ -1,15 +1,15 @@
-import importlib
-import pickle
-import threading
-from textwrap import dedent
-import unittest
+importiere importlib
+importiere pickle
+importiere threading
+von textwrap importiere dedent
+importiere unittest
 
-from test.support import import_helper, Py_DEBUG
+von test.support importiere import_helper, Py_DEBUG
 # Raise SkipTest wenn subinterpreters not supported.
 _queues = import_helper.import_module('_interpqueues')
-from concurrent import interpreters
-from concurrent.interpreters import _queues as queues, _crossinterp
-from .utils import _run_output, TestBase as _TestBase
+von concurrent importiere interpreters
+von concurrent.interpreters importiere _queues as queues, _crossinterp
+von .utils importiere _run_output, TestBase as _TestBase
 
 
 REPLACE = _crossinterp._UNBOUND_CONSTANT_TO_FLAG[_crossinterp.UNBOUND]
@@ -55,7 +55,7 @@ klasse LowLevelTests(TestBase):
         stdout, stderr = self.assert_python_ok(
             '-c',
             dedent(f"""
-                import {_queues.__name__} as _queues
+                importiere {_queues.__name__} as _queues
                 _queues.create(2, {REPLACE}, -1)
                 """),
         )
@@ -126,7 +126,7 @@ klasse QueueTests(TestBase):
 
         interp = interpreters.create()
         interp.exec(dedent(f"""
-            from concurrent.interpreters import _queues as queues
+            von concurrent.interpreters importiere _queues as queues
             queue1 = queues.Queue({queue1.id})
             """));
 
@@ -372,7 +372,7 @@ klasse TestQueueOps(TestBase):
     def test_put_get_same_interpreter(self):
         interp = interpreters.create()
         interp.exec(dedent("""
-            from concurrent.interpreters import _queues as queues
+            von concurrent.interpreters importiere _queues as queues
             queue = queues.create()
             """))
         fuer methname in ('get', 'get_nowait'):
@@ -399,7 +399,7 @@ klasse TestQueueOps(TestBase):
                 out = _run_output(
                     interp,
                     dedent(f"""
-                        from concurrent.interpreters import _queues as queues
+                        von concurrent.interpreters importiere _queues as queues
                         queue1 = queues.Queue({queue1.id})
                         queue2 = queues.Queue({queue2.id})
                         assert queue1.qsize() == 1, 'expected: queue1.qsize() == 1'
@@ -438,7 +438,7 @@ klasse TestQueueOps(TestBase):
             interp = interpreters.create()
 
             _run_output(interp, dedent(f"""
-                from concurrent.interpreters import _queues as queues
+                von concurrent.interpreters importiere _queues as queues
                 queue = queues.Queue({queue.id})
                 obj1 = b'spam'
                 obj2 = b'eggs'
@@ -516,7 +516,7 @@ klasse TestQueueOps(TestBase):
         queue = queues.create()
         interp = interpreters.create()
         _run_output(interp, dedent(f"""
-            from concurrent.interpreters import _queues as queues
+            von concurrent.interpreters importiere _queues as queues
             queue = queues.Queue({queue.id})
             queue.put(1, unbounditems=queues.UNBOUND)
             queue.put(2, unbounditems=queues.UNBOUND_ERROR)
@@ -552,14 +552,14 @@ klasse TestQueueOps(TestBase):
 
         queue.put(1)
         _run_output(interp1, dedent(f"""
-            from concurrent.interpreters import _queues as queues
+            von concurrent.interpreters importiere _queues as queues
             queue = queues.Queue({queue.id})
             obj1 = queue.get()
             queue.put(2, unbounditems=queues.UNBOUND)
             queue.put(obj1, unbounditems=queues.UNBOUND_REMOVE)
             """))
         _run_output(interp2, dedent(f"""
-            from concurrent.interpreters import _queues as queues
+            von concurrent.interpreters importiere _queues as queues
             queue = queues.Queue({queue.id})
             obj2 = queue.get()
             obj1 = queue.get()

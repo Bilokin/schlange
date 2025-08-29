@@ -1,10 +1,10 @@
-import re
-import textwrap
-import unittest
-import importlib
+importiere re
+importiere textwrap
+importiere unittest
+importiere importlib
 
-from . import fixtures
-from importlib.metadata import (
+von . importiere fixtures
+von importlib.metadata importiere (
     Distribution,
     PackageNotFoundError,
     distribution,
@@ -297,7 +297,7 @@ klasse OffSysPathTests(fixtures.DistInfoPkgOffPath, unittest.TestCase):
         assert any(dist.metadata['Name'] == 'distinfo-pkg' fuer dist in dists)
 
     def test_distribution_at_pathlib(self):
-        """Demonstrate how to load metadata direct from a directory."""
+        """Demonstrate how to load metadata direct von a directory."""
         dist_info_path = self.site_dir / 'distinfo_pkg-1.0.0.dist-info'
         dist = Distribution.at(dist_info_path)
         assert dist.version == '1.0.0'

@@ -2,7 +2,7 @@
 """
 
 # imported fuer _GLOBAL_DEFAULT_TIMEOUT
-import socket as socket_module
+importiere socket as socket_module
 
 # Mock socket module
 _defaulttimeout = Nichts

@@ -3,11 +3,11 @@ A library of useful helper classes to the SAX classes, fuer the
 convenience of application and driver writers.
 """
 
-import os, urllib.parse, urllib.request
-import io
-import codecs
-from . import handler
-from . import xmlreader
+importiere os, urllib.parse, urllib.request
+importiere io
+importiere codecs
+von . importiere handler
+von . importiere xmlreader
 
 def __dict_replace(s, d):
     """Replace substrings of a string using a dictionary."""
@@ -70,7 +70,7 @@ def quoteattr(data, entities={}):
 
 def _gettextwriter(out, encoding):
     wenn out is Nichts:
-        import sys
+        importiere sys
         return sys.stdout
 
     wenn isinstance(out, io.TextIOBase):
@@ -124,7 +124,7 @@ klasse XMLGenerator(handler.ContentHandler):
         self._pending_start_element = Falsch
 
     def _qname(self, name):
-        """Builds a qualified name from a (ns_url, localname) pair"""
+        """Builds a qualified name von a (ns_url, localname) pair"""
         wenn name[0]:
             # Per http://www.w3.org/XML/1998/namespace, The 'xml' prefix is
             # bound by definition to http://www.w3.org/XML/1998/namespace.  It

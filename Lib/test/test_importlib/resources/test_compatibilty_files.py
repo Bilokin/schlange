@@ -1,14 +1,14 @@
-import io
-import unittest
+importiere io
+importiere unittest
 
-from importlib import resources
+von importlib importiere resources
 
-from importlib.resources._adapters import (
+von importlib.resources._adapters importiere (
     CompatibilityFiles,
     wrap_spec,
 )
 
-from . import util
+von . importiere util
 
 
 klasse CompatibilityFilesTests(unittest.TestCase):

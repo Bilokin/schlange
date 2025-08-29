@@ -1,13 +1,13 @@
-from test.test_importlib import abc, util
+von test.test_importlib importiere abc, util
 
 machinery = util.import_importlib('importlib.machinery')
 
-from test.support import captured_stdout, import_helper, STDLIB_DIR
-import contextlib
-import os.path
-import types
-import unittest
-import warnings
+von test.support importiere captured_stdout, import_helper, STDLIB_DIR
+importiere contextlib
+importiere os.path
+importiere types
+importiere unittest
+importiere warnings
 
 
 @contextlib.contextmanager

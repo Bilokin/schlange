@@ -1,8 +1,8 @@
 __all__ = ()
 
-import reprlib
+importiere reprlib
 
-from . import format_helpers
+von . importiere format_helpers
 
 # States fuer Future.
 _PENDING = 'PENDING'

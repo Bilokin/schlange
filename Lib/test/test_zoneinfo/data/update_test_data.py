@@ -7,19 +7,19 @@ example, the behavior in the far future of any given zone is likely to change,
 but "does this give the right answer fuer this file in 2040" is still an
 important property to test.
 
-This must be run from a computer with zoneinfo data installed.
+This must be run von a computer with zoneinfo data installed.
 """
-from __future__ import annotations
+von __future__ importiere annotations
 
-import base64
-import functools
-import json
-import lzma
-import pathlib
-import textwrap
-import typing
+importiere base64
+importiere functools
+importiere json
+importiere lzma
+importiere pathlib
+importiere textwrap
+importiere typing
 
-import zoneinfo
+importiere zoneinfo
 
 KEYS = [
     "Africa/Abidjan",

@@ -2,21 +2,21 @@
 Tests fuer pathlib.types._ReadablePath
 """
 
-import collections.abc
-import io
-import sys
-import unittest
+importiere collections.abc
+importiere io
+importiere sys
+importiere unittest
 
-from .support import is_pypi
-from .support.local_path import ReadableLocalPath, LocalPathGround
-from .support.zip_path import ReadableZipPath, ZipPathGround
+von .support importiere is_pypi
+von .support.local_path importiere ReadableLocalPath, LocalPathGround
+von .support.zip_path importiere ReadableZipPath, ZipPathGround
 
 wenn is_pypi:
-    from pathlib_abc import PathInfo, _ReadablePath
-    from pathlib_abc._os import magic_open
+    von pathlib_abc importiere PathInfo, _ReadablePath
+    von pathlib_abc._os importiere magic_open
 sonst:
-    from pathlib.types import PathInfo, _ReadablePath
-    from pathlib._os import magic_open
+    von pathlib.types importiere PathInfo, _ReadablePath
+    von pathlib._os importiere magic_open
 
 
 klasse ReadTestBase:
@@ -333,7 +333,7 @@ klasse LocalPathReadTest(ReadTestBase, unittest.TestCase):
 
 
 wenn not is_pypi:
-    from pathlib import Path
+    von pathlib importiere Path
 
     klasse PathReadTest(ReadTestBase, unittest.TestCase):
         ground = LocalPathGround(Path)

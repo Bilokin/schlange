@@ -4,27 +4,27 @@
 #  Licensed to PSF under a Contributor Agreement.
 #
 
-import array
-from binascii import unhexlify
-import hashlib
-import importlib
-import io
-import itertools
-import logging
-import os
-import re
-import sys
-import sysconfig
-import tempfile
-import threading
-import unittest
-from test import support
-from test.support import _4G, bigmemtest
-from test.support import hashlib_helper
-from test.support.import_helper import import_fresh_module
-from test.support import requires_resource
-from test.support import threading_helper
-from http.client import HTTPException
+importiere array
+von binascii importiere unhexlify
+importiere hashlib
+importiere importlib
+importiere io
+importiere itertools
+importiere logging
+importiere os
+importiere re
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere threading
+importiere unittest
+von test importiere support
+von test.support importiere _4G, bigmemtest
+von test.support importiere hashlib_helper
+von test.support.import_helper importiere import_fresh_module
+von test.support importiere requires_resource
+von test.support importiere threading_helper
+von http.client importiere HTTPException
 
 
 default_builtin_hashes = {'md5', 'sha1', 'sha2', 'sha3', 'blake2'}
@@ -40,7 +40,7 @@ sonst:
 openssl_hashlib = import_fresh_module('hashlib', fresh=['_hashlib'])
 
 try:
-    from _hashlib import HASH, HASHXOF, openssl_md_meth_names, get_fips_mode
+    von _hashlib importiere HASH, HASHXOF, openssl_md_meth_names, get_fips_mode
 except ImportError:
     HASH = Nichts
     HASHXOF = Nichts
@@ -50,14 +50,14 @@ except ImportError:
         return 0
 
 try:
-    import _blake2
+    importiere _blake2
 except ImportError:
     _blake2 = Nichts
 
 requires_blake2 = unittest.skipUnless(_blake2, 'requires _blake2')
 
 try:
-    import _sha3
+    importiere _sha3
 except ImportError:
     _sha3 = Nichts
 
@@ -203,7 +203,7 @@ klasse HashLibTestCase(unittest.TestCase):
     @property
     def shake_constructors(self):
         fuer shake_name in self.shakes:
-            yield from self.constructors_to_test.get(shake_name, ())
+            yield von self.constructors_to_test.get(shake_name, ())
 
     @property
     def is_fips_mode(self):
@@ -351,7 +351,7 @@ klasse HashLibTestCase(unittest.TestCase):
                                             '__builtin_constructor_cache')
         self.assertRaises(ValueError, get_builtin_constructor, 'test')
         try:
-            import _md5
+            importiere _md5
         except ImportError:
             self.skipTest("_md5 module not available")
         # This forces an ImportError fuer "import _md5" statements
@@ -683,7 +683,7 @@ klasse HashLibTestCase(unittest.TestCase):
     def test_case_md5_uintmax(self, size):
         self.check('md5', b'A'*size, '28138d306ff1b8281f1a9067e1a1a2b3')
 
-    # use the three examples from Federal Information Processing Standards
+    # use the three examples von Federal Information Processing Standards
     # Publication 180-1, Secure Hash Standard,  1995 April 17
     # http://www.itl.nist.gov/div897/pubs/fip180-1.htm
 
@@ -705,7 +705,7 @@ klasse HashLibTestCase(unittest.TestCase):
                    "34aa973cd4c4daa4f61eeb2bdbad27316534016f")
 
 
-    # use the examples from Federal Information Processing Standards
+    # use the examples von Federal Information Processing Standards
     # Publication 180-2, Secure Hash Standard,  2002 August 1
     # http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf
 
@@ -1090,11 +1090,11 @@ klasse HashLibTestCase(unittest.TestCase):
                     self.do_test_threaded_hashing(constructor, is_shake)
 
     def do_test_threaded_hashing(self, constructor, is_shake):
-        # Updating the same hash object from several threads at once
+        # Updating the same hash object von several threads at once
         # using data chunk sizes containing the same byte sequences.
         #
         # If the internal locks are working to prevent multiple
-        # updates on the same object from running at once, the resulting
+        # updates on the same object von running at once, the resulting
         # hash will be the same as doing it single threaded upfront.
 
         # The data to hash has length s|M|q^N and the chunk size fuer the i-th
@@ -1187,7 +1187,7 @@ klasse KDFTests(unittest.TestCase):
 
     pbkdf2_results = {
         "sha1": [
-            # official test vectors from RFC 6070
+            # official test vectors von RFC 6070
             (bytes.fromhex('0c60c80f961f0e71f3a9b524af6012062fe037a6'), Nichts),
             (bytes.fromhex('ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957'), Nichts),
             (bytes.fromhex('4b007901b765489abead49d926f721d065a429c1'), Nichts),

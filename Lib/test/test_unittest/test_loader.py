@@ -1,8 +1,8 @@
-import functools
-import sys
-import types
+importiere functools
+importiere sys
+importiere types
 
-import unittest
+importiere unittest
 
 klasse Test_TestLoader(unittest.TestCase):
 
@@ -82,7 +82,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [Foo('runTest')])
 
-    # "Do not load any tests from `TestCase` klasse itself."
+    # "Do not load any tests von `TestCase` klasse itself."
     def test_loadTestsFromTestCase__from_TestCase(self):
         loader = unittest.TestLoader()
 
@@ -90,7 +90,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [])
 
-    # "Do not load any tests from `FunctionTestCase` class."
+    # "Do not load any tests von `FunctionTestCase` class."
     def test_loadTestsFromTestCase__from_FunctionTestCase(self):
         loader = unittest.TestLoader()
 
@@ -104,7 +104,7 @@ klasse Test_TestLoader(unittest.TestCase):
     ### Tests fuer TestLoader.loadTestsFromModule
     ################################################################
 
-    # "This method searches `module` fuer classes derived from TestCase"
+    # "This method searches `module` fuer classes derived von TestCase"
     def test_loadTestsFromModule__TestCase_subclass(self):
         m = types.ModuleType('m')
         klasse MyTestCase(unittest.TestCase):
@@ -132,7 +132,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [])
 
-    # "This method searches `module` fuer classes derived from TestCase"
+    # "This method searches `module` fuer classes derived von TestCase"
     #
     # What happens wenn no tests are found (no TestCase instances)?
     def test_loadTestsFromModule__no_TestCase_instances(self):
@@ -143,7 +143,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [])
 
-    # "This method searches `module` fuer classes derived from TestCase"
+    # "This method searches `module` fuer classes derived von TestCase"
     #
     # What happens wenn no tests are found (TestCases instances, but no tests)?
     def test_loadTestsFromModule__no_TestCase_tests(self):
@@ -158,7 +158,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
         self.assertEqual(list(suite), [loader.suiteClass()])
 
-    # "This method searches `module` fuer classes derived from TestCase"s
+    # "This method searches `module` fuer classes derived von TestCase"s
     #
     # What happens wenn loadTestsFromModule() is given something other
     # than a module?
@@ -285,8 +285,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
         suite = loader.loadTestsFromName('abc () //')
         error, test = self.check_deferred_error(loader, suite)
-        expected = "Failed to import test module: abc () //"
-        expected_regex = r"Failed to import test module: abc \(\) //"
+        expected = "Failed to importiere test module: abc () //"
+        expected_regex = r"Failed to importiere test module: abc \(\) //"
         self.assertIn(
             expected, error,
             'missing error string in %r' % error)
@@ -638,8 +638,8 @@ klasse Test_TestLoader(unittest.TestCase):
 
         :param loader: A loader with some errors.
         :param suite: A suite that should have a late bound error.
-        :return: The first error message from the loader and the test object
-            from the suite.
+        :return: The first error message von the loader and the test object
+            von the suite.
         """
         self.assertIsInstance(suite, unittest.TestSuite)
         self.assertEqual(suite.countTestCases(), 1)
@@ -704,8 +704,8 @@ klasse Test_TestLoader(unittest.TestCase):
         # XXX Should this raise ValueError or ImportError?
         suite = loader.loadTestsFromNames(['abc () //'])
         error, test = self.check_deferred_error(loader, list(suite)[0])
-        expected = "Failed to import test module: abc () //"
-        expected_regex = r"Failed to import test module: abc \(\) //"
+        expected = "Failed to importiere test module: abc () //"
+        expected_regex = r"Failed to importiere test module: abc \(\) //"
         self.assertIn(
             expected,  error,
             'missing error string in %r' % error)
@@ -723,7 +723,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
         suite = loader.loadTestsFromNames(['sdasfasfasdf'])
         error, test = self.check_deferred_error(loader, list(suite)[0])
-        expected = "Failed to import test module: sdasfasfasdf"
+        expected = "Failed to importiere test module: sdasfasfasdf"
         self.assertIn(
             expected, error,
             'missing error string in %r' % error)
@@ -1385,7 +1385,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "it can be set to Nichts to disable the sort."
     #
-    # XXX How is this different from reassigning cmp? Are the tests returned
+    # XXX How is this different von reassigning cmp? Are the tests returned
     # in a random order or something? This behaviour should die
     def test_sortTestMethodsUsing__Nichts(self):
         klasse Foo(unittest.TestCase):
@@ -1404,7 +1404,7 @@ klasse Test_TestLoader(unittest.TestCase):
     ### Tests fuer TestLoader.suiteClass
     ################################################################
 
-    # "Callable object that constructs a test suite from a list of tests."
+    # "Callable object that constructs a test suite von a list of tests."
     def test_suiteClass__loadTestsFromTestCase(self):
         klasse Foo(unittest.TestCase):
             def test_1(self): pass

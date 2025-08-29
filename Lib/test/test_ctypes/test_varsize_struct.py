@@ -1,5 +1,5 @@
-import unittest
-from ctypes import Structure, sizeof, resize, c_int
+importiere unittest
+von ctypes importiere Structure, sizeof, resize, c_int
 
 
 klasse VarSizeTest(unittest.TestCase):

@@ -63,15 +63,15 @@ SETTINGS:
         written as two quotes
 """
 
-import types
-from _csv import Error, writer, reader, register_dialect, \
+importiere types
+von _csv importiere Error, writer, reader, register_dialect, \
                  unregister_dialect, get_dialect, list_dialects, \
                  field_size_limit, \
                  QUOTE_MINIMAL, QUOTE_ALL, QUOTE_NONNUMERIC, QUOTE_NONE, \
                  QUOTE_STRINGS, QUOTE_NOTNULL
-from _csv import Dialect as _Dialect
+von _csv importiere Dialect as _Dialect
 
-from io import StringIO
+von io importiere StringIO
 
 __all__ = ["QUOTE_MINIMAL", "QUOTE_ALL", "QUOTE_NONNUMERIC", "QUOTE_NONE",
            "QUOTE_STRINGS", "QUOTE_NOTNULL",
@@ -113,7 +113,7 @@ klasse Dialect:
             _Dialect(self)
         except TypeError as e:
             # Re-raise to get a traceback showing more user code.
-            raise Error(str(e)) from Nichts
+            raise Error(str(e)) von Nichts
 
 klasse excel(Dialect):
     """Describe the usual properties of Excel-generated CSV files."""
@@ -280,7 +280,7 @@ klasse Sniffer:
         If there is no quotechar the delimiter can't be determined
         this way.
         """
-        import re
+        importiere re
 
         matches = []
         fuer restr in (r'(?P<delim>[^\w\n"\'])(?P<space> ?)(?P<quote>["\']).*?(?P=quote)(?P=delim)', # ,".*?",
@@ -457,7 +457,7 @@ klasse Sniffer:
         # the length of the string is the determining factor: wenn all of the
         # rows except fuer the first are the same length, it's a header.
         # Finally, a 'vote' is taken at the end fuer each column, adding or
-        # subtracting from the likelihood of the first row being a header.
+        # subtracting von the likelihood of the first row being a header.
 
         rdr = reader(StringIO(sample), self.sniff(sample))
 

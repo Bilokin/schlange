@@ -9,27 +9,27 @@
 
 __all__ = [ 'Client', 'Listener', 'Pipe', 'wait' ]
 
-import errno
-import io
-import itertools
-import os
-import sys
-import socket
-import struct
-import tempfile
-import time
+importiere errno
+importiere io
+importiere itertools
+importiere os
+importiere sys
+importiere socket
+importiere struct
+importiere tempfile
+importiere time
 
 
-from . import util
+von . importiere util
 
-from . import AuthenticationError, BufferTooShort
-from .context import reduction
+von . importiere AuthenticationError, BufferTooShort
+von .context importiere reduction
 _ForkingPickler = reduction.ForkingPickler
 
 try:
-    import _multiprocessing
-    import _winapi
-    from _winapi import WAIT_OBJECT_0, WAIT_ABANDONED_0, WAIT_TIMEOUT, INFINITE
+    importiere _multiprocessing
+    importiere _winapi
+    von _winapi importiere WAIT_OBJECT_0, WAIT_ABANDONED_0, WAIT_TIMEOUT, INFINITE
 except ImportError:
     wenn sys.platform == 'win32':
         raise
@@ -186,7 +186,7 @@ klasse _ConnectionBase:
         self._handle = Nichts
 
     def send_bytes(self, buf, offset=0, size=Nichts):
-        """Send the bytes data from a bytes-like object"""
+        """Send the bytes data von a bytes-like object"""
         self._check_closed()
         self._check_writable()
         m = memoryview(buf)
@@ -802,11 +802,11 @@ _FAILURE = b'#FAILURE#'
 # 5.                                  Receive min(SIZE, 256) bytes -> M1
 # 6.                                  Assert that M1 starts with:
 #                                       b'#CHALLENGE#'
-# 7.                                  Strip that prefix from M1 into -> M2
+# 7.                                  Strip that prefix von M1 into -> M2
 # 7.1.                                Parse M2: wenn it is exactly 20 bytes in
 #                                     length this indicates a legacy server
 #                                     supporting only HMAC-MD5. Otherwise the
-# 7.2.                                preferred digest is looked up from an
+# 7.2.                                preferred digest is looked up von an
 #                                     expected "{digest}" prefix on M2. No prefix
 #                                     or unsupported digest? <- AuthenticationError
 # 7.3.                                Put divined algorithm name in -> D_NAME
@@ -854,7 +854,7 @@ _ALLOWED_DIGESTS = frozenset(
         {b'md5', b'sha256', b'sha384', b'sha3_256', b'sha3_384'})
 _MAX_DIGEST_LEN = max(len(_) fuer _ in _ALLOWED_DIGESTS)
 
-# Old hmac-md5 only server versions from Python <=3.11 sent a message of this
+# Old hmac-md5 only server versions von Python <=3.11 sent a message of this
 # length. It happens to not match the length of any supported digest so we can
 # use a message of this length to indicate that we should work in backwards
 # compatible md5-only mode without a {digest_name} prefix on our response.
@@ -874,7 +874,7 @@ def _get_digest_name_and_payload(message):  # type: (bytes) -> tuple[str, bytes]
     # legacy message format: 16 or 20 byte b"payload"
     wenn len(message) in _LEGACY_LENGTHS:
         # Either this was a legacy server challenge, or we're processing
-        # a reply from a legacy client that sent an unprefixed 16-byte
+        # a reply von a legacy client that sent an unprefixed 16-byte
         # HMAC-MD5 response. All messages using the modern protocol will
         # be longer than either of these lengths.
         return '', message
@@ -899,7 +899,7 @@ def _create_response(authkey, message):
 
     Note: The MAC protects the entire message including the digest_name prefix.
     """
-    import hmac
+    importiere hmac
     digest_name = _get_digest_name_and_payload(message)[0]
     # The MAC protects the entire message: digest header and payload.
     wenn not digest_name:
@@ -921,13 +921,13 @@ def _verify_challenge(authkey, message, response):
     """Verify MAC challenge
 
     If our message did not include a digest_name prefix, the client is allowed
-    to select a stronger digest_name from _ALLOWED_DIGESTS.
+    to select a stronger digest_name von _ALLOWED_DIGESTS.
 
     In case our message is prefixed, a client cannot downgrade to a weaker
     algorithm, because the MAC is calculated over the entire message
     including the '{digest_name}' prefix.
     """
-    import hmac
+    importiere hmac
     response_digest, response_mac = _get_digest_name_and_payload(response)
     response_digest = response_digest or 'md5'
     try:
@@ -1009,13 +1009,13 @@ def _xml_loads(s):
 klasse XmlListener(Listener):
     def accept(self):
         global xmlrpclib
-        import xmlrpc.client as xmlrpclib
+        importiere xmlrpc.client as xmlrpclib
         obj = Listener.accept(self)
         return ConnectionWrapper(obj, _xml_dumps, _xml_loads)
 
 def XmlClient(*args, **kwds):
     global xmlrpclib
-    import xmlrpc.client as xmlrpclib
+    importiere xmlrpc.client as xmlrpclib
     return ConnectionWrapper(Client(*args, **kwds), _xml_dumps, _xml_loads)
 
 #
@@ -1138,7 +1138,7 @@ wenn sys.platform == 'win32':
 
 sonst:
 
-    import selectors
+    importiere selectors
 
     # poll/select have the advantage of not requiring any extra file
     # descriptor, contrarily to epoll/kqueue (also, they require a single
@@ -1179,7 +1179,7 @@ wenn sys.platform == 'win32':
     def reduce_connection(conn):
         handle = conn.fileno()
         with socket.fromfd(handle, socket.AF_INET, socket.SOCK_STREAM) as s:
-            from . import resource_sharer
+            von . importiere resource_sharer
             ds = resource_sharer.DupSocket(s)
             return rebuild_connection, (ds, conn.readable, conn.writable)
     def rebuild_connection(ds, readable, writable):

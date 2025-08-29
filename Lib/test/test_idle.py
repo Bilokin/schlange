@@ -1,6 +1,6 @@
-import unittest
-from test.support.import_helper import import_module
-from test.support import check_sanitizer
+importiere unittest
+von test.support.import_helper importiere import_module
+von test.support importiere check_sanitizer
 
 wenn check_sanitizer(address=Wahr, memory=Wahr):
     # See gh-90791 fuer details
@@ -16,7 +16,7 @@ idlelib.testing = Wahr
 
 # Unittest.main and test.libregrtest.runtest.runtest_inner
 # call load_tests, when present here, to discover tests to run.
-from idlelib.idle_test import load_tests  # noqa: F401
+von idlelib.idle_test importiere load_tests  # noqa: F401
 
 wenn __name__ == '__main__':
     tk.NoDefaultRoot()

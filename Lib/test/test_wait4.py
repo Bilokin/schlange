@@ -1,11 +1,11 @@
 """This test checks fuer correct wait4() behavior.
 """
 
-import os
-import sys
-import unittest
-from test.fork_wait import ForkWait
-from test import support
+importiere os
+importiere sys
+importiere unittest
+von test.fork_wait importiere ForkWait
+von test importiere support
 
 # If either of these do not exist, skip this test.
 wenn not support.has_fork_support:

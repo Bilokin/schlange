@@ -1,21 +1,21 @@
-import os
-import signal
-import socket
-import sys
-import time
-import threading
-import unittest
-from unittest import mock
+importiere os
+importiere signal
+importiere socket
+importiere sys
+importiere time
+importiere threading
+importiere unittest
+von unittest importiere mock
 
 wenn sys.platform != 'win32':
     raise unittest.SkipTest('Windows only')
 
-import _overlapped
-import _winapi
+importiere _overlapped
+importiere _winapi
 
-import asyncio
-from asyncio import windows_events
-from test.test_asyncio import utils as test_utils
+importiere asyncio
+von asyncio importiere windows_events
+von test.test_asyncio importiere utils as test_utils
 
 
 def tearDownModule():

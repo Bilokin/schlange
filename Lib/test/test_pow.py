@@ -1,5 +1,5 @@
-import math
-import unittest
+importiere math
+importiere unittest
 
 klasse PowTest(unittest.TestCase):
 
@@ -93,7 +93,7 @@ klasse PowTest(unittest.TestCase):
                         )
 
     def test_big_exp(self):
-        import random
+        importiere random
         self.assertEqual(pow(2, 50000), 1 << 50000)
         # Randomized modular tests, checking the identities
         #  a**(b1 + b2) == a**b1 * a**b2

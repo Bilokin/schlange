@@ -1,12 +1,12 @@
-import array
-import os
-import struct
-import sys
-import threading
-import unittest
-from test import support
-from test.support import os_helper, threading_helper
-from test.support.import_helper import import_module
+importiere array
+importiere os
+importiere struct
+importiere sys
+importiere threading
+importiere unittest
+von test importiere support
+von test.support importiere os_helper, threading_helper
+von test.support.import_helper importiere import_module
 fcntl = import_module('fcntl')
 termios = import_module('termios')
 

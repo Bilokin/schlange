@@ -1,11 +1,11 @@
-import re
-import textwrap
-import unittest
+importiere re
+importiere textwrap
+importiere unittest
 
 
-from test import support
-from test.support import import_helper, requires_subprocess
-from test.support.script_helper import assert_python_failure, assert_python_ok
+von test importiere support
+von test.support importiere import_helper, requires_subprocess
+von test.support.script_helper importiere assert_python_failure, assert_python_ok
 
 
 # Skip this test wenn the _testcapi and _testinternalcapi extensions are not
@@ -91,7 +91,7 @@ klasse PyMemDebugTests(unittest.TestCase):
 
     def check_pyobject_is_freed(self, func_name):
         code = textwrap.dedent(f'''
-            import gc, os, sys, _testinternalcapi
+            importiere gc, os, sys, _testinternalcapi
             # Disable the GC to avoid crash on GC collection
             gc.disable()
             _testinternalcapi.{func_name}()
@@ -122,7 +122,7 @@ klasse PyMemDebugTests(unittest.TestCase):
     @unittest.skipIf(support.Py_TRACE_REFS, 'cannot test Py_TRACE_REFS build')
     def test_set_nomemory(self):
         code = """if 1:
-            import _testcapi
+            importiere _testcapi
 
             klasse C(): pass
 

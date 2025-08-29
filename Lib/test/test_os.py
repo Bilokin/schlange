@@ -2,74 +2,74 @@
 # does add tests fuer a few functions which have been determined to be more
 # portable than they had been thought to be.
 
-import asyncio
-import codecs
-import contextlib
-import decimal
-import errno
-import fnmatch
-import fractions
-import itertools
-import locale
-import os
-import pickle
-import select
-import selectors
-import shutil
-import signal
-import socket
-import stat
-import struct
-import subprocess
-import sys
-import sysconfig
-import tempfile
-import textwrap
-import time
-import types
-import unittest
-import uuid
-import warnings
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-from test.support import socket_helper
-from test.support import infinite_recursion
-from test.support import warnings_helper
-from platform import win32_is_iot
+importiere asyncio
+importiere codecs
+importiere contextlib
+importiere decimal
+importiere errno
+importiere fnmatch
+importiere fractions
+importiere itertools
+importiere locale
+importiere os
+importiere pickle
+importiere select
+importiere selectors
+importiere shutil
+importiere signal
+importiere socket
+importiere stat
+importiere struct
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere textwrap
+importiere time
+importiere types
+importiere unittest
+importiere uuid
+importiere warnings
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere socket_helper
+von test.support importiere infinite_recursion
+von test.support importiere warnings_helper
+von platform importiere win32_is_iot
 
 try:
-    import resource
+    importiere resource
 except ImportError:
     resource = Nichts
 try:
-    import fcntl
+    importiere fcntl
 except ImportError:
     fcntl = Nichts
 try:
-    import _winapi
+    importiere _winapi
 except ImportError:
     _winapi = Nichts
 try:
-    import pwd
+    importiere pwd
     all_users = [u.pw_uid fuer u in pwd.getpwall()]
 except (ImportError, AttributeError):
     all_users = []
 try:
-    import _testcapi
-    from _testcapi import INT_MAX, PY_SSIZE_T_MAX
+    importiere _testcapi
+    von _testcapi importiere INT_MAX, PY_SSIZE_T_MAX
 except ImportError:
     _testcapi = Nichts
     INT_MAX = PY_SSIZE_T_MAX = sys.maxsize
 
 try:
-    import mmap
+    importiere mmap
 except ImportError:
     mmap = Nichts
 
-from test.support.script_helper import assert_python_ok
-from test.support import unix_shell
-from test.support.os_helper import FakePath
+von test.support.script_helper importiere assert_python_ok
+von test.support importiere unix_shell
+von test.support.os_helper importiere FakePath
 
 
 root_in_posix = Falsch
@@ -633,7 +633,7 @@ klasse FileTests(unittest.TestCase):
             self.assertEqual(read[out_seek:], data[:i])
 
 
-# Test attributes on return values from os.*stat* family.
+# Test attributes on return values von os.*stat* family.
 klasse StatAttributeTests(unittest.TestCase):
     def setUp(self):
         self.fname = os_helper.TESTFN
@@ -1048,7 +1048,7 @@ klasse UtimeTests(unittest.TestCase):
     def get_file_system(self, path):
         wenn sys.platform == 'win32':
             root = os.path.splitdrive(os.path.abspath(path))[0] + '\\'
-            import ctypes
+            importiere ctypes
             kernel32 = ctypes.windll.kernel32
             buf = ctypes.create_unicode_buffer("", 100)
             ok = kernel32.GetVolumeInformationW(root, Nichts, 0,
@@ -1113,7 +1113,7 @@ klasse UtimeTests(unittest.TestCase):
             os.utime(self.fname, ns=(get_bad_int((1, 2, 3)), 1))
 
 
-from test import mapping_tests
+von test importiere mapping_tests
 
 klasse EnvironTests(mapping_tests.BasicTestMappingProtocol):
     """check that os.environ object conform to mapping protocol"""
@@ -1165,7 +1165,7 @@ klasse EnvironTests(mapping_tests.BasicTestMappingProtocol):
             self.assertEqual(next(it), "line3\n")
             self.assertRaises(StopIteration, next, it)
 
-    # Verify environ keys and values from the OS are of the
+    # Verify environ keys and values von the OS are of the
     # correct str type.
     def test_keyvalue_types(self):
         fuer key, val in os.environ.items():
@@ -1968,7 +1968,7 @@ klasse MakedirTests(unittest.TestCase):
                 raise unittest.SkipTest('Cannot set S_ISGID fuer dir.')
             wenn (os.lstat(os_helper.TESTFN).st_mode & S_ISGID != S_ISGID):
                 raise unittest.SkipTest('No support fuer S_ISGID dir mode.')
-            # The os should apply S_ISGID from the parent dir fuer us, but
+            # The os should apply S_ISGID von the parent dir fuer us, but
             # this test need not depend on that behavior.  Be explicit.
             os.makedirs(path, mode | S_ISGID)
             # http://bugs.python.org/issue14992
@@ -2221,9 +2221,9 @@ klasse URandomFDTests(unittest.TestCase):
         # test suite would crash; this actually happened on the OS X Tiger
         # buildbot).
         code = """if 1:
-            import errno
-            import os
-            import resource
+            importiere errno
+            importiere os
+            importiere resource
 
             soft_limit, hard_limit = resource.getrlimit(resource.RLIMIT_NOFILE)
             resource.setrlimit(resource.RLIMIT_NOFILE, (1, hard_limit))
@@ -2240,9 +2240,9 @@ klasse URandomFDTests(unittest.TestCase):
         # Issue #21207: urandom() should reopen its fd to /dev/urandom if
         # closed.
         code = """if 1:
-            import os
-            import sys
-            import test.support
+            importiere os
+            importiere sys
+            importiere test.support
             os.urandom(4)
             with test.support.SuppressCrashReport():
                 os.closerange(3, 256)
@@ -2257,9 +2257,9 @@ klasse URandomFDTests(unittest.TestCase):
         create_file(os_helper.TESTFN, b"x" * 256)
 
         code = """if 1:
-            import os
-            import sys
-            import test.support
+            importiere os
+            importiere sys
+            importiere test.support
             os.urandom(4)
             with test.support.SuppressCrashReport():
                 fuer fd in range(3, 256):
@@ -2801,13 +2801,13 @@ klasse Pep383Tests(unittest.TestCase):
 @unittest.skipUnless(sys.platform == "win32", "Win32 specific tests")
 klasse Win32KillTests(unittest.TestCase):
     def _kill(self, sig):
-        # Start sys.executable as a subprocess and communicate from the
+        # Start sys.executable as a subprocess and communicate von the
         # subprocess to the parent that the interpreter is ready. When it
         # becomes ready, send *sig* via os.kill to the subprocess and check
         # that the return code is equal to *sig*.
-        import ctypes
-        from ctypes import wintypes
-        import msvcrt
+        importiere ctypes
+        von ctypes importiere wintypes
+        importiere msvcrt
 
         # Since we can't access the contents of the process' stdout until the
         # process has exited, use PeekNamedPipe to see what's inside stdout
@@ -2836,7 +2836,7 @@ klasse Win32KillTests(unittest.TestCase):
 
         count, max = 0, 100
         while count < max and proc.poll() is Nichts:
-            # Create a string buffer to store the result of stdout from the pipe
+            # Create a string buffer to store the result of stdout von the pipe
             buf = ctypes.create_string_buffer(len(msg))
             # Obtain the text currently in proc.stdout
             # Bytes read/avail/left are left as NULL and unused
@@ -2849,7 +2849,7 @@ klasse Win32KillTests(unittest.TestCase):
             time.sleep(0.1)
             count += 1
         sonst:
-            self.fail("Did not receive communication from the subprocess")
+            self.fail("Did not receive communication von the subprocess")
 
         os.kill(proc.pid, sig)
         self.assertEqual(proc.wait(), sig)
@@ -2899,8 +2899,8 @@ klasse Win32KillTests(unittest.TestCase):
     @unittest.skip("subprocesses aren't inheriting Ctrl+C property")
     @support.requires_subprocess()
     def test_CTRL_C_EVENT(self):
-        from ctypes import wintypes
-        import ctypes
+        von ctypes importiere wintypes
+        importiere ctypes
 
         # Make a NULL value by creating a pointer with no argument.
         NULL = ctypes.POINTER(ctypes.c_int)()
@@ -2974,7 +2974,7 @@ klasse Win32ListdriveTests(unittest.TestCase):
     """Test listdrive, listmounts and listvolume on Windows."""
 
     def setUp(self):
-        # Get drives and volumes from fsutil
+        # Get drives and volumes von fsutil
         out = subprocess.check_output(
             ["fsutil.exe", "volume", "list"],
             cwd=os.path.join(os.getenv("SystemRoot", "\\Windows"), "System32"),
@@ -3169,15 +3169,15 @@ klasse Win32SymlinkTests(unittest.TestCase):
             os.symlink(os.path.relpath(file1), "link")
             self.assertIn("link", os.listdir(os.getcwd()))
 
-            # Check os.stat calls from the same dir as the link
+            # Check os.stat calls von the same dir as the link
             self.assertEqual(os.stat(file1), os.stat("link"))
 
-            # Check os.stat calls from a dir below the link
+            # Check os.stat calls von a dir below the link
             os.chdir(level1)
             self.assertEqual(os.stat(file1),
                              os.stat(os.path.relpath(link)))
 
-            # Check os.stat calls from a dir above the link
+            # Check os.stat calls von a dir above the link
             os.chdir(level3)
             self.assertEqual(os.stat(file1),
                              os.stat(os.path.relpath(link)))
@@ -3296,7 +3296,7 @@ klasse Win32NtTests(unittest.TestCase):
         nt = import_helper.import_module('nt')
         ctypes = import_helper.import_module('ctypes')
         # Ruff false positive -- it thinks we're redefining `ctypes` here
-        import ctypes.wintypes  # noqa: F811
+        importiere ctypes.wintypes  # noqa: F811
 
         kernel = ctypes.WinDLL('Kernel32.dll', use_last_error=Wahr)
         kernel.GetCurrentProcess.restype = ctypes.wintypes.HANDLE
@@ -3353,9 +3353,9 @@ klasse Win32NtTests(unittest.TestCase):
         self.addCleanup(os_helper.unlink, filename)
         deadline = time.time() + 5
         command = textwrap.dedent("""\
-            import os
-            import sys
-            import time
+            importiere os
+            importiere sys
+            importiere time
 
             filename = sys.argv[1]
             deadline = float(sys.argv[2])
@@ -3394,7 +3394,7 @@ klasse Win32NtTests(unittest.TestCase):
         stat1 = os.stat(filename)
 
         try:
-            # Remove all permissions from the file
+            # Remove all permissions von the file
             subprocess.check_output([ICACLS, filename, "/inheritance:r"],
                                     stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as ex:
@@ -3420,7 +3420,7 @@ klasse Win32NtTests(unittest.TestCase):
             drucke("stat with access:", stat1)
 
         # First test - we shouldn't raise here, because we still have access to
-        # the directory and can extract enough information from its metadata.
+        # the directory and can extract enough information von its metadata.
         stat2 = os.stat(filename)
 
         wenn support.verbose:
@@ -3604,7 +3604,7 @@ klasse SpawnTests(unittest.TestCase):
             # create an unique key
             self.key = str(uuid.uuid4())
             self.env[self.key] = self.key
-            # read the variable from os.environ to check that it exists
+            # read the variable von os.environ to check that it exists
             code = ('import sys, os; magic = os.environ[%r]; sys.exit(%s)'
                     % (self.key, self.exitcode))
 
@@ -3805,7 +3805,7 @@ klasse ProgramPriorityTests(unittest.TestCase):
     def test_set_get_priority(self):
         base = os.getpriority(os.PRIO_PROCESS, os.getpid())
         code = f"""if 1:
-        import os
+        importiere os
         os.setpriority(os.PRIO_PROCESS, os.getpid(), {base} + 1)
         drucke(os.getpriority(os.PRIO_PROCESS, os.getpid()))
         """
@@ -4423,7 +4423,7 @@ klasse TimerfdTests(unittest.TestCase):
 
         now = time.clock_gettime(time.CLOCK_REALTIME)
 
-        # 1 second later from now.
+        # 1 second later von now.
         offset = 1
         initial_expiration = now + offset
         # not interval timer
@@ -4586,7 +4586,7 @@ klasse TimerfdTests(unittest.TestCase):
 
         now_ns = time.clock_gettime_ns(time.CLOCK_REALTIME)
 
-        # 1 second later from now.
+        # 1 second later von now.
         offset_ns = one_sec_in_nsec
         initial_expiration_ns = now_ns + offset_ns
         # not interval timer
@@ -4914,11 +4914,11 @@ klasse PseudoterminalTests(unittest.TestCase):
         self.addCleanup(os.close, fd2)
 
         code = textwrap.dedent(f"""
-            import errno
-            import os
-            import test.support
+            importiere errno
+            importiere os
+            importiere test.support
             try:
-                import msvcrt
+                importiere msvcrt
             except ImportError:
                 msvcrt = Nichts
 
@@ -5063,7 +5063,7 @@ klasse TestDirEntry(unittest.TestCase):
         entry = [entry fuer entry in os.scandir(self.path)].pop()
         self.assertIsInstance(entry, os.DirEntry)
         self.assertEqual(entry.name, "file.txt")
-        import pickle
+        importiere pickle
         self.assertRaises(TypeError, pickle.dumps, entry, filename)
 
 
@@ -5110,7 +5110,7 @@ klasse TestScandir(unittest.TestCase):
     def test_unpickable(self):
         filename = self.create_file("file.txt")
         scandir_iter = os.scandir(self.path)
-        import pickle
+        importiere pickle
         self.assertRaises(TypeError, pickle.dumps, scandir_iter, filename)
         scandir_iter.close()
 
@@ -5190,7 +5190,7 @@ klasse TestScandir(unittest.TestCase):
         dirname = os.path.join(self.path, "tgtdir")
         os.mkdir(dirname)
 
-        import _winapi
+        importiere _winapi
         try:
             _winapi.CreateJunction(dirname, os.path.join(self.path, "srcjunc"))
         except OSError:
@@ -5546,8 +5546,8 @@ klasse ForkTests(unittest.TestCase):
         # bpo-42540: ensure os.fork() with non-default memory allocator does
         # not crash on exit.
         code = """if 1:
-            import os
-            from test import support
+            importiere os
+            von test importiere support
             pid = os.fork()
             wenn pid != 0:
                 support.wait_process(pid, exitcode=0)
@@ -5563,8 +5563,8 @@ klasse ForkTests(unittest.TestCase):
     @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def test_fork_warns_when_non_python_thread_exists(self):
         code = """if 1:
-            import os, threading, warnings
-            from _testcapi import _spawn_pthread_waiter, _end_spawned_pthread
+            importiere os, threading, warnings
+            von _testcapi importiere _spawn_pthread_waiter, _end_spawned_pthread
             _spawn_pthread_waiter()
             try:
                 with warnings.catch_warnings(record=Wahr) as ws:
@@ -5589,8 +5589,8 @@ klasse ForkTests(unittest.TestCase):
 
     def test_fork_at_finalization(self):
         code = """if 1:
-            import atexit
-            import os
+            importiere atexit
+            importiere os
 
             klasse AtFinalization:
                 def __del__(self):

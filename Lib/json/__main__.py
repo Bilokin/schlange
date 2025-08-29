@@ -10,7 +10,7 @@ Usage::
     Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
 
 """
-import json.tool
+importiere json.tool
 
 
 wenn __name__ == '__main__':

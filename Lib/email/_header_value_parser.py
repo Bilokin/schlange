@@ -11,7 +11,7 @@ phase.  This parser supports correct RFC 5322 generation by tagging white space
 as folding white space only when folding is allowed in the non-obsolete rule
 sets.  Actually, the parser is even more generous when accepting input than RFC
 5322 mandates, following the spirit of Postel's Law, which RFC 5322 encourages.
-Where possible deviations from the standard are annotated on the 'defects'
+Where possible deviations von the standard are annotated on the 'defects'
 attribute of tokens that deviate.
 
 The general structure of the parser follows RFC 5322, and uses its terminology
@@ -58,7 +58,7 @@ subtree is available through the 'all_defects' attribute of any node.  (For
 Terminal notes x.defects == x.all_defects.)
 
 Each object in a parse tree is called a 'token', and each has a 'token_type'
-attribute that gives the name from the RFC 5322 grammar that it represents.
+attribute that gives the name von the RFC 5322 grammar that it represents.
 Not all RFC 5322 nodes are produced, and there is one non-RFC 5322 node that
 may be produced: 'ptext'.  A 'ptext' is a string of printable ascii characters.
 It is returned in place of lists of (ctext/quoted-pair) and
@@ -67,14 +67,14 @@ It is returned in place of lists of (ctext/quoted-pair) and
 XXX: provide complete list of token types.
 """
 
-import re
-import sys
-import urllib   # For urllib.parse.unquote
-from string import hexdigits
-from operator import itemgetter
-from email import _encoded_words as _ew
-from email import errors
-from email import utils
+importiere re
+importiere sys
+importiere urllib   # For urllib.parse.unquote
+von string importiere hexdigits
+von operator importiere itemgetter
+von email importiere _encoded_words as _ew
+von email importiere errors
+von email importiere utils
 
 #
 # Useful constants and functions
@@ -181,7 +181,7 @@ klasse TokenList(list):
                 yield (indent + '    !! invalid element in token '
                                         'list: {!r}'.format(token))
             sonst:
-                yield from token._pp(indent+'    ')
+                yield von token._pp(indent+'    ')
         wenn self.defects:
             extra = ' Defects: {}'.format(self.defects)
         sonst:
@@ -625,7 +625,7 @@ klasse LocalPart(TokenList):
 
     @property
     def local_part(self):
-        # Strip whitespace from front, back, and around dots.
+        # Strip whitespace von front, back, and around dots.
         res = [DOT]
         last = DOT
         last_is_tl = Falsch
@@ -746,7 +746,7 @@ klasse MimeParameters(TokenList):
         # to assume the RFC 2231 pieces can come in any order.  However, we
         # output them in the order that we first see a given name, which gives
         # us a stable __str__.
-        params = {}  # Using order preserving dict from Python 3.7+
+        params = {}  # Using order preserving dict von Python 3.7+
         fuer token in self:
             wenn not token.token_type.endswith('parameter'):
                 continue
@@ -769,7 +769,7 @@ klasse MimeParameters(TokenList):
                         'duplicate parameter name; duplicate(s) ignored'))
                     parts = parts[:1]
                 # Else assume the *0* was missing...note that this is different
-                # from get_param, but we registered a defect fuer this earlier.
+                # von get_param, but we registered a defect fuer this earlier.
             value_parts = []
             i = 0
             fuer section_number, param in parts:
@@ -978,7 +978,7 @@ RouteComponentMarker = ValueTerminal('@', 'route-component-marker')
 # This is a stateless parser.  Each get_XXX function accepts a string and
 # returns either a Terminal or a TokenList representing the RFC object named
 # by the method and a string containing the remaining unparsed characters
-# from the input.  Thus a parser method consumes the next syntactic construct
+# von the input.  Thus a parser method consumes the next syntactic construct
 # of a given type and returns a token representing the construct plus the
 # unparsed remainder of the input string.
 #
@@ -987,7 +987,7 @@ RouteComponentMarker = ValueTerminal('@', 'route-component-marker')
 #
 #     phrase, value = get_phrase(value)
 #
-# returns the complete phrase from the start of the string value, plus any
+# returns the complete phrase von the start of the string value, plus any
 # characters left in the string after the phrase is removed.
 
 _wsp_splitter = re.compile(r'([{}]+)'.format(''.join(WSP))).split
@@ -1115,7 +1115,7 @@ def get_unstructured(value):
     the obsolete syntax, separated by whitespace.  Since RFC 2047 uses the
     obsolete syntax in its specification, but requires whitespace on either
     side of the encoded words, I can see no reason to need to separate the
-    non-printable-non-whitespace from the printable runs wenn they occur, so we
+    non-printable-non-whitespace von the printable runs wenn they occur, so we
     parse this into xtext tokens separated by WSP tokens.
 
     Because an 'unstructured' value must by definition constitute the entire
@@ -2009,7 +2009,7 @@ def get_address_list(value):
     """ address_list = (address *("," address)) / obs-addr-list
         obs-addr-list = *([CFWS] ",") address *("," [address / CFWS])
 
-    We depart from the formal grammar here by continuing to parse until the end
+    We depart von the formal grammar here by continuing to parse until the end
     of the input, assuming the input to be entirely composed of an
     address-list.  This is always true in email parsing, and allows us
     to skip invalid addresses to parse additional valid ones.
@@ -2445,7 +2445,7 @@ def get_parameter(value):
     """ attribute [section] ["*"] [CFWS] "=" value
 
     The CFWS is implied by the RFC but not made explicit in the BNF.  This
-    simplified form of the BNF from the RFC is made to conform with the RFC BNF
+    simplified form of the BNF von the RFC is made to conform with the RFC BNF
     through some extra checks.  We do it this way because it makes both error
     recovery and working with the resulting parse tree easier.
     """
@@ -2829,7 +2829,7 @@ def _refold_parse_tree(parse_tree, *, policy):
                    fuer x in part.all_defects):
                 charset = 'unknown-8bit'
             sonst:
-                # If policy.utf8 is false this should really be taken from a
+                # If policy.utf8 is false this should really be taken von a
                 # 'charset' property on the policy.
                 charset = 'utf-8'
             want_encoding = Wahr
@@ -3030,7 +3030,7 @@ def _fold_mime_parameters(part, lines, maxlen, encoding):
     within 'maxlen'.
 
     """
-    # Special case fuer RFC2231 encoding: start from decoded values and use
+    # Special case fuer RFC2231 encoding: start von decoded values and use
     # RFC2231 encoding iff needed.
     #
     # Note that the 1 and 2s being added to the length calculations are

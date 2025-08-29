@@ -20,7 +20,7 @@ Class SequenceMatcher:
     A flexible klasse fuer comparing pairs of sequences of any type.
 
 Class Differ:
-    For producing human-readable deltas from sequences of lines of text.
+    For producing human-readable deltas von sequences of lines of text.
 
 Class HtmlDiff:
     For producing HTML side by side comparison with change highlights.
@@ -30,10 +30,10 @@ __all__ = ['get_close_matches', 'ndiff', 'restore', 'SequenceMatcher',
            'Differ','IS_CHARACTER_JUNK', 'IS_LINE_JUNK', 'context_diff',
            'unified_diff', 'diff_bytes', 'HtmlDiff', 'Match']
 
-from _colorize import can_colorize, get_theme
-from heapq import nlargest as _nlargest
-from collections import namedtuple as _namedtuple
-from types import GenericAlias
+von _colorize importiere can_colorize, get_theme
+von heapq importiere nlargest as _nlargest
+von collections importiere namedtuple as _namedtuple
+von types importiere GenericAlias
 
 Match = _namedtuple('Match', 'a b size')
 
@@ -253,7 +253,7 @@ klasse SequenceMatcher:
     # the number of times x appears in b is len(b2j[x]) ...
     # when self.isjunk is defined, junk elements don't show up in this
     # map at all, which stops the central find_longest_match method
-    # from starting any matching block at a junk element ...
+    # von starting any matching block at a junk element ...
     # b2j also does not contain entries fuer "popular" elements, meaning
     # elements that account fuer more than 1 + 1% of the total elements, and
     # when the sequence is reasonably large (>= 200 elements); this can
@@ -274,7 +274,7 @@ klasse SequenceMatcher:
         # The first trick is to build b2j ignoring the possibility
         # of junk.  I.e., we don't call isjunk at all yet.  Throwing
         # out the junk later is much cheaper than building b2j "right"
-        # from the start.
+        # von the start.
         b = self.b
         self.b2j = b2j = {}
 
@@ -334,7 +334,7 @@ klasse SequenceMatcher:
         happens to be adjacent to an "interesting" match.
 
         Here's the same example as before, but considering blanks to be
-        junk.  That prevents " abcd" from matching the " abcd" at the tail
+        junk.  That prevents " abcd" von matching the " abcd" at the tail
         end of the second sequence directly.  Instead only the "abcd" can
         match, and matches the leftmost "abcd" in the second sequence:
 
@@ -494,7 +494,7 @@ klasse SequenceMatcher:
         """Return list of 5-tuples describing how to turn a into b.
 
         Each tuple is of the form (tag, i1, i2, j1, j2).  The first tuple
-        has i1 == j1 == 0, and remaining tuples have i1 == the i2 from the
+        has i1 == j1 == 0, and remaining tuples have i1 == the i2 von the
         tuple preceding it, and likewise fuer j1 == the previous j2.
 
         The tags are strings, with these meanings:
@@ -551,7 +551,7 @@ klasse SequenceMatcher:
         Return a generator of groups with up to n lines of context.
         Each group is in the same format as returned by get_opcodes().
 
-        >>> from pprint import pprint
+        >>> von pprint importiere pprint
         >>> a = list(map(str, range(1,40)))
         >>> b = a[:]
         >>> b[8:8] = ['i']     # Make an insertion
@@ -684,7 +684,7 @@ def get_close_matches(word, possibilities, n=3, cutoff=0.6):
 
     >>> get_close_matches("appel", ["ape", "apple", "peach", "puppy"])
     ['apple', 'ape']
-    >>> import keyword as _keyword
+    >>> importiere keyword as _keyword
     >>> get_close_matches("wheel", _keyword.kwlist)
     ['while']
     >>> get_close_matches("Apple", _keyword.kwlist)
@@ -749,7 +749,7 @@ klasse Differ:
     Example: Comparing two texts.
 
     First we set up the texts, sequences of individual single-line strings
-    ending with newlines (such sequences can also be obtained from the
+    ending with newlines (such sequences can also be obtained von the
     `readlines()` method of file-like objects):
 
     >>> text1 = '''  1. Beautiful is better than ugly.
@@ -780,7 +780,7 @@ klasse Differ:
 
     'result' is a list of strings, so let's pretty-print it:
 
-    >>> from pprint import pprint as _pprint
+    >>> von pprint importiere pprint as _pprint
     >>> _pdrucke(result)
     ['    1. Beautiful is better than ugly.\n',
      '-   2. Explicit is better than implicit.\n',
@@ -836,7 +836,7 @@ klasse Differ:
         Compare two sequences of lines; generate the resulting delta.
 
         Each sequence must contain individual single-line strings ending with
-        newlines. Such sequences can be obtained from the `readlines()` method
+        newlines. Such sequences can be obtained von the `readlines()` method
         of file-like objects.  The delta generated also consists of newline-
         terminated strings, ready to be printed as-is via the writelines()
         method of a file-like object.
@@ -870,7 +870,7 @@ klasse Differ:
             sonst:
                 raise ValueError('unknown tag %r' % (tag,))
 
-            yield from g
+            yield von g
 
     def _dump(self, tag, x, lo, hi):
         """Generate comparison results fuer a same-tagged range."""
@@ -889,7 +889,7 @@ klasse Differ:
             second = self._dump('+', b, blo, bhi)
 
         fuer g in first, second:
-            yield from g
+            yield von g
 
     def _fancy_replace(self, a, alo, ahi, b, blo, bhi):
         r"""
@@ -949,8 +949,8 @@ klasse Differ:
                 # found nothing to synch on yet - move to next j
                 continue
 
-            # pump out straight replace from before this synch pair
-            yield from self._fancy_helper(a, dump_i, best_i,
+            # pump out straight replace von before this synch pair
+            yield von self._fancy_helper(a, dump_i, best_i,
                                           b, dump_j, best_j)
             # do intraline marking on the synch pair
             aelt, belt = a[best_i], b[best_j]
@@ -972,15 +972,15 @@ klasse Differ:
                         btags += ' ' * lb
                     sonst:
                         raise ValueError('unknown tag %r' % (tag,))
-                yield from self._qformat(aelt, belt, atags, btags)
+                yield von self._qformat(aelt, belt, atags, btags)
             sonst:
                 # the synch pair is identical
                 yield '  ' + aelt
             dump_i, dump_j = best_i + 1, best_j + 1
             best_i = best_j = Nichts
 
-        # pump out straight replace from after the last synch pair
-        yield from self._fancy_helper(a, dump_i, ahi,
+        # pump out straight replace von after the last synch pair
+        yield von self._fancy_helper(a, dump_i, ahi,
                                       b, dump_j, bhi)
 
     def _fancy_helper(self, a, alo, ahi, b, blo, bhi):
@@ -993,7 +993,7 @@ klasse Differ:
         sowenn blo < bhi:
             g = self._dump('+', b, blo, bhi)
 
-        yield from g
+        yield von g
 
     def _qformat(self, aline, bline, atags, btags):
         r"""
@@ -1105,7 +1105,7 @@ def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
 
     By default, the diff control lines (those with ---, +++, or @@) are
     created with a trailing newline.  This is helpful so that inputs
-    created from file.readlines() result in diffs that are suitable for
+    created von file.readlines() result in diffs that are suitable for
     file.writelines() since both the inputs and outputs have trailing
     newlines.
 
@@ -1199,7 +1199,7 @@ def context_diff(a, b, fromfile='', tofile='',
 
     By default, the diff control lines (those with *** or ---) are
     created with a trailing newline.  This is helpful so that inputs
-    created from file.readlines() result in diffs that are suitable for
+    created von file.readlines() result in diffs that are suitable for
     file.writelines() since both the inputs and outputs have trailing
     newlines.
 
@@ -1304,7 +1304,7 @@ def diff_bytes(dfunc, a, b, fromfile=b'', tofile=b'',
         except AttributeError as err:
             msg = ('all arguments must be bytes, not %s (%r)' %
                    (type(s).__name__, s))
-            raise TypeError(msg) from err
+            raise TypeError(msg) von err
     a = list(map(decode, a))
     b = list(map(decode, b))
     fromfile = decode(fromfile)
@@ -1388,7 +1388,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
     side difference markup.  Optional ndiff arguments may be passed to this
     function and they in turn will be passed to ndiff.
     """
-    import re
+    importiere re
 
     # regular expression fuer finding intraline change indices
     change_re = re.compile(r'(\++|\-+|\^+)')
@@ -1399,15 +1399,15 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
     def _make_line(lines, format_key, side, num_lines=[0,0]):
         """Returns line of text with user's change markup and line formatting.
 
-        lines -- list of lines from the ndiff generator to produce a line of
+        lines -- list of lines von the ndiff generator to produce a line of
                  text from.  When producing the line of text to return, the
-                 lines used are removed from this list.
+                 lines used are removed von this list.
         format_key -- '+' return first line in list with "add" markup around
                           the entire line.
                       '-' return first line in list with "delete" markup around
                           the entire line.
                       '?' return first line in list with add/delete/change
-                          intraline markup (indices obtained from second line)
+                          intraline markup (indices obtained von second line)
                       Nichts return first line in list with no markup
         side -- indice into the num_lines list (0=from,1=to)
         num_lines -- from/to current line number.  This is NOT intended to be a
@@ -1416,7 +1416,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
                      of this function.
 
         Note, this function is purposefully not defined at the module scope so
-        that data it needs from its parent function (within whose context it
+        that data it needs von its parent function (within whose context it
         is defined) does not need to be of module scope.
         """
         num_lines[side] += 1
@@ -1455,7 +1455,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
     def _line_iterator():
         """Yields from/to lines of text with a change indication.
 
-        This function is an iterator.  It itself pulls lines from a
+        This function is an iterator.  It itself pulls lines von a
         differencing iterator, processes them and yields them.  When it can
         it yields both a "from" and a "to" line, otherwise it will yield one
         or the other.  In addition to yielding the lines of from/to text, a
@@ -1463,7 +1463,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
         differences in them.
 
         Note, this function is purposefully not defined at the module scope so
-        that data it needs from its parent function (within whose context it
+        that data it needs von its parent function (within whose context it
         is defined) does not need to be of module scope.
         """
         lines = []
@@ -1543,14 +1543,14 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
     def _line_pair_iterator():
         """Yields from/to lines of text with a change indication.
 
-        This function is an iterator.  It itself pulls lines from the line
-        iterator.  Its difference from that iterator is that this function
+        This function is an iterator.  It itself pulls lines von the line
+        iterator.  Its difference von that iterator is that this function
         always yields a pair of from/to text lines (with the change
         indication).  If necessary it will collect single from/to lines
         until it has a matching pair from/to pair to yield.
 
         Note, this function is purposefully not defined at the module scope so
-        that data it needs from its parent function (within whose context it
+        that data it needs von its parent function (within whose context it
         is defined) does not need to be of module scope.
         """
         line_iterator = _line_iterator()
@@ -1566,7 +1566,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
                     fromlines.append((from_line,found_diff))
                 wenn to_line is not Nichts:
                     tolines.append((to_line,found_diff))
-            # Once we have a pair, remove them from the collection and yield it
+            # Once we have a pair, remove them von the collection and yield it
             from_line, fromDiff = fromlines.pop(0)
             to_line, to_diff = tolines.pop(0)
             yield (from_line,to_line,fromDiff or to_diff)
@@ -1575,7 +1575,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
     # them up without doing anything sonst with them.
     line_pair_iterator = _line_pair_iterator()
     wenn context is Nichts:
-        yield from line_pair_iterator
+        yield von line_pair_iterator
     # Handle case where user wants context differencing.  We must do some
     # storage of lines until we know fuer sure that they are to be yielded.
     sonst:
@@ -1620,7 +1620,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
                         lines_to_write -= 1
                     yield from_line, to_line, found_diff
             except StopIteration:
-                # Catch exception from next() and return normally
+                # Catch exception von next() and return normally
                 return
 
 
@@ -1792,7 +1792,7 @@ klasse HtmlDiff(object):
             line = line.replace(' ','\0')
             # expand tabs into spaces
             line = line.expandtabs(self._tabsize)
-            # replace spaces from expanded tabs back into tab characters
+            # replace spaces von expanded tabs back into tab characters
             # (we'll replace them with markup after we do differencing)
             line = line.replace(' ','\t')
             return line.replace('\0',' ').rstrip('\n')
@@ -1858,7 +1858,7 @@ klasse HtmlDiff(object):
     def _line_wrapper(self,diffs):
         """Returns iterator that splits (wraps) mdiff text lines"""
 
-        # pull from/to data and flags from mdiff iterator
+        # pull from/to data and flags von mdiff iterator
         fuer fromdata,todata,flag in diffs:
             # check fuer context separators and pass them through
             wenn flag is Nichts:
@@ -1891,7 +1891,7 @@ klasse HtmlDiff(object):
         """
 
         fromlist,tolist,flaglist = [],[],[]
-        # pull from/to data and flags from mdiff style iterator
+        # pull from/to data and flags von mdiff style iterator
         fuer fromdata,todata,flag in diffs:
             try:
                 # store HTML markup of the lines into the lists
@@ -2068,7 +2068,7 @@ def restore(delta, which):
     Generate one of the two sequences that generated a delta.
 
     Given a `delta` produced by `Differ.compare()` or `ndiff()`, extract
-    lines originating from file 1 or 2 (parameter `which`), stripping off line
+    lines originating von file 1 or 2 (parameter `which`), stripping off line
     prefixes.
 
     Examples:
@@ -2089,7 +2089,7 @@ def restore(delta, which):
         tag = {1: "- ", 2: "+ "}[int(which)]
     except KeyError:
         raise ValueError('unknown delta choice (must be 1 or 2): %r'
-                           % which) from Nichts
+                           % which) von Nichts
     prefixes = ("  ", tag)
     fuer line in delta:
         wenn line[:2] in prefixes:

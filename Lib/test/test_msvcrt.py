@@ -1,17 +1,17 @@
-import os
-import subprocess
-import sys
-import unittest
-from textwrap import dedent
+importiere os
+importiere subprocess
+importiere sys
+importiere unittest
+von textwrap importiere dedent
 
-from test.support import os_helper, requires_resource
-from test.support.os_helper import TESTFN, TESTFN_ASCII
+von test.support importiere os_helper, requires_resource
+von test.support.os_helper importiere TESTFN, TESTFN_ASCII
 
 wenn sys.platform != "win32":
     raise unittest.SkipTest("windows related tests")
 
-import _winapi
-import msvcrt
+importiere _winapi
+importiere msvcrt
 
 
 klasse TestFileOperations(unittest.TestCase):
@@ -72,7 +72,7 @@ klasse TestConsoleIO(unittest.TestCase):
 
     def test_kbhit(self):
         code = dedent('''
-            import msvcrt
+            importiere msvcrt
             assert msvcrt.kbhit() == 0
         ''')
         self.run_in_separated_process(code)
@@ -83,8 +83,8 @@ klasse TestConsoleIO(unittest.TestCase):
 
     def check_getwch(self, funcname):
         code = dedent(f'''
-            import msvcrt
-            from _testconsole import write_input
+            importiere msvcrt
+            von _testconsole importiere write_input
             with open("CONIN$", "rb", buffering=0) as stdin:
                 write_input(stdin, {ascii(c_encoded)})
                 assert msvcrt.{funcname}() == "{c}"

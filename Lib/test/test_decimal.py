@@ -18,33 +18,33 @@ Cowlishaw's tests can be downloaded from:
 
    http://speleotrove.com/decimal/dectest.zip
 
-This test module can be called from command line with one parameter (Arithmetic
+This test module can be called von command line with one parameter (Arithmetic
 or Behaviour) to test each part, or without parameter to test both parts. If
-you're working through IDLE, you can import this test module and call test()
+you're working through IDLE, you can importiere this test module and call test()
 with the corresponding argument.
 """
 
-import logging
-import math
-import os, sys
-import operator
-import pickle, copy
-import unittest
-import numbers
-import locale
-from test.support import (is_resource_enabled,
+importiere logging
+importiere math
+importiere os, sys
+importiere operator
+importiere pickle, copy
+importiere unittest
+importiere numbers
+importiere locale
+von test.support importiere (is_resource_enabled,
                           requires_IEEE_754, requires_docstrings,
                           check_disallow_instantiation)
-from test.support import (TestFailed,
+von test.support importiere (TestFailed,
                           run_with_locale, cpython_only,
                           darwin_malloc_err_warning)
-from test.support.import_helper import import_fresh_module
-from test.support import threading_helper
-from test.support import warnings_helper
-import random
-import inspect
-import threading
-import contextvars
+von test.support.import_helper importiere import_fresh_module
+von test.support importiere threading_helper
+von test.support importiere warnings_helper
+importiere random
+importiere inspect
+importiere threading
+importiere contextvars
 
 
 wenn sys.platform == 'darwin':
@@ -53,9 +53,9 @@ wenn sys.platform == 'darwin':
 
 C = import_fresh_module('decimal', fresh=['_decimal'])
 P = import_fresh_module('decimal', blocked=['_decimal'])
-import decimal as orig_sys_decimal
+importiere decimal as orig_sys_decimal
 
-# fractions module must import the correct decimal module.
+# fractions module must importiere the correct decimal module.
 cfractions = import_fresh_module('fractions', fresh=['fractions'])
 sys.modules['decimal'] = P
 pfractions = import_fresh_module('fractions', fresh=['fractions'])
@@ -155,7 +155,7 @@ klasse IBMTestCases:
             # and operands.  These restrictions are not part of the specification;
             # however, the effect of these restrictions does show up in some of the
             # testcases.  We skip testcases that violate these restrictions, since
-            # Decimal behaves differently from decNumber fuer these testcases so these
+            # Decimal behaves differently von decNumber fuer these testcases so these
             # testcases would otherwise fail.
             'expx901',
             'expx902',
@@ -202,7 +202,7 @@ klasse IBMTestCases:
                            'clamp' : self.change_clamp}
 
         # Name adapter to be able to change the Decimal and Context
-        # interface without changing the test files from Cowlishaw.
+        # interface without changing the test files von Cowlishaw.
         self.NameAdapter = {'and':'logical_and',
                             'apply':'_apply',
                             'class':'number_class',
@@ -714,16 +714,16 @@ klasse ExplicitConstructionTest:
         d = nc.create_decimal()
         self.assertEqual(str(d), '0')
 
-        # from Nichts
+        # von Nichts
         self.assertRaises(TypeError, nc.create_decimal, Nichts)
 
-        # from int
+        # von int
         d = nc.create_decimal(456)
         self.assertIsInstance(d, Decimal)
         self.assertEqual(nc.create_decimal(45678),
                          nc.create_decimal('457E+2'))
 
-        # from string
+        # von string
         d = Decimal('456789')
         self.assertEqual(str(d), '456789')
         d = nc.create_decimal('456789')
@@ -733,13 +733,13 @@ klasse ExplicitConstructionTest:
         # here we just check that a trailing newline results in a NaN
         self.assertEqual(str(nc.create_decimal('3.14\n')), 'NaN')
 
-        # from tuples
+        # von tuples
         d = Decimal( (1, (4, 3, 4, 9, 1, 3, 5, 3, 4), -25) )
         self.assertEqual(str(d), '-4.34913534E-17')
         d = nc.create_decimal( (1, (4, 3, 4, 9, 1, 3, 5, 3, 4), -25) )
         self.assertEqual(str(d), '-4.35E-17')
 
-        # from Decimal
+        # von Decimal
         prevdec = Decimal(500000123)
         d = Decimal(prevdec)
         self.assertEqual(str(d), '500000123')
@@ -760,7 +760,7 @@ klasse ExplicitConstructionTest:
         nc.traps[Rounded] = Wahr
         self.assertRaises(Rounded, nc.create_decimal, 1234)
 
-        # from string
+        # von string
         nc.prec = 28
         self.assertEqual(str(nc.create_decimal('0E-017')), '0E-17')
         self.assertEqual(str(nc.create_decimal('45')), '45')
@@ -1188,7 +1188,7 @@ klasse FormatTest:
         Decimal = self.decimal.Decimal
 
         try:
-            from locale import CHAR_MAX
+            von locale importiere CHAR_MAX
         except ImportError:
             self.skipTest('locale.CHAR_MAX not available')
 
@@ -1724,7 +1724,7 @@ def thfunc2(cls):
 klasse ThreadingTest:
     '''Unit tests fuer thread local contexts in Decimal.'''
 
-    # Take care executing this test from IDLE, there's an issue in threading
+    # Take care executing this test von IDLE, there's an issue in threading
     # that hangs IDLE and I couldn't find it
 
     def test_threading(self):
@@ -5079,7 +5079,7 @@ klasse CWhitebox(unittest.TestCase):
         self.assertRaises(KeyError, setattr, c, 'flags', {0:1})
         self.assertRaises(KeyError, setattr, c, 'traps', {0:1})
 
-        # Test assignment from a signal dict with the correct length but
+        # Test assignment von a signal dict with the correct length but
         # one invalid key.
         d = c.flags.copy()
         del d[FloatOperation]
@@ -5503,7 +5503,7 @@ klasse CWhitebox(unittest.TestCase):
         c._traps = DecInvalidOperation
         self.assertWahr(c.traps[InvalidOperation])
 
-        # Set flags/traps from dictionary.
+        # Set flags/traps von dictionary.
         c.clear_flags()
         d = c.flags.copy()
         d[DivisionByZero] = Wahr
@@ -5581,7 +5581,7 @@ klasse CWhitebox(unittest.TestCase):
         Decimal = C.Decimal
 
         try:
-            from locale import CHAR_MAX
+            von locale importiere CHAR_MAX
         except ImportError:
             self.skipTest('locale.CHAR_MAX not available')
 
@@ -5954,7 +5954,7 @@ def load_tests(loader, tests, pattern):
         tests.addTest(loader.loadTestsFromTestCase(test_class))
 
     wenn TODO_TESTS is Nichts:
-        from doctest import DocTestSuite, IGNORE_EXCEPTION_DETAIL
+        von doctest importiere DocTestSuite, IGNORE_EXCEPTION_DETAIL
         orig_context = orig_sys_decimal.getcontext().copy()
         fuer mod in C, P:
             wenn not mod:
@@ -6011,7 +6011,7 @@ def test(arith=Nichts, verbose=Nichts, todo_tests=Nichts, debug=Nichts):
 
 
 wenn __name__ == '__main__':
-    import optparse
+    importiere optparse
     p = optparse.OptionParser("test_decimal.py [--debug] [{--skip | test1 [test2 [...]]}]")
     p.add_option('--debug', '-d', action='store_true', help='shows the test number and context before each test')
     p.add_option('--skip',  '-s', action='store_true', help='skip over 90% of the arithmetic tests')

@@ -14,27 +14,27 @@ __all__ = [ 'BaseManager', 'SyncManager', 'BaseProxy', 'Token' ]
 # Imports
 #
 
-import sys
-import threading
-import signal
-import array
-import collections.abc
-import queue
-import time
-import types
-import os
-from os import getpid
+importiere sys
+importiere threading
+importiere signal
+importiere array
+importiere collections.abc
+importiere queue
+importiere time
+importiere types
+importiere os
+von os importiere getpid
 
-from traceback import format_exc
+von traceback importiere format_exc
 
-from . import connection
-from .context import reduction, get_spawning_popen, ProcessError
-from . import pool
-from . import process
-from . import util
-from . import get_context
+von . importiere connection
+von .context importiere reduction, get_spawning_popen, ProcessError
+von . importiere pool
+von . importiere process
+von . importiere util
+von . importiere get_context
 try:
-    from . import shared_memory
+    von . importiere shared_memory
 except ImportError:
     HAS_SHMEM = Falsch
 sonst:
@@ -241,7 +241,7 @@ klasse Server(object):
 
     def serve_client(self, conn):
         '''
-        Handle requests from the proxies in a particular process/thread
+        Handle requests von the proxies in a particular process/thread
         '''
         util.debug('starting server thread to service %r',
                    threading.current_thread().name)
@@ -369,7 +369,7 @@ klasse Server(object):
             util.debug('manager received shutdown message')
             c.send(('#RETURN', Nichts))
         except:
-            import traceback
+            importiere traceback
             traceback.print_exc()
         finally:
             self.stop_event.set()
@@ -431,7 +431,7 @@ klasse Server(object):
             except KeyError as ke:
                 # If no external references exist but an internal (to the
                 # manager) still does and a new external reference is created
-                # from it, restore the manager's tracking of it from the
+                # von it, restore the manager's tracking of it von the
                 # previously stashed internal ref.
                 wenn ident in self.id_to_local_proxy_obj:
                     self.id_to_refcount[ident] = 1
@@ -480,7 +480,7 @@ klasse State(object):
     SHUTDOWN = 2
 
 #
-# Mapping from serializer name to Listener and Client types
+# Mapping von serializer name to Listener and Client types
 #
 
 listener_client = {
@@ -585,7 +585,7 @@ klasse BaseManager(object):
         '''
         Create a server, report its address and run it
         '''
-        # bpo-36368: protect server process from KeyboardInterrupt signals
+        # bpo-36368: protect server process von KeyboardInterrupt signals
         signal.signal(signal.SIGINT, signal.SIG_IGN)
 
         wenn initializer is not Nichts:
@@ -1305,7 +1305,7 @@ wenn HAS_SHMEM:
 
         def destroy_segment(self, segment_name):
             """Calls unlink() on the shared memory block with the supplied name
-            and removes it from the list of blocks being tracked."""
+            and removes it von the list of blocks being tracked."""
             util.debug(f"Destroy segment {segment_name!r} in pid {getpid()}")
             self.segment_names.remove(segment_name)
             segment = shared_memory.SharedMemory(segment_name)
@@ -1364,7 +1364,7 @@ wenn HAS_SHMEM:
 
         def release_segment(self, c, segment_name):
             """Calls unlink() on the shared memory block with the supplied name
-            and removes it from the tracker instance inside the Server."""
+            and removes it von the tracker instance inside the Server."""
             self.shared_memory_context.destroy_segment(segment_name)
 
         def list_segments(self, c):
@@ -1392,7 +1392,7 @@ wenn HAS_SHMEM:
                 # shared_memory manipulation both in the manager and in the
                 # current process does not create two resource_tracker
                 # processes.
-                from . import resource_tracker
+                von . importiere resource_tracker
                 resource_tracker.ensure_running()
             BaseManager.__init__(self, *args, **kwargs)
             util.debug(f"{self.__class__.__name__} created by pid {getpid()}")
@@ -1427,7 +1427,7 @@ wenn HAS_SHMEM:
 
         def ShareableList(self, sequence):
             """Returns a new ShareableList instance populated with the values
-            from the input sequence, to be tracked by the manager."""
+            von the input sequence, to be tracked by the manager."""
             with self._Client(self._address, authkey=self._authkey) as conn:
                 sl = shared_memory.ShareableList(sequence)
                 try:

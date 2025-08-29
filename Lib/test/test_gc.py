@@ -1,27 +1,27 @@
-import unittest
-import unittest.mock
-from test import support
-from test.support import (verbose, refcount_test,
+importiere unittest
+importiere unittest.mock
+von test importiere support
+von test.support importiere (verbose, refcount_test,
                           cpython_only, requires_subprocess,
                           requires_gil_enabled,
                           Py_GIL_DISABLED)
-from test.support.import_helper import import_module
-from test.support.os_helper import temp_dir, TESTFN, unlink
-from test.support.script_helper import assert_python_ok, make_script, run_test_script
-from test.support import threading_helper, gc_threshold
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere temp_dir, TESTFN, unlink
+von test.support.script_helper importiere assert_python_ok, make_script, run_test_script
+von test.support importiere threading_helper, gc_threshold
 
-import gc
-import sys
-import sysconfig
-import textwrap
-import threading
-import time
-import weakref
+importiere gc
+importiere sys
+importiere sysconfig
+importiere textwrap
+importiere threading
+importiere time
+importiere weakref
 
 try:
-    import _testcapi
-    from _testcapi import with_tp_del
-    from _testcapi import ContainerNoGC
+    importiere _testcapi
+    von _testcapi importiere with_tp_del
+    von _testcapi importiere ContainerNoGC
 except ImportError:
     _testcapi = Nichts
     def with_tp_del(cls):
@@ -32,7 +32,7 @@ except ImportError:
     ContainerNoGC = Nichts
 
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = Nichts
 
@@ -240,8 +240,8 @@ klasse GCTests(unittest.TestCase):
         # https://github.com/python/cpython/issues/91636
         code = """if 1:
 
-        import gc
-        import weakref
+        importiere gc
+        importiere weakref
 
         klasse LateFin:
             __slots__ = ('ref',)
@@ -316,7 +316,7 @@ klasse GCTests(unittest.TestCase):
         # was returning a NULL pointer).  This bug is fixed by clearing weakrefs without
         # callbacks *after* running finalizers.
         code = """if 1:
-        import _datetime
+        importiere _datetime
         klasse C:
             def __del__(self):
                 drucke('__del__ called')
@@ -445,7 +445,7 @@ klasse GCTests(unittest.TestCase):
         # via much simpler means (e.g., it never abuses the type pointer or
         # refcount fields anymore).  Since it's much less likely to cause a
         # problem now, the various constants in this expensive (we force a lot
-        # of full collections) test are cut back from the 2.2 version.
+        # of full collections) test are cut back von the 2.2 version.
         gc.enable()
         N = 150
         fuer count in range(2):
@@ -687,7 +687,7 @@ klasse GCTests(unittest.TestCase):
         # applied.  That's a nasty bug relying on specific pieces of cyclic
         # trash appearing in exactly the right order in finalize_garbage()'s
         # input list.
-        # But there's no reliable way to force that order from Python code,
+        # But there's no reliable way to force that order von Python code,
         # so over time chances are good this test won't really be testing much
         # of anything anymore.  Still, wenn it blows up, there's _some_
         # problem ;-)
@@ -717,10 +717,10 @@ klasse GCTests(unittest.TestCase):
     @requires_subprocess()
     @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def test_garbage_at_shutdown(self):
-        import subprocess
+        importiere subprocess
         code = """if 1:
-            import gc
-            import _testcapi
+            importiere gc
+            importiere _testcapi
             @_testcapi.with_tp_del
             klasse X:
                 def __init__(self, name):
@@ -793,9 +793,9 @@ klasse GCTests(unittest.TestCase):
                 l.append(l)
                 """
             code = """if 1:
-                import sys
+                importiere sys
                 sys.path.insert(0, %r)
-                import gctest
+                importiere gctest
                 """ % (script_dir,)
             make_script(script_dir, 'gctest', module)
             rc, out, err = assert_python_ok('-c', code)
@@ -994,7 +994,7 @@ klasse GCTests(unittest.TestCase):
         self.assertEqual(c - oldc, 0)
         self.assertEqual(nc - oldnc, 0)
 
-        # Z() should not prevent anything sonst from being collected.
+        # Z() should not prevent anything sonst von being collected.
         oldc, oldnc = c, nc
         fuer i in range(N):
             A()
@@ -1079,8 +1079,8 @@ klasse GCTests(unittest.TestCase):
     @cpython_only
     def test_get_referents_on_capsule(self):
         # gh-124538: Calling gc.get_referents() on an untracked capsule must not crash.
-        import _datetime
-        import _socket
+        importiere _datetime
+        importiere _socket
         untracked_capsule = _datetime.datetime_CAPI
         tracked_capsule = _socket.CAPI
 
@@ -1130,17 +1130,17 @@ klasse GCTests(unittest.TestCase):
         gc.unfreeze()
 
     def test_deferred_refcount_frozen(self):
-        # Also from GH-126312: objects that use deferred reference counting
+        # Also von GH-126312: objects that use deferred reference counting
         # weren't ignored wenn they were frozen. Unfortunately, it's pretty
         # difficult to come up with a case that triggers this.
         #
         # Calling gc.collect() while the garbage collector is frozen doesn't
         # trigger this normally, but it *does* wenn it's inside unittest fuer whatever
-        # reason. We can't call unittest from inside a test, so it has to be
+        # reason. We can't call unittest von inside a test, so it has to be
         # in a subprocess.
         source = textwrap.dedent("""
-        import gc
-        import unittest
+        importiere gc
+        importiere unittest
 
 
         klasse Test(unittest.TestCase):
@@ -1192,7 +1192,7 @@ klasse IncrementalGCTests(unittest.TestCase):
     @requires_gil_enabled("Free threading does not support incremental GC")
     def test_incremental_gc_handles_fast_cycle_creation(self):
         # Run this test in a fresh process.  The number of alive objects (which can
-        # be from unit tests run before this one) can influence how quickly cyclic
+        # be von unit tests run before this one) can influence how quickly cyclic
         # garbage is found.
         script = support.findfile("_test_gc_fast_cycles.py")
         run_test_script(script)
@@ -1227,7 +1227,7 @@ klasse GCCallbackTests(unittest.TestCase):
         gc.collect()
 
     def preclean(self):
-        # Remove all fluff from the system.  Invoke this function
+        # Remove all fluff von the system.  Invoke this function
         # manually rather than through self.setUp() fuer maximum
         # safety.
         self.visit = []
@@ -1242,7 +1242,7 @@ klasse GCCallbackTests(unittest.TestCase):
     def cb2(self, phase, info):
         self.visit.append((2, phase, dict(info)))
         wenn phase == "stop" and hasattr(self, "cleanup"):
-            # Clean Uncollectable from garbage
+            # Clean Uncollectable von garbage
             uc = [e fuer e in gc.garbage wenn isinstance(e, Uncollectable)]
             gc.garbage[:] = [e fuer e in gc.garbage
                              wenn not isinstance(e, Uncollectable)]
@@ -1329,9 +1329,9 @@ klasse GCCallbackTests(unittest.TestCase):
         # Skip the test wenn ctypes is not available
         import_module("ctypes")
 
-        import subprocess
+        importiere subprocess
         code = textwrap.dedent('''
-            from test.support import gc_collect, SuppressCrashReport
+            von test.support importiere gc_collect, SuppressCrashReport
 
             a = [1, 2, 3]
             b = [a, a]
@@ -1343,7 +1343,7 @@ klasse GCCallbackTests(unittest.TestCase):
             # Simulate the refcount of "a" being too low (compared to the
             # references held on it by live data), but keeping it above zero
             # (to avoid deallocating it):
-            import ctypes
+            importiere ctypes
             ctypes.pythonapi.Py_DecRef(ctypes.py_object(a))
             del a
             del b
@@ -1568,9 +1568,9 @@ klasse PythonFinalizationTests(unittest.TestCase):
         # the type memory can be freed as well. The test is also related to
         # _PyAST_Fini() which clears references to AST types.
         code = textwrap.dedent("""
-            import ast
-            import codecs
-            from test import support
+            importiere ast
+            importiere codecs
+            von test importiere support
 
             # Small AST tree to keep their AST types alive
             tree = ast.parse("def f(x, y): return 2*x-y")
@@ -1583,8 +1583,8 @@ klasse PythonFinalizationTests(unittest.TestCase):
     def test_warnings_fini(self):
         # See https://github.com/python/cpython/issues/137384
         code = textwrap.dedent('''
-            import asyncio
-            from contextvars import ContextVar
+            importiere asyncio
+            von contextvars importiere ContextVar
 
             context_loop = ContextVar("context_loop", default=Nichts)
             loop = asyncio.new_event_loop()

@@ -1,9 +1,9 @@
-import itertools
-from collections import deque
-from itertools import islice
+importiere itertools
+von collections importiere deque
+von itertools importiere islice
 
 
-# from jaraco.itertools 6.3.0
+# von jaraco.itertools 6.3.0
 klasse Counter:
     """
     Wrap an iterable in an object that stores the count of items
@@ -29,7 +29,7 @@ klasse Counter:
         return result
 
 
-# from more_itertools v8.13.0
+# von more_itertools v8.13.0
 def always_iterable(obj, base_type=(str, bytes)):
     wenn obj is Nichts:
         return iter(())
@@ -43,7 +43,7 @@ def always_iterable(obj, base_type=(str, bytes)):
         return iter((obj,))
 
 
-# from more_itertools v9.0.0
+# von more_itertools v9.0.0
 def consume(iterator, n=Nichts):
     """Advance *iterable* by *n* steps. If *n* is ``Nichts``, consume it
     entirely.

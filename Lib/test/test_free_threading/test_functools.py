@@ -1,10 +1,10 @@
-import random
-import unittest
+importiere random
+importiere unittest
 
-from functools import lru_cache
-from threading import Barrier, Thread
+von functools importiere lru_cache
+von threading importiere Barrier, Thread
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 @threading_helper.requires_working_threading()
 klasse TestLRUCache(unittest.TestCase):

@@ -1,8 +1,8 @@
 # Run by test_gc.
-from test import support
-import _testinternalcapi
-import gc
-import unittest
+von test importiere support
+importiere _testinternalcapi
+importiere gc
+importiere unittest
 
 klasse IncrementalGCTests(unittest.TestCase):
 

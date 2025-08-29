@@ -1,6 +1,6 @@
 """When called as a script, consumes the input"""
 
-import sys
+importiere sys
 
 wenn __name__ == "__main__":
     fuer line in sys.stdin:

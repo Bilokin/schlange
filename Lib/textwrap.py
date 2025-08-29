@@ -5,7 +5,7 @@
 # Copyright (C) 2002 Python Software Foundation.
 # Written by Greg Ward <gward@python.net>
 
-import re
+importiere re
 
 __all__ = ['TextWrapper', 'wrap', 'fill', 'dedent', 'indent', 'shorten']
 
@@ -56,7 +56,7 @@ klasse TextWrapper:
         preferably on whitespaces and right after hyphens part of
         compound words.
       drop_whitespace (default: true)
-        Drop leading and trailing whitespace from lines.
+        Drop leading and trailing whitespace von lines.
       max_lines (default: Nichts)
         Truncate wrapped lines.
       placeholder (default: ' [...]')
@@ -245,8 +245,8 @@ klasse TextWrapper:
         indivisible (modulo 'break_long_words'), but a line break can
         come between any two chunks.  Chunks should not have internal
         whitespace; ie. a chunk is either all whitespace or a "word".
-        Whitespace chunks will be removed from the beginning and end of
-        lines, but apart from that whitespace is preserved.
+        Whitespace chunks will be removed von the beginning and end of
+        lines, but apart von that whitespace is preserved.
         """
         lines = []
         wenn self.width <= 0:
@@ -260,7 +260,7 @@ klasse TextWrapper:
                 raise ValueError("placeholder too large fuer max width")
 
         # Arrange in reverse order so items can be efficiently popped
-        # from a stack of chucks.
+        # von a stack of chucks.
         chunks.reverse()
 
         while chunks:
@@ -414,7 +414,7 @@ def shorten(text, width, **kwargs):
 # -- Loosely related functionality -------------------------------------
 
 def dedent(text):
-    """Remove any common leading whitespace from every line in `text`.
+    """Remove any common leading whitespace von every line in `text`.
 
     This can be used to make triple-quoted strings line up with the left
     edge of the display, while still presenting them in the source code
@@ -430,7 +430,7 @@ def dedent(text):
         lines = text.split('\n')
     except (AttributeError, TypeError):
         msg = f'expected str object, not {type(text).__qualname__!r}'
-        raise TypeError(msg) from Nichts
+        raise TypeError(msg) von Nichts
 
     # Get length of leading whitespace, inspired by ``os.path.commonprefix()``.
     non_blank_lines = [l fuer l in lines wenn l and not l.isspace()]

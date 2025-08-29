@@ -1,6 +1,6 @@
-import asyncio
-import io
-import unittest
+importiere asyncio
+importiere io
+importiere unittest
 
 
 # To prevent a warning "test altered the execution environment"

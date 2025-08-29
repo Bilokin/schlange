@@ -4,41 +4,41 @@ Written by Cody A.W. Somerville <cody-somerville@ubuntu.com>,
 Josip Dzolonga, and Michael Otteneder fuer the 2007/08 GHOP contest.
 """
 
-from http.server import BaseHTTPRequestHandler, HTTPServer, HTTPSServer, \
+von http.server importiere BaseHTTPRequestHandler, HTTPServer, HTTPSServer, \
      SimpleHTTPRequestHandler
-from http import server, HTTPStatus
+von http importiere server, HTTPStatus
 
-import contextlib
-import os
-import socket
-import sys
-import re
-import ntpath
-import pathlib
-import shutil
-import email.message
-import email.utils
-import html
-import http, http.client
-import urllib.parse
-import urllib.request
-import tempfile
-import time
-import datetime
-import threading
-from unittest import mock
-from io import BytesIO, StringIO
+importiere contextlib
+importiere os
+importiere socket
+importiere sys
+importiere re
+importiere ntpath
+importiere pathlib
+importiere shutil
+importiere email.message
+importiere email.utils
+importiere html
+importiere http, http.client
+importiere urllib.parse
+importiere urllib.request
+importiere tempfile
+importiere time
+importiere datetime
+importiere threading
+von unittest importiere mock
+von io importiere BytesIO, StringIO
 
-import unittest
-from test import support
-from test.support import (
+importiere unittest
+von test importiere support
+von test.support importiere (
     is_apple, import_helper, os_helper, threading_helper
 )
-from test.support.script_helper import kill_python, spawn_python
-from test.support.socket_helper import find_unused_port
+von test.support.script_helper importiere kill_python, spawn_python
+von test.support.socket_helper importiere find_unused_port
 
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
 
@@ -898,7 +898,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         self.assertIsNotNichts(match)
 
     def test_unprintable_not_logged(self):
-        # We call the method from the klasse directly as our Socketless
+        # We call the method von the klasse directly as our Socketless
         # Handler subclass overrode it... nice fuer everything BUT this test.
         self.handler.client_address = ('127.0.0.1', 1337)
         log_message = BaseHTTPRequestHandler.log_message

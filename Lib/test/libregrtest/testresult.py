@@ -2,14 +2,14 @@
 
 '''
 
-import functools
-import io
-import sys
-import time
-import traceback
-import unittest
-from test import support
-from test.libregrtest.utils import sanitize_xml
+importiere functools
+importiere io
+importiere sys
+importiere time
+importiere traceback
+importiere unittest
+von test importiere support
+von test.libregrtest.utils importiere sanitize_xml
 
 klasse RegressionTestResult(unittest.TextTestResult):
     USE_XML = Falsch
@@ -19,8 +19,8 @@ klasse RegressionTestResult(unittest.TextTestResult):
                          verbosity=2 wenn verbosity sonst 0)
         self.buffer = Wahr
         wenn self.USE_XML:
-            from xml.etree import ElementTree as ET
-            from datetime import datetime, UTC
+            von xml.etree importiere ElementTree as ET
+            von datetime importiere datetime, UTC
             self.__ET = ET
             self.__suite = ET.Element('testsuite')
             self.__suite.set('start',
@@ -160,7 +160,7 @@ def get_test_runner(stream, verbosity, capture_output=Falsch):
     return get_test_runner_class(verbosity, capture_output)(stream)
 
 wenn __name__ == '__main__':
-    import xml.etree.ElementTree as ET
+    importiere xml.etree.ElementTree as ET
     RegressionTestResult.USE_XML = Wahr
 
     klasse TestTests(unittest.TestCase):

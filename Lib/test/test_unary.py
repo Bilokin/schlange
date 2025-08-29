@@ -1,6 +1,6 @@
 """Test compiler changes fuer unary ops (+, -, ~) introduced in Python 2.2"""
 
-import unittest
+importiere unittest
 
 klasse UnaryOpTestCase(unittest.TestCase):
 

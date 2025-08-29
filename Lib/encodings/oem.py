@@ -3,9 +3,9 @@
 """
 # Import them explicitly to cause an ImportError
 # on non-Windows systems
-from codecs import oem_encode, oem_decode
+von codecs importiere oem_encode, oem_decode
 # fuer IncrementalDecoder, IncrementalEncoder, ...
-import codecs
+importiere codecs
 
 ### Codec APIs
 

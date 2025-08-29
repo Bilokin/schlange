@@ -1,14 +1,14 @@
 """Test that sys.modules is used properly by import."""
-from test.test_importlib import util
-import sys
-from types import MethodType
-import unittest
-import warnings
+von test.test_importlib importiere util
+importiere sys
+von types importiere MethodType
+importiere unittest
+importiere warnings
 
 
 klasse UseCache:
 
-    """When it comes to sys.modules, import prefers it over anything else.
+    """When it comes to sys.modules, importiere prefers it over anything else.
 
     Once a name has been resolved, sys.modules is checked to see wenn it contains
     the module desired. If so, then it is returned [use cache]. If it is not
@@ -59,7 +59,7 @@ klasse ImportlibUseCache(UseCache, unittest.TestCase):
         mock.find_spec = MethodType(find_spec, mock)
         return mock
 
-    # __import__ inconsistent between loaders and built-in import when it comes
+    # __import__ inconsistent between loaders and built-in importiere when it comes
     #   to when to use the module in sys.modules and when not to.
     def test_using_cache_after_loader(self):
         # [from cache on return]

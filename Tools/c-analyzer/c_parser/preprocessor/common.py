@@ -1,13 +1,13 @@
-import contextlib
-import distutils.ccompiler
-import logging
-import os
-import shlex
-import subprocess
-import sys
+importiere contextlib
+importiere distutils.ccompiler
+importiere logging
+importiere os
+importiere shlex
+importiere subprocess
+importiere sys
 
-from ..info import FileInfo, SourceLine
-from .errors import (
+von ..info importiere FileInfo, SourceLine
+von .errors importiere (
     PreprocessorFailure,
     ErrorDirectiveError,
     MissingDependenciesError,

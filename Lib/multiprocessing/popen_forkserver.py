@@ -1,13 +1,13 @@
-import io
-import os
+importiere io
+importiere os
 
-from .context import reduction, set_spawning_popen
+von .context importiere reduction, set_spawning_popen
 wenn not reduction.HAVE_SEND_HANDLE:
     raise ImportError('No support fuer sending fds between processes')
-from . import forkserver
-from . import popen_fork
-from . import spawn
-from . import util
+von . importiere forkserver
+von . importiere popen_fork
+von . importiere spawn
+von . importiere util
 
 
 __all__ = ['Popen']
@@ -60,7 +60,7 @@ klasse Popen(popen_fork.Popen):
 
     def poll(self, flag=os.WNOHANG):
         wenn self.returncode is Nichts:
-            from multiprocessing.connection import wait
+            von multiprocessing.connection importiere wait
             timeout = 0 wenn flag == os.WNOHANG sonst Nichts
             wenn not wait([self.sentinel], timeout):
                 return Nichts

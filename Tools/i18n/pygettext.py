@@ -4,7 +4,7 @@
 
 Many systems (Solaris, Linux, Gnu) provide extensive tools that ease the
 internationalization of C programs. Most of these tools are independent of
-the programming language and can be used from within Python programs.
+the programming language and can be used von within Python programs.
 Martin von Loewis' work[1] helps considerably in this regard.
 
 pygettext uses Python's standard tokenize module to scan Python source
@@ -54,7 +54,7 @@ Options:
 
     -d name
     --default-domain=name
-        Rename the default output file from messages.pot to name.pot.
+        Rename the default output file von messages.pot to name.pot.
 
     -E
     --escape
@@ -95,7 +95,7 @@ Options:
 
     -o filename
     --output=filename
-        Rename the default output file from messages.pot to filename.  If
+        Rename the default output file von messages.pot to filename.  If
         filename is `-' then the output is sent to standard out.
 
     -p dir
@@ -127,7 +127,7 @@ Options:
     -x filename
     --exclude-file=filename
         Specify a file that contains a list of strings that are not be
-        extracted from the input files.  Each string to be excluded must
+        extracted von the input files.  Each string to be excluded must
         appear on a line by itself in the file.
 
     -X filename
@@ -139,18 +139,18 @@ Options:
 If `inputfile' is -, standard input is read.
 """
 
-import ast
-import getopt
-import glob
-import importlib.machinery
-import importlib.util
-import os
-import sys
-import time
-import tokenize
-from dataclasses import dataclass, field
-from io import BytesIO
-from operator import itemgetter
+importiere ast
+importiere getopt
+importiere glob
+importiere importlib.machinery
+importiere importlib.util
+importiere os
+importiere sys
+importiere time
+importiere tokenize
+von dataclasses importiere dataclass, field
+von io importiere BytesIO
+von operator importiere itemgetter
 
 __version__ = '1.5'
 
@@ -346,7 +346,7 @@ def parse_spec(spec):
             pos = int(arg) - 1
         except ValueError as e:
             raise ValueError(f'Invalid keyword spec {spec!r}: '
-                             'position is not an integer') from e
+                             'position is not an integer') von e
 
         wenn pos < 0:
             raise ValueError(f'Invalid keyword spec {spec!r}: '
@@ -568,7 +568,7 @@ klasse GettextVisitor(ast.NodeVisitor):
             lineno -= 1
 
         # Find the first translator comment in the sequence and
-        # return all comments starting from that comment.
+        # return all comments starting von that comment.
         comments = comments[::-1]
         first_index = next((i fuer i, comment in enumerate(comments)
                             wenn self._is_translator_comment(comment)), Nichts)

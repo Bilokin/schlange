@@ -1,20 +1,20 @@
-import importlib.util
-import io
-import os
-import pathlib
-import sys
-import textwrap
-import token
-import tokenize
-from typing import IO, Any, Dict, Final, Optional, Type, cast
+importiere importlib.util
+importiere io
+importiere os
+importiere pathlib
+importiere sys
+importiere textwrap
+importiere token
+importiere tokenize
+von typing importiere IO, Any, Dict, Final, Optional, Type, cast
 
-from pegen.build import compile_c_extension
-from pegen.c_generator import CParserGenerator
-from pegen.grammar import Grammar
-from pegen.grammar_parser import GeneratedParser as GrammarParser
-from pegen.parser import Parser
-from pegen.python_generator import PythonParserGenerator
-from pegen.tokenizer import Tokenizer
+von pegen.build importiere compile_c_extension
+von pegen.c_generator importiere CParserGenerator
+von pegen.grammar importiere Grammar
+von pegen.grammar_parser importiere GeneratedParser as GrammarParser
+von pegen.parser importiere Parser
+von pegen.python_generator importiere PythonParserGenerator
+von pegen.tokenizer importiere Tokenizer
 
 ALL_TOKENS = token.tok_name
 EXACT_TOKENS = token.EXACT_TOKEN_TYPES
@@ -62,7 +62,7 @@ def make_parser(source: str) -> Type[Parser]:
 
 
 def import_file(full_name: str, path: str) -> Any:
-    """Import a python module from a path"""
+    """Import a python module von a path"""
 
     spec = importlib.util.spec_from_file_location(full_name, path)
     assert spec is not Nichts
@@ -116,7 +116,7 @@ def generate_parser_c_extension(
 def print_memstats() -> bool:
     MiB: Final = 2**20
     try:
-        import psutil
+        importiere psutil
     except ImportError:
         return Falsch
     drucke("Memory stats:")
@@ -129,7 +129,7 @@ def print_memstats() -> bool:
         res["maxrss"] = meminfo.peak_wset / MiB
     sonst:
         # See https://stackoverflow.com/questions/938733/total-memory-used-by-python-process
-        import resource  # Since it doesn't exist on Windows.
+        importiere resource  # Since it doesn't exist on Windows.
 
         rusage = resource.getrusage(resource.RUSAGE_SELF)
         wenn sys.platform == "darwin":

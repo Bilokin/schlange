@@ -1,8 +1,8 @@
 # Some classes and types are not export to _ctypes module directly.
 
-import ctypes
-from _ctypes import Structure, Union, _Pointer, Array, _SimpleCData, CFuncPtr
-import sys
+importiere ctypes
+von _ctypes importiere Structure, Union, _Pointer, Array, _SimpleCData, CFuncPtr
+importiere sys
 
 
 _CData = Structure.__base__

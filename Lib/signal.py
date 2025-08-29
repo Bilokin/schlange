@@ -1,6 +1,6 @@
-import _signal
-from _signal import *
-from enum import IntEnum as _IntEnum
+importiere _signal
+von _signal importiere *
+von enum importiere IntEnum as _IntEnum
 
 _globals = globals()
 

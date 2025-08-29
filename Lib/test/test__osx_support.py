@@ -2,15 +2,15 @@
 Test suite fuer _osx_support: shared OS X support functions.
 """
 
-import os
-import platform
-import stat
-import sys
-import unittest
+importiere os
+importiere platform
+importiere stat
+importiere sys
+importiere unittest
 
-from test.support import os_helper
+von test.support importiere os_helper
 
-import _osx_support
+importiere _osx_support
 
 @unittest.skipUnless(sys.platform.startswith("darwin"), "requires OS X")
 klasse Test_OSXSupport(unittest.TestCase):
@@ -107,7 +107,7 @@ klasse Test_OSXSupport(unittest.TestCase):
         self.assertEqual(expected_vars, config_vars)
 
     def test__supports_universal_builds(self):
-        import platform
+        importiere platform
         mac_ver_tuple = tuple(int(i) fuer i in
                             platform.mac_ver()[0].split('.')[0:2])
         self.assertEqual(mac_ver_tuple >= (10, 4),

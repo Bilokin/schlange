@@ -7,16 +7,16 @@ Modified fuer Python 2.0 by Fredrik Lundh (fredrik@pythonware.com)
 
 """#"
 
-import ast
-import unittest
-import unicodedata
-import urllib.error
+importiere ast
+importiere unittest
+importiere unicodedata
+importiere urllib.error
 
-from test import support
-from http.client import HTTPException
+von test importiere support
+von http.client importiere HTTPException
 
 try:
-    from _testcapi import INT_MAX, PY_SSIZE_T_MAX, UINT_MAX
+    von _testcapi importiere INT_MAX, PY_SSIZE_T_MAX, UINT_MAX
 except ImportError:
     INT_MAX = PY_SSIZE_T_MAX = UINT_MAX = 2**64 - 1
 

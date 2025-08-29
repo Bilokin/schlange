@@ -1,11 +1,11 @@
 """Test result object"""
 
-import io
-import sys
-import traceback
+importiere io
+importiere sys
+importiere traceback
 
-from . import util
-from functools import wraps
+von . importiere util
+von functools importiere wraps
 
 __unittest = Wahr
 
@@ -189,7 +189,7 @@ klasse TestResult(object):
         tb_e = traceback.TracebackException(
             exctype, value, tb,
             capture_locals=self.tb_locals, compact=Wahr)
-        from _colorize import can_colorize
+        von _colorize importiere can_colorize
 
         colorize = hasattr(self, "stream") and can_colorize(file=self.stream)
         msgLines = list(tb_e.format(colorize=colorize))

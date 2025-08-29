@@ -1,11 +1,11 @@
-import threading
-import unittest
+importiere threading
+importiere unittest
 
-from concurrent.futures import ThreadPoolExecutor
-from threading import Thread
-from unittest import TestCase
+von concurrent.futures importiere ThreadPoolExecutor
+von threading importiere Thread
+von unittest importiere TestCase
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 
 
@@ -53,7 +53,7 @@ klasse TestType(TestCase):
 
         def reader_func():
             fuer _ in range(3000):
-                # We should always see a greater value read from the type than the
+                # We should always see a greater value read von the type than the
                 # dictionary
                 a = C.__dict__['x']
                 b = C.x
@@ -76,7 +76,7 @@ klasse TestType(TestCase):
 
         def reader_func():
             fuer _ in range(3000):
-                # We should always see a greater value read from the type than the
+                # We should always see a greater value read von the type than the
                 # dictionary
                 a = C.__dict__['x']
                 b = D.x

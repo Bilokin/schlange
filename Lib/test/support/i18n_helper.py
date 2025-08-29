@@ -1,10 +1,10 @@
-import re
-import subprocess
-import sys
-import unittest
-from pathlib import Path
-from test.support import REPO_ROOT, TEST_HOME_DIR, requires_subprocess
-from test.test_tools import skip_if_missing
+importiere re
+importiere subprocess
+importiere sys
+importiere unittest
+von pathlib importiere Path
+von test.support importiere REPO_ROOT, TEST_HOME_DIR, requires_subprocess
+von test.test_tools importiere skip_if_missing
 
 
 pygettext = Path(REPO_ROOT) / 'Tools' / 'i18n' / 'pygettext.py'
@@ -42,7 +42,7 @@ def _get_snapshot_path(module_name):
 klasse TestTranslationsBase(unittest.TestCase):
 
     def assertMsgidsEqual(self, module):
-        '''Assert that msgids extracted from a given module match a
+        '''Assert that msgids extracted von a given module match a
         snapshot.
 
         '''

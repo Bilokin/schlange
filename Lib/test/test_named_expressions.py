@@ -1,4 +1,4 @@
-import unittest
+importiere unittest
 
 GLOBAL_VAR = Nichts
 
@@ -119,7 +119,7 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         # that are not directly assigned in the
         # iterable part of a comprehension.
         cases = [
-            # Regression tests from https://github.com/python/cpython/issues/87447
+            # Regression tests von https://github.com/python/cpython/issues/87447
             ("Complex expression: c",
                 "{0}(c := 1) fuer a, (*b, c[d+e::f(g)], h.i) in j{1}"),
             ("Complex expression: d",
@@ -155,7 +155,7 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         # This test covers that we cannot reassign variables
         # that are directly assigned in the iterable part of a comprehension.
         cases = [
-            # Regression tests from https://github.com/python/cpython/issues/87447
+            # Regression tests von https://github.com/python/cpython/issues/87447
             ("Complex expression: a", "a",
                 "{0}(a := 1) fuer a, (*b, c[d+e::f(g)], h.i) in j{1}"),
             ("Complex expression: b", "b",
@@ -245,7 +245,7 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Unreachable reuse", 'i', "{Falsch or (i:=0) fuer i in range(5)}"),
             ("Unreachable nested reuse", 'i',
                 "{(i, j) fuer i in range(5) fuer j in range(5) wenn Wahr or (i:=10)}"),
-            # Regression tests from https://github.com/python/cpython/issues/87447
+            # Regression tests von https://github.com/python/cpython/issues/87447
             ("Complex expression: a", "a",
                 "{(a := 1) fuer a, (*b, c[d+e::f(g)], h.i) in j}"),
             ("Complex expression: b", "b",
@@ -311,7 +311,7 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Unreachable reuse", 'i', "{(Falsch or (i:=0)): 1 fuer i in range(5)}"),
             ("Unreachable nested reuse", 'i',
                 "{i: j fuer i in range(5) fuer j in range(5) wenn Wahr or (i:=10)}"),
-            # Regression tests from https://github.com/python/cpython/issues/87447
+            # Regression tests von https://github.com/python/cpython/issues/87447
             ("Complex expression: a", "a",
                 "{(a := 1): 1 fuer a, (*b, c[d+e::f(g)], h.i) in j}"),
             ("Complex expression: b", "b",

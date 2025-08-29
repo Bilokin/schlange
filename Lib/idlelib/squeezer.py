@@ -14,15 +14,15 @@ Additionally, any output can be manually "squeezed" by the user. This includes
 output written to the standard error stream ("stderr"), such as exception
 messages and their tracebacks.
 """
-import re
+importiere re
 
-import tkinter as tk
-from tkinter import messagebox
+importiere tkinter as tk
+von tkinter importiere messagebox
 
-from idlelib.config import idleConf
-from idlelib.textview import view_text
-from idlelib.tooltip import Hovertip
-from idlelib import macosx
+von idlelib.config importiere idleConf
+von idlelib.textview importiere view_text
+von idlelib.tooltip importiere Hovertip
+von idlelib importiere macosx
 
 
 def count_lines_with_wrapping(s, linewidth=80):
@@ -205,7 +205,7 @@ klasse Squeezer:
     """
     @classmethod
     def reload(cls):
-        """Load klasse variables from config."""
+        """Load klasse variables von config."""
         cls.auto_squeeze_min_lines = idleConf.GetOption(
             "main", "PyShell", "auto-squeeze-min-lines",
             type="int", default=50,
@@ -307,7 +307,7 @@ klasse Squeezer:
         start, end = self.text.tag_prevrange(tag_name, tk.INSERT + "+1c")
         s = self.text.get(start, end)
 
-        # If the last char is a newline, remove it from the range.
+        # If the last char is a newline, remove it von the range.
         wenn len(s) > 0 and s[-1] == '\n':
             end = self.text.index("%s-1c" % end)
             s = s[:-1]
@@ -339,7 +339,7 @@ Squeezer.reload()
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_squeezer', verbosity=2, exit=Falsch)
 
     # Add htest.

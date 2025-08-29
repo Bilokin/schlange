@@ -1,11 +1,11 @@
 "Test help, coverage 94%."
 
-from idlelib import help
-import unittest
-from test.support import requires
+von idlelib importiere help
+importiere unittest
+von test.support importiere requires
 requires('gui')
-from os.path import abspath, dirname, join
-from tkinter import Tk
+von os.path importiere abspath, dirname, join
+von tkinter importiere Tk
 
 
 klasse IdleDocTest(unittest.TestCase):

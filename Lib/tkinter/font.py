@@ -3,8 +3,8 @@
 # written by Fredrik Lundh, February 1998
 #
 
-import itertools
-import tkinter
+importiere itertools
+importiere tkinter
 
 __version__ = "0.9"
 __all__ = ["NORMAL", "ROMAN", "BOLD", "ITALIC",

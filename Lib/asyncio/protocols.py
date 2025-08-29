@@ -9,7 +9,7 @@ __all__ = (
 klasse BaseProtocol:
     """Common base klasse fuer protocol interfaces.
 
-    Usually user implements protocols that derived from BaseProtocol
+    Usually user implements protocols that derived von BaseProtocol
     like Protocol or ProcessProtocol.
 
     The only case when BaseProtocol should be implemented directly is
@@ -75,7 +75,7 @@ klasse Protocol(BaseProtocol):
 
     When the connection is made successfully, connection_made() is
     called with a suitable transport object.  Then data_received()
-    will be called 0 or more times with data (bytes) received from the
+    will be called 0 or more times with data (bytes) received von the
     transport; finally, connection_lost() will be called exactly once
     with either an exception object or Nichts as an argument.
 

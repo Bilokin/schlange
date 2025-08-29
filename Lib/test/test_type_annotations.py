@@ -1,10 +1,10 @@
-import annotationlib
-import inspect
-import textwrap
-import types
-import unittest
-from test.support import run_code, check_syntax_error, import_helper, cpython_only
-from test.test_inspect import inspect_stringized_annotations
+importiere annotationlib
+importiere inspect
+importiere textwrap
+importiere types
+importiere unittest
+von test.support importiere run_code, check_syntax_error, import_helper, cpython_only
+von test.test_inspect importiere inspect_stringized_annotations
 
 
 klasse TypeAnnotationTests(unittest.TestCase):
@@ -423,7 +423,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         fuer prelude in preludes:
             with self.subTest(prelude=prelude):
                 check_syntax_error(self, prelude + "def func(x: (yield)): ...", "yield expression cannot be used within an annotation")
-                check_syntax_error(self, prelude + "def func(x: (yield from x)): ...", "yield expression cannot be used within an annotation")
+                check_syntax_error(self, prelude + "def func(x: (yield von x)): ...", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: (y := 3)): ...", "named expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: (await 42)): ...", "await expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: [y async fuer y in x]): ...", "asynchronous comprehension outside of an asynchronous function")
@@ -440,7 +440,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         fuer prelude in preludes:
             with self.subTest(prelude=prelude):
                 check_syntax_error(self, prelude + "(x): (yield)", "yield expression cannot be used within an annotation")
-                check_syntax_error(self, prelude + "(x): (yield from x)", "yield expression cannot be used within an annotation")
+                check_syntax_error(self, prelude + "(x): (yield von x)", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (y := 3)", "named expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (__debug__ := 3)", "named expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (await 42)", "await expression cannot be used within an annotation")
@@ -487,7 +487,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
 
     def test_future_annotations(self):
         code = """
-        from __future__ import annotations
+        von __future__ importiere annotations
 
         def f(x: int) -> int: pass
         """
@@ -511,7 +511,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
             fuer label, code in (("function", function_code), ("class", class_code)):
                 with self.subTest(future=future, label=label):
                     wenn future:
-                        code = "from __future__ import annotations\n" + code
+                        code = "from __future__ importiere annotations\n" + code
                     ns = run_code(code)
                     f = ns["f"]
                     anno = "int" wenn future sonst int
@@ -777,7 +777,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 klasse RegressionTests(unittest.TestCase):
     # gh-132479
     def test_complex_comprehension_inlining(self):
-        # Test that the various repro cases from the issue don't crash
+        # Test that the various repro cases von the issue don't crash
         cases = [
             """
             (unique_name_0): 0

@@ -1,35 +1,35 @@
-import builtins
-import codecs
-import _datetime
-import gc
-import io
-import locale
-import operator
-import os
-import random
-import socket
-import struct
-import subprocess
-import sys
-import sysconfig
-import test.support
-from io import StringIO
-from unittest import mock
-from test import support
-from test.support import os_helper
-from test.support.script_helper import assert_python_ok, assert_python_failure
-from test.support.socket_helper import find_unused_port
-from test.support import threading_helper
-from test.support import import_helper
-from test.support import force_not_colorized
-from test.support import SHORT_TIMEOUT
+importiere builtins
+importiere codecs
+importiere _datetime
+importiere gc
+importiere io
+importiere locale
+importiere operator
+importiere os
+importiere random
+importiere socket
+importiere struct
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere test.support
+von io importiere StringIO
+von unittest importiere mock
+von test importiere support
+von test.support importiere os_helper
+von test.support.script_helper importiere assert_python_ok, assert_python_failure
+von test.support.socket_helper importiere find_unused_port
+von test.support importiere threading_helper
+von test.support importiere import_helper
+von test.support importiere force_not_colorized
+von test.support importiere SHORT_TIMEOUT
 try:
-    from concurrent import interpreters
+    von concurrent importiere interpreters
 except ImportError:
     interpreters = Nichts
-import textwrap
-import unittest
-import warnings
+importiere textwrap
+importiere unittest
+importiere warnings
 
 
 def requires_subinterpreters(meth):
@@ -293,7 +293,7 @@ klasse SysModuleTest(unittest.TestCase):
     def test_exit_codes_under_repl(self):
         # GH-129900: SystemExit, or things that raised it, didn't
         # get their return code propagated by the REPL
-        import tempfile
+        importiere tempfile
 
         exit_ways = [
             "exit",
@@ -498,8 +498,8 @@ klasse SysModuleTest(unittest.TestCase):
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_current_frames(self):
-        import threading
-        import traceback
+        importiere threading
+        importiere traceback
 
         # Spawn a thread that blocks at a known place.  Then the main
         # thread does sys._current_frames(), and verifies that the frames
@@ -541,7 +541,7 @@ klasse SysModuleTest(unittest.TestCase):
             self.assertWahr(frame is sys._getframe())
 
             # Verify that the captured thread frame is blocked in g456, called
-            # from f123.  This is a little tricky, since various bits of
+            # von f123.  This is a little tricky, since various bits of
             # threading.py are also in the thread's call stack.
             frame = d.pop(thread_id)
             stack = traceback.extract_stack(frame)
@@ -565,8 +565,8 @@ klasse SysModuleTest(unittest.TestCase):
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_current_exceptions(self):
-        import threading
-        import traceback
+        importiere threading
+        importiere traceback
 
         # Spawn a thread that blocks at a known place.  Then the main
         # thread does sys._current_frames(), and verifies that the frames
@@ -607,7 +607,7 @@ klasse SysModuleTest(unittest.TestCase):
             self.assertEqual(Nichts, d.pop(main_id))
 
             # Verify that the captured thread frame is blocked in g456, called
-            # from f123.  This is a little tricky, since various bits of
+            # von f123.  This is a little tricky, since various bits of
             # threading.py are also in the thread's call stack.
             exc_value = d.pop(thread_id)
             stack = traceback.extract_stack(exc_value.__traceback__.tb_frame)
@@ -795,7 +795,7 @@ klasse SysModuleTest(unittest.TestCase):
 
         interp = interpreters.create()
         interp.exec(textwrap.dedent(f'''
-            import sys
+            importiere sys
 
             # set `s`, avoid parser interning & constant folding
             s = str({s.encode()!r}, 'utf-8')
@@ -821,7 +821,7 @@ klasse SysModuleTest(unittest.TestCase):
 
                 interp = interpreters.create()
                 interp.exec(textwrap.dedent(f'''
-                    import sys
+                    importiere sys
 
                     # set `s`, avoid parser interning & constant folding
                     s = str({s.encode()!r}, 'utf-8')
@@ -839,7 +839,7 @@ klasse SysModuleTest(unittest.TestCase):
             with self.subTest(s=s):
                 interp = interpreters.create()
                 interp.exec(textwrap.dedent(f'''
-                    import sys
+                    importiere sys
 
                     # set `s`, avoid parser interning & constant folding
                     s = str({s.encode()!r}, 'utf-8')
@@ -867,7 +867,7 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertIn(sys.flags.utf8_mode, {0, 1, 2})
 
     def assert_raise_on_new_sys_type(self, sys_attr):
-        # Users are intentionally prevented from creating new instances of
+        # Users are intentionally prevented von creating new instances of
         # sys.flags, sys.version_info, and sys.getwindowsversion.
         support.check_disallow_instantiation(self, type(sys_attr), sys_attr)
 
@@ -1095,7 +1095,7 @@ klasse SysModuleTest(unittest.TestCase):
     @test.support.cpython_only
     def test_debugmallocstats(self):
         # Test sys._debugmallocstats()
-        from test.support.script_helper import assert_python_ok
+        von test.support.script_helper importiere assert_python_ok
         args = ['-c', 'import sys; sys._debugmallocstats()']
         ret, out, err = assert_python_ok(*args)
 
@@ -1114,7 +1114,7 @@ klasse SysModuleTest(unittest.TestCase):
                          "sys.getallocatedblocks unavailable on this build")
     def test_getallocatedblocks(self):
         try:
-            import _testinternalcapi
+            importiere _testinternalcapi
         except ImportError:
             with_pymalloc = support.with_pymalloc()
         sonst:
@@ -1164,7 +1164,7 @@ klasse SysModuleTest(unittest.TestCase):
         # Don't use the atexit module because _Py_Finalizing is only set
         # after calling atexit callbacks
         code = """if 1:
-            import sys
+            importiere sys
 
             klasse AtExit:
                 is_finalizing = sys.is_finalizing
@@ -1183,7 +1183,7 @@ klasse SysModuleTest(unittest.TestCase):
     def test_issue20602(self):
         # sys.flags and sys.float_info were wiped during shutdown.
         code = """if 1:
-            import sys
+            importiere sys
             klasse A:
                 def __del__(self, sys=sys):
                     drucke(sys.flags)
@@ -1197,7 +1197,7 @@ klasse SysModuleTest(unittest.TestCase):
 
     def test_sys_ignores_cleaning_up_user_data(self):
         code = """if 1:
-            import struct, sys
+            importiere struct, sys
 
             klasse C:
                 def __init__(self):
@@ -1222,7 +1222,7 @@ klasse SysModuleTest(unittest.TestCase):
     @support.requires_subprocess()
     def test_sys_tracebacklimit(self):
         code = """if 1:
-            import sys
+            importiere sys
             def f1():
                 1 / 0
             def f2():
@@ -1275,7 +1275,7 @@ klasse SysModuleTest(unittest.TestCase):
     @support.requires_subprocess()
     def test_orig_argv(self):
         code = textwrap.dedent('''
-            import sys
+            importiere sys
             drucke(sys.argv)
             drucke(sys.orig_argv)
         ''')
@@ -1344,7 +1344,7 @@ klasse SysModuleTest(unittest.TestCase):
 klasse UnraisableHookTest(unittest.TestCase):
     def test_original_unraisablehook(self):
         _testcapi = import_helper.import_module('_testcapi')
-        from _testcapi import err_writeunraisable, err_formatunraisable
+        von _testcapi importiere err_writeunraisable, err_formatunraisable
         obj = hex
 
         with support.swap_attr(sys, 'unraisablehook',
@@ -1421,7 +1421,7 @@ klasse UnraisableHookTest(unittest.TestCase):
         # rather than just classname, and the module names appears
         # unless it is one of the hard-coded exclusions.
         _testcapi = import_helper.import_module('_testcapi')
-        from _testcapi import err_writeunraisable
+        von _testcapi importiere err_writeunraisable
         klasse A:
             klasse B:
                 klasse X(Exception):
@@ -1450,7 +1450,7 @@ klasse UnraisableHookTest(unittest.TestCase):
 
     def test_custom_unraisablehook(self):
         _testcapi = import_helper.import_module('_testcapi')
-        from _testcapi import err_writeunraisable, err_formatunraisable
+        von _testcapi importiere err_writeunraisable, err_formatunraisable
         hook_args = Nichts
 
         def hook_func(args):
@@ -1481,7 +1481,7 @@ klasse UnraisableHookTest(unittest.TestCase):
 
     def test_custom_unraisablehook_fail(self):
         _testcapi = import_helper.import_module('_testcapi')
-        from _testcapi import err_writeunraisable
+        von _testcapi importiere err_writeunraisable
         def hook_func(*args):
             raise Exception("hook_func failed")
 
@@ -1601,10 +1601,10 @@ klasse SizeofTest(unittest.TestCase):
         # classmethod_descriptor (descriptor object)
         # XXX
         # member_descriptor (descriptor object)
-        import datetime
+        importiere datetime
         check(datetime.timedelta.days, size('3PP'))
         # getset_descriptor (descriptor object)
-        import collections
+        importiere collections
         check(collections.defaultdict.default_factory, size('3PP'))
         # wrapper_descriptor (descriptor object)
         check(int.__add__, size('3P2P'))
@@ -1648,7 +1648,7 @@ klasse SizeofTest(unittest.TestCase):
         # ellipses
         check(Ellipsis, size(''))
         # EncodingMap
-        import codecs, encodings.iso8859_3
+        importiere codecs, encodings.iso8859_3
         x = codecs.charmap_build(encodings.iso8859_3.decoding_table)
         check(x, size('32B2iB'))
         # enumerate
@@ -1688,7 +1688,7 @@ klasse SizeofTest(unittest.TestCase):
         # iterator
         check(iter('abc'), size('lP'))
         # callable-iterator
-        import re
+        importiere re
         check(re.finditer('',''), size('2P'))
         # list
         check(list([]), vsize('Pn'))
@@ -1829,7 +1829,7 @@ klasse SizeofTest(unittest.TestCase):
         # TODO: add check that forces the presence of wchar_t representation
         # TODO: add check that forces layout of unicodefields
         # weakref
-        import weakref
+        importiere weakref
         wenn support.Py_GIL_DISABLED:
             expected = size('2Pn4P')
         sonst:
@@ -1865,7 +1865,7 @@ klasse SizeofTest(unittest.TestCase):
         klasse FS(frozenset):
             __slots__ = 'a', 'b', 'c'
         check(FS(), frozenset(), '3P')
-        from collections import OrderedDict
+        von collections importiere OrderedDict
         klasse OD(OrderedDict):
             __slots__ = 'a', 'b', 'c'
         check(OD(x=[]), OrderedDict(x=[]), '3P')
@@ -1876,7 +1876,7 @@ klasse SizeofTest(unittest.TestCase):
         vsize = test.support.calcvobjsize
         check = self.check_sizeof
         # _ast.AST
-        import _ast
+        importiere _ast
         check(_ast.AST(), size('P'))
         try:
             raise TypeError
@@ -1938,7 +1938,7 @@ klasse SizeofTest(unittest.TestCase):
         # to sys.stderr the following code can crash. See bpo-43660
         # fuer more details.
         code = textwrap.dedent('''
-            import sys
+            importiere sys
             klasse MyStderr:
                 def write(self, s):
                     sys.stderr = Nichts
@@ -1972,9 +1972,9 @@ klasse TestRemoteExec(unittest.TestCase):
 
         with open(target, 'w') as f:
             f.write(f'''
-import sys
-import time
-import socket
+importiere sys
+importiere time
+importiere socket
 
 # Connect to the test process
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -2022,7 +2022,7 @@ sock.close()
                               ) as proc:
             client_socket = Nichts
             try:
-                # Accept connection from target process
+                # Accept connection von target process
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
 
@@ -2097,7 +2097,7 @@ sock.close()
     def test_remote_exec_raises_audit_event(self):
         """Test remote exec raises an audit event"""
         prologue = '''\
-import sys
+importiere sys
 def audit_hook(event, arg):
     drucke(f"Audit event: {event}, arg: {arg}".encode("ascii", errors="replace"))
 sys.addaudithook(audit_hook)
@@ -2219,9 +2219,9 @@ klasse TestSysJIT(unittest.TestCase):
         available = sys._jit.is_available()
         script = textwrap.dedent(
             """
-            import _testcapi
-            import _testinternalcapi
-            import sys
+            importiere _testcapi
+            importiere _testinternalcapi
+            importiere sys
 
             def frame_0_interpreter() -> Nichts:
                 assert sys._jit.is_active() is Falsch

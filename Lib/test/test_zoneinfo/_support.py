@@ -1,9 +1,9 @@
-import contextlib
-import functools
-import sys
-import threading
-import unittest
-from test.support.import_helper import import_fresh_module
+importiere contextlib
+importiere functools
+importiere sys
+importiere threading
+importiere unittest
+von test.support.import_helper importiere import_fresh_module
 
 OS_ENV_LOCK = threading.Lock()
 TZPATH_LOCK = threading.Lock()
@@ -27,13 +27,13 @@ def call_once(f):
 def get_modules():
     """Retrieve two copies of zoneinfo: pure Python and C accelerated.
 
-    Because this function manipulates the import system in a way that might
+    Because this function manipulates the importiere system in a way that might
     be fragile or do unexpected things wenn it is run many times, it uses a
     `call_once` decorator to ensure that this is only ever called exactly
     one time — in other words, when using this function you will only ever
-    get one copy of each module rather than a fresh import each time.
+    get one copy of each module rather than a fresh importiere each time.
     """
-    import zoneinfo as c_module
+    importiere zoneinfo as c_module
 
     py_module = import_fresh_module("zoneinfo", blocked=["_zoneinfo"])
 
@@ -79,7 +79,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
 
         with lock:
             wenn block_tzdata:
-                # In order to fully exclude tzdata from the path, we need to
+                # In order to fully exclude tzdata von the path, we need to
                 # clear the sys.modules cache of all its contents — setting the
                 # root package to Nichts is not enough to block direct access of
                 # already-imported submodules (though it will prevent new

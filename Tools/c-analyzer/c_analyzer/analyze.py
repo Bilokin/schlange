@@ -1,19 +1,19 @@
-from c_parser.info import (
+von c_parser.info importiere (
     KIND,
     TypeDeclaration,
     POTSType,
     FuncPtr,
 )
-from c_parser.match import (
+von c_parser.match importiere (
     is_pots,
     is_funcptr,
 )
-from .info import (
+von .info importiere (
     IGNORED,
     UNKNOWN,
     SystemType,
 )
-from .match import (
+von .match importiere (
     is_system_type,
 )
 

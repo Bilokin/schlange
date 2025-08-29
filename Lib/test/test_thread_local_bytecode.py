@@ -1,11 +1,11 @@
 """Tests fuer thread-local bytecode."""
-import textwrap
-import unittest
+importiere textwrap
+importiere unittest
 
-from test import support
-from test.support import cpython_only, import_helper, requires_specialization_ft
-from test.support.script_helper import assert_python_ok
-from test.support.threading_helper import requires_working_threading
+von test importiere support
+von test.support importiere cpython_only, import_helper, requires_specialization_ft
+von test.support.script_helper importiere assert_python_ok
+von test.support.threading_helper importiere requires_working_threading
 
 # Skip this test wenn the _testinternalcapi module isn't available
 _testinternalcapi = import_helper.import_module("_testinternalcapi")
@@ -18,11 +18,11 @@ klasse TLBCTests(unittest.TestCase):
     @requires_specialization_ft
     def test_new_threads_start_with_unspecialized_code(self):
         code = textwrap.dedent("""
-        import dis
-        import queue
-        import threading
+        importiere dis
+        importiere queue
+        importiere threading
 
-        from _testinternalcapi import get_tlbc
+        von _testinternalcapi importiere get_tlbc
 
         def all_opnames(bc):
             return {i.opname fuer i in dis._get_instructions_bytes(bc)}
@@ -49,11 +49,11 @@ klasse TLBCTests(unittest.TestCase):
     @requires_specialization_ft
     def test_threads_specialize_independently(self):
         code = textwrap.dedent("""
-        import dis
-        import queue
-        import threading
+        importiere dis
+        importiere queue
+        importiere threading
 
-        from _testinternalcapi import get_tlbc
+        von _testinternalcapi importiere get_tlbc
 
         def all_opnames(bc):
             return {i.opname fuer i in dis._get_instructions_bytes(bc)}
@@ -85,10 +85,10 @@ klasse TLBCTests(unittest.TestCase):
 
     def test_reuse_tlbc_across_threads_different_lifetimes(self):
         code = textwrap.dedent("""
-        import queue
-        import threading
+        importiere queue
+        importiere threading
 
-        from _testinternalcapi import get_tlbc_id
+        von _testinternalcapi importiere get_tlbc_id
 
         def f(a, b, q=Nichts):
             wenn q is not Nichts:
@@ -111,10 +111,10 @@ klasse TLBCTests(unittest.TestCase):
     @support.skip_if_sanitizer("gh-129752: data race on adaptive counter", thread=Wahr)
     def test_no_copies_if_tlbc_disabled(self):
         code = textwrap.dedent("""
-        import queue
-        import threading
+        importiere queue
+        importiere threading
 
-        from _testinternalcapi import get_tlbc_id
+        von _testinternalcapi importiere get_tlbc_id
 
         def f(a, b, q=Nichts):
             wenn q is not Nichts:
@@ -143,11 +143,11 @@ klasse TLBCTests(unittest.TestCase):
 
     def test_no_specialization_if_tlbc_disabled(self):
         code = textwrap.dedent("""
-        import dis
-        import queue
-        import threading
+        importiere dis
+        importiere queue
+        importiere threading
 
-        from _testinternalcapi import get_tlbc
+        von _testinternalcapi importiere get_tlbc
 
         def all_opnames(f):
             bc = get_tlbc(f)
@@ -165,10 +165,10 @@ klasse TLBCTests(unittest.TestCase):
 
     def test_generator_throw(self):
         code = textwrap.dedent("""
-        import queue
-        import threading
+        importiere queue
+        importiere threading
 
-        from _testinternalcapi import get_tlbc_id
+        von _testinternalcapi importiere get_tlbc_id
 
         def g():
             try:

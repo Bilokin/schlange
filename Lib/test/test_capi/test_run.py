@@ -1,8 +1,8 @@
-import os
-import unittest
-from collections import UserDict
-from test.support import import_helper
-from test.support.os_helper import unlink, TESTFN, TESTFN_ASCII, TESTFN_UNDECODABLE
+importiere os
+importiere unittest
+von collections importiere UserDict
+von test.support importiere import_helper
+von test.support.os_helper importiere unlink, TESTFN, TESTFN_ASCII, TESTFN_UNDECODABLE
 
 NULL = Nichts
 _testcapi = import_helper.import_module('_testcapi')

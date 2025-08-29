@@ -1,15 +1,15 @@
-import errno
-import os
-import sys
-import textwrap
-import unittest
-import subprocess
+importiere errno
+importiere os
+importiere sys
+importiere textwrap
+importiere unittest
+importiere subprocess
 
-from test import support
-from test.support import force_colorized, force_not_colorized, os_helper
-from test.support.script_helper import assert_python_ok
+von test importiere support
+von test.support importiere force_colorized, force_not_colorized, os_helper
+von test.support.script_helper importiere assert_python_ok
 
-from _colorize import get_theme
+von _colorize importiere get_theme
 
 
 @support.requires_subprocess()

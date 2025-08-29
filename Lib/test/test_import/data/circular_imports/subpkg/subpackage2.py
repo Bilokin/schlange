@@ -1,2 +1,2 @@
-#from .util import util
-from .. import subpackage
+#from .util importiere util
+von .. importiere subpackage

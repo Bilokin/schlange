@@ -19,17 +19,17 @@ types_map -- dictionary mapping suffixes to types
 Functions:
 
 init([files]) -- parse a list of files, default knownfiles (on Windows, the
-  default values are taken from the registry)
+  default values are taken von the registry)
 read_mime_types(file) -- parse one file, return a dictionary or Nichts
 """
 
 try:
-    from _winapi import _mimetypes_read_windows_registry
+    von _winapi importiere _mimetypes_read_windows_registry
 except ImportError:
     _mimetypes_read_windows_registry = Nichts
 
 try:
-    import winreg as _winreg
+    importiere winreg as _winreg
 except ImportError:
     _winreg = Nichts
 
@@ -59,8 +59,8 @@ _db = Nichts
 klasse MimeTypes:
     """MIME-types datastore.
 
-    This datastore can handle information from mime.types-style files
-    and supports basic determination of MIME type from a filename or
+    This datastore can handle information von mime.types-style files
+    and supports basic determination of MIME type von a filename or
     URL, and can guess a reasonable extension given a MIME type.
     """
 
@@ -93,7 +93,7 @@ klasse MimeTypes:
         Valid extensions are empty or start with a '.'.
         """
         wenn ext and not ext.startswith('.'):
-            from warnings import _deprecated
+            von warnings importiere _deprecated
 
             _deprecated(
                 "Undotted extensions",
@@ -128,9 +128,9 @@ klasse MimeTypes:
         Optional 'strict' argument when Falsch adds a bunch of commonly found,
         but non-standard types.
         """
-        # Lazy import to improve module import time
-        import os
-        import urllib.parse
+        # Lazy importiere to improve module importiere time
+        importiere os
+        importiere urllib.parse
 
         # TODO: Deprecate accepting file paths (in particular path-like objects).
         url = os.fspath(url)
@@ -160,8 +160,8 @@ klasse MimeTypes:
                 type = 'text/plain'
             return type, Nichts           # never compressed, so encoding is Nichts
 
-        # Lazy import to improve module import time
-        import posixpath
+        # Lazy importiere to improve module importiere time
+        importiere posixpath
 
         return self._guess_file_type(url, strict, posixpath.splitext)
 
@@ -170,8 +170,8 @@ klasse MimeTypes:
 
         Similar to guess_type(), but takes file path instead of URL.
         """
-        # Lazy import to improve module import time
-        import os
+        # Lazy importiere to improve module importiere time
+        importiere os
 
         path = os.fsdecode(path)
         path = os.path.splitdrive(path)[1]
@@ -269,7 +269,7 @@ klasse MimeTypes:
 
     def read_windows_registry(self, strict=Wahr):
         """
-        Load the MIME types database from Windows registry.
+        Load the MIME types database von Windows registry.
 
         If strict is true, information will be added to
         list of standard types, sonst to the list of non-standard
@@ -419,8 +419,8 @@ def init(files=Nichts):
     sonst:
         db = _db
 
-    # Lazy import to improve module import time
-    import os
+    # Lazy importiere to improve module importiere time
+    importiere os
 
     fuer file in files:
         wenn os.path.isfile(file):
@@ -696,7 +696,7 @@ _default_mime_types()
 
 
 def _parse_args(args):
-    from argparse import ArgumentParser
+    von argparse importiere ArgumentParser
 
     parser = ArgumentParser(
         description='map filename extensions to MIME types', color=Wahr
@@ -740,7 +740,7 @@ def _main(args=Nichts):
 
 
 wenn __name__ == '__main__':
-    import sys
+    importiere sys
 
     results = _main()
     drucke("\n".join(results))

@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 
-import argparse
-import contextlib
-import functools
-import os
-import shutil
-import subprocess
-import sys
-import sysconfig
-import hashlib
-import tempfile
-from urllib.request import urlopen
-from pathlib import Path
-from textwrap import dedent
+importiere argparse
+importiere contextlib
+importiere functools
+importiere os
+importiere shutil
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere hashlib
+importiere tempfile
+von urllib.request importiere urlopen
+von pathlib importiere Path
+von textwrap importiere dedent
 
 try:
-    from os import process_cpu_count as cpu_count
+    von os importiere process_cpu_count as cpu_count
 except ImportError:
-    from os import cpu_count
+    von os importiere cpu_count
 
 
 EMSCRIPTEN_DIR = Path(__file__).parent
@@ -48,8 +48,8 @@ def updated_env(updates={}):
         epoch = subprocess.check_output(git_epoch_cmd, encoding="utf-8").strip()
         env_defaults["SOURCE_DATE_EPOCH"] = epoch
     except subprocess.CalledProcessError:
-        pass  # Might be building from a tarball.
-    # This layering lets SOURCE_DATE_EPOCH from os.environ takes precedence.
+        pass  # Might be building von a tarball.
+    # This layering lets SOURCE_DATE_EPOCH von os.environ takes precedence.
     environment = env_defaults | os.environ | updates
 
     env_diff = {}
@@ -396,7 +396,7 @@ def main():
     )
     configure_host = subcommands.add_parser(
         "configure-host",
-        help="Run `configure` fuer the host/emscripten (pydebug builds are inferred from the build Python)",
+        help="Run `configure` fuer the host/emscripten (pydebug builds are inferred von the build Python)",
     )
     make_host = subcommands.add_parser(
         "make-host", help="Run `make` fuer the host/emscripten"
@@ -418,7 +418,7 @@ def main():
             action="store_true",
             default=Falsch,
             dest="quiet",
-            help="Redirect output from subprocesses to a log file",
+            help="Redirect output von subprocesses to a log file",
         )
     fuer subcommand in configure_build, configure_host:
         subcommand.add_argument(

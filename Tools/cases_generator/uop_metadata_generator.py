@@ -1,23 +1,23 @@
 """Generate uop metadata.
-Reads the instruction definitions from bytecodes.c.
+Reads the instruction definitions von bytecodes.c.
 Writes the metadata to pycore_uop_metadata.h by default.
 """
 
-import argparse
+importiere argparse
 
-from analyzer import (
+von analyzer importiere (
     Analysis,
     analyze_files,
 )
-from generators_common import (
+von generators_common importiere (
     DEFAULT_INPUT,
     ROOT,
     write_header,
     cflags,
 )
-from stack import Stack
-from cwriter import CWriter
-from typing import TextIO
+von stack importiere Stack
+von cwriter importiere CWriter
+von typing importiere TextIO
 
 DEFAULT_OUTPUT = ROOT / "Include/internal/pycore_uop_metadata.h"
 

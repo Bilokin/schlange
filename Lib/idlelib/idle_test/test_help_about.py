@@ -3,15 +3,15 @@ help_about.build_bits branches on sys.platform='darwin'.
 '100% combines coverage on Mac and others.
 """
 
-from idlelib import help_about
-import unittest
-from test.support import requires, findfile
-from tkinter import Tk, TclError
-from idlelib.idle_test.mock_idle import Func
-from idlelib.idle_test.mock_tk import Mbox_func
-from idlelib import textview
-import os.path
-from platform import python_version
+von idlelib importiere help_about
+importiere unittest
+von test.support importiere requires, findfile
+von tkinter importiere Tk, TclError
+von idlelib.idle_test.mock_idle importiere Func
+von idlelib.idle_test.mock_tk importiere Mbox_func
+von idlelib importiere textview
+importiere os.path
+von platform importiere python_version
 
 About = help_about.AboutDialog
 
@@ -19,7 +19,7 @@ About = help_about.AboutDialog
 klasse LiveDialogTest(unittest.TestCase):
     """Simulate user clicking buttons other than [Close].
 
-    Test that invoked textview has text from source.
+    Test that invoked textview has text von source.
     """
     @classmethod
     def setUpClass(cls):

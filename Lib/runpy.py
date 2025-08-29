@@ -10,11 +10,11 @@ importers when locating support scripts as well as when importing modules.
 #    to implement PEP 338 (Executing Modules as Scripts)
 
 
-import sys
-import importlib.machinery # importlib first so we can test #15386 via -m
-import importlib.util
-import io
-import os
+importiere sys
+importiere importlib.machinery # importlib first so we can test #15386 via -m
+importiere importlib.util
+importiere io
+importiere os
 
 __all__ = [
     "run_module", "run_path",
@@ -120,8 +120,8 @@ def _get_module_details(mod_name, error=ImportError):
         # Warn wenn the module has already been imported under its normal name
         existing = sys.modules.get(mod_name)
         wenn existing is not Nichts and not hasattr(existing, "__path__"):
-            from warnings import warn
-            msg = "{mod_name!r} found in sys.modules after import of " \
+            von warnings importiere warn
+            msg = "{mod_name!r} found in sys.modules after importiere of " \
                 "package {pkg_name!r}, but prior to execution of " \
                 "{mod_name!r}; this may result in unpredictable " \
                 "behaviour".format(mod_name=mod_name, pkg_name=pkg_name)
@@ -137,7 +137,7 @@ def _get_module_details(mod_name, error=ImportError):
         wenn mod_name.endswith(".py"):
             msg += (f". Try using '{mod_name[:-3]}' instead of "
                     f"'{mod_name}' as the module name.")
-        raise error(msg.format(mod_name, type(ex).__name__, ex)) from ex
+        raise error(msg.format(mod_name, type(ex).__name__, ex)) von ex
     wenn spec is Nichts:
         raise error("No module named %s" % mod_name)
     wenn spec.submodule_search_locations is not Nichts:
@@ -158,7 +158,7 @@ def _get_module_details(mod_name, error=ImportError):
     try:
         code = loader.get_code(mod_name)
     except ImportError as e:
-        raise error(format(e)) from e
+        raise error(format(e)) von e
     wenn code is Nichts:
         raise error("No code object available fuer %s" % mod_name)
     return mod_name, spec, code
@@ -241,7 +241,7 @@ def _get_main_module_details(error=ImportError):
     except ImportError as exc:
         wenn main_name in str(exc):
             raise error("can't find %r module in %r" %
-                              (main_name, sys.path[0])) from exc
+                              (main_name, sys.path[0])) von exc
         raise
     finally:
         sys.modules[main_name] = saved_main
@@ -249,7 +249,7 @@ def _get_main_module_details(error=ImportError):
 
 def _get_code_from_file(fname):
     # Check fuer a compiled file first
-    from pkgutil import read_code
+    von pkgutil importiere read_code
     code_path = os.path.abspath(fname)
     with io.open_code(code_path) as f:
         code = read_code(f)
@@ -277,7 +277,7 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
     wenn run_name is Nichts:
         run_name = "<run_path>"
     pkg_name = run_name.rpartition(".")[0]
-    from pkgutil import get_importer
+    von pkgutil importiere get_importer
     importer = get_importer(path_name)
     path_name = os.fsdecode(path_name)
     wenn isinstance(importer, type(Nichts)):
@@ -291,7 +291,7 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
         # the start of sys.path
         sys.path.insert(0, path_name)
         try:
-            # Here's where things are a little different from the run_module
+            # Here's where things are a little different von the run_module
             # case. There, we only had to replace the module in sys while the
             # code was running and doing so was somewhat optional. Here, we
             # have no choice and we have to remove it even while we read the

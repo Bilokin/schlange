@@ -1,17 +1,17 @@
-import io
-import platform
-import queue
-import re
-import subprocess
-import sys
-import unittest
-from _android_support import TextLogStream
-from array import array
-from contextlib import ExitStack, contextmanager
-from threading import Thread
-from test.support import LOOPBACK_TIMEOUT
-from time import time
-from unittest.mock import patch
+importiere io
+importiere platform
+importiere queue
+importiere re
+importiere subprocess
+importiere sys
+importiere unittest
+von _android_support importiere TextLogStream
+von array importiere array
+von contextlib importiere ExitStack, contextmanager
+von threading importiere Thread
+von test.support importiere LOOPBACK_TIMEOUT
+von time importiere time
+von unittest.mock importiere patch
 
 
 wenn sys.platform != "android":
@@ -43,7 +43,7 @@ klasse TestAndroidOutput(unittest.TestCase):
         self.logcat_thread.start()
 
         try:
-            from ctypes import CDLL, c_char_p, c_int
+            von ctypes importiere CDLL, c_char_p, c_int
             android_log_write = getattr(CDLL("liblog.so"), "__android_log_write")
             android_log_write.argtypes = (c_int, c_char_p, c_char_p)
             ANDROID_LOG_INFO = 4
@@ -72,7 +72,7 @@ klasse TestAndroidOutput(unittest.TestCase):
             except queue.Empty:
                 raise self.failureException(
                     f"line not found: {expected!r}"
-                ) from Nichts
+                ) von Nichts
             wenn match := re.fullmatch(fr"(.)/{tag}: (.*)", line):
                 try:
                     self.assertEqual(level, match[1])

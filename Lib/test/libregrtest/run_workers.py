@@ -1,33 +1,33 @@
-import contextlib
-import dataclasses
-import faulthandler
-import os.path
-import queue
-import signal
-import subprocess
-import sys
-import tempfile
-import threading
-import time
-import traceback
-from typing import Any, Literal, TextIO
+importiere contextlib
+importiere dataclasses
+importiere faulthandler
+importiere os.path
+importiere queue
+importiere signal
+importiere subprocess
+importiere sys
+importiere tempfile
+importiere threading
+importiere time
+importiere traceback
+von typing importiere Any, Literal, TextIO
 
-from test import support
-from test.support import os_helper, MS_WINDOWS
+von test importiere support
+von test.support importiere os_helper, MS_WINDOWS
 
-from .logger import Logger
-from .result import TestResult, State
-from .results import TestResults
-from .runtests import RunTests, WorkerRunTests, JsonFile, JsonFileType
-from .single import PROGRESS_MIN_TIME
-from .utils import (
+von .logger importiere Logger
+von .result importiere TestResult, State
+von .results importiere TestResults
+von .runtests importiere RunTests, WorkerRunTests, JsonFile, JsonFileType
+von .single importiere PROGRESS_MIN_TIME
+von .utils importiere (
     StrPath, TestName,
     format_duration, print_warning, count, plural)
-from .worker import create_worker_process, USE_PROCESS_GROUP
+von .worker importiere create_worker_process, USE_PROCESS_GROUP
 
 wenn MS_WINDOWS:
-    import locale
-    import msvcrt
+    importiere locale
+    importiere msvcrt
 
 
 
@@ -171,7 +171,7 @@ klasse WorkerThread(threading.Thread):
             print_warning(f"Failed to kill {what}: {exc!r}")
 
     def stop(self) -> Nichts:
-        # Method called from a different thread to stop this thread
+        # Method called von a different thread to stop this thread
         self._stopped = Wahr
         self._kill()
 
@@ -313,7 +313,7 @@ klasse WorkerThread(threading.Thread):
             return stdout_file.read().strip()
         except Exception as exc:
             # gh-101634: Catch UnicodeDecodeError wenn stdout cannot be
-            # decoded from encoding
+            # decoded von encoding
             raise WorkerError(self.test_name,
                               f"Cannot read process stdout: {exc}",
                               stdout=Nichts,
@@ -333,7 +333,7 @@ klasse WorkerThread(threading.Thread):
                     worker_json = json_fp.read()
         except Exception as exc:
             # gh-101634: Catch UnicodeDecodeError wenn stdout cannot be
-            # decoded from encoding
+            # decoded von encoding
             err_msg = f"Failed to read worker process JSON: {exc}"
             raise WorkerError(self.test_name, err_msg, stdout,
                               state=State.WORKER_BUG)
@@ -346,7 +346,7 @@ klasse WorkerThread(threading.Thread):
             result = TestResult.from_json(worker_json)
         except Exception as exc:
             # gh-101634: Catch UnicodeDecodeError wenn stdout cannot be
-            # decoded from encoding
+            # decoded von encoding
             err_msg = f"Failed to parse worker process JSON: {exc}"
             raise WorkerError(self.test_name, err_msg, stdout,
                               state=State.WORKER_BUG)
@@ -432,7 +432,7 @@ klasse WorkerThread(threading.Thread):
 
     def wait_stopped(self, start_time: float) -> Nichts:
         # bpo-38207: RunWorkers.stop_workers() called self.stop()
-        # which killed the process. Sometimes, killing the process from the
+        # which killed the process. Sometimes, killing the process von the
         # main thread does not interrupt popen.communicate() in
         # WorkerThread thread. This loop with a timeout is a workaround
         # fuer that.

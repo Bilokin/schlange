@@ -3,19 +3,19 @@
 # Script initially imported from:
 # https://github.com/FFY00/python-instrospection/blob/main/python_introspection/scripts/generate-build-details.py
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import argparse
-import collections
-import importlib.machinery
-import json
-import os
-import sys
-import sysconfig
+importiere argparse
+importiere collections
+importiere importlib.machinery
+importiere json
+importiere os
+importiere sys
+importiere sysconfig
 
 TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
-    from typing import Any
+    von typing importiere Any
 
 
 def version_info_to_dict(obj: sys._version_info) -> dict[str, Any]:

@@ -29,13 +29,13 @@ Notes:
 
 """
 
-import atexit
-import builtins
-import inspect
-import keyword
-import re
-import __main__
-import warnings
+importiere atexit
+importiere builtins
+importiere inspect
+importiere keyword
+importiere re
+importiere __main__
+importiere warnings
 
 __all__ = ["Completer"]
 
@@ -209,7 +209,7 @@ def get_class_members(klass):
     return ret
 
 try:
-    import readline
+    importiere readline
 except ImportError:
     _readline_available = Falsch
 sonst:

@@ -1,11 +1,11 @@
-import os.path
-import pathlib
-import unittest
+importiere os.path
+importiere pathlib
+importiere unittest
 
-from importlib import import_module
-from importlib.readers import MultiplexedPath, NamespaceReader
+von importlib importiere import_module
+von importlib.readers importiere MultiplexedPath, NamespaceReader
 
-from . import util
+von . importiere util
 
 
 klasse MultiplexedPathTest(util.DiskSetup, unittest.TestCase):

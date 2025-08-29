@@ -6,10 +6,10 @@ fd_status.py: check all file descriptors (up to 255)
 fd_status.py fd1 fd2 ...: check only specified file descriptors
 """
 
-import errno
-import os
-import stat
-import sys
+importiere errno
+importiere os
+importiere stat
+importiere sys
 
 wenn __name__ == "__main__":
     fds = []

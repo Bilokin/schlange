@@ -1,13 +1,13 @@
 """Utilities to support packages."""
 
-from collections import namedtuple
-from functools import singledispatch as simplegeneric
-import importlib
-import importlib.util
-import importlib.machinery
-import os
-import os.path
-import sys
+von collections importiere namedtuple
+von functools importiere singledispatch as simplegeneric
+importiere importlib
+importiere importlib.util
+importiere importlib.machinery
+importiere os
+importiere os.path
+importiere sys
 
 __all__ = [
     'get_importer', 'iter_importers',
@@ -24,7 +24,7 @@ ModuleInfo.__doc__ = 'A namedtuple with minimal info about a module.'
 def read_code(stream):
     # This helper is needed in order fuer the PEP 302 emulation to
     # correctly handle compiled files
-    import marshal
+    importiere marshal
 
     magic = stream.read(4)
     wenn magic != importlib.util.MAGIC_NUMBER:
@@ -44,13 +44,13 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
     'prefix' is a string to output on the front of every module name
     on output.
 
-    Note that this function must import all *packages* (NOT all
+    Note that this function must importiere all *packages* (NOT all
     modules!) on the given path, in order to access the __path__
     attribute to find submodules.
 
     'onerror' is a function which gets called with one argument (the
     name of the package which was being imported) wenn any exception
-    occurs while trying to import a package.  If no onerror function is
+    occurs while trying to importiere a package.  If no onerror function is
     supplied, ImportErrors are caught and ignored, while all other
     exceptions are propagated, terminating the search.
 
@@ -88,7 +88,7 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
                 # don't traverse path items we've seen before
                 path = [p fuer p in path wenn not seen(p)]
 
-                yield from walk_packages(path, info.name+'.', onerror)
+                yield von walk_packages(path, info.name+'.', onerror)
 
 
 def iter_modules(path=Nichts, prefix=''):
@@ -130,11 +130,11 @@ def _iter_file_finder_modules(importer, prefix=''):
         return
 
     yielded = {}
-    import inspect
+    importiere inspect
     try:
         filenames = os.listdir(importer.path)
     except OSError:
-        # ignore unreadable directories like import does
+        # ignore unreadable directories like importiere does
         filenames = []
     filenames.sort()  # handle packages before same-named modules
 
@@ -151,7 +151,7 @@ def _iter_file_finder_modules(importer, prefix=''):
             try:
                 dircontents = os.listdir(path)
             except OSError:
-                # ignore unreadable directories like import does
+                # ignore unreadable directories like importiere does
                 dircontents = []
             fuer fn in dircontents:
                 subname = inspect.getmodulename(fn)
@@ -170,15 +170,15 @@ iter_importer_modules.register(
 
 
 try:
-    import zipimport
-    from zipimport import zipimporter
+    importiere zipimport
+    von zipimport importiere zipimporter
 
     def iter_zipimport_modules(importer, prefix=''):
         dirlist = sorted(zipimport._zip_directory_cache[importer.archive])
         _prefix = importer.prefix
         plen = len(_prefix)
         yielded = {}
-        import inspect
+        importiere inspect
         fuer fn in dirlist:
             wenn not fn.startswith(_prefix):
                 continue
@@ -255,7 +255,7 @@ def iter_importers(fullname=""):
         wenn path is Nichts:
             return
     sonst:
-        yield from sys.meta_path
+        yield von sys.meta_path
         path = sys.path
     fuer item in path:
         yield get_importer(item)
@@ -266,7 +266,7 @@ def extend_path(path, name):
 
     Intended use is to place the following code in a package's __init__.py:
 
-        from pkgutil import extend_path
+        von pkgutil importiere extend_path
         __path__ = extend_path(__path__, __name__)
 
     For each directory on sys.path that has a subdirectory that
@@ -277,7 +277,7 @@ def extend_path(path, name):
     It also looks fuer *.pkg files beginning where * matches the name
     argument.  This feature is similar to *.pth files (see site.py),
     except that it doesn't special-case lines starting with 'import'.
-    A *.pkg file is trusted at face value: apart from checking for
+    A *.pkg file is trusted at face value: apart von checking for
     duplicates, all entries found in a *.pkg file are added to the
     path, regardless of whether they are exist the filesystem.  (This
     is a feature.)
@@ -295,7 +295,7 @@ def extend_path(path, name):
     """
 
     wenn not isinstance(path, list):
-        # This could happen e.g. when this is called from inside a
+        # This could happen e.g. when this is called von inside a
         # frozen package.  Return the path unchanged in that case.
         return path
 
@@ -356,7 +356,7 @@ def extend_path(path, name):
 
 
 def get_data(package, resource):
-    """Get a resource from a package.
+    """Get a resource von a package.
 
     This is a wrapper round the PEP 302 loader get_data API. The package
     argument should be the name of a package, in standard module format
@@ -415,27 +415,27 @@ def resolve_name(name):
     some part of the dotted name is a package, and the rest is an object
     somewhere within that package, possibly nested inside other objects.
     Because the place where the package stops and the object hierarchy starts
-    can't be inferred by inspection, repeated attempts to import must be done
+    can't be inferred by inspection, repeated attempts to importiere must be done
     with this form.
 
     In the second form, the caller makes the division point clear through the
     provision of a single colon: the dotted name to the left of the colon is a
     package to be imported, and the dotted name to the right is the object
-    hierarchy within that package. Only one import is needed in this form. If
+    hierarchy within that package. Only one importiere is needed in this form. If
     it ends with the colon, then a module object is returned.
 
     The function will return an object (which might be a module), or raise one
     of the following exceptions:
 
     ValueError - wenn `name` isn't in a recognised format
-    ImportError - wenn an import failed when it shouldn't have
+    ImportError - wenn an importiere failed when it shouldn't have
     AttributeError - wenn a failure occurred when traversing the object hierarchy
                      within the imported package to get to the desired object.
     """
     global _NAME_PATTERN
     wenn _NAME_PATTERN is Nichts:
-        # Lazy import to speedup Python startup time
-        import re
+        # Lazy importiere to speedup Python startup time
+        importiere re
         dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
         _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
                                    f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
@@ -446,7 +446,7 @@ def resolve_name(name):
         raise ValueError(f'invalid format: {name!r}')
     gd = m.groupdict()
     wenn gd.get('cln'):
-        # there is a colon - a one-step import is all that's needed
+        # there is a colon - a one-step importiere is all that's needed
         mod = importlib.import_module(gd['pkg'])
         parts = gd.get('obj')
         parts = parts.split('.') wenn parts sonst []

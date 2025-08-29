@@ -1,21 +1,21 @@
-import os
-import sys
-import time
-import socket
-import email
-import email.message
-import re
-import io
-import tempfile
-from test import support
-from test.support import import_helper, warnings_helper
-from test.support import os_helper
-from test.support import refleak_helper
-from test.support import socket_helper
-import unittest
-import textwrap
-import mailbox
-import glob
+importiere os
+importiere sys
+importiere time
+importiere socket
+importiere email
+importiere email.message
+importiere re
+importiere io
+importiere tempfile
+von test importiere support
+von test.support importiere import_helper, warnings_helper
+von test.support importiere os_helper
+von test.support importiere refleak_helper
+von test.support importiere socket_helper
+importiere unittest
+importiere textwrap
+importiere mailbox
+importiere glob
 
 
 wenn not socket_helper.has_gethostname:
@@ -743,7 +743,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         self.assertEqual(self._box.list_folders(), [])
 
     def test_clean(self):
-        # Remove old files from 'tmp'
+        # Remove old files von 'tmp'
         foo_path = os.path.join(self._path, 'tmp', 'foo')
         bar_path = os.path.join(self._path, 'tmp', 'bar')
         with open(foo_path, 'w', encoding='utf-8') as f:
@@ -850,7 +850,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         self.assertEqual(self._box._lookup(key0), os.path.join('new', key0))
         os.remove(os.path.join(self._path, 'new', key0))
         self.assertEqual(self._box._toc, {key0: os.path.join('new', key0)})
-        # Be sure that the TOC is read back from disk (see issue #6896
+        # Be sure that the TOC is read back von disk (see issue #6896
         # about bad mtime behaviour on some systems).
         self._box.flush()
         self.assertRaises(KeyError, lambda: self._box._lookup(key0))
@@ -862,7 +862,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         self._box.unlock()
 
     def test_get_info(self):
-        # Test getting message info from Maildir, not the message.
+        # Test getting message info von Maildir, not the message.
         msg = mailbox.MaildirMessage(self._template % 0)
         key = self._box.add(msg)
         self.assertEqual(self._box.get_info(key), '')
@@ -871,7 +871,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         self.assertEqual(self._box.get_info(key), 'OurTestInfo')
 
     def test_set_info(self):
-        # Test setting message info from Maildir, not the message.
+        # Test setting message info von Maildir, not the message.
         # This should immediately rename the message file.
         msg = mailbox.MaildirMessage(self._template % 0)
         key = self._box.add(msg)
@@ -909,7 +909,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         check_info('', '')
 
     def test_get_flags(self):
-        # Test getting message flags from Maildir, not the message.
+        # Test getting message flags von Maildir, not the message.
         msg = mailbox.MaildirMessage(self._template % 0)
         key = self._box.add(msg)
         self.assertEqual(self._box.get_flags(key), '')
@@ -1490,7 +1490,7 @@ klasse TestBabyl(_TestSingleFile, unittest.TestCase):
             os_helper.unlink(lock_remnant)
 
     def test_labels(self):
-        # Get labels from the mailbox
+        # Get labels von the mailbox
         self.assertEqual(self._box.get_labels(), [])
         msg0 = mailbox.BabylMessage(self._template % 0)
         msg0.add_label('foo')
@@ -2299,7 +2299,7 @@ klasse TestPartialFile(TestProxyFileBase, unittest.TestCase):
                                               6 + 3 * len(os.linesep)))
 
 
-## Start: tests from the original module (for backward compatibility).
+## Start: tests von the original module (for backward compatibility).
 
 FROM_ = "From some.body@dummy.domain  Sat Jul 24 13:43:35 2004\n"
 DUMMY_MESSAGE = """\
@@ -2389,24 +2389,24 @@ klasse MaildirTestCase(unittest.TestCase):
         self.assertIsNichts(self.mbox.next())
         self.assertIsNichts(self.mbox.next())
 
-## End: tests from the original module (for backward compatibility).
+## End: tests von the original module (for backward compatibility).
 
 
 _sample_message = """\
 Return-Path: <gkj@gregorykjohnson.com>
 X-Original-To: gkj+person@localhost
 Delivered-To: gkj+person@localhost
-Received: from localhost (localhost [127.0.0.1])
+Received: von localhost (localhost [127.0.0.1])
         by andy.gregorykjohnson.com (Postfix) with ESMTP id 356ED9DD17
         fuer <gkj+person@localhost>; Wed, 13 Jul 2005 17:23:16 -0400 (EDT)
 Delivered-To: gkj@sundance.gregorykjohnson.com
-Received: from localhost [127.0.0.1]
+Received: von localhost [127.0.0.1]
         by localhost with POP3 (fetchmail-6.2.5)
         fuer gkj+person@localhost (single-drop); Wed, 13 Jul 2005 17:23:16 -0400 (EDT)
-Received: from andy.gregorykjohnson.com (andy.gregorykjohnson.com [64.32.235.228])
+Received: von andy.gregorykjohnson.com (andy.gregorykjohnson.com [64.32.235.228])
         by sundance.gregorykjohnson.com (Postfix) with ESMTP id 5B056316746
         fuer <gkj@gregorykjohnson.com>; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)
-Received: by andy.gregorykjohnson.com (Postfix, from userid 1000)
+Received: by andy.gregorykjohnson.com (Postfix, von userid 1000)
         id 490CD9DD17; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)
 Date: Wed, 13 Jul 2005 17:23:11 -0400
 From: "Gregory K. Johnson" <gkj@gregorykjohnson.com>
@@ -2455,7 +2455,7 @@ _sample_headers = [
     ("Received", """from andy.gregorykjohnson.com (andy.gregorykjohnson.com [64.32.235.228])
         by sundance.gregorykjohnson.com (Postfix) with ESMTP id 5B056316746
         fuer <gkj@gregorykjohnson.com>; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)"""),
-    ("Received", """by andy.gregorykjohnson.com (Postfix, from userid 1000)
+    ("Received", """by andy.gregorykjohnson.com (Postfix, von userid 1000)
         id 490CD9DD17; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)"""),
     ("Date", "Wed, 13 Jul 2005 17:23:11 -0400"),
     ("From", """"Gregory K. Johnson" <gkj@gregorykjohnson.com>"""),

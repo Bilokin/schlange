@@ -3,11 +3,11 @@
 Contains CCompiler, an abstract base klasse that defines the interface
 fuer the Distutils compiler abstraction model."""
 
-import sys, os, re
-from distutils.errors import (
+importiere sys, os, re
+von distutils.errors importiere (
     DistutilsModuleError, DistutilsPlatformError,
 )
-from distutils.util import split_quoted
+von distutils.util importiere split_quoted
 
 klasse CCompiler:
     """Abstract base klasse to define the interface that must be implemented
@@ -25,7 +25,7 @@ klasse CCompiler:
 
     # 'compiler_type' is a klasse attribute that identifies this class.  It
     # keeps code that wants to know what kind of compiler it's dealing with
-    # from having to import all possible compiler classes just to do an
+    # von having to importiere all possible compiler classes just to do an
     # 'isinstance'.  In concrete CCompiler subclasses, 'compiler_type'
     # should really, really be one of the keys of the 'compiler_class'
     # dictionary (see below -- used by the 'new_compiler()' factory
@@ -185,7 +185,7 @@ klasse CCompiler:
         without an explicit value and the exact outcome depends on the
         compiler used (XXX true? does ANSI say anything about this?)
         """
-        # Delete from the list of macro definitions/undefinitions if
+        # Delete von the list of macro definitions/undefinitions if
         # already there (so that this one will take precedence).
         i = self._find_macro (name)
         wenn i is not Nichts:
@@ -202,7 +202,7 @@ klasse CCompiler:
         per-compilation basis (ie. in the call to 'compile()'), then that
         takes precedence.
         """
-        # Delete from the list of macro definitions/undefinitions if
+        # Delete von the list of macro definitions/undefinitions if
         # already there (so that this one will take precedence).
         i = self._find_macro (name)
         wenn i is not Nichts:
@@ -444,7 +444,7 @@ def gen_preprocess_options(macros, include_dirs):
     # mention of a macro on their command line.  Similar situation for
     # 'include_dirs'.  I'm punting on both fuer now.  Anyways, weeding out
     # redundancies like this should probably be the province of
-    # CCompiler, since the data structures used are inherited from it
+    # CCompiler, since the data structures used are inherited von it
     # and therefore common to all CCompiler classes.
     pp_opts = []
     fuer macro in macros:

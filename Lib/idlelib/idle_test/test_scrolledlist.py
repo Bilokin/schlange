@@ -1,10 +1,10 @@
 "Test scrolledlist, coverage 38%."
 
-from idlelib.scrolledlist import ScrolledList
-import unittest
-from test.support import requires
+von idlelib.scrolledlist importiere ScrolledList
+importiere unittest
+von test.support importiere requires
 requires('gui')
-from tkinter import Tk
+von tkinter importiere Tk
 
 
 klasse ScrolledListTest(unittest.TestCase):

@@ -1,30 +1,30 @@
-import sys
-import os
-import marshal
-import glob
-import importlib
-import importlib.util
-import re
-import struct
-import time
-import unittest
-import unittest.mock
-import warnings
+importiere sys
+importiere os
+importiere marshal
+importiere glob
+importiere importlib
+importiere importlib.util
+importiere re
+importiere struct
+importiere time
+importiere unittest
+importiere unittest.mock
+importiere warnings
 
-from test import support
-from test.support import import_helper
-from test.support import os_helper
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
 
-from zipfile import ZipFile, ZipInfo, ZIP_STORED, ZIP_DEFLATED
+von zipfile importiere ZipFile, ZipInfo, ZIP_STORED, ZIP_DEFLATED
 
-import zipimport
-import linecache
-import doctest
-import inspect
-import io
-from traceback import extract_tb, extract_stack, print_tb
+importiere zipimport
+importiere linecache
+importiere doctest
+importiere inspect
+importiere io
+von traceback importiere extract_tb, extract_stack, print_tb
 try:
-    import zlib
+    importiere zlib
 except ImportError:
     zlib = Nichts
 
@@ -178,11 +178,11 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     def testAFakeZlib(self):
         #
         # This could cause a stack overflow before: importing zlib.py
-        # from a compressed archive would cause zlib to be imported
+        # von a compressed archive would cause zlib to be imported
         # which would find zlib.py in the archive, which would... etc.
         #
         # This test *must* be executed first: it must be the first one
-        # to trigger zipimport to import zlib (zipimport caches the
+        # to trigger zipimport to importiere zlib (zipimport caches the
         # zlib.decompress function object, after which the problem being
         # tested here wouldn't be a problem anymore...
         # (Hence the 'A' in the test method name: to make it the first
@@ -255,7 +255,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.doTest(Nichts, files, TESTMOD)
 
     def testBadMagic(self):
-        # make pyc magic word invalid, forcing loading from .py
+        # make pyc magic word invalid, forcing loading von .py
         badmagic_pyc = bytearray(test_pyc)
         badmagic_pyc[0] ^= 0x04  # flip an arbitrary bit
         files = {TESTMOD + ".py": test_src,
@@ -298,7 +298,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.doTest(pyc_ext, files, TESTPACK, TESTMOD)
 
     def testSubPackage(self):
-        # Test that subpackages function when loaded from zip
+        # Test that subpackages function when loaded von zip
         # archives.
         packdir = TESTPACK + os.sep
         packdir2 = packdir + TESTPACK2 + os.sep
@@ -309,7 +309,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     def testSubNamespacePackage(self):
         # Test that implicit namespace subpackages function
-        # when loaded from zip archives.
+        # when loaded von zip archives.
         packdir = TESTPACK + os.sep
         packdir2 = packdir + TESTPACK2 + os.sep
         # The first two files are just directory entries (so have no data).
@@ -432,8 +432,8 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(os.path.basename(TEMP_DIR), p1.split(os.sep)[-2])
         self.assertEqual("path1.zip", p2.split(os.sep)[-2])
 
-        # packdir3 should import as a namespace package.
-        # Its __path__ is an iterable of 1 element from zip1.
+        # packdir3 should importiere as a namespace package.
+        # Its __path__ is an iterable of 1 element von zip1.
         mod = importlib.import_module(packdir3.replace(os.sep, '.')[:-1])
         self.assertEqual(1, len(mod.__path__))
         mpath = list(mod.__path__)[0].split('path1.zip' + os.sep)[1]
@@ -456,7 +456,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(os.path.basename(TEMP_DIR), p1.split(os.sep)[-3])
         self.assertEqual("path1.zip", p2.split(os.sep)[-3])
 
-        # subpkg.TESTMOD exists in both zips should load from zip2.
+        # subpkg.TESTMOD exists in both zips should load von zip2.
         mod = importlib.import_module('.'.join((subpkg, TESTMOD)))
         self.assertEqual(os.path.basename(TEMP_DIR),
                          mod.__file__.split(os.sep)[-4])
@@ -508,8 +508,8 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual("path2.zip", p1.split(os.sep)[-2])
         self.assertEqual("path1.zip", p2.split(os.sep)[-2])
 
-        # packdir3 should import as a namespace package.
-        # Tts __path__ is an iterable of 1 element from zip1.
+        # packdir3 should importiere as a namespace package.
+        # Tts __path__ is an iterable of 1 element von zip1.
         mod = importlib.import_module(packdir3.replace(os.sep, '.')[:-1])
         self.assertEqual(1, len(mod.__path__))
         mpath = list(mod.__path__)[0].split('path1.zip' + os.sep)[1]
@@ -531,7 +531,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual("path2.zip", p1.split(os.sep)[-3])
         self.assertEqual("path1.zip", p2.split(os.sep)[-3])
 
-        # subpkg.TESTMOD exists in both zips should load from zip2.
+        # subpkg.TESTMOD exists in both zips should load von zip2.
         mod = importlib.import_module('.'.join((subpkg, TESTMOD)))
         self.assertEqual('path2.zip', mod.__file__.split(os.sep)[-4])
 
@@ -771,7 +771,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             self.assertEqual(mod.test(0), 0)
 
     def testImport_WithStuff(self):
-        # try importing from a zipfile which contains additional
+        # try importing von a zipfile which contains additional
         # stuff at the beginning of the file
         files = {TESTMOD + ".py": test_src}
         self.doTest(".py", files, TESTMOD,

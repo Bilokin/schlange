@@ -1,9 +1,9 @@
-import os
-import sysconfig
-import unittest
+importiere os
+importiere sysconfig
+importiere unittest
 
 try:
-    from _testinternalcapi import perf_map_state_teardown, write_perf_map_entry
+    von _testinternalcapi importiere perf_map_state_teardown, write_perf_map_entry
 except ImportError:
     raise unittest.SkipTest("requires _testinternalcapi")
 

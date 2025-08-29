@@ -1,5 +1,5 @@
-import keyword
-import unittest
+importiere keyword
+importiere unittest
 
 
 klasse Test_iskeyword(unittest.TestCase):

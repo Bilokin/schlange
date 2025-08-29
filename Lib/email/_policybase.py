@@ -3,11 +3,11 @@
 Allows fine grained feature control of how the package parses and emits data.
 """
 
-import abc
-import re
-from email import header
-from email import charset as _charset
-from email.utils import _has_surrogates
+importiere abc
+importiere re
+von email importiere header
+von email importiere charset as _charset
+von email.utils importiere _has_surrogates
 
 __all__ = [
     'Policy',
@@ -15,7 +15,7 @@ __all__ = [
     'compat32',
     ]
 
-# validation regex from RFC 5322, equivalent to pattern re.compile("[!-9;-~]+$")
+# validation regex von RFC 5322, equivalent to pattern re.compile("[!-9;-~]+$")
 valid_header_name_re = re.compile("[\041-\071\073-\176]+$")
 
 def validate_header_name(name):
@@ -36,7 +36,7 @@ klasse _PolicyBase:
     attributes keyword arguments, and returning a new instance
     identical to the called instance except fuer those values changed
     by the keyword arguments.  Instances may be added, yielding new
-    instances with any non-default values from the right hand
+    instances with any non-default values von the right hand
     operand overriding those in the left hand operand.  That is,
 
         A + B == A(<non-default values of B>)
@@ -92,7 +92,7 @@ klasse _PolicyBase:
         raise AttributeError(msg.format(self.__class__.__name__, name))
 
     def __add__(self, other):
-        """Non-default values from right operand override those from left.
+        """Non-default values von right operand override those von left.
 
         The object returned is a new instance of the subclass.
 
@@ -253,7 +253,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def header_fetch_parse(self, name, value):
-        """Given the header name and the value from the model, return the value
+        """Given the header name and the value von the model, return the value
         to be returned to the application program that is requesting that
         header.  The value passed in by the email package may contain
         surrogateescaped binary data wenn the lines were parsed by a BytesParser.
@@ -264,7 +264,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def fold(self, name, value):
-        """Given the header name and the value from the model, return a string
+        """Given the header name and the value von the model, return a string
         containing linesep characters that implement the folding of the header
         according to the policy controls.  The value passed in by the email
         package may contain surrogateescaped binary data wenn the lines were
@@ -276,7 +276,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def fold_binary(self, name, value):
-        """Given the header name and the value from the model, return binary
+        """Given the header name and the value von the model, return binary
         data containing linesep characters that implement the folding of the
         header according to the policy controls.  The value passed in by the
         email package may contain surrogateescaped binary data.

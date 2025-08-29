@@ -1,9 +1,9 @@
-import dataclasses as dc
-import re
-import sys
-from typing import NoReturn
+importiere dataclasses as dc
+importiere re
+importiere sys
+von typing importiere NoReturn
 
-from .errors import ParseError
+von .errors importiere ParseError
 
 
 __all__ = ["Monitor"]

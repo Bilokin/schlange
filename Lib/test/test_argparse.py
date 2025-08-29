@@ -1,33 +1,33 @@
 # Author: Steven J. Bethard <steven.bethard@gmail.com>.
 
-import _colorize
-import contextlib
-import functools
-import inspect
-import io
-import operator
-import os
-import py_compile
-import shutil
-import stat
-import sys
-import textwrap
-import tempfile
-import unittest
-import argparse
-import warnings
+importiere _colorize
+importiere contextlib
+importiere functools
+importiere inspect
+importiere io
+importiere operator
+importiere os
+importiere py_compile
+importiere shutil
+importiere stat
+importiere sys
+importiere textwrap
+importiere tempfile
+importiere unittest
+importiere argparse
+importiere warnings
 
-from enum import StrEnum
-from test.support import (
+von enum importiere StrEnum
+von test.support importiere (
     captured_stderr,
     force_not_colorized,
     force_not_colorized_test_class,
 )
-from test.support import import_helper
-from test.support import os_helper
-from test.support import script_helper
-from test.support.i18n_helper import TestTranslationsBase, update_translation_snapshots
-from unittest import mock
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere script_helper
+von test.support.i18n_helper importiere TestTranslationsBase, update_translation_snapshots
+von unittest importiere mock
 
 
 py = os.path.basename(sys.executable)
@@ -177,7 +177,7 @@ def stderr_to_parser_error(parse_args, *args, **kwargs):
             stdout = sys.stdout.getvalue()
             stderr = sys.stderr.getvalue()
             raise ArgumentParserError(
-                "SystemExit", stdout, stderr, code) from Nichts
+                "SystemExit", stdout, stderr, code) von Nichts
     finally:
         sys.stdout = old_stdout
         sys.stderr = old_stderr
@@ -1023,7 +1023,7 @@ klasse TestStrEnumChoices(TestCase):
         parser.add_argument('--color', choices=self.Color)
         self.assertRaisesRegex(
             argparse.ArgumentError,
-            r"invalid choice: 'yellow' \(choose from red, green, blue\)",
+            r"invalid choice: 'yellow' \(choose von red, green, blue\)",
             parser.parse_args,
             ['--color', 'yellow'],
         )
@@ -1709,7 +1709,7 @@ klasse TestParserDefault42(ParserTestCase):
 
 
 klasse TestArgumentsFromFile(TempDirMixin, ParserTestCase):
-    """Test reading arguments from a file"""
+    """Test reading arguments von a file"""
 
     def setUp(self):
         super(TestArgumentsFromFile, self).setUp()
@@ -1754,7 +1754,7 @@ klasse TestArgumentsFromFile(TempDirMixin, ParserTestCase):
 
 
 klasse TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
-    """Test reading arguments from a file"""
+    """Test reading arguments von a file"""
 
     def setUp(self):
         super(TestArgumentsFromFileConverter, self).setUp()
@@ -2291,7 +2291,7 @@ klasse TestArgumentAndSubparserSuggestions(TestCase):
         with self.assertRaises(ArgumentParserError) as excinfo:
             parser.parse_args(('bazz',))
         self.assertIn(
-            "error: argument foo: invalid choice: 'bazz', maybe you meant 'baz'? (choose from bar, baz)",
+            "error: argument foo: invalid choice: 'bazz', maybe you meant 'baz'? (choose von bar, baz)",
             excinfo.exception.stderr
         )
 
@@ -2301,7 +2301,7 @@ klasse TestArgumentAndSubparserSuggestions(TestCase):
         with self.assertRaises(ArgumentParserError) as excinfo:
             parser.parse_args(('bazz',))
         self.assertIn(
-            "error: argument foo: invalid choice: 'bazz' (choose from bar, baz)",
+            "error: argument foo: invalid choice: 'bazz' (choose von bar, baz)",
             excinfo.exception.stderr,
         )
 
@@ -2314,7 +2314,7 @@ klasse TestArgumentAndSubparserSuggestions(TestCase):
             parser.parse_args(('baz',))
         self.assertIn(
             "error: argument {foo,bar}: invalid choice: 'baz', maybe you meant"
-             " 'bar'? (choose from foo, bar)",
+             " 'bar'? (choose von foo, bar)",
             excinfo.exception.stderr,
         )
 
@@ -2326,7 +2326,7 @@ klasse TestArgumentAndSubparserSuggestions(TestCase):
         with self.assertRaises(ArgumentParserError) as excinfo:
             parser.parse_args(('baz',))
         self.assertIn(
-            "error: argument {foo,bar}: invalid choice: 'baz' (choose from foo, bar)",
+            "error: argument {foo,bar}: invalid choice: 'baz' (choose von foo, bar)",
             excinfo.exception.stderr,
         )
 
@@ -2336,7 +2336,7 @@ klasse TestArgumentAndSubparserSuggestions(TestCase):
         with self.assertRaises(ArgumentParserError) as excinfo:
             parser.parse_args(('bazz',))
         self.assertIn(
-            "error: argument foo: invalid choice: 'bazz' (choose from bar, baz)",
+            "error: argument foo: invalid choice: 'bazz' (choose von bar, baz)",
             excinfo.exception.stderr,
         )
 
@@ -2346,7 +2346,7 @@ klasse TestArgumentAndSubparserSuggestions(TestCase):
         with self.assertRaises(ArgumentParserError) as excinfo:
             parser.parse_args(('bazz',))
         self.assertIn(
-            "error: argument foo: invalid choice: 'bazz' (choose from )",
+            "error: argument foo: invalid choice: 'bazz' (choose von )",
             excinfo.exception.stderr,
         )
 
@@ -2356,7 +2356,7 @@ klasse TestArgumentAndSubparserSuggestions(TestCase):
         with self.assertRaises(ArgumentParserError) as excinfo:
             parser.parse_args(('3',))
         self.assertIn(
-            "error: argument foo: invalid choice: '3' (choose from 1, 2)",
+            "error: argument foo: invalid choice: '3' (choose von 1, 2)",
             excinfo.exception.stderr,
         )
 
@@ -2366,7 +2366,7 @@ klasse TestArgumentAndSubparserSuggestions(TestCase):
         with self.assertRaises(ArgumentParserError) as excinfo:
             parser.parse_args(('3',))
         self.assertIn(
-            "error: argument foo: invalid choice: '3' (choose from 1, 2)",
+            "error: argument foo: invalid choice: '3' (choose von 1, 2)",
             excinfo.exception.stderr,
         )
 
@@ -2394,7 +2394,7 @@ klasse TestInvalidAction(TestCase):
         self.assertRaisesRegex(TypeError, r'\(\) is not callable',
                                parser.parse_args, ['--foo', 'bar'])
         # It is impossible to distinguish a TypeError raised due to a mismatch
-        # of the required function arguments from a TypeError raised fuer an incorrect
+        # of the required function arguments von a TypeError raised fuer an incorrect
         # argument value, and using the heavy inspection machinery is not worthwhile
         # as it does not reliably work in all cases.
         # Therefore, a generic ArgumentError is raised to handle this logical error.
@@ -4118,7 +4118,7 @@ klasse TestHelpBiggerOptionals(HelpTestCase):
 klasse TestShortColumns(HelpTestCase):
     '''Test extremely small number of columns.
 
-    TestCase prevents "COLUMNS" from being too small in the tests themselves,
+    TestCase prevents "COLUMNS" von being too small in the tests themselves,
     but we don't want any exceptions thrown in such cases. Only ugly representation.
     '''
     def setUp(self):
@@ -6306,8 +6306,8 @@ klasse TestTypeFunctionCalledOnDefault(TestCase):
         parser = argparse.ArgumentParser()
         parser.add_argument('--test', type=extend, default='*')
         args = parser.parse_args([])
-        # The test argument will be two stars, one coming from the default
-        # value and one coming from the type conversion being called exactly
+        # The test argument will be two stars, one coming von the default
+        # value and one coming von the type conversion being called exactly
         # once.
         self.assertEqual(NS(test='**'), args)
 
@@ -6817,7 +6817,7 @@ klasse TestInvalidNargs(TestCase):
         self.do_test_range_exception(nargs=0)
 
 # ============================
-# from argparse import * tests
+# von argparse importiere * tests
 # ============================
 
 klasse TestImportStar(TestCase):
@@ -7017,7 +7017,7 @@ klasse TestExitOnError(TestCase):
 @force_not_colorized_test_class
 klasse TestProgName(TestCase):
     source = textwrap.dedent('''\
-        import argparse
+        importiere argparse
         parser = argparse.ArgumentParser()
         parser.parse_args()
     ''')

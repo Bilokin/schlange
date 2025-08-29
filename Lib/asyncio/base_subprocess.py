@@ -1,13 +1,13 @@
-import collections
-import subprocess
-import warnings
-import os
-import signal
-import sys
+importiere collections
+importiere subprocess
+importiere warnings
+importiere os
+importiere signal
+importiere sys
 
-from . import protocols
-from . import transports
-from .log import logger
+von . importiere protocols
+von . importiere transports
+von .log importiere logger
 
 
 klasse BaseSubprocessTransport(transports.SubprocessTransport):

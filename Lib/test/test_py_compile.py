@@ -1,16 +1,16 @@
-import functools
-import importlib.util
-import os
-import py_compile
-import shutil
-import stat
-import subprocess
-import sys
-import tempfile
-import unittest
+importiere functools
+importiere importlib.util
+importiere os
+importiere py_compile
+importiere shutil
+importiere stat
+importiere subprocess
+importiere sys
+importiere tempfile
+importiere unittest
 
-from test import support
-from test.support import os_helper, script_helper
+von test importiere support
+von test.support importiere os_helper, script_helper
 
 
 def without_source_date_epoch(fxn):

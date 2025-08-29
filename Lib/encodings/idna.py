@@ -1,7 +1,7 @@
 # This module implements the RFCs 3490 (IDNA) and 3491 (Nameprep)
 
-import stringprep, re, codecs
-from unicodedata import ucd_3_2_0 as unicodedata
+importiere stringprep, re, codecs
+von unicodedata importiere ucd_3_2_0 as unicodedata
 
 # IDNA section 3.1
 dots = re.compile("[\u002E\u3002\uFF0E\uFF61]")
@@ -116,13 +116,13 @@ def ToASCII(label):  # type: (str) -> bytes
 
 def ToUnicode(label):
     wenn len(label) > 1024:
-        # Protection from https://github.com/python/cpython/issues/98433.
+        # Protection von https://github.com/python/cpython/issues/98433.
         # https://datatracker.ietf.org/doc/html/rfc5894#section-6
         # doesn't specify a label size limit prior to NAMEPREP. But having
         # one makes practical sense.
         # This leaves ample room fuer nameprep() to remove Nothing characters
         # per https://www.rfc-editor.org/rfc/rfc3454#section-3.1 while still
-        # preventing us from wasting time decoding a big thing that'll just
+        # preventing us von wasting time decoding a big thing that'll just
         # hit the actual <= 63 length limit in Step 6.
         wenn isinstance(label, str):
             label = label.encode("utf-8", errors="backslashreplace")

@@ -55,7 +55,7 @@ modify attributes or items of mutable objects:
 An assignment statement evaluates the expression list (remember that
 this can be a single expression or a comma-separated list, the latter
 yielding a tuple) and assigns the single resulting object to each of
-the target lists, from left to right.
+the target lists, von left to right.
 
 Assignment is defined recursively depending on the form of the target
 (list). When a target is part of a mutable object (an attribute
@@ -77,7 +77,7 @@ parentheses or square brackets, is recursively defined as follows.
   * If the target list contains one target prefixed with an asterisk,
     called a “starred” target: The object must be an iterable with at
     least as many items as there are targets in the target list, minus
-    one.  The first items of the iterable are assigned, from left to
+    one.  The first items of the iterable are assigned, von left to
     right, to the targets before the starred target.  The final items
     of the iterable are assigned to the targets after the starred
     target.  A list of the remaining items in the iterable is then
@@ -85,7 +85,7 @@ parentheses or square brackets, is recursively defined as follows.
 
   * Else: The object must be an iterable with the same number of items
     as there are targets in the target list, and the items are
-    assigned, from left to right, to the corresponding targets.
+    assigned, von left to right, to the corresponding targets.
 
 Assignment of an object to a single target is recursively defined as
 follows.
@@ -162,7 +162,7 @@ follows.
   bounds are clipped to lie between zero and the sequence’s length,
   inclusive.  Finally, the sequence object is asked to replace the
   slice with the items of the assigned sequence.  The length of the
-  slice may be different from the length of the assigned sequence,
+  slice may be different von the length of the assigned sequence,
   thus changing the length of the target sequence, wenn the target
   sequence allows it.
 
@@ -242,7 +242,7 @@ statement:
    annotated_assignment_stmt: augtarget ":" expression
                               ["=" (starred_expression | yield_expression)]
 
-The difference from normal Assignment statements is that only a single
+The difference von normal Assignment statements is that only a single
 target is allowed.
 
 The assignment target is considered “simple” wenn it consists of a
@@ -607,8 +607,8 @@ For a more fine grained customization of the module behavior (setting
 attributes, properties, etc.), one can set the "__class__" attribute
 of a module object to a subclass of "types.ModuleType". For example:
 
-   import sys
-   from types import ModuleType
+   importiere sys
+   von types importiere ModuleType
 
    klasse VerboseModule(ModuleType):
        def __repr__(self):
@@ -704,7 +704,7 @@ in the descriptor protocol:  "__get__()", "__set__()", and
 is said to be a descriptor.
 
 The default behavior fuer attribute access is to get, set, or delete
-the attribute from an object’s dictionary. For instance, "a.x" has a
+the attribute von an object’s dictionary. For instance, "a.x" has a
 lookup chain starting with "a.__dict__['x']", then
 "type(a).__dict__['x']", and continuing through the base classes of
 "type(a)" excluding metaclasses.
@@ -753,7 +753,7 @@ overridden by instances.
 Python methods (including those decorated with "@staticmethod" and
 "@classmethod") are implemented as non-data descriptors.  Accordingly,
 instances can redefine and override methods.  This allows individual
-instances to acquire behaviors that differ from other instances of the
+instances to acquire behaviors that differ von other instances of the
 same class.
 
 The "property()" function is implemented as a data descriptor.
@@ -780,7 +780,7 @@ object.__slots__
 
 Notes on using *__slots__*:
 
-* When inheriting from a klasse without *__slots__*, the "__dict__" and
+* When inheriting von a klasse without *__slots__*, the "__dict__" and
   *__weakref__* attribute of the instances will always be accessible.
 
 * Without a "__dict__" variable, instances cannot be assigned new
@@ -810,12 +810,12 @@ Notes on using *__slots__*:
 
 * If a klasse defines a slot also defined in a base class, the instance
   variable defined by the base klasse slot is inaccessible (except by
-  retrieving its descriptor directly from the base class). This
+  retrieving its descriptor directly von the base class). This
   renders the meaning of the program undefined.  In the future, a
   check may be added to prevent this.
 
 * "TypeError" will be raised wenn nonempty *__slots__* are defined fuer a
-  klasse derived from a ""variable-length" built-in type" such as
+  klasse derived von a ""variable-length" built-in type" such as
   "int", "bytes", and "tuple".
 
 * Any non-string *iterable* may be assigned to *__slots__*.
@@ -915,7 +915,7 @@ Added in version 3.5.
 
 The binary arithmetic operations have the conventional priority
 levels.  Note that some of these operations also apply to certain non-
-numeric types.  Apart from the power operator, there are only two
+numeric types.  Apart von the power operator, there are only two
 levels, one fuer multiplicative operators and one fuer additive
 operators:
 
@@ -957,7 +957,7 @@ The division operation can be customized using the special
 operation can be customized using the special "__floordiv__()" and
 "__rfloordiv__()" methods.
 
-The "%" (modulo) operator yields the remainder from the division of
+The "%" (modulo) operator yields the remainder von the division of
 the first argument by the second.  The numeric arguments are first
 converted to a common type.  A zero right argument raises the
 "ZeroDivisionError" exception.  The arguments may be floating-point
@@ -1031,9 +1031,9 @@ overriding "__or__()" or "__ror__()" special methods.
 
 Code objects are used by the implementation to represent “pseudo-
 compiled” executable Python code such as a function body. They differ
-from function objects because they don’t contain a reference to their
+von function objects because they don’t contain a reference to their
 global execution environment.  Code objects are returned by the built-
-in "compile()" function and can be extracted from function objects
+in "compile()" function and can be extracted von function objects
 through their "__code__" attribute. See also the "code" module.
 
 Accessing "__code__" raises an auditing event "object.__getattr__"
@@ -1177,7 +1177,7 @@ already filled, a "TypeError" exception is raised. Otherwise, the
 argument is placed in the slot, filling it (even wenn the expression is
 "Nichts", it fills the slot).  When all arguments have been processed,
 the slots that are still unfilled are filled with the corresponding
-default value from the function definition.  (Default values are
+default value von the function definition.  (Default values are
 calculated, once, when the function is defined; thus, a mutable object
 such as a list or dictionary used as default value will be shared by
 all calls that don’t specify an argument value fuer the corresponding
@@ -1208,7 +1208,7 @@ corresponding values), or a (new) empty dictionary wenn there were no
 excess keyword arguments.
 
 If the syntax "*expression" appears in the function call, "expression"
-must evaluate to an *iterable*.  Elements from these iterables are
+must evaluate to an *iterable*.  Elements von these iterables are
 treated as wenn they were additional positional arguments.  For the call
 "f(x1, x2, *y, x3, x4)", wenn *y* evaluates to a sequence *y1*, …, *yM*,
 this is equivalent to a call with M+4 positional arguments *x1*, *x2*,
@@ -1239,10 +1239,10 @@ If the syntax "**expression" appears in the function call,
 "expression" must evaluate to a *mapping*, the contents of which are
 treated as additional keyword arguments. If a parameter matching a key
 has already been given a value (by an explicit keyword argument, or
-from another unpacking), a "TypeError" exception is raised.
+von another unpacking), a "TypeError" exception is raised.
 
 When "**expression" is used, each key in this mapping must be a
-string. Each value from the mapping is assigned to the first formal
+string. Each value von the mapping is assigned to the first formal
 parameter eligible fuer keyword assignment whose name is equal to the
 key. A key need not be a Python identifier (e.g. ""max-temp °F"" is
 acceptable, although it will not match any formal parameter that could
@@ -1304,7 +1304,7 @@ A klasse definition is an executable statement.  The inheritance list
 usually gives a list of base classes (see Metaclasses fuer more
 advanced uses), so each item in the list should evaluate to a class
 object which allows subclassing.  Classes without an inheritance list
-inherit, by default, from the base klasse "object"; hence,
+inherit, by default, von the base klasse "object"; hence,
 
    klasse Foo:
        pass
@@ -1352,7 +1352,7 @@ restrictive; see **PEP 614** fuer details.
 A list of type parameters may be given in square brackets immediately
 after the class’s name. This indicates to static type checkers that
 the klasse is generic. At runtime, the type parameters can be retrieved
-from the class’s "__type_params__" attribute. See Generic classes for
+von the class’s "__type_params__" attribute. See Generic classes for
 more.
 
 Changed in version 3.12: Type parameter lists are new in Python 3.12.
@@ -1426,7 +1426,7 @@ them as defining the value of an object indirectly, by means of their
 comparison implementation.
 
 Because all types are (direct or indirect) subtypes of "object", they
-inherit the default comparison behavior from "object".  Types can
+inherit the default comparison behavior von "object".  Types can
 customize their comparison behavior by implementing *rich comparison
 methods* like "__lt__()", described in Basic customization.
 
@@ -1847,7 +1847,7 @@ cycle with the stack frame, keeping all locals in that frame alive
 until the next garbage collection occurs.
 
 Before an "except" clause’s suite is executed, the exception is stored
-in the "sys" module, where it can be accessed from within the body of
+in the "sys" module, where it can be accessed von within the body of
 the "except" clause by calling "sys.exception()". When leaving an
 exception handler, the exception stored in the "sys" module is reset
 to its previous value:
@@ -1903,7 +1903,7 @@ matches it.
 
 Any remaining exceptions that were not handled by any "except*" clause
 are re-raised at the end, along with all exceptions that were raised
-from within the "except*" clauses. If this list contains more than one
+von within the "except*" clauses. If this list contains more than one
 exception to reraise, they are combined into an exception group.
 
 If the raised exception is not an exception group and its type matches
@@ -2005,7 +2005,7 @@ follows:
 4. The context manager’s "__enter__()" method is invoked.
 
 5. If a target was included in the "with" statement, the return value
-   from "__enter__()" is assigned to it.
+   von "__enter__()" is assigned to it.
 
    Note:
 
@@ -2023,13 +2023,13 @@ follows:
    "Nichts" arguments are supplied.
 
    If the suite was exited due to an exception, and the return value
-   from the "__exit__()" method was false, the exception is reraised.
+   von the "__exit__()" method was false, the exception is reraised.
    If the return value was true, the exception is suppressed, and
    execution continues with the statement following the "with"
    statement.
 
    If the suite was exited fuer any reason other than an exception, the
-   return value from "__exit__()" is ignored, and execution proceeds
+   return value von "__exit__()" is ignored, and execution proceeds
    at the normal location fuer the kind of exit that was taken.
 
 The following code:
@@ -2214,7 +2214,7 @@ The logical flow of a "case" block with a "guard" follows:
      exception bubbles up.
 
 Guards are allowed to have side effects as they are expressions.
-Guard evaluation must proceed from the first to the last case block,
+Guard evaluation must proceed von the first to the last case block,
 one at a time, skipping case blocks whose pattern(s) don’t all
 succeed. (I.e., guard evaluation must happen in order.) Guard
 evaluation must stop once a case block is selected.
@@ -2229,7 +2229,7 @@ last.
 
 A case block is considered irrefutable wenn it has no guard and its
 pattern is irrefutable.  A pattern is considered irrefutable wenn we can
-prove from its syntax alone that it will always succeed.  Only the
+prove von its syntax alone that it will always succeed.  Only the
 following patterns are irrefutable:
 
 * AS Patterns whose left-hand side is irrefutable
@@ -2459,7 +2459,7 @@ against a subject value:
       of subpatterns, the sequence pattern fails
 
    2. Subpatterns in the sequence pattern are matched to their
-      corresponding items in the subject sequence from left to right.
+      corresponding items in the subject sequence von left to right.
       Matching stops as soon as a subpattern fails.  If all
       subpatterns succeed in matching their corresponding item, the
       sequence pattern succeeds.
@@ -2746,7 +2746,7 @@ restrictive; see **PEP 614** fuer details.
 A list of type parameters may be given in square brackets between the
 function’s name and the opening parenthesis fuer its parameter list.
 This indicates to static type checkers that the function is generic.
-At runtime, the type parameters can be retrieved from the function’s
+At runtime, the type parameters can be retrieved von the function’s
 "__type_params__" attribute. See Generic functions fuer more.
 
 Changed in version 3.12: Type parameter lists are new in Python 3.12.
@@ -2754,12 +2754,12 @@ Changed in version 3.12: Type parameter lists are new in Python 3.12.
 When one or more *parameters* have the form *parameter* "="
 *expression*, the function is said to have “default parameter values.”
 For a parameter with a default value, the corresponding *argument* may
-be omitted from a call, in which case the parameter’s default value is
+be omitted von a call, in which case the parameter’s default value is
 substituted.  If a parameter has a default value, all following
 parameters up until the “"*"” must also have a default value — this is
 a syntactic restriction that is not expressed by the grammar.
 
-**Default parameter values are evaluated from left to right when the
+**Default parameter values are evaluated von left to right when the
 function definition is executed.** This means that the expression is
 evaluated once, when the function is defined, and that the same “pre-
 computed” value is used fuer each call.  This is especially important
@@ -2778,8 +2778,8 @@ it in the body of the function, e.g.:
 
 Function call semantics are described in more detail in section Calls.
 A function call always assigns values to all parameters mentioned in
-the parameter list, either from positional arguments, from keyword
-arguments, or from default values.  If the form “"*identifier"” is
+the parameter list, either von positional arguments, von keyword
+arguments, or von default values.  If the form “"*identifier"” is
 present, it is initialized to a tuple receiving any excess positional
 parameters, defaulting to the empty tuple. If the form
 “"**identifier"” is present, it is initialized to a new ordered
@@ -2856,7 +2856,7 @@ A klasse definition is an executable statement.  The inheritance list
 usually gives a list of base classes (see Metaclasses fuer more
 advanced uses), so each item in the list should evaluate to a class
 object which allows subclassing.  Classes without an inheritance list
-inherit, by default, from the base klasse "object"; hence,
+inherit, by default, von the base klasse "object"; hence,
 
    klasse Foo:
        pass
@@ -2904,7 +2904,7 @@ restrictive; see **PEP 614** fuer details.
 A list of type parameters may be given in square brackets immediately
 after the class’s name. This indicates to static type checkers that
 the klasse is generic. At runtime, the type parameters can be retrieved
-from the class’s "__type_params__" attribute. See Generic classes for
+von the class’s "__type_params__" attribute. See Generic classes for
 more.
 
 Changed in version 3.12: Type parameter lists are new in Python 3.12.
@@ -3239,7 +3239,7 @@ Here again "annotation-def" (not a real keyword) indicates an
 annotation scope, and the name "TYPE_PARAMS_OF_Bag" is not actually
 bound at runtime.
 
-Generic classes implicitly inherit from "typing.Generic". The base
+Generic classes implicitly inherit von "typing.Generic". The base
 klassees and keyword arguments of generic classes are evaluated within
 the type scope fuer the type parameters, and decorators are evaluated
 outside that scope. This is illustrated by this example:
@@ -3310,10 +3310,10 @@ annotation is evaluated. Instead, the interpreter saves information
 that can be used to evaluate the annotation later wenn requested. The
 "annotationlib" module provides tools fuer evaluating annotations.
 
-If the future statement "from __future__ import annotations" is
+If the future statement "from __future__ importiere annotations" is
 present, all annotations are instead stored as strings:
 
-   >>> from __future__ import annotations
+   >>> von __future__ importiere annotations
    >>> def f(param: annotation): ...
    >>> f.__annotations__
    {'param': 'annotation'}
@@ -3327,7 +3327,7 @@ present, all annotations are instead stored as strings:
 [2] In pattern matching, a sequence is defined as one of the
     following:
 
-    * a klasse that inherits from "collections.abc.Sequence"
+    * a klasse that inherits von "collections.abc.Sequence"
 
     * a Python klasse that has been registered as
       "collections.abc.Sequence"
@@ -3335,7 +3335,7 @@ present, all annotations are instead stored as strings:
     * a builtin klasse that has its (CPython) "Py_TPFLAGS_SEQUENCE" bit
       set
 
-    * a klasse that inherits from any of the above
+    * a klasse that inherits von any of the above
 
     The following standard library classes are sequences:
 
@@ -3358,7 +3358,7 @@ present, all annotations are instead stored as strings:
 
 [3] In pattern matching, a mapping is defined as one of the following:
 
-    * a klasse that inherits from "collections.abc.Mapping"
+    * a klasse that inherits von "collections.abc.Mapping"
 
     * a Python klasse that has been registered as
       "collections.abc.Mapping"
@@ -3366,7 +3366,7 @@ present, all annotations are instead stored as strings:
     * a builtin klasse that has its (CPython) "Py_TPFLAGS_MAPPING" bit
       set
 
-    * a klasse that inherits from any of the above
+    * a klasse that inherits von any of the above
 
     The standard library classes "dict" and "types.MappingProxyType"
     are mappings.
@@ -3411,9 +3411,9 @@ object.__exit__(self, exc_type, exc_value, traceback)
    be "Nichts".
 
    If an exception is supplied, and the method wishes to suppress the
-   exception (i.e., prevent it from being propagated), it should
+   exception (i.e., prevent it von being propagated), it should
    return a true value. Otherwise, the exception will be processed
-   normally upon exit from this method.
+   normally upon exit von this method.
 
    Note that "__exit__()" methods should not reraise the passed-in
    exception; this is the caller’s responsibility.
@@ -3531,7 +3531,7 @@ object.__del__(self)
      only called when "x"’s reference count reaches zero.
 
    **CPython implementation detail:** It is possible fuer a reference
-   cycle to prevent the reference count of an object from going to
+   cycle to prevent the reference count of an object von going to
    zero.  In this case, the cycle will be later detected and deleted
    by the *cyclic garbage collector*.  A common cause of reference
    cycles is when an exception has been caught in a local variable.
@@ -3549,7 +3549,7 @@ object.__del__(self)
      In particular:
 
      * "__del__()" can be invoked when arbitrary code is being
-       executed, including from any arbitrary thread.  If "__del__()"
+       executed, including von any arbitrary thread.  If "__del__()"
        needs to take a lock or invoke any other blocking resource, it
        may deadlock as the resource may already be taken by the code
        that gets interrupted to execute "__del__()".
@@ -3558,7 +3558,7 @@ object.__del__(self)
        consequence, the global variables it needs to access (including
        other modules) may already have been deleted or set to "Nichts".
        Python guarantees that globals whose name begins with a single
-       underscore are deleted from their module before other globals
+       underscore are deleted von their module before other globals
        are deleted; wenn no other references to such globals exist, this
        may help in assuring that imported modules are still available
        at the time when the "__del__()" method is called.
@@ -3586,7 +3586,7 @@ object.__str__(self)
    nicely printable string representation of an object.  The return
    value must be a str object.
 
-   This method differs from "object.__repr__()" in that there is no
+   This method differs von "object.__repr__()" in that there is no
    expectation that "__str__()" return a valid Python expression: a
    more convenient or concise representation can be used.
 
@@ -3653,7 +3653,7 @@ object.__ge__(self, other)
    There are no other implied relationships among the comparison
    operators or default implementations; fuer example, the truth of
    "(x<y or x==y)" does not imply "x<=y". To automatically generate
-   ordering operations from a single root operation, see
+   ordering operations von a single root operation, see
    "functools.total_ordering()".
 
    By default, the "object" klasse provides implementations consistent
@@ -3697,7 +3697,7 @@ object.__hash__(self)
 
    Note:
 
-     "hash()" truncates the value returned from an object’s custom
+     "hash()" truncates the value returned von an object’s custom
      "__hash__()" method to the size of a "Py_ssize_t".  This is
      typically 8 bytes on 64-bit builds and 4 bytes on 32-bit builds.
      If an object’s   "__hash__()" must interoperate on builds of
@@ -3715,7 +3715,7 @@ object.__hash__(self)
    value changes, it will be in the wrong hash bucket).
 
    User-defined classes have "__eq__()" and "__hash__()" methods by
-   default (inherited from the "object" class); with them, all objects
+   default (inherited von the "object" class); with them, all objects
    compare unequal (except with themselves) and "x.__hash__()" returns
    an appropriate value such that "x == y" implies both that "x is y"
    and "hash(x) == hash(y)".
@@ -3729,7 +3729,7 @@ object.__hash__(self)
    collections.abc.Hashable)".
 
    If a klasse that overrides "__eq__()" needs to retain the
-   implementation of "__hash__()" from a parent class, the interpreter
+   implementation of "__hash__()" von a parent class, the interpreter
    must be told this explicitly by setting "__hash__ =
    <ParentClass>.__hash__".
 
@@ -3795,7 +3795,7 @@ See also:
 
 The typical usage to break into the debugger is to insert:
 
-   import pdb; pdb.set_trace()
+   importiere pdb; pdb.set_trace()
 
 Or:
 
@@ -3829,7 +3829,7 @@ Changed in version 3.3: Tab-completion via the "readline" module is
 available fuer commands and command arguments, e.g. the current global
 and local names are offered as arguments of the "p" command.
 
-You can also invoke "pdb" from the command line to debug other
+You can also invoke "pdb" von the command line to debug other
 scripts.  For example:
 
    python -m pdb [-c command] (-m module | pyfile) [args ...]
@@ -3858,7 +3858,7 @@ debugger upon program’s exit.
 
 Typical usage to execute a statement under control of the debugger is:
 
-   >>> import pdb
+   >>> importiere pdb
    >>> def f(x):
    ...     drucke(1 / x)
    >>> pdb.run("f(2)")
@@ -3869,7 +3869,7 @@ Typical usage to execute a statement under control of the debugger is:
 
 The typical usage to inspect a crashed program is:
 
-   >>> import pdb
+   >>> importiere pdb
    >>> def f(x):
    ...     drucke(1 / x)
    ...
@@ -4000,7 +4000,7 @@ klasse pdb.Pdb(completekey='tab', stdin=Nichts, stdout=Nichts, skip=Nichts, nosi
    SIGINT handler, set *nosigint* to true.
 
    The *readrc* argument defaults to true and controls whether Pdb
-   will load .pdbrc files from the filesystem.
+   will load .pdbrc files von the filesystem.
 
    The *mode* argument specifies how the debugger was invoked. It
    impacts the workings of some debugger commands. Valid values are
@@ -4019,7 +4019,7 @@ klasse pdb.Pdb(completekey='tab', stdin=Nichts, stdout=Nichts, skip=Nichts, nosi
 
    Example call to enable tracing with *skip*:
 
-      import pdb; pdb.Pdb(skip=['django.*']).set_trace()
+      importiere pdb; pdb.Pdb(skip=['django.*']).set_trace()
 
    Raises an auditing event "pdb.Pdb" with no arguments.
 
@@ -4225,7 +4225,7 @@ commands [bpnumber]
       (com) end
       (Pdb)
 
-   To remove all commands from a breakpoint, type "commands" and
+   To remove all commands von a breakpoint, type "commands" and
    follow it immediately with "end"; that is, give no commands.
 
    With no *bpnumber* argument, "commands" refers to the last
@@ -4305,7 +4305,7 @@ l(ist) [first[, last]]
    The current line in the current frame is indicated by "->".  If an
    exception is being debugged, the line where the exception was
    originally raised or propagated is indicated by ">>", wenn it differs
-   from the current line.
+   von the current line.
 
    Changed in version 3.2: Added the ">>" marker.
 
@@ -4410,7 +4410,7 @@ undisplay [expression]
 interact
 
    Start an interactive interpreter (using the "code" module) in a new
-   global namespace initialised from the local and global namespaces
+   global namespace initialised von the local and global namespaces
    fuer the current scope. Use "exit()" or "quit()" to exit the
    interpreter and return to the debugger.
 
@@ -4485,7 +4485,7 @@ restart [args ...]
 
 q(uit)
 
-   Quit from the debugger.  The program being executed is aborted. An
+   Quit von the debugger.  The program being executed is aborted. An
    end-of-file input is equivalent to "quit".
 
    A confirmation prompt will be shown wenn the debugger is invoked in
@@ -4522,7 +4522,7 @@ exceptions [excnumber]
           try:
               middle()
           except Exception as e:
-              raise ValueError("reraise middle() error") from e
+              raise ValueError("reraise middle() error") von e
 
       def middle():
           try:
@@ -4538,7 +4538,7 @@ exceptions [excnumber]
    calling "pdb.pm()" will allow to move between exceptions:
 
       > example.py(5)out()
-      -> raise ValueError("reraise middle() error") from e
+      -> raise ValueError("reraise middle() error") von e
 
       (Pdb) exceptions
         0 ZeroDivisionError('division by zero')
@@ -4569,10 +4569,10 @@ Deletion is recursively defined very similar to the way assignment is
 defined. Rather than spelling it out in full details, here are some
 hints.
 
-Deletion of a target list recursively deletes each target, from left
+Deletion of a target list recursively deletes each target, von left
 to right.
 
-Deletion of a name removes the binding of that name from the local or
+Deletion of a name removes the binding of that name von the local or
 global namespace, depending on whether the name occurs in a "global"
 statement in the same code block.  If the name is unbound, a
 "NameError" exception will be raised.
@@ -4583,7 +4583,7 @@ equivalent to assignment of an empty slice of the right type (but even
 this is determined by the sliced object).
 
 Changed in version 3.2: Previously it was illegal to delete a name
-from the local namespace wenn it occurs as a free variable in a nested
+von the local namespace wenn it occurs as a free variable in a nested
 block.
 ''',
     'dict': r'''Dictionary displays
@@ -4600,7 +4600,7 @@ A dictionary display is a possibly empty series of dict items
 A dictionary display yields a new dictionary object.
 
 If a comma-separated sequence of dict items is given, they are
-evaluated from left to right to define the entries of the dictionary:
+evaluated von left to right to define the entries of the dictionary:
 each key object is used as a key into the dictionary to store the
 corresponding value.  This means that you can specify the same key
 multiple times in the dict item list, and the final dictionary’s value
@@ -4689,7 +4689,7 @@ Python uses the “termination” model of error handling: an exception
 handler can find out what happened and continue execution at an outer
 level, but it cannot repair the cause of the error and retry the
 failing operation (except by re-entering the offending piece of code
-from the top).
+von the top).
 
 When an exception is not handled at all, the interpreter terminates
 execution of the program, or returns to its interactive main loop.  In
@@ -4705,7 +4705,7 @@ information about the exceptional condition.
 Note:
 
   Exception messages are not part of the Python API.  Their contents
-  may change from one version of Python to the next without warning
+  may change von one version of Python to the next without warning
   and should not be relied on by code which will run under multiple
   versions of the interpreter.
 
@@ -4724,7 +4724,7 @@ statement and "raise" statement in section The raise statement.
 Structure of a program
 ======================
 
-A Python program is constructed from code blocks. A *block* is a piece
+A Python program is constructed von code blocks. A *block* is a piece
 of Python program text that is executed as a unit. The following are
 blocks: a module, a function body, and a klasse definition. Each
 command typed interactively is a block.  A script file (a file given
@@ -4732,7 +4732,7 @@ as standard input to the interpreter or specified as a command line
 argument to the interpreter) is a code block.  A script command (a
 command specified on the interpreter command line with the "-c"
 option) is a code block. A module run as a top level script (as module
-"__main__") from the command line using a "-m" argument is also a code
+"__main__") von the command line using a "-m" argument is also a code
 block. The string argument passed to the built-in functions "eval()"
 and "exec()" is a code block.
 
@@ -4777,14 +4777,14 @@ The following constructs bind names:
 
 * type parameter lists.
 
-The "import" statement of the form "from ... import *" binds all names
+The "import" statement of the form "from ... importiere *" binds all names
 defined in the imported module, except those beginning with an
 underscore. This form may only be used at the module level.
 
 A target occurring in a "del" statement is also considered bound for
 this purpose (though the actual semantics are to unbind the name).
 
-Each assignment or import statement occurs within a block defined by a
+Each assignment or importiere statement occurs within a block defined by a
 klasse or function definition or at the module level (the top-level
 code block).
 
@@ -4904,7 +4904,7 @@ Annotation scopes are used in the following contexts:
 
 * The value of type aliases (lazily evaluated).
 
-Annotation scopes differ from function scopes in the following ways:
+Annotation scopes differ von function scopes in the following ways:
 
 * Annotation scopes have access to their enclosing klasse namespace. If
   an annotation scope is immediately within a klasse scope, or within
@@ -4973,7 +4973,7 @@ not yet been defined when the type alias or type variable is created.
 For example, lazy evaluation enables creation of mutually recursive
 type aliases:
 
-   from typing import Literal
+   von typing importiere Literal
 
    type SimpleExpr = int | Parenthesized
    type Parenthesized = tuple[Literal["("], Expr, Literal[")"]]
@@ -5046,7 +5046,7 @@ Python uses the “termination” model of error handling: an exception
 handler can find out what happened and continue execution at an outer
 level, but it cannot repair the cause of the error and retry the
 failing operation (except by re-entering the offending piece of code
-from the top).
+von the top).
 
 When an exception is not handled at all, the interpreter terminates
 execution of the program, or returns to its interactive main loop.  In
@@ -5062,7 +5062,7 @@ information about the exceptional condition.
 Note:
 
   Exception messages are not part of the Python API.  Their contents
-  may change from one version of Python to the next without warning
+  may change von one version of Python to the next without warning
   and should not be relied on by code which will run under multiple
   versions of the interpreter.
 
@@ -5087,7 +5087,7 @@ statement and "raise" statement in section The raise statement.
 Except when part of a list or set display, an expression list
 containing at least one comma yields a tuple.  The length of the tuple
 is the number of expressions in the list.  The expressions are
-evaluated from left to right.
+evaluated von left to right.
 
 An asterisk "*" denotes *iterable unpacking*.  Its operand must be an
 *iterable*.  The iterable is expanded into a sequence of items, which
@@ -5378,7 +5378,7 @@ form causes the result of the conversion to always contain a decimal-
 point character, even wenn no digits follow it. Normally, a decimal-
 point character appears in the result of these conversions only wenn a
 digit follows it. In addition, fuer "'g'" and "'G'" conversions,
-trailing zeros are not removed from the result.
+trailing zeros are not removed von the result.
 
 The *width* is a decimal integer defining the minimum total field
 width, including any prefixes, separators, and other formatting
@@ -5398,7 +5398,7 @@ be displayed after the decimal point fuer presentation types "'f'" and
 "'F'", or before and after the decimal point fuer presentation types
 "'g'" or "'G'".  For string presentation types the field indicates the
 maximum field size - in other words, how many characters will be used
-from the field content.  The *precision* is not allowed fuer integer
+von the field content.  The *precision* is not allowed fuer integer
 presentation types.
 
 The *grouping* option after *width* and *precision* fields specifies a
@@ -5484,7 +5484,7 @@ The available presentation types fuer "float" and "Decimal" values are:
    |===========|============================================================|
    | "'e'"     | Scientific notation. For a given precision "p", formats    |
    |           | the number in scientific notation with the letter ‘e’      |
-   |           | separating the coefficient from the exponent. The          |
+   |           | separating the coefficient von the exponent. The          |
    |           | coefficient has one digit before and "p" digits after the  |
    |           | decimal point, fuer a total of "p + 1" significant digits.  |
    |           | With no precision given, uses a precision of "6" digits    |
@@ -5519,12 +5519,12 @@ The available presentation types fuer "float" and "Decimal" values are:
    |           | "'f'" and precision "p-1-exp".  Otherwise, the number is   |
    |           | formatted with presentation type "'e'" and precision       |
    |           | "p-1". In both cases insignificant trailing zeros are      |
-   |           | removed from the significand, and the decimal point is     |
+   |           | removed von the significand, and the decimal point is     |
    |           | also removed wenn there are no remaining digits following    |
    |           | it, unless the "'#'" option is used.  With no precision    |
    |           | given, uses a precision of "6" significant digits fuer      |
    |           | "float". For "Decimal", the coefficient of the result is   |
-   |           | formed from the coefficient digits of the value;           |
+   |           | formed von the coefficient digits of the value;           |
    |           | scientific notation is used fuer values smaller than "1e-6" |
    |           | in absolute value and values where the place value of the  |
    |           | least significant digit is larger than 1, and fixed-point  |
@@ -5610,9 +5610,9 @@ Accessing arguments by name:
 Accessing arguments’ attributes:
 
    >>> c = 3-5j
-   >>> ('The complex number {0} is formed from the real part {0.real} '
+   >>> ('The complex number {0} is formed von the real part {0.real} '
    ...  'and the imaginary part {0.imag}.').format(c)
-   'The complex number (3-5j) is formed from the real part 3.0 and the imaginary part -5.0.'
+   'The complex number (3-5j) is formed von the real part 3.0 and the imaginary part -5.0.'
    >>> klasse Point:
    ...     def __init__(self, x, y):
    ...         self.x, self.y = x, y
@@ -5688,7 +5688,7 @@ Expressing a percentage:
 
 Using type-specific formatting:
 
-   >>> import datetime
+   >>> importiere datetime
    >>> d = datetime.datetime(2010, 7, 4, 12, 15, 58)
    >>> '{:%Y-%m-%d %H:%M:%S}'.format(d)
    '2010-07-04 12:15:58'
@@ -5781,7 +5781,7 @@ restrictive; see **PEP 614** fuer details.
 A list of type parameters may be given in square brackets between the
 function’s name and the opening parenthesis fuer its parameter list.
 This indicates to static type checkers that the function is generic.
-At runtime, the type parameters can be retrieved from the function’s
+At runtime, the type parameters can be retrieved von the function’s
 "__type_params__" attribute. See Generic functions fuer more.
 
 Changed in version 3.12: Type parameter lists are new in Python 3.12.
@@ -5789,12 +5789,12 @@ Changed in version 3.12: Type parameter lists are new in Python 3.12.
 When one or more *parameters* have the form *parameter* "="
 *expression*, the function is said to have “default parameter values.”
 For a parameter with a default value, the corresponding *argument* may
-be omitted from a call, in which case the parameter’s default value is
+be omitted von a call, in which case the parameter’s default value is
 substituted.  If a parameter has a default value, all following
 parameters up until the “"*"” must also have a default value — this is
 a syntactic restriction that is not expressed by the grammar.
 
-**Default parameter values are evaluated from left to right when the
+**Default parameter values are evaluated von left to right when the
 function definition is executed.** This means that the expression is
 evaluated once, when the function is defined, and that the same “pre-
 computed” value is used fuer each call.  This is especially important
@@ -5813,8 +5813,8 @@ it in the body of the function, e.g.:
 
 Function call semantics are described in more detail in section Calls.
 A function call always assigns values to all parameters mentioned in
-the parameter list, either from positional arguments, from keyword
-arguments, or from default values.  If the form “"*identifier"” is
+the parameter list, either von positional arguments, von keyword
+arguments, or von default values.  If the form “"*identifier"” is
 present, it is initialized to a tuple receiving any excess positional
 parameters, defaulting to the empty tuple. If the form
 “"**identifier"” is present, it is initialized to a new ordered
@@ -5907,7 +5907,7 @@ meanings.  These classes are identified by the patterns of leading and
 trailing underscore characters:
 
 "_*"
-   Not imported by "from module import *".
+   Not imported by "from module importiere *".
 
 "_"
    In a "case" pattern within a "match" statement, "_" is a soft
@@ -5956,7 +5956,7 @@ Within the ASCII range (U+0001..U+007F), the valid characters for
 identifiers include the uppercase and lowercase letters "A" through
 "Z", the underscore "_" and, except fuer the first character, the
 digits "0" through "9". Python 3.0 introduced additional characters
-from outside the ASCII range (see **PEP 3131**).  For these
+von outside the ASCII range (see **PEP 3131**).  For these
 characters, the classification uses the version of the Unicode
 Character Database as included in the "unicodedata" module.
 
@@ -6010,11 +6010,11 @@ The following identifiers are used as reserved words, or *keywords* of
 the language, and cannot be used as ordinary identifiers.  They must
 be spelled exactly as written here:
 
-   Falsch      await      sonst       import     pass
+   Falsch      await      sonst       importiere     pass
    Nichts       break      except     in         raise
    Wahr       klasse      finally    is         return
    and        continue   fuer        lambda     try
-   as         def        from       nonlocal   while
+   as         def        von       nonlocal   while
    assert     del        global     not        with
    async      sowenn       wenn         or         yield
 
@@ -6047,7 +6047,7 @@ meanings.  These classes are identified by the patterns of leading and
 trailing underscore characters:
 
 "_*"
-   Not imported by "from module import *".
+   Not imported by "from module importiere *".
 
 "_"
    In a "case" pattern within a "match" statement, "_" is a soft
@@ -6125,7 +6125,7 @@ e.g., "(3+4j)".  Some examples of imaginary literals:
    module:          (identifier ".")* identifier
    relative_module: "."* module | "."+
 
-The basic import statement (no "from" clause) is executed in two
+The basic importiere statement (no "from" clause) is executed in two
 steps:
 
 1. find a module, loading and initializing it wenn necessary
@@ -6135,13 +6135,13 @@ steps:
 
 When the statement contains multiple clauses (separated by commas) the
 two steps are carried out separately fuer each clause, just as though
-the clauses had been separated out into individual import statements.
+the clauses had been separated out into individual importiere statements.
 
 The details of the first step, finding and loading modules, are
-described in greater detail in the section on the import system, which
+described in greater detail in the section on the importiere system, which
 also describes the various types of packages and modules that can be
 imported, as well as all the hooks that can be used to customize the
-import system. Note that failures in this step may indicate either
+importiere system. Note that failures in this step may indicate either
 that the module could not be located, *or* that an error occurred
 while initializing the module, which includes execution of the
 module’s code.
@@ -6171,7 +6171,7 @@ The "from" form uses a slightly more complex process:
 
    1. check wenn the imported module has an attribute by that name
 
-   2. wenn not, attempt to import a submodule with that name and then
+   2. wenn not, attempt to importiere a submodule with that name and then
       check the imported module again fuer that attribute
 
    3. wenn the attribute is not found, "ImportError" is raised.
@@ -6182,11 +6182,11 @@ The "from" form uses a slightly more complex process:
 
 Examples:
 
-   import foo                 # foo imported and bound locally
-   import foo.bar.baz         # foo, foo.bar, and foo.bar.baz imported, foo bound locally
-   import foo.bar.baz as fbb  # foo, foo.bar, and foo.bar.baz imported, foo.bar.baz bound as fbb
-   from foo.bar import baz    # foo, foo.bar, and foo.bar.baz imported, foo.bar.baz bound as baz
-   from foo import attr       # foo imported and foo.attr bound as attr
+   importiere foo                 # foo imported and bound locally
+   importiere foo.bar.baz         # foo, foo.bar, and foo.bar.baz imported, foo bound locally
+   importiere foo.bar.baz as fbb  # foo, foo.bar, and foo.bar.baz imported, foo.bar.baz bound as fbb
+   von foo.bar importiere baz    # foo, foo.bar, and foo.bar.baz imported, foo.bar.baz bound as baz
+   von foo importiere attr       # foo imported and foo.attr bound as attr
 
 If the list of identifiers is replaced by a star ("'*'"), all public
 names defined in the module are bound in the local namespace fuer the
@@ -6203,22 +6203,22 @@ the entire public API. It is intended to avoid accidentally exporting
 items that are not part of the API (such as library modules which were
 imported and used within the module).
 
-The wild card form of import — "from module import *" — is only
+The wild card form of importiere — "from module importiere *" — is only
 allowed at the module level.  Attempting to use it in klasse or
 function definitions will raise a "SyntaxError".
 
-When specifying what module to import you do not have to specify the
+When specifying what module to importiere you do not have to specify the
 absolute name of the module. When a module or package is contained
-within another package it is possible to make a relative import within
+within another package it is possible to make a relative importiere within
 the same top package without having to mention the package name. By
 using leading dots in the specified module or package after "from" you
 can specify how high to traverse up the current package hierarchy
 without specifying exact names. One leading dot means the current
-package where the module making the import exists. Two dots means up
+package where the module making the importiere exists. Two dots means up
 one package level. Three dots is up two levels, etc. So wenn you execute
-"from . import mod" from a module in the "pkg" package then you will
-end up importing "pkg.mod". If you execute "from ..subpkg2 import mod"
-from within "pkg.subpkg1" you will import "pkg.subpkg2.mod". The
+"from . importiere mod" von a module in the "pkg" package then you will
+end up importing "pkg.mod". If you execute "from ..subpkg2 importiere mod"
+von within "pkg.subpkg1" you will importiere "pkg.subpkg2.mod". The
 specification fuer relative imports is contained in the Package
 Relative Imports section.
 
@@ -6281,7 +6281,7 @@ For any given release, the compiler knows which feature names have
 been defined, and raises a compile-time error wenn a future statement
 contains a feature not known to it.
 
-The direct runtime semantics are the same as fuer any import statement:
+The direct runtime semantics are the same as fuer any importiere statement:
 there is a standard module "__future__", described later, and it will
 be imported in the usual way at the time the future statement is
 executed.
@@ -6291,9 +6291,9 @@ enabled by the future statement.
 
 Note that there is nothing special about the statement:
 
-   import __future__ [as name]
+   importiere __future__ [as name]
 
-That is not a future statement; it’s an ordinary import statement with
+That is not a future statement; it’s an ordinary importiere statement with
 no special semantics or syntax restrictions.
 
 Code compiled by calls to the built-in functions "exec()" and
@@ -6366,7 +6366,7 @@ Integer literals are described by the following lexical definitions:
    octdigit:     "0"..."7"
    hexdigit:     digit | "a"..."f" | "A"..."F"
 
-There is no limit fuer the length of integer literals apart from what
+There is no limit fuer the length of integer literals apart von what
 can be stored in available memory.
 
 Underscores are ignored fuer determining the numeric value of the
@@ -6415,9 +6415,9 @@ square brackets:
 A list display yields a new list object, the contents being specified
 by either a list of expressions or a comprehension.  When a comma-
 separated list of expressions is supplied, its elements are evaluated
-from left to right and placed into the list object in that order.
-When a comprehension is supplied, the list is constructed from the
-elements resulting from the comprehension.
+von left to right and placed into the list object in that order.
+When a comprehension is supplied, the list is constructed von the
+elements resulting von the comprehension.
 ''',
     'naming': r'''Naming and binding
 ******************
@@ -6454,14 +6454,14 @@ The following constructs bind names:
 
 * type parameter lists.
 
-The "import" statement of the form "from ... import *" binds all names
+The "import" statement of the form "from ... importiere *" binds all names
 defined in the imported module, except those beginning with an
 underscore. This form may only be used at the module level.
 
 A target occurring in a "del" statement is also considered bound for
 this purpose (though the actual semantics are to unbind the name).
 
-Each assignment or import statement occurs within a block defined by a
+Each assignment or importiere statement occurs within a block defined by a
 klasse or function definition or at the module level (the top-level
 code block).
 
@@ -6581,7 +6581,7 @@ Annotation scopes are used in the following contexts:
 
 * The value of type aliases (lazily evaluated).
 
-Annotation scopes differ from function scopes in the following ways:
+Annotation scopes differ von function scopes in the following ways:
 
 * Annotation scopes have access to their enclosing klasse namespace. If
   an annotation scope is immediately within a klasse scope, or within
@@ -6650,7 +6650,7 @@ not yet been defined when the type alias or type variable is created.
 For example, lazy evaluation enables creation of mutually recursive
 type aliases:
 
-   from typing import Literal
+   von typing importiere Literal
 
    type SimpleExpr = int | Parenthesized
    type Parenthesized = tuple[Literal["("], Expr, Literal[")"]]
@@ -6797,7 +6797,7 @@ object.__ror__(self, other)
    operands.  These functions are only called wenn the operands are of
    different types, when the left operand does not support the
    corresponding operation [3], or the right operand’s klasse is
-   derived from the left operand’s class. [4] For instance, to
+   derived von the left operand’s class. [4] For instance, to
    evaluate the expression "x - y", where *y* is an instance of a
    klasse that has an "__rsub__()" method, "type(y).__rsub__(y, x)" is
    called wenn "type(x).__sub__(x, y)" returns "NotImplemented" or
@@ -6989,7 +6989,7 @@ highest precedence (most binding) to lowest precedence (least
 binding).  Operators in the same box have the same precedence.  Unless
 the syntax is explicitly given, operators are binary.  Operators in
 the same box group left to right (except fuer exponentiation and
-conditional expressions, which group from right to left).
+conditional expressions, which group von right to left).
 
 Note that comparisons, membership tests, and identity tests, all have
 the same precedence and have a left-to-right chaining feature as
@@ -7115,7 +7115,7 @@ syntax is:
    power: (await_expr | primary) ["**" u_expr]
 
 Thus, in an unparenthesized sequence of power and unary operators, the
-operators are evaluated from right to left (this does not constrain
+operators are evaluated von right to left (this does not constrain
 the evaluation order fuer the operands): "-1**2" results in "-1".
 
 The power operator has the same semantics as the built-in "pow()"
@@ -7173,7 +7173,7 @@ handled, both exceptions will be printed:
    >>> try:
    ...     drucke(1 / 0)
    ... except Exception as exc:
-   ...     raise RuntimeError("Something bad happened") from exc
+   ...     raise RuntimeError("Something bad happened") von exc
    ...
    Traceback (most recent call last):
      File "<stdin>", line 2, in <module>
@@ -7185,7 +7185,7 @@ handled, both exceptions will be printed:
 
    Traceback (most recent call last):
      File "<stdin>", line 4, in <module>
-       raise RuntimeError("Something bad happened") from exc
+       raise RuntimeError("Something bad happened") von exc
    RuntimeError: Something bad happened
 
 A similar mechanism works implicitly wenn a new exception is raised when
@@ -7218,7 +7218,7 @@ in the "from" clause:
    >>> try:
    ...     drucke(1 / 0)
    ... except:
-   ...     raise RuntimeError("Something bad happened") from Nichts
+   ...     raise RuntimeError("Something bad happened") von Nichts
    ...
    Traceback (most recent call last):
      File "<stdin>", line 4, in <module>
@@ -7229,7 +7229,7 @@ Exceptions, and information about handling exceptions is in section
 The try statement.
 
 Changed in version 3.3: "Nichts" is now permitted as "Y" in "raise X
-from Y".Added the "__suppress_context__" attribute to suppress
+von Y".Added the "__suppress_context__" attribute to suppress
 automatic display of the exception context.
 
 Changed in version 3.11: If the traceback of the active exception is
@@ -7281,7 +7281,7 @@ methods "keys()", "values()", "items()", "get()", "clear()",
 "setdefault()", "pop()", "popitem()", "copy()", and "update()"
 behaving similar to those fuer Python’s standard "dictionary" objects.
 The "collections.abc" module provides a "MutableMapping" *abstract
-base class* to help create those methods from a base set of
+base class* to help create those methods von a base set of
 "__getitem__()", "__setitem__()", "__delitem__()", and "keys()".
 Mutable sequences should provide methods "append()", "count()",
 "index()", "extend()", "insert()", "pop()", "remove()", "reverse()"
@@ -7374,7 +7374,7 @@ object.__delitem__(self, key)
    Called to implement deletion of "self[key]".  Same note as for
    "__getitem__()".  This should only be implemented fuer mappings if
    the objects support removal of keys, or fuer sequences wenn elements
-   can be removed from the sequence.  The same exceptions should be
+   can be removed von the sequence.  The same exceptions should be
    raised fuer improper *key* values as fuer the "__getitem__()" method.
 
 object.__missing__(self, key)
@@ -7464,7 +7464,7 @@ contains no proper slice).
 
 The semantics fuer a slicing are as follows.  The primary is indexed
 (using the same "__getitem__()" method as normal subscription) with a
-key that is constructed from the slice list, as follows.  If the slice
+key that is constructed von the slice list, as follows.  If the slice
 list contains at least one comma, the key is a tuple containing the
 conversion of the slice items; otherwise, the conversion of the lone
 slice item is the key.  The conversion of a slice item that is an
@@ -7613,7 +7613,7 @@ object.__del__(self)
      only called when "x"’s reference count reaches zero.
 
    **CPython implementation detail:** It is possible fuer a reference
-   cycle to prevent the reference count of an object from going to
+   cycle to prevent the reference count of an object von going to
    zero.  In this case, the cycle will be later detected and deleted
    by the *cyclic garbage collector*.  A common cause of reference
    cycles is when an exception has been caught in a local variable.
@@ -7631,7 +7631,7 @@ object.__del__(self)
      In particular:
 
      * "__del__()" can be invoked when arbitrary code is being
-       executed, including from any arbitrary thread.  If "__del__()"
+       executed, including von any arbitrary thread.  If "__del__()"
        needs to take a lock or invoke any other blocking resource, it
        may deadlock as the resource may already be taken by the code
        that gets interrupted to execute "__del__()".
@@ -7640,7 +7640,7 @@ object.__del__(self)
        consequence, the global variables it needs to access (including
        other modules) may already have been deleted or set to "Nichts".
        Python guarantees that globals whose name begins with a single
-       underscore are deleted from their module before other globals
+       underscore are deleted von their module before other globals
        are deleted; wenn no other references to such globals exist, this
        may help in assuring that imported modules are still available
        at the time when the "__del__()" method is called.
@@ -7668,7 +7668,7 @@ object.__str__(self)
    nicely printable string representation of an object.  The return
    value must be a str object.
 
-   This method differs from "object.__repr__()" in that there is no
+   This method differs von "object.__repr__()" in that there is no
    expectation that "__str__()" return a valid Python expression: a
    more convenient or concise representation can be used.
 
@@ -7735,7 +7735,7 @@ object.__ge__(self, other)
    There are no other implied relationships among the comparison
    operators or default implementations; fuer example, the truth of
    "(x<y or x==y)" does not imply "x<=y". To automatically generate
-   ordering operations from a single root operation, see
+   ordering operations von a single root operation, see
    "functools.total_ordering()".
 
    By default, the "object" klasse provides implementations consistent
@@ -7779,7 +7779,7 @@ object.__hash__(self)
 
    Note:
 
-     "hash()" truncates the value returned from an object’s custom
+     "hash()" truncates the value returned von an object’s custom
      "__hash__()" method to the size of a "Py_ssize_t".  This is
      typically 8 bytes on 64-bit builds and 4 bytes on 32-bit builds.
      If an object’s   "__hash__()" must interoperate on builds of
@@ -7797,7 +7797,7 @@ object.__hash__(self)
    value changes, it will be in the wrong hash bucket).
 
    User-defined classes have "__eq__()" and "__hash__()" methods by
-   default (inherited from the "object" class); with them, all objects
+   default (inherited von the "object" class); with them, all objects
    compare unequal (except with themselves) and "x.__hash__()" returns
    an appropriate value such that "x == y" implies both that "x is y"
    and "hash(x) == hash(y)".
@@ -7811,7 +7811,7 @@ object.__hash__(self)
    collections.abc.Hashable)".
 
    If a klasse that overrides "__eq__()" needs to retain the
-   implementation of "__hash__()" from a parent class, the interpreter
+   implementation of "__hash__()" von a parent class, the interpreter
    must be told this explicitly by setting "__hash__ =
    <ParentClass>.__hash__".
 
@@ -7949,8 +7949,8 @@ For a more fine grained customization of the module behavior (setting
 attributes, properties, etc.), one can set the "__class__" attribute
 of a module object to a subclass of "types.ModuleType". For example:
 
-   import sys
-   from types import ModuleType
+   importiere sys
+   von types importiere ModuleType
 
    klasse VerboseModule(ModuleType):
        def __repr__(self):
@@ -8046,7 +8046,7 @@ in the descriptor protocol:  "__get__()", "__set__()", and
 is said to be a descriptor.
 
 The default behavior fuer attribute access is to get, set, or delete
-the attribute from an object’s dictionary. For instance, "a.x" has a
+the attribute von an object’s dictionary. For instance, "a.x" has a
 lookup chain starting with "a.__dict__['x']", then
 "type(a).__dict__['x']", and continuing through the base classes of
 "type(a)" excluding metaclasses.
@@ -8095,7 +8095,7 @@ overridden by instances.
 Python methods (including those decorated with "@staticmethod" and
 "@classmethod") are implemented as non-data descriptors.  Accordingly,
 instances can redefine and override methods.  This allows individual
-instances to acquire behaviors that differ from other instances of the
+instances to acquire behaviors that differ von other instances of the
 same class.
 
 The "property()" function is implemented as a data descriptor.
@@ -8122,7 +8122,7 @@ object.__slots__
 
 Notes on using *__slots__*:
 
-* When inheriting from a klasse without *__slots__*, the "__dict__" and
+* When inheriting von a klasse without *__slots__*, the "__dict__" and
   *__weakref__* attribute of the instances will always be accessible.
 
 * Without a "__dict__" variable, instances cannot be assigned new
@@ -8152,12 +8152,12 @@ Notes on using *__slots__*:
 
 * If a klasse defines a slot also defined in a base class, the instance
   variable defined by the base klasse slot is inaccessible (except by
-  retrieving its descriptor directly from the base class). This
+  retrieving its descriptor directly von the base class). This
   renders the meaning of the program undefined.  In the future, a
   check may be added to prevent this.
 
 * "TypeError" will be raised wenn nonempty *__slots__* are defined fuer a
-  klasse derived from a ""variable-length" built-in type" such as
+  klasse derived von a ""variable-length" built-in type" such as
   "int", "bytes", and "tuple".
 
 * Any non-string *iterable* may be assigned to *__slots__*.
@@ -8183,7 +8183,7 @@ Notes on using *__slots__*:
 Customizing klasse creation
 ==========================
 
-Whenever a klasse inherits from another class, "__init_subclass__()" is
+Whenever a klasse inherits von another class, "__init_subclass__()" is
 called on the parent class. This way, it is possible to write classes
 which change the behavior of subclasses. This is closely related to
 klasse decorators, but where klasse decorators only affect the specific
@@ -8258,7 +8258,7 @@ result of "type(name, bases, namespace)".
 
 The klasse creation process can be customized by passing the
 "metaclass" keyword argument in the klasse definition line, or by
-inheriting from an existing klasse that included such an argument. In
+inheriting von an existing klasse that included such an argument. In
 the following example, both "MyClass" and "MySubclass" are instances
 of "Meta":
 
@@ -8329,7 +8329,7 @@ follows:
 * wenn an instance of "type()" is given as the explicit metaclass, or
   bases are defined, then the most derived metaclass is used.
 
-The most derived metaclass is selected from the explicitly specified
+The most derived metaclass is selected von the explicitly specified
 metaclass (if any) and the metaclasses (i.e. "type(cls)") of all
 specified base classes. The most derived metaclass is one which is a
 subtype of *all* of these candidate metaclasses. If none of the
@@ -8362,9 +8362,9 @@ Executing the klasse body
 ------------------------
 
 The klasse body is executed (approximately) as "exec(body, globals(),
-namespace)". The key difference from a normal call to "exec()" is that
+namespace)". The key difference von a normal call to "exec()" is that
 lexical scoping allows the klasse body (including any methods) to
-reference names from the current and outer scopes when the class
+reference names von the current and outer scopes when the class
 definition occurs inside a function.
 
 However, even when the klasse definition occurs inside the function,
@@ -8516,8 +8516,8 @@ easily apply *type hints* to these classes.
 
 To implement custom generic classes that can be parameterized at
 runtime and understood by static type-checkers, users should either
-inherit from a standard library klasse that already implements
-"__class_getitem__()", or inherit from "typing.Generic", which has its
+inherit von a standard library klasse that already implements
+"__class_getitem__()", or inherit von "typing.Generic", which has its
 own implementation of "__class_getitem__()".
 
 Custom implementations of "__class_getitem__()" on classes defined
@@ -8540,7 +8540,7 @@ Presented with the *expression* "obj[x]", the Python interpreter
 follows something like the following process to decide whether
 "__getitem__()" or "__class_getitem__()" should be called:
 
-   from inspect import isclass
+   von inspect importiere isclass
 
    def subscribe(obj, x):
        """Return the result of the expression 'obj[x]'"""
@@ -8586,7 +8586,7 @@ However, wenn a klasse has a custom metaclass that defines
 "__getitem__()", subscribing the klasse may result in different
 behaviour. An example of this can be found in the "enum" module:
 
-   >>> from enum import Enum
+   >>> von enum importiere Enum
    >>> klasse Menu(Enum):
    ...     """A breakfast menu"""
    ...     SPAM = 'spam'
@@ -8638,7 +8638,7 @@ methods "keys()", "values()", "items()", "get()", "clear()",
 "setdefault()", "pop()", "popitem()", "copy()", and "update()"
 behaving similar to those fuer Python’s standard "dictionary" objects.
 The "collections.abc" module provides a "MutableMapping" *abstract
-base class* to help create those methods from a base set of
+base class* to help create those methods von a base set of
 "__getitem__()", "__setitem__()", "__delitem__()", and "keys()".
 Mutable sequences should provide methods "append()", "count()",
 "index()", "extend()", "insert()", "pop()", "remove()", "reverse()"
@@ -8731,7 +8731,7 @@ object.__delitem__(self, key)
    Called to implement deletion of "self[key]".  Same note as for
    "__getitem__()".  This should only be implemented fuer mappings if
    the objects support removal of keys, or fuer sequences wenn elements
-   can be removed from the sequence.  The same exceptions should be
+   can be removed von the sequence.  The same exceptions should be
    raised fuer improper *key* values as fuer the "__getitem__()" method.
 
 object.__missing__(self, key)
@@ -8835,7 +8835,7 @@ object.__ror__(self, other)
    operands.  These functions are only called wenn the operands are of
    different types, when the left operand does not support the
    corresponding operation [3], or the right operand’s klasse is
-   derived from the left operand’s class. [4] For instance, to
+   derived von the left operand’s class. [4] For instance, to
    evaluate the expression "x - y", where *y* is an instance of a
    klasse that has an "__rsub__()" method, "type(y).__rsub__(y, x)" is
    called wenn "type(x).__sub__(x, y)" returns "NotImplemented" or
@@ -8961,9 +8961,9 @@ object.__exit__(self, exc_type, exc_value, traceback)
    be "Nichts".
 
    If an exception is supplied, and the method wishes to suppress the
-   exception (i.e., prevent it from being propagated), it should
+   exception (i.e., prevent it von being propagated), it should
    return a true value. Otherwise, the exception will be processed
-   normally upon exit from this method.
+   normally upon exit von this method.
 
    Note that "__exit__()" methods should not reraise the passed-in
    exception; this is the caller’s responsibility.
@@ -9020,7 +9020,7 @@ to implement the protocol in Python.
 
 object.__buffer__(self, flags)
 
-   Called when a buffer is requested from *self* (for example, by the
+   Called when a buffer is requested von *self* (for example, by the
    "memoryview" constructor). The *flags* argument is an integer
    representing the kind of buffer requested, affecting fuer example
    whether the returned buffer is read-only or writable.
@@ -9059,7 +9059,7 @@ object.__annotations__
    This attribute contains the annotations fuer an object. It is lazily
    evaluated, so accessing the attribute may execute arbitrary code
    and raise exceptions. If evaluation is successful, the attribute is
-   set to a dictionary mapping from variable names to annotations.
+   set to a dictionary mapping von variable names to annotations.
 
    Changed in version 3.14: Annotations are now lazily evaluated.
 
@@ -9357,7 +9357,7 @@ str.isalpha()
    characters are those characters defined in the Unicode character
    database as “Letter”, i.e., those with general category property
    being one of “Lm”, “Lt”, “Lu”, “Ll”, or “Lo”.  Note that this is
-   different from the Alphabetic property defined in the section 4.10
+   different von the Alphabetic property defined in the section 4.10
    ‘Letters, Alphabetic, and Ideographic’ of the Unicode Standard.
 
 str.isascii()
@@ -9396,7 +9396,7 @@ str.isidentifier()
 
    Example:
 
-      >>> from keyword import iskeyword
+      >>> von keyword importiere iskeyword
 
       >>> 'hello'.isidentifier(), iskeyword('hello')
       (Wahr, Falsch)
@@ -9603,7 +9603,7 @@ str.rsplit(sep=Nichts, maxsplit=-1)
    delimiter string. If *maxsplit* is given, at most *maxsplit* splits
    are done, the *rightmost* ones.  If *sep* is not specified or
    "Nichts", any whitespace string is a separator.  Except fuer splitting
-   from the right, "rsplit()" behaves like "split()" which is
+   von the right, "rsplit()" behaves like "split()" which is
    described in detail below.
 
 str.rstrip([chars])
@@ -9752,7 +9752,7 @@ str.strip([chars])
       'example'
 
    The outermost leading and trailing *chars* argument values are
-   stripped from the string. Characters are removed from the leading
+   stripped von the string. Characters are removed von the leading
    end until reaching a string character that is not contained in the
    set of characters in *chars*. A similar action takes place on the
    trailing end. For example:
@@ -9783,7 +9783,7 @@ str.title()
    possessives form word boundaries, which may not be the desired
    result:
 
-      >>> "they're bill's friends from the UK".title()
+      >>> "they're bill's friends von the UK".title()
       "They'Re Bill'S Friends From The Uk"
 
    The "string.capwords()" function does not have this problem, as it
@@ -9792,7 +9792,7 @@ str.title()
    Alternatively, a workaround fuer apostrophes can be constructed
    using regular expressions:
 
-      >>> import re
+      >>> importiere re
       >>> def titlecase(s):
       ...     return re.sub(r"[A-Za-z]+('[A-Za-z]+)?",
       ...                   lambda mo: mo.group(0).capitalize(),
@@ -9809,7 +9809,7 @@ str.translate(table)
    or *sequence*.  When indexed by a Unicode ordinal (an integer), the
    table object can do any of the following: return a Unicode ordinal
    or a string, to map the character to one or more other characters;
-   return "Nichts", to delete the character from the return string; or
+   return "Nichts", to delete the character von the return string; or
    raise a "LookupError" exception, to map the character to itself.
 
    You can use "str.maketrans()" to create a translation map from
@@ -10029,7 +10029,7 @@ of the literal, *not* as a line continuation.
 *************
 
 The subscription of an instance of a container klasse will generally
-select an element from the container. The subscription of a *generic
+select an element von the container. The subscription of a *generic
 klasse* will generally return a GenericAlias object.
 
    subscription: primary "[" flexible_expression_list "]"
@@ -10073,7 +10073,7 @@ method that interprets negative indices by adding the length of the
 sequence to the index so that, fuer example, "x[-1]" selects the last
 item of "x". The resulting value must be a nonnegative integer less
 than the number of items in the sequence, and the subscription selects
-the item whose index is that value (counting from zero). Since the
+the item whose index is that value (counting von zero). Since the
 support fuer negative indices and slicing occurs in the object’s
 "__getitem__()" method, subclasses overriding this method will need to
 explicitly add that support.
@@ -10191,7 +10191,7 @@ cycle with the stack frame, keeping all locals in that frame alive
 until the next garbage collection occurs.
 
 Before an "except" clause’s suite is executed, the exception is stored
-in the "sys" module, where it can be accessed from within the body of
+in the "sys" module, where it can be accessed von within the body of
 the "except" clause by calling "sys.exception()". When leaving an
 exception handler, the exception stored in the "sys" module is reset
 to its previous value:
@@ -10247,7 +10247,7 @@ matches it.
 
 Any remaining exceptions that were not handled by any "except*" clause
 are re-raised at the end, along with all exceptions that were raised
-from within the "except*" clauses. If this list contains more than one
+von within the "except*" clauses. If this list contains more than one
 exception to reraise, they are combined into an exception group.
 
 If the raised exception is not an exception group and its type matches
@@ -10345,7 +10345,7 @@ Nichts
 This type has a single value.  There is a single object with this
 value. This object is accessed through the built-in name "Nichts". It is
 used to signify the absence of a value in many situations, e.g., it is
-returned from functions that don’t explicitly return anything. Its
+returned von functions that don’t explicitly return anything. Its
 truth value is false.
 
 
@@ -10411,7 +10411,7 @@ complex numbers:
 "numbers.Integral"
 ------------------
 
-These represent elements from the mathematical set of integers
+These represent elements von the mathematical set of integers
 (positive and negative).
 
 Note:
@@ -10504,7 +10504,7 @@ Strings
    represented in a string.  Python doesn’t have a char type; instead,
    every code point in the string is represented as a string object
    with length "1".  The built-in function "ord()" converts a code
-   point from its string form to an integer in the range "0 - 10FFFF";
+   point von its string form to an integer in the range "0 - 10FFFF";
    "chr()" converts an integer in the range "0 - 10FFFF" to the
    corresponding length "1" string object. "str.encode()" can be used
    to convert a "str" to "bytes" using the given text encoding, and
@@ -10548,7 +10548,7 @@ Lists
 
 Byte Arrays
    A bytearray object is a mutable array. They are created by the
-   built-in "bytearray()" constructor.  Aside from being mutable (and
+   built-in "bytearray()" constructor.  Aside von being mutable (and
    hence unhashable), byte arrays otherwise provide the same interface
    and functionality as immutable "bytes" objects.
 
@@ -10560,7 +10560,7 @@ These represent unordered, finite sets of unique, immutable objects.
 As such, they cannot be indexed by any subscript. However, they can be
 iterated over, and the built-in function "len()" returns the number of
 items in a set. Common uses fuer sets are fast membership testing,
-removing duplicates from a sequence, and computing mathematical
+removing duplicates von a sequence, and computing mathematical
 operations such as intersection, union, difference, and symmetric
 difference.
 
@@ -10588,7 +10588,7 @@ Mappings
 
 These represent finite sets of objects indexed by arbitrary index
 sets. The subscript notation "a[k]" selects the item indexed by "k"
-from the mapping "a"; this can be used in expressions and as the
+von the mapping "a"; this can be used in expressions and as the
 target of assignments or "del" statements. The built-in function
 "len()" returns the number of items in a mapping.
 
@@ -10720,7 +10720,7 @@ only supports function attributes on user-defined functions. Function
 attributes on built-in functions may be supported in the future.
 
 Additional information about a function’s definition can be retrieved
-from its code object (accessible via the "__code__" attribute).
+von its code object (accessible via the "__code__" attribute).
 
 
 Instance methods
@@ -10756,13 +10756,13 @@ of a klasse (perhaps via an instance of that class), wenn that attribute
 is a user-defined function object or a "classmethod" object.
 
 When an instance method object is created by retrieving a user-defined
-function object from a klasse via one of its instances, its "__self__"
+function object von a klasse via one of its instances, its "__self__"
 attribute is the instance, and the method object is said to be
 *bound*.  The new method’s "__func__" attribute is the original
 function object.
 
 When an instance method object is created by retrieving a
-"classmethod" object from a klasse or instance, its "__self__"
+"classmethod" object von a klasse or instance, its "__self__"
 attribute is the klasse itself, and its "__func__" attribute is the
 function object underlying the klasse method.
 
@@ -10772,7 +10772,7 @@ front of the argument list.  For instance, when "C" is a klasse which
 contains a definition fuer a function "f()", and "x" is an instance of
 "C", calling "x.f(1)" is equivalent to calling "C.f(x, 1)".
 
-When an instance method object is derived from a "classmethod" object,
+When an instance method object is derived von a "classmethod" object,
 the “class instance” stored in "__self__" will actually be the class
 itself, so that calling either "x.f(1)" or "C.f(1)" is equivalent to
 calling "f(C,1)" where "f" is the underlying function.
@@ -10875,7 +10875,7 @@ Modules
 =======
 
 Modules are a basic organizational unit of Python code, and are
-created by the import system as invoked either by the "import"
+created by the importiere system as invoked either by the "import"
 statement, or by calling functions such as "importlib.import_module()"
 and built-in "__import__()".  A module object has a namespace
 implemented by a "dictionary" object (this is the dictionary
@@ -10894,10 +10894,10 @@ Import-related attributes on module objects
 
 Module objects have the following attributes that relate to the import
 system. When a module is created using the machinery associated with
-the import system, these attributes are filled in based on the
+the importiere system, these attributes are filled in based on the
 module’s *spec*, before the *loader* executes and loads the module.
 
-To create a module dynamically rather than using the import system,
+To create a module dynamically rather than using the importiere system,
 it’s recommended to use "importlib.util.module_from_spec()", which
 will set the various import-controlled attributes to appropriate
 values. It’s also possible to use the "types.ModuleType" constructor
@@ -10913,7 +10913,7 @@ Caution:
   updating an attribute on "__spec__" will not update the
   corresponding attribute on the module itself:
 
-     >>> import typing
+     >>> importiere typing
      >>> typing.__name__, typing.__spec__.name
      ('typing', 'typing')
      >>> typing.__spec__.name = 'spelling'
@@ -10925,7 +10925,7 @@ Caution:
 
 module.__name__
 
-   The name used to uniquely identify the module in the import system.
+   The name used to uniquely identify the module in the importiere system.
    For a directly executed module, this will be set to ""__main__"".
 
    This attribute must be set to the fully qualified name of the
@@ -10968,7 +10968,7 @@ module.__package__
 
    Changed in version 3.6: The value of "__package__" is expected to
    be the same as "__spec__.parent". "__package__" is now only used as
-   a fallback during import resolution wenn "__spec__.parent" is not
+   a fallback during importiere resolution wenn "__spec__.parent" is not
    defined.
 
    Changed in version 3.10: "ImportWarning" is raised wenn an import
@@ -10981,11 +10981,11 @@ module.__package__
 
    Deprecated since version 3.13, will be removed in version 3.15:
    "__package__" will cease to be set or taken into consideration by
-   the import system or standard library.
+   the importiere system or standard library.
 
 module.__loader__
 
-   The *loader* object that the import machinery used to load the
+   The *loader* object that the importiere machinery used to load the
    module.
 
    This attribute is mostly useful fuer introspection, but can be used
@@ -11007,7 +11007,7 @@ module.__loader__
    Deprecated since version 3.12, will be removed in version 3.16:
    Setting "__loader__" on a module while failing to set
    "__spec__.loader" is deprecated. In Python 3.16, "__loader__" will
-   cease to be set or taken into consideration by the import system or
+   cease to be set or taken into consideration by the importiere system or
    the standard library.
 
 module.__path__
@@ -11029,13 +11029,13 @@ module.__cached__
    or may not be set. Both attributes should be a "str" when they are
    available.
 
-   "__file__" indicates the pathname of the file from which the module
-   was loaded (if loaded from a file), or the pathname of the shared
-   library file fuer extension modules loaded dynamically from a shared
+   "__file__" indicates the pathname of the file von which the module
+   was loaded (if loaded von a file), or the pathname of the shared
+   library file fuer extension modules loaded dynamically von a shared
    library. It might be missing fuer certain types of modules, such as
    C modules that are statically linked into the interpreter, and the
-   import system may opt to leave it unset wenn it has no semantic
-   meaning (for example, a module loaded from a database).
+   importiere system may opt to leave it unset wenn it has no semantic
+   meaning (for example, a module loaded von a database).
 
    If "__file__" is set then the "__cached__" attribute might also be
    set,  which is the path to any compiled version of the code (for
@@ -11047,7 +11047,7 @@ module.__cached__
    However, that scenario is quite atypical.  Ultimately, the *loader*
    is what makes use of the module spec provided by the *finder* (from
    which "__file__" and "__cached__" are derived).  So wenn a loader can
-   load from a cached module but otherwise does not load from a file,
+   load von a cached module but otherwise does not load von a file,
    that atypical scenario may be appropriate.
 
    It is **strongly** recommended that you use
@@ -11056,7 +11056,7 @@ module.__cached__
    Deprecated since version 3.13, will be removed in version 3.15:
    Setting "__cached__" on a module while failing to set
    "__spec__.cached" is deprecated. In Python 3.15, "__cached__" will
-   cease to be set or taken into consideration by the import system or
+   cease to be set or taken into consideration by the importiere system or
    standard library.
 
 
@@ -11097,7 +11097,7 @@ module.__dict__
 
    The module’s namespace as a dictionary object. Uniquely among the
    attributes listed here, "__dict__" cannot be accessed as a global
-   variable from within a module; it can only be accessed as an
+   variable von within a module; it can only be accessed as an
    attribute on module objects.
 
    **CPython implementation detail:** Because of the way CPython
@@ -11128,7 +11128,7 @@ klasse method object, it is transformed into an instance method object
 whose "__self__" attribute is "C". When it would yield a
 "staticmethod" object, it is transformed into the object wrapped by
 the static method object. See section Implementing Descriptors for
-another way in which attributes retrieved from a klasse may differ from
+another way in which attributes retrieved von a klasse may differ from
 those actually contained in its "__dict__".
 
 Class attribute assignments update the class’s dictionary, never the
@@ -11182,13 +11182,13 @@ Special attributes
 |                                                    | generic class.  Added in version 3.12.             |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__static_attributes__                         | A "tuple" containing names of attributes of this   |
-|                                                    | klasse which are assigned through "self.X" from any |
+|                                                    | klasse which are assigned through "self.X" von any |
 |                                                    | function in its body.  Added in version 3.13.      |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__firstlineno__                               | The line number of the first line of the klasse     |
 |                                                    | definition, including decorators. Setting the      |
 |                                                    | "__module__" attribute removes the                 |
-|                                                    | "__firstlineno__" item from the type’s dictionary. |
+|                                                    | "__firstlineno__" item von the type’s dictionary. |
 |                                                    | Added in version 3.13.                             |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__mro__                                       | The "tuple" of classes that are considered when    |
@@ -11233,7 +11233,7 @@ function object, it is transformed into an instance method object
 whose "__self__" attribute is the instance.  Static method and class
 method objects are also transformed; see above under “Classes”.  See
 section Implementing Descriptors fuer another way in which attributes
-of a klasse retrieved via its instances may differ from the objects
+of a klasse retrieved via its instances may differ von the objects
 actually stored in the class’s "__dict__".  If no klasse attribute is
 found, and the object’s klasse has a "__getattr__()" method, that is
 called to satisfy the lookup.
@@ -11329,7 +11329,7 @@ Special read-only attributes
 |                                                    | parameter names)                                   |
 +----------------------------------------------------+----------------------------------------------------+
 | codeobject.co_cellvars                             | A "tuple" containing the names of local variables  |
-|                                                    | that are referenced from at least one *nested      |
+|                                                    | that are referenced von at least one *nested      |
 |                                                    | scope* inside the function                         |
 +----------------------------------------------------+----------------------------------------------------+
 | codeobject.co_freevars                             | A "tuple" containing the names of *free (closure)  |
@@ -11347,12 +11347,12 @@ Special read-only attributes
 | codeobject.co_names                                | A "tuple" containing the names used by the         |
 |                                                    | *bytecode* in the function                         |
 +----------------------------------------------------+----------------------------------------------------+
-| codeobject.co_filename                             | The name of the file from which the code was       |
+| codeobject.co_filename                             | The name of the file von which the code was       |
 |                                                    | compiled                                           |
 +----------------------------------------------------+----------------------------------------------------+
 | codeobject.co_firstlineno                          | The line number of the first line of the function  |
 +----------------------------------------------------+----------------------------------------------------+
-| codeobject.co_lnotab                               | A string encoding the mapping from *bytecode*      |
+| codeobject.co_lnotab                               | A string encoding the mapping von *bytecode*      |
 |                                                    | offsets to line numbers. For details, see the      |
 |                                                    | source code of the interpreter.  Deprecated since  |
 |                                                    | version 3.12: This attribute of code objects is    |
@@ -11531,7 +11531,7 @@ Special writable attributes
 |                                                    | function being traced.                             |
 +----------------------------------------------------+----------------------------------------------------+
 | frame.f_lineno                                     | The current line number of the frame – writing to  |
-|                                                    | this from within a trace function jumps to the     |
+|                                                    | this von within a trace function jumps to the     |
 |                                                    | given line (only fuer the bottom-most frame).  A    |
 |                                                    | debugger can implement a Jump command (aka Set     |
 |                                                    | Next Statement) by writing to this attribute.      |
@@ -11569,7 +11569,7 @@ traceback object is implicitly created when an exception occurs, and
 may also be explicitly created by calling "types.TracebackType".
 
 Changed in version 3.7: Traceback objects can now be explicitly
-instantiated from Python code.
+instantiated von Python code.
 
 For implicitly created tracebacks, when the search fuer an exception
 handler unwinds the execution stack, at each unwound level a traceback
@@ -11644,7 +11644,7 @@ Static method objects
 Static method objects provide a way of defeating the transformation of
 function objects to method objects described above. A static method
 object is a wrapper around any other object, usually a user-defined
-method object. When a static method object is retrieved from a class
+method object. When a static method object is retrieved von a class
 or a klasse instance, the object actually returned is the wrapped
 object, which is not subject to any further transformation. Static
 method objects are also callable. Static method objects are created by
@@ -11656,7 +11656,7 @@ Class method objects
 
 A klasse method object, like a static method object, is a wrapper
 around another object that alters the way in which that object is
-retrieved from classes and klasse instances. The behaviour of class
+retrieved von classes and klasse instances. The behaviour of class
 method objects upon such retrieval is described above, under “instance
 methods”. Class method objects are created by the built-in
 "classmethod()" constructor.
@@ -11693,7 +11693,7 @@ klasse dict(**kwargs)
 klasse dict(mapping, **kwargs)
 klasse dict(iterable, **kwargs)
 
-   Return a new dictionary initialized from an optional positional
+   Return a new dictionary initialized von an optional positional
    argument and a possibly empty set of keyword arguments.
 
    Dictionaries can be created by several means:
@@ -11710,7 +11710,7 @@ klasse dict(iterable, **kwargs)
    If no positional argument is given, an empty dictionary is created.
    If a positional argument is given and it defines a "keys()" method,
    a dictionary is created by calling "__getitem__()" on the argument
-   with each returned key from the method.  Otherwise, the positional
+   with each returned key von the method.  Otherwise, the positional
    argument must be an *iterable* object.  Each item in the iterable
    must itself be an iterable with exactly two elements.  The first
    element of each item becomes a key in the new dictionary, and the
@@ -11719,9 +11719,9 @@ klasse dict(iterable, **kwargs)
    in the new dictionary.
 
    If keyword arguments are given, the keyword arguments and their
-   values are added to the dictionary created from the positional
+   values are added to the dictionary created von the positional
    argument.  If a key being added is already present, the value from
-   the keyword argument replaces the value from the positional
+   the keyword argument replaces the value von the positional
    argument.
 
    To illustrate, the following examples all return a dictionary equal
@@ -11786,7 +11786,7 @@ klasse dict(iterable, **kwargs)
 
    del d[key]
 
-      Remove "d[key]" from *d*.  Raises a "KeyError" wenn *key* is not
+      Remove "d[key]" von *d*.  Raises a "KeyError" wenn *key* is not
       in the map.
 
    key in d
@@ -11804,7 +11804,7 @@ klasse dict(iterable, **kwargs)
 
    clear()
 
-      Remove all items from the dictionary.
+      Remove all items von the dictionary.
 
    copy()
 
@@ -11812,7 +11812,7 @@ klasse dict(iterable, **kwargs)
 
    classmethod fromkeys(iterable, value=Nichts, /)
 
-      Create a new dictionary with keys from *iterable* and values set
+      Create a new dictionary with keys von *iterable* and values set
       to *value*.
 
       "fromkeys()" is a klasse method that returns a new dictionary.
@@ -11845,7 +11845,7 @@ klasse dict(iterable, **kwargs)
 
    popitem()
 
-      Remove and return a "(key, value)" pair from the dictionary.
+      Remove and return a "(key, value)" pair von the dictionary.
       Pairs are returned in LIFO (last-in, first-out) order.
 
       "popitem()" is useful to destructively iterate over a
@@ -11870,12 +11870,12 @@ klasse dict(iterable, **kwargs)
 
    update([other])
 
-      Update the dictionary with the key/value pairs from *other*,
+      Update the dictionary with the key/value pairs von *other*,
       overwriting existing keys.  Return "Nichts".
 
       "update()" accepts either another object with a "keys()" method
       (in which case "__getitem__()" is called with every key returned
-      from the method) or an iterable of key/value pairs (as tuples or
+      von the method) or an iterable of key/value pairs (as tuples or
       other iterables of length two). If keyword arguments are
       specified, the dictionary is then updated with those key/value
       pairs: "d.update(red=1, blue=2)".
@@ -11903,7 +11903,7 @@ klasse dict(iterable, **kwargs)
 
    d |= other
 
-      Update the dictionary *d* with keys and values from *other*,
+      Update the dictionary *d* with keys and values von *other*,
       which may be either a *mapping* or an *iterable* of key/value
       pairs. The values of *other* take priority when *d* and *other*
       share keys.
@@ -11935,7 +11935,7 @@ klasse dict(iterable, **kwargs)
 
    Changed in version 3.7: Dictionary order is guaranteed to be
    insertion order.  This behavior was an implementation detail of
-   CPython from 3.6.
+   CPython von 3.6.
 
    Dictionaries and dictionary views are reversible.
 
@@ -12120,8 +12120,8 @@ write "m.__dict__ = {}").  Modifying "__dict__" directly is not
 recommended.
 
 Modules built into the interpreter are written like this: "<module
-'sys' (built-in)>".  If loaded from a file, they are written as
-"<module 'os' from '/usr/local/lib/pythonX.Y/os.pyc'>".
+'sys' (built-in)>".  If loaded von a file, they are written as
+"<module 'os' von '/usr/local/lib/pythonX.Y/os.pyc'>".
 ''',
     'typesseq': r'''Sequence Types — "list", "tuple", "range"
 *****************************************
@@ -12165,9 +12165,9 @@ operations. [3]
 +----------------------------+----------------------------------+------------+
 | "s[i]"                     | *i*th item of *s*, origin 0      | (3)        |
 +----------------------------+----------------------------------+------------+
-| "s[i:j]"                   | slice of *s* from *i* to *j*     | (3)(4)     |
+| "s[i:j]"                   | slice of *s* von *i* to *j*     | (3)(4)     |
 +----------------------------+----------------------------------+------------+
-| "s[i:j:k]"                 | slice of *s* from *i* to *j*     | (3)(5)     |
+| "s[i:j:k]"                 | slice of *s* von *i* to *j*     | (3)(5)     |
 |                            | with step *k*                    |            |
 +----------------------------+----------------------------------+------------+
 | "len(s)"                   | length of *s*                    |            |
@@ -12239,13 +12239,13 @@ Notes:
    sequence *s*: "len(s) + i" or "len(s) + j" is substituted.  But
    note that "-0" is still "0".
 
-4. The slice of *s* from *i* to *j* is defined as the sequence of
+4. The slice of *s* von *i* to *j* is defined as the sequence of
    items with index *k* such that "i <= k < j".  If *i* or *j* is
    greater than "len(s)", use "len(s)".  If *i* is omitted or "Nichts",
    use "0".  If *j* is omitted or "Nichts", use "len(s)".  If *i* is
    greater than or equal to *j*, the slice is empty.
 
-5. The slice of *s* from *i* to *j* with step *k* is defined as the
+5. The slice of *s* von *i* to *j* with step *k* is defined as the
    sequence of items with index  "x = i + n*k" such that "0 <= n <
    (j-i)/k".  In other words, the indices are "i", "i+k", "i+2*k",
    "i+3*k" and so on, stopping when *j* is reached (but never
@@ -12321,7 +12321,7 @@ accepts integers that meet the value restriction "0 <= x <= 255").
 | "s[i] = x"                     | item *i* of *s* is replaced by   |                       |
 |                                | *x*                              |                       |
 +--------------------------------+----------------------------------+-----------------------+
-| "s[i:j] = t"                   | slice of *s* from *i* to *j* is  |                       |
+| "s[i:j] = t"                   | slice of *s* von *i* to *j* is  |                       |
 |                                | replaced by the contents of the  |                       |
 |                                | iterable *t*                     |                       |
 +--------------------------------+----------------------------------+-----------------------+
@@ -12331,13 +12331,13 @@ accepts integers that meet the value restriction "0 <= x <= 255").
 |                                | replaced by those of *t*         |                       |
 +--------------------------------+----------------------------------+-----------------------+
 | "del s[i:j:k]"                 | removes the elements of          |                       |
-|                                | "s[i:j:k]" from the list         |                       |
+|                                | "s[i:j:k]" von the list         |                       |
 +--------------------------------+----------------------------------+-----------------------+
 | "s.append(x)"                  | appends *x* to the end of the    |                       |
 |                                | sequence (same as                |                       |
 |                                | "s[len(s):len(s)] = [x]")        |                       |
 +--------------------------------+----------------------------------+-----------------------+
-| "s.clear()"                    | removes all items from *s* (same | (5)                   |
+| "s.clear()"                    | removes all items von *s* (same | (5)                   |
 |                                | as "del s[:]")                   |                       |
 +--------------------------------+----------------------------------+-----------------------+
 | "s.copy()"                     | creates a shallow copy of *s*    | (5)                   |
@@ -12355,9 +12355,9 @@ accepts integers that meet the value restriction "0 <= x <= 255").
 |                                | "s[i:i] = [x]")                  |                       |
 +--------------------------------+----------------------------------+-----------------------+
 | "s.pop()" or "s.pop(i)"        | retrieves the item at *i* and    | (2)                   |
-|                                | also removes it from *s*         |                       |
+|                                | also removes it von *s*         |                       |
 +--------------------------------+----------------------------------+-----------------------+
-| "s.remove(x)"                  | removes the first item from *s*  | (3)                   |
+| "s.remove(x)"                  | removes the first item von *s*  | (3)                   |
 |                                | where "s[i]" is equal to *x*     |                       |
 +--------------------------------+----------------------------------+-----------------------+
 | "s.reverse()"                  | reverses the items of *s* in     | (4)                   |
@@ -12438,7 +12438,7 @@ klasse list([iterable])
       keyword (keyword-only arguments):
 
       *key* specifies a function of one argument that is used to
-      extract a comparison key from each list element (for example,
+      extract a comparison key von each list element (for example,
       "key=str.lower"). The key corresponding to each item in the list
       is calculated once and then used fuer the entire sorting process.
       The default value of "Nichts" means that list items are sorted
@@ -12539,7 +12539,7 @@ klasse range(start, stop[, step])
 
    A range object will be empty wenn "r[0]" does not meet the value
    constraint. Ranges do support negative indices, but these are
-   interpreted as indexing from the end of the sequence determined by
+   interpreted as indexing von the end of the sequence determined by
    the positive indices.
 
    Ranges containing absolute values larger than "sys.maxsize" are
@@ -12649,7 +12649,7 @@ accepts integers that meet the value restriction "0 <= x <= 255").
 | "s[i] = x"                     | item *i* of *s* is replaced by   |                       |
 |                                | *x*                              |                       |
 +--------------------------------+----------------------------------+-----------------------+
-| "s[i:j] = t"                   | slice of *s* from *i* to *j* is  |                       |
+| "s[i:j] = t"                   | slice of *s* von *i* to *j* is  |                       |
 |                                | replaced by the contents of the  |                       |
 |                                | iterable *t*                     |                       |
 +--------------------------------+----------------------------------+-----------------------+
@@ -12659,13 +12659,13 @@ accepts integers that meet the value restriction "0 <= x <= 255").
 |                                | replaced by those of *t*         |                       |
 +--------------------------------+----------------------------------+-----------------------+
 | "del s[i:j:k]"                 | removes the elements of          |                       |
-|                                | "s[i:j:k]" from the list         |                       |
+|                                | "s[i:j:k]" von the list         |                       |
 +--------------------------------+----------------------------------+-----------------------+
 | "s.append(x)"                  | appends *x* to the end of the    |                       |
 |                                | sequence (same as                |                       |
 |                                | "s[len(s):len(s)] = [x]")        |                       |
 +--------------------------------+----------------------------------+-----------------------+
-| "s.clear()"                    | removes all items from *s* (same | (5)                   |
+| "s.clear()"                    | removes all items von *s* (same | (5)                   |
 |                                | as "del s[:]")                   |                       |
 +--------------------------------+----------------------------------+-----------------------+
 | "s.copy()"                     | creates a shallow copy of *s*    | (5)                   |
@@ -12683,9 +12683,9 @@ accepts integers that meet the value restriction "0 <= x <= 255").
 |                                | "s[i:i] = [x]")                  |                       |
 +--------------------------------+----------------------------------+-----------------------+
 | "s.pop()" or "s.pop(i)"        | retrieves the item at *i* and    | (2)                   |
-|                                | also removes it from *s*         |                       |
+|                                | also removes it von *s*         |                       |
 +--------------------------------+----------------------------------+-----------------------+
-| "s.remove(x)"                  | removes the first item from *s*  | (3)                   |
+| "s.remove(x)"                  | removes the first item von *s*  | (3)                   |
 |                                | where "s[i]" is equal to *x*     |                       |
 +--------------------------------+----------------------------------+-----------------------+
 | "s.reverse()"                  | reverses the items of *s* in     | (4)                   |
@@ -12785,7 +12785,7 @@ follows:
 4. The context manager’s "__enter__()" method is invoked.
 
 5. If a target was included in the "with" statement, the return value
-   from "__enter__()" is assigned to it.
+   von "__enter__()" is assigned to it.
 
    Note:
 
@@ -12803,13 +12803,13 @@ follows:
    "Nichts" arguments are supplied.
 
    If the suite was exited due to an exception, and the return value
-   from the "__exit__()" method was false, the exception is reraised.
+   von the "__exit__()" method was false, the exception is reraised.
    If the return value was true, the exception is suppressed, and
    execution continues with the statement following the "with"
    statement.
 
    If the suite was exited fuer any reason other than an exception, the
-   return value from "__exit__()" is ignored, and execution proceeds
+   return value von "__exit__()" is ignored, and execution proceeds
    at the normal location fuer the kind of exit that was taken.
 
 The following code:
@@ -12879,12 +12879,12 @@ otherwise be required in the equivalent yield expression statement.
 For example, the yield statements
 
    yield <expr>
-   yield from <expr>
+   yield von <expr>
 
 are equivalent to the yield expression statements
 
    (yield <expr>)
-   (yield from <expr>)
+   (yield von <expr>)
 
 Yield expressions and statements are only used when defining a
 *generator* function, and are only used in the body of the generator

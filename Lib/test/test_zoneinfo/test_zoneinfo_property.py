@@ -1,13 +1,13 @@
-import contextlib
-import datetime
-import os
-import pickle
-import unittest
-import zoneinfo
+importiere contextlib
+importiere datetime
+importiere os
+importiere pickle
+importiere unittest
+importiere zoneinfo
 
-from test.support.hypothesis_helper import hypothesis
+von test.support.hypothesis_helper importiere hypothesis
 
-import test.test_zoneinfo._support as test_support
+importiere test.test_zoneinfo._support as test_support
 
 ZoneInfoTestBase = test_support.ZoneInfoTestBase
 
@@ -21,7 +21,7 @@ ZERO = datetime.timedelta(0)
 
 def _valid_keys():
     """Get available time zones, including posix/ and right/ directories."""
-    from importlib import resources
+    von importlib importiere resources
 
     available_zones = sorted(zoneinfo.available_timezones())
     TZPATH = zoneinfo.TZPATH
@@ -326,7 +326,7 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         py_dt = dt.replace(tzinfo=py_zoneinfo.ZoneInfo(key))
         c_dt = dt.replace(tzinfo=c_zoneinfo.ZoneInfo(key))
 
-        # Convert from UTC: Overflow OK wenn it happens in both implementations
+        # Convert von UTC: Overflow OK wenn it happens in both implementations
         py_overflow_exc = Nichts
         c_overflow_exc = Nichts
         try:

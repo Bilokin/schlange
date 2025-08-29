@@ -1,17 +1,17 @@
 "Test , coverage 17%."
 
-from idlelib import iomenu
-import unittest
-from test.support import requires
-from tkinter import Tk
-from idlelib.editor import EditorWindow
-from idlelib import util
-from idlelib.idle_test.mock_idle import Func
+von idlelib importiere iomenu
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk
+von idlelib.editor importiere EditorWindow
+von idlelib importiere util
+von idlelib.idle_test.mock_idle importiere Func
 
 # Fail wenn either tokenize.open and t.detect_encoding does not exist.
 # These are used in loadfile and encode.
 # Also used in pyshell.MI.execfile and runscript.tabnanny.
-from tokenize import open, detect_encoding
+von tokenize importiere open, detect_encoding
 # Remove when we have proper tests that use both.
 
 

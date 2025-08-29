@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # This script generates Lib/re/_casefix.py.
 
-import collections
-import sys
-import unicodedata
+importiere collections
+importiere sys
+importiere unicodedata
 
 SCRIPT_NAME = 'Tools/build/generate_re_casefix.py'
 
@@ -92,5 +92,5 @@ def main(outfile='Lib/re/_casefix.py'):
 
 
 wenn __name__ == '__main__':
-    import sys
+    importiere sys
     main(*sys.argv[1:])

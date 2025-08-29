@@ -1,11 +1,11 @@
 """Core data structures fuer compiled code templates."""
 
-import dataclasses
-import enum
-import sys
-import typing
+importiere dataclasses
+importiere enum
+importiere sys
+importiere typing
 
-import _schema
+importiere _schema
 
 
 @enum.unique

@@ -1,7 +1,7 @@
-import binascii
-import re
-import unittest
-from ctypes import c_byte, Structure, POINTER, cast
+importiere binascii
+importiere re
+importiere unittest
+von ctypes importiere c_byte, Structure, POINTER, cast
 
 
 def dump(obj):

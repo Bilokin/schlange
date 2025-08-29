@@ -1,27 +1,27 @@
-import base64
-import datetime
-import decimal
-import sys
-import time
-import unittest
-from unittest import mock
-import xmlrpc.client as xmlrpclib
-import xmlrpc.server
-import http.client
-import http, http.server
-import socket
-import threading
-import re
-import io
-import contextlib
-from test import support
-from test.support import os_helper
-from test.support import socket_helper
-from test.support import threading_helper
-from test.support import ALWAYS_EQ, LARGEST, SMALLEST
+importiere base64
+importiere datetime
+importiere decimal
+importiere sys
+importiere time
+importiere unittest
+von unittest importiere mock
+importiere xmlrpc.client as xmlrpclib
+importiere xmlrpc.server
+importiere http.client
+importiere http, http.server
+importiere socket
+importiere threading
+importiere re
+importiere io
+importiere contextlib
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere socket_helper
+von test.support importiere threading_helper
+von test.support importiere ALWAYS_EQ, LARGEST, SMALLEST
 
 try:
-    import gzip
+    importiere gzip
 except ImportError:
     gzip = Nichts
 
@@ -308,7 +308,7 @@ klasse XMLRPCTestCase(unittest.TestCase):
 
     def test_ssl_presence(self):
         try:
-            import ssl  # noqa: F401
+            importiere ssl  # noqa: F401
         except ImportError:
             has_ssl = Falsch
         sonst:

@@ -5,7 +5,7 @@
 # cross-version comparisons.  To run the benchmark on Python 2,
 # comment-out the nonlocal reads and writes.
 
-from collections import deque, namedtuple
+von collections importiere deque, namedtuple
 
 trials = [Nichts] * 500
 steps_per_trial = 25
@@ -270,7 +270,7 @@ def loop_overhead(trials=trials):
 
 wenn __name__=='__main__':
 
-    from timeit import Timer
+    von timeit importiere Timer
 
     fuer f in [
             'Variable and attribute read access:',

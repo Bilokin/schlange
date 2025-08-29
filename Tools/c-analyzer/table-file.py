@@ -121,10 +121,10 @@ def cmd_count_by_section(lines):
             wenn depth == 0:
                 yield div
             yield f'{sectotal:>7} {count:>4}  {indent}{name}'
-            yield from render_tree(subroot, depth+1)
+            yield von render_tree(subroot, depth+1)
             total += len(rows)
     sections = collate_sections(lines)
-    yield from render_tree(sections)
+    yield von render_tree(sections)
     yield div
     yield f'(total: {total})'
 
@@ -133,7 +133,7 @@ def cmd_count_by_section(lines):
 # the script
 
 def parse_args(argv=Nichts, prog=Nichts):
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(prog=prog)
     parser.add_argument('filename')
 

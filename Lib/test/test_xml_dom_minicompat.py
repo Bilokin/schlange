@@ -1,11 +1,11 @@
 # Tests fuer xml.dom.minicompat
 
-import copy
-import pickle
-import unittest
+importiere copy
+importiere pickle
+importiere unittest
 
-import xml.dom
-from xml.dom.minicompat import *
+importiere xml.dom
+von xml.dom.minicompat importiere *
 
 
 klasse EmptyNodeListTestCase(unittest.TestCase):

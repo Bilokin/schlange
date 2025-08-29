@@ -4,12 +4,12 @@
 # The Python C API must be compatible with building
 # with the -Werror=declaration-after-statement compiler flag.
 
-import os.path
-import shlex
-import shutil
-import subprocess
-import unittest
-from test import support
+importiere os.path
+importiere shlex
+importiere shutil
+importiere subprocess
+importiere unittest
+von test importiere support
 
 
 SOURCES = [

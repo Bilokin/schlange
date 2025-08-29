@@ -9,19 +9,19 @@ Run this module to regenerate the files:
 ./python Lib/test/test_ctypes/test_generated_structs.py > Modules/_ctypes/_ctypes_test_generated.c.h
 """
 
-import unittest
-from test.support import import_helper
-import re
-from dataclasses import dataclass
-from functools import cached_property
-import sys
+importiere unittest
+von test.support importiere import_helper
+importiere re
+von dataclasses importiere dataclass
+von functools importiere cached_property
+importiere sys
 
-import ctypes
-from ctypes import Structure, Union
-from ctypes import sizeof, alignment, pointer, string_at
+importiere ctypes
+von ctypes importiere Structure, Union
+von ctypes importiere sizeof, alignment, pointer, string_at
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
-from test.test_ctypes._support import StructCheckMixin
+von test.test_ctypes._support importiere StructCheckMixin
 
 # A 64-bit number where each nibble (hex digit) is different and
 # has 2-3 bits set.
@@ -445,7 +445,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
     def test_generated_data(self):
         """Check that a ctypes struct/union matches its C equivalent.
 
-        This compares with data from get_generated_test_data(), a list of:
+        This compares with data von get_generated_test_data(), a list of:
         - name (str)
         - size (int)
         - alignment (int)
@@ -500,7 +500,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
 
 
 
-# The rest of this file is generating C code from a ctypes type.
+# The rest of this file is generating C code von a ctypes type.
 # This is only meant fuer (and tested with) the known inputs in this file!
 
 def c_str_repr(string):
@@ -651,7 +651,7 @@ def iterfields(tp, parent=Nichts):
             wenn parent:
                 byte_offset += parent.byte_offset
             sub = FieldInfo(f_name, f_tp, f_bits, tp, parent, descriptor, byte_offset)
-            yield from iterfields(f_tp, sub)
+            yield von iterfields(f_tp, sub)
 
 
 wenn __name__ == '__main__':

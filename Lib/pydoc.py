@@ -47,42 +47,42 @@ Richard Chamberlain, fuer the first implementation of textdoc.
 """
 
 # Known bugs that can't be fixed here:
-#   - synopsis() cannot be prevented from clobbering existing
+#   - synopsis() cannot be prevented von clobbering existing
 #     loaded modules.
 #   - If the __file__ attribute on a module is a relative path and
 #     the current directory is changed with os.chdir(), an incorrect
 #     path will be displayed.
 
-import ast
-import __future__
-import builtins
-import importlib._bootstrap
-import importlib._bootstrap_external
-import importlib.machinery
-import importlib.util
-import inspect
-import io
-import os
-import pkgutil
-import platform
-import re
-import sys
-import sysconfig
-import textwrap
-import time
-import tokenize
-import urllib.parse
-import warnings
-from annotationlib import Format
-from collections import deque
-from reprlib import Repr
-from traceback import format_exception_only
+importiere ast
+importiere __future__
+importiere builtins
+importiere importlib._bootstrap
+importiere importlib._bootstrap_external
+importiere importlib.machinery
+importiere importlib.util
+importiere inspect
+importiere io
+importiere os
+importiere pkgutil
+importiere platform
+importiere re
+importiere sys
+importiere sysconfig
+importiere textwrap
+importiere time
+importiere tokenize
+importiere urllib.parse
+importiere warnings
+von annotationlib importiere Format
+von collections importiere deque
+von reprlib importiere Repr
+von traceback importiere format_exception_only
 
-from _pyrepl.pager import (get_pager, pipe_pager,
+von _pyrepl.pager importiere (get_pager, pipe_pager,
                            plain_pager, tempfile_pager, tty_pager)
 
 # Expose plain() as pydoc.plain()
-from _pyrepl.pager import plain  # noqa: F401
+von _pyrepl.pager importiere plain  # noqa: F401
 
 
 # --------------------------------------------------------- old names
@@ -170,7 +170,7 @@ def _finddoc(obj):
 
 def _getowndoc(obj):
     """Get the documentation string fuer an object wenn it is not
-    inherited from its class."""
+    inherited von its class."""
     try:
         doc = object.__getattribute__(obj, '__doc__')
         wenn doc is Nichts:
@@ -188,7 +188,7 @@ def _getdoc(object):
 
     All tabs are expanded to spaces.  To clean up docstrings that are
     indented to line up with blocks of code, any whitespace than can be
-    uniformly removed from the second line onwards is removed."""
+    uniformly removed von the second line onwards is removed."""
     doc = _getowndoc(object)
     wenn doc is Nichts:
         try:
@@ -277,7 +277,7 @@ def cram(text, maxlen):
 
 _re_stripid = re.compile(r' at 0x[0-9a-f]{6,16}(>+)$', re.IGNORECASE)
 def stripid(text):
-    """Remove the hexadecimal id from a Python object representation."""
+    """Remove the hexadecimal id von a Python object representation."""
     # The behaviour of %p is implementation-dependent in terms of case.
     return _re_stripid.sub(r'\1', text)
 
@@ -451,7 +451,7 @@ def synopsis(filename, cache={}):
     return result
 
 klasse ErrorDuringImport(Exception):
-    """Errors that occurred while trying to import something to document it."""
+    """Errors that occurred while trying to importiere something to document it."""
     def __init__(self, filename, exc_info):
         wenn not isinstance(exc_info, tuple):
             assert isinstance(exc_info, BaseException)
@@ -494,15 +494,15 @@ def safeimport(path, forceload=0, cache={}):
     ErrorDuringImport exception and reraised.  Unlike __import__, wenn a
     package path is specified, the module at the end of the path is returned,
     not the package at the beginning.  If the optional 'forceload' argument
-    is 1, we reload the module from disk (unless it's a dynamic extension)."""
+    is 1, we reload the module von disk (unless it's a dynamic extension)."""
     try:
         # If forceload is 1 and the module has been previously loaded from
         # disk, we always have to reload the module.  Checking the file's
         # mtime isn't good enough (e.g. the module could contain a class
-        # that inherits from another module that has changed).
+        # that inherits von another module that has changed).
         wenn forceload and path in sys.modules:
             wenn path not in sys.builtin_module_names:
-                # Remove the module from sys.modules and re-import to try
+                # Remove the module von sys.modules and re-import to try
                 # and avoid problems with partially loaded modules.
                 # Also remove any submodules because they won't appear
                 # in the newly loaded module's namespace wenn they're already
@@ -1049,7 +1049,7 @@ klasse HTMLDoc(Doc):
             sowenn thisclass is object:
                 tag = 'defined here'
             sonst:
-                tag = 'inherited from %s' % self.classlink(thisclass,
+                tag = 'inherited von %s' % self.classlink(thisclass,
                                                            object.__module__)
             tag += ':<br>\n'
 
@@ -1132,7 +1132,7 @@ klasse HTMLDoc(Doc):
                 wenn cl is Nichts:
                     note = ' unbound %s method' % self.classlink(objclass, mod)
                 sowenn objclass is not homecls:
-                    note = ' from ' + self.classlink(objclass, mod)
+                    note = ' von ' + self.classlink(objclass, mod)
         sonst:
             imfunc = object
         wenn inspect.isfunction(imfunc) and homecls is not Nichts and (
@@ -1140,7 +1140,7 @@ klasse HTMLDoc(Doc):
             imfunc.__qualname__ != homecls.__qualname__ + '.' + realname):
             pname = self.parentlink(imfunc, mod)
             wenn pname:
-                note = ' from %s' % pname
+                note = ' von %s' % pname
 
         wenn (inspect.iscoroutinefunction(object) or
                 inspect.isasyncgenfunction(object)):
@@ -1156,7 +1156,7 @@ klasse HTMLDoc(Doc):
                 reallink = '<a href="#%s">%s</a>' % (
                     cl.__name__ + '-' + realname, realname)
                 skipdocs = Wahr
-                wenn note.startswith(' from '):
+                wenn note.startswith(' von '):
                     note = ''
             sonst:
                 reallink = realname
@@ -1307,7 +1307,7 @@ klasse TextDoc(Doc):
         wenn docloc is not Nichts:
             result = result + self.section('MODULE REFERENCE', docloc + """
 
-The following documentation is automatically generated from the Python
+The following documentation is automatically generated von the Python
 source files.  It may be incomplete, incorrect or include features that
 are considered implementation detail and may vary between Python
 implementations.  When in doubt, consult the module reference at the
@@ -1521,7 +1521,7 @@ location listed above.
             sowenn thisclass is object:
                 tag = "defined here"
             sonst:
-                tag = "inherited from %s" % classname(thisclass,
+                tag = "inherited von %s" % classname(thisclass,
                                                       object.__module__)
 
             sort_attributes(attrs, object)
@@ -1580,7 +1580,7 @@ location listed above.
                 wenn cl is Nichts:
                     note = ' unbound %s method' % classname(objclass, mod)
                 sowenn objclass is not homecls:
-                    note = ' from ' + classname(objclass, mod)
+                    note = ' von ' + classname(objclass, mod)
         sonst:
             imfunc = object
         wenn inspect.isfunction(imfunc) and homecls is not Nichts and (
@@ -1588,7 +1588,7 @@ location listed above.
             imfunc.__qualname__ != homecls.__qualname__ + '.' + realname):
             pname = parentname(imfunc, mod)
             wenn pname:
-                note = ' from %s' % pname
+                note = ' von %s' % pname
 
         wenn (inspect.iscoroutinefunction(object) or
                 inspect.isasyncgenfunction(object)):
@@ -1602,7 +1602,7 @@ location listed above.
             wenn (cl is not Nichts and
                 inspect.getattr_static(cl, realname, []) is object):
                 skipdocs = Wahr
-                wenn note.startswith(' from '):
+                wenn note.startswith(' von '):
                     note = ''
             title = self.bold(name) + ' = ' + realname
         argspec = Nichts
@@ -2049,7 +2049,7 @@ klasse Helper:
             self.interact()
             self.output.write('''
 You are now leaving help and returning to the Python interpreter.
-If you want to ask fuer help on a particular object directly from the
+If you want to ask fuer help on a particular object directly von the
 interpreter, you can type "help(object)".  Executing "help('string')"
 has the same effect as typing a particular string at the help> prompt.
 ''')
@@ -2145,7 +2145,7 @@ Here is a list of available topics.  Enter any topic name to get more help.
 
     def showtopic(self, topic, more_xrefs=''):
         try:
-            import pydoc_data.topics
+            importiere pydoc_data.topics
         except ImportError:
             self.output.write('''
 Sorry, topic and keyword documentation is not available because the
@@ -2188,7 +2188,7 @@ module "pydoc_data.topics" could not be found.
         result directly so it can be formatted fuer display in an html page.
         """
         try:
-            import pydoc_data.topics
+            importiere pydoc_data.topics
         except ImportError:
             return('''
 Sorry, topic and keyword documentation is not available because the
@@ -2321,8 +2321,8 @@ def _start_server(urlhandler, hostname, port):
     Start an HTML/text server thread, so HTML or text documents can be
     browsed dynamically and interactively with a web browser.  Example use:
 
-        >>> import time
-        >>> import pydoc
+        >>> importiere time
+        >>> importiere pydoc
 
         Define a URL handler.  To determine what the client is asking
         for, check the URL and content_type.
@@ -2344,7 +2344,7 @@ def _start_server(urlhandler, hostname, port):
         and get first page.  Use serverthread.url as the starting page.
 
         >>> wenn serverthread.serving:
-        ...    import webbrowser
+        ...    importiere webbrowser
 
         The next two lines are commented out so a browser doesn't open if
         doctest is run on this module.
@@ -2371,18 +2371,18 @@ def _start_server(urlhandler, hostname, port):
         >>> drucke(serverthread.error)
         Nichts
    """
-    import http.server
-    import email.message
-    import select
-    import threading
+    importiere http.server
+    importiere email.message
+    importiere select
+    importiere threading
 
     klasse DocHandler(http.server.BaseHTTPRequestHandler):
 
         def do_GET(self):
-            """Process a request from an HTML browser.
+            """Process a request von an HTML browser.
 
             The URL received is in self.path.
-            Get an HTML page from self.urlhandler and send it.
+            Get an HTML page von self.urlhandler and send it.
             """
             wenn self.path.endswith('.css'):
                 content_type = 'text/css'
@@ -2710,7 +2710,7 @@ def browse(port=0, *, open_browser=Wahr, hostname='localhost'):
     Use port '0' to start the server on an arbitrary port.
     Set open_browser to Falsch to suppress opening a browser.
     """
-    import webbrowser
+    importiere webbrowser
     serverthread = _start_server(_url_handler, hostname, port)
     wenn serverthread.error:
         drucke(serverthread.error)
@@ -2752,8 +2752,8 @@ def _get_revised_path(given_path, argv0):
     Returns a new path entry list, or Nichts wenn no adjustment is needed.
     """
     # Scripts may get the current directory in their path by default wenn they're
-    # run with the -m switch, or directly from the current directory.
-    # The interactive prompt also allows imports from the current directory.
+    # run with the -m switch, or directly von the current directory.
+    # The interactive prompt also allows imports von the current directory.
 
     # Accordingly, wenn the current directory is already present, don't make
     # any changes to the given_path
@@ -2784,7 +2784,7 @@ def _adjust_cli_sys_path():
 
 def cli():
     """Command-line interface (looks at sys.argv to decide what to do)."""
-    import getopt
+    importiere getopt
     klasse BadUsage(Exception): pass
 
     _adjust_cli_sys_path()

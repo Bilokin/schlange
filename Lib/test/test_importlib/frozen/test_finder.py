@@ -1,11 +1,11 @@
-from test.test_importlib import abc, util
+von test.test_importlib importiere abc, util
 
 machinery = util.import_importlib('importlib.machinery')
 
-import os.path
-import unittest
+importiere os.path
+importiere unittest
 
-from test.support import import_helper, REPO_ROOT, STDLIB_DIR
+von test.support importiere import_helper, REPO_ROOT, STDLIB_DIR
 
 
 def resolve_stdlib_file(name, ispkg=Falsch):
@@ -150,8 +150,8 @@ klasse FindSpecTests(abc.FinderTests):
     def test_target_ignored(self):
         imported = ('__hello__', '__phello__')
         with import_helper.CleanImport(*imported, usefrozen=Wahr):
-            import __hello__ as match
-            import __phello__ as nonmatch
+            importiere __hello__ as match
+            importiere __phello__ as nonmatch
         name = '__hello__'
         actual = self.find(name)
         fuer target in (Nichts, match, nonmatch, object(), 'not-a-module-object'):

@@ -2,8 +2,8 @@
 # This code is separated-out because it is needed
 # by abc.py to load everything sonst at startup.
 
-from _weakref import ref
-from types import GenericAlias
+von _weakref importiere ref
+von types importiere GenericAlias
 
 __all__ = ['WeakSet']
 
@@ -56,7 +56,7 @@ klasse WeakSet:
             try:
                 itemref = self.data.pop()
             except KeyError:
-                raise KeyError('pop from empty WeakSet') from Nichts
+                raise KeyError('pop von empty WeakSet') von Nichts
             item = itemref()
             wenn item is not Nichts:
                 return item

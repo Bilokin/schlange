@@ -1,7 +1,7 @@
-import logging
-import sys
+importiere logging
+importiere sys
 
-from c_common.scriptutil import (
+von c_common.scriptutil importiere (
     add_verbosity_cli,
     add_traceback_cli,
     add_kind_filtering_cli,
@@ -12,11 +12,11 @@ from c_common.scriptutil import (
     get_prog,
     main_for_filenames,
 )
-from .preprocessor.__main__ import (
+von .preprocessor.__main__ importiere (
     add_common_cli as add_preprocessor_cli,
 )
-from .info import KIND
-from . import parse_file as _iter_parsed
+von .info importiere KIND
+von . importiere parse_file as _iter_parsed
 
 
 logger = logging.getLogger(__name__)
@@ -217,7 +217,7 @@ COMMANDS = {
 # the script
 
 def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset='parse'):
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(
         prog=prog or get_prog,
     )

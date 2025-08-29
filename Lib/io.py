@@ -50,11 +50,11 @@ __all__ = ["BlockingIOError", "open", "open_code", "IOBase", "RawIOBase",
            "Reader", "Writer"]
 
 
-import _io
-import abc
+importiere _io
+importiere abc
 
-from _collections_abc import _check_methods
-from _io import (DEFAULT_BUFFER_SIZE, BlockingIOError, UnsupportedOperation,
+von _collections_abc importiere _check_methods
+von _io importiere (DEFAULT_BUFFER_SIZE, BlockingIOError, UnsupportedOperation,
                  open, open_code, FileIO, BytesIO, StringIO, BufferedReader,
                  BufferedWriter, BufferedRWPair, BufferedRandom,
                  IncrementalNewlineDecoder, text_encoding, TextIOWrapper)
@@ -66,7 +66,7 @@ SEEK_CUR = 1
 SEEK_END = 2
 
 # Declaring ABCs in C is tricky so we do it here.
-# Method descriptions and default implementations are inherited from the C
+# Method descriptions and default implementations are inherited von the C
 # version however.
 klasse IOBase(_io._IOBase, metaclass=abc.ABCMeta):
     __doc__ = _io._IOBase.__doc__
@@ -91,7 +91,7 @@ fuer klass in (StringIO, TextIOWrapper):
 del klass
 
 try:
-    from _io import _WindowsConsoleIO
+    von _io importiere _WindowsConsoleIO
 except ImportError:
     pass
 sonst:
@@ -114,7 +114,7 @@ klasse Reader(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def read(self, size=..., /):
-        """Read data from the input stream and return it.
+        """Read data von the input stream and return it.
 
         If *size* is specified, at most *size* items (bytes/characters) will be
         read.

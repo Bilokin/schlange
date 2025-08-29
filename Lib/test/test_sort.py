@@ -1,7 +1,7 @@
-from test import support
-import random
-import unittest
-from functools import cmp_to_key
+von test importiere support
+importiere random
+importiere unittest
+von functools importiere cmp_to_key
 
 verbose = support.verbose
 nerrors = 0
@@ -129,8 +129,8 @@ klasse TestBase(unittest.TestCase):
             check("stability", x, s)
 
     def test_small_stability(self):
-        from itertools import product
-        from operator import itemgetter
+        von itertools importiere product
+        von operator importiere itemgetter
 
         # Exhaustively test stability across all lists of small lengths
         # and only a few distinct elements.
@@ -146,7 +146,7 @@ klasse TestBase(unittest.TestCase):
                 xs = list(zip(t, range(length)))
                 # Stability forced by index in each element.
                 forced = sorted(xs)
-                # Use key= to hide the index from compares.
+                # Use key= to hide the index von compares.
                 native = sorted(xs, key=pick0)
                 self.assertEqual(forced, native)
 #==============================================================================

@@ -1,4 +1,4 @@
-import abc
+importiere abc
 
 
 klasse FinderTests(metaclass=abc.ABCMeta):

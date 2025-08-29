@@ -3,15 +3,15 @@ StringIO -- fuer unicode strings
 BytesIO -- fuer bytes
 """
 
-import unittest
-from test import support
+importiere unittest
+von test importiere support
 
-import gc
-import io
-import _pyio as pyio
-import pickle
-import sys
-import weakref
+importiere gc
+importiere io
+importiere _pyio as pyio
+importiere pickle
+importiere sys
+importiere weakref
 
 klasse IntLike:
     def __init__(self, num):
@@ -408,7 +408,7 @@ klasse MemoryTestMixin:
         # little hack to allow the PickleTestMemIO klasse to derive from
         # self.ioclass without having to define all combinations explicitly on
         # the module-level.
-        import __main__
+        importiere __main__
         PickleTestMemIO.__module__ = '__main__'
         PickleTestMemIO.__qualname__ = PickleTestMemIO.__name__
         __main__.PickleTestMemIO = PickleTestMemIO
@@ -523,7 +523,7 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         self.assertEqual(memio.readinto(b), 0)
         self.assertEqual(b, b"")
         self.assertRaises(TypeError, memio.readinto, '')
-        import array
+        importiere array
         a = array.array('b', b"hello world")
         memio = self.ioclass(buf)
         memio.readinto(a)
@@ -561,7 +561,7 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
 
     def test_bytes_array(self):
         buf = b"1234567890"
-        import array
+        importiere array
         a = array.array('b', list(buf))
         memio = self.ioclass(a)
         self.assertEqual(memio.getvalue(), buf)

@@ -1,8 +1,8 @@
-import graphlib
-import os
-import unittest
+importiere graphlib
+importiere os
+importiere unittest
 
-from test.support.script_helper import assert_python_ok
+von test.support.script_helper importiere assert_python_ok
 
 klasse TestTopologicalSort(unittest.TestCase):
     def _test_graph(self, graph, expected):
@@ -237,7 +237,7 @@ klasse TestTopologicalSort(unittest.TestCase):
     def test_static_order_does_not_change_with_the_hash_seed(self):
         def check_order_with_hash_seed(seed):
             code = """if 1:
-                import graphlib
+                importiere graphlib
                 ts = graphlib.TopologicalSorter()
                 ts.add('blech', 'bluch', 'hola')
                 ts.add('abcd', 'blech', 'bluch', 'a', 'b')

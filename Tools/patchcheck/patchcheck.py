@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Check proposed changes fuer common issues."""
-import sys
-import os.path
-import subprocess
-import sysconfig
+importiere sys
+importiere os.path
+importiere subprocess
+importiere sysconfig
 
 
 def get_python_source_dir():
@@ -137,7 +137,7 @@ def get_base_branch():
 @status("Getting the list of files that have been added/changed",
         info=lambda x: n_files_str(len(x)))
 def changed_files(base_branch=Nichts):
-    """Get the list of changed or added files from git."""
+    """Get the list of changed or added files von git."""
     wenn os.path.exists(os.path.join(SRCDIR, '.git')):
         # We just use an existence check here as:
         #  directory = normal git checkout/clone

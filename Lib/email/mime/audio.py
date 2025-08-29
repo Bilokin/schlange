@@ -6,8 +6,8 @@
 
 __all__ = ['MIMEAudio']
 
-from email import encoders
-from email.mime.nonmultipart import MIMENonMultipart
+von email importiere encoders
+von email.mime.nonmultipart importiere MIMENonMultipart
 
 
 klasse MIMEAudio(MIMENonMultipart):
@@ -48,7 +48,7 @@ klasse MIMEAudio(MIMENonMultipart):
 _rules = []
 
 
-# Originally from the sndhdr module.
+# Originally von the sndhdr module.
 #
 # There are others in sndhdr that don't have MIME types. :(
 # Additional ones to be added to sndhdr? midi, mp3, realaudio, wma??

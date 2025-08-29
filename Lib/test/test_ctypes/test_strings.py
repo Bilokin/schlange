@@ -1,5 +1,5 @@
-import unittest
-from ctypes import (create_string_buffer, create_unicode_buffer,
+importiere unittest
+von ctypes importiere (create_string_buffer, create_unicode_buffer,
                     sizeof, byref, c_char, c_wchar)
 
 
@@ -122,7 +122,7 @@ klasse WStringTestCase(unittest.TestCase):
 
 def run_test(rep, msg, func, arg):
     items = range(rep)
-    from time import perf_counter as clock
+    von time importiere perf_counter as clock
     start = clock()
     fuer i in items:
         func(arg); func(arg); func(arg); func(arg); func(arg)

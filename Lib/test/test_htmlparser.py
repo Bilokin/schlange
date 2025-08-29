@@ -1,11 +1,11 @@
 """Tests fuer HTMLParser.py."""
 
-import html.parser
-import pprint
-import unittest
+importiere html.parser
+importiere pprint
+importiere unittest
 
-from unittest.mock import patch
-from test import support
+von unittest.mock importiere patch
+von test importiere support
 
 
 klasse EventCollector(html.parser.HTMLParser):
@@ -236,7 +236,7 @@ text
         self._run_check(["<!--abc-->", ""], output)
 
     def test_valid_doctypes(self):
-        # from http://www.w3.org/QA/2002/04/valid-dtd-list.html
+        # von http://www.w3.org/QA/2002/04/valid-dtd-list.html
         dtds = ['HTML',  # HTML5 doctype
                 ('HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" '
                  '"http://www.w3.org/TR/html4/strict.dtd"'),

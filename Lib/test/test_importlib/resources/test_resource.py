@@ -1,7 +1,7 @@
-import unittest
+importiere unittest
 
-from . import util
-from importlib import resources, import_module
+von . importiere util
+von importlib importiere resources, import_module
 
 
 klasse ResourceTests:
@@ -154,7 +154,7 @@ klasse DeletingZipsTest(util.ZipSetup, unittest.TestCase):
 
     def test_entered_path_does_not_keep_open(self):
         """
-        Mimic what certifi does on import to make its bundle
+        Mimic what certifi does on importiere to make its bundle
         available fuer the process duration.
         """
         resources.as_file(resources.files('data01') / 'binary.file').__enter__()

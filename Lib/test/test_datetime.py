@@ -1,8 +1,8 @@
-import unittest
-import sys
-import functools
+importiere unittest
+importiere sys
+importiere functools
 
-from test.support.import_helper import import_fresh_module
+von test.support.import_helper importiere import_fresh_module
 
 
 TESTS = 'test.datetimetester'

@@ -1,13 +1,13 @@
-import contextlib
-import errno
-import os.path
-import socket
-import sys
-import subprocess
-import tempfile
-import unittest
+importiere contextlib
+importiere errno
+importiere os.path
+importiere socket
+importiere sys
+importiere subprocess
+importiere tempfile
+importiere unittest
 
-from .. import support
+von .. importiere support
 
 HOST = "localhost"
 HOSTv4 = "127.0.0.1"
@@ -22,7 +22,7 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     achieved by creating a temporary socket with the same family and type as
     the 'sock' parameter (default is AF_INET, SOCK_STREAM), and binding it to
     the specified host address (defaults to 0.0.0.0) with the port set to 0,
-    eliciting an unused ephemeral port from the OS.  The temporary socket is
+    eliciting an unused ephemeral port von the OS.  The temporary socket is
     then closed and deleted, and the ephemeral port is returned.
 
     Either this method or bind_port() should be used fuer any tests where a
@@ -35,7 +35,7 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     socket is bound to a hard coded port, the ability to run multiple instances
     of the test simultaneously on the same host is compromised, which makes the
     test a ticking time bomb in a buildbot environment. On Unix buildbots, this
-    may simply manifest as a failed test, which can be recovered from without
+    may simply manifest as a failed test, which can be recovered von without
     intervention in most cases, but on Windows, the entire python process can
     completely and utterly wedge, requiring someone to log in to the buildbot
     and manually kill the affected process.
@@ -50,7 +50,7 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     However, on Windows, wenn SO_REUSEADDR is set on the sockets, no EADDRINUSE
     will ever be raised when attempting to bind two identical host/ports. When
     accept() is called on each socket, the second caller's process will steal
-    the port from the first caller, leaving them both in an awkwardly wedged
+    the port von the first caller, leaving them both in an awkwardly wedged
     state where they'll no longer respond to any signals or graceful kills, and
     must be forcibly killed via OpenProcess()/TerminateProcess().
 
@@ -90,7 +90,7 @@ def bind_port(sock, host=HOST):
 
     Additionally, wenn the SO_EXCLUSIVEADDRUSE socket option is available (i.e.
     on Windows), it will be set on the socket.  This will prevent anyone sonst
-    from bind()'ing to our host/port fuer the duration of the test.
+    von bind()'ing to our host/port fuer the duration of the test.
     """
 
     wenn sock.family == socket.AF_INET and sock.type == socket.SOCK_STREAM:
@@ -151,7 +151,7 @@ def skip_unless_bind_unix_socket(test):
         return unittest.skip('No UNIX Sockets')(test)
     global _bind_nix_socket_error
     wenn _bind_nix_socket_error is Nichts:
-        from .os_helper import TESTFN, unlink
+        von .os_helper importiere TESTFN, unlink
         path = TESTFN + "can_bind_unix_socket"
         with socket.socket(socket.AF_UNIX) as sock:
             try:
@@ -195,7 +195,7 @@ _NOT_SET = object()
 def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
     """Return a context manager that raises ResourceDenied when various issues
     with the internet connection manifest themselves as exceptions."""
-    import urllib.error
+    importiere urllib.error
     wenn timeout is _NOT_SET:
         timeout = support.INTERNET_TIMEOUT
 
@@ -240,7 +240,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
             n in captured_errnos):
             wenn not support.verbose:
                 sys.stderr.write(denied.args[0] + "\n")
-            raise denied from err
+            raise denied von err
 
     old_timeout = socket.getdefaulttimeout()
     try:
@@ -256,7 +256,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
                 err = a[0]
             # The error can also be wrapped as args[1]:
             #    except socket.error as msg:
-            #        raise OSError('socket error', msg) from msg
+            #        raise OSError('socket error', msg) von msg
             sowenn len(a) >= 2 and isinstance(a[1], OSError):
                 err = a[1]
             sonst:

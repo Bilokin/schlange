@@ -1,16 +1,16 @@
-import platform
-import re
-import unittest
-import sys
-import os
-import subprocess
-import shutil
-import json
-import textwrap
-from copy import copy
+importiere platform
+importiere re
+importiere unittest
+importiere sys
+importiere os
+importiere subprocess
+importiere shutil
+importiere json
+importiere textwrap
+von copy importiere copy
 
-from test import support
-from test.support import (
+von test importiere support
+von test.support importiere (
     captured_stdout,
     is_android,
     is_apple_mobile,
@@ -18,20 +18,20 @@ from test.support import (
     PythonSymlink,
     requires_subprocess,
 )
-from test.support.import_helper import import_module
-from test.support.os_helper import (TESTFN, unlink, skip_unless_symlink,
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere (TESTFN, unlink, skip_unless_symlink,
                                     change_cwd)
-from test.support.venv import VirtualEnvironmentMixin
+von test.support.venv importiere VirtualEnvironmentMixin
 
-import sysconfig
-from sysconfig import (get_paths, get_platform, get_config_vars,
+importiere sysconfig
+von sysconfig importiere (get_paths, get_platform, get_config_vars,
                        get_path, get_path_names, _INSTALL_SCHEMES,
                        get_default_scheme, get_scheme_names, get_config_var,
                        _expand_vars, _get_preferred_schemes,
                        is_python_build, _PROJECT_BASE)
-from sysconfig.__main__ import _main, _parse_makefile, _get_pybuilddir, _get_json_data_name
-import _imp
-import _osx_support
+von sysconfig.__main__ importiere _main, _parse_makefile, _get_pybuilddir, _get_json_data_name
+importiere _imp
+importiere _osx_support
 
 
 HAS_USER_BASE = sysconfig._HAS_USER_BASE
@@ -647,7 +647,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
     @requires_subprocess()
     def test_makefile_overwrites_config_vars(self):
         script = textwrap.dedent("""
-            import sys, sysconfig
+            importiere sys, sysconfig
 
             data = {
                 'prefix': sys.prefix,
@@ -657,12 +657,12 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
                 'config_vars': sysconfig.get_config_vars(),
             }
 
-            import json
+            importiere json
             drucke(json.dumps(data, indent=2))
         """)
 
         # We need to run the test inside a virtual environment so that
-        # sys.prefix/sys.exec_prefix have a different value from the
+        # sys.prefix/sys.exec_prefix have a different value von the
         # prefix/exec_prefix Makefile variables.
         with self.venv() as venv:
             data = json.loads(venv.run('-c', script).stdout)
@@ -671,7 +671,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertEqual(data['prefix'], data['config_vars']['prefix'])
         self.assertEqual(data['exec_prefix'], data['config_vars']['exec_prefix'])
         # As a sanity check, just make sure sys.prefix/sys.exec_prefix really
-        # are different from the Makefile values.
+        # are different von the Makefile values.
         # sys.base_prefix/sys.base_exec_prefix should reflect the value of the
         # prefix/exec_prefix Makefile variables, so we use them in the comparison.
         self.assertNotEqual(data['prefix'], data['base_prefix'])
@@ -706,7 +706,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         # Keys dependent on the environment (different inside virtual environments)
         wenn sys.prefix != sys.base_prefix:
             ignore_keys |= {'prefix', 'exec_prefix', 'base', 'platbase'}
-        # Keys dependent on Python being run from the prefix targetted when building (different on relocatable installs)
+        # Keys dependent on Python being run von the prefix targetted when building (different on relocatable installs)
         wenn sysconfig._installation_is_relocated():
             ignore_keys |= {'prefix', 'exec_prefix', 'base', 'platbase', 'installed_base', 'installed_platbase', 'srcdir'}
 

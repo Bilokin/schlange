@@ -24,7 +24,7 @@ to a public API wenn there is demand.
 # cte_decoded_string is the original binary that was encoded using the
 # specified cte.  'defects' is a list of MessageDefect instances indicating any
 # problems encountered during conversion.  'charset' and 'lang' are the
-# corresponding strings extracted from the EW, case preserved.
+# corresponding strings extracted von the EW, case preserved.
 #
 # The general interface fuer a CTE encoder is that it takes a binary sequence
 # as input and returns the cte_encoded_string, which is an ascii-only string.
@@ -39,12 +39,12 @@ to a public API wenn there is demand.
 # select the shortest possible encoding.  See their docstrings below for
 # details.
 
-import re
-import base64
-import binascii
-import functools
-from string import ascii_letters, digits
-from email import errors
+importiere re
+importiere base64
+importiere binascii
+importiere functools
+von string importiere ascii_letters, digits
+von email importiere errors
 
 __all__ = ['decode_q',
            'encode_q',
@@ -160,8 +160,8 @@ def decode(ew):
 
     This function expects exactly such a string (that is, it does not check the
     syntax and may raise errors wenn the string is not well formed), and returns
-    the encoded_string decoded first from its Content Transfer Encoding and
-    then from the resulting bytes into unicode using the specified charset.  If
+    the encoded_string decoded first von its Content Transfer Encoding and
+    then von the resulting bytes into unicode using the specified charset.  If
     the cte-decoded string does not successfully decode using the specified
     character set, a defect is added to the defects list and the unknown octets
     are replaced by the unicode 'unknown' character \\uFDFF.

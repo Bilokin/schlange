@@ -1,10 +1,10 @@
-import errno
-import select
-import subprocess
-import sys
-import textwrap
-import unittest
-from test import support
+importiere errno
+importiere select
+importiere subprocess
+importiere sys
+importiere textwrap
+importiere unittest
+von test importiere support
 
 support.requires_working_socket(module=Wahr)
 
@@ -50,7 +50,7 @@ klasse SelectTestCase(unittest.TestCase):
     @support.requires_fork()
     def test_select(self):
         code = textwrap.dedent('''
-            import time
+            importiere time
             fuer i in range(10):
                 drucke("testing...", flush=Wahr)
                 time.sleep(0.050)
@@ -75,7 +75,7 @@ klasse SelectTestCase(unittest.TestCase):
                             drucke('EOF')
                         break
                     continue
-                self.fail('Unexpected return values from select():',
+                self.fail('Unexpected return values von select():',
                           rfd, wfd, xfd)
 
     # Issue 16230: Crash on select resized list

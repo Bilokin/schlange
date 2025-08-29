@@ -1,13 +1,13 @@
-import os
-import msvcrt
-import signal
-import sys
-import _winapi
-from subprocess import STARTUPINFO, STARTF_FORCEOFFFEEDBACK
+importiere os
+importiere msvcrt
+importiere signal
+importiere sys
+importiere _winapi
+von subprocess importiere STARTUPINFO, STARTF_FORCEOFFFEEDBACK
 
-from .context import reduction, get_spawning_popen, set_spawning_popen
-from . import spawn
-from . import util
+von .context importiere reduction, get_spawning_popen, set_spawning_popen
+von . importiere spawn
+von . importiere util
 
 __all__ = ['Popen']
 
@@ -33,7 +33,7 @@ def _close_handles(*handles):
 
 
 #
-# We define a Popen klasse similar to the one from subprocess, but
+# We define a Popen klasse similar to the one von subprocess, but
 # whose constructor takes a process object as its argument.
 #
 
@@ -51,7 +51,7 @@ klasse Popen(object):
         #
         # bpo-33929: Previously, the read end of pipe was "stolen" by the child
         # process, but it leaked a handle wenn the child process had been
-        # terminated before it could steal the handle from the parent process.
+        # terminated before it could steal the handle von the parent process.
         rhandle, whandle = _winapi.CreatePipe(Nichts, 0)
         wfd = msvcrt.open_osfhandle(whandle, 0)
         cmd = spawn.get_command_line(parent_pid=os.getpid(),

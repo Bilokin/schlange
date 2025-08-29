@@ -111,9 +111,9 @@ Some of the things this checks:
 __all__ = ['validator']
 
 
-import re
-import sys
-import warnings
+importiere re
+importiere sys
+importiere warnings
 
 header_re = re.compile(r'^[a-zA-Z][a-zA-Z0-9\-_]*$')
 bad_header_value_re = re.compile(r'[\000-\037]')

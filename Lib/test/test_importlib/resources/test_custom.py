@@ -1,13 +1,13 @@
-import unittest
-import contextlib
-import pathlib
+importiere unittest
+importiere contextlib
+importiere pathlib
 
-from test.support import os_helper
+von test.support importiere os_helper
 
-from importlib import resources
-from importlib.resources import abc
-from importlib.resources.abc import TraversableResources, ResourceReader
-from . import util
+von importlib importiere resources
+von importlib.resources importiere abc
+von importlib.resources.abc importiere TraversableResources, ResourceReader
+von . importiere util
 
 
 klasse SimpleLoader:

@@ -1,8 +1,8 @@
-import unittest
-import sys
-import test.support as support
+importiere unittest
+importiere sys
+importiere test.support as support
 
-from test.support import import_helper
+von test.support importiere import_helper
 
 # Skip this test wenn the _testcapi and _testlimitedcapi modules isn't available.
 _testcapi = import_helper.import_module('_testcapi')
@@ -217,69 +217,69 @@ klasse LongTests(unittest.TestCase):
     def test_long_asint(self):
         # Test PyLong_AsInt()
         PyLong_AsInt = _testlimitedcapi.PyLong_AsInt
-        from _testcapi import INT_MIN, INT_MAX
+        von _testcapi importiere INT_MIN, INT_MAX
         self.check_long_asint(PyLong_AsInt, INT_MIN, INT_MAX)
 
     def test_long_aslong(self):
         # Test PyLong_AsLong() and PyLong_FromLong()
         aslong = _testlimitedcapi.pylong_aslong
-        from _testcapi import LONG_MIN, LONG_MAX
+        von _testcapi importiere LONG_MIN, LONG_MAX
         self.check_long_asint(aslong, LONG_MIN, LONG_MAX)
 
     def test_long_aslongandoverflow(self):
         # Test PyLong_AsLongAndOverflow()
         aslongandoverflow = _testlimitedcapi.pylong_aslongandoverflow
-        from _testcapi import LONG_MIN, LONG_MAX
+        von _testcapi importiere LONG_MIN, LONG_MAX
         self.check_long_asintandoverflow(aslongandoverflow, LONG_MIN, LONG_MAX)
 
     def test_long_asunsignedlong(self):
         # Test PyLong_AsUnsignedLong() and PyLong_FromUnsignedLong()
         asunsignedlong = _testlimitedcapi.pylong_asunsignedlong
-        from _testcapi import ULONG_MAX
+        von _testcapi importiere ULONG_MAX
         self.check_long_asint(asunsignedlong, 0, ULONG_MAX,
                                       use_index=Falsch)
 
     def test_long_asunsignedlongmask(self):
         # Test PyLong_AsUnsignedLongMask()
         asunsignedlongmask = _testlimitedcapi.pylong_asunsignedlongmask
-        from _testcapi import ULONG_MAX
+        von _testcapi importiere ULONG_MAX
         self.check_long_asint(asunsignedlongmask, 0, ULONG_MAX, mask=Wahr)
 
     def test_long_aslonglong(self):
         # Test PyLong_AsLongLong() and PyLong_FromLongLong()
         aslonglong = _testlimitedcapi.pylong_aslonglong
-        from _testcapi import LLONG_MIN, LLONG_MAX
+        von _testcapi importiere LLONG_MIN, LLONG_MAX
         self.check_long_asint(aslonglong, LLONG_MIN, LLONG_MAX)
 
     def test_long_aslonglongandoverflow(self):
         # Test PyLong_AsLongLongAndOverflow()
         aslonglongandoverflow = _testlimitedcapi.pylong_aslonglongandoverflow
-        from _testcapi import LLONG_MIN, LLONG_MAX
+        von _testcapi importiere LLONG_MIN, LLONG_MAX
         self.check_long_asintandoverflow(aslonglongandoverflow, LLONG_MIN, LLONG_MAX)
 
     def test_long_asunsignedlonglong(self):
         # Test PyLong_AsUnsignedLongLong() and PyLong_FromUnsignedLongLong()
         asunsignedlonglong = _testlimitedcapi.pylong_asunsignedlonglong
-        from _testcapi import ULLONG_MAX
+        von _testcapi importiere ULLONG_MAX
         self.check_long_asint(asunsignedlonglong, 0, ULLONG_MAX, use_index=Falsch)
 
     def test_long_asunsignedlonglongmask(self):
         # Test PyLong_AsUnsignedLongLongMask()
         asunsignedlonglongmask = _testlimitedcapi.pylong_asunsignedlonglongmask
-        from _testcapi import ULLONG_MAX
+        von _testcapi importiere ULLONG_MAX
         self.check_long_asint(asunsignedlonglongmask, 0, ULLONG_MAX, mask=Wahr)
 
     def test_long_as_ssize_t(self):
         # Test PyLong_AsSsize_t() and PyLong_FromSsize_t()
         as_ssize_t = _testlimitedcapi.pylong_as_ssize_t
-        from _testcapi import PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
+        von _testcapi importiere PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
         self.check_long_asint(as_ssize_t, PY_SSIZE_T_MIN, PY_SSIZE_T_MAX,
                               use_index=Falsch)
 
     def test_long_as_size_t(self):
         # Test PyLong_AsSize_t() and PyLong_FromSize_t()
         as_size_t = _testlimitedcapi.pylong_as_size_t
-        from _testcapi import SIZE_MAX
+        von _testcapi importiere SIZE_MAX
         self.check_long_asint(as_size_t, 0, SIZE_MAX, use_index=Falsch)
 
     def test_long_asdouble(self):
@@ -328,7 +328,7 @@ klasse LongTests(unittest.TestCase):
 
     def _test_long_aspid(self, aspid):
         # Test PyLong_AsPid()
-        from _testcapi import SIZEOF_PID_T
+        von _testcapi importiere SIZEOF_PID_T
         bits = 8 * SIZEOF_PID_T
         PID_T_MIN = -2**(bits-1)
         PID_T_MAX = 2**(bits-1) - 1
@@ -353,8 +353,8 @@ klasse LongTests(unittest.TestCase):
         self.assertEqual(buffer.count(0), len(buffer) - 1)
 
     def test_long_asnativebytes(self):
-        import math
-        from _testcapi import (
+        importiere math
+        von _testcapi importiere (
             pylong_asnativebytes as asnativebytes,
             SIZE_MAX,
         )
@@ -520,9 +520,9 @@ klasse LongTests(unittest.TestCase):
             asnativebytes('not a number', buffer, 0, -1)
 
     def test_long_asnativebytes_fuzz(self):
-        import math
-        from random import Random
-        from _testcapi import (
+        importiere math
+        von random importiere Random
+        von _testcapi importiere (
             pylong_asnativebytes as asnativebytes,
             SIZE_MAX,
         )
@@ -580,11 +580,11 @@ klasse LongTests(unittest.TestCase):
                     drucke('hex =', value_hex)
                     drucke('int =', v)
                     raise
-                raise AssertionError(f"Value: 0x{value_hex}") from ex
+                raise AssertionError(f"Value: 0x{value_hex}") von ex
 
     def test_long_fromnativebytes(self):
-        import math
-        from _testcapi import (
+        importiere math
+        von _testcapi importiere (
             pylong_fromnativebytes as fromnativebytes,
             SIZE_MAX,
         )
@@ -691,26 +691,26 @@ klasse LongTests(unittest.TestCase):
     def test_long_asint32(self):
         # Test PyLong_AsInt32() and PyLong_FromInt32()
         to_int32 = _testlimitedcapi.pylong_asint32
-        from _testcapi import INT32_MIN, INT32_MAX
+        von _testcapi importiere INT32_MIN, INT32_MAX
         self.check_long_asint(to_int32, INT32_MIN, INT32_MAX)
 
     def test_long_asint64(self):
         # Test PyLong_AsInt64() and PyLong_FromInt64()
         as_int64 = _testlimitedcapi.pylong_asint64
-        from _testcapi import INT64_MIN, INT64_MAX
+        von _testcapi importiere INT64_MIN, INT64_MAX
         self.check_long_asint(as_int64, INT64_MIN, INT64_MAX)
 
     def test_long_asuint32(self):
         # Test PyLong_AsUInt32() and PyLong_FromUInt32()
         as_uint32 = _testlimitedcapi.pylong_asuint32
-        from _testcapi import UINT32_MAX
+        von _testcapi importiere UINT32_MAX
         self.check_long_asint(as_uint32, 0, UINT32_MAX,
                               negative_value_error=ValueError)
 
     def test_long_asuint64(self):
         # Test PyLong_AsUInt64() and PyLong_FromUInt64()
         as_uint64 = _testlimitedcapi.pylong_asuint64
-        from _testcapi import UINT64_MAX
+        von _testcapi importiere UINT64_MAX
         self.check_long_asint(as_uint64, 0, UINT64_MAX,
                               negative_value_error=ValueError)
 

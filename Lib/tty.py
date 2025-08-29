@@ -2,7 +2,7 @@
 
 # Author: Steen Lumholt.
 
-from termios import *
+von termios importiere *
 
 __all__ = ["cfmakeraw", "cfmakecbreak", "setraw", "setcbreak"]
 

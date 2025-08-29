@@ -8,9 +8,9 @@ the PythonShell window, and a Format menu which is only present in the Editor
 windows.
 
 """
-from importlib.util import find_spec
+von importlib.util importiere find_spec
 
-from idlelib.config import idleConf
+von idlelib.config importiere idleConf
 
 #   Warning: menudefs is altered in macosx.overrideRootMenu()
 #   after it is determined that an OS X Aqua Tk is in use,
@@ -122,5 +122,5 @@ wenn find_spec('turtledemo'):
 default_keydefs = idleConf.GetCurrentKeySet()
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_mainmenu', verbosity=2)

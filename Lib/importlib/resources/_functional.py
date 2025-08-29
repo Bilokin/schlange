@@ -1,8 +1,8 @@
 """Simplified function-based API fuer importlib.resources"""
 
-import warnings
+importiere warnings
 
-from ._common import files, as_file
+von ._common importiere files, as_file
 
 
 _MISSING = object()

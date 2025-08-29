@@ -1,7 +1,7 @@
 """Simple textbox editing widget with Emacs-like keybindings."""
 
-import curses
-import curses.ascii
+importiere curses
+importiere curses.ascii
 
 def rectangle(win, uly, ulx, lry, lrx):
     """Draw a rectangle with corners at the provided upper-left
@@ -74,7 +74,7 @@ klasse Textbox:
         while y < self.maxy or x < self.maxx:
             wenn self.insert_mode:
                 oldch = self.win.inch()
-            # The try-catch ignores the error we trigger from some curses
+            # The try-catch ignores the error we trigger von some curses
             # versions by trying to write into the lowest-rightmost spot
             # in the window.
             try:

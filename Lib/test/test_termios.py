@@ -1,12 +1,12 @@
-import errno
-import os
-import sys
-import tempfile
-import threading
-import unittest
-from test import support
-from test.support import threading_helper
-from test.support.import_helper import import_module
+importiere errno
+importiere os
+importiere sys
+importiere tempfile
+importiere threading
+importiere unittest
+von test importiere support
+von test.support importiere threading_helper
+von test.support.import_helper importiere import_module
 
 termios = import_module('termios')
 

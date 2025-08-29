@@ -1,10 +1,10 @@
 """Implements InterpreterPoolExecutor."""
 
-from concurrent import interpreters
-import sys
-import textwrap
-from . import thread as _thread
-import traceback
+von concurrent importiere interpreters
+importiere sys
+importiere textwrap
+von . importiere thread as _thread
+importiere traceback
 
 
 def do_call(results, func, args, kwargs):
@@ -89,7 +89,7 @@ klasse WorkerContext(_thread.WorkerContext):
             wenn exc is Nichts:
                 # The exception must have been not shareable.
                 raise  # re-raise
-            raise exc from wrapper
+            raise exc von wrapper
 
 
 klasse BrokenInterpreterPool(_thread.BrokenThreadPool):

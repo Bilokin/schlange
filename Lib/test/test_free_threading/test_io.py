@@ -1,10 +1,10 @@
-import io
-import _pyio as pyio
-import threading
-from unittest import TestCase
-from test.support import threading_helper
-from random import randint
-from sys import getsizeof
+importiere io
+importiere _pyio as pyio
+importiere threading
+von unittest importiere TestCase
+von test.support importiere threading_helper
+von random importiere randint
+von sys importiere getsizeof
 
 
 klasse ThreadSafetyMixin:

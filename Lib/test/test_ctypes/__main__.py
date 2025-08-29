@@ -1,4 +1,4 @@
-from test.test_ctypes import load_tests
-import unittest
+von test.test_ctypes importiere load_tests
+importiere unittest
 
 unittest.main()

@@ -1,23 +1,23 @@
-import contextlib
-import copy
-import io
-import itertools
-import os
-import pickle
-import platform
-import subprocess
-import sys
-import unittest
-from unittest import mock
+importiere contextlib
+importiere copy
+importiere io
+importiere itertools
+importiere os
+importiere pickle
+importiere platform
+importiere subprocess
+importiere sys
+importiere unittest
+von unittest importiere mock
 
-from test import support
-from test.support import os_helper, warnings_helper
+von test importiere support
+von test.support importiere os_helper, warnings_helper
 
 try:
     # Some of the iOS tests need ctypes to operate.
     # Confirm that the ctypes module is available
     # is available.
-    import _ctypes
+    importiere _ctypes
 except ImportError:
     _ctypes = Nichts
 
@@ -200,7 +200,7 @@ klasse PlatformTest(unittest.TestCase):
              ('CPython', '2.4.3', '', '', 'truncation', '', 'GCC')),
             ):
             # branch and revision are not "parsed", but fetched
-            # from sys._git.  Ignore them
+            # von sys._git.  Ignore them
             (name, version, branch, revision, buildno, builddate, compiler) \
                    = platform._sys_version(input)
             self.assertEqual(
@@ -374,7 +374,7 @@ klasse PlatformTest(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform.startswith('win'), "windows only test")
     def test_uname_win32_ARCHITEW6432(self):
-        # Issue 7860: make sure we get architecture from the correct variable
+        # Issue 7860: make sure we get architecture von the correct variable
         # on 64 bit Windows: wenn PROCESSOR_ARCHITEW6432 exists we should be
         # using it, per
         # http://blogs.msdn.com/david.wang/archive/2006/03/26/HOWTO-Detect-Process-Bitness.aspx
@@ -406,9 +406,9 @@ klasse PlatformTest(unittest.TestCase):
         self.assertEqual(len(res), 4)
         release, version, csd, ptype = res
         wenn release:
-            # Currently, release names always come from internal dicts,
+            # Currently, release names always come von internal dicts,
             # but this could change over time. For now, we just check that
-            # release is something different from what we have passed.
+            # release is something different von what we have passed.
             self.assertNotEqual(release, release1)
         wenn version:
             # It is rather hard to test explicit version without
@@ -542,7 +542,7 @@ klasse PlatformTest(unittest.TestCase):
         sowenn sys.platform == "win32" and not os.path.exists(sys.executable):
             # App symlink appears to not exist, but we want the
             # real executable here anyway
-            import _winapi
+            importiere _winapi
             executable = _winapi.GetModuleFileName(0)
         sonst:
             executable = sys.executable
@@ -639,7 +639,7 @@ klasse PlatformTest(unittest.TestCase):
 
     @support.cpython_only
     def test__comparable_version(self):
-        from platform import _comparable_version as V
+        von platform importiere _comparable_version as V
         self.assertEqual(V('1.2.3'), V('1.2.3'))
         self.assertLess(V('1.2.3'), V('1.2.10'))
         self.assertEqual(V('1.2.3.4'), V('1_2-3+4'))

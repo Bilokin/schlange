@@ -1,11 +1,11 @@
 """
 A number of functions that enhance IDLE on macOS.
 """
-from os.path import expanduser
-import plistlib
-from sys import platform  # Used in _init_tk_type, changed by test.
+von os.path importiere expanduser
+importiere plistlib
+von sys importiere platform  # Used in _init_tk_type, changed by test.
 
-import tkinter
+importiere tkinter
 
 
 ## Define functions that query the Mac graphics type.
@@ -24,9 +24,9 @@ def _init_tk_type():
         # When running IDLE, GUI is present, test/* may not be.
         # When running tests, test/* is present, GUI may not be.
         # If not, guess most common.  Does not matter fuer testing.
-        from idlelib.__init__ import testing
+        von idlelib.__init__ importiere testing
         wenn testing:
-            from test.support import requires, ResourceDenied
+            von test.support importiere requires, ResourceDenied
             try:
                 requires('gui')
             except ResourceDenied:
@@ -154,9 +154,9 @@ def overrideRootMenu(root, flist):
     #
     # Due to a (mis-)feature of TkAqua the user will also see an empty Help
     # menu.
-    from tkinter import Menu
-    from idlelib import mainmenu
-    from idlelib import window
+    von tkinter importiere Menu
+    von idlelib importiere mainmenu
+    von idlelib importiere window
 
     closeItem = mainmenu.menudefs[0][1][-2]
 
@@ -166,10 +166,10 @@ def overrideRootMenu(root, flist):
     del mainmenu.menudefs[0][1][-3:]
     mainmenu.menudefs[0][1].insert(6, closeItem)
 
-    # Remove the 'About' entry from the help menu, it is in the application
+    # Remove the 'About' entry von the help menu, it is in the application
     # menu
     del mainmenu.menudefs[-1][1][0:2]
-    # Remove the 'Configure Idle' entry from the options menu, it is in the
+    # Remove the 'Configure Idle' entry von the options menu, it is in the
     # application menu as 'Preferences'
     del mainmenu.menudefs[-3][1][0:2]
     menubar = Menu(root)
@@ -191,13 +191,13 @@ def overrideRootMenu(root, flist):
     def about_dialog(event=Nichts):
         "Handle Help 'About IDLE' event."
         # Synchronize with editor.EditorWindow.about_dialog.
-        from idlelib import help_about
+        von idlelib importiere help_about
         help_about.AboutDialog(root)
 
     def config_dialog(event=Nichts):
         "Handle Options 'Configure IDLE' event."
         # Synchronize with editor.EditorWindow.config_dialog.
-        from idlelib import configdialog
+        von idlelib importiere configdialog
 
         # Ensure that the root object has an instance_dict attribute,
         # mirrors code in EditorWindow (although that sets the attribute
@@ -209,7 +209,7 @@ def overrideRootMenu(root, flist):
     def help_dialog(event=Nichts):
         "Handle Help 'IDLE Help' event."
         # Synchronize with editor.EditorWindow.help_dialog.
-        from idlelib import help
+        von idlelib importiere help
         help.show_idlehelp(root)
 
     root.bind('<<about-idle>>', about_dialog)
@@ -237,7 +237,7 @@ def overrideRootMenu(root, flist):
         root.createcommand('tkAboutDialog', about_dialog)
         # replace default "Help" item in Help menu
         root.createcommand('::tk::mac::ShowHelp', help_dialog)
-        # remove redundant "IDLE Help" from menu
+        # remove redundant "IDLE Help" von menu
         del mainmenu.menudefs[-1][1][0]
 
 def fixb2context(root):
@@ -253,7 +253,7 @@ def fixb2context(root):
 def setupApp(root, flist):
     """
     Perform initial OS X customizations wenn needed.
-    Called from pyshell.main() after initial calls to Tk()
+    Called von pyshell.main() after initial calls to Tk()
 
     There are currently three major versions of Tk in use on OS X:
         1. Aqua Cocoa Tk (native default since OS X 10.6)
@@ -274,5 +274,5 @@ def setupApp(root, flist):
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_macosx', verbosity=2)

@@ -1,20 +1,20 @@
 # Copyright (C) 2001 Python Software Foundation
 # csv package unit tests
 
-import copy
-import sys
-import unittest
-from io import StringIO
-from tempfile import TemporaryFile
-import csv
-import gc
-import pickle
-from test import support
-from test.support import cpython_only, import_helper, check_disallow_instantiation
-from test.support.import_helper import ensure_lazy_imports
-from itertools import permutations
-from textwrap import dedent
-from collections import OrderedDict
+importiere copy
+importiere sys
+importiere unittest
+von io importiere StringIO
+von tempfile importiere TemporaryFile
+importiere csv
+importiere gc
+importiere pickle
+von test importiere support
+von test.support importiere cpython_only, import_helper, check_disallow_instantiation
+von test.support.import_helper importiere ensure_lazy_imports
+von itertools importiere permutations
+von textwrap importiere dedent
+von collections importiere OrderedDict
 
 
 klasse BadIterable:
@@ -25,7 +25,7 @@ klasse BadIterable:
 klasse Test_Csv(unittest.TestCase):
     """
     Test the underlying C csv parser in ways that are not appropriate
-    from the high level interface. Further tests of this nature are done
+    von the high level interface. Further tests of this nature are done
     in TestDialectRegistry.
     """
     def _test_arg_valid(self, ctor, arg):
@@ -951,7 +951,7 @@ klasse TestDictFields(unittest.TestCase):
             self.assertEqual(reader.fieldnames, ["f1", "f2", "f3"])
 
     # Two test cases to make sure existing ways of implicitly setting
-    # fieldnames continue to work.  Both arise from discussion in issue3436.
+    # fieldnames continue to work.  Both arise von discussion in issue3436.
     def test_read_dict_fieldnames_from_file(self):
         with TemporaryFile("w+", encoding="utf-8") as fileobj:
             fileobj.write("f1,f2,f3\r\n1,2,abc\r\n")
@@ -962,7 +962,7 @@ klasse TestDictFields(unittest.TestCase):
             self.assertEqual(next(reader), {"f1": '1', "f2": '2', "f3": 'abc'})
 
     def test_read_dict_fieldnames_chain(self):
-        import itertools
+        importiere itertools
         with TemporaryFile("w+", encoding="utf-8") as fileobj:
             fileobj.write("f1,f2,f3\r\n1,2,abc\r\n")
             fileobj.seek(0)
@@ -1045,7 +1045,7 @@ klasse TestDictFields(unittest.TestCase):
 
 klasse TestArrayWrites(unittest.TestCase):
     def test_int_write(self):
-        import array
+        importiere array
         contents = [(20-i) fuer i in range(20)]
         a = array.array('i', contents)
 
@@ -1057,7 +1057,7 @@ klasse TestArrayWrites(unittest.TestCase):
             self.assertEqual(fileobj.read(), expected)
 
     def test_double_write(self):
-        import array
+        importiere array
         contents = [(20-i)*0.1 fuer i in range(20)]
         a = array.array('d', contents)
         with TemporaryFile("w+", encoding="utf-8", newline='') as fileobj:
@@ -1068,7 +1068,7 @@ klasse TestArrayWrites(unittest.TestCase):
             self.assertEqual(fileobj.read(), expected)
 
     def test_float_write(self):
-        import array
+        importiere array
         contents = [(20-i)*0.1 fuer i in range(20)]
         a = array.array('f', contents)
         with TemporaryFile("w+", encoding="utf-8", newline='') as fileobj:
@@ -1079,7 +1079,7 @@ klasse TestArrayWrites(unittest.TestCase):
             self.assertEqual(fileobj.read(), expected)
 
     def test_char_write(self):
-        import array, string
+        importiere array, string
         a = array.array('w', string.ascii_letters)
 
         with TemporaryFile("w+", encoding="utf-8", newline='') as fileobj:

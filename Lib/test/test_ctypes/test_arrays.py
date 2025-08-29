@@ -1,12 +1,12 @@
-import ctypes
-import sys
-import unittest
-from ctypes import (Structure, Array, ARRAY, sizeof, addressof,
+importiere ctypes
+importiere sys
+importiere unittest
+von ctypes importiere (Structure, Array, ARRAY, sizeof, addressof,
                     create_string_buffer, create_unicode_buffer,
                     c_char, c_wchar, c_byte, c_ubyte, c_short, c_ushort, c_int, c_uint,
                     c_long, c_ulonglong, c_float, c_double, c_longdouble)
-from test.support import bigmemtest, _2G, threading_helper, Py_GIL_DISABLED
-from ._support import (_CData, PyCArrayType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
+von test.support importiere bigmemtest, _2G, threading_helper, Py_GIL_DISABLED
+von ._support importiere (_CData, PyCArrayType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
                        Py_TPFLAGS_IMMUTABLETYPE)
 
 
@@ -164,7 +164,7 @@ klasse ArrayTestCase(unittest.TestCase):
     def test_cache(self):
         # Array types are cached internally in the _ctypes extension,
         # in a WeakValueDictionary.  Make sure the array type is
-        # removed from the cache when the itemtype goes away.  This
+        # removed von the cache when the itemtype goes away.  This
         # test will not fail, but will show a leak in the testsuite.
 
         # Create a new type:
@@ -270,7 +270,7 @@ klasse ArrayTestCase(unittest.TestCase):
     @threading_helper.requires_working_threading()
     @unittest.skipUnless(Py_GIL_DISABLED, "only meaningful wenn the GIL is disabled")
     def test_thread_safety(self):
-        from threading import Thread
+        von threading importiere Thread
 
         buffer = (ctypes.c_char_p * 10)()
 

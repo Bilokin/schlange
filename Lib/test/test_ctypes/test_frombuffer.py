@@ -1,7 +1,7 @@
-import array
-import gc
-import unittest
-from ctypes import (Structure, Union, Array, sizeof,
+importiere array
+importiere gc
+importiere unittest
+von ctypes importiere (Structure, Union, Array, sizeof,
                     _Pointer, _SimpleCData, _CFuncPtr,
                     c_char, c_int)
 
@@ -54,7 +54,7 @@ klasse Test(unittest.TestCase):
 
     def test_fortran_contiguous(self):
         try:
-            import _testbuffer
+            importiere _testbuffer
         except ImportError as err:
             self.skipTest(str(err))
         flags = _testbuffer.ND_WRITABLE | _testbuffer.ND_FORTRAN

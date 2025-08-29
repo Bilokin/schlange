@@ -1,27 +1,27 @@
 # Run the tests in Programs/_testembed.c (tests fuer the CPython embedding APIs)
-from test import support
-from test.support import import_helper, os_helper, threading_helper, MS_WINDOWS
-import unittest
+von test importiere support
+von test.support importiere import_helper, os_helper, threading_helper, MS_WINDOWS
+importiere unittest
 
-from collections import namedtuple
-import contextlib
-import json
-import os
-import os.path
-import re
-import shutil
-import subprocess
-import sys
-import sysconfig
-import tempfile
-import textwrap
+von collections importiere namedtuple
+importiere contextlib
+importiere json
+importiere os
+importiere os.path
+importiere re
+importiere shutil
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere textwrap
 
 wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = Nichts
 
@@ -49,7 +49,7 @@ INIT_LOOPS = 4
 MAX_HASH_SEED = 4294967295
 
 ABI_THREAD = 't' wenn support.Py_GIL_DISABLED sonst ''
-# PLATSTDLIB_LANDMARK copied from Modules/getpath.py
+# PLATSTDLIB_LANDMARK copied von Modules/getpath.py
 wenn os.name == 'nt':
     PLATSTDLIB_LANDMARK = f'{sys.platlibdir}'
 sonst:
@@ -61,7 +61,7 @@ sonst:
 DEFAULT_THREAD_INHERIT_CONTEXT = 1 wenn support.Py_GIL_DISABLED sonst 0
 DEFAULT_CONTEXT_AWARE_WARNINGS = 1 wenn support.Py_GIL_DISABLED sonst 0
 
-# If we are running from a build dir, but the stdlib has been installed,
+# If we are running von a build dir, but the stdlib has been installed,
 # some tests need to expect different results.
 STDLIB_INSTALL = os.path.join(sys.prefix, sys.platlibdir,
     f'python{sys.version_info.major}.{sys.version_info.minor}')
@@ -144,7 +144,7 @@ klasse EmbeddingTestsMixin:
         out, err = self.run_embedded_interpreter("test_repeated_init_and_subinterpreters")
         self.assertEqual(err, "")
 
-        # The output from _testembed looks like this:
+        # The output von _testembed looks like this:
         # --- Pass 1 ---
         # interp 0 <0x1cf9330>, thread state <0x1cf9700>: id(modules) = 139650431942728
         # interp 1 <0x1d4f690>, thread state <0x1d35350>: id(modules) = 139650431165784
@@ -174,7 +174,7 @@ klasse EmbeddingTestsMixin:
             wenn match is Nichts:
                 self.assertRegex(line, interp_pat)
 
-            # Parse the line from the loop.  The first line is the main
+            # Parse the line von the loop.  The first line is the main
             # interpreter and the 3 afterward are subinterpreters.
             interp = Interp(*match.groups())
             wenn support.verbose > 2:
@@ -387,11 +387,11 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
 
         code = textwrap.dedent(f"""\
-            import dis
-            import importlib._bootstrap
-            import opcode
-            import test.test_dis
-            import test.support
+            importiere dis
+            importiere importlib._bootstrap
+            importiere opcode
+            importiere test.test_dis
+            importiere test.support
 
             def is_specialized(f):
                 fuer instruction in dis.get_instructions(f, adaptive=Wahr):
@@ -442,7 +442,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     def test_static_types_inherited_slots(self):
         script = textwrap.dedent("""
-            import test.support
+            importiere test.support
             results = []
             fuer cls in test.support.iter_builtin_types():
                 fuer attr, _ in test.support.iter_slot_wrappers(cls):
@@ -465,8 +465,8 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         del ns
 
         script += textwrap.dedent("""
-            import json
-            import sys
+            importiere json
+            importiere sys
             text = json.dumps(list(results))
             drucke(text, file=sys.stderr)
             """)
@@ -498,18 +498,18 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         # https://github.com/python/cpython/issues/122334
         code = textwrap.dedent("""
             try:
-                import _ssl
+                importiere _ssl
             except ModuleNotFoundError:
                 _ssl = Nichts
             wenn _ssl is not Nichts:
                 _ssl.txt2obj(txt='1.3')
             drucke('1')
 
-            import _queue
+            importiere _queue
             _queue.SimpleQueue().put_nowait(item=Nichts)
             drucke('2')
 
-            import _zoneinfo
+            importiere _zoneinfo
             _zoneinfo.ZoneInfo.clear_cache(only_keys=['Foo/Bar'])
             drucke('3')
         """)
@@ -745,9 +745,9 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     def _get_expected_config_impl(self):
         env = remove_python_envvars()
         code = textwrap.dedent('''
-            import json
-            import sys
-            import _testinternalcapi
+            importiere json
+            importiere sys
+            importiere _testinternalcapi
 
             configs = _testinternalcapi.get_configs()
 
@@ -757,8 +757,8 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             sys.stdout.buffer.flush()
         ''')
 
-        # Use -S to not import the site module: get the proper configuration
-        # when test_embed is run from a venv (bpo-35313)
+        # Use -S to not importiere the site module: get the proper configuration
+        # when test_embed is run von a venv (bpo-35313)
         args = [sys.executable, '-S', '-c', code]
         proc = subprocess.run(args, env=env,
                               stdout=subprocess.PIPE,
@@ -1400,7 +1400,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
             wenn MS_WINDOWS:
                 # Copy pythonXY.dll (or pythonXY_d.dll)
-                import fnmatch
+                importiere fnmatch
                 exedir = os.path.dirname(self.test_exe)
                 fuer f in os.listdir(exedir):
                     wenn fnmatch.fnmatch(f, '*.dll'):
@@ -1491,7 +1491,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'pythonpath_env': paths_str,
             'stdlib_dir': stdlib,
         }
-        # The code above is taken from test_init_setpythonhome()
+        # The code above is taken von test_init_setpythonhome()
         env = {'TESTHOME': home, 'PYTHONPATH': paths_str}
 
         env['NEGATIVE_ISPYTHONBUILD'] = '1'

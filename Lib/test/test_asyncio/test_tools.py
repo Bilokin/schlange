@@ -1,8 +1,8 @@
-import unittest
+importiere unittest
 
-from asyncio import tools
+von asyncio importiere tools
 
-from collections import namedtuple
+von collections importiere namedtuple
 
 FrameInfo = namedtuple('FrameInfo', ['funcname', 'filename', 'lineno'])
 CoroInfo = namedtuple('CoroInfo', ['call_stack', 'task_name'])

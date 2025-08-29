@@ -1,3 +1,3 @@
-from . import a
+von . importiere a
 
 annos = a.__annotations__

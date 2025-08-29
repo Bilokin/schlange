@@ -7,8 +7,8 @@
 # they display correctly.
 #
 
-import curses
-from curses import textpad
+importiere curses
+von curses importiere textpad
 
 def test_textpad(stdscr, insert_mode=Falsch):
     ncols, nlines = 8, 3

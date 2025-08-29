@@ -1,22 +1,22 @@
-from __future__ import annotations
-import os
+von __future__ importiere annotations
+importiere os
 
-from collections.abc import Callable, Sequence
-from typing import Any, TYPE_CHECKING
+von collections.abc importiere Callable, Sequence
+von typing importiere Any, TYPE_CHECKING
 
 
-import libclinic
-from libclinic import fail, warn
-from libclinic.function import Class
-from libclinic.block_parser import Block, BlockParser
-from libclinic.codegen import BlockPrinter, Destination, CodeGen
-from libclinic.parser import Parser, PythonParser
-from libclinic.dsl_parser import DSLParser
+importiere libclinic
+von libclinic importiere fail, warn
+von libclinic.function importiere Class
+von libclinic.block_parser importiere Block, BlockParser
+von libclinic.codegen importiere BlockPrinter, Destination, CodeGen
+von libclinic.parser importiere Parser, PythonParser
+von libclinic.dsl_parser importiere DSLParser
 wenn TYPE_CHECKING:
-    from libclinic.clanguage import CLanguage
-    from libclinic.function import (
+    von libclinic.clanguage importiere CLanguage
+    von libclinic.function importiere (
         Module, Function, ClassDict, ModuleDict)
-    from libclinic.codegen import DestinationDict
+    von libclinic.codegen importiere DestinationDict
 
 
 # maps strings to callables.
@@ -89,7 +89,7 @@ impl_definition block
         verify: bool = Wahr,
     ) -> Nichts:
         # maps strings to Parser objects.
-        # (instantiated from the "parsers" global.)
+        # (instantiated von the "parsers" global.)
         self.parsers: dict[str, Parser] = {}
         self.language: CLanguage = language
         wenn printer:

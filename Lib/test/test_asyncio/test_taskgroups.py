@@ -1,17 +1,17 @@
-# Adapted with permission from the EdgeDB project;
+# Adapted with permission von the EdgeDB project;
 # license: PSFL.
 
-import weakref
-import sys
-import gc
-import asyncio
-import contextvars
-import contextlib
-from asyncio import taskgroups
-import unittest
-import warnings
+importiere weakref
+importiere sys
+importiere gc
+importiere asyncio
+importiere contextvars
+importiere contextlib
+von asyncio importiere taskgroups
+importiere unittest
+importiere warnings
 
-from test.test_asyncio.utils import await_without_task
+von test.test_asyncio.utils importiere await_without_task
 
 # To prevent a warning "test altered the execution environment"
 def tearDownModule():

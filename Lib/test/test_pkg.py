@@ -1,10 +1,10 @@
 # Test packages (dotted-name import)
 
-import sys
-import os
-import tempfile
-import textwrap
-import unittest
+importiere sys
+importiere os
+importiere tempfile
+importiere textwrap
+importiere unittest
 
 
 # Helpers to create and destroy hierarchies.
@@ -29,18 +29,18 @@ def fixdir(lst):
 
 # XXX Things to test
 #
-# import package without __init__
-# import package with __init__
+# importiere package without __init__
+# importiere package with __init__
 # __init__ importing submodule
 # __init__ importing global module
 # __init__ defining variables
 # submodule importing other submodule
 # submodule importing global module
-# submodule import submodule via global name
-# from package import submodule
-# from package import subpackage
-# from package import variable (defined in __init__)
-# from package import * (defined in __init__)
+# submodule importiere submodule via global name
+# von package importiere submodule
+# von package importiere subpackage
+# von package importiere variable (defined in __init__)
+# von package importiere * (defined in __init__)
 
 
 klasse TestPkg(unittest.TestCase):
@@ -94,7 +94,7 @@ klasse TestPkg(unittest.TestCase):
     def test_1(self):
         hier = [("t1", Nichts), ("t1 __init__.py", "")]
         self.mkhier(hier)
-        import t1  # noqa: F401
+        importiere t1  # noqa: F401
 
     def test_2(self):
         hier = [
@@ -107,8 +107,8 @@ klasse TestPkg(unittest.TestCase):
         ]
         self.mkhier(hier)
 
-        import t2.sub
-        import t2.sub.subsub
+        importiere t2.sub
+        importiere t2.sub.subsub
         self.assertEqual(t2.__name__, "t2")
         self.assertEqual(t2.sub.__name__, "t2.sub")
         self.assertEqual(t2.sub.subsub.__name__, "t2.sub.subsub")
@@ -116,29 +116,29 @@ klasse TestPkg(unittest.TestCase):
         # This exec crap is needed because Py3k forbids 'import *' outside
         # of module-scope and __import__() is insufficient fuer what we need.
         s = """
-            import t2
-            from t2 import *
+            importiere t2
+            von t2 importiere *
             self.assertEqual(dir(), ['self', 'sub', 't2'])
             """
         self.run_code(s)
 
-        from t2 import sub
-        from t2.sub import subsub
-        from t2.sub.subsub import spam  # noqa: F401
+        von t2 importiere sub
+        von t2.sub importiere subsub
+        von t2.sub.subsub importiere spam  # noqa: F401
         self.assertEqual(sub.__name__, "t2.sub")
         self.assertEqual(subsub.__name__, "t2.sub.subsub")
         self.assertEqual(sub.subsub.__name__, "t2.sub.subsub")
         fuer name in ['spam', 'sub', 'subsub', 't2']:
-            self.assertWahr(locals()["name"], "Failed to import %s" % name)
+            self.assertWahr(locals()["name"], "Failed to importiere %s" % name)
 
-        import t2.sub
-        import t2.sub.subsub
+        importiere t2.sub
+        importiere t2.sub.subsub
         self.assertEqual(t2.__name__, "t2")
         self.assertEqual(t2.sub.__name__, "t2.sub")
         self.assertEqual(t2.sub.subsub.__name__, "t2.sub.subsub")
 
         s = """
-            from t2 import *
+            von t2 importiere *
             self.assertEqual(dir(), ['self', 'sub'])
             """
         self.run_code(s)
@@ -154,7 +154,7 @@ klasse TestPkg(unittest.TestCase):
                ]
         self.mkhier(hier)
 
-        import t3.sub.subsub
+        importiere t3.sub.subsub
         self.assertEqual(t3.__name__, "t3")
         self.assertEqual(t3.sub.__name__, "t3.sub")
         self.assertEqual(t3.sub.subsub.__name__, "t3.sub.subsub")
@@ -175,7 +175,7 @@ klasse TestPkg(unittest.TestCase):
         self.mkhier(hier)
 
         s = """
-            from t4.sub.subsub import *
+            von t4.sub.subsub importiere *
             self.assertEqual(spam, 1)
             """
         self.run_code(s)
@@ -186,17 +186,17 @@ klasse TestPkg(unittest.TestCase):
         ("t5 __init__.py", "import t5.foo"),
         ("t5 string.py", "spam = 1"),
         ("t5 foo.py",
-         "from . import string; assert string.spam == 1"),
+         "from . importiere string; assert string.spam == 1"),
          ]
         self.mkhier(hier)
 
         s = """
-            from t5 import *
+            von t5 importiere *
             self.assertEqual(dir(), ['foo', 'self', 'string', 't5'])
             """
         self.run_code(s)
 
-        import t5
+        importiere t5
         self.assertEqual(fixdir(dir(t5)),
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__path__', '__spec__',
@@ -219,14 +219,14 @@ klasse TestPkg(unittest.TestCase):
                ]
         self.mkhier(hier)
 
-        import t6
+        importiere t6
         self.assertEqual(fixdir(dir(t6)),
                          ['__all__', '__cached__', '__doc__', '__file__',
                           '__loader__', '__name__', '__package__', '__path__',
                           '__spec__'])
         s = """
-            import t6
-            from t6 import *
+            importiere t6
+            von t6 importiere *
             self.assertEqual(fixdir(dir(t6)),
                              ['__all__', '__cached__', '__doc__', '__file__',
                               '__loader__', '__name__', '__package__',
@@ -254,18 +254,18 @@ klasse TestPkg(unittest.TestCase):
 
 
         t7, sub, subsub = Nichts, Nichts, Nichts
-        import t7 as tas
+        importiere t7 as tas
         self.assertEqual(fixdir(dir(tas)),
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__path__', '__spec__'])
         self.assertFalsch(t7)
-        from t7 import sub as subpar
+        von t7 importiere sub as subpar
         self.assertEqual(fixdir(dir(subpar)),
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__path__', '__spec__'])
         self.assertFalsch(t7)
         self.assertFalsch(sub)
-        from t7.sub import subsub as subsubsub
+        von t7.sub importiere subsub as subsubsub
         self.assertEqual(fixdir(dir(subsubsub)),
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__path__', '__spec__',
@@ -273,7 +273,7 @@ klasse TestPkg(unittest.TestCase):
         self.assertFalsch(t7)
         self.assertFalsch(sub)
         self.assertFalsch(subsub)
-        from t7.sub.subsub import spam as ham
+        von t7.sub.subsub importiere spam as ham
         self.assertEqual(ham, 1)
         self.assertFalsch(t7)
         self.assertFalsch(sub)
@@ -288,7 +288,7 @@ klasse TestPkg(unittest.TestCase):
                ]
         self.mkhier(hier)
 
-        import t8
+        importiere t8
         self.assertEqual(t8.__doc__, "doc fuer t8")
 
 wenn __name__ == "__main__":

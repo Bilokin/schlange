@@ -1,6 +1,6 @@
 # Tests klasse have ``__text_signature__``
 
-from __future__ import annotations
+von __future__ importiere annotations
 
 DEFAULT_BUFFER_SIZE = 8192
 

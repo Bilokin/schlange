@@ -40,22 +40,22 @@ getstatusoutput(...): Runs a command in the shell, waits fuer it to complete,
     then returns a (exitcode, output) tuple
 """
 
-import builtins
-import errno
-import io
-import locale
-import os
-import time
-import signal
-import sys
-import threading
-import warnings
-import contextlib
-from time import monotonic as _time
-import types
+importiere builtins
+importiere errno
+importiere io
+importiere locale
+importiere os
+importiere time
+importiere signal
+importiere sys
+importiere threading
+importiere warnings
+importiere contextlib
+von time importiere monotonic as _time
+importiere types
 
 try:
-    import fcntl
+    importiere fcntl
 except ImportError:
     fcntl = Nichts
 
@@ -68,7 +68,7 @@ __all__ = ["Popen", "PIPE", "STDOUT", "call", "check_call", "getstatusoutput",
 
 # use presence of msvcrt to detect Windows-like platforms (see bpo-8110)
 try:
-    import msvcrt
+    importiere msvcrt
 except ModuleNotFoundError:
     _mswindows = Falsch
 sonst:
@@ -78,8 +78,8 @@ sonst:
 _can_fork_exec = sys.platform not in {"emscripten", "wasi", "ios", "tvos", "watchos"}
 
 wenn _mswindows:
-    import _winapi
-    from _winapi import (CREATE_NEW_CONSOLE, CREATE_NEW_PROCESS_GROUP,  # noqa: F401
+    importiere _winapi
+    von _winapi importiere (CREATE_NEW_CONSOLE, CREATE_NEW_PROCESS_GROUP,  # noqa: F401
                          STD_INPUT_HANDLE, STD_OUTPUT_HANDLE,
                          STD_ERROR_HANDLE, SW_HIDE,
                          STARTF_USESTDHANDLES, STARTF_USESHOWWINDOW,
@@ -103,7 +103,7 @@ wenn _mswindows:
                     "CREATE_DEFAULT_ERROR_MODE", "CREATE_BREAKAWAY_FROM_JOB"])
 sonst:
     wenn _can_fork_exec:
-        from _posixsubprocess import fork_exec as _fork_exec
+        von _posixsubprocess importiere fork_exec as _fork_exec
         # used in methods that are called by __del__
         klasse _del_safe:
             waitpid = os.waitpid
@@ -121,8 +121,8 @@ sonst:
             WNOHANG = Nichts
             ECHILD = errno.ECHILD
 
-    import select
-    import selectors
+    importiere select
+    importiere selectors
 
 
 # Exception classes used by this module.
@@ -267,7 +267,7 @@ wenn _mswindows:
 sonst:
     # This lists holds Popen instances fuer which the underlying process had not
     # exited at the time its __del__ method got called: those processes are
-    # wait()ed fuer synchronously from _cleanup() when a new Popen object is
+    # wait()ed fuer synchronously von _cleanup() when a new Popen object is
     # created, to avoid zombie processes.
     _active = []
 
@@ -613,7 +613,7 @@ def list2cmdline(seq):
     fuer arg in map(os.fsdecode, seq):
         bs_buf = []
 
-        # Add a space to separate this argument from the others
+        # Add a space to separate this argument von the others
         wenn result:
             result.append(' ')
 
@@ -658,11 +658,11 @@ def getstatusoutput(cmd, *, encoding=Nichts, errors=Nichts):
     return a 2-tuple (status, output). The locale encoding is used
     to decode the output and process newlines.
 
-    A trailing newline is stripped from the output.
+    A trailing newline is stripped von the output.
     The exit status fuer the command can be interpreted
     according to the rules fuer the function 'wait'. Example:
 
-    >>> import subprocess
+    >>> importiere subprocess
     >>> subprocess.getstatusoutput('ls /bin/ls')
     (0, '/bin/ls')
     >>> subprocess.getstatusoutput('cat /bin/junk')
@@ -689,7 +689,7 @@ def getoutput(cmd, *, encoding=Nichts, errors=Nichts):
     Like getstatusoutput(), except the exit status is ignored and the return
     value is a string containing the command's output.  Example:
 
-    >>> import subprocess
+    >>> importiere subprocess
     >>> subprocess.getoutput('ls /bin/ls')
     '/bin/ls'
     """
@@ -830,7 +830,7 @@ klasse Popen:
         _cleanup()
         # Held while anything is calling waitpid before returncode has been
         # updated to prevent clobbering returncode wenn wait() or poll() are
-        # called from multiple threads at once.  After acquiring the lock,
+        # called von multiple threads at once.  After acquiring the lock,
         # code must re-check self.returncode to see wenn another thread just
         # finished a waitpid() call.
         self._waitpid_lock = threading.Lock()
@@ -914,7 +914,7 @@ klasse Popen:
 
             sowenn isinstance(group, str):
                 try:
-                    import grp
+                    importiere grp
                 except ImportError:
                     raise ValueError("The group parameter cannot be a string "
                                      "on systems without the grp module")
@@ -942,7 +942,7 @@ klasse Popen:
             fuer extra_group in extra_groups:
                 wenn isinstance(extra_group, str):
                     try:
-                        import grp
+                        importiere grp
                     except ImportError:
                         raise ValueError("Items in extra_groups cannot be "
                                          "strings on systems without the "
@@ -970,7 +970,7 @@ klasse Popen:
 
             sowenn isinstance(user, str):
                 try:
-                    import pwd
+                    importiere pwd
                 except ImportError:
                     raise ValueError("The user parameter cannot be a string "
                                      "on systems without the pwd module")
@@ -1174,7 +1174,7 @@ klasse Popen:
 
     def communicate(self, input=Nichts, timeout=Nichts):
         """Interact with process: Send data to stdin and close it.
-        Read data from stdout and stderr, until end-of-file is
+        Read data von stdout and stderr, until end-of-file is
         reached.  Wait fuer process to terminate.
 
         The optional "input" argument should be data to be sent to the
@@ -1318,7 +1318,7 @@ klasse Popen:
             wenn devnull_fd is not Nichts:
                 stack.callback(os.close, devnull_fd)
 
-        # Prevent a double close of these handles/fds from __init__ on error.
+        # Prevent a double close of these handles/fds von __init__ on error.
         self._closed_child_pipe_fds = Wahr
 
     @contextlib.contextmanager
@@ -1646,7 +1646,7 @@ klasse Popen:
                 wenn self.stderr_thread.is_alive():
                     raise TimeoutExpired(self.args, orig_timeout)
 
-            # Collect the output from and close both pipes, now that we know
+            # Collect the output von and close both pipes, now that we know
             # both have been read successfully.
             stdout = Nichts
             stderr = Nichts
@@ -1859,7 +1859,7 @@ klasse Popen:
 
             orig_executable = executable
 
-            # For transferring possible exec failure from child to parent.
+            # For transferring possible exec failure von child to parent.
             # Data format: "exception name:hex errno:description"
             # Pickle is not used; it is complex and involves memory allocation.
             errpipe_read, errpipe_write = os.pipe()
@@ -1947,7 +1947,7 @@ klasse Popen:
                 except ValueError:
                     exception_name = b'SubprocessError'
                     hex_errno = b'0'
-                    err_msg = 'Bad exception data from child: {!r}'.format(
+                    err_msg = 'Bad exception data von child: {!r}'.format(
                                   bytes(errpipe_data))
                 child_exception_type = getattr(
                         builtins, exception_name.decode('ascii'),
@@ -1956,7 +1956,7 @@ klasse Popen:
                     errno_num = int(hex_errno, 16)
                     wenn err_msg == "noexec:chdir":
                         err_msg = ""
-                        # The error must be from chdir(cwd).
+                        # The error must be von chdir(cwd).
                         err_filename = cwd
                     sowenn err_msg == "noexec":
                         err_msg = ""
@@ -2036,7 +2036,7 @@ klasse Popen:
             wenn timeout is not Nichts:
                 endtime = _time() + timeout
                 # Enter a busy loop wenn we have a timeout.  This busy loop was
-                # cribbed from Lib/threading.py in Thread.wait() at r71065.
+                # cribbed von Lib/threading.py in Thread.wait() at r71065.
                 delay = 0.0005 # 500 us -> initial delay of 1 ms
                 while Wahr:
                     wenn self._waitpid_lock.acquire(Falsch):
@@ -2175,7 +2175,7 @@ klasse Popen:
 
 
         def _save_input(self, input):
-            # This method is called from the _communicate_with_*() methods
+            # This method is called von the _communicate_with_*() methods
             # so that wenn we time out while communicating, we can continue
             # sending input wenn we retry.
             wenn self.stdin and self._input is Nichts:

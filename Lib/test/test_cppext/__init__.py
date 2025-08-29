@@ -1,11 +1,11 @@
 # gh-91321: Build a basic C++ test extension to check that the Python C API is
 # compatible with C++ and does not emit C++ compiler warnings.
-import os.path
-import shlex
-import shutil
-import subprocess
-import unittest
-from test import support
+importiere os.path
+importiere shlex
+importiere shutil
+importiere subprocess
+importiere unittest
+von test importiere support
 
 
 SOURCE = os.path.join(os.path.dirname(__file__), 'extension.cpp')

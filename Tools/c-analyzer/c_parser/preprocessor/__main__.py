@@ -1,7 +1,7 @@
-import logging
-import sys
+importiere logging
+importiere sys
 
-from c_common.scriptutil import (
+von c_common.scriptutil importiere (
     add_verbosity_cli,
     add_traceback_cli,
     add_kind_filtering_cli,
@@ -13,7 +13,7 @@ from c_common.scriptutil import (
     get_prog,
     main_for_filenames,
 )
-from . import (
+von . importiere (
     errors as _errors,
     get_preprocessor as _get_preprocessor,
 )
@@ -151,7 +151,7 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *,
                excluded=Nichts,
                **prepr_kwargs
                ):
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(
         prog=prog or get_prog(),
     )

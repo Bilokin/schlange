@@ -1,7 +1,7 @@
-import string
-import unittest
+importiere string
+importiere unittest
 
-from _pyrepl.keymap import _keynames, _escapes, parse_keys, compile_keymap, KeySpecError
+von _pyrepl.keymap importiere _keynames, _escapes, parse_keys, compile_keymap, KeySpecError
 
 
 klasse TestParseKeys(unittest.TestCase):

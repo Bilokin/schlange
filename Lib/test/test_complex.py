@@ -1,15 +1,15 @@
-import unittest
-import sys
-from test import support
-from test.support.testcase import ComplexesAreIdenticalMixin
-from test.support.numbers import (
+importiere unittest
+importiere sys
+von test importiere support
+von test.support.testcase importiere ComplexesAreIdenticalMixin
+von test.support.numbers importiere (
     VALID_UNDERSCORE_LITERALS,
     INVALID_UNDERSCORE_LITERALS,
 )
 
-from random import random
-from math import isnan, copysign
-import operator
+von random importiere random
+von math importiere isnan, copysign
+importiere operator
 
 INF = float("inf")
 NAN = float("nan")
@@ -530,7 +530,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         check(complex(4.25, imag=1.5), 4.25, 1.5)
 
         # check that the sign of a zero in the real or imaginary part
-        # is preserved when constructing from two floats.
+        # is preserved when constructing von two floats.
         fuer x in 1.0, -1.0:
             fuer y in 0.0, -0.0:
                 check(complex(x, y), x, y)
@@ -608,7 +608,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, complex, 1.5, MyInt())
 
         klasse complex0(complex):
-            """Test usage of __complex__() when inheriting from 'complex'"""
+            """Test usage of __complex__() when inheriting von 'complex'"""
             def __complex__(self):
                 return 42j
 

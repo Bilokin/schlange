@@ -1,58 +1,58 @@
-import annotationlib
-import contextlib
-import collections
-import collections.abc
-from collections import defaultdict
-from functools import lru_cache, wraps, reduce
-import gc
-import inspect
-import io
-import itertools
-import operator
-import os
-import pickle
-import re
-import sys
-from unittest import TestCase, main, skip
-from unittest.mock import patch
-from copy import copy, deepcopy
+importiere annotationlib
+importiere contextlib
+importiere collections
+importiere collections.abc
+von collections importiere defaultdict
+von functools importiere lru_cache, wraps, reduce
+importiere gc
+importiere inspect
+importiere io
+importiere itertools
+importiere operator
+importiere os
+importiere pickle
+importiere re
+importiere sys
+von unittest importiere TestCase, main, skip
+von unittest.mock importiere patch
+von copy importiere copy, deepcopy
 
-from typing import Any, NoReturn, Never, assert_never
-from typing import overload, get_overloads, clear_overloads
-from typing import TypeVar, TypeVarTuple, Unpack, AnyStr
-from typing import T, KT, VT  # Not in __all__.
-from typing import Union, Optional, Literal
-from typing import Tuple, List, Dict, MutableMapping
-from typing import Callable
-from typing import Generic, ClassVar, Final, final, Protocol
-from typing import assert_type, cast, runtime_checkable
-from typing import get_type_hints
-from typing import get_origin, get_args, get_protocol_members
-from typing import override
-from typing import is_typeddict, is_protocol
-from typing import reveal_type
-from typing import dataclass_transform
-from typing import no_type_check, no_type_check_decorator
-from typing import Type
-from typing import NamedTuple, NotRequired, Required, ReadOnly, TypedDict
-from typing import IO, TextIO, BinaryIO
-from typing import Pattern, Match
-from typing import Annotated, ForwardRef
-from typing import Self, LiteralString
-from typing import TypeAlias
-from typing import ParamSpec, Concatenate, ParamSpecArgs, ParamSpecKwargs
-from typing import TypeGuard, TypeIs, NoDefault
-import abc
-import textwrap
-import typing
-import weakref
-import types
+von typing importiere Any, NoReturn, Never, assert_never
+von typing importiere overload, get_overloads, clear_overloads
+von typing importiere TypeVar, TypeVarTuple, Unpack, AnyStr
+von typing importiere T, KT, VT  # Not in __all__.
+von typing importiere Union, Optional, Literal
+von typing importiere Tuple, List, Dict, MutableMapping
+von typing importiere Callable
+von typing importiere Generic, ClassVar, Final, final, Protocol
+von typing importiere assert_type, cast, runtime_checkable
+von typing importiere get_type_hints
+von typing importiere get_origin, get_args, get_protocol_members
+von typing importiere override
+von typing importiere is_typeddict, is_protocol
+von typing importiere reveal_type
+von typing importiere dataclass_transform
+von typing importiere no_type_check, no_type_check_decorator
+von typing importiere Type
+von typing importiere NamedTuple, NotRequired, Required, ReadOnly, TypedDict
+von typing importiere IO, TextIO, BinaryIO
+von typing importiere Pattern, Match
+von typing importiere Annotated, ForwardRef
+von typing importiere Self, LiteralString
+von typing importiere TypeAlias
+von typing importiere ParamSpec, Concatenate, ParamSpecArgs, ParamSpecKwargs
+von typing importiere TypeGuard, TypeIs, NoDefault
+importiere abc
+importiere textwrap
+importiere typing
+importiere weakref
+importiere types
 
-from test.support import (
+von test.support importiere (
     captured_stderr, cpython_only, requires_docstrings, import_helper, run_code,
     EqualToForwardRef,
 )
-from test.typinganndata import (
+von test.typinganndata importiere (
     ann_module695, mod_generics_cache, _typed_dict_helper,
     ann_module, ann_module2, ann_module3, ann_module5, ann_module6, ann_module8
 )
@@ -397,7 +397,7 @@ klasse TypeVarTests(BaseTestCase):
 
     def test_basic_with_exec(self):
         ns = {}
-        exec('from typing import TypeVar; T = TypeVar("T", bound=float)', ns, ns)
+        exec('from typing importiere TypeVar; T = TypeVar("T", bound=float)', ns, ns)
         T = ns['T']
         self.assertIsInstance(T, TypeVar)
         self.assertEqual(T.__name__, 'T')
@@ -1256,7 +1256,7 @@ klasse TypeVarTupleTests(BaseTestCase):
 
     def test_exec(self):
         ns = {}
-        exec('from typing import TypeVarTuple; Ts = TypeVarTuple("Ts")', ns)
+        exec('from typing importiere TypeVarTuple; Ts = TypeVarTuple("Ts")', ns)
         Ts = ns['Ts']
         self.assertEqual(Ts.__name__, 'Ts')
         self.assertIs(Ts.__module__, Nichts)
@@ -1851,7 +1851,7 @@ klasse TypeVarTupleTests(BaseTestCase):
             {'args': (*tuple[int, bool, *Ts, float, str],)[0]},
         )
 
-        # Unpacking using `Unpack`, `Tuple` type from typing.py
+        # Unpacking using `Unpack`, `Tuple` type von typing.py
 
         def e(*args: Unpack[Tuple[int, Unpack[Ts]]]): pass
         self.assertEqual(
@@ -2234,7 +2234,7 @@ klasse UnionTests(BaseTestCase):
     def test_etree(self):
         # See https://github.com/python/typing/issues/229
         # (Only relevant fuer Python 2.)
-        from xml.etree.ElementTree import Element
+        von xml.etree.ElementTree importiere Element
 
         Union[Element, str]  # Shouldn't crash
 
@@ -2254,7 +2254,7 @@ klasse UnionTests(BaseTestCase):
         self.assertEqual(Union[Literal[Wahr], Literal[1]].__args__,
                          (Literal[Wahr], Literal[1]))
 
-        import enum
+        importiere enum
         klasse Ints(enum.IntEnum):
             A = 0
             B = 1
@@ -2641,7 +2641,7 @@ klasse LiteralTests(BaseTestCase):
         Literal[b"foo", u"bar"]
 
     def test_enum(self):
-        import enum
+        importiere enum
         klasse My(enum.Enum):
             A = 'A'
 
@@ -2737,7 +2737,7 @@ klasse LiteralTests(BaseTestCase):
             self.assertEqual(l.__args__, (1, 2, 3))
 
     def test_does_not_flatten_enum(self):
-        import enum
+        importiere enum
         klasse Ints(enum.IntEnum):
             A = 1
             B = 2
@@ -2944,7 +2944,7 @@ klasse ProtocolTests(BaseTestCase):
         self.assertNotIsInstance(E(), D)
 
     def test_inheritance_from_object(self):
-        # Inheritance from object is specifically allowed, unlike other nominal classes
+        # Inheritance von object is specifically allowed, unlike other nominal classes
         klasse P(Protocol, object):
             x: int
 
@@ -3254,7 +3254,7 @@ klasse ProtocolTests(BaseTestCase):
 
         with self.assertRaisesRegex(
             TypeError,
-            "Protocols can only inherit from other protocols"
+            "Protocols can only inherit von other protocols"
         ):
             klasse Foo(collections.abc.Mapping, Protocol):
                 pass
@@ -3857,7 +3857,7 @@ klasse ProtocolTests(BaseTestCase):
 
         # the returned object should be immutable,
         # and should be a different object to the original attribute
-        # to prevent users from (accidentally or deliberately)
+        # to prevent users von (accidentally or deliberately)
         # mutating the attribute on the original class
         self.assertIsInstance(get_protocol_members(P), frozenset)
         self.assertIsNot(get_protocol_members(P), P.__protocol_attrs__)
@@ -5100,7 +5100,7 @@ klasse GenericTests(BaseTestCase):
         # Test stringified annotations
         scope = {}
         exec(textwrap.dedent('''
-        from __future__ import annotations
+        von __future__ importiere annotations
         klasse C3:
             a: List[list["C2"]]
         '''), scope)
@@ -5553,7 +5553,7 @@ klasse GenericTests(BaseTestCase):
         self.assertEqual(A.__mro__, (A, list, Generic, object))
 
     def test_multiple_inheritance_non_type_without___mro_entries__(self):
-        # Error should be from the type machinery, not from typing.py
+        # Error should be von the type machinery, not von typing.py
         with self.assertRaisesRegex(TypeError, r"^bases must be types"):
             klasse A(List[int], object()): ...
 
@@ -5562,7 +5562,7 @@ klasse GenericTests(BaseTestCase):
             def __mro_entries__(self, bases):
                 return Nichts
 
-        # Error should be from the type machinery, not from typing.py
+        # Error should be von the type machinery, not von typing.py
         with self.assertRaisesRegex(
             TypeError,
             r"^__mro_entries__ must return a tuple",
@@ -5574,7 +5574,7 @@ klasse GenericTests(BaseTestCase):
             def __mro_entries__(self, bases):
                 return (object(),)
 
-        # Error should be from the type machinery, not from typing.py
+        # Error should be von the type machinery, not von typing.py
         with self.assertRaisesRegex(
             TypeError,
             r"^bases must be types",
@@ -6648,7 +6648,7 @@ klasse GetTypeHintsTests(BaseTestCase):
     def test_get_type_hints_modules_forwardref(self):
         # FIXME: This currently exposes a bug in typing. Cached forward references
         # don't account fuer the case where there are multiple types of the same
-        # name coming from different modules in the same program.
+        # name coming von different modules in the same program.
         mgc_hints = {'default_a': Optional[mod_generics_cache.A],
                      'default_b': Optional[mod_generics_cache.B]}
         self.assertEqual(gth(mod_generics_cache), mgc_hints)
@@ -7369,7 +7369,7 @@ klasse EvaluateForwardRefTests(BaseTestCase):
         )
 
     def test_with_module(self):
-        from test.typinganndata import fwdref_module
+        von test.typinganndata importiere fwdref_module
 
         typing.evaluate_forward_ref(
             fwdref_module.fw,)
@@ -8113,8 +8113,8 @@ klasse NamedTupleTests(BaseTestCase):
 
     def test_future_annotations(self):
         code = """
-        from __future__ import annotations
-        from typing import NamedTuple
+        von __future__ importiere annotations
+        von typing importiere NamedTuple
         klasse X(NamedTuple):
             a: int
             b: Nichts
@@ -8621,8 +8621,8 @@ klasse TypedDictTests(BaseTestCase):
         def _make_td(future, class_name, annos, base, extra_names=Nichts):
             lines = []
             wenn future:
-                lines.append('from __future__ import annotations')
-            lines.append('from typing import TypedDict')
+                lines.append('from __future__ importiere annotations')
+            lines.append('from typing importiere TypedDict')
             lines.append(f'class {class_name}({base}):')
             fuer name, anno in annos.items():
                 lines.append(f'    {name}: {anno}')
@@ -8765,7 +8765,7 @@ klasse TypedDictTests(BaseTestCase):
             with self.subTest(bases=bases):
                 with self.assertRaisesRegex(
                     TypeError,
-                    'cannot inherit from both a TypedDict type and a non-TypedDict',
+                    'cannot inherit von both a TypedDict type and a non-TypedDict',
                 ):
                     klasse Wrong(*bases):
                         pass
@@ -9396,7 +9396,7 @@ klasse AnnotatedTests(BaseTestCase):
         self.assertEqual(get_args(Union[Annotated[int, 1], str, Annotated[str, {}], int]),
                          (Annotated[int, 1], str, Annotated[str, {}], int))
 
-        import dataclasses
+        importiere dataclasses
         @dataclasses.dataclass
         klasse ValueRange:
             lo: int
@@ -9716,7 +9716,7 @@ klasse AnnotatedTests(BaseTestCase):
         with self.assertRaises(TypeError):
             H[int]
 
-        # Now let's try creating an alias from an alias.
+        # Now let's try creating an alias von an alias.
 
         Ts2 = TypeVarTuple('Ts2')
         T3 = TypeVar('T3')
@@ -9845,7 +9845,7 @@ klasse ParamSpecTests(BaseTestCase):
 
     def test_basic_with_exec(self):
         ns = {}
-        exec('from typing import ParamSpec; P = ParamSpec("P")', ns, ns)
+        exec('from typing importiere ParamSpec; P = ParamSpec("P")', ns, ns)
         P = ns['P']
         self.assertIsInstance(P, ParamSpec)
         self.assertEqual(P.__name__, 'P')
@@ -10726,7 +10726,7 @@ klasse AllTests(BaseTestCase):
     """Tests fuer __all__."""
 
     def test_all(self):
-        from typing import __all__ as a
+        von typing importiere __all__ as a
         # Just spot-check the first and last of every category.
         self.assertIn('AbstractSet', a)
         self.assertIn('ValuesView', a)
@@ -10833,7 +10833,7 @@ klasse UnionGenericAliasTests(BaseTestCase):
 
 
 def load_tests(loader, tests, pattern):
-    import doctest
+    importiere doctest
     tests.addTests(doctest.DocTestSuite(typing))
     return tests
 

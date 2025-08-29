@@ -19,9 +19,9 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from __future__ import annotations
-import os
-import time
+von __future__ importiere annotations
+importiere os
+importiere time
 
 # Categories of actions:
 #  killing
@@ -32,11 +32,11 @@ import time
 #  finishing
 # [completion]
 
-from .trace import trace
+von .trace importiere trace
 
 # types
 wenn Falsch:
-    from .historical_reader import HistoricalReader
+    von .historical_reader importiere HistoricalReader
 
 
 klasse Command:
@@ -215,7 +215,7 @@ klasse yank_pop(YankCommand):
 
 klasse interrupt(FinishCommand):
     def do(self) -> Nichts:
-        import signal
+        importiere signal
 
         self.reader.console.finish()
         self.reader.finish()
@@ -231,7 +231,7 @@ klasse ctrl_c(Command):
 
 klasse suspend(Command):
     def do(self) -> Nichts:
-        import signal
+        importiere signal
 
         r = self.reader
         p = r.pos
@@ -443,7 +443,7 @@ klasse accept(FinishCommand):
 
 klasse help(Command):
     def do(self) -> Nichts:
-        import _sitebuiltins
+        importiere _sitebuiltins
 
         with self.reader.suspend():
             self.reader.msg = _sitebuiltins._Helper()()  # type: ignore[assignment]
@@ -464,8 +464,8 @@ klasse invalid_command(Command):
 
 klasse show_history(Command):
     def do(self) -> Nichts:
-        from .pager import get_pager
-        from site import gethistoryfile
+        von .pager importiere get_pager
+        von site importiere gethistoryfile
 
         history = os.linesep.join(self.reader.history[:])
         self.reader.console.restore()

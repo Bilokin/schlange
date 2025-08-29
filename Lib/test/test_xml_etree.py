@@ -1,36 +1,36 @@
-# IMPORTANT: the same tests are run from "test_xml_etree_c" in order
+# IMPORTANT: the same tests are run von "test_xml_etree_c" in order
 # to ensure consistency between the C implementation and the Python
 # implementation.
 #
 # For this purpose, the module-level "ET" symbol is temporarily
 # monkey-patched when running the "test_xml_etree_c" test suite.
 
-import copy
-import functools
-import html
-import io
-import itertools
-import operator
-import os
-import pickle
-import pyexpat
-import sys
-import textwrap
-import types
-import unittest
-import unittest.mock as mock
-import warnings
-import weakref
+importiere copy
+importiere functools
+importiere html
+importiere io
+importiere itertools
+importiere operator
+importiere os
+importiere pickle
+importiere pyexpat
+importiere sys
+importiere textwrap
+importiere types
+importiere unittest
+importiere unittest.mock as mock
+importiere warnings
+importiere weakref
 
-from contextlib import nullcontext
-from functools import partial
-from itertools import product, islice
-from test import support
-from test.support import os_helper
-from test.support import warnings_helper
-from test.support import findfile, gc_collect, swap_attr, swap_item
-from test.support.import_helper import import_fresh_module
-from test.support.os_helper import TESTFN
+von contextlib importiere nullcontext
+von functools importiere partial
+von itertools importiere product, islice
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere warnings_helper
+von test.support importiere findfile, gc_collect, swap_attr, swap_item
+von test.support.import_helper importiere import_fresh_module
+von test.support.os_helper importiere TESTFN
 
 
 # pyET is the pure-Python implementation.
@@ -155,9 +155,9 @@ klasse ModuleTest(unittest.TestCase):
     def test_sanity(self):
         # Import sanity.
 
-        from xml.etree import ElementTree     # noqa: F401
-        from xml.etree import ElementInclude  # noqa: F401
-        from xml.etree import ElementPath     # noqa: F401
+        von xml.etree importiere ElementTree     # noqa: F401
+        von xml.etree importiere ElementInclude  # noqa: F401
+        von xml.etree importiere ElementPath     # noqa: F401
 
     def test_all(self):
         names = ("xml.etree.ElementTree", "_elementtree")
@@ -195,10 +195,10 @@ klasse ElementTestCase:
         except pickle.PicklingError as pe:
             # pyET must be second, because pyET may be (equal to) ET.
             human = dict([(ET, "cET"), (pyET, "pyET")])
-            raise support.TestFailed("Failed to round-trip %r from %r to %r"
+            raise support.TestFailed("Failed to round-trip %r von %r to %r"
                                      % (obj,
                                         human.get(dumper, dumper),
-                                        human.get(loader, loader))) from pe
+                                        human.get(loader, loader))) von pe
         return result
 
     def assertEqualElements(self, alice, bob):
@@ -406,7 +406,7 @@ klasse ElementTreeTest(unittest.TestCase):
     def test_path_cache(self):
         # Check that the path cache behaves sanely.
 
-        from xml.etree import ElementPath
+        von xml.etree importiere ElementPath
 
         elem = ET.XML(SAMPLE_XML)
         ElementPath._cache.clear()
@@ -422,7 +422,7 @@ klasse ElementTreeTest(unittest.TestCase):
     def test_copy(self):
         # Test copy handling (etc).
 
-        import copy
+        importiere copy
         e1 = ET.XML("<tag>hello<foo/></tag>")
         e2 = copy.copy(e1)
         e3 = copy.deepcopy(e1)
@@ -508,7 +508,7 @@ klasse ElementTreeTest(unittest.TestCase):
         self.serialize_check(elem, '<tag><subtag key="value" /></tag>')
 
     def test_parsefile(self):
-        # Test parsing from file.
+        # Test parsing von file.
 
         tree = ET.parse(SIMPLE_XMLFILE)
         stream = io.StringIO()
@@ -1390,13 +1390,13 @@ klasse ElementTreeTest(unittest.TestCase):
 
     def test_xpath_tokenizer(self):
         # Test the XPath tokenizer.
-        from xml.etree import ElementPath
+        von xml.etree importiere ElementPath
         def check(p, expected, namespaces=Nichts):
             self.assertEqual([op or tag
                               fuer op, tag in ElementPath.xpath_tokenizer(p, namespaces)],
                              expected)
 
-        # tests from the xml specification
+        # tests von the xml specification
         check("*", ['*'])
         check("text()", ['text', '()'])
         check("@name", ['@', 'name'])
@@ -1464,7 +1464,7 @@ klasse ElementTreeTest(unittest.TestCase):
 
     def test_html_empty_elems_serialization(self):
         # issue 15970
-        # from http://www.w3.org/TR/html401/index/elements.html
+        # von http://www.w3.org/TR/html401/index/elements.html
         fuer element in ['AREA', 'BASE', 'BASEFONT', 'BR', 'COL', 'EMBED', 'FRAME',
                         'HR', 'IMG', 'INPUT', 'ISINDEX', 'LINK', 'META', 'PARAM',
                         'SOURCE', 'TRACK', 'WBR']:
@@ -1802,7 +1802,7 @@ klasse XMLPullParserTest(unittest.TestCase):
         self.assert_event_tags(parser, [('end', 'doc')])
 
 #
-# xinclude tests (samples from appendix C of the xinclude specification)
+# xinclude tests (samples von appendix C of the xinclude specification)
 
 XINCLUDE = {}
 
@@ -1957,7 +1957,7 @@ klasse XIncludeTest(unittest.TestCase):
             return Nichts
 
     def test_xinclude_default(self):
-        from xml.etree import ElementInclude
+        von xml.etree importiere ElementInclude
         doc = self.xinclude_loader('default.xml')
         ElementInclude.include(doc, self._my_loader)
         self.assertEqual(serialize(doc),
@@ -1971,7 +1971,7 @@ klasse XIncludeTest(unittest.TestCase):
             '</document>')
 
     def test_xinclude(self):
-        from xml.etree import ElementInclude
+        von xml.etree importiere ElementInclude
 
         # Basic inclusion example (XInclude C.1)
         document = self.xinclude_loader("C1.xml")
@@ -2035,14 +2035,14 @@ klasse XIncludeTest(unittest.TestCase):
             '</div>') # C5
 
     def test_xinclude_repeated(self):
-        from xml.etree import ElementInclude
+        von xml.etree importiere ElementInclude
 
         document = self.xinclude_loader("include_c1_repeated.xml")
         ElementInclude.include(document, self.xinclude_loader)
         self.assertEqual(1+4*2, len(document.findall(".//p")))
 
     def test_xinclude_failures(self):
-        from xml.etree import ElementInclude
+        von xml.etree importiere ElementInclude
 
         # Test failure to locate included XML file.
         document = ET.XML(XINCLUDE["C1.xml"])
@@ -2764,11 +2764,11 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         fuer Z, side_effect in [(X, 'del root[:]'), (Y, 'root.clear()')]:
             self.enterContext(self.subTest(side_effect=side_effect))
 
-            # test removing R() from [U()]
+            # test removing R() von [U()]
             fuer R, U, description in [
-                (E, Z, "remove missing E() from [Z()]"),
-                (Z, E, "remove missing Z() from [E()]"),
-                (Z, Z, "remove missing Z() from [Z()]"),
+                (E, Z, "remove missing E() von [Z()]"),
+                (Z, E, "remove missing Z() von [E()]"),
+                (Z, Z, "remove missing Z() von [Z()]"),
             ]:
                 with self.subTest(description):
                     root = E('top')
@@ -2776,7 +2776,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                     with get_checker_context():
                         root.remove(R('missing'))
 
-            # test removing R() from [U(), V()]
+            # test removing R() von [U(), V()]
             cases = self.cases_for_remove_missing_with_mutations(E, Z)
             fuer R, U, V, description in cases:
                 with self.subTest(description):
@@ -2785,11 +2785,11 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                     with get_checker_context():
                         root.remove(R('missing'))
 
-            # Test removing root[0] from [Z()].
+            # Test removing root[0] von [Z()].
             #
             # Since we call root.remove() with root[0], Z.__eq__()
             # will not be called (we branch on the fast Py_EQ path).
-            with self.subTest("remove root[0] from [Z()]"):
+            with self.subTest("remove root[0] von [Z()]"):
                 root = E('top')
                 root.append(Z('rem'))
                 with equal_wrapper(E) as f, equal_wrapper(Z) as g:
@@ -2797,7 +2797,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                 f.assert_not_called()
                 g.assert_not_called()
 
-            # Test removing root[1] (of type R) from [U(), R()].
+            # Test removing root[1] (of type R) von [U(), R()].
             is_special = is_python_implementation() and raises and Z is Y
             wenn is_python_implementation() and raises and Z is Y:
                 # In pure Python, using root.clear() sets the children
@@ -2844,7 +2844,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         sonst:
             get_checker_context = nullcontext
 
-        # test removing R() from [U(), V()]
+        # test removing R() von [U(), V()]
         cases = self.cases_for_remove_missing_with_mutations(E, Z)
         fuer R, U, V, description in cases:
             with self.subTest(description):
@@ -2853,7 +2853,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                 with get_checker_context():
                     root.remove(R('missing'))
 
-        # test removing root[1] (of type R) from [U(), R()]
+        # test removing root[1] (of type R) von [U(), R()]
         cases = self.cases_for_remove_existing_with_mutations(E, Z)
         fuer R, U, description in cases:
             with self.subTest(description):
@@ -2863,25 +2863,25 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                     root.remove(root[1])
 
     def cases_for_remove_missing_with_mutations(self, E, Z):
-        # Cases fuer removing R() from [U(), V()].
+        # Cases fuer removing R() von [U(), V()].
         # The case U = V = R = E is not interesting as there is no mutation.
         fuer U, V in [(E, Z), (Z, E), (Z, Z)]:
-            description = (f"remove missing {E.__name__}() from "
+            description = (f"remove missing {E.__name__}() von "
                            f"[{U.__name__}(), {V.__name__}()]")
             yield E, U, V, description
 
         fuer U, V in [(E, E), (E, Z), (Z, E), (Z, Z)]:
-            description = (f"remove missing {Z.__name__}() from "
+            description = (f"remove missing {Z.__name__}() von "
                            f"[{U.__name__}(), {V.__name__}()]")
             yield Z, U, V, description
 
     def cases_for_remove_existing_with_mutations(self, E, Z):
-        # Cases fuer removing root[1] (of type R) from [U(), R()].
+        # Cases fuer removing root[1] (of type R) von [U(), R()].
         # The case U = R = E is not interesting as there is no mutation.
         fuer U, R, description in [
-            (E, Z, "remove root[1] from [E(), Z()]"),
-            (Z, E, "remove root[1] from [Z(), E()]"),
-            (Z, Z, "remove root[1] from [Z(), Z()]"),
+            (E, Z, "remove root[1] von [E(), Z()]"),
+            (Z, E, "remove root[1] von [Z(), E()]"),
+            (Z, Z, "remove root[1] von [Z(), Z()]"),
         ]:
             description = (f"remove root[1] (of type {R.__name__}) "
                            f"from [{U.__name__}(), {R.__name__}()]")
@@ -3067,12 +3067,12 @@ klasse BadElementPath(str):
 klasse BadElementPathTest(ElementTestCase, unittest.TestCase):
     def setUp(self):
         super().setUp()
-        from xml.etree import ElementPath
+        von xml.etree importiere ElementPath
         self.path_cache = ElementPath._cache
         ElementPath._cache = {}
 
     def tearDown(self):
-        from xml.etree import ElementPath
+        von xml.etree importiere ElementPath
         ElementPath._cache = self.path_cache
         super().tearDown()
 
@@ -3732,7 +3732,7 @@ klasse TreeBuilderTest(unittest.TestCase):
         # TreeBuilder should be able to cope with a subclass of the
         # pure Python Element class.
         base = ET._Element_Py
-        # Not from a C extension
+        # Not von a C extension
         self.assertEqual(base.__module__, 'xml.etree.ElementTree')
         # Force some multiple inheritance with a C klasse to make things
         # more interesting.
@@ -4321,7 +4321,7 @@ klasse ParseErrorTest(unittest.TestCase):
         self.assertEqual(self._get_error('foobar<').position, (1, 6))
 
     def test_error_code(self):
-        import xml.parsers.expat.errors as ERRORS
+        importiere xml.parsers.expat.errors as ERRORS
         self.assertEqual(self._get_error('foo').code,
                 ERRORS.codes[ERRORS.XML_ERROR_SYNTAX])
 
@@ -4436,7 +4436,7 @@ klasse C14NTest(unittest.TestCase):
         self.assertEqual(c14n_roundtrip("<normId id=' &apos;   &#x20;&#13;&#xa;&#9;   &apos; '/>"),
             '<normId id=" \'    &#xD;&#xA;&#x9;   \' "></normId>')
 
-        # fragments from PJ's tests
+        # fragments von PJ's tests
         #self.assertEqual(c14n_roundtrip("<doc xmlns:x='http://example.com/x' xmlns='http://example.com/default'><b y:a1='1' xmlns='http://example.com/default' a3='3' xmlns:y='http://example.com/y' y:a2='2'/></doc>"),
         #'<doc xmlns:x="http://example.com/x"><b xmlns:y="http://example.com/y" a3="3" y:a1="1" y:a2="2"></b></doc>')
 
@@ -4522,7 +4522,7 @@ klasse C14NTest(unittest.TestCase):
             '</root>')
 
     #
-    # basic method=c14n tests from the c14n 2.0 specification.  uses
+    # basic method=c14n tests von the c14n 2.0 specification.  uses
     # test files under xmltestdata/c14n-20.
 
     # note that this uses generated C14N versions of the standard ET.write
@@ -4588,7 +4588,7 @@ klasse C14NTest(unittest.TestCase):
                 sonst:
                     qtags = qattrs = Nichts
 
-                # Build subtest description from config.
+                # Build subtest description von config.
                 config_descr = ','.join(
                     f"{name}={value or ','.join(c.tag.split('}')[-1] fuer c in children)}"
                     fuer name, (value, children) in sorted(config.items())
@@ -4649,7 +4649,7 @@ def setUpModule(module=Nichts):
     unittest.addModuleCleanup(cleanup)
 
     # Provide default namespace mapping and path cache.
-    from xml.etree import ElementPath
+    von xml.etree importiere ElementPath
     nsmap = ET.register_namespace._namespace_map
     # Copy the default namespace mapping
     nsmap_copy = nsmap.copy()

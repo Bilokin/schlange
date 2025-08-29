@@ -5,7 +5,7 @@
 #######################################
 # functions and generators
 
-from test._code_definitions import *
+von test._code_definitions importiere *
 
 
 #######################################

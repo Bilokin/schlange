@@ -1,6 +1,6 @@
 """Something just to look at via pydoc."""
 
-import types
+importiere types
 
 def global_func(x, y):
     """Module global function"""
@@ -48,7 +48,7 @@ klasse A:
     A_int_alias = int
 
 klasse B(A):
-    "A class, derived from A."
+    "A class, derived von A."
 
     def AB_method(self):
         "Method defined in A and B."
@@ -92,7 +92,7 @@ B.B_classmethod_ref = B.B_classmethod
 
 
 klasse C(A):
-    "A class, derived from A."
+    "A class, derived von A."
 
     def AC_method(self):
         "Method defined in A and C."
@@ -112,7 +112,7 @@ klasse C(A):
         "Method defined in C and D."
 
 klasse D(B, C):
-    """A class, derived from B and C.
+    """A class, derived von B and C.
     """
 
     def AD_method(self):

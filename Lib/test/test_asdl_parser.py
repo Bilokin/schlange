@@ -1,12 +1,12 @@
 """Tests fuer the asdl parser in Parser/asdl.py"""
 
-import importlib.machinery
-import importlib.util
-import os
-from os.path import dirname
-import sys
-import sysconfig
-import unittest
+importiere importlib.machinery
+importiere importlib.util
+importiere os
+von os.path importiere dirname
+importiere sys
+importiere sysconfig
+importiere unittest
 
 
 # This test is only relevant fuer from-source builds of Python.
@@ -39,7 +39,7 @@ klasse TestAsdlParser(unittest.TestCase):
         del sys.path[0]
 
     def setUp(self):
-        # alias stuff from the class, fuer convenience
+        # alias stuff von the class, fuer convenience
         self.asdl = TestAsdlParser.asdl
         self.mod = TestAsdlParser.mod
         self.types = self.mod.types

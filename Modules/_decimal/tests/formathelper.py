@@ -29,10 +29,10 @@
 # Generate PEP-3101 format strings.
 
 
-import os, sys, locale, random
-import platform, subprocess
-from test.support.import_helper import import_fresh_module
-from shutil import which
+importiere os, sys, locale, random
+importiere platform, subprocess
+von test.support.import_helper importiere import_fresh_module
+von shutil importiere which
 
 C = import_fresh_module('decimal', fresh=['_decimal'])
 P = import_fresh_module('decimal', blocked=['_decimal'])

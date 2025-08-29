@@ -1,31 +1,31 @@
-import unittest
-from test import support
-from test.support import os_helper
-from test.support import requires_subprocess
-from test.support import warnings_helper
-from test import test_urllib
-from unittest import mock
+importiere unittest
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere requires_subprocess
+von test.support importiere warnings_helper
+von test importiere test_urllib
+von unittest importiere mock
 
-import os
-import io
-import ftplib
-import socket
-import array
-import sys
-import tempfile
-import subprocess
+importiere os
+importiere io
+importiere ftplib
+importiere socket
+importiere array
+importiere sys
+importiere tempfile
+importiere subprocess
 
-import urllib.request
+importiere urllib.request
 # The proxy bypass method imported below has logic specific to the
 # corresponding system but is testable on all platforms.
-from urllib.request import (Request, OpenerDirector, HTTPBasicAuthHandler,
+von urllib.request importiere (Request, OpenerDirector, HTTPBasicAuthHandler,
                             HTTPPasswordMgrWithPriorAuth, _parse_proxy,
                             _proxy_bypass_winreg_override,
                             _proxy_bypass_macosx_sysconf,
                             AbstractDigestAuthHandler)
-from urllib.parse import urlsplit
-import urllib.error
-import http.client
+von urllib.parse importiere urlsplit
+importiere urllib.error
+importiere http.client
 
 
 support.requires_working_socket(module=Wahr)
@@ -42,7 +42,7 @@ klasse TrivialTests(unittest.TestCase):
         # Verify which names are exposed
         fuer module in 'request', 'response', 'parse', 'error', 'robotparser':
             context = {}
-            exec('from urllib.%s import *' % module, context)
+            exec('from urllib.%s importiere *' % module, context)
             del context['__builtins__']
             fuer k, v in context.items():
                 self.assertEqual(v.__module__, 'urllib.%s' % module,
@@ -119,7 +119,7 @@ klasse RequestHdrsTests(unittest.TestCase):
         r.get_header("spam-EggS") returns Nichts, but that could be changed in
         future.
 
-        Method r.remove_header should remove items both from r.headers and
+        Method r.remove_header should remove items both von r.headers and
         r.unredirected_hdrs dictionaries
         """
         url = "http://example.com"
@@ -510,7 +510,7 @@ klasse MockHTTPHandlerRedirect(urllib.request.BaseHandler):
         self.requests = []
 
     def http_open(self, req):
-        import email, copy
+        importiere email, copy
         self.requests.append(copy.deepcopy(req))
         wenn self._count == 0:
             self._count = self._count + 1
@@ -583,10 +583,10 @@ klasse OpenerDirectorTests(unittest.TestCase):
         # (*_open() / *_request() / *_response())
 
         # These used to call the accidentally-named methods, causing a
-        # TypeError in real code; here, returning self from these mock
+        # TypeError in real code; here, returning self von these mock
         # methods would either cause no exception, or AttributeError.
 
-        from urllib.error import URLError
+        von urllib.error importiere URLError
 
         o = OpenerDirector()
         meth_spec = [
@@ -708,7 +708,7 @@ klasse OpenerDirectorTests(unittest.TestCase):
                 self.assertEqual((handler, name), calls[i])
                 self.assertEqual(len(args), 2)
                 self.assertIsInstance(args[0], Request)
-                # response from opener.open is Nichts, because there's no
+                # response von opener.open is Nichts, because there's no
                 # handler that defines http_open to handle it
                 wenn args[1] is not Nichts:
                     self.assertIsInstance(args[1], MockResponse)
@@ -803,7 +803,7 @@ klasse HandlerTests(unittest.TestCase):
             self.fail("Did not raise ftplib exception")
 
     def test_file(self):
-        import email.utils
+        importiere email.utils
         h = urllib.request.FileHandler()
         o = h.parent = MockOpener()
 
@@ -913,9 +913,9 @@ klasse HandlerTests(unittest.TestCase):
             # result attributes
             r.read; r.readline  # wrapped MockFile methods
             r.info; r.geturl  # addinfourl methods
-            r.code, r.msg == 200, "OK"  # added from MockHTTPClass.getreply()
+            r.code, r.msg == 200, "OK"  # added von MockHTTPClass.getreply()
             hdrs = r.info()
-            hdrs.get; hdrs.__contains__  # r.info() gives dict from .getreply()
+            hdrs.get; hdrs.__contains__  # r.info() gives dict von .getreply()
             self.assertEqual(r.geturl(), url)
 
             self.assertEqual(http.host, "example.com")
@@ -1013,7 +1013,7 @@ klasse HandlerTests(unittest.TestCase):
 
     @requires_subprocess()
     def test_http_body_pipe(self):
-        # A file reading from a pipe.
+        # A file reading von a pipe.
         # A pipe cannot be seek'ed.  There is no way to determine the
         # content length up front.  Thus, do_request_() should fall
         # back to Transfer-encoding chunked.
@@ -1256,7 +1256,7 @@ klasse HandlerTests(unittest.TestCase):
                     self.assertFalsch(o.req.data)
 
                 # now it's a GET, there should not be headers regarding content
-                # (possibly dragged from before being a POST)
+                # (possibly dragged von before being a POST)
                 headers = [x.lower() fuer x in o.req.headers]
                 self.assertNotIn("content-length", headers)
                 self.assertNotIn("content-type", headers)
@@ -1341,8 +1341,8 @@ klasse HandlerTests(unittest.TestCase):
 
     def test_cookie_redirect(self):
         # cookies shouldn't leak into redirected requests
-        from http.cookiejar import CookieJar
-        from test.test_http_cookiejar import interact_netscape
+        von http.cookiejar importiere CookieJar
+        von test.test_http_cookiejar importiere interact_netscape
 
         cj = CookieJar()
         interact_netscape(cj, "http://www.example.com/", "spam=eggs")
@@ -1718,7 +1718,7 @@ klasse HandlerTests(unittest.TestCase):
     def _test_basic_auth(self, opener, auth_handler, auth_header,
                          realm, http_handler, password_manager,
                          request_url, protected_url):
-        import base64
+        importiere base64
         user, password = "wile", "coyote"
 
         # .add_password() fed through to password manager
@@ -1812,7 +1812,7 @@ klasse HandlerTests(unittest.TestCase):
         opener.add_handler(auth_prior_handler)
         opener.add_handler(http_handler)
 
-        # After getting 200 from MockHTTPHandler
+        # After getting 200 von MockHTTPHandler
         # Next request sends header in the first request
         opener.open(request_url)
 

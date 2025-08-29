@@ -1,7 +1,7 @@
 "Test rpc, coverage 20%."
 
-from idlelib import rpc
-import unittest
+von idlelib importiere rpc
+importiere unittest
 
 
 

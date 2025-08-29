@@ -10,6 +10,6 @@ __all__ = [
     'error'
     ]
 
-from _struct import *
-from _struct import _clearcache  # noqa: F401
-from _struct import __doc__  # noqa: F401
+von _struct importiere *
+von _struct importiere _clearcache  # noqa: F401
+von _struct importiere __doc__  # noqa: F401

@@ -1,8 +1,8 @@
-import functools
-import unittest
-from math import isnan, nextafter
-from test.support import requires_IEEE_754
-from test.support.hypothesis_helper import hypothesis
+importiere functools
+importiere unittest
+von math importiere isnan, nextafter
+von test.support importiere requires_IEEE_754
+von test.support.hypothesis_helper importiere hypothesis
 
 floats = hypothesis.strategies.floats
 integers = hypothesis.strategies.integers

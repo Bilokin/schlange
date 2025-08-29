@@ -33,16 +33,16 @@
 # [meta-key] is identified with [esc key].  We demand that any console
 # klasse does quite a lot towards emulating a unix terminal.
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-from abc import ABC, abstractmethod
-import unicodedata
-from collections import deque
+von abc importiere ABC, abstractmethod
+importiere unicodedata
+von collections importiere deque
 
 
 # types
 wenn Falsch:
-    from .types import EventTuple
+    von .types importiere EventTuple
 
 
 klasse InputTranslator(ABC):
@@ -62,7 +62,7 @@ klasse InputTranslator(ABC):
 klasse KeymapTranslator(InputTranslator):
     def __init__(self, keymap, verbose=Falsch, invalid_cls=Nichts, character_cls=Nichts):
         self.verbose = verbose
-        from .keymap import compile_keymap, parse_keys
+        von .keymap importiere compile_keymap, parse_keys
 
         self.keymap = keymap
         self.invalid_cls = invalid_cls

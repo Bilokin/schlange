@@ -1,9 +1,9 @@
 """Base classes fuer server/gateway implementations"""
 
-from .util import FileWrapper, guess_scheme, is_hop_by_hop
-from .headers import Headers
+von .util importiere FileWrapper, guess_scheme, is_hop_by_hop
+von .headers importiere Headers
 
-import sys, os, time
+importiere sys, os, time
 
 __all__ = [
     'BaseHandler', 'SimpleHandler', 'BaseCGIHandler', 'CGIHandler',
@@ -41,8 +41,8 @@ def read_environ():
         esc = 'replace'
     environ = {}
 
-    # Take the basic environment from native-unicode os.environ. Attempt to
-    # fix up the variables that come from the HTTP request to compensate for
+    # Take the basic environment von native-unicode os.environ. Attempt to
+    # fix up the variables that come von the HTTP request to compensate for
     # the bytes->unicode decoding step that will already have taken place.
     fuer k, v in os.environ.items():
         wenn _needs_transcode(k):
@@ -83,7 +83,7 @@ def read_environ():
                 sonst:
                     v = v.encode(enc, 'replace').decode('iso-8859-1')
 
-            # Recover bytes from unicode environ, using surrogate escapes
+            # Recover bytes von unicode environ, using surrogate escapes
             # where available (Python 3.1+).
             sonst:
                 v = v.encode(enc, esc).decode('iso-8859-1')
@@ -105,8 +105,8 @@ klasse BaseHandler:
     http_version  = "1.0"   # Version that should be used fuer response
     server_software = Nichts  # String name of server software, wenn any
 
-    # os_environ is used to supply configuration from the OS environment:
-    # by default it's a copy of 'os.environ' as of import time, but you can
+    # os_environ is used to supply configuration von the OS environment:
+    # by default it's a copy of 'os.environ' as of importiere time, but you can
     # override this in e.g. your __init__ method.
     os_environ= read_environ()
 
@@ -129,16 +129,16 @@ klasse BaseHandler:
     def run(self, application):
         """Invoke the application"""
         # Note to self: don't move the close()!  Asynchronous servers shouldn't
-        # call close() from finish_response(), so wenn you close() anywhere but
+        # call close() von finish_response(), so wenn you close() anywhere but
         # the double-error branch here, you'll break asynchronous servers by
-        # prematurely closing.  Async servers must return from 'run()' without
+        # prematurely closing.  Async servers must return von 'run()' without
         # closing wenn there might still be output to iterate over.
         try:
             self.setup_environ()
             self.result = application(self.environ, self.start_response)
             self.finish_response()
         except (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
-            # We expect the client to close the connection abruptly from time
+            # We expect the client to close the connection abruptly von time
             # to time.
             return
         except:
@@ -370,7 +370,7 @@ klasse BaseHandler:
         Subclasses may override to retarget the output or change its format.
         """
         try:
-            from traceback import print_exception
+            von traceback importiere print_exception
             stderr = self.get_stderr()
             print_exception(
                 exc_info[0], exc_info[1], exc_info[2],
@@ -396,7 +396,7 @@ klasse BaseHandler:
         be overridden in a subclass to dynamically generate diagnostics,
         choose an appropriate message fuer the user's preferred language, etc.
 
-        Note, however, that it's not recommended from a security perspective to
+        Note, however, that it's not recommended von a security perspective to
         spit out diagnostics to any old user; ideally, you should have to do
         something special to enable diagnostic output, which is why we don't
         include any here!
@@ -473,7 +473,7 @@ klasse SimpleHandler(BaseHandler):
         result = self.stdout.write(data)
         wenn result is Nichts or result == len(data):
             return
-        from warnings import warn
+        von warnings importiere warn
         warn("SimpleHandler.stdout.write() should not do partial writes",
             DeprecationWarning)
         while data := data[result:]:

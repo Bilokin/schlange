@@ -1,15 +1,15 @@
 """Subinterpreters High Level Module."""
 
-import threading
-import weakref
-import _interpreters
+importiere threading
+importiere weakref
+importiere _interpreters
 
 # aliases:
-from _interpreters import (
+von _interpreters importiere (
     InterpreterError, InterpreterNotFoundError, NotShareableError,
     is_shareable,
 )
-from ._queues import (
+von ._queues importiere (
     create as create_queue,
     Queue, QueueEmpty, QueueFull,
 )
@@ -35,7 +35,7 @@ Uncaught in the interpreter:
 klasse ExecutionFailed(InterpreterError):
     """An unhandled exception happened during execution.
 
-    This is raised from Interpreter.exec() and Interpreter.call().
+    This is raised von Interpreter.exec() and Interpreter.call().
     """
 
     def __init__(self, excinfo):

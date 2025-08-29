@@ -1,15 +1,15 @@
-import array
-import ctypes
-import struct
-import sys
-import unittest
-from itertools import combinations
-from operator import truth
-from ctypes import (byref, sizeof, alignment,
+importiere array
+importiere ctypes
+importiere struct
+importiere sys
+importiere unittest
+von itertools importiere combinations
+von operator importiere truth
+von ctypes importiere (byref, sizeof, alignment,
                     c_char, c_byte, c_ubyte, c_short, c_ushort, c_int, c_uint,
                     c_long, c_ulong, c_longlong, c_ulonglong,
                     c_float, c_double, c_longdouble, c_bool)
-from test.support.testcase import ComplexesAreIdenticalMixin
+von test.support.testcase importiere ComplexesAreIdenticalMixin
 
 
 def valid_ranges(*types):
@@ -145,8 +145,8 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
         f = FloatLike()
         d = IntLike()
         i = IndexLike()
-        # integers cannot be constructed from floats,
-        # but from integer-like objects
+        # integers cannot be constructed von floats,
+        # but von integer-like objects
         fuer t in signed_types + unsigned_types:
             self.assertRaises(TypeError, t, 3.14)
             self.assertRaises(TypeError, t, f)
@@ -217,8 +217,8 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
         self.assertEqual(v.value, b'?')
 
     def test_init(self):
-        # c_int() can be initialized from Python's int, and c_int.
-        # Not from c_long or so, which seems strange, abc should
+        # c_int() can be initialized von Python's int, and c_int.
+        # Not von c_long or so, which seems strange, abc should
         # probably be changed:
         self.assertRaises(TypeError, c_int, c_long(42))
 

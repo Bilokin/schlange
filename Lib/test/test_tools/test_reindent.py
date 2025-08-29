@@ -4,12 +4,12 @@ This file contains regression tests fuer some of the scripts found in the
 Tools directory of a Python checkout or tarball, such as reindent.py.
 """
 
-import os
-import unittest
-from test.support.script_helper import assert_python_ok
-from test.support import findfile
+importiere os
+importiere unittest
+von test.support.script_helper importiere assert_python_ok
+von test.support importiere findfile
 
-from test.test_tools import toolsdir, skip_if_missing
+von test.test_tools importiere toolsdir, skip_if_missing
 
 skip_if_missing()
 

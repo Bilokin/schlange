@@ -1,5 +1,5 @@
-import unittest
-from test.support import import_helper
+importiere unittest
+von test.support importiere import_helper
 
 # Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')

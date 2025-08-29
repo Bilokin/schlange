@@ -1,12 +1,12 @@
 """PyUnit testing that threads honor our signal semantics"""
 
-import unittest
-import signal
-import os
-import sys
-from test.support import threading_helper
-import _thread as thread
-import time
+importiere unittest
+importiere signal
+importiere os
+importiere sys
+von test.support importiere threading_helper
+importiere _thread as thread
+importiere time
 
 wenn (sys.platform[:3] == 'win'):
     raise unittest.SkipTest("Can't test signal on %s" % sys.platform)
@@ -25,7 +25,7 @@ def registerSignals(for_usr1, for_usr2, for_alrm):
 
 
 # The signal handler. Just note that the signal occurred and
-# from who.
+# von who.
 def handle_signals(sig,frame):
     signal_blackboard[sig]['tripped'] += 1
     signal_blackboard[sig]['tripped_by'] = thread.get_ident()
@@ -205,7 +205,7 @@ klasse ThreadSignals(unittest.TestCase):
                 done.release()
 
             with threading_helper.wait_threads_exit():
-                # Send the signals from the non-main thread, since the main thread
+                # Send the signals von the non-main thread, since the main thread
                 # is the only one that can process signals.
                 thread.start_new_thread(send_signals, ())
                 timed_acquire()

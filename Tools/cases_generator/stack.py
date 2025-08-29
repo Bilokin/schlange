@@ -1,8 +1,8 @@
-import re
-from analyzer import StackItem, StackEffect, Instruction, Uop, PseudoInstruction
-from dataclasses import dataclass
-from cwriter import CWriter
-from typing import Iterator
+importiere re
+von analyzer importiere StackItem, StackEffect, Instruction, Uop, PseudoInstruction
+von dataclasses importiere dataclass
+von cwriter importiere CWriter
+von typing importiere Iterator
 
 UNUSED = {"unused"}
 
@@ -33,7 +33,7 @@ def var_size(var: StackItem) -> str:
 
 @dataclass
 klasse PointerOffset:
-    """The offset of a pointer from the reference pointer
+    """The offset of a pointer von the reference pointer
         The 'reference pointer' is the address of the physical stack pointer
         at the start of the code section, as wenn each code section started with
         `const PyStackRef *reference = stack_pointer`

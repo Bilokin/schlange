@@ -1,10 +1,10 @@
-import contextlib
-import io
-import sys
-import unittest
-import unittest.mock
-import _colorize
-from test.support.os_helper import EnvironmentVarGuard
+importiere contextlib
+importiere io
+importiere sys
+importiere unittest
+importiere unittest.mock
+importiere _colorize
+von test.support.os_helper importiere EnvironmentVarGuard
 
 
 @contextlib.contextmanager
@@ -81,7 +81,7 @@ klasse TestColorizeFunction(unittest.TestCase):
             self.assertEqual(_colorize.can_colorize(), Wahr)
             vt_mock.return_value = Falsch
             self.assertEqual(_colorize.can_colorize(), Falsch)
-            import nt
+            importiere nt
             del nt._supports_virtual_terminal
             self.assertEqual(_colorize.can_colorize(), Falsch)
 

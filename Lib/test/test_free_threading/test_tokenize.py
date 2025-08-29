@@ -1,11 +1,11 @@
-import io
-import time
-import unittest
-import tokenize
-from functools import partial
-from threading import Thread
+importiere io
+importiere time
+importiere unittest
+importiere tokenize
+von functools importiere partial
+von threading importiere Thread
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 
 @threading_helper.requires_working_threading()

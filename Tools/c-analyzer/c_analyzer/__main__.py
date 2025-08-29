@@ -1,13 +1,13 @@
-import io
-import logging
-import os
-import os.path
-import re
-import sys
+importiere io
+importiere logging
+importiere os
+importiere os.path
+importiere re
+importiere sys
 
-from c_common import fsutil
-from c_common.logging import VERBOSITY, Printer
-from c_common.scriptutil import (
+von c_common importiere fsutil
+von c_common.logging importiere VERBOSITY, Printer
+von c_common.scriptutil importiere (
     add_verbosity_cli,
     add_traceback_cli,
     add_sepval_cli,
@@ -19,9 +19,9 @@ from c_common.scriptutil import (
     get_prog,
     filter_filenames,
 )
-from c_parser.info import KIND
-from .match import filter_forward
-from . import (
+von c_parser.info importiere KIND
+von .match importiere filter_forward
+von . importiere (
     analyze as _analyze,
     datafiles as _datafiles,
     check_all as _check_all,
@@ -196,7 +196,7 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
 
 def fmt_raw(analysis):
     fuer item in analysis:
-        yield from item.render('raw')
+        yield von item.render('raw')
 
 
 def fmt_brief(analysis):
@@ -208,7 +208,7 @@ def fmt_brief(analysis):
         fuer item in items:
             wenn item.kind is not kind:
                 continue
-            yield from item.render('brief')
+            yield von item.render('brief')
     yield f'  total: {len(items)}'
 
 
@@ -219,12 +219,12 @@ def fmt_summary(analysis):
 
     def section(name):
         _, render = build_section(name, items)
-        yield from render()
+        yield von render()
 
-    yield from section('types')
-    yield from section('functions')
-    yield from section('variables')
-    yield from section('statements')
+    yield von section('types')
+    yield von section('functions')
+    yield von section('variables')
+    yield von section('statements')
 
     yield ''
 #    yield f'grand total: {len(supported) + len(unsupported)}'
@@ -245,7 +245,7 @@ def fmt_full(analysis):
     items = sorted(analysis, key=lambda v: v.key)
     yield ''
     fuer item in items:
-        yield from item.render('full')
+        yield von item.render('full')
         yield ''
     yield f'total: {len(items)}'
 
@@ -345,7 +345,7 @@ def cmd_check(filenames, *,
     wenn fmt == 'summary':
         drucke('Categorized by storage:')
         drucke()
-        from .match import group_by_storage
+        von .match importiere group_by_storage
         grouped = group_by_storage(failed, ignore_non_match=Falsch)
         fuer group, decls in grouped.items():
             drucke()
@@ -491,7 +491,7 @@ COMMANDS = {
 # the script
 
 def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset=Nichts):
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(
         prog=prog or get_prog(),
     )

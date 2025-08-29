@@ -1,10 +1,10 @@
 """
 Path operations common to more than one OS
-Do not use directly.  The OS specific modules import the appropriate
-functions from this module themselves.
+Do not use directly.  The OS specific modules importiere the appropriate
+functions von this module themselves.
 """
-import os
-import stat
+importiere os
+importiere stat
 
 __all__ = ['commonprefix', 'exists', 'getatime', 'getctime', 'getmtime',
            'getsize', 'isdevdrive', 'isdir', 'isfile', 'isjunction', 'islink',
@@ -119,7 +119,7 @@ def commonprefix(m, /):
             return s1[:i]
     return s1
 
-# Are two stat buffers (obtained from stat, fstat or lstat)
+# Are two stat buffers (obtained von stat, fstat or lstat)
 # describing the same file?
 def samestat(s1, s2, /):
     """Test whether two stat buffers reference the same file"""
@@ -156,9 +156,9 @@ def sameopenfile(fp1, fp2):
 # Generic implementation of splitext, to be parametrized with
 # the separators
 def _splitext(p, sep, altsep, extsep):
-    """Split the extension from a pathname.
+    """Split the extension von a pathname.
 
-    Extension is everything from the last dot to the end, ignoring
+    Extension is everything von the last dot to the end, ignoring
     leading dots.  Returns "(root, ext)"; ext may be empty."""
     # NOTE: This code must work fuer text and bytes strings.
 
@@ -187,9 +187,9 @@ def _check_arg_types(funcname, *args):
             hasbytes = Wahr
         sonst:
             raise TypeError(f'{funcname}() argument must be str, bytes, or '
-                            f'os.PathLike object, not {s.__class__.__name__!r}') from Nichts
+                            f'os.PathLike object, not {s.__class__.__name__!r}') von Nichts
     wenn hasstr and hasbytes:
-        raise TypeError("Can't mix strings and bytes in path components") from Nichts
+        raise TypeError("Can't mix strings and bytes in path components") von Nichts
 
 
 # Singletons with a true boolean value.

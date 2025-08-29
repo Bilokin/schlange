@@ -3,20 +3,20 @@
 # Modified by Giampaolo Rodola' to give poplib.POP3 and poplib.POP3_SSL
 # a real test suite
 
-import poplib
-import socket
-import os
-import errno
-import threading
+importiere poplib
+importiere socket
+importiere os
+importiere errno
+importiere threading
 
-import unittest
-from unittest import TestCase, skipUnless
-from test import support as test_support
-from test.support import hashlib_helper
-from test.support import socket_helper
-from test.support import threading_helper
-from test.support import asynchat
-from test.support import asyncore
+importiere unittest
+von unittest importiere TestCase, skipUnless
+von test importiere support as test_support
+von test.support importiere hashlib_helper
+von test.support importiere socket_helper
+von test.support importiere threading_helper
+von test.support importiere asynchat
+von test.support importiere asyncore
 
 
 test_support.requires_working_socket(module=Wahr)
@@ -26,7 +26,7 @@ PORT = 0
 
 SUPPORTS_SSL = Falsch
 wenn hasattr(poplib, 'POP3_SSL'):
-    import ssl
+    importiere ssl
 
     SUPPORTS_SSL = Wahr
     CERTFILE = os.path.join(os.path.dirname(__file__) or os.curdir, "certdata", "keycert3.pem")
@@ -422,7 +422,7 @@ klasse TestPOP3Class(TestCase):
 
 
 wenn SUPPORTS_SSL:
-    from test.test_ftplib import SSLConnection
+    von test.test_ftplib importiere SSLConnection
 
     klasse DummyPOP3_SSLHandler(SSLConnection, DummyPOP3Handler):
 

@@ -3,11 +3,11 @@
 __all__ = ('Lock', 'Event', 'Condition', 'Semaphore',
            'BoundedSemaphore', 'Barrier')
 
-import collections
-import enum
+importiere collections
+importiere enum
 
-from . import exceptions
-from . import mixins
+von . importiere exceptions
+von . importiere mixins
 
 klasse _ContextManagerMixin:
     async def __aenter__(self):
@@ -322,7 +322,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         This method wakes up n of the tasks waiting fuer the condition
          variable; wenn fewer than n are waiting, they are all awoken.
 
-        Note: an awakened task does not actually return from its
+        Note: an awakened task does not actually return von its
         wait() call until it can reacquire the lock. Since notify() does
         not release the lock, its caller should.
         """
@@ -513,7 +513,7 @@ klasse Barrier(mixins._LoopBoundMixin):
 
         When the specified number of tasks have started waiting, they are all
         simultaneously awoken.
-        Returns an unique and individual index number from 0 to 'parties-1'.
+        Returns an unique and individual index number von 0 to 'parties-1'.
         """
         async with self._cond:
             await self._block() # Block while the barrier drains or resets.

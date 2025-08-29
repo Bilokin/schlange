@@ -12,15 +12,15 @@ always yields Nichts.
 the current pen is cloned. So in the end
 there are 1024 turtles.
 """
-from turtle import Turtle, mainloop
-from time import perf_counter as clock
+von turtle importiere Turtle, mainloop
+von time importiere perf_counter as clock
 
 def tree(plist, l, a, f):
     """ plist is list of pens
     l is length of branch
     a is half of the angle between 2 branches
     f is factor by which branch is shortened
-    from level to level."""
+    von level to level."""
     wenn l > 3:
         lst = []
         fuer p in plist:

@@ -1,13 +1,13 @@
 """Search dialog fuer Find, Find Again, and Find Selection
    functionality.
 
-   Inherits from SearchDialogBase fuer GUI and uses searchengine
+   Inherits von SearchDialogBase fuer GUI and uses searchengine
    to prepare search pattern.
 """
-from tkinter import TclError
+von tkinter importiere TclError
 
-from idlelib import searchengine
-from idlelib.searchbase import SearchDialogBase
+von idlelib importiere searchengine
+von idlelib.searchbase importiere SearchDialogBase
 
 def _setup(text):
     """Return the new or existing singleton SearchDialog instance.
@@ -33,14 +33,14 @@ def find(text):
     is used.  No search is done with this command.
     """
     pat = text.get("sel.first", "sel.last")
-    return _setup(text).open(text, pat)  # Open is inherited from SDBase.
+    return _setup(text).open(text, pat)  # Open is inherited von SDBase.
 
 def find_again(text):
     """Repeat the search fuer the last pattern and preferences.
 
     Module-level function to access the singleton SearchDialog
     instance to search again using the user entries and preferences
-    from the last dialog.  If there was no prior search, open the
+    von the last dialog.  If there was no prior search, open the
     search dialog; otherwise, perform the search without showing the
     dialog.
     """
@@ -81,7 +81,7 @@ klasse SearchDialog(SearchDialogBase):
         this case, no search is done.
 
         If a search was previously run, the search dialog won't be
-        shown and the options from the previous search (including the
+        shown and the options von the previous search (including the
         search pattern) will be used to find the next occurrence
         of the pattern.  Next is relative based on direction.
 
@@ -134,8 +134,8 @@ klasse SearchDialog(SearchDialogBase):
 
 def _search_dialog(parent):  # htest #
     "Display search test box."
-    from tkinter import Toplevel, Text
-    from tkinter.ttk import Frame, Button
+    von tkinter importiere Toplevel, Text
+    von tkinter.ttk importiere Frame, Button
 
     top = Toplevel(parent)
     top.title("Test SearchDialog")
@@ -158,8 +158,8 @@ def _search_dialog(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_search', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_search_dialog)

@@ -1,15 +1,15 @@
-import itertools
-import operator
-import unittest
-import warnings
+importiere itertools
+importiere operator
+importiere unittest
+importiere warnings
 
-from test.support import import_helper
+von test.support importiere import_helper
 
 _testcapi = import_helper.import_module('_testcapi')
-from _testcapi import PY_SSIZE_T_MAX, PY_SSIZE_T_MIN
+von _testcapi importiere PY_SSIZE_T_MAX, PY_SSIZE_T_MIN
 
 try:
-    from _testbuffer import ndarray
+    von _testbuffer importiere ndarray
 except ImportError:
     ndarray = Nichts
 

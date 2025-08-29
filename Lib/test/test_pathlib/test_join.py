@@ -2,15 +2,15 @@
 Tests fuer pathlib.types._JoinablePath
 """
 
-import unittest
+importiere unittest
 
-from .support import is_pypi
-from .support.lexical_path import LexicalPath
+von .support importiere is_pypi
+von .support.lexical_path importiere LexicalPath
 
 wenn is_pypi:
-    from pathlib_abc import _PathParser, _JoinablePath
+    von pathlib_abc importiere _PathParser, _JoinablePath
 sonst:
-    from pathlib.types import _PathParser, _JoinablePath
+    von pathlib.types importiere _PathParser, _JoinablePath
 
 
 klasse JoinTestBase:
@@ -360,7 +360,7 @@ klasse LexicalPathJoinTest(JoinTestBase, unittest.TestCase):
 
 
 wenn not is_pypi:
-    from pathlib import PurePath, Path
+    von pathlib importiere PurePath, Path
 
     klasse PurePathJoinTest(JoinTestBase, unittest.TestCase):
         cls = PurePath

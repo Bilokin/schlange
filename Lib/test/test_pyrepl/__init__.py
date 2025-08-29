@@ -1,10 +1,10 @@
-import os
-from test.support import load_package_tests
-import unittest
+importiere os
+von test.support importiere load_package_tests
+importiere unittest
 
 
 try:
-    import termios
+    importiere termios
 except ImportError:
     raise unittest.SkipTest("termios required")
 sonst:

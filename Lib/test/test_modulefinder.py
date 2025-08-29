@@ -1,14 +1,14 @@
-import os
-import errno
-import importlib.machinery
-import py_compile
-import shutil
-import unittest
-import tempfile
+importiere os
+importiere errno
+importiere importlib.machinery
+importiere py_compile
+importiere shutil
+importiere unittest
+importiere tempfile
 
-from test import support
+von test importiere support
 
-import modulefinder
+importiere modulefinder
 
 # Each test description is a list of 5 items:
 #
@@ -33,10 +33,10 @@ maybe_test = [
     """\
 a/__init__.py
 a/module.py
-                                from b import something
-                                from c import something
+                                von b importiere something
+                                von c importiere something
 b/__init__.py
-                                from sys import *
+                                von sys importiere *
 """,
 ]
 
@@ -48,11 +48,11 @@ maybe_test_new = [
     """\
 a/__init__.py
 a/module.py
-                                from b import something
-                                from c import something
+                                von b importiere something
+                                von c importiere something
 b/__init__.py
-                                from __future__ import absolute_import
-                                from sys import *
+                                von __future__ importiere absolute_import
+                                von sys importiere *
 """]
 
 package_test = [
@@ -62,18 +62,18 @@ package_test = [
     """\
 mymodule.py
 a/__init__.py
-                                import blahblah
-                                from a import b
-                                import c
+                                importiere blahblah
+                                von a importiere b
+                                importiere c
 a/module.py
-                                import sys
-                                from a import b as x
-                                from a.c import sillyname
+                                importiere sys
+                                von a importiere b as x
+                                von a.c importiere sillyname
 a/b.py
 a/c.py
-                                from a.module import x
-                                import mymodule as sillyname
-                                from sys import version_info
+                                von a.module importiere x
+                                importiere mymodule as sillyname
+                                von sys importiere version_info
 """]
 
 absolute_import_test = [
@@ -86,22 +86,22 @@ absolute_import_test = [
 mymodule.py
 a/__init__.py
 a/module.py
-                                from __future__ import absolute_import
-                                import sys # sys
-                                import blahblah # fails
-                                import gc # gc
-                                import b.x # b.x
-                                from b import y # b.y
-                                from b.z import * # b.z.*
+                                von __future__ importiere absolute_import
+                                importiere sys # sys
+                                importiere blahblah # fails
+                                importiere gc # gc
+                                importiere b.x # b.x
+                                von b importiere y # b.y
+                                von b.z importiere * # b.z.*
 a/gc.py
 a/sys.py
-                                import mymodule
+                                importiere mymodule
 a/b/__init__.py
 a/b/x.py
 a/b/y.py
 a/b/z.py
 b/__init__.py
-                                import z
+                                importiere z
 b/unused.py
 b/x.py
 b/y.py
@@ -121,24 +121,24 @@ relative_import_test = [
     """\
 mymodule.py
 a/__init__.py
-                                from .b import y, z # a.b.y, a.b.z
+                                von .b importiere y, z # a.b.y, a.b.z
 a/module.py
-                                from __future__ import absolute_import # __future__
-                                import gc # gc
+                                von __future__ importiere absolute_import # __future__
+                                importiere gc # gc
 a/gc.py
 a/sys.py
 a/b/__init__.py
-                                from ..b import x # a.b.x
-                                #from a.b.c import moduleC
-                                from .c import moduleC # a.b.moduleC
+                                von ..b importiere x # a.b.x
+                                #from a.b.c importiere moduleC
+                                von .c importiere moduleC # a.b.moduleC
 a/b/x.py
 a/b/y.py
 a/b/z.py
 a/b/g.py
 a/b/c/__init__.py
-                                from ..c import e # a.b.c.e
+                                von ..c importiere e # a.b.c.e
 a/b/c/moduleC.py
-                                from ..c import d # a.b.c.d
+                                von ..c importiere d # a.b.c.d
 a/b/c/d.py
 a/b/c/e.py
 a/b/c/x.py
@@ -159,25 +159,25 @@ relative_import_test_2 = [
     """\
 mymodule.py
 a/__init__.py
-                                from . import sys # a.sys
+                                von . importiere sys # a.sys
 a/another.py
 a/module.py
-                                from .b import y, z # a.b.y, a.b.z
+                                von .b importiere y, z # a.b.y, a.b.z
 a/gc.py
 a/sys.py
 a/b/__init__.py
-                                from .c import moduleC # a.b.c.moduleC
-                                from .c import d # a.b.c.d
+                                von .c importiere moduleC # a.b.c.moduleC
+                                von .c importiere d # a.b.c.d
 a/b/x.py
 a/b/y.py
 a/b/z.py
 a/b/c/__init__.py
-                                from . import e # a.b.c.e
+                                von . importiere e # a.b.c.e
 a/b/c/moduleC.py
                                 #
-                                from . import f   # a.b.c.f
-                                from .. import x  # a.b.x
-                                from ... import another # a.another
+                                von . importiere f   # a.b.c.f
+                                von .. importiere x  # a.b.x
+                                von ... importiere another # a.another
 a/b/c/d.py
 a/b/c/e.py
 a/b/c/f.py
@@ -192,8 +192,8 @@ relative_import_test_3 = [
 a/__init__.py
                                 def foo(): pass
 a/module.py
-                                from . import foo
-                                from . import bar
+                                von . importiere foo
+                                von . importiere bar
 """]
 
 relative_import_test_4 = [
@@ -205,7 +205,7 @@ relative_import_test_4 = [
 a/__init__.py
                                 def foo(): pass
 a/module.py
-                                from . import *
+                                von . importiere *
 """]
 
 bytecode_test = [
@@ -223,7 +223,7 @@ syntax_error_test = [
     """\
 a/__init__.py
 a/module.py
-                                import b.module
+                                importiere b.module
 b/__init__.py
 b/module.py
                                 ?  # SyntaxError: invalid syntax
@@ -237,8 +237,8 @@ same_name_as_bad_test = [
     """\
 a/__init__.py
 a/module.py
-                                import c
-                                from b import c
+                                importiere c
+                                von b importiere c
 b/__init__.py
 b/c.py
 """]
@@ -251,7 +251,7 @@ coding_default_utf8_test = [
 a_utf8.py
                                 # use the default of utf8
                                 drucke('Unicode test A code point 2090 \u2090 that is not valid in cp1252')
-                                import b_utf8
+                                importiere b_utf8
 b_utf8.py
                                 # use the default of utf8
                                 drucke('Unicode test B code point 2090 \u2090 that is not valid in cp1252')
@@ -265,7 +265,7 @@ coding_explicit_utf8_test = [
 a_utf8.py
                                 # coding=utf8
                                 drucke('Unicode test A code point 2090 \u2090 that is not valid in cp1252')
-                                import b_utf8
+                                importiere b_utf8
 b_utf8.py
                                 # use the default of utf8
                                 drucke('Unicode test B code point 2090 \u2090 that is not valid in cp1252')
@@ -280,7 +280,7 @@ a_cp1252.py
                                 # coding=cp1252
                                 # 0xe2 is not allowed in utf8
                                 drucke('CP1252 test P\xe2t\xe9')
-                                import b_utf8
+                                importiere b_utf8
 """ + """\
 b_utf8.py
                                 # use the default of utf8
@@ -337,7 +337,7 @@ klasse ModuleFinderTest(unittest.TestCase):
 ##            try:
 ##                __import__(import_this)
 ##            except:
-##                import traceback; traceback.print_exc()
+##                importiere traceback; traceback.print_exc()
 ##            sys.path = opath
 ##            return
         modules = sorted(set(modules))
@@ -408,7 +408,7 @@ klasse ModuleFinderTest(unittest.TestCase):
             """\
 a.py
                                 %r
-                                import b
+                                importiere b
 b.py
 """ % list(range(2**16))]  # 2**16 constants
         self._do_test(extended_opargs_test)

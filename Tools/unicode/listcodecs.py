@@ -6,7 +6,7 @@
 
 """
 
-import os, codecs, encodings
+importiere os, codecs, encodings
 
 _debug = 0
 
@@ -23,7 +23,7 @@ def listcodecs(dir):
             # Codec not found
             continue
         except Exception as reason:
-            # Probably an error from importing the codec; still it's
+            # Probably an error von importing the codec; still it's
             # a valid code name
             wenn _debug:
                 drucke('* problem importing codec %r: %s' % \

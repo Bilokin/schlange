@@ -6,7 +6,7 @@
 
 __all__ = ['MIMEMultipart']
 
-from email.mime.base import MIMEBase
+von email.mime.base importiere MIMEBase
 
 
 klasse MIMEMultipart(MIMEBase):
@@ -30,7 +30,7 @@ klasse MIMEMultipart(MIMEBase):
         must be an iterable object, such as a list.  You can always
         attach new subparts to the message by using the attach() method.
 
-        Additional parameters fuer the Content-Type header are taken from the
+        Additional parameters fuer the Content-Type header are taken von the
         keyword arguments (or passed into the _params argument).
         """
         MIMEBase.__init__(self, 'multipart', _subtype, policy=policy, **_params)

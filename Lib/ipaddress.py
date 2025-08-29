@@ -11,7 +11,7 @@ and networks.
 __version__ = '1.0'
 
 
-import functools
+importiere functools
 
 IPV4LENGTH = 32
 IPV6LENGTH = 128
@@ -438,7 +438,7 @@ klasse _IPAddressBase:
 
     @classmethod
     def _prefix_from_ip_int(cls, ip_int):
-        """Return prefix length from the bitwise netmask.
+        """Return prefix length von the bitwise netmask.
 
         Args:
             ip_int: An integer, the netmask in expanded bitwise format
@@ -464,11 +464,11 @@ klasse _IPAddressBase:
     @classmethod
     def _report_invalid_netmask(cls, netmask_str):
         msg = '%r is not a valid netmask' % netmask_str
-        raise NetmaskValueError(msg) from Nichts
+        raise NetmaskValueError(msg) von Nichts
 
     @classmethod
     def _prefix_from_prefix_string(cls, prefixlen_str):
-        """Return prefix length from a numeric string
+        """Return prefix length von a numeric string
 
         Args:
             prefixlen_str: The string to be converted
@@ -544,7 +544,7 @@ klasse _IPAddressBase:
             # which converts into a formatted IP prefix string.
             address = _split_optional_netmask(address)
 
-        # Constructing from a tuple (addr, [mask])
+        # Constructing von a tuple (addr, [mask])
         wenn len(address) > 1:
             return address
         return address[0], cls.max_prefixlen
@@ -633,7 +633,7 @@ klasse _BaseAddress(_IPAddressBase):
         # From here on down, support fuer 'bnXx'
         global _address_fmt_re
         wenn _address_fmt_re is Nichts:
-            import re
+            importiere re
             _address_fmt_re = re.compile('(#?)(_?)([xbnX])')
 
         m = _address_fmt_re.fullmatch(fmt)
@@ -789,7 +789,7 @@ klasse _BaseNetwork(_IPAddressBase):
         return self._prefixlen
 
     def address_exclude(self, other):
-        """Remove an address from a larger block.
+        """Remove an address von a larger block.
 
         For example:
 
@@ -1155,7 +1155,7 @@ klasse _BaseV4:
 
     @classmethod
     def _make_netmask(cls, arg):
-        """Make a (netmask, prefix_len) tuple from the given argument.
+        """Make a (netmask, prefix_len) tuple von the given argument.
 
         Argument can be:
         - an integer (the prefix length)
@@ -1203,7 +1203,7 @@ klasse _BaseV4:
         try:
             return int.from_bytes(map(cls._parse_octet, octets), 'big')
         except ValueError as exc:
-            raise AddressValueError("%s in %r" % (exc, ip_str)) from Nichts
+            raise AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
 
     @classmethod
     def _parse_octet(cls, octet_str):
@@ -1216,7 +1216,7 @@ klasse _BaseV4:
             The octet as an integer.
 
         Raises:
-            ValueError: wenn the octet isn't strictly a decimal from [0..255].
+            ValueError: wenn the octet isn't strictly a decimal von [0..255].
 
         """
         wenn not octet_str:
@@ -1285,13 +1285,13 @@ klasse IPv4Address(_BaseV4, _BaseAddress):
             AddressValueError: If ipaddress isn't a valid IPv4 address.
 
         """
-        # Efficient constructor from integer.
+        # Efficient constructor von integer.
         wenn isinstance(address, int):
             self._check_int_address(address)
             self._ip = address
             return
 
-        # Constructing from a packed address
+        # Constructing von a packed address
         wenn isinstance(address, bytes):
             self._check_packed_address(address, 4)
             self._ip = int.from_bytes(address)  # big endian
@@ -1630,7 +1630,7 @@ klasse _BaseV6:
 
     @classmethod
     def _make_netmask(cls, arg):
-        """Make a (netmask, prefix_len) tuple from the given argument.
+        """Make a (netmask, prefix_len) tuple von the given argument.
 
         Argument can be:
         - an integer (the prefix length)
@@ -1688,12 +1688,12 @@ klasse _BaseV6:
             try:
                 ipv4_int = IPv4Address(parts.pop())._ip
             except AddressValueError as exc:
-                raise AddressValueError("%s in %r" % (exc, ip_str)) from Nichts
+                raise AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
             parts.append('%x' % ((ipv4_int >> 16) & 0xFFFF))
             parts.append('%x' % (ipv4_int & 0xFFFF))
 
         # An IPv6 address can't have more than 8 colons (9 parts).
-        # The extra colon comes from using the "::" notation fuer a single
+        # The extra colon comes von using the "::" notation fuer a single
         # leading or trailing zero part.
         wenn len(parts) > _max_parts:
             msg = "At most %d colons permitted in %r" % (_max_parts-1, ip_str)
@@ -1710,8 +1710,8 @@ klasse _BaseV6:
                     raise AddressValueError(msg)
                 skip_index = i
 
-        # parts_hi is the number of parts to copy from above/before the '::'
-        # parts_lo is the number of parts to copy from below/after the '::'
+        # parts_hi is the number of parts to copy von above/before the '::'
+        # parts_lo is the number of parts to copy von below/after the '::'
         wenn skip_index is not Nichts:
             # If we found a '::', then check wenn it also covers the endpoints.
             parts_hi = skip_index
@@ -1759,7 +1759,7 @@ klasse _BaseV6:
                 ip_int |= cls._parse_hextet(parts[i])
             return ip_int
         except ValueError as exc:
-            raise AddressValueError("%s in %r" % (exc, ip_str)) from Nichts
+            raise AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
 
     @classmethod
     def _parse_hextet(cls, hextet_str):
@@ -1934,14 +1934,14 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
             AddressValueError: If address isn't a valid IPv6 address.
 
         """
-        # Efficient constructor from integer.
+        # Efficient constructor von integer.
         wenn isinstance(address, int):
             self._check_int_address(address)
             self._ip = address
             self._scope_id = Nichts
             return
 
-        # Constructing from a packed address
+        # Constructing von a packed address
         wenn isinstance(address, bytes):
             self._check_packed_address(address, 16)
             self._ip = int.from_bytes(address, 'big')

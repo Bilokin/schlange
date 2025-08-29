@@ -1,14 +1,14 @@
-import unittest
+importiere unittest
 
-import heapq
+importiere heapq
 
-from enum import Enum
-from threading import Barrier, Lock
-from random import shuffle, randint
+von enum importiere Enum
+von threading importiere Barrier, Lock
+von random importiere shuffle, randint
 
-from test.support import threading_helper
-from test.support.threading_helper import run_concurrently
-from test import test_heapq
+von test.support importiere threading_helper
+von test.support.threading_helper importiere run_concurrently
+von test importiere test_heapq
 
 
 NTHREADS = 10

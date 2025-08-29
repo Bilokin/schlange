@@ -1,16 +1,16 @@
 """ Tests fuer the linecache module """
 
-import linecache
-import unittest
-import os.path
-import tempfile
-import threading
-import tokenize
-from importlib.machinery import ModuleSpec
-from test import support
-from test.support import os_helper
-from test.support import threading_helper
-from test.support.script_helper import assert_python_ok
+importiere linecache
+importiere unittest
+importiere os.path
+importiere tempfile
+importiere threading
+importiere tokenize
+von importlib.machinery importiere ModuleSpec
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere threading_helper
+von test.support.script_helper importiere assert_python_ok
 
 
 FILENAME = linecache.__file__

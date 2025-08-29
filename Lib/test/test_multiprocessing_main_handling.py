@@ -1,19 +1,19 @@
 # tests __main__ module handling in multiprocessing
-from test import support
-from test.support import import_helper
+von test importiere support
+von test.support importiere import_helper
 # Skip tests wenn _multiprocessing wasn't built.
 import_helper.import_module('_multiprocessing')
 
-import importlib
-import importlib.machinery
-import unittest
-import sys
-import os
-import os.path
-import py_compile
+importiere importlib
+importiere importlib.machinery
+importiere unittest
+importiere sys
+importiere os
+importiere os.path
+importiere py_compile
 
-from test.support import os_helper
-from test.support.script_helper import (
+von test.support importiere os_helper
+von test.support.script_helper importiere (
     make_pkg, make_script, make_zip_pkg, make_zip_script,
     assert_python_ok)
 
@@ -21,7 +21,7 @@ wenn support.PGO:
     raise unittest.SkipTest("test is not helpful fuer PGO")
 
 # Look up which start methods are available to test
-import multiprocessing
+importiere multiprocessing
 AVAILABLE_START_METHODS = set(multiprocessing.get_all_start_methods())
 
 # Issue #22332: Skip tests wenn sem_open implementation is broken.
@@ -34,13 +34,13 @@ test_source = """\
 # attributes accessible in the subprocess in a pickle compatible way.
 
 # We run the "doesn't work in the interactive interpreter" example from
-# the docs to make sure it *does* work from an executed __main__,
+# the docs to make sure it *does* work von an executed __main__,
 # regardless of the invocation mechanism
 
-import sys
-import time
-from multiprocessing import Pool, set_start_method
-from test import support
+importiere sys
+importiere time
+von multiprocessing importiere Pool, set_start_method
+von test importiere support
 
 # We use this __main__ defined function in the map call below in order to
 # check that multiprocessing in correctly running the unguarded
@@ -52,7 +52,7 @@ def f(x):
 wenn "check_sibling" in __file__:
     # We're inside a package and not in a __main__.py file
     # so make sure explicit relative imports work correctly
-    from . import sibling
+    von . importiere sibling
 
 wenn __name__ == '__main__':
     start_method = sys.argv[1]
@@ -83,10 +83,10 @@ test_source_main_skipped_in_children = """\
 wenn __name__ != "__main__":
     raise RuntimeError("Should only be called as __main__!")
 
-import sys
-import time
-from multiprocessing import Pool, set_start_method
-from test import support
+importiere sys
+importiere time
+von multiprocessing importiere Pool, set_start_method
+von test importiere support
 
 start_method = sys.argv[1]
 set_start_method(start_method)
@@ -105,7 +105,7 @@ drucke(start_method, "->", results)
 pool.join()
 """
 
-# These helpers were copied from test_cmd_line_script & tweaked a bit...
+# These helpers were copied von test_cmd_line_script & tweaked a bit...
 
 def _make_test_script(script_dir, script_basename,
                       source=test_source, omit_suffix=Falsch):
@@ -129,7 +129,7 @@ def _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
 # directories and zipfiles executable!)
 # So we fake it fuer testing purposes with a custom launch script
 launch_source = """\
-import sys, os.path, runpy
+importiere sys, os.path, runpy
 sys.path.insert(0, %s)
 runpy._run_module_as_main(%r)
 """
@@ -153,7 +153,7 @@ klasse MultiProcessingCmdLineMixin():
 
     def _check_output(self, script_name, exit_code, out, err):
         wenn verbose > 1:
-            drucke("Output from test script %r:" % script_name)
+            drucke("Output von test script %r:" % script_name)
             drucke(repr(out))
         self.assertEqual(exit_code, 0)
         self.assertEqual(err.decode('utf-8'), '')

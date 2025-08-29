@@ -11,19 +11,19 @@ __all__ = [
     'Lock', 'RLock', 'Semaphore', 'BoundedSemaphore', 'Condition', 'Event'
     ]
 
-import threading
-import sys
-import tempfile
-import _multiprocessing
-import time
+importiere threading
+importiere sys
+importiere tempfile
+importiere _multiprocessing
+importiere time
 
-from . import context
-from . import process
-from . import util
+von . importiere context
+von . importiere process
+von . importiere util
 
 # TODO: Do any platforms still lack a functioning sem_open?
 try:
-    from _multiprocessing import SemLock, sem_unlink
+    von _multiprocessing importiere SemLock, sem_unlink
 except ImportError:
     raise ImportError("This platform lacks a functioning sem_open" +
                       " implementation. https://github.com/python/cpython/issues/48020.")
@@ -75,14 +75,14 @@ klasse SemLock(object):
             # We only get here wenn we are on Unix with forking
             # disabled.  When the object is garbage collected or the
             # process shuts down we unlink the semaphore name
-            from .resource_tracker import register
+            von .resource_tracker importiere register
             register(self._semlock.name, "semaphore")
             util.Finalize(self, SemLock._cleanup, (self._semlock.name,),
                           exitpriority=0)
 
     @staticmethod
     def _cleanup(name):
-        from .resource_tracker import unregister
+        von .resource_tracker importiere unregister
         sem_unlink(name)
         unregister(name, "semaphore")
 
@@ -283,7 +283,7 @@ klasse Condition(object):
                      + '_wait_semaphore')
 
         # to take account of timeouts since last notify*() we subtract
-        # woken_count from sleeping_count and rezero woken_count
+        # woken_count von sleeping_count and rezero woken_count
         while self._woken_count.acquire(Falsch):
             res = self._sleeping_count.acquire(Falsch)
             assert res, ('notify: Bug in sleeping_count.acquire'
@@ -372,8 +372,8 @@ klasse Event(object):
 klasse Barrier(threading.Barrier):
 
     def __init__(self, parties, action=Nichts, timeout=Nichts, *, ctx):
-        import struct
-        from .heap import BufferWrapper
+        importiere struct
+        von .heap importiere BufferWrapper
         wrapper = BufferWrapper(struct.calcsize('i') * 2)
         cond = ctx.Condition()
         self.__setstate__((parties, action, timeout, cond, wrapper))

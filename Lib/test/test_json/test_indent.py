@@ -1,6 +1,6 @@
-import textwrap
-from io import StringIO
-from test.test_json import PyTest, CTest
+importiere textwrap
+von io importiere StringIO
+von test.test_json importiere PyTest, CTest
 
 
 klasse TestIndent:

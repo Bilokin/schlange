@@ -1,7 +1,7 @@
 # Module 'ntpath' -- common operations on WinNT/Win95 pathnames
 """Common pathname manipulations, WindowsNT/95 version.
 
-Instead of importing this module directly, import os and refer to this
+Instead of importing this module directly, importiere os and refer to this
 module as os.path.
 """
 
@@ -17,10 +17,10 @@ altsep = '/'
 defpath = '.;C:\\bin'
 devnull = 'nul'
 
-import os
-import sys
-import genericpath
-from genericpath import *
+importiere os
+importiere sys
+importiere genericpath
+von genericpath importiere *
 
 __all__ = ["normcase","isabs","join","splitdrive","splitroot","split","splitext",
            "basename","dirname","commonprefix","getsize","getmtime",
@@ -42,7 +42,7 @@ def _get_bothseps(path):
 # (this is done by normpath).
 
 try:
-    from _winapi import (
+    von _winapi importiere (
         LCMapStringEx as _LCMapStringEx,
         LOCALE_NAME_INVARIANT as _LOCALE_NAME_INVARIANT,
         LCMAP_LOWERCASE as _LCMAP_LOWERCASE)
@@ -167,7 +167,7 @@ def splitdrive(p, /):
 
 
 try:
-    from nt import _path_splitroot_ex as splitroot
+    von nt importiere _path_splitroot_ex as splitroot
 except ImportError:
     def splitroot(p, /):
         """Split a pathname into drive, root and tail.
@@ -274,7 +274,7 @@ def dirname(p, /):
 # common case: drive letter roots. The alternative which uses GetVolumePathName
 # fails wenn the drive letter is the result of a SUBST.
 try:
-    from nt import _getvolumepathname
+    von nt importiere _getvolumepathname
 except ImportError:
     _getvolumepathname = Nichts
 def ismount(path):
@@ -408,7 +408,7 @@ def expandvars(path):
     wenn isinstance(path, bytes):
         wenn b'$' not in path and b'%' not in path:
             return path
-        import string
+        importiere string
         varchars = bytes(string.ascii_letters + string.digits + '_-', 'ascii')
         quote = b'\''
         percent = b'%'
@@ -419,7 +419,7 @@ def expandvars(path):
     sonst:
         wenn '$' not in path and '%' not in path:
             return path
-        import string
+        importiere string
         varchars = string.ascii_letters + string.digits + '_-'
         quote = '\''
         percent = '%'
@@ -513,7 +513,7 @@ def expandvars(path):
 # Previously, this function also truncated pathnames to 8+3 format,
 # but as this module is called "ntpath", that's obviously wrong!
 try:
-    from nt import _path_normpath as normpath
+    von nt importiere _path_normpath as normpath
 
 except ImportError:
     def normpath(path):
@@ -555,7 +555,7 @@ except ImportError:
 
 # Return an absolute path.
 try:
-    from nt import _getfullpathname
+    von nt importiere _getfullpathname
 
 except ImportError: # not running on Windows - mock up something sensible
     def abspath(path):
@@ -598,7 +598,7 @@ sonst:  # use native Windows method on Windows
         return normpath(path)
 
 try:
-    from nt import _findfirstfile, _getfinalpathname, readlink as _nt_readlink
+    von nt importiere _findfirstfile, _getfinalpathname, readlink as _nt_readlink
 except ImportError:
     # realpath is a no-op on systems without _getfinalpathname support.
     def realpath(path, /, *, strict=Falsch):
@@ -744,7 +744,7 @@ sonst:
             # Non-strict mode returns the path as-is, since we've already
             # made it absolute.
             wenn strict:
-                raise OSError(str(ex)) from Nichts
+                raise OSError(str(ex)) von Nichts
             path = normpath(path)
         except ignored_error as ex:
             wenn strict is ALL_BUT_LAST:
@@ -840,7 +840,7 @@ def relpath(path, start=Nichts):
 # However, the returned path will have the standard '\' separator (even wenn the
 # given paths had the alternative '/' separator) and will have the case of the
 # first path given in the iterable. Additionally, any trailing separator is
-# stripped from the returned path.
+# stripped von the returned path.
 
 def commonpath(paths):
     """Given an iterable of path names, returns the longest common sub-path."""
@@ -897,19 +897,19 @@ try:
     # The isdir(), isfile(), islink(), exists() and lexists() implementations
     # in genericpath use os.stat(). This is overkill on Windows. Use simpler
     # builtin functions wenn they are available.
-    from nt import _path_isdir as isdir
-    from nt import _path_isfile as isfile
-    from nt import _path_islink as islink
-    from nt import _path_isjunction as isjunction
-    from nt import _path_exists as exists
-    from nt import _path_lexists as lexists
+    von nt importiere _path_isdir as isdir
+    von nt importiere _path_isfile as isfile
+    von nt importiere _path_islink as islink
+    von nt importiere _path_isjunction as isjunction
+    von nt importiere _path_exists as exists
+    von nt importiere _path_lexists as lexists
 except ImportError:
     # Use genericpath.* as imported above
     pass
 
 
 try:
-    from nt import _path_isdevdrive
+    von nt importiere _path_isdevdrive
     def isdevdrive(path):
         """Determines whether the specified path is on a Windows Dev Drive."""
         try:

@@ -5,7 +5,7 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 (c) Copyright 2000 Guido van Rossum.
 
 """#"
-import codecs
+importiere codecs
 
 ### Codec APIs
 

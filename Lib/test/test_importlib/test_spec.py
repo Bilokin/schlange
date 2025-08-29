@@ -1,15 +1,15 @@
-from test.test_importlib import util as test_util
+von test.test_importlib importiere util as test_util
 
 init = test_util.import_importlib('importlib')
 machinery = test_util.import_importlib('importlib.machinery')
 util = test_util.import_importlib('importlib.util')
 
-import os.path
-import pathlib
-from test.support.import_helper import CleanImport
-import unittest
-import sys
-import warnings
+importiere os.path
+importiere pathlib
+von test.support.import_helper importiere CleanImport
+importiere unittest
+importiere sys
+importiere warnings
 
 
 

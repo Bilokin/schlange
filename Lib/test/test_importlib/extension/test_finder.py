@@ -1,10 +1,10 @@
-from test.support import is_apple_mobile
-from test.test_importlib import abc, util
+von test.support importiere is_apple_mobile
+von test.test_importlib importiere abc, util
 
 machinery = util.import_importlib('importlib.machinery')
 
-import unittest
-import sys
+importiere unittest
+importiere sys
 
 
 klasse FinderTests(abc.FinderTests):

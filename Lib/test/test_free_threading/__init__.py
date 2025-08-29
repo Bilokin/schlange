@@ -1,7 +1,7 @@
-import os
-import unittest
+importiere os
+importiere unittest
 
-from test import support
+von test importiere support
 
 
 wenn not support.Py_GIL_DISABLED:

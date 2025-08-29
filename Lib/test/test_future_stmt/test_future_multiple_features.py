@@ -1,9 +1,9 @@
 # Check that multiple features can be enabled.
-from __future__ import unicode_literals, print_function
+von __future__ importiere unicode_literals, print_function
 
-import sys
-import unittest
-from test import support
+importiere sys
+importiere unittest
+von test importiere support
 
 
 klasse TestMultipleFeatures(unittest.TestCase):

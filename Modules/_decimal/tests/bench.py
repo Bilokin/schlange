@@ -6,18 +6,18 @@
 # Usage: ../../../python bench.py
 
 
-import time
-import sys
-from functools import wraps
-from test.support.import_helper import import_fresh_module
+importiere time
+importiere sys
+von functools importiere wraps
+von test.support.import_helper importiere import_fresh_module
 
 C = import_fresh_module('decimal', fresh=['_decimal'])
 P = import_fresh_module('decimal', blocked=['_decimal'])
 
 #
-# NOTE: This is the pi function from the decimal documentation, modified
+# NOTE: This is the pi function von the decimal documentation, modified
 # fuer benchmarking purposes. Since floats do not have a context, the higher
-# intermediate precision from the original is NOT used, so the modified
+# intermediate precision von the original is NOT used, so the modified
 # algorithm only gives an approximation to the correctly rounded result.
 # For serious use, refer to the documentation or the appropriate literature.
 #

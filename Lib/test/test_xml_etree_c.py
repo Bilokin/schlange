@@ -1,10 +1,10 @@
 # xml.etree test fuer cElementTree
-import io
-import struct
-from test import support
-from test.support.import_helper import import_fresh_module
-import types
-import unittest
+importiere io
+importiere struct
+von test importiere support
+von test.support.import_helper importiere import_fresh_module
+importiere types
+importiere unittest
 
 cET = import_fresh_module('xml.etree.ElementTree',
                           fresh=['_elementtree'])
@@ -259,7 +259,7 @@ klasse SizeofTest(unittest.TestCase):
 
 def install_tests():
     # Test classes should have __module__ referring to this module.
-    from test import test_xml_etree
+    von test importiere test_xml_etree
     fuer name, base in vars(test_xml_etree).items():
         wenn isinstance(base, type) and issubclass(base, unittest.TestCase):
             klasse Temp(base):
@@ -272,7 +272,7 @@ def install_tests():
 install_tests()
 
 def setUpModule():
-    from test import test_xml_etree
+    von test importiere test_xml_etree
     test_xml_etree.setUpModule(module=cET)
 
 

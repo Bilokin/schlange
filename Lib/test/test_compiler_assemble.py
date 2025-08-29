@@ -1,9 +1,9 @@
-import dis
-import io
-import textwrap
-import types
+importiere dis
+importiere io
+importiere textwrap
+importiere types
 
-from test.support.bytecode_helper import AssemblerTestCase
+von test.support.bytecode_helper importiere AssemblerTestCase
 
 
 # Tests fuer the code-object creation stage of the compiler.

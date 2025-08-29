@@ -1,9 +1,9 @@
 # To fully test this module, we would need a copy of the stringprep tables.
 # Since we don't have them, this test checks only a few code points.
 
-import unittest
+importiere unittest
 
-from stringprep import *
+von stringprep importiere *
 
 klasse StringprepTests(unittest.TestCase):
     def test(self):
@@ -73,7 +73,7 @@ klasse StringprepTests(unittest.TestCase):
         # unicode database. Instead, stringprep.py asserts the version of
         # the database.
 
-        # import hashlib
+        # importiere hashlib
         # predicates = [k fuer k in dir(stringprep) wenn k.startswith("in_table")]
         # predicates.sort()
         # fuer p in predicates:

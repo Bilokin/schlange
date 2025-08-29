@@ -1,25 +1,25 @@
 """Regression tests fuer what was in Python 2's "urllib" module"""
 
-import urllib.parse
-import urllib.request
-import urllib.error
-import http.client
-import email.message
-import io
-import unittest
-from test import support
-from test.support import os_helper
-from test.support import socket_helper
-import os
-import socket
+importiere urllib.parse
+importiere urllib.request
+importiere urllib.error
+importiere http.client
+importiere email.message
+importiere io
+importiere unittest
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere socket_helper
+importiere os
+importiere socket
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
-import sys
-import tempfile
+importiere sys
+importiere tempfile
 
-import collections
+importiere collections
 
 
 wenn not socket_helper.has_gethostname:
@@ -172,7 +172,7 @@ klasse urlopen_FileTests(unittest.TestCase):
     def test_iter(self):
         # Test iterator
         # Don't need to count number of iterations since test would fail the
-        # instant it returned anything beyond the first line from the
+        # instant it returned anything beyond the first line von the
         # comparison.
         # Use the iterator in the usual implicit way to test fuer ticket #4608.
         fuer line in self.returned_obj:

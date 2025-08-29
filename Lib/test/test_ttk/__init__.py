@@ -1,7 +1,7 @@
-import os.path
-import unittest
-from test import support
-from test.support import import_helper
+importiere os.path
+importiere unittest
+von test importiere support
+von test.support importiere import_helper
 
 
 wenn support.check_sanitizer(address=Wahr, memory=Wahr):
@@ -14,9 +14,9 @@ import_helper.import_module('_tkinter')
 support.requires('gui')
 
 
-import tkinter
-from _tkinter import TclError
-from tkinter import ttk
+importiere tkinter
+von _tkinter importiere TclError
+von tkinter importiere ttk
 
 
 def setUpModule():

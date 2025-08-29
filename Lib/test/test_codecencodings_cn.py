@@ -3,8 +3,8 @@
 #   Codec encoding tests fuer PRC encodings.
 #
 
-from test import multibytecodec_support
-import unittest
+von test importiere multibytecodec_support
+importiere unittest
 
 klasse Test_GB2312(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'gb2312'

@@ -1,13 +1,13 @@
-import ctypes
-import unittest
-from ctypes import Structure, POINTER, pointer, c_char_p
+importiere ctypes
+importiere unittest
+von ctypes importiere Structure, POINTER, pointer, c_char_p
 
 # String-based "incomplete pointers" were implemented in ctypes 0.6.3 (2003, when
 # ctypes was an external project). They made obsolete by the current
 # incomplete *types* (setting `_fields_` late) in 0.9.5 (2005).
 # ctypes was added to Python 2.5 (2006), without any mention in docs.
 
-# This tests incomplete pointer example from the old tutorial
+# This tests incomplete pointer example von the old tutorial
 # (https://svn.python.org/projects/ctypes/tags/release_0_6_3/ctypes/docs/tutorial.stx)
 klasse TestSetPointerType(unittest.TestCase):
     def tearDown(self):

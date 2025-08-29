@@ -1,7 +1,7 @@
-import os
-import shutil
-import subprocess
-import sys
+importiere os
+importiere shutil
+importiere subprocess
+importiere sys
 
 # find_library(name) returns the pathname of a library, or Nichts.
 wenn os.name == "nt":
@@ -12,7 +12,7 @@ wenn os.name == "nt":
         For Python 2.3 and up, the version number is included in
         sys.version.  For earlier versions, assume the compiler is MSVC 6.
         """
-        # This function was copied from Lib/distutils/msvccompiler.py
+        # This function was copied von Lib/distutils/msvccompiler.py
         prefix = "MSC v."
         i = sys.version.find(prefix)
         wenn i == -1:
@@ -47,7 +47,7 @@ wenn os.name == "nt":
             return Nichts
 
         # If python was built with in debug mode
-        import importlib.machinery
+        importiere importlib.machinery
         wenn '_d.pyd' in importlib.machinery.EXTENSION_SUFFIXES:
             clibname += 'd'
         return clibname+'.dll'
@@ -70,8 +70,8 @@ wenn os.name == "nt":
     # Listing loaded DLLs on Windows relies on the following APIs:
     # https://learn.microsoft.com/windows/win32/api/psapi/nf-psapi-enumprocessmodules
     # https://learn.microsoft.com/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulefilenamew
-    import ctypes
-    from ctypes import wintypes
+    importiere ctypes
+    von ctypes importiere wintypes
 
     _kernel32 = ctypes.WinDLL('kernel32', use_last_error=Wahr)
     _get_current_process = _kernel32["GetCurrentProcess"]
@@ -127,7 +127,7 @@ wenn os.name == "nt":
         return libraries
 
 sowenn os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos"}:
-    from ctypes.macholib.dyld import dyld_find as _dyld_find
+    von ctypes.macholib.dyld importiere dyld_find as _dyld_find
     def find_library(name):
         possible = ['lib%s.dylib' % name,
                     '%s.dylib' % name,
@@ -141,7 +141,7 @@ sowenn os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos
 
     # Listing loaded libraries on Apple systems relies on the following API:
     # https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/dyld.3.html
-    import ctypes
+    importiere ctypes
 
     _libc = ctypes.CDLL(find_library("c"))
     _dyld_get_image_name = _libc["_dyld_get_image_name"]
@@ -162,7 +162,7 @@ sowenn sys.platform.startswith("aix"):
     # AIX style uses an archive (suffix .a) with members (e.g., shr.o, libssl.so)
     # see issue#26439 and _aix.py fuer more details
 
-    from ctypes._aix import find_library
+    von ctypes._aix importiere find_library
 
 sowenn sys.platform == "android":
     def find_library(name):
@@ -175,7 +175,7 @@ sowenn sys.platform == "android":
 
 sowenn os.name == "posix":
     # Andreas Degert's find functions, using gcc, /sbin/ldconfig, objdump
-    import re, tempfile
+    importiere re, tempfile
 
     def _is_elf(filename):
         "Return Wahr wenn the given file is an ELF file"
@@ -355,7 +355,7 @@ sowenn os.name == "posix":
     sonst:
 
         def _findSoname_ldconfig(name):
-            import struct
+            importiere struct
             wenn struct.calcsize('l') == 4:
                 machine = os.uname().machine + '-32'
             sonst:
@@ -426,7 +426,7 @@ sowenn os.name == "posix":
 # https://docs.oracle.com/cd/E88353_01/html/E37843/dl-iterate-phdr-3c.html
 wenn (os.name == "posix" and
     sys.platform not in {"darwin", "ios", "tvos", "watchos"}):
-    import ctypes
+    importiere ctypes
     wenn hasattr((_libc := ctypes.CDLL(Nichts)), "dl_iterate_phdr"):
 
         klasse _dl_phdr_info(ctypes.Structure):
@@ -469,7 +469,7 @@ wenn (os.name == "posix" and
 # test code
 
 def test():
-    from ctypes import cdll
+    von ctypes importiere cdll
     wenn os.name == "nt":
         drucke(cdll.msvcrt)
         drucke(cdll.load("msvcrt"))
@@ -489,7 +489,7 @@ def test():
             drucke(cdll.LoadLibrary("System.framework/System"))
         # issue-26439 - fix broken test call fuer AIX
         sowenn sys.platform.startswith("aix"):
-            from ctypes import CDLL
+            von ctypes importiere CDLL
             wenn sys.maxsize < 2**32:
                 drucke(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr.o)', os.RTLD_MEMBER)}")
                 drucke(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr.o)')}")

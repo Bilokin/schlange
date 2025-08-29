@@ -1,7 +1,7 @@
 """ Python 'mbcs' Codec fuer Windows
 
 
-Cloned by Mark Hammond (mhammond@skippinet.com.au) from ascii.py,
+Cloned by Mark Hammond (mhammond@skippinet.com.au) von ascii.py,
 which was written by Marc-Andre Lemburg (mal@lemburg.com).
 
 (c) Copyright CNRI, All Rights Reserved. NO WARRANTY.
@@ -9,9 +9,9 @@ which was written by Marc-Andre Lemburg (mal@lemburg.com).
 """
 # Import them explicitly to cause an ImportError
 # on non-Windows systems
-from codecs import mbcs_encode, mbcs_decode
+von codecs importiere mbcs_encode, mbcs_decode
 # fuer IncrementalDecoder, IncrementalEncoder, ...
-import codecs
+importiere codecs
 
 ### Codec APIs
 

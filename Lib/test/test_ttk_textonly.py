@@ -1,10 +1,10 @@
-from test.support import import_helper
+von test.support importiere import_helper
 
 # Skip this test wenn _tkinter does not exist.
 import_helper.import_module('_tkinter')
 
-import unittest
-from tkinter import ttk
+importiere unittest
+von tkinter importiere ttk
 
 
 klasse MockTkApp:
@@ -218,7 +218,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
             [('a', 'b', [1, 2])], opt='x'), ("a b {{a b} {1 2}}", "-opt x"))
 
         # Testing type = from
-        # from type expects at least a type name
+        # von type expects at least a type name
         self.assertRaises(IndexError, ttk._format_elemcreate, 'from')
 
         self.assertEqual(ttk._format_elemcreate('from', Falsch, 'a'),

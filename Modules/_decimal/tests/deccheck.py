@@ -30,28 +30,28 @@
 #
 
 
-import random
-import time
+importiere random
+importiere time
 
 RANDSEED = int(time.time())
 random.seed(RANDSEED)
 
-import sys
-import os
-from copy import copy
-from collections import defaultdict
+importiere sys
+importiere os
+von copy importiere copy
+von collections importiere defaultdict
 
-import argparse
-import subprocess
-from subprocess import PIPE, STDOUT
-from queue import Queue, Empty
-from threading import Thread, Event, Lock
+importiere argparse
+importiere subprocess
+von subprocess importiere PIPE, STDOUT
+von queue importiere Queue, Empty
+von threading importiere Thread, Event, Lock
 
-from test.support.import_helper import import_fresh_module
-from randdec import randfloat, all_unary, all_binary, all_ternary
-from randdec import unary_optarg, binary_optarg, ternary_optarg
-from formathelper import rand_format, rand_locale
-from _pydecimal import _dec_from_triple
+von test.support.import_helper importiere import_fresh_module
+von randdec importiere randfloat, all_unary, all_binary, all_ternary
+von randdec importiere unary_optarg, binary_optarg, ternary_optarg
+von formathelper importiere rand_format, rand_locale
+von _pydecimal importiere _dec_from_triple
 
 C = import_fresh_module('decimal', fresh=['_decimal'])
 P = import_fresh_module('decimal', blocked=['_decimal'])
@@ -189,7 +189,7 @@ class Context(object):
     __slots__ = ['c', 'p']
 
     def __init__(self, c_ctx=Nichts, p_ctx=Nichts):
-        """Initialization is from the C context"""
+        """Initialization is von the C context"""
         self.c = C.getcontext() wenn c_ctx is Nichts sonst c_ctx
         self.p = P.getcontext() wenn p_ctx is Nichts sonst p_ctx
         self.p.prec = self.c.prec
@@ -859,7 +859,7 @@ def verify(t, stat):
         nc = t.rc.number_class().lstrip('+-s')
         stat[nc] += 1
     sonst:
-        # Results from e.g. __divmod__ can only be compared as strings.
+        # Results von e.g. __divmod__ can only be compared as strings.
         wenn not isinstance(t.rc, tuple) and not isinstance(t.rp, tuple):
             wenn t.rc != t.rp:
                 raise_error(t)

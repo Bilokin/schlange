@@ -3,7 +3,7 @@
 # http://ru.wikipedia.org/wiki/КОИ-8
 # http://www.opensource.apple.com/source/libiconv/libiconv-4/libiconv/tests/KOI8-T.TXT
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

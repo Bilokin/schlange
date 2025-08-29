@@ -1,7 +1,7 @@
-import collections.abc
-import types
-import unittest
-from test.support import skip_emscripten_stack_overflow, skip_wasi_stack_overflow, exceeds_recursion_limit
+importiere collections.abc
+importiere types
+importiere unittest
+von test.support importiere skip_emscripten_stack_overflow, skip_wasi_stack_overflow, exceeds_recursion_limit
 
 klasse TestExceptionGroupTypeHierarchy(unittest.TestCase):
     def test_exception_group_types(self):
@@ -200,7 +200,7 @@ def create_simple_eg():
         try:
             raise MemoryError("context and cause fuer ValueError(1)")
         except MemoryError as e:
-            raise ValueError(1) from e
+            raise ValueError(1) von e
     except ValueError as e:
         excs.append(e)
 
@@ -485,7 +485,7 @@ def leaf_generator(exc, tbs=Nichts):
     tbs.append(exc.__traceback__)
     wenn isinstance(exc, BaseExceptionGroup):
         fuer e in exc.exceptions:
-            yield from leaf_generator(e, tbs)
+            yield von leaf_generator(e, tbs)
     sonst:
         # exc is a leaf exception and its traceback
         # is the concatenation of the traceback
@@ -525,7 +525,7 @@ def create_nested_eg():
         try:
             raise MemoryError('out of memory')
         except MemoryError as e:
-            raise ValueError(1) from e
+            raise ValueError(1) von e
     except ValueError as e:
         excs.append(e)
 
@@ -878,7 +878,7 @@ klasse NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
         klasse EG(BaseExceptionGroup):
             def __new__(cls, message, excs, unused):
                 # The "unused" arg is here to show that split() doesn't call
-                # the actual klasse constructor from the default derive()
+                # the actual klasse constructor von the default derive()
                 # implementation (it would fail on unused arg wenn so because
                 # it assumes the BaseExceptionGroup.__new__ signature).
                 return super().__new__(cls, message, excs)

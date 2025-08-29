@@ -1,11 +1,11 @@
-import json
-import os
-import sys
-import sysconfig
-import string
-import unittest
+importiere json
+importiere os
+importiere sys
+importiere sysconfig
+importiere string
+importiere unittest
 
-from test.support import is_android, is_apple_mobile, is_wasm32
+von test.support importiere is_android, is_apple_mobile, is_wasm32
 
 
 klasse FormatTestsBase:

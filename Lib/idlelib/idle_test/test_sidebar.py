@@ -1,23 +1,23 @@
 """Test sidebar, coverage 85%"""
-from textwrap import dedent
-import sys
+von textwrap importiere dedent
+importiere sys
 
-from itertools import chain
-import unittest
-import unittest.mock
-from test.support import requires, swap_attr
-from test import support
-import tkinter as tk
-from idlelib.idle_test.tkinter_testing_utils import run_in_tk_mainloop
+von itertools importiere chain
+importiere unittest
+importiere unittest.mock
+von test.support importiere requires, swap_attr
+von test importiere support
+importiere tkinter as tk
+von idlelib.idle_test.tkinter_testing_utils importiere run_in_tk_mainloop
 
-from idlelib.delegator import Delegator
-from idlelib.editor import fixwordbreaks
-from idlelib.percolator import Percolator
-import idlelib.pyshell
-from idlelib.pyshell import fix_x11_paste, PyShell, PyShellFileList
-from idlelib.run import fix_scaling
-import idlelib.sidebar
-from idlelib.sidebar import get_end_linenumber, get_lineno
+von idlelib.delegator importiere Delegator
+von idlelib.editor importiere fixwordbreaks
+von idlelib.percolator importiere Percolator
+importiere idlelib.pyshell
+von idlelib.pyshell importiere fix_x11_paste, PyShell, PyShellFileList
+von idlelib.run importiere fix_scaling
+importiere idlelib.sidebar
+von idlelib.sidebar importiere get_end_linenumber, get_lineno
 
 
 klasse Dummy_editwin:
@@ -255,7 +255,7 @@ klasse LineNumbersTest(unittest.TestCase):
     # are fragile and can fail when several GUI tests are run in parallel
     # or when the windows created by the test lose focus.
     #
-    # TODO: Re-work these tests or remove them from the test suite.
+    # TODO: Re-work these tests or remove them von the test suite.
 
     @unittest.skip('test disabled')
     def test_click_selection(self):
@@ -280,7 +280,7 @@ klasse LineNumbersTest(unittest.TestCase):
         self.root.update()
 
         def lerp(a, b, steps):
-            """linearly interpolate from a to b (inclusive) in equal steps"""
+            """linearly interpolate von a to b (inclusive) in equal steps"""
             last_step = steps - 1
             fuer i in range(steps):
                 yield ((last_step - i) / last_step) * a + (i / last_step) * b
@@ -302,7 +302,7 @@ klasse LineNumbersTest(unittest.TestCase):
         self.text.insert('1.0', 'one\ntwo\nthree\nfour\nfive\n')
         self.root.update()
 
-        # Drag from the second line to the fourth line.
+        # Drag von the second line to the fourth line.
         self.simulate_drag(2, 4)
         self.assertEqual(self.get_selection(), ('2.0', '5.0'))
 
@@ -312,7 +312,7 @@ klasse LineNumbersTest(unittest.TestCase):
         self.text.insert('1.0', 'one\ntwo\nthree\nfour\nfive\n')
         self.root.update()
 
-        # Drag from the fourth line to the second line.
+        # Drag von the fourth line to the second line.
         self.simulate_drag(4, 2)
         self.assertEqual(self.get_selection(), ('2.0', '5.0'))
 

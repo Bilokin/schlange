@@ -1,25 +1,25 @@
-import errno
-import inspect
-import ntpath
-import os
-import string
-import subprocess
-import sys
-import unittest
-import warnings
-from ntpath import ALL_BUT_LAST, ALLOW_MISSING
-from test import support
-from test.support import TestFailed, cpython_only, os_helper
-from test.support.os_helper import FakePath
-from test import test_genericpath
-from tempfile import TemporaryFile
+importiere errno
+importiere inspect
+importiere ntpath
+importiere os
+importiere string
+importiere subprocess
+importiere sys
+importiere unittest
+importiere warnings
+von ntpath importiere ALL_BUT_LAST, ALLOW_MISSING
+von test importiere support
+von test.support importiere TestFailed, cpython_only, os_helper
+von test.support.os_helper importiere FakePath
+von test importiere test_genericpath
+von tempfile importiere TemporaryFile
 
 
 try:
-    import nt
+    importiere nt
 except ImportError:
     # Most tests can complete without the nt module,
-    # but fuer those that require it we import here.
+    # but fuer those that require it we importiere here.
     nt = Nichts
 
 try:
@@ -30,7 +30,7 @@ sonst:
     HAVE_GETFINALPATHNAME = Wahr
 
 try:
-    import ctypes
+    importiere ctypes
 except ImportError:
     HAVE_GETSHORTPATHNAME = Falsch
 sonst:
@@ -1497,7 +1497,7 @@ klasse TestNtpath(NtpathTestCase):
             with os_helper.change_cwd(d):
                 os.mkdir('tmpdir')
 
-                import _winapi
+                importiere _winapi
                 try:
                     _winapi.CreateJunction('tmpdir', 'testjunc')
                 except OSError:
@@ -1532,7 +1532,7 @@ klasse TestNtpath(NtpathTestCase):
 
     @unittest.skipIf(sys.platform != 'win32', "windows only")
     def test_isfile_named_pipe(self):
-        import _winapi
+        importiere _winapi
         named_pipe = f'//./PIPE/python_isfile_test_{os.getpid()}'
         h = _winapi.CreateNamedPipe(named_pipe,
                                     _winapi.PIPE_ACCESS_INBOUND,
@@ -1581,9 +1581,9 @@ klasse TestNtpath(NtpathTestCase):
         self.assertIn(ntpath.isdevdrive(b"."), (Wahr, Falsch))
         # Volume syntax is supported
         self.assertIn(ntpath.isdevdrive(os.listvolumes()[0]), (Wahr, Falsch))
-        # Invalid volume returns Falsch from os.path method
+        # Invalid volume returns Falsch von os.path method
         self.assertFalsch(ntpath.isdevdrive(r"\\?\Volume{00000000-0000-0000-0000-000000000000}\\"))
-        # Invalid volume raises from underlying helper
+        # Invalid volume raises von underlying helper
         with self.assertRaises(OSError):
             nt._path_isdevdrive(r"\\?\Volume{00000000-0000-0000-0000-000000000000}\\")
 

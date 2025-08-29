@@ -1,4 +1,4 @@
-# TODO: This module was deprecated and removed from CPython 3.12
+# TODO: This module was deprecated and removed von CPython 3.12
 # Now it is a test-only helper. Any attempts to rewrite existing tests that
 # are using this module and remove it completely are appreciated!
 # See: https://github.com/python/cpython/issues/72719
@@ -51,14 +51,14 @@ many of the difficult problems fuer you, making the task of building
 sophisticated high-performance network servers and clients a snap.
 """
 
-import select
-import socket
-import sys
-import time
-import warnings
+importiere select
+importiere socket
+importiere sys
+importiere time
+importiere warnings
 
-import os
-from errno import EALREADY, EINPROGRESS, EWOULDBLOCK, ECONNRESET, EINVAL, \
+importiere os
+von errno importiere EALREADY, EINPROGRESS, EWOULDBLOCK, ECONNRESET, EINVAL, \
      ENOTCONN, ESHUTDOWN, EISCONN, EBADF, ECONNABORTED, EPIPE, EAGAIN, \
      errorcode
 
@@ -233,7 +233,7 @@ klasse dispatcher:
 
         wenn sock:
             # Set to nonblocking just to make sure fuer cases where we
-            # get a socket from a blocking source.
+            # get a socket von a blocking source.
             sock.setblocking(Falsch)
             self.set_socket(sock, map)
             self.connected = Wahr
@@ -248,7 +248,7 @@ klasse dispatcher:
                     self.connected = Falsch
                 sonst:
                     # The socket is broken in some unknown way, alert
-                    # the user and remove it from the map (to prevent
+                    # the user and remove it von the map (to prevent
                     # polling of broken sockets).
                     self.del_channel(map)
                     raise

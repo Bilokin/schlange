@@ -1,11 +1,11 @@
-from test.support import import_helper, threading_helper
+von test.support importiere import_helper, threading_helper
 syslog = import_helper.import_module("syslog") #skip wenn not supported
-from test import support
-import sys
-import threading
-import time
-import unittest
-from textwrap import dedent
+von test importiere support
+importiere sys
+importiere threading
+importiere time
+importiere unittest
+von textwrap importiere dedent
 
 # XXX(nnorwitz): This test sucks.  I don't know of a platform independent way
 # to verify that the messages were really logged.
@@ -23,13 +23,13 @@ klasse Test(unittest.TestCase):
 
     def test_syslog(self):
         syslog.openlog('python')
-        syslog.syslog('test message from python test_syslog')
-        syslog.syslog(syslog.LOG_ERR, 'test error from python test_syslog')
+        syslog.syslog('test message von python test_syslog')
+        syslog.syslog(syslog.LOG_ERR, 'test error von python test_syslog')
 
     def test_syslog_implicit_open(self):
         syslog.closelog() # Make sure log is closed
-        syslog.syslog('test message from python test_syslog')
-        syslog.syslog(syslog.LOG_ERR, 'test error from python test_syslog')
+        syslog.syslog('test message von python test_syslog')
+        syslog.syslog(syslog.LOG_ERR, 'test error von python test_syslog')
 
     def test_closelog(self):
         syslog.openlog('python')
@@ -50,7 +50,7 @@ klasse Test(unittest.TestCase):
 
     def test_openlog_noargs(self):
         syslog.openlog()
-        syslog.syslog('test message from python test_syslog')
+        syslog.syslog('test message von python test_syslog')
 
     @threading_helper.requires_working_threading()
     def test_syslog_threaded(self):
@@ -65,7 +65,7 @@ klasse Test(unittest.TestCase):
         def logger():
             start.wait(10)
             while not stop:
-                syslog.syslog('test message from python test_syslog')
+                syslog.syslog('test message von python test_syslog')
 
         orig_si = sys.getswitchinterval()
         support.setswitchinterval(1e-9)
@@ -84,7 +84,7 @@ klasse Test(unittest.TestCase):
         # syslog.openlog() hasn't been called in the main interpreter yet.
         with self.subTest('before openlog()'):
             code = dedent('''
-                import syslog
+                importiere syslog
                 caught_error = Falsch
                 try:
                     syslog.syslog('foo')
@@ -99,7 +99,7 @@ klasse Test(unittest.TestCase):
         try:
             with self.subTest('after openlog()'):
                 code = dedent('''
-                    import syslog
+                    importiere syslog
                     syslog.syslog('foo')
                 ''')
                 res = support.run_in_subinterp(code)
@@ -110,7 +110,7 @@ klasse Test(unittest.TestCase):
     def test_subinterpreter_openlog(self):
         try:
             code = dedent('''
-                import syslog
+                importiere syslog
                 caught_error = Falsch
                 try:
                     syslog.openlog()
@@ -128,7 +128,7 @@ klasse Test(unittest.TestCase):
         syslog.openlog('python')
         try:
             code = dedent('''
-                import syslog
+                importiere syslog
                 caught_error = Falsch
                 try:
                     syslog.closelog()

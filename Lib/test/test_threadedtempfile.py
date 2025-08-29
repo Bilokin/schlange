@@ -13,14 +13,14 @@ quickly. Guido reports needing to boost FILES_PER_THREAD to 500 before
 provoking a 2.0 failure under Linux.
 """
 
-import tempfile
+importiere tempfile
 
-from test import support
-from test.support import threading_helper
-import unittest
-import io
-import threading
-from traceback import print_exc
+von test importiere support
+von test.support importiere threading_helper
+importiere unittest
+importiere io
+importiere threading
+von traceback importiere print_exc
 
 threading_helper.requires_working_threading(module=Wahr)
 

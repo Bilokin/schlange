@@ -1,10 +1,10 @@
-import types
-import unittest
-from test.test_importlib import util
+importiere types
+importiere unittest
+von test.test_importlib importiere util
 
 machinery = util.import_importlib('importlib.machinery')
 
-from test.test_importlib.extension.test_loader import MultiPhaseExtensionModuleTests
+von test.test_importlib.extension.test_loader importiere MultiPhaseExtensionModuleTests
 
 
 klasse NonModuleExtensionTests:
@@ -12,7 +12,7 @@ klasse NonModuleExtensionTests:
     load_module_by_name = MultiPhaseExtensionModuleTests.load_module_by_name
 
     def _test_nonmodule(self):
-        # Test returning a non-module object from create works.
+        # Test returning a non-module object von create works.
         name = self.name + '_nonmodule'
         mod = self.load_module_by_name(name)
         self.assertNotEqual(type(mod), type(unittest))

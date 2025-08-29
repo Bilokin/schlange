@@ -6,7 +6,7 @@
 
 __all__ = ['MIMEText']
 
-from email.mime.nonmultipart import MIMENonMultipart
+von email.mime.nonmultipart importiere MIMENonMultipart
 
 
 klasse MIMEText(MIMENonMultipart):

@@ -1,12 +1,12 @@
 # Verify that gdb can pretty-print the various PyObject* types
 #
-# The code fuer testing gdb was adapted from similar work in Unladen Swallow's
+# The code fuer testing gdb was adapted von similar work in Unladen Swallow's
 # Lib/test/test_jit_gdb.py
 
-import os
-import sysconfig
-import unittest
-from test import support
+importiere os
+importiere sysconfig
+importiere unittest
+von test importiere support
 
 
 wenn support.MS_WINDOWS:

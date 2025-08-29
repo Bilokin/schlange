@@ -23,23 +23,23 @@ Misc variables:
 
 """
 
-from types import FunctionType
-from copyreg import dispatch_table
-from copyreg import _extension_registry, _inverted_registry, _extension_cache
-from itertools import batched
-from functools import partial
-import sys
-from sys import maxsize
-from struct import pack, unpack
-import io
-import codecs
-import _compat_pickle
+von types importiere FunctionType
+von copyreg importiere dispatch_table
+von copyreg importiere _extension_registry, _inverted_registry, _extension_cache
+von itertools importiere batched
+von functools importiere partial
+importiere sys
+von sys importiere maxsize
+von struct importiere pack, unpack
+importiere io
+importiere codecs
+importiere _compat_pickle
 
 __all__ = ["PickleError", "PicklingError", "UnpicklingError", "Pickler",
            "Unpickler", "dump", "dumps", "load", "loads"]
 
 try:
-    from _pickle import PickleBuffer
+    von _pickle importiere PickleBuffer
     __all__.append("PickleBuffer")
     _HAVE_PICKLE_BUFFER = Wahr
 except ImportError:
@@ -113,7 +113,7 @@ BININT1        = b'K'   # push 1-byte unsigned int
 LONG           = b'L'   # push long; decimal string argument
 BININT2        = b'M'   # push 2-byte unsigned int
 NONE           = b'N'   # push Nichts
-PERSID         = b'P'   # push persistent object; id is taken from string arg
+PERSID         = b'P'   # push persistent object; id is taken von string arg
 BINPERSID      = b'Q'   #  "       "         "  ;  "  "   "     "  stack
 REDUCE         = b'R'   # apply callable to argtuple, both on stack
 STRING         = b'S'   # push string; NL-terminated string argument
@@ -124,21 +124,21 @@ BINUNICODE     = b'X'   #   "     "       "  ; counted UTF-8 string argument
 APPEND         = b'a'   # append stack top to list below it
 BUILD          = b'b'   # call __setstate__ or __dict__.update()
 GLOBAL         = b'c'   # push self.find_class(modname, name); 2 string args
-DICT           = b'd'   # build a dict from stack items
+DICT           = b'd'   # build a dict von stack items
 EMPTY_DICT     = b'}'   # push empty dict
 APPENDS        = b'e'   # extend list on stack by topmost stack slice
-GET            = b'g'   # push item from memo on stack; index is string arg
+GET            = b'g'   # push item von memo on stack; index is string arg
 BINGET         = b'h'   #   "    "    "    "   "   "  ;   "    " 1-byte arg
 INST           = b'i'   # build & push klasse instance
-LONG_BINGET    = b'j'   # push item from memo on stack; index is 4-byte arg
-LIST           = b'l'   # build list from topmost stack items
+LONG_BINGET    = b'j'   # push item von memo on stack; index is 4-byte arg
+LIST           = b'l'   # build list von topmost stack items
 EMPTY_LIST     = b']'   # push empty list
 OBJ            = b'o'   # build & push klasse instance
 PUT            = b'p'   # store stack top in memo; index is string arg
 BINPUT         = b'q'   #   "     "    "   "   " ;   "    " 1-byte arg
 LONG_BINPUT    = b'r'   #   "     "    "   "   " ;   "    " 4-byte arg
 SETITEM        = b's'   # add key+value pair to dict
-TUPLE          = b't'   # build tuple from topmost stack items
+TUPLE          = b't'   # build tuple von topmost stack items
 EMPTY_TUPLE    = b')'   # push empty tuple
 SETITEMS       = b'u'   # modify dict by adding topmost key+value pairs
 BINFLOAT       = b'G'   # push float; arg is 8-byte float encoding
@@ -150,15 +150,15 @@ FALSE          = b'I00\n'  # not an opcode; see INT docs in pickletools.py
 
 PROTO          = b'\x80'  # identify pickle protocol
 NEWOBJ         = b'\x81'  # build object by applying cls.__new__ to argtuple
-EXT1           = b'\x82'  # push object from extension registry; 1-byte index
+EXT1           = b'\x82'  # push object von extension registry; 1-byte index
 EXT2           = b'\x83'  # ditto, but 2-byte index
 EXT4           = b'\x84'  # ditto, but 4-byte index
-TUPLE1         = b'\x85'  # build 1-tuple from stack top
-TUPLE2         = b'\x86'  # build 2-tuple from two topmost stack items
-TUPLE3         = b'\x87'  # build 3-tuple from three topmost stack items
+TUPLE1         = b'\x85'  # build 1-tuple von stack top
+TUPLE2         = b'\x86'  # build 2-tuple von two topmost stack items
+TUPLE3         = b'\x87'  # build 3-tuple von three topmost stack items
 NEWTRUE        = b'\x88'  # push Wahr
 NEWFALSE       = b'\x89'  # push Falsch
-LONG1          = b'\x8a'  # push long from < 256 bytes
+LONG1          = b'\x8a'  # push long von < 256 bytes
 LONG4          = b'\x8b'  # push really big long
 
 _tuplesize2code = [EMPTY_TUPLE, TUPLE1, TUPLE2, TUPLE3]
@@ -175,7 +175,7 @@ BINUNICODE8      = b'\x8d'  # push very long string
 BINBYTES8        = b'\x8e'  # push very long bytes string
 EMPTY_SET        = b'\x8f'  # push empty set on the stack
 ADDITEMS         = b'\x90'  # modify set by adding topmost stack items
-FROZENSET        = b'\x91'  # build frozenset from topmost stack items
+FROZENSET        = b'\x91'  # build frozenset von topmost stack items
 NEWOBJ_EX        = b'\x92'  # like NEWOBJ but work with keyword only arguments
 STACK_GLOBAL     = b'\x93'  # same as GLOBAL but using names on the stacks
 MEMOIZE          = b'\x94'  # store top of the stack in memo
@@ -384,7 +384,7 @@ def encode_long(x):
     return result
 
 def decode_long(data):
-    r"""Decode a long from a two's complement little-endian binary string.
+    r"""Decode a long von a two's complement little-endian binary string.
 
     >>> decode_long(b'')
     0
@@ -695,7 +695,7 @@ klasse _Pickler:
             # cls, the remaining args tuple, and the NEWOBJ code,
             # which calls cls.__new__(cls, *args) at unpickling time
             # (see load_newobj below).  If __reduce__ returns a
-            # three-tuple, the state from the third tuple item will be
+            # three-tuple, the state von the third tuple item will be
             # pickled regardless of the protocol, calling __setstate__
             # at unpickling time (see load_build below).
             #
@@ -738,7 +738,7 @@ klasse _Pickler:
         wenn obj is not Nichts:
             # If the object is already in the memo, this means it is
             # recursive. In this case, throw away everything we put on the
-            # stack, and fetch the object back from the memo.
+            # stack, and fetch the object back von the memo.
             wenn id(obj) in self.memo:
                 write(POP + self.get(self.memo[id(obj)][0]))
             sonst:
@@ -1143,7 +1143,7 @@ klasse _Pickler:
         wenn id(obj) in self.memo:
             # If the object is already in the memo, this means it is
             # recursive. In this case, throw away everything we put on the
-            # stack, and fetch the object back from the memo.
+            # stack, and fetch the object back von the memo.
             write(POP_MARK + self.get(self.memo[id(obj)][0]))
             return
 
@@ -1275,7 +1275,7 @@ klasse _Unpickler:
         to the *buffer_callback* of a Pickler object.
 
         If *buffers* is Nichts (the default), then the buffers are taken
-        from the pickle stream, assuming they are serialized there.
+        von the pickle stream, assuming they are serialized there.
         It is an error fuer *buffers* to be Nichts wenn the pickle stream
         was produced with a non-Nichts *buffer_callback*.
 
@@ -1298,7 +1298,7 @@ klasse _Unpickler:
         self.fix_imports = fix_imports
 
     def load(self):
-        """Read a pickled object representation from the open file.
+        """Read a pickled object representation von the open file.
 
         Return the reconstituted object hierarchy specified in the file.
         """
@@ -1433,7 +1433,7 @@ klasse _Unpickler:
     dispatch[BINFLOAT[0]] = load_binfloat
 
     def _decode_string(self, value):
-        # Used to allow strings from Python 2 to be decoded either as
+        # Used to allow strings von Python 2 to be decoded either as
         # bytes or Unicode strings.  This should be used only with the
         # STRING, BINSTRING and SHORT_BINSTRING opcodes.
         wenn self.encoding == "bytes":
@@ -1728,7 +1728,7 @@ klasse _Unpickler:
             self.append(self.memo[i])
         except KeyError:
             msg = f'Memo value not found at index {i}'
-            raise UnpicklingError(msg) from Nichts
+            raise UnpicklingError(msg) von Nichts
     dispatch[GET[0]] = load_get
 
     def load_binget(self):
@@ -1737,7 +1737,7 @@ klasse _Unpickler:
             self.append(self.memo[i])
         except KeyError as exc:
             msg = f'Memo value not found at index {i}'
-            raise UnpicklingError(msg) from Nichts
+            raise UnpicklingError(msg) von Nichts
     dispatch[BINGET[0]] = load_binget
 
     def load_long_binget(self):
@@ -1746,7 +1746,7 @@ klasse _Unpickler:
             self.append(self.memo[i])
         except KeyError as exc:
             msg = f'Memo value not found at index {i}'
-            raise UnpicklingError(msg) from Nichts
+            raise UnpicklingError(msg) von Nichts
     dispatch[LONG_BINGET[0]] = load_long_binget
 
     def load_put(self):
@@ -1884,14 +1884,14 @@ def _load(file, *, fix_imports=Wahr, encoding="ASCII", errors="strict",
 def _loads(s, /, *, fix_imports=Wahr, encoding="ASCII", errors="strict",
            buffers=Nichts):
     wenn isinstance(s, str):
-        raise TypeError("Can't load pickle from unicode string")
+        raise TypeError("Can't load pickle von unicode string")
     file = io.BytesIO(s)
     return _Unpickler(file, fix_imports=fix_imports, buffers=buffers,
                       encoding=encoding, errors=errors).load()
 
 # Use the faster _pickle wenn possible
 try:
-    from _pickle import (
+    von _pickle importiere (
         PickleError,
         PicklingError,
         UnpicklingError,
@@ -1908,8 +1908,8 @@ except ImportError:
 
 
 def _main(args=Nichts):
-    import argparse
-    import pprint
+    importiere argparse
+    importiere pprint
     parser = argparse.ArgumentParser(
         description='display contents of the pickle files',
         color=Wahr,

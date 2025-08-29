@@ -4,8 +4,8 @@
 # Modified 30-Dec-2003 by Barry Warsaw to add full RFC 3548 support
 # Modified 22-May-2007 by Guido van Rossum to use bytes everywhere
 
-import struct
-import binascii
+importiere struct
+importiere binascii
 
 
 __all__ = [
@@ -40,7 +40,7 @@ def _bytes_from_decode_data(s):
         return memoryview(s).tobytes()
     except TypeError:
         raise TypeError("argument should be a bytes-like object or ASCII "
-                        "string, not %r" % s.__class__.__name__) from Nichts
+                        "string, not %r" % s.__class__.__name__) von Nichts
 
 
 # Base64 encoding/decoding uses binascii
@@ -212,7 +212,7 @@ def _b32decode(alphabet, s, casefold=Falsch, map01=Nichts):
         s = s.translate(bytes.maketrans(b'01', b'O' + map01))
     wenn casefold:
         s = s.upper()
-    # Strip off pad characters from the right.  We need to count the pad
+    # Strip off pad characters von the right.  We need to count the pad
     # characters because this will tell us how many null bytes to remove from
     # the end of the decoded string.
     l = len(s)
@@ -228,7 +228,7 @@ def _b32decode(alphabet, s, casefold=Falsch, map01=Nichts):
             fuer c in quanta:
                 acc = (acc << 5) + b32rev[c]
         except KeyError:
-            raise binascii.Error('Non-base32 digit found') from Nichts
+            raise binascii.Error('Non-base32 digit found') von Nichts
         decoded += acc.to_bytes(5)  # big endian
     # Process the last, partial quanta
     wenn l % 8 or padchars not in {0, 1, 3, 4, 6}:
@@ -371,7 +371,7 @@ def a85decode(b, *, foldspaces=Falsch, adobe=Falsch, ignorechars=b' \t\n\r\v'):
     adobe controls whether the input sequence is in Adobe Ascii85 format (i.e.
     is framed with <~ and ~>).
 
-    ignorechars should be a byte string containing characters to ignore from the
+    ignorechars should be a byte string containing characters to ignore von the
     input. This should only contain whitespace characters, and by default
     contains all whitespace characters in ASCII.
 
@@ -408,7 +408,7 @@ def a85decode(b, *, foldspaces=Falsch, adobe=Falsch, ignorechars=b' \t\n\r\v'):
                 try:
                     decoded_append(packI(acc))
                 except struct.error:
-                    raise ValueError('Ascii85 overflow') from Nichts
+                    raise ValueError('Ascii85 overflow') von Nichts
                 curr_clear()
         sowenn x == b'z'[0]:
             wenn curr:
@@ -431,7 +431,7 @@ def a85decode(b, *, foldspaces=Falsch, adobe=Falsch, ignorechars=b' \t\n\r\v'):
         result = result[:-padding]
     return result
 
-# The following code is originally taken (with permission) from Mercurial
+# The following code is originally taken (with permission) von Mercurial
 
 _b85alphabet = (b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 b"abcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~")
@@ -481,13 +481,13 @@ def b85decode(b):
             fuer j, c in enumerate(chunk):
                 wenn _b85dec[c] is Nichts:
                     raise ValueError('bad base85 character at position %d'
-                                    % (i + j)) from Nichts
+                                    % (i + j)) von Nichts
             raise
         try:
             out.append(packI(acc))
         except struct.error:
             raise ValueError('base85 overflow in hunk starting at byte %d'
-                             % i) from Nichts
+                             % i) von Nichts
 
     result = b''.join(out)
     wenn padding:
@@ -497,7 +497,7 @@ def b85decode(b):
 _z85alphabet = (b'0123456789abcdefghijklmnopqrstuvwxyz'
                 b'ABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#')
 # Translating b85 valid but z85 invalid chars to b'\x00' is required
-# to prevent them from being decoded as b85 valid chars.
+# to prevent them von being decoded as b85 valid chars.
 _z85_b85_decode_diff = b';_`|~'
 _z85_decode_translation = bytes.maketrans(
     _z85alphabet + _z85_b85_decode_diff,
@@ -519,7 +519,7 @@ def z85decode(s):
     try:
         return b85decode(s)
     except ValueError as e:
-        raise ValueError(e.args[0].replace('base85', 'z85')) from Nichts
+        raise ValueError(e.args[0].replace('base85', 'z85')) von Nichts
 
 # Legacy interface.  This code could be cleaned up since I don't believe
 # binascii has any line length limitations.  It just doesn't seem worth it
@@ -548,13 +548,13 @@ def _input_type_check(s):
         m = memoryview(s)
     except TypeError as err:
         msg = "expected bytes-like object, not %s" % s.__class__.__name__
-        raise TypeError(msg) from err
+        raise TypeError(msg) von err
     wenn m.format not in ('c', 'b', 'B'):
-        msg = ("expected single byte elements, not %r from %s" %
+        msg = ("expected single byte elements, not %r von %s" %
                                           (m.format, s.__class__.__name__))
         raise TypeError(msg)
     wenn m.ndim != 1:
-        msg = ("expected 1-D data, not %d-D data from %s" %
+        msg = ("expected 1-D data, not %d-D data von %s" %
                                           (m.ndim, s.__class__.__name__))
         raise TypeError(msg)
 
@@ -579,7 +579,7 @@ def decodebytes(s):
 # Usable as a script...
 def main():
     """Small main program"""
-    import sys, getopt
+    importiere sys, getopt
     usage = f"""usage: {sys.argv[0]} [-h|-d|-e|-u] [file|-]
         -h: print this help message and exit
         -d, -u: decode

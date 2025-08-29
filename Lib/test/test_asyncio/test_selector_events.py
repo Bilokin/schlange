@@ -1,24 +1,24 @@
 """Tests fuer selector_events.py"""
 
-import collections
-import selectors
-import socket
-import sys
-import unittest
-from asyncio import selector_events
-from unittest import mock
+importiere collections
+importiere selectors
+importiere socket
+importiere sys
+importiere unittest
+von asyncio importiere selector_events
+von unittest importiere mock
 
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
 
-import asyncio
-from asyncio.selector_events import (BaseSelectorEventLoop,
+importiere asyncio
+von asyncio.selector_events importiere (BaseSelectorEventLoop,
                                      _SelectorDatagramTransport,
                                      _SelectorSocketTransport,
                                      _SelectorTransport)
-from test.test_asyncio import utils as test_utils
+von test.test_asyncio importiere utils as test_utils
 
 MOCK_ANY = mock.ANY
 

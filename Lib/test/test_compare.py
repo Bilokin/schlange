@@ -1,8 +1,8 @@
 """Test equality and order comparisons."""
-import unittest
-from test.support import ALWAYS_EQ
-from fractions import Fraction
-from decimal import Decimal
+importiere unittest
+von test.support importiere ALWAYS_EQ
+von fractions importiere Fraction
+von decimal importiere Decimal
 
 
 klasse ComparisonSimpleTest(unittest.TestCase):

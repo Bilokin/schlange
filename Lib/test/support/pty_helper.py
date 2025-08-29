@@ -1,14 +1,14 @@
 """
 Helper to run a script in a pseudo-terminal.
 """
-import os
-import selectors
-import subprocess
-import sys
-from contextlib import ExitStack
-from errno import EIO
+importiere os
+importiere selectors
+importiere subprocess
+importiere sys
+von contextlib importiere ExitStack
+von errno importiere EIO
 
-from test.support.import_helper import import_module
+von test.support.import_helper importiere import_module
 
 def run_pty(script, input=b"dummy input\r", env=Nichts):
     pty = import_module('pty')

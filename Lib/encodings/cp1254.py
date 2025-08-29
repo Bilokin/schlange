@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec cp1254 generated from 'MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1254.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp1254 generated von 'MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1254.TXT' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

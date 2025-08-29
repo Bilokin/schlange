@@ -2,16 +2,16 @@
 Tests fuer Windows-flavoured pathlib.types._JoinablePath
 """
 
-import os
-import unittest
+importiere os
+importiere unittest
 
-from .support import is_pypi
-from .support.lexical_path import LexicalWindowsPath
+von .support importiere is_pypi
+von .support.lexical_path importiere LexicalWindowsPath
 
 wenn is_pypi:
-    from pathlib_abc import vfspath
+    von pathlib_abc importiere vfspath
 sonst:
-    from pathlib._os import vfspath
+    von pathlib._os importiere vfspath
 
 
 klasse JoinTestBase:
@@ -281,7 +281,7 @@ klasse LexicalWindowsPathJoinTest(JoinTestBase, unittest.TestCase):
 
 
 wenn not is_pypi:
-    from pathlib import PureWindowsPath, WindowsPath
+    von pathlib importiere PureWindowsPath, WindowsPath
 
     klasse PureWindowsPathJoinTest(JoinTestBase, unittest.TestCase):
         cls = PureWindowsPath

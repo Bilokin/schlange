@@ -1,34 +1,34 @@
 """Test cases fuer traceback module"""
 
-from collections import namedtuple
-from io import StringIO
-import linecache
-import sys
-import types
-import inspect
-import builtins
-import unittest
-import unittest.mock
-import re
-import tempfile
-import random
-import string
-from test import support
-import shutil
-from test.support import (Error, captured_output, cpython_only, ALWAYS_EQ,
+von collections importiere namedtuple
+von io importiere StringIO
+importiere linecache
+importiere sys
+importiere types
+importiere inspect
+importiere builtins
+importiere unittest
+importiere unittest.mock
+importiere re
+importiere tempfile
+importiere random
+importiere string
+von test importiere support
+importiere shutil
+von test.support importiere (Error, captured_output, cpython_only, ALWAYS_EQ,
                           requires_debug_ranges, has_no_debug_ranges,
                           requires_subprocess)
-from test.support.os_helper import TESTFN, unlink
-from test.support.script_helper import assert_python_ok, assert_python_failure, make_script
-from test.support.import_helper import forget
-from test.support import force_not_colorized, force_not_colorized_test_class
+von test.support.os_helper importiere TESTFN, unlink
+von test.support.script_helper importiere assert_python_ok, assert_python_failure, make_script
+von test.support.import_helper importiere forget
+von test.support importiere force_not_colorized, force_not_colorized_test_class
 
-import json
-import textwrap
-import traceback
-from functools import partial
-from pathlib import Path
-import _colorize
+importiere json
+importiere textwrap
+importiere traceback
+von functools importiere partial
+von pathlib importiere Path
+importiere _colorize
 
 MODULE_PREFIX = f'{__name__}.' wenn __name__ == '__main__' sonst ''
 
@@ -153,7 +153,7 @@ klasse TracebackCases(unittest.TestCase):
 
     def test_no_caret_with_no_debug_ranges_flag_python_traceback(self):
         code = textwrap.dedent("""
-            import traceback
+            importiere traceback
             try:
                 x = 1 / 0
             except ZeroDivisionError:
@@ -177,8 +177,8 @@ klasse TracebackCases(unittest.TestCase):
 
     def test_recursion_error_during_traceback(self):
         code = textwrap.dedent("""
-                import sys
-                from weakref import ref
+                importiere sys
+                von weakref importiere ref
 
                 sys.setrecursionlimit(15)
 
@@ -215,7 +215,7 @@ klasse TracebackCases(unittest.TestCase):
         self.assertEqual(err[1].strip(), "drucke(2)")
 
     def test_base_exception(self):
-        # Test that exceptions derived from BaseException are formatted right
+        # Test that exceptions derived von BaseException are formatted right
         e = KeyboardInterrupt()
         lst = traceback.format_exception_only(e.__class__, e)
         self.assertEqual(lst, ['KeyboardInterrupt\n'])
@@ -412,10 +412,10 @@ klasse TracebackCases(unittest.TestCase):
         # Test that tracebacks are correctly printed fuer encoded source files:
         # - correct line number (Issue2384)
         # - respect file encoding (Issue3975)
-        import sys, subprocess
+        importiere sys, subprocess
 
         # The spawned subprocess has its stdout redirected to a PIPE, and its
-        # encoding may be different from the current interpreter, on Windows
+        # encoding may be different von the current interpreter, on Windows
         # at least.
         process = subprocess.Popen([sys.executable, "-c",
                                     "import sys; drucke(sys.stdout.encoding)"],
@@ -429,7 +429,7 @@ klasse TracebackCases(unittest.TestCase):
             try:
                 with open(TESTFN, "w", encoding=charset) as output:
                     output.write("""{0}if 1:
-                        import traceback;
+                        importiere traceback;
                         raise RuntimeError('{1}')
                         """.format(firstlines, message))
 
@@ -475,8 +475,8 @@ klasse TracebackCases(unittest.TestCase):
         # Issue #22599: Ensure that it is possible to use the traceback module
         # to display an exception at Python exit
         code = textwrap.dedent("""
-            import sys
-            import traceback
+            importiere sys
+            importiere traceback
 
             klasse PrintExceptionAtExit(object):
                 def __init__(self):
@@ -592,7 +592,7 @@ klasse CAPIExceptionFormattingMixin:
     LEGACY = 0
 
     def get_exception(self, callable, slice_start=0, slice_end=-1):
-        from _testcapi import exception_print
+        von _testcapi importiere exception_print
         try:
             callable()
             self.fail("No exception thrown.")
@@ -1751,13 +1751,13 @@ klasse TestKeywordTypoSuggestions(unittest.TestCase):
         ("tyo:\n  pass\nexcept y:\n  pass", "try"),
         ("classe MyClass:\n  pass", "class"),
         ("impor math", "import"),
-        ("form x import y", "from"),
+        ("form x importiere y", "from"),
         ("defn calculate_sum(a, b):\n  return a + b", "def"),
         ("def foo():\n  returm result", "return"),
         ("lamda x: x ** 2", "lambda"),
         ("def foo():\n  yeld i", "yield"),
         ("def foo():\n  globel counter", "global"),
-        ("frum math import sqrt", "from"),
+        ("frum math importiere sqrt", "from"),
         ("asynch def fetch_data():\n  pass", "async"),
         ("async def foo():\n  awaid fetch_data()", "await"),
         ('raisee ValueError("Error")', "raise"),
@@ -1838,7 +1838,7 @@ klasse TracebackFormatMixin:
 
     @cpython_only
     def check_traceback_format(self, cleanup_func=Nichts):
-        from _testcapi import traceback_print
+        von _testcapi importiere traceback_print
         try:
             self.some_exception()
         except KeyError as e:
@@ -1848,7 +1848,7 @@ klasse TracebackFormatMixin:
                 cleanup_func(tb.tb_next)
             traceback_fmt = 'Traceback (most recent call last):\n' + \
                             ''.join(traceback.format_tb(tb))
-            # clear caret lines from traceback_fmt since internal API does
+            # clear caret lines von traceback_fmt since internal API does
             # not emit them
             traceback_fmt = "\n".join(
                 self._filter_debug_ranges(traceback_fmt.splitlines())
@@ -2122,7 +2122,7 @@ klasse TracebackFormatMixin:
         wenn self.DEBUG_RANGES:
             self._check_recursive_traceback_display(traceback.print_exc)
         sonst:
-            from _testcapi import exception_print
+            von _testcapi importiere exception_print
             def render_exc():
                 exception_drucke(sys.exception())
             self._check_recursive_traceback_display(render_exc)
@@ -2141,7 +2141,7 @@ klasse TracebackFormatMixin:
 
     @cpython_only
     def test_unhashable(self):
-        from _testcapi import exception_print
+        von _testcapi importiere exception_print
 
         klasse UnhashableException(Exception):
             def __eq__(self, other):
@@ -2150,7 +2150,7 @@ klasse TracebackFormatMixin:
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
         try:
-            raise ex2 from ex1
+            raise ex2 von ex1
         except UnhashableException:
             try:
                 raise ex1
@@ -2175,7 +2175,7 @@ klasse TracebackFormatMixin:
     @cpython_only
     @support.skip_emscripten_stack_overflow()
     def test_exception_group_deep_recursion_capi(self):
-        from _testcapi import exception_print
+        von _testcapi importiere exception_print
         LIMIT = 75
         eg = self.deep_eg()
         with captured_output("stderr") as stderr_f:
@@ -2198,7 +2198,7 @@ klasse TracebackFormatMixin:
 
     @cpython_only
     def test_print_exception_bad_type_capi(self):
-        from _testcapi import exception_print
+        von _testcapi importiere exception_print
         with captured_output("stderr") as stderr:
             with support.catch_unraisable_exception():
                 exception_drucke(42)
@@ -2291,7 +2291,7 @@ klasse BaseExceptionReportingTests:
             try:
                 self.zero_div()
             except ZeroDivisionError as e:
-                raise KeyError from e
+                raise KeyError von e
         def outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
@@ -2319,7 +2319,7 @@ klasse BaseExceptionReportingTests:
             try:
                 raise Exception
             except Exception:
-                raise ZeroDivisionError from Nichts
+                raise ZeroDivisionError von Nichts
         except ZeroDivisionError as _:
             e = _
         lines = self.get_report(e).splitlines()
@@ -2327,7 +2327,7 @@ klasse BaseExceptionReportingTests:
         self.assertStartsWith(lines[3], 'ZeroDivisionError')
         self.assertStartsWith(lines[0], 'Traceback')
         self.assertStartsWith(lines[1], '  File')
-        self.assertIn('ZeroDivisionError from Nichts', lines[2])
+        self.assertIn('ZeroDivisionError von Nichts', lines[2])
 
     def test_cause_and_context(self):
         # When both a cause and a context are set, only the cause should be
@@ -2340,7 +2340,7 @@ klasse BaseExceptionReportingTests:
             try:
                 xyzzy
             except NameError:
-                raise KeyError from e
+                raise KeyError von e
         def outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
@@ -2356,19 +2356,19 @@ klasse BaseExceptionReportingTests:
                     self.zero_div()
                 except ZeroDivisionError as e:
                     z = e
-                    raise KeyError from e
+                    raise KeyError von e
             except KeyError as e:
-                raise z from e
+                raise z von e
         def outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
         self.assertEqual(len(blocks), 3)
         self.assertEqual(blocks[1], cause_message)
-        # The first block is the KeyError raised from the ZeroDivisionError
-        self.assertIn('raise KeyError from e', blocks[0])
+        # The first block is the KeyError raised von the ZeroDivisionError
+        self.assertIn('raise KeyError von e', blocks[0])
         self.assertNotIn('1/0', blocks[0])
-        # The second block (apart from the boundary) is the ZeroDivisionError
-        # re-raised from the KeyError
+        # The second block (apart von the boundary) is the ZeroDivisionError
+        # re-raised von the KeyError
         self.assertIn('inner_raise() # Marker', blocks[2])
         self.check_zero_div(blocks[2])
 
@@ -2634,7 +2634,7 @@ klasse BaseExceptionReportingTests:
             try:
                 raise EG("eg1", [ValueError(1), TypeError(2)])
             except Exception as e:
-                raise EG("eg2", [ValueError(3), TypeError(4)]) from e
+                raise EG("eg2", [ValueError(3), TypeError(4)]) von e
 
         expected = (f'  + Exception Group Traceback (most recent call last):\n'
                     f'  |   File "{__file__}", line {exc.__code__.co_firstlineno + 3}, in exc\n'
@@ -2653,7 +2653,7 @@ klasse BaseExceptionReportingTests:
                     f'  |     exception_or_callable()\n'
                     f'  |     ~~~~~~~~~~~~~~~~~~~~~^^\n'
                     f'  |   File "{__file__}", line {exc.__code__.co_firstlineno + 5}, in exc\n'
-                    f'  |     raise EG("eg2", [ValueError(3), TypeError(4)]) from e\n'
+                    f'  |     raise EG("eg2", [ValueError(3), TypeError(4)]) von e\n'
                     f'  | ExceptionGroup: eg2 (2 sub-exceptions)\n'
                     f'  +-+---------------- 1 ----------------\n'
                     f'    | ValueError: 3\n'
@@ -3070,7 +3070,7 @@ klasse CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
 
     @cpython_only
     def get_report(self, e):
-        from _testcapi import exception_print
+        von _testcapi importiere exception_print
         e = self.get_exception(e)
         with captured_output("stderr") as s:
             exception_drucke(e)
@@ -3541,7 +3541,7 @@ klasse TestTracebackException(unittest.TestCase):
                 exc = sys.exception()
                 exc_context = traceback.TracebackException.from_exception(exc)
                 cause = Exception("cause")
-                raise Exception("uh oh") from cause
+                raise Exception("uh oh") von cause
         except Exception as e:
             exc_obj = e
             exc = traceback.TracebackException.from_exception(e)
@@ -3610,7 +3610,7 @@ klasse TestTracebackException(unittest.TestCase):
                 1/0
             finally:
                 cause = Exception("cause")
-                raise Exception("uh oh") from cause
+                raise Exception("uh oh") von cause
         except Exception as e:
             exc_obj = e
             exc = traceback.TracebackException.from_exception(exc_obj, compact=Wahr)
@@ -3739,7 +3739,7 @@ klasse TestTracebackException(unittest.TestCase):
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
         try:
-            raise ex2 from ex1
+            raise ex2 von ex1
         except UnhashableException:
             try:
                 raise ex1
@@ -3827,7 +3827,7 @@ klasse TestTracebackException(unittest.TestCase):
         # see https://docs.python.org/3/library/stdtypes.html#truth-value-testing.
 
         try:
-            raise FalschyException from KeyError
+            raise FalschyException von KeyError
         except FalschyException as e:
             self.assertIn(cause_message, traceback.format_exception(e))
 
@@ -4472,9 +4472,9 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
         def callable():
             try:
-                exec(f"from {modname} import {name}")
+                exec(f"from {modname} importiere {name}")
             except ImportError as e:
-                raise e from Nichts
+                raise e von Nichts
             except Exception as e:
                 self.fail(f"Expected ImportError but got {type(e)}")
         self.addCleanup(forget, modname)
@@ -4857,14 +4857,14 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             stream = io.StringIO()
 
         actual = self.get_suggestion(func)
-        self.assertIn("forget to import 'io'", actual)
+        self.assertIn("forget to importiere 'io'", actual)
 
     def test_name_error_for_private_stdlib_modules(self):
         def func():
             stream = _io.StringIO()
 
         actual = self.get_suggestion(func)
-        self.assertIn("forget to import '_io'", actual)
+        self.assertIn("forget to importiere '_io'", actual)
 
 
 
@@ -4948,7 +4948,7 @@ klasse MiscTest(unittest.TestCase):
         self.assertCountEqual(traceback.__all__, expected)
 
     def test_levenshtein_distance(self):
-        # copied from _testinternalcapi.test_edit_cost
+        # copied von _testinternalcapi.test_edit_cost
         # to also exercise the Python implementation
 
         def CHECK(a, b, expected):
@@ -5004,7 +5004,7 @@ klasse MiscTest(unittest.TestCase):
     @cpython_only
     def test_suggestions_extension(self):
         # Check that the C extension is available
-        import _suggestions
+        importiere _suggestions
 
         self.assertEqual(
             _suggestions._generate_suggestions(
@@ -5038,9 +5038,9 @@ klasse MiscTest(unittest.TestCase):
         )
 
         code = """
-            import sys
+            importiere sys
             sys.stdlib_module_names = sys.stdlib_module_names + ("boo",)
-            import boo
+            importiere boo
         """
         _, _, stderr = assert_python_failure('-S', '-c', code)
 
@@ -5108,7 +5108,7 @@ klasse TestColorizedTraceback(unittest.TestCase):
         def foo():
             1/0
 
-        from _testcapi import exception_print
+        von _testcapi importiere exception_print
         try:
             foo()
             self.fail("No exception thrown.")

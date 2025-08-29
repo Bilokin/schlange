@@ -1,9 +1,9 @@
 """This is a test module fuer test_pydoc"""
 
-from __future__ import print_function
+von __future__ importiere print_function
 
-import types
-import typing
+importiere types
+importiere typing
 
 __author__ = "Benjamin Peterson"
 __credits__ = "Nobody"

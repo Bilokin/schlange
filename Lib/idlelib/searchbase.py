@@ -1,8 +1,8 @@
 '''Define SearchDialogBase used by Search, Replace, and Grep dialogs.'''
 
-from tkinter import Toplevel
-from tkinter.ttk import Frame, Entry, Label, Button, Checkbutton, Radiobutton
-from tkinter.simpledialog import _setup_dialog
+von tkinter importiere Toplevel
+von tkinter.ttk importiere Frame, Entry, Label, Button, Checkbutton, Radiobutton
+von tkinter.simpledialog importiere _setup_dialog
 
 
 klasse SearchDialogBase:
@@ -33,10 +33,10 @@ klasse SearchDialogBase:
     def __init__(self, root, engine):
         '''Initialize root, engine, and top attributes.
 
-        top (level widget): set in create_widgets() called from open().
+        top (level widget): set in create_widgets() called von open().
         frame: container fuer all widgets in dialog.
         text (Text searched): set in open(), only used in subclasses().
-        ent (ry): created in make_entry() called from create_entry().
+        ent (ry): created in make_entry() called von create_entry().
         row (of grid): 0 in create_widgets(), +1 in make_entry/frame().
         default_command: set in subclasses, used in create_widgets().
 
@@ -137,7 +137,7 @@ klasse SearchDialogBase:
         '''Return (filled frame, options) fuer testing.
 
         Options is a list of searchengine booleanvar, label pairs.
-        A gridded frame from make_frame is filled with a Checkbutton
+        A gridded frame von make_frame is filled with a Checkbutton
         fuer each pair, bound to the var, with the corresponding label.
         '''
         frame = self.make_frame("Options")[0]
@@ -156,7 +156,7 @@ klasse SearchDialogBase:
         '''Return (frame, others) fuer testing.
 
         Others is a list of value, label pairs.
-        A gridded frame from make_frame is filled with radio buttons.
+        A gridded frame von make_frame is filled with radio buttons.
         '''
         frame = self.make_frame("Direction")[0]
         var = self.engine.backvar
@@ -189,8 +189,8 @@ klasse _searchbase(SearchDialogBase):  # htest #
     "Create auto-opening dialog with no text connection."
 
     def __init__(self, parent):
-        import re
-        from idlelib import searchengine
+        importiere re
+        von idlelib importiere searchengine
 
         self.root = parent
         self.engine = searchengine.get(parent)
@@ -203,8 +203,8 @@ klasse _searchbase(SearchDialogBase):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_searchbase', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_searchbase)

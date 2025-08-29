@@ -1,43 +1,43 @@
-import datetime
-import os
-import sys
-import contextlib
-import importlib.util
-import inspect
-import io
-import pydoc
-import py_compile
-import keyword
-import _pickle
-import pkgutil
-import re
-import stat
-import tempfile
-import test.support
-import time
-import types
-import typing
-import unittest
-import unittest.mock
-import urllib.parse
-import xml.etree
-import xml.etree.ElementTree
-import textwrap
-from io import StringIO
-from collections import namedtuple
-from urllib.request import urlopen, urlcleanup
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-from test.support.script_helper import (assert_python_ok,
+importiere datetime
+importiere os
+importiere sys
+importiere contextlib
+importiere importlib.util
+importiere inspect
+importiere io
+importiere pydoc
+importiere py_compile
+importiere keyword
+importiere _pickle
+importiere pkgutil
+importiere re
+importiere stat
+importiere tempfile
+importiere test.support
+importiere time
+importiere types
+importiere typing
+importiere unittest
+importiere unittest.mock
+importiere urllib.parse
+importiere xml.etree
+importiere xml.etree.ElementTree
+importiere textwrap
+von io importiere StringIO
+von collections importiere namedtuple
+von urllib.request importiere urlopen, urlcleanup
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support.script_helper importiere (assert_python_ok,
                                         assert_python_failure, spawn_python)
-from test.support import threading_helper
-from test.support import (reap_children, captured_stdout,
+von test.support importiere threading_helper
+von test.support importiere (reap_children, captured_stdout,
                           captured_stderr, is_wasm32,
                           requires_docstrings, MISSING_C_DOCSTRINGS)
-from test.support.os_helper import (TESTFN, rmtree, unlink)
-from test.test_pydoc import pydoc_mod
-from test.test_pydoc import pydocfodder
+von test.support.os_helper importiere (TESTFN, rmtree, unlink)
+von test.test_pydoc importiere pydoc_mod
+von test.test_pydoc importiere pydocfodder
 
 
 klasse nonascii:
@@ -250,7 +250,7 @@ klasse DA(builtins.object)
  |  ham
  |
  |  ----------------------------------------------------------------------
- |  Data and other attributes inherited from Meta:
+ |  Data and other attributes inherited von Meta:
  |
  |  ham = 'spam'
 """.strip()
@@ -259,7 +259,7 @@ expected_virtualattribute_pattern1 = """
 Help on klasse Class in module %s:
 
 klasse Class(builtins.object)
- |  Data and other attributes inherited from Meta:
+ |  Data and other attributes inherited von Meta:
  |
  |  LIFE = 42
 """.strip()
@@ -268,7 +268,7 @@ expected_virtualattribute_pattern2 = """
 Help on klasse Class1 in module %s:
 
 klasse Class1(builtins.object)
- |  Data and other attributes inherited from Meta1:
+ |  Data and other attributes inherited von Meta1:
  |
  |  one = 1
 """.strip()
@@ -282,17 +282,17 @@ klasse Class2(Class1)
  |      Class1
  |      builtins.object
  |
- |  Data and other attributes inherited from Meta1:
+ |  Data and other attributes inherited von Meta1:
  |
  |  one = 1
  |
  |  ----------------------------------------------------------------------
- |  Data and other attributes inherited from Meta3:
+ |  Data and other attributes inherited von Meta3:
  |
  |  three = 3
  |
  |  ----------------------------------------------------------------------
- |  Data and other attributes inherited from Meta2:
+ |  Data and other attributes inherited von Meta2:
  |
  |  two = 2
 """.strip()
@@ -449,7 +449,7 @@ klasse PydocDocTest(unittest.TestCase):
     def test_text_enum_member_with_value_zero(self):
         # Test issue #20654 to ensure enum member with value 0 can be
         # displayed. It used to throw KeyError: 'zero'.
-        import enum
+        importiere enum
         klasse BinaryInteger(enum.IntEnum):
             zero = 0
             one = 1
@@ -457,7 +457,7 @@ klasse PydocDocTest(unittest.TestCase):
         self.assertIn('BinaryInteger.zero', doc)
 
     def test_slotted_dataclass_with_field_docs(self):
-        import dataclasses
+        importiere dataclasses
         @dataclasses.dataclass(slots=Wahr)
         klasse My:
             x: int = dataclasses.field(doc='Docstring fuer x')
@@ -553,7 +553,7 @@ klasse PydocDocTest(unittest.TestCase):
             # of the known subclasses of object. (doc.docclass() used to
             # fail wenn HeapType was imported before running this test, like
             # when running tests sequentially.)
-            from _testcapi import HeapType  # noqa: F401
+            von _testcapi importiere HeapType  # noqa: F401
         except ImportError:
             pass
         text = doc.docclass(object)
@@ -1077,7 +1077,7 @@ klasse B(A)
  |      Configure resources of an item TAGORID.
  |
  |  ----------------------------------------------------------------------
- |  Methods inherited from A:
+ |  Methods inherited von A:
  |
  |  a_size(self)
  |      Return size
@@ -1088,7 +1088,7 @@ klasse B(A)
  |      Raise this widget in the stacking order.
  |
  |  ----------------------------------------------------------------------
- |  Data descriptors inherited from A:
+ |  Data descriptors inherited von A:
  |
  |  __dict__
  |      dictionary fuer instance variables
@@ -1114,14 +1114,14 @@ klasse B(A)
         itemconfigure(self, tagOrId, cnf=Nichts, **kw)
             Configure resources of an item TAGORID.
 
-    Methods inherited from A:
+    Methods inherited von A:
         a_size(self)
             Return size
         lift = tkraise(self, aboveThis=Nichts)
         tkraise(self, aboveThis=Nichts)
             Raise this widget in the stacking order.
 
-    Data descriptors inherited from A:
+    Data descriptors inherited von A:
         __dict__
             dictionary fuer instance variables
         __weakref__
@@ -1133,8 +1133,8 @@ klasse B(A)
             self.assertIn(expected_line, as_text)
 
     def test_long_signatures(self):
-        from collections.abc import Callable
-        from typing import Literal, Annotated
+        von collections.abc importiere Callable
+        von typing importiere Literal, Annotated
 
         klasse A:
             def __init__(self,
@@ -1219,9 +1219,9 @@ function_with_really_long_name_so_annotations_can_be_rather_small(
 ''' % __name__)
 
     def test__future__imports(self):
-        # __future__ features are excluded from module help,
+        # __future__ features are excluded von module help,
         # except when it's the __future__ module itself
-        import __future__
+        importiere __future__
         future_text, _ = get_pydoc_text(__future__)
         future_html, _ = get_pydoc_html(__future__)
         pydoc_mod_text, _ = get_pydoc_text(pydoc_mod)
@@ -1245,7 +1245,7 @@ klasse PydocImportTest(PydocBaseTest):
 
     def test_badimport(self):
         # This tests the fix fuer issue 5230, where wenn pydoc found the module
-        # but the module had an internal import error pydoc would report no doc
+        # but the module had an internal importiere error pydoc would report no doc
         # found.
         modname = 'testmod_xyzzy'
         testpairs = (
@@ -1336,7 +1336,7 @@ klasse PydocImportTest(PydocBaseTest):
             try:
                 with self.assertRaisesRegex(ValueError, "ouch"):
                     # Sanity check
-                    import test_error_package  # noqa: F401
+                    importiere test_error_package  # noqa: F401
 
                 text = self.call_url_handler("search?key=test_error_package",
                     "Pydoc: Search Results")
@@ -1560,7 +1560,7 @@ klasse TestDescriptions(unittest.TestCase):
 
     def test_module_level_callable_o(self):
         try:
-            import _stat
+            importiere _stat
         except ImportError:
             # stat.S_IMODE() and _stat.S_IMODE() have a different signature
             self.skipTest('_stat extension is missing')
@@ -1804,7 +1804,7 @@ cm(x) klasse method of test.test_pydoc.test_pydoc.X
 area
     Area of the rect
 """)
-        # inherits the docstring from Rect.area
+        # inherits the docstring von Rect.area
         self.assertEqual(self._get_summary_lines(Square.area), """\
 area
     Area of the rect
@@ -1902,7 +1902,7 @@ foo
 
     def test_module_none(self):
         # Issue #128772
-        from test.test_pydoc import module_none
+        von test.test_pydoc importiere module_none
         pydoc.render_doc(module_none)
 
 
@@ -1923,24 +1923,24 @@ klasse PydocFodderTest(unittest.TestCase):
         doc = pydoc.TextDoc()
         result = doc.docclass(cls)
         result = clean_text(result)
-        where = 'defined here' wenn cls is pydocfodder.B sonst 'inherited from B'
+        where = 'defined here' wenn cls is pydocfodder.B sonst 'inherited von B'
         lines = self.getsection(result, f' |  Methods {where}:', ' |  ' + '-'*70)
         self.assertIn(' |  A_method_alias = A_method(self)', lines)
         self.assertIn(' |  B_method_alias = B_method(self)', lines)
-        self.assertIn(' |  A_staticmethod(x, y) from test.test_pydoc.pydocfodder.A', lines)
+        self.assertIn(' |  A_staticmethod(x, y) von test.test_pydoc.pydocfodder.A', lines)
         self.assertIn(' |  A_staticmethod_alias = A_staticmethod(x, y)', lines)
-        self.assertIn(' |  global_func(x, y) from test.test_pydoc.pydocfodder', lines)
+        self.assertIn(' |  global_func(x, y) von test.test_pydoc.pydocfodder', lines)
         self.assertIn(' |  global_func_alias = global_func(x, y)', lines)
-        self.assertIn(' |  global_func2_alias = global_func2(x, y) from test.test_pydoc.pydocfodder', lines)
+        self.assertIn(' |  global_func2_alias = global_func2(x, y) von test.test_pydoc.pydocfodder', lines)
         wenn not support.MISSING_C_DOCSTRINGS:
-            self.assertIn(' |  count(self, value, /) from builtins.list', lines)
+            self.assertIn(' |  count(self, value, /) von builtins.list', lines)
             self.assertIn(' |  list_count = count(self, value, /)', lines)
-            self.assertIn(' |  __repr__(self, /) from builtins.object', lines)
+            self.assertIn(' |  __repr__(self, /) von builtins.object', lines)
             self.assertIn(' |  object_repr = __repr__(self, /)', lines)
         sonst:
-            self.assertIn(' |  count(self, object, /) from builtins.list', lines)
+            self.assertIn(' |  count(self, object, /) von builtins.list', lines)
             self.assertIn(' |  list_count = count(self, object, /)', lines)
-            self.assertIn(' |  __repr__(...) from builtins.object', lines)
+            self.assertIn(' |  __repr__(...) von builtins.object', lines)
             self.assertIn(' |  object_repr = __repr__(...)', lines)
 
         lines = self.getsection(result, f' |  Static methods {where}:', ' |  ' + '-'*70)
@@ -1963,24 +1963,24 @@ klasse PydocFodderTest(unittest.TestCase):
         doc = pydoc.HTMLDoc()
         result = doc.docclass(cls)
         result = html2text(result)
-        where = 'defined here' wenn cls is pydocfodder.B sonst 'inherited from B'
+        where = 'defined here' wenn cls is pydocfodder.B sonst 'inherited von B'
         lines = self.getsection(result, f'Methods {where}:', '-'*70)
         self.assertIn('A_method_alias = A_method(self)', lines)
         self.assertIn('B_method_alias = B_method(self)', lines)
-        self.assertIn('A_staticmethod(x, y) from test.test_pydoc.pydocfodder.A', lines)
+        self.assertIn('A_staticmethod(x, y) von test.test_pydoc.pydocfodder.A', lines)
         self.assertIn('A_staticmethod_alias = A_staticmethod(x, y)', lines)
-        self.assertIn('global_func(x, y) from test.test_pydoc.pydocfodder', lines)
+        self.assertIn('global_func(x, y) von test.test_pydoc.pydocfodder', lines)
         self.assertIn('global_func_alias = global_func(x, y)', lines)
-        self.assertIn('global_func2_alias = global_func2(x, y) from test.test_pydoc.pydocfodder', lines)
+        self.assertIn('global_func2_alias = global_func2(x, y) von test.test_pydoc.pydocfodder', lines)
         wenn not support.MISSING_C_DOCSTRINGS:
-            self.assertIn('count(self, value, /) from builtins.list', lines)
+            self.assertIn('count(self, value, /) von builtins.list', lines)
             self.assertIn('list_count = count(self, value, /)', lines)
-            self.assertIn('__repr__(self, /) from builtins.object', lines)
+            self.assertIn('__repr__(self, /) von builtins.object', lines)
             self.assertIn('object_repr = __repr__(self, /)', lines)
         sonst:
-            self.assertIn('count(self, object, /) from builtins.list', lines)
+            self.assertIn('count(self, object, /) von builtins.list', lines)
             self.assertIn('list_count = count(self, object, /)', lines)
-            self.assertIn('__repr__(...) from builtins.object', lines)
+            self.assertIn('__repr__(...) von builtins.object', lines)
             self.assertIn('object_repr = __repr__(...)', lines)
 
         lines = self.getsection(result, f'Static methods {where}:', '-'*70)

@@ -1,13 +1,13 @@
 # test interactions between int, float, Decimal and Fraction
 
-import unittest
-import random
-import math
-import sys
-import operator
+importiere unittest
+importiere random
+importiere math
+importiere sys
+importiere operator
 
-from decimal import Decimal as D
-from fractions import Fraction as F
+von decimal importiere Decimal as D
+von fractions importiere Fraction as F
 
 # Constants related to the hash implementation;  hash(x) is based
 # on the reduction of x modulo the prime _PyHASH_MODULUS.

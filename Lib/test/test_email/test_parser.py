@@ -1,9 +1,9 @@
-import io
-import email
-import unittest
-from email.message import Message, EmailMessage
-from email.policy import default
-from test.test_email import TestEmailBase
+importiere io
+importiere email
+importiere unittest
+von email.message importiere Message, EmailMessage
+von email.policy importiere default
+von test.test_email importiere TestEmailBase
 
 
 klasse TestCustomMessage(TestEmailBase):

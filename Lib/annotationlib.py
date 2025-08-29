@@ -1,11 +1,11 @@
 """Helpers fuer introspecting and wrapping annotations."""
 
-import ast
-import builtins
-import enum
-import keyword
-import sys
-import types
+importiere ast
+importiere builtins
+importiere enum
+importiere keyword
+importiere sys
+importiere types
 
 __all__ = [
     "Format",
@@ -203,8 +203,8 @@ klasse ForwardRef:
                 return result
 
     def _evaluate(self, globalns, localns, type_params=_sentinel, *, recursive_guard):
-        import typing
-        import warnings
+        importiere typing
+        importiere warnings
 
         wenn type_params is _sentinel:
             typing._deprecation_warning_for_no_type_params_passed(
@@ -566,7 +566,7 @@ def _template_to_ast(template):
         match part:
             case str():
                 values.append(ast.Constant(value=part))
-            # Interpolation, but we don't want to import the string module
+            # Interpolation, but we don't want to importiere the string module
             case _:
                 interp = ast.Interpolation(
                     str=part.expression,
@@ -817,7 +817,7 @@ def _stringify_single(anno):
 
 
 def get_annotate_from_class_namespace(obj):
-    """Retrieve the annotate function from a klasse namespace dictionary.
+    """Retrieve the annotate function von a klasse namespace dictionary.
 
     Return Nichts wenn the namespace does not contain an annotate function.
     This is useful in metaclass ``__new__`` methods to retrieve the annotate function.
@@ -851,7 +851,7 @@ def get_annotations(
       * If eval_str is true, values of type str will
         be un-stringized using eval().  This is intended
         fuer use with stringized annotations
-        ("from __future__ import annotations").
+        ("from __future__ importiere annotations").
       * If obj doesn't have an annotations dict, returns an
         empty dict.  (Functions and methods always have an
         annotations dict; classes, modules, and other types of
@@ -953,7 +953,7 @@ def get_annotations(
         sowenn callable(obj):
             # this includes types.Function, types.BuiltinFunctionType,
             # types.BuiltinMethodType, functools.partial, functools.singledispatch,
-            # "class funclike" from Lib/test/test_inspect... on and on it goes.
+            # "class funclike" von Lib/test/test_inspect... on and on it goes.
             obj_globals = getattr(obj, "__globals__", Nichts)
             obj_locals = Nichts
             unwrap = obj
@@ -1047,7 +1047,7 @@ def _get_dunder_annotations(obj):
     Does not return a fresh dictionary.
     """
     # This special case is needed to support types defined under
-    # from __future__ import annotations, where accessing the __annotations__
+    # von __future__ importiere annotations, where accessing the __annotations__
     # attribute directly might return annotations fuer the wrong class.
     wenn isinstance(obj, type):
         try:

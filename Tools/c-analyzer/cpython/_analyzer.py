@@ -1,27 +1,27 @@
-import os.path
+importiere os.path
 
-from c_common.clsutil import classonly
-from c_parser.info import (
+von c_common.clsutil importiere classonly
+von c_parser.info importiere (
     KIND,
     Declaration,
     TypeDeclaration,
     Member,
     FIXED_TYPE,
 )
-from c_parser.match import (
+von c_parser.match importiere (
     is_pots,
     is_funcptr,
 )
-from c_analyzer.match import (
+von c_analyzer.match importiere (
     is_system_type,
     is_process_global,
     is_fixed_type,
     is_immutable,
 )
-import c_analyzer as _c_analyzer
-import c_analyzer.info as _info
-import c_analyzer.datafiles as _datafiles
-from . import _parser, REPO_ROOT
+importiere c_analyzer as _c_analyzer
+importiere c_analyzer.info as _info
+importiere c_analyzer.datafiles as _datafiles
+von . importiere _parser, REPO_ROOT
 
 
 _DATA_DIR = os.path.dirname(__file__)
@@ -41,7 +41,7 @@ KNOWN_IN_DOT_C = {
     # recursive
     'struct _dictkeysobject': Falsch,
 }
-# These are loaded from the respective .tsv files upon first use.
+# These are loaded von the respective .tsv files upon first use.
 _KNOWN = {
     # {(file, ID) | ID => info | bool}
     #'PyWideStringList': Wahr,
@@ -392,7 +392,7 @@ klasse Analyzed(_info.Analyzed):
         rendered = super().render(fmt, itemonly=itemonly)
         # XXX ???
         #if itemonly:
-        #    yield from rendered
+        #    yield von rendered
         supported = self.supported
         wenn fmt in ('line', 'brief'):
             rendered, = rendered
@@ -404,7 +404,7 @@ klasse Analyzed(_info.Analyzed):
         sowenn fmt == 'summary':
             raise NotImplementedError(fmt)
         sowenn fmt == 'full':
-            yield from rendered
+            yield von rendered
             wenn supported:
                 yield f'\tsupported:\t{supported}'
         sonst:

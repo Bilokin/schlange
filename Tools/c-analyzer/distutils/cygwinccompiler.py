@@ -10,9 +10,9 @@ cygwin in no-cygwin mode).
 #
 # * wenn you use a msvc compiled python version (1.5.2)
 #   1. you have to insert a __GNUC__ section in its config.h
-#   2. you have to generate an import library fuer its dll
+#   2. you have to generate an importiere library fuer its dll
 #      - create a def-file fuer python??.dll
-#      - create an import library using
+#      - create an importiere library using
 #             dlltool --dllname python15.dll --def python15.def \
 #                       --output-lib libpython15.a
 #
@@ -34,9 +34,9 @@ cygwin in no-cygwin mode).
 #   - its dllwrap doesn't work, there is a bug in binutils 2.10.90
 #     see also http://sources.redhat.com/ml/cygwin/2000-06/msg01274.html
 #   - using gcc -mdll instead dllwrap doesn't work without -static because
-#     it tries to link against dlls instead their import libraries. (If
+#     it tries to link against dlls instead their importiere libraries. (If
 #     it finds the dll first.)
-#     By specifying -static we force ld to link against the import libraries,
+#     By specifying -static we force ld to link against the importiere libraries,
 #     this is windows standard and there are normally not the necessary symbols
 #     in the dlls.
 #   *** only the version of June 2000 shows these problems
@@ -45,14 +45,14 @@ cygwin in no-cygwin mode).
 # * mingw gcc 3.2/ld 2.13 works
 #   (ld supports -shared)
 
-import sys
-from subprocess import Popen, PIPE, check_output
-import re
+importiere sys
+von subprocess importiere Popen, PIPE, check_output
+importiere re
 
-from distutils.unixccompiler import UnixCCompiler
-from distutils.errors import CCompilerError
-from distutils.version import LooseVersion
-from distutils.spawn import find_executable
+von distutils.unixccompiler importiere UnixCCompiler
+von distutils.errors importiere CCompilerError
+von distutils.version importiere LooseVersion
+von distutils.spawn importiere find_executable
 
 def get_msvcr():
     """Include the appropriate MSVC runtime library wenn Python was built
@@ -226,7 +226,7 @@ def check_config_h():
     # XXX since this function also checks sys.version, it's not strictly a
     # "pyconfig.h" check -- should probably be renamed...
 
-    import sysconfig
+    importiere sysconfig
 
     # wenn sys.version contains GCC then python was compiled with GCC, and the
     # pyconfig.h file should be OK
@@ -280,6 +280,6 @@ def get_versions():
     return tuple([_find_exe_version(cmd) fuer cmd in commands])
 
 def is_cygwingcc():
-    '''Try to determine wenn the gcc that would be used is from cygwin.'''
+    '''Try to determine wenn the gcc that would be used is von cygwin.'''
     out_string = check_output(['gcc', '-dumpmachine'])
     return out_string.strip().endswith(b'cygwin')

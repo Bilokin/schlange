@@ -1,4 +1,4 @@
-import multiprocessing
+importiere multiprocessing
 
 multiprocessing.Lock()
 

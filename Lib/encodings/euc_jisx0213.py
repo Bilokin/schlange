@@ -4,8 +4,8 @@
 # Written by Hye-Shik Chang <perky@FreeBSD.org>
 #
 
-import _codecs_jp, codecs
-import _multibytecodec as mbc
+importiere _codecs_jp, codecs
+importiere _multibytecodec as mbc
 
 codec = _codecs_jp.getcodec('euc_jisx0213')
 

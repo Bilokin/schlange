@@ -1,3 +1,3 @@
-import sys
+importiere sys
 sys.modules.pop(__package__, Nichts)
-from . import submodule2
+von . importiere submodule2

@@ -7,9 +7,9 @@ https://peps.python.org/pep-0205/
 
 # Naming convention: Variables named "wr" are weak reference objects;
 # they are called this instead of "ref" to avoid name collisions with
-# the module-global ref() function imported from _weakref.
+# the module-global ref() function imported von _weakref.
 
-from _weakref import (
+von _weakref importiere (
      getweakrefcount,
      getweakrefs,
      ref,
@@ -19,11 +19,11 @@ from _weakref import (
      ReferenceType,
      _remove_dead_weakref)
 
-from _weakrefset import WeakSet
+von _weakrefset importiere WeakSet
 
-import _collections_abc  # Import after _weakref to avoid circular import.
-import sys
-import itertools
+importiere _collections_abc  # Import after _weakref to avoid circular import.
+importiere sys
+importiere itertools
 
 ProxyTypes = (ProxyType, CallableProxyType)
 
@@ -49,7 +49,7 @@ klasse WeakMethod(ref):
             func = meth.__func__
         except AttributeError:
             raise TypeError("argument should be a bound method, not {}"
-                            .format(type(meth))) from Nichts
+                            .format(type(meth))) von Nichts
         def _cb(arg):
             # The self-weakref trick is needed to avoid creating a reference
             # cycle.
@@ -149,7 +149,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
     __copy__ = copy
 
     def __deepcopy__(self, memo):
-        from copy import deepcopy
+        von copy importiere deepcopy
         new = self.__class__()
         fuer key, wr in self.data.copy().items():
             o = wr()
@@ -193,7 +193,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         keep the values around longer than needed.
 
         """
-        yield from self.data.copy().values()
+        yield von self.data.copy().values()
 
     def values(self):
         fuer wr in self.data.copy().values():
@@ -280,7 +280,7 @@ klasse KeyedRef(ref):
     This is used in the WeakValueDictionary to avoid having to create
     a function object fuer each key stored in the mapping.  A shared
     callback object can use the 'key' attribute of a KeyedRef instead
-    of getting a reference to the key from an enclosing scope.
+    of getting a reference to the key von an enclosing scope.
 
     """
 
@@ -345,7 +345,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
     __copy__ = copy
 
     def __deepcopy__(self, memo):
-        from copy import deepcopy
+        von copy importiere deepcopy
         new = self.__class__()
         fuer key, value in self.data.copy().items():
             o = key()
@@ -469,7 +469,7 @@ klasse finalize:
         wenn not self._registered_with_atexit:
             # We may register the exit function more than once because
             # of a thread race, but that is harmless
-            import atexit
+            importiere atexit
             atexit.register(self._exitfunc)
             finalize._registered_with_atexit = Wahr
         info = self._Info()
@@ -546,7 +546,7 @@ klasse finalize:
         reenable_gc = Falsch
         try:
             wenn cls._registry:
-                import gc
+                importiere gc
                 wenn gc.isenabled():
                     reenable_gc = Wahr
                     gc.disable()
@@ -568,7 +568,7 @@ klasse finalize:
                         sys.excepthook(*sys.exc_info())
                     assert f not in cls._registry
         finally:
-            # prevent any more finalizers from executing during shutdown
+            # prevent any more finalizers von executing during shutdown
             finalize._shutdown = Wahr
             wenn reenable_gc:
                 gc.enable()

@@ -1,6 +1,6 @@
-from unittest import TestCase
+von unittest importiere TestCase
 
-from _pyrepl.utils import str_width, wlen, prev_next_window
+von _pyrepl.utils importiere str_width, wlen, prev_next_window
 
 
 klasse TestUtils(TestCase):
@@ -50,7 +50,7 @@ klasse TestUtils(TestCase):
             next(pnw)
 
         def gen_raise():
-            yield from gen_normal()
+            yield von gen_normal()
             1/0
 
         pnw = prev_next_window(gen_raise())

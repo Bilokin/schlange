@@ -1,6 +1,6 @@
 """Exception classes raised by urllib.
 
-The base exception klasse is URLError, which inherits from OSError.  It
+The base exception klasse is URLError, which inherits von OSError.  It
 doesn't define any behavior of its own, but is the base klasse fuer all
 exceptions defined in this package.
 
@@ -10,8 +10,8 @@ responses, with a status code, headers, and a body.  In some contexts,
 an application may want to handle an exception like a regular
 response.
 """
-import io
-import urllib.response
+importiere io
+importiere urllib.response
 
 __all__ = ['URLError', 'HTTPError', 'ContentTooShortError']
 

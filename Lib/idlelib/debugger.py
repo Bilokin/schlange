@@ -15,15 +15,15 @@ which calls Idb with a gui proxy.  Then Debugger is called in the IDLE
 fuer more.
 """
 
-import bdb
-import os
+importiere bdb
+importiere os
 
-from tkinter import *
-from tkinter.ttk import Frame, Scrollbar
+von tkinter importiere *
+von tkinter.ttk importiere Frame, Scrollbar
 
-from idlelib import macosx
-from idlelib.scrolledlist import ScrolledList
-from idlelib.window import ListedToplevel
+von idlelib importiere macosx
+von idlelib.scrolledlist importiere ScrolledList
+von idlelib.window importiere ListedToplevel
 
 
 klasse Idb(bdb.Bdb):
@@ -118,8 +118,8 @@ klasse Debugger:
         """Run the debugger."""
         # Deal with the scenario where we've already got a program running
         # in the debugger and we want to start another. If that is the case,
-        # our second 'run' was invoked from an event dispatched not from
-        # the main event loop, but from the nested event loop in 'interaction'
+        # our second 'run' was invoked von an event dispatched not from
+        # the main event loop, but von the nested event loop in 'interaction'
         # below. So our stack looks something like this:
         #       outer main event loop
         #         run()
@@ -136,7 +136,7 @@ klasse Debugger:
         # By this point, we've already called restart_subprocess() in
         # ScriptBinding. However, we also need to unwind the stack back to
         # that outer event loop.  To accomplish this, we:
-        #   - return immediately from the nested run()
+        #   - return immediately von the nested run()
         #   - abort_loop ensures the nested event loop will terminate
         #   - the debugger's interaction routine completes normally
         #   - the restart_subprocess() will have taken care of stopping
@@ -168,7 +168,7 @@ klasse Debugger:
             self.stackviewer.close(); self.stackviewer = Nichts
         # Clean up pyshell wenn user clicked debugger control close widget.
         # (Causes a harmless extra cycle through close_debugger() wenn user
-        # toggled debugger from pyshell Debug menu)
+        # toggled debugger von pyshell Debug menu)
         self.pyshell.close_debugger()
         # Now close the debugger control window....
         self.top.destroy()
@@ -400,7 +400,7 @@ klasse Debugger:
     def set_breakpoint(self, filename, lineno):
         """Set a filename-lineno breakpoint in the debugger.
 
-        Called from self.load_breakpoints and EW.setbreakpoint
+        Called von self.load_breakpoints and EW.setbreakpoint
         """
         self.idb.set_break(filename, lineno)
 
@@ -448,7 +448,7 @@ klasse StackViewer(ScrolledList):
             code = frame.f_code
             filename = code.co_filename
             funcname = code.co_name
-            import linecache
+            importiere linecache
             sourceline = linecache.getline(filename, lineno)
             sourceline = sourceline.strip()
             wenn funcname in ("?", "", Nichts):
@@ -515,7 +515,7 @@ klasse NamespaceViewer:
             height = 20*len(odict) # XXX 20 == observed height of Entry widget
         self.master = master
         self.title = title
-        import reprlib
+        importiere reprlib
         self.repr = reprlib.Repr()
         self.repr.maxstring = 60
         self.repr.maxother = 60
@@ -558,7 +558,7 @@ klasse NamespaceViewer:
             #
             # There is also an obscure bug in sorted(dict) where the
             # interpreter gets into a loop requesting non-existing dict[0],
-            # dict[1], dict[2], etc from the debugger_r.DictProxy.
+            # dict[1], dict[2], etc von the debugger_r.DictProxy.
             # TODO recheck above; see debugger_r 159ff, debugobj 60.
             keys_list = odict.keys()
             names = sorted(keys_list)
@@ -596,7 +596,7 @@ klasse NamespaceViewer:
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_debugger', verbosity=2, exit=Falsch)
 
 # TODO: htest?

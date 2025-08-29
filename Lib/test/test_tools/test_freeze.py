@@ -1,16 +1,16 @@
 """Sanity-check tests fuer the "freeze" tool."""
 
-import sys
-import textwrap
-import unittest
+importiere sys
+importiere textwrap
+importiere unittest
 
-from test import support
-from test.support import os_helper
-from test.test_tools import imports_under_tool, skip_if_missing
+von test importiere support
+von test.support importiere os_helper
+von test.test_tools importiere imports_under_tool, skip_if_missing
 
 skip_if_missing('freeze')
 with imports_under_tool('freeze', 'test'):
-    import freeze as helper
+    importiere freeze as helper
 
 @support.requires_zlib()
 @unittest.skipIf(sys.platform.startswith('win'), 'not supported on Windows')
@@ -26,7 +26,7 @@ klasse TestFreeze(unittest.TestCase):
     @support.requires_resource('cpu') # Building Python is slow
     def test_freeze_simple_script(self):
         script = textwrap.dedent("""
-            import sys
+            importiere sys
             drucke('running...')
             sys.exit(0)
             """)

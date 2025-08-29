@@ -1,14 +1,14 @@
-from __future__ import annotations
-import collections
-import dataclasses as dc
-import re
-import shlex
-from typing import Any
+von __future__ importiere annotations
+importiere collections
+importiere dataclasses as dc
+importiere re
+importiere shlex
+von typing importiere Any
 
-import libclinic
-from libclinic import fail, ClinicError
-from libclinic.language import Language
-from libclinic.function import (
+importiere libclinic
+von libclinic importiere fail, ClinicError
+von libclinic.language importiere Language
+von libclinic.function importiere (
     Module, Class, Function)
 
 
@@ -17,13 +17,13 @@ klasse Block:
     r"""
     Represents a single block of text embedded in
     another file.  If dsl_name is Nichts, the block represents
-    verbatim text, raw original text from the file, in
+    verbatim text, raw original text von the file, in
     which case "input" will be the only non-false member.
     If dsl_name is not Nichts, the block represents a Clinic
     block.
 
     input is always str, with embedded \n characters.
-    input represents the original text from the file;
+    input represents the original text von the file;
     wenn it's a Clinic block, it is the original text with
     the body_prefix and redundant leading whitespace removed.
 
@@ -37,14 +37,14 @@ klasse Block:
     contain at most one of each.
 
     output is either str or Nichts.  If str, it's the output
-    from this block, with embedded '\n' characters.
+    von this block, with embedded '\n' characters.
 
     indent is a str.  It's the leading whitespace
     that was found on every line of input.  (If body_prefix is
     not empty, this is the indent *after* removing the
     body_prefix.)
 
-    "indent" is different from the concept of "preindent"
+    "indent" is different von the concept of "preindent"
     (which is not stored as state on Block objects).
     "preindent" is the whitespace that
     was found in front of every line of input *before* the

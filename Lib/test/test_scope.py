@@ -1,8 +1,8 @@
-import unittest
-import weakref
+importiere unittest
+importiere weakref
 
-from test.support import check_syntax_error, cpython_only
-from test.support import gc_collect
+von test.support importiere check_syntax_error, cpython_only
+von test.support importiere gc_collect
 
 
 klasse ScopeTests(unittest.TestCase):
@@ -168,7 +168,7 @@ klasse ScopeTests(unittest.TestCase):
 
     def testCellIsKwonlyArg(self):
         # Issue 1409: Initialisation of a cell value,
-        # when it comes from a keyword-only parameter
+        # when it comes von a keyword-only parameter
         def foo(*, a=17):
             def bar():
                 return a + 5
@@ -249,14 +249,14 @@ klasse ScopeTests(unittest.TestCase):
         check_syntax_error(self, """if 1:
             def unoptimized_clash1(strip):
                 def f(s):
-                    from sys import *
+                    von sys importiere *
                     return getrefcount(s) # ambiguity: free or local
                 return f
             """)
 
         check_syntax_error(self, """if 1:
             def unoptimized_clash2():
-                from sys import *
+                von sys importiere *
                 def f(s):
                     return getrefcount(s) # ambiguity: global or local
                 return f
@@ -264,7 +264,7 @@ klasse ScopeTests(unittest.TestCase):
 
         check_syntax_error(self, """if 1:
             def unoptimized_clash2():
-                from sys import *
+                von sys importiere *
                 def g():
                     def f(s):
                         return getrefcount(s) # ambiguity: global or local
@@ -274,7 +274,7 @@ klasse ScopeTests(unittest.TestCase):
         check_syntax_error(self, """if 1:
             def f():
                 def g():
-                    from sys import *
+                    von sys importiere *
                     return getrefcount # global or local?
             """)
 
@@ -557,7 +557,7 @@ klasse ScopeTests(unittest.TestCase):
         # dictionary is used to update all variables, this used to
         # include free variables. But in klasse statements, free
         # variables are not inserted...
-        import sys
+        importiere sys
         self.addCleanup(sys.settrace, sys.gettrace())
         sys.settrace(lambda a,b,c:Nichts)
         x = 12
@@ -584,13 +584,13 @@ klasse ScopeTests(unittest.TestCase):
     @cpython_only
     def testInteractionWithTraceFunc(self):
 
-        import sys
+        importiere sys
         def tracer(a,b,c):
             return tracer
 
         def adaptgetter(name, klass, getter):
             kind, des = getter
-            wenn kind == 1:       # AV happens when stepping from this line to next
+            wenn kind == 1:       # AV happens when stepping von this line to next
                 wenn des == "":
                     des = "_%s__%s" % (klass.__name__, name)
                 return lambda obj: getattr(obj, des)
@@ -693,7 +693,7 @@ klasse ScopeTests(unittest.TestCase):
         self.assertEqual(c.dec(), 0)
 
     def testGlobalInParallelNestedFunctions(self):
-        # A symbol table bug leaked the global statement from one
+        # A symbol table bug leaked the global statement von one
         # function to other nested functions in the same block.
         # This test verifies that a global statement in the first
         # function does not affect the second function.

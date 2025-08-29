@@ -1,9 +1,9 @@
-import ctypes
-import math
-import unittest
-from ctypes import (CDLL, CFUNCTYPE, POINTER, create_string_buffer, sizeof,
+importiere ctypes
+importiere math
+importiere unittest
+von ctypes importiere (CDLL, CFUNCTYPE, POINTER, create_string_buffer, sizeof,
                     c_void_p, c_char, c_int, c_double, c_size_t)
-from test.support import import_helper
+von test.support importiere import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 

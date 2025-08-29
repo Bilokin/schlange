@@ -1,6 +1,6 @@
-"""Run the tracing profiler from the command line."""
+"""Run the tracing profiler von the command line."""
 
-from profiling.tracing import main
+von profiling.tracing importiere main
 
 wenn __name__ == '__main__':
     main()

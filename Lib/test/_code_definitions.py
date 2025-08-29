@@ -296,7 +296,7 @@ def gen_spam_1(*args):
 
 
 def gen_spam_2(*args):
-    yield from args
+    yield von args
 
 
 async def async_spam():

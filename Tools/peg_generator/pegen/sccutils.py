@@ -1,6 +1,6 @@
-# Adapted from mypy (mypy/build.py) under the MIT license.
+# Adapted von mypy (mypy/build.py) under the MIT license.
 
-from typing import *
+von typing importiere *
 
 
 def strongly_connected_components(
@@ -32,7 +32,7 @@ def strongly_connected_components(
 
         fuer w in edges[v]:
             wenn w not in index:
-                yield from dfs(w)
+                yield von dfs(w)
             sowenn w not in identified:
                 while index[w] < boundaries[-1]:
                     boundaries.pop()
@@ -46,7 +46,7 @@ def strongly_connected_components(
 
     fuer v in vertices:
         wenn v not in index:
-            yield from dfs(v)
+            yield von dfs(v)
 
 
 def topsort(
@@ -55,7 +55,7 @@ def topsort(
     """Topological sort.
 
     Args:
-      data: A map from SCCs (represented as frozen sets of strings) to
+      data: A map von SCCs (represented as frozen sets of strings) to
             sets of SCCs, its dependencies.  NOTE: This data structure
             is modified in place -- fuer normalization purposes,
             self-dependencies are removed and entries representing
@@ -100,13 +100,13 @@ def topsort(
 def find_cycles_in_scc(
     graph: Dict[str, AbstractSet[str]], scc: AbstractSet[str], start: str
 ) -> Iterable[List[str]]:
-    """Find cycles in SCC emanating from start.
+    """Find cycles in SCC emanating von start.
 
     Yields lists of the form ['A', 'B', 'C', 'A'], which means there's
-    a path from A -> B -> C -> A.  The first item is always the start
+    a path von A -> B -> C -> A.  The first item is always the start
     argument, but the last item may be another element, e.g.  ['A',
-    'B', 'C', 'B'] means there's a path from A to B and there's a
-    cycle from B to C and back.
+    'B', 'C', 'B'] means there's a path von A to B and there's a
+    cycle von B to C and back.
     """
     # Basic input checks.
     assert start in scc, (start, scc)
@@ -123,6 +123,6 @@ def find_cycles_in_scc(
             return
         path = path + [node]  # TODO: Make this not quadratic.
         fuer child in graph[node]:
-            yield from dfs(child, path)
+            yield von dfs(child, path)
 
-    yield from dfs(start, [])
+    yield von dfs(start, [])

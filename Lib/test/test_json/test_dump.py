@@ -1,7 +1,7 @@
-from io import StringIO
-from test.test_json import PyTest, CTest
+von io importiere StringIO
+von test.test_json importiere PyTest, CTest
 
-from test.support import bigmemtest, _1G
+von test.support importiere bigmemtest, _1G
 
 klasse TestDump:
     def test_dump(self):

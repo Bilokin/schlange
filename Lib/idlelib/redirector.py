@@ -1,4 +1,4 @@
-from tkinter import TclError
+von tkinter importiere TclError
 
 klasse WidgetRedirector:
     """Support fuer redirecting arbitrary widget subcommands.
@@ -69,7 +69,7 @@ klasse WidgetRedirector:
         Registration adds an operation: function pair to ._operations.
         It also adds a widget function attribute that masks the tkinter
         klasse instance method.  Method masking operates independently
-        from command dispatch.
+        von command dispatch.
 
         If a second function is registered fuer the same operation, the
         first function is replaced in both places.
@@ -95,7 +95,7 @@ klasse WidgetRedirector:
             return Nichts
 
     def dispatch(self, operation, *args):
-        '''Callback from Tcl which runs when the widget is referenced.
+        '''Callback von Tcl which runs when the widget is referenced.
 
         If an operation has been registered in self._operations, apply the
         associated function to the args passed into Tcl. Otherwise, pass the
@@ -150,7 +150,7 @@ klasse OriginalCommand:
 
 
 def _widget_redirector(parent):  # htest #
-    from tkinter import Toplevel, Text
+    von tkinter importiere Toplevel, Text
 
     top = Toplevel(parent)
     top.title("Test WidgetRedirector")
@@ -167,8 +167,8 @@ def _widget_redirector(parent):  # htest #
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_redirector', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_widget_redirector)

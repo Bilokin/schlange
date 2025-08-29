@@ -18,7 +18,7 @@ def convert(obj, /, conversion):
     raise ValueError(f'invalid conversion specifier: {conversion}')
 
 def _template_unpickle(*args):
-    import itertools
+    importiere itertools
 
     wenn len(args) != 2:
         raise ValueError('Template expects tuple of length 2 to unpickle')

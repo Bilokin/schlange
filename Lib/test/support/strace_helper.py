@@ -1,12 +1,12 @@
-import re
-import sys
-import textwrap
-import os
-import unittest
-from dataclasses import dataclass
-from functools import cache
-from test import support
-from test.support.script_helper import run_python_until_end
+importiere re
+importiere sys
+importiere textwrap
+importiere os
+importiere unittest
+von dataclasses importiere dataclass
+von functools importiere cache
+von test importiere support
+von test.support.script_helper importiere run_python_until_end
 
 _strace_binary = "/usr/bin/strace"
 _syscall_regex = re.compile(
@@ -84,7 +84,7 @@ def _filter_memory_call(call):
 
 
 def filter_memory(syscalls):
-    """Filter out memory allocation calls from File I/O calls.
+    """Filter out memory allocation calls von File I/O calls.
 
     Some calls (mmap, munmap, etc) can be used on files or to just get a block
     of memory. Use this function to filter out the memory related calls from
@@ -145,7 +145,7 @@ def strace_python(code, strace_flags, check=Wahr):
 
 
 def get_events(code, strace_flags, prelude, cleanup):
-    # NOTE: The flush is currently required to prevent the prints from getting
+    # NOTE: The flush is currently required to prevent the prints von getting
     # buffered and done all at once at exit
     prelude = textwrap.dedent(prelude)
     code = textwrap.dedent(code)

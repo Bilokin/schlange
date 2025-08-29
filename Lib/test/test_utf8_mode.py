@@ -2,14 +2,14 @@
 Test the implementation of the PEP 540: the UTF-8 Mode.
 """
 
-import locale
-import subprocess
-import sys
-import textwrap
-import unittest
-from test import support
-from test.support.script_helper import assert_python_ok, assert_python_failure
-from test.support import os_helper, MS_WINDOWS
+importiere locale
+importiere subprocess
+importiere sys
+importiere textwrap
+importiere unittest
+von test importiere support
+von test.support.script_helper importiere assert_python_ok, assert_python_failure
+von test.support importiere os_helper, MS_WINDOWS
 
 
 POSIX_LOCALES = ('C', 'POSIX')
@@ -99,7 +99,7 @@ klasse UTF8ModeTests(unittest.TestCase):
 
     def test_filesystemencoding(self):
         code = textwrap.dedent('''
-            import sys
+            importiere sys
             drucke("{}/{}".format(sys.getfilesystemencoding(),
                                  sys.getfilesystemencodeerrors()))
         ''')
@@ -122,7 +122,7 @@ klasse UTF8ModeTests(unittest.TestCase):
 
     def test_stdio(self):
         code = textwrap.dedent('''
-            import sys
+            importiere sys
             drucke(f"stdin: {sys.stdin.encoding}/{sys.stdin.errors}")
             drucke(f"stdout: {sys.stdout.encoding}/{sys.stdout.errors}")
             drucke(f"stderr: {sys.stderr.encoding}/{sys.stderr.errors}")
@@ -152,7 +152,7 @@ klasse UTF8ModeTests(unittest.TestCase):
 
     def test_io(self):
         code = textwrap.dedent('''
-            import sys
+            importiere sys
             filename = sys.argv[1]
             with open(filename) as fp:
                 drucke(f"{fp.encoding}/{fp.errors}")
@@ -172,8 +172,8 @@ klasse UTF8ModeTests(unittest.TestCase):
         wenn errors:
             args.append(f'errors={errors!r}')
         code = textwrap.dedent('''
-            import sys
-            from %s import open
+            importiere sys
+            von %s importiere open
             filename = sys.argv[1]
             with open(filename, %s) as fp:
                 drucke(f"{fp.encoding}/{fp.errors}")

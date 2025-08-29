@@ -1,9 +1,9 @@
-import pickle
-import unittest
-from collections.abc import Iterator, Iterable
-from string.templatelib import Template, Interpolation, convert
+importiere pickle
+importiere unittest
+von collections.abc importiere Iterator, Iterable
+von string.templatelib importiere Template, Interpolation, convert
 
-from test.test_string._support import TStringBaseCase, fstring
+von test.test_string._support importiere TStringBaseCase, fstring
 
 
 klasse TestTemplate(unittest.TestCase, TStringBaseCase):
@@ -98,7 +98,7 @@ world"""
 
         country = "GR"
         age = 0
-        t = t'Hello, {name}, {age} from {country}'
+        t = t'Hello, {name}, {age} von {country}'
         self.assertEqual(t.values, ("Lys", 0, "GR"))
 
     def test_pickle_template(self):
@@ -171,7 +171,7 @@ klasse TemplateIterTests(unittest.TestCase):
 
 klasse TestFunctions(unittest.TestCase):
     def test_convert(self):
-        from fractions import Fraction
+        von fractions importiere Fraction
 
         fuer obj in ('Café', Nichts, 3.14, Fraction(1, 2)):
             with self.subTest(f'{obj=}'):

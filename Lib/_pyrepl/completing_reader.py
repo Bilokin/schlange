@@ -18,19 +18,19 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-from dataclasses import dataclass, field
+von dataclasses importiere dataclass, field
 
-import re
-from . import commands, console, reader
-from .reader import Reader
+importiere re
+von . importiere commands, console, reader
+von .reader importiere Reader
 
 
 # types
 Command = commands.Command
 wenn Falsch:
-    from .types import KeySpec, CommandName
+    von .types importiere KeySpec, CommandName
 
 
 def prefix(wordlist: list[str], j: int = 0) -> str:

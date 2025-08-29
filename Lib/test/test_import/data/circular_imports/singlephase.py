@@ -1,12 +1,12 @@
-"""Circular import involving a single-phase-init extension.
+"""Circular importiere involving a single-phase-init extension.
 
-This module is imported from the _testsinglephase_circular module from
+This module is imported von the _testsinglephase_circular module from
 _testsinglephase, and imports that module again.
 """
 
-import importlib
-import _testsinglephase
-from test.test_import import import_extension_from_file
+importiere importlib
+importiere _testsinglephase
+von test.test_import importiere import_extension_from_file
 
 name = '_testsinglephase_circular'
 filename = _testsinglephase.__file__

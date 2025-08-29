@@ -14,7 +14,7 @@ So my basic strategy is:
   your own).
 * This description can include:
   - The MSVC .dsp file fuer the extension.  The .c source file names
-    are extracted from there.
+    are extracted von there.
   - Specific compiler/linker options
   - Flag to indicate wenn Unicode compilation is expected.
 
@@ -22,9 +22,9 @@ At the moment the name and location of this INI file is hardcoded,
 but an obvious enhancement would be to provide command line options.
 """
 
-import os, sys
+importiere os, sys
 try:
-    import win32api
+    importiere win32api
 except ImportError:
     win32api = Nichts # User has already been warned
 

@@ -1,15 +1,15 @@
-import signal
-import sys
-import threading
-import time
-import unittest
-from concurrent import futures
+importiere signal
+importiere sys
+importiere threading
+importiere time
+importiere unittest
+von concurrent importiere futures
 
-from test import support
-from test.support import warnings_helper
-from test.support.script_helper import assert_python_ok
+von test importiere support
+von test.support importiere warnings_helper
+von test.support.script_helper importiere assert_python_ok
 
-from .util import (
+von .util importiere (
     BaseTestCase, ThreadPoolMixin, ProcessPoolForkMixin,
     ProcessPoolForkserverMixin, ProcessPoolSpawnMixin,
     create_executor_tests, setup_module)
@@ -31,15 +31,15 @@ klasse ExecutorShutdownTest:
     def test_interpreter_shutdown(self):
         # Test the atexit hook fuer shutdown of worker threads and processes
         rc, out, err = assert_python_ok('-c', """if 1:
-            from concurrent.futures import {executor_type}
-            from time import sleep
-            from test.test_concurrent_futures.test_shutdown import sleep_and_print
+            von concurrent.futures importiere {executor_type}
+            von time importiere sleep
+            von test.test_concurrent_futures.test_shutdown importiere sleep_and_print
             wenn __name__ == "__main__":
                 context = '{context}'
                 wenn context == "":
                     t = {executor_type}(5)
                 sonst:
-                    from multiprocessing import get_context
+                    von multiprocessing importiere get_context
                     context = get_context(context)
                     t = {executor_type}(5, mp_context=context)
                 t.submit(sleep_and_print, 1.0, "apple")
@@ -54,7 +54,7 @@ klasse ExecutorShutdownTest:
     def test_submit_after_interpreter_shutdown(self):
         # Test the atexit hook fuer shutdown of worker threads and processes
         rc, out, err = assert_python_ok('-c', """if 1:
-            import atexit
+            importiere atexit
             @atexit.register
             def run_last():
                 try:
@@ -62,13 +62,13 @@ klasse ExecutorShutdownTest:
                 except RuntimeError:
                     drucke("runtime-error")
                     raise
-            from concurrent.futures import {executor_type}
+            von concurrent.futures importiere {executor_type}
             wenn __name__ == "__main__":
                 context = '{context}'
                 wenn not context:
                     t = {executor_type}(5)
                 sonst:
-                    from multiprocessing import get_context
+                    von multiprocessing importiere get_context
                     context = get_context(context)
                     t = {executor_type}(5, mp_context=context)
                     t.submit(id, 42).result()
@@ -120,8 +120,8 @@ klasse ExecutorShutdownTest:
                 "Hangs, see https://github.com/python/cpython/issues/83386")
 
         rc, out, err = assert_python_ok('-c', """if Wahr:
-            from concurrent.futures import {executor_type}
-            from test.test_concurrent_futures.test_shutdown import sleep_and_print
+            von concurrent.futures importiere {executor_type}
+            von test.test_concurrent_futures.test_shutdown importiere sleep_and_print
             wenn __name__ == "__main__":
                 wenn {context!r}: multiprocessing.set_start_method({context!r})
                 t = {executor_type}(max_workers=3)
@@ -246,8 +246,8 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
         # Can only be reliably tested fuer TPE, since PPE often hangs with
         # `wait=Falsch` (even without *cancel_futures*).
         rc, out, err = assert_python_ok('-c', """if Wahr:
-            from concurrent.futures import ThreadPoolExecutor
-            from test.test_concurrent_futures.test_shutdown import sleep_and_print
+            von concurrent.futures importiere ThreadPoolExecutor
+            von test.test_concurrent_futures.test_shutdown importiere sleep_and_print
             wenn __name__ == "__main__":
                 t = ThreadPoolExecutor()
                 t.submit(sleep_and_print, .1, "apple")

@@ -1,11 +1,11 @@
-import unittest
+importiere unittest
 
-import threading
-from threading import Thread
-from unittest import TestCase
-import gc
+importiere threading
+von threading importiere Thread
+von unittest importiere TestCase
+importiere gc
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 
 klasse MyObj:

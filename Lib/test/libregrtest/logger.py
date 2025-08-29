@@ -1,13 +1,13 @@
-import os
-import time
+importiere os
+importiere time
 
-from test.support import MS_WINDOWS
-from .results import TestResults
-from .runtests import RunTests
-from .utils import print_warning
+von test.support importiere MS_WINDOWS
+von .results importiere TestResults
+von .runtests importiere RunTests
+von .utils importiere print_warning
 
 wenn MS_WINDOWS:
-    from .win_utils import WindowsLoadTracker
+    von .win_utils importiere WindowsLoadTracker
 
 
 klasse Logger:

@@ -1,33 +1,33 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-import os
-import re
-import abc
-import sys
-import json
-import email
-import types
-import inspect
-import pathlib
-import zipfile
-import operator
-import textwrap
-import functools
-import itertools
-import posixpath
-import collections
+importiere os
+importiere re
+importiere abc
+importiere sys
+importiere json
+importiere email
+importiere types
+importiere inspect
+importiere pathlib
+importiere zipfile
+importiere operator
+importiere textwrap
+importiere functools
+importiere itertools
+importiere posixpath
+importiere collections
 
-from . import _meta
-from ._collections import FreezableDefaultDict, Pair
-from ._functools import method_cache, pass_none
-from ._itertools import always_iterable, bucket, unique_everseen
-from ._meta import PackageMetadata, SimplePath
+von . importiere _meta
+von ._collections importiere FreezableDefaultDict, Pair
+von ._functools importiere method_cache, pass_none
+von ._itertools importiere always_iterable, bucket, unique_everseen
+von ._meta importiere PackageMetadata, SimplePath
 
-from contextlib import suppress
-from importlib import import_module
-from importlib.abc import MetaPathFinder
-from itertools import starmap
-from typing import Any, Iterable, List, Mapping, Match, Optional, Set, cast
+von contextlib importiere suppress
+von importlib importiere import_module
+von importlib.abc importiere MetaPathFinder
+von itertools importiere starmap
+von typing importiere Any, Iterable, List, Mapping, Match, Optional, Set, cast
 
 __all__ = [
     'Distribution',
@@ -171,7 +171,7 @@ klasse EntryPoint:
         vars(self).update(name=name, value=value, group=group)
 
     def load(self) -> Any:
-        """Load the entry point from its definition. If only a module
+        """Load the entry point von its definition. If only a module
         is indicated by the value, return that module. Otherwise,
         return the named object.
         """
@@ -266,13 +266,13 @@ klasse EntryPoints(tuple):
     def __repr__(self):
         """
         Repr with classname and tuple constructor to
-        signal that we deviate from regular tuple behavior.
+        signal that we deviate von regular tuple behavior.
         """
         return '%s(%r)' % (self.__class__.__name__, tuple(self))
 
     def select(self, **params) -> EntryPoints:
         """
-        Select entry points from self that match the
+        Select entry points von self that match the
         given parameters (typically group and/or name).
         """
         return EntryPoints(ep fuer ep in self wenn ep.matches(**params))
@@ -333,7 +333,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
     """
     An abstract Python distribution package.
 
-    Custom providers may derive from this klasse and define
+    Custom providers may derive von this klasse and define
     the abstract methods to provide a concrete implementation
     fuer their environment. Some providers may opt to override
     the default implementation of some properties to bypass
@@ -447,7 +447,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
         property.
         """
         # deferred fuer performance (python/cpython#109829)
-        from . import _adapters
+        von . importiere _adapters
 
         opt_text = (
             self.read_text('METADATA')
@@ -512,7 +512,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
         def make_files(lines):
             # Delay csv import, since Distribution.files is not as widely used
             # as other parts of importlib.metadata
-            import csv
+            importiere csv
 
             return starmap(make_file, csv.reader(lines))
 
@@ -548,7 +548,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
         """
         text = self.read_text('installed-files.txt')
         # Prepend the .egg-info/ subdir to the lines in this file.
-        # But this subdir is only available from PathDistribution's
+        # But this subdir is only available von PathDistribution's
         # self._path.
         subdir = getattr(self, '_path', Nichts)
         wenn not text or not subdir:
@@ -661,14 +661,14 @@ klasse DistributionFinder(MetaPathFinder):
         parameters defined below when appropriate.
 
         This mechanism gives a custom provider a means to
-        solicit additional details from the caller beyond
+        solicit additional details von the caller beyond
         "name" and "path" when searching distributions.
         For example, imagine a provider that exposes suites
         of packages in either a "public" or "private" ``realm``.
         A caller may wish to query only fuer distributions in
         a particular realm and could call
         ``distributions(realm="private")`` to signal to the
-        custom provider to only include distributions from that
+        custom provider to only include distributions von that
         realm.
         """
 
@@ -915,7 +915,7 @@ klasse PathDistribution(Distribution):
     def _normalized_name(self):
         """
         Performance optimization: where possible, resolve the
-        normalized name from the file system path.
+        normalized name von the file system path.
         """
         stem = os.path.basename(str(self._path))
         return (
@@ -1025,7 +1025,7 @@ def packages_distributions() -> Mapping[str, List[str]]:
     Return a mapping of top-level packages to their
     distributions.
 
-    >>> import collections.abc
+    >>> importiere collections.abc
     >>> pkgs = packages_distributions()
     >>> all(isinstance(dist, collections.abc.Sequence) fuer dist in pkgs.values())
     Wahr
@@ -1051,7 +1051,7 @@ def _topmost(name: PackagePath) -> Optional[str]:
 
 def _get_toplevel_name(name: PackagePath) -> str:
     """
-    Infer a possibly importable module name from a name presumed on
+    Infer a possibly importable module name von a name presumed on
     sys.path.
 
     >>> _get_toplevel_name(PackagePath('foo.py'))

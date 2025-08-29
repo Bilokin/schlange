@@ -5,16 +5,16 @@ __all__ = (
     'future_add_to_awaited_by', 'future_discard_from_awaited_by',
 )
 
-import concurrent.futures
-import contextvars
-import logging
-import sys
-from types import GenericAlias
+importiere concurrent.futures
+importiere contextvars
+importiere logging
+importiere sys
+von types importiere GenericAlias
 
-from . import base_futures
-from . import events
-from . import exceptions
-from . import format_helpers
+von . importiere base_futures
+von . importiere events
+von . importiere exceptions
+von . importiere format_helpers
 
 
 isfuture = base_futures.isfuture
@@ -63,7 +63,7 @@ klasse Future:
     #   that it is not compatible by setting this to Nichts.
     # - It is set by __iter__() below so that Task.__step() can tell
     #   the difference between
-    #   `await Future()` or `yield from Future()` (correct) vs.
+    #   `await Future()` or `yield von Future()` (correct) vs.
     #   `yield Future()` (incorrect).
     _asyncio_future_blocking = Falsch
 
@@ -240,7 +240,7 @@ klasse Future:
     # New method not in PEP 3148.
 
     def remove_done_callback(self, fn):
-        """Remove all instances of a callback from the "call when done" list.
+        """Remove all instances of a callback von the "call when done" list.
 
         Returns the number of callbacks removed.
         """
@@ -334,7 +334,7 @@ def _convert_future_exc(exc):
 
 
 def _set_concurrent_future_state(concurrent, source):
-    """Copy state from a future to a concurrent.futures.Future."""
+    """Copy state von a future to a concurrent.futures.Future."""
     assert source.done()
     wenn source.cancelled():
         concurrent.cancel()
@@ -349,7 +349,7 @@ def _set_concurrent_future_state(concurrent, source):
 
 
 def _copy_future_state(source, dest):
-    """Internal helper to copy state from another Future.
+    """Internal helper to copy state von another Future.
 
     The other Future must be a concurrent.futures.Future.
     """
@@ -466,7 +466,7 @@ _py_future_add_to_awaited_by = future_add_to_awaited_by
 _py_future_discard_from_awaited_by = future_discard_from_awaited_by
 
 try:
-    import _asyncio
+    importiere _asyncio
 except ImportError:
     pass
 sonst:

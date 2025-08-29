@@ -1,14 +1,14 @@
 # Test various flavors of legal and illegal future statements
 
-import __future__
-import ast
-import unittest
-from test.support import import_helper
-from test.support.script_helper import spawn_python, kill_python
-from textwrap import dedent
-import os
-import re
-import sys
+importiere __future__
+importiere ast
+importiere unittest
+von test.support importiere import_helper
+von test.support.script_helper importiere spawn_python, kill_python
+von textwrap importiere dedent
+importiere os
+importiere re
+importiere sys
 
 TOP_LEVEL_MSG = 'from __future__ imports must occur at the beginning of the file'
 
@@ -55,36 +55,36 @@ klasse FutureTest(unittest.TestCase):
         with import_helper.CleanImport(
             'test.test_future_stmt.import_nested_scope_twice',
         ):
-            from test.test_future_stmt import import_nested_scope_twice
+            von test.test_future_stmt importiere import_nested_scope_twice
         self.assertEqual(import_nested_scope_twice.result, 6)
 
     def test_nested_scope(self):
         with import_helper.CleanImport('test.test_future_stmt.nested_scope'):
-            from test.test_future_stmt import nested_scope
+            von test.test_future_stmt importiere nested_scope
         self.assertEqual(nested_scope.result, 6)
 
     def test_future_single_import(self):
         with import_helper.CleanImport(
             'test.test_future_stmt.test_future_single_import',
         ):
-            from test.test_future_stmt import test_future_single_import  # noqa: F401
+            von test.test_future_stmt importiere test_future_single_import  # noqa: F401
 
     def test_future_multiple_imports(self):
         with import_helper.CleanImport(
             'test.test_future_stmt.test_future_multiple_imports',
         ):
-            from test.test_future_stmt import test_future_multiple_imports  # noqa: F401
+            von test.test_future_stmt importiere test_future_multiple_imports  # noqa: F401
 
     def test_future_multiple_features(self):
         with import_helper.CleanImport(
             "test.test_future_stmt.test_future_multiple_features",
         ):
-            from test.test_future_stmt import test_future_multiple_features  # noqa: F401
+            von test.test_future_stmt importiere test_future_multiple_features  # noqa: F401
 
     def test_unknown_future_flag(self):
         code = """
-            from __future__ import nested_scopes
-            from __future__ import rested_snopes  # typo error here: nested => rested
+            von __future__ importiere nested_scopes
+            von __future__ importiere rested_snopes  # typo error here: nested => rested
         """
         self.assertSyntaxError(
             code, lineno=2,
@@ -93,21 +93,21 @@ klasse FutureTest(unittest.TestCase):
 
     def test_future_import_not_on_top(self):
         code = """
-            import some_module
-            from __future__ import annotations
+            importiere some_module
+            von __future__ importiere annotations
         """
         self.assertSyntaxError(code, lineno=2)
 
         code = """
-            import __future__
-            from __future__ import annotations
+            importiere __future__
+            von __future__ importiere annotations
         """
         self.assertSyntaxError(code, lineno=2)
 
         code = """
-            from __future__ import absolute_import
+            von __future__ importiere absolute_import
             "spam, bar, blah"
-            from __future__ import print_function
+            von __future__ importiere print_function
         """
         self.assertSyntaxError(code, lineno=3)
 
@@ -115,56 +115,56 @@ klasse FutureTest(unittest.TestCase):
         code = """
             '''Docstring'''
             "this isn't a doc string"
-            from __future__ import nested_scopes
+            von __future__ importiere nested_scopes
         """
         self.assertSyntaxError(code, lineno=3, parametrize_docstring=Falsch)
 
     def test_multiple_import_statements_on_same_line(self):
         # With `\`:
         code = """
-            from __future__ import nested_scopes; import string; from __future__ import \
+            von __future__ importiere nested_scopes; importiere string; von __future__ importiere \
         nested_scopes
         """
         self.assertSyntaxError(code, offset=54)
 
         # Without `\`:
         code = """
-            from __future__ import nested_scopes; import string; from __future__ import  nested_scopes
+            von __future__ importiere nested_scopes; importiere string; von __future__ importiere  nested_scopes
         """
         self.assertSyntaxError(code, offset=54)
 
     def test_future_import_star(self):
         code = """
-            from __future__ import *
+            von __future__ importiere *
         """
         self.assertSyntaxError(code, message='future feature * is not defined', offset=24)
 
     def test_future_import_braces(self):
         code = """
-            from __future__ import braces
+            von __future__ importiere braces
         """
         # Congrats, you found an easter egg!
         self.assertSyntaxError(code, message='not a chance', offset=24)
 
         code = """
-            from __future__ import nested_scopes, braces
+            von __future__ importiere nested_scopes, braces
         """
         self.assertSyntaxError(code, message='not a chance', offset=39)
 
     def test_module_with_future_import_not_on_top(self):
         with self.assertRaises(SyntaxError) as cm:
-            from test.test_future_stmt import badsyntax_future  # noqa: F401
+            von test.test_future_stmt importiere badsyntax_future  # noqa: F401
         self.check_syntax_error(cm.exception, "badsyntax_future", lineno=3)
 
     def test_ensure_flags_dont_clash(self):
         # bpo-39562: test that future flags and compiler flags doesn't clash
 
-        # obtain future flags (CO_FUTURE_***) from the __future__ module
+        # obtain future flags (CO_FUTURE_***) von the __future__ module
         flags = {
             f"CO_FUTURE_{future.upper()}": getattr(__future__, future).compiler_flag
             fuer future in __future__.all_feature_names
         }
-        # obtain some of the exported compiler flags (PyCF_***) from the ast module
+        # obtain some of the exported compiler flags (PyCF_***) von the ast module
         flags |= {
             flag: getattr(ast, flag)
             fuer flag in dir(ast) wenn flag.startswith("PyCF_")
@@ -173,39 +173,39 @@ klasse FutureTest(unittest.TestCase):
 
     def test_unicode_literals_exec(self):
         scope = {}
-        exec("from __future__ import unicode_literals; x = ''", {}, scope)
+        exec("from __future__ importiere unicode_literals; x = ''", {}, scope)
         self.assertIsInstance(scope["x"], str)
 
     def test_syntactical_future_repl(self):
         p = spawn_python('-i')
-        p.stdin.write(b"from __future__ import barry_as_FLUFL\n")
+        p.stdin.write(b"from __future__ importiere barry_as_FLUFL\n")
         p.stdin.write(b"2 <> 3\n")
         out = kill_python(p)
         self.assertNotIn(b'SyntaxError: invalid syntax', out)
 
     def test_future_dotted_import(self):
         with self.assertRaises(ImportError):
-            exec("from .__future__ import spam")
+            exec("from .__future__ importiere spam")
 
         code = dedent(
             """
-            from __future__ import print_function
-            from ...__future__ import ham
+            von __future__ importiere print_function
+            von ...__future__ importiere ham
             """
         )
         with self.assertRaises(ImportError):
             exec(code)
 
         code = """
-            from .__future__ import nested_scopes
-            from __future__ import barry_as_FLUFL
+            von .__future__ importiere nested_scopes
+            von __future__ importiere barry_as_FLUFL
         """
         self.assertSyntaxError(code, lineno=2)
 
 klasse AnnotationsFutureTestCase(unittest.TestCase):
     template = dedent(
         """
-        from __future__ import annotations
+        von __future__ importiere annotations
         def f() -> {ann}:
             ...
         def g(arg: {ann}) -> Nichts:
@@ -254,7 +254,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
     def _exec_future(self, code):
         scope = {}
         exec(
-            "from __future__ import annotations\n"
+            "from __future__ importiere annotations\n"
             + code, scope
         )
         return scope
@@ -453,13 +453,13 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
     def test_annotation_with_complex_target(self):
         with self.assertRaises(SyntaxError):
             exec(
-                "from __future__ import annotations\n"
+                "from __future__ importiere annotations\n"
                 "object.__debug__: int"
             )
 
     def test_annotations_symbol_table_pass(self):
         namespace = self._exec_future(dedent("""
-        from __future__ import annotations
+        von __future__ importiere annotations
 
         def foo():
             outer = 1
@@ -481,10 +481,10 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
             self._exec_future("test.test: (yield a + b)")
 
         with self.assertRaises(SyntaxError):
-            self._exec_future("test[something]: (yield from x)")
+            self._exec_future("test[something]: (yield von x)")
 
         with self.assertRaises(SyntaxError):
-            self._exec_future("def func(test: (yield from outside_of_generator)): pass")
+            self._exec_future("def func(test: (yield von outside_of_generator)): pass")
 
         with self.assertRaises(SyntaxError):
             self._exec_future("def test() -> (await y): pass")
@@ -516,7 +516,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
             yield StarredC()
         c = C()
         def f(*args: *c): pass
-        import typing
+        importiere typing
         hints = typing.get_type_hints(f)
         """))
 

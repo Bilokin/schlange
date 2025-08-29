@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 
-import unittest
-from test.support import script_helper, captured_stdout, requires_subprocess, requires_resource
-from test.support.os_helper import TESTFN, unlink, rmtree
-from test.support.import_helper import unload
-import importlib
-import os
-import sys
-import subprocess
-import tempfile
+importiere unittest
+von test.support importiere script_helper, captured_stdout, requires_subprocess, requires_resource
+von test.support.os_helper importiere TESTFN, unlink, rmtree
+von test.support.import_helper importiere unload
+importiere importlib
+importiere os
+importiere sys
+importiere subprocess
+importiere tempfile
 
 klasse MiscSourceEncodingTest(unittest.TestCase):
 
     def test_import_encoded_module(self):
-        from test.encoded_modules import test_strings
+        von test.encoded_modules importiere test_strings
         # Make sure we're actually testing something
         self.assertGreaterEqual(len(test_strings), 1)
         fuer modname, encoding, teststr in test_strings:

@@ -1,12 +1,12 @@
-import annotationlib
-import textwrap
-import types
-import unittest
-import pickle
-import weakref
-from test.support import check_syntax_error, run_code, run_no_yield_async_fn
+importiere annotationlib
+importiere textwrap
+importiere types
+importiere unittest
+importiere pickle
+importiere weakref
+von test.support importiere check_syntax_error, run_code, run_no_yield_async_fn
 
-from typing import Generic, NoDefault, Sequence, TypeAliasType, TypeVar, TypeVarTuple, ParamSpec, get_args
+von typing importiere Generic, NoDefault, Sequence, TypeAliasType, TypeVar, TypeVarTuple, ParamSpec, get_args
 
 
 klasse TypeParamsInvalidTest(unittest.TestCase):
@@ -134,12 +134,12 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
 
     def test_disallowed_expressions(self):
         check_syntax_error(self, "type X = (yield)")
-        check_syntax_error(self, "type X = (yield from x)")
+        check_syntax_error(self, "type X = (yield von x)")
         check_syntax_error(self, "type X = (await 42)")
         check_syntax_error(self, "async def f(): type X = (yield)")
         check_syntax_error(self, "type X = (y := 3)")
         check_syntax_error(self, "class X[T: (yield)]: pass")
-        check_syntax_error(self, "class X[T: (yield from x)]: pass")
+        check_syntax_error(self, "class X[T: (yield von x)]: pass")
         check_syntax_error(self, "class X[T: (await 42)]: pass")
         check_syntax_error(self, "class X[T: (y := 3)]: pass")
         check_syntax_error(self, "class X[T](y := Sequence[T]): pass")
@@ -422,7 +422,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
 
     def test_gen_exp_in_nested_class(self):
         code = """
-            from test.test_type_params import make_base
+            von test.test_type_params importiere make_base
 
             klasse C[T]:
                 T = "class"
@@ -437,7 +437,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
 
     def test_gen_exp_in_nested_generic_class(self):
         code = """
-            from test.test_type_params import make_base
+            von test.test_type_params importiere make_base
 
             klasse C[T]:
                 T = "class"
@@ -452,7 +452,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
 
     def test_listcomp_in_nested_class(self):
         code = """
-            from test.test_type_params import make_base
+            von test.test_type_params importiere make_base
 
             klasse C[T]:
                 T = "class"
@@ -467,7 +467,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
 
     def test_listcomp_in_nested_generic_class(self):
         code = """
-            from test.test_type_params import make_base
+            von test.test_type_params importiere make_base
 
             klasse C[T]:
                 T = "class"
@@ -746,12 +746,12 @@ klasse TypeParamsClassScopeTest(unittest.TestCase):
                 klasse Cls:
                     global x
                     type Alias = x
-                    x = "global from class"
+                    x = "global von class"
                 Cls.x = "class"
                 return Cls
         """)
         cls = ns["outer"]()
-        self.assertEqual(cls.Alias.__value__, "global from class")
+        self.assertEqual(cls.Alias.__value__, "global von class")
 
     def test_explicit_nonlocal(self):
         ns = run_code("""
@@ -876,7 +876,7 @@ klasse TypeParamsManglingTest(unittest.TestCase):
 
     def test_no_mangling_in_nested_scopes(self):
         ns = run_code("""
-            from test.test_type_params import make_base
+            von test.test_type_params importiere make_base
 
             klasse __X:
                 pass
@@ -906,7 +906,7 @@ klasse TypeParamsManglingTest(unittest.TestCase):
 
     def test_type_params_are_mangled(self):
         ns = run_code("""
-            from test.test_type_params import make_base
+            von test.test_type_params importiere make_base
 
             klasse Foo[__T, __U: __T](make_base(__T), make_base(lambda: __T)):
                 param = __T
@@ -980,15 +980,15 @@ klasse TypeParamsComplexCallsTest(unittest.TestCase):
 klasse TypeParamsTraditionalTypeVarsTest(unittest.TestCase):
     def test_traditional_01(self):
         code = """
-            from typing import Generic
+            von typing importiere Generic
             klasse ClassA[T](Generic[T]): ...
         """
 
-        with self.assertRaisesRegex(TypeError, r"Cannot inherit from Generic\[...\] multiple times."):
+        with self.assertRaisesRegex(TypeError, r"Cannot inherit von Generic\[...\] multiple times."):
             run_code(code)
 
     def test_traditional_02(self):
-        from typing import TypeVar
+        von typing importiere TypeVar
         S = TypeVar("S")
         with self.assertRaises(TypeError):
             klasse ClassA[T](dict[T, S]): ...
@@ -996,7 +996,7 @@ klasse TypeParamsTraditionalTypeVarsTest(unittest.TestCase):
     def test_traditional_03(self):
         # This does not generate a runtime error, but it should be
         # flagged as an error by type checkers.
-        from typing import TypeVar
+        von typing importiere TypeVar
         S = TypeVar("S")
         def func[T](a: T, b: S) -> T | S:
             return a
@@ -1036,7 +1036,7 @@ klasse TypeParamsTypeVarTest(unittest.TestCase):
             def generator2[B]():
                 yield A
                 yield B
-                yield from generator1()
+                yield von generator1()
             return generator2
 
         gen = get_generator()

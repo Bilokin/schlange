@@ -1,6 +1,6 @@
-import unittest
-from test import support
-from test.support.import_helper import import_module
+importiere unittest
+von test importiere support
+von test.support.import_helper importiere import_module
 
 
 klasse TestMROEntry(unittest.TestCase):

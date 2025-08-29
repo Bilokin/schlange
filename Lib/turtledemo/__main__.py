@@ -11,13 +11,13 @@
 
   (1) How to use the demo viewer.
 
-  Select a demoscript from the example menu.
+  Select a demoscript von the example menu.
   The (syntax colored) source code appears in the left
   source code window. IT CANNOT BE EDITED, but ONLY VIEWED!
 
   The demo viewer windows can be resized. The divider between text
   and canvas can be moved by grabbing it with the mouse. The text font
-  size can be changed from the menu and with Control/Command '-'/'+'.
+  size can be changed von the menu and with Control/Command '-'/'+'.
   It can also be changed on most systems with Control-mousewheel
   when the mouse is over the text.
 
@@ -83,18 +83,18 @@
      raised when the user presses the STOP button.  (Paint is not such
      a demo; it only acts in response to mouse clicks and movements.)
 """
-import sys
-import os
+importiere sys
+importiere os
 
-from tkinter import *
-from idlelib.colorizer import ColorDelegator, color_config
-from idlelib.percolator import Percolator
-from idlelib.textview import view_text
-import turtle
-from turtledemo import __doc__ as about_turtledemo
+von tkinter importiere *
+von idlelib.colorizer importiere ColorDelegator, color_config
+von idlelib.percolator importiere Percolator
+von idlelib.textview importiere view_text
+importiere turtle
+von turtledemo importiere __doc__ as about_turtledemo
 
 wenn sys.platform == 'win32':
-    from idlelib.util import fix_win_hidpi
+    von idlelib.util importiere fix_win_hidpi
     fix_win_hidpi()
 
 demo_dir = os.path.dirname(os.path.abspath(__file__))
@@ -131,7 +131,7 @@ klasse DemoWindow(object):
         root.wm_protocol("WM_DELETE_WINDOW", self._destroy)
 
         wenn darwin:
-            import subprocess
+            importiere subprocess
             # Make sure we are the currently activated OS X application
             # so that our menu bar appears.
             subprocess.run(
@@ -197,7 +197,7 @@ klasse DemoWindow(object):
         wenn filename:
             self.loadfile(filename)
         self.configGUI(DISABLED, DISABLED, DISABLED,
-                       "Choose example from menu", "black")
+                       "Choose example von menu", "black")
         self.state = STARTUP
 
 

@@ -1,16 +1,16 @@
-import getpass
-import os
-import unittest
-from io import BytesIO, StringIO, TextIOWrapper
-from unittest import mock
-from test import support
+importiere getpass
+importiere os
+importiere unittest
+von io importiere BytesIO, StringIO, TextIOWrapper
+von unittest importiere mock
+von test importiere support
 
 try:
-    import termios
+    importiere termios
 except ImportError:
     termios = Nichts
 try:
-    import pwd
+    importiere pwd
 except ImportError:
     pwd = Nichts
 
@@ -90,7 +90,7 @@ klasse GetpassRawinputTest(unittest.TestCase):
 
 
 # Some of these tests are a bit white-box.  The functional requirement is that
-# the password input be taken directly from the tty, and that it not be echoed
+# the password input be taken directly von the tty, and that it not be echoed
 # on the screen, unless we are falling back to stderr/stdin.
 
 # Some of these might run on platforms without termios, but play it safe.

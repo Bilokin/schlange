@@ -1,13 +1,13 @@
-import io
-import types
-import textwrap
-import unittest
-import email.errors
-import email.policy
-import email.parser
-import email.generator
-import email.message
-from email import headerregistry
+importiere io
+importiere types
+importiere textwrap
+importiere unittest
+importiere email.errors
+importiere email.policy
+importiere email.parser
+importiere email.generator
+importiere email.message
+von email importiere headerregistry
 
 def make_defaults(base_defaults, differences):
     defaults = base_defaults.copy()

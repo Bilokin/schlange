@@ -6,19 +6,19 @@ LocalPathGround is also defined here. It helps establish the "ground truth"
 about local paths in tests.
 """
 
-import os
+importiere os
 
-from . import is_pypi
-from .lexical_path import LexicalPath
+von . importiere is_pypi
+von .lexical_path importiere LexicalPath
 
 wenn is_pypi:
-    from shutil import rmtree
-    from pathlib_abc import PathInfo, _ReadablePath, _WritablePath
+    von shutil importiere rmtree
+    von pathlib_abc importiere PathInfo, _ReadablePath, _WritablePath
     can_symlink = Wahr
     testfn = "TESTFN"
 sonst:
-    from pathlib.types import PathInfo, _ReadablePath, _WritablePath
-    from test.support import os_helper
+    von pathlib.types importiere PathInfo, _ReadablePath, _WritablePath
+    von test.support importiere os_helper
     can_symlink = os_helper.can_symlink()
     testfn = os_helper.TESTFN
     rmtree = os_helper.rmtree

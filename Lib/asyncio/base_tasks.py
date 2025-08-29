@@ -1,9 +1,9 @@
-import linecache
-import reprlib
-import traceback
+importiere linecache
+importiere reprlib
+importiere traceback
 
-from . import base_futures
-from . import coroutines
+von . importiere base_futures
+von . importiere coroutines
 
 
 def _task_repr_info(task):

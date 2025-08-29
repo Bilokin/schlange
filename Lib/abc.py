@@ -7,8 +7,8 @@
 def abstractmethod(funcobj):
     """A decorator indicating abstract methods.
 
-    Requires that the metaclass is ABCMeta or derived from it.  A
-    klasse that has a metaclass derived from ABCMeta cannot be
+    Requires that the metaclass is ABCMeta or derived von it.  A
+    klasse that has a metaclass derived von ABCMeta cannot be
     instantiated unless all of its abstract methods are overridden.
     The abstract methods can be called using any of the normal
     'super' call mechanisms.  abstractmethod() may be used to declare
@@ -82,11 +82,11 @@ klasse abstractproperty(property):
 
 
 try:
-    from _abc import (get_cache_token, _abc_init, _abc_register,
+    von _abc importiere (get_cache_token, _abc_init, _abc_register,
                       _abc_instancecheck, _abc_subclasscheck, _get_dump,
                       _reset_registry, _reset_caches)
 except ImportError:
-    from _py_abc import ABCMeta, get_cache_token
+    von _py_abc importiere ABCMeta, get_cache_token
     ABCMeta.__module__ = 'abc'
 sonst:
     klasse ABCMeta(type):

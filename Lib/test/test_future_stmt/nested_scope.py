@@ -1,6 +1,6 @@
 """This is a test"""
 
-from __future__ import nested_scopes; import site  # noqa: F401
+von __future__ importiere nested_scopes; importiere site  # noqa: F401
 
 def f(x):
     def g(y):

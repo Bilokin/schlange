@@ -1,16 +1,16 @@
-from test.test_importlib import util
+von test.test_importlib importiere util
 
 machinery = util.import_importlib('importlib.machinery')
 
-import codecs
-import importlib.util
-import re
-import types
+importiere codecs
+importiere importlib.util
+importiere re
+importiere types
 # Because sys.path gets essentially blanked, need to have unicodedata already
 # imported fuer the parser to use.
-import unicodedata
-import unittest
-import warnings
+importiere unicodedata
+importiere unittest
+importiere warnings
 
 
 CODING_RE = re.compile(r'^[ \t\f]*#.*?coding[:=][ \t]*([-\w.]+)', re.ASCII)

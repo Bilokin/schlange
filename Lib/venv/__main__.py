@@ -1,5 +1,5 @@
-import sys
-from . import main
+importiere sys
+von . importiere main
 
 rc = 1
 try:

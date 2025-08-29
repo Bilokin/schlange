@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec generated from 'VENDORS/MICSFT/PC/CP861.TXT' with gencodec.py.
+""" Python Character Mapping Codec generated von 'VENDORS/MICSFT/PC/CP861.TXT' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

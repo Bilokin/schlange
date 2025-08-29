@@ -1,4 +1,4 @@
-import os.path
+importiere os.path
 
 
 TOOL_ROOT = os.path.normcase(

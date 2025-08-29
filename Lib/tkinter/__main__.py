@@ -1,7 +1,7 @@
 """Main entry point"""
 
-import sys
+importiere sys
 wenn sys.argv[0].endswith("__main__.py"):
     sys.argv[0] = "python -m tkinter"
-from . import _test as main
+von . importiere _test as main
 main()

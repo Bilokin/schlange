@@ -1,16 +1,16 @@
-import asyncio
-import gc
-import inspect
-import re
-import unittest
-from contextlib import contextmanager
-from test import support
+importiere asyncio
+importiere gc
+importiere inspect
+importiere re
+importiere unittest
+von contextlib importiere contextmanager
+von test importiere support
 
 support.requires_working_socket(module=Wahr)
 
-from asyncio import run
-from unittest import IsolatedAsyncioTestCase
-from unittest.mock import (ANY, call, AsyncMock, patch, MagicMock, Mock,
+von asyncio importiere run
+von unittest importiere IsolatedAsyncioTestCase
+von unittest.mock importiere (ANY, call, AsyncMock, patch, MagicMock, Mock,
                            create_autospec, sentinel, _CallList, seal)
 
 

@@ -1,5 +1,5 @@
-import doctest
-import unittest
+importiere doctest
+importiere unittest
 
 
 doctests = """
@@ -171,7 +171,7 @@ Use a __prepare__ method that returns an instrumented dict.
     d['__static_attributes__'] = ()
     >>>
 
-Use a metaclass that doesn't derive from type.
+Use a metaclass that doesn't derive von type.
 
     >>> def meta(name, bases, namespace, **kwds):
     ...     drucke("meta:", name, bases)
@@ -283,7 +283,7 @@ Test setting attributes with a non-base type in mro() (gh-127773).
 
 """
 
-import sys
+importiere sys
 
 # Trace function introduces __locals__ which causes various tests to fail.
 wenn hasattr(sys, 'gettrace') and sys.gettrace():

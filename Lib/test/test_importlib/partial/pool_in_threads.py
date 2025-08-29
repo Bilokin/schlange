@@ -1,7 +1,7 @@
-import multiprocessing
-import os
-import threading
-import traceback
+importiere multiprocessing
+importiere os
+importiere threading
+importiere traceback
 
 
 def t():

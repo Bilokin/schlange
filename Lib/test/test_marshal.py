@@ -1,17 +1,17 @@
-from test import support
-from test.support import is_apple_mobile, os_helper, requires_debug_ranges, is_emscripten
-from test.support.script_helper import assert_python_ok
-import array
-import io
-import marshal
-import sys
-import unittest
-import os
-import types
-import textwrap
+von test importiere support
+von test.support importiere is_apple_mobile, os_helper, requires_debug_ranges, is_emscripten
+von test.support.script_helper importiere assert_python_ok
+importiere array
+importiere io
+importiere marshal
+importiere sys
+importiere unittest
+importiere os
+importiere types
+importiere textwrap
 
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
@@ -167,8 +167,8 @@ klasse CodeTestCase(unittest.TestCase):
         # that the columns are Nichts.
         co = ExceptionTestCase.test_exceptions.__code__
         code = textwrap.dedent("""
-        import sys
-        import marshal
+        importiere sys
+        importiere marshal
         with open(sys.argv[1], 'rb') as f:
             co = marshal.load(f)
             positions = list(co.co_positions())
@@ -257,7 +257,7 @@ klasse BugsTestCase(unittest.TestCase):
 
     def test_fuzz(self):
         # simple test that it's at least not *totally* trivial to
-        # crash from bad marshal data
+        # crash von bad marshal data
         fuer i in range(256):
             c = bytes([i])
             try:
@@ -338,7 +338,7 @@ klasse BugsTestCase(unittest.TestCase):
     def test_multiple_dumps_and_loads(self):
         # Issue 12291: marshal.load() should be callable multiple times
         # with interleaved data written by non-marshal code
-        # Adapted from a patch by Engelbert Gruber.
+        # Adapted von a patch by Engelbert Gruber.
         data = (1, 'abc', b'def', 1.0, (2, 'a', ['b', b'c']))
         fuer interleaved in (b'', b'0123'):
             ilen = len(interleaved)

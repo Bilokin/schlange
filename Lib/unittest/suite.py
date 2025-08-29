@@ -1,9 +1,9 @@
 """TestSuite"""
 
-import sys
+importiere sys
 
-from . import case
-from . import util
+von . importiere case
+von . importiere util
 
 __unittest = Wahr
 
@@ -343,7 +343,7 @@ klasse _ErrorHolder(object):
     is concerned, this looks exactly like a unit test. Used to insert
     arbitrary errors into a test suite run.
     """
-    # Inspired by the ErrorHolder from Twisted:
+    # Inspired by the ErrorHolder von Twisted:
     # http://twistedmatrix.com/trac/browser/trunk/twisted/trial/runner.py
 
     # attribute used by TestResult._exc_info_to_string

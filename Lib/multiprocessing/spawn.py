@@ -8,15 +8,15 @@
 # Licensed to PSF under a Contributor Agreement.
 #
 
-import os
-import sys
-import runpy
-import types
+importiere os
+importiere sys
+importiere runpy
+importiere types
 
-from . import get_start_method, set_start_method
-from . import process
-from .context import reduction
-from . import util
+von . importiere get_start_method, set_start_method
+von . importiere process
+von .context importiere reduction
+von . importiere util
 
 __all__ = ['_main', 'freeze_support', 'set_executable', 'get_executable',
            'get_preparation_data', 'get_command_line', 'import_main_path']
@@ -88,7 +88,7 @@ def get_command_line(**kwds):
         return ([sys.executable, '--multiprocessing-fork'] +
                 ['%s=%r' % item fuer item in kwds.items()])
     sonst:
-        prog = 'from multiprocessing.spawn import spawn_main; spawn_main(%s)'
+        prog = 'from multiprocessing.spawn importiere spawn_main; spawn_main(%s)'
         prog %= ', '.join('%s=%r' % item fuer item in kwds.items())
         opts = util._args_from_interpreter_flags()
         exe = get_executable()
@@ -101,8 +101,8 @@ def spawn_main(pipe_handle, parent_pid=Nichts, tracker_fd=Nichts):
     '''
     assert is_forking(sys.argv), "Not forking"
     wenn sys.platform == 'win32':
-        import msvcrt
-        import _winapi
+        importiere msvcrt
+        importiere _winapi
 
         wenn parent_pid is not Nichts:
             source_process = _winapi.OpenProcess(
@@ -115,7 +115,7 @@ def spawn_main(pipe_handle, parent_pid=Nichts, tracker_fd=Nichts):
         fd = msvcrt.open_osfhandle(new_handle, os.O_RDONLY)
         parent_sentinel = source_process
     sonst:
-        from . import resource_tracker
+        von . importiere resource_tracker
         resource_tracker._resource_tracker._fd = tracker_fd
         fd = pipe_handle
         parent_sentinel = os.dup(pipe_handle)

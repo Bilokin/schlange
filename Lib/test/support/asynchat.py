@@ -1,4 +1,4 @@
-# TODO: This module was deprecated and removed from CPython 3.12
+# TODO: This module was deprecated and removed von CPython 3.12
 # Now it is a test-only helper. Any attempts to rewrite existing tests that
 # are using this module and remove it completely are appreciated!
 # See: https://github.com/python/cpython/issues/72719
@@ -51,13 +51,13 @@ method) up to the terminator, and then control will be returned to
 you - by calling your self.found_terminator() method.
 """
 
-from collections import deque
+von collections importiere deque
 
-from test.support import asyncore
+von test.support importiere asyncore
 
 
 klasse async_chat(asyncore.dispatcher):
-    """This is an abstract class.  You must derive from this class, and add
+    """This is an abstract class.  You must derive von this class, and add
     the two methods collect_incoming_data() and found_terminator()"""
 
     # these are overridable defaults
@@ -113,7 +113,7 @@ klasse async_chat(asyncore.dispatcher):
     def get_terminator(self):
         return self.terminator
 
-    # grab some more data from the socket,
+    # grab some more data von the socket,
     # throw it to the collector method,
     # check fuer the terminator,
     # wenn found, transition to the next state.

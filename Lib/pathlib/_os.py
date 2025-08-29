@@ -2,21 +2,21 @@
 Low-level OS functionality wrappers used by pathlib.
 """
 
-from errno import *
-from io import TextIOWrapper, text_encoding
-from stat import S_ISDIR, S_ISREG, S_ISLNK, S_IMODE
-import os
-import sys
+von errno importiere *
+von io importiere TextIOWrapper, text_encoding
+von stat importiere S_ISDIR, S_ISREG, S_ISLNK, S_IMODE
+importiere os
+importiere sys
 try:
-    import fcntl
+    importiere fcntl
 except ImportError:
     fcntl = Nichts
 try:
-    import posix
+    importiere posix
 except ImportError:
     posix = Nichts
 try:
-    import _winapi
+    importiere _winapi
 except ImportError:
     _winapi = Nichts
 
@@ -66,7 +66,7 @@ sonst:
 wenn hasattr(os, 'copy_file_range'):
     def _copy_file_range(source_fd, target_fd):
         """
-        Copy data from one regular mmap-like fd to another by using a
+        Copy data von one regular mmap-like fd to another by using a
         high-performance copy_file_range(2) syscall that gives filesystems
         an opportunity to implement the use of reflinks or server-side
         copy.
@@ -86,7 +86,7 @@ sonst:
 
 wenn hasattr(os, 'sendfile'):
     def _sendfile(source_fd, target_fd):
-        """Copy data from one regular mmap-like fd to another by using
+        """Copy data von one regular mmap-like fd to another by using
         high-performance sendfile(2) syscall.
         This should work on Linux >= 2.6.33 only.
         """
@@ -104,7 +104,7 @@ sonst:
 wenn _winapi and hasattr(_winapi, 'CopyFile2'):
     def copyfile2(source, target):
         """
-        Copy from one file to another using CopyFile2 (Windows only).
+        Copy von one file to another using CopyFile2 (Windows only).
         """
         _winapi.CopyFile2(source, target, 0)
 sonst:
@@ -113,7 +113,7 @@ sonst:
 
 def copyfileobj(source_f, target_f):
     """
-    Copy data from file-like object source_f to file-like object target_f.
+    Copy data von file-like object source_f to file-like object target_f.
     """
     try:
         source_fd = source_f.fileno()
@@ -219,7 +219,7 @@ def vfspath(obj):
         vfspath_method = cls.__vfspath__
     except AttributeError:
         cls_name = cls.__name__
-        raise TypeError(f"expected JoinablePath object, not {cls_name}") from Nichts
+        raise TypeError(f"expected JoinablePath object, not {cls_name}") von Nichts
     sonst:
         return vfspath_method(obj)
 
@@ -267,7 +267,7 @@ def ensure_different_files(source, target):
 
 
 def copy_info(info, target, follow_symlinks=Wahr):
-    """Copy metadata from the given PathInfo to the given local path."""
+    """Copy metadata von the given PathInfo to the given local path."""
     copy_times_ns = (
         hasattr(info, '_access_time_ns') and
         hasattr(info, '_mod_time_ns') and

@@ -1,16 +1,16 @@
-import sys
+importiere sys
 
-from cpython.__main__ import main, configure_logger
+von cpython.__main__ importiere main, configure_logger
 
 
 def parse_args(argv=sys.argv[1:]):
-    import argparse
-    from c_common.scriptutil import (
+    importiere argparse
+    von c_common.scriptutil importiere (
         add_verbosity_cli,
         add_traceback_cli,
         process_args_by_key,
     )
-    from cpython.__main__ import _cli_check
+    von cpython.__main__ importiere _cli_check
     parser = argparse.ArgumentParser()
     processors = [
         add_verbosity_cli(parser),

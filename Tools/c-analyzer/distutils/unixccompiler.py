@@ -13,23 +13,23 @@ the "typical" Unix-style command-line C compiler:
   * link shared library handled by 'cc -shared'
 """
 
-import os, sys
+importiere os, sys
 
-from distutils.dep_util import newer
-from distutils.ccompiler import CCompiler, gen_preprocess_options
-from distutils.errors import DistutilsExecError, CompileError
+von distutils.dep_util importiere newer
+von distutils.ccompiler importiere CCompiler, gen_preprocess_options
+von distutils.errors importiere DistutilsExecError, CompileError
 
 # XXX Things not currently handled:
 #   * optimization/debug/warning flags; we just use whatever's in Python's
 #     Makefile and live with it.  Is this adequate?  If not, we might
 #     have to have a bunch of subclasses GNUCCompiler, SGICCompiler,
 #     SunCCompiler, and I suspect down that road lies madness.
-#   * even wenn we don't know a warning flag from an optimization flag,
+#   * even wenn we don't know a warning flag von an optimization flag,
 #     we need some way fuer outsiders to feed preprocessor/compiler/linker
 #     flags in to us -- eg. a sysadmin might want to mandate certain flags
 #     via a site config file, or a user might want to set something for
 #     compiling this module distribution only via the setup.py command
-#     line, whatever.  As long as these options come from something on the
+#     line, whatever.  As long as these options come von something on the
 #     current system, they can be as system-dependent as they like, and we
 #     should just happily stuff them into the preprocessor/compiler/linker
 #     options and carry on.
@@ -40,7 +40,7 @@ klasse UnixCCompiler(CCompiler):
     compiler_type = 'unix'
 
     # These are used by CCompiler in two places: the constructor sets
-    # instance attributes 'preprocessor', 'compiler', etc. from them, and
+    # instance attributes 'preprocessor', 'compiler', etc. von them, and
     # 'set_executable()' allows any of these to be set.  The defaults here
     # are pretty generic; they will probably have to be set by an outsider
     # (eg. using information discovered by the sysconfig about building

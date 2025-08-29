@@ -7,18 +7,18 @@
 # directly seems like the easiest and therefore safest thing to do.
 # Unicode identifiers in tests is allowed by PEP 3131.
 
-import ast
-import datetime
-import dis
-import os
-import re
-import types
-import decimal
-import unittest
-import warnings
-from test import support
-from test.support.os_helper import temp_cwd
-from test.support.script_helper import assert_python_failure, assert_python_ok
+importiere ast
+importiere datetime
+importiere dis
+importiere os
+importiere re
+importiere types
+importiere decimal
+importiere unittest
+importiere warnings
+von test importiere support
+von test.support.os_helper importiere temp_cwd
+von test.support.script_helper importiere assert_python_failure, assert_python_ok
 
 a_global = 'global variable'
 

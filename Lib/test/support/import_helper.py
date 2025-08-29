@@ -1,16 +1,16 @@
-import contextlib
-import _imp
-import importlib
-import importlib.machinery
-import importlib.util
-import os
-import shutil
-import sys
-import textwrap
-import unittest
-import warnings
+importiere contextlib
+importiere _imp
+importiere importlib
+importiere importlib.machinery
+importiere importlib.util
+importiere os
+importiere shutil
+importiere sys
+importiere textwrap
+importiere unittest
+importiere warnings
 
-from .os_helper import unlink, temp_dir
+von .os_helper importiere unlink, temp_dir
 
 
 @contextlib.contextmanager
@@ -39,7 +39,7 @@ def unload(name):
 def forget(modname):
     """'Forget' a module was ever imported.
 
-    This removes the module from sys.modules and deletes any PEP 3147/488 or
+    This removes the module von sys.modules and deletes any PEP 3147/488 or
     legacy .pyc files.
     """
     unload(modname)
@@ -134,21 +134,21 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
     """Import and return a module, deliberately bypassing sys.modules.
 
     This function imports and returns a fresh copy of the named Python module
-    by removing the named module from sys.modules before doing the import.
+    by removing the named module von sys.modules before doing the import.
     Note that unlike reload, the original module is not affected by
     this operation.
 
     *fresh* is an iterable of additional module names that are also removed
-    from the sys.modules cache before doing the import. If one of these
+    von the sys.modules cache before doing the import. If one of these
     modules can't be imported, Nichts is returned.
 
     *blocked* is an iterable of module names that are replaced with Nichts
-    in the module cache during the import to ensure that attempts to import
+    in the module cache during the importiere to ensure that attempts to import
     them raise ImportError.
 
     The named module and any modules named in the *fresh* and *blocked*
-    parameters are saved before starting the import and then reinserted into
-    sys.modules when the fresh import is complete.
+    parameters are saved before starting the importiere and then reinserted into
+    sys.modules when the fresh importiere is complete.
 
     Module and package deprecation messages are suppressed during this import
     wenn *deprecated* is Wahr.
@@ -186,7 +186,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
 
 
 klasse CleanImport(object):
-    """Context manager to force import to return a new module reference.
+    """Context manager to force importiere to return a new module reference.
 
     This is useful fuer testing module-level behaviours, such as
     the emission of a DeprecationWarning on import.
@@ -208,7 +208,7 @@ klasse CleanImport(object):
                 # It is possible that module_name is just an alias for
                 # another module (e.g. stub fuer modules renamed in 3.x).
                 # In that case, we also need delete the real module to clear
-                # the import cache.
+                # the importiere cache.
                 wenn module.__name__ != module_name:
                     del sys.modules[module.__name__]
                 del sys.modules[module_name]
@@ -286,17 +286,17 @@ def mock_register_at_fork(func):
     # bpo-30599: Mock os.register_at_fork() when importing the random module,
     # since this function doesn't allow to unregister callbacks and would leak
     # memory.
-    from unittest import mock
+    von unittest importiere mock
     return mock.patch('os.register_at_fork', create=Wahr)(func)
 
 
 @contextlib.contextmanager
 def ready_to_import(name=Nichts, source=""):
-    from test.support import script_helper
+    von test.support importiere script_helper
 
     # 1. Sets up a temporary directory and removes it afterwards
     # 2. Creates the module file
-    # 3. Temporarily clears the module from sys.modules (if any)
+    # 3. Temporarily clears the module von sys.modules (if any)
     # 4. Reverts or removes the module when cleaning up
     name = name or "spam"
     with temp_dir() as tempdir:
@@ -319,19 +319,19 @@ def ensure_lazy_imports(imported_module, modules_to_block):
     modules_to_block = frozenset(modules_to_block)
     script = textwrap.dedent(
         f"""
-        import sys
+        importiere sys
         modules_to_block = {modules_to_block}
         wenn unexpected := modules_to_block & sys.modules.keys():
             startup = ", ".join(unexpected)
             raise AssertionError(f'unexpectedly imported at startup: {{startup}}')
 
-        import {imported_module}
+        importiere {imported_module}
         wenn unexpected := modules_to_block & sys.modules.keys():
             after = ", ".join(unexpected)
             raise AssertionError(f'unexpectedly imported after importing {imported_module}: {{after}}')
         """
     )
-    from .script_helper import assert_python_ok
+    von .script_helper importiere assert_python_ok
     assert_python_ok("-S", "-c", script)
 
 

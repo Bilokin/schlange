@@ -1,6 +1,6 @@
-import unittest
-from ctypes import CDLL, CFUNCTYPE, ArgumentError, c_char_p, c_void_p, c_char
-from test.support import import_helper
+importiere unittest
+von ctypes importiere CDLL, CFUNCTYPE, ArgumentError, c_char_p, c_void_p, c_char
+von test.support importiere import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 

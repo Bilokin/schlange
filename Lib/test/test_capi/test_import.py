@@ -1,11 +1,11 @@
-import importlib.util
-import os.path
-import sys
-import types
-import unittest
-from test.support import os_helper
-from test.support import import_helper
-from test.support.warnings_helper import check_warnings
+importiere importlib.util
+importiere os.path
+importiere sys
+importiere types
+importiere unittest
+von test.support importiere os_helper
+von test.support importiere import_helper
+von test.support.warnings_helper importiere check_warnings
 
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
@@ -149,7 +149,7 @@ klasse ImportTests(unittest.TestCase):
         try:
             self.assertEqual(import_frozen_module('zipimport'), 1)
 
-            # import zipimport again
+            # importiere zipimport again
             self.assertEqual(import_frozen_module('zipimport'), 1)
         finally:
             sys.modules['zipimport'] = old_zipimport
@@ -324,7 +324,7 @@ klasse ImportTests(unittest.TestCase):
 
         # module name containing a dot
         attr = importmoduleattr('email.message', 'Message')
-        from email.message import Message
+        von email.message importiere Message
         self.assertIs(attr, Message)
 
         with self.assertRaises(ImportError):

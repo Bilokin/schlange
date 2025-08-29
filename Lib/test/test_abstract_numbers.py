@@ -1,10 +1,10 @@
 """Unit tests fuer numbers.py."""
 
-import abc
-import math
-import operator
-import unittest
-from numbers import Complex, Real, Rational, Integral, Number
+importiere abc
+importiere math
+importiere operator
+importiere unittest
+von numbers importiere Complex, Real, Rational, Integral, Number
 
 
 def concretize(cls):

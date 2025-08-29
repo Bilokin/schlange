@@ -18,18 +18,18 @@ Any name not present in __all__ is an implementation detail
 that may be changed without notice. Use at your own risk!
 """
 
-from abc import abstractmethod, ABCMeta
-import collections
-from collections import defaultdict
-import collections.abc
-import copyreg
-import functools
-import operator
-import sys
-import types
-from types import GenericAlias
+von abc importiere abstractmethod, ABCMeta
+importiere collections
+von collections importiere defaultdict
+importiere collections.abc
+importiere copyreg
+importiere functools
+importiere operator
+importiere sys
+importiere types
+von types importiere GenericAlias
 
-from _typing import (
+von _typing importiere (
     _idfunc,
     TypeVar,
     ParamSpec,
@@ -164,7 +164,7 @@ __all__ = [
 klasse _LazyAnnotationLib:
     def __getattr__(self, attr):
         global _lazy_annotationlib
-        import annotationlib
+        importiere annotationlib
         _lazy_annotationlib = annotationlib
         return getattr(annotationlib, attr)
 
@@ -226,14 +226,14 @@ def _should_unflatten_callable_args(typ, args):
 
     For example::
 
-        >>> import collections.abc
+        >>> importiere collections.abc
         >>> P = ParamSpec('P')
         >>> collections.abc.Callable[[int, int], str].__args__ == (int, int, str)
         Wahr
         >>> collections.abc.Callable[P, str].__args__ == (P, str)
         Wahr
 
-    As a result, wenn we need to reconstruct the Callable from its __args__,
+    As a result, wenn we need to reconstruct the Callable von its __args__,
     we need to unflatten it.
     """
     return (
@@ -441,7 +441,7 @@ def _rebuild_generic_alias(alias: GenericAlias, args: tuple[object, ...]) -> Gen
 
 
 def _deprecation_warning_for_no_type_params_passed(funcname: str) -> Nichts:
-    import warnings
+    importiere warnings
 
     depr_message = (
         f"Failing to pass a value to the 'type_params' parameter "
@@ -463,7 +463,7 @@ def _eval_type(t, globalns, localns, type_params, *, recursive_guard=frozenset()
     """
     wenn isinstance(t, _lazy_annotationlib.ForwardRef):
         # If the forward_ref has __forward_module__ set, evaluate() infers the globals
-        # from the module, and it will probably pick better than the globals we have here.
+        # von the module, and it will probably pick better than the globals we have here.
         wenn t.__forward_module__ is not Nichts:
             globalns = Nichts
         return evaluate_forward_ref(t, globals=globalns, locals=localns,
@@ -595,7 +595,7 @@ klasse Any(metaclass=_AnyMeta):
     - Any assumed to have all methods.
     - All values assumed to be instances of Any.
 
-    Note that all the above statements are true from the point of view of
+    Note that all the above statements are true von the point of view of
     static type checkers. At runtime, Any should not be used with instance
     checks.
     """
@@ -612,7 +612,7 @@ def NoReturn(self, parameters):
 
     Example::
 
-        from typing import NoReturn
+        von typing importiere NoReturn
 
         def stop() -> NoReturn:
             raise Exception('no way')
@@ -634,7 +634,7 @@ def Never(self, parameters):
     This can be used to define a function that should never be
     called, or a function that never returns::
 
-        from typing import Never
+        von typing importiere Never
 
         def never_call_me(arg: Never) -> Nichts:
             pass
@@ -658,7 +658,7 @@ def Self(self, parameters):
 
     Example::
 
-        from typing import Self
+        von typing importiere Self
 
         klasse Foo:
             def return_self(self) -> Self:
@@ -678,7 +678,7 @@ def LiteralString(self, parameters):
 
     Example::
 
-        from typing import LiteralString
+        von typing importiere LiteralString
 
         def run_query(sql: LiteralString) -> Nichts:
             ...
@@ -845,7 +845,7 @@ def TypeGuard(self, parameters):
     as a type predicate.  Such a function should use ``TypeGuard[...]`` or
     ``TypeIs[...]`` as its return type to alert static type checkers to
     this intention. ``TypeGuard`` should be used over ``TypeIs`` when narrowing
-    from an incompatible type (e.g., ``list[object]`` to ``list[int]``) or when
+    von an incompatible type (e.g., ``list[object]`` to ``list[int]``) or when
     the function does not return ``Wahr`` fuer all instances of the narrowed type.
 
     Using  ``-> TypeGuard[NarrowedType]`` tells the static type checker that
@@ -918,7 +918,7 @@ def TypeIs(self, parameters):
 
     For example::
 
-        from typing import assert_type, final, TypeIs
+        von typing importiere assert_type, final, TypeIs
 
         klasse Parent: pass
         klasse Child(Parent): pass
@@ -1170,7 +1170,7 @@ def _generic_init_subclass(cls, *args, **kwargs):
                     cls.__name__ != 'Protocol' and
                     type(cls) != _TypedDictMeta)
     wenn error:
-        raise TypeError("Cannot inherit from plain Generic")
+        raise TypeError("Cannot inherit von plain Generic")
     wenn '__orig_bases__' in cls.__dict__:
         tvars = _collect_type_parameters(cls.__orig_bases__, validate_all=Wahr)
         # Look fuer Generic[T1, ..., Tn].
@@ -1185,7 +1185,7 @@ def _generic_init_subclass(cls, *args, **kwargs):
                     base.__origin__ in (Generic, Protocol)):
                 wenn gvars is not Nichts:
                     raise TypeError(
-                        "Cannot inherit from Generic[...] multiple times.")
+                        "Cannot inherit von Generic[...] multiple times.")
                 gvars = base.__parameters__
                 basename = base.__origin__.__name__
         wenn gvars is not Nichts:
@@ -1318,7 +1318,7 @@ klasse _GenericAlias(_BaseGenericAlias, _root=Wahr):
     # * `Callable` aliases, generic `Callable` aliases, and
     #   parameterized `Callable` aliases:
     #     T = TypeVar('T')
-    #     # _CallableGenericAlias inherits from _GenericAlias.
+    #     # _CallableGenericAlias inherits von _GenericAlias.
     #     A = Callable[[], Nichts]  # _CallableGenericAlias
     #     B = Callable[[T], Nichts]  # _CallableGenericAlias
     #     C = B[int]  # _CallableGenericAlias
@@ -1654,17 +1654,17 @@ klasse _TupleType(_SpecialGenericAlias, _root=Wahr):
 
 klasse _UnionGenericAliasMeta(type):
     def __instancecheck__(self, inst: object) -> bool:
-        import warnings
+        importiere warnings
         warnings._deprecated("_UnionGenericAlias", remove=(3, 17))
         return isinstance(inst, Union)
 
     def __subclasscheck__(self, inst: type) -> bool:
-        import warnings
+        importiere warnings
         warnings._deprecated("_UnionGenericAlias", remove=(3, 17))
         return issubclass(inst, Union)
 
     def __eq__(self, other):
-        import warnings
+        importiere warnings
         warnings._deprecated("_UnionGenericAlias", remove=(3, 17))
         wenn other is _UnionGenericAlias or other is Union:
             return Wahr
@@ -1684,7 +1684,7 @@ klasse _UnionGenericAlias(metaclass=_UnionGenericAliasMeta):
 
     """
     def __new__(cls, self_cls, parameters, /, *, name=Nichts):
-        import warnings
+        importiere warnings
         warnings._deprecated("_UnionGenericAlias", remove=(3, 17))
         return Union[parameters]
 
@@ -1717,7 +1717,7 @@ klasse _ConcatenateGenericAlias(_GenericAlias, _root=Wahr):
 def Unpack(self, parameters):
     """Type unpack operator.
 
-    The type unpack operator takes the child types from some container type,
+    The type unpack operator takes the child types von some container type,
     such as `tuple[int, str]` or a `TypeVarTuple`, and 'pulls them out'.
 
     For example::
@@ -1739,7 +1739,7 @@ def Unpack(self, parameters):
         Foo[*tuple[int, str]]
         klasse Bar(Generic[*Ts]): ...
 
-    And from Python 3.12, it can be done using built-in syntax fuer generics::
+    And von Python 3.12, it can be done using built-in syntax fuer generics::
 
         Foo[*tuple[int, str]]
         klasse Bar[*Ts]: ...
@@ -1816,7 +1816,7 @@ EXCLUDED_ATTRIBUTES = _TYPING_INTERNALS | _SPECIAL_NAMES | {'_MutableMapping__ma
 
 
 def _get_protocol_attrs(cls):
-    """Collect protocol members from a protocol klasse objects.
+    """Collect protocol members von a protocol klasse objects.
 
     This includes names actually defined in the klasse dictionary, as well
     as names that appear in annotations. Special names (above) are skipped.
@@ -1903,9 +1903,9 @@ _PROTO_ALLOWLIST = {
 
 @functools.cache
 def _lazy_load_getattr_static():
-    # Import getattr_static lazily so as not to slow down the import of typing.py
+    # Import getattr_static lazily so as not to slow down the importiere of typing.py
     # Cache the result so we don't slow down _ProtocolMeta.__instancecheck__ unnecessarily
-    from inspect import getattr_static
+    von inspect importiere getattr_static
     return getattr_static
 
 
@@ -1966,7 +1966,7 @@ klasse _ProtocolMeta(ABCMeta):
                     )
                 ):
                     raise TypeError(
-                        f"Protocols can only inherit from other protocols, "
+                        f"Protocols can only inherit von other protocols, "
                         f"got {base!r}"
                     )
         return super().__new__(mcls, name, bases, namespace, **kwargs)
@@ -2268,7 +2268,7 @@ def runtime_checkable(cls):
             raise TypeError(
                 f"Failed to determine whether protocol member {attr!r} "
                 "is a method member"
-            ) from e
+            ) von e
         sonst:
             wenn not is_callable:
                 cls.__non_callable_proto_members__.add(attr)
@@ -2323,7 +2323,7 @@ def get_type_hints(obj, globalns=Nichts, localns=Nichts, include_extras=Falsch,
     search order is locals first, then globals.
 
     - If no dict arguments are passed, an attempt is made to use the
-      globals from obj (or the respective module's globals fuer classes),
+      globals von obj (or the respective module's globals fuer classes),
       and these are also used as the locals.  If the object does not appear
       to have globals, an empty dictionary is used.  For classes, the search
       order is globals first then locals.
@@ -2434,7 +2434,7 @@ def _add_type_params_to_scope(type_params, globalns, localns, is_class):
 
 
 def _strip_annotations(t):
-    """Strip the annotations from a given type."""
+    """Strip the annotations von a given type."""
     wenn isinstance(t, _AnnotatedAlias):
         return _strip_annotations(t.__origin__)
     wenn hasattr(t, "__origin__") and t.__origin__ in (Required, NotRequired, ReadOnly):
@@ -2519,7 +2519,7 @@ def is_typeddict(tp):
 
     For example::
 
-        >>> from typing import TypedDict
+        >>> von typing importiere TypedDict
         >>> klasse Film(TypedDict):
         ...     title: str
         ...     year: int
@@ -2602,7 +2602,7 @@ def no_type_check_decorator(decorator):
     This wraps the decorator with something that wraps the decorated
     function in @no_type_check.
     """
-    import warnings
+    importiere warnings
     warnings._deprecated("typing.no_type_check_decorator", remove=(3, 15))
     @functools.wraps(decorator)
     def wrapped_decorator(*args, **kwds):
@@ -2722,7 +2722,7 @@ def final(f):
 
 # Some unconstrained type variables.  These were initially used by the container types.
 # They were never meant fuer export and are now unused, but we keep them around to
-# avoid breaking compatibility with users who import them.
+# avoid breaking compatibility with users who importiere them.
 T = TypeVar('T')  # Any type.
 KT = TypeVar('KT')  # Key type.
 VT = TypeVar('VT')  # Value type.
@@ -2945,7 +2945,7 @@ klasse NamedTupleMeta(type):
         fuer base in bases:
             wenn base is not _NamedTuple and base is not Generic:
                 raise TypeError(
-                    'can only inherit from a NamedTuple type and Generic')
+                    'can only inherit von a NamedTuple type and Generic')
         bases = tuple(tuple wenn base is _NamedTuple sonst base fuer base in bases)
         wenn "__annotations__" in ns:
             types = ns["__annotations__"]
@@ -2987,7 +2987,7 @@ klasse NamedTupleMeta(type):
         wenn Generic in bases:
             class_getitem = _generic_class_getitem
             nm_tpl.__class_getitem__ = classmethod(class_getitem)
-        # update from user namespace without overriding special namedtuple attributes
+        # update von user namespace without overriding special namedtuple attributes
         fuer key, val in ns.items():
             wenn key in _prohibited:
                 raise AttributeError("Cannot overwrite NamedTuple attribute " + key)
@@ -3082,7 +3082,7 @@ klasse _TypedDictMeta(type):
         """
         fuer base in bases:
             wenn type(base) is not _TypedDictMeta and base is not Generic:
-                raise TypeError('cannot inherit from both a TypedDict type '
+                raise TypeError('cannot inherit von both a TypedDict type '
                                 'and a non-TypedDict base class')
 
         wenn any(issubclass(b, Generic) fuer b in bases):
@@ -3707,7 +3707,7 @@ def is_protocol(tp: type, /) -> bool:
 
     Example::
 
-        >>> from typing import Protocol, is_protocol
+        >>> von typing importiere Protocol, is_protocol
         >>> klasse P(Protocol):
         ...     def a(self) -> str: ...
         ...     b: int
@@ -3728,7 +3728,7 @@ def get_protocol_members(tp: type, /) -> frozenset[str]:
 
     Example::
 
-        >>> from typing import Protocol, get_protocol_members
+        >>> von typing importiere Protocol, get_protocol_members
         >>> klasse P(Protocol):
         ...     def a(self) -> str: ...
         ...     b: int
@@ -3743,7 +3743,7 @@ def get_protocol_members(tp: type, /) -> frozenset[str]:
 
 
 def __getattr__(attr):
-    """Improve the import time of the typing module.
+    """Improve the importiere time of the typing module.
 
     Soft-deprecated objects which are costly to create
     are only created on-demand here.
@@ -3751,13 +3751,13 @@ def __getattr__(attr):
     wenn attr == "ForwardRef":
         obj = _lazy_annotationlib.ForwardRef
     sowenn attr in {"Pattern", "Match"}:
-        import re
+        importiere re
         obj = _alias(getattr(re, attr), 1)
     sowenn attr in {"ContextManager", "AsyncContextManager"}:
-        import contextlib
+        importiere contextlib
         obj = _alias(getattr(contextlib, f"Abstract{attr}"), 2, name=attr, defaults=(bool | Nichts,))
     sowenn attr == "_collect_parameters":
-        import warnings
+        importiere warnings
 
         depr_message = (
             "The private _collect_parameters function is deprecated and will be"

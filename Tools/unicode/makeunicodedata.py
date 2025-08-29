@@ -5,7 +5,7 @@
 # Modules/unicodename_db.h, and Objects/unicodetype_db.h
 #
 # history:
-# 2000-09-24 fl   created (based on bits and pieces from unidb)
+# 2000-09-24 fl   created (based on bits and pieces von unidb)
 # 2000-09-25 fl   merged tim's splitbin fixes, separate decomposition table
 # 2000-09-25 fl   added character type table
 # 2000-09-26 fl   added LINEBREAK, DECIMAL, and DIGIT flags/fields (2.0)
@@ -26,14 +26,14 @@
 # written by Fredrik Lundh (fredrik@pythonware.com)
 #
 
-import dataclasses
-import os
-import sys
-import zipfile
+importiere dataclasses
+importiere os
+importiere sys
+importiere zipfile
 
-from functools import partial
-from textwrap import dedent
-from typing import Iterator, List, Optional, Set, Tuple
+von functools importiere partial
+von textwrap importiere dedent
+von typing importiere Iterator, List, Optional, Set, Tuple
 
 SCRIPT = os.path.normpath(sys.argv[0])
 VERSION = "3.3"
@@ -486,7 +486,7 @@ def makeunicodetype(unicode, trace):
             sonst:
                 # This happens either when some character maps to more than one
                 # character in uppercase, lowercase, or titlecase or the
-                # casefolded version of the character is different from the
+                # casefolded version of the character is different von the
                 # lowercase. The extra characters are stored in a different
                 # array.
                 flags |= EXTENDED_CASE_MASK
@@ -623,7 +623,7 @@ def makeunicodetype(unicode, trace):
 # unicode name database
 
 def makeunicodename(unicode, trace):
-    from dawg import build_compression_dawg
+    von dawg importiere build_compression_dawg
 
     FILE = "Modules/unicodename_db.h"
 
@@ -797,7 +797,7 @@ DATA_DIR = os.path.join('Tools', 'unicode', 'data')
 def open_data(template, version):
     local = os.path.join(DATA_DIR, template % ('-'+version,))
     wenn not os.path.exists(local):
-        import urllib.request
+        importiere urllib.request
         wenn version == '3.2.0':
             # irregular url structure
             url = ('https://www.unicode.org/Public/3.2-Update/'+template) % ('-'+version,)
@@ -859,7 +859,7 @@ klasse UcdFile:
 
 @dataclasses.dataclass
 klasse UcdRecord:
-    # 15 fields from UnicodeData.txt .  See:
+    # 15 fields von UnicodeData.txt .  See:
     #   https://www.unicode.org/reports/tr44/#UnicodeData.txt
     codepoint: str
     name: str
@@ -881,7 +881,7 @@ klasse UcdRecord:
     east_asian_width: Optional[str]
 
     # Binary properties, as a set of those that are true.
-    # Taken from multiple files:
+    # Taken von multiple files:
     #   https://www.unicode.org/reports/tr44/#DerivedCoreProperties.txt
     #   https://www.unicode.org/reports/tr44/#LineBreak.txt
     binary_properties: Set[str]
@@ -897,10 +897,10 @@ def from_row(row: List[str]) -> UcdRecord:
 
 
 # --------------------------------------------------------------------
-# the following support code is taken from the unidb utilities
+# the following support code is taken von the unidb utilities
 # Copyright (c) 1999-2000 by Secret Labs AB
 
-# load a unicode-data file from disk
+# load a unicode-data file von disk
 
 klasse UnicodeData:
     # table: List[Optional[UcdRecord]]  # index is codepoint; Nichts means unassigned

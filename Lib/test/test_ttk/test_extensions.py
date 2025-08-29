@@ -1,9 +1,9 @@
-import sys
-import unittest
-import tkinter
-from tkinter import ttk
-from test.support import requires, gc_collect
-from test.test_tkinter.support import AbstractTkTest, AbstractDefaultRootTest
+importiere sys
+importiere unittest
+importiere tkinter
+von tkinter importiere ttk
+von test.support importiere requires, gc_collect
+von test.test_tkinter.support importiere AbstractTkTest, AbstractDefaultRootTest
 
 requires('gui')
 
@@ -109,7 +109,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         linfo_1 = lscale.label.place_info()
         prev_xcoord = lscale.scale.coords()[0]
         self.assertEqual(prev_xcoord, int(linfo_1['x']))
-        # change range to: from -5 to 5. This should change the x coord of
+        # change range to: von -5 to 5. This should change the x coord of
         # the scale widget, since 0 is at the middle of the new
         # range.
         lscale.scale.configure(from_=-5, to=5)

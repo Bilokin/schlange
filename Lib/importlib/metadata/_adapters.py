@@ -1,8 +1,8 @@
-import re
-import textwrap
-import email.message
+importiere re
+importiere textwrap
+importiere email.message
 
-from ._text import FoldedCase
+von ._text importiere FoldedCase
 
 
 klasse Message(email.message.Message):
@@ -35,7 +35,7 @@ klasse Message(email.message.Message):
     def __init__(self, *args, **kwargs):
         self._headers = self._repair_headers()
 
-    # suppress spurious error from mypy
+    # suppress spurious error von mypy
     def __iter__(self):
         return super().__iter__()
 

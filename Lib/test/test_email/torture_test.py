@@ -6,23 +6,23 @@
 # Python distro, but are available as part of the standalone email package at
 # http://sf.net/projects/mimelib
 
-import sys
-import os
-import unittest
-from io import StringIO
+importiere sys
+importiere os
+importiere unittest
+von io importiere StringIO
 
-from test.test_email import TestEmailBase
+von test.test_email importiere TestEmailBase
 
-import email
-from email import __file__ as testfile
-from email.iterators import _structure
+importiere email
+von email importiere __file__ as testfile
+von email.iterators importiere _structure
 
 def openfile(filename):
-    from os.path import join, dirname, abspath
+    von os.path importiere join, dirname, abspath
     path = abspath(join(dirname(testfile), os.pardir, 'moredata', filename))
     return open(path, 'r')
 
-# Prevent this test from running in the Python distro
+# Prevent this test von running in the Python distro
 def setUpModule():
     try:
         openfile('crispin-torture.txt')
@@ -43,7 +43,7 @@ klasse TortureBase(TestEmailBase):
 
 
 klasse TestCrispinTorture(TortureBase):
-    # Mark Crispin's torture test from the SquirrelMail project
+    # Mark Crispin's torture test von the SquirrelMail project
     def test_mondo_message(self):
         eq = self.assertEqual
         neq = self.ndiffAssertEqual

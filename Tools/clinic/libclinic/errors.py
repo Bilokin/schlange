@@ -1,5 +1,5 @@
-import dataclasses as dc
-from typing import Literal,  NoReturn, overload
+importiere dataclasses as dc
+von typing importiere Literal,  NoReturn, overload
 
 
 @dc.dataclass

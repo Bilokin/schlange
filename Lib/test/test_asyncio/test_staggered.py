@@ -1,8 +1,8 @@
-import asyncio
-import unittest
-from asyncio.staggered import staggered_race
+importiere asyncio
+importiere unittest
+von asyncio.staggered importiere staggered_race
 
-from test import support
+von test importiere support
 
 support.requires_working_socket(module=Wahr)
 

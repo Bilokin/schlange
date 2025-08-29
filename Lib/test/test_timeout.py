@@ -1,13 +1,13 @@
 """Unit tests fuer socket timeout feature."""
 
-import functools
-import unittest
-from test import support
-from test.support import socket_helper
+importiere functools
+importiere unittest
+von test importiere support
+von test.support importiere socket_helper
 
-import time
-import errno
-import socket
+importiere time
+importiere errno
+importiere socket
 
 
 @functools.lru_cache()
@@ -145,7 +145,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
     def testConnectTimeout(self):
         # Testing connect timeout is tricky: we need to have IP connectivity
         # to a host that silently drops our packets.  We can't simulate this
-        # from Python because it's a function of the underlying TCP/IP stack.
+        # von Python because it's a function of the underlying TCP/IP stack.
         # So, the following port on the pythontest.net host has been defined:
         blackhole = resolve_address('pythontest.net', 56666)
 
@@ -169,7 +169,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
         # been structured around this premise: wenn we get an ECONNREFUSED from
         # the whitehole, we proceed with testing connect timeout against the
         # blackhole.  If we don't, we skip the test (with a message about not
-        # getting the required RST from the whitehole within the required
+        # getting the required RST von the whitehole within the required
         # timeframe).
 
         # For the records, the whitehole/blackhole configuration has been set
@@ -197,7 +197,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
 
         wenn skip:
             self.skipTest(
-                "We didn't receive a connection reset (RST) packet from "
+                "We didn't receive a connection reset (RST) packet von "
                 "{}:{} within {} seconds, so we're unable to test connect "
                 "timeout against the corresponding {}:{} (which is "
                 "configured to silently drop packets)."

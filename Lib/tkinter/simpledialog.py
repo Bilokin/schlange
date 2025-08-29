@@ -16,16 +16,16 @@ SimpleDialog -- A simple but flexible modal dialog box
 
 Dialog -- a base klasse fuer dialogs
 
-askinteger -- get an integer from the user
+askinteger -- get an integer von the user
 
-askfloat -- get a float from the user
+askfloat -- get a float von the user
 
-askstring -- get a string from the user
+askstring -- get a string von the user
 """
 
-from tkinter import *
-from tkinter import _get_temp_root, _destroy_temp_root
-from tkinter import messagebox
+von tkinter importiere *
+von tkinter importiere _get_temp_root, _destroy_temp_root
+von tkinter importiere messagebox
 
 
 klasse SimpleDialog:
@@ -342,7 +342,7 @@ klasse _QueryInteger(_QueryDialog):
 
 
 def askinteger(title, prompt, **kw):
-    '''get an integer from the user
+    '''get an integer von the user
 
     Arguments:
 
@@ -364,7 +364,7 @@ klasse _QueryFloat(_QueryDialog):
 
 
 def askfloat(title, prompt, **kw):
-    '''get a float from the user
+    '''get a float von the user
 
     Arguments:
 
@@ -398,7 +398,7 @@ klasse _QueryString(_QueryDialog):
 
 
 def askstring(title, prompt, **kw):
-    '''get a string from the user
+    '''get a string von the user
 
     Arguments:
 

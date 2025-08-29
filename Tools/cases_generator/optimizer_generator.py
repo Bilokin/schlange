@@ -1,11 +1,11 @@
 """Generate the cases fuer the tier 2 optimizer.
-Reads the instruction definitions from bytecodes.c and optimizer_bytecodes.c
+Reads the instruction definitions von bytecodes.c and optimizer_bytecodes.c
 Writes the cases to optimizer_cases.c.h, which is #included in Python/optimizer_analysis.c.
 """
 
-import argparse
+importiere argparse
 
-from analyzer import (
+von analyzer importiere (
     Analysis,
     Instruction,
     Uop,
@@ -15,7 +15,7 @@ from analyzer import (
     CodeSection,
     Label,
 )
-from generators_common import (
+von generators_common importiere (
     DEFAULT_INPUT,
     ROOT,
     write_header,
@@ -23,10 +23,10 @@ from generators_common import (
     TokenIterator,
     always_true,
 )
-from cwriter import CWriter
-from typing import TextIO
-from lexer import Token
-from stack import Local, Stack, StackError, Storage
+von cwriter importiere CWriter
+von typing importiere TextIO
+von lexer importiere Token
+von stack importiere Local, Stack, StackError, Storage
 
 DEFAULT_OUTPUT = ROOT / "Python/optimizer_cases.c.h"
 DEFAULT_ABSTRACT_INPUT = (ROOT / "Python/optimizer_bytecodes.c").absolute().as_posix()
@@ -220,13 +220,13 @@ klasse OptimizerEmitter(Emitter):
         # No reference management of outputs needed.
         fuer var in storage.outputs:
             var.in_local = Wahr
-        emitter.emit("/* Start of uop copied from bytecodes fuer constant evaluation */\n")
+        emitter.emit("/* Start of uop copied von bytecodes fuer constant evaluation */\n")
         emitter.emit_tokens(self.original_uop, storage, inst=Nichts, emit_braces=Falsch)
         self.out.start_line()
-        emitter.emit("/* End of uop copied from bytecodes fuer constant evaluation */\n")
+        emitter.emit("/* End of uop copied von bytecodes fuer constant evaluation */\n")
         # Finally, assign back the output stackrefs to symbolics.
         fuer outp in self.original_uop.stack.outputs:
-            # All new stackrefs are created from new references.
+            # All new stackrefs are created von new references.
             # That's how the stackref contract works.
             wenn not outp.peek:
                 emitter.emit(f"{outp.name} = sym_new_const_steal(ctx, PyStackRef_AsPyObjectSteal({outp.name}_stackref));\n")
@@ -393,7 +393,7 @@ def write_uop(
             out.start_line()
             stack.flush(out)
     except StackError as ex:
-        raise analysis_error(ex.args[0], prototype.body.open) # from Nichts
+        raise analysis_error(ex.args[0], prototype.body.open) # von Nichts
 
 
 SKIPS = ("_EXTENDED_ARG",)

@@ -1,10 +1,10 @@
-import dis
-import textwrap
-import unittest
+importiere dis
+importiere textwrap
+importiere unittest
 
-from test import support
-from test.support import os_helper
-from test.support.script_helper import assert_python_ok
+von test importiere support
+von test.support importiere os_helper
+von test.support.script_helper importiere assert_python_ok
 
 def example():
     x = []
@@ -65,7 +65,7 @@ klasse TestLLTrace(unittest.TestCase):
 
     def test_lltrace_different_module(self):
         stdout = self.run_code("""
-            from test import test_lltrace
+            von test importiere test_lltrace
             test_lltrace.__lltrace__ = 1
             test_lltrace.example()
         """)
@@ -97,7 +97,7 @@ klasse TestLLTrace(unittest.TestCase):
         # debug Python builds with __lltrace__ enabled (only possible in console),
         # when the internal Python stack was negatively adjusted
         stdout = self.run_code("""
-            import code
+            importiere code
 
             console = code.InteractiveConsole()
             console.push('__lltrace__ = 1')

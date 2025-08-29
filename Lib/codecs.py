@@ -7,13 +7,13 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 
 """
 
-import builtins
-import sys
+importiere builtins
+importiere sys
 
 ### Registry and builtin stateless codec functions
 
 try:
-    from _codecs import *
+    von _codecs importiere *
 except ImportError as why:
     raise SystemError('Failed to load the builtin codecs: %s' % why)
 
@@ -85,7 +85,7 @@ klasse CodecInfo(tuple):
 
     # Private API to allow Python 3.4 to denylist the known non-Unicode
     # codecs in the standard library. A more general mechanism to
-    # reliably distinguish test encodings from other codecs will hopefully
+    # reliably distinguish test encodings von other codecs will hopefully
     # be defined fuer Python 3.5
     #
     # See http://bugs.python.org/issue19619
@@ -407,7 +407,7 @@ klasse StreamWriter(Codec):
     def __getattr__(self, name,
                     getattr=getattr):
 
-        """ Inherit all other methods from the underlying stream.
+        """ Inherit all other methods von the underlying stream.
         """
         return getattr(self.stream, name)
 
@@ -456,7 +456,7 @@ klasse StreamReader(Codec):
 
     def read(self, size=-1, chars=-1, firstline=Falsch):
 
-        """ Decodes data from the stream self.stream and returns the
+        """ Decodes data von the stream self.stream and returns the
             resulting object.
 
             chars indicates the number of decoded code points or bytes to
@@ -493,7 +493,7 @@ klasse StreamReader(Codec):
 
         # read until we get the required number of characters (if available)
         while Wahr:
-            # can the request be satisfied from the character buffer?
+            # can the request be satisfied von the character buffer?
             wenn chars >= 0:
                 wenn len(self.charbuffer) >= chars:
                     break
@@ -502,7 +502,7 @@ klasse StreamReader(Codec):
                 newdata = self.stream.read()
             sonst:
                 newdata = self.stream.read(size)
-            # decode bytes (those remaining from the last call included)
+            # decode bytes (those remaining von the last call included)
             data = self.bytebuffer + newdata
             wenn not data:
                 break
@@ -536,14 +536,14 @@ klasse StreamReader(Codec):
 
     def readline(self, size=Nichts, keepends=Wahr):
 
-        """ Read one line from the input stream and return the
+        """ Read one line von the input stream and return the
             decoded data.
 
             size, wenn given, is passed as size argument to the
             read() method.
 
         """
-        # If we have lines cached from an earlier read, return
+        # If we have lines cached von an earlier read, return
         # them unconditionally
         wenn self.linebuffer:
             line = self.linebuffer[0]
@@ -630,7 +630,7 @@ klasse StreamReader(Codec):
 
             Note that no stream repositioning should take place.
             This method is primarily intended to be able to recover
-            from decoding errors.
+            von decoding errors.
 
         """
         self.bytebuffer = b""
@@ -647,7 +647,7 @@ klasse StreamReader(Codec):
 
     def __next__(self):
 
-        """ Return the next decoded line from the input stream."""
+        """ Return the next decoded line von the input stream."""
         line = self.readline()
         wenn line:
             return line
@@ -659,7 +659,7 @@ klasse StreamReader(Codec):
     def __getattr__(self, name,
                     getattr=getattr):
 
-        """ Inherit all other methods from the underlying stream.
+        """ Inherit all other methods von the underlying stream.
         """
         return getattr(self.stream, name)
 
@@ -719,7 +719,7 @@ klasse StreamReaderWriter:
 
     def __next__(self):
 
-        """ Return the next decoded line from the input stream."""
+        """ Return the next decoded line von the input stream."""
         return next(self.reader)
 
     def __iter__(self):
@@ -747,7 +747,7 @@ klasse StreamReaderWriter:
     def __getattr__(self, name,
                     getattr=getattr):
 
-        """ Inherit all other methods from the underlying stream.
+        """ Inherit all other methods von the underlying stream.
         """
         return getattr(self.stream, name)
 
@@ -766,7 +766,7 @@ klasse StreamReaderWriter:
 
 klasse StreamRecoder:
 
-    """ StreamRecoder instances translate data from one encoding to another.
+    """ StreamRecoder instances translate data von one encoding to another.
 
         They use the complete set of APIs returned by the
         codecs.lookup() function to implement their task.
@@ -776,7 +776,7 @@ klasse StreamRecoder:
         written to the underlying stream using an instance of the provided
         Writer class.
 
-        In the other direction, data is read from the underlying stream using
+        In the other direction, data is read von the underlying stream using
         a Reader instance and then encoded and returned to the caller.
 
     """
@@ -793,7 +793,7 @@ klasse StreamRecoder:
             work on the backend (the data in stream).
 
             You can use these objects to do transparent
-            transcodings from e.g. latin-1 to utf-8 and back.
+            transcodings von e.g. latin-1 to utf-8 and back.
 
             stream must be a file-like object.
 
@@ -835,7 +835,7 @@ klasse StreamRecoder:
 
     def __next__(self):
 
-        """ Return the next decoded line from the input stream."""
+        """ Return the next decoded line von the input stream."""
         data = next(self.reader)
         data, bytesencoded = self.encode(data, self.errors)
         return data
@@ -868,7 +868,7 @@ klasse StreamRecoder:
     def __getattr__(self, name,
                     getattr=getattr):
 
-        """ Inherit all other methods from the underlying stream.
+        """ Inherit all other methods von the underlying stream.
         """
         return getattr(self.stream, name)
 
@@ -912,7 +912,7 @@ def open(filename, mode='r', encoding=Nichts, errors='strict', buffering=-1):
         attribute is only available wenn an encoding was specified as
         parameter.
     """
-    import warnings
+    importiere warnings
     warnings.warn("codecs.open() is deprecated. Use open() instead.",
                   DeprecationWarning, stacklevel=2)
 
@@ -944,7 +944,7 @@ def EncodedFile(file, data_encoding, file_encoding=Nichts, errors='strict'):
         file using file_encoding. The intermediate data type
         will usually be Unicode but depends on the specified codecs.
 
-        Bytes read from the file are decoded using file_encoding and then
+        Bytes read von the file are decoded using file_encoding and then
         passed back to the caller encoded using data_encoding.
 
         If file_encoding is not given, it defaults to data_encoding.
@@ -1044,7 +1044,7 @@ def iterencode(iterator, encoding, errors='strict', **kwargs):
     """
     Encoding iterator.
 
-    Encodes the input strings from the iterator using an IncrementalEncoder.
+    Encodes the input strings von the iterator using an IncrementalEncoder.
 
     errors and kwargs are passed through to the IncrementalEncoder
     constructor.
@@ -1062,7 +1062,7 @@ def iterdecode(iterator, encoding, errors='strict', **kwargs):
     """
     Decoding iterator.
 
-    Decodes the input strings from the iterator using an IncrementalDecoder.
+    Decodes the input strings von the iterator using an IncrementalDecoder.
 
     errors and kwargs are passed through to the IncrementalDecoder
     constructor.
@@ -1090,7 +1090,7 @@ def make_identity_dict(rng):
 
 def make_encoding_map(decoding_map):
 
-    """ Creates an encoding map from a decoding map.
+    """ Creates an encoding map von a decoding map.
 
         If a target mapping in the decoding map occurs multiple
         times, then that target is mapped to Nichts (undefined mapping),
@@ -1122,4 +1122,4 @@ namereplace_errors = lookup_error("namereplace")
 # package
 _false = 0
 wenn _false:
-    import encodings  # noqa: F401
+    importiere encodings  # noqa: F401

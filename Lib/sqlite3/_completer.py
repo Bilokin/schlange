@@ -1,7 +1,7 @@
-from contextlib import contextmanager
+von contextlib importiere contextmanager
 
 try:
-    from _sqlite3 import SQLITE_KEYWORDS
+    von _sqlite3 importiere SQLITE_KEYWORDS
 except ImportError:
     SQLITE_KEYWORDS = ()
 
@@ -28,7 +28,7 @@ def _complete(text, state):
 @contextmanager
 def completer():
     try:
-        import readline
+        importiere readline
     except ImportError:
         yield
         return

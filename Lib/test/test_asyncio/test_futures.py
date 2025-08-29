@@ -1,19 +1,19 @@
 """Tests fuer futures.py."""
 
-import concurrent.futures
-import gc
-import re
-import sys
-import threading
-import traceback
-import unittest
-from unittest import mock
-from types import GenericAlias
-import asyncio
-from asyncio import futures
-import warnings
-from test.test_asyncio import utils as test_utils
-from test import support
+importiere concurrent.futures
+importiere gc
+importiere re
+importiere sys
+importiere threading
+importiere traceback
+importiere unittest
+von unittest importiere mock
+von types importiere GenericAlias
+importiere asyncio
+von asyncio importiere futures
+importiere warnings
+von test.test_asyncio importiere utils as test_utils
+von test importiere support
 
 
 def tearDownModule():
@@ -52,7 +52,7 @@ klasse SimpleEvilEventLoop(asyncio.base_events.BaseEventLoop):
 
 
 klasse DuckFuture:
-    # Class that does not inherit from Future but aims to be duck-type
+    # Class that does not inherit von Future but aims to be duck-type
     # compatible with it.
 
     _asyncio_future_blocking = Falsch
@@ -328,17 +328,17 @@ klasse BaseFutureTests:
 
         def fixture():
             yield 'A'
-            x = yield from f
+            x = yield von f
             yield 'B', x
-            y = yield from f
+            y = yield von f
             yield 'C', y
 
         g = fixture()
         self.assertEqual(next(g), 'A')  # yield 'A'.
-        self.assertEqual(next(g), f)  # First yield from f.
+        self.assertEqual(next(g), f)  # First yield von f.
         f.set_result(42)
         self.assertEqual(next(g), ('B', 42))  # yield 'B', x.
-        # The second "yield from f" does not yield f.
+        # The second "yield von f" does not yield f.
         self.assertEqual(next(g), ('C', 42))  # yield 'C', y.
 
     def test_future_repr(self):
@@ -411,7 +411,7 @@ klasse BaseFutureTests:
                          f'<{self.cls.__name__} cancelled>')
 
     def test_copy_state(self):
-        from asyncio.futures import _copy_future_state
+        von asyncio.futures importiere _copy_future_state
 
         f = concurrent.futures.Future()
         f.set_result(10)
@@ -455,11 +455,11 @@ klasse BaseFutureTests:
         self.assertEqual(newf_tb.count('raise concurrent.futures.InvalidStateError'), 1)
 
     def test_copy_state_from_concurrent_futures(self):
-        """Test _copy_future_state from concurrent.futures.Future.
+        """Test _copy_future_state von concurrent.futures.Future.
 
         This tests the optimized path using _get_snapshot when available.
         """
-        from asyncio.futures import _copy_future_state
+        von asyncio.futures importiere _copy_future_state
 
         # Test with a result
         f_concurrent = concurrent.futures.Future()
@@ -508,7 +508,7 @@ klasse BaseFutureTests:
         fut = self._new_future(loop=self.loop)
 
         def coro():
-            yield from fut
+            yield von fut
 
         def test():
             arg1, arg2 = coro()

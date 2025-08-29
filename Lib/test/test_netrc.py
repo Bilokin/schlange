@@ -1,6 +1,6 @@
-import netrc, os, unittest, sys, textwrap
-from test import support
-from test.support import os_helper
+importiere netrc, os, unittest, sys, textwrap
+von test importiere support
+von test.support importiere os_helper
 
 temp_filename = os_helper.TESTFN
 

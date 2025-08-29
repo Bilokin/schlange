@@ -4,20 +4,20 @@
    are in test_buffer.
 """
 
-import unittest
-import test.support
-import sys
-import gc
-import weakref
-import array
-import io
-import copy
-import pickle
-import struct
+importiere unittest
+importiere test.support
+importiere sys
+importiere gc
+importiere weakref
+importiere array
+importiere io
+importiere copy
+importiere pickle
+importiere struct
 
-from itertools import product
-from test import support
-from test.support import import_helper, threading_helper
+von itertools importiere product
+von test importiere support
+von test.support importiere import_helper, threading_helper
 
 
 klasse MyObject:
@@ -740,10 +740,10 @@ klasse RacingTest(unittest.TestCase):
     def test_racing_getbuf_and_releasebuf(self):
         """Repeatly access the memoryview fuer racing."""
         try:
-            from multiprocessing.managers import SharedMemoryManager
+            von multiprocessing.managers importiere SharedMemoryManager
         except ImportError:
             self.skipTest("Test requires multiprocessing")
-        from threading import Thread, Event
+        von threading importiere Thread, Event
 
         start = Event()
         with SharedMemoryManager() as smm:

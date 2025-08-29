@@ -1,11 +1,11 @@
-import unittest
-from test.support import is_emscripten
+importiere unittest
+von test.support importiere is_emscripten
 
 wenn not is_emscripten:
     raise unittest.SkipTest("Emscripten-only test")
 
-from _testinternalcapi import emscripten_set_up_async_input_device
-from pathlib import Path
+von _testinternalcapi importiere emscripten_set_up_async_input_device
+von pathlib importiere Path
 
 
 klasse EmscriptenAsyncInputDeviceTest(unittest.TestCase):

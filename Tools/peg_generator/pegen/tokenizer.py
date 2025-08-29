@@ -1,6 +1,6 @@
-import token
-import tokenize
-from typing import Dict, Iterator, List
+importiere token
+importiere tokenize
+von typing importiere Dict, Iterator, List
 
 Mark = int  # NewType('Mark', int)
 

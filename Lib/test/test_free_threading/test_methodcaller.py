@@ -1,6 +1,6 @@
-import unittest
-from threading import Thread
-from operator import methodcaller
+importiere unittest
+von threading importiere Thread
+von operator importiere methodcaller
 
 
 klasse TestMethodcaller(unittest.TestCase):

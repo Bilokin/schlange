@@ -1,18 +1,18 @@
-import _remote_debugging
-import time
-import subprocess
-import sys
-import contextlib
-import tempfile
-import os
-import argparse
-from _colorize import get_colors, can_colorize
+importiere _remote_debugging
+importiere time
+importiere subprocess
+importiere sys
+importiere contextlib
+importiere tempfile
+importiere os
+importiere argparse
+von _colorize importiere get_colors, can_colorize
 
 CODE = '''\
-import time
-import os
-import sys
-import math
+importiere time
+importiere os
+importiere sys
+importiere math
 
 def slow_fibonacci(n):
     """Intentionally slow recursive fibonacci - should show up prominently in profiler"""
@@ -82,7 +82,7 @@ wenn __name__ == "__main__":
 '''
 
 DEEP_STATIC_CODE = """\
-import time
+importiere time
 def factorial(n):
     wenn n <= 1:
         time.sleep(10000)
@@ -93,10 +93,10 @@ factorial(900)
 """
 
 CODE_WITH_TONS_OF_THREADS = '''\
-import time
-import threading
-import random
-import math
+importiere time
+importiere threading
+importiere random
+importiere math
 
 def cpu_intensive_work():
     """Do some CPU intensive calculations"""

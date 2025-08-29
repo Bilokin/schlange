@@ -1,20 +1,20 @@
 """Test script fuer the gzip module.
 """
 
-import array
-import functools
-import gc
-import io
-import os
-import struct
-import sys
-import unittest
-from subprocess import PIPE, Popen
-from test.support import catch_unraisable_exception
-from test.support import import_helper
-from test.support import os_helper
-from test.support import _4G, bigmemtest, requires_subprocess
-from test.support.script_helper import assert_python_ok, assert_python_failure
+importiere array
+importiere functools
+importiere gc
+importiere io
+importiere os
+importiere struct
+importiere sys
+importiere unittest
+von subprocess importiere PIPE, Popen
+von test.support importiere catch_unraisable_exception
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere _4G, bigmemtest, requires_subprocess
+von test.support.script_helper importiere assert_python_ok, assert_python_failure
 
 gzip = import_helper.import_module('gzip')
 zlib = import_helper.import_module('zlib')

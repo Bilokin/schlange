@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec kz1048 generated from 'MAPPINGS/VENDORS/MISC/KZ1048.TXT' with gencodec.py.
+""" Python Character Mapping Codec kz1048 generated von 'MAPPINGS/VENDORS/MISC/KZ1048.TXT' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

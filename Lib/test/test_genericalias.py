@@ -1,38 +1,38 @@
 """Tests fuer C-implemented GenericAlias."""
 
-import unittest
-import pickle
-from array import array
-import copy
-from collections import (
+importiere unittest
+importiere pickle
+von array importiere array
+importiere copy
+von collections importiere (
     defaultdict, deque, OrderedDict, Counter, UserDict, UserList
 )
-from collections.abc import *
-from concurrent.futures import Future
-from concurrent.futures.thread import _WorkItem
-from contextlib import AbstractContextManager, AbstractAsyncContextManager
-from contextvars import ContextVar, Token
-from csv import DictReader, DictWriter
-from dataclasses import Field
-from functools import partial, partialmethod, cached_property
-from graphlib import TopologicalSorter
-from logging import LoggerAdapter, StreamHandler
-from mailbox import Mailbox, _PartialFile
+von collections.abc importiere *
+von concurrent.futures importiere Future
+von concurrent.futures.thread importiere _WorkItem
+von contextlib importiere AbstractContextManager, AbstractAsyncContextManager
+von contextvars importiere ContextVar, Token
+von csv importiere DictReader, DictWriter
+von dataclasses importiere Field
+von functools importiere partial, partialmethod, cached_property
+von graphlib importiere TopologicalSorter
+von logging importiere LoggerAdapter, StreamHandler
+von mailbox importiere Mailbox, _PartialFile
 try:
-    import ctypes
+    importiere ctypes
 except ImportError:
     ctypes = Nichts
-from difflib import SequenceMatcher
-from filecmp import dircmp
-from fileinput import FileInput
-from itertools import chain
-from http.cookies import Morsel
+von difflib importiere SequenceMatcher
+von filecmp importiere dircmp
+von fileinput importiere FileInput
+von itertools importiere chain
+von http.cookies importiere Morsel
 try:
-    from multiprocessing.managers import ValueProxy, DictProxy, ListProxy
-    from multiprocessing.pool import ApplyResult
-    from multiprocessing.queues import SimpleQueue as MPSimpleQueue
-    from multiprocessing.queues import Queue as MPQueue
-    from multiprocessing.queues import JoinableQueue as MPJoinableQueue
+    von multiprocessing.managers importiere ValueProxy, DictProxy, ListProxy
+    von multiprocessing.pool importiere ApplyResult
+    von multiprocessing.queues importiere SimpleQueue as MPSimpleQueue
+    von multiprocessing.queues importiere Queue as MPQueue
+    von multiprocessing.queues importiere JoinableQueue as MPJoinableQueue
 except ImportError:
     # _multiprocessing module is optional
     ValueProxy = Nichts
@@ -43,27 +43,27 @@ except ImportError:
     MPQueue = Nichts
     MPJoinableQueue = Nichts
 try:
-    from multiprocessing.shared_memory import ShareableList
+    von multiprocessing.shared_memory importiere ShareableList
 except ImportError:
     # multiprocessing.shared_memory is not available on e.g. Android
     ShareableList = Nichts
-from os import DirEntry
-from re import Pattern, Match
-from types import GenericAlias, MappingProxyType, AsyncGeneratorType, CoroutineType, GeneratorType
-from tempfile import TemporaryDirectory, SpooledTemporaryFile
-from urllib.parse import SplitResult, ParseResult
-from unittest.case import _AssertRaisesContext
-from queue import Queue, SimpleQueue
-from weakref import WeakSet, ReferenceType, ref
-import typing
-from typing import Unpack
+von os importiere DirEntry
+von re importiere Pattern, Match
+von types importiere GenericAlias, MappingProxyType, AsyncGeneratorType, CoroutineType, GeneratorType
+von tempfile importiere TemporaryDirectory, SpooledTemporaryFile
+von urllib.parse importiere SplitResult, ParseResult
+von unittest.case importiere _AssertRaisesContext
+von queue importiere Queue, SimpleQueue
+von weakref importiere WeakSet, ReferenceType, ref
+importiere typing
+von typing importiere Unpack
 try:
-    from tkinter import Event
+    von tkinter importiere Event
 except ImportError:
     Event = Nichts
-from string.templatelib import Template, Interpolation
+von string.templatelib importiere Template, Interpolation
 
-from typing import TypeVar
+von typing importiere TypeVar
 T = TypeVar('T')
 K = TypeVar('K')
 V = TypeVar('V')
@@ -245,7 +245,7 @@ klasse BaseTest(unittest.TestCase):
         self.assertEndsWith(repr(MyGeneric[[int, str]]), 'MyGeneric[[int, str]]')
 
     def test_exposed_type(self):
-        import types
+        importiere types
         a = types.GenericAlias(list, int)
         self.assertEqual(str(a), 'list[int]')
         self.assertIs(a.__origin__, list)
@@ -253,7 +253,7 @@ klasse BaseTest(unittest.TestCase):
         self.assertEqual(a.__parameters__, ())
 
     def test_parameters(self):
-        from typing import List, Dict, Callable
+        von typing importiere List, Dict, Callable
 
         D0 = dict[str, int]
         self.assertEqual(D0.__args__, (str, int))
@@ -315,7 +315,7 @@ klasse BaseTest(unittest.TestCase):
         self.assertEqual(T4.__parameters__, ())
 
     def test_parameter_chaining(self):
-        from typing import List, Dict, Union, Callable
+        von typing importiere List, Dict, Union, Callable
         self.assertEqual(list[T][int], list[int])
         self.assertEqual(dict[str, T][int], dict[str, int])
         self.assertEqual(dict[T, int][str], dict[str, int])

@@ -1,9 +1,9 @@
-from test.test_importlib import abc, util
+von test.test_importlib importiere abc, util
 
 machinery = util.import_importlib('importlib.machinery')
 
-import sys
-import unittest
+importiere sys
+importiere unittest
 
 
 @unittest.skipIf(util.BUILTINS.good_name is Nichts, 'no reasonable builtin module')

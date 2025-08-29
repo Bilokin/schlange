@@ -1,63 +1,63 @@
 """Test relative imports (PEP 328)."""
-from test.test_importlib import util
-import unittest
-import warnings
+von test.test_importlib importiere util
+importiere unittest
+importiere warnings
 
 
 klasse RelativeImports:
 
     """PEP 328 introduced relative imports. This allows fuer imports to occur
-    from within a package without having to specify the actual package name.
+    von within a package without having to specify the actual package name.
 
-    A simple example is to import another module within the same package
-    [module from module]::
+    A simple example is to importiere another module within the same package
+    [module von module]::
 
       # From pkg.mod1 with pkg.mod2 being a module.
-      from . import mod2
+      von . importiere mod2
 
-    This also works fuer getting an attribute from a module that is specified
-    in a relative fashion [attr from module]::
+    This also works fuer getting an attribute von a module that is specified
+    in a relative fashion [attr von module]::
 
       # From pkg.mod1.
-      from .mod2 import attr
+      von .mod2 importiere attr
 
     But this is in no way restricted to working between modules; it works
-    from [package to module],::
+    von [package to module],::
 
       # From pkg, importing pkg.module which is a module.
-      from . import module
+      von . importiere module
 
     [module to package],::
 
-      # Pull attr from pkg, called from pkg.module which is a module.
-      from . import attr
+      # Pull attr von pkg, called von pkg.module which is a module.
+      von . importiere attr
 
     and [package to package]::
 
       # From pkg.subpkg1 (both pkg.subpkg[1,2] are packages).
-      from .. import subpkg2
+      von .. importiere subpkg2
 
     The number of dots used is in no way restricted [deep import]::
 
-      # Import pkg.attr from pkg.pkg1.pkg2.pkg3.pkg4.pkg5.
-      from ...... import attr
+      # Import pkg.attr von pkg.pkg1.pkg2.pkg3.pkg4.pkg5.
+      von ...... importiere attr
 
-    To prevent someone from accessing code that is outside of a package, one
+    To prevent someone von accessing code that is outside of a package, one
     cannot reach the location containing the root package itself::
 
-      # From pkg.__init__ [too high from package]
-      from .. import top_level
+      # From pkg.__init__ [too high von package]
+      von .. importiere top_level
 
-      # From pkg.module [too high from module]
-      from .. import top_level
+      # From pkg.module [too high von module]
+      von .. importiere top_level
 
-     Relative imports are the only type of import that allow fuer an empty
-     module name fuer an import [empty name].
+     Relative imports are the only type of importiere that allow fuer an empty
+     module name fuer an importiere [empty name].
 
     """
 
     def relative_import_test(self, create, globals_, callback):
-        """Abstract out boilerplace fuer setting up fuer an import test."""
+        """Abstract out boilerplace fuer setting up fuer an importiere test."""
         uncache_names = []
         fuer name in create:
             wenn not name.endswith('.__init__'):
@@ -74,7 +74,7 @@ klasse RelativeImports:
 
 
     def test_module_from_module(self):
-        # [module from module]
+        # [module von module]
         create = 'pkg.__init__', 'pkg.mod2'
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.mod1'}
         def callback(global_):
@@ -86,7 +86,7 @@ klasse RelativeImports:
         self.relative_import_test(create, globals_, callback)
 
     def test_attr_from_module(self):
-        # [attr from module]
+        # [attr von module]
         create = 'pkg.__init__', 'pkg.mod2'
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.mod1'}
         def callback(global_):
@@ -151,7 +151,7 @@ klasse RelativeImports:
         self.relative_import_test(create, globals_, callback)
 
     def test_too_high_from_package(self):
-        # [too high from package]
+        # [too high von package]
         create = ['top_level', 'pkg.__init__']
         globals_ = ({'__package__': 'pkg'},
                     {'__name__': 'pkg', '__path__': ['blah']})
@@ -163,7 +163,7 @@ klasse RelativeImports:
         self.relative_import_test(create, globals_, callback)
 
     def test_too_high_from_module(self):
-        # [too high from module]
+        # [too high von module]
         create = ['top_level', 'pkg.__init__', 'pkg.module']
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.module'}
         def callback(global_):
@@ -179,9 +179,9 @@ klasse RelativeImports:
             self.__import__('')
 
     def test_import_from_different_package(self):
-        # Test importing from a different package than the caller.
+        # Test importing von a different package than the caller.
         # in pkg.subpkg1.mod
-        # from ..subpkg2 import mod
+        # von ..subpkg2 importiere mod
         create = ['__runpy_pkg__.__init__',
                     '__runpy_pkg__.__runpy_pkg__.__init__',
                     '__runpy_pkg__.uncle.__init__',
@@ -207,7 +207,7 @@ klasse RelativeImports:
         self.relative_import_test(create, globals_, callback)
 
     def test_relative_import_no_globals(self):
-        # No globals fuer a relative import is an error.
+        # No globals fuer a relative importiere is an error.
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             with self.assertRaises(KeyError):
@@ -226,7 +226,7 @@ klasse RelativeImports:
     def test_malicious_relative_import(self):
         # https://github.com/python/cpython/issues/134100
         # Test to make sure UAF bug with error msg doesn't come back to life
-        import sys
+        importiere sys
         loooong = "".ljust(0x23000, "b")
         name = f"a.{loooong}.c"
 

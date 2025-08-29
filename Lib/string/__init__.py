@@ -18,7 +18,7 @@ __all__ = ["ascii_letters", "ascii_lowercase", "ascii_uppercase", "capwords",
            "digits", "hexdigits", "octdigits", "printable", "punctuation",
            "whitespace", "Formatter", "Template"]
 
-import _string
+importiere _string
 
 # Some strings fuer ctype-style character classification
 whitespace = ' \t\n\r\v\f'
@@ -81,7 +81,7 @@ klasse Template:
 
     @classmethod
     def _compile_pattern(cls):
-        import re  # deferred import, fuer performance
+        importiere re  # deferred import, fuer performance
 
         pattern = cls.__dict__.get('pattern', _TemplatePattern)
         wenn pattern is _TemplatePattern:
@@ -122,7 +122,7 @@ klasse Template:
         wenn mapping is _sentinel_dict:
             mapping = kws
         sowenn kws:
-            from collections import ChainMap
+            von collections importiere ChainMap
             mapping = ChainMap(kws, mapping)
         # Helper function fuer .sub()
         def convert(mo):
@@ -142,7 +142,7 @@ klasse Template:
         wenn mapping is _sentinel_dict:
             mapping = kws
         sowenn kws:
-            from collections import ChainMap
+            von collections importiere ChainMap
             mapping = ChainMap(kws, mapping)
         # Helper function fuer .sub()
         def convert(mo):
@@ -229,14 +229,14 @@ klasse Formatter:
                 field_first, _ = _string.formatter_field_name_split(field_name)
                 wenn field_first == '':
                     wenn auto_arg_index is Falsch:
-                        raise ValueError('cannot switch from manual field '
+                        raise ValueError('cannot switch von manual field '
                                          'specification to automatic field '
                                          'numbering')
                     field_name = str(auto_arg_index) + field_name
                     auto_arg_index += 1
                 sowenn isinstance(field_first, int):
                     wenn auto_arg_index:
-                        raise ValueError('cannot switch from automatic field '
+                        raise ValueError('cannot switch von automatic field '
                                          'numbering to manual field '
                                          'specification')
                     # disable auto arg incrementing, wenn it gets

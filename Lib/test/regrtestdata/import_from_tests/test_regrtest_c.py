@@ -1,6 +1,6 @@
-import sys
-import unittest
-import test_regrtest_b.util
+importiere sys
+importiere unittest
+importiere test_regrtest_b.util
 
 klasse Test(unittest.TestCase):
     def test(self):

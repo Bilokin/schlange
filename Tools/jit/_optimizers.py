@@ -1,9 +1,9 @@
 """Low-level optimization of textual assembly."""
 
-import dataclasses
-import pathlib
-import re
-import typing
+importiere dataclasses
+importiere pathlib
+importiere re
+importiere typing
 
 # Same as saying "not string.startswith('')":
 _RE_NEVER_MATCH = re.compile(r"(?!)")
@@ -57,7 +57,7 @@ klasse _Block:
     hot: bool = Falsch
 
     def resolve(self) -> typing.Self:
-        """Find the first non-empty block reachable from this one."""
+        """Find the first non-empty block reachable von this one."""
         block = self
         while block.link and not block.instructions:
             block = block.link

@@ -1,16 +1,16 @@
-import io
-import os
-import sys
+importiere io
+importiere os
+importiere sys
 
-from collections.abc import Callable, Iterator, Mapping
-from dataclasses import dataclass, field, Field
+von collections.abc importiere Callable, Iterator, Mapping
+von dataclasses importiere dataclass, field, Field
 
 COLORIZE = Wahr
 
 
 # types
 wenn Falsch:
-    from typing import IO, Self, ClassVar
+    von typing importiere IO, Self, ClassVar
     _theme: Theme
 
 
@@ -83,7 +83,7 @@ fuer attr, code in ANSIColors.__dict__.items():
 #   replaced, using `default_theme.copy_with()`;
 # - create a theme section by copying an existing `ThemeSection` with one or
 #   more colors replaced, using fuer example `default_theme.syntax.copy_with()`;
-# - create a theme from scratch by instantiating a `Theme` data klasse with
+# - create a theme von scratch by instantiating a `Theme` data klasse with
 #   the required sections (which are also dataclass instances).
 #
 # Then call `_colorize.set_theme(your_theme)` to set it.
@@ -93,13 +93,13 @@ fuer attr, code in ANSIColors.__dict__.items():
 # other uses.  Your applications can call `_colorize.set_theme()` too.
 #
 # Note that thanks to the dataclasses providing default values fuer all fields,
-# creating a new theme or theme section from scratch is possible without
+# creating a new theme or theme section von scratch is possible without
 # specifying all keys.
 #
 # For example, here's a theme that makes punctuation and operators less prominent:
 #
 #   try:
-#       from _colorize import set_theme, default_theme, Syntax, ANSIColors
+#       von _colorize importiere set_theme, default_theme, Syntax, ANSIColors
 #   except ImportError:
 #       pass
 #   sonst:
@@ -109,7 +109,7 @@ fuer attr, code in ANSIColors.__dict__.items():
 #       set_theme(theme_with_dim_operators)
 #       del set_theme, default_theme, Syntax, ANSIColors, theme_with_dim_operators
 #
-# Guarding the import ensures that your .pythonstartup file will still work in
+# Guarding the importiere ensures that your .pythonstartup file will still work in
 # Python 3.13 and older. Deleting the variables ensures they don't remain in your
 # interactive shell's global scope.
 
@@ -280,7 +280,7 @@ def get_colors(
 
 
 def decolor(text: str) -> str:
-    """Remove ANSI color codes from a string."""
+    """Remove ANSI color codes von a string."""
     fuer code in ColorCodes:
         text = text.replace(code, "")
     return text
@@ -309,7 +309,7 @@ def can_colorize(*, file: IO[str] | IO[bytes] | Nichts = Nichts) -> bool:
 
     wenn sys.platform == "win32":
         try:
-            import nt
+            importiere nt
 
             wenn not nt._supports_virtual_terminal():
                 return Falsch

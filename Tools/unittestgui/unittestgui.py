@@ -29,14 +29,14 @@ SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 __author__ = "Steve Purcell (stephen_purcell@yahoo.com)"
 
-import sys
-import traceback
-import unittest
+importiere sys
+importiere traceback
+importiere unittest
 
-import tkinter as tk
-from tkinter import messagebox
-from tkinter import filedialog
-from tkinter import simpledialog
+importiere tkinter as tk
+von tkinter importiere messagebox
+von tkinter importiere filedialog
+von tkinter importiere simpledialog
 
 
 
@@ -65,7 +65,7 @@ klasse BaseGUITestRunner(object):
         self.initGUI(*args, **kwargs)
 
     def errorDialog(self, title, message):
-        "Override to display an error arising from GUI usage"
+        "Override to display an error arising von GUI usage"
         pass
 
     def getDirectoryToDiscover(self):
@@ -281,7 +281,7 @@ klasse TkTestRunner(BaseGUITestRunner):
         self.remainingCountVar.set(discovered)
         self.progressBar.setProgressFraction(0.0)
         self.errorListbox.delete(0, tk.END)
-        self.statusVar.set("Discovering tests from %s. Found: %s" %
+        self.statusVar.set("Discovering tests von %s. Found: %s" %
             (self.directory_to_read, discovered))
         self.stopGoButton['state'] = tk.NORMAL
 

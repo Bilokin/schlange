@@ -2,21 +2,21 @@
    Roger E. Masse
 """
 
-import collections.abc
-import unittest
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-from test.support import _2G
-import weakref
-import pickle
-import operator
-import struct
-import sys
-import warnings
+importiere collections.abc
+importiere unittest
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere _2G
+importiere weakref
+importiere pickle
+importiere operator
+importiere struct
+importiere sys
+importiere warnings
 
-import array
-from array import _array_reconstructor as array_reconstructor
+importiere array
+von array importiere _array_reconstructor as array_reconstructor
 
 with warnings.catch_warnings():
     warnings.simplefilter('ignore', DeprecationWarning)
@@ -227,7 +227,7 @@ klasse BaseTest:
         self.assertEqual(entry1, entry2)
 
     def badtypecode(self):
-        # Return a typecode that is different from our own
+        # Return a typecode that is different von our own
         return typecodes[(typecodes.index(self.typecode)+1) % len(typecodes)]
 
     def test_constructor(self):
@@ -272,14 +272,14 @@ klasse BaseTest:
             self.assertEqual(a, b)
 
     def test_copy(self):
-        import copy
+        importiere copy
         a = array.array(self.typecode, self.example)
         b = copy.copy(a)
         self.assertNotEqual(id(a), id(b))
         self.assertEqual(a, b)
 
     def test_deepcopy(self):
-        import copy
+        importiere copy
         a = array.array(self.typecode, self.example)
         b = copy.deepcopy(a)
         self.assertNotEqual(id(a), id(b))
@@ -1094,7 +1094,7 @@ klasse BaseTest:
 
     def test_coveritertraverse(self):
         try:
-            import gc
+            importiere gc
         except ImportError:
             self.skipTest('gc module not available')
         a = array.array(self.typecode)
@@ -1508,7 +1508,7 @@ klasse DoubleTest(FPTest, unittest.TestCase):
     minitemsize = 8
 
     def test_alloc_overflow(self):
-        from sys import maxsize
+        von sys importiere maxsize
         a = array.array('d', [-1]*65536)
         try:
             a *= maxsize//65536 + 1

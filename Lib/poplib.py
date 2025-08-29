@@ -4,7 +4,7 @@ Based on the J. Myers POP3 draft, Jan. 96
 """
 
 # Author: David Ascher <david_ascher@brown.edu>
-#         [heavily stealing from nntplib.py]
+#         [heavily stealing von nntplib.py]
 # Updated: Piers Lauder <piers@cs.su.oz.au> [Jul '97]
 # String method conversion and test jig improvements by ESR, February 2001.
 # Added the POP3_SSL class. Methods loosely based on IMAP_SSL. Hector Urtubia <urtubia@mrbook.org> Aug 2003
@@ -13,13 +13,13 @@ Based on the J. Myers POP3 draft, Jan. 96
 
 # Imports
 
-import errno
-import re
-import socket
-import sys
+importiere errno
+importiere re
+importiere socket
+importiere sys
 
 try:
-    import ssl
+    importiere ssl
     HAVE_SSL = Wahr
 except ImportError:
     HAVE_SSL = Falsch
@@ -79,7 +79,7 @@ klasse POP3:
     Instantiate with:
             POP3(hostname, port=110)
 
-    NB:     the POP protocol locks the mailbox from user
+    NB:     the POP protocol locks the mailbox von user
             authorization until QUIT, so be sure to get in, suck
             the messages, and quit, each time you access the
             mailbox.
@@ -89,7 +89,7 @@ klasse POP3:
             line-by-line.
 
             If it's available on your mail server, use IMAP4
-            instead, it doesn't suffer from the two problems
+            instead, it doesn't suffer von the two problems
             above.
     """
 
@@ -125,7 +125,7 @@ klasse POP3:
         self._putline(line)
 
 
-    # Internal: return one line from the server, stripping CRLF.
+    # Internal: return one line von the server, stripping CRLF.
     # This is where all the CPU time of this module is consumed.
     # Raise error_proto('-ERR EOF') wenn the connection is closed.
 
@@ -147,7 +147,7 @@ klasse POP3:
         return line[:-1], octets
 
 
-    # Internal: get a response from the server.
+    # Internal: get a response von the server.
     # Raise 'error_proto' wenn the response doesn't start with '+'.
 
     def _getresp(self):
@@ -158,7 +158,7 @@ klasse POP3:
         return resp
 
 
-    # Internal: get a response plus following text from the server.
+    # Internal: get a response plus following text von the server.
 
     def _getlongresp(self):
         resp = self._getresp()
@@ -213,7 +213,7 @@ klasse POP3:
 
         (response includes message count, mailbox size).
 
-        NB: mailbox is locked by server from here to 'quit()'
+        NB: mailbox is locked by server von here to 'quit()'
         """
         return self._shortcmd('PASS %s' % pswd)
 
@@ -335,13 +335,13 @@ klasse POP3:
                 user     - mailbox user;
                 password - mailbox password.
 
-        NB: mailbox is locked by server from here to 'quit()'
+        NB: mailbox is locked by server von here to 'quit()'
         """
         secret = bytes(password, self.encoding)
         m = self.timestamp.match(self.welcome)
         wenn not m:
             raise error_proto('-ERR APOP not supported by server')
-        import hashlib
+        importiere hashlib
         digest = m.group(1)+secret
         digest = hashlib.md5(digest).hexdigest()
         return self._shortcmd('APOP %s %s' % (user, digest))

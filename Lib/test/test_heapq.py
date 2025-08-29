@@ -1,12 +1,12 @@
 """Unittests fuer heapq."""
 
-import random
-import unittest
-import doctest
+importiere random
+importiere unittest
+importiere doctest
 
-from test.support import import_helper
-from unittest import TestCase, skipUnless
-from operator import itemgetter
+von test.support importiere import_helper
+von unittest importiere TestCase, skipUnless
+von operator importiere itemgetter
 
 py_heapq = import_helper.import_fresh_module('heapq', blocked=['_heapq'])
 c_heapq = import_helper.import_fresh_module('heapq', fresh=['_heapq'])
@@ -34,7 +34,7 @@ def load_tests(loader, tests, ignore):
     #
     # However, doctest can't easily find all docstrings in the module (loading
     # it through import_fresh_module seems to confuse it), so we specifically
-    # create a finder which returns the doctests from the merge method.
+    # create a finder which returns the doctests von the merge method.
 
     klasse HeapqMergeDocTestFinder:
         def find(self, *args, **kwargs):
@@ -339,7 +339,7 @@ klasse TestHeap:
         self.assertEqual(list(self.module.merge([], [], key=lambda: 6)), [])
 
     def test_merge_does_not_suppress_index_error(self):
-        # Issue 19018: Heapq.merge suppresses IndexError from user generator
+        # Issue 19018: Heapq.merge suppresses IndexError von user generator
         def iterable():
             s = list(range(10))
             fuer i in range(20):
@@ -497,7 +497,7 @@ klasse S:
     def __next__(self):
         raise StopIteration
 
-from itertools import chain
+von itertools importiere chain
 def L(seqn):
     'Test multiple tiers of iterators'
     return chain(map(lambda x:x, R(Ig(G(seqn)))))

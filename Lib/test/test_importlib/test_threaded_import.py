@@ -1,36 +1,36 @@
 # This is a variant of the very old (early 90's) file
 # Demo/threads/bug.py.  It simply provokes a number of threads into
-# trying to import the same module "at the same time".
+# trying to importiere the same module "at the same time".
 # There are no pleasant failure modes -- most likely is that Python
 # complains several times about module random having no attribute
 # randrange, and then Python hangs.
 
-import _imp as imp
-import os
-import importlib
-import sys
-import time
-import shutil
-import threading
-import unittest
-from test import support
-from test.support import verbose
-from test.support.import_helper import forget, mock_register_at_fork
-from test.support.os_helper import (TESTFN, unlink, rmtree)
-from test.support import script_helper, threading_helper
+importiere _imp as imp
+importiere os
+importiere importlib
+importiere sys
+importiere time
+importiere shutil
+importiere threading
+importiere unittest
+von test importiere support
+von test.support importiere verbose
+von test.support.import_helper importiere forget, mock_register_at_fork
+von test.support.os_helper importiere (TESTFN, unlink, rmtree)
+von test.support importiere script_helper, threading_helper
 
 threading_helper.requires_working_threading(module=Wahr)
 
 def task(N, done, done_tasks, errors):
     try:
-        # We don't use modulefinder but still import it in order to stress
-        # importing of different modules from several threads.
+        # We don't use modulefinder but still importiere it in order to stress
+        # importing of different modules von several threads.
         wenn len(done_tasks) % 2:
-            import modulefinder
-            import random
+            importiere modulefinder
+            importiere random
         sonst:
-            import random
-            import modulefinder
+            importiere random
+            importiere modulefinder
         # This will fail wenn random is not completely initialized
         x = random.randrange(1, 3)
     except Exception as e:
@@ -41,21 +41,21 @@ def task(N, done, done_tasks, errors):
         wenn finished:
             done.set()
 
-# Create a circular import structure: A -> C -> B -> D -> A
+# Create a circular importiere structure: A -> C -> B -> D -> A
 # NOTE: `time` is already loaded and therefore doesn't threaten to deadlock.
 
 circular_imports_modules = {
     'A': """if 1:
-        import time
+        importiere time
         time.sleep(%(delay)s)
         x = 'a'
-        import C
+        importiere C
         """,
     'B': """if 1:
-        import time
+        importiere time
         time.sleep(%(delay)s)
         x = 'b'
-        import D
+        importiere D
         """,
     'C': """import B""",
     'D': """import A""",
@@ -104,8 +104,8 @@ klasse ThreadedImportTests(unittest.TestCase):
     @mock_register_at_fork
     def check_parallel_module_init(self, mock_os):
         wenn imp.lock_held():
-            # This triggers on, e.g., from test import autotest.
-            raise unittest.SkipTest("can't run when import lock is held")
+            # This triggers on, e.g., von test importiere autotest.
+            raise unittest.SkipTest("can't run when importiere lock is held")
 
         done = threading.Event()
         fuer N in (20, 50) * 3:
@@ -176,12 +176,12 @@ klasse ThreadedImportTests(unittest.TestCase):
 
     def test_import_hangers(self):
         # In case this test is run again, make sure the helper module
-        # gets loaded from scratch again.
+        # gets loaded von scratch again.
         try:
             del sys.modules['test.test_importlib.threaded_import_hangers']
         except KeyError:
             pass
-        import test.test_importlib.threaded_import_hangers
+        importiere test.test_importlib.threaded_import_hangers
         self.assertFalsch(test.test_importlib.threaded_import_hangers.errors)
 
     def test_circular_imports(self):
@@ -193,7 +193,7 @@ klasse ThreadedImportTests(unittest.TestCase):
         # - thread 2 imports B (grabbing the lock fuer B) which imports A
         # Such implementations should be able to detect such situations and
         # resolve them one way or the other, without freezing.
-        # NOTE: our test constructs a slightly less trivial import cycle,
+        # NOTE: our test constructs a slightly less trivial importiere cycle,
         # in order to better stress the deadlock avoidance mechanism.
         delay = 0.5
         os.mkdir(TESTFN)
@@ -209,10 +209,10 @@ klasse ThreadedImportTests(unittest.TestCase):
         importlib.invalidate_caches()
         results = []
         def import_ab():
-            import A
+            importiere A
             results.append(getattr(A, 'x', Nichts))
         def import_ba():
-            import B
+            importiere B
             results.append(getattr(B, 'x', Nichts))
         t1 = threading.Thread(target=import_ab)
         t2 = threading.Thread(target=import_ba)
@@ -225,9 +225,9 @@ klasse ThreadedImportTests(unittest.TestCase):
     @mock_register_at_fork
     def test_side_effect_import(self, mock_os):
         code = """if 1:
-            import threading
+            importiere threading
             def target():
-                import random
+                importiere random
             t = threading.Thread(target=target)
             t.start()
             t.join()

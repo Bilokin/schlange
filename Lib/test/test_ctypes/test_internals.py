@@ -11,9 +11,9 @@
 #
 # What about pointers?
 
-import sys
-import unittest
-from ctypes import Structure, POINTER, c_char_p, c_int
+importiere sys
+importiere unittest
+von ctypes importiere Structure, POINTER, c_char_p, c_int
 
 
 klasse ObjectsTestCase(unittest.TestCase):

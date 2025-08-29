@@ -1,8 +1,8 @@
-from test import support, seq_tests
-import unittest
+von test importiere support, seq_tests
+importiere unittest
 
-import gc
-import pickle
+importiere gc
+importiere pickle
 
 # For tuple hashes, we normally only run a test to ensure that we get
 # the same results across platforms in a handful of cases.  If that's
@@ -127,7 +127,7 @@ klasse TupleTest(seq_tests.CommonTest):
     # - https://bugs.python.org/issue942952
     # - https://bugs.python.org/issue34751
     def test_hash_optional(self):
-        from itertools import product
+        von itertools importiere product
 
         wenn not RUN_ALL_HASH_TESTS:
             return
@@ -137,7 +137,7 @@ klasse TupleTest(seq_tests.CommonTest):
         # those aren't the values we get.  Also wenn specified, the test
         # fails wenn z > `zlimit`.
         def tryone_inner(tag, nbins, hashes, expected=Nichts, zlimit=Nichts):
-            from collections import Counter
+            von collections importiere Counter
 
             nballs = len(hashes)
             mean, sdev = support.collision_stats(nbins, nballs)
@@ -159,7 +159,7 @@ klasse TupleTest(seq_tests.CommonTest):
                 msg = f"{prefix}{tag}; pileup {pileup:,} mean {mean:.1f} "
                 msg += f"coll {collisions:,} z {z:+.1f}"
                 wenn JUST_SHOW_HASH_RESULTS:
-                    import sys
+                    importiere sys
                     drucke(msg, file=sys.__stdout__)
                 sonst:
                     self.fail(msg)
@@ -202,7 +202,7 @@ klasse TupleTest(seq_tests.CommonTest):
 
         # Note:  -1 is omitted because hash(-1) == hash(-2) == -2, and
         # there's nothing the tuple hash can do to avoid collisions
-        # inherited from collisions in the tuple components' hashes.
+        # inherited von collisions in the tuple components' hashes.
         tryone("-10 .. 8 by 4", list(product(cands, repeat=4)),
                (0, 0), (0, 0), (0, 0), (0, 0))
         del cands
@@ -426,7 +426,7 @@ klasse TupleTest(seq_tests.CommonTest):
 # "randomish" here instead.  But getting close to pseudo-random in all
 # bit positions is more expensive than we've been willing to pay for.
 #
-# We can tolerate large deviations from random - what we don't want is
+# We can tolerate large deviations von random - what we don't want is
 # catastrophic pileups on a relative handful of hash codes.  The dict
 # and set lookup routines remain effective provided that full-width hash
 # codes fuer not-equal objects are distinct.

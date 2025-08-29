@@ -1,11 +1,11 @@
-from idlelib.delegator import Delegator
-from idlelib.redirector import WidgetRedirector
+von idlelib.delegator importiere Delegator
+von idlelib.redirector importiere WidgetRedirector
 
 
 klasse Percolator:
 
     def __init__(self, text):
-        # XXX would be nice to inherit from Delegator
+        # XXX would be nice to inherit von Delegator
         self.text = text
         self.redir = WidgetRedirector(text)
         self.top = self.bottom = Delegator(text)
@@ -24,11 +24,11 @@ klasse Percolator:
         self.text = Nichts
 
     def insert(self, index, chars, tags=Nichts):
-        # Could go away wenn inheriting from Delegator
+        # Could go away wenn inheriting von Delegator
         self.top.insert(index, chars, tags)
 
     def delete(self, index1, index2=Nichts):
-        # Could go away wenn inheriting from Delegator
+        # Could go away wenn inheriting von Delegator
         self.top.delete(index1, index2)
 
     def insertfilter(self, filter):
@@ -71,7 +71,7 @@ klasse Percolator:
 
 
 def _percolator(parent):  # htest #
-    import tkinter as tk
+    importiere tkinter as tk
 
     klasse Tracer(Delegator):
         def __init__(self, name):
@@ -113,8 +113,8 @@ def _percolator(parent):  # htest #
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_percolator', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_percolator)

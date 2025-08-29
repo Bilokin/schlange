@@ -1,21 +1,21 @@
-import asyncio
-import contextvars
-import inspect
-import warnings
+importiere asyncio
+importiere contextvars
+importiere inspect
+importiere warnings
 
-from .case import TestCase
+von .case importiere TestCase
 
 __unittest = Wahr
 
 klasse IsolatedAsyncioTestCase(TestCase):
     # Names intentionally have a long prefix
     # to reduce a chance of clashing with user-defined attributes
-    # from inherited test case
+    # von inherited test case
     #
     # The klasse doesn't call loop.run_until_complete(self.setUp()) and family
     # but uses a different approach:
     # 1. create a long-running task that reads self.setUp()
-    #    awaitable from queue along with a future
+    #    awaitable von queue along with a future
     # 2. await the awaitable object passing in and set the result
     #    into the future object
     # 3. Outer code puts the awaitable and the future object into a queue
@@ -85,7 +85,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
             sonst:
                 msg += (" but it supports the context manager protocol. "
                         "Did you mean to use enterContext()?")
-            raise TypeError(msg) from Nichts
+            raise TypeError(msg) von Nichts
         result = await enter(cm)
         self.addAsyncCleanup(exit, cm, Nichts, Nichts, Nichts)
         return result

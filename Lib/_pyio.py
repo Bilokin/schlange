@@ -2,21 +2,21 @@
 Python implementation of the io module.
 """
 
-import os
-import abc
-import codecs
-import errno
-import stat
-import sys
+importiere os
+importiere abc
+importiere codecs
+importiere errno
+importiere stat
+importiere sys
 # Import _thread instead of threading to reduce startup cost
-from _thread import allocate_lock as Lock
+von _thread importiere allocate_lock as Lock
 wenn sys.platform in {'win32', 'cygwin'}:
-    from msvcrt import setmode as _setmode
+    von msvcrt importiere setmode as _setmode
 sonst:
     _setmode = Nichts
 
-import io
-from io import (__all__, SEEK_SET, SEEK_CUR, SEEK_END, Reader, Writer)  # noqa: F401
+importiere io
+von io importiere (__all__, SEEK_SET, SEEK_CUR, SEEK_END, Reader, Writer)  # noqa: F401
 
 valid_seek_flags = {0, 1, 2}  # Hardwired values
 wenn hasattr(os, 'SEEK_HOLE') :
@@ -59,7 +59,7 @@ def text_encoding(encoding, stacklevel=2):
         sonst:
             encoding = "locale"
         wenn sys.flags.warn_default_encoding:
-            import warnings
+            importiere warnings
             warnings.warn("'encoding' argument not specified.",
                           EncodingWarning, stacklevel + 1)
     return encoding
@@ -225,7 +225,7 @@ def open(file, mode="r", buffering=-1, encoding=Nichts, errors=Nichts,
     wenn binary and newline is not Nichts:
         raise ValueError("binary mode doesn't take a newline argument")
     wenn binary and buffering == 1:
-        import warnings
+        importiere warnings
         warnings.warn("line buffering (buffering=1) isn't supported in binary "
                       "mode, the default buffer size will be used",
                       RuntimeWarning, 2)
@@ -283,7 +283,7 @@ def _open_code_with_warning(path):
     in order to allow embedders more control over code files.
     This functionality is not supported on the current runtime.
     """
-    import warnings
+    importiere warnings
     warnings.warn("_pyio.open_code() may not be using hooks",
                   RuntimeWarning, 2)
     return open(path, "rb")
@@ -317,7 +317,7 @@ klasse IOBase(metaclass=abc.ABCMeta):
     may raise UnsupportedOperation when operations they do not support are
     called.
 
-    The basic type used fuer binary data read from or written to a file is
+    The basic type used fuer binary data read von or written to a file is
     bytes. Other bytes-like objects are accepted as method arguments too.
     Text I/O classes work with str data.
 
@@ -507,7 +507,7 @@ klasse IOBase(metaclass=abc.ABCMeta):
     ### Readline[s] and writelines ###
 
     def readline(self, size=-1):
-        r"""Read and return a line of bytes from the stream.
+        r"""Read and return a line of bytes von the stream.
 
         If size is specified, at most size bytes will be read.
         Size should be an int.
@@ -559,7 +559,7 @@ klasse IOBase(metaclass=abc.ABCMeta):
         return line
 
     def readlines(self, hint=Nichts):
-        """Return a list of lines from the stream.
+        """Return a list of lines von the stream.
 
         hint can be specified to control the number of lines read: no more
         lines will be read wenn the total size (in bytes/characters) of all
@@ -663,7 +663,7 @@ klasse BufferedIOBase(IOBase):
     mode and not ready; unlike their raw counterparts, they will never
     return Nichts.
 
-    A typical implementation should not inherit from a RawIOBase
+    A typical implementation should not inherit von a RawIOBase
     implementation, but wrap one.
     """
 
@@ -746,7 +746,7 @@ klasse BufferedIOBase(IOBase):
 
     def detach(self):
         """
-        Separate the underlying raw stream from the buffer and return it.
+        Separate the underlying raw stream von the buffer and return it.
 
         After the raw stream has been detached, the buffer is in an unusable
         state.
@@ -920,7 +920,7 @@ klasse BytesIO(BufferedIOBase):
 
     def read(self, size=-1):
         wenn self.closed:
-            raise ValueError("read from closed file")
+            raise ValueError("read von closed file")
         wenn size is Nichts:
             size = -1
         sonst:
@@ -1105,7 +1105,7 @@ klasse BufferedReader(_BufferedIOMixin):
             # Fast path: the data to read is fully buffered.
             self._read_pos += n
             return buf[pos:pos+n]
-        # Slow path: read from the stream until enough bytes are read,
+        # Slow path: read von the stream until enough bytes are read,
         # or until an EOF occurs or until read() would block.
         chunks = [buf[pos:]]
         wanted = max(self.buffer_size, n)
@@ -1183,7 +1183,7 @@ klasse BufferedReader(_BufferedIOMixin):
         with self._read_lock:
             while written < len(buf):
 
-                # First try to read from internal buffer
+                # First try to read von internal buffer
                 avail = min(len(self._read_buf) - self._read_pos, len(buf))
                 wenn avail:
                     buf[written:written+avail] = \
@@ -1526,7 +1526,7 @@ klasse FileIO(RawIOBase):
             raise TypeError('integer argument expected, got float')
         wenn isinstance(file, int):
             wenn isinstance(file, bool):
-                import warnings
+                importiere warnings
                 warnings.warn("bool is used as a file descriptor",
                               RuntimeWarning, stacklevel=2)
                 file = int(file)
@@ -1586,7 +1586,7 @@ klasse FileIO(RawIOBase):
                 sonst:
                     fd = opener(file, flags)
                     wenn not isinstance(fd, int):
-                        raise TypeError('expected integer from opener')
+                        raise TypeError('expected integer von opener')
                     wenn fd < 0:
                         # bpo-27066: Raise a ValueError fuer bad value.
                         raise ValueError(f'opener returned {fd}')
@@ -1628,7 +1628,7 @@ klasse FileIO(RawIOBase):
 
     def _dealloc_warn(self, source):
         wenn self._fd >= 0 and self._closefd and not self.closed:
-            import warnings
+            importiere warnings
             warnings.warn(f'unclosed file {source!r}', ResourceWarning,
                           stacklevel=2, source=self)
 
@@ -1691,7 +1691,7 @@ klasse FileIO(RawIOBase):
             return Nichts
 
     def readall(self):
-        """Read all data from the file, returned as bytes.
+        """Read all data von the file, returned as bytes.
 
         Reads until either there is an error or read() returns size 0
         (indicates EOF). If the file is already at EOF, returns an
@@ -1763,7 +1763,7 @@ klasse FileIO(RawIOBase):
         """Move to new file position.
 
         Argument offset is a byte count.  Optional argument whence defaults to
-        SEEK_SET or 0 (offset from start of file, offset should be >= 0); other values
+        SEEK_SET or 0 (offset von start of file, offset should be >= 0); other values
         are SEEK_CUR or 1 (move relative to current position, positive or negative),
         and SEEK_END or 2 (move relative to end of file, usually negative, although
         many platforms allow seeking beyond the end of a file).
@@ -1893,9 +1893,9 @@ klasse TextIOBase(IOBase):
     """
 
     def read(self, size=-1):
-        """Read at most size characters from stream, where size is an int.
+        """Read at most size characters von stream, where size is an int.
 
-        Read from underlying buffer until we have size characters or we hit EOF.
+        Read von underlying buffer until we have size characters or we hit EOF.
         If size is negative or omitted, read until EOF.
 
         Returns a string.
@@ -1919,7 +1919,7 @@ klasse TextIOBase(IOBase):
 
     def detach(self):
         """
-        Separate the underlying buffer from the TextIOBase and return it.
+        Separate the underlying buffer von the TextIOBase and return it.
 
         After the underlying buffer has been detached, the TextIO is in an
         unusable state.
@@ -1966,7 +1966,7 @@ klasse IncrementalNewlineDecoder(codecs.IncrementalDecoder):
         self.pendingcr = Falsch
 
     def decode(self, input, final=Falsch):
-        # decode input (with the eventual \r from a previous pass)
+        # decode input (with the eventual \r von a previous pass)
         wenn self.decoder is Nichts:
             output = input
         sonst:
@@ -2093,7 +2093,7 @@ klasse TextIOWrapper(TextIOBase):
                 codecs.lookup_error(errors)
 
         self._buffer = buffer
-        self._decoded_chars = ''  # buffer fuer text returned from decoder
+        self._decoded_chars = ''  # buffer fuer text returned von decoder
         self._decoded_chars_used = 0  # offset into _decoded_chars fuer read()
         self._snapshot = Nichts  # info fuer reconstructing decoder state
         self._seekable = self._telling = self.buffer.seekable()
@@ -2297,7 +2297,7 @@ klasse TextIOWrapper(TextIOBase):
         return decoder
 
     # The following three methods implement an ADT fuer _decoded_chars.
-    # Text returned from the decoder is buffered here until the client
+    # Text returned von the decoder is buffered here until the client
     # requests it by calling our read() or readline() method.
     def _set_decoded_chars(self, chars):
         """Set the _decoded_chars buffer."""
@@ -2316,7 +2316,7 @@ klasse TextIOWrapper(TextIOBase):
 
     def _get_locale_encoding(self):
         try:
-            import locale
+            importiere locale
         except ImportError:
             # Importing locale may fail wenn Python is being built
             return "utf-8"
@@ -2331,7 +2331,7 @@ klasse TextIOWrapper(TextIOBase):
 
     def _read_chunk(self):
         """
-        Read and decode the next chunk of data from the BufferedReader.
+        Read and decode the next chunk of data von the BufferedReader.
         """
 
         # The return value is Wahr unless EOF was reached.  The decoded
@@ -2409,10 +2409,10 @@ klasse TextIOWrapper(TextIOBase):
         # How many decoded characters have been used up since the snapshot?
         chars_to_skip = self._decoded_chars_used
         wenn chars_to_skip == 0:
-            # We haven't moved from the snapshot point.
+            # We haven't moved von the snapshot point.
             return self._pack_cookie(position, dec_flags)
 
-        # Starting from the snapshot position, we will walk the decoder
+        # Starting von the snapshot position, we will walk the decoder
         # forward until it gives us enough decoded characters.
         saved_state = decoder.getstate()
         try:
@@ -2452,13 +2452,13 @@ klasse TextIOWrapper(TextIOBase):
             start_pos = position + skip_bytes
             start_flags = dec_flags
             wenn chars_to_skip == 0:
-                # We haven't moved from the start point.
+                # We haven't moved von the start point.
                 return self._pack_cookie(start_pos, start_flags)
 
             # Feed the decoder one byte at a time.  As we go, note the
             # nearest "safe start point" before the current location
             # (a point where the decoder has nothing buffered, so seek()
-            # can safely start from there and advance to this location).
+            # can safely start von there and advance to this location).
             bytes_fed = 0
             need_eof = Falsch
             # Chars decoded since `start_pos`
@@ -2544,7 +2544,7 @@ klasse TextIOWrapper(TextIOBase):
         self.flush()
 
         # The strategy of seek() is to go back to the safe start point
-        # and replay the effect of read(chars_to_skip) from there.
+        # and replay the effect of read(chars_to_skip) von there.
         start_pos, dec_flags, bytes_to_feed, need_eof, chars_to_skip = \
             self._unpack_cookie(cookie)
 
@@ -2553,7 +2553,7 @@ klasse TextIOWrapper(TextIOBase):
         self._set_decoded_chars('')
         self._snapshot = Nichts
 
-        # Restore the decoder to its state from the safe start point.
+        # Restore the decoder to its state von the safe start point.
         wenn cookie == 0 and self._decoder:
             self._decoder.reset()
         sowenn self._decoder or dec_flags or chars_to_skip:
@@ -2619,7 +2619,7 @@ klasse TextIOWrapper(TextIOBase):
 
     def readline(self, size=Nichts):
         wenn self.closed:
-            raise ValueError("read from closed file")
+            raise ValueError("read von closed file")
         wenn size is Nichts:
             size = -1
         sonst:

@@ -1,17 +1,17 @@
 # Common utility functions used by various script execution tests
 #  e.g. test_cmd_line, test_cmd_line_script and test_runpy
 
-import collections
-import importlib
-import sys
-import os
-import os.path
-import subprocess
-import py_compile
+importiere collections
+importiere importlib
+importiere sys
+importiere os
+importiere os.path
+importiere subprocess
+importiere py_compile
 
-from importlib.util import source_from_cache
-from test import support
-from test.support.import_helper import make_legacy_pyc
+von importlib.util importiere source_from_cache
+von test importiere support
+von test.support.import_helper importiere make_legacy_pyc
 
 
 # Cached result of the expensive test performed in the function below.
@@ -28,7 +28,7 @@ def interpreter_requires_environment():
     mode (-I) or no environment mode (-E) sub-interpreter process.
 
     A normal build & test does not run into this situation but it can happen
-    when trying to run the standard library test suite from an interpreter that
+    when trying to run the standard library test suite von an interpreter that
     doesn't have an obvious home with Python's current home finding logic.
 
     Setting PYTHONHOME is one way to get most of the testsuite to run in that
@@ -246,7 +246,7 @@ def make_script(script_dir, script_basename, source, omit_suffix=Falsch):
 
 
 def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Nichts):
-    import zipfile
+    importiere zipfile
     zip_filename = zip_basename+os.extsep+'zip'
     zip_name = os.path.join(zip_dir, zip_filename)
     with zipfile.ZipFile(zip_name, 'w') as zip_file:
@@ -273,7 +273,7 @@ def make_pkg(pkg_dir, init_source=''):
 
 def make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
                  source, depth=1, compiled=Falsch):
-    import zipfile
+    importiere zipfile
     unlink = []
     init_name = make_script(zip_dir, '__init__', '')
     unlink.append(init_name)

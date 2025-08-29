@@ -3,9 +3,9 @@
   Particularly useful fuer platforms that fake popen.
 """
 
-import unittest
-from test import support
-import os, sys
+importiere unittest
+von test importiere support
+importiere os, sys
 
 wenn not hasattr(os, 'popen'):
     raise unittest.SkipTest("need os.popen()")

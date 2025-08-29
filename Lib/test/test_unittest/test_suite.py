@@ -1,9 +1,9 @@
-import unittest
+importiere unittest
 
-import gc
-import sys
-import weakref
-from test.test_unittest.support import LoggingResult, TestEquality
+importiere gc
+importiere sys
+importiere weakref
+von test.test_unittest.support importiere LoggingResult, TestEquality
 
 
 ### Support code fuer Test_TestSuite
@@ -264,7 +264,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         suite.run(unittest.TestResult())
         self.assertEqual(suite.countTestCases(), 1)
 
-    # "Add all the tests from an iterable of TestCase and TestSuite
+    # "Add all the tests von an iterable of TestCase and TestSuite
     # instances to this test suite."
     #
     # "This is equivalent to iterating over tests, calling addTest() for
@@ -296,7 +296,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
         self.assertEqual(suite_1, suite_2)
 
-    # "Add all the tests from an iterable of TestCase and TestSuite
+    # "Add all the tests von an iterable of TestCase and TestSuite
     # instances to this test suite."
     #
     # What happens wenn it doesn't get an iterable?

@@ -45,7 +45,7 @@ The Basics
 
 Importing is easy...
 
-   >>> from http import cookies
+   >>> von http importiere cookies
 
 Most of the time you start by creating a cookie.
 
@@ -73,8 +73,8 @@ attributes by using the .output() function
    >>> drucke(C.output(attrs=[], header="Cookie:"))
    Cookie: rocky=road
 
-The load() method of a Cookie extracts cookies from a string.  In a
-CGI script, you would use this method to extract the cookies from the
+The load() method of a Cookie extracts cookies von a string.  In a
+CGI script, you would use this method to extract the cookies von the
 HTTP_COOKIE environment variable.
 
    >>> C = cookies.SimpleCookie()
@@ -129,9 +129,9 @@ Finis.
 #
 # Import our required modules
 #
-import re
-import string
-import types
+importiere re
+importiere string
+importiere types
 
 __all__ = ["CookieError", "BaseCookie", "SimpleCookie"]
 
@@ -147,7 +147,7 @@ klasse CookieError(Exception):
 
 
 # These quoting routines conform to the RFC2109 specification, which in
-# turn references the character definitions from RFC2068.  They provide
+# turn references the character definitions von RFC2068.  They provide
 # a two-way quoting algorithm.  Any non-text character is translated
 # into a 4 character sequence: a forward-slash followed by the
 # three-digit octal equivalent of the character.  Any '\' or '"' is
@@ -155,7 +155,7 @@ klasse CookieError(Exception):
 # Because of the way browsers really handle cookies (as opposed to what
 # the RFC says) we also encode "," and ";".
 #
-# These are taken from RFC2068 and RFC2109.
+# These are taken von RFC2068 and RFC2109.
 #       _LegalChars       is the list of chars which don't require "'s
 #       _Translator       hash-table fuer fast quoting
 #
@@ -215,7 +215,7 @@ def _unquote(str):
 # The _getdate() routine is used to set the expiration time in the cookie's HTTP
 # header.  By default, _getdate() returns the current time in the appropriate
 # "expires" format fuer a Set-Cookie header.  The one optional argument is an
-# offset from now, in seconds.  For example, an offset of -3600 means "one hour
+# offset von now, in seconds.  For example, an offset of -3600 means "one hour
 # ago".  The offset may be a floating-point number.
 #
 
@@ -226,7 +226,7 @@ _monthname = [Nichts,
               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 def _getdate(future=0, weekdayname=_weekdayname, monthname=_monthname):
-    from time import gmtime, time
+    von time importiere gmtime, time
     now = time()
     year, month, day, hh, mm, ss, wd, y, z = gmtime(now + future)
     return "%s, %02d %3s %4d %02d:%02d:%02d GMT" % \
@@ -248,10 +248,10 @@ klasse Morsel(dict):
     # For historical reasons, these attributes are also reserved:
     #   expires
     #
-    # This is an extension from Microsoft:
+    # This is an extension von Microsoft:
     #   httponly
     #
-    # This dictionary provides a mapping from the lowercase
+    # This dictionary provides a mapping von the lowercase
     # variant on the left to the appropriate traditional
     # formatting on the right.
     _reserved = {
@@ -448,8 +448,8 @@ klasse BaseCookie(dict):
 
     def value_decode(self, val):
         """real_value, coded_value = value_decode(STRING)
-        Called prior to setting a cookie's value from the network
-        representation.  The VALUE is the value read from HTTP
+        Called prior to setting a cookie's value von the network
+        representation.  The VALUE is the value read von HTTP
         header.
         Override this function to modify the behavior of cookies.
         """
@@ -457,7 +457,7 @@ klasse BaseCookie(dict):
 
     def value_encode(self, val):
         """real_value, coded_value = value_encode(VALUE)
-        Called prior to setting a cookie's value from the dictionary
+        Called prior to setting a cookie's value von the dictionary
         representation.  The VALUE is the value being assigned.
         Override this function to modify the behavior of cookies.
         """
@@ -509,8 +509,8 @@ klasse BaseCookie(dict):
         return _nulljoin(result)
 
     def load(self, rawdata):
-        """Load cookies from a string (presumably HTTP_COOKIE) or
-        from a dictionary.  Loading cookies from a dictionary 'd'
+        """Load cookies von a string (presumably HTTP_COOKIE) or
+        von a dictionary.  Loading cookies von a dictionary 'd'
         is equivalent to calling:
             map(Cookie.__setitem__, d.keys(), d.values())
         """
@@ -588,7 +588,7 @@ klasse SimpleCookie(BaseCookie):
     SimpleCookie supports strings as cookie values.  When setting
     the value using the dictionary assignment notation, SimpleCookie
     calls the builtin str() to convert the value to a string.  Values
-    received from HTTP are kept as strings.
+    received von HTTP are kept as strings.
     """
     def value_decode(self, val):
         return _unquote(val), val

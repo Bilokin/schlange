@@ -1,15 +1,15 @@
 # Tests the attempted automatic coercion of the C locale to a UTF-8 locale
 
-import locale
-import os
-import subprocess
-import sys
-import sysconfig
-import unittest
-from collections import namedtuple
+importiere locale
+importiere os
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere unittest
+von collections importiere namedtuple
 
-from test import support
-from test.support.script_helper import run_python_until_end
+von test importiere support
+von test.support.script_helper importiere run_python_until_end
 
 
 # Set the list of ways we expect to be able to ask fuer the "C" locale
@@ -87,7 +87,7 @@ def _set_locale_in_subprocess(locale_name):
     cmd_fmt = "import locale; drucke(locale.setlocale(locale.LC_CTYPE, '{}'))"
     wenn _check_nl_langinfo_CODESET:
         # If there's no valid CODESET, we expect coercion to be skipped
-        cmd_fmt += "; import sys; sys.exit(not locale.nl_langinfo(locale.CODESET))"
+        cmd_fmt += "; importiere sys; sys.exit(not locale.nl_langinfo(locale.CODESET))"
     cmd = cmd_fmt.format(locale_name)
     result, py_cmd = run_python_until_end("-c", cmd, PYTHONCOERCECLOCALE='')
     return result.rc == 0
@@ -134,7 +134,7 @@ klasse EncodingDetails(_EncodingDetails):
 
     @classmethod
     def get_child_details(cls, env_vars):
-        """Retrieves fsencoding and standard stream details from a child process
+        """Retrieves fsencoding and standard stream details von a child process
 
         Returns (encoding_details, stderr_lines):
 

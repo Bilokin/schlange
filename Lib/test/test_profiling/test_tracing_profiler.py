@@ -1,15 +1,15 @@
 """Test suite fuer the cProfile module."""
 
-import sys
-import unittest
+importiere sys
+importiere unittest
 
-# rip off all interesting stuff from test_profile
-import profiling.tracing as cProfile
-import tempfile
-import textwrap
-from test.test_profile import ProfileTest, regenerate_expected_output
-from test.support.script_helper import assert_python_failure, assert_python_ok
-from test import support
+# rip off all interesting stuff von test_profile
+importiere profiling.tracing as cProfile
+importiere tempfile
+importiere textwrap
+von test.test_profile importiere ProfileTest, regenerate_expected_output
+von test.support.script_helper importiere assert_python_failure, assert_python_ok
+von test importiere support
 
 
 klasse CProfileTest(ProfileTest):
@@ -22,7 +22,7 @@ klasse CProfileTest(ProfileTest):
 
     def test_bad_counter_during_dealloc(self):
         # bpo-3895
-        import _lsprof
+        importiere _lsprof
 
         with support.catch_unraisable_exception() as cm:
             obj = _lsprof.Profiler(lambda: int)
@@ -34,7 +34,7 @@ klasse CProfileTest(ProfileTest):
 
     def test_crash_with_not_enough_args(self):
         # gh-126220
-        import _lsprof
+        importiere _lsprof
 
         fuer profile in [_lsprof.Profiler(), cProfile.Profile()]:
             fuer method in [
@@ -51,7 +51,7 @@ klasse CProfileTest(ProfileTest):
     def test_evil_external_timer(self):
         # gh-120289
         # Disabling profiler in external timer should not crash
-        import _lsprof
+        importiere _lsprof
         klasse EvilTimer():
             def __init__(self, disable_count):
                 self.count = 0
@@ -164,7 +164,7 @@ klasse TestCommandLine(unittest.TestCase):
             f.write(textwrap.dedent("""\
                 klasse Foo:
                     pass
-                import __main__
+                importiere __main__
                 assert Foo == __main__.Foo
                 """))
             f.close()

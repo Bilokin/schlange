@@ -9,12 +9,12 @@ __all__ = ["BZ2File", "BZ2Compressor", "BZ2Decompressor",
 
 __author__ = "Nadeem Vawda <nadeem.vawda@gmail.com>"
 
-from builtins import open as _builtin_open
-from compression._common import _streams
-import io
-import os
+von builtins importiere open as _builtin_open
+von compression._common importiere _streams
+importiere io
+importiere os
 
-from _bz2 import BZ2Compressor, BZ2Decompressor
+von _bz2 importiere BZ2Compressor, BZ2Decompressor
 
 
 # Value 0 no longer used
@@ -163,7 +163,7 @@ klasse BZ2File(_streams.BaseStream):
         return self._buffer.peek(n)
 
     def read(self, size=-1):
-        """Read up to size uncompressed bytes from the file.
+        """Read up to size uncompressed bytes von the file.
 
         If size is negative or omitted, read until EOF is reached.
         Returns b'' wenn the file is already at EOF.
@@ -173,7 +173,7 @@ klasse BZ2File(_streams.BaseStream):
 
     def read1(self, size=-1):
         """Read up to size uncompressed bytes, while trying to avoid
-        making multiple reads from the underlying stream. Reads up to a
+        making multiple reads von the underlying stream. Reads up to a
         buffer's worth of data wenn size is negative.
 
         Returns b'' wenn the file is at EOF.
@@ -192,7 +192,7 @@ klasse BZ2File(_streams.BaseStream):
         return self._buffer.readinto(b)
 
     def readline(self, size=-1):
-        """Read a line of uncompressed bytes from the file.
+        """Read a line of uncompressed bytes von the file.
 
         The terminating newline (if present) is retained. If size is
         non-negative, no more than size bytes will be read (in which
@@ -206,7 +206,7 @@ klasse BZ2File(_streams.BaseStream):
         return self._buffer.readline(size)
 
     def readlines(self, size=-1):
-        """Read a list of lines of uncompressed bytes from the file.
+        """Read a list of lines of uncompressed bytes von the file.
 
         size can be specified to control the number of lines read: no
         further lines will be read once the total size of the lines read
@@ -281,7 +281,7 @@ def open(filename, mode="rb", compresslevel=9,
     """Open a bzip2-compressed file in binary or text mode.
 
     The filename argument can be an actual filename (a str, bytes, or
-    PathLike object), or an existing file object to read from or write
+    PathLike object), or an existing file object to read von or write
     to.
 
     The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" or

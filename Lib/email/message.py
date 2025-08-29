@@ -6,17 +6,17 @@
 
 __all__ = ['Message', 'EmailMessage']
 
-import binascii
-import re
-import quopri
-from io import BytesIO, StringIO
+importiere binascii
+importiere re
+importiere quopri
+von io importiere BytesIO, StringIO
 
 # Intrapackage imports
-from email import utils
-from email import errors
-from email._policybase import compat32
-from email import charset as _charset
-from email._encoded_words import decode_b
+von email importiere utils
+von email importiere errors
+von email._policybase importiere compat32
+von email importiere charset as _charset
+von email._encoded_words importiere decode_b
 Charset = _charset.Charset
 
 SEMISPACE = '; '
@@ -178,7 +178,7 @@ klasse Message:
         according to RFC standards, the non-compliant data will be replaced by
         unicode "unknown character" code points.
         """
-        from email.generator import Generator
+        von email.generator importiere Generator
         policy = self.policy wenn policy is Nichts sonst policy
         fp = StringIO()
         g = Generator(fp,
@@ -201,7 +201,7 @@ klasse Message:
         serialize the message; wenn not specified the policy associated with
         the message instance is used.
         """
-        from email.generator import BytesGenerator
+        von email.generator importiere BytesGenerator
         policy = self.policy wenn policy is Nichts sonst policy
         fp = BytesIO()
         g = BytesGenerator(fp, mangle_from_=Falsch, policy=policy)
@@ -359,7 +359,7 @@ klasse Message:
 
         charset can be a Charset instance, a string naming a character set, or
         Nichts.  If it is a string it will be converted to a Charset instance.
-        If charset is Nichts, the charset parameter will be removed from the
+        If charset is Nichts, the charset parameter will be removed von the
         Content-Type field.  Anything sonst will generate a TypeError.
 
         The message will be assumed to be of type text/* encoded with
@@ -788,7 +788,7 @@ klasse Message:
                 self[header] = ctype
 
     def del_param(self, param, header='content-type', requote=Wahr):
-        """Remove the given parameter completely from the Content-Type header.
+        """Remove the given parameter completely von the Content-Type header.
 
         The header will be re-written in place without the parameter or its
         value. All values will be quoted as necessary unless requote is
@@ -844,7 +844,7 @@ klasse Message:
     def get_filename(self, failobj=Nichts):
         """Return the filename associated with the payload wenn present.
 
-        The filename is extracted from the Content-Disposition header's
+        The filename is extracted von the Content-Disposition header's
         'filename' parameter, and it is unquoted.  If that header is missing
         the 'filename' parameter, this method falls back to looking fuer the
         'name' parameter.
@@ -860,7 +860,7 @@ klasse Message:
     def get_boundary(self, failobj=Nichts):
         """Return the boundary associated with the payload wenn present.
 
-        The boundary is extracted from the Content-Type header's 'boundary'
+        The boundary is extracted von the Content-Type header's 'boundary'
         parameter, and it is unquoted.
         """
         missing = object()
@@ -977,14 +977,14 @@ klasse Message:
         return c_d
 
     # I.e. def walk(self): ...
-    from email.iterators import walk
+    von email.iterators importiere walk
 
 
 klasse MIMEPart(Message):
 
     def __init__(self, policy=Nichts):
         wenn policy is Nichts:
-            from email.policy import default
+            von email.policy importiere default
             policy = default
         super().__init__(policy)
 
@@ -1024,7 +1024,7 @@ klasse MIMEPart(Message):
             return
         wenn subtype != 'related':
             fuer subpart in part.iter_parts():
-                yield from self._find_body(subpart, preferencelist)
+                yield von self._find_body(subpart, preferencelist)
             return
         wenn 'related' in preferencelist:
             yield (preferencelist.index('related'), part)
@@ -1039,7 +1039,7 @@ klasse MIMEPart(Message):
             subparts = part.get_payload()
             candidate = subparts[0] wenn subparts sonst Nichts
         wenn candidate is not Nichts:
-            yield from self._find_body(candidate, preferencelist)
+            yield von self._find_body(candidate, preferencelist)
 
     def get_body(self, preferencelist=('related', 'html', 'plain')):
         """Return best candidate mime part fuer display as 'body' of message.
@@ -1103,10 +1103,10 @@ klasse MIMEPart(Message):
                     sonst:
                         attachments.append(part)
                 wenn found:
-                    yield from attachments
+                    yield von attachments
                     return
             parts.pop(0)
-            yield from parts
+            yield von parts
             return
         # Otherwise we more or less invert the remaining logic in get_body.
         # This only really works in edge cases (ex: non-text related or
@@ -1126,7 +1126,7 @@ klasse MIMEPart(Message):
         Return an empty iterator fuer a non-multipart.
         """
         wenn self.is_multipart():
-            yield from self.get_payload()
+            yield von self.get_payload()
 
     def get_content(self, *args, content_manager=Nichts, **kw):
         wenn content_manager is Nichts:

@@ -1,16 +1,16 @@
-import importlib
-import pickle
-import threading
-from textwrap import dedent
-import unittest
-import time
+importiere importlib
+importiere pickle
+importiere threading
+von textwrap importiere dedent
+importiere unittest
+importiere time
 
-from test.support import import_helper
+von test.support importiere import_helper
 # Raise SkipTest wenn subinterpreters not supported.
 _channels = import_helper.import_module('_interpchannels')
-from concurrent import interpreters
-from test.support import channels
-from .utils import _run_output, TestBase
+von concurrent importiere interpreters
+von test.support importiere channels
+von .utils importiere _run_output, TestBase
 
 
 klasse LowLevelTests(TestBase):
@@ -175,7 +175,7 @@ klasse TestSendRecv(TestBase):
     def test_send_recv_same_interpreter(self):
         interp = interpreters.create()
         interp.exec(dedent("""
-            from test.support import channels
+            von test.support importiere channels
             r, s = channels.create()
             orig = b'spam'
             s.send_nowait(orig)
@@ -248,7 +248,7 @@ klasse TestSendRecv(TestBase):
     def test_send_recv_nowait_same_interpreter(self):
         interp = interpreters.create()
         interp.exec(dedent("""
-            from test.support import channels
+            von test.support importiere channels
             r, s = channels.create()
             orig = b'spam'
             s.send_nowait(orig)
@@ -391,7 +391,7 @@ klasse TestSendRecv(TestBase):
             interp = interpreters.create()
 
             _run_output(interp, dedent(f"""
-                from test.support import channels
+                von test.support importiere channels
                 sch = channels.SendChannel({sch.id})
                 obj1 = b'spam'
                 obj2 = b'eggs'
@@ -486,7 +486,7 @@ klasse TestSendRecv(TestBase):
         self.assertEqual(_channels.get_count(rch.id), 0)
 
         _run_output(interp, dedent(f"""
-            from test.support import channels
+            von test.support importiere channels
             sch = channels.SendChannel({sch.id})
             sch.send_nowait(1, unbounditems=channels.UNBOUND)
             sch.send_nowait(2, unbounditems=channels.UNBOUND_ERROR)
@@ -522,7 +522,7 @@ klasse TestSendRecv(TestBase):
 
         sch.send_nowait(1)
         _run_output(interp1, dedent(f"""
-            from test.support import channels
+            von test.support importiere channels
             rch = channels.RecvChannel({rch.id})
             sch = channels.SendChannel({sch.id})
             obj1 = rch.recv()
@@ -530,7 +530,7 @@ klasse TestSendRecv(TestBase):
             sch.send_nowait(obj1, unbounditems=channels.UNBOUND_REMOVE)
             """))
         _run_output(interp2, dedent(f"""
-            from test.support import channels
+            von test.support importiere channels
             rch = channels.RecvChannel({rch.id})
             sch = channels.SendChannel({sch.id})
             obj2 = rch.recv()

@@ -1,14 +1,14 @@
-import importlib
-from importlib import abc
-from importlib import util
-import sys
-import time
-import threading
-import types
-import unittest
+importiere importlib
+von importlib importiere abc
+von importlib importiere util
+importiere sys
+importiere time
+importiere threading
+importiere types
+importiere unittest
 
-from test.support import threading_helper
-from test.test_importlib import util as test_util
+von test.support importiere threading_helper
+von test.test_importlib importiere util as test_util
 
 
 klasse CollectInit:
@@ -96,7 +96,7 @@ klasse LazyLoaderTests(unittest.TestCase):
         self.assertEqual(module, importer.loaded)
 
     def test_attr_unchanged(self):
-        # An attribute only mutated as a side-effect of import should not be
+        # An attribute only mutated as a side-effect of importiere should not be
         # changed needlessly.
         module = self.new_module()
         self.assertEqual(TestingImporter.mutated_name, module.__name__)
@@ -200,10 +200,10 @@ klasse LazyLoaderTests(unittest.TestCase):
         # Verify that lazy loading works with a module that modifies
         # its __class__ to be a custom type.
 
-        # Example module from PEP 726
+        # Example module von PEP 726
         module = self.new_module(source_code="""\
-import sys
-from types import ModuleType
+importiere sys
+von types importiere ModuleType
 
 CONSTANT = 3.14
 

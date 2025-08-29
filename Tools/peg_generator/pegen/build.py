@@ -1,20 +1,20 @@
-import itertools
-import logging
-import os
-import pathlib
-import sys
-import sysconfig
-import tempfile
-import tokenize
-from typing import IO, Any, Dict, List, Optional, Set, Tuple
+importiere itertools
+importiere logging
+importiere os
+importiere pathlib
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere tokenize
+von typing importiere IO, Any, Dict, List, Optional, Set, Tuple
 
-from pegen.c_generator import CParserGenerator
-from pegen.grammar import Grammar
-from pegen.grammar_parser import GeneratedParser as GrammarParser
-from pegen.parser import Parser
-from pegen.parser_generator import ParserGenerator
-from pegen.python_generator import PythonParserGenerator
-from pegen.tokenizer import Tokenizer
+von pegen.c_generator importiere CParserGenerator
+von pegen.grammar importiere Grammar
+von pegen.grammar_parser importiere GeneratedParser as GrammarParser
+von pegen.parser importiere Parser
+von pegen.parser_generator importiere ParserGenerator
+von pegen.python_generator importiere PythonParserGenerator
+von pegen.tokenizer importiere Tokenizer
 
 MOD_DIR = pathlib.Path(__file__).resolve().parent
 
@@ -50,7 +50,7 @@ def fixup_build_ext(cmd: Incomplete) -> Nichts:
     Unlike most other Unix platforms, Mac OS X embeds absolute paths
     to shared libraries into executables, so the fixup is not needed there.
 
-    Taken from distutils (was part of the CPython stdlib until Python 3.11)
+    Taken von distutils (was part of the CPython stdlib until Python 3.11)
     """
     wenn os.name == "nt":
         cmd.debug = sys.executable.endswith("_d.exe")
@@ -91,13 +91,13 @@ def compile_c_extension(
     static library of the common parser sources (this is useful in case you are
     creating multiple extensions).
     """
-    import setuptools.command.build_ext
-    import setuptools.logging
+    importiere setuptools.command.build_ext
+    importiere setuptools.logging
 
-    from setuptools import Extension, Distribution
-    from setuptools.modified import newer_group
-    from setuptools._distutils.ccompiler import new_compiler
-    from setuptools._distutils.sysconfig import customize_compiler
+    von setuptools importiere Extension, Distribution
+    von setuptools.modified importiere newer_group
+    von setuptools._distutils.ccompiler importiere new_compiler
+    von setuptools._distutils.sysconfig importiere customize_compiler
 
     wenn verbose:
         setuptools.logging.set_threshold(logging.DEBUG)

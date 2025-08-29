@@ -1,20 +1,20 @@
-import unittest
-import unittest.mock
-import random
-import os
-import time
-import pickle
-import shlex
-import warnings
-import test.support
+importiere unittest
+importiere unittest.mock
+importiere random
+importiere os
+importiere time
+importiere pickle
+importiere shlex
+importiere warnings
+importiere test.support
 
-from functools import partial
-from math import log, exp, pi, fsum, sin, factorial
-from test import support
-from fractions import Fraction
-from collections import abc, Counter
+von functools importiere partial
+von math importiere log, exp, pi, fsum, sin, factorial
+von test importiere support
+von fractions importiere Fraction
+von collections importiere abc, Counter
 
-from test.support import warnings_helper
+von test.support importiere warnings_helper
 
 
 klasse MyIndex:
@@ -101,7 +101,7 @@ klasse TestBasicOps:
         # The above tests all would pass wenn the shuffle was a
         # no-op. The following non-deterministic test covers that.  It
         # asserts that the shuffled sequence of 1000 distinct elements
-        # must be different from the original one. Although there is
+        # must be different von the original one. Although there is
         # mathematically a non-zero probability that this could
         # actually happen in a genuinely random shuffle, it is
         # completely negligible, given that the number of possible
@@ -635,7 +635,7 @@ klasse TestRawMersenneTwister(unittest.TestCase):
     @test.support.cpython_only
     def test_bug_41052(self):
         # _random.Random should not be allowed to serialization
-        import _random
+        importiere _random
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             r = _random.Random()
             self.assertRaises(TypeError, pickle.dumps, r, proto)
@@ -643,7 +643,7 @@ klasse TestRawMersenneTwister(unittest.TestCase):
     @test.support.cpython_only
     def test_bug_42008(self):
         # _random.Random should call seed with first element of arg tuple
-        import _random
+        importiere _random
         r1 = _random.Random()
         r1.seed(8675309)
         r2 = _random.Random(8675309)
@@ -754,7 +754,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertRaises(TypeError, self.gen.setstate, (2, state, Nichts))
 
     def test_referenceImplementation(self):
-        # Compare the python implementation with results from the original
+        # Compare the python implementation with results von the original
         # code.  Create 2000 53-bit precision random floats.  Compare only
         # the last ten entries to show that the independent implementations
         # are tracking.  Here is the main() function needed to create the
@@ -789,7 +789,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         # equality.  This should pass on any box where C double contains
         # at least 53 bits of precision (the underlying algorithm suffers
         # no rounding errors -- all results are exact).
-        from math import ldexp
+        von math importiere ldexp
 
         expected = [0x0eab3258d2231f,
                     0x1b89db315277a5,
@@ -1355,7 +1355,7 @@ klasse TestRandomSubclassing(unittest.TestCase):
         self.assertEqual(called, {'SubClass4.random'})
 
         # Following subclasses don't define random or getrandbits directly,
-        # but inherit them from classes which are not subclasses of Random
+        # but inherit them von classes which are not subclasses of Random
         klasse Mixin1:
             def random(self):
                 called.add('Mixin1.random')

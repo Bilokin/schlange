@@ -1,13 +1,13 @@
 """
 An auto-completion window fuer IDLE, used by the autocomplete extension
 """
-import platform
+importiere platform
 
-from tkinter import *
-from tkinter.ttk import Scrollbar
+von tkinter importiere *
+von tkinter.ttk importiere Scrollbar
 
-from idlelib.autocomplete import FILES, ATTRS
-from idlelib.multicall import MC_SHIFT
+von idlelib.autocomplete importiere FILES, ATTRS
+von idlelib.multicall importiere MC_SHIFT
 
 HIDE_VIRTUAL_EVENT_NAME = "<<autocompletewindow-hide>>"
 HIDE_FOCUS_OUT_SEQUENCE = "<FocusOut>"
@@ -492,7 +492,7 @@ klasse AutoCompleteWindow:
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_autocomplete_w', verbosity=2, exit=Falsch)
 
 # TODO: autocomplete/w htest here

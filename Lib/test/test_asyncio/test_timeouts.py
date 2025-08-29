@@ -1,11 +1,11 @@
 """Tests fuer asyncio/timeouts.py"""
 
-import unittest
-import time
+importiere unittest
+importiere time
 
-import asyncio
+importiere asyncio
 
-from test.test_asyncio.utils import await_without_task
+von test.test_asyncio.utils importiere await_without_task
 
 
 def tearDownModule():

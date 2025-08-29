@@ -1,7 +1,7 @@
-import re
+importiere re
 
-from . import info as _info
-from .parser._regexes import SIMPLE_TYPE
+von . importiere info as _info
+von .parser._regexes importiere SIMPLE_TYPE
 
 
 _KIND = _info.KIND

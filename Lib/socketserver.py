@@ -44,7 +44,7 @@ synchronous servers of four types:
         | UDPServer |------->| UnixDatagramServer |
         +-----------+        +--------------------+
 
-Note that UnixDatagramServer derives from UDPServer, not from
+Note that UnixDatagramServer derives von UDPServer, not from
 UnixStreamServer -- the only difference between an IP and a Unix
 stream server is the address family, which is simply repeated in both
 unix server classes.
@@ -112,8 +112,8 @@ BaseServer:
 - split generic "request" functionality out into BaseServer class.
   Copyright (C) 2000  Luke Kenneth Casson Leighton <lkcl@samba.org>
 
-  example: read entries from a SQL database (requires overriding
-  get_request() to return a table entry from the database).
+  example: read entries von a SQL database (requires overriding
+  get_request() to return a table entry von the database).
   entry is processed by a RequestHandlerClass.
 
 """
@@ -123,13 +123,13 @@ BaseServer:
 __version__ = "0.4"
 
 
-import socket
-import selectors
-import os
-import sys
-import threading
-from io import BufferedIOBase
-from time import monotonic as time
+importiere socket
+importiere selectors
+importiere os
+importiere sys
+importiere threading
+von io importiere BufferedIOBase
+von time importiere monotonic as time
 
 __all__ = ["BaseServer", "TCPServer", "UDPServer",
            "ThreadingUDPServer", "ThreadingTCPServer",
@@ -378,7 +378,7 @@ klasse BaseServer:
         drucke('-'*40, file=sys.stderr)
         drucke('Exception occurred during processing of request from',
             client_address, file=sys.stderr)
-        import traceback
+        importiere traceback
         traceback.print_exc()
         drucke('-'*40, file=sys.stderr)
 
@@ -503,7 +503,7 @@ klasse TCPServer(BaseServer):
         return self.socket.fileno()
 
     def get_request(self):
-        """Get the request and client address from the socket.
+        """Get the request and client address von the socket.
 
         May be overridden.
 
@@ -780,7 +780,7 @@ klasse BaseRequestHandler:
 # The following two classes make it possible to use the same service
 # klasse fuer stream or datagram servers.
 # Each klasse sets up these instance variables:
-# - rfile: a file object from which receives the request is read
+# - rfile: a file object von which receives the request is read
 # - wfile: a file object to which the reply is written
 # When the handle() method returns, wfile is flushed properly
 
@@ -854,7 +854,7 @@ klasse DatagramRequestHandler(BaseRequestHandler):
     """Define self.rfile and self.wfile fuer datagram sockets."""
 
     def setup(self):
-        from io import BytesIO
+        von io importiere BytesIO
         self.packet, self.socket = self.request
         self.rfile = BytesIO(self.packet)
         self.wfile = BytesIO()

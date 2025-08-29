@@ -1,9 +1,9 @@
 "Test , coverage %."
 
-from idlelib import zzdummy
-import unittest
-from test.support import requires
-from tkinter import Tk
+von idlelib importiere zzdummy
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk
 
 
 klasse Test(unittest.TestCase):

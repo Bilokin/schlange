@@ -30,5 +30,5 @@ klasse Delegator:
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_delegator', verbosity=2)

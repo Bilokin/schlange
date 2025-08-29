@@ -1,12 +1,12 @@
-import signal
-import sys
-import textwrap
-from test import list_tests, support
-from test.support import cpython_only
-from test.support.import_helper import import_module
-from test.support.script_helper import assert_python_failure, assert_python_ok
-import pickle
-import unittest
+importiere signal
+importiere sys
+importiere textwrap
+von test importiere list_tests, support
+von test.support importiere cpython_only
+von test.support.import_helper importiere import_module
+von test.support.script_helper importiere assert_python_failure, assert_python_ok
+importiere pickle
+importiere unittest
 
 klasse ListTest(list_tests.CommonTest):
     type2test = list
@@ -268,7 +268,7 @@ klasse ListTest(list_tests.CommonTest):
             def __init__(self, lst):
                 self.lst = lst
             def __iter__(self):
-                yield from self.lst
+                yield von self.lst
                 self.lst.clear()
 
         lst = list(range(5))
@@ -331,7 +331,7 @@ klasse ListTest(list_tests.CommonTest):
         # gh-118331: Make sure we don't crash wenn list allocation fails
         import_module("_testcapi")
         code = textwrap.dedent("""
-        import _testcapi, sys
+        importiere _testcapi, sys
         # Prime the freelist
         l = [Nichts]
         del l

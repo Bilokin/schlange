@@ -1,18 +1,18 @@
-# XXX TypeErrors on calling handlers, or on bad return values from a
+# XXX TypeErrors on calling handlers, or on bad return values von a
 # handler, are obscure and unhelpful.
 
-import os
-import sys
-import sysconfig
-import unittest
-import traceback
-from io import BytesIO
-from test import support
-from test.support import os_helper
-from test.support import sortdict
-from unittest import mock
-from xml.parsers import expat
-from xml.parsers.expat import errors
+importiere os
+importiere sys
+importiere sysconfig
+importiere unittest
+importiere traceback
+von io importiere BytesIO
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere sortdict
+von unittest importiere mock
+von xml.parsers importiere expat
+von xml.parsers.expat importiere errors
 
 
 klasse SetAttributeTest(unittest.TestCase):
@@ -449,7 +449,7 @@ klasse BufferTextTest(unittest.TestCase):
         self.assertIsNichts(parser.CharacterDataHandler)
 
 
-# Test handling of exception from callback:
+# Test handling of exception von callback:
 klasse HandlerExceptionTest(unittest.TestCase):
     def StartElementHandler(self, name, attrs):
         raise RuntimeError(f'StartElementHandler: <{name}>')
@@ -751,7 +751,7 @@ klasse ForeignDTDTests(unittest.TestCase):
         """
         If UseForeignDTD is passed Wahr and a document with an external
         entity reference is parsed, ExternalEntityRefHandler is called with
-        the public and system ids from the document.
+        the public and system ids von the document.
         """
         handler_call_args = []
         def resolve_entity(context, base, system_id, public_id):

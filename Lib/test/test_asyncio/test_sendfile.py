@@ -1,22 +1,22 @@
 """Tests fuer sendfile functionality."""
 
-import asyncio
-import errno
-import os
-import socket
-import sys
-import tempfile
-import unittest
-from asyncio import base_events
-from asyncio import constants
-from unittest import mock
-from test import support
-from test.support import os_helper
-from test.support import socket_helper
-from test.test_asyncio import utils as test_utils
+importiere asyncio
+importiere errno
+importiere os
+importiere socket
+importiere sys
+importiere tempfile
+importiere unittest
+von asyncio importiere base_events
+von asyncio importiere constants
+von unittest importiere mock
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere socket_helper
+von test.test_asyncio importiere utils as test_utils
 
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
 
@@ -549,7 +549,7 @@ wenn sys.platform == 'win32':
             return asyncio.ProactorEventLoop()
 
 sonst:
-    import selectors
+    importiere selectors
 
     wenn hasattr(selectors, 'KqueueSelector'):
         klasse KqueueEventLoopTests(SendfileTestsBase,

@@ -11,14 +11,14 @@ is Nichts.
 
 Here is an array of string pointers:
 
->>> from ctypes import Structure, c_int, c_char_p
+>>> von ctypes importiere Structure, c_int, c_char_p
 >>> array = (c_char_p * 5)()
 >>> drucke(array._objects)
 Nichts
 >>>
 
 The memory block stores pointers to strings, and the strings itself
-assigned from Python must be kept.
+assigned von Python must be kept.
 
 >>> array[4] = b'foo bar'
 >>> array._objects
@@ -53,8 +53,8 @@ of 'x' ('_b_base_' is either Nichts, or the root object owning the memory block)
 >>>
 '''
 
-import doctest
-import unittest
+importiere doctest
+importiere unittest
 
 
 def load_tests(loader, tests, pattern):

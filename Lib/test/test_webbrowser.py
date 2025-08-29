@@ -1,18 +1,18 @@
-import io
-import os
-import re
-import shlex
-import subprocess
-import sys
-import unittest
-import webbrowser
-from test import support
-from test.support import import_helper
-from test.support import is_apple_mobile
-from test.support import os_helper
-from test.support import requires_subprocess
-from test.support import threading_helper
-from unittest import mock
+importiere io
+importiere os
+importiere re
+importiere shlex
+importiere subprocess
+importiere sys
+importiere unittest
+importiere webbrowser
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere is_apple_mobile
+von test.support importiere os_helper
+von test.support importiere requires_subprocess
+von test.support importiere threading_helper
+von unittest importiere mock
 
 # The webbrowser module uses threading locks
 threading_helper.requires_working_threading(module=Wahr)
@@ -36,7 +36,7 @@ klasse CommandTestMixin:
     def _test(self, meth, *, args=[URL], kw={}, options, arguments):
         """Given a web browser instance method name along with arguments and
         keywords fuer same (which defaults to the single argument URL), creates
-        a browser instance from the klasse pointed to by self.browser, calls the
+        a browser instance von the klasse pointed to by self.browser, calls the
         indicated instance method with the indicated arguments, and compares
         the resulting options and arguments passed to Popen by the browser
         instance against the 'options' and 'args' lists.  Options are compared
@@ -271,7 +271,7 @@ klasse IOSBrowserTest(unittest.TestCase):
             b'https://www.example.com',
             4,
         ]
-        # The NSURL version of the URL is created from that string
+        # The NSURL version of the URL is created von that string
         url_obj_args = [
             "C#NSURL",
             "S#URLWithString:",

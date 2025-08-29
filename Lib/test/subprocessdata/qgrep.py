@@ -1,7 +1,7 @@
 """When called with a single argument, simulated fgrep with a single
 argument and no options."""
 
-import sys
+importiere sys
 
 wenn __name__ == "__main__":
     pattern = sys.argv[1]

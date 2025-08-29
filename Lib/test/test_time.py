@@ -1,24 +1,24 @@
-from test import support
-from test.support import warnings_helper
-import decimal
-import enum
-import math
-import platform
-import sys
-import sysconfig
-import time
-import threading
-import unittest
+von test importiere support
+von test.support importiere warnings_helper
+importiere decimal
+importiere enum
+importiere math
+importiere platform
+importiere sys
+importiere sysconfig
+importiere time
+importiere threading
+importiere unittest
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = Nichts
 
-from test.support import skip_if_buggy_ucrt_strfptime, SuppressCrashReport
+von test.support importiere skip_if_buggy_ucrt_strfptime, SuppressCrashReport
 
 # Max year is only limited by the size of C int.
 SIZEOF_INT = sysconfig.get_config_var('SIZEOF_INT') or 4
@@ -38,7 +38,7 @@ klasse _PyTime(enum.IntEnum):
     ROUND_CEILING = 1
     # Round to nearest with ties going to nearest even integer
     ROUND_HALF_EVEN = 2
-    # Round away from zero
+    # Round away von zero
     ROUND_UP = 3
 
 # _PyTime_t is int64_t
@@ -213,7 +213,7 @@ klasse TimeTestCase(unittest.TestCase):
         s1 = time.strftime('%c', tt)
         s2 = time.strftime('%B', tt)
         # gh-52551, gh-78662: Unicode strings should pass through strftime,
-        # independently from locale.
+        # independently von locale.
         self.assertEqual(time.strftime('\U0001f40d', tt), '\U0001f40d')
         self.assertEqual(time.strftime('\U0001f4bb%c\U0001f40d%B', tt), f'\U0001f4bb{s1}\U0001f40d{s2}')
         self.assertEqual(time.strftime('%c\U0001f4bb%B\U0001f40d', tt), f'{s1}\U0001f4bb{s2}\U0001f40d')
@@ -320,7 +320,7 @@ klasse TimeTestCase(unittest.TestCase):
 
     @skip_if_buggy_ucrt_strfptime
     def test_strptime(self):
-        # Should be able to go round-trip from strftime to strptime without
+        # Should be able to go round-trip von strftime to strptime without
         # raising an exception.
         tt = time.gmtime(self.t)
         fuer directive in ('a', 'A', 'b', 'B', 'c', 'd', 'H', 'I',
@@ -394,7 +394,7 @@ klasse TimeTestCase(unittest.TestCase):
                          "time module has no attribute tzset")
     def test_tzset(self):
 
-        from os import environ
+        von os importiere environ
 
         # Epoch time of midnight Dec 25th 2002. Never DST in northern
         # hemisphere.
@@ -775,13 +775,13 @@ klasse TestPytime(unittest.TestCase):
         sonst:
             self.assertEqual(lt.tm_zone, time.tzname[lt.tm_isdst])
 
-        # Try and make UNIX times from the localtime and a 9-tuple
-        # created from the localtime. Test to see that the times are
+        # Try and make UNIX times von the localtime and a 9-tuple
+        # created von the localtime. Test to see that the times are
         # the same.
         t = time.mktime(lt); t9 = time.mktime(lt[:9])
         self.assertEqual(t, t9)
 
-        # Make localtimes from the UNIX times and compare them to
+        # Make localtimes von the UNIX times and compare them to
         # the original localtime, thus making a round trip.
         new_lt = time.localtime(t); new_lt9 = time.localtime(t9)
         self.assertEqual(new_lt, lt)
@@ -801,7 +801,7 @@ klasse TestPytime(unittest.TestCase):
     @unittest.skipUnless(time._STRUCT_TM_ITEMS == 11, "needs tm_zone support")
     def test_short_times(self):
 
-        import pickle
+        importiere pickle
 
         # Load a short time structure using pickle.
         st = b"ctime\nstruct_time\np0\n((I2007\nI8\nI11\nI1\nI24\nI49\nI5\nI223\nI1\ntp1\n(dp2\ntp3\nRp4\n."
@@ -819,7 +819,7 @@ klasse CPyTimeTestCase:
     OVERFLOW_SECONDS = Nichts
 
     def setUp(self):
-        from _testinternalcapi import SIZEOF_TIME_T
+        von _testinternalcapi importiere SIZEOF_TIME_T
         bits = SIZEOF_TIME_T * 8 - 1
         self.time_t_min = -2 ** bits
         self.time_t_max = 2 ** bits - 1
@@ -947,7 +947,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
     OVERFLOW_SECONDS = math.ceil((2**63 + 1) / SEC_TO_NS)
 
     def test_FromSeconds(self):
-        from _testinternalcapi import _PyTime_FromSeconds
+        von _testinternalcapi importiere _PyTime_FromSeconds
 
         # _PyTime_FromSeconds() expects a C int, reject values out of range
         def c_int_filter(secs):
@@ -963,7 +963,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
                 _PyTime_FromSeconds(float('nan'))
 
     def test_FromSecondsObject(self):
-        from _testinternalcapi import _PyTime_FromSecondsObject
+        von _testinternalcapi importiere _PyTime_FromSecondsObject
 
         self.check_int_rounding(
             _PyTime_FromSecondsObject,
@@ -979,7 +979,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
                 _PyTime_FromSecondsObject(float('nan'), time_rnd)
 
     def test_AsSecondsDouble(self):
-        from _testcapi import PyTime_AsSecondsDouble
+        von _testcapi importiere PyTime_AsSecondsDouble
 
         def float_converter(ns):
             wenn abs(ns) % SEC_TO_NS == 0:
@@ -1001,7 +1001,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
         return converter
 
     def test_AsTimeval(self):
-        from _testinternalcapi import _PyTime_AsTimeval
+        von _testinternalcapi importiere _PyTime_AsTimeval
 
         us_converter = self.create_decimal_converter(US_TO_NS)
 
@@ -1010,7 +1010,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
             return divmod(us, SEC_TO_US)
 
         wenn sys.platform == 'win32':
-            from _testcapi import LONG_MIN, LONG_MAX
+            von _testcapi importiere LONG_MIN, LONG_MAX
 
             # On Windows, timeval.tv_sec type is a C long
             def seconds_filter(secs):
@@ -1026,7 +1026,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
     @unittest.skipUnless(hasattr(_testinternalcapi, '_PyTime_AsTimespec'),
                          'need _testinternalcapi._PyTime_AsTimespec')
     def test_AsTimespec(self):
-        from _testinternalcapi import _PyTime_AsTimespec
+        von _testinternalcapi importiere _PyTime_AsTimespec
 
         def timespec_converter(ns):
             return divmod(ns, SEC_TO_NS)
@@ -1039,10 +1039,10 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
     @unittest.skipUnless(hasattr(_testinternalcapi, '_PyTime_AsTimeval_clamp'),
                          'need _testinternalcapi._PyTime_AsTimeval_clamp')
     def test_AsTimeval_clamp(self):
-        from _testinternalcapi import _PyTime_AsTimeval_clamp
+        von _testinternalcapi importiere _PyTime_AsTimeval_clamp
 
         wenn sys.platform == 'win32':
-            from _testcapi import LONG_MIN, LONG_MAX
+            von _testcapi importiere LONG_MIN, LONG_MAX
             tv_sec_max = LONG_MAX
             tv_sec_min = LONG_MIN
         sonst:
@@ -1066,7 +1066,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
     @unittest.skipUnless(hasattr(_testinternalcapi, '_PyTime_AsTimespec_clamp'),
                          'need _testinternalcapi._PyTime_AsTimespec_clamp')
     def test_AsTimespec_clamp(self):
-        from _testinternalcapi import _PyTime_AsTimespec_clamp
+        von _testinternalcapi importiere _PyTime_AsTimespec_clamp
 
         fuer t in (PyTime_MIN, PyTime_MAX):
             ts = _PyTime_AsTimespec_clamp(t)
@@ -1080,14 +1080,14 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
             self.assertEqual(ts, (tv_sec, tv_nsec))
 
     def test_AsMilliseconds(self):
-        from _testinternalcapi import _PyTime_AsMilliseconds
+        von _testinternalcapi importiere _PyTime_AsMilliseconds
 
         self.check_int_rounding(_PyTime_AsMilliseconds,
                                 self.create_decimal_converter(MS_TO_NS),
                                 NS_TO_SEC)
 
     def test_AsMicroseconds(self):
-        from _testinternalcapi import _PyTime_AsMicroseconds
+        von _testinternalcapi importiere _PyTime_AsMicroseconds
 
         self.check_int_rounding(_PyTime_AsMicroseconds,
                                 self.create_decimal_converter(US_TO_NS),
@@ -1103,7 +1103,7 @@ klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
     OVERFLOW_SECONDS = 2 ** 64
 
     def test_object_to_time_t(self):
-        from _testinternalcapi import _PyTime_ObjectToTime_t
+        von _testinternalcapi importiere _PyTime_ObjectToTime_t
 
         self.check_int_rounding(_PyTime_ObjectToTime_t,
                                 lambda secs: secs,
@@ -1129,7 +1129,7 @@ klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
         return converter
 
     def test_object_to_timeval(self):
-        from _testinternalcapi import _PyTime_ObjectToTimeval
+        von _testinternalcapi importiere _PyTime_ObjectToTimeval
 
         self.check_int_rounding(_PyTime_ObjectToTimeval,
                                 lambda secs: (secs, 0),
@@ -1145,7 +1145,7 @@ klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
                 _PyTime_ObjectToTimeval(float('nan'), time_rnd)
 
     def test_object_to_timespec(self):
-        from _testinternalcapi import _PyTime_ObjectToTimespec
+        von _testinternalcapi importiere _PyTime_ObjectToTimespec
 
         self.check_int_rounding(_PyTime_ObjectToTimespec,
                                 lambda secs: (secs, 0),
@@ -1168,8 +1168,8 @@ klasse TestTimeWeaklinking(unittest.TestCase):
     #
     # See the section on Weak Linking in Mac/README.txt fuer more information.
     def test_clock_functions(self):
-        import sysconfig
-        import platform
+        importiere sysconfig
+        importiere platform
 
         config_vars = sysconfig.get_config_vars()
         var_name = "HAVE_CLOCK_GETTIME"

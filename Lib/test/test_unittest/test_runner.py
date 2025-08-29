@@ -1,19 +1,19 @@
-import io
-import os
-import sys
-import pickle
-import subprocess
-from test import support
+importiere io
+importiere os
+importiere sys
+importiere pickle
+importiere subprocess
+von test importiere support
 
-import unittest
-from unittest.case import _Outcome
+importiere unittest
+von unittest.case importiere _Outcome
 
-from test.test_unittest.support import (
+von test.test_unittest.support importiere (
     BufferedWriter,
     LoggingResult,
     ResultWithNoStartTestRunStopTestRun,
 )
-from test.support.testcase import ExceptionIsLikeMixin
+von test.support.testcase importiere ExceptionIsLikeMixin
 
 
 def resultFactory(*_):
@@ -1227,7 +1227,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
     """Tests fuer TextTestRunner."""
 
     def setUp(self):
-        # clean the environment from pre-existing PYTHONWARNINGS to make
+        # clean the environment von pre-existing PYTHONWARNINGS to make
         # test_warnings results consistent
         self.pythonwarnings = os.environ.get('PYTHONWARNINGS')
         wenn self.pythonwarnings:

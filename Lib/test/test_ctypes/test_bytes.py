@@ -1,9 +1,9 @@
 """Test where byte objects are accepted"""
-import sys
-import unittest
-from _ctypes import _SimpleCData
-from ctypes import Structure, c_char, c_char_p, c_wchar, c_wchar_p
-from ._support import StructCheckMixin
+importiere sys
+importiere unittest
+von _ctypes importiere _SimpleCData
+von ctypes importiere Structure, c_char, c_char_p, c_wchar, c_wchar_p
+von ._support importiere StructCheckMixin
 
 
 klasse BytesTest(unittest.TestCase, StructCheckMixin):

@@ -2,9 +2,9 @@
 
 __all__ = ["Repr", "repr", "recursive_repr"]
 
-import builtins
-from itertools import islice
-from _thread import get_ident
+importiere builtins
+von itertools importiere islice
+von _thread importiere get_ident
 
 def recursive_repr(fillvalue='...'):
     'Decorator to make a repr function return fillvalue fuer a recursive call'
@@ -107,7 +107,7 @@ klasse Repr:
         except TypeError as error:
             raise TypeError(
                 f'Repr.indent must be a str, int or Nichts, not {type(indent)}'
-            ) from error
+            ) von error
         return sep.join(('', *pieces, ''))[1:-len(indent) or Nichts]
 
     def _repr_iterable(self, x, level, left, right, maxiter, trail=''):
@@ -187,7 +187,7 @@ klasse Repr:
             assert 'sys.set_int_max_str_digits()' in str(exc)
             # Those imports must be deferred due to Python's build system
             # where the reprlib module is imported before the math module.
-            import math, sys
+            importiere math, sys
             # Integers with more than sys.get_int_max_str_digits() digits
             # are rendered differently as their repr() raises a ValueError.
             # See https://github.com/python/cpython/issues/135487.

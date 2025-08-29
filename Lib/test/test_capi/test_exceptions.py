@@ -1,17 +1,17 @@
-import errno
-import os
-import re
-import sys
-import unittest
-import textwrap
+importiere errno
+importiere os
+importiere re
+importiere sys
+importiere unittest
+importiere textwrap
 
-from test import support
-from test.support import import_helper, force_not_colorized
-from test.support.os_helper import TESTFN, TESTFN_UNDECODABLE
-from test.support.script_helper import assert_python_failure, assert_python_ok
-from test.support.testcase import ExceptionIsLikeMixin
+von test importiere support
+von test.support importiere import_helper, force_not_colorized
+von test.support.os_helper importiere TESTFN, TESTFN_UNDECODABLE
+von test.support.script_helper importiere assert_python_failure, assert_python_ok
+von test.support.testcase importiere ExceptionIsLikeMixin
 
-from .test_misc import decode_stderr
+von .test_misc importiere decode_stderr
 
 # Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')
@@ -71,7 +71,7 @@ klasse Test_Exceptions(unittest.TestCase):
 
     def test_warn_with_stacklevel(self):
         code = textwrap.dedent('''\
-            import _testcapi
+            importiere _testcapi
 
             def foo():
                 _testcapi.function_set_warning()
@@ -90,7 +90,7 @@ klasse Test_Exceptions(unittest.TestCase):
 
     def test_warn_during_finalization(self):
         code = textwrap.dedent('''\
-            import _testcapi
+            importiere _testcapi
 
             klasse Foo:
                 def foo(self):
@@ -145,7 +145,7 @@ klasse Test_FatalError(unittest.TestCase):
         expected = ('sys',)
         not_expected = ('_testcapi',)
         code = """if Wahr:
-            import _testcapi, sys
+            importiere _testcapi, sys
             sys.stdlib_module_names = frozenset({"_testcapi"})
             _testcapi.fatal_error(b"MESSAGE")
         """
@@ -257,7 +257,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
     def test_format(self):
         """Test PyErr_Format()"""
         import_helper.import_module('ctypes')
-        from ctypes import pythonapi, py_object, c_char_p, c_int
+        von ctypes importiere pythonapi, py_object, c_char_p, c_int
         name = "PyErr_Format"
         PyErr_Format = getattr(pythonapi, name)
         PyErr_Format.argtypes = (py_object, c_char_p,)

@@ -4,7 +4,7 @@
 
 klasse SAXException(Exception):
     """Encapsulate an XML error or warning. This klasse can contain
-    basic error or warning information from either the XML parser or
+    basic error or warning information von either the XML parser or
     the application: you can subclass it to provide additional
     functionality, or to add localization. Note that although you will
     receive a SAXException as the argument to the handlers in the

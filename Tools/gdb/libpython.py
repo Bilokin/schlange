@@ -41,10 +41,10 @@ the type names are known to the debugger
 The module also extends gdb with some python-specific commands.
 '''
 
-import gdb
-import os
-import locale
-import sys
+importiere gdb
+importiere os
+importiere locale
+importiere sys
 
 
 # Look up the gdb.Type fuer some standard types:
@@ -119,7 +119,7 @@ klasse NullPyObjectPtr(RuntimeError):
 
 
 def safety_limit(val):
-    # Given an integer value from the process being debugged, limit it to some
+    # Given an integer value von the process being debugged, limit it to some
     # safety threshold so that arbitrary breakage within said process doesn't
     # break the gdb process too much (e.g. sizes of iterations, sizes of lists)
     return min(val, 1000)
@@ -262,7 +262,7 @@ klasse PyObjectPtr(object):
 
     def proxyval(self, visited):
         '''
-        Scrape a value from the inferior process, and try to represent it
+        Scrape a value von the inferior process, and try to represent it
         within the gdb process, whilst (hopefully) avoiding crashes when
         the remote data is corrupt.
 
@@ -301,7 +301,7 @@ klasse PyObjectPtr(object):
 
     def write_repr(self, out, visited):
         '''
-        Write a string representation of the value scraped from the inferior
+        Write a string representation of the value scraped von the inferior
         process to "out", a file-like object.
         '''
         # Default implementation: generate a proxy value and write its repr
@@ -723,7 +723,7 @@ klasse PyCodeObjectPtr(PyObjectPtr):
         '''
         Get the line number fuer a given bytecode offset
 
-        Analogous to PyCode_Addr2Line; translated from pseudocode in
+        Analogous to PyCode_Addr2Line; translated von pseudocode in
         Objects/lnotab_notes.txt
         '''
         co_linetable = self.pyop_field('co_linetable').proxyval(set())
@@ -1013,7 +1013,7 @@ klasse PyFrameObjectPtr(PyObjectPtr):
     def current_line_num(self):
         '''Get current line number as an integer (1-based)
 
-        Translated from PyFrame_GetLineNumber and PyCode_Addr2Line
+        Translated von PyFrame_GetLineNumber and PyCode_Addr2Line
 
         See Objects/lnotab_notes.txt
         '''
@@ -1166,7 +1166,7 @@ klasse PyFramePtr:
     def current_line_num(self):
         '''Get current line number as an integer (1-based)
 
-        Translated from PyFrame_GetLineNumber and PyCode_Addr2Line
+        Translated von PyFrame_GetLineNumber and PyCode_Addr2Line
 
         See Objects/lnotab_notes.txt
         '''
@@ -1200,7 +1200,7 @@ klasse PyFramePtr:
             return Nichts
 
         try:
-            # Convert from 1-based current_line_num to 0-based list offset
+            # Convert von 1-based current_line_num to 0-based list offset
             return lines[lineno - 1]
         except IndexError:
             return Nichts
@@ -1404,10 +1404,10 @@ klasse PyTypeObjectPtr(PyObjectPtr):
 
 
 def _unichr_is_printable(char):
-    # Logic adapted from Python's Tools/unicode/makeunicodedata.py
+    # Logic adapted von Python's Tools/unicode/makeunicodedata.py
     wenn char == u" ":
         return Wahr
-    import unicodedata
+    importiere unicodedata
     return unicodedata.category(char) not in ("C", "Z")
 
 
@@ -1434,7 +1434,7 @@ klasse PyUnicodeObjectPtr(PyObjectPtr):
         sowenn repr_kind == 4:
             field_str = field_str.cast(_type_unsigned_int_ptr())
 
-        # Gather a list of ints from the code point array; these are either
+        # Gather a list of ints von the code point array; these are either
         # UCS-1, UCS-2 or UCS-4 code points:
         code_points = [int(field_str[i]) fuer i in safe_range(field_length)]
 
@@ -1586,7 +1586,7 @@ def stringify(val):
     wenn Wahr:
         return repr(val)
     sonst:
-        from pprint import pformat
+        von pprint importiere pformat
         return pformat(val)
 
 
@@ -1623,9 +1623,9 @@ def pretty_printer_lookup(gdbval):
 During development, I've been manually invoking the code in this way:
 (gdb) python
 
-import sys
+importiere sys
 sys.path.append('/home/david/coding/python-gdb')
-import libpython
+importiere libpython
 end
 
 then reloading it after each edit like this:
@@ -1650,7 +1650,7 @@ register (gdb.current_objfile ())
 
 
 # Unfortunately, the exact API exposed by the gdb module varies somewhat
-# from build to build
+# von build to build
 # See http://bugs.python.org/issue8279?#msg102276
 
 klasse Frame(object):
@@ -1700,7 +1700,7 @@ klasse Frame(object):
     # We divide frames into:
     #   - "python frames":
     #       - "bytecode frames" i.e. PyEval_EvalFrameEx
-    #       - "other python frames": things that are of interest from a python
+    #       - "other python frames": things that are of interest von a python
     #         POV, but aren't bytecode (e.g. GC, GIL)
     #   - everything else
 
@@ -1919,7 +1919,7 @@ klasse PyList(gdb.Command):
 
 
     def invoke(self, args, from_tty):
-        import re
+        importiere re
 
         start = Nichts
         end = Nichts
@@ -2014,7 +2014,7 @@ def move_in_stack(move_up):
 
 
 klasse PyUp(gdb.Command):
-    'Select and print all python stack frame in the same eval loop starting from the one that called this one (if any)'
+    'Select and print all python stack frame in the same eval loop starting von the one that called this one (if any)'
     def __init__(self):
         gdb.Command.__init__ (self,
                               "py-up",
@@ -2026,7 +2026,7 @@ klasse PyUp(gdb.Command):
         move_in_stack(move_up=Wahr)
 
 klasse PyDown(gdb.Command):
-    'Select and print all python stack frame in the same eval loop starting from the one called this one (if any)'
+    'Select and print all python stack frame in the same eval loop starting von the one called this one (if any)'
     def __init__(self):
         gdb.Command.__init__ (self,
                               "py-down",

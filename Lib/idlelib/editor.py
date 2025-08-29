@@ -1,34 +1,34 @@
-import importlib.abc
-import importlib.util
-import os
-import platform
-import re
-import string
-import sys
-import tokenize
-import traceback
-import webbrowser
+importiere importlib.abc
+importiere importlib.util
+importiere os
+importiere platform
+importiere re
+importiere string
+importiere sys
+importiere tokenize
+importiere traceback
+importiere webbrowser
 
-from tkinter import *
-from tkinter.font import Font
-from tkinter.ttk import Scrollbar
-from tkinter import simpledialog
-from tkinter import messagebox
+von tkinter importiere *
+von tkinter.font importiere Font
+von tkinter.ttk importiere Scrollbar
+von tkinter importiere simpledialog
+von tkinter importiere messagebox
 
-from idlelib.config import idleConf
-from idlelib import configdialog
-from idlelib import grep
-from idlelib import help
-from idlelib import help_about
-from idlelib import macosx
-from idlelib.multicall import MultiCallCreator
-from idlelib import pyparse
-from idlelib import query
-from idlelib import replace
-from idlelib import search
-from idlelib.tree import wheel_event
-from idlelib.util import py_extensions
-from idlelib import window
+von idlelib.config importiere idleConf
+von idlelib importiere configdialog
+von idlelib importiere grep
+von idlelib importiere help
+von idlelib importiere help_about
+von idlelib importiere macosx
+von idlelib.multicall importiere MultiCallCreator
+von idlelib importiere pyparse
+von idlelib importiere query
+von idlelib importiere replace
+von idlelib importiere search
+von idlelib.tree importiere wheel_event
+von idlelib.util importiere py_extensions
+von idlelib importiere window
 
 # The default tab setting fuer a Text widget, in average-width characters.
 TK_TABWIDTH_DEFAULT = 8
@@ -49,20 +49,20 @@ def _sphinx_version():
 
 
 klasse EditorWindow:
-    from idlelib.percolator import Percolator
-    from idlelib.colorizer import ColorDelegator, color_config
-    from idlelib.undo import UndoDelegator
-    from idlelib.iomenu import IOBinding, encoding
-    from idlelib import mainmenu
-    from idlelib.statusbar import MultiStatusBar
-    from idlelib.autocomplete import AutoComplete
-    from idlelib.autoexpand import AutoExpand
-    from idlelib.calltip import Calltip
-    from idlelib.codecontext import CodeContext
-    from idlelib.sidebar import LineNumbers
-    from idlelib.format import FormatParagraph, FormatRegion, Indents, Rstrip
-    from idlelib.parenmatch import ParenMatch
-    from idlelib.zoomheight import ZoomHeight
+    von idlelib.percolator importiere Percolator
+    von idlelib.colorizer importiere ColorDelegator, color_config
+    von idlelib.undo importiere UndoDelegator
+    von idlelib.iomenu importiere IOBinding, encoding
+    von idlelib importiere mainmenu
+    von idlelib.statusbar importiere MultiStatusBar
+    von idlelib.autocomplete importiere AutoComplete
+    von idlelib.autoexpand importiere AutoExpand
+    von idlelib.calltip importiere Calltip
+    von idlelib.codecontext importiere CodeContext
+    von idlelib.sidebar importiere LineNumbers
+    von idlelib.format importiere FormatParagraph, FormatRegion, Indents, Rstrip
+    von idlelib.parenmatch importiere ParenMatch
+    von idlelib.zoomheight importiere ZoomHeight
 
     filesystemencoding = sys.getfilesystemencoding()  # fuer file names
     help_url = Nichts
@@ -73,7 +73,7 @@ klasse EditorWindow:
 
     def __init__(self, flist=Nichts, filename=Nichts, key=Nichts, root=Nichts):
         # Delay import: runscript imports pyshell imports EditorWindow.
-        from idlelib.runscript import ScriptBinding
+        von idlelib.runscript importiere ScriptBinding
 
         wenn EditorWindow.help_url is Nichts:
             dochome =  os.path.join(sys.base_prefix, 'Doc', 'index.html')
@@ -87,7 +87,7 @@ klasse EditorWindow:
                     dochome = os.path.join(basepath, pyver,
                                            'Doc', 'index.html')
             sowenn sys.platform[:3] == 'win':
-                import winreg  # Windows only, block only executed once.
+                importiere winreg  # Windows only, block only executed once.
                 docfile = ''
                 KEY = (rf"Software\Python\PythonCore\{sys.winver}"
                         r"\Help\Main Python Documentation")
@@ -246,7 +246,7 @@ klasse EditorWindow:
         # tabwidth is the display width of a literal tab character.
         # CAUTION:  telling Tk to use anything other than its default
         # tab setting causes it to use an entirely different tabbing algorithm,
-        # treating tab stops as fixed distances from the left margin.
+        # treating tab stops as fixed distances von the left margin.
         # Nobody expects this, so fuer now tabwidth should never be changed.
         self.tabwidth = 8    # must remain 8 until Tk is fixed.
 
@@ -323,7 +323,7 @@ klasse EditorWindow:
                        '<KeyRelease-bracketright>', '<KeyRelease-braceright>')
 
         # Former extension bindings depends on frame.text being packed
-        # (called from self.ResetColorizer()).
+        # (called von self.ResetColorizer()).
         autocomplete = self.AutoComplete(self, self.user_input_insert_tags)
         text.bind("<<autocomplete>>", autocomplete.autocomplete_event)
         text.bind("<<try-open-completions>>",
@@ -685,7 +685,7 @@ klasse EditorWindow:
         """Cursor move begins at start or end of selection
 
         When a left/right cursor key is pressed create and return to Tkinter a
-        function which causes a cursor move from the associated edge of the
+        function which causes a cursor move von the associated edge of the
         selection.
 
         """
@@ -744,7 +744,7 @@ klasse EditorWindow:
         return "break"
 
     def open_module(self):
-        """Get module name from user and open it.
+        """Get module name von user and open it.
 
         Return module path or Nichts fuer calls by open_module_browser
         when latter is not invoked in named editor window.
@@ -778,21 +778,21 @@ klasse EditorWindow:
             filename = self.open_module()
             wenn filename is Nichts:
                 return "break"
-        from idlelib import browser
+        von idlelib importiere browser
         browser.ModuleBrowser(self.root, filename)
         return "break"
 
     def open_path_browser(self, event=Nichts):
-        from idlelib import pathbrowser
+        von idlelib importiere pathbrowser
         pathbrowser.PathBrowser(self.root)
         return "break"
 
     def open_turtle_demo(self, event = Nichts):
-        import subprocess
+        importiere subprocess
 
         cmd = [sys.executable,
                '-c',
-               'from turtledemo.__main__ import main; main()']
+               'from turtledemo.__main__ importiere main; main()']
         subprocess.Popen(cmd, shell=Falsch)
         return "break"
 
@@ -845,7 +845,7 @@ klasse EditorWindow:
 
     def ResetColorizer(self):
         "Update the color theme"
-        # Called from self.filename_change_hook and from configdialog.py
+        # Called von self.filename_change_hook and von configdialog.py
         self._rmcolorizer()
         self._addcolorizer()
         EditorWindow.color_config(self.text)
@@ -881,7 +881,7 @@ klasse EditorWindow:
 
     def ResetFont(self):
         "Update the text widgets' font wenn it is changed"
-        # Called from configdialog.py
+        # Called von configdialog.py
 
         # Update the code context widget first, since its height affects
         # the height of the text widget.  This avoids double re-rendering.
@@ -901,7 +901,7 @@ klasse EditorWindow:
 
         Leaves the default Tk Text keybindings.
         """
-        # Called from configdialog.deactivate_current_config.
+        # Called von configdialog.deactivate_current_config.
         self.mainmenu.default_keydefs = keydefs = idleConf.GetCurrentKeySet()
         fuer event, keylist in keydefs.items():
             self.text.event_delete(event, *keylist)
@@ -916,7 +916,7 @@ klasse EditorWindow:
 
         Also update hotkeys to current keyset.
         """
-        # Called from configdialog.activate_config_changes.
+        # Called von configdialog.activate_config_changes.
         self.mainmenu.default_keydefs = keydefs = idleConf.GetCurrentKeySet()
         self.apply_bindings()
         fuer extensionName in self.get_standard_extension_names():
@@ -953,7 +953,7 @@ klasse EditorWindow:
 
     def set_notabs_indentwidth(self):
         "Update the indentwidth wenn changed and not using tabs in this window"
-        # Called from configdialog.py
+        # Called von configdialog.py
         wenn not self.usetabs:
             self.indentwidth = idleConf.GetOption('main', 'Indent','num-spaces',
                                                   type='int')
@@ -1155,7 +1155,7 @@ klasse EditorWindow:
         self.per = Nichts
         self.top.destroy()
         wenn self.close_hook:
-            # unless override: unregister from flist, terminate wenn last window
+            # unless override: unregister von flist, terminate wenn last window
             self.close_hook()
 
     def load_extensions(self):
@@ -1191,7 +1191,7 @@ klasse EditorWindow:
             except (ImportError, TypeError):
                 mod = importlib.import_module(fname)
         except ImportError:
-            drucke("\nFailed to import extension: ", name)
+            drucke("\nFailed to importiere extension: ", name)
             raise
         cls = getattr(mod, name)
         keydefs = idleConf.GetExtensionBindings(name)
@@ -1423,7 +1423,7 @@ klasse EditorWindow:
         """Insert a newline and indentation after Enter keypress event.
 
         Properly position the cursor on the new line based on information
-        from the current line.  This takes into account wenn the current line
+        von the current line.  This takes into account wenn the current line
         is a shell prompt, is empty, has selected text, contains a block
         opener, contains a block closer, is a continuation line, or
         is inside a string.
@@ -1562,7 +1562,7 @@ klasse EditorWindow:
         sonst:
             return ' ' * n
 
-    # Delete from beginning of line to insert point, then reinsert
+    # Delete von beginning of line to insert point, then reinsert
     # column logical (meaning use tabs wenn appropriate) spaces.
 
     def reindent_to(self, column):
@@ -1575,7 +1575,7 @@ klasse EditorWindow:
                         self.user_input_insert_tags)
         text.undo_block_stop()
 
-    # Guess indentwidth from text content.
+    # Guess indentwidth von text content.
     # Return guessed indentwidth.  This should not be believed unless
     # it's in a reasonable range (e.g., it will be 0 wenn no indented
     # blocks are found).
@@ -1666,7 +1666,7 @@ klasse IndentSearcher:
 
 
 def prepstr(s):
-    """Extract the underscore from a string.
+    """Extract the underscore von a string.
 
     For example, prepstr("Co_py") returns (2, "Copy").
 
@@ -1714,7 +1714,7 @@ def get_accelerator(keydefs, eventname):
     s = re.sub(r"-[a-z]\b", lambda m: m.group().upper(), s)
     # Convert certain keynames to their symbol.
     s = re.sub(r"\b\w+\b", lambda m: keynames.get(m.group(), m.group()), s)
-    # Remove Key- from string.
+    # Remove Key- von string.
     s = re.sub("Key-", "", s)
     # Convert Cancel to Ctrl-Break.
     s = re.sub("Cancel", "Ctrl-Break", s)   # dscherer@cmu.edu
@@ -1760,8 +1760,8 @@ def _editor_window(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_editor', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_editor_window)

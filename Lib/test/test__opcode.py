@@ -1,10 +1,10 @@
-import dis
-from test.support.import_helper import import_module
-import unittest
-import opcode
+importiere dis
+von test.support.import_helper importiere import_module
+importiere unittest
+importiere opcode
 
 _opcode = import_module("_opcode")
-from _opcode import stack_effect
+von _opcode importiere stack_effect
 
 
 klasse OpListTests(unittest.TestCase):

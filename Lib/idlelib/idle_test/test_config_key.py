@@ -5,13 +5,13 @@ may be skipped, and dummy function in bind test should not be called.
 Not tested: exit with 'self.advanced or self.keys_ok(keys) ...' Falsch.
 """
 
-from idlelib import config_key
-from test.support import requires
-import unittest
-from unittest import mock
-from tkinter import Tk, TclError
-from idlelib.idle_test.mock_idle import Func
-from idlelib.idle_test.mock_tk import Mbox_func
+von idlelib importiere config_key
+von test.support importiere requires
+importiere unittest
+von unittest importiere mock
+von tkinter importiere Tk, TclError
+von idlelib.idle_test.mock_idle importiere Func
+von idlelib.idle_test.mock_tk importiere Mbox_func
 
 
 klasse ValidationTest(unittest.TestCase):

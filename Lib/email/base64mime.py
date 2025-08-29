@@ -34,8 +34,8 @@ __all__ = [
     ]
 
 
-from base64 import b64encode
-from binascii import b2a_base64, a2b_base64
+von base64 importiere b64encode
+von binascii importiere b2a_base64, a2b_base64
 
 CRLF = '\r\n'
 NL = '\n'

@@ -1,5 +1,5 @@
-import unittest
-from ctypes import (create_string_buffer, create_unicode_buffer, sizeof,
+importiere unittest
+von ctypes importiere (create_string_buffer, create_unicode_buffer, sizeof,
                     c_char, c_wchar)
 
 

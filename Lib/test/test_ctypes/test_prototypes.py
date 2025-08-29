@@ -18,12 +18,12 @@
 #
 # In this case, there would have to be an additional reference to the argument...
 
-import unittest
-from ctypes import (CDLL, CFUNCTYPE, POINTER, ArgumentError,
+importiere unittest
+von ctypes importiere (CDLL, CFUNCTYPE, POINTER, ArgumentError,
                     pointer, byref, sizeof, addressof, create_string_buffer,
                     c_void_p, c_char_p, c_wchar_p, c_char, c_wchar,
                     c_short, c_int, c_long, c_longlong, c_double)
-from test.support import import_helper
+von test.support importiere import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
@@ -37,7 +37,7 @@ def positive_address(a):
     wenn a >= 0:
         return a
     # View the bits in `a` as unsigned instead.
-    import struct
+    importiere struct
     num_bits = struct.calcsize("P") * 8 # num bits in native machine address
     a += 1 << num_bits
     assert a >= 0

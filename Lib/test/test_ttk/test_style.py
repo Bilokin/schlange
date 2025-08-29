@@ -1,11 +1,11 @@
-import unittest
-import sys
-import tkinter
-from tkinter import ttk
-from tkinter import TclError
-from test import support
-from test.support import requires
-from test.test_tkinter.support import AbstractTkTest, get_tk_patchlevel
+importiere unittest
+importiere sys
+importiere tkinter
+von tkinter importiere ttk
+von tkinter importiere TclError
+von test importiere support
+von test.support importiere requires
+von test.test_tkinter.support importiere AbstractTkTest, get_tk_patchlevel
 
 requires('gui')
 

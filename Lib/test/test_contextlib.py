@@ -1,17 +1,17 @@
 """Unit tests fuer contextlib.py, and other context managers."""
 
-import io
-import os
-import sys
-import tempfile
-import threading
-import traceback
-import unittest
-from contextlib import *  # Tests __all__
-from test import support
-from test.support import os_helper
-from test.support.testcase import ExceptionIsLikeMixin
-import weakref
+importiere io
+importiere os
+importiere sys
+importiere tempfile
+importiere threading
+importiere traceback
+importiere unittest
+von contextlib importiere *  # Tests __all__
+von test importiere support
+von test.support importiere os_helper
+von test.support.testcase importiere ExceptionIsLikeMixin
+importiere weakref
 
 
 klasse TestAbstractContextManager(unittest.TestCase):
@@ -245,8 +245,8 @@ klasse ContextManagerTestCase(unittest.TestCase):
 
     def test_contextmanager_except_pep479(self):
         code = """\
-from __future__ import generator_stop
-from contextlib import contextmanager
+von __future__ importiere generator_stop
+von contextlib importiere contextmanager
 @contextmanager
 def woohoo():
     yield
@@ -270,7 +270,7 @@ def woohoo():
             try:
                 yield
             except Exception as exc:
-                raise RuntimeError('issue29692:Chained') from exc
+                raise RuntimeError('issue29692:Chained') von exc
         try:
             with test_issue29692():
                 raise ZeroDivisionError
@@ -293,7 +293,7 @@ def woohoo():
             try:
                 yield
             except Exception as exc:
-                raise RuntimeError(f'caught {exc}') from exc
+                raise RuntimeError(f'caught {exc}') von exc
 
         with self.assertRaises(RuntimeError):
             with woohoo():
@@ -1116,7 +1116,7 @@ klasse TestBaseExitStack:
             try:
                 yield 1
             except Exception as exc:
-                raise UniqueException("new exception") from exc
+                raise UniqueException("new exception") von exc
 
         @contextmanager
         def first():

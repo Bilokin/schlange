@@ -1,7 +1,7 @@
-import unittest
+importiere unittest
 
-from importlib import resources
-from . import util
+von importlib importiere resources
+von . importiere util
 
 
 klasse CommonBinaryTests(util.CommonTests, unittest.TestCase):

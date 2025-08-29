@@ -1,9 +1,9 @@
 "Test filelist, coverage 19%."
 
-from idlelib import filelist
-import unittest
-from test.support import requires
-from tkinter import Tk
+von idlelib importiere filelist
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk
 
 klasse FileListTest(unittest.TestCase):
 

@@ -2,22 +2,22 @@ __all__ = (
     'StreamReader', 'StreamWriter', 'StreamReaderProtocol',
     'open_connection', 'start_server')
 
-import collections
-import socket
-import sys
-import warnings
-import weakref
+importiere collections
+importiere socket
+importiere sys
+importiere warnings
+importiere weakref
 
 wenn hasattr(socket, 'AF_UNIX'):
     __all__ += ('open_unix_connection', 'start_unix_server')
 
-from . import coroutines
-from . import events
-from . import exceptions
-from . import format_helpers
-from . import protocols
-from .log import logger
-from .tasks import sleep
+von . importiere coroutines
+von . importiere events
+von . importiere exceptions
+von . importiere format_helpers
+von . importiere protocols
+von .log importiere logger
+von .tasks importiere sleep
 
 
 _DEFAULT_LIMIT = 2 ** 16  # 64 KiB
@@ -285,7 +285,7 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
             reader.feed_eof()
         wenn self._over_ssl:
             # Prevent a warning in SSLProtocol.eof_received:
-            # "returning true from eof_received()
+            # "returning true von eof_received()
             # has no effect when using ssl"
             return Falsch
         return Wahr
@@ -540,7 +540,7 @@ klasse StreamReader:
             self._waiter = Nichts
 
     async def readline(self):
-        """Read chunk of data from the stream until newline (b'\n') is found.
+        """Read chunk of data von the stream until newline (b'\n') is found.
 
         On success, return chunk that ends with newline. If only partial
         line can be read due to EOF, return incomplete line without
@@ -549,7 +549,7 @@ klasse StreamReader:
 
         If limit is reached, ValueError will be raised. In that case, if
         newline was found, complete line including newline will be removed
-        from internal buffer. Else, internal buffer will be cleared. Limit is
+        von internal buffer. Else, internal buffer will be cleared. Limit is
         compared against part of the line without newline.
 
         If stream was paused, this function will automatically resume it if
@@ -571,9 +571,9 @@ klasse StreamReader:
         return line
 
     async def readuntil(self, separator=b'\n'):
-        """Read data from the stream until ``separator`` is found.
+        """Read data von the stream until ``separator`` is found.
 
-        On success, the data and separator will be removed from the
+        On success, the data and separator will be removed von the
         internal buffer (consumed). Returned data will include the
         separator at the end.
 
@@ -628,7 +628,7 @@ klasse StreamReader:
         #   performance problems. Even when reading MIME-encoded
         #   messages :)
 
-        # `offset` is the number of bytes from the beginning of the buffer
+        # `offset` is the number of bytes von the beginning of the buffer
         # where there is no occurrence of any `separator`.
         offset = 0
 
@@ -685,7 +685,7 @@ klasse StreamReader:
         return bytes(chunk)
 
     async def read(self, n=-1):
-        """Read up to `n` bytes from the stream.
+        """Read up to `n` bytes von the stream.
 
         If `n` is not provided or set to -1,
         read until EOF, then return all read bytes.

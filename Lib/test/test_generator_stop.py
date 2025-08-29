@@ -1,6 +1,6 @@
-from __future__ import generator_stop
+von __future__ importiere generator_stop
 
-import unittest
+importiere unittest
 
 
 klasse TestPEP479(unittest.TestCase):

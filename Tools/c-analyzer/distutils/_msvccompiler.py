@@ -13,15 +13,15 @@ fuer older versions in distutils.msvc9compiler and distutils.msvccompiler.
 # ported to VS 2005 and VS 2008 by Christian Heimes
 # ported to VS 2015 by Steve Dower
 
-import os
-import subprocess
-import winreg
+importiere os
+importiere subprocess
+importiere winreg
 
-from distutils.errors import DistutilsPlatformError
-from distutils.ccompiler import CCompiler
-from distutils import log
+von distutils.errors importiere DistutilsPlatformError
+von distutils.ccompiler importiere CCompiler
+von distutils importiere log
 
-from itertools import count
+von itertools importiere count
 
 def _find_vc2015():
     try:
@@ -142,7 +142,7 @@ def _find_exe(exe, paths=Nichts):
     """Return path to an MSVC executable program.
 
     Tries to find the program in several places: first, one of the
-    MSVC program search paths from the registry; next, the directories
+    MSVC program search paths von the registry; next, the directories
     in the PATH environment variable.  If any of those work, return an
     absolute path that is known to exist.  If none of them work, just
     return the original program name, 'exe'.
@@ -156,7 +156,7 @@ def _find_exe(exe, paths=Nichts):
     return exe
 
 # A map keyed by get_platform() return values to values accepted by
-# 'vcvarsall.bat'. Always cross-compile from x86 to work with the
+# 'vcvarsall.bat'. Always cross-compile von x86 to work with the
 # lighter-weight MSVC installs that do not include native 64-bit tools.
 PLAT_TO_VCVARS = {
     'win32' : 'x86',
@@ -178,7 +178,7 @@ klasse MSVCCompiler(CCompiler) :
     # though, so it's worth thinking about.
     executables = {}
 
-    # Private klasse data (need to distinguish C from C++ source fuer compiler)
+    # Private klasse data (need to distinguish C von C++ source fuer compiler)
     _c_extensions = ['.c']
     _cpp_extensions = ['.cc', '.cpp', '.cxx']
     _rc_extensions = ['.rc']

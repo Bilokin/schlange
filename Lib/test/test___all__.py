@@ -1,8 +1,8 @@
-import unittest
-from test import support
-from test.support import warnings_helper
-import os
-import sys
+importiere unittest
+von test importiere support
+von test.support importiere warnings_helper
+importiere os
+importiere sys
 
 
 wenn support.check_sanitizer(address=Wahr, memory=Wahr):
@@ -56,7 +56,7 @@ klasse AllTest(unittest.TestCase):
                 ("", SyntaxWarning),
                 quiet=Wahr):
                 try:
-                    exec("from %s import *" % modname, names)
+                    exec("from %s importiere *" % modname, names)
                 except Exception as e:
                     # Include the module name in the exception string
                     self.fail("__all__ failure in {}: {}: {}".format(
@@ -107,7 +107,7 @@ klasse AllTest(unittest.TestCase):
         # In case _socket fails to build, make this test fail more gracefully
         # than an AttributeError somewhere deep in concurrent.futures, email
         # or unittest.
-        import _socket  # noqa: F401
+        importiere _socket  # noqa: F401
 
         ignored = []
         failed_imports = []

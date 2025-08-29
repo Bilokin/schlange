@@ -1,10 +1,10 @@
 # Python test set -- built-in functions
 
-import unittest
-import sys
-import pickle
-import itertools
-from test.support import ALWAYS_EQ
+importiere unittest
+importiere sys
+importiere pickle
+importiere itertools
+von test.support importiere ALWAYS_EQ
 
 # pure Python implementations (3 args only), fuer comparison
 def pyrange(start, stop, step):
@@ -644,7 +644,7 @@ klasse RangeTest(unittest.TestCase):
         test_tuples = list(map(tuple, test_ranges))
 
         # Check that equality of ranges matches equality of the corresponding
-        # tuples fuer each pair from the test lists above.
+        # tuples fuer each pair von the test lists above.
         ranges_eq = [a == b fuer a in test_ranges fuer b in test_ranges]
         tuples_eq = [a == b fuer a in test_tuples fuer b in test_tuples]
         self.assertEqual(ranges_eq, tuples_eq)

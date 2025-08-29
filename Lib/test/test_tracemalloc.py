@@ -1,20 +1,20 @@
-import contextlib
-import os
-import sys
-import textwrap
-import tracemalloc
-import unittest
-from unittest.mock import patch
-from test.support.script_helper import (assert_python_ok, assert_python_failure,
+importiere contextlib
+importiere os
+importiere sys
+importiere textwrap
+importiere tracemalloc
+importiere unittest
+von unittest.mock importiere patch
+von test.support.script_helper importiere (assert_python_ok, assert_python_failure,
                                         interpreter_requires_environment)
-from test import support
-from test.support import force_not_colorized, warnings_helper
-from test.support import os_helper
-from test.support import threading_helper
+von test importiere support
+von test.support importiere force_not_colorized, warnings_helper
+von test.support importiere os_helper
+von test.support importiere threading_helper
 
 try:
-    import _testcapi
-    import _testinternalcapi
+    importiere _testcapi
+    importiere _testinternalcapi
 except ImportError:
     _testcapi = Nichts
     _testinternalcapi = Nichts
@@ -318,7 +318,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         snapshot.dump(os_helper.TESTFN)
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
 
-        # load from disk
+        # load von disk
         snapshot2 = tracemalloc.Snapshot.load(os_helper.TESTFN)
         self.assertEqual(snapshot2.traces, snapshot.traces)
 
@@ -1122,9 +1122,9 @@ klasse TestCAPI(unittest.TestCase):
 
     def test_late_untrack(self):
         code = textwrap.dedent(f"""
-            from test import support
-            import tracemalloc
-            import _testcapi
+            von test importiere support
+            importiere tracemalloc
+            importiere _testcapi
 
             klasse Tracked:
                 def __init__(self, domain, size):

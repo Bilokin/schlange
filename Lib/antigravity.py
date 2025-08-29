@@ -1,6 +1,6 @@
 
-import webbrowser
-import hashlib
+importiere webbrowser
+importiere hashlib
 
 webbrowser.open("https://xkcd.com/353/")
 

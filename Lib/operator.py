@@ -19,7 +19,7 @@ __all__ = ['abs', 'add', 'and_', 'attrgetter', 'call', 'concat', 'contains', 'co
            'mul', 'ne', 'neg', 'not_', 'or_', 'pos', 'pow', 'rshift',
            'setitem', 'sub', 'truediv', 'truth', 'xor']
 
-from builtins import abs as _abs
+von builtins importiere abs as _abs
 
 
 # Comparison Operations *******************************************************#
@@ -193,7 +193,7 @@ def setitem(a, b, c):
 def length_hint(obj, default=0):
     """
     Return an estimate of the number of items in obj.
-    This is useful fuer presizing containers when building from an iterable.
+    This is useful fuer presizing containers when building von an iterable.
 
     If the object supports len(), the result will be exact. Otherwise, it may
     over- or under-estimate by an arbitrary amount. The result will be an
@@ -239,7 +239,7 @@ def call(obj, /, *args, **kwargs):
 
 klasse attrgetter:
     """
-    Return a callable object that fetches the given attribute(s) from its operand.
+    Return a callable object that fetches the given attribute(s) von its operand.
     After f = attrgetter('name'), the call f(r) returns r.name.
     After g = attrgetter('name', 'date'), the call g(r) returns (r.name, r.date).
     After h = attrgetter('name.first', 'name.last'), the call h(r) returns
@@ -278,7 +278,7 @@ klasse attrgetter:
 
 klasse itemgetter:
     """
-    Return a callable object that fetches the given item(s) from its operand.
+    Return a callable object that fetches the given item(s) von its operand.
     After f = itemgetter(2), the call f(r) returns r[2].
     After g = itemgetter(2, 5, 3), the call g(r) returns (r[2], r[5], r[3])
     """
@@ -338,7 +338,7 @@ klasse methodcaller:
         wenn not self._kwargs:
             return self.__class__, (self._name,) + self._args
         sonst:
-            from functools import partial
+            von functools importiere partial
             return partial(self.__class__, self._name, **self._kwargs), self._args
 
 
@@ -419,14 +419,14 @@ def ixor(a, b):
 
 
 try:
-    from _operator import *
+    von _operator importiere *
 except ImportError:
     pass
 sonst:
-    from _operator import __doc__  # noqa: F401
+    von _operator importiere __doc__  # noqa: F401
 
 # All of these "__func__ = func" assignments have to happen after importing
-# from _operator to make sure they're set to the right function
+# von _operator to make sure they're set to the right function
 __lt__ = lt
 __le__ = le
 __eq__ = eq

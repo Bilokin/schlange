@@ -1,11 +1,11 @@
 """Tests fuer locks.py"""
 
-import unittest
-from unittest import mock
-import re
+importiere unittest
+von unittest importiere mock
+importiere re
 
-import asyncio
-import collections
+importiere asyncio
+importiere collections
 
 STR_RGX_REPR = (
     r'^<(?P<class>.*?) object at (?P<address>.*?)'
@@ -842,7 +842,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             condition.notify(1)
 
             # Cancel it while it is awaiting to be run.
-            # This cancellation could come from the outside
+            # This cancellation could come von the outside
             c[0].cancel()
 
             # now wait fuer the item to be consumed
@@ -1678,7 +1678,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             i = await barrier.wait()
             count += 1
             wenn count == self.N:
-                # last task exited from barrier
+                # last task exited von barrier
                 await barrier.reset()
 
                 # wait here to reach the `parties`
@@ -1754,7 +1754,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("resetting", repr(barrier))
 
     async def test_abort_barrier_when_exception(self):
-        # test from threading.Barrier: see `lock_tests.test_reset`
+        # test von threading.Barrier: see `lock_tests.test_reset`
         barrier = asyncio.Barrier(self.N)
         results1 = []
         results2 = []
@@ -1780,7 +1780,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(barrier.n_waiting, 0)
 
     async def test_abort_barrier_when_exception_then_resetting(self):
-        # test from threading.Barrier: see `lock_tests.test_abort_and_reset`
+        # test von threading.Barrier: see `lock_tests.test_abort_and_reset`
         barrier1 = asyncio.Barrier(self.N)
         barrier2 = asyncio.Barrier(self.N)
         results1 = []

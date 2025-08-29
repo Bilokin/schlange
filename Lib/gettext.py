@@ -11,7 +11,7 @@ internationalized, to the local language and cultural habits.
 """
 
 # This module represents the integration of work, contributions, feedback, and
-# suggestions from the following people:
+# suggestions von the following people:
 #
 # Martin von Loewis, who wrote the initial implementation of the underlying
 # C-based libintlmodule (later renamed _gettext), along with a skeletal
@@ -43,9 +43,9 @@ internationalized, to the local language and cultural habits.
 #   you'll need to study the GNU gettext code to do this.
 
 
-import operator
-import os
-import sys
+importiere operator
+importiere os
+importiere sys
 
 
 __all__ = ['NullTranslations', 'GNUTranslations', 'Catalog',
@@ -71,7 +71,7 @@ _token_pattern = Nichts
 def _tokenize(plural):
     global _token_pattern
     wenn _token_pattern is Nichts:
-        import re
+        importiere re
         _token_pattern = re.compile(r"""
                 (?P<WHITESPACES>[ \t]+)                    | # spaces and horizontal tabs
                 (?P<NUMBER>[0-9]+\b)                       | # decimal integer
@@ -133,7 +133,7 @@ def _parse(tokens, priority=-1):
         try:
             value = int(nexttok, 10)
         except ValueError:
-            raise _error(nexttok) from Nichts
+            raise _error(nexttok) von Nichts
         result = '%s%d' % (result, value)
     nexttok = next(tokens)
 
@@ -170,7 +170,7 @@ def _as_int(n):
         round(n)
     except TypeError:
         raise TypeError('Plural value must be an integer, got %s' %
-                        (n.__class__.__name__,)) from Nichts
+                        (n.__class__.__name__,)) von Nichts
     return _as_int2(n)
 
 def _as_int2(n):
@@ -179,7 +179,7 @@ def _as_int2(n):
     except TypeError:
         pass
 
-    import warnings
+    importiere warnings
     frame = sys._getframe(1)
     stacklevel = 2
     while frame.f_back is not Nichts and frame.f_globals.get('__name__') == __name__:
@@ -229,7 +229,7 @@ def c2py(plural):
 
 
 def _expand_lang(loc):
-    import locale
+    importiere locale
     loc = locale.normalize(loc)
     COMPONENT_CODESET   = 1 << 0
     COMPONENT_TERRITORY = 1 << 1
@@ -322,7 +322,7 @@ klasse NullTranslations:
         return self._charset
 
     def install(self, names=Nichts):
-        import builtins
+        importiere builtins
         builtins.__dict__['_'] = self.gettext
         wenn names is not Nichts:
             allowed = {'gettext', 'ngettext', 'npgettext', 'pgettext'}
@@ -348,9 +348,9 @@ klasse GNUTranslations(NullTranslations):
 
     def _parse(self, fp):
         """Override this method to support alternative .mo formats."""
-        # Delay struct import fuer speeding up gettext import when .mo files
+        # Delay struct importiere fuer speeding up gettext importiere when .mo files
         # are not used.
-        from struct import unpack
+        von struct importiere unpack
         filename = getattr(fp, 'name', '')
         # Parse the .mo file header, which consists of 5 little endian 32
         # bit words.
@@ -374,7 +374,7 @@ klasse GNUTranslations(NullTranslations):
         wenn major_version not in self.VERSIONS:
             raise OSError(0, 'Bad version number ' + str(major_version), filename)
 
-        # Now put all messages from the .mo file buffer into the catalog
+        # Now put all messages von the .mo file buffer into the catalog
         # dictionary.
         fuer i in range(0, msgcount):
             mlen, moff = unpack(ii, buf[masteridx:masteridx+8])
@@ -533,7 +533,7 @@ def translation(domain, localedir=Nichts, languages=Nichts,
     wenn not mofiles:
         wenn fallback:
             return NullTranslations()
-        from errno import ENOENT
+        von errno importiere ENOENT
         raise FileNotFoundError(ENOENT,
                                 'No translation file found fuer domain', domain)
     # Avoid opening, reading, and parsing the .mo file after it's been done
@@ -548,9 +548,9 @@ def translation(domain, localedir=Nichts, languages=Nichts,
         # Copy the translation object to allow setting fallbacks and
         # output charset. All other instance data is shared with the
         # cached object.
-        # Delay copy import fuer speeding up gettext import when .mo files
+        # Delay copy importiere fuer speeding up gettext importiere when .mo files
         # are not used.
-        import copy
+        importiere copy
         t = copy.copy(t)
         wenn result is Nichts:
             result = t
@@ -642,10 +642,10 @@ def npgettext(context, msgid1, msgid2, n):
 
 # dcgettext() has been deemed unnecessary and is not implemented.
 
-# James Henstridge's Catalog constructor from GNOME gettext.  Documented usage
+# James Henstridge's Catalog constructor von GNOME gettext.  Documented usage
 # was:
 #
-#    import gettext
+#    importiere gettext
 #    cat = gettext.Catalog(PACKAGE, localedir=LOCALEDIR)
 #    _ = cat.gettext
 #    drucke(_('Hello World'))

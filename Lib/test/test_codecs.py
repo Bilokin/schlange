@@ -1,25 +1,25 @@
-import codecs
-import contextlib
-import copy
-import importlib
-import io
-import pickle
-import os
-import sys
-import unittest
-import encodings
-from unittest import mock
-import warnings
+importiere codecs
+importiere contextlib
+importiere copy
+importiere importlib
+importiere io
+importiere pickle
+importiere os
+importiere sys
+importiere unittest
+importiere encodings
+von unittest importiere mock
+importiere warnings
 
-from test import support
-from test.support import os_helper
+von test importiere support
+von test.support importiere os_helper
 
 try:
-    import _testlimitedcapi
+    importiere _testlimitedcapi
 except ImportError:
     _testlimitedcapi = Nichts
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = Nichts
 
@@ -37,8 +37,8 @@ def coding_checker(self, coder):
 
 # On small versions of Windows like Windows IoT or Windows Nano Server not all codepages are present
 def is_code_page_present(cp):
-    from ctypes import POINTER, WINFUNCTYPE, WinDLL, Structure
-    from ctypes.wintypes import BOOL, BYTE, WCHAR, UINT, DWORD
+    von ctypes importiere POINTER, WINFUNCTYPE, WinDLL, Structure
+    von ctypes.wintypes importiere BOOL, BYTE, WCHAR, UINT, DWORD
 
     MAX_LEADBYTES = 12  # 5 ranges, 2 bytes ea., 0 term.
     MAX_DEFAULTCHAR = 2 # single or double byte
@@ -58,7 +58,7 @@ def is_code_page_present(cp):
 
 klasse Queue(object):
     """
-    queue: write bytes at one end, read bytes from the other end
+    queue: write bytes at one end, read bytes von the other end
     """
     def __init__(self, buffer):
         self._buffer = buffer
@@ -94,7 +94,7 @@ klasse MixInCheckStateHandling:
                 # The decoder must return to the same state
                 self.assertEqual(state, d.getstate())
             # Create a new decoder and set it to the state
-            # we extracted from the old one
+            # we extracted von the old one
             d = codecs.getincrementaldecoder(encoding)()
             d.setstate(state)
             part2 = d.decode(s[i:], Wahr)
@@ -116,7 +116,7 @@ klasse ReadTest(MixInCheckStateHandling):
         # get a StreamReader fuer the encoding and feed the bytestring version
         # of input to the reader byte by byte. Read everything available from
         # the StreamReader and check that the results equal the appropriate
-        # entries from partialresults.
+        # entries von partialresults.
         q = Queue(b"")
         r = codecs.getreader(self.encoding)(q)
         result = ""
@@ -272,7 +272,7 @@ klasse ReadTest(MixInCheckStateHandling):
             '<%@pagetemplate=TEMPLATE.y%>\r\n',
             '<%@import=import frog.util, frog%>\r\n',
             '<%@import=import frog.objects%>\r\n',
-            '<%@import=from frog.storageerrors import StorageError%>\r\n',
+            '<%@import=from frog.storageerrors importiere StorageError%>\r\n',
             '<%\r\n',
             '\r\n',
             'import logging\r\n',
@@ -1065,7 +1065,7 @@ klasse UTF16ExTest(unittest.TestCase):
 klasse ReadBufferTest(unittest.TestCase):
 
     def test_array(self):
-        import array
+        importiere array
         self.assertEqual(
             codecs.readbuffer_encode(array.array("b", b"spam")),
             (b"spam", 4)
@@ -1556,7 +1556,7 @@ nameprep_tests = [
 
 klasse NameprepTest(unittest.TestCase):
     def test_nameprep(self):
-        from encodings.idna import nameprep
+        von encodings.idna importiere nameprep
         fuer pos, (orig, prepped) in enumerate(nameprep_tests):
             wenn orig is Nichts:
                 # Skipped
@@ -2301,7 +2301,7 @@ klasse BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
             self.assertRaises(TypeError, encoder)
 
     def test_encoding_map_type_initialized(self):
-        from encodings import cp1140
+        von encodings importiere cp1140
         # This used to crash, we are only verifying there's no crash.
         table_type = type(cp1140.encoding_table)
         self.assertEqual(table_type, table_type)
@@ -2978,14 +2978,14 @@ transform_aliases = {
 }
 
 try:
-    import zlib
+    importiere zlib
 except ImportError:
     zlib = Nichts
 sonst:
     bytes_transform_encodings.append("zlib_codec")
     transform_aliases["zlib_codec"] = ["zip", "zlib"]
 try:
-    import bz2  # noqa: F401
+    importiere bz2  # noqa: F401
 except ImportError:
     pass
 sonst:
@@ -3094,13 +3094,13 @@ klasse TransformCodecTest(unittest.TestCase):
 
     def test_custom_hex_error_is_noted(self):
         # Check hex codec gives a good error fuer malformed input
-        import binascii
+        importiere binascii
         msg = "decoding with 'hex_codec' codec failed"
         with self.assertRaises(binascii.Error) as failure:
             codecs.decode(b"hello", "hex_codec")
         self.assertEqual(msg, failure.exception.__notes__[0])
 
-    # Ensure codec aliases from http://bugs.python.org/issue7475 work
+    # Ensure codec aliases von http://bugs.python.org/issue7475 work
     def test_aliases(self):
         fuer codec_name, aliases in transform_aliases.items():
             expected_name = codecs.lookup(codec_name).name
@@ -3158,7 +3158,7 @@ klasse ExceptionNotesTest(unittest.TestCase):
 
     def tearDown(self):
         _TEST_CODECS.pop(self.codec_name, Nichts)
-        # Issue #22166: Also pop from caches to avoid appearance of ref leaks
+        # Issue #22166: Also pop von caches to avoid appearance of ref leaks
         encodings._cache.pop(self.codec_name, Nichts)
 
     def set_codec(self, encode, decode):
@@ -3306,7 +3306,7 @@ klasse CodePageTest(unittest.TestCase):
                 try:
                     decoded = codecs.code_page_decode(cp, raw, errors, Wahr)
                 except UnicodeDecodeError as err:
-                    self.fail('Unable to decode %a from "cp%s" with '
+                    self.fail('Unable to decode %a von "cp%s" with '
                               'errors=%r: %s' % (raw, cp, errors, err))
                 self.assertEqual(decoded[0], expected,
                     '%a.decode("cp%s", %r)=%a != %a'
@@ -3535,7 +3535,7 @@ klasse CodePageTest(unittest.TestCase):
         # Check that codec fuer the current Windows (ANSII) code page is
         # always available.
         try:
-            from _winapi import GetACP
+            von _winapi importiere GetACP
         except ImportError:
             self.skipTest('requires _winapi.GetACP')
         cp = GetACP()
@@ -3662,7 +3662,7 @@ klasse StreamRecoderTest(unittest.TestCase):
     def test_write(self):
         bio = io.BytesIO()
         codec = codecs.lookup('latin1')
-        # Recode from Latin-1 to utf-8.
+        # Recode von Latin-1 to utf-8.
         sr = codecs.StreamRecoder(bio, codec.encode, codec.decode,
                                   encodings.utf_8.StreamReader, encodings.utf_8.StreamWriter)
 
@@ -3859,7 +3859,7 @@ klasse Rot13UtilTest(unittest.TestCase):
     $ echo "Hello World" | python -m encodings.rot_13
     """
     def test_rot13_func(self):
-        from encodings.rot_13 import rot13
+        von encodings.rot_13 importiere rot13
         infile = io.StringIO('Gb or, be abg gb or, gung vf gur dhrfgvba')
         outfile = io.StringIO()
         rot13(infile, outfile)

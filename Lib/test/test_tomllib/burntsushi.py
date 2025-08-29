@@ -4,8 +4,8 @@
 
 """Utilities fuer tests that are in the "burntsushi" format."""
 
-import datetime
-from typing import Any
+importiere datetime
+von typing importiere Any
 
 # Aliases fuer converting TOML compliance format [1] to BurntSushi format [2]
 # [1] https://github.com/toml-lang/compliance/blob/db7c3211fda30ff9ddb10292f4aeda7e2e10abc4/docs/json-encoding.md  # noqa: E501

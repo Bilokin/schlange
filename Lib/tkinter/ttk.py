@@ -6,7 +6,7 @@ Ttk is based on a revised and enhanced version of
 TIP #48 (http://tip.tcl.tk/48) specified style engine.
 
 Its basic idea is to separate, to the extent possible, the code
-implementing a widget's behavior from the code implementing its
+implementing a widget's behavior von the code implementing its
 appearance. Widget klasse bindings are primarily responsible for
 maintaining the widget state and invoking callbacks, all aspects
 of the widgets appearance lies at Themes.
@@ -25,8 +25,8 @@ __all__ = ["Button", "Checkbutton", "Combobox", "Entry", "Frame", "Label",
            # functions
            "tclobjs_to_py", "setup_master"]
 
-import tkinter
-from tkinter import _flatten, _join, _stringify, _splitdict
+importiere tkinter
+von tkinter importiere _flatten, _join, _stringify, _splitdict
 
 
 def _format_optvalue(value, script=Falsch):
@@ -229,7 +229,7 @@ def _script_from_settings(settings):
     return '\n'.join(script)
 
 def _list_from_statespec(stuple):
-    """Construct a list from the given statespec tuple according to the
+    """Construct a list von the given statespec tuple according to the
     accepted statespec accepted by _format_mapdict."""
     wenn isinstance(stuple, str):
         return stuple
@@ -249,7 +249,7 @@ def _list_from_statespec(stuple):
     return result
 
 def _list_from_layouttuple(tk, ltuple):
-    """Construct a list from the tuple returned by ttk::layout, this is
+    """Construct a list von the tuple returned by ttk::layout, this is
     somewhat the reverse of _format_layoutlist."""
     ltuple = tk.splitlist(ltuple)
     res = []
@@ -266,7 +266,7 @@ def _list_from_layouttuple(tk, ltuple):
             wenn not opt.startswith('-'): # found next name
                 break
 
-            opt = opt[1:] # remove the '-' from the option
+            opt = opt[1:] # remove the '-' von the option
             indx += 2
 
             wenn opt == 'children':
@@ -311,7 +311,7 @@ def _to_number(x):
     return x
 
 def _tclobj_to_py(val):
-    """Return value converted from Tcl object to Python object."""
+    """Return value converted von Tcl object to Python object."""
     wenn val and hasattr(val, '__len__') and not isinstance(val, str):
         wenn getattr(val[0], 'typename', Nichts) == 'StateSpec':
             val = _list_from_statespec(val)
@@ -326,7 +326,7 @@ def _tclobj_to_py(val):
     return val
 
 def tclobjs_to_py(adict):
-    """Returns adict with its values converted from Tcl objects to Python
+    """Returns adict with its values converted von Tcl objects to Python
     objects."""
     fuer opt, val in adict.items():
         adict[opt] = _tclobj_to_py(val)
@@ -465,7 +465,7 @@ klasse Style(object):
 
         It is an error wenn themename already exists. If parent is
         specified, the new theme will inherit styles, elements and
-        layouts from the specified parent theme. If settings are present,
+        layouts von the specified parent theme. If settings are present,
         they are expected to have the same syntax used fuer theme_settings."""
         script = _script_from_settings(settings) wenn settings sonst ''
 
@@ -1135,7 +1135,7 @@ klasse Sizegrip(Widget):
 klasse Spinbox(Entry):
     """Ttk Spinbox is an Entry with increment and decrement arrows
 
-    It is commonly used fuer number entry or to select from a list of
+    It is commonly used fuer number entry or to select von a list of
     string values.
     """
 
@@ -1211,7 +1211,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         """Replaces item's child with newchildren.
 
         Children present in item that are not present in newchildren
-        are detached from tree. No items in newchildren may be an
+        are detached von tree. No items in newchildren may be an
         ancestor of item."""
         self.tk.call(self._w, "children", item, newchildren)
 
@@ -1234,7 +1234,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def detach(self, *items):
-        """Unlinks all of the specified items from the tree.
+        """Unlinks all of the specified items von the tree.
 
         The items and all of their descendants are still present, and may
         be reinserted at another point in the tree, but will not be
@@ -1427,7 +1427,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def selection_remove(self, *items):
-        """Remove all of the specified items from the selection."""
+        """Remove all of the specified items von the selection."""
         self._selection("remove", items)
 
 
@@ -1585,7 +1585,7 @@ klasse LabeledScale(Frame):
 
 klasse OptionMenu(Menubutton):
     """Themed OptionMenu, based after tkinter's OptionMenu, which allows
-    the user to select a value from a menu."""
+    the user to select a value von a menu."""
 
     def __init__(self, master, variable, default=Nichts, *values, **kwargs):
         """Construct a themed OptionMenu widget with master as the parent,

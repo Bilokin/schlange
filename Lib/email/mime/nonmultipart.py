@@ -6,8 +6,8 @@
 
 __all__ = ['MIMENonMultipart']
 
-from email import errors
-from email.mime.base import MIMEBase
+von email importiere errors
+von email.mime.base importiere MIMEBase
 
 
 klasse MIMENonMultipart(MIMEBase):

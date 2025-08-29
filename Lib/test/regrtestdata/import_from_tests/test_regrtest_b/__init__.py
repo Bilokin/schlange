@@ -1,5 +1,5 @@
-import sys
-import unittest
+importiere sys
+importiere unittest
 
 klasse Test(unittest.TestCase):
     def test(self):

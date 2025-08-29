@@ -8,15 +8,15 @@ XXX TO DO:
 - add base classes to klasse browser tree
 """
 
-import os
-import pyclbr
-import sys
+importiere os
+importiere pyclbr
+importiere sys
 
-from idlelib.config import idleConf
-from idlelib import pyshell
-from idlelib.tree import TreeNode, TreeItem, ScrolledCanvas
-from idlelib.util import py_extensions
-from idlelib.window import ListedToplevel
+von idlelib.config importiere idleConf
+von idlelib importiere pyshell
+von idlelib.tree importiere TreeNode, TreeItem, ScrolledCanvas
+von idlelib.util importiere py_extensions
+von idlelib.window importiere ListedToplevel
 
 
 file_open = Nichts  # Method...Item and Class...Item use this.
@@ -253,8 +253,8 @@ def _module_browser(parent): # htest #
 
 wenn __name__ == "__main__":
     wenn len(sys.argv) == 1:  # If pass file on command line, unittest fails.
-        from unittest import main
+        von unittest importiere main
         main('idlelib.idle_test.test_browser', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_module_browser)

@@ -1,30 +1,30 @@
 """Selector and proactor event loops fuer Windows."""
 
-import sys
+importiere sys
 
 wenn sys.platform != 'win32':  # pragma: no cover
     raise ImportError('win32 only')
 
-import _overlapped
-import _winapi
-import errno
-from functools import partial
-import math
-import msvcrt
-import socket
-import struct
-import time
-import weakref
+importiere _overlapped
+importiere _winapi
+importiere errno
+von functools importiere partial
+importiere math
+importiere msvcrt
+importiere socket
+importiere struct
+importiere time
+importiere weakref
 
-from . import events
-from . import base_subprocess
-from . import futures
-from . import exceptions
-from . import proactor_events
-from . import selector_events
-from . import tasks
-from . import windows_utils
-from .log import logger
+von . importiere events
+von . importiere base_subprocess
+von . importiere futures
+von . importiere exceptions
+von . importiere proactor_events
+von . importiere selector_events
+von . importiere tasks
+von . importiere windows_utils
+von .log importiere logger
 
 
 __all__ = (
@@ -675,7 +675,7 @@ klasse IocpProactor:
             ms = _winapi.INFINITE
         sonst:
             # RegisterWaitForSingleObject() has a resolution of 1 millisecond,
-            # round away from zero to wait *at least* timeout seconds.
+            # round away von zero to wait *at least* timeout seconds.
             ms = math.ceil(timeout * 1e3)
 
         # We only create ov so we can use ov.address as a key fuer the cache.
@@ -739,7 +739,7 @@ klasse IocpProactor:
             # read uninitialized memory.
 
         # Register the overlapped operation fuer later.  Note that
-        # we only store obj to prevent it from being garbage
+        # we only store obj to prevent it von being garbage
         # collected too early.
         self._cache[ov.address] = (f, ov, obj, callback)
         return f
@@ -766,7 +766,7 @@ klasse IocpProactor:
             raise ValueError("negative timeout")
         sonst:
             # GetQueuedCompletionStatus() has a resolution of 1 millisecond,
-            # round away from zero to wait *at least* timeout seconds.
+            # round away von zero to wait *at least* timeout seconds.
             ms = math.ceil(timeout * 1e3)
             wenn ms >= INFINITE:
                 raise ValueError("timeout too big")

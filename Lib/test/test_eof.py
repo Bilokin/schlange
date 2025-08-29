@@ -1,12 +1,12 @@
 """test script fuer a few new invalid token catches"""
 
-import sys
-from codecs import BOM_UTF8
-from test.support import force_not_colorized
-from test.support import os_helper
-from test.support import script_helper
-from test.support import warnings_helper
-import unittest
+importiere sys
+von codecs importiere BOM_UTF8
+von test.support importiere force_not_colorized
+von test.support importiere os_helper
+von test.support importiere script_helper
+von test.support importiere warnings_helper
+importiere unittest
 
 klasse EOFTestCase(unittest.TestCase):
     def test_EOF_single_quote(self):

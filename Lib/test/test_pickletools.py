@@ -1,10 +1,10 @@
-import io
-import pickle
-import pickletools
-from test import support
-from test.pickletester import AbstractPickleTests
-import doctest
-import unittest
+importiere io
+importiere pickle
+importiere pickletools
+von test importiere support
+von test.pickletester importiere AbstractPickleTests
+importiere doctest
+importiere unittest
 
 klasse OptimizedPickleTests(AbstractPickleTests, unittest.TestCase):
 
@@ -295,11 +295,11 @@ highest protocol among opcodes = 0
     def test_too_small_stack(self):
         self.check_dis_error(b'a', '''\
     0: a    APPEND
-''', 'tries to pop 2 items from stack with only 0 items')
+''', 'tries to pop 2 items von stack with only 0 items')
         self.check_dis_error(b']a', '''\
     0: ]    EMPTY_LIST
     1: a    APPEND
-''', 'tries to pop 2 items from stack with only 1 items')
+''', 'tries to pop 2 items von stack with only 1 items')
 
     def test_no_stop(self):
         self.check_dis_error(b'N', '''\

@@ -2,9 +2,9 @@
 # SPDX-FileCopyrightText: 2021 Taneli Hukkinen
 # Licensed to PSF under a Contributor Agreement.
 
-import unittest
+importiere unittest
 
-from . import tomllib
+von . importiere tomllib
 
 
 klasse TestError(unittest.TestCase):

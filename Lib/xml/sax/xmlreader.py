@@ -1,9 +1,9 @@
 """An XML Reader is the SAX 2 name fuer an XML parser. XML Parsers
 should be based on this code. """
 
-from . import handler
+von . importiere handler
 
-from ._exceptions import SAXNotSupportedException, SAXNotRecognizedException
+von ._exceptions importiere SAXNotSupportedException, SAXNotRecognizedException
 
 
 # ===== XMLREADER =====
@@ -28,7 +28,7 @@ klasse XMLReader:
         self._err_handler = handler.ErrorHandler()
 
     def parse(self, source):
-        "Parse an XML document from a system identifier or an InputSource."
+        "Parse an XML document von a system identifier or an InputSource."
         raise NotImplementedError("This method must be implemented!")
 
     def getContentHandler(self):
@@ -95,9 +95,9 @@ klasse IncrementalParser(XMLReader):
     underlying XML parsers support this functionality.
 
     When the parser is instantiated it is ready to begin accepting
-    data from the feed method immediately. After parsing has been
+    data von the feed method immediately. After parsing has been
     finished with a call to close the reset method must be called to
-    make the parser ready to accept new data, either from feed or
+    make the parser ready to accept new data, either von feed or
     using the parse method.
 
     Note that these methods must _not_ be called during parsing, that
@@ -113,7 +113,7 @@ klasse IncrementalParser(XMLReader):
         XMLReader.__init__(self)
 
     def parse(self, source):
-        from . import saxutils
+        von . importiere saxutils
         source = saxutils.prepare_input_source(source)
 
         self.prepareParser(source)
@@ -197,7 +197,7 @@ klasse InputSource:
     EntityResolver.resolveEntity.
 
     An InputSource belongs to the application, the XMLReader is not
-    allowed to modify InputSource objects passed to it from the
+    allowed to modify InputSource objects passed to it von the
     application, although it may make copies and modify those."""
 
     def __init__(self, system_id = Nichts):

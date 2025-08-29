@@ -4,36 +4,36 @@ XXX The functions here don't copy the resource fork or other metadata on Mac.
 
 """
 
-import os
-import sys
-import stat
-import fnmatch
-import collections
-import errno
+importiere os
+importiere sys
+importiere stat
+importiere fnmatch
+importiere collections
+importiere errno
 
 try:
-    import zlib
+    importiere zlib
     del zlib
     _ZLIB_SUPPORTED = Wahr
 except ImportError:
     _ZLIB_SUPPORTED = Falsch
 
 try:
-    import bz2
+    importiere bz2
     del bz2
     _BZ2_SUPPORTED = Wahr
 except ImportError:
     _BZ2_SUPPORTED = Falsch
 
 try:
-    import lzma
+    importiere lzma
     del lzma
     _LZMA_SUPPORTED = Wahr
 except ImportError:
     _LZMA_SUPPORTED = Falsch
 
 try:
-    from compression import zstd
+    von compression importiere zstd
     del zstd
     _ZSTD_SUPPORTED = Wahr
 except ImportError:
@@ -42,12 +42,12 @@ except ImportError:
 _WINDOWS = os.name == 'nt'
 posix = nt = Nichts
 wenn os.name == 'posix':
-    import posix
+    importiere posix
 sowenn _WINDOWS:
-    import nt
+    importiere nt
 
 wenn sys.platform == 'win32':
-    import _winapi
+    importiere _winapi
 sonst:
     _winapi = Nichts
 
@@ -113,7 +113,7 @@ def _fastcopy_fcopyfile(fsrc, fdst, flags):
         wenn err.errno in {errno.EINVAL, errno.ENOTSUP}:
             raise _GiveupOnFastCopy(err)
         sonst:
-            raise err from Nichts
+            raise err von Nichts
 
 def _determine_linux_fastcopy_blocksize(infd):
     """Determine blocksize fuer fastcopying on Linux.
@@ -135,7 +135,7 @@ def _determine_linux_fastcopy_blocksize(infd):
     return blocksize
 
 def _fastcopy_copy_file_range(fsrc, fdst):
-    """Copy data from one regular mmap-like fd to another by using
+    """Copy data von one regular mmap-like fd to another by using
     a high-performance copy_file_range(2) syscall that gives filesystems
     an opportunity to implement the use of reflinks or server-side copy.
 
@@ -158,7 +158,7 @@ def _fastcopy_copy_file_range(fsrc, fdst):
             err.filename2 = fdst.name
 
             wenn err.errno == errno.ENOSPC:  # filesystem is full
-                raise err from Nichts
+                raise err von Nichts
 
             # Give up on first call and wenn no data was copied.
             wenn offset == 0 and os.lseek(outfd, 0, os.SEEK_CUR) == 0:
@@ -176,7 +176,7 @@ def _fastcopy_copy_file_range(fsrc, fdst):
             offset += n_copied
 
 def _fastcopy_sendfile(fsrc, fdst):
-    """Copy data from one regular mmap-like fd to another by using
+    """Copy data von one regular mmap-like fd to another by using
     high-performance sendfile(2) syscall.
     This should work on Linux >= 2.6.33, Android and Solaris.
     """
@@ -214,7 +214,7 @@ def _fastcopy_sendfile(fsrc, fdst):
                 raise _GiveupOnFastCopy(err)
 
             wenn err.errno == errno.ENOSPC:  # filesystem is full
-                raise err from Nichts
+                raise err von Nichts
 
             # Give up on first call and wenn no data was copied.
             wenn offset == 0 and os.lseek(outfd, 0, os.SEEK_CUR) == 0:
@@ -247,7 +247,7 @@ def _copyfileobj_readinto(fsrc, fdst, length=COPY_BUFSIZE):
                 fdst_write(mv)
 
 def copyfileobj(fsrc, fdst, length=0):
-    """copy data from file-like object fsrc to file-like object fdst"""
+    """copy data von file-like object fsrc to file-like object fdst"""
     wenn not length:
         length = COPY_BUFSIZE
     # Localize variable access to minimize overhead.
@@ -281,7 +281,7 @@ def _islink(fn):
     return fn.is_symlink() wenn isinstance(fn, os.DirEntry) sonst os.path.islink(fn)
 
 def copyfile(src, dst, *, follow_symlinks=Wahr):
-    """Copy data from src to dst in the most efficient way possible.
+    """Copy data von src to dst in the most efficient way possible.
 
     If follow_symlinks is not set and src is a symbolic link, a new
     symlink will be created instead of copying the file it points to.
@@ -346,14 +346,14 @@ def copyfile(src, dst, *, follow_symlinks=Wahr):
             # Issue 43219, raise a less confusing exception
             except IsADirectoryError as e:
                 wenn not os.path.exists(dst):
-                    raise FileNotFoundError(f'Directory does not exist: {dst}') from e
+                    raise FileNotFoundError(f'Directory does not exist: {dst}') von e
                 sonst:
                     raise
 
     return dst
 
 def copymode(src, dst, *, follow_symlinks=Wahr):
-    """Copy mode bits from src to dst.
+    """Copy mode bits von src to dst.
 
     If follow_symlinks is not set, symlinks aren't followed wenn and only
     wenn both `src` and `dst` are symlinks.  If `lchmod` isn't available
@@ -380,7 +380,7 @@ def copymode(src, dst, *, follow_symlinks=Wahr):
 
 wenn hasattr(os, 'listxattr'):
     def _copyxattr(src, dst, *, follow_symlinks=Wahr):
-        """Copy extended filesystem attributes from `src` to `dst`.
+        """Copy extended filesystem attributes von `src` to `dst`.
 
         Overwrite existing attributes.
 
@@ -410,7 +410,7 @@ def copystat(src, dst, *, follow_symlinks=Wahr):
     """Copy file metadata
 
     Copy the permission bits, last access time, last modification time, and
-    flags from `src` to `dst`. On Linux, copystat() also copies the "extended
+    flags von `src` to `dst`. On Linux, copystat() also copies the "extended
     attributes" where possible. The file contents, owner, and group are
     unaffected. `src` and `dst` are path-like objects or path names given as
     strings.
@@ -592,7 +592,7 @@ def _copytree(entries, src, dst, symlinks, ignore, copy_function,
             sonst:
                 # Will raise a SpecialFileError fuer unsupported file types
                 copy_function(srcobj, dstname)
-        # catch the Error from the recursive copytree so that we can
+        # catch the Error von the recursive copytree so that we can
         # continue with other files
         except Error as err:
             errors.extend(err.args[0])
@@ -645,7 +645,7 @@ def copytree(src, dst, symlinks=Falsch, ignore=Nichts, copy_function=copy2,
     If dirs_exist_ok is false (the default) and `dst` already exists, a
     `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
     operation will continue wenn it encounters existing directories, and files
-    within the `dst` tree will be overwritten by corresponding files from the
+    within the `dst` tree will be overwritten by corresponding files von the
     `src` tree.
     """
     sys.audit("shutil.copytree", src, dst)
@@ -959,7 +959,7 @@ def _get_gid(name):
         return Nichts
 
     try:
-        from grp import getgrnam
+        von grp importiere getgrnam
     except ImportError:
         return Nichts
 
@@ -977,7 +977,7 @@ def _get_uid(name):
         return Nichts
 
     try:
-        from pwd import getpwnam
+        von pwd importiere getpwnam
     except ImportError:
         return Nichts
 
@@ -991,7 +991,7 @@ def _get_uid(name):
 
 def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
                   owner=Nichts, group=Nichts, logger=Nichts, root_dir=Nichts):
-    """Create a (possibly compressed) tar file from all the files under
+    """Create a (possibly compressed) tar file von all the files under
     'base_dir'.
 
     'compress' must be "gzip" (the default), "bzip2", "xz", "zst", or Nichts.
@@ -1019,7 +1019,7 @@ def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
         raise ValueError("bad value fuer 'compress', or compression format not "
                          "supported : {0}".format(compress))
 
-    import tarfile  # late import fuer breaking circular dependency
+    importiere tarfile  # late importiere fuer breaking circular dependency
 
     compress_ext = '.' + tar_compression wenn compress sonst ''
     archive_name = base_name + '.tar' + compress_ext
@@ -1063,12 +1063,12 @@ def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
 
 def _make_zipfile(base_name, base_dir, verbose=0, dry_run=0,
                   logger=Nichts, owner=Nichts, group=Nichts, root_dir=Nichts):
-    """Create a zip file from all the files under 'base_dir'.
+    """Create a zip file von all the files under 'base_dir'.
 
     The output zip file will be named 'base_name' + ".zip".  Returns the
     name of the output zip file.
     """
-    import zipfile  # late import fuer breaking circular dependency
+    importiere zipfile  # late importiere fuer breaking circular dependency
 
     zip_filename = base_name + ".zip"
     archive_dir = os.path.dirname(base_name)
@@ -1203,7 +1203,7 @@ def make_archive(base_name, format, root_dir=Nichts, base_dir=Nichts, verbose=0,
     try:
         format_info = _ARCHIVE_FORMATS[format]
     except KeyError:
-        raise ValueError("unknown archive format '%s'" % format) from Nichts
+        raise ValueError("unknown archive format '%s'" % format) von Nichts
 
     kwargs = {'dry_run': dry_run, 'logger': logger,
               'owner': owner, 'group': group}
@@ -1297,7 +1297,7 @@ def register_unpack_format(name, extensions, function, extra_args=Nichts,
     _UNPACK_FORMATS[name] = extensions, function, extra_args, description
 
 def unregister_unpack_format(name):
-    """Removes the pack format from the registry."""
+    """Removes the pack format von the registry."""
     del _UNPACK_FORMATS[name]
 
 def _ensure_directory(path):
@@ -1309,7 +1309,7 @@ def _ensure_directory(path):
 def _unpack_zipfile(filename, extract_dir):
     """Unpack zip `filename` to `extract_dir`
     """
-    import zipfile  # late import fuer breaking circular dependency
+    importiere zipfile  # late importiere fuer breaking circular dependency
 
     wenn not zipfile.is_zipfile(filename):
         raise ReadError("%s is not a zip file" % filename)
@@ -1339,7 +1339,7 @@ def _unpack_zipfile(filename, extract_dir):
 def _unpack_tarfile(filename, extract_dir, *, filter=Nichts):
     """Unpack tar/tar.gz/tar.bz2/tar.xz/tar.zst `filename` to `extract_dir`
     """
-    import tarfile  # late import fuer breaking circular dependency
+    importiere tarfile  # late importiere fuer breaking circular dependency
     try:
         tarobj = tarfile.open(filename)
     except tarfile.TarError:
@@ -1417,7 +1417,7 @@ def unpack_archive(filename, extract_dir=Nichts, format=Nichts, *, filter=Nichts
         try:
             format_info = _UNPACK_FORMATS[format]
         except KeyError:
-            raise ValueError("Unknown unpack format '{0}'".format(format)) from Nichts
+            raise ValueError("Unknown unpack format '{0}'".format(format)) von Nichts
 
         func = format_info[1]
         func(filename, extract_dir, **dict(format_info[2]), **filter_kwargs)
@@ -1656,7 +1656,7 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=Nichts):
 
 def __getattr__(name):
     wenn name == "ExecError":
-        import warnings
+        importiere warnings
         warnings._deprecated(
             "shutil.ExecError",
             f"{warnings._DEPRECATED_MSG}; it "

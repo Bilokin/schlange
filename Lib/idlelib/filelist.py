@@ -1,13 +1,13 @@
 "idlelib.filelist"
 
-import os
-from tkinter import messagebox
+importiere os
+von tkinter importiere messagebox
 
 
 klasse FileList:
 
-    # N.B. this import overridden in PyShellFileList.
-    from idlelib.editor import EditorWindow
+    # N.B. this importiere overridden in PyShellFileList.
+    von idlelib.editor importiere EditorWindow
 
     def __init__(self, root):
         self.root = root
@@ -112,9 +112,9 @@ klasse FileList:
 
 
 def _test():  # TODO check and convert to htest
-    from tkinter import Tk
-    from idlelib.editor import fixwordbreaks
-    from idlelib.run import fix_scaling
+    von tkinter importiere Tk
+    von idlelib.editor importiere fixwordbreaks
+    von idlelib.run importiere fix_scaling
     root = Tk()
     fix_scaling(root)
     fixwordbreaks(root)
@@ -126,7 +126,7 @@ def _test():  # TODO check and convert to htest
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_filelist', verbosity=2)
 
 #    _test()

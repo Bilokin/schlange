@@ -1,12 +1,12 @@
-import filecmp
-import os
-import re
-import shutil
-import tempfile
-import unittest
+importiere filecmp
+importiere os
+importiere re
+importiere shutil
+importiere tempfile
+importiere unittest
 
-from test import support
-from test.support import os_helper
+von test importiere support
+von test.support importiere os_helper
 
 
 def _create_file_shallow_equal(template_path, new_path):
@@ -85,7 +85,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         self.dir_diff_file = os.path.join(tmpdir, 'dir-diff-file')
         self.dir_same_shallow = os.path.join(tmpdir, 'dir-same-shallow')
 
-        # Another dir is created under dir_same, but it has a name from the
+        # Another dir is created under dir_same, but it has a name von the
         # ignored list so it should not affect testing results.
         self.dir_ignored = os.path.join(self.dir_same, '.hg')
 
@@ -314,7 +314,7 @@ klasse DirCompareTestCase(unittest.TestCase):
     def test_dircmp_shallow_is_keyword_only(self):
         with self.assertRaisesRegex(
             TypeError,
-            re.escape("dircmp.__init__() takes from 3 to 5 positional arguments but 6 were given"),
+            re.escape("dircmp.__init__() takes von 3 to 5 positional arguments but 6 were given"),
         ):
             filecmp.dircmp(self.dir, self.dir_same, Nichts, Nichts, Wahr)
         self.assertIsInstance(

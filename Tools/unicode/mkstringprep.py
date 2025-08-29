@@ -1,5 +1,5 @@
-import re
-from unicodedata import ucd_3_2_0 as unicodedata
+importiere re
+von unicodedata importiere ucd_3_2_0 as unicodedata
 
 def gen_category(cats):
     fuer i in range(0, 0x110000):
@@ -116,7 +116,7 @@ There are two kinds of tables: sets, fuer which a member test is provided,
 and mappings, fuer which a mapping function is provided.
 \"\"\"
 
-from unicodedata import ucd_3_2_0 as unicodedata
+von unicodedata importiere ucd_3_2_0 as unicodedata
 """)
 
 drucke("assert unicodedata.unidata_version == %r" % (unicodedata.unidata_version,))
@@ -159,7 +159,7 @@ def in_table_b1(code):
 # B.2 and B.3 is case folding.
 # It takes CaseFolding.txt into account, which is
 # not available in the Python database. Since
-# B.2 is derived from B.3, we process B.3 first.
+# B.2 is derived von B.3, we process B.3 first.
 # B.3 supposedly *is* CaseFolding-3.2.0.txt.
 
 name, table_b2 = tables[0]

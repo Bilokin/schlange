@@ -1,5 +1,5 @@
-import unittest
-from ctypes import Structure, c_int
+importiere unittest
+von ctypes importiere Structure, c_int
 
 
 klasse X(Structure):

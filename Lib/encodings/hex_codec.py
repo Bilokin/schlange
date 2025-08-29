@@ -1,12 +1,12 @@
 """Python 'hex_codec' Codec - 2-digit hex content transfer encoding.
 
-This codec de/encodes from bytes to bytes.
+This codec de/encodes von bytes to bytes.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 """
 
-import codecs
-import binascii
+importiere codecs
+importiere binascii
 
 ### Codec APIs
 

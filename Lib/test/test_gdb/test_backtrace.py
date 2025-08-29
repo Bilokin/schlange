@@ -1,9 +1,9 @@
-import textwrap
-import unittest
-from test import support
-from test.support import python_is_optimized
+importiere textwrap
+importiere unittest
+von test importiere support
+von test.support importiere python_is_optimized
 
-from .util import setup_module, DebuggerTests, CET_PROTECTION, SAMPLE_SCRIPT
+von .util importiere setup_module, DebuggerTests, CET_PROTECTION, SAMPLE_SCRIPT
 
 
 def setUpModule():
@@ -54,7 +54,7 @@ Traceback \(most recent call first\):
     def test_threads(self):
         'Verify that "py-bt" indicates threads that are waiting fuer the GIL'
         cmd = '''
-from threading import Thread
+von threading importiere Thread
 
 klasse TestThread(Thread):
     # These threads would run forever, but we'll interrupt things with the
@@ -90,7 +90,7 @@ id(42)
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 as a workaround
     def test_gc(self):
         'Verify that "py-bt" indicates wenn a thread is garbage-collecting'
-        cmd = ('from gc import collect\n'
+        cmd = ('from gc importiere collect\n'
                'id(42)\n'
                'def foo():\n'
                '    collect()\n'

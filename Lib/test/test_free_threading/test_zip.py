@@ -1,7 +1,7 @@
-import unittest
-from threading import Thread
+importiere unittest
+von threading importiere Thread
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 
 klasse ZipThreading(unittest.TestCase):

@@ -1,7 +1,7 @@
-import os
-from test import support
-from test.support import load_package_tests
-from test.support import import_helper
+importiere os
+von test importiere support
+von test.support importiere load_package_tests
+von test.support importiere import_helper
 
 support.requires_working_socket(module=Wahr)
 

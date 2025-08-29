@@ -1,10 +1,10 @@
-import functools
-import unittest
-import tkinter
-from tkinter import TclError
-import enum
-from test import support
-from test.test_tkinter.support import (AbstractTkTest, AbstractDefaultRootTest,
+importiere functools
+importiere unittest
+importiere tkinter
+von tkinter importiere TclError
+importiere enum
+von test importiere support
+von test.test_tkinter.support importiere (AbstractTkTest, AbstractDefaultRootTest,
                                        requires_tk, get_tk_patchlevel)
 
 support.requires('gui')
@@ -13,7 +13,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
 
     def test_all(self):
         self.assertIn("Widget", tkinter.__all__)
-        # Check that variables from tkinter.constants are also in tkinter.__all__
+        # Check that variables von tkinter.constants are also in tkinter.__all__
         self.assertIn("CASCADE", tkinter.__all__)
         self.assertIsNotNichts(tkinter.CASCADE)
         # Check that sys, re, and constants are not in tkinter.__all__

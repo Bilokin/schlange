@@ -1,32 +1,32 @@
 # Python test set -- part 1, grammar.
 # This just tests whether the parser accepts them all.
 
-from test.support import check_syntax_error, skip_wasi_stack_overflow
-from test.support import import_helper
-import annotationlib
-import inspect
-import unittest
-import sys
-import textwrap
-import warnings
-# testing import *
-from sys import *
+von test.support importiere check_syntax_error, skip_wasi_stack_overflow
+von test.support importiere import_helper
+importiere annotationlib
+importiere inspect
+importiere unittest
+importiere sys
+importiere textwrap
+importiere warnings
+# testing importiere *
+von sys importiere *
 
-# different import patterns to check that __annotations__ does not interfere
-# with import machinery
-import test.typinganndata.ann_module as ann_module
-import typing
-from test.typinganndata import ann_module2
-import test
-from test.support.numbers import (
+# different importiere patterns to check that __annotations__ does not interfere
+# with importiere machinery
+importiere test.typinganndata.ann_module as ann_module
+importiere typing
+von test.typinganndata importiere ann_module2
+importiere test
+von test.support.numbers importiere (
     VALID_UNDERSCORE_LITERALS,
     INVALID_UNDERSCORE_LITERALS,
 )
 
 klasse TokenTests(unittest.TestCase):
 
-    from test.support import check_syntax_error
-    from test.support.warnings_helper import check_syntax_warning
+    von test.support importiere check_syntax_error
+    von test.support.warnings_helper importiere check_syntax_warning
 
     def test_backslash(self):
         # Backslash means line continuation:
@@ -46,7 +46,7 @@ klasse TokenTests(unittest.TestCase):
         self.assertEqual(0b1001, 9)
         # "0x" is not a valid literal
         self.assertRaises(SyntaxError, eval, "0x")
-        from sys import maxsize
+        von sys importiere maxsize
         wenn maxsize == 2147483647:
             self.assertEqual(-2147483647-1, -0o20000000000)
             # XXX -2147483648
@@ -266,9 +266,9 @@ var_annot_global: int # a global annotated is necessary fuer test_var_annot
 
 klasse GrammarTests(unittest.TestCase):
 
-    from test.support import check_syntax_error
-    from test.support.warnings_helper import check_syntax_warning
-    from test.support.warnings_helper import check_no_warnings
+    von test.support importiere check_syntax_error
+    von test.support.warnings_helper importiere check_syntax_warning
+    von test.support.warnings_helper importiere check_no_warnings
 
     # single_input: NEWLINE | simple_stmt | compound_stmt NEWLINE
     # XXX can't test in a script -- this rule is only used when interactive
@@ -1163,46 +1163,46 @@ klasse GrammarTests(unittest.TestCase):
     def test_yield(self):
         # Allowed as standalone statement
         def g(): yield 1
-        def g(): yield from ()
+        def g(): yield von ()
         # Allowed as RHS of assignment
         def g(): x = yield 1
-        def g(): x = yield from ()
+        def g(): x = yield von ()
         # Ordinary yield accepts implicit tuples
         def g(): yield 1, 1
         def g(): x = yield 1, 1
         # 'yield from' does not
-        check_syntax_error(self, "def g(): yield from (), 1")
-        check_syntax_error(self, "def g(): x = yield from (), 1")
+        check_syntax_error(self, "def g(): yield von (), 1")
+        check_syntax_error(self, "def g(): x = yield von (), 1")
         # Requires parentheses as subexpression
         def g(): 1, (yield 1)
-        def g(): 1, (yield from ())
+        def g(): 1, (yield von ())
         check_syntax_error(self, "def g(): 1, yield 1")
-        check_syntax_error(self, "def g(): 1, yield from ()")
+        check_syntax_error(self, "def g(): 1, yield von ()")
         # Requires parentheses as call argument
         def g(): f((yield 1))
         def g(): f((yield 1), 1)
-        def g(): f((yield from ()))
-        def g(): f((yield from ()), 1)
+        def g(): f((yield von ()))
+        def g(): f((yield von ()), 1)
         # Do not require parenthesis fuer tuple unpacking
         def g(): rest = 4, 5, 6; yield 1, 2, 3, *rest
         self.assertEqual(list(g()), [(1, 2, 3, 4, 5, 6)])
         check_syntax_error(self, "def g(): f(yield 1)")
         check_syntax_error(self, "def g(): f(yield 1, 1)")
-        check_syntax_error(self, "def g(): f(yield from ())")
-        check_syntax_error(self, "def g(): f(yield from (), 1)")
+        check_syntax_error(self, "def g(): f(yield von ())")
+        check_syntax_error(self, "def g(): f(yield von (), 1)")
         # Not allowed at top level
         check_syntax_error(self, "yield")
         check_syntax_error(self, "yield from")
         # Not allowed at klasse scope
         check_syntax_error(self, "class foo:yield 1")
-        check_syntax_error(self, "class foo:yield from ()")
+        check_syntax_error(self, "class foo:yield von ()")
         # Check annotation refleak on SyntaxError
         check_syntax_error(self, "def g(a:(yield)): pass")
 
     def test_yield_in_comprehensions(self):
         # Check yield in comprehensions
         def g(): [x fuer x in [(yield 1)]]
-        def g(): [x fuer x in [(yield from ())]]
+        def g(): [x fuer x in [(yield von ())]]
 
         check = self.check_syntax_error
         check("def g(): [(yield x) fuer x in ()]",
@@ -1219,7 +1219,7 @@ klasse GrammarTests(unittest.TestCase):
               "'yield' inside dict comprehension")
         check("def g(): ((yield x) fuer x in ())",
               "'yield' inside generator expression")
-        check("def g(): [(yield from x) fuer x in ()]",
+        check("def g(): [(yield von x) fuer x in ()]",
               "'yield' inside list comprehension")
         check("class C: [(yield x) fuer x in ()]",
               "'yield' inside list comprehension")
@@ -1235,16 +1235,16 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_import(self):
         # 'import' dotted_as_names
-        import sys
-        import time, sys
+        importiere sys
+        importiere time, sys
         # 'from' dotted_name 'import' ('*' | '(' import_as_names ')' | import_as_names)
-        from time import time
-        from time import (time)
+        von time importiere time
+        von time importiere (time)
         # not testable inside a function, but already done at top of the module
-        # from sys import *
-        from sys import path, argv
-        from sys import (path, argv)
-        from sys import (path, argv,)
+        # von sys importiere *
+        von sys importiere path, argv
+        von sys importiere (path, argv)
+        von sys importiere (path, argv,)
 
     def test_global(self):
         # 'global' NAME (',' NAME)*
@@ -1637,7 +1637,7 @@ klasse GrammarTests(unittest.TestCase):
         ### trailer: '(' [testlist] ')' | '[' subscript ']' | '.' NAME
         ### subscript: expr | [expr] ':' [expr]
 
-        import sys, time
+        importiere sys, time
         c = sys.path[0]
         x = time.time()
         x = sys.modules['time'].time()

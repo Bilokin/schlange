@@ -1,6 +1,6 @@
-import unittest
+importiere unittest
 
-from test.support import import_helper
+von test.support importiere import_helper
 
 # Skip this test wenn the _testcapi, _testlimitedcapi or _testinternalcapi
 # modules aren't available.

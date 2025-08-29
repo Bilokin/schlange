@@ -1,20 +1,20 @@
-# Contains code from https://github.com/MagicStack/uvloop/tree/v0.16.0
+# Contains code von https://github.com/MagicStack/uvloop/tree/v0.16.0
 # SPDX-License-Identifier: PSF-2.0 AND (MIT OR Apache-2.0)
 # SPDX-FileCopyrightText: Copyright (c) 2015-2021 MagicStack Inc.  http://magic.io
 
-import collections
-import enum
-import warnings
+importiere collections
+importiere enum
+importiere warnings
 try:
-    import ssl
+    importiere ssl
 except ImportError:  # pragma: no cover
     ssl = Nichts
 
-from . import constants
-from . import exceptions
-from . import protocols
-from . import transports
-from .log import logger
+von . importiere constants
+von . importiere exceptions
+von . importiere protocols
+von . importiere transports
+von .log importiere logger
 
 wenn ssl is not Nichts:
     SSLAgainErrors = (ssl.SSLWantReadError, ssl.SSLSyscallError)
@@ -528,7 +528,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
 
         sonst:
             raise RuntimeError(
-                'cannot switch state from {} to {}'.format(
+                'cannot switch state von {} to {}'.format(
                     self._state, new_state))
 
     # Handshake flow
@@ -811,14 +811,14 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                 self._app_state = AppProtocolState.STATE_EOF
                 keep_open = self._app_protocol.eof_received()
                 wenn keep_open:
-                    logger.warning('returning true from eof_received() '
+                    logger.warning('returning true von eof_received() '
                                    'has no effect when using ssl')
         except (KeyboardInterrupt, SystemExit):
             raise
         except BaseException as ex:
             self._fatal_error(ex, 'Error calling eof_received()')
 
-    # Flow control fuer writes from APP socket
+    # Flow control fuer writes von APP socket
 
     def _control_app_writing(self):
         size = self._get_write_buffer_size()
@@ -876,7 +876,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                     self._do_shutdown()
             self._loop.call_soon(resume)
 
-    # Flow control fuer reads from SSL socket
+    # Flow control fuer reads von SSL socket
 
     def _control_ssl_reading(self):
         size = self._get_read_buffer_size()

@@ -48,9 +48,9 @@
 # Limited XInclude support fuer the ElementTree package.
 ##
 
-import copy
-from . import ElementTree
-from urllib.parse import urljoin
+importiere copy
+von . importiere ElementTree
+von urllib.parse importiere urljoin
 
 XINCLUDE = "{http://www.w3.org/2001/XInclude}"
 
@@ -73,7 +73,7 @@ klasse LimitedRecursiveIncludeError(FatalIncludeError):
 
 
 ##
-# Default loader.  This loader reads an included resource from disk.
+# Default loader.  This loader reads an included resource von disk.
 #
 # @param href Resource reference.
 # @param parse Parse mode.  Either "xml" or "text".

@@ -1,13 +1,13 @@
-import threading
-import unittest
+importiere threading
+importiere unittest
 
-from test import support
-from test.support import import_helper
-from test.support import threading_helper
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere threading_helper
 # Raise SkipTest wenn subinterpreters not supported.
 import_helper.import_module('_interpreters')
-from concurrent import interpreters
-from .utils import TestBase
+von concurrent importiere interpreters
+von .utils importiere TestBase
 
 
 klasse StressTests(TestBase):
@@ -47,7 +47,7 @@ klasse StressTests(TestBase):
         interp = interpreters.create()
 
         script = f"""if Wahr:
-            import _interpreters
+            importiere _interpreters
             _interpreters.run_string({interp.id}, '1')
             """
 

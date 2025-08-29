@@ -1,18 +1,18 @@
 """Abstract base classes related to import."""
-from . import _bootstrap_external
-from . import machinery
+von . importiere _bootstrap_external
+von . importiere machinery
 try:
-    import _frozen_importlib
+    importiere _frozen_importlib
 except ImportError as exc:
     wenn exc.name != '_frozen_importlib':
         raise
     _frozen_importlib = Nichts
 try:
-    import _frozen_importlib_external
+    importiere _frozen_importlib_external
 except ImportError:
     _frozen_importlib_external = _bootstrap_external
-from ._abc import Loader
-import abc
+von ._abc importiere Loader
+importiere abc
 
 
 __all__ = [
@@ -35,7 +35,7 @@ def _register(abstract_cls, *classes):
 
 klasse MetaPathFinder(metaclass=abc.ABCMeta):
 
-    """Abstract base klasse fuer import finders on sys.meta_path."""
+    """Abstract base klasse fuer importiere finders on sys.meta_path."""
 
     # We don't define find_spec() here since that would break
     # hasattr checks we do to support backward compatibility.
@@ -63,7 +63,7 @@ _register(PathEntryFinder, machinery.FileFinder)
 
 klasse ResourceLoader(Loader):
 
-    """Abstract base klasse fuer loaders which can return data from their
+    """Abstract base klasse fuer loaders which can return data von their
     back-end storage to facilitate reading data to perform an import.
 
     This ABC represents one of the optional protocols specified by PEP 302.
@@ -188,9 +188,9 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
     """Abstract base klasse fuer loading source code (and optionally any
     corresponding bytecode).
 
-    To support loading from source code, the abstractmethods inherited from
+    To support loading von source code, the abstractmethods inherited from
     ResourceLoader and ExecutionLoader need to be implemented. To also support
-    loading from bytecode, the optional methods specified directly by this ABC
+    loading von bytecode, the optional methods specified directly by this ABC
     is required.
 
     Inherited abstractmethods not implemented in this ABC:
@@ -202,7 +202,7 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
 
     def path_mtime(self, path):
         """Return the (int) modification time fuer the path (str)."""
-        import warnings
+        importiere warnings
         warnings.warn('SourceLoader.path_mtime is deprecated in favour of '
                       'SourceLoader.path_stats().',
                       DeprecationWarning, stacklevel=2)

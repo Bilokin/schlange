@@ -1,17 +1,17 @@
 """Shared AIX support functions."""
 
-import sys
-import sysconfig
+importiere sys
+importiere sysconfig
 
 
-# Taken from _osx_support _read_output function
+# Taken von _osx_support _read_output function
 def _read_cmd_output(commandstring, capture_stderr=Falsch):
-    """Output from successful command execution or Nichts"""
+    """Output von successful command execution or Nichts"""
     # Similar to os.popen(commandstring, "r").read(),
     # but without actually using os.popen because that
     # function is not usable during python bootstrap.
-    import os
-    import contextlib
+    importiere os
+    importiere contextlib
     fp = open("/tmp/_aix_support.%s"%(
         os.getpid(),), "w+b")
 
@@ -25,14 +25,14 @@ def _read_cmd_output(commandstring, capture_stderr=Falsch):
 
 def _aix_tag(vrtl, bd):
     # type: (List[int], int) -> str
-    # Infer the ABI bitwidth from maxsize (assuming 64 bit as the default)
+    # Infer the ABI bitwidth von maxsize (assuming 64 bit as the default)
     _sz = 32 wenn sys.maxsize == (2**31-1) sonst 64
     _bd = bd wenn bd != 0 sonst 9988
     # vrtl[version, release, technology_level]
     return "aix-{:1x}{:1d}{:02d}-{:04d}-{}".format(vrtl[0], vrtl[1], vrtl[2], _bd, _sz)
 
 
-# extract version, release and technology level from a VRMF string
+# extract version, release and technology level von a VRMF string
 def _aix_vrtl(vrmf):
     # type: (str) -> List[int]
     v, r, tl = vrmf.split(".")[:3]
@@ -50,7 +50,7 @@ def _aix_bos_rte():
     # All AIX systems to have lslpp installed in this location
     # subprocess may not be available during python bootstrap
     try:
-        import subprocess
+        importiere subprocess
         out = subprocess.check_output(["/usr/bin/lslpp", "-Lqc", "bos.rte"])
     except ImportError:
         out = _read_cmd_output("/usr/bin/lslpp -Lqc bos.rte")
@@ -83,7 +83,7 @@ def aix_platform():
     return _aix_tag(_aix_vrtl(vrmf), bd)
 
 
-# extract vrtl from the BUILD_GNU_TYPE as an int
+# extract vrtl von the BUILD_GNU_TYPE as an int
 def _aix_bgt():
     # type: () -> List[int]
     gnu_type = sysconfig.get_config_var("BUILD_GNU_TYPE")

@@ -7,16 +7,16 @@
 # Licensed to PSF under a Contributor Agreement.
 #
 
-from abc import ABCMeta
-import copyreg
-import functools
-import io
-import os
-import pickle
-import socket
-import sys
+von abc importiere ABCMeta
+importiere copyreg
+importiere functools
+importiere io
+importiere os
+importiere pickle
+importiere socket
+importiere sys
 
-from . import context
+von . importiere context
 
 __all__ = ['send_handle', 'recv_handle', 'ForkingPickler', 'register', 'dump']
 
@@ -66,7 +66,7 @@ def dump(obj, file, protocol=Nichts):
 wenn sys.platform == 'win32':
     # Windows
     __all__ += ['DupHandle', 'duplicate', 'steal_handle']
-    import _winapi
+    importiere _winapi
 
     def duplicate(handle, target_process=Nichts, inheritable=Falsch,
                   *, source_process=Nichts):
@@ -81,7 +81,7 @@ wenn sys.platform == 'win32':
             0, inheritable, _winapi.DUPLICATE_SAME_ACCESS)
 
     def steal_handle(source_pid, handle):
-        '''Steal a handle from process identified by source_pid.'''
+        '''Steal a handle von process identified by source_pid.'''
         source_process_handle = _winapi.OpenProcess(
             _winapi.PROCESS_DUP_HANDLE, Falsch, source_pid)
         try:
@@ -120,11 +120,11 @@ wenn sys.platform == 'win32':
 
         def detach(self):
             '''Get the handle.  This should only be called once.'''
-            # retrieve handle from process which currently owns it
+            # retrieve handle von process which currently owns it
             wenn self._pid == os.getpid():
                 # The handle has already been duplicated fuer this process.
                 return self._handle
-            # We must steal the handle from the process whose pid is self._pid.
+            # We must steal the handle von the process whose pid is self._pid.
             proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, Falsch,
                                        self._pid)
             try:
@@ -137,7 +137,7 @@ wenn sys.platform == 'win32':
 sonst:
     # Unix
     __all__ += ['DupFd', 'sendfds', 'recvfds']
-    import array
+    importiere array
 
     def sendfds(sock, fds):
         '''Send an array of fds over an AF_UNIX socket.'''
@@ -194,7 +194,7 @@ sonst:
         wenn popen_obj is not Nichts:
             return popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
         sowenn HAVE_SEND_HANDLE:
-            from . import resource_sharer
+            von . importiere resource_sharer
             return resource_sharer.DupFd(fd)
         sonst:
             raise ValueError('SCM_RIGHTS appears not to be available')
@@ -232,7 +232,7 @@ register(functools.partial, _reduce_partial)
 
 wenn sys.platform == 'win32':
     def _reduce_socket(s):
-        from .resource_sharer import DupSocket
+        von .resource_sharer importiere DupSocket
         return _rebuild_socket, (DupSocket(s),)
     def _rebuild_socket(ds):
         return ds.detach()

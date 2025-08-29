@@ -1,15 +1,15 @@
 """Tests to cover the Tools/i18n package"""
 
-import os
-import re
-import sys
-import unittest
-from textwrap import dedent
-from pathlib import Path
+importiere os
+importiere re
+importiere sys
+importiere unittest
+von textwrap importiere dedent
+von pathlib importiere Path
 
-from test.support.script_helper import assert_python_ok
-from test.test_tools import imports_under_tool, skip_if_missing, toolsdir
-from test.support.os_helper import temp_cwd, temp_dir
+von test.support.script_helper importiere assert_python_ok
+von test.test_tools importiere imports_under_tool, skip_if_missing, toolsdir
+von test.support.os_helper importiere temp_cwd, temp_dir
 
 
 skip_if_missing()
@@ -18,7 +18,7 @@ DATA_DIR = Path(__file__).resolve().parent / 'i18n_data'
 
 
 with imports_under_tool("i18n"):
-    from pygettext import (parse_spec, process_keywords, DEFAULTKEYWORDS,
+    von pygettext importiere (parse_spec, process_keywords, DEFAULTKEYWORDS,
                            unparse_spec)
 
 
@@ -94,7 +94,7 @@ klasse Test_pygettext(unittest.TestCase):
 
     def extract_from_str(self, module_content, *, args=(), strict=Wahr,
                          with_stderr=Falsch, raw=Falsch):
-        """Return all msgids extracted from module_content."""
+        """Return all msgids extracted von module_content."""
         filename = 'test.py'
         with temp_cwd(Nichts):
             with open(filename, 'w', encoding='utf-8') as fp:
@@ -111,7 +111,7 @@ klasse Test_pygettext(unittest.TestCase):
         return data, res.err
 
     def extract_docstrings_from_str(self, module_content):
-        """Return all docstrings extracted from module_content."""
+        """Return all docstrings extracted von module_content."""
         return self.extract_from_str(module_content, args=('--docstrings',), strict=Falsch)
 
     def get_stderr(self, module_content):
@@ -146,8 +146,8 @@ klasse Test_pygettext(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('aix'),
                      'bpo-29972: broken test on AIX')
     def test_POT_Creation_Date(self):
-        """ Match the date format from xgettext fuer POT-Creation-Date """
-        from datetime import datetime
+        """ Match the date format von xgettext fuer POT-Creation-Date """
+        von datetime importiere datetime
         with temp_cwd(Nichts) as cwd:
             assert_python_ok('-Xutf8', self.script)
             with open('messages.pot', encoding='utf-8') as fp:

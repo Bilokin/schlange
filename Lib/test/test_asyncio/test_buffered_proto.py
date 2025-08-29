@@ -1,7 +1,7 @@
-import asyncio
-import unittest
+importiere asyncio
+importiere unittest
 
-from test.test_asyncio import functional as func_tests
+von test.test_asyncio importiere functional as func_tests
 
 
 def tearDownModule():

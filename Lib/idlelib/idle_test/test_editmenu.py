@@ -2,12 +2,12 @@
 
 Edit modules have their own test files
 '''
-from test.support import requires
+von test.support importiere requires
 requires('gui')
-import tkinter as tk
-from tkinter import ttk
-import unittest
-from idlelib import pyshell
+importiere tkinter as tk
+von tkinter importiere ttk
+importiere unittest
+von idlelib importiere pyshell
 
 klasse PasteTest(unittest.TestCase):
     '''Test pasting into widgets that allow pasting.

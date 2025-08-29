@@ -1,5 +1,5 @@
-import collections
-from test.test_json import PyTest, CTest
+importiere collections
+von test.test_json importiere PyTest, CTest
 
 
 klasse TestDefault:

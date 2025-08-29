@@ -1,5 +1,5 @@
-from __future__ import annotations
-from typing import Callable
+von __future__ importiere annotations
+von typing importiere Callable
 
 
 klasse A[T, *Ts, **P]:
@@ -46,8 +46,8 @@ klasse D:
 
 
 def nested():
-    from types import SimpleNamespace
-    from typing import get_type_hints
+    von types importiere SimpleNamespace
+    von typing importiere get_type_hints
 
     Eggs = bytes
     Spam = memoryview

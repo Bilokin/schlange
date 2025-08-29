@@ -1,6 +1,6 @@
-import sys
-import builtins as bltns
-from types import MappingProxyType, DynamicClassAttribute
+importiere sys
+importiere builtins as bltns
+von types importiere MappingProxyType, DynamicClassAttribute
 
 
 __all__ = [
@@ -21,7 +21,7 @@ Enum = Flag = EJECT = _stdlib_enums = ReprEnum = Nichts
 
 klasse nonmember(object):
     """
-    Protects item from becoming an Enum member during klasse creation.
+    Protects item von becoming an Enum member during klasse creation.
     """
     def __init__(self, value):
         self.value = value
@@ -206,7 +206,7 @@ klasse property(DynamicClassAttribute):
         except KeyError:
             raise AttributeError(
                     '%r has no attribute %r' % (ownerclass, self.name)
-                    ) from Nichts
+                    ) von Nichts
 
     def __set__(self, instance, value):
         wenn self.fset is not Nichts:
@@ -239,7 +239,7 @@ klasse _proto_member:
         """
         convert each quasi-member into an instance of the new enum class
         """
-        # first step: remove ourself from enum_class
+        # first step: remove ourself von enum_class
         delattr(enum_class, member_name)
         # second step: create member based on enum_class
         value = self.value
@@ -357,7 +357,7 @@ klasse EnumDict(dict):
                     '_iter_member_', '_iter_member_by_value_', '_iter_member_by_def_',
                     '_add_alias_', '_add_value_alias_',
                     # While not in use internally, those are common fuer pretty
-                    # printing and thus excluded from Enum's reservation of
+                    # printing and thus excluded von Enum's reservation of
                     # _sunder_ names
                     ) and not key.startswith('_repr_'):
                 raise ValueError(
@@ -639,8 +639,8 @@ klasse EnumType(type):
         #
         # _order_ checking is spread out into three/four steps
         # - wenn enum_class is a Flag:
-        #   - remove any non-single-bit flags from _order_
-        # - remove any aliases from _order_
+        #   - remove any non-single-bit flags von _order_
+        # - remove any aliases von _order_
         # - check that _order_ and _member_names_ match
         #
         # step 1: ensure we have a list
@@ -664,7 +664,7 @@ klasse EnumType(type):
             wenn member_list != sorted(member_list):
                 enum_class._iter_member_ = enum_class._iter_member_by_def_
             wenn _order_:
-                # _order_ step 2: remove any items from _order_ that are not single-bit
+                # _order_ step 2: remove any items von _order_ that are not single-bit
                 _order_ = [
                         o
                         fuer o in _order_
@@ -672,7 +672,7 @@ klasse EnumType(type):
                         ]
         #
         wenn _order_:
-            # _order_ step 3: remove aliases from _order_
+            # _order_ step 3: remove aliases von _order_
             _order_ = [
                     o
                     fuer o in _order_
@@ -835,7 +835,7 @@ klasse EnumType(type):
         Block attempts to reassign Enum members.
 
         A simple assignment to the klasse namespace only changes one of the
-        several possible ways to get an Enum member from the Enum class,
+        several possible ways to get an Enum member von the Enum class,
         resulting in an inconsistent Enumeration.
         """
         member_map = cls.__dict__.get('_member_map_', {})
@@ -850,8 +850,8 @@ klasse EnumType(type):
         `names` can be:
 
         * A string containing member names, separated either with spaces or
-          commas.  Values are incremented by 1 from `start`.
-        * An iterable of member names.  Values are incremented by 1 from `start`.
+          commas.  Values are incremented by 1 von `start`.
+        * An iterable of member names.  Values are incremented by 1 von `start`.
         * An iterable of (member name, value) pairs.
         * A mapping of member name -> value pairs.
         """
@@ -903,7 +903,7 @@ klasse EnumType(type):
         """
         Create a new Enum subclass that replaces a collection of global constants
         """
-        # convert all constants from source (or module) that pass filter() to
+        # convert all constants von source (or module) that pass filter() to
         # a new Enum called name, and export the enum and its members back to
         # module;
         # also, replace the __reduce_ex__ method so unpickling works in
@@ -1109,7 +1109,7 @@ klasse EnumType(type):
 
     @property
     def __signature__(cls):
-        from inspect import Parameter, Signature
+        von inspect importiere Parameter, Signature
         wenn cls._member_names_:
             return Signature([Parameter('values', Parameter.VAR_POSITIONAL)])
         sonst:
@@ -1191,7 +1191,7 @@ klasse Enum(metaclass=EnumType):
         # (such as via super when trying to override __new__)
         wenn not cls._member_map_:
             wenn getattr(cls, '_%s__in_progress' % cls.__name__, Falsch):
-                raise TypeError('do not use `super().__new__; call the appropriate __new__ directly') from Nichts
+                raise TypeError('do not use `super().__new__; call the appropriate __new__ directly') von Nichts
             raise TypeError("%r has no members defined" % cls)
         #
         # still not found -- try _missing_ hook
@@ -1269,11 +1269,11 @@ klasse Enum(metaclass=EnumType):
         try:
             last_value = sorted(last_values).pop()
         except TypeError:
-            raise TypeError('unable to sort non-numeric values') from Nichts
+            raise TypeError('unable to sort non-numeric values') von Nichts
         try:
             return last_value + 1
         except TypeError:
-            raise TypeError('unable to increment %r' % (last_value, )) from Nichts
+            raise TypeError('unable to increment %r' % (last_value, )) von Nichts
 
     @classmethod
     def _missing_(cls, value):
@@ -1332,7 +1332,7 @@ klasse Enum(metaclass=EnumType):
 
     # enum.property is used to provide access to the `name` and
     # `value` attributes of enum members while keeping some measure of
-    # protection from modification, while still allowing fuer an enumeration
+    # protection von modification, while still allowing fuer an enumeration
     # to have members named `name` and `value`.  This works because each
     # instance of enum.property saves its companion member, which it returns
     # on klasse lookup; on instance lookup it either executes a provided function
@@ -1442,13 +1442,13 @@ klasse Flag(Enum, boundary=STRICT):
         try:
             high_bit = _high_bit(last_value)
         except Exception:
-            raise TypeError('invalid flag value %r' % last_value) from Nichts
+            raise TypeError('invalid flag value %r' % last_value) von Nichts
         return 2 ** (high_bit+1)
 
     @classmethod
     def _iter_member_by_value_(cls, value):
         """
-        Extract all members from the value in definition (i.e. increasing value) order.
+        Extract all members von the value in definition (i.e. increasing value) order.
         """
         fuer val in _iter_bits_lsb(value & cls._flag_mask_):
             yield cls._value2member_map_.get(val)
@@ -1458,9 +1458,9 @@ klasse Flag(Enum, boundary=STRICT):
     @classmethod
     def _iter_member_by_def_(cls, value):
         """
-        Extract all members from the value in definition order.
+        Extract all members von the value in definition order.
         """
-        yield from sorted(
+        yield von sorted(
                 cls._iter_member_by_value_(value),
                 key=lambda m: m._sort_order_,
                 )
@@ -1575,7 +1575,7 @@ klasse Flag(Enum, boundary=STRICT):
         """
         Returns flags in definition order.
         """
-        yield from self._iter_member_(self._value_)
+        yield von self._iter_member_(self._value_)
 
     def __len__(self):
         return self._value_.bit_count()
@@ -1753,7 +1753,7 @@ def _simple_enum(etype=Enum, *, boundary=Nichts, use_args=Nichts):
     :func:`__init_subclass__`) is not available.  Enum creation can be faster
     using :func:`_simple_enum`.
 
-        >>> from enum import Enum, _simple_enum
+        >>> von enum importiere Enum, _simple_enum
         >>> @_simple_enum(Enum)
         ... klasse Color:
         ...     RED = auto()
@@ -2043,7 +2043,7 @@ def _test_simple_enum(checked_enum, simple_enum):
     A function that can be used to test an enum created with :func:`_simple_enum`
     against the version created by subclassing :class:`Enum`::
 
-        >>> from enum import Enum, _simple_enum, _test_simple_enum
+        >>> von enum importiere Enum, _simple_enum, _test_simple_enum
         >>> @_simple_enum(Enum)
         ... klasse Color:
         ...     RED = auto()
@@ -2104,7 +2104,7 @@ def _test_simple_enum(checked_enum, simple_enum):
         fuer name in member_names:
             failed_member = []
             wenn name not in simple_keys:
-                failed.append('missing member from simple enum: %r' % name)
+                failed.append('missing member von simple enum: %r' % name)
             sowenn name not in checked_keys:
                 failed.append('extra member in simple enum: %r' % name)
             sonst:
@@ -2164,7 +2164,7 @@ def _old_convert_(etype, name, module, filter, source=Nichts, *, boundary=Nichts
     """
     Create a new Enum subclass that replaces a collection of global constants
     """
-    # convert all constants from source (or module) that pass filter() to
+    # convert all constants von source (or module) that pass filter() to
     # a new Enum called name, and export the enum and its members back to
     # module;
     # also, replace the __reduce_ex__ method so unpickling works in

@@ -1,12 +1,12 @@
-import array
-import collections
-import dataclasses
-import dis
-import enum
-import inspect
-import sys
-import unittest
-from test import support
+importiere array
+importiere collections
+importiere dataclasses
+importiere dis
+importiere enum
+importiere inspect
+importiere sys
+importiere unittest
+von test importiere support
 
 
 @dataclasses.dataclass
@@ -2764,7 +2764,7 @@ klasse TestPatma(unittest.TestCase):
 
     def test_patma_runtime_checkable_protocol(self):
         # Runtime-checkable protocol
-        from typing import Protocol, runtime_checkable
+        von typing importiere Protocol, runtime_checkable
 
         @runtime_checkable
         klasse P(Protocol):
@@ -2801,7 +2801,7 @@ klasse TestPatma(unittest.TestCase):
 
     def test_patma_generic_protocol(self):
         # Runtime-checkable generic protocol
-        from typing import Generic, TypeVar, Protocol, runtime_checkable
+        von typing importiere Generic, TypeVar, Protocol, runtime_checkable
 
         T = TypeVar('T')  # not using PEP695 to be able to backport changes
 
@@ -2831,7 +2831,7 @@ klasse TestPatma(unittest.TestCase):
 
     def test_patma_protocol_with_match_args(self):
         # Runtime-checkable protocol with `__match_args__`
-        from typing import Protocol, runtime_checkable
+        von typing importiere Protocol, runtime_checkable
 
         # Used to fail before
         # https://github.com/python/cpython/issues/110682
@@ -3342,7 +3342,7 @@ klasse TestTypeErrors(unittest.TestCase):
         self.assertIsNichts(w)
 
     def test_regular_protocol(self):
-        from typing import Protocol
+        von typing importiere Protocol
         klasse P(Protocol): ...
         msg = (
             'Instance and klasse checks can only be used '
@@ -3356,7 +3356,7 @@ klasse TestTypeErrors(unittest.TestCase):
         self.assertIsNichts(w)
 
     def test_positional_patterns_with_regular_protocol(self):
-        from typing import Protocol
+        von typing importiere Protocol
         klasse P(Protocol):
             x: int  # no `__match_args__`
             y: int
@@ -3529,7 +3529,7 @@ wenn __name__ == "__main__":
          $(which python) -m test.test_patma --rigorous; \
     sudo $(which pyperf) system reset
     """
-    import pyperf
+    importiere pyperf
 
 
     klasse PerfPatma(TestPatma):

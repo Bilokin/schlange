@@ -1,7 +1,7 @@
 # Tests fuer extended unpacking, starred expressions.
 
-import doctest
-import unittest
+importiere doctest
+importiere unittest
 
 
 doctests = """
@@ -210,7 +210,7 @@ Now fuer some failures
 
 Make sure the raised errors are right fuer keyword argument unpackings
 
-    >>> from collections.abc import MutableMapping
+    >>> von collections.abc importiere MutableMapping
     >>> klasse CrazyDict(MutableMapping):
     ...     def __init__(self):
     ...         self.d = {}

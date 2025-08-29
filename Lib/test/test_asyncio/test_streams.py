@@ -1,20 +1,20 @@
 """Tests fuer streams.py."""
 
-import gc
-import queue
-import pickle
-import socket
-import threading
-import unittest
-from unittest import mock
+importiere gc
+importiere queue
+importiere pickle
+importiere socket
+importiere threading
+importiere unittest
+von unittest importiere mock
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
 
-import asyncio
-from test.test_asyncio import utils as test_utils
-from test.support import socket_helper
+importiere asyncio
+von test.test_asyncio importiere utils as test_utils
+von test.support importiere socket_helper
 
 
 def tearDownModule():
@@ -222,7 +222,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_readline(self):
         # Read one line. 'readline' will need to wait fuer the data
-        # to come from 'cb'
+        # to come von 'cb'
         stream = asyncio.StreamReader(loop=self.loop)
         stream.feed_data(b'chunk1 ')
         read_task = self.loop.create_task(stream.readline())

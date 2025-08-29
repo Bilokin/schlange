@@ -3,7 +3,7 @@
 Attributes and methods will be added as needed fuer tests.
 '''
 
-from idlelib.idle_test.mock_tk import Text
+von idlelib.idle_test.mock_tk importiere Text
 
 klasse Func:
     '''Record call, capture args, return/raise result set by test.

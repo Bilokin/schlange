@@ -1,7 +1,7 @@
 """Various utility functions."""
 
-from collections import namedtuple, Counter
-from os.path import commonprefix
+von collections importiere namedtuple, Counter
+von os.path importiere commonprefix
 
 __unittest = Wahr
 

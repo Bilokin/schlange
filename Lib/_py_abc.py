@@ -1,4 +1,4 @@
-from _weakrefset import WeakSet
+von _weakrefset importiere WeakSet
 
 
 def get_cache_token():

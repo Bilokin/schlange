@@ -1,23 +1,23 @@
-import sys
-import unittest
+importiere sys
+importiere unittest
 
 wenn sys.platform != "win32":
     raise unittest.SkipTest("test only relevant on win32")
 
 
-import itertools
-from functools import partial
-from test.support import force_not_colorized_test_class
-from typing import Iterable
-from unittest import TestCase
-from unittest.mock import MagicMock, call
+importiere itertools
+von functools importiere partial
+von test.support importiere force_not_colorized_test_class
+von typing importiere Iterable
+von unittest importiere TestCase
+von unittest.mock importiere MagicMock, call
 
-from .support import handle_all_events, code_to_events
-from .support import prepare_reader as default_prepare_reader
+von .support importiere handle_all_events, code_to_events
+von .support importiere prepare_reader as default_prepare_reader
 
 try:
-    from _pyrepl.console import Event, Console
-    from _pyrepl.windows_console import (
+    von _pyrepl.console importiere Event, Console
+    von _pyrepl.windows_console importiere (
         WindowsConsole,
         MOVE_LEFT,
         MOVE_RIGHT,
@@ -25,7 +25,7 @@ try:
         MOVE_DOWN,
         ERASE_IN_LINE,
     )
-    import _pyrepl.windows_console as wc
+    importiere _pyrepl.windows_console as wc
 except ImportError:
     pass
 
@@ -481,7 +481,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.get_event([ir]), Event(evt="key", data="\033"))
         self.assertEqual(
             self.console.get_event(), Event("key", "left"))
-        # self.mock is not called again, since the second time we read from the
+        # self.mock is not called again, since the second time we read von the
         # command queue
         self.assertEqual(self.mock.call_count, 1)
 

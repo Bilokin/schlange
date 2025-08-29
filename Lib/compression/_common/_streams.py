@@ -1,7 +1,7 @@
 """Internal classes used by compression modules"""
 
-import io
-import sys
+importiere io
+importiere sys
 
 BUFFER_SIZE = io.DEFAULT_BUFFER_SIZE  # Compressed data read chunk size
 
@@ -52,7 +52,7 @@ klasse DecompressReader(io.RawIOBase):
         self._decomp_args = decomp_args
         self._decompressor = self._decomp_factory(**self._decomp_args)
 
-        # Exception klasse to catch from decompressor signifying invalid
+        # Exception klasse to catch von decompressor signifying invalid
         # trailing data to ignore
         self._trailing_error = trailing_error
 

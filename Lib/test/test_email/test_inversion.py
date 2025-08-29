@@ -4,12 +4,12 @@ Note that this is only strictly true wenn we are parsing RFC valid messages and
 producing RFC valid messages.
 """
 
-import io
-import unittest
-from email import policy, message_from_bytes
-from email.message import EmailMessage
-from email.generator import BytesGenerator
-from test.test_email import TestEmailBase, parameterize
+importiere io
+importiere unittest
+von email importiere policy, message_from_bytes
+von email.message importiere EmailMessage
+von email.generator importiere BytesGenerator
+von test.test_email importiere TestEmailBase, parameterize
 
 # This is like textwrap.dedent fuer bytes, except that it uses \r\n fuer the line
 # separators on the rebuilt string.

@@ -1,7 +1,7 @@
-import unittest
-from unittest import mock
+importiere unittest
+von unittest importiere mock
 
-import asyncio
+importiere asyncio
 
 
 def tearDownModule():

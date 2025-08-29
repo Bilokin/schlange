@@ -17,25 +17,25 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import _colorize
+importiere _colorize
 
-from abc import ABC, abstractmethod
-import ast
-import code
-import linecache
-from dataclasses import dataclass, field
-import os.path
-import re
-import sys
+von abc importiere ABC, abstractmethod
+importiere ast
+importiere code
+importiere linecache
+von dataclasses importiere dataclass, field
+importiere os.path
+importiere re
+importiere sys
 
 
 TYPE_CHECKING = Falsch
 
 wenn TYPE_CHECKING:
-    from typing import IO
-    from typing import Callable
+    von typing importiere IO
+    von typing importiere Callable
 
 
 @dataclass
@@ -170,7 +170,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
         super().showsyntaxerror(filename=filename, **kwargs)
 
     def _excepthook(self, typ, value, tb):
-        import traceback
+        importiere traceback
         lines = traceback.format_exception(
                 typ, value, tb,
                 colorize=self.can_colorize,

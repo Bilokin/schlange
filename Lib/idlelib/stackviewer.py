@@ -1,12 +1,12 @@
 # Rename to stackbrowser or possibly consolidate with browser.
 
-import linecache
-import os
+importiere linecache
+importiere os
 
-import tkinter as tk
+importiere tkinter as tk
 
-from idlelib.debugobj import ObjectTreeItem, make_objecttreeitem
-from idlelib.tree import TreeNode, TreeItem, ScrolledCanvas
+von idlelib.debugobj importiere ObjectTreeItem, make_objecttreeitem
+von idlelib.tree importiere TreeNode, TreeItem, ScrolledCanvas
 
 def StackBrowser(root, exc, flist=Nichts, top=Nichts):
     global sc, item, node  # For testing.
@@ -114,7 +114,7 @@ klasse VariablesTreeItem(ObjectTreeItem):
 
 
 def _stackbrowser(parent):  # htest #
-    from idlelib.pyshell import PyShellFileList
+    von idlelib.pyshell importiere PyShellFileList
     top = tk.Toplevel(parent)
     top.title("Test StackViewer")
     x, y = map(int, parent.geometry().split('+')[1:])
@@ -127,8 +127,8 @@ def _stackbrowser(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_stackviewer', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_stackbrowser)

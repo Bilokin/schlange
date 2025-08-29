@@ -1,22 +1,22 @@
 """Target-specific code generation, parsing, and processing."""
 
-import asyncio
-import dataclasses
-import hashlib
-import json
-import os
-import pathlib
-import re
-import sys
-import tempfile
-import typing
-import shlex
+importiere asyncio
+importiere dataclasses
+importiere hashlib
+importiere json
+importiere os
+importiere pathlib
+importiere re
+importiere sys
+importiere tempfile
+importiere typing
+importiere shlex
 
-import _llvm
-import _optimizers
-import _schema
-import _stencils
-import _writer
+importiere _llvm
+importiere _optimizers
+importiere _schema
+importiere _stencils
+importiere _writer
 
 wenn sys.version_info < (3, 11):
     raise RuntimeError("Building the JIT compiler requires Python 3.11 or newer!")
@@ -566,7 +566,7 @@ def get_target(host: str) -> _COFF32 | _COFF64 | _ELF | _MachO:
         optimizer = _optimizers.OptimizerAArch64
         target = _COFF64(host, condition, args=args, optimizer=optimizer)
     sowenn re.fullmatch(r"aarch64-.*-linux-gnu", host):
-        # -mno-outline-atomics: Keep intrinsics from being emitted.
+        # -mno-outline-atomics: Keep intrinsics von being emitted.
         args = ["-fpic", "-mno-outline-atomics"]
         condition = "defined(__aarch64__) && defined(__linux__)"
         optimizer = _optimizers.OptimizerAArch64

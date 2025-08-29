@@ -1,12 +1,12 @@
 """Simple text browser fuer IDLE
 
 """
-from tkinter import Toplevel, Text, TclError,\
+von tkinter importiere Toplevel, Text, TclError,\
     HORIZONTAL, VERTICAL, NS, EW, NSEW, NONE, WORD, SUNKEN
-from tkinter.ttk import Frame, Scrollbar, Button
-from tkinter.messagebox import showerror
+von tkinter.ttk importiere Frame, Scrollbar, Button
+von tkinter.messagebox importiere showerror
 
-from idlelib.colorizer import color_config
+von idlelib.colorizer importiere color_config
 
 
 klasse AutoHideScrollbar(Scrollbar):
@@ -186,8 +186,8 @@ def view_file(parent, title, filename, encoding, modal=Wahr, wrap='word',
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_textview', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(ViewWindow)

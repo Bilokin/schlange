@@ -3,8 +3,8 @@
 #   Codec encoding tests fuer ROC encodings.
 #
 
-from test import multibytecodec_support
-import unittest
+von test importiere multibytecodec_support
+importiere unittest
 
 klasse Test_Big5(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'big5'

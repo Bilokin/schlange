@@ -1,10 +1,10 @@
 # Test case fuer DynamicClassAttribute
 # more tests are in test_descr
 
-import abc
-import sys
-import unittest
-from types import DynamicClassAttribute
+importiere abc
+importiere sys
+importiere unittest
+von types importiere DynamicClassAttribute
 
 klasse PropertyBase(Exception):
     pass

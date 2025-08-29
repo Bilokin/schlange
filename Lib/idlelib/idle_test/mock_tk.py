@@ -3,8 +3,8 @@
 A gui object is anything with a master or parent parameter, which is
 typically required in spite of what the doc strings say.
 """
-import re
-from _tkinter import TclError
+importiere re
+von _tkinter importiere TclError
 
 
 klasse Event:
@@ -61,8 +61,8 @@ klasse Mbox:
 
     Example usage in test_module.py fuer testing functions in module.py:
     ---
-from idlelib.idle_test.mock_tk import Mbox
-import module
+von idlelib.idle_test.mock_tk importiere Mbox
+importiere module
 
 orig_mbox = module.messagebox
 showerror = Mbox.showerror  # example, fuer attribute access in test methods
@@ -137,7 +137,7 @@ klasse Text:
         try:
             index=index.lower()
         except AttributeError:
-            raise TclError('bad text index "%s"' % index) from Nichts
+            raise TclError('bad text index "%s"' % index) von Nichts
 
         lastline =  len(self.data) - 1  # same as number of text lines
         wenn index == 'insert':
@@ -199,7 +199,7 @@ klasse Text:
         self.data[line+len(chars)-1] += after
 
     def get(self, index1, index2=Nichts):
-        "Return slice from index1 to index2 (default is 'index1+1')."
+        "Return slice von index1 to index2 (default is 'index1+1')."
 
         startline, startchar = self._decode(index1)
         wenn index2 is Nichts:
@@ -217,7 +217,7 @@ klasse Text:
             return ''.join(lines)
 
     def delete(self, index1, index2=Nichts):
-        '''Delete slice from index1 to index2 (default is 'index1+1').
+        '''Delete slice von index1 to index2 (default is 'index1+1').
 
         Adjust default index2 ('index+1) fuer line ends.
         Do not delete the terminal \n at the very end of self.data ([-1][-1]).
@@ -277,7 +277,7 @@ klasse Text:
         "Delete all marks in markNames."
 
     def tag_remove(self, tagName, index1, index2=Nichts):
-        "Remove tag tagName from all characters between index1 and index2."
+        "Remove tag tagName von all characters between index1 and index2."
         pass
 
     # The following Text methods affect the graphics screen and return Nichts.

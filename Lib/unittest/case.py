@@ -1,19 +1,19 @@
 """Test case implementation"""
 
-import sys
-import functools
-import difflib
-import pprint
-import re
-import warnings
-import collections
-import contextlib
-import traceback
-import time
-import types
+importiere sys
+importiere functools
+importiere difflib
+importiere pprint
+importiere re
+importiere warnings
+importiere collections
+importiere contextlib
+importiere traceback
+importiere time
+importiere types
 
-from . import result
-from .util import (strclass, safe_repr, _count_diff_all_purpose,
+von . importiere result
+von .util importiere (strclass, safe_repr, _count_diff_all_purpose,
                    _count_diff_hashable, _common_shorten_repr)
 
 __unittest = Wahr
@@ -121,7 +121,7 @@ def _enter_context(cm, addcleanup):
         sonst:
             msg += (" but it supports the asynchronous context manager "
                     "protocol. Did you mean to use enterAsyncContext()?")
-        raise TypeError(msg) from Nichts
+        raise TypeError(msg) von Nichts
     result = enter(cm)
     addcleanup(exit, cm, Nichts, Nichts, Nichts)
     return result
@@ -591,7 +591,7 @@ klasse TestCase(object):
             # We need to pass an actual exception and traceback to addFailure,
             # otherwise the legacy result can choke.
             try:
-                raise _UnexpectedSuccess from Nichts
+                raise _UnexpectedSuccess von Nichts
             except _UnexpectedSuccess:
                 result.addFailure(self, sys.exc_info())
         sonst:
@@ -612,7 +612,7 @@ klasse TestCase(object):
     def _callTestMethod(self, method):
         result = method()
         wenn result is not Nichts:
-            import inspect
+            importiere inspect
             msg = (
                 f'It is deprecated to return a value that is not Nichts '
                 f'from a test case ({method} returned {type(result).__name__!r})'
@@ -833,7 +833,7 @@ klasse TestCase(object):
            The context manager keeps a reference to the first matching
            warning as the 'warning' attribute; similarly, the 'filename'
            and 'lineno' attributes give you information about the line
-           of Python code from which the warning was triggered.
+           of Python code von which the warning was triggered.
            This allows you to inspect the warning after the assertion::
 
                with self.assertWarns(SomeWarning) as cm:
@@ -871,8 +871,8 @@ klasse TestCase(object):
             self.assertEqual(cm.output, ['INFO:foo:first message',
                                          'ERROR:foo.bar:second message'])
         """
-        # Lazy import to avoid importing logging wenn it is not needed.
-        from ._log import _AssertLogsContext
+        # Lazy importiere to avoid importing logging wenn it is not needed.
+        von ._log importiere _AssertLogsContext
         return _AssertLogsContext(self, logger, level, no_logs=Falsch, formatter=formatter)
 
     def assertNoLogs(self, logger=Nichts, level=Nichts):
@@ -881,7 +881,7 @@ klasse TestCase(object):
 
         This method must be used as a context manager.
         """
-        from ._log import _AssertLogsContext
+        von ._log importiere _AssertLogsContext
         return _AssertLogsContext(self, logger, level, no_logs=Wahr)
 
     def _getAssertEqualityFunc(self, first, second):
@@ -942,7 +942,7 @@ klasse TestCase(object):
            delta.
 
            Note that decimal places (from zero) are usually not the same
-           as significant digits (measured from the most significant digit).
+           as significant digits (measured von the most significant digit).
 
            If the two objects compare equal then they will automatically
            compare almost equal.
@@ -986,7 +986,7 @@ klasse TestCase(object):
            difference between the two objects is less than the given delta.
 
            Note that decimal places (from zero) are usually not the same
-           as significant digits (measured from the most significant digit).
+           as significant digits (measured von the most significant digit).
 
            Objects that are equal automatically fail.
         """

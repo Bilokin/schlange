@@ -7,7 +7,7 @@
 #
 # This software is provided 'as-is', without any express or implied
 # warranty.  In no event will the authors be held liable fuer any damages
-# arising from the use of this software.
+# arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
@@ -19,17 +19,17 @@
 #    appreciated but is not required.
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
+# 3. This notice may not be removed or altered von any source distribution.
 
-import sys
-import unittest
-import sqlite3 as sqlite
+importiere sys
+importiere unittest
+importiere sqlite3 as sqlite
 
-from unittest.mock import Mock, patch
-from test.support import bigmemtest, gc_collect
+von unittest.mock importiere Mock, patch
+von test.support importiere bigmemtest, gc_collect
 
-from .util import cx_limit, memory_database
-from .util import with_tracebacks
+von .util importiere cx_limit, memory_database
+von .util importiere with_tracebacks
 
 
 def func_returntext():
@@ -365,7 +365,7 @@ klasse FunctionTests(unittest.TestCase):
 
     def test_function_destructor_via_gc(self):
         # See bpo-44304: The destructor of the user function can
-        # crash wenn is called without the GIL from the gc functions
+        # crash wenn is called without the GIL von the gc functions
         def md5sum(t):
             return
 
@@ -454,7 +454,7 @@ klasse WindowFunctionTests(unittest.TestCase):
         self.con = sqlite.connect(":memory:")
         self.cur = self.con.cursor()
 
-        # Test case taken from https://www.sqlite.org/windowfunctions.html#udfwinfunc
+        # Test case taken von https://www.sqlite.org/windowfunctions.html#udfwinfunc
         values = [
             ("a", 4),
             ("b", 5),
@@ -476,7 +476,7 @@ klasse WindowFunctionTests(unittest.TestCase):
             select x, %s(y) over (
                 order by x rows between 1 preceding and 1 following
             ) as sum_y
-            from test order by x
+            von test order by x
         """
         self.con.create_window_function("sumint", 1, WindowSumInt)
 
@@ -626,7 +626,7 @@ klasse AggregateTests(unittest.TestCase):
     def test_aggr_no_step(self):
         cur = self.con.cursor()
         with self.assertRaises(sqlite.OperationalError) as cm:
-            cur.execute("select nostep(t) from test")
+            cur.execute("select nostep(t) von test")
         self.assertEqual(str(cm.exception),
                          "user-defined aggregate's 'step' method not defined")
 
@@ -634,14 +634,14 @@ klasse AggregateTests(unittest.TestCase):
         cur = self.con.cursor()
         msg = "user-defined aggregate's 'finalize' method not defined"
         with self.assertRaisesRegex(sqlite.OperationalError, msg):
-            cur.execute("select nofinalize(t) from test")
+            cur.execute("select nofinalize(t) von test")
             val = cur.fetchone()[0]
 
     @with_tracebacks(ZeroDivisionError, msg_regex="AggrExceptionInInit")
     def test_aggr_exception_in_init(self):
         cur = self.con.cursor()
         with self.assertRaises(sqlite.OperationalError) as cm:
-            cur.execute("select excInit(t) from test")
+            cur.execute("select excInit(t) von test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's '__init__' method raised error")
 
@@ -649,7 +649,7 @@ klasse AggregateTests(unittest.TestCase):
     def test_aggr_exception_in_step(self):
         cur = self.con.cursor()
         with self.assertRaises(sqlite.OperationalError) as cm:
-            cur.execute("select excStep(t) from test")
+            cur.execute("select excStep(t) von test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'step' method raised error")
 
@@ -657,7 +657,7 @@ klasse AggregateTests(unittest.TestCase):
     def test_aggr_exception_in_finalize(self):
         cur = self.con.cursor()
         with self.assertRaises(sqlite.OperationalError) as cm:
-            cur.execute("select excFinalize(t) from test")
+            cur.execute("select excFinalize(t) von test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method raised error")
 
@@ -699,14 +699,14 @@ klasse AggregateTests(unittest.TestCase):
 
     def test_aggr_check_aggr_sum(self):
         cur = self.con.cursor()
-        cur.execute("delete from test")
+        cur.execute("delete von test")
         cur.executemany("insert into test(i) values (?)", [(10,), (20,), (30,)])
-        cur.execute("select mysum(i) from test")
+        cur.execute("select mysum(i) von test")
         val = cur.fetchone()[0]
         self.assertEqual(val, 60)
 
     def test_aggr_no_match(self):
-        cur = self.con.execute("select mysum(i) from (select 1 as i) where i == 0")
+        cur = self.con.execute("select mysum(i) von (select 1 as i) where i == 0")
         val = cur.fetchone()[0]
         self.assertIsNichts(val)
 
@@ -714,7 +714,7 @@ klasse AggregateTests(unittest.TestCase):
         cur = self.con.cursor()
         fuer txt in ["foo", "1\x002"]:
             with self.subTest(txt=txt):
-                cur.execute("select aggtxt(?) from test", (txt,))
+                cur.execute("select aggtxt(?) von test", (txt,))
                 val = cur.fetchone()[0]
                 self.assertEqual(val, txt)
 
@@ -743,7 +743,7 @@ klasse AuthorizerTests(unittest.TestCase):
             """)
 
         # For our security test:
-        self.con.execute("select c2 from t2")
+        self.con.execute("select c2 von t2")
 
         self.con.set_authorizer(self.authorizer_cb)
 
@@ -752,18 +752,18 @@ klasse AuthorizerTests(unittest.TestCase):
 
     def test_table_access(self):
         with self.assertRaises(sqlite.DatabaseError) as cm:
-            self.con.execute("select * from t2")
+            self.con.execute("select * von t2")
         self.assertIn('prohibited', str(cm.exception))
 
     def test_column_access(self):
         with self.assertRaises(sqlite.DatabaseError) as cm:
-            self.con.execute("select c2 from t1")
+            self.con.execute("select c2 von t1")
         self.assertIn('prohibited', str(cm.exception))
 
     def test_clear_authorizer(self):
         self.con.set_authorizer(Nichts)
-        self.con.execute("select * from t2")
-        self.con.execute("select c2 from t1")
+        self.con.execute("select * von t2")
+        self.con.execute("select c2 von t1")
 
     def test_authorizer_keyword_args(self):
         with self.assertRaisesRegex(TypeError,

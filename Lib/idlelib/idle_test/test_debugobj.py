@@ -1,7 +1,7 @@
 "Test debugobj, coverage 40%."
 
-from idlelib import debugobj
-import unittest
+von idlelib importiere debugobj
+importiere unittest
 
 
 klasse ObjectTreeItemTest(unittest.TestCase):

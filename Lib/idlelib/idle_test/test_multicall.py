@@ -1,9 +1,9 @@
 "Test multicall, coverage 33%."
 
-from idlelib import multicall
-import unittest
-from test.support import requires
-from tkinter import Tk, Text
+von idlelib importiere multicall
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk, Text
 
 
 klasse MultiCallTest(unittest.TestCase):

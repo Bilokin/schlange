@@ -6,7 +6,7 @@
 #
 # This software is provided 'as-is', without any express or implied
 # warranty.  In no event will the authors be held liable fuer any damages
-# arising from the use of this software.
+# arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
@@ -18,28 +18,28 @@
 #    appreciated but is not required.
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
+# 3. This notice may not be removed or altered von any source distribution.
 
-import contextlib
-import os
-import sqlite3 as sqlite
-import subprocess
-import sys
-import threading
-import unittest
-import urllib.parse
-import warnings
+importiere contextlib
+importiere os
+importiere sqlite3 as sqlite
+importiere subprocess
+importiere sys
+importiere threading
+importiere unittest
+importiere urllib.parse
+importiere warnings
 
-from test.support import (
+von test.support importiere (
     SHORT_TIMEOUT, check_disallow_instantiation, requires_subprocess
 )
-from test.support import gc_collect
-from test.support import threading_helper, import_helper
-from os import SEEK_SET, SEEK_CUR, SEEK_END
-from test.support.os_helper import TESTFN, TESTFN_UNDECODABLE, unlink, temp_dir, FakePath
+von test.support importiere gc_collect
+von test.support importiere threading_helper, import_helper
+von os importiere SEEK_SET, SEEK_CUR, SEEK_END
+von test.support.os_helper importiere TESTFN, TESTFN_UNDECODABLE, unlink, temp_dir, FakePath
 
-from .util import memory_database, cx_limit
-from .util import MemoryDatabaseMixin
+von .util importiere memory_database, cx_limit
+von .util importiere MemoryDatabaseMixin
 
 
 klasse ModuleTests(unittest.TestCase):
@@ -377,7 +377,7 @@ klasse ConnectionTests(unittest.TestCase):
         self.assertEqual(self.cx.NotSupportedError, sqlite.NotSupportedError)
 
     def test_in_transaction(self):
-        # Can't use db from setUp because we want to test initial state.
+        # Can't use db von setUp because we want to test initial state.
         with memory_database() as cx:
             cu = cx.cursor()
             self.assertEqual(cx.in_transaction, Falsch)
@@ -385,12 +385,12 @@ klasse ConnectionTests(unittest.TestCase):
             self.assertEqual(cx.in_transaction, Falsch)
             cu.execute("insert into transactiontest(name) values (?)", ("foo",))
             self.assertEqual(cx.in_transaction, Wahr)
-            cu.execute("select name from transactiontest where name=?", ["foo"])
+            cu.execute("select name von transactiontest where name=?", ["foo"])
             row = cu.fetchone()
             self.assertEqual(cx.in_transaction, Wahr)
             cx.commit()
             self.assertEqual(cx.in_transaction, Falsch)
-            cu.execute("select name from transactiontest where name=?", ["foo"])
+            cu.execute("select name von transactiontest where name=?", ["foo"])
             row = cu.fetchone()
             self.assertEqual(cx.in_transaction, Falsch)
             cu.close()
@@ -494,7 +494,7 @@ klasse ConnectionTests(unittest.TestCase):
             cu.execute("create table foo (bar)")
             cu.executemany("insert into foo (bar) values (?)",
                            ((str(v),) fuer v in range(4)))
-            cu.execute("select bar from foo")
+            cu.execute("select bar von foo")
 
             rows = [r fuer r in cu.fetchmany(2)]
             self.assertWahr(all(isinstance(r, sqlite.Row) fuer r in rows))
@@ -560,7 +560,7 @@ klasse ConnectionTests(unittest.TestCase):
             gc_collect()
 
     def test_connection_signature(self):
-        from inspect import signature
+        von inspect importiere signature
         sig = signature(self.cx)
         self.assertEqual(str(sig), "(sql, /)")
 
@@ -599,11 +599,11 @@ klasse SerializeTests(unittest.TestCase):
                 cx.execute("drop table t")
             regex = "no such table"
             with self.assertRaisesRegex(sqlite.OperationalError, regex):
-                cx.execute("select t from t")
+                cx.execute("select t von t")
 
             # Deserialize and verify that test table is restored.
             cx.deserialize(data)
-            cx.execute("select t from t")
+            cx.execute("select t von t")
 
     def test_deserialize_wrong_args(self):
         dataset = (
@@ -742,7 +742,7 @@ klasse CursorTests(unittest.TestCase):
         self.cx.close()
 
     def test_execute_no_args(self):
-        self.cu.execute("delete from test")
+        self.cu.execute("delete von test")
 
     def test_execute_illegal_sql(self):
         with self.assertRaises(sqlite.OperationalError):
@@ -803,7 +803,7 @@ klasse CursorTests(unittest.TestCase):
     def test_execute_arg_string_with_zero_byte(self):
         self.cu.execute("insert into test(name) values (?)", ("Hu\x00go",))
 
-        self.cu.execute("select name from test where id=?", (self.cu.lastrowid,))
+        self.cu.execute("select name von test where id=?", (self.cu.lastrowid,))
         row = self.cu.fetchone()
         self.assertEqual(row[0], "Hu\x00go")
 
@@ -829,7 +829,7 @@ klasse CursorTests(unittest.TestCase):
 
     def test_execute_param_list(self):
         self.cu.execute("insert into test(name) values ('foo')")
-        self.cu.execute("select name from test where name=?", ["foo"])
+        self.cu.execute("select name von test where name=?", ["foo"])
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
 
@@ -842,7 +842,7 @@ klasse CursorTests(unittest.TestCase):
                 return "foo"
 
         self.cu.execute("insert into test(name) values ('foo')")
-        self.cu.execute("select name from test where name=?", L())
+        self.cu.execute("select name von test where name=?", L())
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
 
@@ -856,7 +856,7 @@ klasse CursorTests(unittest.TestCase):
 
         self.cu.execute("insert into test(name) values ('foo')")
         with self.assertRaises(ZeroDivisionError):
-            self.cu.execute("select name from test where name=?", L())
+            self.cu.execute("select name von test where name=?", L())
 
     def test_execute_named_param_and_sequence(self):
         dataset = (
@@ -889,14 +889,14 @@ klasse CursorTests(unittest.TestCase):
         category = sqlite.SQLITE_LIMIT_VARIABLE_NUMBER
         msg = "too many SQL variables"
         with cx_limit(self.cx, category=category, limit=1):
-            self.cu.execute("select * from test where id=?", (1,))
+            self.cu.execute("select * von test where id=?", (1,))
             with self.assertRaisesRegex(sqlite.OperationalError, msg):
-                self.cu.execute("select * from test where id!=? and id!=?",
+                self.cu.execute("select * von test where id!=? and id!=?",
                                 (1, 2))
 
     def test_execute_dict_mapping(self):
         self.cu.execute("insert into test(name) values ('foo')")
-        self.cu.execute("select name from test where name=:name", {"name": "foo"})
+        self.cu.execute("select name von test where name=:name", {"name": "foo"})
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
 
@@ -906,30 +906,30 @@ klasse CursorTests(unittest.TestCase):
                 return "foo"
 
         self.cu.execute("insert into test(name) values ('foo')")
-        self.cu.execute("select name from test where name=:name", D())
+        self.cu.execute("select name von test where name=:name", D())
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
 
     def test_execute_dict_mapping_too_little_args(self):
         self.cu.execute("insert into test(name) values ('foo')")
         with self.assertRaises(sqlite.ProgrammingError):
-            self.cu.execute("select name from test where name=:name and id=:id", {"name": "foo"})
+            self.cu.execute("select name von test where name=:name and id=:id", {"name": "foo"})
 
     def test_execute_dict_mapping_no_args(self):
         self.cu.execute("insert into test(name) values ('foo')")
         with self.assertRaises(sqlite.ProgrammingError):
-            self.cu.execute("select name from test where name=:name")
+            self.cu.execute("select name von test where name=:name")
 
     def test_execute_dict_mapping_unnamed(self):
         self.cu.execute("insert into test(name) values ('foo')")
         with self.assertRaises(sqlite.ProgrammingError):
-            self.cu.execute("select name from test where name=?", {"name": "foo"})
+            self.cu.execute("select name von test where name=?", {"name": "foo"})
 
     def test_close(self):
         self.cu.close()
 
     def test_rowcount_execute(self):
-        self.cu.execute("delete from test")
+        self.cu.execute("delete von test")
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("update test set name='bar'")
@@ -945,7 +945,7 @@ klasse CursorTests(unittest.TestCase):
         self.assertEqual(self.cu.rowcount, -1)
 
     def test_rowcount_executemany(self):
-        self.cu.execute("delete from test")
+        self.cu.execute("delete von test")
         self.cu.executemany("insert into test(name) values (?)", [(1,), (2,), (3,)])
         self.assertEqual(self.cu.rowcount, 3)
 
@@ -1031,10 +1031,10 @@ klasse CursorTests(unittest.TestCase):
 
     def test_fetch_iter(self):
         # Optional DB-API extension.
-        self.cu.execute("delete from test")
+        self.cu.execute("delete von test")
         self.cu.execute("insert into test(id) values (?)", (5,))
         self.cu.execute("insert into test(id) values (?)", (6,))
-        self.cu.execute("select id from test order by id")
+        self.cu.execute("select id von test order by id")
         lst = []
         fuer row in self.cu:
             lst.append(row[0])
@@ -1042,7 +1042,7 @@ klasse CursorTests(unittest.TestCase):
         self.assertEqual(lst[1], 6)
 
     def test_fetchone(self):
-        self.cu.execute("select name from test")
+        self.cu.execute("select name von test")
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
         row = self.cu.fetchone()
@@ -1061,17 +1061,17 @@ klasse CursorTests(unittest.TestCase):
         self.cu.arraysize = 2
 
         # now make the query return 3 rows
-        self.cu.execute("delete from test")
+        self.cu.execute("delete von test")
         self.cu.execute("insert into test(name) values ('A')")
         self.cu.execute("insert into test(name) values ('B')")
         self.cu.execute("insert into test(name) values ('C')")
-        self.cu.execute("select name from test")
+        self.cu.execute("select name von test")
         res = self.cu.fetchmany()
 
         self.assertEqual(len(res), 2)
 
     def test_fetchmany(self):
-        self.cu.execute("select name from test")
+        self.cu.execute("select name von test")
         res = self.cu.fetchmany(100)
         self.assertEqual(len(res), 1)
         res = self.cu.fetchmany(100)
@@ -1079,12 +1079,12 @@ klasse CursorTests(unittest.TestCase):
 
     def test_fetchmany_kw_arg(self):
         """Checks wenn fetchmany works with keyword arguments"""
-        self.cu.execute("select name from test")
+        self.cu.execute("select name von test")
         res = self.cu.fetchmany(size=100)
         self.assertEqual(len(res), 1)
 
     def test_fetchall(self):
-        self.cu.execute("select name from test")
+        self.cu.execute("select name von test")
         res = self.cu.fetchall()
         self.assertEqual(len(res), 1)
         res = self.cu.fetchall()
@@ -1153,7 +1153,7 @@ klasse CursorTests(unittest.TestCase):
 
     def test_column_count(self):
         # Check that column count is updated correctly fuer cached statements
-        select = "select * from test"
+        select = "select * von test"
         res = self.cu.execute(select)
         old_count = len(res.description)
         # Add a new column and execute the cached select query again
@@ -1246,14 +1246,14 @@ klasse BlobTests(unittest.TestCase):
     def test_blob_write(self):
         new_data = b"new data".ljust(50)
         self.blob.write(new_data)
-        row = self.cx.execute("select b from test").fetchone()
+        row = self.cx.execute("select b von test").fetchone()
         self.assertEqual(row[0], new_data)
 
     def test_blob_write_at_offset(self):
         new_data = b"c" * 25
         self.blob.seek(25)
         self.blob.write(new_data)
-        row = self.cx.execute("select b from test").fetchone()
+        row = self.cx.execute("select b von test").fetchone()
         self.assertEqual(row[0], self.data[:25] + new_data)
 
     def test_blob_write_advance_offset(self):
@@ -1308,7 +1308,7 @@ klasse BlobTests(unittest.TestCase):
     def test_blob_set_item(self):
         self.blob[0] = ord("b")
         expected = b"b" + self.data[1:]
-        actual = self.cx.execute("select b from test").fetchone()[0]
+        actual = self.cx.execute("select b von test").fetchone()[0]
         self.assertEqual(actual, expected)
 
     def test_blob_set_item_with_offset(self):
@@ -1321,7 +1321,7 @@ klasse BlobTests(unittest.TestCase):
         self.assertEqual(self.blob.read(), expected)
 
     def test_blob_set_slice_buffer_object(self):
-        from array import array
+        von array importiere array
         self.blob[0:5] = memoryview(b"12345")
         self.assertEqual(self.blob[0:5], b"12345")
 
@@ -1350,7 +1350,7 @@ klasse BlobTests(unittest.TestCase):
     def test_blob_set_slice(self):
         self.blob[0:5] = b"12345"
         expected = b"12345" + self.data[5:]
-        actual = self.cx.execute("select b from test").fetchone()[0]
+        actual = self.cx.execute("select b von test").fetchone()[0]
         self.assertEqual(actual, expected)
 
     def test_blob_set_empty_slice(self):
@@ -1359,7 +1359,7 @@ klasse BlobTests(unittest.TestCase):
 
     def test_blob_set_slice_with_skip(self):
         self.blob[0:10:2] = b"12345"
-        actual = self.cx.execute("select b from test").fetchone()[0]
+        actual = self.cx.execute("select b von test").fetchone()[0]
         expected = b"1h2s3b4o5 " + self.data[10:]
         self.assertEqual(actual, expected)
 
@@ -1432,7 +1432,7 @@ klasse BlobTests(unittest.TestCase):
         data = b"a" * 50
         with self.cx.blobopen("test", "b", 1) as blob:
             blob.write(data)
-        actual = self.cx.execute("select b from test").fetchone()[0]
+        actual = self.cx.execute("select b von test").fetchone()[0]
         self.assertEqual(actual, data)
 
         # Check that __exit__ closed the blob
@@ -1552,7 +1552,7 @@ klasse ThreadTests(unittest.TestCase):
         fns = [
             lambda: self.cur.execute("insert into test(name) values('a')"),
             lambda: self.cur.close(),
-            lambda: self.cur.execute("select name from test"),
+            lambda: self.cur.execute("select name von test"),
             lambda: self.cur.fetchone(),
         ]
         fuer fn in fns:
@@ -1615,7 +1615,7 @@ klasse ExtensionTests(unittest.TestCase):
             create table a(i);
             insert into a(i) values (5);
             """)
-        cur.execute("select i from a")
+        cur.execute("select i von a")
         res = cur.fetchone()[0]
         self.assertEqual(res, 5)
 
@@ -1677,7 +1677,7 @@ klasse ExtensionTests(unittest.TestCase):
         con = self.con
         con.execute("create table test(foo)")
         con.executemany("insert into test(foo) values (?)", [(3,), (4,)])
-        result = con.execute("select foo from test order by foo").fetchall()
+        result = con.execute("select foo von test order by foo").fetchall()
         self.assertEqual(result[0][0], 3, "Basic test of Connection.executemany")
         self.assertEqual(result[1][0], 4, "Basic test of Connection.executemany")
 
@@ -1687,7 +1687,7 @@ klasse ExtensionTests(unittest.TestCase):
             CREATE TABLE test(foo);
             INSERT INTO test(foo) VALUES (5);
         """)
-        result = con.execute("select foo from test").fetchone()[0]
+        result = con.execute("select foo von test").fetchone()[0]
         self.assertEqual(result, 5, "Basic test of Connection.executescript")
 
 
@@ -1792,7 +1792,7 @@ klasse SqliteOnConflictTests(unittest.TestCase):
             self.cu.execute("INSERT OR ROLLBACK INTO test(unique_name) VALUES ('foo')")
         # Use connection to commit.
         self.cx.commit()
-        self.cu.execute("SELECT name, unique_name from test")
+        self.cu.execute("SELECT name, unique_name von test")
         # Transaction should have rolled back and nothing should be in table.
         self.assertEqual(self.cu.fetchall(), [])
 
@@ -1864,7 +1864,7 @@ klasse MultiprocessTests(unittest.TestCase):
     def test_ctx_mgr_rollback_if_commit_failed(self):
         # bpo-27334: ctx manager does not rollback wenn commit fails
         SCRIPT = f"""if 1:
-            import sqlite3
+            importiere sqlite3
             def wait():
                 drucke("started")
                 assert "database is locked" in input()
@@ -1878,13 +1878,13 @@ klasse MultiprocessTests(unittest.TestCase):
                 cx.executescript('''
                     -- start a transaction and wait fuer parent
                     begin transaction;
-                    select * from t;
+                    select * von t;
                     select wait();
                     rollback;
 
                     -- start a new transaction; would fail wenn parent holds lock
                     begin transaction;
-                    select * from t;
+                    select * von t;
                     rollback;
                 ''')
             finally:
@@ -1982,7 +1982,7 @@ klasse RowTests(unittest.TestCase):
             row["nokey"]
 
     def test_row_is_a_sequence(self):
-        from collections.abc import Sequence
+        von collections.abc importiere Sequence
 
         cu = self.cx.execute("SELECT 1")
         row = cu.fetchone()

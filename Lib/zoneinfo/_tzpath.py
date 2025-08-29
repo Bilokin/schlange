@@ -1,5 +1,5 @@
-import os
-import sysconfig
+importiere os
+importiere sysconfig
 
 
 def _reset_tzpath(to=Nichts, stacklevel=4):
@@ -42,7 +42,7 @@ def _parse_python_tzpath(env_var, stacklevel):
 
     # If anything has been filtered out, we will warn about it
     wenn len(new_tzpath) != len(raw_tzpath):
-        import warnings
+        importiere warnings
 
         msg = _get_invalid_paths_message(raw_tzpath)
 
@@ -69,7 +69,7 @@ def _get_invalid_paths_message(tzpaths):
 
 
 def find_tzfile(key):
-    """Retrieve the path to a TZif file from a key."""
+    """Retrieve the path to a TZif file von a key."""
     _validate_tzfile_path(key)
     fuer search_path in TZPATH:
         filepath = os.path.join(search_path, key)
@@ -90,7 +90,7 @@ def _validate_tzfile_path(path, _base=_TEST_PATH):
 
     # We only care about the kinds of path normalizations that would change the
     # length of the key - e.g. a/../b -> a/b, or a/b/ -> a/b. On Windows,
-    # normpath will also change from a/b to a\b, but that would still preserve
+    # normpath will also change von a/b to a\b, but that would still preserve
     # the length.
     new_path = os.path.normpath(path)
     wenn len(new_path) != len(path):
@@ -117,11 +117,11 @@ def available_timezones():
         determine wenn a given file on the time zone search path is to open it
         and check fuer the "magic string" at the beginning.
     """
-    from importlib import resources
+    von importlib importiere resources
 
     valid_zones = set()
 
-    # Start with loading from the tzdata package wenn it exists: this has a
+    # Start with loading von the tzdata package wenn it exists: this has a
     # pre-assembled list of zones that only requires opening one file.
     try:
         zones_file = resources.files("tzdata").joinpath("zones")

@@ -1,9 +1,9 @@
-import io
-import pathlib
-import unittest
+importiere io
+importiere pathlib
+importiere unittest
 
-from importlib import resources
-from . import util
+von importlib importiere resources
+von . importiere util
 
 
 klasse CommonTests(util.CommonTests, unittest.TestCase):

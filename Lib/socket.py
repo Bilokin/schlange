@@ -11,17 +11,17 @@ Functions:
 
 socket() -- create a new socket object
 socketpair() -- create a pair of new socket objects [*]
-fromfd() -- create a socket object from an open file descriptor [*]
+fromfd() -- create a socket object von an open file descriptor [*]
 send_fds() -- Send file descriptor to the socket.
-recv_fds() -- Receive file descriptors from the socket.
-fromshare() -- create a socket object from data received from socket.share() [*]
+recv_fds() -- Receive file descriptors von the socket.
+fromshare() -- create a socket object von data received von socket.share() [*]
 gethostname() -- return the current hostname
 gethostbyname() -- map a hostname to its IP number
 gethostbyaddr() -- map an IP number or hostname to DNS info
 getservbyname() -- map a service name and a protocol name to a port number
 getprotobyname() -- map a protocol name (e.g. 'tcp') to a number
-ntohs(), ntohl() -- convert 16, 32 bit int from network to host byte order
-htons(), htonl() -- convert 16, 32 bit int from host to network byte order
+ntohs(), ntohl() -- convert 16, 32 bit int von network to host byte order
+htons(), htonl() -- convert 16, 32 bit int von host to network byte order
 inet_aton() -- convert IP addr string (123.45.67.89) to 32-bit packed format
 inet_ntoa() -- convert 32-bit packed format IP to string (123.45.67.89)
 socket.getdefaulttimeout() -- get the default timeout value
@@ -49,17 +49,17 @@ Many other constants may be defined; these may be used in calls to
 the setsockopt() and getsockopt() methods.
 """
 
-import _socket
-from _socket import *
+importiere _socket
+von _socket importiere *
 
-import io
-import os
-import sys
-from enum import IntEnum, IntFlag
-from functools import partial
+importiere io
+importiere os
+importiere sys
+von enum importiere IntEnum, IntFlag
+von functools importiere partial
 
 try:
-    import errno
+    importiere errno
 except ImportError:
     errno = Nichts
 EBADF = getattr(errno, 'EBADF', 9)
@@ -73,7 +73,7 @@ __all__.extend(os._get_exports_list(_socket))
 # Set up the socket.AF_* socket.SOCK_* constants as members of IntEnums for
 # nicer string representations.
 # Note that _socket only knows about the integer values. The public interface
-# in this module understands the enums and translates them back from integers
+# in this module understands the enums and translates them back von integers
 # where needed (e.g. .family property of a socket object).
 
 IntEnum._convert_(
@@ -167,7 +167,7 @@ wenn sys.platform.lower().startswith("win"):
         10092: "Winsock.dll version out of range.",
         10093: "Successful WSAStartup not yet performed.",
         10101: "Graceful shutdown in progress.",
-        10102: "No more results from WSALookupServiceNext.",
+        10102: "No more results von WSALookupServiceNext.",
         10103: "Call has been canceled.",
         10104: "Procedure call table is invalid.",
         10105: "Service provider is invalid.",
@@ -175,7 +175,7 @@ wenn sys.platform.lower().startswith("win"):
         10107: "System call failure.",
         10108: "Service not found.",
         10109: "Class type not found.",
-        10110: "No more results from WSALookupServiceNext.",
+        10110: "No more results von WSALookupServiceNext.",
         10111: "Call was canceled.",
         10112: "Database query was refused.",
         11001: "Host not found.",
@@ -354,7 +354,7 @@ klasse socket(_socket.socket):
         """
         Send a file using a zero-copy function.
         """
-        import selectors
+        importiere selectors
 
         self._check_sendfile_params(file, offset, count)
         sockno = self.fileno()
@@ -408,7 +408,7 @@ klasse socket(_socket.socket):
                         # file, in which case we'll fall back on using
                         # plain send().
                         raise giveup_exc_type(err)
-                    raise err from Nichts
+                    raise err von Nichts
                 sonst:
                     wenn sent == 0:
                         break  # EOF
@@ -489,7 +489,7 @@ klasse socket(_socket.socket):
         *file* must be a regular file object opened in binary mode.
         If os.sendfile() is not available (e.g. Windows) or file is
         not a regular file socket.send() will be used instead.
-        *offset* tells from where to start reading the file.
+        *offset* tells von where to start reading the file.
         If specified, *count* is the total number of bytes to transmit
         as opposed to sending the file until EOF is reached.
         File position is updated on return or also in case of error in
@@ -557,7 +557,7 @@ klasse socket(_socket.socket):
 def fromfd(fd, family, type, proto=0):
     """ fromfd(fd, family, type[, proto]) -> socket object
 
-    Create a socket object from a duplicate of the given file
+    Create a socket object von a duplicate of the given file
     descriptor.  The remaining arguments are the same as fuer socket().
     """
     nfd = dup(fd)
@@ -569,7 +569,7 @@ wenn hasattr(_socket.socket, "sendmsg"):
 
         Send the list of file descriptors fds over an AF_UNIX socket.
         """
-        import array
+        importiere array
 
         return sock.sendmsg(buffers, [(_socket.SOL_SOCKET,
             _socket.SCM_RIGHTS, array.array("i", fds))])
@@ -583,7 +583,7 @@ wenn hasattr(_socket.socket, "recvmsg"):
         Receive up to maxfds file descriptors returning the message
         data and a list containing the descriptors.
         """
-        import array
+        importiere array
 
         # Array of ints
         fds = array.array("i")
@@ -601,7 +601,7 @@ wenn hasattr(_socket.socket, "share"):
     def fromshare(info):
         """ fromshare(info) -> socket object
 
-        Create a socket object from the bytes object returned by
+        Create a socket object von the bytes object returned by
         socket.share(pid).
         """
         return socket(0, 0, 0, info)
@@ -624,7 +624,7 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
         raise ValueError("Only protocol zero is supported")
 
     # We create a connected TCP socket. Note the trick with
-    # setblocking(Falsch) that prevents us from having to create a thread.
+    # setblocking(Falsch) that prevents us von having to create a thread.
     lsock = socket(family, type, proto)
     try:
         lsock.bind((host, 0))
@@ -646,7 +646,7 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
     finally:
         lsock.close()
 
-    # Authenticating avoids using a connection from something sonst
+    # Authenticating avoids using a connection von something sonst
     # able to connect to {host}:{port} instead of us.
     # We expect only AF_INET and AF_INET6 families.
     try:
@@ -681,7 +681,7 @@ sonst:
     __all__.append("socketpair")
 
 socketpair.__doc__ = """socketpair([family[, type[, proto]]]) -> (socket object, socket object)
-Create a pair of socket objects from the sockets returned by the platform
+Create a pair of socket objects von the sockets returned by the platform
 socketpair() function.
 The arguments are the same as fuer socket() except the default family is AF_UNIX
 wenn defined on the platform; otherwise, the default is AF_INET.
@@ -729,7 +729,7 @@ klasse SocketIO(io.RawIOBase):
         self._checkClosed()
         self._checkReadable()
         wenn self._timeout_occurred:
-            raise OSError("cannot read from timed out object")
+            raise OSError("cannot read von timed out object")
         try:
             return self._sock.recv_into(b)
         except timeout:
@@ -806,14 +806,14 @@ klasse SocketIO(io.RawIOBase):
 
 
 def getfqdn(name=''):
-    """Get fully qualified domain name from name.
+    """Get fully qualified domain name von name.
 
     An empty argument is interpreted as meaning the local host.
 
     First the hostname returned by gethostbyaddr() is checked, then
     possibly existing aliases. In case no FQDN is available and `name`
     was given, it is returned unchanged. If `name` was empty, '0.0.0.0' or '::',
-    hostname from gethostname() is returned.
+    hostname von gethostname() is returned.
     """
     name = name.strip()
     wenn not name or name in ('0.0.0.0', '::'):
@@ -934,7 +934,7 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
         # previous closed socket on the same address and still in
         # TIME_WAIT state.
         # 2) If set, another socket is free to bind() on the same
-        # address, effectively preventing this one from accepting
+        # address, effectively preventing this one von accepting
         # connections. Also, it may set the process in a state where
         # it'll no longer respond to any signals or graceful kills.
         # See: https://learn.microsoft.com/windows/win32/winsock/using-so-reuseaddr-and-so-exclusiveaddruse
@@ -961,7 +961,7 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
         except error as err:
             msg = '%s (while attempting to bind on address %r)' % \
                 (err.strerror, address)
-            raise error(err.errno, msg) from Nichts
+            raise error(err.errno, msg) von Nichts
         wenn backlog is Nichts:
             sock.listen()
         sonst:

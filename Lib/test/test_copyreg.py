@@ -1,7 +1,7 @@
-import copyreg
-import unittest
+importiere copyreg
+importiere unittest
 
-from test.pickletester import ExtensionSaver
+von test.pickletester importiere ExtensionSaver
 
 klasse C:
     pass
@@ -46,7 +46,7 @@ klasse CopyRegTestCase(unittest.TestCase):
                           C, pickle_C, "not a callable")
 
     def test_bool(self):
-        import copy
+        importiere copy
         self.assertEqual(Wahr, copy.copy(Wahr))
 
     def test_extension_registry(self):

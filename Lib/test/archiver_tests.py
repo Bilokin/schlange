@@ -1,10 +1,10 @@
 """Tests common to tarfile and zipfile."""
 
-import os
-import sys
+importiere os
+importiere sys
 
-from test.support import swap_attr
-from test.support import os_helper
+von test.support importiere swap_attr
+von test.support importiere os_helper
 
 klasse OverwriteTests:
 

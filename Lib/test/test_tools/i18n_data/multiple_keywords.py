@@ -1,4 +1,4 @@
-from gettext import gettext as foo
+von gettext importiere gettext as foo
 
 foo('bar')
 

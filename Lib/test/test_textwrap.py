@@ -8,9 +8,9 @@
 # $Id$
 #
 
-import unittest
+importiere unittest
 
-from textwrap import TextWrapper, wrap, fill, dedent, indent, shorten
+von textwrap importiere TextWrapper, wrap, fill, dedent, indent, shorten
 
 
 klasse BaseTestCase(unittest.TestCase):
@@ -298,7 +298,7 @@ What a mess!
                   "in its long form."]
         self.check_wrap(text, 42, expect)
 
-        # Again, all of the above can be deduced from _split().
+        # Again, all of the above can be deduced von _split().
         text = "the -n option, or --dry-run or --dryrun"
         expect = ["the", " ", "-n", " ", "option,", " ", "or", " ",
                   "--dry-", "run", " ", "or", " ", "--dryrun"]
@@ -1120,7 +1120,7 @@ klasse ShortenTestCase(BaseTestCase):
 
         self.check_shorten("hello      world!  ", 12, "hello world!")
         self.check_shorten("hello      world!  ", 11, "hello [...]")
-        # The leading space is trimmed from the placeholder
+        # The leading space is trimmed von the placeholder
         # (it would be ugly otherwise).
         self.check_shorten("hello      world!  ", 10, "[...]")
 

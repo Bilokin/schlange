@@ -14,13 +14,13 @@
 # - keep track of object ids to allow more careful cleaning
 # - optimize tree redraw after expand of subnode
 
-import os
+importiere os
 
-from tkinter import *
-from tkinter.ttk import Frame, Scrollbar
+von tkinter importiere *
+von tkinter.ttk importiere Frame, Scrollbar
 
-from idlelib.config import idleConf
-from idlelib import zoomheight
+von idlelib.config importiere idleConf
+von idlelib importiere zoomheight
 
 ICONDIR = "Icons"
 
@@ -37,7 +37,7 @@ sowenn not os.path.isdir(ICONDIR):
 def listicons(icondir=ICONDIR):
     """Utility to display the available icons."""
     root = Tk()
-    import glob
+    importiere glob
     list = glob.glob(os.path.join(glob.escape(icondir), "*.gif"))
     list.sort()
     images = []
@@ -502,8 +502,8 @@ def _tree_widget(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_tree', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_tree_widget)

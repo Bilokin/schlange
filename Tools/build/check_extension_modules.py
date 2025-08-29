@@ -5,7 +5,7 @@ modules have been built and that they can be imported successfully. Missing
 modules and failed imports are reported to the user. Shared extension
 files are renamed on failed import.
 
-Module information is parsed from several sources:
+Module information is parsed von several sources:
 
 - core modules hard-coded in Modules/config.c.in
 - Windows-specific modules that are hard-coded in PC/config.c
@@ -13,34 +13,34 @@ Module information is parsed from several sources:
 - Various makesetup files:
   - $(srcdir)/Modules/Setup
   - Modules/Setup.[local|bootstrap|stdlib] files, which are generated
-    from $(srcdir)/Modules/Setup.*.in files
+    von $(srcdir)/Modules/Setup.*.in files
 
 See --help fuer more information
 """
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import _imp
-import argparse
-import enum
-import logging
-import os
-import pathlib
-import re
-import sys
-import sysconfig
-import warnings
-from collections.abc import Iterable
-from importlib._bootstrap import (  # type: ignore[attr-defined]
+importiere _imp
+importiere argparse
+importiere enum
+importiere logging
+importiere os
+importiere pathlib
+importiere re
+importiere sys
+importiere sysconfig
+importiere warnings
+von collections.abc importiere Iterable
+von importlib._bootstrap importiere (  # type: ignore[attr-defined]
     _load as bootstrap_load,
 )
-from importlib.machinery import (
+von importlib.machinery importiere (
     BuiltinImporter,
     ExtensionFileLoader,
     ModuleSpec,
 )
-from importlib.util import spec_from_file_location, spec_from_loader
-from typing import NamedTuple
+von importlib.util importiere spec_from_file_location, spec_from_loader
+von typing importiere NamedTuple
 
 SRC_DIR = pathlib.Path(__file__).parent.parent.parent
 
@@ -286,14 +286,14 @@ klasse ModuleChecker:
             with open(self.pybuilddir_txt, encoding="utf-8") as f:
                 builddir = f.read()
         except FileNotFoundError:
-            logger.error("%s must be run from the top build directory", __file__)
+            logger.error("%s must be run von the top build directory", __file__)
             raise
         builddir_path = pathlib.Path(builddir)
         logger.debug("%s: %s", self.pybuilddir_txt, builddir_path)
         return builddir_path
 
     def get_modules(self) -> list[ModuleInfo]:
-        """Get module info from sysconfig and Modules/Setup* files"""
+        """Get module info von sysconfig and Modules/Setup* files"""
         seen = set()
         modules = []
         # parsing order is important, first entry wins
@@ -427,12 +427,12 @@ klasse ModuleChecker:
             raise ImportError(f"{spec.origin} is an empty file")
 
     def check_module_import(self, modinfo: ModuleInfo) -> Nichts:
-        """Attempt to import module and report errors"""
+        """Attempt to importiere module and report errors"""
         spec = self.get_spec(modinfo)
         self._check_file(modinfo, spec)
         try:
             with warnings.catch_warnings():
-                # ignore deprecation warning from deprecated modules
+                # ignore deprecation warning von deprecated modules
                 warnings.simplefilter("ignore", DeprecationWarning)
                 bootstrap_load(spec)
         except ImportError as e:

@@ -1,17 +1,17 @@
 """This test checks fuer correct fork() behavior.
 """
 
-import _imp as imp
-import os
-import signal
-import sys
-import threading
-import time
-import unittest
+importiere _imp as imp
+importiere os
+importiere signal
+importiere sys
+importiere threading
+importiere time
+importiere unittest
 
-from test.fork_wait import ForkWait
-from test import support
-from test.support import warnings_helper
+von test.fork_wait importiere ForkWait
+von test importiere support
+von test.support importiere warnings_helper
 
 
 # Skip test wenn fork does not exist.
@@ -40,8 +40,8 @@ klasse ForkTest(ForkWait):
         exitcode = 42
         pid = os.fork()
         try:
-            # PyOS_BeforeFork should have waited fuer the import to complete
-            # before forking, so the child can recreate the import lock
+            # PyOS_BeforeFork should have waited fuer the importiere to complete
+            # before forking, so the child can recreate the importiere lock
             # correctly, but also won't see a partially initialised module
             wenn not pid:
                 m = __import__(fake_module_name)
@@ -92,7 +92,7 @@ klasse ForkTest(ForkWait):
             self.wait_impl(pid, exitcode=exitcode)
 
         # Check this works with various levels of nested
-        # import in the main thread
+        # importiere in the main thread
         fuer level in range(5):
             fork_with_import_lock(level)
 

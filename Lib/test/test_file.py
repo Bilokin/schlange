@@ -1,17 +1,17 @@
-import sys
-import os
-import unittest
-from array import array
-from weakref import proxy
+importiere sys
+importiere os
+importiere unittest
+von array importiere array
+von weakref importiere proxy
 
-import io
-import _pyio as pyio
+importiere io
+importiere _pyio as pyio
 
-from test.support import gc_collect
-from test.support.os_helper import TESTFN
-from test.support import os_helper
-from test.support import warnings_helper
-from collections import UserList
+von test.support importiere gc_collect
+von test.support.os_helper importiere TESTFN
+von test.support importiere os_helper
+von test.support importiere warnings_helper
+von collections importiere UserList
 
 klasse AutoFileTests:
     # file tests fuer which a test file is automatically set up

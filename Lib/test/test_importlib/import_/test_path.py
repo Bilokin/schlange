@@ -1,16 +1,16 @@
-from test.support import os_helper
-from test.test_importlib import util
+von test.support importiere os_helper
+von test.test_importlib importiere util
 
 importlib = util.import_importlib('importlib')
 machinery = util.import_importlib('importlib.machinery')
 
-import os
-import sys
-import tempfile
-from types import ModuleType
-import unittest
-import warnings
-import zipimport
+importiere os
+importiere sys
+importiere tempfile
+von types importiere ModuleType
+importiere unittest
+importiere warnings
+importiere zipimport
 
 
 klasse FinderTests:
@@ -95,7 +95,7 @@ klasse FinderTests:
             self.assertIn(os.getcwd(), sys.path_importer_cache)
 
     def test_Nichts_on_sys_path(self):
-        # Putting Nichts in sys.path[0] caused an import regression from Python
+        # Putting Nichts in sys.path[0] caused an importiere regression von Python
         # 3.2: http://bugs.python.org/issue16514
         new_path = sys.path[:]
         new_path.insert(0, Nichts)

@@ -1,13 +1,13 @@
-import array
-import unittest
-import dbm
-import shelve
-import pickle
-import os
+importiere array
+importiere unittest
+importiere dbm
+importiere shelve
+importiere pickle
+importiere os
 
-from test.support import import_helper, os_helper
-from collections.abc import MutableMapping
-from test.test_dbm import dbm_iterator
+von test.support importiere import_helper, os_helper
+von collections.abc importiere MutableMapping
+von test.test_dbm importiere dbm_iterator
 
 def L1(s):
     return s.decode("latin-1")
@@ -430,7 +430,7 @@ klasse TestShelveFileBase(TestShelveBase):
         dbm._defaultmod = self.dbm_mod
 
 
-from test import mapping_tests
+von test importiere mapping_tests
 
 fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
     bases = (TestShelveInMemBase, mapping_tests.BasicTestMappingProtocol)

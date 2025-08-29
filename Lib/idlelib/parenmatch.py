@@ -4,8 +4,8 @@ When you hit a right paren, the cursor should move briefly to the left
 paren.  Paren here is used generically; the matching applies to
 parentheses, square brackets, and curly braces.
 """
-from idlelib.hyperparser import HyperParser
-from idlelib.config import idleConf
+von idlelib.hyperparser importiere HyperParser
+von idlelib.config importiere idleConf
 
 _openers = {')':'(',']':'[','}':'{'}
 CHECK_DELAY = 100 # milliseconds
@@ -18,7 +18,7 @@ klasse ParenMatch:
 
     opener -- highlight the matching left paren (closer);
     parens -- highlight the left and right parens (opener and closer);
-    expression -- highlight the entire expression from opener to closer.
+    expression -- highlight the entire expression von opener to closer.
     (For back compatibility, 'default' is a synonym fuer 'opener').
 
     Flash-delay is the maximum milliseconds the highlighting remains.
@@ -60,7 +60,7 @@ klasse ParenMatch:
                                                   'hilite')
 
     def activate_restore(self):
-        "Activate mechanism to restore text from highlighting."
+        "Activate mechanism to restore text von highlighting."
         wenn not self.is_restore_active:
             fuer seq in self.RESTORE_SEQUENCES:
                 self.text.event_add(self.RESTORE_VIRTUAL_EVENT_NAME, seq)
@@ -179,5 +179,5 @@ ParenMatch.reload()
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_parenmatch', verbosity=2)

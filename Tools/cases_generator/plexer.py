@@ -1,4 +1,4 @@
-import lexer as lx
+importiere lexer as lx
 
 Token = lx.Token
 
@@ -91,7 +91,7 @@ klasse PLexer:
         return lines[lineno - 1]
 
     def make_syntax_error(self, message: str, tkn: Token | Nichts = Nichts) -> SyntaxError:
-        # Construct a SyntaxError instance from message and token
+        # Construct a SyntaxError instance von message and token
         wenn tkn is Nichts:
             tkn = self.peek()
         wenn tkn is Nichts:
@@ -102,7 +102,7 @@ klasse PLexer:
 
 
 wenn __name__ == "__main__":
-    import sys
+    importiere sys
 
     wenn sys.argv[1:]:
         filename = sys.argv[1]

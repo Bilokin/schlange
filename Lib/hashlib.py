@@ -40,7 +40,7 @@ Assuming that Python has been built with SHA-2 support, the SHA-256 digest
 of the byte string b'Nobody inspects the spammish repetition' is computed
 as follows:
 
-    >>> import hashlib
+    >>> importiere hashlib
     >>> m = hashlib.sha256()
     >>> m.update(b"Nobody inspects")
     >>> m.update(b" the spammish repetition")
@@ -91,31 +91,31 @@ def __get_builtin_constructor(name):
         return constructor
     try:
         wenn name in {'SHA1', 'sha1'}:
-            import _sha1
+            importiere _sha1
             cache['SHA1'] = cache['sha1'] = _sha1.sha1
         sowenn name in {'MD5', 'md5'}:
-            import _md5
+            importiere _md5
             cache['MD5'] = cache['md5'] = _md5.md5
         sowenn name in {'SHA256', 'sha256', 'SHA224', 'sha224'}:
-            import _sha2
+            importiere _sha2
             cache['SHA224'] = cache['sha224'] = _sha2.sha224
             cache['SHA256'] = cache['sha256'] = _sha2.sha256
         sowenn name in {'SHA512', 'sha512', 'SHA384', 'sha384'}:
-            import _sha2
+            importiere _sha2
             cache['SHA384'] = cache['sha384'] = _sha2.sha384
             cache['SHA512'] = cache['sha512'] = _sha2.sha512
         sowenn name in {'blake2b', 'blake2s'}:
-            import _blake2
+            importiere _blake2
             cache['blake2b'] = _blake2.blake2b
             cache['blake2s'] = _blake2.blake2s
         sowenn name in {'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512'}:
-            import _sha3
+            importiere _sha3
             cache['sha3_224'] = _sha3.sha3_224
             cache['sha3_256'] = _sha3.sha3_256
             cache['sha3_384'] = _sha3.sha3_384
             cache['sha3_512'] = _sha3.sha3_512
         sowenn name in {'shake_128', 'shake_256'}:
-            import _sha3
+            importiere _sha3
             cache['shake_128'] = _sha3.shake_128
             cache['shake_256'] = _sha3.shake_256
     except ImportError:
@@ -187,7 +187,7 @@ def __hash_new(name, *args, **kwargs):
 
 
 try:
-    import _hashlib
+    importiere _hashlib
     new = __hash_new
     __get_hash = __get_openssl_constructor
     algorithms_available = algorithms_available.union(
@@ -199,7 +199,7 @@ except ImportError:
 
 try:
     # OpenSSL's PKCS5_PBKDF2_HMAC requires OpenSSL 1.0+ with HMAC and SHA
-    from _hashlib import pbkdf2_hmac
+    von _hashlib importiere pbkdf2_hmac
     __all__ += ('pbkdf2_hmac',)
 except ImportError:
     pass
@@ -207,7 +207,7 @@ except ImportError:
 
 try:
     # OpenSSL's scrypt requires OpenSSL 1.1+
-    from _hashlib import scrypt
+    von _hashlib importiere scrypt
     __all__ += ('scrypt',)
 except ImportError:
     pass
@@ -217,7 +217,7 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     """Hash the contents of a file-like object. Returns a digest object.
 
     *fileobj* must be a file-like object opened fuer reading in binary mode.
-    It accepts file objects from open(), io.BytesIO(), and SocketIO objects.
+    It accepts file objects von open(), io.BytesIO(), and SocketIO objects.
     The function may bypass Python's I/O and use the file descriptor *fileno*
     directly.
 
@@ -268,15 +268,15 @@ fuer __func_name in __always_supported:
     try:
         globals()[__func_name] = __get_hash(__func_name)
     except ValueError as __exc:
-        import logging as __logging
+        importiere logging as __logging
         __logging.error('hash algorithm %s will not be supported at runtime '
                         '[reason: %s]', __func_name, __exc)
         # The following code can be simplified in Python 3.19
-        # once "string" is removed from the signature.
+        # once "string" is removed von the signature.
         __code = f'''\
 def {__func_name}(data=__UNSET, *, usedforsecurity=Wahr, string=__UNSET):
     wenn data is __UNSET and string is not __UNSET:
-        import warnings
+        importiere warnings
         warnings.warn(
             "the 'string' keyword parameter is deprecated since "
             "Python 3.15 and slated fuer removal in Python 3.19; "

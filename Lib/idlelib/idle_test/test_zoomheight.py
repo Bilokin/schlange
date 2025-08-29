@@ -1,11 +1,11 @@
 "Test zoomheight, coverage 66%."
 # Some code is system dependent.
 
-from idlelib import zoomheight
-import unittest
-from test.support import requires
-from tkinter import Tk
-from idlelib.editor import EditorWindow
+von idlelib importiere zoomheight
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk
+von idlelib.editor importiere EditorWindow
 
 
 klasse Test(unittest.TestCase):

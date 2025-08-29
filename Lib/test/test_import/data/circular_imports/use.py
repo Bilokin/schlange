@@ -1,2 +1,2 @@
-from . import source
+von . importiere source
 source.spam

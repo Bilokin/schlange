@@ -1,4 +1,4 @@
-from gettext import (
+von gettext importiere (
     gettext as foo,
     ngettext as nfoo,
     pgettext as pfoo,

@@ -5,7 +5,7 @@ Consumers that can rely on Python 3.11 should use the other
 module directly.
 """
 
-from .resources.readers import (
+von .resources.readers importiere (
     FileReader, ZipReader, MultiplexedPath, NamespaceReader,
 )
 

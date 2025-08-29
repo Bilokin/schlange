@@ -1,12 +1,12 @@
-import gc
-import io
-import os
-import sys
-import signal
-import weakref
-import unittest
+importiere gc
+importiere io
+importiere os
+importiere sys
+importiere signal
+importiere weakref
+importiere unittest
 
-from test import support
+von test importiere support
 
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")

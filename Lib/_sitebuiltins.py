@@ -8,7 +8,7 @@ The objects used by the site module to add custom builtins.
 # Note this means this module should also avoid keep things alive in its
 # globals.
 
-import sys
+importiere sys
 
 klasse Quitter(object):
     def __init__(self, name, eof):
@@ -33,7 +33,7 @@ klasse _Printer(object):
     MAXLINES = 23
 
     def __init__(self, name, data, files=(), dirs=()):
-        import os
+        importiere os
         self.__name = name
         self.__data = data
         self.__lines = Nichts
@@ -99,5 +99,5 @@ klasse _Helper(object):
         return "Type help() fuer interactive help, " \
                "or help(object) fuer help about object."
     def __call__(self, *args, **kwds):
-        import pydoc
+        importiere pydoc
         return pydoc.help(*args, **kwds)

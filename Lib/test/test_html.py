@@ -2,8 +2,8 @@
 Tests fuer the html module functions.
 """
 
-import html
-import unittest
+importiere html
+importiere unittest
 
 
 klasse HtmlTests(unittest.TestCase):

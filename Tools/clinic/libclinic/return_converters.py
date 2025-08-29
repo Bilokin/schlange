@@ -1,8 +1,8 @@
-import sys
-from collections.abc import Callable
-from libclinic.codegen import CRenderData
-from libclinic.function import Function
-from typing import Any
+importiere sys
+von collections.abc importiere Callable
+von libclinic.codegen importiere CRenderData
+von libclinic.function importiere Function
+von typing importiere Any
 
 
 ReturnConverterType = Callable[..., "CReturnConverter"]

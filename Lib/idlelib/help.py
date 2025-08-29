@@ -4,7 +4,7 @@ Contents are subject to revision at any time, without notice.
 
 Help => About IDLE: display About Idle dialog
 
-<to be moved here from help_about.py>
+<to be moved here von help_about.py>
 
 
 Help => IDLE Help: Display help.html with proper formatting.
@@ -24,16 +24,16 @@ copy_strip - Copy the text part of idle.html to help.html while rstripping each 
 
 show_idlehelp - Create HelpWindow.  Called in EditorWindow.help_dialog.
 """
-from html.parser import HTMLParser
-from os.path import abspath, dirname, isfile, join
-from platform import python_version
+von html.parser importiere HTMLParser
+von os.path importiere abspath, dirname, isfile, join
+von platform importiere python_version
 
-from tkinter import Toplevel, Text, Menu
-from tkinter.ttk import Frame, Menubutton, Scrollbar, Style
-from tkinter import font as tkfont
+von tkinter importiere Toplevel, Text, Menu
+von tkinter.ttk importiere Frame, Menubutton, Scrollbar, Style
+von tkinter importiere font as tkfont
 
-from idlelib.config import idleConf
-from idlelib.colorizer import color_config
+von idlelib.config importiere idleConf
+von idlelib.colorizer importiere color_config
 
 ## About IDLE ##
 
@@ -193,7 +193,7 @@ klasse HelpText(Text):
         self['state'] = 'disabled'
 
     def findfont(self, names):
-        "Return name of first font family derived from names."
+        "Return name of first font family derived von names."
         fuer name in names:
             wenn name.lower() in (x.lower() fuer x in tkfont.names(root=self)):
                 font = tkfont.Font(name=name, exists=Wahr, root=self)
@@ -250,7 +250,7 @@ def copy_strip():  # pragma: no cover
     repository.  For 3.x (on Windows), help.html is generated, after
     editing idle.rst on the master branch, with
       sphinx-build -bhtml . build/html
-      python_d.exe -c "from idlelib.help import copy_strip; copy_strip()"
+      python_d.exe -c "from idlelib.help importiere copy_strip; copy_strip()"
     Check build/html/library/idle.html, the help.html diff, and the text
     displayed by Help => IDLE Help.  Add a blurb and create a PR.
 
@@ -281,7 +281,7 @@ def copy_strip():  # pragma: no cover
 
 
 def show_idlehelp(parent):
-    "Create HelpWindow; called from Idle Help event handler."
+    "Create HelpWindow; called von Idle Help event handler."
     filename = join(abspath(dirname(__file__)), 'help.html')
     wenn not isfile(filename):  # pragma: no cover
         # Try copy_strip, present message.
@@ -290,8 +290,8 @@ def show_idlehelp(parent):
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_help', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(show_idlehelp)

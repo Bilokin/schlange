@@ -1,15 +1,15 @@
-from test.test_importlib import util as test_util
+von test.test_importlib importiere util as test_util
 
 init = test_util.import_importlib('importlib')
 
-import sys
-import threading
-import unittest
-import weakref
+importiere sys
+importiere threading
+importiere unittest
+importiere weakref
 
-from test import support
-from test.support import threading_helper
-from test import lock_tests
+von test importiere support
+von test.support importiere threading_helper
+von test importiere lock_tests
 
 
 threading_helper.requires_working_threading(module=Wahr)

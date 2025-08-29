@@ -1,4 +1,4 @@
-import gc
+importiere gc
 
 klasse old_style_class():
     pass

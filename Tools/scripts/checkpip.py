@@ -3,10 +3,10 @@
 Checks that the version of the projects bundled in ensurepip are the latest
 versions available.
 """
-import ensurepip
-import json
-import urllib.request
-import sys
+importiere ensurepip
+importiere json
+importiere urllib.request
+importiere sys
 
 
 def main():

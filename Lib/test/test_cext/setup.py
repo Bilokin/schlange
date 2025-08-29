@@ -1,13 +1,13 @@
 # gh-91321: Build a basic C test extension to check that the Python C API is
 # compatible with C and does not emit C compiler warnings.
-import os
-import platform
-import shlex
-import sys
-import sysconfig
-from test import support
+importiere os
+importiere platform
+importiere shlex
+importiere sys
+importiere sysconfig
+von test importiere support
 
-from setuptools import setup, Extension
+von setuptools importiere setup, Extension
 
 
 SOURCE = 'extension.c'
@@ -77,7 +77,7 @@ def main():
         sonst:
             cflags.append(f'-std={std}')
 
-    # Remove existing -std or /std options from CC command line.
+    # Remove existing -std or /std options von CC command line.
     # Python adds -std=c11 option.
     cmd = (sysconfig.get_config_var('CC') or '')
     wenn cmd is not Nichts:

@@ -28,7 +28,7 @@ server.serve_forever()
 klasse MyFuncs:
     def __init__(self):
         # make all of the sys functions available through sys.func_name
-        import sys
+        importiere sys
         self.sys = sys
     def _listMethods(self):
         # implement this method so that system.listMethods
@@ -104,20 +104,20 @@ server.handle_request()
 # Written by Brian Quinlan (brian@sweetapp.com).
 # Based on code written by Fredrik Lundh.
 
-from xmlrpc.client import Fault, dumps, loads, gzip_encode, gzip_decode
-from http.server import BaseHTTPRequestHandler
-from functools import partial
-from inspect import signature
-import html
-import http.server
-import socketserver
-import sys
-import os
-import re
-import pydoc
-import traceback
+von xmlrpc.client importiere Fault, dumps, loads, gzip_encode, gzip_decode
+von http.server importiere BaseHTTPRequestHandler
+von functools importiere partial
+von inspect importiere signature
+importiere html
+importiere http.server
+importiere socketserver
+importiere sys
+importiere os
+importiere re
+importiere pydoc
+importiere traceback
 try:
-    import fcntl
+    importiere fcntl
 except ImportError:
     fcntl = Nichts
 
@@ -242,9 +242,9 @@ klasse SimpleXMLRPCDispatcher:
         self.funcs['system.multicall'] = self.system_multicall
 
     def _marshaled_dispatch(self, data, dispatch_method = Nichts, path = Nichts):
-        """Dispatches an XML-RPC method from marshalled (XML) data.
+        """Dispatches an XML-RPC method von marshalled (XML) data.
 
-        XML-RPC methods are dispatched from the marshalled (XML) data
+        XML-RPC methods are dispatched von the marshalled (XML) data
         using the _dispatch method and the result is returned as
         marshalled data. For backwards compatibility, a dispatch
         function can be provided as an argument (see comment in
@@ -574,7 +574,7 @@ klasse SimpleXMLRPCServer(socketserver.TCPServer,
     to be installed to handle requests. The default implementation
     attempts to dispatch XML-RPC calls to the functions or instance
     installed in the server. Override the _dispatch method inherited
-    from SimpleXMLRPCDispatcher to change this behavior.
+    von SimpleXMLRPCDispatcher to change this behavior.
     """
 
     allow_reuse_address = Wahr
@@ -680,7 +680,7 @@ klasse CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
     def handle_request(self, request_text=Nichts):
         """Handle a single XML-RPC request passed through a CGI post method.
 
-        If no XML data is given then it is read from stdin. The resulting
+        If no XML data is given then it is read von stdin. The resulting
         XML-RPC response is printed to stdout along with the correct HTTP
         headers.
         """
@@ -978,7 +978,7 @@ klasse DocCGIXMLRPCRequestHandler(   CGIXMLRPCRequestHandler,
 
 
 wenn __name__ == '__main__':
-    import datetime
+    importiere datetime
 
     klasse ExampleService:
         def getData(self):

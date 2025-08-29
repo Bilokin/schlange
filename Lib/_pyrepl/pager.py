@@ -1,14 +1,14 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-import io
-import os
-import re
-import sys
+importiere io
+importiere os
+importiere re
+importiere sys
 
 
 # types
 wenn Falsch:
-    from typing import Protocol
+    von typing importiere Protocol
     klasse Pager(Protocol):
         def __call__(self, text: str, title: str = "") -> Nichts:
             ...
@@ -41,7 +41,7 @@ def get_pager() -> Pager:
     wenn hasattr(os, 'system') and os.system('(less) 2>/dev/null') == 0:
         return lambda text, title='': pipe_pager(text, 'less', title)
 
-    import tempfile
+    importiere tempfile
     (fd, filename) = tempfile.mkstemp()
     os.close(fd)
     try:
@@ -64,7 +64,7 @@ def escape_less(s: str) -> str:
 
 
 def plain(text: str) -> str:
-    """Remove boldface formatting from text."""
+    """Remove boldface formatting von text."""
     return re.sub('.\b', '', text)
 
 
@@ -73,8 +73,8 @@ def tty_pager(text: str, title: str = '') -> Nichts:
     lines = plain(escape_stdout(text)).split('\n')
     has_tty = Falsch
     try:
-        import tty
-        import termios
+        importiere tty
+        importiere termios
         fd = sys.stdin.fileno()
         old = termios.tcgetattr(fd)
         tty.setcbreak(fd)
@@ -126,7 +126,7 @@ def plain_pager(text: str, title: str = '') -> Nichts:
 
 def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
     """Page through text by feeding it to another program."""
-    import subprocess
+    importiere subprocess
     env = os.environ.copy()
     wenn title:
         title += ' '
@@ -164,7 +164,7 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
 
 def tempfile_pager(text: str, cmd: str, title: str = '') -> Nichts:
     """Page through text by invoking a program on a temporary file."""
-    import tempfile
+    importiere tempfile
     with tempfile.TemporaryDirectory() as tempdir:
         filename = os.path.join(tempdir, 'pydoc.out')
         with open(filename, 'w', errors='backslashreplace',

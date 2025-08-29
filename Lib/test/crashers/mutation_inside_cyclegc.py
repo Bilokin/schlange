@@ -10,7 +10,7 @@
 # more examples like this one.)
 
 
-import weakref
+importiere weakref
 
 klasse A(object):
     pass

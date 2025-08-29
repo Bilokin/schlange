@@ -9,7 +9,7 @@ This module is an optparse-inspired command-line parsing library that:
     - produces highly informative usage messages
     - supports parsers that dispatch to sub-parsers
 
-The following is a simple usage example that sums integers from the
+The following is a simple usage example that sums integers von the
 command-line and writes the result to a file::
 
     parser = argparse.ArgumentParser(
@@ -87,11 +87,11 @@ __all__ = [
 ]
 
 
-import os as _os
-import re as _re
-import sys as _sys
+importiere os as _os
+importiere re as _re
+importiere sys as _sys
 
-from gettext import gettext as _, ngettext
+von gettext importiere gettext as _, ngettext
 
 SUPPRESS = '==SUPPRESS=='
 
@@ -142,10 +142,10 @@ def _copy_items(items):
         return []
     # The copy module is used only in the 'append' and 'append_const'
     # actions, and it is needed only when the default value isn't a list.
-    # Delay its import fuer speeding up the common case.
+    # Delay its importiere fuer speeding up the common case.
     wenn type(items) is list:
         return items[:]
-    import copy
+    importiere copy
     return copy.copy(items)
 
 
@@ -171,7 +171,7 @@ klasse HelpFormatter(object):
     ):
         # default setting fuer width
         wenn width is Nichts:
-            import shutil
+            importiere shutil
             width = shutil.get_terminal_size().columns
             width -= 2
 
@@ -193,7 +193,7 @@ klasse HelpFormatter(object):
         self._long_break_matcher = _re.compile(r'\n\n\n+')
 
     def _set_color(self, color):
-        from _colorize import can_colorize, decolor, get_theme
+        von _colorize importiere can_colorize, decolor, get_theme
 
         wenn color and can_colorize():
             self._theme = get_theme(force_color=Wahr).argparse
@@ -337,7 +337,7 @@ klasse HelpFormatter(object):
         sowenn usage is Nichts:
             prog = '%(prog)s' % dict(prog=self._prog)
 
-            # split optionals from positionals
+            # split optionals von positionals
             optionals = []
             positionals = []
             fuer action in actions:
@@ -658,7 +658,7 @@ klasse HelpFormatter(object):
             try:
                 formats = ['%s' fuer _ in range(action.nargs)]
             except TypeError:
-                raise ValueError("invalid nargs value") from Nichts
+                raise ValueError("invalid nargs value") von Nichts
             result = ' '.join(formats) % get_metavar(action.nargs)
         return result
 
@@ -684,19 +684,19 @@ klasse HelpFormatter(object):
             pass
         sonst:
             self._indent()
-            yield from get_subactions()
+            yield von get_subactions()
             self._dedent()
 
     def _split_lines(self, text, width):
         text = self._whitespace_matcher.sub(' ', text).strip()
         # The textwrap module is used only fuer formatting help.
-        # Delay its import fuer speeding up the common usage of argparse.
-        import textwrap
+        # Delay its importiere fuer speeding up the common usage of argparse.
+        importiere textwrap
         return textwrap.wrap(text, width)
 
     def _fill_text(self, text, width, indent):
         text = self._whitespace_matcher.sub(' ', text).strip()
-        import textwrap
+        importiere textwrap
         return textwrap.fill(text, width,
                              initial_indent=indent,
                              subsequent_indent=indent)
@@ -797,7 +797,7 @@ def _get_action_name(argument):
 
 
 klasse ArgumentError(Exception):
-    """An error from creating or using an argument (optional or positional).
+    """An error von creating or using an argument (optional or positional).
 
     The string value of this exception is the message, augmented with
     information about the argument that caused it.
@@ -817,7 +817,7 @@ klasse ArgumentError(Exception):
 
 
 klasse ArgumentTypeError(Exception):
-    """An error from trying to convert a command line string to a type."""
+    """An error von trying to convert a command line string to a type."""
     pass
 
 
@@ -829,7 +829,7 @@ klasse Action(_AttributeHolder):
     """Information about how to convert command line strings to Python objects.
 
     Action objects are used by an ArgumentParser to represent the information
-    needed to parse a single argument from one or more strings from the
+    needed to parse a single argument von one or more strings von the
     command line. The keyword arguments to the Action constructor are also
     all attributes of Action instances.
 
@@ -1243,7 +1243,7 @@ klasse _SubParsersAction(Action):
             metavar=metavar)
 
     def add_parser(self, name, *, deprecated=Falsch, **kwargs):
-        # set prog from the existing prefix
+        # set prog von the existing prefix
         wenn kwargs.get('prog') is Nichts:
             kwargs['prog'] = '%s %s' % (self._prog_prefix, name)
 
@@ -1352,7 +1352,7 @@ klasse FileType(object):
     """
 
     def __init__(self, mode='r', bufsize=-1, encoding=Nichts, errors=Nichts):
-        import warnings
+        importiere warnings
         warnings.warn(
             "FileType is deprecated. Simply open files after parsing arguments.",
             category=PendingDeprecationWarning,
@@ -1695,7 +1695,7 @@ klasse _ActionsContainer(object):
         return self._registry_get('action', action, action)
 
     def _get_handler(self):
-        # determine function from conflict handler string
+        # determine function von conflict handler string
         handler_func_name = '_handle_conflict_%s' % self.conflict_handler
         try:
             return getattr(self, handler_func_name)
@@ -1735,7 +1735,7 @@ klasse _ActionsContainer(object):
             action.option_strings.remove(option_string)
             self._option_string_actions.pop(option_string, Nichts)
 
-            # wenn the option now has no option string, remove it from the
+            # wenn the option now has no option string, remove it von the
             # container holding it
             wenn not action.option_strings:
                 action.container._remove_action(action)
@@ -1746,14 +1746,14 @@ klasse _ActionsContainer(object):
             try:
                 formatter._expand_help(action)
             except (ValueError, TypeError, KeyError) as exc:
-                raise ValueError('badly formed help string') from exc
+                raise ValueError('badly formed help string') von exc
 
 
 klasse _ArgumentGroup(_ActionsContainer):
 
     def __init__(self, container, title=Nichts, description=Nichts, **kwargs):
         wenn 'prefix_chars' in kwargs:
-            import warnings
+            importiere warnings
             depr_msg = (
                 "The use of the undocumented 'prefix_chars' parameter in "
                 "ArgumentParser.add_argument_group() is deprecated."
@@ -1843,7 +1843,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
     Keyword Arguments:
         - prog -- The name of the program (default:
             ``os.path.basename(sys.argv[0])``)
-        - usage -- A usage message (default: auto-generated from arguments)
+        - usage -- A usage message (default: auto-generated von arguments)
         - description -- A description of what the program does
         - epilog -- Text following the argument descriptions
         - parents -- Parsers whose arguments should be copied into this one
@@ -2018,7 +2018,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             # make sure that args are mutable
             args = list(args)
 
-        # default Namespace built from parser defaults
+        # default Namespace built von parser defaults
         wenn namespace is Nichts:
             namespace = Namespace()
 
@@ -2111,7 +2111,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
                         raise ArgumentError(action, msg % action_name)
 
             # take the action wenn we didn't receive a SUPPRESS value
-            # (e.g. from a default)
+            # (e.g. von a default)
             wenn argument_values is not SUPPRESS:
                 action(self, namespace, argument_values, option_string)
 
@@ -2675,16 +2675,16 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
         wenn value not in choices:
             args = {'value': str(value),
                     'choices': ', '.join(map(str, action.choices))}
-            msg = _('invalid choice: %(value)r (choose from %(choices)s)')
+            msg = _('invalid choice: %(value)r (choose von %(choices)s)')
 
             wenn self.suggest_on_error and isinstance(value, str):
                 wenn all(isinstance(choice, str) fuer choice in action.choices):
-                    import difflib
+                    importiere difflib
                     suggestions = difflib.get_close_matches(value, action.choices, 1)
                     wenn suggestions:
                         args['closest'] = suggestions[0]
                         msg = _('invalid choice: %(value)r, maybe you meant %(closest)r? '
-                                '(choose from %(choices)s)')
+                                '(choose von %(choices)s)')
 
             raise ArgumentError(action, msg % args)
 
@@ -2718,7 +2718,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
         # epilog
         formatter.add_text(self.epilog)
 
-        # determine help from format above
+        # determine help von format above
         return formatter.format_help()
 
     def _get_formatter(self):

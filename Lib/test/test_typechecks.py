@@ -1,6 +1,6 @@
 """Unit tests fuer __instancecheck__ and __subclasscheck__."""
 
-import unittest
+importiere unittest
 
 
 klasse ABC(type):

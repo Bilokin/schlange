@@ -11,8 +11,8 @@ parallel.
 
 Followed by a complete undo().
 """
-from turtle import Screen, Turtle, mainloop
-from time import perf_counter as clock, sleep
+von turtle importiere Screen, Turtle, mainloop
+von time importiere perf_counter as clock, sleep
 
 def mn_eck(p, ne,sz):
     turtlelist = [p]

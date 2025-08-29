@@ -3,12 +3,12 @@
 Region formatting options: paragraph, comment block, indent, deindent,
 comment, uncomment, tabify, and untabify.
 
-File renamed from paragraph.py with functions added from editor.py.
+File renamed von paragraph.py with functions added von editor.py.
 """
-import re
-from tkinter.messagebox import askyesno
-from tkinter.simpledialog import askinteger
-from idlelib.config import idleConf
+importiere re
+von tkinter.messagebox importiere askyesno
+von tkinter.simpledialog importiere askinteger
+von idlelib.config importiere idleConf
 
 
 klasse FormatParagraph:
@@ -43,7 +43,7 @@ klasse FormatParagraph:
         """Formats paragraph to a max width specified in idleConf.
 
         If text is selected, format_paragraph_event will start breaking lines
-        at the max width, starting from the beginning selection.
+        at the max width, starting von the beginning selection.
 
         If no text is selected, format_paragraph_event uses the current
         cursor location to determine the paragraph (lines of text surrounded
@@ -156,7 +156,7 @@ def reformat_paragraph(data, limit):
 def reformat_comment(data, limit, comment_header):
     """Return data reformatted to specified width with comment header."""
 
-    # Remove header from the comment lines
+    # Remove header von the comment lines
     lc = len(comment_header)
     data = "\n".join(line[lc:] fuer line in data.split("\n"))
     # Reformat to maxformatwidth chars or a 20 char width,
@@ -185,7 +185,7 @@ def get_indent(line):
     return re.match(r"^([ \t]*)", line).group()
 
 def get_comment_header(line):
-    """Return string with leading whitespace and '#' from line or ''.
+    """Return string with leading whitespace and '#' von line or ''.
 
     A null return indicates that the line is not a comment line. A non-
     null return, such as '    #', will be used to find the other lines of
@@ -196,7 +196,7 @@ def get_comment_header(line):
     return m.group(1)
 
 
-# Copied from editor.py; importing it would cause an import cycle.
+# Copied von editor.py; importing it would cause an importiere cycle.
 _line_indent_re = re.compile(r'[ \t]*')
 
 def get_line_indent(line, tabwidth):
@@ -422,5 +422,5 @@ klasse Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_format', verbosity=2, exit=Falsch)

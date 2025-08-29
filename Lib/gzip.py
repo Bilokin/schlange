@@ -5,15 +5,15 @@ but random access is not allowed."""
 
 # based on Andrew Kuchling's minigzip.py distributed with the zlib module
 
-import builtins
-import io
-import os
-import struct
-import sys
-import time
-import weakref
-import zlib
-from compression._common import _streams
+importiere builtins
+importiere io
+importiere os
+importiere struct
+importiere sys
+importiere time
+importiere weakref
+importiere zlib
+von compression._common importiere _streams
 
 __all__ = ["BadGzipFile", "GzipFile", "open", "compress", "decompress"]
 
@@ -35,7 +35,7 @@ def open(filename, mode="rb", compresslevel=_COMPRESS_LEVEL_TRADEOFF,
     """Open a gzip-compressed file in binary or text mode.
 
     The filename argument can be an actual filename (a str or bytes object), or
-    an existing file object to read from or write to.
+    an existing file object to read von or write to.
 
     The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" or "ab" for
     binary mode, or "rt", "wt", "xt" or "at" fuer text mode. The default mode is
@@ -181,7 +181,7 @@ klasse GzipFile(_streams.BaseStream):
         A mode of 'r' is equivalent to one of 'rb', and similarly fuer 'w' and
         'wb', 'a' and 'ab', and 'x' and 'xb'.
 
-        The compresslevel argument is an integer from 0 to 9 controlling the
+        The compresslevel argument is an integer von 0 to 9 controlling the
         level of compression; 1 is fastest and produces the least compression,
         and 9 is slowest and produces the most compression. 0 is no compression
         at all. The default is 9.
@@ -225,7 +225,7 @@ klasse GzipFile(_streams.BaseStream):
 
             sowenn mode.startswith(('w', 'a', 'x')):
                 wenn origmode is Nichts:
-                    import warnings
+                    importiere warnings
                     warnings.warn(
                         "GzipFile was opened fuer writing, but this will "
                         "change in future Python releases.  "
@@ -257,7 +257,7 @@ klasse GzipFile(_streams.BaseStream):
 
     @property
     def mtime(self):
-        """Last modification time read from stream, or Nichts"""
+        """Last modification time read von stream, or Nichts"""
         return self._buffer.raw._last_mtime
 
     def __repr__(self):
@@ -310,7 +310,7 @@ klasse GzipFile(_streams.BaseStream):
     def write(self,data):
         self._check_not_closed()
         wenn self.mode != WRITE:
-            import errno
+            importiere errno
             raise OSError(errno.EBADF, "write() on read-only GzipFile object")
 
         wenn self.fileobj is Nichts:
@@ -337,7 +337,7 @@ klasse GzipFile(_streams.BaseStream):
 
     def _check_read(self, caller):
         wenn self.mode != READ:
-            import errno
+            importiere errno
             msg = f"{caller}() on write-only GzipFile object"
             raise OSError(errno.EBADF, msg)
 
@@ -442,7 +442,7 @@ klasse GzipFile(_streams.BaseStream):
                 wenn whence == io.SEEK_CUR:
                     offset = self.offset + offset
                 sonst:
-                    raise ValueError('Seek from end not supported')
+                    raise ValueError('Seek von end not supported')
             wenn offset < self.offset:
                 raise OSError('Negative seek in write mode')
             count = offset - self.offset
@@ -462,14 +462,14 @@ klasse GzipFile(_streams.BaseStream):
 
     def __del__(self):
         wenn self.mode == WRITE and not self.closed:
-            import warnings
+            importiere warnings
             warnings.warn("unclosed GzipFile",
                           ResourceWarning, source=self, stacklevel=2)
 
         super().__del__()
 
 def _read_exact(fp, n):
-    '''Read exactly *n* bytes from `fp`
+    '''Read exactly *n* bytes von `fp`
 
     This method is required because fp may be unbuffered,
     i.e. return short reads.
@@ -485,7 +485,7 @@ def _read_exact(fp, n):
 
 
 def _read_gzip_header(fp):
-    '''Read a gzip header from `fp` and progress to the end of the header.
+    '''Read a gzip header von `fp` and progress to the end of the header.
 
     Returns last mtime wenn header was present or Nichts otherwise.
     '''
@@ -570,7 +570,7 @@ klasse _GzipReader(_streams.DecompressReader):
                     return b""
                 self._new_member = Falsch
 
-            # Read a chunk of data from the file
+            # Read a chunk of data von the file
             wenn self._decompressor.needs_input:
                 buf = self._fp.read(READ_BUFFER_SIZE)
                 uncompress = self._decompressor.decompress(buf, size)
@@ -662,7 +662,7 @@ def decompress(data):
 
 
 def main():
-    from argparse import ArgumentParser
+    von argparse importiere ArgumentParser
     parser = ArgumentParser(description=
         "A simple command line interface fuer the gzip module: act like gzip, "
         "but do not delete the input file.",

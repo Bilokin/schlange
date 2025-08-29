@@ -1,23 +1,23 @@
-import unittest
-from test.support import (cpython_only, is_wasi, requires_limited_api, Py_DEBUG,
+importiere unittest
+von test.support importiere (cpython_only, is_wasi, requires_limited_api, Py_DEBUG,
                           set_recursion_limit, skip_on_s390x,
                           skip_emscripten_stack_overflow,
                           skip_wasi_stack_overflow, skip_if_sanitizer,
                           import_helper)
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 try:
-    import _testlimitedcapi
+    importiere _testlimitedcapi
 except ImportError:
     _testlimitedcapi = Nichts
-import struct
-import collections
-import itertools
-import gc
-import contextlib
-import types
+importiere struct
+importiere collections
+importiere itertools
+importiere gc
+importiere contextlib
+importiere types
 
 
 klasse BadStr(str):
@@ -45,7 +45,7 @@ klasse FunctionCalls(unittest.TestCase):
 
     def test_frames_are_popped_after_failed_calls(self):
         # GH-93252: stuff blows up wenn we don't pop the new frame after
-        # recovering from failed calls:
+        # recovering von failed calls:
         def f():
             pass
         klasse C:
@@ -253,7 +253,7 @@ klasse CFunctionCallsErrorMessages(unittest.TestCase):
 
 @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
 klasse TestCallingConventions(unittest.TestCase):
-    """Test calling using various C calling conventions (METH_*) from Python
+    """Test calling using various C calling conventions (METH_*) von Python
 
     Subclasses test several kinds of functions (module-level, methods,
     klasse methods static methods) using these attributes:
@@ -451,7 +451,7 @@ NULL_OR_EMPTY = object()
 
 
 klasse FastCallTests(unittest.TestCase):
-    """Test calling using various callables from C
+    """Test calling using various callables von C
     """
 
     # Test calls with positional arguments
@@ -623,7 +623,7 @@ def testfunction_kw(self, *, kw):
 klasse TestPEP590(unittest.TestCase):
 
     def test_method_descriptor_flag(self):
-        import functools
+        importiere functools
         cached = functools.lru_cache(1)(testfunction)
 
         self.assertFalsch(type(repr).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
@@ -714,7 +714,7 @@ klasse TestPEP590(unittest.TestCase):
         self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType1), Wahr)
         self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType2), Wahr)
 
-        # Setting __call__ should remove vectorcall from all subclasses
+        # Setting __call__ should remove vectorcall von all subclasses
         SuperType.__call__ = lambda self: "custom"
 
         self.assertEqual(instance(), "custom")
@@ -744,9 +744,9 @@ klasse TestPEP590(unittest.TestCase):
                  (_testcapi.MethodDescriptorDerived(), (0,), {}, Wahr),
                  (_testcapi.MethodDescriptor2(), (0,), {}, Falsch)]
 
-        from _testcapi import pyobject_vectorcall, pyvectorcall_call
-        from types import MethodType
-        from functools import partial
+        von _testcapi importiere pyobject_vectorcall, pyvectorcall_call
+        von types importiere MethodType
+        von functools importiere partial
 
         def vectorcall(func, args, kwargs):
             args = *args, *kwargs.values()
@@ -801,7 +801,7 @@ klasse TestPEP590(unittest.TestCase):
                 self.assertEqual(expected, wrapped(*args, **kwargs))
 
     def test_setvectorcall(self):
-        from _testcapi import function_setvectorcall
+        von _testcapi importiere function_setvectorcall
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
         def f(num): return num + 1
         assert_equal = self.assertEqual
@@ -812,7 +812,7 @@ klasse TestPEP590(unittest.TestCase):
             assert_equal("overridden", f(num))
 
     def test_setvectorcall_load_attr_specialization_skip(self):
-        from _testcapi import function_setvectorcall
+        von _testcapi importiere function_setvectorcall
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
 
         klasse X:
@@ -829,7 +829,7 @@ klasse TestPEP590(unittest.TestCase):
             assert_equal("overridden", x.a)
 
     def test_setvectorcall_load_attr_specialization_deopt(self):
-        from _testcapi import function_setvectorcall
+        von _testcapi importiere function_setvectorcall
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
 
         klasse X:
@@ -852,7 +852,7 @@ klasse TestPEP590(unittest.TestCase):
 
     @requires_limited_api
     def test_vectorcall_limited_incoming(self):
-        from _testcapi import pyobject_vectorcall
+        von _testcapi importiere pyobject_vectorcall
         fuer cls in (_testlimitedcapi.LimitedVectorCallClass,
                     _testlimitedcapi.LimitedRelativeVectorCallClass):
             with self.subTest(cls=cls):
@@ -863,7 +863,7 @@ klasse TestPEP590(unittest.TestCase):
 
     @requires_limited_api
     def test_vectorcall_limited_outgoing(self):
-        from _testlimitedcapi import call_vectorcall
+        von _testlimitedcapi importiere call_vectorcall
 
         args_captured = []
         kwargs_captured = []
@@ -879,7 +879,7 @@ klasse TestPEP590(unittest.TestCase):
 
     @requires_limited_api
     def test_vectorcall_limited_outgoing_method(self):
-        from _testlimitedcapi import call_vectorcall_method
+        von _testlimitedcapi importiere call_vectorcall_method
 
         args_captured = []
         kwargs_captured = []

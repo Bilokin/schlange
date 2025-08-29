@@ -1,12 +1,12 @@
-from test.support import requires_IEEE_754, cpython_only, import_helper
-from test.support.testcase import ComplexesAreIdenticalMixin
-from test.test_math import parse_testfile, test_file
-import test.test_math as test_math
-import unittest
-import cmath, math
-from cmath import phase, polar, rect, pi
-import platform
-import sys
+von test.support importiere requires_IEEE_754, cpython_only, import_helper
+von test.support.testcase importiere ComplexesAreIdenticalMixin
+von test.test_math importiere parse_testfile, test_file
+importiere test.test_math as test_math
+importiere unittest
+importiere cmath, math
+von cmath importiere phase, polar, rect, pi
+importiere platform
+importiere sys
 
 
 INF = float('inf')
@@ -157,7 +157,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         flt_arg = -6.131677725
 
         # a variety of non-complex numbers, used to check that
-        # non-complex return values from __complex__ give an error
+        # non-complex return values von __complex__ give an error
         non_complexes = ["not complex", 1, 5, 2., Nichts,
                          object(), NotImplemented]
 
@@ -210,7 +210,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             # __int__ or __index__:
             self.assertRaises(TypeError, f, NeitherComplexNorFloat())
             self.assertRaises(TypeError, f, MyInt())
-            # non-complex return value from __complex__ -> TypeError
+            # non-complex return value von __complex__ -> TypeError
             fuer bad_complex in non_complexes:
                 self.assertRaises(TypeError, f, MyComplex(bad_complex))
             # exceptions in __complex__ should be propagated correctly

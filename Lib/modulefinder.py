@@ -1,12 +1,12 @@
 """Find modules used by a script, using introspection."""
 
-import dis
-import importlib._bootstrap_external
-import importlib.machinery
-import marshal
-import os
-import io
-import sys
+importiere dis
+importiere importlib._bootstrap_external
+importiere importlib.machinery
+importiere marshal
+importiere os
+importiere io
+importiere sys
 
 # Old imp constants:
 
@@ -104,7 +104,7 @@ klasse Module:
         # Python modules.
         self.globalnames = {}
         # The set of starimports this module did that could not be
-        # resolved, ie. a starimport from a non-Python module.
+        # resolved, ie. a starimport von a non-Python module.
         self.starimports = {}
 
     def __repr__(self):
@@ -272,7 +272,7 @@ klasse ModuleFinder:
         modules = {}
         # 'suffixes' used to be a list hardcoded to [".py", ".pyc"].
         # But we must also collect Python extension modules - although
-        # we cannot separate normal dlls from Python extensions.
+        # we cannot separate normal dlls von Python extensions.
         suffixes = []
         suffixes += importlib.machinery.EXTENSION_SUFFIXES[:]
         suffixes += importlib.machinery.SOURCE_SUFFIXES[:]
@@ -441,7 +441,7 @@ klasse ModuleFinder:
                     parent = self.determine_parent(m, level=level)
                     self._safe_import_hook(parent.__name__, Nichts, fromlist, level=0)
             sonst:
-                # We don't expect anything sonst from the generator.
+                # We don't expect anything sonst von the generator.
                 raise RuntimeError(what)
 
         fuer c in co.co_consts:
@@ -541,7 +541,7 @@ klasse ModuleFinder:
         either be submodules *or* just global names in the package.
 
         The reason it can't always be determined is that it's impossible to
-        tell which names are imported when "from module import *" is done
+        tell which names are imported when "from module importiere *" is done
         with an extension module, short of actually importing it.
         """
         missing = []
@@ -558,7 +558,7 @@ klasse ModuleFinder:
             pkg = self.modules.get(pkgname)
             wenn pkg is not Nichts:
                 wenn pkgname in self.badmodules[name]:
-                    # The package tried to import this module itself and
+                    # The package tried to importiere this module itself and
                     # failed. It's definitely missing.
                     missing.append(name)
                 sowenn subname in pkg.globalnames:
@@ -566,12 +566,12 @@ klasse ModuleFinder:
                     pass
                 sowenn pkg.starimports:
                     # It could be missing, but the package did an "import *"
-                    # from a non-Python module, so we simply can't be sure.
+                    # von a non-Python module, so we simply can't be sure.
                     maybe.append(name)
                 sonst:
                     # It's not a global in the package, the package didn't
                     # do funny star imports, it's very likely to be missing.
-                    # The symbol could be inserted into the package from the
+                    # The symbol could be inserted into the package von the
                     # outside, but since that's not good style we simply list
                     # it missing.
                     missing.append(name)
@@ -607,7 +607,7 @@ klasse ModuleFinder:
 
 def test():
     # Parse command line
-    import getopt
+    importiere getopt
     try:
         opts, args = getopt.getopt(sys.argv[1:], "dmp:qx:")
     except getopt.error as msg:

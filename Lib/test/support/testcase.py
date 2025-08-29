@@ -1,4 +1,4 @@
-from math import copysign, isnan
+von math importiere copysign, isnan
 
 
 klasse ExceptionIsLikeMixin:

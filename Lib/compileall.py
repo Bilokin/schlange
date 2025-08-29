@@ -10,15 +10,15 @@ packages -- fuer now, you'll have to deal with packages separately.)
 
 See module py_compile fuer details of the actual byte-compilation.
 """
-import os
-import sys
-import importlib.util
-import py_compile
-import struct
-import filecmp
+importiere os
+importiere sys
+importiere importlib.util
+importiere py_compile
+importiere struct
+importiere filecmp
 
-from functools import partial
-from pathlib import Path
+von functools importiere partial
+von pathlib importiere Path
 
 __all__ = ["compile_dir","compile_file","compile_path"]
 
@@ -42,7 +42,7 @@ def _walk_dir(dir, maxlevels, quiet=0):
             yield fullname
         sowenn (maxlevels > 0 and name != os.curdir and name != os.pardir and
               os.path.isdir(fullname) and not os.path.islink(fullname)):
-            yield from _walk_dir(fullname, maxlevels=maxlevels - 1,
+            yield von _walk_dir(fullname, maxlevels=maxlevels - 1,
                                  quiet=quiet)
 
 def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
@@ -66,7 +66,7 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
                files each with one optimization level.
     workers:   maximum number of parallel workers
     invalidation_mode: how the up-to-dateness of the pyc will be checked
-    stripdir:  part of path to left-strip from source file path
+    stripdir:  part of path to left-strip von source file path
     prependdir: path to prepend to beginning of original file path, applied
                after stripdir
     limit_sl_dest: ignore symlinks wenn they are pointing outside of
@@ -85,19 +85,19 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
         raise ValueError('workers must be greater or equal to 0')
     wenn workers != 1:
         # Check wenn this is a system where ProcessPoolExecutor can function.
-        from concurrent.futures.process import _check_system_limits
+        von concurrent.futures.process importiere _check_system_limits
         try:
             _check_system_limits()
         except NotImplementedError:
             workers = 1
         sonst:
-            from concurrent.futures import ProcessPoolExecutor
+            von concurrent.futures importiere ProcessPoolExecutor
     wenn maxlevels is Nichts:
         maxlevels = sys.getrecursionlimit()
     files = _walk_dir(dir, quiet=quiet, maxlevels=maxlevels)
     success = Wahr
     wenn workers != 1 and ProcessPoolExecutor is not Nichts:
-        import multiprocessing
+        importiere multiprocessing
         wenn multiprocessing.get_start_method() == 'fork':
             mp_context = multiprocessing.get_context('forkserver')
         sonst:
@@ -148,7 +148,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                the interpreter. Multiple levels leads to multiple compiled
                files each with one optimization level.
     invalidation_mode: how the up-to-dateness of the pyc will be checked
-    stripdir:  part of path to left-strip from source file path
+    stripdir:  part of path to left-strip von source file path
     prependdir: path to prepend to beginning of original file path, applied
                after stripdir
     limit_sl_dest: ignore symlinks wenn they are pointing outside of
@@ -314,7 +314,7 @@ def compile_path(skip_curdir=1, maxlevels=0, force=Falsch, quiet=0,
 
 def main():
     """Script main program."""
-    import argparse
+    importiere argparse
 
     parser = argparse.ArgumentParser(
         description='Utilities to support installing Python libraries.',
@@ -341,7 +341,7 @@ def main():
                               'unavailable'))
     parser.add_argument('-s', metavar='STRIPDIR',  dest='stripdir',
                         default=Nichts,
-                        help=('part of path to left-strip from path '
+                        help=('part of path to left-strip von path '
                               'to source file - fuer example buildroot. '
                               '`-d` and `-s` options cannot be '
                               'specified together.'))
@@ -360,7 +360,7 @@ def main():
     parser.add_argument('-i', metavar='FILE', dest='flist',
                         help=('add all the files and directories listed in '
                               'FILE to the list considered fuer compilation; '
-                              'if "-", names are read from stdin'))
+                              'if "-", names are read von stdin'))
     parser.add_argument('compile_dest', metavar='FILE|DIR', nargs='*',
                         help=('zero or more file and directory names '
                               'to compile; wenn no arguments given, defaults '
@@ -389,7 +389,7 @@ def main():
     compile_dests = args.compile_dest
 
     wenn args.rx:
-        import re
+        importiere re
         args.rx = re.compile(args.rx)
 
     wenn args.limit_sl_dest == "":

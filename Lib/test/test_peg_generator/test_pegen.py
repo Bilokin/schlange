@@ -1,22 +1,22 @@
-import ast
-import difflib
-import io
-import textwrap
-import unittest
+importiere ast
+importiere difflib
+importiere io
+importiere textwrap
+importiere unittest
 
-from test import test_tools
-from typing import Dict, Any
-from tokenize import TokenInfo, NAME, NEWLINE, NUMBER, OP
+von test importiere test_tools
+von typing importiere Dict, Any
+von tokenize importiere TokenInfo, NAME, NEWLINE, NUMBER, OP
 
 test_tools.skip_if_missing("peg_generator")
 with test_tools.imports_under_tool("peg_generator"):
-    from pegen.grammar_parser import GeneratedParser as GrammarParser
-    from pegen.testutil import parse_string, generate_parser, make_parser
-    from pegen.grammar import GrammarVisitor, GrammarError, Grammar
-    from pegen.grammar_visualizer import ASTGrammarPrinter
-    from pegen.parser import Parser
-    from pegen.parser_generator import compute_nullables, compute_left_recursives
-    from pegen.python_generator import PythonParserGenerator
+    von pegen.grammar_parser importiere GeneratedParser as GrammarParser
+    von pegen.testutil importiere parse_string, generate_parser, make_parser
+    von pegen.grammar importiere GrammarVisitor, GrammarError, Grammar
+    von pegen.grammar_visualizer importiere ASTGrammarPrinter
+    von pegen.parser importiere Parser
+    von pegen.parser_generator importiere compute_nullables, compute_left_recursives
+    von pegen.python_generator importiere PythonParserGenerator
 
 
 klasse TestPegen(unittest.TestCase):

@@ -2,12 +2,12 @@
    Test cases fuer codeop.py
    Nick Mathewson
 """
-import unittest
-import warnings
-from test.support import warnings_helper
-from textwrap import dedent
+importiere unittest
+importiere warnings
+von test.support importiere warnings_helper
+von textwrap importiere dedent
 
-from codeop import compile_command, PyCF_DONT_IMPLY_DEDENT
+von codeop importiere compile_command, PyCF_DONT_IMPLY_DEDENT
 
 klasse CodeopTests(unittest.TestCase):
 
@@ -144,11 +144,11 @@ klasse CodeopTests(unittest.TestCase):
         ai("@a(b,c")
         ai("@a(b,c,")
 
-        ai("from a import (")
-        ai("from a import (b")
-        ai("from a import (b,")
-        ai("from a import (b,c")
-        ai("from a import (b,c,")
+        ai("from a importiere (")
+        ai("from a importiere (b")
+        ai("from a importiere (b,")
+        ai("from a importiere (b,c")
+        ai("from a importiere (b,c,")
 
         ai("[")
         ai("[a")

@@ -1,6 +1,6 @@
 # helper to the helper fuer testing skip_file_prefixes.
 
-import os
+importiere os
 
 package_path = os.path.dirname(__file__)
 

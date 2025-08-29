@@ -1,13 +1,13 @@
 """Tests fuer base_events.py"""
 
-import asyncio
-import contextvars
-import unittest
+importiere asyncio
+importiere contextvars
+importiere unittest
 
-from unittest import mock
-from asyncio import tasks
-from test.test_asyncio import utils as test_utils
-from test.support.script_helper import assert_python_ok
+von unittest importiere mock
+von asyncio importiere tasks
+von test.test_asyncio importiere utils as test_utils
+von test.support.script_helper importiere assert_python_ok
 
 MOCK_ANY = mock.ANY
 
@@ -320,7 +320,7 @@ klasse CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase
     @unittest.skip("skip")
     def test_issue105987(self):
         code = """if 1:
-        from _asyncio import _swap_current_task
+        von _asyncio importiere _swap_current_task
 
         klasse DummyTask:
             pass

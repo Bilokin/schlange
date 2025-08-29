@@ -1,39 +1,39 @@
 """Tests fuer the sampling profiler (profiling.sampling)."""
 
-import contextlib
-import io
-import marshal
-import os
-import shutil
-import socket
-import subprocess
-import sys
-import tempfile
-import unittest
-from unittest import mock
+importiere contextlib
+importiere io
+importiere marshal
+importiere os
+importiere shutil
+importiere socket
+importiere subprocess
+importiere sys
+importiere tempfile
+importiere unittest
+von unittest importiere mock
 
-from profiling.sampling.pstats_collector import PstatsCollector
-from profiling.sampling.stack_collector import (
+von profiling.sampling.pstats_collector importiere PstatsCollector
+von profiling.sampling.stack_collector importiere (
     CollapsedStackCollector,
 )
 
-from test.support.os_helper import unlink
-from test.support import force_not_colorized_test_class, SHORT_TIMEOUT
-from test.support.socket_helper import find_unused_port
-from test.support import requires_subprocess, is_emscripten
+von test.support.os_helper importiere unlink
+von test.support importiere force_not_colorized_test_class, SHORT_TIMEOUT
+von test.support.socket_helper importiere find_unused_port
+von test.support importiere requires_subprocess, is_emscripten
 
 PROCESS_VM_READV_SUPPORTED = Falsch
 
 try:
-    from _remote_debugging import PROCESS_VM_READV_SUPPORTED
-    import _remote_debugging
+    von _remote_debugging importiere PROCESS_VM_READV_SUPPORTED
+    importiere _remote_debugging
 except ImportError:
     raise unittest.SkipTest(
         "Test only runs when _remote_debugging is available"
     )
 sonst:
-    import profiling.sampling
-    from profiling.sampling.sample import SampleProfiler
+    importiere profiling.sampling
+    von profiling.sampling.sample importiere SampleProfiler
 
 
 
@@ -66,7 +66,7 @@ def test_subprocess(script):
 
     # Inject socket connection code at the beginning of the script
     socket_code = f'''
-import socket
+importiere socket
 _test_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 _test_sock.connect(('localhost', {port}))
 _test_sock.sendall(b"ready")
@@ -95,7 +95,7 @@ _test_sock.sendall(b"ready")
         server_socket.close()
         response = client_socket.recv(1024)
         wenn response != b"ready":
-            raise RuntimeError(f"Unexpected response from subprocess: {response}")
+            raise RuntimeError(f"Unexpected response von subprocess: {response}")
 
         yield proc
     finally:
@@ -233,7 +233,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         self.assertEqual(collector.result[multi1_key]["direct_calls"], 1)
         self.assertEqual(
             collector.result[multi2_key]["cumulative_calls"], 1
-        )  # Called from multi1
+        )  # Called von multi1
 
     def test_collapsed_stack_collector_with_empty_and_deep_stacks(self):
         """Test CollapsedStackCollector handles empty frames, single-frame stacks, and very deep call stacks."""
@@ -472,7 +472,7 @@ klasse TestSampleProfiler(unittest.TestCase):
 
     def test_sample_profiler_initialization(self):
         """Test SampleProfiler initialization with various parameters."""
-        from profiling.sampling.sample import SampleProfiler
+        von profiling.sampling.sample importiere SampleProfiler
 
         # Mock RemoteUnwinder to avoid permission issues
         with mock.patch(
@@ -498,7 +498,7 @@ klasse TestSampleProfiler(unittest.TestCase):
 
     def test_sample_profiler_sample_method_timing(self):
         """Test that the sample method respects duration and handles timing correctly."""
-        from profiling.sampling.sample import SampleProfiler
+        von profiling.sampling.sample importiere SampleProfiler
 
         # Mock the unwinder to avoid needing a real process
         mock_unwinder = mock.MagicMock()
@@ -548,7 +548,7 @@ klasse TestSampleProfiler(unittest.TestCase):
 
     def test_sample_profiler_error_handling(self):
         """Test that the sample method handles errors gracefully."""
-        from profiling.sampling.sample import SampleProfiler
+        von profiling.sampling.sample importiere SampleProfiler
 
         # Mock unwinder that raises errors
         mock_unwinder = mock.MagicMock()
@@ -612,7 +612,7 @@ klasse TestSampleProfiler(unittest.TestCase):
 
     def test_sample_profiler_missed_samples_warning(self):
         """Test that the profiler warns about missed samples when sampling is too slow."""
-        from profiling.sampling.sample import SampleProfiler
+        von profiling.sampling.sample importiere SampleProfiler
 
         mock_unwinder = mock.MagicMock()
         mock_unwinder.get_stack_trace.return_value = [
@@ -659,7 +659,7 @@ klasse TestSampleProfiler(unittest.TestCase):
 
             # Should warn about missed samples
             self.assertIn("Warning: missed", result)
-            self.assertIn("samples from the expected total", result)
+            self.assertIn("samples von the expected total", result)
 
 
 @force_not_colorized_test_class
@@ -698,7 +698,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_basic(self):
         """Test basic print_sampled_stats functionality."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         # Capture output
         with io.StringIO() as output:
@@ -720,7 +720,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_sorting(self):
         """Test different sorting options."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         # Test sort by calls
         with io.StringIO() as output:
@@ -753,7 +753,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_limit(self):
         """Test limiting output rows."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         with io.StringIO() as output:
             with mock.patch("sys.stdout", output):
@@ -782,7 +782,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_time_units(self):
         """Test proper time unit selection."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         with io.StringIO() as output:
             with mock.patch("sys.stdout", output):
@@ -812,7 +812,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_summary(self):
         """Test summary section generation."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         with io.StringIO() as output:
             with mock.patch("sys.stdout", output):
@@ -840,7 +840,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_no_summary(self):
         """Test disabling summary output."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         with io.StringIO() as output:
             with mock.patch("sys.stdout", output):
@@ -857,7 +857,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_empty_stats(self):
         """Test with empty stats."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         empty_stats = mock.MagicMock()
         empty_stats.stats = {}
@@ -873,7 +873,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_sample_percentage_sorting(self):
         """Test sample percentage sorting options."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         # Add a function with high sample percentage (more direct calls than func3's 200)
         self.mock_stats.stats[("expensive.py", 60, "expensive_func")] = (
@@ -900,7 +900,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_with_recursive_calls(self):
         """Test print_sampled_stats with recursive calls where nc != cc."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         # Create stats with recursive calls (nc != cc)
         recursive_stats = mock.MagicMock()
@@ -936,7 +936,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_with_zero_call_counts(self):
         """Test print_sampled_stats with zero call counts to trigger division protection."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         # Create stats with zero call counts
         zero_stats = mock.MagicMock()
@@ -964,7 +964,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_sort_by_name(self):
         """Test sort by function name option."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         with io.StringIO() as output:
             with mock.patch("sys.stdout", output):
@@ -999,7 +999,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
         # Extract just the function names fuer comparison
         func_names = []
-        import re
+        importiere re
 
         fuer line in data_lines:
             # Function name is between the last ( and ), accounting fuer ANSI color codes
@@ -1022,7 +1022,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_with_zero_time_functions(self):
         """Test summary sections with functions that have zero time."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         # Create stats with zero-time functions
         zero_time_stats = mock.MagicMock()
@@ -1060,7 +1060,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
     def test_print_sampled_stats_with_malformed_qualified_names(self):
         """Test summary generation with function names that don't contain colons."""
-        from profiling.sampling.sample import print_sampled_stats
+        von profiling.sampling.sample importiere print_sampled_stats
 
         # Create stats with function names that would create malformed qualified names
         malformed_stats = mock.MagicMock()
@@ -1109,7 +1109,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
         collector.create_stats()
 
-        # Check that recursive calls are handled differently from non-recursive
+        # Check that recursive calls are handled differently von non-recursive
         factorial_stats = collector.stats[("recursive.py", 10, "factorial")]
         normal_stats = collector.stats[("normal.py", 20, "normal_func")]
 
@@ -1249,7 +1249,7 @@ klasse TestRecursiveFunctionProfiling(unittest.TestCase):
                 self.assertEqual(direct_calls, 0)
 
             # Deeper levels should have lower cumulative time than higher levels
-            # (since they don't include time from functions they call)
+            # (since they don't include time von functions they call)
             wenn level == 1:  # Deepest level with most time
                 self.assertGreater(ct, 0)
 
@@ -1380,8 +1380,8 @@ klasse TestSampleProfilerIntegration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.test_script = '''
-import time
-import os
+importiere time
+importiere os
 
 def slow_fibonacci(n):
     """Recursive fibonacci - should show up prominently in profiler."""
@@ -1808,7 +1808,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
             self._verify_coordinator_command(mock_popen, ("-m", "mymodule"))
             mock_sample.assert_called_once_with(
                 12345,
-                sort=2,  # default sort (sort_value from args.sort)
+                sort=2,  # default sort (sort_value von args.sort)
                 sample_interval_usec=100,
                 duration_sec=10,
                 filename=Nichts,

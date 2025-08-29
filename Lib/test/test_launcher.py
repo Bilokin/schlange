@@ -1,21 +1,21 @@
-import contextlib
-import itertools
-import os
-import re
-import shutil
-import subprocess
-import sys
-import sysconfig
-import tempfile
-import unittest
-from pathlib import Path
-from test import support
+importiere contextlib
+importiere itertools
+importiere os
+importiere re
+importiere shutil
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere unittest
+von pathlib importiere Path
+von test importiere support
 
 wenn sys.platform != "win32":
     raise unittest.SkipTest("test only applies to Windows")
 
 # Get winreg after the platform check
-import winreg
+importiere winreg
 
 
 PY_EXE = "py.exe"

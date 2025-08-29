@@ -1,20 +1,20 @@
 """Tests fuer proactor_events.py"""
 
-import io
-import socket
-import unittest
-import sys
-from unittest import mock
+importiere io
+importiere socket
+importiere unittest
+importiere sys
+von unittest importiere mock
 
-import asyncio
-from asyncio.proactor_events import BaseProactorEventLoop
-from asyncio.proactor_events import _ProactorSocketTransport
-from asyncio.proactor_events import _ProactorWritePipeTransport
-from asyncio.proactor_events import _ProactorDuplexPipeTransport
-from asyncio.proactor_events import _ProactorDatagramTransport
-from test.support import os_helper
-from test.support import socket_helper
-from test.test_asyncio import utils as test_utils
+importiere asyncio
+von asyncio.proactor_events importiere BaseProactorEventLoop
+von asyncio.proactor_events importiere _ProactorSocketTransport
+von asyncio.proactor_events importiere _ProactorWritePipeTransport
+von asyncio.proactor_events importiere _ProactorDuplexPipeTransport
+von asyncio.proactor_events importiere _ProactorDatagramTransport
+von test.support importiere os_helper
+von test.support importiere socket_helper
+von test.test_asyncio importiere utils as test_utils
 
 
 def tearDownModule():

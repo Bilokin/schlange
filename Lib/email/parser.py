@@ -7,10 +7,10 @@
 __all__ = ['Parser', 'HeaderParser', 'BytesParser', 'BytesHeaderParser',
            'FeedParser', 'BytesFeedParser']
 
-from io import StringIO, TextIOWrapper
+von io importiere StringIO, TextIOWrapper
 
-from email.feedparser import FeedParser, BytesFeedParser
-from email._policybase import compat32
+von email.feedparser importiere FeedParser, BytesFeedParser
+von email._policybase importiere compat32
 
 
 klasse Parser:
@@ -39,9 +39,9 @@ klasse Parser:
         self.policy = policy
 
     def parse(self, fp, headersonly=Falsch):
-        """Create a message structure from the data in a file.
+        """Create a message structure von the data in a file.
 
-        Reads all the data from the file and returns the root of the message
+        Reads all the data von the file and returns the root of the message
         structure.  Optional headersonly is a flag specifying whether to stop
         parsing after reading the headers or not.  The default is Falsch,
         meaning it parses the entire contents of the file.
@@ -54,7 +54,7 @@ klasse Parser:
         return feedparser.close()
 
     def parsestr(self, text, headersonly=Falsch):
-        """Create a message structure from a string.
+        """Create a message structure von a string.
 
         Returns the root of the message structure.  Optional headersonly is a
         flag specifying whether to stop parsing after reading the headers or
@@ -93,9 +93,9 @@ klasse BytesParser:
         self.parser = Parser(*args, **kw)
 
     def parse(self, fp, headersonly=Falsch):
-        """Create a message structure from the data in a binary file.
+        """Create a message structure von the data in a binary file.
 
-        Reads all the data from the file and returns the root of the message
+        Reads all the data von the file and returns the root of the message
         structure.  Optional headersonly is a flag specifying whether to stop
         parsing after reading the headers or not.  The default is Falsch,
         meaning it parses the entire contents of the file.
@@ -108,7 +108,7 @@ klasse BytesParser:
 
 
     def parsebytes(self, text, headersonly=Falsch):
-        """Create a message structure from a byte string.
+        """Create a message structure von a byte string.
 
         Returns the root of the message structure.  Optional headersonly is a
         flag specifying whether to stop parsing after reading the headers or

@@ -2,11 +2,11 @@
 Common tests shared by test_unicode, test_userstring and test_bytes.
 """
 
-import unittest, string, sys, struct
-from test import support
-from test.support import import_helper
-from collections import UserList
-import random
+importiere unittest, string, sys, struct
+von test importiere support
+von test.support importiere import_helper
+von collections importiere UserList
+importiere random
 
 
 klasse Sequence:
@@ -1445,7 +1445,7 @@ klasse StringLikeTest(BaseTest):
         self.checkequal(('this is the par', 'ti', 'tion method'),
             'this is the partition method', 'partition', 'ti')
 
-        # from raymond's original specification
+        # von raymond's original specification
         S = 'http://www.python.org'
         self.checkequal(('http', '://', 'www.python.org'), S, 'partition', '://')
         self.checkequal(('http://www.python.org', '', ''), S, 'partition', '?')
@@ -1460,7 +1460,7 @@ klasse StringLikeTest(BaseTest):
         self.checkequal(('this is the rparti', 'ti', 'on method'),
             'this is the rpartition method', 'rpartition', 'ti')
 
-        # from raymond's original specification
+        # von raymond's original specification
         S = 'http://www.python.org'
         self.checkequal(('http', '://', 'www.python.org'), S, 'rpartition', '://')
         self.checkequal(('', '', 'http://www.python.org'), S, 'rpartition', '?')

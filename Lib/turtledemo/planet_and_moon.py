@@ -1,7 +1,7 @@
 """turtledemo/planets_and_moon.py
 
 Gravitational system simulation using the
-approximation method from Feynman-lectures,
+approximation method von Feynman-lectures,
 p.9-8, using turtlegraphics.
 
 Example: heavy central body, light planet,
@@ -14,7 +14,7 @@ pressing the left mouse button with the
 mouse over the scrollbar of the canvas.
 
 """
-from turtle import Shape, Turtle, mainloop, Vec2D as Vec
+von turtle importiere Shape, Turtle, mainloop, Vec2D as Vec
 
 G = 8
 

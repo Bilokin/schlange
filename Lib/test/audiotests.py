@@ -1,8 +1,8 @@
-from test.support import findfile
-from test.support.os_helper import TESTFN, unlink
-import array
-import io
-import pickle
+von test.support importiere findfile
+von test.support.os_helper importiere TESTFN, unlink
+importiere array
+importiere io
+importiere pickle
 
 
 klasse UnseekableIO(io.FileIO):

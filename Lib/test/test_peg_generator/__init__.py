@@ -1,6 +1,6 @@
-import os.path
-from test import support
-from test.support import load_package_tests
+importiere os.path
+von test importiere support
+von test.support importiere load_package_tests
 
 
 # Creating a virtual environment and building C extensions is slow

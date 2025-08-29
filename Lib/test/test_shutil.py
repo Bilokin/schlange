@@ -1,36 +1,36 @@
 # Copyright (C) 2003 Python Software Foundation
 
-import unittest
-import unittest.mock
-import shutil
-import tempfile
-import sys
-import stat
-import os
-import os.path
-import errno
-import functools
-import subprocess
-import random
-import string
-import contextlib
-import io
-from shutil import (make_archive,
+importiere unittest
+importiere unittest.mock
+importiere shutil
+importiere tempfile
+importiere sys
+importiere stat
+importiere os
+importiere os.path
+importiere errno
+importiere functools
+importiere subprocess
+importiere random
+importiere string
+importiere contextlib
+importiere io
+von shutil importiere (make_archive,
                     register_archive_format, unregister_archive_format,
                     get_archive_formats, Error, unpack_archive,
                     register_unpack_format, RegistryError,
                     unregister_unpack_format, get_unpack_formats,
                     SameFileError, _GiveupOnFastCopy)
-import tarfile
-import zipfile
+importiere tarfile
+importiere zipfile
 try:
-    import posix
+    importiere posix
 except ImportError:
     posix = Nichts
 
-from test import support
-from test.support import os_helper
-from test.support.os_helper import TESTFN, FakePath
+von test importiere support
+von test.support importiere os_helper
+von test.support.os_helper importiere TESTFN, FakePath
 
 TESTFN2 = TESTFN + "2"
 TESTFN_SRC = TESTFN + "_SRC"
@@ -39,14 +39,14 @@ MACOS = sys.platform.startswith("darwin")
 SOLARIS = sys.platform.startswith("sunos")
 AIX = sys.platform[:3] == 'aix'
 try:
-    import grp
-    import pwd
+    importiere grp
+    importiere pwd
     UID_GID_SUPPORT = Wahr
 except ImportError:
     UID_GID_SUPPORT = Falsch
 
 try:
-    import _winapi
+    importiere _winapi
 except ImportError:
     _winapi = Nichts
 
@@ -100,7 +100,7 @@ def write_test_file(path, size):
     assert os.path.getsize(path) == size
 
 def read_file(path, binary=Falsch):
-    """Return contents from a file located at *path*.
+    """Return contents von a file located at *path*.
 
     If *path* is a tuple instead of a string, os.path.join will be used to
     make a path.  If *binary* is true, the file will be opened in binary
@@ -1746,7 +1746,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
             # This feature can be disabled with the
             # '--no-mac-metadata' option on macOS 11 or
             # later.
-            import platform
+            importiere platform
             wenn int(platform.mac_ver()[0].split('.')[0]) >= 11:
                 tar_cmd.insert(1, '--no-mac-metadata')
         subprocess.check_call(tar_cmd, cwd=root_dir,
@@ -3347,7 +3347,7 @@ klasse TestZeroCopySendfile(_ZeroCopyFileLinuxTest, unittest.TestCase):
     def test_file2file_not_supported(self):
         # Emulate a case where sendfile() only support file->socket
         # fds. In such a case copyfile() is supposed to skip the
-        # fast-copy attempt from then on.
+        # fast-copy attempt von then on.
         assert shutil._USE_CP_SENDFILE
         try:
             with unittest.mock.patch(
@@ -3492,7 +3492,7 @@ klasse PublicAPITests(unittest.TestCase):
             target_api.append('disk_usage')
         self.assertEqual(set(shutil.__all__), set(target_api))
         with self.assertWarns(DeprecationWarning):
-            from shutil import ExecError  # noqa: F401
+            von shutil importiere ExecError  # noqa: F401
 
 
 wenn __name__ == '__main__':

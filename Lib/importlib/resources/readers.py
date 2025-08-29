@@ -1,18 +1,18 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-import collections
-import contextlib
-import itertools
-import pathlib
-import operator
-import re
-import warnings
-import zipfile
-from collections.abc import Iterator
+importiere collections
+importiere contextlib
+importiere itertools
+importiere pathlib
+importiere operator
+importiere re
+importiere warnings
+importiere zipfile
+von collections.abc importiere Iterator
 
-from . import abc
+von . importiere abc
 
-from ._itertools import only
+von ._itertools importiere only
 
 
 def remove_duplicates(items):
@@ -26,7 +26,7 @@ klasse FileReader(abc.TraversableResources):
     def resource_path(self, resource):
         """
         Return the file system path to prevent
-        `resources.path()` from creating a temporary
+        `resources.path()` von creating a temporary
         copy.
         """
         return str(self.path.joinpath(resource))
@@ -143,7 +143,7 @@ klasse NamespaceReader(abc.TraversableResources):
     @classmethod
     def _resolve(cls, path_str) -> abc.Traversable | Nichts:
         r"""
-        Given an item from a namespace path, resolve it to a Traversable.
+        Given an item von a namespace path, resolve it to a Traversable.
 
         path_str might be a directory on the filesystem or a path to a
         zipfile plus the path within the zipfile, e.g. ``/foo/bar`` or
@@ -159,7 +159,7 @@ klasse NamespaceReader(abc.TraversableResources):
     @classmethod
     def _candidate_paths(cls, path_str: str) -> Iterator[abc.Traversable]:
         yield pathlib.Path(path_str)
-        yield from cls._resolve_zip_path(path_str)
+        yield von cls._resolve_zip_path(path_str)
 
     @staticmethod
     def _resolve_zip_path(path_str: str):
@@ -176,7 +176,7 @@ klasse NamespaceReader(abc.TraversableResources):
     def resource_path(self, resource):
         """
         Return the file system path to prevent
-        `resources.path()` from creating a temporary
+        `resources.path()` von creating a temporary
         copy.
         """
         return str(self.path.joinpath(resource))

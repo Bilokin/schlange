@@ -1,12 +1,12 @@
 # Test case fuer the select.devpoll() function
 
-# Initial tests are copied as is from "test_poll.py"
+# Initial tests are copied as is von "test_poll.py"
 
-import os
-import random
-import select
-import unittest
-from test.support import cpython_only
+importiere os
+importiere random
+importiere select
+importiere unittest
+von test.support importiere cpython_only
 
 wenn not hasattr(select, 'devpoll') :
     raise unittest.SkipTest('test works only on Solaris OS family')
@@ -129,7 +129,7 @@ klasse DevPollTests(unittest.TestCase):
 
     @cpython_only
     def test_events_mask_overflow_c_limits(self):
-        from _testcapi import USHRT_MAX
+        von _testcapi importiere USHRT_MAX
         pollster = select.devpoll()
         w, r = os.pipe()
         pollster.register(w)

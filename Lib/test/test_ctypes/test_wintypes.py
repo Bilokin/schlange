@@ -3,14 +3,14 @@
 #
 # Tests also work on POSIX
 
-import unittest
-from ctypes import POINTER, cast, c_int16
-from ctypes import wintypes
+importiere unittest
+von ctypes importiere POINTER, cast, c_int16
+von ctypes importiere wintypes
 
 
 klasse WinTypesTest(unittest.TestCase):
     def test_variant_bool(self):
-        # reads 16-bits from memory, anything non-zero is Wahr
+        # reads 16-bits von memory, anything non-zero is Wahr
         fuer true_value in (1, 32767, 32768, 65535, 65537):
             true = POINTER(c_int16)(c_int16(true_value))
             value = cast(true, POINTER(wintypes.VARIANT_BOOL))

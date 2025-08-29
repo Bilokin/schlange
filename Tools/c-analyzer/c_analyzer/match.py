@@ -1,6 +1,6 @@
-import os.path
+importiere os.path
 
-from c_parser import (
+von c_parser importiere (
     info as _info,
     match as _match,
 )

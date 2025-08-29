@@ -1,11 +1,11 @@
-import unittest
-from collections import OrderedDict
-from test import support
-from test.support import import_helper
+importiere unittest
+von collections importiere OrderedDict
+von test importiere support
+von test.support importiere import_helper
 
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
-from _testcapi import PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
+von _testcapi importiere PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
 
 NULL = Nichts
 
@@ -1065,12 +1065,12 @@ klasse CAPITest(unittest.TestCase):
             next_func(it)
 
     def test_iter_next(self):
-        from _testcapi import PyIter_Next
+        von _testcapi importiere PyIter_Next
         self.run_iter_api_test(PyIter_Next)
         # CRASHES PyIter_Next(10)
 
     def test_iter_nextitem(self):
-        from _testcapi import PyIter_NextItem
+        von _testcapi importiere PyIter_NextItem
         self.run_iter_api_test(PyIter_NextItem)
 
         regex = "expected.*iterator.*got.*'int'"

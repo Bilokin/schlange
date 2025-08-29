@@ -1,9 +1,9 @@
-from test.test_importlib import util
-import importlib._bootstrap
-import sys
-from types import MethodType
-import unittest
-import warnings
+von test.test_importlib importiere util
+importiere importlib._bootstrap
+importiere sys
+von types importiere MethodType
+importiere unittest
+importiere warnings
 
 
 klasse CallingOrder:

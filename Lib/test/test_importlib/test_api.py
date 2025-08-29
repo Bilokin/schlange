@@ -1,17 +1,17 @@
-from test.test_importlib import util as test_util
+von test.test_importlib importiere util as test_util
 
 init = test_util.import_importlib('importlib')
 util = test_util.import_importlib('importlib.util')
 machinery = test_util.import_importlib('importlib.machinery')
 
-import os.path
-import sys
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-import traceback
-import types
-import unittest
+importiere os.path
+importiere sys
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
+importiere traceback
+importiere types
+importiere unittest
 
 
 klasse ImportModuleTests:
@@ -26,7 +26,7 @@ klasse ImportModuleTests:
                 self.assertEqual(module.__name__, 'top_level')
 
     def test_absolute_package_import(self):
-        # Test importing a module from a package with an absolute name.
+        # Test importing a module von a package with an absolute name.
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
         name = '{0}.mod'.format(pkg_name)
@@ -36,7 +36,7 @@ klasse ImportModuleTests:
                 self.assertEqual(module.__name__, name)
 
     def test_shallow_relative_package_import(self):
-        # Test importing a module from a package through a relative import.
+        # Test importing a module von a package through a relative import.
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
         module_name = 'mod'
@@ -58,7 +58,7 @@ klasse ImportModuleTests:
                 self.assertEqual(module.__name__, 'a.c')
 
     def test_absolute_import_with_package(self):
-        # Test importing a module from a package with an absolute name with
+        # Test importing a module von a package with an absolute name with
         # the 'package' argument given.
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
@@ -78,7 +78,7 @@ klasse ImportModuleTests:
 
     def test_loaded_once(self):
         # Issue #13591: Modules should only be loaded once when
-        # initializing the parent package attempts to import the
+        # initializing the parent package attempts to importiere the
         # module currently being imported.
         b_load_count = 0
         def load_a():
@@ -187,7 +187,7 @@ klasse ReloadTests:
 
     def test_module_replaced(self):
         def code():
-            import sys
+            importiere sys
             module = type(sys)('top_level')
             module.spam = 3
             sys.modules['top_level'] = module
@@ -203,7 +203,7 @@ klasse ReloadTests:
 
     def test_reload_missing_loader(self):
         with import_helper.CleanImport('types'):
-            import types
+            importiere types
             loader = types.__loader__
             del types.__loader__
             reloaded = self.init.reload(types)
@@ -214,7 +214,7 @@ klasse ReloadTests:
 
     def test_reload_loader_replaced(self):
         with import_helper.CleanImport('types'):
-            import types
+            importiere types
             types.__loader__ = Nichts
             self.init.invalidate_caches()
             reloaded = self.init.reload(types)
@@ -414,7 +414,7 @@ klasse InvalidateCacheTests:
 klasse FrozenImportlibTests(unittest.TestCase):
 
     def test_no_frozen_importlib(self):
-        # Should be able to import w/o _frozen_importlib being defined.
+        # Should be able to importiere w/o _frozen_importlib being defined.
         # Can't do an isinstance() check since separate copies of importlib
         # may have been used fuer import, so just check the name is not fuer the
         # frozen loader.
@@ -455,7 +455,7 @@ klasse StartupTests:
 klasse TestModuleAll(unittest.TestCase):
     def test_machinery(self):
         extra = (
-            # from importlib._bootstrap and importlib._bootstrap_external
+            # von importlib._bootstrap and importlib._bootstrap_external
             'AppleFrameworkLoader',
             'BYTECODE_SUFFIXES',
             'BuiltinImporter',
@@ -477,7 +477,7 @@ klasse TestModuleAll(unittest.TestCase):
 
     def test_util(self):
         extra = (
-            # from importlib.abc, importlib._bootstrap
+            # von importlib.abc, importlib._bootstrap
             # and importlib._bootstrap_external
             'Loader',
             'MAGIC_NUMBER',
@@ -493,7 +493,7 @@ klasse TestModuleAll(unittest.TestCase):
 
 klasse TestDeprecations(unittest.TestCase):
     def test_machinery_deprecated_attributes(self):
-        from importlib import machinery
+        von importlib importiere machinery
         attributes = (
             'DEBUG_BYTECODE_SUFFIXES',
             'OPTIMIZED_BYTECODE_SUFFIXES',

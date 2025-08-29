@@ -1,6 +1,6 @@
-import sys
-import unittest
-from test.support import import_helper
+importiere sys
+importiere unittest
+von test.support importiere import_helper
 
 pwd = import_helper.import_module('pwd')
 
@@ -46,7 +46,7 @@ klasse PwdTest(unittest.TestCase):
             entriesbyuid.setdefault(e.pw_uid, []).append(e)
 
         # check whether the entry returned by getpwuid()
-        # fuer each uid is among those from getpwall() fuer this uid
+        # fuer each uid is among those von getpwall() fuer this uid
         fuer e in entries:
             wenn not e[0] or e[0] == '+':
                 continue # skip NIS entries etc.

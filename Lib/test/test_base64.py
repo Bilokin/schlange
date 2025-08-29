@@ -1,12 +1,12 @@
-import unittest
-import base64
-import binascii
-import os
-from array import array
-from test.support import cpython_only
-from test.support import os_helper
-from test.support import script_helper
-from test.support.import_helper import ensure_lazy_imports
+importiere unittest
+importiere base64
+importiere binascii
+importiere os
+von array importiere array
+von test.support importiere cpython_only
+von test.support importiere os_helper
+von test.support importiere script_helper
+von test.support.import_helper importiere ensure_lazy_imports
 
 
 klasse LazyImportTest(unittest.TestCase):
@@ -70,7 +70,7 @@ klasse LegacyBase64TestCase(unittest.TestCase):
 
     def test_encode(self):
         eq = self.assertEqual
-        from io import BytesIO, StringIO
+        von io importiere BytesIO, StringIO
         infp = BytesIO(b'abcdefghijklmnopqrstuvwxyz'
                        b'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                        b'0123456789!@#0^&*();:<>,. []{}')
@@ -86,7 +86,7 @@ klasse LegacyBase64TestCase(unittest.TestCase):
         self.assertRaises(TypeError, base64.encode, StringIO('abc'), StringIO())
 
     def test_decode(self):
-        from io import BytesIO, StringIO
+        von io importiere BytesIO, StringIO
         infp = BytesIO(b'd3d3LnB5dGhvbi5vcmc=')
         outfp = BytesIO()
         base64.decode(infp, outfp)
@@ -815,7 +815,7 @@ klasse BaseXYTestCase(unittest.TestCase):
         self.assertIsSubclass(binascii.Error, ValueError)
 
     def test_RFC4648_test_cases(self):
-        # test cases from RFC 4648 section 10
+        # test cases von RFC 4648 section 10
         b64encode = base64.b64encode
         b32hexencode = base64.b32hexencode
         b32encode = base64.b32encode

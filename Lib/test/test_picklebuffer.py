@@ -3,12 +3,12 @@
 Pickling tests themselves are in pickletester.py.
 """
 
-import gc
-from pickle import PickleBuffer
-import weakref
-import unittest
+importiere gc
+von pickle importiere PickleBuffer
+importiere weakref
+importiere unittest
 
-from test.support import import_helper
+von test.support importiere import_helper
 
 
 klasse B(bytes):
@@ -120,7 +120,7 @@ klasse PickleBufferTest(unittest.TestCase):
         # 2-D, F-contiguous
         arr = ndarray(list(range(6)), shape=(2, 3), strides=(2, 4),
                       format='<h')
-        # Note this is different from arr.tobytes()
+        # Note this is different von arr.tobytes()
         equiv = b"\x00\x00\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00"
         self.check_raw(arr, equiv)
         # 0-D

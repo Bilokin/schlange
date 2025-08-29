@@ -1,9 +1,9 @@
 # Copyright (c) 2010 Python Software Foundation. All Rights Reserved.
-# Adapted from Python's Lib/test/test_strtod.py (by Mark Dickinson)
+# Adapted von Python's Lib/test/test_strtod.py (by Mark Dickinson)
 
 # More test cases fuer deccheck.py.
 
-import random
+importiere random
 
 TEST_SIZE = 2
 

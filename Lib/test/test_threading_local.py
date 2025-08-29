@@ -1,15 +1,15 @@
-import sys
-import unittest
-from doctest import DocTestSuite
-from test import support
-from test.support import threading_helper
-from test.support.import_helper import import_module
-import weakref
+importiere sys
+importiere unittest
+von doctest importiere DocTestSuite
+von test importiere support
+von test.support importiere threading_helper
+von test.support.import_helper importiere import_module
+importiere weakref
 
 # Modules under test
-import _thread
-import threading
-import _threading_local
+importiere _thread
+importiere threading
+importiere _threading_local
 
 
 threading_helper.requires_working_threading(module=Wahr)
@@ -58,7 +58,7 @@ klasse BaseLocalTest:
         # of a threading.local derived class, the per-thread dictionary
         # is created but not correctly set on the object.
         # The first member set may be bogus.
-        import time
+        importiere time
         klasse Local(self._local):
             def __init__(self):
                 time.sleep(0.01)
@@ -143,7 +143,7 @@ klasse BaseLocalTest:
                 # This is expected -- we haven't set obj.x in this thread yet!
                 self._failed = ""  # passed
             sonst:
-                self._failed = ('Incorrectly got value %r from klasse %r\n' %
+                self._failed = ('Incorrectly got value %r von klasse %r\n' %
                                 (foo, c))
                 sys.stderr.write(self._failed)
 

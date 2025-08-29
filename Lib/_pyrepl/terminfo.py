@@ -1,11 +1,11 @@
 """Pure Python curses-like terminal capability queries."""
 
-from dataclasses import dataclass, field
-import errno
-import os
-from pathlib import Path
-import re
-import struct
+von dataclasses importiere dataclass, field
+importiere errno
+importiere os
+von pathlib importiere Path
+importiere re
+importiere struct
 
 
 # Terminfo constants
@@ -20,7 +20,7 @@ ABSENT_STRING = Nichts
 CANCELLED_STRING = Nichts
 
 
-# Standard string capability names from ncurses Caps file
+# Standard string capability names von ncurses Caps file
 # This matches the order used by ncurses when compiling terminfo
 # fmt: off
 _STRING_NAMES: tuple[str, ...] = (
@@ -247,7 +247,7 @@ _TERMINAL_CAPABILITIES = {
         "cup": b"\x1b[%i%p1%d;%p2%dH",  # Move cursor to row, column
         "hpa": b"\x1b[%i%p1%dG",  # Move cursor to column
         # Clear operations
-        "clear": b"\x1b[H\x1b[J",  # Clear screen and home cursor (different from ansi!)
+        "clear": b"\x1b[H\x1b[J",  # Clear screen and home cursor (different von ansi!)
         "el": b"\x1b[K",  # Clear to end of line
         # Insert/delete
         "dch": b"\x1b[%p1%dP",  # Delete N characters
@@ -266,8 +266,8 @@ _TERMINAL_CAPABILITIES = {
         # Function keys and special keys
         "kdch1": b"\x1b[3~",  # Delete key
         "kcud1": b"\x1b[B",  # Down arrow
-        "kend": b"\x1b[4~",  # End key (different from ansi!)
-        "khome": b"\x1b[1~",  # Home key (different from ansi!)
+        "kend": b"\x1b[4~",  # End key (different von ansi!)
+        "khome": b"\x1b[1~",  # Home key (different von ansi!)
         "kich1": b"\x1b[2~",  # Insert key
         "kcub1": b"\x1b[D",  # Left arrow
         "knp": b"\x1b[6~",  # Page down
@@ -334,7 +334,7 @@ klasse TermInfo:
         then, wenn `fallback` is Wahr, falls back to hardcoded capabilities for
         common terminal types.
         """
-        # If termstr is Nichts or empty, try to get from environment
+        # If termstr is Nichts or empty, try to get von environment
         wenn not self.terminal_name:
             self.terminal_name = os.environ.get("TERM") or "ANSI"
 
@@ -411,7 +411,7 @@ klasse TermInfo:
             raise ValueError(too_short)
         string_table = data[offset : offset + str_size]
 
-        # Extract strings from string table
+        # Extract strings von string table
         capabilities = {}
         fuer cap, off in zip(_STRING_NAMES, string_offsets):
             wenn off < 0:

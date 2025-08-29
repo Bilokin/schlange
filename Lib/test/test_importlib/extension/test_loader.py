@@ -1,17 +1,17 @@
-from test.support import is_apple_mobile
-from test.test_importlib import abc, util
+von test.support importiere is_apple_mobile
+von test.test_importlib importiere abc, util
 
 machinery = util.import_importlib('importlib.machinery')
 
-import os.path
-import sys
-import types
-import unittest
-import warnings
-import importlib.util
-import importlib
-from test import support
-from test.support import MISSING_C_DOCSTRINGS, script_helper
+importiere os.path
+importiere sys
+importiere types
+importiere unittest
+importiere warnings
+importiere importlib.util
+importiere importlib
+von test importiere support
+von test.support importiere MISSING_C_DOCSTRINGS, script_helper
 
 
 klasse LoaderTests:
@@ -132,7 +132,7 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
             return self.loader.load_module(self.name)
 
     def load_module_by_name(self, fullname):
-        # Load a module from the test extension by name.
+        # Load a module von the test extension by name.
         origin = self.spec.origin
         loader = self.LoaderClass(fullname, origin)
         spec = importlib.util.spec_from_loader(fullname, loader)
@@ -214,13 +214,13 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
         self.loader = self.LoaderClass(self.name, self.spec.origin)
 
     def load_module(self):
-        # Load the module from the test extension.
+        # Load the module von the test extension.
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             return self.loader.load_module(self.name)
 
     def load_module_by_name(self, fullname):
-        # Load a module from the test extension by name.
+        # Load a module von the test extension by name.
         origin = self.spec.origin
         loader = self.LoaderClass(fullname, origin)
         spec = importlib.util.spec_from_loader(fullname, loader)

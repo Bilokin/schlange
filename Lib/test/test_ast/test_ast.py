@@ -1,34 +1,34 @@
-import _ast_unparse
-import ast
-import builtins
-import contextlib
-import copy
-import dis
-import enum
-import itertools
-import os
-import re
-import sys
-import tempfile
-import textwrap
-import types
-import unittest
-import weakref
-from io import StringIO
-from pathlib import Path
-from textwrap import dedent
+importiere _ast_unparse
+importiere ast
+importiere builtins
+importiere contextlib
+importiere copy
+importiere dis
+importiere enum
+importiere itertools
+importiere os
+importiere re
+importiere sys
+importiere tempfile
+importiere textwrap
+importiere types
+importiere unittest
+importiere weakref
+von io importiere StringIO
+von pathlib importiere Path
+von textwrap importiere dedent
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = Nichts
 
-from test import support
-from test.support import os_helper
-from test.support import skip_emscripten_stack_overflow, skip_wasi_stack_overflow
-from test.support.ast_helper import ASTTestMixin
-from test.support.import_helper import ensure_lazy_imports
-from test.test_ast.utils import to_tuple
-from test.test_ast.snippets import (
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere skip_emscripten_stack_overflow, skip_wasi_stack_overflow
+von test.support.ast_helper importiere ASTTestMixin
+von test.support.import_helper importiere ensure_lazy_imports
+von test.test_ast.utils importiere to_tuple
+von test.test_ast.snippets importiere (
     eval_tests, eval_results, exec_tests, exec_results, single_tests, single_results
 )
 
@@ -352,17 +352,17 @@ klasse AST_Tests(unittest.TestCase):
         self.assertIsNichts(slc.step)
 
     def test_from_import(self):
-        im = ast.parse("from . import y").body[0]
+        im = ast.parse("from . importiere y").body[0]
         self.assertIsNichts(im.module)
 
     def test_non_interned_future_from_ast(self):
-        mod = ast.parse("from __future__ import division")
+        mod = ast.parse("from __future__ importiere division")
         self.assertIsInstance(mod.body[0], ast.ImportFrom)
         mod.body[0].module = " __future__ ".strip()
         compile(mod, "<test>", "exec")
 
     def test_alias(self):
-        im = ast.parse("from bar import y").body[0]
+        im = ast.parse("from bar importiere y").body[0]
         self.assertEqual(len(im.names), 1)
         alias = im.names[0]
         self.assertEqual(alias.name, 'y')
@@ -372,7 +372,7 @@ klasse AST_Tests(unittest.TestCase):
         self.assertEqual(alias.col_offset, 16)
         self.assertEqual(alias.end_col_offset, 17)
 
-        im = ast.parse("from bar import *").body[0]
+        im = ast.parse("from bar importiere *").body[0]
         alias = im.names[0]
         self.assertEqual(alias.name, '*')
         self.assertIsNichts(alias.asname)
@@ -381,7 +381,7 @@ klasse AST_Tests(unittest.TestCase):
         self.assertEqual(alias.col_offset, 16)
         self.assertEqual(alias.end_col_offset, 17)
 
-        im = ast.parse("from bar import y as z").body[0]
+        im = ast.parse("from bar importiere y as z").body[0]
         alias = im.names[0]
         self.assertEqual(alias.name, "y")
         self.assertEqual(alias.asname, "z")
@@ -602,8 +602,8 @@ klasse AST_Tests(unittest.TestCase):
                 compile(e, "<test>", "eval")
 
     def test_empty_yield_from(self):
-        # Issue 16546: yield from value is not optional.
-        empty_yield_from = ast.parse("def f():\n yield from g()")
+        # Issue 16546: yield von value is not optional.
+        empty_yield_from = ast.parse("def f():\n yield von g()")
         empty_yield_from.body[0].body[0].value.value = Nichts
         with self.assertRaises(ValueError) as cm:
             compile(empty_yield_from, "<test>", "exec")
@@ -613,7 +613,7 @@ klasse AST_Tests(unittest.TestCase):
     def test_issue31592(self):
         # There shouldn't be an assertion failure in case of a bad
         # unicodedata.normalize().
-        import unicodedata
+        importiere unicodedata
         def bad_normalize(*args):
             return Nichts
         with support.swap_attr(unicodedata, 'normalize', bad_normalize):
@@ -959,7 +959,7 @@ klasse AST_Tests(unittest.TestCase):
 
     def test_precedence_enum(self):
         klasse _Precedence(enum.IntEnum):
-            """Precedence table that originated from python grammar."""
+            """Precedence table that originated von python grammar."""
             NAMED_EXPR = enum.auto()      # <target> := <expr1>
             TUPLE = enum.auto()           # <expr1>, <expr2>
             YIELD = enum.auto()           # 'yield', 'yield from'
@@ -1143,12 +1143,12 @@ klasse CopyTests(unittest.TestCase):
 
             yield cls
             fuer sub in cls.__subclasses__():
-                yield from do(sub)
+                yield von do(sub)
 
-        yield from do(ast.AST)
+        yield von do(ast.AST)
 
     def test_pickling(self):
-        import pickle
+        importiere pickle
 
         fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             fuer code in exec_tests:
@@ -1721,7 +1721,7 @@ Module(
         )
 
         check_text(
-            "import _ast as ast; from module import sub",
+            "import _ast as ast; von module importiere sub",
             empty="Module(body=[Import(names=[alias(name='_ast', asname='ast')]), ImportFrom(module='module', names=[alias(name='sub')], level=0)])",
             full="Module(body=[Import(names=[alias(name='_ast', asname='ast')]), ImportFrom(module='module', names=[alias(name='sub')], level=0)], type_ignores=[])",
         )
@@ -2803,7 +2803,7 @@ klasse EndPositionTests(unittest.TestCase):
         s = dedent('''
             x = """Some multi-line text.
 
-            It goes on starting from same indent."""
+            It goes on starting von same indent."""
         ''').strip()
         assign = ast.parse(s).body[0]
         self._check_end_pos(assign, 3, 40)
@@ -2886,7 +2886,7 @@ klasse EndPositionTests(unittest.TestCase):
 
     def test_import_from_multi_line(self):
         s = dedent('''
-            from x.y.z import (
+            von x.y.z importiere (
                 a, b, c as c
             )
         ''').strip()
@@ -3129,7 +3129,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
             def visit_Expr(self, node: ast.Expr):
                 self.generic_visit(node)
                 wenn isinstance(node.value, ast.Yield):
-                    return Nichts  # Remove `yield` from a function
+                    return Nichts  # Remove `yield` von a function
                 return node
 
         self.assertASTTransformation(YieldRemover, code, expected)
@@ -3298,7 +3298,7 @@ klasse ASTConstructorTests(unittest.TestCase):
 
         with self.assertWarnsRegex(
             DeprecationWarning,
-            r"Field 'b' is missing from MoreFieldsThanTypes\._field_types"
+            r"Field 'b' is missing von MoreFieldsThanTypes\._field_types"
         ):
             obj = MoreFieldsThanTypes()
         self.assertIs(obj.a, Nichts)
@@ -3343,10 +3343,10 @@ klasse ModuleStateTests(unittest.TestCase):
         # bpo-41194: Importing the _ast module twice must not crash.
         with support.swap_item(sys.modules, '_ast', Nichts):
             del sys.modules['_ast']
-            import _ast as ast1
+            importiere _ast as ast1
 
             del sys.modules['_ast']
-            import _ast as ast2
+            importiere _ast as ast2
 
             self.check_ast_module()
 
@@ -3370,23 +3370,23 @@ klasse ModuleStateTests(unittest.TestCase):
             del sys.modules['_ast']
 
             with support.swap_attr(builtins, '__import__', my_import):
-                # Test that compile() does not import the _ast module
+                # Test that compile() does not importiere the _ast module
                 self.check_ast_module()
                 self.assertNotIn('_ast', sys.modules)
 
                 # Sanity check of the test itself
-                import _ast
+                importiere _ast
                 self.assertIs(_ast, lazy_mod)
 
     def test_subinterpreter(self):
         # bpo-41631: Importing and using the _ast module in a subinterpreter
         # must not crash.
         code = dedent('''
-            import _ast
-            import ast
-            import gc
-            import sys
-            import types
+            importiere _ast
+            importiere ast
+            importiere gc
+            importiere sys
+            importiere types
 
             # Create _ast.AST subclasses instances and call PyAST_Check()
             ast_tree = compile('x+1', '<string>', 'eval',

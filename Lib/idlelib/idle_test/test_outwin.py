@@ -1,13 +1,13 @@
 "Test outwin, coverage 76%."
 
-from idlelib import outwin
-import sys
-import unittest
-from test.support import requires
-from tkinter import Tk, Text
-from idlelib.idle_test.mock_tk import Mbox_func
-from idlelib.idle_test.mock_idle import Func
-from unittest import mock
+von idlelib importiere outwin
+importiere sys
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Tk, Text
+von idlelib.idle_test.mock_tk importiere Mbox_func
+von idlelib.idle_test.mock_idle importiere Func
+von unittest importiere mock
 
 
 klasse OutputWindowTest(unittest.TestCase):

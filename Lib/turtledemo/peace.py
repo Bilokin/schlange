@@ -1,12 +1,12 @@
 """turtledemo/peace.py
 
 A simple drawing suitable as a beginner's
-programming example. Aside from the
+programming example. Aside von the
 peacecolors assignment and the fuer loop,
 it only uses turtle commands.
 """
 
-from turtle import *
+von turtle importiere *
 
 def main():
     peacecolors = ("red3",  "orange", "yellow",

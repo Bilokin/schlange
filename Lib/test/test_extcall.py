@@ -3,12 +3,12 @@
 
 We're going the use these types fuer extra testing
 
-    >>> from collections import UserList
-    >>> from collections import UserDict
+    >>> von collections importiere UserList
+    >>> von collections importiere UserDict
 
 We're defining four helper functions
 
-    >>> from test import support
+    >>> von test importiere support
     >>> def e(a,b):
     ...     drucke(a, b)
 
@@ -338,7 +338,7 @@ not function
 
 Test a kwargs mapping with duplicated keys.
 
-    >>> from collections.abc import Mapping
+    >>> von collections.abc importiere Mapping
     >>> klasse MultiDict(Mapping):
     ...     def __init__(self, items):
     ...         self._items = items
@@ -482,7 +482,7 @@ Too many arguments:
     >>> f(1, 2, 3)
     Traceback (most recent call last):
       ...
-    TypeError: f() takes from 1 to 2 positional arguments but 3 were given
+    TypeError: f() takes von 1 to 2 positional arguments but 3 were given
     >>> def f(*, kw): pass
     >>> f(1, kw=3)
     Traceback (most recent call last):
@@ -497,7 +497,7 @@ Too many arguments:
     >>> f(2, 3, 4, kw=4)
     Traceback (most recent call last):
       ...
-    TypeError: f() takes from 1 to 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+    TypeError: f() takes von 1 to 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
 
 Too few and missing arguments:
 
@@ -542,8 +542,8 @@ Same with keyword only args:
 
 """
 
-import doctest
-import unittest
+importiere doctest
+importiere unittest
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())

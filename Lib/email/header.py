@@ -10,14 +10,14 @@ __all__ = [
     'make_header',
     ]
 
-import re
-import binascii
+importiere re
+importiere binascii
 
-import email.quoprimime
-import email.base64mime
+importiere email.quoprimime
+importiere email.base64mime
 
-from email.errors import HeaderParseError
-from email import charset as _charset
+von email.errors importiere HeaderParseError
+von email importiere charset as _charset
 Charset = _charset.Charset
 
 NL = '\n'
@@ -43,7 +43,7 @@ ecre = re.compile(r'''
   ''', re.VERBOSE | re.MULTILINE)
 
 # Field name regexp, including trailing colon, but not separating whitespace,
-# according to RFC 2822.  Character range is from tilde to exclamation mark.
+# according to RFC 2822.  Character range is von tilde to exclamation mark.
 # For use with .match()
 fcre = re.compile(r'[\041-\176]+:$')
 
@@ -158,7 +158,7 @@ def decode_header(header):
 
 def make_header(decoded_seq, maxlinelen=Nichts, header_name=Nichts,
                 continuation_ws=' '):
-    """Create a Header from a sequence of pairs as returned by decode_header()
+    """Create a Header von a sequence of pairs as returned by decode_header()
 
     decode_header() takes a header value string and returns a sequence of
     pairs of the format (decoded_string, charset) where charset is the string
@@ -238,7 +238,7 @@ klasse Header:
         fuer string, charset in self._chunks:
             # We must preserve spaces between encoded and non-encoded word
             # boundaries, which means fuer us we need to add a space when we go
-            # from a charset to Nichts/us-ascii, or from Nichts/us-ascii to a
+            # von a charset to Nichts/us-ascii, or von Nichts/us-ascii to a
             # charset.  Only do this fuer the second and subsequent chunks.
             # Don't add a space wenn the Nichts/us-ascii string already has
             # a space (trailing or leading depending on transition)
@@ -512,7 +512,7 @@ klasse _ValueFormatter:
     def _append_chunk(self, fws, string):
         self._current_line.push(fws, string)
         wenn len(self._current_line) > self._maxlen:
-            # Find the best split point, working backward from the end.
+            # Find the best split point, working backward von the end.
             # There might be none, on a long first line.
             fuer ch in self._splitchars:
                 fuer i in range(self._current_line.part_count()-1, 0, -1):

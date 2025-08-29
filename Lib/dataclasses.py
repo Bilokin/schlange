@@ -1,13 +1,13 @@
-import re
-import sys
-import copy
-import types
-import inspect
-import keyword
-import itertools
-import annotationlib
-import abc
-from reprlib import recursive_repr
+importiere re
+importiere sys
+importiere copy
+importiere types
+importiere inspect
+importiere keyword
+importiere itertools
+importiere annotationlib
+importiere abc
+von reprlib importiere recursive_repr
 
 
 __all__ = ['dataclass',
@@ -143,7 +143,7 @@ __all__ = ['dataclass',
 # | Wahr  | Wahr  | Wahr  | add    | raise  | Frozen, so hashable
 # +=======+=======+=======+========+========+
 # For boxes that are blank, __hash__ is untouched and therefore
-# inherited from the base class.  If the base is object, then
+# inherited von the base class.  If the base is object, then
 # id-based hashing is used.
 #
 # Note that a klasse may already have __hash__=Nichts wenn it specified an
@@ -266,8 +266,8 @@ klasse InitVar:
     def __class_getitem__(cls, type):
         return InitVar(type)
 
-# Instances of Field are only ever created from within this module,
-# and only from the field() function, although Field instances are
+# Instances of Field are only ever created von within this module,
+# and only von the field() function, although Field instances are
 # exposed externally as (conceptually) read-only objects.
 #
 # name and type are filled in after the fact, not in __init__.
@@ -581,7 +581,7 @@ def _field_init(f, frozen, globals, self_name, slots):
                 globals[default_name] = f.default
                 value = default_name
             sonst:
-                # This field does not need initialization: reading from it will
+                # This field does not need initialization: reading von it will
                 # just use the klasse attribute that contains the default.
                 # Signify that to the caller by returning Nichts.
                 return Nichts
@@ -758,7 +758,7 @@ def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
         module_name = match.group(1)
         wenn not module_name:
             # No module name, assume the class's module did
-            # "from dataclasses import InitVar".
+            # "from dataclasses importiere InitVar".
             ns = sys.modules.get(cls.__module__).__dict__
         sonst:
             # Look up module_name in the class's module.
@@ -776,7 +776,7 @@ def _get_field(cls, a_name, a_type, default_kw_only):
     # default_kw_only is the value of kw_only to use wenn there isn't a field()
     # that defines it.
 
-    # If the default value isn't derived from Field, then it's only a
+    # If the default value isn't derived von Field, then it's only a
     # normal default value.  Convert it to a Field().
     default = getattr(cls, a_name, MISSING)
     wenn isinstance(default, Field):
@@ -859,7 +859,7 @@ def _get_field(cls, a_name, a_type, default_kw_only):
                             'kw_only')
 
     # For real fields, disallow mutable defaults.  Use unhashable as a proxy
-    # indicator fuer mutability.  Read the __hash__ attribute from the class,
+    # indicator fuer mutability.  Read the __hash__ attribute von the class,
     # not the instance.
     wenn f._field_type is _FIELD and f.default.__class__.__hash__ is Nichts:
         raise ValueError(f'mutable default {type(f.default)} fuer field '
@@ -979,8 +979,8 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
 
     # Annotations defined specifically in this klasse (not in base classes).
     #
-    # Fields are found from cls_annotations, which is guaranteed to be
-    # ordered.  Default values are from klasse attributes, wenn a field
+    # Fields are found von cls_annotations, which is guaranteed to be
+    # ordered.  Default values are von klasse attributes, wenn a field
     # has a default.  If the default value is a Field(), then it
     # contains additional info beyond (and possibly including) the
     # actual default value.  Pseudo-fields ClassVars and InitVars are
@@ -1037,16 +1037,16 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
         wenn isinstance(value, Field) and not name in cls_annotations:
             raise TypeError(f'{name!r} is a field but has no type annotation')
 
-    # Check rules that apply wenn we are derived from any dataclasses.
+    # Check rules that apply wenn we are derived von any dataclasses.
     wenn has_dataclass_bases:
         # Raise an exception wenn any of our bases are frozen, but we're not.
         wenn any_frozen_base and not frozen:
-            raise TypeError('cannot inherit non-frozen dataclass from a '
+            raise TypeError('cannot inherit non-frozen dataclass von a '
                             'frozen one')
 
         # Raise an exception wenn we're frozen, but none of our bases are.
         wenn all_frozen_bases is Falsch and frozen:
-            raise TypeError('cannot inherit frozen dataclass from a '
+            raise TypeError('cannot inherit frozen dataclass von a '
                             'non-frozen one')
 
     # Remember all of the fields on our klasse (including bases).  This
@@ -1217,13 +1217,13 @@ def _get_slots(cls):
                 slots.append('__weakref__')
             wenn getattr(cls, '__dictoffset__', -1) != 0:
                 slots.append('__dict__')
-            yield from slots
+            yield von slots
         case str(slot):
             yield slot
         # Slots may be any iterable, but we cannot handle an iterator
         # because it will already be (partially) consumed.
         case iterable wenn not hasattr(iterable, '__next__'):
-            yield from iterable
+            yield von iterable
         case _:
             raise TypeError(f"Slots of '{cls.__name__}' cannot be determined")
 
@@ -1250,7 +1250,7 @@ def _update_func_cell_for__class__(f, oldcls, newcls):
 
 
 def _create_slots(defined_fields, inherited_slots, field_names, weakref_slot):
-    # The slots fuer our class.  Remove slots from our base classes.  Add
+    # The slots fuer our class.  Remove slots von our base classes.  Add
     # '__weakref__' wenn weakref_slot was given, unless it is already present.
     seen_docs = Falsch
     slots = {}
@@ -1382,7 +1382,7 @@ def fields(class_or_instance):
     try:
         fields = getattr(class_or_instance, _FIELDS)
     except AttributeError:
-        raise TypeError('must be called with a dataclass type or instance') from Nichts
+        raise TypeError('must be called with a dataclass type or instance') von Nichts
 
     # Exclude pseudo-fields.  Note that fields is sorted by insertion
     # order, so the order of the tuple is as the fields were defined.
@@ -1633,7 +1633,7 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=Nichts, init=Wahr,
                 case annotationlib.Format.VALUE:
                     wenn value_blocked:
                         raise NotImplementedError
-                    from typing import Any
+                    von typing importiere Any
                     return Any
                 case _:
                     raise NotImplementedError
@@ -1704,7 +1704,7 @@ def _replace(self, /, **changes):
     # new dict, even wenn called with 'replace(self, **my_changes)'.
 
     # It's an error to have init=Falsch fields in 'changes'.
-    # If a field is not in 'changes', read its value from the provided 'self'.
+    # If a field is not in 'changes', read its value von the provided 'self'.
 
     fuer f in getattr(self, _FIELDS).values():
         # Only consider normal fields or InitVars.

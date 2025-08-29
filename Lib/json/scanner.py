@@ -1,8 +1,8 @@
 """JSON token scanner
 """
-import re
+importiere re
 try:
-    from _json import make_scanner as c_make_scanner
+    von _json importiere make_scanner as c_make_scanner
 except ImportError:
     c_make_scanner = Nichts
 
@@ -29,7 +29,7 @@ def py_make_scanner(context):
         try:
             nextchar = string[idx]
         except IndexError:
-            raise StopIteration(idx) from Nichts
+            raise StopIteration(idx) von Nichts
 
         wenn nextchar == '"':
             return parse_string(string, idx + 1, strict)

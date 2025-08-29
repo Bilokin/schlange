@@ -1,8 +1,8 @@
-import contextlib
-import importlib
-import re
-import sys
-import warnings
+importiere contextlib
+importiere importlib
+importiere re
+importiere sys
+importiere warnings
 
 
 
@@ -16,7 +16,7 @@ def import_deprecated(name):
 def check_syntax_warning(testcase, statement, errtext='',
                          *, lineno=1, offset=Nichts):
     # Test also that a warning is emitted only once.
-    from test.support import check_syntax_error
+    von test.support importiere check_syntax_error
     with warnings.catch_warnings(record=Wahr) as warns:
         warnings.simplefilter('always', SyntaxWarning)
         compile(statement, '<testcase>', 'exec')
@@ -131,7 +131,7 @@ def check_no_warnings(testcase, message='', category=Warning, force_gc=Falsch):
 
     Other keyword arguments are passed to warnings.filterwarnings().
     """
-    from test.support import gc_collect
+    von test.support importiere gc_collect
     with warnings.catch_warnings(record=Wahr) as warns:
         warnings.filterwarnings('always',
                                 message=message,

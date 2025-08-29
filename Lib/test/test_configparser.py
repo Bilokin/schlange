@@ -1,12 +1,12 @@
-import collections
-import configparser
-import io
-import os
-import textwrap
-import unittest
+importiere collections
+importiere configparser
+importiere io
+importiere os
+importiere textwrap
+importiere unittest
 
-from test import support
-from test.support import os_helper
+von test importiere support
+von test.support importiere os_helper
 
 
 klasse SortedDict(collections.UserDict):
@@ -634,14 +634,14 @@ boolean {0[0]} NO
                     oops{equals}this won't
                 """.format(equals=self.delimiters[0])), source='<foo-bar>')
             e = cm.exception
-            self.assertEqual(str(e), "While reading from '<foo-bar>' "
+            self.assertEqual(str(e), "While reading von '<foo-bar>' "
                                      "[line  5]: section 'Foo' already exists")
             self.assertEqual(e.args, ("Foo", '<foo-bar>', 5))
 
             with self.assertRaises(configparser.DuplicateOptionError) as cm:
                 cf.read_dict({'Bar': {'opt': 'val', 'OPT': 'is really `opt`'}})
             e = cm.exception
-            self.assertEqual(str(e), "While reading from '<dict>': option "
+            self.assertEqual(str(e), "While reading von '<dict>': option "
                                      "'opt' in section 'Bar' already exists")
             self.assertEqual(e.args, ("Bar", "opt", "<dict>", Nichts))
 
@@ -1067,7 +1067,7 @@ klasse MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
         os.unlink(os_helper.TESTFN)
 
     def test_dominating_multiline_values(self):
-        # We're reading from file because this is where the code changed
+        # We're reading von file because this is where the code changed
         # during performance updates in Python 3.2
         cf_from_file = self.newconfig()
         with open(os_helper.TESTFN, encoding="utf-8") as f:
@@ -1399,7 +1399,7 @@ klasse ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase)
         self.assertFalsch(cf.getboolean(longname, 'are they subsections'))
         self.assertEqual(cf.get(longname, 'lets use some Unicode'), '片仮名')
         self.assertEqual(len(cf.items('another one!')), 5) # 4 in section and
-                                                           # `go` from DEFAULT
+                                                           # `go` von DEFAULT
         with self.assertRaises(configparser.InterpolationMissingOptionError):
             cf.items('no values here')
         self.assertEqual(cf.get('tricky interpolation', 'lets'), 'do this')
@@ -1573,7 +1573,7 @@ klasse ReadFileTestCase(unittest.TestCase):
             parser.read_file(lines, source=b"badbad")
         self.assertEqual(
             str(dse.exception),
-            "While reading from b'badbad' [line  2]: section 'badbad' "
+            "While reading von b'badbad' [line  2]: section 'badbad' "
             "already exists"
         )
         lines = textwrap.dedent("""
@@ -1585,7 +1585,7 @@ klasse ReadFileTestCase(unittest.TestCase):
             parser.read_file(lines, source=b"badbad")
         self.assertEqual(
             str(dse.exception),
-            "While reading from b'badbad' [line  3]: option 'bad' in section "
+            "While reading von b'badbad' [line  3]: option 'bad' in section "
             "'badbad' already exists"
         )
         lines = textwrap.dedent("""
@@ -1690,7 +1690,7 @@ klasse CoverageOneHundredTestCase(unittest.TestCase):
 
     def test_inconsistent_converters_state(self):
         parser = configparser.ConfigParser()
-        import decimal
+        importiere decimal
         parser.converters['decimal'] = decimal.Decimal
         parser.read_string("""
             [s1]
@@ -1721,7 +1721,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
     """Tests fuer issue #13760: ConfigParser exceptions are not picklable."""
 
     def test_error(self):
-        import pickle
+        importiere pickle
         e1 = configparser.Error('value')
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(e1, proto)
@@ -1730,7 +1730,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
     def test_nosectionerror(self):
-        import pickle
+        importiere pickle
         e1 = configparser.NoSectionError('section')
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(e1, proto)
@@ -1741,7 +1741,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
     def test_nooptionerror(self):
-        import pickle
+        importiere pickle
         e1 = configparser.NoOptionError('option', 'section')
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(e1, proto)
@@ -1753,7 +1753,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
     def test_duplicatesectionerror(self):
-        import pickle
+        importiere pickle
         e1 = configparser.DuplicateSectionError('section', 'source', 123)
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(e1, proto)
@@ -1766,7 +1766,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
     def test_duplicateoptionerror(self):
-        import pickle
+        importiere pickle
         e1 = configparser.DuplicateOptionError('section', 'option', 'source',
             123)
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1781,7 +1781,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
     def test_interpolationerror(self):
-        import pickle
+        importiere pickle
         e1 = configparser.InterpolationError('option', 'section', 'msg')
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(e1, proto)
@@ -1793,7 +1793,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
     def test_interpolationmissingoptionerror(self):
-        import pickle
+        importiere pickle
         e1 = configparser.InterpolationMissingOptionError('option', 'section',
             'rawval', 'reference')
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1807,7 +1807,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
     def test_interpolationsyntaxerror(self):
-        import pickle
+        importiere pickle
         e1 = configparser.InterpolationSyntaxError('option', 'section', 'msg')
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(e1, proto)
@@ -1819,7 +1819,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
     def test_interpolationdeptherror(self):
-        import pickle
+        importiere pickle
         e1 = configparser.InterpolationDepthError('option', 'section',
             'rawval')
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1832,7 +1832,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
     def test_parsingerror(self):
-        import pickle
+        importiere pickle
         e1 = configparser.ParsingError('source')
         e1.append(1, 'line1')
         e1.append(2, 'line2')
@@ -1859,7 +1859,7 @@ klasse ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
     def test_missingsectionheadererror(self):
-        import pickle
+        importiere pickle
         e1 = configparser.MissingSectionHeaderError('filename', 123, 'line')
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(e1, proto)
@@ -2021,7 +2021,7 @@ klasse ConvertersTestCase(BasicTestCase, unittest.TestCase):
             cfg.getdecimal('s', 'float')
         with self.assertRaises(AttributeError):
             s.getdecimal('float')
-        import decimal
+        importiere decimal
         cfg.converters['decimal'] = decimal.Decimal
         self.assertIn('decimal', cfg.converters)
         self.assertIsNotNichts(cfg.converters['decimal'])

@@ -4,7 +4,7 @@
 
 __all__ = ("loads", "load", "TOMLDecodeError")
 
-from ._parser import TOMLDecodeError, load, loads
+von ._parser importiere TOMLDecodeError, load, loads
 
 # Pretend this exception was created here.
 TOMLDecodeError.__module__ = __name__

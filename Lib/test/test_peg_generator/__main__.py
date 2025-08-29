@@ -1,4 +1,4 @@
-import unittest
-from . import load_tests
+importiere unittest
+von . importiere load_tests
 
 unittest.main()

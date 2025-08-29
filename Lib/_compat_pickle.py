@@ -52,7 +52,7 @@ IMPORT_MAPPING = {
 
 # This contains rename rules that are easy to handle.  We ignore the more
 # complex stuff (e.g. mapping the names in the urllib and types modules).
-# These rules should be run before import names are fixed.
+# These rules should be run before importiere names are fixed.
 NAME_MAPPING = {
     ('__builtin__', 'xrange'):     ('builtins', 'range'),
     ('__builtin__', 'reduce'):     ('functools', 'reduce'),

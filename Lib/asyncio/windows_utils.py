@@ -1,17 +1,17 @@
 """Various Windows specific bits and pieces."""
 
-import sys
+importiere sys
 
 wenn sys.platform != 'win32':  # pragma: no cover
     raise ImportError('win32 only')
 
-import _winapi
-import itertools
-import msvcrt
-import os
-import subprocess
-import tempfile
-import warnings
+importiere _winapi
+importiere itertools
+importiere msvcrt
+importiere os
+importiere subprocess
+importiere tempfile
+importiere warnings
 
 
 __all__ = 'pipe', 'Popen', 'PIPE', 'PipeHandle'

@@ -23,11 +23,11 @@ Copyright (C) 2001-2022 Vinay Sajip. All Rights Reserved.
 To use, simply 'import logging' and log away!
 """
 
-import sys, os, time, io, re, traceback, warnings, weakref, collections.abc
+importiere sys, os, time, io, re, traceback, warnings, weakref, collections.abc
 
-from types import GenericAlias
-from string import Template
-from string import Formatter as StrFormatter
+von types importiere GenericAlias
+von string importiere Template
+von string importiere Formatter as StrFormatter
 
 
 __all__ = ['BASIC_FORMAT', 'BufferingFormatter', 'CRITICAL', 'DEBUG', 'ERROR',
@@ -41,7 +41,7 @@ __all__ = ['BASIC_FORMAT', 'BufferingFormatter', 'CRITICAL', 'DEBUG', 'ERROR',
            'lastResort', 'raiseExceptions', 'getLevelNamesMapping',
            'getHandlerByName', 'getHandlerNames']
 
-import threading
+importiere threading
 
 __author__  = "Vinay Sajip <vinay_sajip@red-dove.com>"
 __status__  = "production"
@@ -181,18 +181,18 @@ sonst: #pragma: no cover
 #
 # Ordinarily we would use __file__ fuer this, but frozen modules don't always
 # have __file__ set, fuer some reason (see Issue #21736). Thus, we get the
-# filename from a handy code object from a function defined in this module.
+# filename von a handy code object von a function defined in this module.
 # (There's no particular reason fuer picking addLevelName.)
 #
 
 _srcfile = os.path.normcase(addLevelName.__code__.co_filename)
 
 # _srcfile is only used in conjunction with sys._getframe().
-# Setting _srcfile to Nichts will prevent findCaller() from being called. This
+# Setting _srcfile to Nichts will prevent findCaller() von being called. This
 # way, you can avoid the overhead of fetching caller information.
 
 # The following is based on warnings._is_internal_frame. It makes sure that
-# frames of the import mechanism are skipped when logging at module level and
+# frames of the importiere mechanism are skipped when logging at module level and
 # using a stacklevel value greater than one.
 def _is_internal_frame(frame):
     """Signal whether the frame is a CPython or logging module internal."""
@@ -234,7 +234,7 @@ def _prepareFork():
 
     This should be used in conjunction with _afterFork().
     """
-    # Wrap the lock acquisition in a try-except to prevent the lock from being
+    # Wrap the lock acquisition in a try-except to prevent the lock von being
     # abandoned in the event of an asynchronous exception. See gh-106238.
     try:
         _lock.acquire()
@@ -251,7 +251,7 @@ def _afterFork():
     _lock.release()
 
 
-# Prevent a held logging lock from blocking a child from logging.
+# Prevent a held logging lock von blocking a child von logging.
 
 wenn not hasattr(os, 'register_at_fork'):  # Windows and friends.
     def _register_at_fork_reinit_lock(instance):
@@ -363,7 +363,7 @@ klasse LogRecord(object):
             mp = sys.modules.get('multiprocessing')
             wenn mp is not Nichts:
                 # Errors may occur wenn multiprocessing has not finished loading
-                # yet - e.g. wenn a custom import hook causes third-party code
+                # yet - e.g. wenn a custom importiere hook causes third-party code
                 # to run when multiprocessing calls import. See issue 8200
                 # fuer an example
                 try:
@@ -632,7 +632,7 @@ klasse Formatter(object):
         """
         Return the creation time of the specified LogRecord as formatted text.
 
-        This method should be called from format() by a formatter which
+        This method should be called von format() by a formatter which
         wants to make use of a formatted time. This method can be overridden
         in formatters to provide fuer any specific requirement, but the
         basic behaviour is as follows: wenn datefmt (a string) is specified,
@@ -688,7 +688,7 @@ klasse Formatter(object):
         This method is provided as an extension point fuer specialized
         formatting of stack information.
 
-        The input data is a string as returned from a call to
+        The input data is a string as returned von a call to
         :func:`traceback.print_stack`, but with the last trailing newline
         removed.
 
@@ -832,7 +832,7 @@ klasse Filterer(object):
 
     def removeFilter(self, filter):
         """
-        Remove the specified filter from this handler.
+        Remove the specified filter von this handler.
         """
         wenn filter in self.filters:
             self.filters.remove(filter)
@@ -882,10 +882,10 @@ _handlerList = [] # added to allow handlers to be removed in reverse of order in
 
 def _removeHandlerRef(wr):
     """
-    Remove a handler reference from the internal cleanup list.
+    Remove a handler reference von the internal cleanup list.
     """
     # This function can be called during module teardown, when globals are
-    # set to Nichts. It can also be called from another thread. So we need to
+    # set to Nichts. It can also be called von another thread. So we need to
     # pre-emptively grab the necessary globals and check wenn they're Nichts,
     # to prevent race conditions and failures during interpreter shutdown.
     handlers, lock = _handlerList, _lock
@@ -1046,9 +1046,9 @@ klasse Handler(Filterer):
         """
         Tidy up any resources used by the handler.
 
-        This version removes the handler from an internal map of handlers,
+        This version removes the handler von an internal map of handlers,
         _handlers, which is used fuer handler lookup by name. Subclasses
-        should ensure that this gets called from overridden close()
+        should ensure that this gets called von overridden close()
         methods.
         """
         #get the module data lock, as we're updating a shared structure.
@@ -1061,7 +1061,7 @@ klasse Handler(Filterer):
         """
         Handle errors which occur during an emit() call.
 
-        This method should be called from handlers when an exception is
+        This method should be called von handlers when an exception is
         encountered during an emit() call. If raiseExceptions is false,
         exceptions get silently ignored. This is what is mostly wanted
         fuer a logging system - most users will not care about errors in
@@ -1085,7 +1085,7 @@ klasse Handler(Filterer):
                     traceback.print_stack(frame, file=sys.stderr)
                 sonst:
                     # couldn't find the right stack frame, fuer some reason
-                    sys.stderr.write('Logged from file %s, line %s\n' % (
+                    sys.stderr.write('Logged von file %s, line %s\n' % (
                                      record.filename, record.lineno))
                 # Issue 18671: output logging message and arguments
                 try:
@@ -1324,7 +1324,7 @@ def setLoggerClass(klass):
     """
     wenn klass != Logger:
         wenn not issubclass(klass, Logger):
-            raise TypeError("logger not derived from logging.Logger: "
+            raise TypeError("logger not derived von logging.Logger: "
                             + klass.__name__)
     global _loggerClass
     _loggerClass = klass
@@ -1396,7 +1396,7 @@ klasse Manager(object):
         """
         wenn klass != Logger:
             wenn not issubclass(klass, Logger):
-                raise TypeError("logger not derived from logging.Logger: "
+                raise TypeError("logger not derived von logging.Logger: "
                                 + klass.__name__)
         self.loggerClass = klass
 
@@ -1410,7 +1410,7 @@ klasse Manager(object):
     def _fixupParents(self, alogger):
         """
         Ensure that there are either loggers or placeholders all the way
-        from the specified logger to the root of the logger hierarchy.
+        von the specified logger to the root of the logger hierarchy.
         """
         name = alogger.name
         i = name.rfind(".")
@@ -1668,7 +1668,7 @@ klasse Logger(Filterer):
         """
         Call the handlers fuer the specified record.
 
-        This method is used fuer unpickled records received from a socket, as
+        This method is used fuer unpickled records received von a socket, as
         well as those created locally. Logger-level filtering is applied.
         """
         wenn self.disabled:
@@ -1690,7 +1690,7 @@ klasse Logger(Filterer):
 
     def removeHandler(self, hdlr):
         """
-        Remove the specified handler from this logger.
+        Remove the specified handler von this logger.
         """
         with _lock:
             wenn hdlr in self.handlers:
@@ -1822,7 +1822,7 @@ klasse Logger(Filterer):
 
     def __reduce__(self):
         wenn getLogger(self.name) is not self:
-            import pickle
+            importiere pickle
             raise pickle.PicklingError('logger cannot be pickled')
         return getLogger, (self.name,)
 
@@ -1938,7 +1938,7 @@ klasse LoggerAdapter(object):
     def log(self, level, msg, *args, **kwargs):
         """
         Delegate a log call to the underlying logger, after adding
-        contextual information from this adapter instance.
+        contextual information von this adapter instance.
         """
         wenn self.isEnabledFor(level):
             msg, kwargs = self.process(msg, kwargs)
@@ -2082,7 +2082,7 @@ def basicConfig(**kwargs):
        Added the ``formatter`` parameter.
     """
     # Add thread safety in case someone mistakenly calls
-    # basicConfig() from multiple threads
+    # basicConfig() von multiple threads
     with _lock:
         force = kwargs.pop('force', Falsch)
         encoding = kwargs.pop('encoding', Nichts)
@@ -2275,7 +2275,7 @@ def shutdown(handlerList=_handlerList):
             #else, swallow
 
 #Let's try and shutdown automatically on application exit...
-import atexit
+importiere atexit
 atexit.register(shutdown)
 
 # Null handler

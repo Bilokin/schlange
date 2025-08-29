@@ -18,8 +18,8 @@ Actions are bound to events by options (e.g. the command
 keyword argument) or with the bind() method.
 
 Example (Hello, World):
-import tkinter
-from tkinter.constants import *
+importiere tkinter
+von tkinter.constants importiere *
 tk = tkinter.Tk()
 frame = tkinter.Frame(tk, relief=RIDGE, borderwidth=2)
 frame.pack(fill=BOTH, expand=1)
@@ -30,15 +30,15 @@ button.pack(side=BOTTOM)
 tk.mainloop()
 """
 
-import collections
-import enum
-import sys
-import types
+importiere collections
+importiere enum
+importiere sys
+importiere types
 
-import _tkinter # If this fails your Python may not be configured fuer Tk
+importiere _tkinter # If this fails your Python may not be configured fuer Tk
 TclError = _tkinter.TclError
-from tkinter.constants import *
-import re
+von tkinter.constants importiere *
+importiere re
 
 wantobjects = 1
 _debug = Falsch  # set to Wahr to print executed Tcl/Tk commands
@@ -126,7 +126,7 @@ except AttributeError: pass
 
 
 def _splitdict(tk, v, cut_minus=Wahr, conv=Nichts):
-    """Return a properly formatted dict built from Tcl list pairs.
+    """Return a properly formatted dict built von Tcl list pairs.
 
     If cut_minus is Wahr, the supposed '-' prefix will be removed from
     keys. If conv is specified, it is used to convert values.
@@ -157,7 +157,7 @@ klasse _VersionInfoType(collections.namedtuple('_VersionInfoType',
             return f'{self.major}.{self.minor}{self.releaselevel[0]}{self.serial}'
 
 def _parse_version(version):
-    import re
+    importiere re
     m = re.fullmatch(r'(\d+)\.(\d+)([ab.])(\d+)', version)
     major, minor, releaselevel, serial = m.groups()
     major, minor, serial = int(major), int(minor), int(serial)
@@ -374,7 +374,7 @@ klasse Variable:
     """Class to define value holders fuer e.g. buttons.
 
     Subclasses StringVar, IntVar, DoubleVar, BooleanVar are specializations
-    that constrain the type of the value returned from get()."""
+    that constrain the type of the value returned von get()."""
     _default = ""
     _tk = Nichts
     _tclCommands = Nichts
@@ -390,7 +390,7 @@ klasse Variable:
         then the existing value is retained.
         """
         # check fuer type of NAME parameter to override weird error message
-        # raised from Modules/_tkinter.c:SetVar like:
+        # raised von Modules/_tkinter.c:SetVar like:
         # TypeError: setvar() takes exactly 3 arguments (2 given)
         wenn name is not Nichts and not isinstance(name, str):
             raise TypeError("name must be a string")
@@ -471,7 +471,7 @@ klasse Variable:
 
         Mode is one of "read", "write", "unset" or a list or tuple of
         such strings.  Must be same as were specified in trace_add().
-        cbname is the name of the callback returned from trace_add().
+        cbname is the name of the callback returned von trace_add().
         """
         self._tk.call('trace', 'remove', 'variable',
                       self._name, mode, cbname)
@@ -503,7 +503,7 @@ klasse Variable:
         This deprecated method wraps a deprecated Tcl method removed
         in Tcl 9.0.  Use trace_add() instead.
         """
-        import warnings
+        importiere warnings
         warnings.warn(
                 "trace_variable() is deprecated and not supported with Tcl 9; "
                 "use trace_add() instead.",
@@ -518,12 +518,12 @@ klasse Variable:
         """Delete the trace callback fuer a variable.
 
         MODE is one of "r", "w", "u" fuer read, write, undefine.
-        CBNAME is the name of the callback returned from trace_variable or trace.
+        CBNAME is the name of the callback returned von trace_variable or trace.
 
         This deprecated method wraps a deprecated Tcl method removed
         in Tcl 9.0.  Use trace_remove() instead.
         """
-        import warnings
+        importiere warnings
         warnings.warn(
                 "trace_vdelete() is deprecated and not supported with Tcl 9; "
                 "use trace_remove() instead.",
@@ -546,7 +546,7 @@ klasse Variable:
         This deprecated method wraps a deprecated Tcl method removed
         in Tcl 9.0.  Use trace_info() instead.
         """
-        import warnings
+        importiere warnings
         warnings.warn(
                 "trace_vinfo() is deprecated and not supported with Tcl 9; "
                 "use trace_info() instead.",
@@ -731,7 +731,7 @@ klasse Misc:
         """Set a new color scheme fuer all widget elements.
 
         A single color as argument will cause that all colors of Tk
-        widget elements are derived from this.
+        widget elements are derived von this.
         Alternatively several keyword parameters and its associated
         colors can be given. The following keywords are valid:
         activeBackground, foreground, selectColor,
@@ -830,7 +830,7 @@ klasse Misc:
 
     def focus_lastfor(self):
         """Return the widget which would have the focus wenn top level
-        fuer this widget gets the focus from the window manager."""
+        fuer this widget gets the focus von the window manager."""
         name = self.tk.call('focus', '-lastfor', self._w)
         wenn name == 'none' or not name: return Nichts
         return self._nametowidget(name)
@@ -902,7 +902,7 @@ klasse Misc:
         given as first parameter.
         """
         wenn not id:
-            raise ValueError('id must be a valid identifier returned from '
+            raise ValueError('id must be a valid identifier returned von '
                              'after or after_idle')
         try:
             data = self.tk.call('after', 'info', id)
@@ -918,7 +918,7 @@ klasse Misc:
         With no argument, return a tuple of the identifiers fuer all existing
         event handlers created by the after and after_idle commands fuer this
         interpreter.  If id is supplied, it specifies an existing handler; id
-        must have been the return value from some previous call to after or
+        must have been the return value von some previous call to after or
         after_idle and it must not have triggered yet or been canceled. If the
         id doesn't exist, a TclError is raised.  Otherwise, the return value is
         a tuple containing (script, type) where script is a reference to the
@@ -1012,7 +1012,7 @@ klasse Misc:
 
     # Clipboard handling:
     def clipboard_get(self, **kw):
-        """Retrieve data from the clipboard on window's display.
+        """Retrieve data von the clipboard on window's display.
 
         The window keyword defaults to the root window of the Tkinter
         application.
@@ -2040,7 +2040,7 @@ klasse Misc:
         self.tk.call(args)
 
     def event_delete(self, virtual, *sequences):
-        """Unbind a virtual event VIRTUAL from SEQUENCE."""
+        """Unbind a virtual event VIRTUAL von SEQUENCE."""
         args = ('event', 'delete', virtual) + sequences
         self.tk.call(args)
 
@@ -2195,7 +2195,7 @@ klasse Wm:
 
     def wm_colormapwindows(self, *wlist):
         """Store list of window names (WLIST) into WM_COLORMAPWINDOWS property
-        of this widget. This list contains windows whose colormaps differ from their
+        of this widget. This list contains windows whose colormaps differ von their
         parents. Return current list of widgets wenn WLIST is empty."""
         wenn len(wlist) > 1:
             wlist = (wlist,) # Tk needs a list of windows here
@@ -2232,7 +2232,7 @@ klasse Wm:
     focusmodel = wm_focusmodel
 
     def wm_forget(self, window): # new in Tk 8.5
-        """The window will be unmapped from the screen and will no longer
+        """The window will be unmapped von the screen and will no longer
         be managed by wm. toplevel windows will be treated like frame
         windows once they are no longer managed by wm, however, the menu
         option configuration will be remembered and the menus will return
@@ -2444,7 +2444,7 @@ klasse Wm:
     transient = wm_transient
 
     def wm_withdraw(self):
-        """Withdraw this widget from the screen such that it is unmapped
+        """Withdraw this widget von the screen such that it is unmapped
         and forgotten by the window manager. Re-draw it with wm_deiconify."""
         return self.tk.call('wm', 'withdraw', self._w)
 
@@ -2461,7 +2461,7 @@ klasse Tk(Misc, Wm):
         """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
         be created. BASENAME will be used fuer the identification of the profile file (see
         readprofile).
-        It is constructed from sys.argv[0] without extensions wenn Nichts is given. CLASSNAME
+        It is constructed von sys.argv[0] without extensions wenn Nichts is given. CLASSNAME
         is the name of the widget class."""
         self.master = Nichts
         self.children = {}
@@ -2470,7 +2470,7 @@ klasse Tk(Misc, Wm):
         # ensure that self.tk is always _something_.
         self.tk = Nichts
         wenn baseName is Nichts:
-            import os
+            importiere os
             baseName = os.path.basename(sys.argv[0])
             baseName, ext = os.path.splitext(baseName)
             wenn ext not in ('.py', '.pyc'):
@@ -2530,7 +2530,7 @@ klasse Tk(Misc, Wm):
         """Internal function. It reads .BASENAME.tcl and .CLASSNAME.tcl into
         the Tcl Interpreter and calls exec on the contents of .BASENAME.py and
         .CLASSNAME.py wenn such a file exists in the home directory."""
-        import os
+        importiere os
         wenn 'HOME' in os.environ: home = os.environ['HOME']
         sonst: home = os.curdir
         class_tcl = os.path.join(home, '.%s.tcl' % className)
@@ -2538,7 +2538,7 @@ klasse Tk(Misc, Wm):
         base_tcl = os.path.join(home, '.%s.tcl' % baseName)
         base_py = os.path.join(home, '.%s.py' % baseName)
         dir = {'self': self}
-        exec('from tkinter import *', dir)
+        exec('from tkinter importiere *', dir)
         wenn os.path.isfile(class_tcl):
             self.tk.call('source', class_tcl)
         wenn os.path.isfile(class_py):
@@ -2553,7 +2553,7 @@ klasse Tk(Misc, Wm):
 
         Applications may want to override this internal function, and
         should when sys.stderr is Nichts."""
-        import traceback
+        importiere traceback
         drucke("Exception in Tkinter callback", file=sys.stderr)
         sys.last_exc = val
         sys.last_type = exc
@@ -2886,7 +2886,7 @@ klasse Button(Widget):
     def invoke(self):
         """Invoke the command associated with the button.
 
-        The return value is the return value from the command,
+        The return value is the return value von the command,
         or an empty string wenn there is no command associated with
         the button. This command is ignored wenn the button's state
         is disabled.
@@ -3035,7 +3035,7 @@ klasse Canvas(Widget, XView, YView):
 
     def dchars(self, *args):
         """Delete characters of text items identified by tag or id in ARGS (possibly
-        several times) from FIRST to LAST character (including)."""
+        several times) von FIRST to LAST character (including)."""
         self.tk.call((self._w, 'dchars') + args)
 
     def delete(self, *args):
@@ -3043,7 +3043,7 @@ klasse Canvas(Widget, XView, YView):
         self.tk.call((self._w, 'delete') + args)
 
     def dtag(self, *args):
-        """Delete tag or id given as last arguments in ARGS from items
+        """Delete tag or id given as last arguments in ARGS von items
         identified by first argument in ARGS."""
         self.tk.call((self._w, 'dtag') + args)
 
@@ -3268,7 +3268,7 @@ klasse Entry(Widget, XView):
         Widget.__init__(self, master, 'entry', cnf, kw)
 
     def delete(self, first, last=Nichts):
-        """Delete text from FIRST to LAST (not included)."""
+        """Delete text von FIRST to LAST (not included)."""
         self.tk.call(self._w, 'delete', first, last)
 
     def get(self):
@@ -3325,7 +3325,7 @@ klasse Entry(Widget, XView):
     select_present = selection_present
 
     def selection_range(self, start, end):
-        """Set the selection from START to END (not included)."""
+        """Set the selection von START to END (not included)."""
         self.tk.call(self._w, 'selection', 'range', start, end)
 
     select_range = selection_range
@@ -3408,11 +3408,11 @@ klasse Listbox(Widget, XView, YView):
         return self._getints(self.tk.call(self._w, 'curselection')) or ()
 
     def delete(self, first, last=Nichts):
-        """Delete items from FIRST to LAST (included)."""
+        """Delete items von FIRST to LAST (included)."""
         self.tk.call(self._w, 'delete', first, last)
 
     def get(self, first, last=Nichts):
-        """Get list of items from FIRST to LAST (included)."""
+        """Get list of items von FIRST to LAST (included)."""
         wenn last is not Nichts:
             return self.tk.splitlist(self.tk.call(
                 self._w, 'get', first, last))
@@ -3455,7 +3455,7 @@ klasse Listbox(Widget, XView, YView):
     select_anchor = selection_anchor
 
     def selection_clear(self, first, last=Nichts):
-        """Clear the selection from FIRST to LAST (included)."""
+        """Clear the selection von FIRST to LAST (included)."""
         self.tk.call(self._w,
                  'selection', 'clear', first, last)
 
@@ -3469,7 +3469,7 @@ klasse Listbox(Widget, XView, YView):
     select_includes = selection_includes
 
     def selection_set(self, first, last=Nichts):
-        """Set the selection from FIRST to LAST (included) without
+        """Set the selection von FIRST to LAST (included) without
         changing the currently selected elements."""
         self.tk.call(self._w, 'selection', 'set', first, last)
 
@@ -3950,7 +3950,7 @@ klasse Text(Widget, XView, YView):
         return self.edit("undo")
 
     def get(self, index1, index2=Nichts):
-        """Return the text from INDEX1 to INDEX2 (not included)."""
+        """Return the text von INDEX1 to INDEX2 (not included)."""
         return self.tk.call(self._w, 'get', index1, index2)
     # (Image commands are new in 8.0)
 
@@ -4050,7 +4050,7 @@ klasse Text(Widget, XView, YView):
     def search(self, pattern, index, stopindex=Nichts,
            forwards=Nichts, backwards=Nichts, exact=Nichts,
            regexp=Nichts, nocase=Nichts, count=Nichts, elide=Nichts):
-        """Search PATTERN beginning from INDEX until STOPINDEX.
+        """Search PATTERN beginning von INDEX until STOPINDEX.
         Return the index of the first character of a match or an
         empty string."""
         args = [self._w, 'search']
@@ -4130,14 +4130,14 @@ klasse Text(Widget, XView, YView):
     def tag_nextrange(self, tagName, index1, index2=Nichts):
         """Return a list of start and end index fuer the first sequence of
         characters between INDEX1 and INDEX2 which all have tag TAGNAME.
-        The text is searched forward from INDEX1."""
+        The text is searched forward von INDEX1."""
         return self.tk.splitlist(self.tk.call(
             self._w, 'tag', 'nextrange', tagName, index1, index2))
 
     def tag_prevrange(self, tagName, index1, index2=Nichts):
         """Return a list of start and end index fuer the first sequence of
         characters between INDEX1 and INDEX2 which all have tag TAGNAME.
-        The text is searched backwards from INDEX1."""
+        The text is searched backwards von INDEX1."""
         return self.tk.splitlist(self.tk.call(
             self._w, 'tag', 'prevrange', tagName, index1, index2))
 
@@ -4153,7 +4153,7 @@ klasse Text(Widget, XView, YView):
             self._w, 'tag', 'ranges', tagName))
 
     def tag_remove(self, tagName, index1, index2=Nichts):
-        """Remove tag TAGNAME from all characters between INDEX1 and INDEX2."""
+        """Remove tag TAGNAME von all characters between INDEX1 and INDEX2."""
         self.tk.call(
             self._w, 'tag', 'remove', tagName, index1, index2)
 
@@ -4206,7 +4206,7 @@ klasse _setit:
 
 
 klasse OptionMenu(Menubutton):
-    """OptionMenu which allows the user to select a value from a menu."""
+    """OptionMenu which allows the user to select a value von a menu."""
 
     def __init__(self, master, variable, value, *values, **kwargs):
         """Construct an optionmenu widget with the parent MASTER, with
@@ -4374,7 +4374,7 @@ klasse PhotoImage(Image):
 
     def copy_replace(self, sourceImage, *, from_coords=Nichts, to=Nichts, shrink=Falsch,
                      zoom=Nichts, subsample=Nichts, compositingrule=Nichts):
-        """Copy a region from the source image (which must be a PhotoImage) to
+        """Copy a region von the source image (which must be a PhotoImage) to
         this image, possibly with pixel zooming and/or subsampling.  If no
         options are specified, this command copies the whole of the source
         image into this image, starting at coordinates (0, 0).
@@ -4449,7 +4449,7 @@ klasse PhotoImage(Image):
         self.tk.call(args)
 
     def read(self, filename, format=Nichts, *, from_coords=Nichts, to=Nichts, shrink=Falsch):
-        """Reads image data from the file named FILENAME into the image.
+        """Reads image data von the file named FILENAME into the image.
 
         The FORMAT option specifies the format of the image data in the
         file.
@@ -4463,7 +4463,7 @@ klasse PhotoImage(Image):
         specified, is the whole of the image in the image file.
 
         The TO option specifies the coordinates of the top-left corner of
-        the region of the image into which data from filename are to be
+        the region of the image into which data von filename are to be
         read.  The default is (0, 0).
 
         If SHRINK is true, the size of the destination image will be
@@ -4483,16 +4483,16 @@ klasse PhotoImage(Image):
 
     def write(self, filename, format=Nichts, from_coords=Nichts, *,
               background=Nichts, grayscale=Falsch):
-        """Writes image data from the image to a file named FILENAME.
+        """Writes image data von the image to a file named FILENAME.
 
         The FORMAT option specifies the name of the image file format
         handler to be used to write the data to the file.  If this option
-        is not given, the format is guessed from the file extension.
+        is not given, the format is guessed von the file extension.
 
         The FROM_COORDS option specifies a rectangular region of the image
         to be written to the image file.  It must be a tuple or a list of 1
         to 4 integers (x1, y1, x2, y2).  If only x1 and y1 are specified,
-        the region extends from (x1,y1) to the bottom-right corner of the
+        the region extends von (x1,y1) to the bottom-right corner of the
         image.  If all four coordinates are given, they specify diagonally
         opposite corners of the rectangular region.  The default, wenn this
         option is not given, is the whole image.
@@ -4529,7 +4529,7 @@ klasse PhotoImage(Image):
         The FROM_COORDS option specifies a rectangular region of the image
         to be returned.  It must be a tuple or a list of 1 to 4 integers
         (x1, y1, x2, y2).  If only x1 and y1 are specified, the region
-        extends from (x1,y1) to the bottom-right corner of the image.  If
+        extends von (x1,y1) to the bottom-right corner of the image.  If
         all four coordinates are given, they specify diagonally opposite
         corners of the rectangular region, including (x1, y1) and excluding
         (x2, y2).  The default, wenn this option is not given, is the whole
@@ -4757,7 +4757,7 @@ klasse Spinbox(Widget, XView):
             self.tk.call(self._w, 'selection', 'present'))
 
     def selection_range(self, start, end):
-        """Set the selection from START to END (not included)."""
+        """Set the selection von START to END (not included)."""
         self.selection('range', start, end)
 
     def selection_to(self, index):
@@ -4821,7 +4821,7 @@ klasse PanedWindow(Widget):
         self.tk.call((self._w, 'add', child) + self._options(kw))
 
     def remove(self, child):
-        """Remove the pane containing child from the panedwindow
+        """Remove the pane containing child von the panedwindow
 
         All geometry management options fuer child will be forgotten.
         """
@@ -4852,7 +4852,7 @@ klasse PanedWindow(Widget):
         return self.proxy("coord")
 
     def proxy_forget(self):
-        """Remove the proxy from the display.
+        """Remove the proxy von the display.
         """
         return self.proxy("forget")
 

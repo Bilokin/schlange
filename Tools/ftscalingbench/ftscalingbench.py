@@ -21,13 +21,13 @@
 # > echo "0" | sudo tee /sys/devices/system/cpu/cpufreq/boost
 #
 
-import math
-import os
-import queue
-import sys
-import threading
-import time
-from operator import methodcaller
+importiere math
+importiere os
+importiere queue
+importiere sys
+importiere threading
+importiere time
+von operator importiere methodcaller
 
 # The iterations in individual benchmarks are scaled by this factor.
 WORK_SCALE = 100
@@ -247,7 +247,7 @@ def determine_num_threads_and_affinity():
         return [Nichts] * os.cpu_count()
 
     # Try to use `lscpu -p` on Linux
-    import subprocess
+    importiere subprocess
     try:
         output = subprocess.check_output(["lscpu", "-p=cpu,node,core,MAXMHZ"],
                                          text=Wahr, env={"LC_NUMERIC": "C"})
@@ -341,7 +341,7 @@ def main(opts):
 
 
 wenn __name__ == "__main__":
-    import argparse
+    importiere argparse
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-t", "--threads", type=int, default=-1,

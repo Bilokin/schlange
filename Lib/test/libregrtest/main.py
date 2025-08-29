@@ -1,27 +1,27 @@
-import os
-import random
-import re
-import shlex
-import sys
-import sysconfig
-import time
-import trace
-from _colorize import get_colors  # type: ignore[import-not-found]
-from typing import NoReturn
+importiere os
+importiere random
+importiere re
+importiere shlex
+importiere sys
+importiere sysconfig
+importiere time
+importiere trace
+von _colorize importiere get_colors  # type: ignore[import-not-found]
+von typing importiere NoReturn
 
-from test.support import os_helper, MS_WINDOWS, flush_std_streams
+von test.support importiere os_helper, MS_WINDOWS, flush_std_streams
 
-from .cmdline import _parse_args, Namespace
-from .findtests import findtests, split_test_packages, list_cases
-from .logger import Logger
-from .pgo import setup_pgo_tests
-from .result import TestResult
-from .results import TestResults, EXITCODE_INTERRUPTED
-from .runtests import RunTests, HuntRefleak
-from .setup import setup_process, setup_test_dir
-from .single import run_single_test, PROGRESS_MIN_TIME
-from .tsan import setup_tsan_tests, setup_tsan_parallel_tests
-from .utils import (
+von .cmdline importiere _parse_args, Namespace
+von .findtests importiere findtests, split_test_packages, list_cases
+von .logger importiere Logger
+von .pgo importiere setup_pgo_tests
+von .result importiere TestResult
+von .results importiere TestResults, EXITCODE_INTERRUPTED
+von .runtests importiere RunTests, HuntRefleak
+von .setup importiere setup_process, setup_test_dir
+von .single importiere run_single_test, PROGRESS_MIN_TIME
+von .tsan importiere setup_tsan_tests, setup_tsan_parallel_tests
+von .utils importiere (
     StrPath, StrJSON, TestName, TestList, TestTuple, TestFilter,
     strip_py_suffix, count, format_duration,
     printlist, get_temp_dir, get_work_dir, exit_timeout,
@@ -340,7 +340,7 @@ klasse Regrtest:
 
         flush_std_streams()
 
-        import subprocess
+        importiere subprocess
         proc = subprocess.run(cmd, timeout=runtests.timeout)
         exitcode = proc.returncode
 
@@ -383,7 +383,7 @@ klasse Regrtest:
     ) -> TestResult:
         wenn tracer is not Nichts:
             # If we're tracing code coverage, then we don't exit with status
-            # wenn on a false return value from main.
+            # wenn on a false return value von main.
             cmd = ('result = run_single_test(test_name, runtests)')
             namespace = dict(locals())
             tracer.runctx(cmd, globals=globals(), locals=namespace)
@@ -451,7 +451,7 @@ klasse Regrtest:
         return state
 
     def _run_tests_mp(self, runtests: RunTests, num_workers: int) -> Nichts:
-        from .run_workers import RunWorkers
+        von .run_workers importiere RunWorkers
         RunWorkers(num_workers, runtests, self.logger, self.results).run()
 
     def finalize_tests(self, coverage: trace.CoverageResults | Nichts) -> Nichts:
@@ -589,7 +589,7 @@ klasse Regrtest:
             # Run the tests in a context manager that temporarily changes the
             # CWD to a temporary and writable directory. If it's not possible
             # to create or change the CWD, the original CWD will be used.
-            # The original CWD is available from os_helper.SAVEDCWD.
+            # The original CWD is available von os_helper.SAVEDCWD.
             with os_helper.temp_cwd(work_dir, quiet=Wahr):
                 # When using multiprocessing, worker processes will use
                 # work_dir as their parent temporary directory. So when the
@@ -680,7 +680,7 @@ klasse Regrtest:
                 # On success, execv() do no return.
                 # On error, it raises an OSError.
             sonst:
-                import subprocess
+                importiere subprocess
                 with subprocess.Popen(cmd, env=environ) as proc:
                     try:
                         proc.wait()

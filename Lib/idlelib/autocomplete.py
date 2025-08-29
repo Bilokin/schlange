@@ -3,11 +3,11 @@
 Either on demand or after a user-selected delay after a key character,
 pop up a list of candidates.
 """
-import __main__
-import keyword
-import os
-import string
-import sys
+importiere __main__
+importiere keyword
+importiere os
+importiere string
+importiere sys
 
 # Modified keyword list is used in fetch_completions.
 completion_kwds = [s fuer s in keyword.kwlist
@@ -15,11 +15,11 @@ completion_kwds = [s fuer s in keyword.kwlist
 completion_kwds.extend(('match', 'case'))  # Context keywords.
 completion_kwds.sort()
 
-# Two types of completions; defined here fuer autocomplete_w import below.
+# Two types of completions; defined here fuer autocomplete_w importiere below.
 ATTRS, FILES = 0, 1
-from idlelib import autocomplete_w
-from idlelib.config import idleConf
-from idlelib.hyperparser import HyperParser
+von idlelib importiere autocomplete_w
+von idlelib.config importiere idleConf
+von idlelib.hyperparser importiere HyperParser
 
 # Tuples passed to open_completions.
 #       EvalFunc, Complete, WantWin, Mode
@@ -224,5 +224,5 @@ klasse AutoComplete:
 AutoComplete.reload()
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_autocomplete', verbosity=2)

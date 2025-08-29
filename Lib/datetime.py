@@ -5,9 +5,9 @@ time zone and DST data sources.
 """
 
 try:
-    from _datetime import *
+    von _datetime importiere *
 except ImportError:
-    from _pydatetime import *
+    von _pydatetime importiere *
 
 __all__ = ("date", "datetime", "time", "timedelta", "timezone", "tzinfo",
            "MINYEAR", "MAXYEAR", "UTC")

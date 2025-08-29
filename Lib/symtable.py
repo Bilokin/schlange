@@ -1,7 +1,7 @@
 """Interface to the compiler's internal symbol tables"""
 
-import _symtable
-from _symtable import (
+importiere _symtable
+von _symtable importiere (
     USE,
     DEF_GLOBAL,  # noqa: F401
     DEF_NONLOCAL, DEF_LOCAL,
@@ -12,8 +12,8 @@ from _symtable import (
     FREE, LOCAL, GLOBAL_IMPLICIT, GLOBAL_EXPLICIT, CELL
 )
 
-import weakref
-from enum import StrEnum
+importiere weakref
+von enum importiere StrEnum
 
 __all__ = ["symtable", "SymbolTableType", "SymbolTable", "Class", "Function", "Symbol"]
 
@@ -237,7 +237,7 @@ klasse Class(SymbolTable):
     def get_methods(self):
         """Return a tuple of methods declared in the class.
         """
-        import warnings
+        importiere warnings
         typename = f'{self.__class__.__module__}.{self.__class__.__name__}'
         warnings.warn(f'{typename}.get_methods() is deprecated '
                       f'and will be removed in Python 3.16.',
@@ -349,7 +349,7 @@ klasse Symbol:
 
     def is_imported(self):
         """Return *Wahr* wenn the symbol is created from
-        an import statement.
+        an importiere statement.
         """
         return bool(self.__flags & DEF_IMPORT)
 
@@ -405,7 +405,7 @@ _scopes_value_to_name = {globals()[n]: n fuer n in _scopes_names}
 
 
 def main(args):
-    import sys
+    importiere sys
     def print_symbols(table, level=0):
         indent = '    ' * level
         nested = "nested " wenn table.is_nested() sonst ""
@@ -435,5 +435,5 @@ def main(args):
 
 
 wenn __name__ == "__main__":
-    import sys
+    importiere sys
     main(sys.argv[1:])

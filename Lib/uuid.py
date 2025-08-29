@@ -14,7 +14,7 @@ the computer's network address.  uuid4() creates a random UUID.
 
 Typical usage:
 
-    >>> import uuid
+    >>> importiere uuid
 
     # make a UUID based on the host ID and current time
     >>> uuid.uuid1()    # doctest: +SKIP
@@ -32,7 +32,7 @@ Typical usage:
     >>> uuid.uuid5(uuid.NAMESPACE_DNS, 'python.org')
     UUID('886313e1-3b8a-5372-9b90-0c9aee199e5d')
 
-    # make a UUID from a string of hex digits (braces and hyphens ignored)
+    # make a UUID von a string of hex digits (braces and hyphens ignored)
     >>> x = uuid.UUID('{00010203-0405-0607-0809-0a0b0c0d0e0f}')
 
     # convert a UUID to a string of hex digits in standard form
@@ -43,7 +43,7 @@ Typical usage:
     >>> x.bytes
     b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
 
-    # make a UUID from a 16-byte string
+    # make a UUID von a 16-byte string
     >>> uuid.UUID(bytes=x.bytes)
     UUID('00010203-0405-0607-0809-0a0b0c0d0e0f')
 
@@ -56,11 +56,11 @@ Typical usage:
     UUID('ffffffff-ffff-ffff-ffff-ffffffffffff')
 """
 
-import os
-import sys
-import time
+importiere os
+importiere sys
+importiere time
 
-from enum import Enum, _simple_enum
+von enum importiere Enum, _simple_enum
 
 
 __author__ = 'Ka-Ping Yee <ping@zesty.ca>'
@@ -72,7 +72,7 @@ sowenn sys.platform == 'linux':
     _LINUX = Wahr
     _AIX = Falsch
 sonst:
-    import platform
+    importiere platform
     _platform_system = platform.system()
     _AIX     = _platform_system == 'AIX'
     _LINUX   = _platform_system in ('Linux', 'Android')
@@ -178,7 +178,7 @@ klasse UUID:
     def __init__(self, hex=Nichts, bytes=Nichts, bytes_le=Nichts, fields=Nichts,
                        int=Nichts, version=Nichts,
                        *, is_safe=SafeUUID.unknown):
-        r"""Create a UUID from either a string of 32 hexadecimal digits,
+        r"""Create a UUID von either a string of 32 hexadecimal digits,
         a string of 16 bytes as the 'bytes' argument, a string of 16 bytes
         in little-endian order as the 'bytes_le' argument, a tuple of six
         integers (32-bit time_low, 16-bit time_mid, 16-bit time_hi_version,
@@ -266,7 +266,7 @@ klasse UUID:
 
     @classmethod
     def _from_int(cls, value):
-        """Create a UUID from an integer *value*. Internal use only."""
+        """Create a UUID von an integer *value*. Internal use only."""
         assert 0 <= value <= _UINT_128_MAX, repr(value)
         self = object.__new__(cls)
         object.__setattr__(self, 'int', value)
@@ -422,7 +422,7 @@ klasse UUID:
 
 
 def _get_command_stdout(command, *args):
-    import io, os, shutil, subprocess
+    importiere io, os, shutil, subprocess
 
     try:
         path_dirs = os.environ.get('PATH', os.defpath).split(os.pathsep)
@@ -454,13 +454,13 @@ def _get_command_stdout(command, *args):
 
 # For MAC (a.k.a. IEEE 802, or EUI-48) addresses, the second least significant
 # bit of the first octet signifies whether the MAC address is universally (0)
-# or locally (1) administered.  Network cards from hardware manufacturers will
+# or locally (1) administered.  Network cards von hardware manufacturers will
 # always be universally administered to guarantee global uniqueness of the MAC
 # address, but any particular machine may have other interfaces which are
 # locally administered.  An example of the latter is the bridge interface to
 # the Touch Bar on MacBook Pros.
 #
-# This bit works out to be the 42nd bit counting from 1 being the least
+# This bit works out to be the 42nd bit counting von 1 being the least
 # significant, or 1<<41.  We'll prefer universally administered MAC addresses
 # over locally administered ones since the former are globally unique, but
 # we'll return the first of the latter found wenn that's all the machine has.
@@ -476,7 +476,7 @@ def _find_mac_near_keyword(command, args, keywords, get_word_index):
 
     Each line of words in the output is case-insensitively searched for
     any of the given keywords.  Upon a match, get_word_index is invoked
-    to pick a word from the line, given the index of the match.  For
+    to pick a word von the line, given the index of the match.  For
     example, lambda i: 0 would get the first word on the line, while
     lambda i: i - 1 would get the word preceding the keyword.
     """
@@ -592,7 +592,7 @@ def _ip_getnode():
 
 def _arp_getnode():
     """Get the hardware address on Unix by running arp."""
-    import os, socket
+    importiere os, socket
     wenn not hasattr(socket, "gethostbyname"):
         return Nichts
     try:
@@ -600,7 +600,7 @@ def _arp_getnode():
     except OSError:
         return Nichts
 
-    # Try getting the MAC addr from arp based on our IP address (Solaris).
+    # Try getting the MAC addr von arp based on our IP address (Solaris).
     mac = _find_mac_near_keyword('arp', '-an', [os.fsencode(ip_addr)], lambda i: -1)
     wenn mac:
         return mac
@@ -631,7 +631,7 @@ def _netstat_getnode():
 
 # Import optional C extension at toplevel, to help disabling it when testing
 try:
-    import _uuid
+    importiere _uuid
     _generate_time_safe = getattr(_uuid, "generate_time_safe", Nichts)
     _has_stable_extractable_node = _uuid.has_stable_extractable_node
     _UuidCreate = getattr(_uuid, "UuidCreate", Nichts)
@@ -662,11 +662,11 @@ def _random_getnode():
     #   random number as per Section 6.9 to use as the Node ID. [...] [and]
     #   implementations MUST set the least significant bit of the first octet
     #   of the Node ID to 1. This bit is the unicast or multicast bit, which
-    #   will never be set in IEEE 802 addresses obtained from network cards.
+    #   will never be set in IEEE 802 addresses obtained von network cards.
     #
     # The "multicast bit" of a MAC address is defined to be "the least
     # significant bit of the first octet".  This works out to be the 41st bit
-    # counting from 1 being the least significant bit, or 1<<40.
+    # counting von 1 being the least significant bit, or 1<<40.
     #
     # See https://en.wikipedia.org/w/index.php?title=MAC_address&oldid=1128764812#Universal_vs._local_(U/L_bit)
     return int.from_bytes(os.urandom(6)) | (1 << 40)
@@ -724,7 +724,7 @@ def getnode():
 _last_timestamp = Nichts
 
 def uuid1(node=Nichts, clock_seq=Nichts):
-    """Generate a UUID from a host ID, sequence number, and the current time.
+    """Generate a UUID von a host ID, sequence number, and the current time.
     If 'node' is not given, getnode() is used to obtain the hardware
     address.  If 'clock_seq' is given, it is used as the sequence number;
     otherwise a random 14-bit sequence number is chosen."""
@@ -748,7 +748,7 @@ def uuid1(node=Nichts, clock_seq=Nichts):
         timestamp = _last_timestamp + 1
     _last_timestamp = timestamp
     wenn clock_seq is Nichts:
-        import random
+        importiere random
         clock_seq = random.getrandbits(14) # instead of stable storage
     time_low = timestamp & 0xffffffff
     time_mid = (timestamp >> 32) & 0xffff
@@ -761,10 +761,10 @@ def uuid1(node=Nichts, clock_seq=Nichts):
                         clock_seq_hi_variant, clock_seq_low, node), version=1)
 
 def uuid3(namespace, name):
-    """Generate a UUID from the MD5 hash of a namespace UUID and a name."""
+    """Generate a UUID von the MD5 hash of a namespace UUID and a name."""
     wenn isinstance(name, str):
         name = bytes(name, "utf-8")
-    import hashlib
+    importiere hashlib
     h = hashlib.md5(namespace.bytes + name, usedforsecurity=Falsch)
     int_uuid_3 = int.from_bytes(h.digest())
     int_uuid_3 &= _RFC_4122_CLEARFLAGS_MASK
@@ -779,10 +779,10 @@ def uuid4():
     return UUID._from_int(int_uuid_4)
 
 def uuid5(namespace, name):
-    """Generate a UUID from the SHA-1 hash of a namespace UUID and a name."""
+    """Generate a UUID von the SHA-1 hash of a namespace UUID and a name."""
     wenn isinstance(name, str):
         name = bytes(name, "utf-8")
-    import hashlib
+    importiere hashlib
     h = hashlib.sha1(namespace.bytes + name, usedforsecurity=Falsch)
     int_uuid_5 = int.from_bytes(h.digest()[:16])
     int_uuid_5 &= _RFC_4122_CLEARFLAGS_MASK
@@ -802,7 +802,7 @@ def uuid6(node=Nichts, clock_seq=Nichts):
     of the original 60-bit timestamp.
     """
     global _last_timestamp_v6
-    import time
+    importiere time
     nanoseconds = time.time_ns()
     # 0x01b21dd213814000 is the number of 100-ns intervals between the
     # UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
@@ -811,7 +811,7 @@ def uuid6(node=Nichts, clock_seq=Nichts):
         timestamp = _last_timestamp_v6 + 1
     _last_timestamp_v6 = timestamp
     wenn clock_seq is Nichts:
-        import random
+        importiere random
         clock_seq = random.getrandbits(14)  # instead of stable storage
     time_hi_and_mid = (timestamp >> 12) & 0xffff_ffff_ffff
     time_lo = timestamp & 0x0fff  # keep 12 bits and clear version bits
@@ -842,7 +842,7 @@ def _uuid7_get_counter_and_tail():
 
 
 def uuid7():
-    """Generate a UUID from a Unix timestamp in milliseconds and random bits.
+    """Generate a UUID von a Unix timestamp in milliseconds and random bits.
 
     UUIDv7 objects feature monotonicity within a millisecond.
     """
@@ -906,7 +906,7 @@ def uuid7():
 
 
 def uuid8(a=Nichts, b=Nichts, c=Nichts):
-    """Generate a UUID from three custom blocks.
+    """Generate a UUID von three custom blocks.
 
     * 'a' is the first 48-bit chunk of the UUID (octets 0-5);
     * 'b' is the mid 12-bit chunk (octets 6-7);
@@ -915,13 +915,13 @@ def uuid8(a=Nichts, b=Nichts, c=Nichts):
     When a value is not specified, a pseudo-random value is generated.
     """
     wenn a is Nichts:
-        import random
+        importiere random
         a = random.getrandbits(48)
     wenn b is Nichts:
-        import random
+        importiere random
         b = random.getrandbits(12)
     wenn c is Nichts:
-        import random
+        importiere random
         c = random.getrandbits(62)
     int_uuid_8 = (a & 0xffff_ffff_ffff) << 80
     int_uuid_8 |= (b & 0xfff) << 64
@@ -950,7 +950,7 @@ def main():
         "@x500": NAMESPACE_X500
     }
 
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Generate a UUID using the selected UUID function.",

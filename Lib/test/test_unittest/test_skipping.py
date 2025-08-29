@@ -1,7 +1,7 @@
-import unittest
+importiere unittest
 
-from test.support import force_not_colorized
-from test.test_unittest.support import LoggingResult
+von test.support importiere force_not_colorized
+von test.test_unittest.support importiere LoggingResult
 
 
 klasse Test_TestSkipping(unittest.TestCase):

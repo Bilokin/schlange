@@ -1,7 +1,7 @@
 """ This module tries to retrieve as much platform-identifying data as
     possible. It makes this information available via function APIs.
 
-    If called from the command line, it prints the platform
+    If called von the command line, it prints the platform
     information concatenated as single string to stdout. The output
     format is usable as part of a filename.
 
@@ -32,7 +32,7 @@
 #    <see checkin messages fuer history>
 #
 #    1.0.9 - added invalidate_caches() function to invalidate cached values
-#    1.0.8 - changed Windows support to read version from kernel32.dll
+#    1.0.8 - changed Windows support to read version von kernel32.dll
 #    1.0.7 - added DEV_NULL
 #    1.0.6 - added linux_distribution()
 #    1.0.5 - fixed Java support to allow running the module on Jython
@@ -112,14 +112,14 @@ __copyright__ = """
 
 __version__ = '1.1.0'
 
-import collections
-import os
-import re
-import sys
-import functools
-import itertools
+importiere collections
+importiere os
+importiere re
+importiere sys
+importiere functools
+importiere itertools
 try:
-    import _wmi
+    importiere _wmi
 except ImportError:
     _wmi = Nichts
 
@@ -287,7 +287,7 @@ def _syscmd_ver(system='', release='', version='',
         return system, release, version
 
     # Try some common cmd strings
-    import subprocess
+    importiere subprocess
     fuer cmd in ('ver', 'command /c ver', 'cmd /c ver'):
         try:
             info = subprocess.check_output(cmd,
@@ -313,7 +313,7 @@ def _syscmd_ver(system='', release='', version='',
     m = ver_output.match(info)
     wenn m is not Nichts:
         system, release, version = m.groups()
-        # Strip trailing dots from version and release
+        # Strip trailing dots von version and release
         wenn release[-1] == '.':
             release = release[:-1]
         wenn version[-1] == '.':
@@ -378,7 +378,7 @@ def win32_is_iot():
 
 def win32_edition():
     try:
-        import winreg
+        importiere winreg
     except ImportError:
         pass
     sonst:
@@ -413,7 +413,7 @@ def _win32_ver(version, csd, ptype):
 
     # Fall back to a combination of sys.getwindowsversion and "ver"
     try:
-        from sys import getwindowsversion
+        von sys importiere getwindowsversion
     except ImportError:
         return version, csd, ptype, Wahr
 
@@ -437,7 +437,7 @@ def _win32_ver(version, csd, ptype):
                 csd = 'SP' + csd[13:]
 
     try:
-        import winreg
+        importiere winreg
     except ImportError:
         pass
     sonst:
@@ -469,7 +469,7 @@ def _mac_ver_xml():
         return Nichts
 
     try:
-        import plistlib
+        importiere plistlib
     except ImportError:
         return Nichts
 
@@ -495,7 +495,7 @@ def mac_ver(release='', versioninfo=('', '', ''), machine=''):
         which default to ''. All tuple entries are strings.
     """
 
-    # First try reading the information from an XML file which should
+    # First try reading the information von an XML file which should
     # always be present
     info = _mac_ver_xml()
     wenn info is not Nichts:
@@ -520,7 +520,7 @@ def ios_ver(system="", release="", model="", is_simulator=Falsch):
     parameters.
     """
     wenn sys.platform == "ios":
-        import _ios_support
+        importiere _ios_support
         result = _ios_support.get_platform_ios()
         wenn result is not Nichts:
             return IOSVersionInfo(*result)
@@ -535,7 +535,7 @@ def android_ver(release="", api_level=0, manufacturer="", model="", device="",
                 is_emulator=Falsch):
     wenn sys.platform == "android":
         try:
-            from ctypes import CDLL, c_char_p, create_string_buffer
+            von ctypes importiere CDLL, c_char_p, create_string_buffer
         except ImportError:
             pass
         sonst:
@@ -637,7 +637,7 @@ def _node(default=''):
     """ Helper to determine the node name of this machine.
     """
     try:
-        import socket
+        importiere socket
     except ImportError:
         # No sockets...
         return default
@@ -673,7 +673,7 @@ def _syscmd_file(target, default=''):
         return default
 
     try:
-        import subprocess
+        importiere subprocess
     except ImportError:
         return default
     target = _follow_symlinks(target)
@@ -690,7 +690,7 @@ def _syscmd_file(target, default=''):
     wenn not output:
         return default
     # With the C locale, the output should be mostly ASCII-compatible.
-    # Decode from Latin-1 to prevent Unicode decode error.
+    # Decode von Latin-1 to prevent Unicode decode error.
     return output.decode('latin-1')
 
 ### Information about the used architecture
@@ -721,17 +721,17 @@ def architecture(executable=sys.executable, bits='', linkage=''):
         actual work. This is available on most wenn not all Unix
         platforms. On some non-Unix platforms where the "file" command
         does not exist and the executable is set to the Python interpreter
-        binary defaults from _default_architecture are used.
+        binary defaults von _default_architecture are used.
 
     """
     # Use the sizeof(pointer) as default number of bits wenn nothing
     # sonst is given as default.
     wenn not bits:
-        import struct
+        importiere struct
         size = struct.calcsize('P')
         bits = str(size * 8) + 'bit'
 
-    # Get data from the 'file' system command
+    # Get data von the 'file' system command
     wenn executable:
         fileout = _syscmd_file(executable, '')
     sonst:
@@ -825,7 +825,7 @@ klasse _Processor:
 
     def get_OpenVMS():
         try:
-            import vms_lib
+            importiere vms_lib
         except ImportError:
             pass
         sonst:
@@ -845,7 +845,7 @@ klasse _Processor:
         Fall back to `uname -p`
         """
         try:
-            import subprocess
+            importiere subprocess
         except ImportError:
             return Nichts
         try:
@@ -929,7 +929,7 @@ def uname():
     wenn _uname_cache is not Nichts:
         return _uname_cache
 
-    # Get some infos from the builtin os.uname API...
+    # Get some infos von the builtin os.uname API...
     try:
         system, node, release, version, machine = infos = os.uname()
     except AttributeError:
@@ -1061,7 +1061,7 @@ def processor():
     """
     return uname().processor
 
-### Various APIs fuer extracting information from sys.version
+### Various APIs fuer extracting information von sys.version
 
 _sys_version_cache = {}
 
@@ -1081,7 +1081,7 @@ def _sys_version(sys_version=Nichts):
         cannot be determined.
 
         sys_version may be given to parse an alternative version
-        string, e.g. wenn the version was read from a different Python
+        string, e.g. wenn the version was read von a different Python
         interpreter.
 
     """
@@ -1207,7 +1207,7 @@ def python_branch():
     """ Returns a string identifying the Python implementation
         branch.
 
-        For CPython this is the SCM branch from which the
+        For CPython this is the SCM branch von which the
         Python binary was built.
 
         If not available, an empty string is returned.
@@ -1221,7 +1221,7 @@ def python_revision():
     """ Returns a string identifying the Python implementation
         revision.
 
-        For CPython this is the SCM revision from which the
+        For CPython this is the SCM revision von which the
         Python binary was built.
 
         If not available, an empty string is returned.
@@ -1353,7 +1353,7 @@ def _parse_os_release(lines):
 
 
 def freedesktop_os_release():
-    """Return operation system identification from freedesktop.org os-release
+    """Return operation system identification von freedesktop.org os-release
     """
     global _os_release_cache
 
@@ -1390,7 +1390,7 @@ def invalidate_caches():
 ### Command line interface
 
 def _parse_args(args: list[str] | Nichts):
-    import argparse
+    importiere argparse
 
     parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument("args", nargs="*", choices=["nonaliased", "terse"])
@@ -1408,7 +1408,7 @@ def _parse_args(args: list[str] | Nichts):
         action="store_false",
         help=(
             "disable system/OS name aliasing. If aliasing is enabled, "
-            "some platforms report system names different from "
+            "some platforms report system names different von "
             "their common names, e.g. SunOS is reported as Solaris"
         ),
     )

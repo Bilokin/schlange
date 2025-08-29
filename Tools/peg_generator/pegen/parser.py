@@ -1,13 +1,13 @@
-import argparse
-import sys
-import time
-import token
-import tokenize
-import traceback
-from abc import abstractmethod
-from typing import Any, Callable, ClassVar, Dict, Optional, Tuple, Type, TypeVar, cast
+importiere argparse
+importiere sys
+importiere time
+importiere token
+importiere tokenize
+importiere traceback
+von abc importiere abstractmethod
+von typing importiere Any, Callable, ClassVar, Dict, Optional, Tuple, Type, TypeVar, cast
 
-from pegen.tokenizer import Mark, Tokenizer, exact_token_types
+von pegen.tokenizer importiere Mark, Tokenizer, exact_token_types
 
 T = TypeVar("T")
 F = TypeVar("F", bound=Callable[..., Any])

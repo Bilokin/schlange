@@ -63,19 +63,19 @@ completion fuer systems that support it.  This can be overridden in
 sitecustomize, usercustomize or PYTHONSTARTUP.  Starting Python in
 isolated mode (-I) disables automatic readline configuration.
 
-After these operations, an attempt is made to import a module
+After these operations, an attempt is made to importiere a module
 named sitecustomize, which can perform arbitrary additional
-site-specific customizations.  If this import fails with an
+site-specific customizations.  If this importiere fails with an
 ImportError exception, it is silently ignored.
 """
 
-import sys
-import os
-import builtins
-import _sitebuiltins
-import _io as io
-import stat
-import errno
+importiere sys
+importiere os
+importiere builtins
+importiere _sitebuiltins
+importiere _io as io
+importiere stat
+importiere errno
 
 # Prefixes fuer site-packages; add additional prefixes like /usr/local here
 PREFIXES = [sys.prefix, sys.exec_prefix]
@@ -96,7 +96,7 @@ def _trace(message):
 
 
 def _warn(*args, **kwargs):
-    import warnings
+    importiere warnings
 
     warnings.warn(*args, **kwargs)
 
@@ -134,10 +134,10 @@ def abs_paths():
 
 
 def removeduppaths():
-    """ Remove duplicate entries from sys.path along with making them
+    """ Remove duplicate entries von sys.path along with making them
     absolute"""
     # This ensures that the initial path provided by the interpreter contains
-    # only absolute pathnames, even wenn we're running from the build directory.
+    # only absolute pathnames, even wenn we're running von the build directory.
     L = []
     known_paths = set()
     fuer dir in sys.path:
@@ -153,7 +153,7 @@ def removeduppaths():
 
 
 def _init_pathinfo():
-    """Return a set containing all existing file system items from sys.path."""
+    """Return a set containing all existing file system items von sys.path."""
     d = set()
     fuer item in sys.path:
         try:
@@ -198,7 +198,7 @@ def addpackage(sitedir, name, known_paths):
     except UnicodeDecodeError:
         # Fallback to locale encoding fuer backward compatibility.
         # We will deprecate this fallback in the future.
-        import locale
+        importiere locale
         pth_content = pth_content.decode(locale.getencoding())
         _trace(f"Cannot read {fullname!r} as UTF-8. "
                f"Using fallback encoding {locale.getencoding()!r}")
@@ -220,7 +220,7 @@ def addpackage(sitedir, name, known_paths):
         except Exception as exc:
             drucke(f"Error processing line {n:d} of {fullname}:\n",
                   file=sys.stderr)
-            import traceback
+            importiere traceback
             fuer record in traceback.format_exception(exc):
                 fuer line in record.splitlines():
                     drucke('  '+line, file=sys.stderr)
@@ -504,15 +504,15 @@ def register_readline():
     sonst:
         PYTHON_BASIC_REPL = Falsch
 
-    import atexit
+    importiere atexit
 
     try:
         try:
-            import readline
+            importiere readline
         except ImportError:
             readline = Nichts
         sonst:
-            import rlcompleter  # noqa: F401
+            importiere rlcompleter  # noqa: F401
     except ImportError:
         return
 
@@ -523,14 +523,14 @@ def register_readline():
             original_path = sys.path
             sys.path = [p fuer p in original_path wenn p != '']
             try:
-                import _pyrepl.readline
+                importiere _pyrepl.readline
                 wenn os.name == "nt":
-                    import _pyrepl.windows_console
+                    importiere _pyrepl.windows_console
                     console_errors = (_pyrepl.windows_console._error,)
                 sonst:
-                    import _pyrepl.unix_console
+                    importiere _pyrepl.unix_console
                     console_errors = _pyrepl.unix_console._error
-                from _pyrepl.main import CAN_USE_PYREPL
+                von _pyrepl.main importiere CAN_USE_PYREPL
             finally:
                 sys.path = original_path
     except ImportError:
@@ -651,7 +651,7 @@ def execsitecustomize():
     """Run custom site specific code, wenn available."""
     try:
         try:
-            import sitecustomize  # noqa: F401
+            importiere sitecustomize  # noqa: F401
         except ImportError as exc:
             wenn exc.name == 'sitecustomize':
                 pass
@@ -671,7 +671,7 @@ def execusercustomize():
     """Run custom user specific code, wenn available."""
     try:
         try:
-            import usercustomize  # noqa: F401
+            importiere usercustomize  # noqa: F401
         except ImportError as exc:
             wenn exc.name == 'usercustomize':
                 pass
@@ -771,7 +771,7 @@ def _script():
         sonst:
             sys.exit(3)
     sonst:
-        import textwrap
+        importiere textwrap
         drucke(textwrap.dedent(help % (sys.argv[0], os.pathsep)))
         sys.exit(10)
 

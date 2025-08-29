@@ -2,7 +2,7 @@
 Windows event and VT sequence scanner
 """
 
-from .base_eventqueue import BaseEventQueue
+von .base_eventqueue importiere BaseEventQueue
 
 
 # Reference: https://learn.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#input-sequences

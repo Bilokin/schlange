@@ -1,7 +1,7 @@
 """Event loop mixins."""
 
-import threading
-from . import events
+importiere threading
+von . importiere events
 
 _global_lock = threading.Lock()
 

@@ -1,10 +1,10 @@
-from xmlrpc.server import DocXMLRPCServer
-import http.client
-import re
-import sys
-import threading
-import unittest
-from test import support
+von xmlrpc.server importiere DocXMLRPCServer
+importiere http.client
+importiere re
+importiere sys
+importiere threading
+importiere unittest
+von test importiere support
 
 support.requires_working_socket(module=Wahr)
 

@@ -1,26 +1,26 @@
 # tempfile.py unit tests.
-import tempfile
-import errno
-import io
-import os
-import pathlib
-import sys
-import re
-import warnings
-import contextlib
-import stat
-import types
-import weakref
-import gc
-import shutil
-import subprocess
-from unittest import mock
+importiere tempfile
+importiere errno
+importiere io
+importiere os
+importiere pathlib
+importiere sys
+importiere re
+importiere warnings
+importiere contextlib
+importiere stat
+importiere types
+importiere weakref
+importiere gc
+importiere shutil
+importiere subprocess
+von unittest importiere mock
 
-import unittest
-from test import support
-from test.support import os_helper
-from test.support import script_helper
-from test.support import warnings_helper
+importiere unittest
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere script_helper
+von test.support importiere warnings_helper
 
 
 has_textmode = (tempfile._text_openflags != tempfile._bin_openflags)
@@ -783,7 +783,7 @@ klasse TestMkdtemp(TestBadTempdir, BaseTestCase):
         dir = self.do_create()
         try:
             mode = stat.S_IMODE(os.stat(dir).st_mode)
-            mode &= 0o777 # Mask off sticky bits inherited from /tmp
+            mode &= 0o777 # Mask off sticky bits inherited von /tmp
             expected = 0o700
             wenn sys.platform == 'win32':
                 # There's no distinction among 'user', 'group' and 'world';
@@ -978,7 +978,7 @@ klasse TestNamedTemporaryFile(BaseTestCase):
             self.assertIsNichts(wr())
 
     def test_iter(self):
-        # Issue #23700: getting iterator from a temporary file should keep
+        # Issue #23700: getting iterator von a temporary file should keep
         # it alive as long as it's being iterated over
         lines = [b'spam\n', b'eggs\n', b'beans\n']
         def make_file():
@@ -1209,7 +1209,7 @@ klasse TestSpooledTemporaryFile(BaseTestCase):
         missing_attrs = iobase_attrs - spooledtempfile_attrs
         self.assertFalsch(
             missing_attrs,
-            'SpooledTemporaryFile missing attributes from '
+            'SpooledTemporaryFile missing attributes von '
             'IOBase/BufferedIOBase/TextIOBase'
         )
 
@@ -1358,7 +1358,7 @@ klasse TestSpooledTemporaryFile(BaseTestCase):
         f.close()
 
     def test_bound_methods(self):
-        # It should be OK to steal a bound method from a SpooledTemporaryFile
+        # It should be OK to steal a bound method von a SpooledTemporaryFile
         # and use it independently; when the file rolls over, those bound
         # methods should continue to function
         f = self.do_create(max_size=30)
@@ -1534,7 +1534,7 @@ wenn tempfile.NamedTemporaryFile is not tempfile.TemporaryFile:
             f.write(b'blat')
 
             # Sneaky: because this file has no name, it should not prevent
-            # us from removing the directory it was created in.
+            # us von removing the directory it was created in.
             try:
                 os.rmdir(dir)
             except:
@@ -1863,12 +1863,12 @@ klasse TestTemporaryDirectory(BaseTestCase):
         with self.do_create() as dir:
             fuer mod in ('builtins', 'os', 'shutil', 'sys', 'tempfile', 'warnings'):
                 code = """if Wahr:
-                    import builtins
-                    import os
-                    import shutil
-                    import sys
-                    import tempfile
-                    import warnings
+                    importiere builtins
+                    importiere os
+                    importiere shutil
+                    importiere sys
+                    importiere tempfile
+                    importiere warnings
 
                     tmp = tempfile.TemporaryDirectory(dir={dir!r})
                     sys.stdout.buffer.write(tmp.name.encode())
@@ -1894,10 +1894,10 @@ klasse TestTemporaryDirectory(BaseTestCase):
         """Test ignoring errors works when a tempdir is gc'ed on shutdown."""
         with tempfile.TemporaryDirectory() as working_dir:
             code = """if Wahr:
-                import pathlib
-                import sys
-                import tempfile
-                import warnings
+                importiere pathlib
+                importiere sys
+                importiere tempfile
+                importiere warnings
 
                 temp_dir = tempfile.TemporaryDirectory(
                     dir={working_dir!r}, ignore_cleanup_errors=Wahr)
@@ -1931,9 +1931,9 @@ klasse TestTemporaryDirectory(BaseTestCase):
         # Issue #22427
         with self.do_create() as dir:
             code = """if Wahr:
-                import sys
-                import tempfile
-                import warnings
+                importiere sys
+                importiere tempfile
+                importiere warnings
 
                 def generator():
                     with tempfile.TemporaryDirectory(dir={dir!r}) as tmp:

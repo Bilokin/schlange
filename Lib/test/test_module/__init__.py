@@ -1,12 +1,12 @@
 # Test the module type
-import importlib.machinery
-import unittest
-import weakref
-from test.support import gc_collect
-from test.support import import_helper
-from test.support.script_helper import assert_python_ok
+importiere importlib.machinery
+importiere unittest
+importiere weakref
+von test.support importiere gc_collect
+von test.support importiere import_helper
+von test.support.script_helper importiere assert_python_ok
 
-import sys
+importiere sys
 ModuleType = type(sys)
 
 
@@ -127,8 +127,8 @@ a = A(destroyed)"""
         self.assertIs(wr(), Nichts)
 
     def test_module_getattr(self):
-        import test.test_module.good_getattr as gga
-        from test.test_module.good_getattr import test
+        importiere test.test_module.good_getattr as gga
+        von test.test_module.good_getattr importiere test
         self.assertEqual(test, "There is test")
         self.assertEqual(gga.x, 1)
         self.assertEqual(gga.y, 2)
@@ -139,8 +139,8 @@ a = A(destroyed)"""
         del sys.modules['test.test_module.good_getattr']
 
     def test_module_getattr_errors(self):
-        import test.test_module.bad_getattr as bga
-        from test.test_module import bad_getattr2
+        importiere test.test_module.bad_getattr as bga
+        von test.test_module importiere bad_getattr2
         self.assertEqual(bga.x, 1)
         self.assertEqual(bad_getattr2.x, 1)
         with self.assertRaises(TypeError):
@@ -152,13 +152,13 @@ a = A(destroyed)"""
             del sys.modules['test.test_module.bad_getattr2']
 
     def test_module_dir(self):
-        import test.test_module.good_getattr as gga
+        importiere test.test_module.good_getattr as gga
         self.assertEqual(dir(gga), ['a', 'b', 'c'])
         del sys.modules['test.test_module.good_getattr']
 
     def test_module_dir_errors(self):
-        import test.test_module.bad_getattr as bga
-        from test.test_module import bad_getattr2
+        importiere test.test_module.bad_getattr as bga
+        von test.test_module importiere bad_getattr2
         with self.assertRaises(TypeError):
             dir(bga)
         with self.assertRaises(TypeError):
@@ -168,7 +168,7 @@ a = A(destroyed)"""
             del sys.modules['test.test_module.bad_getattr2']
 
     def test_module_getattr_tricky(self):
-        from test.test_module import bad_getattr3
+        von test.test_module importiere bad_getattr3
         # these lookups should not crash
         with self.assertRaises(AttributeError):
             bad_getattr3.one
@@ -190,13 +190,13 @@ a = A(destroyed)"""
     def test_module_repr_with_name_and_filename(self):
         m = ModuleType('foo')
         m.__file__ = '/tmp/foo.py'
-        self.assertEqual(repr(m), "<module 'foo' from '/tmp/foo.py'>")
+        self.assertEqual(repr(m), "<module 'foo' von '/tmp/foo.py'>")
 
     def test_module_repr_with_filename_only(self):
         m = ModuleType('foo')
         del m.__name__
         m.__file__ = '/tmp/foo.py'
-        self.assertEqual(repr(m), "<module '?' from '/tmp/foo.py'>")
+        self.assertEqual(repr(m), "<module '?' von '/tmp/foo.py'>")
 
     def test_module_repr_with_loader_as_Nichts(self):
         m = ModuleType('foo')
@@ -244,21 +244,21 @@ a = A(destroyed)"""
         # Yes, a klasse not an instance.
         m.__loader__ = BareLoader
         m.__file__ = '/tmp/foo.py'
-        self.assertEqual(repr(m), "<module 'foo' from '/tmp/foo.py'>")
+        self.assertEqual(repr(m), "<module 'foo' von '/tmp/foo.py'>")
 
     def test_module_repr_with_full_loader_and_filename(self):
         m = ModuleType('foo')
         # Yes, a klasse not an instance.
         m.__loader__ = FullLoader
         m.__file__ = '/tmp/foo.py'
-        self.assertEqual(repr(m), "<module 'foo' from '/tmp/foo.py'>")
+        self.assertEqual(repr(m), "<module 'foo' von '/tmp/foo.py'>")
 
     def test_module_repr_builtin(self):
         self.assertEqual(repr(sys), "<module 'sys' (built-in)>")
 
     def test_module_repr_source(self):
         r = repr(unittest)
-        starts_with = "<module 'unittest' from '"
+        starts_with = "<module 'unittest' von '"
         ends_with = "__init__.py'>"
         self.assertEqual(r[:len(starts_with)], starts_with,
                          '{!r} does not start with {!r}'.format(r, starts_with))
@@ -271,7 +271,7 @@ a = A(destroyed)"""
         spec = importlib.machinery.ModuleSpec('foo', loader)
         m.__loader__ = loader
         m.__spec__ = spec
-        self.assertEqual(repr(m), "<module 'foo' (namespace) from ['bar']>")
+        self.assertEqual(repr(m), "<module 'foo' (namespace) von ['bar']>")
 
     def test_module_repr_with_namespace_package_and_custom_loader(self):
         m = ModuleType('foo')
@@ -296,7 +296,7 @@ a = A(destroyed)"""
 
     def test_module_finalization_at_shutdown(self):
         # Module globals and builtins should still be available during shutdown
-        rc, out, err = assert_python_ok("-c", "from test.test_module import final_a")
+        rc, out, err = assert_python_ok("-c", "from test.test_module importiere final_a")
         self.assertFalsch(err)
         lines = out.splitlines()
         self.assertEqual(set(lines), {

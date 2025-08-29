@@ -1,17 +1,17 @@
-import string
-import sys
-import unittest
-from test import support
-from test.support import import_helper
-from test.support import script_helper
-from test.support import warnings_helper
-from test.support.testcase import FloatsAreIdenticalMixin
+importiere string
+importiere sys
+importiere unittest
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere script_helper
+von test.support importiere warnings_helper
+von test.support.testcase importiere FloatsAreIdenticalMixin
 # Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')
-from _testcapi import getargs_keywords, getargs_keyword_only
+von _testcapi importiere getargs_keywords, getargs_keyword_only
 
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = NULL
 
@@ -38,7 +38,7 @@ except ImportError:
 # >
 # > * New format codes.
 # >
-# > ** Changed from previous "range-and-a-half" to "none"; the
+# > ** Changed von previous "range-and-a-half" to "none"; the
 # > range-and-a-half checking wasn't particularly useful.
 #
 # Plus a C API or two, e.g. PyLong_AsUnsignedLongMask() ->
@@ -48,7 +48,7 @@ except ImportError:
 LARGE = 0x7FFFFFFF
 VERY_LARGE = 0xFF0000121212121212121242
 
-from _testcapi import UCHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX, INT_MAX, \
+von _testcapi importiere UCHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX, INT_MAX, \
      INT_MIN, LONG_MIN, LONG_MAX, LLONG_MIN, LLONG_MAX, PY_SSIZE_T_MIN, PY_SSIZE_T_MAX, \
      SHRT_MIN, SHRT_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX
 
@@ -166,7 +166,7 @@ NONCONTIG_READONLY = memoryview(b'noncontig')[::-2]
 
 klasse Unsigned_TestCase(unittest.TestCase):
     def test_b(self):
-        from _testcapi import getargs_b
+        von _testcapi importiere getargs_b
         # b returns 'unsigned char', and does range checking (0 ... UCHAR_MAX)
         self.assertRaises(TypeError, getargs_b, 3.14)
         self.assertEqual(99, getargs_b(Index()))
@@ -190,7 +190,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
         self.assertRaises(OverflowError, getargs_b, VERY_LARGE)
 
     def test_B(self):
-        from _testcapi import getargs_B
+        von _testcapi importiere getargs_B
         # B returns 'unsigned char', no range checking
         self.assertRaises(TypeError, getargs_B, 3.14)
         self.assertEqual(99, getargs_B(Index()))
@@ -227,7 +227,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
             self.assertEqual(UCHAR_MAX & -VERY_LARGE, getargs_B(-VERY_LARGE))
 
     def test_H(self):
-        from _testcapi import getargs_H
+        von _testcapi importiere getargs_H
         # H returns 'unsigned short', no range checking
         self.assertRaises(TypeError, getargs_H, 3.14)
         self.assertEqual(99, getargs_H(Index()))
@@ -259,7 +259,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
             self.assertEqual(USHRT_MAX & -VERY_LARGE, getargs_H(-VERY_LARGE))
 
     def test_I(self):
-        from _testcapi import getargs_I
+        von _testcapi importiere getargs_I
         # I returns 'unsigned int', no range checking
         self.assertRaises(TypeError, getargs_I, 3.14)
         self.assertEqual(99, getargs_I(Index()))
@@ -291,7 +291,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
             self.assertEqual(UINT_MAX & -VERY_LARGE, getargs_I(-VERY_LARGE))
 
     def test_k(self):
-        from _testcapi import getargs_k
+        von _testcapi importiere getargs_k
         # k returns 'unsigned long', no range checking
         self.assertRaises(TypeError, getargs_k, 3.14)
         self.assertEqual(99, getargs_k(Index()))
@@ -324,7 +324,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
 
 klasse Signed_TestCase(unittest.TestCase):
     def test_h(self):
-        from _testcapi import getargs_h
+        von _testcapi importiere getargs_h
         # h returns 'short', and does range checking (SHRT_MIN ... SHRT_MAX)
         self.assertRaises(TypeError, getargs_h, 3.14)
         self.assertEqual(99, getargs_h(Index()))
@@ -348,7 +348,7 @@ klasse Signed_TestCase(unittest.TestCase):
         self.assertRaises(OverflowError, getargs_h, VERY_LARGE)
 
     def test_i(self):
-        from _testcapi import getargs_i
+        von _testcapi importiere getargs_i
         # i returns 'int', and does range checking (INT_MIN ... INT_MAX)
         self.assertRaises(TypeError, getargs_i, 3.14)
         self.assertEqual(99, getargs_i(Index()))
@@ -372,7 +372,7 @@ klasse Signed_TestCase(unittest.TestCase):
         self.assertRaises(OverflowError, getargs_i, VERY_LARGE)
 
     def test_l(self):
-        from _testcapi import getargs_l
+        von _testcapi importiere getargs_l
         # l returns 'long', and does range checking (LONG_MIN ... LONG_MAX)
         self.assertRaises(TypeError, getargs_l, 3.14)
         self.assertEqual(99, getargs_l(Index()))
@@ -396,7 +396,7 @@ klasse Signed_TestCase(unittest.TestCase):
         self.assertRaises(OverflowError, getargs_l, VERY_LARGE)
 
     def test_n(self):
-        from _testcapi import getargs_n
+        von _testcapi importiere getargs_n
         # n returns 'Py_ssize_t', and does range checking
         # (PY_SSIZE_T_MIN ... PY_SSIZE_T_MAX)
         self.assertRaises(TypeError, getargs_n, 3.14)
@@ -423,7 +423,7 @@ klasse Signed_TestCase(unittest.TestCase):
 
 klasse LongLong_TestCase(unittest.TestCase):
     def test_L(self):
-        from _testcapi import getargs_L
+        von _testcapi importiere getargs_L
         # L returns 'long long', and does range checking (LLONG_MIN
         # ... LLONG_MAX)
         self.assertRaises(TypeError, getargs_L, 3.14)
@@ -449,7 +449,7 @@ klasse LongLong_TestCase(unittest.TestCase):
         self.assertRaises(OverflowError, getargs_L, VERY_LARGE)
 
     def test_K(self):
-        from _testcapi import getargs_K
+        von _testcapi importiere getargs_K
         # K return 'unsigned long long', no range checking
         self.assertRaises(TypeError, getargs_K, 3.14)
         self.assertEqual(99, getargs_K(Index()))
@@ -483,7 +483,7 @@ klasse LongLong_TestCase(unittest.TestCase):
 
 klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
     def test_f(self):
-        from _testcapi import getargs_f
+        von _testcapi importiere getargs_f
         self.assertEqual(getargs_f(4.25), 4.25)
         self.assertEqual(getargs_f(4), 4.0)
         self.assertRaises(TypeError, getargs_f, 4.25+0j)
@@ -512,12 +512,12 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
 
     @support.requires_IEEE_754
     def test_f_rounding(self):
-        from _testcapi import getargs_f
+        von _testcapi importiere getargs_f
         self.assertEqual(getargs_f(3.40282356e38), FLT_MAX)
         self.assertEqual(getargs_f(-3.40282356e38), -FLT_MAX)
 
     def test_d(self):
-        from _testcapi import getargs_d
+        von _testcapi importiere getargs_d
         self.assertEqual(getargs_d(4.25), 4.25)
         self.assertEqual(getargs_d(4), 4.0)
         self.assertRaises(TypeError, getargs_d, 4.25+0j)
@@ -541,7 +541,7 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
         self.assertNotEqual(r, r)
 
     def test_D(self):
-        from _testcapi import getargs_D
+        von _testcapi importiere getargs_D
         self.assertEqual(getargs_D(4.25+0.5j), 4.25+0.5j)
         self.assertEqual(getargs_D(4.25), 4.25+0j)
         self.assertEqual(getargs_D(4), 4.0+0j)
@@ -573,7 +573,7 @@ klasse Paradox:
 
 klasse Boolean_TestCase(unittest.TestCase):
     def test_p(self):
-        from _testcapi import getargs_p
+        von _testcapi importiere getargs_p
         self.assertEqual(0, getargs_p(Falsch))
         self.assertEqual(0, getargs_p(Nichts))
         self.assertEqual(0, getargs_p(0))
@@ -599,7 +599,7 @@ klasse Boolean_TestCase(unittest.TestCase):
 
 klasse Tuple_TestCase(unittest.TestCase):
     def test_args(self):
-        from _testcapi import get_args
+        von _testcapi importiere get_args
 
         ret = get_args(1, 2)
         self.assertEqual(ret, (1, 2))
@@ -626,7 +626,7 @@ klasse Tuple_TestCase(unittest.TestCase):
         self.assertIn(type(ret), (tuple, type(Nichts)))
 
     def test_tuple(self):
-        from _testcapi import getargs_tuple
+        von _testcapi importiere getargs_tuple
 
         ret = getargs_tuple(1, (2, 3))
         self.assertEqual(ret, (1,2,3))
@@ -641,7 +641,7 @@ klasse Tuple_TestCase(unittest.TestCase):
 
 klasse Keywords_TestCase(unittest.TestCase):
     def test_kwargs(self):
-        from _testcapi import get_kwargs
+        von _testcapi importiere get_kwargs
 
         ret = get_kwargs(a=1, b=2)
         self.assertEqual(ret, {'a': 1, 'b': 2})
@@ -826,7 +826,7 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
 
 
 klasse PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
-    from _testcapi import getargs_positional_only_and_keywords as getargs
+    von _testcapi importiere getargs_positional_only_and_keywords as getargs
 
     def test_positional_args(self):
         # using all possible positional args
@@ -860,7 +860,7 @@ klasse PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
 
 klasse Bytes_TestCase(unittest.TestCase):
     def test_c(self):
-        from _testcapi import getargs_c
+        von _testcapi importiere getargs_c
         self.assertRaises(TypeError, getargs_c, b'abc')  # len > 1
         self.assertEqual(getargs_c(b'a'), 97)
         self.assertEqual(getargs_c(bytearray(b'a')), 97)
@@ -870,7 +870,7 @@ klasse Bytes_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_c, Nichts)
 
     def test_y(self):
-        from _testcapi import getargs_y
+        von _testcapi importiere getargs_y
         self.assertRaises(TypeError, getargs_y, 'abc\xe9')
         self.assertEqual(getargs_y(b'bytes'), b'bytes')
         self.assertRaises(ValueError, getargs_y, b'nul:\0')
@@ -879,7 +879,7 @@ klasse Bytes_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_y, Nichts)
 
     def test_y_star(self):
-        from _testcapi import getargs_y_star
+        von _testcapi importiere getargs_y_star
         self.assertRaises(TypeError, getargs_y_star, 'abc\xe9')
         self.assertEqual(getargs_y_star(b'bytes'), b'bytes')
         self.assertEqual(getargs_y_star(b'nul:\0'), b'nul:\0')
@@ -890,7 +890,7 @@ klasse Bytes_TestCase(unittest.TestCase):
         self.assertRaises(BufferError, getargs_y_star, NONCONTIG_READONLY)
 
     def test_y_hash(self):
-        from _testcapi import getargs_y_hash
+        von _testcapi importiere getargs_y_hash
         self.assertRaises(TypeError, getargs_y_hash, 'abc\xe9')
         self.assertEqual(getargs_y_hash(b'bytes'), b'bytes')
         self.assertEqual(getargs_y_hash(b'nul:\0'), b'nul:\0')
@@ -905,7 +905,7 @@ klasse Bytes_TestCase(unittest.TestCase):
         # getargs_w_star() modifies first and last byte
         # getargs_w_star_opt() takes additional optional args: with one
         #   argument it should behave the same as getargs_w_star
-        from _testcapi import getargs_w_star, getargs_w_star_opt
+        von _testcapi importiere getargs_w_star, getargs_w_star_opt
         fuer func in (getargs_w_star, getargs_w_star_opt):
             with self.subTest(func=func):
                 self.assertRaises(TypeError, func, 'abc\xe9')
@@ -923,7 +923,7 @@ klasse Bytes_TestCase(unittest.TestCase):
                 self.assertRaises(TypeError, func, NONCONTIG_READONLY)
 
     def test_getargs_empty(self):
-        from _testcapi import getargs_empty
+        von _testcapi importiere getargs_empty
         self.assertWahr(getargs_empty())
         self.assertRaises(TypeError, getargs_empty, 1)
         self.assertRaises(TypeError, getargs_empty, 1, 2, 3)
@@ -934,7 +934,7 @@ klasse Bytes_TestCase(unittest.TestCase):
 
 klasse String_TestCase(unittest.TestCase):
     def test_C(self):
-        from _testcapi import getargs_C
+        von _testcapi importiere getargs_C
         self.assertRaises(TypeError, getargs_C, 'abc')  # len > 1
         self.assertEqual(getargs_C('a'), 97)
         self.assertEqual(getargs_C('\u20ac'), 0x20ac)
@@ -946,7 +946,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_C, Nichts)
 
     def test_s(self):
-        from _testcapi import getargs_s
+        von _testcapi importiere getargs_s
         self.assertEqual(getargs_s('abc\xe9'), b'abc\xc3\xa9')
         self.assertRaises(ValueError, getargs_s, 'nul:\0')
         self.assertRaises(TypeError, getargs_s, b'bytes')
@@ -955,7 +955,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_s, Nichts)
 
     def test_s_star(self):
-        from _testcapi import getargs_s_star
+        von _testcapi importiere getargs_s_star
         self.assertEqual(getargs_s_star('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_s_star('nul:\0'), b'nul:\0')
         self.assertEqual(getargs_s_star(b'bytes'), b'bytes')
@@ -966,7 +966,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(BufferError, getargs_s_star, NONCONTIG_READONLY)
 
     def test_s_hash(self):
-        from _testcapi import getargs_s_hash
+        von _testcapi importiere getargs_s_hash
         self.assertEqual(getargs_s_hash('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_s_hash('nul:\0'), b'nul:\0')
         self.assertEqual(getargs_s_hash(b'bytes'), b'bytes')
@@ -978,7 +978,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_s_hash, NONCONTIG_READONLY)
 
     def test_z(self):
-        from _testcapi import getargs_z
+        von _testcapi importiere getargs_z
         self.assertEqual(getargs_z('abc\xe9'), b'abc\xc3\xa9')
         self.assertRaises(ValueError, getargs_z, 'nul:\0')
         self.assertRaises(TypeError, getargs_z, b'bytes')
@@ -987,7 +987,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertIsNichts(getargs_z(Nichts))
 
     def test_z_star(self):
-        from _testcapi import getargs_z_star
+        von _testcapi importiere getargs_z_star
         self.assertEqual(getargs_z_star('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_z_star('nul:\0'), b'nul:\0')
         self.assertEqual(getargs_z_star(b'bytes'), b'bytes')
@@ -998,7 +998,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(BufferError, getargs_z_star, NONCONTIG_READONLY)
 
     def test_z_hash(self):
-        from _testcapi import getargs_z_hash
+        von _testcapi importiere getargs_z_hash
         self.assertEqual(getargs_z_hash('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_z_hash('nul:\0'), b'nul:\0')
         self.assertEqual(getargs_z_hash(b'bytes'), b'bytes')
@@ -1010,7 +1010,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_z_hash, NONCONTIG_READONLY)
 
     def test_es(self):
-        from _testcapi import getargs_es
+        von _testcapi importiere getargs_es
         self.assertEqual(getargs_es('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_es('abc\xe9', 'latin1'), b'abc\xe9')
         self.assertRaises(UnicodeEncodeError, getargs_es, 'abc\xe9', 'ascii')
@@ -1022,7 +1022,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_es, 'nul:\0', 'latin1')
 
     def test_et(self):
-        from _testcapi import getargs_et
+        von _testcapi importiere getargs_et
         self.assertEqual(getargs_et('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_et('abc\xe9', 'latin1'), b'abc\xe9')
         self.assertRaises(UnicodeEncodeError, getargs_et, 'abc\xe9', 'ascii')
@@ -1036,7 +1036,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_et, bytearray(b'nul:\0'), 'latin1')
 
     def test_es_hash(self):
-        from _testcapi import getargs_es_hash
+        von _testcapi importiere getargs_es_hash
         self.assertEqual(getargs_es_hash('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_es_hash('abc\xe9', 'latin1'), b'abc\xe9')
         self.assertRaises(UnicodeEncodeError, getargs_es_hash, 'abc\xe9', 'ascii')
@@ -1060,7 +1060,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(ValueError, getargs_es_hash, 'abc\xe9', 'latin1', buf)
 
     def test_et_hash(self):
-        from _testcapi import getargs_et_hash
+        von _testcapi importiere getargs_et_hash
         self.assertEqual(getargs_et_hash('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_et_hash('abc\xe9', 'latin1'), b'abc\xe9')
         self.assertRaises(UnicodeEncodeError, getargs_et_hash, 'abc\xe9', 'ascii')
@@ -1086,13 +1086,13 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(ValueError, getargs_et_hash, 'abc\xe9', 'latin1', buf)
 
     def test_gh_99240_clear_args(self):
-        from _testcapi import gh_99240_clear_args
+        von _testcapi importiere gh_99240_clear_args
         self.assertRaises(TypeError, gh_99240_clear_args, 'a', '\0b')
 
 
 klasse Object_TestCase(unittest.TestCase):
     def test_S(self):
-        from _testcapi import getargs_S
+        von _testcapi importiere getargs_S
         obj = b'bytes'
         self.assertIs(getargs_S(obj), obj)
         self.assertRaises(TypeError, getargs_S, bytearray(b'bytearray'))
@@ -1101,7 +1101,7 @@ klasse Object_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_S, memoryview(obj))
 
     def test_Y(self):
-        from _testcapi import getargs_Y
+        von _testcapi importiere getargs_Y
         obj = bytearray(b'bytearray')
         self.assertIs(getargs_Y(obj), obj)
         self.assertRaises(TypeError, getargs_Y, b'bytes')
@@ -1110,7 +1110,7 @@ klasse Object_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_Y, memoryview(obj))
 
     def test_U(self):
-        from _testcapi import getargs_U
+        von _testcapi importiere getargs_U
         obj = 'str'
         self.assertIs(getargs_U(obj), obj)
         self.assertRaises(TypeError, getargs_U, b'bytes')
@@ -1432,9 +1432,9 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
     @unittest.skipIf(_testinternalcapi is Nichts, 'needs _testinternalcapi')
     def test_gh_119213(self):
         rc, out, err = script_helper.assert_python_ok("-c", """if Wahr:
-            from test import support
+            von test importiere support
             script = '''if Wahr:
-                import _testinternalcapi
+                importiere _testinternalcapi
                 _testinternalcapi.gh_119213_getargs(spam='eggs')
                 '''
             config = dict(

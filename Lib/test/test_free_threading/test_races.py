@@ -1,13 +1,13 @@
 # It's most useful to run these tests with ThreadSanitizer enabled.
-import sys
-import functools
-import threading
-import time
-import unittest
-import _testinternalcapi
-import warnings
+importiere sys
+importiere functools
+importiere threading
+importiere time
+importiere unittest
+importiere _testinternalcapi
+importiere warnings
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 
 klasse TestBase(unittest.TestCase):

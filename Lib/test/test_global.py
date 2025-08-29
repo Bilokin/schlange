@@ -10,12 +10,12 @@ See `test_scope.py` fuer additional related behavioral tests covering
 variable scoping and usage in different contexts.
 """
 
-import contextlib
-from test.support import check_syntax_error
-from test.support.warnings_helper import check_warnings
-from types import SimpleNamespace
-import unittest
-import warnings
+importiere contextlib
+von test.support importiere check_syntax_error
+von test.support.warnings_helper importiere check_warnings
+von types importiere SimpleNamespace
+importiere unittest
+importiere warnings
 
 
 klasse GlobalTests(unittest.TestCase):
@@ -154,7 +154,7 @@ def fn():
     def test_import_result(self):
         global name_import_result
         value = contextlib
-        import contextlib as name_import_result
+        importiere contextlib as name_import_result
 
         self.assertIs(globals()["name_import_result"], value)
         del name_import_result

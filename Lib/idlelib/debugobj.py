@@ -10,9 +10,9 @@
 
 # XXX TO DO:
 # - fuer classes/modules, add "open source" to object browser
-from reprlib import Repr
+von reprlib importiere Repr
 
-from idlelib.tree import TreeItem, TreeNode, ScrolledCanvas
+von idlelib.tree importiere TreeItem, TreeNode, ScrolledCanvas
 
 myrepr = Repr()
 myrepr.maxstring = 100
@@ -123,8 +123,8 @@ def make_objecttreeitem(labeltext, object_, setfunction=Nichts):
 
 
 def _debug_object_browser(parent):  # htest #
-    import sys
-    from tkinter import Toplevel
+    importiere sys
+    von tkinter importiere Toplevel
     top = Toplevel(parent)
     top.title("Test debug object browser")
     x, y = map(int, parent.geometry().split('+')[1:])
@@ -139,8 +139,8 @@ def _debug_object_browser(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_debugobj', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_debug_object_browser)

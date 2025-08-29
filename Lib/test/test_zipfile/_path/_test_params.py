@@ -1,7 +1,7 @@
-import functools
-import types
+importiere functools
+importiere types
 
-from ._itertools import always_iterable
+von ._itertools importiere always_iterable
 
 
 def parameterize(names, value_groups):

@@ -3,7 +3,7 @@
 tabnanny -- Detection of ambiguous indentation
 
 For the time being this module is intended to be called as a script.
-However it is possible to import it into an IDE and use the function
+However it is possible to importiere it into an IDE and use the function
 check() described below.
 
 Warning: The API provided by this module is likely to change in future
@@ -18,9 +18,9 @@ releases; such changes may not be backward compatible.
 
 __version__ = "6"
 
-import os
-import sys
-import tokenize
+importiere os
+importiere sys
+importiere tokenize
 
 __all__ = ["check", "NannyNag", "process_tokens"]
 
@@ -36,7 +36,7 @@ def errdrucke(*args):
     sys.exit(1)
 
 def main():
-    import getopt
+    importiere getopt
 
     global verbose, filename_only
     try:

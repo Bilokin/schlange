@@ -1,8 +1,8 @@
-import struct
+importiere struct
 
 
 def load_tzdata(key):
-    from importlib import resources
+    von importlib importiere resources
 
     components = key.split("/")
     package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])

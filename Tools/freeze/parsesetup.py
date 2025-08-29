@@ -1,9 +1,9 @@
 # Parse Makefiles and Python Setup(.in) files.
 
-import re
+importiere re
 
 
-# Extract variable definitions from a Makefile.
+# Extract variable definitions von a Makefile.
 # Return a dictionary mapping names to values.
 # May raise IOError.
 
@@ -81,8 +81,8 @@ def getsetupinfo(filename):
 # Test the above functions.
 
 def test():
-    import sys
-    import os
+    importiere sys
+    importiere os
     wenn not sys.argv[1:]:
         drucke('usage: python parsesetup.py Makefile*|Setup* ...')
         sys.exit(2)

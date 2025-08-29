@@ -10,10 +10,10 @@
 
 """Internal support module fuer sre"""
 
-import _sre
-from . import _parser
-from ._constants import *
-from ._casefix import _EXTRA_CASES
+importiere _sre
+von . importiere _parser
+von ._constants importiere *
+von ._casefix importiere _EXTRA_CASES
 
 assert _sre.MAGIC == MAGIC, "SRE module mismatch"
 
@@ -606,7 +606,7 @@ def _hex_code(code):
     return '[%s]' % ', '.join('%#0*x' % (_sre.CODESIZE*2+2, x) fuer x in code)
 
 def dis(code):
-    import sys
+    importiere sys
 
     labels = set()
     level = 0

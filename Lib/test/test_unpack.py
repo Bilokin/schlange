@@ -1,5 +1,5 @@
-import doctest
-import unittest
+importiere doctest
+importiere unittest
 
 
 doctests = """

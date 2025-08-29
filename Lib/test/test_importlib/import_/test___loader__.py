@@ -1,7 +1,7 @@
-from importlib import machinery
-import unittest
+von importlib importiere machinery
+importiere unittest
 
-from test.test_importlib import util
+von test.test_importlib importiere util
 
 
 klasse SpecLoaderMock:

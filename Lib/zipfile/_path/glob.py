@@ -1,5 +1,5 @@
-import os
-import re
+importiere os
+importiere re
 
 _default_seps = os.sep + str(os.altsep) * bool(os.altsep)
 
@@ -65,7 +65,7 @@ klasse Translator:
 
     def replace(self, match):
         """
-        Perform the replacements fuer a match from :func:`separate`.
+        Perform the replacements fuer a match von :func:`separate`.
         """
         return match.group('set') or (
             re.escape(match.group(0))

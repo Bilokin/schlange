@@ -18,11 +18,11 @@ Options:
 Based on https://github.com/python/cpython/blob/963904335e579bfe39101adf3fd6a0cf705975ff/Lib/test/sortperf.py
 """
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import argparse
-import time
-import random
+importiere argparse
+importiere time
+importiere random
 
 
 # ===============
@@ -178,7 +178,7 @@ BENCHMARKS = {
 
 wenn __name__ == "__main__":
     # This needs `pyperf` 3rd party library:
-    import pyperf
+    importiere pyperf
 
     runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
     add_parser_args(runner.argparser)

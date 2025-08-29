@@ -1,5 +1,5 @@
 #
-# Module which supports allocation of ctypes objects from shared memory
+# Module which supports allocation of ctypes objects von shared memory
 #
 # multiprocessing/sharedctypes.py
 #
@@ -7,13 +7,13 @@
 # Licensed to PSF under a Contributor Agreement.
 #
 
-import ctypes
-import weakref
+importiere ctypes
+importiere weakref
 
-from . import heap
-from . import get_context
+von . importiere heap
+von . importiere get_context
 
-from .context import reduction, assert_spawning
+von .context importiere reduction, assert_spawning
 _ForkingPickler = reduction.ForkingPickler
 
 __all__ = ['RawValue', 'RawArray', 'Value', 'Array', 'copy', 'synchronized']
@@ -41,14 +41,14 @@ def _new_value(type_):
         size = ctypes.sizeof(type_)
     except TypeError as e:
         raise TypeError("bad typecode (must be a ctypes type or one of "
-                        "c, b, B, u, h, H, i, I, l, L, q, Q, f or d)") from e
+                        "c, b, B, u, h, H, i, I, l, L, q, Q, f or d)") von e
 
     wrapper = heap.BufferWrapper(size)
     return rebuild_ctype(type_, wrapper, Nichts)
 
 def RawValue(typecode_or_type, *args):
     '''
-    Returns a ctypes object allocated from shared memory
+    Returns a ctypes object allocated von shared memory
     '''
     type_ = typecode_to_type.get(typecode_or_type, typecode_or_type)
     obj = _new_value(type_)
@@ -58,7 +58,7 @@ def RawValue(typecode_or_type, *args):
 
 def RawArray(typecode_or_type, size_or_initializer):
     '''
-    Returns a ctypes array allocated from shared memory
+    Returns a ctypes array allocated von shared memory
     '''
     type_ = typecode_to_type.get(typecode_or_type, typecode_or_type)
     wenn isinstance(size_or_initializer, int):

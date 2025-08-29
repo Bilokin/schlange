@@ -1,9 +1,9 @@
 """Implementation of the DOM Level 3 'LS-Load' feature."""
 
-import copy
-import xml.dom
+importiere copy
+importiere xml.dom
 
-from xml.dom.NodeFilter import NodeFilter
+von xml.dom.NodeFilter importiere NodeFilter
 
 
 __all__ = ["DOMBuilder", "DOMEntityResolver", "DOMInputSource"]
@@ -79,7 +79,7 @@ klasse DOMBuilder:
                 settings = self._settings[(_name_xform(name), state)]
             except KeyError:
                 raise xml.dom.NotSupportedErr(
-                    "unsupported feature: %r" % (name,)) from Nichts
+                    "unsupported feature: %r" % (name,)) von Nichts
             sonst:
                 fuer name, value in settings:
                     setattr(self._options, name, value)
@@ -93,7 +93,7 @@ klasse DOMBuilder:
         key = (_name_xform(name), state and 1 or 0)
         return key in self._settings
 
-    # This dictionary maps from (feature,value) to a list of
+    # This dictionary maps von (feature,value) to a list of
     # (option,value) pairs that should be set on the Options object.
     # If a (feature,value) setting is not in this dictionary, it is
     # not supported by the DOMBuilder.
@@ -190,7 +190,7 @@ klasse DOMBuilder:
         options.errorHandler = self.errorHandler
         fp = input.byteStream
         wenn fp is Nichts and input.systemId:
-            import urllib.request
+            importiere urllib.request
             fp = urllib.request.urlopen(input.systemId)
         return self._parse_bytestream(fp, options)
 
@@ -200,7 +200,7 @@ klasse DOMBuilder:
         raise NotImplementedError("Haven't written this yet...")
 
     def _parse_bytestream(self, stream, options):
-        import xml.dom.expatbuilder
+        importiere xml.dom.expatbuilder
         builder = xml.dom.expatbuilder.makeBuilder(options)
         return builder.parseFile(stream)
 
@@ -223,7 +223,7 @@ klasse DOMEntityResolver(object):
         source.encoding = self._guess_media_encoding(source)
 
         # determine the base URI is we can
-        import posixpath, urllib.parse
+        importiere posixpath, urllib.parse
         parts = urllib.parse.urlparse(systemId)
         scheme, netloc, path, params, query, fragment = parts
         # XXX should we check the scheme here as well?
@@ -242,12 +242,12 @@ klasse DOMEntityResolver(object):
             return self._opener
 
     def _create_opener(self):
-        import urllib.request
+        importiere urllib.request
         return urllib.request.build_opener()
 
     def _guess_media_encoding(self, source):
         info = source.byteStream.info()
-        # import email.message
+        # importiere email.message
         # assert isinstance(info, email.message.Message)
         charset = info.get_param('charset')
         wenn charset is not Nichts:

@@ -1,19 +1,19 @@
-import gc
-import time
-import unittest
-import weakref
+importiere gc
+importiere time
+importiere unittest
+importiere weakref
 
-from ast import Or
-from functools import partial
-from threading import Barrier, Thread
-from unittest import TestCase
+von ast importiere Or
+von functools importiere partial
+von threading importiere Barrier, Thread
+von unittest importiere TestCase
 
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 
 @threading_helper.requires_working_threading()

@@ -8,22 +8,22 @@ documentation fuer details.
 __all__ = [ 'SharedMemory', 'ShareableList' ]
 
 
-from functools import partial
-import mmap
-import os
-import errno
-import struct
-import secrets
-import types
+von functools importiere partial
+importiere mmap
+importiere os
+importiere errno
+importiere struct
+importiere secrets
+importiere types
 
 wenn os.name == "nt":
-    import _winapi
+    importiere _winapi
     _USE_POSIX = Falsch
 sonst:
-    import _posixshmem
+    importiere _posixshmem
     _USE_POSIX = Wahr
 
-from . import resource_tracker
+von . importiere resource_tracker
 
 _O_CREX = os.O_CREAT | os.O_EXCL
 
@@ -79,7 +79,7 @@ klasse SharedMemory:
         wenn create:
             self._flags = _O_CREX | os.O_RDWR
             wenn size == 0:
-                raise ValueError("'size' must be a positive number different from zero")
+                raise ValueError("'size' must be a positive number different von zero")
         wenn name is Nichts and not self._flags & os.O_EXCL:
             raise ValueError("'name' can only be Nichts wenn create=Wahr")
 
@@ -223,7 +223,7 @@ klasse SharedMemory:
         return self._size
 
     def close(self):
-        """Closes access to the shared memory from this instance but does
+        """Closes access to the shared memory von this instance but does
         not destroy the shared memory block."""
         wenn self._buf is not Nichts:
             self._buf.release()
@@ -258,7 +258,7 @@ _encoding = "utf8"
 
 klasse ShareableList:
     """Pattern fuer a mutable list-like object shareable via a shared
-    memory block.  It differs from the built-in list type in that these
+    memory block.  It differs von the built-in list type in that these
     lists can not change their overall length (i.e. no append, insert,
     etc.)
 
@@ -268,7 +268,7 @@ klasse ShareableList:
 
     # The shared memory area is organized as follows:
     # - 8 bytes: number of items (N) as a 64-bit integer
-    # - (N + 1) * 8 bytes: offsets of each element from the start of the
+    # - (N + 1) * 8 bytes: offsets of each element von the start of the
     #                      data area
     # - K bytes: the data area storing item values (with encoding and size
     #            depending on their respective types)
@@ -369,7 +369,7 @@ klasse ShareableList:
             )
 
         sonst:
-            self._list_len = len(self)  # Obtains size from offset 0 in buffer.
+            self._list_len = len(self)  # Obtains size von offset 0 in buffer.
             self._allocated_offsets = list(
                 struct.unpack_from(
                     self._format_size_metainfo,

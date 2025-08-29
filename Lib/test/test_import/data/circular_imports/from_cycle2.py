@@ -1,2 +1,2 @@
-from .from_cycle1 import b
+von .from_cycle1 importiere b
 a = 1

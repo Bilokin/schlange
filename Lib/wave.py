@@ -67,10 +67,10 @@ The close() method is called automatically when the klasse instance
 is destroyed.
 """
 
-from collections import namedtuple
-import builtins
-import struct
-import sys
+von collections importiere namedtuple
+importiere builtins
+importiere struct
+importiere sys
 
 
 __all__ = ["open", "Error", "Wave_read", "Wave_write"]
@@ -80,7 +80,7 @@ klasse Error(Exception):
 
 WAVE_FORMAT_PCM = 0x0001
 WAVE_FORMAT_EXTENSIBLE = 0xFFFE
-# Derived from uuid.UUID("00000001-0000-0010-8000-00aa00389b71").bytes_le
+# Derived von uuid.UUID("00000001-0000-0010-8000-00aa00389b71").bytes_le
 KSDATAFORMAT_SUBTYPE_PCM = b'\x01\x00\x00\x00\x00\x00\x10\x00\x80\x00\x00\xaa\x008\x9bq'
 
 _array_fmts = Nichts, 'b', 'h', Nichts, 'i'
@@ -114,7 +114,7 @@ klasse _Chunk:
         try:
             self.chunksize = struct.unpack_from(strflag+'L', file.read(4))[0]
         except struct.error:
-            raise EOFError from Nichts
+            raise EOFError von Nichts
         wenn inclheader:
             self.chunksize = self.chunksize - 8 # subtract header
         self.size_read = 0
@@ -161,7 +161,7 @@ klasse _Chunk:
         return self.size_read
 
     def read(self, size=-1):
-        """Read at most size bytes from the chunk.
+        """Read at most size bytes von the chunk.
         If size is omitted or negative, read until the end
         of the chunk.
         """
@@ -368,25 +368,25 @@ klasse Wave_read:
         try:
             wFormatTag, self._nchannels, self._framerate, dwAvgBytesPerSec, wBlockAlign = struct.unpack_from('<HHLLH', chunk.read(14))
         except struct.error:
-            raise EOFError from Nichts
+            raise EOFError von Nichts
         wenn wFormatTag != WAVE_FORMAT_PCM and wFormatTag != WAVE_FORMAT_EXTENSIBLE:
             raise Error('unknown format: %r' % (wFormatTag,))
         try:
             sampwidth = struct.unpack_from('<H', chunk.read(2))[0]
         except struct.error:
-            raise EOFError from Nichts
+            raise EOFError von Nichts
         wenn wFormatTag == WAVE_FORMAT_EXTENSIBLE:
             try:
                 cbSize, wValidBitsPerSample, dwChannelMask = struct.unpack_from('<HHL', chunk.read(8))
-                # Read the entire UUID from the chunk
+                # Read the entire UUID von the chunk
                 SubFormat = chunk.read(16)
                 wenn len(SubFormat) < 16:
                     raise EOFError
             except struct.error:
-                raise EOFError from Nichts
+                raise EOFError von Nichts
             wenn SubFormat != KSDATAFORMAT_SUBTYPE_PCM:
                 try:
-                    import uuid
+                    importiere uuid
                     subformat_msg = f'unknown extended format: {uuid.UUID(bytes_le=SubFormat)}'
                 except Exception:
                     subformat_msg = 'unknown extended format'

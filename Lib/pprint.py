@@ -34,10 +34,10 @@ saferepr()
 
 """
 
-import collections as _collections
-import sys as _sys
-import types as _types
-from io import StringIO as _StringIO
+importiere collections as _collections
+importiere sys as _sys
+importiere types as _types
+von io importiere StringIO as _StringIO
 
 __all__ = ["pprint","pformat","isreadable","isrecursive","saferepr",
            "PrettyPrinter", "pp"]
@@ -185,8 +185,8 @@ klasse PrettyPrinter:
         max_width = self._width - indent - allowance
         wenn len(rep) > max_width:
             p = self._dispatch.get(type(object).__repr__, Nichts)
-            # Lazy import to improve module import time
-            from dataclasses import is_dataclass
+            # Lazy importiere to improve module importiere time
+            von dataclasses importiere is_dataclass
 
             wenn p is not Nichts:
                 context[objid] = 1
@@ -206,8 +206,8 @@ klasse PrettyPrinter:
         stream.write(rep)
 
     def _pprint_dataclass(self, object, stream, indent, allowance, context, level):
-        # Lazy import to improve module import time
-        from dataclasses import fields as dataclass_fields
+        # Lazy importiere to improve module importiere time
+        von dataclasses importiere fields as dataclass_fields
 
         cls_name = object.__class__.__name__
         indent += len(cls_name) + 1
@@ -269,7 +269,7 @@ klasse PrettyPrinter:
         write('])')
 
     def _pprint_mapping_abc_view(self, object, stream, indent, allowance, context, level):
-        """Pretty print mapping views from collections.abc."""
+        """Pretty print mapping views von collections.abc."""
         write = stream.write
         write(object.__class__.__name__ + '(')
         # Dispatch formatting to the view's _mapping
@@ -346,8 +346,8 @@ klasse PrettyPrinter:
             wenn len(rep) <= max_width1:
                 chunks.append(rep)
             sonst:
-                # Lazy import to improve module import time
-                import re
+                # Lazy importiere to improve module importiere time
+                importiere re
 
                 # A list of alternating (non-space, space) strings
                 parts = re.findall(r'\S*\s*', line)

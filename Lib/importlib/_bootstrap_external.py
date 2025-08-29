@@ -15,7 +15,7 @@ work. One should use importlib as the public-facing version of this module.
 
 # See importlib._setup() fuer what is injected into the global namespace.
 
-# When editing this code be aware that code executed at import time CANNOT
+# When editing this code be aware that code executed at importiere time CANNOT
 # reference any injected objects! This includes not only global code but also
 # anything specified at the klasse level.
 
@@ -23,19 +23,19 @@ work. One should use importlib as the public-facing version of this module.
 _bootstrap = Nichts
 
 # Import builtin modules
-import _imp
-import _io
-import sys
-import _warnings
-import marshal
+importiere _imp
+importiere _io
+importiere sys
+importiere _warnings
+importiere marshal
 
 
 _MS_WINDOWS = (sys.platform == 'win32')
 wenn _MS_WINDOWS:
-    import nt as _os
-    import winreg
+    importiere nt as _os
+    importiere winreg
 sonst:
-    import posix as _os
+    importiere posix as _os
 
 
 wenn _MS_WINDOWS:
@@ -286,7 +286,7 @@ def cache_from_source(path, debug_override=Nichts, *, optimization=Nichts):
     wenn sys.pycache_prefix is not Nichts:
         # We need an absolute path to the py file to avoid the possibility of
         # collisions within sys.pycache_prefix, wenn someone has two different
-        # `foo/bar.py` on their system and they import both of them using the
+        # `foo/bar.py` on their system and they importiere both of them using the
         # same sys.pycache_prefix. Let's say sys.pycache_prefix is
         # `C:\Bytecode`; the idea here is that wenn we get `Foo\Bar`, we first
         # make it absolute (`C:\Somewhere\Foo\Bar`), then make it root-relative
@@ -294,14 +294,14 @@ def cache_from_source(path, debug_override=Nichts, *, optimization=Nichts):
         # unambiguous `C:\Bytecode\Somewhere\Foo\Bar\`.
         head = _path_abspath(head)
 
-        # Strip initial drive from a Windows path. We know we have an absolute
+        # Strip initial drive von a Windows path. We know we have an absolute
         # path here, so the second part of the check rules out a POSIX path that
         # happens to contain a colon at the second character.
         # Slicing avoids issues with an empty (or short) `head`.
         wenn head[1:2] == ':' and head[0:1] not in path_separators:
             head = head[2:]
 
-        # Strip initial path separator from `head` to complete the conversion
+        # Strip initial path separator von `head` to complete the conversion
         # back to a root-relative path before joining.
         return _path_join(
             sys.pycache_prefix,
@@ -514,7 +514,7 @@ def _compile_bytecode(data, name=Nichts, bytecode_path=Nichts, source_path=Nicht
     """Compile bytecode as found in a pyc."""
     code = marshal.loads(data)
     wenn isinstance(code, _code_type):
-        _bootstrap._verbose_message('code object from {!r}', bytecode_path)
+        _bootstrap._verbose_message('code object von {!r}', bytecode_path)
         wenn source_path is not Nichts:
             _imp._fix_co_filename(code, source_path)
         return code
@@ -549,7 +549,7 @@ def decode_source(source_bytes):
 
     Universal newline support is used in the decoding.
     """
-    import tokenize  # To avoid bootstrap issues.
+    importiere tokenize  # To avoid bootstrap issues.
     source_bytes_readline = _io.BytesIO(source_bytes).readline
     encoding = tokenize.detect_encoding(source_bytes_readline)
     newline_decoder = _io.IncrementalNewlineDecoder(Nichts, Wahr)
@@ -568,7 +568,7 @@ def spec_from_file_location(name, location=Nichts, *, loader=Nichts,
     To indicate that the module is a package, set
     submodule_search_locations to a list of directory paths.  An
     empty list is sufficient, though its not otherwise useful to the
-    import system.
+    importiere system.
 
     The loader must take a spec as its only __init__() arg.
 
@@ -816,11 +816,11 @@ klasse SourceLoader(_LoaderBasics):
             source_bytes = self.get_data(path)
         except OSError as exc:
             raise ImportError('source not available through get_data()',
-                              name=fullname) from exc
+                              name=fullname) von exc
         return decode_source(source_bytes)
 
     def source_to_code(self, data, path, *, _optimize=-1):
-        """Return the code object compiled from source.
+        """Return the code object compiled von source.
 
         The 'data' argument can be any object type that compile() supports.
         """
@@ -895,7 +895,7 @@ klasse SourceLoader(_LoaderBasics):
         wenn source_bytes is Nichts:
             source_bytes = self.get_data(source_path)
         code_object = self.source_to_code(source_bytes, source_path)
-        _bootstrap._verbose_message('code object from {}', source_path)
+        _bootstrap._verbose_message('code object von {}', source_path)
         wenn (not sys.dont_write_bytecode and bytecode_path is not Nichts and
                 source_mtime is not Nichts):
             wenn hash_based:
@@ -933,7 +933,7 @@ klasse FileLoader:
 
     @_check_name
     def load_module(self, fullname):
-        """Load a module from a file.
+        """Load a module von a file.
 
         This method is deprecated.  Use exec_module() instead.
 
@@ -949,7 +949,7 @@ klasse FileLoader:
         return self.path
 
     def get_data(self, path):
-        """Return the data from path as raw bytes."""
+        """Return the data von path as raw bytes."""
         wenn isinstance(self, (SourceLoader, ExtensionFileLoader)):
             with _io.open_code(str(path)) as file:
                 return file.read()
@@ -959,7 +959,7 @@ klasse FileLoader:
 
     @_check_name
     def get_resource_reader(self, module):
-        from importlib.readers import FileReader
+        von importlib.readers importiere FileReader
         return FileReader(self)
 
 
@@ -1056,14 +1056,14 @@ klasse ExtensionFileLoader(FileLoader, _LoaderBasics):
         """Create an uninitialized extension module"""
         module = _bootstrap._call_with_frames_removed(
             _imp.create_dynamic, spec)
-        _bootstrap._verbose_message('extension module {!r} loaded from {!r}',
+        _bootstrap._verbose_message('extension module {!r} loaded von {!r}',
                          spec.name, self.path)
         return module
 
     def exec_module(self, module):
         """Initialize an extension module"""
         _bootstrap._call_with_frames_removed(_imp.exec_dynamic, module)
-        _bootstrap._verbose_message('extension module {!r} executed from {!r}',
+        _bootstrap._verbose_message('extension module {!r} executed von {!r}',
                          self.name, self.path)
 
     def is_package(self, fullname):
@@ -1088,7 +1088,7 @@ klasse ExtensionFileLoader(FileLoader, _LoaderBasics):
 
 klasse _NamespacePath:
     """Represents a namespace package's path.  It uses the module name
-    to find its parent module, and from there it looks up the parent's
+    to find its parent module, and von there it looks up the parent's
     __path__.  When this changes, the module's own path is recomputed,
     using path_finder.  For top-level modules, the parent module's path
     is sys.path."""
@@ -1182,14 +1182,14 @@ klasse NamespaceLoader:
         This method is deprecated.  Use exec_module() instead.
 
         """
-        # The import system never calls this method.
+        # The importiere system never calls this method.
         _bootstrap._verbose_message('namespace module loaded with path {!r}',
                                     self._path)
         # Warning implemented in _load_module_shim().
         return _bootstrap._load_module_shim(self, fullname)
 
     def get_resource_reader(self, module):
-        from importlib.readers import NamespaceReader
+        von importlib.readers importiere NamespaceReader
         return NamespaceReader(self._path)
 
 
@@ -1218,7 +1218,7 @@ klasse PathFinder:
         # https://bugs.python.org/issue45703
         _NamespacePath._epoch += 1
 
-        from importlib.metadata import MetadataPathFinder
+        von importlib.metadata importiere MetadataPathFinder
         MetadataPathFinder.invalidate_caches()
 
     @staticmethod
@@ -1236,7 +1236,7 @@ klasse PathFinder:
 
     @classmethod
     def _path_importer_cache(cls, path):
-        """Get the finder fuer the path entry from sys.path_importer_cache.
+        """Get the finder fuer the path entry von sys.path_importer_cache.
 
         If the path entry is not in the cache, find the appropriate finder
         and cache it. If no finder is available, store Nichts.
@@ -1319,7 +1319,7 @@ klasse PathFinder:
         (or all names wenn ``Nichts`` indicated) along the paths in the list
         of directories ``context.path``.
         """
-        from importlib.metadata import MetadataPathFinder
+        von importlib.metadata importiere MetadataPathFinder
         return MetadataPathFinder.find_distributions(*args, **kwargs)
 
 
@@ -1423,7 +1423,7 @@ klasse FileFinder:
         wenn not sys.platform.startswith('win'):
             self._path_cache = set(contents)
         sonst:
-            # Windows users can import modules with case-insensitive file
+            # Windows users can importiere modules with case-insensitive file
             # suffixes (for legacy reasons). Make the suffix lowercase here
             # so it's done once instead of fuer every import. This is safe as
             # the specified suffixes to check against are always specified in a
@@ -1491,7 +1491,7 @@ klasse AppleFrameworkLoader(ExtensionFileLoader):
         module = _bootstrap._call_with_frames_removed(_imp.create_dynamic, spec)
 
         _bootstrap._verbose_message(
-            "Apple framework extension module {!r} loaded from {!r} (path {!r})",
+            "Apple framework extension module {!r} loaded von {!r} (path {!r})",
             spec.name,
             spec.origin,
             path,
@@ -1553,7 +1553,7 @@ def _set_bootstrap_module(_bootstrap_module):
 
 
 def _install(_bootstrap_module):
-    """Install the path-based import components."""
+    """Install the path-based importiere components."""
     _set_bootstrap_module(_bootstrap_module)
     supported_loaders = _get_supported_file_loaders()
     sys.path_hooks.extend([FileFinder.path_hook(*supported_loaders)])

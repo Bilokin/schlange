@@ -1,17 +1,17 @@
-from __future__ import annotations
-import abc
-import typing
-from collections.abc import (
+von __future__ importiere annotations
+importiere abc
+importiere typing
+von collections.abc importiere (
     Iterable,
 )
 
-import libclinic
-from libclinic import fail
-from libclinic.function import (
+importiere libclinic
+von libclinic importiere fail
+von libclinic.function importiere (
     Module, Class, Function)
 
 wenn typing.TYPE_CHECKING:
-    from libclinic.app import Clinic
+    von libclinic.app importiere Clinic
 
 
 klasse Language(metaclass=abc.ABCMeta):

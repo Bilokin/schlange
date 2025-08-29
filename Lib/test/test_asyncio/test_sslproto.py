@@ -1,23 +1,23 @@
 """Tests fuer asyncio/sslproto.py."""
 
-import logging
-import socket
-import unittest
-import weakref
-from test import support
-from test.support import socket_helper
-from unittest import mock
+importiere logging
+importiere socket
+importiere unittest
+importiere weakref
+von test importiere support
+von test.support importiere socket_helper
+von unittest importiere mock
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
 
-import asyncio
-from asyncio import log
-from asyncio import protocols
-from asyncio import sslproto
-from test.test_asyncio import utils as test_utils
-from test.test_asyncio import functional as func_tests
+importiere asyncio
+von asyncio importiere log
+von asyncio importiere protocols
+von asyncio importiere sslproto
+von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere functional as func_tests
 
 
 def tearDownModule():
@@ -84,7 +84,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
     def test_fatal_error_no_name_error(self):
         # From issue #363.
         # _fatal_error() generates a NameError wenn sslproto.py
-        # does not import base_events.
+        # does not importiere base_events.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
         # Temporarily turn off error logging so as not to spoil test output.
@@ -98,7 +98,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
 
     def test_connection_lost(self):
         # From issue #472.
-        # yield from waiter hang wenn lost_connection was called.
+        # yield von waiter hang wenn lost_connection was called.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
         self.connection_made(
@@ -172,7 +172,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
         self.assertWahr(transport._force_close.called)
 
     def test_close_during_ssl_over_ssl(self):
-        # gh-113214: passing exceptions from the inner wrapped SSL protocol to the
+        # gh-113214: passing exceptions von the inner wrapped SSL protocol to the
         # shim transport provided by the outer SSL protocol should not raise
         # attribute errors
         outer = self.ssl_protocol(proto=self.ssl_protocol())
@@ -406,7 +406,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 asyncio.wait_for(client(srv.addr),
                                  timeout=support.SHORT_TIMEOUT))
 
-        # No garbage is left fuer SSL client from loop.create_connection, even
+        # No garbage is left fuer SSL client von loop.create_connection, even
         # wenn user stores the SSLTransport in corresponding protocol instance
         client_context = weakref.ref(client_context)
         support.gc_collect()

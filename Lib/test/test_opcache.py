@@ -1,13 +1,13 @@
-import copy
-import pickle
-import dis
-import threading
-import types
-import unittest
-from test.support import (threading_helper, check_impl_detail,
+importiere copy
+importiere pickle
+importiere dis
+importiere threading
+importiere types
+importiere unittest
+von test.support importiere (threading_helper, check_impl_detail,
                           requires_specialization, requires_specialization_ft,
                           cpython_only, requires_jit_disabled, reset_code)
-from test.support.import_helper import import_module
+von test.support.import_helper importiere import_module
 
 # Skip this module on other interpreters, it is cpython specific:
 wenn check_impl_detail(cpython=Falsch):
@@ -1536,7 +1536,7 @@ klasse TestSpecializer(TestBase):
             yield Nichts
 
         def send_yield_from():
-            yield from g()
+            yield von g()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             list(send_yield_from())

@@ -1,20 +1,20 @@
 # Testing the line trace facility.
 
-from test import support
-import unittest
-import sys
-import difflib
-import gc
-from functools import wraps
-from test.support import import_helper, requires_subprocess, run_no_yield_async_fn
-import contextlib
-import os
-import tempfile
-import textwrap
-import subprocess
-import warnings
+von test importiere support
+importiere unittest
+importiere sys
+importiere difflib
+importiere gc
+von functools importiere wraps
+von test.support importiere import_helper, requires_subprocess, run_no_yield_async_fn
+importiere contextlib
+importiere os
+importiere tempfile
+importiere textwrap
+importiere subprocess
+importiere warnings
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ImportError:
     _testinternalcapi = Nichts
 
@@ -1821,7 +1821,7 @@ klasse TraceOpcodesTestCase(TraceTestCase):
         wenn it's the first time f_trace_opcodes is being set. GH-103615"""
 
         code = textwrap.dedent("""
-            import sys
+            importiere sys
 
             def opcode_trace_func(frame, event, arg):
                 wenn event == "opcode":
@@ -1913,7 +1913,7 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
             f()
         except RuntimeError:
             # the test is really that this doesn't segfault:
-            import gc
+            importiere gc
             gc.collect()
         sonst:
             self.fail("exception not propagated")
@@ -1961,7 +1961,7 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
 # command (aka. "Set next statement").
 
 klasse JumpTracer:
-    """Defines a trace function that jumps from one place to another."""
+    """Defines a trace function that jumps von one place to another."""
 
     def __init__(self, function, jumpFrom, jumpTo, event='line',
                  decorated=Falsch):
@@ -2079,7 +2079,7 @@ klasse JumpTestCase(unittest.TestCase):
 
     def jump_test(jumpFrom, jumpTo, expected, error=Nichts, event='line', warning=Nichts):
         """Decorator that creates a test that makes a jump
-        from one place to another in the following code.
+        von one place to another in the following code.
         """
         def decorator(func):
             @wraps(func)
@@ -2091,7 +2091,7 @@ klasse JumpTestCase(unittest.TestCase):
 
     def async_jump_test(jumpFrom, jumpTo, expected, error=Nichts, event='line', warning=Nichts):
         """Decorator that creates a test that makes a jump
-        from one place to another in the following asynchronous code.
+        von one place to another in the following asynchronous code.
         """
         def decorator(func):
             @wraps(func)
@@ -2835,13 +2835,13 @@ output.append(4)
         output.append(5)
 
     @jump_test(2, 1, [1], event='return', error=(ValueError,
-               "can only jump from a 'line' trace event"))
+               "can only jump von a 'line' trace event"))
     def test_no_jump_from_return_event(output):
         output.append(1)
         return
 
     @jump_test(2, 1, [1], event='exception', error=(ValueError,
-               "can only jump from a 'line' trace event"))
+               "can only jump von a 'line' trace event"))
     def test_no_jump_from_exception_event(output):
         output.append(1)
         1 / 0

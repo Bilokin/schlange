@@ -1,14 +1,14 @@
-import doctest
-import textwrap
-import traceback
-import types
-import unittest
+importiere doctest
+importiere textwrap
+importiere traceback
+importiere types
+importiere unittest
 
-from test.support import BrokenIter
+von test.support importiere BrokenIter
 
 
 doctests = """
-########### Tests borrowed from or inspired by test_genexps.py ############
+########### Tests borrowed von or inspired by test_genexps.py ############
 
 Test simple loop with conditional
 
@@ -63,7 +63,7 @@ Verify that syntax error's are raised fuer listcomps used as lvalues
     SyntaxError: ...
 
 
-########### Tests borrowed from or inspired by test_generators.py ############
+########### Tests borrowed von or inspired by test_generators.py ############
 
 Make a nested list comprehension that acts like range()
 
@@ -348,7 +348,7 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_introspecting_frame_locals(self):
         code = """
-            import sys
+            importiere sys
             [i fuer i in range(2)]
             i = 20
             sys._getframe().f_locals
@@ -652,7 +652,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             val = "a" in [sys._getframe().f_locals fuer a in [0]][0]
         """
-        import sys
+        importiere sys
         self._check_in_scopes(code, {"val": Falsch}, ns={"sys": sys})
 
         code = """
@@ -715,7 +715,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         self._check_in_scopes(code, {"x": 2, "y": [2]}, ns={"x": 3}, scopes=["function", "module"])
 
     def test_exception_locations(self):
-        # The location of an exception raised from __init__ or
+        # The location of an exception raised von __init__ or
         # __next__ should be the iterator expression
 
         def init_raises():

@@ -12,8 +12,8 @@ __all__ = [
     ]
 
 
-from base64 import encodebytes as _bencode
-from quopri import encodestring as _encodestring
+von base64 importiere encodebytes as _bencode
+von quopri importiere encodestring as _encodestring
 
 
 def _qencode(s):
@@ -51,7 +51,7 @@ def encode_7or8bit(msg):
         # There's no payload.  For backwards compatibility we use 7bit
         msg['Content-Transfer-Encoding'] = '7bit'
         return
-    # We play a trick to make this go fast.  If decoding from ASCII succeeds,
+    # We play a trick to make this go fast.  If decoding von ASCII succeeds,
     # we know the data must be 7bit, otherwise treat it as 8bit.
     try:
         orig.decode('ascii')

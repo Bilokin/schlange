@@ -1,9 +1,9 @@
 # Test the internal _wmi module on Windows
 # This is used by the platform module, and potentially others
 
-import unittest
-from test import support
-from test.support import import_helper
+importiere unittest
+von test importiere support
+von test.support importiere import_helper
 
 
 # Do this first so test will be skipped wenn module doesn't exist
@@ -81,7 +81,7 @@ klasse WmiTests(unittest.TestCase):
             pass
 
     def test_wmi_query_threads(self):
-        from concurrent.futures import ThreadPoolExecutor
+        von concurrent.futures importiere ThreadPoolExecutor
         query = "SELECT ProcessId FROM Win32_Process WHERE ProcessId < 1000"
         with ThreadPoolExecutor(4) as pool:
             task = [pool.submit(wmi_exec_query, query) fuer _ in range(32)]

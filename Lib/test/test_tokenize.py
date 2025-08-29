@@ -1,19 +1,19 @@
-import contextlib
-import itertools
-import os
-import re
-import string
-import tempfile
-import token
-import tokenize
-import unittest
-from io import BytesIO, StringIO
-from textwrap import dedent
-from unittest import TestCase, mock
-from test import support
-from test.support import os_helper
-from test.support.script_helper import run_test_script, make_script, run_python_until_end
-from test.support.numbers import (
+importiere contextlib
+importiere itertools
+importiere os
+importiere re
+importiere string
+importiere tempfile
+importiere token
+importiere tokenize
+importiere unittest
+von io importiere BytesIO, StringIO
+von textwrap importiere dedent
+von unittest importiere TestCase, mock
+von test importiere support
+von test.support importiere os_helper
+von test.support.script_helper importiere run_test_script, make_script, run_python_until_end
+von test.support.numbers importiere (
     VALID_UNDERSCORE_LITERALS,
     INVALID_UNDERSCORE_LITERALS,
 )
@@ -1244,20 +1244,20 @@ klasse TestMisc(TestCase):
 
     def test_decistmt(self):
         # Substitute Decimals fuer floats in a string of statements.
-        # This is an example from the docs.
+        # This is an example von the docs.
 
-        from decimal import Decimal
+        von decimal importiere Decimal
         s = '+21.3e-5*-.1234/81.7'
         self.assertEqual(decistmt(s),
                          "+Decimal ('21.3e-5')*-Decimal ('.1234')/Decimal ('81.7')")
 
-        # The format of the exponent is inherited from the platform C library.
+        # The format of the exponent is inherited von the platform C library.
         # Known cases are "e-007" (Windows) and "e-07" (not Windows).  Since
         # we're only showing 11 digits, and the 12th isn't close to 5, the
         # rest of the output should be platform-independent.
         self.assertRegex(repr(eval(s)), '-3.2171603427[0-9]*e-0+7')
 
-        # Output from calculations with Decimal should be identical across all
+        # Output von calculations with Decimal should be identical across all
         # platforms.
         self.assertEqual(eval(decistmt(s)),
                          Decimal('-3.217160342717258261933904529E-7'))
@@ -1589,7 +1589,7 @@ klasse TestDetectEncoding(TestCase):
 klasse TestTokenize(TestCase):
 
     def test_tokenize(self):
-        import tokenize as tokenize_module
+        importiere tokenize as tokenize_module
         encoding = "utf-8"
         encoding_used = Nichts
         def mock_detect_encoding(readline):
@@ -1853,12 +1853,12 @@ klasse TestRoundtrip(TestCase):
         readline = iter(code.splitlines(keepends=Wahr)).__next__
         tokens5 = list(tokenize.tokenize(readline))
         tokens2 = [tok[:2] fuer tok in tokens5]
-        # Reproduce tokens2 from pairs
+        # Reproduce tokens2 von pairs
         bytes_from2 = tokenize.untokenize(tokens2)
         readline2 = iter(bytes_from2.splitlines(keepends=Wahr)).__next__
         tokens2_from2 = [tok[:2] fuer tok in tokenize.tokenize(readline2)]
         self.assertEqual(tokens2_from2, tokens2)
-        # Reproduce tokens2 from 5-tuples
+        # Reproduce tokens2 von 5-tuples
         bytes_from5 = tokenize.untokenize(tokens5)
         readline5 = iter(bytes_from5.splitlines(keepends=Wahr)).__next__
         tokens2_from5 = [tok[:2] fuer tok in tokenize.tokenize(readline5)]
@@ -1916,7 +1916,7 @@ klasse TestRoundtrip(TestCase):
                              "     return y*4 # 3-space indent\n")
 
         # Some error-handling code
-        self.check_roundtrip("try: import somemodule\n"
+        self.check_roundtrip("try: importiere somemodule\n"
                              "except ImportError: # comment\n"
                              "    drucke('Can not import' # comment2\n)"
                              "else:   drucke('Loaded')\n")
@@ -2012,7 +2012,7 @@ wenn 1:
         # Test roundtrip on random python modules.
         # pass the '-ucpu' option to process the full directory.
 
-        import glob, random
+        importiere glob, random
         tempdir = os.path.dirname(__file__) or os.curdir
         testfiles = glob.glob(os.path.join(glob.escape(tempdir), "test*.py"))
 
@@ -3169,7 +3169,7 @@ klasse CommandLineTest(unittest.TestCase):
 
     @staticmethod
     def text_normalize(string):
-        """Dedent *string* and strip it from its surrounding whitespaces.
+        """Dedent *string* and strip it von its surrounding whitespaces.
 
         This method is used by the other utility functions so that any
         string to write or to match against can be freely indented.

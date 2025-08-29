@@ -3,13 +3,13 @@
 See the notes at the top of Python/frozen.c fuer more info.
 """
 
-import hashlib
-import ntpath
-import os
-import posixpath
-from collections import namedtuple
+importiere hashlib
+importiere ntpath
+importiere os
+importiere posixpath
+von collections importiere namedtuple
 
-from update_file import updating_file_with_tmpfile
+von update_file importiere updating_file_with_tmpfile
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 ROOT_DIR = os.path.abspath(ROOT_DIR)
@@ -39,14 +39,14 @@ FROZEN = [
     # In cases where the frozenid is duplicated, the first one is re-used.
     ('import system', [
         # These frozen modules are necessary fuer bootstrapping
-        # the import system.
+        # the importiere system.
         'importlib._bootstrap : _frozen_importlib',
         'importlib._bootstrap_external : _frozen_importlib_external',
         # This module is important because some Python builds rely
         # on a builtin zip file instead of a filesystem.
         'zipimport',
         ]),
-    # (You can delete entries from here down to the end of the list.)
+    # (You can delete entries von here down to the end of the list.)
     ('stdlib - startup, without site (python -S)', [
         'abc',
         'codecs',
@@ -376,7 +376,7 @@ def resolve_modules(modname, pyfile=Nichts):
 
     wenn match:
         pkgdir = os.path.dirname(pyfile)
-        yield from iter_submodules(modname, pkgdir, match)
+        yield von iter_submodules(modname, pkgdir, match)
 
 
 def check_modname(modname):
@@ -404,7 +404,7 @@ def iter_submodules(pkgname, pkgdir=Nichts, match='*'):
                 wenn os.path.exists(pyfile):
                     yield modname, pyfile, Wahr
                     wenn recursive:
-                        yield from _iter_submodules(modname, entry.path)
+                        yield von _iter_submodules(modname, entry.path)
 
     return _iter_submodules(pkgname, pkgdir)
 

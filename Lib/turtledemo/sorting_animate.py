@@ -9,8 +9,8 @@ Shelves are implemented using builtin lists.
 Blocks are turtles with shape "square", but
 stretched to rectangles by shapesize()
 """
-from turtle import *
-import random
+von turtle importiere *
+importiere random
 
 
 klasse Block(Turtle):

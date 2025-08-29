@@ -1,11 +1,11 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-import os
-import sys
+importiere os
+importiere sys
 
 # types
 wenn Falsch:
-    from typing import IO
+    von typing importiere IO
 
 
 trace_file: IO[str] | Nichts = Nichts
@@ -15,7 +15,7 @@ wenn trace_filename := os.environ.get("PYREPL_TRACE"):
 
 
 wenn sys.platform == "emscripten":
-    from posix import _emscripten_log
+    von posix importiere _emscripten_log
 
     def trace(line: str, *k: object, **kw: object) -> Nichts:
         wenn "PYREPL_TRACE" not in os.environ:

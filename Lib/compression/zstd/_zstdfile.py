@@ -1,7 +1,7 @@
-import io
-from os import PathLike
-from _zstd import ZstdCompressor, ZstdDecompressor, ZSTD_DStreamOutSize
-from compression._common import _streams
+importiere io
+von os importiere PathLike
+von _zstd importiere ZstdCompressor, ZstdDecompressor, ZSTD_DStreamOutSize
+von compression._common importiere _streams
 
 __all__ = ('ZstdFile', 'open')
 
@@ -162,7 +162,7 @@ klasse ZstdFile(_streams.BaseStream):
             self._fp.flush()
 
     def read(self, size=-1):
-        """Read up to size uncompressed bytes from the file.
+        """Read up to size uncompressed bytes von the file.
 
         If size is negative or omitted, read until EOF is reached.
         Returns b'' wenn the file is already at EOF.
@@ -174,7 +174,7 @@ klasse ZstdFile(_streams.BaseStream):
 
     def read1(self, size=-1):
         """Read up to size uncompressed bytes, while trying to avoid
-        making multiple reads from the underlying stream. Reads up to a
+        making multiple reads von the underlying stream. Reads up to a
         buffer's worth of data wenn size is negative.
 
         Returns b'' wenn the file is at EOF.
@@ -197,7 +197,7 @@ klasse ZstdFile(_streams.BaseStream):
 
     def readinto1(self, b):
         """Read bytes into b, while trying to avoid making multiple reads
-        from the underlying stream.
+        von the underlying stream.
 
         Returns the number of bytes read (0 fuer EOF).
         """
@@ -205,7 +205,7 @@ klasse ZstdFile(_streams.BaseStream):
         return self._buffer.readinto1(b)
 
     def readline(self, size=-1):
-        """Read a line of uncompressed bytes from the file.
+        """Read a line of uncompressed bytes von the file.
 
         The terminating newline (if present) is retained. If size is
         non-negative, no more than size bytes will be read (in which
@@ -298,7 +298,7 @@ def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
 
     file can be either a file name (given as a str, bytes, or PathLike object),
     in which case the named file is opened, or it can be an existing file object
-    to read from or write to.
+    to read von or write to.
 
     The mode parameter can be 'r', 'rb' (default), 'w', 'wb', 'x', 'xb', 'a',
     'ab' fuer binary mode, or 'rt', 'wt', 'xt', 'at' fuer text mode.

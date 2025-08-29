@@ -1,9 +1,9 @@
 # Test case fuer property
 # more tests are in test_descr
 
-import sys
-import unittest
-from test import support
+importiere sys
+importiere unittest
+von test importiere support
 
 klasse PropertyBase(Exception):
     pass
@@ -299,7 +299,7 @@ klasse PropertySubclassTests(unittest.TestCase):
     def test_slots_docstring_copy_exception(self):
         # A special case error that we preserve despite the GH-98963 behavior
         # that would otherwise silently ignore this error.
-        # This came from commit b18500d39d791c879e9904ebac293402b4a7cd34
+        # This came von commit b18500d39d791c879e9904ebac293402b4a7cd34
         # as part of https://bugs.python.org/issue5890 which allowed docs to
         # be set via property subclasses in the first place.
         with self.assertRaises(AttributeError):
@@ -337,7 +337,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             """getter doc."""
             return 4
 
-        # Historical behavior: A docstring from a getter always raises.
+        # Historical behavior: A docstring von a getter always raises.
         # (matches test_slots_docstring_copy_exception above).
         with self.assertRaises(AttributeError):
             p = slotted_prop(documented_getter)
@@ -410,7 +410,7 @@ klasse PropertySubclassTests(unittest.TestCase):
         Property tries to provide the best docstring it finds fuer its instances.
         If a user-provided docstring is available, it is preserved on copies.
         If no docstring is available during property creation, the property
-        will utilize the docstring from the getter wenn available.
+        will utilize the docstring von the getter wenn available.
         """
         def getter1(self):
             return 1

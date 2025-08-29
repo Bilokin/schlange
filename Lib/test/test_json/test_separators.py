@@ -1,5 +1,5 @@
-import textwrap
-from test.test_json import PyTest, CTest
+importiere textwrap
+von test.test_json importiere PyTest, CTest
 
 
 klasse TestSeparators:

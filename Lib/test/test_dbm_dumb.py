@@ -2,16 +2,16 @@
    Original by Roger E. Masse
 """
 
-import contextlib
-import io
-import operator
-import os
-import stat
-import unittest
-import dbm.dumb as dumbdbm
-from test import support
-from test.support import os_helper
-from functools import partial
+importiere contextlib
+importiere io
+importiere operator
+importiere os
+importiere stat
+importiere unittest
+importiere dbm.dumb as dumbdbm
+von test importiere support
+von test.support importiere os_helper
+von functools importiere partial
 
 _fname = os_helper.TESTFN
 
@@ -57,7 +57,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             # This shouldn't fail, but doesn't work like Unix either.
             expected_mode = 0o666
 
-        import stat
+        importiere stat
         st = os.stat(_fname + '.dat')
         self.assertEqual(stat.S_IMODE(st.st_mode), expected_mode)
         st = os.stat(_fname + '.dir')
@@ -171,7 +171,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
     # Perform randomized operations.  This doesn't make assumptions about
     # what *might* fail.
     def test_random(self):
-        import random
+        importiere random
         d = {}  # mirror the database
         fuer dummy in range(5):
             with contextlib.closing(dumbdbm.open(_fname)) as f:

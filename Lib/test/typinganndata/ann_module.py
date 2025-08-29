@@ -5,14 +5,14 @@ The module fuer testing variable annotations.
 Empty lines above are fuer good reason (testing fuer correct line numbers)
 """
 
-from typing import Optional
-from functools import wraps
+von typing importiere Optional
+von functools importiere wraps
 
 klasse C:
 
     x = 5; y: Optional['C'] = Nichts
 
-from typing import Tuple
+von typing importiere Tuple
 x: int = 5; y: str = x; f: Tuple[int, int]
 
 klasse M(type):
@@ -23,7 +23,7 @@ klasse M(type):
 klasse D(C):
     j: str = 'hi'; k: str= 'bye'
 
-from types import new_class
+von types importiere new_class
 h_class = new_class('H', (C,))
 j_class = new_class('J')
 

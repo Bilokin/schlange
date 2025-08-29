@@ -1,6 +1,6 @@
-import unittest
-from test.support import import_helper
-from collections import UserList
+importiere unittest
+von test.support importiere import_helper
+von collections importiere UserList
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 

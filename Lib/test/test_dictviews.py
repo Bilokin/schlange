@@ -1,8 +1,8 @@
-import collections.abc
-import copy
-import pickle
-import unittest
-from test.support import skip_emscripten_stack_overflow, skip_wasi_stack_overflow, exceeds_recursion_limit
+importiere collections.abc
+importiere copy
+importiere pickle
+importiere unittest
+von test.support importiere skip_emscripten_stack_overflow, skip_wasi_stack_overflow, exceeds_recursion_limit
 
 klasse DictSetTest(unittest.TestCase):
 

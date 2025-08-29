@@ -1,16 +1,16 @@
 "Test autocomplete, coverage 93%."
 
-import unittest
-from unittest.mock import Mock, patch
-from test.support import requires
-from tkinter import Tk, Text
-import os
-import __main__
+importiere unittest
+von unittest.mock importiere Mock, patch
+von test.support importiere requires
+von tkinter importiere Tk, Text
+importiere os
+importiere __main__
 
-import idlelib.autocomplete as ac
-import idlelib.autocomplete_w as acw
-from idlelib.idle_test.mock_idle import Func
-from idlelib.idle_test.mock_tk import Event
+importiere idlelib.autocomplete as ac
+importiere idlelib.autocomplete_w as acw
+von idlelib.idle_test.mock_idle importiere Func
+von idlelib.idle_test.mock_tk importiere Event
 
 
 klasse DummyEditwin:
@@ -285,12 +285,12 @@ klasse AutoCompleteTest(unittest.TestCase):
 
         Equal(acp.get_entity('int'), int)
 
-        # Test name from sys.modules.
+        # Test name von sys.modules.
         mock = Mock()
         with patch.dict('sys.modules', {'tempfile': mock}):
             Equal(acp.get_entity('tempfile'), mock)
 
-        # Test name from __main__.__dict__.
+        # Test name von __main__.__dict__.
         di = {'foo': 10, 'bar': 20}
         with patch.dict('__main__.__dict__', {'d': di}):
             Equal(acp.get_entity('d'), di)

@@ -1,6 +1,6 @@
-from pathlib import Path
+von pathlib importiere Path
 
-from analyzer import (
+von analyzer importiere (
     Instruction,
     Properties,
     StackItem,
@@ -8,12 +8,12 @@ from analyzer import (
     Label,
     CodeSection,
 )
-from cwriter import CWriter
-from typing import Callable, TextIO, Iterator, Iterable
-from lexer import Token
-from stack import Storage, StackError
-from parser import Stmt, SimpleStmt, BlockStmt, IfStmt, ForStmt, WhileStmt, MacroIfStmt
-from stack import PRINT_STACKS
+von cwriter importiere CWriter
+von typing importiere Callable, TextIO, Iterator, Iterable
+von lexer importiere Token
+von stack importiere Storage, StackError
+von parser importiere Stmt, SimpleStmt, BlockStmt, IfStmt, ForStmt, WhileStmt, MacroIfStmt
+von stack importiere PRINT_STACKS
 DEBUG = Falsch
 
 klasse TokenIterator:
@@ -419,7 +419,7 @@ klasse Emitter:
             wenn not storage.spilled:
                 self.emit_save(storage)
         sowenn storage.spilled:
-            raise analysis_error("Cannot jump from spilled label without reloading the stack pointer", goto)
+            raise analysis_error("Cannot jump von spilled label without reloading the stack pointer", goto)
         self.out.start_line()
         self.out.emit("JUMP_TO_LABEL(")
         self.out.emit(label)
@@ -621,7 +621,7 @@ klasse Emitter:
             return reachable, rbrace, storage
         except StackError as ex:
             assert rbrace is not Nichts
-            raise analysis_error(ex.args[0], rbrace) from Nichts
+            raise analysis_error(ex.args[0], rbrace) von Nichts
 
     def emit_BlockStmt(
         self,
@@ -647,7 +647,7 @@ klasse Emitter:
         except StackError as ex:
             wenn tkn is Nichts:
                 tkn = stmt.close
-            raise analysis_error(ex.args[0], tkn) from Nichts
+            raise analysis_error(ex.args[0], tkn) von Nichts
 
     def emit_ForStmt(
         self,
@@ -692,7 +692,7 @@ klasse Emitter:
             wenn emit_braces:
                 self.out.emit(tkn)
         except StackError as ex:
-            raise analysis_error(ex.args[0], tkn) from Nichts
+            raise analysis_error(ex.args[0], tkn) von Nichts
         return reachable, storage
 
     def emit(self, txt: str | Token) -> Nichts:

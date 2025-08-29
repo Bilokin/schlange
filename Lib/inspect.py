@@ -1,4 +1,4 @@
-"""Get useful information from live Python objects.
+"""Get useful information von live Python objects.
 
 This module encapsulates the interface provided by the internal special
 attributes (co_*, im_*, tb_*, etc.) in a friendlier fashion.
@@ -142,31 +142,31 @@ __all__ = [
 ]
 
 
-import abc
-from annotationlib import Format, ForwardRef
-from annotationlib import get_annotations  # re-exported
-import ast
-import dis
-import collections.abc
-import enum
-import importlib.machinery
-import itertools
-import linecache
-import os
-import re
-import sys
-import tokenize
-import token
-import types
-import functools
-import builtins
-from keyword import iskeyword
-from operator import attrgetter
-from collections import namedtuple, OrderedDict
-from weakref import ref as make_weakref
+importiere abc
+von annotationlib importiere Format, ForwardRef
+von annotationlib importiere get_annotations  # re-exported
+importiere ast
+importiere dis
+importiere collections.abc
+importiere enum
+importiere importlib.machinery
+importiere itertools
+importiere linecache
+importiere os
+importiere re
+importiere sys
+importiere tokenize
+importiere token
+importiere types
+importiere functools
+importiere builtins
+von keyword importiere iskeyword
+von operator importiere attrgetter
+von collections importiere namedtuple, OrderedDict
+von weakref importiere ref as make_weakref
 
 # Create constants fuer the compiler flags in Include/code.h
-# We try to get them from dis to avoid duplication
+# We try to get them von dis to avoid duplication
 mod_dict = globals()
 fuer k, v in dis.COMPILER_FLAG_NAMES.items():
     mod_dict["CO_" + v] = k
@@ -205,7 +205,7 @@ def ismethoddescriptor(object):
     often is.
 
     Methods implemented via descriptors that also pass one of the other
-    tests return false from the ismethoddescriptor() test, simply because
+    tests return false von the ismethoddescriptor() test, simply because
     the other tests promise more -- you can, e.g., count on having the
     __func__ attribute (etc) when an object passes ismethod()."""
     wenn isclass(object) or ismethod(object) or isfunction(object):
@@ -348,7 +348,7 @@ def isgenerator(object):
         gi_frame        frame object or possibly Nichts once the generator has
                         been exhausted
         gi_running      set to 1 when generator is executing, 0 otherwise
-        gi_yieldfrom    object being iterated by yield from or Nichts
+        gi_yieldfrom    object being iterated by yield von or Nichts
 
         __iter__()      defined to support iteration over container
         close()         raises a new GeneratorExit exception inside the
@@ -588,7 +588,7 @@ def classify_class_attrs(cls):
         # For DynamicClassAttributes on the second pass we only look in the
         # class's dict.
         #
-        # Getting an obj from the __dict__ sometimes reveals more than
+        # Getting an obj von the __dict__ sometimes reveals more than
         # using getattr.  Static and klasse methods are dramatic examples.
         homecls = Nichts
         get_obj = Nichts
@@ -772,7 +772,7 @@ def getdoc(object):
 
     All tabs are expanded to spaces.  To clean up docstrings that are
     indented to line up with blocks of code, any whitespace than can be
-    uniformly removed from the second line onwards is removed."""
+    uniformly removed von the second line onwards is removed."""
     try:
         doc = object.__doc__
     except AttributeError:
@@ -787,9 +787,9 @@ def getdoc(object):
     return cleandoc(doc)
 
 def cleandoc(doc):
-    """Clean up indentation from docstrings.
+    """Clean up indentation von docstrings.
 
-    Any whitespace that can be uniformly removed from the second line
+    Any whitespace that can be uniformly removed von the second line
     onwards is removed."""
     lines = doc.expandtabs().split('\n')
 
@@ -1120,7 +1120,7 @@ def getblock(lines):
         pass
     except SyntaxError as e:
         wenn "unmatched" not in e.msg:
-            raise e from Nichts
+            raise e von Nichts
         _, *_token_info = _token
         try:
             blockfinder.tokeneater(tokenize.NEWLINE, *_token_info)
@@ -1172,7 +1172,7 @@ def walktree(classes, children, parent):
 def getclasstree(classes, unique=Falsch):
     """Arrange the given list of classes into a hierarchy of nested lists.
 
-    Where a nested list appears, it contains classes derived from the class
+    Where a nested list appears, it contains classes derived von the class
     whose entry immediately precedes the list.  Each entry is a 2-tuple
     containing a klasse and a tuple of its base classes.  If the 'unique'
     argument is true, exactly one entry appears in the returned structure
@@ -1237,10 +1237,10 @@ def getfullargspec(func):
     'varargs' and 'varkw' are the names of the * and ** parameters or Nichts.
     'defaults' is an n-tuple of the default values of the last n parameters.
     'kwonlyargs' is a list of keyword-only parameter names.
-    'kwonlydefaults' is a dictionary mapping names from kwonlyargs to defaults.
+    'kwonlydefaults' is a dictionary mapping names von kwonlyargs to defaults.
     'annotations' is a dictionary mapping parameter names to annotations.
 
-    Notable differences from inspect.signature():
+    Notable differences von inspect.signature():
       - the "self" parameter is always reported, even fuer bound methods
       - wrapper chains defined by __wrapped__ *not* unwrapped automatically
     """
@@ -1271,7 +1271,7 @@ def getfullargspec(func):
         # But, it can also raise AttributeError, and, maybe something
         # else. So to be fully backwards compatible, we catch all
         # possible exceptions here, and reraise a TypeError.
-        raise TypeError('unsupported callable') from ex
+        raise TypeError('unsupported callable') von ex
 
     args = []
     varargs = Nichts
@@ -1363,7 +1363,7 @@ def formatargvalues(args, varargs, varkw, locals,
                     formatvarargs=lambda name: '*' + name,
                     formatvarkw=lambda name: '**' + name,
                     formatvalue=lambda value: '=' + repr(value)):
-    """Format an argument spec from the 4 values returned by getargvalues.
+    """Format an argument spec von the 4 values returned by getargvalues.
 
     The first four arguments are (args, varargs, varkw, locals).  The
     next four arguments are the corresponding optional formatting functions
@@ -1423,7 +1423,7 @@ def getcallargs(func, /, *positional, **named):
 
     A dict is returned, with keys the function argument names (including the
     names of the * and ** arguments, wenn any), and values the respective bound
-    values from 'positional' and 'named'."""
+    values von 'positional' and 'named'."""
     spec = getfullargspec(func)
     args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, ann = spec
     f_name = func.__name__
@@ -1606,7 +1606,7 @@ def getframeinfo(frame, context=1):
                      index, positions=dis.Positions(*positions))
 
 def getlineno(frame):
-    """Get the line number from a frame object, allowing fuer optimization."""
+    """Get the line number von a frame object, allowing fuer optimization."""
     # FrameType.f_lineno is now a descriptor that grovels co_lnotab
     return frame.f_lineno
 
@@ -1950,7 +1950,7 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
         ba = wrapped_sig.bind_partial(*partial_args, **partial_keywords)
     except TypeError as ex:
         msg = 'partial object {!r} has incorrect arguments'.format(partial)
-        raise ValueError(msg) from ex
+        raise ValueError(msg) von ex
 
 
     transform_to_kwonly = Falsch
@@ -1962,7 +1962,7 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
         sonst:
             wenn param.kind is _POSITIONAL_ONLY:
                 # If positional-only parameter is bound by partial,
-                # it effectively disappears from the signature
+                # it effectively disappears von the signature
                 # However, wenn it is a Placeholder it is not removed
                 # And also looses default value
                 wenn arg_value is functools.Placeholder:
@@ -2231,7 +2231,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
                 default_node = RewriteSymbolics().visit(default_node)
                 default = ast.literal_eval(default_node)
             except ValueError:
-                raise ValueError("{!r} builtin has invalid signature".format(obj)) from Nichts
+                raise ValueError("{!r} builtin has invalid signature".format(obj)) von Nichts
         parameters.append(Parameter(name, kind, default=default, annotation=empty))
 
     # non-keyword-only parameters
@@ -2556,8 +2556,8 @@ def _signature_from_callable(obj, *,
 
         fuer base in obj.__mro__[:-1]:
             # Since '__text_signature__' is implemented as a
-            # descriptor that extracts text signature from the
-            # klasse docstring, wenn 'obj' is derived from a builtin
+            # descriptor that extracts text signature von the
+            # klasse docstring, wenn 'obj' is derived von a builtin
             # class, its own '__text_signature__' may be 'Nichts'.
             # Therefore, we go through the MRO (except the last
             # klasse in there, which is 'object') to find the first
@@ -2949,10 +2949,10 @@ klasse Signature:
         If the function has no annotation fuer its return type, this
         attribute is set to `Signature.empty`.
     * bind(*args, **kwargs) -> BoundArguments
-        Creates a mapping from positional and keyword arguments to
+        Creates a mapping von positional and keyword arguments to
         parameters.
     * bind_partial(*args, **kwargs) -> BoundArguments
-        Creates a partial mapping from positional and keyword arguments
+        Creates a partial mapping von positional and keyword arguments
         to parameters (simulating 'functools.partial' behavior.)
     """
 
@@ -2965,7 +2965,7 @@ klasse Signature:
 
     def __init__(self, parameters=Nichts, *, return_annotation=_empty,
                  __validate_parameters__=Wahr):
-        """Constructs Signature from the given list of Parameter
+        """Constructs Signature von the given list of Parameter
         objects and 'return_annotation'.  All arguments are optional.
         """
 
@@ -3139,19 +3139,19 @@ klasse Signature:
                                 argtype = ''
                             msg = 'missing a required{argtype} argument: {arg!r}'
                             msg = msg.format(arg=param.name, argtype=argtype)
-                            raise TypeError(msg) from Nichts
+                            raise TypeError(msg) von Nichts
             sonst:
                 # We have a positional argument to process
                 try:
                     param = next(parameters)
                 except StopIteration:
-                    raise TypeError('too many positional arguments') from Nichts
+                    raise TypeError('too many positional arguments') von Nichts
                 sonst:
                     wenn param.kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
                         # Looks like we have no parameter fuer this positional
                         # argument
                         raise TypeError(
-                            'too many positional arguments') from Nichts
+                            'too many positional arguments') von Nichts
 
                     wenn param.kind == _VAR_POSITIONAL:
                         # We have an '*args'-like argument, let's fill it with
@@ -3165,7 +3165,7 @@ klasse Signature:
                     wenn param.name in kwargs and param.kind != _POSITIONAL_ONLY:
                         raise TypeError(
                             'multiple values fuer argument {arg!r}'.format(
-                                arg=param.name)) from Nichts
+                                arg=param.name)) von Nichts
 
                     arguments[param.name] = arg_val
 
@@ -3195,7 +3195,7 @@ klasse Signature:
                 wenn (not partial and param.kind != _VAR_POSITIONAL and
                                                     param.default is _empty):
                     raise TypeError('missing a required argument: {arg!r}'. \
-                                    format(arg=param_name)) from Nichts
+                                    format(arg=param_name)) von Nichts
 
             sonst:
                 arguments[param_name] = arg_val
@@ -3260,7 +3260,7 @@ klasse Signature:
         If *quote_annotation_strings* is Falsch, annotations
         in the signature are displayed without opening and closing quotation
         marks. This is useful when the signature was created with the
-        STRING format or when ``from __future__ import annotations`` was used.
+        STRING format or when ``from __future__ importiere annotations`` was used.
         """
         result = []
         render_pos_only_separator = Falsch
@@ -3342,8 +3342,8 @@ klasse BufferFlags(enum.IntFlag):
 
 def _main():
     """ Logic fuer inspecting an object given at command line """
-    import argparse
-    import importlib
+    importiere argparse
+    importiere importlib
 
     parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument(
@@ -3361,7 +3361,7 @@ def _main():
     try:
         obj = module = importlib.import_module(mod_name)
     except Exception as exc:
-        msg = "Failed to import {} ({}: {})".format(mod_name,
+        msg = "Failed to importiere {} ({}: {})".format(mod_name,
                                                     type(exc).__name__,
                                                     exc)
         drucke(msg, file=sys.stderr)

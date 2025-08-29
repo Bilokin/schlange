@@ -31,7 +31,7 @@ def pickle_complex(c):
 pickle(complex, pickle_complex, complex)
 
 def pickle_union(obj):
-    import typing, operator
+    importiere typing, operator
     return operator.getitem, (typing.Union, obj.__args__)
 
 pickle(type(int | str), pickle_union)
@@ -82,7 +82,7 @@ def _reduce_ex(self, proto):
             raise TypeError(f"cannot pickle {cls.__name__!r} object: "
                             f"a klasse that defines __slots__ without "
                             f"defining __getstate__ cannot be pickled "
-                            f"with protocol {proto}") from Nichts
+                            f"with protocol {proto}") von Nichts
         try:
             dict = self.__dict__
         except AttributeError:
@@ -120,7 +120,7 @@ def _slotnames(cls):
     defined.)
     """
 
-    # Get the value from a cache in the klasse wenn possible
+    # Get the value von a cache in the klasse wenn possible
     names = cls.__dict__.get("__slotnames__")
     wenn names is not Nichts:
         return names
@@ -131,7 +131,7 @@ def _slotnames(cls):
         # This klasse has no slots
         pass
     sonst:
-        # Slots found -- gather slot names from all base classes
+        # Slots found -- gather slot names von all base classes
         fuer c in cls.__mro__:
             wenn "__slots__" in c.__dict__:
                 slots = c.__dict__['__slots__']

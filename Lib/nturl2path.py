@@ -5,7 +5,7 @@ fuer urllib.requests, thus do not use directly.
 """
 # Testing is done through test_nturl2path.
 
-import warnings
+importiere warnings
 
 
 warnings._deprecated(
@@ -14,7 +14,7 @@ warnings._deprecated(
     remove=(3, 19))
 
 def url2pathname(url):
-    """OS-specific conversion from a relative URL of the 'file' scheme
+    """OS-specific conversion von a relative URL of the 'file' scheme
     to a file system path; not recommended fuer general use."""
     # e.g.
     #   ///C|/foo/bar/spam.foo
@@ -22,7 +22,7 @@ def url2pathname(url):
     #   ///C:/foo/bar/spam.foo
     # become
     #   C:\foo\bar\spam.foo
-    import urllib.parse
+    importiere urllib.parse
     wenn url[:3] == '///':
         # URL has an empty authority section, so the path begins on the third
         # character.
@@ -43,14 +43,14 @@ def url2pathname(url):
     return urllib.parse.unquote(url.replace('/', '\\'))
 
 def pathname2url(p):
-    """OS-specific conversion from a file system path to a relative URL
+    """OS-specific conversion von a file system path to a relative URL
     of the 'file' scheme; not recommended fuer general use."""
     # e.g.
     #   C:\foo\bar\spam.foo
     # becomes
     #   ///C:/foo/bar/spam.foo
-    import ntpath
-    import urllib.parse
+    importiere ntpath
+    importiere urllib.parse
     # First, clean up some special forms. We are going to sacrifice
     # the additional information anyway
     p = p.replace('\\', '/')

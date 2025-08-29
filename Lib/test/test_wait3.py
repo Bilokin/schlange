@@ -1,12 +1,12 @@
 """This test checks fuer correct wait3() behavior.
 """
 
-import os
-import subprocess
-import sys
-import unittest
-from test.fork_wait import ForkWait
-from test import support
+importiere os
+importiere subprocess
+importiere sys
+importiere unittest
+von test.fork_wait importiere ForkWait
+von test importiere support
 
 wenn not support.has_fork_support:
     raise unittest.SkipTest("requires working os.fork()")

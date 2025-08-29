@@ -1,5 +1,5 @@
-import os
-import unittest
+importiere os
+importiere unittest
 
 
 def load_tests(loader, standard_tests, pattern):

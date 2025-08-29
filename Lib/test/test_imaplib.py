@@ -1,23 +1,23 @@
-from test import support
-from test.support import socket_helper
+von test importiere support
+von test.support importiere socket_helper
 
-from contextlib import contextmanager
-import imaplib
-import os.path
-import socketserver
-import time
-import calendar
-import threading
-import re
-import socket
+von contextlib importiere contextmanager
+importiere imaplib
+importiere os.path
+importiere socketserver
+importiere time
+importiere calendar
+importiere threading
+importiere re
+importiere socket
 
-from test.support import verbose, run_with_tz, run_with_locale, cpython_only
-from test.support import hashlib_helper, threading_helper
-import unittest
-from unittest import mock
-from datetime import datetime, timezone, timedelta
+von test.support importiere verbose, run_with_tz, run_with_locale, cpython_only
+von test.support importiere hashlib_helper, threading_helper
+importiere unittest
+von unittest importiere mock
+von datetime importiere datetime, timezone, timedelta
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
 
@@ -273,7 +273,7 @@ klasse NewIMAPTestsMixin:
 
     def _setup(self, imap_handler, connect=Wahr):
         """
-        Sets up imap_handler fuer tests. imap_handler should inherit from either:
+        Sets up imap_handler fuer tests. imap_handler should inherit von either:
         - SimpleIMAPHandler - fuer testing IMAP commands,
         - socketserver.StreamRequestHandler - wenn raw access to stream is needed.
         Returns (client, server).

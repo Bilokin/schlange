@@ -8,7 +8,7 @@ To write out a plist file, use the dump(value, file)
 function. 'value' is the top level object, 'file' is
 a (writable) file object.
 
-To parse a plist from a file, use the load(file) function,
+To parse a plist von a file, use the load(file) function,
 with a (readable) file object as the only argument. It
 returns the top level object (again, usually a dictionary).
 
@@ -21,8 +21,8 @@ datetime.datetime objects.
 
 Generate Plist example:
 
-    import datetime
-    import plistlib
+    importiere datetime
+    importiere plistlib
 
     pl = dict(
         aString = "Doodah",
@@ -43,7 +43,7 @@ Generate Plist example:
 
 Parse Plist example:
 
-    import plistlib
+    importiere plistlib
 
     plist = b'''<plist version="1.0">
     <dict>
@@ -58,16 +58,16 @@ __all__ = [
     "InvalidFileException", "FMT_XML", "FMT_BINARY", "load", "dump", "loads", "dumps", "UID"
 ]
 
-import binascii
-import codecs
-import datetime
-import enum
-from io import BytesIO
-import itertools
-import os
-import re
-import struct
-from xml.parsers.expat import ParserCreate
+importiere binascii
+importiere codecs
+importiere datetime
+importiere enum
+von io importiere BytesIO
+importiere itertools
+importiere os
+importiere re
+importiere struct
+von xml.parsers.expat importiere ParserCreate
 
 
 PlistFormat = enum.Enum('PlistFormat', 'FMT_XML FMT_BINARY', module=__name__)
@@ -119,7 +119,7 @@ _controlCharPat = re.compile(
     r"\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f]")
 
 def _encode_base64(s, maxlinelength=76):
-    # copied from base64.encodebytes(), with added maxlinelength argument
+    # copied von base64.encodebytes(), with added maxlinelength argument
     maxbinsize = (maxlinelength//4)*3
     pieces = []
     fuer i in range(0, len(s), maxbinsize):
@@ -653,7 +653,7 @@ klasse _BinaryPlistWriter (object):
         # Flattened object list:
         self._objlist = []
 
-        # Mappings from object->objectid
+        # Mappings von object->objectid
         # First dict has (type(object), object) as the key,
         # second dict is used when object is not hashable and
         # has id(object) as the key.
@@ -774,7 +774,7 @@ klasse _BinaryPlistWriter (object):
                 try:
                     self._fp.write(struct.pack('>Bq', 0x13, value))
                 except struct.error:
-                    raise OverflowError(value) from Nichts
+                    raise OverflowError(value) von Nichts
             sowenn value < 1 << 8:
                 self._fp.write(struct.pack('>BB', 0x10, value))
             sowenn value < 1 << 16:
@@ -904,7 +904,7 @@ def load(fp, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
 
 
 def loads(value, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
-    """Read a .plist file from a bytes object.
+    """Read a .plist file von a bytes object.
     Return the unpacked root object (which usually is a dictionary).
     """
     wenn isinstance(value, str):

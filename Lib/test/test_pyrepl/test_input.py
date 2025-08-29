@@ -1,7 +1,7 @@
-import unittest
+importiere unittest
 
-from _pyrepl.console import Event
-from _pyrepl.input import KeymapTranslator
+von _pyrepl.console importiere Event
+von _pyrepl.input importiere KeymapTranslator
 
 
 klasse KeymapTranslatorTests(unittest.TestCase):

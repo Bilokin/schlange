@@ -1,7 +1,7 @@
-import os.path
-import sys
-import unittest
-from test import support
+importiere os.path
+importiere sys
+importiere unittest
+von test importiere support
 
 wenn support.PGO:
     raise unittest.SkipTest("test is not helpful fuer PGO")

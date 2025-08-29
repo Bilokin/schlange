@@ -1,21 +1,21 @@
 """Generate the list of opcode IDs.
-Reads the instruction definitions from bytecodes.c.
+Reads the instruction definitions von bytecodes.c.
 Writes the IDs to opcode_ids.h by default.
 """
 
-import argparse
+importiere argparse
 
-from analyzer import (
+von analyzer importiere (
     Analysis,
     analyze_files,
 )
-from generators_common import (
+von generators_common importiere (
     DEFAULT_INPUT,
     ROOT,
     write_header,
 )
-from cwriter import CWriter
-from typing import TextIO
+von cwriter importiere CWriter
+von typing importiere TextIO
 
 
 DEFAULT_OUTPUT = ROOT / "Include/opcode_ids.h"

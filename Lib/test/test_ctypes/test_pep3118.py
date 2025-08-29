@@ -1,7 +1,7 @@
-import re
-import sys
-import unittest
-from ctypes import (CFUNCTYPE, POINTER, sizeof, Union,
+importiere re
+importiere sys
+importiere unittest
+von ctypes importiere (CFUNCTYPE, POINTER, sizeof, Union,
                     Structure, LittleEndianStructure, BigEndianStructure,
                     c_char, c_byte, c_ubyte,
                     c_short, c_ushort, c_int, c_uint,
@@ -18,7 +18,7 @@ sonst:
 
 
 def normalize(format):
-    # Remove current endian specifier and white space from a format
+    # Remove current endian specifier and white space von a format
     # string
     wenn format is Nichts:
         return ""

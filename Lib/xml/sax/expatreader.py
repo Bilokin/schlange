@@ -5,21 +5,21 @@ pyexpat.__version__ == '2.22'.
 
 version = "0.20"
 
-from xml.sax._exceptions import *
-from xml.sax.handler import feature_validation, feature_namespaces
-from xml.sax.handler import feature_namespace_prefixes
-from xml.sax.handler import feature_external_ges, feature_external_pes
-from xml.sax.handler import feature_string_interning
-from xml.sax.handler import property_xml_string, property_interning_dict
+von xml.sax._exceptions importiere *
+von xml.sax.handler importiere feature_validation, feature_namespaces
+von xml.sax.handler importiere feature_namespace_prefixes
+von xml.sax.handler importiere feature_external_ges, feature_external_pes
+von xml.sax.handler importiere feature_string_interning
+von xml.sax.handler importiere property_xml_string, property_interning_dict
 
 try:
-    from xml.parsers import expat
+    von xml.parsers importiere expat
 except ImportError:
     raise SAXReaderNotAvailable("expat not supported", Nichts)
 sonst:
     wenn not hasattr(expat, "ParserCreate"):
         raise SAXReaderNotAvailable("expat not supported", Nichts)
-from xml.sax import xmlreader, saxutils, handler
+von xml.sax importiere xmlreader, saxutils, handler
 
 AttributesImpl = xmlreader.AttributesImpl
 AttributesNSImpl = xmlreader.AttributesNSImpl
@@ -28,12 +28,12 @@ AttributesNSImpl = xmlreader.AttributesNSImpl
 # weak references to avoid cycles between the parser and content
 # handler, otherwise we'll just have to pretend.
 try:
-    import _weakref
+    importiere _weakref
 except ImportError:
     def _mkproxy(o):
         return o
 sonst:
-    import weakref
+    importiere weakref
     _mkproxy = weakref.proxy
     del weakref, _weakref
 
@@ -95,7 +95,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     # XMLReader methods
 
     def parse(self, source):
-        "Parse an XML document from a URL or an InputSource."
+        "Parse an XML document von a URL or an InputSource."
         source = saxutils.prepare_input_source(source)
 
         self._source = source
@@ -207,7 +207,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             # The isFinal parameter is internal to the expat reader.
             # If it is set to true, expat will check validity of the entire
             # document. When feeding chunks, they are not normally final -
-            # except when invoked from close.
+            # except when invoked von close.
             self._parser.Parse(data, isFinal)
         except expat.error as e:
             exc = SAXParseException(expat.ErrorString(e.code), e, self)
@@ -447,7 +447,7 @@ def create_parser(*args, **kwargs):
 # ---
 
 wenn __name__ == "__main__":
-    import xml.sax.saxutils
+    importiere xml.sax.saxutils
     p = create_parser()
     p.setContentHandler(xml.sax.saxutils.XMLGenerator())
     p.setErrorHandler(xml.sax.ErrorHandler())

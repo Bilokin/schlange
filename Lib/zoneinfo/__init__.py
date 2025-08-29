@@ -7,16 +7,16 @@ __all__ = [
     "InvalidTZPathWarning",
 ]
 
-from . import _tzpath
-from ._common import ZoneInfoNotFoundError
+von . importiere _tzpath
+von ._common importiere ZoneInfoNotFoundError
 
 try:
-    from _zoneinfo import ZoneInfo
+    von _zoneinfo importiere ZoneInfo
 except (ImportError, AttributeError):  # pragma: nocover
     # AttributeError: module 'datetime' has no attribute 'datetime_CAPI'.
     # This happens when the '_datetime' module is not available and the
     # pure Python implementation is used instead.
-    from ._zoneinfo import ZoneInfo
+    von ._zoneinfo importiere ZoneInfo
 
 reset_tzpath = _tzpath.reset_tzpath
 available_timezones = _tzpath.available_timezones

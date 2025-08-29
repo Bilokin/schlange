@@ -1,5 +1,5 @@
-import unittest
-from test.support import import_helper
+importiere unittest
+von test.support importiere import_helper
 
 _testcapi = import_helper.import_module('_testcapi')
 _testinternalcapi = import_helper.import_module('_testinternalcapi')

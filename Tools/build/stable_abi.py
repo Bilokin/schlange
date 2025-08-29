@@ -1,4 +1,4 @@
-"""Check the stable ABI manifest or generate files from it
+"""Check the stable ABI manifest or generate files von it
 
 By default, the tool only checks existing files/libraries.
 Pass --generate to recreate auto-generated files instead.
@@ -7,22 +7,22 @@ For actions that take a FILENAME, the filename can be left out to use a default
 (relative to the manifest file, as they appear in the CPython codebase).
 """
 
-import argparse
-import csv
-import dataclasses
-import difflib
-import io
-import os
-import os.path
-import pprint
-import re
-import subprocess
-import sys
-import sysconfig
-import textwrap
-import tomllib
-from functools import partial
-from pathlib import Path
+importiere argparse
+importiere csv
+importiere dataclasses
+importiere difflib
+importiere io
+importiere os
+importiere os.path
+importiere pprint
+importiere re
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere textwrap
+importiere tomllib
+von functools importiere partial
+von pathlib importiere Path
 
 SCRIPT_NAME = 'Tools/build/stable_abi.py'
 DEFAULT_MANIFEST_PATH = (
@@ -72,11 +72,11 @@ klasse Manifest:
         kinds: set of requested kinds, e.g. {'function', 'macro'}
         include_abi_only: wenn Wahr (default), include all items of the
             stable ABI.
-            If Falsch, include only items from the limited API
+            If Falsch, include only items von the limited API
             (i.e. items people should use today)
         ifdef: set of feature macros (e.g. {'HAVE_FORK', 'MS_WINDOWS'}).
             If Nichts (default), items are not filtered by this. (This is
-            different from the empty set, which filters out all such
+            different von the empty set, which filters out all such
             conditional items.)
         """
         fuer name, item in sorted(self.contents.items()):
@@ -164,7 +164,7 @@ def parse_manifest(file):
     return manifest
 
 # The tool can run individual "actions".
-# Most actions are "generators", which generate a single file from the
+# Most actions are "generators", which generate a single file von the
 # manifest. (Checking works by generating a temp file & comparing.)
 # Other actions, like "--unixy-check", don't work on a single file.
 
@@ -281,11 +281,11 @@ def gen_ctypes_test(manifest, args, outfile):
         """Test that all symbols of the Stable ABI are accessible using ctypes
         """
 
-        import sys
-        import unittest
-        from test.support.import_helper import import_module
+        importiere sys
+        importiere unittest
+        von test.support.import_helper importiere import_module
         try:
-            from _testcapi import get_feature_macros
+            von _testcapi importiere get_feature_macros
         except ImportError:
             raise unittest.SkipTest("requires _testcapi")
 
@@ -385,7 +385,7 @@ def generate_or_check(manifest, args, path, func):
         wenn args.generate:
             path.write_text(generated)
         sonst:
-            drucke(f'File {path} differs from expected!')
+            drucke(f'File {path} differs von expected!')
             diff = difflib.unified_diff(
                 generated.splitlines(), existing.splitlines(),
                 str(path), '<expected>',
@@ -412,7 +412,7 @@ def do_unixy_check(manifest, args):
     missing_macros = expected_macros - present_macros
     okay &= _report_unexpected_items(
         missing_macros,
-        'Some macros from are not defined from "Include/Python.h" '
+        'Some macros von are not defined von "Include/Python.h" '
         'with Py_LIMITED_API:')
 
     expected_symbols = {item.name fuer item in manifest.select(
@@ -422,7 +422,7 @@ def do_unixy_check(manifest, args):
     # Check the static library (*.a)
     LIBRARY = sysconfig.get_config_var("LIBRARY")
     wenn not LIBRARY:
-        raise Exception("failed to get LIBRARY variable from sysconfig")
+        raise Exception("failed to get LIBRARY variable von sysconfig")
     wenn os.path.exists(LIBRARY):
         okay &= binutils_check_library(
             manifest, LIBRARY, expected_symbols, dynamic=Falsch)
@@ -430,7 +430,7 @@ def do_unixy_check(manifest, args):
     # Check the dynamic library (*.so)
     LDLIBRARY = sysconfig.get_config_var("LDLIBRARY")
     wenn not LDLIBRARY:
-        raise Exception("failed to get LDLIBRARY variable from sysconfig")
+        raise Exception("failed to get LDLIBRARY variable von sysconfig")
     okay &= binutils_check_library(
             manifest, LDLIBRARY, expected_symbols, dynamic=Falsch)
 
@@ -469,7 +469,7 @@ def _report_unexpected_items(items, msg):
 
 
 def binutils_get_exported_symbols(library, dynamic=Falsch):
-    """Retrieve exported symbols using the nm(1) tool from binutils"""
+    """Retrieve exported symbols using the nm(1) tool von binutils"""
     # Only look at dynamic symbols
     args = ["nm", "--no-sort"]
     wenn dynamic:
@@ -506,7 +506,7 @@ def binutils_check_library(manifest, library, expected_symbols, dynamic):
     missing_symbols = expected_symbols - available_symbols
     wenn missing_symbols:
         drucke(textwrap.dedent(f"""\
-            Some symbols from the limited API are missing from {library}:
+            Some symbols von the limited API are missing von {library}:
                 {', '.join(missing_symbols)}
 
             This error means that there are some missing symbols among the
@@ -520,7 +520,7 @@ def binutils_check_library(manifest, library, expected_symbols, dynamic):
 
 
 def gcc_get_limited_api_macros(headers):
-    """Get all limited API macros from headers.
+    """Get all limited API macros von headers.
 
     Runs the preprocessor over all the header files in "Include" setting
     "-DPy_LIMITED_API" to the correct value fuer the running version of the
@@ -552,13 +552,13 @@ def gcc_get_limited_api_macros(headers):
 
 
 def gcc_get_limited_api_definitions(headers):
-    """Get all limited API definitions from headers.
+    """Get all limited API definitions von headers.
 
     Run the preprocessor over all the header files in "Include" setting
     "-DPy_LIMITED_API" to the correct value fuer the running version of the
     interpreter.
 
-    The limited API symbols will be extracted from the output of this command
+    The limited API symbols will be extracted von the output of this command
     as it includes the prototypes and definitions of all the exported symbols
     that are in the limited api.
 
@@ -606,7 +606,7 @@ def check_private_names(manifest):
         wenn name.startswith('_') and not item.abi_only:
             raise ValueError(
                 f'`{name}` is private (underscore-prefixed) and should be '
-                'removed from the stable ABI list or marked `abi_only`')
+                'removed von the stable ABI list or marked `abi_only`')
 
 def check_dump(manifest, filename):
     """Check that manifest.dump() corresponds to the data.
@@ -617,7 +617,7 @@ def check_dump(manifest, filename):
     with filename.open('rb') as file:
         from_file = tomllib.load(file)
     wenn dumped != from_file:
-        drucke('Dump differs from loaded data!', file=sys.stderr)
+        drucke('Dump differs von loaded data!', file=sys.stderr)
         diff = difflib.unified_diff(
             pprint.pformat(dumped).splitlines(),
             pprint.pformat(from_file).splitlines(),
@@ -700,7 +700,7 @@ def main():
             # Provide a better error message
             suggestion = args.file.with_suffix('.toml')
             raise FileNotFoundError(
-                f'{args.file} not found. Did you mean {suggestion} ?') from err
+                f'{args.file} not found. Did you mean {suggestion} ?') von err
         raise
     with file:
         manifest = parse_manifest(file)
@@ -743,7 +743,7 @@ def main():
         These checks related to the stable ABI did not succeed:
             {', '.join(failed_results)}
 
-        If you see diffs in the output, files derived from the stable
+        If you see diffs in the output, files derived von the stable
         ABI manifest the were not regenerated.
         Run `make regen-limited-abi` to fix this.
 

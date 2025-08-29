@@ -1,1 +1,1 @@
-from . import basic, basic2
+von . importiere basic, basic2

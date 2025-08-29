@@ -1,6 +1,6 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-import dataclasses
+importiere dataclasses
 
 
 klasse Foo:

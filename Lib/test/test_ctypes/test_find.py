@@ -1,11 +1,11 @@
-import os.path
-import sys
-import test.support
-import unittest
-import unittest.mock
-from ctypes import CDLL, RTLD_GLOBAL
-from ctypes.util import find_library
-from test.support import os_helper, thread_unsafe
+importiere os.path
+importiere sys
+importiere test.support
+importiere unittest
+importiere unittest.mock
+von ctypes importiere CDLL, RTLD_GLOBAL
+von ctypes.util importiere find_library
+von test.support importiere os_helper, thread_unsafe
 
 
 # On some systems, loading the OpenGL libraries needs the RTLD_GLOBAL mode.
@@ -80,8 +80,8 @@ klasse Test_OpenGL_libs(unittest.TestCase):
 klasse FindLibraryLinux(unittest.TestCase):
     @thread_unsafe('uses setenv')
     def test_find_on_libpath(self):
-        import subprocess
-        import tempfile
+        importiere subprocess
+        importiere tempfile
 
         try:
             p = subprocess.Popen(['gcc', '--version'], stdout=subprocess.PIPE,

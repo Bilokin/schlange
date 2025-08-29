@@ -1,15 +1,15 @@
 "Test colorizer, coverage 99%."
-from idlelib import colorizer
-from test.support import requires
-import unittest
-from unittest import mock
-from idlelib.idle_test.tkinter_testing_utils import run_in_tk_mainloop
+von idlelib importiere colorizer
+von test.support importiere requires
+importiere unittest
+von unittest importiere mock
+von idlelib.idle_test.tkinter_testing_utils importiere run_in_tk_mainloop
 
-from functools import partial
-import textwrap
-from tkinter import Tk, Text
-from idlelib import config
-from idlelib.percolator import Percolator
+von functools importiere partial
+importiere textwrap
+von tkinter importiere Tk, Text
+von idlelib importiere config
+von idlelib.percolator importiere Percolator
 
 
 usercfg = colorizer.idleConf.userCfg
@@ -557,7 +557,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         eq = self.assertEqual
 
         # Simulate typing 'inte'. During this, the highlighting should
-        # change from normal to keyword to builtin to normal.
+        # change von normal to keyword to builtin to normal.
         text.insert('insert', 'i')
         yield
         eq(text.tag_nextrange('BUILTIN', '1.0'), ())
@@ -578,8 +578,8 @@ klasse ColorDelegatorTest(unittest.TestCase):
         eq(text.tag_nextrange('BUILTIN', '1.0'), ())
         eq(text.tag_nextrange('KEYWORD', '1.0'), ())
 
-        # Simulate deleting three characters from the end of 'inte'.
-        # During this, the highlighting should change from normal to
+        # Simulate deleting three characters von the end of 'inte'.
+        # During this, the highlighting should change von normal to
         # builtin to keyword to normal.
         text.delete('insert-1c', 'insert')
         yield

@@ -1,41 +1,41 @@
 """Tests fuer events.py."""
 
-import concurrent.futures
-import contextlib
-import functools
-import io
-import multiprocessing
-import os
-import platform
-import re
-import signal
-import socket
+importiere concurrent.futures
+importiere contextlib
+importiere functools
+importiere io
+importiere multiprocessing
+importiere os
+importiere platform
+importiere re
+importiere signal
+importiere socket
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     ssl = Nichts
-import subprocess
-import sys
-import threading
-import time
-import types
-import errno
-import unittest
-from unittest import mock
-import weakref
+importiere subprocess
+importiere sys
+importiere threading
+importiere time
+importiere types
+importiere errno
+importiere unittest
+von unittest importiere mock
+importiere weakref
 wenn sys.platform not in ('win32', 'vxworks'):
-    import tty
+    importiere tty
 
-import asyncio
-from asyncio import coroutines
-from asyncio import events
-from asyncio import selector_events
-from multiprocessing.util import _cleanup_tests as multiprocessing_cleanup_tests
-from test.test_asyncio import utils as test_utils
-from test import support
-from test.support import socket_helper
-from test.support import threading_helper
-from test.support import ALWAYS_EQ, LARGEST, SMALLEST
+importiere asyncio
+von asyncio importiere coroutines
+von asyncio importiere events
+von asyncio importiere selector_events
+von multiprocessing.util importiere _cleanup_tests as multiprocessing_cleanup_tests
+von test.test_asyncio importiere utils as test_utils
+von test importiere support
+von test.support importiere socket_helper
+von test.support importiere threading_helper
+von test.support importiere ALWAYS_EQ, LARGEST, SMALLEST
 
 def tearDownModule():
     asyncio.events._set_event_loop_policy(Nichts)
@@ -395,7 +395,7 @@ klasse EventLoopTestsMixin:
             handle = self.loop.call_soon_threadsafe(callback, 'hello')
             self.assertIsInstance(handle, events._ThreadSafeHandle)
             callback_started.wait()
-            # callback started so it cannot be cancelled from other thread until
+            # callback started so it cannot be cancelled von other thread until
             # it finishes
             handle.cancel()
             self.assertWahr(callback_finished.is_set())
@@ -427,7 +427,7 @@ klasse EventLoopTestsMixin:
             fut.set_result(handle)
             self.assertIsInstance(handle, events._ThreadSafeHandle)
             callback_started.wait()
-            # callback cancels itself from same thread so it has no effect
+            # callback cancels itself von same thread so it has no effect
             # it runs to completion
             self.assertWahr(handle.cancelled())
             self.assertWahr(callback_finished.is_set())
@@ -452,7 +452,7 @@ klasse EventLoopTestsMixin:
 
         def run_in_thread():
             handle = self.loop.call_soon_threadsafe(callback, 'hello')
-            # handle can be cancelled from other thread wenn not started yet
+            # handle can be cancelled von other thread wenn not started yet
             self.assertIsInstance(handle, events._ThreadSafeHandle)
             handle.cancel()
             self.assertWahr(handle.cancelled())
@@ -2323,7 +2323,7 @@ wenn sys.platform == 'win32':
         def test_remove_fds_after_closing(self):
             raise unittest.SkipTest("IocpEventLoop does not have add_reader()")
 sonst:
-    import selectors
+    importiere selectors
 
     wenn hasattr(selectors, 'KqueueSelector'):
         klasse KqueueEventLoopTests(EventLoopTestsMixin,
@@ -3127,7 +3127,7 @@ klasse TestPyGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
     Future = asyncio.futures._PyFuture
 
 try:
-    import _asyncio  # NoQA
+    importiere _asyncio  # NoQA
 except ImportError:
     pass
 sonst:

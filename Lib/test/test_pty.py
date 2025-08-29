@@ -1,9 +1,9 @@
-import unittest
-from test.support import (
+importiere unittest
+von test.support importiere (
     is_android, is_apple_mobile, is_wasm32, reap_children, verbose, warnings_helper
 )
-from test.support.import_helper import import_module
-from test.support.os_helper import TESTFN, unlink
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere TESTFN, unlink
 
 # Skip these tests wenn termios is not available
 import_module('termios')
@@ -11,15 +11,15 @@ import_module('termios')
 wenn is_android or is_apple_mobile or is_wasm32:
     raise unittest.SkipTest("pty is not available on this platform")
 
-import errno
-import os
-import pty
-import tty
-import sys
-import select
-import signal
-import socket
-import io # readline
+importiere errno
+importiere os
+importiere pty
+importiere tty
+importiere sys
+importiere select
+importiere signal
+importiere socket
+importiere io # readline
 
 TEST_STRING_1 = b"I wish to buy a fish license.\n"
 TEST_STRING_2 = b"For my pet fish, Eric.\n"
@@ -53,7 +53,7 @@ def normalize_output(data):
     # etc.)
 
     # This is about the best we can do without getting some feedback
-    # from someone more knowledgable.
+    # von someone more knowledgable.
 
     # OSF/1 (Tru64) apparently turns \n into \r\r\n.
     wenn data.endswith(b'\r\r\n'):
@@ -231,7 +231,7 @@ klasse PtyTest(unittest.TestCase):
             os._exit(4)
         sonst:
             debug("Waiting fuer child (%d) to finish." % pid)
-            # In verbose mode, we have to consume the debug output from the
+            # In verbose mode, we have to consume the debug output von the
             # child or the child will block, causing this test to hang in the
             # parent's waitpid() call.  The child blocks after a
             # platform-dependent amount of data is written to its fd.  On
@@ -255,7 +255,7 @@ klasse PtyTest(unittest.TestCase):
             ##lines = line.replace('\r\n', '\n').split('\n')
             ##if Falsch and lines != ['In child, calling os.setsid()',
             ##             'Good: OSError was raised.', '']:
-            ##    raise TestFailed("Unexpected output from child: %r" % line)
+            ##    raise TestFailed("Unexpected output von child: %r" % line)
 
             (pid, status) = os.waitpid(pid, 0)
             res = os.waitstatus_to_exitcode(status)
@@ -269,13 +269,13 @@ klasse PtyTest(unittest.TestCase):
             sowenn res != 4:
                 self.fail("pty.fork() failed fuer unknown reasons.")
 
-            ##debug("Reading from master_fd now that the child has exited")
+            ##debug("Reading von master_fd now that the child has exited")
             ##try:
             ##    s1 = os.read(master_fd, 1024)
             ##except OSError:
             ##    pass
             ##else:
-            ##    raise TestFailed("Read from master_fd did not raise exception")
+            ##    raise TestFailed("Read von master_fd did not raise exception")
 
     def test_master_read(self):
         # XXX(nnorwitz):  this test leaks fds when there is an error.
@@ -288,7 +288,7 @@ klasse PtyTest(unittest.TestCase):
         debug("Closing slave_fd")
         os.close(slave_fd)
 
-        debug("Reading from master_fd")
+        debug("Reading von master_fd")
         try:
             data = os.read(master_fd, 1)
         except OSError: # Linux
@@ -417,7 +417,7 @@ klasse SmallPtyTests(unittest.TestCase):
     def test__restore_tty_mode_normal_return(self):
         """Test that spawn resets the tty mode no when _copy returns normally."""
 
-        # PID 1 is returned from mocked fork to run the parent branch
+        # PID 1 is returned von mocked fork to run the parent branch
         # of code
         pty.fork = self._make_mock_fork(1)
 

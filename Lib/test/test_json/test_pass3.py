@@ -1,7 +1,7 @@
-from test.test_json import PyTest, CTest
+von test.test_json importiere PyTest, CTest
 
 
-# from https://json.org/JSON_checker/test/pass3.json
+# von https://json.org/JSON_checker/test/pass3.json
 JSON = r'''
 {
     "JSON Test Pattern pass3": {

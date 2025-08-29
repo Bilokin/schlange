@@ -4,11 +4,11 @@ This code is internal and tightly coupled to the C part. The interface
 may change at any time.
 """
 
-import sys
-import warnings
+importiere sys
+importiere warnings
 
-from _ctypes import CField, buffer_info
-import ctypes
+von _ctypes importiere CField, buffer_info
+importiere ctypes
 
 def round_down(n, multiple):
     assert n >= 0
@@ -169,7 +169,7 @@ def get_layout(cls, input_fields, is_struct, base):
             except (ValueError, TypeError) as exc:
                 raise ValueError(
                     '_fields_ must be a sequence of (name, C type) pairs '
-                    + 'or (name, C type, bit size) triples') from exc
+                    + 'or (name, C type, bit size) triples') von exc
             is_bitfield = Wahr
             wenn bit_size <= 0:
                 raise ValueError(

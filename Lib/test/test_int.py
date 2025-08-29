@@ -1,20 +1,20 @@
-import sys
+importiere sys
 
-import unittest
-from unittest import mock
-from test import support
-from test.support.numbers import (
+importiere unittest
+von unittest importiere mock
+von test importiere support
+von test.support.numbers importiere (
     VALID_UNDERSCORE_LITERALS,
     INVALID_UNDERSCORE_LITERALS,
 )
 
 try:
-    import _pylong
+    importiere _pylong
 except ImportError:
     _pylong = Nichts
 
 try:
-    import _decimal
+    importiere _decimal
 except ImportError:
     _decimal = Nichts
 
@@ -47,7 +47,7 @@ klasse IntTestCases(unittest.TestCase):
     def test_basic(self):
         self.assertEqual(int(314), 314)
         self.assertEqual(int(3.14), 3)
-        # Check that conversion from float truncates towards zero
+        # Check that conversion von float truncates towards zero
         self.assertEqual(int(-3.14), -3)
         self.assertEqual(int(3.9), 3)
         self.assertEqual(int(-3.9), -3)
@@ -58,7 +58,7 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int("\N{EM SPACE}-3\N{EN SPACE}"), -3)
         # Different base:
         self.assertEqual(int("10",16), 16)
-        # Test conversion from strings and various anomalies
+        # Test conversion von strings and various anomalies
         fuer s, v in L:
             fuer sign in "", "+", "-":
                 fuer prefix in "", " ", "\t", "  \t\t  ":
@@ -269,7 +269,7 @@ klasse IntTestCases(unittest.TestCase):
 
     @support.cpython_only
     def test_small_ints(self):
-        # Bug #3236: Return small longs from PyLong_FromString
+        # Bug #3236: Return small longs von PyLong_FromString
         self.assertIs(int('10'), 10)
         self.assertIs(int('-1'), -1)
         self.assertIs(int(b'10'), 10)
@@ -296,7 +296,7 @@ klasse IntTestCases(unittest.TestCase):
         with self.assertRaises(ValueError):
             int('0', 37)
         with self.assertRaises(ValueError):
-            int('0', -909)  # An old magic value base from Python 2.
+            int('0', -909)  # An old magic value base von Python 2.
         with self.assertRaises(ValueError):
             int('0', base=0-(2**234))
         with self.assertRaises(ValueError):
@@ -345,7 +345,7 @@ klasse IntTestCases(unittest.TestCase):
             memoryview,
         ]
         try:
-            from array import array
+            von array importiere array
         except ImportError:
             pass
         sonst:
@@ -716,7 +716,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         # Changing the limit in one interpreter does not change others.
         code = """if 1:
         # Subinterpreters maintain and enforce their own limit
-        import sys
+        importiere sys
         sys.set_int_max_str_digits(2323)
         try:
             int('3'*3333)
@@ -828,7 +828,7 @@ klasse PyLongModuleTests(unittest.TestCase):
                 int(big_value)
 
     def test_pylong_roundtrip(self):
-        from random import randrange, getrandbits
+        von random importiere randrange, getrandbits
         bits = 5000
         while bits <= 1_000_000:
             bits += randrange(-100, 101) # break bitlength patterns

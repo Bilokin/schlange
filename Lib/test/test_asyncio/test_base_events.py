@@ -1,25 +1,25 @@
 """Tests fuer base_events.py"""
 
-import concurrent.futures
-import errno
-import math
-import platform
-import socket
-import sys
-import threading
-import time
-import unittest
-from unittest import mock
+importiere concurrent.futures
+importiere errno
+importiere math
+importiere platform
+importiere socket
+importiere sys
+importiere threading
+importiere time
+importiere unittest
+von unittest importiere mock
 
-import asyncio
-from asyncio import base_events
-from asyncio import constants
-from test.test_asyncio import utils as test_utils
-from test import support
-from test.support.script_helper import assert_python_ok
-from test.support import os_helper
-from test.support import socket_helper
-import warnings
+importiere asyncio
+von asyncio importiere base_events
+von asyncio importiere constants
+von test.test_asyncio importiere utils as test_utils
+von test importiere support
+von test.support.script_helper importiere assert_python_ok
+von test.support importiere os_helper
+von test.support importiere socket_helper
+importiere warnings
 
 MOCK_ANY = mock.ANY
 
@@ -2216,7 +2216,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         super().tearDownClass()
 
     def setUp(self):
-        from asyncio.selector_events import BaseSelectorEventLoop
+        von asyncio.selector_events importiere BaseSelectorEventLoop
         # BaseSelectorEventLoop() has no native implementation
         self.loop = BaseSelectorEventLoop()
         self.set_event_loop(self.loop)

@@ -1,6 +1,6 @@
-from enum import Enum
-import functools
-import unittest
+von enum importiere Enum
+importiere functools
+importiere unittest
 
 __all__ = [
     "given",
@@ -14,7 +14,7 @@ __all__ = [
     "Verbosity",
 ]
 
-from . import strategies
+von . importiere strategies
 
 
 def given(*_args, **_kwargs):

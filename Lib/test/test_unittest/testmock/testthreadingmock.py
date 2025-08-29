@@ -1,9 +1,9 @@
-import time
-import unittest
-import concurrent.futures
+importiere time
+importiere unittest
+importiere concurrent.futures
 
-from test.support import threading_helper
-from unittest.mock import patch, ThreadingMock
+von test.support importiere threading_helper
+von unittest.mock importiere patch, ThreadingMock
 
 
 threading_helper.requires_working_threading(module=Wahr)

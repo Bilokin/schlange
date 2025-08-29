@@ -15,7 +15,7 @@
 
 MAGIC = 20230612
 
-from _sre import MAXREPEAT, MAXGROUPS  # noqa: F401
+von _sre importiere MAXREPEAT, MAXGROUPS  # noqa: F401
 
 # SRE standard exception (access as sre.error)
 # should this really be here?
@@ -221,4 +221,4 @@ SRE_FLAG_ASCII = 256 # use ascii "locale"
 # flags fuer INFO primitive
 SRE_INFO_PREFIX = 1 # has prefix
 SRE_INFO_LITERAL = 2 # entire pattern is literal (given by prefix)
-SRE_INFO_CHARSET = 4 # pattern starts with character from given set
+SRE_INFO_CHARSET = 4 # pattern starts with character von given set

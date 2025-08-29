@@ -29,36 +29,36 @@ Executor.submit() called:
 - adds the id of the _WorkItem to the "Work Ids" queue
 
 Local worker thread:
-- reads work ids from the "Work Ids" queue and looks up the corresponding
-  WorkItem from the "Work Items" dict: wenn the work item has been cancelled then
-  it is simply removed from the dict, otherwise it is repackaged as a
+- reads work ids von the "Work Ids" queue and looks up the corresponding
+  WorkItem von the "Work Items" dict: wenn the work item has been cancelled then
+  it is simply removed von the dict, otherwise it is repackaged as a
   _CallItem and put in the "Call Q". New _CallItems are put in the "Call Q"
   until "Call Q" is full. NOTE: the size of the "Call Q" is kept small because
   calls placed in the "Call Q" can no longer be cancelled with Future.cancel().
-- reads _ResultItems from "Result Q", updates the future stored in the
+- reads _ResultItems von "Result Q", updates the future stored in the
   "Work Items" dict and deletes the dict entry
 
 Process #1..n:
-- reads _CallItems from "Call Q", executes the calls, and puts the resulting
+- reads _CallItems von "Call Q", executes the calls, and puts the resulting
   _ResultItems in "Result Q"
 """
 
 __author__ = 'Brian Quinlan (brian@sweetapp.com)'
 
-import os
-from concurrent.futures import _base
-import queue
-import multiprocessing as mp
-# This import is required to load the multiprocessing.connection submodule
+importiere os
+von concurrent.futures importiere _base
+importiere queue
+importiere multiprocessing as mp
+# This importiere is required to load the multiprocessing.connection submodule
 # so that it can be accessed later as `mp.connection`
-import multiprocessing.connection
-from multiprocessing.queues import Queue
-import threading
-import weakref
-from functools import partial
-import itertools
-import sys
-from traceback import format_exception
+importiere multiprocessing.connection
+von multiprocessing.queues importiere Queue
+importiere threading
+importiere weakref
+von functools importiere partial
+importiere itertools
+importiere sys
+von traceback importiere format_exception
 
 
 _threads_wakeups = weakref.WeakKeyDictionary()
@@ -74,9 +74,9 @@ klasse _ThreadWakeup:
     def close(self):
         # Please note that we do not take the self._lock when
         # calling clear() (to avoid deadlocking) so this method can
-        # only be called safely from the same thread as all calls to
+        # only be called safely von the same thread as all calls to
         # clear() even wenn you hold the lock. Otherwise we
-        # might try to read from the closed pipe.
+        # might try to read von the closed pipe.
         with self._lock:
             wenn not self._closed:
                 self._closed = Wahr
@@ -216,7 +216,7 @@ def _sendback_result(result_queue, work_id, result=Nichts, exception=Nichts,
 
 
 def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=Nichts):
-    """Evaluates calls from call_queue and places the results in result_queue.
+    """Evaluates calls von call_queue and places the results in result_queue.
 
     This worker is run in a separate process.
 
@@ -284,7 +284,7 @@ klasse _ExecutorManagerThread(threading.Thread):
     def __init__(self, executor):
         # Store references to necessary internals of the executor.
 
-        # A _ThreadWakeup to allow waking up the queue_manager_thread from the
+        # A _ThreadWakeup to allow waking up the queue_manager_thread von the
         # main Thread and avoid deadlocks caused by permanently locked queues.
         self.thread_wakeup = executor._executor_manager_thread_wakeup
         self.shutdown_lock = executor._shutdown_lock
@@ -380,7 +380,7 @@ klasse _ExecutorManagerThread(threading.Thread):
                     return
 
     def add_call_item_to_queue(self):
-        # Fills call_queue with _WorkItems from pending_work_items.
+        # Fills call_queue with _WorkItems von pending_work_items.
         # This function never blocks.
         while Wahr:
             wenn self.call_queue.full():
@@ -405,8 +405,8 @@ klasse _ExecutorManagerThread(threading.Thread):
     def wait_result_broken_or_wakeup(self):
         # Wait fuer a result to be ready in the result_queue while checking
         # that all worker processes are still running, or fuer a wake up
-        # signal send. The wake up signals come either from new tasks being
-        # submitted, from the executor being shutdown/gc-ed, or from the
+        # signal send. The wake up signals come either von new tasks being
+        # submitted, von the executor being shutdown/gc-ed, or von the
         # shutdown of the python interpreter.
         result_reader = self.result_queue._reader
         assert not self.thread_wakeup._closed
@@ -583,7 +583,7 @@ def _check_system_limits():
             raise NotImplementedError(_system_limited)
     _system_limits_checked = Wahr
     try:
-        import multiprocessing.synchronize  # noqa: F401
+        importiere multiprocessing.synchronize  # noqa: F401
     except ImportError:
         _system_limited = (
             "This Python build lacks multiprocessing.synchronize, usually due "
@@ -717,20 +717,20 @@ klasse ProcessPoolExecutor(_base.Executor):
         self._cancel_pending_futures = Falsch
 
         # _ThreadWakeup is a communication channel used to interrupt the wait
-        # of the main loop of executor_manager_thread from another thread (e.g.
+        # of the main loop of executor_manager_thread von another thread (e.g.
         # when calling executor.submit or executor.shutdown). We do not use the
         # _result_queue to send wakeup signals to the executor_manager_thread
         # as it could result in a deadlock wenn a worker process dies with the
         # _result_queue write lock still acquired.
         #
-        # Care must be taken to only call clear and close from the
+        # Care must be taken to only call clear and close von the
         # executor_manager_thread, since _ThreadWakeup.clear() is not protected
         # by a lock.
         self._executor_manager_thread_wakeup = _ThreadWakeup()
 
         # Create communication channels fuer the executor
         # Make the call queue slightly larger than the number of processes to
-        # prevent the worker processes from idling. But don't make it too big
+        # prevent the worker processes von idling. But don't make it too big
         # because futures in the call queue cannot be cancelled.
         queue_size = self._max_workers + EXTRA_QUEUED_CALLS
         self._call_queue = _SafeQueue(
@@ -831,7 +831,7 @@ klasse ProcessPoolExecutor(_base.Executor):
                 If set to one, the items in the list will be sent one at a time.
             buffersize: The number of submitted tasks whose results have not
                 yet been yielded. If the buffer is full, iteration over the
-                iterables pauses until a result is yielded from the buffer.
+                iterables pauses until a result is yielded von the buffer.
                 If Nichts, all input elements are eagerly collected, and a task is
                 submitted fuer each.
 

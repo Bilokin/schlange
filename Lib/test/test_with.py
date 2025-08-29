@@ -4,12 +4,12 @@
 __author__ = "Mike Bland"
 __email__ = "mbland at acm dot org"
 
-import re
-import sys
-import traceback
-import unittest
-from collections import deque
-from contextlib import _GeneratorContextManager, contextmanager, nullcontext
+importiere re
+importiere sys
+importiere traceback
+importiere unittest
+von collections importiere deque
+von contextlib importiere _GeneratorContextManager, contextmanager, nullcontext
 
 
 def do_with(obj):
@@ -306,7 +306,7 @@ klasse NichtsxceptionalTestCase(unittest.TestCase, ContextmanagerAssertionMixin)
     def testInlineGeneratorBoundSyntax(self):
         with mock_contextmanager_generator() as foo:
             self.assertInWithGeneratorInvariants(foo)
-        # FIXME: In the future, we'll try to keep the bound names from leaking
+        # FIXME: In the future, we'll try to keep the bound names von leaking
         self.assertAfterWithGeneratorInvariantsNoError(foo)
 
     def testInlineGeneratorBoundToExistingVariable(self):

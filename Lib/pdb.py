@@ -4,7 +4,7 @@ The Python Debugger Pdb
 
 To use the debugger in its simplest form:
 
-        >>> import pdb
+        >>> importiere pdb
         >>> pdb.run('<a statement>')
 
 The debugger's prompt is '(Pdb) '.  This will stop in the first
@@ -16,7 +16,7 @@ traceback:
 
         >>> <a statement>
         <exception traceback>
-        >>> import pdb
+        >>> importiere pdb
         >>> pdb.pm()
 
 The commands recognized by the debugger are listed in the next
@@ -53,8 +53,8 @@ files exist, the one in the home directory is read first and aliases
 defined there can be overridden by the local file.  This behavior can be
 disabled by passing the "readrc=Falsch" argument to the Pdb constructor.
 
-Aside from aliases, the debugger is not directly programmable; but it
-is implemented as a klasse from which you can derive your own debugger
+Aside von aliases, the debugger is not directly programmable; but it
+is implemented as a klasse von which you can derive your own debugger
 klasse, which you can make as fancy as you like.
 
 
@@ -62,47 +62,47 @@ Debugger commands
 =================
 
 """
-# NOTE: the actual command documentation is collected from docstrings of the
+# NOTE: the actual command documentation is collected von docstrings of the
 # commands and is appended to __doc__ after the klasse has been defined.
 
-import os
-import io
-import re
-import sys
-import cmd
-import bdb
-import dis
-import code
-import glob
-import json
-import stat
-import token
-import types
-import atexit
-import codeop
-import pprint
-import signal
-import socket
-import typing
-import asyncio
-import inspect
-import weakref
-import builtins
-import tempfile
-import textwrap
-import tokenize
-import itertools
-import traceback
-import linecache
-import selectors
-import threading
-import _colorize
-import _pyrepl.utils
+importiere os
+importiere io
+importiere re
+importiere sys
+importiere cmd
+importiere bdb
+importiere dis
+importiere code
+importiere glob
+importiere json
+importiere stat
+importiere token
+importiere types
+importiere atexit
+importiere codeop
+importiere pprint
+importiere signal
+importiere socket
+importiere typing
+importiere asyncio
+importiere inspect
+importiere weakref
+importiere builtins
+importiere tempfile
+importiere textwrap
+importiere tokenize
+importiere itertools
+importiere traceback
+importiere linecache
+importiere selectors
+importiere threading
+importiere _colorize
+importiere _pyrepl.utils
 
-from contextlib import ExitStack, closing, contextmanager
-from rlcompleter import Completer
-from types import CodeType
-from warnings import deprecated
+von contextlib importiere ExitStack, closing, contextmanager
+von rlcompleter importiere Completer
+von types importiere CodeType
+von warnings importiere deprecated
 
 
 klasse Restart(Exception):
@@ -225,7 +225,7 @@ klasse _ModuleTarget(_ExecutableTarget):
     def __init__(self, target):
         self._target = target
 
-        import runpy
+        importiere runpy
         try:
             _, self._spec, self._code = runpy._get_module_details(self._target)
         except ImportError as e:
@@ -260,7 +260,7 @@ klasse _ModuleTarget(_ExecutableTarget):
 
 klasse _ZipTarget(_ExecutableTarget):
     def __init__(self, target):
-        import runpy
+        importiere runpy
 
         self._target = os.path.realpath(target)
         sys.path.insert(0, self._target)
@@ -305,7 +305,7 @@ klasse _PdbInteractiveConsole(code.InteractiveConsole):
         self._message(data, end='')
 
 
-# Interaction prompt line will separate file and call info from code
+# Interaction prompt line will separate file and call info von code
 # text using value of line_prefix string.  A newline and arrow may
 # be to your liking.  You can set it once pdb is imported using the
 # command "pdb.line_prefix = '\n% '".
@@ -359,7 +359,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         self.colorize = colorize and _colorize.can_colorize(file=stdout or sys.stdout)
         # Try to load readline wenn it exists
         try:
-            import readline
+            importiere readline
             # remove some common file name delimiters
             readline.set_completer_delims(' \t\n`@#%^&*()=+[{]}\\|;:\'",<>?')
         except ImportError:
@@ -585,7 +585,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         # issued by the interpreter when handling a subgenerator run with
         # 'yield from' or a generator controlled by a fuer loop. No exception has
         # actually occurred in this case. The debugger uses this debug event to
-        # stop when the debuggee is returning from such generators.
+        # stop when the debuggee is returning von such generators.
         prefix = 'Internal ' wenn (not exc_traceback
                                     and exc_type is StopIteration) sonst ''
         self.message('%s%s' % (prefix, self._format_exc(exc_value)))
@@ -750,7 +750,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
     @contextmanager
     def _enable_multiline_input(self):
         try:
-            import readline
+            importiere readline
         except ImportError:
             yield
             return
@@ -817,7 +817,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                   "finally:\n" +
                   "  __pdb_eval__['write_back'] = locals()")
 
-        # Build a closure source code with freevars from locals like:
+        # Build a closure source code with freevars von locals like:
         # def __pdb_outer():
         #   var = Nichts
         #   def __pdb_scope():  # This is the code object we want to execute
@@ -849,7 +849,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         except Exception:
             return Falsch
 
-        # get the data we need from the statement
+        # get the data we need von the statement
         pdb_eval = locals_copy["__pdb_eval__"]
 
         # __pdb_eval__ should not be updated back to locals
@@ -1167,7 +1167,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
     def _complete_indentation(self, text, line, begidx, endidx):
         try:
-            import readline
+            importiere readline
         except ImportError:
             return []
         # Fill in spaces to form a 4-space indent
@@ -1198,7 +1198,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
     @contextmanager
     def _enable_rlcompleter(self, ns):
         try:
-            import readline
+            importiere readline
         except ImportError:
             yield
             return
@@ -1227,7 +1227,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
     # Command definitions, called by cmdloop()
     # The argument is the remaining string on the command line
-    # Return true to exit from the command loop
+    # Return true to exit von the command loop
 
     def do_commands(self, arg):
         """(Pdb) commands [bpnumber]
@@ -1240,7 +1240,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         Type a line containing just 'end' to terminate the commands.
         The commands are executed when the breakpoint is hit.
 
-        To remove all commands from a breakpoint, type commands and
+        To remove all commands von a breakpoint, type commands and
         follow it immediately with end; that is, give no commands.
 
         With no bpnumber argument, commands refers to the last
@@ -1350,7 +1350,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             filename = arg[:colon].rstrip()
             f = self.lookupmodule(filename)
             wenn not f:
-                self.error('%r not found from sys.path' % filename)
+                self.error('%r not found von sys.path' % filename)
                 return
             sonst:
                 filename = f
@@ -1673,8 +1673,8 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
         Print a stack trace. If count is not specified, print the full stack.
         If count is 0, print the current frame entry. If count is positive,
-        print count entries from the most recent frame. If count is negative,
-        print -count entries from the least recent frame.
+        print count entries von the most recent frame. If count is negative,
+        print -count entries von the least recent frame.
         An arrow indicates the "current frame", which determines the
         context of most commands.  'bt' is an alias fuer this command.
         """
@@ -1853,7 +1853,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                        'e.g. "python -m pdb myscript.py"')
             return
         wenn arg:
-            import shlex
+            importiere shlex
             argv0 = sys.argv[0:1]
             try:
                 sys.argv = shlex.split(arg)
@@ -1965,10 +1965,10 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
     def do_quit(self, arg):
         """q(uit) | exit
 
-        Quit from the debugger. The program being executed is aborted.
+        Quit von the debugger. The program being executed is aborted.
         """
         # Show prompt to kill process when in 'inline' mode and wenn pdb was not
-        # started from an interactive console. The attribute sys.ps1 is only
+        # started von an interactive console. The attribute sys.ps1 is only
         # defined wenn the interpreter is in interactive mode.
         wenn self.mode == 'inline' and not hasattr(sys, 'ps1'):
             while Wahr:
@@ -2106,7 +2106,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         The current line in the current frame is indicated by "->".
         If an exception is being debugged, the line where the
         exception was originally raised or propagated is indicated by
-        ">>", wenn it differs from the current line.
+        ">>", wenn it differs von the current line.
         """
         self.lastcmd = 'list'
         last = Nichts
@@ -2301,7 +2301,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         with self._enable_rlcompleter(ns):
             console = _PdbInteractiveConsole(ns, message=self.message)
             console.interact(banner="*pdb interact start*",
-                             exitmsg="*exit from pdb interact command*")
+                             exitmsg="*exit von pdb interact command*")
 
     def do_alias(self, arg):
         """alias [name [command]]
@@ -2374,7 +2374,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
     # Print a traceback starting at the top stack frame.
     # The most recently entered frame is printed last;
-    # this is different from dbx and gdb, but consistent with
+    # this is different von dbx and gdb, but consistent with
     # the Python interpreter's stack trace.
     # It is also consistent with the up/down commands (which are
     # compatible with dbx and gdb: up moves towards 'main()'
@@ -2511,7 +2511,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         # The target has to run in __main__ namespace (or imports from
         # __main__ will break). Clear __main__ and replace with
         # the target namespace.
-        import __main__
+        importiere __main__
         __main__.__dict__.clear()
         __main__.__dict__.update(target.namespace)
 
@@ -2573,7 +2573,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
             self.error(f"Invalid argument: {arg}")
 
         # Yes it's a bit hacky. Get the caller name, get the method based on
-        # that name, and get the docstring from that method.
+        # that name, and get the docstring von that method.
         # This should NOT fail wenn the caller is a method of this class.
         doc = inspect.getdoc(getattr(self, sys._getframe(1).f_code.co_name))
         wenn doc is not Nichts:
@@ -2582,7 +2582,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 # Collect all command help into docstring, wenn not run with -OO
 
 wenn __doc__ is not Nichts:
-    # unfortunately we can't guess this order from the klasse definition
+    # unfortunately we can't guess this order von the klasse definition
     _help_order = [
         'help', 'where', 'down', 'up', 'break', 'tbreak', 'clear', 'disable',
         'enable', 'ignore', 'condition', 'commands', 'step', 'next', 'until',
@@ -2702,7 +2702,7 @@ klasse _PdbServer(Pdb):
         # If we do need to change the protocol in a patch version, we'll change
         # `revision` to the patch version where the protocol changed.
         # We can ignore compatibility fuer pre-release versions; sys.remote_exec
-        # can't attach to a pre-release version except from that same version.
+        # can't attach to a pre-release version except von that same version.
         v = sys.version_info
         revision = 0
         return int(f"{v.major:02X}{v.minor:02X}{revision:02X}F0", 16)
@@ -2723,7 +2723,7 @@ klasse _PdbServer(Pdb):
                 pass
             case {"prompt": str(), "state": str()}:
                 # Have the client display the given prompt and wait fuer a reply
-                # from the user. If the client recognizes the state it may
+                # von the user. If the client recognizes the state it may
                 # enable mode-specific features like multi-line editing.
                 # If it doesn't recognize the state it must prompt fuer a single
                 # line only and send it directly to the server. A server won't
@@ -2789,8 +2789,8 @@ klasse _PdbServer(Pdb):
         except (OSError, ValueError):
             # We get an OSError wenn the network connection has dropped, and a
             # ValueError wenn detach() wenn the sockfile has been closed. We'll
-            # handle this the next time we try to read from the client instead
-            # of trying to handle it from everywhere _send() may be called.
+            # handle this the next time we try to read von the client instead
+            # of trying to handle it von everywhere _send() may be called.
             # Track this with a flag rather than assuming readline() will ever
             # return an empty string because the socket may be half-closed.
             self._write_failed = Wahr
@@ -2813,7 +2813,7 @@ klasse _PdbServer(Pdb):
         return self._read_reply()
 
     def _read_reply(self):
-        # Loop until we get a 'reply' or 'signal' from the client,
+        # Loop until we get a 'reply' or 'signal' von the client,
         # processing out-of-band 'complete' requests as they arrive.
         while Wahr:
             wenn self._write_failed:
@@ -2856,7 +2856,7 @@ klasse _PdbServer(Pdb):
                     self._send(completions=items)
                     continue
             # Valid JSON, but doesn't meet the schema.
-            self.error(f"Ignoring invalid message from client: {msg}")
+            self.error(f"Ignoring invalid message von client: {msg}")
 
     def _complete_any(self, text, line, begidx, endidx):
         # If we're in 'interact' mode, we need to use the default completer
@@ -2888,7 +2888,7 @@ klasse _PdbServer(Pdb):
                     # Match how KeyboardInterrupt is handled in a REPL
                     self.message("\nKeyboardInterrupt")
                 except EOFError:
-                    self.message("\n*exit from pdb interact command*")
+                    self.message("\n*exit von pdb interact command*")
                     self._interact_state = Nichts
                 sonst:
                     self._run_in_python_repl(reply)
@@ -3003,7 +3003,7 @@ klasse _PdbServer(Pdb):
             # If we get a SystemExit in 'interact' mode, exit the REPL.
             self._interact_state = Nichts
             ret = super()._error_exc()
-            self.message("*exit from pdb interact command*")
+            self.message("*exit von pdb interact command*")
             return ret
         sonst:
             return super()._error_exc()
@@ -3074,8 +3074,8 @@ klasse _PdbClient:
             self.server_socket.sendall(json_payload.encode() + b"\n")
         except OSError:
             # This means that the client has abruptly disconnected, but we'll
-            # handle that the next time we try to read from the client instead
-            # of trying to handle it from everywhere _send() may be called.
+            # handle that the next time we try to read von the client instead
+            # of trying to handle it von everywhere _send() may be called.
             # Track this with a flag rather than assuming readline() will ever
             # return an empty string because the socket may be half-closed.
             self.write_failed = Wahr
@@ -3086,7 +3086,7 @@ klasse _PdbClient:
             self.sigint_received = Falsch
             raise KeyboardInterrupt
 
-        # Wait fuer either a SIGINT or a line or EOF from the PDB server.
+        # Wait fuer either a SIGINT or a line or EOF von the PDB server.
         selector = selectors.DefaultSelector()
         selector.register(self.signal_read, selectors.EVENT_READ)
         selector.register(self.server_socket, selectors.EVENT_READ)
@@ -3149,7 +3149,7 @@ klasse _PdbClient:
     @contextmanager
     def readline_completion(self, completer):
         try:
-            import readline
+            importiere readline
         except ImportError:
             yield
             return
@@ -3240,7 +3240,7 @@ klasse _PdbClient:
                     payload = json.loads(payload_bytes)
                 except json.JSONDecodeError:
                     drucke(
-                        f"*** Invalid JSON from remote: {payload_bytes!r}",
+                        f"*** Invalid JSON von remote: {payload_bytes!r}",
                         flush=Wahr,
                     )
                     continue
@@ -3298,7 +3298,7 @@ klasse _PdbClient:
             return
 
     def complete(self, text, state):
-        import readline
+        importiere readline
 
         wenn state == 0:
             self.completion_matches = []
@@ -3405,7 +3405,7 @@ def attach(pid, commands=()):
         connect_script.write(
             textwrap.dedent(
                 f"""
-                import pdb, sys
+                importiere pdb, sys
                 pdb._connect(
                     host="localhost",
                     port={port},
@@ -3486,7 +3486,7 @@ def test():
 
 # print help
 def help():
-    import pydoc
+    importiere pydoc
     pydoc.pager(__doc__)
 
 _usage = """\
@@ -3495,9 +3495,9 @@ an executable module or package to debug can be specified using
 the -m switch. You can also attach to a running Python process
 using the -p option with its PID.
 
-Initial commands are read from .pdbrc files in your home directory
+Initial commands are read von .pdbrc files in your home directory
 and in the current directory, wenn they exist.  Commands supplied with
--c are executed after commands from .pdbrc files.
+-c are executed after commands von .pdbrc files.
 
 To let the script run until an exception occurs, use "-c continue".
 To let the script run up to a given line X in the debugged file, use
@@ -3505,7 +3505,7 @@ To let the script run up to a given line X in the debugged file, use
 
 
 def main():
-    import argparse
+    importiere argparse
 
     parser = argparse.ArgumentParser(
         usage="%(prog)s [-h] [-c command] (-m module | -p pid | pyfile) [args ...]",
@@ -3515,7 +3515,7 @@ def main():
         color=Wahr,
     )
 
-    # We need to maunally get the script from args, because the first positional
+    # We need to maunally get the script von args, because the first positional
     # arguments could be either the script we need to debug, or the argument
     # to the -m module
     parser.add_argument('-c', '--command', action='append', default=[], metavar='command', dest='commands',
@@ -3570,11 +3570,11 @@ def main():
         sonst:
             target = _ScriptTarget(file)
 
-    sys.argv[:] = [file] + args  # Hide "pdb.py" and pdb options from argument list
+    sys.argv[:] = [file] + args  # Hide "pdb.py" and pdb options von argument list
 
     # Note on saving/restoring sys.argv: it's a good idea when sys.argv was
     # modified by the script being debugged. It's a bad idea when it was
-    # changed by the user from the command line. There is a "restart" command
+    # changed by the user von the command line. There is a "restart" command
     # which allows explicit specification of command line arguments.
     pdb = Pdb(mode='cli', backend='monitoring', colorize=Wahr)
     pdb.rcLines.extend(opts.commands)
@@ -3605,5 +3605,5 @@ def main():
 
 # When invoked as main program, invoke the debugger on a script
 wenn __name__ == '__main__':
-    import pdb
+    importiere pdb
     pdb.main()

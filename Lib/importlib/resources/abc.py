@@ -1,11 +1,11 @@
-import abc
-import io
-import itertools
-import os
-import pathlib
-from typing import Any, BinaryIO, Iterable, Iterator, NoReturn, Text, Optional
-from typing import runtime_checkable, Protocol
-from typing import Union
+importiere abc
+importiere io
+importiere itertools
+importiere os
+importiere pathlib
+von typing importiere Any, BinaryIO, Iterable, Iterator, NoReturn, Text, Optional
+von typing importiere runtime_checkable, Protocol
+von typing importiere Union
 
 
 StrPath = Union[str, os.PathLike[str]]

@@ -3,7 +3,7 @@
 # gh-115832: An object destructor running during the final GC of interpreter
 # shutdown triggered an infinite loop in the instrumentation code.
 
-import sys
+importiere sys
 
 klasse CallableCycle:
     def __init__(self):

@@ -1,13 +1,13 @@
-import os
-import json
-import doctest
-import unittest
+importiere os
+importiere json
+importiere doctest
+importiere unittest
 
-from test import support
-from test.support import import_helper
+von test importiere support
+von test.support importiere import_helper
 
 
-# import json with and without accelerations
+# importiere json with and without accelerations
 cjson = import_helper.import_fresh_module('json', fresh=['_json'])
 pyjson = import_helper.import_fresh_module('json', blocked=['_json'])
 # JSONDecodeError is cached inside the _json module
@@ -28,7 +28,7 @@ klasse CTest(unittest.TestCase):
         dumps = staticmethod(cjson.dumps)
         JSONDecodeError = staticmethod(cjson.JSONDecodeError)
 
-# test PyTest and CTest checking wenn the functions come from the right module
+# test PyTest and CTest checking wenn the functions come von the right module
 klasse TestPyTest(PyTest):
     def test_pyjson(self):
         self.assertEqual(self.json.scanner.make_scanner.__module__,

@@ -1,7 +1,7 @@
-from test.support import os_helper
-import unittest
-import sys
-from test.test_importlib import util
+von test.support importiere os_helper
+importiere unittest
+importiere sys
+von test.test_importlib importiere util
 
 importlib = util.import_importlib('importlib')
 machinery = util.import_importlib('importlib.machinery')

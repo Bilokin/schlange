@@ -1,13 +1,13 @@
 """Unit tests fuer the copy module."""
 
-import copy
-import copyreg
-import weakref
-import abc
-from operator import le, lt, ge, gt, eq, ne, attrgetter
+importiere copy
+importiere copyreg
+importiere weakref
+importiere abc
+von operator importiere le, lt, ge, gt, eq, ne, attrgetter
 
-import unittest
-from test import support
+importiere unittest
+von test importiere support
 
 order_comparisons = le, lt, ge, gt
 equality_comparisons = eq, ne
@@ -15,7 +15,7 @@ comparisons = order_comparisons + equality_comparisons
 
 klasse TestCopy(unittest.TestCase):
 
-    # Attempt full line coverage of copy.py from top to bottom
+    # Attempt full line coverage of copy.py von top to bottom
 
     def test_exceptions(self):
         self.assertIs(copy.Error, copy.error)
@@ -941,8 +941,8 @@ klasse TestReplace(unittest.TestCase):
         self.assertEqual(attrs(copy.replace(a, x=1, y=2)), (1, 2, 3))
 
     def test_namedtuple(self):
-        from collections import namedtuple
-        from typing import NamedTuple
+        von collections importiere namedtuple
+        von typing importiere NamedTuple
         PointFromCall = namedtuple('Point', 'x y', defaults=(0,))
         klasse PointFromInheritance(PointFromCall):
             pass
@@ -962,7 +962,7 @@ klasse TestReplace(unittest.TestCase):
                     copy.replace(p, x=1, error=2)
 
     def test_dataclass(self):
-        from dataclasses import dataclass
+        von dataclasses importiere dataclass
         @dataclass
         klasse C:
             x: int

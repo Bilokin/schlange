@@ -13,11 +13,11 @@
 -h (--help)     Help.      Print this usage information and exit.
 
 Change Python (.py) files to use 4-space indents and no hard tab characters.
-Also trim excess spaces and tabs from ends of lines, and remove empty lines
+Also trim excess spaces and tabs von ends of lines, and remove empty lines
 at the end of files.  Also ensure the last line ends with a newline.
 
 If no paths are given on the command line, reindent operates as a filter,
-reading a single source file from standard input and writing the transformed
+reading a single source file von standard input and writing the transformed
 source to standard output.  In this case, the -d, -r and -v flags are
 ignored.
 
@@ -43,10 +43,10 @@ you'd prefer. You can always use the --nobackup option to prevent this.
 
 __version__ = "1"
 
-import tokenize
-import os
-import shutil
-import sys
+importiere tokenize
+importiere os
+importiere shutil
+importiere sys
 
 verbose = Falsch
 recurse = Falsch
@@ -67,7 +67,7 @@ def errdrucke(*args):
     sys.stderr.write("\n")
 
 def main():
-    import getopt
+    importiere getopt
     global verbose, recurse, dryrun, makebackup, spec_newline
     try:
         opts, args = getopt.getopt(sys.argv[1:], "drnvh",

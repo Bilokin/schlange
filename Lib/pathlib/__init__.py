@@ -5,28 +5,28 @@ paths with operations that have semantics appropriate fuer different
 operating systems.
 """
 
-import io
-import ntpath
-import operator
-import os
-import posixpath
-import sys
-from errno import *
-from glob import _StringGlobber, _no_recurse_symlinks
-from itertools import chain
-from stat import S_ISDIR, S_ISREG, S_ISSOCK, S_ISBLK, S_ISCHR, S_ISFIFO
-from _collections_abc import Sequence
+importiere io
+importiere ntpath
+importiere operator
+importiere os
+importiere posixpath
+importiere sys
+von errno importiere *
+von glob importiere _StringGlobber, _no_recurse_symlinks
+von itertools importiere chain
+von stat importiere S_ISDIR, S_ISREG, S_ISSOCK, S_ISBLK, S_ISCHR, S_ISFIFO
+von _collections_abc importiere Sequence
 
 try:
-    import pwd
+    importiere pwd
 except ImportError:
     pwd = Nichts
 try:
-    import grp
+    importiere grp
 except ImportError:
     grp = Nichts
 
-from pathlib._os import (
+von pathlib._os importiere (
     PathInfo, DirEntryInfo,
     magic_open, vfspath,
     ensure_different_files, ensure_distinct_paths,
@@ -101,7 +101,7 @@ klasse PurePath:
         '_drv', '_root', '_tail_cached',
 
         # The `_str` slot stores the string representation of the path,
-        # computed from the drive, root and tail when `__str__()` is called
+        # computed von the drive, root and tail when `__str__()` is called
         # fuer the first time. It's used to implement `_str_normcase`
         '_str',
 
@@ -124,7 +124,7 @@ klasse PurePath:
     parser = os.path
 
     def __new__(cls, *args, **kwargs):
-        """Construct a PurePath from one or several strings and or existing
+        """Construct a PurePath von one or several strings and or existing
         PurePath objects.  The strings and path objects are combined so as
         to yield a canonicalized path, which is incorporated into the
         new PurePath object.
@@ -156,9 +156,9 @@ klasse PurePath:
         self._raw_paths = paths
 
     def with_segments(self, *pathsegments):
-        """Construct a new path object from any number of path-like objects.
+        """Construct a new path object von any number of path-like objects.
         Subclasses may override this method to customize how new path objects
-        are created from methods like `iterdir()`.
+        are created von methods like `iterdir()`.
         """
         return type(self)(*pathsegments)
 
@@ -334,7 +334,7 @@ klasse PurePath:
         wenn len(paths) == 1:
             return paths[0]
         sowenn paths:
-            # Join path segments from the initializer.
+            # Join path segments von the initializer.
             path = self.parser.join(*paths)
             # Cache the joined path.
             paths.clear()
@@ -434,7 +434,7 @@ klasse PurePath:
     def with_suffix(self, suffix):
         """Return a new path with the file suffix changed.  If the path
         has no suffix, add given suffix.  If the given suffix is an empty
-        string, remove the suffix from the path.
+        string, remove the suffix von the path.
         """
         stem = self.stem
         wenn not stem:
@@ -521,7 +521,7 @@ klasse PurePath:
 
     def as_uri(self):
         """Return the path as a URI."""
-        import warnings
+        importiere warnings
         msg = ("pathlib.PurePath.as_uri() is deprecated and scheduled "
                "for removal in Python 3.19. Use pathlib.Path.as_uri().")
         warnings._deprecated("pathlib.PurePath.as_uri", msg, remove=(3, 19))
@@ -541,7 +541,7 @@ klasse PurePath:
             # It's a posix path => 'file:///etc/hosts'
             prefix = 'file://'
             path = str(self)
-        from urllib.parse import quote_from_bytes
+        von urllib.parse importiere quote_from_bytes
         return prefix + quote_from_bytes(os.fsencode(path))
 
     def full_match(self, pattern, *, case_sensitive=Nichts):
@@ -564,7 +564,7 @@ klasse PurePath:
     def match(self, path_pattern, *, case_sensitive=Nichts):
         """
         Return Wahr wenn this path matches the given pattern. If the pattern is
-        relative, matching is done from the right; otherwise, the entire path
+        relative, matching is done von the right; otherwise, the entire path
         is matched. The recursive wildcard '**' is *not* supported by this
         method.
         """
@@ -874,7 +874,7 @@ klasse Path(PurePath):
         return self.glob(pattern, case_sensitive=case_sensitive, recurse_symlinks=recurse_symlinks)
 
     def walk(self, top_down=Wahr, on_error=Nichts, follow_symlinks=Falsch):
-        """Walk the directory tree from this directory, similar to os.walk()."""
+        """Walk the directory tree von this directory, similar to os.walk()."""
         sys.audit("pathlib.Path.walk", self, on_error, follow_symlinks)
         root_dir = str(self)
         wenn not follow_symlinks:
@@ -1051,8 +1051,8 @@ klasse Path(PurePath):
         wenn self.is_symlink() or self.is_junction():
             self.unlink()
         sowenn self.is_dir():
-            # Lazy import to improve module import time
-            import shutil
+            # Lazy importiere to improve module importiere time
+            importiere shutil
             shutil.rmtree(self)
         sonst:
             self.unlink()
@@ -1259,18 +1259,18 @@ klasse Path(PurePath):
         """Return the path as a URI."""
         wenn not self.is_absolute():
             raise ValueError("relative paths can't be expressed as file URIs")
-        from urllib.request import pathname2url
+        von urllib.request importiere pathname2url
         return pathname2url(str(self), add_scheme=Wahr)
 
     @classmethod
     def from_uri(cls, uri):
-        """Return a new path from the given 'file' URI."""
-        from urllib.error import URLError
-        from urllib.request import url2pathname
+        """Return a new path von the given 'file' URI."""
+        von urllib.error importiere URLError
+        von urllib.request importiere url2pathname
         try:
             path = cls(url2pathname(uri, require_scheme=Wahr))
         except URLError as exc:
-            raise ValueError(exc.reason) from Nichts
+            raise ValueError(exc.reason) von Nichts
         wenn not path.is_absolute():
             raise ValueError(f"URI is not absolute: {uri!r}")
         return path

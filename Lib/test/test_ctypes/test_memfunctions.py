@@ -1,7 +1,7 @@
-import sys
-import unittest
-from test import support
-from ctypes import (POINTER, sizeof, cast,
+importiere sys
+importiere unittest
+von test importiere support
+von ctypes importiere (POINTER, sizeof, cast,
                     create_string_buffer, string_at,
                     create_unicode_buffer, wstring_at,
                     memmove, memset,

@@ -1,57 +1,57 @@
 # Run the _testcapi module tests (tests fuer the Python/C API):  by defn,
 # these are all functions _testcapi exports whose name begins with 'test_'.
 
-import _thread
-from collections import deque
-import contextlib
-import importlib.machinery
-import importlib.util
-import json
-import os
-import pickle
-import queue
-import random
-import sys
-import textwrap
-import threading
-import time
-import types
-import unittest
-import weakref
-import operator
-from test import support
-from test.support import MISSING_C_DOCSTRINGS
-from test.support import import_helper
-from test.support import threading_helper
-from test.support import warnings_helper
-from test.support import requires_limited_api
-from test.support import expected_failure_if_gil_disabled
-from test.support import Py_GIL_DISABLED
-from test.support.script_helper import assert_python_failure, assert_python_ok, run_python_until_end
+importiere _thread
+von collections importiere deque
+importiere contextlib
+importiere importlib.machinery
+importiere importlib.util
+importiere json
+importiere os
+importiere pickle
+importiere queue
+importiere random
+importiere sys
+importiere textwrap
+importiere threading
+importiere time
+importiere types
+importiere unittest
+importiere weakref
+importiere operator
+von test importiere support
+von test.support importiere MISSING_C_DOCSTRINGS
+von test.support importiere import_helper
+von test.support importiere threading_helper
+von test.support importiere warnings_helper
+von test.support importiere requires_limited_api
+von test.support importiere expected_failure_if_gil_disabled
+von test.support importiere Py_GIL_DISABLED
+von test.support.script_helper importiere assert_python_failure, assert_python_ok, run_python_until_end
 try:
-    import _posixsubprocess
+    importiere _posixsubprocess
 except ImportError:
     _posixsubprocess = Nichts
 try:
-    import _testmultiphase
+    importiere _testmultiphase
 except ImportError:
     _testmultiphase = Nichts
 try:
-    import _testsinglephase
+    importiere _testsinglephase
 except ImportError:
     _testsinglephase = Nichts
 try:
-    import _interpreters
+    importiere _interpreters
 except ModuleNotFoundError:
     _interpreters = Nichts
 
 # Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')
 
-from _testcapi import HeapCTypeSubclass, HeapCTypeSubclassWithFinalizer
+von _testcapi importiere HeapCTypeSubclass, HeapCTypeSubclassWithFinalizer
 
-import _testlimitedcapi
-import _testinternalcapi
+importiere _testlimitedcapi
+importiere _testinternalcapi
 
 
 NULL = Nichts
@@ -96,8 +96,8 @@ klasse CAPITest(unittest.TestCase):
     @support.requires_subprocess()
     def test_no_FatalError_infinite_loop(self):
         code = textwrap.dedent("""
-            import _testcapi
-            from test import support
+            importiere _testcapi
+            von test importiere support
 
             with support.SuppressCrashReport():
                 _testcapi.crash_no_current_thread()
@@ -224,8 +224,8 @@ klasse CAPITest(unittest.TestCase):
         # error
         wenn support.Py_DEBUG:
             code = textwrap.dedent("""
-                import _testcapi
-                from test import support
+                importiere _testcapi
+                von test importiere support
 
                 with support.SuppressCrashReport():
                     _testcapi.return_null_without_error()
@@ -252,8 +252,8 @@ klasse CAPITest(unittest.TestCase):
         # Issue #23571: A function must not return a result with an error set
         wenn support.Py_DEBUG:
             code = textwrap.dedent("""
-                import _testcapi
-                from test import support
+                importiere _testcapi
+                von test importiere support
 
                 with support.SuppressCrashReport():
                     _testcapi.return_result_with_error()
@@ -287,8 +287,8 @@ klasse CAPITest(unittest.TestCase):
         # PyObject_GetItem(): check that the assertion catches the bug.
         # PyObject_GetItem() must not be called with an exception set.
         code = textwrap.dedent("""
-            import _testcapi
-            from test import support
+            importiere _testcapi
+            von test importiere support
 
             with support.SuppressCrashReport():
                 _testcapi.getitem_with_error({1: 2}, 1)
@@ -371,7 +371,7 @@ klasse CAPITest(unittest.TestCase):
     def test_buildvalue_ints(self):
         # Test Py_BuildValue() with integer arguments
         buildvalue = _testcapi.py_buildvalue_ints
-        from _testcapi import SHRT_MIN, SHRT_MAX, USHRT_MAX, INT_MIN, INT_MAX, UINT_MAX
+        von _testcapi importiere SHRT_MIN, SHRT_MAX, USHRT_MAX, INT_MIN, INT_MAX, UINT_MAX
         self.assertEqual(buildvalue('i', INT_MAX), INT_MAX)
         self.assertEqual(buildvalue('i', INT_MIN), INT_MIN)
         self.assertEqual(buildvalue('I', UINT_MAX), UINT_MAX)
@@ -406,7 +406,7 @@ klasse CAPITest(unittest.TestCase):
     def test_trashcan_subclass(self):
         # bpo-35983: Check that the trashcan mechanism fuer "list" is NOT
         # activated when its tp_dealloc is being called by a subclass
-        from _testcapi import MyList
+        von _testcapi importiere MyList
         L = Nichts
         fuer i in range(100):
             L = MyList((L,))
@@ -421,7 +421,7 @@ klasse CAPITest(unittest.TestCase):
     @support.skip_emscripten_stack_overflow()
     @support.skip_wasi_stack_overflow()
     def test_trashcan_python_class2(self):
-        from _testcapi import MyList
+        von _testcapi importiere MyList
         self.do_test_trashcan_python_class(MyList)
 
     def do_test_trashcan_python_class(self, base):
@@ -644,22 +644,22 @@ klasse CAPITest(unittest.TestCase):
         #
         # We expect the refcount on the old type, HeapCTypeSubclassWithFinalizer, to
         # remain the same: the finalizer gets a strong reference (+1) when it gets the
-        # type from the module and setting __class__ decrements the refcount (-1).
+        # type von the module and setting __class__ decrements the refcount (-1).
         #
         # We expect the refcount on the new type, HeapCTypeSubclass, to increase by 2:
-        # the finalizer get a strong reference (+1) when it gets the type from the
+        # the finalizer get a strong reference (+1) when it gets the type von the
         # module and setting __class__ increments the refcount (+1).
         expected_type_refcnt = type_refcnt
         expected_new_type_refcnt = new_type_refcnt + 2
 
         wenn not Py_GIL_DISABLED:
-            # In default builds the result returned from sys.getrefcount
+            # In default builds the result returned von sys.getrefcount
             # includes a temporary reference that is created by the interpreter
             # when it pushes its argument on the operand stack. This temporary
             # reference is not included in the result returned by Py_REFCNT, which
             # is used in the finalizer.
             #
-            # In free-threaded builds the result returned from sys.getrefcount
+            # In free-threaded builds the result returned von sys.getrefcount
             # does not include the temporary reference. Types use deferred
             # refcounting and the interpreter will not create a new reference
             # fuer deferred values on the operand stack.
@@ -692,13 +692,13 @@ klasse CAPITest(unittest.TestCase):
         metaclass = _testcapi.HeapCTypeMetaclass
         self.assertIsSubclass(metaclass, type)
 
-        # Class creation from C
+        # Class creation von C
         t = _testcapi.pytype_fromspec_meta(metaclass)
         self.assertIsInstance(t, type)
         self.assertEqual(t.__name__, "HeapCTypeViaMetaclass")
         self.assertIs(type(t), metaclass)
 
-        # Class creation from Python
+        # Class creation von Python
         t = metaclass("PyClassViaMetaclass", (), {})
         self.assertIsInstance(t, type)
         self.assertEqual(t.__name__, "PyClassViaMetaclass")
@@ -708,13 +708,13 @@ klasse CAPITest(unittest.TestCase):
 
         self.assertIsSubclass(metaclass, type)
 
-        # Class creation from C
+        # Class creation von C
         t = _testcapi.pytype_fromspec_meta(metaclass)
         self.assertIsInstance(t, type)
         self.assertEqual(t.__name__, "HeapCTypeViaMetaclass")
         self.assertIs(type(t), metaclass)
 
-        # Class creation from Python
+        # Class creation von Python
         with self.assertRaisesRegex(TypeError, "cannot create .* instances"):
             metaclass("PyClassViaMetaclass", (), {})
 
@@ -733,7 +733,7 @@ klasse CAPITest(unittest.TestCase):
         klasse Base(metaclass=metaclass):
             pass
 
-        # Class creation from C
+        # Class creation von C
         msg = "Metaclasses with custom tp_new are not supported."
         with self.assertRaisesRegex(TypeError, msg):
             sub = _testcapi.make_type_with_base(Base)
@@ -811,7 +811,7 @@ klasse CAPITest(unittest.TestCase):
             _testcapi.make_immutable_type_with_base(MutableBase)
 
     def test_pynumber_tobase(self):
-        from _testcapi import pynumber_tobase
+        von _testcapi importiere pynumber_tobase
         small_number = 123
         large_number = 2**64
         klasse IDX:
@@ -1428,12 +1428,12 @@ klasse TestPendingCalls(unittest.TestCase):
         interpid = _interpreters.create()
         self.addCleanup(lambda: _interpreters.destroy(interpid))
         _interpreters.run_string(interpid, f"""if Wahr:
-            import json
-            import os
-            import threading
-            import time
-            import _testinternalcapi
-            from test.support import threading_helper
+            importiere json
+            importiere os
+            importiere threading
+            importiere time
+            importiere _testinternalcapi
+            von test.support importiere threading_helper
             """)
 
         def create_pipe():
@@ -1646,10 +1646,10 @@ klasse SubinterpreterTest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     def test_subinterps(self):
-        import builtins
+        importiere builtins
         r, w = os.pipe()
         code = """if 1:
-            import sys, builtins, pickle
+            importiere sys, builtins, pickle
             with open({:d}, "wb") as f:
                 pickle.dump(id(sys.modules), f)
                 pickle.dump(id(builtins), f)
@@ -1664,7 +1664,7 @@ klasse SubinterpreterTest(unittest.TestCase):
     def test_subinterps_recent_language_features(self):
         r, w = os.pipe()
         code = """if 1:
-            import pickle
+            importiere pickle
             with open({:d}, "wb") as f:
 
                 @(lambda x:x)  # Py 3.9
@@ -1690,7 +1690,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         # This test could verify ANY config value, it just happens to have been
         # written around the time of int_max_str_digits. Refactoring is okay.
         code = """if 1:
-        import sys, _testcapi
+        importiere sys, _testcapi
 
         # Any config value would do, this happens to be the one being
         # double checked at the time this test was written.
@@ -1780,7 +1780,7 @@ klasse SubinterpreterTest(unittest.TestCase):
             with self.subTest(config):
                 r, w = os.pipe()
                 script = textwrap.dedent(f'''
-                    import _testinternalcapi, json, os
+                    importiere _testinternalcapi, json, os
                     settings = _testinternalcapi.get_interp_settings()
                     with os.fdopen({w}, "w") as stdin:
                         json.dump(settings, stdin)
@@ -1798,7 +1798,7 @@ klasse SubinterpreterTest(unittest.TestCase):
             kwargs = dict(zip(kwlist, config))
             with self.subTest(config):
                 script = textwrap.dedent(f'''
-                    import _testinternalcapi
+                    importiere _testinternalcapi
                     _testinternalcapi.get_interp_settings()
                     raise NotImplementedError('unreachable')
                     ''')
@@ -1865,7 +1865,7 @@ klasse SubinterpreterTest(unittest.TestCase):
                 # gh-117649: The test fails before `w` is closed
                 self.addCleanup(os.close, w)
             script = textwrap.dedent(f'''
-                from test.test_capi.check_config import run_singlephase_check
+                von test.test_capi.check_config importiere run_singlephase_check
                 run_singlephase_check({override}, {w})
                 ''')
             with os.fdopen(r) as stdout:
@@ -1901,7 +1901,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         a change in one interpreter's module gets reflected into the
         other ones.
         """
-        import binascii
+        importiere binascii
 
         support.run_in_subinterp("import binascii; binascii.Error.foobar = 'foobar'")
 
@@ -1928,9 +1928,9 @@ klasse SubinterpreterTest(unittest.TestCase):
             loader = "ExtensionFileLoader"
 
         script = textwrap.dedent(f"""
-            import importlib.machinery
-            import importlib.util
-            import os
+            importiere importlib.machinery
+            importiere importlib.util
+            importiere os
 
             fullname = '_test_module_state_shared'
             origin = importlib.util.find_spec('_testmultiphase').origin
@@ -2003,14 +2003,14 @@ klasse InterpreterConfigTests(unittest.TestCase):
                                     )
 
     def assert_ns_equal(self, ns1, ns2, msg=Nichts):
-        # This is mostly copied from TestCase.assertDictEqual.
+        # This is mostly copied von TestCase.assertDictEqual.
         self.assertEqual(type(ns1), type(ns2))
         wenn ns1 == ns2:
             return
 
-        import difflib
-        import pprint
-        from unittest.util import _common_shorten_repr
+        importiere difflib
+        importiere pprint
+        von unittest.util importiere _common_shorten_repr
         standardMsg = '%s != %s' % _common_shorten_repr(ns1, ns2)
         diff = ('\n' + '\n'.join(difflib.ndiff(
                        pprint.pformat(vars(ns1)).splitlines(),
@@ -2480,7 +2480,7 @@ klasse TestStaticTypes(unittest.TestCase):
     def test_pytype_ready_always_sets_tp_type(self):
         # The point of this test is to prevent something like
         # https://github.com/python/cpython/issues/104614
-        # from happening again.
+        # von happening again.
 
         # First check when tp_base/tp_bases is *not* set before PyType_Ready().
         with self.basic_static_type() as cls:
@@ -2540,7 +2540,7 @@ klasse TestThreadState(unittest.TestCase):
     def test_gilstate_ensure_no_deadlock(self):
         # See https://github.com/python/cpython/issues/96071
         code = textwrap.dedent("""
-            import _testcapi
+            importiere _testcapi
 
             def callback():
                 drucke('callback called')
@@ -2568,7 +2568,7 @@ def get_test_funcs(mod, exclude_prefix=Nichts):
 klasse Test_testcapi(unittest.TestCase):
     locals().update(get_test_funcs(_testcapi))
 
-    # Suppress warning from PyUnicode_FromUnicode().
+    # Suppress warning von PyUnicode_FromUnicode().
     @warnings_helper.ignore_warnings(category=DeprecationWarning)
     def test_widechar(self):
         _testlimitedcapi.test_widechar()
@@ -2783,7 +2783,7 @@ klasse Test_Pep523API(unittest.TestCase):
         def inner():
             yield 42
         def outer():
-            yield from inner()
+            yield von inner()
         def func():
             list(outer())
         names = ["func", "outer", "outer", "inner", "inner", "outer", "inner"]
@@ -2892,7 +2892,7 @@ klasse TestVersions(unittest.TestCase):
 klasse TestCEval(unittest.TestCase):
    def test_ceval_decref(self):
         code = textwrap.dedent("""
-            import _testcapi
+            importiere _testcapi
             _testcapi.toggle_reftrace_printer(Wahr)
             l1 = []
             l2 = []

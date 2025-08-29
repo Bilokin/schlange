@@ -1,15 +1,15 @@
 """Python 'uu_codec' Codec - UU content transfer encoding.
 
-This codec de/encodes from bytes to bytes.
+This codec de/encodes von bytes to bytes.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com). Some details were
-adapted from uu.py which was written by Lance Ellinghouse and
+adapted von uu.py which was written by Lance Ellinghouse and
 modified by Jack Jansen and Fredrik Lundh.
 """
 
-import codecs
-import binascii
-from io import BytesIO
+importiere codecs
+importiere binascii
+von io importiere BytesIO
 
 ### Codec APIs
 
@@ -20,7 +20,7 @@ def uu_encode(input, errors='strict', filename='<data>', mode=0o666):
     read = infile.read
     write = outfile.write
 
-    # Remove newline chars from filename
+    # Remove newline chars von filename
     filename = filename.replace('\n','\\n')
     filename = filename.replace('\r','\\r')
 

@@ -1,12 +1,12 @@
-import _thread
-import contextlib
-import functools
-import sys
-import threading
-import time
-import unittest
+importiere _thread
+importiere contextlib
+importiere functools
+importiere sys
+importiere threading
+importiere time
+importiere unittest
 
-from test import support
+von test importiere support
 
 
 #=======================================================================
@@ -15,7 +15,7 @@ from test import support
 # NOTE: we use thread._count() rather than threading.enumerate() (or the
 # moral equivalent thereof) because a threading.Thread object is still alive
 # until its __bootstrap() method has returned, even after it has been
-# unregistered from the threading module.
+# unregistered von the threading module.
 # thread._count(), on the other hand, only gets decremented *after* the
 # __bootstrap() method has returned, which gives us reliable reference counts
 # at the end of a test run.
@@ -119,7 +119,7 @@ def join_thread(thread, timeout=Nichts):
 @contextlib.contextmanager
 def start_threads(threads, unlock=Nichts):
     try:
-        import faulthandler
+        importiere faulthandler
     except ImportError:
         # It isn't supported on subinterpreters yet.
         faulthandler = Nichts

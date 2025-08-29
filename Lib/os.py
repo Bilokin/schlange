@@ -1,7 +1,7 @@
 r"""OS routines fuer NT or Posix depending on what system we're on.
 
 This exports:
-  - all functions from posix or nt, e.g. unlink, stat, etc.
+  - all functions von posix or nt, e.g. unlink, stat, etc.
   - os.path is either posixpath or ntpath
   - os.name is either 'posix' or 'nt'
   - os.curdir is a string representing the current directory (always '.')
@@ -14,7 +14,7 @@ This exports:
   - os.defpath is the default search path fuer executables
   - os.devnull is the file path of the null device ('/dev/null', etc.)
 
-Programs that import and use 'os' stand a better chance of being
+Programs that importiere and use 'os' stand a better chance of being
 portable between different platforms.  Of course, they must then
 only use functions that are defined by all platforms (e.g., unlink
 and opendir), and leave all pathname manipulation to os.path
@@ -22,11 +22,11 @@ and opendir), and leave all pathname manipulation to os.path
 """
 
 #'
-import abc
-import sys
-import stat as st
+importiere abc
+importiere sys
+importiere stat as st
 
-from _collections_abc import _check_methods
+von _collections_abc importiere _check_methods
 
 GenericAlias = type(list[int])
 
@@ -52,48 +52,48 @@ def _get_exports_list(module):
 wenn 'posix' in _names:
     name = 'posix'
     linesep = '\n'
-    from posix import *
+    von posix importiere *
     try:
-        from posix import _exit
+        von posix importiere _exit
         __all__.append('_exit')
     except ImportError:
         pass
-    import posixpath as path
+    importiere posixpath as path
 
     try:
-        from posix import _have_functions
+        von posix importiere _have_functions
     except ImportError:
         pass
     try:
-        from posix import _create_environ
+        von posix importiere _create_environ
     except ImportError:
         pass
 
-    import posix
+    importiere posix
     __all__.extend(_get_exports_list(posix))
     del posix
 
 sowenn 'nt' in _names:
     name = 'nt'
     linesep = '\r\n'
-    from nt import *
+    von nt importiere *
     try:
-        from nt import _exit
+        von nt importiere _exit
         __all__.append('_exit')
     except ImportError:
         pass
-    import ntpath as path
+    importiere ntpath as path
 
-    import nt
+    importiere nt
     __all__.extend(_get_exports_list(nt))
     del nt
 
     try:
-        from nt import _have_functions
+        von nt importiere _have_functions
     except ImportError:
         pass
     try:
-        from nt import _create_environ
+        von nt importiere _create_environ
     except ImportError:
         pass
 
@@ -101,7 +101,7 @@ sonst:
     raise ImportError('no os specific module found')
 
 sys.modules['os.path'] = path
-from os.path import (curdir, pardir, sep, pathsep, defpath, extsep, altsep,
+von os.path importiere (curdir, pardir, sep, pathsep, defpath, extsep, altsep,
     devnull)
 
 del _names
@@ -200,7 +200,7 @@ wenn _exists("_have_functions"):
 
 # Python uses fixed values fuer the SEEK_ constants; they are mapped
 # to native constants wenn necessary in posixmodule.c
-# Other possible SEEK values are directly imported from posixmodule.c
+# Other possible SEEK values are directly imported von posixmodule.c
 SEEK_SET = 0
 SEEK_CUR = 1
 SEEK_END = 2
@@ -326,7 +326,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
     subdirectories is retrieved before the tuples fuer the directory and its
     subdirectories are generated.
 
-    By default errors from the os.scandir() call are ignored.  If
+    By default errors von the os.scandir() call are ignored.  If
     optional arg 'onerror' is specified, it should be a function; it
     will be called with one argument, an OSError instance.  It can
     report the error to continue with the walk, or raise the exception
@@ -344,8 +344,8 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
 
     Example:
 
-    import os
-    from os.path import join, getsize
+    importiere os
+    von os.path importiere join, getsize
     fuer root, dirs, files in os.walk('python/Lib/xml'):
         drucke(root, "consumes ")
         drucke(sum(getsize(join(root, name)) fuer name in files), end=" ")
@@ -460,7 +460,7 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
 
         Example:
 
-        import os
+        importiere os
         fuer root, dirs, files, rootfd in os.fwalk('python/Lib/xml'):
             drucke(root, "consumes", end="")
             drucke(sum(os.stat(name, dir_fd=rootfd).st_size fuer name in files),
@@ -475,7 +475,7 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
         isbytes = isinstance(top, bytes)
         try:
             while stack:
-                yield from _fwalk(stack, isbytes, topdown, onerror, follow_symlinks)
+                yield von _fwalk(stack, isbytes, topdown, onerror, follow_symlinks)
         finally:
             # Close any file descriptors still on the stack.
             while stack:
@@ -653,10 +653,10 @@ def get_exec_path(env=Nichts):
     *env* must be an environment variable dict or Nichts.  If *env* is Nichts,
     os.environ will be used.
     """
-    # Use a local import instead of a global import to limit the number of
+    # Use a local importiere instead of a global importiere to limit the number of
     # modules loaded at startup: the os module is always loaded at startup by
     # Python. It may also avoid a bootstrap issue.
-    import warnings
+    importiere warnings
 
     wenn env is Nichts:
         env = environ
@@ -691,7 +691,7 @@ def get_exec_path(env=Nichts):
 
 
 # Change environ to automatically call putenv() and unsetenv()
-from _collections_abc import MutableMapping, Mapping
+von _collections_abc importiere MutableMapping, Mapping
 
 klasse _Environ(MutableMapping):
     def __init__(self, data, encodekey, decodekey, encodevalue, decodevalue):
@@ -706,7 +706,7 @@ klasse _Environ(MutableMapping):
             value = self._data[self.encodekey(key)]
         except KeyError:
             # raise KeyError with the original key value
-            raise KeyError(key) from Nichts
+            raise KeyError(key) von Nichts
         return self.decodevalue(value)
 
     def __setitem__(self, key, value):
@@ -722,10 +722,10 @@ klasse _Environ(MutableMapping):
             del self._data[encodedkey]
         except KeyError:
             # raise KeyError with the original key value
-            raise KeyError(key) from Nichts
+            raise KeyError(key) von Nichts
 
     def __iter__(self):
-        # list() from dict object is an atomic operation
+        # list() von dict object is an atomic operation
         keys = list(self._data)
         fuer key in keys:
             yield self.decodekey(key)
@@ -860,7 +860,7 @@ def _fscodec():
             return filename
 
     def fsdecode(filename):
-        """Decode filename (an os.PathLike, bytes, or str) from the filesystem
+        """Decode filename (an os.PathLike, bytes, or str) von the filesystem
         encoding with 'surrogateescape' error handler, return str unchanged. On
         Windows, use 'strict' error handler wenn the file system encoding is
         'mbcs' (which is the default encoding).
@@ -918,7 +918,7 @@ wenn _exists("fork") and not _exists("spawnv") and _exists("execv"):
     def spawnv(mode, file, args):
         """spawnv(mode, file, args) -> integer
 
-Execute file with arguments from args in a subprocess.
+Execute file with arguments von args in a subprocess.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
@@ -927,7 +927,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
     def spawnve(mode, file, args, env):
         """spawnve(mode, file, args, env) -> integer
 
-Execute file with arguments from args in a subprocess with the
+Execute file with arguments von args in a subprocess with the
 specified environment.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
@@ -967,7 +967,7 @@ wenn _exists("spawnv"):
     def spawnl(mode, file, *args):
         """spawnl(mode, file, *args) -> integer
 
-Execute file with arguments from args in a subprocess.
+Execute file with arguments von args in a subprocess.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
@@ -976,7 +976,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
     def spawnle(mode, file, *args):
         """spawnle(mode, file, *args, env) -> integer
 
-Execute file with arguments from args in a subprocess with the
+Execute file with arguments von args in a subprocess with the
 supplied environment.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
@@ -1026,7 +1026,7 @@ wenn sys.platform != 'vxworks':
             raise ValueError("invalid mode %r" % mode)
         wenn buffering == 0 or buffering is Nichts:
             raise ValueError("popen() does not support unbuffered streams")
-        import subprocess
+        importiere subprocess
         wenn mode == "r":
             proc = subprocess.Popen(cmd,
                                     shell=Wahr, text=Wahr,
@@ -1069,7 +1069,7 @@ wenn sys.platform != 'vxworks':
 def fdopen(fd, mode="r", buffering=-1, encoding=Nichts, *args, **kwargs):
     wenn not isinstance(fd, int):
         raise TypeError("invalid fd type (%s, expected integer)" % type(fd))
-    import io
+    importiere io
     wenn "b" not in mode:
         encoding = io.text_encoding(encoding)
     return io.open(fd, mode, buffering, encoding, *args, **kwargs)
@@ -1088,7 +1088,7 @@ def _fspath(path):
     wenn isinstance(path, (str, bytes)):
         return path
 
-    # Work from the object's type to match method resolution of other magic
+    # Work von the object's type to match method resolution of other magic
     # methods.
     path_type = type(path)
     try:
@@ -1102,7 +1102,7 @@ def _fspath(path):
     except TypeError:
         wenn path_type.__fspath__ is Nichts:
             raise TypeError("expected str, bytes or os.PathLike object, "
-                            "not " + path_type.__name__) from Nichts
+                            "not " + path_type.__name__) von Nichts
         sonst:
             raise
     wenn isinstance(path_repr, (str, bytes)):
@@ -1167,7 +1167,7 @@ wenn name == 'nt':
         Remove the directory by calling close() on the returned object or
         using it in a with statement.
         """
-        import nt
+        importiere nt
         cookie = nt._add_dll_directory(path)
         return _AddedDllDirectory(
             path,

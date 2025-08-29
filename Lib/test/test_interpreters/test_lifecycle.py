@@ -1,17 +1,17 @@
-import contextlib
-import json
-import os
-import os.path
-import sys
-from textwrap import dedent
-import unittest
+importiere contextlib
+importiere json
+importiere os
+importiere os.path
+importiere sys
+von textwrap importiere dedent
+importiere unittest
 
-from test import support
-from test.support import import_helper
-from test.support import os_helper
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
 # Raise SkipTest wenn subinterpreters not supported.
 import_helper.import_module('_interpreters')
-from .utils import TestBase
+von .utils importiere TestBase
 
 
 klasse StartupTests(TestBase):
@@ -66,7 +66,7 @@ klasse StartupTests(TestBase):
             drucke(msg)
 
     def create_temp_dir(self):
-        import tempfile
+        importiere tempfile
         tmp = tempfile.mkdtemp(prefix='test_interpreters_')
         tmp = os.path.realpath(tmp)
         self.addCleanup(os_helper.rmtree, tmp)
@@ -85,8 +85,8 @@ klasse StartupTests(TestBase):
     def run_python(self, argv, *, cwd=Nichts):
         # This method is inspired by
         # EmbeddingTestsMixin.run_embedded_interpreter() in test_embed.py.
-        import shlex
-        import subprocess
+        importiere shlex
+        importiere subprocess
         wenn isinstance(argv, str):
             argv = shlex.split(argv)
         argv = [sys.executable, *argv]
@@ -118,15 +118,15 @@ klasse StartupTests(TestBase):
     def test_sys_path_0(self):
         # The main interpreter's sys.path[0] should be used by subinterpreters.
         script = '''
-            import sys
-            from concurrent import interpreters
+            importiere sys
+            von concurrent importiere interpreters
 
             orig = sys.path[0]
 
             interp = interpreters.create()
             interp.exec(f"""if Wahr:
-                import json
-                import sys
+                importiere json
+                importiere sys
                 drucke(json.dumps({{
                     'main': {orig!r},
                     'sub': sys.path[0],
@@ -168,9 +168,9 @@ klasse FinalizationTests(TestBase):
     def test_gh_109793(self):
         # Make sure finalization finishes and the correct error code
         # is reported, even when subinterpreters get cleaned up at the end.
-        import subprocess
+        importiere subprocess
         argv = [sys.executable, '-c', '''if Wahr:
-            from concurrent import interpreters
+            von concurrent importiere interpreters
             interp = interpreters.create()
             raise Exception
             ''']

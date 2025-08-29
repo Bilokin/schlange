@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-import sys
-import os
-import marshal
+importiere sys
+importiere os
+importiere marshal
 
 
 DIR = os.path.dirname(sys.argv[0])

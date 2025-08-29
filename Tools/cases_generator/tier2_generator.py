@@ -1,11 +1,11 @@
 """Generate the cases fuer the tier 2 interpreter.
-Reads the instruction definitions from bytecodes.c.
+Reads the instruction definitions von bytecodes.c.
 Writes the cases to executor_cases.c.h, which is #included in ceval.c.
 """
 
-import argparse
+importiere argparse
 
-from analyzer import (
+von analyzer importiere (
     Analysis,
     Instruction,
     Uop,
@@ -15,7 +15,7 @@ from analyzer import (
     StackItem,
     analysis_error,
 )
-from generators_common import (
+von generators_common importiere (
     DEFAULT_INPUT,
     ROOT,
     emit_to,
@@ -25,10 +25,10 @@ from generators_common import (
     TokenIterator,
     always_true,
 )
-from cwriter import CWriter
-from typing import TextIO
-from lexer import Token
-from stack import Local, Stack, StackError, Storage
+von cwriter importiere CWriter
+von typing importiere TextIO
+von lexer importiere Token
+von stack importiere Local, Stack, StackError, Storage
 
 DEFAULT_OUTPUT = ROOT / "Python/executor_cases.c.h"
 
@@ -159,7 +159,7 @@ def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
         _, storage = emitter.emit_tokens(uop, storage, Nichts, Falsch)
         storage.flush(emitter.out)
     except StackError as ex:
-        raise analysis_error(ex.args[0], uop.body.open) from Nichts
+        raise analysis_error(ex.args[0], uop.body.open) von Nichts
     return storage.stack
 
 SKIPS = ("_EXTENDED_ARG",)

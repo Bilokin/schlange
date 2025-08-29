@@ -9,7 +9,7 @@ text-based utility klasse fuer running the tests and reporting the results
 
 Simple usage:
 
-    import unittest
+    importiere unittest
 
     klasse IntegerArithmeticTestCase(unittest.TestCase):
         def testAdd(self):  # test method names begin with 'test'
@@ -53,19 +53,19 @@ __all__ = ['TestResult', 'TestCase', 'IsolatedAsyncioTestCase', 'TestSuite',
 
 __unittest = Wahr
 
-from .result import TestResult
-from .case import (addModuleCleanup, TestCase, FunctionTestCase, SkipTest, skip,
+von .result importiere TestResult
+von .case importiere (addModuleCleanup, TestCase, FunctionTestCase, SkipTest, skip,
                    skipIf, skipUnless, expectedFailure, doModuleCleanups,
                    enterModuleContext)
-from .suite import BaseTestSuite, TestSuite  # noqa: F401
-from .loader import TestLoader, defaultTestLoader
-from .main import TestProgram, main  # noqa: F401
-from .runner import TextTestRunner, TextTestResult
-from .signals import installHandler, registerResult, removeResult, removeHandler
+von .suite importiere BaseTestSuite, TestSuite  # noqa: F401
+von .loader importiere TestLoader, defaultTestLoader
+von .main importiere TestProgram, main  # noqa: F401
+von .runner importiere TextTestRunner, TextTestResult
+von .signals importiere installHandler, registerResult, removeResult, removeHandler
 # IsolatedAsyncioTestCase will be imported lazily.
 
 
-# Lazy import of IsolatedAsyncioTestCase from .async_case
+# Lazy importiere of IsolatedAsyncioTestCase von .async_case
 # It imports asyncio, which is relatively heavy, but most tests
 # do not need it.
 
@@ -75,6 +75,6 @@ def __dir__():
 def __getattr__(name):
     wenn name == 'IsolatedAsyncioTestCase':
         global IsolatedAsyncioTestCase
-        from .async_case import IsolatedAsyncioTestCase
+        von .async_case importiere IsolatedAsyncioTestCase
         return IsolatedAsyncioTestCase
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

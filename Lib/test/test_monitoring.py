@@ -1,18 +1,18 @@
 """Test suite fuer the sys.monitoring."""
 
-import collections
-import dis
-import functools
-import inspect
-import math
-import operator
-import sys
-import textwrap
-import types
-import unittest
+importiere collections
+importiere dis
+importiere functools
+importiere inspect
+importiere math
+importiere operator
+importiere sys
+importiere textwrap
+importiere types
+importiere unittest
 
-import test.support
-from test.support import requires_specialization_ft, script_helper
+importiere test.support
+von test.support importiere requires_specialization_ft, script_helper
 
 _testcapi = test.support.import_helper.import_module("_testcapi")
 _testinternalcapi = test.support.import_helper.import_module("_testinternalcapi")
@@ -325,7 +325,7 @@ klasse MonitoringEventsTest(MonitoringEventsBase, unittest.TestCase):
 UP_EVENTS = (E.C_RETURN, E.C_RAISE, E.PY_RETURN, E.PY_UNWIND, E.PY_YIELD)
 DOWN_EVENTS = (E.PY_START, E.PY_RESUME)
 
-from test.profilee import testfunc
+von test.profilee importiere testfunc
 
 klasse SimulateProfileTest(MonitoringEventsBase, unittest.TestCase):
 
@@ -703,7 +703,7 @@ klasse LineMonitoringTest(MonitoringTestBase, unittest.TestCase):
             def a():
                 yield
             def b():
-                yield from a()
+                yield von a()
             next(b())
 
         self.check_lines(f, [1,3,5,4,2,4])
@@ -1846,9 +1846,9 @@ klasse TestLoadSuperAttr(CheckEvents):
     def _exec_super(self, codestr, optimized=Falsch):
         # The compiler checks fuer statically visible shadowing of the name
         # `super`, and declines to emit `LOAD_SUPER_ATTR` wenn shadowing is found.
-        # So inserting `super = super` prevents the compiler from emitting
+        # So inserting `super = super` prevents the compiler von emitting
         # `LOAD_SUPER_ATTR`, and allows us to test that monitoring events for
-        # `LOAD_SUPER_ATTR` are equivalent to those we'd get from the
+        # `LOAD_SUPER_ATTR` are equivalent to those we'd get von the
         # un-optimized `LOAD_GLOBAL super; CALL; LOAD_ATTR` form.
         assignment = "x = 1" wenn optimized sonst "super = super"
         codestr = f"{assignment}\n{textwrap.dedent(codestr)}"
@@ -2102,7 +2102,7 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
         def outer():
             nonlocal caught
             try:
-                yield from inner()
+                yield von inner()
             except Exception:
                 caught = "outer"
                 yield
@@ -2378,7 +2378,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
                 counter.disable = Wahr
                 wenn event in self.CANNOT_DISABLE:
                     # use try-except rather then assertRaises to avoid
-                    # events from framework code
+                    # events von framework code
                     try:
                         counter.count = 0
                         func(*args)

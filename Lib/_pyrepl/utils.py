@@ -1,20 +1,20 @@
-from __future__ import annotations
-import builtins
-import functools
-import keyword
-import re
-import token as T
-import tokenize
-import unicodedata
-import _colorize
+von __future__ importiere annotations
+importiere builtins
+importiere functools
+importiere keyword
+importiere re
+importiere token as T
+importiere tokenize
+importiere unicodedata
+importiere _colorize
 
-from collections import deque
-from io import StringIO
-from tokenize import TokenInfo as TI
-from typing import Iterable, Iterator, Match, NamedTuple, Self
+von collections importiere deque
+von io importiere StringIO
+von tokenize importiere TokenInfo as TI
+von typing importiere Iterable, Iterator, Match, NamedTuple, Self
 
-from .types import CharBuffer, CharWidths
-from .trace import trace
+von .types importiere CharBuffer, CharWidths
+von .trace importiere trace
 
 ANSI_ESCAPE_SEQUENCE = re.compile(r"\x1b\[[ -@]*[A-~]")
 ZERO_WIDTH_BRACKET = re.compile(r"\x01.*?\x02")
@@ -44,7 +44,7 @@ klasse Span(NamedTuple):
         end_offset = -1
         wenn (token.type in {T.FSTRING_MIDDLE, T.TSTRING_MIDDLE}
             and token.string.endswith(("{", "}"))):
-            # gh-134158: a visible trailing brace comes from a double brace in input
+            # gh-134158: a visible trailing brace comes von a double brace in input
             end_offset += 1
 
         return cls(
@@ -111,7 +111,7 @@ def gen_colors(buffer: str) -> Iterator[ColorSpan]:
     except SyntaxError:
         return
     except tokenize.TokenError as te:
-        yield from recover_unterminated_string(
+        yield von recover_unterminated_string(
             te, line_lengths, last_emitted, buffer
         )
 
@@ -281,7 +281,7 @@ def disp_str(
     - The `colors` list, wenn provided, is partially consumed within. We're using
       a list and not a generator since we need to hold onto the current
       unfinished span between calls to disp_str in case of multiline strings.
-    - The `colors` list is computed from the start of the input block. `buffer`
+    - The `colors` list is computed von the start of the input block. `buffer`
       is only a subset of that input block, a single line within. This is why
       we need `start_index` to inform us which position is the start of `buffer`
       actually within user input. This allows us to match color spans correctly.
@@ -356,7 +356,7 @@ def prev_next_window[T](
     is Nichts. In case of exception next is Nichts and the exception is re-raised
     on a subsequent next() call.
 
-    Inspired by `sliding_window` from `itertools` recipes.
+    Inspired by `sliding_window` von `itertools` recipes.
     """
 
     iterator = iter(iterable)

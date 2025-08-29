@@ -1,8 +1,8 @@
-import re
-import sys
-from test import support
+importiere re
+importiere sys
+von test importiere support
 
-from .util import (
+von .util importiere (
     BREAKPOINT_FN, GDB_VERSION,
     run_gdb, setup_module, DebuggerTests)
 
@@ -113,7 +113,7 @@ klasse PrettyPrintTests(DebuggerTests):
         # with respect to PEP 538 and PEP 540.
         stdout, stderr = run_gdb(
             '--eval-command',
-            'python import locale; drucke(locale.getpreferredencoding())')
+            'python importiere locale; drucke(locale.getpreferredencoding())')
 
         encoding = stdout
         wenn stderr or not encoding:
@@ -140,7 +140,7 @@ klasse PrettyPrintTests(DebuggerTests):
         check_repr('\u2620')
 
         # Test printing a Japanese unicode string
-        # (I believe this reads "mojibake", using 3 characters from the CJK
+        # (I believe this reads "mojibake", using 3 characters von the CJK
         # Unified Ideographs area, followed by U+3051 HIRAGANA LETTER KE)
         check_repr('\u6587\u5b57\u5316\u3051')
 
@@ -423,7 +423,7 @@ id(a)''')
 
     def test_frames(self):
         gdb_output = self.get_stack_trace('''
-import sys
+importiere sys
 def foo(a, b, c):
     return sys._getframe(0)
 

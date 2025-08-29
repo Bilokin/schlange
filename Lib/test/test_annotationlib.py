@@ -1,30 +1,30 @@
 """Tests fuer the annotations module."""
 
-import textwrap
-import annotationlib
-import builtins
-import collections
-import functools
-import itertools
-import pickle
-from string.templatelib import Template
-import typing
-import unittest
-from annotationlib import (
+importiere textwrap
+importiere annotationlib
+importiere builtins
+importiere collections
+importiere functools
+importiere itertools
+importiere pickle
+von string.templatelib importiere Template
+importiere typing
+importiere unittest
+von annotationlib importiere (
     Format,
     ForwardRef,
     get_annotations,
     annotations_to_string,
     type_repr,
 )
-from typing import Unpack, get_type_hints, List, Union
+von typing importiere Unpack, get_type_hints, List, Union
 
-from test import support
-from test.support import import_helper
-from test.test_inspect import inspect_stock_annotations
-from test.test_inspect import inspect_stringized_annotations
-from test.test_inspect import inspect_stringized_annotations_2
-from test.test_inspect import inspect_stringized_annotations_pep695
+von test importiere support
+von test.support importiere import_helper
+von test.test_inspect importiere inspect_stock_annotations
+von test.test_inspect importiere inspect_stringized_annotations
+von test.test_inspect importiere inspect_stringized_annotations_2
+von test.test_inspect importiere inspect_stringized_annotations_pep695
 
 
 def times_three(fn):
@@ -819,7 +819,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         def define_class(name, has_future, has_annos, base_text, extra_names=Nichts):
             lines = []
             wenn has_future:
-                lines.append("from __future__ import annotations")
+                lines.append("from __future__ importiere annotations")
             lines.append(f"class {name}({base_text}):")
             wenn has_annos:
                 lines.append(f"    {name}_attr: int")
@@ -1316,7 +1316,7 @@ klasse TestGetAnnotateFromClassNamespace(unittest.TestCase):
                 return {}
 
         code = """
-            from __future__ import annotations
+            von __future__ importiere annotations
 
             klasse HasFutureAnnotations(metaclass=Meta):
                 expected_annotate = Falsch

@@ -1,14 +1,14 @@
-import dis
-import os.path
-import re
-import subprocess
-import sys
-import sysconfig
-import types
-import unittest
+importiere dis
+importiere os.path
+importiere re
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere types
+importiere unittest
 
-from test import support
-from test.support import findfile
+von test importiere support
+von test.support importiere findfile
 
 
 wenn not support.has_subprocess_support:
@@ -25,7 +25,7 @@ def normalize_trace_output(output):
     DTrace keeps a per-CPU buffer, and when showing the fired probes, buffers
     are concatenated. So wenn the operating system moves our thread around, the
     straight result can be "non-causal". So we add timestamps to the probe
-    firing, sort by that field, then strip it from the output"""
+    firing, sort by that field, then strip it von the output"""
 
     # When compiling with '--with-pydebug', strip '[# refs]' debug output.
     output = re.sub(r"\[[0-9]+ refs\]", "", output)

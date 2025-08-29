@@ -1,21 +1,21 @@
-import doctest
-import unittest
-import itertools
-from test import support
-from test.support import threading_helper, script_helper
-from itertools import *
-import weakref
-from decimal import Decimal
-from fractions import Fraction
-import operator
-import random
-import copy
-import pickle
-from functools import reduce
-import sys
-import struct
-import threading
-import gc
+importiere doctest
+importiere unittest
+importiere itertools
+von test importiere support
+von test.support importiere threading_helper, script_helper
+von itertools importiere *
+importiere weakref
+von decimal importiere Decimal
+von fractions importiere Fraction
+importiere operator
+importiere random
+importiere copy
+importiere pickle
+von functools importiere reduce
+importiere sys
+importiere struct
+importiere threading
+importiere gc
 
 maxsize = support.MAX_Py_ssize_t
 minsize = -maxsize-1
@@ -108,7 +108,7 @@ klasse TestBasicOps(unittest.TestCase):
             c = expand(compare)
             self.assertEqual(a, c)
 
-        # Take from the copy, and create another copy and compare them.
+        # Take von the copy, and create another copy and compare them.
         i3 = pickle.loads(dump)
         took = 0
         try:
@@ -256,7 +256,7 @@ klasse TestBasicOps(unittest.TestCase):
                     yield tuple(pool[i] fuer i in indices)
 
         def combinations3(iterable, r):
-            'Pure python version from cwr()'
+            'Pure python version von cwr()'
             pool = tuple(iterable)
             n = len(pool)
             fuer indices in combinations_with_replacement(range(n), r):
@@ -274,7 +274,7 @@ klasse TestBasicOps(unittest.TestCase):
                     self.assertEqual(len(c), r)                         # r-length combinations
                     self.assertEqual(len(set(c)), r)                    # no duplicate elements
                     self.assertEqual(list(c), sorted(c))                # keep original ordering
-                    self.assertWahr(all(e in values fuer e in c))           # elements taken from input iterable
+                    self.assertWahr(all(e in values fuer e in c))           # elements taken von input iterable
                     self.assertEqual(list(c),
                                      [e fuer e in values wenn e in c])      # comb is a subsequence of the input iterable
                 self.assertEqual(result, list(combinations1(values, r))) # matches first pure python version
@@ -350,7 +350,7 @@ klasse TestBasicOps(unittest.TestCase):
                     noruns = [k fuer k,v in groupby(c)]                  # combo without consecutive repeats
                     self.assertEqual(len(noruns), len(set(noruns)))     # no repeats other than consecutive
                     self.assertEqual(list(c), sorted(c))                # keep original ordering
-                    self.assertWahr(all(e in values fuer e in c))           # elements taken from input iterable
+                    self.assertWahr(all(e in values fuer e in c))           # elements taken von input iterable
                     self.assertEqual(noruns,
                                      [e fuer e in values wenn e in c])     # comb is a subsequence of the input iterable
                 self.assertEqual(result, list(cwr1(values, r)))         # matches first pure python version
@@ -421,7 +421,7 @@ klasse TestBasicOps(unittest.TestCase):
                 fuer p in result:
                     self.assertEqual(len(p), r)                         # r-length permutations
                     self.assertEqual(len(set(p)), r)                    # no duplicate elements
-                    self.assertWahr(all(e in values fuer e in p))           # elements taken from input iterable
+                    self.assertWahr(all(e in values fuer e in p))           # elements taken von input iterable
                 self.assertEqual(result, list(permutations1(values, r))) # matches first pure python version
                 self.assertEqual(result, list(permutations2(values, r))) # matches second pure python version
                 wenn r == n:
@@ -809,7 +809,7 @@ klasse TestBasicOps(unittest.TestCase):
             target = [tuple((e is Nichts and 'X' or e) fuer e in t) fuer t in target]   # Replace Nichts fills with 'X'
             self.assertEqual(list(zip_longest(*args, **dict(fillvalue='X'))), target)
 
-        self.assertEqual(take(3,zip_longest('abcdef', count())), list(zip('abcdef', range(3)))) # take 3 from infinite input
+        self.assertEqual(take(3,zip_longest('abcdef', count())), list(zip('abcdef', range(3)))) # take 3 von infinite input
 
         self.assertEqual(list(zip_longest()), list(zip()))
         self.assertEqual(list(zip_longest([])), list(zip([])))
@@ -1170,7 +1170,7 @@ klasse TestBasicOps(unittest.TestCase):
         self.assertEqual(next(c), 3)
 
         # Issue #21321: check source iterator is not referenced
-        # from islice() after the latter has been exhausted
+        # von islice() after the latter has been exhausted
         it = (x fuer x in (1, 2))
         wr = weakref.ref(it)
         it = islice(it, 1)
@@ -1338,7 +1338,7 @@ klasse TestBasicOps(unittest.TestCase):
         )
         script_helper.assert_python_ok("-c", script)
 
-    # Issue 13454: Crash when deleting backward iterator from tee()
+    # Issue 13454: Crash when deleting backward iterator von tee()
     def test_tee_del_backward(self):
         forward, backward = tee(repeat(Nichts, 20000000))
         try:
@@ -1418,7 +1418,7 @@ klasse TestBasicOps(unittest.TestCase):
         gc.collect()
         # That GC collection probably untracked the recycled internal result
         # tuple, which has the value (Nichts,). Make sure it's re-tracked when
-        # it's mutated and returned from __next__:
+        # it's mutated and returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
     @support.cpython_only
@@ -1461,7 +1461,7 @@ klasse TestBasicOps(unittest.TestCase):
 
     @support.cpython_only
     def test_immutable_types(self):
-        from itertools import _grouper, _tee, _tee_dataobject
+        von itertools importiere _grouper, _tee, _tee_dataobject
         dataset = (
             accumulate,
             batched,
@@ -1942,7 +1942,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
             self.assertEqual(list(a), long_ans[100:])
             self.assertEqual(list(b), long_ans[60:])
 
-        # Issue 13454: Crash when deleting backward iterator from tee()
+        # Issue 13454: Crash when deleting backward iterator von tee()
         forward, backward = tee(repeat(Nichts, 2000)) # 20000000
         try:
             any(forward)  # exhaust the iterator

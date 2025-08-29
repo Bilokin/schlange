@@ -1,12 +1,12 @@
 # Test the Unicode versions of normal file functions
 # open, os.open, os.stat. os.listdir, os.rename, os.remove, os.mkdir, os.chdir, os.rmdir
-import os
-import sys
-import unittest
-import warnings
-from unicodedata import normalize
-from test.support import is_apple, os_helper
-from test import support
+importiere os
+importiere sys
+importiere unittest
+importiere warnings
+von unicodedata importiere normalize
+von test.support importiere is_apple, os_helper
+von test importiere support
 
 
 filenames = [

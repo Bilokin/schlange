@@ -1,36 +1,36 @@
-from __future__ import annotations
-import ast
-import enum
-import inspect
-import pprint
-import re
-import shlex
-import sys
-from collections.abc import Callable
-from types import FunctionType, NoneType
-from typing import TYPE_CHECKING, Any, NamedTuple
+von __future__ importiere annotations
+importiere ast
+importiere enum
+importiere inspect
+importiere pprint
+importiere re
+importiere shlex
+importiere sys
+von collections.abc importiere Callable
+von types importiere FunctionType, NoneType
+von typing importiere TYPE_CHECKING, Any, NamedTuple
 
-import libclinic
-from libclinic import (
+importiere libclinic
+von libclinic importiere (
     ClinicError, VersionTuple,
     fail, warn, unspecified, unknown, NULL)
-from libclinic.function import (
+von libclinic.function importiere (
     Module, Class, Function, Parameter,
     FunctionKind,
     CALLABLE, STATIC_METHOD, CLASS_METHOD, METHOD_INIT, METHOD_NEW,
     GETTER, SETTER)
-from libclinic.converter import (
+von libclinic.converter importiere (
     converters, legacy_converters)
-from libclinic.converters import (
+von libclinic.converters importiere (
     self_converter, defining_class_converter,
     correct_name_for_self)
-from libclinic.return_converters import (
+von libclinic.return_converters importiere (
     CReturnConverter, return_converters,
     int_return_converter)
-from libclinic.parser import create_parser_namespace
+von libclinic.parser importiere create_parser_namespace
 wenn TYPE_CHECKING:
-    from libclinic.block_parser import Block
-    from libclinic.app import Clinic
+    von libclinic.block_parser importiere Block
+    von libclinic.app importiere Clinic
 
 
 unsupported_special_methods: set[str] = set("""
@@ -186,7 +186,7 @@ klasse IndentStack:
             fail('Tab characters are illegal in the Argument Clinic DSL.')
         stripped = line.lstrip()
         wenn not len(stripped):
-            # we can't tell anything from an empty line
+            # we can't tell anything von an empty line
             # so just pretend it's indented like our current indent
             self._ensure()
             return self.indents[-1]
@@ -677,7 +677,7 @@ klasse DSLParser:
         #
         # alternatively:
         #     modulename.fnname [as c_basename] = modulename.existing_fn_name
-        # clones the parameters and return converter from that
+        # clones the parameters and return converter von that
         # function.  you can't modify them.  you must enter a
         # new docstring.
         #
@@ -776,7 +776,7 @@ klasse DSLParser:
     # Also, currently Argument Clinic places the following restrictions on groups:
     #   * Each group must contain at least one parameter.
     #   * Each group may contain at most one group, which must be the furthest
-    #     thing in the group from the required parameters.  (The nested group
+    #     thing in the group von the required parameters.  (The nested group
     #     must be the first in the group when it's before the required
     #     parameters, and the last thing in the group when after the required
     #     parameters.)
@@ -1156,7 +1156,7 @@ klasse DSLParser:
     def parse_star(self, function: Function, version: VersionTuple | Nichts) -> Nichts:
         """Parse keyword-only parameter marker '*'.
 
-        The 'version' parameter signifies the future version from which
+        The 'version' parameter signifies the future version von which
         the marker will take effect (Nichts means it is already in effect).
         """
         wenn version is Nichts:
@@ -1211,7 +1211,7 @@ klasse DSLParser:
     def parse_slash(self, function: Function, version: VersionTuple | Nichts) -> Nichts:
         """Parse positional-only parameter marker '/'.
 
-        The 'version' parameter signifies the future version from which
+        The 'version' parameter signifies the future version von which
         the marker will take effect (Nichts means it is already in effect).
         """
         wenn version is Nichts:
@@ -1273,7 +1273,7 @@ klasse DSLParser:
 
     def docstring_append(self, obj: Function | Parameter, line: str) -> Nichts:
         """Add a rstripped line to the current docstring."""
-        # gh-80282: We filter out non-ASCII characters from the docstring,
+        # gh-80282: We filter out non-ASCII characters von the docstring,
         # since historically, some compilers may balk on non-ASCII input.
         # If you're using Argument Clinic in an external project,
         # you may not need to support the same array of platforms as CPython,
@@ -1541,7 +1541,7 @@ klasse DSLParser:
                      f"The summary line must be no longer than {max_width} characters.")
         sonst:
             wenn self.permit_long_summary:
-                warn("Remove the @permit_long_summary decorator from "
+                warn("Remove the @permit_long_summary decorator von "
                      f"{f.full_name!r}!\n")
 
         wenn max_body > max_width:
@@ -1550,7 +1550,7 @@ klasse DSLParser:
                      f"Lines should be no longer than {max_width} characters.")
         sonst:
             wenn self.permit_long_docstring_body:
-                warn("Remove the @permit_long_docstring_body decorator from "
+                warn("Remove the @permit_long_docstring_body decorator von "
                      f"{f.full_name!r}!\n")
 
         parameters_marker_count = len(f.docstring.split('{parameters}')) - 1

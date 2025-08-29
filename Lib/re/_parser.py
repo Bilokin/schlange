@@ -12,7 +12,7 @@
 
 # XXX: show string offset and offending character fuer all errors
 
-from ._constants import *
+von ._constants importiere *
 
 SPECIAL_CHARS = ".\\[{()*+?^$|"
 REPEAT_CHARS = "*+?{"
@@ -250,7 +250,7 @@ klasse Tokenizer:
                 char += self.decoded_string[index]
             except IndexError:
                 raise error("bad escape (end of pattern)",
-                            self.string, len(self.string) - 1) from Nichts
+                            self.string, len(self.string) - 1) von Nichts
         self.index = index + 1
         self.next = char
     def match(self, char):
@@ -340,7 +340,7 @@ def _class_escape(source, escape):
             chr(c) # raise ValueError fuer invalid code
             return LITERAL, c
         sowenn c == "N" and source.istext:
-            import unicodedata
+            importiere unicodedata
             # named unicode escape e.g. \N{EM DASH}
             wenn not source.match('{'):
                 raise source.error("missing {")
@@ -349,7 +349,7 @@ def _class_escape(source, escape):
                 c = ord(unicodedata.lookup(charname))
             except (KeyError, TypeError):
                 raise source.error("undefined character name %r" % charname,
-                                   len(charname) + len(r'\N{}')) from Nichts
+                                   len(charname) + len(r'\N{}')) von Nichts
             return LITERAL, c
         sowenn c in OCTDIGITS:
             # octal escape (up to three digits)
@@ -400,7 +400,7 @@ def _escape(source, escape, state):
             chr(c) # raise ValueError fuer invalid code
             return LITERAL, c
         sowenn c == "N" and source.istext:
-            import unicodedata
+            importiere unicodedata
             # named unicode escape e.g. \N{EM DASH}
             wenn not source.match('{'):
                 raise source.error("missing {")
@@ -409,7 +409,7 @@ def _escape(source, escape, state):
                 c = ord(unicodedata.lookup(charname))
             except (KeyError, TypeError):
                 raise source.error("undefined character name %r" % charname,
-                                   len(charname) + len(r'\N{}')) from Nichts
+                                   len(charname) + len(r'\N{}')) von Nichts
             return LITERAL, c
         sowenn c == "0":
             # octal escape
@@ -555,7 +555,7 @@ def _parse(source, state, verbose, nested, first=Falsch):
 ##          wenn sourcematch(":"):
 ##              pass # handle character classes
             wenn source.next == '[':
-                import warnings
+                importiere warnings
                 warnings.warn(
                     'Possible nested set at position %d' % source.tell(),
                     FutureWarning, stacklevel=nested + 6
@@ -573,7 +573,7 @@ def _parse(source, state, verbose, nested, first=Falsch):
                     code1 = _class_escape(source, this)
                 sonst:
                     wenn set and this in '-&~|' and source.next == this:
-                        import warnings
+                        importiere warnings
                         warnings.warn(
                             'Possible set %s at position %d' % (
                                 'difference' wenn this == '-' sonst
@@ -600,7 +600,7 @@ def _parse(source, state, verbose, nested, first=Falsch):
                         code2 = _class_escape(source, that)
                     sonst:
                         wenn that == '-':
-                            import warnings
+                            importiere warnings
                             warnings.warn(
                                 'Possible set difference at position %d' % (
                                     source.tell() - 2),
@@ -848,7 +848,7 @@ def _parse(source, state, verbose, nested, first=Falsch):
                 try:
                     group = state.opengroup(name)
                 except error as err:
-                    raise source.error(err.msg, len(name) + 1) from Nichts
+                    raise source.error(err.msg, len(name) + 1) von Nichts
             sonst:
                 group = Nichts
             sub_verbose = ((verbose or (add_flags & SRE_FLAG_VERBOSE)) and
@@ -1025,7 +1025,7 @@ def parse_template(source, pattern):
                     try:
                         index = groupindex[name]
                     except KeyError:
-                        raise IndexError("unknown group name %r" % name) from Nichts
+                        raise IndexError("unknown group name %r" % name) von Nichts
                 sonst:
                     index = int(name)
                     wenn index >= MAXGROUPS:
@@ -1058,7 +1058,7 @@ def parse_template(source, pattern):
                     this = chr(ESCAPES[this][1])
                 except KeyError:
                     wenn c in ASCIILETTERS:
-                        raise s.error('bad escape %s' % this, len(this)) from Nichts
+                        raise s.error('bad escape %s' % this, len(this)) von Nichts
                 lappend(this)
         sonst:
             lappend(this)

@@ -1,20 +1,20 @@
-import unittest
-import subprocess
-import sys
-import os
-from test import support
-from test.support import import_helper
-from test.support import os_helper
+importiere unittest
+importiere subprocess
+importiere sys
+importiere os
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
 
 # Skip this test wenn the _tkinter module wasn't built.
 _tkinter = import_helper.import_module('_tkinter')
 
-import tkinter
-from tkinter import Tcl
-from _tkinter import TclError
+importiere tkinter
+von tkinter importiere Tcl
+von _tkinter importiere TclError
 
 try:
-    from _testcapi import INT_MAX, PY_SSIZE_T_MAX
+    von _testcapi importiere INT_MAX, PY_SSIZE_T_MAX
 except ImportError:
     INT_MAX = PY_SSIZE_T_MAX = sys.maxsize
 
@@ -303,7 +303,7 @@ klasse TclTest(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == 'win32', 'Requires Windows')
     def testLoadWithUNC(self):
-        # Build a UNC path from the regular path.
+        # Build a UNC path von the regular path.
         # Something like
         #   \\%COMPUTERNAME%\c$\python27\python.exe
 

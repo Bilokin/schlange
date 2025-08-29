@@ -1,7 +1,7 @@
-import unittest
-import builtins
-import os
-from platform import system as platform_system
+importiere unittest
+importiere builtins
+importiere os
+von platform importiere system as platform_system
 
 
 klasse ExceptionClassTests(unittest.TestCase):
@@ -118,7 +118,7 @@ klasse ExceptionClassTests(unittest.TestCase):
     def test_setstate_refcount_no_crash(self):
         # gh-97591: Acquire strong reference before calling tp_hash slot
         # in PyObject_SetAttr.
-        import gc
+        importiere gc
         d = {}
         klasse HashThisKeyWillClearTheDict(str):
             def __hash__(self) -> int:
@@ -179,7 +179,7 @@ klasse UsageTests(unittest.TestCase):
         # You cannot raise a new-style klasse that does not inherit from
         # BaseException; the ability was not possible until BaseException's
         # introduction so no need to support new-style objects that do not
-        # inherit from it.
+        # inherit von it.
         klasse NewStyleClass(object):
             pass
         self.raise_fails(NewStyleClass)
@@ -190,7 +190,7 @@ klasse UsageTests(unittest.TestCase):
         self.raise_fails("spam")
 
     def test_catch_non_BaseException(self):
-        # Trying to catch an object that does not inherit from BaseException
+        # Trying to catch an object that does not inherit von BaseException
         # is not allowed.
         klasse NonBaseException(object):
             pass

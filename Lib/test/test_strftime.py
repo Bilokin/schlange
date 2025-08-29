@@ -2,12 +2,12 @@
 Unittest fuer time.strftime
 """
 
-import calendar
-import sys
-import re
-from test import support
-import time
-import unittest
+importiere calendar
+importiere sys
+importiere re
+von test importiere support
+importiere time
+importiere unittest
 
 
 # helper functions
@@ -68,7 +68,7 @@ klasse StrftimeTest(unittest.TestCase):
         self.now = now
 
     def setUp(self):
-        from locale import setlocale, LC_TIME
+        von locale importiere setlocale, LC_TIME
         saved_locale = setlocale(LC_TIME)
         setlocale(LC_TIME, 'C')
         self.addCleanup(setlocale, LC_TIME, saved_locale)

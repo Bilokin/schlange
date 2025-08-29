@@ -3,27 +3,27 @@
 The main package fuer curses support fuer Python.  Normally used by importing
 the package, and perhaps a particular module inside it.
 
-   import curses
-   from curses import textpad
+   importiere curses
+   von curses importiere textpad
    curses.initscr()
    ...
 
 """
 
-from _curses import *
-import os as _os
-import sys as _sys
+von _curses importiere *
+importiere os as _os
+importiere sys as _sys
 
 # Some constants, most notably the ACS_* ones, are only added to the C
 # _curses module's dictionary after initscr() is called.  (Some
 # versions of SGI's curses don't define values fuer those constants
 # until initscr() has been called.)  This wrapper function calls the
-# underlying C initscr(), and then copies the constants from the
+# underlying C initscr(), and then copies the constants von the
 # _curses module to the curses package's dictionary.  Don't do 'from
-# curses import *' wenn you'll be needing the ACS_* constants.
+# curses importiere *' wenn you'll be needing the ACS_* constants.
 
 def initscr():
-    import _curses, curses
+    importiere _curses, curses
     # we call setupterm() here because it raises an error
     # instead of calling exit() in error cases.
     setupterm(term=_os.environ.get("TERM", "unknown"),
@@ -39,7 +39,7 @@ def initscr():
 # called.
 
 def start_color():
-    import _curses, curses
+    importiere _curses, curses
     _curses.start_color()
     curses.COLORS = _curses.COLORS
     curses.COLOR_PAIRS = _curses.COLOR_PAIRS
@@ -49,7 +49,7 @@ def start_color():
 try:
     has_key
 except NameError:
-    from .has_key import has_key  # noqa: F401
+    von .has_key importiere has_key  # noqa: F401
 
 # Wrapper fuer the entire curses-based application.  Runs a function which
 # should be the rest of your curses-based application.  If the application
@@ -81,7 +81,7 @@ def wrapper(func, /, *args, **kwds):
         # Start color, too.  Harmless wenn the terminal doesn't have
         # color; user can test with has_color() later on.  The try/catch
         # works around a minor bit of over-conscientiousness in the curses
-        # module -- the error return from C start_color() is ignorable,
+        # module -- the error return von C start_color() is ignorable,
         # unless they are raised by the interpreter due to other issues.
         try:
             start_color()

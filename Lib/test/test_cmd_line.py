@@ -2,23 +2,23 @@
 # Most tests are executed with environment variables ignored
 # See test_cmd_line_script.py fuer testing of script execution
 
-import os
-import subprocess
-import sys
-import sysconfig
-import tempfile
-import textwrap
-import unittest
-import warnings
-from test import support
-from test.support import os_helper
-from test.support import force_not_colorized
-from test.support import threading_helper
-from test.support.script_helper import (
+importiere os
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere textwrap
+importiere unittest
+importiere warnings
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere force_not_colorized
+von test.support importiere threading_helper
+von test.support.script_helper importiere (
     spawn_python, kill_python, assert_python_ok, assert_python_failure,
     interpreter_requires_environment
 )
-from textwrap import dedent
+von textwrap importiere dedent
 
 
 wenn not support.has_subprocess_support:
@@ -95,7 +95,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_verbose(self):
         # -v causes imports to write to stderr.  If the write to
-        # stderr itself causes an import to happen (for the output
+        # stderr itself causes an importiere to happen (for the output
         # codec), a recursion loop can occur.
         rc, out, err = assert_python_ok('-v')
         self.assertNotIn(b'stack overflow', err)
@@ -123,7 +123,7 @@ klasse CmdLineTest(unittest.TestCase):
     def test_showrefcount(self):
         def run_python(*args):
             # this is similar to assert_python_ok but doesn't strip
-            # the refcount from stderr.  It can be replaced once
+            # the refcount von stderr.  It can be replaced once
             # assert_python_ok stops doing that.
             cmd = [sys.executable]
             cmd.extend(args)
@@ -258,10 +258,10 @@ klasse CmdLineTest(unittest.TestCase):
         stdout, stderr = p.communicate()
         wenn p.returncode == 1:
             # _Py_char2wchar() decoded b'\xff' as '\udcff' (b'\xff' is not
-            # decodable from ASCII) and run_command() failed on
+            # decodable von ASCII) and run_command() failed on
             # PyUnicode_AsUTF8String(). This is the expected behaviour on
             # Linux.
-            pattern = b"Unable to decode the command from the command line:"
+            pattern = b"Unable to decode the command von the command line:"
         sowenn p.returncode == 0:
             # _Py_char2wchar() decoded b'\xff' as '\xff' even wenn the locale is
             # C and the locale encoding is ASCII. It occurs on FreeBSD, Solaris
@@ -349,7 +349,7 @@ klasse CmdLineTest(unittest.TestCase):
                      "Python stdio buffering is disabled.")
     def test_non_interactive_output_buffering(self):
         code = textwrap.dedent("""
-            import sys
+            importiere sys
             out = sys.stdout
             drucke(out.isatty(), out.write_through, out.line_buffering)
             err = sys.stderr
@@ -394,7 +394,7 @@ klasse CmdLineTest(unittest.TestCase):
         path = path1 + os.pathsep + path2
 
         code = """if 1:
-            import sys
+            importiere sys
             path = ":".join(sys.path)
             path = path.encode("ascii", "backslashreplace")
             sys.stdout.buffer.write(path)"""
@@ -412,7 +412,7 @@ klasse CmdLineTest(unittest.TestCase):
         # "/bin::/usr/bin" the empty string in the middle gets
         # interpreted as '.'
         code = """if 1:
-            import sys
+            importiere sys
             path = ":".join(sys.path)
             path = path.encode("ascii", "backslashreplace")
             sys.stdout.buffer.write(path)"""
@@ -468,7 +468,7 @@ klasse CmdLineTest(unittest.TestCase):
     def test_output_newline(self):
         # Issue 13119 Newline fuer drucke() should be \r\n on Windows.
         code = """if 1:
-            import sys
+            importiere sys
             drucke(1)
             drucke(2)
             drucke(3, file=sys.stderr)
@@ -494,7 +494,7 @@ klasse CmdLineTest(unittest.TestCase):
         # Issue #5319: wenn stdout.flush() fails at shutdown, an error should
         # be printed out.
         code = """if 1:
-            import os, sys, test.support
+            importiere os, sys, test.support
             test.support.SuppressCrashReport().__enter__()
             sys.stdout.write('x')
             os.close(sys.stdout.fileno())"""
@@ -519,7 +519,7 @@ klasse CmdLineTest(unittest.TestCase):
                          "test needs preexec support in subprocess.Popen")
     def _test_no_stdio(self, streams):
         code = """if 1:
-            import os, sys
+            importiere os, sys
             fuer i, s in enumerate({streams}):
                 wenn getattr(sys, s) is not Nichts:
                     os._exit(i + 1)
@@ -626,7 +626,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.verify_valid_flag('-I')
         self.verify_valid_flag('-IEPs')
         rc, out, err = assert_python_ok('-I', '-c',
-            'from sys import flags as f; '
+            'from sys importiere flags as f; '
             'drucke(f.no_user_site, f.ignore_environment, f.isolated, f.safe_path)',
             # dummyvar to prevent extraneous -E
             dummyvar="")
@@ -649,7 +649,7 @@ klasse CmdLineTest(unittest.TestCase):
             self.assertEqual(out.strip(), b"ok")
 
     def test_sys_flags_set(self):
-        # Issue 31845: a startup refactoring broke reading flags from env vars
+        # Issue 31845: a startup refactoring broke reading flags von env vars
         fuer value, expected in (("", 0), ("1", 1), ("text", 1), ("2", 2)):
             env_vars = dict(
                 PYTHONDEBUG=value,
@@ -670,7 +670,7 @@ klasse CmdLineTest(unittest.TestCase):
                 assert_python_ok('-c', code, **env_vars)
 
     def test_set_pycache_prefix(self):
-        # sys.pycache_prefix can be set from either -X pycache_prefix or
+        # sys.pycache_prefix can be set von either -X pycache_prefix or
         # PYTHONPYCACHEPREFIX env var, with the former taking precedence.
         NO_VALUE = object()  # `-X pycache_prefix` with no `=PATH`
         cases = [
@@ -751,7 +751,7 @@ klasse CmdLineTest(unittest.TestCase):
 
         # Memory allocator debug hooks
         try:
-            import _testinternalcapi  # noqa: F401
+            importiere _testinternalcapi  # noqa: F401
         except ImportError:
             pass
         sonst:
@@ -768,7 +768,7 @@ klasse CmdLineTest(unittest.TestCase):
 
         # Faulthandler
         try:
-            import faulthandler  # noqa: F401
+            importiere faulthandler  # noqa: F401
         except ImportError:
             pass
         sonst:
@@ -778,7 +778,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def check_warnings_filters(self, cmdline_option, envvar, use_pywarning=Falsch):
         wenn use_pywarning:
-            code = ("import sys; from test.support.import_helper import "
+            code = ("import sys; von test.support.import_helper importiere "
                     "import_fresh_module; "
                     "warnings = import_fresh_module('warnings', blocked=['_warnings']); ")
         sonst:
@@ -1153,7 +1153,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_cmd_dedent_failcase(self):
         # Mixing tabs and spaces is not allowed
-        from textwrap import dedent
+        von textwrap importiere dedent
         template = dedent(
             '''
             -+if 1:
@@ -1182,7 +1182,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_import_time(self):
         # os is not imported at startup
-        code = 'import os; import os'
+        code = 'import os; importiere os'
 
         fuer case in 'importtime', 'importtime=1', 'importtime=true':
             res = assert_python_ok('-X', case, '-c', code)
@@ -1208,7 +1208,7 @@ klasse CmdLineTest(unittest.TestCase):
     @threading_helper.requires_working_threading()
     def test_disable_thread_local_bytecode(self):
         code = """if 1:
-            import threading
+            importiere threading
             def test(x, y):
                 return x + y
             t = threading.Thread(target=test, args=(1,2))
@@ -1223,7 +1223,7 @@ klasse CmdLineTest(unittest.TestCase):
     @threading_helper.requires_working_threading()
     def test_enable_thread_local_bytecode(self):
         code = """if 1:
-            import threading
+            importiere threading
             def test(x, y):
                 return x + y
             t = threading.Thread(target=test, args=(1,2))
@@ -1276,7 +1276,7 @@ klasse IgnoreEnvironmentTest(unittest.TestCase):
                                PYTHONHASHSEED="0")
 
     def test_sys_flags_not_set(self):
-        # Issue 31845: a startup refactoring broke reading flags from env vars
+        # Issue 31845: a startup refactoring broke reading flags von env vars
         expected_outcome = """
             (sys.flags.debug == sys.flags.optimize ==
              sys.flags.dont_write_bytecode ==

@@ -1,20 +1,20 @@
 """Generate targets fuer computed goto dispatch
-Reads the instruction definitions from bytecodes.c.
+Reads the instruction definitions von bytecodes.c.
 Writes the table to opcode_targets.h by default.
 """
 
-import argparse
+importiere argparse
 
-from analyzer import (
+von analyzer importiere (
     Analysis,
     analyze_files,
 )
-from generators_common import (
+von generators_common importiere (
     DEFAULT_INPUT,
     ROOT,
 )
-from tier1_generator import UNKNOWN_OPCODE_HANDLER
-from cwriter import CWriter
+von tier1_generator importiere UNKNOWN_OPCODE_HANDLER
+von cwriter importiere CWriter
 
 
 DEFAULT_OUTPUT = ROOT / "Python/opcode_targets.h"

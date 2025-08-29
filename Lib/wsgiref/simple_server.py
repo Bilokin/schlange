@@ -10,11 +10,11 @@ For example usage, see the 'if __name__=="__main__"' block at the end of the
 module.  See also the BaseHTTPServer module docs fuer other API information.
 """
 
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import sys
-import urllib.parse
-from wsgiref.handlers import SimpleHandler
-from platform import python_implementation
+von http.server importiere BaseHTTPRequestHandler, HTTPServer
+importiere sys
+importiere urllib.parse
+von wsgiref.handlers importiere SimpleHandler
+von platform importiere python_implementation
 
 __version__ = "0.2"
 __all__ = ['WSGIServer', 'WSGIRequestHandler', 'demo_app', 'make_server']
@@ -132,7 +132,7 @@ klasse WSGIRequestHandler(BaseHTTPRequestHandler):
 
 
 def demo_app(environ,start_response):
-    from io import StringIO
+    von io importiere StringIO
     stdout = StringIO()
     drucke("Hello world!", file=stdout)
     drucke(file=stdout)
@@ -156,6 +156,6 @@ wenn __name__ == '__main__':
     with make_server('', 8000, demo_app) as httpd:
         sa = httpd.socket.getsockname()
         drucke("Serving HTTP on", sa[0], "port", sa[1], "...")
-        import webbrowser
+        importiere webbrowser
         webbrowser.open('http://localhost:8000/xyz?abc')
         httpd.handle_request()  # serve one request, then exit

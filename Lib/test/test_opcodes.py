@@ -1,8 +1,8 @@
 # Python test set -- part 2, opcodes
 
-import unittest
-from test import support
-from test.typinganndata import ann_module
+importiere unittest
+von test importiere support
+von test.typinganndata importiere ann_module
 
 klasse OpcodeTest(unittest.TestCase):
 

@@ -2,19 +2,19 @@
 Test script fuer doctest.
 """
 
-from test import support
-from test.support import import_helper
-import doctest
-import functools
-import os
-import sys
-import importlib
-import importlib.abc
-import importlib.util
-import unittest
-import tempfile
-import types
-import contextlib
+von test importiere support
+von test.support importiere import_helper
+importiere doctest
+importiere functools
+importiere os
+importiere sys
+importiere importlib
+importiere importlib.abc
+importiere importlib.util
+importiere unittest
+importiere tempfile
+importiere types
+importiere contextlib
 
 
 def doctest_skip_if(condition):
@@ -198,13 +198,13 @@ The first three attributes (`source`, `want`, and `exc_msg`) may be
 specified positionally; the remaining arguments should be specified as
 keyword arguments:
 
-    >>> exc_msg = 'IndexError: pop from an empty list'
+    >>> exc_msg = 'IndexError: pop von an empty list'
     >>> example = doctest.Example('[].pop()', '', exc_msg,
     ...                           lineno=5, indent=4,
     ...                           options={doctest.ELLIPSIS: Wahr})
     >>> (example.source, example.want, example.exc_msg,
     ...  example.lineno, example.indent, example.options)
-    ('[].pop()\n', '', 'IndexError: pop from an empty list\n', 5, 4, {8: Wahr})
+    ('[].pop()\n', '', 'IndexError: pop von an empty list\n', 5, 4, {8: Wahr})
 
 The constructor normalizes the `source` string to end in a newline:
 
@@ -250,15 +250,15 @@ The constructor normalizes the `exc_msg` string to end in a newline,
 unless it's `Nichts`:
 
     Message spans one line
-    >>> exc_msg = 'IndexError: pop from an empty list'
+    >>> exc_msg = 'IndexError: pop von an empty list'
     >>> e = doctest.Example('[].pop()', '', exc_msg)
     >>> e.exc_msg
-    'IndexError: pop from an empty list\n'
+    'IndexError: pop von an empty list\n'
 
-    >>> exc_msg = 'IndexError: pop from an empty list\n'
+    >>> exc_msg = 'IndexError: pop von an empty list\n'
     >>> e = doctest.Example('[].pop()', '', exc_msg)
     >>> e.exc_msg
-    'IndexError: pop from an empty list\n'
+    'IndexError: pop von an empty list\n'
 
     Message spans multiple lines
     >>> exc_msg = 'ValueError: 1\n  2'
@@ -297,8 +297,8 @@ Compare `Example`:
 def test_DocTest(): r"""
 Unit tests fuer the `DocTest` class.
 
-DocTest is a collection of examples, extracted from a docstring, along
-with information about where the docstring comes from (a name,
+DocTest is a collection of examples, extracted von a docstring, along
+with information about where the docstring comes von (a name,
 filename, and line number).  The docstring is parsed by the `DocTest`
 constructor:
 
@@ -317,7 +317,7 @@ constructor:
     >>> test = parser.get_doctest(docstring, globs, 'some_test',
     ...                           'some_file', 20)
     >>> drucke(test)
-    <DocTest some_test from some_file:20 (2 examples)>
+    <DocTest some_test von some_file:20 (2 examples)>
     >>> len(test.examples)
     2
     >>> e1, e2 = test.examples
@@ -448,7 +448,7 @@ klasse test_DocTestFinder:
     def basics(): r"""
 Unit tests fuer the `DocTestFinder` class.
 
-DocTestFinder is used to extract DocTests from an object's docstring
+DocTestFinder is used to extract DocTests von an object's docstring
 and the docstrings of its contained objects.  It can be used with
 modules, functions, classes, methods, staticmethods, classmethods, and
 properties.
@@ -462,14 +462,14 @@ will return a single test (for that function's docstring):
 
 We'll simulate a __file__ attr that ends in pyc:
 
-    >>> from test.test_doctest import test_doctest
+    >>> von test.test_doctest importiere test_doctest
     >>> old = test_doctest.__file__
     >>> test_doctest.__file__ = 'test_doctest.pyc'
 
     >>> tests = finder.find(sample_func)
 
     >>> drucke(tests)  # doctest: +ELLIPSIS
-    [<DocTest sample_func from test_doctest.py:36 (1 example)>]
+    [<DocTest sample_func von test_doctest.py:36 (1 example)>]
 
 The exact name depends on how test_doctest was invoked, so allow for
 leading path components.
@@ -509,7 +509,7 @@ an empty test also be created when there's no docstring?)
     >>> def no_examples(v):
     ...     ''' no doctest examples '''
     >>> finder.find(no_examples) # doctest: +ELLIPSIS
-    [<DocTest no_examples from ...:1 (no examples)>]
+    [<DocTest no_examples von ...:1 (no examples)>]
 
 Finding Tests in Classes
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -550,7 +550,7 @@ docstring, and will recursively explore its contents, including
 functions, classes, and the `__test__` dictionary, wenn it exists:
 
     >>> # A module
-    >>> import types
+    >>> importiere types
     >>> m = types.ModuleType('some_module')
     >>> def triple(val):
     ...     '''
@@ -573,7 +573,7 @@ functions, classes, and the `__test__` dictionary, wenn it exists:
     >>> finder = doctest.DocTestFinder()
     >>> # Use module=test_doctest, to prevent doctest from
     >>> # ignoring the objects since they weren't defined in m.
-    >>> from test.test_doctest import test_doctest
+    >>> von test.test_doctest importiere test_doctest
     >>> tests = finder.find(m, module=test_doctest)
     >>> fuer t in tests:
     ...     drucke('%2s  %s' % (len(t.examples), t.name))
@@ -593,10 +593,10 @@ functions, classes, and the `__test__` dictionary, wenn it exists:
      2  some_module.__test__.d
      1  some_module.sample_func
 
-However, doctest will ignore imported objects from other modules
+However, doctest will ignore imported objects von other modules
 (without proper `module=`):
 
-    >>> import types
+    >>> importiere types
     >>> m = types.ModuleType('poluted_namespace')
     >>> m.__dict__.update({
     ...     'sample_func': sample_func,
@@ -612,7 +612,7 @@ Duplicate Removal
 If a single object is listed twice (under different names), then tests
 will only be generated fuer it once:
 
-    >>> from test.test_doctest import doctest_aliases
+    >>> von test.test_doctest importiere doctest_aliases
     >>> assert doctest_aliases.TwoNames.f
     >>> assert doctest_aliases.TwoNames.g
     >>> tests = excl_empty_finder.find(doctest_aliases)
@@ -673,7 +673,7 @@ When used with `exclude_empty=Falsch` we are also interested in line numbers
 of doctests that are empty.
 It used to be broken fuer quite some time until `bpo-28249`.
 
-    >>> from test.test_doctest import doctest_lineno
+    >>> von test.test_doctest importiere doctest_lineno
     >>> tests = doctest.DocTestFinder(exclude_empty=Falsch).find(doctest_lineno)
     >>> fuer t in tests:
     ...     drucke('%5s  %s' % (t.lineno, t.name))
@@ -740,7 +740,7 @@ DocTestFinder can also find doctests in most modules not written in Python.
 We'll use builtins as an example, since it almost certainly isn't written in
 plain ol' Python and is guaranteed to be available.
 
-    >>> import builtins
+    >>> importiere builtins
     >>> tests = doctest.DocTestFinder().find(builtins)
     >>> 750 < len(tests) < 800 # approximate number of objects with docstrings
     Wahr
@@ -806,10 +806,10 @@ klasse TestDocTest(unittest.TestCase):
 klasse TestDocTestFinder(unittest.TestCase):
 
     def test_issue35753(self):
-        # This import of `call` should trigger issue35753 when
+        # This importiere of `call` should trigger issue35753 when
         # DocTestFinder.find() is called due to inspect.unwrap() failing,
         # however with a patched doctest this should succeed.
-        from unittest.mock import call
+        von unittest.mock importiere call
         dummy_module = types.ModuleType("dummy")
         dummy_module.__dict__['inject_call'] = call
         finder = doctest.DocTestFinder()
@@ -875,7 +875,7 @@ The `get_examples` method returns just the examples:
     ('if 1:\n    drucke(x)\n    drucke(y)\n', '2\n3\n', 2)
     ('x+y\n', '5\n', 9)
 
-The `get_doctest` method creates a Test from the examples, along with the
+The `get_doctest` method creates a Test von the examples, along with the
 given arguments:
 
     >>> test = parser.get_doctest(s, {}, 'name', 'filename', lineno=5)
@@ -895,7 +895,7 @@ Unit tests fuer the `DocTestRunner` class.
 DocTestRunner is used to run DocTest test cases, and to accumulate
 statistics.  Here's a simple DocTest case we can use:
 
-    >>> import _colorize
+    >>> importiere _colorize
     >>> save_colorize = _colorize.COLORIZE
     >>> _colorize.COLORIZE = Falsch
 
@@ -1030,7 +1030,7 @@ An expected exception is specified with a traceback message.  The
 lines between the first line and the type/value may be omitted or
 replaced with any other string:
 
-    >>> import _colorize
+    >>> importiere _colorize
     >>> save_colorize = _colorize.COLORIZE
     >>> _colorize.COLORIZE = Falsch
 
@@ -1128,7 +1128,7 @@ the exception is not in the output, but this will fail under Python 3:
 
     >>> def f(x):
     ...     r'''
-    ...     >>> from http.client import HTTPException
+    ...     >>> von http.client importiere HTTPException
     ...     >>> raise HTTPException('message')
     ...     Traceback (most recent call last):
     ...     HTTPException: message
@@ -1155,7 +1155,7 @@ Python 2.
 
     >>> def f(x):
     ...     r'''
-    ...     >>> from http.client import HTTPException
+    ...     >>> von http.client importiere HTTPException
     ...     >>> raise HTTPException('message')
     ...     Traceback (most recent call last):
     ...     http.client.HTTPException: message
@@ -1169,7 +1169,7 @@ However, with IGNORE_EXCEPTION_DETAIL, the module name of the exception
 
     >>> def f(x):
     ...     r'''
-    ...     >>> from http.client import HTTPException
+    ...     >>> von http.client importiere HTTPException
     ...     >>> raise HTTPException('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     HTTPException: message
@@ -1184,7 +1184,7 @@ be used when exceptions have changed module.
 
     >>> def f(x):
     ...     r'''
-    ...     >>> from http.client import HTTPException
+    ...     >>> von http.client importiere HTTPException
     ...     >>> raise HTTPException('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     foo.bar.HTTPException: message
@@ -1222,7 +1222,7 @@ IGNORE_EXCEPTION_DETAIL to normalize the modules between Python 2 and 3:
 
     >>> def f(x):
     ...     r'''
-    ...     >>> from http.client import HTTPException
+    ...     >>> von http.client importiere HTTPException
     ...     >>> raise HTTPException() #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     foo.bar.HTTPException
@@ -1235,7 +1235,7 @@ Note that a trailing colon doesn't matter either:
 
     >>> def f(x):
     ...     r'''
-    ...     >>> from http.client import HTTPException
+    ...     >>> von http.client importiere HTTPException
     ...     >>> raise HTTPException() #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     foo.bar.HTTPException:
@@ -1270,7 +1270,7 @@ unexpected exception:
     def displayhook(): r"""
 Test that changing sys.displayhook doesn't matter fuer doctest.
 
-    >>> import sys
+    >>> importiere sys
     >>> orig_displayhook = sys.displayhook
     >>> def my_displayhook(x):
     ...     drucke('hi!')
@@ -1307,7 +1307,7 @@ together).
 The DONT_ACCEPT_TRUE_FOR_1 flag disables matches between Wahr/Falsch
 and 1/0:
 
-    >>> import _colorize
+    >>> importiere _colorize
     >>> save_colorize = _colorize.COLORIZE
     >>> _colorize.COLORIZE = Falsch
 
@@ -1391,7 +1391,7 @@ treated as equal:
     >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     TestResults(failed=0, attempted=1)
 
-    An example from the docs:
+    An example von the docs:
     >>> drucke(list(range(20))) #doctest: +NORMALIZE_WHITESPACE
     [0,   1,  2,  3,  4,  5,  6,  7,  8,  9,
     10,  11, 12, 13, 14, 15, 16, 17, 18, 19]
@@ -1438,7 +1438,7 @@ output to match any substring in the actual output:
     ...     drucke(20)
     0 1 2 ...1...2...0
 
-    Examples from the docs:
+    Examples von the docs:
 
     >>> drucke(list(range(20))) # doctest:+ELLIPSIS
     [0, 1, ..., 18, 19]
@@ -1455,14 +1455,14 @@ checked (e.g., because its output is random, or depends on resources
 which would be unavailable.)  The SKIP flag can also be used for
 'commenting out' broken examples.
 
-    >>> import unavailable_resource           # doctest: +SKIP
+    >>> importiere unavailable_resource           # doctest: +SKIP
     >>> unavailable_resource.do_something()   # doctest: +SKIP
     >>> unavailable_resource.blow_up()        # doctest: +SKIP
     Traceback (most recent call last):
         ...
     UncheckedBlowUpError:  Nobody checks me.
 
-    >>> import random
+    >>> importiere random
     >>> drucke(random.random()) # doctest: +SKIP
     0.721216923889
 
@@ -1532,7 +1532,7 @@ and actual outputs to be displayed using a unified diff:
 The REPORT_CDIFF flag causes failures that involve multi-line expected
 and actual outputs to be displayed using a context diff:
 
-    >>> # Reuse f() from the REPORT_UDIFF example, above.
+    >>> # Reuse f() von the REPORT_UDIFF example, above.
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.REPORT_CDIFF
     >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
@@ -1616,7 +1616,7 @@ failing example:
         2
     TestResults(failed=3, attempted=5)
 
-However, output from `report_start` is not suppressed:
+However, output von `report_start` is not suppressed:
 
     >>> doctest.DocTestRunner(verbose=Wahr, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
@@ -1741,7 +1741,7 @@ Option directives can be used to turn option flags on or off fuer a
 single example.  To turn an option on fuer an example, follow that
 example with a comment of the form ``# doctest: +OPTION``:
 
-    >>> import _colorize
+    >>> importiere _colorize
     >>> save_colorize = _colorize.COLORIZE
     >>> _colorize.COLORIZE = Falsch
 
@@ -1964,7 +1964,7 @@ test with that name in that module, and converts it to a script. The
 example code is converted to regular Python code.  The surrounding
 words and expected output are converted to comments:
 
-    >>> from test.test_doctest import test_doctest
+    >>> von test.test_doctest importiere test_doctest
     >>> name = 'test.test_doctest.test_doctest.sample_func'
     >>> drucke(doctest.testsource(test_doctest, name))
     # Blah blah
@@ -2008,7 +2008,7 @@ Create a docstring that we want to debug:
 
 Create some fake stdin input, to feed to the debugger:
 
-    >>> from test.support.pty_helper import FakeInput
+    >>> von test.support.pty_helper importiere FakeInput
     >>> real_stdin = sys.stdin
     >>> sys.stdin = FakeInput(['next', 'drucke(x)', 'continue'])
 
@@ -2029,16 +2029,16 @@ Run the debugger on the docstring, and then restore sys.stdin.
 
 wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
     def test_pdb_set_trace():
-        """Using pdb.set_trace from a doctest.
+        """Using pdb.set_trace von a doctest.
 
-        You can use pdb.set_trace from a doctest.  To do so, you must
-        retrieve the set_trace function from the pdb module at the time
+        You can use pdb.set_trace von a doctest.  To do so, you must
+        retrieve the set_trace function von the pdb module at the time
         you use it.  The doctest module changes sys.stdout so that it can
         capture program output.  It also temporarily replaces pdb.set_trace
         with a version that restores stdout.  This is necessary fuer you to
         see debugger output.
 
-          >>> import _colorize
+          >>> importiere _colorize
           >>> save_colorize = _colorize.COLORIZE
           >>> _colorize.COLORIZE = Falsch
 
@@ -2047,7 +2047,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
           ... >>> raise Exception('clé')
           ... Traceback (most recent call last):
           ... Exception: clé
-          ... >>> import pdb; pdb.set_trace()
+          ... >>> importiere pdb; pdb.set_trace()
           ... '''
           >>> parser = doctest.DocTestParser()
           >>> test = parser.get_doctest(doc, {}, "foo-bar@baz", "foo-bar@baz.py", 0)
@@ -2056,7 +2056,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
         To demonstrate this, we'll create a fake standard input that
         captures our debugger input:
 
-          >>> from test.support.pty_helper import FakeInput
+          >>> von test.support.pty_helper importiere FakeInput
           >>> real_stdin = sys.stdin
           >>> sys.stdin = FakeInput([
           ...    'drucke(x)',  # print data defined by the example
@@ -2066,17 +2066,17 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
           >>> try: runner.run(test)
           ... finally: sys.stdin = real_stdin
           > <doctest foo-bar@baz[2]>(1)<module>()
-          -> import pdb; pdb.set_trace()
+          -> importiere pdb; pdb.set_trace()
           (Pdb) drucke(x)
           42
           (Pdb) continue
           TestResults(failed=0, attempted=3)
 
-          You can also put pdb.set_trace in a function called from a test:
+          You can also put pdb.set_trace in a function called von a test:
 
           >>> def calls_set_trace():
           ...    y=2
-          ...    import pdb; pdb.set_trace()
+          ...    importiere pdb; pdb.set_trace()
 
           >>> doc = '''
           ... >>> x=1
@@ -2096,7 +2096,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
           ... finally:
           ...     sys.stdin = real_stdin
           > <doctest test.test_doctest.test_doctest.test_pdb_set_trace[11]>(3)calls_set_trace()
-          -> import pdb; pdb.set_trace()
+          -> importiere pdb; pdb.set_trace()
           (Pdb) drucke(y)
           2
           (Pdb) up
@@ -2115,33 +2115,33 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
           ... ...     g(x*2)
           ... >>> def g(x):
           ... ...     drucke(x+3)
-          ... ...     import pdb; pdb.set_trace()
+          ... ...     importiere pdb; pdb.set_trace()
           ... >>> f(3)
           ... '''
           >>> test = parser.get_doctest(doc, globals(), "foo-bar@baz", "foo-bar@baz.py", 0)
           >>> real_stdin = sys.stdin
           >>> sys.stdin = FakeInput([
           ...    'step',     # return event of g
-          ...    'list',     # list source from example 2
-          ...    'next',     # return from g()
-          ...    'list',     # list source from example 1
-          ...    'next',     # return from f()
-          ...    'list',     # list source from example 3
+          ...    'list',     # list source von example 2
+          ...    'next',     # return von g()
+          ...    'list',     # list source von example 1
+          ...    'next',     # return von f()
+          ...    'list',     # list source von example 3
           ...    'continue', # stop debugging
           ...    ''])
           >>> try: runner.run(test)
           ... finally: sys.stdin = real_stdin
           ... # doctest: +NORMALIZE_WHITESPACE
           > <doctest foo-bar@baz[1]>(3)g()
-          -> import pdb; pdb.set_trace()
+          -> importiere pdb; pdb.set_trace()
           (Pdb) step
           --Return--
           > <doctest foo-bar@baz[1]>(3)g()->Nichts
-          -> import pdb; pdb.set_trace()
+          -> importiere pdb; pdb.set_trace()
           (Pdb) list
             1     def g(x):
             2         drucke(x+3)
-            3  ->     import pdb; pdb.set_trace()
+            3  ->     importiere pdb; pdb.set_trace()
           [EOF]
           (Pdb) next
           --Return--
@@ -2177,7 +2177,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
         >>> klasse C(object):
         ...     def calls_set_trace(self):
         ...         y = 1
-        ...         import pdb; pdb.set_trace()
+        ...         importiere pdb; pdb.set_trace()
         ...         self.f1()
         ...         y = 2
         ...     def f1(self):
@@ -2197,7 +2197,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
         >>> parser = doctest.DocTestParser()
         >>> runner = doctest.DocTestRunner(verbose=Falsch)
         >>> test = parser.get_doctest(doc, globals(), "foo-bar@baz", "foo-bar@baz.py", 0)
-        >>> from test.support.pty_helper import FakeInput
+        >>> von test.support.pty_helper importiere FakeInput
         >>> real_stdin = sys.stdin
         >>> sys.stdin = FakeInput([
         ...    'step',
@@ -2215,7 +2215,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
         ...     sys.stdin = real_stdin
         ... # doctest: +REPORT_NDIFF
         > <doctest test.test_doctest.test_doctest.test_pdb_set_trace_nested[0]>(4)calls_set_trace()
-        -> import pdb; pdb.set_trace()
+        -> importiere pdb; pdb.set_trace()
         (Pdb) step
         > <doctest test.test_doctest.test_doctest.test_pdb_set_trace_nested[0]>(5)calls_set_trace()
         -> self.f1()
@@ -2263,13 +2263,13 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
     """
 
 def test_DocTestSuite():
-    """DocTestSuite creates a unittest test suite from a doctest.
+    """DocTestSuite creates a unittest test suite von a doctest.
 
        We create a Suite by providing a module.  A module can be provided
        by passing a module object:
 
-         >>> import unittest
-         >>> import test.test_doctest.sample_doctest
+         >>> importiere unittest
+         >>> importiere test.test_doctest.sample_doctest
          >>> suite = doctest.DocTestSuite(test.test_doctest.sample_doctest)
          >>> result = suite.run(unittest.TestResult())
          >>> result
@@ -2374,11 +2374,11 @@ def test_DocTestSuite():
        You can supply setUp and tearDown functions:
 
          >>> def setUp(t):
-         ...     from test.test_doctest import test_doctest
+         ...     von test.test_doctest importiere test_doctest
          ...     test_doctest.sillySetup = Wahr
 
          >>> def tearDown(t):
-         ...     from test.test_doctest import test_doctest
+         ...     von test.test_doctest importiere test_doctest
          ...     del test_doctest.sillySetup
 
        Here, we installed a silly variable that the test expects:
@@ -2390,7 +2390,7 @@ def test_DocTestSuite():
 
        But the tearDown restores sanity:
 
-         >>> from test.test_doctest import test_doctest
+         >>> von test.test_doctest importiere test_doctest
          >>> test_doctest.sillySetup
          Traceback (most recent call last):
          ...
@@ -2415,8 +2415,8 @@ def test_DocTestSuite():
 def test_DocTestSuite_errors():
     """Tests fuer error reporting in DocTestSuite.
 
-         >>> import unittest
-         >>> import test.test_doctest.sample_doctest_errors as mod
+         >>> importiere unittest
+         >>> importiere test.test_doctest.sample_doctest_errors as mod
          >>> suite = doctest.DocTestSuite(mod)
          >>> result = suite.run(unittest.TestResult())
          >>> result
@@ -2520,7 +2520,7 @@ def test_DocFileSuite():
        We create a suite by providing the names of one or more text
        files that include examples:
 
-         >>> import unittest
+         >>> importiere unittest
          >>> suite = doctest.DocFileSuite('test_doctest.txt',
          ...                              'test_doctest2.txt',
          ...                              'test_doctest4.txt')
@@ -2531,7 +2531,7 @@ def test_DocFileSuite():
        calling module.  A package keyword argument can be provided to
        specify a different relative location.
 
-         >>> import unittest
+         >>> importiere unittest
          >>> suite = doctest.DocFileSuite('test_doctest.txt',
          ...                              'test_doctest2.txt',
          ...                              'test_doctest4.txt',
@@ -2546,11 +2546,11 @@ def test_DocFileSuite():
          >>> suite.run(unittest.TestResult())
          <unittest.result.TestResult run=1 errors=1 failures=0>
 
-       If DocFileSuite is used from an interactive session, then files
+       If DocFileSuite is used von an interactive session, then files
        are resolved relative to the directory of sys.argv[0]:
 
-         >>> import types, os.path
-         >>> from test.test_doctest import test_doctest
+         >>> importiere types, os.path
+         >>> von test.test_doctest importiere test_doctest
          >>> save_argv = sys.argv
          >>> sys.argv = [test_doctest.__file__]
          >>> suite = doctest.DocFileSuite('test_doctest.txt',
@@ -2621,11 +2621,11 @@ def test_DocFileSuite():
        And, you can provide setUp and tearDown functions:
 
          >>> def setUp(t):
-         ...     from test.test_doctest import test_doctest
+         ...     von test.test_doctest importiere test_doctest
          ...     test_doctest.sillySetup = Wahr
 
          >>> def tearDown(t):
-         ...     from test.test_doctest import test_doctest
+         ...     von test.test_doctest importiere test_doctest
          ...     del test_doctest.sillySetup
 
        Here, we installed a silly variable that the test expects:
@@ -2639,7 +2639,7 @@ def test_DocFileSuite():
 
        But the tearDown restores sanity:
 
-         >>> from test.test_doctest import test_doctest
+         >>> von test.test_doctest importiere test_doctest
          >>> test_doctest.sillySetup
          Traceback (most recent call last):
          ...
@@ -2683,7 +2683,7 @@ def test_DocFileSuite():
 def test_DocFileSuite_errors():
     """Tests fuer error reporting in DocTestSuite.
 
-        >>> import unittest
+        >>> importiere unittest
         >>> suite = doctest.DocFileSuite('test_doctest_errors.txt')
         >>> result = suite.run(unittest.TestResult())
         >>> result
@@ -2762,7 +2762,7 @@ def test_look_in_unwrapped():
     """
     Ensure that wrapped doctests work correctly.
 
-    >>> import doctest
+    >>> importiere doctest
     >>> doctest.run_docstring_examples(
     ...     wrapped, {}, name=wrapped.__name__, verbose=Wahr)
     Finding tests in wrapped
@@ -2777,8 +2777,8 @@ def test_look_in_unwrapped():
 def test_wrapped_c_func():
     """
     # https://github.com/python/cpython/issues/117692
-    >>> import binascii
-    >>> from test.test_doctest.decorator_mod import decorator
+    >>> importiere binascii
+    >>> von test.test_doctest.decorator_mod importiere decorator
 
     >>> c_func_wrapped = decorator(binascii.b2a_hex)
     >>> tests = doctest.DocTestFinder(exclude_empty=Falsch).find(c_func_wrapped)
@@ -2797,7 +2797,7 @@ def test_unittest_reportflags():
 
       >>> suite = doctest.DocFileSuite('test_doctest.txt',
       ...                          optionflags=doctest.DONT_ACCEPT_BLANKLINE)
-      >>> import unittest
+      >>> importiere unittest
       >>> result = suite.run(unittest.TestResult())
       >>> result
       <unittest.result.TestResult run=1 errors=1 failures=1>
@@ -2878,7 +2878,7 @@ calling module.  The return value is (#failures, #tests).
 
 We don't want color or `-v` in sys.argv fuer these tests.
 
-    >>> import _colorize
+    >>> importiere _colorize
     >>> save_colorize = _colorize.COLORIZE
     >>> _colorize.COLORIZE = Falsch
 
@@ -3157,7 +3157,7 @@ newline \n or os.linesep fuer the platform the test is run on.
 
 Windows line endings first:
 
-    >>> import tempfile, os
+    >>> importiere tempfile, os
     >>> fn = tempfile.mktemp()
     >>> with open(fn, 'wb') as f:
     ...    f.write(b'Test:\r\n\r\n  >>> x = 1 + 1\r\n\r\nDone.\r\n')
@@ -3194,8 +3194,8 @@ in it, and use a package hook to install a custom loader; on any platform,
 at least one of the line endings will raise a ValueError fuer inconsistent
 whitespace wenn doctest does not correctly do the newline conversion.
 
-    >>> from test.support import os_helper
-    >>> import shutil
+    >>> von test.support importiere os_helper
+    >>> importiere shutil
     >>> dn = tempfile.mkdtemp()
     >>> pkg = os.path.join(dn, "doctest_testpkg")
     >>> os.mkdir(pkg)
@@ -3227,7 +3227,7 @@ testing the case raised by Issue 6195, where trying to doctest a C module would
 fail with a UnicodeDecodeError because doctest tried to read the "source" lines
 out of the binary module.
 
-    >>> import unicodedata
+    >>> importiere unicodedata
     >>> doctest.testmod(unicodedata, verbose=Falsch)
     TestResults(failed=0, attempted=0)
 """
@@ -3235,7 +3235,7 @@ out of the binary module.
 def test_testmod_errors(): r"""
 Tests fuer error reporting in the testmod() function.
 
-    >>> import test.test_doctest.sample_doctest_errors as mod
+    >>> importiere test.test_doctest.sample_doctest_errors as mod
     >>> doctest.testmod(mod, verbose=Falsch) # doctest: +ELLIPSIS
     **********************************************************************
     File "...sample_doctest_errors.py", line 5, in test.test_doctest.sample_doctest_errors
@@ -3347,7 +3347,7 @@ wenn supports_unicode:
     def test_unicode(): """
 Check doctest with a non-ascii filename:
 
-    >>> import _colorize
+    >>> importiere _colorize
     >>> save_colorize = _colorize.COLORIZE
     >>> _colorize.COLORIZE = Falsch
 
@@ -3358,7 +3358,7 @@ Check doctest with a non-ascii filename:
     >>> parser = doctest.DocTestParser()
     >>> test = parser.get_doctest(doc, {}, "foo-bär@baz", "foo-bär@baz.py", 0)
     >>> test
-    <DocTest foo-bär@baz from foo-bär@baz.py:0 (1 example)>
+    <DocTest foo-bär@baz von foo-bär@baz.py:0 (1 example)>
     >>> runner = doctest.DocTestRunner(verbose=Falsch)
     >>> runner.run(test) # doctest: +ELLIPSIS
     **********************************************************************
@@ -3393,8 +3393,8 @@ With those preliminaries out of the way, we'll start with a file with two
 simple tests and no errors.  We'll run both the unadorned doctest command, and
 the verbose version, and then check the output:
 
-    >>> from test.support import script_helper
-    >>> from test.support.os_helper import temp_dir
+    >>> von test.support importiere script_helper
+    >>> von test.support.os_helper importiere temp_dir
     >>> with temp_dir() as tmpdir:
     ...     fn = os.path.join(tmpdir, 'myfile.doc')
     ...     with open(fn, 'w', encoding='utf-8') as f:
@@ -3445,8 +3445,8 @@ ability to process more than one file on the command line and, since the second
 file ends in '.py', its handling of python module files (as opposed to straight
 text files).
 
-    >>> from test.support import script_helper
-    >>> from test.support.os_helper import temp_dir
+    >>> von test.support importiere script_helper
+    >>> von test.support.os_helper importiere temp_dir
     >>> with temp_dir() as tmpdir:
     ...     fn = os.path.join(tmpdir, 'myfile.doc')
     ...     with open(fn, 'w', encoding="utf-8") as f:
@@ -3483,7 +3483,7 @@ text files).
     ...             '-m', 'doctest', '-v', '-o', 'ELLIPSIS',
     ...             '-o', 'NORMALIZE_WHITESPACE', fn, fn2)
 
-Our first test run will show the errors from the first file (doctest stops wenn a
+Our first test run will show the errors von the first file (doctest stops wenn a
 file has errors).  Note that doctest test-run error output appears on stdout,
 not stderr:
 
@@ -3644,7 +3644,7 @@ def test_no_trailing_whitespace_stripping():
     TestResults(failed=1, attempted=1)
 
     *NOTE*: `\x20` is fuer checking the trailing whitespace on the +a line above.
-    We cannot use actual spaces there, as a commit hook prevents from committing
+    We cannot use actual spaces there, as a commit hook prevents von committing
     patches that contain trailing whitespace. More info on Issue 24746.
     """
 
@@ -3655,8 +3655,8 @@ def test_run_doctestsuite_multiple_times():
     http://bugs.python.org/issue2604
     http://bugs.python.org/issue9736
 
-    >>> import unittest
-    >>> import test.test_doctest.sample_doctest
+    >>> importiere unittest
+    >>> importiere test.test_doctest.sample_doctest
     >>> suite = doctest.DocTestSuite(test.test_doctest.sample_doctest)
     >>> suite.run(unittest.TestResult())
     <unittest.result.TestResult run=9 errors=2 failures=2>
@@ -3667,7 +3667,7 @@ def test_run_doctestsuite_multiple_times():
 
 def test_exception_with_note(note):
     """
-    >>> import _colorize
+    >>> importiere _colorize
     >>> save_colorize = _colorize.COLORIZE
     >>> _colorize.COLORIZE = Falsch
 
@@ -3794,7 +3794,7 @@ def test_syntax_error_subclass_from_stdlib():
     Note
     Line
     """
-    from xml.etree.ElementTree import ParseError
+    von xml.etree.ElementTree importiere ParseError
     exc = ParseError("error\nerror")
     exc.add_note('Note\nLine')
     raise exc
@@ -3802,7 +3802,7 @@ def test_syntax_error_subclass_from_stdlib():
 
 def test_syntax_error_with_incorrect_expected_note():
     """
-    >>> import _colorize
+    >>> importiere _colorize
     >>> save_colorize = _colorize.COLORIZE
     >>> _colorize.COLORIZE = Falsch
 

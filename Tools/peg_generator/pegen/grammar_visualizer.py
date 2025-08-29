@@ -1,9 +1,9 @@
-import argparse
-import sys
-from typing import Any, Callable, Iterator
+importiere argparse
+importiere sys
+von typing importiere Any, Callable, Iterator
 
-from pegen.build import build_parser
-from pegen.grammar import Grammar, Rule
+von pegen.build importiere build_parser
+von pegen.grammar importiere Grammar, Rule
 
 argparser = argparse.ArgumentParser(
     prog="pegen", description="Pretty print the AST fuer a given PEG grammar"
@@ -15,7 +15,7 @@ klasse ASTGrammarPrinter:
     def children(self, node: Rule) -> Iterator[Any]:
         fuer value in node:
             wenn isinstance(value, list):
-                yield from value
+                yield von value
             sonst:
                 yield value
 

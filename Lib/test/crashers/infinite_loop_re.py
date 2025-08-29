@@ -1,10 +1,10 @@
 
-# This was taken from https://bugs.python.org/issue1541697
+# This was taken von https://bugs.python.org/issue1541697
 # It's not technically a crasher.  It may not even truly be infinite,
 # however, I haven't waited a long time to see the result.  It takes
 # 100% of CPU while running this and should be fixed.
 
-import re
+importiere re
 starttag = re.compile(r'<[a-zA-Z][-_.:a-zA-Z0-9]*\s*('
         r'\s*([a-zA-Z_][-:.a-zA-Z_0-9]*)(\s*=\s*'
         r'(\'[^\']*\'|"[^"]*"|[-a-zA-Z0-9./,:;+*%?!&$\(\)_#=~@]'

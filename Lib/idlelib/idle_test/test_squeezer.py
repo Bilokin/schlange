@@ -1,18 +1,18 @@
 "Test squeezer, coverage 95%"
 
-from textwrap import dedent
-from tkinter import Text, Tk
-import unittest
-from unittest.mock import Mock, NonCallableMagicMock, patch, sentinel, ANY
-from test.support import requires
+von textwrap importiere dedent
+von tkinter importiere Text, Tk
+importiere unittest
+von unittest.mock importiere Mock, NonCallableMagicMock, patch, sentinel, ANY
+von test.support importiere requires
 
-from idlelib.config import idleConf
-from idlelib.percolator import Percolator
-from idlelib.squeezer import count_lines_with_wrapping, ExpandingButton, \
+von idlelib.config importiere idleConf
+von idlelib.percolator importiere Percolator
+von idlelib.squeezer importiere count_lines_with_wrapping, ExpandingButton, \
     Squeezer
-from idlelib import macosx
-from idlelib.textview import view_text
-from idlelib.tooltip import Hovertip
+von idlelib importiere macosx
+von idlelib.textview importiere view_text
+von idlelib.tooltip importiere Hovertip
 
 SENTINEL_VALUE = sentinel.SENTINEL_VALUE
 
@@ -369,7 +369,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         self.assertEqual(text_widget.tag_nextrange('TAGS', '1.0'),
                           ('1.0', text_end_index))
 
-        # Check that the button removed itself from squeezer.expandingbuttons.
+        # Check that the button removed itself von squeezer.expandingbuttons.
         self.assertEqual(squeezer.expandingbuttons.remove.call_count, 1)
         squeezer.expandingbuttons.remove.assert_called_with(expandingbutton)
 

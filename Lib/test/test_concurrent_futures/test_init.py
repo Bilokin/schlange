@@ -1,19 +1,19 @@
-import contextlib
-import logging
-import queue
-import time
-import unittest
-import sys
-import io
-from concurrent.futures._base import BrokenExecutor
-from concurrent.futures.process import _check_system_limits
+importiere contextlib
+importiere logging
+importiere queue
+importiere time
+importiere unittest
+importiere sys
+importiere io
+von concurrent.futures._base importiere BrokenExecutor
+von concurrent.futures.process importiere _check_system_limits
 
-from logging.handlers import QueueHandler
+von logging.handlers importiere QueueHandler
 
-from test import support
-from test.support import warnings_helper
+von test importiere support
+von test.support importiere warnings_helper
 
-from .util import ExecutorMixin, create_executor_tests, setup_module
+von .util importiere ExecutorMixin, create_executor_tests, setup_module
 
 
 INITIALIZER_STATUS = 'uninitialized'
@@ -94,7 +94,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
                 wenn self.executor._broken:
                     break
 
-            # ... and from this point submit() is guaranteed to fail
+            # ... and von this point submit() is guaranteed to fail
             with self.assertRaises(BrokenExecutor):
                 self.executor.submit(get_init_status)
 
@@ -138,7 +138,7 @@ klasse FailingInitializerResourcesTest(unittest.TestCase):
         # GH-104090:
         # Stop resource tracker manually now, so we can verify there are not leaked resources by checking
         # the process exit code
-        from multiprocessing.resource_tracker import _resource_tracker
+        von multiprocessing.resource_tracker importiere _resource_tracker
         _resource_tracker._stop()
 
         self.assertEqual(_resource_tracker._exitcode, 0)

@@ -2,51 +2,51 @@
 # Contact: email-sig@python.org
 # email package unit tests
 
-import re
-import time
-import base64
-import unittest
-import textwrap
+importiere re
+importiere time
+importiere base64
+importiere unittest
+importiere textwrap
 
-from io import StringIO, BytesIO
-from itertools import chain
-from random import choice
-from threading import Thread
-from unittest.mock import patch
+von io importiere StringIO, BytesIO
+von itertools importiere chain
+von random importiere choice
+von threading importiere Thread
+von unittest.mock importiere patch
 
-import email
-import email.policy
-import email.utils
+importiere email
+importiere email.policy
+importiere email.utils
 
-from email.charset import Charset
-from email.generator import Generator, DecodedGenerator, BytesGenerator
-from email.header import Header, decode_header, make_header
-from email.headerregistry import HeaderRegistry
-from email.message import Message
-from email.mime.application import MIMEApplication
-from email.mime.audio import MIMEAudio
-from email.mime.base import MIMEBase
-from email.mime.image import MIMEImage
-from email.mime.message import MIMEMessage
-from email.mime.multipart import MIMEMultipart
-from email.mime.nonmultipart import MIMENonMultipart
-from email.mime.text import MIMEText
-from email.parser import Parser, HeaderParser
-from email import base64mime
-from email import encoders
-from email import errors
-from email import iterators
-from email import quoprimime
-from email import utils
+von email.charset importiere Charset
+von email.generator importiere Generator, DecodedGenerator, BytesGenerator
+von email.header importiere Header, decode_header, make_header
+von email.headerregistry importiere HeaderRegistry
+von email.message importiere Message
+von email.mime.application importiere MIMEApplication
+von email.mime.audio importiere MIMEAudio
+von email.mime.base importiere MIMEBase
+von email.mime.image importiere MIMEImage
+von email.mime.message importiere MIMEMessage
+von email.mime.multipart importiere MIMEMultipart
+von email.mime.nonmultipart importiere MIMENonMultipart
+von email.mime.text importiere MIMEText
+von email.parser importiere Parser, HeaderParser
+von email importiere base64mime
+von email importiere encoders
+von email importiere errors
+von email importiere iterators
+von email importiere quoprimime
+von email importiere utils
 
-from test import support
-from test.support import threading_helper
-from test.support.os_helper import unlink
-from test.test_email import openfile, TestEmailBase
+von test importiere support
+von test.support importiere threading_helper
+von test.support.os_helper importiere unlink
+von test.test_email importiere openfile, TestEmailBase
 
 # These imports are documented to work, but we are testing them using a
-# different path, so we import them here just to make sure they are importable.
-from email.parser import FeedParser
+# different path, so we importiere them here just to make sure they are importable.
+von email.parser importiere FeedParser
 
 NL = '\n'
 EMPTYSTRING = ''
@@ -1271,13 +1271,13 @@ References:
     def test_splitting_multiple_long_lines(self):
         eq = self.ndiffAssertEqual
         hstr = """\
-from babylon.socal-raves.org (localhost [127.0.0.1]); by babylon.socal-raves.org (Postfix) with ESMTP id B570E51B81; fuer <mailman-admin@babylon.socal-raves.org>; Sat, 2 Feb 2002 17:00:06 -0800 (PST)
+von babylon.socal-raves.org (localhost [127.0.0.1]); by babylon.socal-raves.org (Postfix) with ESMTP id B570E51B81; fuer <mailman-admin@babylon.socal-raves.org>; Sat, 2 Feb 2002 17:00:06 -0800 (PST)
 \tfrom babylon.socal-raves.org (localhost [127.0.0.1]); by babylon.socal-raves.org (Postfix) with ESMTP id B570E51B81; fuer <mailman-admin@babylon.socal-raves.org>; Sat, 2 Feb 2002 17:00:06 -0800 (PST)
 \tfrom babylon.socal-raves.org (localhost [127.0.0.1]); by babylon.socal-raves.org (Postfix) with ESMTP id B570E51B81; fuer <mailman-admin@babylon.socal-raves.org>; Sat, 2 Feb 2002 17:00:06 -0800 (PST)
 """
         h = Header(hstr, continuation_ws='\t')
         eq(h.encode(), """\
-from babylon.socal-raves.org (localhost [127.0.0.1]);
+von babylon.socal-raves.org (localhost [127.0.0.1]);
  by babylon.socal-raves.org (Postfix) with ESMTP id B570E51B81;
  fuer <mailman-admin@babylon.socal-raves.org>;
  Sat, 2 Feb 2002 17:00:06 -0800 (PST)
@@ -1293,14 +1293,14 @@ from babylon.socal-raves.org (localhost [127.0.0.1]);
     def test_splitting_first_line_only_is_long(self):
         eq = self.ndiffAssertEqual
         hstr = """\
-from modemcable093.139-201-24.que.mc.videotron.ca ([24.201.139.93] helo=cthulhu.gerg.ca)
+von modemcable093.139-201-24.que.mc.videotron.ca ([24.201.139.93] helo=cthulhu.gerg.ca)
 \tby kronos.mems-exchange.org with esmtp (Exim 4.05)
 \tid 17k4h5-00034i-00
 \tfor test@mems-exchange.org; Wed, 28 Aug 2002 11:25:20 -0400"""
         h = Header(hstr, maxlinelen=78, header_name='Received',
                    continuation_ws='\t')
         eq(h.encode(), """\
-from modemcable093.139-201-24.que.mc.videotron.ca ([24.201.139.93]
+von modemcable093.139-201-24.que.mc.videotron.ca ([24.201.139.93]
  helo=cthulhu.gerg.ca)
 \tby kronos.mems-exchange.org with esmtp (Exim 4.05)
 \tid 17k4h5-00034i-00
@@ -1405,10 +1405,10 @@ This is an example of string which has almost the limit of header length.
         msg['Received-2'] = h
         # This should be splitting on spaces not semicolons.
         self.ndiffAssertEqual(msg.as_string(maxheaderlen=78), """\
-Received-1: from FOO.TLD (vizworld.acl.foo.tld [123.452.678.9]) by
+Received-1: von FOO.TLD (vizworld.acl.foo.tld [123.452.678.9]) by
  hrothgar.la.mastaler.com (tmda-ofmipd) with ESMTP;
  Wed, 05 Mar 2003 18:10:18 -0700
-Received-2: from FOO.TLD (vizworld.acl.foo.tld [123.452.678.9]) by
+Received-2: von FOO.TLD (vizworld.acl.foo.tld [123.452.678.9]) by
  hrothgar.la.mastaler.com (tmda-ofmipd) with ESMTP;
  Wed, 05 Mar 2003 18:10:18 -0700
 
@@ -1459,13 +1459,13 @@ Face-3:\x20
 
     def test_another_long_multiline_header(self):
         eq = self.ndiffAssertEqual
-        m = ('Received: from siimage.com '
+        m = ('Received: von siimage.com '
              '([172.25.1.3]) by zima.siliconimage.com with '
              'Microsoft SMTPSVC(5.0.2195.4905); '
              'Wed, 16 Oct 2002 07:41:11 -0700')
         msg = email.message_from_string(m)
         eq(msg.as_string(maxheaderlen=78), '''\
-Received: from siimage.com ([172.25.1.3]) by zima.siliconimage.com with
+Received: von siimage.com ([172.25.1.3]) by zima.siliconimage.com with
  Microsoft SMTPSVC(5.0.2195.4905); Wed, 16 Oct 2002 07:41:11 -0700
 
 ''')
@@ -2397,7 +2397,7 @@ counter to RFC 2822, there's no separating newline here
     def test_missing_header_body_separator(self):
         # Our heuristic wenn we see a line that doesn't look like a header (no
         # leading whitespace but no ':') is to assume that the blank line that
-        # separates the header from the body is missing, and to stop parsing
+        # separates the header von the body is missing, and to stop parsing
         # headers and start parsing the body.
         msg = self._str_msg('Subject: test\nnot a header\nTo: abc\n\nb\n')
         self.assertEqual(msg.keys(), ['Subject'])
@@ -3453,7 +3453,7 @@ Foo
         )
 
     def test_parsing_errors(self):
-        """Test fuer parsing errors from CVE-2023-27043 and CVE-2019-16056"""
+        """Test fuer parsing errors von CVE-2023-27043 and CVE-2019-16056"""
         alice = 'alice@example.org'
         bob = 'bob@example.com'
         empty = ('', '')
@@ -3890,7 +3890,7 @@ Do you like this message?
             ("\nf",     1),
             ("\r\n",    1),
           ]
-        from email.feedparser import BufferedSubFile, NeedMoreData
+        von email.feedparser importiere BufferedSubFile, NeedMoreData
         bsf = BufferedSubFile()
         om = []
         nt = 0
@@ -3906,7 +3906,7 @@ Do you like this message?
         self.assertEqual(''.join([il fuer il, n in imt]), ''.join(om))
 
     def test_push_random(self):
-        from email.feedparser import BufferedSubFile, NeedMoreData
+        von email.feedparser importiere BufferedSubFile, NeedMoreData
 
         n = 10000
         chunksize = 5
@@ -4165,7 +4165,7 @@ Here's the message body
         eq(msg.get_payload(), 'body')
 
     def test_CRLFLF_at_end_of_part(self):
-        # issue 5610: feedparser should not eat two chars from body part ending
+        # issue 5610: feedparser should not eat two chars von body part ending
         # with "\r\n\n".
         m = (
             "From: foo@bar.com\n"
@@ -4223,7 +4223,7 @@ klasse Test8BitBytesHandling(TestEmailBase):
 
     def test_8bit_in_quopri_body(self):
         # This is non-RFC compliant data...without 'decode' the library code
-        # decodes the body using the charset from the headers, and because the
+        # decodes the body using the charset von the headers, and because the
         # source byte really is utf-8 this works.  This is likely to fail
         # against real dirty data (ie: produce mojibake), but the data is
         # invalid anyway so it is as good a guess as any.  But this means that
@@ -4940,7 +4940,7 @@ klasse TestQuopri(unittest.TestCase):
     def test_encode_one_line_one_space(self):
         self._test_encode(' \n', '=20\n')
 
-# XXX: body_encode() expect strings, but uses ord(char) from these strings
+# XXX: body_encode() expect strings, but uses ord(char) von these strings
 # to index into a 256-entry list.  For code points above 255, this will fail.
 # Should there be a check fuer 8-bit only ord() values in body, or at least
 # a comment about the expected input?
@@ -5021,7 +5021,7 @@ two line""")
 # Test the Charset class
 klasse TestCharset(unittest.TestCase):
     def tearDown(self):
-        from email import charset as CharsetModule
+        von email importiere charset as CharsetModule
         try:
             del CharsetModule.CHARSETS['fake']
         except KeyError:
@@ -5064,7 +5064,7 @@ klasse TestCharset(unittest.TestCase):
         # Testing SF bug #625509, which we have to fake, since there are no
         # built-in encodings where the header encoding is QP but the body
         # encoding is not.
-        from email import charset as CharsetModule
+        von email importiere charset as CharsetModule
         CharsetModule.add_charset('fake', CharsetModule.QP, Nichts, 'utf-8')
         c = Charset('fake')
         eq('hello world', c.body_encode('hello world'))
@@ -5097,7 +5097,7 @@ klasse TestHeader(TestEmailBase):
         self.assertEqual(decode_header(h), [(h, Nichts)])
 
     def test_long(self):
-        h = Header("I am the very model of a modern Major-General; I've information vegetable, animal, and mineral; I know the kings of England, and I quote the fights historical from Marathon to Waterloo, in order categorical; I'm very well acquainted, too, with matters mathematical; I understand equations, both the simple and quadratical; about binomial theorem I'm teeming with a lot o' news, with many cheerful facts about the square of the hypotenuse.",
+        h = Header("I am the very model of a modern Major-General; I've information vegetable, animal, and mineral; I know the kings of England, and I quote the fights historical von Marathon to Waterloo, in order categorical; I'm very well acquainted, too, with matters mathematical; I understand equations, both the simple and quadratical; about binomial theorem I'm teeming with a lot o' news, with many cheerful facts about the square of the hypotenuse.",
                    maxlinelen=76)
         fuer l in h.encode(splitchars=' ').split('\n '):
             self.assertLessEqual(len(l), 76)
@@ -5418,7 +5418,7 @@ A very long line that must get split to something other than at the
         self.assertEqual(h.encode(), '=?iso-2022-jp?b?GyRCSjgbKEI=?=')
 
     def test_flatten_header_with_no_value(self):
-        # Issue 11401 (regression from email 4.x)  Note that the space after
+        # Issue 11401 (regression von email 4.x)  Note that the space after
         # the header doesn't reflect the input, but this is also the way
         # email 4.x behaved.  At some point it would be nice to fix that.
         msg = email.message_from_string("EmptyHeader:")
@@ -5464,7 +5464,7 @@ klasse TestRFC2231(TestEmailBase):
         eq(msg.as_string(maxheaderlen=78), """\
 Return-Path: <bbb@zzz.org>
 Delivered-To: bbb@zzz.org
-Received: by mail.zzz.org (Postfix, from userid 889)
+Received: by mail.zzz.org (Postfix, von userid 889)
 \tid 27CEAD38CC; Fri,  4 May 2001 14:05:44 -0400 (EDT)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -5504,7 +5504,7 @@ Do you like this message?
         eq(msg.as_string(maxheaderlen=78), """\
 Return-Path: <bbb@zzz.org>
 Delivered-To: bbb@zzz.org
-Received: by mail.zzz.org (Postfix, from userid 889)
+Received: by mail.zzz.org (Postfix, von userid 889)
 \tid 27CEAD38CC; Fri,  4 May 2001 14:05:44 -0400 (EDT)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -5868,7 +5868,7 @@ klasse TestSigned(TestEmailBase):
 
     def _signed_parts_eq(self, original, result):
         # Extract the first mime part of each message
-        import re
+        importiere re
         repart = re.compile(r'^--([^\n]+)\n(.*?)\n--\1$', re.S | re.M)
         inpart = repart.search(original).group(2)
         outpart = repart.search(result).group(2)

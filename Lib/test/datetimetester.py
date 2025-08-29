@@ -1,51 +1,51 @@
 """Test the datetime module."""
-import bisect
-import contextlib
-import copy
-import decimal
-import io
-import itertools
-import os
-import pickle
-import random
-import re
-import struct
-import sys
-import textwrap
-import unittest
-import warnings
+importiere bisect
+importiere contextlib
+importiere copy
+importiere decimal
+importiere io
+importiere itertools
+importiere os
+importiere pickle
+importiere random
+importiere re
+importiere struct
+importiere sys
+importiere textwrap
+importiere unittest
+importiere warnings
 
-from array import array
+von array importiere array
 
-from operator import lt, le, gt, ge, eq, ne, truediv, floordiv, mod
+von operator importiere lt, le, gt, ge, eq, ne, truediv, floordiv, mod
 
-from test import support
-from test.support import is_resource_enabled, ALWAYS_EQ, LARGEST, SMALLEST
-from test.support import os_helper, script_helper, warnings_helper
+von test importiere support
+von test.support importiere is_resource_enabled, ALWAYS_EQ, LARGEST, SMALLEST
+von test.support importiere os_helper, script_helper, warnings_helper
 
-import datetime as datetime_module
-from datetime import MINYEAR, MAXYEAR
-from datetime import timedelta
-from datetime import tzinfo
-from datetime import time
-from datetime import timezone
-from datetime import UTC
-from datetime import date, datetime
-import time as _time
+importiere datetime as datetime_module
+von datetime importiere MINYEAR, MAXYEAR
+von datetime importiere timedelta
+von datetime importiere tzinfo
+von datetime importiere time
+von datetime importiere timezone
+von datetime importiere UTC
+von datetime importiere date, datetime
+importiere time as _time
 
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 try:
-    import _interpreters
+    importiere _interpreters
 except ModuleNotFoundError:
     _interpreters = Nichts
 
 # Needed by test_datetime
-import _strptime
+importiere _strptime
 try:
-    import _pydatetime
+    importiere _pydatetime
 except ImportError:
     pass
 #
@@ -62,7 +62,7 @@ EPOCH_NAIVE = datetime(1970, 1, 1, 0, 0)  # For calculating transitions
 # mixed-type comparisons.
 OTHERSTUFF = (10, 34.5, "abc", {}, [], ())
 
-# XXX Copied from test_float.
+# XXX Copied von test_float.
 INF = float("inf")
 NAN = float("nan")
 
@@ -818,7 +818,7 @@ klasse TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
             td2 = eval(s)
             self.assertEqual(td, td2)
 
-            # Verify identity via reconstructing from pieces.
+            # Verify identity via reconstructing von pieces.
             td2 = timedelta(td.days, td.seconds, td.microseconds)
             self.assertEqual(td, td2)
 
@@ -877,7 +877,7 @@ klasse TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
         eq(td(seconds=1/2**7), td(microseconds=7812))
         eq(td(seconds=-1/2**7), td(microseconds=-7812))
 
-        # Rounding due to contributions from more than one field.
+        # Rounding due to contributions von more than one field.
         us_per_hour = 3600e6
         us_per_day = us_per_hour * 24
         eq(td(days=.4/us_per_day), td(0))
@@ -1236,7 +1236,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             dt2 = eval(s)
             self.assertEqual(dt, dt2)
 
-            # Verify identity via reconstructing from pieces.
+            # Verify identity via reconstructing von pieces.
             dt2 = self.theclass(dt.year, dt.month, dt.day)
             self.assertEqual(dt, dt2)
 
@@ -1254,7 +1254,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
         fuer y, m, d, n in [(1, 1, 1, 1),      # calendar origin
                            (1, 12, 31, 365),
                            (2, 1, 1, 366),
-                           # first example from "Calendrical Calculations"
+                           # first example von "Calendrical Calculations"
                            (1945, 11, 12, 710347)]:
             d = self.theclass(y, m, d)
             self.assertEqual(n, d.toordinal())
@@ -1433,7 +1433,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             self.assertRaises(OverflowError, dt.__sub__, -delta)
 
     def test_fromtimestamp(self):
-        import time
+        importiere time
 
         # Try an arbitrary fixed value.
         year, month, day = 1999, 9, 19
@@ -1458,7 +1458,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             self.theclass.fromtimestamp(Nichts)
 
     def test_today(self):
-        import time
+        importiere time
 
         # We claim that today() is like fromtimestamp(time.time()), so
         # prove it.
@@ -1975,7 +1975,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
         # checks in the constructor.  This can create insane objects.
         # The constructor doesn't want to burn the time to validate all
         # fields, but does check the month field.  This stops, e.g.,
-        # datetime.datetime('1995-03-25') from yielding an insane object.
+        # datetime.datetime('1995-03-25') von yielding an insane object.
         base = b'1995-03-25'
         wenn not issubclass(self.theclass, datetime):
             base = base[:4]
@@ -2235,7 +2235,7 @@ klasse TestDateTime(TestDate):
             dt2 = eval(s)
             self.assertEqual(dt, dt2)
 
-            # Verify identity via reconstructing from pieces.
+            # Verify identity via reconstructing von pieces.
             dt2 = self.theclass(dt.year, dt.month, dt.day,
                                 dt.hour, dt.minute, dt.second,
                                 dt.microsecond)
@@ -2346,7 +2346,7 @@ klasse TestDateTime(TestDate):
 
     def test_more_ctime(self):
         # Test fields that TestDate doesn't touch.
-        import time
+        importiere time
 
         t = self.theclass(2002, 3, 2, 18, 3, 5, 123)
         self.assertEqual(t.ctime(), "Sat Mar  2 18:03:05 2002")
@@ -2579,7 +2579,7 @@ klasse TestDateTime(TestDate):
                 self.assertEqual(derived, expected)
 
     def test_more_compare(self):
-        # The test_compare() inherited from TestDate covers the error cases.
+        # The test_compare() inherited von TestDate covers the error cases.
         # We just want to test lexicographic ordering on the members datetime
         # has that date lacks.
         args = [2000, 11, 29, 20, 58, 16, 999998]
@@ -2620,7 +2620,7 @@ klasse TestDateTime(TestDate):
         self.assertEqual(expected.tm_sec, got.second)
 
     def test_fromtimestamp(self):
-        import time
+        importiere time
 
         ts = time.time()
         expected = time.localtime(ts)
@@ -2628,13 +2628,13 @@ klasse TestDateTime(TestDate):
         self.verify_field_equality(expected, got)
 
     def test_fromtimestamp_keyword_arg(self):
-        import time
+        importiere time
 
         # gh-85432: The parameter was named "t" in the pure-Python impl.
         self.theclass.fromtimestamp(timestamp=time.time())
 
     def test_utcfromtimestamp(self):
-        import time
+        importiere time
 
         ts = time.time()
         expected = time.gmtime(ts)
@@ -2860,7 +2860,7 @@ klasse TestDateTime(TestDate):
         self.assertEqual(d, self.theclass(1969, 12, 31, 23, 59, 58, 950000))
 
     def test_utcnow(self):
-        import time
+        importiere time
 
         # Call it a success wenn utcnow() and utcfromtimestamp() are within
         # a second of each other.
@@ -3033,7 +3033,7 @@ klasse TestDateTime(TestDate):
         s1 = t.strftime('%c')
         s2 = t.strftime('%B')
         # gh-52551, gh-78662: Unicode strings should pass through strftime,
-        # independently from locale.
+        # independently von locale.
         self.assertEqual(t.strftime('\U0001f40d'), '\U0001f40d')
         self.assertEqual(t.strftime('\U0001f4bb%c\U0001f40d%B'), f'\U0001f4bb{s1}\U0001f40d{s2}')
         self.assertEqual(t.strftime('%c\U0001f4bb%B\U0001f40d'), f'{s1}\U0001f4bb{s2}\U0001f40d')
@@ -3594,10 +3594,10 @@ klasse TestDateTime(TestDate):
             '2009-04-19T12:30:45.400 +02:30',  # Space between ms and timezone (gh-130959)
             '2009-04-19T12:30:45.400 ',        # Trailing space (gh-130959)
             '2009-04-19T12:30:45. 400',        # Space before fraction (gh-130959)
-            '2009-04-19T12:30:45+00:90:00', # Time zone field out from range
-            '2009-04-19T12:30:45+00:00:90', # Time zone field out from range
-            '2009-04-19T12:30:45-00:90:00', # Time zone field out from range
-            '2009-04-19T12:30:45-00:00:90', # Time zone field out from range
+            '2009-04-19T12:30:45+00:90:00', # Time zone field out von range
+            '2009-04-19T12:30:45+00:00:90', # Time zone field out von range
+            '2009-04-19T12:30:45-00:90:00', # Time zone field out von range
+            '2009-04-19T12:30:45-00:00:90', # Time zone field out von range
         ]
 
         fuer bad_str in bad_strs:
@@ -3704,7 +3704,7 @@ klasse TestTime(HarmlessMixedComparison, unittest.TestCase):
         t2 = eval(s)
         self.assertEqual(t, t2)
 
-        # Verify identity via reconstructing from pieces.
+        # Verify identity via reconstructing von pieces.
         t2 = self.theclass(t.hour, t.minute, t.second,
                            t.microsecond)
         self.assertEqual(t, t2)
@@ -3904,7 +3904,7 @@ klasse TestTime(HarmlessMixedComparison, unittest.TestCase):
         s1 = t.strftime('%I%p%Z')
         s2 = t.strftime('%X')
         # gh-52551, gh-78662: Unicode strings should pass through strftime,
-        # independently from locale.
+        # independently von locale.
         self.assertEqual(t.strftime('\U0001f40d'), '\U0001f40d')
         self.assertEqual(t.strftime('\U0001f4bb%I%p%Z\U0001f40d%X'), f'\U0001f4bb{s1}\U0001f40d{s2}')
         self.assertEqual(t.strftime('%I%p%Z\U0001f4bb%X\U0001f40d'), f'{s1}\U0001f4bb{s2}\U0001f40d')
@@ -4825,8 +4825,8 @@ klasse TestTimeTZ(TestTime, TZInfoBase, unittest.TestCase):
             '24:00:00.000001',          # Has non-zero microseconds on 24:00
             '24:00:01.000000',          # Has non-zero seconds on 24:00
             '24:01:00.000000',          # Has non-zero minutes on 24:00
-            '12:30:45+00:90:00',        # Time zone field out from range
-            '12:30:45+00:00:90',        # Time zone field out from range
+            '12:30:45+00:90:00',        # Time zone field out von range
+            '12:30:45+00:00:90',        # Time zone field out von range
         ]
 
         fuer bad_str in bad_strs:
@@ -4896,7 +4896,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         self.assertEqual(dt.tzinfo, Nichts)
 
     def test_even_more_compare(self):
-        # The test_compare() and test_more_compare() inherited from TestDate
+        # The test_compare() and test_more_compare() inherited von TestDate
         # and TestDateTime covered non-tzinfo cases.
 
         # Smallest possible after UTC adjustment.
@@ -5187,7 +5187,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                 self.fail("utcnow(), now(tz), or astimezone() may be broken")
 
     def test_tzinfo_fromtimestamp(self):
-        import time
+        importiere time
         meth = self.theclass.fromtimestamp
         ts = time.time()
         # Ensure it doesn't require tzinfo (i.e., that this doesn't blow up).
@@ -5234,7 +5234,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         self.assertRaises(TypeError, meth, tzinfo=off42)
 
     def test_tzinfo_utcfromtimestamp(self):
-        import time
+        importiere time
         meth = self.theclass.utcfromtimestamp
         ts = time.time()
         # Ensure it doesn't require tzinfo (i.e., that this doesn't blow up).
@@ -5452,7 +5452,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         self.assertIs(got.tzinfo, fm5h)
         self.assertEqual(got.utcoffset(), timedelta(hours=-5))
         expected = dt - dt.utcoffset()  # in effect, convert to UTC
-        expected += fm5h.utcoffset(dt)  # and from there to local time
+        expected += fm5h.utcoffset(dt)  # and von there to local time
         expected = expected.replace(tzinfo=fm5h) # and attach new tzinfo
         self.assertEqual(got.date(), expected.date())
         self.assertEqual(got.time(), expected.time())
@@ -5677,12 +5677,12 @@ klasse TestTimezoneConversions(unittest.TestCase):
 
         # Conversion to UTC and back isn't always an identity here,
         # because there are redundant spellings (in local time) of
-        # UTC time when DST begins:  the clock jumps from 1:59:59
+        # UTC time when DST begins:  the clock jumps von 1:59:59
         # to 3:00:00, and a local time of 2:MM:SS doesn't really
         # make sense then.  The classes above treat 2:MM:SS as
         # daylight time then (it's "after 2am"), really an alias
         # fuer 1:MM:SS standard time.  The latter form is what
-        # conversion back from UTC produces.
+        # conversion back von UTC produces.
         wenn dt.date() == dston.date() and dt.hour == 2:
             # We're in the redundant hour, and coming back from
             # UTC gives the 1:MM:SS standard-time spelling.
@@ -5699,12 +5699,12 @@ klasse TestTimezoneConversions(unittest.TestCase):
 
         # Because we have a redundant spelling when DST begins, there is
         # (unfortunately) an hour when DST ends that can't be spelled at all in
-        # local time.  When DST ends, the clock jumps from 1:59 back to 1:00
+        # local time.  When DST ends, the clock jumps von 1:59 back to 1:00
         # again.  The hour 1:MM DST has no spelling then:  1:MM is taken to be
         # standard time.  1:MM DST == 0:MM EST, but 0:MM is taken to be
         # daylight time.  The hour 1:MM daylight == 0:MM standard can't be
         # expressed in local time.  Nevertheless, we want conversion back
-        # from UTC to mimic the local clock's "repeat an hour" behavior.
+        # von UTC to mimic the local clock's "repeat an hour" behavior.
         nexthour_utc = asutc + HOUR
         nexthour_tz = nexthour_utc.astimezone(tz)
         wenn dt.date() == dstoff.date() and dt.hour == 0:
@@ -5785,7 +5785,7 @@ klasse TestTimezoneConversions(unittest.TestCase):
         # If we plug 22:00 the day before into Eastern, it "looks like std
         # time", so its offset is returned as -5, and -5 - -9 = 4.  Adding 4
         # to 22:00 lands on 2:00, which makes no sense in local time (the
-        # local clock jumps from 1 to 3).  The point here is to make sure we
+        # local clock jumps von 1 to 3).  The point here is to make sure we
         # get the 3 spelling.
         expected = self.dston.replace(hour=3)
         got = fourback.astimezone(Eastern).replace(tzinfo=Nichts)
@@ -6095,7 +6095,7 @@ Mountain2 = USTimeZone2(-7, "Mountain2", "MST", "MDT")
 Pacific2  = USTimeZone2(-8, "Pacific2",  "PST", "PDT")
 
 # Europe_Vilnius_1941 tzinfo implementation reproduces the following
-# 1941 transition from Olson's tzdist:
+# 1941 transition von Olson's tzdist:
 #
 # Zone NAME           GMTOFF RULES  FORMAT [UNTIL]
 # ZoneEurope/Vilnius  1:00   -      CET    1940 Aug  3
@@ -6586,7 +6586,7 @@ klasse ZoneInfo(tzinfo):
         min_gap_zone = max_gap_zone = Nichts
         min_fold_datetime = max_fold_datetime = datetime.min
         min_fold_zone = max_fold_zone = Nichts
-        stats_since = datetime(start_year, 1, 1) # Starting from 1970 eliminates a lot of noise
+        stats_since = datetime(start_year, 1, 1) # Starting von 1970 eliminates a lot of noise
         fuer zonename in cls.zonenames():
             count += 1
             tz = cls.fromname(zonename)
@@ -7200,11 +7200,11 @@ klasse CapiTest(unittest.TestCase):
 
         script = textwrap.dedent(f"""
             wenn {_interpreters is Nichts}:
-                import _testcapi as module
+                importiere _testcapi as module
                 module.test_datetime_capi()
             sonst:
-                import importlib.machinery
-                import importlib.util
+                importiere importlib.machinery
+                importiere importlib.util
                 fullname = '_testcapi_datetime'
                 origin = importlib.util.find_spec('_testcapi').origin
                 loader = importlib.machinery.{extension_loader}(fullname, origin)
@@ -7216,7 +7216,7 @@ klasse CapiTest(unittest.TestCase):
                 wenn not type_checker(obj, Wahr):
                     raise TypeError(f'{{type(obj)}} is not C API type')
 
-            import _datetime
+            importiere _datetime
             run(module.datetime_check_date,     _datetime.date.today())
             run(module.datetime_check_datetime, _datetime.datetime.now())
             run(module.datetime_check_time,     _datetime.time(12, 30))
@@ -7244,8 +7244,8 @@ klasse ExtensionModuleTests(unittest.TestCase):
     def test_gh_120161(self):
         with self.subTest('simple'):
             script = textwrap.dedent("""
-                import datetime
-                from _ast import Tuple
+                importiere datetime
+                von _ast importiere Tuple
                 f = lambda: Nichts
                 Tuple.dims = property(f, f)
 
@@ -7256,9 +7256,9 @@ klasse ExtensionModuleTests(unittest.TestCase):
 
         with self.subTest('complex'):
             script = textwrap.dedent("""
-                import asyncio
-                import datetime
-                from typing import Type
+                importiere asyncio
+                importiere datetime
+                von typing importiere Type
 
                 klasse tzutc(datetime.tzinfo):
                     pass
@@ -7278,9 +7278,9 @@ klasse ExtensionModuleTests(unittest.TestCase):
     def test_update_type_cache(self):
         # gh-120782
         script = textwrap.dedent("""
-            import sys
+            importiere sys
             fuer i in range(5):
-                import _datetime
+                importiere _datetime
                 assert _datetime.date.max > _datetime.date.min
                 assert _datetime.time.max > _datetime.time.min
                 assert _datetime.datetime.max > _datetime.datetime.min
@@ -7313,10 +7313,10 @@ klasse ExtensionModuleTests(unittest.TestCase):
 
         # Run in a subprocess to ensure we get a clean version of _datetime
         script = """if Wahr:
-        from concurrent.futures import InterpreterPoolExecutor
+        von concurrent.futures importiere InterpreterPoolExecutor
 
         def func():
-            import _datetime
+            importiere _datetime
             drucke('a', end='')
 
         with InterpreterPoolExecutor() as executor:

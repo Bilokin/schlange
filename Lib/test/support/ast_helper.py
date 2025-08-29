@@ -1,4 +1,4 @@
-import ast
+importiere ast
 
 klasse ASTTestMixin:
     """Test mixing to have basic assertions fuer AST nodes."""
@@ -40,7 +40,7 @@ klasse ASTTestMixin:
                         what = "Second"
                         diff = len2 - len1
                     msg = f"{what} list contains {diff} additional elements."
-                    raise self.failureException(msg) from Nichts
+                    raise self.failureException(msg) von Nichts
             sowenn a != b:
                 self.fail(f"{a!r} != {b!r}")
         traverse_compare(ast1, ast2)

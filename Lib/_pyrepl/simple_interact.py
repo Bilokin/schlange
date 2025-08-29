@@ -23,24 +23,24 @@ the CPython prompt as closely as possible, with the exception of
 allowing multiline input and multiline history entries.
 """
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import _sitebuiltins
-import functools
-import os
-import sys
-import code
-import warnings
-import errno
+importiere _sitebuiltins
+importiere functools
+importiere os
+importiere sys
+importiere code
+importiere warnings
+importiere errno
 
-from .readline import _get_reader, multiline_input, append_history_file
+von .readline importiere _get_reader, multiline_input, append_history_file
 
 
 _error: tuple[type[Exception], ...] | type[Exception]
 try:
-    from .unix_console import _error
+    von .unix_console importiere _error
 except ModuleNotFoundError:
-    from .windows_console import _error
+    von .windows_console importiere _error
 
 def check() -> str:
     """Returns the error message wenn there is a problem initializing the state."""
@@ -103,7 +103,7 @@ def run_multiline_interactive_console(
     *,
     future_flags: int = 0,
 ) -> Nichts:
-    from .readline import _setup
+    von .readline importiere _setup
     _setup(console.locals)
     wenn future_flags:
         console.compile.compiler.flags |= future_flags

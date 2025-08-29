@@ -1,12 +1,12 @@
-import unittest
-import os
-import importlib
+importiere unittest
+importiere os
+importiere importlib
 
-from test.support import warnings_helper
+von test.support importiere warnings_helper
 
-from importlib import resources
+von importlib importiere resources
 
-from . import util
+von . importiere util
 
 # Since the functional API forwards to Traversable, we only test
 # filesystem resources here -- not zip files, namespace packages etc.

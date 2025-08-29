@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec mac_iceland generated from 'MAPPINGS/VENDORS/APPLE/ICELAND.TXT' with gencodec.py.
+""" Python Character Mapping Codec mac_iceland generated von 'MAPPINGS/VENDORS/APPLE/ICELAND.TXT' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

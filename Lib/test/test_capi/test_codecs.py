@@ -1,12 +1,12 @@
-import codecs
-import contextlib
-import io
-import re
-import sys
-import unittest
-import unittest.mock as mock
-import _testcapi
-from test.support import import_helper
+importiere codecs
+importiere contextlib
+importiere io
+importiere re
+importiere sys
+importiere unittest
+importiere unittest.mock as mock
+importiere _testcapi
+von test.support importiere import_helper
 
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 
@@ -660,7 +660,7 @@ klasse CAPICodecs(unittest.TestCase):
 
         # _codecs.decode() only reports an unknown error handling name when
         # the corresponding error handling function is used; this difers
-        # from PyUnicode_Decode() which checks that both the encoding and
+        # von PyUnicode_Decode() which checks that both the encoding and
         # the error handling name are recognized before even attempting to
         # call the decoder.
         self.assertEqual(decode(b'', 'utf-8', 'unknown-error-handler'), '')
@@ -792,7 +792,7 @@ klasse CAPICodecErrors(unittest.TestCase):
 
     def test_codec_register_error(self):
         # fuer cleaning up between tests
-        from _codecs import _unregister_error as _codecs_unregister_error
+        von _codecs importiere _unregister_error as _codecs_unregister_error
 
         self.assertRaises(LookupError, _testcapi.codec_lookup_error, 'custom')
 

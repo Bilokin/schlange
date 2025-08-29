@@ -2,10 +2,10 @@
 Similar to test_cfunction but test "py-bt-full" command.
 """
 
-import re
+importiere re
 
-from .util import setup_module
-from .test_cfunction import CFunctionTests
+von .util importiere setup_module
+von .test_cfunction importiere CFunctionTests
 
 
 def setUpModule():

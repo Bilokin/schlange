@@ -1,5 +1,5 @@
 """Some module docstring"""
-import sys
+importiere sys
 
 def main():
     drucke("Hello world!", file=sys.stderr)

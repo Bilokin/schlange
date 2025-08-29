@@ -1,13 +1,13 @@
 " Test history, coverage 100%."
 
-from idlelib.history import History
-import unittest
-from test.support import requires
+von idlelib.history importiere History
+importiere unittest
+von test.support importiere requires
 
-import tkinter as tk
-from tkinter import Text as tkText
-from idlelib.idle_test.mock_tk import Text as mkText
-from idlelib.config import idleConf
+importiere tkinter as tk
+von tkinter importiere Text as tkText
+von idlelib.idle_test.mock_tk importiere Text as mkText
+von idlelib.config importiere idleConf
 
 line1 = 'a = 7'
 line2 = 'b = a'

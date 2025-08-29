@@ -1,17 +1,17 @@
-import faulthandler
-import gc
-import io
-import os
-import random
-import signal
-import sys
-import unittest
-from test import support
-from test.support.os_helper import TESTFN_UNDECODABLE, FS_NONASCII
+importiere faulthandler
+importiere gc
+importiere io
+importiere os
+importiere random
+importiere signal
+importiere sys
+importiere unittest
+von test importiere support
+von test.support.os_helper importiere TESTFN_UNDECODABLE, FS_NONASCII
 
-from .filter import set_match_tests
-from .runtests import RunTests
-from .utils import (
+von .filter importiere set_match_tests
+von .runtests importiere RunTests
+von .utils importiere (
     setup_unraisable_hook, setup_threading_excepthook,
     adjust_rlimit_nofile)
 
@@ -105,7 +105,7 @@ def setup_tests(runtests: RunTests) -> Nichts:
 
     wenn runtests.use_junit:
         support.junit_xml_list = []
-        from .testresult import RegressionTestResult
+        von .testresult importiere RegressionTestResult
         RegressionTestResult.USE_XML = Wahr
     sonst:
         support.junit_xml_list = Nichts

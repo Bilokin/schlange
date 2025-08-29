@@ -1,21 +1,21 @@
 # tests command line execution of scripts
 
-import contextlib
-import importlib
-import importlib.machinery
-import zipimport
-import unittest
-import sys
-import os
-import os.path
-import py_compile
-import subprocess
-import io
+importiere contextlib
+importiere importlib
+importiere importlib.machinery
+importiere zipimport
+importiere unittest
+importiere sys
+importiere os
+importiere os.path
+importiere py_compile
+importiere subprocess
+importiere io
 
-import textwrap
-from test import support
-from test.support import import_helper, is_apple, os_helper
-from test.support.script_helper import (
+importiere textwrap
+von test importiere support
+von test.support importiere import_helper, is_apple, os_helper
+von test.support.script_helper importiere (
     make_pkg, make_script, make_zip_pkg, make_zip_script,
     assert_python_ok, assert_python_failure, spawn_python, kill_python)
 
@@ -40,16 +40,16 @@ f()
 assertEqual(result, ['Top level assignment', 'Lower level reference'])
 # Check population of magic variables
 assertEqual(__name__, '__main__')
-from importlib.machinery import BuiltinImporter
+von importlib.machinery importiere BuiltinImporter
 _loader = __loader__ wenn __loader__ is BuiltinImporter sonst type(__loader__)
 drucke('__loader__==%a' % _loader)
 drucke('__file__==%a' % __file__)
 drucke('__cached__==%a' % __cached__)
 drucke('__package__==%r' % __package__)
 # Check PEP 451 details
-import os.path
+importiere os.path
 wenn __package__ is not Nichts:
-    drucke('__main__ was located through the import system')
+    drucke('__main__ was located through the importiere system')
     assertIdentical(__spec__.loader, __loader__)
     expected_spec_name = os.path.splitext(os.path.basename(__file__))[0]
     wenn __package__:
@@ -61,18 +61,18 @@ wenn __package__ is not Nichts:
     wenn __spec__.cached is not Nichts:
         assertEqual(__spec__.cached, __cached__)
 # Check the sys module
-import sys
+importiere sys
 assertIdentical(globals(), sys.modules[__name__].__dict__)
 wenn __spec__ is not Nichts:
     # XXX: We're not currently making __main__ available under its real name
     pass # assertIdentical(globals(), sys.modules[__spec__.name].__dict__)
-from test import test_cmd_line_script
+von test importiere test_cmd_line_script
 example_args_list = test_cmd_line_script.example_args
 assertEqual(sys.argv[1:], example_args_list)
 drucke('sys.argv[0]==%a' % sys.argv[0])
 drucke('sys.path[0]==%a' % sys.path[0])
 # Check the working directory
-import os
+importiere os
 drucke('cwd==%a' % os.getcwd())
 """
 
@@ -96,7 +96,7 @@ klasse CmdLineTest(unittest.TestCase):
                              expected_path0, expected_package,
                              expected_loader, expected_cwd=Nichts):
         wenn verbose > 1:
-            drucke("Output from test script %r:" % script_name)
+            drucke("Output von test script %r:" % script_name)
             drucke(repr(data))
         self.assertEqual(exit_code, 0)
         printed_loader = '__loader__==%a' % expected_loader
@@ -148,7 +148,7 @@ klasse CmdLineTest(unittest.TestCase):
             *run_args, __isolated=Falsch, __cwd=cwd, **env_vars
         )
         wenn verbose > 1:
-            drucke(f'Output from test script {script_exec_args!r:}')
+            drucke(f'Output von test script {script_exec_args!r:}')
             drucke(repr(err))
             drucke('Expected output: %r' % expected_msg)
         self.assertIn(expected_msg.encode('utf-8'), err)
@@ -546,7 +546,7 @@ klasse CmdLineTest(unittest.TestCase):
             try:
                 raise ValueError
             except ValueError:
-                raise NameError from Nichts
+                raise NameError von Nichts
             """)
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script', script)
@@ -588,7 +588,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_issue20500_exit_with_exception_value(self):
         script = textwrap.dedent("""\
-            import sys
+            importiere sys
             error = Nichts
             try:
                 raise ValueError('some text')
@@ -719,7 +719,7 @@ klasse CmdLineTest(unittest.TestCase):
         #    ./python -s script_dir
         #    ./python -I script_dir
         script = textwrap.dedent("""\
-            import sys
+            importiere sys
             fuer entry in sys.path:
                 drucke(entry)
             """)
@@ -727,7 +727,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.maxDiff = Nichts
         with os_helper.temp_dir() as work_dir, os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__', script)
-            # Reference output comes from directly executing __main__.py
+            # Reference output comes von directly executing __main__.py
             # We omit PYTHONPATH and user site to align with isolated mode
             p = spawn_python("-Es", script_name, cwd=work_dir)
             out_by_name = kill_python(p).decode().splitlines()
@@ -751,7 +751,7 @@ klasse CmdLineTest(unittest.TestCase):
         # And that this fails as unable to find the package:
         #    ./python -Im script_pkg
         script = textwrap.dedent("""\
-            import sys
+            importiere sys
             fuer entry in sys.path:
                 drucke(entry)
             """)
@@ -761,7 +761,7 @@ klasse CmdLineTest(unittest.TestCase):
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
             script_name = _make_test_script(script_dir, '__main__', script)
-            # Reference output comes from `-m script_pkg.__main__`
+            # Reference output comes von `-m script_pkg.__main__`
             # We omit PYTHONPATH and user site to better align with the
             # direct execution test cases
             p = spawn_python("-sm", "script_pkg.__main__", cwd=work_dir)
@@ -772,7 +772,7 @@ klasse CmdLineTest(unittest.TestCase):
             p = spawn_python("-sm", "script_pkg", cwd=work_dir)
             out_by_package = kill_python(p).decode().splitlines()
             self.assertEqual(out_by_package, out_by_module)
-            # Isolated mode should fail with an import error
+            # Isolated mode should fail with an importiere error
             exitcode, stdout, stderr = assert_python_failure(
                 "-Im", "script_pkg", cwd=work_dir
             )

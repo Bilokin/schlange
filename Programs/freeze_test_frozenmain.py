@@ -1,7 +1,7 @@
-import marshal
-import tokenize
-import os.path
-import sys
+importiere marshal
+importiere tokenize
+importiere os.path
+importiere sys
 
 PROGRAM_DIR = os.path.dirname(__file__)
 SRC_DIR = os.path.dirname(PROGRAM_DIR)

@@ -1,8 +1,8 @@
-import collections
-import functools
+importiere collections
+importiere functools
 
 
-# from jaraco.functools 4.0.2
+# von jaraco.functools 4.0.2
 def save_method_args(method):
     """
     Wrap a method such that when it is called, the args and kwargs are

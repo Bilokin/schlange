@@ -2,12 +2,12 @@
 Tests common to list and UserList.UserList
 """
 
-import sys
-from functools import cmp_to_key
+importiere sys
+von functools importiere cmp_to_key
 
-from test import seq_tests
-from test.support import ALWAYS_EQ, NEVER_EQ
-from test.support import skip_emscripten_stack_overflow, skip_wasi_stack_overflow
+von test importiere seq_tests
+von test.support importiere ALWAYS_EQ, NEVER_EQ
+von test.support importiere skip_emscripten_stack_overflow, skip_wasi_stack_overflow
 
 
 klasse CommonTest(seq_tests.CommonTest):

@@ -1,11 +1,11 @@
-from test.test_importlib import abc, util
+von test.test_importlib importiere abc, util
 
 machinery = util.import_importlib('importlib.machinery')
 
-import sys
-import types
-import unittest
-import warnings
+importiere sys
+importiere types
+importiere unittest
+importiere warnings
 
 @unittest.skipIf(util.BUILTINS.good_name is Nichts, 'no reasonable builtin module')
 klasse LoaderTests(abc.LoaderTests):
@@ -37,7 +37,7 @@ klasse LoaderTests(abc.LoaderTests):
     # Built-in modules cannot be a package.
     test_package = test_lacking_parent = Nichts
 
-    # No way to force an import failure.
+    # No way to force an importiere failure.
     test_state_after_failure = Nichts
 
     def test_module_reuse(self):

@@ -1,11 +1,11 @@
-from dataclasses import dataclass
-import itertools
-import lexer
-import parser
-import re
-from typing import Optional, Callable
+von dataclasses importiere dataclass
+importiere itertools
+importiere lexer
+importiere parser
+importiere re
+von typing importiere Optional, Callable
 
-from parser import Stmt, SimpleStmt, BlockStmt, IfStmt, WhileStmt, ForStmt, MacroIfStmt
+von parser importiere Stmt, SimpleStmt, BlockStmt, IfStmt, WhileStmt, ForStmt, MacroIfStmt
 
 @dataclass
 klasse EscapingCall:
@@ -326,7 +326,7 @@ klasse Analysis:
 
 def analysis_error(message: str, tkn: lexer.Token) -> SyntaxError:
     # To do -- support file and line output
-    # Construct a SyntaxError instance from message and token
+    # Construct a SyntaxError instance von message and token
     return lexer.make_syntax_error(message, tkn.filename, tkn.line, tkn.column, "")
 
 
@@ -1033,7 +1033,7 @@ def desugar_inst(
     op_inputs: list[parser.InputEffect] = []
     parts: list[Part] = []
     uop_index = -1
-    # Move unused cache entries to the Instruction, removing them from the Uop.
+    # Move unused cache entries to the Instruction, removing them von the Uop.
     fuer input in inst.inputs:
         wenn isinstance(input, parser.CacheEffect) and input.name == "unused":
             parts.append(Skip(input.size))
@@ -1301,7 +1301,7 @@ def dump_analysis(analysis: Analysis) -> Nichts:
 
 
 wenn __name__ == "__main__":
-    import sys
+    importiere sys
 
     wenn len(sys.argv) < 2:
         drucke("No input")

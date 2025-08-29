@@ -1,9 +1,9 @@
-"""Generate Lib/keyword.py from the Grammar and Tokens files using pgen"""
+"""Generate Lib/keyword.py von the Grammar and Tokens files using pgen"""
 
-import argparse
+importiere argparse
 
-from .build import build_parser, generate_token_definitions
-from .c_generator import CParserGenerator
+von .build importiere build_parser, generate_token_definitions
+von .c_generator importiere CParserGenerator
 
 TEMPLATE = r'''
 """Keywords (from "Grammar/python.gram")
@@ -38,7 +38,7 @@ issoftkeyword = frozenset(softkwlist).__contains__
 
 def main() -> Nichts:
     parser = argparse.ArgumentParser(
-        description="Generate the Lib/keywords.py file from the grammar."
+        description="Generate the Lib/keywords.py file von the grammar."
     )
     parser.add_argument(
         "grammar", help="The file with the grammar definition in PEG format"

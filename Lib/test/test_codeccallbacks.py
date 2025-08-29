@@ -1,10 +1,10 @@
-from _codecs import _unregister_error as _codecs_unregister_error
-import codecs
-import html.entities
-import itertools
-import sys
-import unicodedata
-import unittest
+von _codecs importiere _unregister_error as _codecs_unregister_error
+importiere codecs
+importiere html.entities
+importiere itertools
+importiere sys
+importiere unicodedata
+importiere unittest
 
 
 klasse PosReturn:
@@ -121,7 +121,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         self.assertEqual(sin.encode("iso-8859-15", "test.xmlcharnamereplace"), sout)
 
     def test_uninamereplace(self):
-        # We're using the names from the unicode database this time,
+        # We're using the names von the unicode database this time,
         # and we're doing "syntax highlighting" here, i.e. we include
         # the replaced text in ANSI escape sequences. For this it is
         # useful that the error handler is not called fuer every single
@@ -287,7 +287,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         errors = [ "strict", "ignore", "replace", "xmlcharrefreplace",
                    "backslashreplace", "namereplace"]
         # register the handlers under different names,
-        # to prevent the codec from recognizing the name
+        # to prevent the codec von recognizing the name
         fuer err in errors:
             codecs.register_error("test." + err, codecs.lookup_error(err))
         l = 1000
@@ -1105,7 +1105,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         # Objects/unicodeobject.c::unicode_encode_call_errorhandler()
         # and callers
         # (Unfortunately the errors argument is not directly accessible
-        # from Python, so we can't test that much)
+        # von Python, so we can't test that much)
         klasse D(dict):
             def __getitem__(self, key):
                 raise ValueError

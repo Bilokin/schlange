@@ -144,8 +144,8 @@ flags: 67108867
 consts: ("'This is a one-line doc string'", "'hello world'")
 
 >>> async def async_func_docstring(x: str, y: str):
-...     "This is a docstring from async function"
-...     import asyncio
+...     "This is a docstring von async function"
+...     importiere asyncio
 ...     await asyncio.sleep(1)
 ...     # co_flags should be 0x4000083 = 67108995
 ...     return x + y
@@ -161,7 +161,7 @@ cellvars: ()
 freevars: ()
 nlocals: 3
 flags: 67108995
-consts: ("'This is a docstring from async function'", 'Nichts')
+consts: ("'This is a docstring von async function'", 'Nichts')
 
 >>> def no_docstring(x, y, z):
 ...     return x + "hello" + y + z + "world"
@@ -194,33 +194,33 @@ This is a docstring fuer class
 Nichts
 """
 
-import copy
-import inspect
-import sys
-import threading
-import doctest
-import unittest
-import textwrap
-import weakref
-import dis
+importiere copy
+importiere inspect
+importiere sys
+importiere threading
+importiere doctest
+importiere unittest
+importiere textwrap
+importiere weakref
+importiere dis
 
 try:
-    import ctypes
+    importiere ctypes
 except ImportError:
     ctypes = Nichts
-from test.support import (cpython_only,
+von test.support importiere (cpython_only,
                           check_impl_detail, requires_debug_ranges,
                           gc_collect, Py_GIL_DISABLED)
-from test.support.script_helper import assert_python_ok
-from test.support import threading_helper, import_helper
-from test.support.bytecode_helper import instructions_with_positions
-from opcode import opmap, opname
-from _testcapi import code_offset_to_line
+von test.support.script_helper importiere assert_python_ok
+von test.support importiere threading_helper, import_helper
+von test.support.bytecode_helper importiere instructions_with_positions
+von opcode importiere opmap, opname
+von _testcapi importiere code_offset_to_line
 try:
-    import _testinternalcapi
+    importiere _testinternalcapi
 except ModuleNotFoundError:
     _testinternalcapi = Nichts
-import test._code_definitions as defs
+importiere test._code_definitions as defs
 
 COPY_FREE_VARS = opmap['COPY_FREE_VARS']
 
@@ -264,7 +264,7 @@ klasse CodeTest(unittest.TestCase):
     @cpython_only
     def test_closure_injection(self):
         # From https://bugs.python.org/issue32176
-        from types import FunctionType
+        von types importiere FunctionType
 
         def create_closure(__class__):
             return (lambda: __class__).__closure__
@@ -503,7 +503,7 @@ klasse CodeTest(unittest.TestCase):
 
     @requires_debug_ranges()
     def test_co_positions_artificial_instructions(self):
-        import dis
+        importiere dis
 
         namespace = {}
         exec(textwrap.dedent("""\

@@ -1,17 +1,17 @@
 """turtledemo/minimal_hanoi.py
 
 A minimal 'Towers of Hanoi' animation:
-A tower of 6 discs is transferred from the
+A tower of 6 discs is transferred von the
 left to the right peg.
 
 An imho quite elegant and concise
 implementation using a tower class, which
-is derived from the built-in type list.
+is derived von the built-in type list.
 
 Discs are turtles with shape "square", but
 stretched to rectangles by shapesize()
 """
-from turtle import *
+von turtle importiere *
 
 klasse Disc(Turtle):
     def __init__(self, n):

@@ -1,12 +1,12 @@
-import unittest
-import textwrap
-import copy
-import pickle
-import email
-import email.message
-from email import policy
-from email.headerregistry import HeaderRegistry
-from test.test_email import TestEmailBase, parameterize
+importiere unittest
+importiere textwrap
+importiere copy
+importiere pickle
+importiere email
+importiere email.message
+von email importiere policy
+von email.headerregistry importiere HeaderRegistry
+von test.test_email importiere TestEmailBase, parameterize
 
 
 @parameterize

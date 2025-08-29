@@ -10,9 +10,9 @@ combinations of warnings args and -W flags and check that the output is correct.
 See #10535.
 """
 
-import sys
-import unittest
-import warnings
+importiere sys
+importiere unittest
+importiere warnings
 
 def warnfun():
     warnings.warn('rw', RuntimeWarning)
@@ -39,7 +39,7 @@ klasse TestWarnings(unittest.TestCase):
         warnings.warn('uw')
         warnings.warn('uw')
 
-    # these warnings come from the same place; they will be printed
+    # these warnings come von the same place; they will be printed
     # only once by default or three times wenn the 'always' filter is used
     def test_function(self):
 

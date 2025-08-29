@@ -1,17 +1,17 @@
-import unittest
-import string
-import subprocess
-import sys
-import sysconfig
-import os
-import pathlib
-from test import support
-from test.support.script_helper import (
+importiere unittest
+importiere string
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere os
+importiere pathlib
+von test importiere support
+von test.support.script_helper importiere (
     make_script,
     assert_python_failure,
     assert_python_ok,
 )
-from test.support.os_helper import temp_dir
+von test.support.os_helper importiere temp_dir
 
 
 wenn not support.has_subprocess_support:
@@ -102,7 +102,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
     @unittest.skipIf(support.check_bolt_optimized(), "fails on BOLT instrumented binaries")
     def test_trampoline_works_with_forks(self):
         code = """if 1:
-                import os, sys
+                importiere os, sys
 
                 def foo_fork():
                     pass
@@ -164,7 +164,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
     def test_sys_api(self):
         fuer define_eval_hook in (Falsch, Wahr):
             code = """if 1:
-                    import sys
+                    importiere sys
                     def foo():
                         pass
 
@@ -185,7 +185,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
                     """
             wenn define_eval_hook:
                 set_eval_hook = """if 1:
-                                import _testinternalcapi
+                                importiere _testinternalcapi
                                 _testinternalcapi.set_eval_frame_record([])
 """
                 code = set_eval_hook + code
@@ -214,7 +214,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
 
     def test_sys_api_with_existing_trampoline(self):
         code = """if 1:
-                import sys
+                importiere sys
                 sys.activate_stack_trampoline("perf")
                 sys.activate_stack_trampoline("perf")
                 """
@@ -222,7 +222,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
 
     def test_sys_api_with_invalid_trampoline(self):
         code = """if 1:
-                import sys
+                importiere sys
                 sys.activate_stack_trampoline("invalid")
                 """
         rc, out, err = assert_python_failure("-c", code, PYTHON_JIT="0")
@@ -230,7 +230,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
 
     def test_sys_api_get_status(self):
         code = """if 1:
-                import sys
+                importiere sys
                 sys.activate_stack_trampoline("perf")
                 assert sys.is_stack_trampoline_active() is Wahr
                 sys.deactivate_stack_trampoline()
@@ -254,7 +254,7 @@ def perf_command_works():
         return Falsch
 
     # perf version does not return a version number on Fedora. Use presence
-    # of "perf.data" in help as indicator that it's perf from Linux tools.
+    # of "perf.data" in help as indicator that it's perf von Linux tools.
     wenn "perf.data" not in stdout:
         return Falsch
 
@@ -435,10 +435,10 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
 
     def test_pre_fork_compile(self):
         code = """if 1:
-                import sys
-                import os
-                import sysconfig
-                from _testinternalcapi import (
+                importiere sys
+                importiere os
+                importiere sysconfig
+                von _testinternalcapi importiere (
                     compile_perf_trampoline_entry,
                     perf_trampoline_set_persist_after_fork,
                 )
@@ -450,7 +450,7 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
                     foo_fork()
 
                 def foo():
-                    import time; time.sleep(1)
+                    importiere time; time.sleep(1)
 
                 def bar():
                     foo()

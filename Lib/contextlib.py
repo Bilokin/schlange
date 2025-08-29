@@ -1,11 +1,11 @@
 """Utilities fuer with-statement contexts.  See PEP 343."""
-import abc
-import os
-import sys
-import _collections_abc
-from collections import deque
-from functools import wraps
-from types import MethodType, GenericAlias
+importiere abc
+importiere os
+importiere sys
+importiere _collections_abc
+von collections importiere deque
+von functools importiere wraps
+von types importiere MethodType, GenericAlias
 
 __all__ = ["asynccontextmanager", "contextmanager", "closing", "nullcontext",
            "AbstractContextManager", "AbstractAsyncContextManager",
@@ -140,7 +140,7 @@ klasse _GeneratorContextManager(
         try:
             return next(self.gen)
         except StopIteration:
-            raise RuntimeError("generator didn't yield") from Nichts
+            raise RuntimeError("generator didn't yield") von Nichts
 
     def __exit__(self, typ, value, traceback):
         wenn typ is Nichts:
@@ -163,7 +163,7 @@ klasse _GeneratorContextManager(
             except StopIteration as exc:
                 # Suppress StopIteration *unless* it's the same exception that
                 # was passed to throw().  This prevents a StopIteration
-                # raised inside the "with" statement from being suppressed.
+                # raised inside the "with" statement von being suppressed.
                 return exc is not value
             except RuntimeError as exc:
                 # Don't re-raise the passed in exception. (issue27122)
@@ -213,7 +213,7 @@ klasse _AsyncGeneratorContextManager(
         try:
             return await anext(self.gen)
         except StopAsyncIteration:
-            raise RuntimeError("generator didn't yield") from Nichts
+            raise RuntimeError("generator didn't yield") von Nichts
 
     async def __aexit__(self, typ, value, traceback):
         wenn typ is Nichts:
@@ -236,7 +236,7 @@ klasse _AsyncGeneratorContextManager(
             except StopAsyncIteration as exc:
                 # Suppress StopIteration *unless* it's the same exception that
                 # was passed to throw().  This prevents a StopIteration
-                # raised inside the "with" statement from being suppressed.
+                # raised inside the "with" statement von being suppressed.
                 return exc is not value
             except RuntimeError as exc:
                 # Don't re-raise the passed in exception. (issue27122)
@@ -526,7 +526,7 @@ klasse _BaseExitStack:
             _exit = cls.__exit__
         except AttributeError:
             raise TypeError(f"'{cls.__module__}.{cls.__qualname__}' object does "
-                            f"not support the context manager protocol") from Nichts
+                            f"not support the context manager protocol") von Nichts
         result = _enter(cm)
         self._push_cm_exit(cm, _exit)
         return result
@@ -664,7 +664,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         except AttributeError:
             raise TypeError(f"'{cls.__module__}.{cls.__qualname__}' object does "
                             f"not support the asynchronous context manager protocol"
-                           ) from Nichts
+                           ) von Nichts
         result = await _enter(cm)
         self._push_async_cm_exit(cm, _exit)
         return result

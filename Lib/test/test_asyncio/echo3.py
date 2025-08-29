@@ -1,4 +1,4 @@
-import os
+importiere os
 
 wenn __name__ == '__main__':
     while Wahr:

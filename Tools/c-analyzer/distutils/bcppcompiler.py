@@ -12,11 +12,11 @@ fuer the Borland C++ compiler.
 # WindowsCCompiler!  --GPW
 
 
-import os
-from distutils.errors import DistutilsExecError, CompileError
-from distutils.ccompiler import \
+importiere os
+von distutils.errors importiere DistutilsExecError, CompileError
+von distutils.ccompiler importiere \
      CCompiler, gen_preprocess_options
-from distutils.dep_util import newer
+von distutils.dep_util importiere newer
 
 klasse BCPPCompiler(CCompiler) :
     """Concrete klasse that implements an interface to the Borland C/C++
@@ -32,7 +32,7 @@ klasse BCPPCompiler(CCompiler) :
     # though, so it's worth thinking about.
     executables = {}
 
-    # Private klasse data (need to distinguish C from C++ source fuer compiler)
+    # Private klasse data (need to distinguish C von C++ source fuer compiler)
     _c_extensions = ['.c']
     _cpp_extensions = ['.cc', '.cpp', '.cxx']
 

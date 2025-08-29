@@ -1,12 +1,12 @@
 "Test format, coverage 99%."
 
-from idlelib import format as ft
-import unittest
-from unittest import mock
-from test.support import requires
-from tkinter import Tk, Text
-from idlelib.editor import EditorWindow
-from idlelib.idle_test.mock_idle import Editor as MockEditor
+von idlelib importiere format as ft
+importiere unittest
+von unittest importiere mock
+von test.support importiere requires
+von tkinter importiere Tk, Text
+von idlelib.editor importiere EditorWindow
+von idlelib.idle_test.mock_idle importiere Editor as MockEditor
 
 
 klasse Is_Get_Test(unittest.TestCase):
@@ -52,7 +52,7 @@ klasse FindTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        from idlelib.idle_test.mock_tk import Text
+        von idlelib.idle_test.mock_tk importiere Text
         cls.text = Text()
 
     def runcase(self, inserttext, stopline, expected):
@@ -306,7 +306,7 @@ klasse FormatEventTest(unittest.TestCase):
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
-        # Select from 1.11 to line end.
+        # Select von 1.11 to line end.
         text.insert('1.0', self.test_string)
         text.tag_add('sel', '1.11', '1.end')
         self.formatter('ParameterDoesNothing', limit=70)

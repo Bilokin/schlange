@@ -1,19 +1,19 @@
-import contextlib
-import io
-import itertools
-import pathlib
-import pickle
-import stat
-import sys
-import unittest
-import zipfile
-import zipfile._path
+importiere contextlib
+importiere io
+importiere itertools
+importiere pathlib
+importiere pickle
+importiere stat
+importiere sys
+importiere unittest
+importiere zipfile
+importiere zipfile._path
 
-from test.support.os_helper import FakePath, temp_dir
+von test.support.os_helper importiere FakePath, temp_dir
 
-from ._functools import compose
-from ._itertools import Counter
-from ._test_params import Invoked, parameterize
+von ._functools importiere compose
+von ._itertools importiere Counter
+von ._test_params importiere Invoked, parameterize
 
 
 klasse jaraco:
@@ -270,7 +270,7 @@ klasse TestPath(unittest.TestCase):
     @pass_alpharep
     def test_pathlike_construction(self, alpharep):
         """
-        zipfile.Path should be constructable from a path-like object
+        zipfile.Path should be constructable von a path-like object
         """
         zipfile_ondisk = self.zipfile_ondisk(alpharep)
         pathlike = FakePath(str(zipfile_ondisk))
@@ -652,7 +652,7 @@ klasse TestPath(unittest.TestCase):
 
     @pass_alpharep
     def test_interface(self, alpharep):
-        from importlib.resources.abc import Traversable
+        von importlib.resources.abc importiere Traversable
 
         zf = zipfile.Path(alpharep)
         assert isinstance(zf, Traversable)

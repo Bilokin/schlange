@@ -1,11 +1,11 @@
-import gc
-import os
-import signal
-import subprocess
-import sys
-import time
-import unittest
-from test import support
+importiere gc
+importiere os
+importiere signal
+importiere subprocess
+importiere sys
+importiere time
+importiere unittest
+von test importiere support
 
 
 klasse SIGUSR1Exception(Exception):

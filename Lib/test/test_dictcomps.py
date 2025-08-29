@@ -1,7 +1,7 @@
-import traceback
-import unittest
+importiere traceback
+importiere unittest
 
-from test.support import BrokenIter
+von test.support importiere BrokenIter
 
 # For scope testing.
 g = "Global variable"
@@ -131,7 +131,7 @@ klasse DictComprehensionTest(unittest.TestCase):
         self.assertEqual({i: i*i fuer i in (*range(4),)}, expected)
 
     def test_exception_locations(self):
-        # The location of an exception raised from __init__ or
+        # The location of an exception raised von __init__ or
         # __next__ should be the iterator expression
         def init_raises():
             try:

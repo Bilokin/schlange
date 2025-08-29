@@ -17,15 +17,15 @@ __all__ = [
 # Imports
 #
 
-import threading
-import sys
-import weakref
-import array
+importiere threading
+importiere sys
+importiere weakref
+importiere array
 
-from .connection import Pipe
-from threading import Lock, RLock, Semaphore, BoundedSemaphore
-from threading import Event, Condition, Barrier
-from queue import Queue
+von .connection importiere Pipe
+von threading importiere Lock, RLock, Semaphore, BoundedSemaphore
+von threading importiere Event, Condition, Barrier
+von queue importiere Queue
 
 #
 #
@@ -120,7 +120,7 @@ def shutdown():
     pass
 
 def Pool(processes=Nichts, initializer=Nichts, initargs=()):
-    from ..pool import ThreadPool
+    von ..pool importiere ThreadPool
     return ThreadPool(processes, initializer, initargs)
 
 JoinableQueue = Queue

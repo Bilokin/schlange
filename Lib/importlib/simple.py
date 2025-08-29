@@ -5,7 +5,7 @@ Consumers that can rely on Python 3.11 should use the other
 module directly.
 """
 
-from .resources.simple import (
+von .resources.simple importiere (
     SimpleReader, ResourceHandle, ResourceContainer, TraversableReader,
 )
 

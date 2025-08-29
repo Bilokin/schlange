@@ -1,10 +1,10 @@
-import pickle
-import types
-import unittest
-from test.support import check_syntax_error, run_code
-from test.typinganndata import mod_generics_cache
+importiere pickle
+importiere types
+importiere unittest
+von test.support importiere check_syntax_error, run_code
+von test.typinganndata importiere mod_generics_cache
 
-from typing import (
+von typing importiere (
     Callable, TypeAliasType, TypeVar, TypeVarTuple, ParamSpec, Unpack, get_args,
 )
 

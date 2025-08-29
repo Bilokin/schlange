@@ -1,5 +1,5 @@
 # Test message extraction
-from gettext import (
+von gettext importiere (
     gettext,
     ngettext,
     pgettext,

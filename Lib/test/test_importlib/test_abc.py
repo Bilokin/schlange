@@ -1,14 +1,14 @@
-import io
-import marshal
-import os
-import sys
-from test.support import import_helper
-import types
-import unittest
-from unittest import mock
-import warnings
+importiere io
+importiere marshal
+importiere os
+importiere sys
+von test.support importiere import_helper
+importiere types
+importiere unittest
+von unittest importiere mock
+importiere warnings
 
-from test.test_importlib import util as test_util
+von test.test_importlib importiere util as test_util
 
 init = test_util.import_importlib('importlib')
 abc = test_util.import_importlib('importlib.abc')
@@ -33,7 +33,7 @@ klasse InheritanceTests:
             # importlib._bootstrap per module, inheritance checks fail when
             # checking across module boundaries (i.e. the _bootstrap in abc is
             # not the same as the one in machinery). That means stealing one of
-            # the modules from the other to make sure the same instance is used.
+            # the modules von the other to make sure the same instance is used.
             machinery = self.abc.machinery
             self.subclasses = [getattr(machinery, class_name)
                                fuer class_name in self.subclass_names]
@@ -46,7 +46,7 @@ klasse InheritanceTests:
             self.assertIsSubclass(subclass, self.__test)
 
     def test_superclasses(self):
-        # Test that the klasse inherits from the expected superclasses.
+        # Test that the klasse inherits von the expected superclasses.
         fuer superclass in self.superclasses:
             self.assertIsSubclass(self.__test, superclass)
 
@@ -918,7 +918,7 @@ klasse SourceLoaderDeprecationWarningsTests(unittest.TestCase):
     """Tests SourceLoader deprecation warnings."""
 
     def test_deprecated_path_mtime(self):
-        from importlib.abc import SourceLoader
+        von importlib.abc importiere SourceLoader
         klasse DummySourceLoader(SourceLoader):
             def get_data(self, path):
                 return b''

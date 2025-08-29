@@ -1,7 +1,7 @@
 # tests common to dict and UserDict
-import unittest
-import collections
-from test import support
+importiere unittest
+importiere collections
+von test importiere support
 
 
 klasse BasicTestMappingProtocol(unittest.TestCase):

@@ -1,10 +1,10 @@
 # Test the most dynamic corner cases of Python's runtime semantics.
 
-import builtins
-import sys
-import unittest
+importiere builtins
+importiere sys
+importiere unittest
 
-from test.support import swap_item, swap_attr, skip_wasi_stack_overflow
+von test.support importiere swap_item, swap_attr, skip_wasi_stack_overflow
 
 
 klasse RebindBuiltinsTests(unittest.TestCase):
@@ -47,7 +47,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
             self.assertEqual(foo(), 7)
 
     def test_modify_builtins_while_generator_active(self):
-        # Modify the builtins out from under a live generator.
+        # Modify the builtins out von under a live generator.
         def foo():
             x = range(3)
             yield len(x)

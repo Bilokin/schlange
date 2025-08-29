@@ -1,14 +1,14 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-from dataclasses import dataclass, field
-import traceback
+von dataclasses importiere dataclass, field
+importiere traceback
 
 
 TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
-    from threading import Thread
-    from types import TracebackType
-    from typing import Protocol
+    von threading importiere Thread
+    von types importiere TracebackType
+    von typing importiere Protocol
 
     klasse ExceptHookArgs(Protocol):
         @property
@@ -24,11 +24,11 @@ wenn TYPE_CHECKING:
         def __call__(self) -> int: ...
         def add(self, s: str) -> Nichts: ...
 
-    from .reader import Reader
+    von .reader importiere Reader
 
 
 def install_threading_hook(reader: Reader) -> Nichts:
-    import threading
+    importiere threading
 
     @dataclass
     klasse ExceptHookHandler:

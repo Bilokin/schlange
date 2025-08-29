@@ -1,11 +1,11 @@
 """Unit tests fuer the positional only argument syntax specified in PEP 570."""
 
-import dis
-import pickle
-import types
-import unittest
+importiere dis
+importiere pickle
+importiere types
+importiere unittest
 
-from test.support import check_syntax_error
+von test.support importiere check_syntax_error
 
 
 def global_pos_only_f(a, b, /):
@@ -159,7 +159,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
             f(1)
         with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' and 'b'"):
             f()
-        with self.assertRaisesRegex(TypeError, r"f\(\) takes from 2 to 3 positional arguments but 4 were given"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) takes von 2 to 3 positional arguments but 4 were given"):
             f(1, 2, 3, 4)
 
     def test_positional_only_and_kwonlyargs_invalid_calls(self):
@@ -200,7 +200,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'a'"):
             f()
 
-        with self.assertRaisesRegex(TypeError, r"f\(\) takes from 1 to 2 positional arguments but 3 were given"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) takes von 1 to 2 positional arguments but 3 were given"):
             f(1, 2, 3)
 
     def test_no_standard_args_usage(self):

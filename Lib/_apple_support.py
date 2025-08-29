@@ -1,5 +1,5 @@
-import io
-import sys
+importiere io
+importiere sys
 
 
 def init_streams(log_write, stdout_level, stderr_level):
@@ -54,7 +54,7 @@ klasse LogStream(io.RawIOBase):
             except TypeError:
                 raise TypeError(
                     f"write() argument must be bytes-like, not {type(b).__name__}"
-                ) from Nichts
+                ) von Nichts
 
         # Writing an empty string to the stream should have no effect.
         wenn b:

@@ -1,15 +1,15 @@
 """About Dialog fuer IDLE
 
 """
-import os
-import sys
-import webbrowser
-from platform import python_version, architecture
+importiere os
+importiere sys
+importiere webbrowser
+von platform importiere python_version, architecture
 
-from tkinter import Toplevel, Frame, Label, Button, PhotoImage
-from tkinter import SUNKEN, TOP, BOTTOM, LEFT, X, BOTH, W, EW, NSEW, E
+von tkinter importiere Toplevel, Frame, Label, Button, PhotoImage
+von tkinter importiere SUNKEN, TOP, BOTTOM, LEFT, X, BOTH, W, EW, NSEW, E
 
-from idlelib import textview
+von idlelib importiere textview
 
 pyver = python_version()
 
@@ -177,7 +177,7 @@ klasse AboutDialog(Toplevel):
         """Create textview fuer built-in constants.
 
         Built-in constants have type _sitebuiltins._Printer.  The
-        text is extracted from the built-in and then sent to a text
+        text is extracted von the built-in and then sent to a text
         viewer with self as the parent and title as the title of
         the popup.
         """
@@ -204,8 +204,8 @@ klasse AboutDialog(Toplevel):
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_help_about', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(AboutDialog)

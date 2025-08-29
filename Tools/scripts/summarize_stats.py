@@ -2,28 +2,28 @@
 default stats folders.
 """
 
-from __future__ import annotations
+von __future__ importiere annotations
 
 # NOTE: Bytecode introspection modules (opcode, dis, etc.) should only
 # be imported when loading a single dataset. When comparing datasets, it
 # could get it wrong, leading to subtle errors.
 
-import argparse
-import collections
-from collections.abc import KeysView
-from dataclasses import dataclass
-from datetime import date
-import enum
-import functools
-import itertools
-import json
-from operator import itemgetter
-import os
-from pathlib import Path
-import re
-import sys
-import textwrap
-from typing import Any, Callable, TextIO, TypeAlias
+importiere argparse
+importiere collections
+von collections.abc importiere KeysView
+von dataclasses importiere dataclass
+von datetime importiere date
+importiere enum
+importiere functools
+importiere itertools
+importiere json
+von operator importiere itemgetter
+importiere os
+von pathlib importiere Path
+importiere re
+importiere sys
+importiere textwrap
+von typing importiere Any, Callable, TextIO, TypeAlias
 
 
 RawData: TypeAlias = dict[str, Any]
@@ -65,7 +65,7 @@ def _load_metadata_from_source():
                 defines[int(val.strip())].append(name.strip())
         return defines
 
-    import opcode
+    importiere opcode
 
     return {
         "_specialized_instructions": [
@@ -404,7 +404,7 @@ klasse Stats:
     def get_object_stats(self) -> dict[str, tuple[int, int]]:
         total_materializations = self._data.get("Object inline values", 0)
         total_allocations = self._data.get("Object allocations", 0) + self._data.get(
-            "Object allocations from freelist", 0
+            "Object allocations von freelist", 0
         )
         total_increfs = (
             self._data.get("Object interpreter mortal increfs", 0) +
@@ -589,7 +589,7 @@ klasse Stats:
             ): (jit_padding_size, jit_total_memory_size),
             Doc(
                 "Freed memory size",
-                "The size of the memory freed from the JIT traces",
+                "The size of the memory freed von the JIT traces",
             ): (jit_freed_memory_size, jit_total_memory_size),
         }
 
@@ -734,7 +734,7 @@ klasse Section:
         wenn isinstance(part_iter, list):
 
             def iter_parts(base_stats: Stats, head_stats: Stats | Nichts):
-                yield from part_iter
+                yield von part_iter
 
             self.part_iter = iter_parts
         sonst:
@@ -1145,8 +1145,8 @@ def object_stats_section() -> Section:
             )
         ],
         doc="""
-        Below, "allocations" means "allocations that are not from a freelist".
-        Total allocations = "Allocations from freelist" + "Allocations".
+        Below, "allocations" means "allocations that are not von a freelist".
+        Total allocations = "Allocations von freelist" + "Allocations".
 
         "Inline values" is the number of values arrays inlined into objects.
 
@@ -1166,8 +1166,8 @@ def gc_stats_section() -> Section:
                 Count(gen["collections"]),
                 Count(gen["objects collected"]),
                 Count(gen["object visits"]),
-                Count(gen["objects reachable from roots"]),
-                Count(gen["objects not reachable from roots"]),
+                Count(gen["objects reachable von roots"]),
+                Count(gen["objects not reachable von roots"]),
             )
             fuer (i, gen) in enumerate(gc_stats)
         ]
@@ -1178,7 +1178,7 @@ def gc_stats_section() -> Section:
         [
             Table(
                 ("Generation:", "Collections:", "Objects collected:", "Object visits:",
-                 "Reachable from roots:", "Not reachable from roots:"),
+                 "Reachable von roots:", "Not reachable von roots:"),
                 calc_gc_stats,
             )
         ],
@@ -1524,7 +1524,7 @@ def main():
         default=[DEFAULT_DIR],
         help=f"""
         Input source(s).
-        For each entry, wenn a .json file, the output provided by --json-output from a previous run;
+        For each entry, wenn a .json file, the output provided by --json-output von a previous run;
         wenn a directory, a directory containing raw pystats .txt files.
         If one source is provided, its stats are printed.
         If two sources are provided, comparative stats are printed.

@@ -1,11 +1,11 @@
 """Unittests fuer test.support.script_helper.  Who tests the test helper?"""
 
-import subprocess
-import sys
-import os
-from test.support import script_helper, requires_subprocess
-import unittest
-from unittest import mock
+importiere subprocess
+importiere sys
+importiere os
+von test.support importiere script_helper, requires_subprocess
+importiere unittest
+von unittest importiere mock
 
 
 klasse TestScriptHelper(unittest.TestCase):
@@ -15,12 +15,12 @@ klasse TestScriptHelper(unittest.TestCase):
         self.assertEqual(0, t[0], 'return code was not 0')
 
     def test_assert_python_failure(self):
-        # I didn't import the sys module so this child will fail.
+        # I didn't importiere the sys module so this child will fail.
         rc, out, err = script_helper.assert_python_failure('-c', 'sys.exit(0)')
         self.assertNotEqual(0, rc, 'return code should not be 0')
 
     def test_assert_python_ok_raises(self):
-        # I didn't import the sys module so this child will fail.
+        # I didn't importiere the sys module so this child will fail.
         with self.assertRaises(AssertionError) as error_context:
             script_helper.assert_python_ok('-c', 'sys.exit(0)')
         error_msg = str(error_context.exception)

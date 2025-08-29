@@ -1,10 +1,10 @@
-from test.support import import_helper
-from test.support import os_helper
+von test.support importiere import_helper
+von test.support importiere os_helper
 import_helper.import_module("dbm.ndbm") #skip wenn not supported
-import os
-import unittest
-import dbm.ndbm
-from dbm.ndbm import error
+importiere os
+importiere unittest
+importiere dbm.ndbm
+von dbm.ndbm importiere error
 
 klasse DbmTestCase(unittest.TestCase):
 

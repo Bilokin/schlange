@@ -1,4 +1,4 @@
-from idlelib import rpc
+von idlelib importiere rpc
 
 def remote_object_tree_item(item):
     wrapper = WrappedObjectTreeItem(item)
@@ -37,5 +37,5 @@ klasse StubObjectTreeItem:
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_debugobj_r', verbosity=2)

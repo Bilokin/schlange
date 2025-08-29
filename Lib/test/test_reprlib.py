@@ -3,20 +3,20 @@
   Nick Mathewson
 """
 
-import annotationlib
-import sys
-import os
-import shutil
-import importlib
-import importlib.util
-import unittest
-import textwrap
+importiere annotationlib
+importiere sys
+importiere os
+importiere shutil
+importiere importlib
+importiere importlib.util
+importiere unittest
+importiere textwrap
 
-from test.support import verbose, EqualToForwardRef
-from test.support.os_helper import create_empty_file
-from reprlib import repr as r # Don't shadow builtin repr
-from reprlib import Repr
-from reprlib import recursive_repr
+von test.support importiere verbose, EqualToForwardRef
+von test.support.os_helper importiere create_empty_file
+von reprlib importiere repr as r # Don't shadow builtin repr
+von reprlib importiere Repr
+von reprlib importiere recursive_repr
 
 
 def nestedTuple(nesting):
@@ -84,8 +84,8 @@ klasse ReprTests(unittest.TestCase):
         eq(r3.repr(t3), expected)
 
     def test_container(self):
-        from array import array
-        from collections import deque
+        von array importiere array
+        von collections importiere deque
 
         eq = self.assertEqual
         # Tuples give up after 6 elements
@@ -711,9 +711,9 @@ klasse LongReprTest(unittest.TestCase):
         self._check_path_limitations(self.pkgname)
         create_empty_file(os.path.join(self.subpkgname, self.pkgname + '.py'))
         importlib.invalidate_caches()
-        from areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation import areallylongpackageandmodulenametotestreprtruncation
+        von areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation importiere areallylongpackageandmodulenametotestreprtruncation
         module = areallylongpackageandmodulenametotestreprtruncation
-        self.assertEqual(repr(module), "<module %r from %r>" % (module.__name__, module.__file__))
+        self.assertEqual(repr(module), "<module %r von %r>" % (module.__name__, module.__file__))
         self.assertEqual(repr(sys), "<module 'sys' (built-in)>")
 
     def test_type(self):
@@ -724,7 +724,7 @@ klasse foo(object):
     pass
 ''')
         importlib.invalidate_caches()
-        from areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation import foo
+        von areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation importiere foo
         eq(repr(foo.foo),
                "<class '%s.foo'>" % foo.__name__)
 
@@ -741,7 +741,7 @@ klasse bar:
     pass
 ''')
         importlib.invalidate_caches()
-        from areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation import bar
+        von areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation importiere bar
         # Module name may be prefixed with "test.", depending on how run.
         self.assertEqual(repr(bar.bar), "<class '%s.bar'>" % bar.__name__)
 
@@ -752,7 +752,7 @@ klasse baz:
     pass
 ''')
         importlib.invalidate_caches()
-        from areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation import baz
+        von areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation importiere baz
         ibaz = baz.baz()
         self.assertStartsWith(repr(ibaz),
             "<%s.baz object at 0x" % baz.__name__)
@@ -765,7 +765,7 @@ klasse aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     def amethod(self): pass
 ''')
         importlib.invalidate_caches()
-        from areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation import qux
+        von areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation importiere qux
         # Unbound methods first
         r = repr(qux.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.amethod)
         self.assertStartsWith(r, '<function aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.amethod')
@@ -828,7 +828,7 @@ klasse TestRecursiveRepr(unittest.TestCase):
         self.assertEqual(repr(m), '<a, b, c, d, e, +++, x, +++>')
 
     def test_assigned_attributes(self):
-        from functools import WRAPPER_ASSIGNMENTS as assigned
+        von functools importiere WRAPPER_ASSIGNMENTS as assigned
         wrapped = MyContainer3.wrapped
         wrapper = MyContainer3.wrapper
         fuer name in assigned:

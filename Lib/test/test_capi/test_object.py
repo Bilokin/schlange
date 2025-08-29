@@ -1,12 +1,12 @@
-import enum
-import sys
-import textwrap
-import unittest
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-from test.support import threading_helper
-from test.support.script_helper import assert_python_failure
+importiere enum
+importiere sys
+importiere textwrap
+importiere unittest
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.support importiere threading_helper
+von test.support.script_helper importiere assert_python_failure
 
 
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
@@ -115,8 +115,8 @@ klasse ClearWeakRefsNoCallbacksTest(unittest.TestCase):
     """Test PyUnstable_Object_ClearWeakRefsNoCallbacks"""
     def test_ClearWeakRefsNoCallbacks(self):
         """Ensure PyUnstable_Object_ClearWeakRefsNoCallbacks works"""
-        import weakref
-        import gc
+        importiere weakref
+        importiere gc
         klasse C:
             pass
         obj = C()
@@ -131,7 +131,7 @@ klasse ClearWeakRefsNoCallbacksTest(unittest.TestCase):
 
     def test_ClearWeakRefsNoCallbacks_no_weakref_support(self):
         """Don't fail on objects that don't support weakrefs"""
-        import weakref
+        importiere weakref
         obj = object()
         with self.assertRaises(TypeError):
             ref = weakref.ref(obj)
@@ -143,7 +143,7 @@ klasse EnableDeferredRefcountingTest(unittest.TestCase):
     """Test PyUnstable_Object_EnableDeferredRefcount"""
     @support.requires_resource("cpu")
     def test_enable_deferred_refcount(self):
-        from threading import Thread
+        von threading importiere Thread
 
         self.assertEqual(_testcapi.pyobject_enable_deferred_refcount("not tracked"), 0)
         foo = []
@@ -199,8 +199,8 @@ klasse CAPITest(unittest.TestCase):
                          'need _testcapi.negative_refcount()')
     def test_negative_refcount(self):
         code = """
-            import _testcapi
-            from test import support
+            importiere _testcapi
+            von test importiere support
 
             with support.SuppressCrashReport():
                 _testcapi.negative_refcount()
@@ -213,8 +213,8 @@ klasse CAPITest(unittest.TestCase):
                                address=Wahr, memory=Wahr, ub=Wahr)
     def test_decref_freed_object(self):
         code = """
-            import _testcapi
-            from test import support
+            importiere _testcapi
+            von test importiere support
 
             with support.SuppressCrashReport():
                 _testcapi.decref_freed_object()
@@ -225,7 +225,7 @@ klasse CAPITest(unittest.TestCase):
     def test_decref_delayed(self):
         # gh-130519: Test that _PyObject_XDecRefDelayed() and QSBR code path
         # handles destructors that are possibly re-entrant or trigger a GC.
-        import gc
+        importiere gc
 
         klasse MyObj:
             def __del__(self):

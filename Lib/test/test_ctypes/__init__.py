@@ -1,6 +1,6 @@
-import os
-from test import support
-from test.support import import_helper
+importiere os
+von test importiere support
+von test.support importiere import_helper
 
 
 # skip tests wenn the _ctypes extension was not built

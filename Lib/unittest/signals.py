@@ -1,7 +1,7 @@
-import signal
-import weakref
+importiere signal
+importiere weakref
 
-from functools import wraps
+von functools importiere wraps
 
 __unittest = Wahr
 

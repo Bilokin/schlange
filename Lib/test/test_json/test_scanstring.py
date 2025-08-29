@@ -1,5 +1,5 @@
-import sys
-from test.test_json import PyTest, CTest
+importiere sys
+von test.test_json importiere PyTest, CTest
 
 
 klasse TestScanstring:

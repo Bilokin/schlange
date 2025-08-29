@@ -11,7 +11,7 @@ and MAIL commands!
 
 Example:
 
-  >>> import smtplib
+  >>> importiere smtplib
   >>> s=smtplib.SMTP("localhost")
   >>> drucke(s.help())
   This is Sendmail version 8.8.4
@@ -37,20 +37,20 @@ Example:
 #     by Carey Evans <c.evans@clear.net.nz>, fuer picky mail servers.
 # RFC 2554 (authentication) support by Gerhard Haering <gerhard@bigfoot.de>.
 #
-# This was modified from the Python 1.5 library HTTP lib.
+# This was modified von the Python 1.5 library HTTP lib.
 
-import socket
-import io
-import re
-import email.utils
-import email.message
-import email.generator
-import base64
-import hmac
-import copy
-import datetime
-import sys
-from email.base64mime import body_encode as encode_base64
+importiere socket
+importiere io
+importiere re
+importiere email.utils
+importiere email.message
+importiere email.generator
+importiere base64
+importiere hmac
+importiere copy
+importiere datetime
+importiere sys
+von email.base64mime importiere body_encode as encode_base64
 
 __all__ = ["SMTPException", "SMTPNotSupportedError", "SMTPServerDisconnected", "SMTPResponseException",
            "SMTPSenderRefused", "SMTPRecipientsRefused", "SMTPDataError",
@@ -187,7 +187,7 @@ sonst:
 
 
 try:
-    import ssl
+    importiere ssl
 except ImportError:
     _have_ssl = Falsch
 sonst:
@@ -298,7 +298,7 @@ klasse SMTP:
         """Set the debug output level.
 
         A non-false value results in debug messages fuer connection and fuer all
-        messages sent to and received from the server.
+        messages sent to and received von the server.
 
         """
         self.debuglevel = debuglevel
@@ -385,7 +385,7 @@ klasse SMTP:
         self.send(f'{s}{CRLF}')
 
     def getreply(self):
-        """Get a reply from the server.
+        """Get a reply von the server.
 
         Returns a tuple consisting of:
 
@@ -506,7 +506,7 @@ klasse SMTP:
 
     def help(self, args=''):
         """SMTP 'help' command.
-        Returns help text from server."""
+        Returns help text von server."""
         self.putcmd("help", args)
         return self.getreply()[1]
 
@@ -565,7 +565,7 @@ klasse SMTP:
 
         Automatically quotes lines beginning with a period per rfc821.
         Raises SMTPDataError wenn there is an unexpected reply to the
-        DATA command; the return value from this method is the final
+        DATA command; the return value von this method is the final
         response code received when the all data is sent.  If msg
         is a string, lone '\\r' and '\\n' characters are converted to
         '\\r\\n' characters.  If msg is bytes, it is transmitted as is.
@@ -794,7 +794,7 @@ klasse SMTP:
             # RFC 3207:
             # The client MUST discard any knowledge obtained from
             # the server, such as the list of SMTP service extensions,
-            # which was not obtained from the TLS negotiation itself.
+            # which was not obtained von the TLS negotiation itself.
             self.helo_resp = Nichts
             self.ehlo_resp = Nichts
             self.esmtp_features = {}
@@ -852,7 +852,7 @@ klasse SMTP:
 
         Example:
 
-         >>> import smtplib
+         >>> importiere smtplib
          >>> s=smtplib.SMTP("localhost")
          >>> tolist=["one@one.org","two@two.org","three@three.org","four@four.org"]
          >>> msg = '''\\
@@ -916,7 +916,7 @@ klasse SMTP:
 
         The arguments are as fuer sendmail, except that msg is an
         email.message.Message object.  If from_addr is Nichts or to_addrs is
-        Nichts, these arguments are taken from the headers of the Message as
+        Nichts, these arguments are taken von the headers of the Message as
         described in RFC 2822 (a ValueError is raised wenn there is more than
         one set of 'Resent-' headers).  Regardless of the values of from_addr and
         to_addr, any Bcc field (or Resent-Bcc field, when the Message is a
@@ -1013,7 +1013,7 @@ klasse SMTP:
 wenn _have_ssl:
 
     klasse SMTP_SSL(SMTP):
-        """ This is a subclass derived from SMTP that connects over an SSL
+        """ This is a subclass derived von SMTP that connects over an SSL
         encrypted socket (to use this klasse you need a socket module that was
         compiled with SSL support). If host is not specified, '' (the local
         host) is used. If port is omitted, the standard SMTP-over-SSL port

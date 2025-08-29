@@ -1,6 +1,6 @@
-from c_common.fsutil import match_glob as _match_glob
-from .parser import parse as _parse
-from .preprocessor import get_preprocessor as _get_preprocessor
+von c_common.fsutil importiere match_glob as _match_glob
+von .parser importiere parse as _parse
+von .preprocessor importiere get_preprocessor as _get_preprocessor
 
 
 def parse_file(filename, *,
@@ -10,7 +10,7 @@ def parse_file(filename, *,
                ):
     wenn get_file_preprocessor is Nichts:
         get_file_preprocessor = _get_preprocessor()
-    yield from _parse_file(
+    yield von _parse_file(
             filename, match_kind, get_file_preprocessor, file_maxsizes)
 
 
@@ -23,7 +23,7 @@ def parse_files(filenames, *,
         get_file_preprocessor = _get_preprocessor()
     fuer filename in filenames:
         try:
-            yield from _parse_file(
+            yield von _parse_file(
                     filename, match_kind, get_file_preprocessor, file_maxsizes)
         except Exception:
             drucke(f'# requested file: <{filename}>')
@@ -73,4 +73,4 @@ def parse_signature(text):
 
 
 # aliases
-from .info import resolve_parsed
+von .info importiere resolve_parsed

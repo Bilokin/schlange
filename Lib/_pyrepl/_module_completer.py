@@ -1,19 +1,19 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-import pkgutil
-import sys
-import token
-import tokenize
-from io import StringIO
-from contextlib import contextmanager
-from dataclasses import dataclass
-from itertools import chain
-from tokenize import TokenInfo
+importiere pkgutil
+importiere sys
+importiere token
+importiere tokenize
+von io importiere StringIO
+von contextlib importiere contextmanager
+von dataclasses importiere dataclass
+von itertools importiere chain
+von tokenize importiere TokenInfo
 
 TYPE_CHECKING = Falsch
 
 wenn TYPE_CHECKING:
-    from typing import Any, Iterable, Iterator, Mapping
+    von typing importiere Any, Iterable, Iterator, Mapping
 
 
 def make_default_module_completer() -> ModuleCompleter:
@@ -22,19 +22,19 @@ def make_default_module_completer() -> ModuleCompleter:
 
 
 klasse ModuleCompleter:
-    """A completer fuer Python import statements.
+    """A completer fuer Python importiere statements.
 
     Examples:
-        - import <tab>
-        - import foo<tab>
-        - import foo.<tab>
-        - import foo as bar, baz<tab>
+        - importiere <tab>
+        - importiere foo<tab>
+        - importiere foo.<tab>
+        - importiere foo as bar, baz<tab>
 
-        - from <tab>
-        - from foo<tab>
-        - from foo import <tab>
-        - from foo import bar<tab>
-        - from foo import (bar as baz, qux<tab>
+        - von <tab>
+        - von foo<tab>
+        - von foo importiere <tab>
+        - von foo importiere bar<tab>
+        - von foo importiere (bar as baz, qux<tab>
     """
 
     def __init__(self, namespace: Mapping[str, Any] | Nichts = Nichts) -> Nichts:
@@ -43,7 +43,7 @@ klasse ModuleCompleter:
         self._curr_sys_path: list[str] = sys.path[:]
 
     def get_completions(self, line: str) -> list[str] | Nichts:
-        """Return the next possible import completions fuer 'line'."""
+        """Return the next possible importiere completions fuer 'line'."""
         result = ImportParser(line).parse()
         wenn not result:
             return Nichts
@@ -56,19 +56,19 @@ klasse ModuleCompleter:
 
     def complete(self, from_name: str | Nichts, name: str | Nichts) -> list[str]:
         wenn from_name is Nichts:
-            # import x.y.z<tab>
+            # importiere x.y.z<tab>
             assert name is not Nichts
             path, prefix = self.get_path_and_prefix(name)
             modules = self.find_modules(path, prefix)
             return [self.format_completion(path, module) fuer module in modules]
 
         wenn name is Nichts:
-            # from x.y.z<tab>
+            # von x.y.z<tab>
             path, prefix = self.get_path_and_prefix(from_name)
             modules = self.find_modules(path, prefix)
             return [self.format_completion(path, module) fuer module in modules]
 
-        # from x.y import z<tab>
+        # von x.y importiere z<tab>
         return self.find_modules(from_name, name)
 
     def find_modules(self, path: str, prefix: str) -> list[str]:
@@ -80,7 +80,7 @@ klasse ModuleCompleter:
 
     def _find_modules(self, path: str, prefix: str) -> list[str]:
         wenn not path:
-            # Top-level import (e.g. `import foo<tab>`` or `from foo<tab>`)`
+            # Top-level importiere (e.g. `import foo<tab>`` or `from foo<tab>`)`
             builtin_modules = [name fuer name in sys.builtin_module_names
                                wenn self.is_suggestion_match(name, prefix)]
             third_party_modules = [module.name fuer module in self.global_cache
@@ -121,7 +121,7 @@ klasse ModuleCompleter:
 
     def get_path_and_prefix(self, dotted_name: str) -> tuple[str, str]:
         """
-        Split a dotted name into an import path and a
+        Split a dotted name into an importiere path and a
         final prefix that is to be completed.
 
         Examples:
@@ -151,7 +151,7 @@ klasse ModuleCompleter:
 
         Example: resolve_relative_name('.foo', 'bar') -> 'bar.foo'
         """
-        # taken from importlib._bootstrap
+        # taken von importlib._bootstrap
         level = 0
         fuer character in name:
             wenn character != '.':
@@ -176,17 +176,17 @@ klasse ModuleCompleter:
 
 klasse ImportParser:
     """
-    Parses incomplete import statements that are
+    Parses incomplete importiere statements that are
     suitable fuer autocomplete suggestions.
 
     Examples:
-        - import foo          -> Result(from_name=Nichts, name='foo')
-        - import foo.         -> Result(from_name=Nichts, name='foo.')
-        - from foo            -> Result(from_name='foo', name=Nichts)
-        - from foo import bar -> Result(from_name='foo', name='bar')
-        - from .foo import (  -> Result(from_name='.foo', name='')
+        - importiere foo          -> Result(from_name=Nichts, name='foo')
+        - importiere foo.         -> Result(from_name=Nichts, name='foo.')
+        - von foo            -> Result(from_name='foo', name=Nichts)
+        - von foo importiere bar -> Result(from_name='foo', name='bar')
+        - von .foo importiere (  -> Result(from_name='.foo', name='')
 
-    Note that the parser works in reverse order, starting from the
+    Note that the parser works in reverse order, starting von the
     last token in the input string. This makes the parser more robust
     when parsing multiple statements.
     """

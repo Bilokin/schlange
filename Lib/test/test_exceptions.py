@@ -1,29 +1,29 @@
 # Python test set -- part 5, built-in exceptions
 
-import copy
-import os
-import sys
-import unittest
-import pickle
-import weakref
-import errno
-from codecs import BOM_UTF8
-from itertools import product
-from textwrap import dedent
+importiere copy
+importiere os
+importiere sys
+importiere unittest
+importiere pickle
+importiere weakref
+importiere errno
+von codecs importiere BOM_UTF8
+von itertools importiere product
+von textwrap importiere dedent
 
-from test.support import (captured_stderr, check_impl_detail,
+von test.support importiere (captured_stderr, check_impl_detail,
                           cpython_only, gc_collect,
                           no_tracing, script_helper,
                           SuppressCrashReport,
                           force_not_colorized)
-from test.support.import_helper import import_module
-from test.support.os_helper import TESTFN, unlink
-from test.support.warnings_helper import check_warnings
-from test import support
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere TESTFN, unlink
+von test.support.warnings_helper importiere check_warnings
+von test importiere support
 
 try:
-    import _testcapi
-    from _testcapi import INT_MAX
+    importiere _testcapi
+    von _testcapi importiere INT_MAX
 except ImportError:
     _testcapi = Nichts
     INT_MAX = 2**31 - 1
@@ -71,7 +71,7 @@ klasse ExceptionTests(unittest.TestCase):
         savestdin = sys.stdin
         try:
             try:
-                import marshal
+                importiere marshal
                 marshal.loads(b'')
             except EOFError:
                 pass
@@ -310,7 +310,7 @@ klasse ExceptionTests(unittest.TestCase):
 
         # Errors thrown by symtable.c
         check('x = [(yield i) fuer i in range(3)]', 1, 7)
-        check('def f():\n  from _ import *', 2, 17)
+        check('def f():\n  von _ importiere *', 2, 17)
         check('def f(x, x):\n  pass', 1, 10)
         check('{i fuer i in range(5) wenn (j := 0) fuer j in range(5)}', 1, 38)
         check('def f(x):\n  nonlocal x', 2, 3)
@@ -319,9 +319,9 @@ klasse ExceptionTests(unittest.TestCase):
         check('def f():\n  global x\n  nonlocal x', 2, 3)
 
         # Errors thrown by future.c
-        check('from __future__ import doesnt_exist', 1, 24)
-        check('from __future__ import braces', 1, 24)
-        check('x=1\nfrom __future__ import division', 2, 1)
+        check('from __future__ importiere doesnt_exist', 1, 24)
+        check('from __future__ importiere braces', 1, 24)
+        check('x=1\nfrom __future__ importiere division', 2, 1)
         check('foo(1=2)', 1, 5)
         check('def f():\n  x, y: int', 2, 3)
         check('[*x fuer x in xs]', 1, 2)
@@ -658,9 +658,9 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertRaisesRegex(TE, msg, setattr, exc, 'args', 1)
         msg = "__traceback__ must be a traceback or Nichts"
         self.assertRaisesRegex(TE, msg, setattr, exc, '__traceback__', 1)
-        msg = "exception cause must be Nichts or derive from BaseException"
+        msg = "exception cause must be Nichts or derive von BaseException"
         self.assertRaisesRegex(TE, msg, setattr, exc, '__cause__', 1)
-        msg = "exception context must be Nichts or derive from BaseException"
+        msg = "exception context must be Nichts or derive von BaseException"
         self.assertRaisesRegex(TE, msg, setattr, exc, '__context__', 1)
 
     def test_invalid_delattr(self):
@@ -1459,9 +1459,9 @@ klasse ExceptionTests(unittest.TestCase):
         # locals indefinitely and would cause a segfault in _PyExc_Fini() upon
         # finalization of these locals.
         code = """if 1:
-            import sys
-            from _testinternalcapi import get_recursion_depth
-            from test import support
+            importiere sys
+            von _testinternalcapi importiere get_recursion_depth
+            von test importiere support
 
             klasse MyException(Exception): pass
 
@@ -1510,7 +1510,7 @@ klasse ExceptionTests(unittest.TestCase):
         # maximum recursion depth has been exceeded when creating
         # an exception
         code = """if 1:
-            import _testcapi
+            importiere _testcapi
             try:
                 raise _testcapi.RecursingInfinitelyError
             finally:
@@ -1582,7 +1582,7 @@ klasse ExceptionTests(unittest.TestCase):
         # the size of the list of preallocated MemoryError instances, the
         # Fatal Python error message mentions MemoryError.
         code = """if 1:
-            import _testcapi
+            importiere _testcapi
             klasse C(): pass
             def recurse(cnt):
                 cnt -= 1
@@ -1602,8 +1602,8 @@ klasse ExceptionTests(unittest.TestCase):
     def test_MemoryError(self):
         # PyErr_NoMemory always raises the same exception instance.
         # Check that the traceback is not doubled.
-        import traceback
-        from _testcapi import raise_memoryerror
+        importiere traceback
+        von _testcapi importiere raise_memoryerror
         def raiseMemError():
             try:
                 raise_memoryerror()
@@ -1662,7 +1662,7 @@ klasse ExceptionTests(unittest.TestCase):
     def test_memory_error_cleanup(self):
         # Issue #5437: preallocated MemoryError instances should not keep
         # traceback objects alive.
-        from _testcapi import raise_memoryerror
+        von _testcapi importiere raise_memoryerror
         klasse C:
             pass
         wr = Nichts
@@ -1755,7 +1755,7 @@ klasse ExceptionTests(unittest.TestCase):
     @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def test_memory_error_in_PyErr_PrintEx(self):
         code = """if 1:
-            import _testcapi
+            importiere _testcapi
             klasse C(): pass
             _testcapi.set_nomemory(0, %d)
             C()
@@ -1879,7 +1879,7 @@ klasse ExceptionTests(unittest.TestCase):
         # interp.static_objects.last_resort_memory_error.args
         # should be initialized to empty tuple to avoid crash on attempt to print it.
         code = f"""if 1:
-            import _testcapi
+            importiere _testcapi
             _testcapi.run_in_subinterp(\"[0]*{sys.maxsize}\")
             exit(0)
         """
@@ -2115,7 +2115,7 @@ klasse ImportErrorTests(unittest.TestCase):
 
     def test_ModuleNotFoundError_repr_with_failed_import(self):
         with self.assertRaises(ModuleNotFoundError) as cm:
-            import does_not_exist  # type: ignore[import] # noqa: F401
+            importiere does_not_exist  # type: ignore[import] # noqa: F401
 
         self.assertEqual(cm.exception.name, "does_not_exist")
         self.assertIsNichts(cm.exception.path)
@@ -2275,7 +2275,7 @@ klasse SyntaxErrorTests(unittest.TestCase):
     @force_not_colorized
     def test_range_of_offsets(self):
         cases = [
-            # Basic range from 2->7
+            # Basic range von 2->7
             (("bad.py", 1, 2, "abcdefg", 1, 7),
              dedent(
              """

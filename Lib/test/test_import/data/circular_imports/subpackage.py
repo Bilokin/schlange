@@ -1,2 +1,2 @@
-"""Circular import involving a sub-package."""
-from .subpkg import subpackage2
+"""Circular importiere involving a sub-package."""
+von .subpkg importiere subpackage2

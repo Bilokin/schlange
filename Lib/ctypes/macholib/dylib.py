@@ -2,7 +2,7 @@
 Generic dylib path manipulation
 """
 
-import re
+importiere re
 
 __all__ = ['dylib_info']
 

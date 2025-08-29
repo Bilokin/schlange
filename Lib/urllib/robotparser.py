@@ -10,10 +10,10 @@
     http://www.robotstxt.org/norobots-rfc.txt
 """
 
-import collections
-import urllib.error
-import urllib.parse
-import urllib.request
+importiere collections
+importiere urllib.error
+importiere urllib.parse
+importiere urllib.request
 
 __all__ = ["RobotFileParser"]
 
@@ -49,7 +49,7 @@ klasse RobotFileParser:
         current time.
 
         """
-        import time
+        importiere time
         self.last_checked = time.time()
 
     def set_url(self, url):
@@ -81,7 +81,7 @@ klasse RobotFileParser:
             self.entries.append(entry)
 
     def parse(self, lines):
-        """Parse the input lines from a robots.txt file.
+        """Parse the input lines von a robots.txt file.
 
         We allow that a user-agent: line is not preceded by
         one or more blank lines.

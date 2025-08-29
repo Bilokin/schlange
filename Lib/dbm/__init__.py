@@ -2,7 +2,7 @@
 
 Use
 
-        import dbm
+        importiere dbm
         d = dbm.open(file, 'w', 0o666)
 
 The returned object is a dbm.sqlite3, dbm.gnu, dbm.ndbm or dbm.dumb database object, dependent on the
@@ -29,10 +29,10 @@ implementations.
 
 __all__ = ['open', 'whichdb', 'error']
 
-import io
-import os
-import struct
-import sys
+importiere io
+importiere os
+importiere struct
+importiere sys
 
 
 klasse error(Exception):
@@ -45,7 +45,7 @@ _modules = {}
 error = (error, OSError)
 
 try:
-    from dbm import ndbm
+    von dbm importiere ndbm
 except ImportError:
     ndbm = Nichts
 

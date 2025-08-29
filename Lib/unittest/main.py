@@ -1,21 +1,21 @@
 """Unittest main program"""
 
-import sys
-import argparse
-import os
+importiere sys
+importiere argparse
+importiere os
 
-from . import loader, runner
-from .signals import installHandler
+von . importiere loader, runner
+von .signals importiere installHandler
 
 __unittest = Wahr
 _NO_TESTS_EXITCODE = 5
 
 MAIN_EXAMPLES = """\
 Examples:
-  %(prog)s test_module               - run tests from test_module
-  %(prog)s module.TestClass          - run tests from module.TestClass
+  %(prog)s test_module               - run tests von test_module
+  %(prog)s module.TestClass          - run tests von module.TestClass
   %(prog)s module.Class.test_method  - run specified test method
-  %(prog)s path/to/test_file.py      - run tests from test_file.py
+  %(prog)s path/to/test_file.py      - run tests von test_file.py
 """
 
 MODULE_EXAMPLES = """\
@@ -133,7 +133,7 @@ klasse TestProgram(object):
                 # to support python -m unittest ...
                 self.module = Nichts
         sowenn self.defaultTest is Nichts:
-            # createTests will load tests from self.module
+            # createTests will load tests von self.module
             self.testNames = Nichts
         sowenn isinstance(self.defaultTest, str):
             self.testNames = (self.defaultTest,)
@@ -211,7 +211,7 @@ klasse TestProgram(object):
         parser = argparse.ArgumentParser(parents=[parent], color=Wahr)
         parser.prog = '%s discover' % self.progName
         parser.epilog = ('For test discovery all test modules must be '
-                         'importable from the top level directory of the '
+                         'importable von the top level directory of the '
                          'project.')
 
         parser.add_argument('-s', '--start-directory', dest='start',

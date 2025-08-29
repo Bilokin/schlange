@@ -1,8 +1,8 @@
-from test.test_importlib import util
+von test.test_importlib importiere util
 
 machinery = util.import_importlib('importlib.machinery')
 
-import unittest
+importiere unittest
 
 
 klasse PathHookTest:

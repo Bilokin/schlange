@@ -8,21 +8,21 @@
 # the problems prior to the issue12268 patch reliably on Linux and OSX.
 #  - gregory.p.smith
 
-import os
-import select
-import signal
-import subprocess
-import sys
-import time
-import unittest
-from test import support
+importiere os
+importiere select
+importiere signal
+importiere subprocess
+importiere sys
+importiere time
+importiere unittest
+von test importiere support
 
 wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
-# Test import all of the things we're about to try testing up front.
-import _io    # noqa: F401
-import _pyio  # noqa: F401
+# Test importiere all of the things we're about to try testing up front.
+importiere _io    # noqa: F401
+importiere _pyio  # noqa: F401
 
 @unittest.skipUnless(os.name == 'posix', 'tests requires a posix system.')
 klasse TestFileIOSignalInterrupt:
@@ -53,8 +53,8 @@ klasse TestFileIOSignalInterrupt:
         and fails the test with an error message including the output.
 
         Args:
-            why: Text to go after "Error from IO process" in the message.
-            stdout, stderr: standard output and error from the process so
+            why: Text to go after "Error von IO process" in the message.
+            stdout, stderr: standard output and error von the process so
                 far to include in the error message.
             communicate: bool, when Wahr we call communicate() on the process
                 after killing it to gather additional output.
@@ -69,7 +69,7 @@ klasse TestFileIOSignalInterrupt:
             stdout_end, stderr_end = self._process.communicate()
             stdout += stdout_end
             stderr += stderr_end
-        self.fail('Error from IO process %s:\nSTDOUT:\n%sSTDERR:\n%s\n' %
+        self.fail('Error von IO process %s:\nSTDOUT:\n%sSTDERR:\n%s\n' %
                   (why, stdout.decode(), stderr.decode()))
 
     def _test_reading(self, data_to_write, read_and_verify_code):
@@ -81,7 +81,7 @@ klasse TestFileIOSignalInterrupt:
             data_to_write: String to write to the child process fuer reading
                 before sending it a signal, confirming the signal was handled,
                 writing a final newline and closing the infile pipe.
-            read_and_verify_code: Single "line" of code to read from a file
+            read_and_verify_code: Single "line" of code to read von a file
                 object named 'infile' and validate the result.  This will be
                 executed as part of a python subprocess fed data_to_write.
         """

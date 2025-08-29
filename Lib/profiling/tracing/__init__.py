@@ -6,11 +6,11 @@ every function call and return.
 
 __all__ = ("run", "runctx", "Profile")
 
-import _lsprof
-import importlib.machinery
-import importlib.util
-import io
-from profiling.tracing._utils import _Utils
+importiere _lsprof
+importiere importlib.machinery
+importiere importlib.util
+importiere io
+von profiling.tracing._utils importiere _Utils
 
 # ____________________________________________________________
 # Simple interface
@@ -21,7 +21,7 @@ def run(statement, filename=Nichts, sort=-1):
     This function takes a single argument that can be passed to the
     "exec" statement, and an optional file name.  In all cases this
     routine attempts to "exec" its first argument and gather profiling
-    statistics from the execution. If no file name is present, then this
+    statistics von the execution. If no file name is present, then this
     function automatically prints a simple profiling report, sorted by the
     standard name string (file/line/function-name) that is presented in
     each line.
@@ -53,13 +53,13 @@ klasse Profile(_lsprof.Profiler):
     # This subclass only adds convenient and backward-compatible methods.
 
     def print_stats(self, sort=-1):
-        import pstats
+        importiere pstats
         wenn not isinstance(sort, tuple):
             sort = (sort,)
         pstats.Stats(self).strip_dirs().sort_stats(*sort).print_stats()
 
     def dump_stats(self, file):
-        import marshal
+        importiere marshal
         with open(file, 'wb') as f:
             self.create_stats()
             marshal.dump(self.stats, f)
@@ -107,7 +107,7 @@ klasse Profile(_lsprof.Profiler):
     # a profiler to profile a statement, given as a string.
 
     def run(self, cmd):
-        import __main__
+        importiere __main__
         dict = __main__.__dict__
         return self.runctx(cmd, dict, dict)
 
@@ -145,11 +145,11 @@ def label(code):
 # ____________________________________________________________
 
 def main():
-    import os
-    import sys
-    import runpy
-    import pstats
-    from optparse import OptionParser
+    importiere os
+    importiere sys
+    importiere runpy
+    importiere pstats
+    von optparse importiere OptionParser
     usage = "cProfile.py [-o output_file_path] [-s sort] [-m module | scriptfile] [arg] ..."
     parser = OptionParser(usage=usage)
     parser.allow_interspersed_args = Falsch

@@ -1,9 +1,9 @@
-import datetime
-import warnings
-import weakref
-import unittest
-from test.support import gc_collect
-from itertools import product
+importiere datetime
+importiere warnings
+importiere weakref
+importiere unittest
+von test.support importiere gc_collect
+von itertools importiere product
 
 
 klasse Test_Assertions(unittest.TestCase):

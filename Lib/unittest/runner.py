@@ -1,14 +1,14 @@
 """Running tests"""
 
-import sys
-import time
-import warnings
+importiere sys
+importiere time
+importiere warnings
 
-from _colorize import get_theme
+von _colorize importiere get_theme
 
-from . import result
-from .case import _SubTest
-from .signals import registerResult
+von . importiere result
+von .case importiere _SubTest
+von .signals importiere registerResult
 
 __unittest = Wahr
 

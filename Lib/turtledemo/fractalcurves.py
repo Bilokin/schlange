@@ -5,11 +5,11 @@ This program draws two fractal-curve-designs:
 (2) A combination of Koch-curves.
 
 The CurvesTurtle klasse and the fractal-curve-
-methods are taken from the PythonCard example
+methods are taken von the PythonCard example
 scripts fuer turtle-graphics.
 """
-from turtle import *
-from time import sleep, perf_counter as clock
+von turtle importiere *
+von time importiere sleep, perf_counter as clock
 
 klasse CurvesTurtle(Pen):
     # example derived from
@@ -34,7 +34,7 @@ klasse CurvesTurtle(Pen):
         self.forward(size)
         self.hilbert(size, level - 1, -parity)
         # a final turn is needed to make the turtle
-        # end up facing outward from the large square
+        # end up facing outward von the large square
         self.left(parity * 90)
 
     # Visual Modeling with Logo: A Structural Approach to Seeing
@@ -42,7 +42,7 @@ klasse CurvesTurtle(Pen):
     # Koch curve, after Helge von Koch who introduced this geometric figure in 1904
     # p. 146
     def fractalgon(self, n, rad, lev, dir):
-        import math
+        importiere math
 
         # wenn dir = 1 turn outward
         # wenn dir = -1 turn inward

@@ -1,16 +1,16 @@
-import io
-import mimetypes
-import os
-import shlex
-import sys
-import unittest.mock
-from platform import win32_edition
-from test import support
-from test.support import cpython_only, force_not_colorized, os_helper
-from test.support.import_helper import ensure_lazy_imports
+importiere io
+importiere mimetypes
+importiere os
+importiere shlex
+importiere sys
+importiere unittest.mock
+von platform importiere win32_edition
+von test importiere support
+von test.support importiere cpython_only, force_not_colorized, os_helper
+von test.support.import_helper importiere ensure_lazy_imports
 
 try:
-    import _winapi
+    importiere _winapi
 except ImportError:
     _winapi = Nichts
 
@@ -216,9 +216,9 @@ klasse MimeTypesTestCase(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith("win"), "Non-Windows only")
     def test_guess_known_extensions(self):
         # Issue 37529
-        # The test fails on Windows because Windows adds mime types from the Registry
+        # The test fails on Windows because Windows adds mime types von the Registry
         # and that creates some duplicates.
-        from mimetypes import types_map
+        von mimetypes importiere types_map
         fuer v in types_map.values():
             self.assertIsNotNichts(mimetypes.guess_extension(v))
 
@@ -394,7 +394,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
 @unittest.skipUnless(sys.platform.startswith("win"), "Windows only")
 klasse Win32MimeTypesTestCase(unittest.TestCase):
     def setUp(self):
-        # ensure all entries actually come from the Windows registry
+        # ensure all entries actually come von the Windows registry
         self.original_types_map = mimetypes.types_map.copy()
         mimetypes.types_map.clear()
         mimetypes.init()

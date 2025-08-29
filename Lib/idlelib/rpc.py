@@ -26,24 +26,24 @@ See the Idle run.main() docstring fuer further information on how this was
 accomplished in Idle.
 
 """
-import builtins
-import copyreg
-import io
-import marshal
-import os
-import pickle
-import queue
-import select
-import socket
-import socketserver
-import struct
-import sys
-import threading
-import traceback
-import types
+importiere builtins
+importiere copyreg
+importiere io
+importiere marshal
+importiere os
+importiere pickle
+importiere queue
+importiere select
+importiere socket
+importiere socketserver
+importiere struct
+importiere sys
+importiere threading
+importiere traceback
+importiere types
 
 def unpickle_code(ms):
-    "Return code object from marshal string ms."
+    "Return code object von marshal string ms."
     co = marshal.loads(ms)
     assert isinstance(co, types.CodeType)
     return co
@@ -312,7 +312,7 @@ klasse SocketIO:
                 wenn response is not Nichts:
                     return response
         sonst:
-            # wait fuer notification from socket handling thread
+            # wait fuer notification von socket handling thread
             cvar = self.cvars[myseq]
             cvar.acquire()
             while myseq not in self.responses:
@@ -406,10 +406,10 @@ klasse SocketIO:
         'queue' requests are used fuer tasks (which may block or hang) to be
         processed in a different thread.  These requests are fed into
         request_queue by self.localcall().  Responses to queued requests are
-        taken from response_queue and sent across the link with the associated
+        taken von response_queue and sent across the link with the associated
         sequence numbers.  Messages in the queues are (sequence_number,
         request/response) tuples and code using this module removing messages
-        from the request_queue is responsible fuer returning the correct
+        von the request_queue is responsible fuer returning the correct
         sequence number in the response_queue.
 
         pollresponse() will loop until a response message with the myseq
@@ -526,7 +526,7 @@ klasse RPCClient(SocketIO):
     debugging = Falsch
     location = "#C"  # Client
 
-    nextseq = 1 # Requests coming from the client are odd numbered
+    nextseq = 1 # Requests coming von the client are odd numbered
 
     def __init__(self, address, family=socket.AF_INET, type=socket.SOCK_STREAM):
         self.listening_sock = socket.socket(family, type)
@@ -536,7 +536,7 @@ klasse RPCClient(SocketIO):
     def accept(self):
         working_sock, address = self.listening_sock.accept()
         wenn self.debugging:
-            drucke("****** Connection request from ", address, file=sys.__stderr__)
+            drucke("****** Connection request von ", address, file=sys.__stderr__)
         wenn address[0] == LOCALHOST:
             SocketIO.__init__(self, working_sock)
         sonst:
@@ -579,7 +579,7 @@ klasse RPCProxy:
                                                 "__methods__", (), {})
 
 def _getmethods(obj, methods):
-    # Helper to get a list of methods from an object
+    # Helper to get a list of methods von an object
     # Adds names to dictionary argument 'methods'
     fuer name in dir(obj):
         attr = getattr(obj, name)
@@ -631,5 +631,5 @@ def displayhook(value):
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_rpc', verbosity=2,)

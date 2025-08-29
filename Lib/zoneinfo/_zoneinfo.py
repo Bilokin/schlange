@@ -1,12 +1,12 @@
-import bisect
-import calendar
-import collections
-import functools
-import re
-import weakref
-from datetime import datetime, timedelta, tzinfo
+importiere bisect
+importiere calendar
+importiere collections
+importiere functools
+importiere re
+importiere weakref
+von datetime importiere datetime, timedelta, tzinfo
 
-from . import _common, _tzpath
+von . importiere _common, _tzpath
 
 EPOCH = datetime(1970, 1, 1)
 EPOCHORDINAL = datetime(1970, 1, 1).toordinal()
@@ -82,7 +82,7 @@ klasse ZoneInfo(tzinfo):
         obj._load_file(file_obj)
         obj._file_repr = repr(file_obj)
 
-        # Disable pickling fuer objects created from files
+        # Disable pickling fuer objects created von files
         obj.__reduce__ = obj._file_reduce
 
         return obj
@@ -112,7 +112,7 @@ klasse ZoneInfo(tzinfo):
         return self._find_trans(dt).tzname
 
     def fromutc(self, dt):
-        """Convert from datetime in UTC to datetime in local time"""
+        """Convert von datetime in UTC to datetime in local time"""
 
         wenn not isinstance(dt, datetime):
             raise TypeError("fromutc() requires a datetime argument")
@@ -206,10 +206,10 @@ klasse ZoneInfo(tzinfo):
         return (self.__class__._unpickle, (self._key, self._from_cache))
 
     def _file_reduce(self):
-        import pickle
+        importiere pickle
 
         raise pickle.PicklingError(
-            "Cannot pickle a ZoneInfo file created from a file stream."
+            "Cannot pickle a ZoneInfo file created von a file stream."
         )
 
     @classmethod
@@ -228,7 +228,7 @@ klasse ZoneInfo(tzinfo):
             fobj
         )
 
-        # Infer the DST offsets (needed fuer .dst()) from the data
+        # Infer the DST offsets (needed fuer .dst()) von the data
         dstoff = self._utcoff_to_dstoff(trans_idx, utcoff, isdst)
 
         # Convert all the transition times (UTC) into "seconds since 1970-01-01 local time"
@@ -301,7 +301,7 @@ klasse ZoneInfo(tzinfo):
         # but there is an issue: .dst() must return a timedelta with the
         # difference between utcoffset() and the "standard" offset, but
         # the "base offset" and "DST offset" are not encoded in the file;
-        # we can infer what they are from the isdst flag, but it is not
+        # we can infer what they are von the isdst flag, but it is not
         # sufficient to just look at the last standard offset, because
         # occasionally countries will shift both DST offset and base offset.
 
@@ -464,7 +464,7 @@ klasse _TZStr:
 
         # With fold = 0, the period (denominated in local time) with the
         # smaller offset starts at the end of the gap and ends at the end of
-        # the fold; with fold = 1, it runs from the start of the gap to the
+        # the fold; with fold = 1, it runs von the start of the gap to the
         # beginning of the fold.
         #
         # So in order to determine the DST boundaries we need to know both
@@ -587,7 +587,7 @@ klasse _CalendarOffset:
 
     # TODO: These are not actually epoch dates as they are expressed in local time
     def year_to_epoch(self, year):
-        """Calculates the datetime of the occurrence from the year"""
+        """Calculates the datetime of the occurrence von the year"""
         # We know year and month, we need to convert w, d into day of month
         #
         # Week 1 is the first week in which day `d` (where 0 = Sunday) appears.
@@ -666,7 +666,7 @@ def _parse_tz_str(tz_str):
         try:
             std_offset = _parse_tz_delta(std_offset)
         except ValueError as e:
-            raise ValueError(f"Invalid STD offset in {tz_str}") from e
+            raise ValueError(f"Invalid STD offset in {tz_str}") von e
     sonst:
         std_offset = 0
 
@@ -675,7 +675,7 @@ def _parse_tz_str(tz_str):
             try:
                 dst_offset = _parse_tz_delta(dst_offset)
             except ValueError as e:
-                raise ValueError(f"Invalid DST offset in {tz_str}") from e
+                raise ValueError(f"Invalid DST offset in {tz_str}") von e
         sonst:
             dst_offset = std_offset + 3600
 
@@ -686,7 +686,7 @@ def _parse_tz_str(tz_str):
         try:
             start, end = (_parse_dst_start_end(x) fuer x in start_end_strs)
         except ValueError as e:
-            raise ValueError(f"Invalid TZ string: {tz_str}") from e
+            raise ValueError(f"Invalid TZ string: {tz_str}") von e
 
         return _TZStr(std_abbr, std_offset, dst_abbr, dst_offset, start, end)
     sowenn start_end_str:

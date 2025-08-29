@@ -26,23 +26,23 @@ __all__ = [
     'namedtuple',
 ]
 
-import _collections_abc
-import sys as _sys
+importiere _collections_abc
+importiere sys as _sys
 
 _sys.modules['collections.abc'] = _collections_abc
 abc = _collections_abc
 
-from itertools import chain as _chain
-from itertools import repeat as _repeat
-from itertools import starmap as _starmap
-from keyword import iskeyword as _iskeyword
-from operator import eq as _eq
-from operator import itemgetter as _itemgetter
-from reprlib import recursive_repr as _recursive_repr
-from _weakref import proxy as _proxy
+von itertools importiere chain as _chain
+von itertools importiere repeat as _repeat
+von itertools importiere starmap as _starmap
+von keyword importiere iskeyword as _iskeyword
+von operator importiere eq as _eq
+von operator importiere itemgetter as _itemgetter
+von reprlib importiere recursive_repr as _recursive_repr
+von _weakref importiere proxy as _proxy
 
 try:
-    from _collections import deque
+    von _collections importiere deque
 except ImportError:
     pass
 sonst:
@@ -50,12 +50,12 @@ sonst:
 
 try:
     # Expose _deque_iterator to support pickling deque iterators
-    from _collections import _deque_iterator  # noqa: F401
+    von _collections importiere _deque_iterator  # noqa: F401
 except ImportError:
     pass
 
 try:
-    from _collections import defaultdict
+    von _collections importiere defaultdict
 except ImportError:
     pass
 
@@ -69,7 +69,7 @@ heapq = Nichts  # Lazily imported
 klasse _OrderedDictKeysView(_collections_abc.KeysView):
 
     def __reversed__(self):
-        yield from reversed(self._mapping)
+        yield von reversed(self._mapping)
 
 klasse _OrderedDictItemsView(_collections_abc.ItemsView):
 
@@ -99,7 +99,7 @@ klasse OrderedDict(dict):
     # The sentinel is in self.__hardroot with a weakref proxy in self.__root.
     # The prev links are weakref proxies (to prevent circular references).
     # Individual links are kept alive by the hard reference in self.__map.
-    # Those hard references disappear when a key is deleted from an OrderedDict.
+    # Those hard references disappear when a key is deleted von an OrderedDict.
 
     def __new__(cls, /, *args, **kwds):
         "Create the ordered dict object and set up the underlying structures."
@@ -162,14 +162,14 @@ klasse OrderedDict(dict):
             curr = curr.prev
 
     def clear(self):
-        'od.clear() -> Nichts.  Remove all items from od.'
+        'od.clear() -> Nichts.  Remove all items von od.'
         root = self.__root
         root.prev = root.next = root
         self.__map.clear()
         dict.clear(self)
 
     def popitem(self, last=Wahr):
-        '''Remove and return a (key, value) pair from the dictionary.
+        '''Remove and return a (key, value) pair von the dictionary.
 
         Pairs are returned in LIFO order wenn last is true or FIFO order wenn false.
         '''
@@ -307,7 +307,7 @@ klasse OrderedDict(dict):
 
     @classmethod
     def fromkeys(cls, iterable, value=Nichts):
-        '''Create a new ordered dictionary with keys from iterable and values set to value.
+        '''Create a new ordered dictionary with keys von iterable and values set to value.
         '''
         self = cls()
         fuer key in iterable:
@@ -343,7 +343,7 @@ klasse OrderedDict(dict):
 
 
 try:
-    from _collections import OrderedDict
+    von _collections importiere OrderedDict
 except ImportError:
     # Leave the pure Python version in place.
     pass
@@ -354,7 +354,7 @@ except ImportError:
 ################################################################################
 
 try:
-    from _collections import _tuplegetter
+    von _collections importiere _tuplegetter
 except ImportError:
     _tuplegetter = lambda index, doc: property(_itemgetter(index), doc=doc)
 
@@ -375,7 +375,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     >>> d = p._asdict()                 # convert to a dictionary
     >>> d['x']
     11
-    >>> Point(**d)                      # convert from a dictionary
+    >>> Point(**d)                      # convert von a dictionary
     Point(x=11, y=22)
     >>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
     Point(x=100, y=22)
@@ -457,7 +457,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
             raise TypeError(f'Expected {num_fields} arguments, got {len(result)}')
         return result
 
-    _make.__func__.__doc__ = (f'Make a new {typename} object from a sequence '
+    _make.__func__.__doc__ = (f'Make a new {typename} object von a sequence '
                               'or iterable')
 
     def _replace(self, /, **kwds):
@@ -538,13 +538,13 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
 ########################################################################
 
 def _count_elements(mapping, iterable):
-    'Tally elements from the iterable.'
+    'Tally elements von the iterable.'
     mapping_get = mapping.get
     fuer elem in iterable:
         mapping[elem] = mapping_get(elem, 0) + 1
 
 try:                                    # Load C helper function wenn available
-    from _collections import _count_elements
+    von _collections importiere _count_elements
 except ImportError:
     pass
 
@@ -553,7 +553,7 @@ klasse Counter(dict):
     or multiset.  Elements are stored as dictionary keys and their counts
     are stored as dictionary values.
 
-    >>> c = Counter('abcdeabcdabcaba')  # count elements from a string
+    >>> c = Counter('abcdeabcdabcaba')  # count elements von a string
 
     >>> c.most_common(3)                # three most common elements
     [('a', 5), ('b', 4), ('c', 3)]
@@ -566,7 +566,7 @@ klasse Counter(dict):
 
     >>> c['a']                          # count of letter 'a'
     5
-    >>> fuer elem in 'shazam':           # update counts from an iterable
+    >>> fuer elem in 'shazam':           # update counts von an iterable
     ...     c[elem] += 1                # by adding 1 to each element's count
     >>> c['a']                          # now there are seven 'a'
     7
@@ -601,13 +601,13 @@ klasse Counter(dict):
 
     def __init__(self, iterable=Nichts, /, **kwds):
         '''Create a new, empty Counter object.  And wenn given, count elements
-        from an input iterable.  Or, initialize the count from another mapping
+        von an input iterable.  Or, initialize the count von another mapping
         of elements to their counts.
 
         >>> c = Counter()                           # a new, empty counter
-        >>> c = Counter('gallahad')                 # a new counter from an iterable
-        >>> c = Counter({'a': 4, 'b': 2})           # a new counter from a mapping
-        >>> c = Counter(a=4, b=2)                   # a new counter from keyword args
+        >>> c = Counter('gallahad')                 # a new counter von an iterable
+        >>> c = Counter({'a': 4, 'b': 2})           # a new counter von a mapping
+        >>> c = Counter(a=4, b=2)                   # a new counter von keyword args
 
         '''
         super().__init__()
@@ -623,21 +623,21 @@ klasse Counter(dict):
         return sum(self.values())
 
     def most_common(self, n=Nichts):
-        '''List the n most common elements and their counts from the most
+        '''List the n most common elements and their counts von the most
         common to the least.  If n is Nichts, then list all element counts.
 
         >>> Counter('abracadabra').most_common(3)
         [('a', 5), ('b', 2), ('r', 2)]
 
         '''
-        # Emulate Bag.sortedByCount from Smalltalk
+        # Emulate Bag.sortedByCount von Smalltalk
         wenn n is Nichts:
             return sorted(self.items(), key=_itemgetter(1), reverse=Wahr)
 
-        # Lazy import to speedup Python startup time
+        # Lazy importiere to speedup Python startup time
         global heapq
         wenn heapq is Nichts:
-            import heapq
+            importiere heapq
 
         return heapq.nlargest(n, self.items(), key=_itemgetter(1))
 
@@ -650,7 +650,7 @@ klasse Counter(dict):
 
         Knuth's example fuer prime factors of 1836:  2**2 * 3**3 * 17**1
 
-        >>> import math
+        >>> importiere math
         >>> prime_factors = Counter({2: 2, 3: 3, 17: 1})
         >>> math.prod(prime_factors.elements())
         1836
@@ -659,7 +659,7 @@ klasse Counter(dict):
         number, elements() will ignore it.
 
         '''
-        # Emulate Bag.do from Smalltalk and Multiset.begin from C++.
+        # Emulate Bag.do von Smalltalk and Multiset.begin von C++.
         return _chain.from_iterable(_starmap(_repeat, self.items()))
 
     # Override dict methods where necessary
@@ -682,9 +682,9 @@ klasse Counter(dict):
         Source can be an iterable, a dictionary, or another Counter instance.
 
         >>> c = Counter('which')
-        >>> c.update('witch')           # add elements from another iterable
+        >>> c.update('witch')           # add elements von another iterable
         >>> d = Counter('watch')
-        >>> c.update(d)                 # add elements from another counter
+        >>> c.update(d)                 # add elements von another counter
         >>> c['h']                      # four 'h' in which, witch, and watch
         4
 
@@ -718,8 +718,8 @@ klasse Counter(dict):
         Source can be an iterable, a dictionary, or another Counter instance.
 
         >>> c = Counter('which')
-        >>> c.subtract('witch')             # subtract elements from another iterable
-        >>> c.subtract(Counter('watch'))    # subtract elements from another counter
+        >>> c.subtract('witch')             # subtract elements von another iterable
+        >>> c.subtract(Counter('watch'))    # subtract elements von another counter
         >>> c['h']                          # 2 in which, minus 1 in witch, minus 1 in watch
         0
         >>> c['w']                          # 1 in which, minus 1 in witch, minus 1 in watch
@@ -834,7 +834,7 @@ klasse Counter(dict):
         return self >= other and self != other
 
     def __add__(self, other):
-        '''Add counts from two counters.
+        '''Add counts von two counters.
 
         >>> Counter('abbb') + Counter('bcc')
         Counter({'b': 4, 'c': 2, 'a': 1})
@@ -917,7 +917,7 @@ klasse Counter(dict):
         return result
 
     def __neg__(self):
-        '''Subtracts from an empty counter.  Strips positive and zero counts,
+        '''Subtracts von an empty counter.  Strips positive and zero counts,
         and flips the sign on negative counts.
 
         '''
@@ -935,7 +935,7 @@ klasse Counter(dict):
         return self
 
     def __iadd__(self, other):
-        '''Inplace add from another counter, keeping only positive counts.
+        '''Inplace add von another counter, keeping only positive counts.
 
         >>> c = Counter('abbb')
         >>> c += Counter('bcc')
@@ -961,7 +961,7 @@ klasse Counter(dict):
         return self._keep_positive()
 
     def __ior__(self, other):
-        '''Inplace union is the maximum of value from either counter.
+        '''Inplace union is the maximum of value von either counter.
 
         >>> c = Counter('abbb')
         >>> c |= Counter('bcc')
@@ -1054,7 +1054,7 @@ klasse ChainMap(_collections_abc.MutableMapping):
 
     @classmethod
     def fromkeys(cls, iterable, value=Nichts, /):
-        'Create a new ChainMap with keys from iterable and values set to value.'
+        'Create a new ChainMap with keys von iterable and values set to value.'
         return cls(dict.fromkeys(iterable, value))
 
     def copy(self):
@@ -1076,7 +1076,7 @@ klasse ChainMap(_collections_abc.MutableMapping):
 
     @property
     def parents(self):                          # like Django's Context.pop()
-        'New ChainMap from maps[1:].'
+        'New ChainMap von maps[1:].'
         return self.__class__(*self.maps[1:])
 
     def __setitem__(self, key, value):
@@ -1089,14 +1089,14 @@ klasse ChainMap(_collections_abc.MutableMapping):
             raise KeyError(f'Key not found in the first mapping: {key!r}')
 
     def popitem(self):
-        'Remove and return an item pair from maps[0]. Raise KeyError is maps[0] is empty.'
+        'Remove and return an item pair von maps[0]. Raise KeyError is maps[0] is empty.'
         try:
             return self.maps[0].popitem()
         except KeyError:
             raise KeyError('No keys found in the first mapping.')
 
     def pop(self, key, *args):
-        'Remove *key* from maps[0] and return its value. Raise KeyError wenn *key* not in maps[0].'
+        'Remove *key* von maps[0] and return its value. Raise KeyError wenn *key* not in maps[0].'
         try:
             return self.maps[0].pop(key, *args)
         except KeyError:
@@ -1205,7 +1205,7 @@ klasse UserDict(_collections_abc.MutableMapping):
     def copy(self):
         wenn self.__class__ is UserDict:
             return UserDict(self.data.copy())
-        import copy
+        importiere copy
         data = self.data
         try:
             self.data = {}

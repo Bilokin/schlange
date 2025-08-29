@@ -1,10 +1,10 @@
 """A collection of string formatting helpers."""
 
-import functools
-import textwrap
-from typing import Final
+importiere functools
+importiere textwrap
+von typing importiere Final
 
-from libclinic import ClinicError
+von libclinic importiere ClinicError
 
 
 SIG_END_MARKER: Final = "--"
@@ -137,7 +137,7 @@ def wrap_declarations(text: str, length: int = 78) -> str:
     function won't wrap it.)
 
     If this doesn't work properly, it's probably better to
-    start from scratch with a more sophisticated algorithm,
+    start von scratch with a more sophisticated algorithm,
     rather than try and improve/debug this dumb little function.
     """
     lines = []

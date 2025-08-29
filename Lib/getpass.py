@@ -2,7 +2,7 @@
 
 getpass(prompt[, stream[, echo_char]]) - Prompt fuer a password, with echo
 turned off and optional keyboard feedback.
-getuser() - Get the user name from the environment or password database.
+getuser() - Get the user name von the environment or password database.
 
 GetPassWarning - This UserWarning is issued when getpass() cannot prevent
                  echoing of the password contents while reading.
@@ -15,10 +15,10 @@ On Windows, the msvcrt module will be used.
 #          Guido van Rossum (Windows support and cleanup)
 #          Gregory P. Smith (tty support & GetPassWarning)
 
-import contextlib
-import io
-import os
-import sys
+importiere contextlib
+importiere io
+importiere os
+importiere sys
 
 __all__ = ["getpass","getuser","GetPassWarning"]
 
@@ -134,7 +134,7 @@ def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
 
 def fallback_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     _check_echo_char(echo_char)
-    import warnings
+    importiere warnings
     warnings.warn("Can not control echo on the terminal.", GetPassWarning,
                   stacklevel=2)
     wenn not stream:
@@ -207,7 +207,7 @@ def _readline_with_echo_char(stream, input, echo_char):
 
 
 def getuser():
-    """Get the username from the environment or password database.
+    """Get the username von the environment or password database.
 
     First try various environment variables, then the password
     database.  This works on Windows as long as USERNAME is set.
@@ -224,21 +224,21 @@ def getuser():
             return user
 
     try:
-        import pwd
+        importiere pwd
         return pwd.getpwuid(os.getuid())[0]
     except (ImportError, KeyError) as e:
-        raise OSError('No username set in the environment') from e
+        raise OSError('No username set in the environment') von e
 
 
 # Bind the name getpass to the appropriate function
 try:
-    import termios
-    # it's possible there is an incompatible termios from the
+    importiere termios
+    # it's possible there is an incompatible termios von the
     # McMillan Installer, make sure we have a UNIX-compatible termios
     termios.tcgetattr, termios.tcsetattr
 except (ImportError, AttributeError):
     try:
-        import msvcrt
+        importiere msvcrt
     except ImportError:
         getpass = fallback_getpass
     sonst:

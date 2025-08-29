@@ -1,17 +1,17 @@
-import inspect
-import time
-import types
-import unittest
+importiere inspect
+importiere time
+importiere types
+importiere unittest
 
-from unittest.mock import (
+von unittest.mock importiere (
     call, _Call, create_autospec, MagicMock,
     Mock, ANY, _CallList, patch, PropertyMock, _callable
 )
 
-from dataclasses import dataclass, field, InitVar
-from datetime import datetime
-from functools import partial
-from typing import ClassVar
+von dataclasses importiere dataclass, field, InitVar
+von datetime importiere datetime
+von functools importiere partial
+von typing importiere ClassVar
 
 klasse SomeClass(object):
     def one(self, a, b): pass
@@ -808,7 +808,7 @@ klasse SpecSignatureTest(unittest.TestCase):
 
     def test_class_with_no_init(self):
         # this used to raise an exception
-        # due to trying to get a signature from object.__init__
+        # due to trying to get a signature von object.__init__
         klasse Foo(object):
             pass
         create_autospec(Foo)

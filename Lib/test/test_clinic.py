@@ -2,35 +2,35 @@
 # Copyright 2012-2013 by Larry Hastings.
 # Licensed to the PSF under a contributor agreement.
 
-from functools import partial
-from test import support, test_tools
-from test.support import os_helper
-from test.support.os_helper import TESTFN, unlink, rmtree
-from textwrap import dedent
-from unittest import TestCase
-import inspect
-import os.path
-import re
-import sys
-import unittest
+von functools importiere partial
+von test importiere support, test_tools
+von test.support importiere os_helper
+von test.support.os_helper importiere TESTFN, unlink, rmtree
+von textwrap importiere dedent
+von unittest importiere TestCase
+importiere inspect
+importiere os.path
+importiere re
+importiere sys
+importiere unittest
 
 test_tools.skip_if_missing('clinic')
 with test_tools.imports_under_tool('clinic'):
-    import libclinic
-    from libclinic import ClinicError, unspecified, NULL, fail
-    from libclinic.converters import int_converter, str_converter, self_converter
-    from libclinic.function import (
+    importiere libclinic
+    von libclinic importiere ClinicError, unspecified, NULL, fail
+    von libclinic.converters importiere int_converter, str_converter, self_converter
+    von libclinic.function importiere (
         Module, Class, Function, FunctionKind, Parameter,
         permute_optional_groups, permute_right_option_groups,
         permute_left_option_groups)
-    import clinic
-    from libclinic.clanguage import CLanguage
-    from libclinic.converter import converters, legacy_converters
-    from libclinic.return_converters import return_converters, int_return_converter
-    from libclinic.block_parser import Block, BlockParser
-    from libclinic.codegen import BlockPrinter, Destination
-    from libclinic.dsl_parser import DSLParser
-    from libclinic.cli import parse_file, Clinic
+    importiere clinic
+    von libclinic.clanguage importiere CLanguage
+    von libclinic.converter importiere converters, legacy_converters
+    von libclinic.return_converters importiere return_converters, int_return_converter
+    von libclinic.block_parser importiere Block, BlockParser
+    von libclinic.codegen importiere BlockPrinter, Destination
+    von libclinic.dsl_parser importiere DSLParser
+    von libclinic.cli importiere parse_file, Clinic
 
 
 def repeat_fn(*functions):
@@ -2749,7 +2749,7 @@ klasse ClinicExternalTest(TestCase):
                 with self.subTest(filename=filename):
                     path = os.path.join(tmp_dir, filename)
                     self.assertNotIn(path, out)
-            # don't expect C files from the externals dir
+            # don't expect C files von the externals dir
             fuer filename in c_files:
                 with self.subTest(filename=filename):
                     path = os.path.join(ext_path, filename)
@@ -2954,7 +2954,7 @@ klasse ClinicExternalTest(TestCase):
                 self.assertEqual(data, expected_output)
 
 try:
-    import _testclinic as ac_tester
+    importiere _testclinic as ac_tester
 except ImportError:
     ac_tester = Nichts
 
@@ -3044,7 +3044,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.assertEqual(ac_tester.char_converter(*chars), expected)
 
     def test_unsigned_char_converter(self):
-        from _testcapi import UCHAR_MAX
+        von _testcapi importiere UCHAR_MAX
         SCHAR_MAX = UCHAR_MAX // 2
         SCHAR_MIN = SCHAR_MAX - UCHAR_MAX
         with self.assertRaises(OverflowError):
@@ -3065,7 +3065,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
             self.assertEqual(ac_tester.unsigned_char_converter(0, 0, (UCHAR_MAX + 1) * 3 + 123), (0, 0, 123))
 
     def test_short_converter(self):
-        from _testcapi import SHRT_MIN, SHRT_MAX
+        von _testcapi importiere SHRT_MIN, SHRT_MAX
         with self.assertRaises(OverflowError):
             ac_tester.short_converter(SHRT_MIN - 1)
         with self.assertRaises(OverflowError):
@@ -3076,7 +3076,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.assertEqual(ac_tester.short_converter(4321), (4321,))
 
     def test_unsigned_short_converter(self):
-        from _testcapi import SHRT_MIN, SHRT_MAX, USHRT_MAX
+        von _testcapi importiere SHRT_MIN, SHRT_MAX, USHRT_MAX
         with self.assertRaises(ValueError):
             ac_tester.unsigned_short_converter(-1)
         with self.assertRaises(OverflowError):
@@ -3095,7 +3095,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
             self.assertEqual(ac_tester.unsigned_short_converter(0, 0, (USHRT_MAX + 1) * 3 + 123), (0, 0, 123))
 
     def test_int_converter(self):
-        from _testcapi import INT_MIN, INT_MAX
+        von _testcapi importiere INT_MIN, INT_MAX
         with self.assertRaises(OverflowError):
             ac_tester.int_converter(INT_MIN - 1)
         with self.assertRaises(OverflowError):
@@ -3108,7 +3108,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.assertEqual(ac_tester.int_converter(1, 2, '3'), (1, 2, ord('3')))
 
     def test_unsigned_int_converter(self):
-        from _testcapi import INT_MIN, INT_MAX, UINT_MAX
+        von _testcapi importiere INT_MIN, INT_MAX, UINT_MAX
         with self.assertRaises(ValueError):
             ac_tester.unsigned_int_converter(-1)
         with self.assertRaises(OverflowError):
@@ -3127,7 +3127,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
             self.assertEqual(ac_tester.unsigned_int_converter(0, 0, (UINT_MAX + 1) * 3 + 123), (0, 0, 123))
 
     def test_long_converter(self):
-        from _testcapi import LONG_MIN, LONG_MAX
+        von _testcapi importiere LONG_MIN, LONG_MAX
         with self.assertRaises(OverflowError):
             ac_tester.long_converter(LONG_MIN - 1)
         with self.assertRaises(OverflowError):
@@ -3138,7 +3138,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.assertEqual(ac_tester.long_converter(-1234), (-1234,))
 
     def test_unsigned_long_converter(self):
-        from _testcapi import LONG_MIN, LONG_MAX, ULONG_MAX
+        von _testcapi importiere LONG_MIN, LONG_MAX, ULONG_MAX
         with self.assertRaises(ValueError):
             ac_tester.unsigned_long_converter(-1)
         with self.assertRaises(OverflowError):
@@ -3157,7 +3157,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
             self.assertEqual(ac_tester.unsigned_long_converter(0, 0, (ULONG_MAX + 1) * 3 + 123), (0, 0, 123))
 
     def test_long_long_converter(self):
-        from _testcapi import LLONG_MIN, LLONG_MAX
+        von _testcapi importiere LLONG_MIN, LLONG_MAX
         with self.assertRaises(OverflowError):
             ac_tester.long_long_converter(LLONG_MIN - 1)
         with self.assertRaises(OverflowError):
@@ -3168,7 +3168,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.assertEqual(ac_tester.long_long_converter(-1234), (-1234,))
 
     def test_unsigned_long_long_converter(self):
-        from _testcapi import LLONG_MIN, LLONG_MAX, ULLONG_MAX
+        von _testcapi importiere LLONG_MIN, LLONG_MAX, ULLONG_MAX
         with self.assertRaises(ValueError):
             ac_tester.unsigned_long_long_converter(-1)
         with self.assertRaises(OverflowError):
@@ -3187,7 +3187,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
             self.assertEqual(ac_tester.unsigned_long_long_converter(0, 0, (ULLONG_MAX + 1) * 3 + 123), (0, 0, 123))
 
     def test_py_ssize_t_converter(self):
-        from _testcapi import PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
+        von _testcapi importiere PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
         with self.assertRaises(OverflowError):
             ac_tester.py_ssize_t_converter(PY_SSIZE_T_MIN - 1)
         with self.assertRaises(OverflowError):
@@ -3198,7 +3198,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         self.assertEqual(ac_tester.py_ssize_t_converter(1, 2, Nichts), (1, 2, 56))
 
     def test_slice_index_converter(self):
-        from _testcapi import PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
+        von _testcapi importiere PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
         with self.assertRaises(TypeError):
             ac_tester.slice_index_converter([])
         self.assertEqual(ac_tester.slice_index_converter(), (12, 34, 56))
@@ -3593,7 +3593,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         check(meth, a=1)
 
     def test_get_defining_class_capi(self):
-        from _testcapi import pyobject_vectorcall
+        von _testcapi importiere pyobject_vectorcall
         obj = ac_tester.TestClass()
         meth = obj.get_defining_class
         pyobject_vectorcall(meth, Nichts, Nichts)
@@ -3979,7 +3979,7 @@ klasse LimitedCAPIOutputTests(unittest.TestCase):
 
 
 try:
-    import _testclinic_limited
+    importiere _testclinic_limited
 except ImportError:
     _testclinic_limited = Nichts
 

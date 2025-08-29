@@ -16,14 +16,14 @@ Python, however, can easily fill in the gap.
 
 __author__ = "Steve Dower <steve.dower@microsoft.com>"
 
-import csv
-import re
-import sys
+importiere csv
+importiere re
+importiere sys
 
-from collections import defaultdict
-from itertools import chain, zip_longest
-from pathlib import PureWindowsPath
-from uuid import uuid1
+von collections importiere defaultdict
+von itertools importiere chain, zip_longest
+von pathlib importiere PureWindowsPath
+von uuid importiere uuid1
 
 ID_CHAR_SUBS = {
     '-': '_',

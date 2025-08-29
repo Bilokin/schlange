@@ -1,26 +1,26 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-import argparse
-import inspect
-import os
-import re
-import sys
-from collections.abc import Callable
-from typing import NoReturn
+importiere argparse
+importiere inspect
+importiere os
+importiere re
+importiere sys
+von collections.abc importiere Callable
+von typing importiere NoReturn
 
 
 # Local imports.
-import libclinic
-import libclinic.cpp
-from libclinic import ClinicError
-from libclinic.language import Language, PythonLanguage
-from libclinic.block_parser import BlockParser
-from libclinic.converter import (
+importiere libclinic
+importiere libclinic.cpp
+von libclinic importiere ClinicError
+von libclinic.language importiere Language, PythonLanguage
+von libclinic.block_parser importiere BlockParser
+von libclinic.converter importiere (
     ConverterType, converters, legacy_converters)
-from libclinic.return_converters import (
+von libclinic.return_converters importiere (
     return_converters, ReturnConverterType)
-from libclinic.clanguage import CLanguage
-from libclinic.app import Clinic
+von libclinic.clanguage importiere CLanguage
+von libclinic.app importiere Clinic
 
 
 # TODO:

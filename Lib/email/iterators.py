@@ -11,8 +11,8 @@ __all__ = [
     # Do not include _structure() since it's part of the debugging API.
     ]
 
-import sys
-from io import StringIO
+importiere sys
+von io importiere StringIO
 
 
 # This function will become a method of the Message class
@@ -25,7 +25,7 @@ def walk(self):
     yield self
     wenn self.is_multipart():
         fuer subpart in self.get_payload():
-            yield from subpart.walk()
+            yield von subpart.walk()
 
 
 # These two functions are imported into the Iterators.py interface module.
@@ -37,7 +37,7 @@ def body_line_iterator(msg, decode=Falsch):
     fuer subpart in msg.walk():
         payload = subpart.get_payload(decode=decode)
         wenn isinstance(payload, str):
-            yield from StringIO(payload)
+            yield von StringIO(payload)
 
 
 def typed_subpart_iterator(msg, maintype='text', subtype=Nichts):

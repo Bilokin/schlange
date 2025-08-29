@@ -1,10 +1,10 @@
-import unittest
+importiere unittest
 
-from itertools import cycle
-from threading import Event, Thread
-from unittest import TestCase
+von itertools importiere cycle
+von threading importiere Event, Thread
+von unittest importiere TestCase
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 @threading_helper.requires_working_threading()
 klasse TestStr(TestCase):

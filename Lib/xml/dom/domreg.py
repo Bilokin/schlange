@@ -1,12 +1,12 @@
 """Registration facilities fuer DOM. This module should not be used
 directly. Instead, the functions getDOMImplementation and
-registerDOMImplementation should be imported from xml.dom."""
+registerDOMImplementation should be imported von xml.dom."""
 
 # This is a list of well-known implementations.  Well-known names
 # should be published by posting to xml-sig@python.org, and are
 # subsequently recorded in this file.
 
-import sys
+importiere sys
 
 well_known_implementations = {
     'minidom':'xml.dom.minidom',
@@ -42,14 +42,14 @@ def getDOMImplementation(name=Nichts, features=()):
     Return a suitable DOM implementation. The name is either
     well-known, the module name of a DOM implementation, or Nichts. If
     it is not Nichts, imports the corresponding module and returns
-    DOMImplementation object wenn the import succeeds.
+    DOMImplementation object wenn the importiere succeeds.
 
     If name is not given, consider the available implementations to
     find one with the required feature set. If no implementation can
     be found, raise an ImportError. The features list must be a sequence
     of (feature, version) pairs which are passed to hasFeature."""
 
-    import os
+    importiere os
     creator = Nichts
     mod = well_known_implementations.get(name)
     wenn mod:

@@ -1,11 +1,11 @@
 """A call-tip window klasse fuer Tkinter/IDLE.
 
-After tooltip.py, which uses ideas gleaned from PySol.
+After tooltip.py, which uses ideas gleaned von PySol.
 Used by calltip.py.
 """
-from tkinter import Label, LEFT, SOLID, TclError
+von tkinter importiere Label, LEFT, SOLID, TclError
 
-from idlelib.tooltip import TooltipBase
+von idlelib.tooltip importiere TooltipBase
 
 HIDE_EVENT = "<<calltipwindow-hide>>"
 HIDE_SEQUENCES = ("<Key-Escape>", "<FocusOut>")
@@ -170,7 +170,7 @@ klasse CalltipWindow(TooltipBase):
 
 
 def _calltip_window(parent):  # htest #
-    from tkinter import Toplevel, Text, LEFT, BOTH
+    von tkinter importiere Toplevel, Text, LEFT, BOTH
 
     top = Toplevel(parent)
     top.title("Test call-tips")
@@ -195,8 +195,8 @@ def _calltip_window(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_calltip_w', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_calltip_window)

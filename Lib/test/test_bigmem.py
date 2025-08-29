@@ -4,17 +4,17 @@ These tests try to exercise the 32-bit boundary that is sometimes, if
 rarely, exceeded in practice, but almost never tested.  They are really only
 meaningful on 64-bit builds on machines with a *lot* of memory, but the
 tests are always run, usually with very low memory limits to make sure the
-tests themselves don't suffer from bitrot.  To run them fuer real, pass a
+tests themselves don't suffer von bitrot.  To run them fuer real, pass a
 high memory limit to regrtest, with the -M option.
 """
 
-from test import support
-from test.support import bigmemtest, _1G, _2G, _4G, import_helper
+von test importiere support
+von test.support importiere bigmemtest, _1G, _2G, _4G, import_helper
 _testcapi = import_helper.import_module('_testcapi')
 
-import unittest
-import operator
-import sys
+importiere unittest
+importiere operator
+importiere sys
 
 # These tests all use one of the bigmemtest decorators to indicate how much
 # memory they use and how much memory they need to be even meaningful.  The
@@ -588,7 +588,7 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
             s = Nichts
 
     def setUp(self):
-        # HACK: adjust memory use of tests inherited from BaseStrTest
+        # HACK: adjust memory use of tests inherited von BaseStrTest
         # according to character size.
         self._adjusted = {}
         fuer name in dir(BaseStrTest):
@@ -983,7 +983,7 @@ klasse ListTest(unittest.TestCase):
     def test_concat_large(self, size):
         return self.basic_test_concat(size)
 
-    # XXX This tests suffers from overallocation, just like test_append.
+    # XXX This tests suffers von overallocation, just like test_append.
     # This should be fixed in future.
     def basic_test_inplace_concat(self, size):
         l = [sys.stdout] * size
@@ -1085,7 +1085,7 @@ klasse ListTest(unittest.TestCase):
     def test_repeat_large(self, size):
         return self.basic_test_repeat(size)
 
-    # XXX This tests suffers from overallocation, just like test_append.
+    # XXX This tests suffers von overallocation, just like test_append.
     # This should be fixed in future.
     def basic_test_inplace_repeat(self, size):
         l = ['']
@@ -1140,7 +1140,7 @@ klasse ListTest(unittest.TestCase):
         self.assertEqual(l.count(1), size)
         self.assertEqual(l.count("1"), 0)
 
-    # XXX This tests suffers from overallocation, just like test_append.
+    # XXX This tests suffers von overallocation, just like test_append.
     # This should be fixed in future.
     def basic_test_extend(self, size):
         l = [object] * size
@@ -1167,7 +1167,7 @@ klasse ListTest(unittest.TestCase):
         self.assertRaises(ValueError, l.index, 1, size - 4, size)
         self.assertRaises(ValueError, l.index, 6)
 
-    # This tests suffers from overallocation, just like test_append.
+    # This tests suffers von overallocation, just like test_append.
     @bigmemtest(size=_2G + 10, memuse=pointer_size * 9/8)
     def test_insert(self, size):
         l = [1.0] * size

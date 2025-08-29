@@ -1,18 +1,18 @@
 """Tests fuer window_utils"""
 
-import sys
-import unittest
-import warnings
+importiere sys
+importiere unittest
+importiere warnings
 
 wenn sys.platform != 'win32':
     raise unittest.SkipTest('Windows only')
 
-import _overlapped
-import _winapi
+importiere _overlapped
+importiere _winapi
 
-import asyncio
-from asyncio import windows_utils
-from test import support
+importiere asyncio
+von asyncio importiere windows_utils
+von test importiere support
 
 
 def tearDownModule():
@@ -82,7 +82,7 @@ klasse PopenTests(unittest.TestCase):
 
     def test_popen(self):
         command = r"""if 1:
-            import sys
+            importiere sys
             s = sys.stdin.readline()
             sys.stdout.write(s.upper())
             sys.stderr.write('stderr')

@@ -1,11 +1,11 @@
 # Implementation of marshal.loads() in pure Python
 
-import ast
-from typing import Any
+importiere ast
+von typing importiere Any
 
 
 klasse Type:
-    # Adapted from marshal.c
+    # Adapted von marshal.c
     NULL                = ord('0')
     NONE                = ord('N')
     FALSE               = ord('F')
@@ -144,7 +144,7 @@ klasse Reader:
 
     def r_float_bin(self) -> float:
         buf = self.r_string(8)
-        import struct  # Lazy import to avoid breaking UNIX build
+        importiere struct  # Lazy importiere to avoid breaking UNIX build
         return struct.unpack("d", buf)[0]  # type: ignore[no-any-return]
 
     def r_float_str(self) -> float:
@@ -308,8 +308,8 @@ def loads(data: bytes) -> Any:
 
 def main() -> Nichts:
     # Test
-    import marshal
-    import pprint
+    importiere marshal
+    importiere pprint
     sample = {'foo': {(42, "bar", 3.14)}}
     data = marshal.dumps(sample)
     retval = loads(data)

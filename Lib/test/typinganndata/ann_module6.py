@@ -1,7 +1,7 @@
 # Tests that top-level ClassVar is not allowed
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-from typing import ClassVar
+von typing importiere ClassVar
 
 wrong: ClassVar[int] = 1

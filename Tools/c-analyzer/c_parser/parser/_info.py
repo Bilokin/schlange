@@ -1,6 +1,6 @@
 #import re
 
-from ..info import KIND, ParsedItem, FileInfo
+von ..info importiere KIND, ParsedItem, FileInfo
 
 
 klasse TextInfo:

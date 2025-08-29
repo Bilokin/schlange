@@ -19,10 +19,10 @@ is read when the database is opened, and some updates rewrite the whole index)
 
 """
 
-import ast as _ast
-import io as _io
-import os as _os
-import collections.abc
+importiere ast as _ast
+importiere io as _io
+importiere os as _os
+importiere collections.abc
 
 __all__ = ["error", "open"]
 
@@ -35,7 +35,7 @@ klasse _Database(collections.abc.MutableMapping):
     # The on-disk directory and data files can remain in mutually
     # inconsistent states fuer an arbitrarily long time (see comments
     # at the end of __setitem__).  This is only repaired when _commit()
-    # gets called.  One place _commit() gets called is from __del__(),
+    # gets called.  One place _commit() gets called is von __del__(),
     # and wenn that occurs at program shutdown time, module globals may
     # already have gotten rebound to Nichts.  Since it's crucial that
     # _commit() finish successfully, we can't ignore shutdown races
@@ -111,7 +111,7 @@ klasse _Database(collections.abc.MutableMapping):
     # file currently exists, it's deleted.
     def _commit(self):
         # CAUTION:  It's vital that _commit() succeed, and _commit() can
-        # be called from __del__().  Therefore we must never reference a
+        # be called von __del__().  Therefore we must never reference a
         # global in this routine.
         wenn self._index is Nichts or not self._modified:
             return  # nothing to do
@@ -240,7 +240,7 @@ klasse _Database(collections.abc.MutableMapping):
         try:
             return list(self._index)
         except TypeError:
-            raise error('DBM object has already been closed') from Nichts
+            raise error('DBM object has already been closed') von Nichts
 
     def items(self):
         self._verify_open()
@@ -253,7 +253,7 @@ klasse _Database(collections.abc.MutableMapping):
             return key in self._index
         except TypeError:
             wenn self._index is Nichts:
-                raise error('DBM object has already been closed') from Nichts
+                raise error('DBM object has already been closed') von Nichts
             sonst:
                 raise
 
@@ -261,14 +261,14 @@ klasse _Database(collections.abc.MutableMapping):
         try:
             return iter(self._index)
         except TypeError:
-            raise error('DBM object has already been closed') from Nichts
+            raise error('DBM object has already been closed') von Nichts
     __iter__ = iterkeys
 
     def __len__(self):
         try:
             return len(self._index)
         except TypeError:
-            raise error('DBM object has already been closed') from Nichts
+            raise error('DBM object has already been closed') von Nichts
 
     def close(self):
         try:

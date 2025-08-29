@@ -3,4 +3,4 @@
 Module fuer using panels with curses.
 """
 
-from _curses_panel import *
+von _curses_panel importiere *

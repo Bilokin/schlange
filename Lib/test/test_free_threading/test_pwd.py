@@ -1,9 +1,9 @@
-import unittest
+importiere unittest
 
-from test.support import threading_helper
-from test.support.threading_helper import run_concurrently
+von test.support importiere threading_helper
+von test.support.threading_helper importiere run_concurrently
 
-from test import test_pwd
+von test importiere test_pwd
 
 
 NTHREADS = 10

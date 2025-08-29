@@ -1,14 +1,14 @@
 # This script lists the names of standard library modules
 # to update Python/stdlib_module_names.h
-from __future__ import annotations
+von __future__ importiere annotations
 
-import _imp
-import os.path
-import sys
-import sysconfig
-from typing import TextIO
+importiere _imp
+importiere os.path
+importiere sys
+importiere sysconfig
+von typing importiere TextIO
 
-from check_extension_modules import ModuleChecker
+von check_extension_modules importiere ModuleChecker
 
 SCRIPT_NAME = 'Tools/build/generate_stdlib_module_names.py'
 

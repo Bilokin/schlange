@@ -1,27 +1,27 @@
-# Adapted from test_file.py by Daniel Stutzbach
+# Adapted von test_file.py by Daniel Stutzbach
 
-import sys
-import os
-import io
-import errno
-import unittest
-from array import array
-from weakref import proxy
-from functools import wraps
+importiere sys
+importiere os
+importiere io
+importiere errno
+importiere unittest
+von array importiere array
+von weakref importiere proxy
+von functools importiere wraps
 
-from test.support import (
+von test.support importiere (
     cpython_only, swap_attr, gc_collect, is_wasi,
     infinite_recursion, strace_helper
 )
-from test.support.os_helper import (
+von test.support.os_helper importiere (
     TESTFN, TESTFN_ASCII, TESTFN_UNICODE, make_bad_fd,
     )
-from test.support.warnings_helper import check_warnings
-from test.support.import_helper import import_module
-from collections import UserList
+von test.support.warnings_helper importiere check_warnings
+von test.support.import_helper importiere import_module
+von collections importiere UserList
 
-import _io  # C implementation of io
-import _pyio # Python implementation of io
+importiere _io  # C implementation of io
+importiere _pyio # Python implementation of io
 
 
 _strace_flags=["--trace=%file,%desc"]
@@ -78,7 +78,7 @@ klasse AutoFileTests:
     def testBlksize(self):
         # test private _blksize attribute
         blksize = io.DEFAULT_BUFFER_SIZE
-        # try to get preferred blksize from stat.st_blksize, wenn available
+        # try to get preferred blksize von stat.st_blksize, wenn available
         wenn hasattr(os, 'fstat'):
             fst = os.fstat(self.f.fileno())
             blksize = getattr(fst, 'st_blksize', blksize)
@@ -390,7 +390,7 @@ klasse AutoFileTests:
                 # The first call should be an open that returns a
                 # file descriptor (fd). Afer that calls may vary. Once the file
                 # is opened, check calls refer to it by fd as the filename
-                # could be removed from the filesystem, renamed, etc. See:
+                # could be removed von the filesystem, renamed, etc. See:
                 # Time-of-check time-of-use (TOCTOU) software bug class.
                 #
                 # There are a number of related but distinct open system calls
@@ -475,7 +475,7 @@ klasse AutoFileTests:
         check_readall(
             "pathlib read_bytes",
             "p.read_bytes()",
-            prelude=f"""from pathlib import Path; p = Path("{TESTFN}")""",
+            prelude=f"""from pathlib importiere Path; p = Path("{TESTFN}")""",
             # GH-122111: Buffering is disabled so these calls are avoided.
             extra_checks=[("seek", 0)]
         )
@@ -483,7 +483,7 @@ klasse AutoFileTests:
         check_readall(
             "pathlib read_text",
             "p.read_text()",
-            prelude=f"""from pathlib import Path; p = Path("{TESTFN}")"""
+            prelude=f"""from pathlib importiere Path; p = Path("{TESTFN}")"""
         )
 
         # Focus on just `read()`.
@@ -622,7 +622,7 @@ klasse OtherFileTests:
         self.assertRaises(ValueError, self.FileIO, -10)
         self.assertRaises(OSError, self.FileIO, make_bad_fd())
         wenn sys.platform == 'win32':
-            import msvcrt
+            importiere msvcrt
             self.assertRaises(OSError, msvcrt.get_osfhandle, make_bad_fd())
 
     def testBooleanFd(self):

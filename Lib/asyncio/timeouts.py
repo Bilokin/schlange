@@ -1,10 +1,10 @@
-import enum
+importiere enum
 
-from types import TracebackType
+von types importiere TracebackType
 
-from . import events
-from . import exceptions
-from . import tasks
+von . importiere events
+von . importiere exceptions
+von . importiere tasks
 
 
 __all__ = (
@@ -111,7 +111,7 @@ klasse Timeout:
                 # Since there are no new cancel requests, we're
                 # handling this.
                 wenn issubclass(exc_type, exceptions.CancelledError):
-                    raise TimeoutError from exc_val
+                    raise TimeoutError von exc_val
                 sowenn exc_val is not Nichts:
                     self._insert_timeout_error(exc_val)
                     wenn isinstance(exc_val, ExceptionGroup):

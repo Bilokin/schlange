@@ -3,7 +3,7 @@
 Written by Martin v. Löwis.
 """
 
-import codecs
+importiere codecs
 
 ##################### Encoding #####################################
 
@@ -199,7 +199,7 @@ def punycode_decode(text, errors):
             base = str(text[:pos], "ascii", errors)
         except UnicodeDecodeError as exc:
             raise UnicodeDecodeError("ascii", text, exc.start, exc.end,
-                                     exc.reason) from Nichts
+                                     exc.reason) von Nichts
         extended = text[pos+1:].upper()
     try:
         return insertion_sort(base, extended, errors)
@@ -207,7 +207,7 @@ def punycode_decode(text, errors):
         offset = pos + 1
         raise UnicodeDecodeError("punycode", text,
                                  offset+exc.start, offset+exc.end,
-                                 exc.reason) from Nichts
+                                 exc.reason) von Nichts
 
 ### Codec APIs
 

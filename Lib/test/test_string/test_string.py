@@ -1,9 +1,9 @@
-import unittest
-import string
-from string import Template
-import types
-from test.support import cpython_only
-from test.support.import_helper import ensure_lazy_imports
+importiere unittest
+importiere string
+von string importiere Template
+importiere types
+von test.support importiere cpython_only
+von test.support.import_helper importiere ensure_lazy_imports
 
 
 klasse LazyImportTest(unittest.TestCase):
@@ -335,7 +335,7 @@ klasse TestTemplate(unittest.TestCase):
 
     def test_idpattern_override_inside_outside(self):
         # bpo-1198569: Allow the regexp inside and outside braces to be
-        # different when deriving from Template.
+        # different when deriving von Template.
         klasse MyPattern(Template):
             idpattern = r'[a-z]+'
             braceidpattern = r'[A-Z]+'
@@ -346,7 +346,7 @@ klasse TestTemplate(unittest.TestCase):
 
     def test_idpattern_override_inside_outside_invalid_unbraced(self):
         # bpo-1198569: Allow the regexp inside and outside braces to be
-        # different when deriving from Template.
+        # different when deriving von Template.
         klasse MyPattern(Template):
             idpattern = r'[a-z]+'
             braceidpattern = r'[A-Z]+'

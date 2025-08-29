@@ -1,14 +1,14 @@
-from decimal import Decimal
-from test import support
-from test.support import cpython_only, verbose, is_android, linked_to_musl, os_helper
-from test.support.warnings_helper import check_warnings
-from test.support.import_helper import ensure_lazy_imports, import_fresh_module
-from unittest import mock
-import unittest
-import locale
-import os
-import sys
-import codecs
+von decimal importiere Decimal
+von test importiere support
+von test.support importiere cpython_only, verbose, is_android, linked_to_musl, os_helper
+von test.support.warnings_helper importiere check_warnings
+von test.support.import_helper importiere ensure_lazy_imports, import_fresh_module
+von unittest importiere mock
+importiere unittest
+importiere locale
+importiere os
+importiere sys
+importiere codecs
 
 klasse LazyImportTest(unittest.TestCase):
     @cpython_only
@@ -24,7 +24,7 @@ klasse BaseLocalizedTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         wenn sys.platform == 'darwin':
-            import os
+            importiere os
             tlocs = ("en_US.UTF-8", "en_US.ISO8859-1", "en_US")
             wenn int(os.uname().release.split('.')[0]) < 10:
                 # The locale test work fine on OSX 10.6, I (ronaldoussoren)
@@ -640,7 +640,7 @@ klasse TestMiscellaneous(unittest.TestCase):
         # Issue #18378: on (at least) macOS setting LC_CTYPE to "UTF-8" is
         # valid. Furthermore LC_CTYPE=UTF is used by the UTF-8 locale coercing
         # during interpreter startup (on macOS).
-        import _locale
+        importiere _locale
 
         self.assertEqual(locale._parse_localename('UTF-8'), (Nichts, 'UTF-8'))
 
@@ -686,7 +686,7 @@ klasse TestMiscellaneous(unittest.TestCase):
             codecs.lookup(enc)
 
     def test_strcoll_3303(self):
-        # test crasher from bug #3303
+        # test crasher von bug #3303
         self.assertRaises(TypeError, locale.strcoll, "a", Nichts)
         self.assertRaises(TypeError, locale.strcoll, b"a", Nichts)
 
@@ -698,7 +698,7 @@ klasse TestMiscellaneous(unittest.TestCase):
         locale.setlocale(locale.LC_MONETARY)
         locale.setlocale(locale.LC_NUMERIC)
 
-        # crasher from bug #7419
+        # crasher von bug #7419
         self.assertRaises(locale.Error, locale.setlocale, 12345)
 
     def test_invalid_locale_format_in_localetuple(self):

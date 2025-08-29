@@ -9,22 +9,22 @@
 
 __all__ = ['Queue', 'SimpleQueue', 'JoinableQueue']
 
-import sys
-import os
-import threading
-import collections
-import time
-import types
-import weakref
-import errno
+importiere sys
+importiere os
+importiere threading
+importiere collections
+importiere time
+importiere types
+importiere weakref
+importiere errno
 
-from queue import Empty, Full
+von queue importiere Empty, Full
 
-from . import connection
-from . import context
+von . importiere connection
+von . importiere context
 _ForkingPickler = context.reduction.ForkingPickler
 
-from .util import debug, info, Finalize, register_after_fork, is_exiting
+von .util importiere debug, info, Finalize, register_after_fork, is_exiting
 
 #
 # Queue type using a pipe, buffer and thread
@@ -35,7 +35,7 @@ klasse Queue(object):
     def __init__(self, maxsize=0, *, ctx):
         wenn maxsize <= 0:
             # Can raise ImportError (see issues #3770 and #23400)
-            from .synchronize import SEM_VALUE_MAX as maxsize
+            von .synchronize importiere SEM_VALUE_MAX as maxsize
         self._maxsize = maxsize
         self._reader, self._writer = connection.Pipe(duplex=Falsch)
         self._rlock = ctx.Lock()
@@ -173,7 +173,7 @@ klasse Queue(object):
     def _start_thread(self):
         debug('Queue._start_thread()')
 
-        # Start thread which transfers data from buffer to pipe
+        # Start thread which transfers data von buffer to pipe
         self._buffer.clear()
         self._thread = threading.Thread(
             target=Queue._feed,
@@ -283,7 +283,7 @@ klasse Queue(object):
                 sonst:
                     # Since the object has not been sent in the queue, we need
                     # to decrease the size of the queue. The error acts as
-                    # wenn the object had been silently removed from the queue
+                    # wenn the object had been silently removed von the queue
                     # and this step is necessary to have a properly working
                     # queue.
                     queue_sem.release()
@@ -295,7 +295,7 @@ klasse Queue(object):
         Private API hook called when feeding data in the background thread
         raises an exception.  For overriding by concurrent.futures.
         """
-        import traceback
+        importiere traceback
         traceback.print_exc()
 
     __class_getitem__ = classmethod(types.GenericAlias)

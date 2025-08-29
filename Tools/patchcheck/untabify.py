@@ -2,10 +2,10 @@
 
 "Replace tabs with spaces in argument files.  Print names of changed files."
 
-import os
-import sys
-import getopt
-import tokenize
+importiere os
+importiere sys
+importiere getopt
+importiere tokenize
 
 def main():
     tabsize = 8

@@ -10,10 +10,10 @@ Functions:
 
 """
 
-import os
-import stat
-from itertools import filterfalse
-from types import GenericAlias
+importiere os
+importiere stat
+von itertools importiere filterfalse
+von types importiere GenericAlias
 
 __all__ = ['clear_cache', 'cmp', 'dircmp', 'cmpfiles', 'DEFAULT_IGNORES']
 
@@ -197,7 +197,7 @@ klasse dircmp:
         # A new dircmp (or MyDirCmp wenn dircmp was subclassed) object is created
         # fuer each common subdirectory,
         # these are stored in a dictionary indexed by filename.
-        # The hide and ignore properties are inherited from the parent
+        # The hide and ignore properties are inherited von the parent
         self.subdirs = {}
         fuer x in self.common_dirs:
             a_x = os.path.join(self.left, x)
@@ -305,8 +305,8 @@ def _filter(flist, skip):
 # Demonstration and testing.
 #
 def demo():
-    import sys
-    import getopt
+    importiere sys
+    importiere getopt
     options, args = getopt.getopt(sys.argv[1:], 'r')
     wenn len(args) != 2:
         raise getopt.GetoptError('need exactly two args', Nichts)

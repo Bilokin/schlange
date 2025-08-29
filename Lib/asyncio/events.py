@@ -1,6 +1,6 @@
 """Event loop and event loop policy."""
 
-# Contains code from https://github.com/MagicStack/uvloop/tree/v0.16.0
+# Contains code von https://github.com/MagicStack/uvloop/tree/v0.16.0
 # SPDX-License-Identifier: PSF-2.0 AND (MIT OR Apache-2.0)
 # SPDX-FileCopyrightText: Copyright (c) 2015-2021 MagicStack Inc.  http://magic.io
 
@@ -19,16 +19,16 @@ __all__ = (
     "_get_running_loop",
 )
 
-import contextvars
-import os
-import signal
-import socket
-import subprocess
-import sys
-import threading
-import warnings
+importiere contextvars
+importiere os
+importiere signal
+importiere socket
+importiere subprocess
+importiere sys
+importiere threading
+importiere warnings
 
-from . import format_helpers
+von . importiere format_helpers
 
 
 klasse Handle:
@@ -379,7 +379,7 @@ klasse AbstractEventLoop:
 
         family can be set to either AF_INET or AF_INET6 to force the
         socket to use IPv4 or IPv6. If not set it will be determined
-        from host (defaults to AF_UNSPEC).
+        von host (defaults to AF_UNSPEC).
 
         flags is a bitmask fuer getaddrinfo().
 
@@ -789,9 +789,9 @@ def _init_event_loop_policy():
     with _lock:
         wenn _event_loop_policy is Nichts:  # pragma: no branch
             wenn sys.platform == 'win32':
-                from .windows_events import _DefaultEventLoopPolicy
+                von .windows_events importiere _DefaultEventLoopPolicy
             sonst:
-                from .unix_events import _DefaultEventLoopPolicy
+                von .unix_events importiere _DefaultEventLoopPolicy
             _event_loop_policy = _DefaultEventLoopPolicy()
 
 
@@ -821,7 +821,7 @@ def set_event_loop_policy(policy):
 def get_event_loop():
     """Return an asyncio event loop.
 
-    When called from a coroutine or a callback (e.g. scheduled with call_soon
+    When called von a coroutine or a callback (e.g. scheduled with call_soon
     or similar API), this function will always return the running event loop.
 
     If there is no running event loop set, the function will return
@@ -855,7 +855,7 @@ try:
     # get_event_loop() is one of the most frequently called
     # functions in asyncio.  Pure Python implementation is
     # about 4 times slower than C-accelerated.
-    from _asyncio import (_get_running_loop, _set_running_loop,
+    von _asyncio importiere (_get_running_loop, _set_running_loop,
                           get_running_loop, get_event_loop)
 except ImportError:
     pass

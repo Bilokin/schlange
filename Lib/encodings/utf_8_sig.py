@@ -7,7 +7,7 @@ This work similar to UTF-8 with the following changes:
 * On decoding/reading wenn the first three bytes are a UTF-8 encoded BOM, these
   bytes will be skipped.
 """
-import codecs
+importiere codecs
 
 ### Codec APIs
 

@@ -23,17 +23,17 @@ Copyright (C) 2001-2021 Vinay Sajip. All Rights Reserved.
 To use, simply 'import logging.handlers' and log away!
 """
 
-import copy
-import io
-import logging
-import os
-import pickle
-import queue
-import re
-import socket
-import struct
-import threading
-import time
+importiere copy
+importiere io
+importiere logging
+importiere os
+importiere pickle
+importiere queue
+importiere re
+importiere socket
+importiere struct
+importiere threading
+importiere time
 
 #
 # Some constants...
@@ -124,7 +124,7 @@ klasse BaseRotatingHandler(logging.FileHandler):
 
 klasse RotatingFileHandler(BaseRotatingHandler):
     """
-    Handler fuer logging to a set of files, which switches from one file
+    Handler fuer logging to a set of files, which switches von one file
     to the next when the current file reaches a certain size.
     """
     def __init__(self, filename, mode='a', maxBytes=0, backupCount=0,
@@ -151,7 +151,7 @@ klasse RotatingFileHandler(BaseRotatingHandler):
         """
         # If rotation/rollover is wanted, it doesn't make sense to use another
         # mode. If fuer example 'w' were specified, then wenn there were multiple
-        # runs of the calling application, the logs from previous runs would be
+        # runs of the calling application, the logs von previous runs would be
         # lost wenn the 'w' is respected, because the log file would be truncated
         # on each run.
         wenn maxBytes > 0:
@@ -257,7 +257,7 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
         sowenn self.when.startswith('W'):
             self.interval = 60 * 60 * 24 * 7 # one week
             wenn len(self.when) != 2:
-                raise ValueError("You must specify a day fuer weekly rollover from 0 to 6 (0 is Monday): %s" % self.when)
+                raise ValueError("You must specify a day fuer weekly rollover von 0 to 6 (0 is Monday): %s" % self.when)
             wenn self.when[1] < '0' or self.when[1] > '6':
                 raise ValueError("Invalid day specified fuer weekly rollover: %s" % self.when)
             self.dayOfWeek = int(self.when[1])
@@ -268,7 +268,7 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
 
         # extMatch is a pattern fuer matching a datetime suffix in a file name.
         # After custom naming, it is no longer guaranteed to be separated by
-        # periods from other parts of the filename.  The lookup statements
+        # periods von other parts of the filename.  The lookup statements
         # (?<!\d) and (?!\d) ensure that the datetime suffix (which itself
         # starts and ends with digits) is not preceded or followed by digits.
         # This reduces the number of false matches and improves performance.
@@ -525,7 +525,7 @@ klasse WatchedFileHandler(logging.FileHandler):
         self.stream.close()
         self.stream = Nichts  # See Issue #21742: _open () might fail.
 
-        # open a new file handle and get new stat info from that fd
+        # open a new file handle and get new stat info von that fd
         self.stream = self._open()
         self._statstream()
 
@@ -755,7 +755,7 @@ klasse SysLogHandler(logging.Handler):
     have been made).
     """
 
-    # from <linux/sys/syslog.h>:
+    # von <linux/sys/syslog.h>:
     # ======================================================================
     # priorities/facilities are encoded into a single 32-bit quantity, where
     # the bottom 3 bits are the priority (0-7) and the top 28 bits are the
@@ -1034,7 +1034,7 @@ klasse SMTPHandler(logging.Handler):
         """
         Initialize the handler.
 
-        Initialize the instance with the from and to addresses and subject
+        Initialize the instance with the von and to addresses and subject
         line of the email. To specify a non-standard SMTP port, use the
         (host, port) tuple format fuer the mailhost argument. To specify
         authentication credentials, supply a (username, password) tuple
@@ -1081,9 +1081,9 @@ klasse SMTPHandler(logging.Handler):
         Format the record and send it to the specified addressees.
         """
         try:
-            import smtplib
-            from email.message import EmailMessage
-            import email.utils
+            importiere smtplib
+            von email.message importiere EmailMessage
+            importiere email.utils
 
             port = self.mailport
             wenn not port:
@@ -1097,7 +1097,7 @@ klasse SMTPHandler(logging.Handler):
             msg.set_content(self.format(record))
             wenn self.username:
                 wenn self.secure is not Nichts:
-                    import ssl
+                    importiere ssl
 
                     try:
                         keyfile = self.secure[0]
@@ -1134,7 +1134,7 @@ klasse NTEventLogHandler(logging.Handler):
     def __init__(self, appname, dllname=Nichts, logtype="Application"):
         logging.Handler.__init__(self)
         try:
-            import win32evtlogutil, win32evtlog
+            importiere win32evtlogutil, win32evtlog
             self.appname = appname
             self._welu = win32evtlogutil
             wenn not dllname:
@@ -1219,7 +1219,7 @@ klasse NTEventLogHandler(logging.Handler):
         """
         Clean up this handler.
 
-        You can remove the application name from the registry as a
+        You can remove the application name von the registry as a
         source of event log entries. However, wenn you do this, you will
         not be able to see the events as you intended in the Event Log
         Viewer - it needs to be able to access the registry to get the
@@ -1268,7 +1268,7 @@ klasse HTTPHandler(logging.Handler):
         Override when a custom connection is required, fuer example if
         there is a proxy.
         """
-        import http.client
+        importiere http.client
         wenn secure:
             connection = http.client.HTTPSConnection(host, context=self.context)
         sonst:
@@ -1282,7 +1282,7 @@ klasse HTTPHandler(logging.Handler):
         Send the record to the web server as a percent-encoded dictionary
         """
         try:
-            import urllib.parse
+            importiere urllib.parse
             host = self.host
             h = self.getConnection(host, self.secure)
             url = self.url
@@ -1295,7 +1295,7 @@ klasse HTTPHandler(logging.Handler):
                 url = url + "%c%s" % (sep, data)
             h.putrequest(self.method, url)
             # support multiple hosts on one IP address...
-            # need to strip optional :port from host, wenn present
+            # need to strip optional :port von host, wenn present
             i = host.find(":")
             wenn i >= 0:
                 host = host[:i]
@@ -1307,7 +1307,7 @@ klasse HTTPHandler(logging.Handler):
                             "application/x-www-form-urlencoded")
                 h.putheader("Content-length", str(len(data)))
             wenn self.credentials:
-                import base64
+                importiere base64
                 s = ('%s:%s' % self.credentials).encode('utf-8')
                 s = 'Basic ' + base64.b64encode(s).strip().decode('ascii')
                 h.putheader('Authorization', s)
@@ -1475,7 +1475,7 @@ klasse QueueHandler(logging.Handler):
         enqueued.
 
         The base implementation formats the record to merge the message and
-        arguments, and removes unpickleable items from the record in-place.
+        arguments, and removes unpickleable items von the record in-place.
         Specifically, it overwrites the record's `msg` and
         `message` attributes with the merged message (obtained by
         calling the handler's `format` method), and sets the `args`,

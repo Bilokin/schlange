@@ -1,16 +1,16 @@
 # test fuer xml.dom.minidom
 
-import copy
-import pickle
-import io
-from test import support
-import unittest
+importiere copy
+importiere pickle
+importiere io
+von test importiere support
+importiere unittest
 
-import xml.dom.minidom
+importiere xml.dom.minidom
 
-from xml.dom.minidom import parse, Attr, Node, Document, parseString
-from xml.dom.minidom import getDOMImplementation
-from xml.parsers.expat import ExpatError
+von xml.dom.minidom importiere parse, Attr, Node, Document, parseString
+von xml.dom.minidom importiere getDOMImplementation
+von xml.parsers.expat importiere ExpatError
 
 
 tstfile = support.findfile("test.xml", subdir="xmltestdata")

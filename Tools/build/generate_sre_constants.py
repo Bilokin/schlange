@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-# This script generates Modules/_sre/sre_constants.h from Lib/re/_constants.py.
+# This script generates Modules/_sre/sre_constants.h von Lib/re/_constants.py.
 
 SCRIPT_NAME = 'Tools/build/generate_sre_constants.py'
 
@@ -76,5 +76,5 @@ def main(
 
 
 wenn __name__ == '__main__':
-    import sys
+    importiere sys
     main(*sys.argv[1:])

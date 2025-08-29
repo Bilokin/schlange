@@ -1,6 +1,6 @@
-from enum import Enum, IntEnum
-from math import isnan
-from test.test_json import PyTest, CTest
+von enum importiere Enum, IntEnum
+von math importiere isnan
+von test.test_json importiere PyTest, CTest
 
 SMALL = 1
 BIG = 1<<32

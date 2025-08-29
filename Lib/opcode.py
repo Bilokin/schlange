@@ -9,11 +9,11 @@ __all__ = ["cmp_op", "stack_effect", "hascompare", "opname", "opmap",
            "HAVE_ARGUMENT", "EXTENDED_ARG", "hasarg", "hasconst", "hasname",
            "hasjump", "hasjrel", "hasjabs", "hasfree", "haslocal", "hasexc"]
 
-import builtins
-import _opcode
-from _opcode import stack_effect
+importiere builtins
+importiere _opcode
+von _opcode importiere stack_effect
 
-from _opcode_metadata import (_specializations, _specialized_opmap, opmap,  # noqa: F401
+von _opcode_metadata importiere (_specializations, _specialized_opmap, opmap,  # noqa: F401
                               HAVE_ARGUMENT, MIN_INSTRUMENTED_OPCODE)  # noqa: F401
 EXTENDED_ARG = opmap['EXTENDED_ARG']
 

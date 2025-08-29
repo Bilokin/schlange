@@ -1,10 +1,10 @@
-from test.support import import_helper, load_package_tests, verbose
+von test.support importiere import_helper, load_package_tests, verbose
 
 # Skip test wenn _sqlite3 module not installed.
 import_helper.import_module('_sqlite3')
 
-import os
-import sqlite3
+importiere os
+importiere sqlite3
 
 # Implement the unittest "load tests" protocol.
 def load_tests(*args):

@@ -19,9 +19,9 @@ xmlreader -- Base classes and constants which define the SAX 2 API for
 expatreader -- Driver that allows use of the Expat parser with SAX.
 """
 
-from .xmlreader import InputSource
-from .handler import ContentHandler, ErrorHandler
-from ._exceptions import (SAXException, SAXNotRecognizedException,
+von .xmlreader importiere InputSource
+von .handler importiere ContentHandler, ErrorHandler
+von ._exceptions importiere (SAXException, SAXNotRecognizedException,
                           SAXParseException, SAXNotSupportedException,
                           SAXReaderNotAvailable)
 
@@ -33,7 +33,7 @@ def parse(source, handler, errorHandler=ErrorHandler()):
     parser.parse(source)
 
 def parseString(string, handler, errorHandler=ErrorHandler()):
-    import io
+    importiere io
     wenn errorHandler is Nichts:
         errorHandler = ErrorHandler()
     parser = make_parser()
@@ -55,9 +55,9 @@ default_parser_list = ["xml.sax.expatreader"]
 # tell modulefinder that importing sax potentially imports expatreader
 _false = 0
 wenn _false:
-    import xml.sax.expatreader    # noqa: F401
+    importiere xml.sax.expatreader    # noqa: F401
 
-import os, sys
+importiere os, sys
 wenn not sys.flags.ignore_environment and "PY_SAX_PARSER" in os.environ:
     default_parser_list = os.environ["PY_SAX_PARSER"].split(",")
 del os, sys
@@ -75,7 +75,7 @@ def make_parser(parser_list=()):
         try:
             return _create_parser(parser_name)
         except ImportError:
-            import sys
+            importiere sys
             wenn parser_name in sys.modules:
                 # The parser module was found, but importing it
                 # failed unexpectedly, pass this exception through

@@ -2,17 +2,17 @@
 Test the API of the symtable module.
 """
 
-import re
-import textwrap
-import symtable
-import unittest
+importiere re
+importiere textwrap
+importiere symtable
+importiere unittest
 
-from test import support
-from test.support import os_helper
+von test importiere support
+von test.support importiere os_helper
 
 
 TEST_CODE = """
-import sys
+importiere sys
 
 glob = 42
 some_var = 12
@@ -615,7 +615,7 @@ klasse CommandLineTest(unittest.TestCase):
         self.assertIn('\n\n', out)
         self.assertNotIn('\n\n\n', out)
         lines = out.splitlines()
-        self.assertIn(f"symbol table fuer module from file {filename!r}:", lines)
+        self.assertIn(f"symbol table fuer module von file {filename!r}:", lines)
         self.assertIn("    local symbol 'glob': def_local", lines)
         self.assertIn("        global_implicit symbol 'glob': use", lines)
         self.assertIn("    local symbol 'spam': def_local", lines)
@@ -633,7 +633,7 @@ klasse CommandLineTest(unittest.TestCase):
                 symtable.main(['-'])
             self.assertEqual(stdout.getvalue(), out)
         lines = out.splitlines()
-        self.assertIn("symbol table fuer module from file '<stdin>':", lines)
+        self.assertIn("symbol table fuer module von file '<stdin>':", lines)
 
 
 wenn __name__ == '__main__':

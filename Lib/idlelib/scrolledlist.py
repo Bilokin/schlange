@@ -1,7 +1,7 @@
-from tkinter import *
-from tkinter.ttk import Frame, Scrollbar
+von tkinter importiere *
+von tkinter.ttk importiere Frame, Scrollbar
 
-from idlelib import macosx
+von idlelib importiere macosx
 
 
 klasse ScrolledList:
@@ -144,8 +144,8 @@ def _scrolled_list(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_scrolledlist', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_scrolled_list)

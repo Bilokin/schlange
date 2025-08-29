@@ -1,8 +1,8 @@
 # Helper module fuer testing stacklevel and skip_file_prefixes arguments
 # of warnings.warn()
 
-import warnings
-from test.test_warnings.data import package_helper
+importiere warnings
+von test.test_warnings.data importiere package_helper
 
 
 def outer(message, stacklevel=1, skip_file_prefixes=()):

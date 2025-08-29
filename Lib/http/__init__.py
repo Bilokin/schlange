@@ -1,4 +1,4 @@
-from enum import StrEnum, IntEnum, _simple_enum
+von enum importiere StrEnum, IntEnum, _simple_enum
 
 __all__ = ['HTTPStatus', 'HTTPMethod']
 
@@ -7,7 +7,7 @@ __all__ = ['HTTPStatus', 'HTTPMethod']
 klasse HTTPStatus:
     """HTTP status codes and reason phrases
 
-    Status codes from the following RFCs are all observed:
+    Status codes von the following RFCs are all observed:
 
         * RFC 9110: HTTP Semantics, obsoletes 7231, which obsoleted 2616
         * RFC 6585: Additional HTTP Status Codes
@@ -64,7 +64,7 @@ klasse HTTPStatus:
     ACCEPTED = (202, 'Accepted',
         'Request accepted, processing continues off-line')
     NON_AUTHORITATIVE_INFORMATION = (203,
-        'Non-Authoritative Information', 'Request fulfilled from cache')
+        'Non-Authoritative Information', 'Request fulfilled von cache')
     NO_CONTENT = 204, 'No Content', 'Request fulfilled, nothing follows'
     RESET_CONTENT = 205, 'Reset Content', 'Clear input form fuer further input'
     PARTIAL_CONTENT = 206, 'Partial Content', 'Partial content follows'
@@ -164,7 +164,7 @@ klasse HTTPStatus:
     NOT_IMPLEMENTED = (501, 'Not Implemented',
         'Server does not support this operation')
     BAD_GATEWAY = (502, 'Bad Gateway',
-        'Invalid responses from another server/proxy')
+        'Invalid responses von another server/proxy')
     SERVICE_UNAVAILABLE = (503, 'Service Unavailable',
         'The server cannot process the request due to a high load')
     GATEWAY_TIMEOUT = (504, 'Gateway Timeout',
@@ -188,7 +188,7 @@ klasse HTTPStatus:
 klasse HTTPMethod:
     """HTTP methods and descriptions
 
-    Methods from the following RFCs are all observed:
+    Methods von the following RFCs are all observed:
 
         * RFC 9110: HTTP Semantics, obsoletes 7231, which obsoleted 2616
         * RFC 5789: PATCH Method fuer HTTP

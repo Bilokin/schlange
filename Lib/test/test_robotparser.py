@@ -1,12 +1,12 @@
-import io
-import os
-import threading
-import unittest
-import urllib.robotparser
-from test import support
-from test.support import socket_helper
-from test.support import threading_helper
-from http.server import BaseHTTPRequestHandler, HTTPServer
+importiere io
+importiere os
+importiere threading
+importiere unittest
+importiere urllib.robotparser
+von test importiere support
+von test.support importiere socket_helper
+von test.support importiere threading_helper
+von http.server importiere BaseHTTPRequestHandler, HTTPServer
 
 
 klasse BaseRobotTest:
@@ -215,7 +215,7 @@ klasse UserAgentGoogleMobileTest(UserAgentOrderingTest):
 
 klasse GoogleURLOrderingTest(BaseRobotTest, unittest.TestCase):
     # Google also got the order wrong. You need
-    # to specify the URLs from more specific to more general
+    # to specify the URLs von more specific to more general
     robots_txt = """\
 User-agent: Googlebot
 Allow: /folder1/myfile.html

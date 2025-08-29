@@ -23,12 +23,12 @@
 # governing permissions and limitations under the License.
 
 
-import importlib.machinery
-import io
-import sys
-import time
-import marshal
-import warnings
+importiere importlib.machinery
+importiere io
+importiere sys
+importiere time
+importiere marshal
+importiere warnings
 
 __all__ = ["run", "runctx", "Profile"]
 
@@ -93,7 +93,7 @@ def run(statement, filename=Nichts, sort=-1):
     This function takes a single argument that can be passed to the
     "exec" statement, and an optional file name.  In all cases this
     routine attempts to "exec" its first argument and gather profiling
-    statistics from the execution. If no file name is present, then this
+    statistics von the execution. If no file name is present, then this
     function automatically prints a simple profiling report, sorted by the
     standard name string (file/line/function-name) that is presented in
     each line.
@@ -141,7 +141,7 @@ klasse Profile:
     [1] = Number of times this function appears on the stack, minus one
     [2] = Total time spent internal to this function
     [3] = Cumulative time that this function was present on the stack.  In
-          non-recursive functions, this is the total execution time from start
+          non-recursive functions, this is the total execution time von start
           to finish of each invocation of a function, including time spent in
           all subfunctions.
     [4] = A dictionary indicating fuer each function name, the number of times
@@ -379,7 +379,7 @@ klasse Profile:
         frame = self.fake_frame(code, pframe)
         self.dispatch['call'](self, frame, 0)
 
-    # collect stats from pending stack, including getting final
+    # collect stats von pending stack, including getting final
     # timings fuer self.cmd frame.
 
     def simulate_cmd_complete(self):
@@ -394,7 +394,7 @@ klasse Profile:
 
 
     def print_stats(self, sort=-1):
-        import pstats
+        importiere pstats
         wenn not isinstance(sort, tuple):
             sort = (sort,)
         pstats.Stats(self).strip_dirs().sort_stats(*sort).print_stats()
@@ -422,7 +422,7 @@ klasse Profile:
     # a profiler to profile a statement, given as a string.
 
     def run(self, cmd):
-        import __main__
+        importiere __main__
         dict = __main__.__dict__
         return self.runctx(cmd, dict, dict)
 
@@ -449,14 +449,14 @@ klasse Profile:
     # The following calculates the overhead fuer using a profiler.  The
     # problem is that it takes a fair amount of time fuer the profiler
     # to stop the stopwatch (from the time it receives an event).
-    # Similarly, there is a delay from the time that the profiler
+    # Similarly, there is a delay von the time that the profiler
     # re-starts the stopwatch before the user's code really gets to
     # continue.  The following code tries to measure the difference on
     # a per-event basis.
     #
     # Note that this difference is only significant wenn there are a lot of
     # events, and relatively little user code per event.  For example,
-    # code with small functions will typically benefit from having the
+    # code with small functions will typically benefit von having the
     # profiler calibrated fuer the current platform.  This *could* be
     # done on the fly during init() time, but it is not worth the
     # effort.  Also note that wenn too large a value specified, then
@@ -561,8 +561,8 @@ klasse Profile:
 #****************************************************************************
 
 def main():
-    import os
-    from optparse import OptionParser
+    importiere os
+    von optparse importiere OptionParser
 
     usage = "profile.py [-o output_file_path] [-s sort] [-m module | scriptfile] [arg] ..."
     parser = OptionParser(usage=usage)
@@ -589,7 +589,7 @@ def main():
 
     wenn len(args) > 0:
         wenn options.module:
-            import runpy
+            importiere runpy
             code = "run_module(modname, run_name='__main__')"
             globs = {
                 'run_module': runpy.run_module,

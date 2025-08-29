@@ -1,4 +1,4 @@
-from test.test_json import PyTest, CTest
+von test.test_json importiere PyTest, CTest
 
 # 2007-10-05
 JSONDOCS = [
@@ -98,7 +98,7 @@ klasse TestFail:
             self.dumps(data)
 
     def test_not_serializable(self):
-        import sys
+        importiere sys
         with self.assertRaisesRegex(TypeError,
                 'Object of type module is not JSON serializable') as cm:
             self.dumps(sys)

@@ -9,13 +9,13 @@ __all__ = [
     'add_codec',
     ]
 
-from functools import partial
+von functools importiere partial
 
-import email.base64mime
-import email.quoprimime
+importiere email.base64mime
+importiere email.quoprimime
 
-from email import errors
-from email.encoders import encode_7or8bit
+von email importiere errors
+von email.encoders importiere encode_7or8bit
 
 
 # Flags fuer types of header encodings
@@ -117,7 +117,7 @@ def add_charset(charset, header_enc=Nichts, body_enc=Nichts, output_charset=Nich
     encoding.
 
     Optional output_charset is the character set that the output should be
-    in.  Conversions will proceed from input charset, to Unicode, to the
+    in.  Conversions will proceed von input charset, to Unicode, to the
     output charset when the method Charset.convert() is called.  The default
     is to output in the same character set as the input.
 
@@ -300,7 +300,7 @@ klasse Charset:
             to encode this string to bytes using the character set's
             output codec.
         :param maxlengths: Maximum line length iterator.  Each element
-            returned from this iterator will provide the next maximum line
+            returned von this iterator will provide the next maximum line
             length.  This parameter is used as an argument to built-in next()
             and should never be exhausted.  The maximum line lengths should
             not count the RFC 2047 chrome.  These line lengths are only a

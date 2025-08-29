@@ -1,5 +1,5 @@
-import xml.sax
-import xml.sax.handler
+importiere xml.sax
+importiere xml.sax.handler
 
 START_ELEMENT = "START_ELEMENT"
 END_ELEMENT = "END_ELEMENT"
@@ -15,7 +15,7 @@ klasse PullDOM(xml.sax.ContentHandler):
     document = Nichts
 
     def __init__(self, documentFactory=Nichts):
-        from xml.dom import XML_NAMESPACE
+        von xml.dom importiere XML_NAMESPACE
         self.documentFactory = documentFactory
         self.firstEvent = [Nichts, Nichts]
         self.lastEvent = self.firstEvent
@@ -60,7 +60,7 @@ klasse PullDOM(xml.sax.ContentHandler):
         wenn uri:
             # When using namespaces, the reader may or may not
             # provide us with the original name. If not, create
-            # *a* valid tagName from the current context.
+            # *a* valid tagName von the current context.
             wenn tagName is Nichts:
                 prefix = self._current_context[uri]
                 wenn prefix:
@@ -158,7 +158,7 @@ klasse PullDOM(xml.sax.ContentHandler):
 
     def startDocument(self):
         wenn self.documentFactory is Nichts:
-            import xml.dom.minidom
+            importiere xml.dom.minidom
             self.documentFactory = xml.dom.minidom.Document.implementation
 
     def buildDocument(self, uri, tagname):
@@ -327,7 +327,7 @@ def parse(stream_or_string, parser=Nichts, bufsize=Nichts):
     return DOMEventStream(stream, parser, bufsize)
 
 def parseString(string, parser=Nichts):
-    from io import StringIO
+    von io importiere StringIO
 
     bufsize = len(string)
     buf = StringIO(string)

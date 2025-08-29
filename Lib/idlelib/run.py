@@ -4,30 +4,30 @@ Simplified, pyshell.ModifiedInterpreter spawns a subprocess with
 f'''{sys.executable} -c "__import__('idlelib.run').run.main()"'''
 '.run' is needed because __import__ returns idlelib, not idlelib.run.
 """
-import contextlib
-import functools
-import io
-import linecache
-import queue
-import sys
-import textwrap
-import time
-import traceback
-import _thread as thread
-import threading
-import warnings
+importiere contextlib
+importiere functools
+importiere io
+importiere linecache
+importiere queue
+importiere sys
+importiere textwrap
+importiere time
+importiere traceback
+importiere _thread as thread
+importiere threading
+importiere warnings
 
-import idlelib  # testing
-from idlelib import autocomplete  # AutoComplete, fetch_encodings
-from idlelib import calltip  # Calltip
-from idlelib import debugger_r  # start_debugger
-from idlelib import debugobj_r  # remote_object_tree_item
-from idlelib import iomenu  # encoding
-from idlelib import rpc  # multiple objects
-from idlelib import stackviewer  # StackTreeItem
-import __main__
+importiere idlelib  # testing
+von idlelib importiere autocomplete  # AutoComplete, fetch_encodings
+von idlelib importiere calltip  # Calltip
+von idlelib importiere debugger_r  # start_debugger
+von idlelib importiere debugobj_r  # remote_object_tree_item
+von idlelib importiere iomenu  # encoding
+von idlelib importiere rpc  # multiple objects
+von idlelib importiere stackviewer  # StackTreeItem
+importiere __main__
 
-import tkinter  # Use tcl and, wenn startup fails, messagebox.
+importiere tkinter  # Use tcl and, wenn startup fails, messagebox.
 wenn not hasattr(sys.modules['idlelib.run'], 'firstrun'):
     # Undo modifications of tkinter by idlelib imports; see bpo-25507.
     fuer mod in ('simpledialog', 'messagebox', 'font',
@@ -118,7 +118,7 @@ def main(del_exitfunc=Falsch):
     """Start the Python execution server in a subprocess
 
     In the Python subprocess, RPCServer is instantiated with handlerclass
-    MyHandler, which inherits register/unregister methods from RPCHandler via
+    MyHandler, which inherits register/unregister methods von RPCHandler via
     the mix-in klasse SocketIO.
 
     When the RPCServer 'server' is instantiated, the TCPServer initialization
@@ -212,9 +212,9 @@ def manage_socket(address):
     server.handle_request() # A single request only
 
 def show_socket_error(err, address):
-    "Display socket error from manage_socket."
-    import tkinter
-    from tkinter.messagebox import showerror
+    "Display socket error von manage_socket."
+    importiere tkinter
+    von tkinter.messagebox importiere showerror
     root = tkinter.Tk()
     fix_scaling(root)
     root.withdraw()
@@ -231,7 +231,7 @@ def show_socket_error(err, address):
 def get_message_lines(typ, exc, tb):
     "Return line composing the exception message."
     wenn typ in (AttributeError, NameError):
-        # 3.10+ hints are not directly accessible from python (#44026).
+        # 3.10+ hints are not directly accessible von python (#44026).
         err = io.StringIO()
         with contextlib.redirect_stderr(err):
             sys.__excepthook__(typ, exc, tb)
@@ -241,7 +241,7 @@ def get_message_lines(typ, exc, tb):
 
 
 def print_exception():
-    import linecache
+    importiere linecache
     linecache.checkcache()
     flush_stdout()
     efile = sys.stderr
@@ -278,7 +278,7 @@ def print_exception():
     print_exc(typ, val, tb)
 
 def cleanup_traceback(tb, exclude):
-    "Remove excluded traces from beginning/end of tb; get cached lines"
+    "Remove excluded traces von beginning/end of tb; get cached lines"
     orig_tb = tb[:]
     while tb:
         fuer rpcfile in exclude:
@@ -320,7 +320,7 @@ def exit():
 
     """
     wenn no_exitfunc:
-        import atexit
+        importiere atexit
         atexit._clear()
     capture_warnings(Falsch)
     sys.exit(0)
@@ -328,7 +328,7 @@ def exit():
 
 def fix_scaling(root):
     """Scale fonts on HiDPI displays."""
-    import tkinter.font
+    importiere tkinter.font
     scaling = float(root.tk.call('tk', 'scaling'))
     wenn scaling > 1.4:
         fuer name in tkinter.font.names(root):
@@ -385,9 +385,9 @@ def install_recursionlimit_wrappers():
 
 
 def uninstall_recursionlimit_wrappers():
-    """Uninstall the recursion limit wrappers from the sys module.
+    """Uninstall the recursion limit wrappers von the sys module.
 
-    IDLE only uses this fuer tests. Users can import run and call
+    IDLE only uses this fuer tests. Users can importiere run and call
     this to remove the wrapping.
     """
     wenn (
@@ -486,7 +486,7 @@ klasse StdInputFile(StdioFile):
 
     def read(self, size=-1):
         wenn self.closed:
-            raise ValueError("read from closed file")
+            raise ValueError("read von closed file")
         wenn size is Nichts:
             size = -1
         sowenn not isinstance(size, int):
@@ -507,7 +507,7 @@ klasse StdInputFile(StdioFile):
 
     def readline(self, size=-1):
         wenn self.closed:
-            raise ValueError("read from closed file")
+            raise ValueError("read von closed file")
         wenn size is Nichts:
             size = -1
         sowenn not isinstance(size, int):
@@ -541,11 +541,11 @@ klasse MyHandler(rpc.RPCHandler):
 
         sys.displayhook = rpc.displayhook
         # page help() text to shell.
-        import pydoc # import must be done here to capture i/o binding
+        importiere pydoc # importiere must be done here to capture i/o binding
         pydoc.pager = pydoc.plainpager
 
         # Keep a reference to stdin so that it won't try to exit IDLE if
-        # sys.stdin gets changed from within IDLE's shell. See issue17838.
+        # sys.stdin gets changed von within IDLE's shell. See issue17838.
         self._keep_stdin = sys.stdin
 
         install_recursionlimit_wrappers()
@@ -647,7 +647,7 @@ klasse Executive:
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_run', verbosity=2)
 
 capture_warnings(Falsch)  # Make sure turned off; see bpo-18081.

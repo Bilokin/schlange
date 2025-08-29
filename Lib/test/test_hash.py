@@ -3,12 +3,12 @@
 #
 # Also test that hash implementations are inherited as expected
 
-import datetime
-import os
-import sys
-import unittest
-from test.support.script_helper import assert_python_ok
-from collections.abc import Hashable
+importiere datetime
+importiere os
+importiere sys
+importiere unittest
+von test.support.script_helper importiere assert_python_ok
+von collections.abc importiere Hashable
 
 IS_64BIT = sys.maxsize > 2**32
 

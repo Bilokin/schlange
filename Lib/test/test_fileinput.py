@@ -2,34 +2,34 @@
 Tests fuer fileinput module.
 Nick Mathewson
 '''
-import io
-import os
-import sys
-import re
-import fileinput
-import collections
-import builtins
-import tempfile
-import unittest
+importiere io
+importiere os
+importiere sys
+importiere re
+importiere fileinput
+importiere collections
+importiere builtins
+importiere tempfile
+importiere unittest
 
 try:
-    import bz2
+    importiere bz2
 except ImportError:
     bz2 = Nichts
 try:
-    import gzip
+    importiere gzip
 except ImportError:
     gzip = Nichts
 
-from io import BytesIO, StringIO
-from fileinput import FileInput, hook_encoded
+von io importiere BytesIO, StringIO
+von fileinput importiere FileInput, hook_encoded
 
-from test.support import verbose
-from test.support.os_helper import TESTFN, FakePath
-from test.support.os_helper import unlink as safe_unlink
-from test.support import os_helper
-from test import support
-from unittest import mock
+von test.support importiere verbose
+von test.support.os_helper importiere TESTFN, FakePath
+von test.support.os_helper importiere unlink as safe_unlink
+von test.support importiere os_helper
+von test importiere support
+von unittest importiere mock
 
 
 # The fileinput module has 2 interfaces: the FileInput klasse which does

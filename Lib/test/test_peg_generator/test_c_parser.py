@@ -1,25 +1,25 @@
-import contextlib
-import subprocess
-import sysconfig
-import textwrap
-import unittest
-import os
-import shutil
-import tempfile
-from pathlib import Path
+importiere contextlib
+importiere subprocess
+importiere sysconfig
+importiere textwrap
+importiere unittest
+importiere os
+importiere shutil
+importiere tempfile
+von pathlib importiere Path
 
-from test import test_tools
-from test import support
-from test.support import os_helper, import_helper
-from test.support.script_helper import assert_python_ok
+von test importiere test_tools
+von test importiere support
+von test.support importiere os_helper, import_helper
+von test.support.script_helper importiere assert_python_ok
 
 wenn support.check_cflags_pgo():
     raise unittest.SkipTest("peg_generator test disabled under PGO build")
 
 test_tools.skip_if_missing("peg_generator")
 with test_tools.imports_under_tool("peg_generator"):
-    from pegen.grammar_parser import GeneratedParser as GrammarParser
-    from pegen.testutil import (
+    von pegen.grammar_parser importiere GeneratedParser as GrammarParser
+    von pegen.testutil importiere (
         parse_string,
         generate_parser_c_extension,
         generate_c_parser_source,
@@ -29,17 +29,17 @@ with test_tools.imports_under_tool("peg_generator"):
 TEST_TEMPLATE = """
 tmp_dir = {extension_path!r}
 
-import ast
-import traceback
-import sys
-import unittest
+importiere ast
+importiere traceback
+importiere sys
+importiere unittest
 
-from test import test_tools
+von test importiere test_tools
 with test_tools.imports_under_tool("peg_generator"):
-    from pegen.ast_dump import ast_dump
+    von pegen.ast_dump importiere ast_dump
 
 sys.path.insert(0, tmp_dir)
-import parse
+importiere parse
 
 klasse Tests(unittest.TestCase):
 
@@ -361,7 +361,7 @@ klasse TestCParser(unittest.TestCase):
         import_as_name_from[alias_ty]: a=NAME 'as' b=NAME { _PyAST_alias(((expr_ty) a)->v.Name.id, ((expr_ty) b)->v.Name.id, EXTRA) }
         """
         test_source = """
-        fuer stmt in ("from a import b as c", "from . import a as b"):
+        fuer stmt in ("from a importiere b as c", "from . importiere a as b"):
             expected_ast = ast.parse(stmt)
             actual_ast = parse.parse_string(stmt, mode=1)
             self.assertEqual(ast_dump(expected_ast), ast_dump(actual_ast))

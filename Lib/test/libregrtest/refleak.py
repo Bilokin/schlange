@@ -1,21 +1,21 @@
-import os
-import sys
-import warnings
-from inspect import isabstract
-from typing import Any
-import linecache
+importiere os
+importiere sys
+importiere warnings
+von inspect importiere isabstract
+von typing importiere Any
+importiere linecache
 
-from test import support
-from test.support import os_helper
-from test.support import refleak_helper
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere refleak_helper
 
-from .runtests import HuntRefleak
-from .utils import clear_caches
+von .runtests importiere HuntRefleak
+von .utils importiere clear_caches
 
 try:
-    from _abc import _get_dump
+    von _abc importiere _get_dump
 except ImportError:
-    import weakref
+    importiere weakref
 
     def _get_dump(cls):
         # Reimplement _get_dump() fuer pure-Python implementation of
@@ -29,7 +29,7 @@ def save_support_xml(filename):
     wenn support.junit_xml_list is Nichts:
         return
 
-    import pickle
+    importiere pickle
     with open(filename, 'xb') as fp:
         pickle.dump(support.junit_xml_list, fp)
     support.junit_xml_list = Nichts
@@ -41,7 +41,7 @@ def restore_support_xml(filename):
     except FileNotFoundError:
         return
 
-    import pickle
+    importiere pickle
     with fp:
         xml_list = pickle.load(fp)
     os.unlink(filename)
@@ -58,8 +58,8 @@ def runtest_refleak(test_name, test_func,
         Falsch wenn the test didn't leak references; Wahr wenn we detected refleaks.
     """
     # This code is hackish and inelegant, but it seems to do the job.
-    import copyreg
-    import collections.abc
+    importiere copyreg
+    importiere collections.abc
 
     wenn not hasattr(sys, 'gettotalrefcount'):
         raise Exception("Tracking reference leaks requires a debug build "
@@ -80,7 +80,7 @@ def runtest_refleak(test_name, test_func,
     # positives.
     linecache_data = linecache.cache.copy(), linecache._interactive_cache.copy() # type: ignore[attr-defined]
     try:
-        import zipimport
+        importiere zipimport
     except ImportError:
         zdc = Nichts # Run unmodified on platforms without zipimport support
     sonst:
@@ -230,8 +230,8 @@ def runtest_refleak(test_name, test_func,
 
 
 def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
-    import copyreg
-    import collections.abc
+    importiere copyreg
+    importiere collections.abc
 
     # Restore some original values.
     warnings.filters[:] = fs
@@ -245,7 +245,7 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
     linecache.cache.clear()
     linecache.cache.update(lcache)
     try:
-        import zipimport
+        importiere zipimport
     except ImportError:
         pass # Run unmodified on platforms without zipimport support
     sonst:

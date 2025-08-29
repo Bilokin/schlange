@@ -3,10 +3,10 @@
 
 """Tests fuer the raise statement."""
 
-from test import support
-import sys
-import types
-import unittest
+von test importiere support
+importiere sys
+importiere types
+importiere unittest
 
 
 def get_tb():
@@ -82,7 +82,7 @@ klasse TestRaise(unittest.TestCase):
             try:
                 raise TypeError("foo")
             except TypeError:
-                raise ValueError() from Nichts
+                raise ValueError() von Nichts
         except ValueError as e:
             self.assertIsInstance(e.__context__, TypeError)
             self.assertIsNichts(e.__cause__)
@@ -156,7 +156,7 @@ klasse TestCause(unittest.TestCase):
                 try:
                     raise TypeError
                 except Exception:
-                    raise ValueError from Nichts
+                    raise ValueError von Nichts
             except ValueError as exc:
                 self.assertIsNichts(exc.__cause__)
                 self.assertWahr(exc.__suppress_context__)
@@ -171,7 +171,7 @@ klasse TestCause(unittest.TestCase):
 
     def test_invalid_cause(self):
         try:
-            raise IndexError from 5
+            raise IndexError von 5
         except TypeError as e:
             self.assertIn("exception cause", str(e))
         sonst:
@@ -179,7 +179,7 @@ klasse TestCause(unittest.TestCase):
 
     def test_class_cause(self):
         try:
-            raise IndexError from KeyError
+            raise IndexError von KeyError
         except IndexError as e:
             self.assertIsInstance(e.__cause__, KeyError)
         sonst:
@@ -191,7 +191,7 @@ klasse TestCause(unittest.TestCase):
             def __new__(*args, **kwargs):
                 return Nichts
         try:
-            raise IndexError from ConstructsNichts
+            raise IndexError von ConstructsNichts
         except TypeError as e:
             self.assertIn("should have returned an instance of BaseException", str(e))
         except IndexError:
@@ -202,7 +202,7 @@ klasse TestCause(unittest.TestCase):
     def test_instance_cause(self):
         cause = KeyError()
         try:
-            raise IndexError from cause
+            raise IndexError von cause
         except IndexError as e:
             self.assertIs(e.__cause__, cause)
         sonst:
@@ -214,7 +214,7 @@ klasse TestCause(unittest.TestCase):
                 raise RuntimeError()
 
         try:
-            raise IndexError from MyException
+            raise IndexError von MyException
         except RuntimeError:
             pass
         sonst:
@@ -468,7 +468,7 @@ klasse TestContext(unittest.TestCase):
         f()
 
     def test_3611(self):
-        import gc
+        importiere gc
         # A re-raised exception in a __del__ caused the __context__
         # to be cleared
         klasse C:

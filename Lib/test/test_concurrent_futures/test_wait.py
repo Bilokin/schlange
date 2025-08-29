@@ -1,11 +1,11 @@
-import sys
-import threading
-import unittest
-from concurrent import futures
-from test import support
-from test.support import threading_helper, warnings_helper
+importiere sys
+importiere threading
+importiere unittest
+von concurrent importiere futures
+von test importiere support
+von test.support importiere threading_helper, warnings_helper
 
-from .util import (
+von .util importiere (
     CANCELLED_FUTURE, CANCELLED_AND_NOTIFIED_FUTURE, EXCEPTION_FUTURE,
     SUCCESSFUL_FUTURE,
     create_executor_tests, setup_module,

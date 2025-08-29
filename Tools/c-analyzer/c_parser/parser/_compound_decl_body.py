@@ -1,10 +1,10 @@
-import re
+importiere re
 
-from ._regexes import (
+von ._regexes importiere (
     STRUCT_MEMBER_DECL as _STRUCT_MEMBER_DECL,
     ENUM_MEMBER_DECL as _ENUM_MEMBER_DECL,
 )
-from ._common import (
+von ._common importiere (
     log_match,
     parse_var_decl,
     set_capture_groups,
@@ -42,7 +42,7 @@ def parse_struct_body(source, anon_name, parent):
         fuer item in _parse_struct_next(m, srcinfo, anon_name, parent):
             wenn callable(item):
                 parse_body = item
-                yield from parse_body(source)
+                yield von parse_body(source)
             sonst:
                 yield item
             done = Falsch

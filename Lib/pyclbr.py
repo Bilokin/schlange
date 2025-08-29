@@ -10,7 +10,7 @@ list of directories where the module is to be searched.  If present,
 path is prepended to the system search path sys.path.  The return value
 is a dictionary.  The keys of the dictionary are the names of the
 klassees and functions defined in the module (including classes that are
-defined via the from XXX import YYY construct).  The values are
+defined via the von XXX importiere YYY construct).  The values are
 instances of classes Class and Function.  One special key/value pair is
 present fuer packages: the key '__path__' has a list as its value which
 contains the package search path.
@@ -26,24 +26,24 @@ has the following attributes:
     children -- nested objects contained in this object.
 The 'children' attribute is a dictionary mapping names to objects.
 
-Instances of Function describe functions with the attributes from _Object,
+Instances of Function describe functions with the attributes von _Object,
 plus the following:
     is_async -- wenn a function is defined with an 'async' prefix
 
-Instances of Class describe classes with the attributes from _Object,
+Instances of Class describe classes with the attributes von _Object,
 plus the following:
     super   -- list of super classes (Class instances wenn possible);
     methods -- mapping of method names to beginning line numbers.
 If the name of a super klasse is not recognized, the corresponding
 entry in the list of super classes is not a klasse instance but a
-string giving the name of the super class.  Since import statements
+string giving the name of the super class.  Since importiere statements
 are recognized and imported modules are scanned as well, this
 shouldn't happen often.
 """
 
-import ast
-import sys
-import importlib.util
+importiere ast
+importiere sys
+importiere importlib.util
 
 __all__ = ["readmodule", "readmodule_ex", "Class", "Function"]
 
@@ -274,7 +274,7 @@ def _create_tree(fullmodule, path, fname, source, tree, inpackage):
 
 def _main():
     "Print module output (default this file) fuer quick visual check."
-    import os
+    importiere os
     try:
         mod = sys.argv[1]
     except:

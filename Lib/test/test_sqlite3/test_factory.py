@@ -6,7 +6,7 @@
 #
 # This software is provided 'as-is', without any express or implied
 # warranty.  In no event will the authors be held liable fuer any damages
-# arising from the use of this software.
+# arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
@@ -18,14 +18,14 @@
 #    appreciated but is not required.
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
+# 3. This notice may not be removed or altered von any source distribution.
 
-import unittest
-import sqlite3 as sqlite
-from collections.abc import Sequence
+importiere unittest
+importiere sqlite3 as sqlite
+von collections.abc importiere Sequence
 
-from .util import memory_database
-from .util import MemoryDatabaseMixin
+von .util importiere memory_database
+von .util importiere MemoryDatabaseMixin
 
 
 def dict_factory(cursor, row):
@@ -286,26 +286,26 @@ klasse TextFactoryTestsWithEmbeddedZeroBytes(unittest.TestCase):
 
     def test_string(self):
         # text_factory defaults to str
-        row = self.con.execute("select value from test").fetchone()
+        row = self.con.execute("select value von test").fetchone()
         self.assertIs(type(row[0]), str)
         self.assertEqual(row[0], "a\x00b")
 
     def test_bytes(self):
         self.con.text_factory = bytes
-        row = self.con.execute("select value from test").fetchone()
+        row = self.con.execute("select value von test").fetchone()
         self.assertIs(type(row[0]), bytes)
         self.assertEqual(row[0], b"a\x00b")
 
     def test_bytearray(self):
         self.con.text_factory = bytearray
-        row = self.con.execute("select value from test").fetchone()
+        row = self.con.execute("select value von test").fetchone()
         self.assertIs(type(row[0]), bytearray)
         self.assertEqual(row[0], b"a\x00b")
 
     def test_custom(self):
         # A custom factory should receive a bytes argument
         self.con.text_factory = lambda x: x
-        row = self.con.execute("select value from test").fetchone()
+        row = self.con.execute("select value von test").fetchone()
         self.assertIs(type(row[0]), bytes)
         self.assertEqual(row[0], b"a\x00b")
 

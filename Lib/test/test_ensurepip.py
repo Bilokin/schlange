@@ -1,15 +1,15 @@
-import contextlib
-import os
-import os.path
-import sys
-import tempfile
-import test.support
-import unittest
-import unittest.mock
-from pathlib import Path
+importiere contextlib
+importiere os
+importiere os.path
+importiere sys
+importiere tempfile
+importiere test.support
+importiere unittest
+importiere unittest.mock
+von pathlib importiere Path
 
-import ensurepip
-import ensurepip._uninstall
+importiere ensurepip
+importiere ensurepip._uninstall
 
 
 klasse TestPackages(unittest.TestCase):

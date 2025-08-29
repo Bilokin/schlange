@@ -1,5 +1,5 @@
-from tkinter import Toplevel, TclError
-import sys
+von tkinter importiere Toplevel, TclError
+importiere sys
 
 
 klasse WindowList:
@@ -94,5 +94,5 @@ klasse ListedToplevel(Toplevel):
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_window', verbosity=2)

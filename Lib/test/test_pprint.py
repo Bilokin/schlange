@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 
-import collections
-import contextlib
-import dataclasses
-import io
-import itertools
-import pprint
-import random
-import re
-import types
-import unittest
-from collections.abc import ItemsView, KeysView, Mapping, MappingView, ValuesView
+importiere collections
+importiere contextlib
+importiere dataclasses
+importiere io
+importiere itertools
+importiere pprint
+importiere random
+importiere re
+importiere types
+importiere unittest
+von collections.abc importiere ItemsView, KeysView, Mapping, MappingView, ValuesView
 
-from test.support import cpython_only
-from test.support.import_helper import ensure_lazy_imports
+von test.support importiere cpython_only
+von test.support.import_helper importiere ensure_lazy_imports
 
 # list, tuple and dict subclasses that do or don't overwrite __repr__
 klasse list2(list):
@@ -899,7 +899,7 @@ frozenset2({0,
         # - https://github.com/python/cpython/issues/58115
         # - https://github.com/python/cpython/issues/111147
 
-        import textwrap
+        importiere textwrap
 
         # Single-line, always ordered:
         fs0 = frozenset()

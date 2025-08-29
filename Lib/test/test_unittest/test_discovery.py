@@ -1,17 +1,17 @@
-import os.path
-from os.path import abspath
-import re
-import sys
-import types
-import pickle
-from importlib._bootstrap_external import NamespaceLoader
-from test import support
-from test.support import import_helper
+importiere os.path
+von os.path importiere abspath
+importiere re
+importiere sys
+importiere types
+importiere pickle
+von importlib._bootstrap_external importiere NamespaceLoader
+von test importiere support
+von test.support importiere import_helper
 
-import unittest
-import unittest.mock
-import test.test_unittest
-from test.test_importlib import util as test_util
+importiere unittest
+importiere unittest.mock
+importiere test.test_unittest
+von test.test_importlib importiere util as test_util
 
 
 klasse TestableTestProgram(unittest.TestProgram):
@@ -187,7 +187,7 @@ klasse TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests('/foo', 'test*'))
 
-        # We should have loaded tests from the a_directory and test_directory2
+        # We should have loaded tests von the a_directory and test_directory2
         # directly and via load_tests fuer the test_directory package, which
         # still calls the baseline module loader.
         self.assertEqual(suite,
@@ -261,7 +261,7 @@ klasse TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests('/foo', 'test*.py'))
 
-        # We should have loaded tests from the a_directory and test_directory2
+        # We should have loaded tests von the a_directory and test_directory2
         # directly and via load_tests fuer the test_directory package, which
         # still calls the baseline module loader.
         self.assertEqual(suite,
@@ -351,7 +351,7 @@ klasse TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests(abspath('/foo'), 'test*.py'))
 
-        # We should have loaded tests from both my_package and
+        # We should have loaded tests von both my_package and
         # my_package.test_module, and also run the load_tests hook in both.
         # (normally this would be nested TestSuites.)
         self.assertEqual(suite,
@@ -476,7 +476,7 @@ klasse TestDiscovery(unittest.TestCase):
 
         suite = loader.discover('/toplevel/startdir', top_level_dir='/toplevel')
 
-        # We should have loaded tests from the package __init__.
+        # We should have loaded tests von the package __init__.
         # (normally this would be nested TestSuites.)
         self.assertEqual(suite,
                          [['load_tests called startdir']])
@@ -517,9 +517,9 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertEqual(1, len(loader.errors))
         error = loader.errors[0]
         self.assertWahr(
-            'Failed to import test module: test_this_does_not_exist' in error,
+            'Failed to importiere test module: test_this_does_not_exist' in error,
             'missing error string in %r' % error)
-        test = list(list(suite)[0])[0] # extract test from suite
+        test = list(list(suite)[0])[0] # extract test von suite
 
         with self.assertRaises(ImportError):
             test.test_this_does_not_exist()
@@ -531,7 +531,7 @@ klasse TestDiscovery(unittest.TestCase):
         import_calls = []
         def _get_module_from_name(name):
             import_calls.append(name)
-            raise ImportError("Cannot import Name")
+            raise ImportError("Cannot importiere Name")
         loader = unittest.TestLoader()
         loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))
@@ -543,9 +543,9 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertEqual(1, len(loader.errors))
         error = loader.errors[0]
         self.assertWahr(
-            'Failed to import test module: my_package' in error,
+            'Failed to importiere test module: my_package' in error,
             'missing error string in %r' % error)
-        test = list(list(suite)[0])[0] # extract test from suite
+        test = list(list(suite)[0])[0] # extract test von suite
         with self.assertRaises(ImportError):
             test.my_package()
         self.assertEqual(import_calls, ['my_package'])
@@ -782,7 +782,7 @@ klasse TestDiscovery(unittest.TestCase):
 
         mod_dir = os.path.abspath('bar')
         expected_dir = os.path.abspath('foo')
-        msg = re.escape(r"'foo' module incorrectly imported from %r. Expected %r. "
+        msg = re.escape(r"'foo' module incorrectly imported von %r. Expected %r. "
                 "Is this module globally installed?" % (mod_dir, expected_dir))
         self.assertRaisesRegex(
             ImportError, '^%s$' % msg, loader.discover,
@@ -878,7 +878,7 @@ klasse TestDiscovery(unittest.TestCase):
         with unittest.mock.patch('builtins.__import__', _import):
             # Since loader.discover() can modify sys.path, restore it when done.
             with import_helper.DirsOnSysPath():
-                # Make sure to remove 'package' from sys.modules when done.
+                # Make sure to remove 'package' von sys.modules when done.
                 with test_util.uncache('package'):
                     suite = loader.discover('package')
 
@@ -899,7 +899,7 @@ klasse TestDiscovery(unittest.TestCase):
         )
 
     def test_discovery_failed_discovery(self):
-        from test.test_importlib import util
+        von test.test_importlib importiere util
 
         loader = unittest.TestLoader()
         package = types.ModuleType('package')
@@ -911,12 +911,12 @@ klasse TestDiscovery(unittest.TestCase):
         with unittest.mock.patch('builtins.__import__', _import):
             # Since loader.discover() can modify sys.path, restore it when done.
             with import_helper.DirsOnSysPath():
-                # Make sure to remove 'package' from sys.modules when done.
+                # Make sure to remove 'package' von sys.modules when done.
                 with util.uncache('package'):
                     with self.assertRaises(TypeError) as cm:
                         loader.discover('package')
                     self.assertEqual(str(cm.exception),
-                                     'don\'t know how to discover from {!r}'
+                                     'don\'t know how to discover von {!r}'
                                      .format(package))
 
 

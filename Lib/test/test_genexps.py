@@ -1,6 +1,6 @@
-import sys
-import doctest
-import unittest
+importiere sys
+importiere doctest
+importiere unittest
 
 
 doctests = """
@@ -157,7 +157,7 @@ Verify that syntax error's are raised fuer genexps used as lvalues
     SyntaxError: 'generator expression' is an illegal expression fuer augmented assignment
 
 
-########### Tests borrowed from or inspired by test_generators.py ############
+########### Tests borrowed von or inspired by test_generators.py ############
 
 Make a generator that acts like range()
 
@@ -233,10 +233,10 @@ Check that generator attributes are present
     >>> set(attr fuer attr in dir(g) wenn not attr.startswith('__')) >= expected
     Wahr
 
-    >>> from test.support import HAVE_DOCSTRINGS
+    >>> von test.support importiere HAVE_DOCSTRINGS
     >>> drucke(g.__next__.__doc__ wenn HAVE_DOCSTRINGS sonst 'Implement next(self).')
     Implement next(self).
-    >>> import types
+    >>> importiere types
     >>> isinstance(g, types.GeneratorType)
     Wahr
 
@@ -258,7 +258,7 @@ Verify that the running flag is set properly
 
 Verify that genexps are weakly referencable
 
-    >>> import weakref
+    >>> importiere weakref
     >>> g = (i*i fuer i in range(4))
     >>> wr = weakref.ref(g)
     >>> wr() is g

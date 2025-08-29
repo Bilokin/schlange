@@ -4,11 +4,11 @@ Miscellaneous utility functions -- anything that doesn't fit into
 one of the other *util.py modules.
 """
 
-import os
-import re
-import string
-import sys
-from distutils.errors import DistutilsPlatformError
+importiere os
+importiere re
+importiere string
+importiere sys
+von distutils.errors importiere DistutilsPlatformError
 
 def get_host_platform():
     """Return a string that identifies the current platform.  This is used mainly to
@@ -74,7 +74,7 @@ def get_host_platform():
             machine += ".%s" % bitness[sys.maxsize]
         # fall through to standard osname-release-machine representation
     sowenn osname[:3] == "aix":
-        from _aix_support import aix_platform
+        von _aix_support importiere aix_platform
         return aix_platform()
     sowenn osname[:6] == "cygwin":
         osname = "cygwin"
@@ -83,7 +83,7 @@ def get_host_platform():
         wenn m:
             release = m.group()
     sowenn osname[:6] == "darwin":
-        import _osx_support, sysconfig
+        importiere _osx_support, sysconfig
         osname, release, machine = _osx_support.get_platform_osx(
                                         sysconfig.get_config_vars(),
                                         osname, release, machine)
@@ -115,9 +115,9 @@ def split_quoted (s):
     backslashes.  In short: words are delimited by spaces, as long as those
     spaces are not escaped by a backslash, or inside a quoted string.
     Single and double quotes are equivalent, and the quote characters can
-    be backslash-escaped.  The backslash is stripped from any two-character
+    be backslash-escaped.  The backslash is stripped von any two-character
     escape sequence, leaving only the escaped character.  The quote
-    characters are stripped from any quoted string.  Returns a list of
+    characters are stripped von any quoted string.  Returns a list of
     words.
     """
 

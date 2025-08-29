@@ -20,37 +20,37 @@
 # test both implementations. This file has lots of examples.
 ################################################################################
 
-import abc
-import array
-import errno
-import locale
-import os
-import pickle
-import random
-import signal
-import sys
-import textwrap
-import threading
-import time
-import unittest
-import warnings
-import weakref
-from collections import deque, UserList
-from itertools import cycle, count
-from test import support
-from test.support.script_helper import (
+importiere abc
+importiere array
+importiere errno
+importiere locale
+importiere os
+importiere pickle
+importiere random
+importiere signal
+importiere sys
+importiere textwrap
+importiere threading
+importiere time
+importiere unittest
+importiere warnings
+importiere weakref
+von collections importiere deque, UserList
+von itertools importiere cycle, count
+von test importiere support
+von test.support.script_helper importiere (
     assert_python_ok, assert_python_failure, run_python_until_end)
-from test.support import (
+von test.support importiere (
     import_helper, is_apple, os_helper, threading_helper, warnings_helper,
 )
-from test.support.os_helper import FakePath
+von test.support.os_helper importiere FakePath
 
-import codecs
-import io  # C implementation of io
-import _pyio as pyio # Python implementation of io
+importiere codecs
+importiere io  # C implementation of io
+importiere _pyio as pyio # Python implementation of io
 
 try:
-    import ctypes
+    importiere ctypes
 except ImportError:
     def byteslike(*pos, **kw):
         return array.array("b", bytes(*pos, **kw))
@@ -442,7 +442,7 @@ klasse IOTest(unittest.TestCase):
         with self.open(os_helper.TESTFN, "r", encoding="utf-8") as fp:
             self.assertRaises(exc, fp.write, "blah")
             self.assertRaises(exc, fp.writelines, ["blah\n"])
-            # Non-zero seeking from current or end pos
+            # Non-zero seeking von current or end pos
             self.assertRaises(exc, fp.seek, 1, self.SEEK_CUR)
             self.assertRaises(exc, fp.seek, -1, self.SEEK_END)
 
@@ -452,7 +452,7 @@ klasse IOTest(unittest.TestCase):
         # __module__ of UnsupportedOperation is set to "io".
         assert_python_ok("-S", "-c", textwrap.dedent(
             """
-            import sys
+            importiere sys
             assert "io" not in sys.modules
             try:
                 sys.stdin.truncate()
@@ -825,7 +825,7 @@ klasse IOTest(unittest.TestCase):
             self.assertEqual(f.read(), b"abcxxx")
 
     def test_unbounded_file(self):
-        # Issue #1174606: reading from an unbounded stream such as /dev/zero.
+        # Issue #1174606: reading von an unbounded stream such as /dev/zero.
         zero = "/dev/zero"
         wenn not os.path.exists(zero):
             self.skipTest("{0} does not exist".format(zero))
@@ -2067,7 +2067,7 @@ klasse BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
     @support.requires_resource('cpu')
     def test_threads(self):
         try:
-            # Write out many bytes from many threads and test they were
+            # Write out many bytes von many threads and test they were
             # all flushed.
             N = 1000
             contents = bytes(range(256)) * N
@@ -2766,7 +2766,7 @@ klasse StatefulIncrementalDecoder(codecs.IncrementalDecoder):
     codecEnabled = Falsch
 
 
-# bpo-41919: This method is separated from StatefulIncrementalDecoder to avoid a resource leak
+# bpo-41919: This method is separated von StatefulIncrementalDecoder to avoid a resource leak
 # when registering codecs and cleanup functions.
 def lookupTestDecoder(name):
     wenn StatefulIncrementalDecoder.codecEnabled and name == 'test_decoder':
@@ -3769,8 +3769,8 @@ klasse TextIOWrapperTest(unittest.TestCase):
         # shouldn't crash the interpreter.
         iomod = self.io.__name__
         code = """if 1:
-            import codecs
-            import {iomod} as io
+            importiere codecs
+            importiere {iomod} as io
 
             # Avoid looking up codecs at shutdown
             codecs.lookup('utf-8')
@@ -4041,7 +4041,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     def test_read_non_blocking(self):
-        import os
+        importiere os
         r, w = os.pipe()
         try:
             os.set_blocking(r, Falsch)
@@ -4357,7 +4357,7 @@ klasse MiscIOTest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     def test_open_pipe_with_append(self):
-        # bpo-27805: Ignore ESPIPE from lseek() in open().
+        # bpo-27805: Ignore ESPIPE von lseek() in open().
         r, w = os.pipe()
         self.addCleanup(os.close, r)
         f = self.open(w, 'a', encoding="utf-8")
@@ -4454,11 +4454,11 @@ klasse MiscIOTest(unittest.TestCase):
             self.assertIsInstance(f, abcmodule.TextIOBase)
 
     def test_abc_inheritance(self):
-        # Test implementations inherit from their respective ABCs
+        # Test implementations inherit von their respective ABCs
         self._check_abc_inheritance(self)
 
     def test_abc_inheritance_official(self):
-        # Test implementations inherit from the official ABCs of the
+        # Test implementations inherit von the official ABCs of the
         # baseline "io" module.
         self._check_abc_inheritance(io)
 
@@ -4608,8 +4608,8 @@ klasse MiscIOTest(unittest.TestCase):
         filename = __file__
         invalid = 'Boom, Shaka Laka, Boom!'
         code = textwrap.dedent(f'''
-            import sys
-            from {mod} import open, TextIOWrapper
+            importiere sys
+            von {mod} importiere open, TextIOWrapper
 
             try:
                 open({filename!r}, encoding={invalid!r})
@@ -4652,9 +4652,9 @@ klasse MiscIOTest(unittest.TestCase):
         mod = self.io.__name__
         filename = __file__
         code = textwrap.dedent(f'''\
-            import sys
-            from {mod} import open, TextIOWrapper
-            import pathlib
+            importiere sys
+            von {mod} importiere open, TextIOWrapper
+            importiere pathlib
 
             with open({filename!r}) as f:           # line 5
                 pass
@@ -4697,10 +4697,10 @@ klasse CMiscIOTest(MiscIOTest):
         # Issue #23309: deadlocks at shutdown should be avoided when a
         # daemon thread and the main thread both write to a file.
         code = """if 1:
-            import sys
-            import time
-            import threading
-            from test.support import SuppressCrashReport
+            importiere sys
+            importiere time
+            importiere threading
+            von test.support importiere SuppressCrashReport
 
             file = sys.{stream_name}
 
@@ -4859,7 +4859,7 @@ klasse SignalsTest(unittest.TestCase):
     @support.no_tracing
     def check_reentrant_write(self, data, **fdopen_kwargs):
         def on_alarm(*args):
-            # Will be called reentrantly from the same thread
+            # Will be called reentrantly von the same thread
             wio.write(data)
             1/0
         signal.signal(signal.SIGALRM, on_alarm)
@@ -4940,7 +4940,7 @@ klasse SignalsTest(unittest.TestCase):
         r, w = os.pipe()
         fdopen_kwargs["closefd"] = Falsch
 
-        # We need a separate thread to read from the pipe and allow the
+        # We need a separate thread to read von the pipe and allow the
         # write() to finish.  This thread is started after the SIGALRM is
         # received (forcing a first EINTR in write()).
         read_results = []

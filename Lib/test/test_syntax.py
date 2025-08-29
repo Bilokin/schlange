@@ -18,14 +18,14 @@ there are infinitely many programs with invalid syntax, we would need
 to be judicious in selecting some.
 
 The compiler generates a synthetic module name fuer code executed by
-doctest.  Since all the code comes from the same module, a suffix like
+doctest.  Since all the code comes von the same module, a suffix like
 [1] is appended to the module name, As a consequence, changing the
 order of tests in this module means renumbering all the errors after
 it.  (Maybe we should enable the ellipsis option fuer these tests.)
 
 In ast.c, syntax errors are raised by calling ast_error().
 
-Errors from set_context():
+Errors von set_context():
 
 >>> obj.Nichts = 1
 Traceback (most recent call last):
@@ -635,7 +635,7 @@ SyntaxError: parameter without a default follows parameter with a default
 Traceback (most recent call last):
 SyntaxError: parameter without a default follows parameter with a default
 
->>> import ast; ast.parse('''
+>>> importiere ast; ast.parse('''
 ... def f(
 ...     *, # type: int
 ...     a, # type: int
@@ -1441,17 +1441,17 @@ Better error message fuer using `except as` with not a name:
 Regression tests fuer gh-133999:
 
    >>> try: pass
-   ... except TypeError as name: raise from Nichts
+   ... except TypeError as name: raise von Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' and 'from'?
 
    >>> try: pass
-   ... except* TypeError as name: raise from Nichts
+   ... except* TypeError as name: raise von Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' and 'from'?
 
    >>> match 1:
-   ...     case 1 | 2 as abc: raise from Nichts
+   ...     case 1 | 2 as abc: raise von Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' and 'from'?
 
@@ -1712,11 +1712,11 @@ Better errors fuer `raise` statement:
     Traceback (most recent call last):
     SyntaxError: did you forget an expression after 'from'?
 
-    >>> raise from exc
+    >>> raise von exc
     Traceback (most recent call last):
     SyntaxError: did you forget an expression between 'raise' and 'from'?
 
-    >>> raise from Nichts
+    >>> raise von Nichts
     Traceback (most recent call last):
     SyntaxError: did you forget an expression between 'raise' and 'from'?
 
@@ -1834,7 +1834,7 @@ SyntaxError: invalid syntax. Did you mean 'class'?
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'import'?
 
->>> form x import y
+>>> form x importiere y
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'from'?
 
@@ -1862,7 +1862,7 @@ SyntaxError: invalid syntax. Did you mean 'yield'?
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'global'?
 
->>> frum math import sqrt
+>>> frum math importiere sqrt
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'from'?
 
@@ -2023,128 +2023,128 @@ SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
 
->>> from t import x,
+>>> von t importiere x,
 Traceback (most recent call last):
 SyntaxError: trailing comma not allowed without surrounding parentheses
 
->>> from t import x,y,
+>>> von t importiere x,y,
 Traceback (most recent call last):
 SyntaxError: trailing comma not allowed without surrounding parentheses
 
->>> import a from b
+>>> importiere a von b
 Traceback (most recent call last):
-SyntaxError: Did you mean to use 'from ... import ...' instead?
+SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> import a.y.z from b.y.z
+>>> importiere a.y.z von b.y.z
 Traceback (most recent call last):
-SyntaxError: Did you mean to use 'from ... import ...' instead?
+SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> import a from b as bar
+>>> importiere a von b as bar
 Traceback (most recent call last):
-SyntaxError: Did you mean to use 'from ... import ...' instead?
+SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> import a.y.z from b.y.z as bar
+>>> importiere a.y.z von b.y.z as bar
 Traceback (most recent call last):
-SyntaxError: Did you mean to use 'from ... import ...' instead?
+SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> import a, b,c from b
+>>> importiere a, b,c von b
 Traceback (most recent call last):
-SyntaxError: Did you mean to use 'from ... import ...' instead?
+SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> import a.y.z, b.y.z, c.y.z from b.y.z
+>>> importiere a.y.z, b.y.z, c.y.z von b.y.z
 Traceback (most recent call last):
-SyntaxError: Did you mean to use 'from ... import ...' instead?
+SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> import a,b,c from b as bar
+>>> importiere a,b,c von b as bar
 Traceback (most recent call last):
-SyntaxError: Did you mean to use 'from ... import ...' instead?
+SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> import a.y.z, b.y.z, c.y.z from b.y.z as bar
+>>> importiere a.y.z, b.y.z, c.y.z von b.y.z as bar
 Traceback (most recent call last):
-SyntaxError: Did you mean to use 'from ... import ...' instead?
+SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> import __debug__
-Traceback (most recent call last):
-SyntaxError: cannot assign to __debug__
-
->>> import a as __debug__
+>>> importiere __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> import a.b.c as __debug__
+>>> importiere a as __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> from a import __debug__
+>>> importiere a.b.c as __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> from a import b as __debug__
+>>> von a importiere __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> import a as b.c
+>>> von a importiere b as __debug__
 Traceback (most recent call last):
-SyntaxError: cannot use attribute as import target
+SyntaxError: cannot assign to __debug__
 
->>> import a.b as (a, b)
+>>> importiere a as b.c
 Traceback (most recent call last):
-SyntaxError: cannot use tuple as import target
+SyntaxError: cannot use attribute as importiere target
 
->>> import a, a.b as 1
+>>> importiere a.b as (a, b)
 Traceback (most recent call last):
-SyntaxError: cannot use literal as import target
+SyntaxError: cannot use tuple as importiere target
 
->>> import a.b as 'a', a
+>>> importiere a, a.b as 1
 Traceback (most recent call last):
-SyntaxError: cannot use literal as import target
+SyntaxError: cannot use literal as importiere target
 
->>> from a import (b as c.d)
+>>> importiere a.b as 'a', a
 Traceback (most recent call last):
-SyntaxError: cannot use attribute as import target
+SyntaxError: cannot use literal as importiere target
 
->>> from a import b as 1
+>>> von a importiere (b as c.d)
 Traceback (most recent call last):
-SyntaxError: cannot use literal as import target
+SyntaxError: cannot use attribute as importiere target
 
->>> from a import (
+>>> von a importiere b as 1
+Traceback (most recent call last):
+SyntaxError: cannot use literal as importiere target
+
+>>> von a importiere (
 ...   b as f())
 Traceback (most recent call last):
-SyntaxError: cannot use function call as import target
+SyntaxError: cannot use function call as importiere target
 
->>> from a import (
+>>> von a importiere (
 ...   b as [],
 ... )
 Traceback (most recent call last):
-SyntaxError: cannot use list as import target
+SyntaxError: cannot use list as importiere target
 
->>> from a import (
+>>> von a importiere (
 ...   b,
 ...   c as ()
 ... )
 Traceback (most recent call last):
-SyntaxError: cannot use tuple as import target
+SyntaxError: cannot use tuple as importiere target
 
->>> from a import b, с as d[e]
+>>> von a importiere b, с as d[e]
 Traceback (most recent call last):
-SyntaxError: cannot use subscript as import target
+SyntaxError: cannot use subscript as importiere target
 
->>> from a import с as d[e], b
+>>> von a importiere с as d[e], b
 Traceback (most recent call last):
-SyntaxError: cannot use subscript as import target
+SyntaxError: cannot use subscript as importiere target
 
 # Check that we dont raise the "trailing comma" error wenn there is more
 # input to the left of the valid part that we parsed.
 
->>> from t import x,y, and 3
+>>> von t importiere x,y, and 3
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> from i import
+>>> von i import
 Traceback (most recent call last):
 SyntaxError: Expected one or more names after 'import'
 
->>> from .. import
+>>> von .. import
 Traceback (most recent call last):
 SyntaxError: Expected one or more names after 'import'
 
@@ -2236,7 +2236,7 @@ Corner-cases that used to crash:
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> import ä £
+    >>> importiere ä £
     Traceback (most recent call last):
     SyntaxError: invalid character '£' (U+00A3)
 
@@ -2585,7 +2585,7 @@ Invalid expressions in type scopes:
       ...
    SyntaxError: await expression cannot be used within a TypeVar bound
 
-   >>> type A[T: (yield from [])] = int
+   >>> type A[T: (yield von [])] = int
    Traceback (most recent call last):
       ...
    SyntaxError: yield expression cannot be used within a TypeVar bound
@@ -2630,7 +2630,7 @@ Invalid expressions in type scopes:
       ...
    SyntaxError: await expression cannot be used within a type alias
 
-   >>> type A = (yield from [])
+   >>> type A = (yield von [])
    Traceback (most recent call last):
       ...
    SyntaxError: yield expression cannot be used within a type alias
@@ -2658,7 +2658,7 @@ Invalid expressions in type scopes:
       ...
    SyntaxError: await expression cannot be used within the definition of a generic
 
-   >>> klasse A[T]((yield from [])): ...
+   >>> klasse A[T]((yield von [])): ...
    Traceback (most recent call last):
       ...
    SyntaxError: yield expression cannot be used within the definition of a generic
@@ -2688,12 +2688,12 @@ Invalid expressions in type scopes:
     SyntaxError: Invalid star expression
 """
 
-import re
-import doctest
-import textwrap
-import unittest
+importiere re
+importiere doctest
+importiere textwrap
+importiere unittest
 
-from test import support
+von test importiere support
 
 klasse SyntaxWarningTest(unittest.TestCase):
     def check_warning(self, code, errtext, filename="<testcase>", mode="exec"):
@@ -2874,7 +2874,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
 
     def test_raise_from_error_message(self):
         source = """if 1:
-        raise AssertionError() from Nichts
+        raise AssertionError() von Nichts
         drucke(1,,2)
         """
         self._check_error(source, "invalid syntax", lineno=3)
@@ -3301,7 +3301,7 @@ while 1:
             "import",
             "import ast",
             "from",
-            "from ast import *"
+            "from ast importiere *"
         ]:
             self._check_error(f"x = 1 wenn 1 sonst {stmt}", msg)
 

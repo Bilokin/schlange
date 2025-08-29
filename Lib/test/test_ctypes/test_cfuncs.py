@@ -1,12 +1,12 @@
-import ctypes
-import unittest
-from ctypes import (CDLL,
+importiere ctypes
+importiere unittest
+von ctypes importiere (CDLL,
                     c_byte, c_ubyte, c_char,
                     c_short, c_ushort, c_int, c_uint,
                     c_long, c_ulong, c_longlong, c_ulonglong,
                     c_float, c_double, c_longdouble)
-from test import support
-from test.support import import_helper, threading_helper
+von test importiere support
+von test.support importiere import_helper, threading_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
@@ -197,7 +197,7 @@ klasse CFunctions(unittest.TestCase):
     @support.requires_resource("cpu")
     @unittest.skipUnless(support.Py_GIL_DISABLED, "only meaningful on free-threading")
     def test_thread_safety(self):
-        from threading import Thread
+        von threading importiere Thread
 
         def concurrent():
             fuer _ in range(100):

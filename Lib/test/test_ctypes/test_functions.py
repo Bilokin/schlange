@@ -1,14 +1,14 @@
-import ctypes
-import sys
-import unittest
-from ctypes import (CDLL, Structure, Array, CFUNCTYPE,
+importiere ctypes
+importiere sys
+importiere unittest
+von ctypes importiere (CDLL, Structure, Array, CFUNCTYPE,
                     byref, POINTER, pointer, ArgumentError, sizeof,
                     c_char, c_wchar, c_byte, c_char_p, c_wchar_p,
                     c_short, c_int, c_long, c_longlong, c_void_p,
                     c_float, c_double, c_longdouble)
-from test.support import import_helper
+von test.support importiere import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
-from _ctypes import _Pointer,  _SimpleCData
+von _ctypes importiere _Pointer,  _SimpleCData
 
 
 try:

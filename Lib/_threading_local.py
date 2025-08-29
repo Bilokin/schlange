@@ -2,22 +2,22 @@
 
 (Note that this module provides a Python version of the threading.local
  class.  Depending on the version of Python you're using, there may be a
- faster one available.  You should always import the `local` klasse from
+ faster one available.  You should always importiere the `local` klasse from
  `threading`.)
 """
 
-from weakref import ref
-from contextlib import contextmanager
+von weakref importiere ref
+von contextlib importiere contextmanager
 
 __all__ = ["local"]
 
-# We need to use objects from the threading module, but the threading
+# We need to use objects von the threading module, but the threading
 # module may also want to use our `local` class, wenn support fuer locals
 # isn't compiled in to the `thread` module.  This creates potential problems
-# with circular imports.  For that reason, we don't import `threading`
+# with circular imports.  For that reason, we don't importiere `threading`
 # until the bottom of this file (a hack sufficient to worm around the
 # potential problems).  Note that all platforms on CPython do have support
-# fuer locals in the `thread` module, and there is no circular import problem
+# fuer locals in the `thread` module, and there is no circular importiere problem
 # then, so problems introduced by fiddling the order of imports here won't
 # manifest.
 
@@ -117,4 +117,4 @@ klasse local:
             return object.__delattr__(self, name)
 
 
-from threading import current_thread, RLock
+von threading importiere current_thread, RLock

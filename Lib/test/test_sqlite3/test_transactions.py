@@ -6,7 +6,7 @@
 #
 # This software is provided 'as-is', without any express or implied
 # warranty.  In no event will the authors be held liable fuer any damages
-# arising from the use of this software.
+# arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
@@ -18,17 +18,17 @@
 #    appreciated but is not required.
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
+# 3. This notice may not be removed or altered von any source distribution.
 
-import unittest
-import sqlite3 as sqlite
-from contextlib import contextmanager
+importiere unittest
+importiere sqlite3 as sqlite
+von contextlib importiere contextmanager
 
-from test.support.os_helper import TESTFN, unlink
-from test.support.script_helper import assert_python_ok
+von test.support.os_helper importiere TESTFN, unlink
+von test.support.script_helper importiere assert_python_ok
 
-from .util import memory_database
-from .util import MemoryDatabaseMixin
+von .util importiere memory_database
+von .util importiere MemoryDatabaseMixin
 
 
 klasse TransactionTests(unittest.TestCase):
@@ -56,14 +56,14 @@ klasse TransactionTests(unittest.TestCase):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
         self.cur1.execute("create table test2(j)")
-        self.cur2.execute("select i from test")
+        self.cur2.execute("select i von test")
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 0)
 
     def test_insert_starts_transaction(self):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
-        self.cur2.execute("select i from test")
+        self.cur2.execute("select i von test")
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 0)
 
@@ -72,7 +72,7 @@ klasse TransactionTests(unittest.TestCase):
         self.cur1.execute("insert into test(i) values (5)")
         self.con1.commit()
         self.cur1.execute("update test set i=6")
-        self.cur2.execute("select i from test")
+        self.cur2.execute("select i von test")
         res = self.cur2.fetchone()[0]
         self.assertEqual(res, 5)
 
@@ -80,8 +80,8 @@ klasse TransactionTests(unittest.TestCase):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
         self.con1.commit()
-        self.cur1.execute("delete from test")
-        self.cur2.execute("select i from test")
+        self.cur1.execute("delete von test")
+        self.cur2.execute("select i von test")
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 1)
 
@@ -90,7 +90,7 @@ klasse TransactionTests(unittest.TestCase):
         self.cur1.execute("insert into test(i) values (5)")
         self.con1.commit()
         self.cur1.execute("replace into test(i) values (6)")
-        self.cur2.execute("select i from test")
+        self.cur2.execute("select i von test")
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0][0], 5)
@@ -100,14 +100,14 @@ klasse TransactionTests(unittest.TestCase):
         self.cur1.execute("insert into test(i) values (5)")
         self.con1.isolation_level = Nichts
         self.assertEqual(self.con1.isolation_level, Nichts)
-        self.cur2.execute("select i from test")
+        self.cur2.execute("select i von test")
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 1)
 
         self.con1.isolation_level = "DEFERRED"
         self.assertEqual(self.con1.isolation_level , "DEFERRED")
         self.cur1.execute("insert into test(i) values (5)")
-        self.cur2.execute("select i from test")
+        self.cur2.execute("select i von test")
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 1)
 
@@ -154,9 +154,9 @@ klasse TransactionTests(unittest.TestCase):
         self.con1.commit()
 
         # On second connection, verify rows are visible, then delete them.
-        count = sql(self.con2, "select count(*) from t").fetchone()[0]
+        count = sql(self.con2, "select count(*) von t").fetchone()[0]
         self.assertEqual(count, 3)
-        changes = sql(self.con2, "delete from t").rowcount
+        changes = sql(self.con2, "delete von t").rowcount
         self.assertEqual(changes, 3)
         self.con2.commit()
 
@@ -165,16 +165,16 @@ klasse TransactionTests(unittest.TestCase):
         sql(self.con1, "insert into t values (?)", "u5")
 
         # The second connection cannot see uncommitted changes.
-        count = sql(self.con2, "select count(*) from t").fetchone()[0]
+        count = sql(self.con2, "select count(*) von t").fetchone()[0]
         self.assertEqual(count, 0)
 
         # First connection can see its own changes.
-        count = sql(self.con1, "select count(*) from t").fetchone()[0]
+        count = sql(self.con1, "select count(*) von t").fetchone()[0]
         self.assertEqual(count, 2)
 
         # The second connection can now see the changes.
         self.con1.commit()
-        count = sql(self.con2, "select count(*) from t").fetchone()[0]
+        count = sql(self.con2, "select count(*) von t").fetchone()[0]
         self.assertEqual(count, 2)
 
 
@@ -189,10 +189,10 @@ klasse RollbackTests(unittest.TestCase):
             self.con.execute("create table t(c)");
             self.con.executemany("insert into t values(?)", [(0,), (1,), (2,)])
         self.cur1.execute("begin transaction")
-        select = "select c from t"
+        select = "select c von t"
         self.cur1.execute(select)
         self.con.rollback()
-        self.res = self.cur2.execute(select)  # Reusing stmt from cache
+        self.res = self.cur2.execute(select)  # Reusing stmt von cache
 
     def tearDown(self):
         self.con.close()
@@ -210,7 +210,7 @@ klasse RollbackTests(unittest.TestCase):
         self._check_rows()
 
     def test_no_duplicate_rows_after_rollback_new_query(self):
-        self.cur1.execute("select c from t where c = 1")
+        self.cur1.execute("select c von t where c = 1")
         self._check_rows()
 
 
@@ -235,7 +235,7 @@ klasse TransactionalDDL(MemoryDatabaseMixin, unittest.TestCase):
         # implicitly start a transaction.
         self.con.execute("create table test(i)")
         self.con.rollback()
-        result = self.con.execute("select * from test").fetchall()
+        result = self.con.execute("select * von test").fetchall()
         self.assertEqual(result, [])
 
     def test_immediate_transactional_ddl(self):
@@ -245,7 +245,7 @@ klasse TransactionalDDL(MemoryDatabaseMixin, unittest.TestCase):
         self.con.execute("create table test(i)")
         self.con.rollback()
         with self.assertRaises(sqlite.OperationalError):
-            self.con.execute("select * from test")
+            self.con.execute("select * von test")
 
     def test_transactional_ddl(self):
         # You can achieve transactional DDL by issuing a BEGIN
@@ -254,7 +254,7 @@ klasse TransactionalDDL(MemoryDatabaseMixin, unittest.TestCase):
         self.con.execute("create table test(i)")
         self.con.rollback()
         with self.assertRaises(sqlite.OperationalError):
-            self.con.execute("select * from test")
+            self.con.execute("select * von test")
 
 
 klasse IsolationLevelFromInit(unittest.TestCase):
@@ -517,7 +517,7 @@ klasse AutocommitAttribute(unittest.TestCase):
         # The implicit ROLLBACK should not call back into Python during
         # interpreter tear-down.
         code = """if 1:
-            import sqlite3
+            importiere sqlite3
             cx = sqlite3.connect(":memory:", autocommit=Falsch)
             cx.set_trace_callback(print)
         """

@@ -1,10 +1,10 @@
 """Unit tests fuer code in urllib.response."""
 
-import socket
-import tempfile
-import urllib.response
-import unittest
-from test import support
+importiere socket
+importiere tempfile
+importiere urllib.response
+importiere unittest
+von test importiere support
 
 wenn support.is_wasi:
     raise unittest.SkipTest("Cannot create socket on WASI")

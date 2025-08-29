@@ -1,11 +1,11 @@
 """
 Collect various information about Python to help debugging test failures.
 """
-import errno
-import re
-import sys
-import traceback
-import warnings
+importiere errno
+importiere re
+importiere sys
+importiere traceback
+importiere warnings
 
 
 def normalize_text(text):
@@ -150,7 +150,7 @@ def collect_sys(info_add):
 
 
 def collect_platform(info_add):
-    import platform
+    importiere platform
 
     arch = platform.architecture()
     arch = ' '.join(filter(bool, arch))
@@ -190,7 +190,7 @@ def collect_platform(info_add):
 
 
 def collect_locale(info_add):
-    import locale
+    importiere locale
 
     info_add('locale.getencoding', locale.getencoding())
 
@@ -201,7 +201,7 @@ def collect_builtins(info_add):
 
 
 def collect_urandom(info_add):
-    import os
+    importiere os
 
     wenn hasattr(os, 'getrandom'):
         # PEP 524: Check wenn system urandom is initialized
@@ -220,7 +220,7 @@ def collect_urandom(info_add):
 
 
 def collect_os(info_add):
-    import os
+    importiere os
 
     def format_attr(attr, value):
         wenn attr in ('supports_follow_symlinks', 'supports_fd',
@@ -364,10 +364,10 @@ def collect_os(info_add):
 
 def collect_pwd(info_add):
     try:
-        import pwd
+        importiere pwd
     except ImportError:
         return
-    import os
+    importiere os
 
     uid = os.getuid()
     try:
@@ -391,7 +391,7 @@ def collect_pwd(info_add):
 
 def collect_readline(info_add):
     try:
-        import readline
+        importiere readline
     except ImportError:
         return
 
@@ -419,7 +419,7 @@ def collect_readline(info_add):
 
 
 def collect_gdb(info_add):
-    import subprocess
+    importiere subprocess
 
     try:
         proc = subprocess.Popen(["gdb", "-nx", "--version"],
@@ -440,7 +440,7 @@ def collect_gdb(info_add):
 
 def collect_tkinter(info_add):
     try:
-        import _tkinter
+        importiere _tkinter
     except ImportError:
         pass
     sonst:
@@ -448,7 +448,7 @@ def collect_tkinter(info_add):
         copy_attributes(info_add, _tkinter, 'tkinter.%s', attributes)
 
     try:
-        import tkinter
+        importiere tkinter
     except ImportError:
         pass
     sonst:
@@ -458,7 +458,7 @@ def collect_tkinter(info_add):
 
 
 def collect_time(info_add):
-    import time
+    importiere time
 
     info_add('time.time', time.time())
 
@@ -486,7 +486,7 @@ def collect_time(info_add):
 
 def collect_curses(info_add):
     try:
-        import curses
+        importiere curses
     except ImportError:
         return
 
@@ -495,7 +495,7 @@ def collect_curses(info_add):
 
 def collect_datetime(info_add):
     try:
-        import datetime
+        importiere datetime
     except ImportError:
         return
 
@@ -503,7 +503,7 @@ def collect_datetime(info_add):
 
 
 def collect_sysconfig(info_add):
-    import sysconfig
+    importiere sysconfig
 
     info_add('sysconfig.is_python_build', sysconfig.is_python_build())
 
@@ -570,13 +570,13 @@ def collect_sysconfig(info_add):
 
 
 def collect_ssl(info_add):
-    import os
+    importiere os
     try:
-        import ssl
+        importiere ssl
     except ImportError:
         return
     try:
-        import _ssl
+        importiere _ssl
     except ImportError:
         _ssl = Nichts
 
@@ -624,7 +624,7 @@ def collect_ssl(info_add):
 
 def collect_socket(info_add):
     try:
-        import socket
+        importiere socket
     except ImportError:
         return
 
@@ -640,7 +640,7 @@ def collect_socket(info_add):
 
 def collect_sqlite(info_add):
     try:
-        import sqlite3
+        importiere sqlite3
     except ImportError:
         return
 
@@ -650,7 +650,7 @@ def collect_sqlite(info_add):
 
 def collect_zlib(info_add):
     try:
-        import zlib
+        importiere zlib
     except ImportError:
         return
 
@@ -660,7 +660,7 @@ def collect_zlib(info_add):
 
 def collect_zstd(info_add):
     try:
-        import _zstd
+        importiere _zstd
     except ImportError:
         return
 
@@ -670,7 +670,7 @@ def collect_zstd(info_add):
 
 def collect_expat(info_add):
     try:
-        from xml.parsers import expat
+        von xml.parsers importiere expat
     except ImportError:
         return
 
@@ -680,7 +680,7 @@ def collect_expat(info_add):
 
 def collect_decimal(info_add):
     try:
-        import _decimal
+        importiere _decimal
     except ImportError:
         return
 
@@ -690,7 +690,7 @@ def collect_decimal(info_add):
 
 def collect_testcapi(info_add):
     try:
-        import _testcapi
+        importiere _testcapi
     except ImportError:
         return
 
@@ -705,7 +705,7 @@ def collect_testcapi(info_add):
 
 def collect_testinternalcapi(info_add):
     try:
-        import _testinternalcapi
+        importiere _testinternalcapi
     except ImportError:
         return
 
@@ -720,7 +720,7 @@ def collect_testinternalcapi(info_add):
 
 def collect_resource(info_add):
     try:
-        import resource
+        importiere resource
     except ImportError:
         return
 
@@ -734,9 +734,9 @@ def collect_resource(info_add):
 
 
 def collect_test_socket(info_add):
-    import unittest
+    importiere unittest
     try:
-        from test import test_socket
+        von test importiere test_socket
     except (ImportError, unittest.SkipTest):
         return
 
@@ -748,7 +748,7 @@ def collect_test_socket(info_add):
 
 def collect_support(info_add):
     try:
-        from test import support
+        von test importiere support
     except ImportError:
         return
 
@@ -779,7 +779,7 @@ def collect_support(info_add):
 
 def collect_support_os_helper(info_add):
     try:
-        from test.support import os_helper
+        von test.support importiere os_helper
     except ImportError:
         return
 
@@ -795,7 +795,7 @@ def collect_support_os_helper(info_add):
 
 def collect_support_socket_helper(info_add):
     try:
-        from test.support import socket_helper
+        von test.support importiere socket_helper
     except ImportError:
         return
 
@@ -814,7 +814,7 @@ def collect_support_socket_helper(info_add):
 
 def collect_support_threading_helper(info_add):
     try:
-        from test.support import threading_helper
+        von test.support importiere threading_helper
     except ImportError:
         return
 
@@ -825,15 +825,15 @@ def collect_support_threading_helper(info_add):
 
 
 def collect_cc(info_add):
-    import subprocess
-    import sysconfig
+    importiere subprocess
+    importiere sysconfig
 
     CC = sysconfig.get_config_var('CC')
     wenn not CC:
         return
 
     try:
-        import shlex
+        importiere shlex
         args = shlex.split(CC)
     except ImportError:
         args = CC.split()
@@ -861,7 +861,7 @@ def collect_cc(info_add):
 
 def collect_gdbm(info_add):
     try:
-        from _gdbm import _GDBM_VERSION
+        von _gdbm importiere _GDBM_VERSION
     except ImportError:
         return
 
@@ -871,7 +871,7 @@ def collect_gdbm(info_add):
 def collect_get_config(info_add):
     # Get global configuration variables, _PyPreConfig and _PyCoreConfig
     try:
-        from _testinternalcapi import get_configs
+        von _testinternalcapi importiere get_configs
     except ImportError:
         return
 
@@ -883,7 +883,7 @@ def collect_get_config(info_add):
 
 
 def collect_subprocess(info_add):
-    import subprocess
+    importiere subprocess
     copy_attributes(info_add, subprocess, 'subprocess.%s', ('_USE_POSIX_SPAWN',))
 
 
@@ -895,7 +895,7 @@ def collect_windows(info_add):
     # windows.RtlAreLongPathsEnabled: RtlAreLongPathsEnabled()
     # windows.is_admin: IsUserAnAdmin()
     try:
-        import ctypes
+        importiere ctypes
         wenn not hasattr(ctypes, 'WinDLL'):
             raise ImportError
     except ImportError:
@@ -920,7 +920,7 @@ def collect_windows(info_add):
         info_add('windows.is_admin', IsUserAnAdmin())
 
     try:
-        import _winapi
+        importiere _winapi
     except ImportError:
         pass
     sonst:
@@ -934,7 +934,7 @@ def collect_windows(info_add):
         call_func(info_add, 'windows.oem_code_page', _winapi, 'GetOEMCP')
 
     # windows.version_caption: "wmic os get Caption,Version /value" command
-    import subprocess
+    importiere subprocess
     try:
         # When wmic.exe output is redirected to a pipe,
         # it uses the OEM code page
@@ -980,7 +980,7 @@ def collect_windows(info_add):
             info_add('windows.ver', line)
 
     # windows.developer_mode: get AllowDevelopmentWithoutDevLicense registry
-    import winreg
+    importiere winreg
     try:
         key = winreg.OpenKey(
             winreg.HKEY_LOCAL_MACHINE,
@@ -998,7 +998,7 @@ def collect_windows(info_add):
 
 def collect_fips(info_add):
     try:
-        import _hashlib
+        importiere _hashlib
     except ImportError:
         _hashlib = Nichts
 
@@ -1016,14 +1016,14 @@ def collect_fips(info_add):
 
 
 def collect_tempfile(info_add):
-    import tempfile
+    importiere tempfile
 
     info_add('tempfile.gettempdir', tempfile.gettempdir())
 
 
 def collect_libregrtest_utils(info_add):
     try:
-        from test.libregrtest import utils
+        von test.libregrtest importiere utils
     except ImportError:
         return
 
@@ -1072,7 +1072,7 @@ def collect_info(info):
         collect_zstd,
         collect_libregrtest_utils,
 
-        # Collecting from tests should be last as they have side effects.
+        # Collecting von tests should be last as they have side effects.
         collect_test_socket,
         collect_support,
         collect_support_os_helper,

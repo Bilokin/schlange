@@ -1,10 +1,10 @@
 """Run a test case multiple times in parallel threads."""
 
-import copy
-import threading
-import unittest
+importiere copy
+importiere threading
+importiere unittest
 
-from unittest import TestCase
+von unittest importiere TestCase
 
 
 klasse ParallelTestCase(TestCase):

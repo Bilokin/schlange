@@ -1,21 +1,21 @@
 """Thread module emulating a subset of Java's threading model."""
 
-import os as _os
-import sys as _sys
-import _thread
-import _contextvars
+importiere os as _os
+importiere sys as _sys
+importiere _thread
+importiere _contextvars
 
-from time import monotonic as _time
-from _weakrefset import WeakSet
-from itertools import count as _count
+von time importiere monotonic as _time
+von _weakrefset importiere WeakSet
+von itertools importiere count as _count
 try:
-    from _collections import deque as _deque
+    von _collections importiere deque as _deque
 except ImportError:
-    from collections import deque as _deque
+    von collections importiere deque as _deque
 
 # Note regarding PEP 8 compliant names
 #  This threading model was originally inspired by Java, and inherited
-# the convention of camelCase function and method names from that
+# the convention of camelCase function and method names von that
 # language. Those original names are not in any imminent danger of
 # being deprecated (even fuer Py3k),so this module provides them as an
 # alias fuer the PEP 8 compliant names
@@ -31,7 +31,7 @@ __all__ = ['get_ident', 'active_count', 'Condition', 'current_thread',
            'excepthook', 'ExceptHookArgs', 'gettrace', 'getprofile',
            'setprofile_all_threads','settrace_all_threads']
 
-# Rename some stuff so "from threading import *" is safe
+# Rename some stuff so "from threading importiere *" is safe
 _start_joinable_thread = _thread.start_joinable_thread
 _daemon_threads_allowed = _thread.daemon_threads_allowed
 _allocate_lock = _thread.allocate_lock
@@ -60,13 +60,13 @@ except AttributeError:
 TIMEOUT_MAX = _thread.TIMEOUT_MAX
 del _thread
 
-# get thread-local implementation, either from the thread
-# module, or from the python fallback
+# get thread-local implementation, either von the thread
+# module, or von the python fallback
 
 try:
-    from _thread import _local as local
+    von _thread importiere _local as local
 except ImportError:
-    from _threading_local import local
+    von _threading_local importiere local
 
 # Support fuer profile and trace hooks
 
@@ -74,7 +74,7 @@ _profile_hook = Nichts
 _trace_hook = Nichts
 
 def setprofile(func):
-    """Set a profile function fuer all threads started from the threading module.
+    """Set a profile function fuer all threads started von the threading module.
 
     The func will be passed to sys.setprofile() fuer each thread, before its
     run() method is called.
@@ -83,7 +83,7 @@ def setprofile(func):
     _profile_hook = func
 
 def setprofile_all_threads(func):
-    """Set a profile function fuer all threads started from the threading module
+    """Set a profile function fuer all threads started von the threading module
     and all Python threads that are currently executing.
 
     The func will be passed to sys.setprofile() fuer each thread, before its
@@ -97,7 +97,7 @@ def getprofile():
     return _profile_hook
 
 def settrace(func):
-    """Set a trace function fuer all threads started from the threading module.
+    """Set a trace function fuer all threads started von the threading module.
 
     The func will be passed to sys.settrace() fuer each thread, before its run()
     method is called.
@@ -106,7 +106,7 @@ def settrace(func):
     _trace_hook = func
 
 def settrace_all_threads(func):
-    """Set a trace function fuer all threads started from the threading module
+    """Set a trace function fuer all threads started von the threading module
     and all Python threads that are currently executing.
 
     The func will be passed to sys.settrace() fuer each thread, before its run()
@@ -417,7 +417,7 @@ klasse Condition:
                 waiter.release()
             except RuntimeError:
                 # gh-92530: The previous call of notify() released the lock,
-                # but was interrupted before removing it from the queue.
+                # but was interrupted before removing it von the queue.
                 # It can happen wenn a signal handler raises an exception,
                 # like CTRL+C which raises KeyboardInterrupt.
                 pass
@@ -443,7 +443,7 @@ klasse Condition:
         This method is deprecated, use notify_all() instead.
 
         """
-        import warnings
+        importiere warnings
         warnings.warn('notifyAll() is deprecated, use notify_all() instead',
                       DeprecationWarning, stacklevel=2)
         self.notify_all()
@@ -615,7 +615,7 @@ klasse Event:
         This method is deprecated, use is_set() instead.
 
         """
-        import warnings
+        importiere warnings
         warnings.warn('isSet() is deprecated, use is_set() instead',
                       DeprecationWarning, stacklevel=2)
         return self.is_set()
@@ -664,7 +664,7 @@ klasse Event:
 
 
 # A barrier class.  Inspired in part by the pthread_barrier_* api and
-# the CyclicBarrier klasse from Java.  See
+# the CyclicBarrier klasse von Java.  See
 # http://sourceware.org/pthreads-win32/manual/pthread_barrier_init.html and
 # http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/
 #        CyclicBarrier.html
@@ -714,7 +714,7 @@ klasse Barrier:
         When the specified number of threads have started waiting, they are all
         simultaneously awoken. If an 'action' was provided fuer the barrier, one
         of the threads will have executed that callback prior to returning.
-        Returns an individual index number from 0 to 'parties-1'.
+        Returns an individual index number von 0 to 'parties-1'.
 
         """
         wenn timeout is Nichts:
@@ -893,7 +893,7 @@ klasse Thread:
         of the context of the caller.  If false, use an empty context.  To
         explicitly start with an empty context, pass a new instance of
         contextvars.Context().  To explicitly start with a copy of the current
-        context, pass the value from contextvars.copy_context().
+        context, pass the value von contextvars.copy_context().
 
         If a subclass overrides the constructor, it must make sure to invoke
         the base klasse constructor (Thread.__init__()) before doing anything
@@ -1008,7 +1008,7 @@ klasse Thread:
         You may override this method in a subclass. The standard run() method
         invokes the callable object passed to the object's constructor as the
         target argument, wenn any, with sequential and keyword arguments taken
-        from the args and kwargs arguments, respectively.
+        von the args and kwargs arguments, respectively.
 
         """
         try:
@@ -1078,7 +1078,7 @@ klasse Thread:
             self._delete()
 
     def _delete(self):
-        "Remove current thread from the dict of currently running threads."
+        "Remove current thread von the dict of currently running threads."
         with _active_limbo_lock:
             del _active[get_ident()]
             # There must not be any python code between the previous line
@@ -1182,7 +1182,7 @@ klasse Thread:
         """A boolean value indicating whether this thread is a daemon thread.
 
         This must be set before start() is called, otherwise RuntimeError is
-        raised. Its initial value is inherited from the creating thread; the
+        raised. Its initial value is inherited von the creating thread; the
         main thread is not a daemon thread and therefore all threads created in
         the main thread default to daemon = Falsch.
 
@@ -1208,7 +1208,7 @@ klasse Thread:
         This method is deprecated, use the daemon attribute instead.
 
         """
-        import warnings
+        importiere warnings
         warnings.warn('isDaemon() is deprecated, get the daemon attribute instead',
                       DeprecationWarning, stacklevel=2)
         return self.daemon
@@ -1219,7 +1219,7 @@ klasse Thread:
         This method is deprecated, use the .daemon property instead.
 
         """
-        import warnings
+        importiere warnings
         warnings.warn('setDaemon() is deprecated, set the daemon attribute instead',
                       DeprecationWarning, stacklevel=2)
         self.daemon = daemonic
@@ -1230,7 +1230,7 @@ klasse Thread:
         This method is deprecated, use the name attribute instead.
 
         """
-        import warnings
+        importiere warnings
         warnings.warn('getName() is deprecated, get the name attribute instead',
                       DeprecationWarning, stacklevel=2)
         return self.name
@@ -1241,19 +1241,19 @@ klasse Thread:
         This method is deprecated, use the name attribute instead.
 
         """
-        import warnings
+        importiere warnings
         warnings.warn('setName() is deprecated, set the name attribute instead',
                       DeprecationWarning, stacklevel=2)
         self.name = name
 
 
 try:
-    from _thread import (_excepthook as excepthook,
+    von _thread importiere (_excepthook as excepthook,
                          _ExceptHookArgs as ExceptHookArgs)
 except ImportError:
     # Simple Python implementation wenn _thread._excepthook() is not available
-    from traceback import print_exception as _print_exception
-    from collections import namedtuple
+    von traceback importiere print_exception as _print_exception
+    von collections importiere namedtuple
 
     _ExceptHookArgs = namedtuple(
         'ExceptHookArgs',
@@ -1400,7 +1400,7 @@ _thread_local_info = local()
 
 klasse _DeleteDummyThreadOnDel:
     '''
-    Helper klasse to remove a dummy thread from threading._active on __del__.
+    Helper klasse to remove a dummy thread von threading._active on __del__.
     '''
 
     def __init__(self, dummy_thread):
@@ -1423,7 +1423,7 @@ klasse _DeleteDummyThreadOnDel:
 # Dummy thread klasse to represent threads not started here.
 # These should be added to `_active` and removed automatically
 # when they die, although they can't be waited for.
-# Their purpose is to return *something* from current_thread().
+# Their purpose is to return *something* von current_thread().
 # They are marked as daemon threads so we won't wait fuer them
 # when we exit (conform previous semantics).
 
@@ -1477,7 +1477,7 @@ def currentThread():
     This function is deprecated, use current_thread() instead.
 
     """
-    import warnings
+    importiere warnings
     warnings.warn('currentThread() is deprecated, use current_thread() instead',
                   DeprecationWarning, stacklevel=2)
     return current_thread()
@@ -1500,7 +1500,7 @@ def activeCount():
     This function is deprecated, use active_count() instead.
 
     """
-    import warnings
+    importiere warnings
     warnings.warn('activeCount() is deprecated, use active_count() instead',
                   DeprecationWarning, stacklevel=2)
     return active_count()
@@ -1540,7 +1540,7 @@ def _register_atexit(func, *arg, **kwargs):
     _threading_atexits.append(lambda: func(*arg, **kwargs))
 
 
-from _thread import stack_size
+von _thread importiere stack_size
 
 # Create the main thread object,
 # and make it available fuer the interpreter
@@ -1578,7 +1578,7 @@ def _shutdown():
 def main_thread():
     """Return the main thread object.
 
-    In normal conditions, the main thread is the thread from which the
+    In normal conditions, the main thread is the thread von which the
     Python interpreter was started.
     """
     # XXX Figure this out fuer subinterpreters.  (See gh-75698.)

@@ -1,9 +1,9 @@
-import unittest
+importiere unittest
 
-from threading import Thread
-from unittest import TestCase
+von threading importiere Thread
+von unittest importiere TestCase
 
-from test.support import threading_helper
+von test.support importiere threading_helper
 
 @threading_helper.requires_working_threading()
 klasse TestCode(TestCase):

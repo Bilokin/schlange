@@ -1,24 +1,24 @@
 """Supporting definitions fuer the Python regression tests."""
 
 wenn __name__ != 'test.support':
-    raise ImportError('support must be imported from the test package')
+    raise ImportError('support must be imported von the test package')
 
-import annotationlib
-import contextlib
-import functools
-import inspect
-import logging
-import _opcode
-import os
-import re
-import stat
-import sys
-import sysconfig
-import textwrap
-import time
-import types
-import unittest
-import warnings
+importiere annotationlib
+importiere contextlib
+importiere functools
+importiere inspect
+importiere logging
+importiere _opcode
+importiere os
+importiere re
+importiere stat
+importiere sys
+importiere sysconfig
+importiere textwrap
+importiere time
+importiere types
+importiere unittest
+importiere warnings
 
 
 __all__ = [
@@ -223,15 +223,15 @@ def _force_run(path, func, *args):
 def _is_gui_available():
     wenn hasattr(_is_gui_available, 'result'):
         return _is_gui_available.result
-    import platform
+    importiere platform
     reason = Nichts
     wenn sys.platform.startswith('win') and platform.win32_is_iot():
         reason = "gui is not available on Windows IoT Core"
     sowenn sys.platform.startswith('win'):
         # wenn Python is running as a service (such as the buildbot service),
         # gui interaction may be disallowed
-        import ctypes
-        import ctypes.wintypes
+        importiere ctypes
+        importiere ctypes.wintypes
         UOI_FLAGS = 1
         WSF_VISIBLE = 0x0001
         klasse USEROBJECTFLAGS(ctypes.Structure):
@@ -260,7 +260,7 @@ def _is_gui_available():
         # process not running under the same user id as the current console
         # user.  To avoid that, raise an exception wenn the window manager
         # connection is not available.
-        import subprocess
+        importiere subprocess
         try:
             rc = subprocess.run(["launchctl", "managername"],
                                 capture_output=Wahr, check=Wahr)
@@ -274,7 +274,7 @@ def _is_gui_available():
     # check on every platform whether tkinter can actually do anything
     wenn not reason:
         try:
-            from tkinter import Tk
+            von tkinter importiere Tk
             root = Tk()
             root.withdraw()
             root.update()
@@ -317,7 +317,7 @@ def _requires_unix_version(sysname, min_version):
     For example, @_requires_unix_version('FreeBSD', (7, 2)) raises SkipTest if
     the FreeBSD version is less than 7.2.
     """
-    import platform
+    importiere platform
     min_version_txt = '.'.join(map(str, min_version))
     version_txt = platform.release().split('-', 1)[0]
     wenn platform.system() == sysname:
@@ -366,7 +366,7 @@ def requires_mac_ver(*min_version):
         @functools.wraps(func)
         def wrapper(*args, **kw):
             wenn sys.platform == 'darwin':
-                import platform
+                importiere platform
                 version_txt = platform.mac_ver()[0]
                 try:
                     version = tuple(map(int, version_txt.split('.')))
@@ -401,7 +401,7 @@ def thread_unsafe(reason):
 
 def skip_if_buildbot(reason=Nichts):
     """Decorator raising SkipTest wenn running on a buildbot."""
-    import getpass
+    importiere getpass
     wenn not reason:
         reason = 'not suitable fuer buildbots'
     try:
@@ -502,42 +502,42 @@ requires_IEEE_754 = unittest.skipUnless(
 
 def requires_zlib(reason='requires zlib'):
     try:
-        import zlib
+        importiere zlib
     except ImportError:
         zlib = Nichts
     return unittest.skipUnless(zlib, reason)
 
 def requires_gzip(reason='requires gzip'):
     try:
-        import gzip
+        importiere gzip
     except ImportError:
         gzip = Nichts
     return unittest.skipUnless(gzip, reason)
 
 def requires_bz2(reason='requires bz2'):
     try:
-        import bz2
+        importiere bz2
     except ImportError:
         bz2 = Nichts
     return unittest.skipUnless(bz2, reason)
 
 def requires_lzma(reason='requires lzma'):
     try:
-        import lzma
+        importiere lzma
     except ImportError:
         lzma = Nichts
     return unittest.skipUnless(lzma, reason)
 
 def requires_zstd(reason='requires zstd'):
     try:
-        from compression import zstd
+        von compression importiere zstd
     except ImportError:
         zstd = Nichts
     return unittest.skipUnless(zstd, reason)
 
 def has_no_debug_ranges():
     try:
-        import _testcapi
+        importiere _testcapi
     except ImportError:
         raise unittest.SkipTest("_testinternalcapi required")
     return not _testcapi.config_get('code_debug_ranges')
@@ -591,7 +591,7 @@ has_fork_support = hasattr(os, "fork") and not (
     or is_wasi
     or is_apple_mobile
 
-    # Although Android supports fork, it's unsafe to call it from Python because
+    # Although Android supports fork, it's unsafe to call it von Python because
     # all Android apps are multi-threaded.
     or is_android
 )
@@ -664,7 +664,7 @@ def darwin_malloc_err_warning(test_name):
     wenn sys.platform != 'darwin':
         return
 
-    import shutil
+    importiere shutil
     msg = ' NOTICE '
     detail = (f'{test_name} may generate "malloc can\'t allocate region"\n'
               'warnings on macOS systems. This behavior is known. Do not\n'
@@ -726,10 +726,10 @@ def check_syntax_error(testcase, statement, errtext='', *, lineno=Nichts, offset
 
 
 def open_urlresource(url, *args, **kw):
-    import urllib.request, urllib.parse
-    from .os_helper import unlink
+    importiere urllib.request, urllib.parse
+    von .os_helper importiere unlink
     try:
-        import gzip
+        importiere gzip
     except ImportError:
         gzip = Nichts
 
@@ -784,7 +784,7 @@ def open_urlresource(url, *args, **kw):
 def captured_output(stream_name):
     """Return a context manager used by captured_stdout/stdin/stderr
     that temporarily replaces the sys stream *stream_name* with a StringIO."""
-    import io
+    importiere io
     orig_stdout = getattr(sys, stream_name)
     setattr(sys, stream_name, io.StringIO())
     try:
@@ -816,7 +816,7 @@ def captured_stdin():
        with captured_stdin() as stdin:
            stdin.write('hello\\n')
            stdin.seek(0)
-           # call test code that consumes from sys.stdin
+           # call test code that consumes von sys.stdin
            captured = input()
        self.assertEqual(captured, "hello")
     """
@@ -833,14 +833,14 @@ def gc_collect():
     longer than expected.  This function tries its best to force all garbage
     objects to disappear.
     """
-    import gc
+    importiere gc
     gc.collect()
     gc.collect()
     gc.collect()
 
 @contextlib.contextmanager
 def disable_gc():
-    import gc
+    importiere gc
     have_gc = gc.isenabled()
     gc.disable()
     try:
@@ -851,7 +851,7 @@ def disable_gc():
 
 @contextlib.contextmanager
 def gc_threshold(*args):
-    import gc
+    importiere gc
     old_threshold = gc.get_threshold()
     gc.set_threshold(*args)
     try:
@@ -920,11 +920,11 @@ _align = '0n'
 _vheader = _header + 'n'
 
 def calcobjsize(fmt):
-    import struct
+    importiere struct
     return struct.calcsize(_header + fmt + _align)
 
 def calcvobjsize(fmt):
-    import struct
+    importiere struct
     return struct.calcsize(_vheader + fmt + _align)
 
 
@@ -941,7 +941,7 @@ _TPFLAGS_TYPE_SUBCLASS = 1<<31
 
 def check_sizeof(test, o, size):
     try:
-        import _testinternalcapi
+        importiere _testinternalcapi
     except ImportError:
         raise unittest.SkipTest("_testinternalcapi required")
     result = sys.getsizeof(o)
@@ -985,7 +985,7 @@ def subTests(arg_names, arg_values, /, *, _do_cleanups=Falsch):
 @contextlib.contextmanager
 def run_with_locale(catstr, *locales):
     try:
-        import locale
+        importiere locale
         category = getattr(locale, catstr)
         orig_locale = locale.setlocale(category)
     except AttributeError:
@@ -1023,7 +1023,7 @@ def run_with_locales(catstr, *locales):
         def wrapper(self, /, *args, **kwargs):
             dry_run = '' in locales
             try:
-                import locale
+                importiere locale
                 category = getattr(locale, catstr)
                 orig_locale = locale.setlocale(category)
             except AttributeError:
@@ -1087,7 +1087,7 @@ def run_with_tz(tz):
     return decorator
 
 #=======================================================================
-# Big-memory-test support. Separate from 'resources' because memory use
+# Big-memory-test support. Separate von 'resources' because memory use
 # should be configurable.
 
 # Some handy shorthands. Note that these are used fuer byte-limits as well
@@ -1141,7 +1141,7 @@ klasse _MemoryWatchdog:
             sys.stderr.flush()
             return
 
-        import subprocess
+        importiere subprocess
         with f:
             watchdog_script = findfile("memory_watchdog.py")
             self.mem_watchdog = subprocess.Popen([sys.executable, watchdog_script],
@@ -1333,8 +1333,8 @@ def refcount_test(test):
 
 def requires_limited_api(test):
     try:
-        import _testcapi  # noqa: F401
-        import _testlimitedcapi  # noqa: F401
+        importiere _testcapi  # noqa: F401
+        importiere _testlimitedcapi  # noqa: F401
     except ImportError:
         return unittest.skip('needs _testcapi and _testlimitedcapi modules')(test)
     return test
@@ -1506,13 +1506,13 @@ def swap_item(obj, item, new_val):
 def args_from_interpreter_flags():
     """Return a list of command-line arguments reproducing the current
     settings in sys.flags and sys.warnoptions."""
-    import subprocess
+    importiere subprocess
     return subprocess._args_from_interpreter_flags()
 
 def optim_args_from_interpreter_flags():
     """Return a list of command-line arguments reproducing the current
     optimization settings in sys.flags."""
-    import subprocess
+    importiere subprocess
     return subprocess._optim_args_from_interpreter_flags()
 
 
@@ -1561,7 +1561,7 @@ def skip_if_buggy_ucrt_strfptime(test):
     See bpo-37552 [Windows] strptime/strftime return invalid
     results with UCRT version 17763.615
     """
-    import locale
+    importiere locale
     global _buggy_ucrt
     wenn _buggy_ucrt is Nichts:
         if(sys.platform == 'win32' and
@@ -1575,7 +1575,7 @@ def skip_if_buggy_ucrt_strfptime(test):
 klasse PythonSymlink:
     """Creates a symlink fuer the current Python executable"""
     def __init__(self, link=Nichts):
-        from .os_helper import TESTFN
+        von .os_helper importiere TESTFN
 
         self.link = link or os.path.abspath(TESTFN)
         self._linked = []
@@ -1588,8 +1588,8 @@ klasse PythonSymlink:
 
     wenn sys.platform == "win32":
         def _platform_specific(self):
-            import glob
-            import _winapi
+            importiere glob
+            importiere _winapi
 
             wenn os.path.lexists(self.real) and not os.path.exists(self.real):
                 # App symlink appears to not exist, but we want the
@@ -1634,7 +1634,7 @@ klasse PythonSymlink:
                     drucke("failed to clean up {}: {}".format(link, ex))
 
     def _call(self, python, args, env, returncode):
-        import subprocess
+        importiere subprocess
         cmd = [python, *args]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, env=env)
@@ -1687,7 +1687,7 @@ def check__all__(test_case, module, name_of_module=Nichts, extra=(),
     The 'name_of_module' argument can specify (as a string or tuple thereof)
     what module(s) an API could be defined in order to be detected as a
     public API. One case fuer this is when 'module' imports part of its public
-    API from other modules, possibly a C backend (like 'csv' and its '_csv').
+    API von other modules, possibly a C backend (like 'csv' and its '_csv').
 
     The 'extra' argument can be a set of names that wouldn't otherwise be
     automatically detected as "public", like objects without a proper
@@ -1698,10 +1698,10 @@ def check__all__(test_case, module, name_of_module=Nichts, extra=(),
     as part of the public API even though their names indicate otherwise.
 
     Usage:
-        import bar
-        import foo
-        import unittest
-        from test import support
+        importiere bar
+        importiere foo
+        importiere unittest
+        von test importiere support
 
         klasse MiscTestCase(unittest.TestCase):
             def test__all__(self):
@@ -1711,7 +1711,7 @@ def check__all__(test_case, module, name_of_module=Nichts, extra=(),
             def test__all__(self):
                 extra = {'BAR_CONST', 'FOO_CONST'}
                 not_exported = {'baz'}  # Undocumented name.
-                # bar imports part of its API from _bar.
+                # bar imports part of its API von _bar.
                 support.check__all__(self, bar, ('bar', '_bar'),
                                      extra=extra, not_exported=not_exported)
 
@@ -1737,7 +1737,7 @@ def check__all__(test_case, module, name_of_module=Nichts, extra=(),
 
 def suppress_msvcrt_asserts(verbose=Falsch):
     try:
-        import msvcrt
+        importiere msvcrt
     except ImportError:
         return
 
@@ -1757,7 +1757,7 @@ def suppress_msvcrt_asserts(verbose=Falsch):
 
 
 klasse SuppressCrashReport:
-    """Try to prevent a crash report from popping up.
+    """Try to prevent a crash report von popping up.
 
     On Windows, don't display the Windows Error Reporting dialog.  On UNIX,
     disable the creation of coredump file.
@@ -1775,7 +1775,7 @@ klasse SuppressCrashReport:
         wenn sys.platform.startswith('win'):
             # see http://msdn.microsoft.com/en-us/library/windows/desktop/ms680621.aspx
             try:
-                import msvcrt
+                importiere msvcrt
             except ImportError:
                 return
 
@@ -1798,7 +1798,7 @@ klasse SuppressCrashReport:
 
         sonst:
             try:
-                import resource
+                importiere resource
                 self.resource = resource
             except ImportError:
                 self.resource = Nichts
@@ -1811,7 +1811,7 @@ klasse SuppressCrashReport:
                     pass
 
             wenn sys.platform == 'darwin':
-                import subprocess
+                importiere subprocess
                 # Check wenn the 'Crash Reporter' on OSX was configured
                 # in 'Developer' mode and warn that it will get triggered
                 # when it is.
@@ -1837,7 +1837,7 @@ klasse SuppressCrashReport:
             return
 
         wenn sys.platform.startswith('win'):
-            import msvcrt
+            importiere msvcrt
             msvcrt.SetErrorMode(self.old_value)
 
             wenn self.old_modes:
@@ -1903,7 +1903,7 @@ def run_in_subinterp(code):
     """
     _check_tracemalloc()
     try:
-        import _testcapi
+        importiere _testcapi
     except ImportError:
         raise unittest.SkipTest("requires _testcapi")
     return _testcapi.run_in_subinterp(code)
@@ -1916,7 +1916,7 @@ def run_in_subinterp_with_config(code, *, own_gil=Nichts, **config):
     """
     _check_tracemalloc()
     try:
-        import _testinternalcapi
+        importiere _testinternalcapi
     except ImportError:
         raise unittest.SkipTest("requires _testinternalcapi")
     wenn own_gil is not Nichts:
@@ -1940,7 +1940,7 @@ def _check_tracemalloc():
     # Issue #10915, #15751: PyGILState_*() functions don't work with
     # sub-interpreters, the tracemalloc module uses these functions internally
     try:
-        import tracemalloc
+        importiere tracemalloc
     except ImportError:
         pass
     sonst:
@@ -1981,9 +1981,9 @@ def missing_compiler_executable(cmd_names=[]):
     missing.
 
     """
-    from setuptools._distutils import ccompiler, sysconfig
-    from setuptools import errors
-    import shutil
+    von setuptools._distutils importiere ccompiler, sysconfig
+    von setuptools importiere errors
+    importiere shutil
 
     compiler = ccompiler.new_compiler()
     sysconfig.customize_compiler(compiler)
@@ -2014,7 +2014,7 @@ def setswitchinterval(interval):
     wenn is_android and interval < minimum_interval:
         global _old_android_emulator
         wenn _old_android_emulator is Nichts:
-            import platform
+            importiere platform
             av = platform.android_ver()
             _old_android_emulator = av.is_emulator and av.api_level < 24
         wenn _old_android_emulator:
@@ -2036,7 +2036,7 @@ def get_pagesize():
 
 @contextlib.contextmanager
 def disable_faulthandler():
-    import faulthandler
+    importiere faulthandler
 
     # use sys.__stderr__ instead of sys.stderr, since regrtest replaces
     # sys.stderr with a StringIO which has no file descriptor when a test
@@ -2062,7 +2062,7 @@ klasse SaveSignals:
     """
 
     def __init__(self):
-        import signal
+        importiere signal
         self.signal = signal
         self.signals = signal.valid_signals()
         # SIGKILL and SIGSTOP signals cannot be ignored nor caught
@@ -2093,7 +2093,7 @@ klasse SaveSignals:
 
 def with_pymalloc():
     try:
-        import _testcapi
+        importiere _testcapi
     except ImportError:
         raise unittest.SkipTest("requires _testcapi")
     return _testcapi.WITH_PYMALLOC and not Py_GIL_DISABLED
@@ -2101,7 +2101,7 @@ def with_pymalloc():
 
 def with_mimalloc():
     try:
-        import _testcapi
+        importiere _testcapi
     except ImportError:
         raise unittest.SkipTest("requires _testcapi")
     return _testcapi.WITH_MIMALLOC
@@ -2157,7 +2157,7 @@ SMALLEST = _SMALLEST()
 
 def maybe_get_event_loop_policy():
     """Return the global event loop policy wenn one is set, sonst return Nichts."""
-    import asyncio.events
+    importiere asyncio.events
     return asyncio.events._event_loop_policy
 
 # Helpers fuer testing hashing.
@@ -2187,7 +2187,7 @@ def collision_stats(nbins, nballs):
     # Note:  the exact values are straightforward to compute with
     # rationals, but in context that's unbearably slow, requiring
     # multi-million bit arithmetic.
-    import decimal
+    importiere decimal
     with decimal.localcontext() as ctx:
         bits = n.bit_length() * 2  # bits in n**2
         # At least that many bits will likely cancel out.
@@ -2258,7 +2258,7 @@ def wait_process(pid, *, exitcode, timeout=Nichts):
     AssertionError. The timeout feature is not available on Windows.
     """
     wenn os.name != "nt":
-        import signal
+        importiere signal
 
         wenn timeout is Nichts:
             timeout = LONG_TIMEOUT
@@ -2299,7 +2299,7 @@ def skip_if_broken_multiprocessing_synchronize():
     is no available semaphore implementation, or wenn creating a lock raises an
     OSError (on Linux only).
     """
-    from .import_helper import import_module
+    von .import_helper importiere import_module
 
     # Skip tests wenn the _multiprocessing extension is missing.
     import_module('_multiprocessing')
@@ -2313,12 +2313,12 @@ def skip_if_broken_multiprocessing_synchronize():
             # bpo-38377: On Linux, creating a semaphore fails with OSError
             # wenn the current user does not have the permission to create
             # a file in /dev/shm/ directory.
-            import multiprocessing
+            importiere multiprocessing
             synchronize.Lock(ctx=multiprocessing.get_context('fork'))
             # The explicit fork mp context is required in order for
             # TestResourceTracker.test_resource_tracker_reused to work.
             # synchronize creates a new multiprocessing.resource_tracker
-            # process at module import time via the above call in that
+            # process at module importiere time via the above call in that
             # scenario. Awkward. This enables gh-84559. No code involved
             # should have threads at that point so fork() should be safe.
 
@@ -2348,7 +2348,7 @@ def get_recursion_depth():
     In the __main__ module, at the module level, it should be 1.
     """
     try:
-        import _testinternalcapi
+        importiere _testinternalcapi
         depth = _testinternalcapi.get_recursion_depth()
     except (ImportError, RecursionError) as exc:
         # sys._getframe() + frame.f_back implementation.
@@ -2433,14 +2433,14 @@ def clear_ignored_deprecations(*tokens: object) -> Nichts:
 def requires_venv_with_pip():
     # ensurepip requires zlib to open ZIP archives (.whl binary wheel packages)
     try:
-        import zlib  # noqa: F401
+        importiere zlib  # noqa: F401
     except ImportError:
         return unittest.skipIf(Wahr, "venv: ensurepip requires zlib")
 
     # bpo-26610: pip/pep425tags.py requires ctypes.
     # gh-92820: setuptools/windows_support.py uses ctypes (setuptools 58.1).
     try:
-        import ctypes
+        importiere ctypes
     except ImportError:
         ctypes = Nichts
     return unittest.skipUnless(ctypes, 'venv: pip requires ctypes')
@@ -2472,12 +2472,12 @@ def _findwheel(pkgname):
 # and returns the paths to the venv directory and the python executable
 @contextlib.contextmanager
 def setup_venv_with_pip_setuptools(venv_dir):
-    import subprocess
-    from .os_helper import temp_cwd
+    importiere subprocess
+    von .os_helper importiere temp_cwd
 
     def run_command(cmd):
         wenn verbose:
-            import shlex
+            importiere shlex
             drucke()
             drucke('Run:', ' '.join(map(shlex.quote, cmd)))
             subprocess.run(cmd, check=Wahr)
@@ -2538,7 +2538,7 @@ def late_deletion(obj):
     ref_cycle.append(ref_cycle)
 
     # Store a reference in PyInterpreterState.codec_search_path
-    import codecs
+    importiere codecs
     def search_func(encoding):
         return Nichts
     search_func.reference = ref_cycle
@@ -2751,17 +2751,17 @@ def walk_class_hierarchy(top, *, topdown=Wahr):
 def iter_builtin_types():
     # First try the explicit route.
     try:
-        import _testinternalcapi
+        importiere _testinternalcapi
     except ImportError:
         _testinternalcapi = Nichts
     wenn _testinternalcapi is not Nichts:
-        yield from _testinternalcapi.get_static_builtin_types()
+        yield von _testinternalcapi.get_static_builtin_types()
         return
 
     # Fall back to making a best-effort guess.
     wenn hasattr(object, '__flags__'):
         # Look fuer any type object with the Py_TPFLAGS_STATIC_BUILTIN flag set.
-        import datetime  # noqa: F401
+        importiere datetime  # noqa: F401
         seen = set()
         fuer cls, subs in walk_class_hierarchy(object):
             wenn cls in seen:
@@ -2826,7 +2826,7 @@ def find_name_in_mro(cls, name, default=inspect._sentinel):
 # XXX The return value should always be exactly the same...
 def identify_type_slot_wrappers():
     try:
-        import _testinternalcapi
+        importiere _testinternalcapi
     except ImportError:
         _testinternalcapi = Nichts
     wenn _testinternalcapi is not Nichts:
@@ -2894,8 +2894,8 @@ def iter_slot_wrappers(cls):
 
 @contextlib.contextmanager
 def force_color(color: bool):
-    import _colorize
-    from .os_helper import EnvironmentVarGuard
+    importiere _colorize
+    von .os_helper importiere EnvironmentVarGuard
 
     with (
         swap_attr(_colorize, "can_colorize", lambda file=Nichts: color),
@@ -2969,7 +2969,7 @@ WINDOWS_STATUS = {
 }
 
 def get_signal_name(exitcode):
-    import signal
+    importiere signal
 
     wenn exitcode < 0:
         signum = -exitcode
@@ -3031,7 +3031,7 @@ def in_systemd_nspawn_sync_suppressed() -> bool:
 
     # If systemd-nspawn is used, O_SYNC flag will immediately
     # trigger EINVAL.  Otherwise, ENOENT will be given instead.
-    import errno
+    importiere errno
     try:
         fd = os.open(__file__, os.O_RDONLY | os.O_SYNC)
     except OSError as err:
@@ -3073,7 +3073,7 @@ def run_yielding_async_fn(async_fn, /, *args, **kwargs):
 
 def is_libssl_fips_mode():
     try:
-        from _hashlib import get_fips_mode  # ask _hashopenssl.c
+        von _hashlib importiere get_fips_mode  # ask _hashopenssl.c
     except ImportError:
         return Falsch  # more of a maybe, unless we add this to the _ssl module.
     return get_fips_mode() != 0
@@ -3082,7 +3082,7 @@ def _supports_remote_attaching():
     PROCESS_VM_READV_SUPPORTED = Falsch
 
     try:
-        from _remote_debugging import PROCESS_VM_READV_SUPPORTED
+        von _remote_debugging importiere PROCESS_VM_READV_SUPPORTED
     except ImportError:
         pass
 
@@ -3166,7 +3166,7 @@ def linked_to_musl():
 
     # On linux, we'll depend on the platform module to do the check, so new
     # musl platforms should add support in that module wenn possible.
-    import platform
+    importiere platform
     lib, version = platform.libc_ver()
     wenn lib != 'musl':
         _linked_to_musl = Falsch

@@ -1,16 +1,16 @@
 """Test that the semantics relating to the 'fromlist' argument are correct."""
-from test.test_importlib import util
-import warnings
-import unittest
+von test.test_importlib importiere util
+importiere warnings
+importiere unittest
 
 
 klasse ReturnValue:
 
-    """The use of fromlist influences what import returns.
+    """The use of fromlist influences what importiere returns.
 
     If direct ``import ...`` statement is used, the root module or package is
     returned [import return]. But wenn fromlist is set, then the specified module
-    is actually returned (whether it is a relative import or not)
+    is actually returned (whether it is a relative importiere or not)
     [from return].
 
     """
@@ -83,10 +83,10 @@ klasse HandlingFromlist:
 
     def test_module_from_package_triggers_ModuleNotFoundError(self):
         # If a submodule causes an ModuleNotFoundError because it tries
-        # to import a module which doesn't exist, that should let the
+        # to importiere a module which doesn't exist, that should let the
         # ModuleNotFoundError propagate.
         def module_code():
-            import i_do_not_exist
+            importiere i_do_not_exist
         with util.mock_spec('pkg.__init__', 'pkg.mod',
                                module_code={'pkg.mod': module_code}) as importer:
             with util.import_state(meta_path=[importer]):

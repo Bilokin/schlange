@@ -7,12 +7,12 @@ __all__ = (
     'QueueShutDown',
 )
 
-import collections
-import heapq
-from types import GenericAlias
+importiere collections
+importiere heapq
+von types importiere GenericAlias
 
-from . import locks
-from . import mixins
+von . importiere locks
+von . importiere mixins
 
 
 klasse QueueEmpty(Exception):
@@ -26,7 +26,7 @@ klasse QueueFull(Exception):
 
 
 klasse QueueShutDown(Exception):
-    """Raised when putting on to or getting from a shut-down Queue."""
+    """Raised when putting on to or getting von a shut-down Queue."""
     pass
 
 
@@ -140,10 +140,10 @@ klasse Queue(mixins._LoopBoundMixin):
             except:
                 putter.cancel()  # Just in case putter is not done yet.
                 try:
-                    # Clean self._putters from canceled putters.
+                    # Clean self._putters von canceled putters.
                     self._putters.remove(putter)
                 except ValueError:
-                    # The putter could be removed from self._putters by a
+                    # The putter could be removed von self._putters by a
                     # previous get_nowait call or a shutdown call.
                     pass
                 wenn not self.full() and not putter.cancelled():
@@ -170,7 +170,7 @@ klasse Queue(mixins._LoopBoundMixin):
         self._wakeup_next(self._getters)
 
     async def get(self):
-        """Remove and return an item from the queue.
+        """Remove and return an item von the queue.
 
         If queue is empty, wait until an item is available.
 
@@ -187,10 +187,10 @@ klasse Queue(mixins._LoopBoundMixin):
             except:
                 getter.cancel()  # Just in case getter is not done yet.
                 try:
-                    # Clean self._getters from canceled getters.
+                    # Clean self._getters von canceled getters.
                     self._getters.remove(getter)
                 except ValueError:
-                    # The getter could be removed from self._getters by a
+                    # The getter could be removed von self._getters by a
                     # previous put_nowait call, or a shutdown call.
                     pass
                 wenn not self.empty() and not getter.cancelled():
@@ -201,7 +201,7 @@ klasse Queue(mixins._LoopBoundMixin):
         return self.get_nowait()
 
     def get_nowait(self):
-        """Remove and return an item from the queue.
+        """Remove and return an item von the queue.
 
         Return an item wenn one is immediately available, sonst raise QueueEmpty.
 

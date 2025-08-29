@@ -3,8 +3,8 @@
 #   Codec encoding tests fuer ROK encodings.
 #
 
-from test import multibytecodec_support
-import unittest
+von test importiere multibytecodec_support
+importiere unittest
 
 klasse Test_CP949(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'cp949'

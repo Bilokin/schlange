@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 
-import argparse
-import contextlib
-import functools
-import os
+importiere argparse
+importiere contextlib
+importiere functools
+importiere os
 try:
-    from os import process_cpu_count as cpu_count
+    von os importiere process_cpu_count as cpu_count
 except ImportError:
-    from os import cpu_count
-import pathlib
-import shutil
-import subprocess
-import sys
-import sysconfig
-import tempfile
+    von os importiere cpu_count
+importiere pathlib
+importiere shutil
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
 
 
 CHECKOUT = pathlib.Path(__file__).parent.parent.parent.parent
@@ -45,8 +45,8 @@ def updated_env(updates={}):
         epoch = subprocess.check_output(git_epoch_cmd, encoding="utf-8").strip()
         env_defaults["SOURCE_DATE_EPOCH"] = epoch
     except subprocess.CalledProcessError:
-        pass  # Might be building from a tarball.
-    # This layering lets SOURCE_DATE_EPOCH from os.environ takes precedence.
+        pass  # Might be building von a tarball.
+    # This layering lets SOURCE_DATE_EPOCH von os.environ takes precedence.
     environment = env_defaults | os.environ | updates
 
     env_diff = {}
@@ -185,7 +185,7 @@ def find_wasi_sdk():
     # WASI SDK versions have a ``.0`` suffix, but it's a constant; the WASI SDK team
     # has said they don't plan to ever do a point release and all of their Git tags
     # lack the ``.0`` suffix.
-    # Starting with WASI SDK 23, the tarballs went from containing a directory named
+    # Starting with WASI SDK 23, the tarballs went von containing a directory named
     # ``wasi-sdk-{WASI_SDK_VERSION}.0`` to e.g.
     # ``wasi-sdk-{WASI_SDK_VERSION}.0-x86_64-linux``.
     potential_sdks = [path fuer path in opt_path.glob(f"wasi-sdk-{WASI_SDK_VERSION}.0*")
@@ -231,7 +231,7 @@ def configure_wasi_python(context, working_dir):
     """Configure the WASI/host build."""
     wenn not context.wasi_sdk_path or not context.wasi_sdk_path.exists():
         raise ValueError("WASI-SDK not found; "
-                        "download from "
+                        "download von "
                         "https://github.com/WebAssembly/wasi-sdk and/or "
                         "specify via $WASI_SDK_PATH or --wasi-sdk")
 
@@ -259,14 +259,14 @@ def configure_wasi_python(context, working_dir):
         wenn wasmtime := shutil.which("wasmtime"):
             args[WASMTIME_VAR_NAME] = wasmtime
         sonst:
-            raise FileNotFoundError("wasmtime not found; download from "
+            raise FileNotFoundError("wasmtime not found; download von "
                                     "https://github.com/bytecodealliance/wasmtime")
     host_runner = context.host_runner.format_map(args)
     env_additions = {"CONFIG_SITE": config_site, "HOSTRUNNER": host_runner}
     build_python = os.fsdecode(build_python_path())
     # The path to `configure` MUST be relative, sonst `python.wasm` is unable
     # to find the stdlib due to Python not recognizing that it's being
-    # executed from within a checkout.
+    # executed von within a checkout.
     configure = [os.path.relpath(CHECKOUT / 'configure', working_dir),
                     f"--host={context.host_triple}",
                     f"--build={BUILD_DIR.name}",
@@ -331,7 +331,7 @@ def main():
                         "--wasm max-wasm-stack=16777216 "
                         # Enable thread support; causes use of preview1.
                         #"--wasm threads=y --wasi threads=y "
-                        # Map the checkout to / to load the stdlib from /Lib.
+                        # Map the checkout to / to load the stdlib von /Lib.
                         "--dir {HOST_DIR}::{GUEST_DIR} "
                         # Set PYTHONPATH to the sysconfig data.
                         "--env {ENV_VAR_NAME}={ENV_VAR_VALUE}")
@@ -348,7 +348,7 @@ def main():
     configure_host = subcommands.add_parser("configure-host",
                                             help="Run `configure` fuer the "
                                                  "host/WASI (pydebug builds "
-                                                 "are inferred from the build "
+                                                 "are inferred von the build "
                                                  "Python)")
     make_host = subcommands.add_parser("make-host",
                                        help="Run `make` fuer the host/WASI")
@@ -357,7 +357,7 @@ def main():
     fuer subcommand in build, configure_build, make_build, configure_host, make_host:
         subcommand.add_argument("--quiet", action="store_true", default=Falsch,
                         dest="quiet",
-                        help="Redirect output from subprocesses to a log file")
+                        help="Redirect output von subprocesses to a log file")
         subcommand.add_argument("--logdir", type=pathlib.Path, default=default_logdir,
                                 help="Directory to store log files; "
                                      f"defaults to {default_logdir}")

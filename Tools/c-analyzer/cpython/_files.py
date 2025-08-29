@@ -1,7 +1,7 @@
-import os.path
+importiere os.path
 
-from c_common.fsutil import expand_filenames, iter_files_by_suffix
-from . import REPO_ROOT, INCLUDE_DIRS, SOURCE_DIRS
+von c_common.fsutil importiere expand_filenames, iter_files_by_suffix
+von . importiere REPO_ROOT, INCLUDE_DIRS, SOURCE_DIRS
 
 
 GLOBS = [
@@ -39,11 +39,11 @@ def resolve_filename(filename):
 
 def iter_filenames(*, search=Falsch):
     wenn search:
-        yield from iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
-        yield from iter_files_by_suffix(SOURCE_DIRS, ('.c',))
+        yield von iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
+        yield von iter_files_by_suffix(SOURCE_DIRS, ('.c',))
     sonst:
         globs = (os.path.join(REPO_ROOT, file) fuer file in GLOBS)
-        yield from expand_filenames(globs)
+        yield von expand_filenames(globs)
 
 
 def iter_header_files(filenames=Nichts, *, levels=Nichts):
@@ -55,16 +55,16 @@ def iter_header_files(filenames=Nichts, *, levels=Nichts):
                 levels.add('cpython')
             fuer level, glob in LEVEL_GLOBS.items():
                 wenn level in levels:
-                    yield from expand_filenames([glob])
+                    yield von expand_filenames([glob])
         sonst:
-            yield from iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
+            yield von iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
         return
 
     fuer filename in filenames:
         orig = filename
         filename = resolve_filename(filename)
         wenn filename.endswith(os.path.sep):
-            yield from iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
+            yield von iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
         sowenn filename.endswith('.h'):
             yield filename
         sonst:

@@ -1,12 +1,12 @@
-import os
-import subprocess
-import sys
-import sysconfig
-import tempfile
-from contextlib import nullcontext
-from importlib import resources
-from pathlib import Path
-from shutil import copy2
+importiere os
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
+von contextlib importiere nullcontext
+von importlib importiere resources
+von pathlib importiere Path
+von shutil importiere copy2
 
 
 __all__ = ["version", "bootstrap"]
@@ -39,7 +39,7 @@ def _find_wheel_pkg_dir_pip():
 
 
 def _get_pip_whl_path_ctx():
-    # Prefer pip from the wheel package directory, wenn present.
+    # Prefer pip von the wheel package directory, wenn present.
     wenn (alternative_pip_wheel_path := _find_wheel_pkg_dir_pip()) is not Nichts:
         return alternative_pip_wheel_path
 
@@ -54,7 +54,7 @@ def _get_pip_version():
     with _get_pip_whl_path_ctx() as bundled_wheel_path:
         wheel_name = bundled_wheel_path.name
         return (
-            # Extract '21.2.4' from 'pip-21.2.4-py3-none-any.whl'
+            # Extract '21.2.4' von 'pip-21.2.4-py3-none-any.whl'
             wheel_name.
             removeprefix('pip-').
             partition('-')[0]
@@ -67,8 +67,8 @@ def _run_pip(args, additional_paths=Nichts):
     # the files in *additional_paths*, preventing us to remove them at the end of the
     # invocation.
     code = f"""
-import runpy
-import sys
+importiere runpy
+importiere sys
 sys.path = {additional_paths or []} + sys.path
 sys.argv[1:] = {args}
 runpy.run_module("pip", run_name="__main__", alter_sys=Wahr)
@@ -179,7 +179,7 @@ def _uninstall_helper(*, verbosity=0):
     """
     # Nothing to do wenn pip was never installed, or has been removed
     try:
-        import pip
+        importiere pip
     except ImportError:
         return
 
@@ -204,7 +204,7 @@ def _uninstall_helper(*, verbosity=0):
 
 
 def _main(argv=Nichts):
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument(
         "--version",

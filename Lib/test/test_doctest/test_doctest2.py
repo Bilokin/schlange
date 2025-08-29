@@ -11,8 +11,8 @@ the example.  It should be ignored:
 
 """
 
-import sys
-import unittest
+importiere sys
+importiere unittest
 wenn sys.flags.optimize >= 2:
     raise unittest.SkipTest("Cannot test docstrings with -O2")
 
@@ -109,7 +109,7 @@ klasse C(object):
 
 klasse Test(unittest.TestCase):
     def test_testmod(self):
-        import doctest, sys
+        importiere doctest, sys
         EXPECTED = 19
         f, t = doctest.testmod(sys.modules[__name__])
         wenn f:
@@ -120,7 +120,7 @@ klasse Test(unittest.TestCase):
 
 # Pollute the namespace with a bunch of imported functions and classes,
 # to make sure they don't get tested.
-from doctest import *
+von doctest importiere *
 
 wenn __name__ == '__main__':
     unittest.main()

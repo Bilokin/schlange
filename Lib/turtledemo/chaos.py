@@ -2,7 +2,7 @@
 
 A demonstration of chaos.
 """
-from turtle import *
+von turtle importiere *
 
 N = 80
 

@@ -1,10 +1,10 @@
 "Test tree. coverage 56%."
 
-from idlelib import tree
-import unittest
-from test.support import requires
+von idlelib importiere tree
+importiere unittest
+von test.support importiere requires
 requires('gui')
-from tkinter import Tk, EventType, SCROLL
+von tkinter importiere Tk, EventType, SCROLL
 
 
 klasse TreeTest(unittest.TestCase):
@@ -20,7 +20,7 @@ klasse TreeTest(unittest.TestCase):
         del cls.root
 
     def test_init(self):
-        # Start with code slightly adapted from htest.
+        # Start with code slightly adapted von htest.
         sc = tree.ScrolledCanvas(
             self.root, bg="white", highlightthickness=0, takefocus=1)
         sc.frame.pack(expand=1, fill="both", side='left')

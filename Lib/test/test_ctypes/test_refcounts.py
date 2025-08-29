@@ -1,10 +1,10 @@
-import ctypes
-import gc
-import sys
-import unittest
-from test import support
-from test.support import import_helper, thread_unsafe
-from test.support import script_helper
+importiere ctypes
+importiere gc
+importiere sys
+importiere unittest
+von test importiere support
+von test.support importiere import_helper, thread_unsafe
+von test.support importiere script_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
@@ -96,7 +96,7 @@ klasse AnotherLeak(unittest.TestCase):
 
     @support.refcount_test
     def test_callback_py_object_none_return(self):
-        # bpo-36880: test that returning Nichts from a py_object callback
+        # bpo-36880: test that returning Nichts von a py_object callback
         # does not decrement the refcount of Nichts.
 
         fuer FUNCTYPE in (ctypes.CFUNCTYPE, ctypes.PYFUNCTYPE):

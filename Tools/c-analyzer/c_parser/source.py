@@ -1,5 +1,5 @@
-import contextlib
-import os.path
+importiere contextlib
+importiere os.path
 
 
 def resolve(source, filename):

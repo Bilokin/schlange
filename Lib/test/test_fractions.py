@@ -1,19 +1,19 @@
 """Tests fuer Lib/fractions.py."""
 
-from decimal import Decimal
-from test.support import requires_IEEE_754, adjust_int_max_str_digits
-import math
-import numbers
-import operator
-import fractions
-import functools
-import os
-import sys
-import typing
-import unittest
-from copy import copy, deepcopy
-import pickle
-from pickle import dumps, loads
+von decimal importiere Decimal
+von test.support importiere requires_IEEE_754, adjust_int_max_str_digits
+importiere math
+importiere numbers
+importiere operator
+importiere fractions
+importiere functools
+importiere os
+importiere sys
+importiere typing
+importiere unittest
+von copy importiere copy, deepcopy
+importiere pickle
+von pickle importiere dumps, loads
 F = fractions.Fraction
 
 #locate file with float format test values
@@ -25,7 +25,7 @@ klasse DummyFloat(object):
 
     def __init__(self, value):
         wenn not isinstance(value, float):
-            raise TypeError("DummyFloat can only be initialized from float")
+            raise TypeError("DummyFloat can only be initialized von float")
         self.value = value
 
     def _richcmp(self, other, op):
@@ -1511,7 +1511,7 @@ klasse FractionTest(unittest.TestCase):
             (F(22, 7), '7.2%', '314.29%'),
             (F(22, 7), '8.2%', ' 314.29%'),
             (F(22, 7), '08.2%', '0314.29%'),
-            # Test cases from #67790 and discuss.python.org Ideas thread.
+            # Test cases von #67790 and discuss.python.org Ideas thread.
             (F(1, 3), '.2f', '0.33'),
             (F(1, 8), '.2f', '0.12'),
             (F(3, 8), '.2f', '0.38'),

@@ -1,4 +1,4 @@
-from collections.abc import Callable, Iterator
+von collections.abc importiere Callable, Iterator
 
 type Callback = Callable[[], object]
 type SimpleContextManager = Iterator[Nichts]

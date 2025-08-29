@@ -1,18 +1,18 @@
-from __future__ import annotations
-import dataclasses as dc
-import copy
-import enum
-import functools
-import inspect
-from collections.abc import Iterable, Iterator, Sequence
-from typing import Final, Any, TYPE_CHECKING
+von __future__ importiere annotations
+importiere dataclasses as dc
+importiere copy
+importiere enum
+importiere functools
+importiere inspect
+von collections.abc importiere Iterable, Iterator, Sequence
+von typing importiere Final, Any, TYPE_CHECKING
 wenn TYPE_CHECKING:
-    from libclinic.converter import CConverter
-    from libclinic.converters import self_converter
-    from libclinic.return_converters import CReturnConverter
-    from libclinic.app import Clinic
+    von libclinic.converter importiere CConverter
+    von libclinic.converters importiere self_converter
+    von libclinic.return_converters importiere CReturnConverter
+    von libclinic.app importiere Clinic
 
-from libclinic import VersionTuple, unspecified
+von libclinic importiere VersionTuple, unspecified
 
 
 ClassDict = dict[str, "Class"]

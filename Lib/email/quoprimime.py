@@ -39,9 +39,9 @@ __all__ = [
     'unquote',
     ]
 
-import re
+importiere re
 
-from string import ascii_letters, digits, hexdigits
+von string importiere ascii_letters, digits, hexdigits
 
 CRLF = '\r\n'
 NL = '\n'

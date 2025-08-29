@@ -1,17 +1,17 @@
 """Test program fuer the fcntl C module.
 """
-import errno
-import multiprocessing
-import platform
-import os
-import struct
-import sys
-import unittest
-from test.support import (
+importiere errno
+importiere multiprocessing
+importiere platform
+importiere os
+importiere struct
+importiere sys
+importiere unittest
+von test.support importiere (
     cpython_only, get_pagesize, is_apple, requires_subprocess, verbose, is_emscripten
 )
-from test.support.import_helper import import_module
-from test.support.os_helper import TESTFN, unlink, make_bad_fd
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere TESTFN, unlink, make_bad_fd
 
 
 # Skip test wenn no fcntl module.
@@ -83,15 +83,15 @@ klasse TestFcntl(unittest.TestCase):
         return lockdata
 
     def test_fcntl_fileno(self):
-        # the example from the library docs
+        # the example von the library docs
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
         wenn verbose:
-            drucke('Status from fcntl with O_NONBLOCK: ', rv)
+            drucke('Status von fcntl with O_NONBLOCK: ', rv)
         lockdata = self.get_lockdata()
         rv = fcntl.fcntl(self.f.fileno(), fcntl.F_SETLKW, lockdata)
         wenn verbose:
-            drucke('String from fcntl with F_SETLKW: ', repr(rv))
+            drucke('String von fcntl with F_SETLKW: ', repr(rv))
         self.f.close()
 
     def test_fcntl_file_descriptor(self):
@@ -99,11 +99,11 @@ klasse TestFcntl(unittest.TestCase):
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f, fcntl.F_SETFL, os.O_NONBLOCK)
         wenn verbose:
-            drucke('Status from fcntl with O_NONBLOCK: ', rv)
+            drucke('Status von fcntl with O_NONBLOCK: ', rv)
         lockdata = self.get_lockdata()
         rv = fcntl.fcntl(self.f, fcntl.F_SETLKW, lockdata)
         wenn verbose:
-            drucke('String from fcntl with F_SETLKW: ', repr(rv))
+            drucke('String von fcntl with F_SETLKW: ', repr(rv))
         self.f.close()
 
     def test_fcntl_bad_file(self):

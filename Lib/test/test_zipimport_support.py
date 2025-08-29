@@ -2,19 +2,19 @@
 # fuer working with modules located inside zipfiles
 # The tests are centralised in this fashion to make it easy to drop them
 # wenn a platform doesn't support zipimport
-import test.support
-import os
-import os.path
-import sys
-import textwrap
-import zipfile
-import zipimport
-import doctest
-import inspect
-import linecache
-import unittest
-from test.support import os_helper
-from test.support.script_helper import (spawn_python, kill_python, assert_python_ok,
+importiere test.support
+importiere os
+importiere os.path
+importiere sys
+importiere textwrap
+importiere zipfile
+importiere zipimport
+importiere doctest
+importiere inspect
+importiere linecache
+importiere unittest
+von test.support importiere os_helper
+von test.support.script_helper importiere (spawn_python, kill_python, assert_python_ok,
                                         make_script, make_zip_script)
 
 verbose = test.support.verbose
@@ -28,8 +28,8 @@ verbose = test.support.verbose
 #  test_zipimport (of course!)
 #  test_cmd_line_script (covers the zipimport support in runpy)
 
-# Retrieve some helpers from other test cases
-from test.test_doctest import (test_doctest,
+# Retrieve some helpers von other test cases
+von test.test_doctest importiere (test_doctest,
                                sample_doctest, sample_doctest_no_doctests,
                                sample_doctest_no_docstrings, sample_doctest_skip)
 
@@ -56,7 +56,7 @@ def _run_object_doctest(obj, module):
 
 klasse ZipSupportTests(unittest.TestCase):
     # This used to use the ImportHooksBaseTestCase to restore
-    # the state of the import related information
+    # the state of the importiere related information
     # in the sys module after each test. However, that restores
     # *too much* information and breaks fuer the invocation
     # of test_doctest. So we do our own thing and leave
@@ -87,7 +87,7 @@ klasse ZipSupportTests(unittest.TestCase):
                                                 init_name, name_in_zip)
             os.remove(init_name)
             sys.path.insert(0, zip_name)
-            import zip_pkg
+            importiere zip_pkg
             try:
                 self.assertEqual(inspect.getsource(zip_pkg.foo), test_src)
             finally:
@@ -101,7 +101,7 @@ klasse ZipSupportTests(unittest.TestCase):
         # everything still works correctly
         test_src = inspect.getsource(test_doctest)
         test_src = test_src.replace(
-                         "from test.test_doctest import test_doctest",
+                         "from test.test_doctest importiere test_doctest",
                          "import test_zipped_doctest as test_doctest")
         test_src = test_src.replace("test.test_doctest.test_doctest",
                                     "test_zipped_doctest")
@@ -133,7 +133,7 @@ klasse ZipSupportTests(unittest.TestCase):
                     zip_file.printdir()
             os.remove(script_name)
             sys.path.insert(0, zip_name)
-            import test_zipped_doctest
+            importiere test_zipped_doctest
             try:
                 # Some of the doc tests depend on the colocated text files
                 # which aren't available to the zipped version (the doctest
@@ -190,7 +190,7 @@ klasse ZipSupportTests(unittest.TestCase):
                         ">>> 'line 2'"
                         pass
 
-                    import doctest
+                    importiere doctest
                     doctest.testmod()
                     """)
         pattern = 'File "%s", line 2, in %s'
@@ -218,7 +218,7 @@ klasse ZipSupportTests(unittest.TestCase):
                     def f():
                         pass
 
-                    import pdb
+                    importiere pdb
                     pdb.Pdb(nosigint=Wahr).runcall(f)
                     """)
         with os_helper.temp_dir() as d:

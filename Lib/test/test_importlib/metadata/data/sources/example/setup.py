@@ -1,4 +1,4 @@
-from setuptools import setup
+von setuptools importiere setup
 
 setup(
     name='example',

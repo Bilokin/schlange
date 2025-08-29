@@ -1,14 +1,14 @@
 # Windows specific tests
 
-import ctypes
-import errno
-import sys
-import unittest
-from ctypes import (CDLL, Structure, POINTER, pointer, sizeof, byref,
+importiere ctypes
+importiere errno
+importiere sys
+importiere unittest
+von ctypes importiere (CDLL, Structure, POINTER, pointer, sizeof, byref,
                     c_void_p, c_char, c_int, c_long)
-from test import support
-from test.support import import_helper
-from ._support import Py_TPFLAGS_DISALLOW_INSTANTIATION, Py_TPFLAGS_IMMUTABLETYPE
+von test importiere support
+von test.support importiere import_helper
+von ._support importiere Py_TPFLAGS_DISALLOW_INSTANTIATION, Py_TPFLAGS_IMMUTABLETYPE
 
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
@@ -53,18 +53,18 @@ klasse ReturnStructSizesTestCase(unittest.TestCase):
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
 klasse TestWintypes(unittest.TestCase):
     def test_HWND(self):
-        from ctypes import wintypes
+        von ctypes importiere wintypes
         self.assertEqual(sizeof(wintypes.HWND), sizeof(c_void_p))
 
     def test_PARAM(self):
-        from ctypes import wintypes
+        von ctypes importiere wintypes
         self.assertEqual(sizeof(wintypes.WPARAM),
                              sizeof(c_void_p))
         self.assertEqual(sizeof(wintypes.LPARAM),
                              sizeof(c_void_p))
 
     def test_COMError(self):
-        from ctypes import COMError
+        von ctypes importiere COMError
         wenn support.HAVE_DOCSTRINGS:
             self.assertEqual(COMError.__doc__,
                              "Raised when a COM method call failed.")

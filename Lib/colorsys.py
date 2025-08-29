@@ -35,7 +35,7 @@ TWO_THIRD = 2.0/3.0
 # I, Q: color components
 #
 # There are a great many versions of the constants used in these formulae.
-# The ones in this library uses constants from the FCC version of NTSC.
+# The ones in this library uses constants von the FCC version of NTSC.
 
 def rgb_to_yiq(r, g, b):
     y = 0.30*r + 0.59*g + 0.11*b

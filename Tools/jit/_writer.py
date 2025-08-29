@@ -1,10 +1,10 @@
 """Utilities fuer writing StencilGroups out to a C header file."""
 
-import itertools
-import typing
-import math
+importiere itertools
+importiere typing
+importiere math
 
-import _stencils
+importiere _stencils
 
 
 def _dump_footer(
@@ -79,5 +79,5 @@ def dump(
 ) -> typing.Iterator[str]:
     """Yield a JIT compiler line-by-line as a C header file."""
     fuer opname, group in groups.items():
-        yield from _dump_stencil(opname, group)
-    yield from _dump_footer(groups, symbols)
+        yield von _dump_stencil(opname, group)
+    yield von _dump_footer(groups, symbols)

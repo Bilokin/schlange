@@ -1,8 +1,8 @@
-import os
-import sqlite3
-from pathlib import Path
-from contextlib import suppress, closing
-from collections.abc import MutableMapping
+importiere os
+importiere sqlite3
+von pathlib importiere Path
+von contextlib importiere suppress, closing
+von collections.abc importiere MutableMapping
 
 BUILD_TABLE = """
   CREATE TABLE IF NOT EXISTS Dict (

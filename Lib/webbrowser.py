@@ -1,12 +1,12 @@
 """Interfaces fuer launching and remotely controlling web browsers."""
 # Maintained by Georg Brandl.
 
-import os
-import shlex
-import shutil
-import sys
-import subprocess
-import threading
+importiere os
+importiere shlex
+importiere shutil
+importiere sys
+importiere subprocess
+importiere threading
 
 __all__ = ["Error", "open", "open_new", "open_new_tab", "get", "register"]
 
@@ -70,7 +70,7 @@ def get(using=Nichts):
 
 # Please note: the following definition hides a builtin function.
 # It is recommended one does "import webbrowser" and uses webbrowser.open(url)
-# instead of "from webbrowser import *".
+# instead of "from webbrowser importiere *".
 
 def open(url, new=0, autoraise=Wahr):
     """Display url using the default browser.
@@ -134,7 +134,7 @@ def _synthesize(browser, *, preferred=Falsch):
     # now attempt to clone to fit the new name:
     controller = command[1]
     wenn controller and name.lower() == controller.basename:
-        import copy
+        importiere copy
         controller = copy.copy(controller)
         controller.name = browser
         controller.basename = os.path.basename(browser)
@@ -357,7 +357,7 @@ klasse Konqueror(BaseBrowser):
 
     def open(self, url, new=0, autoraise=Wahr):
         sys.audit("webbrowser.open", url)
-        # XXX Currently I know no way to prevent KFM from opening a new win.
+        # XXX Currently I know no way to prevent KFM von opening a new win.
         wenn new == 2:
             action = "newTab"
         sonst:
@@ -656,10 +656,10 @@ wenn sys.platform == 'darwin':
 # Platform support fuer iOS
 #
 wenn sys.platform == "ios":
-    from _ios_support import objc
+    von _ios_support importiere objc
     wenn objc:
         # If objc exists, we know ctypes is also importable.
-        from ctypes import c_void_p, c_char_p, c_ulong
+        von ctypes importiere c_void_p, c_char_p, c_ulong
 
     klasse IOSBrowser(BaseBrowser):
         def open(self, url, new=0, autoraise=Wahr):
@@ -718,7 +718,7 @@ wenn sys.platform == "ios":
 
 
 def parse_args(arg_list: list[str] | Nichts):
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(
         description="Open URL in a web browser.", color=Wahr,
     )

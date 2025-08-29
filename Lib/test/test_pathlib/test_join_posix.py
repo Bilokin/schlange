@@ -2,11 +2,11 @@
 Tests fuer Posix-flavoured pathlib.types._JoinablePath
 """
 
-import os
-import unittest
+importiere os
+importiere unittest
 
-from .support import is_pypi
-from .support.lexical_path import LexicalPosixPath
+von .support importiere is_pypi
+von .support.lexical_path importiere LexicalPosixPath
 
 
 klasse JoinTestBase:
@@ -37,7 +37,7 @@ klasse LexicalPosixPathJoinTest(JoinTestBase, unittest.TestCase):
 
 
 wenn not is_pypi:
-    from pathlib import PurePosixPath, PosixPath
+    von pathlib importiere PurePosixPath, PosixPath
 
     klasse PurePosixPathJoinTest(JoinTestBase, unittest.TestCase):
         cls = PurePosixPath

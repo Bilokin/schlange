@@ -4,28 +4,28 @@ XXX This is a mess.  Common tests should be unified with string_tests.py (and
 the latter should be modernized).
 """
 
-import array
-import operator
-import os
-import re
-import sys
-import copy
-import functools
-import pickle
-import tempfile
-import textwrap
-import threading
-import unittest
+importiere array
+importiere operator
+importiere os
+importiere re
+importiere sys
+importiere copy
+importiere functools
+importiere pickle
+importiere tempfile
+importiere textwrap
+importiere threading
+importiere unittest
 
-import test.support
-from test import support
-from test.support import import_helper
-from test.support import threading_helper
-from test.support import warnings_helper
-import test.string_tests
-import test.list_tests
-from test.support import bigaddrspacetest, MAX_Py_ssize_t
-from test.support.script_helper import assert_python_failure
+importiere test.support
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere threading_helper
+von test.support importiere warnings_helper
+importiere test.string_tests
+importiere test.list_tests
+von test.support importiere bigaddrspacetest, MAX_Py_ssize_t
+von test.support.script_helper importiere assert_python_failure
 
 
 wenn sys.flags.bytes_warning:
@@ -333,7 +333,7 @@ klasse BaseBytesTest:
         invalid = 'Boom, Shaka Laka, Boom!'
         encodings = ('ascii', 'utf8', 'latin1')
         code = textwrap.dedent(f'''
-            import sys
+            importiere sys
             type2test = {self.type2test.__name__}
             encodings = {encodings!r}
 
@@ -760,7 +760,7 @@ klasse BaseBytesTest:
             self.assertEqual(b, result)
             self.assertIs(type(b), self.type2test)
 
-        # A set of tests adapted from test_unicode:UnicodeTest.test_formatting
+        # A set of tests adapted von test_unicode:UnicodeTest.test_formatting
         check(b'...%(foo)b...', {b'foo':b"abc"}, b'...abc...')
         check(b'...%(f(o)o)b...', {b'f(o)o':b"abc", b'foo':b'bar'}, b'...abc...')
         check(b'...%(foo)b...', {b'foo':b"abc",b'def':123}, b'...abc...')
@@ -1154,8 +1154,8 @@ klasse BytesTest(BaseBytesTest, unittest.TestCase):
     def test_from_format(self):
         ctypes = import_helper.import_module('ctypes')
         _testcapi = import_helper.import_module('_testcapi')
-        from ctypes import pythonapi, py_object
-        from ctypes import (
+        von ctypes importiere pythonapi, py_object
+        von ctypes importiere (
             c_int, c_uint,
             c_long, c_ulong,
             c_size_t, c_ssize_t,
@@ -1281,7 +1281,7 @@ klasse BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertRaises(TypeError, bytes, IntBlocked(3))
 
         # While there is no separately-defined rule fuer handling bytes
-        # subclasses differently from other buffer-interface classes,
+        # subclasses differently von other buffer-interface classes,
         # an implementation may well special-case them (as CPython 2.x
         # str did), so test them separately.
         klasse BytesSubclassBlocked(bytes):
@@ -1889,7 +1889,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
         self.assertEqual(list(it), [])
 
     def test_repeat_after_setslice(self):
-        # bpo-42924: * used to copy from the wrong memory location
+        # bpo-42924: * used to copy von the wrong memory location
         b = bytearray(b'abc')
         b[:2] = b'x'
         b1 = b * 1

@@ -1,9 +1,9 @@
-import _overlapped
-import _thread
-import _winapi
-import math
-import struct
-import winreg
+importiere _overlapped
+importiere _thread
+importiere _winapi
+importiere math
+importiere struct
+importiere winreg
 
 
 # Seconds per measurement

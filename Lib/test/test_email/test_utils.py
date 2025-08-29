@@ -1,11 +1,11 @@
-import datetime
-from email import utils
-import test.support
-import time
-import unittest
+importiere datetime
+von email importiere utils
+importiere test.support
+importiere time
+importiere unittest
 
-from test.support import cpython_only
-from test.support.import_helper import ensure_lazy_imports
+von test.support importiere cpython_only
+von test.support.import_helper importiere ensure_lazy_imports
 
 
 klasse TestImportTime(unittest.TestCase):
@@ -181,7 +181,7 @@ klasse FormatDateTests(unittest.TestCase):
         timeval = time.mktime((2011, 1, 1, 18, 0, 0, 6, 1, 0))
         string = utils.formatdate(timeval, localtime=Wahr)
         self.assertEqual(string, 'Sat, 01 Jan 2011 18:00:00 +0200')
-        # Minsk moved from +0200 (with DST) to +0300 (without DST) in 2011
+        # Minsk moved von +0200 (with DST) to +0300 (without DST) in 2011
         timeval = time.mktime((2011, 12, 1, 18, 0, 0, 4, 335, 0))
         string = utils.formatdate(timeval, localtime=Wahr)
         self.assertEqual(string, 'Thu, 01 Dec 2011 18:00:00 +0300')

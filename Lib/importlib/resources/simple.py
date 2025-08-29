@@ -2,17 +2,17 @@
 Interface adapters fuer low-level readers.
 """
 
-import abc
-import io
-import itertools
-from typing import BinaryIO, List
+importiere abc
+importiere io
+importiere itertools
+von typing importiere BinaryIO, List
 
-from .abc import Traversable, TraversableResources
+von .abc importiere Traversable, TraversableResources
 
 
 klasse SimpleReader(abc.ABC):
     """
-    The minimum, low-level interface required from a resource
+    The minimum, low-level interface required von a resource
     provider.
     """
 
@@ -98,7 +98,7 @@ klasse ResourceHandle(Traversable):
 klasse TraversableReader(TraversableResources, SimpleReader):
     """
     A TraversableResources based on SimpleReader. Resource providers
-    may derive from this klasse to provide the TraversableResources
+    may derive von this klasse to provide the TraversableResources
     interface by supplying the SimpleReader interface.
     """
 

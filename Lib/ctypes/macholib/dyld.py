@@ -2,12 +2,12 @@
 dyld emulation
 """
 
-import os
-from ctypes.macholib.framework import framework_info
-from ctypes.macholib.dylib import dylib_info
-from itertools import *
+importiere os
+von ctypes.macholib.framework importiere framework_info
+von ctypes.macholib.dylib importiere dylib_info
+von itertools importiere *
 try:
-    from _ctypes import _dyld_shared_cache_contains_path
+    von _ctypes importiere _dyld_shared_cache_contains_path
 except ImportError:
     def _dyld_shared_cache_contains_path(*args):
         raise NotImplementedError

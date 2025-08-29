@@ -17,7 +17,7 @@ cloning turtles. The animation is
 controlled through update().
 """
 
-from turtle import *
+von turtle importiere *
 
 def stop():
     global running

@@ -1,22 +1,22 @@
-import io
-import itertools
-import json
-import os
-import re
-import signal
-import socket
-import subprocess
-import sys
-import textwrap
-import unittest
-import unittest.mock
-from contextlib import closing, contextmanager, redirect_stdout, redirect_stderr, ExitStack
-from test.support import is_wasi, cpython_only, force_color, requires_subprocess, SHORT_TIMEOUT, subTests
-from test.support.os_helper import TESTFN, unlink
-from typing import List
+importiere io
+importiere itertools
+importiere json
+importiere os
+importiere re
+importiere signal
+importiere socket
+importiere subprocess
+importiere sys
+importiere textwrap
+importiere unittest
+importiere unittest.mock
+von contextlib importiere closing, contextmanager, redirect_stdout, redirect_stderr, ExitStack
+von test.support importiere is_wasi, cpython_only, force_color, requires_subprocess, SHORT_TIMEOUT, subTests
+von test.support.os_helper importiere TESTFN, unlink
+von typing importiere List
 
-import pdb
-from pdb import _PdbServer, _PdbClient
+importiere pdb
+von pdb importiere _PdbServer, _PdbClient
 
 
 wenn not sys.is_remote_debug_enabled():
@@ -50,7 +50,7 @@ klasse MockSocketFile:
         pass
 
     def readline(self) -> bytes:
-        """Read a line from the prepared input queue."""
+        """Read a line von the prepared input queue."""
         wenn not self.input_queue:
             return b""
         return self.input_queue.pop(0)
@@ -288,7 +288,7 @@ klasse PdbClientTestCase(unittest.TestCase):
             # a request to display a help overview
             ({"help": ""}, "type help <topic>"),
             # a request to display the full PDB manual
-            ({"help": "pdb"}, ">>> import pdb"),
+            ({"help": "pdb"}, ">>> importiere pdb"),
         ],
     )
     def test_handling_help_when_available(self, help_request, expected_substring):
@@ -528,7 +528,7 @@ klasse PdbClientTestCase(unittest.TestCase):
             expected_outgoing=[],
             expected_stdout="\n".join(
                 [
-                    "*** Invalid JSON from remote: b'spam\\n'",
+                    "*** Invalid JSON von remote: b'spam\\n'",
                     "Something",
                 ]
             ),
@@ -718,7 +718,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         )
 
     def test_read_failure_during_completion(self):
-        """Test failing to read tab completions from the socket."""
+        """Test failing to read tab completions von the socket."""
         incoming = [
             ("server", {"prompt": ">>> ", "state": "interact"}),
             (
@@ -866,7 +866,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
         self.assertEqual(outputs[1], {"message": "Test error", "type": "error"})
 
     def test_read_command(self):
-        """Test reading commands from the socket."""
+        """Test reading commands von the socket."""
         # Add test input
         self.sockfile.add_input({"reply": "help"})
 
@@ -980,7 +980,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
             # Add commands to the queue
             self.pdb.cmdqueue = ['help', 'list']
 
-            # Add a command from the socket fuer when cmdqueue is empty
+            # Add a command von the socket fuer when cmdqueue is empty
             self.sockfile.add_input({"reply": "next"})
 
             # Add a second command to break the loop
@@ -995,7 +995,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
             self.pdb.quitting = Falsch # Set this by hand because we don't want to really call set_trace()
             self.pdb.cmdloop()
 
-            # Should have processed 4 commands: 2 from cmdqueue, 2 from socket
+            # Should have processed 4 commands: 2 von cmdqueue, 2 von socket
             self.assertEqual(mock_onecmd.call_count, 4)
             mock_onecmd.assert_any_call('help')
             mock_onecmd.assert_any_call('list')
@@ -1025,9 +1025,9 @@ klasse PdbConnectTestCase(unittest.TestCase):
         wenn script is Nichts:
             script = textwrap.dedent(
                 f"""
-                import pdb
-                import sys
-                import time
+                importiere pdb
+                importiere sys
+                importiere time
 
                 def foo():
                     x = 42
@@ -1082,7 +1082,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             text=Wahr
         )
 
-        # Accept the connection from the subprocess
+        # Accept the connection von the subprocess
         client_sock, _ = self.server_sock.accept()
         client_file = client_sock.makefile('rwb')
         self.addCleanup(client_file.close)
@@ -1114,7 +1114,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         process, client_file = self._connect_and_get_client_file()
 
         with kill_on_error(process):
-            # We should receive initial data from the debugger
+            # We should receive initial data von the debugger
             data = client_file.readline()
             initial_data = json.loads(data.decode())
             self.assertIn('message', initial_data)
@@ -1208,10 +1208,10 @@ klasse PdbConnectTestCase(unittest.TestCase):
         """Test that sending keyboard interrupt breaks into pdb."""
 
         script = textwrap.dedent(f"""
-            import time
-            import sys
-            import socket
-            import pdb
+            importiere time
+            importiere sys
+            importiere socket
+            importiere pdb
             def bar():
                 frame = sys._getframe()  # Get the current frame
                 pdb._connect(
@@ -1237,7 +1237,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         self._create_script(script=script)
         process, client_file = self._connect_and_get_client_file()
 
-        # Accept a 2nd connection from the subprocess to tell it about signals
+        # Accept a 2nd connection von the subprocess to tell it about signals
         signal_sock, _ = self.server_sock.accept()
         self.addCleanup(signal_sock.close)
 
@@ -1296,8 +1296,8 @@ klasse PdbConnectTestCase(unittest.TestCase):
         """Test that incompatible protocol versions are properly detected."""
         # Create a script using an incompatible protocol version
         script = textwrap.dedent(f'''
-            import sys
-            import pdb
+            importiere sys
+            importiere pdb
 
             def run_test():
                 frame = sys._getframe()
@@ -1446,7 +1446,7 @@ def _supports_remote_attaching():
     PROCESS_VM_READV_SUPPORTED = Falsch
 
     try:
-        from _remote_debugging import PROCESS_VM_READV_SUPPORTED
+        von _remote_debugging importiere PROCESS_VM_READV_SUPPORTED
     except ImportError:
         pass
 
@@ -1473,8 +1473,8 @@ klasse PdbAttachTestCase(unittest.TestCase):
         # Create a file fuer subprocess script
         script = textwrap.dedent(
             f"""
-            import socket
-            import time
+            importiere socket
+            importiere time
 
             def foo():
                 return bar()

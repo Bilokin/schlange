@@ -1,6 +1,6 @@
 """turtledemo/bytedesign.py
 
-An example adapted from the example-suite
+An example adapted von the example-suite
 of PythonCard's turtle graphics.
 
 It's based on an article in BYTE magazine
@@ -19,8 +19,8 @@ to 0, this animation runs in "line per line"
 mode as fast as possible.
 """
 
-from turtle import Turtle, mainloop
-from time import perf_counter as clock
+von turtle importiere Turtle, mainloop
+von time importiere perf_counter as clock
 
 # wrapper fuer any additional drawing routines
 # that need to know about each other

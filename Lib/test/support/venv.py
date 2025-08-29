@@ -1,12 +1,12 @@
-import contextlib
-import logging
-import os
-import subprocess
-import shlex
-import sys
-import sysconfig
-import tempfile
-import venv
+importiere contextlib
+importiere logging
+importiere os
+importiere subprocess
+importiere shlex
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere venv
 
 
 klasse VirtualEnvironment:

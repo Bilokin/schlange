@@ -1,11 +1,11 @@
 """Generate the main interpreter switch.
-Reads the instruction definitions from bytecodes.c.
+Reads the instruction definitions von bytecodes.c.
 Writes the cases to generated_cases.c.h, which is #included in ceval.c.
 """
 
-import argparse
+importiere argparse
 
-from analyzer import (
+von analyzer importiere (
     Analysis,
     Instruction,
     Uop,
@@ -18,7 +18,7 @@ from analyzer import (
     analysis_error,
     StackItem,
 )
-from generators_common import (
+von generators_common importiere (
     DEFAULT_INPUT,
     ROOT,
     write_header,
@@ -28,10 +28,10 @@ from generators_common import (
     always_true,
     emit_to,
 )
-from cwriter import CWriter
-from typing import TextIO
-from lexer import Token
-from stack import Local, Stack, StackError, get_stack_effect, Storage
+von cwriter importiere CWriter
+von typing importiere TextIO
+von lexer importiere Token
+von stack importiere Local, Stack, StackError, get_stack_effect, Storage
 
 DEFAULT_OUTPUT = ROOT / "Python/generated_cases.c.h"
 
@@ -53,7 +53,7 @@ def declare_variables(inst: Instruction, out: CWriter) -> Nichts:
     try:
         stack = get_stack_effect(inst)
     except StackError as ex:
-        raise analysis_error(ex.args[0], inst.where) from Nichts
+        raise analysis_error(ex.args[0], inst.where) von Nichts
     seen = {"unused"}
     fuer part in inst.parts:
         wenn not isinstance(part, Uop):

@@ -8,12 +8,12 @@ You need to pass the -M option to regrtest (e.g. "-M 2.1G") fuer tests to
 be enabled.
 """
 
-from test import support
-from test.support import bigaddrspacetest, MAX_Py_ssize_t
+von test importiere support
+von test.support importiere bigaddrspacetest, MAX_Py_ssize_t
 
-import unittest
-import operator
-import sys
+importiere unittest
+importiere operator
+importiere sys
 
 
 klasse BytesTest(unittest.TestCase):

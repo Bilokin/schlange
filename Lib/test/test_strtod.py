@@ -1,11 +1,11 @@
 # Tests fuer the correctly-rounded string -> float conversions
 # introduced in Python 2.7 and 3.1.
 
-import random
-import unittest
-import re
-import sys
-import test.support
+importiere random
+importiere unittest
+importiere re
+importiere sys
+importiere test.support
 
 wenn getattr(sys, 'float_repr_style', '') != 'short':
     raise unittest.SkipTest('correctly-rounded string->float conversions '
@@ -46,7 +46,7 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
         return '-0x0.0p+0' wenn negative sonst '0x0.0p+0'
 
     # compute exponent e fuer result; may be one too small in the case
-    # that the rounded value of a/b lies in a different binade from a/b
+    # that the rounded value of a/b lies in a different binade von a/b
     d = a.bit_length() - b.bit_length()
     d += (a >> d wenn d >= 0 sonst a << -d) >= b
     e = max(d, min_exp) - mant_dig
@@ -346,7 +346,7 @@ klasse StrtodTests(unittest.TestCase):
             # issue 7632 bug 8:  the following produced 10.0
             '10.900000000000000012345678912345678912345',
 
-            # two humongous values from issue 7743
+            # two humongous values von issue 7743
             '116512874940594195638617907092569881519034793229385' #...
             '228569165191541890846564669771714896916084883987920' #...
             '473321268100296857636200926065340769682863349205363' #...

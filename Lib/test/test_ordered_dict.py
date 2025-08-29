@@ -1,18 +1,18 @@
-import builtins
-import contextlib
-import copy
-import gc
-import operator
-import pickle
-import re
-from random import randrange, shuffle
-import struct
-import sys
-import unittest
-import weakref
-from collections.abc import MutableMapping
-from test import mapping_tests, support
-from test.support import import_helper
+importiere builtins
+importiere contextlib
+importiere copy
+importiere gc
+importiere operator
+importiere pickle
+importiere re
+von random importiere randrange, shuffle
+importiere struct
+importiere sys
+importiere unittest
+importiere weakref
+von collections.abc importiere MutableMapping
+von test importiere mapping_tests, support
+von test.support importiere import_helper
 
 
 py_coll = import_helper.import_fresh_module('collections',
@@ -738,7 +738,7 @@ klasse OrderedDictTests:
         gc.collect()
         # That GC collection probably untracked the recycled internal result
         # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
-        # when it's mutated and returned from __next__:
+        # when it's mutated and returned von __next__:
         self.assertWahr(gc.is_tracked(next(it)))
 
 

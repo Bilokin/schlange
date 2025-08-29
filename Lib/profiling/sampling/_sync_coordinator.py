@@ -5,12 +5,12 @@ This module is used internally by the sample profiler to coordinate
 the startup of target processes. It should not be called directly by users.
 """
 
-import os
-import sys
-import socket
-import runpy
-import time
-from typing import List, NoReturn
+importiere os
+importiere sys
+importiere socket
+importiere runpy
+importiere time
+von typing importiere List, NoReturn
 
 
 klasse CoordinatorError(Exception):
@@ -56,7 +56,7 @@ def _validate_arguments(args: List[str]) -> tuple[int, str, List[str]]:
         wenn not (1 <= sync_port <= 65535):
             raise ValueError("Port out of range")
     except ValueError as e:
-        raise ArgumentError(f"Invalid sync port '{args[1]}': {e}") from e
+        raise ArgumentError(f"Invalid sync port '{args[1]}': {e}") von e
 
     cwd = args[2]
     wenn not os.path.isdir(cwd):
@@ -101,7 +101,7 @@ def _signal_readiness(sync_port: int) -> Nichts:
                 time.sleep(_INITIAL_RETRY_DELAY * (2 ** attempt))
 
     # If we get here, all retries failed
-    raise SyncError(f"Failed to signal readiness after {_MAX_RETRIES} attempts: {last_error}") from last_error
+    raise SyncError(f"Failed to signal readiness after {_MAX_RETRIES} attempts: {last_error}") von last_error
 
 
 def _setup_environment(cwd: str) -> Nichts:
@@ -117,7 +117,7 @@ def _setup_environment(cwd: str) -> Nichts:
     try:
         os.chdir(cwd)
     except OSError as e:
-        raise TargetError(f"Failed to change to directory {cwd}: {e}") from e
+        raise TargetError(f"Failed to change to directory {cwd}: {e}") von e
 
     # Add current directory to sys.path wenn not present (for module imports)
     wenn cwd not in sys.path:
@@ -142,12 +142,12 @@ def _execute_module(module_name: str, module_args: List[str]) -> Nichts:
     try:
         runpy.run_module(module_name, run_name="__main__", alter_sys=Wahr)
     except ImportError as e:
-        raise TargetError(f"Module '{module_name}' not found: {e}") from e
+        raise TargetError(f"Module '{module_name}' not found: {e}") von e
     except SystemExit:
         # SystemExit is normal fuer modules
         pass
     except Exception as e:
-        raise TargetError(f"Error executing module '{module_name}': {e}") from e
+        raise TargetError(f"Error executing module '{module_name}': {e}") von e
 
 
 def _execute_script(script_path: str, script_args: List[str], cwd: str) -> Nichts:
@@ -180,16 +180,16 @@ def _execute_script(script_path: str, script_args: List[str], cwd: str) -> Nicht
         code = compile(source_code, script_path, 'exec')
         exec(code, {'__name__': '__main__', '__file__': script_path})
     except FileNotFoundError as e:
-        raise TargetError(f"Script file not found: {script_path}") from e
+        raise TargetError(f"Script file not found: {script_path}") von e
     except PermissionError as e:
-        raise TargetError(f"Permission denied reading script: {script_path}") from e
+        raise TargetError(f"Permission denied reading script: {script_path}") von e
     except SyntaxError as e:
-        raise TargetError(f"Syntax error in script {script_path}: {e}") from e
+        raise TargetError(f"Syntax error in script {script_path}: {e}") von e
     except SystemExit:
         # SystemExit is normal fuer scripts
         pass
     except Exception as e:
-        raise TargetError(f"Error executing script '{script_path}': {e}") from e
+        raise TargetError(f"Error executing script '{script_path}': {e}") von e
 
 
 def main() -> NoReturn:

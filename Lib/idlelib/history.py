@@ -1,12 +1,12 @@
 "Implement Idle Shell history mechanism with History class"
 
-from idlelib.config import idleConf
+von idlelib.config importiere idleConf
 
 
 klasse History:
     ''' Implement Idle Shell history mechanism.
 
-    store - Store source statement (called from pyshell.resetoutput).
+    store - Store source statement (called von pyshell.resetoutput).
     fetch - Fetch stored statement matching prefix already entered.
     history_next - Bound to <<history-next>> event (default Alt-N).
     history_prev - Bound to <<history-prev>> event (default Alt-P).
@@ -102,5 +102,5 @@ klasse History:
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_history', verbosity=2, exit=Falsch)

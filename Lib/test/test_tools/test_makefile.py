@@ -2,10 +2,10 @@
 Tests fuer `Makefile`.
 """
 
-import os
-import unittest
-from test import support
-import sysconfig
+importiere os
+importiere unittest
+von test importiere support
+importiere sysconfig
 
 MAKEFILE = sysconfig.get_makefile_filename()
 

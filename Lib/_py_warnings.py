@@ -1,8 +1,8 @@
 """Python part of the warnings subsystem."""
 
-import sys
-import _contextvars
-import _thread
+importiere sys
+importiere _contextvars
+importiere _thread
 
 
 __all__ = ["warn", "warn_explicit", "showwarning",
@@ -156,11 +156,11 @@ def _formatwarnmsg_impl(msg):
 
     wenn msg.line is Nichts:
         try:
-            import linecache
+            importiere linecache
             line = linecache.getline(msg.filename, msg.lineno)
         except Exception:
             # When a warning is logged during Python shutdown, linecache
-            # and the import machinery don't work anymore
+            # and the importiere machinery don't work anymore
             line = Nichts
             linecache = Nichts
     sonst:
@@ -171,7 +171,7 @@ def _formatwarnmsg_impl(msg):
 
     wenn msg.source is not Nichts:
         try:
-            import tracemalloc
+            importiere tracemalloc
         # Logging a warning should not raise a new exception:
         # catch Exception, not only ImportError and RecursionError.
         except Exception:
@@ -184,7 +184,7 @@ def _formatwarnmsg_impl(msg):
                 tb = tracemalloc.get_object_traceback(msg.source)
             except Exception:
                 # When a warning is logged during Python shutdown, tracemalloc
-                # and the import machinery don't work anymore
+                # and the importiere machinery don't work anymore
                 suggest_tracemalloc = Falsch
                 tb = Nichts
 
@@ -277,7 +277,7 @@ def filterwarnings(action, message="", category=Warning, module="", lineno=0,
         raise ValueError("lineno must be an int >= 0")
 
     wenn message or module:
-        import re
+        importiere re
 
     wenn message:
         message = re.compile(message, re.I)
@@ -367,7 +367,7 @@ def _setoption(arg):
     action = _wm._getaction(action)
     category = _wm._getcategory(category)
     wenn message or module:
-        import re
+        importiere re
     wenn message:
         message = re.escape(message)
     wenn module:
@@ -378,7 +378,7 @@ def _setoption(arg):
             wenn lineno < 0:
                 raise ValueError
         except (ValueError, OverflowError):
-            raise _wm._OptionError("invalid lineno %r" % (lineno,)) from Nichts
+            raise _wm._OptionError("invalid lineno %r" % (lineno,)) von Nichts
     sonst:
         lineno = 0
     _wm.filterwarnings(action, message, category, module, lineno)
@@ -399,18 +399,18 @@ def _getcategory(category):
     wenn not category:
         return Warning
     wenn '.' not in category:
-        import builtins as m
+        importiere builtins as m
         klass = category
     sonst:
         module, _, klass = category.rpartition('.')
         try:
             m = __import__(module, Nichts, Nichts, [klass])
         except ImportError:
-            raise _wm._OptionError("invalid module name: %r" % (module,)) from Nichts
+            raise _wm._OptionError("invalid module name: %r" % (module,)) von Nichts
     try:
         cat = getattr(m, klass)
     except AttributeError:
-        raise _wm._OptionError("unknown warning category: %r" % (category,)) from Nichts
+        raise _wm._OptionError("unknown warning category: %r" % (category,)) von Nichts
     wenn not issubclass(cat, Warning):
         raise _wm._OptionError("invalid warning category: %r" % (category,))
     return cat
@@ -563,7 +563,7 @@ def warn_explicit(message, category, filename, lineno,
 
     # Prime the linecache fuer formatting, in case the
     # "file" is actually in a zipfile or something.
-    import linecache
+    importiere linecache
     linecache.getlines(filename, module_globals)
 
     # Print message and context
@@ -746,8 +746,8 @@ klasse deprecated:
             arg.__deprecated__ = msg
             return arg
         sowenn isinstance(arg, type):
-            import functools
-            from types import MethodType
+            importiere functools
+            von types importiere MethodType
 
             original_new = arg.__new__
 
@@ -791,8 +791,8 @@ klasse deprecated:
             __init_subclass__.__deprecated__ = msg
             return arg
         sowenn callable(arg):
-            import functools
-            import inspect
+            importiere functools
+            importiere inspect
 
             @functools.wraps(arg)
             def wrapper(*args, **kwargs):
@@ -839,7 +839,7 @@ def _warn_unawaited_coroutine(coro):
         f"coroutine '{coro.__qualname__}' was never awaited\n"
     ]
     wenn coro.cr_origin is not Nichts:
-        import linecache, traceback
+        importiere linecache, traceback
         def extract():
             fuer filename, lineno, funcname in reversed(coro.cr_origin):
                 line = linecache.getline(filename, lineno)

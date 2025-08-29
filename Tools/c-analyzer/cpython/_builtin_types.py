@@ -1,11 +1,11 @@
-from collections import namedtuple
-import os.path
-import re
-import textwrap
+von collections importiere namedtuple
+importiere os.path
+importiere re
+importiere textwrap
 
-from c_common import tables
-from . import REPO_ROOT
-from ._files import iter_header_files, iter_filenames
+von c_common importiere tables
+von . importiere REPO_ROOT
+von ._files importiere iter_header_files, iter_filenames
 
 
 CAPI_PREFIX = os.path.join('Include', '')

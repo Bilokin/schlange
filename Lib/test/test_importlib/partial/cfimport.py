@@ -1,7 +1,7 @@
-import os
-import sys
-import threading
-import traceback
+importiere os
+importiere sys
+importiere threading
+importiere traceback
 
 
 NLOOPS = 50
@@ -10,14 +10,14 @@ NTHREADS = 30
 
 def t1():
     try:
-        from concurrent.futures import ThreadPoolExecutor
+        von concurrent.futures importiere ThreadPoolExecutor
     except Exception:
         traceback.print_exc()
         os._exit(1)
 
 def t2():
     try:
-        from concurrent.futures.thread import ThreadPoolExecutor
+        von concurrent.futures.thread importiere ThreadPoolExecutor
     except Exception:
         traceback.print_exc()
         os._exit(1)

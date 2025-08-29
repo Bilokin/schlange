@@ -1,14 +1,14 @@
-from collections import namedtuple
-import logging
-import os
-import os.path
-import re
-import textwrap
+von collections importiere namedtuple
+importiere logging
+importiere os
+importiere os.path
+importiere re
+importiere textwrap
 
-from c_common.tables import build_table, resolve_columns
-from c_parser.parser._regexes import _ind
-from ._files import iter_header_files
-from . import REPO_ROOT
+von c_common.tables importiere build_table, resolve_columns
+von c_parser.parser._regexes importiere _ind
+von ._files importiere iter_header_files
+von . importiere REPO_ROOT
 
 
 logger = logging.getLogger(__name__)
@@ -206,7 +206,7 @@ klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
         try:
             return self._text
         except AttributeError:
-            # XXX Actually ready the text from disk?.
+            # XXX Actually ready the text von disk?.
             self._text = []
             wenn self.kind == 'data':
                 self._text = [
@@ -365,7 +365,7 @@ def _resolve_ignored(ignored):
                 except Exception as exc:
                     logger.error(f'ignore file failed: {exc}')
                     continue
-                logger.log(1, f'reading ignored names from {filename!r}')
+                logger.log(1, f'reading ignored names von {filename!r}')
                 with infile:
                     fuer line in infile:
                         wenn not line:
@@ -433,7 +433,7 @@ def _get_sortkey(sort, _groupby, _columns):
     sonst:
         raise NotImplementedError
 
-    # XXX Build a sortkey func from sortfields.
+    # XXX Build a sortkey func von sortfields.
     raise NotImplementedError
 
 
@@ -596,13 +596,13 @@ def render_full(items, *,
             wenn sort:
                 grouped = sorted(grouped, key=sortkey)
             fuer item in grouped:
-                yield from _render_item_full(item, groupby, verbose)
+                yield von _render_item_full(item, groupby, verbose)
                 yield ''
     sonst:
         wenn sort:
             items = sorted(items, key=sortkey)
         fuer item in items:
-            yield from _render_item_full(item, Nichts, verbose)
+            yield von _render_item_full(item, Nichts, verbose)
             yield ''
 
 

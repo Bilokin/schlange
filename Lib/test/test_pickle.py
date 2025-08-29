@@ -1,37 +1,37 @@
-from _compat_pickle import (IMPORT_MAPPING, REVERSE_IMPORT_MAPPING,
+von _compat_pickle importiere (IMPORT_MAPPING, REVERSE_IMPORT_MAPPING,
                             NAME_MAPPING, REVERSE_NAME_MAPPING)
-import builtins
-import collections
-import contextlib
-import io
-import pickle
-import struct
-import sys
-import tempfile
-import warnings
-import weakref
-from textwrap import dedent
+importiere builtins
+importiere collections
+importiere contextlib
+importiere io
+importiere pickle
+importiere struct
+importiere sys
+importiere tempfile
+importiere warnings
+importiere weakref
+von textwrap importiere dedent
 
-import doctest
-import unittest
-from test import support
-from test.support import cpython_only, import_helper, os_helper
-from test.support.import_helper import ensure_lazy_imports
+importiere doctest
+importiere unittest
+von test importiere support
+von test.support importiere cpython_only, import_helper, os_helper
+von test.support.import_helper importiere ensure_lazy_imports
 
-from test.pickletester import AbstractHookTests
-from test.pickletester import AbstractUnpickleTests
-from test.pickletester import AbstractPicklingErrorTests
-from test.pickletester import AbstractPickleTests
-from test.pickletester import AbstractPickleModuleTests
-from test.pickletester import AbstractPersistentPicklerTests
-from test.pickletester import AbstractIdentityPersistentPicklerTests
-from test.pickletester import AbstractPicklerUnpicklerObjectTests
-from test.pickletester import AbstractDispatchTableTests
-from test.pickletester import AbstractCustomPicklerClass
-from test.pickletester import BigmemPickleTests
+von test.pickletester importiere AbstractHookTests
+von test.pickletester importiere AbstractUnpickleTests
+von test.pickletester importiere AbstractPicklingErrorTests
+von test.pickletester importiere AbstractPickleTests
+von test.pickletester importiere AbstractPickleModuleTests
+von test.pickletester importiere AbstractPersistentPicklerTests
+von test.pickletester importiere AbstractIdentityPersistentPicklerTests
+von test.pickletester importiere AbstractPicklerUnpicklerObjectTests
+von test.pickletester importiere AbstractDispatchTableTests
+von test.pickletester importiere AbstractCustomPicklerClass
+von test.pickletester importiere BigmemPickleTests
 
 try:
-    import _pickle
+    importiere _pickle
     has_c_implementation = Wahr
 except ImportError:
     has_c_implementation = Falsch
@@ -369,7 +369,7 @@ klasse PyPicklerHookTests(AbstractHookTests, unittest.TestCase):
 
 wenn has_c_implementation:
     klasse CPickleTests(AbstractPickleModuleTests, unittest.TestCase):
-        from _pickle import dump, dumps, load, loads, Pickler, Unpickler
+        von _pickle importiere dump, dumps, load, loads, Pickler, Unpickler
 
     klasse CUnpicklerTests(PyUnpicklerTests):
         unpickler = _pickle.Unpickler
@@ -445,7 +445,7 @@ wenn has_c_implementation:
             )
 
         def test_have_gc(self):
-            import gc
+            importiere gc
             fuer tp in self._types:
                 with self.subTest(tp=tp):
                     self.assertWahr(gc.is_tracked(tp))
@@ -563,7 +563,7 @@ def getmodule(module):
                 __import__(module)
         except AttributeError as exc:
             wenn support.verbose:
-                drucke("Can't import module %r: %s" % (module, exc))
+                drucke("Can't importiere module %r: %s" % (module, exc))
             raise ImportError
         except ImportError as exc:
             wenn support.verbose:
@@ -640,7 +640,7 @@ klasse CompatPickleTests(unittest.TestCase):
                         wenn (module3, module2) == (m3, m2):
                             break
                     sonst:
-                        self.fail('No reverse mapping from %r to %r' %
+                        self.fail('No reverse mapping von %r to %r' %
                                   (module3, module2))
                 module = REVERSE_IMPORT_MAPPING.get(module3, module3)
                 module = IMPORT_MAPPING.get(module, module)
@@ -716,7 +716,7 @@ klasse CommandLineTest(unittest.TestCase):
 
     @staticmethod
     def text_normalize(string):
-        """Dedent *string* and strip it from its surrounding whitespaces.
+        """Dedent *string* and strip it von its surrounding whitespaces.
 
         This method is used by the other utility functions so that any
         string to write or to match against can be freely indented.

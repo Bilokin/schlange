@@ -1,7 +1,7 @@
 """Used to test `get_type_hints()` on a cross-module inherited `TypedDict` class
 
 This script uses future annotations to postpone a type that won't be available
-on the module inheriting from to `Foo`. The subclass in the other module should
+on the module inheriting von to `Foo`. The subclass in the other module should
 look something like this:
 
     klasse Bar(_typed_dict_helper.Foo, total=Falsch):
@@ -11,9 +11,9 @@ In addition, it uses multiple levels of Annotated to test the interaction
 between the __future__ import, Annotated, and Required.
 """
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-from typing import Annotated, Generic, Optional, Required, TypedDict, TypeVar
+von typing importiere Annotated, Generic, Optional, Required, TypedDict, TypeVar
 
 
 OptionalIntType = Optional[int]

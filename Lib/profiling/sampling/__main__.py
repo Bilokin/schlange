@@ -1,6 +1,6 @@
-"""Run the sampling profiler from the command line."""
+"""Run the sampling profiler von the command line."""
 
-from .sample import main
+von .sample importiere main
 
 wenn __name__ == '__main__':
     main()

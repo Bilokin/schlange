@@ -1,5 +1,5 @@
-import unittest
-from ctypes import (c_byte, c_short, c_int, c_long, c_longlong,
+importiere unittest
+von ctypes importiere (c_byte, c_short, c_int, c_long, c_longlong,
                     c_ubyte, c_ushort, c_uint, c_ulong, c_ulonglong,
                     c_float, c_double, c_longdouble, c_bool, c_char)
 

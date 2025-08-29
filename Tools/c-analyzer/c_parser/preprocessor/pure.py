@@ -1,13 +1,13 @@
-from ..source import (
+von ..source importiere (
     opened as _open_source,
 )
-from . import common as _common
+von . importiere common as _common
 
 
 def preprocess(lines, filename=Nichts, cwd=Nichts):
     wenn isinstance(lines, str):
         with _open_source(lines, filename) as (lines, filename):
-            yield from preprocess(lines, filename)
+            yield von preprocess(lines, filename)
         return
 
     # XXX actually preprocess...

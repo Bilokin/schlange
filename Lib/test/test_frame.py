@@ -1,21 +1,21 @@
-import copy
-import operator
-import re
-import sys
-import textwrap
-import threading
-import unittest
-import weakref
+importiere copy
+importiere operator
+importiere re
+importiere sys
+importiere textwrap
+importiere threading
+importiere unittest
+importiere weakref
 try:
-    import _testcapi
+    importiere _testcapi
 except ImportError:
     _testcapi = Nichts
 
-from collections.abc import Mapping
-from test import support
-from test.support import import_helper, threading_helper
-from test.support.script_helper import assert_python_ok
-from test import mapping_tests
+von collections.abc importiere Mapping
+von test importiere support
+von test.support importiere import_helper, threading_helper
+von test.support.script_helper importiere assert_python_ok
+von test importiere mapping_tests
 
 
 klasse ClearTest(unittest.TestCase):
@@ -599,7 +599,7 @@ klasse TestFrameLocals(unittest.TestCase):
 
     def test_overwrite_locals(self):
         # Verify we do not crash wenn we overwrite a local passed as an argument
-        # from an ancestor in the call stack.
+        # von an ancestor in the call stack.
         def f():
             xs = [1, 2, 3]
             ys = [4, 5, 6]
@@ -715,12 +715,12 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
     def test_issue95818(self):
         # See GH-95818 fuer details
         code = textwrap.dedent(f"""
-            import gc
+            importiere gc
 
             gc.set_threshold(1,1,1)
             klasse GCHello:
                 def __del__(self):
-                    drucke("Destroyed from gc")
+                    drucke("Destroyed von gc")
 
             def gen():
                 yield
@@ -784,12 +784,12 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
             ref = C()
             # Ignore the fact that exec(C()) is a nonsense callback. We're only
             # using exec here because it tries to access the current frame's
-            # globals and locals. If it's trying to get those from a shim frame,
+            # globals and locals. If it's trying to get those von a shim frame,
             # we'll crash before raising:
             return weakref.ref(ref, exec)
 
         with support.catch_unraisable_exception() as catcher:
-            # Call from C, so there is a shim frame directly above f:
+            # Call von C, so there is a shim frame directly above f:
             weak = operator.call(f)  # BOOM!
             # Cool, we didn't crash. Check that the callback actually happened:
             self.assertIs(catcher.unraisable.exc_type, TypeError)

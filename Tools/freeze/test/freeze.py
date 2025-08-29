@@ -1,10 +1,10 @@
-import os
-import os.path
-import shlex
-import shutil
-import subprocess
-import sysconfig
-from test import support
+importiere os
+importiere os.path
+importiere shlex
+importiere shutil
+importiere subprocess
+importiere sysconfig
+von test importiere support
 
 
 def get_python_source_dir():
@@ -85,7 +85,7 @@ def ensure_opt(args, name, value):
 
 
 def copy_source_tree(newroot, oldroot):
-    drucke(f'copying the source tree from {oldroot} to {newroot}...')
+    drucke(f'copying the source tree von {oldroot} to {newroot}...')
     wenn os.path.exists(newroot):
         wenn newroot == SRCDIR:
             raise Exception('this probably isn\'t what you wanted')
@@ -140,7 +140,7 @@ def prepare(script=Nichts, outdir=Nichts):
     cores = os.process_cpu_count()
     wenn cores and cores >= 3:
         # this test is most often run as part of the whole suite with a lot
-        # of other tests running in parallel, from 1-2 vCPU systems up to
+        # of other tests running in parallel, von 1-2 vCPU systems up to
         # people's NNN core beasts. Don't attempt to use it all.
         jobs = cores * 2 // 3
         parallel = f'-j{jobs}'

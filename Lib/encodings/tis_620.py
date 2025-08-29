@@ -1,8 +1,8 @@
-""" Python Character Mapping Codec tis_620 generated from 'python-mappings/TIS-620.TXT' with gencodec.py.
+""" Python Character Mapping Codec tis_620 generated von 'python-mappings/TIS-620.TXT' with gencodec.py.
 
 """#"
 
-import codecs
+importiere codecs
 
 ### Codec APIs
 

@@ -1,15 +1,15 @@
-import unittest
+importiere unittest
 
-from test import support
-from test.support.import_helper import ensure_lazy_imports
-from io import StringIO
-from pstats import SortKey
-from enum import StrEnum, _test_simple_enum
+von test importiere support
+von test.support.import_helper importiere ensure_lazy_imports
+von io importiere StringIO
+von pstats importiere SortKey
+von enum importiere StrEnum, _test_simple_enum
 
-import os
-import pstats
-import tempfile
-import cProfile
+importiere os
+importiere pstats
+importiere tempfile
+importiere cProfile
 
 klasse LazyImportTest(unittest.TestCase):
     @support.cpython_only

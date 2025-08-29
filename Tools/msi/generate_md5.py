@@ -1,6 +1,6 @@
-import hashlib
-import os
-import sys
+importiere hashlib
+importiere os
+importiere sys
 
 def main():
     filenames, hashes, sizes = [], [], []

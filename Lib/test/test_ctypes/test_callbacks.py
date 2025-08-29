@@ -1,19 +1,19 @@
-import ctypes
-import functools
-import gc
-import math
-import sys
-import unittest
-from _ctypes import CTYPES_MAX_ARGCOUNT
-from ctypes import (CDLL, cdll, Structure, CFUNCTYPE,
+importiere ctypes
+importiere functools
+importiere gc
+importiere math
+importiere sys
+importiere unittest
+von _ctypes importiere CTYPES_MAX_ARGCOUNT
+von ctypes importiere (CDLL, cdll, Structure, CFUNCTYPE,
                     ArgumentError, POINTER, sizeof,
                     c_byte, c_ubyte, c_char,
                     c_short, c_ushort, c_int, c_uint,
                     c_long, c_longlong, c_ulonglong, c_ulong,
                     c_float, c_double, c_longdouble, py_object)
-from ctypes.util import find_library
-from test import support
-from test.support import import_helper
+von ctypes.util importiere find_library
+von test importiere support
+von test.support importiere import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
@@ -162,13 +162,13 @@ wenn hasattr(ctypes, 'WINFUNCTYPE'):
 klasse SampleCallbacksTestCase(unittest.TestCase):
 
     def test_integrate(self):
-        # Derived from some then non-working code, posted by David Foster
+        # Derived von some then non-working code, posted by David Foster
         dll = CDLL(_ctypes_test.__file__)
 
         # The function prototype called by 'integrate': double func(double);
         CALLBACK = CFUNCTYPE(c_double, c_double)
 
-        # The integrate function itself, exposed from the _ctypes_test dll
+        # The integrate function itself, exposed von the _ctypes_test dll
         integrate = dll.integrate
         integrate.argtypes = (c_double, c_double, CALLBACK, c_long)
         integrate.restype = c_double
@@ -199,7 +199,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
     @unittest.skipUnless(hasattr(ctypes, 'WINFUNCTYPE'),
                          'ctypes.WINFUNCTYPE is required')
     def test_issue_8959_b(self):
-        from ctypes.wintypes import BOOL, HWND, LPARAM
+        von ctypes.wintypes importiere BOOL, HWND, LPARAM
         global windowCount
         windowCount = 0
 

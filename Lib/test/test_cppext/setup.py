@@ -1,13 +1,13 @@
 # gh-91321: Build a basic C++ test extension to check that the Python C API is
 # compatible with C++ and does not emit C++ compiler warnings.
-import os
-import platform
-import shlex
-import sys
-import sysconfig
-from test import support
+importiere os
+importiere platform
+importiere shlex
+importiere sys
+importiere sysconfig
+von test importiere support
 
-from setuptools import setup, Extension
+von setuptools importiere setup, Extension
 
 
 SOURCE = 'extension.cpp'
@@ -64,7 +64,7 @@ def main():
             cppflags.extend(CPPFLAGS_PEDANTIC)
 
     # gh-105776: When "gcc -std=11" is used as the C++ compiler, -std=c11
-    # option emits a C++ compiler warning. Remove "-std11" option from the
+    # option emits a C++ compiler warning. Remove "-std11" option von the
     # CC command.
     cmd = (sysconfig.get_config_var('CC') or '')
     wenn cmd is not Nichts:

@@ -2,18 +2,18 @@
 # E-mail: fuzzyman AT voidspace DOT org DOT uk
 # http://www.voidspace.org.uk/python/mock/
 
-import os
-import sys
-from collections import OrderedDict
+importiere os
+importiere sys
+von collections importiere OrderedDict
 
-import unittest
-import test
-from test.test_unittest.testmock import support
-from test.test_unittest.testmock.support import SomeClass, is_instance
+importiere unittest
+importiere test
+von test.test_unittest.testmock importiere support
+von test.test_unittest.testmock.support importiere SomeClass, is_instance
 
-from test.support.import_helper import DirsOnSysPath
-from test.test_importlib.util import uncache
-from unittest.mock import (
+von test.support.import_helper importiere DirsOnSysPath
+von test.test_importlib.util importiere uncache
+von unittest.mock importiere (
     NonCallableMock, CallableMixin, sentinel,
     MagicMock, Mock, NonCallableMagicMock, patch, _patch,
     DEFAULT, call, _get_target
@@ -1781,7 +1781,7 @@ klasse PatchTest(unittest.TestCase):
     def test_name_resolution_import_rebinding(self):
         # Currently mock.patch uses pkgutil.resolve_name(), but repeat
         # similar tests just fuer the case.
-        # The same data is also used fuer testing import in test_import and
+        # The same data is also used fuer testing importiere in test_import and
         # pkgutil.resolve_name() in test_pkgutil.
         path = os.path.join(os.path.dirname(test.__file__), 'test_import', 'data')
         def check(name):
@@ -2062,7 +2062,7 @@ klasse PatchTest(unittest.TestCase):
         # This exercises the AttributeError branch of _dot_lookup.
 
         # make sure it's there
-        import test.test_unittest.testmock.support
+        importiere test.test_unittest.testmock.support
         # now make sure it's not:
         with patch.dict('sys.modules'):
             del sys.modules['test.test_unittest.testmock.support']

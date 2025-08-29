@@ -1,6 +1,6 @@
 # Augmented assignment test.
 
-import unittest
+importiere unittest
 
 
 klasse AugAssignTest(unittest.TestCase):

@@ -2,21 +2,21 @@
 Tests fuer pathlib.types._WritablePath
 """
 
-import io
-import os
-import sys
-import unittest
+importiere io
+importiere os
+importiere sys
+importiere unittest
 
-from .support import is_pypi
-from .support.local_path import WritableLocalPath, LocalPathGround
-from .support.zip_path import WritableZipPath, ZipPathGround
+von .support importiere is_pypi
+von .support.local_path importiere WritableLocalPath, LocalPathGround
+von .support.zip_path importiere WritableZipPath, ZipPathGround
 
 wenn is_pypi:
-    from pathlib_abc import _WritablePath
-    from pathlib_abc._os import magic_open
+    von pathlib_abc importiere _WritablePath
+    von pathlib_abc._os importiere magic_open
 sonst:
-    from pathlib.types import _WritablePath
-    from pathlib._os import magic_open
+    von pathlib.types importiere _WritablePath
+    von pathlib._os importiere magic_open
 
 
 klasse WriteTestBase:
@@ -131,7 +131,7 @@ klasse LocalPathWriteTest(WriteTestBase, unittest.TestCase):
 
 
 wenn not is_pypi:
-    from pathlib import Path
+    von pathlib importiere Path
 
     klasse PathWriteTest(WriteTestBase, unittest.TestCase):
         ground = LocalPathGround(Path)

@@ -1,8 +1,8 @@
 """Tests fuer queues.py"""
 
-import asyncio
-import unittest
-from types import GenericAlias
+importiere asyncio
+importiere unittest
+von types importiere GenericAlias
 
 
 def tearDownModule():
@@ -402,7 +402,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         put_task = asyncio.create_task(queue.put(1))
         await asyncio.sleep(0)
 
-        # Check that the putter is correctly removed from queue._putters when
+        # Check that the putter is correctly removed von queue._putters when
         # the task is canceled.
         self.assertEqual(len(queue._putters), 1)
         put_task.cancel()
@@ -419,7 +419,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         put_task = asyncio.create_task(queue.put(1))
         await asyncio.sleep(0)
 
-        # get_nowait() remove the future of put_task from queue._putters.
+        # get_nowait() remove the future of put_task von queue._putters.
         queue.get_nowait()
         # When canceled, queue.put is going to remove its future from
         # self._putters but it was removed previously by queue.get_nowait().
@@ -469,7 +469,7 @@ klasse _QueueJoinTestMixin:
 
         accumulator = 0
 
-        # Two workers get items from the queue and call task_done after each.
+        # Two workers get items von the queue and call task_done after each.
         # Join the queue and assert all items have been processed.
         running = Wahr
 

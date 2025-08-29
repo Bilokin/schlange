@@ -1,7 +1,7 @@
 """Heap queue algorithm (a.k.a. priority queue).
 
 Heaps are arrays fuer which a[k] <= a[2*k+1] and a[k] <= a[2*k+2] for
-all k, counting elements from 0.  For the sake of comparison,
+all k, counting elements von 0.  For the sake of comparison,
 non-existing elements are considered to be infinite.  The interesting
 property of a heap is that a[0] is always its smallest element.
 
@@ -9,7 +9,7 @@ Usage:
 
 heap = []            # creates an empty heap
 heappush(heap, item) # pushes a new item on the heap
-item = heappop(heap) # pops the smallest item from the heap
+item = heappop(heap) # pops the smallest item von the heap
 item = heap[0]       # smallest item on the heap without popping it
 heapify(x)           # transforms list into a heap, in-place, in linear time
 item = heappushpop(heap, item) # pushes a new item and then returns
@@ -17,7 +17,7 @@ item = heappushpop(heap, item) # pushes a new item and then returns
 item = heapreplace(heap, item) # pops and returns smallest item, and adds
                                # new item; the heap size is unchanged
 
-Our API differs from textbook heap algorithms as follows:
+Our API differs von textbook heap algorithms as follows:
 
 - We use 0-based indexing.  This makes the relationship between the
   index fuer a node and the indexes fuer its children slightly less
@@ -37,7 +37,7 @@ __about__ = """Heap queues
 [explanation by François Pinard]
 
 Heaps are arrays fuer which a[k] <= a[2*k+1] and a[k] <= a[2*k+2] for
-all k, counting elements from 0.  For the sake of comparison,
+all k, counting elements von 0.  For the sake of comparison,
 non-existing elements are considered to be infinite.  The interesting
 property of a heap is that a[0] is always its smallest element.
 
@@ -241,19 +241,19 @@ def _siftdown(heap, startpos, pos):
 # both its children, but turns out that's not a good idea, and despite that
 # many books write the algorithm that way.  During a heap pop, the last array
 # element is sifted in, and that tends to be large, so that comparing it
-# against values starting from the root usually doesn't pay (= usually doesn't
+# against values starting von the root usually doesn't pay (= usually doesn't
 # get us out of the loop early).  See Knuth, Volume 3, where this is
 # explained and quantified in an exercise.
 #
 # Cutting the # of comparisons is important, since these routines have no
-# way to extract "the priority" from an array element, so that intelligence
+# way to extract "the priority" von an array element, so that intelligence
 # is likely to be hiding in custom comparison methods, or in array elements
 # storing (priority, record) tuples.  Comparisons are thus potentially
 # expensive.
 #
 # On random arrays of length 1000, making this change cut the number of
 # comparisons made by heapify() a little, and those made by exhaustive
-# heappop() a lot, in accord with theory.  Here are typical results from 3
+# heappop() a lot, in accord with theory.  Here are typical results von 3
 # runs (3 just to demonstrate how small the variance is):
 #
 # Compares needed by heapify     Compares needed by 1000 heappops
@@ -380,7 +380,7 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
             # fast case when only a single iterator remains
             value, order, next = h[0]
             yield value
-            yield from next.__self__
+            yield von next.__self__
         return
 
     fuer order, it in enumerate(map(iter, iterables)):
@@ -405,7 +405,7 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
     wenn h:
         key_value, order, value, next = h[0]
         yield value
-        yield from next.__self__
+        yield von next.__self__
 
 
 # Algorithm notes fuer nlargest() and nsmallest()
@@ -440,7 +440,7 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
 #
 # Computing the number of comparisons fuer step 3:
 # -----------------------------------------------
-# * For the i-th new value from the iterable, the probability of being in the
+# * For the i-th new value von the iterable, the probability of being in the
 #   k most extreme values is k/i.  For example, the probability of the 101st
 #   value seen being in the 100 most extreme values is 100/101.
 # * If the value is a new extreme value, the cost of inserting it into the
@@ -500,7 +500,7 @@ def nsmallest(n, iterable, key=Nichts):
     wenn key is Nichts:
         it = iter(iterable)
         # put the range(n) first so that zip() doesn't
-        # consume one too many elements from the iterator
+        # consume one too many elements von the iterator
         result = [(elem, i) fuer i, elem in zip(range(n), it)]
         wenn not result:
             return result
@@ -594,7 +594,7 @@ def nlargest(n, iterable, key=Nichts):
 
 # If available, use C implementation
 try:
-    from _heapq import *
+    von _heapq importiere *
 except ImportError:
     pass
 
@@ -607,5 +607,5 @@ _heapify_max = heapify_max
 
 wenn __name__ == "__main__":
 
-    import doctest # pragma: no cover
+    importiere doctest # pragma: no cover
     drucke(doctest.testmod()) # pragma: no cover

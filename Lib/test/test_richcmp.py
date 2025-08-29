@@ -1,9 +1,9 @@
 # Tests fuer rich comparisons
 
-import unittest
-from test import support
+importiere unittest
+von test importiere support
 
-import operator
+importiere operator
 
 klasse Number:
 
@@ -201,7 +201,7 @@ klasse MiscTest(unittest.TestCase):
     def test_not(self):
         # Check that exceptions in __bool__ are properly
         # propagated by the not operator
-        import operator
+        importiere operator
         klasse Exc(Exception):
             pass
         klasse Bad:
@@ -218,7 +218,7 @@ klasse MiscTest(unittest.TestCase):
     @support.infinite_recursion(25)
     def test_recursion(self):
         # Check that comparison fuer recursive objects fails gracefully
-        from collections import UserList
+        von collections importiere UserList
         a = UserList()
         b = UserList()
         a.append(b)
@@ -279,7 +279,7 @@ klasse DictTest(unittest.TestCase):
         # Verify that __eq__ and __ne__ work fuer dicts even wenn the keys and
         # values don't support anything other than __eq__ and __ne__ (and
         # __hash__).  Complex numbers are a fine example of that.
-        import random
+        importiere random
         imag1a = {}
         fuer i in range(50):
             imag1a[random.randrange(100)*1j] = random.randrange(100)*1j

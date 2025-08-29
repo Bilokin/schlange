@@ -1,7 +1,7 @@
-import sys
-import unittest
-from test.support import import_helper
-from collections import UserList
+importiere sys
+importiere unittest
+von test.support importiere import_helper
+von collections importiere UserList
 
 
 py_bisect = import_helper.import_fresh_module('bisect', blocked=['_bisect'])
@@ -153,7 +153,7 @@ klasse TestBisect:
         self.assertEqual(data.last_insert, (x + 1, x))
 
     def test_random(self, n=25):
-        from random import randrange
+        von random importiere randrange
         fuer i in range(n):
             data = [randrange(0, n, 2) fuer j in range(i)]
             data.sort()
@@ -234,7 +234,7 @@ klasse TestBisect:
             )
 
     def test_insort(self):
-        from random import shuffle
+        von random importiere shuffle
         mod = self.module
 
         # Invariant:  As random elements are inserted in
@@ -301,7 +301,7 @@ klasse TestBisectC(TestBisect, unittest.TestCase):
 
 klasse TestInsort:
     def test_vsBuiltinSort(self, n=500):
-        from random import choice
+        von random importiere choice
         fuer insorted in (list(), UserList()):
             fuer i in range(n):
                 digit = choice("0123456789")

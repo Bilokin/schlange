@@ -22,7 +22,7 @@
 # - type: dialog type; that is, which buttons to display (see below)
 #
 
-from tkinter.commondialog import Dialog
+von tkinter.commondialog importiere Dialog
 
 __all__ = ["showinfo", "showwarning", "showerror",
            "askquestion", "askokcancel", "askyesno",

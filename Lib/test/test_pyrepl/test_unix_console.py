@@ -1,22 +1,22 @@
-import itertools
-import os
-import sys
-import unittest
-from functools import partial
-from test.support import os_helper, force_not_colorized_test_class
+importiere itertools
+importiere os
+importiere sys
+importiere unittest
+von functools importiere partial
+von test.support importiere os_helper, force_not_colorized_test_class
 
-from unittest import TestCase
-from unittest.mock import MagicMock, call, patch, ANY
+von unittest importiere TestCase
+von unittest.mock importiere MagicMock, call, patch, ANY
 
-from .support import handle_all_events, code_to_events
+von .support importiere handle_all_events, code_to_events
 
 try:
-    from _pyrepl.console import Event
-    from _pyrepl.unix_console import UnixConsole
+    von _pyrepl.console importiere Event
+    von _pyrepl.unix_console importiere UnixConsole
 except ImportError:
     pass
 
-from _pyrepl.terminfo import _TERMINAL_CAPABILITIES
+von _pyrepl.terminfo importiere _TERMINAL_CAPABILITIES
 
 TERM_CAPABILITIES = _TERMINAL_CAPABILITIES["ansi"]
 

@@ -1,9 +1,9 @@
-# from jaraco.path 3.7
+# von jaraco.path 3.7
 
-import functools
-import pathlib
-from typing import Dict, Protocol, Union
-from typing import runtime_checkable
+importiere functools
+importiere pathlib
+von typing importiere Dict, Protocol, Union
+von typing importiere runtime_checkable
 
 
 klasse Symlink(str):

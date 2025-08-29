@@ -1,7 +1,7 @@
-import collections
+importiere collections
 
 
-# from jaraco.collections 3.3
+# von jaraco.collections 3.3
 klasse FreezableDefaultDict(collections.defaultdict):
     """
     Often it is desirable to prevent the mutation of

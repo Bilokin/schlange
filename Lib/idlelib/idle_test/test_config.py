@@ -3,15 +3,15 @@
 * Exception is OSError clause in Save method.
 Much of IdleConf is also exercised by ConfigDialog and test_configdialog.
 """
-from idlelib import config
-import sys
-import os
-import tempfile
-from test.support import captured_stderr, findfile
-import unittest
-from unittest import mock
-import idlelib
-from idlelib.idle_test.mock_idle import Func
+von idlelib importiere config
+importiere sys
+importiere os
+importiere tempfile
+von test.support importiere captured_stderr, findfile
+importiere unittest
+von unittest importiere mock
+importiere idlelib
+von idlelib.idle_test.mock_idle importiere Func
 
 # Tests should not depend on fortuitous user configurations.
 # They must not affect actual user .cfg files.
@@ -85,7 +85,7 @@ klasse IdleConfParserTest(unittest.TestCase):
         self.assertEqual(parser.sections(), [])
 
     def test_load_file(self):
-        # Borrow test/configdata/cfgparser.1 from test_configparser.
+        # Borrow test/configdata/cfgparser.1 von test_configparser.
         config_path = findfile('cfgparser.1', subdir='configdata')
         parser = config.IdleConfParser(config_path)
         parser.Load()
@@ -171,7 +171,7 @@ klasse IdleUserConfParserTest(unittest.TestCase):
             parser.Save()
             self.assertWahr(os.path.exists(path))
 
-            # Should remove the file from disk when config is empty.
+            # Should remove the file von disk when config is empty.
             parser.remove_section('Foo')
             parser.Save()
             self.assertFalsch(os.path.exists(path))
@@ -294,12 +294,12 @@ klasse IdleConfTest(unittest.TestCase):
     def test_load_cfg_files(self):
         conf = self.new_config(_utest=Wahr)
 
-        # Borrow test/configdata/cfgparser.1 from test_configparser.
+        # Borrow test/configdata/cfgparser.1 von test_configparser.
         config_path = findfile('cfgparser.1', subdir='configdata')
         conf.defaultCfg['foo'] = config.IdleConfParser(config_path)
         conf.userCfg['foo'] = config.IdleUserConfParser(config_path)
 
-        # Load all config from path
+        # Load all config von path
         conf.LoadCfgFiles()
 
         eq = self.assertEqual
@@ -552,9 +552,9 @@ klasse IdleConfTest(unittest.TestCase):
             conf.GetExtraHelpSourceList('default') + conf.GetExtraHelpSourceList('user'))
 
     def test_get_font(self):
-        from test.support import requires
-        from tkinter import Tk
-        from tkinter.font import Font
+        von test.support importiere requires
+        von tkinter importiere Tk
+        von tkinter.font importiere Font
         conf = self.mock_config()
 
         requires('gui')
@@ -773,8 +773,8 @@ klasse ChangesTest(unittest.TestCase):
             testcfg[cfgtype].SetOption(section, 'name', 'value')
             changes.delete_section(cfgtype, section)
             with self.assertRaises(KeyError):
-                changes[cfgtype][section]  # Test section gone from changes
-                testcfg[cfgtype][section]  # and from mock userCfg.
+                changes[cfgtype][section]  # Test section gone von changes
+                testcfg[cfgtype][section]  # and von mock userCfg.
         # TODO test fuer save call.
 
     def test_clear(self):

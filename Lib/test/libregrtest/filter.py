@@ -1,6 +1,6 @@
-import itertools
-import operator
-import re
+importiere itertools
+importiere operator
+importiere re
 
 
 # By default, don't filter tests
@@ -57,7 +57,7 @@ def _compile_match_function(patterns):
         # The test.bisect_cmd utility only uses such full test identifiers.
         return set(patterns).__contains__
     sonst:
-        import fnmatch
+        importiere fnmatch
         regex = '|'.join(map(fnmatch.translate, patterns))
         # The search *is* case sensitive on purpose:
         # don't use flags=re.IGNORECASE

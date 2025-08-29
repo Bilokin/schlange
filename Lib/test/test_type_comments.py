@@ -1,6 +1,6 @@
-import ast
-import sys
-import unittest
+importiere ast
+importiere sys
+importiere unittest
 
 
 funcdef = """\

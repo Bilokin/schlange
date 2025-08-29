@@ -1,16 +1,16 @@
-import contextlib
-import multiprocessing as mp
-import multiprocessing.process
-import multiprocessing.util
-import os
-import threading
-import unittest
-from concurrent import futures
-from test import support
-from test.support import warnings_helper
+importiere contextlib
+importiere multiprocessing as mp
+importiere multiprocessing.process
+importiere multiprocessing.util
+importiere os
+importiere threading
+importiere unittest
+von concurrent importiere futures
+von test importiere support
+von test.support importiere warnings_helper
 
-from .executor import ExecutorTest, mul
-from .util import BaseTestCase, ThreadPoolMixin, setup_module
+von .executor importiere ExecutorTest, mul
+von .util importiere BaseTestCase, ThreadPoolMixin, setup_module
 
 
 klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):

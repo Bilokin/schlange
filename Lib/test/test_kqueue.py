@@ -1,15 +1,15 @@
 """
 Tests fuer kqueue wrapper.
 """
-import errno
-import os
-import select
-import socket
-from test import support
-import time
-import unittest
+importiere errno
+importiere os
+importiere select
+importiere socket
+von test importiere support
+importiere time
+importiere unittest
 
-from test.support import warnings_helper
+von test.support importiere warnings_helper
 
 wenn not hasattr(select, "kqueue"):
     raise unittest.SkipTest("test works only on BSD")
@@ -24,7 +24,7 @@ klasse TestKQueue(unittest.TestCase):
         self.assertRaises(ValueError, kq.fileno)
 
     def test_create_event(self):
-        from operator import lt, le, gt, ge
+        von operator importiere lt, le, gt, ge
 
         fd = os.open(os.devnull, os.O_WRONLY)
         self.addCleanup(os.close, fd)

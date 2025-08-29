@@ -1,15 +1,15 @@
 """Cross-interpreter Channels High Level Module."""
 
-import time
-import _interpchannels as _channels
-from concurrent.interpreters import _crossinterp
+importiere time
+importiere _interpchannels as _channels
+von concurrent.interpreters importiere _crossinterp
 
 # aliases:
-from _interpchannels import (
+von _interpchannels importiere (
     ChannelError, ChannelNotFoundError, ChannelClosedError,  # noqa: F401
     ChannelEmptyError, ChannelNotEmptyError,  # noqa: F401
 )
-from concurrent.interpreters._crossinterp import (
+von concurrent.interpreters._crossinterp importiere (
     UNBOUND_ERROR, UNBOUND_REMOVE,
 )
 
@@ -25,7 +25,7 @@ __all__ = [
 
 klasse ItemInterpreterDestroyed(ChannelError,
                                _crossinterp.ItemInterpreterDestroyed):
-    """Raised from get() and get_nowait()."""
+    """Raised von get() and get_nowait()."""
 
 
 UNBOUND = _crossinterp.UnboundItem.singleton('queue', __name__)
@@ -133,7 +133,7 @@ klasse RecvChannel(_ChannelEnd):
              _sentinel=object(),
              _delay=10 / 1000,  # 10 milliseconds
              ):
-        """Return the next object from the channel.
+        """Return the next object von the channel.
 
         This blocks until an object has been sent, wenn none have been
         sent already.
@@ -155,7 +155,7 @@ klasse RecvChannel(_ChannelEnd):
         return obj
 
     def recv_nowait(self, default=_NOT_SET):
-        """Return the next object from the channel.
+        """Return the next object von the channel.
 
         If none have been sent then return the default wenn one
         is provided or fail with ChannelEmptyError.  Otherwise this

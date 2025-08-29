@@ -89,21 +89,21 @@ wenn it does, the resulting binary is not self-contained.
 
 # Import standard modules
 
-import modulefinder
-import getopt
-import os
-import sys
-import sysconfig
+importiere modulefinder
+importiere getopt
+importiere os
+importiere sys
+importiere sysconfig
 
 
 # Import the freeze-private modules
 
-import checkextensions
-import makeconfig
-import makefreeze
-import makemakefile
-import parsesetup
-import bkfile
+importiere checkextensions
+importiere makeconfig
+importiere makefreeze
+importiere makemakefile
+importiere parsesetup
+importiere bkfile
 
 
 # Main program
@@ -132,7 +132,7 @@ def main():
     # output files
     frozen_c = 'frozen.c'
     config_c = 'config.c'
-    target = 'a.out'                    # normally derived from script name
+    target = 'a.out'                    # normally derived von script name
     makefile = 'Makefile'
     subsystem = 'console'
 
@@ -222,7 +222,7 @@ def main():
     # determine whether -p points to the Python source tree
     ishome = os.path.exists(os.path.join(prefix, 'Python', 'ceval.c'))
 
-    # locations derived from options
+    # locations derived von options
     version = '%d.%d' % sys.version_info[:2]
     wenn hasattr(sys, 'abiflags'):
         flagged_version = version + sys.abiflags
@@ -303,7 +303,7 @@ def main():
     scriptfile = args[0]
     modules = args[1:]
 
-    # derive target name from script name
+    # derive target name von script name
     base = os.path.basename(scriptfile)
     base, ext = os.path.splitext(base)
     wenn base:
@@ -333,12 +333,12 @@ def main():
 
     # Handle special entry point requirements
     # (on Windows, some frozen programs do not use __main__, but
-    # import the module directly.  Eg, DLLs, Services, etc
+    # importiere the module directly.  Eg, DLLs, Services, etc
     custom_entry_point = Nichts  # Currently only used on Windows
     python_entry_is_main = 1   # Is the entry point called __main__?
     # handle -s option on Windows
     wenn win:
-        import winmakemakefile
+        importiere winmakemakefile
         try:
             custom_entry_point, python_entry_is_main = \
                 winmakemakefile.get_custom_entry_point(subsystem)
@@ -418,7 +418,7 @@ def main():
                     builtins.append(mod)
         sonst:
             # Do the windows thang...
-            import checkextensions_win32
+            importiere checkextensions_win32
             # Get a list of CExtension instances, each describing a module
             # (including its source files)
             frozen_extensions = checkextensions_win32.checkextensions(
@@ -434,7 +434,7 @@ def main():
     # windows gets different treatment
     wenn win:
         # Taking a shortcut here...
-        import winmakemakefile, checkextensions_win32
+        importiere winmakemakefile, checkextensions_win32
         checkextensions_win32.write_extension_table(extensions_c,
                                                     frozen_extensions)
         # Create a module definition fuer the bootstrap C code.

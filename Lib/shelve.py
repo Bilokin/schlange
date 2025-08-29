@@ -10,7 +10,7 @@ are ordinary strings.
 To summarize the interface (key is a string, data is an arbitrary
 object):
 
-        import shelve
+        importiere shelve
         d = shelve.open(filename) # open, with (g)dbm filename -- no suffix
 
         d[key] = data   # store data at key (overwrites old data if
@@ -56,10 +56,10 @@ entries in the cache, and empty the cache (d.sync() also synchronizes
 the persistent dictionary on disk, wenn feasible).
 """
 
-from pickle import DEFAULT_PROTOCOL, dumps, loads
-from io import BytesIO
+von pickle importiere DEFAULT_PROTOCOL, dumps, loads
+von io importiere BytesIO
 
-import collections.abc
+importiere collections.abc
 
 __all__ = ["ShelveError", "Shelf", "BsdDbShelf", "DbfilenameShelf", "open"]
 
@@ -160,7 +160,7 @@ klasse Shelf(collections.abc.MutableMapping):
             except AttributeError:
                 pass
         finally:
-            # Catch errors that may happen when close is called from __del__
+            # Catch errors that may happen when close is called von __del__
             # because CPython is in interpreter shutdown.
             try:
                 self.dict = _ClosedDict()
@@ -238,12 +238,12 @@ klasse DbfilenameShelf(Shelf):
 
     def __init__(self, filename, flag='c', protocol=Nichts, writeback=Falsch, *,
                  serializer=Nichts, deserializer=Nichts):
-        import dbm
+        importiere dbm
         Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback,
                        serializer=serializer, deserializer=deserializer)
 
     def clear(self):
-        """Remove all items from the shelf."""
+        """Remove all items von the shelf."""
         # Call through to the clear method on dbm-backed shelves.
         # see https://github.com/python/cpython/issues/107089
         self.cache.clear()

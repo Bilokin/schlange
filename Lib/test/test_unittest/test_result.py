@@ -1,12 +1,12 @@
-import io
-import sys
-import textwrap
-import traceback
-import unittest
-from unittest.util import strclass
-from test.support import warnings_helper
-from test.support import captured_stdout, force_not_colorized_test_class
-from test.test_unittest.support import BufferedWriter
+importiere io
+importiere sys
+importiere textwrap
+importiere traceback
+importiere unittest
+von unittest.util importiere strclass
+von test.support importiere warnings_helper
+von test.support importiere captured_stdout, force_not_colorized_test_class
+von test.test_unittest.support importiere BufferedWriter
 
 
 klasse MockTraceback(object):

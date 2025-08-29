@@ -1,24 +1,24 @@
-import faulthandler
-import gc
-import importlib
-import io
-import sys
-import time
-import traceback
-import unittest
+importiere faulthandler
+importiere gc
+importiere importlib
+importiere io
+importiere sys
+importiere time
+importiere traceback
+importiere unittest
 
-from _colorize import get_colors  # type: ignore[import-not-found]
-from test import support
-from test.support import threading_helper
+von _colorize importiere get_colors  # type: ignore[import-not-found]
+von test importiere support
+von test.support importiere threading_helper
 
-from .filter import match_test
-from .result import State, TestResult, TestStats
-from .runtests import RunTests
-from .save_env import saved_test_environment
-from .setup import setup_tests
-from .testresult import get_test_runner
-from .parallel_case import ParallelTestCase
-from .utils import (
+von .filter importiere match_test
+von .result importiere State, TestResult, TestStats
+von .runtests importiere RunTests
+von .save_env importiere saved_test_environment
+von .setup importiere setup_tests
+von .testresult importiere get_test_runner
+von .parallel_case importiere ParallelTestCase
+von .utils importiere (
     TestName,
     clear_caches, remove_testfn, abs_module_name, print_warning)
 
@@ -76,7 +76,7 @@ def _parallelize_tests(suite, parallel_threads: int):
     suite._tests = newtests
 
 def _run_suite(suite):
-    """Run tests from a unittest.TestSuite-derived class."""
+    """Run tests von a unittest.TestSuite-derived class."""
     runner = get_test_runner(sys.stdout,
                              verbosity=support.verbose,
                              capture_output=(support.junit_xml_list is not Nichts))
@@ -84,7 +84,7 @@ def _run_suite(suite):
     result = runner.run(suite)
 
     wenn support.junit_xml_list is not Nichts:
-        import xml.etree.ElementTree as ET
+        importiere xml.etree.ElementTree as ET
         xml_elem = result.get_xml_element()
         xml_str = ET.tostring(xml_elem).decode('ascii')
         support.junit_xml_list.append(xml_str)
@@ -110,7 +110,7 @@ def regrtest_runner(result: TestResult, test_func, runtests: RunTests) -> Nichts
     # Run test_func(), collect statistics, and detect reference and memory
     # leaks.
     wenn runtests.hunt_refleak:
-        from .refleak import runtest_refleak
+        von .refleak importiere runtest_refleak
         refleak, test_result = runtest_refleak(result.test_name, test_func,
                                                runtests.hunt_refleak,
                                                runtests.quiet)
@@ -132,9 +132,9 @@ def regrtest_runner(result: TestResult, test_func, runtests: RunTests) -> Nichts
             print_warning(f"{result.test_name} test runner returned Nichts: {test_func}")
             stats = Nichts
         case _:
-            # Don't import doctest at top level since only few tests return
+            # Don't importiere doctest at top level since only few tests return
             # a doctest.TestResult instance.
-            import doctest
+            importiere doctest
             wenn isinstance(test_result, doctest.TestResults):
                 stats = TestStats.from_doctest(test_result)
             sonst:

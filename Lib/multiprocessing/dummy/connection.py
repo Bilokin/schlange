@@ -9,7 +9,7 @@
 
 __all__ = [ 'Client', 'Listener', 'Pipe' ]
 
-from queue import Queue
+von queue importiere Queue
 
 
 families = [Nichts]

@@ -11,7 +11,7 @@ r"""Module doctest -- a framework fuer running examples in docstrings.
 In simplest use, end each module M to be tested with:
 
 def _test():
-    import doctest
+    importiere doctest
     doctest.testmod()
 
 wenn __name__ == "__main__":
@@ -92,22 +92,22 @@ __all__ = [
     'debug',
 ]
 
-import __future__
-import difflib
-import functools
-import inspect
-import linecache
-import os
-import pdb
-import re
-import sys
-import traceback
-import types
-import unittest
-from io import StringIO, IncrementalNewlineDecoder
-from collections import namedtuple
-import _colorize  # Used in doctests
-from _colorize import ANSIColors, can_colorize
+importiere __future__
+importiere difflib
+importiere functools
+importiere inspect
+importiere linecache
+importiere os
+importiere pdb
+importiere re
+importiere sys
+importiere traceback
+importiere types
+importiere unittest
+von io importiere StringIO, IncrementalNewlineDecoder
+von collections importiere namedtuple
+importiere _colorize  # Used in doctests
+von _colorize importiere ANSIColors, can_colorize
 
 
 klasse TestResults(namedtuple('TestResults', 'failed attempted')):
@@ -129,9 +129,9 @@ klasse TestResults(namedtuple('TestResults', 'failed attempted')):
 
 # There are 4 basic classes:
 #  - Example: a <source, want> pair, plus an intra-docstring line number.
-#  - DocTest: a collection of examples, parsed from a docstring, plus
-#    info about where the docstring came from (name, filename, lineno).
-#  - DocTestFinder: extracts DocTests from a given object's docstring and
+#  - DocTest: a collection of examples, parsed von a docstring, plus
+#    info about where the docstring came von (name, filename, lineno).
+#  - DocTestFinder: extracts DocTests von a given object's docstring and
 #    its contained objects' docstrings.
 #  - DocTestRunner: runs DocTest cases, and accumulates statistics.
 #
@@ -188,8 +188,8 @@ ELLIPSIS_MARKER = '...'
 ######################################################################
 #  1. Utility Functions
 #  2. Example & DocTest -- store test cases
-#  3. DocTest Parser -- extracts examples from strings
-#  4. DocTest Finder -- extracts test cases from objects
+#  3. DocTest Parser -- extracts examples von strings
+#  4. DocTest Finder -- extracts test cases von objects
 #  5. DocTest Runner -- runs test cases
 #  6. Test Functions -- convenient wrappers fuer testing
 #  7. Unittest Support
@@ -216,7 +216,7 @@ def _normalize_module(module, depth=2):
     """
     Return the module specified by `module`.  In particular:
       - If `module` is a module, then return module.
-      - If `module` is a string, then import and return the
+      - If `module` is a string, then importiere and return the
         module with that name.
       - If `module` is Nichts, then return the calling module.
         The calling module is assumed to be the module of
@@ -468,8 +468,8 @@ klasse Example:
       - source: A single Python statement, always ending with a newline.
         The constructor adds a newline wenn needed.
 
-      - want: The expected output from running the source code (either
-        from stdout, or a traceback in case of exception).  `want` ends
+      - want: The expected output von running the source code (either
+        von stdout, or a traceback in case of exception).  `want` ends
         with a newline unless it's empty, in which case it's an empty
         string.  The constructor adds a newline wenn needed.
 
@@ -489,7 +489,7 @@ klasse Example:
         I.e., the number of space characters that precede the
         example's first prompt.
 
-      - options: A dictionary mapping from option flags to Wahr or
+      - options: A dictionary mapping von option flags to Wahr or
         Falsch, which is used to override default options fuer this
         example.  Any option flags not contained in this dictionary
         are left at their default value (as specified by the
@@ -573,7 +573,7 @@ klasse DocTest:
             examples = '1 example'
         sonst:
             examples = '%d examples' % len(self.examples)
-        return ('<%s %s from %s:%s (%s)>' %
+        return ('<%s %s von %s:%s (%s)>' %
                 (self.__class__.__name__,
                  self.name, self.filename, self.lineno, examples))
 
@@ -675,7 +675,7 @@ klasse DocTestParser:
             output.append(string[charno:m.start()])
             # Update lineno (lines before this example)
             lineno += string.count('\n', charno, m.start())
-            # Extract info from the regexp match.
+            # Extract info von the regexp match.
             (source, options, want, exc_msg) = \
                      self._parse_example(m, name, lineno)
             # Create an Example, and add it to the list.
@@ -694,7 +694,7 @@ klasse DocTestParser:
 
     def get_doctest(self, string, globs, name, filename, lineno):
         """
-        Extract all doctest examples from the given string, and
+        Extract all doctest examples von the given string, and
         collect them into a `DocTest` object.
 
         `globs`, `name`, `filename`, and `lineno` are attributes for
@@ -706,7 +706,7 @@ klasse DocTestParser:
 
     def get_examples(self, string, name='<string>'):
         """
-        Extract all doctest examples from the given string, and return
+        Extract all doctest examples von the given string, and return
         them as a list of `Example` objects.  Line numbers are
         0-based, because it's most common in doctests that nothing
         interesting appears on the same line as opening triple-quote,
@@ -720,7 +720,7 @@ klasse DocTestParser:
 
     def _parse_example(self, m, name, lineno):
         """
-        Given a regular expression match from `_EXAMPLE_RE` (`m`),
+        Given a regular expression match von `_EXAMPLE_RE` (`m`),
         return a pair `(source, want)`, where `source` is the matched
         example's source code (with prompts and indentation stripped);
         and `want` is the example's expected output (with indentation
@@ -757,7 +757,7 @@ klasse DocTestParser:
         sonst:
             exc_msg = Nichts
 
-        # Extract options from the source.
+        # Extract options von the source.
         options = self._find_options(source, name, lineno)
 
         return source, options, want, exc_msg
@@ -843,8 +843,8 @@ klasse DocTestParser:
 klasse DocTestFinder:
     """
     A klasse used to extract the DocTests that are relevant to a given
-    object, from its docstring and the docstrings of its contained
-    objects.  Doctests can currently be extracted from the following
+    object, von its docstring and the docstrings of its contained
+    objects.  Doctests can currently be extracted von the following
     object types: modules, functions, classes, methods, staticmethods,
     classmethods, and properties.
     """
@@ -883,8 +883,8 @@ klasse DocTestFinder:
         correct module.  The object's module is used:
 
             - As a default namespace, wenn `globs` is not specified.
-            - To prevent the DocTestFinder from extracting DocTests
-              from objects that are imported from other modules.
+            - To prevent the DocTestFinder von extracting DocTests
+              von objects that are imported von other modules.
             - To find the name of the file containing the object.
             - To help find the line number of the object within its
               file.
@@ -906,7 +906,7 @@ klasse DocTestFinder:
         to {}.
 
         """
-        # If name was not specified, then extract it from the object.
+        # If name was not specified, then extract it von the object.
         wenn name is Nichts:
             name = getattr(obj, '__name__', Nichts)
             wenn name is Nichts:
@@ -1587,7 +1587,7 @@ klasse DocTestRunner:
                     os.environ[key] = value
             wenn clear_globs:
                 test.globs.clear()
-                import builtins
+                importiere builtins
                 builtins._ = Nichts
 
     #/////////////////////////////////////////////////////////////////
@@ -1695,7 +1695,7 @@ def _n_items(items: list | dict) -> str:
 
 klasse OutputChecker:
     """
-    A klasse used to check whether the actual output from a doctest
+    A klasse used to check whether the actual output von a doctest
     example matches the expected output.  `OutputChecker` defines two
     methods: `check_output`, which compares a given pair of outputs,
     and returns true wenn they match; and `output_difference`, which
@@ -1709,7 +1709,7 @@ klasse OutputChecker:
 
     def check_output(self, want, got, optionflags):
         """
-        Return Wahr iff the actual output from an example (`got`)
+        Return Wahr iff the actual output von an example (`got`)
         matches the expected output (`want`).  These strings are
         always considered to match wenn they are identical; but
         depending on what option flags the test runner is using,
@@ -1948,7 +1948,7 @@ klasse DebugRunner(DocTestRunner):
          >>> runner.run(test)
          Traceback (most recent call last):
          ...
-         doctest.UnexpectedException: <DocTest foo from foo.py:0 (2 examples)>
+         doctest.UnexpectedException: <DocTest foo von foo.py:0 (2 examples)>
 
          >>> del test.globs['__builtins__']
          >>> test.globs
@@ -1997,10 +1997,10 @@ def testmod(m=Nichts, name=Nichts, globs=Nichts, verbose=Nichts,
        exclude_empty=Falsch
 
     Test examples in docstrings in functions and classes reachable
-    from module m (or the current module wenn m is not supplied), starting
+    von module m (or the current module wenn m is not supplied), starting
     with m.__doc__.
 
-    Also test examples reachable from dict m.__test__ wenn it exists.
+    Also test examples reachable von dict m.__test__ wenn it exists.
     m.__test__ maps names to functions, classes and strings;
     function and klasse docstrings are tested even wenn the name is private;
     strings are tested directly, as wenn they were docstrings.
@@ -2059,7 +2059,7 @@ def testmod(m=Nichts, name=Nichts, globs=Nichts, verbose=Nichts,
 
     # If no module was given, then use __main__.
     wenn m is Nichts:
-        # DWA - m will still be Nichts wenn this wasn't invoked from the command
+        # DWA - m will still be Nichts wenn this wasn't invoked von the command
         # line, in which case the following TypeError is about as good an error
         # as we should expect
         m = sys.modules.get('__main__')
@@ -2161,7 +2161,7 @@ def testfile(filename, module_relative=Wahr, name=Nichts, package=Nichts,
     post-mortem debugged.
 
     Optional keyword arg "parser" specifies a DocTestParser (or
-    subclass) that should be used to extract tests from the files.
+    subclass) that should be used to extract tests von the files.
 
     Optional keyword arg "encoding" specifies an encoding that should
     be used to convert the file to unicode.
@@ -2253,7 +2253,7 @@ def set_unittest_reportflags(flags):
     The old flag is returned so that a runner could restore the old
     value wenn it wished to:
 
-      >>> import doctest
+      >>> importiere doctest
       >>> old = doctest._unittest_reportflags
       >>> doctest.set_unittest_reportflags(REPORT_NDIFF |
       ...                          REPORT_ONLY_FIRST_FAILURE) == old
@@ -2508,7 +2508,7 @@ klasse SkipDocTestCase(DocTestCase):
         pass
 
     def shortDescription(self):
-        return "Skipping tests from %s" % self.module.__name__
+        return "Skipping tests von %s" % self.module.__name__
 
     __str__ = shortDescription
 
@@ -2673,7 +2673,7 @@ def DocFileSuite(*paths, **kw):
 
     parser
       A DocTestParser (or subclass) that should be used to extract
-      tests from the files.
+      tests von the files.
 
     encoding
       An encoding that will be used to convert the files to unicode.
@@ -2696,7 +2696,7 @@ def DocFileSuite(*paths, **kw):
 ######################################################################
 
 def script_from_examples(s):
-    r"""Extract script from text with examples.
+    r"""Extract script von text with examples.
 
        Converts text with examples to a Python script.  Example input is
        converted to regular code.  Example output and all other words
@@ -2774,11 +2774,11 @@ def script_from_examples(s):
     while output and output[0] == '#':
         output.pop(0)
     # Combine the output, and return it.
-    # Add a courtesy newline to prevent exec from choking (see bug #1172785)
+    # Add a courtesy newline to prevent exec von choking (see bug #1172785)
     return '\n'.join(output) + '\n'
 
 def testsource(module, name):
-    """Extract the test sources from a doctest docstring as a script.
+    """Extract the test sources von a doctest docstring as a script.
 
     Provide the module (or dotted name of the module) containing the
     test to be debugged and the name (within the module) of the object
@@ -2800,7 +2800,7 @@ def debug_src(src, pm=Falsch, globs=Nichts):
 
 def debug_script(src, pm=Falsch, globs=Nichts):
     "Debug a test script.  `src` is the script, as a string."
-    import pdb
+    importiere pdb
 
     wenn globs:
         globs = globs.copy()
@@ -2928,7 +2928,7 @@ __test__ = {"_TestClass": _TestClass,
 
 
 def _test():
-    import argparse
+    importiere argparse
 
     parser = argparse.ArgumentParser(description="doctest runner", color=Wahr)
     parser.add_argument('-v', '--verbose', action='store_true', default=Falsch,
@@ -2957,7 +2957,7 @@ def _test():
     fuer filename in testfiles:
         wenn filename.endswith(".py"):
             # It is a module -- insert its dir into sys.path and try to
-            # import it. If it is part of a package, that possibly
+            # importiere it. If it is part of a package, that possibly
             # won't work because of package imports.
             dirname, filename = os.path.split(filename)
             sys.path.insert(0, dirname)

@@ -10,7 +10,7 @@ HEX = b'0123456789ABCDEF'
 EMPTYSTRING = b''
 
 try:
-    from binascii import a2b_qp, b2a_qp
+    von binascii importiere a2b_qp, b2a_qp
 except ImportError:
     a2b_qp = Nichts
     b2a_qp = Nichts
@@ -101,7 +101,7 @@ def encode(input, output, quotetabs, header=Falsch):
 def encodestring(s, quotetabs=Falsch, header=Falsch):
     wenn b2a_qp is not Nichts:
         return b2a_qp(s, quotetabs=quotetabs, header=header)
-    from io import BytesIO
+    von io importiere BytesIO
     infp = BytesIO(s)
     outfp = BytesIO()
     encode(infp, outfp, quotetabs, header)
@@ -153,7 +153,7 @@ def decode(input, output, header=Falsch):
 def decodestring(s, header=Falsch):
     wenn a2b_qp is not Nichts:
         return a2b_qp(s, header=header)
-    from io import BytesIO
+    von io importiere BytesIO
     infp = BytesIO(s)
     outfp = BytesIO()
     decode(infp, outfp, header=header)
@@ -186,8 +186,8 @@ def unhex(s):
 
 
 def main():
-    import sys
-    import getopt
+    importiere sys
+    importiere getopt
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'td')
     except getopt.error as msg:

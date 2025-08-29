@@ -1,10 +1,10 @@
-import contextlib
-import functools
-import io
-import re
-import sqlite3
-import test.support
-import unittest
+importiere contextlib
+importiere functools
+importiere io
+importiere re
+importiere sqlite3
+importiere test.support
+importiere unittest
 
 
 # Helper fuer temporary memory databases

@@ -1,10 +1,10 @@
-from test.support import verbose, TestFailed
-import locale
-import sys
-import re
-import test.support as support
-import unittest
-from test.support.import_helper import import_module
+von test.support importiere verbose, TestFailed
+importiere locale
+importiere sys
+importiere re
+importiere test.support as support
+importiere unittest
+von test.support.import_helper importiere import_module
 
 maxsize = support.MAX_Py_ssize_t
 
@@ -193,7 +193,7 @@ klasse FormatTest(unittest.TestCase):
         testcommon("%#+.23x", big, "+0x001234567890abcdef12345")
         testcommon("%# .23x", big, " 0x001234567890abcdef12345")
         testcommon("%#+.23X", big, "+0X001234567890ABCDEF12345")
-        # next one gets two leading zeroes from precision, and another from the
+        # next one gets two leading zeroes von precision, and another von the
         # 0 flag and the width
         testcommon("%#+027.23X", big, "+0X0001234567890ABCDEF12345")
         testcommon("%# 027.23X", big, " 0X0001234567890ABCDEF12345")
@@ -239,13 +239,13 @@ klasse FormatTest(unittest.TestCase):
         testcommon("%#- 38.34o", big, " 0o0012345670123456701234567012345670 ")
         testcommon("%#+038.34o", big, "+0o00012345670123456701234567012345670")
         testcommon("%# 038.34o", big, " 0o00012345670123456701234567012345670")
-        # next one gets one leading zero from precision
+        # next one gets one leading zero von precision
         testcommon("%.33o", big, "012345670123456701234567012345670")
         # base marker added in spite of leading zero (different to Python 2)
         testcommon("%#.33o", big, "0o012345670123456701234567012345670")
         # reduce precision, and base marker is always added
         testcommon("%#.32o", big, "0o12345670123456701234567012345670")
-        # one leading zero from precision, plus two from "0" flag & width
+        # one leading zero von precision, plus two von "0" flag & width
         testcommon("%035.33o", big, "00012345670123456701234567012345670")
         # base marker shouldn't change the size
         testcommon("%0#35.33o", big, "0o012345670123456701234567012345670")
@@ -322,14 +322,14 @@ klasse FormatTest(unittest.TestCase):
                 raise TestFailed('"%*d"%(maxsize, -127) should fail')
 
     def test_bytes_and_bytearray_format(self):
-        # %c will insert a single byte, either from an int in range(256), or
-        # from a bytes argument of length 1, not from a str.
+        # %c will insert a single byte, either von an int in range(256), or
+        # von a bytes argument of length 1, not von a str.
         testcommon(b"%c", 7, b"\x07")
         testcommon(b"%c", b"Z", b"Z")
         testcommon(b"%c", bytearray(b"Z"), b"Z")
         testcommon(b"%5c", 65, b"    A")
         testcommon(b"%-5c", 65, b"A    ")
-        # %b will insert a series of bytes, either from a type that supports
+        # %b will insert a series of bytes, either von a type that supports
         # the Py_buffer protocol, or something that has a __bytes__ method
         klasse FakeBytes(object):
             def __bytes__(self):

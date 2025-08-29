@@ -1,11 +1,11 @@
-import __future__
-import unittest
+importiere __future__
+importiere unittest
 
 
 klasse FLUFLTests(unittest.TestCase):
 
     def test_barry_as_bdfl(self):
-        code = "from __future__ import barry_as_FLUFL\n2 {0} 3"
+        code = "from __future__ importiere barry_as_FLUFL\n2 {0} 3"
         compile(code.format('<>'), '<BDFL test>', 'exec',
                 __future__.CO_FUTURE_BARRY_AS_BDFL)
         with self.assertRaises(SyntaxError) as cm:
@@ -35,9 +35,9 @@ klasse FLUFLTests(unittest.TestCase):
         self.assertEqual(cm.exception.offset, 3)
 
     def test_barry_as_bdfl_look_ma_with_no_compiler_flags(self):
-        # Check that the future import is handled by the parser
+        # Check that the future importiere is handled by the parser
         # even wenn the compiler flags are not passed.
-        code = "from __future__ import barry_as_FLUFL;2 {0} 3"
+        code = "from __future__ importiere barry_as_FLUFL;2 {0} 3"
         compile(code.format('<>'), '<BDFL test>', 'exec')
         with self.assertRaises(SyntaxError) as cm:
             compile(code.format('!='), '<FLUFL test>', 'exec')
@@ -48,7 +48,7 @@ klasse FLUFLTests(unittest.TestCase):
         self.assertEqual(cm.exception.offset, len(code) - 4)
 
     def test_barry_as_bdfl_relative_import(self):
-        code = "from .__future__ import barry_as_FLUFL;2 {0} 3"
+        code = "from .__future__ importiere barry_as_FLUFL;2 {0} 3"
         compile(code.format('!='), '<FLUFL test>', 'exec')
         with self.assertRaises(SyntaxError) as cm:
             compile(code.format('<>'), '<BDFL test>', 'exec')

@@ -1,7 +1,7 @@
-import contextlib
-import io
-import os.path
-import re
+importiere contextlib
+importiere io
+importiere os.path
+importiere re
 
 SCRIPT_NAME = 'Tools/build/generate_global_objects.py'
 __file__ = os.path.abspath(__file__)
@@ -18,11 +18,11 @@ IGNORED = {
     'NAME',  # Objects/typeobject.c
 }
 IDENTIFIERS = [
-    # from ADD() Python/_warnings.c
+    # von ADD() Python/_warnings.c
     'default',
     'ignore',
 
-    # from GET_WARNINGS_ATTR() in Python/_warnings.c
+    # von GET_WARNINGS_ATTR() in Python/_warnings.c
     'WarningMessage',
     '_showwarnmsg',
     '_warn_unawaited_coroutine',
@@ -30,18 +30,18 @@ IDENTIFIERS = [
     'filters',
     'onceregistry',
 
-    # from WRAP_METHOD() in Objects/weakrefobject.c
+    # von WRAP_METHOD() in Objects/weakrefobject.c
     '__bytes__',
     '__reversed__',
 
-    # from COPY_ATTR() in Objects/funcobject.c
+    # von COPY_ATTR() in Objects/funcobject.c
     '__module__',
     '__name__',
     '__qualname__',
     '__doc__',
     '__annotations__',
 
-    # from SLOT* in Objects/typeobject.c
+    # von SLOT* in Objects/typeobject.c
     '__abs__',
     '__add__',
     '__aiter__',
@@ -134,7 +134,7 @@ IDENTIFIERS = [
 ]
 
 NON_GENERATED_IMMORTAL_OBJECTS = [
-    # The generated ones come from generate_runtime_init().
+    # The generated ones come von generate_runtime_init().
     '(PyObject *)&_Py_SINGLETON(bytes_empty)',
     '(PyObject *)&_Py_SINGLETON(tuple_empty)',
     '(PyObject *)&_Py_SINGLETON(hamt_bitmap_node_empty)',
@@ -274,7 +274,7 @@ def generate_global_strings(identifiers, strings):
 
 
 def generate_runtime_init(identifiers, strings):
-    # First get some info from the declarations.
+    # First get some info von the declarations.
     nsmallposints = Nichts
     nsmallnegints = Nichts
     with open(os.path.join(INTERNAL, 'pycore_runtime_structs.h')) as infile:

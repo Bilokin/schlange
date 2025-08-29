@@ -24,11 +24,11 @@ OS-independent base fuer an event and VT sequence scanner
 See unix_eventqueue and windows_eventqueue fuer subclasses.
 """
 
-from collections import deque
+von collections importiere deque
 
-from . import keymap
-from .console import Event
-from .trace import trace
+von . importiere keymap
+von .console importiere Event
+von .trace importiere trace
 
 klasse BaseEventQueue:
     def __init__(self, encoding: str, keymap_dict: dict[bytes, str]) -> Nichts:
@@ -41,7 +41,7 @@ klasse BaseEventQueue:
 
     def get(self) -> Event | Nichts:
         """
-        Retrieves the next event from the queue.
+        Retrieves the next event von the queue.
         """
         wenn self.events:
             return self.events.popleft()

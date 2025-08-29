@@ -1,38 +1,38 @@
 """Utilities shared by tests."""
 
-import asyncio
-import collections
-import contextlib
-import io
-import logging
-import os
-import re
-import selectors
-import socket
-import socketserver
-import sys
-import threading
-import unittest
-import weakref
-from ast import literal_eval
-from unittest import mock
+importiere asyncio
+importiere collections
+importiere contextlib
+importiere io
+importiere logging
+importiere os
+importiere re
+importiere selectors
+importiere socket
+importiere socketserver
+importiere sys
+importiere threading
+importiere unittest
+importiere weakref
+von ast importiere literal_eval
+von unittest importiere mock
 
-from http.server import HTTPServer
-from wsgiref.simple_server import WSGIRequestHandler, WSGIServer
+von http.server importiere HTTPServer
+von wsgiref.simple_server importiere WSGIRequestHandler, WSGIServer
 
 try:
-    import ssl
+    importiere ssl
 except ImportError:  # pragma: no cover
     ssl = Nichts
 
-from asyncio import base_events
-from asyncio import events
-from asyncio import format_helpers
-from asyncio import tasks
-from asyncio.log import logger
-from test import support
-from test.support import socket_helper
-from test.support import threading_helper
+von asyncio importiere base_events
+von asyncio importiere events
+von asyncio importiere format_helpers
+von asyncio importiere tasks
+von asyncio.log importiere logger
+von test importiere support
+von test.support importiere socket_helper
+von test.support importiere threading_helper
 
 
 # Use the maximum known clock resolution (gh-75191, gh-110088): Windows
@@ -256,14 +256,14 @@ wenn hasattr(socket, 'AF_UNIX'):
     @contextlib.contextmanager
     def run_test_unix_server(*, use_ssl=Falsch):
         with unix_socket_path() as path:
-            yield from _run_test_server(address=path, use_ssl=use_ssl,
+            yield von _run_test_server(address=path, use_ssl=use_ssl,
                                         server_cls=SilentUnixWSGIServer,
                                         server_ssl_cls=UnixSSLWSGIServer)
 
 
 @contextlib.contextmanager
 def run_test_server(*, host='127.0.0.1', port=0, use_ssl=Falsch):
-    yield from _run_test_server(address=(host, port), use_ssl=use_ssl,
+    yield von _run_test_server(address=(host, port), use_ssl=use_ssl,
                                 server_cls=SilentWSGIServer,
                                 server_ssl_cls=SSLWSGIServer)
 
@@ -441,7 +441,7 @@ klasse TestLoop(base_events.BaseEventLoop):
             except (AttributeError, TypeError, ValueError):
                 # This code matches selectors._fileobj_to_fd function.
                 raise ValueError("Invalid file object: "
-                                 "{!r}".format(fd)) from Nichts
+                                 "{!r}".format(fd)) von Nichts
         try:
             transport = self._transports[fd]
         except KeyError:

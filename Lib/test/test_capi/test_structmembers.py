@@ -1,9 +1,9 @@
-import unittest
-from test.support import import_helper
+importiere unittest
+von test.support importiere import_helper
 
 # Skip this test wenn the _testcapi module isn't available.
 import_helper.import_module('_testcapi')
-from _testcapi import (_test_structmembersType_OldAPI,
+von _testcapi importiere (_test_structmembersType_OldAPI,
     _test_structmembersType_NewAPI,
     CHAR_MAX, CHAR_MIN, UCHAR_MAX,
     SHRT_MAX, SHRT_MIN, USHRT_MAX,

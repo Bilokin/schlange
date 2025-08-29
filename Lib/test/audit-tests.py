@@ -5,9 +5,9 @@ module with arguments identifying each test.
 
 """
 
-import contextlib
-import os
-import sys
+importiere contextlib
+importiere os
+importiere sys
 
 
 klasse TestHook:
@@ -87,7 +87,7 @@ def test_basic():
 
 
 def test_block_add_hook():
-    # Raising an exception should prevent a new hook from being added,
+    # Raising an exception should prevent a new hook von being added,
     # but will not propagate out.
     with TestHook(raise_on_events="sys.addaudithook") as hook1:
         with TestHook() as hook2:
@@ -108,7 +108,7 @@ def test_block_add_hook_baseexception():
 
 
 def test_marshal():
-    import marshal
+    importiere marshal
     o = ("a", "b", "c", 1, 2, 3)
     payload = marshal.dumps(o)
 
@@ -134,7 +134,7 @@ def test_marshal():
 
 
 def test_pickle():
-    import pickle
+    importiere pickle
 
     klasse PicklePrint:
         def __reduce_ex__(self, p):
@@ -189,14 +189,14 @@ def test_monkeypatch():
 def test_open(testfn):
     # SSLContext.load_dh_params uses Py_fopen() rather than normal open()
     try:
-        import ssl
+        importiere ssl
 
         load_dh_params = ssl.create_default_context().load_dh_params
     except ImportError:
         load_dh_params = Nichts
 
     try:
-        import readline
+        importiere readline
     except ImportError:
         readline = Nichts
 
@@ -298,7 +298,7 @@ def test_cantrace():
 
 
 def test_mmap():
-    import mmap
+    importiere mmap
 
     with TestHook() as hook:
         mmap.mmap(-1, 8)
@@ -306,8 +306,8 @@ def test_mmap():
 
 
 def test_ctypes_call_function():
-    import ctypes
-    import _ctypes
+    importiere ctypes
+    importiere _ctypes
 
     with TestHook() as hook:
         _ctypes.call_function(ctypes._memmove_addr, (0, 0, 0))
@@ -327,7 +327,7 @@ def test_ctypes_call_function():
 
 
 def test_posixsubprocess():
-    import multiprocessing.util
+    importiere multiprocessing.util
 
     exe = b"xxx"
     args = [b"yyy", b"zzz"]
@@ -355,7 +355,7 @@ def test_excepthook():
 
 
 def test_unraisablehook():
-    from _testcapi import err_formatunraisable
+    von _testcapi importiere err_formatunraisable
 
     def unraisablehook(hookargs):
         pass
@@ -373,7 +373,7 @@ def test_unraisablehook():
 
 
 def test_winreg():
-    from winreg import OpenKey, EnumKey, CloseKey, HKEY_LOCAL_MACHINE
+    von winreg importiere OpenKey, EnumKey, CloseKey, HKEY_LOCAL_MACHINE
 
     def hook(event, args):
         wenn not event.startswith("winreg."):
@@ -396,7 +396,7 @@ def test_winreg():
 
 
 def test_socket():
-    import socket
+    importiere socket
 
     def hook(event, args):
         wenn event.startswith("socket."):
@@ -418,7 +418,7 @@ def test_socket():
 
 
 def test_gc():
-    import gc
+    importiere gc
 
     def hook(event, args):
         wenn event.startswith("gc."):
@@ -436,7 +436,7 @@ def test_gc():
 
 
 def test_http_client():
-    import http.client
+    importiere http.client
 
     def hook(event, args):
         wenn event.startswith("http.client."):
@@ -454,7 +454,7 @@ def test_http_client():
 
 
 def test_sqlite3():
-    import sqlite3
+    importiere sqlite3
 
     def hook(event, *args):
         wenn event.startswith("sqlite3."):
@@ -479,7 +479,7 @@ def test_sqlite3():
         cx2.close()
 
 def test_sys_getframe():
-    import sys
+    importiere sys
 
     def hook(event, args):
         wenn event.startswith("sys."):
@@ -490,7 +490,7 @@ def test_sys_getframe():
 
 
 def test_sys_getframemodulename():
-    import sys
+    importiere sys
 
     def hook(event, args):
         wenn event.startswith("sys."):
@@ -501,7 +501,7 @@ def test_sys_getframemodulename():
 
 
 def test_threading():
-    import _thread
+    importiere _thread
 
     def hook(event, args):
         wenn event.startswith(("_thread.", "cpython.PyThreadState", "test.")):
@@ -527,7 +527,7 @@ def test_threading():
 
 def test_threading_abort():
     # Ensures that aborting PyThreadState_New raises the correct exception
-    import _thread
+    importiere _thread
 
     klasse ThreadNewAbortError(Exception):
         pass
@@ -546,7 +546,7 @@ def test_threading_abort():
 
 
 def test_wmi_exec_query():
-    import _wmi
+    importiere _wmi
 
     def hook(event, args):
         wenn event.startswith("_wmi."):
@@ -562,7 +562,7 @@ def test_wmi_exec_query():
             raise
 
 def test_syslog():
-    import syslog
+    importiere syslog
 
     def hook(event, args):
         wenn event.startswith("syslog."):
@@ -583,7 +583,7 @@ def test_syslog():
 
 
 def test_not_in_gc():
-    import gc
+    importiere gc
 
     hook = lambda *a: Nichts
     sys.addaudithook(hook)
@@ -594,7 +594,7 @@ def test_not_in_gc():
 
 
 def test_time(mode):
-    import time
+    importiere time
 
     def hook(event, args):
         wenn event.startswith("time."):
@@ -612,7 +612,7 @@ def test_time(mode):
         pass
 
 def test_sys_monitoring_register_callback():
-    import sys
+    importiere sys
 
     def hook(event, args):
         wenn event.startswith("sys.monitoring"):
@@ -623,7 +623,7 @@ def test_sys_monitoring_register_callback():
 
 
 def test_winapi_createnamedpipe(pipe_name):
-    import _winapi
+    importiere _winapi
 
     def hook(event, args):
         wenn event == "_winapi.CreateNamedPipe":
@@ -634,7 +634,7 @@ def test_winapi_createnamedpipe(pipe_name):
 
 
 def test_assert_unicode():
-    import sys
+    importiere sys
     sys.addaudithook(lambda *args: Nichts)
     try:
         sys.audit(9)
@@ -644,7 +644,7 @@ def test_assert_unicode():
         raise RuntimeError("Expected sys.audit(9) to fail.")
 
 def test_sys_remote_exec():
-    import tempfile
+    importiere tempfile
 
     pid = os.getpid()
     event_pid = -1
@@ -673,7 +673,7 @@ def test_sys_remote_exec():
         assertEqual(remote_event_script_path, tmp_file.name)
 
 wenn __name__ == "__main__":
-    from test.support import suppress_msvcrt_asserts
+    von test.support importiere suppress_msvcrt_asserts
 
     suppress_msvcrt_asserts()
 

@@ -1,8 +1,8 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-import os
-from typing import Protocol
-from typing import Any, Dict, Iterator, List, Optional, TypeVar, Union, overload
+importiere os
+von typing importiere Protocol
+von typing importiere Any, Dict, Iterator, List, Optional, TypeVar, Union, overload
 
 
 _T = TypeVar("_T")

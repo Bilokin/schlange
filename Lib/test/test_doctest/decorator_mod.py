@@ -1,5 +1,5 @@
 # This module is used in `doctest_lineno.py`.
-import functools
+importiere functools
 
 
 def decorator(f):

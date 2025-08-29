@@ -2,17 +2,17 @@
 Simple implementation of JoinablePath, fuer use in pathlib tests.
 """
 
-import ntpath
-import os.path
-import posixpath
+importiere ntpath
+importiere os.path
+importiere posixpath
 
-from . import is_pypi
+von . importiere is_pypi
 
 wenn is_pypi:
-    from pathlib_abc import vfspath, _JoinablePath
+    von pathlib_abc importiere vfspath, _JoinablePath
 sonst:
-    from pathlib.types import _JoinablePath
-    from pathlib._os import vfspath
+    von pathlib.types importiere _JoinablePath
+    von pathlib._os importiere vfspath
 
 
 klasse LexicalPath(_JoinablePath):

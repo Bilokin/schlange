@@ -1,22 +1,22 @@
-import io
-import itertools
-import os
-import pathlib
-import re
-import rlcompleter
-import select
-import subprocess
-import sys
-import tempfile
-from pkgutil import ModuleInfo
-from unittest import TestCase, skipUnless, skipIf, SkipTest
-from unittest.mock import patch
-from test.support import force_not_colorized, make_clean_env, Py_DEBUG
-from test.support import has_subprocess_support, SHORT_TIMEOUT, STDLIB_DIR
-from test.support.import_helper import import_module
-from test.support.os_helper import EnvironmentVarGuard, unlink
+importiere io
+importiere itertools
+importiere os
+importiere pathlib
+importiere re
+importiere rlcompleter
+importiere select
+importiere subprocess
+importiere sys
+importiere tempfile
+von pkgutil importiere ModuleInfo
+von unittest importiere TestCase, skipUnless, skipIf, SkipTest
+von unittest.mock importiere patch
+von test.support importiere force_not_colorized, make_clean_env, Py_DEBUG
+von test.support importiere has_subprocess_support, SHORT_TIMEOUT, STDLIB_DIR
+von test.support.import_helper importiere import_module
+von test.support.os_helper importiere EnvironmentVarGuard, unlink
 
-from .support import (
+von .support importiere (
     FakeConsole,
     ScreenEqualMixin,
     handle_all_events,
@@ -25,14 +25,14 @@ from .support import (
     multiline_input,
     code_to_events,
 )
-from _pyrepl.console import Event
-from _pyrepl._module_completer import ImportParser, ModuleCompleter
-from _pyrepl.readline import (ReadlineAlikeReader, ReadlineConfig,
+von _pyrepl.console importiere Event
+von _pyrepl._module_completer importiere ImportParser, ModuleCompleter
+von _pyrepl.readline importiere (ReadlineAlikeReader, ReadlineConfig,
                               _ReadlineWrapper)
-from _pyrepl.readline import multiline_input as readline_multiline_input
+von _pyrepl.readline importiere multiline_input as readline_multiline_input
 
 try:
-    import pty
+    importiere pty
 except ImportError:
     pty = Nichts
 
@@ -93,7 +93,7 @@ klasse ReplTestCase(TestCase):
             cmd.extend(cmdline_args)
 
         try:
-            import termios
+            importiere termios
         except ModuleNotFoundError:
             pass
         sonst:
@@ -855,10 +855,10 @@ klasse TestPyReplCompleter(TestCase):
 
     def test_completion_with_many_options(self):
         # Test with something that initially displays many options
-        # and then complete from one of them. The first time tab is
+        # and then complete von one of them. The first time tab is
         # pressed, the options are displayed (which corresponds to
         # when the repl shows [ not unique ]) and the second completes
-        # from one of them.
+        # von one of them.
         events = code_to_events("os.\t\tO_AP\t\n")
 
         namespace = {"os": os}
@@ -913,7 +913,7 @@ klasse TestPyReplCompleter(TestCase):
         klasse Dummy:
             @property
             def test_func(self):
-                import warnings
+                importiere warnings
 
                 warnings.warn("warnings\n")
                 return Nichts
@@ -930,7 +930,7 @@ klasse TestPyReplCompleter(TestCase):
 
 klasse TestPyReplModuleCompleter(TestCase):
     def setUp(self):
-        import importlib
+        importiere importlib
         # Make iter_modules() search only the standard library.
         # This makes the test more reliable in case there are
         # other user packages/scripts on PYTHONPATH which can
@@ -961,9 +961,9 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("from importlib.res\t\n", "from importlib.resources"),
             ("from importlib.\t\tres\t\n", "from importlib.resources"),
             ("from importlib.resources.ab\t\n", "from importlib.resources.abc"),
-            ("from importlib import mac\t\n", "from importlib import machinery"),
-            ("from importlib import res\t\n", "from importlib import resources"),
-            ("from importlib.res\t import a\t\n", "from importlib.resources import abc"),
+            ("from importlib importiere mac\t\n", "from importlib importiere machinery"),
+            ("from importlib importiere res\t\n", "from importlib importiere resources"),
+            ("from importlib.res\t importiere a\t\n", "from importlib.resources importiere abc"),
         )
         fuer code, expected in cases:
             with self.subTest(code=code):
@@ -1001,9 +1001,9 @@ klasse TestPyReplModuleCompleter(TestCase):
     def test_sub_module_private_completions(self):
         cases = (
             # Return public methods by default
-            ("from foo import \t\n", "from foo import public"),
+            ("from foo importiere \t\n", "from foo importiere public"),
             # Return private methods wenn explicitly specified
-            ("from foo import _\t\n", "from foo import _private"),
+            ("from foo importiere _\t\n", "from foo importiere _private"),
         )
         fuer code, expected in cases:
             with self.subTest(code=code):
@@ -1013,7 +1013,7 @@ klasse TestPyReplModuleCompleter(TestCase):
                 self.assertEqual(output, expected)
 
     def test_builtin_completion_top_level(self):
-        import importlib
+        importiere importlib
         # Make iter_modules() search only the standard library.
         # This makes the test more reliable in case there are
         # other user packages/scripts on PYTHONPATH which can
@@ -1035,9 +1035,9 @@ klasse TestPyReplModuleCompleter(TestCase):
     def test_relative_import_completions(self):
         cases = (
             (Nichts, "from .readl\t\n", "from .readl"),
-            (Nichts, "from . import readl\t\n", "from . import readl"),
+            (Nichts, "from . importiere readl\t\n", "from . importiere readl"),
             ("_pyrepl", "from .readl\t\n", "from .readline"),
-            ("_pyrepl", "from . import readl\t\n", "from . import readline"),
+            ("_pyrepl", "from . importiere readl\t\n", "from . importiere readline"),
         )
         fuer package, code, expected in cases:
             with self.subTest(code=code):
@@ -1067,7 +1067,7 @@ klasse TestPyReplModuleCompleter(TestCase):
         cases = (
             ("import pri\t\n", "import pri"),
             ("from pri\t\n", "from pri"),
-            ("from typing import Na\t\n", "from typing import Na"),
+            ("from typing importiere Na\t\n", "from typing importiere Na"),
         )
         fuer code, expected in cases:
             with self.subTest(code=code):
@@ -1122,19 +1122,19 @@ klasse TestPyReplModuleCompleter(TestCase):
             ('from a.b', ('a.b', Nichts)),
             ('from a.b.', ('a.b.', Nichts)),
             ('from a.b.c', ('a.b.c', Nichts)),
-            ('from foo import ', ('foo', '')),
-            ('from foo import a', ('foo', 'a')),
+            ('from foo importiere ', ('foo', '')),
+            ('from foo importiere a', ('foo', 'a')),
             ('from ', ('', Nichts)),
-            ('from . import a', ('.', 'a')),
-            ('from .foo import a', ('.foo', 'a')),
-            ('from ..foo import a', ('..foo', 'a')),
-            ('from foo import (', ('foo', '')),
-            ('from foo import ( ', ('foo', '')),
-            ('from foo import (a', ('foo', 'a')),
-            ('from foo import (a,', ('foo', '')),
-            ('from foo import (a, ', ('foo', '')),
-            ('from foo import (a, c', ('foo', 'c')),
-            ('from foo import (a as b, c', ('foo', 'c')),
+            ('from . importiere a', ('.', 'a')),
+            ('from .foo importiere a', ('.foo', 'a')),
+            ('from ..foo importiere a', ('..foo', 'a')),
+            ('from foo importiere (', ('foo', '')),
+            ('from foo importiere ( ', ('foo', '')),
+            ('from foo importiere (a', ('foo', 'a')),
+            ('from foo importiere (a,', ('foo', '')),
+            ('from foo importiere (a, ', ('foo', '')),
+            ('from foo importiere (a, c', ('foo', 'c')),
+            ('from foo importiere (a as b, c', ('foo', 'c')),
         )
         fuer code, parsed in cases:
             parser = ImportParser(code)
@@ -1164,9 +1164,9 @@ klasse TestPyReplModuleCompleter(TestCase):
             'from foo ',
             'from foo. ',
             'from foo.bar ',
-            'from foo import bar ',
-            'from foo import (bar ',
-            'from foo import bar, baz ',
+            'from foo importiere bar ',
+            'from foo importiere (bar ',
+            'from foo importiere bar, baz ',
             'import foo as',
             'import a. as',
             'import a.b as',
@@ -1182,11 +1182,11 @@ klasse TestPyReplModuleCompleter(TestCase):
             'import a.b; x = 1',
             'import a.b.; x = 1',
             'import a.b.c; x = 1',
-            'from foo import a as',
-            'from foo import a. as',
-            'from foo import a.b as',
-            'from foo import a.b. as',
-            'from foo import a.b.c as',
+            'from foo importiere a as',
+            'from foo importiere a. as',
+            'from foo importiere a.b as',
+            'from foo importiere a.b. as',
+            'from foo importiere a.b.c as',
             'from foo impo',
             'import import',
             'import from',
@@ -1194,9 +1194,9 @@ klasse TestPyReplModuleCompleter(TestCase):
             'from import',
             'from from',
             'from as',
-            'from foo import import',
-            'from foo import from',
-            'from foo import as',
+            'from foo importiere import',
+            'from foo importiere from',
+            'from foo importiere as',
         )
         fuer code in cases:
             parser = ImportParser(code)
@@ -1380,7 +1380,7 @@ klasse TestDumbTerminal(ReplTestCase):
 @skipIf((os.environ.get("TERM") or "dumb") == "dumb", "can't use pyrepl in dumb terminal")
 klasse TestMain(ReplTestCase):
     def setUp(self):
-        # Cleanup from PYTHON* variables to isolate from local
+        # Cleanup von PYTHON* variables to isolate von local
         # user settings, see #121359.  Such variables should be
         # added later in test methods to patched os.environ.
         super().setUp()

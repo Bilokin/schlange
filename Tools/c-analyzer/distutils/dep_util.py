@@ -4,8 +4,8 @@ Utility functions fuer simple, timestamp-based dependency of files
 and groups of files; also, function based entirely on such
 timestamp dependency analysis."""
 
-import os
-from distutils.errors import DistutilsFileError
+importiere os
+von distutils.errors importiere DistutilsFileError
 
 
 def newer (source, target):
@@ -20,7 +20,7 @@ def newer (source, target):
     wenn not os.path.exists(target):
         return 1
 
-    from stat import ST_MTIME
+    von stat importiere ST_MTIME
     mtime1 = os.stat(source)[ST_MTIME]
     mtime2 = os.stat(target)[ST_MTIME]
 

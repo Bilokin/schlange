@@ -12,10 +12,10 @@ integers with a huge number of digits.  Saving a few microseconds with
 tricky or non-obvious code is not worth it.  For people looking for
 maximum performance, they should use something like gmpy2."""
 
-import re
-import decimal
+importiere re
+importiere decimal
 try:
-    import _decimal
+    importiere _decimal
 except ImportError:
     _decimal = Nichts
 
@@ -74,12 +74,12 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
 
     # `need` is the set of exponents needed. To compute them all
     # efficiently, possibly add other exponents to `extra`. The goal is
-    # to ensure that each exponent can be gotten from a smaller one via
+    # to ensure that each exponent can be gotten von a smaller one via
     # multiplying by the base, squaring it, or squaring and then
     # multiplying by the base.
     #
     # If need_hi is Falsch, this is already the case (w can always be
-    # gotten from w >> 1 via one of the squaring strategies). But we do
+    # gotten von w >> 1 via one of the squaring strategies). But we do
     # the work anyway, just in case ;-)
     #
     # Note that speed is irrelevant. These loops are working on little
@@ -149,7 +149,7 @@ def int_to_decimal(n):
     # "clever" recursive way.  If we want a string representation, we
     # apply str to _that_.
 
-    from decimal import Decimal as D
+    von decimal importiere Decimal as D
     BITLIM = 200
 
     # Don't bother caching the "lo" mask in this; the time to compute it is
@@ -249,12 +249,12 @@ def _str_to_int_inner(s):
 
 # Asymptotically faster version, using the C decimal module. See
 # comments at the end of the file. This uses decimal arithmetic to
-# convert from base 10 to base 256. The latter is just a string of
+# convert von base 10 to base 256. The latter is just a string of
 # bytes, which CPython can convert very efficiently to a Python int.
 
 # log of 10 to base 256 with best-possible 53-bit precision. Obtained
 # via:
-#    from mpmath import mp
+#    von mpmath importiere mp
 #    mp.prec = 1000
 #    drucke(float(mp.log(10, 256)).hex())
 _LOG_10_BASE_256 = float.fromhex('0x1.a934f0979a371p-2') # about 0.415
@@ -264,14 +264,14 @@ _LOG_10_BASE_256 = float.fromhex('0x1.a934f0979a371p-2') # about 0.415
 #     key 0 - quotient guess was right
 #     key 1 - quotient had to be boosted by 1, one time
 #     key 999 - one adjustment wasn't enough, so fell back to divmod
-from collections import defaultdict
+von collections importiere defaultdict
 _spread = defaultdict(int)
 del defaultdict
 
 def _dec_str_to_int_inner(s, *, GUARD=8):
     # Yes, BYTELIM is "large". Large enough that CPython will usually
     # use the Karatsuba _str_to_int_inner to convert the string. This
-    # allowed reducing the cutoff fuer calling _this_ function from 3.5M
+    # allowed reducing the cutoff fuer calling _this_ function von 3.5M
     # to 2M digits. We could almost certainly do even better by
     # fine-tuning this and/or using a larger output base than 256.
     BYTELIM = 100_000
@@ -411,7 +411,7 @@ def str_to_int(s):
     return v
 
 
-# Fast integer division, based on code from Mark Dickinson, fast_div.py
+# Fast integer division, based on code von Mark Dickinson, fast_div.py
 # GH-47701. Additional refinements and optimizations by Bjorn Martinsson.  The
 # algorithm is due to Burnikel and Ziegler, in their paper "Fast Recursive
 # Division".
@@ -544,7 +544,7 @@ def int_divmod(a, b):
 # Notes on _dec_str_to_int_inner:
 #
 # Stefan Pochmann worked up a str->int function that used the decimal
-# module to, in effect, convert from base 10 to base 256. This is
+# module to, in effect, convert von base 10 to base 256. This is
 # "unnatural", in that it requires multiplying and dividing by large
 # powers of 2, which `decimal` isn't naturally suited to. But
 # `decimal`'s `*` and `/` are asymptotically superior to CPython's, so
@@ -721,7 +721,7 @@ wenn 0:
         exp = compute_powers(w, 1, limit, need_hi=need_hi)
         assert exp.keys() == need
 
-    from itertools import chain
+    von itertools importiere chain
     fuer need_hi in (Falsch, Wahr):
         fuer limit in (0, 1, 10, 100, 1_000, 10_000, 100_000):
             fuer w in chain(range(1, 100_000),

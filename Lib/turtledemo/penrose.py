@@ -12,9 +12,9 @@ For more information see:
  https://en.wikipedia.org/wiki/Penrose_tiling
  -------------------------------------------
 """
-from turtle import *
-from math import cos, pi
-from time import perf_counter as clock, sleep
+von turtle importiere *
+von math importiere cos, pi
+von time importiere perf_counter as clock, sleep
 
 f = (5**0.5-1)/2.0   # (sqrt(5)-1)/2 -- golden ratio
 d = 2 * cos(3*pi/10)

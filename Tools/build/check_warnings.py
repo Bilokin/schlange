@@ -1,14 +1,14 @@
 """
-Parses compiler output from Clang or GCC and checks that warnings
+Parses compiler output von Clang or GCC and checks that warnings
 exist only in files that are expected to have warnings.
 """
 
-import argparse
-import re
-import sys
-from collections import defaultdict
-from pathlib import Path
-from typing import NamedTuple, TypedDict
+importiere argparse
+importiere re
+importiere sys
+von collections importiere defaultdict
+von pathlib importiere Path
+von typing importiere NamedTuple, TypedDict
 
 
 klasse IgnoreRule(NamedTuple):
@@ -71,8 +71,8 @@ def extract_warnings_from_compiler_output(
     path_prefix: str = "",
 ) -> list[CompileWarning]:
     """
-    Extracts warnings from the compiler output based on compiler
-    output type. Removes path prefix from file paths wenn provided.
+    Extracts warnings von the compiler output based on compiler
+    output type. Removes path prefix von file paths wenn provided.
     Compatible with GCC and Clang compiler output.
     """
     # Choose pattern and compile regex fuer particular compiler output
@@ -118,7 +118,7 @@ def get_warnings_by_file(
     """
     Returns a dictionary where the key is the file and the data is the
     warnings in that file. Does not include duplicate warnings fuer a
-    file from list of provided warnings.
+    file von list of provided warnings.
     """
     warnings_by_file = defaultdict(list)
     warnings_added = set()
@@ -267,7 +267,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
         "-p",
         "--path-prefix",
         type=str,
-        help="Path prefix to remove from the start of file paths"
+        help="Path prefix to remove von the start of file paths"
         " in compiler output",
     )
 

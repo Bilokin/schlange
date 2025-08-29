@@ -1,4 +1,4 @@
-from tkinter.ttk import Label, Frame
+von tkinter.ttk importiere Label, Frame
 
 
 klasse MultiStatusBar(Frame):
@@ -20,8 +20,8 @@ klasse MultiStatusBar(Frame):
 
 
 def _multistatus_bar(parent):  # htest #
-    from tkinter import Toplevel, Text
-    from tkinter.ttk import Frame, Button
+    von tkinter importiere Toplevel, Text
+    von tkinter.ttk importiere Frame, Button
     top = Toplevel(parent)
     x, y = map(int, parent.geometry().split('+')[1:])
     top.geometry("+%d+%d" %(x, y + 175))
@@ -45,8 +45,8 @@ def _multistatus_bar(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_statusbar', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_multistatus_bar)

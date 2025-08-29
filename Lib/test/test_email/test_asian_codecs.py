@@ -2,12 +2,12 @@
 # Contact: email-sig@python.org
 # email package unit tests fuer (optional) Asian codecs
 
-import unittest
+importiere unittest
 
-from test.test_email import TestEmailBase
-from email.charset import Charset
-from email.header import Header, decode_header
-from email.message import Message
+von test.test_email importiere TestEmailBase
+von email.charset importiere Charset
+von email.header importiere Header, decode_header
+von email.message importiere Message
 
 # We're compatible with Python 2.3, but it doesn't have the built-in Asian
 # codecs, so we have to skip all these tests.

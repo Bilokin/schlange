@@ -1,9 +1,9 @@
 # Run tests fuer functions in Python/fileutils.c.
 
-import os
-import os.path
-import unittest
-from test.support import import_helper
+importiere os
+importiere os.path
+importiere unittest
+von test.support importiere import_helper
 
 # Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testinternalcapi')
@@ -15,7 +15,7 @@ klasse PathTests(unittest.TestCase):
         wenn os.name == 'nt':
             raise unittest.SkipTest('Windows has its own helper fuer this')
         sonst:
-            from test.test_posixpath import PosixPathTest as posixdata
+            von test.test_posixpath importiere PosixPathTest as posixdata
             tests = posixdata.NORMPATH_CASES
         fuer filename, expected in tests:
             wenn not os.path.isabs(filename):

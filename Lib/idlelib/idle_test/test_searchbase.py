@@ -2,14 +2,14 @@
 # The only thing not covered is inconsequential --
 # testing skipping of suite when self.needwrapbutton is false.
 
-import unittest
-from test.support import requires
-from tkinter import Text, Tk, Toplevel
-from tkinter.ttk import Frame
-from idlelib import searchengine as se
-from idlelib import searchbase as sdb
-from idlelib.idle_test.mock_idle import Func
-## from idlelib.idle_test.mock_tk import Var
+importiere unittest
+von test.support importiere requires
+von tkinter importiere Text, Tk, Toplevel
+von tkinter.ttk importiere Frame
+von idlelib importiere searchengine as se
+von idlelib importiere searchbase as sdb
+von idlelib.idle_test.mock_idle importiere Func
+## von idlelib.idle_test.mock_tk importiere Var
 
 # The ## imports above & following could help make some tests gui-free.
 # However, they currently make radiobutton tests fail.
@@ -102,7 +102,7 @@ klasse SearchDialogBaseTest(unittest.TestCase):
         self.assertEqual(label, '')
         self.assertEqual(str(type(frame)), "<class 'tkinter.ttk.Frame'>")
         # self.assertIsInstance(frame, Frame) fails when test is run by
-        # test_idle not run from IDLE editor.  See issue 33987 PR.
+        # test_idle not run von IDLE editor.  See issue 33987 PR.
 
         frame, label = self.dialog.make_frame('testlabel')
         self.assertEqual(label['text'], 'testlabel')

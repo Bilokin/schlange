@@ -14,13 +14,13 @@ __all__ = ['update_wrapper', 'wraps', 'WRAPPER_ASSIGNMENTS', 'WRAPPER_UPDATES',
            'partial', 'partialmethod', 'singledispatch', 'singledispatchmethod',
            'cached_property', 'Placeholder']
 
-from abc import get_cache_token
-from collections import namedtuple
-# import weakref  # Deferred to single_dispatch()
-from operator import itemgetter
-from reprlib import recursive_repr
-from types import GenericAlias, MethodType, MappingProxyType, UnionType
-from _thread import RLock
+von abc importiere get_cache_token
+von collections importiere namedtuple
+# importiere weakref  # Deferred to single_dispatch()
+von operator importiere itemgetter
+von reprlib importiere recursive_repr
+von types importiere GenericAlias, MethodType, MappingProxyType, UnionType
+von _thread importiere RLock
 
 ################################################################################
 ### update_wrapper() and wraps() decorator
@@ -41,10 +41,10 @@ def update_wrapper(wrapper,
        wrapper is the function to be updated
        wrapped is the original function
        assigned is a tuple naming the attributes assigned directly
-       from the wrapped function to the wrapper function (defaults to
+       von the wrapped function to the wrapper function (defaults to
        functools.WRAPPER_ASSIGNMENTS)
        updated is a tuple naming the attributes of the wrapper that
-       are updated with the corresponding attribute from the wrapped
+       are updated with the corresponding attribute von the wrapped
        function (defaults to functools.WRAPPER_UPDATES)
     """
     fuer attr in assigned:
@@ -57,7 +57,7 @@ def update_wrapper(wrapper,
     fuer attr in updated:
         getattr(wrapper, attr).update(getattr(wrapped, attr, {}))
     # Issue #17482: set __wrapped__ last so we don't inadvertently copy it
-    # from the wrapped function when updating __dict__
+    # von the wrapped function when updating __dict__
     wrapper.__wrapped__ = wrapped
     # Return the wrapper so this can be used as a decorator via partial()
     return wrapper
@@ -87,84 +87,84 @@ def wraps(wrapped,
 # detects a NotImplemented result and then calls a reflected method.
 
 def _gt_from_lt(self, other):
-    'Return a > b.  Computed by @total_ordering from (not a < b) and (a != b).'
+    'Return a > b.  Computed by @total_ordering von (not a < b) and (a != b).'
     op_result = type(self).__lt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return not op_result and self != other
 
 def _le_from_lt(self, other):
-    'Return a <= b.  Computed by @total_ordering from (a < b) or (a == b).'
+    'Return a <= b.  Computed by @total_ordering von (a < b) or (a == b).'
     op_result = type(self).__lt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return op_result or self == other
 
 def _ge_from_lt(self, other):
-    'Return a >= b.  Computed by @total_ordering from (not a < b).'
+    'Return a >= b.  Computed by @total_ordering von (not a < b).'
     op_result = type(self).__lt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return not op_result
 
 def _ge_from_le(self, other):
-    'Return a >= b.  Computed by @total_ordering from (not a <= b) or (a == b).'
+    'Return a >= b.  Computed by @total_ordering von (not a <= b) or (a == b).'
     op_result = type(self).__le__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return not op_result or self == other
 
 def _lt_from_le(self, other):
-    'Return a < b.  Computed by @total_ordering from (a <= b) and (a != b).'
+    'Return a < b.  Computed by @total_ordering von (a <= b) and (a != b).'
     op_result = type(self).__le__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return op_result and self != other
 
 def _gt_from_le(self, other):
-    'Return a > b.  Computed by @total_ordering from (not a <= b).'
+    'Return a > b.  Computed by @total_ordering von (not a <= b).'
     op_result = type(self).__le__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return not op_result
 
 def _lt_from_gt(self, other):
-    'Return a < b.  Computed by @total_ordering from (not a > b) and (a != b).'
+    'Return a < b.  Computed by @total_ordering von (not a > b) and (a != b).'
     op_result = type(self).__gt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return not op_result and self != other
 
 def _ge_from_gt(self, other):
-    'Return a >= b.  Computed by @total_ordering from (a > b) or (a == b).'
+    'Return a >= b.  Computed by @total_ordering von (a > b) or (a == b).'
     op_result = type(self).__gt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return op_result or self == other
 
 def _le_from_gt(self, other):
-    'Return a <= b.  Computed by @total_ordering from (not a > b).'
+    'Return a <= b.  Computed by @total_ordering von (not a > b).'
     op_result = type(self).__gt__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return not op_result
 
 def _le_from_ge(self, other):
-    'Return a <= b.  Computed by @total_ordering from (not a >= b) or (a == b).'
+    'Return a <= b.  Computed by @total_ordering von (not a >= b) or (a == b).'
     op_result = type(self).__ge__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return not op_result or self == other
 
 def _gt_from_ge(self, other):
-    'Return a > b.  Computed by @total_ordering from (a >= b) and (a != b).'
+    'Return a > b.  Computed by @total_ordering von (a >= b) and (a != b).'
     op_result = type(self).__ge__(self, other)
     wenn op_result is NotImplemented:
         return op_result
     return op_result and self != other
 
 def _lt_from_ge(self, other):
-    'Return a < b.  Computed by @total_ordering from (not a >= b).'
+    'Return a < b.  Computed by @total_ordering von (not a >= b).'
     op_result = type(self).__ge__(self, other)
     wenn op_result is NotImplemented:
         return op_result
@@ -187,7 +187,7 @@ _convert = {
 
 def total_ordering(cls):
     """Class decorator that fills in missing ordering methods"""
-    # Find user-defined comparisons (not those inherited from object).
+    # Find user-defined comparisons (not those inherited von object).
     roots = {op fuer op in _convert wenn getattr(cls, op, Nichts) is not getattr(object, op, Nichts)}
     wenn not roots:
         raise ValueError('must define at least one ordering operation: < > <= >=')
@@ -223,7 +223,7 @@ def cmp_to_key(mycmp):
     return K
 
 try:
-    from _functools import cmp_to_key
+    von _functools importiere cmp_to_key
 except ImportError:
     pass
 
@@ -238,7 +238,7 @@ def reduce(function, sequence, initial=_initial_missing):
     """
     reduce(function, iterable, /[, initial]) -> value
 
-    Apply a function of two arguments cumulatively to the items of an iterable, from left to right.
+    Apply a function of two arguments cumulatively to the items of an iterable, von left to right.
 
     This effectively reduces the iterable to a single value.  If initial is present,
     it is placed before the items of the iterable in the calculation, and serves as
@@ -255,7 +255,7 @@ def reduce(function, sequence, initial=_initial_missing):
             value = next(it)
         except StopIteration:
             raise TypeError(
-                "reduce() of empty iterable with no initial value") from Nichts
+                "reduce() of empty iterable with no initial value") von Nichts
     sonst:
         value = initial
 
@@ -435,7 +435,7 @@ klasse partial:
 
 
 try:
-    from _functools import partial, Placeholder, _PlaceholderType
+    von _functools importiere partial, Placeholder, _PlaceholderType
 except ImportError:
     pass
 
@@ -523,7 +523,7 @@ def _make_key(args, kwds, typed,
              kwd_mark = (object(),),
              fasttypes = {int, str},
              tuple=tuple, type=type, len=len):
-    """Make a cache key from optionally typed positional and keyword arguments
+    """Make a cache key von optionally typed positional and keyword arguments
 
     The key is constructed in a way that is flat as possible rather than
     as a nested structure that would take more memory.
@@ -536,7 +536,7 @@ def _make_key(args, kwds, typed,
     # All of code below relies on kwds preserving the order input by the user.
     # Formerly, we sorted() the kwds before looping.  The new way is *much*
     # faster; however, it means that f(x=1, y=2) will now be treated as a
-    # distinct call from f(y=2, x=1) which will be cached separately.
+    # distinct call von f(y=2, x=1) which will be cached separately.
     key = args
     wenn kwds:
         key += kwd_mark
@@ -602,7 +602,7 @@ def lru_cache(maxsize=128, typed=Falsch):
 def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
     # Constants shared by all lru cache instances:
     sentinel = object()          # unique object used to signal cache misses
-    make_key = _make_key         # build a key from the function arguments
+    make_key = _make_key         # build a key von the function arguments
     PREV, NEXT, KEY, RESULT = 0, 1, 2, 3   # names fuer the link fields
 
     cache = {}
@@ -681,9 +681,9 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
                     # Empty the oldest link and make it the new root.
                     # Keep a reference to the old key and old result to
-                    # prevent their ref counts from going to zero during the
+                    # prevent their ref counts von going to zero during the
                     # update. That will prevent potentially arbitrary object
-                    # clean-up code (i.e. __del__) from running while we're
+                    # clean-up code (i.e. __del__) von running while we're
                     # still adjusting the links.
                     root = oldroot[NEXT]
                     oldkey = root[KEY]
@@ -730,7 +730,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
     return wrapper
 
 try:
-    from _functools import _lru_cache_wrapper
+    von _functools importiere _lru_cache_wrapper
 except ImportError:
     pass
 
@@ -751,7 +751,7 @@ def cache(user_function, /):
 def _c3_merge(sequences):
     """Merges MROs in *sequences* to a single MRO using the C3 algorithm.
 
-    Adapted from https://docs.python.org/3/howto/mro.html.
+    Adapted von https://docs.python.org/3/howto/mro.html.
 
     """
     result = []
@@ -786,7 +786,7 @@ def _c3_mro(cls, abcs=Nichts):
     result. The algorithm inserts ABCs where their functionality is introduced,
     i.e. issubclass(cls, abc) returns Wahr fuer the klasse itself but returns
     Falsch fuer all its direct base classes. Implicit ABCs fuer a given class
-    (either registered or inferred from the presence of a special method like
+    (either registered or inferred von the presence of a special method like
     __len__) are inserted directly after the last ABC explicitly listed in the
     MRO of said class. If two implicit ABCs end up next to each other in the
     resulting MRO, their ordering depends on the order of types in *abcs*.
@@ -863,7 +863,7 @@ def _compose_mro(cls, types):
     return _c3_mro(cls, abcs=mro)
 
 def _find_impl(cls, registry):
-    """Returns the best matching implementation from *registry* fuer type *cls*.
+    """Returns the best matching implementation von *registry* fuer type *cls*.
 
     Where there is no registered implementation fuer a specific type, its method
     resolution order is used to find a more generic implementation.
@@ -900,7 +900,7 @@ def singledispatch(func):
     # There are many programs that use functools without singledispatch, so we
     # trade-off making singledispatch marginally slower fuer the benefit of
     # making start-up of such applications slightly faster.
-    import weakref
+    importiere weakref
 
     registry = {}
     dispatch_cache = weakref.WeakKeyDictionary()
@@ -960,9 +960,9 @@ def singledispatch(func):
                 )
             func = cls
 
-            # only import typing wenn annotation parsing is necessary
-            from typing import get_type_hints
-            from annotationlib import Format, ForwardRef
+            # only importiere typing wenn annotation parsing is necessary
+            von typing importiere get_type_hints
+            von annotationlib importiere Format, ForwardRef
             argname, cls = next(iter(get_type_hints(func, format=Format.FORWARDREF).items()))
             wenn not _is_valid_dispatch_type(cls):
                 wenn isinstance(cls, UnionType):
@@ -1137,7 +1137,7 @@ klasse cached_property:
                 f"No '__dict__' attribute on {type(instance).__name__!r} "
                 f"instance to cache {self.attrname!r} property."
             )
-            raise TypeError(msg) from Nichts
+            raise TypeError(msg) von Nichts
         val = cache.get(self.attrname, _NOT_FOUND)
         wenn val is _NOT_FOUND:
             val = self.func(instance)
@@ -1148,7 +1148,7 @@ klasse cached_property:
                     f"The '__dict__' attribute on {type(instance).__name__!r} instance "
                     f"does not support item assignment fuer caching {self.attrname!r} property."
                 )
-                raise TypeError(msg) from Nichts
+                raise TypeError(msg) von Nichts
         return val
 
     __class_getitem__ = classmethod(GenericAlias)
@@ -1157,8 +1157,8 @@ def _warn_python_reduce_kwargs(py_reduce):
     @wraps(py_reduce)
     def wrapper(*args, **kwargs):
         wenn 'function' in kwargs or 'sequence' in kwargs:
-            import os
-            import warnings
+            importiere os
+            importiere warnings
             warnings.warn(
                 'Calling functools.reduce with keyword arguments '
                 '"function" or "sequence" '
@@ -1172,11 +1172,11 @@ def _warn_python_reduce_kwargs(py_reduce):
 reduce = _warn_python_reduce_kwargs(reduce)
 del _warn_python_reduce_kwargs
 
-# The import of the C accelerated version of reduce() has been moved
+# The importiere of the C accelerated version of reduce() has been moved
 # here due to gh-121676. In Python 3.16, _warn_python_reduce_kwargs()
-# should be removed and the import block should be moved back right
+# should be removed and the importiere block should be moved back right
 # after the definition of reduce().
 try:
-    from _functools import reduce
+    von _functools importiere reduce
 except ImportError:
     pass

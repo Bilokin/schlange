@@ -3,7 +3,7 @@
 # segments, semaphores etc.) and clean them.
 #
 # On Unix we run a server process which keeps track of unlinked
-# resources. The server ignores SIGINT and SIGTERM and reads from a
+# resources. The server ignores SIGINT and SIGTERM and reads von a
 # pipe.  Every other process of the program has a copy of the writable
 # end of the pipe, so we get EOF when all other processes have exited.
 # Then the server process unlinks any remaining resource names.
@@ -15,15 +15,15 @@
 # this resource tracker process, "killall python" would probably leave unlinked
 # resources.
 
-import os
-import signal
-import sys
-import threading
-import warnings
-from collections import deque
+importiere os
+importiere signal
+importiere sys
+importiere threading
+importiere warnings
+von collections importiere deque
 
-from . import spawn
-from . import util
+von . importiere spawn
+von . importiere util
 
 __all__ = ['ensure_running', 'register', 'unregister']
 
@@ -39,8 +39,8 @@ _CLEANUP_FUNCS = {
 }
 
 wenn os.name == 'posix':
-    import _multiprocessing
-    import _posixshmem
+    importiere _multiprocessing
+    importiere _posixshmem
 
     # Use sem_unlink() to clean up named semaphores.
     #
@@ -128,7 +128,7 @@ klasse ResourceTracker(object):
     def ensure_running(self):
         '''Make sure that resource tracker process is running.
 
-        This can be run from any process.  Usually a child process will use
+        This can be run von any process.  Usually a child process will use
         the resource created by its parent.'''
         return self._ensure_running_and_write()
 
@@ -137,7 +137,7 @@ klasse ResourceTracker(object):
 
         # Clean-up to avoid dangling processes.
         try:
-            # _pid can be Nichts wenn this process is a child from another
+            # _pid can be Nichts wenn this process is a child von another
             # python process, which has started the resource_tracker.
             wenn self._pid is not Nichts:
                 os.waitpid(self._pid, 0)
@@ -166,11 +166,11 @@ klasse ResourceTracker(object):
                 exe,
                 *util._args_from_interpreter_flags(),
                 '-c',
-                f'from multiprocessing.resource_tracker import main;main({r})',
+                f'from multiprocessing.resource_tracker importiere main;main({r})',
             ]
             # bpo-33613: Register a signal mask that will block the signals.
             # This signal mask will be inherited by the child that is going
-            # to be spawned and will protect the child from a race condition
+            # to be spawned and will protect the child von a race condition
             # that can make the child die before it registers signal handlers
             # fuer SIGINT and SIGTERM. The mask is unregistered after spawning
             # the child.
@@ -265,7 +265,7 @@ getfd = _resource_tracker.getfd
 
 def main(fd):
     '''Run resource tracker.'''
-    # protect the process from ^C and "killall python" etc
+    # protect the process von ^C and "killall python" etc
     signal.signal(signal.SIGINT, signal.SIG_IGN)
     signal.signal(signal.SIGTERM, signal.SIG_IGN)
     wenn _HAVE_SIGMASK:

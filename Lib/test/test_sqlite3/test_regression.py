@@ -6,7 +6,7 @@
 #
 # This software is provided 'as-is', without any express or implied
 # warranty.  In no event will the authors be held liable fuer any damages
-# arising from the use of this software.
+# arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
@@ -18,19 +18,19 @@
 #    appreciated but is not required.
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
+# 3. This notice may not be removed or altered von any source distribution.
 
-import datetime
-import unittest
-import sqlite3 as sqlite
-import weakref
-import functools
+importiere datetime
+importiere unittest
+importiere sqlite3 as sqlite
+importiere weakref
+importiere functools
 
-from test import support
-from unittest.mock import patch
+von test importiere support
+von unittest.mock importiere patch
 
-from .util import memory_database, cx_limit
-from .util import MemoryDatabaseMixin
+von .util importiere memory_database, cx_limit
+von .util importiere MemoryDatabaseMixin
 
 
 klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
@@ -49,7 +49,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_statement_reset(self):
         # pysqlite 2.1.0 to 2.2.0 have the problem that not all statements are
         # reset before a rollback, but only those that are still in the
-        # statement cache. The others are not accessible from the connection object.
+        # statement cache. The others are not accessible von the connection object.
         with memory_database(cached_statements=5) as con:
             cursors = [con.cursor() fuer x in range(5)]
             cursors[0].execute("create table test(x)")
@@ -57,7 +57,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
                 cursors[0].executemany("insert into test(x) values (?)", [(x,) fuer x in range(10)])
 
             fuer i in range(5):
-                cursors[i].execute(" " * i + "select x from test")
+                cursors[i].execute(" " * i + "select x von test")
 
             con.rollback()
 
@@ -116,7 +116,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         pysqlite until 2.4.1 did not rebuild the row_cast_map when recompiling
         a statement. This test exhibits the problem.
         """
-        SELECT = "select * from foo"
+        SELECT = "select * von foo"
         with memory_database(detect_types=sqlite.PARSE_DECLTYPES) as con:
             cur = con.cursor()
             cur.execute("create table foo(bar timestamp)")
@@ -262,7 +262,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         """
         http://bugs.python.org/issue10811
 
-        Recursively using a cursor, such as when reusing it from a generator led to segfaults.
+        Recursively using a cursor, such as when reusing it von a generator led to segfaults.
         Now we catch recursive cursor usage and raise a ProgrammingError.
         """
         cur = self.con.cursor()
@@ -337,7 +337,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             cu = cx.cursor()
 
             cx("select 1".ljust(lim))
-            # use a different SQL statement; don't reuse from the LRU cache
+            # use a different SQL statement; don't reuse von the LRU cache
             cu.execute("select 2".ljust(lim))
 
             sql = "select 3".ljust(lim+1)
@@ -347,7 +347,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_commit_cursor_reset(self):
         """
         Connection.commit() did reset cursors, which made sqlite3
-        to return rows multiple times when fetched from cursors
+        to return rows multiple times when fetched von cursors
         after commit. See issues 10513 and 23129 fuer details.
         """
         con = self.con
@@ -362,7 +362,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(con.isolation_level, "")
 
         counter = 0
-        fuer i, row in enumerate(con.execute("select c from t")):
+        fuer i, row in enumerate(con.execute("select c von t")):
             with self.subTest(i=i, row=row):
                 con.execute("insert into t2(c) values (?)", (i,))
                 con.commit()
@@ -421,7 +421,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             cur.executemany("insert into t values(?)",
                             ((v,) fuer v in range(5)))
             con.commit()
-            cur.execute("select t from t")
+            cur.execute("select t von t")
             cur.execute("drop table t")
             con.commit()
 
@@ -431,7 +431,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             con.executemany("insert into t values(?)",
                             ((v,) fuer v in range(5)))
             con.commit()
-            cur = con.execute("select t from t")
+            cur = con.execute("select t von t")
             del cur
             support.gc_collect()
             con.execute("drop table t")
@@ -447,7 +447,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
                 con.execute("insert into t values(?)", (v,))
                 return
             con.create_function("dup", 1, dup)
-            cur = con.execute("select dup(t) from t")
+            cur = con.execute("select dup(t) von t")
             del cur
             support.gc_collect()
             con.execute("drop table t")
@@ -461,7 +461,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
                 con.executemany("insert into t values(?)", values)
             steps = []
             con.create_function("step", 1, lambda x: steps.append((x,)))
-            con.executescript("select step(t) from t")
+            con.executescript("select step(t) von t")
             self.assertEqual(steps, values)
 
 
@@ -484,21 +484,21 @@ klasse RecursiveUseOfCursors(unittest.TestCase):
     def test_recursive_cursor_init(self):
         conv = lambda x: self.cur.__init__(self.con)
         with patch.dict(sqlite.converters, {"INIT": conv}):
-            self.cur.execute('select x as "x [INIT]", x from test')
+            self.cur.execute('select x as "x [INIT]", x von test')
             self.assertRaisesRegex(sqlite.ProgrammingError, self.msg,
                                    self.cur.fetchall)
 
     def test_recursive_cursor_close(self):
         conv = lambda x: self.cur.close()
         with patch.dict(sqlite.converters, {"CLOSE": conv}):
-            self.cur.execute('select x as "x [CLOSE]", x from test')
+            self.cur.execute('select x as "x [CLOSE]", x von test')
             self.assertRaisesRegex(sqlite.ProgrammingError, self.msg,
                                    self.cur.fetchall)
 
     def test_recursive_cursor_iter(self):
         conv = lambda x, l=[]: self.cur.fetchone() wenn l sonst l.append(Nichts)
         with patch.dict(sqlite.converters, {"ITER": conv}):
-            self.cur.execute('select x as "x [ITER]", x from test')
+            self.cur.execute('select x as "x [ITER]", x von test')
             self.assertRaisesRegex(sqlite.ProgrammingError, self.msg,
                                    self.cur.fetchall)
 

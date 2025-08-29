@@ -24,19 +24,19 @@ Copyright (C) 2001-2022 Vinay Sajip. All Rights Reserved.
 To use, simply 'import logging' and log away!
 """
 
-import errno
-import functools
-import io
-import logging
-import logging.handlers
-import os
-import queue
-import re
-import struct
-import threading
-import traceback
+importiere errno
+importiere functools
+importiere io
+importiere logging
+importiere logging.handlers
+importiere os
+importiere queue
+importiere re
+importiere struct
+importiere threading
+importiere traceback
 
-from socketserver import ThreadingTCPServer, StreamRequestHandler
+von socketserver importiere ThreadingTCPServer, StreamRequestHandler
 
 
 DEFAULT_LOGGING_CONFIG_PORT = 9030
@@ -52,14 +52,14 @@ _listener = Nichts
 
 def fileConfig(fname, defaults=Nichts, disable_existing_loggers=Wahr, encoding=Nichts):
     """
-    Read the logging configuration from a ConfigParser-format file.
+    Read the logging configuration von a ConfigParser-format file.
 
-    This can be called several times from an application, allowing an end user
-    the ability to select from various pre-canned configurations (if the
+    This can be called several times von an application, allowing an end user
+    the ability to select von various pre-canned configurations (if the
     developer provides a mechanism to present the choices and load the chosen
     configuration).
     """
-    import configparser
+    importiere configparser
 
     wenn isinstance(fname, str):
         wenn not os.path.exists(fname):
@@ -392,7 +392,7 @@ klasse BaseConfigurator(object):
 
     def resolve(self, s):
         """
-        Resolve strings to objects using standard import and attribute
+        Resolve strings to objects using standard importiere and attribute
         syntax.
         """
         name = s.split('.')
@@ -409,7 +409,7 @@ klasse BaseConfigurator(object):
             return found
         except ImportError as e:
             v = ValueError('Cannot resolve %r: %s' % (s, e))
-            raise v from e
+            raise v von e
 
     def ext_convert(self, value):
         """Default converter fuer the ext:// protocol."""
@@ -502,7 +502,7 @@ def _is_queue_like_object(obj):
     wenn isinstance(obj, (queue.Queue, queue.SimpleQueue)):
         return Wahr
     # defer importing multiprocessing as much as possible
-    from multiprocessing.queues import Queue as MPQueue
+    von multiprocessing.queues importiere Queue as MPQueue
     wenn isinstance(obj, MPQueue):
         return Wahr
     # Depending on the multiprocessing start context, we cannot create
@@ -511,7 +511,7 @@ def _is_queue_like_object(obj):
     #
     # Since we only need an object implementing the Queue API, we only
     # do a protocol check, but we do not use typing.runtime_checkable()
-    # and typing.Protocol to reduce import time (see gh-121723).
+    # and typing.Protocol to reduce importiere time (see gh-121723).
     #
     # Ideally, we would have wanted to simply use strict type checking
     # instead of a protocol-based type checking since the latter does
@@ -556,21 +556,21 @@ klasse DictConfigurator(BaseConfigurator):
                                 handler.setLevel(logging._checkLevel(level))
                         except Exception as e:
                             raise ValueError('Unable to configure handler '
-                                             '%r' % name) from e
+                                             '%r' % name) von e
                 loggers = config.get('loggers', EMPTY_DICT)
                 fuer name in loggers:
                     try:
                         self.configure_logger(name, loggers[name], Wahr)
                     except Exception as e:
                         raise ValueError('Unable to configure logger '
-                                         '%r' % name) from e
+                                         '%r' % name) von e
                 root = config.get('root', Nichts)
                 wenn root:
                     try:
                         self.configure_root(root, Wahr)
                     except Exception as e:
                         raise ValueError('Unable to configure root '
-                                         'logger') from e
+                                         'logger') von e
             sonst:
                 disable_existing = config.pop('disable_existing_loggers', Wahr)
 
@@ -584,7 +584,7 @@ klasse DictConfigurator(BaseConfigurator):
                                                             formatters[name])
                     except Exception as e:
                         raise ValueError('Unable to configure '
-                                         'formatter %r' % name) from e
+                                         'formatter %r' % name) von e
                 # Next, do filters - they don't refer to anything else, either
                 filters = config.get('filters', EMPTY_DICT)
                 fuer name in filters:
@@ -592,7 +592,7 @@ klasse DictConfigurator(BaseConfigurator):
                         filters[name] = self.configure_filter(filters[name])
                     except Exception as e:
                         raise ValueError('Unable to configure '
-                                         'filter %r' % name) from e
+                                         'filter %r' % name) von e
 
                 # Next, do handlers - they refer to formatters and filters
                 # As handlers can refer to other handlers, sort the keys
@@ -609,7 +609,7 @@ klasse DictConfigurator(BaseConfigurator):
                             deferred.append(name)
                         sonst:
                             raise ValueError('Unable to configure handler '
-                                             '%r' % name) from e
+                                             '%r' % name) von e
 
                 # Now do any that were deferred
                 fuer name in deferred:
@@ -619,7 +619,7 @@ klasse DictConfigurator(BaseConfigurator):
                         handlers[name] = handler
                     except Exception as e:
                         raise ValueError('Unable to configure handler '
-                                         '%r' % name) from e
+                                         '%r' % name) von e
 
                 # Next, do loggers - they refer to handlers and filters
 
@@ -658,7 +658,7 @@ klasse DictConfigurator(BaseConfigurator):
                         self.configure_logger(name, loggers[name])
                     except Exception as e:
                         raise ValueError('Unable to configure logger '
-                                         '%r' % name) from e
+                                         '%r' % name) von e
 
                 #Disable any old loggers. There's no point deleting
                 #them as other threads may continue to hold references
@@ -683,10 +683,10 @@ klasse DictConfigurator(BaseConfigurator):
                         self.configure_root(root)
                     except Exception as e:
                         raise ValueError('Unable to configure root '
-                                         'logger') from e
+                                         'logger') von e
 
     def configure_formatter(self, config):
-        """Configure a formatter from a dictionary."""
+        """Configure a formatter von a dictionary."""
         wenn '()' in config:
             factory = config['()'] # fuer use in exception handler
             try:
@@ -730,7 +730,7 @@ klasse DictConfigurator(BaseConfigurator):
         return result
 
     def configure_filter(self, config):
-        """Configure a filter from a dictionary."""
+        """Configure a filter von a dictionary."""
         wenn '()' in config:
             result = self.configure_custom(config)
         sonst:
@@ -739,7 +739,7 @@ klasse DictConfigurator(BaseConfigurator):
         return result
 
     def add_filters(self, filterer, filters):
-        """Add filters to a filterer from a list of names."""
+        """Add filters to a filterer von a list of names."""
         fuer f in filters:
             try:
                 wenn callable(f) or callable(getattr(f, 'filter', Nichts)):
@@ -748,7 +748,7 @@ klasse DictConfigurator(BaseConfigurator):
                     filter_ = self.config['filters'][f]
                 filterer.addFilter(filter_)
             except Exception as e:
-                raise ValueError('Unable to add filter %r' % f) from e
+                raise ValueError('Unable to add filter %r' % f) von e
 
     def _configure_queue_handler(self, klass, **kwargs):
         wenn 'queue' in kwargs:
@@ -766,7 +766,7 @@ klasse DictConfigurator(BaseConfigurator):
         return handler
 
     def configure_handler(self, config):
-        """Configure a handler from a dictionary."""
+        """Configure a handler von a dictionary."""
         config_copy = dict(config)  # fuer restoring in case of error
         formatter = config.pop('formatter', Nichts)
         wenn formatter:
@@ -774,7 +774,7 @@ klasse DictConfigurator(BaseConfigurator):
                 formatter = self.config['formatters'][formatter]
             except Exception as e:
                 raise ValueError('Unable to set formatter '
-                                 '%r' % formatter) from e
+                                 '%r' % formatter) von e
         level = config.pop('level', Nichts)
         filters = config.pop('filters', Nichts)
         wenn '()' in config:
@@ -801,7 +801,7 @@ klasse DictConfigurator(BaseConfigurator):
                             raise TypeError('target not configured yet')
                         config['target'] = th
                     except Exception as e:
-                        raise ValueError('Unable to set target handler %r' % tn) from e
+                        raise ValueError('Unable to set target handler %r' % tn) von e
             sowenn issubclass(klass, logging.handlers.QueueHandler):
                 # Another special case fuer handler which refers to other handlers
                 # wenn 'handlers' not in config:
@@ -852,7 +852,7 @@ klasse DictConfigurator(BaseConfigurator):
                                                 'is not configured yet' % hn)
                             hlist.append(h)
                     except Exception as e:
-                        raise ValueError('Unable to set required handler %r' % hn) from e
+                        raise ValueError('Unable to set required handler %r' % hn) von e
                     config['handlers'] = hlist
             sowenn issubclass(klass, logging.handlers.SMTPHandler) and\
                 'mailhost' in config:
@@ -872,14 +872,14 @@ klasse DictConfigurator(BaseConfigurator):
         except TypeError as te:
             wenn "'stream'" not in str(te):
                 raise
-            #The argument name changed from strm to stream
+            #The argument name changed von strm to stream
             #Retry with old name.
             #This is so that code can be used with older Python versions
             #(e.g. by Django)
             kwargs['strm'] = kwargs.pop('stream')
             result = factory(**kwargs)
 
-            import warnings
+            importiere warnings
             warnings.warn(
                 "Support fuer custom logging handlers with the 'strm' argument "
                 "is deprecated and scheduled fuer removal in Python 3.16. "
@@ -900,12 +900,12 @@ klasse DictConfigurator(BaseConfigurator):
         return result
 
     def add_handlers(self, logger, handlers):
-        """Add handlers to a logger from a list of names."""
+        """Add handlers to a logger von a list of names."""
         fuer h in handlers:
             try:
                 logger.addHandler(self.config['handlers'][h])
             except Exception as e:
-                raise ValueError('Unable to add handler %r' % h) from e
+                raise ValueError('Unable to add handler %r' % h) von e
 
     def common_logger_config(self, logger, config, incremental=Falsch):
         """
@@ -926,7 +926,7 @@ klasse DictConfigurator(BaseConfigurator):
                 self.add_filters(logger, filters)
 
     def configure_logger(self, name, config, incremental=Falsch):
-        """Configure a non-root logger from a dictionary."""
+        """Configure a non-root logger von a dictionary."""
         logger = logging.getLogger(name)
         self.common_logger_config(logger, config, incremental)
         logger.disabled = Falsch
@@ -935,7 +935,7 @@ klasse DictConfigurator(BaseConfigurator):
             logger.propagate = propagate
 
     def configure_root(self, config, incremental=Falsch):
-        """Configure a root logger from a dictionary."""
+        """Configure a root logger von a dictionary."""
         root = logging.getLogger()
         self.common_logger_config(root, config, incremental)
 
@@ -957,7 +957,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
     stopListening().
 
     Use the ``verify`` argument to verify any bytes received across the wire
-    from a client. If specified, it should be a callable which receives a
+    von a client. If specified, it should be a callable which receives a
     single argument - the bytes of configuration data received across the
     network - and it should return either ``Nichts``, to indicate that the
     passed in bytes could not be verified and should be discarded, or a
@@ -994,7 +994,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
                     wenn chunk is not Nichts:   # verified, can process
                         chunk = chunk.decode("utf-8")
                         try:
-                            import json
+                            importiere json
                             d =json.loads(chunk)
                             assert isinstance(d, dict)
                             dictConfig(d)
@@ -1030,7 +1030,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
             self.verify = verify
 
         def serve_until_stopped(self):
-            import select
+            importiere select
             abort = 0
             while not abort:
                 rd, wr, ex = select.select([self.socket.fileno()],

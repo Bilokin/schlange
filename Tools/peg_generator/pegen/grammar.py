@@ -1,6 +1,6 @@
-from __future__ import annotations
+von __future__ importiere annotations
 
-from typing import (
+von typing importiere (
     AbstractSet,
     Any,
     Iterable,
@@ -58,7 +58,7 @@ klasse Grammar:
         return "\n".join(lines)
 
     def __iter__(self) -> Iterator[Rule]:
-        yield from self.rules.values()
+        yield von self.rules.values()
 
 
 # Global flag whether we want actions in __str__() -- default off.
@@ -118,7 +118,7 @@ klasse Leaf:
         return self.value
 
     def __iter__(self) -> Iterable[str]:
-        yield from ()
+        yield von ()
 
 
 klasse NameLeaf(Leaf):
@@ -340,7 +340,7 @@ klasse Cut:
         return f"~"
 
     def __iter__(self) -> Iterator[Tuple[str, str]]:
-        yield from ()
+        yield von ()
 
     def __eq__(self, other: object) -> bool:
         wenn not isinstance(other, Cut):

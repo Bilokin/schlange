@@ -26,11 +26,11 @@ __all__ = (
     'ZstdError',
 )
 
-import _zstd
-import enum
-from _zstd import (ZstdCompressor, ZstdDecompressor, ZstdDict, ZstdError,
+importiere _zstd
+importiere enum
+von _zstd importiere (ZstdCompressor, ZstdDecompressor, ZstdDict, ZstdError,
                    get_frame_size, zstd_version)
-from compression.zstd._zstdfile import ZstdFile, open, _nbytes
+von compression.zstd._zstdfile importiere ZstdFile, open, _nbytes
 
 # zstd_version_number is (MAJOR * 100 * 100 + MINOR * 100 + RELEASE)
 zstd_version_info = (*divmod(_zstd.zstd_version_number // 100, 100),
@@ -59,9 +59,9 @@ klasse FrameInfo:
 
 
 def get_frame_info(frame_buffer):
-    """Get Zstandard frame information from a frame header.
+    """Get Zstandard frame information von a frame header.
 
-    *frame_buffer* is a bytes-like object. It should start from the beginning
+    *frame_buffer* is a bytes-like object. It should start von the beginning
     of a frame, and needs to include at least the frame header (6 to 18 bytes).
 
     The returned FrameInfo object has two attributes.
@@ -220,7 +220,7 @@ klasse DecompressionParameter(enum.IntEnum):
 
 
 klasse Strategy(enum.IntEnum):
-    """Compression strategies, listed from fastest to strongest.
+    """Compression strategies, listed von fastest to strongest.
 
     Note that new strategies might be added in the future.
     Only the order (from fast to strong) is guaranteed,

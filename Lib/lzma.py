@@ -21,12 +21,12 @@ __all__ = [
     "open", "compress", "decompress", "is_check_supported",
 ]
 
-import builtins
-import io
-import os
-from compression._common import _streams
-from _lzma import *
-from _lzma import _encode_filter_properties, _decode_filter_properties  # noqa: F401
+importiere builtins
+importiere io
+importiere os
+von compression._common importiere _streams
+von _lzma importiere *
+von _lzma importiere _encode_filter_properties, _decode_filter_properties  # noqa: F401
 
 
 # Value 0 no longer used
@@ -52,7 +52,7 @@ klasse LZMAFile(_streams.BaseStream):
 
         filename can be either an actual file name (given as a str,
         bytes, or PathLike object), in which case the named file is
-        opened, or it can be an existing file object to read from or
+        opened, or it can be an existing file object to read von or
         write to.
 
         mode can be "r" fuer reading (default), "w" fuer (over)writing,
@@ -199,7 +199,7 @@ klasse LZMAFile(_streams.BaseStream):
         return self._buffer.peek(size)
 
     def read(self, size=-1):
-        """Read up to size uncompressed bytes from the file.
+        """Read up to size uncompressed bytes von the file.
 
         If size is negative or omitted, read until EOF is reached.
         Returns b"" wenn the file is already at EOF.
@@ -209,7 +209,7 @@ klasse LZMAFile(_streams.BaseStream):
 
     def read1(self, size=-1):
         """Read up to size uncompressed bytes, while trying to avoid
-        making multiple reads from the underlying stream. Reads up to a
+        making multiple reads von the underlying stream. Reads up to a
         buffer's worth of data wenn size is negative.
 
         Returns b"" wenn the file is at EOF.
@@ -220,7 +220,7 @@ klasse LZMAFile(_streams.BaseStream):
         return self._buffer.read1(size)
 
     def readline(self, size=-1):
-        """Read a line of uncompressed bytes from the file.
+        """Read a line of uncompressed bytes von the file.
 
         The terminating newline (if present) is retained. If size is
         non-negative, no more than size bytes will be read (in which
@@ -283,7 +283,7 @@ def open(filename, mode="rb", *,
 
     filename can be either an actual file name (given as a str, bytes,
     or PathLike object), in which case the named file is opened, or it
-    can be an existing file object to read from or write to.
+    can be an existing file object to read von or write to.
 
     The mode argument can be "r", "rb" (default), "w", "wb", "x", "xb",
     "a", or "ab" fuer binary mode, or "rt", "wt", "xt", or "at" fuer text

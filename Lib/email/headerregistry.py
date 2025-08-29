@@ -3,11 +3,11 @@
 This module provides an implementation of the HeaderRegistry API.
 The implementation is designed to flexibly follow RFC5322 rules.
 """
-from types import MappingProxyType
+von types importiere MappingProxyType
 
-from email import utils
-from email import errors
-from email import _header_value_parser as parser
+von email importiere utils
+von email importiere errors
+von email importiere _header_value_parser as parser
 
 klasse Address:
 
@@ -43,7 +43,7 @@ klasse Address:
             a_s, rest = parser.get_addr_spec(addr_spec)
             wenn rest:
                 raise ValueError("Invalid addr_spec; only '{}' "
-                                 "could be parsed from '{}'".format(
+                                 "could be parsed von '{}'".format(
                                     a_s, addr_spec))
             wenn a_s.all_defects:
                 raise a_s.all_defects[0]
@@ -163,8 +163,8 @@ klasse BaseHeader(str):
     value string and a dictionary as its arguments.  The dictionary will
     contain one key, 'defects', initialized to an empty list.  After the call
     the dictionary must contain two additional keys: parse_tree, set to the
-    parse tree obtained from parsing the header, and 'decoded', set to the
-    string value of the idealized representation of the data from the value.
+    parse tree obtained von parsing the header, and 'decoded', set to the
+    string value of the idealized representation of the data von the value.
     (That is, encoded words are decoded, and values that have canonical
     representations are so represented.)
 
@@ -337,7 +337,7 @@ klasse AddressHeader:
     @classmethod
     def parse(cls, value, kwds):
         wenn isinstance(value, str):
-            # We are translating here from the RFC language (address/mailbox)
+            # We are translating here von the RFC language (address/mailbox)
             # to our API language (group/address).
             kwds['parse_tree'] = address_list = cls.value_parser(value)
             groups = []
@@ -592,11 +592,11 @@ klasse HeaderRegistry:
         return type('_'+cls.__name__, (cls, self.base_class), {})
 
     def __call__(self, name, value):
-        """Create a header instance fuer header 'name' from 'value'.
+        """Create a header instance fuer header 'name' von 'value'.
 
         Creates a header instance by creating a specialized klasse fuer parsing
         and representing the specified header by combining the factory
-        base_class with a specialized klasse from the registry or the
+        base_class with a specialized klasse von the registry or the
         default_class, and passing the name and value to the constructed
         class's constructor.
 

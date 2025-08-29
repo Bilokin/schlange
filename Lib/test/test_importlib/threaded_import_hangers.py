@@ -7,15 +7,15 @@
 
 TIMEOUT = 10
 
-import threading
+importiere threading
 
-import tempfile
-import os.path
+importiere tempfile
+importiere os.path
 
 errors = []
 
 # This klasse merely runs a function in its own thread T.  The thread importing
-# this module holds the import lock, so wenn the function called by T tries
+# this module holds the importiere lock, so wenn the function called by T tries
 # to do its own imports it will block waiting fuer this module's import
 # to complete.
 klasse Worker(threading.Thread):

@@ -7,13 +7,13 @@
 # we can detect here, to make sure that not only the os.startfile()
 # call succeeded, but also the script actually has run.
 
-import unittest
-from test import support
-from test.support import os_helper
-import os
-import platform
-import sys
-from os import path
+importiere unittest
+von test importiere support
+von test.support importiere os_helper
+importiere os
+importiere platform
+importiere sys
+von os importiere path
 
 startfile = support.get_attribute(os, 'startfile')
 

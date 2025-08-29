@@ -1,7 +1,7 @@
-import ast
-import sys
+importiere ast
+importiere sys
 
-from test.test_ast.utils import to_tuple
+von test.test_ast.utils importiere to_tuple
 
 
 # These tests are compiled through "exec"
@@ -95,7 +95,7 @@ exec_tests = [
     "raise",
     "raise Exception('string')",
     "raise Exception",
-    "raise Exception('string') from Nichts",
+    "raise Exception('string') von Nichts",
     # TryExcept
     "try:\n  pass\nexcept Exception:\n  pass",
     "try:\n  pass\nexcept Exception as exc:\n  pass",
@@ -116,8 +116,8 @@ exec_tests = [
     "import sys",
     "import foo as bar",
     # ImportFrom
-    "from sys import x as y",
-    "from sys import v",
+    "from sys importiere x as y",
+    "from sys importiere v",
     # Global
     "global v",
     # Expr
@@ -163,7 +163,7 @@ exec_tests = [
     "{*{1, 2}, 3}",
     # Function with yield (from)
     "def f(): yield 1",
-    "def f(): yield from []",
+    "def f(): yield von []",
     # Asynchronous comprehensions
     "async def f():\n [i async fuer b in c]",
     # Decorated FunctionDef

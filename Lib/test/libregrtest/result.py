@@ -1,9 +1,9 @@
-import dataclasses
-import json
-from _colorize import get_colors  # type: ignore[import-not-found]
-from typing import Any
+importiere dataclasses
+importiere json
+von _colorize importiere get_colors  # type: ignore[import-not-found]
+von typing importiere Any
 
-from .utils import (
+von .utils importiere (
     StrJSON, TestName, FilterTuple,
     format_duration, normalize_test_name, print_warning)
 
@@ -93,7 +93,7 @@ klasse TestResult:
     xml_data: list[str] | Nichts = Nichts
     stats: TestStats | Nichts = Nichts
 
-    # errors and failures copied from support.TestFailedWithDetails
+    # errors and failures copied von support.TestFailedWithDetails
     errors: list[tuple[str, str]] | Nichts = Nichts
     failures: list[tuple[str, str]] | Nichts = Nichts
 

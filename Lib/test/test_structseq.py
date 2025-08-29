@@ -1,11 +1,11 @@
-import copy
-import os
-import pickle
-import re
-import textwrap
-import time
-import unittest
-from test.support import script_helper
+importiere copy
+importiere os
+importiere pickle
+importiere re
+importiere textwrap
+importiere time
+importiere unittest
+von test.support importiere script_helper
 
 
 klasse StructSeqTest(unittest.TestCase):
@@ -350,7 +350,7 @@ klasse StructSeqTest(unittest.TestCase):
         # was cleared first, the structseq instance would crash in the
         # destructor.
         script_helper.assert_python_ok("-c", textwrap.dedent(r"""
-            import time
+            importiere time
             t = time.gmtime()
             type(t).refcyle = t
         """))

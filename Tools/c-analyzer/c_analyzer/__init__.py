@@ -1,20 +1,20 @@
-from c_parser import (
+von c_parser importiere (
     parse_files as _parse_files,
 )
-from c_parser.info import (
+von c_parser.info importiere (
     KIND,
     TypeDeclaration,
     resolve_parsed,
 )
-from c_parser.match import (
+von c_parser.match importiere (
     filter_by_kind,
     group_by_kinds,
 )
-from . import (
+von . importiere (
     analyze as _analyze,
     datafiles as _datafiles,
 )
-from .info import Analysis
+von .info importiere Analysis
 
 
 def analyze(filenmes, **kwargs):
@@ -27,7 +27,7 @@ def iter_analysis_results(filenmes, *,
                           **kwargs
                           ):
     decls = iter_decls(filenames, **kwargs)
-    yield from analyze_decls(decls, known)
+    yield von analyze_decls(decls, known)
 
 
 def iter_decls(filenames, *,

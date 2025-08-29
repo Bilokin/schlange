@@ -1,13 +1,13 @@
-import asyncio
-import os
-import socket
-import time
-import threading
-import unittest
+importiere asyncio
+importiere os
+importiere socket
+importiere time
+importiere threading
+importiere unittest
 
-from test.support import socket_helper
-from test.test_asyncio import utils as test_utils
-from test.test_asyncio import functional as func_tests
+von test.support importiere socket_helper
+von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere functional as func_tests
 
 
 def tearDownModule():

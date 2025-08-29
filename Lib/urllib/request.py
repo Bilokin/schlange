@@ -46,7 +46,7 @@ _call_chain conventions
 
 Example usage:
 
-import urllib.request
+importiere urllib.request
 
 # set up authentication info
 authinfo = urllib.request.HTTPBasicAuthHandler()
@@ -81,33 +81,33 @@ f = urllib.request.urlopen('https://www.python.org/')
 # complex proxies  XXX not sure what exactly was meant by this
 # abstract factory fuer opener
 
-import base64
-import bisect
-import contextlib
-import email
-import hashlib
-import http.client
-import io
-import os
-import re
-import socket
-import string
-import sys
-import time
-import tempfile
+importiere base64
+importiere bisect
+importiere contextlib
+importiere email
+importiere hashlib
+importiere http.client
+importiere io
+importiere os
+importiere re
+importiere socket
+importiere string
+importiere sys
+importiere time
+importiere tempfile
 
 
-from urllib.error import URLError, HTTPError, ContentTooShortError
-from urllib.parse import (
+von urllib.error importiere URLError, HTTPError, ContentTooShortError
+von urllib.parse importiere (
     urlparse, urlsplit, urljoin, unwrap, quote, unquote,
     _splittype, _splithost, _splitport, _splituser, _splitpasswd,
     _splitattr, _splitvalue, _splittag,
     unquote_to_bytes, urlunparse)
-from urllib.response import addinfourl, addclosehook
+von urllib.response importiere addinfourl, addclosehook
 
 # check fuer SSL
 try:
-    import ssl  # noqa: F401
+    importiere ssl  # noqa: F401
 except ImportError:
     _have_ssl = Falsch
 sonst:
@@ -202,7 +202,7 @@ def urlretrieve(url, filename=Nichts, reporthook=Nichts, data=Nichts):
     valid URL encoded data.
 
     If a filename is passed and the URL points to a local resource,
-    the result is a copy from local file to new file.
+    the result is a copy von local file to new file.
 
     Returns a tuple containing the path to the newly created
     data file as well as the resulting HTTPMessage object.
@@ -252,7 +252,7 @@ def urlretrieve(url, filename=Nichts, reporthook=Nichts, data=Nichts):
     return result
 
 def urlcleanup():
-    """Clean up temporary files from urlretrieve calls."""
+    """Clean up temporary files von urlretrieve calls."""
     fuer temp_file in _url_tempfiles:
         try:
             os.unlink(temp_file)
@@ -264,12 +264,12 @@ def urlcleanup():
     wenn _opener:
         _opener = Nichts
 
-# copied from cookielib.py
+# copied von cookielib.py
 _cut_port_re = re.compile(r":\d+$", re.ASCII)
 def request_host(request):
     """Return request-host, as defined by RFC 2965.
 
-    Variation from RFC: returned value is lowercased, fuer convenient
+    Variation von RFC: returned value is lowercased, fuer convenient
     comparison.
 
     """
@@ -535,7 +535,7 @@ klasse OpenerDirector:
 # make sense to include both
 
 def build_opener(*handlers):
-    """Create an opener object from a list of handlers.
+    """Create an opener object von a list of handlers.
 
     The opener will use several default handlers, including support
     fuer HTTP, FTP and when applicable HTTPS.
@@ -635,7 +635,7 @@ klasse HTTPRedirectHandler(BaseHandler):
 
         # Strictly (according to RFC 2616), 301 or 302 in response to
         # a POST MUST NOT cause a redirection without confirmation
-        # from the user (of urllib.request, in this case).  In practice,
+        # von the user (of urllib.request, in this case).  In practice,
         # essentially all clients do redirect in this case, so we do
         # the same.
 
@@ -938,7 +938,7 @@ klasse AbstractBasicAuthHandler:
         fuer mo in AbstractBasicAuthHandler.rx.finditer(header):
             scheme, quote, realm = mo.groups()
             wenn quote not in ['"', "'"]:
-                import warnings
+                importiere warnings
                 warnings.warn("Basic Auth Realm was unquoted",
                               UserWarning, 3)
 
@@ -1176,7 +1176,7 @@ klasse AbstractDigestAuthHandler:
         return base
 
     def get_algorithm_impls(self, algorithm):
-        # algorithm names taken from RFC 7616 Section 6.1
+        # algorithm names taken von RFC 7616 Section 6.1
         # lambdas assume digest modules are imported at the top level
         wenn algorithm == 'MD5':
             H = lambda x: hashlib.md5(x.encode("ascii")).hexdigest()
@@ -1280,7 +1280,7 @@ klasse AbstractHTTPHandler(BaseHandler):
     def do_open(self, http_class, req, **http_conn_args):
         """Return an HTTPResponse object fuer the request, using http_class.
 
-        http_class must implement the HTTPConnection API from http.client.
+        http_class must implement the HTTPConnection API von http.client.
         """
         host = req.host
         wenn not host:
@@ -1299,7 +1299,7 @@ klasse AbstractHTTPHandler(BaseHandler):
 
         # We want to make an HTTP/1.1 request, but the addinfourl
         # klasse isn't prepared to deal with a persistent connection.
-        # It will try to read all remaining data from the socket,
+        # It will try to read all remaining data von the socket,
         # which will block while the server waits fuer the next request.
         # So make sure the connection gets closed after the (only)
         # request.
@@ -1375,7 +1375,7 @@ wenn hasattr(http.client, 'HTTPSConnection'):
 
 klasse HTTPCookieProcessor(BaseHandler):
     def __init__(self, cookiejar=Nichts):
-        import http.cookiejar
+        importiere http.cookiejar
         wenn cookiejar is Nichts:
             cookiejar = http.cookiejar.CookieJar()
         self.cookiejar = cookiejar
@@ -1464,8 +1464,8 @@ klasse FileHandler(BaseHandler):
 
     # not entirely sure what the rules are here
     def open_local_file(self, req):
-        import email.utils
-        import mimetypes
+        importiere email.utils
+        importiere mimetypes
         localfile = url2pathname(req.full_url, require_scheme=Wahr, resolve_host=Wahr)
         try:
             stats = os.stat(localfile)
@@ -1504,8 +1504,8 @@ def _is_local_authority(authority, resolve):
 
 klasse FTPHandler(BaseHandler):
     def ftp_open(self, req):
-        import ftplib
-        import mimetypes
+        importiere ftplib
+        importiere mimetypes
         host = req.host
         wenn not host:
             raise URLError('ftp error: no host given')
@@ -1553,7 +1553,7 @@ klasse FTPHandler(BaseHandler):
             headers = email.message_from_string(headers)
             return addinfourl(fp, headers, req.full_url)
         except ftplib.all_errors as exp:
-            raise URLError(f"ftp error: {exp}") from exp
+            raise URLError(f"ftp error: {exp}") von exp
 
     def connect_ftp(self, user, passwd, host, port, dirs, timeout):
         return ftpwrapper(user, passwd, host, port, dirs, timeout,
@@ -1643,7 +1643,7 @@ klasse DataHandler(BaseHandler):
         return addinfourl(io.BytesIO(data), headers, url)
 
 
-# Code moved from the old urllib module
+# Code moved von the old urllib module
 
 def url2pathname(url, *, require_scheme=Falsch, resolve_host=Falsch):
     """Convert the given file URL to a local file system path.
@@ -1745,7 +1745,7 @@ def ftperrors():
     """Return the set of errors raised by the FTP class."""
     global _ftperrors
     wenn _ftperrors is Nichts:
-        import ftplib
+        importiere ftplib
         _ftperrors = ftplib.all_errors
     return _ftperrors
 
@@ -1780,7 +1780,7 @@ klasse ftpwrapper:
             raise
 
     def init(self):
-        import ftplib
+        importiere ftplib
         self.busy = 0
         self.ftp = ftplib.FTP()
         self.ftp.connect(self.host, self.port, self.timeout)
@@ -1789,7 +1789,7 @@ klasse ftpwrapper:
         self.ftp.cwd(_target)
 
     def retrfile(self, file, type):
-        import ftplib
+        importiere ftplib
         self.endtransfer()
         wenn type in ('d', 'D'): cmd = 'TYPE A'; isdir = 1
         sonst: cmd = 'TYPE ' + type; isdir = 0
@@ -1806,7 +1806,7 @@ klasse ftpwrapper:
                 conn, retrlen = self.ftp.ntransfercmd(cmd)
             except ftplib.error_perm as reason:
                 wenn str(reason)[:3] != '550':
-                    raise URLError(f'ftp error: {reason}') from reason
+                    raise URLError(f'ftp error: {reason}') von reason
         wenn not conn:
             # Set transfer mode to ASCII!
             self.ftp.voidcmd('TYPE A')
@@ -1817,7 +1817,7 @@ klasse ftpwrapper:
                     try:
                         self.ftp.cwd(file)
                     except ftplib.error_perm as reason:
-                        raise URLError('ftp error: %r' % reason) from reason
+                        raise URLError('ftp error: %r' % reason) von reason
                 finally:
                     self.ftp.cwd(pwd)
                 cmd = 'LIST ' + file
@@ -1881,8 +1881,8 @@ def getproxies_environment():
             wenn value:
                 proxies[proxy_name] = value
     # CVE-2016-1000110 - If we are running as CGI script, forget HTTP_PROXY
-    # (non-all-lowercase) as it may be set from the web server by a "Proxy:"
-    # header from the client
+    # (non-all-lowercase) as it may be set von the web server by a "Proxy:"
+    # header von the client
     # If "proxy" is lowercase, it will still be used thanks to the next block
     wenn 'REQUEST_METHOD' in os.environ:
         proxies.pop('http', Nichts)
@@ -1939,13 +1939,13 @@ def _proxy_bypass_macosx_sysconf(host, proxy_settings):
     This function uses the MacOSX framework SystemConfiguration
     to fetch the proxy information.
 
-    proxy_settings come from _scproxy._get_proxy_settings or get mocked ie:
+    proxy_settings come von _scproxy._get_proxy_settings or get mocked ie:
     { 'exclude_simple': bool,
       'exceptions': ['foo.bar', '*.bar.com', '127.0.0.1', '10.1', '10.0/16']
     }
     """
-    from fnmatch import fnmatch
-    from ipaddress import AddressValueError, IPv4Address
+    von fnmatch importiere fnmatch
+    von ipaddress importiere AddressValueError, IPv4Address
 
     hostonly, port = _splitport(host)
 
@@ -1999,13 +1999,13 @@ def _proxy_bypass_macosx_sysconf(host, proxy_settings):
 def _proxy_bypass_winreg_override(host, override):
     """Return Wahr wenn the host should bypass the proxy server.
 
-    The proxy override list is obtained from the Windows
+    The proxy override list is obtained von the Windows
     Internet settings proxy override registry value.
 
     An example of a proxy override value is:
     "www.example.com;*.example.net; 192.168.0.1"
     """
-    from fnmatch import fnmatch
+    von fnmatch importiere fnmatch
 
     host, _ = _splitport(host)
     proxy_override = override.split(';')
@@ -2021,7 +2021,7 @@ def _proxy_bypass_winreg_override(host, override):
 
 
 wenn sys.platform == 'darwin':
-    from _scproxy import _get_proxy_settings, _get_proxies
+    von _scproxy importiere _get_proxy_settings, _get_proxies
 
     def proxy_bypass_macosx_sysconf(host):
         proxy_settings = _get_proxy_settings()
@@ -2040,8 +2040,8 @@ wenn sys.platform == 'darwin':
     def proxy_bypass(host):
         """Return Wahr, wenn host should be bypassed.
 
-        Checks proxy settings gathered from the environment, wenn specified,
-        or from the MacOSX framework SystemConfiguration.
+        Checks proxy settings gathered von the environment, wenn specified,
+        or von the MacOSX framework SystemConfiguration.
 
         """
         proxies = getproxies_environment()
@@ -2063,7 +2063,7 @@ sowenn os.name == 'nt':
         """
         proxies = {}
         try:
-            import winreg
+            importiere winreg
         except ImportError:
             # Std module, so should be around - but you never know!
             return proxies
@@ -2107,7 +2107,7 @@ sowenn os.name == 'nt':
     def getproxies():
         """Return a dictionary of scheme -> proxy server URL mappings.
 
-        Returns settings gathered from the environment, wenn specified,
+        Returns settings gathered von the environment, wenn specified,
         or the registry.
 
         """
@@ -2115,7 +2115,7 @@ sowenn os.name == 'nt':
 
     def proxy_bypass_registry(host):
         try:
-            import winreg
+            importiere winreg
         except ImportError:
             # Std modules, so should be around - but you never know!
             return Falsch
@@ -2136,7 +2136,7 @@ sowenn os.name == 'nt':
     def proxy_bypass(host):
         """Return Wahr, wenn host should be bypassed.
 
-        Checks proxy settings gathered from the environment, wenn specified,
+        Checks proxy settings gathered von the environment, wenn specified,
         or the registry.
 
         """

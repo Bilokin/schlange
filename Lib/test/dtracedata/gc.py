@@ -1,4 +1,4 @@
-import gc
+importiere gc
 
 def start():
     gc.collect(0)

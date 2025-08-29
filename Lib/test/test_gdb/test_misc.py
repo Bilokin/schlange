@@ -1,8 +1,8 @@
-import re
-import unittest
-from test.support import python_is_optimized
+importiere re
+importiere unittest
+von test.support importiere python_is_optimized
 
-from .util import run_gdb, setup_module, DebuggerTests, SAMPLE_SCRIPT
+von .util importiere run_gdb, setup_module, DebuggerTests, SAMPLE_SCRIPT
 
 
 def setUpModule():
@@ -15,7 +15,7 @@ def gdb_has_frame_select():
     m = re.match(r'.*\[(.*)\].*', stdout)
     wenn not m:
         raise unittest.SkipTest(
-            f"Unable to parse output from gdb.Frame.select test\n"
+            f"Unable to parse output von gdb.Frame.select test\n"
             f"stdout={stdout!r}\n"
             f"stderr={stderr!r}\n")
     gdb_frame_dir = m.group(1).split(', ')
@@ -68,7 +68,7 @@ klasse PyListTests(DebuggerTests):
 
 SAMPLE_WITH_C_CALL = """
 
-from _testcapi import pyobject_vectorcall
+von _testcapi importiere pyobject_vectorcall
 
 def foo(a, b, c):
     bar(a, b, c)

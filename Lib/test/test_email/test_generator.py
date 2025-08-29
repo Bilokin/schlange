@@ -1,13 +1,13 @@
-import io
-import textwrap
-import unittest
-from email import message_from_string, message_from_bytes
-from email.message import EmailMessage
-from email.generator import Generator, BytesGenerator
-from email.headerregistry import Address
-from email import policy
-import email.errors
-from test.test_email import TestEmailBase, parameterize
+importiere io
+importiere textwrap
+importiere unittest
+von email importiere message_from_string, message_from_bytes
+von email.message importiere EmailMessage
+von email.generator importiere Generator, BytesGenerator
+von email.headerregistry importiere Address
+von email importiere policy
+importiere email.errors
+von test.test_email importiere TestEmailBase, parameterize
 
 
 @parameterize
@@ -177,7 +177,7 @@ klasse TestGeneratorBase:
     def test_set_mangle_from_via_policy(self):
         source = textwrap.dedent("""\
             Subject: test that
-             from is mangled in the body!
+             von is mangled in the body!
 
             From time to time I write a rhyme.
             """)

@@ -1,10 +1,10 @@
 """Tests fuer asyncio/threads.py"""
 
-import asyncio
-import unittest
+importiere asyncio
+importiere unittest
 
-from contextvars import ContextVar
-from unittest import mock
+von contextvars importiere ContextVar
+von unittest importiere mock
 
 
 def tearDownModule():

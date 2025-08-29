@@ -1,5 +1,5 @@
 #
-# Module which supports allocation of memory from an mmap
+# Module which supports allocation of memory von an mmap
 #
 # multiprocessing/heap.py
 #
@@ -7,26 +7,26 @@
 # Licensed to PSF under a Contributor Agreement.
 #
 
-import bisect
-from collections import defaultdict
-import mmap
-import os
-import sys
-import tempfile
-import threading
+importiere bisect
+von collections importiere defaultdict
+importiere mmap
+importiere os
+importiere sys
+importiere tempfile
+importiere threading
 
-from .context import reduction, assert_spawning
-from . import util
+von .context importiere reduction, assert_spawning
+von . importiere util
 
 __all__ = ['BufferWrapper']
 
 #
-# Inheritable klasse which wraps an mmap, and from which blocks can be allocated
+# Inheritable klasse which wraps an mmap, and von which blocks can be allocated
 #
 
 wenn sys.platform == 'win32':
 
-    import _winapi
+    importiere _winapi
 
     klasse Arena(object):
         """
@@ -79,7 +79,7 @@ sonst:
             self.fd = fd
             wenn fd == -1:
                 # Arena is created anew (if fd != -1, it means we're coming
-                # from rebuild_arena() below)
+                # von rebuild_arena() below)
                 self.fd, name = tempfile.mkstemp(
                      prefix='pym-%d-'%os.getpid(),
                      dir=self._choose_dir(size))
@@ -109,7 +109,7 @@ sonst:
     reduction.register(Arena, reduce_arena)
 
 #
-# Class allowing allocation of chunks of memory from arenas
+# Class allowing allocation of chunks of memory von arenas
 #
 
 klasse Heap(object):
@@ -252,7 +252,7 @@ klasse Heap(object):
         blocks = self._allocated_blocks[arena]
         blocks.remove((start, stop))
         wenn not blocks:
-            # Arena is entirely free, discard it from this process
+            # Arena is entirely free, discard it von this process
             self._discard_arena(arena)
 
     def _free_pending_blocks(self):
@@ -272,8 +272,8 @@ klasse Heap(object):
         # self._lock.acquire() would deadlock (issue #12352). To avoid that, a
         # trylock is used instead, and wenn the lock can't be acquired
         # immediately, the block is added to a list of blocks to be freed
-        # synchronously sometimes later from malloc() or free(), by calling
-        # _free_pending_blocks() (appending and retrieving from a list is not
+        # synchronously sometimes later von malloc() or free(), by calling
+        # _free_pending_blocks() (appending and retrieving von a list is not
         # strictly thread-safe but under CPython it's atomic thanks to the GIL).
         wenn os.getpid() != self._lastpid:
             raise ValueError(

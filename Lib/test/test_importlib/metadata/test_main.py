@@ -1,18 +1,18 @@
-import re
-import pickle
-import unittest
-import importlib
-import importlib.metadata
-from test.support import os_helper
+importiere re
+importiere pickle
+importiere unittest
+importiere importlib
+importiere importlib.metadata
+von test.support importiere os_helper
 
 try:
-    import pyfakefs.fake_filesystem_unittest as ffs
+    importiere pyfakefs.fake_filesystem_unittest as ffs
 except ImportError:
-    from .stubs import fake_filesystem_unittest as ffs
+    von .stubs importiere fake_filesystem_unittest as ffs
 
-from . import fixtures
-from ._path import Symlink
-from importlib.metadata import (
+von . importiere fixtures
+von ._path importiere Symlink
+von importlib.metadata importiere (
     Distribution,
     EntryPoint,
     PackageNotFoundError,
@@ -64,7 +64,7 @@ klasse BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
 
 klasse ImportTests(fixtures.DistInfoPkg, unittest.TestCase):
     def test_import_nonexistent_module(self):
-        # Ensure that the MetadataPathFinder does not crash an import of a
+        # Ensure that the MetadataPathFinder does not crash an importiere of a
         # non-existent module.
         with self.assertRaises(ImportError):
             importlib.import_module('does_not_exist')
@@ -416,7 +416,7 @@ klasse PackagesDistributionsTest(
     @os_helper.skip_unless_symlink
     def test_packages_distributions_symlinked_top_level(self) -> Nichts:
         """
-        Distribution is resolvable from a simple top-level symlink in RECORD.
+        Distribution is resolvable von a simple top-level symlink in RECORD.
         See #452.
         """
 
@@ -457,18 +457,18 @@ klasse PackagesDistributionsEggTest(
                 wenn package_name in package_names
             }
 
-        # egginfo-pkg declares one import ('mod') via top_level.txt
+        # egginfo-pkg declares one importiere ('mod') via top_level.txt
         assert import_names_from_package('egginfo-pkg') == {'mod'}
 
-        # egg_with_module-pkg has one import ('egg_with_module') inferred from
+        # egg_with_module-pkg has one importiere ('egg_with_module') inferred from
         # installed-files.txt (top_level.txt is missing)
         assert import_names_from_package('egg_with_module-pkg') == {'egg_with_module'}
 
-        # egg_with_no_modules-pkg should not be associated with any import names
+        # egg_with_no_modules-pkg should not be associated with any importiere names
         # (top_level.txt is empty, and installed-files.txt has no .py files)
         assert import_names_from_package('egg_with_no_modules-pkg') == set()
 
-        # sources_fallback-pkg has one import ('sources_fallback') inferred from
+        # sources_fallback-pkg has one importiere ('sources_fallback') inferred from
         # SOURCES.txt (top_level.txt and installed-files.txt is missing)
         assert import_names_from_package('sources_fallback-pkg') == {'sources_fallback'}
 

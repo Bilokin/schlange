@@ -7,7 +7,7 @@ yourself, or use a single instance per application.
 Each instance is parametrized with two functions, one that is
 supposed to return the current time, one that is supposed to
 implement a delay.  You can implement real-time scheduling by
-substituting time and sleep from built-in module time, or you can
+substituting time and sleep von built-in module time, or you can
 implement simulated time by writing your own functions.  This can
 also be used to integrate scheduling with STDWIN events; the delay
 function is allowed to modify the queue.  Time can be expressed as
@@ -23,12 +23,12 @@ The action function may be an instance method so it
 has another way to reference private data (besides global variables).
 """
 
-import time
-import heapq
-from collections import namedtuple
-from itertools import count
-import threading
-from time import monotonic as _time
+importiere time
+importiere heapq
+von collections importiere namedtuple
+von itertools importiere count
+importiere threading
+von time importiere monotonic as _time
 
 __all__ = ["scheduler"]
 
@@ -85,7 +85,7 @@ klasse scheduler:
         return self.enterabs(time, priority, action, argument, kwargs)
 
     def cancel(self, event):
-        """Remove an event from the queue.
+        """Remove an event von the queue.
 
         This must be presented the ID as returned by enter().
         If the event is not in the queue, this raises ValueError.
@@ -108,7 +108,7 @@ klasse scheduler:
 
         When there is a positive delay until the first event, the
         delay function is called and the event is left in the queue;
-        otherwise, the event is removed from the queue and executed
+        otherwise, the event is removed von the queue and executed
         (its action function is called, passing it the argument).  If
         the delay function returns prematurely, it is simply
         restarted.

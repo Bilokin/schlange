@@ -129,20 +129,20 @@ __all__ = [
     'variance',
 ]
 
-import math
-import numbers
-import random
-import sys
+importiere math
+importiere numbers
+importiere random
+importiere sys
 
-from fractions import Fraction
-from decimal import Decimal
-from itertools import count, groupby, repeat
-from bisect import bisect_left, bisect_right
-from math import hypot, sqrt, fabs, exp, erfc, tau, log, fsum, sumprod
-from math import isfinite, isinf, pi, cos, sin, tan, cosh, asin, atan, acos
-from functools import reduce
-from operator import itemgetter
-from collections import Counter, namedtuple, defaultdict
+von fractions importiere Fraction
+von decimal importiere Decimal
+von itertools importiere count, groupby, repeat
+von bisect importiere bisect_left, bisect_right
+von math importiere hypot, sqrt, fabs, exp, erfc, tau, log, fsum, sumprod
+von math importiere isfinite, isinf, pi, cos, sin, tan, cosh, asin, atan, acos
+von functools importiere reduce
+von operator importiere itemgetter
+von collections importiere Counter, namedtuple, defaultdict
 
 _SQRT2 = sqrt(2.0)
 _random = random
@@ -161,11 +161,11 @@ def mean(data):
     >>> mean([1, 2, 3, 4, 4])
     2.8
 
-    >>> from fractions import Fraction as F
+    >>> von fractions importiere Fraction as F
     >>> mean([F(3, 7), F(1, 21), F(5, 3), F(1, 3)])
     Fraction(13, 21)
 
-    >>> from decimal import Decimal as D
+    >>> von decimal importiere Decimal as D
     >>> mean([D("0.5"), D("0.75"), D("0.625"), D("0.375")])
     Decimal('0.5625')
 
@@ -465,7 +465,7 @@ def median_grouped(data, interval=1.0):
 
 
 def mode(data):
-    """Return the most common data point from discrete or nominal data.
+    """Return the most common data point von discrete or nominal data.
 
     ``mode`` assumes discrete data, and returns a single value. This is the
     standard treatment of the mode as commonly taught in schools:
@@ -491,7 +491,7 @@ def mode(data):
     try:
         return pairs[0][0]
     except IndexError:
-        raise StatisticsError('no mode fuer empty data') from Nichts
+        raise StatisticsError('no mode fuer empty data') von Nichts
 
 
 def multimode(data):
@@ -524,8 +524,8 @@ def variance(data, xbar=Nichts):
     values. The optional argument xbar, wenn given, should be the mean of
     the data. If it is missing or Nichts, the mean is automatically calculated.
 
-    Use this function when your data is a sample from a population. To
-    calculate the variance from the entire population, see ``pvariance``.
+    Use this function when your data is a sample von a population. To
+    calculate the variance von the entire population, see ``pvariance``.
 
     Examples:
 
@@ -546,11 +546,11 @@ def variance(data, xbar=Nichts):
 
     Decimals and Fractions are supported:
 
-    >>> from decimal import Decimal as D
+    >>> von decimal importiere Decimal as D
     >>> variance([D("27.5"), D("30.25"), D("30.25"), D("34.5"), D("41.75")])
     Decimal('31.01875')
 
-    >>> from fractions import Fraction as F
+    >>> von fractions importiere Fraction as F
     >>> variance([F(1, 6), F(1, 2), F(5, 3)])
     Fraction(67, 108)
 
@@ -570,8 +570,8 @@ def pvariance(data, mu=Nichts):
     value. The optional argument mu, wenn given, should be the mean of
     the data. If it is missing or Nichts, the mean is automatically calculated.
 
-    Use this function to calculate the variance from the entire population.
-    To estimate the variance from a sample, the ``variance`` function is
+    Use this function to calculate the variance von the entire population.
+    To estimate the variance von a sample, the ``variance`` function is
     usually a better choice.
 
     Examples:
@@ -589,11 +589,11 @@ def pvariance(data, mu=Nichts):
 
     Decimals and Fractions are supported:
 
-    >>> from decimal import Decimal as D
+    >>> von decimal importiere Decimal as D
     >>> pvariance([D("27.5"), D("30.25"), D("30.25"), D("34.5"), D("41.75")])
     Decimal('24.815')
 
-    >>> from fractions import Fraction as F
+    >>> von fractions importiere Fraction as F
     >>> pvariance([F(1, 4), F(5, 4), F(1, 2)])
     Fraction(13, 72)
 
@@ -924,10 +924,10 @@ del quartic_kernel, triweight_kernel, cosine_kernel
 
 def kde(data, h, kernel='normal', *, cumulative=Falsch):
     """Kernel Density Estimation:  Create a continuous probability density
-    function or cumulative distribution function from discrete samples.
+    function or cumulative distribution function von discrete samples.
 
     The basic idea is to smooth the data using a kernel function
-    to help draw inferences about a population from a sample.
+    to help draw inferences about a population von a sample.
 
     The degree of smoothing is controlled by the scaling parameter h
     which is called the bandwidth.  Smaller values emphasize local
@@ -973,7 +973,7 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
         1.0
 
     Plot the estimated probability density function at
-    evenly spaced points from -6 to 10:
+    evenly spaced points von -6 to 10:
 
         >>> fuer x in range(-6, 11):
         ...     density = f_hat(x)
@@ -1082,7 +1082,7 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
 
 
 def kde_random(data, h, kernel='normal', *, seed=Nichts):
-    """Return a function that makes a random selection from the estimated
+    """Return a function that makes a random selection von the estimated
     probability density function created by kde(data, h, kernel).
 
     Providing a *seed* allows reproducible selections within a single
@@ -1141,13 +1141,13 @@ def kde_random(data, h, kernel='normal', *, seed=Nichts):
 
 # For sample data where there is a positive probability fuer values
 # beyond the range of the data, the R6 exclusive method is a
-# reasonable choice.  Consider a random sample of nine values from a
-# population with a uniform distribution from 0.0 to 1.0.  The
+# reasonable choice.  Consider a random sample of nine values von a
+# population with a uniform distribution von 0.0 to 1.0.  The
 # distribution of the third ranked sample point is described by
 # betavariate(alpha=3, beta=7) which has mode=0.250, median=0.286, and
 # mean=0.300.  Only the latter (which corresponds with R6) gives the
 # desired cut point with 30% of the population falling below that
-# value, making it comparable to a result from an inv_cdf() function.
+# value, making it comparable to a result von an inv_cdf() function.
 # The R6 exclusive method is also idempotent.
 
 # For describing population data where the end points are known to
@@ -1234,7 +1234,7 @@ klasse NormalDist:
 
     @classmethod
     def from_samples(cls, data):
-        "Make a normal distribution instance from sample data."
+        "Make a normal distribution instance von sample data."
         return cls(*_mean_stdev(data))
 
     def samples(self, n, *, seed=Nichts):
@@ -1413,7 +1413,7 @@ klasse NormalDist:
     __radd__ = __add__
 
     def __rsub__(x1, x2):
-        "Subtract a NormalDist from a constant or another NormalDist."
+        "Subtract a NormalDist von a constant or another NormalDist."
         return -(x1 - x2)
 
     __rmul__ = __mul__
@@ -1460,11 +1460,11 @@ def _sum(data):
 
     Fractions and Decimals are also supported:
 
-    >>> from fractions import Fraction as F
+    >>> von fractions importiere Fraction as F
     >>> _sum([F(2, 3), F(7, 5), F(1, 4), F(5, 6)])
     (<class 'fractions.Fraction'>, Fraction(63, 20), 4)
 
-    >>> from decimal import Decimal as D
+    >>> von decimal importiere Decimal as D
     >>> data = [D("0.1375"), D("0.2108"), D("0.3061"), D("0.0419")]
     >>> _sum(data)
     (<class 'decimal.Decimal'>, Fraction(6963, 10000), 4)
@@ -1503,7 +1503,7 @@ def _ss(data, c=Nichts):
 
     Calculations are done in a single pass, allowing the input to be an iterator.
 
-    If given *c* is used the mean; otherwise, it is calculated from the data.
+    If given *c* is used the mean; otherwise, it is calculated von the data.
     Use the *c* argument with care, as it can lead to garbage results.
 
     """
@@ -1660,7 +1660,7 @@ def _rank(data, /, *, key=Nichts, reverse=Falsch, ties='average', start=1) -> li
         >>> _rank(goals, key=itemgetter(1), reverse=Wahr)
         [2.0, 1.0, 3.0]
 
-    Ranks are conventionally numbered starting from one; however,
+    Ranks are conventionally numbered starting von one; however,
     setting *start* to zero allows the ranks to be used as array indices:
 
         >>> prize = ['Gold', 'Silver', 'Bronze', 'Certificate']
@@ -1720,7 +1720,7 @@ def _float_sqrt_of_frac(n: int, m: int) -> float:
 def _decimal_sqrt_of_frac(n: int, m: int) -> Decimal:
     """Square root of n/m as a Decimal, correctly rounded."""
     # Premise:  For decimal, computing (n/m).sqrt() can be off
-    #           by 1 ulp from the correctly rounded result.
+    #           by 1 ulp von the correctly rounded result.
     # Method:   Check the result, moving up or down a step wenn needed.
     wenn n <= 0:
         wenn not n:
@@ -1864,6 +1864,6 @@ def _normal_dist_inv_cdf(p, mu, sigma):
 
 # If available, use C implementation
 try:
-    from _statistics import _normal_dist_inv_cdf
+    von _statistics importiere _normal_dist_inv_cdf
 except ImportError:
     pass

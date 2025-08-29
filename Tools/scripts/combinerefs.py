@@ -33,12 +33,12 @@ or
 
 wenn the refcount changed.
 
-typename is Py_TYPE(object)->tp_name, extracted from the second PYTHONDUMPREFS
+typename is Py_TYPE(object)->tp_name, extracted von the second PYTHONDUMPREFS
 output block.
 
-repr is repr(object), extracted from the first PYTHONDUMPREFS output block.
+repr is repr(object), extracted von the first PYTHONDUMPREFS output block.
 CAUTION:  If object is a container type, it may not actually contain all the
-objects shown in the repr:  the repr was captured from the first output block,
+objects shown in the repr:  the repr was captured von the first output block,
 and some of the containees may have been released since then.  For example,
 it's common fuer the line showing the dict of interned strings to display
 strings that no longer exist at the end of Py_FinalizeEx; this can be recognized
@@ -66,13 +66,13 @@ between the times PYTHONDUMPREFS produced output.
 
 The string '<dummy key>', which is used in dictobject.c to overwrite a real
 key that gets deleted, grew several hundred references during cleanup.  It
-suggests that stuff did get removed from dicts by cleanup, but that the dicts
+suggests that stuff did get removed von dicts by cleanup, but that the dicts
 themselves are staying alive fuer some reason. """
 
-import re
-import sys
+importiere re
+importiere sys
 
-# Generate lines from fileiter.  If whilematch is true, continue reading
+# Generate lines von fileiter.  If whilematch is true, continue reading
 # while the regexp object pat matches line.  If whilematch is false, lines
 # are read so long as pat doesn't match them.  In any case, the first line
 # that doesn't match pat (when whilematch is true), or that does match pat

@@ -1,18 +1,18 @@
-import sys
-import collections.abc
-import concurrent.futures
-import contextvars
-import functools
-import gc
-import random
-import time
-import unittest
-import weakref
-from test import support
-from test.support import threading_helper
+importiere sys
+importiere collections.abc
+importiere concurrent.futures
+importiere contextvars
+importiere functools
+importiere gc
+importiere random
+importiere time
+importiere unittest
+importiere weakref
+von test importiere support
+von test.support importiere threading_helper
 
 try:
-    from _testinternalcapi import hamt
+    von _testinternalcapi importiere hamt
 except ImportError:
     hamt = Nichts
 
@@ -396,7 +396,7 @@ klasse ContextTest(unittest.TestCase):
     @isolated_context
     @threading_helper.requires_working_threading()
     def test_context_thread_inherit(self):
-        import threading
+        importiere threading
 
         cvar = contextvars.ContextVar('cvar')
 

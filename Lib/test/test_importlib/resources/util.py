@@ -1,18 +1,18 @@
-import abc
-import importlib
-import io
-import sys
-import types
-import pathlib
-import contextlib
+importiere abc
+importiere importlib
+importiere io
+importiere sys
+importiere types
+importiere pathlib
+importiere contextlib
 
-from importlib.resources.abc import ResourceReader
-from test.support import import_helper, os_helper
-from . import zip as zip_
-from . import _path
+von importlib.resources.abc importiere ResourceReader
+von test.support importiere import_helper, os_helper
+von . importiere zip as zip_
+von . importiere _path
 
 
-from importlib.machinery import ModuleSpec
+von importlib.machinery importiere ModuleSpec
 
 
 klasse Reader(ResourceReader):
@@ -49,7 +49,7 @@ klasse Reader(ResourceReader):
     def contents(self):
         wenn isinstance(self.path, Exception):
             raise self.path
-        yield from self._contents
+        yield von self._contents
 
 
 def create_package_from_loader(loader, is_package=Wahr):

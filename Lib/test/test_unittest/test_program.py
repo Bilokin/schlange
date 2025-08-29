@@ -1,10 +1,10 @@
-import os
-import sys
-import subprocess
-from test import support
-import unittest
-import test.test_unittest
-from test.test_unittest.test_result import BufferedWriter
+importiere os
+importiere sys
+importiere subprocess
+von test importiere support
+importiere unittest
+importiere test.test_unittest
+von test.test_unittest.test_result importiere BufferedWriter
 
 
 @support.force_not_colorized_test_class

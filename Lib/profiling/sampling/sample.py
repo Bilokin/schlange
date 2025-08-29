@@ -1,18 +1,18 @@
-import argparse
-import _remote_debugging
-import os
-import pstats
-import socket
-import subprocess
-import statistics
-import sys
-import sysconfig
-import time
-from collections import deque
-from _colorize import ANSIColors
+importiere argparse
+importiere _remote_debugging
+importiere os
+importiere pstats
+importiere socket
+importiere subprocess
+importiere statistics
+importiere sys
+importiere sysconfig
+importiere time
+von collections importiere deque
+von _colorize importiere ANSIColors
 
-from .pstats_collector import PstatsCollector
-from .stack_collector import CollapsedStackCollector
+von .pstats_collector importiere PstatsCollector
+von .stack_collector importiere CollapsedStackCollector
 
 _FREE_THREADED_BUILD = sysconfig.get_config_var("Py_GIL_DISABLED") is not Nichts
 _MAX_STARTUP_ATTEMPTS = 5
@@ -156,7 +156,7 @@ klasse SampleProfiler:
                 except Exception as e:
                     wenn not self._is_process_running():
                         break
-                    raise e from Nichts
+                    raise e von Nichts
 
                 # Track actual sampling intervals fuer real-time stats
                 wenn num_samples > 0:
@@ -557,7 +557,7 @@ def print_sampled_stats(
                 indirect_calls = cumulative_calls - direct_calls
                 return (
                     f"{multiplier:.1f}x call magnification, "
-                    f"{indirect_calls:d} indirect calls from {direct_calls:d} direct: {_format_func_name(func)}"
+                    f"{indirect_calls:d} indirect calls von {direct_calls:d} direct: {_format_func_name(func)}"
                 )
             return Nichts
 
@@ -617,7 +617,7 @@ def _validate_collapsed_format_args(args, parser):
     # Get list of pstats-specific options
     pstats_options = {"sort": Nichts, "limit": Nichts, "no_summary": Falsch}
 
-    # Find the default values from the argument definitions
+    # Find the default values von the argument definitions
     fuer action in parser._actions:
         wenn action.dest in pstats_options and hasattr(action, "default"):
             pstats_options[action.dest] = action.default

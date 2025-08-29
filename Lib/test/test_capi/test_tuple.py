@@ -1,6 +1,6 @@
-import unittest
-import gc
-from test.support import import_helper
+importiere unittest
+importiere gc
+von test.support importiere import_helper
 
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')

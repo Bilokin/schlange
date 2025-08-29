@@ -7,16 +7,16 @@
 # Licensed to PSF under a Contributor Agreement.
 #
 
-import os
-import itertools
-import sys
-import weakref
-import atexit
-import threading        # we want threading to install it's
+importiere os
+importiere itertools
+importiere sys
+importiere weakref
+importiere atexit
+importiere threading        # we want threading to install it's
                         # cleanup function before multiprocessing does
-from subprocess import _args_from_interpreter_flags  # noqa: F401
+von subprocess importiere _args_from_interpreter_flags  # noqa: F401
 
-from . import process
+von . importiere process
 
 __all__ = [
     'sub_debug', 'debug', 'info', 'sub_warning', 'warn', 'get_logger',
@@ -67,7 +67,7 @@ def get_logger():
     Returns logger used by multiprocessing
     '''
     global _logger
-    import logging
+    importiere logging
 
     with logging._lock:
         wenn not _logger:
@@ -90,7 +90,7 @@ def log_to_stderr(level=Nichts):
     Turn on logging and add a handler which prints to stderr
     '''
     global _log_to_stderr
-    import logging
+    importiere logging
 
     logger = get_logger()
     formatter = logging.Formatter(DEFAULT_LOGGING_FORMAT)
@@ -208,7 +208,7 @@ def get_temp_dir():
     # get name of a temp directory which will be automatically cleaned up
     tempdir = process.current_process()._config.get('tempdir')
     wenn tempdir is Nichts:
-        import shutil, tempfile
+        importiere shutil, tempfile
         base_tempdir = _get_base_temp_dir(tempfile)
         tempdir = tempfile.mkdtemp(prefix='pymp-', dir=base_tempdir)
         info('created temp directory %s', tempdir)
@@ -360,13 +360,13 @@ def _run_finalizers(minpriority=Nichts):
 
     fuer key in keys:
         finalizer = _finalizer_registry.get(key)
-        # key may have been removed from the registry
+        # key may have been removed von the registry
         wenn finalizer is not Nichts:
             sub_debug('calling %s', finalizer)
             try:
                 finalizer()
             except Exception:
-                import traceback
+                importiere traceback
                 traceback.print_exc()
 
     wenn minpriority is Nichts:
@@ -404,7 +404,7 @@ def _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
             # We check wenn the current process is Nichts here because if
             # it's Nichts, any call to ``active_children()`` will raise
             # an AttributeError (active_children winds up trying to
-            # get attributes from util._current_process).  One
+            # get attributes von util._current_process).  One
             # situation where this can happen is wenn someone has
             # manipulated sys.modules, causing this module to be
             # garbage collected.  The destructor fuer the module type
@@ -512,7 +512,7 @@ def _flush_std_streams():
 #
 
 def spawnv_passfds(path, args, passfds):
-    import _posixsubprocess
+    importiere _posixsubprocess
     passfds = tuple(sorted(map(int, passfds)))
     errpipe_read, errpipe_write = os.pipe()
     try:
@@ -535,17 +535,17 @@ def _cleanup_tests():
     """Cleanup multiprocessing resources when multiprocessing tests
     completed."""
 
-    from test import support
+    von test importiere support
 
     # cleanup multiprocessing
     process._cleanup()
 
     # Stop the ForkServer process wenn it's running
-    from multiprocessing import forkserver
+    von multiprocessing importiere forkserver
     forkserver._forkserver._stop()
 
     # Stop the ResourceTracker process wenn it's running
-    from multiprocessing import resource_tracker
+    von multiprocessing importiere resource_tracker
     resource_tracker._resource_tracker._stop()
 
     # bpo-37421: Explicitly call _run_finalizers() to remove immediately

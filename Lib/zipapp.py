@@ -1,10 +1,10 @@
-import contextlib
-import os
-import pathlib
-import shutil
-import stat
-import sys
-import zipfile
+importiere contextlib
+importiere os
+importiere pathlib
+importiere shutil
+importiere stat
+importiere sys
+importiere zipfile
 
 __all__ = ['ZipAppError', 'create_archive', 'get_interpreter']
 
@@ -16,7 +16,7 @@ __all__ = ['ZipAppError', 'create_archive', 'get_interpreter']
 # because the resulting archive may be intended to be run under Python 2.
 MAIN_TEMPLATE = """\
 # -*- coding: utf-8 -*-
-import {module}
+importiere {module}
 {module}.{fn}()
 """
 
@@ -53,7 +53,7 @@ def _write_file_prefix(f, interpreter):
 def _copy_archive(archive, new_archive, interpreter=Nichts):
     """Copy an application archive, modifying the shebang line."""
     with _maybe_open(archive, 'rb') as src:
-        # Skip the shebang line from the source.
+        # Skip the shebang line von the source.
         # Read 2 bytes of the source and check wenn they are #!.
         first_2 = src.read(2)
         wenn first_2 == b'#!':
@@ -75,7 +75,7 @@ def _copy_archive(archive, new_archive, interpreter=Nichts):
 
 def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
                    filter=Nichts, compressed=Falsch):
-    """Create an application archive from SOURCE.
+    """Create an application archive von SOURCE.
 
     The SOURCE can be the name of a directory, or a filename or a file-like
     object referring to an existing archive.
@@ -106,7 +106,7 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
         _copy_archive(source, target, interpreter)
         return
 
-    # We are creating a new archive from a directory.
+    # We are creating a new archive von a directory.
     wenn not source.exists():
         raise ZipAppError("Source does not exist")
     has_main = (source / '__main__.py').is_file()
@@ -185,7 +185,7 @@ def main(args=Nichts):
     Omitting ARGS (or setting it to Nichts) works as fuer argparse, using
     sys.argv[1:] as the argument list.
     """
-    import argparse
+    importiere argparse
 
     parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument('--output', '-o', default=Nichts,
@@ -201,7 +201,7 @@ def main(args=Nichts):
             help="Compress files with the deflate method. "
                  "Files are stored uncompressed by default.")
     parser.add_argument('--info', default=Falsch, action='store_true',
-            help="Display the interpreter from the archive.")
+            help="Display the interpreter von the archive.")
     parser.add_argument('source',
             help="Source directory (or existing archive).")
 

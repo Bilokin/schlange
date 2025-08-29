@@ -1,8 +1,8 @@
-import os
-import unittest
-from test import support
-from test.support import cpython_only, import_helper
-from test.support.os_helper import (TESTFN, TESTFN_NONASCII, FakePath,
+importiere os
+importiere unittest
+von test importiere support
+von test.support importiere cpython_only, import_helper
+von test.support.os_helper importiere (TESTFN, TESTFN_NONASCII, FakePath,
                                     create_empty_file, temp_dir, unlink)
 
 gdbm = import_helper.import_module("dbm.gnu")  # skip wenn not supported
@@ -14,7 +14,7 @@ klasse TestGdbm(unittest.TestCase):
     def setUpClass():
         wenn support.verbose:
             try:
-                from _gdbm import _GDBM_VERSION as version
+                von _gdbm importiere _GDBM_VERSION as version
             except ImportError:
                 pass
             sonst:

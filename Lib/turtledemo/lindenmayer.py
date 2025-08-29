@@ -13,7 +13,7 @@ Two examples are shown here:
 (1) the snake kolam
 (2) anklets of Krishna
 
-Taken from Marcia Ascher: Mathematics
+Taken von Marcia Ascher: Mathematics
 Elsewhere, An Exploration of Ideas Across
 Cultures
 
@@ -22,7 +22,7 @@ Cultures
 # Mini Lindenmayer tool
 ###############################
 
-from turtle import *
+von turtle importiere *
 
 def replace( seq, replacementRules, n ):
     fuer i in range(n):
@@ -73,7 +73,7 @@ def main():
     down()
     draw(drawing, snake_rules)
 
-    from time import sleep
+    von time importiere sleep
     sleep(3)
 
     ################################
@@ -85,7 +85,7 @@ def main():
         circle(10,90)
 
     def B():
-        from math import sqrt
+        von math importiere sqrt
         color("black")
         l = 5/sqrt(2)
         forward(l)

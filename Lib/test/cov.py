@@ -3,7 +3,7 @@
 Designed to be used with -Xpresite= which means:
 * it installs itself on import
 * it's not imported as `__main__` so can't use the ifmain idiom
-* it can't import anything besides `sys` to avoid tainting gathered coverage
+* it can't importiere anything besides `sys` to avoid tainting gathered coverage
 * filenames are not normalized
 
 To get gathered coverage back, look fuer 'test.cov' in `sys.modules`
@@ -13,7 +13,7 @@ was already in use.
 If you need to disable the hook, call the `disable()` function.
 """
 
-import sys
+importiere sys
 
 mon = sys.monitoring
 

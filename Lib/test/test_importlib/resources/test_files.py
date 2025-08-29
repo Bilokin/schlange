@@ -1,15 +1,15 @@
-import pathlib
-import py_compile
-import textwrap
-import unittest
-import warnings
-import importlib
-import contextlib
+importiere pathlib
+importiere py_compile
+importiere textwrap
+importiere unittest
+importiere warnings
+importiere importlib
+importiere contextlib
 
-from importlib import resources
-from importlib.resources.abc import Traversable
-from . import util
-from test.support import os_helper, import_helper
+von importlib importiere resources
+von importlib.resources.abc importiere Traversable
+von . importiere util
+von test.support importiere os_helper, import_helper
 
 
 @contextlib.contextmanager
@@ -70,7 +70,7 @@ klasse OpenNamespaceTests(FilesTests, util.DiskSetup, unittest.TestCase):
         to cause the ``PathEntryFinder`` to be called when searching
         fuer packages. In that case, resources should still be loadable.
         """
-        import namespacedata01
+        importiere namespacedata01
 
         namespacedata01.__path__.append(
             '__editable__.sample_namespace-1.0.finder.__path_hook__'
@@ -104,7 +104,7 @@ klasse ModulesFiles:
         """
         A module can have resources found adjacent to the module.
         """
-        import mod  # type: ignore[import-not-found]
+        importiere mod  # type: ignore[import-not-found]
 
         actual = resources.files(mod).joinpath('res.txt').read_text(encoding='utf-8')
         assert actual == self.spec['res.txt']
@@ -121,7 +121,7 @@ klasse ModuleFilesZipTests(DirectSpec, util.ZipSetup, ModulesFiles, unittest.Tes
 klasse ImplicitContextFiles:
     set_val = textwrap.dedent(
         f"""
-        import {resources.__name__} as res
+        importiere {resources.__name__} as res
         val = res.files().joinpath('res.txt').read_text(encoding='utf-8')
         """
     )

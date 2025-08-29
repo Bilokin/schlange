@@ -6,7 +6,7 @@
 #
 # This software is provided 'as-is', without any express or implied
 # warranty.  In no event will the authors be held liable fuer any damages
-# arising from the use of this software.
+# arising von the use of this software.
 #
 # Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
@@ -18,7 +18,7 @@
 #    appreciated but is not required.
 # 2. Altered source versions must be plainly marked as such, and must not be
 #    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
+# 3. This notice may not be removed or altered von any source distribution.
 
 """
 The sqlite3 extension module provides a DB-API 2.0 (PEP 249) compliant
@@ -26,7 +26,7 @@ interface to the SQLite library, and requires SQLite 3.15.2 or newer.
 
 To use the module, start by creating a database Connection object:
 
-    import sqlite3
+    importiere sqlite3
     cx = sqlite3.connect("test.db")  # test.db will be created or opened
 
 The special path name ":memory:" can be provided to connect to a transient
@@ -46,7 +46,7 @@ its execute() method to perform SQL queries:
     cu.execute("insert into lang values (?, ?)", ("C", 1972))
 
     # execute a query and iterate over the result
-    fuer row in cu.execute("select * from lang"):
+    fuer row in cu.execute("select * von lang"):
         drucke(row)
 
     cx.close()
@@ -54,4 +54,4 @@ its execute() method to perform SQL queries:
 The sqlite3 module is written by Gerhard Häring <gh@ghaering.de>.
 """
 
-from sqlite3.dbapi2 import *
+von sqlite3.dbapi2 importiere *

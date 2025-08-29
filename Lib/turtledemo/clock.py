@@ -3,8 +3,8 @@
 Enhanced clock-program, showing date
 and time.
 """
-from turtle import *
-from datetime import datetime
+von turtle importiere *
+von datetime importiere datetime
 
 dtfont = "TkFixedFont", 14, "bold"
 current_day = Nichts

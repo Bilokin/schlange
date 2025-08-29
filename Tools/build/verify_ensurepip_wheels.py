@@ -7,12 +7,12 @@ When GitHub Actions executes the script, output is formatted accordingly.
 https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-a-notice-message
 """
 
-import hashlib
-import json
-import os
-import re
-from pathlib import Path
-from urllib.request import urlopen
+importiere hashlib
+importiere json
+importiere os
+importiere re
+von pathlib importiere Path
+von urllib.request importiere urlopen
 
 ENSURE_PIP_ROOT = Path(__file__).parent.parent.parent / "Lib/ensurepip"
 WHEEL_DIR = ENSURE_PIP_ROOT / "_bundled"
@@ -59,7 +59,7 @@ def verify_wheel(package_name: str) -> bool:
         return Falsch
     package_version = package_version_match[1]
 
-    # Get the SHA 256 digest from the Cheeseshop
+    # Get the SHA 256 digest von the Cheeseshop
     try:
         raw_text = urlopen(f"https://pypi.org/pypi/{package_name}/json").read()
     except (OSError, ValueError):
@@ -74,7 +74,7 @@ def verify_wheel(package_name: str) -> bool:
         expected_digest = release_info["digests"].get("sha256", "")
         break
     sonst:
-        print_error(package_path, f"No digest fuer {package_name} found from PyPI.")
+        print_error(package_path, f"No digest fuer {package_name} found von PyPI.")
         return Falsch
 
     # Compute the SHA 256 digest of the wheel on disk

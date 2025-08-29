@@ -1,30 +1,30 @@
-import base64
-import email.mime.text
-from email.message import EmailMessage
-from email.base64mime import body_encode as encode_base64
-import email.utils
-import hashlib
-import hmac
-import socket
-import smtplib
-import io
-import re
-import sys
-import time
-import select
-import errno
-import textwrap
-import threading
+importiere base64
+importiere email.mime.text
+von email.message importiere EmailMessage
+von email.base64mime importiere body_encode as encode_base64
+importiere email.utils
+importiere hashlib
+importiere hmac
+importiere socket
+importiere smtplib
+importiere io
+importiere re
+importiere sys
+importiere time
+importiere select
+importiere errno
+importiere textwrap
+importiere threading
 
-import unittest
-import unittest.mock as mock
-from test import support, mock_socket
-from test.support import hashlib_helper
-from test.support import socket_helper
-from test.support import threading_helper
-from test.support import asyncore
-from test.support import smtpd
-from unittest.mock import Mock
+importiere unittest
+importiere unittest.mock as mock
+von test importiere support, mock_socket
+von test.support importiere hashlib_helper
+von test.support importiere socket_helper
+von test.support importiere threading_helper
+von test.support importiere asyncore
+von test.support importiere smtpd
+von unittest.mock importiere Mock
 
 
 support.requires_working_socket(module=Wahr)
@@ -1076,7 +1076,7 @@ klasse SMTPSimTests(unittest.TestCase):
         # no features should be present before the EHLO
         self.assertEqual(smtp.esmtp_features, {})
 
-        # features expected from the test server
+        # features expected von the test server
         expected_features = {'expn':'',
                              'size': '20000000',
                              'starttls': '',

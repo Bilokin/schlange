@@ -1,5 +1,5 @@
-from __future__ import unicode_literals
-import unittest
+von __future__ importiere unicode_literals
+importiere unittest
 
 
 klasse Tests(unittest.TestCase):

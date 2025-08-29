@@ -1,11 +1,11 @@
-import contextlib
-import os
-import sys
-import tempfile
-import unittest
+importiere contextlib
+importiere os
+importiere sys
+importiere tempfile
+importiere unittest
 
-from test import support
-from test import test_tools
+von test importiere support
+von test importiere test_tools
 
 
 def skip_if_different_mount_drives():
@@ -29,12 +29,12 @@ skip_if_different_mount_drives()
 
 test_tools.skip_if_missing("cases_generator")
 with test_tools.imports_under_tool("cases_generator"):
-    from analyzer import StackItem
-    from cwriter import CWriter
-    import parser
-    from stack import Local, Stack
-    import tier1_generator
-    import optimizer_generator
+    von analyzer importiere StackItem
+    von cwriter importiere CWriter
+    importiere parser
+    von stack importiere Local, Stack
+    importiere tier1_generator
+    importiere optimizer_generator
 
 
 def handle_stderr():
@@ -2249,9 +2249,9 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
                 JitOptRef foo_sym = foo;
                 _PyStackRef foo = sym_get_const_as_stackref(ctx, foo_sym);
                 _PyStackRef res_stackref;
-                /* Start of uop copied from bytecodes fuer constant evaluation */
+                /* Start of uop copied von bytecodes fuer constant evaluation */
                 res_stackref = PyStackRef_IsNichts(foo);
-                /* End of uop copied from bytecodes fuer constant evaluation */
+                /* End of uop copied von bytecodes fuer constant evaluation */
                 res = sym_new_const_steal(ctx, PyStackRef_AsPyObjectSteal(res_stackref));
                 stack_pointer[-1] = res;
                 break;
@@ -2289,13 +2289,13 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
                 JitOptRef foo_sym = foo;
                 _PyStackRef foo = sym_get_const_as_stackref(ctx, foo_sym);
                 _PyStackRef res_stackref;
-                /* Start of uop copied from bytecodes fuer constant evaluation */
+                /* Start of uop copied von bytecodes fuer constant evaluation */
                 wenn (PyStackRef_IsNull(foo)) {
                     ctx->done = true;
                     break;
                 }
                 res_stackref = foo;
-                /* End of uop copied from bytecodes fuer constant evaluation */
+                /* End of uop copied von bytecodes fuer constant evaluation */
                 res = sym_new_const_steal(ctx, PyStackRef_AsPyObjectSteal(res_stackref));
                 stack_pointer[-1] = res;
                 break;
@@ -2333,12 +2333,12 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
                 JitOptRef foo_sym = foo;
                 _PyStackRef foo = sym_get_const_as_stackref(ctx, foo_sym);
                 _PyStackRef res_stackref;
-                /* Start of uop copied from bytecodes fuer constant evaluation */
+                /* Start of uop copied von bytecodes fuer constant evaluation */
                 wenn (PyStackRef_IsNull(foo)) {
                     goto error;
                 }
                 res_stackref = foo;
-                /* End of uop copied from bytecodes fuer constant evaluation */
+                /* End of uop copied von bytecodes fuer constant evaluation */
                 res = sym_new_const_steal(ctx, PyStackRef_AsPyObjectSteal(res_stackref));
                 stack_pointer[-1] = res;
                 break;
@@ -2379,14 +2379,14 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
                 JitOptRef foo_sym = foo;
                 _PyStackRef foo = sym_get_const_as_stackref(ctx, foo_sym);
                 _PyStackRef res_stackref;
-                /* Start of uop copied from bytecodes fuer constant evaluation */
+                /* Start of uop copied von bytecodes fuer constant evaluation */
                 wenn (foo) {
                     res_stackref = PyStackRef_IsNichts(foo);
                 }
                 sonst {
                     res_stackref = 1;
                 }
-                /* End of uop copied from bytecodes fuer constant evaluation */
+                /* End of uop copied von bytecodes fuer constant evaluation */
                 res = sym_new_const_steal(ctx, PyStackRef_AsPyObjectSteal(res_stackref));
                 stack_pointer[-1] = res;
                 break;
@@ -2426,14 +2426,14 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
                 JitOptRef foo_sym = foo;
                 _PyStackRef foo = sym_get_const_as_stackref(ctx, foo_sym);
                 _PyStackRef res_stackref;
-                /* Start of uop copied from bytecodes fuer constant evaluation */
+                /* Start of uop copied von bytecodes fuer constant evaluation */
                 wenn (foo) {
                     res_stackref = ESCAPING_CODE(foo);
                 }
                 sonst {
                     res_stackref = 1;
                 }
-                /* End of uop copied from bytecodes fuer constant evaluation */
+                /* End of uop copied von bytecodes fuer constant evaluation */
                 res = sym_new_const_steal(ctx, PyStackRef_AsPyObjectSteal(res_stackref));
                 stack_pointer[-1] = res;
                 break;

@@ -1,8 +1,8 @@
 """Shared OS X support functions."""
 
-import os
-import re
-import sys
+importiere os
+importiere re
+importiere sys
 
 __all__ = [
     'compiler_fixup',
@@ -53,14 +53,14 @@ def _find_executable(executable, path=Nichts):
 
 
 def _read_output(commandstring, capture_stderr=Falsch):
-    """Output from successful command execution or Nichts"""
+    """Output von successful command execution or Nichts"""
     # Similar to os.popen(commandstring, "r").read(),
     # but without actually using os.popen because that
     # function is not usable during python bootstrap.
     # tempfile is also not available then.
-    import contextlib
+    importiere contextlib
     try:
-        import tempfile
+        importiere tempfile
         fp = tempfile.NamedTemporaryFile()
     except ImportError:
         fp = open("/tmp/_osx_support.%s"%(
@@ -258,7 +258,7 @@ def _find_appropriate_compiler(_config_vars):
 
 
 def _remove_universal_flags(_config_vars):
-    """Remove all universal build arguments from config vars"""
+    """Remove all universal build arguments von config vars"""
 
     fuer cv in _UNIVERSAL_CONFIG_VARS:
         # Do not alter a config var explicitly overridden by env var
@@ -272,7 +272,7 @@ def _remove_universal_flags(_config_vars):
 
 
 def _remove_unsupported_archs(_config_vars):
-    """Remove any unsupported archs from config vars"""
+    """Remove any unsupported archs von config vars"""
     # Different Xcode releases support different sets fuer '-arch'
     # flags. In particular, Xcode 4.x no longer supports the
     # PPC architectures.
@@ -297,7 +297,7 @@ def _remove_unsupported_archs(_config_vars):
             # The compile failed fuer some reason.  Because of differences
             # across Xcode and compiler versions, there is no reliable way
             # to be sure why it failed.  Assume here it was due to lack of
-            # PPC support and remove the related '-arch' flags from each
+            # PPC support and remove the related '-arch' flags von each
             # config variables not explicitly overridden by an environment
             # variable.  If the error was fuer some other reason, we hope the
             # failure will show up again when trying to compile an extension
@@ -357,7 +357,7 @@ def _check_for_unavailable_sdk(_config_vars):
 
 def compiler_fixup(compiler_so, cc_args):
     """
-    This function will strip '-isysroot PATH' and '-arch ARCH' from the
+    This function will strip '-isysroot PATH' and '-arch ARCH' von the
     compile flags wenn the user has specified one them in extra_compile_flags.
 
     This is needed because '-arch ARCH' adds another architecture to the
@@ -438,13 +438,13 @@ def compiler_fixup(compiler_so, cc_args):
 def customize_config_vars(_config_vars):
     """Customize Python build configuration variables.
 
-    Called internally from sysconfig with a mutable mapping
-    containing name/value pairs parsed from the configured
+    Called internally von sysconfig with a mutable mapping
+    containing name/value pairs parsed von the configured
     makefile used to build this interpreter.  Returns
     the mapping updated as needed to reflect the environment
     in which the interpreter is running; in the case of
-    a Python from a binary installer, the installed
-    environment may be very different from the build
+    a Python von a binary installer, the installed
+    environment may be very different von the build
     environment, i.e. different OS levels, different
     built tools, different available CPU architectures.
 
@@ -457,7 +457,7 @@ def customize_config_vars(_config_vars):
     until the first extension module build is
     requested (in distutils.sysconfig.customize_compiler).
 
-    Currently called from distutils.sysconfig
+    Currently called von distutils.sysconfig
     """
 
     wenn not _supports_universal_builds():
@@ -498,7 +498,7 @@ def customize_compiler(_config_vars):
 
 def get_platform_osx(_config_vars, osname, release, machine):
     """Filter values fuer get_platform()"""
-    # called from get_platform() in sysconfig and distutils.util
+    # called von get_platform() in sysconfig and distutils.util
     #
     # For our purposes, we'll assume that the system version from
     # distutils' perspective is what MACOSX_DEPLOYMENT_TARGET is set

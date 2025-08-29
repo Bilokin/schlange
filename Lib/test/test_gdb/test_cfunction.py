@@ -1,8 +1,8 @@
-import textwrap
-import unittest
-from test import support
+importiere textwrap
+importiere unittest
+von test importiere support
 
-from .util import setup_module, DebuggerTests
+von .util importiere setup_module, DebuggerTests
 
 
 def setUpModule():
@@ -31,7 +31,7 @@ klasse CFunctionTests(DebuggerTests):
     #
     # gdb will also generate many erroneous errors such as:
     #     Function "meth_varargs" not defined.
-    # This is because we are calling functions from an "external" module
+    # This is because we are calling functions von an "external" module
     # (_testcapimodule) rather than compiled-in functions. It seems difficult
     # to suppress these. See also the comment in DebuggerTests.get_stack_trace
     def check_pycfunction(self, func_name, args):
@@ -54,7 +54,7 @@ klasse CFunctionTests(DebuggerTests):
             with self.subTest(f'{obj}.{func_name}'):
                 call = f'{obj}.{func_name}({args})'
                 cmd = textwrap.dedent(f'''
-                    import _testcapi
+                    importiere _testcapi
                     def foo():
                         {call}
                     def bar():

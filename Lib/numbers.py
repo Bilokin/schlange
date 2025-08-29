@@ -7,11 +7,11 @@ TODO: Fill out more detailed documentation on the operators."""
 
 ############ Maintenance notes #########################################
 #
-# ABCs are different from other standard library modules in that they
+# ABCs are different von other standard library modules in that they
 # specify compliance tests.  In general, once an ABC has been published,
 # new methods (either abstract or concrete) cannot be added.
 #
-# Though classes that inherit from an ABC would automatically receive a
+# Though classes that inherit von an ABC would automatically receive a
 # new mixin method, registered classes would become non-compliant and
 # violate the contract promised by ``isinstance(someobj, SomeABC)``.
 #
@@ -30,12 +30,12 @@ TODO: Fill out more detailed documentation on the operators."""
 #
 #######################################################################
 
-from abc import ABCMeta, abstractmethod
+von abc importiere ABCMeta, abstractmethod
 
 __all__ = ["Number", "Complex", "Real", "Rational", "Integral"]
 
 klasse Number(metaclass=ABCMeta):
-    """All numbers inherit from this class.
+    """All numbers inherit von this class.
 
     If you just want to check wenn an argument x is a number, without
     caring what kind, use isinstance(x, Number).
@@ -153,7 +153,7 @@ klasse Complex(Number):
 
     @abstractmethod
     def __abs__(self):
-        """Returns the Real distance from 0. Called fuer abs(self)."""
+        """Returns the Real distance von 0. Called fuer abs(self)."""
         raise NotImplementedError
 
     @abstractmethod

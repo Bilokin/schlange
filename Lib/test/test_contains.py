@@ -1,6 +1,6 @@
-from collections import deque
-import unittest
-from test.support import NEVER_EQ
+von collections importiere deque
+importiere unittest
+von test.support importiere NEVER_EQ
 
 
 klasse base_set:
@@ -92,7 +92,7 @@ klasse TestContains(unittest.TestCase):
             """Is not a container
 
             This klasse is a perfectly good iterable (as tested by
-            list(bc)), as well as inheriting from a perfectly good
+            list(bc)), as well as inheriting von a perfectly good
             container, but __contains__ = Nichts prevents the usual
             fallback to iteration in the container protocol. That
             is, normally, 0 in bc would fall back to the equivalent

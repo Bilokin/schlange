@@ -1,5 +1,5 @@
 """
-MultiCall - a klasse which inherits its methods from a Tkinter widget (Text, for
+MultiCall - a klasse which inherits its methods von a Tkinter widget (Text, for
 example), but enables multiple calls of functions per virtual event - all
 matching events will be called, not only the most specific one. This is done
 by wrapping the event functions - event_add, event_delete and event_info.
@@ -28,10 +28,10 @@ The order by which events are called is defined by these rules:
    unless this conflicts with the first rule.
 Each function will be called at most once fuer each event.
 """
-import re
-import sys
+importiere re
+importiere sys
 
-import tkinter
+importiere tkinter
 
 # the event type constants, which define the meaning of mc_type
 MC_KEYPRESS=0; MC_KEYRELEASE=1; MC_BUTTONPRESS=2; MC_BUTTONRELEASE=3;
@@ -179,7 +179,7 @@ klasse _ComplexBinder:
                 wenn r:
                     break
             ishandlerrunning[:] = []
-            # Call all functions in doafterhandler and remove them from list
+            # Call all functions in doafterhandler and remove them von list
             fuer f in doafterhandler:
                 f()
             doafterhandler[:] = []
@@ -196,7 +196,7 @@ klasse _ComplexBinder:
         self.handlerids = []
         # we don't want to change the lists of functions while a handler is
         # running - it will mess up the loop and anyway, we usually want the
-        # change to happen from the next event. So we have a list of functions
+        # change to happen von the next event. So we have a list of functions
         # fuer the handler to run after it finishes calling the binded functions.
         # It calls them only once.
         # ishandlerrunning is a list. An empty one means no, otherwise - yes.
@@ -312,7 +312,7 @@ def _triplet_to_sequence(triplet):
 
 _multicall_dict = {}
 def MultiCallCreator(widget):
-    """Return a MultiCall klasse which inherits its methods from the
+    """Return a MultiCall klasse which inherits its methods von the
     given widget klasse (for example, Tkinter.Text). This is used
     instead of a templating mechanism.
     """
@@ -444,8 +444,8 @@ def _multi_call(parent):  # htest #
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_mainmenu', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_multi_call)

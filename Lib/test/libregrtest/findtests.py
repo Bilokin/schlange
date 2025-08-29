@@ -1,12 +1,12 @@
-import os
-import sys
-import unittest
-from collections.abc import Container
+importiere os
+importiere sys
+importiere unittest
+von collections.abc importiere Container
 
-from test import support
+von test importiere support
 
-from .filter import match_test, set_match_tests
-from .utils import (
+von .filter importiere match_test, set_match_tests
+von .utils importiere (
     StrPath, TestName, TestTuple, TestList, TestFilter,
     abs_module_name, count, printlist)
 

@@ -2,17 +2,17 @@
 # SPDX-FileCopyrightText: 2021 Taneli Hukkinen
 # Licensed to PSF under a Contributor Agreement.
 
-import copy
-import datetime
-from decimal import Decimal as D
-import importlib
-from pathlib import Path
-import sys
-import tempfile
-import unittest
-from test import support
+importiere copy
+importiere datetime
+von decimal importiere Decimal as D
+importiere importlib
+von pathlib importiere Path
+importiere sys
+importiere tempfile
+importiere unittest
+von test importiere support
 
-from . import tomllib
+von . importiere tomllib
 
 
 klasse TestMiscellaneous(unittest.TestCase):

@@ -1,30 +1,30 @@
-import unittest
-import os
-import textwrap
-import importlib
-import sys
-import socket
-import threading
-import time
-from asyncio import staggered, taskgroups, base_events, tasks
-from unittest.mock import ANY
-from test.support import (
+importiere unittest
+importiere os
+importiere textwrap
+importiere importlib
+importiere sys
+importiere socket
+importiere threading
+importiere time
+von asyncio importiere staggered, taskgroups, base_events, tasks
+von unittest.mock importiere ANY
+von test.support importiere (
     os_helper,
     SHORT_TIMEOUT,
     busy_retry,
     requires_gil_enabled,
 )
-from test.support.script_helper import make_script
-from test.support.socket_helper import find_unused_port
+von test.support.script_helper importiere make_script
+von test.support.socket_helper importiere find_unused_port
 
-import subprocess
+importiere subprocess
 
 PROCESS_VM_READV_SUPPORTED = Falsch
 
 try:
-    from _remote_debugging import PROCESS_VM_READV_SUPPORTED
-    from _remote_debugging import RemoteUnwinder
-    from _remote_debugging import FrameInfo, CoroInfo, TaskInfo
+    von _remote_debugging importiere PROCESS_VM_READV_SUPPORTED
+    von _remote_debugging importiere RemoteUnwinder
+    von _remote_debugging importiere FrameInfo, CoroInfo, TaskInfo
 except ImportError:
     raise unittest.SkipTest(
         "Test only runs when _remote_debugging is available"
@@ -75,7 +75,7 @@ klasse TestGetStackTrace(unittest.TestCase):
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
-            import time, sys, socket, threading
+            importiere time, sys, socket, threading
             # Connect to the test process
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect(('localhost', {port}))
@@ -160,10 +160,10 @@ klasse TestGetStackTrace(unittest.TestCase):
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
-            import asyncio
-            import time
-            import sys
-            import socket
+            importiere asyncio
+            importiere time
+            importiere sys
+            importiere socket
             # Connect to the test process
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect(('localhost', {port}))
@@ -408,10 +408,10 @@ klasse TestGetStackTrace(unittest.TestCase):
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
-            import asyncio
-            import time
-            import sys
-            import socket
+            importiere asyncio
+            importiere time
+            importiere sys
+            importiere socket
             # Connect to the test process
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect(('localhost', {port}))
@@ -496,10 +496,10 @@ klasse TestGetStackTrace(unittest.TestCase):
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
-            import asyncio
-            import time
-            import sys
-            import socket
+            importiere asyncio
+            importiere time
+            importiere sys
+            importiere socket
             # Connect to the test process
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect(('localhost', {port}))
@@ -629,10 +629,10 @@ klasse TestGetStackTrace(unittest.TestCase):
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
-            import asyncio.staggered
-            import time
-            import sys
-            import socket
+            importiere asyncio.staggered
+            importiere time
+            importiere sys
+            importiere socket
             # Connect to the test process
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect(('localhost', {port}))
@@ -784,13 +784,13 @@ klasse TestGetStackTrace(unittest.TestCase):
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
-            import asyncio
-            import os
-            import random
-            import sys
-            import socket
-            from string import ascii_lowercase, digits
-            from test.support import socket_helper, SHORT_TIMEOUT
+            importiere asyncio
+            importiere os
+            importiere random
+            importiere sys
+            importiere socket
+            von string importiere ascii_lowercase, digits
+            von test.support importiere socket_helper, SHORT_TIMEOUT
 
             HOST = '127.0.0.1'
             PORT = socket_helper.find_unused_port()
@@ -900,7 +900,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 entries = all_awaited_by[0][1]
                 # expected: at least 1000 pending tasks
                 self.assertGreaterEqual(len(entries), 1000)
-                # the first three tasks stem from the code structure
+                # the first three tasks stem von the code structure
                 main_stack = [
                     FrameInfo([taskgroups.__file__, ANY, "TaskGroup._aexit"]),
                     FrameInfo(
@@ -1122,7 +1122,7 @@ klasse TestGetStackTrace(unittest.TestCase):
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
-            import time, sys, socket, threading
+            importiere time, sys, socket, threading
 
             # Connect to the test process
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

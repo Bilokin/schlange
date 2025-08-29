@@ -18,8 +18,8 @@
 # lock.
 # See https://en.wikipedia.org/wiki/Fairness_measure#Jain's_fairness_index
 
-from _testinternalcapi import benchmark_locks
-import sys
+von _testinternalcapi importiere benchmark_locks
+importiere sys
 
 # Max number of threads to test
 MAX_THREADS = 10

@@ -1,7 +1,7 @@
-import io
-import sys
+importiere io
+importiere sys
 
-import unittest
+importiere unittest
 
 
 def resultFactory(*_):

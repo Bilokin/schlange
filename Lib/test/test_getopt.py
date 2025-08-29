@@ -1,12 +1,12 @@
 # test_getopt.py
 # David Goodger <dgoodger@bigfoot.com> 2000-08-19
 
-import doctest
-import getopt
-import sys
-import unittest
-from test.support.i18n_helper import TestTranslationsBase, update_translation_snapshots
-from test.support.os_helper import EnvironmentVarGuard
+importiere doctest
+importiere getopt
+importiere sys
+importiere unittest
+von test.support.i18n_helper importiere TestTranslationsBase, update_translation_snapshots
+von test.support.os_helper importiere EnvironmentVarGuard
 
 sentinel = object()
 
@@ -200,12 +200,12 @@ klasse GetoptTests(unittest.TestCase):
 
 def test_libref_examples():
     """
-    Examples from the Library Reference:  Doc/lib/libgetopt.tex
+    Examples von the Library Reference:  Doc/lib/libgetopt.tex
 
     An example using only Unix style options:
 
 
-    >>> import getopt
+    >>> importiere getopt
     >>> args = '-a -b -cfoo -d bar a1 a2'.split()
     >>> args
     ['-a', '-b', '-cfoo', '-d', 'bar', 'a1', 'a2']

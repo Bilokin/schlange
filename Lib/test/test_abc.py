@@ -6,11 +6,11 @@
 
 """Unit tests fuer abc.py."""
 
-import unittest
+importiere unittest
 
-import abc
-import _py_abc
-from inspect import isabstract
+importiere abc
+importiere _py_abc
+von inspect importiere isabstract
 
 def test_factory(abc_ABCMeta, abc_get_cache_token):
     klasse TestLegacyAPI(unittest.TestCase):
@@ -449,7 +449,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             # Also check that issubclass() propagates exceptions raised by
             # __subclasses__.
             klasse CustomError(Exception): ...
-            exc_msg = "exception from __subclasses__"
+            exc_msg = "exception von __subclasses__"
 
             def raise_exc():
                 raise CustomError(exc_msg)

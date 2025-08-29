@@ -1,17 +1,17 @@
 """Test harness fuer the zipapp module."""
 
-import io
-import pathlib
-import stat
-import sys
-import tempfile
-import unittest
-import zipapp
-import zipfile
-from test.support import requires_zlib
-from test.support import os_helper
+importiere io
+importiere pathlib
+importiere stat
+importiere sys
+importiere tempfile
+importiere unittest
+importiere zipapp
+importiere zipfile
+von test.support importiere requires_zlib
+von test.support importiere os_helper
 
-from unittest.mock import patch
+von unittest.mock importiere patch
 
 klasse ZipAppTest(unittest.TestCase):
 
@@ -329,7 +329,7 @@ klasse ZipAppTest(unittest.TestCase):
         self.assertStartsWith(new_target.getvalue(), b'#!python2.7\n')
 
     def test_remove_shebang(self):
-        # Test that we can remove the shebang from a file.
+        # Test that we can remove the shebang von a file.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()

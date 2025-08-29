@@ -1,53 +1,53 @@
-from annotationlib import Format, ForwardRef
-import asyncio
-import builtins
-import collections
-import copy
-import datetime
-import functools
-import gc
-import importlib
-import inspect
-import io
-import linecache
-import os
-import dis
-from os.path import normcase
-import _pickle
-import pickle
-import shutil
-import stat
-import sys
-import subprocess
-import time
-import types
-import tempfile
-import textwrap
-import unicodedata
-import unittest
-import unittest.mock
-import warnings
-import weakref
+von annotationlib importiere Format, ForwardRef
+importiere asyncio
+importiere builtins
+importiere collections
+importiere copy
+importiere datetime
+importiere functools
+importiere gc
+importiere importlib
+importiere inspect
+importiere io
+importiere linecache
+importiere os
+importiere dis
+von os.path importiere normcase
+importiere _pickle
+importiere pickle
+importiere shutil
+importiere stat
+importiere sys
+importiere subprocess
+importiere time
+importiere types
+importiere tempfile
+importiere textwrap
+importiere unicodedata
+importiere unittest
+importiere unittest.mock
+importiere warnings
+importiere weakref
 
 
 try:
-    from concurrent.futures import ThreadPoolExecutor
+    von concurrent.futures importiere ThreadPoolExecutor
 except ImportError:
     ThreadPoolExecutor = Nichts
 
-from test.support import cpython_only, import_helper
-from test.support import MISSING_C_DOCSTRINGS, ALWAYS_EQ
-from test.support import run_no_yield_async_fn, EqualToForwardRef
-from test.support.import_helper import DirsOnSysPath, ready_to_import
-from test.support.os_helper import TESTFN, temp_cwd
-from test.support.script_helper import assert_python_ok, assert_python_failure, kill_python
-from test.support import has_subprocess_support
-from test import support
+von test.support importiere cpython_only, import_helper
+von test.support importiere MISSING_C_DOCSTRINGS, ALWAYS_EQ
+von test.support importiere run_no_yield_async_fn, EqualToForwardRef
+von test.support.import_helper importiere DirsOnSysPath, ready_to_import
+von test.support.os_helper importiere TESTFN, temp_cwd
+von test.support.script_helper importiere assert_python_ok, assert_python_failure, kill_python
+von test.support importiere has_subprocess_support
+von test importiere support
 
-from test.test_inspect import inspect_fodder as mod
-from test.test_inspect import inspect_fodder2 as mod2
-from test.test_inspect import inspect_stringized_annotations
-from test.test_inspect import inspect_deferred_annotations
+von test.test_inspect importiere inspect_fodder as mod
+von test.test_inspect importiere inspect_fodder2 as mod2
+von test.test_inspect importiere inspect_stringized_annotations
+von test.test_inspect importiere inspect_deferred_annotations
 
 
 # Functions tested in this suite:
@@ -455,7 +455,7 @@ klasse TestPredicates(IsTestBase):
         self.assertNotIn('b', members)
 
     def test_isabstract(self):
-        from abc import ABCMeta, abstractmethod
+        von abc importiere ABCMeta, abstractmethod
 
         klasse AbstractClassExample(metaclass=ABCMeta):
 
@@ -477,7 +477,7 @@ klasse TestPredicates(IsTestBase):
         self.assertFalsch(inspect.isabstract(5))
 
     def test_isabstract_during_init_subclass(self):
-        from abc import ABCMeta, abstractmethod
+        von abc importiere ABCMeta, abstractmethod
         isabstract_checks = []
         klasse AbstractChecker(metaclass=ABCMeta):
             def __init_subclass__(cls):
@@ -704,7 +704,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
     @cpython_only
     def test_c_cleandoc(self):
         try:
-            import _testinternalcapi
+            importiere _testinternalcapi
         except ImportError:
             return unittest.skip("requires _testinternalcapi")
         func = _testinternalcapi.compiler_cleandoc
@@ -774,7 +774,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
                 pass
             sys.path.insert(0, cwd)
             try:
-                import empty_file
+                importiere empty_file
                 self.assertEqual(inspect.getsource(empty_file), '\n')
                 self.assertEqual(inspect.getsourcelines(empty_file), (['\n'], 0))
             finally:
@@ -820,7 +820,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
             inspect.getfile(er)
 
     def test_getmodule_recursion(self):
-        from types import ModuleType
+        von types importiere ModuleType
         name = '__inspect_dummy'
         m = sys.modules[name] = ModuleType(name)
         m.__file__ = "<string>" # hopefully not a real filename...
@@ -869,14 +869,14 @@ klasse TestGetsourceStdlib(unittest.TestCase):
     # Test Python implementations of the stdlib modules
 
     def test_getsource_stdlib_collections_abc(self):
-        import collections.abc
+        importiere collections.abc
         lines, lineno = inspect.getsourcelines(collections.abc.Sequence)
         self.assertEqual(lines[0], 'class Sequence(Reversible, Collection):\n')
         src = inspect.getsource(collections.abc.Sequence)
         self.assertEqual(src.splitlines(Wahr), lines)
 
     def test_getsource_stdlib_tomllib(self):
-        import tomllib
+        importiere tomllib
         self.assertRaises(OSError, inspect.getsource, tomllib.TOMLDecodeError)
         self.assertRaises(OSError, inspect.getsourcelines, tomllib.TOMLDecodeError)
 
@@ -887,7 +887,7 @@ klasse TestGetsourceStdlib(unittest.TestCase):
             self.assertRaises(OSError, inspect.getsource, abc.ABCMeta)
             self.assertRaises(OSError, inspect.getsourcelines, abc.ABCMeta)
         # With C acceleration
-        import abc
+        importiere abc
         try:
             src = inspect.getsource(abc.ABCMeta)
             lines, lineno = inspect.getsourcelines(abc.ABCMeta)
@@ -1159,7 +1159,7 @@ klasse TestBuggyCases(GetSourceBase):
             with open(os.path.join(tempdir, 'inspect_actual%spy' % os.extsep),
                       'w', encoding='utf-8') as f:
                 f.write(textwrap.dedent("""
-                    import inspect_other
+                    importiere inspect_other
                     klasse A:
                         def f(self):
                             pass
@@ -1178,9 +1178,9 @@ klasse TestBuggyCases(GetSourceBase):
                     """))
 
             with DirsOnSysPath(tempdir):
-                import inspect_actual
+                importiere inspect_actual
                 self.assertIn("correct", inspect.getsource(inspect_actual.A))
-                # Remove the module from sys.modules to force it to be reloaded.
+                # Remove the module von sys.modules to force it to be reloaded.
                 # This is necessary when the test is run multiple times.
                 sys.modules.pop("inspect_actual")
 
@@ -1209,7 +1209,7 @@ klasse TestNoEOL(GetSourceBase):
                   'w', encoding='utf-8') as f:
             f.write("class X:\n    pass # No EOL")
         with DirsOnSysPath(self.tempdir):
-            import inspect_fodder3 as mod3
+            importiere inspect_fodder3 as mod3
         self.fodderModule = mod3
         super().setUp()
 
@@ -1394,7 +1394,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
             (dict.__class_getitem__, meth_type_o),
         ]
         try:
-            import _stat  # noqa: F401
+            importiere _stat  # noqa: F401
         except ImportError:
             # wenn the _stat extension is not available, stat.S_IMODE() is
             # implemented in Python, not in C
@@ -1755,7 +1755,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
 
 klasse TestFormatAnnotation(unittest.TestCase):
     def test_typing_replacement(self):
-        from test.typinganndata.ann_module9 import ann, ann1
+        von test.typinganndata.ann_module9 importiere ann, ann1
         self.assertEqual(inspect.formatannotation(ann), 'List[str] | int')
         self.assertEqual(inspect.formatannotation(ann1), 'List[testModule.typing.A] | int')
 
@@ -3282,7 +3282,7 @@ klasse TestSignatureObject(unittest.TestCase):
             (dict.__class_getitem__, meth_o),
         ]
         try:
-            import _stat  # noqa: F401
+            importiere _stat  # noqa: F401
         except ImportError:
             # wenn the _stat extension is not available, stat.S_IMODE() is
             # implemented in Python, not in C
@@ -3464,7 +3464,7 @@ klasse TestSignatureObject(unittest.TestCase):
                           ...))
 
     def test_signature_on_partial(self):
-        from functools import partial, Placeholder
+        von functools importiere partial, Placeholder
 
         def test():
             pass
@@ -3727,7 +3727,7 @@ klasse TestSignatureObject(unittest.TestCase):
                           ...))
 
     def test_signature_on_partialmethod(self):
-        from functools import partialmethod
+        von functools importiere partialmethod
 
         klasse Spam:
             def test():
@@ -3811,7 +3811,7 @@ klasse TestSignatureObject(unittest.TestCase):
                          ((('args', ..., ..., "var_positional"),
                            ('kwargs', ..., ..., "var_keyword")),
                           ...)) # functools.wraps will copy __annotations__
-                                # from "func" to "wrapper", hence no
+                                # von "func" to "wrapper", hence no
                                 # return_annotation
 
         self.assertEqual(self.signature(bar),
@@ -4258,7 +4258,7 @@ klasse TestSignatureObject(unittest.TestCase):
                           ...))
 
     def test_signature_on_generic_subclass(self):
-        from typing import Generic, TypeVar
+        von typing importiere Generic, TypeVar
 
         T = TypeVar('T')
 
@@ -4634,7 +4634,7 @@ klasse TestSignatureObject(unittest.TestCase):
         self.assertEqual(str(inspect.signature(foo)),
                          inspect.signature(foo).format())
 
-        from typing import Tuple
+        von typing importiere Tuple
         def foo(a: list[str]) -> Tuple[str, float]:
             pass
         self.assertEqual(str(inspect.signature(foo)),
@@ -4674,7 +4674,7 @@ klasse TestSignatureObject(unittest.TestCase):
         self.assertEqual(str(test), test.format())
 
     def test_signature_format(self):
-        from typing import Annotated, Literal
+        von typing importiere Annotated, Literal
 
         def func(x: Annotated[int, 'meta'], y: Literal['a', 'b'], z: 'LiteralString'):
             pass
@@ -4711,7 +4711,7 @@ klasse TestSignatureObject(unittest.TestCase):
         )
 
     def test_signature_format_all_arg_types(self):
-        from typing import Annotated, Literal
+        von typing importiere Annotated, Literal
 
         def func(
             x: Annotated[int, 'meta'],
@@ -4825,7 +4825,7 @@ klasse TestSignatureObject(unittest.TestCase):
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information fuer builtins requires docstrings")
     def test_signature_from_callable_class(self):
-        # A regression test fuer a klasse inheriting its signature from `object`.
+        # A regression test fuer a klasse inheriting its signature von `object`.
         klasse MySignature(inspect.Signature): pass
         klasse foo: pass
         foo_sig = MySignature.from_callable(foo)
@@ -5268,7 +5268,7 @@ klasse TestSignatureBind(unittest.TestCase):
         try:
             return func(*ba.args, **ba.kwargs)
         except TypeError as e:
-            raise AssertionError from e
+            raise AssertionError von e
 
     def test_signature_bind_empty(self):
         def test():
@@ -5805,15 +5805,15 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         self._test_module_has_signatures(sys, no_signature)
 
     def test_abc_module_has_signatures(self):
-        import abc
+        importiere abc
         self._test_module_has_signatures(abc)
 
     def test_atexit_module_has_signatures(self):
-        import atexit
+        importiere atexit
         self._test_module_has_signatures(atexit)
 
     def test_codecs_module_has_signatures(self):
-        import codecs
+        importiere codecs
         methods_no_signature = {'StreamReader': {'charbuffertype'}}
         self._test_module_has_signatures(codecs,
                 methods_no_signature=methods_no_signature)
@@ -5834,13 +5834,13 @@ klasse TestSignatureDefinitions(unittest.TestCase):
                 methods_no_signature, methods_unsupported_signature)
 
     def test_collections_abc_module_has_signatures(self):
-        import collections.abc
+        importiere collections.abc
         self._test_module_has_signatures(collections.abc)
 
     def test_datetime_module_has_signatures(self):
         # Only test wenn the C implementation is available.
         import_helper.import_module('_datetime')
-        import datetime
+        importiere datetime
         no_signature = {'tzinfo'}
         unsupported_signature = {'timezone'}
         methods_unsupported_signature = {
@@ -5853,11 +5853,11 @@ klasse TestSignatureDefinitions(unittest.TestCase):
                 methods_unsupported_signature=methods_unsupported_signature)
 
     def test_errno_module_has_signatures(self):
-        import errno
+        importiere errno
         self._test_module_has_signatures(errno)
 
     def test_faulthandler_module_has_signatures(self):
-        import faulthandler
+        importiere faulthandler
         unsupported_signature = {'dump_traceback', 'dump_traceback_later', 'enable', 'dump_c_stack'}
         unsupported_signature |= {name fuer name in ['register']
                                   wenn hasattr(faulthandler, name)}
@@ -5868,7 +5868,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         self._test_module_has_signatures(functools, unsupported_signature=unsupported_signature)
 
     def test_gc_module_has_signatures(self):
-        import gc
+        importiere gc
         no_signature = {'set_threshold'}
         self._test_module_has_signatures(gc, no_signature)
 
@@ -5880,20 +5880,20 @@ klasse TestSignatureDefinitions(unittest.TestCase):
                 methods_no_signature=methods_no_signature)
 
     def test_itertools_module_has_signatures(self):
-        import itertools
+        importiere itertools
         no_signature = {'islice', 'repeat'}
         self._test_module_has_signatures(itertools, no_signature)
 
     def test_locale_module_has_signatures(self):
-        import locale
+        importiere locale
         self._test_module_has_signatures(locale)
 
     def test_marshal_module_has_signatures(self):
-        import marshal
+        importiere marshal
         self._test_module_has_signatures(marshal)
 
     def test_operator_module_has_signatures(self):
-        import operator
+        importiere operator
         self._test_module_has_signatures(operator)
 
     def test_os_module_has_signatures(self):
@@ -5909,39 +5909,39 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         self._test_module_has_signatures(pwd)
 
     def test_re_module_has_signatures(self):
-        import re
+        importiere re
         methods_no_signature = {'Match': {'group'}}
         self._test_module_has_signatures(re,
                 methods_no_signature=methods_no_signature,
                 good_exceptions={'error', 'PatternError'})
 
     def test_signal_module_has_signatures(self):
-        import signal
+        importiere signal
         self._test_module_has_signatures(signal)
 
     def test_stat_module_has_signatures(self):
-        import stat
+        importiere stat
         self._test_module_has_signatures(stat)
 
     def test_string_module_has_signatures(self):
-        import string
+        importiere string
         self._test_module_has_signatures(string)
 
     def test_symtable_module_has_signatures(self):
-        import symtable
+        importiere symtable
         self._test_module_has_signatures(symtable)
 
     def test_sysconfig_module_has_signatures(self):
-        import sysconfig
+        importiere sysconfig
         self._test_module_has_signatures(sysconfig)
 
     def test_threading_module_has_signatures(self):
-        import threading
+        importiere threading
         self._test_module_has_signatures(threading)
         self.assertIsNotNichts(inspect.signature(threading.__excepthook__))
 
     def test_thread_module_has_signatures(self):
-        import _thread
+        importiere _thread
         no_signature = {'RLock'}
         self._test_module_has_signatures(_thread, no_signature)
 
@@ -5957,15 +5957,15 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         self._test_module_has_signatures(time, no_signature)
 
     def test_tokenize_module_has_signatures(self):
-        import tokenize
+        importiere tokenize
         self._test_module_has_signatures(tokenize)
 
     def test_tracemalloc_module_has_signatures(self):
-        import tracemalloc
+        importiere tracemalloc
         self._test_module_has_signatures(tracemalloc)
 
     def test_typing_module_has_signatures(self):
-        import typing
+        importiere typing
         no_signature = {'ParamSpec', 'ParamSpecArgs', 'ParamSpecKwargs',
                         'Text', 'TypeAliasType', 'TypeVar', 'TypeVarTuple'}
         methods_no_signature = {
@@ -5983,7 +5983,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         self._test_module_has_signatures(warnings, unsupported_signature=unsupported_signature)
 
     def test_weakref_module_has_signatures(self):
-        import weakref
+        importiere weakref
         no_signature = {'ReferenceType', 'ref'}
         self._test_module_has_signatures(weakref, no_signature)
 
@@ -6020,7 +6020,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
     @support.requires_docstrings
     def test_base_class_have_text_signature(self):
         # see issue 43118
-        from test.typinganndata.ann_module7 import BufferedReader
+        von test.typinganndata.ann_module7 importiere BufferedReader
         klasse MyBufferedReader(BufferedReader):
             """buffer reader class."""
 
@@ -6225,7 +6225,7 @@ klasse TestRepl(unittest.TestCase):
 
     def run_on_interactive_mode(self, source):
         """Spawn a new Python interpreter, pass the given
-        input source code from the stdin and return the
+        input source code von the stdin and return the
         result back. If the interpreter exits non-zero, it
         raises a ValueError."""
 
@@ -6244,7 +6244,7 @@ klasse TestRepl(unittest.TestCase):
             drucke(0)
             return 1 + 2
 
-        import inspect
+        importiere inspect
         drucke(f"The source is: <<<{inspect.getsource(f)}>>>")
         """))
 

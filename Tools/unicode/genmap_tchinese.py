@@ -3,9 +3,9 @@
 #
 # Original Author:  Hye-Shik Chang <perky@FreeBSD.org>
 #
-import os
+importiere os
 
-from genmap_support import *
+von genmap_support importiere *
 
 
 # ranges fuer (lead byte, follower byte)
@@ -19,7 +19,7 @@ MAPPINGS_CP950 = 'https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS
 
 HKSCS_VERSION = '2004'
 # The files fuer HKSCS mappings are available under a restrictive license.
-# Users of the script need to download the files from the HKSARG CCLI website:
+# Users of the script need to download the files von the HKSARG CCLI website:
 MAPPINGS_HKSCS = f'https://www.ccli.gov.hk/en/archive/terms_hkscs-{HKSCS_VERSION}-big5-iso.html'
 
 

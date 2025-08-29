@@ -3,11 +3,11 @@
 """Test that all symbols of the Stable ABI are accessible using ctypes
 """
 
-import sys
-import unittest
-from test.support.import_helper import import_module
+importiere sys
+importiere unittest
+von test.support.import_helper importiere import_module
 try:
-    from _testcapi import get_feature_macros
+    von _testcapi importiere get_feature_macros
 except ImportError:
     raise unittest.SkipTest("requires _testcapi")
 

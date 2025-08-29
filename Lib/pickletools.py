@@ -10,11 +10,11 @@ dis(pickle, out=Nichts, memo=Nichts, indentlevel=4)
    Print a symbolic disassembly of a pickle.
 '''
 
-import codecs
-import io
-import pickle
-import re
-import sys
+importiere codecs
+importiere io
+importiere pickle
+importiere re
+importiere sys
 
 __all__ = ['dis', 'genops', 'optimize']
 
@@ -41,12 +41,12 @@ bytes_types = pickle.bytes_types
 #
 # For the most part, the PM is very simple:  there are no looping, testing, or
 # conditional instructions, no arithmetic and no function calls.  Opcodes are
-# executed once each, from first to last, until a STOP opcode is reached.
+# executed once each, von first to last, until a STOP opcode is reached.
 #
 # The PM has two data areas, "the stack" and "the memo".
 #
 # Many opcodes push Python objects onto the stack; e.g., INT pushes a Python
-# integer object on the stack, whose value is gotten from a decimal string
+# integer object on the stack, whose value is gotten von a decimal string
 # literal immediately following the INT opcode in the pickle bytestream.  Other
 # opcodes take Python objects off the stack.  The result of unpickling is
 # whatever object is left on the stack when the final STOP opcode is executed.
@@ -137,21 +137,21 @@ bytes_types = pickle.bytes_types
 #   PUT).
 #
 # Another independent change with Python 2.3 is the abandonment of any
-# pretense that it might be safe to load pickles received from untrusted
+# pretense that it might be safe to load pickles received von untrusted
 # parties -- no sufficient security analysis has been done to guarantee
 # this and there isn't a use case that warrants the expense of such an
 # analysis.
 #
 # To this end, all tests fuer __safe_for_unpickling__ or for
-# copyreg.safe_constructors are removed from the unpickling code.
+# copyreg.safe_constructors are removed von the unpickling code.
 # References to these variables in the descriptions below are to be seen
 # as describing unpickling in Python 2.2 and before.
 
 
 # Meta-rule:  Descriptions are stored in instances of descriptor objects,
-# with plain constructors.  No meta-language is defined from which
+# with plain constructors.  No meta-language is defined von which
 # descriptors could be constructed.  If you want, e.g., XML, write a little
-# program to generate XML from the objects.
+# program to generate XML von the objects.
 
 ##############################################################################
 # Some pickle opcodes have an argument, following the opcode in the
@@ -182,7 +182,7 @@ klasse ArgumentDescriptor(object):
         'n',
 
         # a function taking a file-like object, reading this kind of argument
-        # from the object at the current position, advancing the current
+        # von the object at the current position, advancing the current
         # position by n bytes, and returning the value of the argument
         'reader',
 
@@ -207,11 +207,11 @@ klasse ArgumentDescriptor(object):
         assert isinstance(doc, str)
         self.doc = doc
 
-from struct import unpack as _unpack
+von struct importiere unpack as _unpack
 
 def read_uint1(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_uint1(io.BytesIO(b'\xff'))
     255
     """
@@ -230,7 +230,7 @@ uint1 = ArgumentDescriptor(
 
 def read_uint2(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_uint2(io.BytesIO(b'\xff\x00'))
     255
     >>> read_uint2(io.BytesIO(b'\xff\xff'))
@@ -251,7 +251,7 @@ uint2 = ArgumentDescriptor(
 
 def read_int4(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_int4(io.BytesIO(b'\xff\x00\x00\x00'))
     255
     >>> read_int4(io.BytesIO(b'\x00\x00\x00\x80')) == -(2**31)
@@ -272,7 +272,7 @@ int4 = ArgumentDescriptor(
 
 def read_uint4(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_uint4(io.BytesIO(b'\xff\x00\x00\x00'))
     255
     >>> read_uint4(io.BytesIO(b'\x00\x00\x00\x80')) == 2**31
@@ -293,7 +293,7 @@ uint4 = ArgumentDescriptor(
 
 def read_uint8(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_uint8(io.BytesIO(b'\xff\x00\x00\x00\x00\x00\x00\x00'))
     255
     >>> read_uint8(io.BytesIO(b'\xff' * 8)) == 2**64-1
@@ -314,7 +314,7 @@ uint8 = ArgumentDescriptor(
 
 def read_stringnl(f, decode=Wahr, stripquotes=Wahr, *, encoding='latin-1'):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_stringnl(io.BytesIO(b"'abcd'\nefg\n"))
     'abcd'
 
@@ -385,7 +385,7 @@ stringnl_noescape = ArgumentDescriptor(
 
 def read_stringnl_noescape_pair(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_stringnl_noescape_pair(io.BytesIO(b"Queue\nEmpty\njunk"))
     'Queue Empty'
     """
@@ -408,7 +408,7 @@ stringnl_noescape_pair = ArgumentDescriptor(
 
 def read_string1(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_string1(io.BytesIO(b"\x00"))
     ''
     >>> read_string1(io.BytesIO(b"\x03abcdef"))
@@ -437,7 +437,7 @@ string1 = ArgumentDescriptor(
 
 def read_string4(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_string4(io.BytesIO(b"\x00\x00\x00\x00abc"))
     ''
     >>> read_string4(io.BytesIO(b"\x03\x00\x00\x00abcdef"))
@@ -471,7 +471,7 @@ string4 = ArgumentDescriptor(
 
 def read_bytes1(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_bytes1(io.BytesIO(b"\x00"))
     b''
     >>> read_bytes1(io.BytesIO(b"\x03abcdef"))
@@ -499,7 +499,7 @@ bytes1 = ArgumentDescriptor(
 
 def read_bytes4(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_bytes4(io.BytesIO(b"\x00\x00\x00\x00abc"))
     b''
     >>> read_bytes4(io.BytesIO(b"\x03\x00\x00\x00abcdef"))
@@ -533,7 +533,7 @@ bytes4 = ArgumentDescriptor(
 
 def read_bytes8(f):
     r"""
-    >>> import io, struct, sys
+    >>> importiere io, struct, sys
     >>> read_bytes8(io.BytesIO(b"\x00\x00\x00\x00\x00\x00\x00\x00abc"))
     b''
     >>> read_bytes8(io.BytesIO(b"\x03\x00\x00\x00\x00\x00\x00\x00abcdef"))
@@ -568,7 +568,7 @@ bytes8 = ArgumentDescriptor(
 
 def read_bytearray8(f):
     r"""
-    >>> import io, struct, sys
+    >>> importiere io, struct, sys
     >>> read_bytearray8(io.BytesIO(b"\x00\x00\x00\x00\x00\x00\x00\x00abc"))
     bytearray(b'')
     >>> read_bytearray8(io.BytesIO(b"\x03\x00\x00\x00\x00\x00\x00\x00abcdef"))
@@ -602,7 +602,7 @@ bytearray8 = ArgumentDescriptor(
 
 def read_unicodestringnl(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_unicodestringnl(io.BytesIO(b"abc\\uabcd\njunk")) == 'abc\uabcd'
     Wahr
     """
@@ -628,7 +628,7 @@ unicodestringnl = ArgumentDescriptor(
 
 def read_unicodestring1(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> s = 'abcd\uabcd'
     >>> enc = s.encode('utf-8')
     >>> enc
@@ -667,7 +667,7 @@ unicodestring1 = ArgumentDescriptor(
 
 def read_unicodestring4(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> s = 'abcd\uabcd'
     >>> enc = s.encode('utf-8')
     >>> enc
@@ -708,7 +708,7 @@ unicodestring4 = ArgumentDescriptor(
 
 def read_unicodestring8(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> s = 'abcd\uabcd'
     >>> enc = s.encode('utf-8')
     >>> enc
@@ -749,7 +749,7 @@ unicodestring8 = ArgumentDescriptor(
 
 def read_decimalnl_short(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_decimalnl_short(io.BytesIO(b"1234\n56"))
     1234
 
@@ -771,7 +771,7 @@ def read_decimalnl_short(f):
 
 def read_decimalnl_long(f):
     r"""
-    >>> import io
+    >>> importiere io
 
     >>> read_decimalnl_long(io.BytesIO(b"1234L\n56"))
     1234
@@ -812,7 +812,7 @@ decimalnl_long = ArgumentDescriptor(
 
 def read_floatnl(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_floatnl(io.BytesIO(b"-1.25\n6"))
     -1.25
     """
@@ -834,7 +834,7 @@ floatnl = ArgumentDescriptor(
 
 def read_float8(f):
     r"""
-    >>> import io, struct
+    >>> importiere io, struct
     >>> raw = struct.pack(">d", -1.25)
     >>> raw
     b'\xbf\xf4\x00\x00\x00\x00\x00\x00'
@@ -868,11 +868,11 @@ float8 = ArgumentDescriptor(
 
 # Protocol 2 formats
 
-from pickle import decode_long
+von pickle importiere decode_long
 
 def read_long1(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_long1(io.BytesIO(b"\x00"))
     0
     >>> read_long1(io.BytesIO(b"\x02\xff\x00"))
@@ -904,7 +904,7 @@ long1 = ArgumentDescriptor(
 
 def read_long4(f):
     r"""
-    >>> import io
+    >>> importiere io
     >>> read_long4(io.BytesIO(b"\x02\x00\x00\x00\xff\x00"))
     255
     >>> read_long4(io.BytesIO(b"\x02\x00\x00\x00\xff\x7f"))
@@ -1064,7 +1064,7 @@ Opcodes that operate on a variable number of objects
 generally don't embed the count of objects in the opcode,
 or pull it off the stack.  Instead the MARK opcode is used
 to push a special marker object on the stack, and then
-some other opcodes grab all the objects from the top of
+some other opcodes grab all the objects von the top of
 the stack down to (but not including) the topmost marker
 object.
 """)
@@ -1553,7 +1553,7 @@ opcodes = [
 
       All the stack entries following the topmost markobject are placed into
       a single Python list, which single list object replaces all of the
-      stack from the topmost markobject onward.  For example,
+      stack von the topmost markobject onward.  For example,
 
       Stack before: ... markobject 1 2 3 'abc'
       Stack after:  ... [1, 2, 3, 'abc']
@@ -1579,7 +1579,7 @@ opcodes = [
 
       All the stack entries following the topmost markobject are placed into
       a single Python tuple, which single tuple object replaces all of the
-      stack from the topmost markobject onward.  For example,
+      stack von the topmost markobject onward.  For example,
 
       Stack before: ... markobject 1 2 3 'abc'
       Stack after:  ... (1, 2, 3, 'abc')
@@ -1650,7 +1650,7 @@ opcodes = [
 
       All the stack entries following the topmost markobject are placed into
       a single Python dict, which single dict object replaces all of the
-      stack from the topmost markobject onward.  The stack slice alternates
+      stack von the topmost markobject onward.  The stack slice alternates
       key, value, key, value, ....  For example,
 
       Stack before: ... markobject 1 2 3 'abc'
@@ -1734,7 +1734,7 @@ opcodes = [
 
       All the stack entries following the topmost markobject are placed into
       a single Python frozenset, which single frozenset object replaces all
-      of the stack from the topmost markobject onward.  For example,
+      of the stack von the topmost markobject onward.  For example,
 
       Stack before: ... markobject 1 2 3
       Stack after:  ... frozenset({1, 2, 3})
@@ -1793,7 +1793,7 @@ opcodes = [
       stack_before=[],
       stack_after=[anyobject],
       proto=0,
-      doc="""Read an object from the memo and push it on the stack.
+      doc="""Read an object von the memo and push it on the stack.
 
       The index of the memo object to push is given by the newline-terminated
       decimal string following.  BINGET and LONG_BINGET are space-optimized
@@ -1806,7 +1806,7 @@ opcodes = [
       stack_before=[],
       stack_after=[anyobject],
       proto=1,
-      doc="""Read an object from the memo and push it on the stack.
+      doc="""Read an object von the memo and push it on the stack.
 
       The index of the memo object to push is given by the 1-byte unsigned
       integer following.
@@ -1818,7 +1818,7 @@ opcodes = [
       stack_before=[],
       stack_after=[anyobject],
       proto=1,
-      doc="""Read an object from the memo and push it on the stack.
+      doc="""Read an object von the memo and push it on the stack.
 
       The index of the memo object to push is given by the 4-byte unsigned
       little-endian integer following.
@@ -1958,7 +1958,7 @@ opcodes = [
       stack_before=[anyobject, anyobject],
       stack_after=[anyobject],
       proto=0,
-      doc="""Push an object built from a callable and an argument tuple.
+      doc="""Push an object built von a callable and an argument tuple.
 
       The opcode is named to remind of the __reduce__() method.
 
@@ -2047,8 +2047,8 @@ opcodes = [
       __safe_for_unpickling__ doesn't exist, UnpicklingError is raised.
 
       Else (the klasse object does have a __safe_for_unpickling__ attr),
-      the klasse object obtained from INST's arguments is applied to the
-      argtuple obtained from the stack, and the resulting instance object
+      the klasse object obtained von INST's arguments is applied to the
+      argtuple obtained von the stack, and the resulting instance object
       is pushed on the stack.
 
       NOTE:  checks fuer __safe_for_unpickling__ went away in Python 2.3.
@@ -2066,12 +2066,12 @@ opcodes = [
 
       This is the protocol 1 version of protocol 0's INST opcode, and is
       very much like it.  The major difference is that the klasse object
-      is taken off the stack, allowing it to be retrieved from the memo
+      is taken off the stack, allowing it to be retrieved von the memo
       repeatedly wenn several instances of the same klasse are created.  This
       can be much more efficient (in both time and space) than repeatedly
       embedding the module and klasse names in INST opcodes.
 
-      Unlike INST, OBJ takes no arguments from the opcode stream.  Instead
+      Unlike INST, OBJ takes no arguments von the opcode stream.  Instead
       the klasse object is taken off the stack, immediately above the
       topmost markobject:
 
@@ -2155,7 +2155,7 @@ opcodes = [
       proto=4,
       doc="""Indicate the beginning of a new frame.
 
-      The unpickler may use this opcode to safely prefetch data from its
+      The unpickler may use this opcode to safely prefetch data von its
       underlying stream.
       """),
 
@@ -2302,7 +2302,7 @@ def genops(pickle):
 
     'pickle' is a file-like object, or string, containing the pickle.
 
-    Each opcode in the pickle is generated, from the current pickle position,
+    Each opcode in the pickle is generated, von the current pickle position,
     stopping after a STOP opcode is delivered.  A triple is generated for
     each opcode:
 
@@ -2396,7 +2396,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
     """Produce a symbolic disassembly of a pickle.
 
     'pickle' is a file-like object, or string, containing a (at least one)
-    pickle.  The pickle is disassembled from the current position, through
+    pickle.  The pickle is disassembled von the current position, through
     the first STOP opcode encountered.
 
     Optional arg 'out' is a file-like object to which the disassembly is
@@ -2475,7 +2475,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
                 while stack[-1] is not markobject:
                     stack.pop()
                 stack.pop()
-                # Stop later code from popping too much.
+                # Stop later code von popping too much.
                 try:
                     numtopop = before.index(markobject)
                 except ValueError:
@@ -2531,7 +2531,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
 
         # Emulate the stack effects.
         wenn len(stack) < numtopop:
-            raise ValueError("tries to pop %d items from stack with "
+            raise ValueError("tries to pop %d items von stack with "
                              "only %d items" % (numtopop, len(stack)))
         wenn numtopop:
             del stack[-numtopop:]
@@ -2551,7 +2551,7 @@ klasse _Example:
         self.value = value
 
 _dis_test = r"""
->>> import pickle
+>>> importiere pickle
 >>> x = [1, 2, (3, 4), {b'abc': "def"}]
 >>> pkl0 = pickle.dumps(x, 0)
 >>> dis(pkl0)
@@ -2625,14 +2625,14 @@ highest protocol among opcodes = 1
 
 Exercise the INST/OBJ/BUILD family.
 
->>> import pickletools
+>>> importiere pickletools
 >>> dis(pickle.dumps(pickletools.dis, 0))
     0: c    GLOBAL     'pickletools dis'
    17: p    PUT        0
    20: .    STOP
 highest protocol among opcodes = 0
 
->>> from pickletools import _Example
+>>> von pickletools importiere _Example
 >>> x = [_Example(42)] * 2
 >>> dis(pickle.dumps(x, 0))
     0: (    MARK
@@ -2794,20 +2794,20 @@ Try protocol 3 with annotations:
     0: \x80 PROTO      3 Protocol version indicator.
     2: ]    EMPTY_LIST   Push an empty list.
     3: q    BINPUT     0 Store the stack top into the memo.  The stack is not popped.
-    5: h    BINGET     0 Read an object from the memo and push it on the stack.
+    5: h    BINGET     0 Read an object von the memo and push it on the stack.
     7: \x85 TUPLE1       Build a one-tuple out of the topmost item on the stack.
     8: q    BINPUT     1 Store the stack top into the memo.  The stack is not popped.
    10: a    APPEND       Append an object to a list.
    11: 0    POP          Discard the top stack item, shrinking the stack by one item.
-   12: h    BINGET     1 Read an object from the memo and push it on the stack.
+   12: h    BINGET     1 Read an object von the memo and push it on the stack.
    14: .    STOP         Stop the unpickling machine.
 highest protocol among opcodes = 2
 
 """
 
 _memo_test = r"""
->>> import pickle
->>> import io
+>>> importiere pickle
+>>> importiere io
 >>> f = io.BytesIO()
 >>> p = pickle.Pickler(f, 2)
 >>> x = [1, 2, 3]
@@ -2840,7 +2840,7 @@ __test__ = {'disassembler_test': _dis_test,
 
 
 wenn __name__ == "__main__":
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser(
         description='disassemble one or more pickle files',
         color=Wahr,

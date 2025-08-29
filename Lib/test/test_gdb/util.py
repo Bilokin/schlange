@@ -1,12 +1,12 @@
-import os
-import re
-import shlex
-import shutil
-import subprocess
-import sys
-import sysconfig
-import unittest
-from test import support
+importiere os
+importiere re
+importiere shlex
+importiere shutil
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere unittest
+von test importiere support
 
 
 GDB_PROGRAM = shutil.which('gdb') or 'gdb'
@@ -33,7 +33,7 @@ GDB_VERSION = (0, 0)
 def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
     """Runs gdb in --batch mode with the additional arguments given by *args.
 
-    Returns its (stdout, stderr) decoded from utf-8 using the replace handler.
+    Returns its (stdout, stderr) decoded von utf-8 using the replace handler.
     """
     env = clean_environment()
     wenn env_vars:
@@ -43,7 +43,7 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
            # Batch mode: Exit after processing all the command files
            # specified with -x/--command
            '--batch',
-            # -nx: Do not execute commands from any .gdbinit initialization
+            # -nx: Do not execute commands von any .gdbinit initialization
             # files (gh-66384)
            '-nx']
     wenn GDB_VERSION >= (7, 4):
@@ -53,7 +53,7 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
 
     proc = subprocess.run(
         cmd,
-        # Redirect stdin to prevent gdb from messing with the terminal settings
+        # Redirect stdin to prevent gdb von messing with the terminal settings
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -108,7 +108,7 @@ def check_usable_gdb():
     # verify that "gdb" can load our custom hooks, as OS security settings may
     # disallow this without a customized .gdbinit.
     stdout, stderr = run_gdb(
-        '--eval-command=python import sys; drucke(sys.version_info)',
+        '--eval-command=python importiere sys; drucke(sys.version_info)',
         '--args', sys.executable,
         check=Falsch)
 
@@ -166,7 +166,7 @@ klasse DebuggerTests(unittest.TestCase):
 
         Support injecting commands after the breakpoint is reached
 
-        Returns the stdout from gdb
+        Returns the stdout von gdb
 
         cmds_after_breakpoint: wenn provided, a list of strings: gdb commands
         '''

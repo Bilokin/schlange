@@ -1,6 +1,6 @@
-import os
-import unittest
-from test.support.import_helper import import_module
+importiere os
+importiere unittest
+von test.support.import_helper importiere import_module
 
 termios = import_module('termios')
 tty = import_module('tty')

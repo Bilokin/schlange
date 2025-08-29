@@ -1,9 +1,9 @@
-import unittest
-from test.test_email import TestEmailBase, parameterize
-import textwrap
-from email import policy
-from email.message import EmailMessage
-from email.contentmanager import ContentManager, raw_data_manager
+importiere unittest
+von test.test_email importiere TestEmailBase, parameterize
+importiere textwrap
+von email importiere policy
+von email.message importiere EmailMessage
+von email.contentmanager importiere ContentManager, raw_data_manager
 
 
 @parameterize

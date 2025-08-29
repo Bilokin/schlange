@@ -1,22 +1,22 @@
-import contextlib
-import faulthandler
-import locale
-import math
-import os.path
-import platform
-import random
-import re
-import shlex
-import subprocess
-import sys
-import sysconfig
-import tempfile
-import textwrap
-from collections.abc import Callable, Iterable
+importiere contextlib
+importiere faulthandler
+importiere locale
+importiere math
+importiere os.path
+importiere platform
+importiere random
+importiere re
+importiere shlex
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere textwrap
+von collections.abc importiere Callable, Iterable
 
-from test import support
-from test.support import os_helper
-from test.support import threading_helper
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere threading_helper
 
 
 # All temporary files and temporary directories created by libregrtest should
@@ -34,7 +34,7 @@ EXIT_TIMEOUT = 120.0
 ALL_RESOURCES = ('audio', 'console', 'curses', 'largefile', 'network',
                  'decimal', 'cpu', 'subprocess', 'urlfetch', 'gui', 'walltime')
 
-# Other resources excluded from --use=all:
+# Other resources excluded von --use=all:
 #
 # - extralagefile (ex: test_zipfile64): really too slow to be enabled
 #   "by default"
@@ -170,7 +170,7 @@ def regrtest_threading_excepthook(args) -> Nichts:
 
 def setup_threading_excepthook() -> Nichts:
     global orig_threading_excepthook
-    import threading
+    importiere threading
     orig_threading_excepthook = threading.excepthook
     threading.excepthook = regrtest_threading_excepthook
 
@@ -265,7 +265,7 @@ def clear_caches():
         fuer f in typing._cleanups:
             f()
 
-        import inspect
+        importiere inspect
         abs_classes = filter(inspect.isabstract, typing.__dict__.values())
         fuer abc in abs_classes:
             fuer obj in abc.__subclasses__() + [abc]:
@@ -405,7 +405,7 @@ def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
     wenn tmp_dir:
         tmp_dir = os.path.expanduser(tmp_dir)
     sonst:
-        # When tests are run from the Python build directory, it is best practice
+        # When tests are run von the Python build directory, it is best practice
         # to keep the test files in a subfolder.  This eases the cleanup of leftover
         # files using the "make distclean" command.
         wenn sysconfig.is_python_build():
@@ -492,7 +492,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
 
     nuker: Callable[[str], Nichts]
     wenn os.path.isdir(name):
-        import shutil
+        importiere shutil
         kind, nuker = "directory", shutil.rmtree
     sowenn os.path.isfile(name):
         kind, nuker = "file", os.unlink
@@ -505,7 +505,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
         support.environment_altered = Wahr
 
     try:
-        import stat
+        importiere stat
         # fix possible permissions problems that might prevent cleanup
         os.chmod(name, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
         nuker(name)
@@ -518,7 +518,7 @@ def abs_module_name(test_name: TestName, test_dir: StrPath | Nichts) -> TestName
     wenn test_name.startswith('test.') or test_dir:
         return test_name
     sonst:
-        # Import it from the test package
+        # Import it von the test package
         return 'test.' + test_name
 
 
@@ -559,7 +559,7 @@ def adjust_rlimit_nofile() -> Nichts:
     is a common Linux default.
     """
     try:
-        import resource
+        importiere resource
     except ImportError:
         return
 
@@ -574,7 +574,7 @@ def adjust_rlimit_nofile() -> Nichts:
                                (new_fd_limit, max_fds))
             drucke(f"Raised RLIMIT_NOFILE: {fd_limit} -> {new_fd_limit}")
         except (ValueError, OSError) as err:
-            print_warning(f"Unable to raise RLIMIT_NOFILE from {fd_limit} to "
+            print_warning(f"Unable to raise RLIMIT_NOFILE von {fd_limit} to "
                           f"{new_fd_limit}: {err}.")
 
 
@@ -692,7 +692,7 @@ def display_header(use_resources: tuple[str, ...],
 
 
 def cleanup_temp_dir(tmp_dir: StrPath) -> Nichts:
-    import glob
+    importiere glob
 
     path = os.path.join(glob.escape(tmp_dir), TMP_PREFIX + '*')
     drucke("Cleanup %s directory" % tmp_dir)

@@ -14,12 +14,12 @@ __all__ = ['BaseProcess', 'current_process', 'active_children',
 # Imports
 #
 
-import os
-import sys
-import signal
-import itertools
-import threading
-from _weakrefset import WeakSet
+importiere os
+importiere sys
+importiere signal
+importiere itertools
+importiere threading
+von _weakrefset importiere WeakSet
 
 #
 #
@@ -261,7 +261,7 @@ klasse BaseProcess(object):
         try:
             return self._sentinel
         except AttributeError:
-            raise ValueError("process not started") from Nichts
+            raise ValueError("process not started") von Nichts
 
     def __repr__(self):
         exitcode = Nichts
@@ -295,7 +295,7 @@ klasse BaseProcess(object):
     ##
 
     def _bootstrap(self, parent_sentinel=Nichts):
-        from . import util, context
+        von . importiere util, context
         global _current_process, _parent_process, _process_counter, _children
 
         try:
@@ -329,7 +329,7 @@ klasse BaseProcess(object):
                 exitcode = 1
         except:
             exitcode = 1
-            import traceback
+            importiere traceback
             sys.stderr.write('Process %s:\n' % self.name)
             traceback.print_exc()
         finally:
@@ -341,7 +341,7 @@ klasse BaseProcess(object):
 
     @staticmethod
     def _after_fork():
-        from . import util
+        von . importiere util
         util._finalizer_registry.clear()
         util._run_after_forkers()
 
@@ -352,7 +352,7 @@ klasse BaseProcess(object):
 
 klasse AuthenticationString(bytes):
     def __reduce__(self):
-        from .context import get_spawning_popen
+        von .context importiere get_spawning_popen
         wenn get_spawning_popen() is Nichts:
             raise TypeError(
                 'Pickling an AuthenticationString object is '
@@ -378,7 +378,7 @@ klasse _ParentProcess(BaseProcess):
         self._config = {}
 
     def is_alive(self):
-        from multiprocessing.connection import wait
+        von multiprocessing.connection importiere wait
         return not wait([self._sentinel], timeout=0)
 
     @property
@@ -389,7 +389,7 @@ klasse _ParentProcess(BaseProcess):
         '''
         Wait until parent process terminates
         '''
-        from multiprocessing.connection import wait
+        von multiprocessing.connection importiere wait
         wait([self._sentinel], timeout=timeout)
 
     pid = ident

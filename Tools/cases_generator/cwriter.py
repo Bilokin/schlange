@@ -1,7 +1,7 @@
-import contextlib
-from lexer import Token
-from typing import TextIO, Iterator
-from io import StringIO
+importiere contextlib
+von lexer importiere Token
+von typing importiere TextIO, Iterator
+von io importiere StringIO
 
 klasse CWriter:
     "A writer that understands tokens and how to format C code"

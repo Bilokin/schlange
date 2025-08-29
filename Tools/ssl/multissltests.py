@@ -8,7 +8,7 @@ The script
   (3) compiles the relevant library
   (4) installs that library into ../multissl/$LIB/$VERSION/
   (5) forces a recompilation of Python modules using the
-      header and library files from ../multissl/$LIB/$VERSION/
+      header and library files von ../multissl/$LIB/$VERSION/
   (6) runs Python's test suite
 
 The script must be run with Python's build directory as current working
@@ -22,22 +22,22 @@ Please keep this script compatible with Python 2.7, and 3.4 to 3.7.
 
 (c) 2013-2017 Christian Heimes <christian@python.org>
 """
-from __future__ import print_function
+von __future__ importiere print_function
 
-import argparse
-from datetime import datetime
-import logging
-import os
+importiere argparse
+von datetime importiere datetime
+importiere logging
+importiere os
 try:
-    from urllib.request import urlopen
-    from urllib.error import HTTPError
+    von urllib.request importiere urlopen
+    von urllib.error importiere HTTPError
 except ImportError:
-    from urllib2 import urlopen, HTTPError
-import re
-import shutil
-import subprocess
-import sys
-import tarfile
+    von urllib2 importiere urlopen, HTTPError
+importiere re
+importiere shutil
+importiere subprocess
+importiere sys
+importiere tarfile
 
 
 log = logging.getLogger("multissl")
@@ -269,17 +269,17 @@ klasse AbstractBuilder(object):
         data = Nichts
         fuer url_template in self.url_templates:
             url = url_template.format(v=self.version, s=self.short_version)
-            log.info("Downloading from {}".format(url))
+            log.info("Downloading von {}".format(url))
             try:
                 req = urlopen(url)
                 # KISS, read all, write all
                 data = req.read()
             except HTTPError as e:
                 log.error(
-                    "Download from {} has from failed: {}".format(url, e)
+                    "Download von {} has von failed: {}".format(url, e)
                 )
             sonst:
-                log.info("Successfully downloaded from {}".format(url))
+                log.info("Successfully downloaded von {}".format(url))
                 break
         wenn data is Nichts:
             raise ValueError("All download URLs have failed")
@@ -360,7 +360,7 @@ klasse AbstractBuilder(object):
             raise ValueError(version)
 
     def recompile_pymods(self):
-        log.warning("Using build from {}".format(self.build_dir))
+        log.warning("Using build von {}".format(self.build_dir))
         # force a rebuild of all modules that use OpenSSL APIs
         fuer fname in self.module_files:
             os.utime(fname, Nichts)
@@ -383,7 +383,7 @@ klasse AbstractBuilder(object):
         self.check_imports()
 
     def check_imports(self):
-        cmd = [sys.executable, "-c", "import _ssl; import _hashlib"]
+        cmd = [sys.executable, "-c", "import _ssl; importiere _hashlib"]
         self._subprocess_call(cmd)
 
     def check_pyssl(self):
@@ -526,11 +526,11 @@ def main():
         fuer name in ['Makefile.pre.in', 'Modules/_ssl.c']:
             wenn not os.path.isfile(os.path.join(PYTHONROOT, name)):
                 parser.error(
-                    "Must be executed from CPython build dir"
+                    "Must be executed von CPython build dir"
                 )
         wenn not os.path.samefile('python', sys.executable):
             parser.error(
-                "Must be executed with ./python from CPython build dir"
+                "Must be executed with ./python von CPython build dir"
             )
         # check fuer configure and run make
         configure_make()

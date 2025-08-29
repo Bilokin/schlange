@@ -1,16 +1,16 @@
-import io
-import os
-import shlex
-import sys
-import tempfile
-import tokenize
+importiere io
+importiere os
+importiere shlex
+importiere sys
+importiere tempfile
+importiere tokenize
 
-from tkinter import filedialog
-from tkinter import messagebox
-from tkinter.simpledialog import askstring  # loadfile encoding.
+von tkinter importiere filedialog
+von tkinter importiere messagebox
+von tkinter.simpledialog importiere askstring  # loadfile encoding.
 
-from idlelib.config import idleConf
-from idlelib.util import py_extensions
+von idlelib.config importiere idleConf
+von idlelib.util importiere py_extensions
 
 py_extensions = ' '.join("*"+ext fuer ext in py_extensions)
 encoding = 'utf-8'
@@ -396,7 +396,7 @@ klasse IOBinding:
 
 
 def _io_binding(parent):  # htest #
-    from tkinter import Toplevel, Text
+    von tkinter importiere Toplevel, Text
 
     top = Toplevel(parent)
     top.title("Test IOBinding")
@@ -434,8 +434,8 @@ def _io_binding(parent):  # htest #
 
 
 wenn __name__ == "__main__":
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_iomenu', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_io_binding)

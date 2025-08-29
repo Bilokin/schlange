@@ -1,8 +1,8 @@
-import math
-import unittest
-import os
-from inspect import iscoroutinefunction
-from unittest.mock import AsyncMock, Mock, MagicMock, _magics
+importiere math
+importiere unittest
+importiere os
+von inspect importiere iscoroutinefunction
+von unittest.mock importiere AsyncMock, Mock, MagicMock, _magics
 
 
 

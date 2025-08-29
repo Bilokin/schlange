@@ -1,32 +1,32 @@
 """Tests fuer unix_events.py."""
 
-import contextlib
-import errno
-import io
-import multiprocessing
-from multiprocessing.util import _cleanup_tests as multiprocessing_cleanup_tests
-import os
-import signal
-import socket
-import stat
-import sys
-import time
-import unittest
-from unittest import mock
+importiere contextlib
+importiere errno
+importiere io
+importiere multiprocessing
+von multiprocessing.util importiere _cleanup_tests as multiprocessing_cleanup_tests
+importiere os
+importiere signal
+importiere socket
+importiere stat
+importiere sys
+importiere time
+importiere unittest
+von unittest importiere mock
 
-from test import support
-from test.support import os_helper, warnings_helper
-from test.support import socket_helper
-from test.support import wait_process
-from test.support import hashlib_helper
+von test importiere support
+von test.support importiere os_helper, warnings_helper
+von test.support importiere socket_helper
+von test.support importiere wait_process
+von test.support importiere hashlib_helper
 
 wenn sys.platform == 'win32':
     raise unittest.SkipTest('UNIX only')
 
 
-import asyncio
-from asyncio import unix_events
-from test.test_asyncio import utils as test_utils
+importiere asyncio
+von asyncio importiere unix_events
+von test.test_asyncio importiere utils as test_utils
 
 
 def tearDownModule():

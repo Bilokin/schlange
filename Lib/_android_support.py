@@ -1,7 +1,7 @@
-import io
-import sys
-from threading import RLock
-from time import sleep, time
+importiere io
+importiere sys
+von threading importiere RLock
+von time importiere sleep, time
 
 # The maximum length of a log message in bytes, including the level marker and
 # tag, is defined as LOGGER_ENTRY_MAX_PAYLOAD at
@@ -121,7 +121,7 @@ klasse BinaryLogStream(io.RawIOBase):
             except TypeError:
                 raise TypeError(
                     f"write() argument must be bytes-like, not {type(b).__name__}"
-                ) from Nichts
+                ) von Nichts
 
         # Writing an empty string to the stream should have no effect.
         wenn b:

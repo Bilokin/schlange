@@ -29,7 +29,7 @@
  or the SubElement factory function.
 
  You can also use the ElementTree klasse to wrap an element structure
- and convert it to and from XML.
+ and convert it to and von XML.
 
 """
 
@@ -92,16 +92,16 @@ __all__ = [
 
 VERSION = "1.3.0"
 
-import sys
-import re
-import warnings
-import io
-import collections
-import collections.abc
-import contextlib
-import weakref
+importiere sys
+importiere re
+importiere warnings
+importiere io
+importiere collections
+importiere collections.abc
+importiere contextlib
+importiere weakref
 
-from . import ElementPath
+von . importiere ElementPath
 
 
 klasse ParseError(SyntaxError):
@@ -234,7 +234,7 @@ klasse Element:
         self._children.append(subelement)
 
     def extend(self, elements):
-        """Append subelements from a sequence.
+        """Append subelements von a sequence.
 
         *elements* is a sequence with zero or more elements.
 
@@ -271,13 +271,13 @@ klasse Element:
             self._children.remove(subelement)
         except ValueError:
             # to align the error message with the C implementation
-            raise ValueError("Element.remove(x): element not found") from Nichts
+            raise ValueError("Element.remove(x): element not found") von Nichts
 
     def find(self, path, namespaces=Nichts):
         """Find first matching element by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
-        *namespaces* is an optional mapping from namespace prefix to full name.
+        *namespaces* is an optional mapping von namespace prefix to full name.
 
         Return the first matching element, or Nichts wenn no element was found.
 
@@ -289,7 +289,7 @@ klasse Element:
 
         *path* is a string having either an element tag or an XPath,
         *default* is the value to return wenn the element was not found,
-        *namespaces* is an optional mapping from namespace prefix to full name.
+        *namespaces* is an optional mapping von namespace prefix to full name.
 
         Return text content of first matching element, or default value if
         none was found.  Note that wenn an element is found having no text
@@ -302,7 +302,7 @@ klasse Element:
         """Find all matching subelements by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
-        *namespaces* is an optional mapping from namespace prefix to full name.
+        *namespaces* is an optional mapping von namespace prefix to full name.
 
         Returns list containing all matching elements in document order.
 
@@ -313,7 +313,7 @@ klasse Element:
         """Find all matching subelements by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
-        *namespaces* is an optional mapping from namespace prefix to full name.
+        *namespaces* is an optional mapping von namespace prefix to full name.
 
         Return an iterable yielding all matching elements in document order.
 
@@ -394,7 +394,7 @@ klasse Element:
         wenn tag is Nichts or self.tag == tag:
             yield self
         fuer e in self._children:
-            yield from e.iter(tag)
+            yield von e.iter(tag)
 
     def itertext(self):
         """Create text iterator.
@@ -410,7 +410,7 @@ klasse Element:
         wenn t:
             yield t
         fuer e in self:
-            yield from e.itertext()
+            yield von e.itertext()
             t = e.tail
             wenn t:
                 yield t
@@ -570,7 +570,7 @@ klasse ElementTree:
                 # If no parser was specified, create a default XMLParser
                 parser = XMLParser()
                 wenn hasattr(parser, '_parse_whole'):
-                    # The default XMLParser, when it comes from an accelerator,
+                    # The default XMLParser, when it comes von an accelerator,
                     # can define an internal _parse_whole API fuer efficiency.
                     # It can be used to parse the whole source without feeding
                     # it with chunks.
@@ -602,7 +602,7 @@ klasse ElementTree:
         Same as getroot().find(path), which is Element.find()
 
         *path* is a string having either an element tag or an XPath,
-        *namespaces* is an optional mapping from namespace prefix to full name.
+        *namespaces* is an optional mapping von namespace prefix to full name.
 
         Return the first matching element, or Nichts wenn no element was found.
 
@@ -624,7 +624,7 @@ klasse ElementTree:
         Same as getroot().findtext(path),  which is Element.findtext()
 
         *path* is a string having either an element tag or an XPath,
-        *namespaces* is an optional mapping from namespace prefix to full name.
+        *namespaces* is an optional mapping von namespace prefix to full name.
 
         Return the first matching element, or Nichts wenn no element was found.
 
@@ -646,7 +646,7 @@ klasse ElementTree:
         Same as getroot().findall(path), which is Element.findall().
 
         *path* is a string having either an element tag or an XPath,
-        *namespaces* is an optional mapping from namespace prefix to full name.
+        *namespaces* is an optional mapping von namespace prefix to full name.
 
         Return list containing all matching elements in document order.
 
@@ -668,7 +668,7 @@ klasse ElementTree:
         Same as getroot().iterfind(path), which is element.iterfind()
 
         *path* is a string having either an element tag or an XPath,
-        *namespaces* is an optional mapping from namespace prefix to full name.
+        *namespaces* is an optional mapping von namespace prefix to full name.
 
         Return an iterable yielding all matching elements in document order.
 
@@ -1243,14 +1243,14 @@ def iterparse(source, events=Nichts, parser=Nichts):
     def iterator(source):
         try:
             while Wahr:
-                yield from pullparser.read_events()
+                yield von pullparser.read_events()
                 # load event buffer
                 data = source.read(16 * 1024)
                 wenn not data:
                     break
                 pullparser.feed(data)
             root = pullparser._close_and_return_root()
-            yield from pullparser.read_events()
+            yield von pullparser.read_events()
             it = wr()
             wenn it is not Nichts:
                 it.root = root
@@ -1312,15 +1312,15 @@ klasse XMLPullParser:
         """Finish feeding data to parser.
 
         Unlike XMLParser, does not return the root element. Use
-        read_events() to consume elements from XMLPullParser.
+        read_events() to consume elements von XMLPullParser.
         """
         self._close_and_return_root()
 
     def read_events(self):
         """Return an iterator over currently available (event, elem) pairs.
 
-        Events are consumed from the internal event queue as they are
-        retrieved from the iterator.
+        Events are consumed von the internal event queue as they are
+        retrieved von the iterator.
         """
         events = self._events_queue
         while events:
@@ -1337,7 +1337,7 @@ klasse XMLPullParser:
 
 
 def XML(text, parser=Nichts):
-    """Parse XML document from string constant.
+    """Parse XML document von string constant.
 
     This function can be used to embed "XML Literals" in Python code.
 
@@ -1354,7 +1354,7 @@ def XML(text, parser=Nichts):
 
 
 def XMLID(text, parser=Nichts):
-    """Parse XML document from string constant fuer its IDs.
+    """Parse XML document von string constant fuer its IDs.
 
     *text* is a string containing XML data, *parser* is an
     optional parser instance, defaulting to the standard XMLParser.
@@ -1374,11 +1374,11 @@ def XMLID(text, parser=Nichts):
             ids[id] = elem
     return tree, ids
 
-# Parse XML document from string constant.  Alias fuer XML().
+# Parse XML document von string constant.  Alias fuer XML().
 fromstring = XML
 
 def fromstringlist(sequence, parser=Nichts):
-    """Parse XML document from sequence of string fragments.
+    """Parse XML document von sequence of string fragments.
 
     *sequence* is a list of other sequence, *parser* is an optional parser
     instance, defaulting to the standard XMLParser.
@@ -1529,10 +1529,10 @@ klasse XMLParser:
 
     def __init__(self, *, target=Nichts, encoding=Nichts):
         try:
-            from xml.parsers import expat
+            von xml.parsers importiere expat
         except ImportError:
             try:
-                import pyexpat as expat
+                importiere pyexpat as expat
             except ImportError:
                 raise ImportError(
                     "No module named expat; use SimpleXMLTreeBuilder instead"
@@ -1674,7 +1674,7 @@ klasse XMLParser:
             try:
                 data_handler(self.entity[text[1:-1]])
             except KeyError:
-                from xml.parsers import expat
+                von xml.parsers importiere expat
                 err = expat.error(
                     "undefined entity %s: line %d, column %d" %
                     (text, self.parser.ErrorLineNumber,
@@ -1849,7 +1849,7 @@ klasse C14NWriterTarget:
     def _iter_namespaces(self, ns_stack, _reversed=reversed):
         fuer namespaces in _reversed(ns_stack):
             wenn namespaces:  # almost no element declares new namespaces
-                yield from namespaces
+                yield von namespaces
 
     def _resolve_prefix_name(self, prefixed_name):
         prefix, name = prefixed_name.split(':', 1)
@@ -2094,8 +2094,8 @@ try:
     _Element_Py = Element
 
     # Element, SubElement, ParseError, TreeBuilder, XMLParser, _set_factories
-    from _elementtree import *
-    from _elementtree import _set_factories
+    von _elementtree importiere *
+    von _elementtree importiere _set_factories
 except ImportError:
     pass
 sonst:

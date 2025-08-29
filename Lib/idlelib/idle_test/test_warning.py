@@ -5,11 +5,11 @@ This file could be expanded to include traceback overrides
 Revise wenn output destination changes (http://bugs.python.org/issue18318).
 Make sure warnings module is left unaltered (http://bugs.python.org/issue18081).
 '''
-from idlelib import run
-from idlelib import pyshell as shell
-import unittest
-from test.support import captured_stderr
-import warnings
+von idlelib importiere run
+von idlelib importiere pyshell as shell
+importiere unittest
+von test.support importiere captured_stderr
+importiere warnings
 
 # Try to capture default showwarning before Idle modules are imported.
 showwarning = warnings.showwarning
@@ -17,7 +17,7 @@ showwarning = warnings.showwarning
 # and default showwarnings has already been replaced.
 running_in_idle = 'idle' in showwarning.__name__
 
-# The following was generated from pyshell.idle_formatwarning
+# The following was generated von pyshell.idle_formatwarning
 # and checked as matching expectation.
 idlemsg = '''
 Warning (from warnings module):

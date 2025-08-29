@@ -4,37 +4,37 @@ Tests of regrtest.py.
 Note: test_regrtest cannot be run twice in parallel.
 """
 
-import _colorize
-import contextlib
-import dataclasses
-import glob
-import io
-import locale
-import os.path
-import platform
-import random
-import re
-import shlex
-import signal
-import subprocess
-import sys
-import sysconfig
-import tempfile
-import textwrap
-import unittest
-import unittest.mock
-from xml.etree import ElementTree
+importiere _colorize
+importiere contextlib
+importiere dataclasses
+importiere glob
+importiere io
+importiere locale
+importiere os.path
+importiere platform
+importiere random
+importiere re
+importiere shlex
+importiere signal
+importiere subprocess
+importiere sys
+importiere sysconfig
+importiere tempfile
+importiere textwrap
+importiere unittest
+importiere unittest.mock
+von xml.etree importiere ElementTree
 
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-from test.libregrtest import cmdline
-from test.libregrtest import main
-from test.libregrtest import setup
-from test.libregrtest import utils
-from test.libregrtest.filter import get_match_tests, set_match_tests, match_test
-from test.libregrtest.result import TestStats
-from test.libregrtest.utils import normalize_test_name
+von test importiere support
+von test.support importiere import_helper
+von test.support importiere os_helper
+von test.libregrtest importiere cmdline
+von test.libregrtest importiere main
+von test.libregrtest importiere setup
+von test.libregrtest importiere utils
+von test.libregrtest.filter importiere get_match_tests, set_match_tests, match_test
+von test.libregrtest.result importiere TestStats
+von test.libregrtest.utils importiere normalize_test_name
 
 wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
@@ -61,11 +61,11 @@ EXITCODE_RERUN_FAIL = 5
 EXITCODE_INTERRUPTED = 130
 
 TEST_INTERRUPTED = textwrap.dedent("""
-    from signal import SIGINT, raise_signal
+    von signal importiere SIGINT, raise_signal
     try:
         raise_signal(SIGINT)
     except ImportError:
-        import os
+        importiere os
         os.kill(os.getpid(), SIGINT)
     """)
 
@@ -527,7 +527,7 @@ klasse BaseTestCase(unittest.TestCase):
 
         wenn code is Nichts:
             code = textwrap.dedent("""
-                    import unittest
+                    importiere unittest
 
                     klasse Tests(unittest.TestCase):
                         def test_empty_test(self):
@@ -864,8 +864,8 @@ klasse ProgramsTestCase(BaseTestCase):
         self.run_tests(args)
 
     def test_module_from_test_autotest(self):
-        # from test import autotest
-        code = 'from test import autotest'
+        # von test importiere autotest
+        code = 'from test importiere autotest'
         args = [*self.python_args, '-c', code,
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
@@ -934,7 +934,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_success(self):
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse PassingTests(unittest.TestCase):
                 def test_test1(self):
@@ -954,7 +954,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_skip(self):
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
             raise unittest.SkipTest("nope")
         """)
         test_ok = self.create_test('ok')
@@ -969,7 +969,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_failing_test(self):
         # test a failing test
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse FailingTest(unittest.TestCase):
                 def test_failing(self):
@@ -988,8 +988,8 @@ klasse ArgsTestCase(BaseTestCase):
         tests = {}
         fuer resource in ('audio', 'network'):
             code = textwrap.dedent("""
-                        from test import support; support.requires(%r)
-                        import unittest
+                        von test importiere support; support.requires(%r)
+                        importiere unittest
                         klasse PassingTest(unittest.TestCase):
                             def test_pass(self):
                                 pass
@@ -1017,7 +1017,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_random(self):
         # test -r and --randseed command line option
         code = textwrap.dedent("""
-            import random
+            importiere random
             drucke("TESTRANDOM: %s" % random.randint(1, 1000))
         """)
         test = self.create_test('random', code)
@@ -1170,8 +1170,8 @@ klasse ArgsTestCase(BaseTestCase):
     def test_forever(self):
         # test --forever
         code = textwrap.dedent("""
-            import builtins
-            import unittest
+            importiere builtins
+            importiere unittest
 
             klasse ForeverTester(unittest.TestCase):
                 def test_run(self):
@@ -1230,7 +1230,7 @@ klasse ArgsTestCase(BaseTestCase):
     def check_huntrleaks(self, *, run_workers: bool):
         # test --huntrleaks
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             GLOBAL_LIST = []
 
@@ -1250,7 +1250,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_huntrleaks_bisect(self):
         # test --huntrleaks --bisect
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             GLOBAL_LIST = []
 
@@ -1291,8 +1291,8 @@ klasse ArgsTestCase(BaseTestCase):
     def test_huntrleaks_fd_leak(self):
         # test --huntrleaks fuer file descriptor leak
         code = textwrap.dedent("""
-            import os
-            import unittest
+            importiere os
+            importiere unittest
 
             klasse FDLeakTest(unittest.TestCase):
                 def test_leak(self):
@@ -1311,7 +1311,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_list_cases(self):
         # test --list-cases
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_method1(self):
@@ -1351,7 +1351,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_ignorefile(self):
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_method1(self):
@@ -1385,7 +1385,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_matchfile(self):
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_method1(self):
@@ -1426,7 +1426,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_env_changed(self):
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_env_changed(self):
@@ -1457,7 +1457,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_rerun_fail(self):
         # FAILURE then FAILURE
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_succeed(self):
@@ -1483,8 +1483,8 @@ klasse ArgsTestCase(BaseTestCase):
         self.assertFalsch(os.path.exists(marker_filename))
 
         code = textwrap.dedent(f"""
-            import os.path
-            import unittest
+            importiere os.path
+            importiere unittest
 
             marker_filename = {marker_filename!r}
 
@@ -1522,7 +1522,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_rerun_setup_class_hook_failure(self):
         # FAILURE then FAILURE
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse ExampleTests(unittest.TestCase):
                 @classmethod
@@ -1545,7 +1545,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_rerun_teardown_class_hook_failure(self):
         # FAILURE then FAILURE
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse ExampleTests(unittest.TestCase):
                 @classmethod
@@ -1568,7 +1568,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_rerun_setup_module_hook_failure(self):
         # FAILURE then FAILURE
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             def setUpModule():
                 raise RuntimeError('Fail')
@@ -1590,7 +1590,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_rerun_teardown_module_hook_failure(self):
         # FAILURE then FAILURE
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             def tearDownModule():
                 raise RuntimeError('Fail')
@@ -1612,7 +1612,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_rerun_setup_hook_failure(self):
         # FAILURE then FAILURE
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse ExampleTests(unittest.TestCase):
                 def setUp(self):
@@ -1634,7 +1634,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_rerun_teardown_hook_failure(self):
         # FAILURE then FAILURE
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse ExampleTests(unittest.TestCase):
                 def tearDown(self):
@@ -1656,7 +1656,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_rerun_async_setup_hook_failure(self):
         # FAILURE then FAILURE
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse ExampleTests(unittest.IsolatedAsyncioTestCase):
                 async def asyncSetUp(self):
@@ -1677,7 +1677,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_rerun_async_teardown_hook_failure(self):
         # FAILURE then FAILURE
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse ExampleTests(unittest.IsolatedAsyncioTestCase):
                 async def asyncTearDown(self):
@@ -1698,7 +1698,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_no_tests_ran(self):
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_bug(self):
@@ -1714,7 +1714,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_no_tests_ran_skip(self):
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_skipped(self):
@@ -1728,7 +1728,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_no_tests_ran_multiple_tests_nonexistent(self):
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_bug(self):
@@ -1745,7 +1745,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_no_test_ran_some_test_exist_some_not(self):
         code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_bug(self):
@@ -1753,7 +1753,7 @@ klasse ArgsTestCase(BaseTestCase):
         """)
         testname = self.create_test(code=code)
         other_code = textwrap.dedent("""
-            import unittest
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_other_bug(self):
@@ -1773,9 +1773,9 @@ klasse ArgsTestCase(BaseTestCase):
         import_helper.import_module('_testcapi')
 
         code = textwrap.dedent(r"""
-            import _testcapi
-            import gc
-            import unittest
+            importiere _testcapi
+            importiere gc
+            importiere unittest
 
             @_testcapi.with_tp_del
             klasse Garbage:
@@ -1800,10 +1800,10 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_multiprocessing_timeout(self):
         code = textwrap.dedent(r"""
-            import time
-            import unittest
+            importiere time
+            importiere unittest
             try:
-                import faulthandler
+                importiere faulthandler
             except ImportError:
                 faulthandler = Nichts
 
@@ -1830,9 +1830,9 @@ klasse ArgsTestCase(BaseTestCase):
         # --fail-env-changed must catch unraisable exception.
         # The exception must be displayed even wenn sys.stderr is redirected.
         code = textwrap.dedent(r"""
-            import unittest
-            import weakref
-            from test.support import captured_stderr
+            importiere unittest
+            importiere weakref
+            von test.support importiere captured_stderr
 
             klasse MyObject:
                 pass
@@ -1865,9 +1865,9 @@ klasse ArgsTestCase(BaseTestCase):
         # --fail-env-changed must catch uncaught thread exception.
         # The exception must be displayed even wenn sys.stderr is redirected.
         code = textwrap.dedent(r"""
-            import threading
-            import unittest
-            from test.support import captured_stderr
+            importiere threading
+            importiere unittest
+            von test.support importiere captured_stderr
 
             klasse MyObject:
                 pass
@@ -1898,9 +1898,9 @@ klasse ArgsTestCase(BaseTestCase):
         # bpo-45410: The order of messages must be preserved when -W and
         # support.print_warning() are used.
         code = textwrap.dedent(r"""
-            import sys
-            import unittest
-            from test import support
+            importiere sys
+            importiere unittest
+            von test importiere support
 
             klasse MyObject:
                 pass
@@ -1962,9 +1962,9 @@ klasse ArgsTestCase(BaseTestCase):
                      'checking temp files is not implemented on WASI')
     def test_leak_tmp_file(self):
         code = textwrap.dedent(r"""
-            import os.path
-            import tempfile
-            import unittest
+            importiere os.path
+            importiere tempfile
+            importiere unittest
 
             klasse FileTests(unittest.TestCase):
                 def test_leak_tmp_file(self):
@@ -2013,14 +2013,14 @@ klasse ArgsTestCase(BaseTestCase):
         expected_line = corrupted_output.decode(encoding, 'backslashreplace')
 
         code = textwrap.dedent(fr"""
-            import sys
-            import unittest
+            importiere sys
+            importiere unittest
 
             klasse Tests(unittest.TestCase):
                 def test_pass(self):
                     pass
 
-            # bytes which cannot be decoded from UTF-8
+            # bytes which cannot be decoded von UTF-8
             corrupted_output = {corrupted_output!a}
             sys.stdout.buffer.write(corrupted_output)
             sys.stdout.buffer.flush()
@@ -2035,9 +2035,9 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_doctest(self):
         code = textwrap.dedent(r'''
-            import doctest
-            import sys
-            from test import support
+            importiere doctest
+            importiere sys
+            von test importiere support
 
             def my_function():
                 """
@@ -2076,8 +2076,8 @@ klasse ArgsTestCase(BaseTestCase):
         # gh-109276: When -r/--randomize is used, random.seed() is called
         # with the same random seed before running each test file.
         code = textwrap.dedent(r'''
-            import random
-            import unittest
+            importiere random
+            importiere unittest
 
             klasse RandomSeedTest(unittest.TestCase):
                 def test_randint(self):
@@ -2114,8 +2114,8 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_python_command(self):
         code = textwrap.dedent(r"""
-            import sys
-            import unittest
+            importiere sys
+            importiere unittest
 
             klasse WorkerTests(unittest.TestCase):
                 def test_dev_mode(self):
@@ -2135,10 +2135,10 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_unload_tests(self):
         # Test that unloading test modules does not break tests
-        # that import from other tests.
+        # that importiere von other tests.
         # The test execution order matters fuer this test.
         # Both test_regrtest_a and test_regrtest_c which are executed before
-        # and after test_regrtest_b import a submodule from the test_regrtest_b
+        # and after test_regrtest_b importiere a submodule von the test_regrtest_b
         # package and use it in testing. test_regrtest_b itself does not import
         # that submodule.
         # Previously test_regrtest_c failed because test_regrtest_b.util in
@@ -2159,11 +2159,11 @@ klasse ArgsTestCase(BaseTestCase):
         import_helper.import_module('_testinternalcapi')
 
         code = textwrap.dedent(r"""
-            import sys
-            import unittest
-            from test import support
+            importiere sys
+            importiere unittest
+            von test importiere support
             try:
-                from _testcapi import config_get
+                von _testcapi importiere config_get
             except ImportError:
                 config_get = Nichts
 
@@ -2224,9 +2224,9 @@ klasse ArgsTestCase(BaseTestCase):
         import_helper.import_module('faulthandler')
 
         code = textwrap.dedent(r"""
-            import faulthandler
-            import unittest
-            from test import support
+            importiere faulthandler
+            importiere unittest
+            von test importiere support
 
             klasse CrashTests(unittest.TestCase):
                 def test_crash(self):
@@ -2255,8 +2255,8 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_verbose3(self):
         code = textwrap.dedent(r"""
-            import unittest
-            from test import support
+            importiere unittest
+            von test importiere support
 
             klasse VerboseTests(unittest.TestCase):
                 def test_pass(self):
@@ -2278,7 +2278,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_xml(self):
         code = textwrap.dedent(r"""
-            import unittest
+            importiere unittest
 
             klasse VerboseTests(unittest.TestCase):
                 def test_failed(self):
@@ -2315,7 +2315,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_nonascii(self):
         code = textwrap.dedent(r"""
-            import unittest
+            importiere unittest
 
             klasse NonASCIITests(unittest.TestCase):
                 def test_docstring(self):
@@ -2550,7 +2550,7 @@ klasse TestUtils(unittest.TestCase):
                          'valid t\xe9xt \u20ac')
 
 
-from test.libregrtest.results import TestResults
+von test.libregrtest.results importiere TestResults
 
 
 klasse TestColorized(unittest.TestCase):

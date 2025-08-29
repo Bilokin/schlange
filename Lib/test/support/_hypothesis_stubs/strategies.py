@@ -1,6 +1,6 @@
-import functools
+importiere functools
 
-from ._helpers import StubClass, stub_factory
+von ._helpers importiere StubClass, stub_factory
 
 
 klasse StubStrategy(StubClass):

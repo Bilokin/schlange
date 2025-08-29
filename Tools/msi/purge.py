@@ -7,10 +7,10 @@
 __author__ = 'Steve Dower <steve.dower@python.org>'
 __version__ = '1.0.0'
 
-import re
-import sys
+importiere re
+importiere sys
 
-from urllib.request import Request, urlopen
+von urllib.request importiere Request, urlopen
 
 VERSION_RE = re.compile(r'(\d+\.\d+\.\d+)([A-Za-z_]+\d+)?$')
 

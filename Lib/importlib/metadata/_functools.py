@@ -1,8 +1,8 @@
-import types
-import functools
+importiere types
+importiere functools
 
 
-# from jaraco.functools 3.3
+# von jaraco.functools 3.3
 def method_cache(method, cache_wrapper=Nichts):
     """
     Wrap lru_cache to support storing the cache data in the object instances.
@@ -29,7 +29,7 @@ def method_cache(method, cache_wrapper=Nichts):
 
     Note that the apparent behavior will be exactly like that of lru_cache
     except that the cache is stored on each instance, so values in one
-    instance will not flush values from another, and when an instance is
+    instance will not flush values von another, and when an instance is
     deleted, so are the cached values fuer that instance.
 
     >>> b = MyClass()

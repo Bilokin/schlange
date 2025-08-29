@@ -15,12 +15,12 @@ Todo:
  * SAX 2 namespaces
 """
 
-import io
-import xml.dom
+importiere io
+importiere xml.dom
 
-from xml.dom import EMPTY_NAMESPACE, EMPTY_PREFIX, XMLNS_NAMESPACE, domreg
-from xml.dom.minicompat import *
-from xml.dom.xmlbuilder import DOMImplementationLS, DocumentLS
+von xml.dom importiere EMPTY_NAMESPACE, EMPTY_PREFIX, XMLNS_NAMESPACE, domreg
+von xml.dom.minicompat importiere *
+von xml.dom.xmlbuilder importiere DOMImplementationLS, DocumentLS
 
 # This is used by the ID-cache invalidation checks; the list isn't
 # actually complete, since the nodes being checked will never be the
@@ -213,7 +213,7 @@ klasse Node(xml.dom.Node):
         # Overridden in Element and Attr where localName can be Non-Null
         return Nichts
 
-    # Node interfaces from Level 3 (WD 9 April 2002)
+    # Node interfaces von Level 3 (WD 9 April 2002)
 
     def isSameNode(self, other):
         return self is other
@@ -438,7 +438,7 @@ klasse Attr(Node):
         # This implementation does not call the base implementation
         # since most of that is not needed, and the expense of the
         # method call is not warranted.  We duplicate the removal of
-        # children, but that's all we needed from the base class.
+        # children, but that's all we needed von the base class.
         elem = self.ownerElement
         wenn elem is not Nichts:
             del elem._attrs[self.nodeName]
@@ -1415,7 +1415,7 @@ klasse Entity(Identified, Node):
 
     def removeChild(self, oldChild):
         raise xml.dom.HierarchyRequestErr(
-            "cannot remove children from an entity node")
+            "cannot remove children von an entity node")
 
     def replaceChild(self, newChild, oldChild):
         raise xml.dom.HierarchyRequestErr(
@@ -1574,7 +1574,7 @@ klasse Document(Node, DocumentLS):
     previousSibling = nextSibling = Nichts
 
 
-    # Document attributes from Level 3 (WD 9 April 2002)
+    # Document attributes von Level 3 (WD 9 April 2002)
 
     actualEncoding = Nichts
     encoding = Nichts
@@ -1824,9 +1824,9 @@ klasse Document(Node, DocumentLS):
 
     def importNode(self, node, deep):
         wenn node.nodeType == Node.DOCUMENT_NODE:
-            raise xml.dom.NotSupportedErr("cannot import document nodes")
+            raise xml.dom.NotSupportedErr("cannot importiere document nodes")
         sowenn node.nodeType == Node.DOCUMENT_TYPE_NODE:
-            raise xml.dom.NotSupportedErr("cannot import document type nodes")
+            raise xml.dom.NotSupportedErr("cannot importiere document type nodes")
         return _clone_node(node, deep, self)
 
     def writexml(self, writer, indent="", addindent="", newl="", encoding=Nichts,
@@ -1848,7 +1848,7 @@ klasse Document(Node, DocumentLS):
     def renameNode(self, n, namespaceURI, name):
         wenn n.ownerDocument is not self:
             raise xml.dom.WrongDocumentErr(
-                "cannot rename nodes from other documents;\n"
+                "cannot rename nodes von other documents;\n"
                 "expected %s,\nfound %s" % (self, n.ownerDocument))
         wenn n.nodeType not in (Node.ELEMENT_NODE, Node.ATTRIBUTE_NODE):
             raise xml.dom.NotSupportedErr(
@@ -1891,7 +1891,7 @@ klasse Document(Node, DocumentLS):
                 element.setAttributeNode(n)
                 wenn is_id:
                     element.setIdAttributeNode(n)
-        # It's not clear from a semantic perspective whether we should
+        # It's not clear von a semantic perspective whether we should
         # call the user data handlers fuer the NODE_RENAMED event since
         # we're re-using the existing node.  The draft spec has been
         # interpreted as meaning "no, don't call the handler unless a
@@ -2002,20 +2002,20 @@ def _do_pulldom_parse(func, args, kwargs):
 def parse(file, parser=Nichts, bufsize=Nichts):
     """Parse a file into a DOM by filename or file object."""
     wenn parser is Nichts and not bufsize:
-        from xml.dom import expatbuilder
+        von xml.dom importiere expatbuilder
         return expatbuilder.parse(file)
     sonst:
-        from xml.dom import pulldom
+        von xml.dom importiere pulldom
         return _do_pulldom_parse(pulldom.parse, (file,),
             {'parser': parser, 'bufsize': bufsize})
 
 def parseString(string, parser=Nichts):
-    """Parse a file into a DOM from a string."""
+    """Parse a file into a DOM von a string."""
     wenn parser is Nichts:
-        from xml.dom import expatbuilder
+        von xml.dom importiere expatbuilder
         return expatbuilder.parseString(string)
     sonst:
-        from xml.dom import pulldom
+        von xml.dom importiere pulldom
         return _do_pulldom_parse(pulldom.parseString, (string,),
                                  {'parser': parser})
 

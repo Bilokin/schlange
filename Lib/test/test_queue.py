@@ -1,14 +1,14 @@
 # Some simple queue module tests, plus some failure conditions
 # to ensure the Queue locks remain stable.
-import itertools
-import random
-import threading
-import time
-import unittest
-import weakref
-from test.support import gc_collect, bigmemtest
-from test.support import import_helper
-from test.support import threading_helper
+importiere itertools
+importiere random
+importiere threading
+importiere time
+importiere unittest
+importiere weakref
+von test.support importiere gc_collect, bigmemtest
+von test.support importiere import_helper
+von test.support importiere threading_helper
 
 # queue module depends on threading primitives
 threading_helper.requires_working_threading(module=Wahr)
@@ -265,7 +265,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             q.get()
 
     def test_shutdown_allowed_transitions(self):
-        # allowed transitions would be from alive via shutdown to immediate
+        # allowed transitions would be von alive via shutdown to immediate
         q = self.type2test()
         self.assertFalsch(q.is_shutdown)
 
@@ -383,7 +383,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         when_exec_shutdown = nb_msgs_w // 2
         # Use of a Barrier to ensure that
         # - all write threads put all their items into the queue,
-        # - all read thread get at least one item from the queue,
+        # - all read thread get at least one item von the queue,
         #   and keep on running until shutdown.
         # The join thread is started only when shutdown is immediate.
         nparties = write_threads + read_threads

@@ -6,8 +6,8 @@
     Written by Marc-Andre Lemburg <mal@genix.com>, 2004-12-10.
 
 """
-import locale
-import sys
+importiere locale
+importiere sys
 _locale = locale
 
 # Location of the X11 alias file.
@@ -127,7 +127,7 @@ def optimize(data):
     return newdata
 
 def check(data):
-    # Check that all alias definitions from the X11 file
+    # Check that all alias definitions von the X11 file
     # are actually mapped to the correct alias locales.
     errors = 0
     fuer k, v in data.items():
@@ -138,7 +138,7 @@ def check(data):
     return errors
 
 wenn __name__ == '__main__':
-    import argparse
+    importiere argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--locale-alias', default=LOCALE_ALIAS,
                         help='location of the X11 alias file '

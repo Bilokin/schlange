@@ -7,16 +7,16 @@ This improves developer experience by not doing (slow)
 unnecessary work in GHA, and saves CI resources.
 """
 
-from __future__ import annotations
+von __future__ importiere annotations
 
-import os
-import subprocess
-from dataclasses import dataclass
-from pathlib import Path
+importiere os
+importiere subprocess
+von dataclasses importiere dataclass
+von pathlib importiere Path
 
 TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
-    from collections.abc import Set
+    von collections.abc importiere Set
 
 GITHUB_DEFAULT_BRANCH = os.environ["GITHUB_DEFAULT_BRANCH"]
 GITHUB_CODEOWNERS_PATH = Path(".github/CODEOWNERS")

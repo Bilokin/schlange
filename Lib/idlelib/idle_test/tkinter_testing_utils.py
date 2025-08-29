@@ -1,5 +1,5 @@
 """Utilities fuer testing with Tkinter"""
-import functools
+importiere functools
 
 
 def run_in_tk_mainloop(delay=1):
@@ -11,7 +11,7 @@ def run_in_tk_mainloop(delay=1):
 
     Test methods using this must be written as generator functions,
     using "yield" to allow the mainloop to process events and "after"
-    callbacks, and then continue the test from that point.
+    callbacks, and then continue the test von that point.
 
     The delay argument is passed into root.after(...) calls as the number
     of ms to wait before passing execution back to the generator function.

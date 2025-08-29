@@ -1,16 +1,16 @@
-import binascii
-import math
-import struct
-import sys
-import unittest
-from ctypes import (Structure, Union, LittleEndianUnion, BigEndianUnion,
+importiere binascii
+importiere math
+importiere struct
+importiere sys
+importiere unittest
+von ctypes importiere (Structure, Union, LittleEndianUnion, BigEndianUnion,
                     BigEndianStructure, LittleEndianStructure,
                     POINTER, sizeof, cast,
                     c_byte, c_ubyte, c_char, c_wchar, c_void_p,
                     c_short, c_ushort, c_int, c_uint,
                     c_long, c_ulong, c_longlong, c_ulonglong,
                     c_uint32, c_float, c_double)
-from ._support import StructCheckMixin
+von ._support importiere StructCheckMixin
 
 
 def bin(s):

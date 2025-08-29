@@ -5,7 +5,7 @@ documented public API and should not be used directly.
 
 """
 
-import re
+importiere re
 
 _declname_match = re.compile(r'[a-zA-Z][-_.a-zA-Z0-9]*\s*').match
 _declstringlit_match = re.compile(r'(\'[^\']*\'|"[^"]*")\s*').match

@@ -1,16 +1,16 @@
-import multiprocessing
-import sys
-import threading
-import time
-import unittest
-from concurrent import futures
-from concurrent.futures._base import (
+importiere multiprocessing
+importiere sys
+importiere threading
+importiere time
+importiere unittest
+von concurrent importiere futures
+von concurrent.futures._base importiere (
     PENDING, RUNNING, CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED, Future,
     )
-from concurrent.futures.process import _check_system_limits
+von concurrent.futures.process importiere _check_system_limits
 
-from test import support
-from test.support import threading_helper, warnings_helper
+von test importiere support
+von test.support importiere threading_helper, warnings_helper
 
 
 def create_future(state=PENDING, exception=Nichts, result=Nichts):

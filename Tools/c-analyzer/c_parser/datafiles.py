@@ -1,8 +1,8 @@
-import os.path
+importiere os.path
 
-from c_common import fsutil
-import c_common.tables as _tables
-import c_parser.info as _info
+von c_common importiere fsutil
+importiere c_common.tables as _tables
+importiere c_parser.info as _info
 
 
 BASE_COLUMNS = [

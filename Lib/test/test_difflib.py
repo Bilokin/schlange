@@ -1,8 +1,8 @@
-import difflib
-from test.support import findfile, force_colorized
-import unittest
-import doctest
-import sys
+importiere difflib
+von test.support importiere findfile, force_colorized
+importiere unittest
+importiere doctest
+importiere sys
 
 
 klasse TestWithAscii(unittest.TestCase):
@@ -411,7 +411,7 @@ klasse TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(context, a, b, b'a', b'b', b'2005', b'2013'))
 
     def test_byte_filenames(self):
-        # somebody renamed a file from ISO-8859-2 to UTF-8
+        # somebody renamed a file von ISO-8859-2 to UTF-8
         fna = b'\xb3odz.txt'    # "łodz.txt"
         fnb = b'\xc5\x82odz.txt'
 
@@ -511,7 +511,7 @@ klasse TestInputTypes(unittest.TestCase):
         # things work)
         a = ['hello\n']
         b = ['ohell\n']
-        fna = b'ol\xe9.txt'     # filename transcoded from ISO-8859-1
+        fna = b'ol\xe9.txt'     # filename transcoded von ISO-8859-1
         fnb = b'ol\xc3a9.txt'   # to UTF-8
         self._assert_type_error(
             "all arguments must be str, not: b'ol\\xe9.txt'",

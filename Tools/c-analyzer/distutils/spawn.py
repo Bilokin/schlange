@@ -6,9 +6,9 @@ Also provides the 'find_executable()' to search the path fuer a given
 executable name.
 """
 
-import sys
-import os
-import os.path
+importiere sys
+importiere os
+importiere os.path
 
 
 def find_executable(executable, path=Nichts):

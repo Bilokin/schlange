@@ -1,47 +1,47 @@
-import builtins
-import collections
-import copyreg
-import dbm
-import io
-import functools
-import os
-import math
-import pickle
-import pickletools
-import shutil
-import struct
-import sys
-import threading
-import types
-import unittest
-import weakref
-from textwrap import dedent
-from http.cookies import SimpleCookie
+importiere builtins
+importiere collections
+importiere copyreg
+importiere dbm
+importiere io
+importiere functools
+importiere os
+importiere math
+importiere pickle
+importiere pickletools
+importiere shutil
+importiere struct
+importiere sys
+importiere threading
+importiere types
+importiere unittest
+importiere weakref
+von textwrap importiere dedent
+von http.cookies importiere SimpleCookie
 
 try:
-    import _testbuffer
+    importiere _testbuffer
 except ImportError:
     _testbuffer = Nichts
 
-from test import support
-from test.support import os_helper
-from test.support import (
+von test importiere support
+von test.support importiere os_helper
+von test.support importiere (
     TestFailed, run_with_locales, no_tracing,
     _2G, _4G, bigmemtest
     )
-from test.support.import_helper import forget
-from test.support.os_helper import TESTFN
-from test.support import threading_helper
-from test.support.warnings_helper import save_restore_warnings_filters
+von test.support.import_helper importiere forget
+von test.support.os_helper importiere TESTFN
+von test.support importiere threading_helper
+von test.support.warnings_helper importiere save_restore_warnings_filters
 
-from pickle import bytes_types
+von pickle importiere bytes_types
 
 
 # bpo-41003: Save/restore warnings filters to leave them unchanged.
 # Ignore filters installed by numpy.
 try:
     with save_restore_warnings_filters():
-        import numpy as np
+        importiere numpy as np
 except ImportError:
     np = Nichts
 
@@ -144,7 +144,7 @@ klasse E(C):
     def __getinitargs__(self):
         return ()
 
-import __main__
+importiere __main__
 __main__.C = C
 C.__module__ = "__main__"
 __main__.D = D
@@ -736,13 +736,13 @@ DATA4_DIS = """\
 highest protocol among opcodes = 4
 """
 
-# set([1,2]) pickled from 2.x with protocol 2
+# set([1,2]) pickled von 2.x with protocol 2
 DATA_SET = b'\x80\x02c__builtin__\nset\nq\x00]q\x01(K\x01K\x02e\x85q\x02Rq\x03.'
 
-# xrange(5) pickled from 2.x with protocol 2
+# xrange(5) pickled von 2.x with protocol 2
 DATA_XRANGE = b'\x80\x02c__builtin__\nxrange\nq\x00K\x00K\x05K\x01\x87q\x01Rq\x02.'
 
-# a SimpleCookie() object pickled from 2.x with protocol 2
+# a SimpleCookie() object pickled von 2.x with protocol 2
 DATA_COOKIE = (b'\x80\x02cCookie\nSimpleCookie\nq\x00)\x81q\x01U\x03key'
                b'q\x02cCookie\nMorsel\nq\x03)\x81q\x04(U\x07commentq\x05U'
                b'\x00q\x06U\x06domainq\x07h\x06U\x06secureq\x08h\x06U\x07'
@@ -750,7 +750,7 @@ DATA_COOKIE = (b'\x80\x02cCookie\nSimpleCookie\nq\x00)\x81q\x01U\x03key'
                b'\x04pathq\x0ch\x06U\x08httponlyq\rh\x06u}q\x0e(U\x0b'
                b'coded_valueq\x0fU\x05valueq\x10h\x10h\x10h\x02h\x02ubs}q\x11b.')
 
-# set([3]) pickled from 2.x with protocol 2
+# set([3]) pickled von 2.x with protocol 2
 DATA_SET2 = b'\x80\x02c__builtin__\nset\nq\x00]q\x01K\x03a\x85q\x02Rq\x03.'
 
 python2_exceptions_without_args = (
@@ -803,7 +803,7 @@ python2_exceptions_without_args = (
 
 exception_pickle = b'\x80\x02cexceptions\n?\nq\x00)Rq\x01.'
 
-# UnicodeEncodeError object pickled from 2.x with protocol 2
+# UnicodeEncodeError object pickled von 2.x with protocol 2
 DATA_UEERR = (b'\x80\x02cexceptions\nUnicodeEncodeError\n'
               b'q\x00(U\x05asciiq\x01X\x03\x00\x00\x00fooq\x02K\x00K\x01'
               b'U\x03badq\x03tq\x04Rq\x05.')
@@ -947,7 +947,7 @@ klasse AbstractUnpickleTests:
         self.check_unpickling_error(ValueError, data)
 
     def test_unpickle_from_2x(self):
-        # Unpickle non-trivial data from Python 2.x.
+        # Unpickle non-trivial data von Python 2.x.
         loaded = self.loads(DATA_SET)
         self.assertEqual(loaded, set([1, 2]))
         loaded = self.loads(DATA_XRANGE)
@@ -958,7 +958,7 @@ klasse AbstractUnpickleTests:
         self.assertEqual(list(loaded.keys()), ["key"])
         self.assertEqual(loaded["key"].value, "value")
 
-        # Exception objects without arguments pickled from 2.x with protocol 2
+        # Exception objects without arguments pickled von 2.x with protocol 2
         fuer exc in python2_exceptions_without_args:
             data = exception_pickle.replace(b'?', exc.__name__.encode("ascii"))
             loaded = self.loads(data)
@@ -1014,7 +1014,7 @@ klasse AbstractUnpickleTests:
 
     def test_issue135241(self):
         # C implementation should check fuer hardcoded values 00 and 01
-        # when getting booleans from the INT opcode. Doing a str comparison
+        # when getting booleans von the INT opcode. Doing a str comparison
         # to bypass truthy/falsy comparisons. These payloads should return
         # 0, not Falsch.
         out1 = self.loads(b'I+0\n.')
@@ -1616,11 +1616,11 @@ klasse AbstractUnpickleTests:
     def test_unpickle_module_race(self):
         # https://bugs.python.org/issue34572
         locker_module = dedent("""
-        import threading
+        importiere threading
         barrier = threading.Barrier(2)
         """)
         locking_import_module = dedent("""
-        import locker
+        importiere locker
         locker.barrier.wait()
         klasse ToBeUnpickled(object):
             pass
@@ -1637,7 +1637,7 @@ klasse AbstractUnpickleTests:
         self.addCleanup(forget, "locker")
         self.addCleanup(forget, "locking_import")
 
-        import locker
+        importiere locker
 
         pickle_bytes = (
             b'\x80\x03clocking_import\nToBeUnpickled\nq\x00)\x81q\x01.')
@@ -1646,7 +1646,7 @@ klasse AbstractUnpickleTests:
         # One of them will cause the module import, and we want it to block
         # until the other one either:
         #   - fails (before the patch fuer this issue)
-        #   - blocks on the import lock fuer the module, as it should
+        #   - blocks on the importiere lock fuer the module, as it should
         results = []
         barrier = threading.Barrier(3)
         def t():
@@ -1667,7 +1667,7 @@ klasse AbstractUnpickleTests:
         t1.join()
         t2.join()
 
-        from locking_import import ToBeUnpickled
+        von locking_import importiere ToBeUnpickled
         self.assertEqual(
             [type(x) fuer x in results],
             [ToBeUnpickled] * 2)
@@ -2512,8 +2512,8 @@ klasse AbstractPickleTests:
     # is a mystery.  cPickle also suppresses PUT fuer objects with a refcount
     # of 1.
     def dont_test_disassembly(self):
-        from io import StringIO
-        from pickletools import dis
+        von io importiere StringIO
+        von pickletools importiere dis
 
         fuer proto, expected in (0, DATA0_DIS), (1, DATA1_DIS):
             s = self.dumps(self._testdata, proto)
@@ -3010,8 +3010,8 @@ klasse AbstractPickleTests:
             self.assertIs(type(a), type(b))
 
     def test_structseq(self):
-        import time
-        import os
+        importiere time
+        importiere os
 
         t = time.localtime()
         fuer proto in protocols:
@@ -3669,7 +3669,7 @@ klasse AbstractPickleTests:
             return
 
         def remove_frames(pickled, keep_frame=Nichts):
-            """Remove frame opcodes from the given pickle."""
+            """Remove frame opcodes von the given pickle."""
             frame_starts = []
             # 1 byte fuer the opcode and 8 fuer the argument
             frame_opcode_size = 9
@@ -3967,7 +3967,7 @@ klasse AbstractPickleTests:
                                      1 wenn obj.readonly sonst 0)
                     self.assertEqual(count_opcode(pickle.BYTEARRAY8, data),
                                      0 wenn obj.readonly sonst 1)
-                    # Return a true value from buffer_callback should have
+                    # Return a true value von buffer_callback should have
                     # the same effect
                     def buffer_callback(obj):
                         return Wahr
@@ -4027,7 +4027,7 @@ klasse AbstractPickleTests:
                     self.assertEqual(new, obj)
 
     def test_oob_buffers_writable_to_readonly(self):
-        # Test reconstructing readonly object from writable buffer
+        # Test reconstructing readonly object von writable buffer
         obj = ZeroCopyBytes(b"foobar")
         fuer proto in range(5, pickle.HIGHEST_PROTOCOL + 1):
             buffers = []
@@ -4102,7 +4102,7 @@ klasse AbstractPickleTests:
 
     def test_evil_class_mutating_dict(self):
         # https://github.com/python/cpython/issues/92930
-        from random import getrandbits
+        von random importiere getrandbits
 
         global Bad
         klasse Bad:
@@ -4273,14 +4273,14 @@ klasse REX:
         return self.reduce_ex
 
 klasse REX_one(object):
-    """No __reduce_ex__ here, but inheriting it from object"""
+    """No __reduce_ex__ here, but inheriting it von object"""
     _reduce_called = 0
     def __reduce__(self):
         self._reduce_called = 1
         return REX_one, ()
 
 klasse REX_two(object):
-    """No __reduce__ here, but inheriting it from object"""
+    """No __reduce__ here, but inheriting it von object"""
     _proto = Nichts
     def __reduce_ex__(self, proto):
         self._proto = proto
@@ -4425,7 +4425,7 @@ klasse SlotList(MyList):
     __slots__ = ["foo"]
 
 # Ruff "redefined while unused" false positive here due to `global` variables
-# being assigned (and then restored) from within test methods earlier in the file
+# being assigned (and then restored) von within test methods earlier in the file
 klasse SimpleNewObj(int):  # noqa: F811
     def __init__(self, *args, **kwargs):
         # raise an error, to make sure this isn't called
@@ -4506,7 +4506,7 @@ klasse AbstractPickleModuleTests:
         self.assertRaises((EOFError, struct.error, pickle.UnpicklingError), self.load, s)
 
     def test_bad_init(self):
-        # Test issue3664 (pickle can segfault from a badly initialized Pickler).
+        # Test issue3664 (pickle can segfault von a badly initialized Pickler).
         # Override initialization without calling __init__() of the superclass.
         klasse BadPickler(self.Pickler):
             def __init__(self): pass
@@ -4993,7 +4993,7 @@ klasse AbstractHookTests:
     def test_reducer_override_no_reference_cycle(self):
         # bpo-39492: reducer_override used to induce a spurious reference cycle
         # inside the Pickler object, that could prevent all serialized objects
-        # from being garbage-collected without explicitly invoking gc.collect.
+        # von being garbage-collected without explicitly invoking gc.collect.
 
         fuer proto in range(0, pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
@@ -5132,7 +5132,7 @@ klasse AbstractDispatchTableTests:
 
 wenn __name__ == "__main__":
     # Print some stuff that can be used to rewrite DATA{0,1,2}
-    from pickletools import dis
+    von pickletools importiere dis
     x = create_data()
     fuer i in range(pickle.HIGHEST_PROTOCOL+1):
         p = pickle.dumps(x, i)

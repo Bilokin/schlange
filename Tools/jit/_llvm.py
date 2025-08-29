@@ -1,14 +1,14 @@
 """Utilities fuer invoking LLVM tools."""
 
-import asyncio
-import functools
-import os
-import re
-import shlex
-import subprocess
-import typing
+importiere asyncio
+importiere functools
+importiere os
+importiere re
+importiere shlex
+importiere subprocess
+importiere typing
 
-import _targets
+importiere _targets
 
 _LLVM_VERSION = 19
 _LLVM_VERSION_PATTERN = re.compile(rf"version\s+{_LLVM_VERSION}\.\d+\.\d+\S*\s+")

@@ -1,10 +1,10 @@
-import unittest
-import tkinter
-from test.support import requires, swap_attr
-from test.test_tkinter.support import AbstractDefaultRootTest, AbstractTkTest
-from tkinter import colorchooser
-from tkinter.colorchooser import askcolor
-from tkinter.commondialog import Dialog
+importiere unittest
+importiere tkinter
+von test.support importiere requires, swap_attr
+von test.test_tkinter.support importiere AbstractDefaultRootTest, AbstractTkTest
+von tkinter importiere colorchooser
+von tkinter.colorchooser importiere askcolor
+von tkinter.commondialog importiere Dialog
 
 requires('gui')
 

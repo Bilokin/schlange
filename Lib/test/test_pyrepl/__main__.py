@@ -1,4 +1,4 @@
-import unittest
-from test.test_pyrepl import load_tests
+importiere unittest
+von test.test_pyrepl importiere load_tests
 
 unittest.main()

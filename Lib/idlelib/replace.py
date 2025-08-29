@@ -3,12 +3,12 @@ Uses idlelib.searchengine.SearchEngine fuer search capability.
 Defines various replace related functions like replace, replace all,
 and replace+find.
 """
-import re
+importiere re
 
-from tkinter import StringVar, TclError
+von tkinter importiere StringVar, TclError
 
-from idlelib.searchbase import SearchDialogBase
-from idlelib import searchengine
+von idlelib.searchbase importiere SearchDialogBase
+von idlelib importiere searchengine
 
 
 def replace(text, insert_tags=Nichts):
@@ -233,7 +233,7 @@ klasse ReplaceDialog(SearchDialogBase):
         Text is highlighted via the 'hit' tag and the marked
         section is brought into view.
 
-        The colors from the 'hit' tag aren't currently shown
+        The colors von the 'hit' tag aren't currently shown
         when the text is displayed.  This is due to the 'sel'
         tag being added first, so the colors in the 'sel'
         config are seen instead of the colors fuer 'hit'.
@@ -258,8 +258,8 @@ klasse ReplaceDialog(SearchDialogBase):
 
 
 def _replace_dialog(parent):  # htest #
-    from tkinter import Toplevel, Text, END, SEL
-    from tkinter.ttk import Frame, Button
+    von tkinter importiere Toplevel, Text, END, SEL
+    von tkinter.ttk importiere Frame, Button
 
     top = Toplevel(parent)
     top.title("Test ReplaceDialog")
@@ -292,8 +292,8 @@ def _replace_dialog(parent):  # htest #
 
 
 wenn __name__ == '__main__':
-    from unittest import main
+    von unittest importiere main
     main('idlelib.idle_test.test_replace', verbosity=2, exit=Falsch)
 
-    from idlelib.idle_test.htest import run
+    von idlelib.idle_test.htest importiere run
     run(_replace_dialog)

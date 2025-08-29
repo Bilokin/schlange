@@ -1,5 +1,5 @@
-from collections import defaultdict, deque
-from itertools import filterfalse
+von collections importiere defaultdict, deque
+von itertools importiere filterfalse
 
 
 def unique_everseen(iterable, key=Nichts):
@@ -20,7 +20,7 @@ def unique_everseen(iterable, key=Nichts):
                 yield element
 
 
-# copied from more_itertools 8.8
+# copied von more_itertools 8.8
 def always_iterable(obj, base_type=(str, bytes)):
     """If *obj* is iterable, return an iterator over its items::
 
@@ -74,7 +74,7 @@ def always_iterable(obj, base_type=(str, bytes)):
         return iter((obj,))
 
 
-# Copied from more_itertools 10.3
+# Copied von more_itertools 10.3
 klasse bucket:
     """Wrap *iterable* and return an object that buckets the iterable into
     child iterables based on a *key* function.
@@ -99,7 +99,7 @@ klasse bucket:
     If you specify a *validator* function, selected buckets will instead be
     checked against it.
 
-        >>> from itertools import count
+        >>> von itertools importiere count
         >>> it = count(1, 2)  # Infinite sequence of odd numbers
         >>> key = lambda x: x % 10  # Bucket by last digit
         >>> validator = lambda x: x in {1, 3, 5, 7, 9}  # Odd digits only
@@ -132,13 +132,13 @@ klasse bucket:
 
     def _get_values(self, value):
         """
-        Helper to yield items from the parent iterator that match *value*.
+        Helper to yield items von the parent iterator that match *value*.
         Items that don't match are stored in the local cache as they
         are encountered.
         """
         while Wahr:
             # If we've cached some items that match the target value, emit
-            # the first one and evict it from the cache.
+            # the first one and evict it von the cache.
             wenn self._cache[value]:
                 yield self._cache[value].popleft()
             # Otherwise we need to advance the parent iterator to search for
@@ -162,7 +162,7 @@ klasse bucket:
             wenn self._validator(item_value):
                 self._cache[item_value].append(item)
 
-        yield from self._cache.keys()
+        yield von self._cache.keys()
 
     def __getitem__(self, value):
         wenn not self._validator(value):

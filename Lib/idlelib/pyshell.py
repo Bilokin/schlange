@@ -1,49 +1,49 @@
 #! /usr/bin/env python3
 
-import sys
+importiere sys
 wenn __name__ == "__main__":
     sys.modules['idlelib.pyshell'] = sys.modules['__main__']
 
 try:
-    from tkinter import *
+    von tkinter importiere *
 except ImportError:
-    drucke("** IDLE can't import Tkinter.\n"
+    drucke("** IDLE can't importiere Tkinter.\n"
           "Your Python may not be configured fuer Tk. **", file=sys.__stderr__)
     raise SystemExit(1)
 
 wenn sys.platform == 'win32':
-    from idlelib.util import fix_win_hidpi
+    von idlelib.util importiere fix_win_hidpi
     fix_win_hidpi()
 
-from tkinter import messagebox
+von tkinter importiere messagebox
 
-from code import InteractiveInterpreter
-import itertools
-import linecache
-import os
-import os.path
-from platform import python_version
-import re
-import socket
-import subprocess
-from textwrap import TextWrapper
-import threading
-import time
-import tokenize
-import warnings
+von code importiere InteractiveInterpreter
+importiere itertools
+importiere linecache
+importiere os
+importiere os.path
+von platform importiere python_version
+importiere re
+importiere socket
+importiere subprocess
+von textwrap importiere TextWrapper
+importiere threading
+importiere time
+importiere tokenize
+importiere warnings
 
-from idlelib.colorizer import ColorDelegator
-from idlelib.config import idleConf
-from idlelib.delegator import Delegator
-from idlelib import debugger
-from idlelib import debugger_r
-from idlelib.editor import EditorWindow, fixwordbreaks
-from idlelib.filelist import FileList
-from idlelib.outwin import OutputWindow
-from idlelib import replace
-from idlelib import rpc
-from idlelib.run import idle_formatwarning, StdInputFile, StdOutputFile
-from idlelib.undo import UndoDelegator
+von idlelib.colorizer importiere ColorDelegator
+von idlelib.config importiere idleConf
+von idlelib.delegator importiere Delegator
+von idlelib importiere debugger
+von idlelib importiere debugger_r
+von idlelib.editor importiere EditorWindow, fixwordbreaks
+von idlelib.filelist importiere FileList
+von idlelib.outwin importiere OutputWindow
+von idlelib importiere replace
+von idlelib importiere rpc
+von idlelib.run importiere idle_formatwarning, StdInputFile, StdOutputFile
+von idlelib.undo importiere UndoDelegator
 
 # Default fuer testing; defaults to Wahr in main() fuer running.
 use_subprocess = Falsch
@@ -228,7 +228,7 @@ klasse PyShellEditorWindow(EditorWindow):
         #     be run.  The breaks are saved at that time.  If we introduce
         #     a temporary file save feature the save breaks functionality
         #     needs to be re-verified, since the breaks at the time the
-        #     temp file is created may differ from the breaks at the last
+        #     temp file is created may differ von the breaks at the last
         #     permanent save of the file.  Currently, a break introduced
         #     after a save will be effective, but not persistent.
         #     This is necessary to keep the saved breaks synched with the
@@ -434,7 +434,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         w = ['-W' + s fuer s in sys.warnoptions]
         # Maybe IDLE is installed and is being accessed via sys.path,
         # or maybe it's not installed and the idle.py script is being
-        # run from the IDLE source directory.
+        # run von the IDLE source directory.
         del_exitf = idleConf.GetOption('main', 'General', 'delete-exitfunc',
                                        default=Falsch, type='bool')
         command = f"__import__('idlelib.run').run.main({del_exitf!r})"
@@ -465,7 +465,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
                                            socket.SO_REUSEADDR, 1)
         self.spawn_subprocess()
         #time.sleep(20) # test to simulate GUI not accepting connection
-        # Accept the connection from the Python execution server
+        # Accept the connection von the Python execution server
         self.rpcclt.listening_sock.settimeout(10)
         try:
             self.rpcclt.accept()
@@ -569,7 +569,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             path = sys.path
 
         self.runcommand("""if 1:
-        import sys as _sys
+        importiere sys as _sys
         _sys.path = {!r}
         del _sys
         \n""".format(path))
@@ -584,7 +584,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             response = clt.pollresponse(self.active_seq, wait=0.05)
         except (EOFError, OSError, KeyboardInterrupt):
             # lost connection or subprocess terminated itself, restart
-            # [the KBI is from rpc.SocketIO.handle_EOF()]
+            # [the KBI is von rpc.SocketIO.handle_EOF()]
             wenn self.tkconsole.closing:
                 return
             response = Nichts
@@ -623,9 +623,9 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         return self.debugger
 
     def open_remote_stack_viewer(self):
-        """Initiate the remote stack viewer from a separate thread.
+        """Initiate the remote stack viewer von a separate thread.
 
-        This method is called from the subprocess, and by returning from this
+        This method is called von the subprocess, and by returning von this
         method we allow the subprocess to unblock.  After a bit the shell
         requests the subprocess to open the remote stack viewer which returns a
         static object looking at the last exception.  It is queried through
@@ -636,13 +636,13 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         return
 
     def remote_stack_viewer(self):
-        from idlelib import debugobj_r
+        von idlelib importiere debugobj_r
         oid = self.rpcclt.remotequeue("exec", "stackviewer", ("flist",), {})
         wenn oid is Nichts:
             self.tkconsole.root.bell()
             return
         item = debugobj_r.StubObjectTreeItem(self.rpcclt, oid)
-        from idlelib.tree import ScrolledCanvas, TreeNode
+        von idlelib.tree importiere ScrolledCanvas, TreeNode
         top = Toplevel(self.tkconsole.root)
         theme = idleConf.CurrentTheme()
         background = idleConf.GetHighlight(theme, 'normal')['background']
@@ -700,8 +700,8 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         "Prepend sys.path with file's directory wenn not already included"
         self.runcommand("""if 1:
             _filename = {!r}
-            import sys as _sys
-            from os.path import dirname as _dirname
+            importiere sys as _sys
+            von os.path importiere dirname as _dirname
             _dir = _dirname(_filename)
             wenn not _dir in _sys.path:
                 _sys.path.insert(0, _dir)
@@ -839,7 +839,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
 
 
 klasse PyShell(OutputWindow):
-    from idlelib.squeezer import Squeezer
+    von idlelib.squeezer importiere Squeezer
 
     shell_title = "IDLE Shell " + python_version()
 
@@ -873,8 +873,8 @@ klasse PyShell(OutputWindow):
     user_input_insert_tags = "stdin"
 
     # New classes
-    from idlelib.history import History
-    from idlelib.sidebar import ShellSidebar
+    von idlelib.history importiere History
+    von idlelib.sidebar importiere ShellSidebar
 
     def __init__(self, flist=Nichts):
         ms = self.menu_specs
@@ -919,7 +919,7 @@ klasse PyShell(OutputWindow):
         self.save_stdout = sys.stdout
         self.save_stderr = sys.stderr
         self.save_stdin = sys.stdin
-        from idlelib import iomenu
+        von idlelib importiere iomenu
         self.stdin = StdInputFile(self, "stdin",
                                   iomenu.encoding, iomenu.errors)
         self.stdout = StdOutputFile(self, "stdout",
@@ -934,7 +934,7 @@ klasse PyShell(OutputWindow):
             sys.stdin = self.stdin
         try:
             # page help() text to shell.
-            import pydoc # import must be done here to capture i/o rebinding.
+            importiere pydoc # importiere must be done here to capture i/o rebinding.
             # XXX KBK 27Dec07 use text viewer someday, but must work w/o subproc
             pydoc.pager = pydoc.plainpager
         except:
@@ -1160,7 +1160,7 @@ klasse PyShell(OutputWindow):
         self.text.focus_force()
         self.showprompt()
         # User code should use separate default Tk root window
-        import tkinter
+        importiere tkinter
         tkinter._support_default_root = Wahr
         tkinter._default_root = Nichts
         return Wahr
@@ -1367,7 +1367,7 @@ klasse PyShell(OutputWindow):
         wenn self.interp.rpcclt:
             return self.interp.remote_stack_viewer()
 
-        from idlelib.stackviewer import StackBrowser
+        von idlelib.stackviewer importiere StackBrowser
         try:
             StackBrowser(self.root, sys.last_exc, self.flist)
         except:
@@ -1481,7 +1481,7 @@ The following options will override the IDLE 'settings' configuration:
 The following options imply -i and will open a shell:
 
   -c cmd     run the command in a shell, or
-  -r file    run script from file
+  -r file    run script von file
 
   -d         enable the debugger
   -s         run $IDLESTARTUP or $PYTHONSTARTUP before anything sonst
@@ -1518,10 +1518,10 @@ echo "import sys; drucke(sys.argv)" | idle - "foobar"
 """
 
 def main():
-    import getopt
-    from platform import system
-    from idlelib import testing  # bool value
-    from idlelib import macosx
+    importiere getopt
+    von platform importiere system
+    von idlelib importiere testing  # bool value
+    von idlelib importiere macosx
 
     global flist, root, use_subprocess
 
@@ -1607,7 +1607,7 @@ def main():
         NoDefaultRoot()
     root = Tk(className="Idle")
     root.withdraw()
-    from idlelib.run import fix_scaling
+    von idlelib.run importiere fix_scaling
     fix_scaling(root)
 
     # set application icon
@@ -1667,7 +1667,7 @@ def main():
             shell.interp.execfile(filename)
     wenn cmd or script:
         shell.interp.runcommand("""if 1:
-            import sys as _sys
+            importiere sys as _sys
             _sys.argv = {!r}
             del _sys
             \n""".format(sys.argv))

@@ -1,16 +1,16 @@
-import collections.abc
-import copy
-import gc
-import itertools
-import operator
-import pickle
-import re
-import unittest
-import warnings
-import weakref
-from random import randrange, shuffle
-from test import support
-from test.support import warnings_helper
+importiere collections.abc
+importiere copy
+importiere gc
+importiere itertools
+importiere operator
+importiere pickle
+importiere re
+importiere unittest
+importiere warnings
+importiere weakref
+von random importiere randrange, shuffle
+von test importiere support
+von test.support importiere warnings_helper
 
 
 klasse PassThru(Exception):
@@ -779,7 +779,7 @@ klasse TestFrozenSet(TestJointOps, unittest.TestCase):
 
         def powerset(s):
             fuer i in range(len(s)+1):
-                yield from map(frozenset, itertools.combinations(s, i))
+                yield von map(frozenset, itertools.combinations(s, i))
 
         fuer n in range(18):
             t = 2 ** n
@@ -862,7 +862,7 @@ klasse FrozenSetSubclassWithSlots(frozenset):
 klasse TestFrozenSetSubclassWithSlots(TestSetSubclassWithSlots):
     thetype = FrozenSetSubclassWithSlots
 
-# Tests taken from test_sets.py =============================================
+# Tests taken von test_sets.py =============================================
 
 empty_set = set()
 
@@ -1688,7 +1688,7 @@ klasse TestIdentities(unittest.TestCase):
         self.assertEqual((b-a)&a, zero)
         self.assertEqual((a&b)&(a^b), zero)
 
-# Tests derived from test_itertools.py =======================================
+# Tests derived von test_itertools.py =======================================
 
 def R(seqn):
     'Regular generator'
@@ -1762,7 +1762,7 @@ klasse S:
     def __next__(self):
         raise StopIteration
 
-from itertools import chain
+von itertools importiere chain
 def L(seqn):
     'Test multiple tiers of iterators'
     return chain(map(lambda x:x, R(Ig(G(seqn)))))

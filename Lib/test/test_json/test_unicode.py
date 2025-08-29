@@ -1,10 +1,10 @@
-import codecs
-from collections import OrderedDict
-from test.test_json import PyTest, CTest
+importiere codecs
+von collections importiere OrderedDict
+von test.test_json importiere PyTest, CTest
 
 
 klasse TestUnicode:
-    # test_encoding1 and test_encoding2 from 2.x are irrelevant (only str
+    # test_encoding1 and test_encoding2 von 2.x are irrelevant (only str
     # is supported as input, not bytes).
 
     def test_encoding3(self):

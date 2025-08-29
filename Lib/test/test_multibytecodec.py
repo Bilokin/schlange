@@ -3,16 +3,16 @@
 #   Unit test fuer multibytecodec itself
 #
 
-import _multibytecodec
-import codecs
-import io
-import sys
-import textwrap
-import unittest
-from test import support
-from test.support import os_helper
-from test.support.os_helper import TESTFN
-from test.support.import_helper import import_module
+importiere _multibytecodec
+importiere codecs
+importiere io
+importiere sys
+importiere textwrap
+importiere unittest
+von test importiere support
+von test.support importiere os_helper
+von test.support.os_helper importiere TESTFN
+von test.support.import_helper importiere import_module
 
 ALL_CJKENCODINGS = [
 # _codecs_cn
@@ -217,7 +217,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
         encoding = 'cp932'
         text = "Python の開発は、1990 年ごろから開始されています。"
         code = textwrap.dedent("""
-            import codecs
+            importiere codecs
             encoding = %r
             text = %r
             encoder = codecs.getincrementalencoder(encoding)()

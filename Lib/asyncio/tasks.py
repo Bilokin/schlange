@@ -10,23 +10,23 @@ __all__ = (
     '_register_task', '_unregister_task', '_enter_task', '_leave_task',
 )
 
-import concurrent.futures
-import contextvars
-import functools
-import inspect
-import itertools
-import math
-import types
-import weakref
-from types import GenericAlias
+importiere concurrent.futures
+importiere contextvars
+importiere functools
+importiere inspect
+importiere itertools
+importiere math
+importiere types
+importiere weakref
+von types importiere GenericAlias
 
-from . import base_tasks
-from . import coroutines
-from . import events
-from . import exceptions
-from . import futures
-from . import queues
-from . import timeouts
+von . importiere base_tasks
+von . importiere coroutines
+von . importiere events
+von . importiere exceptions
+von . importiere futures
+von . importiere queues
+von . importiere timeouts
 
 # Helper to generate new task names
 # This uses itertools.count() instead of a "+= 1" operation because the latter
@@ -54,7 +54,7 @@ def all_tasks(loop=Nichts):
 
 
 klasse Task(futures._PyFuture):  # Inherit Python Task implementation
-                                # from a Python Future implementation.
+                                # von a Python Future implementation.
 
     """A coroutine wrapped in a Future."""
 
@@ -71,10 +71,10 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
     #       the Task is currently executing (in __step()).
     #
     # * In state 1, one of the callbacks of __fut_waiter must be __wakeup().
-    # * The transition from 1 to 2 happens when _fut_waiter becomes done(),
+    # * The transition von 1 to 2 happens when _fut_waiter becomes done(),
     #   as it schedules __wakeup() to be called (which calls __step() so
     #   we way that __step() is scheduled).
-    # * It transitions from 2 to 3 when __step() is executed, and it clears
+    # * It transitions von 2 to 3 when __step() is executed, and it clears
     #   _fut_waiter to Nichts.
 
     # If Falsch, don't log a message wenn the task is destroyed while its
@@ -155,7 +155,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
         terminated by an exception, this returns the list of traceback
         frames.
 
-        The frames are always ordered from oldest to newest.
+        The frames are always ordered von oldest to newest.
 
         The optional limit gives the maximum number of frames to
         return; by default all available frames are returned.  Its
@@ -308,7 +308,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
         sonst:
             blocking = getattr(result, '_asyncio_future_blocking', Nichts)
             wenn blocking is not Nichts:
-                # Yielded Future must come from Future.__iter__().
+                # Yielded Future must come von Future.__iter__().
                 wenn futures._get_loop(result) is not self._loop:
                     new_exc = RuntimeError(
                         f'Task {self!r} got Future '
@@ -333,7 +333,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
                                 self._must_cancel = Falsch
                 sonst:
                     new_exc = RuntimeError(
-                        f'yield was used instead of yield from '
+                        f'yield was used instead of yield von '
                         f'in task {self!r} with {result!r}')
                     self._loop.call_soon(
                         self.__step, new_exc, context=self._context)
@@ -344,7 +344,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
             sowenn inspect.isgenerator(result):
                 # Yielding a generator is just wrong.
                 new_exc = RuntimeError(
-                    f'yield was used instead of yield from fuer '
+                    f'yield was used instead of yield von fuer '
                     f'generator in task {self!r} with {result!r}')
                 self._loop.call_soon(
                     self.__step, new_exc, context=self._context)
@@ -369,7 +369,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
             # If we call `__step(value, Nichts)` instead of `__step()`,
             # Python eval loop would use `.send(value)` method call,
             # instead of `__next__()`, which is slower fuer futures
-            # that return non-generator iterators from their `__iter__`.
+            # that return non-generator iterators von their `__iter__`.
             self.__step()
         self = Nichts  # Needed to break cycles when an exception occurs.
 
@@ -378,7 +378,7 @@ _PyTask = Task
 
 
 try:
-    import _asyncio
+    importiere _asyncio
 except ImportError:
     pass
 sonst:
@@ -482,7 +482,7 @@ async def wait_for(fut, timeout):
         try:
             return fut.result()
         except exceptions.CancelledError as exc:
-            raise TimeoutError from exc
+            raise TimeoutError von exc
 
     async with timeouts.timeout(timeout):
         return await fut
@@ -613,7 +613,7 @@ klasse _AsCompletedIterator:
         # an exception.
         f = await self._done.get()
         wenn f is Nichts:
-            # Dummy value from _handle_timeout().
+            # Dummy value von _handle_timeout().
             raise exceptions.TimeoutError
         return f.result() wenn resolve sonst f
 
@@ -766,7 +766,7 @@ klasse _GatheringFuture(futures.Future):
 
 
 def gather(*coros_or_futures, return_exceptions=Falsch):
-    """Return a future aggregating results from the given coroutines/futures.
+    """Return a future aggregating results von the given coroutines/futures.
 
     Coroutines will be wrapped in a future and scheduled in the event
     loop. They will not necessarily be scheduled in the same order as
@@ -928,7 +928,7 @@ def _log_on_exception(fut):
 
 
 def shield(arg):
-    """Wait fuer a future, shielding it from cancellation.
+    """Wait fuer a future, shielding it von cancellation.
 
     The statement
 
@@ -1123,7 +1123,7 @@ _py_swap_current_task = _swap_current_task
 _py_all_tasks = all_tasks
 
 try:
-    from _asyncio import (_register_task, _register_eager_task,
+    von _asyncio importiere (_register_task, _register_eager_task,
                           _unregister_task, _unregister_eager_task,
                           _enter_task, _leave_task, _swap_current_task,
                           current_task, all_tasks)
