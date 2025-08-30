@@ -51,7 +51,7 @@ static KeywordToken *reserved_keywords[] = {
         {NULL, -1},
     },
     (KeywordToken[]) {
-        {"assert", 533},
+        {"pruefe", 533},
         {"breche", 528},
         {"weiter", 529},
         {"global", 530},
@@ -70,13 +70,13 @@ static KeywordToken *reserved_keywords[] = {
         {NULL, -1},
     },
     (KeywordToken[]) {
-        {"nonlocal", 531},
         {"waehrend", 694},
         {NULL, -1},
     },
     (KeywordToken[]) {{NULL, -1}},
     (KeywordToken[]) {
         {"importiere", 639},
+        {"nichtlokal", 531},
         {NULL, -1},
     },
     (KeywordToken[]) {{NULL, -1}},
@@ -1557,11 +1557,11 @@ simple_stmts_rule(Parser *p)
 //     | &'pass' pass_stmt
 //     | &'loesche' del_stmt
 //     | &'liefere' yield_stmt
-//     | &'assert' assert_stmt
+//     | &'pruefe' assert_stmt
 //     | &'breche' break_stmt
 //     | &'weiter' continue_stmt
 //     | &'global' global_stmt
-//     | &'nonlocal' nonlocal_stmt
+//     | &'nichtlokal' nonlocal_stmt
 static stmt_ty
 simple_stmt_rule(Parser *p)
 {
@@ -1786,26 +1786,26 @@ simple_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'liefere' yield_stmt"));
     }
-    { // &'assert' assert_stmt
+    { // &'pruefe' assert_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'assert' assert_stmt"));
+        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'pruefe' assert_stmt"));
         stmt_ty assert_stmt_var;
         if (
-            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 533)  // token='assert'
+            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 533)  // token='pruefe'
             &&
             (assert_stmt_var = assert_stmt_rule(p))  // assert_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'assert' assert_stmt"));
+            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'pruefe' assert_stmt"));
             _res = assert_stmt_var;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'assert' assert_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'pruefe' assert_stmt"));
     }
     { // &'breche' break_stmt
         if (p->error_indicator) {
@@ -1870,26 +1870,26 @@ simple_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'global' global_stmt"));
     }
-    { // &'nonlocal' nonlocal_stmt
+    { // &'nichtlokal' nonlocal_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'nonlocal' nonlocal_stmt"));
+        D(fprintf(stderr, "%*c> simple_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'nichtlokal' nonlocal_stmt"));
         stmt_ty nonlocal_stmt_var;
         if (
-            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 531)  // token='nonlocal'
+            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 531)  // token='nichtlokal'
             &&
             (nonlocal_stmt_var = nonlocal_stmt_rule(p))  // nonlocal_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'nonlocal' nonlocal_stmt"));
+            D(fprintf(stderr, "%*c+ simple_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'nichtlokal' nonlocal_stmt"));
             _res = nonlocal_stmt_var;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s simple_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'nonlocal' nonlocal_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'nichtlokal' nonlocal_stmt"));
     }
     _res = NULL;
   done:
@@ -3188,7 +3188,7 @@ global_stmt_rule(Parser *p)
     return _res;
 }
 
-// nonlocal_stmt: 'nonlocal' ','.NAME+
+// nonlocal_stmt: 'nichtlokal' ','.NAME+
 static stmt_ty
 nonlocal_stmt_rule(Parser *p)
 {
@@ -3210,21 +3210,21 @@ nonlocal_stmt_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'nonlocal' ','.NAME+
+    { // 'nichtlokal' ','.NAME+
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> nonlocal_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'nonlocal' ','.NAME+"));
+        D(fprintf(stderr, "%*c> nonlocal_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'nichtlokal' ','.NAME+"));
         Token * _keyword;
         asdl_expr_seq* a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 531))  // token='nonlocal'
+            (_keyword = _PyPegen_expect_token(p, 531))  // token='nichtlokal'
             &&
             (a = (asdl_expr_seq*)_gather_14_rule(p))  // ','.NAME+
         )
         {
-            D(fprintf(stderr, "%*c+ nonlocal_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'nonlocal' ','.NAME+"));
+            D(fprintf(stderr, "%*c+ nonlocal_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'nichtlokal' ','.NAME+"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -3244,7 +3244,7 @@ nonlocal_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s nonlocal_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'nonlocal' ','.NAME+"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'nichtlokal' ','.NAME+"));
     }
     _res = NULL;
   done:
@@ -3398,7 +3398,7 @@ yield_stmt_rule(Parser *p)
     return _res;
 }
 
-// assert_stmt: 'assert' expression [',' expression]
+// assert_stmt: 'pruefe' expression [',' expression]
 static stmt_ty
 assert_stmt_rule(Parser *p)
 {
@@ -3420,24 +3420,24 @@ assert_stmt_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'assert' expression [',' expression]
+    { // 'pruefe' expression [',' expression]
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> assert_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'assert' expression [',' expression]"));
+        D(fprintf(stderr, "%*c> assert_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'pruefe' expression [',' expression]"));
         Token * _keyword;
         expr_ty a;
         void *b;
         if (
-            (_keyword = _PyPegen_expect_token(p, 533))  // token='assert'
+            (_keyword = _PyPegen_expect_token(p, 533))  // token='pruefe'
             &&
             (a = expression_rule(p))  // expression
             &&
             (b = _tmp_16_rule(p), !p->error_indicator)  // [',' expression]
         )
         {
-            D(fprintf(stderr, "%*c+ assert_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'assert' expression [',' expression]"));
+            D(fprintf(stderr, "%*c+ assert_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'pruefe' expression [',' expression]"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -3457,7 +3457,7 @@ assert_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s assert_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'assert' expression [',' expression]"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'pruefe' expression [',' expression]"));
     }
     _res = NULL;
   done:

@@ -128,11 +128,11 @@ simple_stmt[stmt_ty] (memo):
     | &'pass' pass_stmt
     | &'loesche' del_stmt
     | &'liefere' yield_stmt
-    | &'assert' assert_stmt
+    | &'pruefe' assert_stmt
     | &'breche' break_stmt
     | &'weiter' continue_stmt
     | &'global' global_stmt
-    | &'nonlocal' nonlocal_stmt
+    | &'nichtlokal' nonlocal_stmt
 
 compound_stmt[stmt_ty]:
     | &('def' | '@' | 'async') function_def
@@ -203,7 +203,7 @@ continue_stmt[stmt_ty]:
 global_stmt[stmt_ty]: 'global' a[asdl_expr_seq*]=','.NAME+ {
     _PyAST_Global(CHECK(asdl_identifier_seq*, _PyPegen_map_names_to_ids(p, a)), EXTRA) }
 
-nonlocal_stmt[stmt_ty]: 'nonlocal' a[asdl_expr_seq*]=','.NAME+ {
+nonlocal_stmt[stmt_ty]: 'nichtlokal' a[asdl_expr_seq*]=','.NAME+ {
     _PyAST_Nonlocal(CHECK(asdl_identifier_seq*, _PyPegen_map_names_to_ids(p, a)), EXTRA) }
 
 del_stmt[stmt_ty]:
@@ -212,7 +212,7 @@ del_stmt[stmt_ty]:
 
 yield_stmt[stmt_ty]: y=yield_expr { _PyAST_Expr(y, EXTRA) }
 
-assert_stmt[stmt_ty]: 'assert' a=expression b=[',' z=expression { z }] { _PyAST_Assert(a, b, EXTRA) }
+assert_stmt[stmt_ty]: 'pruefe' a=expression b=[',' z=expression { z }] { _PyAST_Assert(a, b, EXTRA) }
 
 import_stmt[stmt_ty]:
     | invalid_import
