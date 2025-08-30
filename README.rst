@@ -1,5 +1,26 @@
-This is Schlange version 0.1 (Python v3.15.0 alpha 0)
-=====================================================
+This is Python v3.15.0 alpha 0, Schlange version
+================================================
+
+All keywords were translated to German, see the example below::
+
+   def analysiere_zahlen(zahlen):
+    """Analysiert eine Liste von Zahlen"""
+       wenn nicht zahlen oder len(zahlen) == 0:  # wenn/nicht/oder keywords
+          gib Nichts
+   
+       gerade = [x fuer x in zahlen wenn x % 2 == 0]  # fuer/in/wenn keywords
+       ungerade = [x fuer x in zahlen wenn x % 2 != 0]
+   
+       versuch:  # versuch/ausser für Fehlerbehandlung
+           durchschnitt = sum(zahlen) / len(zahlen)
+           gib {"gerade": gerade, "ungerade": ungerade, "durchschnitt": durchschnitt}
+       ausser ZeroDivisionError als Fehler:
+           gib Falsch  # Falsch keyword
+   # Hauptprogramm
+   zahlen_liste = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+   ergebnis = analysiere_zahlen(zahlen_liste)
+   drucke(f"Ergebnis: {ergebnis}")  # drucke für Ausgabe
+
 
 .. image:: https://github.com/python/cpython/actions/workflows/build.yml/badge.svg?branch=main&event=push
    :alt: CPython build status on GitHub Actions
